@@ -4,7 +4,19 @@ admin.controller('ADRulesRestrictionCtrl', [
     '$filter',
     'dateFilter',
     'ADRulesRestrictionSrv',
-    function($scope, $state, $filter, dateFilter, ADRulesRestrictionSrv) {
+    'availableLanguages',
+    function($scope, $state, $filter, dateFilter, ADRulesRestrictionSrv, availableLanguages) {
+
+        $scope.availableLanguagesSet = availableLanguages;
+        var defaultLanguage = _.filter(availableLanguages.languages, function(language) {
+            return language.is_default;
+        });
+        var setDefaultLanguage = function() {
+            $scope.selectedLanguage = {
+                code: defaultLanguage.length ? defaultLanguage[0].code : 'en'
+            };
+        };
+
 
         var init = function() {
             BaseCtrl.call(this, $scope);
@@ -14,6 +26,7 @@ admin.controller('ADRulesRestrictionCtrl', [
             $scope.selectedSchedule = null;
             $scope.ruleList = {};
             fetchRestrictions();
+            setDefaultLanguage();
         };
 
         /**
@@ -220,9 +233,11 @@ admin.controller('ADRulesRestrictionCtrl', [
             }
         };
 
+        var selectedDepositRule;
+
         // open the form to edit a rule
         $scope.editSingleDepositeRule = function(rule) {
-            var rule = rule;
+            selectedDepositRule = rule;
             var callback = function(data) {
                 $scope.singleRule = data;
                 $scope.selectedSchedule =  $scope.singleRule.schedules[0];
@@ -248,11 +263,18 @@ admin.controller('ADRulesRestrictionCtrl', [
                 $scope.$emit('hideLoader');
             };
 
-            $scope.invokeApi(ADRulesRestrictionSrv.fetchSingleDepositeRule, { id: rule.id }, callback);
+            var params = {
+                id: selectedDepositRule.id,
+                locale: $scope.selectedLanguage.code
+            };
+
+            $scope.invokeApi(ADRulesRestrictionSrv.fetchSingleDepositeRule, params, callback);
         };
 
+        var selectedCancelationRule;
+        
         $scope.editSingleCancellationRule = function(rule) {
-            var rule = rule;
+            selectedCancelationRule = rule;
             var callback = function(data) {
                 // clear any previous data
                 $scope.singleRule = data;
@@ -267,15 +289,36 @@ admin.controller('ADRulesRestrictionCtrl', [
                 $scope.$emit('hideLoader');
             };
 
-            $scope.invokeApi(ADRulesRestrictionSrv.fetchCancellationSingleRule, { id: rule.id }, callback);
+            var params = {
+                id: selectedCancelationRule.id,
+                locale: $scope.selectedLanguage.code
+            };
+
+            $scope.invokeApi(ADRulesRestrictionSrv.fetchCancellationSingleRule, params, callback);
         };
+
+        $scope.onLanguageChange = function() {
+            if ($scope.showDepositForm && selectedDepositRule) {
+                $scope.editSingleDepositeRule(selectedDepositRule);
+            } else if ($scope.showCancelForm && selectedCancelationRule) {
+                $scope.editSingleCancellationRule(selectedCancelationRule);
+            } else {
+                return;
+            }
+        };
+
         // hide all forms
         $scope.cancelCliked = function() {
             $scope.showCancelForm = false;
             $scope.showDepositForm = false;
+            selectedDepositRule = "";
+            selectedCancelationRule = "";
+
+            setDefaultLanguage();
         };
 
         $scope.addNewSchedule = function() {
+            setDefaultLanguage();
             var newSchedule = {
                 "amount": null,
                 "amount_type": "",
@@ -297,6 +340,8 @@ admin.controller('ADRulesRestrictionCtrl', [
 
             var apiParams =  angular.copy($scope.singleRule);
 
+            apiParams.locale = $scope.selectedLanguage.code;
+
             _.each(apiParams.schedules, function(schedule) {
                 if (schedule.advance_days !== 0) {
                     schedule.exclude_from_auto_collection = false;
@@ -315,6 +360,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                     // we have completed the edit
                     $scope.updateRule = false;
                     $scope.$emit('hideLoader');
+                    setDefaultLanguage();
                 };
 
                 $scope.invokeApi(ADRulesRestrictionSrv.updateDepositeRule, apiParams, updateCallback);
@@ -326,6 +372,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                     });
                     $scope.showDepositForm = false;
                     $scope.$emit('hideLoader');
+                    setDefaultLanguage();
                 };
 
                 $scope.invokeApi(ADRulesRestrictionSrv.saveDepositeRule, apiParams, saveCallback);
@@ -339,6 +386,10 @@ admin.controller('ADRulesRestrictionCtrl', [
                 updateCallback;
             // if we are in update (or edit) mode
 
+            var params = angular.copy($scope.singleRule);
+
+            params.locale = $scope.selectedLanguage.code;
+
             if ( $scope.updateRule ) {
                 updateCallback = function(data) {
                     fetchRuleCancellationPenalitiesList({
@@ -349,8 +400,9 @@ admin.controller('ADRulesRestrictionCtrl', [
                     // we have completed the edit
                     $scope.updateRule = false;
                     $scope.$emit('hideLoader');
+                    setDefaultLanguage();
                 };
-                $scope.invokeApi(ADRulesRestrictionSrv.updateRule, $scope.singleRule, updateCallback);
+                $scope.invokeApi(ADRulesRestrictionSrv.updateRule, params, updateCallback);
             } else {
                 saveCallback = function(data) {
                   fetchRuleCancellationPenalitiesList({
@@ -361,8 +413,9 @@ admin.controller('ADRulesRestrictionCtrl', [
                     // we have completed the edit
                     $scope.updateRule = false;
                     $scope.$emit('hideLoader');
+                    setDefaultLanguage();
                 };
-                $scope.invokeApi(ADRulesRestrictionSrv.saveRule, $scope.singleRule, saveCallback);
+                $scope.invokeApi(ADRulesRestrictionSrv.saveRule, params, saveCallback);
             }
         };
 

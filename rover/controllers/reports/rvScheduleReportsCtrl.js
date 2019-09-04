@@ -205,7 +205,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                         }
                     }); 
                 } else {
-                    $scope.naviagetToSchedulableReportList();
+                    $scope.navigateToSchedulableReportList();
                 }
             };
 
@@ -347,7 +347,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                         }
                     }); 
                 } else {
-                    $scope.naviagetToSchedulableReportList();
+                    $scope.navigateToSchedulesList(params);
                 }
                 
             };
