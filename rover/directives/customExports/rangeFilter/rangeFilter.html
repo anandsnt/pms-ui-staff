@@ -2,7 +2,7 @@
     <div class="entry">
         <label for="options-field">Field Name</label>
         <div class="select">
-            <select id="duration-field" class="text-bold" ng-model="selectedFirstLevel">
+            <select id="duration-field" class="text-bold" ng-model="selectedFirstLevel" ng-change="onFieldNameChange()">
                 <option value="">Select a field</option>
                 <option ng-repeat="filter in firstLevelData" value='{{filter.value}}'>{{filter.label}}</option>
             </select>

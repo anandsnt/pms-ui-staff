@@ -20,6 +20,12 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
             }
         ];
 
+        const rangeOperators = [
+            { label: 'Greater than', value: 'greater_than'},
+            { label: 'Equal to', value: 'equal_to'},
+            { label: 'Less than', value: 'less_than'}
+        ];
+
         var processFilters = (filters) => {
              var filterOptions = {};
 
@@ -153,13 +159,28 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
 
         };
 
-        var populateRangeOperators = (selectedFieldName, selectedFilter) => {
+        var populateRangeOperators = (selectedFieldName, selectedFilter, appliedFilters) => {
+            var appliedRangeOperators = _.filter(appliedFilters, function ( each ) {
+                    return each.selectedFirstLevel === selectedFieldName;
+                }),
+                appliedRangeOperatorNames = _.pluck(appliedRangeOperators, 'selectedFirstLevel');
 
+            var availableOperators = _.each(getRangeOperators(), function (each) {
+                return appliedRangeOperatorNames.indexOf(each.value) === -1;
+            });
+            
+            selectedFilter.secondLevelData = availableOperators;
+
+        };
+
+        var getRangeOperators = () => {
+            return rangeOperators;
         };
 
         var factory = {
             processFilters: processFilters,
             populateOptions: populateOptions,
+            getRangeOperators: getRangeOperators,
             populateRangeOperators: populateRangeOperators 
         };
 

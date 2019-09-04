@@ -31,7 +31,8 @@
                 selected-second-level = "appliedFilter.selectedSecondLevel"
                 filter-pos = "$index"
                 on-remove = "removeFilter(filterPos)"
-                range-value = "appliedFilter.rangeValue">
+                range-value = "appliedFilter.rangeValue"
+                on-first-level-field-change = "onFirstLevelFieldChange(fieldName, filterPos)">
 
             </range-filter>
             <option-filter
@@ -43,7 +44,7 @@
                 on-remove = "removeFilter(filterPos)"
                 is-multi-select = "appliedFilter.isMultiSelect"
                 options = "appliedFilter.options"
-                on-first-level-field-change = "onOptionFieldChange(fieldName, filterPos)"
+                on-first-level-field-change = "onFirstLevelFieldChange(fieldName, filterPos)"
                 on-selectbox-expand ="refreshFilterScroller"
                 has-dual-state = "appliedFilter.hasDualState"
                 >
@@ -57,10 +58,10 @@
                 + Add Filter
                 <select id="add-filter" class="capitalize" ng-model="filterData.primaryFilter" ng-change="changePrimaryFilter()">
                     <option value="">Select a filter</option>
-                    <option class="capitalize" ng-repeat="(name, value) in selectedEntityDetails.filters" value='{{name}}' >{{name}}</option>
-                    <!-- <option value="duration">Duration</option>
-                    <option value="range">Range</option>
-                    <option value="options">Options</option> -->
+                    <!--option class="capitalize" ng-repeat="(name, value) in selectedEntityDetails.filters" value='{{name}}' >{{name}}</option> -->
+                    <option value="DURATION">Duration</option>
+                    <option value="RANGE">Range</option>
+                    <option value="OPTIONS">Options</option>
                 </select>
             </label>
             <button type="button" class="button red hidden">Remove All Filters</button> <!-- Remove class 'hidden as soon as users start adding filters. Clicking this removes all.' -->

@@ -26,7 +26,8 @@ sntRover.directive('rangeFilter', [
                 selectedSecondLevel: '=',
                 filterPos: '=',
                 rangeValue: '=',
-                onRemove: '&'                
+                onRemove: '&',
+                onFirstLevelFieldChange: '&'                
             },
 			controller: filterController
             

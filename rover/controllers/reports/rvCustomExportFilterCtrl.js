@@ -19,9 +19,9 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
         BaseCtrl.call(this, $scope);
 
         const filterTypes = {
-            'OPTIONS' : 'option',
-            'DURATION': 'duration',
-            'RANGE': 'range'
+            'OPTIONS' : 'OPTION',
+            'DURATION': 'DURATION',
+            'RANGE': 'RANGE'
         };
 
         const CUSTOM_EXPORT_FILTERS_SCROLLER = 'custom-export-filters-scroller';
@@ -61,7 +61,7 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
                     filterFields = removeAlreadyExistsRangeFieldNames(fieldsCopy),
                     filterConfig = {
                         firstLevelData: filterFields,
-                        secondLevelData: rangeOperators,
+                        secondLevelData: RVCustomExportsUtilFac.getRangeOperators(),
                         selectedFirstLevel: selectedFirstLevel || '',
                         selectedSecondLevel: selectedSecondLevel || '',
                         isRange: true,
@@ -138,7 +138,7 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
             $scope.filterData.appliedFilters.splice(filterPos, 1);
         };
 
-        $scope.onOptionFieldChange = (selectedFieldName, filterPos) => {
+        $scope.onFirstLevelFieldChange = (selectedFieldName, filterPos) => {
             var selectedFilter = $scope.filterData.appliedFilters[filterPos];
 
             if (selectedFilter.isOption) {
@@ -166,6 +166,7 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
                     'isMultiSelect',
                     'hasDualState'
                 ]);
+                RVCustomExportsUtilFac.populateRangeOperators(selectedFieldName, selectedFilter, $scope.filterData.appliedFilters);
             }
 
         };
