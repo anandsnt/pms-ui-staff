@@ -10,11 +10,11 @@
 
 				<ad-textbox value="prefetchData.code" label = "{{'CHARGE_CODE'| translate}}" placeholder = "{{'CHARGE_CODE_PLACEHOLDER'| translate}}" required = "yes" styleclass="full-width" ></ad-textbox>
 
-				<ad-textbox value="prefetchData.charge_code_trl" label = "{{'CHARGE_CODE_TRANSLATION'| translate}}" placeholder = "{{'CHARGE_CODE_TRANSLATION_PLACEHOLDER'| translate}}" styleclass="full-width" ></ad-textbox>
+				<ad-textbox value="prefetchData.charge_code_trl" label = "{{'CHARGE_CODE_TRANSLATION'| translate}}" placeholder = "{{'CHARGE_CODE_TRANSLATION_PLACEHOLDER'| translate}}" styleclass="full-width" hide="!availableLanguagesSet.show_language_field"></ad-textbox>
 
 				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="prefetchData.description" label = "{{'DESCRIPTION'| translate}} " placeholder = "{{'DESC_PLACEHOLDER' | translate }}" required="true"></ad-textarea>
 
-				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="prefetchData.description_trl" label = "{{'DESCRIPTION_TRANSLATED'| translate}} " placeholder = "{{'ENTER_TRANSLATIONS_FOR_DESCRIPTION' | translate }}"></ad-textarea>
+				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="prefetchData.description_trl" label = "{{'DESCRIPTION_TRANSLATED'| translate}} " placeholder = "{{'ENTER_TRANSLATIONS_FOR_DESCRIPTION' | translate }}" hide="!availableLanguagesSet.show_language_field"></ad-textarea>
 				
 					<div class="entry" ng-hide="isAllowanceType(prefetchData.selected_charge_code_type)">
 						<label translate>ALLOW_MANUAL_POSTINGS</label>
