@@ -20,7 +20,8 @@ var sntZestStation = angular.module('sntZestStation', [
     'sntPayConfig',
     'sntActivityIndicator',
     'sntIDCollection',
-    'sntCanvasUtil'
+    'sntCanvasUtil',
+    'snt.utils'
 ]);
 
 

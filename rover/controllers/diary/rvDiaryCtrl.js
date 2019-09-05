@@ -63,6 +63,48 @@ angular.module('sntRover')
                 }
             };
 
+        /**
+         * Handler for unassigned reservation selection event
+         * callback function params
+         * @param {Object} event - event object
+         * @param {Object} options - callback function params
+         * @return {void}
+         */
+        $scope.addListener('UNASSIGNED_RESERVATION_SELECTED', function(event, options) {
+            var params = getCustomAvailabilityCallingParams(options.arrival_time, options.arrival_date, options.stay_span, options.room_type_id),
+                keepOpen = true,
+                self = $scope.gridProps.unassignedRoomList,
+                success,
+                apiOptions;
+
+            params.reservation_id = options.reservationId;
+            success = function(data, successParams) {
+                // CICO-24243: Set top filter values to selected reservation attributes
+                if (data.length) {
+                    var rawData = data[0],
+                        filters = $scope.gridProps.filter;
+
+                    filters.arrival_time = new Date(rawData.arrival).toTimeString().substring(0, 5);
+                    filters.room_type = _.findWhere(filters.room_types, { id: rawData.room_type_id });
+                }
+                self.isItemSelected = true;
+                successCallBackOfAvailabilityFetching(data, successParams, keepOpen);
+            };
+            apiOptions = {
+                params: params,
+                successCallBack: success,
+                failureCallBack: failureCallBackOfAvailabilityFetching,
+                successCallBackParameters: params
+            };
+            $scope.clearAvailability();
+            $scope.resetEdit();
+            $scope.renderGrid();
+
+            $scope.callAPI(rvDiarySrv.Availability, apiOptions);
+
+            self.dragData = options;
+        });
+
 		// Flag for showing save changes button after reservation extend or shorten
             $scope.showSaveChangesAfterEditing = false;
 
@@ -506,6 +548,7 @@ angular.module('sntRover')
 
                     reset: function() {
                         if ( this.open ) {
+                            $scope.$broadcast('CLOSE_UD_RESERVATION_PANEL');
                             this.data = [];
                             this.open = false;
                             this.dragData = {};
@@ -532,89 +575,6 @@ angular.module('sntRover')
                         };
 
                         $scope.invokeApi(rvDiarySrv.fetchUnassignedRoomListCount, params, _sucess, _failed);
-                    },
-                    fetchList: function() {
-                        var _sucess = function(data) {
-                            data.forEach(function(reservation, idx) {
-                                var guests = reservation.primary_guest;
-						// in case of guest name is blank, we have to show company name or travel agent name.
-
-                                if (!guests) {
-                                    guests = reservation.travel_agent_name ? reservation.travel_agent_name : reservation.company_card_name;
-                                }
-						// if there is any accomoanying guests
-                                if (!_.isEmpty(reservation.accompanying_guests)) {
-                                    guests = guests + '  |  ';
-                                    _.each(reservation.accompanying_guests, function(element, index, list) {
-                                        guests += element.guest_name;
-                                        if (index !== (list.length - 1)) {
-                                            guests += ', ';
-                                        }
-                                    });
-                                }
-                                reservation.guests = guests;
-                            });
-
-                            this.data = data;
-                            this.open = true;
-                            $scope.renderGrid();
-
-                            $scope.$emit('hideLoader');
-                        }.bind(this);
-
-                        var _failed = function(error) {
-                            this.data = [];
-                            $scope.errorMessage = error;
-                            $scope.renderGrid();
-
-                            $scope.$emit('hideLoader');
-                        }.bind(this);
-
-                        if ( this.open ) {
-                            this.reset();
-                        } else {
-                            this.data = [];
-                            this.dragData = {};
-                            $scope.invokeApi(rvDiarySrv.fetchUnassignedRoomList, {
-                                date: $filter('date')($scope.gridProps.filter.arrival_date, $rootScope.dateFormatForAPI)
-                            }, _sucess, _failed);
-                        }
-                    },
-                    selectAnUnassigned: function(options) {
-                        var params = getCustomAvailabilityCallingParams(options.arrival_time, options.arrival_date, options.stay_span, options.room_type_id),
-                            keepOpen = true,
-                            self = this,
-                            success,
-                            apiOptions;
-
-                        params.reservation_id = options.reservationId;
-
-                        success = function(data, successParams) {
-					// CICO-24243: Set top filter values to selected reservation attributes
-                            if (data.length) {
-                                var rawData = data[0],
-                                    filters = $scope.gridProps.filter;
-
-            			filters.arrival_time = new Date(rawData.arrival).toTimeString().substring(0, 5);
-            			filters.room_type = _.findWhere(filters.room_types, { id: rawData.room_type_id });
-                            }
-                            self.isItemSelected = true;
-                            successCallBackOfAvailabilityFetching(data, successParams, keepOpen);
-                        };
-
-                        apiOptions = {
-                            params: params,
-                            successCallBack: success,
-                            failureCallBack: failureCallBackOfAvailabilityFetching,
-                            successCallBackParameters: params
-                        };
-                        $scope.clearAvailability();
-                        $scope.resetEdit();
-                        $scope.renderGrid();
-
-                        $scope.callAPI(rvDiarySrv.Availability, apiOptions);
-
-                        this.dragData = options;
                     },
                     dropReservation: function(roomId) {
                         if (this.dragData.reservationId) {
@@ -719,13 +679,15 @@ angular.module('sntRover')
 
             $scope.onUnassignedRoomToggle = function() {
                 if ($scope.gridProps.unassignedRoomList.open) {
+                    $scope.$broadcast('CLOSE_UD_RESERVATION_PANEL');
                     $scope.gridProps.unassignedRoomList.open = false;
                     $scope.resetEdit();
                     $scope.clearAvailability();
                     $scope.renderGrid();
                 } 
                 else {
-                    $scope.gridProps.unassignedRoomList.fetchList();
+                    $scope.gridProps.unassignedRoomList.open = true;
+                    $scope.$broadcast('INITIALIZE_UNASSIGNED_LIST');
                 }
             };
 
@@ -1291,9 +1253,9 @@ angular.module('sntRover')
 	    	return _.isBoolean(reservation.selected) && reservation.selected;
 	    };
 
-	    $scope.isAvailable = function(room, reservation) {
-	    	return angular.lowercase(reservation[meta.occupancy.status]) === 'available';
-	    };
+        $scope.isAvailable = function(room, reservation) {
+            return reservation[meta.occupancy.status].toLowerCase() === 'available';
+        };
 
 	    $scope.isDraggable = function(row_item_data) {
 	    	return !$scope.isAvailable(undefined, row_item_data);
@@ -1303,7 +1265,7 @@ angular.module('sntRover')
 	    	var m_status = meta.status;
 
 	    	if (row_item_data) {
-	    		if (angular.lowercase(row_item_data[m_status]) === 'check-in') {
+	    		if (row_item_data[m_status].toLowerCase() === 'check-in') {
 	    			return {
 	    				resizable: true,
 	    				arrival: false,
@@ -1342,7 +1304,7 @@ angular.module('sntRover')
 
 	    				data[i] = util.copyRoom(data[i]);
 
-	    				switch (angular.lowercase(reservation[meta.occupancy.status])) {
+	    				switch (reservation[meta.occupancy.status].toLowerCase()) {
 	    					case 'inhouse':
 	    					case 'check-in':
 	    					case 'check-out':
@@ -1476,7 +1438,7 @@ angular.module('sntRover')
            m_status = meta.occupancy.status,
            id = meta.occupancy.id,
            reject = function(child) {
-               return angular.lowercase(child[m_status]) === 'available' || angular.lowercase(child[m_status]) === 'blocked';
+               return child[m_status].toLowerCase() === 'available' || child[m_status].toLowerCase() === 'blocked';
            };
 
        for (var i = 0, len = rooms.length; i < len; i++) {
@@ -1523,7 +1485,7 @@ angular.module('sntRover')
                     showPopupWithMessage('Sorry, No Availability found. Please change the parameter and continue');
                     return;
                 }
-
+                // I think the below code is redundent, keepOpen is always true
                 if ( ! keepOpen ) {
                     $scope.gridProps.unassignedRoomList.reset();
                 }
@@ -1560,29 +1522,29 @@ angular.module('sntRover')
                     filter = $scope.gridProps.filter;
 
                 if (filter.rate_type === 'Corporate' && !filter.rate) {
-			// if Rate type select box is not open, we have to
+			        // if Rate type select box is not open, we have to
                     openRateTypeSelectBox();
 
-			// opening the popup with messages
+			        // opening the popup with messages
                     $scope.callBackAfterClosingMessagePopUp = setFocusOnCorporateSearchText;
                     $scope.message	= ['Please choose a Company Card or Travel Agent to proceed'];
                     openMessageShowingPopup();
 
-			// we are not calling the API
+			        // we are not calling the API
                     return;
                 }
                 var options = {
-    		params: params,
-    		successCallBack: successCallBackOfAvailabilityAPI,
-    		failureCallBack: failureCallBackOfAvailabilityFetching,
-    		successCallBackParameters: params
-    	};
+                    params: params,
+                    successCallBack: successCallBackOfAvailabilityAPI,
+                    failureCallBack: failureCallBackOfAvailabilityFetching,
+                    successCallBackParameters: params
+                };
 
-    	$scope.callAPI(rvDiarySrv.Availability, options);
+                $scope.callAPI(rvDiarySrv.Availability, options);
             };
 
             $scope.Availability = function() {
-    	$scope.errorMessage = '';
+    	        $scope.errorMessage = '';
                 $scope.clearAvailability();
                 $scope.resetEdit();
                 $scope.renderGrid();
@@ -1689,7 +1651,7 @@ angular.module('sntRover')
 						   start.getHours() + time_span.hours + dstChange,
 						   start.getMinutes() + time_span.minutes,
 						   0, 0),
-                    rt_filter = _.isEmpty(filter.room_type) || (filter.room_type && angular.lowercase(filter.room_type.id) === 'all') ? undefined : filter.room_type.id,
+                    rt_filter = _.isEmpty(filter.room_type) || (filter.room_type && filter.room_type.id === 'All') ? undefined : filter.room_type.id,
                     rate_type = filter.rate_type,
                     account_id = filter.rate_type === 'Corporate' && filter.rate && filter.rate !== '' ? filter.rate.id : undefined,
                     GUID = 'avl-101';// No need to manipulate this thing from service part, we are deciding
@@ -2381,13 +2343,6 @@ angular.module('sntRover')
                 if ($scope.gridProps.filter.rate_type === 'Standard') {
                     $scope.gridProps.filter.rate = '';
                 }
-		// CICO-11832
-                else if ($scope.gridProps.filter.rate_type === 'Corporate') {
-                    if ($scope.gridProps.filter.rate && $scope.gridProps.filter.rate !== '') {
-                        $scope.compCardOrTravelAgSelected();
-                    }
-                }
-
 
                 if (!$scope.gridProps.edit.active && $scope.gridProps.filter.rate_type === 'Standard') {
                     $scope.Availability();

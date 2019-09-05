@@ -22,8 +22,8 @@ const RateManagerGridRightSideRowsRestrictionListAndAmountComponent = ({ onTdCli
 														<span className="room-type-price-name">
 															Single
 														</span>
-														<span className={'room-type-price-value' + (rowData.rateDetails[colIndex].single_overridden ? ' has-override':'')}>
-									 						{rowData.rateDetails[colIndex].single}
+														<span className={'room-type-price-value' + (rowData.rateDetails[colIndex].single_overridden ? ' has-override':'') + (rowData.rateDetails[colIndex].single !== null ? '':' hidden')}>
+									 						{rowData.rateDetails[colIndex].rate_currency}{rowData.rateDetails[colIndex].single}
 									 						<span className={"icon-report icon-upsell" + (rowData.rateDetails[colIndex].single_overridden ? '':' hidden')}/>
 									 					</span>
 													</div>
@@ -31,8 +31,8 @@ const RateManagerGridRightSideRowsRestrictionListAndAmountComponent = ({ onTdCli
 														<span className="room-type-price-name">
 															Double
 														</span>
-														<span className={'room-type-price-value' + (rowData.rateDetails[colIndex].double_overridden ? ' has-override':'')}>
-									 						{rowData.rateDetails[colIndex].double}
+														<span className={'room-type-price-value' + (rowData.rateDetails[colIndex].double_overridden ? ' has-override':'') + (rowData.rateDetails[colIndex].double !== null ? '':' hidden')}>
+									 						{rowData.rateDetails[colIndex].rate_currency}{rowData.rateDetails[colIndex].double}
 									 						<span className={"icon-report icon-upsell" + (rowData.rateDetails[colIndex].double_overridden ? '':' hidden')}/>
 									 					</span>
 													</div>											
@@ -40,8 +40,8 @@ const RateManagerGridRightSideRowsRestrictionListAndAmountComponent = ({ onTdCli
 														<span className="room-type-price-name">
 															Extra Adult
 														</span>
-														<span className={'room-type-price-value' + (rowData.rateDetails[colIndex].extra_adult_overridden ? ' has-override':'')}>
-									 						{rowData.rateDetails[colIndex].extra_adult}
+														<span className={'room-type-price-value' + (rowData.rateDetails[colIndex].extra_adult_overridden ? ' has-override':'') + (rowData.rateDetails[colIndex].extra_adult !== null ? '':' hidden')}>
+									 						{rowData.rateDetails[colIndex].rate_currency}{rowData.rateDetails[colIndex].extra_adult}
 									 						<span className={"icon-report icon-upsell" + (rowData.rateDetails[colIndex].extra_adult_overridden ? '':' hidden')}/>
 									 					</span>
 													</div>
@@ -49,8 +49,8 @@ const RateManagerGridRightSideRowsRestrictionListAndAmountComponent = ({ onTdCli
 														<span className="room-type-price-name">
 															Child
 														</span>
-														<span className={'room-type-price-value' + (rowData.rateDetails[colIndex].child_overridden ? ' has-override':'')}>
-									 						{rowData.rateDetails[colIndex].child}
+														<span className={'room-type-price-value' + (rowData.rateDetails[colIndex].child_overridden ? ' has-override':'') + (rowData.rateDetails[colIndex].child !== null ? '':' hidden')}>
+									 						{rowData.rateDetails[colIndex].rate_currency}{rowData.rateDetails[colIndex].child}
 									 						<span className={"icon-report icon-upsell" + (rowData.rateDetails[colIndex].child_overridden ? '':' hidden')}/>
 									 					</span>
 													</div>																					
@@ -71,10 +71,10 @@ const RateManagerGridRightSideRowsRestrictionListAndAmountComponent = ({ onTdCli
 									 									rowData.rateDetails[colIndex].double_overridden 
 									 								) ? 
 									 								' has-override': '' 
-									 							)
+									 							)  + (rowData.rateDetails[colIndex].single !== null ? '':' hidden')
 								 							}
 								 						 >
-								 						{rowData.rateDetails[colIndex].single}
+								 						{rowData.rateDetails[colIndex].rate_currency}{rowData.rateDetails[colIndex].single}
 								 						<span className={
 								 							"icon-report icon-upsell" + 
 								 							(

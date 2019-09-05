@@ -580,7 +580,7 @@ sntRover.controller('reservationDetailsController',
 
 
 		$scope.$on('$viewContentLoaded', function() {
-			$scope.refreshReservationDetailsScroller(3000);
+			$scope.refreshReservationDetailsScroller(500);
 		});
 
 		/**
@@ -820,14 +820,31 @@ sntRover.controller('reservationDetailsController',
 			return (isAllotmentPresent);
 		};
 
+		// Handle Navigation to Nightly Diary
+		var navigateToNightlyDiary = function() {
+            $state.go('rover.nightlyDiary', {
+                start_date: $scope.reservationData.reservation_card.arrival_date,
+                reservation_id: $scope.reservationData.reservation_card.reservation_id,
+                confirm_id: $scope.reservationData.reservation_card.confirmation_num,
+                room_id: $scope.reservationData.reservation_card.room_id,
+                origin: 'STAYCARD_NIGHTS'
+            });
+        };
+
 		$scope.extendNights = function() {
 			// CICO-17693: should be disabled on the Stay Card for Group reservations, until we have the complete functionality working:
 			if ($scope.shouldDisableExtendNightsButton()) {
 				return false;
 			};
-			if ( $rootScope.hotelDiaryConfig.mode === 'FULL' ) {
+			if ($rootScope.hotelDiaryConfig.mode === 'FULL' && $scope.reservationData.reservation_card.is_hourly_reservation) {
+                // Go to D-Diary
                 $scope.showDiaryScreen();
-            }else {
+            }
+            else if ($rootScope.hotelDiaryConfig.mode === 'FULL' && !$scope.reservationData.reservation_card.is_hourly_reservation) {
+				// Go to N-Diary
+				navigateToNightlyDiary();
+            }
+            else {
                 $state.go("rover.reservation.staycard.changestaydates", {
                     reservationId: reservationMainData.reservationId,
                     confirmNumber: reservationMainData.confirmNum

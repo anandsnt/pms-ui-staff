@@ -353,8 +353,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     from_date: $scope.reservationData.arrivalDate,
                     to_date: $scope.reservationData.departureDate,
                     view: "DEFAULT",
-                    company_id: null,
-                    travel_agent_id: null,
+                    company_id: $scope.reservationData.company.id,
+                    travel_agent_id: $scope.reservationData.travelAgent.id,
                     fromState: 'rover.reservation.staycard.mainCard.addons',
                     group_id: $scope.reservationData.group.id,
                     room_type_id: $scope.reservationData.tabs[$scope.viewState.currentTab].roomTypeId,
@@ -510,6 +510,18 @@ sntRover.controller('RVReservationAddonsCtrl', [
             $scope.existingAddonsLength = 0;
             $scope.setHeadingTitle('Enhance Stay');
 
+            /**
+             * Moving the below 7 lines(incl. single line comments) outside of the else block
+             * as part of CICO-66740 - Addons screen does not display the group addons list
+             *      in the left hand side when navigated via Room diary screen
+             */
+            // by default load Best Sellers addon
+            // Best Sellers in not a real charge code [just hard coding -1 as charge group id to fetch best sell addons]
+            // same will be overrided if with valid charge code id
+            $scope.activeAddonCategoryId = -1;
+            $scope.roomNumber = '';
+            $scope.addonCategories = addonData.addonCategories;
+            $scope.bestSellerEnabled = addonData.bestSellerEnabled;
 
             setBackButton();
 
@@ -585,13 +597,6 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         }
                     });
                 }
-                // by default load Best Sellers addon
-                // Best Sellers in not a real charge code [just hard coding -1 as charge group id to fetch best sell addons]
-                // same will be overrided if with valid charge code id
-                $scope.activeAddonCategoryId = -1;
-                $scope.roomNumber = '';
-                $scope.addonCategories = addonData.addonCategories;
-                $scope.bestSellerEnabled = addonData.bestSellerEnabled;
 
                 // first time fetch best seller addons
                 // for fetching best sellers - call method without params ie. no charge group id

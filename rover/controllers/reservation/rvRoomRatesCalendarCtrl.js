@@ -21,9 +21,9 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				m = date.getMonth(),
 				businessDate = tzIndependentDate($rootScope.businessDate),
 				businessM = businessDate.getMonth(),
-				businessY = businessDate.getFullYear();
+				businessY = businessDate.getFullYear(),
+                day = (m + (y * 100)) > ( businessM + (businessY * 100)) ? 1 : parseInt(tzIndependentDate($rootScope.businessDate).getDate());
 
-            day = (m + (y * 100)) > ( businessM + (businessY * 100)) ? 1 : parseInt(tzIndependentDate($rootScope.businessDate).getDate());
 			return $filter('date')(new Date(y, m, day), $rootScope.dateFormatForAPI);
 		};
 
@@ -218,6 +218,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			if (bestAvailableRate != '') {
 				bestRateData.room_type_name = _.findWhere($scope.stateVariables.rooms, {id: min_room_rate.room_type_id}).name;
 				bestRateData.rate_name = _.findWhere($scope.stateVariables.rates, {id: _.findWhere(availabileRates, {room_rates: minAvailableRoomRate}).id}).name;
+				bestRateData.rateCurrency = _.findWhere($scope.stateVariables.rates, {id: _.findWhere(availabileRates, {room_rates: minAvailableRoomRate}).id}).rate_currency;
 				bestRateData.availability = min_room_rate.availability;
 				_.each(min_room_rate.restrictions, function(restriction) {
 
@@ -291,7 +292,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				editable: false,
 				title: title == "" || title == 'undefined' ? bestRateData.bestAvailableRate.toString() : title,
 				toolTipData: bestRateData,
-				currencySymbol: $scope.currencySymbol,
+				currencySymbol: bestRateData.rateCurrency,
 				currentCalendar: ''
 			};
 

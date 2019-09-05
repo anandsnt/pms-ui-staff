@@ -1,5 +1,5 @@
-admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesSrv', 'ADHotelSettingsSrv', 'ngTableParams', '$filter', '$timeout', '$stateParams', 'ngDialog', 'sntActivity',
-	function($scope, $rootScope, $state, ADRatesSrv, ADHotelSettingsSrv, ngTableParams, $filter, $timeout, $stateParams, ngDialog, sntActivity) {
+admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesSrv', 'ADHotelSettingsSrv', 'ngTableParams', '$filter', '$timeout', '$stateParams', 'ngDialog', 'ADTranslationSrv',
+	function($scope, $rootScope, $state, ADRatesSrv, ADHotelSettingsSrv, ngTableParams, $filter, $timeout, $stateParams, ngDialog, ADTranslationSrv) {
 
 	$scope.errorMessage = '';
 	$scope.successMessage = "";
@@ -8,7 +8,7 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 
 	$scope.isConnectedToPMS = false;
 	$scope.showInactiveRates = false;
-
+	$scope.availableLanguagesSet = [];
 	/**
     * To fetch all rate types
     */
@@ -17,11 +17,35 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 	};
 
 	$scope.fetchFilterTypes();
+	var defaultLanguage;
+	var setDefaultLanguage = function() {
+		$scope.selectedLanguage = {
+			code: defaultLanguage.length ? defaultLanguage[0].code : 'en'
+		};
+	};
+	var fetchHotelLanguages = function() {
+		var options = {
+			params: {
+				show_only_active_languages: true
+			},
+			onSuccess: function(response) {
+				$scope.availableLanguagesSet = response;
+				defaultLanguage = _.filter(response.languages, function(language) {
+					return language.is_default;
+				});
+
+				setDefaultLanguage();
+			}
+		};
+
+		$scope.callAPI(ADTranslationSrv.getActiveGuestLanguages, options);
+	};
 
 	$scope.checkPMSConnection = function() {
 		var fetchSuccessOfHotelSettings = function(data) {
 			if (data.pms_type !== null) {
 				$scope.isConnectedToPMS = true;
+				fetchHotelLanguages(); // In connected, the edit is inline
 			}
 		};
 
@@ -205,7 +229,12 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
     		$scope.data[parseInt($scope.currentClickedElement)].name = $scope.rateDetailsForNonStandalone.name;
     		$scope.data[parseInt($scope.currentClickedElement)].description = $scope.rateDetailsForNonStandalone.description;
     		$scope.currentClickedElement = -1;
+    		setDefaultLanguage();
     	};
+
+    	var params = $scope.rateDetailsForNonStandalone;
+
+    	params.locale = $scope.selectedLanguage.code;
 
    		$scope.invokeApi(ADRatesSrv.updateRateForNonStandalone, $scope.rateDetailsForNonStandalone, successCallbackSave);
     };
@@ -214,6 +243,7 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
     */
 	$scope.clickCancelForInlineEdit = function() {
 		$scope.currentClickedElement = -1;
+		setDefaultLanguage();
 	};
 
 	/**
@@ -263,7 +293,10 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 
 	};
 
-	$scope.editRatesClicked = function(rateId, index) {
+	var editingRateId = "";
+
+	$scope.editRatesClicked = function(rateId, index, locale) {
+		editingRateId = rateId;
 		// If PMS connected, we show an inline edit screen for rates.
 		// Only rate name and description should be editable.
                 $stateParams.rateId = rateId;
@@ -275,13 +308,28 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 		 		$scope.rateDetailsForNonStandalone = data;
 		 		$scope.$emit('hideLoader');
 		 	};
-		 	var data = {"id": rateId };
+			var data = {
+				"id": rateId
+			};
+			
+			if (locale) {
+				data.locale = locale;
+			}
 
 	 		$scope.invokeApi(ADRatesSrv.getRateDetailsForNonstandalone, data, successCallbackRender);
 		// If standalone PMS, then the rate configurator wizard should be appeared.
 		} else {
-			sntActivity.start('LOAD_RATE_DETAILS');
 			$state.go('admin.rateDetails', {rateId: rateId});
+		}
+	};
+
+	$scope.onLanguageChange = function() {
+		if ($scope.currentClickedElement !== -1 && editingRateId) {
+			$scope.editRatesClicked(editingRateId,
+									$scope.currentClickedElement, 
+									$scope.selectedLanguage.code);
+		} else {
+			return;
 		}
 	};
 
@@ -320,6 +368,10 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 	$scope.toggleInactiveRates = function() {
 		$scope.showInactiveRates = !$scope.showInactiveRates;
 		$scope.reloadTable();
+	};
+
+	$scope.showListPageItems = function() {
+		return $scope.currentClickedElement === -1;
 	};
 
 }]);

@@ -12,23 +12,24 @@
         <span ng-bind-html="printData.guest_details.address"></span>
         <div class="info-bottom">
             <strong >{{printData.translation.invoice_date}}: </strong>{{printData.invoice_date | date:dateFormat}}<br/>
-            <span ng-show="!isInformationalInvoice && printData.is_print_invoice_enabled && (printData.is_print_ar_invoice_number_enabled  && printData.is_db_payment_exists ? false : true)">
+            <span ng-show="!printData.is_informational_invoice && printData.is_print_invoice_enabled && (printData.is_print_ar_invoice_number_enabled  && printData.is_db_payment_exists ? false : true)">
                 <strong >{{printData.translation.invoice_number}}:</strong>{{printData.invoice_number}}<br/>
             </span>
-            <span ng-show="!isInformationalInvoice && printData.is_print_ar_invoice_number_enabled  && printData.is_db_payment_exists && shouldShowArInvoiceNumber">
+            <span ng-show="!printData.is_informational_invoice && printData.is_print_ar_invoice_number_enabled  && printData.is_db_payment_exists && shouldShowArInvoiceNumber">
                 <strong >{{printData.translation.ar_invoice_number}}:</strong>{{printData.ar_invoice_number}}<br/>
             </span>
-            <span ng-if="printData.folio_number && printData.is_print_folio_enabled && (printData.is_print_ar_invoice_number_enabled  && (!printData.is_db_payment_exists || !shouldShowArInvoiceNumber))">
-                <strong >{{printData.translation.folio_number}}:</strong>{{printData.folio_number}}<br/>
+
+            <span ng-if="!printData.is_informational_invoice && printData.folio_number && printData.is_print_folio_enabled && ((printData.is_print_ar_invoice_number_enabled  && (!printData.is_db_payment_exists || !shouldShowArInvoiceNumber)) || !printData.is_print_ar_invoice_number_enabled)">
+                    <strong><span ng-if = "printData.folio_label">{{printData.folio_label}}:</span><span ng-if = "!printData.folio_label">{{printData.translation.folio_number}}:</span></strong>{{printData.folio_number}}<br/>
             </span>
-            <span ng-show="printData.has_enabled_invoice_number_sequence && printData.mod_invoice_number && !isInformationalInvoice">
+            <span ng-show="printData.has_enabled_invoice_number_sequence && printData.mod_invoice_number && !printData.is_informational_invoice">
                 <strong >{{printData.mod_label}}: </strong>{{printData.mod_invoice_number}}<br/>
             </span>
-            <span ng-show="printData.control_code !== '' && !isInformationalInvoice">
+            <span ng-show="printData.control_code !== '' && !printData.is_informational_invoice">
                 <strong >{{printData.translation.control_code}}: </strong> {{printData.control_code | limitTo : 30}}
                 <br/>
             </span>
-            <span ng-show="printData.control_unit !== '' && !isInformationalInvoice">
+            <span ng-show="printData.control_unit !== '' && !printData.is_informational_invoice">
                 <strong >{{printData.translation.control_unit}}: </strong> {{printData.control_unit}}
                 <br/>
             </span>
@@ -68,23 +69,23 @@
     <div class="info-bottom float">
         <div class="info-left">
             <strong >{{printData.translation.invoice_date}}:</strong>{{printData.invoice_date | date:dateFormat}}<br/>
-            <span ng-show="!isInformationalInvoice && printData.is_print_invoice_enabled && (printData.is_print_ar_invoice_number_enabled  && printData.is_db_payment_exists ? false : true)">
+            <span ng-show="!printData.is_informational_invoice && printData.is_print_invoice_enabled && (printData.is_print_ar_invoice_number_enabled  && printData.is_db_payment_exists ? false : true)">
                 <strong >{{printData.translation.invoice_number}}:</strong>{{printData.invoice_number}}<br/>
             </span>
-            <span ng-show="!isInformationalInvoice && printData.is_print_ar_invoice_number_enabled  && printData.is_db_payment_exists && shouldShowArInvoiceNumber">
+            <span ng-show="!printData.is_informational_invoice && printData.is_print_ar_invoice_number_enabled  && printData.is_db_payment_exists && shouldShowArInvoiceNumber">
                 <strong >{{printData.translation.ar_invoice_number}}:</strong>{{printData.ar_invoice_number}}<br/>
             </span>
-            <span ng-if="printData.folio_number && printData.is_print_folio_enabled && (printData.is_print_ar_invoice_number_enabled  && (!printData.is_db_payment_exists || !shouldShowArInvoiceNumber))">
-                <strong >{{printData.translation.folio_number}}:</strong>{{printData.folio_number}}<br/>
+            <span ng-if="!printData.is_informational_invoice && printData.folio_number && printData.is_print_folio_enabled && ((printData.is_print_ar_invoice_number_enabled  && (!printData.is_db_payment_exists || !shouldShowArInvoiceNumber)) || !printData.is_print_ar_invoice_number_enabled)">
+                    <strong><span ng-if = "printData.folio_label">{{printData.folio_label}}:</span><span ng-if = "!printData.folio_label">{{printData.translation.folio_number}}:</span></strong>{{printData.folio_number}}<br/>
             </span>
-            <span ng-show="printData.has_enabled_invoice_number_sequence && printData.mod_invoice_number && !isInformationalInvoice">
+            <span ng-show="printData.has_enabled_invoice_number_sequence && printData.mod_invoice_number && !printData.is_informational_invoice">
                 <strong >{{printData.mod_label}}:</strong>{{printData.mod_invoice_number}}<br/>
             </span>
-            <span ng-show="printData.control_code !== '' && !isInformationalInvoice">
+            <span ng-show="printData.control_code !== '' && !printData.is_informational_invoice">
                 <strong >{{printData.translation.control_code}}: </strong> {{printData.control_code | limitTo : 30}}
                 <br/>
             </span>
-            <span ng-show="printData.control_unit !== '' && !isInformationalInvoice">
+            <span ng-show="printData.control_unit !== '' && !printData.is_informational_invoice">
                 <strong >{{printData.translation.control_unit}}: </strong> {{printData.control_unit}}
                 <br/>
             </span>
@@ -311,8 +312,7 @@
     </tbody>           
 </table>
 
-<div ng-if="printData.is_from_cards" class="invoice-footer text-center">
-    {{printData.ar_invoice_billing_text}}
+<div ng-if="printData.is_from_cards" class="invoice-footer text-center" ng-bind-html="trustAsHtml(printData.ar_invoice_billing_text)">
 </div>
 <div class="invoice-footer text-center" ng-bind-html="trustAsHtml(printData.custom_text_footer)">
 </div>

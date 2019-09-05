@@ -58,6 +58,10 @@
     <div ng-include="'/assets/partials/financials/invoiceSearch/rvInvoiceSearchReceipts.html'" ></div>
 </span>
 
+<span ng-if="shouldShowARInvoices()">
+    <div ng-include="'/assets/partials/financials/invoiceSearch/rvInvoiceSearchARInvoices.html'" ></div>
+</span>
+
 <!-- When search results exist and print button is tapped, add invoice details here -->
 <div class="invoice" ng-if="invoiceSearchFlags.isClickedReservation && !printReceiptActive">
     <div ng-include="'/assets/partials/bill/rvPrintBillCard.html'" ></div>

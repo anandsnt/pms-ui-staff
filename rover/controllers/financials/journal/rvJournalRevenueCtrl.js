@@ -38,7 +38,9 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
             "from_date": $scope.data.fromDate,
             "to_date": $scope.data.toDate,
             "employee_ids": $scope.data.selectedEmployeeList,
-            "department_ids": $scope.data.selectedDepartmentList
+            "department_ids": $scope.data.selectedDepartmentList,
+            "filter_id": $scope.data.filterId,
+            "query": $scope.data.query
         };
 
 		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, postData, successCallBackFetchRevenueData);
@@ -60,6 +62,10 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
         initRevenueData("");
     });
 
+    $scope.addListener('REVENUESEARCH', function() {
+        initRevenueData();
+    });
+
     // CICO-28060 : Update dates for Revenue & Payments upon changing summary dates
     $scope.addListener('REFRESH_REVENUE_PAYMENT_DATA', function( event, data ) {
         $scope.data.fromDate = data.date;
@@ -67,8 +73,17 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
         initRevenueData(data.origin);
     });
 
+    $scope.addListener('EXPAND_REVENUE_SCREEN', function() {
+        
+        angular.forEach($scope.data.revenueData.charge_groups, function(item, key) {
+            if ($scope.checkHasArrowFirstLevel(key)) {
+                $scope.clickedFirstLevel(key, true);
+            }
+        });
+    });    
+
     /** Handle Expand/Collapse on Level1 **/
-    $scope.clickedFirstLevel = function(index1) {
+    $scope.clickedFirstLevel = function(index1, shouldExpandSecondLevel) {
 
         var toggleItem = $scope.data.revenueData.charge_groups[index1];
 
@@ -78,6 +93,13 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
                 toggleItem.active = !toggleItem.active;
                 refreshRevenueScroller();
                 $scope.data.selectedChargeCode  = '';
+                if (shouldExpandSecondLevel) {
+                    angular.forEach(toggleItem.charge_codes, function(item, key) {
+                        if ($scope.checkHasArrowSecondLevel(index1, key)) {
+                            $scope.clickedSecondLevel(index1, key);
+                        }
+                    });
+                }
             }
             $scope.errorMessage = "";
             $scope.$emit('hideLoader');

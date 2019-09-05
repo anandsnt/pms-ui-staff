@@ -45,8 +45,8 @@ admin.service('adComtrolChargeCodeMappingSrv', ['$http', '$q', 'ADBaseWebSrvV2',
          *
          * @returns {deferred.promise|{then, catch, finally}}
          */
-        service.fetch = function() {
-            return adIFCSrv.get('comtrol', 'list_cc_mapping');
+        service.fetch = function(params) {
+            return adIFCSrv.get('comtrol', 'list_cc_mapping', params);
         };
 
         /**
@@ -78,7 +78,8 @@ admin.service('adComtrolChargeCodeMappingSrv', ['$http', '$q', 'ADBaseWebSrvV2',
                 revenue_center_code: mapping.revenue_center_code,
                 category_name: mapping.category_name,
                 charge_code_name: mapping.charge_code_name,
-                is_default: mapping.is_default
+                is_default: mapping.is_default,
+                meal_time_period: mapping.meal_time_period
             });
         };
     }]);

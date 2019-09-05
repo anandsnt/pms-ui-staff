@@ -74,8 +74,9 @@ angular.module('sntRover')
 
             // CICO-36015 Handle cancel room move button click.
             $scope.cancelMoveRoomButtonClick = function() {
-                $scope.$emit('HIDE_ASSIGN_ROOM_SLOTS');
+                $scope.diaryData.isCancelledMoveOrAssign = true;
                 $scope.diaryData.isReservationSelected = false;
+                $scope.$emit('HIDE_ASSIGN_ROOM_SLOTS');
             };
 
             // CICO-62103 Handle Unassign Room button click.

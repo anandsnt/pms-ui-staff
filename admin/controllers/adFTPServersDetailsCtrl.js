@@ -9,6 +9,7 @@ admin.controller('ADFTPServersDetailsCtrl', ['$scope', 'ADFTPServersSrv', '$stat
     var fetchSuccessOfServerDetails = function(data) {
         $scope.$emit('hideLoader');
         $scope.serverDetails = data;
+        $scope.setDefaultDisplayPassword($scope.serverDetails, 'password');
     };
 
     var fetchFailedOfServerDetails = function(errorMessage) {
@@ -40,13 +41,19 @@ admin.controller('ADFTPServersDetailsCtrl', ['$scope', 'ADFTPServersSrv', '$stat
     * Function to test connectivity details
     */
     $scope.testConnectivity = function(ftpServerConnectivityData) {
-        $scope.invokeApi(ADFTPServersSrv.testConnectivity, ftpServerConnectivityData, $scope.successCallbackConnectionTest, $scope.failureCallbackConnectionTest);
+        var params = dclone(ftpServerConnectivityData);
+
+        $scope.deletePropertyIfRequired(params, 'password');
+
+        $scope.invokeApi(ADFTPServersSrv.testConnectivity, params, $scope.successCallbackConnectionTest, $scope.failureCallbackConnectionTest);
     };
 
     $scope.saveServerDetails = function() {
         var postData = {};
 
         postData = $scope.serverDetails;
+
+        $scope.deletePropertyIfRequired(postData, 'password');
 
         var fetchSuccessOfSaveServerDetails = function() {
             $scope.goBack();

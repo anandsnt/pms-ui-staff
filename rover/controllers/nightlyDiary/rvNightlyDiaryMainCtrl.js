@@ -40,7 +40,8 @@ angular.module('sntRover')
                     document.addEventListener('touchmove', window.touchmovestoppropogate, false);
                 });
                 var isFromStayCard = $stateParams.origin === 'STAYCARD',
-                    MAX_NO_OF_DAYS = 21;
+                    MAX_NO_OF_DAYS = 21,
+                    paginationDataBeforeMoveOrAssign = {};
 
                 /*
                  * utility method Initiate controller
@@ -130,7 +131,8 @@ angular.module('sntRover')
                         requireAuthorization: false,
                         isReservationSelected: false,
                         selectedUnassignedReservation: {},
-                        roomAssignmentFilters: {}
+                        roomAssignmentFilters: {},
+                        isCancelledMoveOrAssign: false
                     };
                     $scope.currentSelectedReservation = {};
                     $scope.currentSelectedRoom = {};
@@ -187,11 +189,15 @@ angular.module('sntRover')
                         var roomTypeId = $scope.diaryData.availableSlotsForAssignRooms.roomTypeId;
 
                         postData.selected_room_type_ids = [roomTypeId];
-
+                        paginationDataBeforeMoveOrAssign = angular.copy(postData);
                         // CICO-68767 : Handle pagination(offset) while ASSIGN or MOVE actions
                         if (!(($scope.diaryData.isAssignRoomViewActive || $scope.diaryData.isMoveRoomViewActive) && !!offset)) {
                             postData.page = 1;
                         }
+                    }
+                    else if ($scope.diaryData.isCancelledMoveOrAssign) {
+                        postData.page = paginationDataBeforeMoveOrAssign.page ? paginationDataBeforeMoveOrAssign.page : 1;
+                        $scope.diaryData.isCancelledMoveOrAssign = false;
                     }
 
                     if (roomId) {
@@ -349,7 +355,10 @@ angular.module('sntRover')
                     var successCallBackFetchAvailableTimeSlots = function (data) {
                         $scope.setTimePopupData.data = data;
                         // Handle ASSIGN/MOVE button click handle.
-                        if ((type === 'ASSIGN' || type === 'MOVE') && data.is_overlapping_reservations_exists) {
+                        if (type === 'MOVE' && reservationDetails.reservationStatus === 'CHECKEDIN' && roomDetails.room_ready_status === 'DIRTY') {
+                            showWarningMessagePopup("Cannot move occupied guest to a dirty room");
+                        }
+                        else if ((type === 'ASSIGN' || type === 'MOVE') && data.is_overlapping_reservations_exists) {
                             triggerSetTimePopup();
                         }
                         else if ((type === 'ASSIGN' || type === 'MOVE') && !data.is_overlapping_reservations_exists) {
@@ -377,12 +386,12 @@ angular.module('sntRover')
                 };
 
                 /*
-                 *  Handle ASSIGN button click.
-                 *  @param {object} [roomDetails - Current selected room details]
-                 *  @param {object} [reservationDetails - Current selected reservation details]
-                 *  @return {}
+                 *  Method to verify whether occupancy message needed to show.
+                 *  @param {Object} [room details]
+                 *  @param {Object} [reservation details]
+                 *  @return {boolean} [isShowOccupancyMessagePopup flag]
                  */
-                var clickedAssignRoom = (roomDetails, reservationDetails) => {
+                var isShowOccupancyMessagePopup = function (roomDetails, reservationDetails) {
                     var showOccupancyMessage = false;
 
                     if (roomDetails.room_max_occupancy !== null && reservationDetails.reservationOccupancy !== null) {
@@ -390,14 +399,24 @@ angular.module('sntRover')
                             showOccupancyMessage = true;
                             $scope.max_occupancy = roomDetails.room_max_occupancy;
                         }
-                    } else if (roomDetails.room_type_max_occupancy !== null && reservationDetails.reservationOccupancy !== null) {
+                    } 
+                    else if (roomDetails.room_type_max_occupancy !== null && reservationDetails.reservationOccupancy !== null) {
                         if (roomDetails.room_type_max_occupancy < reservationDetails.reservationOccupancy) {
                             showOccupancyMessage = true;
                             $scope.max_occupancy = roomDetails.room_type_max_occupancy;
                         }
                     }
+                    return showOccupancyMessage;
+                };
 
-                    if (showOccupancyMessage) {
+                /*
+                 *  Handle ASSIGN button click.
+                 *  @param {object} [roomDetails - Current selected room details]
+                 *  @param {object} [reservationDetails - Current selected reservation details]
+                 *  @return {}
+                 */
+                var clickedAssignRoom = (roomDetails, reservationDetails) => {
+                    if (isShowOccupancyMessagePopup(roomDetails, reservationDetails)) {
                         ngDialog.openConfirm({
                             template: '/assets/partials/nightlyDiary/rvNightlyDiaryMaxOccupancyPopup.html',
                             className: 'ngdialog-theme-default',
@@ -405,9 +424,12 @@ angular.module('sntRover')
                         }).then(
                             function() {
                                 showDiarySetTimePopup(roomDetails, reservationDetails, 'ASSIGN');
-                            }, function() {
-                            });
-                    } else {
+                            },
+                            function() {
+                            }
+                        );
+                    } 
+                    else {
                         showDiarySetTimePopup(roomDetails, reservationDetails, 'ASSIGN');
                     }
                 };
@@ -426,7 +448,22 @@ angular.module('sntRover')
                  *  @return {}
                  */
                 var clickedMoveRoom = (roomDetails, reservationDetails) => {
-                    showDiarySetTimePopup(roomDetails, reservationDetails, 'MOVE');
+                    if (isShowOccupancyMessagePopup(roomDetails, reservationDetails)) {
+                        ngDialog.openConfirm({
+                            template: '/assets/partials/nightlyDiary/rvNightlyDiaryMaxOccupancyPopup.html',
+                            className: 'ngdialog-theme-default',
+                            scope: $scope
+                        }).then(
+                            function() {
+                                showDiarySetTimePopup(roomDetails, reservationDetails, 'MOVE');
+                            }, 
+                            function() {
+                            }
+                        );
+                    } 
+                    else {
+                        showDiarySetTimePopup(roomDetails, reservationDetails, 'MOVE');
+                    }
                 },
                 showPopupForReservationWithUnassignedRoom = function() {
                     ngDialog.open({
@@ -1037,7 +1074,7 @@ angular.module('sntRover')
                     diaryMode: rvUtilSrv.getDiaryMode()
                 };
 
-                const store = configureStore(initialState);
+                const store = configureDiaryStore(initialState);
                 const { render } = ReactDOM;
                 const { Provider } = ReactRedux;
 

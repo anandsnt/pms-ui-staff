@@ -17,7 +17,8 @@ admin.directive('adTextbox', function($timeout) {
             disabled: '=disabled',
             hide: '=hide',
             labelSuffix: '@labelSuffix',
-            modelChanged: '=modelChanged'
+            modelChanged: '=modelChanged',
+            clickHandler: '&clickHandler'
 	    },
     	templateUrl: '/assets/directives/textBox/adTextbox.html'
 

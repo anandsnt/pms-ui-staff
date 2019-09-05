@@ -5,8 +5,8 @@ admin.service('adComtrolRevenueCenterSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ad
    *
    * @returns {deferred.promise|{then, catch, finally}}
    */
-  service.fetch = function() {
-    return adIFCSrv.get('comtrol', 'list_revenue_centers');
+  service.fetch = function(params) {
+    return adIFCSrv.get('comtrol', 'list_revenue_centers', params);
   };
 
   /**

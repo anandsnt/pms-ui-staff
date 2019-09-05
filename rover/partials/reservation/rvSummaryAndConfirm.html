@@ -28,7 +28,8 @@
                         <div class="check-data icons icon-time time-in">
                             <div class="select hour">
                                 <select iscroll-stop-propagation name="check-in" class="placeholder"
-                                        ng-model="reservationData.checkinTime.hh">
+                                        ng-model="reservationData.checkinTime.hh"
+                                        ng-disabled="reservationData.isHourly">
                                     <option value="" selected>HH</option>
                                     <option value="01">01</option>
                                     <option value="02">02</option>
@@ -46,7 +47,8 @@
                             </div>
                             <div class="select minutes">
                                 <select iscroll-stop-propagation name="check-in" class="placeholder"
-                                        ng-model="reservationData.checkinTime.mm">
+                                        ng-model="reservationData.checkinTime.mm"
+                                        ng-disabled="reservationData.isHourly">
                                     <option value="00">00</option>
                                     <option value="15">15</option>
                                     <option value="30">30</option>
@@ -55,7 +57,8 @@
                             </div>
                             <div class="select ampm">
                                 <select iscroll-stop-propagation name="check-in" class="placeholder"
-                                        ng-model="reservationData.checkinTime.ampm">
+                                        ng-model="reservationData.checkinTime.ampm"
+                                        ng-disabled="reservationData.isHourly">
                                     <option value="AM">AM</option>
                                     <option value="PM">PM</option>
                                 </select>
@@ -69,7 +72,8 @@
                         <div class="check-data icons icon-time time-out">
                             <div class="select hour">
                                 <select iscroll-stop-propagation name="check-out" class="placeholder"
-                                        ng-model="reservationData.checkoutTime.hh">
+                                        ng-model="reservationData.checkoutTime.hh"
+                                        ng-disabled="reservationData.isHourly">
                                     <option value="" selected>HH</option>
                                     <option value="01">01</option>
                                     <option value="02">02</option>
@@ -87,7 +91,8 @@
                             </div>
                             <div class="select minutes">
                                 <select iscroll-stop-propagation name="check-out" class="placeholder"
-                                        ng-model="reservationData.checkoutTime.mm">
+                                        ng-model="reservationData.checkoutTime.mm"
+                                        ng-disabled="reservationData.isHourly">
                                     <option value="00">00</option>
                                     <option value="15">15</option>
                                     <option value="30">30</option>
@@ -96,7 +101,8 @@
                             </div>
                             <div class="select ampm">
                                 <select iscroll-stop-propagation name="check-out" class="placeholder"
-                                        ng-model="reservationData.checkoutTime.ampm">
+                                        ng-model="reservationData.checkoutTime.ampm"
+                                        ng-disabled="reservationData.isHourly">
                                     <option value="AM">AM</option>
                                     <option value="PM">PM</option>
                                 </select>
@@ -135,20 +141,20 @@
                             <a ng-click="editReservationRates(room, $index)">
                                 <em>{{room.rateName}}</em>
                                 <span class="price">
-                                    <label ng-if="!room.isSuppressed && !reservationData.isHourly">{{currencySymbol}}{{room.rateAvg | number : 2}}</label>
+                                    <label ng-if="!room.isSuppressed && !reservationData.isHourly">{{reservationData.rateCurrency}}{{room.rateAvg | number : 2}}</label>
                                     <label ng-if="room.isSuppressed && !reservationData.isHourly">SR</label>
                                     <span ng-if="!reservationData.isHourly" translate>AVG_NIGHT</span>
                                 <span class="total" ng-if="room.isSuppressed">SR</span>
-                                <span class="total" ng-if="!room.isSuppressed">{{currencySymbol}}{{room.rateTotal | number : 2}}</span>
+                                <span class="total" ng-if="!room.isSuppressed">{{reservationData.rateCurrency}}{{room.rateTotal | number : 2}}</span>
                                 </span>
                             </a>
                         </li>
                         <li ng-repeat='addon in room.addons'>
                             <em>{{addon.title}}</em>
                             <span class="price" ng-hide="addon.is_inclusive">
-                                {{currencySymbol}}{{ addon.price | number : 2}}
+                                {{reservationData.rateCurrency}}{{ addon.price | number : 2}}
                                 <span translate>EACH</span>
-                            <span class="total">{{currencySymbol}}{{ addon.effectivePrice | number : 2}}</span>
+                            <span class="total">{{reservationData.rateCurrency}}{{ addon.effectivePrice | number : 2}}</span>
                             </span>
                             <!-- CICO-18833 Hide all rate refreneces for inclusive addons (Kees Lek) -->
                             <span class="price" ng-show="addon.is_inclusive">
@@ -242,6 +248,7 @@
                             hotel-config="hotelPaymentConfig"
                             workstation-id="{{workstation_id}}"
                             reservation-id="{{reservationData.reservationId}}"
+                            rate-currency="{{reservationData.rateCurrency}}"
                             deposit-policy-name="{{depositData.description}}"
                             bill-number="billNumber"
                             payment-types="reservationData.paymentMethods"

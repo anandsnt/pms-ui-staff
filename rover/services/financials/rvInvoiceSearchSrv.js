@@ -1,9 +1,8 @@
 angular.module('sntRover').service('RVInvoiceSearchSrv', 
     ['$http', 
     '$q', 
-    'BaseWebSrvV2',
-    'sntBaseWebSrv', 
-    function($http, $q, BaseWebSrvV2, sntBaseWebSrv) {
+    'sntBaseWebSrv',
+    function($http, $q, sntBaseWebSrv) {
 
     var that = this;
     /*

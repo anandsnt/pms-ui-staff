@@ -186,6 +186,7 @@
 				</div>
 				<ad-textbox value="data.tax_id" label="{{'TAX_ID' | translate}}" placeholder="{{'TAX_ID_PLACEHOLDER' | translate}}" styleclass="half-width" ng-if="isStandAlone && !isHourlyRatesEnabled"></ad-textbox>
 				<ad-textbox value="data.swift_code" label="{{'SWIFT_CODE' | translate}}" placeholder="{{'SWIFT_PLACEHOLDER' | translate}}" styleclass="half-width" ng-if="isStandAlone && !isHourlyRatesEnabled"></ad-textbox>
+				<ad-textbox value="data.police_hotel_code" label="{{'HOTEL_POLICE_EXPORT_CODE' | translate}}" placeholder="{{'HOTEL_POLICE_EXPORT_CODE_PLACEHOLDER' | translate}}" styleclass="half-width"></ad-textbox>
 				<div class="entry full-width registration-for-rover" ng-if="!isAdminSnt">
 					<label for="rover"> Rover Registration </label>
 					<div  id="registration-for-rover" class="boxes">
@@ -925,6 +926,22 @@
 					<input type="text" ng-model="data.mli_chain_code" value="{{data.mli_chain_code}}" placeholder="Enter MLI chain code" name="mli-chain-code" id="mli-chain-code">
 				</div>
 
+                <div class="entry">
+                    <div class="switch-container">
+                        <div class="switch-button with-text" ng-class = "{'on': data.mli_use_sha1 }" style="width: 250px;">
+                            <!-- Add class 'on' when input below is checked -->
+                            <input id="is-mli-use-sha2" type="checkbox" ng-model="data.mli_use_sha1">
+                            <label class="data-on">
+                                <span class="value">SHA2 CERT</span>
+                                <span class="button orange">SHA1 CERT</span>
+                            </label>
+                            <label class="data-off">
+                                <span class="button orange">SHA2 CERT</span>
+                                <span class="value">SHA1 CERT</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
 				<div class="entry full-width">
 					<label for="certificate">
 						 MerchantLink Token Certificate
@@ -941,7 +958,8 @@
 
 				<div class="entry full-width">
 					<label for="mli-access-url"> MerchantLink Access URL </label>
-					<input type="text" ng-model="data.mli_access_url" value="{{data.mli_access_url}}" readonly="true" name="mli-access-url" id="mli-access-url" readonly>
+                    <input type="text" ng-show="data.mli_use_sha1" ng-model="data.mli_access_url" value="{{data.mli_access_url}}" readonly="true" name="mli-access-url" id="mli-access-url" readonly>
+					<input type="text" ng-hide="data.mli_use_sha1" ng-model="data.mli_sha2_access_url" value="{{data.mli_sha2_access_url}}" readonly="true" name="mli-access-url" id="mli-access-url" readonly>
 				</div>
 
 				<button type="button" id="test-mli-connectivity" ng-click="clickedTestMliConnectivity()" class="button blue">

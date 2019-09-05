@@ -347,7 +347,15 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 var selectedDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 
                 $scope.toDateOptionsOneYearLimit.minDate = selectedDate;
-                $scope.toDateOptionsOneYearLimit.maxDate = reportUtils.processDate(selectedDate).aYearAfter;                
+                $scope.toDateOptionsOneYearLimit.maxDate = reportUtils.processDate(selectedDate).aYearAfter; 
+                
+                if ($scope.touchedReport.untilDate < selectedDate) {
+                    $scope.touchedReport.untilDate = selectedDate;
+                }
+                if ($scope.touchedReport.untilDate > $scope.toDateOptionsOneYearLimit.maxDate) {
+                    $scope.touchedReport.untilDate = $scope.toDateOptionsOneYearLimit.maxDate;
+                }
+                              
             }
         }, datePickerCommon);
 
@@ -358,6 +366,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
                 $scope.toDateOptionsOneMonthLimit.minDate = selectedDate;
                 $scope.toDateOptionsOneMonthLimit.maxDate = reportUtils.processDate(selectedDate).aMonthAfter;                
+
+                if ($scope.touchedReport.untilDate < selectedDate) {
+                    $scope.touchedReport.untilDate = selectedDate;
+                }
+                if ($scope.touchedReport.untilDate > $scope.toDateOptionsOneMonthLimit.maxDate) {
+                    $scope.touchedReport.untilDate = $scope.toDateOptionsOneMonthLimit.maxDate;
+                }
             }
         }, datePickerCommon);
 
@@ -1030,7 +1045,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     'addonGroups': [],
                     'addons': [],
                     'reservationStatus': [],
-                    'reservation_type': [],
                     'guestOrAccount': [],
                     'chargeTypes': [],
                     'users': [],
@@ -1214,10 +1228,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             }
 
             if (!!report.hasDayUseFilter) {
-                var selectedResType = _.pluck(_.where(report.hasDayUseFilter.data, {selected: true}), 'value');
+                var inclDayUse = report[reportParams['INCLUDE_DAYUSE']];
 
-                $scope.appliedFilter.reservation_type = selectedResType;
-                params[reportParams['RESERVATION_TYPES']] = selectedResType;
+                $scope.appliedFilter[reportParams['INCLUDE_DAYUSE']] = inclDayUse;
+                params[reportParams['INCLUDE_DAYUSE']] = inclDayUse;
             }
 
             // for rate code

@@ -16,6 +16,9 @@ angular.module('sntRover')
         $scope.businessDate = $rootScope.businessDate;
 
         var selectUnassignedListItem = function(item) {
+            if ($scope.diaryData.isEditReservationMode) {
+                $scope.$emit('CANCEL_RESERVATION_EDITING');
+            }
             $scope.diaryData.isReservationSelected = true;
             $scope.diaryData.selectedUnassignedReservation = item;
             $scope.diaryData.roomAssignmentFilters = {};
@@ -40,6 +43,7 @@ angular.module('sntRover')
         unSelectUnassignedListItem = function() {
             $scope.diaryData.selectedUnassignedReservation = {};
             $scope.diaryData.isReservationSelected = false;
+            $scope.diaryData.isCancelledMoveOrAssign = true;
             $scope.$emit("RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY");
         };
 

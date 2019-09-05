@@ -41,7 +41,7 @@ var sntRover = angular.module('sntRover', [
         'snt.transitionManager',
         'sntCurrencyFilter',
         'sntCanvasUtil',
-        'sntFeatureToggles'
+        'snt.utils'
 	]);
 
 sntRover.config([
