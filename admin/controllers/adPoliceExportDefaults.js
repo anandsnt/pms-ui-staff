@@ -1,12 +1,13 @@
-admin.controller('ADHotelDetailsCtrl', [
+admin.controller('ADPoliceExportDefaults', [
     '$rootScope',
     '$scope',
-    'ADHotelDetailsSrv',
+    'adPoliceExportDefaultSrv',
     '$stateParams',
     '$state',
     'ngDialog',
-    'oracleDataCenters',
-    function($rootScope, $scope, ADHotelDetailsSrv, $stateParams, $state, ngDialog, oracleDataCenters) {
+    'defaultSettings',
+    function($rootScope, $scope, adPoliceExportDefaultSrv, $stateParams, $state, ngDialog, defaultSettings) {
 
-        
+        $scope.title = "Police Export Defaults";  
+        $scope.defaultSettings = defaultSettings;
     }]);

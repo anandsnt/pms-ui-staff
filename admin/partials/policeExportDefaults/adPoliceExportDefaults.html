@@ -1,17 +1,25 @@
-<div class="entry">
-	<label for="country">Country</label>
-	<div form="contact-info" class="select">
-		<select iscroll-stop-propagation ng-options="country.id as country.value for country  in countries" ng-model="guestCardData.contactInfo.address.country_id">
-			<option style="display:none" value=""></option>
-		</select>
+<div id="wrapper" class="content current admin-scrollfix" ng-click="clearErrorMessage()" div-touch-move-stop-propogate >
+		<header class="content-title float">
+			<h2>{{title}}</h2>
+		</header>
+		<section class="content-scroll">
+			<div class="entry">
+				<label for="country">Country</label>
+				<div form="contact-info" class="select">
+					<select iscroll-stop-propagation ng-options="country.id as country.value for country  in countries" ng-model="guestCardData.contactInfo.address.country_id">
+						<option style="display:none" value=""></option>
+					</select>
+				</div>
+			</div>
+			
+			<div class="entry margin">
+				<label for="country">Nationality</label>
+				<div form="contact-info" class="select">
+					<select iscroll-stop-propagation ng-options="country.id as country.value for country in countries" ng-model="guestCardData.contactInfo.nationality_id">
+						<option style="display:none" value=""></option>
+					</select>
+				</div>
+			</div>
+		</section>
 	</div>
-</div>
-
-<div class="entry margin">
-	<label for="country">Nationality</label>
-	<div form="contact-info" class="select">
-		<select iscroll-stop-propagation ng-options="country.id as country.value for country in countries" ng-model="guestCardData.contactInfo.nationality_id">
-			<option style="display:none" value=""></option>
-		</select>
-	</div>
-</div>
+	

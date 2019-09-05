@@ -1031,7 +1031,12 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
     $stateProvider.state('admin.policeExportDefaults', {
         templateUrl: '/assets/partials/policeExportDefaults/adPoliceExportDefaults.html',
         controller: 'ADPoliceExportDefaults',
-        url: '/policeExportDefaults'
+        url: '/policeExportDefaults',
+        resolve: {
+            defaultSettings: function (adPoliceExportDefaultSrv) {
+                return adPoliceExportDefaultSrv.fetchCountry();
+            }
+        }
     });
 
 });
