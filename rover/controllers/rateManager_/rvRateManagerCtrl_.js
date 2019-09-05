@@ -39,7 +39,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         cachedRoomTypeList = [],
         cachedRateTypeList = [],
         cachedRateAndRestrictionResponseData = [],
-        chosenTab = '';
+        chosenTab = '',
+        isHierarchyRestrictionEnabled = Toggles.isEnabled('hierarchical_restrictions');
 
     /**
      * for pagination purpose
@@ -82,6 +83,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @param  {Oject} data
      */
     var showRateRestrictionPopup = (data) => {
+        data.isHierarchyRestrictionEnabled = isHierarchyRestrictionEnabled;
+        data.hierarchyRestrictionType = $scope.hierarchyRestrictionType;
         ngDialog.open({
             template: '/assets/partials/rateManager_/popup/rvRateManagerRateRestrictionPopup.html',
             scope: $scope,
@@ -533,6 +536,19 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $timeout(() => $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]), 0);
     };
 
+    // Util method to get restriction value
+    var isHierarchyRestrictionNeeded = function() {
+        return $scope.isHierarchyRestrictionEnabled && $scope.hierarchyRestrictionType !== 'COMMON';
+    },
+    getRestrictionLevelParam = function() {
+        var value = null;
+
+        if ($scope.hierarchyRestrictionType === 'HOUSE') {
+            value = "Hotel";
+        }
+        return value;
+    };
+
     var getSingleRateRowDetailsAndUpdateCachedDataModel = (rateID) => {
         var fromDates = _.pluck(cachedRateAndRestrictionResponseData, 'fromDate').map(fromDate => tzIndependentDate(fromDate)),
             toDates = _.pluck(cachedRateAndRestrictionResponseData, 'toDate').map(toDate => tzIndependentDate(toDate)),
@@ -552,6 +568,10 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
         if (rateTypeIDs.length) {
             params['rate_type_ids[]'] = rateTypeIDs;
+        }
+
+        if (isHierarchyRestrictionNeeded()) {
+            params.restriction_level = getRestrictionLevelParam();
         }
 
         var options = {
@@ -580,6 +600,10 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             fetchCommonRestrictions: true,
             'rate_type_ids[]': [rateTypeID]
         };
+
+        if (isHierarchyRestrictionNeeded()) {
+            params.restriction_level = getRestrictionLevelParam();
+        }
 
         var options = {
             params: params,
@@ -615,6 +639,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
         if (rateTypeIDs.length) {
             params['rate_type_ids[]'] = rateTypeIDs;
+        }
+        if (isHierarchyRestrictionNeeded()) {
+            params.restriction_level = getRestrictionLevelParam();
         }
 
         var options = {
@@ -756,6 +783,11 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             fetchRoomTypes: !cachedRoomTypeList.length,
             fetchCommonRestrictions: true
         };
+
+        if (isHierarchyRestrictionNeeded()) {
+            params.restriction_level = getRestrictionLevelParam();
+        }
+
         var options = {
             params: params,
             onSuccess: onFetchRoomTypeAndRestrictionsSuccess
@@ -889,6 +921,11 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             fetchSingleRoomTypeRestrictionAndAmountDetailsForPopup(rateID, roomTypeIDs[0], date);
     };
 
+    const changedHeirarchyRestriction = ( type ) => {
+        $scope.hierarchyRestrictionType = type;
+        $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
+    };
+
     /**
      * utility method to pass callbacks from
      * @return {Object} with callbacks
@@ -908,7 +945,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 clickedOnRoomTypeAndAmountCell,
                 clickedOnRateTypeViewCell,
                 goToPrevPage,
-                goToNextPage
+                goToNextPage,
+                changedHeirarchyRestriction
             };
         };
 
@@ -1462,6 +1500,10 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             params['page'] = filterValues.allRate.currentPage;
             params['per_page'] = paginationRatePerPage;
 
+            if (isHierarchyRestrictionNeeded()) {
+                params.restriction_level = getRestrictionLevelParam();
+            }
+
             var options = {
                 params: params,
                 onSuccess: onFetchDailyRatesSuccess
@@ -1522,6 +1564,10 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 to_date: date,
                 considerRateIDsInAllRestrictionStatusFetch: rateIDs.length > 0
             };
+
+            if (isHierarchyRestrictionNeeded()) {
+                params.restriction_level = getRestrictionLevelParam();
+            }
             var options = {
                 params,
                 onSuccess: onFetchMultipleRateRestrictionDetailsForRateCell,
@@ -1653,6 +1699,10 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fetchRoomTypes: !cachedRoomTypeList.length,
                 fetchRates: !cachedRateList.length
             };
+
+            if (isHierarchyRestrictionNeeded()) {
+                params.restriction_level = getRestrictionLevelParam();
+            }
             var options = {
                 params,
                 onSuccess: onFetchSingleRateRestrictionModeDetailsForPopup,
@@ -1680,6 +1730,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fetchRates: !cachedRateList.length
             };
 
+            if (isHierarchyRestrictionNeeded()) {
+                params.restriction_level = getRestrictionLevelParam();
+            }
             var options = {
                 params,
                 onSuccess: onFetchSingleRateTypeRestrictionModeDetailsForPopup,
@@ -1700,6 +1753,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fetchRates: !cachedRateList.length
             };
 
+            if (isHierarchyRestrictionNeeded()) {
+                params.restriction_level = getRestrictionLevelParam();
+            }
             var options = {
                 params,
                 onSuccess: onFetchMultipleRateTypeRestrictionModeDetailsForPopup,
@@ -1796,6 +1852,10 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 room_type_id: roomTypeID,
                 fetchRoomTypes: !cachedRoomTypeList.length
             };
+
+            if (isHierarchyRestrictionNeeded()) {
+                params.restriction_level = getRestrictionLevelParam();
+            }
             var options = {
                 params: params,
                 onSuccess: onFetchSingleRoomTypeRestrictionDetailsForPopupSuccess,
@@ -1873,6 +1933,10 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 to_date: date,
                 fetchRoomTypes: !cachedRoomTypeList.length,
             };
+
+            if (isHierarchyRestrictionNeeded()) {
+                params.restriction_level = getRestrictionLevelParam();
+            }
             var options = {
                 params,
                 onSuccess: onFetchMultipleRoomTypeRestrictionsDetailsForPopupSuccess,
@@ -1938,6 +2002,10 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fetchRoomTypes: !cachedRoomTypeList.length,
                 fetchRates: !cachedRateList.length
             };
+
+            if (isHierarchyRestrictionNeeded()) {
+                params.restriction_level = getRestrictionLevelParam();
+            }
             var options = {
                 params: params,
                 onSuccess: onFetchSingleRoomTypeRestrictionAndAmountDetailsForPopupSuccess,
@@ -1994,6 +2062,10 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fetchRoomTypes: !cachedRoomTypeList.length,
                 fetchRates: !cachedRateList.length
             };
+
+            if (isHierarchyRestrictionNeeded()) {
+                params.restriction_level = getRestrictionLevelParam();
+            }
             var options = {
                 params: params,
                 onSuccess: onFetchMultipleRoomTypeRestrictionsAndAmountDetailsForPopup,
@@ -2211,6 +2283,11 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fetchRates: !cachedRateList.length,
                 fetchCommonRestrictions: true
             };
+
+            if (isHierarchyRestrictionNeeded()) {
+                params.restriction_level = getRestrictionLevelParam();
+            }
+
             var options = {
                 params: params,
                 onSuccess: onFetchSingleRateDetailsAndRestrictions
@@ -2385,14 +2462,16 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             $scope.selectedAddress = [];
             $scope.fromDate = null;
             $scope.toDate = null;
-            $scope.isAddHierarchyRestrictions = Toggles.isEnabled('add_hierarchy_restrictions');
+            $scope.isHierarchyRestrictionEnabled = isHierarchyRestrictionEnabled;
+            $scope.hierarchyRestrictionType = 'HOUSE';
 
             // mode
             $scope.viewingScreen = RM_RX_CONST.GRID_VIEW;
         };
 
         var initialState = {
-            mode: RM_RX_CONST.NOT_CONFIGURED_MODE
+            mode: RM_RX_CONST.NOT_CONFIGURED_MODE,
+            isHierarchyRestrictionEnabled: isHierarchyRestrictionEnabled
         };
 
         const store = configureStore(initialState);
