@@ -324,7 +324,9 @@ sntRover.controller('RVJournalController',
     $scope.activatedTab = function(tabName) {
     	$scope.data.activeTab = tabName;
     	if (tabName === 'REVENUE') {
-            $rootScope.$broadcast('REFRESHREVENUECONTENT');
+            if (!$scope.data.isExpandedViewRevenue) {
+                $rootScope.$broadcast('REFRESHREVENUECONTENT');
+            }            
         }
     	else if (tabName === 'CASHIER') {
             $scope.$broadcast('cashierTabActive');

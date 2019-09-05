@@ -44,13 +44,12 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
         };
 
 		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, postData, successCallBackFetchRevenueData);
-    };
-
-	initRevenueData("");
+    };	
 
     fetchDepartments();
 
     $scope.addListener('REFRESHREVENUECONTENT', function() {
+        initRevenueData();
         refreshRevenueScroller();
     });
 
