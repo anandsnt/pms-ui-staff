@@ -9,11 +9,11 @@ sntRover.controller('RVJournalBalanceController',
 
     var initBalanceData = function() {
         var successCallBackFetchBalanceData = function(data) {
-            $scope.balanceData = data.data;
+            $scope.balanceData = data;
         };
 
         var postData = {
-            "date": $scope.data.fromDate
+            "date": $scope.data.balanceDate
         };
 
         $scope.invokeApi(RVJournalSrv.fetchBalanceDetails, postData, successCallBackFetchBalanceData);
@@ -24,6 +24,12 @@ sntRover.controller('RVJournalBalanceController',
 
         $state.go('rover.search', stateParams);
     };
+
+
+    // To handle date updation on summary tab
+    $scope.addListener('balanceDateChanged', function() {
+        initBalanceData();
+    });
 
     initBalanceData();
 

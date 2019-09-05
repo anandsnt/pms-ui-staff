@@ -1,5 +1,5 @@
 <span ng-controller="RVJournalBalanceController" ng-click="clickedOnPayment($event)">
-    <div id="journal-content" class="journal-content balance">
+    <div id="journal-content" class="journal-content balance" ng-if="deposit_balance_difference !== null && guest_balance_difference !== null">
 
         <div class="journal-summary balance-summary first">
             <h3>Deposit Ledger</h3>
@@ -14,9 +14,11 @@
                 </li>
                 <li>
                     Balance Check
-                    <i class="icons icon-action icon-completed"></i>
-                    <!-- If there's difference, show this instead of L53: 
-                    <span class="color-red">{difference}</span> -->
+                    <i class="icons icon-action icon-completed" ng-if="balanceData.deposit_balance_difference === 0"></i>
+                    <!-- If there's difference, show this instead of L53: -->
+                    <span class="color-red" ng-if="balanceData.deposit_balance_difference !== 0"> 
+                        <span class="currency">{{currencySymbol}}</span>{{balanceData.guest_balance_difference}}
+                    </span> 
                 </li>
             </ul>
         </div>
@@ -31,9 +33,11 @@
                     <span class="has-arrow next-view"><span class="currency">{{currencySymbol}}</span>{{balanceData.guest_report_balance}}</span> <!-- Clicking this should open Guest Balance Report, with the back button text "Journal" -->
                 </li>
                 <li>
-                    <i class="icons icon-action icon-completed"></i>
-                    <!-- If there's difference, show this instead of L70: 
-                    <span class="color-red">{difference}</span> -->
+                    <i class="icons icon-action icon-completed" ng-if="balanceData.guest_balance_difference === 0"></i>
+                    <!-- If there's difference, show this instead of L70: -->
+                    <span class="color-red" ng-if="balanceData.guest_balance_difference !== 0">
+                        <span class="currency">{{currencySymbol}}</span>{{balanceData.guest_balance_difference}}
+                    </span> 
                 </li>
             </ul>
         </div>
@@ -82,5 +86,12 @@
             </ul>
         </div>
         
+    </div>
+    <div id="journal-content" class="journal-content no-content" ng-if="deposit_balance_difference === null && guest_balance_difference === null">
+        <div class="info">
+            <span class="icon-no-content icon-rates"></span>
+            <strong class="h1">No Data Available</strong>
+            <span class="h2">Please select another date</span>
+        </div>
     </div>
 </span>

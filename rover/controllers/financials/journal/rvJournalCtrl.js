@@ -89,6 +89,10 @@ sntRover.controller('RVJournalController',
     $scope.clickedSummaryDate = function() {
         popupCalendar('SUMMARY');
     };
+
+    $scope.clickedBalanceDate = function() {
+        popupCalendar('BALANCE');
+    };
     // Filter by Logged in user id.
     var filterByLoggedInUser = function() {
         angular.forEach($scope.data.filterData.employees, function(item, index) {
@@ -276,7 +280,9 @@ sntRover.controller('RVJournalController',
         $scope.data.fromDate = $rootScope.businessDate;
         $scope.data.toDate   = $rootScope.businessDate;
         $scope.data.cashierDate = $rootScope.businessDate;
-        $scope.data.summaryDate = $rootScope.businessDate;
+        $scope.data.summaryDate = $rootScope.businessDate;        
+        $scope.data.balanceDate = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
+                .format($rootScope.momentFormatForAPI);
         // b) All employee fields should default to logged in user
         $timeout(function() {
             filterByLoggedInUser();
@@ -297,6 +303,8 @@ sntRover.controller('RVJournalController',
         $scope.data.toDate   = $filter('date')(yesterday, 'yyyy-MM-dd');
         $scope.data.cashierDate = $filter('date')(yesterday, 'yyyy-MM-dd');
         $scope.data.summaryDate = $filter('date')(yesterday, 'yyyy-MM-dd');
+        $scope.data.balanceDate = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
+                .format($rootScope.momentFormatForAPI);
         // CICO-20294 : Hide summary tab if the reservation is of type Hourly.
         if ($rootScope.isHourlyRateOn) $scope.data.isShowSummaryTab = false;
     }
