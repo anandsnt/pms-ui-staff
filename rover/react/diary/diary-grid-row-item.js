@@ -49,20 +49,16 @@ var GridRowItem = React.createClass({
             display = props.display,
             showRateAmount;
 
-        if (!!props.unassignedRoomList) {
-            try {
-                var dragData = props.unassignedRoomList.dragData;
 
-                if (!_.isEmpty(dragData) && !dragData.is_hourly) {
-                    showRateAmount = false;
-                } else {
-                    showRateAmount = true;
-                }
-            } catch (e) {
+        try {
+            var dragData = props.unassignedRoomList.dragData;
+
+            if (!_.isEmpty(dragData) && !dragData.is_hourly) {
+                showRateAmount = false;
+            } else {
                 showRateAmount = true;
             }
-        }
-        else {
+        } catch (e) {
             showRateAmount = true;
         }
 
