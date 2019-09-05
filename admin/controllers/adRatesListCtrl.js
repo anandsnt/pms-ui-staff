@@ -25,7 +25,9 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 	};
 	var fetchHotelLanguages = function() {
 		var options = {
-			params: {},
+			params: {
+				show_only_active_languages: true
+			},
 			onSuccess: function(response) {
 				$scope.availableLanguagesSet = response;
 				defaultLanguage = _.filter(response.languages, function(language) {
