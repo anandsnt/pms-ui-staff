@@ -2,14 +2,14 @@
 	<div>
 		<header class="content-title float">
 			<h2> Rates </h2>
-			<span class="count"> ({{totalCount}}) </span>
-			<a class="action add" ui-sref="admin.addRate" ng-click="showLoader()" ng-hide="isConnectedToPMS">Add new</a>
+			<span class="count" ng-show="showListPageItems()"> ({{totalCount}}) </span>
+			<a class="action add" ui-sref="admin.addRate" ng-click="showLoader()" ng-hide="isConnectedToPMS" ng-show="showListPageItems()">Add new</a>
 
-			<a class="action import" ng-click="importFromPms($event)" ng-show="isConnectedToPMS">IMPORT FROM PMS</a>
+			<a class="action import" ng-click="importFromPms($event)" ng-show="isConnectedToPMS && showListPageItems()">IMPORT FROM PMS</a>
 
-			<a class="action import" ng-click="openCsvUploadPopup()" ng-show="isConnectedToPMS" translate>UPLOAD_CSV</a>
+			<a class="action import" ng-click="openCsvUploadPopup()" ng-show="isConnectedToPMS && showListPageItems()" translate>UPLOAD_CSV</a>
 
-			<div class="filters">
+			<div class="filters" ng-show="showListPageItems()">
 				<div class="filter select">
 					<div class="entry">
 						<div class="select">
@@ -21,17 +21,26 @@
 
 				</div>
 			</div>
+			<div class="filters language" ng-if="isConnectedToPMS && currentClickedElement !== -1 && availableLanguagesSet.show_language_field">
+                <label for="email-hotel-logo" translate> SELECT LANGUAGE </label>
+                <div class="select">
+                    <select ng-model="selectedLanguage.code" name="locale" ng-change="onLanguageChange()">
+                        <option ng-repeat="locale in availableLanguagesSet.languages" value="{{locale.code}}" ng-selected="rateData.selectedLanguage.code == roomTypeData.locale"> {{locale.language}}
+                        </option>
+                    </select>
+                </div>
+            </div>
 		</header>
 		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
-			<span class="count-show">Show</span>
-			<div class="select table-count rates-table-count">
+			<span class="count-show" ng-show="showListPageItems()">Show</span>
+			<div class="select table-count rates-table-count" ng-show="showListPageItems()">
 				<select ng-model="displyCount"	ng-options="opt for opt in displayCountList"></select>
 			</div>
-			<span class="count-entries">entries</span>
+			<span class="count-entries" ng-show="showListPageItems()">entries</span>
 
-			<div class="table-filters">
+			<div class="table-filters" ng-show="showListPageItems()">
 				<div class="entry pull-left" ng-hide="searchTerm !== ''">
 					<label class="checkbox">
 						<span class="icon-form icon-checkbox" ng-class="{'checked': showInactiveRates}"></span>

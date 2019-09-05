@@ -6,6 +6,14 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'adComtrolGenericMapp
         // CICO-42895 This value doesn't change
         var _TIP_CHARGE_CODE_EXT_VALUE = 295;
 
+        /*
+         * This methode is to set page count.
+         * @param {number} page count
+         */
+        $scope.displayCountChanged = function(count) {
+            $scope.displyCount = count;
+        };
+
         // private methods and variables
         var resetNew = function() {
                 $scope.state.new = {
@@ -241,18 +249,8 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'adComtrolGenericMapp
                   is_default: false
               }
           };
-
+          loadMetaList();
           $scope.loadTable();
-
-          // $scope.callAPI(adComtrolGenericMappingSrv.fetch, {
-          //   onSuccess: function (response) {
-          //     $scope.mappings = response;
-          //
-          //     if ($scope.mappings.length) {
-          //       loadMetaList();
-          //     }
-          //   }
-          // });
         })();
     }
 ]);
