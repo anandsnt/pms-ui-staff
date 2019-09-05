@@ -7,35 +7,40 @@
         </div>
         <div class="entry">
             <label><span translate>ACTIVATE_INACTIVATE</span></label>
-            <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: config.enabled }"
-                ng-click="toggleEnabled()">
+            <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: config.enabled }" ng-click="toggleEnabled()">
                 <input type="checkbox" name="staah-setup-active" id="staah-setup-active">
                 <span class="switch-icon"></span>
             </div>
         </div>
         <fieldset class="holder full-width">
+            <div class="form-title">
+                <h3>API Access Configuration</h3>
+            </div>
             <fieldset class="holder left">
-                <ad-textbox inputtype="text" value="config.username" label="{{'USERNAME'| translate}}"
-                    styleclass="full-width">
+                <ad-textbox inputtype="text" value="config.end_point" label="{{'ENDPOINT'| translate}}" styleclass="full-width">
+                </ad-textbox>
+                <ad-textbox inputtype="text" value="config.hotel_id" label="{{'HOTEL_ID'| translate}}" styleclass="full-width">
                 </ad-textbox>
             </fieldset>
             <fieldset class="holder right">
-                <ad-textbox inputtype="password" value="config.password" label="{{'PASSWORD'| translate}}"
-                    styleclass="full-width">
+                <ad-textbox inputtype="text" value="config.username" label="{{'USERNAME'| translate}}" styleclass="full-width">
+                </ad-textbox>
+                <ad-textbox inputtype="password" value="config.password" label="{{'PASSWORD'| translate}}" styleclass="full-width">
                 </ad-textbox>
             </fieldset>
-            <fieldset class="holder left">
-                <ad-textbox inputtype="text" value="config.endpoint" label="{{'ENDPOINT'| translate}}"
-                    styleclass="full-width">
+            <fieldset class="holder full-width">
+                <ad-textbox inputtype="text"
+                            value="authentication_token"
+                            name="authentication-token"
+                            id="authentication-token"
+                            label="{{'AUTHENTICATION_TOKEN' | translate}}"
+                            readonly="yes">
                 </ad-textbox>
-            </fieldset>
-            <fieldset class="holder right">
-                <ad-textbox inputtype="text" value="config.hotel_id" label="{{'HOTEL_ID'| translate}}"
-                    styleclass="full-width">
-                </ad-textbox>
+                <button type="button" style="margin: 24px 0 0 10px" class="button blue sm-refresh-btn" ng-click="onClickRegenerate()">
+                    REGENERATE
+                </button>
             </fieldset>
         </fieldset>
-
         <fieldset class="holder full-width">
             <div class="form-title full-width">
                 <h3>Feature Settings</h3>
@@ -44,70 +49,29 @@
                 <div class="entry" is-checked="config.download_reservation">
                     <label>Download Reservation</label>
                     <div name="active-inactive-toggle" class="switch-button single"
-                        ng-class="{ on: config.reservation_download }"
-                        ng-click="toggleFeatureSetting('reservation_download')">
+                         ng-class="{ on: config.reservation_download }"
+                         ng-click="toggleFeatureSetting('reservation_download')">
                         <input type="checkbox" name="staah-setup-download-reservation"
-                            id="staah-setup-download-reservation">
+                               id="staah-setup-download-reservation">
                         <span class="switch-icon"></span>
                     </div>
                 </div>
-
-                <div class="entry" is-checked="config.upload_reservation">
-                    <label>Upload Reservation</label>
-                    <div name="active-inactive-toggle" class="switch-button single"
-                        ng-class="{ on: config.reservation_upload }"
-                        ng-click="toggleFeatureSetting('reservation_upload')">
-                        <input type="checkbox" name="staah-setup-upload-reservation"
-                            id="staah-setup-upload-reservation">
-                        <span class="switch-icon"></span>
-                    </div>
-                </div>
-
                 <div class="entry" is-checked="config.ari_upload">
                     <label>ARI Upload</label>
                     <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: config.ari_upload }"
-                        ng-click="toggleFeatureSetting('ari_upload')">
+                         ng-click="toggleFeatureSetting('ari_upload')">
                         <input type="checkbox" name="staah-setup-ari-upload" id="staah-setup-ari-upload">
                         <span class="switch-icon"></span>
                     </div>
                 </div>
             </fieldset>
         </fieldset>
-
-        <fieldset class="holder full-width">
-            <div class="form-title full-width">
-                <h3>Reservation Settings</h3>
-            </div>
-            <fieldset class="holder left">
-                <ad-textbox inputtype="text" value="config.default_rate" label="{{'DEFAULT_RATE'| translate}}"
-                    styleclass="full-width">
-                </ad-textbox>
-            </fieldset>
-            <fieldset class="holder right">
-                <ad-textbox inputtype="text" value="config.default_room_type" label="{{'DEFAULT_ROOM_TYPE'| translate}}"
-                    styleclass="full-width">
-                </ad-textbox>
-            </fieldset>
-            <fieldset class="holder left">
-                <ad-textbox inputtype="text" value="config.default_payment_method"
-                    label="{{'DEFAULT_PAYMENT_METHOD'| translate}}" styleclass="full-width">
-                </ad-textbox>
-            </fieldset>
-            <fieldset class="holder right">
-                <ad-textbox inputtype="text" value="config.default_booking_origin"
-                    label="{{'DEFAULT_BOOKING_ORIGIN'| translate}}" styleclass="full-width">
-                </ad-textbox>
-            </fieldset>
-        </fieldset>
     </fieldset>
-
     <div class="actions float">
-        <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()"
-            translate>
+        <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
             CANCEL
         </button>
-        <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSetup()"
-            translate>
+        <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSetup()" translate>
             SAVE_CHANGES
         </button>
     </div>

@@ -12,4 +12,3 @@
  @import 'shared/lib/css/date-picker.css.less';
  @import (inline) 'shared/lib/css/advanced_date_picker.css';
  @import (inline) 'shared/lib/css/angular-multi-select.css';
- @import (inline) 'shared/lib/css/toastr/toastr.min.css';

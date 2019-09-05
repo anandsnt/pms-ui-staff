@@ -43,4 +43,7 @@
 "ADD_NEW_TAX_EXEMPT_TYPE":"Add New Tax Exempt Type",
 "BACK_TO_TAX_EXEMPT_TYPES":"Back to Tax Exempt Types",
 "SELECT_CHARGE_CODES": "Select Charge Codes",
-"DEFAULT_TAX_EXEMPT_TYPE": "Default Tax Exempt Type"
+"DEFAULT_TAX_EXEMPT_TYPE": "Default Tax Exempt Type",
+
+"CHARGE_CODE_TRANSLATION":"Charge code (Translation)",
+"CHARGE_CODE_TRANSLATION_PLACEHOLDER":"Enter translation for charge code"
