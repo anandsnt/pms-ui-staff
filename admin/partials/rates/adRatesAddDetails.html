@@ -62,9 +62,9 @@
             </div>
 
             <div class="entry" ng-if="currencyId !== rateData.currency_code_id">
-                <label>Fixed It</label>
+                <label>Exchange fixed at</label>
                 <select class="placeholder" ng-model="rateData.fixed_it_id" ng-options="fixedit.id as fixedit.name for fixedit in rateTypesDetails.hotel_settings.rate_fixed_it_options">
-                   <option value="">Select Fixed It</option>
+                   <option value="">Select Exchange Fixed at</option>
                 </select>
             </div>
 
