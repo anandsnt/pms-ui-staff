@@ -46,22 +46,14 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
 
         // Should show the export list
         $scope.shouldShowExportListOnly = () => {
-            return $scope.currentStage === STAGES.SHOW_CUSTOM_EXPORT_LIST;
+            return $scope.viewState.currentStage === STAGES.SHOW_CUSTOM_EXPORT_LIST;
         };
 
         // Create new export
         var configureNewExport = () => {
             fetchDataSpaces();
-            $scope.currentStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
+            $scope.viewState.currentStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
         };
-
-        // Listener for creating new custom export
-        $scope.addListener('CREATE_NEW_CUSTOM_EXPORT', function () {
-            configureNewExport();
-            $scope.customExportsData.isNewExport = true;
-            $scope.updateView($scope.reportViewActions.SHOW_CUSTOM_NEW_EXPORT);
-            $scope.updateViewCol($scope.viewColsActions.ONE);
-        });
 
         /**
          * Fetch available data spaces for custom exports
@@ -78,7 +70,8 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                                 description: dataSpace.description
                             },
                             active: false,
-                            filteredOut: false
+                            filteredOut: false,
+                            filters: dataSpace.filters
                         });
                     });                                       
                 },
@@ -102,7 +95,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                         schedule.report.description = schedule.name;
                     });
 
-                    $scope.currentStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
+                    $scope.viewState.currentStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
                 },
                 onScheduledExportsFetchFailure = () => {
                     $scope.customExportsData.scheduledCustomExports = [];
@@ -142,11 +135,11 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
          * @param {Number} reportId - id of the report
          * @return {void}
          */
-        var loadReqData = (reportId) => {
+        var loadReqData = (reportId, isSavedSchedule ) => {
             var onSuccess = ( payload ) => {
                     $scope.selectedEntityDetails.columns = payload.columns;
                     $scope.selectedEntityDetails.active = true;
-                    $scope.currentStage = STAGES.SHOW_PARAMETERS;
+                    $scope.viewState.currentStage = STAGES.SHOW_PARAMETERS;
                     $scope.customExportsData.exportFormats = payload.exportFormats;
                     $scope.customExportsData.deliveryTypes = payload.deliveryTypes;
                     $scope.customExportsData.durations = payload.durations;
@@ -158,10 +151,13 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                     $scope.updateViewCol($scope.viewColsActions.FOUR);
                     refreshScroll(REPORT_COLS_SCROLLER);
 
-                    var reportFilters = $scope.selectedEntityDetails.filters;
+                    var reportFilters = angular.copy($scope.selectedEntityDetails.filters);
 
-                    $scope.selectedEntityDetails.filters = RVCustomExportsUtilFac.processFilters(reportFilters);
-
+                    //$scope.selectedEntityDetails.filterFields = angular.copy($scope.selectedEntityDetails.filters);
+                    $scope.selectedEntityDetails.processedFilters = RVCustomExportsUtilFac.processFilters(reportFilters);
+                    if (isSavedSchedule) {
+                        $scope.$broadcast('UPDATE_FILTER_SELECTIONS');
+                    }
 
                 },
                 onFailure = (error) => {
@@ -180,6 +176,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
         // Click handler for the given data space
         $scope.clickDataSpace = ( selectedDataSpace ) => {
             $scope.selectedEntityDetails = selectedDataSpace;
+            $scope.filterData.appliedFilters = [];
             loadReqData(selectedDataSpace.id);
         };
 
@@ -198,6 +195,20 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 refreshScroll(REPORT_SELECTED_COLS_SCROLLER);
             }, 100);
 
+        };
+
+        /**
+         * Get selected item values for multi select option
+         * @param {Array} items - array of items
+         * @param {String} key -the key to used as value
+         * @return {Array} selectedIds - array of selected ids
+         */
+        var getSelectedItemValues = (items, key) => {
+            key = key || 'value';
+            var selectedItems = _.where(items, { selected: true }),
+                selectedIds = _.pluck(selectedItems, key);
+
+            return selectedIds;
         };
 
         /**
@@ -235,6 +246,34 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
 
             params.mapped_names = fieldMappings;
 
+            // Process the applied filters
+            var filterValues = {},
+                paramKey;
+
+            _.each($scope.filterData.appliedFilters, function (filter) {
+                paramKey = (filter.selectedFirstLevel).toLowerCase();
+                if (filter.isDuration) {
+                    filterValues[paramKey] = filter.selectedSecondLevel;
+                } else if (filter.isOption) {
+                    if (filter.hasDualState) {
+                        filterValues[paramKey] = filter.selectedSecondLevel;
+                    } else if (filter.isMultiSelect) {
+                        filterValues[paramKey] = getSelectedItemValues(filter.secondLevelData);
+                    }
+                } else if (filter.isRange) {
+                    if (!filterValues[paramKey]) {
+                        filterValues[paramKey] = [];
+                    }
+                    filterValues[paramKey].push({
+                        operator: filter.selectedSecondLevel,
+                        value: filter.rangeValue
+                    });
+                }
+
+            });
+
+            params.filter_values = filterValues;
+
             return params;
         };
 
@@ -246,7 +285,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 onScheduleCreateSuccess = () => {
                     $scope.errorMessage = '';
                     $scope.updateViewCol($scope.viewColsActions.ONE);
-                    $scope.addingStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
+                    //$scope.addingStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
                     $scope.customExportsData.isNewExport = false;
                     fetchScheduledCustomExports();
                 },
@@ -271,7 +310,9 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             $scope.selectedEntityDetails = selectedSchedule;
             $scope.customExportsData.isNewExport = false;
             $scope.selectedColumns = [];
-            loadReqData(selectedSchedule.report.id);
+            $scope.filterData.appliedFilters = [];
+            $scope.customExportsScheduleParams.exportName = selectedSchedule.name;
+            loadReqData(selectedSchedule.report.id, true);
         };
 
         // Save the given schedule
@@ -280,7 +321,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 onScheduleSaveSuccess = () => {
                     $scope.errorMessage = '';
                     $scope.updateViewCol($scope.viewColsActions.ONE);
-                    $scope.addingStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
+                    //$scope.addingStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
                     $scope.customExportsData.isNewExport = false;
                     fetchScheduledCustomExports();
                 },
@@ -305,11 +346,20 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
     
             $scope.addListener('SHOW_EXPORT_LISTING', () => {
                 $scope.updateViewCol($scope.viewColsActions.ONE);
-                $scope.addingStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
+                //$scope.addingStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
             });
     
             $scope.addListener('CREATE_NEW_CUSTOM_EXPORT_SCHEDULE', () => {
                 createSchedule();
+            });
+
+            // Listener for creating new custom export
+            $scope.addListener('CREATE_NEW_CUSTOM_EXPORT', function () {
+                initializeData();
+                configureNewExport();
+                $scope.customExportsData.isNewExport = true;
+                $scope.updateView($scope.reportViewActions.SHOW_CUSTOM_NEW_EXPORT);
+                $scope.updateViewCol($scope.viewColsActions.ONE);
             });
         };
 
@@ -323,30 +373,34 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
         };
 
         $scope.getSecondLevelFilterValues = () => {
-            if ($scope.selectedEntityDetails.filters[$scope.filterData.firstLevelFilter]) {
-                return $scope.selectedEntityDetails.filters[$scope.filterData.firstLevelFilter];
+            if ($scope.selectedEntityDetails.processedFilters[$scope.filterData.firstLevelFilter]) {
+                return $scope.selectedEntityDetails.processedFilters[$scope.filterData.firstLevelFilter];
             }
             return [];
         };
-        
-        // Initialize the controller
-        var init = () => {
-            $scope.customExportsData.isNewExport = false;
-            
-            fetchScheduledCustomExports();
+
+        var initializeData = () => {
+            $scope.customExportsScheduleParams.format = '';
+            $scope.customExportsScheduleParams.exportName = '';
             $scope.selectedColumns = [];
             $scope.customExportsData.scheduledCustomExports = [];
             $scope.customExportsData.customExportDataSpaces = [];
             $scope.customExportsData.exportFormats = [];
             $scope.customExportsData.deliveryTypes = [];
             $scope.customExportsData.durations = [];
-            
             $scope.filterData = {
                 appliedFilters: [],
                 primaryFilter: '',
                 secondLevelFilter: '' 
             };
-            
+            $scope.viewState = {};
+        };
+        
+        // Initialize the controller
+        var init = () => {
+            $scope.customExportsData.isNewExport = false;
+            initializeData();
+            fetchScheduledCustomExports();
             initializeScrollers();
             setUpListeners();
             

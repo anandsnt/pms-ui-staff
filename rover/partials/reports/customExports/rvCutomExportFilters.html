@@ -1,5 +1,4 @@
 <div class="scrollable no-buttons" 
-     ng-controller="RVCustomExportFilterCtrl"
      ng-iscroll="custom-export-filters-scroller"> <!-- Add vertical scroller here. Add .no-fields if there are no fields. -->
     <div class="wrapper">
         <h3>Set Filters<span>Select Field and Apply Filters</span></h3>
@@ -40,6 +39,7 @@
                 first-level-data = "appliedFilter.firstLevelData"
                 second-level-data = "appliedFilter.secondLevelData"
                 selected-first-level = "appliedFilter.selectedFirstLevel"
+                selected-second-level = "appliedFilter.selectedSecondLevel"
                 filter-pos = "$index"
                 on-remove = "removeFilter(filterPos)"
                 is-multi-select = "appliedFilter.isMultiSelect"
@@ -58,13 +58,13 @@
                 + Add Filter
                 <select id="add-filter" class="capitalize" ng-model="filterData.primaryFilter" ng-change="changePrimaryFilter()">
                     <option value="">Select a filter</option>
-                    <!--option class="capitalize" ng-repeat="(name, value) in selectedEntityDetails.filters" value='{{name}}' >{{name}}</option> -->
                     <option value="DURATION">Duration</option>
                     <option value="RANGE">Range</option>
-                    <option value="OPTIONS">Options</option>
+                    <option value="OPTION">Options</option>
                 </select>
             </label>
-            <button type="button" class="button red hidden">Remove All Filters</button> <!-- Remove class 'hidden as soon as users start adding filters. Clicking this removes all.' -->
+            <button type="button" class="button red" 
+                    ng-show="filterData.appliedFilters.length >= 2" ng-click="removeAllFilters()">Remove All Filters</button> <!-- Remove class 'hidden as soon as users start adding filters. Clicking this removes all.' -->
         </div>
         
         

@@ -10,10 +10,10 @@
     </div>
     <div class="entry dual">
         <label for="range-options">Range Options</label>
-        <div class="select" ng-model="selectedSecondLevel">
+        <div class="select">
             <select id="range-options" ng-model="selectedSecondLevel">
-                <option value="">Select</option>
-                <option ng-repeat="filter in secondLevelData" value='{{filter.value}}'>{{filter.label}}</option>
+                <option value="">Select </option>
+                <option ng-repeat="filter in secondLevelData" value='{{filter.value}}' ng-selected="filter.value === selectedSecondLevel">{{filter.label}}</option>
             </select>
         </div>
         <input type="text" placeholder="Enter value" ng-model="rangeValue">

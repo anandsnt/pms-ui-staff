@@ -44,9 +44,23 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
             return filterOptions;
         };
 
-        var populateBookingOrigins = (selectedFilter, deferred) => {
+        var markAsSelected = (list, selectedValues, key) => {
+            key = key || 'value';
+            if (selectedValues.length === 0 ) {
+                return list;
+            }
+            _.each (list, function ( each ) {
+                if (selectedValues.indexOf(each[key] !== -1)) {
+                    each.selected = true;
+                }
+            });
+
+            return list;
+        }
+
+        var populateBookingOrigins = (selectedFilter, selectedValues, deferred) => {
                 reportSubSrv.fetchBookingOrigins().then(function (data) {
-                    selectedFilter.secondLevelData = angular.copy(data);
+                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues);
                     selectedFilter.options = {
                         selectAll: false,
                         hasSearch: false,
@@ -118,19 +132,20 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                     deferred.resolve(selectedFilter);
                 });
             },
-            populateDualStates = ( selectedFilter, deferred ) => {
+            populateDualStates = ( selectedFilter, selectedValues, deferred ) => {
                 selectedFilter.secondLevelData = angular.copy(dualStateOptions);
                 selectedFilter.hasDualState = true;
+                selectedFilter.selectedSecondLevel = selectedValues || '';
                 deferred.resolve(selectedFilter);
             };
 
 
-        var populateOptions = (selectedFieldName, selectedFilter) => {
+        var populateOptions = (selectedFieldName, selectedFilter, selectedValues) => {
             var deferred = $q.defer();
 
             switch (selectedFieldName) {
                 case customExportFilterParamsConst['BOOKING_ORIGIN_CODE']:
-                    populateBookingOrigins(selectedFilter, deferred);
+                    populateBookingOrigins(selectedFilter, selectedValues, deferred);
                     break;
                 case customExportFilterParamsConst['MARKET_CODE']:
                     populateMarkets(selectedFilter, deferred);
@@ -149,7 +164,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                     break;
                 case customExportFilterParamsConst['ACTIVE']:
                 case customExportFilterParamsConst['DAYUSE INDICATOR']:
-                    populateDualStates(selectedFilter, deferred);
+                    populateDualStates(selectedFilter, selectedValues, deferred);
                     break;
                 default:
 
@@ -159,17 +174,19 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
 
         };
 
-        var populateRangeOperators = (selectedFieldName, selectedFilter, appliedFilters) => {
+        var populateRangeOperators = (selectedFieldName, selectedFilter, appliedFilters, selectedSecondLevel, rangeValue) => {
             var appliedRangeOperators = _.filter(appliedFilters, function ( each ) {
                     return each.selectedFirstLevel === selectedFieldName;
                 }),
-                appliedRangeOperatorNames = _.pluck(appliedRangeOperators, 'selectedFirstLevel');
+                appliedRangeOperatorNames = _.pluck(appliedRangeOperators, 'selectedSecondLevel');
 
-            var availableOperators = _.each(getRangeOperators(), function (each) {
+            var availableOperators = _.filter(getRangeOperators(), function (each) {
                 return appliedRangeOperatorNames.indexOf(each.value) === -1;
             });
             
             selectedFilter.secondLevelData = availableOperators;
+            selectedFilter.selectedSecondLevel = selectedSecondLevel;
+            selectedFilter.rangeValue = rangeValue;
 
         };
 
@@ -177,11 +194,12 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
             return rangeOperators;
         };
 
+
         var factory = {
             processFilters: processFilters,
             populateOptions: populateOptions,
             getRangeOperators: getRangeOperators,
-            populateRangeOperators: populateRangeOperators 
+            populateRangeOperators: populateRangeOperators
         };
 
         return factory;

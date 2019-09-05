@@ -45,7 +45,7 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
         };
 
         var createDurationEntry = ( filterType, selectedFirstLevel, selectedSecondLevel ) => {
-                var filterFields = $scope.selectedEntityDetails.filters[filterType],
+                var filterFields = $scope.selectedEntityDetails.processedFilters[filterType],
                     filterConfig = {
                         firstLevelData: filterFields,
                         secondLevelData: $scope.customExportsData.durations,
@@ -57,7 +57,7 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
                 return filterConfig;
             },
             createRangeEntry = ( filterType, selectedFirstLevel, selectedSecondLevel, rangeValue ) => {
-                var fieldsCopy = angular.copy($scope.selectedEntityDetails.filters[filterType]),
+                var fieldsCopy = angular.copy($scope.selectedEntityDetails.processedFilters[filterType]),
                     filterFields = removeAlreadyExistsRangeFieldNames(fieldsCopy),
                     filterConfig = {
                         firstLevelData: filterFields,
@@ -71,7 +71,7 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
                 return filterConfig;
             },
             createOptionEntry = ( filterType, selectedFirstLevel, selectedSecondLevel) => {
-                var fieldsCopy = angular.copy($scope.selectedEntityDetails.filters[filterType]),
+                var fieldsCopy = angular.copy($scope.selectedEntityDetails.processedFilters[filterType]),
                     filterFields = removeAlreadyExistsOptionFieldNames(fieldsCopy),
                     filterConfig = {
                         firstLevelData: filterFields,
@@ -138,7 +138,7 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
             $scope.filterData.appliedFilters.splice(filterPos, 1);
         };
 
-        $scope.onFirstLevelFieldChange = (selectedFieldName, filterPos) => {
+        $scope.onFirstLevelFieldChange = (selectedFieldName, filterPos, selectedSecondLevel, rangeValue) => {
             var selectedFilter = $scope.filterData.appliedFilters[filterPos];
 
             if (selectedFilter.isOption) {
@@ -152,7 +152,7 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
                     'isMultiSelect',
                     'hasDualState'
                 ]);
-                RVCustomExportsUtilFac.populateOptions(selectedFieldName, selectedFilter).then(function (filter) {
+                RVCustomExportsUtilFac.populateOptions(selectedFieldName, selectedFilter, selectedSecondLevel).then(function (filter) {
                     selectedFilter = filter;
                 });
             } else if (selectedFilter.isRange) {
@@ -166,10 +166,49 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
                     'isMultiSelect',
                     'hasDualState'
                 ]);
-                RVCustomExportsUtilFac.populateRangeOperators(selectedFieldName, selectedFilter, $scope.filterData.appliedFilters);
+                RVCustomExportsUtilFac.populateRangeOperators(selectedFieldName, selectedFilter, $scope.filterData.appliedFilters, selectedSecondLevel, rangeValue);
             }
 
         };
+
+        // Remove all the selected filters
+        $scope.removeAllFilters = () => {
+            $scope.filterData.appliedFilters = [];
+        };
+
+        var processFilterSelections  = () => {
+            var filterValues = $scope.selectedEntityDetails.filter_values,
+                filterFields = $scope.selectedEntityDetails.filters,
+                filterType,
+                filter;
+            
+            RVCustomExportSrv.processFilterSelections(filterValues).then(function() {
+                _.each(filterValues, function (value, key) {
+                    key = key.toUpperCase();
+                    filterType = (_.find(filterFields, { value: key })).filter_type;
+                    if (filterType === filterTypes.DURATION) {
+                        filter = createDurationEntry(filterType, key, value);
+                        $scope.filterData.appliedFilters.push(filter);
+                    } else if (filterType === filterTypes.RANGE) {
+                        _.each (value, function ( each ) {
+                            filter = createRangeEntry(filterType, key, each.operator, each.value);
+                            $scope.filterData.appliedFilters.push(filter);
+                            $scope.onFirstLevelFieldChange(key, ($scope.filterData.appliedFilters.length - 1), each.operator, each.value);
+                        });
+                        
+                    } else if (filterType === filterTypes.OPTIONS) {
+                        filter = createOptionEntry(filterType, key);
+                        $scope.filterData.appliedFilters.push(filter);
+                        $scope.onFirstLevelFieldChange(key, ($scope.filterData.appliedFilters.length - 1), value);
+                    }
+
+                });
+            });
+        };
+
+        $scope.addListener('UPDATE_FILTER_SELECTIONS', () => {
+            processFilterSelections();
+        });
 
 
     }

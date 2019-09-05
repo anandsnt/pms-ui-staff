@@ -15,10 +15,10 @@
         options="options"
         on-update="onSelectboxExpand"
     ></multi-option-selection>
-    <div class="entry" ng-if="hasDualState">
+    <div class="entry" ng-show="hasDualState">
         <label for="duration-field">Options</label>
         <div class="select">
-            <select id="duration-field" class="text-bold" ng-model="selectedSecondLevel">
+            <select id="option-field" class="text-bold" ng-model="selectedSecondLevel">
                 <option value="">Select Options</option>
                 <option ng-repeat="filter in secondLevelData" value='{{filter.value}}'>{{filter.label}}</option>
             </select>

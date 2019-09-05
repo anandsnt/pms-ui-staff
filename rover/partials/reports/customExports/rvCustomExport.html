@@ -13,7 +13,7 @@
             </div>
         </li>
     </ul>
-    <ul class="wrapper" ng-if="!customExportsData.isNewExport">
+    <ul class="wrapper" ng-if="!customExportsData.isNewExport && customExportsData.scheduledCustomExports.length > 0">
         <li class="report-item" 
             ng-repeat="scheduledExport in customExportsData.scheduledCustomExports"
             ng-hide="scheduledExport.filteredOut"
@@ -25,6 +25,14 @@
             </div>
         </li>
     </ul>
+    <div class="no-content"
+        ng-show="!customExportsData.scheduledCustomExports.length && !customExportsData.isNewExport">
+        <div class="info">
+            <span class="icon-no-content icon-reports"></span>
+            <strong class="h1">Exports unavailable</strong>
+            <span class="h2">You have no exports configured</span>
+        </div>
+    </div>
     
 </div>
 
@@ -84,5 +92,5 @@
 </div>
 
 <!-- Fourth column - distribution list -->
-<div class="report-col" ng-if="!shouldShowExportListOnly()" ng-include="'/assets/partials/reports/customExports/rvCutomExportFilters.html'">
+<div class="report-col" ng-controller="RVCustomExportFilterCtrl" ng-show="!shouldShowExportListOnly()" ng-include="'/assets/partials/reports/customExports/rvCutomExportFilters.html'">
 </div>
