@@ -36,7 +36,10 @@
                             label="{{'AUTHENTICATION_TOKEN' | translate}}"
                             readonly="yes">
                 </ad-textbox>
-                <button type="button" style="margin: 24px 0 0 10px" class="button blue sm-refresh-btn" ng-click="onClickRegenerate()">
+                <button ng-if="!authentication_token" type="button" style="margin: 24px 0 0 10px" class="button blue sm-refresh-btn" ng-click="onClickRegenerate()">
+                    GENERATE
+                </button>
+                <button ng-if="authentication_token" type="button" style="margin: 24px 0 0 10px" class="button blue sm-refresh-btn" ng-click="onClickRegenerate()">
                     REGENERATE
                 </button>
             </fieldset>
