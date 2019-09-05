@@ -32,6 +32,9 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
             if (origin !== "SUMMARY_DATE_CHANGED") {
                 $scope.$emit('hideLoader');
             }
+            if ($scope.data.isExpandedViewRevenue) {
+                $scope.$emit("EXPAND_REVENUE");
+            }
 		};
 
         var postData = {
@@ -44,12 +47,14 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
         };
 
 		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, postData, successCallBackFetchRevenueData);
-    };	
+    };
 
+    if (!$scope.data.isExpandedViewRevenue) {
+        initRevenueData();
+    }
     fetchDepartments();
 
     $scope.addListener('REFRESHREVENUECONTENT', function() {
-        initRevenueData();
         refreshRevenueScroller();
     });
 

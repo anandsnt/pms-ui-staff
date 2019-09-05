@@ -101,7 +101,7 @@ sntRover.controller('RVJournalController',
     };
 
 
-    $scope.clickedJournalToggle = function () {
+    $scope.clickedJournalToggle = function (isFromSearch) {
         var tabName = $scope.data.activeTab;
 
         if (tabName === 'SUMMARY') {
@@ -111,7 +111,9 @@ sntRover.controller('RVJournalController',
             $scope.data.isExpandedViewPayment = !$scope.data.isExpandedViewPayment;
             $scope.$broadcast("EXPAND_PAYMENT_SCREEN");
         } else if (tabName === 'REVENUE') {
-            $scope.data.isExpandedViewRevenue = !$scope.data.isExpandedViewRevenue;
+            if (!isFromSearch) {
+                $scope.data.isExpandedViewRevenue = !$scope.data.isExpandedViewRevenue;
+            }
 
             if (!$scope.data.isExpandedViewRevenue) {
                 $scope.searchJournal();
@@ -363,7 +365,6 @@ sntRover.controller('RVJournalController',
             $scope.data.isExpandedViewPayment = false;
             $rootScope.$broadcast('PAYMENTSSEARCH');
         } else if (tabName === 'REVENUE') {
-            $scope.data.isExpandedViewRevenue = false;
             $rootScope.$broadcast('REVENUESEARCH');
         }
     };
@@ -392,6 +393,10 @@ sntRover.controller('RVJournalController',
         }
 
     };
+
+    $scope.addListener('EXPAND_REVENUE', function() {
+        $scope.clickedJournalToggle(true);
+    });
 
     var init = function() {
         // $scope.data.isExpandedViewSummary = false;
