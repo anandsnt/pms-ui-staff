@@ -1096,7 +1096,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 }]
             };
 
-            if ($scope.isAddHierarchyRestrictions) {
+            if ($scope.isHierarchyRestrictionEnabled) {
                 paramsForClosingRestriction.restriction_level = 'Hotel';
             }
 
@@ -1128,7 +1128,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 }]
             };
 
-            if ($scope.isAddHierarchyRestrictions) {
+            if ($scope.isHierarchyRestrictionEnabled) {
                 paramsForOpeningRestriction.restriction_level = 'Hotel';
             }
 
