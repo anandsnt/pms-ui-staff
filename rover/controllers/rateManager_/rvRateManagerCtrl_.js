@@ -1096,6 +1096,10 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 }]
             };
 
+            if ($scope.isHierarchyRestrictionEnabled) {
+                paramsForClosingRestriction.restriction_level = 'Hotel';
+            }
+
             if (stateProps.mode ===  RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE) {
                 openAllRestrictionsForSingleRateView(paramsForClosingRestriction);
             }
@@ -1123,6 +1127,10 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                     }]
                 }]
             };
+
+            if ($scope.isHierarchyRestrictionEnabled) {
+                paramsForOpeningRestriction.restriction_level = 'Hotel';
+            }
 
             if (stateProps.mode ===  RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE) {
                 // rate_id: will be adding from the controller (openAllRestrictionsForSingleRateView)
