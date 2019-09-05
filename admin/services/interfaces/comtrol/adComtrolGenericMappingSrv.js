@@ -40,8 +40,8 @@ admin.service('adComtrolGenericMappingSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'a
          *
          * @returns {deferred.promise|{then, catch, finally}}
          */
-        service.fetch = function() {
-          return adIFCSrv.get('comtrol', 'list_generic_mapping');
+        service.fetch = function(params)  {
+          return adIFCSrv.get('comtrol', 'list_generic_mapping', params);
         };
 
         /**

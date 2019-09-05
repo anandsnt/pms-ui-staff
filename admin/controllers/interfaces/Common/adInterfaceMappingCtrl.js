@@ -17,7 +17,8 @@ admin.controller('adInterfaceMappingCtrl', [
             'payment_code_billing_account': 'Payment Code - Billing Account Number',
             'source_code': 'Source Code',
             'tax_code': 'Tax Codes',
-            'tax_charge_code': 'Tax Codes'
+            'tax_charge_code': 'Tax Codes',
+            'room_number': 'Room Numbers'
         };
 
         var mappingPartials = {
@@ -29,6 +30,7 @@ admin.controller('adInterfaceMappingCtrl', [
             'EXACTONLINE': '/assets/partials/interfaces/exactonline/adExactonlineMapping.html',
             'IGEL': '/assets/partials/interfaces/igel/adIgelMappingDetailView.html',
             'SAFEACCOUNTING': '/assets/partials/interfaces/safeaccounting/mapping.html',
+            'AXBASE3000': '/assets/partials/interfaces/axbase3000/adAxbaseMapping.html',
             'SIE': '/assets/partials/interfaces/sie/adSieMappingDetailView.html'
         };
 

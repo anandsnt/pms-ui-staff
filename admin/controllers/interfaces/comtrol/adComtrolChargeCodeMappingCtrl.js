@@ -1,5 +1,15 @@
-admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'adComtrolChargeCodeMappingSrv', 'COMTROL_REF',
-  function ($scope, adComtrolChargeCodeMappingSrv, COMTROL_REF) {
+admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'adComtrolChargeCodeMappingSrv', 'ngTableParams', 'COMTROL_REF',
+  function ($scope, adComtrolChargeCodeMappingSrv, ngTableParams, COMTROL_REF) {
+
+    ADBaseTableCtrl.call(this, $scope, ngTableParams);
+
+    /*
+     * This methode is to set page count.
+     * @param {number} page count
+     */
+    $scope.displayCountChanged = function(count) {
+        $scope.displyCount = count;
+    };
 
     // private methods and variables
     var resetNew = function () {
@@ -12,14 +22,14 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'adComtrolChargeCo
     },
     revertEdit = function () {
       if ($scope.state.editRef) {
-        $scope.mappings[$scope.state.selected] = angular.copy($scope.state.editRef);
+        $scope.data[$scope.state.selected] = angular.copy($scope.state.editRef);
         $scope.state.editRef = null;
       }
     },
     loadMetaList = function (cb) {
       $scope.callAPI(adComtrolChargeCodeMappingSrv.fetchMeta, {
         successCallBack: function (response) {
-          $scope.state.revCenters = response.revCenters;
+          $scope.state.revCenters = response.revCenters.revenue_center_mappings;
           $scope.state.chargeCodes = response.chargeCodes;
           cb && cb();
         }
@@ -65,21 +75,9 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'adComtrolChargeCo
           charge_code_name: charge_code_name,
           is_default: is_default
         },
-        successCallBack: function (response) {
-          if (is_default) {
-            _.each($scope.mappings, function (obj) {
-              obj.is_default = false;
-            });
-          }
-
-          $scope.mappings.push({
-            id: response.id,
-            revenue_center_code: revenue_center_code,
-            category_name: category_name,
-            charge_code_name: charge_code_name,
-            is_default: is_default
-          });
-          $scope.state.mode = "";
+        successCallBack: function() {
+            $scope.tableParams.reload();
+            $scope.state.mode = '';
         }
       });
     };
@@ -139,8 +137,7 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'adComtrolChargeCo
       $scope.callAPI(adComtrolChargeCodeMappingSrv.delete, {
         params: mapping.id,
         successCallBack: function () {
-          mapping.isDeleted = true;
-          $scope.state.deletedCount++;
+          $scope.tableParams.reload();
         }
       });
     };
@@ -189,6 +186,31 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'adComtrolChargeCo
       });
     };
 
+    $scope.fetchTableData = function($defer, params) {
+        var getParams = $scope.calculateGetParams(params),
+            fetchSuccessOfItemList = function(data) {
+                $scope.$emit('hideLoader');
+                $scope.currentClickedElement = -1;
+                $scope.totalCount = data.total_records;
+                $scope.totalPage = Math.ceil(data.total_records / $scope.displyCount);
+                $scope.data = data.cc_mappings;
+                $scope.currentPage = params.page();
+                params.total(data.total_records);
+                $defer.resolve($scope.data);
+            };
+        $scope.invokeApi(adComtrolChargeCodeMappingSrv.fetch, getParams, fetchSuccessOfItemList);
+    };
+
+    $scope.loadTable = function() {
+        $scope.tableParams = new ngTableParams({
+            page: 1, // show first page
+            count: $scope.displyCount // count per page
+        }, {
+            total: 0, // length of data
+            getData: $scope.fetchTableData
+        });
+    };
+
     // --------------------------------------------------------------------------------------------------------------
     /**
      * Initialization method for the controller
@@ -209,16 +231,8 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'adComtrolChargeCo
           is_default: false
         }
       };
-
-      $scope.callAPI(adComtrolChargeCodeMappingSrv.fetch, {
-        onSuccess: function (response) {
-          $scope.mappings = response;
-
-          if ($scope.mappings.length) {
-            loadMetaList();
-          }
-        }
-      });
+      loadMetaList();
+      $scope.loadTable();
     })();
   }
 ]);

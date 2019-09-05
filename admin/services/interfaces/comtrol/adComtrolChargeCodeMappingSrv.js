@@ -45,8 +45,8 @@ admin.service('adComtrolChargeCodeMappingSrv', ['$http', '$q', 'ADBaseWebSrvV2',
          *
          * @returns {deferred.promise|{then, catch, finally}}
          */
-        service.fetch = function() {
-            return adIFCSrv.get('comtrol', 'list_cc_mapping');
+        service.fetch = function(params) {
+            return adIFCSrv.get('comtrol', 'list_cc_mapping', params);
         };
 
         /**
