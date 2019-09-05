@@ -10,7 +10,7 @@
                 </li>
                 <li>
                     EOD Report Balance
-                    <span class="has-arrow next-view"><span class="currency">{{currencySymbol}}</span>{{balanceData.deposit_opening_balance}}</span> <!-- Clicking this should open Deposit Summary Report, with the back button text "Journal" -->
+                    <span class="has-arrow next-view"><span class="currency">{{currencySymbol}}</span>{{balanceData.deposit_report_balance}}</span> <!-- Clicking this should open Deposit Summary Report, with the back button text "Journal" -->
                 </li>
                 <li>
                     Balance Check
@@ -28,7 +28,7 @@
                     <span><span class="currency">{{currencySymbol}}</span>{{balanceData.guest_closing_balance}}</span>
                 </li>
                 <li>
-                    <span class="has-arrow next-view"><span class="currency">{{currencySymbol}}</span>{{balanceData.guest_opening_balance}}</span> <!-- Clicking this should open Guest Balance Report, with the back button text "Journal" -->
+                    <span class="has-arrow next-view"><span class="currency">{{currencySymbol}}</span>{{balanceData.guest_report_balance}}</span> <!-- Clicking this should open Guest Balance Report, with the back button text "Journal" -->
                 </li>
                 <li>
                     <i class="icons icon-action icon-completed"></i>
@@ -38,14 +38,14 @@
             </ul>
         </div>
 
-        <div class="journal-summary balance-summary">
+        <div class="journal-summary balance-summary hidden">
             <h3>A/R Ledger</h3>
             <ul>
                 <li>
                     <span><span class="currency">{{currencySymbol}}</span>{{balanceData.ar_closing_balance}}</span>
                 </li>
                 <li>
-                    <span class="has-arrow next-view"><span class="currency">{{currencySymbol}}</span>{{balanceData.ar_opening_balance}}</span> <!-- Clicking this should open A/R Summary Report, with the back button text "Journal" -->
+                    <span class="has-arrow next-view"><span class="currency">{{currencySymbol}}</span>{{balanceData.ar_report_balance}}</span> <!-- Clicking this should open A/R Summary Report, with the back button text "Journal" -->
                 </li>
                 <li>
                     <i class="icons icon-action icon-completed"></i>
@@ -62,21 +62,21 @@
                     <button type="button" class="button white has-arrow next-view" ng-click="clickedNavigationToSearch('CHECKEDOUT')">
                         <i class="guest-status departed"></i>
                         <span class="label">Checked out</span>
-                        kr. 1,212.43
+                        <span class="currency">{{currencySymbol}}</span> {{balanceData.checkout_with_balance}}
                     </button>
                 </li>
-                <li>
+                <li ng-if="false">
                     <button type="button" class="button white has-arrow next-view" ng-click="clickedNavigationToSearch('NOSHOW')">
                         <i class="guest-status no-show"></i>
                         <span class="label">No Show</span>
-                        kr. 543.00
+                        <span class="currency">{{currencySymbol}}</span> {{balanceData.no_show_with_balance}}
                     </button>
                 </li>
-                <li>
+                <li ng-if="false">
                     <button type="button" class="button white has-arrow next-view" ng-click="clickedNavigationToSearch('CANCELED')">
                         <i class="guest-status cancel"></i>
                         <span class="label">Cancellations</span>
-                        kr. 125.00
+                        <span class="currency">{{currencySymbol}}</span> {{balanceData.cancellation_with_balance}}
                     </button>
                 </li>
             </ul>
