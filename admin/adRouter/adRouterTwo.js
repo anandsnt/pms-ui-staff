@@ -1070,7 +1070,7 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
 
     $stateProvider.state('admin.policeExportDefaults', {
         templateUrl: '/assets/partials/policeExportDefaults/adPoliceExportDefaults.html',
-        controller: 'ADPoliceExportDefaults',
+        controller: 'ADPoliceExportDefaultsCtrl',
         url: '/policeExportDefaults',
         resolve: {
             defaultSettings: function (adPoliceExportDefaultSrv) {
