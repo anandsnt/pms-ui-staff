@@ -46,7 +46,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
 
         var markAsSelected = (list, selectedValues, key) => {
             key = key || 'value';
-            if (selectedValues.length === 0 ) {
+            if (!selectedValues || selectedValues.length === 0 ) {
                 return list;
             }
             _.each (list, function ( each ) {
@@ -88,7 +88,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                     selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues);
                     selectedFilter.options = {
                         hasSearch: false,
-                        selectAll: data.length === selectedValues.length,
+                        selectAll: selectedValues ? data.length === selectedValues.length : true,
                         key: 'status',
                         defaultValue: 'Select Status'
                     };
@@ -101,7 +101,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                     selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues);
                     selectedFilter.options = {
                         hasSearch: false,
-                        selectAll: data.length === selectedValues.length,
+                        selectAll: selectedValues ? data.length === selectedValues.length : true,
                         key: 'name'
                     };
                     selectedFilter.isMultiSelect = true;
@@ -113,7 +113,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                     selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues);
                     selectedFilter.options = {
                         hasSearch: false,
-                        selectAll: data.length === selectedValues.length,
+                        selectAll: selectedValues ? data.length === selectedValues.length : true,
                         key: 'name'
                     };
                     selectedFilter.isMultiSelect = true;
@@ -125,7 +125,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                     selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues);
                     selectedFilter.options = {
                         hasSearch: false,
-                        selectAll: data.length === selectedValues.length,
+                        selectAll: selectedValues ? data.length === selectedValues.length : true,
                         key: 'name'
                     };
                     selectedFilter.isMultiSelect = true;
