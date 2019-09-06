@@ -289,7 +289,7 @@ var GridRowItem = React.createClass({
                 React.DOM.span({
                     className: show_outstanding_indicator ? 'deposit-icon' : '',
                     style: styleForDepositIcon
-                }, rateCurrency),
+                }, data.rate_currency),
                 React.DOM.span({
                     className: is_room_locked ? 'icons icon-diary-lock' : '',
                     style: styleForRoomLocked
