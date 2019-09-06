@@ -108,7 +108,10 @@ sntRover.controller('RVJournalController',
             $scope.data.isExpandedViewSummary = !$scope.data.isExpandedViewSummary;
             $scope.$broadcast("EXPAND_SUMMARY_SCREEN");
         } else if (tabName === 'PAYMENTS') {
-            $scope.data.isExpandedViewPayment = !$scope.data.isExpandedViewPayment;
+            if (!isFromSearch) {
+                $scope.data.isExpandedViewPayment = !$scope.data.isExpandedViewPayment;
+            }
+            
             $scope.$broadcast("EXPAND_PAYMENT_SCREEN");
         } else if (tabName === 'REVENUE') {
             if (!isFromSearch) {
@@ -393,6 +396,10 @@ sntRover.controller('RVJournalController',
         }
 
     };
+
+    $scope.addListener('EXPAND_PAYMENT', function() {
+        $scope.clickedJournalToggle(true);
+    });
 
     $scope.addListener('EXPAND_REVENUE', function() {
         $scope.clickedJournalToggle(true);
