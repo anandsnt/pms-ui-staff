@@ -89,6 +89,7 @@ sntRover.controller('RVReceiptPopupController',
      */
     var init = function() {
         $scope.data = {};
+
         var dataToSend = {
             successCallBack: successCallBackForLanguagesFetch
         };

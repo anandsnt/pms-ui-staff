@@ -60,6 +60,7 @@ module.exports = function(config) {
             sharedRoot + 'directives/clickTouch/clickTouch.js',
             sharedRoot + 'directives/activityIndicator/sntActivityIndicator.js',
             sharedRoot + 'sntCanvasUtil/**/*.js',
+            sharedRoot + 'sntUtils/**/*.js',
             jsLegacyLibRoot + 'date.js',
             sharedRoot + 'cordova.js',
             zestRoot + 'zsApp.js',

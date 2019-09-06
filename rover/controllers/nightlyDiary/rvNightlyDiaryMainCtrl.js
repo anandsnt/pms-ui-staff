@@ -40,7 +40,8 @@ angular.module('sntRover')
                     document.addEventListener('touchmove', window.touchmovestoppropogate, false);
                 });
                 var isFromStayCard = $stateParams.origin === 'STAYCARD',
-                    MAX_NO_OF_DAYS = 21;
+                    MAX_NO_OF_DAYS = 21,
+                    paginationDataBeforeMoveOrAssign = {};
 
                 /*
                  * utility method Initiate controller
@@ -130,7 +131,8 @@ angular.module('sntRover')
                         requireAuthorization: false,
                         isReservationSelected: false,
                         selectedUnassignedReservation: {},
-                        roomAssignmentFilters: {}
+                        roomAssignmentFilters: {},
+                        isCancelledMoveOrAssign: false
                     };
                     $scope.currentSelectedReservation = {};
                     $scope.currentSelectedRoom = {};
@@ -187,11 +189,15 @@ angular.module('sntRover')
                         var roomTypeId = $scope.diaryData.availableSlotsForAssignRooms.roomTypeId;
 
                         postData.selected_room_type_ids = [roomTypeId];
-
+                        paginationDataBeforeMoveOrAssign = angular.copy(postData);
                         // CICO-68767 : Handle pagination(offset) while ASSIGN or MOVE actions
                         if (!(($scope.diaryData.isAssignRoomViewActive || $scope.diaryData.isMoveRoomViewActive) && !!offset)) {
                             postData.page = 1;
                         }
+                    }
+                    else if ($scope.diaryData.isCancelledMoveOrAssign) {
+                        postData.page = paginationDataBeforeMoveOrAssign.page ? paginationDataBeforeMoveOrAssign.page : 1;
+                        $scope.diaryData.isCancelledMoveOrAssign = false;
                     }
 
                     if (roomId) {
@@ -349,7 +355,10 @@ angular.module('sntRover')
                     var successCallBackFetchAvailableTimeSlots = function (data) {
                         $scope.setTimePopupData.data = data;
                         // Handle ASSIGN/MOVE button click handle.
-                        if ((type === 'ASSIGN' || type === 'MOVE') && data.is_overlapping_reservations_exists) {
+                        if (type === 'MOVE' && reservationDetails.reservationStatus === 'CHECKEDIN' && roomDetails.room_ready_status === 'DIRTY') {
+                            showWarningMessagePopup("Cannot move occupied guest to a dirty room");
+                        }
+                        else if ((type === 'ASSIGN' || type === 'MOVE') && data.is_overlapping_reservations_exists) {
                             triggerSetTimePopup();
                         }
                         else if ((type === 'ASSIGN' || type === 'MOVE') && !data.is_overlapping_reservations_exists) {
@@ -1037,7 +1046,7 @@ angular.module('sntRover')
                     diaryMode: rvUtilSrv.getDiaryMode()
                 };
 
-                const store = configureStore(initialState);
+                const store = configureDiaryStore(initialState);
                 const { render } = ReactDOM;
                 const { Provider } = ReactRedux;
 

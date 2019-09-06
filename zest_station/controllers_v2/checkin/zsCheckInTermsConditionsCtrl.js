@@ -230,14 +230,14 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
         };
 
         var checkForAllowedAndGuarenteedPaymentTypes = function(byPassCC) {
+            var paymentMethodUsed = paymentParams.payment_method_used ? paymentParams.payment_method_used : '';
             var isAllowedPaymentMethod = function(paymentType) {
                 var paymentMethodValue = paymentType.value ? paymentType.value : '';
-                var paymentMethodUsed = paymentParams.payment_method_used ? paymentParams.payment_method_used : '';
 
-                return (paymentType.id === paymentParams.payment_method_used ||
+                return ((paymentType.id === paymentParams.payment_method_used ||
                         paymentMethodValue.toUpperCase() === paymentMethodUsed.toUpperCase()) &&
                         paymentType.active &&
-                        paymentType.enable_zs_checkin;
+                        paymentType.enable_zs_checkin);
             }
             var indexInAllowedPaymentTypes = _.findIndex($scope.zestStationData.payment_types, function(paymentType) {
                 return isAllowedPaymentMethod(paymentType);
@@ -247,9 +247,9 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
             });
 
             // If the reservation is not walkin and payment type is not allowed, block the reservation from checking in
-            if (!$scope.selectedReservation.isWalkinReservation && indexInAllowedPaymentTypes === -1) {
+            if (!$scope.selectedReservation.isWalkinReservation && paymentMethodUsed && indexInAllowedPaymentTypes === -1) {
                 $state.go('zest_station.paymentMethodNotAllowed');
-            } else if (indexInAllowedPaymentTypes !== -1 && indexInGuaranteedPaymentTypes !== -1) {
+            } else if (paymentMethodUsed && indexInAllowedPaymentTypes !== -1 && indexInGuaranteedPaymentTypes !== -1) {
                 checkInGuest();
             } else {
                 nextPageActions(byPassCC, true);

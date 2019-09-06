@@ -1291,9 +1291,9 @@ angular.module('sntRover')
 	    	return _.isBoolean(reservation.selected) && reservation.selected;
 	    };
 
-	    $scope.isAvailable = function(room, reservation) {
-	    	return angular.lowercase(reservation[meta.occupancy.status]) === 'available';
-	    };
+        $scope.isAvailable = function(room, reservation) {
+            return reservation[meta.occupancy.status].toLowerCase() === 'available';
+        };
 
 	    $scope.isDraggable = function(row_item_data) {
 	    	return !$scope.isAvailable(undefined, row_item_data);
@@ -1303,7 +1303,7 @@ angular.module('sntRover')
 	    	var m_status = meta.status;
 
 	    	if (row_item_data) {
-	    		if (angular.lowercase(row_item_data[m_status]) === 'check-in') {
+	    		if (row_item_data[m_status].toLowerCase() === 'check-in') {
 	    			return {
 	    				resizable: true,
 	    				arrival: false,
@@ -1342,7 +1342,7 @@ angular.module('sntRover')
 
 	    				data[i] = util.copyRoom(data[i]);
 
-	    				switch (angular.lowercase(reservation[meta.occupancy.status])) {
+	    				switch (reservation[meta.occupancy.status].toLowerCase()) {
 	    					case 'inhouse':
 	    					case 'check-in':
 	    					case 'check-out':
@@ -1476,7 +1476,7 @@ angular.module('sntRover')
            m_status = meta.occupancy.status,
            id = meta.occupancy.id,
            reject = function(child) {
-               return angular.lowercase(child[m_status]) === 'available' || angular.lowercase(child[m_status]) === 'blocked';
+               return child[m_status].toLowerCase() === 'available' || child[m_status].toLowerCase() === 'blocked';
            };
 
        for (var i = 0, len = rooms.length; i < len; i++) {
@@ -1689,7 +1689,7 @@ angular.module('sntRover')
 						   start.getHours() + time_span.hours + dstChange,
 						   start.getMinutes() + time_span.minutes,
 						   0, 0),
-                    rt_filter = _.isEmpty(filter.room_type) || (filter.room_type && angular.lowercase(filter.room_type.id) === 'all') ? undefined : filter.room_type.id,
+                    rt_filter = _.isEmpty(filter.room_type) || (filter.room_type && filter.room_type.id === 'All') ? undefined : filter.room_type.id,
                     rate_type = filter.rate_type,
                     account_id = filter.rate_type === 'Corporate' && filter.rate && filter.rate !== '' ? filter.rate.id : undefined,
                     GUID = 'avl-101';// No need to manipulate this thing from service part, we are deciding
@@ -2381,13 +2381,6 @@ angular.module('sntRover')
                 if ($scope.gridProps.filter.rate_type === 'Standard') {
                     $scope.gridProps.filter.rate = '';
                 }
-		// CICO-11832
-                else if ($scope.gridProps.filter.rate_type === 'Corporate') {
-                    if ($scope.gridProps.filter.rate && $scope.gridProps.filter.rate !== '') {
-                        $scope.compCardOrTravelAgSelected();
-                    }
-                }
-
 
                 if (!$scope.gridProps.edit.active && $scope.gridProps.filter.rate_type === 'Standard') {
                     $scope.Availability();

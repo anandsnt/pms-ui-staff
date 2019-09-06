@@ -31,6 +31,7 @@ sntRover.controller('RVReservationPackageController',
 
 				},
 				2000);
+				
 	$scope.closeAddOnPopup = function() {
 		// to add stjepan's popup showing animation
 		$rootScope.modalOpened = false;
@@ -43,7 +44,7 @@ sntRover.controller('RVReservationPackageController',
 	};
 
 	$scope.goToAddons = function() {
-		$scope.closeAddOnPopup();
+		ngDialog.close();
 		$state.go('rover.reservation.staycard.mainCard.addons',
 		 	{
 		 		'from_date': $scope.reservation.reservation_card.arrival_date,
@@ -65,7 +66,6 @@ sntRover.controller('RVReservationPackageController',
 			$scope.reservationData.reservation_card.package_count = parseInt($scope.reservationData.reservation_card.package_count) - parseInt(1);
 			if ($scope.reservationData.reservation_card.package_count === 0) {
 				$scope.reservationData.reservation_card.is_package_exist = false;
-				$scope.closeAddOnPopup();
 			}
 			shouldReloadState = true;
 		};

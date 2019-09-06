@@ -98,6 +98,7 @@
             <text editable-text="IN_ROOM"> {{'IN_ROOM' |translate}}</text>
         </span>
         <strong>{{printRegCardData.room_number}}</strong>
+        <h3>{{printRegCardData.room_instructions}}</h3>
     </div>
     <div class="room" ng-if="printRegCardData.show_room_pin">
          <span style="font-size: 18pt;"> {{ 'ROOM_PIN_TEXT' | translate }} &nbsp;<span  style="font-weight: 700;">{{ printRegCardData.room_pin }}</span></span>
@@ -125,6 +126,8 @@
                 </span>
                 <br><br><br>
                     <strong class="large_txt">{{printRegCardData.room_number}}</strong>
+                <br><br><br>
+                <span>{{printRegCardData.room_instructions}}</span>
                 <br><br><br>
                     <span ng-hide="zestStationData.isHourlyRateOn">
                         <text editable-text="REGISTRATION_READY_PRINT_DEPART_DATE"> {{'REGISTRATION_READY_PRINT_DEPART_DATE' |translate}}</text> {{departDate | date:'dd-MMM yyyy'}}</span>

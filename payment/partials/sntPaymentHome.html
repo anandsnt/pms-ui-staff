@@ -4,8 +4,7 @@
     <label for="payment-type" translate>PAYMENT_TYPE</label>
     <div class="select" >
         <select ng-disabled="actionType === 'AR_REFUND_PAYMENT'" ng-options="paymentData.name as paymentData.description for paymentData in paymentTypes"
-                ng-model="selectedPaymentType" ng-change="onPaymentInfoChange(true)">
-            <option value="" translate>SELECT_PAYMENT_TYPE</option>
+                ng-model="selectedPaymentType" ng-change="onPaymentInfoChange(true)" snt-placeholder="SELECT_PAYMENT_TYPE">
         </select>
     </div>
 </div>
@@ -16,7 +15,7 @@
         <input name="card-source"
                style="width: 100%"
                id="card-source" value="card-source" type="checkbox" ng-model="payment.isManualEntryInsideIFrame"
-               ng-click="toggleManualIframe()"/>
+               ng-change="toggleManualIframe()"/>
         <label class="data-off">
             <span class="value">CARD READER</span>
             <span class="switch-icon">Manual</span>

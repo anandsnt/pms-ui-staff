@@ -1,5 +1,6 @@
 admin.controller('adDuettoSetupCtrl', ['$scope', 'config', 'adInterfacesCommonConfigSrv',
     function($scope, config, adInterfacesCommonConfigSrv) {
+        BaseCtrl.call(this, $scope);
 
         var interfaceIdentifier = 'duetto';
 
@@ -8,9 +9,13 @@ admin.controller('adDuettoSetupCtrl', ['$scope', 'config', 'adInterfacesCommonCo
         };
 
         $scope.saveInterfaceConfig = function() {
+            var params = dclone($scope.config);
+
+            $scope.deletePropertyIfRequired(params, 'password');
+
             $scope.callAPI(adInterfacesCommonConfigSrv.saveConfiguration, {
                 params: {
-                    config: $scope.config,
+                    config: params,
                     interfaceIdentifier: interfaceIdentifier
                 },
                 onSuccess: function() {
@@ -31,6 +36,7 @@ admin.controller('adDuettoSetupCtrl', ['$scope', 'config', 'adInterfacesCommonCo
             });
 
             $scope.config = config;
+            $scope.setDefaultDisplayPassword($scope.config, 'password');
             $scope.interface = interfaceIdentifier.toUpperCase();
         })();
     }
