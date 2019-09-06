@@ -14,18 +14,6 @@
                 <span id="revenue-date-month" class="month">{{data.summaryDate | date:'MMMM'}}</span>
                 <span id="revenue-date-year" class="year">{{data.summaryDate | date:'y'}}</span>
             </div>
-            <div class="switch-button" ng-class="{'on': !isDetailsSelected}">
-                <input id="journal-summary-toggle" type="checkbox" ng-model="isDetailsSelected"/>
-                <label class="data-off">
-                    <span class="value">Overview</span>
-                    <span class="switch-icon">Details</span>
-                </label>
-                <label class="data-on">
-                    <span class="switch-icon">Overview</span>
-                    <span class="value">Details</span>
-                </label>
-            </div>
-            <!-- <button ng-click="printSummary()" type="button" class="button blue" translate>PRINT</button> -->
         </div>
 
 

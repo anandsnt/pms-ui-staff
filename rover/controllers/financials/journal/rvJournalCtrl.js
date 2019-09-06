@@ -101,17 +101,22 @@ sntRover.controller('RVJournalController',
     };
 
 
-    $scope.clickedJournalToggle = function () {
+    $scope.clickedJournalToggle = function (isFromSearch) {
         var tabName = $scope.data.activeTab;
 
         if (tabName === 'SUMMARY') {
             $scope.data.isExpandedViewSummary = !$scope.data.isExpandedViewSummary;
             $scope.$broadcast("EXPAND_SUMMARY_SCREEN");
         } else if (tabName === 'PAYMENTS') {
-            $scope.data.isExpandedViewPayment = !$scope.data.isExpandedViewPayment;
+            if (!isFromSearch) {
+                $scope.data.isExpandedViewPayment = !$scope.data.isExpandedViewPayment;
+            }
+            
             $scope.$broadcast("EXPAND_PAYMENT_SCREEN");
         } else if (tabName === 'REVENUE') {
-            $scope.data.isExpandedViewRevenue = !$scope.data.isExpandedViewRevenue;
+            if (!isFromSearch) {
+                $scope.data.isExpandedViewRevenue = !$scope.data.isExpandedViewRevenue;
+            }
 
             if (!$scope.data.isExpandedViewRevenue) {
                 $scope.searchJournal();
@@ -324,7 +329,9 @@ sntRover.controller('RVJournalController',
     $scope.activatedTab = function(tabName) {
     	$scope.data.activeTab = tabName;
     	if (tabName === 'REVENUE') {
-            $rootScope.$broadcast('REFRESHREVENUECONTENT');
+            if (!$scope.data.isExpandedViewRevenue) {
+                $rootScope.$broadcast('REFRESHREVENUECONTENT');
+            }            
         }
     	else if (tabName === 'CASHIER') {
             $scope.$broadcast('cashierTabActive');
@@ -361,7 +368,6 @@ sntRover.controller('RVJournalController',
             $scope.data.isExpandedViewPayment = false;
             $rootScope.$broadcast('PAYMENTSSEARCH');
         } else if (tabName === 'REVENUE') {
-            $scope.data.isExpandedViewRevenue = false;
             $rootScope.$broadcast('REVENUESEARCH');
         }
     };
@@ -390,6 +396,14 @@ sntRover.controller('RVJournalController',
         }
 
     };
+
+    $scope.addListener('EXPAND_PAYMENT', function() {
+        $scope.clickedJournalToggle(true);
+    });
+
+    $scope.addListener('EXPAND_REVENUE', function() {
+        $scope.clickedJournalToggle(true);
+    });
 
     var init = function() {
         // $scope.data.isExpandedViewSummary = false;
