@@ -84,7 +84,7 @@
 						</div>
 						<div class="entry" ng-if="showDateOfBirth">
 							<label>Date Of Birth<strong>*</strong></label>
-							<input type="text" ng-model="saveData.birth_day" name="guest-birthday" maxlength="8" id="guest-birthday" class="datepicker" ng-click="popupCalendar()" readonly />
+							<input type="text" ng-model="saveData.birth_day | date:dateFormat" name="guest-birthday" maxlength="8" id="guest-birthday" class="datepicker" ng-click="popupCalendar()" readonly />
 						</div>
 			        </div>
 			    </fieldset>
