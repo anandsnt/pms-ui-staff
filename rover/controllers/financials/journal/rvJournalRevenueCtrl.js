@@ -117,7 +117,9 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
                 "to_date": $scope.data.toDate,
                 "charge_group_id": toggleItem.id,
                 "employee_ids": $scope.data.selectedEmployeeList,
-                "department_ids": $scope.data.selectedDepartmentList
+                "department_ids": $scope.data.selectedDepartmentList,
+                "filter_id": $scope.data.filterId,
+                "query": $scope.data.query
             };
 
             $scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeCodes, postData, successCallBackFetchRevenueDataChargeCodes);
@@ -163,7 +165,9 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
                 "employee_ids": $scope.data.selectedEmployeeList,
                 "department_ids": $scope.data.selectedDepartmentList,
                 "page_no": chargeCodeItem.page_no,
-                "per_page": $scope.data.filterData.perPage
+                "per_page": $scope.data.filterData.perPage,
+                "filter_id": $scope.data.filterId,
+                "query": $scope.data.query
             };
 
             $scope.invokeApi(RVJournalSrv.fetchRevenueDataByTransactions, postData, successCallBackFetchRevenueDataTransactions);
