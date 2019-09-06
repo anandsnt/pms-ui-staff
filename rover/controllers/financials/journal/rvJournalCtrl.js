@@ -362,10 +362,8 @@ sntRover.controller('RVJournalController',
         var tabName = $scope.data.activeTab;
 
         if (tabName === 'SUMMARY') {
-            $scope.data.isExpandedViewSummary = false;
             $rootScope.$broadcast('SUMMARYSEARCH');
         } else if (tabName === 'PAYMENTS') {
-            $scope.data.isExpandedViewPayment = false;
             $rootScope.$broadcast('PAYMENTSSEARCH');
         } else if (tabName === 'REVENUE') {
             $rootScope.$broadcast('REVENUESEARCH');
