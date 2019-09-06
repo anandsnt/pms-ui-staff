@@ -1,6 +1,6 @@
 <!-- First column - Scheduled reports -->
-<div class="report-col main-col scrollable" > <!-- Add vertical scroller here -->
-    <ul class="wrapper" ng-if="customExportsData.isNewExport">
+<div class="report-col main-col scrollable" ng-iscroll="exports-list-scroller"> <!-- Add vertical scroller here -->
+    <ul class="wrapper" ng-show="customExportsData.isNewExport">
         <li class="report-item" 
             ng-repeat="dataSpace in customExportsData.customExportDataSpaces" 
             ng-hide="dataSpace.filteredOut"
@@ -13,11 +13,13 @@
             </div>
         </li>
     </ul>
-    <ul class="wrapper" ng-if="!customExportsData.isNewExport && customExportsData.scheduledCustomExports.length > 0">
+    <ul class="wrapper" ng-show="!customExportsData.isNewExport && customExportsData.scheduledCustomExports.length > 0">
         <li class="report-item" 
             ng-repeat="scheduledExport in customExportsData.scheduledCustomExports"
             ng-hide="scheduledExport.filteredOut"
-            ng-click="pickSchedule(scheduledExport)"> <!-- Add class "active" when selected + load filters in 2nd column -->
+            ng-click="pickSchedule(scheduledExport)"
+            ng-class="{'active': scheduledExport.active}"> <!-- Add class "active" when selected + load filters in 2nd column -->
+            
             <span class="icon-report {report icon class}"></span>
             <div class="data">
                 <h2 ng-bind-html="escapeNull(scheduledExport.report.description)|highlight:query:false"></h2><!-- Add .single-line if there is no info -->
@@ -37,7 +39,7 @@
 </div>
 
 <!-- Second column - paremeters -->
-<div class="report-col" ng-if="!shouldShowExportListOnly()">
+<div class="report-col" ng-hide="shouldShowExportListOnly()">
     <div class="scrollable no-buttons" ng-iscroll="report-cols-scroller"> <!-- Add vertical scroller here + add class "buttons-4" if it's an existing export -->
         <div class="wrapper">
             <h3>Select Fields<span>To include in Export</span></h3>
@@ -54,10 +56,10 @@
 </div>
 
 <!-- Third column - details -->
-<div class="report-col" ng-if="!shouldShowExportListOnly()">
+<div class="report-col" ng-hide="shouldShowExportListOnly()">
     <div class="scrollable no-buttons" 
         ng-class="{'no-fields': selectedColumns.length === 0 }"
-        ng-iscroll="report-selected-cols-scroller"> <!-- Add vertical scroller here. Add .no-fields if there are no fields -->
+        ng-iscroll="report-selected-cols-scroller"> 
         <div class="wrapper">
             <h3>Set Order & Labels<span>Of Selected Fields</span></h3>
             <div class="entry export-fields-order"
@@ -80,7 +82,6 @@
                 </div>
             </div>
 
-            <!-- Show this instead of .entry if there are no fields -->
             <div class="no-content" ng-if="selectedColumns.length === 0">
                 <div class="info">
                     <strong>No Fields selected</strong>
@@ -92,5 +93,5 @@
 </div>
 
 <!-- Fourth column - distribution list -->
-<div class="report-col" ng-controller="RVCustomExportFilterCtrl" ng-show="!shouldShowExportListOnly()" ng-include="'/assets/partials/reports/customExports/rvCutomExportFilters.html'">
+<div class="report-col" ng-controller="RVCustomExportFilterCtrl" ng-hide="shouldShowExportListOnly()" ng-include="'/assets/partials/reports/customExports/rvCutomExportFilters.html'">
 </div>

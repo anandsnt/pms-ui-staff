@@ -1136,7 +1136,6 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             var reset = true;
 
             $scope.isAddingNew = true;
-            $scope.addingStage = STAGES.SHOW_PARAMETERS;
 
             $scope.selectedSchedule.active = false;
 

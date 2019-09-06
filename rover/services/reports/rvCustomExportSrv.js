@@ -6,6 +6,7 @@ angular.module('sntRover').service('RVCustomExportSrv', [
         $q,
         sntBaseWebSrv,
         reportSubSrv ) {
+
         const FILTER_KEYS = {
             'BOOKING_ORIGIN_CODE': 'booking_origin_code',
             'MARKET_CODE': 'market_code',
@@ -14,6 +15,12 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             'ROOM_TYPE': 'room_type',
             'SEGMENT_CODE': 'segment_code',
             'SOURCE_CODE': 'source_code'
+        };
+
+        var cache = {
+            timePeriods: [],
+            dataSpaceColumns: {},
+            deliveryTypes: []
         };
 
         this.getAvailableDataSpaces = () => {
@@ -74,15 +81,20 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
-        this.getExportDeliveryTypes = ( params )  => {
+        this.getExportDeliveryTypes = ()  => {
             var deferred = $q.defer(),
                 url = 'admin/export_delivery_types.json';
 
-            sntBaseWebSrv.getJSON(url).then(function (response) {
-                deferred.resolve(response.results);
-            }, function (error) {
-                deferred.reject(error);
-            });
+            if (cache.deliveryTypes.length > 0 ) {
+                deferred.resolve(cache.deliveryTypes);
+            } else {
+                sntBaseWebSrv.getJSON(url).then(function (response) {
+                    cache.deliveryTypes = response.results;
+                    deferred.resolve(cache.deliveryTypes);
+                }, function (error) {
+                    deferred.reject(error);
+                });  
+            }
 
             return deferred.promise;
         };
@@ -91,29 +103,42 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             var deferred = $q.defer(),
                 url = 'api/reports/' + params.reportId + '/list_data_space_columns';
 
-            sntBaseWebSrv.getJSON(url).then(function (columnData) {
-                columnData = columnData.map((column) => ({
-                    name: column,
-                    selected: false
-                }));
-
-                deferred.resolve(columnData);
-            }, function (error) {
-                deferred.reject(error);
-            });
+            if (cache.dataSpaceColumns[params.reportId]) {
+                deferred.resolve(cache.dataSpaceColumns[params.reportId]);
+            } else {
+                sntBaseWebSrv.getJSON(url).then(function (columnData) {
+                    columnData = columnData.map((column) => ({
+                        name: column,
+                        selected: false
+                    }));
+                    cache.dataSpaceColumns[params.reportId] = columnData;
+                    deferred.resolve(columnData);
+                }, function (error) {
+                    deferred.reject(error);
+                });
+            }   
 
             return deferred.promise;
         };
 
-        this.getExportDurations = ( params )  => {
+        this.getExportDurations = ( )  => {
             var deferred = $q.defer(),
                 url = 'admin/export_time_periods.json';
 
-            sntBaseWebSrv.getJSON(url).then(function (response) {
-                deferred.resolve(response.results);
-            }, function (error) {
-                deferred.reject(error);
-            });
+            if (cache.timePeriods.length > 0) {
+                deferred.resolve(cache.timePeriods);
+            } else {
+                sntBaseWebSrv.getJSON(url).then(function (response) {
+                    var results = _.reject(response.results, function ( each ) {
+                        return each.value === 'DATE';
+                    });
+    
+                    cache.timePeriods = results;
+                    deferred.resolve(results);
+                }, function (error) {
+                    deferred.resolve(error);
+                });
+            }
 
             return deferred.promise;
         };

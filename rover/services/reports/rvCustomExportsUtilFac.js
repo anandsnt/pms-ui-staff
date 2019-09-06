@@ -50,7 +50,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                 return list;
             }
             _.each (list, function ( each ) {
-                if (selectedValues.indexOf(each[key] !== -1)) {
+                if (selectedValues.indexOf(each[key]) !== -1) {
                     each.selected = true;
                 }
             });
@@ -71,9 +71,9 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                     deferred.resolve(selectedFilter);
                 });
             },
-            populateMarkets = ( selectedFilter, deferred ) => {
+            populateMarkets = ( selectedFilter, selectedValues, deferred ) => {
                 reportSubSrv.fetchMarkets().then(function (data) {
-                    selectedFilter.secondLevelData = angular.copy(data);
+                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues);
                     selectedFilter.options = {
                         selectAll: false,
                         hasSearch: false,
@@ -83,12 +83,12 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                     deferred.resolve(selectedFilter);
                 });
             },
-            populateReservationStatus = ( selectedFilter, deferred ) => {
+            populateReservationStatus = ( selectedFilter, selectedValues, deferred ) => {
                 reportSubSrv.fetchReservationStatus().then(function (data) {
-                    selectedFilter.secondLevelData = angular.copy(data);
+                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues);
                     selectedFilter.options = {
                         hasSearch: false,
-                        selectAll: true,
+                        selectAll: data.length === selectedValues.length,
                         key: 'status',
                         defaultValue: 'Select Status'
                     };
@@ -96,36 +96,36 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                     deferred.resolve(selectedFilter);
                 });
             },
-            populateSource = ( selectedFilter, deferred ) => {
+            populateSource = ( selectedFilter, selectedValues, deferred ) => {
                 reportSubSrv.fetchSources().then(function (data) {
-                    selectedFilter.secondLevelData = angular.copy(data);
+                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues);
                     selectedFilter.options = {
                         hasSearch: false,
-                        selectAll: true,
+                        selectAll: data.length === selectedValues.length,
                         key: 'name'
                     };
                     selectedFilter.isMultiSelect = true;
                     deferred.resolve(selectedFilter);
                 });
             },
-            populateSegments = ( selectedFilter, deferred ) => {
+            populateSegments = ( selectedFilter, selectedValues, deferred ) => {
                 reportSubSrv.fetchSegments().then(function (data) {
-                    selectedFilter.secondLevelData = angular.copy(data);
+                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues);
                     selectedFilter.options = {
                         hasSearch: false,
-                        selectAll: true,
+                        selectAll: data.length === selectedValues.length,
                         key: 'name'
                     };
                     selectedFilter.isMultiSelect = true;
                     deferred.resolve(selectedFilter);
                 });
             },
-            populateRoomTypes = ( selectedFilter, deferred ) => {
+            populateRoomTypes = ( selectedFilter, selectedValues, deferred ) => {
                 reportSubSrv.fetchRoomTypeList().then(function (data) {
-                    selectedFilter.secondLevelData = angular.copy(data);
+                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues);
                     selectedFilter.options = {
                         hasSearch: false,
-                        selectAll: true,
+                        selectAll: data.length === selectedValues.length,
                         key: 'name'
                     };
                     selectedFilter.isMultiSelect = true;
@@ -148,19 +148,19 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                     populateBookingOrigins(selectedFilter, selectedValues, deferred);
                     break;
                 case customExportFilterParamsConst['MARKET_CODE']:
-                    populateMarkets(selectedFilter, deferred);
+                    populateMarkets(selectedFilter, selectedValues, deferred);
                     break;
                 case customExportFilterParamsConst['RESERVATION_STATUS']:
-                    populateReservationStatus(selectedFilter, deferred);
+                    populateReservationStatus(selectedFilter, selectedValues, deferred);
                     break;
                 case customExportFilterParamsConst['SOURCE_CODE']:
-                    populateSource(selectedFilter, deferred);
+                    populateSource(selectedFilter, selectedValues, deferred);
                     break;
                 case customExportFilterParamsConst['SEGMENT_CODE']:
-                    populateSegments(selectedFilter, deferred);
+                    populateSegments(selectedFilter, selectedValues, deferred);
                     break;
                 case customExportFilterParamsConst['ROOM_TYPE']:
-                    populateRoomTypes(selectedFilter, deferred);
+                    populateRoomTypes(selectedFilter, selectedValues, deferred);
                     break;
                 case customExportFilterParamsConst['ACTIVE']:
                 case customExportFilterParamsConst['DAYUSE INDICATOR']:

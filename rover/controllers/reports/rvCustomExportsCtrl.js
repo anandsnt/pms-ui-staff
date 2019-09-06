@@ -21,6 +21,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
 
         const REPORT_COLS_SCROLLER = 'report-cols-scroller';
         const REPORT_SELECTED_COLS_SCROLLER = 'report-selected-cols-scroller';
+        const EXPORT_LIST_SCROLLER = 'exports-list-scroller';
         const SCROLL_REFRESH_DELAY = 100;
 
         // Initialize the scrollers
@@ -32,6 +33,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
 
             $scope.setScroller(REPORT_COLS_SCROLLER, scrollerOptions);
             $scope.setScroller(REPORT_SELECTED_COLS_SCROLLER, scrollerOptions);
+            $scope.setScroller(EXPORT_LIST_SCROLLER, scrollerOptions);
         };
 
         // Refresh the given scroller
@@ -137,12 +139,12 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
          */
         var loadReqData = (reportId, isSavedSchedule ) => {
             var onSuccess = ( payload ) => {
-                    $scope.selectedEntityDetails.columns = payload.columns;
+                    $scope.selectedEntityDetails.columns = angular.copy(payload.columns);
                     $scope.selectedEntityDetails.active = true;
                     $scope.viewState.currentStage = STAGES.SHOW_PARAMETERS;
-                    $scope.customExportsData.exportFormats = payload.exportFormats;
-                    $scope.customExportsData.deliveryTypes = payload.deliveryTypes;
-                    $scope.customExportsData.durations = payload.durations;
+                    $scope.customExportsData.exportFormats = angular.copy(payload.exportFormats);
+                    $scope.customExportsData.deliveryTypes = angular.copy(payload.deliveryTypes);
+                    $scope.customExportsData.durations = angular.copy(payload.durations);
 
                     if (!$scope.customExportsData.isNewExport) {
                         applySelectedFormatAndDeliveryTypes(); 
@@ -153,7 +155,6 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
 
                     var reportFilters = angular.copy($scope.selectedEntityDetails.filters);
 
-                    //$scope.selectedEntityDetails.filterFields = angular.copy($scope.selectedEntityDetails.filters);
                     $scope.selectedEntityDetails.processedFilters = RVCustomExportsUtilFac.processFilters(reportFilters);
                     if (isSavedSchedule) {
                         $scope.$broadcast('UPDATE_FILTER_SELECTIONS');
@@ -175,6 +176,10 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
 
         // Click handler for the given data space
         $scope.clickDataSpace = ( selectedDataSpace ) => {
+            // Set the previous data space as non-active
+            if ($scope.selectedEntityDetails) {
+                $scope.selectedEntityDetails.active = false;
+            }
             $scope.selectedEntityDetails = selectedDataSpace;
             $scope.filterData.appliedFilters = [];
             loadReqData(selectedDataSpace.id);
@@ -285,7 +290,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 onScheduleCreateSuccess = () => {
                     $scope.errorMessage = '';
                     $scope.updateViewCol($scope.viewColsActions.ONE);
-                    //$scope.addingStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
+                    $scope.viewState.currentStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
                     $scope.customExportsData.isNewExport = false;
                     fetchScheduledCustomExports();
                 },
@@ -312,6 +317,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             $scope.selectedColumns = [];
             $scope.filterData.appliedFilters = [];
             $scope.customExportsScheduleParams.exportName = selectedSchedule.name;
+            selectedSchedule.active = true;
             loadReqData(selectedSchedule.report.id, true);
         };
 
@@ -321,8 +327,8 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 onScheduleSaveSuccess = () => {
                     $scope.errorMessage = '';
                     $scope.updateViewCol($scope.viewColsActions.ONE);
-                    //$scope.addingStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
                     $scope.customExportsData.isNewExport = false;
+                    $scope.viewState.currentStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
                     fetchScheduledCustomExports();
                 },
                 onScheduleSaveFailure = (error) => {
@@ -346,7 +352,9 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
     
             $scope.addListener('SHOW_EXPORT_LISTING', () => {
                 $scope.updateViewCol($scope.viewColsActions.ONE);
-                //$scope.addingStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
+                $scope.viewState.currentStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
+                $scope.selectedEntityDetails.active = false;
+                
             });
     
             $scope.addListener('CREATE_NEW_CUSTOM_EXPORT_SCHEDULE', () => {
@@ -363,22 +371,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             });
         };
 
-        $scope.changeFirstLevelFilter = (isFirst) => {
-            $scope.filterData.appliedFilters.push({
-                firstLevelFilter: isFirst ? $scope.filterData.firstLevelFilter : '',
-                secondLevelFilter: '',
-                key: '',
-                value: ''
-            });
-        };
-
-        $scope.getSecondLevelFilterValues = () => {
-            if ($scope.selectedEntityDetails.processedFilters[$scope.filterData.firstLevelFilter]) {
-                return $scope.selectedEntityDetails.processedFilters[$scope.filterData.firstLevelFilter];
-            }
-            return [];
-        };
-
+        // Initialize the data
         var initializeData = () => {
             $scope.customExportsScheduleParams.format = '';
             $scope.customExportsScheduleParams.exportName = '';
@@ -390,10 +383,11 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             $scope.customExportsData.durations = [];
             $scope.filterData = {
                 appliedFilters: [],
-                primaryFilter: '',
-                secondLevelFilter: '' 
+                primaryFilter: ''
             };
-            $scope.viewState = {};
+            $scope.viewState = {
+                currentStage: STAGES.SHOW_CUSTOM_EXPORT_LIST
+            };
         };
         
         // Initialize the controller

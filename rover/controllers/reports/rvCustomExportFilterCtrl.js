@@ -5,39 +5,31 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
     '$rootScope',
     'RVreportsSrv',
     'RVCustomExportsUtilFac',
-    'RVreportsSubSrv',
-    'RVCustomExportFilterParamsConst',
     function($scope, 
         RVCustomExportSrv,
         $timeout,
         $rootScope,
         reportsSrv,
-        RVCustomExportsUtilFac,
-        reportSubSrv,
-        customExportFilterParamsConst) {
+        RVCustomExportsUtilFac ) {
 
         BaseCtrl.call(this, $scope);
 
         const filterTypes = {
-            'OPTIONS' : 'OPTION',
-            'DURATION': 'DURATION',
-            'RANGE': 'RANGE'
+            OPTIONS: 'OPTION',
+            DURATION: 'DURATION',
+            RANGE: 'RANGE'
         };
 
         const CUSTOM_EXPORT_FILTERS_SCROLLER = 'custom-export-filters-scroller';
         const RANGE_FILTER_OPERATORS = 3;
 
-        const rangeOperators = [
-            { label: 'Greater than', value: 'greater_than'},
-            { label: 'Equal to', value: 'equal_to'},
-            { label: 'Less than', value: 'less_than'}
-        ];
-
+        // Set the scroller
         $scope.setScroller(CUSTOM_EXPORT_FILTERS_SCROLLER, {
             tap: true,
             preventDefault: false
         });
 
+        // Refreshes the scroller
         $scope.refreshFilterScroller = () => {
             $timeout(function () {
                 $scope.refreshScroller(CUSTOM_EXPORT_FILTERS_SCROLLER);
@@ -85,7 +77,7 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
                 return filterConfig;
             },
             removeAlreadyExistsOptionFieldNames = ( fields ) => {
-                var selectedOptionsFilter = _.filter($scope.filterData.appliedFilters, { isOption : true }),
+                var selectedOptionsFilter = _.filter($scope.filterData.appliedFilters, { isOption: true }),
                     selectedOptionsName = _.pluck(selectedOptionsFilter, 'selectedFirstLevel'),
                     availableFields = [];
 
@@ -99,10 +91,10 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
                 var availableRangeFieldNames = [];
 
                 _.each (fields, function (each) {
-                    var selectedRangeFieldNames = _.filter($scope.filterData.appliedFilters, { 
-                                                    isRange: true, 
-                                                    selectedFirstLevel: each.value 
-                                                });
+                    var selectedRangeFieldNames = _.filter($scope.filterData.appliedFilters, {
+                        isRange: true,
+                        selectedFirstLevel: each.value
+                    });
 
                     if (selectedRangeFieldNames.length !== RANGE_FILTER_OPERATORS) {
                         availableRangeFieldNames.push(each);
@@ -113,7 +105,7 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
                 return availableRangeFieldNames;
             };
 
-
+        // Creates new filter entry object
         var createNewFilterEntry = ( filterType ) => {
             var filter;
 
@@ -128,16 +120,19 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
             return filter;
         };
 
+        // Handler for primary filter change
         $scope.changePrimaryFilter = () => {
             $scope.filterData.appliedFilters.push(createNewFilterEntry($scope.filterData.primaryFilter));
             $scope.filterData.primaryFilter = '';
             $scope.refreshFilterScroller();
         };
 
+        // Remove a particular filter
         $scope.removeFilter = (filterPos) => {
             $scope.filterData.appliedFilters.splice(filterPos, 1);
         };
 
+        // Handler for first level field change
         $scope.onFirstLevelFieldChange = (selectedFieldName, filterPos, selectedSecondLevel, rangeValue) => {
             var selectedFilter = $scope.filterData.appliedFilters[filterPos];
 
@@ -176,6 +171,7 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
             $scope.filterData.appliedFilters = [];
         };
 
+        // Process the filters which are already added and populate the dropdowns
         var processFilterSelections  = () => {
             var filterValues = $scope.selectedEntityDetails.filter_values,
                 filterFields = $scope.selectedEntityDetails.filters,
@@ -206,6 +202,7 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
             });
         };
 
+        // Listener for the update filter selections during edit
         $scope.addListener('UPDATE_FILTER_SELECTIONS', () => {
             processFilterSelections();
         });
