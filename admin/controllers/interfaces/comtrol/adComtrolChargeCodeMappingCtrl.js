@@ -178,7 +178,7 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'adComtrolChargeCo
        * SET ALL OTHERS as not default
        */
       if (!mapping.is_default) {
-        _.each($scope.mappings, function (obj) {
+        _.each($scope.data, function (obj) {
           obj.is_default = false;
         });
       }
