@@ -258,6 +258,7 @@ var GridRowItem = React.createClass({
                 row_data: row_data,
                 meta: props.meta,
                 data: data,
+                rateCurrency: data.rate_currency,
                 display: display,
                 viewport: props.viewport,
                 edit: props.edit,
@@ -288,7 +289,7 @@ var GridRowItem = React.createClass({
                 React.DOM.span({
                     className: show_outstanding_indicator ? 'deposit-icon' : '',
                     style: styleForDepositIcon
-                }, meta.rate_currency),
+                }, data.rate_currency),
                 React.DOM.span({
                     className: is_room_locked ? 'icons icon-diary-lock' : '',
                     style: styleForRoomLocked

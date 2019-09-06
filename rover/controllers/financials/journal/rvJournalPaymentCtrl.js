@@ -25,6 +25,9 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
             if (origin !== "SUMMARY_DATE_CHANGED") {
                 $scope.$emit('hideLoader');
             }
+            if ($scope.data.isExpandedViewPayment) {
+                $scope.$emit("EXPAND_PAYMENT");
+            }
 		};
 
         var postData = {
@@ -40,8 +43,10 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
 		$scope.invokeApi(RVJournalSrv.fetchPaymentDataByPaymentTypes, postData, successCallBackFetchPaymentData);
 	};
 
-	initPaymentData("");
-
+    if (!$scope.data.isExpandedViewPayment) {
+        initPaymentData();
+    }
+	
     $scope.addListener('fromDateChanged', function() {
         initPaymentData("");
     });
@@ -98,6 +103,8 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
                 "department_ids": $scope.data.selectedDepartmentList,
                 "page_no": chargeCodeItem.page_no,
                 "per_page": $scope.data.filterData.perPage,
+                "filter_id": $scope.data.filterId,
+                "query": $scope.data.query,
                 "type": ($scope.data.activePaymentTab === "" ? "" : ($scope.data.activePaymentTab).toLowerCase())
             };
 

@@ -171,6 +171,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
     };
 
     $scope.addListener("EXPAND_SUMMARY_SCREEN", function() {
+        
         $scope.toggleJournalSummaryItem('DEPOSIT_BALANCE');
         $scope.toggleJournalSummaryItem('GUEST_BALANCE');
         $scope.toggleJournalSummaryItem('AR_BALANCE');
