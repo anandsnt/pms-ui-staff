@@ -74,6 +74,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			$('#upgrades').css({
 				"height": "calc(100% - 230px)"
 			});
+            setLoadingCompleted();
 		};
 
 		$scope.paginationAction = function(disableButtonFlag, isNextPage) {
@@ -274,7 +275,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		var fetchLateCheckoutSettings = function() {
 			var fetchLateCheckoutSettingsSuccess = function(response) {
 					var checkIfAddonIdIsPresent = function(lco) {
-						return (!_.isUndefined(lco.addon_id) && lco.addon_id !== '');
+						return (lco && !_.isUndefined(lco.addon_id) && lco.addon_id !== '');
 					};
 					var alreadyPresentAddonIds = _.pluck($scope.selectedReservation.addons, 'id');
 					var checkIfLcoIsAlreadyPurchased = function(addon_id) {
@@ -425,9 +426,6 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				} else {
 					setPageNumberDetails();
 				}
-
-				$scope.loadingCompleted = true;
-				$scope.showPageNumberDetails = true;
 			};
 
 			$scope.callAPI(zsCheckinSrv.fetchHotelAddonLabels, {
@@ -438,6 +436,11 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				'failureCallBack': generalError
 			});
 		};
+
+		var setLoadingCompleted = function() {
+            $scope.loadingCompleted = true;
+            $scope.showPageNumberDetails = true;
+        };
 
 		var fetchAddons = function() {
 
@@ -521,10 +524,19 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		};
 		var findSelectedLanguageId = function() {
 			var usedLanguageCode = $translate.use();
-
-			$scope.languageId = _.find($scope.zestStationData.hotelLanguages, function(language) {
+			var selectedLanguage = _.find($scope.zestStationData.hotelLanguages, function(language) {
 				return language.code === usedLanguageCode;
-			}).id;
+			});
+
+			// For custom languages, use English for now
+			// TODO: Handle addon translations for custom languages in hotel admin
+			if (!selectedLanguage) {
+				selectedLanguage = _.find($scope.zestStationData.hotelLanguages, function(language) {
+					return language.language === 'English';
+				});
+			}
+			$scope.languageId = selectedLanguage.id;
+
 			fetchAddons();
 		};
 

@@ -5,7 +5,7 @@
     <!-- Header -->
     <form method="post" action="" id="journal-header" name="journal-header" class="journal-header">
 
-        <div class="entry summary" ng-show="data.activeTab === 'SUMMARY'">
+        <div class="entry date" ng-show="data.activeTab === 'SUMMARY'">
             <label for="journal-from-date" translate>BAL_AS_OF_EOD</label>
             <!-- Datepicker for summary tab -->
             <div class="entry-data" ng-click="clickedSummaryDate()">
@@ -14,21 +14,20 @@
                 <span id="revenue-date-month" class="month">{{data.summaryDate | date:'MMMM'}}</span>
                 <span id="revenue-date-year" class="year">{{data.summaryDate | date:'y'}}</span>
             </div>
-            <div class="switch-button" ng-class="{'on': !isDetailsSelected}">
-                <input id="journal-summary-toggle" type="checkbox" ng-model="isDetailsSelected"/>
-                <label class="data-off">
-                    <span class="value">Overview</span>
-                    <span class="switch-icon">Details</span>
-                </label>
-                <label class="data-on">
-                    <span class="switch-icon">Overview</span>
-                    <span class="value">Details</span>
-                </label>
-            </div>
-            <button ng-click="printSummary()" type="button" class="button blue" translate>PRINT</button>
         </div>
 
 
+
+        <div class="entry date" ng-show="data.activeTab === 'BALANCE'">
+            <label for="journal-from-date" translate>Date</label>
+            <!-- Datepicker for summary tab -->
+            <div class="entry-data" ng-click="clickedBalanceDate()">
+                <input name="revenue-date" id="revenue-date" type="text" class="datepicker hasDatepicker" readonly />
+                <strong id="revenue-date-day" class="day">{{data.balanceDate | date:'d'}}</strong>
+                <span id="revenue-date-month" class="month">{{data.balanceDate | date:'MMMM'}}</span>
+                <span id="revenue-date-year" class="year">{{data.balanceDate | date:'y'}}</span>
+            </div>
+        </div>
 
         <div class="entry filter" ng-show="data.activeTab === 'REVENUE' || data.activeTab === 'PAYMENTS'">
             <label for="revenue-departments" translate>EMPLOYEE / DEPARTMENT / HOUSE</label>
@@ -110,13 +109,17 @@
                 <span class="icons icon-navbar icon-revenue" translate>REVENUE</span><span class="currency">{{currencySymbol}}</span> {{data.revenueData.total_revenue | number: precisonTwo}}</li>
             <li id="show-payments" ng-class="{'active':data.activeTab === 'PAYMENTS'}" ng-click="activatedTab('PAYMENTS')">
                 <span class="icons icon-navbar icon-payments" translate>PAYMENTS</span><span class="currency">{{currencySymbol}} </span>{{data.paymentData.total_payment | number: precisonTwo}}</li>
+            <li ng-class="{'active':data.activeTab === 'BALANCE'}" ng-click="activatedTab('BALANCE')">
+                <span class="icons icon-navbar icon-balance">Balance</span>
+                <span class="value">End of Day</span>
+            </li>
             <li id="show-cashier" ng-class="{'active':data.activeTab === 'CASHIER'}" ng-click="activatedTab('CASHIER')">
                 <span class="icons icon-navbar icon-cashier" translate>CASHIER</span>{{data.filterData.cashierStatus}}</li>
         </ul>
     </form>
 
 
-    <form ng-controller="RVJournalPrintController" ng-hide="data.activeTab === 'SUMMARY'" id="journal-print-options" class="journal-print" role="complementary" ng-class="{ 'open': data.isDrawerOpened }" ui-jq="resizable" resize ui-options="resizableOptions" style="height: {{data.printBoxHeight}}px;" ng-click="clickedDrawer($event)">
+    <form ng-controller="RVJournalPrintController" id="journal-print-options" class="journal-print" role="complementary" ng-class="{ 'open': data.isDrawerOpened }" ui-jq="resizable" resize ui-options="resizableOptions" style="height: {{data.printBoxHeight}}px;" ng-click="clickedDrawer($event)">
         <div ng-include="'/assets/partials/financials/journal/rvPrintBox.html'"></div>
     </form>
 
@@ -124,15 +127,17 @@
     <span ng-if="data.isShowSummaryTab" ng-show="data.activeTab === 'SUMMARY'" ng-include="'/assets/partials/financials/journal/rvSummary.html'" ng-class="{'no-print' : isDetailsSelected && isPrintClicked}"></span>
 
     <!-- Content SUMMARY PrintView-->
-    <span ng-show="data.activeTab === 'SUMMARY' && isDetailsSelected && isPrintClicked" ng-include="'/assets/partials/financials/journal/rvSummaryDetails.html'"></span>
+    <span ng-if="data.activeTab === 'SUMMARY' && isDetailsSelected && isPrintClicked" ng-include="'/assets/partials/financials/journal/rvSummaryDetails.html'"></span>
 
     <!-- Content REVENUE-->
-    <span ng-show="data.activeTab === 'REVENUE'" ng-include="'/assets/partials/financials/journal/rvRevenue.html'"></span>
+    <span ng-if="data.activeTab === 'REVENUE'" ng-include="'/assets/partials/financials/journal/rvRevenue.html'"></span>
 
     <!-- Content PAYMENTS-->
-    <span ng-show="data.activeTab === 'PAYMENTS'" ng-include="'/assets/partials/financials/journal/rvPayments.html'"></span>
+    <span ng-if="data.activeTab === 'PAYMENTS'" ng-include="'/assets/partials/financials/journal/rvPayments.html'"></span>
+
+     <span ng-if="data.activeTab === 'BALANCE'" ng-include="'/assets/partials/financials/journal/rvBalance.html'"></span>
 
     <!-- Content CASHIER-->
-    <span ng-show="data.activeTab === 'CASHIER'" ng-include="'/assets/partials/financials/journal/rvCashier.html'"></span>
+    <span ng-if="data.activeTab === 'CASHIER'" ng-include="'/assets/partials/financials/journal/rvCashier.html'"></span>
 
 </section>

@@ -1,27 +1,48 @@
 admin.controller('ADVectronSetupCtrl', [
-    '$scope', 'vectronSetupValues', 'adInterfacesCommonConfigSrv', 'adVectronSetupSrv', 'ngDialog',
-    function($scope, vectronSetupValues, adInterfacesCommonConfigSrv, adVectronSetupSrv, ngDialog) {
+    '$scope', 'config', 'adInterfacesSrv', 'adIFCSrv', 'ngDialog',
+    function ($scope, config, adInterfacesSrv, adIFCSrv, ngDialog) {
         BaseCtrl.call(this, $scope);
 
         $scope.interface = 'VECTRON';
 
         $scope.state = {
-            activeTab: 'SETUP'
+            activeTab: 'SETTING'
+
+        };
+
+        var resetToken = function () {
+            return adIFCSrv.post('authentication', 'reset_token', {
+                integration: $scope.interface.toLowerCase()
+            });
+        };
+
+        var fetchToken = function () {
+            return adIFCSrv.get('authentication', 'token', {
+                integration: $scope.interface.toLowerCase()
+            });
         };
 
         /**
-         * when clicked on check box to enable/diable GoMomentIvy
+         * when clicked on check box to enable/disable Vectron
          * @return {undefined}
          */
-        $scope.toggleEnabled = function() {
+        $scope.toggleEnabled = function () {
             $scope.config.enabled = !$scope.config.enabled;
         };
 
-        $scope.closeDialog = function() {
+        /**
+         * @param {string} name "tab name"
+         * @return {undefined}
+         */
+        $scope.changeTab = function (name) {
+            $scope.state.activeTab = name;
+        };
+
+        $scope.closeDialog = function () {
             ngDialog.close();
         };
 
-        $scope.onClickRegenerate = function() {
+        $scope.onClickRegenerate = function () {
             if (!$scope.config.authentication_token) {
                 $scope.generateAuthToken();
             } else {
@@ -33,47 +54,42 @@ admin.controller('ADVectronSetupCtrl', [
             }
 
         };
+
         /**
-         * Genearete Auth token
+         * Generate Auth token
          * @return {void}
          */
-        $scope.generateAuthToken = function() {
-            $scope.callAPI(adVectronSetupSrv.resetAuthToken, {
-                onSuccess: function(response) {
+        $scope.generateAuthToken = function () {
+            $scope.callAPI(resetToken, {
+                successCallBack: function (response) {
                     $scope.config.authentication_token = response.authentication_token;
                     $scope.closeDialog();
                 }
             });
         };
 
-        /**
-         *
-         * @return {undefined}
-         */
-        $scope.toggleMappings = function() {
-            $scope.state.activeTab = $scope.state.activeTab === 'SETUP' ? 'MAPPING' : 'SETUP';
+        var loadToken = function () {
+            $scope.callAPI(fetchToken, {
+                successCallBack: function (response) {
+                    $scope.config.authentication_token = response.authentication_token;
+                }
+            });
         };
-
-        /**
-         * when the save is success
-         * @return {undefined}
-         */
-        var successCallBackOfSave = function() {
-            $scope.goBackToPreviousState();
-        };
-
 
         /**
          * when we clicked on save button
          * @return {undefined}
          */
-        $scope.saveSetup = function() {
-            $scope.callAPI(adInterfacesCommonConfigSrv.saveConfiguration, {
+        $scope.saveSetup = function () {
+            $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
-                    config: $scope.config,
-                    interfaceIdentifier: $scope.interface
+                    settings: $scope.config,
+                    integration: $scope.interface.toLowerCase()
                 },
-                successCallBack: successCallBackOfSave
+                onSuccess: function () {
+                    $scope.errorMessage = '';
+                    $scope.successMessage = 'SUCCESS: Settings updated!';
+                }
             });
         };
 
@@ -81,7 +97,9 @@ admin.controller('ADVectronSetupCtrl', [
          * Initialization stuffs
          * @return {undefined}
          */
-        (function() {
-            $scope.config = vectronSetupValues;
+        (function () {
+            loadToken();
+            $scope.config = config;
         })();
-    }]);
+    }
+]);

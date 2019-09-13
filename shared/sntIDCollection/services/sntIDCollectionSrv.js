@@ -335,6 +335,14 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 				var documentObj = JSON.parse(requestGetDocument.responseText);
 				
 				documentObj.Fields = documentObj.Fields ? sntIDCollectionUtilsSrv.formatData(documentObj.Fields) : {};
+				documentObj.DataFields = documentObj.DataFields ? sntIDCollectionUtilsSrv.formatData(documentObj.DataFields, 'DataFields') : {};
+				var dataFields = documentObj.DataFields;
+
+				// The names are mostly correct inside the 'DataFields' rather than in the 'Fields'
+				if (documentObj.Fields && dataFields && (dataFields.surname && (dataFields.first_name || dataFields.given_name))) {
+					documentObj.Fields.first_name = dataFields.first_name ? dataFields.first_name : dataFields.given_name;
+					documentObj.Fields.last_name = dataFields.surname ? dataFields.surname : '';
+				}
 				deferred.resolve(documentObj);
 			} else {
 				deferred.reject(['Document getResults failed']);

@@ -46,7 +46,8 @@
                         </div>
                     </div>
                     <div class="room-type">
-                        <h4>{{room.roomTypeName}}<span></span></h4>
+                        <h4 ng-if="room.roomName">{{room.roomName}} - {{room.roomTypeName}}<span></span></h4>
+                        <h4 ng-if="!room.roomName">{{room.roomTypeName}}<span></span></h4>
                         <div class="confirmation" ng-hide="room.confirm_no"> <!-- Show confirmation number -->
                             <span class="label">Confirmation #</span>{{reservationData.confirmNum}}
                         </div>
@@ -58,19 +59,19 @@
                         <li>
                             <em>{{room.rateName}}</em>
                             <span class="price">
-                                <label ng-if="!room.isSuppressed && !reservationData.isHourly">{{currencySymbol}}{{room.rateAvg | number : 2}}</label>
+                                <label ng-if="!room.isSuppressed && !reservationData.isHourly">{{reservationData.rateCurrency}}{{room.rateAvg | number : 2}}</label>
                                 <label ng-if="room.isSuppressed && !reservationData.isHourly">SR</label>
                                 <span translate ng-if="!reservationData.isHourly">AVG_NIGHT</span>
                                 <span class="total" ng-if="room.isSuppressed">SR</span>
-                                <span class="total" ng-if="!room.isSuppressed">{{currencySymbol}}{{room.rateTotal | number : 2}}</span>
+                                <span class="total" ng-if="!room.isSuppressed">{{reservationData.rateCurrency}}{{room.rateTotal | number : 2}}</span>
                             </span>
                         </li>
                         <li ng-repeat='addon in room.addons'>
                             <em>{{addon.title}}</em>
                             <span class="price" ng-hide="addon.is_inclusive">
-                                {{currencySymbol}}{{ addon.price | number : 2}}
+                                {{reservationData.rateCurrency}}{{ addon.price | number : 2}}
                                 <span translate>EACH</span>
-                            <span class="total">{{currencySymbol}}{{ addon.effectivePrice | number : 2}}</span>
+                            <span class="total">{{reservationData.rateCurrency}}{{ addon.effectivePrice | number : 2}}</span>
                             </span>
                             <!-- CICO-18833 Hide all rate refreneces for inclusive addons (Kees Lek) -->
                             <span class="price" ng-show="addon.is_inclusive">
@@ -98,16 +99,16 @@
                 	<li ng-repeat="row in reservationData.taxDetails.taxInformation">
                 		<span class="label" translate> {{row.description}} </span>
                         <span class="total" ng-if="reservationData.isRoomRateSuppressed">SR</span>
-                        <span class="total" ng-if="!reservationData.isRoomRateSuppressed">{{currencySymbol}}{{ row.amount | number : 2}}</span>
+                        <span class="total" ng-if="!reservationData.isRoomRateSuppressed">{{reservationData.rateCurrency}}{{ row.amount | number : 2}}</span>
                 	</li>
                     <li>
                         <span class="label" translate>TOTAL_TAX</span>
-                        <label ng-if="!reservationData.isRoomRateSuppressed">{{currencySymbol}}{{reservationData.totalTax | number : 2}}</label>
+                        <label ng-if="!reservationData.isRoomRateSuppressed">{{reservationData.rateCurrency}}{{reservationData.totalTax | number : 2}}</label>
                         <label ng-if="reservationData.isRoomRateSuppressed">SR</label>
                     </li>
                     <li>
                         <span class="label" translate>TOTAL_STAY_COST</span>
-                        <label ng-if="!reservationData.isRoomRateSuppressed"><strong>{{currencySymbol}}{{reservationData.totalStayCost | number : 2}}</strong></label>
+                        <label ng-if="!reservationData.isRoomRateSuppressed"><strong>{{reservationData.rateCurrency}}{{reservationData.totalStayCost | number : 2}}</strong></label>
                         <label ng-if="reservationData.isRoomRateSuppressed">SR</label>
                     </li>
                 </ul>
@@ -231,10 +232,13 @@
                         <button type="button" id="go-to-search" ng-hide="reservationData.isHourly" class="button white blue-text" ng-click="goToSearchClicked()" translate>
                             SEARCH_RESERVATIONS
                         </button>
-                        <button type="button" id="" class="button blue-text"  translate ng-click="checkin()" ng-disabled="!enableCheckInButton()" ng-class="{'white': enableCheckInButton(), 'grey': !enableCheckInButton()}" ng-hide="true"><!--Hidden for now-->
+                        <button type="button" class="button blue-text"  translate ng-click="checkin()" ng-disabled="!enableCheckInButton()" ng-class="{'white': enableCheckInButton(), 'grey': !enableCheckInButton()}" ng-hide="true"><!--Hidden for now-->
                             CHECKIN
                         </button>
-                        <button type="button" id="" class="button white blue-text"  translate ng-click="gotoDiaryScreen()" ng-show="reservationData.isHourly">
+                        <button type="button" class="button white blue-text"  translate ng-click="gotoDiaryScreen()" ng-show="reservationData.isHourly">
+                            Diary
+                        </button>
+                        <button type="button" class="button white blue-text"  translate ng-click="gotoNightlyDiary()" ng-show="reservationData.isFromNightlyDiary">
                             Diary
                         </button>
                     </div>

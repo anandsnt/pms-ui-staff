@@ -37,4 +37,11 @@
 "NAME_OF_MOTHER": "Name of Mother",
 "PLACE_OF_BIRTH": "Place Of Birth",
 "GENDER": "Gender",
-"VEHICLE_REGISTRATION_NUMBER": "Vehicle Registration Number"
+"VEHICLE_REGISTRATION_NUMBER": "Vehicle Registration Number",
+"PERSONAL_ID_NUMBER": "Personal ID no.",
+"HOME_TOWN": "Home Town",
+"PLACE_OF_RESIDENCE": "Place of residence",
+"VEHICLE_COUNTRY_MARK": "Vehicle country mark",
+"NATIONALITY": "Nationality",
+"DATE_OF_BIRTH": "Date Of Birth",
+"JOB_TITLE": "Job Title"

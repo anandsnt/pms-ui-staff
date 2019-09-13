@@ -147,7 +147,7 @@
 											<span class="icons icon-charge"></span>
 											Add Charge
 										</button>
-										<button g-show="isStandAlone && reservationBillData.reservation_status === 'CHECKEDIN' &&
+										<button ng-show="isStandAlone && reservationBillData.reservation_status === 'CHECKEDIN' &&
 									!reservationBillData.is_advance_bill && !reservationBillData.is_hourly" type="button" class="button with-icon green" click-touch="clickedAdvanceBill()"> <!-- Click opens {modals/alerts/advanced-bill.html} -->
 											<span class="icons icon-charge"></span>
 											Advanced Bill
@@ -279,7 +279,7 @@
 												ng-if="isBalanceShown(billData.is_rate_suppressed)"> <span class="currency">{{currencySymbol}}</span>{{billGroupExpense.expense | number: precisonTwo}}
 											</td>
 											<td> {{billGroupExpense.location}} </td>
-											<td> {{billGroupExpense.date | date:'MM-dd-yyyy'}} </td>
+											<td> {{billGroupExpense.date | date:dateFormat}} </td>
 										</tr>
 									</tbody>
 								</table>
@@ -289,11 +289,15 @@
 						<!-- Invoice -->
 						<div id="invoiceDiv" ng-if="printBillCardActive" class="invoice" ng-include="'/assets/partials/bill/rvPrintBillCard.html'"></div>
 
+						<!-- Invoice -->
+						<div id="invoiceDiv" ng-if="printReceiptActive" class="invoice" ng-include="'/assets/partials/bill/rvPrintReceipt.html'"></div>
+
 						<!-- Balance / Signature / Card -->
 						<div class="total-stay-fees" ng-include="'/assets/partials/bill/rvTotalStayFees.html'" ></div>
 
 						<!-- Registration card -->
-						<div id="regDiv" ng-if="printRegistrationCardActive" class="registration-card" ng-include="'/assets/partials/bill/rvRegistrationCard.html'"></div>
+						<div id="regDiv" ng-if="printRegistrationCardActive && !isAustrianRegistrationCardEnabled" class="registration-card" ng-include="'/assets/partials/bill/rvRegistrationCard.html'"></div>
+						<div id="regDiv" ng-if="printRegistrationCardActive && isAustrianRegistrationCardEnabled" class="registration-card" ng-include="'/assets/partials/bill/rvRegistrationCardAustria.html'"></div>
 					</div>
 
 

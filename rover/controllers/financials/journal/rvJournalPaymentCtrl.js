@@ -25,6 +25,9 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
             if (origin !== "SUMMARY_DATE_CHANGED") {
                 $scope.$emit('hideLoader');
             }
+            if ($scope.data.isExpandedViewPayment) {
+                $scope.$emit("EXPAND_PAYMENT");
+            }
 		};
 
         var postData = {
@@ -32,20 +35,28 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
             "to_date": $scope.data.toDate,
             "employee_ids": $scope.data.selectedEmployeeList,
             "department_ids": $scope.data.selectedDepartmentList,
-            "type": ($scope.data.activePaymentTab === "" ? "" : ($scope.data.activePaymentTab).toLowerCase())
+            "type": ($scope.data.activePaymentTab === "" ? "" : ($scope.data.activePaymentTab).toLowerCase()),
+            "filter_id": $scope.data.filterId,
+            "query": $scope.data.query
         };
 
 		$scope.invokeApi(RVJournalSrv.fetchPaymentDataByPaymentTypes, postData, successCallBackFetchPaymentData);
 	};
 
-	initPaymentData("");
-
+    if (!$scope.data.isExpandedViewPayment) {
+        initPaymentData();
+    }
+	
     $scope.addListener('fromDateChanged', function() {
         initPaymentData("");
     });
 
     $scope.addListener('toDateChanged', function() {
         initPaymentData("");
+    });
+
+    $scope.addListener('PAYMENTSSEARCH', function() {
+        initPaymentData();
     });
 
     // CICO-28060 : Update dates for Revenue & Payments upon changing summary dates
@@ -92,6 +103,8 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
                 "department_ids": $scope.data.selectedDepartmentList,
                 "page_no": chargeCodeItem.page_no,
                 "per_page": $scope.data.filterData.perPage,
+                "filter_id": $scope.data.filterId,
+                "query": $scope.data.query,
                 "type": ($scope.data.activePaymentTab === "" ? "" : ($scope.data.activePaymentTab).toLowerCase())
             };
 
@@ -102,8 +115,17 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
         }
     };
 
+    $scope.addListener('EXPAND_PAYMENT_SCREEN', function() {
+        
+        angular.forEach($scope.data.paymentData.payment_types, function(item, key) {
+            if ($scope.checkHasArrowFirstLevel(key)) {
+                $scope.clickedFirstLevel(key, true);
+            }
+        });
+    }); 
+
     /** Handle Expand/Collapse of Level1 **/
-    $scope.clickedFirstLevel = function(index1) {
+    $scope.clickedFirstLevel = function(index1, shouldExpandSecondLevel) {
 
         var toggleItem = $scope.data.paymentData.payment_types[index1];
 
@@ -122,6 +144,14 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
             // For Credit cards , level-2 data already exist , so just do expand/collapse only ..
             toggleItem.active = !toggleItem.active;
             refreshPaymentScroll();
+            if (shouldExpandSecondLevel) {
+                angular.forEach($scope.data.paymentData.payment_types[index1].credit_cards, function(item, key) {
+                    if ($scope.checkHasArrowSecondLevel(index1, key)) {
+                        $scope.clickedSecondLevel(index1, key);
+                    }
+                });
+                
+            }
         }
     };
 
@@ -148,7 +178,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
         if ((typeof item.credit_cards !== 'undefined') && (item.credit_cards.length > 0)) {
             hasArrow = true;
         }
-        else if ((typeof item.transactions !== 'undefined') && (item.transactions.length > 0)) {
+        else if (item.number > 0) {
             hasArrow = true;
         }
         return hasArrow;
@@ -157,9 +187,9 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
     /* To hide/show arrow button for Level2 */
     $scope.checkHasArrowSecondLevel = function(index1, index2) {
         var hasArrow = false,
-        item = $scope.data.paymentData.payment_types[index1].credit_cards[index2].transactions;
+        item = $scope.data.paymentData.payment_types[index1].credit_cards[index2];
 
-        if ((typeof item !== 'undefined') && (item.length > 0)) {
+        if (item.number > 0) {
             hasArrow = true;
         }
         return hasArrow;

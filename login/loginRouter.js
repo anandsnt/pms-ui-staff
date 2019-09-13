@@ -41,7 +41,21 @@ login.config([
                     } else {
                         $window.localStorage.removeItem('jwt');
                     }
-                }]
+                }],
+            resolve: {
+                marketingItems: function(loginSrv, $window) {
+                    if (!location.href.match('select_property')) {
+                        $window.localStorage.removeItem('jwt');
+                    }
+                    return loginSrv.getMarketingItems(); 
+                },
+                errors: [
+                    'resetSrv', function (resetSrv) {
+                        if (location.href.match('activation_period_expired=true')) {
+                            return resetSrv.handleRedirectErrors('activation_period_expired');
+                        }
+                    }]
+            }
         });
 
         $stateProvider.state('stationlogin', {

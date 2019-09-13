@@ -6,6 +6,15 @@
                 <h2>Edit Rate <span>{{ rateData.name }}</span></h2>
             </div>
             <a class="action back" ng-click="backToRates($event)">Back to rates</a>
+            <div class="filters language" ng-if="availableLanguagesSet.show_language_field && rateMenu ==='Details'">
+                <label for="email-hotel-logo" translate> SELECT LANGUAGE </label>
+                <div class="select">
+                    <select ng-model="rateData.selectedLanguage.code" name="locale" ng-change="onLanguageChange()">
+                        <option ng-repeat="locale in availableLanguagesSet.languages" value="{{locale.code}}" ng-selected="rateData.selectedLanguage.code == roomTypeData.locale"> {{locale.language}}
+                        </option>
+                    </select>
+                </div>
+            </div>
         </div>
     </header>
     <section class="content-scroll">
@@ -17,28 +26,27 @@
             </tr>
             <!-- Render Rate Room Types View -->
             <!-- TODO Hide row for Add Mode -->
-            <tr ng-show="rateData.id > 0">
+            <tr ng-show="rateData.id > 0" ng-class="{'overlay': rateData.basedOnRateUnselected}">
                 <td ng-include="'/assets/partials/rates/adRatesAddRoomTypes.html'"></td>
             </tr>
             <!-- to be done-->
-            <tr ng-show="rateData.id > 0 && showPromotionSection() && isPromoActive">
+            <tr ng-show="rateData.id > 0 && showPromotionSection() && isPromoActive" ng-class="{'overlay': rateData.basedOnRateUnselected}">
                 <td ng-include="'/assets/partials/rates/adRatesPromotions.html'"></td>
             </tr>
-            <tr ng-repeat ="dateRange in rateData.date_ranges">
+            <tr ng-repeat ="dateRange in rateData.date_ranges" ng-class="{'overlay': rateData.basedOnRateUnselected}">
                 <td ng-include="'/assets/partials/rates/adRatesAddConfigure.html'" ng-controller="ADRatesAddConfigureCtrl"></td>
             </tr>
            <!--  <tr ng-show="rateMenu ==='ADD_NEW_DATE_RANGE'">
                 <td ng-include="'/assets/partials/rates/adRatesAddRange.html'"></td>
             </tr> -->
-
         </table>
-          <div ng-show="rateMenu ==='ADD_NEW_DATE_RANGE'">
+
+        <div ng-show="rateMenu ==='ADD_NEW_DATE_RANGE'">
             <div ng-include="'/assets/partials/rates/adRatesAddRange.html'"></div>
         </div>
         <!-- template to add new date range -->
-        
 
-        <div ng-click="addNewDateRange()" ng-show="shouldShowAddNewDateRange()" class="center_align add_new_date_range_container newset-container"> 
+        <div ng-click="addNewDateRange()" ng-show="shouldShowAddNewDateRange()" ng-class="{'overlay': rateData.basedOnRateUnselected}" class="center_align add_new_date_range_container newset-container"> 
             <a class="icons icon-add">
             <span>NEW DATE RANGE</span>
             </a>

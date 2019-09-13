@@ -48,6 +48,7 @@
             <text data-ng-bind-html="getTagValue('IN_ROOM')" editable-text="IN_ROOM"></text>
         </span>
         <strong>{{printRegCardData.room_number}}</strong>
+        <h3>{{printRegCardData.room_instructions}}</h3>
     </div>
     <!-- If text outputs multiple <p> tags then wrap it with <div class="terms"> instead of <p id="terms"> -->
     <p class="terms" data-ng-bind-html="trustAsHtml(printRegCardData.reg_card_text)" style="width:80%; margin: 0 auto;"></p>
@@ -72,6 +73,10 @@
             <br>
             <br>
             <strong class="large_txt">{{printRegCardData.room_number}}</strong>
+            <br>
+            <br>
+            <br>
+            <span>{{printRegCardData.room_instructions}}</span>
             <br>
             <br>
             <br>

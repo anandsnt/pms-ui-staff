@@ -43,7 +43,14 @@ angular.module('stayCardModule', [])
             params: {
                 guestId: null,
                 selectedArrivalDate: null,
-                selectedRoomTypeId: null
+                selectedRoomTypeId: null,
+                selectedRoomId: null,
+                selectedRoomNo: null,
+                startDate: null,
+                fromState: null,
+                selectedArrivalTime: null,
+                selectedDepartureTime: null,
+                numNights: null
             },
             templateUrl: '/assets/partials/reservation/rvBaseSearch.html',
             controller: 'RVReservationBaseSearchCtrl',
@@ -111,7 +118,12 @@ angular.module('stayCardModule', [])
                 promotion_id: '',
                 room_type_id: null,
                 is_member: '',
-                guestId: ''
+                guestId: '',
+                selectedRoomId: null,
+                selectedRoomNo: null,
+                arrivalTime: null,
+                departureTime: null,
+                numNights: null
             },
             templateUrl: '/assets/partials/reservation/rvSelectRoomAndRate.html',
             controller: 'RVSelectRoomAndRateCtrl',
@@ -174,16 +186,19 @@ angular.module('stayCardModule', [])
                 from_date: '',
                 to_date: '',
                 reservation: 'DAILY',
-                from_screen: ''
+                from_screen: '',
+                rate_id: ''
             },
             resolve: {
                 addonData: function (RVReservationAddonsSrv, $stateParams) {
+
                     var params = {};
 
                     params.from_date = $stateParams.from_date;
                     params.to_date = $stateParams.to_date;
                     params.is_active = true;
                     params.is_not_rate_only = true;
+                    params.rate_id = $stateParams.rate_id;
                     return RVReservationAddonsSrv.fetchAddonData(params);
                 }
             }
@@ -231,7 +246,9 @@ angular.module('stayCardModule', [])
                 isKeySystemAvailable: null,
                 isFromTACommission: null,
                 isFromGuestStatistics: null,
-                isFromCardStatistics: null
+                isFromCardStatistics: null,
+                isBulkCheckoutSelected: false,
+                isAllowOpenBalanceCheckoutSelected: false
             },
             resolve: {
                 reservationListData: function (RVReservationCardSrv, $stateParams) {

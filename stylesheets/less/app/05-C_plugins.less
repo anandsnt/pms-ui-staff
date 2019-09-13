@@ -599,6 +599,56 @@
                         }
                     }
                 }
+
+                &.diary-assigned {
+                    .message { 
+                        margin-bottom: 10px; 
+                    }
+
+                    .text { 
+                        text-transform: none; 
+                        margin-bottom: 30px; 
+                    }
+
+                    .notice {
+                        margin-top: 20px;
+                    }
+                }
+
+                &.diary-times {
+                    width: 380px;
+                    padding-bottom: 20px;
+
+                    .message { margin-bottom: 10px; }
+
+                    .text { 
+                        text-transform: none; 
+                    }
+
+                    label {
+                        margin-bottom: 0;
+                    }
+
+                    .fields {
+                        .float();
+                    }
+
+                    .entry {
+                        margin-bottom: 20px;
+                        .calc-width(50, 5);
+
+                        &.margin {
+                            margin-right: 10px;
+                        }
+                    }
+
+                    .actions {
+                        margin-top: 0;
+                        text-align: center;
+                        padding-top: 19px;
+                        border-top: 1px solid rgba(0,0,0,.1);
+                    }
+                }
             }
 
             /* Confirmation modal window ***/
@@ -2066,7 +2116,9 @@
 
                 label { 
                     margin-bottom: 0;
+                    
                     &.checkbox {
+                        display: table;
                         text-transform: uppercase;
                     } 
                 }
@@ -2151,9 +2203,9 @@
                     }
                 }
 
-                &.rooming-list {
-                    .actions {
-                        margin-top: 10px;
+                &.types {
+                    .button:not(:last-child) {
+                        margin-bottom: 10px;
                     }
                 }
             }
@@ -2342,24 +2394,13 @@
 
             /* Cancel reservation ***/
             &.cancel-reservation {
-                width: 360px;
+                width: 420px;
 
                 .notice { margin-bottom: 10px; }
 
                 .actions { 
                     .button { 
                         margin-bottom: 10px;
-
-                        &.with-icon {
-                            padding: 0;
-                            height: 50px;
-
-                            .icons {
-                                margin: 0;
-                                top: 15px;
-                                left: 10px;
-                            }
-                        }
 
                         &:last-child { margin-bottom: 0; }
                     }
@@ -2376,6 +2417,48 @@
                             &.blank { 
                                 padding: 0 20px 0 0; 
                                 text-align: right; 
+                            }
+                        }
+                    }
+                }
+
+                .confirmation-emails {
+                    margin-top: 20px;
+                    padding-top: 20px;
+                    border-top: 1px solid rgba(0,0,0,.1);
+
+                    label.checkbox {
+                        &:not(:last-child) {
+                            margin-bottom: 10px;
+                        }
+                    }
+                }
+
+                #reservation-canceled {
+                    .holder {
+                        .float;
+
+                        .entry {
+                            margin-bottom: 0;
+                            .calc-width(50, 10);
+                        }
+                    }
+                    
+                    .actions {
+                        margin-top: 20px;
+                        padding-top: 20px;
+                        border-top: 1px solid rgba(0,0,0,.1);
+                        #flexbox > .parent( row wrap, space-around, '', '' );
+                        
+                        .button {
+                            
+                            &.blank {
+                                flex-shrink: 0;
+                            }
+    
+                            &:not(.blank) {
+                                .calc-width(50, 10);
+                                margin-bottom: 10px;
                             }
                         }
                     }
@@ -2405,58 +2488,85 @@
                     }
 
                     .margin { margin-right: 20px; }
+
+                    + .entry { margin-top: 10px; }
                 }
 
                 .switch-button {
-                    font-size: 14px;
-                    text-transform: uppercase;
-                    .size(40px, 120px);
-
+                    background: rgba(0,0,0,.1);
+                    #border-radius > .rounded();
+                    .size(40px, 100%);
+                    .show;
+    
                     .data-off,
-                    .data-on {
-                        left: auto;
+                    .data-on { 
+                        font-size: 14px;
                         line-height: 30px;
+                        text-transform: uppercase;
                         height: 30px;
-
-                        &.data-off { 
-                            right: -100%;
-
-                            .switch-icon { 
-                                margin: 0 5px 0 0; 
-                                .gradient(@greenStart, @greenEnd);                                    
-                            }
+                        overflow: hidden;
+    
+                        .value {
+                            color: @black;
+                            text-shadow: none;
+                            .clickable;
+                            background: @white;
                         }
-                        
-                        &.data-on { 
+    
+                        .switch-icon { 
+                            color: rgba(0,0,0,.3);
+                            font-weight: 600; 
+                            background: transparent;
+                            margin: 0;
+                        }
+    
+                        &.data-off { 
+                            left: auto;
                             right: 0;
-
-                            .switch-icon { 
-                                margin: 0 0 0 5px; 
-                                .gradient(@grey2, @grey3);
-                            }
+    
+                            .value { margin-left: 5px; }
+                        }
+    
+                        &.data-on { 
+                            left: auto;
+                            right: 100%;
+    
+                            .value { margin-right: 5px; }
                         }
                     }
-
+    
                     &.on {
-                        .data-off { right: 0; }
-                        .data-on { right: 100%; }
+                        .data-off { left: auto; right: -100%; }
+                        .data-on { left: auto; right: 0; }
                     }
                 }
-                
-                .actions {
+
+                .confirmation-emails {
                     margin-top: 20px;
                     padding-top: 20px;
                     border-top: 1px solid rgba(0,0,0,.1);
 
-                    .with-icon {
-                        height: 50px;
-                        margin-bottom: 10px;
-                        padding: 0 20px 0 40px;
+                    label.checkbox {
+                        &:not(:last-child) {
+                            margin-bottom: 10px;
+                        }
+                    }
+                }
 
-                        .icons {
-                            margin: 0;
-                            top: 15px;
-                            left: 20px;
+                .actions {
+                    margin-top: 20px;
+                    padding-top: 20px;
+                    border-top: 1px solid rgba(0,0,0,.1);
+                    #flexbox > .parent( row wrap, space-around, '', '' );
+                    
+                    .button {
+                        &.blank {
+                            flex-shrink: 0;
+                        }
+
+                        &:not(.blank) {
+                            .calc-width(50, 10);
+                            margin-bottom: 10px;
                         }
                     }
                 }
@@ -3137,6 +3247,112 @@
                 }
 
                 &.room-move { width: 580px; }
+            }
+
+            /** Diary Extend/Shorten Stay **/
+            &.diary-change-stay {
+                width: 600px;
+
+                .stay-info-text { 
+                    text-transform: uppercase; 
+                    font-size: 14px;
+                }
+
+                .stay-info {
+                    height: 50px;
+                    padding: 10px;
+                    margin-bottom: 20px;
+                    background: @white;
+                    #flexbox > .parent( row, '', center, center );
+
+                    .arrival,
+                    .departure,
+                    .stay-nights {
+                        font-size: 16px;
+                        line-height: 30px;
+                        font-weight: 600;
+                        height: 100%;
+                        #flexbox > .parent( row, '', center, '' );
+                    }
+
+                    .arrival,
+                    .departure {
+                        border-left: 1px solid rgba( 0, 0, 0, 0.15 );
+                        padding-left: 20px;
+                        .calc-width( 50, 55 );
+                    }
+
+                    .stay-nights {
+                        width: 110px;
+                    }
+
+                    &.from {
+                        .arrival,
+                        .departure,
+                        .stay-nights {
+                            opacity: 0.5;
+                        }
+                    }
+                }
+
+                .guest-status {
+                    margin-right: 10px;
+                    .square( 20px );
+
+                    &.check-in,
+                    &.check-out {
+                        background-size: 80px;
+                    }
+
+                    &.check-in {
+                        background-position: 5px -75px;
+                    }
+
+                    &.check-out {
+                        background-position: 6px -101px;
+                    }
+                }
+
+                .stay-change-status {
+                    padding: 40px 0 20px 0;
+                    min-height: 150px;
+                    border-top: 1px solid rgba( 0, 0, 0, 0.15 );
+                    #flexbox > .parent( column, '', center, center );
+
+                    h3 {
+                        font-size: 24px;
+                        font-weight: bold;
+                        margin-bottom: 10px;
+
+                        &.orange {
+                            color: @orange;
+                        }
+
+                        &.red {
+                            color: @red;
+                        }
+
+                        &.green {
+                            color: @green;
+                        }
+                    }
+
+                    p {
+                        font-weight: 300;
+                        font-size: 18px;
+                        color: @grey3;
+                    }
+
+                    .button {
+                        width: auto;
+                        min-width: 150px;
+                    }
+                }
+
+                .actions {
+                    padding-top: 25px;
+                    border-top: 1px solid rgba( 0, 0, 0, 0.15 );
+                }
             }
 
             &.move-charge {
@@ -7666,7 +7882,8 @@
 
                              
                             .payment-data {
-                                 
+                                flex-flow: row;
+                                
                                 .date,
                                 .reference {
                                     .value {
@@ -7706,6 +7923,7 @@
                             text-align: right;
                             align-self: flex-end;
                             margin-left: auto;
+                            height: auto;
                         }
                     }
 
@@ -8167,6 +8385,106 @@
                 }
             }
 
+            &.commissions-properties {
+                width: 740px;
+                max-height: 80vh;
+                #flexbox > .parent(column wrap, '', '', '');
+
+                .message { 
+                    line-height: 25px;
+                    margin-bottom: 0;
+                }
+
+                .text {
+                    line-height: 20px;
+                }
+
+                .grid {
+                    line-height: 1;
+                    width: 100%;
+                    padding-bottom: 20px;
+                    max-height: calc(~'80vh - 185px');
+                }
+
+                .grid-row {
+                    &.with-cells {
+                        display: grid;
+                        grid-template-columns: calc(~'45% - 8px') calc(~'15% - 8px') calc(~'12% - 8px') calc(~'18% - 8px') calc(~'10% - 8px');
+                        grid-column-gap: 10px;
+                        grid-row-gap: 10px;
+                        align-items: center;
+                        padding: 8px 12px;
+                    }
+
+                    &.header {
+                        font-size: 14px;
+                        text-transform: uppercase;
+                        color: @grey3;
+                    }
+                }
+
+                .grid-cell {
+                    strong {
+                        font-weight: 600;
+                    }
+
+                    input,
+                    .select {
+                        width: 100%;
+                    }
+
+                    select {
+                        padding: 0 10px;
+                    }
+
+                    .checkbox {
+                        padding: 0;
+                        margin: 0 auto;
+                        .square(40px);
+
+                        .icon-form {
+                            top: 10px;
+                            left: 10px;
+                        }
+                    }
+
+                    &:not(:last-child) {
+                        padding-right: 12px;
+                    }
+                }
+
+                .scrollable {
+                    position: relative;
+                    max-height: calc(~'80vh - 245px');
+                }
+
+                .wrapper {
+                    padding: 0;
+                }
+
+                .iScrollVerticalScrollbar {
+                    top: 10px;
+                    right: 10px;
+                    bottom: 10px;
+                }
+
+                .actions {
+                    margin-top: auto;
+                    padding-top: 20px;
+                    .box-shadow(0 -1px 0 rgba(0,0,0,.1));
+                    #flexbox > .parent(row wrap, center, center, '');
+
+                    .button {
+                        width: auto;
+                        margin-top: 0;
+
+                        &:not(:last-child) {
+                            margin-right: 10px;
+                        }
+                    }
+                }
+            }
+
             /* Overbooking ***/
             &.overbooking {
                 width: 260px;
@@ -8410,6 +8728,13 @@
             /* Check In Data ***/
             &.check-in-data {
                 width: 670px;
+                padding: 20px 0;
+
+                .modal-fields {
+                    position: relative;
+                    max-height: 380px;
+                    padding: 0 20px;
+                }
 
                 fieldset {
                     padding-left: 200px;
@@ -8450,21 +8775,56 @@
 
                 .message {
                     margin-bottom: 10px;
+                    padding: 0 20px;
+                }
+
+                .text {
+                    padding: 0 20px;
                 }
 
                 .required {
                     color: @red;
                 }
 
+                .iScrollVerticalScrollbar {
+                    .iScrollIndicator {
+                        background: @grey2;
+                    }
+                }
+
                 .actions {
                     padding-top: 10px;
                     text-align: right;
                     border-top: 1px solid rgba(0, 0, 0, 0.15);
+                    margin: 0 20px;
 
                     .button {
                         width: auto;
                         display: inline-block;
                         padding: 0 40px;
+                    }
+                }
+            }
+
+            /* Used in AR Create Modal for creating the AR account. Going alongside .check-in-data */
+            &.ar-create {
+
+                .scrollable {
+                    height: 400px;
+                    position: relative;
+
+                    .iScrollVerticalScrollbar {
+                        right: 0;
+
+                        .iScrollIndicator {
+                            background: @grey2;
+                        }
+                    }
+                }
+
+                fieldset {
+                    &:not(:nth-of-type(1)) {
+                        border-top: 1px solid rgba(0, 0, 0, 0.15);
                     }
                 }
             }
@@ -8616,7 +8976,110 @@
                     }
                 }
             }
-        }
+
+            /* Guest Search ***/
+            &.guest-search {
+                padding: 0;
+                .size( 650px, 950px );
+
+                .modal-header {
+                    height: 90px;
+                    padding: 20px;
+                    background: @gcard;
+                    #flexbox > .parent( row, '', center, '' );
+
+                    .guest-image {
+                        margin-right: 10px;
+                    }
+
+                    .data {
+                        max-width: 400px;
+                        .calc-width( 100, 350 );
+                    }
+
+                    .actions {
+                        margin-left: auto;
+                        #flexbox > .parent( row, flex-end, '', '' );
+                        .button {
+                            width: auto;
+                            font-size: 16px;
+
+                            &.blank {
+                                color: white;
+                            }
+
+                            &.green {
+                                background-image: @arrowWhiteRight;    
+                                background-size: 12px 12px;
+                                background-repeat: no-repeat, repeat;
+                                background-position: 85% center;
+                                padding: 0 40px 0 30px;
+
+                                @media @highdpi { 
+                                    background-image: @arrowWhiteRight2x;
+                                }
+                            }
+
+                            &:not(:last-child) {
+                                margin-right: 10px;
+                            }
+                        }
+                    }
+
+                    input {
+                        height: 30px;
+                        line-height: 30px;
+                        font-size: 30px;
+                        font-weight: 700;
+                        color: @orange;
+                        background: rgba( 0, 0, 0, 0.2 );
+                        padding: 0 10px;
+                        .calc-width(50, 10);
+                        .pull-left;
+
+                        &:not(:last-child) {
+                            margin-right: 10px;
+                        }
+                    }
+                }
+
+                .modal-body {
+                    .calc-height( 100, 90 );
+
+                    .match-info {
+                        height: 100px;
+                        #flexbox > .parent( column, center, center, center );
+                        
+                        p {
+                            color: @grey3;
+                            text-transform: uppercase;
+                            margin: 0;
+                            
+                            strong {
+                                color: #000;
+                                font-size: 24px;
+                                font-weight: 600;
+                            }
+                        }
+                    }
+
+                    .scrollable {
+                        padding-bottom: 20px;
+                        position: relative;
+                        .calc-height( 100, 100 );
+
+                        .iScrollVerticalScrollbar {
+                            top: 0;
+                        }
+                    }
+
+                    .search-results {
+                        padding-top: 0;
+                        padding-bottom: 20px;
+                    }
+                }
+            }
+        } // end of modals
     }
 
 

@@ -232,7 +232,8 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				if (scrollCount === 0) {
 					localStorage.setItem( 'roomListScrollTopPos', $_roomsEl.scrollTop );
 					$state.go("rover.housekeeping.roomDetails", {
-						id: room.id
+						id: room.id,
+						page: $_page
 					});
 				}
 			}, 400);
@@ -575,7 +576,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		$scope.shouldShowTimeSelector = function() {
             var isInService = $scope.updateServiceData.room_service_status_id === 1;
 
-            return $rootScope.isHourlyRateOn && !isInService;
+            return ($rootScope.isHourlyRateOn || $rootScope.hotelDiaryConfig.mode === 'FULL') && !isInService;
 		};
 
 		$scope.closeDialog = function() {
@@ -654,7 +655,20 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
   					item.isMultipleReservation = true;
   				} else if ((item.reservations.length === 1)) {
   					item.reservationData = "#" + item.reservations[0].confirm_no;
-  					item.GuestName = item.reservations[0].last_name + ", " + item.reservations[0].first_name;
+					  item.GuestName = (function() {
+										 var guestName = "";
+
+										 if (item.reservations[0].last_name && item.reservations[0].first_name) {
+											guestName = item.reservations[0].last_name + ", " + item.reservations[0].first_name;  
+										 } else if (item.reservations[0].last_name && !item.reservations[0].first_name) {
+											guestName = item.reservations[0].last_name + ", ";
+										 } else if (!item.reservations[0].last_name && item.reservations[0].first_name) {
+											guestName = ', ' +  item.reservations[0].first_name;
+										 }
+
+										 return guestName;
+					  				  })();
+					  
   					item.isMultipleReservation = false;
   				}
 			});
@@ -1053,7 +1067,9 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			$_updateFilters('page', $_page);
 			$timeout(function() {
 				$scope.$broadcast('updatePagination', 'HK_SEARCH');
+				$scope.$broadcast('updatePageNo', $_page);
 			}, 700);
+			
 		}
 
 
@@ -1145,6 +1161,8 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 		function $_callRoomsApi(page) {
 			var clickedPage = page || 1;
+
+			$_page = clickedPage;
 
 			$_updateFilters('page', clickedPage);
 
@@ -1515,7 +1533,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
               break;
           }
           return (returnString);
-        };
-
+		};
+		
 	}
 	]);

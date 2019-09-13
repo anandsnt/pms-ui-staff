@@ -18,7 +18,7 @@ angular.module('accountsModule', [])
             }
         });
 
-        // company card details
+        // Accounts search
         $stateProvider.state('rover.accounts.search', {
             url: '/search',
             templateUrl: '/assets/partials/accounts/search/rvAccountsSearch.html',

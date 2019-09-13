@@ -1,0 +1,152 @@
+<div class="invoice">
+    <div class="invoice-logo envelope">
+        <img ng-src="{{printData.hotel_logo}}" alt="" />
+        <h1>{{printData.hotel_name}}</h1>
+        <span ng-bind-html="printData.hotel_address"></span>
+        <span class="type">{{printData.invoiceLabel}}</span>
+    </div>
+    <div class="info-container account-info">
+        <div class="info-left">
+            <strong>{{printData.guest_details.first_name}} {{printData.guest_details.last_name}}</strong><br>
+            <span ng-bind-html="printData.guest_details.address"></span>
+
+            <div class="info-bottom">
+                <span ng-if = "printData.invoice_date"><strong>{{printData.translation.invoice_date}}:</strong> {{printData.invoice_date}}</span><br/>
+                <span ng-if = "!printData.is_informational_invoice && (!printData.is_print_ar_invoice_number_enabled || printData.is_manual_balance) && printData.invoice_number"><strong>{{printData.translation.invoice_number}}:</strong> {{printData.invoice_number}}</span><br/>
+                <span ng-if = "!printData.is_informational_invoice && !printData.is_print_ar_invoice_number_enabled && printData.folio_number && printData.is_print_folio_enabled">
+                    <strong><span ng-if = "printData.folio_label">{{printData.folio_label}}:</span><span ng-if = "!printData.folio_label">{{printData.translation.folio_number}}:</span></strong> {{printData.folio_number}}</span><br/>
+                <span ng-if = "!printData.is_informational_invoice && printData.is_print_ar_invoice_number_enabled && printData.ar_invoice_number"><strong>{{printData.translation.ar_invoice_number}}:</strong> {{printData.ar_invoice_number}}</span><br/>
+                <span ng-if = "!printData.is_informational_invoice && printData.is_print_ar_folio_number_enabled && printData.ar_folio_number"><strong>AR Folio Number:</strong> {{printData.ar_folio_number}}</span>
+            </div>
+        </div>
+        <div class="info-right">
+            <span ng-if = "printData.arrival_date"><strong>{{printData.translation.arrival_date}}:</strong> {{printData.arrival_date}}</span><br/>
+            <span ng-if = "printData.departure_date"><strong>{{printData.translation.departure_date}}:</strong> {{printData.departure_date}}</span><br/>
+            <span ng-if = "printData.room_number"><strong>{{printData.translation.room_number}}:</strong> {{printData.room_number}}</span><br/>
+            <span ng-if = "printData.confirmation_number"><strong>{{printData.translation.confirmation_number}}:</strong> {{printData.confirmation_number}}</span><br/>
+            <span ng-if = "printData.tax_number"><strong>{{printData.translation.tax_number}}:</strong> {{printData.tax_number}}</span><br/>
+            <span ng-if = "!printData.is_informational_invoice && printData.card_details.ar_number"><strong>{{printData.translation.ar_number}}:</strong> {{printData.card_details.ar_number}}</span><br/><br/>
+            <span>{{printData.card_details.name}}</span><br>
+            <span ng-bind-html="printData.card_details.address"></span>
+        </div>
+
+    </div>
+
+    <div class="invoice-header">
+        <!-- {header-text} -->
+    </div>
+
+    <div class="invoice-body">
+        <table class="invoice-details">
+            <thead>
+                <tr>
+                    <th>{{printData.translation.date_of_charge}}</th>
+                    <th>{{printData.translation.charge_description}}</th>
+                    <th class="align-right">{{printData.translation.charge_amount}}</th>
+                    <th class="align-right">{{printData.translation.credit_amount}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-if="printData.debits.length > 0" class="person" ng-repeat="statement in printData.debits">
+                    <td rowspan={rowspan}>{{statement.date}}</td>
+                    <td class="description">
+                        <strong>{{statement.item_description}}</strong>
+                        <span>{{statement.description}}</span>
+                        <span class="reference">{{statement.reference_text}}</span>
+                    </td>
+                    <td class="align-right">
+                        <span ng-if="statement.fees" class="currency">{{printData.currency_for_html}}</span>{{statement.fees}}
+                        <div ng-if="statement.ar_fees_invoice_currency" class="converted-currency">
+                            {{printData.invoice_currency_for_html}}{{statement.ar_fees_invoice_currency}}
+                        </div>
+                    </td>
+                    <td rowspan={rowspan} class="align-right">
+                        <span ng-if="statement.credits" class="currency">{{printData.currency_for_html}}</span>{{statement.credits}}
+                        <div ng-if="statement.ar_credits_invoice_currency" class="converted-currency">
+                            {{printData.invoice_currency_for_html}}{{statement.ar_credits_invoice_currency}}
+                        </div>
+                    </td>
+                </tr>
+                <tr ng-if="printData.payments.length > 0" class="person" ng-repeat="statement in printData.payments">
+                    <td rowspan={rowspan}>{{statement.transaction_date}}</td>
+                    <td class="description">
+                        <strong>{{statement.payment_type}}</strong>
+                        <span>{{statement.description}}</span>
+                        <span class="reference">{{statement.reference_text}}</span>
+                    </td>
+                    <td class="align-right">
+                        <span ng-if="statement.fees" class="currency">{{printData.currency_for_html}}</span>{{statement.fees}}
+                        <div ng-if="statement.ar_fees_invoice_currency" class="converted-currency">
+                            {{printData.invoice_currency_for_html}}{{statement.ar_fees_invoice_currency}}
+                        </div>
+                    </td>
+                    <td rowspan={rowspan} class="align-right">
+                        <span ng-if="statement.amount" class="currency">{{printData.currency_for_html}}</span>{{statement.amount}}
+                        <div ng-if="statement.ar_amount_invoice_currency" class="converted-currency">
+                            {{printData.invoice_currency_for_html}}{{statement.ar_amount_invoice_currency}}
+                        </div>
+                    </td>
+                </tr>
+                <br>
+                <tr>
+                    <td colspan="6"><strong>{{printData.translation.total_charge}}</strong></td>
+                    <td>
+                        <strong><span class="currency" ng-if="printData.total_charge">{{printData.currency_for_html}}</span>{{printData.total_charge}}</strong>
+                        <div ng-if="printData.invoice_currency_total_charge" class="converted-currency">
+                            {{printData.invoice_currency_for_html}}{{printData.invoice_currency_total_charge}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6"><strong>{{printData.translation.total_credits}}</strong></td>
+                    <td>
+                        <strong><span class="currency" ng-if="printData.total_credits">{{printData.currency_for_html}}</span>{{printData.total_credits}}</strong>
+                        <div ng-if="printData.invoice_currency_total_credits" class="converted-currency">
+                            {{printData.invoice_currency_for_html}}{{printData.invoice_currency_total_credits}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6"><strong>{{printData.translation.balance}}</strong></td>
+                    <td>
+                        <strong><span class="currency" ng-if="printData.balance">{{printData.currency_for_html}}</span>{{printData.balance}}</strong>
+                        <div ng-if="printData.invoice_currency_balance" class="converted-currency">
+                            {{printData.invoice_currency_for_html}}{{printData.invoice_currency_balance}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">{{printData.translation.net_amount}}</td>
+                    <td>
+                        <span class="currency" ng-if="printData.net_amount">{{printData.currency_for_html}}</span>{{printData.net_amount}}
+                        <div ng-if="printData.invoice_currency_net_amount" class="converted-currency">
+                            {{printData.invoice_currency_for_html}}{{printData.invoice_currency_net_amount}}
+                        </div>
+                    </td>
+                </tr>
+                <tr ng-if="!printData.ar_has_enabled_extended_tax_breakdown" ng-repeat="tax in printData.tax_info">
+                    <td colspan="6">{{tax.tax_charge_code_desc}}</td>
+                    <td>
+                        <span class="currency" ng-if="tax.amount">{{printData.currency_for_html}}</span>{{tax.amount}}
+                        <div ng-if="tax.invoice_currency_amount" class="converted-currency">
+                            {{printData.invoice_currency_for_html}}{{tax.invoice_currency_amount}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">{{printData.translation.total_incl_tax}}</td>
+                    <td>
+                        <span class="currency" ng-if="printData.total_incl_tax">{{printData.currency_for_html}}</span>{{printData.total_incl_tax}}
+                        <div ng-if="printData.invoice_currency_total_incl_tax" class="converted-currency">
+                            {{printData.invoice_currency_for_html}}{{printData.invoice_currency_total_incl_tax}}
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="invoice-footer" ng-if="printData.custom_text_footer">
+        <p>{{printData.custom_text_footer}}</p>
+    </div>
+</div>

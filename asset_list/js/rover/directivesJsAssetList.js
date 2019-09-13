@@ -39,6 +39,7 @@ module.exports = {
                     'rover/directives/includeReplaceDir.js',
 
                     'rover/directives/convertToNumber/*js',
+                    'rover/directives/stringToNumber/*js',
 
                     // Eliminate all spec files
                     '!**/*.spec.js'

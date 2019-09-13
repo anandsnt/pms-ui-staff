@@ -114,7 +114,7 @@
                             <h4 ng-hide="borrowForGroups || room.defaultRate.isCorporate" translate>RESV_BEST_RATE</h4>
                             <h4 ng-show="!borrowForGroups && room.defaultRate.isCorporate" translate>RESV_COR_RATE</h4>
                             <div class="price" ng-if="!borrowForGroups && !room.defaultRate.isSuppressed">
-                                {{currencySymbol}}{{room.defaultRate.adr | number: 2}}
+                                {{room.rateCurrency}}{{room.defaultRate.adr | number: 2}}
                                 <span translate>RESV_AVG_NIGHT</span>
                             </div>
                             <div class="price" ng-if="!borrowForGroups && room.defaultRate.isSuppressed">
@@ -165,9 +165,9 @@
                                     </span> -->
                                  <!--    <span class="restriction-icon" ng-if="rate.numRestrictions > 1">R</span>
                                     <span class="restriction-icon {restriction-icon-class} {restriction-bg-class} {restriction-bgcolor}">{Restriction}</span> -->
-
+                                <span class="reservation-type red" ng-if="rate.isDayUse">D</span>
                                 <div class="price" ng-if="!rate.isSuppressed">
-                                    {{currencySymbol}}{{rate.adr | number: 2}}
+                                    {{rate.rateCurrency}}{{rate.adr | number: 2}}
                                     <span translate>RESV_AVG_NIGHT</span>
                                 </div>
                                 <div class="price" ng-if="rate.isSuppressed">
@@ -201,30 +201,30 @@
                                     <tfoot>
                                         <tr>
                                             <td colspan="5" class="total-label" translate>RESV_TOTAL_ROOM</td>
-                                            <td class="total-value" ng-if="!rate.isSuppressed">{{currencySymbol}}{{rate.total | number:2}}</td>
+                                            <td class="total-value" ng-if="!rate.isSuppressed">{{currencySymbol}}---{{rate.total | number:2}}</td>
                                             <td ng-if="rate.isSuppressed">SR</td>
                                         </tr>
                                     </tfoot>
                                     <tbody>
                                         <tr ng-repeat="day in rate.dates">
                                             <td>
-                                                {{day.obj | date: fulldayInWeek }}, {{day.obj | date: dateFormat }}
+                                             {{day.obj | date: fulldayInWeek }}, {{day.obj | date: dateFormat }}
                                             </td>
                                             <!-- Room charge -->
-                                            <td ng-if="!rate.isSuppressed">{{currencySymbol}}{{day.amount | number: 2}}</td>
+                                            <td ng-if="!rate.isSuppressed">{{day.rateCurrency}}{{day.amount | number: 2}}</td>
                                             <td ng-if="rate.isSuppressed">SR</td>
                                             <!-- Add on -->
-                                            <td ng-if="!rate.isSuppressed && !day.inclusiveAddonsExist">{{currencySymbol}}{{day.addon | number: 2}}</td>
+                                            <td ng-if="!rate.isSuppressed && !day.inclusiveAddonsExist">{{day.rateCurrency}}{{day.addon | number: 2}}</td>
                                             <td ng-if="!rate.isSuppressed && !!day.inclusiveAddonsExist">INCL</td>
                                             <td ng-if="rate.isSuppressed">SR</td>
                                             <!-- taxes -->
-                                            <td ng-if="!rate.isSuppressed">{{currencySymbol}}{{day.tax.incl | number: 2}}</td>
+                                            <td ng-if="!rate.isSuppressed">{{day.rateCurrency}}{{day.tax.incl | number: 2}}</td>
                                             <td ng-if="rate.isSuppressed">SR</td>
                                             <!-- excl taxes -->
-                                            <td ng-if="!rate.isSuppressed">{{currencySymbol}}{{day.tax.excl | number: 2}}</td>
+                                            <td ng-if="!rate.isSuppressed">{{day.rateCurrency}}{{day.tax.excl | number: 2}}</td>
                                             <td ng-if="rate.isSuppressed">SR</td>
                                             <!-- incl taxes -->
-                                            <td ng-if="!rate.isSuppressed">{{currencySymbol}}{{day.total | number: 2}}</td>
+                                            <td ng-if="!rate.isSuppressed">{{day.rateCurrency}}{{day.total | number: 2}}</td>
                                             <td ng-if="rate.isSuppressed">SR</td>
                                             <td class="edit"></td>
                                         </tr>

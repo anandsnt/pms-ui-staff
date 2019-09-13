@@ -289,6 +289,9 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 							groupSummary.rate = -1;
 						}
 
+						groupSummary.country_id = groupSummary.country_id ? groupSummary.country_id : '';
+            			groupSummary.nationality = groupSummary.nationality ? groupSummary.nationality : '';
+
 						self.lastFetchedGroup = {
 							id: groupSummary.group_id,
 							demographics: angular.copy(groupSummary.demographics)

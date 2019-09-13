@@ -102,7 +102,7 @@ var CurrencyInfoMappings = {
     'VND': [0, '\u20AB', 'VN\u20AB'],
     'YER': [0, 'Rial', 'Rial'],
     'ZAR': [2, 'R', 'R'],
-    'ZL': [2, 'zł', 'zł']
+    'PLN': [2, 'zł', 'zł']
 };
 
 /**
@@ -721,4 +721,23 @@ var getTZIndependentDateFromDayMonthYear = function(day, month, year) {
 
     return getTzIndependentDate(d);
 
+};
+
+var isValidEmail = function(email) {
+    return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email));
+}
+
+// Get display password to show in the password form fields
+var getTemporaryDisplayPassword = function() {
+    // Strong password generated randomly for display purpose only
+    return '-R#h!bVsALm-';
+};
+
+/**
+ * Checks whether the given array is empty or not
+ * @param {Array} arr 
+ * @return {Boolean}
+ */
+var isEmptyArray = function (arr) {
+    return arr.length === 0;
 };

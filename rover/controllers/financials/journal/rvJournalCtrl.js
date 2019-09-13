@@ -1,4 +1,8 @@
-sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams', 'ngDialog', '$rootScope', 'RVJournalSrv', 'journalResponse', '$timeout', 'rvPermissionSrv', function($scope, $filter, $stateParams, ngDialog, $rootScope, RVJournalSrv, journalResponse, $timeout, rvPermissionSrv) {
+sntRover.controller('RVJournalController', 
+    ['$scope', '$filter', '$stateParams', 'ngDialog', '$rootScope', 
+    'RVJournalSrv', 'journalResponse', '$timeout', 'rvPermissionSrv', 'journalFilters',
+    function($scope, $filter, $stateParams, ngDialog, $rootScope, 
+        RVJournalSrv, journalResponse, $timeout, rvPermissionSrv, journalFilters) {
 
 	BaseCtrl.call(this, $scope);
 	// Setting up the screen heading and browser title.
@@ -18,6 +22,9 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
     $scope.data.selectedChargeCode  = '';
     $scope.data.selectedPaymentType = '';
     $scope.data.filterTitle = "All Departments";
+    $scope.data.isExpandedViewSummary = false;
+    $scope.data.isExpandedViewRevenue = false;
+    $scope.data.isExpandedViewPayment = false;
 
     $scope.data.isActiveRevenueFilter = false;
     $scope.data.activeChargeGroups = [];
@@ -26,7 +33,8 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
     $scope.data.selectedDepartmentList = [];
     $scope.data.selectedEmployeeList = [];
     $scope.data.isDrawerOpened = false;
-	$scope.data.reportType  = "";
+    $scope.data.reportType  = "";
+    $scope.data.query = "";
     $scope.data.isShowSummaryTab  = true;
 
     $scope.data.isRevenueToggleSummaryActive = true;
@@ -82,6 +90,9 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
         popupCalendar('SUMMARY');
     };
 
+    $scope.clickedBalanceDate = function() {
+        popupCalendar('BALANCE');
+    };
     // Filter by Logged in user id.
     var filterByLoggedInUser = function() {
         angular.forEach($scope.data.filterData.employees, function(item, index) {
@@ -91,6 +102,32 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
                 $scope.clickedSelectButton();
             }
         });
+    };
+
+
+    $scope.clickedJournalToggle = function (isFromSearch) {
+        var tabName = $scope.data.activeTab;
+
+        if (tabName === 'SUMMARY') {
+            $scope.data.isExpandedViewSummary = !$scope.data.isExpandedViewSummary;
+            $scope.$broadcast("EXPAND_SUMMARY_SCREEN");
+        } else if (tabName === 'PAYMENTS') {
+            if (!isFromSearch) {
+                $scope.data.isExpandedViewPayment = !$scope.data.isExpandedViewPayment;
+            }
+            
+            $scope.$broadcast("EXPAND_PAYMENT_SCREEN");
+        } else if (tabName === 'REVENUE') {
+            if (!isFromSearch) {
+                $scope.data.isExpandedViewRevenue = !$scope.data.isExpandedViewRevenue;
+            }
+
+            if (!$scope.data.isExpandedViewRevenue) {
+                $scope.searchJournal();
+            } else {
+                $scope.$broadcast("EXPAND_REVENUE_SCREEN");
+            }           
+        } 
     };
 
     // To toggle revenue filter box.
@@ -248,7 +285,9 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
         $scope.data.fromDate = $rootScope.businessDate;
         $scope.data.toDate   = $rootScope.businessDate;
         $scope.data.cashierDate = $rootScope.businessDate;
-        $scope.data.summaryDate = $rootScope.businessDate;
+        $scope.data.summaryDate = $rootScope.businessDate;        
+        $scope.data.balanceDate = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
+                .format($rootScope.momentFormatForAPI);
         // b) All employee fields should default to logged in user
         $timeout(function() {
             filterByLoggedInUser();
@@ -269,6 +308,8 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
         $scope.data.toDate   = $filter('date')(yesterday, 'yyyy-MM-dd');
         $scope.data.cashierDate = $filter('date')(yesterday, 'yyyy-MM-dd');
         $scope.data.summaryDate = $filter('date')(yesterday, 'yyyy-MM-dd');
+        $scope.data.balanceDate = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
+                .format($rootScope.momentFormatForAPI);
         // CICO-20294 : Hide summary tab if the reservation is of type Hourly.
         if ($rootScope.isHourlyRateOn) $scope.data.isShowSummaryTab = false;
     }
@@ -296,7 +337,9 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
     $scope.activatedTab = function(tabName) {
     	$scope.data.activeTab = tabName;
     	if (tabName === 'REVENUE') {
-            $rootScope.$broadcast('REFRESHREVENUECONTENT');
+            if (!$scope.data.isExpandedViewRevenue) {
+                $rootScope.$broadcast('REFRESHREVENUECONTENT');
+            }            
         }
     	else if (tabName === 'CASHIER') {
             $scope.$broadcast('cashierTabActive');
@@ -323,6 +366,24 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
         return returnData;
     };
 
+    $scope.searchJournal = () => {
+        var tabName = $scope.data.activeTab;
+
+        if (tabName === 'SUMMARY') {
+            $rootScope.$broadcast('SUMMARYSEARCH');
+        } else if (tabName === 'PAYMENTS') {
+            $rootScope.$broadcast('PAYMENTSSEARCH');
+        } else if (tabName === 'REVENUE') {
+            $rootScope.$broadcast('REVENUESEARCH');
+        }
+    };
+    /* 
+     * Toggle Action 
+     */
+    // $scope.toggleCollapsedOrExpandedSummary = function() {
+    //     $scope.data.isExpandedView = !$scope.data.isExpandedView;
+    // }; 
+
     /* get the time string from the date-time string */
 
     $scope.getTimeString = function(date, time) {
@@ -341,5 +402,21 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
         }
 
     };
+
+    $scope.addListener('EXPAND_PAYMENT', function() {
+        $scope.clickedJournalToggle(true);
+    });
+
+    $scope.addListener('EXPAND_REVENUE', function() {
+        $scope.clickedJournalToggle(true);
+    });
+
+    var init = function() {
+        // $scope.data.isExpandedViewSummary = false;
+        $scope.data.searchFilterOptions = journalFilters.filters;        
+        $scope.data.filterId = (_.first($scope.data.searchFilterOptions)).id;
+    };
+
+    init();
 
 }]);

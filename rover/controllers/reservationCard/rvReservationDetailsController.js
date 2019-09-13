@@ -112,6 +112,14 @@ sntRover.controller('reservationDetailsController',
                     isFromStayCard: true
                 }
             };
+        } else if ($scope.previousState.name === 'rover.financials.invoiceSearch') {
+            $rootScope.setPrevState = {
+                title: 'INVOICE SEARCH',
+                name: 'rover.financials.invoiceSearch',
+                param: {
+                    isFromStayCard: true
+                }
+            };
         } else if ($scope.previousState.name === "rover.allotments.config" || $rootScope.stayCardStateBookMark.previousState === 'rover.allotments.config') {
 			if ($scope.previousState.name === "rover.allotments.config") {
 				setNavigationBookMark();
@@ -142,12 +150,12 @@ sntRover.controller('reservationDetailsController',
 				setNavigationBookMark();
 			}
 			$rootScope.setPrevState = {
-				title: 'DIARY',
+				title: 'ROOM DIARY',
 				name: 'rover.nightlyDiary',
 				param: {
 					id: $rootScope.stayCardStateBookMark.previousStateParams.id,
 					activeTab: "DIARY",
-					isFromStayCard: true
+					origin: 'STAYCARD'
 				}
 			};
 		} else if ($stateParams.isFromDiary && !$rootScope.isReturning()) {
@@ -245,7 +253,9 @@ sntRover.controller('reservationDetailsController',
                 // set to true in case of a back navigation in the $rootScope.loadPrevState method of rvApp.js file
                 // With the upgraded ui-router the stateparams cannot be changed in the middle of a transition
                 backParam = backParam || {};
-                backParam.useCache = true;
+				backParam.useCache = true;
+				backParam.isBulkCheckoutSelected = $stateParams.isBulkCheckoutSelected;
+				backParam.isAllowOpenBalanceCheckoutSelected = $stateParams.isAllowOpenBalanceCheckoutSelected;
 				$state.go('rover.search', backParam);
 			};
 		}
@@ -278,8 +288,6 @@ sntRover.controller('reservationDetailsController',
 		var fetchGuestIDs = function() {
 			var successCallBack = function(response) {
 				guestIdList = response;
-				console.log(response);
-
 				sntActivity.stop('GUEST_ID_FETCH');
 			};
 
@@ -306,8 +314,10 @@ sntRover.controller('reservationDetailsController',
 		// CICO-10006 assign the avatar image
 		$scope.guestCardData.cardHeaderImage = reservationListData.guest_details.avatar;
 		$scope.guestCardData.nationality_id = reservationListData.guest_details.nationality_id;
-		$scope.guestCardData.contactInfo.address = {};
-		$scope.guestCardData.contactInfo.address.country_id = reservationListData.guest_details.country_id;
+		if (!$scope.guestCardData.contactInfo.address) {
+			$scope.guestCardData.contactInfo.address = {};
+			$scope.guestCardData.contactInfo.address.country_id = reservationListData.guest_details.country_id;
+		}
 
 		/**
 		 *	We have moved the fetching of 'baseData' form 'rover.reservation' state
@@ -459,11 +469,13 @@ sntRover.controller('reservationDetailsController',
 
 		};
 
-		$scope.saveAccGuestDetails = function() {
+		$scope.saveAccGuestDetails = function ($event) {
 			setTimeout(function() {
 				// CICO-60110 - Save the accompany guests only while in staycard. 
 				// The additional check is to prevent the save while navigating to some other states
-				if(document.activeElement.getAttribute("type") != "text" && $state.$current.name === "rover.reservation.staycard.reservationcard.reservationdetails") {
+				if(document.activeElement.getAttribute("type") != "text" && 
+					$state.$current.name === "rover.reservation.staycard.reservationcard.reservationdetails" &&
+					!document.activeElement.className.search(/prevent-api-call/) ) {
 					$scope.$broadcast("UPDATEGUESTDEATAILS", {"isBackToStayCard": false});
 				}
 
@@ -568,7 +580,7 @@ sntRover.controller('reservationDetailsController',
 
 
 		$scope.$on('$viewContentLoaded', function() {
-			$scope.refreshReservationDetailsScroller(3000);
+			$scope.refreshReservationDetailsScroller(500);
 		});
 
 		/**
@@ -754,10 +766,9 @@ sntRover.controller('reservationDetailsController',
 		 * as part of CICO-17712, we are hiding it for now (group rservation)
 		 * @return {Boolean}
 		 */
-		$scope.shouldShowChangeStayDatesButton = function() {
-			return ($scope.isNightsEnabled() &&
-				!$scope.reservationData.reservation_card.is_hourly_reservation);
-		};
+        $scope.shouldShowChangeStayDatesButton = function () {
+            return $scope.isNightsEnabled() && !$scope.reservationData.reservation_card.is_hourly_reservation;
+        };
 
 		$scope.isNightsEnabled = function() {
 			var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
@@ -780,22 +791,20 @@ sntRover.controller('reservationDetailsController',
 			var is_hourly_reservation = $scope.reservationData.reservation_card.is_hourly_reservation,
 				reservation_status    = $scope.reservationData.reservation_card.reservation_status,
 				group_id              = $scope.reservationData.reservation_card.group_id,
-                isStayDatesChangeAllowed;
+                isStayDatesChangeAllowed = false;
 
-			var not_hourly_reservation = ! is_hourly_reservation,
+			var is_full_mode = $rootScope.hotelDiaryConfig.mode === 'FULL' ? true : false,
 				checking_in_reserved   = {'CHECKING_IN': true, 'RESERVED': true}[reservation_status],
 				group_checked_in       = {'CHECKEDIN': true, 'CHECKING_OUT': true}[reservation_status] && !! group_id;
 
 			isStayDatesChangeAllowed = false;
 
-			if (
-				$rootScope.isStandAlone &&
-				not_hourly_reservation &&
-				hasPermissionToChangeStayDates() &&
-				(checking_in_reserved || group_checked_in)
-			) {
-				isStayDatesChangeAllowed = true;
-			}
+            if ($rootScope.isStandAlone &&
+                (!is_full_mode && !is_hourly_reservation)
+                && hasPermissionToChangeStayDates()
+                && (checking_in_reserved || group_checked_in)) {
+                isStayDatesChangeAllowed = true;
+            }
 
 			return isStayDatesChangeAllowed;
 		};
@@ -811,16 +820,36 @@ sntRover.controller('reservationDetailsController',
 			return (isAllotmentPresent);
 		};
 
+		// Handle Navigation to Nightly Diary
+		var navigateToNightlyDiary = function() {
+            $state.go('rover.nightlyDiary', {
+                start_date: $scope.reservationData.reservation_card.arrival_date,
+                reservation_id: $scope.reservationData.reservation_card.reservation_id,
+                confirm_id: $scope.reservationData.reservation_card.confirmation_num,
+                room_id: $scope.reservationData.reservation_card.room_id,
+                origin: 'STAYCARD_NIGHTS'
+            });
+        };
+
 		$scope.extendNights = function() {
 			// CICO-17693: should be disabled on the Stay Card for Group reservations, until we have the complete functionality working:
 			if ($scope.shouldDisableExtendNightsButton()) {
 				return false;
 			};
-
-			$state.go("rover.reservation.staycard.changestaydates", {
-				reservationId: reservationMainData.reservationId,
-				confirmNumber: reservationMainData.confirmNum
-			});
+			if ($rootScope.hotelDiaryConfig.mode === 'FULL' && $scope.reservationData.reservation_card.is_hourly_reservation) {
+                // Go to D-Diary
+                $scope.showDiaryScreen();
+            }
+            else if ($rootScope.hotelDiaryConfig.mode === 'FULL' && !$scope.reservationData.reservation_card.is_hourly_reservation) {
+				// Go to N-Diary
+				navigateToNightlyDiary();
+            }
+            else {
+                $state.go("rover.reservation.staycard.changestaydates", {
+                    reservationId: reservationMainData.reservationId,
+                    confirmNumber: reservationMainData.confirmNum
+                });
+            }
 		};
 
 		var editPromptDialogId;
@@ -1044,7 +1073,8 @@ sntRover.controller('reservationDetailsController',
 			RVReservationCardSrv.checkinDateForDiary = $scope.reservationData.reservation_card.arrival_date.replace(/-/g, '/');
 			$state.go('rover.diary', {
 				reservation_id: $scope.reservationData.reservation_card.reservation_id,
-				checkin_date: $scope.reservationData.reservation_card.arrival_date
+				checkin_date: $scope.reservationData.reservation_card.arrival_date,
+				is_nightly_reservation: !$scope.reservationData.reservation_card.is_hourly_reservation
 			});
 		};
 
@@ -1382,6 +1412,8 @@ sntRover.controller('reservationDetailsController',
 			'authAmount': '0.00',
 			'manualCCAuthPermission': true,
 			'billData': [],
+			'isManual': false,
+			'manualAuthCode': '',
 			'selectedCardDetails': {	// To keep the selected/active card details
 					'name': '',	// card - name
 					'number': '',	// card - number
@@ -1404,6 +1436,7 @@ sntRover.controller('reservationDetailsController',
 		$scope.showAuthAmountPopUp = function() {
 
 			var fetchCreditCardAuthInfoSuccess = function( data ) {
+				sntActivity.stop('FETCH_AUTH_DETAILS');
 				$scope.$emit('hideLoader');
 				$scope.authData.manualCCAuthPermission = hasManualCCAuthPermission();
 				$scope.authData.billData = data.bill_data;
@@ -1431,6 +1464,7 @@ sntRover.controller('reservationDetailsController',
 			};
 
 			var fetchCreditCardAuthInfoFaliure = function( errorMessage ) {
+				sntActivity.stop('FETCH_AUTH_DETAILS');
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = errorMessage;
 			};
@@ -1442,7 +1476,7 @@ sntRover.controller('reservationDetailsController',
 			var data = {
 				"reservation_id": $scope.reservationData.reservation_card.reservation_id
 			};
-
+			sntActivity.start('FETCH_AUTH_DETAILS');
 			$scope.invokeApi(RVCCAuthorizationSrv.fetchCreditCardAuthInfo, data, fetchCreditCardAuthInfoSuccess, fetchCreditCardAuthInfoFaliure);
 		};
 
@@ -1502,10 +1536,27 @@ sntRover.controller('reservationDetailsController',
 			var onAuthorizationSuccess = function(response) {
 				$scope.$emit('hideLoader');
 				authSuccess(response);
+				if ($scope.authData.isManual) {
+					$scope.authData.isManual = false; // reset 
+					$scope.authData.authAmount = ''; // reset
+					$scope.authData.manualAuthCode = ''; // reset
+					ngDialog.close(); // reload popup with new data from the API
+					$scope.showAuthAmountPopUp();
+				}
 			};
 
 			var onAuthorizationFaliure = function(errorMessage) {
 				$scope.$emit('hideLoader');
+				if ($scope.authData.isManual) {
+					ngDialog.close(); // close the initial popup and display error
+					$scope.isCCAuthPermission = true;
+					ngDialog.open({
+						template: '/assets/partials/authorization/rvManualAuthorizationProcess.html',
+						className: '',
+						closeByDocument: false,
+						scope: $scope
+					});
+				}
 				authFailure();
 			};
 
@@ -1514,7 +1565,12 @@ sntRover.controller('reservationDetailsController',
 				"amount": $scope.authData.authAmount
 			};
 
-			$scope.invokeApi(RVCCAuthorizationSrv.manualAuthorization, postData, onAuthorizationSuccess, onAuthorizationFaliure);
+			if ($scope.authData.isManual) {
+				postData.auth_code = $scope.authData.manualAuthCode;
+				$scope.invokeApi(RVCCAuthorizationSrv.manualVoiceAuth, postData, onAuthorizationSuccess, onAuthorizationFaliure);
+			} else {
+				$scope.invokeApi(RVCCAuthorizationSrv.manualAuthorization, postData, onAuthorizationSuccess, onAuthorizationFaliure);
+			}
 		};
 
 		// To handle close/cancel button click after success/declined of auth process.
@@ -1524,22 +1580,27 @@ sntRover.controller('reservationDetailsController',
 
 		// To handle authorize button click on 'auth amount popup' ..
 		$scope.authorize = function() {
-			ngDialog.close(); // Closing the 'auth amount popup' ..
+			if ($scope.authData.isManual) {
+				manualAuthAPICall(); // No need to show Auth in progress message
+			} else {
+				ngDialog.close(); // Closing the 'auth amount popup' ..
 
-			authInProgress();
+				authInProgress();
 
-			setTimeout(function() {
+				setTimeout(function() {
 
-				ngDialog.open({
-					template: '/assets/partials/authorization/rvManualAuthorizationProcess.html',
-					className: '',
-					closeByDocument: false,
-					scope: $scope
-				});
+					ngDialog.open({
+						template: '/assets/partials/authorization/rvManualAuthorizationProcess.html',
+						className: '',
+						closeByDocument: false,
+						scope: $scope
+					});
 
-				manualAuthAPICall();
+					manualAuthAPICall();
 
-			}, 100);
+				}, 100);
+			}
+
 		};
 
     // Handle TRY AGAIN on auth failure popup.
@@ -1793,8 +1854,12 @@ sntRover.controller('reservationDetailsController',
 			$filter('translate')('GUEST_LAST_NAME') + ": " + lastName + "\r\n" +
 			$filter('translate')('DOB') + ": " + guestDocData.date_of_birth + "\r\n" +
 			$filter('translate')('NATIONALITY') + ": " + guestDocData.nationality + "\r\n" +
-			$filter('translate')('ID_NUMBER') + ": " + guestDocData.document_number + "\r\n" +
-			$filter('translate')('ID_EXPIRY') + ": " + docExpiry;
+			$filter('translate')('ID_NUMBER') + ": " + guestDocData.document_number + "\r\n";
+
+		if (guestDocData.id_scan_info && guestDocData.id_scan_info.personal_id_no) {
+			guestInfo = guestInfo + $filter('translate')('PERSONAL_NUMBER') + ": " + guestDocData.id_scan_info.personal_id_no + "\r\n";
+		}
+		guestInfo = guestInfo + $filter('translate')('ID_EXPIRY') + ": " + docExpiry;
 
 		return guestInfo;
 	};

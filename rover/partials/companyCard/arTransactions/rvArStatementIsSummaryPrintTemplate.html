@@ -1,0 +1,65 @@
+<div class="invoice-body" style="margin-top: 1cm;">
+        <table class="invoice-details" style="text-transform: none;margin: 4pt 0;page-break-after: auto;width: 100%;table-layout: auto;border-collapse: collapse;border-spacing: 0;clear: both;">
+          <thead>
+            <tr style="page-break-inside: avoid;page-break-after: auto;">
+              <th><strong>{{printData.translation.departure_date}}</strong></th>
+              <th><strong>Reservation Name</strong></th>
+              <th><strong>Invoice/Folio No./AR No.</strong></th>
+              <th class="align-right"><strong>{{printData.translation.debits}}</strong></th>
+              <th class="align-right"><strong>{{printData.translation.credits}}</strong></th>
+              <th class="align-right"><strong>{{printData.translation.amount_due}}</strong></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-if="printData.manual_balance_details.length > 0" class="person" ng-repeat="statement in printData.manual_balance_details">
+                <td>{{statement.departure_date}}</td>
+                <td>{{statement.name}}</td>
+                <td ng-if="statement.invoice_number">{{statement.invoice_number}}</td>
+                <td class="align-right"><span class="currency">{{currencySymbol}}</span>{{statement.debit}}</td>
+                <td class="align-right"><span class="currency">{{currencySymbol}}</span>{{statement.credit}}</td>
+                <td class="align-right"><span class="currency">{{currencySymbol}}</span>{{statement.amount_due}}</td>
+            </tr>    
+            <tr ng-if="printData.posting_account_details.length > 0" class="person" ng-repeat="statement in printData.posting_account_details">
+                <td>{{statement.departure_date}}</td>
+                <td>{{statement.name}}</td>
+                <td ng-if="printData.is_print_ar_invoice_number_enabled && statement.ar_invoice_number">{{statement.ar_invoice_number}}</td>
+                <td ng-if="printData.is_print_ar_invoice_number_enabled && !statement.ar_invoice_number && statement.folio_number">{{statement.folio_number}}</td>
+                <td ng-if="printData.is_print_ar_invoice_number_enabled && !statement.ar_invoice_number && !statement.folio_number && statement.invoice_number">{{statement.invoice_number}}</td>
+                <td ng-if="!printData.is_print_ar_invoice_number_enabled && statement.folio_number">{{statement.folio_number}}</td>
+                <td ng-if="!printData.is_print_ar_invoice_number_enabled && !statement.folio_number && statement.invoice_number">{{statement.invoice_number}}</td>
+                <td class="align-right"><span class="currency">{{currencySymbol}}</span>{{statement.debit}}</td>
+                <td class="align-right"><span class="currency">{{currencySymbol}}</span>{{statement.credit}}</td>
+                <td class="align-right"><span class="currency">{{currencySymbol}}</span>{{statement.amount_due}}</td>
+            </tr>
+            <tr ng-if="printData.reservation_details.length > 0" class="person" ng-repeat="statement in printData.reservation_details">
+                <td>{{statement.departure_date}}</td>
+                <td>{{statement.name}}</td>
+                <td ng-if="printData.is_print_ar_invoice_number_enabled && statement.ar_invoice_number">{{statement.ar_invoice_number}}</td>
+                <td ng-if="printData.is_print_ar_invoice_number_enabled && !statement.ar_invoice_number && statement.folio_number">{{statement.folio_number}}</td>
+                <td ng-if="printData.is_print_ar_invoice_number_enabled && !statement.ar_invoice_number && !statement.folio_number && statement.invoice_number">{{statement.invoice_number}}</td>
+                <td ng-if="!printData.is_print_ar_invoice_number_enabled && statement.folio_number">{{statement.folio_number}}</td>
+                <td ng-if="!printData.is_print_ar_invoice_number_enabled && !statement.folio_number && statement.invoice_number">{{statement.invoice_number}}</td>
+                <td class="align-right"><span class="currency">{{currencySymbol}}</span>{{statement.debit}}</td>
+                <td class="align-right"><span class="currency">{{currencySymbol}}</span>{{statement.credit}}</td>
+                <td class="align-right"><span class="currency">{{currencySymbol}}</span>{{statement.amount_due}}</td>
+            </tr>
+          </tbody>
+          <tfoot>
+                <tr>
+                    <td colspan="5"><strong >{{printData.translation.total_amount}}</strong></td>
+                    <td><strong><span class="currency">{{currencySymbol}}</span>{{printData.total_amount | number: precisonTwo}}</strong></td>
+                </tr>
+
+                <tr>
+                    <td colspan="5"><strong >{{printData.translation.total_account_amount}}</strong></td>
+                    <td><strong><span class="currency">{{currencySymbol}}</span>{{printData.total_account_amount | number: precisonTwo}}</strong></td>
+                </tr>
+                
+                <tr>
+                    <td colspan="5"><strong >{{printData.translation.total_account_amount_due}}</strong></td>
+                    <td><strong><span class="currency">{{currencySymbol}}</span>{{printData.total_amount_due | number: precisonTwo}}</strong></td>
+                </tr>
+
+            </tfoot>
+      </table>
+     </div>

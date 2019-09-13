@@ -11,6 +11,7 @@ module.exports = {
 					controllerRoot + 'depositBalance/rvDepositBalanceAccountsCtrl.js',
 					controllerRoot + 'roverPayment/rvCardOptionsCtrl.js',
 					controllerRoot + "billFormat/rvBillFormatPopupController.js",
+					controllerRoot + "paymentReceipt/**/*.js",
 					controllerRoot + "payment/**/**.js",
 					controllerRoot + "bill/rvVoidBillPopupCtrl.js",
 					servicesRoot + "rvCompanyCardSrv.js",

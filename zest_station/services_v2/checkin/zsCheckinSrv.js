@@ -9,6 +9,16 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             TERMINAL_POLLING_INTERVAL_MS = 3000;
 
         this.checkInReservations = [];
+        this.currentReservationIdDetails = {};
+
+        this.setCurrentReservationIdDetails = function(data) {
+            that.currentReservationIdDetails = data;
+        };
+
+        this.getCurrentReservationIdDetails = function() {
+            return that.currentReservationIdDetails;
+        };
+
         this.setCheckInReservations = function(data) {
             that.checkInReservations = [];
             that.checkInReservations = data;
@@ -281,7 +291,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var deferred = $q.defer();
             var url = '/api/reservations/' + params.id + '/print_registration_card';
 
-            zsBaseWebSrv.getJSON(url).then(function(data) {
+            zsBaseWebSrv.getJSON(url, {'locale': params.locale}).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
@@ -608,6 +618,25 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var url = '/staff/guest_cards/' + params.guest_id + '.json';
             
             return zsBaseWebSrv.putJSON(url, params);
+        };
+
+        this.getRoomUpsellSettings = function() {
+            var url = '/admin/room_upsells/room_upsell_options.json';
+
+            return zsBaseWebSrv2.getJSON(url);
+        };
+
+        this.preCheckinReservation = function(params) {
+            var url = '/api/reservations/' + params.reservation_id + '/pre_checkin';
+
+            return zsBaseWebSrv2.postJSON(url, params);
+        };
+
+        this.addNotes = function (params) {
+            
+            var url = '/reservation_notes';
+
+            return zsBaseWebSrv2.postJSON(url, params);
         };
     }
 ]);

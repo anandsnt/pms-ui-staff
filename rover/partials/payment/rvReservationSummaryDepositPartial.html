@@ -27,14 +27,14 @@
                        delay="1000"
                        function-to-fire="onChangeGiftCard"
                        type="text"/>
-                <label ng-show="giftCard.amountAvailable"> Available Card Balance(<span class="currency">{{currencySymbol}}</span>) </label>
+                <label ng-show="giftCard.amountAvailable"> Available Card Balance(<span class="currency">{{rateCurrency}}</span>) </label>
                 <input ng-show="giftCard.amountAvailable"
                        ng-readonly="true"
                        ng-model="giftCard.availableBalance"
                        type="text"/>
             </div>
             <div class="entry full-width">
-                <label>Amount to pay (<span><span class="currency">{{currencySymbol}}</span></span>)</label>
+                <label>Amount to pay (<span><span class="currency">{{rateCurrency}}</span></span>)</label>
                 <input ng-change="onPaymentInfoChange()"
                        ng-model="payment.amount"
                        type="text"
@@ -67,7 +67,7 @@
                 <span ng-show="feeData.showFee" class="total">
           Total:
           <strong ng-if="!payment.isRateSuppressed">
-              <span class="currency">{{currencySymbol}}</span>{{feeData.totalOfValueAndFee}}
+              <span class="currency">{{rateCurrency}}</span>{{feeData.totalOfValueAndFee}}
           </strong>
           <strong ng-if="payment.isRateSuppressed">
               {{'SUPPRESSED_RATES_TEXT' | translate}}
@@ -83,7 +83,8 @@
 
         <div class="actions" ng-show="!!selectedPaymentType">
             <button type="button" class="button blue" ng-click="payLater()">Pay deposit later</button>
-            <button type="button" class="button green" ng-click="submitPayment()" ng-hide="shouldHidePaymentButton()">
+            <button type="button" class="button green" ng-disabled="shouldHidePaymentButton()"
+            ng-class="{'grey':shouldHidePaymentButton()}" ng-click="submitPayment()">
                 Pay
                 deposit now
             </button>
@@ -100,13 +101,13 @@
             <li ng-if="feeData.showFee">
                 Amount paid:
                 <span class="value">
-                    <i class="currency">{{currencySymbol}}</i>{{payment.amount}} + <i class="currency">{{currencySymbol}}</i>{{feeData.calculatedFee}} fee
+                    <i class="currency">{{rateCurrency}}</i>{{payment.amount}} + <i class="currency">{{rateCurrency}}</i>{{feeData.calculatedFee}} fee
                 </span>
             </li>
             <li ng-if="!feeData.showFee">
                 Amount paid:
                 <span class="value">
-                    <i class="currency">{{currencySymbol}}</i>{{payment.amount}}
+                    <i class="currency">{{rateCurrency}}</i>{{payment.amount}}
                 </span>
             </li>
         </ul>

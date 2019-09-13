@@ -472,8 +472,10 @@ sntRover.controller('RVActionsManagerController',
                         $("header .h2").addClass('text-hide');
                         // remove the orientation after similar delay
                         removePrintOrientation();
-                    }, 200); 
+                    }, 200);
+                    $("body #loading").html('<div id="loading-spinner" ></div>');
                 };
+                $("body #loading").html("");
                 /*
                 *   ======[ READY TO PRINT ]======
                 */

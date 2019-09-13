@@ -61,6 +61,17 @@
                 </td>
             </tr>
             <tr>
+                <td>Germanic Deposit</td>
+                <td>
+                    <!-- remove .on when not active -->
+                    <div class="switch-button" ng-class="{'on' : legalSettings.advance_payment_enabled}">
+                        <!-- remove checked when not active-->
+                        <input name="germanic-deposit" id="germanic-deposit" value="germanic-deposit" type="checkbox" ng-model="legalSettings.advance_payment_enabled">
+                        <span class="switch-icon"></span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
                 <td>Folio Number Prefix</td>
                 <td>
                     <input type="text" ng-model="legalSettings.folio_no_prefix" placeholder="Enter Prefix"> 
@@ -70,6 +81,12 @@
                 <td>First Folio number field</td>
                 <td>
                     <input type="text" ng-model="legalSettings.first_folio_number" placeholder="Enter First Folio Number"> 
+                </td>
+            </tr>
+            <tr>
+                <td>Folio Label</td>
+                <td>
+                    <input type="text" ng-model="legalSettings.folio_label" placeholder="Enter Folio Label"> 
                 </td>
             </tr>
             <tr>

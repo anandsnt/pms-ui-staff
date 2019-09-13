@@ -72,18 +72,6 @@ describe('ADCoTaMandatoryFieldsCtrl', function() {
 
     // ========================
 
-    it('Clicked status toggle when organization id visibility is true', function() {
-
-        $scope.clickedStatus('organization_id_mandatory');
-
-        expect($scope.coTaMandatoryFields.organization_id_mandatory.is_visible).toBe(false);
-        expect($scope.coTaMandatoryFields.organization_id_mandatory.is_mandatory_on_ar_account_creation).toBe(false);
-        expect($scope.coTaMandatoryFields.organization_id_mandatory.is_mandatory_on_account_creation).toBe(false);
-
-    });
-
-    // ========================
-
     it('Clicked mandatory on AR account creation for address line', function() {
 
         $scope.clickedMandatoryOnArAccountCreation(true, "address_line1_mandatory");

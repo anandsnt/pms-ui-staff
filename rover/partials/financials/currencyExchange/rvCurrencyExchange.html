@@ -8,8 +8,12 @@
         </div>
 
         <div class="filters">
-            <input id="start-date" class="datepicker" readonly type="text" ui-date="startDateOptions" value="{{start_date | date: dateFormat }}" />
-            <input id="end-date" class="datepicker" readonly type="text" ui-date="endDateOptions" value="{{end_date | date: dateFormat}}" />
+            <input id="start-date" class="datepicker" readonly type="text" ng-model="start_date" ui-date="startDateOptions" value="{{start_date | date: dateFormat }}" />
+            <input id="end-date" ng-model="end_date" class="datepicker" readonly type="text" ui-date="endDateOptions" value="{{end_date | date: dateFormat}}" />
+            <div class="select" >
+                <select class="select-currency" id="currency" ng-change="changeCurrency()" ng-model="selected_rate_currency" ng-options="currency.id as currency.symbol for currency in rateCurrencyList">
+                </select>
+            </div>
         </div>
 
         <div id="exchange-grid" class="scrollable" ng-iscroll="CURRENCY_SCROLLER"> <!-- iScroll here -->
@@ -28,7 +32,7 @@
                                 <strong>{{exchangeRate.day}}, {{exchangeRate.date | date: dateFormat}}</strong>
                             </td>
                             <td>
-                                <span class="currency">{{invoiceCurrencySymbol}}</span>
+                                <span class="currency">{{selected_rate_currency_symbol}}</span>
                                 <input type="text" ng-model="exchangeRate.conversion_rate" ng-disabled="{{exchangeRate.isDisabled}}"><!-- Add attr 'disabled' if it's for past date -->
                             </td>
                             <td>

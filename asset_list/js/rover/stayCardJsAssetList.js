@@ -14,7 +14,8 @@ module.exports = {
                 nonMinifiedFiles: [
                     'rover/filters/rangeFilter.js',
                     controllerRoot + "rvGuestController.js",
-                    controllerRoot + "rvContactInfoDatePickerCtrl.js",
+                    // controllerRoot + "rvContactInfoDatePickerCtrl.js",
+                    controllerRoot + "rvAllContactInfoDatePickerCtrl.js",
                     controllerRoot + "rvAddLoyaltyProgramController.js",
                     controllerRoot + "rvGuestCardLoyaltyCtrl.js",
                     controllerRoot + "rvReservationRoomStatusCtrl.js",
@@ -70,7 +71,8 @@ module.exports = {
                     sharedRoot + "sntIDCollection/sntIDCollectionApp.js",
                     sharedRoot + "sntIDCollection/services/*.js",
                     sharedRoot + "sntIDCollection/constants/*.js",
-                    sharedRoot + "sntIDCollection/controllers/*.js",		    
+                    sharedRoot + "sntIDCollection/controllers/*.js",
+                    servicesRoot + "bill/rvBillCardSrv.js",		    
 
                     // Eliminate all spec files
                     '!**/*.spec.js'

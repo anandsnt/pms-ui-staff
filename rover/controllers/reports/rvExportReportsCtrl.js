@@ -148,6 +148,20 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             }
         };
 
+        /**
+         * Navigate to the schedulable report list
+         */
+        $scope.navigateToSchedulableReportList = function () {
+            ngDialog.close();
+            if ( !! $scope.selectedReport && $scope.selectedReport.active ) {
+                $scope.selectedReport.active = false;
+            }
+            $scope.updateViewCol($scope.viewColsActions.ONE);
+            $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
+
+            fetchReqDatas();
+        };
+
         var createSchedule = function() {
             var params = {
                 report_id: $scope.selectedEntityDetails.id,
@@ -157,16 +171,21 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 delivery_type_id: $scope.scheduleParams.delivery_id
             };
 
-            var success = function() {
+            var success = function( data ) {
                 $scope.errorMessage = '';
                 $scope.$emit( 'hideLoader' );
-                if ( !! $scope.selectedReport && $scope.selectedReport.active ) {
-                    $scope.selectedReport.active = false;
+                if (data.is_export_already_exist) {
+                    ngDialog.open({
+                        template: '/assets/partials/reports/rvDuplicateScheduleWarningPopup.html',
+                        scope: $scope,
+                        closeByEscape: false,
+                        data: {
+                            isUpdate: false
+                        }
+                    }); 
+                } else {
+                    $scope.navigateToSchedulableReportList();
                 }
-                $scope.updateViewCol($scope.viewColsActions.ONE);
-                $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
-
-                fetchReqDatas();
             };
 
             var failed = function(errors) {
@@ -233,6 +252,28 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             $scope.invokeApi( reportsSrv.createSchedule, params, success, failed );
         };
 
+        // Navigates to schedule list
+        $scope.navigateToSchedulesList = (params) => {
+            ngDialog.close();
+            var updatedIndex = _.findIndex($scope.$parent.$parent.schedulesList, { id: params.id });
+            
+            if ( !! $scope.selectedSchedule && $scope.selectedSchedule.active ) {
+                $scope.selectedSchedule.active = false;
+            }
+            $scope.updateViewCol($scope.viewColsActions.ONE);
+
+            if ( updatedIndex >= 0 ) {
+                $scope.$parent.$parent.schedulesList[updatedIndex].frequency_id = params.frequency_id;
+                $scope.$parent.$parent.schedulesList[updatedIndex].repeats_every = params.repeats_every;
+                $scope.$parent.$parent.schedulesList[updatedIndex].time = params.time;
+                $scope.$parent.$parent.schedulesList[updatedIndex].starts_on = params.starts_on;
+                $scope.$parent.$parent.schedulesList[updatedIndex].ends_on_after = params.ends_on_after;
+                $scope.$parent.$parent.schedulesList[updatedIndex].ends_on_date = params.ends_on_date;
+
+                $scope.$parent.$parent.schedulesList[updatedIndex].occurance = findOccurance($scope.$parent.$parent.schedulesList[updatedIndex]);
+            }
+        };
+
         var saveSchedule = function() {
             var params = {
                 id: $scope.selectedEntityDetails.id,
@@ -243,26 +284,23 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 delivery_type_id: $scope.scheduleParams.delivery_id
             };
 
-            var success = function() {
-                var updatedIndex = _.findIndex($scope.$parent.$parent.schedulesList, { id: params.id });
-
+            var success = function(data) {
                 $scope.errorMessage = '';
                 $scope.$emit( 'hideLoader' );
-                if ( !! $scope.selectedSchedule && $scope.selectedSchedule.active ) {
-                    $scope.selectedSchedule.active = false;
+                if (data.is_export_already_exist) {
+                    ngDialog.open({
+                        template: '/assets/partials/reports/rvDuplicateScheduleWarningPopup.html',
+                        scope: $scope,
+                        closeByEscape: false,
+                        data: {
+                            isUpdate: true,
+                            params: params
+                        }
+                    }); 
+                } else {
+                    $scope.navigateToSchedulesList(params);
                 }
-                $scope.updateViewCol($scope.viewColsActions.ONE);
-
-                if ( updatedIndex >= 0 ) {
-                    $scope.$parent.$parent.schedulesList[updatedIndex].frequency_id = params.frequency_id;
-                    $scope.$parent.$parent.schedulesList[updatedIndex].repeats_every = params.repeats_every;
-                    $scope.$parent.$parent.schedulesList[updatedIndex].time = params.time;
-                    $scope.$parent.$parent.schedulesList[updatedIndex].starts_on = params.starts_on;
-                    $scope.$parent.$parent.schedulesList[updatedIndex].ends_on_after = params.ends_on_after;
-                    $scope.$parent.$parent.schedulesList[updatedIndex].ends_on_date = params.ends_on_date;
-
-                    $scope.$parent.$parent.schedulesList[updatedIndex].occurance = findOccurance($scope.$parent.$parent.schedulesList[updatedIndex]);
-                }
+                
             };
 
             var failed = function(errors) {
@@ -497,7 +535,9 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Clairvoyix Reservations Export': true,
                 'Synxis - Reservations': true,
                 'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
-                'Police Report Export': true
+                'Police Report Export': true,
+                'Switzerland Zurich Police Export': true,
+                'Invoice / Folio Export': true
             };
 
             var forRunOnceOnly = {
@@ -514,7 +554,9 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Clairvoyix Reservations Export': true,
                 'Synxis - Reservations': true,
                 'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
-                'Police Report Export': true
+                'Police Report Export': true,
+                'Switzerland Zurich Police Export': true,
+                'Austria Nationality Export': true
             };
 
             var forWeekly = {
@@ -522,7 +564,9 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Last Week Reservations': true,
                 'Clairvoyix Reservations Export': true,
                 'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
-                'Police Report Export': true
+                'Police Report Export': true,
+                'Switzerland Zurich Police Export': true,
+                'Invoice / Folio Export': true
             };
             var forMonthly = {
                 'Future Reservations': true,
@@ -531,14 +575,20 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Commissions': true,
                 'Clairvoyix Reservations Export': true,
                 'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
-                'Police Report Export': true
+                'Police Report Export': true,
+                'Belgium Nationality Export': true,
+                'Switzerland Zurich Police Export': true,
+                'Austria Nationality Export': true,
+                'Invoice / Folio Export': true
             };
 
             var forHourly = {
                 'Future Reservations': true,
                 'Clairvoyix Reservations Export': true,
                 'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
-                'Police Report Export': true
+                'Police Report Export': true,
+                'Synxis - Reservations': true,
+                'Switzerland Zurich Police Export': true
             };
 
             if ( forHourly[item.report.title] ) {
@@ -1161,7 +1211,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
          * Show export calender only for joyrnal export
          */
         $scope.shouldShowExportCalenderDate = function () {
-            if ($scope.selectedEntityDetails.report.title === 'Journal Export') {
+            if ($scope.selectedEntityDetails.report.title === 'Journal Export' || $scope.selectedEntityDetails.report.title === 'Invoice / Folio Export') {
                 var dateFieldObject = _.find($scope.originalScheduleTimePeriods,
                     function(item) {
                         return item.value === 'DATE'; }

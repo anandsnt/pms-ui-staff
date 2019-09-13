@@ -32,20 +32,26 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
             if (origin !== "SUMMARY_DATE_CHANGED") {
                 $scope.$emit('hideLoader');
             }
+            if ($scope.data.isExpandedViewRevenue) {
+                $scope.$emit("EXPAND_REVENUE");
+            }
 		};
 
         var postData = {
             "from_date": $scope.data.fromDate,
             "to_date": $scope.data.toDate,
             "employee_ids": $scope.data.selectedEmployeeList,
-            "department_ids": $scope.data.selectedDepartmentList
+            "department_ids": $scope.data.selectedDepartmentList,
+            "filter_id": $scope.data.filterId,
+            "query": $scope.data.query
         };
 
 		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, postData, successCallBackFetchRevenueData);
     };
 
-	initRevenueData("");
-
+    if (!$scope.data.isExpandedViewRevenue) {
+        initRevenueData();
+    }
     fetchDepartments();
 
     $scope.addListener('REFRESHREVENUECONTENT', function() {
@@ -60,6 +66,10 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
         initRevenueData("");
     });
 
+    $scope.addListener('REVENUESEARCH', function() {
+        initRevenueData();
+    });
+
     // CICO-28060 : Update dates for Revenue & Payments upon changing summary dates
     $scope.addListener('REFRESH_REVENUE_PAYMENT_DATA', function( event, data ) {
         $scope.data.fromDate = data.date;
@@ -67,8 +77,17 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
         initRevenueData(data.origin);
     });
 
+    $scope.addListener('EXPAND_REVENUE_SCREEN', function() {
+        
+        angular.forEach($scope.data.revenueData.charge_groups, function(item, key) {
+            if ($scope.checkHasArrowFirstLevel(key)) {
+                $scope.clickedFirstLevel(key, true);
+            }
+        });
+    });    
+
     /** Handle Expand/Collapse on Level1 **/
-    $scope.clickedFirstLevel = function(index1) {
+    $scope.clickedFirstLevel = function(index1, shouldExpandSecondLevel) {
 
         var toggleItem = $scope.data.revenueData.charge_groups[index1];
 
@@ -78,6 +97,13 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
                 toggleItem.active = !toggleItem.active;
                 refreshRevenueScroller();
                 $scope.data.selectedChargeCode  = '';
+                if (shouldExpandSecondLevel) {
+                    angular.forEach(toggleItem.charge_codes, function(item, key) {
+                        if ($scope.checkHasArrowSecondLevel(index1, key)) {
+                            $scope.clickedSecondLevel(index1, key);
+                        }
+                    });
+                }
             }
             $scope.errorMessage = "";
             $scope.$emit('hideLoader');
@@ -91,7 +117,9 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
                 "to_date": $scope.data.toDate,
                 "charge_group_id": toggleItem.id,
                 "employee_ids": $scope.data.selectedEmployeeList,
-                "department_ids": $scope.data.selectedDepartmentList
+                "department_ids": $scope.data.selectedDepartmentList,
+                "filter_id": $scope.data.filterId,
+                "query": $scope.data.query
             };
 
             $scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeCodes, postData, successCallBackFetchRevenueDataChargeCodes);
@@ -137,7 +165,9 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
                 "employee_ids": $scope.data.selectedEmployeeList,
                 "department_ids": $scope.data.selectedDepartmentList,
                 "page_no": chargeCodeItem.page_no,
-                "per_page": $scope.data.filterData.perPage
+                "per_page": $scope.data.filterData.perPage,
+                "filter_id": $scope.data.filterId,
+                "query": $scope.data.query
             };
 
             $scope.invokeApi(RVJournalSrv.fetchRevenueDataByTransactions, postData, successCallBackFetchRevenueDataTransactions);
@@ -165,9 +195,9 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
     // To show/hide expandable arrow to level1
     $scope.checkHasArrowFirstLevel = function(index) {
         var hasArrow = false;
-        var item = $scope.data.revenueData.charge_groups[index].charge_codes;
+        var count = $scope.data.revenueData.charge_groups[index].charge_codes_count;
 
-        if ((typeof item !== 'undefined') && (item.length > 0)) {
+        if (count > 0) {
             hasArrow = true;
         }
         return hasArrow;
@@ -176,9 +206,9 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
     // To show/hide expandable arrow to level2
     $scope.checkHasArrowSecondLevel = function(index1, index2) {
         var hasArrow = false;
-        var item = $scope.data.revenueData.charge_groups[index1].charge_codes[index2].transactions;
+        var count = $scope.data.revenueData.charge_groups[index1].charge_codes[index2].number;
 
-        if ((typeof item !== 'undefined') && (item.length > 0)) {
+        if (count > 0) {
             hasArrow = true;
         }
         return hasArrow;

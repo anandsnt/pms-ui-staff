@@ -110,7 +110,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
 
             var url = "/admin/rates/" + params.id + "/edit.json";
 
-            ADBaseWebSrv.getJSON(url).then(function (data) {
+            ADBaseWebSrv.getJSON(url, params).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
                 deferred.reject(data);
@@ -178,7 +178,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
 
             var url = "/api/rates/" + params.rateId;
 
-            ADBaseWebSrvV2.getJSON(url).then(function (data) {
+            ADBaseWebSrvV2.getJSON(url, params).then(function (data) {
                 that.rateDetails = data;
                 that.setUpCommissionData(data);
 
@@ -199,6 +199,10 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
                 deferred.reject(data);
             });
             return deferred.promise;
+        };
+
+        this.fetchRoomTypes = function (id) {
+            return ADBaseWebSrvV2.getJSON('/api/rates/' + id + '/fetch_room_types');
         };
 
     }

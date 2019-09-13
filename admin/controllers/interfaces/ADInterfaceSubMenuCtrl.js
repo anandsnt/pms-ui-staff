@@ -2,35 +2,35 @@ admin.controller('ADInterfaceSubMenuCtrl', ['$scope', '$state',
     function($scope, $state) {
         switch ($state.current.name) {
             case "admin.textMessagingGroup":
-                $scope.sectionTitle = "Text Messaging Systems Setup";
+                $scope.sectionTitle = "Integrations > Text Messaging";
                 break;
             case "admin.backOfficeSetup":
-                $scope.sectionTitle = "Back Office Setup";
+                $scope.sectionTitle = "Integrations > Back Office";
                 break;
             case "admin.centralReservationSystemGroup":
-                $scope.sectionTitle = "Central Reservation Systems Setup";
+                $scope.sectionTitle = "Integrations > Central Reservation System";
                 break;
             case "admin.ifcComtrolSetup":
-                $scope.sectionTitle = "Comtrol Setup";
+                $scope.sectionTitle = "Integrations > Comtrol";
                 break;
             case "admin.snapshotSetup":
-                $scope.sectionTitle = "Snapshot Setup";
+                $scope.sectionTitle = "Integrations > Snapshot";
                 break;
             case "admin.mobileKey":
-                $scope.sectionTitle = "Mobile Key Setup";
+                $scope.sectionTitle = "Integrations > Mobile Key";
                 break;
             case "admin.chain.certificates":
-                $scope.sectionTitle = "Certificates Setup";
+                $scope.sectionTitle = "Certificates";
                 break;
             case "admin.commissionsSetup":
-                $scope.sectionTitle = "Commissions Setup";
+                $scope.sectionTitle = "Integrations > Commissions";
                 break;
             // This menu is available at settings->hotel & staff. Added here to reuse the submenu controller
             case "admin.idCollection":
                 $scope.sectionTitle = "ID Collection";
                 break;   
             default:
-                $scope.sectionTitle = "Interfaces Setup";
+                $scope.sectionTitle = "Integrations > Integrations";
         }
 
         var menu = _.find($scope.selectedMenu.components, {state: $state.current.name});
@@ -45,7 +45,7 @@ admin.controller('ADInterfaceSubMenuCtrl', ['$scope', '$state',
 
         var subComponents = (menu && menu.sub_components) || [];
 
-        // CICO-36466 Admin Interfaces Menu to be sorted by alphabetical
+        // CICO-36466 Admin Integrations Menu to be sorted by alphabetical
         $scope.subComponents = _.sortBy(subComponents, function(menu) {
             return menu.name.toLowerCase();
         });

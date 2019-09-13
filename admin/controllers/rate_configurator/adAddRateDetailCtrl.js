@@ -1,5 +1,7 @@
-admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDetailsSrv', 'ngDialog', 'ADReservationToolsSrv',
-    function($scope, $rootScope, ADRatesAddDetailsSrv, ngDialog, ADReservationToolsSrv) {
+admin.controller('ADaddRatesDetailCtrl', ['$scope', '$state', '$rootScope', 'ADRatesAddDetailsSrv', 'ngDialog', 'ADReservationToolsSrv',
+    function($scope, $state, $rootScope, ADRatesAddDetailsSrv, ngDialog, ADReservationToolsSrv) {
+
+        var initialRateData = {};
 
         $scope.init = function() {
             BaseCtrl.call(this, $scope);
@@ -9,6 +11,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             getTasksForDefaultWorkType();
             $scope.detailsMenu = '';
             $scope.isStandAlone = $rootScope.isStandAlone;
+            $scope.disableDayUseToggle = false;
         };
         $scope.getSubtask = function(task) {
             var subtask = [];
@@ -66,6 +69,26 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             return !$rootScope.isHourlyRatesEnabled && (!!$rootScope.isFFPActive || !!$rootScope.isHLPActive);
         };
 
+        $scope.shouldShowPeriodicity = function() {
+            return $rootScope.isHourlyRatesEnabled || $rootScope.hourlyRatesForDayUseEnabled;
+        };
+        
+        $scope.shouldShowBasedOnAndCopy = function() {
+            return !$scope.rateData.is_hourly_rate;
+        };
+
+        $scope.shouldDisableBasedOnAndCopy = function() {
+            var basedOnData = $scope.rateData.based_on;
+
+            return $scope.is_edit && (basedOnData.id === '' || basedOnData.is_copied);
+        };
+
+        $scope.shouldShowMinThreshold = function() {
+            var basedOnData = $scope.rateData.based_on;
+
+            return basedOnData.id === '' || basedOnData.id === null;
+        };
+
         $scope.isHourlyRatesEnabled = function () {
             return !!$rootScope.isHourlyRatesEnabled;
         };
@@ -121,6 +144,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             if (!$scope.rateData.id) {
                 $scope.rateData.is_hourly_rate = $rootScope.isHourlyRatesEnabled;
             }
+            initialRateData = angular.copy($scope.rateData);
 
             $scope.rateTypesDetails.markets = $scope.rateTypesDetails.is_use_markets ? $scope.rateTypesDetails.markets : [];
             $scope.rateTypesDetails.sources = $scope.rateTypesDetails.is_use_sources ? $scope.rateTypesDetails.sources : [];
@@ -162,10 +186,10 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
 
             $scope.rateTypesDetails.depositPolicies = $scope.depositRequiredActivated ? $scope.rateTypesDetails.depositPolicies : [];
             $scope.rateTypesDetails.cancelationPenalties = $scope.cancelPenaltiesActivated ? $scope.rateTypesDetails.cancelationPenalties : [];
-            $scope.rateData.currency_code_id = $scope.rateTypesDetails.hotel_settings.currency.id;
 
             $scope.rateData.last_sync_status = null;
             $scope.rateData.last_sync_at = null;
+            $scope.showRoundingOptions();
         };
         /*
          * Set commission data
@@ -213,6 +237,17 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             return addOnsArray;
         };
 
+        // Method to check whether based on rate is changed before saving.
+        var checkBasedOnRateChanged = function() {
+            var isBasedOnRateChanged = false;
+
+            if (initialRateData.based_on.id !== $scope.rateData.based_on.id) {
+                isBasedOnRateChanged = true;
+            }
+
+            return isBasedOnRateChanged;
+        };
+
         $scope.startSave = function() {
             var amount = parseFloat($scope.rateData.based_on.value_sign + $scope.rateData.based_on.value_abs);
             var addOns = setUpAddOnData();
@@ -231,10 +266,11 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'description': $scope.rateData.description,
                 'rate_type_id': $scope.rateData.rate_type.id,
                 'based_on_rate_id': $scope.rateData.based_on.id,
-                'based_on_type': $scope.rateData.based_on.type,
-                'based_on_value': amount,
+                'based_on_type': $scope.rateData.based_on.id === null ? null : $scope.rateData.based_on.type,
+                'based_on_value': $scope.rateData.based_on.id === null ? null : amount,
                 'promotion_code': $scope.rateData.promotion_code,
                 'charge_code_id': $scope.rateData.charge_code_id,
+                'fixed_it_id': $scope.rateData.fixed_it_id,
                 'currency_code_id': $scope.rateData.currency_code_id,
                 'min_advanced_booking': $scope.rateData.min_advanced_booking,
                 'max_advanced_booking': $scope.rateData.max_advanced_booking,
@@ -258,24 +294,36 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'task_id': $scope.rateData.task_id,
                 'is_copied': ($scope.rateData.based_on.is_copied == undefined) ? false : $scope.rateData.based_on.is_copied,
                 'booking_origin_id': $scope.rateData.booking_origin_id,
-                'tasks': $scope.rateData.tasks
+                'tasks': $scope.rateData.tasks,
+                'is_day_use': $scope.rateData.is_day_use,
+                'round_type_id': $scope.rateData.round_type_id,
+                'min_threshold_percent': ($scope.rateData.based_on.id === null || $scope.rateData.based_on.id === "") ? $scope.rateData.min_threshold_percent : null,
+                'rate_name_trl': $scope.rateData.rate_name_trl,
+                'rate_desc_trl': $scope.rateData.rate_desc_trl,
+                'locale': $scope.rateData.selectedLanguage.code
             };
-
 
             // Save Rate Success Callback
             var saveSuccessCallback = function(data) {
+                // CICO-55171: If Based on rate is changed while editing, go and refresh page..
+                if ($scope.is_edit && checkBasedOnRateChanged()) {
+                    $scope.$emit('hideLoader');
+                    $state.go('admin.rates');
+                }
                 $scope.manipulateData(data);
                 $scope.detailsMenu = "";
                 $('#activityLogArea').scope().detailsMenu = '';
                 $scope.$emit('hideLoader');
+                
                 if ($scope.rateData.based_on && $scope.rateData.based_on.is_copied == true) {
                     $scope.$emit("activateSetTab");
-                } else {
+                } 
+                else {
                     $scope.$emit("changeMenu", 'Room types');
                 }
                 $scope.$emit("rateChangedFromDetails");
-
             };
+
             var saveFailureCallback = function(data) {
                 $scope.$emit('hideLoader');
                 $scope.$emit("errorReceived", data);
@@ -284,7 +332,8 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             if (!$scope.rateData.id) {
                 data.addons = addOns;
                 $scope.invokeApi(ADRatesAddDetailsSrv.createNewRate, data, saveSuccessCallback, saveFailureCallback);
-            } else {
+            } 
+            else {
                 // CICO-49136. We need to compare existing addons and 
                 // selected addons on update. If both are same no need to pass that param to API
                 var addonsDifferenceCount = 0;
@@ -390,7 +439,6 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             $scope.rateData.end_date_for_display = "";
         };
 
-
         $scope.popupCalendar = function() {
             ngDialog.open({
                 template: '/assets/partials/rates/adRatesAdditionalDetailsPicker.html',
@@ -404,6 +452,10 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
         $scope.toggleHourlyRate = function(value) {
             if ($scope.rateData.date_ranges.length < 1) {
                 $scope.rateData.is_hourly_rate = value;
+            }
+            // While Switching to Hourly - Reset Day use flag to false.
+            if (value) {
+                $scope.rateData.is_day_use = false;
             }
         };
 
@@ -448,7 +500,6 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                     });
                 }
             });
-            console.log("$scope.rateData.tasks", $scope.rateData.tasks);
         };
 
         /*  
@@ -473,6 +524,37 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
 
             $scope.callAPI(ADReservationToolsSrv.reSyncRates, options);
         };
+        // Handle based on rate change
+        $scope.basedOnRateChanged = function() {
+            if ($scope.rateData.based_on.id) {
+                var fullRateList = $scope.rateTypesDetails.based_on.results,
+                    selectedRate = _.find(fullRateList, function(item) { return item.id === $scope.rateData.based_on.id; });
+
+                $scope.rateData.is_day_use = selectedRate.is_day_use;
+                $scope.disableDayUseToggle = true;
+                $scope.rateData.basedOnRateUnselected = false;
+            }
+            else {
+                $scope.rateData.round_type_id = null;
+                // not selecting any rate.
+                $scope.disableDayUseToggle = false;
+                $scope.rateData.basedOnRateUnselected = true;
+            }
+        };
+
+        /**
+         * check to see if round_types drop-down should be shown
+         */
+        $scope.showRoundingOptions = function() {
+            var enableRoundingOptions =
+                $scope.rateData.based_on.id &&
+                $scope.rateData.based_on.value_sign &&
+                $scope.rateData.based_on.value_abs &&
+                $scope.rateData.based_on.type;
+
+            return enableRoundingOptions;
+        };
+
         // CICO-56662
         var listener = $scope.$on('INIT_RATE_DETAILS', function() {
             $scope.init();

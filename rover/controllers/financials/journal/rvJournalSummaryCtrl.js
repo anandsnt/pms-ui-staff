@@ -1,5 +1,7 @@
 sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJournalSrv', '$timeout', function($scope, $rootScope, RVJournalSrv, $timeout) {
 	BaseCtrl.call(this, $scope);
+    var timeDelay = 800;
+
     $scope.errorMessage = "";
     $scope.perPage = 50;
 
@@ -7,7 +9,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
     var refreshSummaryScroller = function () {
         setTimeout(function() {
             $scope.refreshScroller('summary_content');
-        }, 500);
+        }, timeDelay);
     };
 
     $scope.addListener('REFRESHSUMMARYCONTENT', function () {
@@ -15,6 +17,10 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
     });
 
     $scope.addListener('RELOADSUMMARYOVERVIEW', function() {
+        initSummaryData();
+    });
+
+    $scope.addListener('SUMMARYSEARCH', function() {
         initSummaryData();
     });
 
@@ -69,12 +75,14 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
         }
     };
 
-	var initSummaryData = function() {
+	var initSummaryData = function() {        
 
 		var successCallBackFetchSummaryData = function(responce) {
 
             $scope.data.summaryData = {};
             $scope.data.summaryData = responce.data;
+            $scope.data.printDate = "";
+            $scope.data.printTime = "";
 
             // Initializing objetcs for DEPOSIT_BALANCE/ GUEST_BALANCE/ AR_BALANCE sections.
             $scope.data.summaryData.deposit_balance = { 'active': false, 'page_no': 1, 'start': 1, 'end': 1, 'nextAction': false, 'prevAction': false };
@@ -87,11 +95,14 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
 		};
 
         var params = {
-            "date": $scope.data.summaryDate
+            "date": $scope.data.summaryDate,
+            "filter_id": $scope.data.filterId,
+            "query": $scope.data.query,
+            "is_summary": $scope.data.isExpandedView
         };
 
 		$scope.invokeApi(RVJournalSrv.fetchSummaryData, params, successCallBackFetchSummaryData);
-    };
+    };    
 
     // To handle date updation on summary tab
     $scope.addListener('summaryDateChanged', function() {
@@ -122,7 +133,10 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
 
             $scope.errorMessage = "";
             refreshSummaryScroller();
-            $scope.$broadcast('updatePagination', balance_type);
+           
+            $timeout (function() {
+                 $scope.$broadcast('updatePagination', balance_type);
+            }, timeDelay);
             $scope.$emit('hideLoader');
         };
 
@@ -132,7 +146,10 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
                 "date": $scope.data.summaryDate,
                 "page_no": summaryItem.page_no,
                 "per_page": $scope.perPage,
-                "type": balance_type
+                "type": balance_type,
+                "filter_id": $scope.data.filterId,
+                "query": $scope.data.query,
+                "is_summary": $scope.data.isExpandedView
             };
 
             $scope.invokeApi(RVJournalSrv.fetchBalanceDetails, params, successCallBackFetchBalanceDetails);
@@ -142,6 +159,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
             refreshSummaryScroller();
         }
     };
+   
 
     /*
      *   Handle Expand/Collapse on balance each type
@@ -151,6 +169,13 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
 
         fetchBalanceDetails( balance_type, false );
     };
+
+    $scope.addListener("EXPAND_SUMMARY_SCREEN", function() {
+        
+        $scope.toggleJournalSummaryItem('DEPOSIT_BALANCE');
+        $scope.toggleJournalSummaryItem('GUEST_BALANCE');
+        $scope.toggleJournalSummaryItem('AR_BALANCE');
+    });
 
 	initSummaryData();
 

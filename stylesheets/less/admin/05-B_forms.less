@@ -94,6 +94,10 @@
             #pixel-to-percent > .width(580, 1200);
             .pull-left;
 
+            > .holder {
+                padding-top: 40px;
+            }
+
             &.left { #pixel-to-percent > .right-margin(40, 1200); }
 
             &.full-width {
@@ -146,6 +150,25 @@
             margin-bottom: 20px;
             #pixel-to-percent > .width(280, 580);
             .pull-left;
+
+            &.has-datepicker {
+                position: relative;
+
+                .date-delete-wrapper {
+                    position: absolute;
+                    bottom: 1px;
+                    right: 1px;
+                    background-color: @grey1;
+                    cursor: pointer;
+                    .square(38px);
+                    .show();
+
+                    .date-delete {
+                        background-position: 16px -536px !important;
+                        .square(38px);
+                    }
+                }
+            }
 
             &.col1-3 {
                 width: 30%;
@@ -262,6 +285,26 @@
 
                 &.no-margin {
                     margin-bottom: 0;
+                }
+
+                &.radio {
+                    &.bold {
+                        &.checked { font-weight: 600; }
+                    }
+                    &.with-arrow {
+                        .icon-arrow-right {
+                            display: inline-block;
+                            vertical-align: middle;
+                            .square(10px);
+                        }
+                        &.checked {
+                            .icon-arrow-right {
+                                .icons.icon-arrow-right-bold;
+                            }
+                            font-weight: 600;
+                        }
+                        
+                    }
                 }
             }
 
@@ -535,6 +578,21 @@
                 }
             }
 
+            .input-group {
+                #flexbox > .parent(row wrap, '', flex-start, '');
+
+                .small-input {
+                    width: 50px;
+                }
+
+                .symbol {
+                    display: block;
+                    width: 40px;
+                    text-align: center;
+                    height: 40px;
+                    line-height: 40px;
+                }
+            }
 
             .select {
                 select { height: 40px; }
@@ -997,6 +1055,56 @@
                     &.no-margin {
                         .checkbox,
                         .radio { margin: 0; }
+                    }
+                }
+
+                &.autocomplete-search {
+                    padding: 0;
+
+                    &:not(.searching) {
+                        background: none;
+                        .box-shadow(none);
+
+                        input {
+                            background: @white;
+                        }
+
+                        .scrollable {
+                            .hide();
+                        }
+
+                        .search {
+                            input {
+                                color: @black;
+                            }
+                        }
+                    }
+
+                    .scrollable {
+                        position: relative;
+                        max-height: 400px;
+                    }
+
+                    .search {
+                        .box-shadow(none);
+                    }
+
+                    .highlight { color: @logoPrimary; }
+
+                    .radio {
+                        padding: 10px 10px 10px 40px;
+                        margin: 0;
+                        background: white;
+                        &:not(:last-child) {
+                            border-bottom: 1px solid rgba( 0, 0, 0, 0.1 );
+                        }
+
+                        .icon-radio {
+                            top: 0;
+                            bottom: 0;
+                            margin: auto;
+                            left: 10px;
+                        }
                     }
                 }
 
@@ -2156,6 +2264,16 @@
         &.activation {
             top: 5px;
             margin-left: 5px;
+        }
+
+        &.disabled {
+            opacity: .5;
+            cursor: default;
+            opacity: .5;
+
+            input {
+                cursor: default;
+            }
         }
     }
 

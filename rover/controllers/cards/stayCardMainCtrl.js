@@ -1,6 +1,6 @@
 
-angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state', 'RVReservationSummarySrv', '$timeout', 'dateFilter', 'RVContactInfoSrv', '$q', 'RVReservationStateService', 'RVReservationDataService', 'rvGroupConfigurationSrv', 'rvAllotmentConfigurationSrv', 'RVReservationPackageSrv',
-	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state, RVReservationSummarySrv, $timeout, dateFilter, RVContactInfoSrv, $q, RVReservationStateService, RVReservationDataService, rvGroupConfigurationSrv, rvAllotmentConfigurationSrv, RVReservationPackageSrv) {
+angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'RVGuestCardsSrv', 'ngDialog', '$state', 'RVReservationSummarySrv', '$timeout', 'dateFilter', 'RVContactInfoSrv', '$q', 'RVReservationStateService', 'RVReservationDataService', 'rvGroupConfigurationSrv', 'rvAllotmentConfigurationSrv', 'RVReservationPackageSrv',
+	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, RVGuestCardsSrv, ngDialog, $state, RVReservationSummarySrv, $timeout, dateFilter, RVContactInfoSrv, $q, RVReservationStateService, RVReservationDataService, rvGroupConfigurationSrv, rvAllotmentConfigurationSrv, RVReservationPackageSrv) {
 		BaseCtrl.call(this, $scope);
 		// Switch to Enable the new cards addition funcitonality
 		$scope.addNewCards = true;
@@ -71,7 +71,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
                     $scope.$broadcast('loyaltyLevelAvailable', $scope.reservationData.guest.membership_type);
                 }, 1000);
 
-                RVContactInfoSrv.setGuest(param.id);
+                RVGuestCardsSrv.setGuest(param.id);
 
                 // CICO-40614 In case of soft reload of stay card (eg. shared room other staycard navigation) the guestCard should be inititated
                 $scope.$broadcast('guestCardAvailable');
@@ -82,15 +82,16 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				 * Hence, for the scenario where we have a guest id, and we are coming into the summary screen in case of hourly reservations, we will have to make this call and fetch
 				 * the guest details
                  */
-                if ($rootScope.isHourlyRateOn && $state.current.name !== 'rover.reservation.staycard.reservationcard.reservationdetails') {
-                    $scope.callAPI(RVContactInfoSrv.getGuestDetails, {
+                if ($stateParams.mode === "EDIT_HOURLY" || ($rootScope.isHourlyRateOn && $state.current.name !== 'rover.reservation.staycard.reservationcard.reservationdetails')) {
+                    $scope.callAPI(RVGuestCardsSrv.fetchGuestDetailsInformation, {
                         successCallBack: function(data) {
                             fetchGuestCardDataSuccessCallback(data);
                         },
                         failureCallBack: function(errorMessage) {
                             $scope.errorMessage = errorMessage;
                             $scope.$emit('hideLoader');
-                        }
+                        },
+                        params: param.id
                     });
                 }
             }
@@ -140,6 +141,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
             $scope.guestCardData.userId = contactInfoData.userId;
             $scope.guestCardData.guestId = contactInfoData.guestId;
             $scope.guestCardData.contactInfo.birthday = data.birthday;
+            $scope.guestCardData.contactInfo.genderTypeList = data.gender_list;
 
             guestInfo = {
                 'user_id': contactInfoData.userId,
@@ -162,7 +164,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
             $scope.$broadcast('guestCardAvailable');
             $scope.$broadcast('resetGuestTab');
             $scope.$emit('hideLoader');
-        }
+        }       
 
         $scope.$on('UPDATE_GUEST_CARD_DETAILS', function(event, data) {
             fetchGuestCardDataSuccessCallback(data);
@@ -948,14 +950,15 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				$scope.searchData.guestCard.guestLoyaltyNumber = "";
 				$scope.searchData.guestCard.email = "";
 				$scope.initGuestCard(cardData);
-                $scope.callAPI(RVContactInfoSrv.getGuestDetails, {
+                $scope.callAPI(RVGuestCardsSrv.fetchGuestDetailsInformation, {
                     successCallBack: function(data) {
                         fetchGuestCardDataSuccessCallback(data);
                     },
                     failureCallBack: function(errorMessage) {
                         $scope.errorMessage = errorMessage;
                         $scope.$emit('hideLoader');
-                    }
+                    },
+                    params: cardData.id
                 });
 
 				$scope.$broadcast('guestSearchStopped');

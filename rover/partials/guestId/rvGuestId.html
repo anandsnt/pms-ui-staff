@@ -50,7 +50,14 @@
                     </li>
                     <!-- ID NUMBER -->
                     <li>
-                        <span>{{ 'ID_NUMBER' | translate}}</span>
+                        <span>{{ 'PERSONAL_NUMBER' | translate}}</span>
+                        <div class="entry">
+                            <input type="text" placeholder="" ng-model="guestIdData.id_scan_info.personal_id_no">
+                        </div>
+                    </li>
+                    <!-- DOCUMENT NUMBER -->
+                    <li>
+                        <span>{{ 'DOCUMENT_NUMBER' | translate}}</span>
                         <div class="entry">
                             <input type="text" placeholder="" ng-model="guestIdData.document_number">
                         </div>

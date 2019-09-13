@@ -10,13 +10,12 @@ angular.module('sntRover').controller('rvGuestDetailsController',
   'RVGuestCardSrv',
   'RVContactInfoSrv',
   'RVSearchSrv',
-  'idTypesList',
   'rvPermissionSrv',
   'RVGuestCardsSrv',
   '$timeout',
   '$window',
   function($scope, contactInfo, countries, $stateParams, $state, $filter, $rootScope, RVGuestCardSrv,
-    RVContactInfoSrv, RVSearchSrv, idTypesList, rvPermissionSrv, RVGuestCardsSrv, $timeout, $window) {        
+    RVContactInfoSrv, RVSearchSrv, rvPermissionSrv, RVGuestCardsSrv, $timeout, $window) {        
 
         BaseCtrl.call(this, $scope);
         GuestCardBaseCtrl.call (this, $scope, RVSearchSrv, RVContactInfoSrv, rvPermissionSrv, $rootScope);
@@ -32,6 +31,8 @@ angular.module('sntRover').controller('rvGuestDetailsController',
               $scope.loyaltyTabEnabled = false;
            }
         });
+
+        $scope.isFromMenuGuest = $stateParams.isFromMenuGuest;
 
         $scope.$on('$destroy', listener);
 
@@ -76,6 +77,8 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             guestCardData.contactInfo.birthday = guestId ? data.birthday : null;
             guestCardData.contactInfo.user_id = guestId ? guestId : "";
             guestCardData.contactInfo.guest_id = guestId ? guestId : "";
+            guestCardData.contactInfo.genderTypeList = data.gender_list;
+            guestCardData.contactInfo.guestAdminSettings = data.guestAdminSettings;
 
             return guestCardData;
         };
@@ -117,15 +120,29 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             }
         };
 
+        $scope.$on('contactInfoError', function(event, value) {
+            if (value) {
+                $scope.current = 'guest-contact';
+            }
+        });
+
         /**
          * Set navigation back to guest card search         
          */
         var setBackNavigation = function() {
-                $rootScope.setPrevState = {
-                    title: $filter('translate')('FIND GUESTS'),
-                    callback: 'navigateBack',
-                    scope: $scope
-                };
+            var backBtnLabel = $filter('translate')('FIND GUESTS');
+
+            if ($stateParams.isMergeViewSelected) {
+                backBtnLabel = $filter('translate')('MERGE_CARDS');
+            } 
+            if ($stateParams.fromStaycard) {
+                backBtnLabel = $filter('translate')('STAY_CARD');
+            }
+            $rootScope.setPrevState = {
+                title: backBtnLabel,
+                callback: 'navigateBack',
+                scope: $scope
+            };
             },
             setTitleAndHeading = function () {
                 var title = $filter('translate')('GUEST_CARD');
@@ -142,9 +159,19 @@ angular.module('sntRover').controller('rvGuestDetailsController',
 
         // Back navigation handler
         $scope.navigateBack = function () {
-          $state.go('rover.guest.search', {
-            textInQueryBox: $stateParams.query
-          });
+          if ($stateParams.fromStaycard) {
+              $state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
+                  id: $stateParams.reservationId,
+                  confirmationId: $stateParams.confirmationNo
+              });
+          } else {
+              $state.go('rover.guest.search', {
+                  textInQueryBox: $stateParams.query,
+                  selectedIds: $stateParams.selectedIds,
+                  isMergeViewSelected: $stateParams.isMergeViewSelected
+              });
+          }
+          
         };
 
         /**
@@ -182,10 +209,11 @@ angular.module('sntRover').controller('rvGuestDetailsController',
          * @return {undefined} 
          */
         var initGuestCard = function(guestData) {
+
             if (guestData.id) {
                 $scope.guestCardData.userId = guestData.id;
                 $scope.guestCardData.guestId = guestData.id;
-                RVContactInfoSrv.setGuest(guestData.id);                
+                RVGuestCardsSrv.setGuest(guestData.id);                
             }
         };
 
@@ -257,7 +285,24 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             $scope.currentGuestCardHeaderData.last_name = data.last_name;
         }); 
 
-        $scope.$on('$destroy', resetHeaderDataListener);        
+        $scope.$on('$destroy', resetHeaderDataListener);
+        
+        /**
+         * Pouplate admin settings for guest fields
+         */
+        var populateContactInfo = function () {
+            $scope.callAPI(RVGuestCardsSrv.fetchGuestAdminSettingsAndGender, {
+                successCallBack: function(data) {
+                    $scope.guestCardData.contactInfo.guestAdminSettings = data.guestAdminSettings;
+                    $scope.idTypeList = data.idTypeList;
+                    $scope.guestCardData.contactInfo.genderTypeList = data.genderTypeList;
+                },
+                failureCallBack: function(errorMessage) {
+                    $scope.errorMessage = errorMessage;
+                    $scope.$emit('hideLoader');
+                }
+            });
+        };
 
         var init = function () {
 
@@ -269,13 +314,18 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             $scope.shouldShowStatisticsTab = !!$stateParams.guestId;
 
             if (!$stateParams.guestId) {
-                $scope.guestCardData = {};
-                $scope.guestCardData.contactInfo = RVGuestCardsSrv.setGuestFields();
+                $scope.guestCardData = {};                
+                $scope.guestCardData.contactInfo = {};
+                $scope.guestCardData.contactInfo.user_id = '';
+                $scope.guestCardData.contactInfo.first_name = $stateParams.firstName;
+                $scope.guestCardData.contactInfo.last_name = $stateParams.lastName;
+                populateContactInfo();
+               
             } else {
                 $scope.guestCardData = getGuestCardData(contactInfo, $stateParams.guestId);
             }
-            $scope.countries = countries;
-            $scope.idTypeList = idTypesList;
+            $scope.idTypeList = contactInfo.id_type_list;
+            $scope.countries = countries;           
 
             var guestInfo = {
                 'user_id': $scope.guestCardData.contactInfo.user_id,
@@ -307,7 +357,9 @@ angular.module('sntRover').controller('rvGuestDetailsController',
 
             $scope.printState = {
                 clicked: false
-            };          
+            };
+
+            $scope.$on('$destroy', $scope.guestCardTabSwitch);
         };
 
         // Listener for setting the guestData information

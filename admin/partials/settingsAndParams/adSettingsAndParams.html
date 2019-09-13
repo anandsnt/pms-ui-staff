@@ -99,11 +99,67 @@
 							<label> Hotel Invoice Currency <strong>*</strong> </label>
 							<div class="select">
 								<select 
-								        ng-model="invoice_currency"
+										ng-model="invoice_currency"
 										ng-options="currency.id as currency.code for currency in currency_list">
 								</select>
 							</div>
 						</div>
+						<div class="entry full-width actions_margin_top" ng-show="is_multi_currency_enabled">
+							<label> Hotel Rate Currencies <strong>*</strong> </label>
+							<div id="available-charge-codes" class="boxes col2">
+								<ad-checkbox ng-repeat="currency in currency_list"
+								is-checked="currency.is_selected"
+								label="{{currency.code +' - ' + currency.symbol}}"
+								parent-label-class="room-likes" span-class="checkbox-background"
+								on-click="selectedCurrency(currency.id)"></ad-checkbox>
+							</div>
+						</div>
+						<!--  <multi-option-selection label="dfgdffffffff"
+                on-update="refreshSidebarScroll"
+                data="currency_list"
+                options="chosenReport.empList.options"></multi-option-selection> -->
+               <!--  <div class="entry">
+                <label>Rate / Add On Currencies</label>
+                
+                <span class="multiSelect inlineBlock">
+                    <button type="button" class="button multiSelectButton">None selected<span class="caret"></span>
+                    </button>
+
+                    <div class="checkboxLayer">
+                        <form>
+                            <div class="helperContainer">
+                                <div class="line">
+                                    <button type="button" class="helperButton">   ✓&nbsp; Select All</button>
+                                    <button type="button" class="helperButton">  ×&nbsp; Select None</button>
+                                    <button type="button" class="helperButton" style="float:right">↶&nbsp; Reset</button>
+                                </div>
+                                <div class="line" style="position:relative">
+                                    <input placeholder="Search..." type="text" class="inputFilter">
+                                    <button type="button" class="clearButton">×</button>
+                                </div>
+                            </div>
+                            <div class="checkBoxContainer"> -->
+                               <!-- Add .selected if selected -->
+                          <!--      <div class="multiSelectItem vertical">
+                                    <div class="acol">
+                                        <label>
+                                            <input class="checkbox focusable" type="checkbox" checked="checked">
+                                            {currency ISO | exp. USD}
+                                            <span class="currency">({currency-symbol})</span>
+                                        </label>
+                                    </div> -->
+                                    <!-- show mark if selected -->
+                                   <!--  <span class="tickMark">✔</span>
+                                </div> -->
+                                <!-- ... repeat for each -->
+                               
+                         <!--    </div>
+                        </form>
+                    </div> 
+                </span>-->
+            </div>
+                </span>
+            </div>
                     </fieldset>
 
 					<div class="actions float">

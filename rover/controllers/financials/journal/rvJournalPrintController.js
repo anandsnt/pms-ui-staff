@@ -3,7 +3,7 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 
 	/** Code for PRINT BOX drawer common Resize Handler starts here .. **/
 	var resizableMinHeight = 0;
-	var resizableMaxHeight = 90;
+	var resizableMaxHeight = 60;
 
 	$scope.eventTimestamp = '';
 	$scope.data.printBoxHeight = resizableMinHeight;
@@ -108,7 +108,8 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
             "to_date": $scope.data.toDate,
             "employee_ids": $scope.data.selectedEmployeeList,
             "department_ids": $scope.data.selectedDepartmentList,
-            "charge_group_id": $scope.data.selectedChargeGroup
+            "charge_group_id": $scope.data.selectedChargeGroup,
+            "filter_id": $scope.data.filterId
         };
 
 		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, postData, successCallBackFetchRevenueData);
@@ -188,7 +189,8 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
             "from_date": $scope.data.fromDate,
             "to_date": $scope.data.toDate,
             "employee_ids": $scope.data.selectedEmployeeList,
-            "department_ids": $scope.data.selectedDepartmentList
+            "department_ids": $scope.data.selectedDepartmentList,
+            "filter_id": $scope.data.filterId
         };
 
 		if ($scope.data.selectedPaymentType === "ALL") {
@@ -257,28 +259,31 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 
 	// print the journal page
 	var printJournal = function() {
-        $scope.$emit('hideLoader');
-        $timeout(function() {
+		var successCallBackFetchDateTimeDuringPrint = function(response) {
+			$scope.$emit('hideLoader');
+			$timeout(function() {
+				$scope.data.printDate = response.print_date;
+				$scope.data.printTime = response.print_time;
 
-			$scope.printFilterValues = {};
-			$scope.printFilterValues.selectedChargeGroup = $( '#revenue-charge-group option:selected' ).text();
-			$scope.printFilterValues.selectedChargeCode = $( '#revenue-charge-code:selected' ).text();
-			$scope.printFilterValues.selectedPaymentType = $( '#payments-payment-type option:selected' ).text();
+				$scope.printFilterValues = {};
+				$scope.printFilterValues.selectedChargeGroup = $( '#revenue-charge-group option:selected' ).text();
+				$scope.printFilterValues.selectedChargeCode = $( '#revenue-charge-code:selected' ).text();
+				$scope.printFilterValues.selectedPaymentType = $( '#payments-payment-type option:selected' ).text();
 
-			// add the orientation
-			addPrintOrientation();
+				// add the orientation
+				addPrintOrientation();
 
-			/*
-			 *	======[ READY TO PRINT ]======
-			 */
+				/*
+				*	======[ READY TO PRINT ]======
+				*/
 
-		    $timeout(function() {
+				$timeout(function() {
 
 				if (sntapp.cordovaLoaded) {
 					cordova.exec(journalPrintCompleted,
-						function(error) {
-							journalPrintCompleted();
-						}, 'RVCardPlugin', 'printWebView', []);
+					function(error) {
+						journalPrintCompleted();
+					}, 'RVCardPlugin', 'printWebView', []);
 				}
 				else
 				{
@@ -289,14 +294,22 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 				}
 			}, 100);
 
-		    /*
-		     *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
-		     */
+			/*
+			*	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
+			*/
 
 			// remove the orientation after similar delay
-			
 
-    	}, 250);
+
+			}, 250);
+		};    	
+		var params = {},
+			options = {
+				params: params,
+				successCallBack: successCallBackFetchDateTimeDuringPrint
+			};
+
+		$scope.callAPI(RVJournalSrv.fetchPrintDateTime, options);
 	};
 
 }]);
