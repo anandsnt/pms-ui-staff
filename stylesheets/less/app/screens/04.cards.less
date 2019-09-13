@@ -1757,6 +1757,63 @@
                                         }
                                     }
                                 }
+
+                                .autocomplete-search {
+                                    &:not(.searching) {
+                                        .search {
+                                            padding: 0;
+
+                                            .icon-search {
+                                                top: 10px;
+                                                left: 10px;
+                                            }
+
+                                            .clear-query {
+                                                top: 0;
+                                                right: 0;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                .contracted-rates {
+                                    li {
+                                        background-color: @white;
+                                        font-weight: 600;
+                                        padding: 10px 30px 10px 10px;
+                                        list-style: none;
+                                        cursor: pointer;
+                                        position: relative;
+                                        .box-shadow();
+        
+                                        &:not(:last-child) {
+                                            margin-bottom: 10px;
+                                        }
+
+                                        .icons {
+                                            &.icon-remove-10 {
+                                                background-position: 3px -2624px;
+                                                background-size: 80px;
+                                                position: absolute;
+                                                right: 10px;
+                                                top: 0;
+                                                bottom: 0;
+                                                margin: auto;
+                                                border-radius: 14px;
+                                                background-color: @grey1;
+                                            }
+                                        }
+                                    }
+
+                                    &.disabled {
+                                        li {
+                                            cursor: default;
+                                            color: @grey3;
+
+                                            .icons { .hide(); }
+                                        }
+                                    }
+                                }
                             }
                         }
 
