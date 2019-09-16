@@ -186,10 +186,10 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
                 } else {
                     dataToUpdate.birthday = null;
                 }
-                if ($scope.guestCardData.contactInfo.id_date_of_issue) {
-                    dataToUpdate.id_date_of_issue = moment($scope.guestCardData.contactInfo.id_date_of_issue, $rootScope.dateFormat.toUpperCase()).format("YYYY-MM-DD");
+                if ($scope.guestCardData.contactInfo.id_issue_date) {
+                    dataToUpdate.id_issue_date = moment($scope.guestCardData.contactInfo.id_issue_date, $rootScope.dateFormat.toUpperCase()).format("YYYY-MM-DD");
                 } else {
-                    dataToUpdate.id_date_of_issue = null;
+                    dataToUpdate.id_issue_date = null;
                 }
                 if ($scope.guestCardData.contactInfo.entry_date) {
                     dataToUpdate.entry_date = moment($scope.guestCardData.contactInfo.entry_date, $rootScope.dateFormat.toUpperCase()).format("YYYY-MM-DD");
