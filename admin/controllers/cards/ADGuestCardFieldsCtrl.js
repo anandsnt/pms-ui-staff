@@ -88,11 +88,25 @@ function($scope, $state, ADGuestCardSrv) {
 					}
 					break;
 				case "nationality":
-					$scope.guestCardFields.nationality.is_visible = !$scope.guestCardFields.nationality.is_visible;					
+					$scope.guestCardFields.nationality.is_visible = !$scope.guestCardFields.nationality.is_visible;
 					if (!$scope.guestCardFields.nationality.is_visible) {
 						$scope.guestCardFields.nationality.is_mandatory_on_guest_card_creation = false;
 					}
 					break;
+				case "entry_date":
+                    $scope.guestCardFields.entry_date.is_visible = !$scope.guestCardFields.entry_date.is_visible;
+                    if (!$scope.guestCardFields.entry_date.is_visible) {
+						$scope.guestCardFields.entry_date.is_mandatory_on_guest_card_creation = false;
+					}
+					break;
+				case "id_issue_date":
+                    $scope.guestCardFields.id_issue_date.is_visible = !$scope.guestCardFields.id_issue_date.is_visible;
+                    if (!$scope.guestCardFields.id_issue_date.is_visible) {
+						$scope.guestCardFields.id_issue_date.is_mandatory_on_guest_card_creation = false;
+					}
+					break;
+
+
 
 			}
 	
@@ -139,8 +153,14 @@ function($scope, $state, ADGuestCardSrv) {
 					$scope.guestCardFields.date_of_birth.is_mandatory_on_guest_card_creation = !$scope.guestCardFields.date_of_birth.is_mandatory_on_guest_card_creation;					
 					break;
 				case "nationality":
-					$scope.guestCardFields.nationality.is_mandatory_on_guest_card_creation = !$scope.guestCardFields.nationality.is_mandatory_on_guest_card_creation;					
+					$scope.guestCardFields.nationality.is_mandatory_on_guest_card_creation = !$scope.guestCardFields.nationality.is_mandatory_on_guest_card_creation;
 					break;
+                case "entry_date":
+                    $scope.guestCardFields.entry_date.is_mandatory_on_guest_card_creation = !$scope.guestCardFields.entry_date.is_mandatory_on_guest_card_creation;
+                    break;
+                case "id_issue_date":
+                    $scope.guestCardFields.id_issue_date.is_mandatory_on_guest_card_creation = !$scope.guestCardFields.id_issue_date.is_mandatory_on_guest_card_creation;
+                    break;
 			}
 		}
 	};

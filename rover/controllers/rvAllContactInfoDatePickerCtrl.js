@@ -10,7 +10,7 @@ sntRover.controller('RVAllContactInfoDatePickerController',
             yearRange: "-100:+0",
             onSelect: function(dateText, inst) {
                 if ($scope.calenderFor === 'idDate') {
-                    $scope.guestCardData.contactInfo.id_date_of_issue = dateText;
+                    $scope.guestCardData.contactInfo.id_issue_date = dateText;
                 }
                 if ($scope.calenderFor === 'entryDate') {
                     $scope.guestCardData.contactInfo.entry_date = dateText;
