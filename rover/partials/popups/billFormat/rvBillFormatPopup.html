@@ -81,7 +81,7 @@
             </div>
         </div>
         <div class="entry full-width" ng-if="!shouldGenerateFinalInvoice">
-            <label class="checkbox inline" ng-class="{checked: billFormat.isInformationalInvoice, disabled: billFormat.isInformationalInvoiceDisabled}">
+            <label class="checkbox inline" ng-class="{checked: billFormat.isInformationalInvoice, disabled: billFormat.isInformationalInvoiceDisabled && is_bill_lock_enabled }">
                 <span class="icon-form icon-checkbox" ng-class="{checked: billFormat.isInformationalInvoice, disabled: billFormat.isInformationalInvoiceDisabled}">
                 </span>
                 <input id="enable-split" ng-disabled="billFormat.isInformationalInvoiceDisabled && is_bill_lock_enabled" ng-model="billFormat.isInformationalInvoice" type="checkbox" />

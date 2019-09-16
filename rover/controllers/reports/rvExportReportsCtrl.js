@@ -298,7 +298,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                         }
                     }); 
                 } else {
-                    $scope.navigateToSchedulesList();
+                    $scope.navigateToSchedulesList(params);
                 }
                 
             };

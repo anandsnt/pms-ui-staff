@@ -97,7 +97,7 @@
 <!-- Show blank section -->
 <section id="main" ng-hide="loadingCompleted"></section>
 <!-- Content -->
-<section id="main" class="addon-screen" role="main" ng-show="mode !== 'SINGLE_ADDON_ERROR' && loadingCompleted">
+<section id="main" class="addon-screen" role="main" ng-if="mode !== 'SINGLE_ADDON_ERROR' && loadingCompleted">
    <div id="content">
       <h1>
          <text data-ng-bind-html="getTagValue('ADD_ON_HEADING')" editable-text="ADD_ON_HEADING"></text>
@@ -199,6 +199,7 @@
       </div>
    </div>
 </section>
+
 <section id="main" class="addon-screen centered" role="main" ng-show="mode === 'SINGLE_ADDON_ERROR'">
    <div id="content">
       <h1 editable-text="{{errorHeader}}">{{ errorHeader | translate}}</h1>

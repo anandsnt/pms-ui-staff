@@ -3,7 +3,7 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 
 	/** Code for PRINT BOX drawer common Resize Handler starts here .. **/
 	var resizableMinHeight = 0;
-	var resizableMaxHeight = 90;
+	var resizableMaxHeight = 60;
 
 	$scope.eventTimestamp = '';
 	$scope.data.printBoxHeight = resizableMinHeight;

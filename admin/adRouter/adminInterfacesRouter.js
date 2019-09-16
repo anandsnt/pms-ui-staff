@@ -90,7 +90,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.goMomentIvySetup', {
-        templateUrl: '/assets/partials/interfaces/gomomentivy/adGoMomentIvySetup.html',
+        templateUrl: '/assets/partials/interfaces/gomomentivy/adGoMomentIvy.html',
         controller: 'adGoMomentIvySetupCtrl',
         url: '/gomomentivy/setup',
         resolve: {
@@ -946,7 +946,6 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.staahSetup', {
         templateUrl: '/assets/partials/interfaces/staah/adStaah.html',
         controller: 'adStaahController',
-        controllerAs: 'vm',
         url: '/staah',
         resolve: {
             config: [
