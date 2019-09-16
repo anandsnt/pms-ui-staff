@@ -67,7 +67,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
     });
 
     $scope.addListener('REVENUESEARCH', function() {
-        if ($scope.data.query != "") {
+        if ($scope.data.query !== "") {
             initRevenueData();
         }
     });

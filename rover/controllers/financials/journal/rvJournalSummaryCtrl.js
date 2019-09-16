@@ -21,7 +21,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
     });
 
     $scope.addListener('SUMMARYSEARCH', function() {
-        if ($scope.data.query != "") {
+        if ($scope.data.query !== "") {
             initSummaryData();
         }
     });
