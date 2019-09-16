@@ -56,7 +56,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
     });
 
     $scope.addListener('PAYMENTSSEARCH', function() {
-        if ($scope.data.query != "") {
+        if ($scope.data.query !== "") {
             initPaymentData();
         }
     });
