@@ -368,7 +368,8 @@ sntRover.controller('RVJournalController',
 
     $scope.searchJournal = () => {
         var tabName = $scope.data.activeTab;
-
+        
+        $scope.data.filterName = $filter('filter')($scope.data.searchFilterOptions, $scope.data.filterId)[0].name;
         if (tabName === 'SUMMARY') {
             $rootScope.$broadcast('SUMMARYSEARCH');
         } else if (tabName === 'PAYMENTS') {
@@ -415,6 +416,7 @@ sntRover.controller('RVJournalController',
         // $scope.data.isExpandedViewSummary = false;
         $scope.data.searchFilterOptions = journalFilters.filters;        
         $scope.data.filterId = (_.first($scope.data.searchFilterOptions)).id;
+        $scope.data.filterName = (_.first($scope.data.searchFilterOptions)).name;
     };
 
     init();
