@@ -16,7 +16,7 @@ sntRover.controller('RVJournalBalanceController',
             "date": $scope.data.balanceDate
         };
 
-        $scope.invokeApi(RVJournalSrv.fetchBalanceDetails, postData, successCallBackFetchBalanceData);
+        $scope.invokeApi(RVJournalSrv.fetchBalanceTabDetails, postData, successCallBackFetchBalanceData);
     };
 
     $scope.clickedNavigationToSearch = function(clickedType) {
