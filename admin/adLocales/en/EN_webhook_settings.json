@@ -27,4 +27,5 @@
 "complete_end_of_day": "END OF DAY COMPLETION",
 "update_sell_limit": "UPDATE SELL LIMIT",
 "checkedout": "CHECKED OUT",
-"reservation_revenue_update": "RESERVATION REVENUE UPDATE"
+"reservation_revenue_update": "RESERVATION REVENUE UPDATE",
+"room_move": "ROOM MOVE"

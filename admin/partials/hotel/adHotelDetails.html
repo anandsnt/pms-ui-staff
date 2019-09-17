@@ -866,6 +866,16 @@
                     </label>
                     <input type="text" ng-model="data.shiji_token_api_password" value="{{data.shiji_token_api_password}}">
                 </div>
+                <div class="entry">
+                    <label>
+                        Token Channel
+                    </label>
+                    <div class="select white">
+                        <select ng-model="data.shiji_token_channel" id="shiji_token_channel"  ng-options="shijiTokenChannel.code as shijiTokenChannel.name for shijiTokenChannel in shijiTokenChannels">
+                            <option value="" class="placeholder" disabled="">Select Token Channel</option>
+                        </select>
+                    </div>
+                </div>
             </fieldset>
             <fieldset class="holder right" ng-if="isAdminSnt && data.payment_gateway === 'SHIJI'">
                 <div class="form-title">

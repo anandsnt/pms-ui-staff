@@ -109,7 +109,8 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
             "employee_ids": $scope.data.selectedEmployeeList,
             "department_ids": $scope.data.selectedDepartmentList,
             "charge_group_id": $scope.data.selectedChargeGroup,
-            "filter_id": $scope.data.filterId
+			"filter_id": $scope.data.filterId,
+			"query": $scope.data.query
         };
 
 		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, postData, successCallBackFetchRevenueData);
@@ -129,7 +130,7 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 			$scope.data.revenueData.charge_groups[0].charge_codes = data.charge_codes;
 			$scope.data.revenueData.charge_groups[0].active = true;
 
-			var chargeCodeList = data.charge_codes;
+			var chargeCodeList = data.group_charge_codes;
 
 			$scope.data.activeChargeCodes = ( chargeCodeList.length > 0 ) ? chargeCodeList : [];
 
@@ -144,7 +145,9 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
         	"charge_group_id": $scope.data.selectedChargeGroup,
         	"charge_code_id": $scope.data.selectedChargeCode,
         	"employee_ids": $scope.data.selectedEmployeeList,
-            "department_ids": $scope.data.selectedDepartmentList
+            "department_ids": $scope.data.selectedDepartmentList,
+			"filter_id": $scope.data.filterId,
+			"query": $scope.data.query,
         };
 
         $scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeCodes, postData, successCallBackFetchRevenueDataChargeCodes);
@@ -190,7 +193,8 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
             "to_date": $scope.data.toDate,
             "employee_ids": $scope.data.selectedEmployeeList,
             "department_ids": $scope.data.selectedDepartmentList,
-            "filter_id": $scope.data.filterId
+            "filter_id": $scope.data.filterId,
+			"query": $scope.data.query
         };
 
 		if ($scope.data.selectedPaymentType === "ALL") {
