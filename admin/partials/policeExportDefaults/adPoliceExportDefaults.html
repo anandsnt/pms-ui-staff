@@ -13,7 +13,7 @@
 							<div class="entry">
 								<label>COUNTRY</label>
 								<div class="select">
-									<select ng-options="country.id as country.name for country in countries.countries" ng-model="countries.countries.id">
+									<select ng-options="country.id as country.name for country in countries.countries" ng-model="countries.police_export_default_country_id">
 										<option style="display:none" value=""></option>
 									</select>
 								</div>
@@ -23,7 +23,7 @@
 							<div class="entry margin">
 								<label>NATIONALITY</label>
 								<div class="select">
-									<select ng-options="nationality.id as nationality.name for nationality in nationalities.countries" ng-model="nationalities.countries.id">
+									<select ng-options="nationality.id as nationality.name for nationality in nationalities.countries" ng-model="nationalities.police_export_default_nationality_id">
 										<option style="display:none" value=""></option>
 									</select>
 								</div>
