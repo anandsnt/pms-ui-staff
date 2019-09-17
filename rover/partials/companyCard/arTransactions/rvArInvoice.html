@@ -55,13 +55,13 @@
                         <span class="reference">{{statement.reference_text}}</span>
                     </td>
                     <td class="align-right">
-                        <span ng-if="statement.fees" class="currency">{{printData.currency_for_html}}</span>{{statement.fees}}
+                        <span ng-if="statement.fees" class="currency">{{printData.currency_for_html}}</span>{{statement.fees | number: precisonTwo}}
                         <div ng-if="statement.ar_fees_invoice_currency" class="converted-currency">
                             {{printData.invoice_currency_for_html}}{{statement.ar_fees_invoice_currency}}
                         </div>
                     </td>
                     <td rowspan={rowspan} class="align-right">
-                        <span ng-if="statement.credits" class="currency">{{printData.currency_for_html}}</span>{{statement.credits}}
+                        <span ng-if="statement.credits" class="currency">{{printData.currency_for_html}}</span>{{statement.credits | number: precisonTwo}}
                         <div ng-if="statement.ar_credits_invoice_currency" class="converted-currency">
                             {{printData.invoice_currency_for_html}}{{statement.ar_credits_invoice_currency}}
                         </div>
@@ -75,13 +75,13 @@
                         <span class="reference">{{statement.reference_text}}</span>
                     </td>
                     <td class="align-right">
-                        <span ng-if="statement.fees" class="currency">{{printData.currency_for_html}}</span>{{statement.fees}}
+                        <span ng-if="statement.fees" class="currency">{{printData.currency_for_html}}</span>{{statement.fees | number: precisonTwo}}
                         <div ng-if="statement.ar_fees_invoice_currency" class="converted-currency">
                             {{printData.invoice_currency_for_html}}{{statement.ar_fees_invoice_currency}}
                         </div>
                     </td>
                     <td rowspan={rowspan} class="align-right">
-                        <span ng-if="statement.amount" class="currency">{{printData.currency_for_html}}</span>{{statement.amount}}
+                        <span ng-if="statement.amount" class="currency">{{printData.currency_for_html}}</span>{{statement.amount | number: precisonTwo}}
                         <div ng-if="statement.ar_amount_invoice_currency" class="converted-currency">
                             {{printData.invoice_currency_for_html}}{{statement.ar_amount_invoice_currency}}
                         </div>
@@ -91,7 +91,7 @@
                 <tr>
                     <td colspan="6"><strong>{{printData.translation.total_charge}}</strong></td>
                     <td>
-                        <strong><span class="currency" ng-if="printData.total_charge">{{printData.currency_for_html}}</span>{{printData.total_charge}}</strong>
+                        <strong><span class="currency" ng-if="printData.total_charge">{{printData.currency_for_html}}</span>{{printData.total_charge | number: precisonTwo}}</strong>
                         <div ng-if="printData.invoice_currency_total_charge" class="converted-currency">
                             {{printData.invoice_currency_for_html}}{{printData.invoice_currency_total_charge}}
                         </div>
@@ -100,7 +100,7 @@
                 <tr>
                     <td colspan="6"><strong>{{printData.translation.total_credits}}</strong></td>
                     <td>
-                        <strong><span class="currency" ng-if="printData.total_credits">{{printData.currency_for_html}}</span>{{printData.total_credits}}</strong>
+                        <strong><span class="currency" ng-if="printData.total_credits">{{printData.currency_for_html}}</span>{{printData.total_credits | number: precisonTwo}}</strong>
                         <div ng-if="printData.invoice_currency_total_credits" class="converted-currency">
                             {{printData.invoice_currency_for_html}}{{printData.invoice_currency_total_credits}}
                         </div>
@@ -109,7 +109,7 @@
                 <tr>
                     <td colspan="6"><strong>{{printData.translation.balance}}</strong></td>
                     <td>
-                        <strong><span class="currency" ng-if="printData.balance">{{printData.currency_for_html}}</span>{{printData.balance}}</strong>
+                        <strong><span class="currency" ng-if="printData.balance">{{printData.currency_for_html}}</span>{{printData.balance | number: precisonTwo}}</strong>
                         <div ng-if="printData.invoice_currency_balance" class="converted-currency">
                             {{printData.invoice_currency_for_html}}{{printData.invoice_currency_balance}}
                         </div>
@@ -118,7 +118,7 @@
                 <tr>
                     <td colspan="6">{{printData.translation.net_amount}}</td>
                     <td>
-                        <span class="currency" ng-if="printData.net_amount">{{printData.currency_for_html}}</span>{{printData.net_amount}}
+                        <span class="currency" ng-if="printData.net_amount">{{printData.currency_for_html}}</span>{{printData.net_amount | number: precisonTwo}}
                         <div ng-if="printData.invoice_currency_net_amount" class="converted-currency">
                             {{printData.invoice_currency_for_html}}{{printData.invoice_currency_net_amount}}
                         </div>
@@ -127,7 +127,7 @@
                 <tr ng-if="!printData.ar_has_enabled_extended_tax_breakdown" ng-repeat="tax in printData.tax_info">
                     <td colspan="6">{{tax.tax_charge_code_desc}}</td>
                     <td>
-                        <span class="currency" ng-if="tax.amount">{{printData.currency_for_html}}</span>{{tax.amount}}
+                        <span class="currency" ng-if="tax.amount">{{printData.currency_for_html}}</span>{{tax.amount | number: precisonTwo}}
                         <div ng-if="tax.invoice_currency_amount" class="converted-currency">
                             {{printData.invoice_currency_for_html}}{{tax.invoice_currency_amount}}
                         </div>
@@ -136,7 +136,7 @@
                 <tr>
                     <td colspan="6">{{printData.translation.total_incl_tax}}</td>
                     <td>
-                        <span class="currency" ng-if="printData.total_incl_tax">{{printData.currency_for_html}}</span>{{printData.total_incl_tax}}
+                        <span class="currency" ng-if="printData.total_incl_tax">{{printData.currency_for_html}}</span>{{printData.total_incl_tax | number: precisonTwo}}
                         <div ng-if="printData.invoice_currency_total_incl_tax" class="converted-currency">
                             {{printData.invoice_currency_for_html}}{{printData.invoice_currency_total_incl_tax}}
                         </div>
