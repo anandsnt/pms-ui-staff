@@ -110,7 +110,7 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
             "department_ids": $scope.data.selectedDepartmentList,
             "charge_group_id": $scope.data.selectedChargeGroup,
 			"filter_id": $scope.data.filterId,
-			"query": $scope.data.query,
+			"query": $scope.data.query
         };
 
 		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, postData, successCallBackFetchRevenueData);
@@ -193,7 +193,8 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
             "to_date": $scope.data.toDate,
             "employee_ids": $scope.data.selectedEmployeeList,
             "department_ids": $scope.data.selectedDepartmentList,
-            "filter_id": $scope.data.filterId
+            "filter_id": $scope.data.filterId,
+			"query": $scope.data.query
         };
 
 		if ($scope.data.selectedPaymentType === "ALL") {
