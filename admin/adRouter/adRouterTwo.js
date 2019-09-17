@@ -212,7 +212,7 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
             roomId: undefined
         },
         resolve: {
-            availableLanguages: function(ADTranslationSrv) {
+            availableGuestLanguages: function(ADTranslationSrv) {
                 return ADTranslationSrv.getActiveGuestLanguages({
                     show_only_active_languages: true
                 });
