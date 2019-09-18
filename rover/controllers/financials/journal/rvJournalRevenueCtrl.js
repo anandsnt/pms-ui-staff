@@ -23,8 +23,8 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
 		var successCallBackFetchRevenueData = function(data) {
 			$scope.data.revenueData = {};
             $scope.data.activeChargeGroups = [];
-            $scope.data.selectedChargeGroup = '';
-            $scope.data.selectedChargeCode  = '';
+            // $scope.data.selectedChargeGroup = '';
+            // $scope.data.selectedChargeCode  = '';
 			$scope.data.revenueData = data;
             $scope.data.activeChargeGroups = data.charge_groups;
             $scope.errorMessage = "";
