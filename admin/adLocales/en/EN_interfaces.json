@@ -137,4 +137,5 @@
 "market_code_department_code": "Market Code - Department Code",
 "market_segment": "Market Segment",
 "source_code": "Source Code",
-"SAFEACCOUNTING_HEADER": "Integrations > Back Office > Safe Accounting"
+"SAFEACCOUNTING_HEADER": "Integrations > Back Office > Safe Accounting",
+"charge_code_cost_center": "Charge Code - Cost Center"

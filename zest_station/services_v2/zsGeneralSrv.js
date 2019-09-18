@@ -101,7 +101,9 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'seacrest': 'Seacrest Hotel V2',
             'cole': 'The Cole Hotel',
             'heritage-hills': 'Heritage Hills Golf Resort',
-            'metropolis-resort': 'Metropolis Resort'
+            'metropolis-resort': 'Metropolis Resort',
+            'why-seattle': 'Why Hotel Seattle',
+            'pod-philly': 'POD Philly'
         };
 
         this.isThemeConfigured = function(theme) {

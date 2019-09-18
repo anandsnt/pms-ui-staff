@@ -2,7 +2,42 @@ angular.module('sntRover').controller('guestCardController', [
     '$scope', '$window', 'RVCompanyCardSrv', '$q', 'RVReservationAllCardsSrv', 'RVGuestCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv', 'RVReservationDataService', 'rvGroupSrv', '$state', 'rvAllotmentSrv', '$vault', 'rvPermissionSrv',
     function($scope, $window, RVCompanyCardSrv, $q, RVReservationAllCardsSrv, RVGuestCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv, RVReservationDataService, rvGroupSrv, $state, rvAllotmentSrv, $vault, rvPermissionSrv) {
         var resizableMinHeight = 90,
-            resizableMaxHeight = $(window).height() - resizableMinHeight;
+            resizableMaxHeight = $(window).height() - resizableMinHeight,
+            DEBOUNCE_DELAY = 1500,
+            updateContactInfo = function() {
+                var that = this;
+
+                that.newUpdatedData = $scope.decloneUnwantedKeysFromContactInfo();
+                var saveUserInfoFailureCallback = function () {
+                    $scope.$emit('contactInfoError', true);
+                };
+
+                var saveUserInfoSuccessCallback = function(data) {
+                    $scope.$emit('hideLoader');
+                    $scope.reservationData.guest.email = that.newUpdatedData.email;
+                    // update few of the details to searchSrv
+                    $scope.updateSearchCache();
+                    // This is used in contact info ctrl to prevent the extra API call while clicking outside
+                    $scope.isGuestCardSaveInProgress = false;
+
+                    // to reset current data in contcat info for determining any change
+                    $scope.$broadcast("RESETCONTACTINFO", that.newUpdatedData);
+                };
+
+                // check if there is any chage in data.if so call API for updating data, CICO-46709 fix
+                if (JSON.stringify($scope.getContactInfo(currentGuestCardHeaderData)) !== JSON.stringify($scope.getContactInfo(that.newUpdatedData))) {
+                    currentGuestCardHeaderData = that.newUpdatedData;
+                    var data = {
+                        'data': currentGuestCardHeaderData,
+                        'userId': $scope.guestCardData.contactInfo.user_id
+                    };
+
+                    if (typeof data.userId !== 'undefined') {
+                        $scope.isGuestCardSaveInProgress = true;
+                        $scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
+                    }
+                }
+            };
 
         $scope.dimensionsLookup = {
             resizableMaxHeight: resizableMaxHeight,
@@ -345,38 +380,9 @@ angular.module('sntRover').controller('guestCardController', [
         });
 
         $scope.updateContactInfo = function() {
-            var that = this;
-
-            that.newUpdatedData = $scope.decloneUnwantedKeysFromContactInfo();
-            var saveUserInfoFailureCallback = function () {
-                $scope.$emit('contactInfoError', true);
-            };
-
-            var saveUserInfoSuccessCallback = function(data) {
-                $scope.$emit('hideLoader');
-                $scope.reservationData.guest.email = that.newUpdatedData.email;
-                // update few of the details to searchSrv
-                $scope.updateSearchCache();
-                // This is used in contact info ctrl to prevent the extra API call while clicking outside
-                $scope.isGuestCardSaveInProgress = false;
-
-                // to reset current data in contcat info for determining any change
-                $scope.$broadcast("RESETCONTACTINFO", that.newUpdatedData);
-            };
-
-            // check if there is any chage in data.if so call API for updating data, CICO-46709 fix
-            if (JSON.stringify($scope.getContactInfo(currentGuestCardHeaderData)) !== JSON.stringify($scope.getContactInfo(that.newUpdatedData))) {
-                currentGuestCardHeaderData = that.newUpdatedData;
-                var data = {
-                    'data': currentGuestCardHeaderData,
-                    'userId': $scope.guestCardData.contactInfo.user_id
-                };
-
-                if (typeof data.userId !== 'undefined') {
-                    $scope.isGuestCardSaveInProgress = true;
-                    $scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
-                }
-            }
+            $scope.timerHandler = $timeout(function () {
+                updateContactInfo();
+            }, DEBOUNCE_DELAY);
         };
 
         /**

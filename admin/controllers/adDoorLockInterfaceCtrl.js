@@ -141,7 +141,7 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
     var updateDisplayPasswords = function () {
         $scope.setDefaultDisplayPassword($scope.data, 'key_password', 'key_password_present');
         $scope.setDefaultDisplayPassword($scope.data, 'secondary_key_password', 'secondary_key_password_present');
-        $scope.setDefaultDisplayPassword($scope.data, 'pre_auth_user_password', 'pre_auth_user_password');
+        $scope.setDefaultDisplayPassword($scope.data, 'pre_auth_user_password', 'pre_auth_user_password_present');
         $scope.setDefaultDisplayPassword($scope.data, 'wallet_auth_password', 'wallet_auth_password_present');
     };
 
@@ -183,7 +183,7 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
 		var saveData = dclone($scope.data, unwantedKeys);
 
         saveData.hotel_supported_card_types = hotelSupportedCardTypes;
-        
+
         $scope.deletePropertyIfRequired(saveData, 'key_password');
         $scope.deletePropertyIfRequired(saveData, 'secondary_key_password');
         $scope.deletePropertyIfRequired(saveData, 'wallet_auth_password');

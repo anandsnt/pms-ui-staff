@@ -12,14 +12,14 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'adComtrolChargeCo
     },
     revertEdit = function () {
       if ($scope.state.editRef) {
-        $scope.mappings[$scope.state.selected] = angular.copy($scope.state.editRef);
+        $scope.data[$scope.state.selected] = angular.copy($scope.state.editRef);
         $scope.state.editRef = null;
       }
     },
     loadMetaList = function (cb) {
       $scope.callAPI(adComtrolChargeCodeMappingSrv.fetchMeta, {
         successCallBack: function (response) {
-          $scope.state.revCenters = response.revCenters;
+          $scope.state.revCenters = response.revCenters.revenue_center_mappings;
           $scope.state.chargeCodes = response.chargeCodes;
           cb && cb();
         }
@@ -142,8 +142,7 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'adComtrolChargeCo
       $scope.callAPI(adComtrolChargeCodeMappingSrv.delete, {
         params: mapping.id,
         successCallBack: function () {
-          mapping.isDeleted = true;
-          $scope.state.deletedCount++;
+          $scope.tableParams.reload();
         }
       });
     };
@@ -192,6 +191,31 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'adComtrolChargeCo
       });
     };
 
+    $scope.fetchTableData = function($defer, params) {
+        var getParams = $scope.calculateGetParams(params),
+            fetchSuccessOfItemList = function(data) {
+                $scope.$emit('hideLoader');
+                $scope.currentClickedElement = -1;
+                $scope.totalCount = data.total_records;
+                $scope.totalPage = Math.ceil(data.total_records / $scope.displyCount);
+                $scope.data = data.cc_mappings;
+                $scope.currentPage = params.page();
+                params.total(data.total_records);
+                $defer.resolve($scope.data);
+            };
+        $scope.invokeApi(adComtrolChargeCodeMappingSrv.fetch, getParams, fetchSuccessOfItemList);
+    };
+
+    $scope.loadTable = function() {
+        $scope.tableParams = new ngTableParams({
+            page: 1, // show first page
+            count: $scope.displyCount // count per page
+        }, {
+            total: 0, // length of data
+            getData: $scope.fetchTableData
+        });
+    };
+
     // --------------------------------------------------------------------------------------------------------------
     /**
      * Initialization method for the controller
@@ -213,16 +237,8 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'adComtrolChargeCo
           meal_time_period: ""
         }
       };
-
-      $scope.callAPI(adComtrolChargeCodeMappingSrv.fetch, {
-        onSuccess: function (response) {
-          $scope.mappings = response;
-
-          if ($scope.mappings.length) {
-            loadMetaList();
-          }
-        }
-      });
+      loadMetaList();
+      $scope.loadTable();
     })();
   }
 ]);
