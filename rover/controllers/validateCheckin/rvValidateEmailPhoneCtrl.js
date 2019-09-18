@@ -117,7 +117,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl',
             $scope.guestCardData.contactInfo.birth_place = $scope.saveData.birth_place;
         }
         if ($scope.showGender) {
-            $scope.guestCardData.contactInfo.gender = $scope.saveData.gender;
+            $scope.guestCardData.contactInfo.gender_id = $scope.saveData.gender_id;
         }
         if ($scope.showPersonalIdNumber) {
             $scope.guestCardData.contactInfo.personal_id_no = $scope.saveData.personal_id_no;
