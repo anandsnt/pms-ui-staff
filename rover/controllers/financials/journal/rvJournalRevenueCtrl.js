@@ -75,9 +75,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
     });
 
     $scope.addListener('REVENUESEARCH', function() {
-        if ($scope.data.query !== "") {
-            initRevenueData();
-        }
+        initRevenueData();
     });
 
     // CICO-28060 : Update dates for Revenue & Payments upon changing summary dates
