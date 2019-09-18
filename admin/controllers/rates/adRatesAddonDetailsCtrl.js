@@ -19,6 +19,7 @@ admin.controller('ADRatesAddonDetailsCtrl', [
 
             // various addon data holders
             $scope.data = [];
+            singleAddon.ref_currency_code_id = hotelSettings.currency.id
             $scope.singleAddon = singleAddon;
             $scope.singleAddon.id = $stateParams.addonId;
             // for adding
