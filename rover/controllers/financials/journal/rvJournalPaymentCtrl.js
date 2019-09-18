@@ -39,15 +39,8 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
         };
 
         if ($scope.data.query !== "") {
-            postData = {
-                "from_date": $scope.data.fromDate,
-                "to_date": $scope.data.toDate,
-                "employee_ids": $scope.data.selectedEmployeeList,
-                "department_ids": $scope.data.selectedDepartmentList,
-                "type": ($scope.data.activePaymentTab === "" ? "" : ($scope.data.activePaymentTab).toLowerCase()),
-                "filter_id": $scope.data.filterId,
-                "query": $scope.data.query
-            };
+            postData.filter_id = $scope.data.filterId;
+            postData.query = $scope.data.query;
         }
 		$scope.invokeApi(RVJournalSrv.fetchPaymentDataByPaymentTypes, postData, successCallBackFetchPaymentData);
 	};
