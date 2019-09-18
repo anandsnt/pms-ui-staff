@@ -112,15 +112,8 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 		};
 
 		if ($scope.data.query !== "") {
-			postData = {
-				"from_date": $scope.data.fromDate,
-				"to_date": $scope.data.toDate,
-				"employee_ids": $scope.data.selectedEmployeeList,
-				"department_ids": $scope.data.selectedDepartmentList,
-				"charge_group_id": $scope.data.selectedChargeGroup,
-				"filter_id": $scope.data.filterId,
-				"query": $scope.data.query
-			};
+            postData.filter_id = $scope.data.filterId;
+            postData.query = $scope.data.query;
 		}
 
 		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, postData, successCallBackFetchRevenueData);
@@ -159,16 +152,8 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
         };
 
 		if ($scope.data.query !== "") {
-			postData = {
-				"from_date": $scope.data.fromDate,
-				"to_date": $scope.data.toDate,
-				"charge_group_id": $scope.data.selectedChargeGroup,
-				"charge_code_id": $scope.data.selectedChargeCode,
-				"employee_ids": $scope.data.selectedEmployeeList,
-				"department_ids": $scope.data.selectedDepartmentList,
-				"filter_id": $scope.data.filterId,
-				"query": $scope.data.query
-			};
+            postData.filter_id = $scope.data.filterId;
+            postData.query = $scope.data.query;
 		}
 
         $scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeCodes, postData, successCallBackFetchRevenueDataChargeCodes);
@@ -217,14 +202,8 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 		};
 		
 		if ($scope.data.query !== "") {
-			postData = {
-				"from_date": $scope.data.fromDate,
-				"to_date": $scope.data.toDate,
-				"employee_ids": $scope.data.selectedEmployeeList,
-				"department_ids": $scope.data.selectedDepartmentList,
-				"filter_id": $scope.data.filterId,
-				"query": $scope.data.query
-			};
+            postData.filter_id = $scope.data.filterId;
+            postData.query = $scope.data.query;
 		}
 
 		if ($scope.data.selectedPaymentType === "ALL") {
