@@ -6,6 +6,7 @@ module.exports = {
 			nonMinifiedFiles: [
 				roverRoot + "controllers/companycard/details/**/*.js",
 				roverRoot + "controllers/companycard/activityLog/*.js",
+				roverRoot + "controllers/companycard/contracts/*.js",
 				roverRoot + "controllers/arTransactions/*.js",
 				roverRoot + "controllers/arTransactions/**/*.js",
 				roverRoot + "controllers/cardsOutside/rvCompanyCardArTransactionsCtrl.js",
