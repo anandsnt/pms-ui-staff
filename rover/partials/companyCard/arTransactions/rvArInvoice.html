@@ -50,7 +50,6 @@
                 <tr ng-if="printData.debits.length > 0" class="person" ng-repeat="statement in printData.debits">
                     <td rowspan={rowspan}>{{statement.date}}</td>
                     <td class="description">
-                        <strong>{{statement.item_description}}</strong>
                         <span>{{statement.description}}</span>
                         <span class="reference">{{statement.reference_text}}</span>
                     </td>
