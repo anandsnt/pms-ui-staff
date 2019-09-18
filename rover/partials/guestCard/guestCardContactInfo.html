@@ -44,12 +44,11 @@
 			</div>
 			<rv-textbox value="guestCardData.contactInfo.id_number" label = "Id Number" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.id_number, '')}}"></rv-textbox>
 
-			<div class="entry margin has-datepicker">
+			<div class="entry margin has-datepicker" ng-if="guestCardData.contactInfo.guestAdminSettings.id_issue_date.is_visible">
 				<label for="id date issue"> ID Date of issue </label>
 				<input type="text" ng-model="guestCardData.contactInfo.id_issue_date" class="datepicker" value="{{guestCardData.contactInfo.id_issue_date | date:dateFormat}}" ng-click="popupCalendarForGuestContactInfoDate('idDate')" readonly />
 			</div>
-
-			<div class="entry has-datepicker" >
+			<div class="entry has-datepicker" ng-class="{'margin': !guestCardData.contactInfo.guestAdminSettings.id_issue_date.is_visible}" ng-if="guestCardData.contactInfo.guestAdminSettings.entry_date.is_visible">
 				<label for="entry date"> Entry Date </label>
 				<input type="text" ng-model="guestCardData.contactInfo.entry_date" class="datepicker" value="{{guestCardData.contactInfo.entry_date | date:dateFormat}}" ng-click="popupCalendarForGuestContactInfoDate('entryDate')" readonly />
 			</div>
@@ -61,7 +60,7 @@
 			<rv-textbox ng-if="guestCardData.contactInfo.guestAdminSettings.birth_place.is_visible" required ="{{guestCardData.contactInfo.guestAdminSettings.birth_place.is_mandatory_on_guest_card_creation ? 'yes' : 'no'}}" value="guestCardData.contactInfo.birth_place" label = "Place of Birth" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.birth_place, guestCardData.contactInfo.is_father_name_visible && guestCardData.contactInfo.is_mother_name_visible ? 'margin' : '')}}"></rv-textbox>
 
 			<div class="entry" ng-if="guestCardData.contactInfo.guestAdminSettings.gender.is_visible" ng-class="getStyleClassForPrint(guestCardData.contactInfo.genderTypeList, guestCardData.contactInfo.is_father_name_visible ? '' : 'margin')">
-				<label for="country">Gender</label>
+				<label for="country"> Gender <strong ng-if="guestCardData.contactInfo.guestAdminSettings.gender.is_mandatory_on_guest_card_creation">*</strong></label>
 				<div form="contact-info" class="select">
 					<select iscroll-stop-propagation ng-options="genderType.id as genderType.value for genderType in guestCardData.contactInfo.genderTypeList" ng-model="guestCardData.contactInfo.gender_id" required ="{{guestCardData.contactInfo.guestAdminSettings.gender.is_mandatory_on_guest_card_creation ? 'yes' : 'no'}}">
 						<option style="display:none" value="genderType.id"></option>

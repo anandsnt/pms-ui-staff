@@ -32,6 +32,8 @@ admin.controller('adBritePabXSetupCtrl', ['$scope', 'britePabXSetupValues', 'adI
                 config: _.omit(angular.copy($scope.brite), 'charge_code_name')
             };
 
+            $scope.deletePropertyIfRequired(params.config, 'api_key');
+
             if (params.config.charge_code_id === '') {
                 $timeout(function () {
                     $scope.errorMessage = ['Please search a charge code, pick from the list and proceed'];
@@ -52,5 +54,6 @@ admin.controller('adBritePabXSetupCtrl', ['$scope', 'britePabXSetupValues', 'adI
          */
         (function () {
             $scope.brite = britePabXSetupValues;
+            $scope.setDefaultDisplayPassword($scope.brite, 'api_key');
         }());
     }]);
