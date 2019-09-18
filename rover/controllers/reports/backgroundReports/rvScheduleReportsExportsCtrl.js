@@ -100,7 +100,7 @@ angular.module('sntRover')
 
                 if ($scope.reportViewStore && 
                     ($scope.reportViewStore.showingCustomNewExport || $scope.reportViewStore.showingCustomExports) && 
-                    action === $scope.viewColsActions.FOUR) {
+                    action === $scope.viewColsActions.SIX) {
                     styles.push('with-bottom-form');
                 }
 
@@ -113,7 +113,9 @@ angular.module('sntRover')
                 ONE: 1,
                 TWO: 2,
                 THREE: 3,
-                FOUR: 4
+                FOUR: 4,
+                FIVE: 5,
+                SIX: 6
             };
 
 

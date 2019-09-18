@@ -5,12 +5,16 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
     '$rootScope',
     'RVreportsSrv',
     'RVCustomExportsUtilFac',
+    'RVReportUtilsFac',
+    '$filter',
     function($scope, 
         RVCustomExportSrv,
         $timeout,
         $rootScope,
         reportsSrv,
-        RVCustomExportsUtilFac) {
+        RVCustomExportsUtilFac,
+        reportUtils,
+        $filter) {
 
         BaseCtrl.call(this, $scope);
 
@@ -22,6 +26,8 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
         const REPORT_COLS_SCROLLER = 'report-cols-scroller';
         const REPORT_SELECTED_COLS_SCROLLER = 'report-selected-cols-scroller';
         const EXPORT_LIST_SCROLLER = 'exports-list-scroller';
+        const SCHEDULE_DETAILS_SCROLLER = 'schedule-details-scroller';
+        const DELIVERY_OPTIONS_SCROLLER = 'delivery-options-scroller';
         const SCROLL_REFRESH_DELAY = 100;
 
         // Initialize the scrollers
@@ -34,6 +40,8 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             $scope.setScroller(REPORT_COLS_SCROLLER, scrollerOptions);
             $scope.setScroller(REPORT_SELECTED_COLS_SCROLLER, scrollerOptions);
             $scope.setScroller(EXPORT_LIST_SCROLLER, scrollerOptions);
+            $scope.setScroller(SCHEDULE_DETAILS_SCROLLER, scrollerOptions);
+            $scope.setScroller(DELIVERY_OPTIONS_SCROLLER, scrollerOptions);
         };
 
         // Refresh the given scroller
@@ -55,6 +63,113 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
         var configureNewExport = () => {
             fetchDataSpaces();
             $scope.viewState.currentStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
+        };
+
+        var processScheduleDetails = function(report) {
+            var TIME_SLOTS = 30;
+
+            var datePickerCommon = {
+                dateFormat: $rootScope.jqDateFormat,
+                numberOfMonths: 1,
+                changeYear: true,
+                changeMonth: true,
+                beforeShow: function() {
+                    angular.element('#ui-datepicker-div');
+                    angular.element('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
+                },
+                onClose: function() {
+                    angular.element('#ui-datepicker-div');
+                    angular.element('#ui-datepicker-overlay').remove();
+                }
+            };
+
+            var startsOn = $scope.selectedEntityDetails.starts_on || $rootScope.businessDate,
+                endsOnDate = $scope.selectedEntityDetails.ends_on_date || $rootScope.businessDate,
+                exportDate = $scope.selectedEntityDetails.export_date || $rootScope.businessDate;
+
+            // saved emails/FTP
+            var delieveryType = $scope.selectedEntityDetails.delivery_type ? $scope.selectedEntityDetails.delivery_type.value : '';
+
+            $scope.scheduleParams = {};
+
+            if ( angular.isDefined($scope.selectedEntityDetails.export_date) ) {
+                $scope.scheduleParams.export_date = $scope.selectedEntityDetails.export_date;
+            } else {
+                $scope.scheduleParams.export_date = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days');
+
+                var todayDate = moment().startOf('day'),
+                    daysDiff = moment.duration(todayDate.diff($scope.scheduleParams.export_date)).asDays();
+                
+                if (daysDiff < 7) {
+                    $scope.scheduleParams.export_date = $scope.scheduleParams.export_date.format("L");
+                } else {
+                    $scope.scheduleParams.export_date = $scope.scheduleParams.export_date.calendar();
+                }
+            }
+
+            if ( angular.isDefined($scope.selectedEntityDetails.time) ) {
+                $scope.scheduleParams.time = $scope.selectedEntityDetails.time;
+            } else {
+                $scope.scheduleParams.time = undefined;
+            }
+
+            if ( angular.isDefined($scope.selectedEntityDetails.frequency_id) ) {
+                $scope.scheduleParams.frequency_id = $scope.selectedEntityDetails.frequency_id;
+            } else {
+                $scope.scheduleParams.frequency_id = undefined;
+            }
+
+            if ( angular.isDefined($scope.selectedEntityDetails.repeats_every) ) {
+                $scope.scheduleParams.repeats_every = $scope.selectedEntityDetails.repeats_every;
+            } else {
+                $scope.scheduleParams.repeats_every = undefined;
+            }
+
+            if ( $scope.selectedEntityDetails.ends_on_date !== null && $scope.selectedEntityDetails.ends_on_after === null ) {
+                $scope.scheduleParams.scheduleEndsOn = 'DATE';
+            } else if ( $scope.selectedEntityDetails.ends_on_date === null && $scope.selectedEntityDetails.ends_on_after !== null ) {
+                $scope.scheduleParams.ends_on_after = $scope.selectedEntityDetails.ends_on_after;
+                $scope.scheduleParams.scheduleEndsOn = 'NUMBER';
+            } else {
+                $scope.scheduleParams.scheduleEndsOn = 'NEVER';
+            }
+            /*
+             * Export Calender Options
+             * max date is business date
+             */
+            $scope.exportCalenderOptions = angular.extend({
+                maxDate: tzIndependentDate($rootScope.businessDate)
+            }, datePickerCommon);
+            $scope.scheduleParams.export_date = reportUtils.processDate(exportDate).today;
+
+            $scope.startsOnOptions = angular.extend({
+                minDate: tzIndependentDate($rootScope.businessDate),
+                onSelect: function(value) {
+                    $scope.endsOnOptions.minDate = value;
+                }
+            }, datePickerCommon);
+            $scope.scheduleParams.starts_on = reportUtils.processDate(startsOn).today;
+            /**/
+            $scope.endsOnOptions = angular.extend({
+                onSelect: function(value) {
+                    $scope.startsOnOptions.maxDate = value;
+                }
+            }, datePickerCommon);
+            $scope.scheduleParams.ends_on_date = reportUtils.processDate(endsOnDate).today;
+
+
+            // if ( delieveryType === 'EMAIL' ) {
+            //     $scope.scheduleParams.delivery_id = $scope.getDeliveryId('EMAIL');
+            //     $scope.emailList = $scope.selectedEntityDetails.emails.split(', ');
+            // } else if ( delieveryType === 'SFTP' ) {
+            //     $scope.scheduleParams.delivery_id = $scope.getDeliveryId('SFTP');
+            //     $scope.scheduleParams.selectedFtpRecipient = $scope.selectedEntityDetails.sftp_server_id;
+            // } else {
+            //    $scope.emailList = [];
+            //    $scope.scheduleParams.selectedFtpRecipient = '';
+            // }
+
+            $scope.timeSlots = reportUtils.createTimeSlots(TIME_SLOTS);
         };
 
         /**
@@ -130,6 +245,34 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                     $scope.selectedColumns[columnPos] = selectedColumn;
 
                 });
+            },
+            getValue = (value) => {
+                switch (value) {
+                    case 'DAILY':
+                        return 'Day';
+                    case 'HOURLY':
+                        return 'Hour';
+                    case 'WEEKLY':
+                        return 'Week';
+                    case 'MONTHLY':
+                        return 'Month';
+                    case 'RUN_ONCE':
+                        return 'Once';
+                    case 'MINUTES':
+                        return 'Minute';
+                    default:
+                        return 'Per';
+                }
+            },
+
+            createExportFrequencyTypes = () => {
+                $scope.customExportsData.scheduleFreqTypes = _.map($scope.customExportsData.scheduleFrequencies, function(freq) {
+                    return {
+                        id: freq.id,
+                        value: getValue(freq.value),
+                        originalValue: freq.value
+                    };
+                });
             };
             
         /**
@@ -145,13 +288,21 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                     $scope.customExportsData.exportFormats = angular.copy(payload.exportFormats);
                     $scope.customExportsData.deliveryTypes = angular.copy(payload.deliveryTypes);
                     $scope.customExportsData.durations = angular.copy(payload.durations);
+                    $scope.customExportsData.scheduleFrequencies = angular.copy(payload.scheduleFrequency);
+                    $scope.ftpServerList = payload.ftpServerList;
+                    $scope.dropDownAccountList = payload.dropDownAccounts;
+                    $scope.googleDriveAccountList = payload.googleDriveAccounts;
 
                     if (!$scope.customExportsData.isNewExport) {
                         applySelectedFormatAndDeliveryTypes(); 
                         updateSelectedColumns();
                     }
-                    $scope.updateViewCol($scope.viewColsActions.FOUR);
-                    refreshScroll(REPORT_COLS_SCROLLER);
+                    createExportFrequencyTypes();
+                    processScheduleDetails($scope.selectedEntityDetails);
+                    $scope.updateViewCol($scope.viewColsActions.SIX);
+                    refreshScroll(REPORT_COLS_SCROLLER, true);
+                    refreshScroll(SCHEDULE_DETAILS_SCROLLER, true);
+                    refreshScroll(DELIVERY_OPTIONS_SCROLLER, true);
 
                     var reportFilters = angular.copy($scope.selectedEntityDetails.filters);
 
@@ -228,12 +379,12 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 format_id: $scope.customExportsScheduleParams.format,
                 delivery_type_id: $scope.customExportsScheduleParams.deliveryType,
                 name: $scope.customExportsScheduleParams.exportName,
-                time_period_id: 4,
+                //time_period_id: 4,
                 emails: 'ragesh@stayntouch.com',
-                frequency_id: 3,
-                export_date: "2019-03-17T18:30:00.000Z",
-                repeats_every: 0,
-                starts_on: "2019/03/18"
+                //frequency_id: 3,
+                //export_date: "2019-03-17T18:30:00.000Z",
+                //repeats_every: 0,
+                //starts_on: "2019/03/18"
 
             };
 
@@ -276,8 +427,59 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 }
 
             });
-
             params.filter_values = filterValues;
+
+            var runOnceId = _.find($scope.customExportsData.scheduleFrequencies, { value: 'RUN_ONCE' }).id;
+
+            if ( $scope.scheduleParams.time ) {
+                params.time = $scope.scheduleParams.time;
+            }
+            
+            if ( $scope.scheduleParams.export_date ) {
+                params.export_date = $filter('date')($scope.scheduleParams.export_date, 'yyyy/MM/dd');
+            }
+            
+
+            // fill 'frequency_id', 'starts_on', 'repeats_every' and 'ends_on_date'
+            params.frequency_id = $scope.scheduleParams.frequency_id;
+            /**/
+            if ( $scope.scheduleParams.starts_on ) {
+                params.starts_on = $filter('date')($scope.scheduleParams.starts_on, 'yyyy/MM/dd');
+            }
+
+            if ( $scope.scheduleParams.frequency_id === runOnceId ) {
+                params.repeats_every = null;
+            } else if ( $scope.scheduleParams.repeats_every ) {
+                params.repeats_every = $scope.scheduleParams.repeats_every;
+            } else {
+                params.repeats_every = 0;
+            }
+
+            if ( $scope.scheduleParams.frequency_id === runOnceId ) {
+                params.ends_on_after = null;
+                params.ends_on_date = null;
+            } else if ( $scope.scheduleParams.scheduleEndsOn === 'NUMBER' ) {
+                params.ends_on_after = $scope.scheduleParams.ends_on_after;
+                params.ends_on_date = null;
+            } else if ( $scope.scheduleParams.scheduleEndsOn === 'DATE' ) {
+                params.ends_on_date = $filter('date')($scope.scheduleParams.ends_on_date, 'yyyy/MM/dd');
+                params.ends_on_after = null;
+            } else {
+                params.ends_on_after = null;
+                params.ends_on_date = null;
+            }
+
+            // // fill emails/FTP
+            // if ( $scope.checkDeliveryType('EMAIL') && $scope.emailList.length ) {
+            //     params.emails = $scope.emailList.join(', ');
+            // } else if ( $scope.checkDeliveryType('SFTP') && !! $scope.scheduleParams.selectedFtpRecipient ) {
+            //     params.sftp_server_id = $scope.scheduleParams.selectedFtpRecipient;
+            // } else {
+            //     params.emails = '';
+            //     params.sftp_server_id = '';
+            // }
+
+            // fill sort_field and filters
 
             return params;
         };
@@ -371,6 +573,67 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             });
         };
 
+        $scope.notRunOnce = function () {
+            var match = _.find($scope.customExportsData.scheduleFrequencies, { id: $scope.scheduleParams.frequency_id }) || {};
+
+            return match.value !== 'RUN_ONCE';
+        };
+
+        $scope.getRepeatPer = function() {
+            var found = _.find($scope.customExportsData.scheduleFreqTypes, { id: $scope.scheduleParams.frequency_id });
+
+            return found ? found.value : 'Per';
+        };
+
+        $scope.checkDeliveryType = function (checkFor) {
+            var match = _.find($scope.customExportsData.deliveryTypes, { id: $scope.scheduleParams.delivery_id }) || {};
+
+            return match.value === checkFor;
+        };
+
+        var runDigestCycle = function() {
+            if (!$scope.$$phase) {
+                $scope.$digest();
+            }
+        };
+
+        $scope.userAutoCompleteSimple = {
+            minLength: 3,
+            source: function(request, response) {
+                var mapedUsers, found;
+
+                mapedUsers = _.map($scope.activeUserList, function(user) {
+                    return {
+                        label: user.full_name || user.email,
+                        value: user.email
+                    };
+                });
+                found = $.ui.autocomplete.filter(mapedUsers, request.term);
+                response(found);
+            },
+            select: function(event, ui) {
+                var RESET = true;
+                var alreadyPresent = _.find($scope.emailList, function(email) {
+                    return email === ui.item.value;
+                });
+
+                if ( ! alreadyPresent ) {
+                    $scope.emailList.push( ui.item.value );
+                }
+                this.value = '';
+
+                runDigestCycle();
+                $scope.refreshFourthColumnScroll(RESET);
+
+                return false;
+            },
+            focus: function() {
+                return false;
+            }
+        };
+
+
+
         // Initialize the data
         var initializeData = () => {
             $scope.customExportsScheduleParams.format = '';
@@ -388,6 +651,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             $scope.viewState = {
                 currentStage: STAGES.SHOW_CUSTOM_EXPORT_LIST
             };
+            $scope.scheduleParams = {};
         };
         
         // Initialize the controller

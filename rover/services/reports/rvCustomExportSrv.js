@@ -20,7 +20,10 @@ angular.module('sntRover').service('RVCustomExportSrv', [
         var cache = {
             timePeriods: [],
             dataSpaceColumns: {},
-            deliveryTypes: []
+            deliveryTypes: [],
+            exportFrequencies: [],
+            DROP_BOX: [],
+            GOOGLE_DRIVE: []
         };
 
         this.getAvailableDataSpaces = () => {
@@ -57,6 +60,9 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             promises['exportFormats'] = this.getExportFormats(params);
             promises['deliveryTypes'] = this.getExportDeliveryTypes(params);
             promises['durations'] = this.getExportDurations(params);
+            promises['scheduleFrequency'] = this.getExportFrequencies();
+            promises['dropDownAccounts'] = this.getCloudDrives('DROP_BOX');
+            promises['googleDriveAccounts'] = this.getCloudDrives('GOOGLE_DRIVE');
 
             $q.all(promises).then(function (data) {
                 deferred.resolve(data);
@@ -91,6 +97,42 @@ angular.module('sntRover').service('RVCustomExportSrv', [
                 sntBaseWebSrv.getJSON(url).then(function (response) {
                     cache.deliveryTypes = response.results;
                     deferred.resolve(cache.deliveryTypes);
+                }, function (error) {
+                    deferred.reject(error);
+                });  
+            }
+
+            return deferred.promise;
+        };
+
+        this.getExportFrequencies = ()  => {
+            var deferred = $q.defer(),
+                url = 'admin/export_frequencies.json';
+
+            if (cache.exportFrequencies.length > 0 ) {
+                deferred.resolve(cache.exportFrequencies);
+            } else {
+                sntBaseWebSrv.getJSON(url).then(function (response) {
+                    cache.exportFrequencies = response.results;
+                    deferred.resolve(cache.exportFrequencies);
+                }, function (error) {
+                    deferred.reject(error);
+                });  
+            }
+
+            return deferred.promise;
+        };
+
+        this.getCloudDrives = (driveType)  => {
+            var deferred = $q.defer(),
+                url = '/api/cloud_drives?cloud_drive_type=' + driveType;
+
+            if (cache[driveType].length > 0 ) {
+                deferred.resolve(cache[driveType]);
+            } else {
+                sntBaseWebSrv.getJSON(url).then(function (response) {
+                    cache[driveType] = response.results;
+                    deferred.resolve(cache[driveType]);
                 }, function (error) {
                     deferred.reject(error);
                 });  
