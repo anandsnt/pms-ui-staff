@@ -23,8 +23,8 @@ admin.controller('ADPoliceExportDefaultsCtrl', [
                 $scope.$emit('hideLoader');
             },
             postData = {
-				'police_export_default_country_id': $scope.countries.countries.id,
-				'police_export_default_nationality_id': $scope.nationalities.countries.id }
+				'police_export_default_country_id': $scope.countries.police_export_default_country_id,
+				'police_export_default_nationality_id': $scope.nationalities.police_export_default_nationality_id }
             // option object
             options = {
                 params: postData,
