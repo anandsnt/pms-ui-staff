@@ -16,7 +16,6 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
 	var initPaymentData = function(origin) {
 		var successCallBackFetchPaymentData = function(data) {
 			$scope.data.paymentData = {};
-            // $scope.data.selectedPaymentType = '';
 			$scope.data.paymentData = data;
 			$scope.data.activePaymentTypes = data.payment_types;
 
