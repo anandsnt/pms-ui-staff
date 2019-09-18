@@ -111,7 +111,7 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
             "charge_group_id": $scope.data.selectedChargeGroup
 		};
 
-		if ($scope.data.query !== ""){
+		if ($scope.data.query !== "") {
 			postData = {
 				"from_date": $scope.data.fromDate,
 				"to_date": $scope.data.toDate,
@@ -158,7 +158,7 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
             "department_ids": $scope.data.selectedDepartmentList
         };
 
-		if ($scope.data.query !== ""){
+		if ($scope.data.query !== "") {
 			postData = {
 				"from_date": $scope.data.fromDate,
 				"to_date": $scope.data.toDate,
