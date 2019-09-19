@@ -721,7 +721,11 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             dates.map((date) => {
                 dateRateTypeSet = _.findWhere(rateTypeRestrictionWithDateAsKey[date].rate_types, {id: rateType.id});
                 rateType.restrictionList.push(dateRateTypeSet.restrictions);
-                rateType.amountList.push(dateRateTypeSet.rate_currency + "" + dateRateTypeSet.amount);
+                if (dateRateTypeSet.amount === null) {
+                    rateType.amountList.push("");
+                } else {
+                    rateType.amountList.push(dateRateTypeSet.rate_currency + "" + dateRateTypeSet.amount);
+                }                
             });
 
             return _.omit(rateType, 'restrictions');
@@ -1057,7 +1061,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 dates.map((date) => {
                     dateRateSet = _.findWhere(rateRestrictionWithDateAsKey[date].rates, { id: rate.id });
                     rate.restrictionList.push(dateRateSet.restrictions);
-                    rate.amountList.push(dateRateSet.rate_currency + "" + dateRateSet.amount);
+                    if (dateRateSet.amount === null) {
+                        rate.amountList.push("");
+                    } else {
+                        rate.amountList.push(dateRateSet.rate_currency + "" + dateRateSet.amount);
+                    }
+                    
                 }
                 );
                 return _.omit(rate, 'restrictions');
@@ -1366,7 +1375,11 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 dates.map((date) => {
                     dateRoomTypeSet = _.findWhere(roomTypeRestrictionWithDateAsKey[date].room_types, {id: roomType.id});
                     roomType.restrictionList.push(dateRoomTypeSet.restrictions);
-                    roomType.amountList.push(dateRoomTypeSet.rate_currency + "" + dateRoomTypeSet.amount);
+                    if (dateRoomTypeSet.amount === null) {
+                        roomType.amountList.push("");
+                    } else {
+                        roomType.amountList.push(dateRoomTypeSet.rate_currency + "" + dateRoomTypeSet.amount);
+                    }                    
                 });
 
                 return _.omit(roomType, 'restrictions');
