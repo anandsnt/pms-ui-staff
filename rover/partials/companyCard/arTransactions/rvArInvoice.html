@@ -116,7 +116,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="6">  class="align-right"{{printData.translation.net_amount}} : </td>
+                    <td colspan="6" class="align-right">{{printData.translation.net_amount}} : </td>
                     <td>
                         <span class="currency" ng-if="printData.net_amount">{{printData.currency_for_html}}</span>{{printData.net_amount}}
                         <div ng-if="printData.invoice_currency_net_amount" class="converted-currency">
@@ -145,8 +145,8 @@
             </tbody>
         </table>
     </div>
-    <strong ng-if="printData.has_enabled_extended_tax_breakdown">Tax Breakdown</strong>
-    <table class="invoice-details extended-tax-table" ng-if="printData.has_enabled_extended_tax_breakdown">
+    <strong ng-if="printData.ar_has_enabled_extended_tax_breakdown">Tax Breakdown</strong>
+    <table class="invoice-details extended-tax-table" ng-if="printData.ar_has_enabled_extended_tax_breakdown">
         <thead style="display:table-row-group;">
             <tr>
                 <th class="text-align-left" >{{printData.translation.tax_description}}</th>
