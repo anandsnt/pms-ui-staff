@@ -242,7 +242,7 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
         if (!$scope.billFormat.isInformationalInvoice 
             && (parseInt($scope.item.print_counter, 10) >= parseInt($scope.transactionsDetails.no_of_original_invoices, 10) 
                 && $scope.roverObj.noReprintReEmailInvoice 
-                )) {
+                && parseInt($scope.transactionsDetails.no_of_original_invoices, 10) !== 0)) {
 
             printButtonClass = "grey";
         }
@@ -258,7 +258,7 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
         if (!$scope.billFormat.isInformationalInvoice 
             && (parseInt($scope.item.print_counter, 10) >= parseInt($scope.transactionsDetails.no_of_original_invoices, 10) 
                 && $scope.roverObj.noReprintReEmailInvoice 
-                )) {   
+                && parseInt($scope.transactionsDetails.no_of_original_invoices, 10) !== 0)) {   
 
             isPrintButtonDisabled = true;
         }
