@@ -61,7 +61,7 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             promises['deliveryTypes'] = this.getExportDeliveryTypes(params);
             promises['durations'] = this.getExportDurations(params);
             promises['scheduleFrequency'] = this.getExportFrequencies();
-            promises['dropDownAccounts'] = this.getCloudDrives('DROP_BOX');
+            promises['dropBoxAccounts'] = this.getCloudDrives('DROP_BOX');
             promises['googleDriveAccounts'] = this.getCloudDrives('GOOGLE_DRIVE');
 
             $q.all(promises).then(function (data) {

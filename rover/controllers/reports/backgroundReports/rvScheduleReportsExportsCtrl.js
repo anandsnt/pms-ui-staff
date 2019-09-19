@@ -221,6 +221,7 @@ angular.module('sntRover')
             $scope.reportMainMenuChange = function (nextMenu) {
                 $scope.updateViewCol($scope.viewColsActions.ONE);
                 $scope.updateView(nextMenu);
+                $scope.$broadcast('RESET_CURRENT_STAGE');
             };
 
             $scope.updateViewCol = function (cols, noReset) {

@@ -87,8 +87,6 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 endsOnDate = $scope.selectedEntityDetails.ends_on_date || $rootScope.businessDate,
                 exportDate = $scope.selectedEntityDetails.export_date || $rootScope.businessDate;
 
-            // saved emails/FTP
-            var delieveryType = $scope.selectedEntityDetails.delivery_type ? $scope.selectedEntityDetails.delivery_type.value : '';
 
             $scope.scheduleParams = {};
 
@@ -157,17 +155,21 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             }, datePickerCommon);
             $scope.scheduleParams.ends_on_date = reportUtils.processDate(endsOnDate).today;
 
+            var deliveryType = $scope.selectedEntityDetails.delivery_type ? $scope.selectedEntityDetails.delivery_type.value : '';
 
-            // if ( delieveryType === 'EMAIL' ) {
-            //     $scope.scheduleParams.delivery_id = $scope.getDeliveryId('EMAIL');
-            //     $scope.emailList = $scope.selectedEntityDetails.emails.split(', ');
-            // } else if ( delieveryType === 'SFTP' ) {
-            //     $scope.scheduleParams.delivery_id = $scope.getDeliveryId('SFTP');
-            //     $scope.scheduleParams.selectedFtpRecipient = $scope.selectedEntityDetails.sftp_server_id;
-            // } else {
-            //    $scope.emailList = [];
-            //    $scope.scheduleParams.selectedFtpRecipient = '';
-            // }
+            if (deliveryType !== '' && deliveryType === 'CLOUD_DRIVE') {
+                $scope.scheduleParams.delivery_id = $scope.selectedEntityDetails.delivery_type.id + ':' + $scope.selectedEntityDetails.cloud_drive_type;
+            } else {
+                $scope.scheduleParams.delivery_id = $scope.selectedEntityDetails.delivery_type.id + ':' + $scope.selectedEntityDetails.cloud_drive_type;
+            }
+
+            if ( deliveryType === 'EMAIL' ) {
+                $scope.emailList = $scope.selectedEntityDetails.emails.split(', ');
+            } else if ( deliveryType === 'SFTP' ) {
+                $scope.scheduleParams.selectedFtpRecipient = $scope.selectedEntityDetails.sftp_server_id;
+            } else if ( $scope.selectedEntityDetails.cloud_drive_type === 'GOOGLE DRIVE' || $scope.selectedEntityDetails.cloud_drive_type === 'DROPBOX' ) {
+                $scope.scheduleParams.selectedCloudAccount = $scope.selectedEntityDetails.cloud_drive_id;
+            } 
 
             $scope.timeSlots = reportUtils.createTimeSlots(TIME_SLOTS);
         };
@@ -290,7 +292,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                     $scope.customExportsData.durations = angular.copy(payload.durations);
                     $scope.customExportsData.scheduleFrequencies = angular.copy(payload.scheduleFrequency);
                     $scope.ftpServerList = payload.ftpServerList;
-                    $scope.dropDownAccountList = payload.dropDownAccounts;
+                    $scope.dropBoxAccountList = payload.dropBoxAccounts;
                     $scope.googleDriveAccountList = payload.googleDriveAccounts;
 
                     if (!$scope.customExportsData.isNewExport) {
@@ -377,15 +379,8 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 report_id: reportId,
                 hotel_id: $rootScope.hotelDetails.userHotelsData.current_hotel_id,
                 format_id: $scope.customExportsScheduleParams.format,
-                delivery_type_id: $scope.customExportsScheduleParams.deliveryType,
-                name: $scope.customExportsScheduleParams.exportName,
-                //time_period_id: 4,
-                emails: 'ragesh@stayntouch.com',
-                //frequency_id: 3,
-                //export_date: "2019-03-17T18:30:00.000Z",
-                //repeats_every: 0,
-                //starts_on: "2019/03/18"
-
+                delivery_type_id: '',
+                name: $scope.customExportsScheduleParams.exportName
             };
 
             var fieldMappings = [],
@@ -469,15 +464,24 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 params.ends_on_date = null;
             }
 
-            // // fill emails/FTP
-            // if ( $scope.checkDeliveryType('EMAIL') && $scope.emailList.length ) {
-            //     params.emails = $scope.emailList.join(', ');
-            // } else if ( $scope.checkDeliveryType('SFTP') && !! $scope.scheduleParams.selectedFtpRecipient ) {
-            //     params.sftp_server_id = $scope.scheduleParams.selectedFtpRecipient;
-            // } else {
-            //     params.emails = '';
-            //     params.sftp_server_id = '';
-            // }
+            var deliveryId = $scope.scheduleParams.delivery_id ? $scope.scheduleParams.delivery_id.split(':') : '';
+
+            if (deliveryId) {
+                params.delivery_type_id = parseInt(deliveryId[0]);
+            }
+
+            // fill emails/FTP
+            if ( $scope.checkDeliveryType('EMAIL') && $scope.emailList.length ) {
+                params.emails = $scope.emailList.join(', ');
+            } else if ( $scope.checkDeliveryType('SFTP') && !! $scope.scheduleParams.selectedFtpRecipient ) {
+                params.sftp_server_id = $scope.scheduleParams.selectedFtpRecipient;
+            } else if (($scope.checkDeliveryType('GOOGLE DRIVE') || $scope.checkDeliveryType('DROPBOX')) && 
+                        !!$scope.scheduleParams.selectedCloudAccount ) {
+                params.cloud_drive_id = $scope.scheduleParams.selectedCloudAccount;
+            } else {
+                params.emails = '';
+                params.sftp_server_id = '';
+            }
 
             // fill sort_field and filters
 
@@ -571,6 +575,10 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 $scope.updateView($scope.reportViewActions.SHOW_CUSTOM_NEW_EXPORT);
                 $scope.updateViewCol($scope.viewColsActions.ONE);
             });
+
+            $scope.addListener('RESET_CURRENT_STAGE', () => {
+                $scope.viewState.currentStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
+            });
         };
 
         $scope.notRunOnce = function () {
@@ -586,9 +594,17 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
         };
 
         $scope.checkDeliveryType = function (checkFor) {
-            var match = _.find($scope.customExportsData.deliveryTypes, { id: $scope.scheduleParams.delivery_id }) || {};
+            var deliveryId = $scope.scheduleParams.delivery_id ? $scope.scheduleParams.delivery_id.split(':') : null,
+                match;
 
-            return match.value === checkFor;
+            if (deliveryId) {
+                match = _.find($scope.customExportsData.deliveryTypes, { 
+                            id: parseInt(deliveryId[0]),
+                            value: deliveryId[1]  
+                        }) || {};
+            }
+
+            return match ? (match.value === checkFor) : false;
         };
 
         var runDigestCycle = function() {
@@ -612,7 +628,6 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 response(found);
             },
             select: function(event, ui) {
-                var RESET = true;
                 var alreadyPresent = _.find($scope.emailList, function(email) {
                     return email === ui.item.value;
                 });
@@ -623,7 +638,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 this.value = '';
 
                 runDigestCycle();
-                $scope.refreshFourthColumnScroll(RESET);
+                refreshScroll(DELIVERY_OPTIONS_SCROLLER, true);
 
                 return false;
             },
@@ -632,6 +647,21 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             }
         };
 
+        $scope.removeEmail = function(index) {
+            $scope.emailList = [].concat(
+                $scope.emailList.slice(0, index),
+                $scope.emailList.slice(index + 1)
+            );
+
+            refreshScroll(DELIVERY_OPTIONS_SCROLLER, true);
+        };
+
+        $scope.onDeliveryOptionChange = () => {
+            // We are just clearing the cloud drive id only because the given id belongs to 
+            // a single cloud drive account and if not cleared it will shows empty <option>
+            // when the cloud account type is changed from the delivery options
+            $scope.scheduleParams.selectedCloudAccount = null;
+        };
 
 
         // Initialize the data
@@ -652,6 +682,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 currentStage: STAGES.SHOW_CUSTOM_EXPORT_LIST
             };
             $scope.scheduleParams = {};
+            $scope.emailList = [];
         };
         
         // Initialize the controller

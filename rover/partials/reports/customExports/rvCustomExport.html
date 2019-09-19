@@ -199,8 +199,10 @@
                 <label for="export-delivery">Delivery Method</label>
                 <div class="select">
                     <select id="export-delivery"
-                            ng-options="deliveryType.id as deliveryType.value for deliveryType in customExportsData.deliveryTypes"
-                            ng-model="scheduleParams.delivery_id">
+                            ng-options="(deliveryType.id + ':' + deliveryType.value ) as deliveryType.description for deliveryType in customExportsData.deliveryTypes"
+                            ng-model="scheduleParams.delivery_id"
+                            ng-change=onDeliveryOptionChange()
+                            iscroll-stop-propagation>
                         <option value="">Select Delivery Method</option>
                     </select>
                 </div>
@@ -244,16 +246,38 @@
                 </div>
             </div>
 
+            <div class="entry join" ng-show="checkDeliveryType('SFTP') && !ftpServerList.length">
+                <label for="export-sftp">No SFTP configured</label> 
+            </div>
+
             <!-- DELIVER 3: Drive/Dropbox etc. -->
-            <div class="entry join">
+            <div class="entry join" ng-show="checkDeliveryType('GOOGLE DRIVE') && googleDriveAccountList.length">
                 <label for="export-folder">Google Drive Folder</label>
                 <div class="select">
-                    <select id="export-folder">
+                    <select id="export-folder"
+                            ng-options="googleDrive.id as googleDrive.description for googleDrive in googleDriveAccountList"
+                            ng-model="scheduleParams.selectedCloudAccount"
+                            iscroll-stop-propagation>
                         <option value="">Select Google Drive Folder</option>
-                        <option value="1">Folder 1</option>
-                        ... repeat L292 for each folder
                     </select>
                 </div>
+            </div>
+            <div class="entry join" ng-show="checkDeliveryType('GOOGLE DRIVE') && !googleDriveAccountList.length">
+                <label for="export-folder">No Google Drive Accounts configured</label>
+            </div>
+            <div class="entry join" ng-show="checkDeliveryType('DROPBOX') && dropBoxAccountList.length">
+                <label for="export-folder">Dropbox {{scheduleParams.selectedCloudAccount}}</label>
+                <div class="select">
+                    <select id="export-folder"
+                            ng-options="dropbox.id as dropbox.description for dropbox in dropBoxAccountList"
+                            ng-model="scheduleParams.selectedCloudAccount"
+                            iscroll-stop-propagation>
+                        <option value="">Select Dropbox</option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry join" ng-show="checkDeliveryType('DROPBOX') && !dropBoxAccountList.length">
+                <label for="export-folder">No Dropbox accounts configured</label>
             </div>
         </div>
     </div>
