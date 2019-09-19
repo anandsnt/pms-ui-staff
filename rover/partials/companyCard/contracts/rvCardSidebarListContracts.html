@@ -1,38 +1,38 @@
 <!-- If there are contracts, show this. -->
 <!-- If we don't show sidebar actions, remove .with-actions -->
-<div class="contracts-list with-actions" ng-if="!contractData.noContracts">
+<div class="contracts-list with-actions" ng-show="!contractData.noContracts">
     <div class="contracts-list-items scrollable">
         <div class="wrapper">
             <!-- If it has no items, add .no-items -->
             <!-- If it's opened, add .open -->
-            <div class="contract-list-items-section no-items">
+            <div class="contract-list-items-section no-items" ng-repeat="item in contractData.sideList">
                 <h2>
-                    {Section}
-                    <span class="count">{count}</span>
+                    {{item.type}}
+                    <span class="count">{{item.count}}</span>
                     <!-- If there are items, show arrow
                       'status-class':
                         - 'rotate-uo' -> when opened
-                        - 'rotate-down' -> when closed
-                    <span class="icons icon-double-arrow black {status-class}"></span>
-                    -->
+                        - 'rotate-down' -> when closed -->
+                    <span ng-show="item.count !== 0" class="icons icon-double-arrow black " ng-class="{'rotate-up': opened, 'rotate-down': !opened}"></span>
+                   
                 </h2>
                 <ul>
                     <!-- Add class .active if showing this contact -->
-                    <li>
-                        <h3 class="item-title">{Contract title}</h3>
+                    <li ng-repeat="contract in item.contracts">
+                        <h3 class="item-title">{{contract.contract_name}}</h3>
                         <div class="item-info">
                             <span>{start-date}</span>
                             <span>{end-date}</span>
                         </div>
                     </li>
-                    ... repeat for each contract
+                    <!-- ... repeat for each contract -->
                 </ul>
             </div>
-            ... repeat for each section (Future, Current, Past)
+            <!-- ... repeat for each section (Future, Current, Past) -->
         </div>
     </div>
     <!-- Show this to enable creating contracts. -->
-    <div class="contracts-list-actions">
+    <div class="contracts-list-actions" ng-show="contractData.noContracts">
         <button type="button" class="button green">Create New Contract</button>
     </div>
 </div>

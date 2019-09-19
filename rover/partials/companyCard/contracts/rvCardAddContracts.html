@@ -1,4 +1,4 @@
-<div class="contracts-details" ng-if="!contractData.noContracts && contractData.mode === 'ADD'">
+<div ng-controller="rvCardAddContractsCtrl" class="contracts-details" ng-show="!contractData.noContracts && contractData.mode === 'ADD'">
     <!-- Add .searching when searching a contract -->
     <div class="autocomplete-search contract-details-header">
         <!-- Remove .with-button if we are not shwoing Unlink Contract button -->
@@ -31,13 +31,13 @@
                     <li class="end-date">{end-date}</li>
                     <li class="rate">{rate}</li>
                 </ul>
-                ... repeat for each found contract
+                <!-- ... repeat for each found contract -->
             </div>
         </div>
     </div>
     <!-- If we don't show the bottom form, add .without-footer -->
     <!-- If we don't show the search for some reason, add .without-header -->
-    <div class="contracts-details-form scrollable">
+    <div class="contracts-details-form scrollable" ng-iscroll="cardContractsScroll" ng-iscroll-delay="1000">
         <div class="wrapper float">
             <div class="holder left">
                 <strong class="h3">Contract Details</strong>
@@ -95,7 +95,7 @@
                                 <div class="card">
                                     {rate}
                                 </div>
-                                ... repeat for each rate
+                                <!-- ... repeat for each rate -->
                             </div>
                         </div>
                     </div>
@@ -106,7 +106,7 @@
                             <!-- display the icon when the rate can be removed -->
                             <span class="icons icon-remove-10"></span>
                         </li>
-                        ... repeat for each rate
+                        <!-- ... repeat for each rate -->
                     </div>
                 </div>
                 <div class="entry margin">
@@ -114,26 +114,6 @@
                      <!-- add readonly if it's read only -->
                     <input name="contracted-nights" id="contracted-nights" class=" contracted-nights" placeholder="Nights per month" value="{nights}" maxlength="8" readonly type="text" />
                 </div>
-            </div>
-            <div class="holder right">
-                <strong class="h3">Statistics</strong>
-                 <!-- If there are statistics, show this -->
-                <ul id="contract-stats" class="contract-stats" ng-if="!contractData.noStatistics">
-                    <li>Booked Nights <span>{count}</span></li>
-                    <li>Total Nights <span>{count}</span></li>
-                    <li>Total Stays <span>{count}</span></li>
-                    <li>Total Revenue <span class="green">${total}</span></li>
-                    <li>Average Rate <span>${average}</span></li>
-                </ul>
-                <!-- If there is no statistics, show this -->
-                <div class="no-content" ng-if="contractData.noStatistics">
-                    <div class="info">
-                        <span class="icon-no-content icon-contracts"></span>
-                        <strong class="h1">No Statistics</strong>
-                        <span class="h2">This contracts has no reservations.</span>
-                    </div>
-                </div>
-                
             </div>
         </div>
     </div>
