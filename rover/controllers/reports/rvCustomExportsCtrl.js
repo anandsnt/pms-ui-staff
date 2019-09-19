@@ -155,19 +155,17 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             }, datePickerCommon);
             $scope.scheduleParams.ends_on_date = reportUtils.processDate(endsOnDate).today;
 
-            var deliveryType = $scope.selectedEntityDetails.delivery_type ? $scope.selectedEntityDetails.delivery_type.value : '';
-
-            if (deliveryType !== '' && deliveryType === 'CLOUD_DRIVE') {
-                $scope.scheduleParams.delivery_id = $scope.selectedEntityDetails.delivery_type.id + ':' + $scope.selectedEntityDetails.cloud_drive_type;
-            } else {
-                $scope.scheduleParams.delivery_id = $scope.selectedEntityDetails.delivery_type.id + ':' + $scope.selectedEntityDetails.cloud_drive_type;
+            $scope.scheduleParams.delivery_id = $scope.selectedEntityDetails.delivery_type ? $scope.selectedEntityDetails.delivery_type.value : '';
+            
+            if ($scope.scheduleParams.delivery_id === 'CLOUD_DRIVE') {
+                $scope.scheduleParams.delivery_id = $scope.selectedEntityDetails.cloud_drive_type;
             }
 
-            if ( deliveryType === 'EMAIL' ) {
+            if ( $scope.scheduleParams.delivery_id === 'EMAIL' ) {
                 $scope.emailList = $scope.selectedEntityDetails.emails.split(', ');
-            } else if ( deliveryType === 'SFTP' ) {
+            } else if ( $scope.scheduleParams.delivery_id === 'SFTP' ) {
                 $scope.scheduleParams.selectedFtpRecipient = $scope.selectedEntityDetails.sftp_server_id;
-            } else if ( $scope.selectedEntityDetails.cloud_drive_type === 'GOOGLE DRIVE' || $scope.selectedEntityDetails.cloud_drive_type === 'DROPBOX' ) {
+            } else if ( $scope.scheduleParams.delivery_id === 'GOOGLE DRIVE' || $scope.scheduleParams.delivery_id === 'DROPBOX' ) {
                 $scope.scheduleParams.selectedCloudAccount = $scope.selectedEntityDetails.cloud_drive_id;
             } 
 
@@ -437,7 +435,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
 
             // fill 'frequency_id', 'starts_on', 'repeats_every' and 'ends_on_date'
             params.frequency_id = $scope.scheduleParams.frequency_id;
-            /**/
+
             if ( $scope.scheduleParams.starts_on ) {
                 params.starts_on = $filter('date')($scope.scheduleParams.starts_on, 'yyyy/MM/dd');
             }
@@ -464,10 +462,12 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 params.ends_on_date = null;
             }
 
-            var deliveryId = $scope.scheduleParams.delivery_id ? $scope.scheduleParams.delivery_id.split(':') : '';
+            var deliveryType = _.find ($scope.customExportsData.deliveryTypes, {
+                value: $scope.scheduleParams.delivery_id
+            });
 
-            if (deliveryId) {
-                params.delivery_type_id = parseInt(deliveryId[0]);
+            if (deliveryType) {
+                params.delivery_type_id = parseInt(deliveryType.id);
             }
 
             // fill emails/FTP
@@ -594,17 +594,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
         };
 
         $scope.checkDeliveryType = function (checkFor) {
-            var deliveryId = $scope.scheduleParams.delivery_id ? $scope.scheduleParams.delivery_id.split(':') : null,
-                match;
-
-            if (deliveryId) {
-                match = _.find($scope.customExportsData.deliveryTypes, { 
-                            id: parseInt(deliveryId[0]),
-                            value: deliveryId[1]  
-                        }) || {};
-            }
-
-            return match ? (match.value === checkFor) : false;
+            return checkFor === $scope.scheduleParams.delivery_id;
         };
 
         var runDigestCycle = function() {

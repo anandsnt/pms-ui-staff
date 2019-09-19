@@ -199,7 +199,7 @@
                 <label for="export-delivery">Delivery Method</label>
                 <div class="select">
                     <select id="export-delivery"
-                            ng-options="(deliveryType.id + ':' + deliveryType.value ) as deliveryType.description for deliveryType in customExportsData.deliveryTypes"
+                            ng-options="deliveryType.value as deliveryType.description for deliveryType in customExportsData.deliveryTypes"
                             ng-model="scheduleParams.delivery_id"
                             ng-change=onDeliveryOptionChange()
                             iscroll-stop-propagation>
