@@ -23,8 +23,8 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
 		var successCallBackFetchRevenueData = function(data) {
 			$scope.data.revenueData = {};
             $scope.data.activeChargeGroups = [];
-            $scope.data.selectedChargeGroup = '';
-            $scope.data.selectedChargeCode  = '';
+            // $scope.data.selectedChargeGroup = '';
+            // $scope.data.selectedChargeCode  = '';
 			$scope.data.revenueData = data;
             $scope.data.activeChargeGroups = data.charge_groups;
             $scope.errorMessage = "";
@@ -41,11 +41,13 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
             "from_date": $scope.data.fromDate,
             "to_date": $scope.data.toDate,
             "employee_ids": $scope.data.selectedEmployeeList,
-            "department_ids": $scope.data.selectedDepartmentList,
-            "filter_id": $scope.data.filterId,
-            "query": $scope.data.query
+            "department_ids": $scope.data.selectedDepartmentList
         };
 
+        if ($scope.data.query !== "") {
+            postData.filter_id = $scope.data.filterId;
+            postData.query = $scope.data.query;
+        }
 		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, postData, successCallBackFetchRevenueData);
     };
 
@@ -67,9 +69,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
     });
 
     $scope.addListener('REVENUESEARCH', function() {
-        if ($scope.data.query !== "") {
-            initRevenueData();
-        }
+        initRevenueData();
     });
 
     // CICO-28060 : Update dates for Revenue & Payments upon changing summary dates
