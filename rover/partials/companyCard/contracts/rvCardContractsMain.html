@@ -1,0 +1,17 @@
+<!-- Company Card Tab - Contracts -->
+<form ng-controller="rvCardContractsMainCtrl" method="post" id="cc-contracts" name="cc-contracts" class="form card-tab inner-header contracts" ng-show="currentSelectedTab == 'cc-contracts'">
+
+    <!-- Add .no-content if no contracts -->
+    <div class="tab-details scrollable" ng-class="{'no-content': contractData.noContracts}">
+
+		<div include-replace ng-include="'/assets/partials/companyCard/contracts/rvCardSidebarListContracts.html'"></div>
+
+		<div include-replace ng-include="'/assets/partials/companyCard/contracts/rvCardAddContracts.html'"></div>
+
+		<div include-replace ng-include="'/assets/partials/companyCard/contracts/rvCardEditContracts.html'"></div>
+
+		<div include-replace ng-include="'/assets/partials/companyCard/contracts/rvCardNoContracts.html'"></div>
+        
+    </div>
+
+</form>
