@@ -237,7 +237,7 @@ let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDat
 
     }
 
-    reservation.reservationClass = "reservation " + reservationStatusClass + " " + reservationClass + " " + reservationEditClass;
+    reservation.reservationClass = "reservation " + reservationStatusClass + " " + reservationClass + " " + reservationEditClass + " overlap-" + reservation.overlapCount;
     return reservation;
 };
 

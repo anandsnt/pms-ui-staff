@@ -2,8 +2,26 @@ const { connect } = ReactRedux;
 
 let convertRowReadyToComponent = (roomsList, selectedRoomId, state) => {
 
-    roomsList.map((room) => {
-        room.roomClass = (room.id === selectedRoomId) ? 'grid-row highlighted' : 'grid-row';
+    roomsList.map((room, iterator) => {
+
+        var reservations = [],
+            overlappedReservationsCount = 0;
+
+        if (roomsList[iterator].reservations.length !== 0) {
+            roomsList[iterator].reservations.map((roomItem, itr) => {
+                reservations.push(roomsList[iterator].reservations[itr]);
+            })
+        }
+        // if(reservations.length !== 0) {
+        //     reservations.push(reservations[reservations.length - 1]); 
+        // }
+        overlappedReservationsCount = reservations.length - 1;
+
+        if (room.id === selectedRoomId) {
+            room.roomClass = (overlappedReservationsCount >= 0) ? 'grid-row highlighted overlap-' + overlappedReservationsCount : 'grid-row highlighted';
+        } else {
+            room.roomClass = (overlappedReservationsCount >= 0) ? 'grid-row overlap-' + overlappedReservationsCount : 'grid-row';
+        }
     });
     return roomsList;
 };
