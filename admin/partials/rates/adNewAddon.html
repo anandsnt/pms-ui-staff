@@ -190,7 +190,7 @@
                                 <div class="entry">
                                     <label>Addon Currency</label>
                                     <select class="placeholder" ng-model="singleAddon.ref_currency_code_id" ng-options="currency.id as currency.value + ' - '  + currency.symbol for currency in rateCurrencyList" ng-change="onChangeChargeCode()">
-                                       <option value="">Select Rate Currency</option>
+                                       <option value="" style="display:none">Select Rate Currency</option>
                                     </select>
                                 </div>
                             </div>

@@ -189,7 +189,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
                 if ($scope.guestCardData.contactInfo.id_issue_date) {
                     dataToUpdate.id_issue_date = moment($scope.guestCardData.contactInfo.id_issue_date).format("YYYY-MM-DD");
                 } else {
-                    dataToUpdate.id_date_of_issue = null;
+                    dataToUpdate.id_issue_date = null;
                 }
                 if ($scope.guestCardData.contactInfo.entry_date) {
                     dataToUpdate.entry_date = moment($scope.guestCardData.contactInfo.entry_date).format("YYYY-MM-DD");

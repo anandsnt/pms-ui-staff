@@ -44,12 +44,11 @@
 			</div>
 			<rv-textbox value="guestCardData.contactInfo.id_number" label = "Id Number" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.id_number, '')}}"></rv-textbox>
 
-			<div class="entry margin has-datepicker">
+			<div class="entry margin has-datepicker" ng-if="guestCardData.contactInfo.guestAdminSettings.id_issue_date.is_visible">
 				<label for="id date issue"> ID Date of issue </label>
 				<input type="text" ng-model="guestCardData.contactInfo.id_issue_date  | date:dateFormat" class="datepicker" ng-click="popupCalendarForGuestContactInfoDate('idDate')" readonly />
 			</div>
-
-			<div class="entry has-datepicker" >
+			<div class="entry has-datepicker" ng-class="{'margin': !guestCardData.contactInfo.guestAdminSettings.id_issue_date.is_visible}" ng-if="guestCardData.contactInfo.guestAdminSettings.entry_date.is_visible">
 				<label for="entry date"> Entry Date </label>
 				<input type="text" ng-model="guestCardData.contactInfo.entry_date | date:dateFormat" class="datepicker" ng-click="popupCalendarForGuestContactInfoDate('entryDate')" readonly />
 			</div>
