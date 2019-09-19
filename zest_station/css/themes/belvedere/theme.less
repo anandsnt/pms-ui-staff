@@ -1,0 +1,201 @@
+/* StayNTouch Zest Station Styles | Arc Theme */
+
+/* 1. COLORS
+==========================================================*/
+@brandColor:            #48b294;
+    
+@textColor:             @white;
+@backgroundColor:       #64c9ac;
+
+@actionColor:           @white;
+@actionBackground:      @brandColor;
+
+@inputBackground:       #e3e3e3;
+@inputColor:            @black;
+@transparentColor:      rgba(0,0,0,.5);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+
+@font-face {
+    font-family:'courier_newregular';
+        src: url('../../type/courier-new/courier-new.eot');
+        src: url('../../type/courier-new/courier-new.eot?#iefix') format('embedded-opentype'),
+            url('../../type/courier-new/courier-new.woff') format('woff'),
+            url('../../type/courier-new/courier-new.ttf') format('truetype'),
+            url('../../type/courier-new/courier-new.svg#courier_newregular') format('svg');
+        font-weight: normal;
+        font-style: normal;
+}
+@fontFamily: 'courier_newregular', sans-serif;
+
+
+/* 3. IMAGES
+==========================================================*/
+@background: @backgroundColor;
+@backgroundSize: '';
+
+@headerIconsColor:      @white;
+@headerIconsActive:     @white;
+
+.icons { 
+    &.icon-create-key {
+        fill: @brandColor;
+        stroke: @brandColor;
+    }
+
+    &.icon-no-print { stroke: @white; }
+
+    &.icon-oos {
+        fill: @brandColor;
+    }
+
+    &.icon-arrow-left,
+    &.icon-arrow-right {
+        fill: none;
+        stroke: @white;
+    }
+
+}
+
+.logo-svg{
+    background-image: url("../css/themes/belvedere/logo.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    height: 125px;
+    width: 128px;
+}
+
+/* 4. LAYOUT
+==========================================================*/
+
+#belvedere {
+
+    #header {
+        height: 145px;
+    }
+
+    #main {
+        #calc > #height > .remove(100%, 145px);
+        top: 145px;
+
+        &.centered {
+            padding-top: 100px;
+            #content {
+                height: 100%;
+            }
+        }
+    }
+
+    input,
+    select,
+    /* Popup fixes start */
+    textarea
+    /* Popup fixes end */  {
+        background: @inputBackground;
+        color: @inputColor;
+    }
+
+    .button {
+        &.transparent {
+            background: rgba( 0, 0, 0, 0.05 );
+        }
+    }
+
+    #logo {
+        padding-top: 0;
+        margin-top: 15px;
+
+        .logo {
+            width: auto;
+            height: 125px;
+        }
+    }
+
+    #options {
+        
+        .icon-text {
+            color: @white;
+        }
+
+        .icons {
+            fill: @white;
+        }
+
+        li.break {
+            padding-top: 60px;
+
+            &:after,
+            &:before {
+                display: none;
+            }
+        }
+
+        li.radio-option {
+            input[type=radio]:not(:checked) + .button {
+                opacity: 0.35;
+            }
+        }
+    }
+
+    
+
+    #guests {
+        .button {
+            color: @white;
+            background-color: @black;
+        }
+    } 
+
+    .upgrade-list {
+        li {
+            &:not(.selected) {
+                border-color: @white;
+
+                .upgrade-content {
+                    color: @black;
+                    background-color: @white;
+                }
+            }
+        }
+    }
+
+    .add-on-list {
+        li {
+
+            &:not(.selected){
+                border-color: @white;
+
+                .add-on-content {
+                    background: @white;
+                }
+            }
+            
+        }
+    }
+
+    .add-on {
+
+        .input-group {
+            input {
+                color: @black;
+            }
+        }
+    }
+
+    #rate {
+        li {
+            &.sub {
+                color: #a1a1a1;
+            }
+        }
+    }
+
+    #textual,
+    .popup {
+        .icons {
+            fill: @white;
+        }
+    }
+}
