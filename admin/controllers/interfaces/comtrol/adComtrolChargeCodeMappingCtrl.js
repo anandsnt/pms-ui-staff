@@ -1,5 +1,16 @@
-admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'adComtrolChargeCodeMappingSrv', 'COMTROL_REF',
-  function ($scope, adComtrolChargeCodeMappingSrv, COMTROL_REF) {
+admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'adComtrolChargeCodeMappingSrv', 'ngTableParams', 'COMTROL_REF',
+  function ($scope, adComtrolChargeCodeMappingSrv, ngTableParams, COMTROL_REF) {
+
+    ADBaseTableCtrl.call(this, $scope, ngTableParams);
+
+    /*
+     * This methode is to set page count.
+     * @param {number} page count
+     */
+    $scope.displayCountChanged = function(count) {
+        $scope.displyCount = count;
+    };
+
     // private methods and variables
     var resetNew = function () {
       $scope.state.new = {
@@ -67,22 +78,9 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'adComtrolChargeCo
           is_default: is_default,
           meal_time_period: meal_time_period
         },
-        successCallBack: function (response) {
-          if (is_default) {
-            _.each($scope.mappings, function (obj) {
-              obj.is_default = false;
-            });
-          }
-
-          $scope.mappings.push({
-            id: response.id,
-            revenue_center_code: revenue_center_code,
-            category_name: category_name,
-            charge_code_name: charge_code_name,
-            is_default: is_default,
-            meal_time_period: meal_time_period
-          });
-          $scope.state.mode = "";
+        successCallBack: function() {
+            $scope.tableParams.reload();
+            $scope.state.mode = '';
         }
       });
     };
