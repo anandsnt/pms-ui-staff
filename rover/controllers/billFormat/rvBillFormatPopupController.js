@@ -35,7 +35,8 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
                     // Only Company card is attached.
                     $scope.disableCompanyCardInvoice = true;
                 }
-            } else if (!!$scope.groupConfigData) {
+            }
+            if (!!$scope.groupConfigData) {
                 params.id = $scope.groupConfigData.summary.group_id;
                 params.is_group = true;
                 params.is_type = "Account";
