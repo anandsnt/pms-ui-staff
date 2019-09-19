@@ -98,20 +98,6 @@ const isRoomAvailable = (roomId, state, type) => {
 
 const NightlyDiaryReservationsListComponent = ({ reservationsListToComponent, roomRowClass, showAssignRooms, showMoveRooms, showBookRooms, state }) => {
 
-    reservationsListToComponent.map((item, iterator) => {
-        var reservations = [];
-
-        if (reservationsListToComponent[iterator].reservations.length !== 0) {
-            // reservationsListToComponent[iterator].reservations.push(reservationsListToComponent[iterator].reservations[reservationsListToComponent[iterator].reservations.length - 1]);
-            reservationsListToComponent[iterator].reservations.map((reservation, itr) => {
-                reservations.push(reservationsListToComponent[iterator].reservations[itr]);
-                // if(itr !== 0) {
-                    reservationsListToComponent[iterator].reservations[itr].overlapCount = itr;
-                // }
-            })
-        }
-    });
-
     return (
         <div className={roomRowClass}>
             {
@@ -120,8 +106,8 @@ const NightlyDiaryReservationsListComponent = ({ reservationsListToComponent, ro
                         {
 
                             item.reservations.length > 0 ?
-                                item.reservations.map((reservationItem) => (
-                                    <NightlyDiaryReservationContainer reservation={reservationItem} room={item} />
+                                item.reservations.map((reservationItem, iterator) => (
+                                    <NightlyDiaryReservationContainer reservation={reservationItem} room={item} overlapCount={iterator} />
                                 )
                                 )
 

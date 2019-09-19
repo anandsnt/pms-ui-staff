@@ -32,9 +32,6 @@ let convertRoomsListReadyToComponent = (roomsList, selectedRoomId, state) => {
         state.reservationsList[index].reservations.map((reservation, iterator) => {
             reservations.push(state.reservationsList[index].reservations[iterator]);
         })
-        // if(reservations.length !== 0) {
-        //     reservations.push(reservations[reservations.length - 1]); 
-        // }
         overlappedReservationsCount = reservations.length - 1;
 
         if (overlappedReservationsCount >= 0) {
