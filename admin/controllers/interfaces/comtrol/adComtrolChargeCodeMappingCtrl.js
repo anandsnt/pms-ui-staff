@@ -1,22 +1,12 @@
-admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'adComtrolChargeCodeMappingSrv', 'ngTableParams', 'COMTROL_REF',
-  function ($scope, adComtrolChargeCodeMappingSrv, ngTableParams, COMTROL_REF) {
-
-    ADBaseTableCtrl.call(this, $scope, ngTableParams);
-
-    /*
-     * This methode is to set page count.
-     * @param {number} page count
-     */
-    $scope.displayCountChanged = function(count) {
-        $scope.displyCount = count;
-    };
-
+admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'adComtrolChargeCodeMappingSrv', 'COMTROL_REF',
+  function ($scope, adComtrolChargeCodeMappingSrv, COMTROL_REF) {
     // private methods and variables
     var resetNew = function () {
       $scope.state.new = {
         revenue_center_code: "",
         category_name: "",
         charge_code_name: "",
+        meal_time_period: "",
         is_default: false
       };
     },
@@ -66,18 +56,33 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'adComtrolChargeCo
       var revenue_center_code = $scope.state.new.revenue_center_code,
         category_name = $scope.state.new.category_name,
         is_default = $scope.state.new.is_default,
-        charge_code_name = $scope.state.new.charge_code_name;
+        charge_code_name = $scope.state.new.charge_code_name,
+        meal_time_period = $scope.state.new.meal_time_period;
 
       $scope.callAPI(adComtrolChargeCodeMappingSrv.create, {
         params: {
           revenue_center_code: revenue_center_code,
           category_name: category_name,
           charge_code_name: charge_code_name,
-          is_default: is_default
+          is_default: is_default,
+          meal_time_period: meal_time_period
         },
-        successCallBack: function() {
-            $scope.tableParams.reload();
-            $scope.state.mode = '';
+        successCallBack: function (response) {
+          if (is_default) {
+            _.each($scope.mappings, function (obj) {
+              obj.is_default = false;
+            });
+          }
+
+          $scope.mappings.push({
+            id: response.id,
+            revenue_center_code: revenue_center_code,
+            category_name: category_name,
+            charge_code_name: charge_code_name,
+            is_default: is_default,
+            meal_time_period: meal_time_period
+          });
+          $scope.state.mode = "";
         }
       });
     };
@@ -172,7 +177,7 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'adComtrolChargeCo
        * SET ALL OTHERS as not default
        */
       if (!mapping.is_default) {
-        _.each($scope.mappings, function (obj) {
+        _.each($scope.data, function (obj) {
           obj.is_default = false;
         });
       }
@@ -228,7 +233,8 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'adComtrolChargeCo
           revenue_center_code: "",
           category_name: "",
           charge_code_name: "",
-          is_default: false
+          is_default: false,
+          meal_time_period: ""
         }
       };
       loadMetaList();
