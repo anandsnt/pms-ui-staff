@@ -26,6 +26,8 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             GOOGLE_DRIVE: []
         };
 
+        var self = this;
+
         this.getAvailableDataSpaces = () => {
             var deferred = $q.defer(),
                 url = 'api/reports?show_only_redshift_reports=true';
@@ -185,6 +187,29 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
+        this.getRoomNos = () => {
+            var deferred = $q.defer(),
+                url = 'house/search.json',
+                data = {
+                    all_employees_selected: true
+                };
+
+            sntBaseWebSrv.postJSON(url, data).then(function (response) {
+                var results = _.map(response.data.rooms, function (each) {
+                    return {
+                        id: each.id,
+                        name: each.room_no
+                    };
+                });
+
+                deferred.resolve(angular.copy(results));
+            }, function (error) {
+                deferred.resolve(error);
+            });
+
+            return deferred.promise;
+        };
+
         this.processFilterSelections = ( filterValues ) => {
             var promises = [],
                 deferred = $q.defer();
@@ -201,9 +226,9 @@ angular.module('sntRover').service('RVCustomExportSrv', [
                         promises.push(reportSubSrv.fetchReservationStatus());
                         break;
                     
-                    // case FILTER_KEYS['ROOM_NO']:
-                    //     promises.push(reportSubSrv.fetchBookingOrigins());
-                    //     break;
+                    case FILTER_KEYS['ROOM_NO']:
+                        promises.push(self.getRoomNos());
+                        break;
                     case FILTER_KEYS['ROOM_TYPE']:
                         promises.push(reportSubSrv.fetchRoomTypeList());
                         break;

@@ -359,9 +359,10 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
          * @param {String} key -the key to used as value
          * @return {Array} selectedIds - array of selected ids
          */
-        var getSelectedItemValues = (items, key) => {
-            key = key || 'value';
-            var selectedItems = _.where(items, { selected: true }),
+        var getSelectedItemValues = (filter) => {
+            var key = filter.options.value_key || 'value';
+
+            var selectedItems = _.where(filter.secondLevelData, { selected: true }),
                 selectedIds = _.pluck(selectedItems, key);
 
             return selectedIds;
@@ -407,7 +408,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                     if (filter.hasDualState) {
                         filterValues[paramKey] = filter.selectedSecondLevel;
                     } else if (filter.isMultiSelect) {
-                        filterValues[paramKey] = getSelectedItemValues(filter.secondLevelData);
+                        filterValues[paramKey] = getSelectedItemValues(filter);
                     }
                 } else if (filter.isRange) {
                     if (!filterValues[paramKey]) {
