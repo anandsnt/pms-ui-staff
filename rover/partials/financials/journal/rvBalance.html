@@ -17,7 +17,7 @@
                     <i class="icons icon-action icon-completed" ng-if="balanceData.deposit_balance_difference === 0"></i>
                     <!-- If there's difference, show this instead of L53: -->
                     <span class="color-red" ng-if="balanceData.deposit_balance_difference !== 0"> 
-                        <span class="currency">{{currencySymbol}}</span>{{balanceData.guest_balance_difference}}
+                        <span class="currency">{{currencySymbol}}</span>{{balanceData.deposit_balance_difference}}
                     </span> 
                 </li>
             </ul>
