@@ -1,16 +1,16 @@
 <span ng-controller="RVJournalBalanceController" ng-click="clickedOnPayment($event)">
-    <div id="journal-content" class="journal-content balance" ng-if="deposit_balance_difference !== null && guest_balance_difference !== null">
+    <div id="journal-content" class="journal-content balance" ng-if="!balanceData.is_eod_not_run">
 
         <div class="journal-summary balance-summary first">
             <h3>Deposit Ledger</h3>
             <ul>
                 <li>
                     Closing Balance
-                    <span><span class="currency">{{currencySymbol}}</span>{{balanceData.deposit_closing_balance}}</span>
+                    <span ng-show="balanceData.deposit_closing_balance !== null"><span class="currency">{{currencySymbol}}</span>{{balanceData.deposit_closing_balance}}</span>
                 </li>
                 <li>
                     EOD Report Balance
-                    <span class="next-view"><span class="currency">{{currencySymbol}}</span>{{balanceData.deposit_report_balance}}</span> <!-- Clicking this should open Deposit Summary Report, with the back button text "Journal" -->
+                    <span class="next-view" ng-show="balanceData.deposit_report_balance !== null"><span class="currency">{{currencySymbol}}</span>{{balanceData.deposit_report_balance}}</span> <!-- Clicking this should open Deposit Summary Report, with the back button text "Journal" -->
                 </li>
                 <li>
                     Balance Check
@@ -27,10 +27,10 @@
             <h3>Guest Ledger</h3>
             <ul>
                 <li>
-                    <span><span class="currency">{{currencySymbol}}</span>{{balanceData.guest_closing_balance}}</span>
+                    <span ng-show="balanceData.guest_closing_balance !== null"><span class="currency">{{currencySymbol}}</span>{{balanceData.guest_closing_balance}}</span>
                 </li>
                 <li>
-                    <span class="next-view"><span class="currency">{{currencySymbol}}</span>{{balanceData.guest_report_balance}}</span> <!-- Clicking this should open Guest Balance Report, with the back button text "Journal" -->
+                    <span class="next-view" ng-show="balanceData.guest_report_balance !== null"><span class="currency">{{currencySymbol}}</span>{{balanceData.guest_report_balance}}</span> <!-- Clicking this should open Guest Balance Report, with the back button text "Journal" -->
                 </li>
                 <li>
                     <i class="icons icon-action icon-completed" ng-if="balanceData.guest_balance_difference === 0"></i>
@@ -87,7 +87,7 @@
         </div>
         
     </div>
-    <div id="journal-content" class="journal-content no-content" ng-if="deposit_balance_difference === null && guest_balance_difference === null">
+    <div id="journal-content" class="journal-content no-content" ng-if="balanceData.is_eod_not_run">
         <div class="info">
             <span class="icon-no-content icon-rates"></span>
             <strong class="h1">No Data Available</strong>
