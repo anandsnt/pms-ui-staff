@@ -14,13 +14,14 @@ sntRover.controller('RVPleaseSwipeCtrl', ['$rootScope', '$scope', 'sntPaymentSrv
                     reservation_id: $scope.reservationBillData.reservation_id,
                     workstation_id: $scope.workstation_id
                 },
-                successCallBack: function (response) {
-                    console.log(response);
+                successCallBack: function () {
+                    $scope.$emit('REFRESH_BILLCARD_VIEW');
                     $scope.$emit("HIDE_SIX_PAY_LOADER");
+                    $scope.closeDialog();
                 },
-                failureCallBack: function () {
+                failureCallBack: function (err) {
                     $scope.state.numAttempts++;
-                    $scope.errorMessage = ['UNABLE TO ADD CARD TO FILE']
+                    $scope.errorMessage = err;
                     $scope.$emit("HIDE_SIX_PAY_LOADER");
                 }
             });
