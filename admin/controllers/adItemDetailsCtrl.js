@@ -10,6 +10,7 @@ admin.controller('ADItemDetailsCtrl', ['$scope', 'ADItemSrv', '$state', '$stateP
     var defaultLanguage = _.filter(availableLanguages.languages, function(language) {
         return language.is_default;
     });
+
     $scope.selectedLanguage = {
         code: defaultLanguage.length ? defaultLanguage[0].code : 'en'
     };
@@ -46,7 +47,7 @@ admin.controller('ADItemDetailsCtrl', ['$scope', 'ADItemSrv', '$state', '$stateP
 		else {
 			$scope.invokeApi(ADItemSrv.addItemDetails, {}, fetchSuccessOfItemDetails, fetchFailedOfItemDetails);
 		}
-    }
+    };
 
 	loadItemDetails();
 
