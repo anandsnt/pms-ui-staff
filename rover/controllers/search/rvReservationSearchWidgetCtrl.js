@@ -38,7 +38,19 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		if ($stateParams.type === "OPEN_BILL_CHECKOUT" ) {
 			// CICO-24079 - OPEN_BILL_CHECKOUT - Date picker from date should default to Null.
 			$scope.fromDate = "";
-			$scope.$emit("UpdateHeading", 'Checked Out (With Balance)');
+			
+			if ($stateParams.from_page === 'JOURNAL') {
+				// $scope.$emit("UpdateHeading", 'JOURNAL');
+				$rootScope.setPrevState = {
+					title: 'JOURNAL',
+					name: 'rover.financials.journal',
+					param: {
+						tab: "BALANCE"				
+					}
+				};
+			} else {
+				$scope.$emit("UpdateHeading", 'Checked Out (With Balance)');
+			}
 		}
 		else {
 		// Date picker from date should default to current business date - CICO-8490
