@@ -15,10 +15,11 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
                 var absUrl = $location.$$absUrl;
                 var apiUrl = "";
 
-                var setAPiURLfromWindowUrl = function() {
+                var setAPiURLfromWindowUrl = function(startingUrl) {
                     absUrl = (absUrl.indexOf("#") !== -1) ? absUrl.substring(0, absUrl.indexOf("#")) : absUrl;
                     var offset = absUrl.indexOf("?");
-                    var startingUrl = absUrl.substring(0, offset);
+
+                    startingUrl = startingUrl || absUrl.substring(0, offset);
                     // to strip away state URLS
                     var remainingURl = decodeURIComponent(absUrl.substring(offset, absUrl.length));
 
@@ -28,23 +29,29 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
                 // if the guestweb is accessed normaly, ie invoked using
                 // the mail sent from the hotel admin
 
-                if (absUrl.indexOf("/guest_web/home/index?guest_web_token=") !== -1) {  
-                    setAPiURLfromWindowUrl();
+                if (absUrl.indexOf("/guest_web/home/index?guest_web_token=") !== -1 ||
+                        absUrl.indexOf("/checkin/home?guest_web_token=") !== -1) {
+                    // The way GW works is by appending the baseURL with _data and requesting with the same parameters
+                    setAPiURLfromWindowUrl("/guest_web/home/index");
                 }
                 // invoked when forgot password or email verification is
                 // requested from the zest apps
-                else if (absUrl.indexOf("/guest_web/home/user_activation") !== -1) {
+                else if (absUrl.indexOf('/guest_web/home/user_activation') !== -1 ||
+                    absUrl.indexOf('/checkin/user_activation') !== -1) {
                     absUrl = (absUrl.indexOf("#") !== -1) ? absUrl.substring(0, absUrl.indexOf("#")) : absUrl;
                     var offset = absUrl.indexOf("?");
-                    var startingUrl = absUrl.substring(0, offset);
+
                     // to strip away state URLS
                     var remainingURl = decodeURIComponent(absUrl.substring(offset, absUrl.length));
 
-                        remainingURl = (remainingURl.indexOf("#") !== -1) ? remainingURl.substring(0, remainingURl.indexOf("#")) : remainingURl;
+                    remainingURl = (remainingURl.indexOf("#") !== -1) ? remainingURl.substring(0, remainingURl.indexOf("#")) : remainingURl;
                     apiUrl = "/guest_web/home/activate_user.json" + remainingURl;
                 }
-                else if ( absUrl.indexOf("/guest_web/") !== -1 && absUrl.indexOf("/checkin?guest_web_token=") !== -1) {
+                else if ( absUrl.indexOf("/checkin?guest_web_token=") !== -1) {
                     setAPiURLfromWindowUrl();
+                    // Correct the URL set by the above method to point to the API endpoints
+                    // With CICO-63376 all API endpoints reside at /guest_web/ and the UI assets reside at /checkin and /checkout
+                    apiUrl = apiUrl.replace('/checkin/reservation/', '/guest_web/');
                 }
                 // direct URL checkin - accessing URLS set in hotel admin for checkin
                 else if (absUrl.indexOf("checkin") !== -1) {

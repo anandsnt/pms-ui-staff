@@ -5,12 +5,9 @@ html,
 body {
   height: auto;
   min-height: 100%;
-}
-
-body {
   background-color: #fff;
-}
 
+}
 .back-text {
   color: #fff;
   display: none !important;
@@ -40,10 +37,10 @@ input[type=email] {
 
 .header-bar {
   background:#fff;
+  margin-bottom: 5%;
 }
 
 .logo-image {
-  width: 100%;
   max-width: 100%;
   margin: 0 !important;
 }
@@ -74,6 +71,7 @@ input[type=email] {
 .btn:hover {
   background:#00b196;
   color: @white;
+  text-transform: uppercase !important;
 }
 
 .dual-button {
@@ -255,6 +253,13 @@ input[type=email] {
   height: 40px;
 }
 
+@media (min-width: 990px) {
+  .checkout-alone-button {
+    float: none;
+    margin: 1% auto;
+  }
+}
+
 @media (max-width: 990px) {
   .logo-image {
     margin: 0 !important;
@@ -264,11 +269,13 @@ input[type=email] {
   .back-to-checkout {
     display: none;
   }
-  .checkout-icon,.late-checkout-icon {
+  .checkout-alone-button {
+    margin: 1% auto !important;
+  }
+  .checkout-icon, .late-checkout-icon {
     margin-top: 43px;
   }
-  .accept-charges,
-  {
+  .accept-charges {
     width: 300px;
     padding: 4% 0%;
   }
@@ -301,6 +308,12 @@ input[type=email] {
   }
 }
 
+@media only screen and (max-device-width: 1028px) and (min-device-width: 768px) {
+  .checkout-alone-button {
+    margin: 1% auto !important;
+  }
+}
+
 .btn-template {
   font-size: 30px;
 }
@@ -312,6 +325,5 @@ input{
 }
 
 .text-comment {
-  background: #000 !important;
-  color: #fff !important;
+  background: #ededed !important;
 }

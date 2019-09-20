@@ -435,14 +435,13 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
             } else {
                 data.splice(0, 1);
                 $scope.bills = $scope.excludeExistingBills(data);
-                if ($scope.newBillNumber <= 10) {
-                    var newBill = {};
 
-                    newBill.id = 'new';
-                    newBill.is_active = true;
-                    newBill.bill_number = '' + $scope.newBillNumber + '(new)';
-                    $scope.bills.push(newBill);
-                }
+                var newBill = {};
+
+                newBill.id = 'new';
+                newBill.is_active = true;
+                newBill.bill_number = '' + $scope.newBillNumber + '(new)';
+                $scope.bills.push(newBill);
                 $scope.$parent.bills = $scope.bills;
             }
             $scope.selectedEntity.to_bill = $scope.selectedEntity.is_new ? $scope.bills[0].id : $scope.selectedEntity.to_bill;
@@ -550,6 +549,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
                     $scope.isShownExistingCCPayment = true;
                 }
             }
+            $scope.selectedEntity.split_charge_by_guests = data.split_charge_by_guests;
             $scope.$parent.$emit('hideLoader');
         };
         var params = {};
@@ -812,9 +812,9 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
             }
             if ($scope.billingEntity === "ALLOTMENT_DEFAULT_BILLING") {
                 params.entity_type = "ALLOTMENT";
-                $scope.invokeApi(RVBillinginfoSrv.saveAllotmentDefaultAccountRouting, params, defaultRoutingSaveSuccess);
+                $scope.invokeApi(RVBillinginfoSrv.saveAllotmentDefaultAccountRouting, params, defaultRoutingSaveSuccess, errorCallback);
             } else {
-                $scope.invokeApi(RVBillinginfoSrv.saveDefaultAccountRouting, params, defaultRoutingSaveSuccess);
+                $scope.invokeApi(RVBillinginfoSrv.saveDefaultAccountRouting, params, defaultRoutingSaveSuccess, errorCallback);
             }
         }
         else {
@@ -1170,5 +1170,9 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
     $scope.$on("PAYMENT_TYPE_CHANGED", function() {
         setTimeout(refreshScrollers, 300);
     });
+
+    $scope.shouldShowSplitChargeAccompanyGuests = function() {
+        return $scope.billingEntity === 'GROUP_DEFAULT_BILLING';
+    };
 
 }]);

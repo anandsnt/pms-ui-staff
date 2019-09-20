@@ -39,7 +39,10 @@ var sntRover = angular.module('sntRover', [
         'overBookingModule',
         'guestCardModule',
         'snt.transitionManager',
-        'sntCurrencyFilter'
+        'sntCurrencyFilter',
+        'sntCanvasUtil',
+        'sntFeatureToggles',
+        'snt.utils'
 	]);
 
 sntRover.config([
@@ -52,6 +55,8 @@ sntRover.config([
 
         $locationProvider.html5Mode(true);
         $qProvider.errorOnUnhandledRejections(false);
+
+        $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
         // $provide.decorator('$browser', ['$delegate', function ($delegate) {
         //     $delegate.onUrlChange = function () {};

@@ -67,6 +67,9 @@ sntRover.controller('roverController', [
         });
         $scope.roverFlags = {};
         $scope.hotelDetails = hotelDetails;
+        if (hotelDetails.hide_analytics_menu) {
+            rvMenuSrv.showAnalyticsMenu = false;
+        }
         // set current hotel details
         $scope.currentHotelData = {
             'name': '',
@@ -126,12 +129,23 @@ sntRover.controller('roverController', [
         $rootScope.termsAndConditionsText = hotelDetails.terms_and_conditions;
         // CICO-50810 checking for any interface enabled.
         $rootScope.roverObj = {
-            isAnyInterfaceEnabled: hotelDetails.interface.is_avida_enabled || hotelDetails.interface.is_baseware_enabled,
+            eInvoiceVisible: hotelDetails.e_invoice_visible,
             noReprintReEmailInvoice: hotelDetails.no_reprint_reemail_invoice,
             noModifyInvoice: hotelDetails.no_modify_invoice,
             forceCountryAtCheckin: hotelDetails.force_country_at_checkin,
             forceNationalityAtCheckin: hotelDetails.force_nationality_at_checkin
         };
+        /*
+         *   A = settings.day_use_enabled (true / false)
+         *   B = settings.hourly_rates_for_day_use_enabled (true / false)
+         *   C = settings.hourly_availability_calculation ('FULL' / 'LIMITED')
+         */
+        $rootScope.hotelDiaryConfig = {
+            dayUseEnabled: hotelDetails.day_use_enabled,
+            hourlyRatesForDayUseEnabled: hotelDetails.hourly_rates_for_day_use_enabled,
+            mode: hotelDetails.hourly_availability_calculation
+        };
+
         /*
          * hotel Details
          */
@@ -140,6 +154,8 @@ sntRover.controller('roverController', [
         $rootScope.isLateCheckoutTurnedOn = hotelDetails.late_checkout_settings.is_late_checkout_on;
         $rootScope.businessDate = hotelDetails.business_date;
         $rootScope.currencySymbol = getCurrencySign(hotelDetails.currency.value);
+        $rootScope.isMultiCurrencyEnabled = hotelDetails.is_multi_currency_enabled;
+        $rootScope.invoiceCurrencySymbol = hotelDetails.is_multi_currency_enabled ? getCurrencySign(hotelDetails.selected_invoice_currency.value) : '';
         // CICO-35453 Currency Format
         $rootScope.currencyFormat = hotelDetails.currency_format && hotelDetails.currency_format.value;
         $rootScope.dateFormat = getDateFormat(hotelDetails.date_format.value);
@@ -149,6 +165,7 @@ sntRover.controller('roverController', [
         $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
         $rootScope.advanced_queue_flow_enabled = hotelDetails.advanced_queue_flow_enabled;
         $rootScope.isPmsProductionEnv = hotelDetails.is_pms_prod;
+        $rootScope.isWorkStationMandatory = hotelDetails.is_workstation_mandatory;
         // $rootScope.isRoomDiaryEnabled = hotelDetails.is_room_diary_enabled;
         // CICO-40544 - Now we have to enable menu in all standalone hotels
         // API not removing for now - Because if we need to disable it we can use the same param
@@ -217,6 +234,8 @@ sntRover.controller('roverController', [
         $rootScope.isHLPActive = hotelDetails.is_hlp_active;
         $rootScope.isPromoActive = hotelDetails.is_promotion_active;
 
+        $rootScope.maxStayLength = hotelDetails.max_stay_length;
+
         // set MLI Merchant Id
         try {
             sntapp.MLIOperator.setMerChantID($rootScope.MLImerchantId);
@@ -253,7 +272,6 @@ sntRover.controller('roverController', [
         $scope.isPmsConfigured = $scope.userInfo.is_pms_configured;
         $rootScope.adminRole = $scope.userInfo.user_role;
         $rootScope.isHotelStaff = $scope.userInfo.is_staff;
-
 
         // self executing check
         $rootScope.isMaintenanceStaff = (function (roles) {
@@ -304,7 +322,9 @@ sntRover.controller('roverController', [
             $scope.isStayCardDepositScreenOpened = value;
         });
         $scope.searchBackButtonCaption = '';
-
+        
+        $rootScope.isInfrasecEnabled = hotelDetails.is_infrasec_enabled;
+        $rootScope.allowCheckInToNotReadyRooms = hotelDetails.allow_checkin_to_not_ready_rooms;
         /**
          * reciever function used to change the heading according to the current page
          * if there is any trnslation, please use that
@@ -521,6 +541,7 @@ sntRover.controller('roverController', [
                 isManualCCEntryEnabled: $rootScope.isManualCCEntryEnabled,
                 isEMVEnabled: $rootScope.isMLIEMVEnabled
             };
+            $rootScope.featuresSupportedInIosApp = []; // The feature list cordoav call will work only in new builds.
 
             $scope.menuOpen = false;
             $rootScope.showNotificationForCurrentUser = true;
@@ -547,6 +568,15 @@ sntRover.controller('roverController', [
                     }, function () {
 
                     }, 'RVCardPlugin', 'getAppInfo', []);
+
+                    cordova.exec(function(response) {
+                        if (response && response.features) {
+                            $rootScope.featuresSupportedInIosApp = response.features;
+                        }
+                    },
+                    function(error) {
+                        // do nothing
+                    }, 'RVDevicePlugin', 'featureList', ['should_show_details']);
 
                 }, 500);
             }
@@ -593,12 +623,13 @@ sntRover.controller('roverController', [
             $scope.menuOpen = false;
         };
 
-        $scope.logout = function () {
-            var redirUrl = '/logout/';
-
-            $timeout(function () {
-                $window.location.href = redirUrl;
-            }, 300);
+        $scope.logout = function() {
+            sntActivity.start('LOGOUT_INVALIDATE_TOKEN');
+            RVDashboardSrv.signOut().finally(function() {
+                $timeout(function () {
+                    $window.location.href = '/logout';
+                });
+            });
         };
 
         var openEndOfDayPopup = function () {
@@ -612,6 +643,18 @@ sntRover.controller('roverController', [
                         template: '/assets/partials/endOfDay/rvEndOfDayModal.html',
                         controller: 'RVEndOfDayModalController',
                         className: 'end-of-day-popup ngdialog-theme-plain'
+                    });
+                });
+        };
+
+        var openCurrencyExchangePopup = function() {
+            jsMappings.fetchAssets(['rover.financials'])
+                .then(function () {
+                    $scope.$emit('hideLoader');
+                    ngDialog.open({
+                        template: '/assets/partials/financials/currencyExchange/rvCurrencyExchange.html',
+                        controller: 'RVCurrencyExchangeModalController',
+                        className: ''
                     });
                 });
         };
@@ -670,6 +713,8 @@ sntRover.controller('roverController', [
             }
             else if (subMenu === 'deviceStatus') {
                 $scope.fetchDeviceStatus();
+            } else if (subMenu === 'currencyExchange') {
+                openCurrencyExchangePopup();
             }
         };
 
@@ -717,15 +762,20 @@ sntRover.controller('roverController', [
             $log.error('showErrorMessage', transition.error());
         });
 
+        // $scope.$on("OPEN_GUEST_CARD_ON_VALIDATION", function() {
+        //     $scope.openGuestCard();
+        // });
+
         // This variable is used to identify whether guest card is visible
         // Depends on $scope.guestCardVisible in rvguestcardcontroller.js
         $scope.isGuestCardVisible = false;
+        $scope.isFromMenuGuest = false;
         $scope.$on('GUESTCARDVISIBLE', function (event, data) {
-            $scope.isGuestCardVisible = false;
+            $scope.isGuestCardVisible = data;
             if (data) {
                 // inoder to refresh the scroller in tab's and I dont knw why 'GUESTCARDVISIBLE' listened here :(
                 $scope.$broadcast('REFRESH_ALL_CARD_SCROLLERS');
-                $scope.isGuestCardVisible = true;
+                $scope.$broadcast('OPEN_GUEST_CARD');
             }
         });
 
@@ -909,6 +959,7 @@ sntRover.controller('roverController', [
         $rootScope.showTimeoutError = function () {
             // Hide loading message
             $scope.$emit('hideLoader');
+            $scope.$emit('resetLoader');
             ngDialog.open({
                 template: '/assets/partials/errorPopup/rvTimeoutError.html',
                 className: 'ngdialog-theme-default1 modal-theme1',
@@ -1124,6 +1175,10 @@ sntRover.controller('roverController', [
             $scope.formMenu();
         });
 
+        $scope.broadcastFromRoot = function(eventIdentifier, payLoad) {
+            $scope.$broadcast(eventIdentifier, payLoad);
+        };
+
         (function() {
             if ($window.dataLayer) {
                 $window.dataLayer.push({
@@ -1134,6 +1189,12 @@ sntRover.controller('roverController', [
                 });
             }
         })();
+
+        // TODO: delete this code after 2-3 releases, this is mainly for analyzing the feature
+        // In browser console call document.dispatchEvent(new Event('SHOW_ANALYTICS_MENU')) 
+        document.addEventListener('SHOW_ANALYTICS_MENU', function() {
+            $state.go('rover.reportAnalytics');
+        });
 
     }
 ]);

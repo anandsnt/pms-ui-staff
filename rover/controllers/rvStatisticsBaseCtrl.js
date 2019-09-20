@@ -1,5 +1,5 @@
 
-var StatisticsBaseCtrl = function ($scope, $rootScope) {
+window.StatisticsBaseCtrl = function ($scope, $rootScope) {
 
     // Get icon class based on the variance value
     $scope.getStatusIconClass = function( value ) {
@@ -21,19 +21,6 @@ var StatisticsBaseCtrl = function ($scope, $rootScope) {
             styleClass = 'green';
         } else if ( value < 0 ) {
             styleClass = 'red';
-        }
-        return styleClass;
-    };
-
-    // Get style for statistics details expanded view
-    $scope.getStyleForExpandedView = function( monthlyData ) {
-        var styleClass = {},
-            count =  monthlyData.reservations_count || (monthlyData.reservations && monthlyData.reservations.length);
-
-        if (monthlyData.isOpen) {
-            var margin = count * 70 + 30;
-
-            styleClass['margin-bottom'] = margin + 'px';
         }
         return styleClass;
     };

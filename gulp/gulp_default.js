@@ -58,8 +58,7 @@ module.exports = function(gulp, $, options) {
                     'build-station-login-dev', 
                     'build-admin-dev', 
                     'build-zest-dev', 
-                    'build-guestweb-dev',
-                    'build-guestweb-v2-dev',
+                    // 'build-guestweb-v2-dev',
                     'build-payment-dev',
                     'copy-cordova-assets'
                 ],
@@ -70,8 +69,7 @@ module.exports = function(gulp, $, options) {
                     'watch-station-login-files', 
                     'watch-admin-files', 
                     'watch-zest-files', 
-                    'watch-guestweb-files',
-                    'watch-guestweb-v2-files',
+                    // 'watch-guestweb-v2-files',
                     'watch-payment-files'
                 ];
 
@@ -80,6 +78,8 @@ module.exports = function(gulp, $, options) {
 
         if (argv['prod'] || argv['production']) {
             process.env.BUILD_ENV = 'prod';
+        } else if (argv['env']) {
+            process.env.BUILD_ENV = argv['env'];
         }
 
         // Inject gtm tags only if option is provided
@@ -174,7 +174,7 @@ module.exports = function(gulp, $, options) {
         return runSequence('guestweb-asset-prod-precompile', 'guestweb-inject-assets-to-templates', 'copy-guestweb-base-html', callback);
     });
 
-    gulp.task('asset-precompile', ['gw-asset-precompile'], function(callback) {
+    gulp.task('asset-precompile', function(callback) {
         processArgs();
         setEnvironment();
         return runSequence(compilationTasks, tasksAfterCompilation, copyBaseHtmlToPublicAssets, callback);

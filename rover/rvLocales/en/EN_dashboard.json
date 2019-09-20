@@ -22,4 +22,5 @@
     "CONFIRM_NO_PREFIX" : "CONF.",
     "EXTERNAL_REF_NO_PREFIX" : "EXT.",
     "PENDING" : "Pending",
-    "QUEUED" : "Queued"
+    "QUEUED" : "Queued",
+    "BUSINESS_DATE_CHANGED": "Business date has changed."

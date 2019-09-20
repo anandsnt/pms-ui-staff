@@ -19,12 +19,15 @@ var sntZestStation = angular.module('sntZestStation', [
     'sntPay',
     'sntPayConfig',
     'sntActivityIndicator',
-    'sntIDCollection'
+    'sntIDCollection',
+    'sntCanvasUtil'
 ]);
 
 
 // adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
 sntZestStation.config(function($httpProvider, $translateProvider, $locationProvider) {
+
+    $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
     $httpProvider.interceptors.push('sharedHttpInterceptor');
     $translateProvider.useStaticFilesLoader({
         prefix: '/assets/zest_station/zsLocales/',
@@ -35,15 +38,18 @@ sntZestStation.config(function($httpProvider, $translateProvider, $locationProvi
     $locationProvider.html5Mode(true);
 });
 
-sntZestStation.run(['$rootScope', '$state', '$stateParams', function($rootScope, $state, $stateParams) {
+sntZestStation.run(['$rootScope', '$state', '$stateParams', '$transitions', function($rootScope, $state, $stateParams, $transitions) {
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
     $rootScope.cls = {
         'editor': 'false'
     };
 
-    $rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
-        $rootScope.previousState = from.name;
+    $transitions.onSuccess({}, function(transition) {
+        var fromState = transition.from(),
+            fromParams = transition.params('from');
+
+        $rootScope.previousState = fromState.name;
         $rootScope.previousStateParam = fromParams.menu;
         // on state changes hide the keyboard always in case of iPad
         document.activeElement.blur();
@@ -75,7 +81,7 @@ var GlobalZestStationApp = function() {
     this.setBrowser = function(browser) {
         var url = "/assets/shared/cordova.js";
         //  var url = "/ui/show?haml_file=cordova/cordova_ipad_ios&json_input=cordova/cordova.json&is_hash_map=true&is_partial=true";
-        
+
         if (typeof browser === 'undefined' || browser === '') {
             that.browser = "other";
         } else if (browser === 'rv_native_android') {
@@ -125,7 +131,7 @@ var GlobalZestStationApp = function() {
 
     // success function of coddova plugin's appending
     this.fetchCompletedOfCordovaPlugins = function(data) {
-        that.cordovaLoaded = true;       
+        that.cordovaLoaded = true;
 
         var script_node = document.createElement('script');
 
@@ -221,7 +227,7 @@ var GlobalZestStationApp = function() {
 
             if (typeof _ !== typeof undefined) {
                 if (workstationFetchTimer === true) {
-                    // only (true), when being called to only debug timers, 
+                    // only (true), when being called to only debug timers,
                     // all other args will be ignored
                     if (typeof that.timeDebugger !== typeof undefined) {
                         that.timeDebugger = !that.timeDebugger;
@@ -379,7 +385,7 @@ var GlobalZestStationApp = function() {
 
 if (jQuery && $) {
     // for zest station text editor and jquery keyboard plugin, we'll need to get the cursor position
-    // to replace spacing (spacebar) requests from the jquery keyboard to insert where the user cursor current is at. 
+    // to replace spacing (spacebar) requests from the jquery keyboard to insert where the user cursor current is at.
     // this is a good cross browser solution as of may/2017, verified in firefox, chrome, and chromium
     (function($) {
         $.fn.getCursorPosition = function() {

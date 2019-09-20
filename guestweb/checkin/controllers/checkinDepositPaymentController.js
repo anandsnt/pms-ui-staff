@@ -3,7 +3,7 @@
 */
 
 (function() {
-	var checkinDepositPaymentController = function($scope, guestDetailsService, $state, $rootScope, $stateParams, sntGuestWebSrv) {
+	var checkinDepositPaymentController = function($scope, guestDetailsService, $state, $rootScope, $stateParams, sntGuestWebSrv, $filter) {
 
 		var setMessage = function(cmsString, defaultString) {
 			return cmsString.length > 0 ? cmsString : defaultString;
@@ -104,7 +104,7 @@
 					payment_method_id = response.payment_method_id;
 					deposit_amount = response.deposit_amount;
 					card_type = !!response.card_type ? response.card_type.toUpperCase() : "";
-					$scope.depositAmount = response.currency_symbol + response.deposit_amount;
+					$scope.depositAmount = response.currency_symbol + $filter('number')(response.deposit_amount.toString(), 2);
 				}
 				else {
 					$scope.noPaymentMethod = true;
@@ -134,7 +134,7 @@
 	};
 
 	var dependencies = [
-		'$scope', 'guestDetailsService', '$state', '$rootScope', '$stateParams', 'sntGuestWebSrv',
+		'$scope', 'guestDetailsService', '$state', '$rootScope', '$stateParams', 'sntGuestWebSrv', '$filter',
 		checkinDepositPaymentController
 	];
 

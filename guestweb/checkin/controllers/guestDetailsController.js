@@ -131,9 +131,71 @@
 				}
 			};
 
+			var checkIfDateIsValid = function() {
+				var birthday = $scope.guestDetails.month + "/" + $scope.guestDetails.day + "/" + $scope.guestDetails.year;
+				var comp = birthday.split('/');
+				var m = parseInt(comp[0], 10);
+				var d = parseInt(comp[1], 10);
+				var y = parseInt(comp[2], 10);
+				var date = new Date(y, m - 1, d);
+
+				return (date.getFullYear() == y && date.getMonth() + 1 == m && date.getDate() == d);
+			};
+
+
+			$scope.yearOrMonthChanged = function() {
+				if (!checkIfDateIsValid()) {
+					$scope.guestDetails.day = "";
+				}
+			};
+
+			var getAge = function (birthDateString) {
+				var today = new Date();
+				var birthDate = new Date(birthDateString);
+				var age = today.getFullYear() - birthDate.getFullYear();
+				var m = today.getMonth() - birthDate.getMonth();
+
+				if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+					age--;
+				}
+				return age;
+			};
+
+			var checkIfAllRequiredFieldsAreEntered = function () {
+
+				var isAllRequiredAddressFieldsFilled = $scope.guestDetails.country &&
+					$scope.guestDetails.street &&
+					$scope.guestDetails.city &&
+					$scope.guestDetails.state &&
+					$scope.guestDetails.postal_code;
+
+				var isBirthdayFieldsFilledIfMandatory = !$rootScope.guestBirthdateMandatory || 
+														($scope.guestDetails.month &&
+														 $scope.guestDetails.day &&
+														  $scope.guestDetails.year);
+
+				return isAllRequiredAddressFieldsFilled && isBirthdayFieldsFilledIfMandatory;
+			};
+
 			//post guest details
 			$scope.postGuestDetails = function() {
-				if ($scope.guestDetails.country && $scope.guestDetails.street && $scope.guestDetails.city && $scope.guestDetails.state && $scope.guestDetails.postal_code) {
+				var isGuestEligible = true;
+
+				// if birthday is mandatory, check if the guest is old enough
+				if ($rootScope.guestBirthdateMandatory &&
+					$state.href('guestDetails') !== null &&
+					$rootScope.guestAddressOn) {
+					var birthday = $scope.guestDetails.month + "/" + $scope.guestDetails.day + "/" + $scope.guestDetails.year;
+
+					if ($rootScope.minimumAge && getAge(birthday) < $rootScope.minimumAge) {
+						isGuestEligible = false;
+					}
+				}
+
+				if (!isGuestEligible && $state.href('guestNotEligible') !== null) {
+					$state.go('guestNotEligible');
+				}
+				else if (checkIfAllRequiredFieldsAreEntered()) {
 					if (_.isMatch(alreadyPresentGuestDetails, angular.copy($scope.guestDetails))) {
 						// No change in guest details
 						nextPageActions();

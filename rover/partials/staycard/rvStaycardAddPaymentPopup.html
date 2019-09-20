@@ -10,7 +10,7 @@
     <button type="button" class="button blank modal-close" ng-click="closeThePopup()">
         Close
     </button>
-    <button type="button" class="button green" ng-click="saveReservationPaymentMethod();">
+    <button type="button" class="button green" ng-click="saveReservationPaymentMethod();" ng-disabled="!selectedPaymentType" ng-class="{'grey': !selectedPaymentType}">
         Add
     </button>
 </div>

@@ -13,7 +13,8 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
         this.DEFAULT_PER_PAGE = 10;
         this.DEFAULT_PAGE = 1;
 
-        var openSaveAccountRequests = {};
+        var openSaveAccountRequests = {},
+            that = this;
 
         /** contact information area */
 
@@ -37,6 +38,41 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
             return deferred.promise;
         };
 
+        this.fetchContactInformationMandatoryFields = function() {
+            var deferred = $q.defer(),
+                url = '/admin/co_ta_settings/current_settings.json';
+
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+            return deferred.promise;
+        };
+
+        this.fetchContactInformationAndMandatoryFields = function(data) {
+            var deferred = $q.defer(),
+                returnData = {};
+
+            $q.when().then(function() {
+                return that.fetchContactInformation(data).then(function(response) {
+                    returnData = response;
+                });
+            })
+            .then(function() {                 
+                return that.fetchContactInformationMandatoryFields().then(function(response) {
+                    returnData.mandatoryFields = response;
+                });
+            })
+            .then(function() {
+                deferred.resolve(returnData);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+
+            return deferred.promise;
+        };
+
         /**
          * getting details of commission status of travel agent card
          * @return {promise|{then, catch, finally}|*|e} Promise
@@ -51,6 +87,30 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
                 deferred.reject(data);
             });
             return deferred.promise;
+        };
+
+        this.fetchCommissionDetailsAndMandatoryFields = function() {
+            var deferred = $q.defer(),
+                returnData = {};
+
+            $q.when().then(function() {
+                return that.fetchCommissionDetail().then(function(response) {
+                    returnData = response;
+                });
+            })
+            .then(function() {                 
+                return that.fetchContactInformationMandatoryFields().then(function(response) {
+                    returnData.mandatoryFields = response;
+                });
+            })
+            .then(function() {
+                deferred.resolve(returnData);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+
+            return deferred.promise;
+
         };
 
         /**
@@ -559,7 +619,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
             var deferred = $q.defer(),
                 url = ' /api/bills/' + param.bill_id + '/transactions';
 
-            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+            rvBaseWebSrvV2.getJSON(url, param).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
@@ -639,24 +699,6 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
         };
 
         /**
-         * Service to get the government id types
-         * @return promise Promise
-         */
-        this.fetchIdTypes = function () {
-            var deffered = $q.defer(),
-               url = 'api/guest_details/government_id_types';
-
-            rvBaseWebSrvV2.getJSON(url)
-             .then( function (data) {
-                deffered.resolve( data.id_type_list);
-             }, function (error) {
-                deffered.resolve( error);
-             });
-
-             return deffered.promise;
-        };
-
-        /**
          * Fetch CC/TA card statistics summary
          * @param {Object} params request params
          * @return {Promise} promise
@@ -711,6 +753,40 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
                 deferred.reject(data);
             });
             return deferred.promise;
+        };
+
+        /**
+         * Verify whether the given cc/ta are eligible for being merged
+         * @param {Object} params contains array of ids of the cc/ta
+         * @return {Promise} promise
+         */
+        this.verifyTravelAgentCompanyCardMerge = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/accounts/validate_card_merge';
+
+            rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise; 
+        };
+
+        /**
+         * Merge the non-primary cards to primary card
+         * @param {Object} params contains primary card id, non-primary card ids and card type
+         * @return {Promise} promise
+         */
+        this.mergeCards = function(params)  {
+            var deferred = $q.defer(),
+                url = '/api/accounts/merge_cards';
+
+            rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise; 
         };
     }
 ]);

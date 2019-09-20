@@ -3,7 +3,7 @@
    <div class="popup-content add-on">
       <!-- <i class="close-popup" touch-press="closePopup()"></i> -->
       <div class="add-on-picture">
-         <img src="{{selectedAddon.image}}" />
+         <img ng-src="{{selectedAddon.image}}" onError="this.onerror=null;this.src='/assets/images/room_type_image_not_available.png';"/>
       </div>
       <div class="add-on-content">
          <h2>{{selectedAddon.name}}</h2>
@@ -106,7 +106,7 @@
          <ul class="add-on-list add-on-list-columns" ng-if="addonsList.length > 1" ng-class="{'add-on-list-rows':pageData.viewableItems.length >= 4}">
             <li class="add-on" ng-repeat="addon in pageData.viewableItems" click-touch="addonSelected(addon)" ng-class="{'selected':addon.is_selected || addon.quantity >0}">
                <div class="add-on-picture">
-                  <img src="{{addon.image}}">
+                  <img ng-src="{{addon.image}}" onError="this.onerror=null;this.src='/assets/images/room_type_image_not_available.png';">
                </div>
                <div class="add-on-content">
                   <h2 ng-hide="addon.isLco">{{addon.name}}<span ng-show="addon.quantity>0">&nbsp;({{addon.quantity}})</span></h2>

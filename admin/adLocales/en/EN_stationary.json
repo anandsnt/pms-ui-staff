@@ -87,6 +87,7 @@
 	"SELECT_ACCOUNT_BILL" : "Select Account Bill",
 	"SHOW_REGISTRATION_CARD_PRINT" : "Show Registration Card Print",
 	"EXT_TAX_BREAKDOWN" : "Extended Tax breakdown",
+	"PAYMENT_RECEIPTS" : "Payment receipts",
 	"PRINT_INVOICE_NUMBER": "Print Invoice Number",
 	"ACTIVATE_FOLIO_NUMBER": "Activate Folio Number",
 	"SHOW_PERFORMA_INVOICE":"Pro Forma Invoice",
@@ -131,5 +132,9 @@
 	"TERMS_AND_CONDITIONS_PLACEHOLDER": "Enter Terms & Conditions",
 	"NONE": "None",
 	"ADD_NEW": "Add New",
-	"SHOW_TAX_BREAKDWON": "Show Tax Breakdown"
+	"SHOW_TAX_BREAKDWON": "Show Tax Breakdown",
+	"COPY_HOTEL_ON_CONFIRMATION": "Copy hotel on confirmation",
+	"HOTEL_EMAIL": "Hotel Email",
+	"BULK_CHECKOUT_SEND_INVOICES": "Bulk check out - send invoices",
+	"LOGO_BG": "Logo background"
 

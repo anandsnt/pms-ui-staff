@@ -335,6 +335,14 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 				var documentObj = JSON.parse(requestGetDocument.responseText);
 				
 				documentObj.Fields = documentObj.Fields ? sntIDCollectionUtilsSrv.formatData(documentObj.Fields) : {};
+				documentObj.DataFields = documentObj.DataFields ? sntIDCollectionUtilsSrv.formatData(documentObj.DataFields, 'DataFields') : {};
+				var dataFields = documentObj.DataFields;
+
+				// The names are mostly correct inside the 'DataFields' rather than in the 'Fields'
+				if (documentObj.Fields && dataFields && (dataFields.surname && (dataFields.first_name || dataFields.given_name))) {
+					documentObj.Fields.first_name = dataFields.first_name ? dataFields.first_name : dataFields.given_name;
+					documentObj.Fields.last_name = dataFields.surname ? dataFields.surname : '';
+				}
 				deferred.resolve(documentObj);
 			} else {
 				deferred.reject(['Document getResults failed']);
@@ -403,5 +411,32 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 		};
 		return deferred.promise;
 	};
+
+	this.getFaceImage = function() {
+		var deferred = $q.defer();
+		var url = acuantCredentials.assureIDConnectEndpoint + 'AssureIDService/Document/' + that.instanceID + '/Field/Image?key=Photo';
+		var requestGetDocument = createRequestObject('GET', url);
+
+		requestGetDocument.responseType = 'arraybuffer';
+		requestGetDocument.send();
+		requestGetDocument.onload = function() {
+			if (requestGetDocument.status === 200) {
+				var base64String = sntIDCollectionUtilsSrv.base64ArrayBuffer(requestGetDocument.response);
+
+				deferred.resolve(base64String);
+			} else {
+				deferred.reject(['Document getFaceImage failed']);
+			}
+		};
+		requestGetDocument.onerror = function() {
+			deferred.reject(['Document getFaceImage failed']);
+		};
+		requestGetDocument.ontimeout = function() {
+			deferred.reject(operationTimedOutMsg);
+		};
+
+		return deferred.promise;
+	};
+
 
 });

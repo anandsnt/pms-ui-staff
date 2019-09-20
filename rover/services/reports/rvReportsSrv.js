@@ -94,13 +94,54 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'TODAY',
                 'DATE'
              ],
+             'Invoice / Folio Export': [
+                'YESTERDAY',
+                'TODAY',
+                'DATE'
+             ],
              'Clairvoyix Stays Export': [
              	'YESTERDAY',
              	'ALL'
              ],
              'Clairvoyix Reservations Export': [
                 'TODAY'
-             ]
+             ],
+             'Police Report Export': [
+				'TODAY'
+			 ],
+			'Switzerland Zurich Police Export': [
+				'TODAY'
+			],
+			 'Belgium Nationality Export': [
+				'LAST_MONTH',
+                'LAST_JANUARY',
+                'LAST_FEBRUARY',
+                'LAST_MARCH',
+                'LAST_APRIL',
+                'LAST_MAY',
+                'LAST_JUNE',
+                'LAST_JULY',
+                'LAST_AUGUST',
+                'LAST_SEPTEMBER',
+                'LAST_OCTOBER',
+                'LAST_NOVEMBER',
+                'LAST_DECEMBER' 
+			 ],
+			 'Austria Nationality Export': [
+				'LAST_MONTH',
+                'LAST_JANUARY',
+                'LAST_FEBRUARY',
+                'LAST_MARCH',
+                'LAST_APRIL',
+                'LAST_MAY',
+                'LAST_JUNE',
+                'LAST_JULY',
+                'LAST_AUGUST',
+                'LAST_SEPTEMBER',
+                'LAST_OCTOBER',
+                'LAST_NOVEMBER',
+                'LAST_DECEMBER' 
+			 ]
         };
 
         var SCHEDULE_REPORT_TIMEPERIODS = {
@@ -117,7 +158,10 @@ angular.module('sntRover').service('RVreportsSrv', [
         		'TOMORROW'
         	 ],
         	 'Comparison': ['YESTERDAY'],
-        	 'Guest Balance Report': ['ALL']
+			 'Guest Balance Report': ['ALL'],
+			 'Daily Production': ['YESTERDAY'],
+			 'Daily Production by Demographics': ['YESTERDAY'],
+			 'Daily Production by Rate': ['YESTERDAY']
         };
 
 		var cacheKey = 'REPORT_PAYLOAD_CACHE';

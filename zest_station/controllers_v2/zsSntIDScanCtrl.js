@@ -22,11 +22,12 @@
 			});
 
 			var stateParams = JSON.parse($stateParams.params);
-			var SCANING_PENDING = $filter('translate')('GID_SCAN_NOT_STARTED');
-			var SCAN_REJECTED = $filter('translate')('GID_STAFF_REVIEW_REJECTED');
-			var SCAN_ACCEPTED = $filter('translate')('GID_STAFF_REVIEW_ACCEPTED');
-			var SCAN_WAITING_FOR_APPROVAL = $filter('translate')('GID_SCAN_SUCCESS');
-			var FR_FAILED_STATUS = $filter('translate')('GID_FACIAL_RECOGNITION_FAILED');
+			var SCANING_PENDING = $filter('translate')('GID_SCAN_NOT_STARTED') || 'Pending';
+			var SCAN_REJECTED = $filter('translate')('GID_STAFF_REVIEW_REJECTED') || 'Rejected';
+			var SCAN_ACCEPTED = $filter('translate')('GID_STAFF_REVIEW_ACCEPTED') || 'Accepted';
+			var SCAN_WAITING_FOR_APPROVAL = $filter('translate')('GID_SCAN_SUCCESS') || 'Success';
+			var SCAN_ALREADY_COMPLTED = $filter('translate')('GID_SCAN_ALREADY_DONE') || 'approve/reject';
+			var FR_FAILED_STATUS = $filter('translate')('GID_FACIAL_RECOGNITION_FAILED') || 'FR Failed';
 
 			if (!sntIDCollectionSrv.isInDevEnv && $scope.zestStationData.hotelSettings.id_collection) {
 				sntIDCollectionSrv.setAcuantCredentialsForProduction($scope.zestStationData.hotelSettings.id_collection.acuant_credentials);
@@ -101,7 +102,9 @@
 				$scope.idScanData.selectedGuest = selectGuest;
 				if ($scope.inDemoMode() && !$scope.idScanData.staffVerified) {
 					demoModeScanActions();
-				} else if ((selectedGuest.idScanStatus === SCAN_ACCEPTED || $scope.idScanData.staffVerified) && selectedGuest.idScanStatus !==  SCANING_PENDING) {
+				} else if ((selectedGuest.idScanStatus === SCAN_ACCEPTED || $scope.idScanData.staffVerified) &&
+						 selectedGuest.idScanStatus !==  SCANING_PENDING || 
+						 selectedGuest.idScanStatus === SCAN_ALREADY_COMPLTED) {
 					$scope.screenData.scanMode = 'FINAL_ID_RESULTS';
 					refreshIDdetailsScroller();
 				} else {
@@ -148,15 +151,35 @@
 				}, 0);
 			};
 
+			var saveFaceImage = function() {
+				var avatar = $scope.idScanData.selectedGuest.faceImage.split(',').length > 1 ? $scope.idScanData.selectedGuest.faceImage.split(',')[1] : '';
+				var apiParams = {
+					'avatar': avatar,
+					'guest_id': $scope.idScanData.selectedGuest.id
+				};
+				
+				$scope.callAPI(zsCheckinSrv.saveFaceImage, {
+					params: apiParams,
+					loader: 'NONE'
+				});
+			};
+
+			var idAppprovalRejectAfterActions = function() {
+				$scope.screenData.scanMode = 'GUEST_LIST';
+				setPageNumberDetails();
+				if ($scope.idScanData.verificationMethod !== 'STAFF' && !$scope.idScanData.staffVerified) {
+					$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
+				}
+				if ($scope.idScanData.selectedGuest.is_primary) {
+					$scope.idScanData.showPrimaryGuestAlreadyScannedMg = false;
+				}
+			};
+
 			$scope.acceptID = function() {
 				var accpetIdSuccess = function() {
 					$scope.idScanData.selectedGuest.idScanStatus = SCAN_ACCEPTED;
-					$scope.screenData.scanMode = 'GUEST_LIST';
 					recordIDScanActions('ID_ANALYZING', 'Success for the guest');
-					setPageNumberDetails();
-					if ($scope.idScanData.verificationMethod !== 'STAFF' && !$scope.idScanData.staffVerified) {
-						$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
-					}
+					idAppprovalRejectAfterActions();
 				};
 				var apiParams = angular.copy($scope.idScanData.selectedGuest.scannedDetails);
 
@@ -166,6 +189,13 @@
 				apiParams.guest_id = $scope.idScanData.selectedGuest.id;
 				if (apiParams.nationality_name) {
 					delete apiParams.nationality_name;
+				}
+
+				if ($scope.zestStationData.hotelSettings.id_collection  &&
+				    $scope.zestStationData.hotelSettings.id_collection.rover &&
+				    $scope.zestStationData.hotelSettings.id_collection.rover.save_id_face_image &&
+				    $scope.idScanData.selectedGuest.faceImage) {
+					saveFaceImage();
 				}
 				$scope.callAPI(zsCheckinSrv.savePassport, {
 					params: apiParams,
@@ -180,11 +210,7 @@
 
 			$scope.rejectID = function() {
 				$scope.idScanData.selectedGuest.idScanStatus = SCAN_REJECTED;
-				$scope.screenData.scanMode = 'GUEST_LIST';
-				setPageNumberDetails();
-				if ($scope.idScanData.verificationMethod !== 'STAFF' && !$scope.idScanData.staffVerified) {
-					$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
-				}
+				idAppprovalRejectAfterActions();
 			};
 
 			$scope.$on('CLEAR_PREVIOUS_DATA', resetSscannedData);
@@ -192,10 +218,12 @@
 			$scope.screenData.facialRecognitionInProgress = false;
 
 			$scope.$on('FR_ANALYSIS_STARTED', function() {
+				$scope.resetTime();
 				$scope.screenData.facialRecognitionInProgress = true;
 				$scope.$emit('showLoader');
 			});
 			$scope.$on('FR_FAILED', function() {
+				$scope.resetTime();
 				$scope.$emit('hideLoader');
 				$scope.idScanData.selectedGuest.idScanStatus = FR_FAILED_STATUS;
 				$scope.screenData.facialRecognitionInProgress = false;
@@ -204,6 +232,7 @@
 			});
 
 			$scope.$on('FR_SUCCESS', function() {
+				$scope.resetTime();
 				$scope.$emit('hideLoader');
 				$scope.screenData.scanMode = 'FINAL_ID_RESULTS';
 				refreshIDdetailsScroller();
@@ -211,16 +240,20 @@
 			});
 
 			$scope.$on('IMAGE_ANALYSIS_FAILED', function(event, data) {
+				$scope.resetTime();
 				var errorMessage = data && Array.isArray(data) ? data[0] + ' for the guest' : 'Failed for the guest';
 
 				recordIDScanActions('ID_IMAGE_PROCESSING', errorMessage);
 			});
 
 			$scope.$on('FINAL_RESULTS', function(evt, data) {
-				if (data.expiration_date === 'Invalid date' || _.isEmpty(data.expiration_date)) {
-					recordIDScanActions('ID_ANALYZING', 'Failed (Invalid expiry date) for the guest');
-					$scope.screenData.scanMode = 'EXPIRATION_DATE_INVALID';
-				} else if (data.expirationStatus === 'Expired') {
+				$scope.resetTime();
+				// Commented below code to avoid failures w/o expiry date
+				// if (data.expiration_date === 'Invalid date' || _.isEmpty(data.expiration_date)) {
+				// 	recordIDScanActions('ID_ANALYZING', 'Failed (Invalid expiry date) for the guest');
+				// 	$scope.screenData.scanMode = 'EXPIRATION_DATE_INVALID';
+				// }
+				if (data.expirationStatus === 'Expired') {
 					recordIDScanActions('ID_ANALYZING', 'Failed (ID expired) for the guest');
 					$scope.screenData.scanMode = 'ID_DATA_EXPIRED';
 				} else if (!data.document_number) {
@@ -236,6 +269,9 @@
 					$scope.screenData.facialRecognitionInProgress = false;
 					$scope.screenData.scanMode = 'FACIAL_RECOGNITION_MODE';
 					$scope.idScanData.selectedGuest.scannedDetails = data;
+					if ($scope.deviceConfig.useExtCamForFR) {
+						$scope.startFacialRecognitionUsingExtCamera();
+					}
 				} 
 				else {
 					$scope.idScanData.selectedGuest.scannedDetails = data;
@@ -248,6 +284,7 @@
 			};
 
 			$scope.$on('IMAGE_UPDATED', function(evt, data) {
+				$scope.resetTime();
 				if (data.isFrontSide) {
 					$scope.idScanData.selectedGuest.front_image_data = data.imageData;
 				} else {
@@ -303,7 +340,10 @@
 			};
 
 			$scope.doneButtonClicked = function() {
-				if ($scope.idScanData.verificationMethod === 'STAFF') {
+				// record which staff reviewed the IDs for staff verification settings as well as for facial recognition failure
+				// continued with staff verification
+				if ($scope.idScanData.verificationMethod === 'STAFF' || 
+				    ($scope.idScanData.verificationMethod === 'FR' && $scope.idScanData.staffVerified && verfiedStaffId)) {
 					recordIDApproval();
 				} else {
 					nextPageActions();
@@ -353,6 +393,8 @@
 					successCallback({
 						id: 123
 					});
+				} else if (!$scope.screenData.adminPin) {
+					return;
 				} else {
 					$scope.callAPI(zsGeneralSrv.verifyStaffByPin, options);
 				}
@@ -365,6 +407,7 @@
 
 			var goBackToScanAgain = function() {
 				var backToGuestListScreenModes = ['FINAL_ID_RESULTS',
+					'FACIAL_RECOGNITION_MODE',
 					'FACIAL_RECOGNTION_FAILED',
 					'UPLOAD_FRONT_IMAGE',
 					'UPLOAD_FRONT_IMAGE_FAILED',
@@ -382,6 +425,7 @@
 					$scope.idScanData.staffVerified = false;
 					$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 				}
+				$scope.$emit('STOP_EXT_CAM');
 			};
 			// Back button will be only shown when staff is reviewwing
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, goBackToScanAgain);
@@ -390,19 +434,76 @@
 				$scope.screenData.scanMode = 'GUEST_LIST';
 			});
 
-			var retrieveIdScanType = function() {
-				if ($scope.zestStationData.kiosk_scan_mode === 'id_scan_with_staff_verification') {
-					return 'STAFF';
-				} else if ($scope.zestStationData.kiosk_scan_mode === 'id_scan_with_facial_verification') {
-					return 'FR';
-				} else {
-					return 'NONE';
-				}
-			};
-
 			$scope.loginAsStaff = function() {
 				$scope.screenData.scanMode = 'ADMIN_LOGIN';
 				$scope.screenData.adminMode = 'ADMIN_PIN_ENTRY';
+			};
+
+			/** *************** External camera actions ****** **/
+
+			$scope.$on('FRONT_SIDE_SCANNING_STARTED', function() {
+				$scope.resetTime();
+				$scope.$emit('showLoader');
+				$scope.startExtCameraCapture('front-image');
+			});
+			$scope.$on('FRONT_IMAGE_CONFIRMED', function() {
+				$scope.resetTime();
+				if ($scope.screenData.scanMode === 'UPLOAD_BACK_IMAGE' && $scope.deviceConfig.useExtCamera) {
+					$scope.$emit('showLoader');
+					$scope.startExtCameraCapture('back-image');
+				}
+			});
+			$scope.$on('IMAGE_ANALYSIS_STARTED', function() {
+				$scope.resetTime();
+				$scope.screenData.scanMode = 'ANALYSING_ID_DATA';
+			});
+
+			$scope.$on('EXT_CAMERA_STARTED', function() {
+				$timeout(function() {
+					$scope.$emit('hideLoader');
+				}, 3000);
+			});
+
+			$scope.$on('EXT_CAMERA_FAILED', function() {
+				$scope.$emit('hideLoader');
+			});
+			$scope.$on('FR_CAMERA_STARTING', function(){
+				$scope.$emit('showLoader');
+			});
+
+			$scope.$on('FACE_IMAGE_RETRIEVED', function(event, response) {
+				$scope.resetTime();
+				$scope.idScanData.selectedGuest.faceImage = response;
+			});
+
+			$scope.detachGuest = function(guest_id) {
+				$scope.detachingGuest = _.find($scope.selectedReservation.guest_details, function(guest) {
+					return guest.id === guest_id;
+				});
+				$scope.detachingGuest.reason = '';
+				$scope.detachingGuest.showWarning = true;
+			};
+
+			$scope.confirmGuestDetaching = function() {
+				var successCallback = function() {
+					$scope.selectedReservation.guest_details = _.filter($scope.selectedReservation.guest_details, function(guest) {
+						return guest.id !== $scope.detachingGuest.id;
+					});
+					setPageNumberDetails();
+					$scope.detachingGuest.showWarning = false;
+				};
+
+				var options = {
+					params: {
+						"id": stateParams.reservation_id,
+						"guest_id": $scope.detachingGuest.id,
+						"note": $scope.detachingGuest.reason,
+						"application": "KIOSK"
+					},
+					successCallBack: successCallback
+				};
+
+				$scope.callAPI(zsGeneralSrv.detachGuest, options);
 			};
 
 			(function() {
@@ -415,24 +516,39 @@
 					});
 				}
 
+				$scope.idScanData = {
+					mode: '',
+					selectedGuest: {},
+					verificationMethod: zsUtilitySrv.retriveIdScanVerificationMethod($scope.zestStationData.kiosk_scan_mode),
+					staffVerified: false,
+					showPrimaryGuestAlreadyScannedMg: false
+				};
+
 				angular.forEach($scope.selectedReservation.guest_details, function(guestDetail) {
 					guestDetail.idScanStatus = SCANING_PENDING;
+					var scannedDetails = zsCheckinSrv.getCurrentReservationIdDetails();
+					if (guestDetail.is_primary && !_.isEmpty(scannedDetails) && guestDetail.last_name.toLowerCase() === scannedDetails.last_name.toLowerCase()) {
+						$scope.idScanData.showPrimaryGuestAlreadyScannedMg = true;
+						guestDetail.scannedDetails = scannedDetails;
+						guestDetail.front_image_data = scannedDetails.front_image_data ? scannedDetails.front_image_data :'';
+						guestDetail.back_image_data = scannedDetails.back_image_data ? scannedDetails.back_image_data : '';
+						guestDetail.idScanStatus = SCAN_ALREADY_COMPLTED;
+						guestDetail.faceImage = scannedDetails.faceImage ? scannedDetails.faceImage : '';
+					}
 				});
+
 				setPageNumberDetails();
 
 				$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 				$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 
 				$scope.setScreenIcon('checkin');
-				$scope.idScanData = {
-					mode: '',
-					selectedGuest: {},
-					verificationMethod: retrieveIdScanType(),
-					staffVerified: false
-				};
 				$scope.screenData.scanMode = 'GUEST_LIST';
 				$scope.setScroller('passport-validate');
 				$scope.setScroller('confirm-images');
+				var idCaptureConfig = processCameraConfigs($scope.zestStationData.iOSCameraEnabled, $scope.zestStationData.connectedCameras, $scope.zestStationData.featuresSupportedInIosApp);
+            
+           		$scope.setConfigurations(idCaptureConfig);
 			}());
 		}
 	]);

@@ -1,4 +1,4 @@
-<div class="numbers-pagination" ng-show="pageOptions.totalPages > 1">
+<div class="numbers-pagination" ng-show="pageOptions.totalPages > 1" ng-class="divClass">
     <div class="pages">
         <button type="button" class="button prev" ng-hide="currentFocus <= 3 || pageOptions.totalPages <= showCount" ng-click="setScroll(currentFocus-3)">Prev</button>
         

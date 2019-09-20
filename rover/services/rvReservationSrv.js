@@ -2,10 +2,7 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 	function($http, $q, RVBaseWebSrv, rvBaseWebSrvV2, $rootScope) {
 
 		this.reservationData = {};
-		this.lastFetchData = {
-			'cached': false,
-			data: {}
-		};
+
 		var that = this;
 
 		/**
@@ -31,8 +28,6 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 				var url = 'api/reservations/' + reservationId + '.json';
 
 				RVBaseWebSrv.getJSON(url).then(function(data) {
-					that.lastFetchData.cached = true;
-					that.lastFetchData.data = data;
 					that.reservationData[reservationId] = data;
 					deferred.resolve(data);
 				}, function(data) {
@@ -203,7 +198,7 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 			return deferred.promise;
 		};
 
-		// CICO-24928 
+		// CICO-24928
 		this.updateReservationNote = function(data) {
 			var deferred = $q.defer(),
 				url = '/reservation_notes/' + data.id;
@@ -230,7 +225,7 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 					deferred.reject(data);
 				});
 			}
-			
+
 			return deferred.promise;
 		};
 		this.modifyRoomQueueStatus = function(data) {
@@ -337,7 +332,7 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
                                     response.amount = parseFloat(response.amount).toFixed(2);
                                 }
                             }
-                            
+
 				deferred.resolve(response);
 			}, function(response) {
 				deferred.reject(response);
@@ -351,6 +346,42 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 				url = '/api/guest_identity/' + data.reservation_id;
 
 			rvBaseWebSrvV2.getJSON(url, data).then(function(response) {
+				deferred.resolve(response);
+			}, function(response) {
+				deferred.reject(response);
+			});
+			return deferred.promise;
+		};
+
+		/**
+		 * Service to perform the reverse check-in process
+		 * @param {Object} param reservation id
+		 * @return {Promise}
+		 */
+		this.reverseCheckIn = function(param) {
+			var deferred = $q.defer(),
+				url = '/api/reservations/' + param.reservationId + '/reverse_check_in';
+
+			rvBaseWebSrvV2.postJSON(url).then(function(response) {
+				deferred.resolve(response);
+			}, function(response) {
+				deferred.reject(response);
+			});
+			return deferred.promise;
+		};
+
+		/**
+		 * Attach a specific guest to a reservation
+		 * @param {Object} params - holding request params
+		 * @return {Promise}
+		 */
+		this.attachGuestToReservation = function (params) {
+			var deferred = $q.defer(),
+				url = '/api/reservations/' + params.reservation_id + '/reservations_guest_details/attach_guest_details';
+			
+			delete params.reservation_id;
+
+			rvBaseWebSrvV2.postJSON(url, params).then(function(response) {
 				deferred.resolve(response);
 			}, function(response) {
 				deferred.reject(response);

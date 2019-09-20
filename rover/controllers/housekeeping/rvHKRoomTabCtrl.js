@@ -194,7 +194,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
          */
         $scope.shouldShowTimeSelector = function() {
             // as per CICO-11840 we will show this for hourly hotels only
-            return $rootScope.isHourlyRateOn && !$scope.inService;
+            return ($rootScope.isHourlyRateOn || $rootScope.hotelDiaryConfig.mode === 'FULL') && !$scope.inService;
         };
         /*
          * @param  {Date}
@@ -231,6 +231,11 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
                 reservations: reservationList
             };
 
+            $scope.setScroller('reservation-list-scroller', {
+                tap: true,
+                preventDefault: false
+            });
+            
             ngDialog.open({
                 template: '/assets/partials/housekeeping/popups/roomTab/rvRoomTabReservationExist.html',
                 className: '',
@@ -278,20 +283,18 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
          * @returns {void}
          */
         $scope.checkWhetherRoomStatusChangePossible = function() {
-            // As per requirement initially we are restricting this feature to hourly hotels only
-            if (!$rootScope.isHourlyRateOn) {
-                $scope.update ();
-                return;
-            }
-
+            
             // for hourly hotels as of now
             var params = {
                 from_date: getApiFormattedDate($scope.updateService.from_date),
                 to_date: getApiFormattedDate($scope.updateService.to_date),
-                room_id: $scope.roomDetails.id,
-                begin_time: $scope.updateService.begin_time,
-                end_time: $scope.updateService.end_time
+                room_id: $scope.roomDetails.id
             };
+
+            if ($rootScope.isHourlyRateOn || $rootScope.hotelDiaryConfig.mode === 'FULL') {
+                params.begin_time = $scope.updateService.begin_time;
+                params.end_time = $scope.updateService.end_time;
+            }
 
             var options = {
                 params: params,
@@ -358,7 +361,12 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
             if ($scope.showSaved) {
                 $scope.showSaved = false;
             } else {
-                $scope.checkWhetherRoomStatusChangePossible();
+                if ($scope.updateService.room_service_status_id !== 1) {
+                  $scope.checkWhetherRoomStatusChangePossible();  
+                } else {
+                    $scope.update();
+                }
+                
             }
         };
 
@@ -465,7 +473,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 
             $scope.ooOsTitle = item.description;
 
-            $scope.updateService.reason_id = dateHash[$scope.updateService.selected_date].reason_id;
+            $scope.updateService.reason_id = dateHash[$scope.updateService.selected_date].maintenance_reason_id;
             $scope.updateService.comment = dateHash[$scope.updateService.selected_date].comments;
 
             if ($scope.updateService.room_service_status_id !== $_inServiceId) {

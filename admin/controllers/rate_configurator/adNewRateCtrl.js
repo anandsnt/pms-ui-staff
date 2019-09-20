@@ -1,5 +1,5 @@
-admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$state', '$stateParams', 'rateInitialData', 'rateDetails', '$filter', '$rootScope', 'ADOriginsSrv', 'ADRatesAddDetailsSrv', 'sntActivity',
-    function($scope, ADRatesRangeSrv, ADRatesSrv, $state, $stateParams, rateInitialData, rateDetails, $filter, $rootScope, ADOriginsSrv, ADRatesAddDetailsSrv, sntActivity) {
+admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$state', '$stateParams', 'rateInitialData', 'rateDetails', '$filter', '$rootScope', 'ADOriginsSrv', 'ADRatesAddDetailsSrv',
+    function($scope, ADRatesRangeSrv, ADRatesSrv, $state, $stateParams, rateInitialData, rateDetails, $filter, $rootScope, ADOriginsSrv, ADRatesAddDetailsSrv) {
 
         $scope.init = function() {
             BaseCtrl.call(this, $scope);
@@ -38,12 +38,14 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 },
                 "status": true,
                 "room_type_ids": [],
+                "round_type_id": '',
                 "promotion_code": "",
                 "date_ranges": [],
                 "addOns": [],
                 "end_date": "",
                 "end_date_for_display": "",
                 "commission_details": {},
+                "basedOnRateUnselected": false,
                 "is_discount_allowed_on": true // CICO-25305 - For new rates we are enabling default,
 
             };
@@ -94,7 +96,6 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             if (!!$scope.rateData.based_on.id) {
                 fetchBasedOnRateDetails();
             }
-            sntActivity.stop('LOAD_RATE_DETAILS');
         };
 
         var fetchCommissionDetails = function() {
@@ -233,6 +234,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         var manipulateAdditionalDetails = function(data) {
             // hourly rate?
             $scope.rateData.is_hourly_rate = data.is_hourly_rate;
+            $scope.rateData.is_public_rate = data.is_public_rate;
+            $scope.rateData.is_day_use = data.is_day_use;
 
             // rules and restrictions
             $scope.rateData.min_advanced_booking = data.min_advanced_booking;
@@ -328,9 +331,10 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.currency_code_id = data.currency_code_id;
             $scope.rateData.tax_inclusive_or_exclusive = data.tax_inclusive_or_exclusive;
             $scope.rateData.is_global_contract = data.is_global_contract;
-
+            $scope.rateData.round_type_id = data.round_type_id;
+            $scope.rateData.min_threshold_percent = data.min_threshold_percent;
+            
             manipulateAdditionalDetails(data);
-
 
             if (data.based_on) {
                 $scope.rateData.based_on.id = data.based_on.id;

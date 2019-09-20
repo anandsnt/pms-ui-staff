@@ -11,4 +11,10 @@
 "SWIFT_CODE": "SWIFT CODE",
 "SWIFT_PLACEHOLDER": "Enter Swift code",
 "AR_NUMBER": "AR Number",
-"AR_NUMBER_PLACEHOLDER": "Enter AR Number for Property"
+"AR_NUMBER_PLACEHOLDER": "Enter AR Number for Property",
+"BANK_NAME" : "Bank Name",
+"BANK_NAME_PLACEHOLDER" : "Enter Bank Name",
+"BANK_ID" : "Bank Institution ID",
+"BANK_ID_PLACEHOLDER" : "Enter Bank Institution ID",
+"BANK_IBAN" : "BANK IBAN information",
+"BANK_IBAN_PLACEHOLDER" : "Enter BANK IBAN information"

@@ -472,8 +472,10 @@ sntRover.controller('RVActionsManagerController',
                         $("header .h2").addClass('text-hide');
                         // remove the orientation after similar delay
                         removePrintOrientation();
-                    }, 200); 
+                    }, 200);
+                    $("body #loading").html('<div id="loading-spinner" ></div>');
                 };
+                $("body #loading").html("");
                 /*
                 *   ======[ READY TO PRINT ]======
                 */
@@ -499,12 +501,16 @@ sntRover.controller('RVActionsManagerController',
                 $scope.$emit('hideLoader');
                 $scope.errorMessage = errorData;
             };
+            
+            var apiConfig = {
+                params: getReportParams(),
+                onSuccess: sucessCallback,
+                onFailure: failureCallback
+            };
 
-            var params = getReportParams();
+            setAppliedFilter();            
 
-            setAppliedFilter();
-
-            $scope.invokeApi(reportsSubSrv.fetchReportDetails, params, sucessCallback, failureCallback);
+            $scope.callAPI(rvActionTasksSrv.fetchReportDetails, apiConfig); 
         };
 
         // Checks whether edit/complete btn should be shown or not

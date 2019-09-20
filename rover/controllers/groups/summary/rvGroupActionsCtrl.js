@@ -1437,7 +1437,11 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
 
         // Cancel the action edit operation
         $scope.cancel = function() {
-            $scope.actionSelected = 'selected';
+            if ($scope.actions.totalCount === 0) {
+                $scope.setRightPane("none");
+            } else {
+                $scope.setRightPane("selected");
+            }
         };
 
         // Checks the permission to edit action

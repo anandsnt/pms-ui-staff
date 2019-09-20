@@ -1,0 +1,77 @@
+<!-- header -->
+<div class="container-fluid padding-0">
+    <div class="row header-bar ng-scope">
+        <div class="col-xs-2 padding-2">&nbsp;
+            <a ui-sref="checkOutOptions">
+                <div class="half-widh pull-left back-to-checkout">
+                </div>
+                <span class="sub-main-text pull-right hide-in-mobile back-text">back</span>
+            </a>
+        </div>
+        <div class="col-xs-8">
+            <img alt="" class="logo-image" src="{{hotelLogo}}"/>
+        </div>
+        <div class="col-xs-2"></div>
+    </div>
+</div>
+<!-- main section starts here -->
+<div class="container sm-full-strech">
+    <!-- request text -->
+    <div class="row" ng-show="isFetching && !netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="request-text">Your request is being processed.
+                This may take a few seconds..... please wait!</p>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+    <!-- error message -->
+    <div class="row" ng-show="netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="error-text">Our apologies, something went wrong, please complete your check-out at our front desk. You can also call the hotel at <a href="tel: {{hotelPhone}}"class="phone-text">{{hotelPhone}}.</a></p>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+    <!-- options -->
+    <div class="row" ng-hide="isFetching || netWorkError">
+        <div class="col-md-2"></div>
+        <!-- left side -->
+        <div class="col-md-4 top-spacing">
+            <p class="main-text">Select your new<br>check out time:</p>
+        </div>
+        <!-- right side -->
+        <div class="col-md-5 top-spacing mob-no-padding">
+            <div class="row options-container">
+                <a class="btn triple-button one-third-width {{ charge.class }}" ng-repeat="charge in charges" ng-click="gotToNextStep(charge.amount,charge.id)">
+                    <div class="row">
+                        <div class="circle-bg">
+                            <text x="40%" y="65%" fill="white">
+                                <tspan class="time">
+                                    {{ charge.time | number }}
+                                </tspan>
+                                <tspan class="ap">
+                                    {{ charge.ap }}
+                                </tspan>
+                            </text>
+                        </div>
+                    </div>
+                    <div class="row late-charge">
+                        <div class="line-break">
+
+                        </div>
+                        <br/>
+                        <span class="for">for</span>
+                        <span class="amount">{{currencySymbol}}{{charge.amount| number:0}}</span>
+                    </div>
+                </a>
+            </div>
+            <div class=" row margin-top-10">
+                <a class="no-thanks" ui-sref="checkOutOptions">No, thanks </a>
+            </div>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+</div>

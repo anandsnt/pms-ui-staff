@@ -24,7 +24,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             "isrefresh": true
                         });
                     };
-                } else if (!!$stateParams.isFromDiary) {
+                } else if ( $stateParams.reservation === "HOURLY" ) {
                     $rootScope.setPrevState = {
                         title: $filter('translate')('DIARY'),
                         name: 'rover.diary',
@@ -353,8 +353,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     from_date: $scope.reservationData.arrivalDate,
                     to_date: $scope.reservationData.departureDate,
                     view: "DEFAULT",
-                    company_id: null,
-                    travel_agent_id: null,
+                    company_id: $scope.reservationData.company.id,
+                    travel_agent_id: $scope.reservationData.travelAgent.id,
                     fromState: 'rover.reservation.staycard.mainCard.addons',
                     group_id: $scope.reservationData.group.id,
                     room_type_id: $scope.reservationData.tabs[$scope.viewState.currentTab].roomTypeId,

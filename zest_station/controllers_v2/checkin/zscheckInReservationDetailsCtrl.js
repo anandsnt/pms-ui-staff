@@ -9,7 +9,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
     '$timeout',
     'zsPaymentSrv',
     'sntActivity',
-    function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv, $stateParams, $log, $timeout, zsPaymentSrv, sntActivity) {
+    'zsGeneralSrv',
+    function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv, $stateParams, $log, $timeout, zsPaymentSrv, sntActivity, zsGeneralSrv) {
 
 
         // This controller is used for viewing reservation details 
@@ -67,9 +68,28 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                     $scope.selectedReservation.reservation_details = data.data.reservation_card;
                     $scope.zestStationData.selectedReservation = $scope.selectedReservation;
                     $scope.isReservationDetailsFetched = true;
-                    if ($scope.zestStationData.kiosk_prevent_non_cc_guests && $scope.selectedReservation.reservation_details.payment_method_used !== 'CC') {
+
+                    var paymentMethodUsed = $scope.selectedReservation.reservation_details.payment_method_used ? $scope.selectedReservation.reservation_details.payment_method_used : '';
+                    var isAllowedPaymentMethod = function(paymentType) {
+                        var paymentMethodValue = paymentType.value ? paymentType.value : '';
+
+                        return (paymentType.id === paymentMethodUsed || paymentMethodValue.toUpperCase() === paymentMethodUsed.toUpperCase()) &&
+                            paymentType.active &&
+                            paymentType.enable_zs_checkin;
+                    };
+
+                    var indexInAllowedPaymentTypes = _.findIndex($scope.zestStationData.payment_types, function(paymentType) {
+                        return isAllowedPaymentMethod(paymentType);
+                    });
+
+                    if ($scope.zestStationData.kiosk_prevent_non_cc_guests &&
+                        $scope.selectedReservation.reservation_details.payment_method_used !== 'CC') {
                         $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
                         $state.go('zest_station.noCCPresentForCheckin');
+                    } else if (paymentMethodUsed && $stateParams.previousState !== 'WALKIN' &&
+                               zsGeneralSrv.featuresToggleList && zsGeneralSrv.featuresToggleList.kiosk_exclude_payment_methods &&
+                               indexInAllowedPaymentTypes === -1) {
+                        $state.go('zest_station.paymentMethodNotAllowed');
                     }
                     else {
                         if ($scope.isRateSuppressed()) {
@@ -95,10 +115,12 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             } else {
                 $scope.callAPI(zsCheckinSrv.fetchReservationInfo, {
                     params: {
-                        'id': $scope.selectedReservation.id
+                        'id': $scope.selectedReservation.id, 
+                        'log_action': $rootScope.checkin_reservation_id !== $scope.selectedReservation.id
                     },
                     'successCallBack': onSuccessFetchReservationDetails
                 });
+                $rootScope.checkin_reservation_id = $scope.selectedReservation.id;
             }
 
         };
@@ -169,7 +191,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             if ($scope.mode === 'LOYALTY_PROGRAMS') {
                 $scope.$broadcast('LOYALTY_PROGRAMS_BACK_NAVIGATIONS');
             } else if ($scope.mode === 'TERMS_CONDITIONS') {
-                if ($scope.zestStationData.add_loyalty_pgms) {
+                if ($scope.zestStationData.add_loyalty_pgms && ($scope.selectedReservation.reservation_details.loyalty_level.use_ffp || $scope.selectedReservation.reservation_details.loyalty_level.use_hlp)) {
                     $scope.mode = 'LOYALTY_PROGRAMS';
                     $scope.$broadcast('FETCH_USER_MEMBERSHIPS');
                 } else {
@@ -187,7 +209,11 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 });
             } else if (reservations.length > 0) {
                 $state.go('zest_station.selectReservationForCheckIn');
-            } else {
+            }
+            else if ($stateParams.previousState === 'WALKIN') {
+                $scope.navToHome();
+            } 
+            else {
                 $state.go('zest_station.checkInReservationSearch');
             }
             // what needs to be passed back to re-init search results
@@ -219,7 +245,11 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             if (!$stateParams.isQuickJump || $stateParams.isQuickJump === 'false') {
                 fetchReservationDetails();
                 fetchAddons();
-                checkIfRoomUpgradeIsPresent();
+                if ($scope.selectedReservation.skipRoomUpsell) {
+                    $scope.selectedReservation.is_upsell_available = false;
+                } else {
+                    checkIfRoomUpgradeIsPresent();
+                }
             } else {
                 setDisplayContentHeight(); // utils function
                 refreshScroller();
@@ -406,8 +436,23 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             $state.go('zest_station.checkInTerms', stateParams);
         };
 
+        var goToRoomNotAvailableOptions = function() {
+            $state.go('zest_station.checkinRoomNotAvailableNow', {
+                'guest_email': $scope.selectedReservation.guest_details[0].email,
+                'first_name': $scope.selectedReservation.guest_details[0].first_name,
+                'last_name': $scope.selectedReservation.guest_details[0].last_name,
+                'guest_id': $scope.selectedReservation.guest_details[0].id,
+                'reservation_id': $scope.selectedReservation.reservation_details.reservation_id,
+                'guest_email_blacklisted': $scope.selectedReservation.guest_details[0].is_email_blacklisted
+            });
+        };
+
         var initRoomError = function() {
-            $state.go('zest_station.checkinRoomError');
+            if (zsGeneralSrv.featuresToggleList && zsGeneralSrv.featuresToggleList.kiosk_room_ready_alert) {
+                goToRoomNotAvailableOptions();
+            } else {
+                $state.go('zest_station.checkinRoomError');   
+            }
         };
 
         var showTermsAndCondition = function() {
@@ -514,15 +559,20 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         };
 
         var initCheckinTimeError = function() {
-            /*
-             *  guest attempted to check in too early, 
-             *  - for hourly hotels such as Yotel, guest is not allowed to check-in
-             *  - unless they are within the hour of the arrival time
-             */
-            $state.go('zest_station.checkinRoomError', {
-                'early_checkin_unavailable': true,
-                'first_name': $scope.selectedReservation.guest_details[0].first_name
-            });
+
+            if (zsGeneralSrv.featuresToggleList && zsGeneralSrv.featuresToggleList.kiosk_room_ready_alert) {
+               goToRoomNotAvailableOptions();
+            } else {
+                /*
+                 *  guest attempted to check in too early, 
+                 *  - for hourly hotels such as Yotel, guest is not allowed to check-in
+                 *  - unless they are within the hour of the arrival time
+                 */
+                $state.go('zest_station.checkinRoomError', {
+                    'early_checkin_unavailable': true,
+                    'first_name': $scope.selectedReservation.guest_details[0].first_name
+                });
+            }
         };
 
         var currentHotelTime = '',

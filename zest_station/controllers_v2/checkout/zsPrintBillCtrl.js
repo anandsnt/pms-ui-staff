@@ -24,6 +24,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
         var nextPageActions = function(printopted) {
             $scope.$emit('hideLoader');
             $scope.runDigestCycle();
+            $scope.zestStationData.consecutivePrintFailure = printopted === 'true' ? 0 : $scope.zestStationData.consecutivePrintFailure;
             // for overlay the email collection is before print and for 
             // stand alone its after print bil
             if ($scope.zestStationData.guest_bill.email && $scope.zestStationData.is_standalone) {
@@ -48,9 +49,12 @@ sntZestStation.controller('zsPrintBillCtrl', [
         var printFailedActions = function(errorMessage) {
             $scope.$emit('hideLoader');
             errorMessage = _.isUndefined(errorMessage) ? 'CHECKOUT_PRINT_FAILED' : errorMessage;
-            $scope.zestStationData.workstationOooReason = $filter('translate')(errorMessage);
-            $scope.zestStationData.workstationStatus = 'out-of-order';
-            $scope.addReasonToOOSLog('CHECKOUT_PRINT_FAILED');
+            $scope.zestStationData.consecutivePrintFailure++;
+            if ($scope.zestStationData.consecutivePrintFailure >= $scope.zestStationData.kioskOutOfOrderTreshold) {
+                $scope.zestStationData.workstationOooReason = $filter('translate')(errorMessage);
+                $scope.zestStationData.workstationStatus = 'out-of-order';
+                $scope.addReasonToOOSLog('CHECKOUT_PRINT_FAILED');
+            }
             var printopted = 'false';
 
             $scope.runDigestCycle();

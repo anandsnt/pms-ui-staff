@@ -191,8 +191,29 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 	});
 
 	$stateProvider.state('sntIDScan', {
-        	url: '/sntIDScan/:params',
-            templateUrl: '/assets/common_templates/partials/checkin/idScan/idScanMain.html',
-            controller: 'sntIDScanCtrl'
-        });
+		url: '/sntIDScan/:params',
+		templateUrl: '/assets/common_templates/partials/checkin/idScan/idScanMain.html',
+		controller: 'sntIDScanCtrl'
+	});
+
+	$stateProvider.state('sntIDScanUseMobile', {
+		url: '/sntIDScanUseMobile/:is_external_verification/:skip_checkin_verification',
+		templateUrl: '/assets/common_templates/partials/checkin/idScan/gwIdScanUseMobile.html',
+		controller: 'sntIDScanUseMobileCtrl'
+	});
+
+
+	$stateProvider.state('guestNotEligible', {
+		url: '/guestNotEligible',
+		templateUrl: '/assets/common_templates/partials/checkin/gwGuestNotEligible.html',
+		title: 'Guest Details'
+	});
+
+	$stateProvider.state('unableToCheckn', {
+		url: '/unableToCheckn/:reason',
+		templateUrl:'/assets/common_templates/partials/checkin/gwReservationInEligibleToCheckin.html',
+		controller: 'unableToChecknCtrl',
+		title: 'Unable to Checkin'
+	});
+
 }]);

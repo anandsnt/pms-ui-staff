@@ -65,7 +65,9 @@
             "always"
         ],
         "no-extra-parens":[
-            "warn"
+            "warn",
+            "all",
+            { "nestedBinaryExpressions" : false }
         ],
         "valid-jsdoc":[
             "error"

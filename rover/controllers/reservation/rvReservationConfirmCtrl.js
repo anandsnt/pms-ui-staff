@@ -289,15 +289,13 @@ sntRover.controller('RVReservationConfirmCtrl', [
 					postData.tax_details.push(taxDetail);
 				});
 				postData.tax_total = $scope.reservationData.totalTax;
-
-
-				postData.emails = [];
+				
 				if (!!$scope.reservationData.guest.email && $scope.otherData.isGuestPrimaryEmailChecked) {
-					postData.emails.push($scope.reservationData.guest.email);
+					postData.primary_email = $scope.reservationData.guest.email;
 				}
 
 				if (!!$scope.otherData.additionalEmail && $scope.otherData.isGuestAdditionalEmailChecked) {
-					postData.emails.push($scope.otherData.additionalEmail);
+					postData.booker_email = $scope.otherData.additionalEmail;
 				}
 				if ($scope.reservationData.isHourly) {
 					postData.reservation_ids = [];
@@ -473,6 +471,18 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				isfromcreatereservation: false
 			});
 		};
+
+		// CICO-60529 : Navigate back to Room Diary
+		$scope.gotoNightlyDiary = function() {
+			var stateParams = {
+				origin: 'RESERVATION_SUMMARY',
+				reservation_id: $scope.reservationData.reservationId,
+				room_id: $scope.reservationData.rooms[0].room_id
+			};
+
+			$state.go('rover.nightlyDiary', stateParams );
+		};
+
 		var allRoomDetailsFetched = function(data) {
 			$scope.$emit("hideLoader");
 		};

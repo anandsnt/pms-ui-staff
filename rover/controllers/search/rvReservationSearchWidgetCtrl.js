@@ -1,5 +1,5 @@
-sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScope', 'RVSearchSrv', '$filter', '$state', '$stateParams', '$vault', 'ngDialog', '$timeout', 'RVHkRoomStatusSrv',
-	function($scope, $rootScope, RVSearchSrv, $filter, $state, $stateParams, $vault, ngDialog, $timeout, RVHkRoomStatusSrv) {
+sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScope', 'RVSearchSrv', '$filter', '$state', '$stateParams', '$vault', 'ngDialog', '$timeout', 'RVHkRoomStatusSrv', 'rvPermissionSrv',
+	function($scope, $rootScope, RVSearchSrv, $filter, $state, $stateParams, $vault, ngDialog, $timeout, RVHkRoomStatusSrv, rvPermissionSrv) {
 
 		/*
 		 * Base reservation search, will extend in some place
@@ -60,6 +60,11 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.isSwiped = false;
 		$scope.firstSearch = true;
 
+		$scope.isBulkCheckoutSelected = !!$stateParams.isBulkCheckoutSelected;
+		$scope.isDueoutShowing = $stateParams.type === 'DUEOUT';
+		
+		$scope.allowOpenBalanceCheckout = !!$stateParams.isAllowOpenBalanceCheckoutSelected;
+		$scope.bulkCheckoutReservationsCount = 0;
 		$scope.showAddNewGuestButton = false; // read cooment below :(
 		/**
 		 *	should we show ADD Guest Button
@@ -184,6 +189,12 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.$on("updateDataFromOutside", function(event, data) {
 			$scope.disableNextButton = false;
 			$scope.results = data;
+
+			// CICO-56785 - Bulk checkout case while returning from staycard
+			if (data.total_count) {
+				$scope.totalSearchResults = data.total_count;
+				$scope.results = data.results;
+			}
 
 			$scope.start = ((RVSearchSrv.page - 1) * RVSearchSrv.searchPerPage) + $scope.start;
 			$scope.end = $scope.start + $scope.results.length - 1;
@@ -709,6 +720,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 * function to execute on clicking on each result
 		 */
 		$scope.goToReservationDetails = function($event, reservationID, confirmationID) {
+
 			$event.preventDefault();
 			$event.stopImmediatePropagation();
   			$event.stopPropagation();
@@ -720,10 +732,13 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			RVSearchSrv.toDate = $scope.toDate;
 
             $rootScope.goToReservationCalled = true;
+            $scope.$emit('GUESTCARDVISIBLE', false);
 			$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
 				id: reservationID,
 				confirmationId: confirmationID,
-				isrefresh: true
+				isrefresh: true,
+				isBulkCheckoutSelected: $scope.isBulkCheckoutSelected,
+				isAllowOpenBalanceCheckoutSelected: $scope.allowOpenBalanceCheckout
 			});
 		};
 
@@ -1068,5 +1083,146 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			}
 			return status;
 		};
+
+		/**
+		 * Initialize the pagination object based on whether bulk checkout is available or not
+		 * @param {Boolean} isBulkCheckoutAvailable whether bulk checkout is available
+		 * @return {void}
+		 */
+		var initializePagination = function (isBulkCheckoutAvailable) {
+			$scope.dashboardSearchPagination = {
+				id: 'DASHBOARD_SEARCH',
+				api: isBulkCheckoutAvailable ? $scope.fetchBulkCheckoutReservations : $scope.fetchSearchResults,
+				perPage: RVSearchSrv.searchPerPage
+			};
+		};
+
+		/**
+		 * Fetch reservations eligible for bulk checkout
+		 */
+		$scope.fetchBulkCheckoutReservations = function( page ) {
+			var requestParams = {
+					per_page: RVSearchSrv.searchPerPage,
+					page: page || 1,
+					allow_open_balance_checkout: $scope.allowOpenBalanceCheckout
+				},
+				onReservationsFetchSuccess = function(data) {
+					$scope.results = data.results;
+					$scope.totalSearchResults = data.total_count;
+					if ($scope.results.length > 0) { 
+						applyFilters();
+						$scope.showSearchResultsArea = true;
+					}
+					$scope.bulkCheckoutReservationsCount = data.total_count;
+					setTimeout(function() {
+						$scope.$broadcast('updatePagination', 'DASHBOARD_SEARCH');
+						$scope.$parent.myScroll['result_showing_area'].scrollTo(0, 0, 0);
+						refreshScroller();
+					}, 100);
+				},
+				onReservationsFetchFailure = function(errorMsg) {
+					$scope.errorMessage = errorMsg;
+				};
+
+			$scope.callAPI(RVSearchSrv.fetchReservationsForBulkCheckout, {
+				onSuccess: onReservationsFetchSuccess,
+				onFailure: onReservationsFetchFailure,
+				params: requestParams
+			});
+		};
+
+		/**
+		 * Toggle the tab view in the departures screen
+		 */
+		$scope.onDeparturesScreenTabViewChange = function() {
+			$scope.isBulkCheckoutSelected = !$scope.isBulkCheckoutSelected;
+			initializePagination($scope.isBulkCheckoutSelected);
+
+			if ($scope.isBulkCheckoutSelected) {
+				$scope.fetchBulkCheckoutReservations();
+			} else {
+				$scope.fetchSearchResults();
+			}
+		};
+
+		/**
+		 * Should disable bulk checkout button in departures screen
+		 */
+		$scope.shouldDisableBulkCheckoutOption = function() {
+			return (
+                !$rootScope.isStandAlone ||
+                $rootScope.isHourlyRateOn ||
+                !rvPermissionSrv.getPermissionValue("CHECK_OUT_RESERVATION") ||
+                $rootScope.isInfrasecEnabled
+            );
+		};
+
+		/**
+		 * Toggle allow open balance checkout filter in departures screen
+		 */
+		$scope.toggleAllowOpenBalanceCheckoutFilter = function() {
+			$scope.allowOpenBalanceCheckout = !$scope.allowOpenBalanceCheckout;
+			$scope.fetchBulkCheckoutReservations();
+		};
+
+		/**
+		 * Show the popup with proper message when the bulk checkout process is initiated
+		 * @param {Object} data holding the details for the popup content
+		 * @return {void}
+		 */
+		this.showBulkCheckoutStatusPopup = function (data) {
+			ngDialog.open({
+				template: '/assets/partials/popups/rvInfoPopup.html',						
+				closeByDocument: true,
+				scope: $scope,
+				data: JSON.stringify(data)
+			});
+		};
+			
+
+		/**
+		 * Perform bulk checkout of reservations
+		 */
+		$scope.performBulkCheckout = function() {
+			var postData = {
+					allow_open_balance_checkout: $scope.allowOpenBalanceCheckout
+				},
+				onBulkCheckoutSuccess = function (response) {
+					var data;
+					
+					if (response.is_bulk_checkout_in_progress) {
+						data = {
+							message: "BULK_CHECKOUT_PROCESS_IN_PROGRESS",
+							isFailure: true
+						};
+						that.showBulkCheckoutStatusPopup(data);
+					} else {
+						data = {
+							message: "BULK_CHECKOUT_INITIATED",
+							isSuccess: true
+						};
+						that.showBulkCheckoutStatusPopup(data);
+					}
+					
+				},
+				onBulkCheckoutFailure = function (errorMsg) {
+					$scope.errorMessage = errorMsg;
+				};
+
+			$scope.callAPI(RVSearchSrv.processBulkCheckout, {
+				onSuccess: onBulkCheckoutSuccess,
+				onFailure: onBulkCheckoutFailure,
+				params: postData
+			});
+		};
+
+		$scope.closeSuccessDialog = function() {
+			ngDialog.close();
+			$state.go('rover.dashboard');
+		};
+		$scope.closeErrorDialog = function() {
+			ngDialog.close();
+		};
+
 	}
 ]);

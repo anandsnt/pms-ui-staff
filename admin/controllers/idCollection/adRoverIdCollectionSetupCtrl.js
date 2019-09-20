@@ -11,6 +11,10 @@ angular.module('admin').controller('adRoverIdCollectionSetupCtrl', ['$scope', '$
             config.enabled = !config.enabled;
         };
 
+        $scope.toggleSaveIdFaceImage = function() {
+            config.save_id_face_image = !config.save_id_face_image;
+        };
+
         $scope.saveConfig = function() {
             $scope.callAPI(adInterfacesCommonConfigSrv.saveConfiguration, {
                 params: {

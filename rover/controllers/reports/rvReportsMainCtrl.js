@@ -31,13 +31,16 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         $scope.setTitle(listTitle);
         $scope.heading = listTitle;
         $scope.$emit('updateRoverLeftMenu', 'reports');
-
-        $scope.reportList = payload.reportsResponse.results;
-        $scope.reportCount = payload.reportsResponse.total_count;
-        $scope.codeSettings = payload.codeSettings;
-        $scope.activeUserList = payload.activeUserList;
+        $scope.reportList = angular.copy(payload.reportsResponse.results);
+        $scope.reportCount = angular.copy(payload.reportsResponse.total_count);
+        $scope.codeSettings = angular.copy(payload.codeSettings);
+        $scope.activeUserList = angular.copy(payload.activeUserList);
         $scope.schedulesList = [];
         $scope.schedulableReports = [];
+
+        $scope.refreshReportList = function() {
+            $scope.reportList = angular.copy(payload.reportsResponse.results);
+        };
 
         $scope.selectedReport = {
             report: null
@@ -224,7 +227,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             item_52: false,
             item_53: false,
             item_54: false,
-            item_55: false
+            item_55: false,
+            item_56: false,
+            item_57: false
         };
         $scope.toggleFilterItems = function (item) {
             if (!$scope.filterItemsToggle.hasOwnProperty(item)) {
@@ -342,7 +347,15 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 var selectedDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 
                 $scope.toDateOptionsOneYearLimit.minDate = selectedDate;
-                $scope.toDateOptionsOneYearLimit.maxDate = reportUtils.processDate(selectedDate).aYearAfter;                
+                $scope.toDateOptionsOneYearLimit.maxDate = reportUtils.processDate(selectedDate).aYearAfter; 
+                
+                if ($scope.touchedReport.untilDate < selectedDate) {
+                    $scope.touchedReport.untilDate = selectedDate;
+                }
+                if ($scope.touchedReport.untilDate > $scope.toDateOptionsOneYearLimit.maxDate) {
+                    $scope.touchedReport.untilDate = $scope.toDateOptionsOneYearLimit.maxDate;
+                }
+                              
             }
         }, datePickerCommon);
 
@@ -353,6 +366,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
                 $scope.toDateOptionsOneMonthLimit.minDate = selectedDate;
                 $scope.toDateOptionsOneMonthLimit.maxDate = reportUtils.processDate(selectedDate).aMonthAfter;                
+
+                if ($scope.touchedReport.untilDate < selectedDate) {
+                    $scope.touchedReport.untilDate = selectedDate;
+                }
+                if ($scope.touchedReport.untilDate > $scope.toDateOptionsOneMonthLimit.maxDate) {
+                    $scope.touchedReport.untilDate = $scope.toDateOptionsOneMonthLimit.maxDate;
+                }
             }
         }, datePickerCommon);
 
@@ -1039,7 +1059,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     'segments': [],
                     'market_ids': [],
                     'tax_exempt_type_ids': [],
-                    'group_code': []
+                    'group_code': [],
+                    'country_ids': [],
+                    'include_long_stays': []
                 };
             }
 
@@ -1205,6 +1227,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 params[reportParams['RESTRICTION_IDS']] = _.pluck(_.where(report.hasRestrictionListFilter.data, {selected: true}), 'id');
             }
 
+            if (!!report.hasDayUseFilter) {
+                var inclDayUse = report[reportParams['INCLUDE_DAYUSE']];
+
+                $scope.appliedFilter[reportParams['INCLUDE_DAYUSE']] = inclDayUse;
+                params[reportParams['INCLUDE_DAYUSE']] = inclDayUse;
+            }
+
             // for rate code
             if (!!report.hasRateCodeFilter) {
                 if (report.hasRateCodeFilter.options.singleSelect) {
@@ -1305,7 +1334,16 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     $scope.appliedFilter['with_vat_number'] = report.with_vat_number;
                     $scope.appliedFilter['without_vat_number'] = report.without_vat_number;
                 }
-            }   
+            }
+
+            if ( report.hasShowIncludeLongStays ) {
+                key         = reportParams['INCLUDE_LONG_STAYS'];
+                params[key] = report.include_long_stays;
+
+                if ( changeAppliedFilter ) {
+                    $scope.appliedFilter['include_long_stays'] = report.include_long_stays;
+                }
+            } 
 
             if ( report.hasShowVatWithRates ) {
                 key         = reportParams['SHOW_VAT_WITH_RATES'];
@@ -1864,6 +1902,29 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 }
             }
 
+            // include country ids
+            if (report.hasOwnProperty('hasIncludeCountry')) {
+                selected = _.where(report['hasIncludeCountry']['data'], {selected: true});
+
+                if (selected.length > 0) {
+                    key = reportParams['COUNTRY'];
+                    params[key] = [];
+                    /**/
+                    _.each(selected, function (each) {
+                        params[key].push(each.id.toString());
+                        /**/
+                        if (changeAppliedFilter) {
+                            $scope.appliedFilter.country_ids.push(each.id);
+                        }
+                    });
+
+                    // in case if all reservation status are selected
+                    if (changeAppliedFilter && report['hasIncludeCountry']['data'].length === selected.length) {
+                        $scope.appliedFilter.hasIncludeCountry = ['All countries'];
+                    }
+                }
+            }
+
             // include Aging days
             if (report.hasOwnProperty('hasIncludeAgingBalance')) {
                 selected = _.where(report['hasIncludeAgingBalance']['data'], {selected: true});
@@ -2359,9 +2420,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
                 $scope.errorMessage = response;
                 $scope.$emit('hideLoader');
-
+                
                 $log.info(reportMsgs['REPORT_API_FAILED']);
-                $rootScope.$broadcast(reportMsgs['REPORT_API_FAILED']);
+                $rootScope.$broadcast(reportMsgs['REPORT_API_FAILED'], response);
             };
 
             $scope.clearErrorMessage();
@@ -2894,6 +2955,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         $scope.navigateToReportInbox = () => {
             $scope.closeDialog();
             $state.go('rover.reports.inbox');
+        };
+
+        $scope.reload = function() {
+            $state.reload();
         };
 
         // Listener for updating the report header

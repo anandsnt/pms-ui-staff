@@ -1,5 +1,5 @@
-sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardSrv', 'ngDialog', '$timeout', 'RVContactInfoSrv',
-	function($scope, $rootScope, RVGuestCardSrv, ngDialog, $timeout, RVContactInfoSrv) {
+sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardsSrv', 'ngDialog', '$timeout', 'RVContactInfoSrv',
+	function($scope, $rootScope, RVGuestCardsSrv, ngDialog, $timeout, RVContactInfoSrv) {
 
 		// Browser chokes when he tries to do the following two thing at the same time:
 		// 		1. Slide in staycard
@@ -159,7 +159,7 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
 			// 		Hence, in order to get the updated list of cards against a guest, make the guest details request before
 			// fetching the card details
             if (!$rootScope.isStandAlone &&
-                !RVContactInfoSrv.isGuestFetchComplete($scope.reservationData.guest.id)) {
+                !RVGuestCardsSrv.isGuestFetchComplete($scope.reservationData.guest.id)) {
                 $scope.callAPI(RVContactInfoSrv.getGuestDetails, {
                     successCallBack: function(data) {
                         $scope.$emit("UPDATE_GUEST_CARD_DETAILS", data);
@@ -213,9 +213,13 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
         $scope.$on('PRIMARY_GUEST_ID_CHANGED', function(event, data) {
 
             $scope.guestCardData.contactInfo.id_type = data.id_type;
+            $scope.guestCardData.contactInfo.gender_id = data.gender_id;
             $scope.guestCardData.contactInfo.nationality_id = data.nationality_id;
             $scope.guestCardData.contactInfo.id_number = data.id_number;
             $scope.guestCardData.contactInfo.birthday = data.birthday;
+            if (data.faceImage) {
+                $scope.guestCardData.contactInfo.avatar = data.faceImage;
+            }
         });
 
 	}

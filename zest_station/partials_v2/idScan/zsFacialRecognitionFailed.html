@@ -3,7 +3,10 @@
       <h1 translate>
          FACIAL_RECOGNITION_FAILED_SEE_STAFF_OPTIONALLY
       </h1>
-      <button type="button" class="button done-btn" touch-press="startFacialRecognition()" translate>
+      <button type="button" class="button done-btn" ng-hide="deviceConfig.useExtCamForFR" touch-press="startFacialRecognition()" translate>
+         RETAKE_SELFIE
+      </button>
+      <button type="button" class="button done-btn" ng-show="deviceConfig.useExtCamForFR" touch-press="startFacialRecognitionUsingExtCamera()" translate>
          RETAKE_SELFIE
       </button>
       <button ng-if="zestStationData.kiosk_staff_notification_sound" type="button" class="button done-btn transparent" touch-press="ringBell()" translate>

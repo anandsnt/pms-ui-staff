@@ -18,7 +18,9 @@ admin.directive('adToggleButton', function() {
     templateUrl: '/assets/directives/toggle/adToggleButton.html',
     controller: function($scope) {
       $scope.handler = function () {
-       $scope.onUpdate($scope.params, $scope.isChecked);
+          if (typeof $scope.onUpdate === 'function') {
+              $scope.onUpdate($scope.params, $scope.isChecked);
+          }
       };
     }
   };

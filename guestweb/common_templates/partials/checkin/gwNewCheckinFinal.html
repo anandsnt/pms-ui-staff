@@ -26,9 +26,9 @@
     </div>
     <!-- main content -->
     <div class="row" ng-hide="isPosting || netWorkError">
-        <div class="col-md-4"></div>
+        <div class="col-md-3"></div>
         <!-- left side -->
-        <div class="col-md-4 top-spacing">
+        <div class="col-md-6 top-spacing" ng-hide="idScanSkipped">
             <p class="main-text final-text">You're checked in!</p>
             <p class="sub-text">Reservation #:{{confirmationNumber}}</p>
             <br/>
@@ -48,7 +48,12 @@
             <br>
             <br>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6 top-spacing" ng-show="idScanSkipped">
+            <p class="main-text final-text">Unable to checkin</p>
+            <p class="sub-main-text">Sorry we are unable to checkin without the IDs. When arriving at the hotel, please proceed directly to the front desk, with your picture IDs ready. We look forward to welcoming you.</p>
+            <p class="sub-main-text">Please feel free to call us at <a href="tel: {{hotelPhone}}"class="phone-text">{{hotelPhone}}.</a></p>
+        </div>
+        <div class="col-md-3">
         </div>
     </div>
 </div>

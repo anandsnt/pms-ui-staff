@@ -1,5 +1,8 @@
 admin.service('ADAppSrv', ['ADBaseWebSrv', 'ADBaseWebSrvV2', '$q',
 	function(ADBaseWebSrv, ADBaseWebSrvV2, $q) {
+	
+	// varibale to keep header_info.json's output
+	var userDetails = null;	    
 
 	this.fetch = function() {
 		var url = '/admin/settings/menu_items.json';
@@ -79,6 +82,10 @@ admin.service('ADAppSrv', ['ADBaseWebSrv', 'ADBaseWebSrvV2', '$q',
         return deferred.promise;
     };
 
+    this.signOut = function() {
+        return ADBaseWebSrvV2.getJSON('/logout');
+    };
+
     /*
   	* To fetch user details
   	* @return {object} user details
@@ -87,13 +94,31 @@ admin.service('ADAppSrv', ['ADBaseWebSrv', 'ADBaseWebSrvV2', '$q',
         var deferred = $q.defer();
         var url = '/api/rover_header_info.json';
 
-        ADBaseWebSrvV2.getJSON(url).then(function(data) {
-            deferred.resolve(data.data);
-        }, function(data) {
-            deferred.reject(data);
-        });
+		if (userDetails) {
+			deferred.resolve(userDetails);
+		} else {
+			ADBaseWebSrvV2.getJSON(url).then(function(data) {
+				userDetails = data.data;
+				deferred.resolve(data.data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+		}
 
         return deferred.promise;
-    };
+	};
+	
+	/**
+	 * Get cached data of user details
+	 */
+	this.getUserDetails = function() {
+		return userDetails;
+	};
+
+	this.retrieveFeatureToggles = function() {
+		var url = '/api/features/list';
+
+		return ADBaseWebSrvV2.getJSON(url);
+	};
 
 }]);

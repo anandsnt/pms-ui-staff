@@ -713,6 +713,7 @@ sntRover.controller('RVReportDetailsCtrl', [
                 case reportNames['COMPARISION_BY_DATE']:
                     $scope.hasReportTotals = false;
                     $scope.showReportHeader = true;
+                    $scope.showPrintOption = true;
                     $scope.detailsTemplateUrl = '/assets/partials/reports/comparisonStatReport/rvComparisonStatReport.html';
                     break;
 
@@ -806,7 +807,7 @@ sntRover.controller('RVReportDetailsCtrl', [
                     $scope.showReportHeader = true;
                     $scope.showPrintOption = true;
                     $scope.detailsTemplateUrl = '/assets/partials/reports/taxExempt/taxExemptReportDetails.html';
-                    break;
+                    break;                  
 
                 default:
                     $scope.hasReportTotals = true;
@@ -1372,7 +1373,7 @@ sntRover.controller('RVReportDetailsCtrl', [
             $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
                 'id': reservation.reservation_id,
                 'confirmationId': reservation.confirm_no,
-                'isrefresh': false
+                'isrefresh': true
             });
         };
 
@@ -1423,7 +1424,7 @@ sntRover.controller('RVReportDetailsCtrl', [
             $scope.refreshScroll();
         });
 
-        var onPrintYearlyTax =  $scope.$on("YEARLY_TAX_REPORT_PRINT", function() {
+        var onPrintYearlyTax =  $scope.$on("PRINT_SELECTED_REPORT", function() {
             printReport();
         });
 
@@ -1488,6 +1489,7 @@ sntRover.controller('RVReportDetailsCtrl', [
         $scope.fetchFullYearlyTaxReport = function() {
             $scope.$broadcast("FETCH_FULL_YEARLY_TAX_REPORT");
         };
+
         /*
          * Method to get the reservations status
          */

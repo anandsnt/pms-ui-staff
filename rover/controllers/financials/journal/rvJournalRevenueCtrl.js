@@ -48,21 +48,20 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
 
     fetchDepartments();
 
-    $rootScope.$on('REFRESHREVENUECONTENT', function() {
+    $scope.addListener('REFRESHREVENUECONTENT', function() {
         refreshRevenueScroller();
     });
 
-    $rootScope.$on('fromDateChanged', function() {
+    $scope.addListener('fromDateChanged', function() {
         initRevenueData("");
-        $rootScope.$broadcast('REFRESH_SUMMARY_DATA', $scope.data.fromDate);
     });
 
-    $rootScope.$on('toDateChanged', function() {
+    $scope.addListener('toDateChanged', function() {
         initRevenueData("");
     });
-    
+
     // CICO-28060 : Update dates for Revenue & Payments upon changing summary dates
-    $rootScope.$on('REFRESH_REVENUE_PAYMENT_DATA', function( event, data ) {
+    $scope.addListener('REFRESH_REVENUE_PAYMENT_DATA', function( event, data ) {
         $scope.data.fromDate = data.date;
         $scope.data.toDate   = data.date;
         initRevenueData(data.origin);
@@ -166,9 +165,9 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
     // To show/hide expandable arrow to level1
     $scope.checkHasArrowFirstLevel = function(index) {
         var hasArrow = false;
-        var item = $scope.data.revenueData.charge_groups[index].charge_codes;
+        var count = $scope.data.revenueData.charge_groups[index].charge_codes_count;
 
-        if ((typeof item !== 'undefined') && (item.length > 0)) {
+        if (count > 0) {
             hasArrow = true;
         }
         return hasArrow;
@@ -177,9 +176,9 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
     // To show/hide expandable arrow to level2
     $scope.checkHasArrowSecondLevel = function(index1, index2) {
         var hasArrow = false;
-        var item = $scope.data.revenueData.charge_groups[index1].charge_codes[index2].transactions;
+        var count = $scope.data.revenueData.charge_groups[index1].charge_codes[index2].number;
 
-        if ((typeof item !== 'undefined') && (item.length > 0)) {
+        if (count > 0) {
             hasArrow = true;
         }
         return hasArrow;

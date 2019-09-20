@@ -17,20 +17,27 @@
                 <ad-textbox inputtype="text" value="rateData.name" label = "Name" placeholder = "Enter Rate Name" required="yes"></ad-textbox>
                 <ad-textbox inputtype="text" value="rateData.code" label="RATE CODE"  placeholder="Enter Rate code" maxlength="20"></ad-textbox>
             </div>
-            <div class="entry margin">
-                <label>Type <strong>*</strong> </label>
-                <div class="select">
-                    <select class="placeholder" ng-model="rateData.rate_type.id" ng-options="rate_type.id as rate_type.name for rate_type in rateTypesDetails.rate_types">
-                        <option value="" ng-selected="rateData.rate_type.id==''">Select Rate Type</option>
-                    </select>
+            <div class="entry full-width">
+                <div class="entry margin">
+                    <label>Type <strong>*</strong> </label>
+                    <div class="select">
+                        <select ng-class="{'placeholder': !rateData.rate_type.id}"
+                                snt-placeholder="SELECT_RATE_TYPE"
+                                ng-model="rateData.rate_type.id"
+                                ng-options="rate_type.id as rate_type.name for rate_type in rateTypesDetails.rate_types">
+                        </select>
+                    </div>
                 </div>
             </div>
-            <div class="entry" ng-show="isHourlyRatesEnabled();">
-                <label>Periodicity</label>
-                <div class="switch" ng-class="{'disabled' : rateData.date_ranges.length > 1}">
-                    <span ng-click="toggleHourlyRate(true)" ng-class="{'active' : rateData.is_hourly_rate}">Hourly</span>
-                    <span ng-click="toggleHourlyRate(false)" ng-class="{'active' : !rateData.is_hourly_rate}">Daily</span>
+            <div class="entry full-width">
+                <div class="entry" ng-show="shouldShowPeriodicity();">
+                    <label>Periodicity</label>
+                    <div class="switch" ng-class="{'disabled' : rateData.date_ranges.length > 1}">
+                        <span ng-click="toggleHourlyRate(true)" ng-class="{'active' : rateData.is_hourly_rate}">Hourly</span>
+                        <span ng-click="toggleHourlyRate(false)" ng-class="{'active' : !rateData.is_hourly_rate}">Nightly</span>
+                    </div>
                 </div>
+                <ad-toggle-button ng-class="{'full-width': !shouldShowPeriodicity()}" is-hide="rateData.is_hourly_rate" is-disabled="is_edit || disableDayUseToggle" is-checked="rateData.is_day_use" label="DAY USE"></ad-toggle-button>
             </div>
             <div class="entry margin">
                 <label>Charge code <strong>*</strong> </label>
@@ -51,12 +58,21 @@
                     </select>
                 </div>
             </div>
-            <div class="entry entry-no-bottom full-width" ng-hide="isHourlyRatesEnabled()">
+
+            <div class="entry full-width" ng-show="shouldShowMinThreshold()">
+                <label>Extra Adult/Child Min. Amount Threshold</label>
+                <div class="input-group">
+                    <input type="number" class="small-input" ng-model="rateData.min_threshold_percent"/>
+                    <span class="symbol">%</span>
+                </div>
+            </div>
+
+            <div class="entry full-width" ng-show="shouldShowBasedOnAndCopy()">
                 <label>Based On / Copy From</label>
                 <div class="boxes">
                     <div class="switch-container">
-                        <div class="switch-button with-text" ng-class="{'on' : !rateData.based_on.is_copied, 'overlay': is_edit}">
-                            <input  id="basedon" name="basedon" type="checkbox" ng-model="rateData.based_on.is_copied" />
+                        <div class="switch-button with-text" ng-class="{'on' : !rateData.based_on.is_copied, 'overlay': is_edit }">
+                            <input id="basedon" name="basedon" type="checkbox" ng-model="rateData.based_on.is_copied" />
                             <label class="data-off">
                                 <span class="value">Based</span>
                                 <span class="button orange">Copy From</span>
@@ -68,9 +84,9 @@
                         </div>
                     </div>
                     <div class="full-width">
-                        <div class="entry margin" ng-class="{'overlay': is_edit}">
+                        <div class="entry margin" ng-class="{'overlay': shouldDisableBasedOnAndCopy()}">
                             <div class="select white">
-                                <select class="placeholder" ng-model="rateData.based_on.id" ng-options="basedOnrateType.id as basedOnrateType.name for basedOnrateType in rateTypesDetails.based_on.results">
+                                <select class="placeholder" ng-model="rateData.based_on.id" ng-change="basedOnRateChanged()" ng-options="basedOnrateType.id as basedOnrateType.name for basedOnrateType in rateTypesDetails.based_on.results">
                                     <option value="">Select Rate</option>
                                 </select>
                             </div>
@@ -78,18 +94,27 @@
                         <div class="entry" ng-class="{'overlay': !otherData.notIsBasedOn}">
                             <div class="select white select-col col1-3">
                                 <select class="placeholder" ng-model="rateData.based_on.value_sign">
-                                                <option value="+">+</option>
-                                                <option value="-">-</option>
-                                            </select>
+                                    <option value="+">+</option>
+                                    <option value="-">-</option>
+                                </select>
                             </div>
                             <div class="entry col1-3">
                                  <input type="text" value="" placeholder="" class="white" ng-model="rateData.based_on.value_abs">
-
                             </div>
                             <div class="select white select-col col1-3">
                                 <select class="placeholder" ng-model="rateData.based_on.type">
                                     <option value="amount">{{currencySymbol}}</option>
                                     <option value="percent">%</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <label ng-show="showRoundingOptions()">Rounding</label>
+                    <div class="full-width" ng-show="showRoundingOptions()">
+                        <div class="entry margin">
+                            <div class="select white">
+                                <select class="placeholder" ng-model="rateData.round_type_id" ng-options="option.id as option.description for option in rateTypesDetails.roundingOptions">
+                                    <option value="">Select</option>
                                 </select>
                             </div>
                         </div>
@@ -110,10 +135,13 @@
                 <ad-toggle-button is-checked="rateData.is_pms_only" ng-click="togglePMSOnly()" label="PMS ONLY"></ad-toggle-button>
                 <ad-toggle-button is-checked="rateData.is_channel_only" ng-click="toggleChannelOnly()" label="CHANNEL ONLY"></ad-toggle-button>
             </div>
-            <div class="entry full-width">
+            <div class="entry">
                 <section ng-show="shouldShowMemberRates()">
                     <ad-toggle-button is-checked="rateData.is_member_rate" label="MEMBER RATE"></ad-toggle-button>
                 </section>
+            </div>
+            <div class="entry" ng-show="isStandAlone">
+                <ad-toggle-button is-checked="rateData.is_public_rate" label="PUBLIC RATE"></ad-toggle-button>
             </div>
         </fieldset>
         <!-- CICO-18040 PROMOTION FREE FORM ENTRY TO BE HIDDEN -->

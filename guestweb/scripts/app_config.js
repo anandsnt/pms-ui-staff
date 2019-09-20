@@ -34,6 +34,7 @@ sntGuestWeb.factory('timeoutHttpIntercept', function ($rootScope, $q) {
  });
 
 sntGuestWeb.config(function ($httpProvider) {
+    $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 	$httpProvider.interceptors.push('authInterceptor');
 	$httpProvider.interceptors.push('timeoutHttpIntercept');
 });
@@ -48,13 +49,13 @@ sntGuestWeb.run(function($rootScope, $location, $http, $window) {
 			event.preventDefault();
 		} else {
 			$rootScope.title = toState.title;
-		}	
-		
+		}
+
 	});
-	
+
 	$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
       // Hide loading message
-      
+
       console.log(error);
       // TODO: Log the error in proper way
     });

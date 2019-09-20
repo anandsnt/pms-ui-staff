@@ -30,7 +30,7 @@
                             <!-- Guest Name -->
                             <div class="info">
                                 <span class="guest-status small-icon" ng-class="getReservationStatus(eachRow.status)">{{eachRow.status}}</span>
-                                <strong>{{eachRow.name}}</strong>
+                                <strong><a ng-click="gotoStayCard(eachRow)">{{eachRow.name}}</a></strong>
                                 <em>{{eachRow.confirm_no}}</em>
                             </div>
 

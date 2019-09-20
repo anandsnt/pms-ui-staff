@@ -715,7 +715,7 @@
 
                                 &.with-icon {
                                     padding: 0 20px 0 40px;
-                                    font-size: 16px;
+                                    font-size: 14px;
                                     line-height: 40px;
                                     overflow: visible;
                                     .size(40px, auto);
@@ -889,9 +889,11 @@
 
                         &.card-buttons {
                             .button {
-                                margin-bottom:10px;
+                                &:not(:last-child) { margin-bottom: 10px; }
+                                &:nth-child(even) { margin-left: 20px; }
                             }
                         }
+
 
                         &.has-datepicker {
                             .ui-datepicker-trigger { top: 24px; }
@@ -900,8 +902,9 @@
                         &.commission {
                             width: 100%;
                             display: grid;
-                            grid-template-columns: 120px 80px 60px calc(~'100% - 290px');;
+                            grid-template-columns: calc(~'20% - 10px') calc(~'16% - 10px') calc(~'14% - 10px') 50%;
                             grid-column-gap: 10px;
+                            margin-right: 0;
 
                             label {
                                 grid-row: 1;
@@ -930,6 +933,14 @@
 
                             .select {
                                 height: 40px;
+
+                                &:not(:first-of-type) {
+                                    #pixel-to-percent > .left-margin(40, 904);
+                                }
+                            }
+
+                            .checkbox {
+                                grid-column: span 2;
                             }
                         }
 
@@ -2414,7 +2425,7 @@
                             padding: 10px;
                             height: 60px;
                             background: none;
-                            .calc-width(100, 430);
+                            .calc-width(100, 275);
                             .pull-left;
                             .box-shadow(none);
 
@@ -2449,28 +2460,20 @@
                         }
 
                         .actions {
-                            width: 290px;
-                            height: 60px;
                             padding: 10px;
-                            box-shadow: inset 2px 00 rgba(0,0,0,.1);
+                            box-shadow: inset 2px 0 0 rgba(0,0,0,.1);
+                            .size(60px, 135px);
                             .pull-left;
                             
-                            .checkbox {
-                                text-transform: uppercase;
-                                font-size: 14px;
-                            }
-
                             .button {
-                                &.with-icon {
-                                    padding-left: 30px;
-                                    width: auto;
+                                padding-left: 30px;
+                                width: 100%;
 
-                                    .icons {
-                                        top: 10px;
-                                        left: 16px;
-                                    }
+                                .icons {
+                                    top: 10px;
+                                    left: 16px;
                                 }
-                            }                            
+                            }                             
                         }
 
                         @media @highdpi {
@@ -2927,26 +2930,32 @@
                             .float;
 
                             li {
-                                color: @white;
-                                font-size: 14px;
+                                color: @grey4;
+                                font-size: 13px;
                                 line-height: 35px;
+                                font-weight: 600;
                                 margin: 0 5px 0 0;
+                                text-transform: uppercase;
                                 .pull-left;
 
                                 &.sort {
                                     cursor: pointer;
                                     padding: 0 20px 0 10px;
                                     background-color: @grey2;
-                                    background-position: 95% 50%;
+                                    background-position: calc(~'100% - 10px') 50%;
                                     background-repeat: no-repeat;
                                     .nowrap();
                                     .box-shadow(1px 1px 0 rgba(0,0,0,.3));
 
                                     &.sorting-asc,
-                                    &.sorting-desc { background-color: darken(@grey2, 10); }
-                                    
-                                    &.sorting-asc { background-image: @arrowSortAsc; }
-                                    &.sorting-desc { background-image: @arrowSortDesc; }
+                                    &.sorting-desc { 
+                                        color: @white;
+                                        background-color: darken(@grey2, 20); 
+                                        background-size: 14px;
+                                    }
+
+                                    &.sorting-asc { background-image: @arrowSortAsc2x; }
+                                    &.sorting-desc { background-image: @arrowSortDesc2x; }
                                 }
 
                                 &.check {
@@ -2958,8 +2967,8 @@
                                         padding: 0;
                                         .size(35px, 60px);
 
-                                        .icon-form { 
-                                            top: 7px; 
+                                        .icon-form {
+                                            top: 7px;
                                             left: 20px;
                                         }
 
@@ -3826,7 +3835,9 @@
 
                             .statistics-reservations {
                                 border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
                                 .search-results { padding: 20px; }
+                                
                                 .reservation {
                                     .faux-anchor {
                                         &:not(.no-arrow) {
@@ -3850,19 +3861,7 @@
                                     .data {
                                         .calc-width(100, 540);
                                     }
-                                    .guest-date {
-                                        width: 110px;
-                                        padding-left: 25px;
-                                        position: relative;
-
-                                        .guest-status {
-                                            position: absolute;
-                                            left: 0;
-                                            top: 0;
-                                            bottom: 0;
-                                            margin: auto;
-                                        }
-                                    }
+                                    
                                     .guest-data {
                                         width: 150px;
                                         padding-right: 20px;
@@ -3888,6 +3887,31 @@
                                             }
                                         }
                                     }
+                                    .reservation-time {
+                                        padding-left: 20px;
+                                    }
+                                    .reservation-type {
+                                        width: 30px;
+                                    }
+                                }
+
+                                .numbers-pagination,
+                                .search-pagination {
+                                    position: static;
+                                    left: auto;
+                                    bottom: auto;
+                                    height: 40px;
+                                    background: transparent;
+                                    padding: 0 20px;
+                                    margin-bottom: 20px;
+                                    .box-shadow(none);
+
+                                    .button { 
+                                        font-size: 14px; 
+                                    }
+
+                                    &:before,
+                                    &:after { .hide; }
                                 }
                             }
                         }

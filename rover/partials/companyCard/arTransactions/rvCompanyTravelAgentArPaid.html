@@ -1,6 +1,6 @@
 <ul class="search-results">
 
-    <li class="reservation transaction" ng-repeat="paidInvoice in arDataObj.paidList">
+    <li class="reservation transaction reservation-transaction" ng-repeat="paidInvoice in arDataObj.paidList">
 
         <!-- add .active when clicked -->
         <div class="faux-anchor has-arrow toggle" ng-click="clickedPaidListItem( $index )" ng-class="{'active': paidInvoice.active }">
@@ -32,20 +32,49 @@
                 </span>
                 <span class="invoice">Account #<span class="value">{{paidInvoice.account_number}}</span></span>
             </div>
-
-            <div class="guest-date arrival">
-                <span class="guest-status small-icon check-in" ng-if="!paidInvoice.is_manual_balance && paidInvoice.associated_type !== 'PostingAccount'">check-in</span>
-                <time ng-if="!paidInvoice.is_manual_balance && paidInvoice.associated_type !== 'PostingAccount'">
-                    <span class="date">{{paidInvoice.reservation_arrival_date | date : dateFormat}}</span>
-                    <span class="time">{{paidInvoice.reservation_arrival_time}}</span>
-                </time>
+            
+            <!-- Case 1: Nightly -->
+            <div class="reservation-time" ng-if="paidInvoice.reservation_arrival_date !== paidInvoice.reservation_dep_date">
+                <div class="check-icons">
+                    <span class="guest-status check-in" ng-if="!paidInvoice.is_manual_balance && paidInvoice.associated_type !== 'PostingAccount'">arrival</span>
+                    <span class="guest-status check-out" ng-hide="paidInvoice.associated_type === 'PostingAccount'">arrival</span>
+                </div>
+                <div class="check-times">
+                    <time class="guest-time" ng-if="!paidInvoice.is_manual_balance && paidInvoice.associated_type !== 'PostingAccount'">
+                        <span>{{paidInvoice.reservation_arrival_date | date : dateFormat}}</span>
+                        <span class="hours">{{paidInvoice.reservation_arrival_time}}</span>
+                    </time>
+                    <time class="guest-time">
+                        <span>{{paidInvoice.reservation_dep_date | date : dateFormat}}</span>
+                        <span class="hours">{{paidInvoice.reservation_dep_time}}</span>
+                    </time>
+                </div>
             </div>
-            <div class="guest-date departure">
-                <span class="guest-status small-icon check-out" ng-hide="paidInvoice.associated_type === 'PostingAccount'">check-out</span>
-                <time>
-                    <span class="date">{{paidInvoice.reservation_dep_date | date : dateFormat}}</span>
-                    <span class="time">{{paidInvoice.reservation_dep_time}}</span>
-                </time>
+
+            <!-- Case 2: Daily Reservation -->
+            <div class="reservation-time daily" ng-if="paidInvoice.reservation_arrival_date === paidInvoice.reservation_dep_date">
+                <div class="check-icons">
+                    <span class="guest-status check-in">arrival</span>
+                    <span class="guest-status check-out">arrival</span>
+                </div>
+                <div class="check-times">
+                    <div class="guest-hours">
+                        <time class="guest-time">{{paidInvoice.reservation_arrival_time}}</time> - <time class="guest-time">{{paidInvoice.reservation_dep_time}}</time>
+                    </div>
+                    <span class="date">{{paidInvoice.reservation_arrival_date | date : dateFormat}}</span>
+                </div>
+            </div>
+            
+            <!-- if daily reservation add .red -->
+            <div class="reservation-type red" ng-if="paidInvoice.is_day_use">D</div>
+            <div class="reservation-type" ng-if="!paidInvoice.is_day_use && hotelDiaryConfig.mode === 'FULL'">N</div>
+
+            <div class="status" ng-show = "paidInvoice.is_locked" >
+                <!-- If partially paid, output:
+                <span class="icons icon-wallet-green"></span> -->
+
+                <!-- If locked, meaning as well that it can't be partially paid, output: -->
+                <span class="icons icon-room-lock"></span>
             </div>
             
             <div class="amount paid">
@@ -122,7 +151,7 @@
                             <span class="currency">{{ currencySymbol }}</span>{{ payment.amount | number:2 }}
                         </td>
                         <td class="action">
-                            <button class="button blank with-icon only-icon open-modal" ng-show="arFlags.hasAllocateUnallocatePermission" ng-click="clickedUnallocateButton(payment)">
+                            <button class="button blank with-icon only-icon open-modal" ng-disabled="arDataObj.is_locked || paidInvoice.is_locked" ng-show="arFlags.hasAllocateUnallocatePermission" ng-click="clickedUnallocateButton(payment)">
                                 <span class="icons icon-remove-40"></span>
                             </button>
                         </td>
@@ -133,11 +162,12 @@
             <div class="actions">
                 <button type="button" ng-show="arFlags.viewFromOutside && !paidInvoice.is_manual_balance " class="button brand-colors" ng-click="goToReservationDetails($index)">StayCard</button>
                 <button type="button" class="button purple hidden">Move Invoice</button>
-                <button type="button" class="button blue hidden">Print Invoice</button>
+                <button type="button" class="button blue" ng-click="showFormatBillPopup($index, true)" >Print Invoice</button>
                 <button type="button" class="button white green-text hidden">Post Charge</button>
                 <button type="button" class="button white purple-text hidden">Edit Charges</button>
             </div>
         </div>
+        <div id="invoiceDiv" ng-if="printBillCardActive" class="invoice ar-statement" ng-include="'/assets/partials/companyCard/arTransactions/rvArInvoice.html'"></div>
     </li>
     <li>
         <!-- To fix scroll: The footer for pagination and select payment is coming above the list so the last entry will 

@@ -7,19 +7,18 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 	'$timeout',
 	'$controller',
 	'sntIDCollectionSrv',
-	function($scope, $rootScope, $filter, ngDialog, RVGuestCardsSrv, dateFilter, $timeout, $controller, sntIDCollectionSrv) {
+	'sntIDCollectionUtilsSrv',
+	'rvUtilSrv',
+	function($scope, $rootScope, $filter, ngDialog, RVGuestCardsSrv, dateFilter, $timeout, $controller, sntIDCollectionSrv, sntIDCollectionUtilsSrv, rvUtilSrv) {
 
 		BaseCtrl.call(this, $scope);
-
-		$scope.showScanOption = navigator.userAgent.match(/iPad/i) !== null && 
-								$scope.hotelDetails.id_collection &&
-		 						$scope.hotelDetails.id_collection.rover.enabled;
 
 		$controller('sntIDCollectionBaseCtrl', {
 			$scope: $scope
 		});
 
 		$scope.screenData.showBackSideScan = false;
+		var faceImage;
 
 		var dateInHotelsFormat = function(date) {
 			var dateFormat = $rootScope.dateFormat ? $rootScope.dateFormat.toUpperCase() : 'MM-DD-YYYY';
@@ -188,6 +187,21 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			}
 		};
 
+		var saveFaceImage = function() {
+			
+			var avatar = faceImage.split(',').length > 1 ? faceImage.split(',')[1] : '';
+			var apiParams = {
+				'avatar': avatar,
+				'guest_id': $scope.guestIdData.guest_id
+			};
+
+			$scope.callAPI(RVGuestCardsSrv.saveFaceImage, {
+				params: apiParams,
+				loader: 'NONE'
+			});
+			$scope.closeGuestIdModal();
+		};
+
 		$scope.saveGuestIdDetails = function(action, imageType) {
 
 			var apiParams = angular.copy($scope.guestIdData);
@@ -223,6 +237,10 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 
 					var idType = $scope.guestIdData.document_type && $scope.guestIdData.document_type === 'ID_CARD' ? 1 : 3;
 					var nationalityId = $scope.guestIdData.nationality_id ? parseInt($scope.guestIdData.nationality_id) : '';
+					var needToSaveFaceImage = $scope.hotelDetails.id_collection &&
+						$scope.hotelDetails.id_collection.rover &&
+						$scope.hotelDetails.id_collection.rover.save_id_face_image &&
+						faceImage;
 
 					if ($scope.guestIdData.is_primary_guest) {
 						var dataToUpdate = {
@@ -232,13 +250,23 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 							birthday: $filter('date')(new Date($scope.guestIdData.date_of_birth), 'yyyy-MM-dd')
 						};
 
+						if (needToSaveFaceImage) {
+							dataToUpdate.faceImage = faceImage;
+						}
+
 						$scope.$emit('PRIMARY_GUEST_ID_CHANGED', dataToUpdate);
 					}
 
-					$scope.closeGuestIdModal();
+					if (needToSaveFaceImage) {
+						saveFaceImage();
+					} else {
+						$scope.closeGuestIdModal();
+					}
+					
 				};
 			}
 
+			
 			$scope.callAPI(RVGuestCardsSrv.saveGuestIdDetails, {
 				params: apiParams,
 				successCallBack: saveSuccessCallBack,
@@ -250,20 +278,21 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 
 		$scope.scanFrontSide = function() {
 			$scope.screenData.imageSide = 0;
-			document.getElementById('front-image').click();
-			
+			$scope.captureFrontImage();
 		};
 		$scope.scanBackSide = function() {
 			$scope.screenData.imageSide = 1;
-			document.getElementById('back-image').click();
+			$scope.captureBackImage();
 		};
 
 		$scope.$on('IMAGE_UPDATED', function(evt, data) {
 			if (data.isFrontSide) {
 				$scope.guestIdData.front_image_data = data.imageData;
 				$scope.guestIdData.back_image_data = '';
+				$scope.screenData.extCamForFrontIDActivated = false;
 			} else {
 				$scope.guestIdData.back_image_data = data.imageData;
+				$scope.screenData.extCamForBackIDActivated = false;
 			}
 			$scope.refreshScroller('id-details');
 
@@ -297,6 +326,8 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			$scope.guestIdData.document_type = data.document_type && data.document_type.toUpperCase() === 'PASSPORT' ? 'PASSPORT' : 'ID_CARD';
 			$scope.guestIdData.expiry_date_for_display = $scope.guestIdData.expiration_date ? dateInHotelsFormat($scope.guestIdData.expiration_date) : '';
 			$scope.guestIdData.dob_for_display = $scope.guestIdData.date_of_birth ? dateInHotelsFormat($scope.guestIdData.date_of_birth) : '';
+			$scope.guestIdData.id_scan_info = data.id_scan_info;
+
 			var nationality_id = '';
 
 			if (data.nationality_name) {
@@ -316,13 +347,17 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			generalFailureCallBack();
 			$scope.guestIdData.front_image_data = '';
 			$scope.guestIdData.back_image_data = '';
+			$scope.screenData.extCamForFrontIDActivated = false;
+			$scope.screenData.extCamForBackIDActivated = false;
 		};
 
 		$scope.$on('FINAL_RESULTS', function(evt, data) {
 			$scope.$emit('hideLoader');
-			if (data.expiration_date === 'Invalid date' || _.isEmpty(data.expiration_date)) {
-				idScanFailureActions('INVALID EXPIRATION DATE. PLEASE RETRY OR USE ANOTHER ID.');
-			} else if (data.expirationStatus === 'Expired') {
+			// Commented below code to avoid failures w/o expiry date
+			// if (data.expiration_date === 'Invalid date' || _.isEmpty(data.expiration_date)) {
+			// 	idScanFailureActions('INVALID EXPIRATION DATE. PLEASE RETRY OR USE ANOTHER ID.');
+			// } 
+			if (data.expirationStatus === 'Expired') {
 				idScanFailureActions('ID IS EXPIRED. PLEASE RETRY OR USE ANOTHER ID.');
 			} else if (!data.document_number) {
 				idScanFailureActions('FAILED TO ANALYZE THE DOCUMENT. PLEASE RETRY OR USE ANOTHER ID.');
@@ -335,14 +370,96 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 		$scope.$on('IMAGE_ANALYSIS_STARTED', function() {
 			$scope.$emit('showLoader');
 		});
+
+		var restartVideoStream = function() {
+			if ($scope.showScanOption) {
+				if ($scope.screenData.extCamForFrontIDActivated) {
+					$scope.startExtCameraCapture('front-image');
+				}
+				if ($scope.screenData.extCamForBackIDActivated) {
+					$scope.startExtCameraCapture('back-image');
+				}
+			}
+		};
+		
 		$scope.$on('IMAGE_ANALYSIS_FAILED', function() {
 			$scope.$emit('hideLoader');
 			$scope.guestIdData.errorMessage = 'Failed to Analyze the image';
 			generalFailureCallBack();
+			restartVideoStream();
 		});
 
 		if (!sntIDCollectionSrv.isInDevEnv && $scope.hotelDetails.id_collection) {
 			sntIDCollectionSrv.setAcuantCredentialsForProduction($scope.hotelDetails.id_collection.acuant_credentials);
 		}
+
+		$scope.showScanOption = $scope.hotelDetails.id_collection &&
+		 						$scope.hotelDetails.id_collection.rover.enabled && sntIDCollectionUtilsSrv.isInMobile();
+
+		$scope.connectedCameras = [];
+		var cameraCount = 0;
+
+		$scope.selectedCamera = localStorage.getItem('ID_SCAN_CAMERA_ID');
+
+		$scope.cameraSourceChanged = function() {
+			localStorage.setItem('ID_SCAN_CAMERA_ID', $scope.selectedCamera);
+			restartVideoStream();
+		};
+
+		// for non mobile devices, check if cameras are present, if yes show options to scan based
+		// settings
+		if (!sntIDCollectionUtilsSrv.isInMobile() && navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+			navigator.mediaDevices.enumerateDevices().then(function gotDevices(deviceInfos) {
+
+				angular.forEach(deviceInfos, function(device) {
+					if (device.kind === 'videoinput') {
+						$scope.connectedCameras.push({
+							'id': device.deviceId,
+							'label': device.label || 'camera ' + (cameraCount + 1)
+						});
+						cameraCount++;
+					}
+				});
+				var config = {
+					useExtCamera: $scope.connectedCameras.length > 0,
+					useAutoDetection: false
+				};
+
+				$scope.showScanOption = $scope.hotelDetails.id_collection &&
+					$scope.hotelDetails.id_collection.rover.enabled &&
+					$scope.connectedCameras.length > 0;
+				$scope.setConfigurations(config);
+			});
+		} else  {
+			
+			var config = {
+				useAutoDetection: false
+			};
+			var idCaptureFeature = rvUtilSrv.retrieveFeatureDetails($rootScope.featuresSupportedInIosApp, 'CAPTURE_ID');
+
+			if (idCaptureFeature) {
+				config.useAutoDetection = true;
+				config.idCapturePluginName = idCaptureFeature.plugin_details ? idCaptureFeature.plugin_details.plugin_name : '';
+				config.idCaptureActionName = idCaptureFeature.plugin_details ? idCaptureFeature.plugin_details.action : '';
+			}
+			$scope.setConfigurations(config);
+		}
+		
+		$scope.$on('EXT_CAMERA_STARTING', function() {
+			$scope.$emit('showLoader');
+		});
+		$scope.$on('EXT_CAMERA_STARTED', function() {
+			$timeout(function() {
+				$scope.$emit('hideLoader');
+			}, 3000);
+		});
+		$scope.$on('EXT_CAMERA_FAILED', function() {
+			$scope.$emit('hideLoader');
+		});
+
+		$scope.$on('FACE_IMAGE_RETRIEVED', function(event, response) {
+			faceImage = response;
+		});
+
 	}
 ]);

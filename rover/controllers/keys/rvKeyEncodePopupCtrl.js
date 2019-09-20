@@ -228,13 +228,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
                     document.removeEventListener("deviceready", checkDeviceConnection, false);
                 };
 
-                if (that.noOfErrorMethodCalled > 1 && $scope.isIpad) {
-                    sntCordovaInit();
-                    document.addEventListener("deviceready", checkDeviceConnection, false);
-                } else {
-
-                    $scope.showDeviceConnectingMessge();
-                }
+                $scope.showDeviceConnectingMessge();
 			}
 		}, 1000);
 		if (secondsAfterCalled > that.MAX_SEC_FOR_DEVICE_CONNECTION_CHECK) {
@@ -702,9 +696,9 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 	};
 
 	var showPrintKeyOptions = function (status) {
-		// if status === false, they are not able to connect. I dont know why these type of designs
+		// if status === false or 0 (in case of Android), they are not able to connect. I dont know why these type of designs
 		// we have to call failurecallback on that
-		if (status === false) {
+		if (status === false || status === 0) {
 
 			return showDeviceNotConnected();
 		}

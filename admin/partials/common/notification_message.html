@@ -1,15 +1,14 @@
 <div ng-show="errorMessage!=''" ng-class="{notice: errorMessage!=''}" class='error error_message' ng-switch on="errorMessage.length">
-	
+
 	<span class="close-btn" ng-click="clearErrorMessage()"></span>
 	<span ng-switch-when="1">
 			{{errorMessage[0]}}
 	</span>
-	<span ng-switch-default>		
+	<span ng-switch-default>
 		<span ng-repeat="message in errorMessage track by $index" >
 			<span ng-if=!$last>{{message}}, </span>
 			<span ng-if=$last> {{message}} </span>
 		</span>
-	</span>	
-	
+	</span>
 
 </div>
