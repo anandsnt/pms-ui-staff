@@ -34,7 +34,7 @@
 			<tr ng-repeat="addon in rateData.addOns" ng-show="addon.shouldShow">
 				<td>{{addon.name}}</td>
 				<td>
-					<span ng-show="addon.amount.length>0">{{currencySymbol}} {{addon.amount |number:2}} &nbsp;&nbsp;<span class="rate_perstay">{{addon.post_type.description}}</span>
+					<span ng-show="addon.amount.length>0">{{addon.addon_currency_symbol}} {{addon.amount |number:2}} &nbsp;&nbsp;<span class="rate_perstay">{{addon.post_type.description}}</span>
 					</span>
 				</td>
 				<td>

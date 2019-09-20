@@ -15,6 +15,7 @@
             <div></div>
             <div class="entry full-width">
                 <ad-textbox inputtype="text" value="rateData.name" label = "Name" placeholder = "Enter Rate Name" required="yes"></ad-textbox>
+                <ad-textbox inputtype="text" value="rateData.rate_name_trl" label = "Name (Translation)" placeholder = "Enter Translation for Rate Name" hide="!availableLanguagesSet.show_language_field"></ad-textbox>
                 <ad-textbox inputtype="text" value="rateData.code" label="RATE CODE"  placeholder="Enter Rate code" maxlength="20"></ad-textbox>
             </div>
             <div class="entry full-width">
@@ -51,12 +52,20 @@
                 <div class=" select-col col1-2 disabled-bg">
                     <ad-textbox label="Tax" inputtype="text" value="rateData.tax_inclusive_or_exclusive" readonly='yes' styleclass="col1-2" label="" placeholder="" style=" width: 100px;"></ad-textbox>
                 </div>
-                <label style=" padding-left: 113px;">currency</label>
-                <div class="select select-col col1-2 " style="float: right;">
-                    <select class="placeholder" disabled="disabled" class="styled">
-                        <option selected>{{currencySymbol}}</option>
-                    </select>
-                </div>
+                
+            </div>
+            <div class="entry margin" >
+                <label>currency</label>
+                <select class="placeholder overlay" ng-model="rateData.currency_code_id" ng-options="currency.id as currency.value + ' - '  + currency.symbol for currency in rateTypesDetails.hotel_settings.rate_currency_list" >
+                   <option value="" style="display:none">Select Rate Currency</option>
+                </select>
+            </div>
+
+            <div class="entry" ng-if="currencyId !== rateData.currency_code_id">
+                <label>Exchange fixed at</label>
+                <select class="placeholder" ng-model="rateData.fixed_it_id" ng-options="fixedit.id as fixedit.name for fixedit in rateTypesDetails.hotel_settings.rate_fixed_it_options">
+                   <option value="">Select Exchange Fixed at</option>
+                </select>
             </div>
 
             <div class="entry full-width" ng-show="shouldShowMinThreshold()">
@@ -131,6 +140,8 @@
         </fieldset>
         <fieldset class="holder right" ng-class="{'overlay' : rateData.is_global_contract}">
             <ad-textarea rows="2" div-class="full-width" text-area-class="full-width rate_description" value="rateData.description" label="Description " placeholder="Enter Rate Description" required="true"></ad-textarea>
+            <ad-textarea rows="2" div-class="full-width" text-area-class="full-width rate_description" value="rateData.rate_desc_trl" label="Description (Translation)" placeholder="Enter Translation for Rate Description"
+            hide="!availableLanguagesSet.show_language_field"></ad-textarea>
             <div class="entry" ng-show="!isHourlyRatesEnabled() && isStandAlone" ng-hide="!isStandAlone || isHourlyRatesEnabled()">
                 <ad-toggle-button is-checked="rateData.is_pms_only" ng-click="togglePMSOnly()" label="PMS ONLY"></ad-toggle-button>
                 <ad-toggle-button is-checked="rateData.is_channel_only" ng-click="toggleChannelOnly()" label="CHANNEL ONLY"></ad-toggle-button>

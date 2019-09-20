@@ -248,7 +248,7 @@ admin.service('ADRulesRestrictionSrv', [
       */
       this.fetchCancellationSingleRule = function(params) {
         var deferred = $q.defer(),
-            url      = '/api/cancellation_policies/' + params.id;
+            url      = '/api/cancellation_policies/' + params.id + '.json';
 
         ADBaseWebSrvV2.getJSON(url, params)
           .then(function(data) {
@@ -263,9 +263,9 @@ admin.service('ADRulesRestrictionSrv', [
 
       this.fetchSingleDepositeRule = function(params) {
         var deferred = $q.defer(),
-            url      = '/api/deposit_policies/' + params.id;
+            url      = '/api/deposit_policies/' + params.id + '.json';
 
-        ADBaseWebSrvV2.getJSON(url)
+        ADBaseWebSrvV2.getJSON(url, params)
           .then(function(data) {
             deferred.resolve(data);
           }, function(errorMessage) {

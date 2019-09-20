@@ -44,4 +44,6 @@
 "VEHICLE_COUNTRY_MARK": "Vehicle country mark",
 "NATIONALITY": "Nationality",
 "DATE_OF_BIRTH": "Date Of Birth",
-"JOB_TITLE": "Job Title"
+"JOB_TITLE": "Job Title",
+"ID_ISSUE_DATE": "Id issue date",
+"ENTRY_DATE": "Entry date"

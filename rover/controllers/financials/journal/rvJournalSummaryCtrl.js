@@ -20,6 +20,10 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
         initSummaryData();
     });
 
+    $scope.addListener('SUMMARYSEARCH', function() {
+        initSummaryData();
+    });
+
     // CICO-28060 : Update dates for summary upon changing from-date from Revenue or Payments
     $scope.addListener('fromDateChanged', function( event, date ) {
         $scope.data.summaryDate = date;
@@ -71,7 +75,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
         }
     };
 
-	var initSummaryData = function() {
+	var initSummaryData = function() {        
 
 		var successCallBackFetchSummaryData = function(responce) {
 
@@ -91,11 +95,17 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
 		};
 
         var params = {
-            "date": $scope.data.summaryDate
+            "date": $scope.data.summaryDate,
+            "is_summary": $scope.data.isExpandedView
         };
+        
+        if ($scope.data.query !== "") {
+            params.filter_id = $scope.data.filterId;
+            params.query = $scope.data.query;
+        }
 
 		$scope.invokeApi(RVJournalSrv.fetchSummaryData, params, successCallBackFetchSummaryData);
-    };
+    };    
 
     // To handle date updation on summary tab
     $scope.addListener('summaryDateChanged', function() {
@@ -139,8 +149,14 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
                 "date": $scope.data.summaryDate,
                 "page_no": summaryItem.page_no,
                 "per_page": $scope.perPage,
-                "type": balance_type
+                "type": balance_type,
+                "is_summary": $scope.data.isExpandedView
             };
+            
+            if ($scope.data.query !== "") {
+                params.filter_id = $scope.data.filterId;
+                params.query = $scope.data.query;
+            }
 
             $scope.invokeApi(RVJournalSrv.fetchBalanceDetails, params, successCallBackFetchBalanceDetails);
         }
@@ -149,6 +165,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
             refreshSummaryScroller();
         }
     };
+   
 
     /*
      *   Handle Expand/Collapse on balance each type
@@ -158,6 +175,13 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
 
         fetchBalanceDetails( balance_type, false );
     };
+
+    $scope.addListener("EXPAND_SUMMARY_SCREEN", function() {
+        
+        $scope.toggleJournalSummaryItem('DEPOSIT_BALANCE');
+        $scope.toggleJournalSummaryItem('GUEST_BALANCE');
+        $scope.toggleJournalSummaryItem('AR_BALANCE');
+    });
 
 	initSummaryData();
 

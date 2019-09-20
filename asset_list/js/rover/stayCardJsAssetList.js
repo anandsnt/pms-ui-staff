@@ -14,7 +14,8 @@ module.exports = {
                 nonMinifiedFiles: [
                     'rover/filters/rangeFilter.js',
                     controllerRoot + "rvGuestController.js",
-                    controllerRoot + "rvContactInfoDatePickerCtrl.js",
+                    // controllerRoot + "rvContactInfoDatePickerCtrl.js",
+                    controllerRoot + "rvAllContactInfoDatePickerCtrl.js",
                     controllerRoot + "rvAddLoyaltyProgramController.js",
                     controllerRoot + "rvGuestCardLoyaltyCtrl.js",
                     controllerRoot + "rvReservationRoomStatusCtrl.js",

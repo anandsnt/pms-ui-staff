@@ -48,4 +48,6 @@
     "SUITE_DOOR": "SUITE DOOR",
     "AVAILABLE_FOR_DAY_USE": "Available for day use",
 
-    "ROOM_LOCATION_INSTRUCTIONS": "Room Location/Instructions"
+    "ROOM_LOCATION_INSTRUCTIONS": "Room Location/Instructions",
+    "ROOM_TYPE_NAME_TRANSLATED": "Room type name (Translation)",
+    "ROOM_TYPE_PLACE_HOLDER_TRANSLATION": "Enter translation for Room Type"
