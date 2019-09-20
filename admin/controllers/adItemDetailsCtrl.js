@@ -41,13 +41,13 @@ admin.controller('ADItemDetailsCtrl', ['$scope', 'ADItemSrv', '$state', '$stateP
     };
 
     var loadItemDetails = function() {
-    	if ($scope.mod === 'edit') {
+		if ($scope.mod === 'edit') {
 			$scope.invokeApi(ADItemSrv.getItemDetails, {'item_id': itemId, 'locale': $scope.selectedLanguage.code}, fetchSuccessOfItemDetails, fetchFailedOfItemDetails);
 		}
 		else {
 			$scope.invokeApi(ADItemSrv.addItemDetails, {}, fetchSuccessOfItemDetails, fetchFailedOfItemDetails);
 		}
-    };
+	};
 
 	loadItemDetails();
 
