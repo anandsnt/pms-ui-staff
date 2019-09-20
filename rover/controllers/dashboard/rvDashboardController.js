@@ -326,7 +326,6 @@ sntRover.controller('RVdashboardController',
              */
             $scope.$on("UpdateHeading", function(event, data) {
                 event.stopPropagation();
-                console.log("----------------------" + data);
                 // chnaging the heading of the page
                 $scope.heading = data;
             });
