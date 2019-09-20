@@ -721,7 +721,11 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             dates.map((date) => {
                 dateRateTypeSet = _.findWhere(rateTypeRestrictionWithDateAsKey[date].rate_types, {id: rateType.id});
                 rateType.restrictionList.push(dateRateTypeSet.restrictions);
-                rateType.amountList.push(dateRateTypeSet.rate_currency + "" + dateRateTypeSet.amount);
+                if (dateRateTypeSet.amount === null) {
+                    rateType.amountList.push(null);
+                } else {
+                    rateType.amountList.push(dateRateTypeSet.rate_currency + "" + dateRateTypeSet.amount);
+                }                
             });
 
             return _.omit(rateType, 'restrictions');
@@ -1057,7 +1061,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 dates.map((date) => {
                     dateRateSet = _.findWhere(rateRestrictionWithDateAsKey[date].rates, { id: rate.id });
                     rate.restrictionList.push(dateRateSet.restrictions);
-                    rate.amountList.push(dateRateSet.rate_currency + "" + dateRateSet.amount);
+                    if (dateRateSet.amount === null) {
+                        rate.amountList.push(null);
+                    } else {
+                        rate.amountList.push(dateRateSet.rate_currency + "" + dateRateSet.amount);
+                    }
+                    
                 }
                 );
                 return _.omit(rate, 'restrictions');
@@ -1366,7 +1375,11 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 dates.map((date) => {
                     dateRoomTypeSet = _.findWhere(roomTypeRestrictionWithDateAsKey[date].room_types, {id: roomType.id});
                     roomType.restrictionList.push(dateRoomTypeSet.restrictions);
-                    roomType.amountList.push(dateRoomTypeSet.rate_currency + "" + dateRoomTypeSet.amount);
+                    if (dateRoomTypeSet.amount === null) {
+                        roomType.amountList.push(null);
+                    } else {
+                        roomType.amountList.push(dateRoomTypeSet.rate_currency + "" + dateRoomTypeSet.amount);
+                    }                    
                 });
 
                 return _.omit(roomType, 'restrictions');
@@ -1708,9 +1721,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fetchRates: !cachedRateList.length
             };
 
-            if (isHierarchyRestrictionNeeded()) {
-                params.restriction_level = getRestrictionLevelParam();
-            }
             var options = {
                 params,
                 onSuccess: onFetchSingleRateRestrictionModeDetailsForPopup,
@@ -1738,9 +1748,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fetchRates: !cachedRateList.length
             };
 
-            if (isHierarchyRestrictionNeeded()) {
-                params.restriction_level = getRestrictionLevelParam();
-            }
             var options = {
                 params,
                 onSuccess: onFetchSingleRateTypeRestrictionModeDetailsForPopup,
@@ -1861,9 +1868,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fetchRoomTypes: !cachedRoomTypeList.length
             };
 
-            if (isHierarchyRestrictionNeeded()) {
-                params.restriction_level = getRestrictionLevelParam();
-            }
             var options = {
                 params: params,
                 onSuccess: onFetchSingleRoomTypeRestrictionDetailsForPopupSuccess,
@@ -2011,9 +2015,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fetchRates: !cachedRateList.length
             };
 
-            if (isHierarchyRestrictionNeeded()) {
-                params.restriction_level = getRestrictionLevelParam();
-            }
             var options = {
                 params: params,
                 onSuccess: onFetchSingleRoomTypeRestrictionAndAmountDetailsForPopupSuccess,
@@ -2432,11 +2433,19 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                     fetchDailyRates(newFilterValues);
                 }
             }
-            else if ($scope.isRoomTypeView) {
+            else if ($scope.isRoomTypeView && $scope.chosenTab === 'ROOM_TYPES') {
                 $scope.isRateView = false;
                 $scope.isRateTypeView = false;
                 $scope.isRoomTypeView = true;
                 fetchRoomTypeAndRestrictions(newFilterValues);
+            }
+            else if ($scope.isRoomTypeView && $scope.chosenTab === 'RATES') {
+                $scope.isRateView = false;
+                $scope.isRateTypeView = false;
+                $scope.isRoomTypeView = true;
+                if (newFilterValues.selectedRates.length === 1) {
+                    fetchSingleRateDetailsAndRestrictions(newFilterValues);
+                }
             }
             else if ($scope.isRateTypeView) {
 

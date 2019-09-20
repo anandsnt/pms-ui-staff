@@ -335,8 +335,9 @@ sntRover.controller('RVJournalController',
     /* Cashier filter ends here */
 
     $scope.activatedTab = function(tabName) {
-    	$scope.data.activeTab = tabName;
+        $scope.data.activeTab = tabName;
     	if (tabName === 'REVENUE') {
+            $scope.data.searchFilterOptions.splice(5, 1);
             if (!$scope.data.isExpandedViewRevenue) {
                 $rootScope.$broadcast('REFRESHREVENUECONTENT');
             }            
@@ -346,9 +347,11 @@ sntRover.controller('RVJournalController',
         }
     	else if (tabName === 'PAYMENTS') {
             $rootScope.$broadcast('REFRESHPAYMENTCONTENT');
+            $scope.data.searchFilterOptions.splice(5, 1);
         }
         else if (tabName === 'SUMMARY') {
             $rootScope.$broadcast('REFRESHSUMMARYCONTENT');
+            $scope.data.searchFilterOptions.push($scope.data.arInvoiceFilter);
         }
     	$scope.$broadcast("CLOSEPRINTBOX");
         $scope.data.isActiveRevenueFilter = false;
@@ -368,7 +371,8 @@ sntRover.controller('RVJournalController',
 
     $scope.searchJournal = () => {
         var tabName = $scope.data.activeTab;
-
+        
+        $scope.data.filterName = $filter('filter')($scope.data.searchFilterOptions, $scope.data.filterId)[0].name;
         if (tabName === 'SUMMARY') {
             $rootScope.$broadcast('SUMMARYSEARCH');
         } else if (tabName === 'PAYMENTS') {
@@ -413,8 +417,13 @@ sntRover.controller('RVJournalController',
 
     var init = function() {
         // $scope.data.isExpandedViewSummary = false;
+        $scope.data.arInvoiceFilter = journalFilters.filters[5]; 
         $scope.data.searchFilterOptions = journalFilters.filters;        
         $scope.data.filterId = (_.first($scope.data.searchFilterOptions)).id;
+        $scope.data.filterName = (_.first($scope.data.searchFilterOptions)).name;
+        if ($stateParams.tab === "BALANCE") {
+            $scope.activatedTab("BALANCE");
+        }
     };
 
     init();

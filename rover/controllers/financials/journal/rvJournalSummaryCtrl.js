@@ -96,10 +96,13 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
 
         var params = {
             "date": $scope.data.summaryDate,
-            "filter_id": $scope.data.filterId,
-            "query": $scope.data.query,
             "is_summary": $scope.data.isExpandedView
         };
+        
+        if ($scope.data.query !== "") {
+            params.filter_id = $scope.data.filterId;
+            params.query = $scope.data.query;
+        }
 
 		$scope.invokeApi(RVJournalSrv.fetchSummaryData, params, successCallBackFetchSummaryData);
     };    

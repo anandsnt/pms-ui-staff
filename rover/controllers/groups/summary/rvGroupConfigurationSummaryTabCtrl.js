@@ -1007,6 +1007,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
         var onRateChangeFailureCallBack = function(errorMessage) {
             $scope.$emit('hideLoader');
             $scope.errorMessage = errorMessage;
+            $scope.$emit('showErrorMessage', errorMessage);
             $scope.groupConfigData.summary.rate = summaryMemento.rate;
         };
 
