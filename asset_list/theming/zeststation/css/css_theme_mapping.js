@@ -88,7 +88,8 @@ module.exports = {
             'metropolis-resort': [themeCSSRoot + 'metropolis-resort.less'],
             'why-seattle': [themeCSSRoot + 'why-seattle.less'],
             'pod-philly': [themeCSSRoot + 'pod-philly.less'],
-            'concordia': [themeCSSRoot + 'concordia.less']
+            'concordia': [themeCSSRoot + 'concordia.less'],
+            'belvedere': [themeCSSRoot + 'belvedere.less']
         };
     }
 };
