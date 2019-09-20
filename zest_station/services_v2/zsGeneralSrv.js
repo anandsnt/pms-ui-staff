@@ -104,7 +104,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'metropolis-resort': 'Metropolis Resort',
             'why-seattle': 'Why Hotel Seattle',
             'pod-philly': 'POD Philly',
-            'concordia': 'The Concordia'
+            'concordia': 'The Concordia',
+            'belvedere': 'Belvedere-on-Hudson'
         };
 
         this.isThemeConfigured = function(theme) {
