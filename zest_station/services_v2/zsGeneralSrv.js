@@ -103,7 +103,9 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'heritage-hills': 'Heritage Hills Golf Resort',
             'metropolis-resort': 'Metropolis Resort',
             'why-seattle': 'Why Hotel Seattle',
-            'pod-philly': 'POD Philly'
+            'pod-philly': 'POD Philly',
+            'concordia': 'The Concordia',
+            'belvedere': 'Belvedere-on-Hudson'
         };
 
         this.isThemeConfigured = function(theme) {

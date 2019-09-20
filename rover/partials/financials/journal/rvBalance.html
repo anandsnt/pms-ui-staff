@@ -58,12 +58,11 @@
                 </li>
             </ul>
         </div>
-
         <div class="journal-summary balance-summary totals">
             <h3>Reservations with Open Balance</h3>
             <ul>
                 <li>
-                    <button type="button" class="button white has-arrow next-view" ng-click="clickedNavigationToSearch('CHECKEDOUT')">
+                    <button type="button" class="button white has-arrow next-view" ng-click="clickedNavigationToSearch('OPEN_BILL_CHECKOUT')">
                         <i class="guest-status departed"></i>
                         <span class="label">Checked out</span>
                         <span class="currency">{{currencySymbol}}</span> {{balanceData.checkout_with_balance | number:2}}
