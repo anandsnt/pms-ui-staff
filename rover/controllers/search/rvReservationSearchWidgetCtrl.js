@@ -40,7 +40,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$scope.fromDate = "";
 			
 			if ($stateParams.from_page === 'JOURNAL') {
-				// $scope.$emit("UpdateHeading", 'JOURNAL');
 				$rootScope.setPrevState = {
 					title: 'JOURNAL',
 					name: 'rover.financials.journal',
