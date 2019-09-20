@@ -236,7 +236,14 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
     $stateProvider.state('admin.itemdetails', {
         templateUrl: '/assets/partials/items/adItemDetails.html',
         controller: 'ADItemDetailsCtrl',
-        url: '/itemdetails/:itemid'
+        url: '/itemdetails/:itemid',
+        resolve: {
+            availableLanguages: function(ADTranslationSrv) {
+                return ADTranslationSrv.getActiveGuestLanguages({
+                    show_only_active_languages: true
+                });
+            }
+        }
     });
 
 
