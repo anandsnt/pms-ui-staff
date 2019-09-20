@@ -155,7 +155,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             }, datePickerCommon);
             $scope.scheduleParams.ends_on_date = reportUtils.processDate(endsOnDate).today;
 
-            $scope.scheduleParams.delivery_id = $scope.selectedEntityDetails.delivery_type ? $scope.selectedEntityDetails.delivery_type.value : '';
+            $scope.scheduleParams.delivery_id = $scope.selectedEntityDetails.delivery_type ? $scope.selectedEntityDetails.delivery_type.value : null;
             
             if ($scope.scheduleParams.delivery_id === 'CLOUD_DRIVE') {
                 $scope.scheduleParams.delivery_id = $scope.selectedEntityDetails.cloud_drive_type;
@@ -300,9 +300,6 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                     createExportFrequencyTypes();
                     processScheduleDetails($scope.selectedEntityDetails);
                     $scope.updateViewCol($scope.viewColsActions.SIX);
-                    refreshScroll(REPORT_COLS_SCROLLER, true);
-                    refreshScroll(SCHEDULE_DETAILS_SCROLLER, true);
-                    refreshScroll(DELIVERY_OPTIONS_SCROLLER, true);
 
                     var reportFilters = angular.copy($scope.selectedEntityDetails.filters);
 
@@ -310,6 +307,10 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                     if (isSavedSchedule) {
                         $scope.$broadcast('UPDATE_FILTER_SELECTIONS');
                     }
+
+                    refreshScroll(REPORT_COLS_SCROLLER, true);
+                    refreshScroll(SCHEDULE_DETAILS_SCROLLER, true);
+                    refreshScroll(DELIVERY_OPTIONS_SCROLLER, true);
 
                 },
                 onFailure = (error) => {
@@ -349,7 +350,9 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
 
             $timeout(function () {
                 refreshScroll(REPORT_SELECTED_COLS_SCROLLER);
-            }, 100);
+                refreshScroll(SCHEDULE_DETAILS_SCROLLER, true);
+                refreshScroll(DELIVERY_OPTIONS_SCROLLER, true);
+            }, 1000);
 
         };
 

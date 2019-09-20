@@ -1219,7 +1219,11 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.scheduleReport();
         });
 
-        $scope.$on('$destroy', createNewReportScheduleListener);        
+        $scope.$on('$destroy', createNewReportScheduleListener);   
+        
+        $scope.addListener('RESET_CURRENT_STAGE', () => {
+            $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
+        });
 
         /**
          * Startup

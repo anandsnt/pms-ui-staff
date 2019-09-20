@@ -1246,6 +1246,10 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
         });
 
         $scope.$on('$destroy', createNewExportScheduleListener);
+        
+        $scope.addListener('RESET_CURRENT_STAGE', () => {
+            $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
+        });
 
         /**
          * Start everything

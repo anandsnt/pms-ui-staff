@@ -5,12 +5,14 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
     '$rootScope',
     'RVreportsSrv',
     'RVCustomExportsUtilFac',
+    'sntActivity',
     function($scope, 
         RVCustomExportSrv,
         $timeout,
         $rootScope,
         reportsSrv,
-        RVCustomExportsUtilFac ) {
+        RVCustomExportsUtilFac,
+        sntActivity ) {
 
         BaseCtrl.call(this, $scope);
 
@@ -37,7 +39,8 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
         };
 
         var createDurationEntry = ( filterType, selectedFirstLevel, selectedSecondLevel ) => {
-                var filterFields = $scope.selectedEntityDetails.processedFilters[filterType],
+                var fieldsCopy = angular.copy($scope.selectedEntityDetails.processedFilters[filterType]),
+                    filterFields = removeAlreadyExistsDurationFieldNames(fieldsCopy),
                     filterConfig = {
                         firstLevelData: filterFields,
                         secondLevelData: $scope.customExportsData.durations,
@@ -103,6 +106,22 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
                 });
 
                 return availableRangeFieldNames;
+            },
+            removeAlreadyExistsDurationFieldNames = ( fields ) => {
+                var availableDurationFieldNames = [];
+
+                _.each (fields, function (each) {                    
+                    var selectedDurationFieldName = _.find($scope.filterData.appliedFilters, {
+                        selectedFirstLevel: each.value
+                    });
+
+                    if (!selectedDurationFieldName) {
+                        availableDurationFieldNames.push(each);
+                    }
+
+                });
+
+                return availableDurationFieldNames;
             };
 
         // Creates new filter entry object
@@ -137,6 +156,7 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
             var selectedFilter = $scope.filterData.appliedFilters[filterPos];
 
             if (selectedFilter.isOption) {
+                sntActivity.start('LOAD_FILTERS');
                 removeKeysFromObj(selectedFilter, [
                     'isRange',
                     'isDuration',
@@ -149,6 +169,7 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
                 ]);
                 RVCustomExportsUtilFac.populateOptions(selectedFieldName, selectedFilter, selectedSecondLevel).then(function (filter) {
                     selectedFilter = filter;
+                    sntActivity.stop('LOAD_FILTERS');
                 });
             } else if (selectedFilter.isRange) {
                 removeKeysFromObj(selectedFilter, [

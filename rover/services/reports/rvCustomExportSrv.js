@@ -8,13 +8,27 @@ angular.module('sntRover').service('RVCustomExportSrv', [
         reportSubSrv ) {
 
         const FILTER_KEYS = {
-            'BOOKING_ORIGIN_CODE': 'booking_origin_code',
-            'MARKET_CODE': 'market_code',
-            'RESERVATION_STATUS': 'reservation_status',
-            'ROOM_NO': 'room_no',
-            'ROOM_TYPE': 'room_type',
-            'SEGMENT_CODE': 'segment_code',
-            'SOURCE_CODE': 'source_code'
+            BOOKING_ORIGIN_CODE: 'booking_origin_code',
+            MARKET_CODE: 'market_code',
+            RESERVATION_STATUS: 'reservation_status',
+            ROOM_NO: 'room_no',
+            ROOM_TYPE: 'room_type',
+            SEGMENT_CODE: 'segment_code',
+            SOURCE_CODE: 'source_code',
+            ARRIVAL_ROOM_TYPE: 'arrival_room_type',
+            DEPARTURE_ROOM_TYPE: 'departure_room_type',
+            ARRIVAL_RATE_CODE: 'arrival_rate_code',
+            CI_AGENT: 'ci_agent',
+            CO_AGENT: 'co_agent',
+            CI_APPLICATION: 'ci_application',
+            CO_APPLICATION: 'co_application',
+            NATIONALITY: 'nationality',
+            COUNTRY: 'country',
+            LANGUAGE: 'language',
+            VIP: 'vip',
+            PRIMARY_PAYMENT_METHOD: 'primary_payment_method',
+            MEMBERSHIP: 'membership',
+            MEMBERSHIP_LEVEL: 'membership_level'
         };
 
         var cache = {
@@ -210,6 +224,227 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
+        this.getGuestLanguages = () => {
+            var deferred = $q.defer(),
+                url = 'api/guest_languages';
+
+            sntBaseWebSrv.getJSON(url).then(function (response) {
+                var results = _.map(response.languages, function (each) {
+                    return {
+                        id: each.id,
+                        value: each.language
+                    };
+                });
+
+                deferred.resolve(results);
+            }, function (error) {
+                deferred.resolve(error);
+            });
+
+            return deferred.promise;
+        };
+
+        this.getPaymentMethods = () => {
+            var deferred = $q.defer(),
+                url = 'staff/payments/addNewPayment.json';
+
+            sntBaseWebSrv.getJSON(url).then(function (response) {
+                deferred.resolve(response.data);
+            }, function (error) {
+                deferred.resolve(error);
+            });
+
+            return deferred.promise;
+        };
+
+        this.getCountries = () => {
+            var deferred = $q.defer(),
+                url = 'ui/country_list';
+
+            sntBaseWebSrv.getJSON(url).then(function (response) {
+                var results = _.map(response, function (each) {
+                    return {
+                        id: each.id,
+                        value: each.value
+                    };
+                });
+
+                deferred.resolve(results);
+            }, function (error) {
+                deferred.resolve(error);
+            });
+
+            return deferred.promise;
+        };
+
+        this.getCICOAgents = () => {
+            var deferred = $q.defer(),
+                url = 'admin/users.json?isAdminSnt=false&sort_dir=true&sort_field=name';
+
+            sntBaseWebSrv.getJSON(url).then(function (response) {
+                var results = _.map(response.users, function (each) {
+                    return {
+                        id: each.id,
+                        full_name: each.full_name,
+                        email: each.email
+                    };
+                });
+
+                deferred.resolve(results);
+            }, function (error) {
+                deferred.resolve(error);
+            });
+
+            return deferred.promise;
+        };
+
+        this.getRateList = () => {
+            var deferred = $q.defer(),
+                url = 'api/rates/list';
+
+            sntBaseWebSrv.postJSON(url).then(function (response) {
+                var results = _.map(response.rates, function (each) {
+                    return {
+                        id: each.id,
+                        name: each.rate_name
+                    };
+                });
+
+                deferred.resolve(results);
+            }, function (error) {
+                deferred.resolve(error);
+            });
+
+            return deferred.promise;
+        };
+
+        this.getCICOApplications = () => {
+            var deferred = $q.defer(),
+                url = 'api/reference_values?type=application';
+
+            sntBaseWebSrv.getJSON(url).then(function (response) {
+                deferred.resolve(response);
+            }, function (error) {
+                deferred.resolve(error);
+            });
+
+            return deferred.promise;
+        };
+
+        this.getHLP = () => {
+            var deferred = $q.defer(),
+                url = 'staff/user_memberships/get_available_hlps.json';
+
+            sntBaseWebSrv.getJSON(url).then(function (response) {
+                var results = _.map (response.data, ( each ) => {
+                    return {
+                        desc: each.hl_description,
+                        value: each.hl_value
+                    };
+                });
+
+                deferred.resolve(results);
+            }, function (error) {
+                deferred.resolve(error);
+            });
+
+            return deferred.promise;
+        };
+
+        this.getFFP = () => {
+            var deferred = $q.defer(),
+                url = 'staff/user_memberships/get_available_ffps.json';
+
+            sntBaseWebSrv.getJSON(url).then(function (response) {
+                var results = _.map (response.data, ( each ) => {
+                    return {
+                        desc: each.ff_description,
+                        value: each.ff_value
+                    };
+                });
+
+                deferred.resolve(results);
+            }, function (error) {
+                deferred.resolve(error);
+            });
+
+            return deferred.promise;
+        };
+
+        this.getHLPLevels = () => {
+            var deferred = $q.defer(),
+                url = 'staff/user_memberships/get_available_hlps.json';
+
+            sntBaseWebSrv.getJSON(url).then(function (response) {
+                var levels = [];
+
+                _.each(response.data, (hlp) => {
+                    _.each(hlp.levels, (level) => {
+                        levels.push({
+                            value: level.membership_level
+                        });
+                    });
+                });
+
+                deferred.resolve(levels);
+            }, function (error) {
+                deferred.resolve(error);
+            });
+
+            return deferred.promise;
+        };
+
+        this.getFFPLevels = () => {
+            var deferred = $q.defer(),
+                url = 'staff/user_memberships/get_available_ffps.json';
+
+            sntBaseWebSrv.getJSON(url).then(function (response) {
+                var levels = [];
+
+                _.each(response.data, (hlp) => {
+                    _.each(hlp.levels, (level) => {
+                        levels.push({
+                            value: level.membership_level
+                        });
+                    });
+                });
+
+                deferred.resolve(levels);
+            }, function (error) {
+                deferred.resolve(error);
+            });
+
+            return deferred.promise;
+        };
+
+        this.getMemberShips = () => {
+            var deferred = $q.defer(),
+                promises = [];
+
+            promises.push(this.getHLP());
+            promises.push(this.getFFP());
+
+            $q.all(promises).then(function (response) {
+                deferred.resolve(response[0].concat(response[1]));
+            });
+
+            return deferred.promise;
+        };
+
+        this.getMemberShipLevels = () => {
+            var deferred = $q.defer(),
+                promises = [];
+
+            promises.push(this.getHLPLevels());
+            promises.push(this.getFFPLevels());
+
+            $q.all(promises).then(function (response) {
+                deferred.resolve(response[0].concat(response[1]));
+            });
+
+            return deferred.promise;
+        };
+
         this.processFilterSelections = ( filterValues ) => {
             var promises = [],
                 deferred = $q.defer();
@@ -224,12 +459,13 @@ angular.module('sntRover').service('RVCustomExportSrv', [
                         break;
                     case FILTER_KEYS['RESERVATION_STATUS']:
                         promises.push(reportSubSrv.fetchReservationStatus());
-                        break;
-                    
+                        break;                    
                     case FILTER_KEYS['ROOM_NO']:
                         promises.push(self.getRoomNos());
                         break;
                     case FILTER_KEYS['ROOM_TYPE']:
+                    case FILTER_KEYS['ARRIVAL_ROOM_TYPE']:
+                    case FILTER_KEYS['DEPARTURE_ROOM_TYPE']:
                         promises.push(reportSubSrv.fetchRoomTypeList());
                         break;
                     case FILTER_KEYS['SEGMENT_CODE']:
@@ -238,6 +474,34 @@ angular.module('sntRover').service('RVCustomExportSrv', [
                     case FILTER_KEYS['SOURCE_CODE']:
                         promises.push(reportSubSrv.fetchSources());
                         break;
+                    case FILTER_KEYS['ARRIVAL_RATE_CODE']:
+                        promises.push(self.getRateList());
+                        break;
+                    case FILTER_KEYS['CI_AGENT']:
+                    case FILTER_KEYS['CO_AGENT']:
+                        promises.push(self.getCICOAgents());
+                        break;
+                    case FILTER_KEYS['CI_APPLICATION']:
+                    case FILTER_KEYS['CO_APPLICATION']:
+                        promises.push(self.getCICOApplications());
+                        break;
+                    case FILTER_KEYS['COUNTRY']:
+                    case FILTER_KEYS['NATIONALITY']:
+                        promises.push(self.getCountries());
+                        break;
+                    case FILTER_KEYS['LANGUAGE']:
+                        promises.push(self.getGuestLanguages());
+                        break;
+                    case FILTER_KEYS['PRIMARY_PAYMENT_METHOD']:
+                        promises.push(self.getPaymentMethods());
+                        break;
+                    case FILTER_KEYS['MEMBERSHIP']:
+                        promises.push(self.getMemberShips());
+                        break;
+                    case FILTER_KEYS['MEMBERSHIP_LEVEL']:
+                        promises.push(self.getMemberShipLevels());
+                        break;
+                    
                     default:
                 }
             });
