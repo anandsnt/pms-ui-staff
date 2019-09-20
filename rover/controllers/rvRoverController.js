@@ -24,10 +24,11 @@ sntRover.controller('roverController', [
     '$interval',
     'sntActivity',
     '$transitions',
+    'features',
     function ($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv,
               ngDialog, $translate, hotelDetails, userInfoDetails, $stateParams,
               rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q, $sce,
-              $log, sntAuthorizationSrv, $location, $interval, sntActivity, $transitions) {
+              $log, sntAuthorizationSrv, $location, $interval, sntActivity, $transitions, features) {
 
 
         var observeDeviceInterval;
@@ -84,6 +85,7 @@ sntRover.controller('roverController', [
         });
 
         $scope.isSettingSubMenuActive = false;
+        $rootScope.featureToggles = features;
         // Used to add precison in amounts
         $rootScope.precisonZero = 0;
         $rootScope.precisonTwo = 2;
