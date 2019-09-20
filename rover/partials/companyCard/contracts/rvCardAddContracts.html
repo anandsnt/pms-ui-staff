@@ -37,15 +37,15 @@
     </div>
     <!-- If we don't show the bottom form, add .without-footer -->
     <!-- If we don't show the search for some reason, add .without-header -->
-    <div class="contracts-details-form scrollable" ng-iscroll="cardContractsScroll" ng-iscroll-delay="1000">
+    <div class="contracts-details-form scrollable" ng-iscroll="cardNewContractsScroll">
         <div class="wrapper float">
             <div class="holder left">
                 <strong class="h3">Contract Details</strong>
                 <div class="entry only-switch margin">
                     <label for="contract-status">Status</label>
                     <!-- Add .on, when active. Remove otherwise -->
-                    <div class="switch-button full-width on">
-                        <input id="contract-status" value="1" type="checkbox" checked="">
+                    <div class="switch-button full-width" ng-class="{'on': formData.isActive}">
+                        <input id="contract-status" ng-model="formData.isActive" ng-click="toggleActiveStatus()" type="checkbox">
                         <label class="data-off">
                             <span class="value">Active</span>
                             <span class="switch-icon">Inactive</span>
@@ -59,22 +59,22 @@
                 <div class="entry margin">
                     <label for="contract-name">Name</label>
                     <!-- add readonly if it's read only -->
-                    <input name="contract-name" id="contract-name"  value="{contract name}" placeholder="Contract Name" type="text" />
+                    <input name="contract-name" id="contract-name" ng-model="formData.contractName" placeholder="Contract Name" type="text" />
                 </div>
                 <div class="entry">
                     <label for="contract-code">Access Code</label>
                     <!-- add readonly if it's read only -->
-                    <input name="contract-code" id="contract-code"  value="{code}" placeholder="Access Code" type="text" />
+                    <input name="contract-code" id="contract-code" ng-model="formData.accessCode" placeholder="Access Code" type="text" />
                 </div>
                 <div class="entry margin has-datepicker">
                     <label for="contract-start">Start Date</label>
                     <!-- add readonly if it's read only -->
-                    <input name="contract-start" id="contract-start" class="datepicker" value="" placeholder="Select Start Date" maxlength="8" readonly type="text" />
+                    <input name="contract-start" id="contract-start" class="datepicker" ng-model="formData.startDate" placeholder="Select Start Date" maxlength="8" readonly type="text" ng-click="contractStart()"/>
                 </div>
                 <div class="entry has-datepicker">
                     <label for="contract-end">End Date</label>
                     <!-- add readonly if it's read only -->
-                    <input name="contract-end" id="contract-end" class="datepicker" value="" placeholder="Select End Date" maxlength="8" readonly type="text" />
+                    <input name="contract-end" id="contract-end" class="datepicker" ng-model="formData.endDate" placeholder="Select End Date" maxlength="8" readonly type="text" ng-click="contractEnd()"/>
                 </div>
                 <div class="entry find-rate full-width">
                     <label for="rate-query">Contracted Rate</label>
@@ -112,13 +112,13 @@
                 <div class="entry margin">
                     <label for="contracted-nights">Contracted nights</label>
                      <!-- add readonly if it's read only -->
-                    <input name="contracted-nights" id="contracted-nights" class=" contracted-nights" placeholder="Nights per month" value="{nights}" maxlength="8" readonly type="text" />
+                    <input name="contracted-nights" id="contracted-nights" class=" contracted-nights" placeholder="Nights per month" ng-model="formData.contractedNights" maxlength="8" readonly type="text" ng-click="contractedNights()"/>
                 </div>
             </div>
         </div>
     </div>
     <div class="contract-details-footer">
-        <button type="button" class="button blank">Cancel</button>
-        <button type="button" class="button green">Save Contract</button>
+        <button type="button" class="button blank" ng-click="cancelNewContract()">Cancel</button>
+        <button type="button" class="button green" ng-click="saveNewContract()">Save Contract</button>
     </div>
 </div>

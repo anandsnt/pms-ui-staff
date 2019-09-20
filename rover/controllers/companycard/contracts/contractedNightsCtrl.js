@@ -1,27 +1,29 @@
 
-sntRover.controller('contractedNightsCtrl', ['$scope', 'dateFilter', 'ngDialog', 'RVCompanyCardSrv', '$stateParams', function($scope, dateFilter, ngDialog, RVCompanyCardSrv, $stateParams) {
+sntRover.controller('contractedNightsCtrl', ['$rootScope', '$scope', 'dateFilter', 'ngDialog', 'RVCompanyCardSrv', '$stateParams', function($rootScope, $scope, dateFilter, ngDialog, RVCompanyCardSrv, $stateParams) {
 	$scope.nightsData = {};
 	$scope.nightsData.occupancy = [];
 	$scope.nightsData.allNights = "";
-	var first_date = new Date($scope.contractData.begin_date);
-	var last_date = new Date($scope.contractData.end_date);
+	var myDate = tzIndependentDate($rootScope.businessDate);
+	var beginDate = $scope.formData.startDate || myDate;
+	var endDate = $scope.formData.endDate || myDate.setDate(myDate.getDate() + 1);
+	var first_date = new Date(beginDate);
+	var last_date = new Date(endDate);
 
-	var month_array = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-	var new_occupancy = [];
-
-	start_point = first_date.getFullYear() * 12 + first_date.getMonth();
-	end_point = last_date.getFullYear() * 12 + last_date.getMonth();
-	my_point = start_point;
+	var month_array = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+		new_occupancy = [],
+		start_point = first_date.getFullYear() * 12 + first_date.getMonth(),
+		end_point = last_date.getFullYear() * 12 + last_date.getMonth(),
+		my_point = start_point;
 
 	while ( my_point <= end_point ) {
-		year = Math.floor(my_point / 12);
-		month = my_point - year * 12;
-		var obj = {
+		var year = Math.floor(my_point / 12),
+			month = my_point - year * 12,
+			obj = {
 				"contracted_occupancy": 0,
 				"year": year,
 				"actual_occupancy": 0,
 				"month": month_array[month]
-		};
+			};
 
 		new_occupancy.push(obj);
 		my_point += 1;

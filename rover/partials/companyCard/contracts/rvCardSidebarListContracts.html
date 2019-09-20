@@ -5,7 +5,7 @@
         <div class="wrapper">
             <!-- If it has no items, add .no-items -->
             <!-- If it's opened, add .open -->
-            <div class="contract-list-items-section no-items" ng-repeat="item in contractData.sideList">
+            <div class="contract-list-items-section no-items" ng-repeat="item in contractData.contractsList">
                 <h2>
                     {{item.type}}
                     <span class="count">{{item.count}}</span>
@@ -32,7 +32,7 @@
         </div>
     </div>
     <!-- Show this to enable creating contracts. -->
-    <div class="contracts-list-actions" ng-show="contractData.noContracts">
+    <div class="contracts-list-actions" ng-show="contractData.mode === 'EDIT'">
         <button type="button" class="button green">Create New Contract</button>
     </div>
 </div>

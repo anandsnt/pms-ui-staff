@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog', 'dateFilter', '$timeout', 'rvPermissionSrv',
-	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, ngDialog, dateFilter, $timeout, rvPermissionSrv) {
+angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog', 'dateFilter', '$timeout',
+	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, ngDialog, dateFilter, $timeout) {
 
 		BaseCtrl.call(this, $scope);
 		/* Items related to ScrollBars
@@ -8,75 +8,79 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$rootScope', 
 		 *    So ng-iscroll will create the ,myScroll Array there, if not defined here.
 		 */
 
-		$scope.setScroller('cardContractsScroll');
+		$scope.setScroller('cardNewContractsScroll');
 
 		var refreshScroller = function() {
 			$timeout(function() {
-				if ($scope.myScroll && $scope.myScroll['cardContractsScroll']) {
-					$scope.myScroll['cardContractsScroll'].refresh();
+				if ($scope.myScroll && $scope.myScroll['cardNewContractsScroll']) {
+					$scope.myScroll['cardNewContractsScroll'].refresh();
 				}
-				$scope.refreshScroller('cardContractsScroll');
+				$scope.refreshScroller('cardNewContractsScroll');
 			}, 500);
 		};
 
 		/** ** Scroll related code ends here. ****/
 
-		var setSideListCount = function(cc, fc, hc) {
-			$scope.contractData.sideList = [
+		var setSideListCount = function(currentContracts, futureContracts, pastContracts) {
+			$scope.contractData.contractsList = [
 				{
-					contracts: fc,
+					contracts: futureContracts,
 					type: 'FUTURE',
-					count: fc.length
+					count: futureContracts.length
 				},
 				{
-					contracts: cc,
+					contracts: currentContracts,
 					type: 'CURRENT',
-					count: cc.length
+					count: currentContracts.length
 				},
 				{
-					contracts: hc,
+					contracts: pastContracts,
 					type: 'PAST',
-					count: hc.length
+					count: pastContracts.length
 				}
 			];
 		}, fetchContractsListSuccessCallback = function(data) {
-			var cc = data.current_contracts || [],
-				hc = data.history_contracts || [],
-				fc = data.future_contracts || [];
+			var currentContracts = data.current_contracts || [],
+				pastContracts = data.history_contracts || [],
+				futureContracts = data.future_contracts || [];
 
-			if (cc.length !== 0 && hc.length !== 0 && fc.length !== 0) {
+			if (currentContracts.length !== 0 && pastContracts.length !== 0 && futureContracts.length !== 0) {
 				// EDIT contract flow
 				// $scope.contractData.mode = 'EDIT';
 				// $scope.contractData.noContracts = false;
 				// $scope.contractData.selectedContract = data.contract_selected;
 				// fetchContractDetails()
 			}
-			setSideListCount(cc, fc, hc);
+			setSideListCount(currentContracts, futureContracts, pastContracts);
 		}, fetchFailureCallback = function(response) {
 			$scope.errorMessage = data;
 		}, init = function() {
 			$scope.contractData = {
 				mode: '',
-				sideList: [],
+				contractsList: [],
 				noContracts: true,
-				noStatistics: false,
+				noStatistics: true,
 				selectedContract: ''
 			};
-			$scope.callAPI(RVCompanyCardSrv.fetchContractsList, {
+			var options = {
 				successCallBack: fetchContractsListSuccessCallback,
 				failureCallBack: fetchFailureCallback,
 				params: {
 					"account_id": $stateParams.id
 				}
-			});
+			}
+			
+			$scope.callAPI(RVCompanyCardSrv.fetchContractsList, options);
 		};
 
-		init();
+		$scope.addListener('closeContractsForm', init);
 
 		$scope.createFirstContract = function() {
 			$scope.contractData.mode = 'ADD';
 			$scope.contractData.noContracts = false;
 			refreshScroller();
 		};
+
+		init();
 	}
 ]);
