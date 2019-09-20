@@ -81,6 +81,13 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$rootScope', 
 			refreshScroller();
 		};
 
+		/**
+		 * function for close activity indicator.
+		 */
+		$scope.closeActivityIndication = function() {
+			$scope.$emit('hideLoader');
+		};
+
 		init();
 	}
 ]);

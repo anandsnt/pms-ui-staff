@@ -7,7 +7,7 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$rootScope', '
             accessCode: '',
             startDate: null,
             endDate: null,
-            contractedNights: '',
+            contractedNights: 0,
             contractedRates: [],
             isActive: false
         };
@@ -25,17 +25,28 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$rootScope', '
         };
 
         $scope.saveContract = function() {
-            var postData = {
-                'access_code':'StayN',
-                'contract_name': 'testARteeasafaf',
-                'begin_date': '2015-07-27',
-                'end_date': '2023-07-19',
-                'total_contracted_nights': 0
-            }, options = {
+            var saveContractSuccessCallback = function(data) {
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = "";
+				$scope.contractData.mode = '';
+				// updateContractList(data); yet to handle
+			}, saveContractFailureCallback = function(data) {
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = data;
+			}, postData = {
+                'access_code':$scope.formData.accessCode,
+                'contract_name': $scope.formData.contractName,
+                'begin_date': $scope.formData.startDate,
+                'end_date': $scope.formData.endDate,
+                'total_contracted_nights': $scope.formData.contractedNights
+            }, account_id = $scope.contactInformation.id || $stateParams.id,
+            options = {
                 params: {
-                    account_id: $stateParams.id,
-                    postData: $scope.formData
-                }
+                    'account_id': account_id,
+                    'postData': postData
+                },
+                successCallBack: saveContractSuccessCallback,
+				failureCallBack: saveContractFailureCallback
             }
 
             $scope.callApi(RVCompanyCardSrv.addNewContract, options);
