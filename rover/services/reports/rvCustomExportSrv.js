@@ -68,6 +68,22 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
+        this.getCustomExportsAndScheduleFrequencies = () => {
+            var deferred = $q.defer(),
+                promises = {};
+
+            promises['customExports'] = this.getScheduledCustomExports();
+            promises['scheduleFrequencies'] = this.getExportFrequencies();
+
+            $q.all(promises).then(function (data) {
+                deferred.resolve(data);
+            }, function (error) {
+                deferred.reject(error);
+            });
+
+            return deferred.promise;
+        };
+
         this.getRequestData = ( params ) => {
             var promises = {},
                 deferred = $q.defer();
@@ -76,7 +92,6 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             promises['exportFormats'] = this.getExportFormats(params);
             promises['deliveryTypes'] = this.getExportDeliveryTypes(params);
             promises['durations'] = this.getExportDurations(params);
-            promises['scheduleFrequency'] = this.getExportFrequencies();
             promises['dropBoxAccounts'] = this.getCloudDrives('DROP_BOX');
             promises['googleDriveAccounts'] = this.getCloudDrives('GOOGLE_DRIVE');
 

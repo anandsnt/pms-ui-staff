@@ -303,6 +303,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 $scope.selectedSchedule.active = false;
             }
             $scope.updateViewCol($scope.viewColsActions.ONE);
+            $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
 
             if ( updatedIndex >= 0 ) {
                 $scope.$parent.$parent.schedulesList[updatedIndex].frequency_id = params.frequency_id;

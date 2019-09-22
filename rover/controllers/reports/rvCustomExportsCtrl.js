@@ -7,6 +7,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
     'RVCustomExportsUtilFac',
     'RVReportUtilsFac',
     '$filter',
+    'ngDialog',
     function($scope, 
         RVCustomExportSrv,
         $timeout,
@@ -14,7 +15,8 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
         reportsSrv,
         RVCustomExportsUtilFac,
         reportUtils,
-        $filter) {
+        $filter,
+        ngDialog) {
 
         BaseCtrl.call(this, $scope);
 
@@ -53,6 +55,110 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 $scope.myScroll[name].scrollTo(0, 0, SCROLL_REFRESH_DELAY);
             }
         };
+
+        // helper function
+        var findOccurance = function(item) {
+            var occurance = 'Runs ',
+                frequency = _.find($scope.customExportsData.scheduleFrequencies, { id: item.frequency_id }),
+                description = '',
+                value = '';
+
+            var FREQ_VALUES = {
+                DAILY: 'DAILY',
+                HOURLY: 'HOURLY',
+                WEEKLY: 'WEEKLY',
+                MONTHLY: 'MONTHLY',
+                RUN_ONCE: 'RUN_ONCE',
+                EVERY_MINUTE: 'EVERY_MINUTE'
+            };
+
+            if ( frequency ) {
+                description = frequency.description;
+                value = frequency.value;
+            }
+
+            if ( value === FREQ_VALUES.RUN_ONCE ) {
+                occurance += 'once';
+            } else {
+                if ( item.repeats_every === 0 ) {
+                    occurance += description.toLowerCase();
+                } else {
+                    occurance += 'after every ' + item.repeats_every + ' ';
+
+                    if ( value === FREQ_VALUES.DAILY ) {
+                        occurance += item.repeats_every === 1 ? 'day' : 'days';
+                    } else if ( value === FREQ_VALUES.HOURLY ) {
+                        occurance += item.repeats_every === 1 ? 'hour' : 'hours';
+                    } else if ( value === FREQ_VALUES.WEEKLY ) {
+                        occurance += item.repeats_every === 1 ? 'week' : 'weeks';
+                    } else if ( value === FREQ_VALUES.MONTHLY ) {
+                        occurance += item.repeats_every === 1 ? 'month' : 'months';
+                    } else if ( value === FREQ_VALUES.MONTHLY ) {
+                        occurance += item.repeats_every === 1 ? 'month' : 'months';
+                    } else if ( value === FREQ_VALUES.EVERY_MINUTE ) {
+                        occurance += item.repeats_every === 1 ? 'minute' : 'minutes';
+                    }
+                }
+            }
+
+            if ( item.time ) {
+                occurance += ' at ' + item.time + '. ';
+            } else {
+                occurance += '. ';
+            }
+
+            if ( item.starts_on ) {
+                occurance += 'Started on ' + $filter('date')(item.starts_on, $rootScope.dateFormat) + '. ';
+            }
+
+            if ( value !== FREQ_VALUES.RUN_ONCE ) {
+                if ( item.ends_on_after ) {
+                    occurance += 'Ends after ' + item.ends_on_after + ' times.';
+                } else if ( item.ends_on_date ) {
+                    occurance += 'Ends on ' + $filter('date')(item.ends_on_date, $rootScope.dateFormat) + '.';
+                } else {
+                    occurance += 'Runs forever.';
+                }
+            }
+
+            return occurance;
+        };
+
+        var validateSchedule = function() {
+            var hasTimePeriod = function() {
+                return angular.isDefined($scope.scheduleParams.time_period_id) && !_.isNull($scope.scheduleParams.time_period_id);
+            };
+
+            var hasFrequency = function() {
+                return !! $scope.scheduleParams.frequency_id;
+            };
+
+            var hasValidDistribution = function() {
+                var hasEmail = $scope.checkDeliveryType('EMAIL') && $scope.emailList.length,
+                    hasFTP = $scope.checkDeliveryType('SFTP') && !! $scope.scheduleParams.selectedFtpRecipient,
+                    hasDropbox = $scope.checkDeliveryType('DROPBOX') && !! $scope.scheduleParams.selectedCloudAccount,
+                    hasGoogleDrive = $scope.checkDeliveryType('GOOGLE DRIVE') && !! $scope.scheduleParams.selectedCloudAccount;
+
+                return hasEmail || hasFTP || hasDropbox || hasGoogleDrive;
+            };
+
+            return hasTimePeriod() && hasFrequency() && hasValidDistribution();
+        };
+
+        var fillValidationErrors = function() {
+            $scope.createErrors = [];
+
+            if ( $scope.selectedColumns.length === 0) {
+                $scope.createErrors.push('No columns selected for the export');
+            }
+            if ( ! $scope.scheduleParams.frequency_id ) {
+                $scope.createErrors.push('Repeat frequency in details');
+            }
+            if ( ! $scope.emailList.length ) {
+                $scope.createErrors.push('Emails/SFTP/Dropbox/Google Drive in distribution list');
+            }
+        };
+        
 
         // Should show the export list
         $scope.shouldShowExportListOnly = () => {
@@ -203,13 +309,15 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
         };
 
         // Fetch scheduled custom exports
-        var fetchScheduledCustomExports = () => {
+        var fetchCustomExportsAndExportFrequencies = () => {
             var onScheduledExportsFetchSuccess = (data) => {
-                    $scope.customExportsData.scheduledCustomExports = data;
+                    $scope.customExportsData.scheduledCustomExports = data.customExports;
+                    $scope.customExportsData.scheduleFrequencies = angular.copy(data.scheduleFrequencies);
 
                     _.each($scope.customExportsData.scheduledCustomExports, function (schedule) {
                         schedule.filteredOut = false;
                         schedule.report.description = schedule.name;
+                        schedule.occurance = findOccurance(schedule);
                     });
 
                     $scope.viewState.currentStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
@@ -218,7 +326,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                     $scope.customExportsData.scheduledCustomExports = [];
                 };
 
-            $scope.callAPI(RVCustomExportSrv.getScheduledCustomExports, {
+            $scope.callAPI(RVCustomExportSrv.getCustomExportsAndScheduleFrequencies, {
                 onSuccess: onScheduledExportsFetchSuccess,
                 onFailure: onScheduledExportsFetchFailure
             });
@@ -288,7 +396,6 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                     $scope.customExportsData.exportFormats = angular.copy(payload.exportFormats);
                     $scope.customExportsData.deliveryTypes = angular.copy(payload.deliveryTypes);
                     $scope.customExportsData.durations = angular.copy(payload.durations);
-                    $scope.customExportsData.scheduleFrequencies = angular.copy(payload.scheduleFrequency);
                     $scope.ftpServerList = payload.ftpServerList;
                     $scope.dropBoxAccountList = payload.dropBoxAccounts;
                     $scope.googleDriveAccountList = payload.googleDriveAccounts;
@@ -502,7 +609,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                     $scope.updateViewCol($scope.viewColsActions.ONE);
                     $scope.viewState.currentStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
                     $scope.customExportsData.isNewExport = false;
-                    fetchScheduledCustomExports();
+                    fetchCustomExportsAndExportFrequencies();
                 },
                 onScheduleCreateFailure = (error) => {
                     $scope.errorMessage = error;
@@ -539,7 +646,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                     $scope.updateViewCol($scope.viewColsActions.ONE);
                     $scope.customExportsData.isNewExport = false;
                     $scope.viewState.currentStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
-                    fetchScheduledCustomExports();
+                    fetchCustomExportsAndExportFrequencies();
                 },
                 onScheduleSaveFailure = (error) => {
                     $scope.errorMessage = error;
@@ -568,7 +675,15 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             });
     
             $scope.addListener('CREATE_NEW_CUSTOM_EXPORT_SCHEDULE', () => {
-                createSchedule();
+                if ( validateSchedule() ) {
+                    createSchedule();
+                } else {
+                    fillValidationErrors();
+                    ngDialog.open({
+                        template: '/assets/partials/reports/scheduleReport/rvCantCreateSchedule.html',
+                        scope: $scope
+                    });
+                }
             });
 
             // Listener for creating new custom export
@@ -585,28 +700,33 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             });
         };
 
+        // Checks not run once case
         $scope.notRunOnce = function () {
             var match = _.find($scope.customExportsData.scheduleFrequencies, { id: $scope.scheduleParams.frequency_id }) || {};
 
             return match.value !== 'RUN_ONCE';
         };
 
+        // Get repeats per string value
         $scope.getRepeatPer = function() {
             var found = _.find($scope.customExportsData.scheduleFreqTypes, { id: $scope.scheduleParams.frequency_id });
 
             return found ? found.value : 'Per';
         };
 
+        // Checks the delivery type for the specific one passed as param
         $scope.checkDeliveryType = function (checkFor) {
             return checkFor === $scope.scheduleParams.delivery_id;
         };
 
+        // Run digest cycle explicitly
         var runDigestCycle = function() {
             if (!$scope.$$phase) {
                 $scope.$digest();
             }
         };
 
+        // Autocomplete options for user search
         $scope.userAutoCompleteSimple = {
             minLength: 3,
             source: function(request, response) {
@@ -641,6 +761,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             }
         };
 
+        // Remove specific email from the emailing list
         $scope.removeEmail = function(index) {
             $scope.emailList = [].concat(
                 $scope.emailList.slice(0, index),
@@ -650,11 +771,26 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             refreshScroll(DELIVERY_OPTIONS_SCROLLER, true);
         };
 
+        // Change handler for delivery options
         $scope.onDeliveryOptionChange = () => {
             // We are just clearing the cloud drive id only because the given id belongs to 
             // a single cloud drive account and if not cleared it will shows empty <option>
             // when the cloud account type is changed from the delivery options
             $scope.scheduleParams.selectedCloudAccount = null;
+        };
+
+        $scope.changeRepeats = () => {
+            var freqType = _.find ($scope.customExportsData.scheduleFreqTypes, {
+                id: $scope.scheduleParams.frequency_id
+            });
+
+            if (freqType && freqType.value === 'Minute') {
+                $scope.repeatMinutesMinVal = 5;
+            } else {
+                $scope.repeatMinutesMinVal = 0;
+            }
+            
+            
         };
 
 
@@ -677,13 +813,14 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             };
             $scope.scheduleParams = {};
             $scope.emailList = [];
+            $scope.repeatMinutesMinVal = 0;
         };
         
         // Initialize the controller
         var init = () => {
             $scope.customExportsData.isNewExport = false;
             initializeData();
-            fetchScheduledCustomExports();
+            fetchCustomExportsAndExportFrequencies();
             initializeScrollers();
             setUpListeners();
             
