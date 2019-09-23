@@ -21,6 +21,13 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 
 		/** ** Scroll related code ends here. ****/
 
+		/**
+		 * function to set the contractsList object
+		 * @param {Array} currentContracts - array of present contracts
+		 * @param {Array} futureContracts
+		 * @param {Array} pastContracts
+		 * @returns void
+		 */
 		var setSideListCount = function(currentContracts, futureContracts, pastContracts) {
 			$scope.contractData.contractsList = [
 				{
@@ -39,7 +46,13 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 					count: pastContracts.length
 				}
 			];
-		}, fetchContractsListSuccessCallback = function(data) {
+		},
+		/**
+		 * success callback for init function
+		 * @param {Object} - accepts the API response as parameter
+		 * @return void
+		 */
+		fetchContractsListSuccessCallback = function(data) {
 			var currentContracts = data.current_contracts || [],
 				pastContracts = data.history_contracts || [],
 				futureContracts = data.future_contracts || [];
@@ -52,9 +65,11 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 				// fetchContractDetails()
 			}
 			setSideListCount(currentContracts, futureContracts, pastContracts);
-		}, fetchFailureCallback = function(response) {
-			$scope.errorMessage = data;
-		}, init = function() {
+		},
+		/**
+		 * Init function fetches the contracts on page load
+		 */
+		init = function() {
 			$scope.contractData = {
 				mode: '',
 				contractsList: [],
@@ -73,8 +88,14 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 			$scope.callAPI(RVCompanyCardSrv.fetchContractsList, options);
 		};
 
+		/**
+		 * Listener to call on new contracts form closure
+		 */
 		$scope.addListener('closeNewContractsForm', init);
 
+		/**
+		 * Function to load the new contracts form
+		 */
 		$scope.createFirstContract = function() {
 			$scope.contractData.mode = 'ADD';
 			$scope.contractData.noContracts = false;

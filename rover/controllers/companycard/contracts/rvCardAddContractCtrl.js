@@ -2,6 +2,11 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
 	function($scope, RVCompanyCardSrv, $stateParams, ngDialog) {
         BaseCtrl.call(this, $scope);
         var showNightsModal = false;
+        /**
+         * 
+         * @param {Object} data - API response of save new contract as the input
+         * @return void
+         */
         var saveNewContractSuccessCallback = function(data) {
             $scope.errorMessage = "";
             $scope.contractData.mode = '';
@@ -28,14 +33,23 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
             isActive: false
         };
 
+        /**
+         * Function to toggle contract's active/inactive status
+         */
         $scope.toggleActiveStatus = function() {
             $scope.formData.isActive = !$scope.formData.isActive;
         };
 
+        /**
+         * Function to cancel and close the new contract form
+         */
         $scope.cancelNewContract = function() {
             $scope.$emit('closeNewContractsForm');
         };
 
+        /**
+         * Function to save the new contract
+         */
         $scope.saveNewContract = function() {
             var account_id;
 
