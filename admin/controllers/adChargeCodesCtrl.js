@@ -11,6 +11,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		$scope.isEdit = false;
 		$scope.disableViennaTax = false;
 		$scope.successMessage = "";
+		$scope.warningMessage = "";
 
 		$scope.selected_payment_type = {};
 		$scope.selected_payment_type.id = -1;
@@ -168,6 +169,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			if (selectedType === '1') {
 				$scope.prefetchData.selected_amount_sign = '+';
 				$scope.prefetchData.selected_amount_symbol = 'amount';
+				$scope.warningMessage = 'The recommended naming convention for Deposit VAT Charge codes is DEP001, DEP002, DEP003, etc.';
 			} else if ($scope.isAllowanceType(selectedType)) {
 				if (_.isUndefined($scope.chargeCodes)) {
 					fetchChargeCodesForAllowance();
@@ -177,7 +179,15 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 	            });
 
 				$scope.prefetchData.selected_charge_group = allowanceChargeGroup.value;
+			} else if (selectedType === '12') {
+				$scope.warningMessage = 'The recommended naming convention for Deposit Charge codes is DEP001, DEP002, DEP003, etc.';
+			} else {
+				$scope.warningMessage = '';
 			}
+		};
+
+		$scope.clearWarningMessage = function () {
+			$scope.warningMessage = '';
 		};
 
 		$scope.onChangeChargeGroup = function (chargeGroupID) {
