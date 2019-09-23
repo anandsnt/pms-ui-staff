@@ -1,4 +1,4 @@
-angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog', 'dateFilter', '$timeout',
+angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog',
 	function($scope, RVCompanyCardSrv, $stateParams, ngDialog) {
         BaseCtrl.call(this, $scope);
         var showNightsModal = false;
