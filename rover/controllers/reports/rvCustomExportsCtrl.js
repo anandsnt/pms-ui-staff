@@ -594,8 +594,6 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 params.sftp_server_id = '';
             }
 
-            // fill sort_field and filters
-
             return params;
         };
 

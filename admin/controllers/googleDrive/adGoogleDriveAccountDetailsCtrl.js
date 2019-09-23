@@ -3,7 +3,8 @@ admin.controller('ADGoogleDriveAccountDetailsCtrl', [
     'ADThirdPartyStorageSrv',
     '$state',
     '$stateParams',
-    function($scope, ADThirdPartyStorageSrv, $state, $stateParams) {
+    '$timeout'
+    function($scope, ADThirdPartyStorageSrv, $state, $stateParams, $timeout) {
     
     BaseCtrl.call(this, $scope);
 
@@ -49,7 +50,7 @@ admin.controller('ADGoogleDriveAccountDetailsCtrl', [
             .then(function(res) {
                 if (res.code) {
                     $scope.accountDetails.access_token = res.code;
-                    setTimeout(function () {
+                    $timeout(function () {
                         $scope.$apply();
                     }, 700);
                 }
