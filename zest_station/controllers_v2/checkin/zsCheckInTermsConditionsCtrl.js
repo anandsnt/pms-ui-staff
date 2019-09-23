@@ -214,7 +214,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
             if ($stateParams.pickup_key_mode) {
                 stateParams.pickup_key_mode = 'manual';
             }
-            if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.hotelSettings.mli_cba_enabled) {
+
             if (!$scope.zestStationData.is_standalone && $scope.zestStationData.hotelSettings.use_ows_opi_auth) {
                 var toParamsJson = JSON.stringify(stateParams);
                 
