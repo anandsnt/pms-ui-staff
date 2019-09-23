@@ -120,10 +120,16 @@
                 <label for="schedule-repeats-every">Repeats Every</label>
                 <div class="entry-data entry-first">
                     <input id="schedule-repeats-every" 
+                           type="number"
+                           restrict-min-val="5"
+                           placeholder="Min:5" 
+                           ng-model="scheduleParams.repeats_every"
+                           ng-if="hasMinutesRepeat()">
+                    <input id="schedule-repeats-every" 
                            type="number" 
                            placeholder="No." 
                            ng-model="scheduleParams.repeats_every"
-                           >
+                           ng-if="!hasMinutesRepeat()">
                 </div>
                 <div class="entry-data entry-second">
                     <div class="select">

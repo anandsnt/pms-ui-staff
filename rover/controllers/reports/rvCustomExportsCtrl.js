@@ -629,6 +629,10 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
          * @return {void}
          */
         $scope.pickSchedule = (selectedSchedule) => {
+            // Set the previous schedule as non-active
+            if ($scope.selectedEntityDetails) {
+                $scope.selectedEntityDetails.active = false;
+            }
             $scope.selectedEntityDetails = selectedSchedule;
             $scope.customExportsData.isNewExport = false;
             $scope.selectedColumns = [];
@@ -779,18 +783,12 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             $scope.scheduleParams.selectedCloudAccount = null;
         };
 
-        $scope.changeRepeats = () => {
+        $scope.hasMinutesRepeat = () => {
             var freqType = _.find ($scope.customExportsData.scheduleFreqTypes, {
                 id: $scope.scheduleParams.frequency_id
             });
 
-            if (freqType && freqType.value === 'Minute') {
-                $scope.repeatMinutesMinVal = 5;
-            } else {
-                $scope.repeatMinutesMinVal = 0;
-            }
-            
-            
+            return freqType && freqType.value === 'Minute';
         };
 
 
