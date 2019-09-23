@@ -1611,7 +1611,11 @@
                                             margin: 0;
 
                                             &.contract-name {
-                                                .calc-width( 100, 440 );
+                                                .calc-width( 100, 500 );
+                                            }
+
+                                            &.access-code {
+                                                width: 110px;
                                             }
 
                                             &.start-date {
@@ -1623,7 +1627,7 @@
                                             }
 
                                             &.rate {
-                                                width: 210px;
+                                                width: 140px;
                                             }
                                         }
                                     }
@@ -1776,6 +1780,22 @@
                                     }
                                 }
 
+                                .find-rate {
+                                    .card {
+                                        #flexbox > .parent( row, space-between, '', '' );
+
+                                        .rate-name {
+                                            padding-right: 10px;
+                                            .nowrap();
+                                        }
+
+                                        .rate-code {
+                                            color: @grey3;
+                                            font-size: 14px;
+                                        }
+                                    }
+                                }
+
                                 .contracted-rates {
                                     li {
                                         background-color: @white;
@@ -1803,11 +1823,23 @@
                                                 background-color: @grey1;
                                             }
                                         }
+
+                                        .rate-name {
+                                            padding-right: 10px;
+                                            .nowrap();
+                                        }
+
+                                        .rate-code {
+                                            color: @grey3;
+                                            font-size: 14px;
+                                            font-weight: 400;
+                                        }
                                     }
 
                                     &.disabled {
                                         li {
                                             cursor: default;
+                                            padding-right: 10px;
                                             color: @grey3;
 
                                             .icons { .hide(); }
