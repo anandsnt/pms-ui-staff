@@ -131,7 +131,11 @@ angular.module('sntRover').service('RVCustomExportSrv', [
                 url = 'admin/export_formats.json';
 
             sntBaseWebSrv.getJSON(url).then(function (response) {
-                deferred.resolve(response.results);
+                var validFormats = _.filter(response.results, function (format) {
+                    return (format.value === 'CSV' || format.value === 'XML' || format.value === 'JSON');
+                });
+
+                deferred.resolve(validFormats);
             }, function (error) {
                 deferred.reject(error);
             });
