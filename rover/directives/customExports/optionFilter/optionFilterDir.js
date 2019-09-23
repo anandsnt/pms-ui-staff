@@ -28,9 +28,9 @@ sntRover.directive('optionFilter', [
                 onRemove: '&',
                 isMultiSelect: '=',
                 options: '=',
-                'onFirstLevelFieldChange': '&',
-                'onSelectboxExpand': '=',
-                'hasDualState': '='
+                onFirstLevelFieldChange: '&',
+                onSelectboxExpand: '=',
+                hasDualState: '='
                 
             },
 			controller: filterController

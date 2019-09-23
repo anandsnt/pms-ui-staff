@@ -313,11 +313,13 @@ angular.module('sntRover')
                 setTitleAndHeading();
             });
 
+            // Create new custom export
             $scope.createNewCustomExport = () => {
                 $scope.$broadcast('CREATE_NEW_CUSTOM_EXPORT');
                 setPrevState(false, false, true);
             };
 
+            // Should show the reporter form or not
             $scope.shouldShowReportFooterForm = () => {
                 return $scope.reportViewStore && 
                         ($scope.reportViewStore.showingCustomNewExport || $scope.reportViewStore.showingCustomExports) &&
