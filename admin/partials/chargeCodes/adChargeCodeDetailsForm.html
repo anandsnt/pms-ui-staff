@@ -34,7 +34,7 @@
                     <ad-dropdown label="{{'CHARGE_GROUP'| translate}}" label-in-drop-down="{{'CHARGE_GROUP'| translate}}" list="prefetchData.charge_groups" selected-Id='prefetchData.selected_charge_group' ng-disabled="prefetchData.selected_charge_code_type === '11'" on-change="onChangeChargeGroup" required = "no" div-class="full-width"></ad-dropdown>
 				</div> 
 				<div class="entry full-width" style="margin-bottom:15px;" ng-show='warningMessage.length'>
-					<section ng-if="warningMessage.length" ng-switch="" on="warningMessage.length" class="notice error error-message">                  
+					<section ng-if="warningMessage.length" ng-switch="" on="warningMessage.length" class="notice error-message">                  
 					<span class="close-btn" ng-click="clearWarningMessage()"></span>
 					<span class="ng-binding ng-scope">{{warningMessage}}</span></section>
 				</div>
