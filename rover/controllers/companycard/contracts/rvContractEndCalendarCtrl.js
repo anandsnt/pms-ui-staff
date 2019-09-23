@@ -1,10 +1,17 @@
 sntRover.controller('rvContractEndCalendarCtrl', ['$rootScope', '$scope', 'dateFilter', 'ngDialog', function($rootScope, $scope, dateFilter, ngDialog) {
 	$scope.setUpData = function() {
-		var minDate, maxDate = '';
+		var maxDate = '',
+			minDate = tzIndependentDate($rootScope.businessDate);
+
+		minDate.setDate(minDate.getDate() + 1)
+			
 
 		if ($scope.contractData.mode === 'ADD') {
-			minDate = $rootScope.businessDate;
-			$scope.date = $scope.formData.endDate || $rootScope.businessDate;
+			$scope.date = $scope.formData.endDate || minDate;
+		} else if ($scope.contractData.mode === 'EDIT') {
+			if (!_.isEmpty($scope.contractData.editData)) {
+				$scope.date = $scope.contractData.editData.end_date || minDate;
+			}
 		}
 
 		// if ($scope.contractList.isAddMode) {
@@ -37,12 +44,26 @@ sntRover.controller('rvContractEndCalendarCtrl', ['$rootScope', '$scope', 'dateF
 			maxDate: tzIndependentDate(maxDate),
 			yearRange: "0:+10",
 			onSelect: function() {
+				var endDate = tzIndependentDate($scope.date),
+					beginDate;
 
 				if ($scope.contractData.mode === 'ADD') {
-					var myDate = tzIndependentDate($scope.date);
+					beginDate = tzIndependentDate($scope.formData.startDate) || endDate
+				} else if ($scope.contractData.mode === 'EDIT') {
+					beginDate = tzIndependentDate($scope.contractData.editData.begin_date);
+				};
 
-					$scope.formData.endDate = dateFilter(myDate, 'yyyy-MM-dd');
-				}
+				if (endDate <= beginDate) {
+					beginDate.setDate(beginDate.getDate() - 1);
+				};
+
+				if ($scope.contractData.mode === 'ADD') {
+					$scope.formData.endDate = dateFilter(endDate, 'yyyy-MM-dd');
+					$scope.formData.beginDate = dateFilter(beginDate, 'yyyy-MM-dd');
+				} else if ($scope.contractData.mode === 'EDIT') {
+					$scope.contractData.editData.end_date = dateFilter(endDate, 'yyyy-MM-dd');
+					$scope.contractData.editData.begin_date = dateFilter(beginDate, 'yyyy-MM-dd');
+				};
 				
 				ngDialog.close();
 			}

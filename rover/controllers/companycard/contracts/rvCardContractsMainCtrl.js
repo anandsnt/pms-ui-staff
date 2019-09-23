@@ -9,6 +9,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 		 */
 
 		$scope.setScroller('cardNewContractsScroll');
+		$scope.setScroller('editContractScroller');
 
 		var refreshScroller = function() {
 			$timeout(function() {
@@ -16,6 +17,12 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 					$scope.myScroll['cardNewContractsScroll'].refresh();
 				}
 				$scope.refreshScroller('cardNewContractsScroll');
+			}, 500);
+			$timeout(function() {
+				if ($scope.myScroll && $scope.myScroll['editContractScroller']) {
+					$scope.myScroll['editContractScroller'].refresh();
+				}
+				$scope.refreshScroller('editContractScroller');
 			}, 500);
 		};
 
@@ -57,14 +64,49 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 				pastContracts = data.history_contracts || [],
 				futureContracts = data.future_contracts || [];
 
-			if (currentContracts.length !== 0 && pastContracts.length !== 0 && futureContracts.length !== 0) {
+			if (currentContracts.length !== 0 || pastContracts.length !== 0 || futureContracts.length !== 0) {
 				// EDIT contract flow
-				// $scope.contractData.mode = 'EDIT';
-				// $scope.contractData.noContracts = false;
-				// $scope.contractData.selectedContract = data.contract_selected;
-				// fetchContractDetails()
+				$scope.contractData.mode = 'EDIT';
+				$scope.contractData.noContracts = false;
+				$scope.contractData.selectedContract = data.contract_selected;
+				// Disable the field if the selected contract is history
+				angular.forEach(pastContracts, function(item) {
+					if (item.id === $scope.contractData.selectedContract) {
+						$scope.contractData.disableFields = true;
+					}
+				});
+				fetchContractDetails($scope.contractData.selectedContract);
 			}
 			setSideListCount(currentContracts, futureContracts, pastContracts);
+		},
+		/**
+		 * Success callback for contract detail fetch
+		 * @param {Object} data - API response of detail fetch
+		 */
+		fetchContractDetailsSuccessCallback = function(data) {
+			$scope.contractData.editData = data;
+			refreshScroller();
+		},
+		/**
+		 * Function to fetch the currently selected contract details
+		 */
+		fetchContractDetails = function(contractId) {
+			var account_id;
+
+			if ($stateParams.id === "add") {
+				account_id = $scope.contactInformation.id;
+			} else {
+				account_id = $stateParams.id;
+			}
+			var options = {
+				successCallBack: fetchContractDetailsSuccessCallback,
+				params: {
+					"account_id": account_id,
+					"contract_id": contractId
+				}
+			};
+
+			$scope.callAPI(RVCompanyCardSrv.fetchContractsDetails, options);
 		},
 		/**
 		 * Init function fetches the contracts on page load
@@ -73,17 +115,18 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 			$scope.contractData = {
 				mode: '',
 				contractsList: [],
+				editData: {},
+				disableFields: false,
 				noContracts: true,
 				noStatistics: true,
 				selectedContract: ''
 			};
 			var options = {
 				successCallBack: fetchContractsListSuccessCallback,
-				failureCallBack: fetchFailureCallback,
 				params: {
 					"account_id": $stateParams.id
 				}
-			}
+			};
 			
 			$scope.callAPI(RVCompanyCardSrv.fetchContractsList, options);
 		};
@@ -92,6 +135,13 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 		 * Listener to call on new contracts form closure
 		 */
 		$scope.addListener('closeNewContractsForm', init);
+
+		/**
+		 * Listener for fetch event from the contract list 
+		 */
+		$scope.addListener('fetchContract', function(event, data) {
+			fetchContractDetails(data);
+		});
 
 		/**
 		 * Function to load the new contracts form

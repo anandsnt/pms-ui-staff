@@ -1,34 +1,34 @@
 <!-- If there are contracts, show this. -->
 <!-- If we don't show sidebar actions, remove .with-actions -->
-<div class="contracts-list with-actions" ng-show="!contractData.noContracts">
-    <div class="contracts-list-items scrollable">
+<div ng-controller="rvCardContractListCtrl" class="contracts-list with-actions" ng-show="!contractData.noContracts">
+    <div class="contracts-list-items scrollable" ng-iscroll="contractListScroller">
         <div class="wrapper">
             <!-- If it has no items, add .no-items -->
             <!-- If it's opened, add .open -->
-            <div class="contract-list-items-section no-items" ng-repeat="item in contractData.contractsList">
-                <h2>
+            <div class="contract-list-items-section"
+                ng-repeat="item in contractData.contractsList"
+                ng-class="{'no-items': item.count === 0, 'open': item.type === selectedType && opened}">
+                <h2 ng-click="openContractsList(item.type)">
                     {{item.type}}
                     <span class="count">{{item.count}}</span>
                     <!-- If there are items, show arrow
                       'status-class':
                         - 'rotate-uo' -> when opened
                         - 'rotate-down' -> when closed -->
-                    <span ng-show="item.count !== 0" class="icons icon-double-arrow black " ng-class="{'rotate-up': opened, 'rotate-down': !opened}"></span>
+                    <span ng-show="item.count !== 0" class="icons icon-double-arrow black " ng-class="{'rotate-up': item.type === selectedType && opened, 'rotate-down': !selectedType && !opened || item.type === selectedType && !opened}"></span>
                    
                 </h2>
                 <ul>
                     <!-- Add class .active if showing this contact -->
-                    <li ng-repeat="contract in item.contracts">
-                        <h3 class="item-title">{{contract.contract_name}}</h3>
+                    <li ng-repeat="contract in item.contracts" ng-click="fetchDetails(contract.id)">
+                        <h3 class="item-title" ng-class="{'active': contract.id === contractData.selectedContract}">{{contract.contract_name}}</h3>
                         <div class="item-info">
-                            <span>{start-date}</span>
-                            <span>{end-date}</span>
+                            <span>{{contract.contract_start_date}}</span>
+                            <span>{{contract.contract_end_date}}</span>
                         </div>
                     </li>
-                    <!-- ... repeat for each contract -->
                 </ul>
             </div>
-            <!-- ... repeat for each section (Future, Current, Past) -->
         </div>
     </div>
     <!-- Show this to enable creating contracts. -->

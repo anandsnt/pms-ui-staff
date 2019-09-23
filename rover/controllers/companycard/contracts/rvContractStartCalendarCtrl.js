@@ -3,10 +3,15 @@ sntRover.controller('rvContractStartCalendarCtrl', ['$rootScope', '$scope', 'dat
 	$scope.setUpData = function() {
 	    $scope.isDateSelected = false;
 		var minDate, maxDate = '';
+
+		minDate = $rootScope.businessDate;
 		
 		if ($scope.contractData.mode === 'ADD') {
-			minDate = $rootScope.businessDate;
-			$scope.date = $scope.formData.startDate || $rootScope.businessDate;
+			$scope.date = $scope.formData.startDate || minDate;
+		} else if ($scope.contractData.mode === 'EDIT') {
+			if (!_.isEmpty($scope.contractData.editData)) {
+				$scope.date = $scope.contractData.editData.begin_date;
+			}
 		};
 
 	    // if ($scope.contractList.isAddMode) {
@@ -38,36 +43,27 @@ sntRover.controller('rvContractStartCalendarCtrl', ['$rootScope', '$scope', 'dat
 		     maxDate: tzIndependentDate(maxDate),
 		     yearRange: "0:+10",
 		     onSelect: function() {
-
+				var endDate;
+				var beginDate = tzIndependentDate($scope.date);
+				
 				if ($scope.contractData.mode === 'ADD') {
-					var myDate = tzIndependentDate($scope.date);
-
-					$scope.formData.startDate = dateFilter(myDate, 'yyyy-MM-dd');
+					endDate = tzIndependentDate($scope.formData.endDate) || beginDate;
+				} else if ($scope.contractData.mode === 'EDIT') {
+					endDate = tzIndependentDate($scope.contractData.editData.end_date) || beginDate;
+				}
+				if (beginDate >= endDate) {
+					endDate.setDate(beginDate.getDate() + 1);
+				}
+				if ($scope.contractData.mode === 'ADD') {
+					$scope.formData.startDate = dateFilter(beginDate, 'yyyy-MM-dd');
+					$scope.formData.endDate = dateFilter(endDate, 'yyyy-MM-dd');
+				} else if ($scope.contractData.mode === 'EDIT') {
+					$scope.contractData.editData.begin_date = dateFilter(beginDate, 'yyyy-MM-dd');
+					$scope.contractData.editData.end_date = dateFilter(endDate, 'yyyy-MM-dd');
 				};
-				// if ($scope.contractList.isAddMode) {
-				// // set end date as one day next to begin date
-				// $scope.addData.begin_date = $scope.date;
-				// var myDate = tzIndependentDate($scope.date);
-
-				// myDate.setDate(myDate.getDate() + 1);
-				// $scope.addData.end_date = dateFilter(myDate, 'yyyy-MM-dd');
-
-				// }
-				// else {
-
-				// $scope.contractData.begin_date = $scope.date;
-				// if (!($scope.contractData.begin_date < $scope.contractData.end_date)) {
-				// 	// set end date as one day next to begin date
-				// 	var myDate = tzIndependentDate($scope.date);
-
-				// 	myDate.setDate(myDate.getDate() + 1);
-				// 	$scope.contractData.end_date = dateFilter(myDate, 'yyyy-MM-dd');
-				// }
-				// }
 
 				ngDialog.close();
 	    	}
-
     	};
 	};
 	
