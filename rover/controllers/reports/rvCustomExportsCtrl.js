@@ -171,7 +171,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             $scope.viewState.currentStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
         };
 
-        var processScheduleDetails = function(report) {
+        var processScheduleDetails = function () {
             var TIME_SLOTS = 30;
 
             var datePickerCommon = {

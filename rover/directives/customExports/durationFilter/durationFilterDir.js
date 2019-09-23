@@ -1,7 +1,6 @@
 sntRover.directive('durationFilter', [
-    '$timeout', 
-    function ($timeout) {
-        var filterController = function ($scope, $element, $attrs) {
+    function () {
+        var filterController = function ($scope) {
 
             $scope.removeFilter = function () {
                 $scope.onRemove({filterPos: $scope.filterPos});
@@ -22,7 +21,6 @@ sntRover.directive('durationFilter', [
                 
             },
 			controller: filterController
-
             
         };
 

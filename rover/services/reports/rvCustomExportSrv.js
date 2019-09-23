@@ -42,6 +42,10 @@ angular.module('sntRover').service('RVCustomExportSrv', [
 
         var self = this;
 
+        /**
+         * Get available data spaces
+         * @return { Promise } promise
+         */
         this.getAvailableDataSpaces = () => {
             var deferred = $q.defer(),
                 url = 'api/reports?show_only_redshift_reports=true';
@@ -55,6 +59,10 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
+        /**
+         * Get scheduled custom exports
+         * @return { Promise } promise
+         */
         this.getScheduledCustomExports = () => {
             var deferred = $q.defer(),
                 url = 'admin/export_schedules.json?show_only_redshift_reports=true';
@@ -68,6 +76,10 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
+        /**
+         * Get scheduled custom exports and export frequencies
+         * @return { Promise } promise
+         */
         this.getCustomExportsAndScheduleFrequencies = () => {
             var deferred = $q.defer(),
                 promises = {};
@@ -84,6 +96,11 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
+        /**
+         * Get all the required data for loading a custom export
+         * @param { Object } params object holding request params
+         * @return { Promise } promise
+         */
         this.getRequestData = ( params ) => {
             var promises = {},
                 deferred = $q.defer();
@@ -105,7 +122,11 @@ angular.module('sntRover').service('RVCustomExportSrv', [
 
         };
 
-        this.getExportFormats =  () => {
+        /**
+         * Get export formats
+         * @return { Promise } promise
+         */
+        this.getExportFormats = () => {
             var deferred = $q.defer(),
                 url = 'admin/export_formats.json';
 
@@ -118,6 +139,10 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
+        /**
+         * Get delivery types configured
+         * @return { Promise } promise
+         */
         this.getExportDeliveryTypes = ()  => {
             var deferred = $q.defer(),
                 url = 'admin/export_delivery_types.json';
@@ -136,6 +161,10 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
+        /**
+         * Get export frequencies
+         * @return { Promise } promise
+         */
         this.getExportFrequencies = ()  => {
             var deferred = $q.defer(),
                 url = 'admin/export_frequencies.json';
@@ -154,6 +183,11 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
+        /**
+         * Get cloud drive list by type
+         * @param {String} driveType cloud drive type
+         * @return { Promise } promise
+         */
         this.getCloudDrives = (driveType)  => {
             var deferred = $q.defer(),
                 url = '/api/cloud_drives?cloud_drive_type=' + driveType;
@@ -172,6 +206,11 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
+        /**
+         * Get data space columns
+         * @param {Object} params object holding request params
+         * @return { Promise } promise
+         */
         this.getDataSpaceColumns = ( params ) => {
             var deferred = $q.defer(),
                 url = 'api/reports/' + params.reportId + '/list_data_space_columns';
@@ -194,7 +233,11 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
-        this.getExportDurations = ( )  => {
+        /**
+         * Get export durations
+         * @return { Promise } promise
+         */
+        this.getExportDurations = () => {
             var deferred = $q.defer(),
                 url = 'admin/export_time_periods.json';
 
@@ -216,6 +259,10 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
+        /**
+         * Get room nos
+         * @return { Promise } promise
+         */
         this.getRoomNos = () => {
             var deferred = $q.defer(),
                 url = 'house/search.json',
@@ -239,6 +286,10 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
+        /**
+         * Get guest languages
+         * @return { Promise } promise
+         */
         this.getGuestLanguages = () => {
             var deferred = $q.defer(),
                 url = 'api/guest_languages';
@@ -259,6 +310,10 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
+        /**
+         * Get primary payment methods
+         * @return { Promise } promise
+         */
         this.getPaymentMethods = () => {
             var deferred = $q.defer(),
                 url = 'staff/payments/addNewPayment.json';
@@ -272,6 +327,10 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
+        /**
+         * Get countries/nationality list
+         * @return { Promise } promise
+         */
         this.getCountries = () => {
             var deferred = $q.defer(),
                 url = 'ui/country_list';
@@ -292,6 +351,10 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
+        /**
+         * Get CI/CO agents list
+         * @return { Promise } promise
+         */
         this.getCICOAgents = () => {
             var deferred = $q.defer(),
                 url = 'admin/users.json?isAdminSnt=false&sort_dir=true&sort_field=name';
@@ -313,6 +376,10 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
+        /**
+         * Get rate list
+         * @return { Promise } promise
+         */
         this.getRateList = () => {
             var deferred = $q.defer(),
                 url = 'api/rates/list';
@@ -333,6 +400,10 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
+        /**
+         * Get CI/CO applications list
+         * @return { Promise } promise
+         */
         this.getCICOApplications = () => {
             var deferred = $q.defer(),
                 url = 'api/reference_values?type=application';
@@ -346,6 +417,10 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
+        /**
+         * Get HLP mememberships
+         * @return { Promise } promise
+         */
         this.getHLP = () => {
             var deferred = $q.defer(),
                 url = 'staff/user_memberships/get_available_hlps.json';
@@ -366,6 +441,10 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
+        /**
+         * Get FFP mememberships
+         * @return { Promise } promise
+         */
         this.getFFP = () => {
             var deferred = $q.defer(),
                 url = 'staff/user_memberships/get_available_ffps.json';
@@ -386,6 +465,10 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
+        /**
+         * Get HLP membership levels
+         * @return { Promise } promise
+         */
         this.getHLPLevels = () => {
             var deferred = $q.defer(),
                 url = 'staff/user_memberships/get_available_hlps.json';
@@ -409,6 +492,10 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
+        /**
+         * Get FFP membership levels
+         * @return { Promise } promise
+         */
         this.getFFPLevels = () => {
             var deferred = $q.defer(),
                 url = 'staff/user_memberships/get_available_ffps.json';
@@ -432,6 +519,10 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
+        /**
+         * Get all memberships
+         * @return { Promise } promise
+         */
         this.getMemberShips = () => {
             var deferred = $q.defer(),
                 promises = [];
@@ -446,6 +537,10 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
+        /**
+         * Get all membership levels
+         * @return { Promise } promise
+         */
         this.getMemberShipLevels = () => {
             var deferred = $q.defer(),
                 promises = [];
@@ -459,6 +554,7 @@ angular.module('sntRover').service('RVCustomExportSrv', [
 
             return deferred.promise;
         };
+
 
         this.processFilterSelections = ( filterValues ) => {
             var promises = [],

@@ -105,7 +105,6 @@ angular.module('sntRover')
                 }
 
                 return styles;
-                //return angular.isDefined(action) ? 'cols-' + action : 'cols-' + $scope.reportViewActions.ONE;
             };
 
 
