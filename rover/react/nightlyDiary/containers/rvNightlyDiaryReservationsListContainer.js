@@ -13,6 +13,10 @@ let convertRowReadyToComponent = (roomsList, selectedRoomId, state) => {
             })
         }
         overlappedReservationsCount = reservations.length - 1;
+        
+        if(roomsList[iterator].hourly_reservations.length !== 0) {
+            overlappedReservationsCount++;
+        }
 
         if (room.id === selectedRoomId) {
             room.roomClass = (overlappedReservationsCount >= 0) ? 'grid-row highlighted overlap-' + overlappedReservationsCount : 'grid-row highlighted';

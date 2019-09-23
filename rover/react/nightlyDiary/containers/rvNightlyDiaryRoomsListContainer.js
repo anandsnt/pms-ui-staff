@@ -33,7 +33,9 @@ let convertRoomsListReadyToComponent = (roomsList, selectedRoomId, state) => {
             reservations.push(state.reservationsList[index].reservations[iterator]);
         })
         overlappedReservationsCount = reservations.length - 1;
-
+        if(state.reservationsList[index].hourly_reservations.length !== 0) {
+            overlappedReservationsCount++;   
+        }
         if (overlappedReservationsCount >= 0) {
             room.main_room_class += ' overlap-' + overlappedReservationsCount;
         }
