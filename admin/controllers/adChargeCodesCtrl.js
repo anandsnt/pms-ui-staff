@@ -217,6 +217,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				$scope.prefetchData = data;
 				$scope.prefetchData.allow_manual_posting = angular.isUndefined(data.allow_manual_posting) ? false : data.allow_manual_posting;
 				$scope.prefetchData.selected_fees_code = $scope.prefetchData.selected_fees_code || '';
+				$scope.prefetchData.linked_deposit_charge_code_id = $scope.prefetchData.linked_deposit_charge_code_id || '';
 				$scope.addIDForPaymentTypes();
                 $scope.stateAttributes.selectedPaymentType = getPaymentTypeCompositeID({
                     value: $scope.prefetchData.selected_payment_type,
@@ -341,7 +342,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			};
 			// To create Charge code Link with list frm scope.
 			var selected_link_with = [];
-
+			
 			angular.forEach($scope.prefetchData.link_with, function(item, index) {
 				if (item.is_checked === 'true') {
 					selected_link_with.push(item.value);
@@ -657,7 +658,19 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 
         $scope.isFeesSelected = function () {
             return parseInt($scope.prefetchData.selected_charge_code_type, 10) === ADChargeCodesSrv.getChargeCodeTypeValue('FEES');
+		};
+		
+        $scope.isDepositSelected = function () {
+            return parseInt($scope.prefetchData.selected_charge_code_type, 10) === ADChargeCodesSrv.getChargeCodeTypeValue('DEPOSIT');
+		};
+		
+        $scope.isArManualBalanceSelected = function () {
+            return parseInt($scope.prefetchData.selected_charge_code_type, 10) === ADChargeCodesSrv.getChargeCodeTypeValue('AR MANUAL BALANCE');
         };
+		
+        $scope.isArManualCreditSelected = function () {
+            return parseInt($scope.prefetchData.selected_charge_code_type, 10) === ADChargeCodesSrv.getChargeCodeTypeValue('AR MANUAL CREDIT');
+		};
 
         /**
          * CICO-40001

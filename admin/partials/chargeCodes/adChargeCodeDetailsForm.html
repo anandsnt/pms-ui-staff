@@ -74,6 +74,19 @@
                         </select>
 					</div>
 				</div>
+				<div class="entry full-width" required="required" ng-hide="(!prefetchData.advance_payment_enabled || isPaymentSelected() || isDepositSelected() || isArManualBalanceSelected() || isArManualCreditSelected())">
+					<label class="ng-binding" ng-hide="label.length==0" for="" >
+						{{'DEPOSIT_CHARGE_CODE'| translate}}
+					</label>
+					<div class="select">
+						<select convert-to-number name="payment-type" ng-model="prefetchData.linked_deposit_charge_code_id">
+							<option value="">Select Deposit charge code</option>
+							<option value="{{depositChargeCode.value}}" ng-selected="depositChargeCode.value == prefetchData.linked_deposit_charge_code_id" ng-repeat="depositChargeCode in prefetchData.deposit_charge_codes">
+							{{depositChargeCode.name}}
+							</option>
+						</select>
+					</div>
+				</div>
 				<div class="entry full-width" required="required" ng-hide="isAllowanceType(prefetchData.selected_charge_code_type)">
 					<label class="ng-binding" ng-hide="label.length==0" for="" >
 						{{'FEES'| translate}}
