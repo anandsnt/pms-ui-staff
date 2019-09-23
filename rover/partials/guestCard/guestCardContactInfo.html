@@ -46,11 +46,11 @@
 
 			<div class="entry margin has-datepicker" ng-if="guestCardData.contactInfo.guestAdminSettings.id_issue_date.is_visible">
 				<label for="id date issue"> ID Date of issue </label>
-				<input type="text" ng-model="guestCardData.contactInfo.id_issue_date" class="datepicker" value="{{guestCardData.contactInfo.id_issue_date | date:dateFormat}}" ng-click="popupCalendarForGuestContactInfoDate('idDate')" readonly />
+				<input type="text" ng-model="guestCardData.contactInfo.id_issue_date  | date:dateFormat" class="datepicker" ng-click="popupCalendarForGuestContactInfoDate('idDate')" readonly />
 			</div>
 			<div class="entry has-datepicker" ng-class="{'margin': !guestCardData.contactInfo.guestAdminSettings.id_issue_date.is_visible}" ng-if="guestCardData.contactInfo.guestAdminSettings.entry_date.is_visible">
 				<label for="entry date"> Entry Date </label>
-				<input type="text" ng-model="guestCardData.contactInfo.entry_date" class="datepicker" value="{{guestCardData.contactInfo.entry_date | date:dateFormat}}" ng-click="popupCalendarForGuestContactInfoDate('entryDate')" readonly />
+				<input type="text" ng-model="guestCardData.contactInfo.entry_date | date:dateFormat" class="datepicker" ng-click="popupCalendarForGuestContactInfoDate('entryDate')" readonly />
 			</div>
 
 			<rv-textbox ng-if="guestCardData.contactInfo.guestAdminSettings.father_name.is_visible" required ="{{guestCardData.contactInfo.guestAdminSettings.father_name.is_mandatory_on_guest_card_creation ? 'yes' : 'no'}}" value="guestCardData.contactInfo.father_name" label = "Name of Father" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.father_name, 'margin')}}"></rv-textbox>
