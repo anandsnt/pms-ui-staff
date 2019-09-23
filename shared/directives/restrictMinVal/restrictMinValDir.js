@@ -1,7 +1,6 @@
 angular.module('restrictMinVal', []).directive('restrictMinVal', [function() {
     return {
         restrict: 'A',
-        require: "ngModel",
         link: function(scope, elem, attrs) {
             var limit = parseInt(attrs.restrictMinVal, 10);
 
@@ -14,6 +13,7 @@ angular.module('restrictMinVal', []).directive('restrictMinVal', [function() {
                     return false;
                 }
             });
+            
         }
     };
 }]);
