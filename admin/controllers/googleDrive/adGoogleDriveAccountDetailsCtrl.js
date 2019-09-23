@@ -3,7 +3,7 @@ admin.controller('ADGoogleDriveAccountDetailsCtrl', [
     'ADThirdPartyStorageSrv',
     '$state',
     '$stateParams',
-    '$timeout'
+    '$timeout',
     function($scope, ADThirdPartyStorageSrv, $state, $stateParams, $timeout) {
     
     BaseCtrl.call(this, $scope);
