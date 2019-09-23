@@ -86,7 +86,7 @@ admin.controller('ADDropboxAccountListCtrl', [
                 page: 1, // show first page
                 count: $scope.dropboxAccountList.length,
                 sorting: {
-                    description : 'asc' // initial sorting
+                    description: 'asc' // initial sorting
                 }
             }, {
                 total: 0, // length of data
