@@ -73,7 +73,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$rootScope', 
 			$scope.callAPI(RVCompanyCardSrv.fetchContractsList, options);
 		};
 
-		$scope.addListener('closeContractsForm', init);
+		$scope.addListener('closeNewContractsForm', init);
 
 		$scope.createFirstContract = function() {
 			$scope.contractData.mode = 'ADD';

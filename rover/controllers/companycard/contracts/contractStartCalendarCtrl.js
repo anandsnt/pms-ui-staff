@@ -1,5 +1,5 @@
 
-sntRover.controller('contractStartCalendarCtrl', ['$rootScope', '$scope', 'dateFilter', 'ngDialog', function($rootScope, $scope, dateFilter, ngDialog) {
+sntRover.controller('rvContractStartCalendarCtrl', ['$rootScope', '$scope', 'dateFilter', 'ngDialog', function($rootScope, $scope, dateFilter, ngDialog) {
 	$scope.setUpData = function() {
 	    $scope.isDateSelected = false;
 		var minDate, maxDate = '';
