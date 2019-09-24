@@ -103,7 +103,8 @@ angular.module('sntRover').service('RVHotelDetailsSrv', ['$q', 'rvBaseWebSrvV2',
 
             return (service.hotelDetails['payment_gateway'] === 'MLI' &&
                 service.hotelDetails['mli_emv_enabled'] &&
-                workstationInfo.emv_terminal_id) || service.hotelDetails['payment_gateway'] === 'sixpayments';
+                workstationInfo.emv_terminal_id) || service.hotelDetails['payment_gateway'] === 'sixpayments' ||
+                service.hotelDetails['payment_gateway'] === 'SHIJI';
         };
         /*
          * fetch infrasec details of the logged in hotel
