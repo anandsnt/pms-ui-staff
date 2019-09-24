@@ -211,7 +211,7 @@
 		<!-- On click Show Manual Balance Billing Content -->
 		<button class="add-new-button" ng-show="!roverObj.noModifyInvoice" ng-click="showAddBalanceScreen()">Add Manual Balance</button>
 	</li>
-    <li>
+    <li ng-if="!printBillCardActive">
         <!-- To fix scroll -->
         <button>&nbsp;</button>
     </li>
