@@ -4,27 +4,58 @@ let convertRowReadyToComponent = (roomsList, selectedRoomId, state) => {
 
     roomsList.map((room, iterator) => {
 
-        var reservations = [],
-            overlappedReservationsCount = 0;
+        let dateList = [];
 
-        if (roomsList[iterator].reservations.length !== 0) {
-            roomsList[iterator].reservations.map((roomItem, itr) => {
-                reservations.push(roomsList[iterator].reservations[itr]);
-            })
-        }
-        overlappedReservationsCount = reservations.length - 1;
-        
-        if(roomsList[iterator].hourly_reservations.length !== 0) {
-            overlappedReservationsCount ++;
+        if (room.reservations.length !== 0) {
+
+            /*
+             *  Retrieve Date List in a row ( against each room)
+             *  where reservations present in it.
+             */
+            _.each(room.reservations,
+                function(item) {
+                    dateList.push(item.arrival_date);
+                }
+            );
+            dateList = _.unique(dateList);
+
+            /*
+             *  Mapping dateList Vs reservations
+             *  Find overlap count ( how many reservations exist in a day the selected room )
+             */
+            _.each(dateList, 
+                function(date) {
+                    let count = 0;
+
+                    _.each(room.reservations,
+                        function(res) {
+                            if (date === res.arrival_date) {
+                               res.overlapCount = count;
+                               count ++;
+                            }
+                        }
+                    );
+                }
+            );
+
+            /*
+             *  Find Max overlap count
+             *  Max no of overlaps in a row.
+             */
+            room.maxOverlap = _.max(room.reservations, 
+                                function(item) { 
+                                    return item.overlapCount; 
+                                }).overlapCount;
         }
 
         if (room.id === selectedRoomId) {
-            room.roomClass = (overlappedReservationsCount >= 0) ? 'grid-row highlighted overlap-' + overlappedReservationsCount : 'grid-row highlighted';
+            room.roomClass = (room.maxOverlap >= 0) ? 'grid-row highlighted overlap-' + room.maxOverlap : 'grid-row highlighted';
         }
         else {
-            room.roomClass = (overlappedReservationsCount >= 0) ? 'grid-row overlap-' + overlappedReservationsCount : 'grid-row';
+            room.roomClass = (room.maxOverlap >= 0) ? 'grid-row overlap-' + room.maxOverlap : 'grid-row';
         }
     });
+
     return roomsList;
 };
 

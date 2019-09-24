@@ -3,8 +3,6 @@ const {connect} = ReactRedux;
 let convertRoomsListReadyToComponent = (roomsList, selectedRoomId, state) => {
     roomsList.map((room, index) => {
 
-        var reservations =[],
-            overlappedReservationsCount = 0;
         room.room_class = (room.service_status === 'IN_SERVICE') ? "room-number " + room.hk_status : "room-number out";
         room.main_room_class = (room.id === selectedRoomId) ? 'room not-clickable highlighted' : 'room not-clickable';
         switch (room.hk_status) {
@@ -28,22 +26,66 @@ let convertRoomsListReadyToComponent = (roomsList, selectedRoomId, state) => {
         if ( room.service_status === 'OUT_OF_ORDER' || room.service_status === 'OUT_OF_SERVICE') {
             room.main_room_class = 'room unavailable';
         }
+        room.isSuitesAvailable = room.suite_room_details.length > 0;
 
-        state.reservationsList[index].reservations.map((reservation, iterator) => {
-            reservations.push(state.reservationsList[index].reservations[iterator]);
-        })
-        overlappedReservationsCount = reservations.length - 1;
-        if(state.reservationsList[index].hourly_reservations.length !== 0) {
-            overlappedReservationsCount++;   
+        // CICO-70115 (N Diary - Stack N bookings in room diary when overlapping) Logic Goes here..
+        let dateList = [];
+        let reservationList = state.reservationsList[index];
+
+        if (reservationList.reservations.length !== 0) {
+            /*
+             *  Retrieve Date List in a row ( against each room)
+             *  where reservations present in it.
+             */
+            _.each(reservationList.reservations,
+                function(item) {
+                    dateList.push(item.arrival_date);
+                }
+            );
+            dateList = _.unique(dateList);
+
+            /*
+             *  Mapping dateList Vs reservations
+             *  Find overlap count ( how many reservations exist in a day the selected room )
+             */
+            _.each(dateList, 
+                function(date) {
+                    let count = 0;
+
+                    _.each(reservationList.reservations,
+                        function(reservation) {
+                            if (date === reservation.arrival_date) {
+                               reservation.overlapCount = count;
+                               count ++;
+                            }
+                        }
+                    );
+                }
+            );
+
+            /*
+             *  Find Max overlap count
+             *  Max no of overlaps in a row.
+             */
+            room.maxOverlap = _.max(reservationList.reservations, 
+                                function(item) { 
+                                    return item.overlapCount; 
+                                }).overlapCount;
+
+            if (reservationList.hourly_reservations.length > 0) {
+                room.maxOverlap ++;
+            }
         }
-        if (overlappedReservationsCount >= 0) {
-            room.main_room_class += ' overlap-' + overlappedReservationsCount;
+
+        if (room.maxOverlap >=0) {
+            room.main_room_class += ' overlap-' + room.maxOverlap;
         }
-        room.isSuitesAvailable = (room.suite_room_details.length > 0) ? true : false;
-    })
+        // CICO-70115 (N Diary - Stack N bookings in room diary when overlapping) Logic Ends here..
+        
+    });
+
     return roomsList;
 }
-
 
 const mapStateToNightlyDiaryRoomsListContainerProps = (state) => ({
     roomListToComponent: convertRoomsListReadyToComponent(state.roomsList, state.selectedRoomId, state),

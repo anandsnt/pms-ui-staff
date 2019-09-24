@@ -19,9 +19,11 @@ let calculateHourlyRoomsPositionAndDuration = (diaryInitialDayOfDateGrid, hourly
     returnData.style = {};
     returnData.style.width = durationOfHourlydRoom + "px";
     returnData.style.transform = "translateX(" + unHourlyRoomPosition + "px)";
+    
     if(isNightlyPresent) {
         returnData.reservationClass = "reservation dayuse " + reservationStatusClass + " overlap-0";
-    } else {
+    } 
+    else {
         returnData.reservationClass = "reservation dayuse " + reservationStatusClass;
     }
     return returnData;

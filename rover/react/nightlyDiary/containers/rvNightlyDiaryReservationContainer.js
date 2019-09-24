@@ -234,7 +234,6 @@ let convertReservationsListReadyToComponent = (reservation, overlapCount, isHour
             reservation.style.width = newDuration;
             reservation.style.transform = "translateX(" + newArrivalPosition + "px)";
         }
-
     }
 
     if(isHourlyPresent) {
