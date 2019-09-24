@@ -741,3 +741,9 @@ var getTemporaryDisplayPassword = function() {
 var isEmptyArray = function (arr) {
     return arr.length === 0;
 };
+
+var removeKeysFromObj = function (obj, keys) {
+    for (var i = 0; i < keys.length; i++) {
+        delete obj[keys[i]];
+    }
+};

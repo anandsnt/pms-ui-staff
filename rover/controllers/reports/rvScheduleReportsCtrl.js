@@ -303,6 +303,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 $scope.selectedSchedule.active = false;
             }
             $scope.updateViewCol($scope.viewColsActions.ONE);
+            $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
 
             if ( updatedIndex >= 0 ) {
                 $scope.$parent.$parent.schedulesList[updatedIndex].frequency_id = params.frequency_id;
@@ -1127,7 +1128,6 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             var reset = true;
 
             $scope.isAddingNew = true;
-            $scope.addingStage = STAGES.SHOW_PARAMETERS;
 
             $scope.selectedSchedule.active = false;
 
@@ -1220,7 +1220,11 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.scheduleReport();
         });
 
-        $scope.$on('$destroy', createNewReportScheduleListener);        
+        $scope.$on('$destroy', createNewReportScheduleListener);   
+        
+        $scope.addListener('RESET_CURRENT_STAGE', () => {
+            $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
+        });
 
         /**
          * Startup
