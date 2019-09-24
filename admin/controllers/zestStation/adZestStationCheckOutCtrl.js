@@ -45,8 +45,6 @@ admin.controller('ADZestStationCheckOutCtrl', ['$scope', '$rootScope', '$state',
             $scope.availableItems = _.filter(data.items, function (item) {
                 return !item.station_item;
             });
-            console.log('allowedItemsInZS: ' + $scope.allowedItemsInZS)
-            console.log('availableItems: ' + $scope.availableItems)
         };
 
         $scope.invokeApi(ADItemSrv.fetchItemList, {}, fetchSuccessOfItemList);
