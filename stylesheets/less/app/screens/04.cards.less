@@ -757,61 +757,6 @@
                             }
                         }
 
-                        &.find-rate {
-                            position: relative;
-                            
-                            .clear-query {
-                                position: absolute;
-                                top: 24px;
-                                right: 0;
-                                z-index: 99;
-                                visibility: hidden;
-                                background: @white;
-                                #border-radius > .right();
-                                .box-shadow(inset -1px 1px 1px rgba(0, 0, 0, .15));
-                                .square(40px);
-
-                                .icons {
-                                    position: absolute;
-                                    top: 12.5px;
-                                    right: 12.5px;
-                                    background-color: @grey2;
-                                    .hide-text;
-                                    .square(15px);
-                                    .opacity(0);
-                                    .show;
-                                    #fade > .out();
-                                    #border-radius > .rounded(15px);
-                                }
-
-                                &.visible { 
-                                    visibility: visible;
-
-                                    .icons {    
-                                        .opacity(100); 
-                                        #fade > .in(); 
-                                    }
-                                }
-
-                                &:hover,
-                                &.active { 
-                                    .icons { background-color: @logoPrimary; }
-                                }
-                            }
-
-                            input {
-                                padding-right: 40px;
-                                .nowrap();
-                            }
-
-                            .mini-select {
-                                position: absolute;
-                                top: 24px;
-                                right: 0;
-                                z-index: 9;
-                            }
-                        }
-
                         &.price-adjust {
                             .float;
 
@@ -1432,66 +1377,530 @@
 
                 /* Contracts ***/
                 &.contracts {
-                    
-                    .tab-header {
-                        padding: 20px;
-
-                        .entry {
-                            .calc-width(100, 240);
-                            .float;
-
-                            input,
-                            .select { 
-                                width: 220px;
-                                margin-right: 10px;
-                                .pull-left; 
-                            }
-
-                            .button { 
-                                width: 80px;
-                                .pull-left; 
-                            }
-                        }
-
-                        .actions {
-                            .button {
-                                &.green {
-                                    width: 120px;
-                                    margin-right: 0;
-                                }
-
-                                &.blank { 
-                                    width: 90px;
-                                    margin-right: 10px; 
-                                }
-                            }
-                        }
-                    }
 
                     .tab-details {
-                        .holder {
-                            margin-bottom: 20px;
+                        height: 100%;
+
+                        &.no-content {
+                            .icon-no-content { height: 90px; }
+                            .info {
+                                .h1 { margin-bottom: 0; }
+                                .h2 { margin-bottom: 20px; }
+                                .button {
+                                    height: 60px;
+                                    font-size: 18px;
+                                }
+                            }
                         }
-                        
+
+                        &:not(.no-content) {
+                            #flexbox > .parent( row, '', '', '' );
+                        }
+
+                        .contracts-list {
+                            position: relative;
+                            background: rgba(0,0,0,.1);
+                            .size( 100%, 265px );
+                            .box-shadow( inset -2px 0px 0 rgba(0, 0, 0, 0.15));
+
+                            .contracts-list-items {
+                                position: relative;
+                                height: 100%;
+
+                                .contract-list-items-section {
+
+                                    h2 {
+                                        padding: 0 40px 0 20px;
+                                        font-size: 16px;
+                                        font-weight: 600;
+                                        text-transform: uppercase;
+                                        background: rgba(0, 0, 0, 0.05);
+                                        width: 100%;
+                                        height: 40px;
+                                        line-height: 40px;
+                                        position: relative;
+                                        #flexbox > .parent( row, space-between, '', '' );
+
+                                        .icons {
+                                            &.icon-double-arrow {
+                                                &.black {
+                                                    position: absolute;
+                                                    top: 12px;
+                                                    right: 18px;
+                                                    width: 14px;
+                                                    height: 13px;
+                                                    background-size: 100px;
+                                                    opacity: 0.3;
+                                                    background-position: 0px -1282px;
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    ul {
+                                        display: none;
+
+                                        li {
+                                            height: 50px;
+                                            margin: 0;
+                                            padding: 10px 20px;
+
+                                            &.active {
+                                                color: @grey3;
+                                                .background(@white);
+                                                .box-shadow(0px 2px 0 rgba(0, 0, 0, 0.15));
+                                            }
+
+                                            .item-title {
+                                                font-size: 16px;
+                                                font-weight: 600;
+                                                .nowrap();
+                                            }
+
+                                            .item-info {
+                                                font-size: 14px;
+                                                color: @grey3;
+                                                line-height: 1;
+                                                #flexbox > .parent( row, space-between, '', '' );
+                                            }
+                                        }
+                                    }
+
+                                    &.open {
+                                        h2 {
+                                            .icons {
+                                                &.icon-double-arrow {
+                                                    &.black {
+                                                        top: 13px;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        ul {
+                                            display: block;
+                                        }
+                                    }
+
+                                    &.no-items {
+                                        h2 {
+                                            color: @grey3;
+                                        }
+                                    }
+
+                                    &:not(.open):not(:last-child) {
+                                        border-bottom: 1px solid rgba( 0, 0, 0, 0.1 );
+                                    }
+                                }
+
+                                .iScrollVerticalScrollbar .iScrollIndicator {
+                                    background: rgba(0,0,0,0.15);
+                                }
+                            }
+
+                            .contracts-list-actions {
+                                display: block;
+                                background: #d0d0d0;
+                                position: absolute;
+                                left: 0;
+                                bottom: 0;
+                                padding: 20px;
+                                .size( 80px, 100% );
+                                .box-shadow(inset -2px 1px 0 rgba(0, 0, 0, 0.15));
+
+                                .button {
+                                    width: 100%;
+                                    font-size: 14px;
+
+                                    &:not(:last-child) {
+                                        margin-bottom: 10px;
+                                    }
+                                }
+                            }
+
+                            &.with-actions {
+                                .contracts-list-items {
+                                    .calc-height( 100, 80 );
+                                }
+                            }
+                        }
+
+                        .contracts-details {
+                            height: 100%;
+                            position: relative;
+                            .calc-width( 100, 265 );
+                            
+                            .contract-details-header {
+                                background: @white;
+                                overflow: hidden;
+                                height: 60px;
+                                .box-shadow();
+
+                                .search-header {
+                                    height: 60px;
+                                    padding: 10px;
+                                    #flexbox > .display();
+
+                                    .search {
+                                        padding: 0;
+                                        width: 100%;
+
+                                        .icon-search {
+                                            top: 10px;
+                                            left: 10px;
+                                        }
+
+                                        .clear-query {
+                                            top: 0;
+                                            right: 0;
+                                        }
+                                    }
+
+                                    &.with-button {
+                                        .search {
+                                            margin-right: 10px;
+                                            .calc-width( 100, 160 );
+                                        }
+
+                                        > .button {
+                                            width: 150px;
+                                            font-size: 14px;
+                                            padding: 0 10px;
+                                        }
+                                    }
+                                }
+
+                                .search {
+                                    input {
+                                        width: 100%;
+                                        background-color: @grey1;
+                                        padding-top: 10px;
+                                        height: 40px;
+                                    }
+
+                                    label {
+                                        text-transform: uppercase;
+                                        position: absolute;
+                                        left: 30px;
+                                        font-size: 12px;
+                                        color: #939393;
+                                        margin: 0;
+                                    }
+                                }
+
+                                &.autocomplete-search {
+
+                                    .scrollable {
+                                        .iScrollVerticalScrollbar .iScrollIndicator {
+                                            background: rgba(0,0,0,0.15);
+                                        }
+
+                                        .wrapper {
+                                            padding-bottom: 20px;
+                                        }
+                                    }
+
+                                    .autocomplete-results-header,
+                                    .contract {
+                                        text-transform: uppercase;
+                                        font-size: 14px;
+                                        padding: 0 20px;
+                                        border-bottom: 1px solid rgba( 0, 0, 0, 0.1 );
+                                        #flexbox > .display();
+
+                                        li {
+                                            margin: 0;
+
+                                            &.contract-name {
+                                                .calc-width( 100, 440 );
+                                            }
+
+                                            &.start-date {
+                                                width: 110px;
+                                            }
+
+                                            &.end-date {
+                                                width: 120px;
+                                            }
+
+                                            &.rate {
+                                                width: 210px;
+                                            }
+                                        }
+                                    }
+
+                                    .autocomplete-results-header {
+                                        color: @grey3;
+                                        font-weight: 600;
+                                        
+                                        li {
+                                            padding: 5px 0 10px 0;
+                                            line-height: 1;
+                                        }
+                                    }
+
+                                    .contract {
+
+                                        li {
+                                            height: 35px;
+                                            line-height: 35px;
+
+                                            .highlight { color: @logoPrimary; }
+
+                                            &.rate,
+                                            &.contract-name {
+                                                .nowrap();
+                                                padding-right: 10px;
+                                            }
+                                        }
+
+                                        &.linked {
+                                            position: relative;
+
+                                            li {
+                                                opacity: 0.35;
+                                            }
+
+                                            &:after {
+                                                content: '';
+
+                                            .icons();
+                                                position: absolute;
+                                                width: 14px;
+                                                height: 14px;
+                                                right: 20px;
+                                                top: 10px;
+                                                background-size: 60px;
+                                                background-position: 0px -3679px;   
+
+                                                @media @highdpi {
+                                                    background-size: 60px;
+                                                }
+                                            }
+                                            
+                                        }
+
+                                        &:last-child {
+                                            border-bottom-color: transparent;
+                                        }
+                                    }
+
+
+                                    &.searching {
+                                        height: 100%;
+                                    }
+
+                                    &:not(.searching) {
+                                        .search {
+                                            input {
+                                                color: @black;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            .contract-details-footer {
+                                height: 60px;
+                                padding: 10px 15px;
+                                background: @white;
+                                position: relative;
+                                z-index: 10;
+                                .box-shadow(0px -1px 0 rgba(0, 0, 0, 0.15));
+                                #flexbox > .parent( row, flex-end, '', '' );
+                            }
+
+                            .contracts-details-form {
+                                position: relative;
+                                .calc-height( 100, 120 );
+
+                                &.without-footer {
+                                    .calc-height( 100, 60 );
+                                }
+
+                                &.without-header {
+                                    .calc-height( 100, 60 );
+
+                                    &.without-footer {
+                                        height: 100%;
+                                    }
+                                }
+
+                                > .wrapper { padding: 20px; }
+
+                                .switch-button {
+                                    width: 175px;
+
+                                    .data-on {
+                                        right: 100%;
+                                    }
+                                    .data-off {
+                                        right: 0;
+                                    }
+
+                                    &.on {
+                                        .data-on {
+                                            right: 0;
+                                        }
+                                        .data-off {
+                                            right: -100%;
+                                        }
+                                    }
+
+                                    .switch-icon { 
+                                        .gradient(@grey2, @grey3);
+                                    }
+        
+                                    .data-on {
+        
+                                        .switch-icon { 
+                                            .gradient(@greenStart, @greenEnd); 
+                                        }
+                                    }
+                                }
+
+                                .autocomplete-search {
+                                    &:not(.searching) {
+                                        .search {
+                                            padding: 0;
+
+                                            .icon-search {
+                                                top: 10px;
+                                                left: 10px;
+                                            }
+
+                                            .clear-query {
+                                                top: 0;
+                                                right: 0;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                .contracted-rates {
+                                    li {
+                                        background-color: @white;
+                                        font-weight: 600;
+                                        padding: 10px 30px 10px 10px;
+                                        list-style: none;
+                                        cursor: pointer;
+                                        position: relative;
+                                        .box-shadow();
+        
+                                        &:not(:last-child) {
+                                            margin-bottom: 10px;
+                                        }
+
+                                        .icons {
+                                            &.icon-remove-10 {
+                                                background-position: 3px -2624px;
+                                                background-size: 80px;
+                                                position: absolute;
+                                                right: 10px;
+                                                top: 0;
+                                                bottom: 0;
+                                                margin: auto;
+                                                border-radius: 14px;
+                                                background-color: @grey1;
+                                            }
+                                        }
+                                    }
+
+                                    &.disabled {
+                                        li {
+                                            cursor: default;
+                                            color: @grey3;
+
+                                            .icons { .hide(); }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        .holder {
+                            &.left {
+                                margin-right: 20px;
+                                .calc-width( 100, 235 );
+                            }
+
+                            &.right {
+                                width: 215px;
+
+                                .no-content {
+                                    padding: 0;
+
+                                    .info {
+                                        .h1 {
+                                            font-size: 18px;
+                                            margin: 0;
+                                            line-height: 1;
+                                        }
+
+                                        .h2 {
+                                            font-size: 15px;
+                                            line-height: 21px;
+                                        }
+                                    }
+
+                                    .icon-no-content {
+                                        margin-top: 20px;
+
+                                        &.icon-contracts {
+                                            background-size: 70px;
+                                            height: 70px;
+                                            width: 75px;
+                                            background-position: 0px -1344px;
+                                        }
+                                        
+                                    }
+                                }
+                            }
+                        }
+
                         .contract-stats {
                             li {
                                 color: @grey3;
                                 text-transform: uppercase;
                                 margin-bottom: 20px;
                                 line-height: 30px;
+                                font-size: 14px;
                                 .float;
 
                                 span {
-                                    font-size: 30px;
+                                    font-size: 24px;
                                     font-weight: 300;
                                     color: @textColor;
                                     text-transform: none;
                                     .pull-right;
 
-                                    &.green { color: @green; }
+                                    &.green { color: @green; font-weight: 600; }
                                     &.red { color: @red; }
                                     &.blue { color: @blue; }
                                 }
+                            }
+                        }
+
+                        /* Occupancy graph ***/
+                        .occupancy-graph {
+                            position: relative;
+                            clear: both;
+                            background-color: @white;
+                            padding: 20px;
+                            margin-bottom: 20px;
+                            .box-shadow();
+                            #border-radius > .rounded();
+                            .show;
+
+                            .h3 {
+                                position: absolute;
+                                top: 20px;
+                                left: 20px;
+                                font-weight: 400;
+                            }
+
+                            .temporary-graph {
+                                width: 100%;
+                                height: auto;
                             }
                         }
                     }
