@@ -30,7 +30,7 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
             endDate: null,
             contractedNights: 0,
             contractedRates: [],
-            isActive: false
+            isActive: true
         };
 
         /**
@@ -63,7 +63,8 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
                 'contract_name': $scope.formData.contractName,
                 'begin_date': $scope.formData.startDate,
                 'end_date': $scope.formData.endDate,
-                'total_contracted_nights': $scope.formData.contractedNights
+                'total_contracted_nights': $scope.formData.contractedNights,
+                'is_active': $scope.formData.isActive
             }, options = {
                 params: {
                     'account_id': account_id,
@@ -72,7 +73,7 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
                 successCallBack: saveNewContractSuccessCallback
             };
 
-            $scope.callApi(RVCompanyCardSrv.addNewContract, options);
+            $scope.callAPI(RVCompanyCardSrv.addNewContract, options);
         };
 
         // To popup contract start date

@@ -2,6 +2,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 	function($scope, RVCompanyCardSrv, $stateParams, $timeout) {
 
 		BaseCtrl.call(this, $scope);
+
 		/* Items related to ScrollBars
 		 * 1. When the tab is activated, refresh scroll.
 		 * 2. Scroll is actually on a sub-scope created by ng-include.
