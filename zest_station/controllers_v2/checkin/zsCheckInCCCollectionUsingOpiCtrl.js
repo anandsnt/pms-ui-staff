@@ -26,6 +26,7 @@ sntZestStation.controller('zsCheckInCCCollectionUsingOpiCtrl', [
 				params: {
 					reservation_id: stateParams.reservation_id
 				},
+				loader: 'none',
 				successCallBack: goToCardSign,
 				failureCallBack: function() {
 					$scope.screenMode.paymentAction = 'CC_ERROR';
