@@ -2,42 +2,9 @@ const { connect } = ReactRedux;
 
 let convertRowReadyToComponent = (roomsList, selectedRoomId, state) => {
 
-    roomsList.map((room, iterator) => {
-
-        let dateList = [];
+    roomsList.map((room) => {
 
         if (room.reservations.length !== 0) {
-
-            /*
-             *  Retrieve Date List in a row ( against each room)
-             *  where reservations present in it.
-             */
-            _.each(room.reservations,
-                function(item) {
-                    dateList.push(item.arrival_date);
-                }
-            );
-            dateList = _.unique(dateList);
-
-            /*
-             *  Mapping dateList Vs reservations
-             *  Find overlap count ( how many reservations exist in a day the selected room )
-             */
-            _.each(dateList, 
-                function(date) {
-                    let count = 0;
-
-                    _.each(room.reservations,
-                        function(res) {
-                            if (date === res.arrival_date) {
-                               res.overlapCount = count;
-                               count ++;
-                            }
-                        }
-                    );
-                }
-            );
-
             /*
              *  Find Max overlap count
              *  Max no of overlaps in a row.

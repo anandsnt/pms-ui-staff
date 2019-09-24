@@ -236,7 +236,7 @@ let convertReservationsListReadyToComponent = (reservation, overlapCount, isHour
         }
     }
 
-    if(isHourlyPresent) {
+    if (isHourlyPresent) {
         overlapCount ++;
     }
     reservation.reservationClass = "reservation " + reservationStatusClass + " " + reservationClass + " " + reservationEditClass + " overlap-" + overlapCount;

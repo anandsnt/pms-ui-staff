@@ -106,8 +106,8 @@ const NightlyDiaryReservationsListComponent = ({ reservationsListToComponent, ro
                         {
 
                             item.reservations.length > 0 ?
-                                item.reservations.map((reservationItem, iterator) => (
-                                    <NightlyDiaryReservationContainer reservation={reservationItem} room={item} overlapCount={reservationItem.overlapCount} isHourlyPresent={item.hourly_reservations.length }/>
+                                item.reservations.map((reservationItem) => (
+                                    <NightlyDiaryReservationContainer reservation={reservationItem} room={item} overlapCount={reservationItem.overlapCount} isHourlyPresent={item.hourly_reservations.length}/>
                                 )
                                 )
 
@@ -144,7 +144,7 @@ const NightlyDiaryReservationsListComponent = ({ reservationsListToComponent, ro
                             item.hourly_reservations.length > 0 ?
 
                                 item.hourly_reservations.map((hourlyItem) => (
-                                    <NightlyDiaryHourlyContainer hourlyItem={hourlyItem} isNightlyPresent={item.reservations.length }/>
+                                    <NightlyDiaryHourlyContainer hourlyItem={hourlyItem} isNightlyPresent={item.reservations.length}/>
                                 )
                                 )
                                 : ''

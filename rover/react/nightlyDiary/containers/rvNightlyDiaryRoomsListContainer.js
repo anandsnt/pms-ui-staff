@@ -77,7 +77,7 @@ let convertRoomsListReadyToComponent = (roomsList, selectedRoomId, state) => {
             }
         }
 
-        if (room.maxOverlap >=0) {
+        if (room.maxOverlap >= 0) {
             room.main_room_class += ' overlap-' + room.maxOverlap;
         }
         // CICO-70115 (N Diary - Stack N bookings in room diary when overlapping) Logic Ends here..
