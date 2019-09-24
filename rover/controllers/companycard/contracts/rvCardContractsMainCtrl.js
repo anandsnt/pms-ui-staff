@@ -79,7 +79,6 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 			};
 			var options = {
 				successCallBack: fetchContractsListSuccessCallback,
-				failureCallBack: fetchFailureCallback,
 				params: {
 					"account_id": $stateParams.id
 				}
