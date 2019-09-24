@@ -6,19 +6,23 @@ angular.module('sntRover')
             '$filter',
             '$stateParams',
             '$rootScope',
+            'Toggles',
             function ($scope,
                       $timeout,
                       $state,
                       $filter,
                       $stateParams,
-                      $rootScope) {
+                      $rootScope,
+                      Toggles) {
 
             var intialReportViewStore = {
                 showingAllReport: false,
                 showingScheduledReports: false,
                 showingScheduleAReport: false,
                 showingExportReports: false,
-                showingExportAReport: false
+                showingExportAReport: false,
+                showingCustomExports: false,
+                showingCustomNewExport: false
             };
 
             /**
@@ -35,6 +39,10 @@ angular.module('sntRover')
                 } else if ($scope.reportViewStore.showingScheduleAReport ||
                     $scope.reportViewStore.showingExportAReport) {
                     source = $scope.schedulableReports;
+                } else if ($scope.reportViewStore.showingCustomExports) {
+                    source = $scope.customExportsData.scheduledCustomExports;
+                } else if ($scope.reportViewStore.showingCustomNewExport) {
+                    source = $scope.customExportsData.customExportDataSpaces;
                 }
 
                 return source;
@@ -70,8 +78,10 @@ angular.module('sntRover')
             var refreshScroller = function () {
                 $timeout(function () {
                     $scope.refreshScroller('report-list-scroll');
-                    $scope.myScroll['report-list-scroll'].refresh();
-
+                    if ($scope.myScroll && $scope.myScroll['report-list-scroll']) {
+                        $scope.myScroll['report-list-scroll'].refresh();
+                    }
+                    
                     if ($scope.myScroll && $scope.myScroll['report-filter-sidebar-scroll']) {
                         $scope.myScroll['report-filter-sidebar-scroll'].refresh();
                     }
@@ -84,7 +94,17 @@ angular.module('sntRover')
              * @returns {string}
              */
             var viewColsReducer = function (action) {
-                return angular.isDefined(action) ? 'cols-' + action : 'cols-' + $scope.reportViewActions.ONE;
+                var styles = [];
+
+                styles.push (angular.isDefined(action) ? 'cols-' + action : 'cols-' + $scope.reportViewActions.ONE);
+
+                if ($scope.reportViewStore && 
+                    ($scope.reportViewStore.showingCustomNewExport || $scope.reportViewStore.showingCustomExports) && 
+                    action === $scope.viewColsActions.SIX) {
+                    styles.push('with-bottom-form');
+                }
+
+                return styles;
             };
 
 
@@ -92,7 +112,9 @@ angular.module('sntRover')
                 ONE: 1,
                 TWO: 2,
                 THREE: 3,
-                FOUR: 4
+                FOUR: 4,
+                FIVE: 5,
+                SIX: 6
             };
 
 
@@ -104,7 +126,9 @@ angular.module('sntRover')
                 SHOW_SCHEDULED_REPORTS: 'SHOW_SCHEDULED_REPORTS',
                 SHOW_SCHEDULE_A_REPORT: 'SHOW_SCHEDULE_A_REPORT',
                 SHOW_EXPORT_REPORTS: 'SHOW_EXPORT_REPORTS',
-                SHOW_EXPORT_A_REPORT: 'SHOW_EXPORT_A_REPORT'
+                SHOW_EXPORT_A_REPORT: 'SHOW_EXPORT_A_REPORT',
+                SHOW_CUSTOM_EXPORTS: 'SHOW_CUSTOM_EXPORTS',
+                SHOW_CUSTOM_NEW_EXPORT: 'SHOW_CUSTOM_NEW_EXPORT'
             };
 
             /**
@@ -129,6 +153,12 @@ angular.module('sntRover')
 
                     case $scope.reportViewActions.SHOW_EXPORT_A_REPORT:
                         return angular.extend({}, intialReportViewStore, {showingExportAReport: true});
+
+                    case $scope.reportViewActions.SHOW_CUSTOM_EXPORTS:
+                        return angular.extend({}, intialReportViewStore, {showingCustomExports: true});
+
+                    case $scope.reportViewActions.SHOW_CUSTOM_NEW_EXPORT:
+                        return angular.extend({}, intialReportViewStore, {showingCustomNewExport: true});
 
                     default:
                         return angular.extend({}, intialReportViewStore, {showingAllReport: true});
@@ -190,6 +220,7 @@ angular.module('sntRover')
             $scope.reportMainMenuChange = function (nextMenu) {
                 $scope.updateViewCol($scope.viewColsActions.ONE);
                 $scope.updateView(nextMenu);
+                $scope.$broadcast('RESET_CURRENT_STAGE');
             };
 
             $scope.updateViewCol = function (cols, noReset) {
@@ -228,17 +259,21 @@ angular.module('sntRover')
              * Set the navigation to previous screen
              * @param {Boolean} showScheduledReports should show scheduled reports
              * @param {Boolean} showScheduledExports should show scheduled exports
+             * @param {Boolean} showCustomExports should show custom exports
              * return {void} set the previous state object
              */
-            let setPrevState = (showScheduledReports, showScheduledExports) => {
+            let setPrevState = (showScheduledReports, showScheduledExports, showCustomExports) => {
                 var backNaviagtionLabel = $filter('translate')('SCHEDULED_REPORTS');
 
                 if (showScheduledExports) {
                     backNaviagtionLabel = $filter('translate')('SCHEDULED_EXPORTS');
+                } else if (showCustomExports) {
+                    backNaviagtionLabel = $filter('translate')('CUSTOM_EXPORTS'); 
                 }
                 // Reload the current state when there is no change in the state params
                 if ($stateParams && $stateParams.showScheduledReports === showScheduledReports && 
-                    $stateParams.showScheduledExports === showScheduledExports) {
+                    $stateParams.showScheduledExports === showScheduledExports && 
+                    $stateParams.showCustomExports === showCustomExports) {
                         $rootScope.setPrevState = {
                             title: backNaviagtionLabel,
                             callback: 'reloadState',
@@ -251,7 +286,8 @@ angular.module('sntRover')
                         name: 'rover.reports.scheduleReportsAndExports',
                         param: {
                             showScheduledReports: showScheduledReports,
-                            showScheduledExports: showScheduledExports                        
+                            showScheduledExports: showScheduledExports,
+                            showCustomExports: showCustomExports                        
                         }                    
                     }; 
                 }
@@ -262,13 +298,13 @@ angular.module('sntRover')
             // Navigate to new report schedule creation screen
             $scope.createNewReportSchedule = () => {
                 $scope.$broadcast('CREATE_NEW_REPORT_SCHEDULE'); 
-                setPrevState(true, false);              
+                setPrevState(true, false, false);              
             };
 
             // Navigate to new export schedule creation screen
             $scope.createNewExportSchedule = () => {
                 $scope.$broadcast('CREATE_NEW_EXPORT_SCHEDULE');
-                setPrevState(false, true);
+                setPrevState(false, true, false);
             };
 
             // Update title and heading
@@ -276,12 +312,43 @@ angular.module('sntRover')
                 setTitleAndHeading();
             });
 
+            // Create new custom export
+            $scope.createNewCustomExport = () => {
+                $scope.$broadcast('CREATE_NEW_CUSTOM_EXPORT');
+                setPrevState(false, false, true);
+            };
+
+            // Should show the reporter form or not
+            $scope.shouldShowReportFooterForm = () => {
+                return $scope.reportViewStore && 
+                        ($scope.reportViewStore.showingCustomNewExport || $scope.reportViewStore.showingCustomExports) &&
+                        $scope.viewColClassName &&
+                        $scope.viewColClassName.indexOf('with-bottom-form') > -1;
+            };
+
+            // Create new custom export
+            $scope.createCustomExport = () => {
+                $scope.$broadcast('CREATE_NEW_CUSTOM_EXPORT_SCHEDULE');
+            };
+
+            // Save the given export
+            $scope.saveCustomExport = () => {
+                $scope.$broadcast('UPDATE_CUSTOM_EXPORT_SCHEDULE');
+            };
+
+            // Navigate to the export listing page
+            $scope.navigateToExportListing = () => {
+                $scope.$broadcast('SHOW_EXPORT_LISTING');
+            };
+
             (function () {
                 $scope.updateViewCol($scope.viewColsActions.ONE);
                 if ($stateParams.showScheduledReports) {
                     $scope.updateView($scope.reportViewActions.SHOW_SCHEDULED_REPORTS);
                 } else if ($stateParams.showScheduledExports) {
                     $scope.updateView($scope.reportViewActions.SHOW_EXPORT_REPORTS);
+                } else if ($stateParams.showCustomExports) {
+                    $scope.updateView($scope.reportViewActions.SHOW_CUSTOM_EXPORTS);
                 } else {
                     $scope.updateView($scope.reportViewActions.SHOW_SCHEDULED_REPORTS);
                 }
@@ -289,6 +356,19 @@ angular.module('sntRover')
                 setupScroll();
                 
                 setTitleAndHeading();
+
+                // Feature toggle decides whether the custom export menu should be shown or not
+                $scope.isCustomExportsEnabled = Toggles.isEnabled('custom_exports');
+                $scope.customExportsScheduleParams = {};
+                
+                // Holds the data for custom exports
+                $scope.customExportsData = {
+                    isNewExport: false,
+                    scheduledCustomExports: [],
+                    customExportDataSpaces: [],
+                    exportFormats: [],
+                    deliveryTypes: []
+                };
 
             })();
 
