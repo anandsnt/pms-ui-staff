@@ -8,8 +8,12 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
          * @return void
          */
         var saveNewContractSuccessCallback = function(data) {
-            $scope.errorMessage = "";
+            
+            $scope.$emit('setErrorMessage', []);
             $scope.contractData.mode = '';
+            $scope.contractData.selectedContract = data.id;
+            // emit something to refresh the Contracts list
+            $scope.$emit('closeNewContractsForm');
             if (showNightsModal) {
                 ngDialog.open({
                     template: '/assets/partials/companyCard/contracts/rvContractedNightsPopup.html',
@@ -19,8 +23,15 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
                 });
                 showNightsModal = false;
             };
-            // emit something to refresh the Contracts list
-            $scope.$emit('closeNewContractsForm')
+        };
+
+        /**
+         * Failure callback for save API
+         * @param {String} error - error string
+         * @return void
+         */
+        var saveNewContractFailureCallback = function(error) {
+            $scope.$emit('setErrorMessage', error);
         };
 
         $scope.formData = {
@@ -70,6 +81,7 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
                     'account_id': account_id,
                     'postData': postData
                 },
+                failureCallBack: saveNewContractFailureCallback,
                 successCallBack: saveNewContractSuccessCallback
             };
 
