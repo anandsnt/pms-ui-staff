@@ -125,10 +125,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
         };
 
         var validateSchedule = function() {
-            var hasTimePeriod = function() {
-                return angular.isDefined($scope.scheduleParams.time_period_id) && !_.isNull($scope.scheduleParams.time_period_id);
-            };
-
+            
             var hasFrequency = function() {
                 return !! $scope.scheduleParams.frequency_id;
             };
@@ -142,7 +139,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 return hasEmail || hasFTP || hasDropbox || hasGoogleDrive;
             };
 
-            return hasTimePeriod() && hasFrequency() && hasValidDistribution();
+            return hasFrequency() && hasValidDistribution();
         };
 
         var fillValidationErrors = function() {
