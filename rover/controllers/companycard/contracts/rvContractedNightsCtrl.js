@@ -70,12 +70,12 @@ sntRover.controller('rvContractedNightsCtrl', ['$rootScope', '$scope', 'dateFilt
 			failureCallBack: saveContractFailureCallback,
 			params: {
 				"account_id": account_id,
-				"contract_id": $scope.contractData.selectedContract,
+				"contract_id": $scope.currentContract,
 				"postData": data
 			}
 		}
 
-	    if (typeof $scope.contractData.selectedContract !== 'undefined') {
+	    if ($scope.currentContract) {
 			$scope.callAPI(RVCompanyCardSrv.updateNight, options);
 		}
 	};

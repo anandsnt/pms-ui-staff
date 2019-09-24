@@ -1,6 +1,7 @@
 angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog',
 	function($scope, RVCompanyCardSrv, $stateParams, ngDialog) {
         BaseCtrl.call(this, $scope);
+        $scope.currentContract = null;
         var showNightsModal = false;
         /**
          * 
@@ -11,7 +12,7 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
             
             $scope.$emit('setErrorMessage', []);
             $scope.contractData.mode = '';
-            $scope.contractData.selectedContract = data.id;
+            $scope.currentContract = data.id;
             // emit something to refresh the Contracts list
             $scope.$emit('closeNewContractsForm');
             if (showNightsModal) {
