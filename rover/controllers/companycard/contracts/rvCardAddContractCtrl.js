@@ -72,7 +72,7 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
                 successCallBack: saveNewContractSuccessCallback
             };
 
-            $scope.callApi(RVCompanyCardSrv.addNewContract, options);
+            $scope.callAPI(RVCompanyCardSrv.addNewContract, options);
         };
 
         // To popup contract start date
