@@ -1,27 +1,29 @@
 
-sntRover.controller('contractedNightsCtrl', ['$scope', 'dateFilter', 'ngDialog', 'RVCompanyCardSrv', '$stateParams', function($scope, dateFilter, ngDialog, RVCompanyCardSrv, $stateParams) {
+sntRover.controller('rvContractedNightsCtrl', ['$rootScope', '$scope', 'dateFilter', 'ngDialog', 'RVCompanyCardSrv', '$stateParams', function($rootScope, $scope, dateFilter, ngDialog, RVCompanyCardSrv, $stateParams) {
 	$scope.nightsData = {};
 	$scope.nightsData.occupancy = [];
 	$scope.nightsData.allNights = "";
-	var first_date = new Date($scope.contractData.begin_date);
-	var last_date = new Date($scope.contractData.end_date);
+	var myDate = tzIndependentDate($rootScope.businessDate);
+	var beginDate = $scope.formData.startDate || myDate;
+	var endDate = $scope.formData.endDate || myDate.setDate(myDate.getDate() + 1);
+	var first_date = new Date(beginDate);
+	var last_date = new Date(endDate);
 
-	var month_array = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-	var new_occupancy = [];
-
-	start_point = first_date.getFullYear() * 12 + first_date.getMonth();
-	end_point = last_date.getFullYear() * 12 + last_date.getMonth();
-	my_point = start_point;
+	var month_array = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+		new_occupancy = [],
+		start_point = first_date.getFullYear() * 12 + first_date.getMonth(),
+		end_point = last_date.getFullYear() * 12 + last_date.getMonth(),
+		my_point = start_point;
 
 	while ( my_point <= end_point ) {
-		year = Math.floor(my_point / 12);
-		month = my_point - year * 12;
-		var obj = {
+		var year = Math.floor(my_point / 12),
+			month = my_point - year * 12,
+			obj = {
 				"contracted_occupancy": 0,
 				"year": year,
 				"actual_occupancy": 0,
 				"month": month_array[month]
-		};
+			};
 
 		new_occupancy.push(obj);
 		my_point += 1;
@@ -44,16 +46,13 @@ sntRover.controller('contractedNightsCtrl', ['$scope', 'dateFilter', 'ngDialog',
 	$scope.saveContractedNights = function() {
 
 		var saveContractSuccessCallback = function(data) {
-	    	$scope.closeActivityIndication();
 	    	$scope.contractData.total_contracted_nights = data.total_contracted_nights;
 	    	$scope.contractData.occupancy = $scope.nightsData.occupancy;
-	    	$scope.errorMessage = "";
-	    	$scope.updateGraph();
+	    	$scope.$emit('setErrorMessage', []);
 	    	ngDialog.close();
 	    };
 	  	var saveContractFailureCallback = function(data) {
-	  		$scope.closeActivityIndication();
-	        $scope.errorMessage = data;
+	        $scope.$emit('setErrorMessage', data);
 	        $scope.contractData.occupancy = temp_occupancy;
 	    };
 
@@ -64,14 +63,21 @@ sntRover.controller('contractedNightsCtrl', ['$scope', 'dateFilter', 'ngDialog',
 	    }
 	    else {
 	    	var account_id = $stateParams.id;
-	    }
-
-	    if (typeof $scope.contractSelected !== 'undefined') {
-			$scope.invokeApi(RVCompanyCardSrv.updateNight, { "account_id": account_id, "contract_id": $scope.contractSelected.id, "postData": data }, saveContractSuccessCallback, saveContractFailureCallback);
 		}
-		else {
+		
+		var options = {
+			successCallBack: saveContractSuccessCallback,
+			failureCallBack: saveContractFailureCallback,
+			params: {
+				"account_id": account_id,
+				"contract_id": $scope.currentContract,
+				"postData": data
+			}
 		}
 
+	    if ($scope.currentContract) {
+			$scope.callAPI(RVCompanyCardSrv.updateNight, options);
+		}
 	};
 
 	$scope.clickedCancel = function() {
