@@ -10,31 +10,12 @@ sntRover.controller('rvContractStartCalendarCtrl', ['$rootScope', '$scope', 'dat
 			$scope.date = $scope.formData.startDate || minDate;
 		} else if ($scope.contractData.mode === 'EDIT') {
 			if (!_.isEmpty($scope.contractData.editData)) {
-				$scope.date = $scope.contractData.editData.begin_date;
+				$scope.date = $scope.contractData.editData.begin_date || minDate;
+			} else {
+				$scope.date = minDate;
 			}
-		};
+		}
 
-	    // if ($scope.contractList.isAddMode) {
-	    //   	$scope.date = $scope.addData.begin_date;
-	    //   	minDate = $scope.addData.min_date;
- 	    //   	maxDate = $scope.addData.max_date;
-	    // }
-	    // else {
-	    // 	if ($scope.contractData.begin_date) {
-		//       $scope.date = $scope.contractData.begin_date;
-		//       minDate = $scope.contractData.min_date;
-	 	//       maxDate = $scope.contractData.max_date;
-		//     }
-		//     else {
-		//     	// set start date as bussiness date
-		//     	var myDate = tzIndependentDate($rootScope.businessDate);
-
-	    //  		$scope.date = dateFilter(myDate, 'yyyy-MM-dd');
-		//     	$scope.contractData.begin_date = $scope.date;
-		//     	minDate = $scope.contractData.min_date;
-		//     	maxDate = $scope.contractData.max_date;
-		//     }
-	    // }
 
 	    $scope.dateOptions = {
 		     changeYear: true,
@@ -47,9 +28,9 @@ sntRover.controller('rvContractStartCalendarCtrl', ['$rootScope', '$scope', 'dat
 				var beginDate = tzIndependentDate($scope.date);
 				
 				if ($scope.contractData.mode === 'ADD') {
-					endDate = tzIndependentDate($scope.formData.endDate) || beginDate;
+					endDate = $scope.formData.endDate ? tzIndependentDate($scope.formData.endDate) : tzIndependentDate($scope.date);
 				} else if ($scope.contractData.mode === 'EDIT') {
-					endDate = tzIndependentDate($scope.contractData.editData.end_date) || beginDate;
+					endDate = $scope.contractData.editData.end_date ? tzIndependentDate($scope.contractData.editData.end_date) : tzIndependentDate($scope.date);
 				}
 				if (beginDate >= endDate) {
 					endDate.setDate(beginDate.getDate() + 1);

@@ -1,6 +1,21 @@
-angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog',
-	function($scope, RVCompanyCardSrv, $stateParams, ngDialog) {
+angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog', '$timeout',
+	function($scope, RVCompanyCardSrv, $stateParams, ngDialog, $timeout) {
         BaseCtrl.call(this, $scope);
+
+        $scope.setScroller('editContractScroller');
+        var refreshEditScroller = function() {
+            $timeout(function() {
+				if ($scope.myScroll && $scope.myScroll['editContractScroller']) {
+					$scope.myScroll['editContractScroller'].refresh();
+				}
+				$scope.refreshScroller('editContractScroller');
+			}, 500);
+        };
+
+        /**
+         * Listener for edit scroller refresh
+         */
+        $scope.addListener('refreshEditScroller', refreshEditScroller);
 
         // To popup contract start date
 		$scope.contractStart = function() {

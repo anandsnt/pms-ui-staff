@@ -2,6 +2,15 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 	function($scope, RVCompanyCardSrv, $stateParams, $timeout) {
 
 		BaseCtrl.call(this, $scope);
+		$scope.contractData = {
+			mode: '',
+			contractsList: [],
+			editData: {},
+			disableFields: false,
+			noContracts: true,
+			noStatistics: true,
+			selectedContract: ''
+		};
 
 		/* Items related to ScrollBars
 		 * 1. When the tab is activated, refresh scroll.
@@ -10,7 +19,6 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 		 */
 
 		$scope.setScroller('cardNewContractsScroll');
-		$scope.setScroller('editContractScroller');
 
 		var refreshScroller = function() {
 			$timeout(function() {
@@ -18,12 +26,6 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 					$scope.myScroll['cardNewContractsScroll'].refresh();
 				}
 				$scope.refreshScroller('cardNewContractsScroll');
-			}, 500);
-			$timeout(function() {
-				if ($scope.myScroll && $scope.myScroll['editContractScroller']) {
-					$scope.myScroll['editContractScroller'].refresh();
-				}
-				$scope.refreshScroller('editContractScroller');
 			}, 500);
 		};
 
@@ -98,7 +100,8 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 		 */
 		fetchContractDetailsSuccessCallback = function(data) {
 			$scope.contractData.editData = data;
-			refreshScroller();
+			$scope.$broadcast('refreshEditScroller');
+			$scope.$broadcast('initContractsList');
 		},
 		/**
 		 * Function to fetch the currently selected contract details
@@ -134,15 +137,6 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 		 * Init function fetches the contracts on page load
 		 */
 		init = function() {
-			$scope.contractData = {
-				mode: '',
-				contractsList: [],
-				editData: {},
-				disableFields: false,
-				noContracts: true,
-				noStatistics: true,
-				selectedContract: ''
-			};
 			var options = {
 				successCallBack: fetchContractsListSuccessCallback,
 				failureCallBack: fetchContractsListFailureCallback,
@@ -171,6 +165,10 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 		$scope.addListener('setErrorMessage', function(event, data) {
 			setErrorMessage(data);
 		});
+		/**
+		 * Listener for addScroller refresh, from contractsList controller
+		 */
+		$scope.addListener('refreshAddScroller', refreshScroller);
 
 		/**
 		 * Function to load the new contracts form

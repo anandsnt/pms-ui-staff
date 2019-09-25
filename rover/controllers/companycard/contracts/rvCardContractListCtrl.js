@@ -4,6 +4,20 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
         $scope.selectedType = '';
         $scope.opened = false;
 
+        var init = function() {
+            var openedContract = $scope.contractData.selectedContract,
+                contractsList = $scope.contractData.contractsList;
+
+            angular.forEach(contractsList, function(item) {
+                angular.forEach(item.contracts, function(contract) {
+                    if (openedContract === contract.id) {
+                        $scope.selectedType = item.type;
+                        $scope.opened = true;
+                    }
+                });
+            });
+        };
+
         $scope.setScroller('contractListScroller');
         var refreshScroller = function() {
 			$timeout(function() {
@@ -13,15 +27,38 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
 				$scope.refreshScroller('contractListScroller');
 			}, 500);
 		};
-
+        /**
+         * Open the selected contracts list
+         * @param {String} listType - PAST, PRESENT, FUTURE string values
+         */
         $scope.openContractsList = function(listType) {
+            if ($scope.opened) {
+                $scope.opened = $scope.selectedType === listType ? false : true;
+            } else {
+                $scope.opened = true;
+            }
             $scope.selectedType = listType;
-            $scope.opened = !$scope.opened;
             refreshScroller();
         };
-
+        /**
+         * Fetch selected contract deatails
+         * @param {Number} contractId - ID of the selected contract
+         */
         $scope.fetchDetails = function(contractId) {
+            $scope.contractData.mode = 'EDIT';
             $scope.$emit('fetchContract', contractId);
         };
+        /**
+         * Function for adding a new contract
+         */
+        $scope.newContract = function() {
+            $scope.contractData.mode = 'ADD';
+            $scope.$emit('refreshAddScroller');
+        }
+
+        /**
+         * Listener for initializing the contracts list
+         */
+        $scope.addListener('initContractsList', init);
     }
 ]);
