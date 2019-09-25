@@ -57,7 +57,7 @@
 
     <!-- Travel Agent Search -->
     <div id="travel-agent-card-content" class="card-search card-content" ng-if="searchMode" ng-class="UICardContentCls('travel-agent-card')">
-        <button id="new-company" ng-show="addNewCards" type="button" class="button green has-arrow skip" ng-click="createNewTravelAgent()">Add New Card</button>
+        <button id="new-company" ng-show="addNewCards" type="button" class="button green has-arrow skip" ng-click="createNewTravelAgent()" ng-disabled="!hasPermissionToCreateTACard" ng-class="{'overlay': !hasPermissionToCreateTACard}">Add New Card</button>
         <div id="search-travel-agent-content" class="search-cards scrollable">
             <!-- Travel Agent Card Results listing -->
             <div ng-controller="travelAgentResults" class="wrapper" ng-show="travelAgentSearchIntiated && travelAgents.length > 0" style="height:100%; overflow: hidden;" ng-iscroll="travelAgentResultScroll">
