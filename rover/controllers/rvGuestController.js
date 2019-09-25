@@ -12,6 +12,7 @@ angular.module('sntRover').controller('guestCardController', [
                     $scope.$emit('contactInfoError', true);
                 };
 
+
                 var saveUserInfoSuccessCallback = function(data) {
                     $scope.$emit('hideLoader');
                     $scope.reservationData.guest.email = that.newUpdatedData.email;
@@ -207,6 +208,8 @@ angular.module('sntRover').controller('guestCardController', [
                 $scope.eventTimestamp = "";
                 var preventClicking = false;
             }
+            $scope.hasPermissionToCreateTACard = rvPermissionSrv.getPermissionValue('CREATE_TRAVEL_AGENT_CARD');
+            $scope.hasPermissionToCreateCCard = rvPermissionSrv.getPermissionValue('CREATE_COMPANY_CARD');
         };
 
         $scope.$on("swipeAtGuestCard", function() {
