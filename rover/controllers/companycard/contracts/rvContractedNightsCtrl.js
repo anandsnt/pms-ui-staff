@@ -46,16 +46,13 @@ sntRover.controller('rvContractedNightsCtrl', ['$rootScope', '$scope', 'dateFilt
 	$scope.saveContractedNights = function() {
 
 		var saveContractSuccessCallback = function(data) {
-	    	$scope.closeActivityIndication();
 	    	$scope.contractData.total_contracted_nights = data.total_contracted_nights;
 	    	$scope.contractData.occupancy = $scope.nightsData.occupancy;
-	    	$scope.errorMessage = "";
-	    	$scope.updateGraph();
+	    	$scope.$emit('setErrorMessage', []);
 	    	ngDialog.close();
 	    };
 	  	var saveContractFailureCallback = function(data) {
-	  		$scope.closeActivityIndication();
-	        $scope.errorMessage = data;
+	        $scope.$emit('setErrorMessage', data);
 	        $scope.contractData.occupancy = temp_occupancy;
 	    };
 
@@ -66,14 +63,21 @@ sntRover.controller('rvContractedNightsCtrl', ['$rootScope', '$scope', 'dateFilt
 	    }
 	    else {
 	    	var account_id = $stateParams.id;
-	    }
-
-	    if (typeof $scope.contractSelected !== 'undefined') {
-			$scope.invokeApi(RVCompanyCardSrv.updateNight, { "account_id": account_id, "contract_id": $scope.contractSelected.id, "postData": data }, saveContractSuccessCallback, saveContractFailureCallback);
 		}
-		else {
+		
+		var options = {
+			successCallBack: saveContractSuccessCallback,
+			failureCallBack: saveContractFailureCallback,
+			params: {
+				"account_id": account_id,
+				"contract_id": $scope.currentContract,
+				"postData": data
+			}
 		}
 
+	    if ($scope.currentContract) {
+			$scope.callAPI(RVCompanyCardSrv.updateNight, options);
+		}
 	};
 
 	$scope.clickedCancel = function() {
