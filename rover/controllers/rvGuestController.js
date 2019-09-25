@@ -12,7 +12,6 @@ angular.module('sntRover').controller('guestCardController', [
                     $scope.$emit('contactInfoError', true);
                 };
 
-
                 var saveUserInfoSuccessCallback = function(data) {
                     $scope.$emit('hideLoader');
                     $scope.reservationData.guest.email = that.newUpdatedData.email;
