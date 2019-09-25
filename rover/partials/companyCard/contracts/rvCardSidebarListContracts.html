@@ -15,8 +15,13 @@
                       'status-class':
                         - 'rotate-uo' -> when opened
                         - 'rotate-down' -> when closed -->
-                    <span ng-show="item.count !== 0" class="icons icon-double-arrow black " ng-class="{'rotate-up': item.type === selectedType && opened, 'rotate-down': !selectedType && !opened || item.type === selectedType && !opened}"></span>
-                   
+                    <span ng-show="item.count !== 0"
+                        class="icons icon-double-arrow black "
+                        ng-class="{'rotate-up': item.type === selectedType && opened,
+                            'rotate-down': !selectedType ||
+                            item.type !== selectedType ||
+                            item.type === selectedType && !opened}">
+                    </span>
                 </h2>
                 <ul>
                     <!-- Add class .active if showing this contact -->
@@ -33,6 +38,6 @@
     </div>
     <!-- Show this to enable creating contracts. -->
     <div class="contracts-list-actions" ng-show="contractData.mode === 'EDIT'">
-        <button type="button" class="button green">Create New Contract</button>
+        <button type="button" class="button green" ng-click="newContract()">Create New Contract</button>
     </div>
 </div>

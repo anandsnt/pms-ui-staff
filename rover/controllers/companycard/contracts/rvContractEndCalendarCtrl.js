@@ -7,35 +7,16 @@ sntRover.controller('rvContractEndCalendarCtrl', ['$rootScope', '$scope', 'dateF
 			
 
 		if ($scope.contractData.mode === 'ADD') {
+			minDate = $scope.formData.startDate ? tzIndependentDate($scope.formData.startDate) : minDate;
 			$scope.date = $scope.formData.endDate || minDate;
 		} else if ($scope.contractData.mode === 'EDIT') {
 			if (!_.isEmpty($scope.contractData.editData)) {
+				minDate = $scope.contractData.editData.endDate ? tzIndependentDate($scope.contractData.editData.endDate) : minDate;
 				$scope.date = $scope.contractData.editData.end_date || minDate;
+			} else {
+				$scope.date = minDate;
 			}
 		}
-
-		// if ($scope.contractList.isAddMode) {
-  		// 	$scope.date = $scope.addData.end_date;
-  		// 	minDate = $scope.addData.min_date;
-  		// 	maxDate = $scope.addData.max_date;
-	  	// }
-	  	// else {
-	  	// 	if ($scope.contractData.end_date) {
-	 	//       	$scope.date = $scope.contractData.end_date;
-	 	//       	minDate = $scope.contractData.min_date;
-	 	//       	maxDate = $scope.contractData.max_date;
-		//     }
-		//     else {
-		//     	// set end date as one day next to bussiness date
-		//     	var myDate = tzIndependentDate($rootScope.businessDate);
-
-		// 		myDate.setDate(myDate.getDate() + 1);
-	    //  		$scope.date = dateFilter(myDate, 'yyyy-MM-dd');
-		//     	$scope.contractData.end_date = $scope.date;
-		//     	minDate = $scope.contractData.min_date;
-		//     	maxDate = $scope.contractData.max_date;
-		//     }
-	  	// }
 
 	  	$scope.dateOptions = {
 			changeYear: true,
@@ -48,9 +29,9 @@ sntRover.controller('rvContractEndCalendarCtrl', ['$rootScope', '$scope', 'dateF
 					beginDate;
 
 				if ($scope.contractData.mode === 'ADD') {
-					beginDate = tzIndependentDate($scope.formData.startDate) || endDate
+					beginDate = $scope.formData.startDate ? tzIndependentDate($scope.formData.startDate) : tzIndependentDate($scope.date)
 				} else if ($scope.contractData.mode === 'EDIT') {
-					beginDate = tzIndependentDate($scope.contractData.editData.begin_date);
+					beginDate = $scope.contractData.editData.begin_date ? tzIndependentDate($scope.contractData.editData.begin_date) : tzIndependentDate($scope.date);
 				};
 
 				if (endDate <= beginDate) {
