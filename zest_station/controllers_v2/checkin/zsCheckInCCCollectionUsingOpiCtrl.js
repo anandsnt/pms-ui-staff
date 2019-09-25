@@ -24,7 +24,8 @@ sntZestStation.controller('zsCheckInCCCollectionUsingOpiCtrl', [
 			$scope.screenMode.paymentAction = 'ADD_CARD';
 			$scope.callAPI(zsPaymentSrv.chipAndPinGetToken, {
 				params: {
-					reservation_id: stateParams.reservation_id
+					reservation_id: stateParams.reservation_id,
+					is_emv_request: true
 				},
 				loader: 'none',
 				successCallBack: goToCardSign,
