@@ -2447,6 +2447,14 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                     fetchSingleRateDetailsAndRestrictions(newFilterValues);
                 }
             }
+            else if($scope.isRoomTypeView && $scope.chosenTab === "RATE_TYPES") {
+                $scope.isRateView = false;
+                $scope.isRateTypeView = false;
+                $scope.isRoomTypeView = true;
+                if (newFilterValues.selectedRates.length === 1) {
+                    fetchSingleRateDetailsAndRestrictions(newFilterValues);
+                }
+            }
             else if ($scope.isRateTypeView) {
 
                 if (initiatedFromLeftFilter) {
