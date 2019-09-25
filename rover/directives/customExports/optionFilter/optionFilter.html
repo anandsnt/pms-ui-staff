@@ -1,0 +1,31 @@
+<div class="entry-wrapper"> <!-- This is container for this filter -->
+    <div class="entry">
+        <label for="duration-field">Field Name</label>
+        <div class="select">
+            <select id="duration-field" class="text-bold" ng-model="selectedFirstLevel" ng-change="onFieldNameChange()">
+                <option value="">Select a field</option>
+                <option ng-repeat="filter in firstLevelData" value='{{filter.value}}'>{{filter.label}}</option>
+            </select>
+        </div>
+    </div>
+    <multi-option-selection ng-show="isMultiSelect"
+        label="Options"
+        report="uiChosenReport"
+        data="secondLevelData"
+        options="options"
+        on-update="onSelectboxExpand"
+    ></multi-option-selection>
+    <div class="entry" ng-show="hasDualState">
+        <label for="duration-field">Options</label>
+        <div class="select">
+            <select id="option-field" class="text-bold" ng-model="selectedSecondLevel">
+                <option value="">Select Options</option>
+                <option ng-repeat="filter in secondLevelData" value='{{filter.value}}'>{{filter.label}}</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="entry">
+        <button class="button white red-text" ng-click="removeFilter()">Remove Options</button> <!-- Removes just this filter -->
+    </div>
+</div>

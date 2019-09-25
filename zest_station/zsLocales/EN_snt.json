@@ -843,6 +843,12 @@
     "ROOM_UNAVAILABLE_FINAL_COME_BACK_LATER_MSG": "Please come back later and check with the front desk agent",
 
     "PAYMENT_TYPE_NOT_ALLOWED_HEADER": "Sorry",
-    "PAYMENT_TYPE_NOT_ALLOWED_SUB_HEADER": "Sorry, your payment type is not allowed, Please see front desk"
+    "PAYMENT_TYPE_NOT_ALLOWED_SUB_HEADER": "Sorry, your payment type is not allowed, Please see front desk",
+
+    "TO_COMPLETE_CHECKIN_INSERT_CARD_IN_EMV_DEVICE": "To Complete your Check-in",
+    "TO_COMPLETE_CHECKIN_INSERT_CARD_IN_EMV_DEVICE_SUB": "Insert your CC in the EMV device",
+    "INSERT_CARD_INSTRUCTIONS": "EMV device will be in the left side of the KIOSK",
+    "CC_INSERT_TIMEOUT": "Are you still there ?",
+    "CC_INSERT_ERROR": "Something went wrong!."
 
 }
