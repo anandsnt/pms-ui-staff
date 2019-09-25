@@ -70,7 +70,14 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
     $stateProvider.state('admin.roomtypes', {
         templateUrl: '/assets/partials/roomTypes/adRoomTypesList.html',
         controller: 'ADRoomTypesCtrl',
-        url: '/roomtypes'
+        url: '/roomtypes',
+        resolve: {
+            availableLanguages: function(ADTranslationSrv) {
+                return ADTranslationSrv.getActiveGuestLanguages({
+                    show_only_active_languages: true
+                });
+            }
+        }
     });
 
     $stateProvider.state('admin.roomclasses', {
@@ -205,8 +212,10 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
             roomId: undefined
         },
         resolve: {
-            availableGuestLanguages: function (ADTranslationSrv) {
-                return ADTranslationSrv.getActiveGuestLanguages();
+            availableGuestLanguages: function(ADTranslationSrv) {
+                return ADTranslationSrv.getActiveGuestLanguages({
+                    show_only_active_languages: true
+                });
             }
         }
     });
@@ -258,7 +267,14 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
     $stateProvider.state('admin.chargeCodes', {
         templateUrl: '/assets/partials/chargeCodes/adChargeCodes.html',
         controller: 'ADChargeCodesCtrl',
-        url: '/chargeCodes'
+        url: '/chargeCodes',
+        resolve: {
+            availableLanguages: function(ADTranslationSrv) {
+                return ADTranslationSrv.getActiveGuestLanguages({
+                    show_only_active_languages: true
+                });
+            }
+        }
     });
 
     $stateProvider.state('admin.externalPmsConnectivity', {
@@ -277,6 +293,11 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
             },
             rateDetails: function () {
                 return {};
+            },
+            availableLanguages: function(ADTranslationSrv) {
+                return ADTranslationSrv.getActiveGuestLanguages({
+                    show_only_active_languages: true
+                });
             }
         }
     });
@@ -295,6 +316,11 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
                 };
 
                 return ADRatesSrv.fetchDetails(params);
+            },
+            availableLanguages: function(ADTranslationSrv) {
+                return ADTranslationSrv.getActiveGuestLanguages({
+                    show_only_active_languages: true
+                });
             }
         }
     });
@@ -302,7 +328,14 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
     $stateProvider.state('admin.rulesRestrictions', {
         templateUrl: '/assets/partials/rulesRestriction/adRulesRestriction.html',
         controller: 'ADRulesRestrictionCtrl',
-        url: '/restriction_types'
+        url: '/restriction_types',
+        resolve: {
+            availableLanguages: function(ADTranslationSrv) {
+                return ADTranslationSrv.getActiveGuestLanguages({
+                    show_only_active_languages: true
+                });
+            }
+        }
     });
 
     $stateProvider.state('admin.sociallobbysettings', {
@@ -403,11 +436,16 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         controller: 'ADRatesAddonDetailsCtrl',
         url: '/rates_addons/:addonId',
         resolve: {
+            hotelSettings: function(ADRulesRestrictionSrv) {
+                return ADRulesRestrictionSrv.fetchHotelCurrency();
+            },
             activeRates: function (ADPromotionsSrv) {
                 return ADPromotionsSrv.getActiveRates();
             },
-            availableLanguages: function (ADTranslationSrv) {
-                return ADTranslationSrv.getActiveGuestLanguages();
+            availableLanguages: function(ADTranslationSrv) {
+                return ADTranslationSrv.getActiveGuestLanguages({
+                    show_only_active_languages: true
+                });
             },
             singleAddon: function (ADRatesAddonsSrv, $stateParams) {
                 if ($stateParams.addonId === "") {
@@ -630,7 +668,7 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         controller: 'ADStationaryCtrl',
         url: '/stationary',
         resolve: {
-            availableGuestLanguages: function (ADTranslationSrv) {
+            availableGuestLanguages: function(ADTranslationSrv) {
                 return ADTranslationSrv.getActiveGuestLanguages();
             },
             availableHoldStatus: function (ADHoldStatusSrv) {
@@ -728,8 +766,10 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
             upsellData: function (ADUpsellAddonSrv) {
                 return ADUpsellAddonSrv.getSettings();
             },
-            availableLanguages: function (ADTranslationSrv) {
-                return ADTranslationSrv.getActiveGuestLanguages();
+            availableLanguages: function(ADTranslationSrv) {
+                return ADTranslationSrv.getActiveGuestLanguages({
+                    show_only_active_languages: true
+                });
             }
 
         }
@@ -1026,6 +1066,17 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
       templateUrl: '/assets/partials/dataCenters/adOracleDataCenters.html',
       controller: 'ADOracleDataCentersCtrl',
       url: '/oracleDataCenters'
+    });
+
+    $stateProvider.state('admin.policeExportDefaults', {
+        templateUrl: '/assets/partials/policeExportDefaults/adPoliceExportDefaults.html',
+        controller: 'ADPoliceExportDefaultsCtrl',
+        url: '/policeExportDefaults',
+        resolve: {
+            defaultSettings: function (adPoliceExportDefaultSrv) {
+                return adPoliceExportDefaultSrv.fetchCountry();
+            }
+        }
     });
 
 });

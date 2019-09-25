@@ -1,6 +1,22 @@
-angular.module('admin').controller('adStaahController', ['$scope', 'config', 'adInterfacesSrv',
-    function ($scope, config, adInterfacesSrv) {
+admin.controller('adStaahController', ['$scope', 'config', 'adInterfacesSrv', 'ngDialog', 'adIFCSrv',
+    function ($scope, config, adInterfacesSrv, ngDialog, adIFCSrv) {
         BaseCtrl.call(this, $scope);
+
+        var resetToken = function() {
+            return adIFCSrv.post('authentication', 'reset_token', {integration: 'staah'});
+        };
+
+        var fetchToken = function() {
+            return adIFCSrv.get('authentication', 'token', {integration: 'staah'});
+        };
+
+        var loadToken = function () {
+            $scope.callAPI(fetchToken, {
+                successCallBack: function (response) {
+                    $scope.authentication_token = response.authentication_token;
+                }
+            });
+        };
 
         $scope.interface = 'STAAH';
 
@@ -52,6 +68,32 @@ angular.module('admin').controller('adStaahController', ['$scope', 'config', 'ad
         };
 
         /**
+         * Dialog methods for generate IFC user auth token.
+         * Button to open popup
+         * Buttons in popup close and generate
+         */
+        $scope.onClickRegenerate = function () {
+            ngDialog.open({
+                template: '/assets/partials/interfaces/staah/adStaahTokenWarning.html',
+                scope: $scope,
+                closeByDocument: true
+            });
+        };
+
+        $scope.closeDialog = function () {
+            ngDialog.close();
+        };
+
+        $scope.regenerateAuth = function () {
+            $scope.callAPI(resetToken, {
+                successCallBack: function (response) {
+                    $scope.authentication_token = response.authentication_token;
+                    $scope.closeDialog();
+                }
+            });
+        };
+
+        /**
          * Initialization
          * @return {undefined}
          * @param {string} option feature setting
@@ -69,11 +111,15 @@ angular.module('admin').controller('adStaahController', ['$scope', 'config', 'ad
          */
         (function () {
             $scope.config = config;
+
+            loadToken();
+
             // initialize feature setting values
-            var featureSettings = ['reservation_download', 'reservation_upload', 'ari_upload'];
+            var featureSettings = ['reservation_download', 'ari_upload'];
 
             for (var i = 0; i < featureSettings.length; i++) {
                 $scope.featureSettingsInit(featureSettings[i]);
             }
         })();
-    }]);
+    }
+]);

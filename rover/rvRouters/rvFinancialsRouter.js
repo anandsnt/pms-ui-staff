@@ -14,9 +14,13 @@ angular.module('FinancialsModule', [])
     });
 
     $stateProvider.state('rover.financials.journal', {
-        url: '/journal/:id',
+        url: '/journal',
         templateUrl: '/assets/partials/financials/journal/rvJournal.html',
         controller: 'RVJournalController',
+        params: {
+            tab: "SUMMARY",
+            id: null
+        },
         resolve: {
             journalResponse: function(RVJournalSrv, jsAssets) {
                 if ( !!RVJournalSrv ) {
@@ -24,6 +28,9 @@ angular.module('FinancialsModule', [])
                 } else {
                     return {};
                 }
+            },
+            journalFilters: function(RVJournalSrv) {
+                return RVJournalSrv.getFilterData();
             }
         }
     });

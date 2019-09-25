@@ -162,12 +162,23 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             fetchReqDatas();
         };
 
+        var getFileFormatId = function() {
+            var formatId = 1;
+
+            if ($scope.selectedEntityDetails.report.title === 'Police Report Export') {
+                formatId = 3;
+            } else if ($scope.selectedEntityDetails.report.title === 'Spain Barcelona Police Export') {
+                formatId = 4;
+            }
+            return formatId;
+        };
+
         var createSchedule = function() {
             var params = {
                 report_id: $scope.selectedEntityDetails.id,
                 hotel_id: $rootScope.hotelDetails.userHotelsData.current_hotel_id,
                 /**/
-                format_id: ($scope.selectedEntityDetails.report.title === 'Police Report Export') ? 3 : 1,
+                format_id: getFileFormatId(),
                 delivery_type_id: $scope.scheduleParams.delivery_id
             };
 
@@ -275,12 +286,13 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
         };
 
         var saveSchedule = function() {
+
             var params = {
                 id: $scope.selectedEntityDetails.id,
                 report_id: $scope.selectedEntityDetails.report.id,
                 hotel_id: $rootScope.hotelDetails.userHotelsData.current_hotel_id,
                 /**/
-                format_id: ($scope.selectedEntityDetails.report.title === 'Police Report Export') ? 3 : 1,
+                format_id: getFileFormatId(),
                 delivery_type_id: $scope.scheduleParams.delivery_id
             };
 
@@ -537,6 +549,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
                 'Police Report Export': true,
                 'Switzerland Zurich Police Export': true,
+                'Spain Barcelona Police Export': true,
                 'Invoice / Folio Export': true
             };
 
@@ -556,6 +569,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
                 'Police Report Export': true,
                 'Switzerland Zurich Police Export': true,
+                'Spain Barcelona Police Export': true,
                 'Austria Nationality Export': true
             };
 
@@ -566,6 +580,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
                 'Police Report Export': true,
                 'Switzerland Zurich Police Export': true,
+                'Spain Barcelona Police Export': true,
                 'Invoice / Folio Export': true
             };
             var forMonthly = {
@@ -578,6 +593,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Police Report Export': true,
                 'Belgium Nationality Export': true,
                 'Switzerland Zurich Police Export': true,
+                'Spain Barcelona Police Export': true,
                 'Austria Nationality Export': true,
                 'Invoice / Folio Export': true
             };
@@ -588,7 +604,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
                 'Police Report Export': true,
                 'Synxis - Reservations': true,
-                'Switzerland Zurich Police Export': true
+                'Switzerland Zurich Police Export': true,
+                'Spain Barcelona Police Export': true
             };
 
             if ( forHourly[item.report.title] ) {
