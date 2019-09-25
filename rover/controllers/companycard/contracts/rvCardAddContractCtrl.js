@@ -63,12 +63,12 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
          * Function to save the new contract
          */
         $scope.saveNewContract = function() {
-            var account_id;
+            var accountId;
 
             if ($stateParams.id === "add") {
-                account_id = $scope.contactInformation.id;
+                accountId = $scope.contactInformation.id;
             } else {
-                account_id = $stateParams.id;
+                accountId = $stateParams.id;
             };
             var postData = {
                 'access_code':$scope.formData.accessCode,
@@ -79,7 +79,7 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
                 'is_active': $scope.formData.isActive
             }, options = {
                 params: {
-                    'account_id': account_id,
+                    'account_id': accountId,
                     'postData': postData
                 },
                 failureCallBack: saveNewContractFailureCallback,

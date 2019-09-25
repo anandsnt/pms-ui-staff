@@ -3,9 +3,8 @@ sntRover.controller('rvContractEndCalendarCtrl', ['$rootScope', '$scope', 'dateF
 		var maxDate = '',
 			minDate = tzIndependentDate($rootScope.businessDate);
 
-		minDate.setDate(minDate.getDate() + 1)
-			
-
+		minDate.setDate(minDate.getDate() + 1);
+		
 		if ($scope.contractData.mode === 'ADD') {
 			minDate = $scope.formData.startDate ? tzIndependentDate($scope.formData.startDate) : minDate;
 			$scope.date = $scope.formData.endDate || minDate;

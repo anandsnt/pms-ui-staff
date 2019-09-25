@@ -45,7 +45,7 @@
                     <label for="contract-status">Status</label>
                     <!-- Add .on, when active. Remove otherwise -->
                     <div class="switch-button full-width" ng-class="{'on': contractData.editData.isActive && !contractData.disableFields}">
-                        <input id="contract-status" ng-model="contractData.editData.isActive" ng-click="toggleActiveStatus()" type="checkbox">
+                        <input id="contract-status" ng-model="contractData.editData.is_active" ng-click="toggleActiveStatus()" type="checkbox">
                         <label class="data-off">
                             <span class="value">Active</span>
                             <span class="switch-icon">Inactive</span>
@@ -59,22 +59,22 @@
                 <div class="entry margin">
                     <label for="contract-name">Name</label>
                     <!-- add readonly if it's read only -->
-                    <input readonly="{{contractData.disableFields}}" name="contract-name" id="contract-name"  ng-model="contractData.editData.contract_name" placeholder="Contract Name" type="text" />
+                    <input ng-readonly="contractData.disableFields" name="contract-name" id="contract-name"  ng-model="contractData.editData.contract_name" placeholder="Contract Name" type="text" />
                 </div>
                 <div class="entry">
                     <label for="contract-code">Access Code</label>
                     <!-- add readonly if it's read only -->
-                    <input readonly="{{contractData.disableFields}}" name="contract-code" id="contract-code"  ng-model="contractData.editData.access_code" placeholder="Access Code" type="text" />
+                    <input ng-readonly="contractData.disableFields" name="contract-code" id="contract-code"  ng-model="contractData.editData.access_code" placeholder="Access Code" type="text" />
                 </div>
                 <div class="entry margin has-datepicker">
                     <label for="contract-start">Start Date</label>
                     <!-- add readonly if it's read only -->
-                    <input readonly="{{contractData.disableFields}}" name="contract-start" id="contract-start" class="datepicker" ng-model="contractData.editData.begin_date" placeholder="Select Start Date" maxlength="8" readonly type="text" />
+                    <input ng-readonly="contractData.disableFields" name="contract-start" id="contract-start" class="datepicker" ng-model="contractData.editData.begin_date" ng-click="contractStart()" placeholder="Select Start Date" maxlength="8" readonly type="text" />
                 </div>
                 <div class="entry has-datepicker">
                     <label for="contract-end">End Date</label>
                     <!-- add readonly if it's read only -->
-                    <input readonly="{{contractData.disableFields}}" name="contract-end" id="contract-end" class="datepicker" ng-model="contractData.editData.end_date" placeholder="Select End Date" maxlength="8" readonly type="text" />
+                    <input ng-readonly="contractData.disableFields" name="contract-end" id="contract-end" class="datepicker" ng-model="contractData.editData.end_date" ng-click="contractEnd()" placeholder="Select End Date" maxlength="8" readonly type="text" />
                 </div>
                 <div class="entry find-rate full-width">
                     <label for="rate-query">Contracted Rate</label>
@@ -112,7 +112,7 @@
                 <div class="entry margin">
                     <label for="contracted-nights">Contracted nights</label>
                      <!-- add readonly if it's read only -->
-                    <input readonly="{{contractData.disableFields}}" name="contracted-nights" id="contracted-nights" class=" contracted-nights" placeholder="Nights per month" ng-model="contractData.editData.total_contracted_nights" maxlength="8" readonly type="text" />
+                    <input ng-readonly="contractData.disableFields" name="contracted-nights" id="contracted-nights" class=" contracted-nights" placeholder="Nights per month" ng-model="contractData.editData.total_contracted_nights" ng-click="contractedNights()" maxlength="8" readonly type="text" />
                 </div>
             </div>
             <div class="holder right">
@@ -128,8 +128,8 @@
             </div>
         </div>
     </div>
-    <!-- <div class="contract-details-footer">
-        <button type="button" class="button blank">Cancel</button>
-        <button type="button" class="button green">Save Contract</button>
-    </div> -->
+    <div class="contract-details-footer">
+        <!-- <button type="button" class="button blank">Cancel</button> -->
+        <button type="button" class="button green" ng-click="updateContract()">Update Contract</button>
+    </div>
 </div>

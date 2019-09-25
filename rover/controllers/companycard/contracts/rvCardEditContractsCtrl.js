@@ -17,6 +17,55 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'RVC
          */
         $scope.addListener('refreshEditScroller', refreshEditScroller);
 
+        /**
+         * Function for updating the contract
+         */
+        $scope.updateContract = function() {
+            console.log('edit', $scope.contractData.editData);
+            var changedData = {
+                'access_code':$scope.contractData.editData.access_code,
+                'contract_name': $scope.contractData.editData.contract_name,
+                'begin_date': $scope.contractData.editData.begin_date,
+                'end_date': $scope.contractData.editData.end_date,
+                'total_contracted_nights': $scope.contractData.editData.total_contracted_nights,
+                'is_active': $scope.contractData.editData.is_active
+            };
+            var updateContractSuccessCallback = function(data) {
+				$scope.$emit('closeNewContractsForm');
+			};
+			var updateContractFailureCallback = function(data) {
+				$scope.$emit('setErrorMessage', data);
+				$scope.$parent.currentSelectedTab = 'cc-contracts';
+            };
+            var accountId;
+
+            if ($stateParams.id === "add") {
+                accountId = $scope.contactInformation.id;
+            } else {
+                accountId = $stateParams.id;
+            }
+            var options = {
+                params: {
+                    'account_id': accountId,
+                    "contract_id": $scope.contractData.selectedContract,
+                    'postData': changedData
+                },
+                failureCallBack: updateContractFailureCallback,
+                successCallBack: updateContractSuccessCallback
+            };
+
+            $scope.callAPI(RVCompanyCardSrv.updateContract, options);
+        };
+
+        /**
+         * Function to toggle contract active status
+         */
+        $scope.toggleActiveStatus = function() {
+            if (!$scope.contractData.disableFields) {
+                $scope.contractData.editData.is_active = !$scope.contractData.editData.is_active;
+            }
+        };
+
         // To popup contract start date
 		$scope.contractStart = function() {
             if (!$scope.contractData.disableFields) {
@@ -43,15 +92,14 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'RVC
         
         // Show contracted nights popup
         $scope.contractedNights = function() {
-            if ($scope.contractData.disableFields) {
-                return;
-            }
-            ngDialog.open({
-                template: '/assets/partials/companyCard/contracts/rvContractedNightsPopup.html',
-                controller: 'rvContractedNightsCtrl',
-                className: 'ngdialog-theme-default1 calendar-single1',
-                scope: $scope
-            });            
+            if (!$scope.contractData.disableFields) {
+                ngDialog.open({
+                    template: '/assets/partials/companyCard/contracts/rvContractedNightsPopup.html',
+                    controller: 'rvContractedNightsCtrl',
+                    className: 'ngdialog-theme-default1 calendar-single1',
+                    scope: $scope
+                });
+            }            
         };
     }
 ]);

@@ -55,27 +55,34 @@ sntRover.controller('rvContractedNightsCtrl', ['$rootScope', '$scope', 'dateFilt
 	        $scope.$emit('setErrorMessage', data);
 	        $scope.contractData.occupancy = temp_occupancy;
 	    };
-
-	    var data = {"occupancy": $scope.nightsData.occupancy};
+		var data = {"occupancy": $scope.nightsData.occupancy};
+		var accountID;
+		var currentContract;
 
 	    if ($stateParams.id === "add") {
-    		var account_id = $scope.contactInformation.id;
+    		accountID = $scope.contactInformation.id;
 	    }
 	    else {
-	    	var account_id = $stateParams.id;
+	    	accountID = $stateParams.id;
+		}
+
+		if ($scope.contractData.mode === 'ADD') {
+			currentContract = $scope.currentContract || null;
+		} else if ($scope.contractData.mode === 'EDIT') {
+			currentContract = $scope.contractData.selectedContract || null;
 		}
 		
 		var options = {
 			successCallBack: saveContractSuccessCallback,
 			failureCallBack: saveContractFailureCallback,
 			params: {
-				"account_id": account_id,
-				"contract_id": $scope.currentContract,
+				"account_id": accountID,
+				"contract_id": currentContract,
 				"postData": data
 			}
-		}
+		};
 
-	    if ($scope.currentContract) {
+	    if (currentContract) {
 			$scope.callAPI(RVCompanyCardSrv.updateNight, options);
 		}
 	};
