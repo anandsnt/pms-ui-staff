@@ -421,6 +421,9 @@ sntRover.controller('RVJournalController',
         $scope.data.searchFilterOptions = journalFilters.filters;        
         $scope.data.filterId = (_.first($scope.data.searchFilterOptions)).id;
         $scope.data.filterName = (_.first($scope.data.searchFilterOptions)).name;
+        if ($stateParams.tab === "BALANCE") {
+            $scope.activatedTab("BALANCE");
+        }
     };
 
     init();

@@ -64,7 +64,7 @@ admin.service('ADItemSrv', ['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
 		var url = "/admin/items/" + id + "/edit_item.json";
 		var deferred = $q.defer();
 
-		ADBaseWebSrv.getJSON(url).then(function(data) {
+		ADBaseWebSrv.getJSON(url, data).then(function(data) {
 			deferred.resolve(data);
 		}, function(errorMessage) {
 			deferred.reject(errorMessage);
