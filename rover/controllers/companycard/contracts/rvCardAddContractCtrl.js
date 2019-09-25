@@ -1,6 +1,7 @@
 angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog',
 	function($scope, RVCompanyCardSrv, $stateParams, ngDialog) {
         BaseCtrl.call(this, $scope);
+        $scope.currentContract = null;
         var showNightsModal = false;
         /**
          * 
@@ -8,8 +9,12 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
          * @return void
          */
         var saveNewContractSuccessCallback = function(data) {
-            $scope.errorMessage = "";
+            
+            $scope.$emit('setErrorMessage', []);
             $scope.contractData.mode = '';
+            $scope.currentContract = data.id;
+            // emit something to refresh the Contracts list
+            $scope.$emit('closeNewContractsForm');
             if (showNightsModal) {
                 ngDialog.open({
                     template: '/assets/partials/companyCard/contracts/rvContractedNightsPopup.html',
@@ -19,8 +24,15 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
                 });
                 showNightsModal = false;
             };
-            // emit something to refresh the Contracts list
-            $scope.$emit('closeNewContractsForm')
+        };
+
+        /**
+         * Failure callback for save API
+         * @param {String} error - error string
+         * @return void
+         */
+        var saveNewContractFailureCallback = function(error) {
+            $scope.$emit('setErrorMessage', error);
         };
 
         $scope.formData = {
@@ -30,7 +42,7 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
             endDate: null,
             contractedNights: 0,
             contractedRates: [],
-            isActive: false
+            isActive: true
         };
 
         /**
@@ -63,16 +75,18 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
                 'contract_name': $scope.formData.contractName,
                 'begin_date': $scope.formData.startDate,
                 'end_date': $scope.formData.endDate,
-                'total_contracted_nights': $scope.formData.contractedNights
+                'total_contracted_nights': $scope.formData.contractedNights,
+                'is_active': $scope.formData.isActive
             }, options = {
                 params: {
                     'account_id': account_id,
                     'postData': postData
                 },
+                failureCallBack: saveNewContractFailureCallback,
                 successCallBack: saveNewContractSuccessCallback
             };
 
-            $scope.callApi(RVCompanyCardSrv.addNewContract, options);
+            $scope.callAPI(RVCompanyCardSrv.addNewContract, options);
         };
 
         // To popup contract start date

@@ -2,6 +2,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 	function($scope, RVCompanyCardSrv, $stateParams, $timeout) {
 
 		BaseCtrl.call(this, $scope);
+
 		/* Items related to ScrollBars
 		 * 1. When the tab is activated, refresh scroll.
 		 * 2. Scroll is actually on a sub-scope created by ng-include.
@@ -27,6 +28,15 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 		};
 
 		/** ** Scroll related code ends here. ****/
+
+		/**
+		 * Function to set error message
+		 * @param {Array} data - error list
+		 * @returns void
+		 */
+		var setErrorMessage = function(data) {
+			$scope.errorMessage = data;
+		};
 
 		/**
 		 * function to set the contractsList object
@@ -64,6 +74,9 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 				pastContracts = data.history_contracts || [],
 				futureContracts = data.future_contracts || [];
 
+			$scope.contractData.selectedContract = data.contract_selected || '';
+			setErrorMessage([]);
+
 			if (currentContracts.length !== 0 || pastContracts.length !== 0 || futureContracts.length !== 0) {
 				// EDIT contract flow
 				$scope.contractData.mode = 'EDIT';
@@ -100,6 +113,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 			}
 			var options = {
 				successCallBack: fetchContractDetailsSuccessCallback,
+				failureCallback: setErrorMessage,
 				params: {
 					"account_id": account_id,
 					"contract_id": contractId
@@ -107,6 +121,14 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 			};
 
 			$scope.callAPI(RVCompanyCardSrv.fetchContractsDetails, options);
+		},
+		/*
+		 * Failure callback for contracts fetch API
+		 * @param {String} response - error message
+		 * @return void
+		 */
+		fetchContractsListFailureCallback = function(response) {
+			setErrorMessage(response);
 		},
 		/**
 		 * Init function fetches the contracts on page load
@@ -123,6 +145,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 			};
 			var options = {
 				successCallBack: fetchContractsListSuccessCallback,
+				failureCallBack: fetchContractsListFailureCallback,
 				params: {
 					"account_id": $stateParams.id
 				}
@@ -142,6 +165,12 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 		$scope.addListener('fetchContract', function(event, data) {
 			fetchContractDetails(data);
 		});
+		/*
+		 * Listener for displaying error message
+		 */
+		$scope.addListener('setErrorMessage', function(event, data) {
+			setErrorMessage(data);
+		});
 
 		/**
 		 * Function to load the new contracts form
@@ -150,13 +179,6 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 			$scope.contractData.mode = 'ADD';
 			$scope.contractData.noContracts = false;
 			refreshScroller();
-		};
-
-		/**
-		 * function for close activity indicator.
-		 */
-		$scope.closeActivityIndication = function() {
-			$scope.$emit('hideLoader');
 		};
 
 		init();
