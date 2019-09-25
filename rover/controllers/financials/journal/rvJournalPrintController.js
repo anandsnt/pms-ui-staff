@@ -108,9 +108,13 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
             "to_date": $scope.data.toDate,
             "employee_ids": $scope.data.selectedEmployeeList,
             "department_ids": $scope.data.selectedDepartmentList,
-            "charge_group_id": $scope.data.selectedChargeGroup,
-            "filter_id": $scope.data.filterId
-        };
+            "charge_group_id": $scope.data.selectedChargeGroup
+		};
+
+		if ($scope.data.query !== "") {
+            postData.filter_id = $scope.data.filterId;
+            postData.query = $scope.data.query;
+		}
 
 		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, postData, successCallBackFetchRevenueData);
        	var uiValue = _.find($scope.data.activeChargeGroups, function(each) {
@@ -129,7 +133,7 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 			$scope.data.revenueData.charge_groups[0].charge_codes = data.charge_codes;
 			$scope.data.revenueData.charge_groups[0].active = true;
 
-			var chargeCodeList = data.charge_codes;
+			var chargeCodeList = data.group_charge_codes;
 
 			$scope.data.activeChargeCodes = ( chargeCodeList.length > 0 ) ? chargeCodeList : [];
 
@@ -146,6 +150,11 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
         	"employee_ids": $scope.data.selectedEmployeeList,
             "department_ids": $scope.data.selectedDepartmentList
         };
+
+		if ($scope.data.query !== "") {
+            postData.filter_id = $scope.data.filterId;
+            postData.query = $scope.data.query;
+		}
 
         $scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeCodes, postData, successCallBackFetchRevenueDataChargeCodes);
 
@@ -189,9 +198,13 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
             "from_date": $scope.data.fromDate,
             "to_date": $scope.data.toDate,
             "employee_ids": $scope.data.selectedEmployeeList,
-            "department_ids": $scope.data.selectedDepartmentList,
-            "filter_id": $scope.data.filterId
-        };
+            "department_ids": $scope.data.selectedDepartmentList
+		};
+		
+		if ($scope.data.query !== "") {
+            postData.filter_id = $scope.data.filterId;
+            postData.query = $scope.data.query;
+		}
 
 		if ($scope.data.selectedPaymentType === "ALL") {
 			postData.charge_code_id = "";
