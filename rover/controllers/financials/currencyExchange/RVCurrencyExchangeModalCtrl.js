@@ -12,13 +12,15 @@ sntRover.controller('RVCurrencyExchangeModalController',
             BaseCtrl.call(this, $scope);
 
             $scope.exchangeRatesData = [];
+            $scope.exchangeCurrencyList = [];
+            // Commented codes needed for MC rate currency.
             // $scope.exchangeCurrencyList = $rootScope.rateCurrencyList;
             // if (_.findIndex($rootScope.rateCurrencyList, {"id": $rootScope.invoiceCurrencyObject.id}) === -1) {
             $scope.exchangeCurrencyList.push($rootScope.invoiceCurrencyObject);
             // } 
             $scope.selected_rate_currency  = (_.first($scope.exchangeCurrencyList)).id;
             $scope.selected_rate_currency_symbol  = (_.first($scope.exchangeCurrencyList)).symbol;
-            $scope.isInvoiceCurrency = $scope.selected_rate_currency === (_.find($rootScope.rateCurrencyList, {"id": $rootScope.invoiceCurrencyObject.id})).id;
+            $scope.isInvoiceCurrency = true; //$scope.selected_rate_currency === (_.find($rootScope.rateCurrencyList, {"id": $rootScope.invoiceCurrencyObject.id})).id;
             
             var delay = 200,
                 noOfDays = 7,
