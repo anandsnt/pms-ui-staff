@@ -21,6 +21,10 @@ admin.controller('adSalesforceSetupCtrl', ['$scope', 'config', 'adInterfacesSrv'
         };
 
         $scope.saveSetup = function() {
+            var params = dclone($scope.config);
+
+            $scope.deletePropertyIfRequired(params, 'sftp_password');
+
             $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
                     integration: $scope.interface.toLowerCase(),
@@ -36,6 +40,7 @@ admin.controller('adSalesforceSetupCtrl', ['$scope', 'config', 'adInterfacesSrv'
         (function() {
             //    init
             $scope.config = config;
+            $scope.setDefaultDisplayPassword($scope.config, 'sftp_password');
         })();
     }
 ]);
