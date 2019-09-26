@@ -6,9 +6,6 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
         $scope.setScroller('contractListScroller');
         var refreshScroller = function() {
 			$timeout(function() {
-				if ($scope.myScroll && $scope.myScroll['contractListScroller']) {
-					$scope.myScroll['contractListScroller'].refresh();
-				}
 				$scope.refreshScroller('contractListScroller');
 			}, 500);
 		};
@@ -33,7 +30,7 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
          */
         $scope.openContractsList = function(listType) {
             if ($scope.opened) {
-                $scope.opened = $scope.selectedType === listType ? false : true;
+                $scope.opened = $scope.selectedType !== listType;
             } else {
                 $scope.opened = true;
             }

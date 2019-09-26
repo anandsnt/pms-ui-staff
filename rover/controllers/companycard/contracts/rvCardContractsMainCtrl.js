@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVCompanyCardSrv', '$stateParams', '$timeout',
-	function($scope, RVCompanyCardSrv, $stateParams, $timeout) {
+angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVCompanyCardSrv', '$stateParams', '$timeout', 'ngDialog',
+	function($scope, RVCompanyCardSrv, $stateParams, $timeout, ngDialog) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.contractData = {
@@ -57,23 +57,26 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 				pastContracts = data.history_contracts || [],
 				futureContracts = data.future_contracts || [];
 
-			$scope.contractData.selectedContract = data.contract_selected || '';
 			setErrorMessage([]);
 
 			if (currentContracts.length !== 0 || pastContracts.length !== 0 || futureContracts.length !== 0) {
+				if ($scope.contractData.mode === '') {
+					$scope.contractData.selectedContract = data.contract_selected || '';
+				}
 				// EDIT contract flow
 				$scope.contractData.mode = 'EDIT';
 				$scope.contractData.noContracts = false;
-				$scope.contractData.selectedContract = data.contract_selected;
 				// Disable the field if the selected contract is history
 				angular.forEach(pastContracts, function(item) {
-					if (item.id === $scope.contractData.selectedContract) {
+					if (item.id === data.contract_selected) {
 						$scope.contractData.disableFields = true;
 					}
 				});
-				fetchContractDetails($scope.contractData.selectedContract);
+				fetchContractDetails(data.contract_selected);
 			}
-			refreshContractScrollers();
+			if ($scope.contractData.selectedContract !== '') {
+				refreshContractScrollers();
+			}
 			setSideListCount(currentContracts, futureContracts, pastContracts);
 		},
 		/**
@@ -89,6 +92,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 		fetchContractDetails = function(contractId) {
 			var accountId;
 
+			$scope.contractData.selectedContract = contractId;
 			if ($stateParams.id === "add") {
 				accountId = $scope.contactInformation.id;
 			} else {
@@ -143,7 +147,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 		/**
 		 * Listener to call on new contracts form closure
 		 */
-		$scope.addListener('closeNewContractsForm', init);
+		$scope.addListener('fetchContractsList', init);
 
 		/**
 		 * Listener for fetch event from the contract list 

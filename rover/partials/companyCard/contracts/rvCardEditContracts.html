@@ -44,7 +44,7 @@
                 <div class="entry only-switch margin">
                     <label for="contract-status">Status</label>
                     <!-- Add .on, when active. Remove otherwise -->
-                    <div class="switch-button full-width" ng-class="{'on': contractData.editData.isActive && !contractData.disableFields}">
+                    <div class="switch-button full-width" ng-class="{'on': contractData.editData.is_active && !contractData.disableFields}">
                         <input id="contract-status" ng-model="contractData.editData.is_active" ng-click="toggleActiveStatus()" type="checkbox">
                         <label class="data-off">
                             <span class="value">Active</span>
@@ -64,7 +64,7 @@
                 <div class="entry">
                     <label for="contract-code">Access Code</label>
                     <!-- add readonly if it's read only -->
-                    <input ng-readonly="contractData.disableFields" name="contract-code" id="contract-code"  ng-model="contractData.editData.access_code" placeholder="Access Code" type="text" />
+                    <input ng-readonly="contractData.mode === 'EDIT'" name="contract-code" id="contract-code"  ng-model="contractData.editData.access_code" placeholder="Access Code" type="text" />
                 </div>
                 <div class="entry margin has-datepicker">
                     <label for="contract-start">Start Date</label>
@@ -112,7 +112,7 @@
                 <div class="entry margin">
                     <label for="contracted-nights">Contracted nights</label>
                      <!-- add readonly if it's read only -->
-                    <input ng-readonly="contractData.disableFields" name="contracted-nights" id="contracted-nights" class=" contracted-nights" placeholder="Nights per month" ng-model="contractData.editData.total_contracted_nights" ng-click="contractedNights()" maxlength="8" readonly type="text" />
+                    <input ng-readonly="contractData.disableFields" name="contracted-nights" id="contracted-nights" class=" contracted-nights" placeholder="Nights per month" ng-model="contractData.editData.total_contracted_nights" ng-click="editContractedNights()" maxlength="8" readonly type="text" />
                 </div>
             </div>
             <div class="holder right">

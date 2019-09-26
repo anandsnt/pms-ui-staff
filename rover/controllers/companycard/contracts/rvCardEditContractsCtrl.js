@@ -5,9 +5,6 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'RVC
         $scope.setScroller('editContractScroller');
         var refreshEditScroller = function() {
             $timeout(function() {
-				if ($scope.myScroll && $scope.myScroll['editContractScroller']) {
-					$scope.myScroll['editContractScroller'].refresh();
-				}
 				$scope.refreshScroller('editContractScroller');
 			}, 500);
         };
@@ -21,7 +18,6 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'RVC
          * Function for updating the contract
          */
         $scope.updateContract = function() {
-            console.log('edit', $scope.contractData.editData);
             var changedData = {
                 'access_code':$scope.contractData.editData.access_code,
                 'contract_name': $scope.contractData.editData.contract_name,
@@ -29,15 +25,15 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'RVC
                 'end_date': $scope.contractData.editData.end_date,
                 'total_contracted_nights': $scope.contractData.editData.total_contracted_nights,
                 'is_active': $scope.contractData.editData.is_active
-            };
-            var updateContractSuccessCallback = function(data) {
-				$scope.$emit('closeNewContractsForm');
-			};
-			var updateContractFailureCallback = function(data) {
+            },
+            updateContractSuccessCallback = function(data) {
+				$scope.$emit('fetchContract', data.id);
+            },
+            updateContractFailureCallback = function(data) {
 				$scope.$emit('setErrorMessage', data);
 				$scope.$parent.currentSelectedTab = 'cc-contracts';
-            };
-            var accountId;
+            },
+            accountId;
 
             if ($stateParams.id === "add") {
                 accountId = $scope.contactInformation.id;
@@ -91,12 +87,12 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'RVC
         };
         
         // Show contracted nights popup
-        $scope.contractedNights = function() {
+        $scope.editContractedNights = function() {
             if (!$scope.contractData.disableFields) {
                 ngDialog.open({
                     template: '/assets/partials/companyCard/contracts/rvContractedNightsPopup.html',
                     controller: 'rvContractedNightsCtrl',
-                    className: 'ngdialog-theme-default1 calendar-single1',
+                    className: '',
                     scope: $scope
                 });
             }            
