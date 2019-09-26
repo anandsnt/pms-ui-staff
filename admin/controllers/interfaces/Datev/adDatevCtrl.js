@@ -41,9 +41,12 @@ admin.controller('adDatevCtrl', ['$scope', 'config', 'adInterfacesSrv', 'ngDialo
               });
               return;
             }
+            var params = dclone($scope.config);
+
+            $scope.deletePropertyIfRequired(params, 'sftp_password');
             $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
-                    settings: $scope.config,
+                    settings: params,
                     integration: $scope.interface.toLowerCase()
                 },
                 onSuccess: function() {
@@ -56,6 +59,7 @@ admin.controller('adDatevCtrl', ['$scope', 'config', 'adInterfacesSrv', 'ngDialo
          (function() {
             $scope.config = config;
             glAccountNumberLength = config.gl_account_number_length;
+            $scope.setDefaultDisplayPassword($scope.config, 'sftp_password');
         })();
     }
 ]);

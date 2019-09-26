@@ -154,9 +154,12 @@ angular.module('admin').controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 
         };
 
         $scope.saveSetup = function () {
+            var params = dclone($scope.config);
+
+            $scope.deletePropertyIfRequired(params, 'password');
             $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
-                    settings: $scope.config,
+                    settings: params,
                     integration: $scope.interface.toLowerCase()
                 },
                 onSuccess: function () {
@@ -200,6 +203,7 @@ angular.module('admin').controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 
         (function () {
             // init
             $scope.config = config;
+            $scope.setDefaultDisplayPassword($scope.config, 'password');
 
             // selected_charge_groups must be an array
             var selectedChargeGroups = config.selected_charge_groups ?
