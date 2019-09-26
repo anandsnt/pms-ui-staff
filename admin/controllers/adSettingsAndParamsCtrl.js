@@ -16,9 +16,9 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
     $scope.hours = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
     $scope.minutes = ['00', '15', '30', '45'];
 
-    $scope.selectedCurrencies = settingsAndParamsData.rate_currencies.length > 0 ? settingsAndParamsData.rate_currencies : [];
+    $scope.selectedRateCurrencies = settingsAndParamsData.rate_currencies.length > 0 ? settingsAndParamsData.rate_currencies : [];
+    $scope.selectedPaymentCurrencies = settingsAndParamsData.payment_currencies.length > 0 ? settingsAndParamsData.payment_currencies : [];
     $scope.data = settingsAndParamsData.business_date;
-    $scope.currency_list = settingsAndParamsData.currency_list;
     $scope.chargeCodes = chargeCodes;
     $scope.selected_charge_code = settingsAndParamsData.no_show_charge_code_id;
     $scope.selected_group_charge_code = settingsAndParamsData.group_charge_code_id;
@@ -27,9 +27,17 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
     $scope.auto_charge_deposit = settingsAndParamsData.auto_charge_deposit;
     $scope.is_multi_currency = settingsAndParamsData.is_multi_currency;
     $scope.is_multi_currency_enabled = settingsAndParamsData.is_multi_currency_enabled;    
-    $scope.currency_list = settingsAndParamsData.currency_list;
-    angular.forEach($scope.currency_list, function(item) {
+    $scope.rate_currency_list = settingsAndParamsData.currency_list;
+    angular.forEach($scope.rate_currency_list, function(item) {
         if (_.indexOf(settingsAndParamsData.rate_currencies, item.id) !== -1) {
+            item.is_selected = true;
+        } else {
+            item.is_selected = false;
+        }        
+    });
+    $scope.payment_currency_list = settingsAndParamsData.currency_list;
+    angular.forEach($scope.payment_currency_list, function(item) {
+        if (_.indexOf(settingsAndParamsData.payment_currencies, item.id) !== -1) {
             item.is_selected = true;
         } else {
             item.is_selected = false;
@@ -63,7 +71,8 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
             'auto_charge_deposit': $scope.auto_charge_deposit,
             'is_multi_currency_enabled': $scope.is_multi_currency_enabled,
             'invoice_currency': parseInt($scope.invoice_currency, 10),
-            'rate_currencies': $scope.selectedCurrencies
+            'rate_currencies': $scope.selectedCurrencies,
+            'payment_currencies': $scope.selectedPaymentCurrencies
         };
 
         $scope.invokeApi(settingsAndParamsSrv.saveSettingsAndParamsSrv, dataToSend, saveDetailsSuccessCallback);
@@ -72,15 +81,32 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
      * Selected currency 
      * @param currencyCode code of currency
      */
-    $scope.selectedCurrency = function(id) {
-        if ((_.findWhere($scope.currency_list, {"id": id})).is_selected) {
-            if (_.indexOf($scope.selectedCurrencies, id) !== -1) {
-                $scope.selectedCurrencies.splice(_.indexOf($scope.selectedCurrencies, id), 1);
-                (_.findWhere($scope.currency_list, {"id": id})).is_selected = false;
+    $scope.selectedRateCurrency = function(id) {
+        if ((_.findWhere($scope.rate_currency_list, {"id": id})).is_selected) {
+            if (_.indexOf($scope.selectedRateCurrencies, id) !== -1) {
+                $scope.selectedRateCurrencies.splice(_.indexOf($scope.selectedRateCurrencies, id), 1);
+                (_.findWhere($scope.rate_currency_list, {"id": id})).is_selected = false;
             }           
         } else {
-            $scope.selectedCurrencies.push(id);
-            (_.findWhere($scope.currency_list, {"id": id})).is_selected = true;            
+            $scope.selectedRateCurrencies.push(id);
+            (_.findWhere($scope.rate_currency_list, {"id": id})).is_selected = true;            
         }       
     };
+
+    /*
+     * Selected currency 
+     * @param currencyCode code of currency
+     */
+    $scope.selectedPaymentCurrency = function(id) {
+        if ((_.findWhere($scope.payment_currency_list, {"id": id})).is_selected) {
+            if (_.indexOf($scope.selectedPaymentCurrencies, id) !== -1) {
+                $scope.selectedPaymentCurrencies.splice(_.indexOf($scope.selectedPaymentCurrencies, id), 1);
+                (_.findWhere($scope.payment_currency_list, {"id": id})).is_selected = false;
+            }           
+        } else {
+            $scope.selectedPaymentCurrencies.push(id);
+            (_.findWhere($scope.payment_currency_list, {"id": id})).is_selected = true;            
+        }       
+    };
+
 }]);
