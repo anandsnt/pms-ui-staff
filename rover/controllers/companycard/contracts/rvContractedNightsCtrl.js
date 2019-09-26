@@ -3,13 +3,13 @@ sntRover.controller('rvContractedNightsCtrl', ['$rootScope', '$scope', 'dateFilt
 	$scope.nightsData = {};
 	$scope.nightsData.occupancy = [];
 	$scope.nightsData.allNights = "";
-	var myDate = tzIndependentDate($rootScope.businessDate);
-	var beginDate = $scope.formData.startDate || myDate;
-	var endDate = $scope.formData.endDate || myDate.setDate(myDate.getDate() + 1);
-	var first_date = new Date(beginDate);
-	var last_date = new Date(endDate);
+	var myDate = tzIndependentDate($rootScope.businessDate),
+		beginDate = $scope.formData.startDate || myDate,
+		endDate = $scope.formData.endDate || myDate.setDate(myDate.getDate() + 1),
+		first_date = tzIndependentDate(beginDate),
+		last_date = tzIndependentDate(endDate),
 
-	var month_array = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+		month_array = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
 		new_occupancy = [],
 		start_point = first_date.getFullYear() * 12 + first_date.getMonth(),
 		end_point = last_date.getFullYear() * 12 + last_date.getMonth(),
@@ -47,35 +47,38 @@ sntRover.controller('rvContractedNightsCtrl', ['$rootScope', '$scope', 'dateFilt
 
 		var saveContractSuccessCallback = function(data) {
 	    	$scope.contractData.total_contracted_nights = data.total_contracted_nights;
-	    	$scope.contractData.occupancy = $scope.nightsData.occupancy;
-	    	$scope.$emit('setErrorMessage', []);
+			$scope.contractData.occupancy = $scope.nightsData.occupancy;
+			$scope.contractData.selectedContract = data.id;
+			$scope.$emit('setErrorMessage', []);
+			$scope.$emit('fetchContractsList');
 	    	ngDialog.close();
-	    };
-	  	var saveContractFailureCallback = function(data) {
-	        $scope.$emit('setErrorMessage', data);
-	        $scope.contractData.occupancy = temp_occupancy;
-	    };
-
-	    var data = {"occupancy": $scope.nightsData.occupancy};
+		},
+		saveContractFailureCallback = function(data) {
+			$scope.$emit('setErrorMessage', data);
+			$scope.contractData.occupancy = temp_occupancy;
+		},
+		data = {"occupancy": $scope.nightsData.occupancy},
+		accountId;
 
 	    if ($stateParams.id === "add") {
-    		var account_id = $scope.contactInformation.id;
+    		accountId = $scope.contactInformation.id;
 	    }
 	    else {
-	    	var account_id = $stateParams.id;
-		}
-		
-		var options = {
-			successCallBack: saveContractSuccessCallback,
-			failureCallBack: saveContractFailureCallback,
-			params: {
-				"account_id": account_id,
-				"contract_id": $scope.currentContract,
-				"postData": data
-			}
+	    	accountId = $stateParams.id;
 		}
 
-	    if ($scope.currentContract) {
+		var currentContract = $scope.contractData.selectedContract || null,
+			options = {
+				successCallBack: saveContractSuccessCallback,
+				failureCallBack: saveContractFailureCallback,
+				params: {
+					"account_id": accountId,
+					"contract_id": currentContract,
+					"postData": data
+				}
+			};
+
+	    if (currentContract) {
 			$scope.callAPI(RVCompanyCardSrv.updateNight, options);
 		}
 	};

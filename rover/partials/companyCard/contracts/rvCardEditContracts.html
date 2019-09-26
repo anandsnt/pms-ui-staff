@@ -1,4 +1,4 @@
-<div class="contracts-details" ng-show="!contractData.noContracts && contractData.mode === 'EDIT'">
+<div ng-controller="rvCardEditContractsCtrl" class="contracts-details" ng-show="!contractData.noContracts && contractData.mode === 'EDIT'">
     <!-- Add .searching when searching a contract -->
     <div class="autocomplete-search contract-details-header">
         <!-- Remove .with-button if we are not shwoing Unlink Contract button -->
@@ -31,21 +31,21 @@
                     <li class="end-date">{end-date}</li>
                     <li class="rate">{rate}</li>
                 </ul>
-                ... repeat for each found contract
+                <!-- ... repeat for each found contract -->
             </div>
         </div>
     </div>
     <!-- If we don't show the bottom form, add .without-footer -->
     <!-- If we don't show the search for some reason, add .without-header -->
-    <div class="contracts-details-form scrollable">
+    <div class="contracts-details-form scrollable" ng-iscroll="editContractScroller">
         <div class="wrapper float">
             <div class="holder left">
                 <strong class="h3">Contract Details</strong>
                 <div class="entry only-switch margin">
                     <label for="contract-status">Status</label>
                     <!-- Add .on, when active. Remove otherwise -->
-                    <div class="switch-button full-width on">
-                        <input id="contract-status" value="1" type="checkbox" checked="">
+                    <div class="switch-button full-width" ng-class="{'on': contractData.editData.is_active && !contractData.disableFields}">
+                        <input id="contract-status" ng-model="contractData.editData.is_active" ng-click="toggleActiveStatus()" type="checkbox">
                         <label class="data-off">
                             <span class="value">Active</span>
                             <span class="switch-icon">Inactive</span>
@@ -59,22 +59,22 @@
                 <div class="entry margin">
                     <label for="contract-name">Name</label>
                     <!-- add readonly if it's read only -->
-                    <input name="contract-name" id="contract-name"  value="{contract name}" placeholder="Contract Name" type="text" />
+                    <input ng-readonly="contractData.disableFields" name="contract-name" id="contract-name"  ng-model="contractData.editData.contract_name" placeholder="Contract Name" type="text" />
                 </div>
                 <div class="entry">
                     <label for="contract-code">Access Code</label>
                     <!-- add readonly if it's read only -->
-                    <input name="contract-code" id="contract-code"  value="{code}" placeholder="Access Code" type="text" />
+                    <input ng-readonly="contractData.mode === 'EDIT'" name="contract-code" id="contract-code"  ng-model="contractData.editData.access_code" placeholder="Access Code" type="text" />
                 </div>
                 <div class="entry margin has-datepicker">
                     <label for="contract-start">Start Date</label>
                     <!-- add readonly if it's read only -->
-                    <input name="contract-start" id="contract-start" class="datepicker" value="" placeholder="Select Start Date" maxlength="8" readonly type="text" />
+                    <input ng-readonly="contractData.disableFields" name="contract-start" id="contract-start" class="datepicker" ng-model="contractData.editData.begin_date" ng-click="contractStart()" placeholder="Select Start Date" maxlength="8" readonly type="text" />
                 </div>
                 <div class="entry has-datepicker">
                     <label for="contract-end">End Date</label>
                     <!-- add readonly if it's read only -->
-                    <input name="contract-end" id="contract-end" class="datepicker" value="" placeholder="Select End Date" maxlength="8" readonly type="text" />
+                    <input ng-readonly="contractData.disableFields" name="contract-end" id="contract-end" class="datepicker" ng-model="contractData.editData.end_date" ng-click="contractEnd()" placeholder="Select End Date" maxlength="8" readonly type="text" />
                 </div>
                 <div class="entry find-rate full-width">
                     <label for="rate-query">Contracted Rate</label>
@@ -95,7 +95,7 @@
                                 <div class="card">
                                     {rate}
                                 </div>
-                                ... repeat for each rate
+                                <!-- ... repeat for each rate -->
                             </div>
                         </div>
                     </div>
@@ -106,39 +106,30 @@
                             <!-- display the icon when the rate can be removed -->
                             <span class="icons icon-remove-10"></span>
                         </li>
-                        ... repeat for each rate
+                        <!-- ... repeat for each rate -->
                     </div>
                 </div>
                 <div class="entry margin">
                     <label for="contracted-nights">Contracted nights</label>
                      <!-- add readonly if it's read only -->
-                    <input name="contracted-nights" id="contracted-nights" class=" contracted-nights" placeholder="Nights per month" value="{nights}" maxlength="8" readonly type="text" />
+                    <input ng-readonly="contractData.disableFields" name="contracted-nights" id="contracted-nights" class=" contracted-nights" placeholder="Nights per month" ng-model="contractData.editData.total_contracted_nights" ng-click="editContractedNights()" maxlength="8" readonly type="text" />
                 </div>
             </div>
             <div class="holder right">
                 <strong class="h3">Statistics</strong>
                  <!-- If there are statistics, show this -->
-                <ul id="contract-stats" class="contract-stats" ng-if="!contractData.noStatistics">
-                    <li>Booked Nights <span>{count}</span></li>
-                    <li>Total Nights <span>{count}</span></li>
-                    <li>Total Stays <span>{count}</span></li>
-                    <li>Total Revenue <span class="green">${total}</span></li>
-                    <li>Average Rate <span>${average}</span></li>
-                </ul>
-                <!-- If there is no statistics, show this -->
-                <div class="no-content" ng-if="contractData.noStatistics">
-                    <div class="info">
-                        <span class="icon-no-content icon-contracts"></span>
-                        <strong class="h1">No Statistics</strong>
-                        <span class="h2">This contracts has no reservations.</span>
-                    </div>
-                </div>
-                
+                <ul id="contract-stats" class="contract-stats" ng-if="contractData.editData.statistics">
+                    <li>Booked Nights <span>{{contractData.editData.statistics.booked_nights}}</span></li>
+                    <li>Total Nights <span>{{contractData.editData.statistics.total_nights}}</span></li>
+                    <li>Total Stays <span>{{contractData.editData.statistics.total_stays}}</span></li>
+                    <li>Total Revenue <span class="green">${{contractData.editData.statistics.total_revenue}}</span></li>
+                    <li>Average Rate <span>${{contractData.editData.statistics.average_rate}}</span></li>
+                </ul>                
             </div>
         </div>
     </div>
     <div class="contract-details-footer">
-        <button type="button" class="button blank">Cancel</button>
-        <button type="button" class="button green">Save Contract</button>
+        <!-- <button type="button" class="button blank">Cancel</button> -->
+        <button type="button" class="button green" ng-click="updateContract()">Update Contract</button>
     </div>
 </div>

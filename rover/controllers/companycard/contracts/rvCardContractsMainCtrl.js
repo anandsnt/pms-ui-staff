@@ -1,26 +1,16 @@
-angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVCompanyCardSrv', '$stateParams', '$timeout',
-	function($scope, RVCompanyCardSrv, $stateParams, $timeout) {
+angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVCompanyCardSrv', '$stateParams', '$timeout', 'ngDialog',
+	function($scope, RVCompanyCardSrv, $stateParams, $timeout, ngDialog) {
 
 		BaseCtrl.call(this, $scope);
-
-		/* Items related to ScrollBars
-		 * 1. When the tab is activated, refresh scroll.
-		 * 2. Scroll is actually on a sub-scope created by ng-include.
-		 *    So ng-iscroll will create the ,myScroll Array there, if not defined here.
-		 */
-
-		$scope.setScroller('cardNewContractsScroll');
-
-		var refreshScroller = function() {
-			$timeout(function() {
-				if ($scope.myScroll && $scope.myScroll['cardNewContractsScroll']) {
-					$scope.myScroll['cardNewContractsScroll'].refresh();
-				}
-				$scope.refreshScroller('cardNewContractsScroll');
-			}, 500);
+		$scope.contractData = {
+			mode: '',
+			contractsList: [],
+			editData: {},
+			disableFields: false,
+			noContracts: true,
+			noStatistics: true,
+			selectedContract: ''
 		};
-
-		/** ** Scroll related code ends here. ****/
 
 		/**
 		 * Function to set error message
@@ -67,19 +57,59 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 				pastContracts = data.history_contracts || [],
 				futureContracts = data.future_contracts || [];
 
-			$scope.contractData.selectedContract = data.contract_selected || '';
 			setErrorMessage([]);
 
-			if (currentContracts.length !== 0 && pastContracts.length !== 0 && futureContracts.length !== 0) {
+			if (currentContracts.length !== 0 || pastContracts.length !== 0 || futureContracts.length !== 0) {
+				if ($scope.contractData.mode === '') {
+					$scope.contractData.selectedContract = data.contract_selected || '';
+				}
 				// EDIT contract flow
-				// $scope.contractData.mode = 'EDIT';
-				// $scope.contractData.noContracts = false;
-				// $scope.contractData.selectedContract = data.contract_selected;
-				// fetchContractDetails()
+				$scope.contractData.mode = 'EDIT';
+				$scope.contractData.noContracts = false;
+				// Disable the field if the selected contract is history
+				angular.forEach(pastContracts, function(item) {
+					if (item.id === data.contract_selected) {
+						$scope.contractData.disableFields = true;
+					}
+				});
+				fetchContractDetails(data.contract_selected);
+			}
+			if ($scope.contractData.selectedContract !== '') {
+				refreshContractScrollers();
 			}
 			setSideListCount(currentContracts, futureContracts, pastContracts);
 		},
 		/**
+		 * Success callback for contract detail fetch
+		 * @param {Object} data - API response of detail fetch
+		 */
+		fetchContractDetailsSuccessCallback = function(data) {
+			$scope.contractData.editData = data;
+		},
+		/**
+		 * Function to fetch the currently selected contract details
+		 */
+		fetchContractDetails = function(contractId) {
+			var accountId;
+
+			$scope.contractData.selectedContract = contractId;
+			if ($stateParams.id === "add") {
+				accountId = $scope.contactInformation.id;
+			} else {
+				accountId = $stateParams.id;
+			}
+			var options = {
+				successCallBack: fetchContractDetailsSuccessCallback,
+				failureCallback: setErrorMessage,
+				params: {
+					"account_id": accountId,
+					"contract_id": contractId
+				}
+			};
+
+			$scope.callAPI(RVCompanyCardSrv.fetchContractsDetails, options);
+	    },
+	    /*
 		 * Failure callback for contracts fetch API
 		 * @param {String} response - error message
 		 * @return void
@@ -91,35 +121,50 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 		 * Init function fetches the contracts on page load
 		 */
 		init = function() {
-			$scope.contractData = {
-				mode: '',
-				contractsList: [],
-				noContracts: true,
-				noStatistics: true,
-				selectedContract: ''
-			};
 			var options = {
 				successCallBack: fetchContractsListSuccessCallback,
 				failureCallBack: fetchContractsListFailureCallback,
 				params: {
 					"account_id": $stateParams.id
 				}
-			}
+			};
 			
 			$scope.callAPI(RVCompanyCardSrv.fetchContractsList, options);
 		};
 
 		/**
-		 * Listener to call on new contracts form closure
+		 * Refresh the appropriate scroller based on mode
 		 */
-		$scope.addListener('closeNewContractsForm', init);
+		var refreshContractScrollers = function() {
+			if ($scope.contractData.mode === 'ADD') {
+				$scope.$broadcast('refreshAddScroller');
+			} else if ($scope.contractData.mode === 'EDIT') {
+				$scope.$broadcast('refreshEditScroller');
+				$scope.$broadcast('initContractsList');
+			}
+		};
 
 		/**
+		 * Listener to call on new contracts form closure
+		 */
+		$scope.addListener('fetchContractsList', init);
+
+		/**
+		 * Listener for fetch event from the contract list 
+		 */
+		$scope.addListener('fetchContract', function(event, data) {
+			fetchContractDetails(data);
+		});
+		/*	
 		 * Listener for displaying error message
 		 */
 		$scope.addListener('setErrorMessage', function(event, data) {
 			setErrorMessage(data);
 		});
+		/**
+		 * Listener for refreshing appropriate scrollers
+		 */
+		$scope.addListener('refreshContractsScroll', refreshContractScrollers);
 
 		/**
 		 * Function to load the new contracts form
@@ -127,7 +172,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 		$scope.createFirstContract = function() {
 			$scope.contractData.mode = 'ADD';
 			$scope.contractData.noContracts = false;
-			refreshScroller();
+			refreshContractScrollers();
 		};
 
 		init();

@@ -1,10 +1,24 @@
-angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog',
-	function($scope, RVCompanyCardSrv, $stateParams, ngDialog) {
+angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog', '$timeout',
+	function($scope, RVCompanyCardSrv, $stateParams, ngDialog, $timeout) {
         BaseCtrl.call(this, $scope);
-        $scope.currentContract = null;
         var showNightsModal = false;
+
+        /* Items related to ScrollBars
+		 * 1. When the tab is activated, refresh scroll.
+		 * 2. Scroll is actually on a sub-scope created by ng-include.
+		 *    So ng-iscroll will create the ,myScroll Array there, if not defined here.
+		 */
+
+		$scope.setScroller('cardNewContractsScroll');
+
+		var refreshScroller = function() {
+			$timeout(function() {
+				$scope.refreshScroller('cardNewContractsScroll');
+			}, 500);
+		};
+
+		/** ** Scroll related code ends here. ****/
         /**
-         * 
          * @param {Object} data - API response of save new contract as the input
          * @return void
          */
@@ -12,14 +26,15 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
             
             $scope.$emit('setErrorMessage', []);
             $scope.contractData.mode = '';
-            $scope.currentContract = data.id;
+            $scope.contractData.selectedContract = data.id;
             // emit something to refresh the Contracts list
-            $scope.$emit('closeNewContractsForm');
+            $scope.$emit('fetchContract', data.id);
+            refreshScroller();
             if (showNightsModal) {
                 ngDialog.open({
                     template: '/assets/partials/companyCard/contracts/rvContractedNightsPopup.html',
                     controller: 'rvContractedNightsCtrl',
-                    className: 'ngdialog-theme-default1 calendar-single1',
+                    className: '',
                     scope: $scope
                 });
                 showNightsModal = false;
@@ -35,15 +50,25 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
             $scope.$emit('setErrorMessage', error);
         };
 
-        $scope.formData = {
-            contractName: '',
-            accessCode: '',
-            startDate: null,
-            endDate: null,
-            contractedNights: 0,
-            contractedRates: [],
-            isActive: true
+        /**
+         * Post object initializer
+         */
+        var init = function() {
+            $scope.formData = {
+                contractName: '',
+                accessCode: '',
+                startDate: null,
+                endDate: null,
+                contractedNights: 0,
+                contractedRates: [],
+                isActive: true
+            };
         };
+        
+        /**
+         * Listener for scroll refresh
+         */
+        $scope.addListener('refreshAddScroller', refreshScroller);
 
         /**
          * Function to toggle contract's active/inactive status
@@ -56,19 +81,20 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
          * Function to cancel and close the new contract form
          */
         $scope.cancelNewContract = function() {
-            $scope.$emit('closeNewContractsForm');
+            $scope.$emit('fetchContractsList');
+            init();
         };
 
         /**
          * Function to save the new contract
          */
         $scope.saveNewContract = function() {
-            var account_id;
+            var accountId;
 
             if ($stateParams.id === "add") {
-                account_id = $scope.contactInformation.id;
+                accountId = $scope.contactInformation.id;
             } else {
-                account_id = $stateParams.id;
+                accountId = $stateParams.id;
             };
             var postData = {
                 'access_code':$scope.formData.accessCode,
@@ -79,7 +105,7 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
                 'is_active': $scope.formData.isActive
             }, options = {
                 params: {
-                    'account_id': account_id,
+                    'account_id': accountId,
                     'postData': postData
                 },
                 failureCallBack: saveNewContractFailureCallback,
@@ -114,5 +140,7 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
             showNightsModal = true;
             $scope.saveNewContract();
         };
+
+        init();
     }
 ]);
