@@ -23,13 +23,13 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
          * @return void
          */
         var saveNewContractSuccessCallback = function(data) {
-            
             $scope.$emit('setErrorMessage', []);
             $scope.contractData.mode = '';
             $scope.contractData.selectedContract = data.id;
             // emit something to refresh the Contracts list
-            $scope.$emit('fetchContract', data.id);
+            $scope.$emit('fetchContractsList');
             refreshScroller();
+            init();
             if (showNightsModal) {
                 ngDialog.open({
                     template: '/assets/partials/companyCard/contracts/rvContractedNightsPopup.html',
