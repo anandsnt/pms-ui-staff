@@ -286,7 +286,7 @@ sntRover.controller('RVReportDetailsCtrl', [
                     break;
 
                 case reportNames['CANCELLATION_NO_SHOW']:
-                    $scope.leftColSpan = 2;
+                    $scope.leftColSpan = 3;
                     $scope.rightColSpan = 3;
                     break;
 
