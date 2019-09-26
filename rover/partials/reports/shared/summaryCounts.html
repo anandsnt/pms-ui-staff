@@ -259,3 +259,10 @@
     <li>Total Tax<span>{{ summaryCounts.total_vat }}</span>
     </li>  
 </ul>
+
+<!-- Cancellation & No show report -->
+<ul ng-if="isThisReport( 'CANCELLATION_NO_SHOW' )" class="totals">
+    <li>Total Open Balance<span ng-class="{'red': toFloat(summaryCounts.total_balance) > 0, 'green': toFloat(summaryCounts.total_balance) <= 0}">
+        <span class="currency">{{ summaryCounts.total_balance | currency:currencySymbol:2 }}</span>
+    </li>
+</ul>
