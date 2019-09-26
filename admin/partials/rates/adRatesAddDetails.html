@@ -56,9 +56,10 @@
             </div>
             <div class="entry margin" >
                 <label>currency</label>
-                <select class="placeholder overlay" ng-model="rateData.currency_code_id" ng-options="currency.id as currency.value + ' - '  + currency.symbol for currency in rateTypesDetails.hotel_settings.rate_currency_list" >
-                   <option value="" style="display:none">Select Rate Currency</option>
-                </select>
+                <select convert-to-number ng-model="rateData.currency_code_id" class="placeholder" >
+                   <option value=""> Select Rate Currency</option>
+                   <option ng-repeat="currency in rateTypesDetails.hotel_settings.rate_currency_list" value="{{currency.id}}" ng-selected="currency.id==rateData.currency_code_id">{{currency.value}} - {{currency.symbol}}</option>
+               </select>
             </div>
 
             <div class="entry" ng-if="currencyId !== rateData.currency_code_id">

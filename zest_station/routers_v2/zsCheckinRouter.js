@@ -639,6 +639,15 @@ sntZestStation.config(['$stateProvider',
             },
             templateUrl: '/assets/partials_v2/checkin/zsCheckinPaymentTypeNotAllowed.html'
         });
+
+        $stateProvider.state('zest_station.checkInCCCollectionUsingOpi', {
+            url: '/checkInCCCollectionUsingOpi',
+            params: {
+                params: ''
+            },
+            templateUrl: '/assets/partials_v2/checkin/zscheckInCCCollectionUsingOpi.html',
+            controller: 'zsCheckInCCCollectionUsingOpiCtrl'
+        });
         
     }
 ]);

@@ -1075,6 +1075,36 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
       url: '/oracleDataCenters'
     });
 
+    $stateProvider.state('admin.dropboxAccounts', {
+        templateUrl: '/assets/partials/dropbox/adDropboxAccountList.html',
+        controller: 'ADDropboxAccountListCtrl',
+        url: '/dropboxaccounts'
+    });
+
+    $stateProvider.state('admin.dropboxAccountDetails', {
+        templateUrl: '/assets/partials/dropbox/adDropboxAccountDetails.html',
+        controller: 'ADDropboxAccountDetailsCtrl',
+        url: '/dropboxaccountdetails/:id',
+        params: {
+            id: '',
+            data: null
+        }
+    });
+
+    $stateProvider.state('admin.googledriveAccounts', {
+        templateUrl: '/assets/partials/googleDrive/adGoogleDriveAccountList.html',
+        controller: 'ADGoogleDriveAccountListCtrl',
+        url: '/googledriveaccounts',
+        params: {
+            updated: null
+        },
+        resolve: {
+            storageConfig: function (ACGIIntegrationSrv) {
+                return ACGIIntegrationSrv.fetchConfiguration();
+            }
+        }
+    });
+    
     $stateProvider.state('admin.policeExportDefaults', {
         templateUrl: '/assets/partials/policeExportDefaults/adPoliceExportDefaults.html',
         controller: 'ADPoliceExportDefaultsCtrl',
@@ -1083,6 +1113,16 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
             defaultSettings: function (adPoliceExportDefaultSrv) {
                 return adPoliceExportDefaultSrv.fetchCountry();
             }
+        }
+    });
+
+    $stateProvider.state('admin.googledriveAccounts.details', {
+        templateUrl: '/assets/partials/googleDrive/adGoogleDriveAccountDetails.html',
+        controller: 'ADGoogleDriveAccountDetailsCtrl',
+        url: '/googleaccountdetails/:id',
+        params: {
+            id: '',
+            data: null
         }
     });
 
