@@ -1,10 +1,28 @@
-angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog',
-	function($scope, RVCompanyCardSrv, $stateParams, ngDialog) {
+angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog', '$timeout',
+	function($scope, RVCompanyCardSrv, $stateParams, ngDialog, $timeout) {
         BaseCtrl.call(this, $scope);
         $scope.currentContract = null;
         var showNightsModal = false;
+
+        /* Items related to ScrollBars
+		 * 1. When the tab is activated, refresh scroll.
+		 * 2. Scroll is actually on a sub-scope created by ng-include.
+		 *    So ng-iscroll will create the ,myScroll Array there, if not defined here.
+		 */
+
+		$scope.setScroller('cardNewContractsScroll');
+
+		var refreshScroller = function() {
+			$timeout(function() {
+				if ($scope.myScroll && $scope.myScroll['cardNewContractsScroll']) {
+					$scope.myScroll['cardNewContractsScroll'].refresh();
+				}
+				$scope.refreshScroller('cardNewContractsScroll');
+			}, 500);
+		};
+
+		/** ** Scroll related code ends here. ****/
         /**
-         * 
          * @param {Object} data - API response of save new contract as the input
          * @return void
          */
@@ -34,6 +52,11 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
         var saveNewContractFailureCallback = function(error) {
             $scope.$emit('setErrorMessage', error);
         };
+        
+        /**
+         * Listener for scroll refresh
+         */
+        $scope.addListener('refreshAddScroller', refreshScroller);
 
         $scope.formData = {
             contractName: '',

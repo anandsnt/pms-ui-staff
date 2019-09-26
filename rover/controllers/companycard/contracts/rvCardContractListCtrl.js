@@ -3,7 +3,15 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
         BaseCtrl.call(this, $scope);
         $scope.selectedType = '';
         $scope.opened = false;
-
+        $scope.setScroller('contractListScroller');
+        var refreshScroller = function() {
+			$timeout(function() {
+				if ($scope.myScroll && $scope.myScroll['contractListScroller']) {
+					$scope.myScroll['contractListScroller'].refresh();
+				}
+				$scope.refreshScroller('contractListScroller');
+			}, 500);
+		};
         var init = function() {
             var openedContract = $scope.contractData.selectedContract,
                 contractsList = $scope.contractData.contractsList;
@@ -16,17 +24,9 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
                     }
                 });
             });
+            refreshScroller();
         };
 
-        $scope.setScroller('contractListScroller');
-        var refreshScroller = function() {
-			$timeout(function() {
-				if ($scope.myScroll && $scope.myScroll['contractListScroller']) {
-					$scope.myScroll['contractListScroller'].refresh();
-				}
-				$scope.refreshScroller('contractListScroller');
-			}, 500);
-		};
         /**
          * Open the selected contracts list
          * @param {String} listType - PAST, PRESENT, FUTURE string values
@@ -53,7 +53,7 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
          */
         $scope.newContract = function() {
             $scope.contractData.mode = 'ADD';
-            $scope.$emit('refreshAddScroller');
+            $scope.$emit('refreshContractsScroll');
         }
 
         /**

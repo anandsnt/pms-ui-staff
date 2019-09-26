@@ -12,25 +12,6 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 			selectedContract: ''
 		};
 
-		/* Items related to ScrollBars
-		 * 1. When the tab is activated, refresh scroll.
-		 * 2. Scroll is actually on a sub-scope created by ng-include.
-		 *    So ng-iscroll will create the ,myScroll Array there, if not defined here.
-		 */
-
-		$scope.setScroller('cardNewContractsScroll');
-
-		var refreshScroller = function() {
-			$timeout(function() {
-				if ($scope.myScroll && $scope.myScroll['cardNewContractsScroll']) {
-					$scope.myScroll['cardNewContractsScroll'].refresh();
-				}
-				$scope.refreshScroller('cardNewContractsScroll');
-			}, 500);
-		};
-
-		/** ** Scroll related code ends here. ****/
-
 		/**
 		 * Function to set error message
 		 * @param {Array} data - error list
@@ -92,6 +73,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 				});
 				fetchContractDetails($scope.contractData.selectedContract);
 			}
+			refreshContractScrollers();
 			setSideListCount(currentContracts, futureContracts, pastContracts);
 		},
 		/**
@@ -100,25 +82,23 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 		 */
 		fetchContractDetailsSuccessCallback = function(data) {
 			$scope.contractData.editData = data;
-			$scope.$broadcast('refreshEditScroller');
-			$scope.$broadcast('initContractsList');
 		},
 		/**
 		 * Function to fetch the currently selected contract details
 		 */
 		fetchContractDetails = function(contractId) {
-			var account_id;
+			var accountId;
 
 			if ($stateParams.id === "add") {
-				account_id = $scope.contactInformation.id;
+				accountId = $scope.contactInformation.id;
 			} else {
-				account_id = $stateParams.id;
+				accountId = $stateParams.id;
 			}
 			var options = {
 				successCallBack: fetchContractDetailsSuccessCallback,
 				failureCallback: setErrorMessage,
 				params: {
-					"account_id": account_id,
+					"account_id": accountId,
 					"contract_id": contractId
 				}
 			};
@@ -149,6 +129,18 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 		};
 
 		/**
+		 * Refresh the appropriate scroller based on mode
+		 */
+		var refreshContractScrollers = function() {
+			if ($scope.contractData.mode === 'ADD') {
+				$scope.$broadcast('refreshAddScroller');
+			} else if ($scope.contractData.mode === 'EDIT') {
+				$scope.$broadcast('refreshEditScroller');
+				$scope.$broadcast('initContractsList');
+			}
+		};
+
+		/**
 		 * Listener to call on new contracts form closure
 		 */
 		$scope.addListener('closeNewContractsForm', init);
@@ -166,9 +158,9 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 			setErrorMessage(data);
 		});
 		/**
-		 * Listener for addScroller refresh, from contractsList controller
+		 * Listener for refreshing appropriate scrollers
 		 */
-		$scope.addListener('refreshAddScroller', refreshScroller);
+		$scope.addListener('refreshContractsScroll', refreshContractScrollers);
 
 		/**
 		 * Function to load the new contracts form
@@ -176,7 +168,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 		$scope.createFirstContract = function() {
 			$scope.contractData.mode = 'ADD';
 			$scope.contractData.noContracts = false;
-			refreshScroller();
+			refreshContractScrollers();
 		};
 
 		init();
