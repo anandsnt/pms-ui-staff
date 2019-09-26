@@ -4,41 +4,53 @@ sntRover.controller('rvContractedNightsCtrl', ['$rootScope', '$scope', 'dateFilt
 	$scope.nightsData.occupancy = [];
 	$scope.nightsData.allNights = "";
 	var myDate = tzIndependentDate($rootScope.businessDate),
-		beginDate = $scope.addData.startDate || myDate,
-		endDate = $scope.addData.endDate || myDate.setDate(myDate.getDate() + 1),
-		first_date = tzIndependentDate(beginDate),
-		last_date = tzIndependentDate(endDate),
+		beginDate,
+		endDate;
 
-		month_array = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-		new_occupancy = [],
-		start_point = first_date.getFullYear() * 12 + first_date.getMonth(),
-		end_point = last_date.getFullYear() * 12 + last_date.getMonth(),
-		my_point = start_point;
+	if ($scope.contractData.mode === 'ADD') {
+		myDate = $scope.addData.startDate ? tzIndependentDate($scope.addData.startDate) : myDate;
+		beginDate = dateFilter(myDate, 'yyyy-MM-dd');
+		endDate = $scope.addData.endDate || dateFilter(myDate.setDate(myDate.getDate() + 1), 'yyyy-MM-dd');
+	}
+	else if ($scope.contractData.mode === 'EDIT') {
+		myDate = $scope.contractData.editData && $scope.contractData.editData.begin_date ?
+				tzIndependentDate($scope.contractData.editData.begin_date) :
+				myDate;
+		beginDate = dateFilter(myDate, 'yyyy-MM-dd');
+		endDate = $scope.contractData.editData.end_date || dateFilter(myDate.setDate(myDate.getDate() + 1), 'yyyy-MM-dd');
+	}
+	var	firstDate = tzIndependentDate(beginDate),
+		lastDate = tzIndependentDate(endDate),
+		monthArray = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+		newOccupancy = [],
+		startPoint = firstDate.getFullYear() * 12 + firstDate.getMonth(),
+		endPoint = lastDate.getFullYear() * 12 + lastDate.getMonth(),
+		myPoint = startPoint;
 
-	while ( my_point <= end_point ) {
-		var year = Math.floor(my_point / 12),
-			month = my_point - year * 12,
+	while ( myPoint <= endPoint ) {
+		var year = Math.floor(myPoint / 12),
+			month = myPoint - year * 12,
 			obj = {
 				"contracted_occupancy": 0,
 				"year": year,
 				"actual_occupancy": 0,
-				"month": month_array[month]
+				"month": monthArray[month]
 			};
 
-		new_occupancy.push(obj);
-		my_point += 1;
+		newOccupancy.push(obj);
+		myPoint += 1;
 	}
 
 	// Taking deep copy of current occupancy data
 	angular.forEach($scope.contractData.occupancy, function(item, index) {
-			angular.forEach(new_occupancy, function(item2, index2) {
+			angular.forEach(newOccupancy, function(item2, index2) {
 				if ((item2.year === item.year) && (item2.month === item.month)) {
 					item2.contracted_occupancy = item.contracted_occupancy;
 					item2.actual_occupancy = item.actual_occupancy;
 				}
     		});
     });
-    $scope.nightsData.occupancy = new_occupancy;
+    $scope.nightsData.occupancy = newOccupancy;
 
 	/*
 	 * To save contract Nights.
