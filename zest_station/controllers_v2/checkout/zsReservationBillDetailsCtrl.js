@@ -53,7 +53,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
 
             // process bill data
             var billsData = response.bill_details.fee_details;
-            
+
             $scope.billData = [];
             $scope.zestStationData.currency = response.bill_details.currency;
             $scope.net_amount = response.bill_details.total_fees;
@@ -248,6 +248,10 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             }
         };
 
+        $scope.clickedAddCharge = function () {
+            $state.go('zest_station.postCharge');
+        };
+
         $scope.nextClicked = function () {
             if (parseFloat($scope.balance) !== 0 && $scope.zestStationData.kiosk_collect_balance) {
                 zsStateHelperSrv.setPreviousStateParams($stateParams);
@@ -284,7 +288,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 $scope.days_of_stay = $stateParams.days_of_stay;
                 $scope.hours_of_stay = $stateParams.hours_of_stay;
                 $stateParams.email = !_.isNull($stateParams.email) ? $stateParams.email : '';
-                
+
                 // storing state varibales to be used in print view also
                 $scope.stateParamsForNextState = {
                     'from': $stateParams.from,

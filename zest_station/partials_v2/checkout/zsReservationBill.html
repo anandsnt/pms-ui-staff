@@ -55,6 +55,10 @@
                         </p>
                         <!-- <a href="{swipe.html, change title of that screen if arrived from here}" class="button">Change Card</a> -->
                     </div>
+                    <button type="button" class="button with-icon brand-colors" touch-press="clickedAddCharge()" ng-class="{ 'overlay' : false }">
+                        <span class="icons icon-charge"></span>
+                        Add Charge
+                    </button>
                     <ul id="rate">
                         <li class="sub">
                             <text data-ng-bind-html="getTagValue('BILL_SUB')" editable-text="BILL_SUB"></text>

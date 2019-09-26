@@ -1,0 +1,97 @@
+<section id="main" role="main">
+    <div id="content">
+        <h1>Minibar Consumption Since Last Night</h1>
+        <div id="flex-holder" class="minibar">
+            <!-- Calculate {maxheight} with this formula: window.height - combined heights of <h1>, <h2> and <h3> elements + 8
+                    - if some <h> elements are missing just exclude them or use 0. 
+                    - 8 is added to make sure bottom rounded corner is set off screen
+                -->
+            <div id="textual" class="minibar-items">
+                <!-- Add ng-scroll here -->
+                <div class="wrapper">
+                    <!-- If showing only Items --
+                                <div class="minibar-item">
+                                    <div class="minibar-item-info">
+                                        <h3 class="minibar-item-title">{Item Name}</h3>
+                                        <div class="minibar-item-meta">{Item Price}</div>
+                                    </div>
+                                    <div class="minibar-item-qty">{Item quantity}</div>
+                                    <div class="minibar-item-actions">
+                                        <button type="button" class="button">+</button>
+                                        Remove .disabled when there is 1 or more quantities --
+                                        <button type="button" class="button disabled">-</button>
+                                    </div>
+                                </div>
+                                ... repeat for each item
+                                -->
+
+                    <!-- If showing groups -->
+                    <div class="minibar-item group">
+                        <div class="minibar-item-info">
+                            <h3 class="minibar-item-title">{Group Name}</h3>
+                            <div class="minibar-item-meta">{Group Meta}</div>
+                        </div>
+                        <div class="minibar-item-qty">{Group Total Quantity}</div>
+                        <div class="minibar-item-expand">
+                            {../assets/icons/down.svg}
+                        </div>
+                        <div class="group-items">
+                            <div class="minibar-item">
+                                <div class="minibar-item-info">
+                                    <h3 class="minibar-item-title">{Item Name}</h3>
+                                    <div class="minibar-item-meta">{Item Price}</div>
+                                </div>
+                                <div class="minibar-item-qty">{Item quantity}</div>
+                                <div class="minibar-item-actions">
+                                    <button type="button" class="button">+</button>
+                                    <!-- Remove .disabled when there is 1 or more quantities -->
+                                    <button type="button" class="button disabled">-</button>
+                                </div>
+                            </div>
+                            ... repeat for each item
+                        </div>
+                    </div>
+                    ... repeat for each group
+
+                </div>
+            </div>
+            <!-- Calculate {maxheight} with this formula: window.height - combined heights of <h1>, <h2> and <h3> elements + 8
+                            - if some <h> elements are missing just exclude them or use 0. 
+                            - 8 is added to make sure bottom rounded corner is set off screen
+                        -->
+            <div class="minibar-review" style="max-height:{maxheight}px;">
+                <div class="review-container">
+                    <div class="review-items">
+                        <!-- Add scroll here as well -->
+                        <div class="items">
+                            <ul class="wrapper">
+                                <li>
+                                    <span class="name">{qty}x {name}</span>
+                                    <span class="cost">${cost}</span>
+                                </li>
+                                ... repeat foreach item
+                            </ul>
+                        </div>
+                        <ul class="totals">
+                            <li>
+                                <span class="name">Subtotal</span>
+                                <span class="cost">${subtotal}</span>
+                            </li>
+                            <li>
+                                <span class="name">Taxes</span>
+                                <span class="cost">${tax}</span>
+                            </li>
+                            <li class="total">
+                                <span class="name">Total</span>
+                                <span class="cost">${total}</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="review-action">
+                        <button type="button" class="button">Post Items</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -164,5 +164,17 @@ sntZestStation.service('zsCheckoutSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseW
             });
             return deferred.promise;
         };
+
+        this.fetchChargeItems = function (params) {
+            var deferred = $q.defer();
+            var url = "/api/charge_codes/items_and_charge_codes.json?application=kiosk";
+
+            BaseWebSrvV2.getJSON(url).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
     }
 ]);
