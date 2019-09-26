@@ -79,7 +79,7 @@
                         </select>
 					</div>
 				</div>
-				<div class="entry full-width" required="required" ng-hide="(!prefetchData.advance_payment_enabled || isPaymentSelected() || isDepositSelected() || isArManualBalanceSelected() || isArManualCreditSelected())">
+				<div class="entry full-width" required="required" ng-hide="(!prefetchData.advance_payment_enabled || isPaymentSelected() || isDepositSelected() || isArManualBalanceSelected() || isArManualCreditSelected() || isFeesSelected() || isTaxSelected() || isTouristTaxSelected())">
 					<label class="ng-binding" ng-hide="label.length==0" for="" >
 						{{'DEPOSIT_CHARGE_CODE'| translate}}
 					</label>
