@@ -28,7 +28,7 @@ admin.controller('adSalesforceSetupCtrl', ['$scope', 'config', 'adInterfacesSrv'
             $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
                     integration: $scope.interface.toLowerCase(),
-                    settings: $scope.config
+                    settings: params
                 },
                 onSuccess: function() {
                     $scope.errorMessage = '';
