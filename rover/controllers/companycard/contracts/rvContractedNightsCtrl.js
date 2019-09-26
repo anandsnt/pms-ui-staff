@@ -4,8 +4,8 @@ sntRover.controller('rvContractedNightsCtrl', ['$rootScope', '$scope', 'dateFilt
 	$scope.nightsData.occupancy = [];
 	$scope.nightsData.allNights = "";
 	var myDate = tzIndependentDate($rootScope.businessDate),
-		beginDate = $scope.formData.startDate || myDate,
-		endDate = $scope.formData.endDate || myDate.setDate(myDate.getDate() + 1),
+		beginDate = $scope.addData.startDate || myDate,
+		endDate = $scope.addData.endDate || myDate.setDate(myDate.getDate() + 1),
 		first_date = tzIndependentDate(beginDate),
 		last_date = tzIndependentDate(endDate),
 

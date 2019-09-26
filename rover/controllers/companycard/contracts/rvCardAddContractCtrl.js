@@ -54,7 +54,7 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
          * Post object initializer
          */
         var init = function() {
-            $scope.formData = {
+            $scope.addData = {
                 contractName: '',
                 accessCode: '',
                 startDate: null,
@@ -74,7 +74,7 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
          * Function to toggle contract's active/inactive status
          */
         $scope.toggleActiveStatus = function() {
-            $scope.formData.isActive = !$scope.formData.isActive;
+            $scope.addData.isActive = !$scope.addData.isActive;
         };
 
         /**
@@ -97,12 +97,12 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
                 accountId = $stateParams.id;
             };
             var postData = {
-                'access_code':$scope.formData.accessCode,
-                'contract_name': $scope.formData.contractName,
-                'begin_date': $scope.formData.startDate,
-                'end_date': $scope.formData.endDate,
-                'total_contracted_nights': $scope.formData.contractedNights,
-                'is_active': $scope.formData.isActive
+                'access_code':$scope.addData.accessCode,
+                'contract_name': $scope.addData.contractName,
+                'begin_date': $scope.addData.startDate,
+                'end_date': $scope.addData.endDate,
+                'total_contracted_nights': $scope.addData.contractedNights,
+                'is_active': $scope.addData.isActive
             }, options = {
                 params: {
                     'account_id': accountId,
