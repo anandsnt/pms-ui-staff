@@ -53,7 +53,7 @@
     <!-- Company Search -->
     <div id="company-card-content" class="card-search card-content" ng-class="UICardContentCls('company-card')" ng-if="searchMode">
         
-        <button id="new-company" ng-show="addNewCards" type="button" class="button green has-arrow skip" ng-click="createNewCompany()">Add New Card</button>
+        <button id="new-company" ng-show="addNewCards" type="button" class="button green has-arrow skip" ng-click="createNewCompany()" ng-disabled="!hasPermissionToCreateCCard" ng-class="{'overlay': !hasPermissionToCreateCCard}">Add New Card</button>
         
         <div id="search-company-content" class="search-cards scrollable">            
             <!-- Company Card Results listing -->
