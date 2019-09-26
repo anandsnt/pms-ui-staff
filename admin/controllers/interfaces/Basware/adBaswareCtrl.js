@@ -27,9 +27,13 @@ admin.controller('adBaswareCtrl', ['$scope', 'config', 'adInterfacesSrv',
          * @return {undefined}
          */
         $scope.saveSetup = function () {
+            var params = dclone($scope.config);
+
+            $scope.deletePropertyIfRequired(params, 'password');
+
             $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
-                    settings: $scope.config,
+                    settings: params,
                     integration: $scope.interface.toLowerCase()
                 },
                 onSuccess: function () {
@@ -41,6 +45,7 @@ admin.controller('adBaswareCtrl', ['$scope', 'config', 'adInterfacesSrv',
 
         (function () {
             $scope.config = config;
+            $scope.setDefaultDisplayPassword($scope.config, 'password');
         })();
     }
 ]);
