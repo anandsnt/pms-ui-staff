@@ -26,8 +26,9 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
     $scope.check_guest_auth_for_interface_postings = settingsAndParamsData.check_guest_auth_for_interface_postings;
     $scope.auto_charge_deposit = settingsAndParamsData.auto_charge_deposit;
     $scope.is_multi_currency = settingsAndParamsData.is_multi_currency;
-    $scope.is_multi_currency_enabled = settingsAndParamsData.is_multi_currency_enabled;    
-    $scope.rate_currency_list = settingsAndParamsData.currency_list;
+    $scope.is_multi_currency_enabled = settingsAndParamsData.is_multi_currency_enabled;
+    $scope.currency_list = settingsAndParamsData.currency_list;
+    $scope.rate_currency_list = angular.copy(settingsAndParamsData.currency_list);
     angular.forEach($scope.rate_currency_list, function(item) {
         if (_.indexOf(settingsAndParamsData.rate_currencies, item.id) !== -1) {
             item.is_selected = true;
@@ -35,7 +36,7 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
             item.is_selected = false;
         }        
     });
-    $scope.payment_currency_list = settingsAndParamsData.currency_list;
+    $scope.payment_currency_list = angular.copy(settingsAndParamsData.currency_list);
     angular.forEach($scope.payment_currency_list, function(item) {
         if (_.indexOf(settingsAndParamsData.payment_currencies, item.id) !== -1) {
             item.is_selected = true;
@@ -71,7 +72,7 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
             'auto_charge_deposit': $scope.auto_charge_deposit,
             'is_multi_currency_enabled': $scope.is_multi_currency_enabled,
             'invoice_currency': parseInt($scope.invoice_currency, 10),
-            'rate_currencies': $scope.selectedCurrencies,
+            'rate_currencies': $scope.selectedRateCurrencies,
             'payment_currencies': $scope.selectedPaymentCurrencies
         };
 

@@ -170,6 +170,11 @@ sntRover.controller('roverController', [
         $rootScope.advanced_queue_flow_enabled = hotelDetails.advanced_queue_flow_enabled;
         $rootScope.isPmsProductionEnv = hotelDetails.is_pms_prod;
         $rootScope.isWorkStationMandatory = hotelDetails.is_workstation_mandatory;
+        $rootScope.paymentCurrencyList = hotelDetails.payment_currency_list;
+        $rootScope.shouldShowPaymentDropDown = false;
+        if ($rootScope.isMultiCurrencyEnabled && $rootScope.paymentCurrencyList.length > 0 ) {
+            $rootScope.shouldShowPaymentDropDown = true;
+        }
         // $rootScope.isRoomDiaryEnabled = hotelDetails.is_room_diary_enabled;
         // CICO-40544 - Now we have to enable menu in all standalone hotels
         // API not removing for now - Because if we need to disable it we can use the same param
