@@ -834,11 +834,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
          *  Change handler for repeats 
          */
         $scope.changeRepeats = () => {
-            var match = _.find($scope.customExportsData.scheduleFrequencies, { id: $scope.scheduleParams.frequency_id }) || {};
-
-            if (match.value === 'RUN_ONCE') {
-               refreshScroll(SCHEDULE_DETAILS_SCROLLER, true) ;
-            }
+            refreshScroll(SCHEDULE_DETAILS_SCROLLER, true) ;
         };
 
 
