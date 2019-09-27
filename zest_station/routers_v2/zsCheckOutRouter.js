@@ -107,17 +107,6 @@ sntZestStation.config(['$stateProvider',
             icon: 'checkout_search.png'
         });
 
-        $stateProvider.state('zest_station.postCharge', {
-            url: '/postCharge',
-            templateUrl: '/assets/partials_v2/checkout/zsPostCharge.html',
-            controller: 'zsPostChargeCtrl',
-            jumper: true,
-            section: 'Checkout',
-            label: '',
-            icon: 'home.png',
-            tags: ['']
-        });
-
         $stateProvider.state('zest_station.payment', {
             url: '/payment',
             templateUrl: '/assets/partials_v2/payment/paymentInitial.html',
