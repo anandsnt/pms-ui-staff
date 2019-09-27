@@ -318,6 +318,12 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                     });
 
                     $scope.viewState.currentStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
+                    
+                    $timeout( () => {
+                        refreshScroll(EXPORT_LIST_SCROLLER, true);
+                    }, 100);
+                    
+
                 },
                 onScheduledExportsFetchFailure = () => {
                     $scope.customExportsData.scheduledCustomExports = [];
@@ -343,11 +349,13 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                                             name: value.field_name 
                                         }),
                         columnPos = parseInt(value.sequence_order) - 1;
-                    
-                        selectedColumn.selected = true;
-                        selectedColumn.customColLabel = value.mapped_name;
 
-                    $scope.selectedColumns[columnPos] = selectedColumn;
+                        if (selectedColumn) {
+                            selectedColumn.selected = true;
+                            selectedColumn.customColLabel = value.mapped_name;
+
+                            $scope.selectedColumns[columnPos] = selectedColumn;
+                        }
 
                 });
             },
