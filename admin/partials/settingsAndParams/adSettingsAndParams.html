@@ -6,14 +6,13 @@
 				<a id="go_back" data-type="load-details" class="action back" ng-click="goBackToPreviousState()"translate>BACK</a>
 			</header>
 			<section class="content-scroll">
+
 				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 				<form  class="form float" >
 					<div class="form-title full-width">
 						<h3><span translate>CHANGE_BUSSINESS_DAY</span></h3>
 					</div>
 					<fieldset class="holder left">
-						<div></div>
-
 						<!-- Switch -->
 						<ad-toggle-button is-checked=" data.is_auto_change_bussiness_date" label="Auto Change Business Date"></ad-toggle-button>
 						<div class="entry">
@@ -99,18 +98,28 @@
 							<label> Hotel Invoice Currency <strong>*</strong> </label>
 							<div class="select">
 								<select 
-								        ng-model="invoice_currency"
+										ng-model="invoice_currency"
 										ng-options="currency.id as currency.code for currency in currency_list">
 								</select>
 							</div>
 						</div>
-                    </fieldset>
-
-					<div class="actions float">
-						<button type="button" id="cancel" class="button blank" ng-click="goBackToPreviousState()"translate>
+						<div class="entry full-width actions_margin_top" ng-show="is_multi_currency_enabled">
+							<label> Hotel Rate Currencies <strong>*</strong> </label>
+							<div id="available-charge-codes" class="boxes col2">
+								<ad-checkbox ng-repeat="currency in currency_list"
+								is-checked="currency.is_selected"
+								label="{{currency.code +' - ' + currency.symbol}}"
+								parent-label-class="room-likes" span-class="checkbox-background"
+								on-click="selectedCurrency(currency.id)"></ad-checkbox>
+							</div>
+						</div>					
+           		  
+            		</fieldset>
+					<div class="actions">
+						<button type="button" id="cancel" class="button blank" ng-click="goBackToPreviousState()" translate>
 							CANCEL
 						</button>
-						<button type="button" id="save" class="button green" ng-click="saveClick()"translate>
+						<button type="button" id="save" class="button green" ng-click="saveClick()" translate>
 							SAVE_CHANGES
 						</button>
 					</div>

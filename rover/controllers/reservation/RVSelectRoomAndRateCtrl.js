@@ -470,6 +470,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							isCollapsed: $scope.stateCheck.selectedRoomType != roomType.id,
 							name: $scope.reservationData.roomsMeta[roomType.id].name,
 							id: roomType.id,
+							rateCurrency: roomType.rate_currency,
 							ratesArray: [],
 							availability: roomType.availability,
 							isSuiteUnavailable: $scope.reservationData.roomsMeta[roomType.id].is_suite && (roomType.availability <= 0 || roomType.availability < $scope.reservationData.rooms.length)
@@ -480,6 +481,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						rateInfo = {
 							id: roomType.rate_id,
 							name: $scope.reservationData.ratesMeta[roomType.rate_id].name,
+							rateCurrency: roomType.rate_currency,
 							adr: roomType.adr,
 							dates: angular.copy(datesInitial),
 							bestAvailableRateRestrictions: roomType.restrictions,
@@ -540,6 +542,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							isCollapsed: true,
 							name: (rate.id) ? $scope.reservationData.ratesMeta[rate.id].name : "Custom Rate for " + $scope.reservationData.group.name,
 							id: rate.id,
+							rateCurrency: rate.rate_currency,
 							defaultRoomTypeId: rate.room_type_id,
 							defaultRoomTypeAvailability: rate.availability,
 							defaultADR: rate.adr,
@@ -568,9 +571,11 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				$scope.refreshScroll();
 			},
 			goToAddonsView = function() {
+
 				$state.go('rover.reservation.staycard.mainCard.addons', {
 					'from_date': ARRIVAL_DATE,
-					'to_date': DEPARTURE_DATE
+					'to_date': DEPARTURE_DATE,
+					'rate_id': $scope.stateCheck.selectedStayDate.rate.id
 				});
 			},
 			enhanceStay = function() {
@@ -1378,6 +1383,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 				_.each(datesArray, function(dayInfo, date) {
 					dayInfo.amount = rateDetails.amounts[date];
+					dayInfo.rateCurrency = secondary.rateCurrency;
 					var adultsCount = 1,
 						childCount = 0;
 
@@ -1577,6 +1583,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				rateInfo = rate;
 			}
 
+			$scope.reservationData.rateCurrency = rateInfo.rateCurrency;
+
 			// CICO-44842 - Plugging in the max occupancy check while booking from room & rates screen
 			$scope.checkOccupancyLimit(null, null, null, roomId);
 
@@ -1652,7 +1660,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						rateAmount = Number(parseFloat(amount).toFixed(2));
 
 					$scope.stateCheck.stayDates[$scope.stateCheck.dateModeActiveDate].amount = rateAmount;
-
+					$scope.stateCheck.stayDates[$scope.stateCheck.dateModeActiveDate].rateCurrency = rateInfo.rateCurrency;
 					for (roomIndex = $scope.stateCheck.roomDetails.firstIndex; roomIndex <= $scope.stateCheck.roomDetails.lastIndex; roomIndex++) {
 						currentRoom = ROOMS[roomIndex];
 						currentRoom.stayDates[activeDate].rateDetails = {
@@ -2009,6 +2017,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 								availability: room.availability,
 								showDays: false,
 								adr: room.adr,
+								rateCurrency: room.rate_currency,
 								forRate: rate.id,
 								numRestrictions: proccesedRestrictions.restrictionCount || 0,
 								restriction: room.restrictions,
@@ -2084,6 +2093,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							id: rate.id,
 							name: $scope.reservationData.ratesMeta[rate.id].name,
 							adr: rate.adr,
+							rateCurrency: rate.rate_currency,
 							dates: angular.copy(datesInitial),
 							totalAmount: 0.0,
 							restriction: rate.restrictions,

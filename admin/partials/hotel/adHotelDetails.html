@@ -186,6 +186,7 @@
 				</div>
 				<ad-textbox value="data.tax_id" label="{{'TAX_ID' | translate}}" placeholder="{{'TAX_ID_PLACEHOLDER' | translate}}" styleclass="half-width" ng-if="isStandAlone && !isHourlyRatesEnabled"></ad-textbox>
 				<ad-textbox value="data.swift_code" label="{{'SWIFT_CODE' | translate}}" placeholder="{{'SWIFT_PLACEHOLDER' | translate}}" styleclass="half-width" ng-if="isStandAlone && !isHourlyRatesEnabled"></ad-textbox>
+				<ad-textbox value="data.police_hotel_code" label="{{'HOTEL_POLICE_EXPORT_CODE' | translate}}" placeholder="{{'HOTEL_POLICE_EXPORT_CODE_PLACEHOLDER' | translate}}" styleclass="half-width"></ad-textbox>
 				<div class="entry full-width registration-for-rover" ng-if="!isAdminSnt">
 					<label for="rover"> Rover Registration </label>
 					<div  id="registration-for-rover" class="boxes">
@@ -845,7 +846,7 @@
                     <label>
                         Tokenization URL
                     </label>
-                    <input type="text" value="{{data.shiji_token_url}}" readonly="readonly">
+                    <input type="text" value="{{data.shiji_token_url}}" ng-model="data.shiji_token_url">
                 </div>
                 <div class="entry">
                     <label>
@@ -864,6 +865,16 @@
                         API Password
                     </label>
                     <input type="text" ng-model="data.shiji_token_api_password" value="{{data.shiji_token_api_password}}">
+                </div>
+                <div class="entry">
+                    <label>
+                        Token Channel
+                    </label>
+                    <div class="select white">
+                        <select ng-model="data.shiji_token_channel" id="shiji_token_channel"  ng-options="shijiTokenChannel.code as shijiTokenChannel.name for shijiTokenChannel in shijiTokenChannels">
+                            <option value="" class="placeholder" disabled="">Select Token Channel</option>
+                        </select>
+                    </div>
                 </div>
             </fieldset>
             <fieldset class="holder right" ng-if="isAdminSnt && data.payment_gateway === 'SHIJI'">
@@ -888,7 +899,7 @@
                     <label>
                         Cloud Payment URL
                     </label>
-                    <input type="text" value="{{data.shiji_cloud_url}}" readonly="readonly">
+                    <input type="text" value="{{data.shiji_cloud_url}}" ng-model="data.shiji_cloud_url">
                 </div>
                 <div class="entry">
                     <label>

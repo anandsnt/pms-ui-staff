@@ -163,6 +163,20 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 $scope.selectedEntityDetails.report.title === reportNames['DAILY_PRODUCTION_RATE']);
         };
 
+        /**
+         * Navigate to the schedulable report list
+         */
+        $scope.navigateToSchedulableReportList = function () {
+            ngDialog.close();
+            if ( !! $scope.selectedReport && $scope.selectedReport.active ) {
+                $scope.selectedReport.active = false;
+            }
+            $scope.updateViewCol($scope.viewColsActions.ONE);
+            $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
+
+            fetch_reportSchedules_frequency_timePeriod_scheduableReports();
+        };
+
         var createSchedule = function() {
             var params = {
                 report_id: $scope.selectedEntityDetails.report.id,
@@ -178,16 +192,21 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
             var key;
 
-            var success = function() {
+            var success = function(data) {
                 $scope.errorMessage = '';
                 $scope.$emit( 'hideLoader' );
-                if ( !! $scope.selectedReport && $scope.selectedReport.active ) {
-                    $scope.selectedReport.active = false;
+                if (data.is_export_already_exist) {
+                    ngDialog.open({
+                        template: '/assets/partials/reports/rvDuplicateScheduleWarningPopup.html',
+                        scope: $scope,
+                        closeByEscape: false,
+                        data: {
+                            isUpdate: false
+                        }
+                    }); 
+                } else {
+                    $scope.navigateToSchedulableReportList();
                 }
-                $scope.updateViewCol($scope.viewColsActions.ONE);
-                $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
-
-                fetch_reportSchedules_frequency_timePeriod_scheduableReports();
             };
 
             var failed = function(errors) {
@@ -275,6 +294,29 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.invokeApi( reportsSrv.createSchedule, params, success, failed );
         };
 
+        // Navigate to schedules list
+        $scope.navigateToSchedulesList = (params) => {
+            ngDialog.close();
+            var updatedIndex = _.findIndex($scope.$parent.$parent.schedulesList, { id: params.id });
+
+            if ( !! $scope.selectedSchedule && $scope.selectedSchedule.active ) {
+                $scope.selectedSchedule.active = false;
+            }
+            $scope.updateViewCol($scope.viewColsActions.ONE);
+            $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
+
+            if ( updatedIndex >= 0 ) {
+                $scope.$parent.$parent.schedulesList[updatedIndex].frequency_id = params.frequency_id;
+                $scope.$parent.$parent.schedulesList[updatedIndex].repeats_every = params.repeats_every;
+                $scope.$parent.$parent.schedulesList[updatedIndex].time = params.time;
+                $scope.$parent.$parent.schedulesList[updatedIndex].starts_on = params.starts_on;
+                $scope.$parent.$parent.schedulesList[updatedIndex].ends_on_after = params.ends_on_after;
+                $scope.$parent.$parent.schedulesList[updatedIndex].ends_on_date = params.ends_on_date;
+
+                $scope.$parent.$parent.schedulesList[updatedIndex].occurance = findOccurance($scope.$parent.$parent.schedulesList[updatedIndex]);
+            }
+        };
+
         var saveSchedule = function() {
             var params = {
                 id: $scope.selectedEntityDetails.id,
@@ -292,26 +334,23 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
             var key;
 
-            var success = function() {
-                var updatedIndex = _.findIndex($scope.$parent.$parent.schedulesList, { id: params.id });
-
+            var success = function(data) {
                 $scope.errorMessage = '';
                 $scope.$emit( 'hideLoader' );
-                if ( !! $scope.selectedSchedule && $scope.selectedSchedule.active ) {
-                    $scope.selectedSchedule.active = false;
+                if (data.is_export_already_exist) {
+                    ngDialog.open({
+                        template: '/assets/partials/reports/rvDuplicateScheduleWarningPopup.html',
+                        scope: $scope,
+                        closeByEscape: false,
+                        data: {
+                            isUpdate: true,
+                            params: params
+                        }
+                    }); 
+                } else {
+                    $scope.navigateToSchedulesList(params);
                 }
-                $scope.updateViewCol($scope.viewColsActions.ONE);
-
-                if ( updatedIndex >= 0 ) {
-                    $scope.$parent.$parent.schedulesList[updatedIndex].frequency_id = params.frequency_id;
-                    $scope.$parent.$parent.schedulesList[updatedIndex].repeats_every = params.repeats_every;
-                    $scope.$parent.$parent.schedulesList[updatedIndex].time = params.time;
-                    $scope.$parent.$parent.schedulesList[updatedIndex].starts_on = params.starts_on;
-                    $scope.$parent.$parent.schedulesList[updatedIndex].ends_on_after = params.ends_on_after;
-                    $scope.$parent.$parent.schedulesList[updatedIndex].ends_on_date = params.ends_on_date;
-
-                    $scope.$parent.$parent.schedulesList[updatedIndex].occurance = findOccurance($scope.$parent.$parent.schedulesList[updatedIndex]);
-                }
+                
             };
 
             var failed = function(errors) {
@@ -1089,7 +1128,6 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             var reset = true;
 
             $scope.isAddingNew = true;
-            $scope.addingStage = STAGES.SHOW_PARAMETERS;
 
             $scope.selectedSchedule.active = false;
 
@@ -1182,7 +1220,11 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.scheduleReport();
         });
 
-        $scope.$on('$destroy', createNewReportScheduleListener);        
+        $scope.$on('$destroy', createNewReportScheduleListener);   
+        
+        $scope.addListener('RESET_CURRENT_STAGE', () => {
+            $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
+        });
 
         /**
          * Startup

@@ -22,7 +22,9 @@ sntRover.controller('RVJournalController',
     $scope.data.selectedChargeCode  = '';
     $scope.data.selectedPaymentType = '';
     $scope.data.filterTitle = "All Departments";
-    $scope.data.isExpandedView = false;
+    $scope.data.isExpandedViewSummary = false;
+    $scope.data.isExpandedViewRevenue = false;
+    $scope.data.isExpandedViewPayment = false;
 
     $scope.data.isActiveRevenueFilter = false;
     $scope.data.activeChargeGroups = [];
@@ -87,6 +89,10 @@ sntRover.controller('RVJournalController',
     $scope.clickedSummaryDate = function() {
         popupCalendar('SUMMARY');
     };
+
+    $scope.clickedBalanceDate = function() {
+        popupCalendar('BALANCE');
+    };
     // Filter by Logged in user id.
     var filterByLoggedInUser = function() {
         angular.forEach($scope.data.filterData.employees, function(item, index) {
@@ -98,8 +104,30 @@ sntRover.controller('RVJournalController',
         });
     };
 
-    $scope.clickedJournalToggle = function () {
-        $scope.data.isExpandedView = !$scope.data.isExpandedView;
+
+    $scope.clickedJournalToggle = function (isFromSearch) {
+        var tabName = $scope.data.activeTab;
+
+        if (tabName === 'SUMMARY') {
+            $scope.data.isExpandedViewSummary = !$scope.data.isExpandedViewSummary;
+            $scope.$broadcast("EXPAND_SUMMARY_SCREEN");
+        } else if (tabName === 'PAYMENTS') {
+            if (!isFromSearch) {
+                $scope.data.isExpandedViewPayment = !$scope.data.isExpandedViewPayment;
+            }
+            
+            $scope.$broadcast("EXPAND_PAYMENT_SCREEN");
+        } else if (tabName === 'REVENUE') {
+            if (!isFromSearch) {
+                $scope.data.isExpandedViewRevenue = !$scope.data.isExpandedViewRevenue;
+            }
+
+            if (!$scope.data.isExpandedViewRevenue) {
+                $scope.searchJournal();
+            } else {
+                $scope.$broadcast("EXPAND_REVENUE_SCREEN");
+            }           
+        } 
     };
 
     // To toggle revenue filter box.
@@ -257,7 +285,9 @@ sntRover.controller('RVJournalController',
         $scope.data.fromDate = $rootScope.businessDate;
         $scope.data.toDate   = $rootScope.businessDate;
         $scope.data.cashierDate = $rootScope.businessDate;
-        $scope.data.summaryDate = $rootScope.businessDate;
+        $scope.data.summaryDate = $rootScope.businessDate;        
+        $scope.data.balanceDate = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
+                .format($rootScope.momentFormatForAPI);
         // b) All employee fields should default to logged in user
         $timeout(function() {
             filterByLoggedInUser();
@@ -278,6 +308,8 @@ sntRover.controller('RVJournalController',
         $scope.data.toDate   = $filter('date')(yesterday, 'yyyy-MM-dd');
         $scope.data.cashierDate = $filter('date')(yesterday, 'yyyy-MM-dd');
         $scope.data.summaryDate = $filter('date')(yesterday, 'yyyy-MM-dd');
+        $scope.data.balanceDate = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
+                .format($rootScope.momentFormatForAPI);
         // CICO-20294 : Hide summary tab if the reservation is of type Hourly.
         if ($rootScope.isHourlyRateOn) $scope.data.isShowSummaryTab = false;
     }
@@ -303,18 +335,23 @@ sntRover.controller('RVJournalController',
     /* Cashier filter ends here */
 
     $scope.activatedTab = function(tabName) {
-    	$scope.data.activeTab = tabName;
+        $scope.data.activeTab = tabName;
     	if (tabName === 'REVENUE') {
-            $rootScope.$broadcast('REFRESHREVENUECONTENT');
+            $scope.data.searchFilterOptions.splice(5, 1);
+            if (!$scope.data.isExpandedViewRevenue) {
+                $rootScope.$broadcast('REFRESHREVENUECONTENT');
+            }            
         }
     	else if (tabName === 'CASHIER') {
             $scope.$broadcast('cashierTabActive');
         }
     	else if (tabName === 'PAYMENTS') {
             $rootScope.$broadcast('REFRESHPAYMENTCONTENT');
+            $scope.data.searchFilterOptions.splice(5, 1);
         }
         else if (tabName === 'SUMMARY') {
             $rootScope.$broadcast('REFRESHSUMMARYCONTENT');
+            $scope.data.searchFilterOptions.push($scope.data.arInvoiceFilter);
         }
     	$scope.$broadcast("CLOSEPRINTBOX");
         $scope.data.isActiveRevenueFilter = false;
@@ -334,7 +371,8 @@ sntRover.controller('RVJournalController',
 
     $scope.searchJournal = () => {
         var tabName = $scope.data.activeTab;
-
+        
+        $scope.data.filterName = $filter('filter')($scope.data.searchFilterOptions, $scope.data.filterId)[0].name;
         if (tabName === 'SUMMARY') {
             $rootScope.$broadcast('SUMMARYSEARCH');
         } else if (tabName === 'PAYMENTS') {
@@ -346,9 +384,9 @@ sntRover.controller('RVJournalController',
     /* 
      * Toggle Action 
      */
-    $scope.toggleCollapsedOrExpandedSummary = function() {
-        $scope.data.isExpandedView = !$scope.data.isExpandedView;
-    }; 
+    // $scope.toggleCollapsedOrExpandedSummary = function() {
+    //     $scope.data.isExpandedView = !$scope.data.isExpandedView;
+    // }; 
 
     /* get the time string from the date-time string */
 
@@ -369,10 +407,23 @@ sntRover.controller('RVJournalController',
 
     };
 
+    $scope.addListener('EXPAND_PAYMENT', function() {
+        $scope.clickedJournalToggle(true);
+    });
+
+    $scope.addListener('EXPAND_REVENUE', function() {
+        $scope.clickedJournalToggle(true);
+    });
+
     var init = function() {
-        $scope.data.isExpandedView = false;
+        // $scope.data.isExpandedViewSummary = false;
+        $scope.data.arInvoiceFilter = journalFilters.filters[5]; 
         $scope.data.searchFilterOptions = journalFilters.filters;        
         $scope.data.filterId = (_.first($scope.data.searchFilterOptions)).id;
+        $scope.data.filterName = (_.first($scope.data.searchFilterOptions)).name;
+        if ($stateParams.tab === "BALANCE") {
+            $scope.activatedTab("BALANCE");
+        }
     };
 
     init();

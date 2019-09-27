@@ -23,8 +23,8 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
 		var successCallBackFetchRevenueData = function(data) {
 			$scope.data.revenueData = {};
             $scope.data.activeChargeGroups = [];
-            $scope.data.selectedChargeGroup = '';
-            $scope.data.selectedChargeCode  = '';
+            // $scope.data.selectedChargeGroup = '';
+            // $scope.data.selectedChargeCode  = '';
 			$scope.data.revenueData = data;
             $scope.data.activeChargeGroups = data.charge_groups;
             $scope.errorMessage = "";
@@ -32,22 +32,28 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
             if (origin !== "SUMMARY_DATE_CHANGED") {
                 $scope.$emit('hideLoader');
             }
+            if ($scope.data.isExpandedViewRevenue) {
+                $scope.$emit("EXPAND_REVENUE");
+            }
 		};
 
         var postData = {
             "from_date": $scope.data.fromDate,
             "to_date": $scope.data.toDate,
             "employee_ids": $scope.data.selectedEmployeeList,
-            "department_ids": $scope.data.selectedDepartmentList,
-            "filter_id": $scope.data.filterId,
-            "query": $scope.data.query
+            "department_ids": $scope.data.selectedDepartmentList
         };
 
+        if ($scope.data.query !== "") {
+            postData.filter_id = $scope.data.filterId;
+            postData.query = $scope.data.query;
+        }
 		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, postData, successCallBackFetchRevenueData);
     };
 
-	initRevenueData("");
-
+    if (!$scope.data.isExpandedViewRevenue) {
+        initRevenueData();
+    }
     fetchDepartments();
 
     $scope.addListener('REFRESHREVENUECONTENT', function() {
@@ -73,8 +79,17 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
         initRevenueData(data.origin);
     });
 
+    $scope.addListener('EXPAND_REVENUE_SCREEN', function() {
+        
+        angular.forEach($scope.data.revenueData.charge_groups, function(item, key) {
+            if ($scope.checkHasArrowFirstLevel(key)) {
+                $scope.clickedFirstLevel(key, true);
+            }
+        });
+    });    
+
     /** Handle Expand/Collapse on Level1 **/
-    $scope.clickedFirstLevel = function(index1) {
+    $scope.clickedFirstLevel = function(index1, shouldExpandSecondLevel) {
 
         var toggleItem = $scope.data.revenueData.charge_groups[index1];
 
@@ -84,6 +99,13 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
                 toggleItem.active = !toggleItem.active;
                 refreshRevenueScroller();
                 $scope.data.selectedChargeCode  = '';
+                if (shouldExpandSecondLevel) {
+                    angular.forEach(toggleItem.charge_codes, function(item, key) {
+                        if ($scope.checkHasArrowSecondLevel(index1, key)) {
+                            $scope.clickedSecondLevel(index1, key);
+                        }
+                    });
+                }
             }
             $scope.errorMessage = "";
             $scope.$emit('hideLoader');
@@ -99,6 +121,11 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
                 "employee_ids": $scope.data.selectedEmployeeList,
                 "department_ids": $scope.data.selectedDepartmentList
             };
+
+            if ($scope.data.query !== "") {
+                postData.filter_id = $scope.data.filterId;
+                postData.query = $scope.data.query;
+            }
 
             $scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeCodes, postData, successCallBackFetchRevenueDataChargeCodes);
         }
@@ -145,6 +172,11 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
                 "page_no": chargeCodeItem.page_no,
                 "per_page": $scope.data.filterData.perPage
             };
+            
+            if ($scope.data.query !== "") {
+                postData.filter_id = $scope.data.filterId;
+                postData.query = $scope.data.query;
+            }
 
             $scope.invokeApi(RVJournalSrv.fetchRevenueDataByTransactions, postData, successCallBackFetchRevenueDataTransactions);
         }

@@ -85,7 +85,11 @@ module.exports = {
             'seacrest': [themeCSSRoot + 'seacrest.less'],
             'cole': [themeCSSRoot + 'cole.less'],
             'heritage-hills': [themeCSSRoot + 'heritage-hills.less'],
-            'metropolis-resort': [themeCSSRoot + 'metropolis-resort.less']
+            'metropolis-resort': [themeCSSRoot + 'metropolis-resort.less'],
+            'why-seattle': [themeCSSRoot + 'why-seattle.less'],
+            'pod-philly': [themeCSSRoot + 'pod-philly.less'],
+            'concordia': [themeCSSRoot + 'concordia.less'],
+            'belvedere': [themeCSSRoot + 'belvedere.less']
         };
     }
 };

@@ -8,7 +8,7 @@
     </div>
 
     <!-- List -->
-    <div class="unassigned-list no-actions scrollable"> <!-- Remove class '.no-actions' when L75 is checked -->
+    <div class="unassigned-list no-actions scrollable scroll-vertical"> <!-- Remove class '.no-actions' when L75 is checked -->
 
         <!-- CASE 1: List is empty for both days (no results or no unassigned reservations at all) -->
         <div class="no-content" ng-if="udReservationsData.length === 0">
@@ -28,7 +28,7 @@
             <div ng-repeat="reservation in udReservationsData"
                 class="{{reservation.statusClass}}"
                 ng-click="clickedUnassignedReservation(reservation)"
-                ng-class="{'selected': selectedIndex === reservation.reservation_id, 'blocked disable-element': reservation.arrival_date !== businessDate}">
+                ng-class="{'selected': selectedIndex === reservation.reservation_id, 'blocked disable-element': reservation.arrival_date !== (gridProps.filter.arrival_date | date:'yyyy-MM-dd')}">
                 <div class="data">
                     <strong class="name">{{reservation.primary_guest}}</strong>
                     <!-- If VIP, show: <span class="vip">VIP</span> -->

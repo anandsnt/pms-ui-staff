@@ -560,7 +560,8 @@ sntRover.controller('RVbillCardController',
     		template: '/assets/partials/payment/rvInitialPleaseSwipeModal.html',
     		controller: 'RVPleaseSwipeCtrl',
     		className: '',
-    		scope: $scope
+    		scope: $scope,
+            closeByDocument: false
     	});
 	};
 	$scope.setNightsString = function() {
@@ -3412,7 +3413,8 @@ sntRover.controller('RVbillCardController',
             isAlreadyShownPleaseSwipeForCheckingIn = true;
             $timeout(function () {
                 if (!$scope.reservationBillData.is_disabled_cc_swipe &&
-                    !$scope.reservation.reservation_card.is_pre_checkin) {
+                    // CICO-70341 If using ows_api_auth prompt for card irrespective of is_pre_checkin
+                    (!$scope.reservation.reservation_card.is_pre_checkin || $scope.hotelDetails.use_ows_opi_auth)) {
                     $scope.openPleaseSwipe();
                 }
             }, 200);

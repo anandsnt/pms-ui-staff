@@ -112,6 +112,9 @@ angular.module('sntRover').service('RVreportsSrv', [
 			'Switzerland Zurich Police Export': [
 				'TODAY'
 			],
+			'Spain Barcelona Police Export': [
+				'TODAY'
+			],
 			 'Belgium Nationality Export': [
 				'LAST_MONTH',
                 'LAST_JANUARY',

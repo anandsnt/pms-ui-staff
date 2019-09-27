@@ -20,7 +20,7 @@
             </span>
 
             <span ng-if="!printData.is_informational_invoice && printData.folio_number && printData.is_print_folio_enabled && ((printData.is_print_ar_invoice_number_enabled  && (!printData.is_db_payment_exists || !shouldShowArInvoiceNumber)) || !printData.is_print_ar_invoice_number_enabled)">
-                <strong >{{printData.translation.folio_number}}:</strong>{{printData.folio_number}}<br/>
+                    <strong><span ng-if = "printData.folio_label">{{printData.folio_label}}:</span><span ng-if = "!printData.folio_label">{{printData.translation.folio_number}}:</span></strong>{{printData.folio_number}}<br/>
             </span>
             <span ng-show="printData.has_enabled_invoice_number_sequence && printData.mod_invoice_number && !printData.is_informational_invoice">
                 <strong >{{printData.mod_label}}: </strong>{{printData.mod_invoice_number}}<br/>
@@ -76,7 +76,7 @@
                 <strong >{{printData.translation.ar_invoice_number}}:</strong>{{printData.ar_invoice_number}}<br/>
             </span>
             <span ng-if="!printData.is_informational_invoice && printData.folio_number && printData.is_print_folio_enabled && ((printData.is_print_ar_invoice_number_enabled  && (!printData.is_db_payment_exists || !shouldShowArInvoiceNumber)) || !printData.is_print_ar_invoice_number_enabled)">
-                <strong >{{printData.translation.folio_number}}:</strong>{{printData.folio_number}}<br/>
+                    <strong><span ng-if = "printData.folio_label">{{printData.folio_label}}:</span><span ng-if = "!printData.folio_label">{{printData.translation.folio_number}}:</span></strong>{{printData.folio_number}}<br/>
             </span>
             <span ng-show="printData.has_enabled_invoice_number_sequence && printData.mod_invoice_number && !printData.is_informational_invoice">
                 <strong >{{printData.mod_label}}:</strong>{{printData.mod_invoice_number}}<br/>
@@ -312,8 +312,7 @@
     </tbody>           
 </table>
 
-<div ng-if="printData.is_from_cards" class="invoice-footer text-center">
-    {{printData.ar_invoice_billing_text}}
+<div ng-if="printData.is_from_cards" class="invoice-footer text-center" ng-bind-html="trustAsHtml(printData.ar_invoice_billing_text)">
 </div>
 <div class="invoice-footer text-center" ng-bind-html="trustAsHtml(printData.custom_text_footer)">
 </div>

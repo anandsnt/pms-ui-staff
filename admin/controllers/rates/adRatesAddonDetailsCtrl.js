@@ -10,7 +10,8 @@ admin.controller('ADRatesAddonDetailsCtrl', [
     'activeRates',
     'availableLanguages',
     'singleAddon',
-    function($scope, $state, $stateParams, $rootScope, ADRatesAddonsSrv, $filter, ngDialog, $timeout, activeRates, availableLanguages, singleAddon) {
+    'hotelSettings',
+    function($scope, $state, $stateParams, $rootScope, ADRatesAddonsSrv, $filter, ngDialog, $timeout, activeRates, availableLanguages, singleAddon, hotelSettings) {
 
         // extend base controller
         BaseCtrl.call(this, $scope);
@@ -18,6 +19,7 @@ admin.controller('ADRatesAddonDetailsCtrl', [
 
             // various addon data holders
             $scope.data = [];
+            
             $scope.singleAddon = singleAddon;
             $scope.singleAddon.id = $stateParams.addonId;
             // for adding
@@ -39,6 +41,7 @@ admin.controller('ADRatesAddonDetailsCtrl', [
             $scope.isConnectedToPMS = !$rootScope.isStandAlone;
 
             $scope.allowanceRefundOptions = _.range(0, 110, 10);
+            $scope.rateCurrencyList = hotelSettings.rate_currency_list; 
 
             if ($scope.isAddMode) {
                 addNew();
@@ -347,7 +350,8 @@ admin.controller('ADRatesAddonDetailsCtrl', [
                 spillage_charge_code_id: $scope.singleAddon.spillage_charge_code_id,
                 is_allowance: $scope.singleAddon.is_allowance,
                 addon_value: $scope.singleAddon.addon_value,
-                spillage_refund_percentage: $scope.singleAddon.spillage_refund_percentage
+                spillage_refund_percentage: $scope.singleAddon.spillage_refund_percentage,
+                ref_currency_code_id: $scope.singleAddon.ref_currency_code_id
             };
 
             if ($scope.isDefaulLanguageSelected()) {
