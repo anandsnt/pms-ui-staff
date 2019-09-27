@@ -25,7 +25,12 @@
             <fieldset class="holder right">
                 <ad-textbox inputtype="text" value="config.username" label="{{'USERNAME'| translate}}" styleclass="full-width">
                 </ad-textbox>
-                <ad-textbox inputtype="password" value="config.password" label="{{'PASSWORD'| translate}}" styleclass="full-width">
+                <ad-textbox 
+                    inputtype="password"
+                    value="config.password" 
+                    label="{{'PASSWORD'| translate}}" 
+                    styleclass="full-width"
+                    click-handler="onPasswordClick(config, 'password')">
                 </ad-textbox>
             </fieldset>
             <fieldset class="holder full-width">

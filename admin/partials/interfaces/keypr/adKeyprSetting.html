@@ -20,8 +20,12 @@
             </fieldset>
 
             <fieldset class="holder right">
-                <ad-textbox inputtype="text" value="config.access_token" label="{{'ACCESS_TOKEN'| translate}}"
-                    styleclass="full-width"></ad-textbox>
+                <ad-textbox 
+                    inputtype="password" 
+                    value="config.access_token" 
+                    label="{{'ACCESS_TOKEN'| translate}}"
+                    styleclass="full-width"
+                    click-handler="onPasswordClick(config, 'access_token')"></ad-textbox>
             </fieldset>
         </fieldset>
     </fieldset>
