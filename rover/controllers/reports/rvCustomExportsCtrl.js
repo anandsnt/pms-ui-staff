@@ -307,7 +307,11 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                             filteredOut: false,
                             filters: dataSpace.filters
                         });
-                    });                                       
+                    });
+                    
+                    $timeout(function () {
+                        refreshScroll(EXPORT_LIST_SCROLLER, true);
+                    }, 500);
                 },
                 onDataSpaceFetchFailure = () => {
                     $scope.customExportsData.customExportDataSpaces = [];
@@ -433,10 +437,13 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                     if (isSavedSchedule) {
                         $scope.$broadcast('UPDATE_FILTER_SELECTIONS');
                     }
-
-                    refreshScroll(REPORT_COLS_SCROLLER, true);
-                    refreshScroll(SCHEDULE_DETAILS_SCROLLER, true);
-                    refreshScroll(DELIVERY_OPTIONS_SCROLLER, true);
+                    
+                    $timeout(function () {
+                        refreshScroll(REPORT_COLS_SCROLLER, true);
+                        refreshScroll(SCHEDULE_DETAILS_SCROLLER, true);
+                        refreshScroll(DELIVERY_OPTIONS_SCROLLER, true);
+                    }, 1000);
+                    
 
                 },
                 onFailure = (error) => {
