@@ -30,8 +30,12 @@
                     <ad-textbox inputtype="text" value="config.user_name" label="{{'USER_NAME'| translate}}"
                         styleclass="full-width">
                     </ad-textbox>
-                    <ad-textbox inputtype="password" value="config.password" label="{{'PASSWORD'| translate}}"
-                        styleclass="full-width">
+                    <ad-textbox 
+                        inputtype="password" 
+                        value="config.password" 
+                        label="{{'PASSWORD'| translate}}"
+                        styleclass="full-width"
+                        click-handler="onPasswordClick(config, 'password')">
                     </ad-textbox>
                 </fieldset>
             </fieldset>
