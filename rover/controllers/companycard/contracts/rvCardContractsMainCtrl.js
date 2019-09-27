@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVCompanyCardSrv', '$stateParams', '$timeout', 'ngDialog',
-	function($scope, RVCompanyCardSrv, $stateParams, $timeout, ngDialog) {
+angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVCompanyCardSrv', '$stateParams',
+	function($scope, RVCompanyCardSrv, $stateParams) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.contractData = {
@@ -11,6 +11,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 			noStatistics: true,
 			selectedContract: ''
 		};
+		var that = this;
 
 		/**
 		 * Function to set error message
@@ -72,7 +73,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 						$scope.contractData.disableFields = true;
 					}
 				});
-				fetchContractDetails(data.contract_selected);
+				that.fetchContractDetails(data.contract_selected);
 			}
 			if ($scope.contractData.selectedContract !== '') {
 				refreshContractScrollers();
@@ -85,11 +86,12 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 		 */
 		fetchContractDetailsSuccessCallback = function(data) {
 			$scope.contractData.editData = data;
-		},
+		};
+
 		/**
 		 * Function to fetch the currently selected contract details
 		 */
-		fetchContractDetails = function(contractId) {
+		that.fetchContractDetails = function(contractId) {
 			var accountId;
 
 			$scope.contractData.selectedContract = contractId;
@@ -108,19 +110,20 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 			};
 
 			$scope.callAPI(RVCompanyCardSrv.fetchContractsDetails, options);
-	    },
+	    };
 	    /*
 		 * Failure callback for contracts fetch API
 		 * @param {String} response - error message
 		 * @return void
 		 */
-		fetchContractsListFailureCallback = function(response) {
+		var fetchContractsListFailureCallback = function(response) {
 			setErrorMessage(response);
-		},
+		};
+
 		/**
 		 * Init function fetches the contracts on page load
 		 */
-		init = function() {
+		that.init = function() {
 			var options = {
 				successCallBack: fetchContractsListSuccessCallback,
 				failureCallBack: fetchContractsListFailureCallback,
@@ -147,13 +150,13 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 		/**
 		 * Listener to call on new contracts form closure
 		 */
-		$scope.addListener('fetchContractsList', init);
+		$scope.addListener('fetchContractsList', that.init);
 
 		/**
 		 * Listener for fetch event from the contract list 
 		 */
 		$scope.addListener('fetchContract', function(event, data) {
-			fetchContractDetails(data);
+			that.fetchContractDetails(data);
 		});
 		/*	
 		 * Listener for displaying error message
@@ -175,6 +178,6 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 			refreshContractScrollers();
 		};
 
-		init();
+		that.init();
 	}
 ]);
