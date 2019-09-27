@@ -182,7 +182,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
                 RVContactInfoSrv.completeContactInfoClone = JSON.parse(JSON.stringify(dataToUpdate));
                 // change date format to be send to API
                 if ($scope.guestCardData.contactInfo.birthday) {
-                    dataToUpdate.birthday = moment($scope.guestCardData.contactInfo.birthday).format("YYYY-MM-DD");
+                    dataToUpdate.birthday = moment($scope.guestCardData.contactInfo.birthday).format("MM-DD-YYYY");
                 } else {
                     dataToUpdate.birthday = null;
                 }
