@@ -9,7 +9,12 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 			disableFields: false,
 			noContracts: true,
 			noStatistics: true,
-			selectedContract: ''
+			selectedContract: '',
+			rateSearchResult: [],
+			rateSearchQuery: '',
+			selectedRateList: [],
+			selectedRateIdList: [],
+			accountId: $stateParams.id === "add" ? $scope.contactInformation.id : $stateParams.id
 		};
 
 		/**

@@ -1,0 +1,33 @@
+<div class="entry find-rate full-width" ng-controller="rvCardSearchContractCtrl">
+    <label for="rate-query">Contracted Rate</label>
+    <!-- Add .searching when seaching -->
+    <!-- Add .hidden to hide it/when not editable -->
+    <div class="entry full-width autocomplete-search" ng-class="{'searching': contractData.rateSearchQuery !== ''}">
+        <div class="search">
+            <button id="faux-select-clear-query" class="clear-query">
+                <span class="icons icon-clear-search" ng-click="clearQuery()">Clear query</span>
+            </button>
+            <button type="submit" name="submit" class="icons icon-search">Search</button>
+             <!-- add readonly if it's read only -->
+            <input ng-model="contractData.rateSearchQuery" ng-change="searchRate()" name="faux-select-query" id="faux-select-query" class="query" placeholder="Search by Rate Name" autocomplete="off" type="search">
+        </div>
+        <!-- remove .hidden when searching -->
+        <div class="scrollable" ng-show="contractData.searchResults.length > 0">
+            <div class="wrapper">
+                <div class="card" ng-repeat="item in contractData.searchResults" ng-click="clickedOnResult($index)">
+                    {{item.name}}
+                </div>
+                <!-- ... repeat for each rate -->
+            </div>
+        </div>
+    </div>
+    <!-- Add .disabled when not editable -->
+    <div class="contracted-rates">
+        <li ng-repeat="rate in contractData.selectedRateList">
+            {{rate.name}}
+            <!-- display the icon when the rate can be removed -->
+            <span class="icons icon-remove-10" ng-click="removeRate($index)"></span>
+        </li>
+        <!-- ... repeat for each rate -->
+    </div>
+</div>
