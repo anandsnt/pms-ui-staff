@@ -3354,7 +3354,7 @@ sntRover.controller('RVbillCardController',
 				window.print();
 				// billCardPrintCompleted();
 			}
-		}, 700);
+		}, 1000);
 	});
 
 	/*
