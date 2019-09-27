@@ -143,7 +143,8 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 		var refreshContractScrollers = function() {
 			if ($scope.contractData.mode === 'ADD') {
 				$scope.$broadcast('refreshAddScroller');
-			} else if ($scope.contractData.mode === 'EDIT') {
+			} 
+			else if ($scope.contractData.mode === 'EDIT') {
 				$scope.$broadcast('refreshEditScroller');
 				$scope.$broadcast('initContractsList');
 			}

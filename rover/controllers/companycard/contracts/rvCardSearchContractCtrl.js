@@ -13,10 +13,15 @@ angular.module('sntRover').controller('rvCardSearchContractCtrl', ['$scope', 'rv
         var fetchRateContract = function(contractId) {
             var fetchRateContractSuccessCallback = function(data) {
                 $scope.contractData.searchResults = data.contract_rates;
+                $scope.$emit('refreshContractsScroll');
+            },
+            fetchRateContractFailureCallback = function(errorMessage) {
+                $scope.$emit('setErrorMessage', errorMessage);
             };
 
             var options = {
                 successCallBack: fetchRateContractSuccessCallback,
+                failureCallBack: fetchRateContractFailureCallback,
                 params: {
                     "account_id": $scope.contractData.accountId,
                     "query": $scope.contractData.rateSearchQuery
@@ -28,7 +33,9 @@ angular.module('sntRover').controller('rvCardSearchContractCtrl', ['$scope', 'rv
 
         $scope.searchRate = function() {
             console.log("search", $scope.contractData.rateSearchQuery);
-            fetchRateContract();
+            if ($scope.contractData.rateSearchQuery.length > 2) {
+                fetchRateContract();
+            }
         };
 
         $scope.clearQuery = function() {
