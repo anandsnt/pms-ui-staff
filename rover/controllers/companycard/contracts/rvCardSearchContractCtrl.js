@@ -47,6 +47,8 @@ angular.module('sntRover').controller('rvCardSearchContractCtrl', ['$scope', 'rv
             console.log('clickedOnResult', $scope.contractData.searchResults[index]);
             $scope.contractData.selectedRateList.push($scope.contractData.searchResults[index]);
             $scope.$emit('refreshContractsScroll');
+            $scope.contractData.searchResults = [];
+            $scope.contractData.rateSearchQuery = '';
         };
 
         $scope.removeRate = function( index ) {
