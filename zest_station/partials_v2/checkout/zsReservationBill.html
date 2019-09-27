@@ -55,7 +55,7 @@
                         </p>
                         <!-- <a href="{swipe.html, change title of that screen if arrived from here}" class="button">Change Card</a> -->
                     </div>
-                    <button type="button" class="button with-icon brand-colors" touch-press="clickedAddCharge()" ng-class="{ 'overlay' : false }">
+                    <button ng-if="zestStationData.enable_items_for_station" type="button" class="button with-icon brand-colors" touch-press="clickedAddCharge()" ng-class="{ 'overlay' : false }">
                         <span class="icons icon-charge"></span>
                         Add Charge
                     </button>

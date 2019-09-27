@@ -42,9 +42,11 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
         };
 
         $scope.setScroller('charge-list');
+        $scope.setScroller('quantity-list');
 
         var refreshChargeScroller = function () {
             $scope.refreshScroller('charge-list');
+            $scope.refreshScroller('quantity-list');
         };
 
         /**
@@ -255,25 +257,33 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             }
         };
 
+        // Add/remove items to post charge
+        $scope.updateQuantity = function(groupId, itemIndex, addAmount) {
+            $scope.chargeData.groupedItems[groupId].items[itemIndex].quantity += addAmount;
+            $scope.chargeData.groupedItems[groupId].quantity += addAmount;
+            $scope.chargeData.subtotal += $scope.chargeData.groupedItems[groupId].items[itemIndex].unit_price * addAmount;
+        };
+
+        // Fetch items
         $scope.getChargeItems = function () {
             var fetchItemsFailure = function (error) {
-                // if key card was inserted we need to eject that
-                // $state.go('zest_station.speakToStaff');
                 console.log(error)
             };
     
             var fetchItemsSuccess = function (response) {
                 $scope.showPostChargeScreen = true;
-                $scope.chargeItems = response.results;
+                $scope.chargeData.chargeItems = response.results;
 
-                $scope.groupedItems = $scope.chargeGroups.reduce(function (map, obj) {
-                    obj['items'] = [];
+                // Group items under charge group
+                $scope.chargeData.groupedItems = $scope.chargeData.chargeGroups.reduce(function (map, obj) {
+                    obj.items = [];
+                    obj.quantity = 0;
                     map[obj.id] = obj;
                     return map;
                 }, {});
-
-                for (var i = 0, itemLen = $scope.chargeItems.length; i < itemLen; i++) {
-                    $scope.groupedItems[$scope.chargeItems[i].charge_group_id].items.push($scope.chargeItems[i]);
+                for (var i = 0, itemLen = $scope.chargeData.chargeItems.length; i < itemLen; i++) {
+                    $scope.chargeData.chargeItems[i].quantity = 0;
+                    $scope.chargeData.groupedItems[$scope.chargeData.chargeItems[i].charge_group_id].items.push($scope.chargeData.chargeItems[i]);
                 }
                 
                 setDisplayContentHeight();
@@ -288,15 +298,14 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             $scope.callAPI(zsCheckoutSrv.fetchChargeItems, options);
         };
 
+        // Fetch charge groups
         $scope.getChargeGroups = function () {
             var fetchChargeGroupFailure = function (error) {
                 console.log(error)
             };
     
             var fetchChargeGroupSuccess = function (response) {
-                $scope.chargeGroups = response.results;
-
-                console.log($scope.chargeGroups);
+                $scope.chargeData.chargeGroups = response.results;
                 $scope.getChargeItems();
             };
 
@@ -308,8 +317,17 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             $scope.callAPI(zsCheckoutSrv.fetchChargeGroups, options);
         };
 
+        // Add charge button click handler
         $scope.clickedAddCharge = function () {
             $scope.getChargeGroups();
+        };
+
+        // Post charge for selected items
+        $scope.postCharge = function () {
+            var itemsToPost = $scope.chargeData.chargeItems.filter(function (item) {
+                return item.quantity > 0;
+            });
+            console.log(itemsToPost)
         };
 
         $scope.nextClicked = function () {
@@ -347,7 +365,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 $scope.last_name = $stateParams.last_name;
                 $scope.days_of_stay = $stateParams.days_of_stay;
                 $scope.hours_of_stay = $stateParams.hours_of_stay;
-                // $stateParams.email = !_.isNull($stateParams.email) ? $stateParams.email : '';
+                $stateParams.email = !_.isNull($stateParams.email) ? $stateParams.email : '';
 
                 // storing state varibales to be used in print view also
                 $scope.stateParamsForNextState = {
@@ -393,9 +411,12 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             });
 
             $scope.showPostChargeScreen = false;
-            $scope.chargeGroups = [];
-            $scope.chargeItems = [];
-            $scope.groupedItems = {};
+            $scope.chargeData = {
+                chargeGroups: [],
+                chargeItems: [],
+                groupedItems: {},
+                subtotal: 0
+            };
 
             $scope.init();
         }());

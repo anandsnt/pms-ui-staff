@@ -167,7 +167,7 @@ sntZestStation.service('zsCheckoutSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseW
 
         this.fetchChargeItems = function (params) {
             var deferred = $q.defer();
-            var url = "/api/charge_codes/items_and_charge_codes.json?application=kiosk";
+            var url = "/api/charge_codes/items_and_charge_codes.json?application=KIOSK";
 
             zsBaseWebSrv.getJSON(url).then(function (data) {
                 deferred.resolve(data);

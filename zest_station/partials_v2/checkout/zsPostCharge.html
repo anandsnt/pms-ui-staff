@@ -5,7 +5,7 @@
                     - if some <h> elements are missing just exclude them or use 0. 
                     - 8 is added to make sure bottom rounded corner is set off screen
                 -->
-        <div id="textual" class="minibar-items">
+        <div id="textual" class="minibar-items" ng-iscroll="charge-list">
             <!-- Add ng-scroll here -->
             <div class="wrapper">
                 <!-- If showing only Items --
@@ -25,32 +25,34 @@
                                 -->
 
                 <!-- If showing groups -->
-                <div class="minibar-item group">
+                <div class="minibar-item group" ng-repeat="(group_id, group) in chargeData.groupedItems"
+                    ng-if="group.items.length > 1">
                     <div class="minibar-item-info">
-                        <h3 class="minibar-item-title">{Group Name}</h3>
-                        <div class="minibar-item-meta">{Group Meta}</div>
+                        <h3 class="minibar-item-title">{{group.name}}</h3>
+                        <div class="minibar-item-meta">{{group.description}}</div>
                     </div>
-                    <div class="minibar-item-qty">{Group Total Quantity}</div>
+                    <div class="minibar-item-qty">{{group.quantity}}</div>
                     <div class="minibar-item-expand">
-                        {../assets/icons/down.svg}
+                        <div ng-include="icons.url.down"></div>
                     </div>
                     <div class="group-items">
-                        <div class="minibar-item">
+                        <div class="minibar-item" ng-repeat="item in group.items">
                             <div class="minibar-item-info">
-                                <h3 class="minibar-item-title">{Item Name}</h3>
-                                <div class="minibar-item-meta">{Item Price}</div>
+                                <h3 class="minibar-item-title">{{item.name}}</h3>
+                                <div class="minibar-item-meta">{{item.unit_price}}</div>
                             </div>
-                            <div class="minibar-item-qty">{Item quantity}</div>
+                            <div class="minibar-item-qty" ng-if="item.quantity>0">{{item.quantity}}</div>
                             <div class="minibar-item-actions">
-                                <button type="button" class="button">+</button>
+                                <button type="button" class="button"
+                                    touch-press="updateQuantity(group_id, $index, 1)">+</button>
                                 <!-- Remove .disabled when there is 1 or more quantities -->
-                                <button type="button" class="button disabled">-</button>
+                                <button type="button" class="button" ng-class="{'disabled': item.quantity<1}"
+                                    touch-press="updateQuantity(group_id, $index, -1)"
+                                    ng-disabled="item.quantity<1">-</button>
                             </div>
                         </div>
-                        ... repeat for each item
                     </div>
                 </div>
-                ... repeat for each group
 
             </div>
         </div>
@@ -62,19 +64,18 @@
             <div class="review-container">
                 <div class="review-items">
                     <!-- Add scroll here as well -->
-                    <div class="items">
+                    <div class="items" ng-iscroll="quantity-list">
                         <ul class="wrapper">
-                            <li>
-                                <span class="name">{qty}x {name}</span>
-                                <span class="cost">${cost}</span>
+                            <li ng-repeat="item in chargeData.chargeItems" ng-if="item.quantity>0">
+                                <span class="name">{{item.quantity}}x {{item.name}}</span>
+                                <span class="cost">${{item.quantity*item.unit_price}}</span>
                             </li>
-                            ... repeat foreach item
                         </ul>
                     </div>
                     <ul class="totals">
                         <li>
                             <span class="name">Subtotal</span>
-                            <span class="cost">${subtotal}</span>
+                            <span class="cost">${{chargeData.subtotal}}</span>
                         </li>
                         <li>
                             <span class="name">Taxes</span>
@@ -82,12 +83,12 @@
                         </li>
                         <li class="total">
                             <span class="name">Total</span>
-                            <span class="cost">${total}</span>
+                            <span class="cost">${{chargeData.subtotal}}</span>
                         </li>
                     </ul>
                 </div>
                 <div class="review-action">
-                    <button type="button" class="button">Post Items</button>
+                    <button type="button" class="button" touch-press="postCharge()">Post Items</button>
                 </div>
             </div>
         </div>
