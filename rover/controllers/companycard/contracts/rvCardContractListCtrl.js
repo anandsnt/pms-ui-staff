@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog',
-	function($timeout, $scope, RVCompanyCardSrv, $stateParams, ngDialog) {
+angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$scope',
+	function($timeout, $scope) {
         BaseCtrl.call(this, $scope);
         $scope.selectedType = '';
         $scope.opened = false;

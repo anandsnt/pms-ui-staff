@@ -1,7 +1,8 @@
 angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog', '$timeout',
 	function($scope, RVCompanyCardSrv, $stateParams, ngDialog, $timeout) {
         BaseCtrl.call(this, $scope);
-        var showNightsModal = false;
+        var showNightsModal = false,
+            that = this;
 
         /* Items related to ScrollBars
 		 * 1. When the tab is activated, refresh scroll.
@@ -29,7 +30,7 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
             // emit something to refresh the Contracts list
             $scope.$emit('fetchContractsList');
             refreshScroller();
-            init();
+            that.init();
             if (showNightsModal) {
                 ngDialog.open({
                     template: '/assets/partials/companyCard/contracts/rvContractedNightsPopup.html',
@@ -38,7 +39,7 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
                     scope: $scope
                 });
                 showNightsModal = false;
-            };
+            }
         };
 
         /**
@@ -53,7 +54,7 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
         /**
          * Post object initializer
          */
-        var init = function() {
+        that.init = function() {
             $scope.addData = {
                 contractName: '',
                 accessCode: '',
@@ -81,8 +82,9 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
          * Function to cancel and close the new contract form
          */
         $scope.cancelNewContract = function() {
+            $scope.contractData.mode = '';
             $scope.$emit('fetchContractsList');
-            init();
+            that.init();
         };
 
         /**
@@ -95,7 +97,7 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
                 accountId = $scope.contactInformation.id;
             } else {
                 accountId = $stateParams.id;
-            };
+            }
             var postData = {
                 'access_code':$scope.addData.accessCode,
                 'contract_name': $scope.addData.contractName,
@@ -141,6 +143,6 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
             $scope.saveNewContract();
         };
 
-        init();
+        that.init();
     }
 ]);
