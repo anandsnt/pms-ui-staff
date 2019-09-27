@@ -7,7 +7,7 @@ angular.module('sntRover').controller('rvCardSearchContractCtrl', ['$scope', 'rv
             $scope.contractData.selectedRateList = [];
         }
         else {
-            $scope.contractData.selectedRateList = $scope.contractData.contract_rates;
+            $scope.contractData.selectedRateList = $scope.contractData.contract_rates || [];
         }
 
         var fetchRateContract = function(contractId) {
@@ -45,10 +45,19 @@ angular.module('sntRover').controller('rvCardSearchContractCtrl', ['$scope', 'rv
 
         $scope.clickedOnResult = function( index ) {
             console.log('clickedOnResult', $scope.contractData.searchResults[index]);
+            $scope.contractData.selectedRateList.push($scope.contractData.searchResults[index]);
+            $scope.$emit('refreshContractsScroll');
         };
 
         $scope.removeRate = function( index ) {
-            console.log("removeRate", $scope.contractData.selectedRateList[index]);
+            
+            var clickedItem = $scope.contractData.selectedRateList[index];
+
+            // get index of object with id:37
+            var removeIndex = $scope.contractData.selectedRateList.map(function(item) { return item.id; }).indexOf(clickedItem.id);
+
+            // remove object
+            $scope.contractData.selectedRateList.splice(removeIndex, 1);
         };
     }
 ]);
