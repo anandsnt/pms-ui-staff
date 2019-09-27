@@ -111,6 +111,7 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             promises['durations'] = this.getExportDurations(params);
             promises['dropBoxAccounts'] = this.getCloudDrives('DROP_BOX');
             promises['googleDriveAccounts'] = this.getCloudDrives('GOOGLE_DRIVE');
+            promises['ftpServerList'] = reportSubSrv.fetchFtpServers();
 
             $q.all(promises).then(function (data) {
                 deferred.resolve(data);
