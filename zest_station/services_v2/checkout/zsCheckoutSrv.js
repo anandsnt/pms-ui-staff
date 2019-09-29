@@ -165,6 +165,12 @@ sntZestStation.service('zsCheckoutSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseW
             return deferred.promise;
         };
 
+        /*
+        * Service function to get items
+        * @method GET
+        * @param {object} data
+        * @return {object} defer promise
+        */
         this.fetchChargeItems = function (params) {
             var deferred = $q.defer();
             var url = "/api/charge_codes/items_and_charge_codes.json?application=KIOSK";
@@ -177,16 +183,23 @@ sntZestStation.service('zsCheckoutSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseW
             return deferred.promise;
         };
 
-        this.fetchChargeGroups = function () {
-
+        /*
+		* Service function to post charge
+		* @method POST
+		* @param {object} data
+		* @return {object} defer promise
+		*/
+        this.postCharges = function (params) {
             var deferred = $q.defer();
-            var url = "/api/charge_groups.json";
+            var url = '/staff/items/post_items_to_bill?application=KIOSK';
 
-            zsBaseWebSrv.getJSON(url).then(function (data) {
-                deferred.resolve(data);
-            }, function (data) {
-                deferred.reject(data);
-            });
+            zsBaseWebSrv.postJSON(url, params)
+                .then(function (data) {
+                    deferred.resolve(data);
+                }, function (data) {
+                    deferred.reject(data);
+                });
+
             return deferred.promise;
         };
     }
