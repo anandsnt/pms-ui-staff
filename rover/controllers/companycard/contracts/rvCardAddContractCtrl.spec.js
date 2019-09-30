@@ -18,7 +18,8 @@ describe('rvCardAddContractsCtrl', function() {
         angular.extend($scope, {
             contractData: {
                 mode: 'ADD'
-            }
+            },
+            showNightsModal: false
         });
     });
 

@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVCompanyCardSrv', '$stateParams',
-	function($scope, RVCompanyCardSrv, $stateParams) {
+angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog',
+	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, ngDialog) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.contractData = {
@@ -9,6 +9,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 			disableFields: false,
 			noContracts: true,
 			noStatistics: true,
+			showNightsModal: false,
 			selectedContract: ''
 		};
 		var that = this;
@@ -67,13 +68,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 				// EDIT contract flow
 				$scope.contractData.mode = 'EDIT';
 				$scope.contractData.noContracts = false;
-				// Disable the field if the selected contract is history
-				angular.forEach(pastContracts, function(item) {
-					if (item.id === data.contract_selected) {
-						$scope.contractData.disableFields = true;
-					}
-				});
-				that.fetchContractDetails(data.contract_selected);
+				that.fetchContractDetails($scope.contractData.selectedContract);
 			}
 			if ($scope.contractData.selectedContract !== '') {
 				refreshContractScrollers();
@@ -86,6 +81,16 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 		 */
 		fetchContractDetailsSuccessCallback = function(data) {
 			$scope.contractData.editData = data;
+			$scope.contractData.disableFields = data.end_date < $rootScope.businessDate;
+			if ($scope.contractData.showNightsModal) {
+				ngDialog.open({
+					template: '/assets/partials/companyCard/contracts/rvContractedNightsPopup.html',
+					controller: 'rvContractedNightsCtrl',
+					className: '',
+					scope: $scope
+				});
+				$scope.contractData.showNightsModal = false;
+			}
 		};
 
 		/**
@@ -94,6 +99,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 		that.fetchContractDetails = function(contractId) {
 			var accountId;
 
+			$scope.$broadcast('addDataReset');
 			$scope.contractData.selectedContract = contractId;
 			if ($stateParams.id === "add") {
 				accountId = $scope.contactInformation.id;

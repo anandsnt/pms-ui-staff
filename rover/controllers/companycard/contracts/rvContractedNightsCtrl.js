@@ -32,7 +32,7 @@ sntRover.controller('rvContractedNightsCtrl', ['$rootScope', '$scope', 'dateFilt
 			month = myPoint - year * 12,
 			obj = {
 				"contracted_occupancy": 0,
-				"year": year,
+				"year": year.toString(),
 				"actual_occupancy": 0,
 				"month": monthArray[month]
 			};
@@ -40,9 +40,10 @@ sntRover.controller('rvContractedNightsCtrl', ['$rootScope', '$scope', 'dateFilt
 		newOccupancy.push(obj);
 		myPoint += 1;
 	}
+	var currentOccupancy = $scope.contractData.editData && $scope.contractData.editData.occupancy; 
 
 	// Taking deep copy of current occupancy data
-	angular.forEach($scope.contractData.occupancy, function(item) {
+	angular.forEach(currentOccupancy, function(item) {
 		angular.forEach(newOccupancy, function(item2) {
 			if ((item2.year === item.year) && (item2.month === item.month)) {
 				item2.contracted_occupancy = item.contracted_occupancy;
@@ -66,7 +67,6 @@ sntRover.controller('rvContractedNightsCtrl', ['$rootScope', '$scope', 'dateFilt
 		},
 		saveContractFailureCallback = function(data) {
 			$scope.$emit('setErrorMessage', data);
-			$scope.contractData.occupancy = [];
 		},
 		data = {"occupancy": $scope.nightsData.occupancy},
 		accountId;
