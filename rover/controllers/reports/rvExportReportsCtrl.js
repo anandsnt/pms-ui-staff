@@ -29,6 +29,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
         var SECOND_COLUMN_SCROLL = 'SECOND_COLUMN_SCROLL';
         var THIRD_COLUMN_SCROLL = 'THIRD_COLUMN_SCROLL';
         var FOURTH_COLUMN_SCROLL = 'FOURTH_COLUMN_SCROLL';
+        const SHOW_ERROR_MSG_EVENT = 'SHOW_ERROR_MSG_EVENT';
+
         var setupScrolls = function() {
             var scrollerOptions = {
                 tap: true,
@@ -201,6 +203,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             var failed = function(errors) {
                 $scope.errorMessage = errors;
+                $scope.$emit(SHOW_ERROR_MSG_EVENT, errors);
                 $scope.$emit( 'hideLoader' );
             };
 
@@ -318,6 +321,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             var failed = function(errors) {
                 $scope.errorMessage = errors;
+                $scope.$emit(SHOW_ERROR_MSG_EVENT, errors);
                 $scope.$emit( 'hideLoader' );
             };
 

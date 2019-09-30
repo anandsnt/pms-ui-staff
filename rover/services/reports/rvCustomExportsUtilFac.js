@@ -482,7 +482,6 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                 case customExportFilterParamsConst['MEMBERSHIP_LEVEL']:
                     populateMembershipLevels(selectedFilter, selectedValues, deferred);
                     break;
-                case customExportFilterParamsConst['DAYUSE INDICATOR']:
                 case customExportFilterParamsConst['STAY_TYPE']:
                     populateDualStates(dayNightUseIndicator, selectedFilter, selectedValues, deferred);
                     break;

@@ -15,6 +15,8 @@ angular.module('sntRover')
                       $rootScope,
                       Toggles) {
 
+            BaseCtrl.call(this, $scope);
+
             var intialReportViewStore = {
                 showingAllReport: false,
                 showingScheduledReports: false,
@@ -341,6 +343,11 @@ angular.module('sntRover')
                 $scope.$broadcast('SHOW_EXPORT_LISTING');
             };
 
+            $scope.addListener('SHOW_ERROR_MSG_EVENT', (event, msg) => {
+                $scope.showingErrMsg = true;
+                $scope.errorMessage = msg instanceof Array ? msg[0] : msg;
+            });
+
             (function () {
                 $scope.updateViewCol($scope.viewColsActions.ONE);
                 if ($stateParams.showScheduledReports) {
@@ -369,6 +376,9 @@ angular.module('sntRover')
                     exportFormats: [],
                     deliveryTypes: []
                 };
+
+                $scope.showingErrMsg = false;
+                $scope.errorMessage = '';
 
             })();
 

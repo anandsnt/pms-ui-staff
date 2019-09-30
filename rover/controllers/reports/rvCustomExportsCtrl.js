@@ -31,6 +31,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
         const SCHEDULE_DETAILS_SCROLLER = 'schedule-details-scroller';
         const DELIVERY_OPTIONS_SCROLLER = 'delivery-options-scroller';
         const SCROLL_REFRESH_DELAY = 100;
+        const SHOW_ERROR_MSG_EVENT = 'SHOW_ERROR_MSG_EVENT';
 
         // Initialize the scrollers
         var initializeScrollers = () => {
@@ -638,6 +639,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 },
                 onScheduleCreateFailure = (error) => {
                     $scope.errorMessage = error;
+                    $scope.$emit(SHOW_ERROR_MSG_EVENT, error);
                 };
 
             $scope.callAPI(reportsSrv.createSchedule, {
@@ -679,6 +681,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 },
                 onScheduleSaveFailure = (error) => {
                     $scope.errorMessage = error;
+                    $scope.$emit(SHOW_ERROR_MSG_EVENT, error);
                 };
 
             requestParams.id = $scope.selectedEntityDetails.id;
