@@ -471,7 +471,7 @@
             }
 
             #payment {
-                width: 70%;
+                width: 65%;
                 #flexbox > .flex();
                 #flexbox > .parent(row wrap, '', '', '');
 
@@ -492,11 +492,28 @@
                     line-height: 54px;
                     height: 54px;
                 }
+
+                .payment-actions {
+                    #flexbox > .flex();
+                    #flexbox > .parent(row wrap, '', '', '');
+                    flex-direction: column;
+
+                    .button {
+                        &:not(:last-child) {
+                            margin-bottom: 10px;
+                        }
+                    }
+                }
             }
 
             #rate { 
                 margin-left: auto;
-                width: 50%;
+                width: 35%;
+
+                .sub,
+                .total {
+                    padding-left: 0;
+                }
 
                 li {
                     &.total { color: @actionBackground; }
