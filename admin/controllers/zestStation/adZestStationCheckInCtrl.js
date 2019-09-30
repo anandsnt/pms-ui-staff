@@ -16,6 +16,7 @@ admin.controller('ADZestStationCheckInCtrl', ['$scope', '$state', '$rootScope', 
                 $scope.excludedPaymentTypes = _.filter(data.payment_types, function(paymentType) {
                     return paymentType.active && !paymentType.enable_zs_checkin;
                 });
+                $scope.zestSettings = [];
                 $scope.$emit('hideLoader');
             };
 
@@ -64,6 +65,36 @@ admin.controller('ADZestStationCheckInCtrl', ['$scope', '$state', '$rootScope', 
             };
 
             $scope.invokeApi(ADZestStationSrv.save, params, savePaymentExclusionSettings, saveFailed);
+        };
+
+        // open the form to list / add passport bypass reason
+        $scope.openPassportNumberBypassView = function() {
+            $scope.editPassportNumberBypassReason = true;
+            $scope.passportBypassReason = {
+                "description": ""
+            };
+        };
+
+        $scope.editPassportBypassReason = function(reason) {
+            $scope.addNewPassportNumberBypassReason = true;
+            $scope.passportBypassReason = reason;
+        };
+
+        $scope.savePassportBypassReason = function() {
+            if (addNewPassportNumberBypassReason) {
+                $scope.zestSettings.passport_bypass_reasons.push($scope.passportBypassReason)
+            }
+            $scope.addNewPassportNumberBypassReason = false;
+            $scope.editPassportNumberBypassReason = false;
+        };
+
+        $scope.cancelPassportBypassReason = function() {
+            $scope.addNewPassportNumberBypassReason = false;
+            $scope.editPassportNumberBypassReason = false;
+        };
+
+        $scope.deletePassportBypassReason = function() {
+            
         };
 
         $scope.isKioskExcludePaymentMethods = Toggles.isEnabled('kiosk_exclude_payment_methods');
