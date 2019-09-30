@@ -28,9 +28,12 @@ admin.controller('adIgelCtrl', ['$scope', 'config', 'paymentChargeCodes', 'adInt
          */
         $scope.saveSetup = function() {
             $scope.config.credit_card_payment_charge_codes = _.pluck($scope.meta.selected_charge_codes, 'charge_code').join(',');
+            var params = dclone($scope.config);
+
+            $scope.deletePropertyIfRequired(params, 'sftp_password');
             $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
-                    settings: $scope.config,
+                    settings: params,
                     integration: $scope.interface.toLowerCase()
                 },
                 onSuccess: function() {
@@ -42,6 +45,7 @@ admin.controller('adIgelCtrl', ['$scope', 'config', 'paymentChargeCodes', 'adInt
 
         (function() {
             $scope.config = config;
+            $scope.setDefaultDisplayPassword($scope.config, 'sftp_password');
             $scope.journalExportOptions = [
               {
                 name: "Daily",

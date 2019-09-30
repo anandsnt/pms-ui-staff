@@ -189,6 +189,23 @@
                     <span class="icons icon-addons"></span> Add-Ons
                 </a>
             </div>
+            <!--Hide Rate Toggle Starts -->
+            <div class="entry full-width tax-exempt" ng-if="!isInAddMode()" >
+                <label for="group-hide-rates" translate>HIDE_RATE</label>
+                <div class="switch-button" ng-click="clickedShowRate()" ng-class="{'on': groupConfigData.summary.hide_rates}" >
+
+                    <input type="checkbox" ng-model="groupConfigData.summary.hide_rates" ng-checked="groupConfigData.summary.hide_rates" />
+                    <label class="data-off">
+                        <span class="value">Off</span>
+                        <span class="switch-icon">On</span>
+                    </label>
+                    <label class="data-on">
+                        <span class="switch-icon grey">Off</span>
+                        <span class="value">On</span>
+                    </label>
+                </div>
+            </div>
+            <!--Hide Rate Toggle Ends -->
              <!-- Tax Exempt -->
             <div class="entry full-width tax-exempt" ng-if="shouldShowTaxExempt()" >
                 <label for="group-tax-exempt">Tax Exempt </label>

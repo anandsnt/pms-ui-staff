@@ -49,10 +49,11 @@
                     styleclass="full-width">
 
         </ad-textbox>
-        <ad-textbox inputtype="text"
+        <ad-textbox inputtype="password"
                     value="config.password"
                     label="{{'IFC_COMTROL_KEY_SYSTEM_PASSWORD' | translate}}"
-                    styleclass="full-width">
+                    styleclass="full-width"
+                    click-handler="onPasswordClick(config, 'password')">
 
         </ad-textbox>
         <p><em>Key system password (if required) to use when creating any key</em></p>

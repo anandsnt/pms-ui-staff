@@ -17,6 +17,14 @@
 @breakpointSingleSidebar: 1280;
 @breakpointDoubleSidebar: 1600;
 
+.overlap-number (@i, @default) when (@i > 0) {
+        
+    &.overlap-@{i} {
+        height: @default*(@i+1);
+    }
+    .overlap-number(@i - 1, @default);
+}
+
 .leftColumn() {
     .calc-width(100, @gridWidth);
 
@@ -627,12 +635,14 @@
         margin: 2px 0;   
         height: 28px;
         .calc-width(100, @gridWidth);
-        #flexbox > .parent(row nowrap, '', center, '');
+        #flexbox > .parent(row nowrap, '', flex-start, '');
 
         /* Fixed Width from this point ***/
         @media screen and (min-width: ~'@{containerWidth}px') {
             width: ~'@{roomsWidth}px';
         }
+
+        .overlap-number(10, 28px);
 
         &.highlighted {
             background-color: #f7dfc3;
@@ -1111,6 +1121,8 @@
             margin: 2px 0;
             .size(28px, 100%);
 
+            .overlap-number(10, 28px);
+
             &:before {
                 content: '';
                 position: absolute;
@@ -1188,6 +1200,17 @@
         .box-shadow(1px 1px 1px rgba(0,0,0,.2));
         .nowrap();
         #flexbox > .parent(row nowrap, '', center, '');
+
+        .overlap-reservation (@i, @default) when (@i > 0) {
+        
+            &.overlap-@{i} {
+                top: @default*(@i);
+                z-index: 1;
+            }
+            .overlap-reservation(@i - 1, @default);
+        }
+
+        .overlap-reservation( 10, 28px );
 
         .reservation-data,
         .reservation-icons {

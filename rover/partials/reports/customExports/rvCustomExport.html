@@ -1,41 +1,42 @@
 <!-- First column - Scheduled reports -->
 <div class="report-col main-col scrollable" ng-iscroll="exports-list-scroller"> <!-- Add vertical scroller here -->
-    <ul class="wrapper" ng-show="customExportsData.isNewExport">
-        <li class="report-item" 
-            ng-repeat="dataSpace in customExportsData.customExportDataSpaces" 
-            ng-hide="dataSpace.filteredOut"
-            ng-click="clickDataSpace(dataSpace)"
-            ng-class="{'active': dataSpace.active}"> <!-- Add class "active" when selected + load filters in 2nd column -->
-            <span class="icon-report {report icon class}"></span>
-            <div class="data">
-                <h2 ng-bind-html="escapeNull(dataSpace.report.title)|highlight:query:false"></h2><!-- Add .single-line if there is no info -->
-                <em>{{dataSpace.report.description}}</em>
+    <div class="wrapper">
+        <ul ng-if="customExportsData.isNewExport">
+            <li class="report-item" 
+                ng-repeat="dataSpace in customExportsData.customExportDataSpaces" 
+                ng-hide="dataSpace.filteredOut"
+                ng-click="clickDataSpace(dataSpace)"
+                ng-class="{'active': dataSpace.active}"> <!-- Add class "active" when selected + load filters in 2nd column -->
+                <span class="icon-report {report icon class}"></span>
+                <div class="data">
+                    <h2 ng-bind-html="escapeNull(dataSpace.report.title)|highlight:query:false"></h2><!-- Add .single-line if there is no info -->
+                    <em>{{dataSpace.report.description}}</em>
+                </div>
+            </li>
+        </ul>
+        <ul ng-if="!customExportsData.isNewExport && customExportsData.scheduledCustomExports.length > 0">
+            <li class="report-item" 
+                ng-repeat="scheduledExport in customExportsData.scheduledCustomExports"
+                ng-hide="scheduledExport.filteredOut"
+                ng-click="pickSchedule(scheduledExport)"
+                ng-class="{'active': scheduledExport.active}"> <!-- Add class "active" when selected + load filters in 2nd column -->
+                
+                <span class="icon-report {report icon class}"></span>
+                <div class="data">
+                    <h2 ng-bind-html="escapeNull(scheduledExport.report.description)|highlight:query:false"></h2><!-- Add .single-line if there is no info -->
+                    <em>{{scheduledExport.occurance}}</em>
+                </div>
+            </li>
+        </ul>
+        <div class="no-content"
+            ng-if="!customExportsData.scheduledCustomExports.length && !customExportsData.isNewExport">
+            <div class="info">
+                <span class="icon-no-content icon-reports"></span>
+                <strong class="h1">Exports unavailable</strong>
+                <span class="h2">You have no exports configured</span>
             </div>
-        </li>
-    </ul>
-    <ul class="wrapper" ng-show="!customExportsData.isNewExport && customExportsData.scheduledCustomExports.length > 0">
-        <li class="report-item" 
-            ng-repeat="scheduledExport in customExportsData.scheduledCustomExports"
-            ng-hide="scheduledExport.filteredOut"
-            ng-click="pickSchedule(scheduledExport)"
-            ng-class="{'active': scheduledExport.active}"> <!-- Add class "active" when selected + load filters in 2nd column -->
-            
-            <span class="icon-report {report icon class}"></span>
-            <div class="data">
-                <h2 ng-bind-html="escapeNull(scheduledExport.report.description)|highlight:query:false"></h2><!-- Add .single-line if there is no info -->
-                <em>{{scheduledExport.occurance}}</em>
-            </div>
-        </li>
-    </ul>
-    <div class="no-content"
-        ng-show="!customExportsData.scheduledCustomExports.length && !customExportsData.isNewExport">
-        <div class="info">
-            <span class="icon-no-content icon-reports"></span>
-            <strong class="h1">Exports unavailable</strong>
-            <span class="h2">You have no exports configured</span>
         </div>
     </div>
-    
 </div>
 
 <!-- Second column - parameters -->
@@ -116,7 +117,7 @@
                     </select>
                 </div>
             </div>
-            <div class="entry">
+            <div class="entry" ng-show="notRunOnce()">
                 <label for="schedule-repeats-every">Repeats Every</label>
                 <div class="entry-data entry-first">
                     <input id="schedule-repeats-every" 
