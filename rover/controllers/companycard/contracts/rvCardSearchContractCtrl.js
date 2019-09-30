@@ -3,6 +3,7 @@ angular.module('sntRover').controller('rvCardSearchContractCtrl', ['$scope', 'rv
         BaseCtrl.call(this, $scope);
 
         $scope.contractData.searchResults = [];
+        $scope.setScroller('searchResults');
         if ($scope.contractData.mode === 'ADD') {
             $scope.contractData.selectedRateList = [];
         }
@@ -10,10 +11,17 @@ angular.module('sntRover').controller('rvCardSearchContractCtrl', ['$scope', 'rv
             $scope.contractData.selectedRateList = $scope.contractData.contract_rates || [];
         }
 
+        var refreshSearchList = function() {
+            $timeout(function() {
+                $scope.refreshScroller('searchResults');
+            }, 500);
+        };
+
         var fetchRateContract = function(contractId) {
             var fetchRateContractSuccessCallback = function(data) {
                 $scope.contractData.searchResults = data.contract_rates;
                 $scope.$emit('refreshContractsScroll');
+                refreshSearchList();
             },
             fetchRateContractFailureCallback = function(errorMessage) {
                 $scope.$emit('setErrorMessage', errorMessage);
@@ -35,6 +43,7 @@ angular.module('sntRover').controller('rvCardSearchContractCtrl', ['$scope', 'rv
             console.log("search", $scope.contractData.rateSearchQuery);
             if ($scope.contractData.rateSearchQuery.length > 2) {
                 fetchRateContract();
+
             }
         };
 

@@ -1,7 +1,7 @@
 
 sntRover.controller('rvContractStartCalendarCtrl', ['$rootScope', '$scope', 'dateFilter', 'ngDialog', function($rootScope, $scope, dateFilter, ngDialog) {
 	$scope.setUpData = function() {
-	    $scope.isDateSelected = false;
+		$scope.isDateSelected = false;
 		var minDate = '';
 
 		/**
@@ -26,11 +26,11 @@ sntRover.controller('rvContractStartCalendarCtrl', ['$rootScope', '$scope', 'dat
 		}
 
 	    $scope.dateOptions = {
-		     changeYear: true,
-		     changeMonth: true,
-		     minDate: tzIndependentDate(minDate),
-		     yearRange: "0:+10",
-		     onSelect: function() {
+			changeYear: true,
+			changeMonth: true,
+			minDate: tzIndependentDate(minDate),
+			yearRange: "0:+10",
+			onSelect: function() {
 				var endDate,
 					beginDate = tzIndependentDate($scope.date);
 				// Above, set the selected date as the beginDate for the form
@@ -67,7 +67,7 @@ sntRover.controller('rvContractStartCalendarCtrl', ['$rootScope', '$scope', 'dat
 				}
 
 				ngDialog.close();
-	    	}
+			}
     	};
 	};
 	

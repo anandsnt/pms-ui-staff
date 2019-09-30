@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVCompanyCardSrv', '$stateParams', '$timeout', 'ngDialog',
-	function($scope, RVCompanyCardSrv, $stateParams, $timeout, ngDialog) {
+angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog',
+	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, ngDialog) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.contractData = {
@@ -14,8 +14,11 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 			rateSearchQuery: '',
 			selectedRateList: [],
 			selectedRateIdList: [],
-			accountId: $stateParams.id === "add" ? $scope.contactInformation.id : $stateParams.id
+			accountId: $stateParams.id === "add" ? $scope.contactInformation.id : $stateParams.id,
+			showNightsModal: false,
+			selectedContract: ''
 		};
+		var that = this;
 
 		/**
 		 * Function to set error message
@@ -71,13 +74,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 				// EDIT contract flow
 				$scope.contractData.mode = 'EDIT';
 				$scope.contractData.noContracts = false;
-				// Disable the field if the selected contract is history
-				angular.forEach(pastContracts, function(item) {
-					if (item.id === data.contract_selected) {
-						$scope.contractData.disableFields = true;
-					}
-				});
-				fetchContractDetails(data.contract_selected);
+				that.fetchContractDetails($scope.contractData.selectedContract);
 			}
 			if ($scope.contractData.selectedContract !== '') {
 				refreshContractScrollers();
@@ -90,13 +87,25 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 		 */
 		fetchContractDetailsSuccessCallback = function(data) {
 			$scope.contractData.editData = data;
-		},
+			$scope.contractData.disableFields = data.end_date < $rootScope.businessDate;
+			if ($scope.contractData.showNightsModal) {
+				ngDialog.open({
+					template: '/assets/partials/companyCard/contracts/rvContractedNightsPopup.html',
+					controller: 'rvContractedNightsCtrl',
+					className: '',
+					scope: $scope
+				});
+				$scope.contractData.showNightsModal = false;
+			}
+		};
+
 		/**
 		 * Function to fetch the currently selected contract details
 		 */
-		fetchContractDetails = function(contractId) {
+		that.fetchContractDetails = function(contractId) {
 			var accountId;
 
+			$scope.$broadcast('addDataReset');
 			$scope.contractData.selectedContract = contractId;
 			if ($stateParams.id === "add") {
 				accountId = $scope.contactInformation.id;
@@ -113,19 +122,20 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 			};
 
 			$scope.callAPI(RVCompanyCardSrv.fetchContractsDetails, options);
-	    },
-	    /*
+		};
+		/*
 		 * Failure callback for contracts fetch API
 		 * @param {String} response - error message
 		 * @return void
 		 */
-		fetchContractsListFailureCallback = function(response) {
+		var fetchContractsListFailureCallback = function(response) {
 			setErrorMessage(response);
-		},
+		};
+
 		/**
 		 * Init function fetches the contracts on page load
 		 */
-		init = function() {
+		that.init = function() {
 			var options = {
 				successCallBack: fetchContractsListSuccessCallback,
 				failureCallBack: fetchContractsListFailureCallback,
@@ -153,13 +163,13 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 		/**
 		 * Listener to call on new contracts form closure
 		 */
-		$scope.addListener('fetchContractsList', init);
+		$scope.addListener('fetchContractsList', that.init);
 
 		/**
 		 * Listener for fetch event from the contract list 
 		 */
 		$scope.addListener('fetchContract', function(event, data) {
-			fetchContractDetails(data);
+			that.fetchContractDetails(data);
 		});
 		/*	
 		 * Listener for displaying error message
@@ -181,6 +191,6 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 			refreshContractScrollers();
 		};
 
-		init();
+		that.init();
 	}
 ]);

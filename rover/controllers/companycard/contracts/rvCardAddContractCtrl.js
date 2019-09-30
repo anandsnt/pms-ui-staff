@@ -1,7 +1,7 @@
 angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog', '$timeout',
 	function($scope, RVCompanyCardSrv, $stateParams, ngDialog, $timeout) {
         BaseCtrl.call(this, $scope);
-        var showNightsModal = false;
+        var that = this;
 
         /* Items related to ScrollBars
 		 * 1. When the tab is activated, refresh scroll.
@@ -29,16 +29,7 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
             // emit something to refresh the Contracts list
             $scope.$emit('fetchContractsList');
             refreshScroller();
-            init();
-            if (showNightsModal) {
-                ngDialog.open({
-                    template: '/assets/partials/companyCard/contracts/rvContractedNightsPopup.html',
-                    controller: 'rvContractedNightsCtrl',
-                    className: '',
-                    scope: $scope
-                });
-                showNightsModal = false;
-            };
+            that.init();
         };
 
         /**
@@ -48,12 +39,13 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
          */
         var saveNewContractFailureCallback = function(error) {
             $scope.$emit('setErrorMessage', error);
+            $scope.contractData.showNightsModal = false;
         };
 
         /**
          * Post object initializer
          */
-        var init = function() {
+        that.init = function() {
             $scope.addData = {
                 contractName: '',
                 accessCode: '',
@@ -70,6 +62,13 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
          */
         $scope.addListener('refreshAddScroller', refreshScroller);
 
+        $scope.addListener('addDataReset', function() {
+            if (!_.isEmpty($scope.addData)) {
+                that.init();
+                $scope.contractData.showNightsModal = false;
+            }
+        });
+
         /**
          * Function to toggle contract's active/inactive status
          */
@@ -81,8 +80,9 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
          * Function to cancel and close the new contract form
          */
         $scope.cancelNewContract = function() {
+            $scope.contractData.mode = '';
             $scope.$emit('fetchContractsList');
-            init();
+            that.init();
         };
 
         /**
@@ -95,9 +95,9 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
                 accountId = $scope.contactInformation.id;
             } else {
                 accountId = $stateParams.id;
-            };
+            }
             var postData = {
-                'access_code':$scope.addData.accessCode,
+                'access_code': $scope.addData.accessCode,
                 'contract_name': $scope.addData.contractName,
                 'begin_date': $scope.addData.startDate,
                 'end_date': $scope.addData.endDate,
@@ -139,10 +139,10 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
         
         // Show contracted nights popup
         $scope.contractedNights = function() {
-            showNightsModal = true;
+            $scope.contractData.showNightsModal = true;
             $scope.saveNewContract();
         };
 
-        init();
+        that.init();
     }
 ]);

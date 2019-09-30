@@ -9,13 +9,14 @@
             </button>
             <button type="submit" name="submit" class="icons icon-search">Search</button>
              <!-- add readonly if it's read only -->
-            <input ng-model="contractData.rateSearchQuery" ng-change="searchRate()" name="faux-select-query" id="faux-select-query" class="query" placeholder="Search by Rate Name" autocomplete="off" type="search">
+            <input ng-model="contractData.rateSearchQuery" ng-change="searchRate()" name="faux-select-query" id="faux-select-query" class="query" placeholder="Search by Rate Name or Code" autocomplete="off" type="search">
         </div>
         <!-- remove .hidden when searching -->
-        <div class="scrollable" ng-show="contractData.searchResults.length > 0">
+        <div class="scrollable" ng-show="contractData.searchResults.length > 0" ng-iscroll='searchResults' ng-iscroll-delay="100">
             <div class="wrapper">
                 <div class="card" ng-repeat="item in contractData.searchResults" ng-click="clickedOnResult($index)">
-                    {{item.name}}
+                    <span ng-bind-html="escapeNull(item.name)|highlight:contractData.rateSearchQuery:false" class="rate-name"></span>
+                    <span class="rate-code">{{item.code}}</span>
                 </div>
                 <!-- ... repeat for each rate -->
             </div>
@@ -24,7 +25,8 @@
     <!-- Add .disabled when not editable -->
     <div class="contracted-rates">
         <li ng-repeat="rate in contractData.selectedRateList">
-            {{rate.name}}
+            <span class="rate-name">{{rate.name}}</span>
+            <span class="rate-code">{{rate.code}}</span>
             <!-- display the icon when the rate can be removed -->
             <span class="icons icon-remove-10" ng-click="removeRate($index)"></span>
         </li>
