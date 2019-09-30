@@ -371,4 +371,11 @@ BaseCtrl = function($scope) {
 
     $scope.isEmptyArray = isEmptyArray;
 
+    /**
+     * Parse a string to a float number
+     */
+    $scope.toFloat = function ( num ) {
+        return parseFloat(num);
+    };
+
 };
