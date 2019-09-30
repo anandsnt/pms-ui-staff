@@ -1,23 +1,30 @@
 angular.module('sntRover').controller('rvCardSearchContractCtrl', ['$scope', 'rvCompanyCardContractsSrv',
 	function($scope, rvCompanyCardContractsSrv) {
+        
         BaseCtrl.call(this, $scope);
 
-        $scope.contractData.searchResults = [];
-        $scope.setScroller('searchResults');
-        if ($scope.contractData.mode === 'ADD') {
-            $scope.contractData.selectedRateList = [];
-        }
-        else {
-            $scope.contractData.selectedRateList = $scope.contractData.contract_rates || [];
-        }
+        var initialise = function() {
+            $scope.contractData.searchResults = [];
+            $scope.setScroller('searchResultsList');
+            if ($scope.contractData.mode === 'ADD') {
+                $scope.contractData.selectedRateList = [];
+            }
+            else {
+                $scope.contractData.selectedRateList = $scope.contractData.contract_rates || [];
+            }
+        };
 
+        // Handle refresh scroll
         var refreshSearchList = function() {
             $timeout(function() {
-                $scope.refreshScroller('searchResults');
+                $scope.refreshScroller('searchResultsList');
             }, 500);
         };
 
-        var fetchRateContract = function(contractId) {
+        /* 
+         *  Handle API call to fetch contract rates.
+         */
+        var fetchRateContract = function() {
             var fetchRateContractSuccessCallback = function(data) {
                 $scope.contractData.searchResults = data.contract_rates;
                 $scope.$emit('refreshContractsScroll');
@@ -39,27 +46,30 @@ angular.module('sntRover').controller('rvCardSearchContractCtrl', ['$scope', 'rv
             $scope.callAPI(rvCompanyCardContractsSrv.fetchRateContract, options);
         };
 
+        // Handle rate search.
         $scope.searchRate = function() {
-            console.log("search", $scope.contractData.rateSearchQuery);
             if ($scope.contractData.rateSearchQuery.length > 2) {
                 fetchRateContract();
-
             }
         };
-
+        // Handle clear search.
         $scope.clearQuery = function() {
-            console.log("search", $scope.contractData.rateSearchQuery);
             $scope.contractData.rateSearchQuery = '';
         };
-
+        /* 
+         *  Handle click on each item in the result list
+         *  @params {Number} [index of the searchResults]
+         */
         $scope.clickedOnResult = function( index ) {
-            console.log('clickedOnResult', $scope.contractData.searchResults[index]);
             $scope.contractData.selectedRateList.push($scope.contractData.searchResults[index]);
             $scope.$emit('refreshContractsScroll');
             $scope.contractData.searchResults = [];
             $scope.contractData.rateSearchQuery = '';
         };
-
+        /* 
+         *  Handle click(for remove) on each item in the selected rate list
+         *  @params {Number} [index of the selected rate list]
+         */
         $scope.removeRate = function( index ) {
             
             var clickedItem = $scope.contractData.selectedRateList[index];
@@ -70,5 +80,7 @@ angular.module('sntRover').controller('rvCardSearchContractCtrl', ['$scope', 'rv
             // remove object
             $scope.contractData.selectedRateList.splice(removeIndex, 1);
         };
+
+        initialise();
     }
 ]);
