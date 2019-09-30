@@ -1,8 +1,7 @@
 angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog', '$timeout',
 	function($scope, RVCompanyCardSrv, $stateParams, ngDialog, $timeout) {
         BaseCtrl.call(this, $scope);
-        var showNightsModal = false,
-            that = this;
+        var showNightsModal = false;
 
         /* Items related to ScrollBars
 		 * 1. When the tab is activated, refresh scroll.
@@ -30,7 +29,7 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
             // emit something to refresh the Contracts list
             $scope.$emit('fetchContractsList');
             refreshScroller();
-            that.init();
+            init();
             if (showNightsModal) {
                 ngDialog.open({
                     template: '/assets/partials/companyCard/contracts/rvContractedNightsPopup.html',
@@ -54,7 +53,7 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
         /**
          * Post object initializer
          */
-        that.init = function() {
+        var init = function() {
             $scope.addData = {
                 contractName: '',
                 accessCode: '',
@@ -84,7 +83,7 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
         $scope.cancelNewContract = function() {
             $scope.contractData.mode = '';
             $scope.$emit('fetchContractsList');
-            that.init();
+            init();
         };
 
         /**
@@ -99,7 +98,7 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
                 accountId = $stateParams.id;
             }
             var postData = {
-                'access_code':$scope.addData.accessCode,
+                'access_code': $scope.addData.accessCode,
                 'contract_name': $scope.addData.contractName,
                 'begin_date': $scope.addData.startDate,
                 'end_date': $scope.addData.endDate,
@@ -143,6 +142,6 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
             $scope.saveNewContract();
         };
 
-        that.init();
+        init();
     }
 ]);

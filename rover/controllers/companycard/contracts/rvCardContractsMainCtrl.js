@@ -110,8 +110,8 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$scope', 'RVC
 			};
 
 			$scope.callAPI(RVCompanyCardSrv.fetchContractsDetails, options);
-	    };
-	    /*
+		};
+		/*
 		 * Failure callback for contracts fetch API
 		 * @param {String} response - error message
 		 * @return void

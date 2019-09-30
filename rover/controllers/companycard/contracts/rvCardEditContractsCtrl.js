@@ -19,14 +19,14 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'RVC
          */
         $scope.updateContract = function() {
             var changedData = {
-                'access_code':$scope.contractData.editData.access_code,
+                'access_code': $scope.contractData.editData.access_code,
                 'contract_name': $scope.contractData.editData.contract_name,
                 'begin_date': $scope.contractData.editData.begin_date,
                 'end_date': $scope.contractData.editData.end_date,
                 'total_contracted_nights': $scope.contractData.editData.total_contracted_nights,
                 'is_active': $scope.contractData.editData.is_active
             },
-            updateContractSuccessCallback = function(data) {
+            updateContractSuccessCallback = function() {
 				$scope.$emit('fetchContractsList');
             },
             updateContractFailureCallback = function(data) {

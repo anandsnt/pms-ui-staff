@@ -1,8 +1,6 @@
 describe('rvCardAddContractsCtrl', function() {
     var $controller,
         $scope = {},
-        $rootScope = {},
-        that,
         $q,
         RVCompanyCardSrv;
 
@@ -11,11 +9,10 @@ describe('rvCardAddContractsCtrl', function() {
         inject(function (_$controller_, _RVCompanyCardSrv_, _$rootScope_, _$q_) {
             $controller = _$controller_;
             $scope = _$rootScope_.$new();
-            $rootScope = _$rootScope_.$new();
             RVCompanyCardSrv = _RVCompanyCardSrv_;
             $q = _$q_;
         });
-        that = $controller('rvCardAddContractsCtrl', {
+        $controller('rvCardAddContractsCtrl', {
             $scope: $scope
         });
         angular.extend($scope, {
