@@ -27,7 +27,7 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'RVC
                 'is_active': $scope.contractData.editData.is_active
             },
             updateContractSuccessCallback = function(data) {
-				$scope.$emit('fetchContract', data.id);
+				$scope.$emit('fetchContractsList');
             },
             updateContractFailureCallback = function(data) {
 				$scope.$emit('setErrorMessage', data);
