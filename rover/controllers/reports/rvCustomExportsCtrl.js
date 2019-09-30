@@ -439,6 +439,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                     }
                     
                     $timeout(function () {
+                        refreshScroll(EXPORT_LIST_SCROLLER);
                         refreshScroll(REPORT_COLS_SCROLLER, true);
                         refreshScroll(SCHEDULE_DETAILS_SCROLLER, true);
                         refreshScroll(DELIVERY_OPTIONS_SCROLLER, true);
