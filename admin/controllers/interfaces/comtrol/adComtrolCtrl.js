@@ -111,9 +111,9 @@ admin.controller('adComtrolCtrl', ['$scope', 'config', 'adInterfacesSrv', 'ngDia
          */
 
         (function () {
-            if(config.meal_period_mappings_enabled === null) {
+            if (config.meal_period_mappings_enabled === null) {
                 config.meal_period_mappings_enabled = false;
-            };
+            }
             $scope.config = config;
             $scope.setDefaultDisplayPassword($scope.config, 'password');
             loadOracodeSetting();
