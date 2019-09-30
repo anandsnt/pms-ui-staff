@@ -23,8 +23,12 @@
                                   styleclass="full-width"></ad-textbox>
                       <ad-textbox inputtype="text" value="config.ftp_username" label="FTP User Name"
                                   styleclass="full-width"></ad-textbox>
-                      <ad-textbox inputtype="password" value="config.ftp_password" label="FTP Password"
-                                  styleclass="full-width"></ad-textbox>
+                      <ad-textbox 
+                            inputtype="password" 
+                            value="config.ftp_password" 
+                            label="FTP Password"
+                            styleclass="full-width"
+                            click-handler="onPasswordClick(config, 'ftp_password')"></ad-textbox>
                       <ad-textbox inputtype="text" value="config.ftp_port" label="FTP Port"
                                   styleclass="full-width" placeholder="Defaults to 22 if not specified"></ad-textbox>
                   </section>

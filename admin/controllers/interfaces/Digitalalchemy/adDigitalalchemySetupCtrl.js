@@ -30,9 +30,13 @@ angular.module('admin').controller('adDigitalalchemySetupCtrl', ['$scope', '$roo
         };
 
         $scope.saveSetup = function() {
+            var params = dclone($scope.config);
+
+            $scope.deletePropertyIfRequired(params, 'authorization_key');
+
             $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
-                    settings: $scope.config,
+                    settings: params,
                     integration: $scope.interface.toLowerCase()
                 },
                 onSuccess: function() {
@@ -45,6 +49,7 @@ angular.module('admin').controller('adDigitalalchemySetupCtrl', ['$scope', '$roo
         (function() {
             //    init
             $scope.config = config;
+            $scope.setDefaultDisplayPassword($scope.config, 'authorization_key');
         })();
     }
 ]);

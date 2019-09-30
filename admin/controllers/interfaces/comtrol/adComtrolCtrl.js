@@ -37,9 +37,12 @@ admin.controller('adComtrolCtrl', ['$scope', 'config', 'adInterfacesSrv', 'ngDia
          * @return {undefined}
          */
         $scope.saveSetup = function () {
+            var params = dclone($scope.config);
+
+            $scope.deletePropertyIfRequired(params, 'password');
             $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
-                    settings: $scope.config,
+                    settings: params,
                     integration: $scope.interface.toLowerCase()
                 },
                 onSuccess: function () {
@@ -105,6 +108,7 @@ admin.controller('adComtrolCtrl', ['$scope', 'config', 'adInterfacesSrv', 'ngDia
 
         (function () {
             $scope.config = config;
+            $scope.setDefaultDisplayPassword($scope.config, 'password');
             loadOracodeSetting();
             loadToken();
             $scope.languages = [
