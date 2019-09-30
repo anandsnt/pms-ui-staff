@@ -27,14 +27,14 @@
                        delay="1000"
                        function-to-fire="onChangeGiftCard"
                        type="text"/>
-                <label ng-show="giftCard.amountAvailable"> Available Card Balance(<span class="currency">{{currencySymbol}}</span>) </label>
+                <label ng-show="giftCard.amountAvailable"> Available Card Balance(<span class="currency">{{rateCurrency}}</span>) </label>
                 <input ng-show="giftCard.amountAvailable"
                        ng-readonly="true"
                        ng-model="giftCard.availableBalance"
                        type="text"/>
             </div>
             <div class="entry full-width">
-                <label>Amount to pay (<span><span class="currency">{{currencySymbol}}</span></span>)</label>
+                <label>Amount to pay (<span><span class="currency">{{rateCurrency}}</span></span>)</label>
                 <input ng-change="onPaymentInfoChange()"
                        ng-model="payment.amount"
                        type="text"
