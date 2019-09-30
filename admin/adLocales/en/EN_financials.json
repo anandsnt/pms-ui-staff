@@ -8,6 +8,7 @@
 "CHARGE_GROUP":"Charge Group",
 "CHARGE_CODE_TYPE":"Charge Code Type",
 "PAYMENT_TYPE":"Payment Type",
+"DEPOSIT_CHARGE_CODE":"Deposit Charge Code",
 "AMOUNT":"Amount",
 "AMOUNT_TYPE":"Amount Type",
 "SELECT_AMOUNT_TYPE":"Select Amount Type",

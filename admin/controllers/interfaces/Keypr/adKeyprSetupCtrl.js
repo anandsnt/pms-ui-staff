@@ -10,9 +10,12 @@ angular.module('admin').controller('adKeyprSetupCtrl', ['$scope', '$rootScope', 
         };
 
         $scope.saveSetup = function() {
+            var params = dclone($scope.config);
+
+            $scope.deletePropertyIfRequired(params, 'access_token');
             $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
-                    settings: $scope.config,
+                    settings: params,
                     integration: $scope.integration.toLowerCase()
                 },
                 onSuccess: function() {
@@ -25,6 +28,7 @@ angular.module('admin').controller('adKeyprSetupCtrl', ['$scope', '$rootScope', 
         (function() {
             //    init
             $scope.config = config;
+            $scope.setDefaultDisplayPassword($scope.config, 'access_token');
         })();
     }
 ]);
