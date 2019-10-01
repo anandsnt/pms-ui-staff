@@ -849,6 +849,8 @@
     "TO_COMPLETE_CHECKIN_INSERT_CARD_IN_EMV_DEVICE_SUB": "Insert your CC in the EMV device",
     "INSERT_CARD_INSTRUCTIONS": "EMV device will be in the left side of the KIOSK",
     "CC_INSERT_TIMEOUT": "Are you still there ?",
-    "CC_INSERT_ERROR": "Something went wrong!."
+    "CC_INSERT_ERROR": "Something went wrong!.",
+
+    "MINIBAR_CONSUMPTION_HEADING": "Minibar Consumption Since Last Night"
 
 }

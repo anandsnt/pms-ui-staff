@@ -47,18 +47,17 @@
                         <br/>
                     </div>
                     <h4 style="width: 100%;margin-bottom: 10px;" ng-show="zestStationData.kiosk_collect_balance && paymentDetails &&  paymentDetails.card_number.length" data-ng-bind-html="getTagValue('PAYMENT')" editable-text="PAYMENT"></h4>
-                    <div id="payment" ng-show="zestStationData.kiosk_collect_balance && paymentDetails &&  paymentDetails.card_number.length">
-                        <p>
+                    <div id="payment">
+                        <p ng-if="zestStationData.kiosk_collect_balance && paymentDetails &&  paymentDetails.card_number.length">
                             <strong>{{paymentDetails.card_type_name}}</strong><br>
                             <span data-ng-bind-html="getTagValue('ENDING_WITH')" editable-text="ENDING_WITH"></span> {{paymentDetails.card_number}}<br>
                             <span data-ng-bind-html="getTagValue('EXPIRES')" editable-text="EXPIRES"></span> {{paymentDetails.card_expiry}}
                         </p>
+                        <div class="payment-actions" ng-if="zestStationData.enable_items_for_station">
+                            <a touch-press="clickedAddCharge()" class="button">Add Charge</a>
+                        </div>
                         <!-- <a href="{swipe.html, change title of that screen if arrived from here}" class="button">Change Card</a> -->
                     </div>
-                    <button ng-if="zestStationData.enable_items_for_station" type="button" class="button with-icon brand-colors" touch-press="clickedAddCharge()" ng-class="{ 'overlay' : false }">
-                        <span class="icons icon-charge"></span>
-                        Add Charge
-                    </button>
                     <ul id="rate">
                         <li class="sub">
                             <text data-ng-bind-html="getTagValue('BILL_SUB')" editable-text="BILL_SUB"></text>
