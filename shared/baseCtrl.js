@@ -97,10 +97,11 @@ BaseCtrl = function($scope) {
             failureCallBackParameters = options['failureCallBackParameters'] ? options['failureCallBackParameters'] : null;
 
         if (showLoader) {
-            $scope.$emit('showLoader');
             // This method has to be implemented in the root controllers
             if ($scope.startActivity) {
                 $scope.startActivity(identifier);
+            } else {
+                $scope.$emit('showLoader');
             }
         }
 
@@ -108,10 +109,11 @@ BaseCtrl = function($scope) {
             // success call back
             function (data) {
                 if (showLoader) {
-                    $scope.$emit('hideLoader');
                     // This method has to be implemented in the root controllers
                     if ($scope.stopActivity) {
                         $scope.stopActivity(identifier);
+                    } else {
+                        $scope.$emit('hideLoader');
                     }
                 }
                 if (successCallBack) {
