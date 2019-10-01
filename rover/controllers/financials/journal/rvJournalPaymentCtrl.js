@@ -106,6 +106,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
                 "per_page": $scope.data.filterData.perPage,
                 "type": ($scope.data.activePaymentTab === "" ? "" : ($scope.data.activePaymentTab).toLowerCase())
             };
+
             if ($scope.data.query !== "") {
                 postData.filter_id = $scope.data.filterId;
                 postData.query = $scope.data.query;
