@@ -1,8 +1,8 @@
 sntZestStation.controller('zsReservationBillDetailsCtrl', [
     '$scope',
     '$state',
-    'zsCheckoutSrv', 'zsEventConstants', '$stateParams', 'zsModeConstants', '$window', '$timeout', 'zsUtilitySrv', '$log', 'zsPaymentSrv', 'zsStateHelperSrv',
-    function ($scope, $state, zsCheckoutSrv, zsEventConstants, $stateParams, zsModeConstants, $window, $timeout, zsUtilitySrv, $log, zsPaymentSrv, zsStateHelperSrv) {
+    'zsCheckoutSrv', 'zsEventConstants', '$stateParams', 'zsModeConstants', '$window', '$timeout', 'zsUtilitySrv', '$log', 'zsPaymentSrv', 'zsStateHelperSrv', '$translate',
+    function ($scope, $state, zsCheckoutSrv, zsEventConstants, $stateParams, zsModeConstants, $window, $timeout, zsUtilitySrv, $log, zsPaymentSrv, zsStateHelperSrv, $translate) {
 
 
         /** *********************************************************************************************
@@ -294,6 +294,10 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             };
 
             var options = {
+                params: {
+                    locale: $translate.use(),
+                    application: 'KIOSK'
+                },
                 successCallBack: fetchItemsSuccess,
                 failureCallBack: fetchItemsFailure
             };
