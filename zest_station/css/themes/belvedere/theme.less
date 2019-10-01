@@ -56,6 +56,10 @@
         stroke: @white;
     }
 
+    &.icon-arrow-down {
+        fill: @brandColor;
+    }
+
 }
 
 .logo-svg{
@@ -196,6 +200,31 @@
     .popup {
         .icons {
             fill: @white;
+        }
+    }
+
+    .minibar-items {
+        .minibar-item {
+            .minibar-item-info {
+                .minibar-item-meta { color:#666; }
+            }
+        }
+    }
+
+    .minibar-review {
+        .review-items {
+            ul.totals {
+                li {
+                    &:not(.total) {
+                        color:#666;
+                    }
+
+                    &:first-child,
+                    &.total {
+                        border-top-color: #666;
+                    }
+                }
+            }
         }
     }
 }
