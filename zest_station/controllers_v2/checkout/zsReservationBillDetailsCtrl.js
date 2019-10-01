@@ -349,7 +349,9 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 failureCallBack: postChargeFailure
             };
 
-            $scope.callAPI(zsCheckoutSrv.postCharges, options);
+            if ($scope.chargeData.total) {
+                $scope.callAPI(zsCheckoutSrv.postCharges, options);
+            }
         };
 
         $scope.nextClicked = function () {
