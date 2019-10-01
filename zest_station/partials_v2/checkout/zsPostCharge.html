@@ -1,5 +1,5 @@
 <div id="content">
-    <h1>Minibar Consumption Since Last Night</h1>
+    <h1 id="minibar-heading" translate="MINIBAR_CONSUMPTION_HEADING"></h1>
     <div id="flex-holder" class="minibar">
         <div ng-style="{'max-height': chargeData.maxHeight}" class="minibar-items" ng-iscroll="charge-list-scroll">
             <div class="wrapper">
@@ -31,14 +31,14 @@
                     </div>
                     <ul class="totals">
                         <li class="total">
-                            <span class="name">Total</span>
+                            <span class="name" translate="TOTAL"></span>
                             <span class="cost">${{chargeData.total | number : 2}}</span>
                         </li>
                     </ul>
                 </div>
                 <div class="review-action">
                     <button type="button" class="button" ng-class="{'disabled': chargeData.total === 0}"
-                        touch-press="postCharge()" ng-disabled="chargeData.total === 0">Post Items</button>
+                        touch-press="postCharge()" translate="POST_ITEMS"></button>
                 </div>
             </div>
         </div>
