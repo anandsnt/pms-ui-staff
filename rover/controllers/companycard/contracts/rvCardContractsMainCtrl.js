@@ -151,8 +151,10 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$rootScope', 
 					"account_id": $stateParams.id
 				}
 			};
-			
-			$scope.callAPI(RVCompanyCardSrv.fetchContractsList, options);
+
+			if ($stateParams.id !== 'add') {
+				$scope.callAPI(RVCompanyCardSrv.fetchContractsList, options);
+			}
 		};
 
 		/**
