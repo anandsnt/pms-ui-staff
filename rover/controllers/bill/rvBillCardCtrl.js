@@ -2706,6 +2706,9 @@ sntRover.controller('RVbillCardController',
 					if ($scope.billFormat.isInformationalInvoice) {
 						successData.invoiceLabel = successData.translation.information_invoice;
 					}
+					else if (successData.is_deposit_invoice) {
+						successData.invoiceLabel = successData.translation.deposit_invoice;
+					}
 					else if (successData.no_of_original_invoices === null && !$scope.reservationBillData.bills[$scope.currentActiveBill].is_void_bill) {
 						successData.invoiceLabel = successData.translation.invoice;
 					} 
