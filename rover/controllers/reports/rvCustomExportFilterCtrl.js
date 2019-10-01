@@ -190,6 +190,7 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
         // Remove all the selected filters
         $scope.removeAllFilters = () => {
             $scope.filterData.appliedFilters = [];
+            $scope.refreshFilterScroller();
         };
 
         // Process the filters which are already added and populate the dropdowns
