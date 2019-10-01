@@ -6,7 +6,7 @@
                 <!-- If showing only Items -- -->
                 <div class="minibar-item" ng-repeat="item in chargeData.chargeItems">
                     <div class="minibar-item-info">
-                        <h3 class="minibar-item-title">{{item.name}}</h3>
+                        <h3 class="minibar-item-title">{{ item.description_trl ? item.description_trl : item.name }}</h3>
                         <div class="minibar-item-meta">{{item.unit_price | number : 2}}</div>
                     </div>
                     <div class="minibar-item-qty" ng-if="item.quantity>0">{{item.quantity}}</div>
