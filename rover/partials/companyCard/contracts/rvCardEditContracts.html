@@ -76,39 +76,9 @@
                     <!-- add readonly if it's read only -->
                     <input ng-readonly="contractData.disableFields" name="contract-end" id="contract-end" class="datepicker" ng-model="contractData.editData.end_date" ng-click="contractEnd()" placeholder="Select End Date" maxlength="8" readonly type="text" />
                 </div>
-                <div class="entry find-rate full-width">
-                    <label for="rate-query">Contracted Rate</label>
-                    <!-- Add .searching when seaching -->
-                    <!-- Add .hidden to hide it/when not editable -->
-                    <div class="entry full-width autocomplete-search">
-                        <div class="search">
-                            <button id="faux-select-clear-query" class="clear-query">
-                                <span class="icons icon-clear-search">Clear query</span>
-                            </button>
-                            <button type="submit" name="submit" class="icons icon-search">Search</button>
-                             <!-- add readonly if it's read only -->
-                            <input name="faux-select-query" id="faux-select-query" class="query" placeholder="Search by Rate Name" autocomplete="off" type="search">
-                        </div>
-                        <!-- remove .hidden when searching -->
-                        <div class="scrollable hidden">
-                            <div class="wrapper">
-                                <div class="card">
-                                    {rate}
-                                </div>
-                                <!-- ... repeat for each rate -->
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Add .disabled when not editable -->
-                    <div class="contracted-rates">
-                        <li>
-                            {rate}
-                            <!-- display the icon when the rate can be removed -->
-                            <span class="icons icon-remove-10"></span>
-                        </li>
-                        <!-- ... repeat for each rate -->
-                    </div>
-                </div>
+
+                <div include-replace ng-include="'/assets/partials/companyCard/contracts/rvCardSearchContract.html'"></div>
+
                 <div class="entry margin">
                     <label for="contracted-nights">Contracted nights</label>
                      <!-- add readonly if it's read only -->

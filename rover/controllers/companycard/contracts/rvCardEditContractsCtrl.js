@@ -24,7 +24,8 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'RVC
                 'begin_date': $scope.contractData.editData.begin_date,
                 'end_date': $scope.contractData.editData.end_date,
                 'total_contracted_nights': $scope.contractData.editData.total_contracted_nights,
-                'is_active': $scope.contractData.editData.is_active
+                'is_active': $scope.contractData.editData.is_active,
+                'rate_ids': _.pluck($scope.contractData.selectedRateList, 'id')
             },
             updateContractSuccessCallback = function() {
 				$scope.$emit('fetchContractsList');
