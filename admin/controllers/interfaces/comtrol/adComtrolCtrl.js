@@ -24,6 +24,10 @@ admin.controller('adComtrolCtrl', ['$scope', 'config', 'adInterfacesSrv', 'ngDia
             $scope.config.enabled = !$scope.config.enabled;
         };
 
+        $scope.toggleMealPeriodMappings = function() {
+            $scope.config.meal_period_mappings_enabled = !$scope.config.meal_period_mappings_enabled;
+        };
+
         /**
          *
          * @return {undefined}
@@ -37,9 +41,12 @@ admin.controller('adComtrolCtrl', ['$scope', 'config', 'adInterfacesSrv', 'ngDia
          * @return {undefined}
          */
         $scope.saveSetup = function () {
+            var params = dclone($scope.config);
+
+            $scope.deletePropertyIfRequired(params, 'password');
             $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
-                    settings: $scope.config,
+                    settings: params,
                     integration: $scope.interface.toLowerCase()
                 },
                 onSuccess: function () {
@@ -104,7 +111,11 @@ admin.controller('adComtrolCtrl', ['$scope', 'config', 'adInterfacesSrv', 'ngDia
          */
 
         (function () {
+            if (config.meal_period_mappings_enabled === null) {
+                config.meal_period_mappings_enabled = false;
+            }
             $scope.config = config;
+            $scope.setDefaultDisplayPassword($scope.config, 'password');
             loadOracodeSetting();
             loadToken();
             $scope.languages = [

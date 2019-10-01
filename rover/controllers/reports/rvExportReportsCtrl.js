@@ -283,6 +283,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
                 $scope.$parent.$parent.schedulesList[updatedIndex].occurance = findOccurance($scope.$parent.$parent.schedulesList[updatedIndex]);
             }
+            $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
         };
 
         var saveSchedule = function() {

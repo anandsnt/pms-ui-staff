@@ -57,6 +57,10 @@
             fill: @actionBackground !important;
             stroke: @actionBackground !important;
         }
+
+        &.icon-arrow-down {
+            fill: @brandColor;
+        }
     }
 
 /* 4. LAYOUT
@@ -210,6 +214,17 @@
 
             &.popup-content {
                 background: @white;
+            }
+        }
+
+        .minibar-item,
+        .minibar-review .review-container {
+            background: rgba(0,0,0,0.05);
+        }
+
+        .minibar-item {
+            .minibar-item {
+                background: transparent;
             }
         }
     }
