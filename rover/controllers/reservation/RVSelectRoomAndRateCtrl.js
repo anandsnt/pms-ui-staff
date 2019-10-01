@@ -1663,9 +1663,11 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					$scope.stateCheck.stayDates[$scope.stateCheck.dateModeActiveDate].rateCurrency = rateInfo.rateCurrency;
 					for (roomIndex = $scope.stateCheck.roomDetails.firstIndex; roomIndex <= $scope.stateCheck.roomDetails.lastIndex; roomIndex++) {
 						currentRoom = ROOMS[roomIndex];
+						currentRoom.stayDates[activeDate].rateCurrency = rateInfo.rateCurrency;
 						currentRoom.stayDates[activeDate].rateDetails = {
 							actual_amount: rateAmount,
 							modified_amount: rateAmount,
+							rateCurrency: rateInfo.rateCurrency,
 							is_discount_allowed: $scope.reservationData.ratesMeta[rateId].is_discount_allowed_on === null ? 'false' : $scope
 								.reservationData.ratesMeta[rateId].is_discount_allowed_on.toString(), // API returns true / false as a string ... Hence true in a string to maintain consistency
 							is_suppressed: $scope.reservationData.ratesMeta[rateId].is_suppress_rate_on === null ? 'false' : $scope.reservationData

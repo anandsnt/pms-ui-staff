@@ -136,6 +136,9 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$state', '$rootScope', 'ADR
          */
 
         var setRateInitialData = function() {
+            if (_.findIndex($scope.rateInitialData.hotel_settings.rate_currency_list, {"id": $rootScope.hotelCurrencyObject.id}) === -1) {
+                $scope.rateInitialData.hotel_settings.rate_currency_list.push($rootScope.hotelCurrencyObject);
+            }
             $scope.rateTypesDetails = $scope.rateInitialData;
             /**
              * CICO-9289 - This switch will only show if the Reservation Setting 'Hourly Rates' has been switched on (see CICO-9435) and then default to 'Hourly'
