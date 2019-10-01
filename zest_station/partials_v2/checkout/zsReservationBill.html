@@ -1,5 +1,5 @@
 <!-- The bill display section -->
-<section id="main" role="main" class="centered" ng-hide="printOpted" click-touch='resetTime()'>
+<section id="main" role="main" class="centered" ng-hide="printOpted || showPostChargeScreen" click-touch='resetTime()'>
     <div id="content">
         <h1 ng-show="isReservationDetailsFetched">
             <text data-ng-bind-html="getTagValue('BILL_REVIEW')" editable-text="BILL_REVIEW"></text>
@@ -55,6 +55,10 @@
                         </p>
                         <!-- <a href="{swipe.html, change title of that screen if arrived from here}" class="button">Change Card</a> -->
                     </div>
+                    <button ng-if="zestStationData.enable_items_for_station" type="button" class="button with-icon brand-colors" touch-press="clickedAddCharge()" ng-class="{ 'overlay' : false }">
+                        <span class="icons icon-charge"></span>
+                        Add Charge
+                    </button>
                     <ul id="rate">
                         <li class="sub">
                             <text data-ng-bind-html="getTagValue('BILL_SUB')" editable-text="BILL_SUB"></text>
@@ -81,8 +85,9 @@
         </div>
     </div>
 </section>
+<section id="main" role="main" ng-include="'/assets/partials_v2/checkout/zsPostCharge.html'" ng-if="showPostChargeScreen"></section>
 <!-- print option for stand alone-->
-<div ng-controller="zsPrintBillCtrl" ng-if="zestStationData.is_standalone">
+<div ng-controller="zsPrintBillCtrl" ng-if="zestStationData.is_standalone || !showPostChargeScreen">
     <section id="main" role="main" class="centered" ng-show="printOpted">
         <div id="content">
             <h1>

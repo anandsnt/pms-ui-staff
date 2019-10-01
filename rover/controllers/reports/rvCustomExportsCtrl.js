@@ -139,7 +139,15 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 return hasEmail || hasFTP || hasDropbox || hasGoogleDrive;
             };
 
-            return hasFrequency() && hasValidDistribution();
+            var hasExportName = function () {
+                return !!$scope.customExportsScheduleParams.exportName;
+            };
+
+            var hasOutputFormat = function () {
+                return !!$scope.customExportsScheduleParams.format;
+            };
+
+            return hasFrequency() && hasValidDistribution() && hasExportName() && hasOutputFormat();
         };
 
         var fillValidationErrors = function() {
@@ -153,6 +161,12 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             }
             if ( ! $scope.emailList.length ) {
                 $scope.createErrors.push('Emails/SFTP/Dropbox/Google Drive in distribution list');
+            }
+            if (!$scope.customExportsScheduleParams.exportName) {
+                $scope.createErrors.push('No export name entered');
+            }
+            if (!$scope.customExportsScheduleParams.format) {
+                $scope.createErrors.push('No format selected');
             }
         };
         
@@ -293,7 +307,11 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                             filteredOut: false,
                             filters: dataSpace.filters
                         });
-                    });                                       
+                    });
+                    
+                    $timeout(function () {
+                        refreshScroll(EXPORT_LIST_SCROLLER, true);
+                    }, 500);
                 },
                 onDataSpaceFetchFailure = () => {
                     $scope.customExportsData.customExportDataSpaces = [];
@@ -321,7 +339,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                     
                     $timeout( () => {
                         refreshScroll(EXPORT_LIST_SCROLLER, true);
-                    }, 100);
+                    }, 1000);
                     
 
                 },
@@ -419,10 +437,14 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                     if (isSavedSchedule) {
                         $scope.$broadcast('UPDATE_FILTER_SELECTIONS');
                     }
-
-                    refreshScroll(REPORT_COLS_SCROLLER, true);
-                    refreshScroll(SCHEDULE_DETAILS_SCROLLER, true);
-                    refreshScroll(DELIVERY_OPTIONS_SCROLLER, true);
+                    
+                    $timeout(function () {
+                        refreshScroll(EXPORT_LIST_SCROLLER);
+                        refreshScroll(REPORT_COLS_SCROLLER, true);
+                        refreshScroll(REPORT_SELECTED_COLS_SCROLLER, true);
+                        refreshScroll(SCHEDULE_DETAILS_SCROLLER, true);
+                        refreshScroll(DELIVERY_OPTIONS_SCROLLER, true);
+                    }, 1000);
 
                 },
                 onFailure = (error) => {
@@ -678,7 +700,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 $scope.updateViewCol($scope.viewColsActions.ONE);
                 $scope.viewState.currentStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
                 $scope.selectedEntityDetails.active = false;
-                
+                resetPreviousSelections();
             });
     
             $scope.addListener('CREATE_NEW_CUSTOM_EXPORT_SCHEDULE', () => {
@@ -794,26 +816,40 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             return freqType && freqType.value === 'Minute';
         };
 
-
-        // Initialize the data
-        var initializeData = () => {
+        /**
+         * Reset previous selections
+         */
+        var resetPreviousSelections = () => {
             $scope.customExportsScheduleParams.format = '';
             $scope.customExportsScheduleParams.exportName = '';
             $scope.selectedColumns = [];
+            $scope.filterData = {
+                appliedFilters: [],
+                primaryFilter: ''
+            };
+            $scope.scheduleParams = {};
+            $scope.emailList = [];
+        };
+
+        /**
+         *  Change handler for repeats 
+         */
+        $scope.changeRepeats = () => {
+            refreshScroll(SCHEDULE_DETAILS_SCROLLER, true) ;
+        };
+
+
+        // Initialize the data
+        var initializeData = () => {
+            resetPreviousSelections();
             $scope.customExportsData.scheduledCustomExports = [];
             $scope.customExportsData.customExportDataSpaces = [];
             $scope.customExportsData.exportFormats = [];
             $scope.customExportsData.deliveryTypes = [];
             $scope.customExportsData.durations = [];
-            $scope.filterData = {
-                appliedFilters: [],
-                primaryFilter: ''
-            };
             $scope.viewState = {
                 currentStage: STAGES.SHOW_CUSTOM_EXPORT_LIST
             };
-            $scope.scheduleParams = {};
-            $scope.emailList = [];
             $scope.repeatMinutesMinVal = 0;
         };
         
