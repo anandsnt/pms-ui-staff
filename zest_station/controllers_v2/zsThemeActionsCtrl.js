@@ -68,7 +68,8 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                     clear_text: commonIconsPath + '/clear-text.svg',
                     no_of_nights: commonIconsPath + '/nights.svg',
                     adults: commonIconsPath + '/adults.svg',
-                    children: commonIconsPath + '/children.svg'
+                    children: commonIconsPath + '/children.svg',
+                    down: commonIconsPath + '/down.svg'
                 }
             };
 
