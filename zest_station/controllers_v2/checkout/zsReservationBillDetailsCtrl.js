@@ -40,6 +40,15 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
         var refreshScroller = function () {
             $scope.refreshScroller('bill-list');
         };
+
+        $scope.setScroller('charge-list-scroll');
+        $scope.setScroller('quantity-list-scroll');
+
+        var refreshChargeScroller = function () {
+            $scope.refreshScroller('charge-list-scroll');
+            $scope.refreshScroller('quantity-list-scroll');
+        };
+
         /**
          *  general failure actions inside bill screen
          **/
@@ -53,7 +62,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
 
             // process bill data
             var billsData = response.bill_details.fee_details;
-            
+
             $scope.billData = [];
             $scope.zestStationData.currency = response.bill_details.currency;
             $scope.net_amount = response.bill_details.total_fees;
@@ -248,6 +257,100 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             }
         };
 
+        // Add/remove items to post charge
+        $scope.updateQuantity = function (index, addAmount) {
+            $scope.chargeData.chargeItems[index].quantity += addAmount;
+            $scope.chargeData.total += $scope.chargeData.chargeItems[index].unit_price * addAmount;
+        };
+
+        var setPostChargeContentHeight = function () {
+            var $contentHeight = ($('#content').outerHeight()),
+                $h1Height = $('#content h1').length ? $('#content h1').outerHeight(true) : 0,
+                $h2Height = $('#content h2').length ? $('#content h2').outerHeight(true) : 0,
+                $h3Height = $('#content h3').length ? $('#content h3').outerHeight(true) : 0,
+                $headingsHeight = parseFloat($h1Height + $h2Height + $h3Height),
+                $textualHeight = parseFloat($contentHeight - $headingsHeight);
+
+            $scope.chargeData.maxHeight = $textualHeight + 'px';
+        };
+
+        // Fetch items
+        $scope.getChargeItems = function () {
+            var fetchItemsFailure = function () {
+                $scope.showPostChargeScreen = false;
+            };
+
+            var fetchItemsSuccess = function (response) {
+                $scope.showPostChargeScreen = true;
+                $scope.chargeData.chargeItems = response.results;
+
+                for (var i = 0, itemLen = $scope.chargeData.chargeItems.length; i < itemLen; i++) {
+                    $scope.chargeData.chargeItems[i].quantity = 0;
+                }
+
+                setPostChargeContentHeight();
+                refreshChargeScroller();
+            };
+
+            var options = {
+                successCallBack: fetchItemsSuccess,
+                failureCallBack: fetchItemsFailure
+            };
+
+            $scope.callAPI(zsCheckoutSrv.fetchChargeItems, options);
+        };
+
+        // Add charge button click handler
+        $scope.clickedAddCharge = function () {
+            $scope.getChargeItems();
+        };
+
+        // Post charge for selected items
+        $scope.postCharge = function () {
+            var updatedItems = [],
+                postData = {
+                    bill_no: '1',
+                    fetch_total_balance: false,
+                    post_anyway: true,
+                    total: $scope.chargeData.total,
+                    reservation_id: $scope.reservation_id,
+                    workstation_id: $scope.workstation_id
+                };
+
+            for (var i = 0, itemLen = $scope.chargeData.chargeItems.length; i < itemLen; i++) {
+                if ($scope.chargeData.chargeItems[i].quantity > 0) {
+                    updatedItems.push({
+                        amount: $scope.chargeData.chargeItems[i].quantity * $scope.chargeData.chargeItems[i].unit_price,
+                        is_item: true,
+                        quantity: $scope.chargeData.chargeItems[i].quantity,
+                        reference_text: "",
+                        show_ref_on_invoice: true,
+                        value: $scope.chargeData.chargeItems[i].id
+                    });
+                }
+            }
+            postData.items = updatedItems;
+
+            var postChargeFailure = function () {
+                $scope.showPostChargeScreen = true;
+            };
+
+            var postChargeSuccess = function () {
+                $scope.$emit('hideLoader');
+                $scope.showPostChargeScreen = false;
+                // Fetch data again to refresh the screen with new data
+                $scope.setupBillData();
+            };
+
+            var options = {
+                params: postData,
+                successCallBack: postChargeSuccess,
+                failureCallBack: postChargeFailure
+            };
+
+            $scope.callAPI(zsCheckoutSrv.postCharges, options);
+        };
+
         $scope.nextClicked = function () {
             if (parseFloat($scope.balance) !== 0 && $scope.zestStationData.kiosk_collect_balance) {
                 zsStateHelperSrv.setPreviousStateParams($stateParams);
@@ -284,7 +387,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 $scope.days_of_stay = $stateParams.days_of_stay;
                 $scope.hours_of_stay = $stateParams.hours_of_stay;
                 $stateParams.email = !_.isNull($stateParams.email) ? $stateParams.email : '';
-                
+
                 // storing state varibales to be used in print view also
                 $scope.stateParamsForNextState = {
                     'from': $stateParams.from,
@@ -321,12 +424,21 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
 
             // back button action
             $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function () {
-                if ($stateParams.from === 'searchByName') {
+                if ($scope.showPostChargeScreen) {
+                    $scope.showPostChargeScreen = false;
+                } else if ($stateParams.from === 'searchByName') {
                     $state.go('zest_station.checkOutReservationSearch');
                 } else {
                     $state.go('zest_station.checkoutKeyCardLookUp');
                 }
             });
+
+            $scope.showPostChargeScreen = false;
+            $scope.chargeData = {
+                chargeItems: [],
+                maxHeight: 'none',
+                total: 0
+            };
 
             $scope.init();
         }());
