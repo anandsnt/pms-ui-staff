@@ -1,6 +1,7 @@
-angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog', '$timeout',
-	function($scope, RVCompanyCardSrv, $stateParams, ngDialog, $timeout) {
+angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog', '$timeout',
+	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, ngDialog, $timeout) {
         BaseCtrl.call(this, $scope);
+        $scope.currencySymbol = $rootScope.currencySymbol;
 
         $scope.setScroller('editContractScroller');
         var refreshEditScroller = function() {

@@ -122,14 +122,13 @@
                     <li>Booked Nights <span>{{contractData.editData.statistics.booked_nights}}</span></li>
                     <li>Total Nights <span>{{contractData.editData.statistics.total_nights}}</span></li>
                     <li>Total Stays <span>{{contractData.editData.statistics.total_stays}}</span></li>
-                    <li>Total Revenue <span class="green">${{contractData.editData.statistics.total_revenue}}</span></li>
-                    <li>Average Rate <span>${{contractData.editData.statistics.average_rate}}</span></li>
+                    <li>Total Revenue <span class="green">{{currencySymbol}}{{contractData.editData.statistics.total_revenue}}</span></li>
+                    <li>Average Rate <span>{{currencySymbol}}{{contractData.editData.statistics.average_rate}}</span></li>
                 </ul>                
             </div>
         </div>
     </div>
     <div class="contract-details-footer">
-        <!-- <button type="button" class="button blank">Cancel</button> -->
         <button ng-show="!contractData.disableFields" type="button" class="button green" ng-click="updateContract()">Update Contract</button>
     </div>
 </div>

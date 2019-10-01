@@ -50,6 +50,7 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
          */
         $scope.newContract = function() {
             $scope.contractData.mode = 'ADD';
+            $scope.contractData.editData = {};
             $scope.$emit('refreshContractsScroll');
         };
 
