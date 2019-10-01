@@ -2,8 +2,9 @@ angular.module('sntRover').controller('rvCardSearchContractCtrl', ['$scope', 'rv
 	function($scope, rvCompanyCardContractsSrv) {
         
         BaseCtrl.call(this, $scope);
+        var that = this;
 
-        var initialise = function() {
+        that.initialise = function() {
             $scope.contractData.searchResults = [];
             $scope.setScroller('searchResultsList');
             if ($scope.contractData.mode === 'ADD') {
@@ -15,7 +16,7 @@ angular.module('sntRover').controller('rvCardSearchContractCtrl', ['$scope', 'rv
         };
 
         // Handle refresh scroll
-        var refreshSearchList = function() {
+        that.refreshSearchList = function() {
             $timeout(function() {
                 $scope.refreshScroller('searchResultsList');
             }, 500);
@@ -24,11 +25,11 @@ angular.module('sntRover').controller('rvCardSearchContractCtrl', ['$scope', 'rv
         /* 
          *  Handle API call to fetch contract rates.
          */
-        var fetchRateContract = function() {
+        that.fetchRateContract = function() {
             var fetchRateContractSuccessCallback = function(data) {
                 $scope.contractData.searchResults = data.contract_rates;
                 $scope.$emit('refreshContractsScroll');
-                refreshSearchList();
+                that.refreshSearchList();
             },
             fetchRateContractFailureCallback = function(errorMessage) {
                 $scope.$emit('setErrorMessage', errorMessage);
@@ -49,7 +50,7 @@ angular.module('sntRover').controller('rvCardSearchContractCtrl', ['$scope', 'rv
         // Handle rate search.
         $scope.searchRate = function() {
             if ($scope.contractData.rateSearchQuery.length > 2) {
-                fetchRateContract();
+                that.fetchRateContract();
             }
         };
         // Handle clear search.
@@ -71,7 +72,6 @@ angular.module('sntRover').controller('rvCardSearchContractCtrl', ['$scope', 'rv
          *  @params {Number} [index of the selected rate list]
          */
         $scope.removeRate = function( index ) {
-            
             var clickedItem = $scope.contractData.selectedRateList[index];
 
             // get index of object with id:37
@@ -81,6 +81,6 @@ angular.module('sntRover').controller('rvCardSearchContractCtrl', ['$scope', 'rv
             $scope.contractData.selectedRateList.splice(removeIndex, 1);
         };
 
-        initialise();
+        that.initialise();
     }
 ]);
