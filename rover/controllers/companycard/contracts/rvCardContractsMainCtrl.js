@@ -9,6 +9,12 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$rootScope', 
 			disableFields: false,
 			noContracts: true,
 			noStatistics: true,
+			selectedContract: '',
+			rateSearchResult: [],
+			rateSearchQuery: '',
+			selectedRateList: [],
+			selectedRateIdList: [],
+			accountId: $stateParams.id === "add" ? $scope.contactInformation.id : $stateParams.id,
 			showNightsModal: false,
 			selectedContract: ''
 		};
@@ -155,7 +161,8 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$rootScope', 
 		var refreshContractScrollers = function() {
 			if ($scope.contractData.mode === 'ADD') {
 				$scope.$broadcast('refreshAddScroller');
-			} else if ($scope.contractData.mode === 'EDIT') {
+			} 
+			else if ($scope.contractData.mode === 'EDIT') {
 				$scope.$broadcast('refreshEditScroller');
 				$scope.$broadcast('initContractsList');
 			}

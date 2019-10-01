@@ -51,6 +51,8 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
         $scope.newContract = function() {
             $scope.contractData.mode = 'ADD';
             $scope.contractData.editData = {};
+            $scope.contractData.selectedRateList = [];
+            $scope.contractData.rateSearchQuery = '';
             $scope.$emit('refreshContractsScroll');
         };
 
