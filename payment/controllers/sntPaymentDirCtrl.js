@@ -39,8 +39,12 @@ angular.module('sntPay').controller('sntPaymentController',
                 isManualEntryInsideIFrame: false,
                 workstationId: '',
                 emvTimeout: 120,
-                isConfirmedDBpayment: false
+                isConfirmedDBpayment: false,
+                selectedPaymentCurrencyId: $rootScope.hotelCurrencyId,
+                selectedPaymentCurrencySymbol: $rootScope.currencySymbol
             };
+
+            $scope.originalAmount = angular.copy($scope.amount);            
 
             $scope.giftCard = {
                 number: '',
@@ -79,7 +83,8 @@ angular.module('sntPay').controller('sntPaymentController',
                         'payment_type': $scope.selectedPaymentType,
                         'amount': $scope.payment.amount.toString().replace(/,/g, ''),
                         'is_split_payment': $scope.splitBillEnabled && $scope.numSplits > 1,
-                        'workstation_id': $scope.hotelConfig.workstationId
+                        'workstation_id': $scope.hotelConfig.workstationId,
+                        'currency_id': $scope.payment.selectedPaymentCurrencyId
                     },
                     'reservation_id': $scope.reservationId,
                     'bill_id': $scope.billId
@@ -947,6 +952,7 @@ angular.module('sntPay').controller('sntPaymentController',
                     showFee: currFee.showFees,
                     feeChargeCode: currFee.feeChargeCode
                 };
+                $scope.originalFee = angular.copy($scope.feeData.calculatedFee);
             }
 
             /**
@@ -985,6 +991,13 @@ angular.module('sntPay').controller('sntPaymentController',
                 // CICO-44719: No need to show add payment screen
                 if ($scope.actionType === 'AR_REFUND_PAYMENT') {
                     return false;
+                }
+
+                if ($scope.selectedPaymentType === 'CC') {
+                    $scope.payment.selectedPaymentCurrencyId = $rootScope.hotelCurrencyId;
+                    $scope.payment.selectedPaymentCurrencySymbol = $rootScope.currencySymbol;
+                    $scope.payment.amount = $scope.originalAmount;
+                    $scope.feeData.calculatedFee = $scope.originalFee;
                 }
 
                 /** CICO-47989
@@ -1047,6 +1060,25 @@ angular.module('sntPay').controller('sntPaymentController',
                 } else {
                     $scope.payment.showAddToGuestCard = false;
                 }
+            };
+
+            $scope.onPaymentCurrencyChange = function() {
+                $scope.payment.selectedPaymentCurrencySymbol = (_.find($scope.paymentCurrencyList, {"id": $scope.payment.selectedPaymentCurrencyId})).symbol;
+                var paramsToApi = {
+                    "amount": parseInt($scope.originalAmount),
+                    "fee": parseInt($scope.originalFee),
+                    "currency_id": parseInt($scope.payment.selectedPaymentCurrencyId),
+                    "date": $rootScope.businessDate
+                };
+
+                sntPaymentSrv.getConvertedAmount(paramsToApi).then(
+                    response => {
+                        $scope.payment.amount = response.data.converted_amount;
+                        $scope.feeData.calculatedFee = response.data.converted_fee;
+                    },
+                    errorMessage => {
+                        console.log(errorMessage);
+                    });
             };
 
             $scope.onFeeOverride = function () {

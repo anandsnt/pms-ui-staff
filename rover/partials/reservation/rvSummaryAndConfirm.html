@@ -244,13 +244,11 @@
         <div class="form payment-info scrollable" ng-click="clearErrorMessage()" ng-iscroll='paymentInfo'>
             <div class="wrapper" ng-class="{'reservation-summary-scroll-fix': shouldIncludeScrollFixClass}">                
                 <div id="set-payment" class="payment-form" ng-if="!!reservationData.reservationId">
-
                     <snt-payment
                             hotel-config="hotelPaymentConfig"
                             workstation-id="{{workstation_id}}"
                             reservation-id="{{reservationData.reservationId}}"
                             rate-currency="{{reservationData.rateCurrency}}" 
-                            payment-currency-list="{{paymentCurrencyList}}" 
                             should-show-payment-drop-down ="{{shouldShowPaymentDropDown}}" 
                             deposit-policy-name="{{depositData.description}}"
                             bill-number="billNumber"
@@ -266,7 +264,7 @@
                             first-name="{{guestCardData.contactInfo.first_name}}"
                             last-name="{{guestCardData.contactInfo.last_name}}"
                             only-payment-selection="reservationData.isValidDeposit"
-                            payment-currency-list="{{paymentCurrencyList}}" 
+                            payment-currency-list="paymentCurrencyList" 
                             reservation-ids="reservationData.reservationIds">
                     </snt-payment>
                     <div class="actions" ng-hide="showCCPage">
