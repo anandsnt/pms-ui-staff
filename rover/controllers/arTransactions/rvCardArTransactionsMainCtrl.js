@@ -969,8 +969,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					else if (parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices))
 					{
 						if (successData.is_copy_counter) {
-							copyCount = getCopyCount(successData);
-						}						
+-							copyCount = getCopyCount(successData);
+-						}
 						successData.invoiceLabel = successData.translation.copy_of_ar_invoice.replace("#count", copyCount);
 					}
 					else if (!$scope.billFormat.isInformationalInvoice) 
