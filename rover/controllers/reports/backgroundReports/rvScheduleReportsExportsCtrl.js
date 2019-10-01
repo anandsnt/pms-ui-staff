@@ -343,10 +343,15 @@ angular.module('sntRover')
                 $scope.$broadcast('SHOW_EXPORT_LISTING');
             };
 
+            // Listener for showing the error msg
             $scope.addListener('SHOW_ERROR_MSG_EVENT', (event, msg) => {
-                $scope.showingErrMsg = true;
                 $scope.errorMessage = msg instanceof Array ? msg[0] : msg;
             });
+
+            // Clear the error msg
+            $scope.clearErrorMsg = () => {
+                $scope.errorMessage = '';
+            };
 
             (function () {
                 $scope.updateViewCol($scope.viewColsActions.ONE);

@@ -425,6 +425,11 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             $scope.errorMessage = data;
         });
 
+        // Clear the error message
+        $scope.clearErrorMsg = () => {
+            $scope.errorMessage = '';
+        };
+
         // Initialize
         self.init = () => { 
             var chosenDate = $state.params.date ? $state.params.date : $rootScope.serverDate;
