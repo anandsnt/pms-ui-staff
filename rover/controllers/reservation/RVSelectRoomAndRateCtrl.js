@@ -546,6 +546,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							defaultRoomTypeId: rate.room_type_id,
 							defaultRoomTypeAvailability: rate.availability,
 							defaultADR: rate.adr,
+							contractName: isCorporate ? rate.contract_name : '',
 							rooms: [],
 							restriction: rate.restrictions,
 							hasRoomsList: false,
