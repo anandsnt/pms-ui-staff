@@ -235,12 +235,12 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              */
             populateRoomNos = ( selectedFilter, selectedValues, deferred ) => {
                 rvCustomExportSrv.getRoomNos().then(function (data) {
-                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, 'id');
+                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, 'name');
                     selectedFilter.options = {
                         hasSearch: false,
                         selectAll: selectedValues ? data.length === selectedValues.length : true,
                         key: 'name',
-                        value_key: 'id'
+                        value_key: 'name'
                     };
                     selectedFilter.isMultiSelect = true;
                     deferred.resolve(selectedFilter);
