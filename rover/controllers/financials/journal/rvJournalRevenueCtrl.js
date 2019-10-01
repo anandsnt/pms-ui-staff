@@ -23,8 +23,6 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
 		var successCallBackFetchRevenueData = function(data) {
 			$scope.data.revenueData = {};
             $scope.data.activeChargeGroups = [];
-            // $scope.data.selectedChargeGroup = '';
-            // $scope.data.selectedChargeCode  = '';
 			$scope.data.revenueData = data;
             $scope.data.activeChargeGroups = data.charge_groups;
             $scope.errorMessage = "";
@@ -172,7 +170,6 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
                 "page_no": chargeCodeItem.page_no,
                 "per_page": $scope.data.filterData.perPage
             };
-            
             if ($scope.data.query !== "") {
                 postData.filter_id = $scope.data.filterId;
                 postData.query = $scope.data.query;
