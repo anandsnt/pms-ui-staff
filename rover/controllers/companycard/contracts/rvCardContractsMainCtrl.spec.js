@@ -25,7 +25,7 @@ describe('rvCardContractsMainCtrl', function() {
             deferred.resolve({});
             return deferred.promise;
         });
-        that.init()
+        that.init();
         expect(RVCompanyCardSrv.fetchContractsList).toHaveBeenCalled();
     });
 

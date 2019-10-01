@@ -13,7 +13,7 @@ sntRover.controller('rvContractEndCalendarCtrl', ['$rootScope', '$scope', 'dateF
 		else if ($scope.contractData.mode === 'EDIT') {
 			minDate = $scope.contractData.editData && $scope.contractData.editData.begin_date ?
 					tzIndependentDate($scope.contractData.editData.begin_date) :
-					minDate
+					minDate;
 		}
 		// Increment the minDate by 1 day as startDate can not be equal to endDate
 		minDate.setDate(minDate.getDate() + 1);
@@ -23,20 +23,18 @@ sntRover.controller('rvContractEndCalendarCtrl', ['$rootScope', '$scope', 'dateF
 		 * or the minDate as the active date to be displayed
 		 */
 		if ($scope.contractData.mode === 'ADD') {
-			var date = $scope.addData.endDate ? tzIndependentDate($scope.addData.endDate) : minDate;
-			$scope.date = date;
+			$scope.date = $scope.addData.endDate ? tzIndependentDate($scope.addData.endDate) : minDate;
 		}
 		else if ($scope.contractData.mode === 'EDIT') {
 			if (!_.isEmpty($scope.contractData.editData)) {
-				var date = $scope.contractData.editData.end_date ? tzIndependentDate($scope.contractData.editData.end_date) : minDate;
-				$scope.date = date;
+				$scope.date = $scope.contractData.editData.end_date ? tzIndependentDate($scope.contractData.editData.end_date) : minDate;
 			}
 			else {
 				$scope.date = minDate;
 			}
 		}
 
-	  	$scope.dateOptions = {
+		$scope.dateOptions = {
 			changeYear: true,
 			changeMonth: true,
 			minDate: minDate,
@@ -53,10 +51,10 @@ sntRover.controller('rvContractEndCalendarCtrl', ['$rootScope', '$scope', 'dateF
 				else if ($scope.contractData.mode === 'EDIT') {
 					$scope.contractData.editData.end_date = dateFilter(endDate, 'yyyy-MM-dd');
 				}
-				
+
 				ngDialog.close();
 			}
-    	};
+		};
 	};
 	
 	$scope.setUpData();
