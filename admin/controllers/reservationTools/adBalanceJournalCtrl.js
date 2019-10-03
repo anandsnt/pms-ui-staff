@@ -10,8 +10,7 @@ admin.controller('ADBalanceJournalCtrl', [
 	'ngDialog',
 	'ngTableParams',
 	'$timeout',
-	'$filter',
-	function($scope, $rootScope, $state, allJobs, ADReservationToolsSrv, ngDialog, ngTableParams, $timeout, $filter) {
+	function($scope, $rootScope, $state, allJobs, ADReservationToolsSrv, ngDialog, ngTableParams, $timeout) {
 		BaseCtrl.call(this, $scope);
 		ADBaseTableCtrl.call(this, $scope, ngTableParams);
 		$scope.errorMessage = "";
@@ -87,7 +86,7 @@ admin.controller('ADBalanceJournalCtrl', [
 
 		$scope.cancelOrChange = function() {
 			$scope.anyJobRunning = false;
-		}
+		};
 
 		$scope.refreshStatus = function() {
 			var params = {
@@ -108,7 +107,7 @@ admin.controller('ADBalanceJournalCtrl', [
 					$scope.cancelOrChangeBtnTxt = "";
 					$scope.runForDiffDatesText = "RUN FOR DIFFERENT DATE";
 				} 
-				else if ($scope.statusData.job_failed_date != "" || $scope.statusData.error != "") {
+				else if ($scope.statusData.job_failed_date !== "" || $scope.statusData.error !== "") {
 					$(".balance-status").addClass('error');
 					$(".balance-status").removeClass('success');
 					$(".balance-status").removeClass('notice');
@@ -172,7 +171,7 @@ admin.controller('ADBalanceJournalCtrl', [
 		$scope.loadTable = function() {
 			$scope.tableParams = new ngTableParams({
 					page: 1,  // show first page
-					count: 5, // count per page
+					count: 10 // count per page
 				}, {
 					total: 1000, // length of data
 					getData: $scope.getActivityLog
