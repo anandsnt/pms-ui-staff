@@ -160,7 +160,8 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             if ( ! $scope.scheduleParams.frequency_id ) {
                 $scope.createErrors.push('Repeat frequency in details');
             }
-            if ( ! $scope.emailList.length ) {
+            if ( ! $scope.emailList.length || !$scope.scheduleParams.selectedFtpRecipient || 
+                !$scope.scheduleParams.selectedCloudAccount ) {
                 $scope.createErrors.push('Emails/SFTP/Dropbox/Google Drive in distribution list');
             }
             if (!$scope.customExportsScheduleParams.exportName) {
