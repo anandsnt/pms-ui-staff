@@ -39,4 +39,21 @@ angular.module('sntRover').service('rvCompanyCardContractsSrv', ['$q', 'rvBaseWe
         return deferred.promise;
     };
 
+    /**
+     * service function used to add new contracts
+     * @param {Object} data payLoad
+     * @return {promise|{then, catch, finally}|*|e} Promise
+     */
+    this.addNewContract = function(data) {
+        var deferred = $q.defer(),
+            url = '/api/accounts/' + data.account_id + '/contracts';
+
+        rvBaseWebSrvV2.postJSON(url, data.postData).then(function(data) {
+            deferred.resolve(data);
+        }, function(data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
 }]);

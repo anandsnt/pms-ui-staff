@@ -2,14 +2,14 @@ describe('rvCardAddContractsCtrl', function() {
     var $controller,
         $scope = {},
         $q,
-        RVCompanyCardSrv;
+        rvCompanyCardContractsSrv;
 
     beforeEach(function() {
         module('sntRover');
-        inject(function (_$controller_, _RVCompanyCardSrv_, _$rootScope_, _$q_) {
+        inject(function (_$controller_, rvCompanyCardContractsSrv, _$rootScope_, _$q_) {
             $controller = _$controller_;
             $scope = _$rootScope_.$new();
-            RVCompanyCardSrv = _RVCompanyCardSrv_;
+            rvCompanyCardContractsSrv = _rvCompanyCardContractsSrv_;
             $q = _$q_;
         });
         $controller('rvCardAddContractsCtrl', {
@@ -29,7 +29,7 @@ describe('rvCardAddContractsCtrl', function() {
     });
 
     it('test save function', function() {
-        spyOn(RVCompanyCardSrv, "addNewContract").and.callFake(function() {
+        spyOn(rvCompanyCardContractsSrv, "addNewContract").and.callFake(function() {
             var deferred = $q.defer();
 
             deferred.resolve({});
@@ -45,7 +45,7 @@ describe('rvCardAddContractsCtrl', function() {
             isActive: true
         };
         $scope.saveNewContract();
-        expect(RVCompanyCardSrv.addNewContract).toHaveBeenCalled();
+        expect(rvCompanyCardContractsSrv.addNewContract).toHaveBeenCalled();
     });
 
     it('check toggle active flag', function() {
@@ -57,13 +57,13 @@ describe('rvCardAddContractsCtrl', function() {
     });
 
     it('call save API before showing contracted nights modal', function() {
-        spyOn(RVCompanyCardSrv, "addNewContract").and.callFake(function() {
+        spyOn(rvCompanyCardContractsSrv, "addNewContract").and.callFake(function() {
             var deferred = $q.defer();
 
             deferred.resolve({});
             return deferred.promise;
         });
         $scope.contractedNights();
-        expect(RVCompanyCardSrv.addNewContract).toHaveBeenCalled();
+        expect(rvCompanyCardContractsSrv.addNewContract).toHaveBeenCalled();
     });
 });
