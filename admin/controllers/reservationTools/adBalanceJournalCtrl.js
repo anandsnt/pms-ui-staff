@@ -8,11 +8,15 @@ admin.controller('ADBalanceJournalCtrl', [
 	'allJobs',
 	'ADReservationToolsSrv',
 	'ngDialog',
-	function($scope, $rootScope, $state, allJobs, ADReservationToolsSrv, ngDialog) {
+	'ngTableParams',
+	'$timeout',
+	'$filter',
+	function($scope, $rootScope, $state, allJobs, ADReservationToolsSrv, ngDialog, ngTableParams, $timeout, $filter) {
 		BaseCtrl.call(this, $scope);
 
 		$scope.errorMessage = "";
 		$scope.showPercentage = false;
+		ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
 		$scope.balanceJournalJob = _.findWhere(allJobs, {"job_name": "SYNC DailyBalanceCorrection"});
 
@@ -35,6 +39,7 @@ admin.controller('ADBalanceJournalCtrl', [
 		 */
 		$scope.startJob = function() {
 			var successCallback = function(data) {
+				var startDate = moment(tzIndependentDate($scope.payload.first_date)).format("YYYY-DD-MM");
 				$(".balance-status").addClass('notice');
 				$(".balance-status").removeClass('success');
 				$(".balance-status").removeClass('error');
@@ -42,7 +47,7 @@ admin.controller('ADBalanceJournalCtrl', [
 				$scope.showPercentage = false;
 				$scope.balanceJournalJobId = data.job_id;
 				$scope.jobStatusTitle = "Balancing started";
-				$scope.jobStatusText = "Balancing journal from " + $scope.payload.first_date + " to " + $scope.payload.end_date;
+				$scope.jobStatusText = "Balancing journal from " + startDate + " to " + $scope.payload.end_date;
 				$scope.cancelOrChangeBtnTxt = "CANCEL JOB";
 				$scope.runButtonText = "REFRESH STATUS";
 				$scope.runForDiffDatesText = "";
@@ -135,6 +140,49 @@ admin.controller('ADBalanceJournalCtrl', [
 			};
 			
 			$scope.callAPI(ADReservationToolsSrv.checkJobStatus, options);
+		};
+
+		$scope.toggleActivityLog = function() {
+            if ($scope.detailsMenu !== 'adRateActivityLog') {
+                $scope.detailsMenu = 'adRateActivityLog';
+				$scope.loadTable();
+            } else {
+                $scope.detailsMenu = '';
+            }
+		};
+		
+		$scope.getActivityLog = function($defer, params) {
+			$scope.showActivityLog = true;
+			var getParams = $scope.calculateGetParams(params),
+            successCallback = function(data) {
+				$timeout(function() {
+					$scope.currentClickedElement = -1;
+					$scope.totalCount = data.total_count;
+					$scope.totalPage = Math.ceil(data.total_count / $scope.displyCount);
+					$scope.activityLogData = data.results;
+					$scope.currentPage = params.page();
+					params.total(data.total_count);
+					// params.total(data.results.length);
+					$defer.resolve($scope.data);
+				}, 500);
+            },
+			options = {
+				params: getParams,
+				successCallBack: successCallback
+			};
+
+            $scope.callAPI(ADReservationToolsSrv.fetchActivityLog, options);
+		};
+
+		$scope.loadTable = function() {
+			$scope.tableParams = new ngTableParams({
+					page: 1,  // show first page
+					count: 5, // count per page
+				}, {
+					total: $scope.activityLogData.length, // length of data
+					getData: $scope.getActivityLog
+				}
+			);
 		};
 	}
 ]);

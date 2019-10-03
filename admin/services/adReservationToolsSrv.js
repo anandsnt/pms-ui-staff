@@ -113,5 +113,19 @@ admin.service('ADReservationToolsSrv', [
 
             return deferred.promise;
         };
+
+        this.fetchActivityLog = function(params) {
+            var deferred = $q.defer();
+            // per page and current page need to be defined
+            var url = "/admin/daily_balance_recalculations?page=" + params.page + "&per_page=" + params.per_page;
+
+            ADBaseWebSrvV2.getJSON(url).then(function(data) {
+                    deferred.resolve(data.results);
+            }, function(data) {
+                    deferred.reject(data);
+            });
+            return deferred.promise;
+	    };
+
     }
 ]);
