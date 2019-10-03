@@ -4,7 +4,7 @@
     <!-- Add .hidden to hide it/when not editable -->
     <div class="entry full-width autocomplete-search" ng-class="{'searching': contractData.rateSearchQuery !== ''}">
         <div class="search">
-            <button id="faux-select-clear-query" class="clear-query">
+            <button id="faux-select-clear-query" class="clear-query" ng-class="{'visible': contractData.rateSearchQuery !== ''}">
                 <span class="icons icon-clear-search" ng-click="clearQuery()" ng-show="contractData.searchResults.length > 0">Clear query</span>
             </button>
             <button type="submit" name="submit" class="icons icon-search">Search</button>
