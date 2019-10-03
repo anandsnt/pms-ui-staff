@@ -6,7 +6,7 @@ describe('rvCardAddContractsCtrl', function() {
 
     beforeEach(function() {
         module('sntRover');
-        inject(function (_$controller_, rvCompanyCardContractsSrv, _$rootScope_, _$q_) {
+        inject(function (_$controller_, _rvCompanyCardContractsSrv_, _$rootScope_, _$q_) {
             $controller = _$controller_;
             $scope = _$rootScope_.$new();
             rvCompanyCardContractsSrv = _rvCompanyCardContractsSrv_;
