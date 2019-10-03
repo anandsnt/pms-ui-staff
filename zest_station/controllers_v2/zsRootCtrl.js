@@ -786,7 +786,8 @@ sntZestStation.controller('zsRootCtrl', [
                     var creditCardUsingStates = ['zest_station.checkInSignature',
                         'zest_station.checkInCardSwipe',
                         'zest_station.payment',
-                        'zest_station.pickUpKeyReservationSearch'
+                        'zest_station.pickUpKeyReservationSearch',
+                        'zest_station.checkInCCCollectionUsingOpi'
                     ];
 
 					// when user activity is not recorded for more than idle_timer.prompt
