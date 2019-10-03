@@ -115,7 +115,7 @@
 			};
 
 			var checkinGuest = function() {
-				var bypassReasonId = zsCheckinSrv.getPaaportBypassReason();
+				var bypassReasonId = zsCheckinSrv.getPassportBypassReason();
 				var stateParams = JSON.parse($stateParams.params);
 				var checkinParams = {
 					'reservation_id': stateParams.reservation_id,

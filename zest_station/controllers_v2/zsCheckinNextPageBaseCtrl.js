@@ -40,7 +40,7 @@ sntZestStation.controller('zsCheckinNextPageBaseCtrl', [
 		};
 
 		$scope.checkinGuest = function() {
-            var bypassReasonId = zsCheckinSrv.getPaaportBypassReason();
+            var bypassReasonId = zsCheckinSrv.getPassportBypassReason();
 			var checkinParams = {
 				'reservation_id': stateParams.reservation_id,
 				'workstation_id': $scope.zestStationData.set_workstation_id,

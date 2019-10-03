@@ -97,7 +97,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
 
         var checkInGuest = function() {
             var signatureBase64Data = getSignatureBase64Data();
-			var bypassReasonId = zsCheckinSrv.getPaaportBypassReason();
+			var bypassReasonId = zsCheckinSrv.getPassportBypassReason();
 
             var checkinParams = {
                 'reservation_id': $stateParams.reservation_id,
