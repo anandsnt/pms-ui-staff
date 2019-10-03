@@ -70,7 +70,8 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
         };
 
         $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function () {
-
+            $scope.isBypassReasonNil = true;
+            $scope.isPassportNumberBlank = true;
             if ($scope.mode === 'PASSPORT_DETAILS') {
                 $state.go('zest_station.collectGuestAddress');
             } else if ($scope.mode === 'COLLECT_PASSPORT_NUMBER' || $scope.mode === 'BYPASS_PASSPORT_DETAILS') {
