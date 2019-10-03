@@ -70,7 +70,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 WEEKLY: 'WEEKLY',
                 MONTHLY: 'MONTHLY',
                 RUN_ONCE: 'RUN_ONCE',
-                EVERY_MINUTE: 'EVERY_MINUTE'
+                EVERY_MINUTE: 'MINUTES'
             };
 
             if ( frequency ) {
@@ -160,7 +160,8 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             if ( ! $scope.scheduleParams.frequency_id ) {
                 $scope.createErrors.push('Repeat frequency in details');
             }
-            if ( ! $scope.emailList.length ) {
+            if ( ! $scope.emailList.length || !$scope.scheduleParams.selectedFtpRecipient || 
+                !$scope.scheduleParams.selectedCloudAccount ) {
                 $scope.createErrors.push('Emails/SFTP/Dropbox/Google Drive in distribution list');
             }
             if (!$scope.customExportsScheduleParams.exportName) {
@@ -468,7 +469,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 $scope.selectedEntityDetails.active = false;
             }
             $scope.selectedEntityDetails = selectedDataSpace;
-            $scope.filterData.appliedFilters = [];
+            resetPreviousSelections();
             loadReqData(selectedDataSpace.id);
         };
 
@@ -503,7 +504,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             var selectedItems = _.where(filter.secondLevelData, { selected: true }),
                 selectedIds = _.pluck(selectedItems, key);
 
-            return selectedIds;
+            return selectedIds || [];
         };
 
         /**
@@ -541,21 +542,31 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             _.each($scope.filterData.appliedFilters, function (filter) {
                 paramKey = (filter.selectedFirstLevel).toLowerCase();
                 if (filter.isDuration) {
-                    filterValues[paramKey] = filter.selectedSecondLevel;
+                    if (filter.selectedSecondLevel) {
+                        filterValues[paramKey] = filter.selectedSecondLevel;
+                    }
                 } else if (filter.isOption) {
                     if (filter.hasDualState) {
-                        filterValues[paramKey] = filter.selectedSecondLevel;
+                        if (filter.selectedSecondLevel) {
+                            filterValues[paramKey] = filter.selectedSecondLevel;
+                        }
                     } else if (filter.isMultiSelect) {
-                        filterValues[paramKey] = getSelectedItemValues(filter);
+                        if (!_.isEmpty(getSelectedItemValues(filter))) {
+                            filterValues[paramKey] = getSelectedItemValues(filter);
+                        }
                     }
                 } else if (filter.isRange) {
                     if (!filterValues[paramKey]) {
                         filterValues[paramKey] = [];
                     }
-                    filterValues[paramKey].push({
-                        operator: filter.selectedSecondLevel,
-                        value: filter.rangeValue
-                    });
+
+                    if (filter.selectedSecondLevel && filter.rangeValue) {
+                        filterValues[paramKey].push({
+                            operator: filter.selectedSecondLevel,
+                            value: filter.rangeValue
+                        });
+                    }
+                    
                 }
 
             });
@@ -662,8 +673,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             }
             $scope.selectedEntityDetails = selectedSchedule;
             $scope.customExportsData.isNewExport = false;
-            $scope.selectedColumns = [];
-            $scope.filterData.appliedFilters = [];
+            resetPreviousSelections();
             $scope.customExportsScheduleParams.exportName = selectedSchedule.name;
             selectedSchedule.active = true;
             loadReqData(selectedSchedule.report.id, true);

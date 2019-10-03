@@ -66,6 +66,49 @@ admin.controller('ADZestStationCheckInCtrl', ['$scope', '$state', '$rootScope', 
             $scope.invokeApi(ADZestStationSrv.save, params, savePaymentExclusionSettings, saveFailed);
         };
 
+        // open the form to list / add passport bypass reason
+        $scope.openPassportNumberBypassView = function() {
+            $scope.editPassportNumberBypassReason = true;
+            $scope.passportBypassReason = {
+                "description": ""
+            };
+        };
+
+        $scope.editPassportBypassReason = function(reason) {
+            $scope.addNewPassportNumberBypassReason = true;
+            $scope.passportBypassReason = reason;
+        };
+
+        $scope.savePassportBypassReason = function() {
+            $scope.addNewPassportNumberBypassReason = false;
+            $scope.editPassportNumberBypassReason = false;
+            $scope.zestSettings.passport_bypass_reasons.push($scope.passportBypassReason);
+            $scope.invokeApi(ADZestStationSrv.savePassportNumberBypassReason, $scope.passportBypassReason);
+        };
+
+        $scope.cancelPassportBypassReason = function() {
+            $scope.addNewPassportNumberBypassReason = false;
+            $scope.editPassportNumberBypassReason = false;
+        };
+
+        $scope.deletePassportBypassReason = function(reason) {
+            var params = {
+                reason_id: reason.id
+            }, 
+            bypassReasons = $scope.zestSettings.passport_bypass_reasons;
+
+            $scope.zestSettings.passport_bypass_reasons = bypassReasons.filter(function (bypassReason) {
+                return bypassReason.id !== reason.id;
+            });
+            $scope.invokeApi(ADZestStationSrv.deletePassportNumberBypassReason, params);
+        };
+
+        $scope.toggleRulesListShow = function() {
+            if ($scope.zestSettings.passport_bypass_reasons) {
+                $scope.zestSettings.bypass_passport_entry = !$scope.zestSettings.bypass_passport_entry;
+            }
+        };
+
         $scope.isKioskExcludePaymentMethods = Toggles.isEnabled('kiosk_exclude_payment_methods');
         fetchSettings();
     }
