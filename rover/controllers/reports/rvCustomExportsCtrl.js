@@ -70,7 +70,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 WEEKLY: 'WEEKLY',
                 MONTHLY: 'MONTHLY',
                 RUN_ONCE: 'RUN_ONCE',
-                EVERY_MINUTE: 'EVERY_MINUTE'
+                EVERY_MINUTE: 'MINUTES'
             };
 
             if ( frequency ) {
@@ -558,7 +558,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                     if (!filterValues[paramKey]) {
                         filterValues[paramKey] = [];
                     }
-                    
+
                     if (filter.selectedSecondLevel && filter.rangeValue) {
                         filterValues[paramKey].push({
                             operator: filter.selectedSecondLevel,
