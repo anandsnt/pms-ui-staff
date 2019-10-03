@@ -81,8 +81,8 @@ admin.controller('ADZestStationCheckInCtrl', ['$scope', '$state', '$rootScope', 
         };
 
         $scope.savePassportBypassReason = function() {
-            if (addNewPassportNumberBypassReason) {
-                $scope.zestSettings.passport_bypass_reasons.push($scope.passportBypassReason)
+            if ($scope.addNewPassportNumberBypassReason) {
+                $scope.zestSettings.passport_bypass_reasons.push($scope.passportBypassReason);
             }
             $scope.addNewPassportNumberBypassReason = false;
             $scope.editPassportNumberBypassReason = false;
