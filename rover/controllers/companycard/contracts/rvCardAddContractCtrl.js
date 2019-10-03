@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog', '$timeout',
-	function($scope, RVCompanyCardSrv, $stateParams, ngDialog, $timeout) {
+angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'rvCompanyCardContractsSrv', '$stateParams', 'ngDialog', '$timeout',
+	function($scope, rvCompanyCardContractsSrv, $stateParams, ngDialog, $timeout) {
         BaseCtrl.call(this, $scope);
         var that = this;
 
@@ -114,7 +114,7 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
                 successCallBack: saveNewContractSuccessCallback
             };
 
-            $scope.callAPI(RVCompanyCardSrv.addNewContract, options);
+            $scope.callAPI(rvCompanyCardContractsSrv.addNewContract, options);
         };
 
         // To popup contract start date
