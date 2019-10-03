@@ -25,7 +25,8 @@
                     <!-- Add class .active if showing this contact -->
                     <li ng-repeat="contract in item.contracts"
                         ng-click="fetchDetails(contract.id)"
-                        ng-class="{'active': contract.id === contractData.selectedContract}">
+                        ng-class="{'active': contract.id === contractData.selectedContract,
+                                'inactive': !contract.is_active}">
                         <h3 class="item-title">{{contract.contract_name}}</h3>
                         <div class="item-info">
                             <span>{{contract.contract_start_date}}</span>
