@@ -37,24 +37,17 @@
 
                      <div ng-show="anyJobRunning" class="data-holder">
                         <form class="form">
-                           <!-- Add class:
-                                 - error - When an error was encountered,
-                                 - success - when journal is balanced
-                           -->
-                           <div class="balance-status error">
+                           <div class="balance-status">
                                  <div class="balance-status-info">
-                                    <strong class="status-title">{status}</strong>
-                                    <span class="status-text">{text}</span>
+                                    <strong class="status-title">{{jobStatusTitle}}</strong>
+                                    <span class="status-text">{{jobStatusText}}</span>
                                  </div>
-                                 <div class="balance-status-percentage">{percentage}%</div>
+                                 <div class="balance-status-percentage" ng-if="showPercentage">{{progressPercentage}}%</div>
                            </div>
                            <div class="actions no-border">
-                     
-                                 <!-- Hide this button when journal was balanced. Use it for Canceling jobs or changing dates -->
-                                 <button type="button" class="button blank">{Button Text}</button>
-                     
-                                 <!-- This button is used for restaring, trying it again or doing it for different dates -->
-                                 <button type="button" class="button blue" ng-click="refreshStatus()">{Button Text}</button>
+                                 <button type="button" class="button blank" ng-click="cancelOrChange()" >{{cancelOrChangeBtnTxt}}</button>
+                                 <button type="button" class="button blue" ng-click="cancelOrChange()">{{runForDiffDatesText}}</button>
+                                 <button type="button" class="button blue" ng-click="refreshStatus()">{{runButtonText}}</button>
                            </div>
                         </form>
                      </div>
