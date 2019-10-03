@@ -16,7 +16,6 @@ admin.controller('ADZestStationCheckInCtrl', ['$scope', '$state', '$rootScope', 
                 $scope.excludedPaymentTypes = _.filter(data.payment_types, function(paymentType) {
                     return paymentType.active && !paymentType.enable_zs_checkin;
                 });
-                $scope.zestSettings = [];
                 $scope.$emit('hideLoader');
             };
 
@@ -81,11 +80,11 @@ admin.controller('ADZestStationCheckInCtrl', ['$scope', '$state', '$rootScope', 
         };
 
         $scope.savePassportBypassReason = function() {
-            if ($scope.addNewPassportNumberBypassReason) {
-                $scope.zestSettings.passport_bypass_reasons.push($scope.passportBypassReason);
-            }
             $scope.addNewPassportNumberBypassReason = false;
             $scope.editPassportNumberBypassReason = false;
+            var params = $scope.passportBypassReason;
+            $scope.zestSettings.passport_bypass_reasons.push($scope.passportBypassReason);
+            $scope.invokeApi(ADZestStationSrv.savePassportNumberBypassReason, params);
         };
 
         $scope.cancelPassportBypassReason = function() {
@@ -93,8 +92,22 @@ admin.controller('ADZestStationCheckInCtrl', ['$scope', '$state', '$rootScope', 
             $scope.editPassportNumberBypassReason = false;
         };
 
-        $scope.deletePassportBypassReason = function() {
-            
+        $scope.deletePassportBypassReason = function(reason) {
+            var params = {
+                reason_id: reason.id
+            }, 
+            bypassReasons = $scope.zestSettings.passport_bypass_reasons;
+
+            $scope.zestSettings.passport_bypass_reasons = bypassReasons.filter(function (bypassReason) {
+                return bypassReason.id !== reason.id;
+            });
+            $scope.invokeApi(ADZestStationSrv.deletePassportNumberBypassReason, params);
+        };
+
+        $scope.toggleRulesListShow = function() {
+            if($scope.zestSettings.passport_bypass_reasons) {
+                $scope.zestSettings.bypass_passport_entry = $scope.zestSettings.bypass_passport_entry ? false : true;
+            }
         };
 
         $scope.isKioskExcludePaymentMethods = Toggles.isEnabled('kiosk_exclude_payment_methods');
