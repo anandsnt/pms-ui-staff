@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog', '$timeout',
-	function($scope, RVCompanyCardSrv, $stateParams, ngDialog, $timeout) {
+angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'rvCompanyCardContractsSrv', '$stateParams', 'ngDialog', '$timeout',
+	function($scope, rvCompanyCardContractsSrv, $stateParams, ngDialog, $timeout) {
         BaseCtrl.call(this, $scope);
 
         $scope.setScroller('editContractScroller');
@@ -31,7 +31,8 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'RVC
 				$scope.$emit('fetchContractsList');
             },
             updateContractFailureCallback = function(data) {
-				$scope.$emit('setErrorMessage', data);
+                $scope.$emit('setErrorMessage', data);
+                $scope.contractData.showNightsModal = false;
 				$scope.$parent.currentSelectedTab = 'cc-contracts';
             },
             accountId;
@@ -51,7 +52,7 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'RVC
                 successCallBack: updateContractSuccessCallback
             };
 
-            $scope.callAPI(RVCompanyCardSrv.updateContract, options);
+            $scope.callAPI(rvCompanyCardContractsSrv.updateContract, options);
         };
 
         /**
@@ -90,12 +91,8 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'RVC
         // Show contracted nights popup
         $scope.editContractedNights = function() {
             if (!$scope.contractData.disableFields) {
-                ngDialog.open({
-                    template: '/assets/partials/companyCard/contracts/rvContractedNightsPopup.html',
-                    controller: 'rvContractedNightsCtrl',
-                    className: '',
-                    scope: $scope
-                });
+                $scope.contractData.showNightsModal = true;
+                $scope.updateContract();
             }            
         };
     }

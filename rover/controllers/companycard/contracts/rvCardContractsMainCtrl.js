@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog',
-	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, ngDialog) {
+angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$rootScope', '$scope', 'rvCompanyCardContractsSrv', '$stateParams', 'ngDialog',
+	function($rootScope, $scope, rvCompanyCardContractsSrv, $stateParams, ngDialog) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.contractData = {
@@ -66,6 +66,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$rootScope', 
 				futureContracts = data.future_contracts || [];
 
 			setErrorMessage([]);
+			setSideListCount(currentContracts, futureContracts, pastContracts);
 
 			if (currentContracts.length !== 0 || pastContracts.length !== 0 || futureContracts.length !== 0) {
 				if ($scope.contractData.mode === '') {
@@ -79,7 +80,6 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$rootScope', 
 			if ($scope.contractData.selectedContract !== '') {
 				refreshContractScrollers();
 			}
-			setSideListCount(currentContracts, futureContracts, pastContracts);
 		},
 		/**
 		 * Success callback for contract detail fetch
@@ -97,6 +97,15 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$rootScope', 
 				});
 				$scope.contractData.showNightsModal = false;
 			}
+			$scope.$broadcast('addDataReset');
+		},
+		/**
+		 * Failure callback for contracts detail fetch
+		 * @param {Array} error - array of errors
+		 */
+		fetchContractDetailsFailureCallback = function(error) {
+			setErrorMessage(error);
+			$scope.$broadcast('addDataReset');
 		};
 
 		/**
@@ -105,7 +114,6 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$rootScope', 
 		that.fetchContractDetails = function(contractId) {
 			var accountId;
 
-			$scope.$broadcast('addDataReset');
 			$scope.contractData.selectedContract = contractId;
 			if ($stateParams.id === "add") {
 				accountId = $scope.contactInformation.id;
@@ -114,14 +122,14 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$rootScope', 
 			}
 			var options = {
 				successCallBack: fetchContractDetailsSuccessCallback,
-				failureCallback: setErrorMessage,
+				failureCallback: fetchContractDetailsFailureCallback,
 				params: {
 					"account_id": accountId,
 					"contract_id": contractId
 				}
 			};
 
-			$scope.callAPI(RVCompanyCardSrv.fetchContractsDetails, options);
+			$scope.callAPI(rvCompanyCardContractsSrv.fetchContractsDetails, options);
 		};
 		/*
 		 * Failure callback for contracts fetch API
@@ -143,8 +151,10 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$rootScope', 
 					"account_id": $stateParams.id
 				}
 			};
-			
-			$scope.callAPI(RVCompanyCardSrv.fetchContractsList, options);
+
+			if ($stateParams.id !== 'add') {
+				$scope.callAPI(rvCompanyCardContractsSrv.fetchContractsList, options);
+			}
 		};
 
 		/**

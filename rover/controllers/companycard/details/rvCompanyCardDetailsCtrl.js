@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv', '$state', '$stateParams', 'ngDialog', '$filter', '$timeout', '$rootScope', 'rvPermissionSrv', '$interval', '$log',
-	function($scope, RVCompanyCardSrv, $state, $stateParams, ngDialog, $filter, $timeout, $rootScope, rvPermissionSrv, $interval, $log) {
+angular.module('sntRover').controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv', 'rvCompanyCardContractsSrv', '$state', '$stateParams', 'ngDialog', '$filter', '$timeout', '$rootScope', 'rvPermissionSrv', '$interval', '$log',
+	function($scope, RVCompanyCardSrv, rvCompanyCardContractsSrv, $state, $stateParams, ngDialog, $filter, $timeout, $rootScope, rvPermissionSrv, $interval, $log) {
 
 		// Flag for add new card or not
 		$scope.isAddNewCard = ($stateParams.id === "add");
@@ -444,7 +444,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 * If contract rate exists then should not allow editing name of CC/TA - CICO-56441
 		 */
 		$scope.isUpdateEnabledForName = function() {
-			var contractedRates = RVCompanyCardSrv.getContractedRates(),
+			var contractedRates = rvCompanyCardContractsSrv.getContractedRates(),
 				isUpdateEnabledForNameInCard = true;
 
 			if (contractedRates.current_contracts.length > 0 || contractedRates.future_contracts.length > 0 || contractedRates.history_contracts.length > 0) {

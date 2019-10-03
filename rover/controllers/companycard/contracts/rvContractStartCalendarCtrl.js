@@ -1,5 +1,5 @@
 
-sntRover.controller('rvContractStartCalendarCtrl', ['$rootScope', '$scope', 'dateFilter', 'ngDialog', function($rootScope, $scope, dateFilter, ngDialog) {
+sntRover.controller('rvContractStartCalendarCtrl', ['$rootScope', '$scope', 'ngDialog', function($rootScope, $scope, ngDialog) {
 	$scope.setUpData = function() {
 		$scope.isDateSelected = false;
 		var minDate = '';
@@ -32,7 +32,7 @@ sntRover.controller('rvContractStartCalendarCtrl', ['$rootScope', '$scope', 'dat
 			yearRange: "0:+10",
 			onSelect: function() {
 				var endDate,
-					beginDate = tzIndependentDate($scope.date);
+					beginDate = moment($scope.date);
 				// Above, set the selected date as the beginDate for the form
 
 				/**
@@ -43,10 +43,10 @@ sntRover.controller('rvContractStartCalendarCtrl', ['$rootScope', '$scope', 'dat
 				 * avoid making the beginDate and endDate "Objects" same - two variables for same memory
 				 */
 				if ($scope.contractData.mode === 'ADD') {
-					endDate = $scope.addData.endDate ? tzIndependentDate($scope.addData.endDate) : tzIndependentDate($scope.date);
+					endDate = $scope.addData.endDate ? moment($scope.addData.endDate) : moment($scope.date);
 				}
 				else if ($scope.contractData.mode === 'EDIT') {
-					endDate = $scope.contractData.editData.end_date ? tzIndependentDate($scope.contractData.editData.end_date) : tzIndependentDate($scope.date);
+					endDate = $scope.contractData.editData.end_date ? moment($scope.contractData.editData.end_date) : moment($scope.date);
 				}
 
 				/**
@@ -54,16 +54,16 @@ sntRover.controller('rvContractStartCalendarCtrl', ['$rootScope', '$scope', 'dat
 				 * If it's not, make it.
 				 */
 				if (beginDate >= endDate) {
-					endDate.setDate(beginDate.getDate() + 1);
+					endDate = moment($scope.date).add(1, 'days');
 				}
 
 				if ($scope.contractData.mode === 'ADD') {
-					$scope.addData.startDate = dateFilter(beginDate, 'yyyy-MM-dd');
-					$scope.addData.endDate = dateFilter(endDate, 'yyyy-MM-dd');
+					$scope.addData.startDate = beginDate.format('YYYY-MM-DD');
+					$scope.addData.endDate = endDate.format('YYYY-MM-DD');
 				}
 				else if ($scope.contractData.mode === 'EDIT') {
-					$scope.contractData.editData.begin_date = dateFilter(beginDate, 'yyyy-MM-dd');
-					$scope.contractData.editData.end_date = dateFilter(endDate, 'yyyy-MM-dd');
+					$scope.contractData.editData.begin_date = beginDate.format('YYYY-MM-DD');
+					$scope.contractData.editData.end_date = endDate.format('YYYY-MM-DD');
 				}
 
 				ngDialog.close();

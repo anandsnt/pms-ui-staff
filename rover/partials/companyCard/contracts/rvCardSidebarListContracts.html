@@ -7,8 +7,8 @@
             <!-- If it's opened, add .open -->
             <div class="contract-list-items-section"
                 ng-repeat="item in contractData.contractsList"
-                ng-class="{'no-items': item.count === 0, 'open': item.type === selectedType && opened}">
-                <h2 ng-click="openContractsList(item.type)">
+                ng-class="{'no-items': item.count === 0, 'open': item.opened}">
+                <h2 ng-click="openContractsList(item)">
                     {{item.type}}
                     <span class="count">{{item.count}}</span>
                     <!-- If there are items, show arrow
@@ -17,10 +17,8 @@
                         - 'rotate-down' -> when closed -->
                     <span ng-show="item.count !== 0"
                         class="icons icon-double-arrow black "
-                        ng-class="{'rotate-up': item.type === selectedType && opened,
-                            'rotate-down': !selectedType ||
-                            item.type !== selectedType ||
-                            item.type === selectedType && !opened}">
+                        ng-class="{'rotate-up': item.opened,
+                            'rotate-down': !item.opened}">
                     </span>
                 </h2>
                 <ul>

@@ -2,14 +2,14 @@ describe('rvCardEditContractsCtrl', function() {
     var $controller,
         $scope = {},
         $q,
-        RVCompanyCardSrv;
+        rvCompanyCardContractsSrv;
 
     beforeEach(function() {
         module('sntRover');
-        inject(function (_$controller_, _RVCompanyCardSrv_, _$rootScope_, _$q_) {
+        inject(function (_$controller_, _rvCompanyCardContractsSrv_, _$rootScope_, _$q_) {
             $controller = _$controller_;
             $scope = _$rootScope_.$new();
-            RVCompanyCardSrv = _RVCompanyCardSrv_;
+            rvCompanyCardContractsSrv = _rvCompanyCardContractsSrv_;
             $q = _$q_;
         });
         $controller('rvCardEditContractsCtrl', {
@@ -31,14 +31,14 @@ describe('rvCardEditContractsCtrl', function() {
     });
 
     it('invoke Update Contracts API', function() {
-        spyOn(RVCompanyCardSrv, "updateContract").and.callFake(function() {
+        spyOn(rvCompanyCardContractsSrv, "updateContract").and.callFake(function() {
             var deferred = $q.defer();
 
             deferred.resolve({});
             return deferred.promise;
         });
         $scope.updateContract();
-        expect(RVCompanyCardSrv.updateContract).toHaveBeenCalled();
+        expect(rvCompanyCardContractsSrv.updateContract).toHaveBeenCalled();
     });
 
     it('check toggle function for non past contracts', function() {
