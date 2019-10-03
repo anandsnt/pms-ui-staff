@@ -1,16 +1,18 @@
-describe('ADaddRatesDetailCtrl', function() {
+describe('ADaddRatesDetailCtrl', function () {
 
     var $controller,
+        $rootScope,
         $scope = {},
         ADReservationToolsSrv,
         $q;
 
-    beforeEach(function() {
+    beforeEach(function () {
         module('admin');
-        inject(function (_$controller_, _$rootScope_, _ADReservationToolsSrv_, _$q_ ) {
+        inject(function (_$controller_, _$rootScope_, _ADReservationToolsSrv_, _$q_) {
             $controller = _$controller_;
             ADReservationToolsSrv = _ADReservationToolsSrv_;
             $q = _$q_;
+            $rootScope = _$rootScope_;
             $scope = _$rootScope_.$new();
         });
 
@@ -43,6 +45,7 @@ describe('ADaddRatesDetailCtrl', function() {
             },
             rateInitialData: {
                 hotel_settings: {
+                    rate_currency_list: [],
                     default_work_type: {},
                     currency: {
                         id: 1
@@ -51,14 +54,17 @@ describe('ADaddRatesDetailCtrl', function() {
             }
         });
 
+        $rootScope['hotelCurrencyObject'] = {};
+
         $controller('ADaddRatesDetailCtrl', {
-            $scope: $scope
+            $scope: $scope,
+            $rootScope: $rootScope
         });
 
     });
 
-    it('Clicked on Re-Sync Rates button', function() {
-        
+    it('Clicked on Re-Sync Rates button', function () {
+
         spyOn(ADReservationToolsSrv, 'reSyncRates').and.callFake(function () {
             var deferred = $q.defer(),
                 response = {
@@ -72,7 +78,7 @@ describe('ADaddRatesDetailCtrl', function() {
         $scope.init();
         $scope.clickedSyncButton();
         $scope.$digest();
-        
+
         expect($scope.rateData.last_sync_at).toEqual("22/04/2018 23:47:03");
         expect($scope.rateData.last_sync_status).toEqual(true);
     });

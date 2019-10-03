@@ -1,8 +1,8 @@
 sntZestStation.controller('zsReservationBillDetailsCtrl', [
     '$scope',
     '$state',
-    'zsCheckoutSrv', 'zsEventConstants', '$stateParams', 'zsModeConstants', '$window', '$timeout', 'zsUtilitySrv', '$log', 'zsPaymentSrv', 'zsStateHelperSrv',
-    function ($scope, $state, zsCheckoutSrv, zsEventConstants, $stateParams, zsModeConstants, $window, $timeout, zsUtilitySrv, $log, zsPaymentSrv, zsStateHelperSrv) {
+    'zsCheckoutSrv', 'zsEventConstants', '$stateParams', 'zsModeConstants', '$window', '$timeout', 'zsUtilitySrv', '$log', 'zsPaymentSrv', 'zsStateHelperSrv', '$translate',
+    function ($scope, $state, zsCheckoutSrv, zsEventConstants, $stateParams, zsModeConstants, $window, $timeout, zsUtilitySrv, $log, zsPaymentSrv, zsStateHelperSrv, $translate) {
 
 
         /** *********************************************************************************************
@@ -259,17 +259,17 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
 
         // Add/remove items to post charge
         $scope.updateQuantity = function (index, addAmount) {
+            if (addAmount === -1 && $scope.chargeData.chargeItems[index].quantity === 0) {
+                return;
+            }
             $scope.chargeData.chargeItems[index].quantity += addAmount;
             $scope.chargeData.total += $scope.chargeData.chargeItems[index].unit_price * addAmount;
         };
 
         var setPostChargeContentHeight = function () {
             var $contentHeight = ($('#content').outerHeight()),
-                $h1Height = $('#content h1').length ? $('#content h1').outerHeight(true) : 0,
-                $h2Height = $('#content h2').length ? $('#content h2').outerHeight(true) : 0,
-                $h3Height = $('#content h3').length ? $('#content h3').outerHeight(true) : 0,
-                $headingsHeight = parseFloat($h1Height + $h2Height + $h3Height),
-                $textualHeight = parseFloat($contentHeight - $headingsHeight);
+                $h1Height = $('#minibar-heading').length ? $('#header').outerHeight(true) : 0,
+                $textualHeight = parseFloat($contentHeight - ($h1Height + 100));
 
             $scope.chargeData.maxHeight = $textualHeight + 'px';
         };
@@ -283,6 +283,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             var fetchItemsSuccess = function (response) {
                 $scope.showPostChargeScreen = true;
                 $scope.chargeData.chargeItems = response.results;
+                $scope.chargeData.total = 0;
 
                 for (var i = 0, itemLen = $scope.chargeData.chargeItems.length; i < itemLen; i++) {
                     $scope.chargeData.chargeItems[i].quantity = 0;
@@ -293,6 +294,10 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             };
 
             var options = {
+                params: {
+                    locale: $translate.use(),
+                    application: 'KIOSK'
+                },
                 successCallBack: fetchItemsSuccess,
                 failureCallBack: fetchItemsFailure
             };
@@ -348,7 +353,9 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 failureCallBack: postChargeFailure
             };
 
-            $scope.callAPI(zsCheckoutSrv.postCharges, options);
+            if ($scope.chargeData.total) {
+                $scope.callAPI(zsCheckoutSrv.postCharges, options);
+            }
         };
 
         $scope.nextClicked = function () {

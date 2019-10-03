@@ -65,9 +65,13 @@ angular.module('sntRover').service('RVCustomExportSrv', [
          */
         this.getScheduledCustomExports = () => {
             var deferred = $q.defer(),
-                url = 'admin/export_schedules.json?show_only_redshift_reports=true';
+                url = 'admin/export_schedules.json?show_only_redshift_reports=true',
+                params = {
+                    page: 1,
+                    per_page: 9999
+                };
 
-            sntBaseWebSrv.getJSON(url).then(function (response) {
+            sntBaseWebSrv.getJSON(url, params).then(function (response) {
                 deferred.resolve(response.results);
             }, function (error) {
                 deferred.reject(error);
@@ -272,7 +276,9 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             var deferred = $q.defer(),
                 url = 'house/search.json',
                 data = {
-                    all_employees_selected: true
+                    all_employees_selected: true,
+                    page: 1,
+                    per_page: 9999
                 };
 
             sntBaseWebSrv.postJSON(url, data).then(function (response) {
