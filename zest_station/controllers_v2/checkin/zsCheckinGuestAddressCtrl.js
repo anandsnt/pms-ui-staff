@@ -19,11 +19,10 @@ sntZestStation.controller('zsCheckinGuestAddressCtrl', [
 			};
 		};
 
-		$scope.usePresentAddress = function() {
+		var nextAction = function() {
 			var enablePassportEntry = $scope.$parent.zestStationData.enable_passport_entry;
 			var bypassPassportEntry = $scope.$parent.zestStationData.bypass_passport_entry;
-
-			if(enablePassportEntry && bypassPassportEntry) {
+			if (enablePassportEntry && bypassPassportEntry) {
 				$state.go('zest_station.zsCheckinPassportDetails', {
 					previousState: 'COLLECT_ADDRESS'
 				});
@@ -34,6 +33,10 @@ sntZestStation.controller('zsCheckinGuestAddressCtrl', [
 			}
 		};
 
+		$scope.usePresentAddress = function() {
+			nextAction();
+		};
+
 		$scope.useNewAddress = function() {
 			resetValues();
 			$scope.mode = "NEW_ADDRESS";
@@ -42,8 +45,6 @@ sntZestStation.controller('zsCheckinGuestAddressCtrl', [
 
 		var saveAddress = function () {
 			var params = angular.copy($scope.guestDetails);
-			var enablePassportEntry = $scope.$parent.zestStationData.enable_passport_entry;
-			var bypassPassportEntry = $scope.$parent.zestStationData.bypass_passport_entry;
 			
 			params.country = params.country_id;
 			delete params.country_id;
@@ -53,15 +54,7 @@ sntZestStation.controller('zsCheckinGuestAddressCtrl', [
 			var options = {
 				params: params,
 				successCallBack: function() {
-					if(enablePassportEntry && bypassPassportEntry) {
-						$state.go('zest_station.zsCheckinPassportDetails', {
-							previousState: 'COLLECT_ADDRESS'
-						});
-					} else {
-						$state.go('zest_station.checkInReservationDetails', {
-							previousState: 'COLLECT_ADDRESS'
-						});
-					}
+					nextAction();
 				}
 			};
 			$scope.callAPI(zsCheckinSrv.saveGuestAddress, options);

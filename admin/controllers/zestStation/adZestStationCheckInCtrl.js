@@ -82,9 +82,8 @@ admin.controller('ADZestStationCheckInCtrl', ['$scope', '$state', '$rootScope', 
         $scope.savePassportBypassReason = function() {
             $scope.addNewPassportNumberBypassReason = false;
             $scope.editPassportNumberBypassReason = false;
-            var params = $scope.passportBypassReason;
             $scope.zestSettings.passport_bypass_reasons.push($scope.passportBypassReason);
-            $scope.invokeApi(ADZestStationSrv.savePassportNumberBypassReason, params);
+            $scope.invokeApi(ADZestStationSrv.savePassportNumberBypassReason, $scope.passportBypassReason);
         };
 
         $scope.cancelPassportBypassReason = function() {
@@ -105,8 +104,8 @@ admin.controller('ADZestStationCheckInCtrl', ['$scope', '$state', '$rootScope', 
         };
 
         $scope.toggleRulesListShow = function() {
-            if($scope.zestSettings.passport_bypass_reasons) {
-                $scope.zestSettings.bypass_passport_entry = $scope.zestSettings.bypass_passport_entry ? false : true;
+            if ($scope.zestSettings.passport_bypass_reasons) {
+                $scope.zestSettings.bypass_passport_entry = !$scope.zestSettings.bypass_passport_entry;
             }
         };
 

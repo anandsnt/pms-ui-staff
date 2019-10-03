@@ -13,7 +13,7 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
         $scope.isPassportNumberBlank = true;
         $scope.isBypassReasonNil = true;
 
-        if($stateParams.previousState) {
+        if ($stateParams.previousState) {
             $scope.previousState = $stateParams.previousState;
         }
 
@@ -42,29 +42,19 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
                     });
                 }
             };
+
             $scope.callAPI(zsCheckinSrv.saveGuestAddress, options);
         };
 
         $scope.bypassPassportDetails = function () {
-            var params = angular.copy($scope.selectedReservation.guest_details[0]),
-                bypassReasonId = $scope.bypassReasonId;
-            if(bypass_reason_id)
-            params.reservation_id = $scope.selectedReservation.id;
-
-            var options = {
-                params: params,
-                successCallBack: function () {
-                    zsCheckinSrv.savePassportBypassReason(bypassReasonId);
-                    $state.go('zest_station.checkInReservationDetails', {
-                        previousState: 'BYPASS_PASSPORT_DETAILS'
-                    });
-                }
-            };
-            $scope.callAPI(zsCheckinSrv.saveGuestAddress, options);
+            zsCheckinSrv.savePassportBypassReason($scope.bypassReasonId);
+            $state.go('zest_station.checkInReservationDetails', {
+                previousState: 'BYPASS_PASSPORT_DETAILS'
+            });
         };
 
         $scope.onchangePassportNumber = function () {
-            if($scope.passportNumber === "") {
+            if (typeof $scope.passportNumber === 'undefined' || $scope.passportNumber === "") {
                 $scope.isPassportNumberBlank = true;
             } else {
                 $scope.isPassportNumberBlank = false;
@@ -72,7 +62,7 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
         };
 
         $scope.onchangeBypassReason = function () {
-            if($scope.bypassReasonId) {
+            if (typeof $scope.bypassReasonId === 'undefined' || $scope.bypassReasonId === "") {
                 $scope.isBypassReasonNil = true;
             } else {
                 $scope.isBypassReasonNil = false;
@@ -81,9 +71,9 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
 
         $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function () {
 
-            if($scope.mode === 'PASSPORT_DETAILS') {
+            if ($scope.mode === 'PASSPORT_DETAILS') {
                 $state.go('zest_station.collectGuestAddress');
-            } else if($scope.mode === 'COLLECT_PASSPORT_NUMBER' || $scope.mode === 'BYPASS_PASSPORT_DETAILS') {
+            } else if ($scope.mode === 'COLLECT_PASSPORT_NUMBER' || $scope.mode === 'BYPASS_PASSPORT_DETAILS') {
                 $scope.mode = 'PASSPORT_DETAILS';
             }
         });

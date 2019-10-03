@@ -28,11 +28,11 @@
             <div class="entry input">
                 <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('passport-number')"
                     click-touch="showOnScreenKeyboard('input_text'); resetTime();"
-                    ng-model="passportNumber" ng-change="onchangePassportNumber()" enter-press="passportNumberEntered()"
+                    ng-model="passportNumber" ng-change="onchangePassportNumber()"
                     ng-keydown="resetTime()" id="passport-number" touch-press />
             </div>
             <div class="entry action">
-                <button type="button" class="button" ng-disabled="isPassportNumberBlank" click-touch="passportNumberEntered()">Next</button>
+                <button type="button" class="button" ng-disabled="isPassportNumberBlank" ng-class="{'disabled': isPassportNumberBlank}" click-touch="passportNumberEntered()">Next</button>
             </div>
         </form>
     </div>
@@ -49,7 +49,7 @@
                 </select>
             </div>
             <div class="entry action">
-                <button type="button" class="button" ng-disabled="isBypassReasonNil" click-touch="bypassPassportDetails()">Next</button>
+                <button type="button" class="button" ng-disabled="isBypassReasonNil" ng-class="{'disabled': isBypassReasonNil}" click-touch="bypassPassportDetails()">Next</button>
             </div>
         </form>
     </div>

@@ -654,7 +654,7 @@ sntZestStation.config(['$stateProvider',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinPassportDetails.html',
             controller: 'zsCheckinPassportDetailsCtrl',
             params: {
-                previousState: '',
+                previousState: ''
             }
         });
     }
