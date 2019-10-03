@@ -102,8 +102,10 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'RVCo
                 'begin_date': $scope.addData.startDate,
                 'end_date': $scope.addData.endDate,
                 'total_contracted_nights': $scope.addData.contractedNights,
-                'is_active': $scope.addData.isActive
-            }, options = {
+                'is_active': $scope.addData.isActive,
+                'rate_ids': _.pluck($scope.contractData.selectedRateList, 'id')
+            }, 
+            options = {
                 params: {
                     'account_id': accountId,
                     'postData': postData
