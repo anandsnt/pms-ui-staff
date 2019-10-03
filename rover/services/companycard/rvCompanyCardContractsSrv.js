@@ -26,6 +26,8 @@ angular.module('sntRover').service('rvCompanyCardContractsSrv', ['$q', 'rvBaseWe
         return deferred.promise;
     };
 
+    var contractRates = [];
+
     this.fetchContractsList = function(data) {
         var deferred = $q.defer(),
             url = '/api/accounts/' + data.account_id + '/contracts';
@@ -37,6 +39,10 @@ angular.module('sntRover').service('rvCompanyCardContractsSrv', ['$q', 'rvBaseWe
             deferred.reject(data);
         });
         return deferred.promise;
+    };
+
+    this.getContractedRates = function() {
+        return contractRates;
     };
 
     /**
