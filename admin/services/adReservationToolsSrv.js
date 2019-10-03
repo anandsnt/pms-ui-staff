@@ -120,7 +120,7 @@ admin.service('ADReservationToolsSrv', [
             var url = "/admin/daily_balance_recalculations?page=" + params.page + "&per_page=" + params.per_page;
 
             ADBaseWebSrvV2.getJSON(url).then(function(data) {
-                    deferred.resolve(data.results);
+                    deferred.resolve(data);
             }, function(data) {
                     deferred.reject(data);
             });
