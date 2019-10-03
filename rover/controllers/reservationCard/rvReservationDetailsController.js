@@ -340,7 +340,6 @@ sntRover.controller('reservationDetailsController',
 		BaseCtrl.call(this, $scope);
 
 		$scope.reservationCardSrv = RVReservationCardSrv;
-		$scope.$emit('showLoader');
 		/*
 		 * success call back of fetch reservation details
 		 */

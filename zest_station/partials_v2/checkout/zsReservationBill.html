@@ -1,5 +1,5 @@
 <!-- The bill display section -->
-<section id="main" role="main" class="centered" ng-hide="printOpted" click-touch='resetTime()'>
+<section id="main" role="main" class="centered" ng-hide="printOpted || showPostChargeScreen" click-touch='resetTime()'>
     <div id="content">
         <h1 ng-show="isReservationDetailsFetched">
             <text data-ng-bind-html="getTagValue('BILL_REVIEW')" editable-text="BILL_REVIEW"></text>
@@ -47,12 +47,15 @@
                         <br/>
                     </div>
                     <h4 style="width: 100%;margin-bottom: 10px;" ng-show="zestStationData.kiosk_collect_balance && paymentDetails &&  paymentDetails.card_number.length" data-ng-bind-html="getTagValue('PAYMENT')" editable-text="PAYMENT"></h4>
-                    <div id="payment" ng-show="zestStationData.kiosk_collect_balance && paymentDetails &&  paymentDetails.card_number.length">
-                        <p>
+                    <div id="payment">
+                        <p ng-if="zestStationData.kiosk_collect_balance && paymentDetails &&  paymentDetails.card_number.length">
                             <strong>{{paymentDetails.card_type_name}}</strong><br>
                             <span data-ng-bind-html="getTagValue('ENDING_WITH')" editable-text="ENDING_WITH"></span> {{paymentDetails.card_number}}<br>
                             <span data-ng-bind-html="getTagValue('EXPIRES')" editable-text="EXPIRES"></span> {{paymentDetails.card_expiry}}
                         </p>
+                        <div class="payment-actions" ng-if="zestStationData.enable_items_for_station">
+                            <a touch-press="clickedAddCharge()" class="button" translate="ADD_CHARGE"></a>
+                        </div>
                         <!-- <a href="{swipe.html, change title of that screen if arrived from here}" class="button">Change Card</a> -->
                     </div>
                     <ul id="rate">
@@ -81,8 +84,9 @@
         </div>
     </div>
 </section>
+<section id="main" role="main" ng-include="'/assets/partials_v2/checkout/zsPostCharge.html'" ng-if="showPostChargeScreen"></section>
 <!-- print option for stand alone-->
-<div ng-controller="zsPrintBillCtrl" ng-if="zestStationData.is_standalone">
+<div ng-controller="zsPrintBillCtrl" ng-if="zestStationData.is_standalone || !showPostChargeScreen">
     <section id="main" role="main" class="centered" ng-show="printOpted">
         <div id="content">
             <h1>
