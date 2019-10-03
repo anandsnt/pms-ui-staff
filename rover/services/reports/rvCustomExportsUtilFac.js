@@ -136,13 +136,13 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              */
             populateReservationStatus = ( selectedFilter, selectedValues, deferred ) => {
                 reportSubSrv.fetchReservationStatus().then(function (data) {
-                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, 'id');
+                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, 'status');
                     selectedFilter.options = {
                         hasSearch: false,
                         selectAll: selectedValues ? data.length === selectedValues.length : true,
                         key: 'status',
                         defaultValue: 'Select Status',
-                        value_key: 'id'
+                        value_key: 'status'
                     };
                     selectedFilter.isMultiSelect = true;
                     deferred.resolve(selectedFilter);
@@ -277,12 +277,12 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              */
             populateCICOAgents = ( selectedFilter, selectedValues, deferred ) => {
                 rvCustomExportSrv.getCICOAgents().then(function (data) {
-                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, 'id');
+                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, 'full_name');
                     selectedFilter.options = {
                         hasSearch: true,
                         selectAll: selectedValues ? data.length === selectedValues.length : true,
                         key: 'full_name',
-                        value_key: 'id',
+                        value_key: 'full_name',
                         altKey: 'email'
                     };
                     selectedFilter.isMultiSelect = true;
@@ -299,12 +299,12 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              */
             populateCICOApplications = ( selectedFilter, selectedValues, deferred ) => {
                 rvCustomExportSrv.getCICOApplications().then(function (data) {
-                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, 'id');
+                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, 'value');
                     selectedFilter.options = {
                         hasSearch: false,
                         selectAll: selectedValues ? data.length === selectedValues.length : true,
                         key: 'value',
-                        value_key: 'id',
+                        value_key: 'value',
                         altKey: 'description'
                     };
                     selectedFilter.isMultiSelect = true;
@@ -319,14 +319,14 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              * @param {Object} deferred - deferred object
              * @return {void} 
              */
-            populateCountryOrNationality = ( selectedFilter, selectedValues, deferred ) => {
+            populateCountryOrNationality = ( selectedFilter, selectedValues, deferred, displayKey, valueKey ) => {
                 rvCustomExportSrv.getCountries().then(function (data) {
-                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, 'id');
+                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, valueKey);
                     selectedFilter.options = {
                         hasSearch: true,
                         selectAll: selectedValues ? data.length === selectedValues.length : true,
-                        key: 'value',
-                        value_key: 'id'
+                        key: displayKey,
+                        value_key: valueKey
                     };
                     selectedFilter.isMultiSelect = true;
                     deferred.resolve(selectedFilter);
@@ -342,12 +342,12 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              */
             populateLanguage = ( selectedFilter, selectedValues, deferred ) => {
                 rvCustomExportSrv.getGuestLanguages().then(function (data) {
-                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, 'id');
+                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, 'value');
                     selectedFilter.options = {
                         hasSearch: true,
                         selectAll: selectedValues ? data.length === selectedValues.length : true,
                         key: 'value',
-                        value_key: 'id'
+                        value_key: 'value'
                     };
                     selectedFilter.isMultiSelect = true;
                     deferred.resolve(selectedFilter);
@@ -384,12 +384,12 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              */
             populateMemberships = ( selectedFilter, selectedValues, deferred ) => {
                 rvCustomExportSrv.getMemberShips().then(function (data) {
-                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, 'value');
+                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, 'desc');
                     selectedFilter.options = {
                         hasSearch: false,
                         selectAll: selectedValues ? data.length === selectedValues.length : true,
                         key: 'desc',
-                        value_key: 'value'
+                        value_key: 'desc'
                     };
                     selectedFilter.isMultiSelect = true;
                     deferred.resolve(selectedFilter);
@@ -467,8 +467,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                     populateCICOApplications(selectedFilter, selectedValues, deferred);
                     break;
                 case customExportFilterParamsConst['COUNTRY']:
-                case customExportFilterParamsConst['NATIONALITY']:
-                    populateCountryOrNationality(selectedFilter, selectedValues, deferred);
+                    populateCountryOrNationality(selectedFilter, selectedValues, deferred, 'value', 'value');
                     break;
                 case customExportFilterParamsConst['LANGUAGE']:
                     populateLanguage(selectedFilter, selectedValues, deferred);
@@ -484,6 +483,9 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                     break;
                 case customExportFilterParamsConst['STAY_TYPE']:
                     populateDualStates(dayNightUseIndicator, selectedFilter, selectedValues, deferred);
+                    break;
+                case customExportFilterParamsConst['NATIONALITY']:
+                    populateCountryOrNationality(selectedFilter, selectedValues, deferred, 'value', 'code');
                     break;
                 default:
 
