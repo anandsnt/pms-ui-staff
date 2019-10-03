@@ -566,6 +566,24 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
+        /**
+         * Get reservation statuses
+         * @param {String} type reference value type
+         * @return { Promise } promise
+         */
+        this.getReferenceValuesByType = (type) => {
+            var deferred = $q.defer(),
+                url = 'api/reference_values?type=' + type;
+
+            sntBaseWebSrv.getJSON(url).then(function (response) {
+                deferred.resolve(response);
+            }, function (error) {
+                deferred.resolve(error);
+            });
+
+            return deferred.promise;
+        };
+
 
         this.processFilterSelections = ( filterValues ) => {
             var promises = [],
@@ -580,7 +598,7 @@ angular.module('sntRover').service('RVCustomExportSrv', [
                         promises.push(reportSubSrv.fetchMarkets());
                         break;
                     case FILTER_KEYS['RESERVATION_STATUS']:
-                        promises.push(reportSubSrv.fetchReservationStatus());
+                        promises.push(self.getReferenceValuesByType('reservation_status'));
                         break;                    
                     case FILTER_KEYS['ROOM_NO']:
                         promises.push(self.getRoomNos());
