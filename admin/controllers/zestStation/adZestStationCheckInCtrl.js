@@ -80,7 +80,6 @@ admin.controller('ADZestStationCheckInCtrl', ['$scope', '$state', '$rootScope', 
         };
 
         $scope.savePassportBypassReason = function() {
-
             $scope.addNewPassportNumberBypassReason = false;
             $scope.editPassportNumberBypassReason = false;
             var params = $scope.passportBypassReason;
