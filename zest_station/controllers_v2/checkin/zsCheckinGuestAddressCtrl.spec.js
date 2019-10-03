@@ -55,6 +55,8 @@ describe('zsCheckinGuestAddressCtrl', function() {
 
     it('On selecting address on file, go to reservation details page', function () {
         spyOn($state, 'go');
+        $scope.$parent.zestStationData.enable_passport_entry = false;
+        $scope.$parent.zestStationData.bypass_passport_entry = false;
         $scope.usePresentAddress();
         expect($state.go)
             .toHaveBeenCalledWith('zest_station.checkInReservationDetails', jasmine.any(Object));
