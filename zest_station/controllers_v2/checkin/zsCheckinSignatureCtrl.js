@@ -97,6 +97,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
 
         var checkInGuest = function() {
             var signatureBase64Data = getSignatureBase64Data();
+			var bypassReasonId = zsCheckinSrv.getPassportBypassReason();
 
             var checkinParams = {
                 'reservation_id': $stateParams.reservation_id,
@@ -106,7 +107,9 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                 'is_promotions_and_email_set': false,
                 //                "no_post": "",//handled by the API CICO-35315
                 'is_kiosk': true,
-                'signature': signatureBase64Data
+                'signature': signatureBase64Data,
+				'passport_bypass_reason_id': bypassReasonId
+
             };
             var options = {
                 params: checkinParams,
