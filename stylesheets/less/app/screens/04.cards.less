@@ -1419,6 +1419,7 @@
                                         height: 40px;
                                         line-height: 40px;
                                         position: relative;
+                                        cursor: pointer;
                                         #flexbox > .parent( row, space-between, '', '' );
 
                                         .icons {
@@ -1444,15 +1445,20 @@
                                             height: 50px;
                                             margin: 0;
                                             padding: 10px 20px;
+                                            cursor: pointer;
 
                                             &.active {
-                                                color: @grey3;
+                                                cursor: default;
                                                 .background(@white);
                                                 .box-shadow(0px 2px 0 rgba(0, 0, 0, 0.15));
                                             }
 
+                                            &.inactive {
+                                                color: @grey3;
+                                            }
+
                                             &:not(:last-child):not(.active) {
-                                                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                                                .box-shadow(0px 1px 1px rgba(0, 0, 0, 0.1));
                                             }
 
                                             .item-title {
@@ -1715,6 +1721,12 @@
                                 z-index: 10;
                                 .box-shadow(0px -1px 0 rgba(0, 0, 0, 0.15));
                                 #flexbox > .parent( row, flex-end, '', '' );
+
+                                .button {
+                                    &.red {
+                                        margin-right: auto;
+                                    }
+                                }
                             }
 
                             .contracts-details-form {
