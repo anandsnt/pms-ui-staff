@@ -13,16 +13,12 @@ admin.controller('ADBalanceJournalCtrl', [
 	'$filter',
 	function($scope, $rootScope, $state, allJobs, ADReservationToolsSrv, ngDialog, ngTableParams, $timeout, $filter) {
 		BaseCtrl.call(this, $scope);
-
+		ADBaseTableCtrl.call(this, $scope, ngTableParams);
 		$scope.errorMessage = "";
 		$scope.showPercentage = false;
-		ADBaseTableCtrl.call(this, $scope, ngTableParams);
-
 		$scope.balanceJournalJob = _.findWhere(allJobs, {"job_name": "SYNC DailyBalanceCorrection"});
-
 		$scope.anyJobRunning = false;
 		$scope.lastRunStatus = '';
-
 		$scope.previousDayOfBusinessDate = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
 											.format($rootScope.hotelDateFormat);
 
@@ -40,6 +36,7 @@ admin.controller('ADBalanceJournalCtrl', [
 		$scope.startJob = function() {
 			var successCallback = function(data) {
 				var endDate = moment(tzIndependentDate($scope.payload.end_date)).format("DD-MM-YYYY");
+
 				$(".balance-status").addClass('notice');
 				$(".balance-status").removeClass('success');
 				$(".balance-status").removeClass('error');
@@ -51,12 +48,10 @@ admin.controller('ADBalanceJournalCtrl', [
 				$scope.cancelOrChangeBtnTxt = "CANCEL JOB";
 				$scope.runButtonText = "REFRESH STATUS";
 				$scope.runForDiffDatesText = "";
-			};
-
-			var unwantedKeys = ["first_date"],			
-				data = dclone($scope.payload, unwantedKeys);
-
-			var options = {
+			},
+			unwantedKeys = ["first_date"],			
+			data = dclone($scope.payload, unwantedKeys),
+			options = {
 				params: data,
 				successCallBack: successCallback
 			};
