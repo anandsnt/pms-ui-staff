@@ -1,8 +1,6 @@
 angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$scope',
 	function($timeout, $scope) {
         BaseCtrl.call(this, $scope);
-        $scope.selectedType = '';
-        $scope.opened = false;
         $scope.setScroller('contractListScroller');
         var refreshScroller = function() {
 			$timeout(function() {
@@ -14,10 +12,10 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
                 contractsList = $scope.contractData.contractsList;
 
             angular.forEach(contractsList, function(item) {
+                item.opened = false;
                 angular.forEach(item.contracts, function(contract) {
                     if (openedContract === contract.id) {
-                        $scope.selectedType = item.type;
-                        $scope.opened = true;
+                        item.opened = true;
                     }
                 });
             });
@@ -28,13 +26,8 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
          * Open the selected contracts list
          * @param {String} listType - PAST, PRESENT, FUTURE string values
          */
-        $scope.openContractsList = function(listType) {
-            if ($scope.opened) {
-                $scope.opened = $scope.selectedType !== listType;
-            } else {
-                $scope.opened = true;
-            }
-            $scope.selectedType = listType;
+        $scope.openContractsList = function(item) {
+            item.opened = !item.opened
             refreshScroller();
         };
         /**
@@ -50,6 +43,7 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
          */
         $scope.newContract = function() {
             $scope.contractData.mode = 'ADD';
+            $scope.contractData.editData = {};
             $scope.contractData.selectedRateList = [];
             $scope.contractData.rateSearchQuery = '';
             $scope.$emit('refreshContractsScroll');

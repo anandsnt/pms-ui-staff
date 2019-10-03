@@ -31,7 +31,8 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'rvC
 				$scope.$emit('fetchContractsList');
             },
             updateContractFailureCallback = function(data) {
-				$scope.$emit('setErrorMessage', data);
+                $scope.$emit('setErrorMessage', data);
+                $scope.contractData.showNightsModal = false;
 				$scope.$parent.currentSelectedTab = 'cc-contracts';
             },
             accountId;
@@ -90,12 +91,8 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'rvC
         // Show contracted nights popup
         $scope.editContractedNights = function() {
             if (!$scope.contractData.disableFields) {
-                ngDialog.open({
-                    template: '/assets/partials/companyCard/contracts/rvContractedNightsPopup.html',
-                    controller: 'rvContractedNightsCtrl',
-                    className: '',
-                    scope: $scope
-                });
+                $scope.contractData.showNightsModal = true;
+                $scope.updateContract();
             }            
         };
     }

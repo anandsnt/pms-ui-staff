@@ -24,11 +24,10 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'rvCo
          */
         var saveNewContractSuccessCallback = function(data) {
             $scope.$emit('setErrorMessage', []);
-            $scope.contractData.mode = '';
+            $scope.contractData.mode = 'EDIT';
             $scope.contractData.selectedContract = data.id;
             // emit something to refresh the Contracts list
             $scope.$emit('fetchContractsList');
-            refreshScroller();
             that.init();
         };
 
