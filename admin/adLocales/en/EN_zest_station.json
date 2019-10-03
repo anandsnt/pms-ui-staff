@@ -175,6 +175,7 @@
 "STATION_PASSPORT_ENTRY_HEADER": "Passport entry settings",
 "STATION_PASSPORT_ENTRY_BYPASS_LABEL": "Bypass passport entry",
 "STATION_PASSPORT_ENTRY_BYPASS_REASON_LABEL": "Passport bypass reason",
+"ADD_NEW_REASON": "Add new reason",
 
 "WALK_IN_RESERVATIONS": "Walk-in Reservations",
 "WALK_IN_RESERVATIONS_INSTRUCTIONS": "",

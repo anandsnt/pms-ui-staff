@@ -1,0 +1,56 @@
+<section ng-if="mode ==='PASSPORT_DETAILS'" id="main" class="centered" role="main">
+    <div id="content">
+        <h1>Your Passport Information is Required</h1>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press='clickedOnEnterPassportNoButton()'>
+                        <div ng-include="icons.url.user_passport"></div>
+                        Enter Number</button>
+                </li>
+                <li class="break">
+                    <span>Or</span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='clickedOnBypassButton()'">
+                        <div ng-include="icons.url.no_user_passport"></div>
+                        Bypass</button>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</section>
+
+<section ng-if="mode ==='COLLECT_PASSPORT_NUMBER'" id="main" class="centered" role="main">
+    <div id="content">
+        <h1>Your Passport Information is Required</h1>
+        <form method="post" class="form">
+            <div class="entry input">
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('passport-number')"
+                    click-touch="showOnScreenKeyboard('input_text'); resetTime();"
+                    ng-model="passportNumber" ng-change="onchangePassportNumber()" enter-press="passportNumberEntered()"
+                    ng-keydown="resetTime()" id="passport-number" touch-press />
+            </div>
+            <div class="entry action">
+                <button type="button" class="button" ng-disabled="isPassportNumberBlank" click-touch="passportNumberEntered()">Next</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<section ng-if="mode === 'BYPASS_PASSPORT_DETAILS'" id="main" class="centered" role="main">
+    <div id="content">
+        <h1>Your Passport Information is Required</h1>
+        <h3>Please select the reason of your bypass</h3>
+        <form method="post" class="form">
+            <div class="entry select select-with-button">
+                <select ng-model="bypassReasonId" ng-change="onchangeBypassReason()">
+                    <option ng-repeat="reason in bypassPassportReasons" value="{{reason.id}}">{{reason.description}}</option>
+                </select>
+            </div>
+            <div class="entry action">
+                <button type="button" class="button" ng-disabled="isBypassReasonNil" click-touch="bypassPassportDetails()">Next</button>
+            </div>
+        </form>
+    </div>
+</section>
