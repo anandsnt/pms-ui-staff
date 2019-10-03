@@ -135,14 +135,14 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              * @return {void} 
              */
             populateReservationStatus = ( selectedFilter, selectedValues, deferred ) => {
-                reportSubSrv.fetchReservationStatus().then(function (data) {
-                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, 'status');
+                rvCustomExportSrv.getReferenceValuesByType('reservation_status').then(function (data) {
+                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, 'value');
                     selectedFilter.options = {
                         hasSearch: false,
                         selectAll: selectedValues ? data.length === selectedValues.length : true,
-                        key: 'status',
+                        key: 'value',
                         defaultValue: 'Select Status',
-                        value_key: 'status'
+                        value_key: 'value'
                     };
                     selectedFilter.isMultiSelect = true;
                     deferred.resolve(selectedFilter);
@@ -256,12 +256,12 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              */
             populateRateList = ( selectedFilter, selectedValues, deferred ) => {
                 rvCustomExportSrv.getRateList().then(function (data) {
-                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, 'id');
+                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, 'code');
                     selectedFilter.options = {
                         hasSearch: false,
                         selectAll: selectedValues ? data.length === selectedValues.length : true,
                         key: 'name',
-                        value_key: 'id'
+                        value_key: 'code'
                     };
                     selectedFilter.isMultiSelect = true;
                     deferred.resolve(selectedFilter);
