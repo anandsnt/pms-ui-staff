@@ -8,10 +8,10 @@
                         <div ng-include="icons.url.user_passport"></div>
                         ENTER_PASSPORT_NUMBER_LABEL</button>
                 </li>
-                <li class="break">
+                <li class="break" ng-if="bypass_passport_entry">
                     <span>Or</span>
                 </li>
-                <li>
+                <li ng-if="bypass_passport_entry">
                     <button type="button" class="button option" touch-press='clickedOnBypassButton()'">
                         <div ng-include="icons.url.no_user_passport"></div>
                         Bypass</button>
@@ -41,7 +41,7 @@
 <section ng-if="mode === 'BYPASS_PASSPORT_DETAILS'" id="main" class="centered" role="main">
     <div id="content">
         <h1 translate>PASSPORT_DETAILS_HEADER</h1>
-        <h3 translate>PAASPORT_BYPASS_REASON_SELECTOR_LABEL</h3>
+        <h3 translate>PASPORT_BYPASS_REASON_SELECTOR_LABEL</h3>
         <form method="post" class="form">
             <div class="entry select select-with-button">
                 <select ng-model="bypassReasonId" ng-change="onchangeBypassReason()">

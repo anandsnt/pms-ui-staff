@@ -21,8 +21,7 @@ sntZestStation.controller('zsCheckinGuestAddressCtrl', [
 
 		var nextAction = function() {
 			var enablePassportEntry = $scope.$parent.zestStationData.enable_passport_entry;
-			var bypassPassportEntry = $scope.$parent.zestStationData.bypass_passport_entry;
-			if (enablePassportEntry && bypassPassportEntry) {
+			if (enablePassportEntry) {
 				$state.go('zest_station.zsCheckinPassportDetails', {
 					previousState: 'COLLECT_ADDRESS'
 				});

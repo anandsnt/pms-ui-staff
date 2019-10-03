@@ -82,6 +82,7 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
         (function () {
             $scope.$emit('hideLoader');
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
+            $scope.bypass_passport_entry = $scope.$parent.zestStationData.bypass_passport_entry;
         }());
     }
 ]);
