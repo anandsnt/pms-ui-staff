@@ -15,7 +15,7 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
         $scope.data = {
             'passportNumber': "",
             'bypassReasonId': ""
-        }
+        };
 
         if ($stateParams.previousState) {
             $scope.previousState = $stateParams.previousState;
