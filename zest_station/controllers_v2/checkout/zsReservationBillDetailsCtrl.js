@@ -267,12 +267,15 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             $scope.chargeData.total += $scope.chargeData.groupedItems[groupId].items[itemIndex].unit_price * addAmount;
         };
 
-        var setPostChargeContentHeight = function () {
-            var $contentHeight = ($('#content').outerHeight()),
-                $h1Height = $('#minibar-heading').length ? $('#minibar-heading').outerHeight(true) : 0,
-                $textualHeight = parseFloat($contentHeight - $h1Height);
+        var setPostChargeContentHeight = function() {
+            $timeout(function() {
+                var $contentHeight = ($('#content').outerHeight()),
+                    $h1Height = $('#minibar-heading').length ? $('#minibar-heading').outerHeight(true) : 0,
+                    $textualHeight = parseFloat($contentHeight - $h1Height);
 
-            $scope.chargeData.maxHeight = $textualHeight + 'px';
+                $scope.chargeData.maxHeight = $textualHeight + 'px';
+                refreshChargeScroller();
+            }, 100);
         };
 
         $scope.getChargeGroups = function () {
@@ -317,8 +320,17 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                     $scope.chargeData.groupedItems[$scope.chargeData.chargeItems[i].charge_group_id].items.push($scope.chargeData.chargeItems[i]);
                 }
 
+                // Discard groups without any items
+                $scope.chargeData.groupedItems = _.filter($scope.chargeData.groupedItems, function(groupedItem) {
+                    return groupedItem.items.length;
+                });
+                // If there is ony one group, by default keep it open
+                if ($scope.chargeData.groupedItems.length === 1) {
+                    $scope.chargeData.groupedItems[0].is_open = true;
+                };
+
                 setPostChargeContentHeight();
-                refreshChargeScroller();
+                
             };
 
             var options = {
@@ -331,6 +343,11 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             };
 
             $scope.callAPI(zsCheckoutSrv.fetchChargeItems, options);
+        };
+
+        $scope.toggleOpenMenu = function(group) {
+            group.is_open = !group.is_open;
+            setPostChargeContentHeight();
         };
 
         var initPostChargeData = function () {
