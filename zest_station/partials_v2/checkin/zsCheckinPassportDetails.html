@@ -28,7 +28,7 @@
             <div class="entry input">
                 <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('passport-number')"
                     click-touch="showOnScreenKeyboard('input_text'); resetTime();"
-                    ng-model="passportNumber" ng-change="onchangePassportNumber()" enter-press="passportNumberEntered()"
+                    ng-model="passportNumber" ng-change="onchangePassportNumber(passportNumber)" enter-press="passportNumberEntered()"
                     ng-keydown="resetTime()" id="passport-number" touch-press />
             </div>
             <div class="entry action">

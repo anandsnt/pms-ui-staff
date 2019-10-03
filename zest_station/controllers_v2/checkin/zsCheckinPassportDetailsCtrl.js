@@ -63,8 +63,8 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
             $scope.callAPI(zsCheckinSrv.saveGuestAddress, options);
         };
 
-        $scope.onchangePassportNumber = function () {
-            if($scope.passportNumber === "") {
+        $scope.onchangePassportNumber = function (passportNumber) {
+            if(passportNumber === "") {
                 $scope.isPassportNumberBlank = true;
             } else {
                 $scope.isPassportNumberBlank = false;
@@ -81,6 +81,8 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
 
         $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function () {
 
+            $scope.isBypassReasonNil = true;
+            $scope.isPassportNumberBlank = true;
             if($scope.mode === 'PASSPORT_DETAILS') {
                 $state.go('zest_station.collectGuestAddress');
             } else if($scope.mode === 'COLLECT_PASSPORT_NUMBER' || $scope.mode === 'BYPASS_PASSPORT_DETAILS') {
