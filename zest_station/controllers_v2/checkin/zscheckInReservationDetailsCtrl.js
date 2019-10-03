@@ -429,7 +429,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 'confirmation_number': $scope.selectedReservation.confirmation_number,
                 'pre_auth_amount_for_zest_station': $scope.selectedReservation.reservation_details.pre_auth_amount_for_zest_station,
                 'authorize_cc_at_checkin': $scope.selectedReservation.reservation_details.authorize_cc_at_checkin,
-                'payment_method': $scope.selectedReservation.reservation_details.payment_method_used,
+                'payment_method': $scope.selectedReservation.reservation_details.payment_method_used
             };
             // check if this page was invoked through pickupkey flow
 
