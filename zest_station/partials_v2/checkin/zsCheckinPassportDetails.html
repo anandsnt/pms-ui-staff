@@ -7,7 +7,7 @@
                     <button type="button" class="button option" touch-press='clickedOnEnterPassportNoButton()'>
                         <div ng-include="icons.url.user_passport"></div>
                         </button>
-                        {{ ENTER_PASSPORT_NUMBER_LABEL | translate}}
+                        {{ 'ENTER_PASSPORT_NUMBER_LABEL' | translate}}
                 </li>
                 <li class="break" ng-if="bypass_passport_entry">
                     <span>Or</span>
@@ -16,7 +16,7 @@
                     <button type="button" class="button option" touch-press='clickedOnBypassButton()'">
                         <div ng-include="icons.url.no_user_passport"></div>
                         </button>
-                    {{ BYPASS_PASSPORT_LABEL | translate}}
+                    {{ 'BYPASS_PASSPORT_LABEL' | translate}}
                 </li>
             </ul>
         </nav>
