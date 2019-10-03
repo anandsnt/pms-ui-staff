@@ -398,7 +398,7 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             sntBaseWebSrv.postJSON(url).then(function (response) {
                 var results = _.map(response.rates, function (each) {
                     return {
-                        id: each.id,
+                        code: each.rate_code,
                         name: each.rate_name
                     };
                 });

@@ -256,12 +256,12 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              */
             populateRateList = ( selectedFilter, selectedValues, deferred ) => {
                 rvCustomExportSrv.getRateList().then(function (data) {
-                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, 'id');
+                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, 'code');
                     selectedFilter.options = {
                         hasSearch: false,
                         selectAll: selectedValues ? data.length === selectedValues.length : true,
                         key: 'name',
-                        value_key: 'id'
+                        value_key: 'code'
                     };
                     selectedFilter.isMultiSelect = true;
                     deferred.resolve(selectedFilter);
