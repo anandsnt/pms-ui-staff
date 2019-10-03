@@ -8,7 +8,8 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
     'ngDialog',
     'rvUtilSrv',
     '$timeout',
-    function($scope, $rootScope, $state, $stateParams, $filter, RVHkRoomDetailsSrv, ngDialog, util, $timeout) {
+    'rvPermissionSrv',
+    function($scope, $rootScope, $state, $stateParams, $filter, RVHkRoomDetailsSrv, ngDialog, util, $timeout, rvPermissionSrv) {
 
         BaseCtrl.call(this, $scope);
         var intervalForTimeSelector = 15,
@@ -498,6 +499,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
             $scope.maintenanceReasonsList = [];
             // param: update the new oo/os status
             // $scope.updateService.room_service_status_id serves as the model for the top dropdown
+            $scope.hasPermissionPutRoomOOS = rvPermissionSrv.getPermissionValue('PUT_ROOM_OOO_OR_OOS');
             $scope.updateService = {
                 room_id: $scope.roomDetails.id,
                 from_date: $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd'),
