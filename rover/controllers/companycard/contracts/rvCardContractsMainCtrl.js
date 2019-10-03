@@ -14,7 +14,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$rootScope', 
 			rateSearchQuery: '',
 			selectedRateList: [],
 			selectedRateIdList: [],
-			accountId: $stateParams.id === "add" ? $scope.contactInformation.id : $stateParams.id,
+			accountId: '',
 			showNightsModal: false,
 			selectedContract: ''
 		};
@@ -144,15 +144,16 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$rootScope', 
 		 * Init function fetches the contracts on page load
 		 */
 		that.init = function() {
+			$scope.contractData.accountId = $stateParams.id === "add" ? $scope.contactInformation.id : $stateParams.id;
 			var options = {
 				successCallBack: fetchContractsListSuccessCallback,
 				failureCallBack: fetchContractsListFailureCallback,
 				params: {
-					"account_id": $stateParams.id
+					"account_id": $scope.contractData.accountId
 				}
 			};
 
-			if ($stateParams.id !== 'add') {
+			if ($scope.contractData.accountId !== undefined) {
 				$scope.callAPI(rvCompanyCardContractsSrv.fetchContractsList, options);
 			}
 		};
