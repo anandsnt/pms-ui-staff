@@ -1,3 +1,53 @@
+/* Container ****/
+#reports {
+
+    /* With left hand side menu **/
+    &.with-menu {
+        #reports-dashboard {
+            left: 240px;
+            height: 100%;
+            .calc-width(100, 240);
+
+            &.with-bottom-form {
+                .calc-height( 100, 70 );
+            }
+        }
+
+        #reports-footer-form {
+            left: 240px;
+            .calc-width(100, 240);
+        }
+    }
+
+    /* With Notice ***/
+    &.with-notice {
+        .notice {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            .calc-width(100, 40);
+            height: 40px;
+            .nowrap();
+        }
+
+        #reports-dashboard {
+            top: 60px;
+            .calc-height(100, 60);
+
+            &.with-bottom-form {
+                .calc-height(100, 130);
+            }
+        }
+
+        &.with-menu {
+            .notice {
+                left: 260px;
+                .calc-width(100, 280);
+            }
+        }
+    }
+}
+
 /* Left Side - Menu ***/
 #reports-menu {
     position: absolute;
@@ -1467,6 +1517,7 @@
     }
 }
 
+/* Bottom - Custom Exports Form **/
 #reports-footer-form {
     position: absolute;
     bottom: 0;
@@ -1510,23 +1561,6 @@
 
     .actions {
         margin-left: auto;
-    }
-}
-
-#reports.with-menu {
-    #reports-dashboard {
-        left: 240px;
-        height: 100%;
-        .calc-width(100, 240);
-
-        &.with-bottom-form {
-            .calc-height( 100, 70 );
-        }
-    }
-
-    #reports-footer-form {
-        left: 240px;
-        .calc-width(100, 240);
     }
 }
 
