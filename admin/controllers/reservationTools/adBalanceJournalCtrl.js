@@ -12,6 +12,7 @@ admin.controller('ADBalanceJournalCtrl', [
 		BaseCtrl.call(this, $scope);
 
 		$scope.errorMessage = "";
+		$scope.showPercentage = false;
 
 		$scope.balanceJournalJob = _.findWhere(allJobs, {"job_name": "SYNC DailyBalanceCorrection"});
 
@@ -33,8 +34,18 @@ admin.controller('ADBalanceJournalCtrl', [
 		 * API when clicks start job
 		 */
 		$scope.startJob = function() {
-			var successCallback = function() {
+			var successCallback = function(data) {
+				$(".balance-status").addClass('notice');
+				$(".balance-status").removeClass('success');
+				$(".balance-status").removeClass('error');
 				$scope.anyJobRunning = true;
+				$scope.showPercentage = false;
+				$scope.balanceJournalJobId = data.job_id;
+				$scope.jobStatusTitle = "Balancing started";
+				$scope.jobStatusText = "Balancing journal from " + $scope.payload.first_date + " to " + $scope.payload.end_date;
+				$scope.cancelOrChangeBtnTxt = "CANCEL JOB";
+				$scope.runButtonText = "REFRESH STATUS";
+				$scope.runForDiffDatesText = "";
 			};
 
 			var unwantedKeys = ["first_date"],			
@@ -73,29 +84,57 @@ admin.controller('ADBalanceJournalCtrl', [
 		/*
 		 * Check the job status on refresh
 		 */
+
+		$scope.cancelOrChange = function() {
+			$scope.anyJobRunning = false;
+		}
+
 		$scope.refreshStatus = function() {
 			var params = {
-				'id': $scope.balanceJournalJob.id
-			};
-
-			var successCallback = function(status) {
-
-				if ( status === 'INPROGRESS' ) {
-					$scope.anyJobRunning = true;
-				} else {
-					$scope.anyJobRunning = false;
+				'id': $scope.balanceJournalJobId
+			},
+			successCallback = function(status) {
+				$scope.anyJobRunning = true;
+				$scope.statusData = status;
+				$scope.showPercentage = true;
+				$scope.progressPercentage = $scope.statusData.progress_percent;
+				if ( $scope.progressPercentage === "100" ) {
+					$(".balance-status").addClass('success');
+					$(".balance-status").removeClass('notice');
+					$(".balance-status").removeClass('error');
+					$scope.jobStatusTitle = "Journal in balance";
+					$scope.jobStatusText = "Balancing journal from " + $scope.statusData.begin_date + " to " + $scope.statusData.end_date + " completed successfully";
+					$scope.runButtonText = "";
+					$scope.cancelOrChangeBtnTxt = "";
+					$scope.runForDiffDatesText = "RUN FOR DIFFERENT DATE";
+				} 
+				else if ($scope.statusData.job_failed_date != "" || $scope.statusData.error != "") {
+					$(".balance-status").addClass('error');
+					$(".balance-status").removeClass('success');
+					$(".balance-status").removeClass('notice');
+					$scope.jobStatusTitle = "Journal not in balance";
+					$scope.jobStatusText = "Balancing journal from " + $scope.statusData.begin_date + " to " + $scope.statusData.end_date + " failed because " + $scope.statusData.error;
+					$scope.cancelOrChangeBtnTxt = "CHANGE DATES";
+					$scope.runForDiffDatesText = "";
+					$scope.runButtonText = "TRY AGAIN";
+				} 
+				else {
+					$(".balance-status").addClass('notice');
+					$(".balance-status").removeClass('success');
+					$(".balance-status").removeClass('error');
+					$scope.jobStatusTitle = "Balancing in progress...";
+					$scope.jobStatusText = "Balancing journal from " + $scope.statusData.begin_date + " to " + $scope.statusData.end_date;
+					$scope.cancelOrChangeBtnTxt = "CANCEL JOBS";
+					$scope.runButtonText = "REFRESH STATUS";
+					$scope.runForDiffDatesText = "";
 				}
-
-				$scope.lastRunStatus = status;
-			};
-
-			var options = {
+			},
+			options = {
 				params: params,
 				successCallBack: successCallback
 			};
 			
 			$scope.callAPI(ADReservationToolsSrv.checkJobStatus, options);
 		};
-		$scope.refreshStatus();
 	}
 ]);

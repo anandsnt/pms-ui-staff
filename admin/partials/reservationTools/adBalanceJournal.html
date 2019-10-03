@@ -36,12 +36,18 @@
                      </div>
 
                      <div ng-show="anyJobRunning" class="data-holder">
-                        <form class="form inline-form float">
-                           <div class="form-title">
-                              <h3>Balance Journal job running.</h3>
+                        <form class="form">
+                           <div class="balance-status">
+                                 <div class="balance-status-info">
+                                    <strong class="status-title">{{jobStatusTitle}}</strong>
+                                    <span class="status-text">{{jobStatusText}}</span>
+                                 </div>
+                                 <div class="balance-status-percentage" ng-if="showPercentage">{{progressPercentage}}%</div>
                            </div>
-                           <div class="actions float">
-                              <button type="button" ng-click="refreshStatus()" class="button green edit-data-inline" translate>REFRESH_STATUS</button>
+                           <div class="actions no-border">
+                                 <button type="button" class="button blank" ng-click="cancelOrChange()" >{{cancelOrChangeBtnTxt}}</button>
+                                 <button type="button" class="button blue" ng-click="cancelOrChange()">{{runForDiffDatesText}}</button>
+                                 <button type="button" class="button blue" ng-click="refreshStatus()">{{runButtonText}}</button>
                            </div>
                         </form>
                      </div>
