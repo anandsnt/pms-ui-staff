@@ -117,12 +117,12 @@ describe('zsCheckinGuestAddressCtrl', function() {
             expect(zsCheckinSrv.saveGuestAddress)
                 .toHaveBeenCalled();
         });
-        it('On clicking next with valid address,call API to save address and on success  go to reservation details page', function () {
-            $scope.nextButtonClicked();
-            $scope.$digest();
-            expect($state.go)
-                .toHaveBeenCalledWith('zest_station.checkInReservationDetails', jasmine.any(Object));
-        });
+        // it('On clicking next with valid address,call API to save address and on success  go to reservation details page', function () {
+        //     $scope.nextButtonClicked();
+        //     $scope.$digest();
+        //     expect($state.go)
+        //         .toHaveBeenCalledWith('zest_station.checkInReservationDetails', jasmine.any(Object));
+        // });
     });
 
     describe('Back button actions', function() {
