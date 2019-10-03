@@ -58,22 +58,18 @@
                 </div>
                 <div class="entry margin">
                     <label for="contract-name">Name</label>
-                    <!-- add readonly if it's read only -->
                     <input ng-readonly="contractData.disableFields" name="contract-name" id="contract-name"  ng-model="contractData.editData.contract_name" placeholder="Contract Name" type="text" />
                 </div>
                 <div class="entry">
                     <label for="contract-code">Access Code</label>
-                    <!-- add readonly if it's read only -->
                     <input ng-readonly="contractData.mode === 'EDIT'" name="contract-code" id="contract-code"  ng-model="contractData.editData.access_code" placeholder="Access Code" type="text" />
                 </div>
                 <div class="entry margin has-datepicker">
                     <label for="contract-start">Start Date</label>
-                    <!-- add readonly if it's read only -->
                     <input ng-readonly="contractData.disableFields" name="contract-start" id="contract-start" class="datepicker" ng-model="contractData.editData.begin_date" ng-click="contractStart()" placeholder="Select Start Date" maxlength="8" readonly type="text" />
                 </div>
                 <div class="entry has-datepicker">
                     <label for="contract-end">End Date</label>
-                    <!-- add readonly if it's read only -->
                     <input ng-readonly="contractData.disableFields" name="contract-end" id="contract-end" class="datepicker" ng-model="contractData.editData.end_date" ng-click="contractEnd()" placeholder="Select End Date" maxlength="8" readonly type="text" />
                 </div>
 
@@ -81,13 +77,11 @@
 
                 <div class="entry margin">
                     <label for="contracted-nights">Contracted nights</label>
-                     <!-- add readonly if it's read only -->
                     <input ng-readonly="contractData.disableFields" name="contracted-nights" id="contracted-nights" class=" contracted-nights" placeholder="Nights per month" ng-model="contractData.editData.total_contracted_nights" ng-click="editContractedNights()" maxlength="8" readonly type="text" />
                 </div>
             </div>
-            <div class="holder right">
+            <!-- <div class="holder right">
                 <strong class="h3">Statistics</strong>
-                 <!-- If there are statistics, show this -->
                 <ul id="contract-stats" class="contract-stats" ng-if="contractData.editData.statistics">
                     <li>Booked Nights <span>{{contractData.editData.statistics.booked_nights}}</span></li>
                     <li>Total Nights <span>{{contractData.editData.statistics.total_nights}}</span></li>
@@ -95,7 +89,7 @@
                     <li>Total Revenue <span class="green">{{currencySymbol}}{{contractData.editData.statistics.total_revenue}}</span></li>
                     <li>Average Rate <span>{{currencySymbol}}{{contractData.editData.statistics.average_rate}}</span></li>
                 </ul>                
-            </div>
+            </div> -->
         </div>
     </div>
     <div class="contract-details-footer">
