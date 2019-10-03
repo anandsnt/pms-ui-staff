@@ -193,26 +193,6 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
             return deferred.promise;
         };
 
-        /** end of contact information area */
-        var contractRates = [];
-
-        this.fetchContractsList = function(data) {
-            var deferred = $q.defer();
-            var url = '/api/accounts/' + data.account_id + '/contracts';
-
-            rvBaseWebSrvV2.getJSON(url).then(function(data) {
-                contractRates = data;
-                deferred.resolve(data);
-            }, function(data) {
-                deferred.reject(data);
-            });
-            return deferred.promise;
-        };
-
-        this.getContractedRates = function() {
-            return contractRates;
-        };
-
         /**
          * service function used for retreive rates
          * @param {Object} params payLoad
