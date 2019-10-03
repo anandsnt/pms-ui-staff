@@ -179,7 +179,7 @@ admin.controller('ADBalanceJournalCtrl', [
 					page: 1,  // show first page
 					count: 5, // count per page
 				}, {
-					total: $scope.activityLogData.length, // length of data
+					total: 1000, // length of data
 					getData: $scope.getActivityLog
 				}
 			);
