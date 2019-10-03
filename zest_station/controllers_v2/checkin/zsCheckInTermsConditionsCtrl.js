@@ -87,7 +87,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 
         var checkInGuest = function() {
             var signature = $scope.signatureData;
-            var bypassReasonId = zsCheckinSrv.getPaaportBypassReason();
+            var bypassReasonId = zsCheckinSrv.getPassportBypassReason();
             var checkinParams = {
                 'reservation_id': $stateParams.reservation_id,
                 'workstation_id': $scope.zestStationData.set_workstation_id,

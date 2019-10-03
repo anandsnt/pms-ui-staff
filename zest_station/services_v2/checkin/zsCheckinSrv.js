@@ -645,7 +645,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             passportBypassReason = bypassReason;
         };
  
-        this.getPaaportBypassReason = function () {
+        this.getPassportBypassReason = function () {
             return passportBypassReason;
         };
     }
