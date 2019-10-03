@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog',
-	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, ngDialog) {
+angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$rootScope', '$scope', 'rvCompanyCardContractsSrv', '$stateParams', 'ngDialog',
+	function($rootScope, $scope, rvCompanyCardContractsSrv, $stateParams, ngDialog) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.contractData = {
@@ -129,7 +129,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$rootScope', 
 				}
 			};
 
-			$scope.callAPI(RVCompanyCardSrv.fetchContractsDetails, options);
+			$scope.callAPI(rvCompanyCardContractsSrv.fetchContractsDetails, options);
 		};
 		/*
 		 * Failure callback for contracts fetch API
@@ -153,7 +153,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$rootScope', 
 			};
 
 			if ($stateParams.id !== 'add') {
-				$scope.callAPI(RVCompanyCardSrv.fetchContractsList, options);
+				$scope.callAPI(rvCompanyCardContractsSrv.fetchContractsList, options);
 			}
 		};
 

@@ -1,7 +1,6 @@
-angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog', '$timeout',
-	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, ngDialog, $timeout) {
+angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'rvCompanyCardContractsSrv', '$stateParams', 'ngDialog', '$timeout',
+	function($scope, rvCompanyCardContractsSrv, $stateParams, ngDialog, $timeout) {
         BaseCtrl.call(this, $scope);
-        $scope.currencySymbol = $rootScope.currencySymbol;
 
         $scope.setScroller('editContractScroller');
         var refreshEditScroller = function() {
@@ -53,7 +52,7 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$rootScope', 
                 successCallBack: updateContractSuccessCallback
             };
 
-            $scope.callAPI(RVCompanyCardSrv.updateContract, options);
+            $scope.callAPI(rvCompanyCardContractsSrv.updateContract, options);
         };
 
         /**

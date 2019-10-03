@@ -2,15 +2,15 @@ describe('rvCardContractsMainCtrl', function() {
     var $controller,
         $scope = {},
         that,
-        RVCompanyCardSrv,
+        rvCompanyCardContractsSrv,
         $q;
 
     beforeEach(function() {
         module('sntRover');
-        inject(function (_$controller_, _RVCompanyCardSrv_, _$rootScope_, _$q_) {
+        inject(function (_$controller_, _rvCompanyCardContractsSrv_, _$rootScope_, _$q_) {
             $controller = _$controller_;
             $scope = _$rootScope_.$new();
-            RVCompanyCardSrv = _RVCompanyCardSrv_;
+            rvCompanyCardContractsSrv = _rvCompanyCardContractsSrv_;
             $q = _$q_;
         });
         that = $controller('rvCardContractsMainCtrl', {
@@ -19,25 +19,25 @@ describe('rvCardContractsMainCtrl', function() {
     });
 
     it('call contracts list API', function() {
-        spyOn(RVCompanyCardSrv, "fetchContractsList").and.callFake(function() {
+        spyOn(rvCompanyCardContractsSrv, "fetchContractsList").and.callFake(function() {
             var deferred = $q.defer();
 
             deferred.resolve({});
             return deferred.promise;
         });
         that.init();
-        expect(RVCompanyCardSrv.fetchContractsList).toHaveBeenCalled();
+        expect(rvCompanyCardContractsSrv.fetchContractsList).toHaveBeenCalled();
     });
 
     it('call contract details API', function() {
-        spyOn(RVCompanyCardSrv, "fetchContractsDetails").and.callFake(function() {
+        spyOn(rvCompanyCardContractsSrv, "fetchContractsDetails").and.callFake(function() {
             var deferred = $q.defer();
 
             deferred.resolve({});
             return deferred.promise;
         });
         that.fetchContractDetails();
-        expect(RVCompanyCardSrv.fetchContractsDetails).toHaveBeenCalled();
+        expect(rvCompanyCardContractsSrv.fetchContractsDetails).toHaveBeenCalled();
     });
 
     it('click on new contract button', function() {
