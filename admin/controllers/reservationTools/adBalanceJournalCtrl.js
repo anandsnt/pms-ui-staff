@@ -79,7 +79,8 @@ admin.controller('ADBalanceJournalCtrl', [
 			};
 
 			var successCallback = function(status) {
-
+				$scope.data = status;
+				console.log($scope.data)
 				if ( status === 'INPROGRESS' ) {
 					$scope.anyJobRunning = true;
 				} else {

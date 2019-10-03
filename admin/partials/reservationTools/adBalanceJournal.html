@@ -36,12 +36,25 @@
                      </div>
 
                      <div ng-show="anyJobRunning" class="data-holder">
-                        <form class="form inline-form float">
-                           <div class="form-title">
-                              <h3>Balance Journal job running.</h3>
+                        <form class="form">
+                           <!-- Add class:
+                                 - error - When an error was encountered,
+                                 - success - when journal is balanced
+                           -->
+                           <div class="balance-status error">
+                                 <div class="balance-status-info">
+                                    <strong class="status-title">{status}</strong>
+                                    <span class="status-text">{text}</span>
+                                 </div>
+                                 <div class="balance-status-percentage">{percentage}%</div>
                            </div>
-                           <div class="actions float">
-                              <button type="button" ng-click="refreshStatus()" class="button green edit-data-inline" translate>REFRESH_STATUS</button>
+                           <div class="actions no-border">
+                     
+                                 <!-- Hide this button when journal was balanced. Use it for Canceling jobs or changing dates -->
+                                 <button type="button" class="button blank">{Button Text}</button>
+                     
+                                 <!-- This button is used for restaring, trying it again or doing it for different dates -->
+                                 <button type="button" class="button blue" ng-click="refreshStatus()">{Button Text}</button>
                            </div>
                         </form>
                      </div>
