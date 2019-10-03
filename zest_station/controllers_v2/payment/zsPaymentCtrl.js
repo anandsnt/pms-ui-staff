@@ -292,8 +292,9 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
         /**  *************************** EMV **********************************/
 
         var saveCardByEmv = function (params) {
-            // Work around fix for six payments
-            if (params.amount === 0 && $scope.zestStationData.paymentGateway === 'sixpayments') {
+            // Work around fix for six payments and SHIJI
+            if (params.amount === 0 &&
+                ($scope.zestStationData.paymentGateway === 'sixpayments' || $scope.zestStationData.paymentGateway === 'SHIJI')) {
                 delete params.amount;
             }
             

@@ -98,7 +98,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
             "date": $scope.data.summaryDate,
             "is_summary": $scope.data.isExpandedView
         };
-        
+
         if ($scope.data.query !== "") {
             params.filter_id = $scope.data.filterId;
             params.query = $scope.data.query;
@@ -152,7 +152,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
                 "type": balance_type,
                 "is_summary": $scope.data.isExpandedView
             };
-            
+
             if ($scope.data.query !== "") {
                 params.filter_id = $scope.data.filterId;
                 params.query = $scope.data.query;
