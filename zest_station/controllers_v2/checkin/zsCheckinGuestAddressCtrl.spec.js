@@ -53,13 +53,11 @@ describe('zsCheckinGuestAddressCtrl', function() {
             .toEqual(false);
     });
 
-    it('On selecting address on file, go to reservation details page', function () {
+    it('On selecting address on file, go to passport entry page', function () {
         spyOn($state, 'go');
-        $scope.$parent.zestStationData.enable_passport_entry = false;
-        $scope.$parent.zestStationData.bypass_passport_entry = false;
         $scope.usePresentAddress();
         expect($state.go)
-            .toHaveBeenCalledWith('zest_station.checkInReservationDetails', jasmine.any(Object));
+            .toHaveBeenCalledWith('zest_station.zsCheckinPassportDetails', jasmine.any(Object));
     });
 
     it('On selecting new address, screen mode has to NEW_ADDRESS and address1 has to be focused', function () {
