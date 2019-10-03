@@ -12,6 +12,10 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
         $scope.guestDetails = {};
         $scope.isPassportNumberBlank = true;
         $scope.isBypassReasonNil = true;
+        $scope.data = {
+            'passportNumber': "",
+            'bypassReasonId': ""
+        }
 
         if ($stateParams.previousState) {
             $scope.previousState = $stateParams.previousState;
@@ -54,7 +58,7 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
         };
 
         $scope.onchangePassportNumber = function () {
-            if (typeof $scope.passportNumber === 'undefined' || $scope.passportNumber === "") {
+            if ($scope.data.passportNumber === "") {
                 $scope.isPassportNumberBlank = true;
             } else {
                 $scope.isPassportNumberBlank = false;
@@ -62,7 +66,7 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
         };
 
         $scope.onchangeBypassReason = function () {
-            if (typeof $scope.bypassReasonId === 'undefined' || $scope.bypassReasonId === "") {
+            if ($scope.data.bypassReasonId === "") {
                 $scope.isBypassReasonNil = true;
             } else {
                 $scope.isBypassReasonNil = false;

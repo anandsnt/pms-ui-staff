@@ -858,6 +858,7 @@
 
     "PASSPORT_DETAILS_HEADER": "Your Passport Information is Required",
     "ENTER_PASSPORT_NUMBER_LABEL": "Enter number",
+    "BYPASS_PASSPORT_LABEL": "Bypass",
     "PASPORT_BYPASS_REASON_SELECTOR_LABEL": "Please select the reason of your bypass"
 
 

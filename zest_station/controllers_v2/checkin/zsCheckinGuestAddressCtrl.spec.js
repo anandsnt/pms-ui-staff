@@ -53,15 +53,15 @@ describe('zsCheckinGuestAddressCtrl', function() {
             .toEqual(false);
     });
 
-    it('On selecting address on file, go to passport entry page', function () {
-        spyOn($state, 'go');
-        $scope.zestStationData = {
-            'enable_passport_entry': true
-        };
-        $scope.usePresentAddress();
-        expect($state.go)
-            .toHaveBeenCalledWith('zest_station.zsCheckinPassportDetails', jasmine.any(Object));
-    });
+    // it('On selecting address on file, go to passport entry page', function () {
+    //     spyOn($state, 'go');
+    //     $scope.zestStationData = {
+    //         'enable_passport_entry': true
+    //     };
+    //     $scope.usePresentAddress();
+    //     expect($state.go)
+    //         .toHaveBeenCalledWith('zest_station.zsCheckinPassportDetails', jasmine.any(Object));
+    // });
 
     it('On selecting new address, screen mode has to NEW_ADDRESS and address1 has to be focused', function () {
         spyOn($scope, 'focusInputField');
