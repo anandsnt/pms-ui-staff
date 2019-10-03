@@ -998,7 +998,7 @@ angular.module('sntPay').controller('sntPaymentController',
                     $scope.payment.selectedPaymentCurrencySymbol = $rootScope.currencySymbol;
                     $scope.payment.amount = $scope.originalAmount;
                     $scope.feeData.calculatedFee = $scope.originalFee;
-                }
+                }                
 
                 /** CICO-47989
                  * To handle scenarios where the bill might have a payment type associated, but it is no longer available in the list
@@ -1077,7 +1077,7 @@ angular.module('sntPay').controller('sntPaymentController',
                         $scope.feeData.calculatedFee = response.data.converted_fee;
                     },
                     errorMessage => {
-                        console.log(errorMessage);
+                        
                     });
             };
 
