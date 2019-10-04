@@ -40,8 +40,7 @@ describe('zsCheckinGuestAddressCtrl', function() {
         });
         $scope.focusInputField = function () {
             return false;
-        };
-        $scope.zestStationData = {};        
+        };        
         zsCheckinSrv.setCheckInReservations([{
             id: 123
         }]);
