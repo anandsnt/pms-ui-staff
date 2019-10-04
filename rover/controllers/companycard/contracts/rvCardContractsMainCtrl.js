@@ -17,7 +17,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 			accountId: '',
 			showNightsModal: false,
 			selectedContract: '',
-			userHasPermission: false
+			userHasPermission: rvPermissionSrv.getPermissionValue('EDIT_CONTRACT_ACCESS_CODE')
 		};
 		var that = this;
 
@@ -115,7 +115,6 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 		that.fetchContractDetails = function(contractId) {
 			var accountId;
 
-			$scope.contractData.userHasPermission = rvPermissionSrv.getPermissionValue('EDIT_CONTRACT_ACCESS_CODE');
 			$scope.contractData.selectedContract = contractId;
 			if ($stateParams.id === "add") {
 				accountId = $scope.contactInformation.id;
