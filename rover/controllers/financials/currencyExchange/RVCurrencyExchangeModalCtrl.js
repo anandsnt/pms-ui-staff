@@ -135,6 +135,7 @@ sntRover.controller('RVCurrencyExchangeModalController',
             
             $scope.changeCurrency = function() {
                 $scope.selected_rate_currency_symbol  = (_.find($rootScope.rateCurrencyList, {"id": $scope.selected_rate_currency})).symbol;
+                $scope.isInvoiceCurrency = $scope.selected_rate_currency === (_.find($rootScope.rateCurrencyList, {"id": $rootScope.invoiceCurrencyObject.id})).id;
                 fetchExhangeRates();
             };
             /*
