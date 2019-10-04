@@ -8,16 +8,16 @@ admin.controller('ADBalanceJournalCtrl', [
 	'allJobs',
 	'ADReservationToolsSrv',
 	'ngDialog',
-	function($scope, $rootScope, $state, allJobs, ADReservationToolsSrv, ngDialog) {
+	'ngTableParams',
+	'$timeout',
+	function($scope, $rootScope, $state, allJobs, ADReservationToolsSrv, ngDialog, ngTableParams, $timeout) {
 		BaseCtrl.call(this, $scope);
-
+		ADBaseTableCtrl.call(this, $scope, ngTableParams);
 		$scope.errorMessage = "";
-
+		$scope.showPercentage = false;
 		$scope.balanceJournalJob = _.findWhere(allJobs, {"job_name": "SYNC DailyBalanceCorrection"});
-
 		$scope.anyJobRunning = false;
 		$scope.lastRunStatus = '';
-
 		$scope.previousDayOfBusinessDate = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
 											.format($rootScope.hotelDateFormat);
 
@@ -33,14 +33,24 @@ admin.controller('ADBalanceJournalCtrl', [
 		 * API when clicks start job
 		 */
 		$scope.startJob = function() {
-			var successCallback = function() {
+			var successCallback = function(data) {
+				var endDate = moment(tzIndependentDate($scope.payload.end_date)).format("DD-MM-YYYY");
+
+				$(".balance-status").addClass('notice');
+				$(".balance-status").removeClass('success');
+				$(".balance-status").removeClass('error');
 				$scope.anyJobRunning = true;
-			};
-
-			var unwantedKeys = ["first_date"],			
-				data = dclone($scope.payload, unwantedKeys);
-
-			var options = {
+				$scope.showPercentage = false;
+				$scope.balanceJournalJobId = data.job_id;
+				$scope.jobStatusTitle = "Balancing started";
+				$scope.jobStatusText = "Balancing journal from " + $scope.payload.first_date + " to " + endDate;
+				$scope.cancelOrChangeBtnTxt = "CANCEL JOB";
+				$scope.runButtonText = "REFRESH STATUS";
+				$scope.runForDiffDatesText = "";
+			},
+			unwantedKeys = ["first_date"],			
+			data = dclone($scope.payload, unwantedKeys),
+			options = {
 				params: data,
 				successCallBack: successCallback
 			};
@@ -73,29 +83,100 @@ admin.controller('ADBalanceJournalCtrl', [
 		/*
 		 * Check the job status on refresh
 		 */
+
+		$scope.cancelOrChange = function() {
+			$scope.anyJobRunning = false;
+		};
+
 		$scope.refreshStatus = function() {
 			var params = {
-				'id': $scope.balanceJournalJob.id
-			};
-
-			var successCallback = function(status) {
-
-				if ( status === 'INPROGRESS' ) {
-					$scope.anyJobRunning = true;
-				} else {
-					$scope.anyJobRunning = false;
+				'id': $scope.balanceJournalJobId
+			},
+			successCallback = function(status) {
+				$scope.anyJobRunning = true;
+				$scope.statusData = status;
+				$scope.showPercentage = true;
+				$scope.progressPercentage = $scope.statusData.progress_percent;
+				if ( $scope.progressPercentage === "100" ) {
+					$(".balance-status").addClass('success');
+					$(".balance-status").removeClass('notice');
+					$(".balance-status").removeClass('error');
+					$scope.jobStatusTitle = "Journal in balance";
+					$scope.jobStatusText = "Balancing journal from " + $scope.statusData.begin_date + " to " + $scope.statusData.end_date + " completed successfully";
+					$scope.runButtonText = "";
+					$scope.cancelOrChangeBtnTxt = "";
+					$scope.runForDiffDatesText = "RUN FOR DIFFERENT DATE";
+				} 
+				else if ($scope.statusData.job_failed_date !== "" || $scope.statusData.error !== "") {
+					$(".balance-status").addClass('error');
+					$(".balance-status").removeClass('success');
+					$(".balance-status").removeClass('notice');
+					$scope.jobStatusTitle = "Journal not in balance";
+					$scope.jobStatusText = "Balancing journal from " + $scope.statusData.begin_date + " to " + $scope.statusData.end_date + " failed because " + $scope.statusData.error;
+					$scope.cancelOrChangeBtnTxt = "CHANGE DATES";
+					$scope.runForDiffDatesText = "";
+					$scope.runButtonText = "TRY AGAIN";
+				} 
+				else {
+					$(".balance-status").addClass('notice');
+					$(".balance-status").removeClass('success');
+					$(".balance-status").removeClass('error');
+					$scope.jobStatusTitle = "Balancing in progress...";
+					$scope.jobStatusText = "Balancing journal from " + $scope.statusData.begin_date + " to " + $scope.statusData.end_date;
+					$scope.cancelOrChangeBtnTxt = "CANCEL JOBS";
+					$scope.runButtonText = "REFRESH STATUS";
+					$scope.runForDiffDatesText = "";
 				}
-
-				$scope.lastRunStatus = status;
-			};
-
-			var options = {
+			},
+			options = {
 				params: params,
 				successCallBack: successCallback
 			};
 			
 			$scope.callAPI(ADReservationToolsSrv.checkJobStatus, options);
 		};
-		$scope.refreshStatus();
+
+		$scope.toggleActivityLog = function() {
+            if ($scope.detailsMenu !== 'adRateActivityLog') {
+                $scope.detailsMenu = 'adRateActivityLog';
+				$scope.loadTable();
+            } else {
+                $scope.detailsMenu = '';
+            }
+		};
+		
+		$scope.getActivityLog = function($defer, params) {
+			$scope.showActivityLog = true;
+			var getParams = $scope.calculateGetParams(params),
+            successCallback = function(data) {
+				$timeout(function() {
+					$scope.currentClickedElement = -1;
+					$scope.totalCount = data.total_count;
+					$scope.totalPage = Math.ceil(data.total_count / $scope.displyCount);
+					$scope.activityLogData = data.results;
+					$scope.currentPage = params.page();
+					params.total(data.total_count);
+					// params.total(data.results.length);
+					$defer.resolve($scope.data);
+				}, 500);
+            },
+			options = {
+				params: getParams,
+				successCallBack: successCallback
+			};
+
+            $scope.callAPI(ADReservationToolsSrv.fetchActivityLog, options);
+		};
+
+		$scope.loadTable = function() {
+			$scope.tableParams = new ngTableParams({
+					page: 1,  // show first page
+					count: 10 // count per page
+				}, {
+					total: 1000, // length of data
+					getData: $scope.getActivityLog
+				}
+			);
+		};
 	}
 ]);

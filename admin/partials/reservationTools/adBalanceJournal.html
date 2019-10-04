@@ -5,12 +5,10 @@
       </header>
       <section class="content-scroll">
          <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-         
          <table class="grid">
             <tbody>
                <tr>
                   <td>
-
                      <div ng-hide="anyJobRunning" class="data-holder">
                         <form class="form inline-form float">
                            <div class="form-title">
@@ -36,21 +34,45 @@
                      </div>
 
                      <div ng-show="anyJobRunning" class="data-holder">
-                        <form class="form inline-form float">
-                           <div class="form-title">
-                              <h3>Balance Journal job running.</h3>
+                        <form class="form">
+                           <div class="balance-status">
+                                 <div class="balance-status-info">
+                                    <strong class="status-title">{{jobStatusTitle}}</strong>
+                                    <span class="status-text">{{jobStatusText}}</span>
+                                 </div>
+                                 <div class="balance-status-percentage" ng-if="showPercentage">{{progressPercentage}}%</div>
                            </div>
-                           <div class="actions float">
-                              <button type="button" ng-click="refreshStatus()" class="button green edit-data-inline" translate>REFRESH_STATUS</button>
+                           <div class="actions no-border">
+                                 <button type="button" class="button blank" ng-click="cancelOrChange()" >{{cancelOrChangeBtnTxt}}</button>
+                                 <button type="button" class="button blue" ng-click="cancelOrChange()">{{runForDiffDatesText}}</button>
+                                 <button type="button" class="button blue" ng-click="refreshStatus()">{{runButtonText}}</button>
                            </div>
                         </form>
                      </div>
-
+                  </td>
+               </tr>
+               <tr>
+                  <td>
+                        <div id="activityLogArea">
+                           <div class="form-title cursor_pointer" ng-click="toggleActivityLog()">
+                                 <div class="rate_additional_details_heading">
+                                       ACTIVITY LOG
+                                    <div class="cursor_pointer rate_additional_details_pointers">
+                                       <img ng-hide="detailsMenu ==='adRateActivityLog'" src="/assets/cssimg/arrow-down.png">
+                                       <img ng-show="detailsMenu ==='adRateActivityLog'" src="/assets/cssimg/arrow-up.png">
+                                    </div>
+                                 </div>
+                           </div>
+                           <div ng-show="detailsMenu ==='adRateActivityLog'" class="form_add_new_rate" >
+                                 <div ng-include="'/assets/partials/reservationTools/adBalanceJournalActivityLog.html'"></div>
+                           </div>
+                        </div>
                   </td>
                </tr>
                
             </tbody>
          </table>
+         
       </section>
    </div>
 </section>
