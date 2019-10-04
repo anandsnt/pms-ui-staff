@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$rootScope', '$scope', 'rvCompanyCardContractsSrv', '$stateParams', 'ngDialog',
-	function($rootScope, $scope, rvCompanyCardContractsSrv, $stateParams, ngDialog) {
+angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionSrv', '$rootScope', '$scope', 'rvCompanyCardContractsSrv', '$stateParams', 'ngDialog',
+	function(rvPermissionSrv, $rootScope, $scope, rvCompanyCardContractsSrv, $stateParams, ngDialog) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.contractData = {
@@ -16,7 +16,8 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['$rootScope', 
 			selectedRateIdList: [],
 			accountId: '',
 			showNightsModal: false,
-			selectedContract: ''
+			selectedContract: '',
+			userHasPermission: rvPermissionSrv.getPermissionValue('EDIT_CONTRACT_ACCESS_CODE')
 		};
 		var that = this;
 
