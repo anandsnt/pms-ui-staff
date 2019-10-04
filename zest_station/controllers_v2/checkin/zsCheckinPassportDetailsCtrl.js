@@ -74,10 +74,14 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
         };
 
         $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function () {
-            $scope.isBypassReasonNil = true;
-            $scope.isPassportNumberBlank = true;
+            var isCollectAddressEnabled = $scope.$parent.zestStationData.kiosk_collect_guest_address;
+
             if ($scope.mode === 'PASSPORT_DETAILS') {
-                $state.go('zest_station.collectGuestAddress');
+                if(isCollectAddressEnabled) {
+                    $state.go('zest_station.collectGuestAddress');
+                } else {
+                    $state.go('zest_station.checkInReservationSearch');
+                }
             } else if ($scope.mode === 'COLLECT_PASSPORT_NUMBER' || $scope.mode === 'BYPASS_PASSPORT_DETAILS') {
                 $scope.mode = 'PASSPORT_DETAILS';
             }
