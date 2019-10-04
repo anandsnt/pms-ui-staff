@@ -99,7 +99,6 @@
                     5
                 </label>
             </div>
-
             <snt-payment
                     hotel-config="hotelPaymentConfig"
                     workstation-id="{{workstation_id}}"
@@ -120,10 +119,10 @@
                     last-name="{{guestCardData.contactInfo.last_name}}"
                     split-bill-enabled="splitBillEnabled"
                     num-splits="splitePaymentDetail.totalNoOfsplits"
-                    completed-split-payments="splitePaymentDetail.completedSplitPayments"
+                    completed-split-payments="splitePaymentDetail.completedSplitPayments" 
+                    payment-currency-list="paymentCurrencyList" 
                     ng-show="!errorOccured && !depositPaidSuccesFully">
             </snt-payment>
-
             <div class="actions" ng-hide="!depositPaidSuccesFully">
                 <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="closeDialog()"
                         translate>
