@@ -5,7 +5,7 @@
             <div class="wrapper">
                 <div ng-repeat="(group_id, group) in chargeData.groupedItems" ng-if="group.items.length > 0"
                     class="minibar-item group" ng-class="{'expanded': group.is_open}"
-                    touch-press="group.is_open = !group.is_open;">
+                    touch-press="toggleOpenMenu(group)">
                     <div class="minibar-item-info">
                         <h3 class="minibar-item-title">{{group.name}}</h3>
                         <div class="minibar-item-meta">{{group.description}}</div>
