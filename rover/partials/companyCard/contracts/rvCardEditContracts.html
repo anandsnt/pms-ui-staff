@@ -62,22 +62,22 @@
                 </div>
                 <div class="entry">
                     <label for="contract-code">Access Code</label>
-                    <input ng-readonly="contractData.mode === 'EDIT'" name="contract-code" id="contract-code"  ng-model="contractData.editData.access_code" placeholder="Access Code" type="text" />
+                    <input ng-readonly="!contractData.userHasPermission" name="contract-code" id="contract-code"  ng-model="contractData.editData.access_code" placeholder="Access Code" type="text" />
                 </div>
                 <div class="entry margin has-datepicker">
                     <label for="contract-start">Start Date</label>
-                    <input ng-readonly="contractData.disableFields" name="contract-start" id="contract-start" class="datepicker" ng-model="contractData.editData.begin_date" ng-click="contractStart()" placeholder="Select Start Date" maxlength="8" readonly type="text" />
+                    <input ng-disabled="contractData.disableFields" name="contract-start" id="contract-start" class="datepicker" ng-model="contractData.editData.begin_date" ng-click="contractStart()" placeholder="Select Start Date" maxlength="8" readonly type="text" />
                 </div>
                 <div class="entry has-datepicker">
                     <label for="contract-end">End Date</label>
-                    <input ng-readonly="contractData.disableFields" name="contract-end" id="contract-end" class="datepicker" ng-model="contractData.editData.end_date" ng-click="contractEnd()" placeholder="Select End Date" maxlength="8" readonly type="text" />
+                    <input ng-disabled="contractData.disableFields" name="contract-end" id="contract-end" class="datepicker" ng-model="contractData.editData.end_date" ng-click="contractEnd()" placeholder="Select End Date" maxlength="8" readonly type="text" />
                 </div>
 
                 <div include-replace ng-include="'/assets/partials/companyCard/contracts/rvCardSearchContract.html'"></div>
 
                 <div class="entry margin">
                     <label for="contracted-nights">Contracted nights</label>
-                    <input ng-readonly="contractData.disableFields" name="contracted-nights" id="contracted-nights" class=" contracted-nights" placeholder="Nights per month" ng-model="contractData.editData.total_contracted_nights" ng-click="editContractedNights()" maxlength="8" readonly type="text" />
+                    <input ng-disabled="contractData.disableFields" name="contracted-nights" id="contracted-nights" class=" contracted-nights" placeholder="Nights per month" ng-model="contractData.editData.total_contracted_nights" ng-click="editContractedNights()" maxlength="8" readonly type="text" />
                 </div>
             </div>
             <!-- <div class="holder right">
