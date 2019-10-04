@@ -279,7 +279,7 @@
                 <label for="export-folder">No Google Drive Accounts configured</label>
             </div>
             <div class="entry join" ng-show="checkDeliveryType('DROPBOX') && dropBoxAccountList.length">
-                <label for="export-folder">Dropbox {{scheduleParams.selectedCloudAccount}}</label>
+                <label for="export-folder">Dropbox</label>
                 <div class="select">
                     <select id="export-folder"
                             ng-options="dropbox.id as dropbox.description for dropbox in dropBoxAccountList"

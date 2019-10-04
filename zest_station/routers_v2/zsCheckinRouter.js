@@ -648,6 +648,14 @@ sntZestStation.config(['$stateProvider',
             templateUrl: '/assets/partials_v2/checkin/zscheckInCCCollectionUsingOpi.html',
             controller: 'zsCheckInCCCollectionUsingOpiCtrl'
         });
-        
+
+        $stateProvider.state('zest_station.zsCheckinPassportDetails', {
+            url: '/passportDetails',
+            templateUrl: '/assets/partials_v2/checkin/zsCheckinPassportDetails.html',
+            controller: 'zsCheckinPassportDetailsCtrl',
+            params: {
+                previousState: ''
+            }
+        });
     }
 ]);

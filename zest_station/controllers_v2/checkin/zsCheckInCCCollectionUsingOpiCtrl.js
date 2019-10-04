@@ -33,13 +33,7 @@ sntZestStation.controller('zsCheckInCCCollectionUsingOpiCtrl', [
 					$scope.screenMode.paymentAction = 'CC_ERROR';
 				}
 			});
-		};
-
-		var timeOutListener = $scope.$on('USER_ACTIVITY_TIMEOUT', function() {
-			$scope.screenMode.paymentAction = 'CC_TIMED_OUT';
-		});
-
-		$scope.$on('$destroy', timeOutListener);
+		};	
 
 		// On landing on this screen start OPI actions
 		$scope.startOpiEMVActions();

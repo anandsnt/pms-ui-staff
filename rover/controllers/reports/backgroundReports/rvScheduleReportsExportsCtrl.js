@@ -372,6 +372,7 @@ angular.module('sntRover')
                 // Feature toggle decides whether the custom export menu should be shown or not
                 $scope.isCustomExportsEnabled = Toggles.isEnabled('custom_exports');
                 $scope.customExportsScheduleParams = {};
+                $scope.isToastEnabled = Toggles.isEnabled('show_toast_notifications');
                 
                 // Holds the data for custom exports
                 $scope.customExportsData = {

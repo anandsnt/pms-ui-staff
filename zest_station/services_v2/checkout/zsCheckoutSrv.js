@@ -166,6 +166,24 @@ sntZestStation.service('zsCheckoutSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseW
         };
 
         /*
+        * Service function to get groups
+        * @method GET
+        * @return {object} defer promise
+        */
+        this.fetchChargeGroups = function () {
+
+            var deferred = $q.defer();
+            var url = "/api/charge_groups.json";
+
+            zsBaseWebSrv.getJSON(url).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        /*
         * Service function to get items
         * @method GET
         * @param {object} data
