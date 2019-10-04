@@ -248,7 +248,8 @@
                             hotel-config="hotelPaymentConfig"
                             workstation-id="{{workstation_id}}"
                             reservation-id="{{reservationData.reservationId}}"
-                            rate-currency="{{reservationData.rateCurrency}}"
+                            rate-currency="{{reservationData.rateCurrency}}" 
+                            should-show-payment-drop-down ="{{shouldShowPaymentDropDown}}" 
                             deposit-policy-name="{{depositData.description}}"
                             bill-number="billNumber"
                             payment-types="reservationData.paymentMethods"
@@ -263,6 +264,7 @@
                             first-name="{{guestCardData.contactInfo.first_name}}"
                             last-name="{{guestCardData.contactInfo.last_name}}"
                             only-payment-selection="reservationData.isValidDeposit"
+                            payment-currency-list="paymentCurrencyList" 
                             reservation-ids="reservationData.reservationIds">
                     </snt-payment>
                     <div class="actions" ng-hide="showCCPage">

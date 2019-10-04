@@ -24,7 +24,8 @@
                 has-permission='hasPermissionToMakePayment()' 
                 form-template-url='/assets/partials/reservationCard/rvSntDepositPayment.html' 
                 first-name="{{firstName}}"
-                last-name="{{lastName}}"
+                last-name="{{lastName}}" 
+                payment-currency-list="paymentCurrencyList" 
                 ng-show="!errorOccured && !depositPaidSuccesFully">
             </snt-payment>
             <!-- Deposit payment successfully -->

@@ -136,7 +136,8 @@
 							is-rate-suppressed='isReservationRateSuppressed'
 							has-permission='hasPermissionToMakePayment()'
 							form-template-url='/assets/partials/payment/rvDepositBalancePartial.html'
-							first-name="{{passData.details.firstName}}"
+							first-name="{{passData.details.firstName}}" 
+							payment-currency-list="paymentCurrencyList" 
 							last-name="{{passData.details.lastName}}">
 					</snt-payment>
                 </div>
