@@ -56,6 +56,35 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'rvC
         };
 
         /**
+         * Function to delete a contract
+         */
+        $scope.deleteContract = function() {
+            var accountId,
+                deleteContractFailureCallback = function(error) {
+                    $scope.$emit('setErrorMessage', error);
+                },
+                deleteContractSuccessCallback = function(data) {
+                    $scope.$emit('fetchContractsList');
+                };
+
+            if ($stateParams.id === "add") {
+                accountId = $scope.contactInformation.id;
+            } else {
+                accountId = $stateParams.id;
+            }
+            var options = {
+                params: {
+                    'account_id': accountId,
+                    "contract_id": $scope.contractData.selectedContract
+                },
+                failureCallBack: deleteContractFailureCallback,
+                successCallBack: deleteContractSuccessCallback
+            };
+
+            $scope.callAPI(rvCompanyCardContractsSrv.deleteContract, options);
+        }
+
+        /**
          * Function to toggle contract active status
          */
         $scope.toggleActiveStatus = function() {
