@@ -158,6 +158,15 @@
 				height: calc(~"@{percentage} - @{pixels}");
 			}
 		}
+
+		#max-height {
+			.add(@percentage, @pixels) {
+				max-height: calc(~"@{percentage} + @{pixels}");
+			}
+			.remove(@percentage, @pixels) {
+				max-height: calc(~"@{percentage} - @{pixels}");
+			}
+		}
 	}
 
 	.size(@height: 5px, @width: 5px) {

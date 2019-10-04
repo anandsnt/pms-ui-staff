@@ -1,0 +1,62 @@
+<div id="content">
+    <h1 id="minibar-heading" translate="MINIBAR_CONSUMPTION_HEADING"></h1>
+    <div id="flex-holder" class="minibar">
+        <div ng-style="{'max-height': chargeData.maxHeight}" class="minibar-items" ng-iscroll="charge-list-scroll">
+            <div class="wrapper">
+                <div ng-repeat="(group_id, group) in chargeData.groupedItems" ng-if="group.items.length > 0"
+                    class="minibar-item group" ng-class="{'expanded': group.is_open}"
+                    touch-press="toggleOpenMenu(group)">
+                    <div class="minibar-item-info">
+                        <h3 class="minibar-item-title">{{group.name}}</h3>
+                        <div class="minibar-item-meta">{{group.description}}</div>
+                    </div>
+                    <div class="minibar-item-qty" ng-if="group.quantity>0">{{group.quantity}}</div>
+                    <div class="minibar-item-expand">
+                        <div ng-include="icons.url.down"></div>
+                    </div>
+                    <div class="group-items">
+                        <div class="minibar-item" ng-repeat="item in group.items">
+                            <div class="minibar-item-info">
+                                <h3 class="minibar-item-title">
+                                    {{ item.description_trl ? item.description_trl : item.name }}</h3>
+                                <div class="minibar-item-meta">{{item.unit_price | number : 2}}</div>
+                            </div>
+                            <div class="minibar-item-qty" ng-if="item.quantity>0">{{item.quantity}}</div>
+                            <div class="minibar-item-actions">
+                                <button type="button" class="button"
+                                    touch-press="updateQuantity(group_id, $index, 1)">+</button>
+                                <button type="button" class="button" ng-class="{'disabled': item.quantity<1}"
+                                    touch-press="updateQuantity(group_id, $index, -1)"
+                                    ng-disabled="item.quantity<1">-</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-style="{'max-height': chargeData.maxHeight}" class="minibar-review">
+            <div class="review-container">
+                <div class="review-items">
+                    <div class="items" ng-iscroll="quantity-list-scroll">
+                        <ul class="wrapper">
+                            <li ng-repeat="item in chargeData.chargeItems" ng-if="item.quantity>0">
+                                <span class="name">{{item.quantity}}x {{item.name}}</span>
+                                <span class="cost">${{(item.quantity*item.unit_price) | number : 2}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <ul class="totals">
+                        <li class="total">
+                            <span class="name" translate="TOTAL"></span>
+                            <span class="cost">${{chargeData.total | number : 2}}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="review-action">
+                    <button type="button" class="button" ng-class="{'disabled': chargeData.total === 0}"
+                        touch-press="postCharge()" translate="POST_ITEMS"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

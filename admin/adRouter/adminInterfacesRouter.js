@@ -689,6 +689,22 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
        }
     });
 
+    $stateProvider.state('admin.dataplusSetup', {
+       templateUrl: '/assets/partials/interfaces/dataplus/adDataplus.html',
+       controller: 'adDataplusCtrl',
+       url: '/dataplus',
+       resolve: {
+           config: [
+               'adInterfacesSrv', function(adInterfacesSrv) {
+                   return adInterfacesSrv.getSettings('dataplus');
+               }],
+           mappingTypes: [
+               'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                   return adInterfacesCommonConfigSrv.fetchMappingTypes('dataplus');
+               }]
+       }
+    });
+
     $stateProvider.state('admin.sunaccountingSetup', {
         templateUrl: '/assets/partials/interfaces/SunAccounting/adSunAccountingConfiguration.html',
         controller: 'adInterfaceConfigurationCtrl',

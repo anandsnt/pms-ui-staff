@@ -31,6 +31,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
         const SCHEDULE_DETAILS_SCROLLER = 'schedule-details-scroller';
         const DELIVERY_OPTIONS_SCROLLER = 'delivery-options-scroller';
         const SCROLL_REFRESH_DELAY = 100;
+        const SHOW_ERROR_MSG_EVENT = 'SHOW_ERROR_MSG_EVENT';
 
         // Initialize the scrollers
         var initializeScrollers = () => {
@@ -69,7 +70,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 WEEKLY: 'WEEKLY',
                 MONTHLY: 'MONTHLY',
                 RUN_ONCE: 'RUN_ONCE',
-                EVERY_MINUTE: 'EVERY_MINUTE'
+                EVERY_MINUTE: 'MINUTES'
             };
 
             if ( frequency ) {
@@ -159,7 +160,8 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             if ( ! $scope.scheduleParams.frequency_id ) {
                 $scope.createErrors.push('Repeat frequency in details');
             }
-            if ( ! $scope.emailList.length ) {
+            if ( ! $scope.emailList.length || !$scope.scheduleParams.selectedFtpRecipient || 
+                !$scope.scheduleParams.selectedCloudAccount ) {
                 $scope.createErrors.push('Emails/SFTP/Dropbox/Google Drive in distribution list');
             }
             if (!$scope.customExportsScheduleParams.exportName) {
@@ -441,10 +443,10 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                     $timeout(function () {
                         refreshScroll(EXPORT_LIST_SCROLLER);
                         refreshScroll(REPORT_COLS_SCROLLER, true);
+                        refreshScroll(REPORT_SELECTED_COLS_SCROLLER, true);
                         refreshScroll(SCHEDULE_DETAILS_SCROLLER, true);
                         refreshScroll(DELIVERY_OPTIONS_SCROLLER, true);
                     }, 1000);
-                    
 
                 },
                 onFailure = (error) => {
@@ -467,7 +469,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 $scope.selectedEntityDetails.active = false;
             }
             $scope.selectedEntityDetails = selectedDataSpace;
-            $scope.filterData.appliedFilters = [];
+            resetPreviousSelections();
             loadReqData(selectedDataSpace.id);
         };
 
@@ -502,7 +504,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             var selectedItems = _.where(filter.secondLevelData, { selected: true }),
                 selectedIds = _.pluck(selectedItems, key);
 
-            return selectedIds;
+            return selectedIds || [];
         };
 
         /**
@@ -540,21 +542,31 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             _.each($scope.filterData.appliedFilters, function (filter) {
                 paramKey = (filter.selectedFirstLevel).toLowerCase();
                 if (filter.isDuration) {
-                    filterValues[paramKey] = filter.selectedSecondLevel;
+                    if (filter.selectedSecondLevel) {
+                        filterValues[paramKey] = filter.selectedSecondLevel;
+                    }
                 } else if (filter.isOption) {
                     if (filter.hasDualState) {
-                        filterValues[paramKey] = filter.selectedSecondLevel;
+                        if (filter.selectedSecondLevel) {
+                            filterValues[paramKey] = filter.selectedSecondLevel;
+                        }
                     } else if (filter.isMultiSelect) {
-                        filterValues[paramKey] = getSelectedItemValues(filter);
+                        if (!_.isEmpty(getSelectedItemValues(filter))) {
+                            filterValues[paramKey] = getSelectedItemValues(filter);
+                        }
                     }
                 } else if (filter.isRange) {
                     if (!filterValues[paramKey]) {
                         filterValues[paramKey] = [];
                     }
-                    filterValues[paramKey].push({
-                        operator: filter.selectedSecondLevel,
-                        value: filter.rangeValue
-                    });
+
+                    if (filter.selectedSecondLevel && filter.rangeValue) {
+                        filterValues[paramKey].push({
+                            operator: filter.selectedSecondLevel,
+                            value: filter.rangeValue
+                        });
+                    }
+                    
                 }
 
             });
@@ -638,6 +650,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 },
                 onScheduleCreateFailure = (error) => {
                     $scope.errorMessage = error;
+                    $scope.$emit(SHOW_ERROR_MSG_EVENT, error);
                 };
 
             $scope.callAPI(reportsSrv.createSchedule, {
@@ -660,8 +673,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             }
             $scope.selectedEntityDetails = selectedSchedule;
             $scope.customExportsData.isNewExport = false;
-            $scope.selectedColumns = [];
-            $scope.filterData.appliedFilters = [];
+            resetPreviousSelections();
             $scope.customExportsScheduleParams.exportName = selectedSchedule.name;
             selectedSchedule.active = true;
             loadReqData(selectedSchedule.report.id, true);
@@ -679,6 +691,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 },
                 onScheduleSaveFailure = (error) => {
                     $scope.errorMessage = error;
+                    $scope.$emit(SHOW_ERROR_MSG_EVENT, error);
                 };
 
             requestParams.id = $scope.selectedEntityDetails.id;
@@ -693,7 +706,16 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
         // Set up all the listeners here
         var setUpListeners = () => {
             $scope.addListener('UPDATE_CUSTOM_EXPORT_SCHEDULE', () => {
-                saveSchedule();
+                if ( validateSchedule() ) {
+                    saveSchedule();
+                } else {
+                    fillValidationErrors();
+                    ngDialog.open({
+                        template: '/assets/partials/reports/scheduleReport/rvCantCreateSchedule.html',
+                        scope: $scope
+                    });
+                }
+                
             });
     
             $scope.addListener('SHOW_EXPORT_LISTING', () => {
