@@ -3,15 +3,22 @@ describe('rvCardContractsMainCtrl', function() {
         $scope = {},
         that,
         rvCompanyCardContractsSrv,
-        $q;
+        $q,
+        $stateParams;
 
     beforeEach(function() {
         module('sntRover');
-        inject(function (_$controller_, _rvCompanyCardContractsSrv_, _$rootScope_, _$q_) {
+        inject(function (_$controller_, _rvCompanyCardContractsSrv_, _$rootScope_, _$q_, _$stateParams_) {
             $controller = _$controller_;
             $scope = _$rootScope_.$new();
             rvCompanyCardContractsSrv = _rvCompanyCardContractsSrv_;
             $q = _$q_;
+            $stateParams = _$stateParams_;
+        });
+        angular.extend($scope, {
+            contactInformation: {
+                id: '2466'
+            }
         });
         that = $controller('rvCardContractsMainCtrl', {
             $scope: $scope
@@ -19,6 +26,7 @@ describe('rvCardContractsMainCtrl', function() {
     });
 
     it('call contracts list API', function() {
+        $stateParams.id = 'add';
         spyOn(rvCompanyCardContractsSrv, "fetchContractsList").and.callFake(function() {
             var deferred = $q.defer();
 
