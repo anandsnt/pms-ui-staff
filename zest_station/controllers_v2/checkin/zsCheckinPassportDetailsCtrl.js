@@ -83,7 +83,7 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
             var isCollectAddressEnabled = $scope.$parent.zestStationData.kiosk_collect_guest_address;
 
             if ($scope.mode === 'PASSPORT_DETAILS') {
-                if(isCollectAddressEnabled) {
+                if (isCollectAddressEnabled) {
                     $state.go('zest_station.collectGuestAddress');
                 } else {
                     $state.go('zest_station.checkInReservationSearch');
