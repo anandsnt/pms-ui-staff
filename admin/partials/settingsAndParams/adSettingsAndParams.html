@@ -106,11 +106,22 @@
 						<div class="entry full-width actions_margin_top" ng-show="is_multi_currency_enabled">
 							<label> Hotel Rate Currencies <strong>*</strong> </label>
 							<div id="available-charge-codes" class="boxes col2">
-								<ad-checkbox ng-repeat="currency in currency_list"
+								<ad-checkbox ng-repeat="currency in rate_currency_list"
 								is-checked="currency.is_selected"
 								label="{{currency.code +' - ' + currency.symbol}}"
 								parent-label-class="room-likes" span-class="checkbox-background"
-								on-click="selectedCurrency(currency.id)"></ad-checkbox>
+								on-click="selectedRateCurrency(currency.id)"></ad-checkbox>
+							</div>
+						</div>
+
+						<div class="entry full-width actions_margin_top" ng-show="is_multi_currency_enabled">
+							<label> Hotel Payment Currencies <strong>*</strong> </label>
+							<div id="available-charge-codes" class="boxes col2">
+								<ad-checkbox ng-repeat="currency in payment_currency_list"
+								is-checked="currency.is_selected"
+								label="{{currency.code +' - ' + currency.symbol}}"
+								parent-label-class="room-likes" span-class="checkbox-background"
+								on-click="selectedPaymentCurrency(currency.id)"></ad-checkbox>
 							</div>
 						</div>					
            		  
