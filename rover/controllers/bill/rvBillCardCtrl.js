@@ -3350,13 +3350,13 @@ sntRover.controller('RVbillCardController',
 			if (sntapp.cordovaLoaded) {
 				cordova.exec(billCardPrintCompleted,
 					function(error) {
-						billCardPrintCompleted();
+						receiptPrintCompleted();
 					}, 'RVCardPlugin', 'printWebView', []);
 			}
 			else
 			{
 				window.print();
-				// billCardPrintCompleted();
+				receiptPrintCompleted();
 			}
 		}, 1000);
 	});
