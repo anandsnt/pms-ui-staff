@@ -70,7 +70,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 WEEKLY: 'WEEKLY',
                 MONTHLY: 'MONTHLY',
                 RUN_ONCE: 'RUN_ONCE',
-                EVERY_MINUTE: 'EVERY_MINUTE'
+                EVERY_MINUTE: 'MINUTES'
             };
 
             if ( frequency ) {
@@ -160,7 +160,8 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             if ( ! $scope.scheduleParams.frequency_id ) {
                 $scope.createErrors.push('Repeat frequency in details');
             }
-            if ( ! $scope.emailList.length ) {
+            if ( ! $scope.emailList.length || !$scope.scheduleParams.selectedFtpRecipient || 
+                !$scope.scheduleParams.selectedCloudAccount ) {
                 $scope.createErrors.push('Emails/SFTP/Dropbox/Google Drive in distribution list');
             }
             if (!$scope.customExportsScheduleParams.exportName) {
@@ -558,7 +559,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                     if (!filterValues[paramKey]) {
                         filterValues[paramKey] = [];
                     }
-                    
+
                     if (filter.selectedSecondLevel && filter.rangeValue) {
                         filterValues[paramKey].push({
                             operator: filter.selectedSecondLevel,
