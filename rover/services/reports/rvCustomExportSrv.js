@@ -350,7 +350,8 @@ angular.module('sntRover').service('RVCustomExportSrv', [
                 var results = _.map(response, function (each) {
                     return {
                         id: each.id,
-                        value: each.value
+                        value: each.value,
+                        code: each.code
                     };
                 });
 
