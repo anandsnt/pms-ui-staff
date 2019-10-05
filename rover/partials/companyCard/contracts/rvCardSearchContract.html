@@ -9,7 +9,7 @@
             </button>
             <button type="submit" name="submit" class="icons icon-search">Search</button>
              <!-- add readonly if it's read only -->
-            <input ng-model="contractData.rateSearchQuery" ng-change="searchRate()" name="faux-select-query" id="faux-select-query" class="query" placeholder="Search by Rate Name or Code" autocomplete="off" type="search">
+            <input ng-readonly="contractData.disableFields" ng-model="contractData.rateSearchQuery" ng-change="searchRate()" name="faux-select-query" id="faux-select-query" class="query" placeholder="Search by Rate Name or Code" autocomplete="off" type="search">
         </div>
         <!-- remove .hidden when searching -->
         <div class="scrollable" ng-show="contractData.searchResults.length > 0" ng-iscroll='searchResultsList'>
