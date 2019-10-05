@@ -11,7 +11,7 @@ angular.module('sntRover').controller('rvCardSearchContractCtrl', ['$scope', 'rv
                 $scope.contractData.selectedRateList = [];
             }
             else {
-                $scope.contractData.selectedRateList = $scope.contractData.contract_rates || [];
+                $scope.contractData.selectedRateList = $scope.contractData.editData.contract_rates || [];
             }
         };
 
