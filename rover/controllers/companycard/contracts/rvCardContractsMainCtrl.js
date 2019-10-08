@@ -16,7 +16,6 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 			selectedRateIdList: [],
 			accountId: '',
 			showNightsModal: false,
-			selectedContract: '',
 			userHasPermission: rvPermissionSrv.getPermissionValue('EDIT_CONTRACT_ACCESS_CODE')
 		};
 		var that = this;
