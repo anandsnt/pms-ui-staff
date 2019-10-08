@@ -11,7 +11,7 @@ angular.module('sntRover').controller('rvCardSearchContractCtrl', ['$scope', 'rv
                 $scope.contractData.selectedRateList = [];
             }
             else {
-                $scope.contractData.selectedRateList = $scope.contractData.contract_rates || [];
+                $scope.contractData.selectedRateList = $scope.contractData.editData.contract_rates || [];
             }
         };
 
@@ -39,8 +39,9 @@ angular.module('sntRover').controller('rvCardSearchContractCtrl', ['$scope', 'rv
                 successCallBack: fetchRateContractSuccessCallback,
                 failureCallBack: fetchRateContractFailureCallback,
                 params: {
-                    "account_id": $scope.contractData.accountId,
-                    "query": $scope.contractData.rateSearchQuery
+                    'account_id': $scope.contractData.accountId,
+                    'query': $scope.contractData.rateSearchQuery,
+                    'rate_ids': _.pluck($scope.contractData.selectedRateList, 'id')
                 }
             };
 
