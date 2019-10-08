@@ -115,7 +115,6 @@
 			};
 
 			var checkinGuest = function() {
-				var bypassReasonId = zsCheckinSrv.getPassportBypassReason();
 				var stateParams = JSON.parse($stateParams.params);
 				var checkinParams = {
 					'reservation_id': stateParams.reservation_id,
@@ -124,8 +123,7 @@
 					'do_not_cc_auth': false,
 					'is_promotions_and_email_set': false,
 					'is_kiosk': true,
-					'signature': stateParams.signature,
-					'passport_bypass_reason_id': bypassReasonId
+					'signature': stateParams.signature
 				};
 				var options = {
 					params: checkinParams,
