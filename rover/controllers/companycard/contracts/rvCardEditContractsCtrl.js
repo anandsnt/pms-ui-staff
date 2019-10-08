@@ -64,6 +64,28 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'rvC
             }
         };
 
+        /**
+         * Determine if access code should be editable
+         */
+        $scope.editAccessCode = function() {
+            var isReadOnly;
+
+            if ($scope.contractData.hasEditAccessCodePermission) {
+                /**
+                 * Should be readonly for expired contracts, irrespective of permission.
+                 * If contract is not expired, disableFields = false
+                 * so isReadonly = false, accesscode is not readonly
+                 * i.e., accesscode is editable
+                 */
+                isReadOnly = $scope.contractData.disableFields;
+            }
+            else {
+                // Otherwise accesscode is not editable, i.e., it's readonly
+                isReadOnly = true;
+            }
+            return isReadOnly;
+        };
+
         // To popup contract start date
 		$scope.contractStart = function() {
             if (!$scope.contractData.disableFields) {

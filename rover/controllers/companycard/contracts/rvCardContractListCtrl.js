@@ -27,7 +27,7 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
          * @param {String} listType - PAST, PRESENT, FUTURE string values
          */
         $scope.openContractsList = function(item) {
-            item.opened = !item.opened
+            item.opened = !item.opened;
             refreshScroller();
         };
         /**
@@ -43,7 +43,6 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
          */
         $scope.newContract = function() {
             $scope.contractData.mode = 'ADD';
-            $scope.contractData.editData = {};
             $scope.contractData.selectedRateList = [];
             $scope.contractData.rateSearchQuery = '';
             $scope.$emit('refreshContractsScroll');
