@@ -41,7 +41,7 @@ angular.module('sntRover').controller('rvCardSearchContractCtrl', ['$scope', 'rv
                 params: {
                     'account_id': $scope.contractData.accountId,
                     'query': $scope.contractData.rateSearchQuery,
-                    'rate_ids': _.pluck($scope.contractData.selectedRateList, 'id')
+                    'selected_rate_ids': _.pluck($scope.contractData.selectedRateList, 'id')
                 }
             };
 
