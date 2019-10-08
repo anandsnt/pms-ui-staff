@@ -91,4 +91,18 @@ angular.module('sntRover').service('rvCompanyCardContractsSrv', ['$q', 'rvBaseWe
         return deferred.promise;
     };
 
+    this.fetchContractsForLinking = function(params) {
+        var url = '/api/contracts/search_contracts',
+            deferred = $q.defer();
+
+        rvBaseWebSrvV2.getJSON(url, params)
+            .then(function(data) {
+                deferred.resolve(data);
+            },
+            function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+        return deferred.promise;
+    };
+
 }]);
