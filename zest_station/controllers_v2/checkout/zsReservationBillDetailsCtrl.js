@@ -271,7 +271,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             $timeout(function() {
                 var $contentHeight = ($('#content').outerHeight()),
                     $h1Height = $('#minibar-heading').length ? $('#minibar-heading').outerHeight(true) : 0,
-                    $textualHeight = parseFloat($contentHeight - $h1Height);
+                    $textualHeight = parseFloat($contentHeight - $h1Height + 5);
 
                 $scope.chargeData.maxHeight = $textualHeight + 'px';
                 refreshChargeScroller();
