@@ -1,10 +1,10 @@
 sntRover.controller('RVdashboardController',
     ['$scope', 'ngDialog', 'RVDashboardSrv', 'RVSearchSrv', 'dashBoarddata',
         '$rootScope', '$filter', '$state', 'RVWorkstationSrv', 'roomTypes', '$timeout', '$interval', '$log',
-        'RVHotelDetailsSrv', '$transitions',
+        'RVHotelDetailsSrv', '$transitions', 'Toggles',
         function($scope, ngDialog, RVDashboardSrv, RVSearchSrv, dashBoarddata,
                  $rootScope, $filter, $state, RVWorkstationSrv, roomTypes, $timeout, $interval, $log,
-                 RVHotelDetailsSrv, $transitions) {
+                 RVHotelDetailsSrv, $transitions, Toggles) {
 
             // setting the heading of the screen
             $scope.heading = 'DASHBOARD_HEADING';
@@ -376,4 +376,10 @@ sntRover.controller('RVdashboardController',
                 $scope.callAPI(RVHotelDetailsSrv.fetchInfrasecDetails, options);
             };
 
+            $scope.analyticsDashboardEnabled = Toggles.isEnabled('dashboard_analytics');
+
+            $scope.isInAnalyticDashboard = false;
+            $scope.toggleAnalyticsView = function() {
+                $scope.isInAnalyticDashboard = !$scope.isInAnalyticDashboard;
+            };
         }]);

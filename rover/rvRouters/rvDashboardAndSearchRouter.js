@@ -100,8 +100,7 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
         });
         $stateProvider.state('rover.dashboard.housekeeping', {
             url: '/housekeeping',  // TODO: check can we reduced it to hk?
-            templateUrl: '/assets/partials/dashboard/rvHouseKeepingDashboard.html',
-            controller: 'RVhouseKeepingDashboardController'
+            templateUrl: '/assets/partials/dashboard/rvHouseKeepingDashboard.html'
         });
 
         /**
