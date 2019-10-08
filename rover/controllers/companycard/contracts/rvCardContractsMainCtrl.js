@@ -16,7 +16,6 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 			selectedRateIdList: [],
 			accountId: '',
 			showNightsModal: false,
-			selectedContract: '',
 			hasEditAccessCodePermission: rvPermissionSrv.getPermissionValue('EDIT_CONTRACT_ACCESS_CODE'),
 			hasDeleteContractPermission: rvPermissionSrv.getPermissionValue('DELETE_CONTRACT')
 		};
@@ -71,7 +70,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 			setSideListCount(currentContracts, futureContracts, pastContracts);
 
 			if (currentContracts.length !== 0 || pastContracts.length !== 0 || futureContracts.length !== 0) {
-				if ($scope.contractData.mode === '') {
+				if ($scope.contractData.selectedContract === '') {
 					$scope.contractData.selectedContract = data.contract_selected || '';
 				}
 				// EDIT contract flow
@@ -79,7 +78,23 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 				$scope.contractData.noContracts = false;
 				that.fetchContractDetails($scope.contractData.selectedContract);
 			}
-			if ($scope.contractData.selectedContract !== '') {
+			else {
+				$scope.contractData = {
+					mode: '',
+					contractsList: [],
+					editData: {},
+					disableFields: false,
+					noContracts: true,
+					noStatistics: true,
+					selectedContract: '',
+					rateSearchResult: [],
+					rateSearchQuery: '',
+					selectedRateList: [],
+					selectedRateIdList: [],
+					showNightsModal: false,
+				};
+			}
+			if ($scope.contractData.selectedContract !== '' && $scope.contractData.mode !== '') {
 				refreshContractScrollers();
 			}
 		},

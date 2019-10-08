@@ -64,6 +64,7 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'rvC
                     $scope.$emit('setErrorMessage', error);
                 },
                 deleteContractSuccessCallback = function(data) {
+                    $scope.contractData.selectedContract = '';
                     $scope.$emit('fetchContractsList');
                 };
 

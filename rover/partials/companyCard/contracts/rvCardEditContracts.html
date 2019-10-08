@@ -93,7 +93,7 @@
         </div>
     </div>
     <div class="contract-details-footer">
-        <button ng-show="!contractData.hasDeleteContractPermission" type="button" class="button red" ng-click="deleteContract()">Delete Contract</button>
+        <button ng-show="contractData.hasDeleteContractPermission" type="button" class="button red" ng-click="deleteContract()">Delete Contract</button>
         <button ng-show="!contractData.disableFields" type="button" class="button green" ng-click="updateContract()">Update Contract</button>
     </div>
 </div>
