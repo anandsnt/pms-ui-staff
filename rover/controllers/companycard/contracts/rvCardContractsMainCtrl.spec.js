@@ -33,7 +33,7 @@ describe('rvCardContractsMainCtrl', function() {
             deferred.resolve({});
             return deferred.promise;
         });
-        that.init();
+        that.fetchContracts();
         expect(rvCompanyCardContractsSrv.fetchContractsList).toHaveBeenCalled();
     });
 

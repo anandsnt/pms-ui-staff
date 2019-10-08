@@ -62,7 +62,7 @@
                 </div>
                 <div class="entry">
                     <label for="contract-code">Access Code</label>
-                    <input ng-readonly="!contractData.userHasPermission" name="contract-code" id="contract-code"  ng-model="contractData.editData.access_code" placeholder="Access Code" type="text" />
+                    <input ng-readonly="editAccessCode()" name="contract-code" id="contract-code"  ng-model="contractData.editData.access_code" placeholder="Access Code" type="text" />
                 </div>
                 <div class="entry margin has-datepicker">
                     <label for="contract-start">Start Date</label>
