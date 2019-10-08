@@ -173,6 +173,7 @@
 "KEY_CONFIRMATION_IMG": "Key confirmation image",
 "SCAN_ID_TO_FIND_RESERVATION": "Scan ID to find Reservations",
 "STATION_PASSPORT_ENTRY_HEADER": "Passport entry settings",
+"STATION_PASSPORT_ENTRY_LABEL": "Collect passport number",
 "STATION_PASSPORT_ENTRY_BYPASS_LABEL": "Bypass passport entry",
 "STATION_PASSPORT_ENTRY_BYPASS_REASON_LABEL": "Passport bypass reason",
 "ADD_NEW_REASON": "Add new reason",

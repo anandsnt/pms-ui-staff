@@ -32,12 +32,15 @@ describe('zsCheckinGuestAddressCtrl', function() {
             zsCheckinSrv = _zsCheckinSrv_;
             zsEventConstants = _zsEventConstants_;
         });
+        angular.extend($scope, {
+            'zestStationData': {}
+        });
         $controller('zsCheckinGuestAddressCtrl', {
             $scope: $scope
         });
         $scope.focusInputField = function () {
             return false;
-        };
+        };        
         zsCheckinSrv.setCheckInReservations([{
             id: 123
         }]);
@@ -53,15 +56,13 @@ describe('zsCheckinGuestAddressCtrl', function() {
             .toEqual(false);
     });
 
-    // it('On selecting address on file, go to passport entry page', function () {
-    //     spyOn($state, 'go');
-    //     $scope.zestStationData = {
-    //         'enable_passport_entry': true
-    //     };
-    //     $scope.usePresentAddress();
-    //     expect($state.go)
-    //         .toHaveBeenCalledWith('zest_station.zsCheckinPassportDetails', jasmine.any(Object));
-    // });
+    it('On selecting address on file, go to passport entry page', function () {
+        $scope.zestStationData.enable_passport_entry = true;
+        spyOn($state, 'go');
+        $scope.usePresentAddress();
+        expect($state.go)
+            .toHaveBeenCalledWith('zest_station.zsCheckinPassportDetails', jasmine.any(Object));
+    });
 
     it('On selecting new address, screen mode has to NEW_ADDRESS and address1 has to be focused', function () {
         spyOn($scope, 'focusInputField');
@@ -102,6 +103,7 @@ describe('zsCheckinGuestAddressCtrl', function() {
                 'street2': '',
                 'country_id': '1'
             };
+            $scope.zestStationData = {};
             spyOn(zsCheckinSrv, 'saveGuestAddress')
                 .and
                 .callFake(function () {
@@ -117,12 +119,13 @@ describe('zsCheckinGuestAddressCtrl', function() {
             expect(zsCheckinSrv.saveGuestAddress)
                 .toHaveBeenCalled();
         });
-        // it('On clicking next with valid address,call API to save address and on success  go to reservation details page', function () {
-        //     $scope.nextButtonClicked();
-        //     $scope.$digest();
-        //     expect($state.go)
-        //         .toHaveBeenCalledWith('zest_station.checkInReservationDetails', jasmine.any(Object));
-        // });
+        it('On clicking next with valid address,call API to save address and on success  go to reservation details page', function () {
+            $scope.zestStationData.enable_passport_entry = false;
+            $scope.nextButtonClicked();
+            $scope.$digest();
+            expect($state.go)
+                .toHaveBeenCalledWith('zest_station.checkInReservationDetails', jasmine.any(Object));
+        });
     });
 
     describe('Back button actions', function() {
