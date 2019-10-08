@@ -95,6 +95,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 		 */
 		fetchContractDetailsSuccessCallback = function(data) {
 			$scope.contractData.editData = data;
+			$scope.contractData.selectedRateList = data.contract_rates;
 			$scope.contractData.disableFields = data.end_date < $rootScope.businessDate;
 			if ($scope.contractData.showNightsModal) {
 				ngDialog.open({
