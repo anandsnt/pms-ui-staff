@@ -37,7 +37,7 @@
     </div>
     <!-- If we don't show the bottom form, add .without-footer -->
     <!-- If we don't show the search for some reason, add .without-header -->
-    <div class="contracts-details-form scrollable" ng-iscroll="editContractScroller">
+    <div class="contracts-details-form scrollable" ng-class="{'without-footer': contractData.disableFields}" ng-iscroll="editContractScroller">
         <div class="wrapper float">
             <div class="holder left">
                 <strong class="h3">Contract Details</strong>
@@ -92,7 +92,7 @@
             </div> -->
         </div>
     </div>
-    <div class="contract-details-footer">
-        <button ng-show="!contractData.disableFields" type="button" class="button green" ng-click="updateContract()">Update Contract</button>
+    <div class="contract-details-footer" ng-if="!contractData.disableFields">
+        <button type="button" class="button green" ng-click="updateContract()">Update Contract</button>
     </div>
 </div>
