@@ -15,7 +15,7 @@ admin.controller('adComtrolCtrl', ['$scope', 'config', 'adInterfacesSrv', 'ngDia
         };
 
         var dataSwap = function() {
-            return adIFCSrv.post('comtrol', 'data_swap', {})
+            return adIFCSrv.post('comtrol', 'data_swap', {});
         };
 
         $scope.interface = 'COMTROL';
