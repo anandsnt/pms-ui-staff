@@ -46,7 +46,7 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
             var options = {
                 params: params,
                 successCallBack: function () {
-                    $scope.checkinGuest(stateParams);
+                    $scope.checkinGuest();
                 }
             };
 
@@ -58,7 +58,7 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
                 return;
             }
             zsCheckinSrv.savePassportBypassReason($scope.data.bypassReasonId);
-            $scope.checkinGuest(stateParams);
+            $scope.checkinGuest();
         };
 
         $scope.onchangePassportNumber = function () {
@@ -91,6 +91,7 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
             $scope.$emit('hideLoader');
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
             $scope.bypass_passport_entry = $scope.zestStationData.bypass_passport_entry;
+            zsCheckinSrv.savePassportBypassReason("");
         }());
     }
 ]);
