@@ -1,4 +1,4 @@
-angular.module('sntRover').controller('rvCardSearchContractCtrl', ['$scope', 'rvCompanyCardContractsSrv',
+angular.module('sntRover').controller('rvCardSearchContractedRateCtrl', ['$scope', 'rvCompanyCardContractsSrv',
 	function($scope, rvCompanyCardContractsSrv) {
         
         BaseCtrl.call(this, $scope);
@@ -33,18 +33,21 @@ angular.module('sntRover').controller('rvCardSearchContractCtrl', ['$scope', 'rv
                 successCallBack: fetchRateContractSuccessCallback,
                 failureCallBack: fetchRateContractFailureCallback,
                 params: {
-                    'contract_id': $scope.contractData.selectedContract,
                     'query': $scope.contractData.rateSearchQuery,
                     'selected_rate_ids': _.pluck($scope.contractData.selectedRateList, 'id')
                 }
             };
+
+            if ($scope.contractData.mode === 'EDIT') {
+                options.params.contract_id = $scope.contractData.selectedContract;
+            }
 
             $scope.callAPI(rvCompanyCardContractsSrv.fetchRateContract, options);
         };
 
         // Handle rate search.
         $scope.searchRate = function() {
-            if ($scope.contractData.rateSearchQuery.length > 2) {
+            if ($scope.contractData.rateSearchQuery.length > 1) {
                 that.fetchRateContract();
             }
         };
