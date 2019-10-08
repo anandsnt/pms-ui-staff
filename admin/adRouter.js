@@ -21,11 +21,21 @@ admin.config([
             }
         });
 
+        $stateProvider.state('auth', {
+            url: '/admin/snt?token',
+            onEnter: ['$state', '$stateParams', '$window',  function ($state, $stateParams, $window) {
+                if ($stateParams.token) {
+                    $window.localStorage.setItem('jwt', $stateParams.token);
+                }
+                $state.go('snt', {});
+            }]
+        });
+
         $stateProvider.state('snt', {
             url: '/admin/snt',
             controller: 'adTopCtrl',
             resolve: {
-                adminDashboardConfigData: ['ADAppSrv', function(ADAppSrv) {
+                adminDashboardConfigData: ['ADAppSrv', function (ADAppSrv) {
                     return ADAppSrv.fetchDashboardConfig();
                 }]
             }

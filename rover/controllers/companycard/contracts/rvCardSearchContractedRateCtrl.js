@@ -1,4 +1,4 @@
-angular.module('sntRover').controller('rvCardSearchContractCtrl', ['$scope', 'rvCompanyCardContractsSrv',
+angular.module('sntRover').controller('rvCardSearchContractedRateCtrl', ['$scope', 'rvCompanyCardContractsSrv',
 	function($scope, rvCompanyCardContractsSrv) {
         
         BaseCtrl.call(this, $scope);
@@ -7,12 +7,6 @@ angular.module('sntRover').controller('rvCardSearchContractCtrl', ['$scope', 'rv
         that.initialise = function() {
             $scope.contractData.searchResults = [];
             $scope.setScroller('searchResultsList');
-            if ($scope.contractData.mode === 'ADD') {
-                $scope.contractData.selectedRateList = [];
-            }
-            else {
-                $scope.contractData.selectedRateList = $scope.contractData.contract_rates || [];
-            }
         };
 
         // Handle refresh scroll
@@ -39,17 +33,21 @@ angular.module('sntRover').controller('rvCardSearchContractCtrl', ['$scope', 'rv
                 successCallBack: fetchRateContractSuccessCallback,
                 failureCallBack: fetchRateContractFailureCallback,
                 params: {
-                    "account_id": $scope.contractData.accountId,
-                    "query": $scope.contractData.rateSearchQuery
+                    'query': $scope.contractData.rateSearchQuery,
+                    'selected_rate_ids': _.pluck($scope.contractData.selectedRateList, 'id')
                 }
             };
+
+            if ($scope.contractData.mode === 'EDIT') {
+                options.params.contract_id = $scope.contractData.selectedContract;
+            }
 
             $scope.callAPI(rvCompanyCardContractsSrv.fetchRateContract, options);
         };
 
         // Handle rate search.
         $scope.searchRate = function() {
-            if ($scope.contractData.rateSearchQuery.length > 2) {
+            if ($scope.contractData.rateSearchQuery.length > 1) {
                 that.fetchRateContract();
             }
         };

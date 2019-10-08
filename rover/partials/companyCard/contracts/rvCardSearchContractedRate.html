@@ -1,4 +1,4 @@
-<div class="entry find-rate full-width" ng-controller="rvCardSearchContractCtrl">
+<div class="entry find-rate full-width" ng-controller="rvCardSearchContractedRateCtrl">
     <label for="rate-query">Contracted Rate</label>
     <!-- Add .searching when seaching -->
     <!-- Add .hidden to hide it/when not editable -->
@@ -9,7 +9,7 @@
             </button>
             <button type="submit" name="submit" class="icons icon-search">Search</button>
              <!-- add readonly if it's read only -->
-            <input ng-model="contractData.rateSearchQuery" ng-change="searchRate()" name="faux-select-query" id="faux-select-query" class="query" placeholder="Search by Rate Name or Code" autocomplete="off" type="search">
+            <input ng-readonly="contractData.disableFields" ng-model="contractData.rateSearchQuery" ng-change="searchRate()" name="faux-select-query" id="faux-select-query" class="query" placeholder="Search by Rate Name or Code" autocomplete="off" type="search">
         </div>
         <!-- remove .hidden when searching -->
         <div class="scrollable" ng-show="contractData.searchResults.length > 0" ng-iscroll='searchResultsList'>
@@ -23,7 +23,7 @@
         </div>
     </div>
     <!-- Add .disabled when not editable -->
-    <div class="contracted-rates">
+    <div class="contracted-rates" ng-class="{'disabled': contractData.disableFields}">
         <li ng-repeat="rate in contractData.selectedRateList">
             <span class="rate-name">{{rate.name}}</span>
             <span class="rate-code">{{rate.code}}</span>
