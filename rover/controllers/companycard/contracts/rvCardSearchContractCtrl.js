@@ -7,12 +7,6 @@ angular.module('sntRover').controller('rvCardSearchContractCtrl', ['$scope', 'rv
         that.initialise = function() {
             $scope.contractData.searchResults = [];
             $scope.setScroller('searchResultsList');
-            if ($scope.contractData.mode === 'ADD') {
-                $scope.contractData.selectedRateList = [];
-            }
-            else {
-                $scope.contractData.selectedRateList = $scope.contractData.editData.contract_rates || [];
-            }
         };
 
         // Handle refresh scroll
