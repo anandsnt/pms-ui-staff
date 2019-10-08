@@ -595,9 +595,14 @@
                             #border-radius > .rounded();
                             .show;
 
-                            &:hover,
-                            &:active { background-position: 95% -140px !important; }
+                            &:hover:not([disabled]),
+                            &:active:not([disabled]) { background-position: 95% -140px !important; }
 
+                            &[disabled] {
+                                cursor: default;
+                                background-color: rgba(0, 0, 0, 0.01) !important;
+                            }
+                            
                             @media @highdpi { background-image: @calendar2x; }
                         }
 
