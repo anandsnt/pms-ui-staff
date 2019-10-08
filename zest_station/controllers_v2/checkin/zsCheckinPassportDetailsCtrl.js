@@ -12,7 +12,6 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
         $controller('zsCheckinNextPageBaseCtrl', {
             $scope: $scope
         });
-        var stateParams = JSON.parse($stateParams.params);
         $scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
         $scope.mode = 'PASSPORT_DETAILS';
         $scope.guestDetails = {};
@@ -78,8 +77,6 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
         };
 
         $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function () {
-            var isCollectAddressEnabled = $scope.$parent.zestStationData.kiosk_collect_guest_address;
-
             if ($scope.mode === 'PASSPORT_DETAILS') {
                 $state.go('zest_station.checkInReservationDetails');
             } else if ($scope.mode === 'COLLECT_PASSPORT_NUMBER' || $scope.mode === 'BYPASS_PASSPORT_DETAILS') {
