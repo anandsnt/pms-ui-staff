@@ -16,7 +16,6 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 			selectedRateIdList: [],
 			accountId: '',
 			showNightsModal: false,
-			selectedContract: '',
 			userHasPermission: rvPermissionSrv.getPermissionValue('EDIT_CONTRACT_ACCESS_CODE')
 		};
 		var that = this;
@@ -88,6 +87,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 		 */
 		fetchContractDetailsSuccessCallback = function(data) {
 			$scope.contractData.editData = data;
+			$scope.contractData.selectedRateList = data.contract_rates;
 			$scope.contractData.disableFields = data.end_date < $rootScope.businessDate;
 			if ($scope.contractData.showNightsModal) {
 				ngDialog.open({
