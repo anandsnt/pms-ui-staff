@@ -6,7 +6,7 @@
     <div class="entry">
         <div class="select">
             <label for="export-output">Select Output Format</label>
-            <select id="export-output" ng-model="customExportsScheduleParams.format" convert-to-number>
+            <select id="export-output" ng-model="customExportsScheduleParams.format" convert-to-number ng-change="onOutputFormatChange()">
                 <option value="">Select output format</option>
                 <option ng-repeat="format in customExportsData.exportFormats" value="{{format.id}}">{{format.value}}</option>
             </select>
