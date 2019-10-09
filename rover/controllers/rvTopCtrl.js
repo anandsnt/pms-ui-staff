@@ -21,10 +21,15 @@ angular.module('sntRover').controller('topController',
 
             var setPropertyAndNavigate = function(uuid) {
                 sntAuthorizationSrv.setProperty(uuid);
-                // NOTE: This listener is not removed on $destroy on purpose!
-                $rootScope.$on('$locationChangeStart', routeChange);
 
                 $window.history.pushState("initial", "Showing Dashboard", "/staff/h/" + uuid);
+
+                // Initiate listener after first URL change
+                $timeout(function () {
+                    // NOTE: This listener is not removed on $destroy on purpose!
+                    $rootScope.$on('$locationChangeStart', routeChange);
+                });
+
                 if ($stateParams.state) {
                     var params = ($stateParams.params && angular.fromJson(decodeURI($stateParams.params))) || {};
 

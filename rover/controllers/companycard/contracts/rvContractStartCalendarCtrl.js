@@ -31,31 +31,8 @@ sntRover.controller('rvContractStartCalendarCtrl', ['$rootScope', '$scope', 'ngD
 			minDate: tzIndependentDate(minDate),
 			yearRange: "0:+10",
 			onSelect: function() {
-				var endDate,
+				var endDate = moment($scope.date).add(1, 'days'),
 					beginDate = moment($scope.date);
-				// Above, set the selected date as the beginDate for the form
-
-				/**
-				 * EndDate can not be same as the start date
-				 * So pick the end date in either cases, if any, else stick with the selected date
-				 * 
-				 * Applying tzIndependentDate on $scope.date again is to
-				 * avoid making the beginDate and endDate "Objects" same - two variables for same memory
-				 */
-				if ($scope.contractData.mode === 'ADD') {
-					endDate = $scope.addData.endDate ? moment($scope.addData.endDate) : moment($scope.date);
-				}
-				else if ($scope.contractData.mode === 'EDIT') {
-					endDate = $scope.contractData.editData.end_date ? moment($scope.contractData.editData.end_date) : moment($scope.date);
-				}
-
-				/**
-				 * endDate should always be minimum 1 day greater that beginDate
-				 * If it's not, make it.
-				 */
-				if (beginDate >= endDate) {
-					endDate = moment($scope.date).add(1, 'days');
-				}
 
 				if ($scope.contractData.mode === 'ADD') {
 					$scope.addData.startDate = beginDate.format('YYYY-MM-DD');

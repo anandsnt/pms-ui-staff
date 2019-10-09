@@ -1,4 +1,4 @@
-describe('rvCardSearchContractCtrl', function() {
+describe('rvCardSearchContractedRateCtrl', function() {
     var $controller,
         $scope = {},
         $q,
@@ -31,7 +31,7 @@ describe('rvCardSearchContractCtrl', function() {
             }
         });
 
-        that = $controller('rvCardSearchContractCtrl', {
+        that = $controller('rvCardSearchContractedRateCtrl', {
             $scope: $scope
         });
     });
