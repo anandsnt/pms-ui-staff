@@ -798,7 +798,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 				_.each($scope.stateCheck.stayDates, function(dayInfo) {
 					dayInfo.amount = dayInfo.rateDetails && dayInfo.rateDetails.modified_amount || null;
-					dayInfo.rateCurrency = dayInfo.rateDetails.rateCurrency;
+					dayInfo.rateCurrency = dayInfo.rateDetails && dayInfo.rateDetails.rateCurrency;
 				});
 
 				if (RVReservationDataService.isVaryingRates(ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates, ARRIVAL_DATE, DEPARTURE_DATE, $scope.reservationData.numNights) || RVReservationDataService.isVaryingOccupancy(ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates, ARRIVAL_DATE, DEPARTURE_DATE, $scope.reservationData.numNights)) {
