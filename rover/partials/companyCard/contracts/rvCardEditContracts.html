@@ -60,6 +60,7 @@
         </div>
     </div>
     <div class="contract-details-footer" ng-if="!contractData.disableFields">
+        <button type="button" class="button red" ng-if="!contractData.editData.is_master_contract" ng-click="clickedUnlinkContracts()">Unlink Contract</button>
         <button type="button" class="button green" ng-click="updateContract()">Update Contract</button>
     </div>
 </div>
