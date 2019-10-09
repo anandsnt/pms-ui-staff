@@ -35,8 +35,8 @@ admin.controller('ADBalanceJournalCtrl', [
 		 */
 		$scope.startJob = function() {
 			var successCallback = function(data) {
-				var endDate = moment(tzIndependentDate($scope.payload.end_date)).format("DD-MM-YYYY");
-				var firstDate = moment(tzIndependentDate($scope.payload.first_date)).format("DD-MM-YYYY");
+				var endDate = moment(tzIndependentDate($scope.payload.end_date)).format("DD-MM-YYYY"),
+					firstDate = moment(tzIndependentDate($scope.payload.first_date)).format("DD-MM-YYYY");
 				
 				$(".balance-status").addClass('notice');
 				$(".balance-status").removeClass('success');
