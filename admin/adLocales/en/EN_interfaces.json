@@ -140,5 +140,4 @@
 "SAFEACCOUNTING_HEADER": "Integrations > Back Office > Safe Accounting",
 "STAAH_HEADER": "Integrations > Central Reservation System > STAAH",
 "AUTHENTICATION_TOKEN": "Authentication Token",
-"charge_code_cost_center": "Charge Code - Cost Center",
-"EXCLUDE_TOURIST_TAX": "Exclude Tourist Tax"
+"charge_code_cost_center": "Charge Code - Cost Center"
