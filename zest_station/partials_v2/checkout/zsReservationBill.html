@@ -85,6 +85,23 @@
     </div>
 </section>
 <section id="main" role="main" ng-include="'/assets/partials_v2/checkout/zsPostCharge.html'" ng-if="showPostChargeScreen"></section>
+
+<!-- Add .open to show the popup -->
+<div class="popup" ng-class="{'open':showPostErrorPopup}">
+    <!-- Remove class "open" to hide popup content -->
+    <div class="popup-content">
+        <h2 class="nocaps">
+            <text editable-text="{{errorHeader}}"> {{ errorHeader  |translate}}</text>
+        </h2>
+        <h3 editable-text="{{errorMessage}}"> {{errorMessage | translate}}</h3>
+        <button type="button" class="button" click-touch='showPostErrorPopup = false'>
+            <text data-ng-bind-html="getTagValue('DONE_BTN')" editable-text="DONE"></text>
+        </button>
+    </div>
+</div>
+<!-- add .open when showing popup -->
+<div id="popup-overlay" ng-class="{'open': showPostErrorPopup}"></div>
+
 <!-- print option for stand alone-->
 <div ng-controller="zsPrintBillCtrl" ng-if="zestStationData.is_standalone || !showPostChargeScreen">
     <section id="main" role="main" class="centered" ng-show="printOpted">
