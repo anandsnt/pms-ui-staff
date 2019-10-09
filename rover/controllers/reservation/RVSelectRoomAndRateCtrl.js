@@ -1054,8 +1054,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
     					calculatedAmount = Number(parseFloat(calculatedAmount).toFixed(2));
     					details.rateDetails = {
     						actual_amount: calculatedAmount,
-    						modified_amount: calculatedAmount
-    						,
+    						modified_amount: calculatedAmount,
     						rateCurrency: dayInfo.rateCurrency
     					};
 
@@ -1541,8 +1540,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 								details.rateDetails = {
 									actual_amount: rateAmount,
-									modified_amount: rateAmount
-									,
+									modified_amount: rateAmount,
 									rateCurrency: details.rateCurrency
 								};
 
