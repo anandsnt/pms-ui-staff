@@ -46,8 +46,8 @@
         <h3 translate>PASPORT_BYPASS_REASON_SELECTOR_LABEL</h3>
         <form method="post" class="form">
             <div class="entry select select-with-button">
-                <select ng-model="data.bypassReasonId" ng-change="onchangeBypassReason()">
-                    <option ng-repeat="reason in bypassPassportReasons" value="{{reason.id}}">{{reason.description}}</option>
+                <select ng-model="data.bypassReason" ng-change="onchangeBypassReason()">
+                    <option ng-repeat="reason in bypassPassportReasons" value="{{reason}}">{{reason}}</option>
                 </select>
             </div>
             <div class="entry action">
