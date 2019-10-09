@@ -89,6 +89,7 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
             zsCheckinSrv.savePassportBypassReason("");
             var passportBypassReasons = $filter('translate')('PASSPORT_BYPASS_REASONS');
+            
             $scope.bypass_passport_entry = $scope.zestStationData.bypass_passport_entry && passportBypassReasons !== 'PASSPORT_BYPASS_REASONS';
             // The tag PASSPORT_BYPASS_REASONS has to be saved in admin with ';' separating reasons
             if ($scope.bypass_passport_entry) {
