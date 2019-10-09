@@ -7,13 +7,15 @@ angular.module('sntRover')
             '$stateParams',
             '$rootScope',
             'Toggles',
+            'ngDialog',
             function ($scope,
                       $timeout,
                       $state,
                       $filter,
                       $stateParams,
                       $rootScope,
-                      Toggles) {
+                      Toggles,
+                      ngDialog) {
 
             BaseCtrl.call(this, $scope);
 
@@ -351,6 +353,18 @@ angular.module('sntRover')
             // Clear the error msg
             $scope.clearErrorMsg = () => {
                 $scope.errorMessage = '';
+            };
+
+            // Handler for changing the output format
+            $scope.onOutputFormatChange = () => {
+                var selectedFormat = _.find($scope.customExportsData.exportFormats, {id: $scope.customExportsScheduleParams.format});
+                
+                if (selectedFormat && ( selectedFormat.value === 'XML' || selectedFormat.value === 'JSON') ) {
+                    ngDialog.open({
+                        template: '/assets/partials/common/rvWarningPopup.html',
+                        scope: $scope
+                    });
+                }
             };
 
             (function () {

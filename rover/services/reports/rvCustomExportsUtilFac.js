@@ -95,7 +95,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                 reportSubSrv.fetchBookingOrigins().then(function (data) {
                     selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues);
                     selectedFilter.options = {
-                        selectAll: false,
+                        selectAll: selectedValues ? data.length === selectedValues.length : true,
                         hasSearch: false,
                         key: 'name',
                         value_key: 'value'
@@ -117,7 +117,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                 reportSubSrv.fetchMarkets().then(function (data) {
                     selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues);
                     selectedFilter.options = {
-                        selectAll: false,
+                        selectAll: selectedValues ? data.length === selectedValues.length : true,
                         hasSearch: false,
                         key: 'name',
                         value_key: 'value'
@@ -429,6 +429,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
 
             switch (selectedFieldName) {
                 case customExportFilterParamsConst['BOOKING_ORIGIN_CODE']:
+                case customExportFilterParamsConst['ORIGIN_CODE']:
                     populateBookingOrigins(selectedFilter, selectedValues, deferred);
                     break;
                 case customExportFilterParamsConst['MARKET_CODE']:
