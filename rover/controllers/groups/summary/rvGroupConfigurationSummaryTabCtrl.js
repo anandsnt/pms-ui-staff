@@ -924,7 +924,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                     is_salutation_enabled: false,
                     is_include_rooming_list: false,
                     personal_salutation: '',
-                    locale: data.selected_language_code
+                    locale: data.selected_language_code,
+                    showLanguageField: data.show_language_field
                 };
                 ngDialog.open({
                     template: '/assets/partials/groups/summary/groupSendConfirmationPopup.html',
