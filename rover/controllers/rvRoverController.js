@@ -155,13 +155,14 @@ sntRover.controller('roverController', [
 
         $rootScope.isLateCheckoutTurnedOn = hotelDetails.late_checkout_settings.is_late_checkout_on;
         $rootScope.businessDate = hotelDetails.business_date;
+        $rootScope.hotelCurrencyId = hotelDetails.currency.id;
         $rootScope.currencySymbol = getCurrencySign(hotelDetails.currency.value);
         $rootScope.isMultiCurrencyEnabled = hotelDetails.is_multi_currency_enabled;
         $rootScope.invoiceCurrencySymbol = hotelDetails.is_multi_currency_enabled ? getCurrencySign(hotelDetails.selected_invoice_currency.value) : '';
         // CICO-35453 Currency Format
         $rootScope.currencyFormat = hotelDetails.currency_format && hotelDetails.currency_format.value;
         $rootScope.invoiceCurrencyObject = hotelDetails.selected_invoice_currency;
-        $rootScope.rateCurrencyList = hotelDetails.rate_currency_list;
+        $rootScope.exchangeCurrencyList = hotelDetails.currency_list_for_exchange;
         $rootScope.dateFormat = getDateFormat(hotelDetails.date_format.value);
         $rootScope.jqDateFormat = getJqDateFormat(hotelDetails.date_format.value);
         $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
@@ -170,6 +171,11 @@ sntRover.controller('roverController', [
         $rootScope.advanced_queue_flow_enabled = hotelDetails.advanced_queue_flow_enabled;
         $rootScope.isPmsProductionEnv = hotelDetails.is_pms_prod;
         $rootScope.isWorkStationMandatory = hotelDetails.is_workstation_mandatory;
+        $rootScope.paymentCurrencyList = hotelDetails.payment_currency_list;
+        $rootScope.shouldShowPaymentDropDown = false;
+        if ($rootScope.isMultiCurrencyEnabled && $rootScope.paymentCurrencyList.length > 0 ) {
+            $rootScope.shouldShowPaymentDropDown = true;
+        }
         // $rootScope.isRoomDiaryEnabled = hotelDetails.is_room_diary_enabled;
         // CICO-40544 - Now we have to enable menu in all standalone hotels
         // API not removing for now - Because if we need to disable it we can use the same param

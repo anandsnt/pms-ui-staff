@@ -677,6 +677,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         
 
         (function() {
+
             if ($stateParams.isQuickJump === 'true') {
                 if ($stateParams.quickJumpMode === 'TERMS_CONDITIONS') {
                     setTermsAndConditionsBasedOnSelectedLanguage();

@@ -1,7 +1,7 @@
 <div class="scrollable no-buttons" 
-     ng-iscroll="custom-export-filters-scroller"> <!-- Add vertical scroller here. Add .no-fields if there are no fields. -->
+     ng-iscroll="custom-export-filters-scroller"
+        ng-class="{'no-fields': filterData.appliedFilters.length === 0 && selectedColumns.length !== 0 }"> <!-- Add vertical scroller here. Add .no-fields if there are no fields. -->
     <div class="wrapper">
-        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <h3>Set Filters<span>Select Field and Apply Filters</span></h3>
 
         <!-- Show this instead of below HTML if there are no fields -->

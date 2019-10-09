@@ -102,6 +102,9 @@
         &.icon-arrow-right {
             fill: none; 
         }
+        &.icon-arrow-down {
+            fill: @brandColor;
+        }
 	}
 
 	 
@@ -236,5 +239,16 @@
 				fill: @white;
 			}
 		}
+	}
+
+	.minibar-item,
+	.minibar-review .review-container {
+		background: rgba( 0, 0, 0, 0.5 );
+		color: @textColor;
+	}
+
+	.minibar-items .minibar-item .minibar-item-actions .button.disabled,
+	.minibar-items .minibar-item .minibar-item-actions .button[disabled] {
+		opacity: 0.5;
 	}
 }

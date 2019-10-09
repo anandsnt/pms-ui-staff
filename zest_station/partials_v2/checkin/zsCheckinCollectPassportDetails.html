@@ -1,0 +1,16 @@
+<section id="main" class="centered" role="main">
+    <div id="content">
+        <h1>Your Passport Information is Required</h1>
+        <form method="post" class="form">
+            <div class="entry input">
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('passport-number')"
+                    click-touch="showOnScreenKeyboard('input_text'); resetTime();"
+                    ng-model="guestDetails.passport_number" enter-press="passportNumberEntered()"
+                    ng-keydown="resetTime()" id="passport-number" touch-press />
+            </div>
+            <div class="entry action">
+                <button type="button" class="button" click-touch="passportNumberEntered()">Next</button>
+            </div>
+        </form>
+    </div>
+</section>

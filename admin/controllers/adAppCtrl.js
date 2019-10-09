@@ -768,6 +768,7 @@ admin.controller('ADAppCtrl', [
             if (data.pms_type === null) {
                 $scope.isStandAlone = true;
             }
+            $rootScope.hotelCurrencyObject = data.currency;
             $rootScope.isStandAlone = $scope.isStandAlone;
             $rootScope.currencySymbol = getCurrencySign(data.currency.value);
             $rootScope.currencyId = data.currency.id;
