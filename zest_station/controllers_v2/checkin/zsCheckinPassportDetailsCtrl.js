@@ -5,7 +5,8 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
     'zsEventConstants',
     'zsCheckinSrv',
     '$controller',
-    function ($scope, $state, $stateParams, zsEventConstants, zsCheckinSrv, $controller) {
+    '$filter',
+    function ($scope, $state, $stateParams, zsEventConstants, zsCheckinSrv, $controller, $filter) {
 
         BaseCtrl.call(this, $scope);
 
@@ -19,7 +20,7 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
         $scope.isBypassReasonNil = true;
         $scope.data = {
             'passportNumber': "",
-            'bypassReasonId': ""
+            'bypassReason': ""
         };
 
         $scope.clickedOnEnterPassportNoButton = function () {
@@ -30,7 +31,6 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
         $scope.clickedOnBypassButton = function () {
 
             $scope.mode = 'BYPASS_PASSPORT_DETAILS';
-            $scope.bypassPassportReasons = $scope.$parent.zestStationData.passport_bypass_reasons;
         };
 
         $scope.passportNumberEntered = function () {
@@ -53,10 +53,10 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
         };
 
         $scope.bypassPassportDetails = function () {
-            if ($scope.data.bypassReasonId === "") {
+            if ($scope.data.bypassReason === "") {
                 return;
             }
-            zsCheckinSrv.savePassportBypassReason($scope.data.bypassReasonId);
+            zsCheckinSrv.savePassportBypassReason($scope.data.bypassReason);
             $scope.checkinGuest();
         };
 
@@ -69,7 +69,7 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
         };
 
         $scope.onchangeBypassReason = function () {
-            if ($scope.data.bypassReasonId === "") {
+            if ($scope.data.bypassReason === "") {
                 $scope.isBypassReasonNil = true;
             } else {
                 $scope.isBypassReasonNil = false;
@@ -87,8 +87,13 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
         (function () {
             $scope.$emit('hideLoader');
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
-            $scope.bypass_passport_entry = $scope.zestStationData.bypass_passport_entry;
             zsCheckinSrv.savePassportBypassReason("");
+            var passportBypassReasons = $filter('translate')('PASSPORT_BYPASS_REASONS');
+            $scope.bypass_passport_entry = $scope.zestStationData.bypass_passport_entry && passportBypassReasons !== 'PASSPORT_BYPASS_REASONS';
+            // The tag PASSPORT_BYPASS_REASONS has to be saved in admin with ';' separating reasons
+            if ($scope.bypass_passport_entry) {
+                $scope.bypassPassportReasons = passportBypassReasons.split(";");
+            }            
         }());
     }
 ]);
