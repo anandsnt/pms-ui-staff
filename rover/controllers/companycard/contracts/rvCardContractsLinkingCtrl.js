@@ -56,35 +56,29 @@ angular.module('sntRover').controller('rvCardContractsLinkingCtrl', ['$scope', '
          *  @params {Number} [index of the searchResults]
          */
         $scope.clickedOnResult = function( index ) {
-            $scope.contractData.linkContractsSearch.results[index]
-            // API: /api/contracts/link_contract
-            /*
-                {
-                    "id": 123, // contract id
-                    "account_id": 1
-                }
+            var clickedItem = $scope.contractData.linkContractsSearch.results[index];
 
-            */
+            if (!clickedItem.is_already_linked) {
+                var linkContractSuccessCallback = function(data) {
+                    clickedItem.is_already_linked = true;
+                },
+                linkContractFailureCallback = function(errorMessage) {
+                    $scope.$emit('setErrorMessage', errorMessage);
+                };
+
+                var options = {
+                    successCallBack: linkContractSuccessCallback,
+                    failureCallBack: linkContractFailureCallback,
+                    params: {
+                        "id": clickedItem.id,
+                        "account_id": $scope.contractData.accountId
+                    }
+                };
+
+                $scope.callAPI(rvCompanyCardContractsSrv.linkContract, options);
+            }
         };
-        /* 
-         *  Handle click Unlink contracts.
-         */
-        $scope.clickedUnlinkContracts = function( index ) {
-            /*
-            API: /api/contracts/unlink_contract
-                Method: POST
-                Request:
-
-                {
-                    "id": 123, // contract id
-                    "account_id": 1
-                }
-
-
-
-            */
-        };
-
+        
         that.initialise();
     }
 ]);
