@@ -146,6 +146,7 @@ admin.controller('ADBalanceJournalCtrl', [
             if ($scope.detailsMenu !== 'adRateActivityLog') {
                 $scope.detailsMenu = 'adRateActivityLog';
 				$scope.loadTable();
+				$scope.tableParams.reload();
             } else {
                 $scope.detailsMenu = '';
             }
@@ -177,12 +178,13 @@ admin.controller('ADBalanceJournalCtrl', [
 		$scope.loadTable = function() {
 			$scope.tableParams = new ngTableParams({
 					page: 1,  // show first page
-					count: 5, // count per page
+					count: $scope.displyCount, // count per page
 				}, {
-					total: 1000, // length of data
+					total: $scope.activityLogData ? $scope.activityLogData.length : 0, // length of data
 					getData: $scope.getActivityLog
 				}
 			);
 		};
+		$scope.loadTable();
 	}
 ]);
