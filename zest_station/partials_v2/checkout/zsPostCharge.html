@@ -4,14 +4,14 @@
         <div ng-style="{'max-height': chargeData.maxHeight}" class="minibar-items" ng-iscroll="charge-list-scroll">
             <div class="wrapper">
                 <div ng-repeat="(group_id, group) in chargeData.groupedItems" ng-if="group.items.length > 0"
-                    class="minibar-item group" ng-class="{'expanded': group.is_open}"
-                    touch-press="toggleOpenMenu(group)">
+                    class="minibar-item group" ng-class="{'expanded': group.is_open}">
                     <div class="minibar-item-info">
                         <h3 class="minibar-item-title">{{group.name}}</h3>
                         <div class="minibar-item-meta">{{group.description}}</div>
                     </div>
-                    <div class="minibar-item-qty" ng-if="group.quantity>0">{{group.quantity}}</div>
-                    <div class="minibar-item-expand">
+                    <div class="minibar-item-qty" ng-style="{'visibility': (group.quantity>0) ? 'visible' : 'hidden'}">
+                        {{group.quantity}}</div>
+                    <div class="minibar-item-expand" touch-press="toggleOpenMenu(group)">
                         <div ng-include="icons.url.down"></div>
                     </div>
                     <div class="group-items">

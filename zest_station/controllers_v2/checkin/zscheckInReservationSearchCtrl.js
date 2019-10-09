@@ -108,8 +108,6 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
                     zsCheckinSrv.setSelectedCheckInReservation(data.results);
                     if ($scope.zestStationData.kiosk_collect_guest_address) {
                         $state.go('zest_station.collectGuestAddress');
-                    } else if ($scope.zestStationData.enable_passport_entry) {
-                        $state.go('zest_station.zsCheckinPassportDetails');
                     } else {
                         $state.go('zest_station.checkInReservationDetails');
                     } 

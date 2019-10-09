@@ -4,9 +4,14 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
     '$stateParams',
     'zsEventConstants',
     'zsCheckinSrv',
-    function ($scope, $state, $stateParams, zsEventConstants, zsCheckinSrv) {
+    '$controller',
+    function ($scope, $state, $stateParams, zsEventConstants, zsCheckinSrv, $controller) {
 
         BaseCtrl.call(this, $scope);
+
+        $controller('zsCheckinNextPageBaseCtrl', {
+            $scope: $scope
+        });
         $scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
         $scope.mode = 'PASSPORT_DETAILS';
         $scope.guestDetails = {};
@@ -16,10 +21,6 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
             'passportNumber': "",
             'bypassReasonId': ""
         };
-
-        if ($stateParams.previousState) {
-            $scope.previousState = $stateParams.previousState;
-        }
 
         $scope.clickedOnEnterPassportNoButton = function () {
 
@@ -44,9 +45,7 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
             var options = {
                 params: params,
                 successCallBack: function () {
-                    $state.go('zest_station.checkInReservationDetails', {
-                        previousState: 'COLLECT_PASSPORT_NUMBER'
-                    });
+                    $scope.checkinGuest();
                 }
             };
 
@@ -58,9 +57,7 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
                 return;
             }
             zsCheckinSrv.savePassportBypassReason($scope.data.bypassReasonId);
-            $state.go('zest_station.checkInReservationDetails', {
-                previousState: 'BYPASS_PASSPORT_DETAILS'
-            });
+            $scope.checkinGuest();
         };
 
         $scope.onchangePassportNumber = function () {
@@ -80,14 +77,8 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
         };
 
         $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function () {
-            var isCollectAddressEnabled = $scope.$parent.zestStationData.kiosk_collect_guest_address;
-
             if ($scope.mode === 'PASSPORT_DETAILS') {
-                if (isCollectAddressEnabled) {
-                    $state.go('zest_station.collectGuestAddress');
-                } else {
-                    $state.go('zest_station.checkInReservationSearch');
-                }
+                $state.go('zest_station.checkInReservationDetails');
             } else if ($scope.mode === 'COLLECT_PASSPORT_NUMBER' || $scope.mode === 'BYPASS_PASSPORT_DETAILS') {
                 $scope.mode = 'PASSPORT_DETAILS';
             }
@@ -97,6 +88,7 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
             $scope.$emit('hideLoader');
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
             $scope.bypass_passport_entry = $scope.zestStationData.bypass_passport_entry;
+            zsCheckinSrv.savePassportBypassReason("");
         }());
     }
 ]);
