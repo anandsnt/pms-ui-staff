@@ -18,7 +18,7 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
             // so form error as array if you modifying it
             
 
-if (status === 406) { // 406- Network error
+            if (status === 406) { // 406- Network error
                 deferred.reject(errors);
             } else if (status === 422) { // 422
                 deferred.reject(errors);
@@ -74,6 +74,19 @@ if (status === 406) { // 406- Network error
 
             $http.get(url).then(function(response) {
                 deferred.resolve(response.data.data);
+            }, function(error) {
+                deferred.reject(error);
+            });
+            return deferred.promise;
+        };
+
+        service.getConvertedAmount = function(params) {
+
+            var deferred = $q.defer(),
+                url = '/api/hotel_currency_conversions/converted_payment_amount?amount=' + params.amount + '&currency_id=' + params.currency_id + '&date=' + params.date + '&fee=' + params.fee;
+
+            $http.get(url).then(function(response) {
+                deferred.resolve(response.data);
             }, function(error) {
                 deferred.reject(error);
             });

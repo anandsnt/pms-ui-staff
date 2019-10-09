@@ -489,7 +489,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.sitemindersSetup', {
-        templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
+        templateUrl: '/assets/partials/interfaces/siteminder/adSiteminderSetup.html',
         controller: 'adCRSCommonCtrl',
         url: '/interfaces/setup',
         params: {
@@ -685,6 +685,22 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
            mappingTypes: [
                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                    return adInterfacesCommonConfigSrv.fetchMappingTypes('sie');
+               }]
+       }
+    });
+
+    $stateProvider.state('admin.dataplusSetup', {
+       templateUrl: '/assets/partials/interfaces/dataplus/adDataplus.html',
+       controller: 'adDataplusCtrl',
+       url: '/dataplus',
+       resolve: {
+           config: [
+               'adInterfacesSrv', function(adInterfacesSrv) {
+                   return adInterfacesSrv.getSettings('dataplus');
+               }],
+           mappingTypes: [
+               'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                   return adInterfacesCommonConfigSrv.fetchMappingTypes('dataplus');
                }]
        }
     });

@@ -110,7 +110,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
                         $state.go('zest_station.collectGuestAddress');
                     } else {
                         $state.go('zest_station.checkInReservationDetails');
-                    }    
+                    } 
                 } else {
                     zsCheckinSrv.setCheckInReservations(data.results);
                     $state.go('zest_station.selectReservationForCheckIn');

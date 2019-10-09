@@ -39,8 +39,12 @@ angular.module('sntPay').controller('sntPaymentController',
                 isManualEntryInsideIFrame: false,
                 workstationId: '',
                 emvTimeout: 120,
-                isConfirmedDBpayment: false
+                isConfirmedDBpayment: false,
+                selectedPaymentCurrencyId: $rootScope.hotelCurrencyId,
+                selectedPaymentCurrencySymbol: $rootScope.currencySymbol
             };
+
+            $scope.originalAmount = angular.copy($scope.amount);            
 
             $scope.giftCard = {
                 number: '',
@@ -79,7 +83,8 @@ angular.module('sntPay').controller('sntPaymentController',
                         'payment_type': $scope.selectedPaymentType,
                         'amount': $scope.payment.amount.toString().replace(/,/g, ''),
                         'is_split_payment': $scope.splitBillEnabled && $scope.numSplits > 1,
-                        'workstation_id': $scope.hotelConfig.workstationId
+                        'workstation_id': $scope.hotelConfig.workstationId,
+                        'currency_id': $scope.payment.selectedPaymentCurrencyId
                     },
                     'reservation_id': $scope.reservationId,
                     'bill_id': $scope.billId
@@ -947,6 +952,7 @@ angular.module('sntPay').controller('sntPaymentController',
                     showFee: currFee.showFees,
                     feeChargeCode: currFee.feeChargeCode
                 };
+                $scope.originalFee = angular.copy($scope.feeData.calculatedFee);
             }
 
             /**
@@ -987,6 +993,13 @@ angular.module('sntPay').controller('sntPaymentController',
                     return false;
                 }
 
+                if ($scope.selectedPaymentType === 'CC') {
+                    $scope.payment.selectedPaymentCurrencyId = $rootScope.hotelCurrencyId;
+                    $scope.payment.selectedPaymentCurrencySymbol = $rootScope.currencySymbol;
+                    $scope.payment.amount = $scope.originalAmount;
+                    $scope.feeData.calculatedFee = $scope.originalFee;
+                }                
+
                 /** CICO-47989
                  * To handle scenarios where the bill might have a payment type associated, but it is no longer available in the list
                  * In such cases, clear the selected payment type
@@ -1020,7 +1033,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 // If the changed payment type is CC and payment gateway is MLI show CC addition options
                 // If there are attached cards, show them first
                 if (!!selectedPaymentType && selectedPaymentType.name === 'CC') {
-                    if (PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl && $scope.hotelConfig.paymentGateway !== 'SHIJI') {
+                    if (PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl) {
                         // Add to guestcard feature for C&P
                         //  The payment info may change after adding a payment method; in such a case, should not reset back to C&P mode
                         $scope.selectedCC = $scope.selectedCC || {};
@@ -1047,6 +1060,25 @@ angular.module('sntPay').controller('sntPaymentController',
                 } else {
                     $scope.payment.showAddToGuestCard = false;
                 }
+            };
+
+            $scope.onPaymentCurrencyChange = function() {
+                $scope.payment.selectedPaymentCurrencySymbol = (_.find($scope.paymentCurrencyList, {"id": $scope.payment.selectedPaymentCurrencyId})).symbol;
+                var paramsToApi = {
+                    "amount": parseInt($scope.originalAmount),
+                    "fee": parseInt($scope.originalFee),
+                    "currency_id": parseInt($scope.payment.selectedPaymentCurrencyId),
+                    "date": $rootScope.businessDate
+                };
+
+                sntPaymentSrv.getConvertedAmount(paramsToApi).then(
+                    response => {
+                        $scope.payment.amount = response.data.converted_amount;
+                        $scope.feeData.calculatedFee = response.data.converted_fee;
+                    },
+                    errorMessage => {
+                        
+                    });
             };
 
             $scope.onFeeOverride = function () {
@@ -1479,7 +1511,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 $scope.$emit('SET_SCROLL_FOR_EXISTING_CARDS');
 
                 // check if card is present, if yes turn on flag
-                if ($scope.hotelConfig.paymentGateway === 'sixpayments') {
+                if ($scope.hotelConfig.paymentGateway === 'sixpayments' || $scope.hotelConfig.paymentGateway === 'SHIJI') {
                     $scope.payment.isManualEntryInsideIFrame = true;
                     // Add to guestcard feature for C&P
                     $scope.payment.showAddToGuestCard = !$scope.payment.isManualEntryInsideIFrame;

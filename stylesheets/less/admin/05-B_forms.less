@@ -1379,7 +1379,7 @@
                 &:last-child { margin-right: 0; }
             }
 
-            &:not(.fixed) {
+            &:not(.fixed):not(.no-border) {
                 border-top: 1px solid rgba(0,0,0,.1);
             }
 
@@ -2020,6 +2020,55 @@
                 }
 
 
+            }
+        }
+
+        /* Balance Journal Status */
+        .balance-status {
+            padding: 20px;
+            color: darken(@yellow, 20);
+            background: lighten(@yellow, 20);
+            border: 2px solid @yellow;
+            line-height: 1;
+            margin-bottom: 10px;
+            border-radius: 3px;
+            #flexbox > .parent( '', space-between, center, '' );
+
+            &.success {
+                color: darken(@green, 20);
+                background: lighten(@green, 20);
+                border-color: @green;
+            }
+        
+            &.error {
+                color: darken(@red, 20);
+                background: lighten(@red, 20);
+                border-color: @red;
+            }
+
+            .balance-status-percentage {
+                text-align: right;
+                font-weight: 600;
+                font-size: 30px;
+            }
+
+            .balance-status-info {
+                .calc-width(100,80);
+
+                .status-title,
+                .status-text {
+                    display: block;
+                }
+
+                .status-text {
+                    font-size: 16px;
+                    line-height: 1.2;
+                }
+
+                .status-title {
+                    font-size: 18px;
+                    margin-bottom: 5px;
+                }
             }
         }
 	

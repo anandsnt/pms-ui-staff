@@ -124,6 +124,7 @@
 							reservation-id="{{reservationData.reservation_card.reservation_id}}"
                             bill-id="depositBalanceData.primary_bill_id"
 							bill-number="billNumber"
+							rate-currency="{{depositBalanceMakePaymentData.rateCurrency}}"
 							payment-types="passData.details.paymentTypes"
 							selected-payment-type="depositBalanceMakePaymentData.payment_type"
 							selected-c-c="depositDetails.attached_card"
@@ -135,7 +136,8 @@
 							is-rate-suppressed='isReservationRateSuppressed'
 							has-permission='hasPermissionToMakePayment()'
 							form-template-url='/assets/partials/payment/rvDepositBalancePartial.html'
-							first-name="{{passData.details.firstName}}"
+							first-name="{{passData.details.firstName}}" 
+							payment-currency-list="paymentCurrencyList" 
 							last-name="{{passData.details.lastName}}">
 					</snt-payment>
                 </div>

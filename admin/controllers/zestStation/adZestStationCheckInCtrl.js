@@ -66,6 +66,12 @@ admin.controller('ADZestStationCheckInCtrl', ['$scope', '$state', '$rootScope', 
             $scope.invokeApi(ADZestStationSrv.save, params, savePaymentExclusionSettings, saveFailed);
         };
 
+        $scope.onPassportEntryToggled = function(params, is_checked) {
+            if (!is_checked) {
+                $scope.zestSettings.bypass_passport_entry = false;
+            }
+        };
+
         $scope.isKioskExcludePaymentMethods = Toggles.isEnabled('kiosk_exclude_payment_methods');
         fetchSettings();
     }
