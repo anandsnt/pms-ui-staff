@@ -41,7 +41,12 @@ admin.controller('ADRatesAddonDetailsCtrl', [
             $scope.isConnectedToPMS = !$rootScope.isStandAlone;
 
             $scope.allowanceRefundOptions = _.range(0, 110, 10);
-            $scope.rateCurrencyList = hotelSettings.rate_currency_list; 
+
+            $scope.rateCurrencyList = hotelSettings.rate_currency_list;
+            
+            if (_.findIndex($scope.rateCurrencyList, {"id": $rootScope.hotelCurrencyObject.id}) === -1) {
+                $scope.rateCurrencyList.push($rootScope.hotelCurrencyObject);
+            }
 
             if ($scope.isAddMode) {
                 addNew();

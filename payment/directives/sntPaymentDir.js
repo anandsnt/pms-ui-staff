@@ -6,6 +6,7 @@ angular.module('sntPay').directive('sntPayment', function() {
             hotelConfig: '=', // hotel settings related
             paymentTypes: '=', // the payment types present
             selectedPaymentType: '=?', // selected initial payment type
+            paymentCurrencyList: '=',
             reservationId: '@',
             rateCurrency: '@',
             postingAccountId: '=?',

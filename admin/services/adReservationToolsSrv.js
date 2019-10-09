@@ -125,7 +125,7 @@ admin.service('ADReservationToolsSrv', [
                     deferred.reject(data);
             });
             return deferred.promise;
-	    };
+	        };
 
     }
 ]);

@@ -73,6 +73,9 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                 }
             };
 
+            $scope.icons.url.user_passport = iconsPath + '/user-id.svg';
+            $scope.icons.url.no_user_passport = iconsPath + '/no-user-id.svg';
+
             if ($scope.icons.url.scanpassport.length > 0) {
                 $scope.scanpassport_image_uploaded = true;
             } else {
