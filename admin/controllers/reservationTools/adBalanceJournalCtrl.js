@@ -123,7 +123,7 @@ admin.controller('ADBalanceJournalCtrl', [
 					$(".balance-status").removeClass('error');
 					$scope.jobStatusTitle = "Balancing in progress...";
 					$scope.jobStatusText = "Balancing journal from " + $scope.statusData.begin_date + " to " + $scope.statusData.end_date;
-					$scope.cancelOrChangeBtnTxt = "CANCEL JOBS";
+					$scope.cancelOrChangeBtnTxt = "CANCEL JOB";
 					$scope.runButtonText = "REFRESH STATUS";
 					$scope.runForDiffDatesText = "";
 				}
