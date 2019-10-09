@@ -9,6 +9,7 @@ sntRover.controller('RVdashboardController',
             // setting the heading of the screen
             $scope.heading = 'DASHBOARD_HEADING';
 
+
             // We are not showing the backbutton now, so setting as blank
             $scope.backButtonCaption = ''; // if it is not blank, backbutton will show, otherwise dont
             $scope.roomTypes = roomTypes;
