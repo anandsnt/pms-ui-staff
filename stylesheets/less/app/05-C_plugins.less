@@ -277,11 +277,23 @@
                         line-height: 18px;
                     }
 
-                    .location {
+                    .location,
+                    .access-code {
                         display: block;
                         font-size: 12px;
                         font-weight: normal;
                         line-height: 14px;
+                    }
+
+                    .access-code {
+                        + .location {
+                           margin-top: 0; 
+                        }
+
+                        padding-left: 20px;
+                        margin-left: 40px;
+                        height: 20px;
+                        line-height: 20px;
                     }
 
                     .group-info {
@@ -425,12 +437,19 @@
 
             .highlight { color: @logoPrimary; }
  
-            .location {
+            .location,
+            .access-code {
                 display: block;
                 font-size: 12px;
                 font-weight: normal;
                 line-height: 14px;
-            } 
+            }
+
+            .access-code {
+                height: 20px;
+                line-height: 20px;
+                padding-left: 20px;
+            }
         }
     }
 
