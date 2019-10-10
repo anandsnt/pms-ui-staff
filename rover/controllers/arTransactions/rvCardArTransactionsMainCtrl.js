@@ -746,6 +746,52 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
             removePrintOrientation();
         };
 
+		$scope.shouldPrintArInvoiceNumber = function(printData, statement) {
+			var printArInvNo = false;
+
+			if (printData.is_print_ar_invoice_number_enabled && statement.ar_invoice_number) {
+				printArInvNo = true;
+			}
+
+			return printArInvNo;
+		};
+
+		$scope.shouldPrintFolioNumber = function(printData, statement) {
+			var printFolioNo = false;
+
+			if (!statement.ar_invoice_number) {
+				if (printData.is_print_ar_folio_number_enabled && statement.folio_number) {
+					printFolioNo = true;
+				} else if (!printData.is_print_ar_folio_number_enabled && (statement.folio_number || !statement.folio_number)) {
+					printFolioNo = false;
+				} 
+			} else {
+				if (!printData.is_print_ar_invoice_number_enabled && printData.is_print_ar_folio_number_enabled && statement.folio_number) {
+					printFolioNo = true;
+				} else if (!printData.is_print_ar_folio_number_enabled && (statement.folio_number || !statement.folio_number)) {
+					printFolioNo = false;
+				}
+			}
+
+			return printFolioNo;
+		};
+
+		$scope.shouldPrintInvoiceNumber = function(printData, statement) {
+			var printInvNo = false;
+
+			if (!printData.is_print_ar_invoice_number_enabled && !printData.is_print_ar_folio_number_enabled) {
+				printInvNo = true;
+			} else if (!printData.is_print_ar_invoice_number_enabled && printData.is_print_ar_folio_number_enabled && !statement.folio_number) {
+				printInvNo = true;
+			} else if (printData.is_print_ar_invoice_number_enabled && !statement.ar_invoice_number && printData.is_print_ar_folio_number_enabled && !statement.folio_number) {
+				printInvNo = true;
+			} else if (!statement.ar_invoice_number && !statement.folio_number) {
+				printInvNo = true;
+			}
+
+			return printInvNo;
+		};
+
         // print AR Statement
         var printArStatement = function(params) {
             var printDataFetchSuccess = function(successData) {
