@@ -745,7 +745,11 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
             // remove the orientation after similar delay
             removePrintOrientation();
         };
-
+        /* 
+		 * Should print AR invoice number
+		 * @param printData response
+		 * @param statement individual item
+		 */
 		$scope.shouldPrintArInvoiceNumber = function(printData, statement) {
 			var printArInvNo = false;
 
@@ -755,7 +759,11 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 			return printArInvNo;
 		};
-
+		/* 
+		 * Should print folio number
+		 * @param printData response
+		 * @param statement individual item
+		 */
 		$scope.shouldPrintFolioNumber = function(printData, statement) {
 			var printFolioNo = false;
 
@@ -775,6 +783,11 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 			return printFolioNo;
 		};
+		/* 
+		 * Should print Invoice number
+		 * @param printData response
+		 * @param statement individual item
+		 */
 
 		$scope.shouldPrintInvoiceNumber = function(printData, statement) {
 			var printInvNo = false;
