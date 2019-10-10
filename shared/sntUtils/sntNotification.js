@@ -54,7 +54,7 @@ angular.module('snt.utils').component('sntNotify', {
 
 
         ctrl.$onInit = function () {
-            let currentMsg;
+            var currentMsg;
 
             ctrl.style = 'notice';
             ctrl.style += (ctrl.type === 'success') ? ' success success-message' : ' error error-message';
