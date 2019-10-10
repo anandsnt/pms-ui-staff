@@ -262,7 +262,7 @@
     </table>
 </div>
 <br><br>
-<strong ng-if="printData.tax_breakdown_for_deposit.details.length>0">Paid Deposit Breakdown</strong>
+<strong ng-if="printData.tax_breakdown_for_deposit.details.length>0 && printData.deposit_folio_number" >Paid Deposit Breakdown</strong>
 <br>
 <span ng-if="printData.tax_breakdown_for_deposit.details.length>0 && printData.deposit_folio_number">
     <strong >Deposit Folio Number: </strong>{{printData.deposit_folio_number}}<br/>
