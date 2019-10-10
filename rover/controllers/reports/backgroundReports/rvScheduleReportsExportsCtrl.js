@@ -347,7 +347,7 @@ angular.module('sntRover')
 
             // Listener for showing the error msg
             $scope.addListener('SHOW_ERROR_MSG_EVENT', (event, msg) => {
-                $scope.errorMessage = msg instanceof Array ? msg[0] : msg;
+                $scope.errorMessage = msg || []; 
             });
 
             // Clear the error msg

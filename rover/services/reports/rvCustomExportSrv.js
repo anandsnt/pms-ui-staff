@@ -562,7 +562,13 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             promises.push(this.getFFPLevels());
 
             $q.all(promises).then(function (response) {
-                deferred.resolve(response[0].concat(response[1]));
+                var membershipLevels = response[0].concat(response[1]);
+
+                membershipLevels = _.uniq(membershipLevels, function (entry) {
+                    return entry.value;
+                });
+
+                deferred.resolve(membershipLevels);
             });
 
             return deferred.promise;
