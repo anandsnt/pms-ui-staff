@@ -341,7 +341,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                     
                     $timeout( () => {
                         refreshScroll(EXPORT_LIST_SCROLLER, true);
-                    }, 1000);
+                    }, 800);
                     
 
                 },
@@ -413,7 +413,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
          * @param {Number} reportId - id of the report
          * @return {void}
          */
-        var loadReqData = (reportId, isSavedSchedule ) => {
+        var loadReqData = (reportId, isSavedSchedule) => {
             var onSuccess = ( payload ) => {
                     $scope.selectedEntityDetails.columns = angular.copy(payload.columns);
                     $scope.selectedEntityDetails.active = true;
@@ -723,6 +723,9 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 $scope.viewState.currentStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
                 $scope.selectedEntityDetails.active = false;
                 resetPreviousSelections();
+                $timeout(function () {
+                    refreshScroll(EXPORT_LIST_SCROLLER, true);
+                }, 300);
             });
     
             $scope.addListener('CREATE_NEW_CUSTOM_EXPORT_SCHEDULE', () => {

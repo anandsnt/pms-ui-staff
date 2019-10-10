@@ -31,7 +31,7 @@
 		<span class="data room">{{ each.room_type }}</span>
 		<span class="data rate">{{ each.rate }} / <strong><span class="currency">{{ each.adr | currency:currencySymbol:2 }}</span> ADR</strong></span>
 	</td>
-	<td class="balance" ng-class="{'red': toFloat(each.balance_amount) > 0, 'green': toFloat(each.balance_amount) <= 0}">
+	<td class="balance" ng-class="{'red': toFloat(each.balance_amount) != 0.00, 'green': toFloat(each.balance_amount) == 0.00}">
 		<span class="currency">{{ each.balance_amount | currency:currencySymbol:2 }}</span>
 	</td>
 	<!-- guest data - name, company, travel agent & group name -->
