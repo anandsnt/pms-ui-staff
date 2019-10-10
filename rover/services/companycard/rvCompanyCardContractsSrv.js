@@ -1,10 +1,10 @@
-angular.module('sntRover').service('rvCompanyCardContractsSrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBaseWebSrvV2) {
+angular.module('sntRover').service('rvCompanyCardContractsSrv', ['$q', 'sntBaseWebSrv', function($q, sntBaseWebSrv) {
 
     this.fetchRateContract = function(params) {
         var url = '/api/rates/contract_rates',
             deferred = $q.defer();
 
-        rvBaseWebSrvV2.getJSON(url, params)
+        sntBaseWebSrv.getJSON(url, params)
             .then(function(data) {
                 deferred.resolve(data);
             },
@@ -18,7 +18,7 @@ angular.module('sntRover').service('rvCompanyCardContractsSrv', ['$q', 'rvBaseWe
         var deferred = $q.defer(),
             url = '/api/accounts/' + data.account_id + '/contracts/' + data.contract_id;
 
-        rvBaseWebSrvV2.getJSON(url).then(function(data) {
+        sntBaseWebSrv.getJSON(url).then(function(data) {
             deferred.resolve(data);
         }, function(data) {
             deferred.reject(data);
@@ -32,7 +32,7 @@ angular.module('sntRover').service('rvCompanyCardContractsSrv', ['$q', 'rvBaseWe
         var deferred = $q.defer(),
             url = '/api/accounts/' + data.account_id + '/contracts';
 
-        rvBaseWebSrvV2.getJSON(url).then(function(data) {
+        sntBaseWebSrv.getJSON(url).then(function(data) {
             contractRates = data;
             deferred.resolve(data);
         }, function(data) {
@@ -54,7 +54,7 @@ angular.module('sntRover').service('rvCompanyCardContractsSrv', ['$q', 'rvBaseWe
         var deferred = $q.defer(),
             url = '/api/accounts/' + data.account_id + '/contracts';
 
-        rvBaseWebSrvV2.postJSON(url, data.postData).then(function(data) {
+        sntBaseWebSrv.postJSON(url, data.postData).then(function(data) {
             deferred.resolve(data);
         }, function(data) {
             deferred.reject(data);
@@ -71,7 +71,7 @@ angular.module('sntRover').service('rvCompanyCardContractsSrv', ['$q', 'rvBaseWe
         var deferred = $q.defer(),
             url = '/api/accounts/' + data.account_id + '/contracts/' + data.contract_id;
 
-        rvBaseWebSrvV2.putJSON(url, data.postData).then(function(data) {
+        sntBaseWebSrv.putJSON(url, data.postData).then(function(data) {
             deferred.resolve(data);
         }, function(data) {
             deferred.reject(data);
@@ -83,7 +83,7 @@ angular.module('sntRover').service('rvCompanyCardContractsSrv', ['$q', 'rvBaseWe
         var deferred = $q.defer(),
             url = '/api/accounts/' + data.account_id + '/contracts/' + data.contract_id + '/contract_nights';
 
-        rvBaseWebSrvV2.postJSON(url, data.postData).then(function(data) {
+        sntBaseWebSrv.postJSON(url, data.postData).then(function(data) {
             deferred.resolve(data);
         }, function(data) {
             deferred.reject(data);
@@ -95,7 +95,7 @@ angular.module('sntRover').service('rvCompanyCardContractsSrv', ['$q', 'rvBaseWe
         var url = '/api/contracts/search_contracts',
             deferred = $q.defer();
 
-        rvBaseWebSrvV2.getJSON(url, params)
+        sntBaseWebSrv.getJSON(url, params)
             .then(function(data) {
                 deferred.resolve(data);
             },
@@ -109,7 +109,7 @@ angular.module('sntRover').service('rvCompanyCardContractsSrv', ['$q', 'rvBaseWe
         var deferred = $q.defer(),
             url = '/api/contracts/link_contract';
 
-        rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
+        sntBaseWebSrv.postJSON(url, params).then(function(data) {
             deferred.resolve(data);
         }, function(data) {
             deferred.reject(data);
@@ -121,7 +121,7 @@ angular.module('sntRover').service('rvCompanyCardContractsSrv', ['$q', 'rvBaseWe
         var deferred = $q.defer(),
             url = '/api/contracts/unlink_contract';
 
-        rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
+        sntBaseWebSrv.postJSON(url, params).then(function(data) {
             deferred.resolve(data);
         }, function(data) {
             deferred.reject(data);

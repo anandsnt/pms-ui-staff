@@ -1,7 +1,7 @@
 <!-- Add .searching when searching a contract -->
 <div ng-controller="rvCardContractsLinkingCtrl" class="autocomplete-search contract-details-header" ng-class="{'searching': contractData.linkContractsSearch.query !== ''}">
     <!-- Remove .with-button if we are not shwoing Unlink Contract button -->
-    <div class="search-header" ng-class="{'with-button': contractData.isShowUnlinkButton}">
+    <div class="search-header">
         <div class="search">
             <label>Link Existing Contract</label>
             <!-- Add .visible to show clear query -->
@@ -11,7 +11,6 @@
             <button type="submit" name="submit" class="icons icon-search">Search</button>
             <input ng-model="contractData.linkContractsSearch.query" ng-change="searchContracts()" name="find-contracts" class="query" placeholder="Search by Contract Name or Access Code" autocomplete="off" type="search">
         </div>
-        <button type="button" class="button red hidden" ng-click="clickedUnlinkContracts()">Unlink Contract</button>
     </div>
     <!-- Remove .hidden when searching -->
     <ul class="autocomplete-results-header" ng-show="contractData.linkContractsSearch.results.length > 0">
