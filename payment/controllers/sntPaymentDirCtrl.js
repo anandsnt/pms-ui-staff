@@ -1065,8 +1065,8 @@ angular.module('sntPay').controller('sntPaymentController',
             $scope.onPaymentCurrencyChange = function() {
                 $scope.payment.selectedPaymentCurrencySymbol = (_.find($scope.paymentCurrencyList, {"id": $scope.payment.selectedPaymentCurrencyId})).symbol;
                 var paramsToApi = {
-                    "amount": parseInt($scope.originalAmount),
-                    "fee": parseInt($scope.originalFee),
+                    "amount": parseFloat($scope.originalAmount),
+                    "fee": parseFloat($scope.originalFee),
                     "currency_id": parseInt($scope.payment.selectedPaymentCurrencyId),
                     "date": $rootScope.businessDate
                 };
