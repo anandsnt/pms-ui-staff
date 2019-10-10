@@ -559,7 +559,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             amount_type: item.amount_type.value,
                             post_type: item.post_type.value,
                             is_inclusive: item.is_inclusive,
-                            is_rate_addon: item.is_rate_addon
+                            is_rate_addon: item.is_rate_addon,
+                            rate_currency: item.addon_currency
                         };
 
                         $scope.addonsData.existingAddons.push(addonsData);
@@ -575,7 +576,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                                 totalAmount: addonsData.totalAmount,
                                 is_inclusive: addonsData.is_inclusive,
                                 taxes: item.taxes,
-                                is_rate_addon: item.is_rate_addon
+                                is_rate_addon: item.is_rate_addon,
+                                rate_currency: item.addon_currency
                             });
                         }
 
