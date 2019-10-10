@@ -28,14 +28,16 @@ admin.controller('ADBalanceJournalCtrl', [
 			'end_date': $scope.previousDayOfBusinessDateInDbFormat,
 			'first_date': ''
 		};
+		$scope.payload.first_date = $scope.previousDayOfBusinessDateInDbFormat;
 
 		/*
 		 * API when clicks start job
 		 */
 		$scope.startJob = function() {
 			var successCallback = function(data) {
-				var endDate = moment(tzIndependentDate($scope.payload.end_date)).format("DD-MM-YYYY");
-
+				var endDate = moment(tzIndependentDate($scope.payload.end_date)).format("DD-MM-YYYY"),
+					firstDate = moment(tzIndependentDate($scope.payload.first_date)).format("DD-MM-YYYY");
+				
 				$(".balance-status").addClass('notice');
 				$(".balance-status").removeClass('success');
 				$(".balance-status").removeClass('error');
@@ -43,10 +45,13 @@ admin.controller('ADBalanceJournalCtrl', [
 				$scope.showPercentage = false;
 				$scope.balanceJournalJobId = data.job_id;
 				$scope.jobStatusTitle = "Balancing started";
-				$scope.jobStatusText = "Balancing journal from " + $scope.payload.first_date + " to " + endDate;
-				$scope.cancelOrChangeBtnTxt = "CANCEL JOB";
+				$scope.jobStatusText = "Balancing journal from " + firstDate + " to " + endDate;
+				$scope.cancelOrChangeBtnTxt = "";
 				$scope.runButtonText = "REFRESH STATUS";
 				$scope.runForDiffDatesText = "";
+				if ($scope.payload.first_date === $scope.payload.end_date) {
+					$scope.jobStatusText = "Balancing journal for " + endDate;
+				}
 			},
 			unwantedKeys = ["first_date"],			
 			data = dclone($scope.payload, unwantedKeys),
@@ -123,7 +128,7 @@ admin.controller('ADBalanceJournalCtrl', [
 					$(".balance-status").removeClass('error');
 					$scope.jobStatusTitle = "Balancing in progress...";
 					$scope.jobStatusText = "Balancing journal from " + $scope.statusData.begin_date + " to " + $scope.statusData.end_date;
-					$scope.cancelOrChangeBtnTxt = "CANCEL JOBS";
+					$scope.cancelOrChangeBtnTxt = "";
 					$scope.runButtonText = "REFRESH STATUS";
 					$scope.runForDiffDatesText = "";
 				}
@@ -140,6 +145,7 @@ admin.controller('ADBalanceJournalCtrl', [
             if ($scope.detailsMenu !== 'adRateActivityLog') {
                 $scope.detailsMenu = 'adRateActivityLog';
 				$scope.loadTable();
+				$scope.tableParams.reload();
             } else {
                 $scope.detailsMenu = '';
             }
@@ -171,12 +177,13 @@ admin.controller('ADBalanceJournalCtrl', [
 		$scope.loadTable = function() {
 			$scope.tableParams = new ngTableParams({
 					page: 1,  // show first page
-					count: 10 // count per page
+					count: $scope.displyCount, // count per page
 				}, {
-					total: 1000, // length of data
+					total: $scope.activityLogData ? $scope.activityLogData.length : 0, // length of data
 					getData: $scope.getActivityLog
 				}
 			);
 		};
+		$scope.loadTable();
 	}
 ]);

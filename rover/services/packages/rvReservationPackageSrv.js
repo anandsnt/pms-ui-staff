@@ -74,7 +74,8 @@ angular.module('sntRover').service('RVReservationPackageSrv', ['$http', '$q', 'r
 			amount_type: addon.amount_type.description,
 			post_type: addon.post_type.description,
 			is_inclusive: !!addon.is_inclusive,
-			is_rate_addon: true	
+			is_rate_addon: true,
+			rate_currency: addon.rate_currency
 		};
 	};
 
