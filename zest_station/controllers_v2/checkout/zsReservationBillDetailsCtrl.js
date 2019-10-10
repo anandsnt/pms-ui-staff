@@ -271,7 +271,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             $timeout(function() {
                 var $contentHeight = ($('#content').outerHeight()),
                     $h1Height = $('#minibar-heading').length ? $('#minibar-heading').outerHeight(true) : 0,
-                    $textualHeight = parseFloat($contentHeight - $h1Height);
+                    $textualHeight = parseFloat($contentHeight - $h1Height + 5);
 
                 $scope.chargeData.maxHeight = $textualHeight + 'px';
                 refreshChargeScroller();
@@ -289,6 +289,9 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             };
 
             var options = {
+                params: {
+                    locale: $translate.use()
+                },
                 successCallBack: fetchChargeGroupSuccess,
                 failureCallBack: fetchChargeGroupFailure
             };
@@ -392,8 +395,10 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             }
             postData.items = updatedItems;
 
-            var postChargeFailure = function () {
-                $scope.showPostChargeScreen = true;
+            var postChargeFailure = function (error) {
+                $scope.errorMessage = error[0];
+                $scope.errorHeader = 'POST_ITEMS_ERROR_HEADER';
+                $scope.showPostErrorPopup = true;
             };
 
             var postChargeSuccess = function () {

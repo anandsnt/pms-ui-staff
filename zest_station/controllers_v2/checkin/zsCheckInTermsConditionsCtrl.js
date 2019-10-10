@@ -87,7 +87,6 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 
         var checkInGuest = function() {
             var signature = $scope.signatureData;
-            var bypassReasonId = zsCheckinSrv.getPassportBypassReason();
             var checkinParams = {
                 'reservation_id': $stateParams.reservation_id,
                 'workstation_id': $scope.zestStationData.set_workstation_id,
@@ -96,8 +95,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
                 'is_promotions_and_email_set': false,
 //               "no_post": "",//handled by the API CICO-35315
                 'is_kiosk': true,
-                'signature': signature,
-                'passport_bypass_reason_id': bypassReasonId
+                'signature': signature
             };
             var options = {
                 params: checkinParams,
@@ -123,6 +121,11 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
             }
             else if ($scope.zestStationData.kiosk_manual_id_scan) {
                 $state.go('zest_station.checkInIdVerification', {
+                    params: JSON.stringify($stateParams)
+                });
+            }
+            else if ($scope.zestStationData.enable_passport_entry) {
+                $state.go('zest_station.zsCheckinPassportDetails', {
                     params: JSON.stringify($stateParams)
                 });
             }

@@ -20,16 +20,9 @@ sntZestStation.controller('zsCheckinGuestAddressCtrl', [
 		};
 
 		var nextAction = function() {
-			var enablePassportEntry = $scope.zestStationData.enable_passport_entry;
-			if (enablePassportEntry) {
-				$state.go('zest_station.zsCheckinPassportDetails', {
-					previousState: 'COLLECT_ADDRESS'
-				});
-			} else {
-				$state.go('zest_station.checkInReservationDetails', {
-					previousState: 'COLLECT_ADDRESS'
-				});
-			}
+			$state.go('zest_station.checkInReservationDetails', {
+				previousState: 'COLLECT_ADDRESS'
+			});
 		};
 
 		$scope.usePresentAddress = function() {
