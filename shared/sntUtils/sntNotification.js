@@ -42,7 +42,7 @@ angular.module('snt.utils').component('sntNotify', {
         '       </div>',
     transclude: true,
     bindings: {
-        message: '<',
+        message: '=',
         type: '@'
     },
     controller: ['sntNotifySrv', 'Toggles', function (sntNotifySrv, Toggles) {
@@ -54,21 +54,21 @@ angular.module('snt.utils').component('sntNotify', {
 
 
         ctrl.$onInit = function () {
+            let currentMsg;
+
             ctrl.style = 'notice';
             ctrl.style += (ctrl.type === 'success') ? ' success success-message' : ' error error-message';
 
             ctrl.showToasts = Toggles.isEnabled('show_toast_notifications');
 
-            ctrl.$onChanges = function (changes) {
-                changes['message'] = changes['message'] || {};
-                // Initialize the toast only if the feature is enabled for this property
-
-                if (ctrl.showToasts) {
-                    if (changes['message'].currentValue &&
-                        changes['message'].currentValue.length) { // Check for empty Array
-                        sntNotifySrv.show(changes['message'].currentValue, ctrl.type);
+            ctrl.$doCheck = function () {
+                if (currentMsg !== this.message) {
+                    currentMsg = this.message;
+                    if (ctrl.showToasts && this.message) {
+                        sntNotifySrv.show(this.message, ctrl.type);
                     }
                 }
+                
             };
 
         };
