@@ -49,6 +49,13 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
         };
 
         /**
+         * Function for linking existing contracts.
+         */
+        $scope.linkContract = function() {
+            $scope.contractData.mode = 'LINK';
+        };
+
+        /**
          * Listener for initializing the contracts list
          */
         $scope.addListener('initContractsList', init);

@@ -25,7 +25,7 @@
                     <!-- Add class .active if showing this contact -->
                     <li ng-repeat="contract in item.contracts"
                         ng-click="fetchDetails(contract.id)"
-                        ng-class="{'active': contract.id === contractData.selectedContract,
+                        ng-class="{'active': (contract.id === contractData.selectedContract && contractData.mode === 'EDIT'),
                                 'inactive': !contract.is_active}">
                         <h3 class="item-title">{{contract.contract_name}}</h3>
                         <div class="item-info">
@@ -38,7 +38,8 @@
         </div>
     </div>
     <!-- Show this to enable creating contracts. -->
-    <div class="contracts-list-actions" ng-show="contractData.mode === 'EDIT'">
-        <button type="button" class="button green" ng-click="newContract()">Create New Contract</button>
+    <div class="contracts-list-actions">
+        <button ng-show="(contractData.mode === 'EDIT' || contractData.mode === 'LINK')" ng-hide="contractData.mode === 'ADD'" type="button" class="button green" ng-click="newContract()">Create New Contract</button>
+        <button type="button" ng-hide="contractData.mode === 'LINK'" class="button purple" ng-click="linkContract()">Link Contract</button>
     </div>
 </div>

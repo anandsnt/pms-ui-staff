@@ -1,35 +1,37 @@
-<!-- Add .searching when searching a contract -->
-<div ng-controller="rvCardContractsLinkingCtrl" class="autocomplete-search contract-details-header" ng-class="{'searching': contractData.linkContractsSearch.query !== ''}">
-    <!-- Remove .with-button if we are not shwoing Unlink Contract button -->
-    <div class="search-header">
-        <div class="search">
-            <label>Link Existing Contract</label>
-            <!-- Add .visible to show clear query -->
-            <button class="clear-query" ng-class="{'visible': contractData.linkContractsSearch.query !== ''}">
-                <span class="icons icon-clear-search" ng-click="clearQuery()" ng-show="contractData.linkContractsSearch.results.length > 0">Clear query</span>
-            </button>
-            <button type="submit" name="submit" class="icons icon-search">Search</button>
-            <input ng-model="contractData.linkContractsSearch.query" ng-change="searchContracts()" name="find-contracts" class="query" placeholder="Search by Contract Name or Access Code" autocomplete="off" type="search">
+<div ng-controller="rvCardContractsLinkingCtrl" class="contracts-details" ng-show="!contractData.noContracts && contractData.mode === 'LINK'">
+    <!-- Add .searching when searching a contract -->
+    <div class="autocomplete-search contract-details-header" ng-class="{'searching': contractData.linkContractsSearch.query !== ''}">
+        <!-- Remove .with-button if we are not shwoing Unlink Contract button -->
+        <div class="search-header">
+            <div class="search">
+                <label>Link Existing Contract</label>
+                <!-- Add .visible to show clear query -->
+                <button class="clear-query" ng-class="{'visible': contractData.linkContractsSearch.query !== ''}">
+                    <span class="icons icon-clear-search" ng-click="clearQuery()" ng-show="contractData.linkContractsSearch.results.length > 0">Clear query</span>
+                </button>
+                <button type="submit" name="submit" class="icons icon-search">Search</button>
+                <input ng-model="contractData.linkContractsSearch.query" ng-change="searchContracts()" name="find-contracts" class="query" placeholder="Search by Contract Name or Access Code" autocomplete="off" type="search">
+            </div>
         </div>
-    </div>
-    <!-- Remove .hidden when searching -->
-    <ul class="autocomplete-results-header" ng-show="contractData.linkContractsSearch.results.length > 0">
-        <li class="contract-name">Contract Name</li>
-        <li class="start-date">Start Date</li>
-        <li class="end-date">End Date</li>
-        <li class="rate">Rate</li>
-    </ul>
-    <!-- Remove .hidden when searching -->
-    <div  class="scrollable" ng-iscroll='searchContractsResultsList' ng-show="contractData.linkContractsSearch.results.length > 0">
-        <div class="wrapper">
-            <!-- Add .linked if it's a linked contract already -->
-            <ul class="contract" ng-click="clickedOnResult($index)" ng-repeat="item in contractData.linkContractsSearch.results" ng-class="{'linked': item.is_already_linked}">
-                <li class="contract-name">{{item.contract_name}}</li>
-                <li class="start-date">{{item.begin_date}}</li>
-                <li class="end-date">{{item.end_date}}</li>
-                <li class="rate">{{item.rates[0]}}</li>
-            </ul>
-            <!-- ... repeat for each found contract -->
+        <!-- Remove .hidden when searching -->
+        <ul class="autocomplete-results-header" ng-show="contractData.linkContractsSearch.results.length > 0">
+            <li class="contract-name">Contract Name</li>
+            <li class="start-date">Start Date</li>
+            <li class="end-date">End Date</li>
+            <li class="rate">Rate</li>
+        </ul>
+        <!-- Remove .hidden when searching -->
+        <div  class="scrollable" ng-iscroll='searchContractsResultsList' ng-show="contractData.linkContractsSearch.results.length > 0">
+            <div class="wrapper">
+                <!-- Add .linked if it's a linked contract already -->
+                <ul class="contract" ng-click="clickedOnResult($index)" ng-repeat="item in contractData.linkContractsSearch.results" ng-class="{'linked': item.is_already_linked}">
+                    <li class="contract-name" ng-bind-html="escapeNull(item.contract_name)|highlight:contractData.linkContractsSearch.query:false"></li>
+                    <li class="start-date">{{item.begin_date}}</li>
+                    <li class="end-date">{{item.end_date}}</li>
+                    <li class="rate">{{item.rates[0]}}</li>
+                </ul>
+                <!-- ... repeat for each found contract -->
+            </div>
         </div>
     </div>
 </div>
