@@ -335,6 +335,9 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 						$scope.data[parseInt($scope.currentClickedElement)].charge_group = data.charge_group;
 						$scope.data[parseInt($scope.currentClickedElement)].charge_code_type = data.charge_code_type;
 						$scope.data[parseInt($scope.currentClickedElement)].link_with = data.link_with;
+					if ($scope.isDepositSelected()) {
+						$scope.data.splice($scope.currentClickedElement, 1);
+					}
 				} 
 				else {
 					$scope.data.push(data);
