@@ -210,6 +210,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		 * To fetch the charge code details for edit screen.
 		 */
 		$scope.editSelected = function(index, value) {
+			$scope.warningMessage = "";
 			$scope.isAddTax = false;
 			$scope.isAdd = false;
 			$scope.disableAddTax = false;
