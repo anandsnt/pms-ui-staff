@@ -73,7 +73,9 @@ angular.module('sntRover').controller('rvCardSearchContractedRateCtrl', ['$scope
             var clickedItem = $scope.contractData.selectedRateList[index];
 
             // get index of object with id:37
-            var removeIndex = $scope.contractData.selectedRateList.map(function(item) { return item.id; }).indexOf(clickedItem.id);
+            var removeIndex = $scope.contractData.selectedRateList.map(function(item) { 
+                                return item.id; 
+                            }).indexOf(clickedItem.id);
 
             // remove object
             $scope.contractData.selectedRateList.splice(removeIndex, 1);
