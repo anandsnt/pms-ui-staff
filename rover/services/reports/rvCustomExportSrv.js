@@ -28,7 +28,8 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             VIP: 'vip',
             PRIMARY_PAYMENT_METHOD: 'primary_payment_method',
             MEMBERSHIP: 'membership',
-            MEMBERSHIP_LEVEL: 'membership_level'
+            MEMBERSHIP_LEVEL: 'membership_level',
+            ORIGIN_CODE: 'origin_code'
         };
 
         var cache = {
@@ -561,7 +562,13 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             promises.push(this.getFFPLevels());
 
             $q.all(promises).then(function (response) {
-                deferred.resolve(response[0].concat(response[1]));
+                var membershipLevels = response[0].concat(response[1]);
+
+                membershipLevels = _.uniq(membershipLevels, function (entry) {
+                    return entry.value;
+                });
+
+                deferred.resolve(membershipLevels);
             });
 
             return deferred.promise;
@@ -593,6 +600,7 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             _.each(filterValues, function (value, key) {
                 switch (key) {
                     case FILTER_KEYS['BOOKING_ORIGIN_CODE']:
+                    case FILTER_KEYS['ORIGIN_CODE']:
                         promises.push(reportSubSrv.fetchBookingOrigins());
                         break;
                     case FILTER_KEYS['MARKET_CODE']:

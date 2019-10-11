@@ -28,7 +28,7 @@ admin.controller('ADBalanceJournalCtrl', [
 			'end_date': $scope.previousDayOfBusinessDateInDbFormat,
 			'first_date': ''
 		};
-		$scope.payload.first_date = $scope.previousDayOfBusinessDateInDbFormat;
+		$scope.payload.first_date = $scope.previousDayOfBusinessDate;
 
 		/*
 		 * API when clicks start job
@@ -49,6 +49,7 @@ admin.controller('ADBalanceJournalCtrl', [
 				$scope.cancelOrChangeBtnTxt = "";
 				$scope.runButtonText = "REFRESH STATUS";
 				$scope.runForDiffDatesText = "";
+				$scope.tableParams.reload();
 				if ($scope.payload.first_date === $scope.payload.end_date) {
 					$scope.jobStatusText = "Balancing journal for " + endDate;
 				}
@@ -102,6 +103,7 @@ admin.controller('ADBalanceJournalCtrl', [
 				$scope.statusData = status;
 				$scope.showPercentage = true;
 				$scope.progressPercentage = $scope.statusData.progress_percent;
+				$scope.tableParams.reload();
 				if ( $scope.progressPercentage === "100" ) {
 					$(".balance-status").addClass('success');
 					$(".balance-status").removeClass('notice');
@@ -143,8 +145,7 @@ admin.controller('ADBalanceJournalCtrl', [
 
 		$scope.toggleActivityLog = function() {
             if ($scope.detailsMenu !== 'adRateActivityLog') {
-                $scope.detailsMenu = 'adRateActivityLog';
-				$scope.loadTable();
+				$scope.detailsMenu = 'adRateActivityLog';
 				$scope.tableParams.reload();
             } else {
                 $scope.detailsMenu = '';
@@ -159,10 +160,9 @@ admin.controller('ADBalanceJournalCtrl', [
 					$scope.currentClickedElement = -1;
 					$scope.totalCount = data.total_count;
 					$scope.totalPage = Math.ceil(data.total_count / $scope.displyCount);
-					$scope.activityLogData = data.results;
+					$scope.data = data.results;
 					$scope.currentPage = params.page();
 					params.total(data.total_count);
-					// params.total(data.results.length);
 					$defer.resolve($scope.data);
 				}, 500);
             },
@@ -178,8 +178,11 @@ admin.controller('ADBalanceJournalCtrl', [
 			$scope.tableParams = new ngTableParams({
 					page: 1,  // show first page
 					count: $scope.displyCount, // count per page
+			        sorting: {
+			            charge_code: 'asc' // initial sorting
+			        }
 				}, {
-					total: $scope.activityLogData ? $scope.activityLogData.length : 0, // length of data
+					total: $scope.data ? $scope.data.length : 0, // length of data
 					getData: $scope.getActivityLog
 				}
 			);
