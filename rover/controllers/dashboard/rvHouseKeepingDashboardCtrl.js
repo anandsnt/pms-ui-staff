@@ -1,4 +1,4 @@
-sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope', '$state', function($scope, $rootScope, $state) {
+sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope', '$state', '$timeout', function($scope, $rootScope, $state, $timeout) {
 	// inheriting some useful things
 	BaseCtrl.call(this, $scope);
     var that = this;
@@ -92,4 +92,13 @@ sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope'
     setTimeout(function() {
       $scope.refreshScroller('dashboard_scroller');
     }, 500);
+
+
+  $scope.$on('SHOW_ANALYTICS_DASHBOARD', function() {
+    // call API and on Success show Analytics page
+    $timeout(function() {
+      $scope.dashboardFilter.analyticsActive = true;
+    }, 500);
+  });
+
 }]);

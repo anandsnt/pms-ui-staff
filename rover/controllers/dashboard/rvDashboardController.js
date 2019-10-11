@@ -8,7 +8,9 @@ sntRover.controller('RVdashboardController',
 
             // setting the heading of the screen
             $scope.heading = 'DASHBOARD_HEADING';
-
+            $scope.dashboardFilter = {
+                analyticsActive : false
+            };
 
             // We are not showing the backbutton now, so setting as blank
             $scope.backButtonCaption = ''; // if it is not blank, backbutton will show, otherwise dont
@@ -379,8 +381,13 @@ sntRover.controller('RVdashboardController',
 
             $scope.analyticsDashboardEnabled = Toggles.isEnabled('dashboard_analytics');
 
-            $scope.isInAnalyticDashboard = false;
+            $scope.dashboardFilter.analyticsActive = false;
+
             $scope.toggleAnalyticsView = function() {
-                $scope.isInAnalyticDashboard = !$scope.isInAnalyticDashboard;
+                if ($scope.dashboardFilter.analyticsActive) {
+                    $scope.dashboardFilter.analyticsActive = false;
+                } else {
+                    $scope.$broadcast('SHOW_ANALYTICS_DASHBOARD');
+                }
             };
         }]);
