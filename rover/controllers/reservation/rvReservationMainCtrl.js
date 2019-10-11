@@ -842,22 +842,25 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     } else {
                         roomTypeId = currentRoom.roomTypeId;
                     }
+                    // In case of the last day, send the first day's occupancy
+                    var rate = (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].rate.id : staydetailInfo.rate.id;
+
                     reservationStayDetails.push({
                         date: date,
-                        // In case of the last day, send the first day's occupancy
-                        rate_id: (function() {
-                            var rate = (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].rate.id : staydetailInfo.rate.id;
-                            // in case of custom rates (rates without IDs send them as null.... the named ids used within the UI controllers are just for tracking and arent saved)
-
-                            return rate && rate.toString().match(/_CUSTOM_/) ? null : rate;
-                        })(),
+                        // in case of custom rates (rates without IDs send them as null.... the named ids used within the UI controllers are just for tracking and arent saved)
+                        rate_id: rate && rate.toString().match(/_CUSTOM_/) ? null : rate,
                         room_type_id: roomTypeId,
                         room_id: $scope.reservationData.inHouse ? staydetailInfo.roomId : currentRoom.room_id,
                         adults_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.adults : parseInt(staydetailInfo.guests.adults),
                         children_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.children : parseInt(staydetailInfo.guests.children),
                         infants_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.infants : parseInt(staydetailInfo.guests.infants),
                         rate_amount: parseFloat((date === $scope.reservationData.departureDate) ? ((currentRoom.stayDates[$scope.reservationData.arrivalDate] && currentRoom.stayDates[$scope.reservationData.arrivalDate].rateDetails && currentRoom.stayDates[$scope.reservationData.arrivalDate].rateDetails.modified_amount) || 0) : ((staydetailInfo.rateDetails && staydetailInfo.rateDetails.modified_amount) || 0)),
-                        contract_id: staydetailInfo.contractId || null
+                        contract_id: (function() {
+                            var contractId = (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].contractId : staydetailInfo.contractId;
+                            // in case of custom rates (rates without IDs send them as null.... the named ids used within the UI controllers are just for tracking and arent saved)
+
+                            return rate && rate.toString().match(/_CUSTOM_/) ? null : contractId;
+                        })()
                     });
                 });
 
