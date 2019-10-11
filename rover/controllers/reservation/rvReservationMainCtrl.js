@@ -856,8 +856,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                         adults_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.adults : parseInt(staydetailInfo.guests.adults),
                         children_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.children : parseInt(staydetailInfo.guests.children),
                         infants_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.infants : parseInt(staydetailInfo.guests.infants),
-                        rate_amount: parseFloat((date === $scope.reservationData.departureDate) ? ((currentRoom.stayDates[$scope.reservationData.arrivalDate] && currentRoom.stayDates[$scope.reservationData.arrivalDate].rateDetails && currentRoom.stayDates[$scope.reservationData.arrivalDate].rateDetails.modified_amount) || 0) : ((staydetailInfo.rateDetails && staydetailInfo.rateDetails.modified_amount) || 0))
-
+                        rate_amount: parseFloat((date === $scope.reservationData.departureDate) ? ((currentRoom.stayDates[$scope.reservationData.arrivalDate] && currentRoom.stayDates[$scope.reservationData.arrivalDate].rateDetails && currentRoom.stayDates[$scope.reservationData.arrivalDate].rateDetails.modified_amount) || 0) : ((staydetailInfo.rateDetails && staydetailInfo.rateDetails.modified_amount) || 0)),
+                        contract_id: staydetailInfo.contractId || null
                     });
                 });
 
