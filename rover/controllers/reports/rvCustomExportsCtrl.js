@@ -752,6 +752,10 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             $scope.addListener('RESET_CURRENT_STAGE', () => {
                 $scope.viewState.currentStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
             });
+
+            $scope.addListener('DELETE_CUSTOM_EXPORT_SCHEDULE', () => {
+                confirmDelete();
+            });
         };
 
         // Checks not run once case
@@ -854,6 +858,122 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             };
             $scope.scheduleParams = {};
             $scope.emailList = [];
+        };
+
+        // Confirm user before deleting the schedule
+        var confirmDelete = function() {
+            ngDialog.open({
+                template: '/assets/partials/reports/scheduleReport/rvConfirmDeleteSchedule.html',
+                scope: $scope
+            });
+        };
+
+        // Delete a schedule
+        $scope.deleteSchedule = function() {
+            var success = function() {
+                $scope.errorMessage = '';
+                $scope.updateViewCol($scope.viewColsActions.ONE);
+                $scope.customExportsData.isNewExport = false;
+                $scope.viewState.currentStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
+                fetchCustomExportsAndExportFrequencies();
+            };
+
+            var failed = function(errors) {
+                $scope.errorMessage = errors;
+            };
+
+            $scope.closeDialog();
+            $scope.callAPI(reportsSrv.deleteSchedule, {
+                params: {
+                    id: $scope.selectedEntityDetails.id
+                },
+                onSuccess: success,
+                onFailure: failed
+            });
+        };
+
+        // Run the schedule now
+        $scope.runScheduleNow = function () {
+            var params = {
+                id: $scope.selectedEntityDetails.id
+            };
+
+            var getFtpAddress = function (id) {
+                var has;
+                var ret = {
+                    description: '',
+                    url: ''
+                };
+
+                if ( $scope.ftpServerList.length ) {
+                    has = _.find($scope.ftpServerList, { id: id }) || ret;
+                    ret = {
+                        description: has.description,
+                        url: has.url
+                    };
+                }
+
+                return ret;
+            },
+            getCloudAccountDetails = function (id) {
+                var has;
+                var ret = {
+                    description: ''
+                };
+
+                if ($scope.scheduleParams.delivery_id === 'GOOGLE DRIVE' && $scope.googleDriveAccountList.length) {
+                    has = _.find($scope.googleDriveAccountList, { id: id }) || ret;
+                    ret = {
+                        description: has.description
+                    }; 
+                }
+
+                if ($scope.scheduleParams.delivery_id === 'DROPBOX' && $scope.dropBoxAccountList.length) {
+                    has = _.find($scope.dropBoxAccountList, { id: id }) || ret;
+                    ret = {
+                        description: has.description
+                    }; 
+                }
+
+                return ret;
+            };
+
+            var showResponse = function () {
+                $scope.runNowData = {
+                    isEmail: $scope.checkDeliveryType('EMAIL'),
+                    isFtp: $scope.checkDeliveryType('SFTP'),
+                    isGoogleDrive: $scope.checkDeliveryType('GOOGLE DRIVE'),
+                    isDropbox: $scope.checkDeliveryType('DROPBOX'),
+                    isSingleEmail: $scope.emailList.length === 1,
+                    ftpAddress: getFtpAddress($scope.scheduleParams.selectedFtpRecipient),
+                    cloudDetails: getCloudAccountDetails($scope.scheduleParams.selectedCloudAccount)
+                };
+
+                ngDialog.open({
+                    template: '/assets/partials/reports/scheduleReport/rvRunScheduleNowUpdate.html',
+                    scope: $scope
+                });
+            };
+
+            var success = function() {
+                $scope.errorMessage = '';
+
+                $scope.runScheduleNowSuccess = true;
+                showResponse();
+            };
+
+            var failed = function(errors) {
+                $scope.errorMessage = errors;
+
+                $scope.runScheduleNowSuccess = false;
+                showResponse();
+            };
+
+            $scope.callAPI(reportsSrv.runScheduleNow, {
+                params: params,
+                onSuccess: success,
+                onFailure: failed
+            });
         };
 
         /**

@@ -367,6 +367,11 @@ angular.module('sntRover')
                 }
             };
 
+            // Handler for deleting the custom exports schedule
+            $scope.deleteCustomExportSchedule = () => {
+                $scope.$broadcast('DELETE_CUSTOM_EXPORT_SCHEDULE');
+            };
+
             (function () {
                 $scope.updateViewCol($scope.viewColsActions.ONE);
                 if ($stateParams.showScheduledReports) {
