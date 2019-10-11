@@ -1,5 +1,5 @@
-angular.module('admin').controller('adArchivalTransferSetupCtrl', ['$scope', '$rootScope', 'config', 'ACGIIntegrationSrv',
-    function($scope, $rootScope, config, ACGIIntegrationSrv) {
+angular.module('admin').controller('adArchivalTransferSetupCtrl', ['$scope', '$rootScope', 'config', 'ACGIIntegrationSrv', 'sntLoadScriptSrv',
+    function($scope, $rootScope, config, ACGIIntegrationSrv, sntLoadScriptSrv) {
 
         var TURN_ON = false,
             updateMode = function() {
@@ -27,11 +27,14 @@ angular.module('admin').controller('adArchivalTransferSetupCtrl', ['$scope', '$r
                 $scope.connctedDetails.isConnected = true;
             },
             init = function() {
+                var googleApiUrl = "https://apis.google.com/js/client.js";
                 $scope.config = config.data;
                 $scope.connctedDetails = {};
                 updateMode();
                 updateConnectedDetails();
-                GAPI.call(this, $scope);
+                sntLoadScriptSrv.loadScript(googleApiUrl).then(function() {
+                    GAPI.call(this, $scope, gapi);
+                });
             };
 
         $scope.enableAcceptButton = function() {
