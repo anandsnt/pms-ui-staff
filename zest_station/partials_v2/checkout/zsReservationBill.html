@@ -53,7 +53,7 @@
                             <span data-ng-bind-html="getTagValue('ENDING_WITH')" editable-text="ENDING_WITH"></span> {{paymentDetails.card_number}}<br>
                             <span data-ng-bind-html="getTagValue('EXPIRES')" editable-text="EXPIRES"></span> {{paymentDetails.card_expiry}}
                         </p>
-                        <div class="payment-actions" ng-if="zestStationData.enable_items_for_station">
+                        <div class="payment-actions" ng-if="zestStationData.enable_items_for_station && !restrict_post">
                             <a touch-press="clickedAddCharge()" class="button" translate="ADD_CHARGE"></a>
                         </div>
                         <!-- <a href="{swipe.html, change title of that screen if arrived from here}" class="button">Change Card</a> -->

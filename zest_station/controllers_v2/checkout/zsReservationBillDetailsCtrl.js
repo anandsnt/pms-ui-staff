@@ -318,15 +318,31 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                     return map;
                 }, {});
 
+                // Map non-group-items to -1
+                $scope.chargeData.groupedItems[-1] = {
+                    id: -1,
+                    items: [],
+                    quantity: 0,
+                    is_open: false
+                };
+
                 for (var i = 0, itemLen = $scope.chargeData.chargeItems.length; i < itemLen; i++) {
                     $scope.chargeData.chargeItems[i].quantity = 0;
-                    $scope.chargeData.groupedItems[$scope.chargeData.chargeItems[i].charge_group_id].items.push($scope.chargeData.chargeItems[i]);
+                    if ($scope.chargeData.chargeItems[i].charge_group_id) {
+                        $scope.chargeData.groupedItems[$scope.chargeData.chargeItems[i].charge_group_id].items.push($scope.chargeData.chargeItems[i]);
+                    } else {
+                        $scope.chargeData.groupedItems[-1].items.push($scope.chargeData.chargeItems[i]);
+                    }
                 }
 
                 // Discard groups without any items
-                $scope.chargeData.groupedItems = _.filter($scope.chargeData.groupedItems, function(groupedItem) {
-                    return groupedItem.items.length;
-                });
+                for (var groupId in $scope.chargeData.groupedItems) {
+                    if ($scope.chargeData.groupedItems.hasOwnProperty(groupId)) {
+                        if (!$scope.chargeData.groupedItems[groupId].items.length) {
+                            delete $scope.chargeData.groupedItems[groupId];
+                        }
+                    }
+                }
                 // If there is ony one group, by default keep it open
                 if ($scope.chargeData.groupedItems.length === 1) {
                     $scope.chargeData.groupedItems[0].is_open = true;
@@ -455,6 +471,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 $scope.days_of_stay = $stateParams.days_of_stay;
                 $scope.hours_of_stay = $stateParams.hours_of_stay;
                 $stateParams.email = !_.isNull($stateParams.email) ? $stateParams.email : '';
+                $scope.restrict_post = $stateParams.restrict_post;
 
                 // storing state varibales to be used in print view also
                 $scope.stateParamsForNextState = {
