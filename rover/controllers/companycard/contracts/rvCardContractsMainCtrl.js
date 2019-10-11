@@ -220,6 +220,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
                         "postData": {'occupancy': data}
                     }
                 };
+            
             $scope.callAPI(rvCompanyCardContractsSrv.updateNight, options);
 		});
 
