@@ -37,14 +37,8 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'rvC
                 $scope.$emit('setErrorMessage', data);
 				$scope.$parent.currentSelectedTab = 'cc-contracts';
             },
-            accountId;
-
-            if ($stateParams.id === "add") {
-                accountId = $scope.contactInformation.id;
-            } else {
-                accountId = $stateParams.id;
-            }
-            var options = {
+            accountId = !_.isEmpty($scope.contactInformation) ? $scope.contactInformation.id : $stateParams.id,
+            options = {
                 params: {
                     'account_id': accountId,
                     "contract_id": $scope.contractData.selectedContract,
