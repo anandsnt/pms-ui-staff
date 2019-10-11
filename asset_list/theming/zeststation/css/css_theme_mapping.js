@@ -90,7 +90,8 @@ module.exports = {
             'pod-philly': [themeCSSRoot + 'pod-philly.less'],
             'concordia': [themeCSSRoot + 'concordia.less'],
             'belvedere': [themeCSSRoot + 'belvedere.less'],
-            'delavan': [themeCSSRoot + 'delavan.less']
+            'delavan': [themeCSSRoot + 'delavan.less'],
+            'garden-place': [themeCSSRoot + 'garden-place.less']
         };
     }
 };
