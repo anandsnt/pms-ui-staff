@@ -1,5 +1,5 @@
 
-sntRover.controller('rvContractedNightsCtrl', ['$rootScope', '$scope', 'dateFilter', 'ngDialog', 'rvCompanyCardContractsSrv', '$stateParams', function($rootScope, $scope, dateFilter, ngDialog, rvCompanyCardContractsSrv, $stateParams) {
+sntRover.controller('rvContractedNightsCtrl', ['$rootScope', '$scope', 'dateFilter', 'ngDialog', 'rvCompanyCardContractsSrv', function($rootScope, $scope, dateFilter, ngDialog, rvCompanyCardContractsSrv) {
 	$scope.nightsData = {};
 	$scope.nightsData.occupancy = [];
 	$scope.nightsData.allNights = "";
