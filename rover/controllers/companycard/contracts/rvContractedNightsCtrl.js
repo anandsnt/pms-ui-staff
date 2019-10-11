@@ -76,7 +76,7 @@ sntRover.controller('rvContractedNightsCtrl', ['$rootScope', '$scope', 'dateFilt
 			$scope.addData.occupancy = $scope.nightsData.occupancy;
 			$scope.addData.contractedNights = getTotalNights();
 		}
-		else if($scope.contractData.mode === 'EDIT') {
+		else if ($scope.contractData.mode === 'EDIT') {
 			$scope.contractData.editData.occupancy = $scope.nightsData.occupancy;
 			$scope.contractData.editData.total_contracted_nights = getTotalNights();
 		}
