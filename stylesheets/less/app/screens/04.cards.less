@@ -595,14 +595,9 @@
                             #border-radius > .rounded();
                             .show;
 
-                            &:hover:not([disabled]),
-                            &:active:not([disabled]) { background-position: 95% -140px !important; }
+                            &:hover,
+                            &:active { background-position: 95% -140px !important; }
 
-                            &[disabled] {
-                                cursor: default;
-                                background-color: rgba(0, 0, 0, 0.01) !important;
-                            }
-                            
                             @media @highdpi { background-image: @calendar2x; }
                         }
 
@@ -759,6 +754,61 @@
 
                                     &:last-child { margin-right: 0; }
                                 }
+                            }
+                        }
+
+                        &.find-rate {
+                            position: relative;
+                            
+                            .clear-query {
+                                position: absolute;
+                                top: 24px;
+                                right: 0;
+                                z-index: 99;
+                                visibility: hidden;
+                                background: @white;
+                                #border-radius > .right();
+                                .box-shadow(inset -1px 1px 1px rgba(0, 0, 0, .15));
+                                .square(40px);
+
+                                .icons {
+                                    position: absolute;
+                                    top: 12.5px;
+                                    right: 12.5px;
+                                    background-color: @grey2;
+                                    .hide-text;
+                                    .square(15px);
+                                    .opacity(0);
+                                    .show;
+                                    #fade > .out();
+                                    #border-radius > .rounded(15px);
+                                }
+
+                                &.visible { 
+                                    visibility: visible;
+
+                                    .icons {    
+                                        .opacity(100); 
+                                        #fade > .in(); 
+                                    }
+                                }
+
+                                &:hover,
+                                &.active { 
+                                    .icons { background-color: @logoPrimary; }
+                                }
+                            }
+
+                            input {
+                                padding-right: 40px;
+                                .nowrap();
+                            }
+
+                            .mini-select {
+                                position: absolute;
+                                top: 24px;
+                                right: 0;
+                                z-index: 9;
                             }
                         }
 
@@ -1536,6 +1586,16 @@
                                 .contracts-list-items {
                                     .calc-height( 100, 80 );
                                 }
+
+                                &.actions-2 {
+                                    .contracts-list-items {
+                                        .calc-height( 100, 130 );
+                                    }
+
+                                    .contracts-list-actions {
+                                        height: 130px;
+                                    }
+                                }
                             }
                         }
 
@@ -1543,7 +1603,7 @@
                             height: 100%;
                             position: relative;
                             .calc-width( 100, 265 );
-                            
+
                             .contract-details-header {
                                 background: @white;
                                 overflow: hidden;
@@ -1605,6 +1665,8 @@
                                 &.autocomplete-search {
 
                                     .scrollable {
+                                        max-height: 100%;
+
                                         .iScrollVerticalScrollbar .iScrollIndicator {
                                             background: rgba(0,0,0,0.15);
                                         }
@@ -1619,14 +1681,13 @@
                                         text-transform: uppercase;
                                         font-size: 14px;
                                         padding: 0 20px;
-                                        border-bottom: 1px solid rgba( 0, 0, 0, 0.1 );
                                         #flexbox > .display();
 
                                         li {
                                             margin: 0;
 
                                             &.contract-name {
-                                                .calc-width( 100, 500 );
+                                                .calc-width( 100, 480 );
                                             }
 
                                             &.access-code {
@@ -1645,12 +1706,16 @@
                                                 width: 140px;
                                             }
                                         }
+
+                                        &:not(:last-child) {
+                                            box-shadow: 0 1px 0 rgba(0,0,0,.1);
+                                        }
                                     }
 
                                     .autocomplete-results-header {
                                         color: @grey3;
                                         font-weight: 600;
-                                        
+
                                         li {
                                             padding: 5px 0 10px 0;
                                             line-height: 1;
@@ -1660,15 +1725,28 @@
                                     .contract {
 
                                         li {
-                                            height: 35px;
-                                            line-height: 35px;
+                                            line-height: 1.2;
+                                            padding: 10px 0;
 
                                             .highlight { color: @logoPrimary; }
 
-                                            &.rate,
-                                            &.contract-name {
-                                                .nowrap();
+                                            &:not(.rate) {
                                                 padding-right: 10px;
+                                            }
+
+                                            &.rate {
+                                                span {
+                                                    .show();
+
+                                                    &:not(:last-child) {
+                                                        margin-bottom: 4px;
+                                                    }
+                                                }
+
+                                                em {
+                                                    text-transform: none;
+                                                    color: @grey3;
+                                                }
                                             }
                                         }
 
@@ -1681,21 +1759,20 @@
 
                                             &:after {
                                                 content: '';
-
-                                            .icons();
+                                                .icons();
                                                 position: absolute;
                                                 width: 14px;
                                                 height: 14px;
-                                                right: 20px;
+                                                right: 10px;
                                                 top: 10px;
                                                 background-size: 60px;
-                                                background-position: 0px -3679px;   
+                                                background-position: 0px -3679px;
 
                                                 @media @highdpi {
                                                     background-size: 60px;
                                                 }
                                             }
-                                            
+
                                         }
 
                                         &:last-child {
@@ -1738,6 +1815,11 @@
                                 position: relative;
                                 .calc-height( 100, 120 );
 
+                                input[disabled]:not(.icons) {
+                                    color: @black;
+                                    -webkit-text-fill-color: @black;
+                                }
+
                                 &.without-footer {
                                     .calc-height( 100, 60 );
                                 }
@@ -1771,14 +1853,26 @@
                                         }
                                     }
 
-                                    .switch-icon { 
+                                    .switch-icon {
                                         .gradient(@grey2, @grey3);
                                     }
-        
+
                                     .data-on {
-        
-                                        .switch-icon { 
-                                            .gradient(@greenStart, @greenEnd); 
+                                        .switch-icon {
+                                            .gradient(@greenStart, @greenEnd);
+                                        }
+                                    }
+
+                                    &.disabled {
+                                        .value { opacity: 0; }
+                                        .switch-icon {
+                                            .gradient-important(@grey2, @grey3);
+                                        }
+    
+                                        .data-on {
+                                            .switch-icon {
+                                                .gradient-important(@greenStart, @greenEnd);
+                                            }
                                         }
                                     }
                                 }
@@ -1810,7 +1904,7 @@
                                             .nowrap();
                                         }
 
-                                        .rate-code {
+                                        .rate-code {
                                             color: @grey3;
                                             font-size: 14px;
                                         }
@@ -1827,7 +1921,7 @@
                                         position: relative;
                                         #flexbox > .parent( row, space-between, '', '' );
                                         .box-shadow();
-        
+
                                         &:not(:last-child) {
                                             margin-bottom: 10px;
                                         }
@@ -1851,7 +1945,7 @@
                                             .nowrap();
                                         }
 
-                                        .rate-code {
+                                        .rate-code {
                                             color: @grey3;
                                             font-size: 14px;
                                             font-weight: 400;
@@ -1880,6 +1974,14 @@
                             &.right {
                                 width: 215px;
 
+                                .button { 
+                                    width: 100%; 
+
+                                    &:not(:last-child) {
+                                        margin-bottom: 10px;
+                                    }
+                                }
+
                                 .no-content {
                                     padding: 0;
 
@@ -1905,7 +2007,7 @@
                                             width: 75px;
                                             background-position: 0px -1344px;
                                         }
-                                        
+
                                     }
                                 }
                             }
@@ -3655,7 +3757,7 @@
                                         margin-right: 10px;
                                         padding: 0;
 
-                                        input[type=text] {
+                                        input[type=text] {
                                             padding-right: 80px;
                                             .box-shadow(inset 1px 1px 0 rgba(0,0,0,.2));
                                         }
@@ -3779,7 +3881,7 @@
                            
                         }
 
-                        &:not(.no-filters) {
+                        &:not(.no-filters) {
                             .search-form {
                                 .button-filter {
                                     .box-shadow(inset 1px 1px 1px rgba(0,0,0,.3));
