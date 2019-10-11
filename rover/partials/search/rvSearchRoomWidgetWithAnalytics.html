@@ -2,7 +2,7 @@
 <div ng-controller="rvHouseKeepingDashboardRoomSearchCtrl" >
 	<form name="dashboard-search-form" id="dashboard-search-form" class="search-form has-options room-search" role="search">
         <div class="entry switch ng-scope">
-            <div class="switch-button off" ng-class="{ 'on' : !isInAnalyticDashboard }">
+            <div class="switch-button off" ng-class="{ 'on' : !dashboardFilter.analyticsActive }">
                 <input id="room-task-toggle" value="" type="checkbox" ng-click="toggleAnalyticsView()" checked="">
                 <label class="data-off">
                     <span class="value">SUMMARY</span>
@@ -14,7 +14,7 @@
                 </label>
             </div>
         </div>
-        <div class="entry search" ng-if="!isInAnalyticDashboard">
+        <div class="entry search" ng-if="!dashboardFilter.analyticsActive">
 			<a href="#" id="dashboard-clear-query" class="clear-query" ng-show="query != ''" ng-click = "clearResults()" ng-class="{'visible': query != ''}">
 				<span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
 			</a>
