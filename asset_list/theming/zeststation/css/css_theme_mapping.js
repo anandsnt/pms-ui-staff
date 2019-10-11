@@ -89,7 +89,8 @@ module.exports = {
             'why-seattle': [themeCSSRoot + 'why-seattle.less'],
             'pod-philly': [themeCSSRoot + 'pod-philly.less'],
             'concordia': [themeCSSRoot + 'concordia.less'],
-            'belvedere': [themeCSSRoot + 'belvedere.less']
+            'belvedere': [themeCSSRoot + 'belvedere.less'],
+            'delavan': [themeCSSRoot + 'delavan.less']
         };
     }
 };
