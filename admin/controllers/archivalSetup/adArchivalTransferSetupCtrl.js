@@ -33,7 +33,7 @@ angular.module('admin').controller('adArchivalTransferSetupCtrl', ['$scope', '$r
                 updateMode();
                 updateConnectedDetails();
                 sntLoadScriptSrv.loadScript(googleApiUrl).then(function() {
-                    GAPI.call(this, $scope, gapi);
+                    GAPI.call(this, $scope);
                 });
             };
 

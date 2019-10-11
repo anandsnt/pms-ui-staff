@@ -1,4 +1,4 @@
-GAPI = function ($scope, gapi) {
+GAPI = function ($scope) {
     $scope.GoogleAuth = null;
     var SCOPE = 'https://www.googleapis.com/auth/drive';
 
