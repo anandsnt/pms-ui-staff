@@ -34,16 +34,16 @@
             <!-- Enable/Disable Post minibar consumption feature in zest station -->
             <fieldset class="holder right">
                 <div class="form-title">
-                    <h3><span translate>POST_MINIBAR_CONSUMPTIONS</span> </h3>
+                    <h3><span translate>POST_GUEST_CHARGES</span> </h3>
                 </div>
-                <ad-toggle-button is-checked="zestSettings.enable_items_for_station" label="{{'POST_MINIBAR_CONSUMPTIONS'| translate}}" div-class="full-width"></ad-toggle-button>
+                <ad-toggle-button is-checked="zestSettings.enable_items_for_station" label="{{'POST_GUEST_CHARGES'| translate}}" div-class="full-width"></ad-toggle-button>
             </fieldset>
 
             <!-- Select items to post -->
             <fieldset ng-if="zestSettings.enable_items_for_station" class="holder full-width" ng-if="true">
                 <div class="form-title">
                     <h3>
-                        <span translate>POST_MINIBAR_CONSUMPTIONS</span>
+                        <span translate>POST_GUEST_CHARGES</span>
                     </h3>
                 </div>
                 <div class="entry has-sortable" style="width: 48%; margin-right: 2%;">

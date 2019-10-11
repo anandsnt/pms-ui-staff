@@ -8,6 +8,7 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'rvC
 				$scope.refreshScroller('editContractScroller');
 			}, 500);
         };
+        
 
         /**
          * Listener for edit scroller refresh
@@ -28,11 +29,12 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'rvC
                 'rate_ids': _.pluck($scope.contractData.selectedRateList, 'id')
             },
             updateContractSuccessCallback = function() {
-				$scope.$emit('fetchContractsList');
+                $scope.$emit('setErrorMessage', []);
+                $scope.$emit('fetchContractsList');
+                $scope.$emit('updateContractedNights', $scope.contractData.editData.occupancy);
             },
             updateContractFailureCallback = function(data) {
                 $scope.$emit('setErrorMessage', data);
-                $scope.contractData.showNightsModal = false;
 				$scope.$parent.currentSelectedTab = 'cc-contracts';
             },
             accountId;
@@ -64,6 +66,28 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'rvC
             }
         };
 
+        /**
+         * Determine if access code should be editable
+         */
+        $scope.editAccessCode = function() {
+            var isReadOnly;
+
+            if ($scope.contractData.hasEditAccessCodePermission) {
+                /**
+                 * Should be readonly for expired contracts, irrespective of permission.
+                 * If contract is not expired, disableFields = false
+                 * so isReadonly = false, accesscode is not readonly
+                 * i.e., accesscode is editable
+                 */
+                isReadOnly = $scope.contractData.disableFields;
+            }
+            else {
+                // Otherwise accesscode is not editable, i.e., it's readonly
+                isReadOnly = true;
+            }
+            return isReadOnly;
+        };
+
         // To popup contract start date
 		$scope.contractStart = function() {
             if (!$scope.contractData.disableFields) {
@@ -91,8 +115,12 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'rvC
         // Show contracted nights popup
         $scope.editContractedNights = function() {
             if (!$scope.contractData.disableFields) {
-                $scope.contractData.showNightsModal = true;
-                $scope.updateContract();
+                ngDialog.open({
+                    template: '/assets/partials/companyCard/contracts/rvContractedNightsPopup.html',
+                    controller: 'rvContractedNightsCtrl',
+                    className: '',
+                    scope: $scope
+                });
             }            
         };
     }
