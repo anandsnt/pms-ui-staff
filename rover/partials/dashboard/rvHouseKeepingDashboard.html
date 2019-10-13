@@ -1,9 +1,9 @@
-<div ng-if="analyticsDashboardEnabled">
+<div ng-if="analyticsDashboardEnabled" ng-controller="RVhouseKeepingDashboardController">
     <div ng-include="'/assets/partials/search/rvSearchRoomWidgetWithAnalytics.html'"></div>
 
     <section id="dashboard" class="content scrollable" role = "main"
              ng-iscroll='dashboard_scroller' ng-iscroll-delay="100"
-             ng-show="showDashboard" ng-controller="RVhouseKeepingDashboardController"
+             ng-show="showDashboard"
              ng-if="!dashboardFilter.analyticsActive">
         <div class="wrapper">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
@@ -13,6 +13,15 @@
             <div ng-include="'/assets/partials/dashboard/rvDbGuestsSection.html'"></div>
         </div>
     </section>
+    <section id="dashboard" class="content scrollable" role = "main"
+             ng-iscroll='dashboard_scroller' ng-iscroll-delay="100"
+             ng-show="showDashboard"
+             ng-if="dashboardFilter.analyticsActive">
+        <div class="wrapper">
+            <div ng-include="'/assets/partials/analytics/rvHouseKeepingAnalytics.html'" ng-controller="RVHouseKeepingAnalyticsCtrlController"></div>
+        </div>
+    </section>
+    
 </div>
 
 <div ng-if="!analyticsDashboardEnabled">
