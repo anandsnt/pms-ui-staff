@@ -202,10 +202,6 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 $scope.$emit('showLoader');
                 $state.go('zest_station.collectGuestAddress');
             }
-            else if ($stateParams.previousState === 'COLLECT_PASSPORT_NUMBER' || $stateParams.previousState === 'BYPASS_PASSPORT_DETAILS') {
-                $scope.$emit('showLoader');
-                $state.go('zest_station.zsCheckinPassportDetails'); 
-            }
             // can't handle back from T&C for auto assign room, as the rooom status is not returned from API now.
             else if ($stateParams.pickup_key_mode) {
                 $state.go('zest_station.checkOutReservationSearch', {
@@ -248,7 +244,9 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
             if (!$stateParams.isQuickJump || $stateParams.isQuickJump === 'false') {
                 fetchReservationDetails();
-                fetchAddons();
+                $timeout(function() {
+                    fetchAddons();
+                }, 100);
                 if ($scope.selectedReservation.skipRoomUpsell) {
                     $scope.selectedReservation.is_upsell_available = false;
                 } else {

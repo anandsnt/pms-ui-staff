@@ -3,7 +3,7 @@
     <div class="multi-select select" ng-click="toggleView()">{{ value }}</div>
     <div class="multi-select-options" ng-class="{ 'hidden': closed }">
         <div class="select-all" ng-hide="options.noSelectAll || options.singleSelect || data.length === 1">
-            <label class="checkbox inline" ng-class="{ 'checked': options.selectAll }" ng-click="toggleSelectAll()">
+            <label class="checkbox inline" ng-class="{ 'checked': options.selectAll }" ng-click="toggleSelectAll()" ng-style="displayStyle">
                 <span class="icon-form icon-checkbox" ng-class="{ 'checked': options.selectAll }"></span>
                 Select All
             </label>
@@ -17,7 +17,7 @@
             <input class="query" placeholder="Search by {{ label }}" autocomplete="off" type="search" ng-model="search" ng-change="onSearchChange()">
         </div>
 
-        <label class="checkbox" ng-repeat="each in data" ng-class="{ 'hidden': each.filteredOut }" ng-click="toggleSelection(each)">
+        <label class="checkbox" ng-repeat="each in data" ng-class="{ 'hidden': each.filteredOut }" ng-click="toggleSelection(each)" ng-style="displayStyle">
             <span class="icon-form icon-checkbox" ng-class="{ 'checked': each.selected }"></span>
             {{ each[options.key] || each[options.altKey] }}
         </label>

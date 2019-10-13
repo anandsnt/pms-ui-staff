@@ -16,7 +16,7 @@
                 <option ng-repeat="filter in secondLevelData" value='{{filter.value}}' ng-selected="filter.value === selectedSecondLevel">{{filter.label}}</option>
             </select>
         </div>
-        <input type="text" placeholder="Enter value" ng-model="rangeValue">
+        <input type="number" placeholder="Enter value" ng-model="rangeValue">
     </div>
     <div class="entry">
         <button class="button white red-text" ng-click="removeFilter()">Remove Range</button>
