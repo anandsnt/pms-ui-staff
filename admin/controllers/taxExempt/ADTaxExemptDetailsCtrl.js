@@ -69,6 +69,7 @@ function($scope, $state, $timeout, $stateParams, ADTaxExemptSrv) {
     return _.pluck(_.filter($scope.chargeCodes, function(item) { return item.is_selected; }), 'value');
 
     };
+	
 	/*
 	 * Save/Update tax exempt
 	 */
