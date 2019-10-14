@@ -123,5 +123,26 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'rvC
                 });
             }            
         };
+
+        // Handle unlink Contract
+        $scope.clickedUnlinkContracts = function() {
+            var unLinkContractSuccessCallback = function() {
+                $scope.$emit('fetchContractsList', 'UNLINK');
+            },
+            unLinkContractFailureCallback = function(errorMessage) {
+                $scope.$emit('setErrorMessage', errorMessage);
+            };
+
+            var options = {
+                successCallBack: unLinkContractSuccessCallback,
+                failureCallBack: unLinkContractFailureCallback,
+                params: {
+                    "id": $scope.contractData.selectedContract,
+                    "account_id": $scope.contractData.accountId
+                }
+            };
+
+            $scope.callAPI(rvCompanyCardContractsSrv.unLinkContract, options);
+        };
     }
 ]);
