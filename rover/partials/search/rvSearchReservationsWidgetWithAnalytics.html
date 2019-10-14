@@ -71,9 +71,7 @@
 		</form> -->
 
 
-		<div id="dashboard-search-form" class="search-form" role="search" outside-click-handler ng-class="{'has-bulk-checkout': isDueoutShowing ,
-		'has-dates has-room-types enable-adding dashboard': !dashboardFilter.analyticsActive,
-		'dashboard-analytics': dashboardFilter.analyticsActive}" ng-cloak>
+		<div id="dashboard-search-form " class="search-form has-dates has-room-types enable-adding dashboard" role="search" outside-click-handler ng-class="{'has-bulk-checkout': isDueoutShowing}" ng-cloak>
 		    <!-- When showing departures -->
 		    <div class="entry switch" ng-if="isDueoutShowing && !dashboardFilter.analyticsActive">
 		        <!-- remove .on when showing Bulk Checkout -->
@@ -118,14 +116,14 @@
 		            </label>
 		        </div>
 		    </div>
-		    <div class="entry search" ng-hide="isBulkCheckoutSelected">
+		    <div class="entry search" ng-hide="isBulkCheckoutSelected ||  dashboardFilter.analyticsActive">
 		        <button id="dashboard-clear-query" class="clear-query" ng-click="clearResults($event)" ng-class="{'visible': textInQueryBox!=''}">
 		            <span class="icons icon-clear-search">Clear query</span>
 		        </button>
 		        <button type="submit" name="submit" class="icons icon-search">Search</button>
 		        <input name="reservations-query" id="reservations-query" class="query" placeholder="Search by Name, Group, Room No. or Confirmation No." type="search" autocomplete="off" ng-change="queryEntered()" ng-click="focusOnSearchText()" ng-blur="checkSearchResults()" ng-model="textInQueryBox" focus-me="focusSearchField" />
 		    </div>
-		    <div class="entry room-types" ng-hide="isBulkCheckoutSelected || dashboardFilter.analyticsActive">
+		    <div class="entry room-types" ng-hide="isBulkCheckoutSelected">
 		        <div class="select with-label">
 		            <label for="room-type">Room Type</label>
 		            <select id="room-type" ng-model="room_type_id" ng-change="onRoomTypeChange()">
@@ -150,12 +148,8 @@
 		        </div>
 		    </div>
 		    <!-- Add reservation -->
-		    <a class="add-new-button" ui-sref="rover.reservation.search" ng-show="isStandAlone" ng-hide="isBulkCheckoutSelected || dashboardFilter.analyticsActive">+ New</a>
+		    <a class="add-new-button" ui-sref="rover.reservation.search" ng-show="isStandAlone" ng-if="!isBulkCheckoutSelected && !dashboardFilter.analyticsActive">+ New</a>
 		</div>
-
-
-
-
 
 		<!--  -->
 		<div ng-show="totalSearchResults > searchPerPage && results.length > 0 && showSearchResultsArea">
