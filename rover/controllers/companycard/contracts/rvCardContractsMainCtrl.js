@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionSrv', '$rootScope', '$scope', 'rvCompanyCardContractsSrv', '$stateParams', 'ngDialog',
-	function(rvPermissionSrv, $rootScope, $scope, rvCompanyCardContractsSrv, $stateParams, ngDialog) {
+angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionSrv', '$rootScope', '$scope', 'rvCompanyCardContractsSrv', '$stateParams',
+	function(rvPermissionSrv, $rootScope, $scope, rvCompanyCardContractsSrv, $stateParams) {
 
 		BaseCtrl.call(this, $scope);
 		/**
@@ -207,7 +207,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 					"postData": {'occupancy': data}
 				}
 			};
-
+            
             $scope.callAPI(rvCompanyCardContractsSrv.updateNight, options);
 		});
 
