@@ -3,7 +3,7 @@ angular.module('sntRover')
         function($scope, sntActivity, $timeout) {
 
             // Draw bidirectional chart
-            $scope.drawBidirectionalChart = function reportWindowSize(chartData, chartColorScheme, onBarChartClick) {
+            $scope.drawBidirectionalChart = function reportWindowSize(chartDetails) {
 
                 var chartAreaWidth = document.getElementById("analytics-chart").clientWidth;
                 var margin = {
@@ -47,7 +47,7 @@ angular.module('sntRover')
 
                 var combinedItemsCountArray = [];
 
-                _.each(chartData, function(chart) {
+                _.each(chartDetails.chartData, function(chart) {
                     _.each(chart.contents.left_side, function(item) {
                         combinedItemsCountArray.push(item.count);
                     });
@@ -60,7 +60,7 @@ angular.module('sntRover')
                     return count;
                 });
 
-                chartData.unshift({
+                chartDetails.chartData.unshift({
                     "type": "hidden",
                     "count": largestItemCount
                 });
@@ -79,7 +79,7 @@ angular.module('sntRover')
                     }]
                 };
 
-                chartData.forEach(function(chart) {
+                chartDetails.chartData.forEach(function(chart) {
 
                     var chartName = chart.type;
 
@@ -145,10 +145,10 @@ angular.module('sntRover')
                 });
 
                 // get minimum and maximum values to plot
-                var min_val = d3.min(chartData, function(chart) {
+                var min_val = d3.min(chartDetails.chartData, function(chart) {
                     return chart.boxes["0"].xOrigin;
                 });
-                var max_val = d3.max(chartData, function(chart) {
+                var max_val = d3.max(chartDetails.chartData, function(chart) {
                     return chart.boxes[chart.boxes.length - 1].xFinal;
                 });
 
@@ -156,7 +156,7 @@ angular.module('sntRover')
                 xScale.domain([min_val, max_val]).nice();
 
                 // set scales for y axis excluding the hidden bar
-                var dataWithoutHiddenbar = _.reject(chartData, function(chart) {
+                var dataWithoutHiddenbar = _.reject(chartDetails.chartData, function(chart) {
                     return chart.type === 'hidden';
                 });
 
@@ -178,7 +178,7 @@ angular.module('sntRover')
 
 
                 var vakken = svg.selectAll(".type")
-                    .data(chartData)
+                    .data(chartDetails.chartData)
                     .enter().append("g")
                     .attr("class", "bar")
                     .attr("transform", function(chart) {
@@ -206,10 +206,12 @@ angular.module('sntRover')
                         return xScale(item.xFinal) - xScale(item.xOrigin);
                     })
                     .style("fill", function(item) {
-                        return item.chartName === 'hidden' ? '' : chartColorScheme[item.chartName + 'ColorScheme'](item.type);
+                        console.log(item.chartName);
+                        console.log(chartDetails.chartColorScheme[item.chartName + 'ColorScheme']);
+                        return item.chartName === 'hidden' ? '' : chartDetails.chartColorScheme[item.chartName + 'ColorScheme'](item.type);
                     })
                     .on("click", function(e) {
-                        onBarChartClick(e);
+                        chartDetails.onBarChartClick(e);
                     });
 
                 bars.append("text")
