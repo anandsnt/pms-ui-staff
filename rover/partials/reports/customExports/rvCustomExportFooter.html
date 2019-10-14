@@ -5,7 +5,7 @@
     </div>
     <div class="entry">
         <div class="select">
-            <label for="export-output">Select Output Format</label>
+            <label for="export-output">Output Format</label>
             <select id="export-output" ng-model="customExportsScheduleParams.format" convert-to-number ng-change="onOutputFormatChange()">
                 <option value="">Select output format</option>
                 <option ng-repeat="format in customExportsData.exportFormats" value="{{format.id}}">{{format.value}}</option>
@@ -15,6 +15,7 @@
     
     <div class="actions">
         <button type="button" class="button blank" ng-click="navigateToExportListing()">Cancel</button>
+        <button type="button" class="button red" ng-if="!customExportsData.isNewExport" ng-click="deleteCustomExportSchedule()">Delete</button>
         <!-- Remove .grey and add .green when available to save Export -->
         <button type="button"
                 class="button green"

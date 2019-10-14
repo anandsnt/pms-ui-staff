@@ -54,7 +54,7 @@ angular.module('snt.utils').component('sntNotify', {
 
 
         ctrl.$onInit = function () {
-            let currentMsg;
+            var currentMsg;
 
             ctrl.style = 'notice';
             ctrl.style += (ctrl.type === 'success') ? ' success success-message' : ' error error-message';
@@ -64,7 +64,7 @@ angular.module('snt.utils').component('sntNotify', {
             ctrl.$doCheck = function () {
                 if (currentMsg !== this.message) {
                     currentMsg = this.message;
-                    if (ctrl.showToasts && this.message) {
+                    if (ctrl.showToasts && this.message.length) {
                         sntNotifySrv.show(this.message, ctrl.type);
                     }
                 }
