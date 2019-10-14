@@ -59,18 +59,16 @@ function($scope, $state, $timeout, $stateParams, ADTaxExemptSrv) {
 
 		$scope.callAPI(ADTaxExemptSrv.fetchChargeCodes, options);
 	};
+
 	/* 
 	 * Handle charge code selection
 	 */
-	$scope.selectedChargeCode = function() {
-		$scope.addData.charge_code_ids = [];
-		angular.forEach($scope.chargeCodes, function(item) {
+	var selectedChargeCode = function() {
 
-			if (item.is_selected) {
-				$scope.addData.charge_code_ids.push(item.value);
-			}
-		});
-	};
+        // eslint-disable-next-line max-statements-per-line
+    return _.pluck(_.filter($scope.chargeCodes, function(item) { return item.is_selected; }), 'value');
+
+    };
 	/*
 	 * Save/Update tax exempt
 	 */
@@ -82,7 +80,7 @@ function($scope, $state, $timeout, $stateParams, ADTaxExemptSrv) {
 				successCallBack: saveSuccess,
 				params: {
 					"name": $scope.addData.name,
-					"charge_code_ids": $scope.addData.charge_code_ids,
+					"charge_code_ids": selectedChargeCode(),
 					"is_default": $scope.addData.is_default
 				}
 			};
