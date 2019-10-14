@@ -103,6 +103,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 			$scope.contractData.selectedRateList = data.contract_rates;
 			$scope.contractData.disableFields = data.end_date < $rootScope.businessDate;
 			$scope.$broadcast('addDataReset');
+			$scope.$broadcast('refreshEditScroller');
 		},
 		/**
 		 * Failure callback for contracts detail fetch

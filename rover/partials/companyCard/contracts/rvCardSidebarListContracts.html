@@ -1,6 +1,6 @@
 <!-- If there are contracts, show this. -->
 <!-- If we don't show sidebar actions, remove .with-actions -->
-<div ng-controller="rvCardContractListCtrl" class="contracts-list with-actions actions-2" ng-show="!contractData.noContracts">
+<div ng-controller="rvCardContractListCtrl" class="contracts-list with-actions" ng-class="{'actions-2': contractData.mode === 'EDIT'}" ng-show="!contractData.noContracts">
     <div class="contracts-list-items scrollable" ng-iscroll="contractListScroller">
         <div class="wrapper">
             <!-- If it has no items, add .no-items -->
@@ -39,7 +39,7 @@
     </div>
     <!-- Show this to enable creating contracts. -->
     <div class="contracts-list-actions">
-        <button type="button" ng-hide="contractData.mode === 'LINK'" class="button blue" ng-click="linkContract()">Link Existing Contract</button>
-        <button ng-show="(contractData.mode === 'EDIT' || contractData.mode === 'LINK')" ng-hide="contractData.mode === 'ADD'" type="button" class="button green" ng-click="newContract()">Create New Contract</button>
+        <button ng-hide="contractData.mode === 'LINK'" type="button" class="button blue" ng-click="linkContract()">Link Existing Contract</button>
+        <button ng-hide="contractData.mode === 'ADD'" type="button" class="button green" ng-click="newContract()">Create New Contract</button>
     </div>
 </div>

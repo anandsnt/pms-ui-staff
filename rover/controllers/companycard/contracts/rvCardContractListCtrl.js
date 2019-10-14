@@ -35,7 +35,7 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
          * @param {Number} contractId - ID of the selected contract
          */
         $scope.fetchDetails = function(contractId) {
-            if (contractId !== $scope.contractData.selectedContract) {
+            if (contractId !== $scope.contractData.selectedContract || $scope.contractData.mode !== 'EDIT') {
                 $scope.contractData.mode = 'EDIT';
                 $scope.$emit('fetchContract', contractId);
             }
