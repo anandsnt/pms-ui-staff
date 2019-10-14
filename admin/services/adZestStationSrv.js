@@ -56,16 +56,4 @@ admin.service('ADZestStationSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
         return ADBaseWebSrvV2.postJSON(url, params);
     };
 
-    this.savePassportNumberBypassReason = function (data) {
-        var url = '/api/hotel_settings/save_passport_entry_bypass_reason';
-
-        return ADBaseWebSrvV2.postJSON(url, data);
-    };
-
-    this.deletePassportNumberBypassReason = function (data) {
-        var url = '/api/hotel_settings/delete_passport_entry_bypass_reason';
-
-        return ADBaseWebSrvV2.postJSON(url, data);
-    };
-
 }]);

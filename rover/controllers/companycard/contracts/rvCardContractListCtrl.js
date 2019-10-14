@@ -35,8 +35,10 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
          * @param {Number} contractId - ID of the selected contract
          */
         $scope.fetchDetails = function(contractId) {
-            $scope.contractData.mode = 'EDIT';
-            $scope.$emit('fetchContract', contractId);
+            if (contractId !== $scope.contractData.selectedContract) {
+                $scope.contractData.mode = 'EDIT';
+                $scope.$emit('fetchContract', contractId);
+            }
         };
         /**
          * Function for adding a new contract

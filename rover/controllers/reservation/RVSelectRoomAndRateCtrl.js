@@ -799,6 +799,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 				_.each($scope.stateCheck.stayDates, function(dayInfo) {
 					dayInfo.amount = dayInfo.rateDetails && dayInfo.rateDetails.modified_amount || null;
+					dayInfo.rateCurrency = dayInfo.rateDetails && dayInfo.rateDetails.rateCurrency;
 				});
 
 				if (RVReservationDataService.isVaryingRates(ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates, ARRIVAL_DATE, DEPARTURE_DATE, $scope.reservationData.numNights) || RVReservationDataService.isVaryingOccupancy(ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates, ARRIVAL_DATE, DEPARTURE_DATE, $scope.reservationData.numNights)) {
@@ -1054,7 +1055,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
     					calculatedAmount = Number(parseFloat(calculatedAmount).toFixed(2));
     					details.rateDetails = {
     						actual_amount: calculatedAmount,
-    						modified_amount: calculatedAmount
+    						modified_amount: calculatedAmount,
+    						rateCurrency: dayInfo.rateCurrency
     					};
 
 						if (rateId) {
@@ -1539,8 +1541,10 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 								details.rateDetails = {
 									actual_amount: rateAmount,
-									modified_amount: rateAmount
+									modified_amount: rateAmount,
+									rateCurrency: details.rateCurrency
 								};
+
 								details.rateDetails.is_discount_allowed = $scope.reservationData.ratesMeta[rateId].is_discount_allowed_on === null ? 'false' : $scope
 									.reservationData.ratesMeta[rateId].is_discount_allowed_on.toString();// API returns true / false as a string ... Hence true in a string to maintain consistency
 								details.rateDetails.is_suppressed = $scope.reservationData.ratesMeta[rateId].is_suppress_rate_on === null ? 'false' : $scope.reservationData
@@ -1570,6 +1574,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				secondary = _.find(roomType.ratesArray, {
 					id: rateId
 				});
+				secondary.rateCurrency = roomType.rateCurrency;
 				roomInfo = roomType;
 				rateInfo = secondary;							
 			} else if ($scope.stateCheck.activeView === 'RATE' || $scope.stateCheck.activeView === 'RECOMMENDED') {
@@ -1580,6 +1585,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				secondary = _.find(rate.rooms, {
 					id: roomId
 				});
+				secondary.rateCurrency = rate.rateCurrency;
 				roomInfo = secondary;
 				rateInfo = rate;
 			}
