@@ -1,5 +1,5 @@
 sntRover.controller('RVfrontDeskDashboardController',
-    ['$scope', '$rootScope', 'RVDashboardSrv', function($scope, $rootScope, RVDashboardSrv) {
+    ['$scope', '$rootScope', 'RVDashboardSrv', '$timeout', function($scope, $rootScope, RVDashboardSrv, $timeout) {
 	// inheriting some useful things
 	BaseCtrl.call(this, $scope);
     var that = this;
@@ -70,4 +70,11 @@ sntRover.controller('RVfrontDeskDashboardController',
     setTimeout(function() {
       $scope.refreshScroller('dashboard_scroller');
     }, 500);
+
+    $scope.$on('SHOW_ANALYTICS_DASHBOARD', function() {
+      // call API and on Success show Analytics page
+      $timeout(function() {
+        $scope.dashboardFilter.analyticsActive = true;
+      }, 500);
+    });
 }]);

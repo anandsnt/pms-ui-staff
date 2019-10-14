@@ -1,8 +1,9 @@
 <div ng-controller = "rvReservationSearchWidgetController" >
-		<form method="get" action="" name="reservations-search-form" id="reservations-search-form" class="has-bulk-checkout search-form has-dates has-room-types enable-adding" role="search"  outside-click-handler ng-class="{'has-bulk-checkout': isDueoutShowing }"><!--TODO: verify enable-adding -->
-			 <!-- When showing departures -->
+	    <!--  
+		<form method="get" action="" name="reservations-search-form" id="reservations-search-form" class="has-bulk-checkout search-form has-dates has-room-types enable-adding" role="search"  outside-click-handler ng-class="{'has-bulk-checkout': isDueoutShowing }" ng-if="showDashboard"><!--TODO: verify enable-adding -->
+			 <!-- When showing departures  
 			<div class="entry switch" ng-if="isDueoutShowing">
-				<!-- remove .on when showing Bulk Checkout -->
+				<!-- remove .on when showing Bulk Checkout 
 				<div class="switch-button" ng-class="{'on': !isBulkCheckoutSelected}">
 					<input value="" type="checkbox" checked="" ng-model="isBulkCheckoutSelected" ng-change="onDeparturesScreenTabViewChange()" ng-disabled="shouldDisableBulkCheckoutOption()">
 					<label class="data-off">
@@ -15,22 +16,8 @@
 					</label>
 				</div>
 			</div>
-
-            <div class="entry switch ng-scope" ng-if="!showDashboard">
-                <div class="switch-button off" ng-class="{ 'on' : !dashboardFilter.analyticsActive }">
-                    <input id="analytics-toggle" value="" type="checkbox" ng-click="toggleAnalyticsView()" checked="">
-                    <label class="data-off">
-                        <span class="value">SUMMARY</span>
-                        <span class="switch-icon">ANALYTICS</span>
-                    </label>
-                    <label class="data-on">
-                        <span class="switch-icon">SUMMARY</span>
-                        <span class="value">ANALYTICS</span>
-                    </label>
-                </div>
-            </div>
 			
-			<!-- remove .hidden when showing bulk checkout -->
+			<!-- remove .hidden when showing bulk checkout 
 			<div class="entry open-balance" ng-if="isDueoutShowing" ng-class="{'hidden': !isBulkCheckoutSelected}">
 				<label class="checkbox" for="open-balance">
 					<span class="icon-form icon-checkbox" ng-class="{'checked': allowOpenBalanceCheckout}"></span>
@@ -39,7 +26,7 @@
 				</label>
 			</div>
 			
-			<!-- remove .hidden when showing bulk checkout -->
+			<!-- remove .hidden when showing bulk checkout 
 			<div class="entry notice-checkout" ng-if="isDueoutShowing" ng-class="{'hidden': !isBulkCheckoutSelected}">
 				<div class="notice">
 					This will check out a total of <span class="count">{{bulkCheckoutReservationsCount}}</span> reservations
@@ -47,7 +34,7 @@
 				<button type="button" class="button red" ng-click="performBulkCheckout()" ng-disabled="results.length === 0" ng-class="{'grey': results.length === 0}">Check out</button>
 			</div>
 		
-			<div class="entry search" ng-class="{'hidden': isBulkCheckoutSelected}">
+			<div class="entry search" ng-class="{'hidden':  ng-hide="isBulkCheckoutSelected"}">
 				<button id="dashboard-clear-query" class="clear-query" ng-click="clearResults($event)" ng-class="{'visible': textInQueryBox!=''}">
 					<span class="icons icon-clear-search">Clear query</span>
 				</button>
@@ -79,9 +66,98 @@
 					<button ng-click="showCalendar('RVReservationSearchToDatepickerCtrl')" type="button" class="ui-datepicker-trigger"></button>
 				</div>
 			</div>
-			<!-- Add reservation -->
+			<!-- Add reservation 
 			<a class="add-new-button" ui-sref="rover.reservation.search" ng-show="isStandAlone" ng-class="{'hidden': isBulkCheckoutSelected}">+ New</a>
-		</form>
+		</form> -->
+
+
+		<div id="dashboard-search-form" class="search-form" role="search" outside-click-handler ng-class="{'has-bulk-checkout': isDueoutShowing ,
+		'has-dates has-room-types enable-adding dashboard': !dashboardFilter.analyticsActive,
+		'dashboard-analytics': dashboardFilter.analyticsActive}" ng-cloak>
+		    <!-- When showing departures -->
+		    <div class="entry switch" ng-if="isDueoutShowing && !dashboardFilter.analyticsActive">
+		        <!-- remove .on when showing Bulk Checkout -->
+		        <div class="switch-button" ng-class="{'on': !isBulkCheckoutSelected}">
+		            <input value="" type="checkbox" checked="" ng-model="isBulkCheckoutSelected" ng-change="onDeparturesScreenTabViewChange()" ng-disabled="shouldDisableBulkCheckoutOption()">
+		            <label class="data-off">
+		                <span class="value">All</span>
+		                <span class="switch-icon">Bulk Checkout</span>
+		            </label>
+		            <label class="data-on">
+		                <span class="switch-icon">All</span>
+		                <span class="value">Bulk Checkout</span>
+		            </label>
+		        </div>
+		    </div>
+		    <!-- remove .hidden when showing bulk checkout -->
+		    <div class="entry open-balance" ng-if="isDueoutShowing && isBulkCheckoutSelected && !dashboardFilter.analyticsActive">
+		        <label class="checkbox" for="open-balance">
+		            <span class="icon-form icon-checkbox" ng-class="{'checked': allowOpenBalanceCheckout}"></span>
+		            <input id="open-balance" value="1" type="checkbox" ng-model="allowOpenBalanceCheckout" ng-click="toggleAllowOpenBalanceCheckoutFilter()">
+		            ALLOW OPEN BALANCE CHECK OUT
+		        </label>
+		    </div>
+		    <!-- remove .hidden when showing bulk checkout -->
+		    <div class="entry notice-checkout" ng-if="isDueoutShowing && isBulkCheckoutSelected &&  !dashboardFilter.analyticsActive">
+		        <div class="notice">
+		            This will check out a total of <span class="count">{{bulkCheckoutReservationsCount}}</span> reservations
+		        </div>
+		        <button type="button" class="button red" ng-click="performBulkCheckout()" ng-disabled="results.length === 0" ng-class="{'grey': results.length === 0}">Check out</button>
+		    </div>
+		    <!-- When showing analytics clear all classes and use just 'search-form dashboard-analytics'. -->
+		    <div class="entry switch ng-scope">
+		        <div class="switch-button off" ng-class="{ 'on' : !dashboardFilter.analyticsActive }">
+		            <input id="analytics-toggle" value="" type="checkbox" ng-click="toggleAnalyticsView()" checked="">
+		            <label class="data-off">
+		                <span class="value">SUMMARY</span>
+		                <span class="switch-icon">ANALYTICS</span>
+		            </label>
+		            <label class="data-on">
+		                <span class="switch-icon">SUMMARY</span>
+		                <span class="value">ANALYTICS</span>
+		            </label>
+		        </div>
+		    </div>
+		    <div class="entry search" ng-hide="isBulkCheckoutSelected">
+		        <button id="dashboard-clear-query" class="clear-query" ng-click="clearResults($event)" ng-class="{'visible': textInQueryBox!=''}">
+		            <span class="icons icon-clear-search">Clear query</span>
+		        </button>
+		        <button type="submit" name="submit" class="icons icon-search">Search</button>
+		        <input name="reservations-query" id="reservations-query" class="query" placeholder="Search by Name, Group, Room No. or Confirmation No." type="search" autocomplete="off" ng-change="queryEntered()" ng-click="focusOnSearchText()" ng-blur="checkSearchResults()" ng-model="textInQueryBox" focus-me="focusSearchField" />
+		    </div>
+		    <div class="entry room-types" ng-hide="isBulkCheckoutSelected || dashboardFilter.analyticsActive">
+		        <div class="select with-label">
+		            <label for="room-type">Room Type</label>
+		            <select id="room-type" ng-model="room_type_id" ng-change="onRoomTypeChange()">
+		                <option value="" selected="" translate>SHOW_ALL</option>
+		                <option value="{{::roomType.id}}" ng-repeat="roomType in ::roomTypes track by $index">{{::roomType.name}}</option>
+		            </select>
+		        </div>
+		    </div>
+		    <div class="entry dates" ng-hide="isBulkCheckoutSelected || dashboardFilter.analyticsActive">
+		        <div class="entry-data has-datepicker">
+		            <label for="dashboard-date-from">From</label>
+		            <input name="dashboard-date-from" id="dashboard-date-from" class="hasDatepicker" readonly="" type="text" placeholder="{{fromDate | date : dateFormat }}" value="{{fromDate| date : dateFormat}}" />
+		            <button ng-click="showCalendar('RVReservationSearchFromDatepickerCtrl')" type="button" class="ui-datepicker-trigger"></button>
+		        </div>
+		        <div class="entry-data has-datepicker">
+		            <label for="dashboard-date-to">To</label>
+		            <button id="dashboard-date-to-clear" class="clear-query" ng-class="{'visible': escapeNull(toDate) !=''}">
+		                <span class="icons icon-clear-search" ng-click="clearToDateClicked()">Clear query</span>
+		            </button>
+		            <input name="dashboard-date-to" id="dashboard-date-to" class="datepicker" placeholder="{{toDate | date : dateFormat}}" value="{{toDate| date : dateFormat}}" readonly="" type="text" />
+		            <button ng-click="showCalendar('RVReservationSearchToDatepickerCtrl')" type="button" class="ui-datepicker-trigger"></button>
+		        </div>
+		    </div>
+		    <!-- Add reservation -->
+		    <a class="add-new-button" ui-sref="rover.reservation.search" ng-show="isStandAlone" ng-hide="isBulkCheckoutSelected || dashboardFilter.analyticsActive">+ New</a>
+		</div>
+
+
+
+
+
+		<!--  -->
 		<div ng-show="totalSearchResults > searchPerPage && results.length > 0 && showSearchResultsArea">
 		   <rv-pagination page-options="dashboardSearchPagination" page-data="totalSearchResults"></rv-pagination>
 		</div>

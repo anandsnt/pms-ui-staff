@@ -1,6 +1,7 @@
+<!-- IF ANALYTICS FEATURE TOGGLE IS ON  -->
 <div ng-if="analyticsDashboardEnabled" ng-controller="RVhouseKeepingDashboardController">
     <div ng-include="'/assets/partials/search/rvSearchRoomWidgetWithAnalytics.html'"></div>
-
+    <!-- SUMMARY VIEW -->
     <section id="dashboard" class="content scrollable" role = "main"
              ng-iscroll='dashboard_scroller' ng-iscroll-delay="100"
              ng-show="showDashboard"
@@ -13,6 +14,7 @@
             <div ng-include="'/assets/partials/dashboard/rvDbGuestsSection.html'"></div>
         </div>
     </section>
+    <!-- ANALYTICS VIEW -->
     <section id="dashboard" class="content scrollable" role = "main"
              ng-iscroll='dashboard_scroller' ng-iscroll-delay="100"
              ng-show="showDashboard"
@@ -21,9 +23,9 @@
             <div ng-include="'/assets/partials/analytics/rvHouseKeepingAnalytics.html'" ng-controller="RVHouseKeepingAnalyticsCtrlController"></div>
         </div>
     </section>
-    
 </div>
 
+<!-- IF ANALYTICS FEATURE TOGGLE IS OFF AND CODE TO BE DELETED AFTER SOME RELEASES  -->
 <div ng-if="!analyticsDashboardEnabled">
     <div ng-include="'/assets/partials/search/rvSearchRoomWidget.html'"></div>
 
