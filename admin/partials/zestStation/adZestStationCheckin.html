@@ -131,47 +131,10 @@
                 <div class="form-title full-width">
                     <h3><span translate>STATION_PASSPORT_ENTRY_HEADER </span> </h3>
                 </div>
-                <ad-toggle-button is-checked="zestSettings.enable_passport_entry" label="{{'STATION_PASSPORT_ENTRY_LABEL'| translate}}"  div-class="full-width"></ad-toggle-button>
+                <ad-toggle-button is-checked="zestSettings.enable_passport_entry" label="{{'STATION_PASSPORT_ENTRY_LABEL'| translate}}" on-update="onPassportEntryToggled"  div-class="full-width"></ad-toggle-button>
 
-                <div ng-if="zestSettings.enable_passport_entry">
-                <table class="grid">
-                                <td>
-                                    <span class="toggle" ng-click="toggleRulesListShow()"></span>
-                                    <label class="inline" ng-click="toggleRulesListShow()" translate> STATION_PASSPORT_ENTRY_BYPASS_LABEL </label>
-                                    <em class="action add" ng-click="openPassportNumberBypassView()" ng-show="zestSettings.bypass_passport_entry" translate>ADD_NEW_REASON </em>
-                                </td>
-                                <td class="activate text-left">
-                                    <div class="entry">
-                                        <div class="switch-button single"
-                                                ng-class="{ on: zestSettings.bypass_passport_entry }">
-                                            <input type = "checkbox"
-                                                    ng-model = "zestSettings.bypass_passport_entry">
-                                            <span class="switch-icon"></span>
-                                        </div>
-                                    </div>
-                                </td>
-                </table>
-                <div ng-if = "(addNewPassportNumberBypassReason || editPassportNumberBypassReason) && zestSettings.bypass_passport_entry">
-                    <ad-textbox value="passportBypassReason.description"  label="{{'STATION_PASSPORT_ENTRY_BYPASS_REASON_LABEL'| translate}}" placeholder="" styleclass="full-width"></ad-textbox>
-                    <div class="actions float">
-                        <button type="button" id="cancel" class="button blank add-data-inline" ng-click="cancelPassportBypassReason()"
-                            translate>CANCEL</button>
-                        <button type="button" like-type="common" id="update" class="button green add-data-inline"
-                            ng-click="savePassportBypassReason()" translate>SAVE</button>
-                    </div>
-                </div>
-                <div ng-if = "!(addNewPassportNumberBypassReason || editPassportNumberBypassReason) && zestSettings.bypass_passport_entry">
-                    <table class="grid sub-grid">
-                        <tr  ng-repeat="reason in zestSettings.passport_bypass_reasons">
-                            <td class="offset"> &nbsp; </td>
-                            <td ng-click="editPassportBypassReason(reason)"><a href>{{ reason.description }}</a></td>
-                            <td width="10" class="delete">
-                                <a class="icons icon-delete large-icon" ng-click="deletePassportBypassReason(reason)" translate>DELETE_R</a>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
+                <ad-toggle-button ng-if="zestSettings.enable_passport_entry" is-checked="zestSettings.bypass_passport_entry" label="{{'STATION_PASSPORT_ENTRY_BYPASS_LABEL'| translate}}"  div-class="full-width"></ad-toggle-button>
+
             </fieldset>
 
             <fieldset class="holder full-width" ng-if="::isKioskExcludePaymentMethods">

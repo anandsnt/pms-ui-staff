@@ -40,6 +40,10 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
             { label: 'Less than', value: 'less_than'}
         ];
 
+        const noTextTransformStyle = {
+            'text-transform': 'none'
+        };
+
         /**
          * Group the filter fields by filter type
          * @param {Array} filters all filter fields
@@ -95,7 +99,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                 reportSubSrv.fetchBookingOrigins().then(function (data) {
                     selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues);
                     selectedFilter.options = {
-                        selectAll: false,
+                        selectAll: selectedValues ? data.length === selectedValues.length : true,
                         hasSearch: false,
                         key: 'name',
                         value_key: 'value'
@@ -117,7 +121,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                 reportSubSrv.fetchMarkets().then(function (data) {
                     selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues);
                     selectedFilter.options = {
-                        selectAll: false,
+                        selectAll: selectedValues ? data.length === selectedValues.length : true,
                         hasSearch: false,
                         key: 'name',
                         value_key: 'value'
@@ -384,12 +388,12 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              */
             populateMemberships = ( selectedFilter, selectedValues, deferred ) => {
                 rvCustomExportSrv.getMemberShips().then(function (data) {
-                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, 'desc');
+                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, 'value');
                     selectedFilter.options = {
                         hasSearch: false,
                         selectAll: selectedValues ? data.length === selectedValues.length : true,
                         key: 'desc',
-                        value_key: 'desc'
+                        value_key: 'value'
                     };
                     selectedFilter.isMultiSelect = true;
                     deferred.resolve(selectedFilter);
@@ -404,7 +408,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              * @return {void} 
              */
             populateMembershipLevels = ( selectedFilter, selectedValues, deferred ) => {
-                rvCustomExportSrv.getMemberShips().then(function (data) {
+                rvCustomExportSrv.getMemberShipLevels().then(function (data) {
                     selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, 'value');
                     selectedFilter.options = {
                         hasSearch: false,
@@ -413,6 +417,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                         value_key: 'value'
                     };
                     selectedFilter.isMultiSelect = true;
+                    selectedFilter.entryStyle = noTextTransformStyle;
                     deferred.resolve(selectedFilter);
                 });
             };
@@ -429,6 +434,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
 
             switch (selectedFieldName) {
                 case customExportFilterParamsConst['BOOKING_ORIGIN_CODE']:
+                case customExportFilterParamsConst['ORIGIN_CODE']:
                     populateBookingOrigins(selectedFilter, selectedValues, deferred);
                     break;
                 case customExportFilterParamsConst['MARKET_CODE']:

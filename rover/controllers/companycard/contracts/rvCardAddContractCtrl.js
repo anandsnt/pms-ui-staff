@@ -26,8 +26,8 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'rvCo
             $scope.$emit('setErrorMessage', []);
             $scope.contractData.mode = 'EDIT';
             $scope.contractData.selectedContract = data.id;
-            // emit something to refresh the Contracts list
             $scope.$emit('fetchContractsList');
+            $scope.$emit('updateContractedNights', $scope.addData.occupancy);
             that.init();
         };
 
@@ -38,7 +38,6 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'rvCo
          */
         var saveNewContractFailureCallback = function(error) {
             $scope.$emit('setErrorMessage', error);
-            $scope.contractData.showNightsModal = false;
         };
 
         /**
@@ -52,7 +51,8 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'rvCo
                 endDate: null,
                 contractedNights: 0,
                 contractedRates: [],
-                isActive: true
+                isActive: true,
+                occupancy: {}
             };
         };
         
@@ -64,7 +64,6 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'rvCo
         $scope.addListener('addDataReset', function() {
             if (!_.isEmpty($scope.addData)) {
                 that.init();
-                $scope.contractData.showNightsModal = false;
             }
         });
 
@@ -138,8 +137,12 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'rvCo
         
         // Show contracted nights popup
         $scope.contractedNights = function() {
-            $scope.contractData.showNightsModal = true;
-            $scope.saveNewContract();
+            ngDialog.open({
+                template: '/assets/partials/companyCard/contracts/rvContractedNightsPopup.html',
+                controller: 'rvContractedNightsCtrl',
+                className: '',
+                scope: $scope
+            });
         };
 
         that.init();

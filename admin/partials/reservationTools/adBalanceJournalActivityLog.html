@@ -1,6 +1,6 @@
 <div ng-show="showActivityLog">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>        
-        <table class="activity-log" ng-table="tableParams" template-pagination="custom/pager">
+        <table class="activity-log grid datatable" ng-table="tableParams" template-pagination="custom/pager">
             <col>
             <col>
             <col>
@@ -16,7 +16,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="log in activityLogData">
+                <tr ng-repeat="log in data">
                     <td>{{log.begin_date}}</td>
                     <td>{{log.end_date}}</td>
                     <td>{{log.username}}</td>
