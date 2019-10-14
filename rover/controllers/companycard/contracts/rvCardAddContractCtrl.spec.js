@@ -18,8 +18,7 @@ describe('rvCardAddContractsCtrl', function() {
         angular.extend($scope, {
             contractData: {
                 mode: 'ADD'
-            },
-            showNightsModal: false
+            }
         });
     });
 
@@ -54,16 +53,5 @@ describe('rvCardAddContractsCtrl', function() {
         expect($scope.addData.isActive).toBeFalsy();
         $scope.toggleActiveStatus();
         expect($scope.addData.isActive).toBeTruthy();
-    });
-
-    it('call save API before showing contracted nights modal', function() {
-        spyOn(rvCompanyCardContractsSrv, "addNewContract").and.callFake(function() {
-            var deferred = $q.defer();
-
-            deferred.resolve({});
-            return deferred.promise;
-        });
-        $scope.contractedNights();
-        expect(rvCompanyCardContractsSrv.addNewContract).toHaveBeenCalled();
     });
 });
