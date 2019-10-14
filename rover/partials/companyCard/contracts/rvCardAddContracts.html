@@ -1,10 +1,7 @@
 <div ng-controller="rvCardAddContractsCtrl" class="contracts-details" ng-show="!contractData.noContracts && contractData.mode === 'ADD'">
-    
-    <!-- <div include-replace ng-include="'/assets/partials/companyCard/contracts/rvCardContractsLinking.html'"></div> -->
-
     <!-- If we don't show the bottom form, add .without-footer -->
     <!-- If we don't show the search for some reason, add .without-header -->
-    <div class="contracts-details-form scrollable" ng-iscroll="cardNewContractsScroll">
+    <div class="contracts-details-form scrollable without-header" ng-iscroll="cardNewContractsScroll">
         <div class="wrapper float">
             <div class="holder left">
                 <strong class="h3">Contract Details</strong>

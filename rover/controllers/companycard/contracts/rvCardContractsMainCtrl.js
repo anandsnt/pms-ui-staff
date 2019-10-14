@@ -220,6 +220,15 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 			$scope.contractData.noContracts = false;
 			refreshContractScrollers();
 		};
+
+		/**
+		 * Function to load Link Contracts screen.
+		 */
+		$scope.moveToLinkContract = function() {
+			$scope.contractData.mode = 'LINK';
+			$scope.contractData.noContracts = false;
+			refreshContractScrollers();
+		};
 		
 		init();
 		that.fetchContracts();
