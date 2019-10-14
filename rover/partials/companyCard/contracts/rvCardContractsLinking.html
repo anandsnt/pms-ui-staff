@@ -28,7 +28,13 @@
                     <li class="contract-name" ng-bind-html="escapeNull(item.contract_name)|highlight:contractData.linkContractsSearch.query:false"></li>
                     <li class="start-date">{{item.begin_date}}</li>
                     <li class="end-date">{{item.end_date}}</li>
-                    <li class="rate">{{item.rates[0]}}</li>
+                    <li class="rate" ng-if="item.rates.length <= 3">
+                        {{item.rates.join()}}
+                    </li>
+                    <li class="rate" ng-if="item.rates.length > 3" ng-init="showMore = true">
+                        {{ showMore ? item.rates.slice(0, 3).join() : item.rates.join()}}
+                        <span ng-show="showMore" ng-click="showMore = false" class="more">+ {{item.rates.length - 3}} More</span>
+                    </li>
                 </ul>
                 <!-- ... repeat for each found contract -->
             </div>
