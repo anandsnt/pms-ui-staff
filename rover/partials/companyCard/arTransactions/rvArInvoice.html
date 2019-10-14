@@ -39,7 +39,7 @@
 
     <div class="invoice-body">
         <table class="invoice-details">
-            <thead style="display:table-row-group;">
+            <thead class="invoice-table">
                 <tr>
                     <th>{{printData.translation.date_of_charge}}</th>
                     <th colspan="6">{{printData.translation.charge_description}}</th>
@@ -170,7 +170,7 @@
     </div>
     <strong ng-if="printData.ar_has_enabled_extended_tax_breakdown">Tax Breakdown</strong>
     <table class="invoice-details extended-tax-table" ng-if="printData.ar_has_enabled_extended_tax_breakdown">
-        <thead style="display:table-row-group;">
+        <thead class="invoice-table">
             <tr>
                 <th class="text-align-left" >{{printData.translation.tax_description}}</th>
                 <th >{{printData.translation.gross}}</th>
