@@ -17,6 +17,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl',
     $scope.saveData.phone = "";
     $scope.saveData.guest_id = "";
     $scope.saveData.user_id = "";
+    $scope.saveData.gender_id = null;
 
     $scope.putInQueue = false;
 
