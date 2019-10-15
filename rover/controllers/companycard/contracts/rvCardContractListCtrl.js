@@ -35,7 +35,7 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
          * @param {Number} contractId - ID of the selected contract
          */
         $scope.fetchDetails = function(contractId) {
-            if (contractId !== $scope.contractData.selectedContract) {
+            if (contractId !== $scope.contractData.selectedContract || $scope.contractData.mode !== 'EDIT') {
                 $scope.contractData.mode = 'EDIT';
                 $scope.$emit('fetchContract', contractId);
             }
@@ -48,6 +48,13 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
             $scope.contractData.selectedRateList = [];
             $scope.contractData.rateSearchQuery = '';
             $scope.$emit('refreshContractsScroll');
+        };
+
+        /**
+         * Function for linking existing contracts.
+         */
+        $scope.linkContract = function() {
+            $scope.contractData.mode = 'LINK';
         };
 
         /**
