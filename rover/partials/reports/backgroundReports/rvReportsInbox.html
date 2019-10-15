@@ -26,8 +26,10 @@
 <section id="reports" 
         class="content reports-wrapper" 
         role="main"
-        ng-class="{'with-notice': errorMessage && errorMessage.length > 0 }">
-        <snt-notify message="errorMessage"></snt-notify>
+        ng-class="{'with-notice': errorMessage && errorMessage.length > 0}">
+    
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+
     <!-- Menu -->
     <div ng-hide="true" id="reports-menu" ng-include="'/assets/partials/reports/shared/rvReportMainMenu.html'"></div>
     <!-- Content -->
