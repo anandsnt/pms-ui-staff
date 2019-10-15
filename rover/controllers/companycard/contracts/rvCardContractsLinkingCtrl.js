@@ -62,7 +62,7 @@ angular.module('sntRover').controller('rvCardContractsLinkingCtrl', ['$scope', '
             if (!clickedItem.is_already_linked) {
                 var linkContractSuccessCallback = function() {
                     clickedItem.is_already_linked = true;
-                    $scope.$emit('fetchContractsList');
+                    $scope.$emit('fetchContractsList', 'LINK', clickedItem.id);
                 },
                 linkContractFailureCallback = function(errorMessage) {
                     $scope.$emit('setErrorMessage', errorMessage);

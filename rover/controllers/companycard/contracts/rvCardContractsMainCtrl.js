@@ -82,6 +82,9 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 				if (params.action === 'UNLINK' || $scope.contractData.selectedContract === '') {
 					$scope.contractData.selectedContract = data.contract_selected || '';
 				}
+				if (params.action === 'LINK') {
+					$scope.contractData.selectedContract = params.selectedContractId;
+				}
 				$scope.contractData.mode = 'EDIT';
 				$scope.contractData.noContracts = false;
 				that.fetchContractDetails($scope.contractData.selectedContract);
@@ -149,13 +152,14 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 		/**
 		 * Function fetches the contracts on page load
 		 */
-		that.fetchContracts = function( action ) {
+		that.fetchContracts = function( action, selectedContractId ) {
 			$scope.contractData.accountId = $stateParams.id === "add" ? $scope.contactInformation.id : $stateParams.id;
 			var options = {
 				successCallBack: fetchContractsListSuccessCallback,
 				failureCallBack: fetchContractsListFailureCallback,
 				successCallBackParameters: {
-					'action': action
+					'action': action,
+					'selectedContractId': selectedContractId || ''
 				},
 				params: {
 					"account_id": $scope.contractData.accountId
@@ -183,8 +187,8 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 		/**
 		 * Listener to call on new contracts form closure
 		 */
-		$scope.addListener('fetchContractsList', function(event, action) {
-			that.fetchContracts(action);
+		$scope.addListener('fetchContractsList', function(event, action, selectedContractId) {
+			that.fetchContracts(action, selectedContractId);
 		});
 
 		/**
