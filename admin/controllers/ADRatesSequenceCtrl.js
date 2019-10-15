@@ -42,9 +42,6 @@ admin.controller('ADRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$anchor
                 admin_dashboard: {}
             }
         };
-        $scope.goBackToRateAdmin = function() {
-            $state.go("admin.dashboard", {"menu": 6});
-        };
 
         $scope.changePreference = function(type, option) {
             $scope.sequenceState.selectedOptions[type] = angular.copy(option);

@@ -8,6 +8,7 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'rvC
 				$scope.refreshScroller('editContractScroller');
 			}, 500);
         };
+        
 
         /**
          * Listener for edit scroller refresh
@@ -28,11 +29,12 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'rvC
                 'rate_ids': _.pluck($scope.contractData.selectedRateList, 'id')
             },
             updateContractSuccessCallback = function() {
-				$scope.$emit('fetchContractsList');
+                $scope.$emit('setErrorMessage', []);
+                $scope.$emit('fetchContractsList');
+                $scope.$emit('updateContractedNights', $scope.contractData.editData.occupancy);
             },
             updateContractFailureCallback = function(data) {
                 $scope.$emit('setErrorMessage', data);
-                $scope.contractData.showNightsModal = false;
 				$scope.$parent.currentSelectedTab = 'cc-contracts';
             },
             accountId;
@@ -143,9 +145,34 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'rvC
         // Show contracted nights popup
         $scope.editContractedNights = function() {
             if (!$scope.contractData.disableFields) {
-                $scope.contractData.showNightsModal = true;
-                $scope.updateContract();
+                ngDialog.open({
+                    template: '/assets/partials/companyCard/contracts/rvContractedNightsPopup.html',
+                    controller: 'rvContractedNightsCtrl',
+                    className: '',
+                    scope: $scope
+                });
             }            
+        };
+
+        // Handle unlink Contract
+        $scope.clickedUnlinkContracts = function() {
+            var unLinkContractSuccessCallback = function() {
+                $scope.$emit('fetchContractsList', 'UNLINK');
+            },
+            unLinkContractFailureCallback = function(errorMessage) {
+                $scope.$emit('setErrorMessage', errorMessage);
+            };
+
+            var options = {
+                successCallBack: unLinkContractSuccessCallback,
+                failureCallBack: unLinkContractFailureCallback,
+                params: {
+                    "id": $scope.contractData.selectedContract,
+                    "account_id": $scope.contractData.accountId
+                }
+            };
+
+            $scope.callAPI(rvCompanyCardContractsSrv.unLinkContract, options);
         };
     }
 ]);
