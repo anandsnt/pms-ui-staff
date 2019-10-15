@@ -18,7 +18,7 @@ angular.module('sntRover').service('rvCompanyCardContractsSrv', ['$q', 'sntBaseW
         var deferred = $q.defer(),
             url = '/api/accounts/' + data.account_id + '/contracts/' + data.contract_id;
 
-        rvBaseWebSrvV2.deleteJSON(url).then(function(data) {
+        sntBaseWebSrv.deleteJSON(url).then(function(data) {
             deferred.resolve(data);
         }, function(data) {
             deferred.reject(data);

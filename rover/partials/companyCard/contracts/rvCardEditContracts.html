@@ -44,16 +44,15 @@
                     <input ng-disabled="contractData.disableFields" name="contracted-nights" id="contracted-nights" class=" contracted-nights" placeholder="Nights per month" ng-model="contractData.editData.total_contracted_nights" ng-click="editContractedNights()" maxlength="8" readonly type="text" />
                 </div>
             </div>
-            <div class="holder right">
+            <div class="holder right" ng-if="!contractData.disableFields">
                 <!-- show only if we can unlink the contract -->
                 <button ng-if="!contractData.editData.is_master_contract" ng-click="clickedUnlinkContracts()" type="button" class="button white red-text">Unlink Contract</button>
                 <!-- show only if we can delete the contract -->
-                <button ng-if="contractData.editData.is_master_contract" type="button" class="button red hidden">Delete Contract</button>
+                <button ng-if="contractData.editData.is_master_contract && contractData.hasDeleteContractPermission" type="button" class="button red" ng-click="deleteContract()">Delete Contract</button>
             </div>
         </div>
     </div>
     <div class="contract-details-footer" ng-if="!contractData.disableFields">
-        <button ng-show="contractData.hasDeleteContractPermission" type="button" class="button red" ng-click="deleteContract()">Delete Contract</button>
         <button type="button" class="button green" ng-click="updateContract()">Update Contract</button>
     </div>
 </div>
