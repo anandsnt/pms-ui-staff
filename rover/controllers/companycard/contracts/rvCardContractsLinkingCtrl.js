@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('rvCardContractsLinkingCtrl', ['$scope', 'rvCompanyCardContractsSrv',
-	function($scope, rvCompanyCardContractsSrv) {
+angular.module('sntRover').controller('rvCardContractsLinkingCtrl', ['$scope', 'rvCompanyCardContractsSrv', '$timeout',
+	function($scope, rvCompanyCardContractsSrv, $timeout) {
         
         BaseCtrl.call(this, $scope);
         var that = this;
