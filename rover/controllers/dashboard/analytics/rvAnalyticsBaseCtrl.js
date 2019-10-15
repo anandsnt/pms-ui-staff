@@ -60,69 +60,66 @@ angular.module('sntRover')
                     return count;
                 });
 
- 
-
                 chartDetails.chartData.forEach(function(chart) {
 
                     var chartName = chart.type;
-                        // sort left side items in descending order
-                        chart.contents.left_side = _.sortBy(chart.contents.left_side, function(item) {
-                            return -1*item.count;
-                        });
-                        // sort right side items in ascending order
-                        chart.contents.right_side = _.sortBy(chart.contents.right_side, function(item) {
-                            return item.count;
-                        });
-                        // Join left side and right arrays and start chart from left side
-                        var combinedArray = chart.contents.left_side.concat(chart.contents.right_side);
+                    // sort left side items in descending order
+                    chart.contents.left_side = _.sortBy(chart.contents.left_side, function(item) {
+                        return -1 * item.count;
+                    });
+                    // sort right side items in ascending order
+                    chart.contents.right_side = _.sortBy(chart.contents.right_side, function(item) {
+                        return item.count;
+                    });
+                    // Join left side and right arrays and start chart from left side
+                    var combinedArray = chart.contents.left_side.concat(chart.contents.right_side);
 
-                        // Let count be 90, 40, 30 - based on calculation below the following will the calculated values
-                        // item 1 = { xOrigin : -160 , xFinal : -70 }
-                        // item 2 = { xOrigin : -70 , xFinal : -30 }
-                        // item 2 = { xOrigin : -30 , xFinal : 0 }
+                    // Let count be 90, 40, 30 - based on calculation below the following will the calculated values
+                    // item 1 = { xOrigin : -160 , xFinal : -70 }
+                    // item 2 = { xOrigin : -70 , xFinal : -30 }
+                    // item 2 = { xOrigin : -30 , xFinal : 0 }
 
-                        var totalCountInLeftSide = _.reduce(chart.contents.left_side, function(totalCount, item) {
-                            return item.count + totalCount;
-                        }, 0);
+                    var totalCountInLeftSide =  _.reduce(chart.contents.left_side, function(totalCount, item) {              
+                        return item.count + totalCount;            
+                    }, 0);
 
-                        chart.contents.left_side = _.each(chart.contents.left_side, function(item, index) {
-                            if(index === 0){
-                                item.origin = -1 * totalCountInLeftSide;
-                                item.xFinal = -1 * (totalCountInLeftSide - item.count);
-                            } else {
-                                item.origin = chart.contents.left_side[index-1].xFinal;
-                                item.xFinal = -1*(-1 * item.origin - item.count);
-                            }
-                        });
+                    chart.contents.left_side = _.each(chart.contents.left_side, function(item, index) {
+                        if (index === 0) {
+                            item.origin = -1 * totalCountInLeftSide;
+                            item.xFinal = -1 * (totalCountInLeftSide - item.count);
+                        } else {
+                            item.origin = chart.contents.left_side[index - 1].xFinal;
+                            item.xFinal = -1 * (-1 * item.origin - item.count);
+                        }
+                    });
 
-                        // Let count be 10, 25, 35 - based on calculation below the following will the calculated values
-                        // item 1 = { xOrigin : 0  , xFinal : 10 }
-                        // item 2 = { xOrigin : 10 , xFinal : 25 }
-                        // item 2 = { xOrigin : 25 , xFinal : 35 }
+                    // Let count be 10, 25, 35 - based on calculation below the following will the calculated values
+                    // item 1 = { xOrigin : 0  , xFinal : 10 }
+                    // item 2 = { xOrigin : 10 , xFinal : 25 }
+                    // item 2 = { xOrigin : 25 , xFinal : 35 }
 
-                        chart.contents.right_side = _.each(chart.contents.right_side, function(item, index) {
-                            // For first item X origin is 0 and xFinal is count 
-                            if (index === 0) {
-                                item.origin = 0;
-                                item.xFinal = item.count;
-                            } else {
-                                // For all other elements, X origin  is count of previous item and X final is count of the item
-                                item.origin = chart.contents.right_side[index - 1].count;
-                                item.xFinal = item.origin + chart.contents.right_side[index].count;
-                            }
-                        });
+                    chart.contents.right_side = _.each(chart.contents.right_side, function(item, index) {
+                        // For first item X origin is 0 and xFinal is count 
+                        if (index === 0) {
+                            item.origin = 0;
+                            item.xFinal = item.count;
+                        } else {
+                            // For all other elements, X origin  is count of previous item and X final is count of the item
+                            item.origin = chart.contents.right_side[index - 1].count;
+                            item.xFinal = item.origin + chart.contents.right_side[index].count;
+                        }
+                    });
 
-                        chart.boxes = combinedArray.map(function(item) {
-                            return {
-                                type: item.type,
-                                label: item.label,
-                                xOrigin: item.origin,
-                                xFinal: item.xFinal,
-                                count: item.count,
-                                chartName: chartName
-                            }
-                        });
-                    // }
+                    chart.boxes = combinedArray.map(function(item) {
+                        return {
+                            type: item.type,
+                            label: item.label,
+                            xOrigin: item.origin,
+                            xFinal: item.xFinal,
+                            count: item.count,
+                            chartName: chartName
+                        }
+                    });
                 });
 
                 // get minimum and maximum values to plot
@@ -136,14 +133,8 @@ angular.module('sntRover')
                 var maxValueInBotheDirections = min_val > max_val ? min_val : max_val;
 
                 // set scales for x axis
-                xScale.domain([-1*maxValueInBotheDirections, maxValueInBotheDirections]).nice();
-
-                // set scales for y axis excluding the hidden bar
-                var dataWithoutHiddenbar = _.reject(chartDetails.chartData, function(chart) {
-                    return chart.type === 'hidden';
-                });
-
-                yScale.domain(dataWithoutHiddenbar.map(function(chart) {
+                xScale.domain([-1 * maxValueInBotheDirections, maxValueInBotheDirections]).nice();
+                yScale.domain(chartDetails.chartData.map(function(chart) {
                     return chart.type;
                 }));
 
@@ -165,11 +156,7 @@ angular.module('sntRover')
                     .enter().append("g")
                     .attr("class", "bar")
                     .attr("transform", function(chart) {
-                        return chart.type !== 'hidden' ? "translate(0," + yScale(chart.type) + ")" : "";
-                    })
-                    .style("display", function(mainItem) {
-                        // hide the hidden bar which is added to show scales equaly on both sides of X axis
-                        return mainItem.type == 'hidden' ? 'none' : 'block';
+                        return "translate(0," + yScale(chart.type) + ")";
                     });
 
                 var bars = vakken.selectAll("rect")
@@ -189,9 +176,7 @@ angular.module('sntRover')
                         return xScale(item.xFinal) - xScale(item.xOrigin);
                     })
                     .style("fill", function(item) {
-                        console.log(item.chartName);
-                        console.log(chartDetails.chartColorScheme[item.chartName + 'ColorScheme']);
-                        return item.chartName === 'hidden' ? '' : chartDetails.chartColorScheme[item.chartName + 'ColorScheme'](item.type);
+                        return chartDetails.chartColorScheme[item.chartName + 'ColorScheme'](item.type);
                     })
                     .on("click", function(e) {
                         chartDetails.onBarChartClick(e);
@@ -207,7 +192,10 @@ angular.module('sntRover')
                     .style("font-size", "15px")
                     .style("text-anchor", "begin")
                     .text(function(item) {
-                        return item.count !== 0 ? item.count : ""
+                        var itemPercantage = item.count * 100 / maxValueInBotheDirections;
+
+                        // show text only if there is enough space
+                        return (itemPercantage > 8 || itemPercantage > 4 && item.count < 10) ? item.count : "";
                     });
 
                 // Add extra Y axis to the middle of the graph
