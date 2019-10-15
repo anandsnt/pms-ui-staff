@@ -246,7 +246,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 fetchReservationDetails();
                 $timeout(function() {
                     fetchAddons();
-                }, 100);
+                }, 1000);
                 if ($scope.selectedReservation.skipRoomUpsell) {
                     $scope.selectedReservation.is_upsell_available = false;
                 } else {
