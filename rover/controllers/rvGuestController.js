@@ -1047,7 +1047,8 @@ angular.module('sntRover').controller('guestCardController', [
                     'city': $scope.searchData.companyCard.companyCity,
                     'account_number': $scope.searchData.companyCard.companyCorpId,
                     'from_date': ($scope.viewState.identifier === "CREATION" || $scope.viewState.identifier === "CONFIRM") ? $scope.reservationData.arrivalDate : new Date($scope.reservation.reservation_card.arrival_date).toISOString().slice(0, 10).replace(/-/g, "-"),
-                    'to_date': ($scope.viewState.identifier === "CREATION" || $scope.viewState.identifier === "CONFIRM") ? $scope.reservationData.departureDate : new Date($scope.reservation.reservation_card.departure_date).toISOString().slice(0, 10).replace(/-/g, "-")
+                    'to_date': ($scope.viewState.identifier === "CREATION" || $scope.viewState.identifier === "CONFIRM") ? $scope.reservationData.departureDate : new Date($scope.reservation.reservation_card.departure_date).toISOString().slice(0, 10).replace(/-/g, "-"),
+                    'reservation_id': $scope.viewState.identifier === "STAY_CARD" ? $scope.reservationData.reservationId : null
                 };
 
                 $scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchCompanies);
@@ -1125,7 +1126,8 @@ angular.module('sntRover').controller('guestCardController', [
                     'city': $scope.searchData.travelAgentCard.travelAgentCity,
                     'account_number': $scope.searchData.travelAgentCard.travelAgentIATA,
                     'from_date': ($scope.viewState.identifier === "CREATION" || $scope.viewState.identifier === "CONFIRM") ? $scope.reservationData.arrivalDate : new Date($scope.reservation.reservation_card.arrival_date).toISOString().slice(0, 10).replace(/-/g, "-"),
-                    'to_date': ($scope.viewState.identifier === "CREATION" || $scope.viewState.identifier === "CONFIRM") ? $scope.reservationData.departureDate : new Date($scope.reservation.reservation_card.departure_date).toISOString().slice(0, 10).replace(/-/g, "-")
+                    'to_date': ($scope.viewState.identifier === "CREATION" || $scope.viewState.identifier === "CONFIRM") ? $scope.reservationData.departureDate : new Date($scope.reservation.reservation_card.departure_date).toISOString().slice(0, 10).replace(/-/g, "-"),
+                    'reservation_id': $scope.viewState.identifier === "STAY_CARD" ? $scope.reservationData.reservationId : null
                 };
 
                 $scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchTravelAgents);
