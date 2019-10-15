@@ -13,6 +13,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
     'RVReportUtilsFac',
     '$q',
     'RVReportMsgsConst',
+    'ngDialog',
     function (
         $rootScope, 
         $scope,
@@ -26,18 +27,67 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         reportNames,
         reportsSubSrv,
         reportUtils,
-        $q, reportMsgs) {
+        $q, 
+        reportMsgs,
+        ngDialog) {
 
         var self = this;
 
         BaseCtrl.call(this, $scope);
 
         $scope.viewStatus.showDetails = false;
+        $scope.maxDateRange = 1;
 
         const REPORT_INBOX_SCROLLER = 'report-inbox-scroller',
             REPORT_FILTERS_PROC_ACTIVITY = 'report_filters_proc_activity',
             PAGINATION_ID = 'report_inbox_pagination';
-        
+
+
+        var datePickerCommon = {
+            dateFormat: $rootScope.jqDateFormat,
+            numberOfMonths: 1,
+            changeYear: true,
+            changeMonth: true,
+            beforeShow: function beforeShow(input, inst) {
+                $('#ui-datepicker-div');
+                $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
+            },
+            onClose: function onClose(value) {
+                $('#ui-datepicker-div');
+                $('#ui-datepicker-overlay').remove();
+                $scope.showRemoveDateBtn();
+            }
+        };
+
+        function $_onSelect(value, dayOffset, effectObj) {
+            if (value instanceof Date ) {
+                return value;
+            }
+            
+            var format = $rootScope.dateFormat.toUpperCase(),
+                day,
+                month,
+                year,
+                date;
+
+            if (format === 'MM-DD-YYYY' || format === 'MM/DD/YYYY') {
+                day = parseInt(value.substring(3, 5));
+                month = parseInt(value.substring(0, 2));
+            } else if (format === 'DD-MM-YYYY' || format === 'DD/MM/YYYY') {
+                day = parseInt(value.substring(0, 2));
+                month = parseInt(value.substring(3, 5));
+            }
+
+            year = parseInt(value.substring(6, 10));
+            date = new Date(year, month - 1, day + dayOffset);
+
+            if (effectObj) {
+                effectObj.maxDate = date;
+            } else {
+                return date;
+            }
+        }
+    
 
         // Navigate to new report request section
         $scope.createNewReport = () => {
@@ -323,9 +373,20 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
                     function(report) {
                         return selectedreport.report_id === report.id;
                     }),
-                   deffered = $q.defer();
+                   deffered = $q.defer(),
+                   reportName = selectedreport.name;
+            
 
             choosenReport.usedFilters = selectedreport.filters;
+
+            if (reportName === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] || 
+                reportName === reportNames['DAILY_PRODUCTION_DEMO'] || 
+                reportName === reportNames['DAILY_PRODUCTION_RATE']
+                ) {
+                choosenReport.usedFilters.to_date = $filter('date')(selectedreport.filterToDate, 'yyyy-MM-dd');
+                choosenReport.usedFilters.from_date = $filter('date')(selectedreport.filterFromDate, 'yyyy-MM-dd');
+            }
+
             // generatedReportId is required make API call
             choosenReport.generatedReportId = selectedreport.id;
             // if the two reports are not the same, just call
@@ -343,6 +404,11 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
                 // These filter data is used in some of the reports controller 
                 choosenReport = _.extend(JSON.parse(JSON.stringify(choosenReport)), selectedreport.rawData);
                 choosenReport.appliedFilter = selectedreport.appliedFilter;
+                if (reportName === reportNames['OCCUPANCY_REVENUE_SUMMARY'] ) {
+                    choosenReport.fromDate = selectedreport.fromDate;
+                    choosenReport.untilDate = selectedreport.toDate;
+                }
+
                 reportsSrv.setChoosenReport( choosenReport );
                 deffered.resolve();
             });            
@@ -412,14 +478,97 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
          * @return void
          */
         $scope.printReport = (report) => { 
-            var mainCtrlScope = $scope.$parent;
+            var reportName = report.name, 
+                fromDate;
 
-            setChoosenReport(report).then(function() {
-                mainCtrlScope.genReport(false, 1, 99999);
-            });
-            reportsSrv.setPrintClicked(true);                       
+            $scope.currentReport = report;
             
+            if ( reportName === reportNames['DAILY_PRODUCTION_RATE'] ) {
+                $scope.maxDateRange = 2;
+            } else if ( reportName === reportNames['OCCUPANCY_REVENUE_SUMMARY'] ) {
+                $scope.maxDateRange = 4;
+            } else {
+                $scope.maxDateRange = 1;
+            }
+
+            if (reportName === reportNames['OCCUPANCY_REVENUE_SUMMARY'] || 
+                    reportName === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] || 
+                    reportName === reportNames['DAILY_PRODUCTION_DEMO'] || 
+                    reportName === reportNames['DAILY_PRODUCTION_RATE'] ) {
+                        
+                $scope.fromDateOptions = angular.extend({}, datePickerCommon);
+                $scope.untilDateOptions = angular.extend({}, datePickerCommon);
+
+                $scope.fromDateOptions.minDate = $scope.currentReport.fromDate;
+                $scope.fromDateOptions.maxDate = $scope.currentReport.toDate;
+
+                // initialize until date base on the from date
+                // CICO-33536 - fix for date format
+                fromDate = $filter('date')($scope.currentReport.fromDate, $rootScope.dateFormat);
+
+                $scope.currentReport.filterToDate = $_onSelect($scope.fromDateOptions.maxDate, 0);
+                $scope.currentReport.filterFromDate = $_onSelect(fromDate, 0);
+
+                // set min and max limits for until date
+                $scope.untilDateOptions.minDate = $scope.currentReport.fromDate;
+                $scope.untilDateOptions.maxDate = $scope.currentReport.toDate;
+
+                ngDialog.open({
+                    template: '/assets/partials/reports/rvPrintReportSelectDatePopup.html',
+                    className: 'ngdialog-theme-default',
+                    scope: $scope
+                });
+            } else {
+                $scope.continuePrint();
+            }
+
         };
+
+        // Perform the actual print
+        $scope.continuePrint = function () {
+            var mainCtrlScope = $scope.$parent,
+                startDate = moment($scope.currentReport.filterFromDate, 'D/M/YYYY'),
+                untilDate = moment($scope.currentReport.filterToDate, 'D/M/YYYY'),
+                numberOfDays = untilDate.diff(startDate, 'days') + 1;
+
+            $scope.errorMsg = '';
+            
+            if (numberOfDays > $scope.maxDateRange) {
+                $scope.errorMsg = 'Allowed limit exceeded';
+            } else {
+                ngDialog.close();
+                setChoosenReport($scope.currentReport).then(function () {
+                    mainCtrlScope.genReport(false, 1, 99999);
+                });
+                reportsSrv.setPrintClicked(true);
+            }
+        };
+
+        // Adjust start date filter
+        $scope.adjustStartDate = function () {
+            if ($scope.currentReport.filterFromDate > $scope.currentReport.filterToDate) {
+                $scope.currentReport.filterFromDate =  $scope.currentReport.filterToDate;
+            }
+            $scope.errorMsg = '';            
+            $scope.errorMessage = [];
+        };
+
+        // Adjust to date filter
+        $scope.adjustUntilDate = function() {
+            if ($scope.currentReport.filterFromDate > $scope.currentReport.filterToDate) {
+                $scope.currentReport.filterFromDate =  $scope.currentReport.filterToDate;
+            }
+            $scope.errorMessage = [];
+            $scope.errorMsg = '';
+        };
+
+        // Close the modal
+        $scope.deleteModal = function () {
+            self.fetchGeneratedReports(false, 1);
+            $scope.errorMsg = '';
+            ngDialog.close();
+        };
+
 
         $scope.addListener(reportMsgs['REPORT_API_FAILED'], function(event, data) {
             $scope.errorMessage = data;
