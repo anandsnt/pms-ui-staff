@@ -162,7 +162,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             } else {
                 $scope.callAPI(zsCheckinSrv.fetchAddonDetails, {
                     params: {
-                        'id': $scope.selectedReservation.id
+                        'id': $scope.selectedReservation.id,
+                        'is_kiosk': true
                     },
                     'successCallBack': fetchCompleted
                 });
