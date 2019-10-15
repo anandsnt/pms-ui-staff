@@ -1088,7 +1088,7 @@
 			<button type="button" ng-click="clickedSave()" class="button green">
 				Save Changes
 			</button>
-			<button type="button" ui-sref="admin.users({id:id})" ng-if="isAdminSnt && isEdit" class="button green">
+			<button type="button" ng-disabled="!data.hotel_code" ng-class="{'grey': !data.hotel_code}" ui-sref="admin.users({id:id})" ng-if="isAdminSnt && isEdit" class="button green">
 				User Setup
 			</button>
 		</div>
