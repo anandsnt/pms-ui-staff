@@ -15,13 +15,10 @@
         </div>
     </section>
     <!-- ANALYTICS VIEW -->
-    <section id="dashboard" class="content scrollable" role = "main"
-             ng-iscroll='dashboard_scroller' ng-iscroll-delay="100"
-             ng-show="showDashboard"
+    <section id="dashboard" class="content scrollable analytics" role="main"
              ng-if="dashboardFilter.analyticsActive">
-        <div class="wrapper">
-            <div ng-include="'/assets/partials/analytics/rvHouseKeepingAnalytics.html'" ng-controller="RVHouseKeepingAnalyticsCtrlController"></div>
-        </div>
+            <ng-include src="'/assets/partials/analytics/rvHouseKeepingAnalytics.html'" ng-controller="RVHouseKeepingAnalyticsCtrlController">
+            </ng-include>
     </section>
 </div>
 

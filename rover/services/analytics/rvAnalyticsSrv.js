@@ -103,7 +103,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
             if (calledHKApis) {
                 var hkOverview = {
                     dashboard_type: 'house_keeping_overview',
-                    label: 'AN_HOUSEKEEPING_VIEW',
+                    label: 'AN_HOUSEKEEPING_OVER_VIEW',
                     data: []
                 };
                 // Pushing arrivals data structure

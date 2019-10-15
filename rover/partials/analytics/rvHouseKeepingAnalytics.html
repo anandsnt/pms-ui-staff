@@ -1,11 +1,60 @@
 <h1 style="text-align: center; font-size: 35px;">
-	ARRIVALS MANAGEMENT CHART
+	{{mainHeading}}
 </h1>
-<!-- LEFT SIDE LEGEND -->
-<div id="left-side-legend"></div>
-<!-- CHART -->
-<div id="analytics-chart" style="margin-bottom: 50px;"></div>
-<!-- RIGHT SIDE CHART -->
-<div id="right-side-legend"></div>
-<!-- ON CLICK MESSAGE -->
-<div id="message" style="width: 100%;float: right; text-align: center;font-weight: 600;"></div>
+
+<div class="wrapper">
+ <!-- Chart -->
+    <div class="analytics-chart with-legend-left with-legend-right">
+         <dl class="chart-legend legend-left">
+                <dd class="legend-item">
+                    <span class="rect" style="background-color: #b7d499;"></span>
+                    <span class="rect-label">Arrivals</span>
+                </dd>
+                <dd class="legend-item">
+                    <span class="rect" style="background-color: #bbe0ee;"></span>
+                    <span class="rect-label">Stayovers</span>
+                </dd>
+                <dd class="legend-item">
+                    <span class="rect" style="background-color: #dba2a2;"></span>
+                    <span class="rect-label">Departures</span>
+                </dd>
+
+                <dt class="legend-title">Vacant</dt>
+                <dd class="legend-item">
+                    <span class="rect" style="background-color: #85b752;"></span>
+                    <span class="rect-label">Clean</span>
+                </dd>
+                <dd class="legend-item">
+                    <span class="rect" style="background-color: #547a2f;"></span>
+                    <span class="rect-label">Inspected</span>
+                </dd>
+            </dl>
+
+        <div id="analytics-chart" class="chart-content">
+        </div>
+
+       <dl class="chart-legend legend-right">
+                <dd class="legend-item">
+                    <span class="rect" style="background-color: #84b652;"></span>
+                    <span class="rect-label">Arrivals</span>
+                </dd>
+                <dd class="legend-item">
+                    <span class="rect" style="background-color: #7cbad3"></span>
+                    <span class="rect-label">Stayovers</span>
+                </dd>
+                <dd class="legend-item">
+                    <span class="rect" style="background-color: #e13939;"></span>
+                    <span class="rect-label">Departures</span>
+                </dd>
+                <dt class="legend-title">Vacant</dt>
+                <dd class="legend-item">
+                    <span class="rect" style="background-color: #ed941a;"></span>
+                    <span class="rect-label">Pickup</span>
+                </dd>
+                <dd class="legend-item">
+                    <span class="rect" style="background-color: #de3838;"></span>
+                    <span class="rect-label">Dirty</span>
+                </dd>
+            </dl>
+    </div>
+</div>

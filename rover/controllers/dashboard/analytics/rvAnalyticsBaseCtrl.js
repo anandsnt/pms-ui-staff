@@ -4,7 +4,7 @@ angular.module('sntRover')
 
             // Draw bidirectional chart
             $scope.drawBidirectionalChart = function reportWindowSize(chartDetails) {
-
+                $scope.mainHeading = chartDetails.chartData.label;
                 var chartAreaWidth = document.getElementById("analytics-chart").clientWidth;
                 var margin = {
                         top: 50,
@@ -26,6 +26,7 @@ angular.module('sntRover')
                     .scale(xScale)
                     .tickSizeOuter(0)
                     .ticks(10)
+                    .tickSizeInner(-height)
                     .tickFormat(function(d) {
                         // X axis... treat -ve values as positive
                         return (d < 0) ? (d * -1) : d;
@@ -34,9 +35,12 @@ angular.module('sntRover')
                 var yAxis = d3.axisLeft()
                     .scale(yScale)
                     .ticks(5)
-                    .tickSizeInner(-width)
+                    //.tickSizeInner(-width)
                     .tickSizeOuter(0)
-                    .tickPadding(10);
+                    .tickPadding(10)
+                    .tickFormat(function(d) {
+                        return "";
+                    });
 
                 var svg = d3.select("#analytics-chart").append("svg")
                     .attr("width", width + margin.left + margin.right)
@@ -47,7 +51,7 @@ angular.module('sntRover')
 
                 var combinedItemsCountArray = [];
 
-                _.each(chartDetails.chartData, function(chart) {
+                _.each(chartDetails.chartData.data, function(chart) {
                     _.each(chart.contents.left_side, function(item) {
                         combinedItemsCountArray.push(item.count);
                     });
@@ -60,7 +64,7 @@ angular.module('sntRover')
                     return count;
                 });
 
-                chartDetails.chartData.forEach(function(chart) {
+                chartDetails.chartData.data.forEach(function(chart) {
 
                     var chartName = chart.type;
                     // sort left side items in descending order
@@ -123,10 +127,10 @@ angular.module('sntRover')
                 });
 
                 // get minimum and maximum values to plot
-                var min_val = d3.min(chartDetails.chartData, function(chart) {
+                var min_val = d3.min(chartDetails.chartData.data, function(chart) {
                     return chart.boxes["0"].xOrigin;
                 });
-                var max_val = d3.max(chartDetails.chartData, function(chart) {
+                var max_val = d3.max(chartDetails.chartData.data, function(chart) {
                     return chart.boxes[chart.boxes.length - 1].xFinal;
                 });
 
@@ -134,7 +138,7 @@ angular.module('sntRover')
 
                 // set scales for x axis
                 xScale.domain([-1 * maxValueInBotheDirections, maxValueInBotheDirections]).nice();
-                yScale.domain(chartDetails.chartData.map(function(chart) {
+                yScale.domain(chartDetails.chartData.data.map(function(chart) {
                     return chart.type;
                 }));
 
@@ -152,7 +156,7 @@ angular.module('sntRover')
 
 
                 var vakken = svg.selectAll(".type")
-                    .data(chartDetails.chartData)
+                    .data(chartDetails.chartData.data)
                     .enter().append("g")
                     .attr("class", "bar")
                     .attr("transform", function(chart) {
@@ -182,29 +186,65 @@ angular.module('sntRover')
                         chartDetails.onBarChartClick(e);
                     });
 
+                var isSmallBarItem = function(item) {
+                    var itemPercantage = item.count * 100 / maxValueInBotheDirections;
+                    return (itemPercantage < 8 || itemPercantage > 4 && item.count < 10);
+                };
                 bars.append("text")
-                    .attr("x", function(chart) {
-                        return ((xScale(chart.xOrigin) + xScale(chart.xFinal)) / 2) - 10;
+                    .attr("x", function(item) {
+                        return ((xScale(item.xOrigin) + xScale(item.xFinal)) / 2);
                     })
-                    .attr("y", yScale.bandwidth() / 2)
-                    .attr("dy", "0.5em")
-                    .attr("dx", "0.5em")
-                    .style("font-size", "15px")
-                    .style("text-anchor", "begin")
+                    .attr("y", function(item){
+                        return yScale.bandwidth() / 2;
+                    })
+                    .attr("dy", function(item) {
+                        return isSmallBarItem(item) ?  -1*(yScale.bandwidth() / 2 + 10):  "0.5em";
+                    })
+                    .attr("dx", function(item) {
+                        return isSmallBarItem(item) && item.xOrigin < 0 ?  "-0.5em" :  "0.5em";
+                    })
+                    .style("font-size", function(item) {
+                        return isSmallBarItem(item) ?  "10px" :  "15px";
+                    })
+                    .style("text-anchor", "middle")
                     .text(function(item) {
-                        var itemPercantage = item.count * 100 / maxValueInBotheDirections;
-
-                        // show text only if there is enough space
-                        return (itemPercantage > 8 || itemPercantage > 4 && item.count < 10) ? item.count : "";
+                        return item.count !== 0 ? item.count : '';
                     });
 
                 // Add extra Y axis to the middle of the graph
                 svg.append("g")
-                    .attr("class", "y axis")
+                    .attr("class", "y axis inner")
                     .append("line")
                     .attr("x1", xScale(0))
                     .attr("x2", xScale(0))
                     .attr("y2", height);
+
+                var firstLineHeight = yScale.bandwidth() * 2.5;
+                svg.append("line") // attach a line
+                    .style("stroke", "#A0A0A0") // colour the line
+                    .style("stroke-width", "1px")
+                    .attr("x1", xScale(-1*maxValueInBotheDirections)) // x position of the first end of the line
+                    .attr("y1", firstLineHeight) // y position of the first end of the line
+                    .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
+                    .attr("y2", firstLineHeight);
+
+                var firstLineHeight1 = yScale.bandwidth() * 4.5;
+                svg.append("line") // attach a line
+                    .style("stroke", "#A0A0A0") // colour the line
+                    .style("stroke-width", "1px")
+                    .attr("x1", xScale(-1*maxValueInBotheDirections)) // x position of the first end of the line
+                    .attr("y1", firstLineHeight1) // y position of the first end of the line
+                    .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
+                    .attr("y2", firstLineHeight1);
+
+                var firstLineHeight2 = yScale.bandwidth() * 6.5;
+                svg.append("line") // attach a line
+                    .style("stroke", "black") // colour the line
+                    .style("stroke-width", "2px")
+                    .attr("x1", xScale(-1*maxValueInBotheDirections)) // x position of the first end of the line
+                    .attr("y1", firstLineHeight2) // y position of the first end of the line
+                    .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
+                    .attr("y2", firstLineHeight2);
             }
 
         }

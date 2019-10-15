@@ -57,7 +57,7 @@ sntRover.controller('RVHouseKeepingAnalyticsCtrlController', ['$scope',
             // Calling HK Overview Build Graph
             rvAnalyticsSrv.hkOverview(date).then(function(data) {
                 var chartDetails = {
-                    chartData: data.data,
+                    chartData: data,
                     chartColorScheme: chartColorScheme,
                     onBarChartClick: onBarChartClick
                 };
