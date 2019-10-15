@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('rvCardContractsLinkingCtrl', ['$scope', 'rvCompanyCardContractsSrv', '$timeout',
-	function($scope, rvCompanyCardContractsSrv, $timeout) {
+angular.module('sntRover').controller('rvCardContractsLinkingCtrl', ['$scope', 'rvCompanyCardContractsSrv', '$timeout', 'stateParams',
+	function($scope, rvCompanyCardContractsSrv, $timeout, stateParams) {
         
         BaseCtrl.call(this, $scope);
         var that = this;
@@ -29,6 +29,7 @@ angular.module('sntRover').controller('rvCardContractsLinkingCtrl', ['$scope', '
                 $scope.$emit('setErrorMessage', errorMessage);
             };
 
+            $scope.contractData.accountId = $stateParams.id === "add" ? $scope.contactInformation.id : $stateParams.id;
             var options = {
                 successCallBack: fetchContractsForLinkingSuccessCallback,
                 failureCallBack: fetchContractsForLinkingFailureCallback,
@@ -61,6 +62,7 @@ angular.module('sntRover').controller('rvCardContractsLinkingCtrl', ['$scope', '
             if (!clickedItem.is_already_linked) {
                 var linkContractSuccessCallback = function() {
                     clickedItem.is_already_linked = true;
+                    $scope.$emit('fetchContractsList');
                 },
                 linkContractFailureCallback = function(errorMessage) {
                     $scope.$emit('setErrorMessage', errorMessage);
