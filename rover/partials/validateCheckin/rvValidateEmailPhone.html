@@ -59,7 +59,7 @@
 						</div>
 						<div class="entry" ng-if="showGender && (guestCardData.contactInfo.gender_id === '' || guestCardData.contactInfo.gender_id === null)">
 							<label>Gender<strong>*</strong></label>
-							<select iscroll-stop-propagation ng-options="genderType.id as genderType.value for genderType in guestCardData.contactInfo.gender_list" ng-model="saveData.gender_id"  ng-class="{'placeholder': saveData.gender_id === null}" >
+							<select iscroll-stop-propagation ng-options="genderType.id as genderType.value for genderType in guestCardData.contactInfo.genderTypeList" ng-model="saveData.gender_id"  ng-class="{'placeholder': saveData.gender_id === null}" >
 								<option value="" disabled selected>Select Gender</option>
 								<option style="display:none" value="genderType.id"></option>
 							</select>
