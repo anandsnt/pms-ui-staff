@@ -851,7 +851,7 @@
     "CC_INSERT_TIMEOUT": "Are you still there ?",
     "CC_INSERT_ERROR": "Something went wrong!.",
 
-    "POST_GUEST_CHARGES_HEADING": "Guest Charges Since Last Night",
+    "GUEST_CHARGES_HEADING": "Guest Charges",
     "TOTAL": "Total",
     "POST_ITEMS": "Post Items",
     "ADD_CHARGE": "Add Charge",

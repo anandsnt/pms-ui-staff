@@ -2,6 +2,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 	function(rvPermissionSrv, $rootScope, $scope, rvCompanyCardContractsSrv, $stateParams) {
 
 		BaseCtrl.call(this, $scope);
+
 		/**
 		 * Initialize contract object
 		 */
@@ -19,7 +20,12 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 				selectedRateList: [],
 				selectedRateIdList: [],
 				accountId: '',
-				hasEditAccessCodePermission: rvPermissionSrv.getPermissionValue('EDIT_CONTRACT_ACCESS_CODE')
+				showNightsModal: false,
+				hasEditAccessCodePermission: rvPermissionSrv.getPermissionValue('EDIT_CONTRACT_ACCESS_CODE'),
+				linkContractsSearch: {
+					query: '',
+					results: []
+				}
 			};
 		},
 		that = this;
@@ -64,7 +70,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 		 * @param {Object} - accepts the API response as parameter
 		 * @return void
 		 */
-		fetchContractsListSuccessCallback = function(data) {
+		fetchContractsListSuccessCallback = function(data, params) {
 			var currentContracts = data.current_contracts || [],
 				pastContracts = data.history_contracts || [],
 				futureContracts = data.future_contracts || [];
@@ -73,7 +79,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 			setSideListCount(currentContracts, futureContracts, pastContracts);
 
 			if (currentContracts.length !== 0 || pastContracts.length !== 0 || futureContracts.length !== 0) {
-				if ($scope.contractData.selectedContract === '') {
+				if (params.action === 'UNLINK' || $scope.contractData.selectedContract === '') {
 					$scope.contractData.selectedContract = data.contract_selected || '';
 				}
 				$scope.contractData.mode = 'EDIT';
@@ -97,6 +103,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 			$scope.contractData.selectedRateList = data.contract_rates;
 			$scope.contractData.disableFields = data.end_date < $rootScope.businessDate;
 			$scope.$broadcast('addDataReset');
+			$scope.$broadcast('refreshEditScroller');
 		},
 		/**
 		 * Failure callback for contracts detail fetch
@@ -142,11 +149,14 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 		/**
 		 * Function fetches the contracts on page load
 		 */
-		that.fetchContracts = function() {
+		that.fetchContracts = function( action ) {
 			$scope.contractData.accountId = $stateParams.id === "add" ? $scope.contactInformation.id : $stateParams.id;
 			var options = {
 				successCallBack: fetchContractsListSuccessCallback,
 				failureCallBack: fetchContractsListFailureCallback,
+				successCallBackParameters: {
+					'action': action
+				},
 				params: {
 					"account_id": $scope.contractData.accountId
 				}
@@ -173,7 +183,9 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 		/**
 		 * Listener to call on new contracts form closure
 		 */
-		$scope.addListener('fetchContractsList', that.fetchContracts);
+		$scope.addListener('fetchContractsList', function(event, action) {
+			that.fetchContracts(action);
+		});
 
 		/**
 		 * Listener for fetch event from the contract list 
@@ -229,6 +241,15 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 		 */
 		$scope.createFirstContract = function() {
 			$scope.contractData.mode = 'ADD';
+			$scope.contractData.noContracts = false;
+			refreshContractScrollers();
+		};
+
+		/**
+		 * Function to load Link Contracts screen.
+		 */
+		$scope.moveToLinkContract = function() {
+			$scope.contractData.mode = 'LINK';
 			$scope.contractData.noContracts = false;
 			refreshContractScrollers();
 		};
