@@ -60,35 +60,14 @@ angular.module('sntRover')
                     return count;
                 });
 
-                chartDetails.chartData.unshift({
-                    "type": "hidden",
-                    "count": largestItemCount
-                });
-
-                var setBoxesForHiddenBars = function(xFinal) {
-                    return [{
-                        type: 'hidden',
-                        xOrigin: -1 * xFinal,
-                        xFinal: 0,
-                        chartName: 'hidden'
-                    }, {
-                        type: 'hidden',
-                        xOrigin: 0,
-                        xFinal: xFinal,
-                        chartName: 'hidden'
-                    }]
-                };
+ 
 
                 chartDetails.chartData.forEach(function(chart) {
 
                     var chartName = chart.type;
-
-                    if (chart.type === "hidden") {
-                        chart.boxes = setBoxesForHiddenBars(chart.count);
-                    } else {
                         // sort left side items in descending order
                         chart.contents.left_side = _.sortBy(chart.contents.left_side, function(item) {
-                            return -1 * item.count;
+                            return -1*item.count;
                         });
                         // sort right side items in ascending order
                         chart.contents.right_side = _.sortBy(chart.contents.right_side, function(item) {
@@ -98,19 +77,21 @@ angular.module('sntRover')
                         var combinedArray = chart.contents.left_side.concat(chart.contents.right_side);
 
                         // Let count be 90, 40, 30 - based on calculation below the following will the calculated values
-                        // item 1 = { xOrigin : -1*90 , xFinal : -1*40 }
-                        // item 2 = { xOrigin : -1*40 , xFinal : -1*30 }
-                        // item 2 = { xOrigin : -1*30 , xFinal : 0 }
+                        // item 1 = { xOrigin : -160 , xFinal : -70 }
+                        // item 2 = { xOrigin : -70 , xFinal : -30 }
+                        // item 2 = { xOrigin : -30 , xFinal : 0 }
+
+                        var totalCountInLeftSide = _.reduce(chart.contents.left_side, function(totalCount, item) {
+                            return item.count + totalCount;
+                        }, 0);
 
                         chart.contents.left_side = _.each(chart.contents.left_side, function(item, index) {
-                            // left side bars starts at the corresponding count
-                            item.origin = -1 * item.count;
-                            // For last item X final is 0
-                            if (index === chart.contents.left_side.length - 1) {
-                                item.xFinal = 0;
+                            if(index === 0){
+                                item.origin = -1 * totalCountInLeftSide;
+                                item.xFinal = -1 * (totalCountInLeftSide - item.count);
                             } else {
-                                // For all other elements, X final is count of the next item
-                                item.xFinal = -1 * chart.contents.left_side[index + 1].count
+                                item.origin = chart.contents.left_side[index-1].xFinal;
+                                item.xFinal = -1*(-1 * item.origin - item.count);
                             }
                         });
 
@@ -127,7 +108,7 @@ angular.module('sntRover')
                             } else {
                                 // For all other elements, X origin  is count of previous item and X final is count of the item
                                 item.origin = chart.contents.right_side[index - 1].count;
-                                item.xFinal = chart.contents.right_side[index].count;
+                                item.xFinal = item.origin + chart.contents.right_side[index].count;
                             }
                         });
 
@@ -141,7 +122,7 @@ angular.module('sntRover')
                                 chartName: chartName
                             }
                         });
-                    }
+                    // }
                 });
 
                 // get minimum and maximum values to plot
@@ -152,8 +133,10 @@ angular.module('sntRover')
                     return chart.boxes[chart.boxes.length - 1].xFinal;
                 });
 
+                var maxValueInBotheDirections = min_val > max_val ? min_val : max_val;
+
                 // set scales for x axis
-                xScale.domain([min_val, max_val]).nice();
+                xScale.domain([-1*maxValueInBotheDirections, maxValueInBotheDirections]).nice();
 
                 // set scales for y axis excluding the hidden bar
                 var dataWithoutHiddenbar = _.reject(chartDetails.chartData, function(chart) {
