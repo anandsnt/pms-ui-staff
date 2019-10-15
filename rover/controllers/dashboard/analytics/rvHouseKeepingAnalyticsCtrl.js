@@ -53,29 +53,30 @@ sntRover.controller('RVHouseKeepingAnalyticsCtrlController', ['$scope',
 			console.log(JSON.stringify(e));
 		};
 
+		var renderHkOverview = function(date) {
+            // Calling HK Overview Build Graph
+            rvAnalyticsSrv.hkOverview(date).then(function(data) {
+                var chartDetails = {
+                    chartData: data,
+                    chartColorScheme: chartColorScheme,
+                    onBarChartClick: onBarChartClick
+                };
+
+                $scope.drawBidirectionalChart(chartDetails);
+            });
+        };
+
 		(function() {
-			rvAnalyticsSrv.hkWorkPriority($rootScope.businessDate).then(function(response) {
-				console.log(response);
-				//$scope.drawBidirectionalChart(response.data, chartColorScheme, onBarChartClick);
-			});
+
 			var options = {
 				params: $rootScope.businessDate,
-				successCallBack: function(response) {
-					var chartDetails = { 
-						chartData: response.data,
-						chartColorScheme: chartColorScheme,
-						onBarChartClick: onBarChartClick
-					};
-					
-					$scope.drawBidirectionalChart(chartDetails);
+				successCallBack: function() {
+                    renderHkOverview($rootScope.businessDate);
 				}
 			};
 
-			$scope.callAPI(rvAnalyticsSrv.hkOverview, options);
+			$scope.callAPI(rvAnalyticsSrv.initRoomAndReservationApis, options);
 
-			// $scope.callAPI(rvFrontOfficeAnalyticsSrv.fetchFrontDeskAnalyticsData, options);
-			
-			
 		})();
 	}
 ]);

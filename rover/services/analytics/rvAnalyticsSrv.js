@@ -1,8 +1,18 @@
 angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBaseWebSrvV2) {
+
+    // This flag is used to understand the required APIs are called
+    var calledHKApis = false;
+
+    var that = this;
+
+    // Variables for API returned data
+    that.activeReservations = null;
+    that.roomStatuses = null;
+
     /*
      * Function To Fetch Active Reservation for that day
      */
-    var fetchActiveReservation = function(params) {
+    this.fetchActiveReservation = function(params) {
 
         // Webservice calling section
         var deferred = $q.defer();
@@ -21,7 +31,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
     /*
      * Function To Fetch Current Room Status
      */
-    var fetchRoomStatus = function() {
+    this.fetchRoomStatus = function() {
 
         // Webservice calling section
         var deferred = $q.defer();
@@ -37,42 +47,41 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         return deferred.promise;
     };
 
-    // This flag is used to understand the required APIs are called
-    var calledHKApis = false;
-    // Variables for API returned data
-    var activeReservations = null;
-    var roomStatuses = null;
+    this.initRoomAndReservationApis = function(date) {
+        var deferred = $q.defer();
+        var completedResCall = false;
+        var completedRoomsCall = false;
+
+        that.fetchActiveReservation({ date: date }).then(function(data) {
+            that.activeReservations = data;
+
+            completedResCall = true;
+
+            if (completedRoomsCall) {
+                calledHKApis = true;
+                deferred.resolve()
+            }
+        });
+
+        that.fetchRoomStatus().then(function(data) {
+            that.roomStatuses = data;
+
+            completedRoomsCall = true;
+            if (completedResCall) {
+                calledHKApis = true;
+                deferred.resolve()
+            }
+        });
+        return deferred.promise;
+    };
 
     /*
      * This function will return the data structure for HK Work Priority
      */
     this.hkWorkPriority = function(date) {
         var deferred = $q.defer();
-        var completedResCall = false;
-        var completedRoomsCall = false;
 
-
-
-        fetchActiveReservation({ date: date }).then(function(data) {
-            activeReservations = data;
-
-            completedResCall = true;
-
-            if (completedRoomsCall) {
-                calledHKApis = true;
-                constructHkWorkPriority(deferred, date);
-            }
-        });
-
-        fetchRoomStatus().then(function(data) {
-            roomStatuses = data;
-
-            completedRoomsCall = true;
-            if (completedResCall) {
-                calledHKApis = true;
-                constructHkWorkPriority(deferred, date);
-            }
-        });
+        constructHkWorkPriority(deferred, date);
 
         return deferred.promise;
     };
@@ -98,13 +107,13 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
                     data: []
                 };
                 // Pushing arrivals data structure
-                hkOverview.data.push(buildArrivals(activeReservations, date, true));
+                hkOverview.data.push(buildArrivals(that.activeReservations, date, true));
                 // Pushing departure data structure
-                hkOverview.data.push(buildDepartures(activeReservations, date, true));
+                hkOverview.data.push(buildDepartures(that.activeReservations, date, true));
                 // Pushing Stayovers data structure
-                hkOverview.data.push(buildStayOvers(activeReservations, roomStatuses, date));
+                hkOverview.data.push(buildStayOvers(that.activeReservations, that.roomStatuses, date));
                 // Pushing vacant data structure
-                hkOverview.data.push(buildVacants(activeReservations, roomStatuses, true));
+                hkOverview.data.push(buildVacants(that.activeReservations, that.roomStatuses, true));
                 window.clearInterval(hkInterval);
 
                 deferred.resolve(hkOverview);
@@ -123,11 +132,11 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
             data: []
         };
         // Pushing arrivals data structure
-        workPriority.data.push(buildArrivals(activeReservations, date, false));
+        workPriority.data.push(buildArrivals(that.activeReservations, date, false));
         // Pushing vacant data structure
-        workPriority.data.push(buildVacants(activeReservations, roomStatuses, false));
+        workPriority.data.push(buildVacants(that.activeReservations, roomStatuses, false));
         // Pushing departure data structure
-        workPriority.data.push(buildDepartures(activeReservations, date));
+        workPriority.data.push(buildDepartures(that.activeReservations, date));
         deferred.resolve(workPriority);
     };
 
