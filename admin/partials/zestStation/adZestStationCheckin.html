@@ -127,6 +127,16 @@
                 <ad-toggle-button is-checked="zestSettings.scan_id_to_find_reservations" div-class="full-width"></ad-toggle-button>
             </fieldset>
 
+            <fieldset class="holder left" >
+                <div class="form-title full-width">
+                    <h3><span translate>STATION_PASSPORT_ENTRY_HEADER </span> </h3>
+                </div>
+                <ad-toggle-button is-checked="zestSettings.enable_passport_entry" label="{{'STATION_PASSPORT_ENTRY_LABEL'| translate}}" on-update="onPassportEntryToggled"  div-class="full-width"></ad-toggle-button>
+
+                <ad-toggle-button ng-if="zestSettings.enable_passport_entry" is-checked="zestSettings.bypass_passport_entry" label="{{'STATION_PASSPORT_ENTRY_BYPASS_LABEL'| translate}}"  div-class="full-width"></ad-toggle-button>
+
+            </fieldset>
+
             <fieldset class="holder full-width" ng-if="::isKioskExcludePaymentMethods">
                 <div class="form-title">
                     <h3>

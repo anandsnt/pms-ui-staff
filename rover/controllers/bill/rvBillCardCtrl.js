@@ -2706,6 +2706,9 @@ sntRover.controller('RVbillCardController',
 					if ($scope.billFormat.isInformationalInvoice) {
 						successData.invoiceLabel = successData.translation.information_invoice;
 					}
+					else if (successData.is_deposit_invoice) {
+						successData.invoiceLabel = successData.translation.deposit_invoice;
+					}
 					else if (successData.no_of_original_invoices === null && !$scope.reservationBillData.bills[$scope.currentActiveBill].is_void_bill) {
 						successData.invoiceLabel = successData.translation.invoice;
 					} 
@@ -3347,15 +3350,15 @@ sntRover.controller('RVbillCardController',
 			if (sntapp.cordovaLoaded) {
 				cordova.exec(billCardPrintCompleted,
 					function(error) {
-						billCardPrintCompleted();
+						receiptPrintCompleted();
 					}, 'RVCardPlugin', 'printWebView', []);
 			}
 			else
 			{
 				window.print();
-				// billCardPrintCompleted();
+				receiptPrintCompleted();
 			}
-		}, 700);
+		}, 1000);
 	});
 
 	/*

@@ -29,6 +29,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
         var SECOND_COLUMN_SCROLL = 'SECOND_COLUMN_SCROLL';
         var THIRD_COLUMN_SCROLL = 'THIRD_COLUMN_SCROLL';
         var FOURTH_COLUMN_SCROLL = 'FOURTH_COLUMN_SCROLL';
+        const SHOW_ERROR_MSG_EVENT = 'SHOW_ERROR_MSG_EVENT';
+
         var setupScrolls = function() {
             var scrollerOptions = {
                 tap: true,
@@ -201,6 +203,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             var failed = function(errors) {
                 $scope.errorMessage = errors;
+                $scope.$emit(SHOW_ERROR_MSG_EVENT, errors);
                 $scope.$emit( 'hideLoader' );
             };
 
@@ -283,6 +286,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
                 $scope.$parent.$parent.schedulesList[updatedIndex].occurance = findOccurance($scope.$parent.$parent.schedulesList[updatedIndex]);
             }
+            $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
         };
 
         var saveSchedule = function() {
@@ -317,6 +321,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             var failed = function(errors) {
                 $scope.errorMessage = errors;
+                $scope.$emit(SHOW_ERROR_MSG_EVENT, errors);
                 $scope.$emit( 'hideLoader' );
             };
 
@@ -772,6 +777,17 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             $scope.timeSlots = reportUtils.createTimeSlots(TIME_SLOTS);
         };
 
+        /**
+         * Filter delivery types, show only EMAIL and SFTP options
+         * @param {Array} deliveryTypes all delivery types available in the system
+         * @return {void}
+         */
+        var filterDeliveryTypes = (deliveryTypes) => {
+            $scope.scheduleDeliveryTypes = _.filter(deliveryTypes, function (deliveryType) {
+                return deliveryType.value === 'EMAIL' || deliveryType.value === 'SFTP';
+            });
+        };
+
         var fetchReqDatas = function() {
             var reset = true;
 
@@ -780,8 +796,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 $scope.originalScheduleTimePeriods = payload.scheduleTimePeriods;
                 $scope.$parent.$parent.schedulesList = [];
                 $scope.$parent.$parent.schedulableReports = [];
-                $scope.scheduleDeliveryTypes = payload.scheduleDeliveryTypes;
                 $scope.ftpServerList = payload.ftpServerList;
+                filterDeliveryTypes(payload.scheduleDeliveryTypes);
 
                 // sort schedule list by report name
                 $scope.$parent.$parent.schedulesList = _.sortBy(
@@ -1153,7 +1169,6 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             var reset = true;
 
             $scope.isAddingNew = true;
-            $scope.addingStage = STAGES.SHOW_PARAMETERS;
 
             $scope.selectedSchedule.active = false;
 
@@ -1264,6 +1279,10 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
         });
 
         $scope.$on('$destroy', createNewExportScheduleListener);
+        
+        $scope.addListener('RESET_CURRENT_STAGE', () => {
+            $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
+        });
 
         /**
          * Start everything

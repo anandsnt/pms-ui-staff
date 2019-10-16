@@ -5,20 +5,29 @@
 			<h2 ng-show="mod == 'add'" translate>ADD_NEW_ITEM</h2>
 			
 			<a data-type="load-details" class="action back" ng-click="goBack()" translate>BACK_TO_ITEMS</a>
-			<em class="status required" ng-show="mod == 'edit'">
-				{{'MANDATORY_FIELDS_MESSAGE1' | translate}}
-				<strong>*</strong>
-				{{'MANDATORY_FIELDS_MESSAGE2' | translate}}
-			</em>
+
+			<div class="filters language" ng-if="availableLanguagesSet.show_language_field">
+	            <label for="email-hotel-logo" translate> SELECT LANGUAGE </label>
+	            <div class="select">
+	                <select ng-model="selectedLanguage.code" name="locale" ng-change="onLanguageChange()">
+	                    <option ng-repeat="locale in availableLanguagesSet.languages" value="{{locale.code}}" ng-selected="selectedLanguage.code == roomTypeData.locale"> {{locale.language}}
+	                    </option>
+	                </select>
+            	</div>
+        	</div>
 		</header>
 		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<form name="item-details" method="post" class="form float">
-				<fieldset class="holder full-width float" ng-show="mod == 'add'">
+				<fieldset class="holder full-width float" >
 					<div class="form-title" >
-						<h3>
+						<h3 ng-show="mod == 'add'">
 							<span translate>ADD_NEW</span>
 							{{'ITEM' | translate}}
+						</h3>
+						<h3 ng-show="mod == 'edit'">
+							<span translate>EDIT</span>
+							<span>{{itemDetails.item_description}} </span>
 						</h3>
 						<em class="status">
 							{{'MANDATORY_FIELDS_MESSAGE1' | translate}}
@@ -29,6 +38,8 @@
 				</fieldset>
 				<fieldset class="holder left float">
 					<ad-textbox value="itemDetails.item_description" name = "item_desc" id = "item_desc" label = "{{'ITEM_DESCRIPTION' |translate}}" placeholder = "{{'ITEM_DESCRIPTION_PLACEHOLDER' |translate}}" required = "yes" styleclass="full-width" ></ad-textbox>
+
+					<ad-textbox value="itemDetails.item_description_trl" name = "item_desc" id = "item_desc" label = "{{'DESCRIPTION_TRANSLATED' |translate}}" placeholder = "{{'ITEM_DESCRIPTION_PLACEHOLDER' |translate}}" required = "yes" styleclass="full-width" hide="!availableLanguagesSet.show_language_field"></ad-textbox>
 
 					<ad-textbox value="itemDetails.unit_price" name = "unit_price" id = "unit_price" label = "{{'UNIT_PRICE' |translate}}" placeholder = "{{'UNIT_PRICE_PLACEHOLDER' |translate}}" required = "no" styleclass="full-width" ></ad-textbox>
 

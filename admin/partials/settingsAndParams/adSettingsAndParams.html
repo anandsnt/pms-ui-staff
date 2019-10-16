@@ -6,14 +6,13 @@
 				<a id="go_back" data-type="load-details" class="action back" ng-click="goBackToPreviousState()"translate>BACK</a>
 			</header>
 			<section class="content-scroll">
+
 				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 				<form  class="form float" >
 					<div class="form-title full-width">
 						<h3><span translate>CHANGE_BUSSINESS_DAY</span></h3>
 					</div>
 					<fieldset class="holder left">
-						<div></div>
-
 						<!-- Switch -->
 						<ad-toggle-button is-checked=" data.is_auto_change_bussiness_date" label="Auto Change Business Date"></ad-toggle-button>
 						<div class="entry">
@@ -104,69 +103,34 @@
 								</select>
 							</div>
 						</div>
-						<div class="entry full-width actions_margin_top" ng-show="false">
+						<div class="entry full-width actions_margin_top" ng-show="is_multi_currency_enabled">
 							<label> Hotel Rate Currencies <strong>*</strong> </label>
 							<div id="available-charge-codes" class="boxes col2">
-								<ad-checkbox ng-repeat="currency in currency_list"
+								<ad-checkbox ng-repeat="currency in rate_currency_list"
 								is-checked="currency.is_selected"
 								label="{{currency.code +' - ' + currency.symbol}}"
 								parent-label-class="room-likes" span-class="checkbox-background"
-								on-click="selectedCurrency(currency.id)"></ad-checkbox>
+								on-click="selectedRateCurrency(currency.id)"></ad-checkbox>
 							</div>
 						</div>
-						<!--  <multi-option-selection label="dfgdffffffff"
-                on-update="refreshSidebarScroll"
-                data="currency_list"
-                options="chosenReport.empList.options"></multi-option-selection> -->
-               <!--  <div class="entry">
-                <label>Rate / Add On Currencies</label>
-                
-                <span class="multiSelect inlineBlock">
-                    <button type="button" class="button multiSelectButton">None selected<span class="caret"></span>
-                    </button>
 
-                    <div class="checkboxLayer">
-                        <form>
-                            <div class="helperContainer">
-                                <div class="line">
-                                    <button type="button" class="helperButton">   ✓&nbsp; Select All</button>
-                                    <button type="button" class="helperButton">  ×&nbsp; Select None</button>
-                                    <button type="button" class="helperButton" style="float:right">↶&nbsp; Reset</button>
-                                </div>
-                                <div class="line" style="position:relative">
-                                    <input placeholder="Search..." type="text" class="inputFilter">
-                                    <button type="button" class="clearButton">×</button>
-                                </div>
-                            </div>
-                            <div class="checkBoxContainer"> -->
-                               <!-- Add .selected if selected -->
-                          <!--      <div class="multiSelectItem vertical">
-                                    <div class="acol">
-                                        <label>
-                                            <input class="checkbox focusable" type="checkbox" checked="checked">
-                                            {currency ISO | exp. USD}
-                                            <span class="currency">({currency-symbol})</span>
-                                        </label>
-                                    </div> -->
-                                    <!-- show mark if selected -->
-                                   <!--  <span class="tickMark">✔</span>
-                                </div> -->
-                                <!-- ... repeat for each -->
-                               
-                         <!--    </div>
-                        </form>
-                    </div> 
-                </span>-->
-            </div>
-                </span>
-            </div>
-                    </fieldset>
-
-					<div class="actions float">
-						<button type="button" id="cancel" class="button blank" ng-click="goBackToPreviousState()"translate>
+						<div class="entry full-width actions_margin_top" ng-show="is_multi_currency_enabled">
+							<label> Hotel Payment Currencies <strong>*</strong> </label>
+							<div id="available-charge-codes" class="boxes col2">
+								<ad-checkbox ng-repeat="currency in payment_currency_list"
+								is-checked="currency.is_selected"
+								label="{{currency.code +' - ' + currency.symbol}}"
+								parent-label-class="room-likes" span-class="checkbox-background"
+								on-click="selectedPaymentCurrency(currency.id)"></ad-checkbox>
+							</div>
+						</div>					
+           		  
+            		</fieldset>
+					<div class="actions">
+						<button type="button" id="cancel" class="button blank" ng-click="goBackToPreviousState()" translate>
 							CANCEL
 						</button>
-						<button type="button" id="save" class="button green" ng-click="saveClick()"translate>
+						<button type="button" id="save" class="button green" ng-click="saveClick()" translate>
 							SAVE_CHANGES
 						</button>
 					</div>

@@ -1,3 +1,53 @@
+/* Container ****/
+#reports {
+
+    /* With left hand side menu **/
+    &.with-menu {
+        #reports-dashboard {
+            left: 240px;
+            height: 100%;
+            .calc-width(100, 240);
+
+            &.with-bottom-form {
+                .calc-height( 100, 70 );
+            }
+        }
+
+        #reports-footer-form {
+            left: 240px;
+            .calc-width(100, 240);
+        }
+    }
+
+    /* With Notice ***/
+    &.with-notice {
+        .notice {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            .calc-width(100, 40);
+            height: 40px;
+            .nowrap();
+        }
+
+        #reports-dashboard {
+            top: 60px;
+            .calc-height(100, 60);
+
+            &.with-bottom-form {
+                .calc-height(100, 130);
+            }
+        }
+
+        &.with-menu {
+            .notice {
+                left: 260px;
+                .calc-width(100, 280);
+            }
+        }
+    }
+}
+
 /* Left Side - Menu ***/
 #reports-menu {
     position: absolute;
@@ -509,8 +559,7 @@
     .size(100%, 250px);
     .box-shadow(1px 1px 0 rgba(0,0,0,.15));
     #border-radius > .rounded();
-    .show();
-    .pull-left;
+    #flexbox > .parent(column nowrap, '', '', '' );
 
     h3 {
         font-size: 18px;
@@ -551,17 +600,203 @@
 
     .select {
         &:after { background-color: @grey1; }
+
+        .text-bold {
+            font-weight: 600;
+        }
     }
 
     .entry { 
         padding: 0 20px;
         .float();
 
+        .button {
+            font-size: 14px;
+            width: 100%;
+
+            &.white {
+                background-color: @grey1;
+            }
+        }
+
+        .add-new-button {
+            position: relative;
+            height: 40px;
+            line-height: 40px;
+            box-shadow: none;
+            text-shadow: none;
+            margin-bottom: 10px;
+
+            select {
+                opacity: 0;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+        }
+
         &:not(:last-child) {
             padding-bottom: 20px;
-            margin-bottom: 15px; 
+            margin-bottom: 20px;
             .box-shadow(0 1px 0 rgba(0,0,0,.1));
-        }                
+        }  
+
+        &.radio-check {
+            .checkbox {
+
+                .icon-form {
+                    background-color: @white;
+                }
+
+                &.checked {
+                    font-weight: 600;
+                }
+
+                &:hover,
+                &:active { 
+                    background-color: darken(@grey1, 5);
+                    .box-shadow(~'1px 1px 0 rgba(0,0,0,.15)');
+                }
+
+                &:not(:first-child) {
+                    #border-radius > .top(0); 
+                }
+
+                &:not(:last-child) {
+                    .box-shadow(~'inset 0 -1px 0 rgba(0,0,0,.1), 1px 1px 0 rgba(0,0,0,.15)');
+                    #border-radius > .bottom(0); 
+
+                    &:hover,
+                    &:active { 
+                        .box-shadow(~'inset 0 -1px 0 rgba(0,0,0,.1), 1px 1px 0 rgba(0,0,0,.15)');
+                    }
+                }
+            }
+        }
+
+        &.dual {
+            #flexbox > .parent(row wrap, '', '', '' );
+
+            label {
+                width: 100%;
+            }
+
+            .select {
+                width: 60%;
+                margin-right: 10px;
+            }
+
+            input {
+                .calc-width(40, 10);
+            }
+        }
+
+        &.export-fields {
+            label {
+                &.checkbox {
+                    &:not(.inline):not(.checked) {
+                        .icon-form {
+                            background-color: @white;
+                        }
+                    }
+
+                    &.checked {
+                        font-weight: 600;
+                    }
+
+                    &:not(:last-child) {
+                        margin-bottom: 10px;
+                    }
+                }
+            }
+
+
+        }
+
+        &.export-fields-order {
+            .export-field {
+                position: relative;
+
+                &:not(:last-child) {
+                    margin-bottom: 10px;
+                }
+
+                input {
+                    padding-left: 50px;
+                }
+
+                .handle {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    cursor: move;
+                    background-image: @calendar2x;
+                    background-size: 16px;
+                    background-repeat: no-repeat;
+                    background-position: 12px 12px;
+                    .square(40px);
+
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        background-color: rgba(0,0,0,.1);
+                        z-index: 1;
+                        .square(40px);
+                    }
+                }
+            }
+        }
+
+        &.with-delete-button {
+            position: relative;
+            padding-right: 50px;
+            padding-left: 0;
+            padding-bottom: 0;
+            box-shadow: none;
+
+            .button-delete {
+                position: absolute;
+                right: 0;
+                top: 24px;
+                background: @grey1;
+                .square( 40px );
+                .box-shadow();
+                
+                .icon-remove-40 {
+                    margin-top: -8px;
+                    margin-left: -8px;
+                    background-size: 80px;
+                    background-position: 1px -2505px;
+                    .square( 15px );
+                }
+            }
+
+            &.search {
+                .clear-query {
+                    right: 50px;
+                }
+            }
+        }             
+    }
+
+    .entry-wrapper {
+        .entry { 
+            &:not(:last-child) {
+                padding-bottom: 10px;
+                margin-bottom: 0;
+                .box-shadow(none);
+            }
+        }
+        
+        &:not(:last-child) {
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+            .box-shadow(0 1px 0 rgba(0,0,0,.1));
+        }
     }
 
     /* Date / Time ***/
@@ -926,7 +1161,6 @@
     /* Scrollable Container ***/
     .scrollable {
         position: relative;
-        .calc-height(100, 60);
 
         .wrapper { 
             padding: 20px 0; 
@@ -940,33 +1174,25 @@
             }
         }
 
-        &.no-buttons {
+        &.no-fields {
             height: 100%;
-        }
 
-        &.buttons-2 {
-            .calc-height(100, 110);
-        }
+            .wrapper {
+                height: 100%;
 
-        &.buttons-3 {
-            .calc-height(100, 160);
-        }
-
-        &.buttons-4 {
-            .calc-height(100, 210);
+                .no-content {
+                    .calc-height( 100, 60 );
+                }
+            }
         }
     }
 
     /* Bottom Actions ***/
     .column-actions {
-        position: absolute;
-        bottom: 0;
-        left: 0;
         text-align: center;
         padding: 10px;
         background: rgba(0,0,0,.1);
-        min-height: 60px;
-        max-height: 210px;
+        margin-top: auto;
         width: 100%;
         .show();
 
@@ -1058,10 +1284,9 @@
     }
 
     &.edit-col {
-        //Remove 20px (right) to match the left padding of 20px
-        .calc-width(100, 20);
         padding: 20px;
         background: rgba(0, 0, 0, 0.1);
+        .calc-width(100, 20); /* Remove 20px (right) to match the left padding of 20px */
         .box-shadow(1px 0 1px rgba(0,0,0,.2));
 
         .edit-actions {
@@ -1219,7 +1444,7 @@
         padding: 20px 0 20px 20px;
         overflow: hidden;
         .square(100%);
-        .float;
+        #flexbox > .parent(row nowrap, '', '', '' );
     }
 
     .no-content { padding: 0 40px; }
@@ -1231,30 +1456,111 @@
         right: 20px;
     }
 
+    &.with-bottom-form {
+        .calc-height( 100, 70 );
+    }
+
+    &[class*='cols-'] {
+        .cols-wrapper {
+            padding-right: 20px;
+        }
+    }
+
     &.cols-2 {
-        .report-col.main-col { .calc-width(100, 260); }
-        .cols-wrapper { padding-right: 20px; }
-        > .wrapper { width: 100%; }
+        .main-col {
+            .calc-width(100, 250);
+        }
+
+        > .wrapper { 
+            width: 100%; 
+        }
     }
 
     &.cols-3 {
-        .report-col.main-col { .calc-width(100, 530); }
-        .cols-wrapper { padding-right: 20px; }
-        > .wrapper { min-width: 1080px; }
+        .main-col {
+            .calc-width(100, 520);
+        }
+
+        > .wrapper { 
+            min-width: 1080px;
+        }
     }
 
     &.cols-4 {
-        .report-col.main-col { .calc-width(100, 800); }
-        .cols-wrapper { padding-right: 20px; }
-        > .wrapper { min-width: 1350px; }
+        .main-col {
+            .calc-width(100, 790);
+        }
+
+        > .wrapper { 
+            min-width: 1350px;
+        }
+    }
+
+    &.cols-5 {
+        .main-col {
+            .calc-width(100, 1060);
+        }
+
+        > .wrapper { 
+            min-width: 1620px;
+        }
+    }
+
+    &.cols-6 {
+        .main-col {
+            .calc-width(100, 1330);
+        }
+
+        > .wrapper { 
+            min-width: 1890px;
+        }
     }
 }
 
-#reports.with-menu {
-    #reports-dashboard {
-        left: 240px;
-        height: 100%;
-        .calc-width(100, 240);
+/* Bottom - Custom Exports Form **/
+#reports-footer-form {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    background: @grey2;
+    padding: 10px;
+    #flexbox > .parent('', '', center, '' );
+
+    .entry {
+        position: relative;
+        margin-right: 10px;
+
+        label {
+            position: absolute;
+            top: 6px;
+            left: 10px;
+            font-size: 12px;
+            line-height: 1;
+            color: @grey3;
+            text-transform: uppercase;
+        }
+
+        input, 
+        select {
+            padding: 12px 10px 0 10px;
+            height: 40px;
+        }
+
+        input {
+            font-weight: 600;
+            width: 240px;
+        }
+
+        select {
+            padding-right: 20px;
+            width: 140px;
+        }
+    }
+
+    .actions {
+        margin-left: auto;
     }
 }
 
@@ -2132,6 +2438,7 @@
                             font-size: 16px;
                             font-weight: 600;
                             padding-left: 10px;
+                            min-width: 120px;
                         }
 
                         &.guest-info {

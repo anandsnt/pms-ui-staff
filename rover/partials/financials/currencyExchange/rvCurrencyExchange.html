@@ -10,11 +10,10 @@
         <div class="filters">
             <input id="start-date" class="datepicker" readonly type="text" ng-model="start_date" ui-date="startDateOptions" value="{{start_date | date: dateFormat }}" />
             <input id="end-date" ng-model="end_date" class="datepicker" readonly type="text" ui-date="endDateOptions" value="{{end_date | date: dateFormat}}" />
-            <!-- <div class="select" > -->
-               <!--  <select class="select-currency" id="currency" ng-change="changeCurrency()" ng-model="selected_rate_currency" ng-options="currency.id as currency.symbol for currency in rateCurrencyList">
-                </select> -->
-                {{selected_rate_currency_symbol}}
-            <!-- </div> -->
+            <div class="select" >
+                <select class="select-currency" id="currency" ng-change="changeCurrency()" ng-model="selected_rate_currency" ng-options="currency.id as currency.symbol for currency in exchangeCurrencyList">
+                </select>
+            </div>
         </div>
 
         <div id="exchange-grid" class="scrollable" ng-iscroll="CURRENCY_SCROLLER"> <!-- iScroll here -->

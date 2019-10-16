@@ -32,8 +32,13 @@
                 
                 <div class="entry" style="margin-bottom:15px;" ng-show='!isStandAlone' ng-hide='isStandAlone'>
                     <ad-dropdown label="{{'CHARGE_GROUP'| translate}}" label-in-drop-down="{{'CHARGE_GROUP'| translate}}" list="prefetchData.charge_groups" selected-Id='prefetchData.selected_charge_group' ng-disabled="prefetchData.selected_charge_code_type === '11'" on-change="onChangeChargeGroup" required = "no" div-class="full-width"></ad-dropdown>
-                </div>  
-                                
+				</div> 
+				<div class="entry full-width" style="margin-bottom:15px;" ng-show='warningMessage.length'>
+					<section ng-if="warningMessage.length" ng-switch="" on="warningMessage.length" class="notice error-message">                  
+					<span class="close-btn" ng-click="clearWarningMessage()"></span>
+					<span class="ng-binding ng-scope">{{warningMessage}}</span></section>
+				</div>
+
 				<ad-dropdown label="{{'CHARGE_CODE_TYPE'| translate}}" label-in-drop-down="{{'CHARGE_CODE_TYPE'| translate}}" list="prefetchData.charge_code_types" selected-Id='prefetchData.selected_charge_code_type' required = "yes" div-class="entry full-width"  on-change="onChangeChargeCodeType"></ad-dropdown>
 
 				<div class="entry full-width" ng-if="isAllowanceType(prefetchData.selected_charge_code_type)">
@@ -72,6 +77,19 @@
                                 {{paymentType.description}}
                             </option>
                         </select>
+					</div>
+				</div>
+				<div class="entry full-width" required="required" ng-hide="(!prefetchData.advance_payment_enabled || isPaymentSelected() || isDepositSelected() || isArManualBalanceSelected() || isArManualCreditSelected() || isFeesSelected() || isTaxSelected() || isTouristTaxSelected())">
+					<label class="ng-binding" ng-hide="label.length==0" for="" >
+						{{'DEPOSIT_CHARGE_CODE'| translate}}
+					</label>
+					<div class="select">
+						<select convert-to-number name="payment-type" ng-model="prefetchData.linked_deposit_charge_code_id">
+							<option value="">Select Deposit charge code</option>
+							<option value="{{depositChargeCode.value}}" ng-selected="depositChargeCode.value == prefetchData.linked_deposit_charge_code_id" ng-repeat="depositChargeCode in prefetchData.deposit_charge_codes">
+							{{depositChargeCode.name}}
+							</option>
+						</select>
 					</div>
 				</div>
 				<div class="entry full-width" required="required" ng-hide="isAllowanceType(prefetchData.selected_charge_code_type)">

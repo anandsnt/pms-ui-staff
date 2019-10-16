@@ -124,6 +124,11 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
                     params: JSON.stringify($stateParams)
                 });
             }
+            else if ($scope.zestStationData.enable_passport_entry) {
+                $state.go('zest_station.zsCheckinPassportDetails', {
+                    params: JSON.stringify($stateParams)
+                });
+            }
             else if ($scope.zestStationData.noCheckInsDebugger === 'true') {
                 if (collectPassportEnabled && !$stateParams.passports_scanned) {
                     $stateParams.email = $stateParams.guest_email;

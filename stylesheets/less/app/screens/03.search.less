@@ -9,8 +9,8 @@
     #find-invoices {
        &.no-results {
             .wrapper,
-            .search-results { height: 100%; }            
-        } 
+            .search-results { height: 100%; }
+        }
     }
 
     .merge-cards {
@@ -252,7 +252,7 @@
                         padding: 10px 10px 10px 40px;
 
                         .primary {
-                            .hide(); 
+                            .hide();
                         }
 
                         &.checked {
@@ -264,7 +264,7 @@
                 &.no-address {
                     label {
                         &:not(.checked) {
-                            
+
                             .icon-form {
                                 top: 0;
                                 bottom: 0;
@@ -274,7 +274,7 @@
                             h2 {
                                 line-height: 30px;
                             }
-                            
+
                         }
                     }
                 }
@@ -362,7 +362,7 @@
                 &.all-cards {
 
                     label {
-                        &.checkbox { 
+                        &.checkbox {
                             position: absolute;
                             top: 10px;
                             left: 5px;
@@ -384,7 +384,7 @@
                         }
 
                         @media @highdpi {
-                            background-image: @arrowRight2x; 
+                            background-image: @arrowRight2x;
                             background-size: 14px 14px;
                         }
                     }
@@ -397,11 +397,11 @@
                         margin-right: 10px;
                         background-size: 100px;
                         .square(30px);
-    
+
                         &.icon-company {
                             background-position: 8px -2926px;
                         }
-    
+
                         &.icon-travel-agent {
                             background-position: 8px -3026px;
                         }
@@ -414,11 +414,11 @@
                         }
                     }
 
-                    .data { 
+                    .data {
                         height: 35px;
                         .calc-width(100, 505 );
                         #flexbox > .parent( column, center, '', '' );
-                        
+
                         &.no-address {
                             height: 30px;
                         }
@@ -436,7 +436,7 @@
                         padding-right: 10px;
                     }
 
-                    .icon-contracts { 
+                    .icon-contracts {
                         background-position: 0px -7653px;
                         line-height: 30px;
                         width: 120px;
@@ -498,7 +498,7 @@
         .search-results {
             li:not(.no-content) {
                 label {
-                    &.checkbox { 
+                    &.checkbox {
                         position: absolute;
                         top: 0px;
                         bottom: 0;
@@ -540,7 +540,7 @@
                             &.checkbox { .show(); }
                         }
                         .data {
-                             .calc-width(100, 280); 
+                             .calc-width(100, 280);
                         }
                         .last-stay {
                             width: 200px;
@@ -554,12 +554,12 @@
             }
         }
     }
-    
+
     .search-results {
         position: relative;
 
         li:not(.no-content) {
-            
+
             &:not(:last-child) {
                 margin-bottom: 10px;
             }
@@ -579,7 +579,7 @@
                 .float;
 
                 &:hover,
-                &:active { 
+                &:active {
                     .box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.15)");
                 }
             }
@@ -624,8 +624,8 @@
                     padding: 0;
                     .square(100%);
 
-                    .icon-form { 
-                        top: 10px; 
+                    .icon-form {
+                        top: 10px;
                         left: 10px;
                         background-color: @grey1;
                     }
@@ -643,7 +643,7 @@
             &.reservation {
                 .data {
                     margin-right: 40px;
-                    .calc-width(40, 110); 
+                    .calc-width(40, 110);
 
                     h2 {
                         line-height: 24px;
@@ -666,23 +666,23 @@
                         padding-left: 20px;
                     }
 
-                    .confirmation { 
+                    .confirmation {
                         color: @textColor;
-                        font-weight: 600; 
+                        font-weight: 600;
                     }
 
                     &.no-guest-info {
-                        .calc-width(68, 110); 
+                        .calc-width(68, 110);
                     }
                 }
 
                 .guest-info {
                     margin-right: 20px;
                     color: @grey3;
-                    .calc-width(28, 20); 
+                    .calc-width(28, 20);
                     .pull-left;
 
-                    span { 
+                    span {
                         font-size: 14px;
                         line-height: 18px;
                         padding-left: 25px;
@@ -697,12 +697,12 @@
                     .size(50px, 32%);
                     .pull-left;
 
-                    .guest-status { 
+                    .guest-status {
                         margin-right: 10px;
-                        .square(30px); 
+                        .square(30px);
                     }
 
-                    time {      
+                    time {
                         span { .show; }
                     }
 
@@ -717,7 +717,7 @@
                             position: absolute;
                             top: 10px;
                             right: 0;
-                            background-position: 0 -4173px; 
+                            background-position: 0 -4173px;
                             .square(30px);
                         }
                     }
@@ -727,7 +727,7 @@
                         padding-top: 10px;
                         .size(50px, 40%);
                         .pull-left;
-                    }     
+                    }
                 }
 
                 /** Reservation Time - Different layout for Daily or Nightly **/
@@ -750,7 +750,7 @@
                         height: 20px;
                         background-size: 80px;
                         float: none;
-    
+
                         &.check-in {
                             background-position: 6px -75px;
                         }
@@ -758,7 +758,7 @@
                             background-position: 6px -102px;
                         }
                     }
-    
+
                     .guest-time {
                         font-size: 14px;
                         width: 100%;
@@ -804,7 +804,7 @@
                         }
                     }
                 }
-                
+
                 /** Reservation Type 'D' or 'N' */
                 .reservation-type {
                     font-size: 18px;
@@ -825,10 +825,10 @@
 
                         &.ready,
                         &.room-green { color: @green; }
-                        
+
                         &.not-ready,
-                        &.room-red { 
-                            color: @red; 
+                        &.room-red {
+                            color: @red;
                             margin-top: -10px;
                         }
 
@@ -879,7 +879,7 @@
                             line-height: 18px;
                             .show;
 
-                            .date { 
+                            .date {
                                 font-size: 15px;
                                 color: @textColor;
                                 margin-left: 5px;
@@ -894,7 +894,7 @@
                         }
 
                         .room {
-                            font-size: 24px; 
+                            font-size: 24px;
                             font-weight: 600;
                             width: 50px;
                         }
@@ -909,7 +909,7 @@
 
                 /* AR Transactions ***/
                 &.transaction {
-                    
+
                     .faux-anchor {
                         padding: 12px 15px;
                         height: 60px;
@@ -920,7 +920,7 @@
                             background-position: -webkit-calc(~'100% - 15px') 50%;
                             background-position: -moz-calc(~'100% - 15px') 50%;
                             background-position: calc(~'100% - 15px') 50%;
-                            
+
                             &.active {
                                 #border-radius > .bottom(0);
                             }
@@ -942,7 +942,7 @@
 
                         h2 {
                             margin-bottom: 0px;
-                            display: block; 
+                            display: block;
                             font-size: 20px;
                             line-height: 20px;
 
@@ -956,7 +956,7 @@
                                 color: @allotmentcard;
                             }
                         }
- 
+
 
                         .confirmation,
                         .invoice {
@@ -965,20 +965,20 @@
                             line-height: 14px;
                             height: 14px;
                             text-transform: uppercase;
-                            color: @grey3; 
+                            color: @grey3;
                             display:inline-block;
                             vertical-align: middle;
                             .nowrap();
 
                             .value {
                                 display: inline-block;
-                                color: @textColor; 
+                                color: @textColor;
                             }
 
                             &:not(:last-child) {
                                 margin-right: 10px;
                             }
-                        }  
+                        }
                     }
 
                     &.with-checkbox {
@@ -994,7 +994,7 @@
                                 top: 0;
                                 left: 0;
 
-                                &:not(.checked){ 
+                                &:not(.checked){
                                     background-color: @grey1;
                                 }
                             }
@@ -1011,7 +1011,7 @@
                         }
                     }
 
-                    &.selected { 
+                    &.selected {
                         .data {
                             .calc-width(100, 420);
 
@@ -1044,7 +1044,7 @@
 
                         .payment-data {
                             #flexbox > .parent(row wrap, '', center, '');
-                            
+
                             .reference {
                                 font-style: normal;
                             }
@@ -1086,7 +1086,7 @@
                                 vertical-align: middle;
                             }
                         }
-                        
+
                         .search-results {
                             background: @white;
                             border-top: 1px solid rgba(0,0,0,0.15);
@@ -1155,15 +1155,15 @@
                                     width: 90px;
                                 }
                             }
- 
+
                             .amount {
                                 width: 220px;
                                 padding-right: 20px;
                                 color: @green;
-                                
+
                                 &.partially-paid {
                                     padding-right: 50px;
-                                    
+
                                     .icons {
                                         left: 20px;
                                     }
@@ -1171,13 +1171,13 @@
                             }
                         }
                     }
-                    
+
                     /* Arrival, Departure */
-                    .guest-date { 
-                        font-size: 14px; 
+                    .guest-date {
+                        font-size: 14px;
                         line-height: 1;
 
-                        .guest-status { 
+                        .guest-status {
                             margin-right: 2px;
                             float: none;
                             .square(20px);
@@ -1188,7 +1188,7 @@
                             display: inline-block;
                             vertical-align: middle;
                         }
- 
+
                         .time { color: @grey3; display: block; }
 
                         &.arrival {
@@ -1243,7 +1243,7 @@
                             .size(17px, 35px);
 
                             img { .size(auto, 100%); }
-                        } 
+                        }
 
                         .number,
                         .date,
@@ -1270,7 +1270,7 @@
                         .number,
                         .type {
                             font-size: 14px;
-                            color: @textColor; 
+                            color: @textColor;
                             font-weight: 600;
                         }
                     }
@@ -1290,13 +1290,22 @@
                         }
                     }
 
+                    /* Amount ***/
                     .amount {
-                        font-size: 24px; 
-                        line-height: 24px;
+                        font-size: 24px;
+                        line-height: 1;
                         font-weight: 300;
                         color: @textColor;
                         text-align: right;
                         width: 170px;
+
+                        .exchange {
+                            font-size: 13px;
+                            font-weight: 400;
+                            color: @grey3;
+                            text-transform: uppercase;
+                            .show();
+                        }
 
                         &.unallocated { color: @green; }
                         &.unpaid { color: @red; }
@@ -1321,11 +1330,11 @@
                             .size(30px, 150px);
                             .hide();
 
-                            input { 
-                                width: 105px; 
-                                background: @grey1; 
-                                font-weight: 600; 
-                                font-size: 18px; 
+                            input {
+                                width: 105px;
+                                background: @grey1;
+                                font-weight: 600;
+                                font-size: 18px;
                                 position: absolute;
                                 top: -5px;
                                 right: 0;
@@ -1342,7 +1351,7 @@
                                 width: 45px;
                             }
                         }
-                    } 
+                    }
 
                     /* Detailed View ***/
                     .grid-items {
@@ -1397,7 +1406,7 @@
                             &.fees,
                             &.credits {
                                 text-align: right;
-                            } 
+                            }
                         }
 
                         td {
@@ -1417,7 +1426,7 @@
                                 &.with-reference {
                                     position: relative;
 
-                                    .icon-invoice-blue { 
+                                    .icon-invoice-blue {
                                         .size(18px, 15px);
                                         position: absolute;
                                         top: 0;
@@ -1466,7 +1475,7 @@
 
                                     .icons {
                                         background-size: 72px;
-                                        
+
                                         &.icon-edit-40 {
                                             background-position: 4px -6716px;
                                         }
@@ -1484,8 +1493,8 @@
                         }
 
                         tr.odd {
-                            td { 
-                                background: @grey1; 
+                            td {
+                                background: @grey1;
 
                                 &.action {
                                     button {
@@ -1513,7 +1522,7 @@
                                     &.with-reference {
                                         position: relative;
 
-                                        .icon-invoice-blue { 
+                                        .icon-invoice-blue {
                                             .size(18px, 15px);
                                             position: absolute;
                                             top: 0;
@@ -1538,7 +1547,7 @@
                             }
                         }
                     }
-                    
+
                     /** Toggle in AR Transactions */
                     .toggle {
                         cursor: pointer;
@@ -1564,18 +1573,18 @@
                         }
                     }
                 }
-                
+
                 /* Group Rooming List ***/
                 &.rooming-list {
                     position: relative;
-                    
+
                     .check {
                         top: 10px;
                         left: 10px;
                     }
 
                     a,
-                    .faux-anchor { 
+                    .faux-anchor {
                         padding: 10px 10px 10px 65px;
                         height: 60px;
                         #flexbox > .parent(row wrap, '', center, '' );
@@ -1615,9 +1624,9 @@
                         .room {
                             font-weight: 600;
 
-                            &.unassigned { 
-                                color: @grey3; 
-                                text-transform: uppercase; 
+                            &.unassigned {
+                                color: @grey3;
+                                text-transform: uppercase;
                             }
                         }
 
@@ -1650,7 +1659,7 @@
                                 height: 30px;
                                 line-height: 1;
                                 #flexbox > .parent( column, center, '', '' );
-                                
+
                             }
 
                             .date {
@@ -1695,7 +1704,7 @@
                     .reservation-status {
                         width: 70px;
                         line-height: 30px;
-                        
+
                         .reservation-type {
                             line-height: inherit;
                             display: block;
@@ -1730,7 +1739,7 @@
                             line-height: 22px;
                             height: 24px;
                             margin: 0;
-    
+
                             &.pending {
                                 color: @grey2;
                             }
@@ -1748,7 +1757,7 @@
                             width: 100%;
                             margin: 0;
                             .nowrap();
-        
+
                             span {
                                 padding: 0;
                                 text-transform: uppercase;
@@ -1763,23 +1772,23 @@
                                 &:not(.highlight) {
                                     margin-right: 5px;
                                 }
-        
+
                                 &.group {
                                     color:  @groupcard;
                                 }
-        
+
                                 &.guest-company {
                                     color:  @ccard;
                                 }
-        
+
                                 &.guest-travelagent {
                                     color:  @tacard;
                                 }
-        
+
                                 &.allotment {
                                     color:  @allotmentcard;
                                 }
-        
+
                                 &.highlight,
                                 &.ui-match { padding-left: 0; }
                             }
@@ -1802,19 +1811,19 @@
                         .icons {
                             color: @grey3;
                         }
-    
+
                         .icon-location {
                            padding-left: 15px;
                            white-space: nowrap;
                            text-overflow: ellipsis;
                            overflow: hidden;
                            background-position: -5px -40px;
-    
+
                            &.no-location {
                              color: @grey2;
                            }
                         }
-    
+
                         .confirmation {
                             color: @textColor;
                             font-weight: 600;
@@ -1832,7 +1841,7 @@
                         position: relative;
                         width: 250px;
                         .pull-right;
-    
+
                         .reservation-type {
                             position: absolute;
                             left: -20px;
@@ -1845,29 +1854,29 @@
                             line-height: 20px;
                             font-weight: 600;
                             color: @grey3;
-    
+
                             &.red {
                                 color: @red;
                             }
                         }
-    
+
                         .guest-status {
                             margin-right: 10px;
                             margin-top: 10px;
                             .square(30px);
                         }
-    
+
                         time {
                             span { .show; }
                         }
-    
+
                         .reservation-status {
                             position: relative;
                             padding-top: 10px;
                             width: 40px;
                             .pull-left;
                         }
-    
+
                         .icon-suite-orange {
                             display: inline-block;
                             vertical-align: middle;
@@ -1876,7 +1885,7 @@
                             background-position: 0 -8546px;
                             .size(10px, 18px);
                         }
-    
+
                         .icon-queued-red {
                             position: absolute;
                             top: 0px;
@@ -1888,7 +1897,7 @@
                             padding-left: 20px;
                             color: @red;
                             text-transform: uppercase;
-    
+
                             .time {
                                 display: block;
                                 float: right;
@@ -1898,7 +1907,7 @@
                                 width: auto;
                             }
                         }
-    
+
                         .room-info {
                             padding-top: 10px;
                             padding-right: 20px; // Because of arrow.
@@ -1906,7 +1915,7 @@
                             .calc-width( 100, 40 );
                             .pull-left;
                         }
-    
+
                         .room-status {
                             font-size: 10px;
                             color: @red;
@@ -1914,22 +1923,22 @@
                             vertical-align: middle;
                             height: 18px;
                             line-height: 18px;
-    
+
                             &.green {
                                 color: @green;
                             }
                         }
-    
+
                         .room-number-info {
                             #flexbox > .parent( row, '', center, '');
-    
+
                             .room-status,
                             .icon-suite-orange {
                                 flex-shrink: 0;
                             }
                         }
                     }
-    
+
                     .room-info {
                         .room-number {
                             font-size: 24px;
@@ -1938,22 +1947,22 @@
                             display: inline-block;
                             width: auto;
                             margin-right: 10px;
-    
+
                             &.ready,
                             &.room-green { color: @green; }
-    
+
                             &.not-ready,
                             &.room-red {
                                 color: @red;
                             }
-    
+
                             &.room-orange { color: @logoPrimary; }
-    
+
                             &.no-number {
                                 color: @grey2;
                             }
                         }
-    
+
                         .room-type {
                             font-size: 14px;
                             text-transform: uppercase;
@@ -1964,8 +1973,8 @@
                 }
 
                 /* Commisions ***/
-                &.commision { 
-                    
+                &.commision {
+
                     .faux-anchor {
                         padding: 0;
                         height: 60px;
@@ -2047,14 +2056,14 @@
                                 text-indent: -9999px;
                             }
 
-                            .switch-icon { 
+                            .switch-icon {
                                 .gradient(@redStart, @redEnd);
                             }
 
                             .data-on {
 
-                                .switch-icon { 
-                                    .gradient(@greenStart, @greenEnd); 
+                                .switch-icon {
+                                    .gradient(@greenStart, @greenEnd);
                                 }
                             }
                         }
@@ -2066,7 +2075,7 @@
                         .button {
                             padding: 0;
                             margin: 15px 20px;
-                            .square(30px); 
+                            .square(30px);
                             background-color: @grey1;
                             .box-shadow(inset 1px 1px 0 rgba(0, 0, 0, 0.15));
 
@@ -2089,7 +2098,7 @@
                         height: 60px;
                         border-left: 1px solid rgba(0,0,0,0.15);
                     }
- 
+
                     .checkbox {
                         padding: 0;
                         margin: 0;
@@ -2115,7 +2124,7 @@
                     background-repeat: no-repeat;
 
                     @media @highdpi {
-                        background-image: @arrowRight2x; 
+                        background-image: @arrowRight2x;
                         background-size: 14px 14px;
                     }
                 }
@@ -2245,7 +2254,7 @@
                         height: 20px;
                         background-size: 80px;
                         float: none;
-    
+
                         &.check-in {
                             background-position: 6px -75px;
                         }
@@ -2253,7 +2262,7 @@
                             background-position: 6px -102px;
                         }
                     }
-    
+
                     .guest-time {
                         font-size: 14px;
                         width: 100%;
@@ -2517,7 +2526,7 @@
                     &.clean-not-inspected { color: @red; }
 
                     &.out { color: @grey3; }
-                    .icons {  
+                    .icons {
                         display:inline-block;
                         vertical-align: middle;
                         margin-left: 10px;
@@ -2531,7 +2540,7 @@
 
                     &.is-suite {
                         .number {
-                           .calc-max-width(100, 35); 
+                           .calc-max-width(100, 35);
                         }
                     }
                 }
@@ -2558,7 +2567,7 @@
                     &.pickup,
                     &.clean-not-bookable  { color: @orange; }
 
-                    &.dirty { color: @red; } 
+                    &.dirty { color: @red; }
                 }
 
                 /* Reservation Status ***/
@@ -2567,7 +2576,7 @@
                     .pull-right();
                     #flexbox > .parent(row wrap, flex-end, '', '');
 
-                    .guest-status { 
+                    .guest-status {
                         margin-right: 2px;
                         background-size: 80px;
                         .square(15px);
@@ -2594,7 +2603,7 @@
                     }
 
                     .current {
-                        margin-right: 5px; 
+                        margin-right: 5px;
                     }
                 }
 
@@ -2672,7 +2681,7 @@
                     width: 30px;
                     background-position: 0px -4178px;
 
-                    &.has-time { 
+                    &.has-time {
                         width: 50px;
                         .time {
                             display: block;
@@ -2730,7 +2739,7 @@
                     margin-right: 20px;
                     .nowrap();
                     .pull-left;
-                    
+
                     .label { font-weight: 400; }
                 }
 
@@ -2807,7 +2816,7 @@
             }
 
             &.card-result {
-                .data { 
+                .data {
                     .calc-width(100, 70);
 
                     .info {
@@ -2842,12 +2851,12 @@
                     .icons {
                         color: @grey3;
                         padding-left: 20px;
-                        margin-right: 20px; 
+                        margin-right: 20px;
                         &:last-child { margin-right: 0; }
                         .calc-max-width(100, 630);
                     }
 
-                    .confirmation { 
+                    .confirmation {
                         max-width: 150px;
                         font-weight: 600;
                         margin-right: 20px;
@@ -2932,7 +2941,7 @@
                                 }
                             }
                         }
-                    } 
+                    }
                 }
             }
 
@@ -2944,7 +2953,7 @@
 
                     h2 {
                         line-height: 40px;
-                        vertical-align: middle; 
+                        vertical-align: middle;
                     }
                 }
 
@@ -2970,7 +2979,7 @@
                 .stayovers { color: @blue; }
                 .departures { color: @red; }
 
-                .shift { 
+                .shift {
                     font-size: 24px;
                     line-height: 40px;
                     width: 180px;
@@ -3045,15 +3054,15 @@
                     .confirmation { color: @textColor; }
                 }
 
-                .arrival, 
+                .arrival,
                 .departure {
                     margin: 10px 20px 0 0;
                     width: 120px;
                     .pull-left;
 
-                    .guest-status { 
+                    .guest-status {
                         margin-right: 5px;
-                        .square(30px); 
+                        .square(30px);
                     }
 
                     time { line-height: 30px; }
@@ -3081,13 +3090,13 @@
                     }
                 }
 
-                .blocked { 
-                    margin: 10px 20px 0 20px; 
+                .blocked {
+                    margin: 10px 20px 0 20px;
 
                     &.tentative { color: @logoPrimary; }
                 }
 
-                .picked { 
+                .picked {
                     &.green { color: @green; }
                     &.red { color: @red; }
                 }
@@ -3129,7 +3138,7 @@
                 }
 
                 .room {
-                    strong { 
+                    strong {
                         font-size: 30px;
                         font-weight: 700;
                         line-height: 45px;
@@ -3158,8 +3167,8 @@
                     width: 120px;
                     .pull-left;
 
-                    .guest-status { 
-                        .square(30px); 
+                    .guest-status {
+                        .square(30px);
                         .pull-right;
                     }
 
@@ -3172,7 +3181,7 @@
                 }
 
                 &:hover,
-                &:active { 
+                &:active {
                     .box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.15)");
                 }
 
@@ -3181,7 +3190,7 @@
 
             /* Account ***/
             &.account {
-                    
+
                 .data {
                     margin-right: 40px;
                     .calc-width(100, 280);
@@ -3241,7 +3250,7 @@
 
             /* Account ***/
             &.account-ar {
-                    
+
                 .data {
                     margin-right: 20px;
                     .calc-width(100, 510);
@@ -3268,7 +3277,7 @@
                         padding-left: 20px;
                     }
 
-                    .confirmation { 
+                    .confirmation {
                         color: @textColor;
                         font-weight: 600;
                     }
@@ -3279,7 +3288,7 @@
                     float: right;
                     height: 50px;
                 }
-                
+
                 .info {
                     text-align: center;
                     color: @grey3;
@@ -3316,13 +3325,13 @@
             /* Commision Item***/
             &.commision-item {
                 position: relative;
-                
+
                 > .faux-anchor {
                     padding: 0px;
 
                     &.expanded {
                         .box-shadow(0px 0px 8px 2px rgba(0,0,0,0.2));
-                    } 
+                    }
                 }
 
                 a {
@@ -3337,10 +3346,10 @@
                         background-image: @arrowRight;
 
                         @media @highdpi {
-                            background-image: @arrowRight2x; 
+                            background-image: @arrowRight2x;
                             background-size: 14px 14px;
                         }
-                    } 
+                    }
                 }
 
                 .expand {
@@ -3355,7 +3364,7 @@
 
                 .check {
                     top: 10px;
-                    left: 45px; 
+                    left: 45px;
                 }
 
                 .account-image {
@@ -3384,7 +3393,7 @@
 
                     h2 {
                         font-size: 18px;
-                        line-height: 1; 
+                        line-height: 1;
                         .nowrap();
                         .pull-left();
                     }
@@ -3394,7 +3403,7 @@
                         line-height: 1;
                         overflow: hidden;
                         margin-right: 20px;
-                        
+
                         &:last-child { margin-right: 0; }
                     }
 
@@ -3404,7 +3413,7 @@
                         background-size: 90px;
                     }
 
-                    .icon-location { 
+                    .icon-location {
                         background-position: 0px -28px
                     }
 
@@ -3419,7 +3428,7 @@
                     }
 
                     .confirmation { color: @textColor; }
-                    
+
                     .icon-hold {
                         position: absolute;
                         right: 0;
@@ -3427,7 +3436,7 @@
                         bottom: 0;
                         margin: auto 0;
                         height: 20px;
-                    } 
+                    }
                 }
 
                 .info {
@@ -3469,7 +3478,7 @@
                     td {
                         font-size: 14px;
                         text-transform: uppercase;
-                        line-height: 1em; 
+                        line-height: 1em;
                         white-space: normal;
                         overflow: visible;
                         padding: 5px;
@@ -3498,7 +3507,7 @@
                         &.amount {
                             width: 130px;
                             text-align: right;
-                        } 
+                        }
                     }
 
                     th {
@@ -3508,13 +3517,13 @@
                         color: @grey3;
 
                         .checkbox {
-                                     
+
                             .icon-form{
                                 &:not(.checked) {
                                     background: @grey1;
                                 }
                             }
-                        } 
+                        }
 
                     }
 
@@ -3523,15 +3532,15 @@
                         word-wrap: break-word;
                         width: 110px;
                         height: 40px;
-                        
+
                         &.name {
                             font-weight: 600;
                             width: auto;
                         }
-                        
+
                         &.owing {
                             font-weight: 600;
-                            color: @textColor; 
+                            color: @textColor;
 
                             &.red {
                                 color: @red;
@@ -3542,26 +3551,26 @@
 
                     tr {
                         &.odd {
-                            td { 
-                                background: @grey1; 
+                            td {
+                                background: @grey1;
                             }
                         }
 
                         &.even {
-                            td { 
-                
+                            td {
+
                                 .checkbox {
-                                     
+
                                     .icon-form{
                                         &:not(.checked) {
                                             background: @grey1;
                                         }
                                     }
-                                } 
+                                }
                             }
                         }
                     }
-                }               
+                }
             }
 
              /* Invoice ***/
@@ -3583,14 +3592,14 @@
                         .transition();
 
                         &:hover,
-                        &:active { 
+                        &:active {
                             .box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.15)");
                         }
                     }
 
                     @i: 0;
                     @increment: 1;
-                    
+
                     .loop (@i) when (@i <= 20) {
                         &:nth-child(@{i}) {
                             z-index: (21 - @i);
@@ -3719,12 +3728,12 @@
                         &.red {
                             color: @red;
                         }
-                    }  
+                    }
 
                     &.has-arrow {
                         cursor: pointer;
                         background-position: 100% 50%;
-                    }             
+                    }
                 }
 
                 .invoice-info {
@@ -3746,21 +3755,21 @@
                         &.text-red {
                             color: @red;
                             font-weight: 600;
-                        } 
+                        }
                     }
 
-                    
+
 
                     .highlight {
                         font-weight: 600;
                     }
-                } 
+                }
 
                 .button {
                     grid-column: 4;
                     margin: 5px 0;
                     .square(40px);
-                }  
+                }
 
                 &:not(:last-child) {
                     margin-bottom: 20px;
@@ -3784,7 +3793,7 @@
 
                         &.has-arrow {
                             background-position: calc(~'100% - 15px') 50%;
-                        
+
                             &:hover,
                             &:active {
                                 .box-shadow();
@@ -3845,7 +3854,7 @@
                                 .size(17px, 35px);
 
                                 img { .size(auto, 100%); }
-                            } 
+                            }
 
                             .number,
                             .date,
@@ -3872,34 +3881,34 @@
                             .number,
                             .type {
                                 font-size: 14px;
-                                color: @textColor; 
+                                color: @textColor;
                                 font-weight: 600;
                             }
                         }
-                        
+
                         table {
                             table-layout: fixed;
                             margin: 0;
                             width: 100%;
                         }
-    
+
                         th,
                         td {
                             font-size: 14px;
                             text-transform: uppercase;
-                            line-height: 1em; 
+                            line-height: 1em;
                             white-space: normal;
                             overflow: visible;
                             padding: 5px;
-    
+
                             &:first-child {
                                 width: 50px;
                                 padding: 0;
-    
+
                                 .checkbox {
                                     margin: 0;
                                     .size(30px, 50px);
-    
+
                                     .icon-form {
                                         top: 5px;
                                         left: 15px;
@@ -3931,53 +3940,53 @@
                                 width: 130px;
                                 text-align: right;
                             }
-                            
+
                             &.credits {
                                 font-weight: 600;
                             }
                         }
-    
+
                         th {
                             font-weight: 600;
                             padding-top: 0;
                             font-size: 14px;
                             color: @black;
                         }
-    
+
                         td {
                             vertical-align: middle;
-                            word-wrap: break-word; 
+                            word-wrap: break-word;
                             height: 30px;
                         }
-    
+
                         tr {
                             &.odd {
-                                td { 
-                                    background: @grey1; 
+                                td {
+                                    background: @grey1;
                                 }
                             }
-    
+
                             &.even {
-                                td { 
+                                td {
                                     .checkbox {
-                                         
+
                                         .icon-form{
                                             &:not(.checked) {
                                                 background: @grey1;
                                             }
                                         }
-                                    } 
+                                    }
                                 }
                             }
                         }
                     }
-                }              
+                }
             }
         }
     }
 }
 
-@media only screen and (min-width: 768px) {  
+@media only screen and (min-width: 768px) {
     .search-results {
         padding: 20px 20px 10px 20px;
 
@@ -3988,13 +3997,13 @@
             .faux-anchor { padding: 15px; }
 
             &.room {
-                .check { 
+                .check {
                     top: 15px;
                     right: 15px;
                 }
 
                 a,
-                .faux-anchor { 
+                .faux-anchor {
                     #flexbox > .parent(row wrap, flex-start, center, '');
                 }
 
@@ -4025,10 +4034,10 @@
                     float: none;
                     #flexbox > .parent('', flex-start, '', '');
 
-                    .guest-status { 
+                    .guest-status {
                         margin-right: 5px;
                         .square(20px);
-                        
+
                         &.check-in { background-position: 6px -75px; }
                         &.check-out { background-position: 6px -101px; }
                         &.late-check-out { background-position: 6px -1901px; }
@@ -4036,7 +4045,7 @@
                     }
 
                     .current,
-                    .next { 
+                    .next {
                         font-size: 16px;
                         line-height: 20px;
                         max-width: 120px;
@@ -4069,7 +4078,7 @@
                 .tasks {
                     clear: both;
                     width: 100%;
-                    
+
                     li {
                         line-height: 30px;
                         border-top: 1px solid rgba(0,0,0,.1);
@@ -4083,7 +4092,7 @@
                         }
                     }
                 }
-                
+
                 /* Occupancy & Queued Room ***/
                 .icon-queued,
                 .guest-image {
@@ -4094,7 +4103,7 @@
 
                 .icon-queued {
                     background-position: 2px -4174px;
-                    &.has-time { 
+                    &.has-time {
                         width: 30px;
                         text-align: center;
                         .time {
@@ -4118,7 +4127,7 @@
                         font-size: 12px;
                         line-height: 18px;
                         .square(18px);
-                    } 
+                    }
                 }
 
                 .show-vacant {

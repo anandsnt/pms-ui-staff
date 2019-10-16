@@ -18,6 +18,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         var SECOND_COLUMN_SCROLL = 'SECOND_COLUMN_SCROLL';
         var THIRD_COLUMN_SCROLL = 'THIRD_COLUMN_SCROLL';
         var FOURTH_COLUMN_SCROLL = 'FOURTH_COLUMN_SCROLL';
+        const SHOW_ERROR_MSG_EVENT = 'SHOW_ERROR_MSG_EVENT';
+
         var setupScrolls = function() {
             var scrollerOptions = {
                 tap: true,
@@ -211,6 +213,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
             var failed = function(errors) {
                 $scope.errorMessage = errors;
+                $scope.$emit(SHOW_ERROR_MSG_EVENT, errors);
                 $scope.$emit( 'hideLoader' );
             };
 
@@ -303,6 +306,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 $scope.selectedSchedule.active = false;
             }
             $scope.updateViewCol($scope.viewColsActions.ONE);
+            $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
 
             if ( updatedIndex >= 0 ) {
                 $scope.$parent.$parent.schedulesList[updatedIndex].frequency_id = params.frequency_id;
@@ -354,6 +358,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
             var failed = function(errors) {
                 $scope.errorMessage = errors;
+                $scope.$emit(SHOW_ERROR_MSG_EVENT, errors);
                 $scope.$emit( 'hideLoader' );
             };
 
@@ -1127,7 +1132,6 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             var reset = true;
 
             $scope.isAddingNew = true;
-            $scope.addingStage = STAGES.SHOW_PARAMETERS;
 
             $scope.selectedSchedule.active = false;
 
@@ -1220,7 +1224,11 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.scheduleReport();
         });
 
-        $scope.$on('$destroy', createNewReportScheduleListener);        
+        $scope.$on('$destroy', createNewReportScheduleListener);   
+        
+        $scope.addListener('RESET_CURRENT_STAGE', () => {
+            $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
+        });
 
         /**
          * Startup

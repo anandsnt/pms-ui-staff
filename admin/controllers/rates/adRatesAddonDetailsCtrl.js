@@ -19,7 +19,7 @@ admin.controller('ADRatesAddonDetailsCtrl', [
 
             // various addon data holders
             $scope.data = [];
-            singleAddon.ref_currency_code_id = hotelSettings.currency.id
+            
             $scope.singleAddon = singleAddon;
             $scope.singleAddon.id = $stateParams.addonId;
             // for adding
@@ -41,7 +41,8 @@ admin.controller('ADRatesAddonDetailsCtrl', [
             $scope.isConnectedToPMS = !$rootScope.isStandAlone;
 
             $scope.allowanceRefundOptions = _.range(0, 110, 10);
-            $scope.rateCurrencyList = hotelSettings.rate_currency_list; 
+
+            $scope.rateCurrencyList = hotelSettings.currency_list_for_rate;
 
             if ($scope.isAddMode) {
                 addNew();

@@ -15,7 +15,11 @@ module.exports = {
 				reportReactViewRoot + "**/*.js",
 				'shared/directives/numbersOnly/numbersOnly.js',
 				roverRoot + 'services/reservation/rvReservationBaseSearchSrv.js',
-
+				'shared/sntUtils/sntFeatureToggles.js',
+				roverRoot + 'directives/customExports/durationFilter/durationFilterDir.js',
+				roverRoot + 'directives/customExports/rangeFilter/rangeFilterDir.js',
+				roverRoot + 'directives/customExports/optionFilter/optionFilterDir.js',
+				'shared/directives/activityIndicator/sntActivityIndicator.js',
                 // Eliminate all spec files
                 '!**/*.spec.js'
 			]

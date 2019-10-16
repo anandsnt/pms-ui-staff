@@ -222,18 +222,18 @@
                     <li ng-repeat="row in reservationData.taxInformation">
                         <span class="label" translate> {{row.description}} </span>
                         <span class="total" ng-if="reservationData.isRoomRateSuppressed">SR</span>
-                        <span class="total" ng-if="!reservationData.isRoomRateSuppressed">{{currencySymbol}}{{ row.amount | number : 2}}</span>
+                        <span class="total" ng-if="!reservationData.isRoomRateSuppressed">{{reservationData.rateCurrency}}{{ row.amount | number : 2}}</span>
                     </li>
 
                     <li>
                         <span class="label" translate>TOTAL_TAX</span>
-                        <label ng-if="!reservationData.isRoomRateSuppressed">{{currencySymbol}}{{reservationData.totalTax
+                        <label ng-if="!reservationData.isRoomRateSuppressed">{{reservationData.rateCurrency}}{{reservationData.totalTax
                             | number : 2}}</label>
                         <label ng-if="reservationData.isRoomRateSuppressed">SR</label>
                     </li>
                     <li>
                         <span class="label" translate>TOTAL_STAY_COST</span>
-                        <label ng-if="!reservationData.isRoomRateSuppressed"><strong>{{currencySymbol}}{{reservationData.totalStayCost
+                        <label ng-if="!reservationData.isRoomRateSuppressed"><strong>{{reservationData.rateCurrency}}{{reservationData.totalStayCost
                             | number : 2}}</strong>
                         </label>
                         <label ng-if="reservationData.isRoomRateSuppressed">SR</label>
@@ -248,7 +248,8 @@
                             hotel-config="hotelPaymentConfig"
                             workstation-id="{{workstation_id}}"
                             reservation-id="{{reservationData.reservationId}}"
-                            rate-currency="{{reservationData.rateCurrency}}"
+                            rate-currency="{{reservationData.rateCurrency}}" 
+                            should-show-payment-drop-down ="{{shouldShowPaymentDropDown}}" 
                             deposit-policy-name="{{depositData.description}}"
                             bill-number="billNumber"
                             payment-types="reservationData.paymentMethods"
@@ -263,6 +264,7 @@
                             first-name="{{guestCardData.contactInfo.first_name}}"
                             last-name="{{guestCardData.contactInfo.last_name}}"
                             only-payment-selection="reservationData.isValidDeposit"
+                            payment-currency-list="paymentCurrencyList" 
                             reservation-ids="reservationData.reservationIds">
                     </snt-payment>
                     <div class="actions" ng-hide="showCCPage">

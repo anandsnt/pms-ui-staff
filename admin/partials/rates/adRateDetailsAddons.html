@@ -31,10 +31,10 @@
 			<th class="header center_align">USE</th>
 		</thead>
 		<tbody>
-			<tr ng-repeat="addon in rateData.addOns" ng-show="addon.shouldShow">
+			<tr ng-repeat="addon in rateData.addOns" ng-show="addon.shouldShow && !is_edit ? addon.ref_currency_code_id === rateData.currency_code_id : true">
 				<td>{{addon.name}}</td>
 				<td>
-					<span ng-show="addon.amount.length>0">{{addon.addon_currency_symbol}} {{addon.amount |number:2}} &nbsp;&nbsp;<span class="rate_perstay">{{addon.post_type.description}}</span>
+					<span ng-show="addon.amount.length>0">{{addon.rate_currency}} {{addon.amount |number:2}} &nbsp;&nbsp;<span class="rate_perstay">{{addon.post_type.description}}</span>
 					</span>
 				</td>
 				<td>

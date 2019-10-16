@@ -53,6 +53,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
             $scope.fromDateOptions.maxDate = $scope.groupConfigData.summary.block_to;
         };
 
+
         /**
          * Our Move date, start date, end date change are defined in parent controller
          * We need to share those actions with room block
@@ -924,7 +925,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                     is_salutation_enabled: false,
                     is_include_rooming_list: false,
                     personal_salutation: '',
-                    locale: data.selected_language_code
+                    locale: data.selected_language_code,
+                    showLanguageField: data.show_language_field
                 };
                 ngDialog.open({
                     template: '/assets/partials/groups/summary/groupSendConfirmationPopup.html',
@@ -1672,6 +1674,28 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                     $scope.groupConfigData.summary.tax_exempt_type_id = $scope.defaultTaxExemptTypeId;
                 }
             }           
+        };
+
+        /*
+         * Hide rates toggle button
+         * When this is turned on, we will not show rates on the stationary pages
+         */
+        $scope.clickedShowRate = function() {
+            $scope.groupConfigData.summary.hide_rates = !$scope.groupConfigData.summary.hide_rates;
+            var params = {
+                'group_id': $scope.groupConfigData.summary.group_id,
+                'hide_rates': $scope.groupConfigData.summary.hide_rates
+            };
+
+            $scope.callAPI(rvGroupConfigurationSrv.toggleHideRate, {
+                successCallBack: function() {
+                    $scope.errorMessage = "";
+                },
+                failureCallBack: function(errorData) {
+                    $scope.errorMessage = errorData;
+                },
+                params: params
+            });
         };
 
         /**

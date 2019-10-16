@@ -46,7 +46,7 @@ body { overflow: hidden; }
 				z-index: 1;
 				.square(100%);
 				.background(@white);
-				
+
 				/* Visible pages ***/
 				&.page-current {
 					visibility: visible;
@@ -76,15 +76,15 @@ body { overflow: hidden; }
 
 							&.set-back { z-index: 20; }
 
-							&.move-from-left { 
-								#move > #from > .left(); 
+							&.move-from-left {
+								#move > #from > .left();
 
 								.nav-bar { .hide; }
 							}
 
-							&.move-from-right { 
-								#move > #from > .right(); 
-								
+							&.move-from-right {
+								#move > #from > .right();
+
 								.nav-bar { .hide; }
 							}
 						}
@@ -109,22 +109,22 @@ body { overflow: hidden; }
 						visibility: hidden;
 						.show;
 						.background(@white);
-						
+
 						&.view-current {
 							z-index: 30;
 							visibility: visible;
 
 							&.set-back { z-index: 20; }
 
-							&.move-from-left { 
-								#move > #from > .left(); 
+							&.move-from-left {
+								#move > #from > .left();
 
 								.nav-bar { .hide; }
 							}
 
-							&.move-from-right { 
-								#move > #from > .right(); 
-								
+							&.move-from-right {
+								#move > #from > .right();
+
 								.nav-bar { .hide; }
 							}
 						}
@@ -206,7 +206,7 @@ body { overflow: hidden; }
 
 	        &#guest-info {
 	            top: 80px;
-	            .calc-height(100, 80); 
+	            .calc-height(100, 80);
 	        }
     	}
     }
@@ -240,7 +240,7 @@ body { overflow: hidden; }
 				top: 120px;
 				.calc-height(100, 180);
 
-				&.no-results, 
+				&.no-results,
 				&.no-pagination { .calc-height(100, 120); }
 			}
 
@@ -278,7 +278,7 @@ body { overflow: hidden; }
 /* App screen transitions 	==============================*/
 
 	@media not print {
-		.container {	
+		.container {
 
 			/* Page transitions - opening guests details ***/
 			&.room-attributes-open {
@@ -293,7 +293,7 @@ body { overflow: hidden; }
 							}
 						}
 					}
-				}			
+				}
 			}
 			&.room-attributes-closing {
 				#room-assignment {
@@ -323,7 +323,7 @@ body { overflow: hidden; }
 	}
 
 /* Nav Bar 					==============================*/
-	.nav-bar { 
+	.nav-bar {
 		position: relative;
 		height: 50px;
 		padding: 5px 80px;
@@ -380,13 +380,13 @@ body { overflow: hidden; }
 			left: 40px;
 			cursor: pointer;
 
-			&.show-mobile { .show; }	
+			&.show-mobile { .show; }
 		}
 	}
 
 	/* 600px+               ==============================*/
     @media only screen and (min-width: 600px) {
-    	.nav-bar { 
+    	.nav-bar {
 			height: 60px;
 
 			.back-button {top: 10px; }
@@ -398,7 +398,7 @@ body { overflow: hidden; }
 				.user {
 					strong {
 						display: inline;
-						font-weight: 600; 
+						font-weight: 600;
 						margin-right: 10px;
 					}
 				}
@@ -421,7 +421,7 @@ body { overflow: hidden; }
 
 	/* 768px+		 		==============================*/
 	@media only screen and (min-width: 768px) {
-		.nav-bar { 
+		.nav-bar {
 			text-align: center;
 			padding: 10px 220px;
 
@@ -441,14 +441,14 @@ body { overflow: hidden; }
 
                 	.switch-icon { .gradient(@greenStart, @greenEnd); }
 
-                    &.data-off { 
+                    &.data-off {
                         left: auto;
                         right: 0;
 
                         .switch-icon { margin: 0 5px 0 0; }
                     }
-                    
-                    &.data-on { 
+
+                    &.data-on {
                         left: auto;
                         right: 100%;
 
@@ -487,11 +487,11 @@ body { overflow: hidden; }
 				}
 
 				.user { font-size: 14px; }
-			}			
+			}
 
-			.logo { 
+			.logo {
 				top: 13px;
-				right: 60px; 
+				right: 60px;
 				.size(35px,158px);
 			}
 		}
@@ -507,11 +507,11 @@ body { overflow: hidden; }
         height: 4px;
         background-color: transparent;
     }
-     
+
     ::-webkit-scrollbar-track {
         background-color: transparent;
     }
-     
+
     ::-webkit-scrollbar-thumb {
         background-color: @logoPrimary;
         #border-radius > .rounded(25px);
@@ -522,14 +522,14 @@ body { overflow: hidden; }
 		overflow: hidden;
 
 		/* Prevent native touch events on Windows */
-		-ms-touch-action: none; 
+		-ms-touch-action: none;
 
 		/* Prevent text resize on orientation change, useful for web-apps */
 		-webkit-text-size-adjust: none;
 		-moz-text-size-adjust: none;
 		-ms-text-size-adjust: none;
 		-o-text-size-adjust: none;
-		text-size-adjust: none; 
+		text-size-adjust: none;
 
 		.wrapper {
 			/* Prevent elements to be highlighted on tap */
@@ -646,11 +646,11 @@ body { overflow: hidden; }
 
 	            .info-heading {
 	                color: @white;
-	            } 
-	            
+	            }
+
 	            .info-subheading {
 	                color: rgba(0,0,0,.5);
-	            }                       
+	            }
 	        }
 
 	        .cards {
@@ -668,7 +668,7 @@ body { overflow: hidden; }
 
 	                .info-subheading {
 	                    color: @white;
-	                }  
+	                }
 	            }
 
 	            .cards-content {
@@ -771,7 +771,7 @@ body { overflow: hidden; }
 	        }
 
 	        .content {
-	            &.reservations-inner, 
+	            &.reservations-inner,
 	            &.stay-card-inner {
 	                top: 0;
 	                height: 100%;
@@ -781,7 +781,7 @@ body { overflow: hidden; }
 	        .registration-content {
 	            margin-top: 60px;
 	            .calc-height(100, 60);
-    
+
 	            &.with-complete-registration {
 	                .calc-height(100, 140);
 	            }
@@ -795,17 +795,17 @@ body { overflow: hidden; }
 
 /* Search bar				==============================*/
 	@media not print {
-		.search-form { 
+		.search-form {
 			text-align: center;
 			height: 60px;
 			padding: 10px;
 			background: rgba(0,0,0,.1);
 			overflow: hidden;
 			.float;
-			.hide; 
+			.hide;
 
 			.entry {
-				position: relative; 
+				position: relative;
 				margin-bottom: 10px;
 				.size(40px, 100%);
 				.pull-left;
@@ -842,17 +842,17 @@ body { overflow: hidden; }
 					#border-radius > .rounded(15px);
 				}
 
-				&.visible { 
+				&.visible {
 					visibility: visible;
 
-					.icons {	
-						.opacity(100); 
-						#fade > .in(); 
+					.icons {
+						.opacity(100);
+						#fade > .in();
 					}
 				}
 
 				&:hover,
-				&.active { 
+				&.active {
 					.icons { background-color: @logoPrimary; }
 				}
 			}
@@ -862,7 +862,7 @@ body { overflow: hidden; }
 				font-size: 21px;
 				font-weight: 700;
 				padding-left: 30px;
-				color: @logoPrimary; 
+				color: @logoPrimary;
 				z-index: 9;
 				.box-shadow(inset 1px 1px 0 rgba(0,0,0,.15));
 				#border-radius > .rounded(25px);
@@ -885,11 +885,11 @@ body { overflow: hidden; }
 	            }
 			}
 
-			.add-new-button { 
+			.add-new-button {
 				line-height: 40px;
 				.size(40px, 100px);
 				.pull-left;
-				.hide; 
+				.hide;
 			}
 
 			/* Dropdowns ***/
@@ -913,7 +913,7 @@ body { overflow: hidden; }
 						min-height: 40px;
 						line-height: 1em;
 					}
-					
+
 				}
 
 				.select,
@@ -1009,7 +1009,7 @@ body { overflow: hidden; }
 	                            font-size:14px;
 	                        }
 	                    }
-	                     
+
 	                    .input {
 	                        width: 110px;
 	                        max-width: 110px;
@@ -1055,7 +1055,7 @@ body { overflow: hidden; }
                     .show;
 
                     .data-off,
-                    .data-on { 
+                    .data-on {
                         font-size: 14px;
                         line-height: 30px;
                         text-transform: uppercase;
@@ -1069,19 +1069,19 @@ body { overflow: hidden; }
                             background: @white;
                         }
 
-                        .value { 
+                        .value {
                             color: rgba(0,0,0,.3);
-                            font-weight: 600; 
+                            font-weight: 600;
                         }
 
-                        &.data-off { 
+                        &.data-off {
                             left: auto;
                             right: 0;
 
                             .switch-icon { margin: 0 5px 0 0; }
                         }
-                        
-                        &.data-on { 
+
+                        &.data-on {
                             left: auto;
                             right: 100%;
 
@@ -1097,8 +1097,8 @@ body { overflow: hidden; }
 
 				.entry { margin: 0 0 0 10px; }
 
-				.search { 
-					.calc-width(100, 200); 
+				.search {
+					.calc-width(100, 200);
 
 					&.rooms-checked { .calc-width(100, 250); }
 				}
@@ -1119,8 +1119,8 @@ body { overflow: hidden; }
 	                    .pull-left;
 	                    .square(40px);
 
-	                    .icon-form { 
-	                        top: 10px; 
+	                    .icon-form {
+	                        top: 10px;
 	                        left: 10px;
 	                        background-color: @white;
 	                    }
@@ -1161,23 +1161,23 @@ body { overflow: hidden; }
 						font-size: 16px;
 						.show;
 
-						&.blank { 
+						&.blank {
 							text-align: left;
-							.pull-left; 
+							.pull-left;
 						}
-						
-						&.green { 
+
+						&.green {
 							padding: 0 20px;
-							.pull-right; 
+							.pull-right;
 						}
 					}
 				}
 
 				&.showing-filters {
 					> .button,
-					> .entry { 
+					> .entry {
 						.hide;
-						#fade > .out(); 
+						#fade > .out();
 					}
 
 					.filter-actions {
@@ -1202,8 +1202,8 @@ body { overflow: hidden; }
 					.square(40px);
 		 			.pull-left;
 
-		 			&.datepicker { 
-		 				background-position: 10px 12px; 
+		 			&.datepicker {
+		 				background-position: 10px 12px;
 
 		 				&:hover,
 		 				&:active { background-position: 10px -38px;  }
@@ -1218,9 +1218,9 @@ body { overflow: hidden; }
 				.entry {
 					&.dates { width: 60px; }
 
-					&.search { 
+					&.search {
                     margin: 0;
-	                    .calc-width(100, 170); 
+	                    .calc-width(100, 170);
 	                }
 
 	                &.actions { width: 50px; }
@@ -1234,7 +1234,7 @@ body { overflow: hidden; }
 					.float;
 					.show;
 
-					li { 
+					li {
 		                cursor: pointer;
 		                margin: 0 0 0 1px;
 		                font-size: 14px;
@@ -1249,8 +1249,8 @@ body { overflow: hidden; }
 		                #border-radius > .rounded(0);
 		                .pull-left;
 
-		                &:hover { 
-		                    color: @logoPrimary; 
+		                &:hover {
+		                    color: @logoPrimary;
 		                    .box-shadow();
 		                }
 
@@ -1262,9 +1262,9 @@ body { overflow: hidden; }
 		                    .gradient (@logoGradientEnd, @logoGradientStart);
 		                }
 
-		                &:first-child { 
+		                &:first-child {
 		                	.calc-width(13, 1);
-		                	#border-radius > .left(); 
+		                	#border-radius > .left();
 		                }
 
 		                &:last-child { #border-radius > .right(); }
@@ -1278,11 +1278,11 @@ body { overflow: hidden; }
 
 			/* Neighbors ***/
 	        &.neighbors-search {
-	            .search { 
-	                .calc-width(100, 50); 
+	            .search {
+	                .calc-width(100, 50);
 	            }
 	        }
-	         
+
 	        /* Invoices ***/
 	        &.invoice-search {
 
@@ -1336,8 +1336,8 @@ body { overflow: hidden; }
 	                }
 	            }
 
-	            .search { 
-	                .calc-width(100, 655); 
+	            .search {
+	                .calc-width(100, 655);
 	            }
 
 	            .dates {
@@ -1373,8 +1373,8 @@ body { overflow: hidden; }
 	                            top: 2px;
 	                            background-color: @white;
 
-	                            .icons { 
-	                                top: 10.5px; 
+	                            .icons {
+	                                top: 10.5px;
 	                            }
 	                        }
 	                    }
@@ -1392,18 +1392,24 @@ body { overflow: hidden; }
 	            }
 
 	            &.ar-invoice-search {
-	                .search { 
-	                    .calc-width(100, 430); 
+	                .search {
+	                    .calc-width(100, 430);
 	                }
 	                .options { .hide(); }
 	            }
 	        }
-			
+
 			/* Reports ***/
 	        &.reports {
 	            &.enable-adding {
 	                .search {
 	                    .calc-width( 100, 200 );
+	                }
+
+	                &.my-exports {
+	                    .search {
+	                        .calc-width( 100, 135 );
+	                    }
 	                }
 	            }
 
@@ -1461,7 +1467,7 @@ body { overflow: hidden; }
 		.search-form {
 			.entry {
 				padding-left: 10px;
-				margin: 0 0 0 10px; 
+				margin: 0 0 0 10px;
 				.box-shadow(inset 1px 0 0 rgba(0,0,0,.1));
 
 				&:first-child {
@@ -1472,38 +1478,38 @@ body { overflow: hidden; }
 			}
 
 			.icon-search { left: 20px; }
-			
-			.query { 
+
+			.query {
 				font-size: 24px;
-				padding-left: 40px; 
+				padding-left: 40px;
 			}
 
 			/* Room search ***/
 			&.room-search {
 				overflow: hidden;
 
-				.refresh { 
+				.refresh {
 					margin-right: 10px;
-					.show; 
+					.show;
 				}
 
-				.search { 
+				.search {
 					padding-right: 10px;
 					.box-shadow(~"inset 1px 0 0 rgba(0,0,0,.1), 1px 0 0 rgba(0,0,0,.1)");
-					.calc-width(100, 390); 
+					.calc-width(100, 390);
 
 					&.rooms-checked { .calc-width(100, 450); }
 				}
 
-				.switch { 
-					width: 140px; 
+				.switch {
+					width: 140px;
 					margin: 0;
 					padding-right: 10px;
 					.box-shadow(1px 0 0 rgba(0,0,0,.1));
 				}
 
-				.check { 
-					right: 10px; 
+				.check {
+					right: 10px;
 					.box-shadow(inset 1px 0 0 rgba(0,0,0,.1));
 				}
 
@@ -1525,10 +1531,10 @@ body { overflow: hidden; }
 			/* Enable adding ***/
 			&.enable-adding {
 				.entry { .calc-width(100, 120); }
-				
-				.add-new-button { 
+
+				.add-new-button {
 					margin-left: 10px;
-					.show; 
+					.show;
 				}
 			}
 
@@ -1578,7 +1584,7 @@ body { overflow: hidden; }
 			&.has-dates {
 				.entry {
 					&.search { .calc-width(100, 410); }
-					
+
 					&.dates {
 						width: 400px;
 						.float;
@@ -1647,7 +1653,7 @@ body { overflow: hidden; }
 
 		            &.dates {
 		                width: 290px;
-		                .entry-data { 
+		                .entry-data {
 		                    width: 135px;
 		                    input {
 		                    	font-size:14px;
@@ -1683,9 +1689,9 @@ body { overflow: hidden; }
 		        &.enable-adding {
 		            .entry {
 		                &.search { .calc-width(100, 620); }
-		                
+
 		                &.dates {
-		                    
+
 		                    padding-right: 10px;
 		                    .box-shadow(~'inset 1px 0 0 rgba(0,0,0,.1), 1px 0 0 rgba(0,0,0,.1)');
 
@@ -1700,8 +1706,8 @@ body { overflow: hidden; }
 	                        width: 190px;
 	                    }
 
-	                    &.search { 
-	                        .calc-width(100, 590); 
+	                    &.search {
+	                        .calc-width(100, 590);
 	                    }
 
 	                    &.open-balance {
@@ -1755,45 +1761,45 @@ body { overflow: hidden; }
 	                        #border-radius > .rounded();
 	                        .size(40px, 100%);
 	                        .show;
-	        
+
 	                        .data-off,
-	                        .data-on { 
+	                        .data-on {
 	                            font-size: 14px;
 	                            line-height: 30px;
 	                            text-transform: uppercase;
 	                            height: 30px;
 	                            overflow: hidden;
-	        
+
 	                            .switch-icon {
 	                                color: @grey3;
 	                                text-shadow: none;
 	                                .clickable;
 	                                background: @white;
 	                            }
-	        
-	                            .value { 
+
+	                            .value {
 	                                color: rgba(0,0,0,.3);
-	                                font-weight: 600; 
+	                                font-weight: 600;
 	                            }
-	        
-	                            &.data-off { 
+
+	                            &.data-off {
 	                                left: auto;
 	                                right: 0;
-	        
-	                                .switch-icon { 
-	                                    margin: 0 5px 0 0; 
+
+	                                .switch-icon {
+	                                    margin: 0 5px 0 0;
 	                                    .calc-width( 100, 45 );
 	                                }
 	                                .value { width: 40px; }
 	                            }
-	        
-	                            &.data-on { 
+
+	                            &.data-on {
 	                                left: auto;
 	                                right: 100%;
-	        
-	                                .switch-icon { 
+
+	                                .switch-icon {
 	                                    width: 40px;
-	                                    margin: 0 0 0 5px; 
+	                                    margin: 0 0 0 5px;
 	                                }
 
 	                                .value {
@@ -1801,7 +1807,7 @@ body { overflow: hidden; }
 	                                }
 	                            }
 	                        }
-	        
+
 	                        &.on {
 	                            .data-off { left: auto; right: -100%; }
 	                            .data-on { left: auto; right: 0; }
@@ -1811,8 +1817,8 @@ body { overflow: hidden; }
 
 	                &.enable-adding {
 	                    .entry {
-	                        &.search { 
-	                            .calc-width(100, 700); 
+	                        &.search {
+	                            .calc-width(100, 700);
 	                        }
 	                    }
 	                }
@@ -1821,14 +1827,14 @@ body { overflow: hidden; }
 
 			/* Room search ***/
 			&.room-search {
-				
+
 				.switch-button {
                     .data-off,
                     .data-on {  font-size: 16px; }
                 }
 
-				.entry.search { 
-					.calc-width(100, 380); 
+				.entry.search {
+					.calc-width(100, 380);
 
 					&.rooms-checked { .calc-width(100, 440); }
 				}
@@ -1842,7 +1848,7 @@ body { overflow: hidden; }
 				.print {
 					&.rooms-checked { right: 120px; }
 				}
-			}	
+			}
 
 			/* Commissions ***/
 	        &.commissions {
@@ -2005,8 +2011,8 @@ body { overflow: hidden; }
 	                            position: absolute;
 	                            left: 50%;
 	                            bottom: -10px;
-	                            width: 0; 
-	                            height: 0; 
+	                            width: 0;
+	                            height: 0;
 	                            margin-left: -10px;
 	                            border-top: 10px solid @logoGradientEnd;
 	                            border-left: 10px solid transparent;
@@ -2015,12 +2021,12 @@ body { overflow: hidden; }
 	                        }
 	                    }
 	                }
-	            }       
+	            }
 	        }
 
 	        /* CO/TA Card Search ***/
 	        &.card-search {
-	            
+
 	            .entry {
 	                &.switch {
 	                    width: 140px;
@@ -2029,7 +2035,7 @@ body { overflow: hidden; }
 	                        width: 70px;
 	                        padding-left: 0;
 	                        .box-shadow(none);
-	                        
+
 	                        .switch-button {
 
 	                            .value {
@@ -2095,9 +2101,9 @@ body { overflow: hidden; }
 	                                }
 	                            }
 	                        }
-	                        
+
 	                        .data-off,
-	                        .data-on { 
+	                        .data-on {
 	                            font-size: 14px;
 	                            line-height: 30px;
 	                            height: 30px;
@@ -2109,19 +2115,19 @@ body { overflow: hidden; }
 	                                background: @white;
 	                            }
 
-	                            .value { 
+	                            .value {
 	                                color: @grey3;
-	                                font-weight: 600; 
+	                                font-weight: 600;
 	                            }
 
-	                            &.data-off { 
+	                            &.data-off {
 	                                left: auto;
 	                                right: 0;
 
 	                                .switch-icon { margin: 0 5px 0 0; }
 	                            }
-	                            
-	                            &.data-on { 
+
+	                            &.data-on {
 	                                left: auto;
 	                                right: 100%;
 
@@ -2142,7 +2148,7 @@ body { overflow: hidden; }
 
 	                &.options {
 	                    width: 180px;
-	                    
+
 	                    .select,
 	                    .input {
 	                        &.with-label {
@@ -2210,9 +2216,9 @@ body { overflow: hidden; }
 
 	            /* Guest Search (used with card-search) **/
 	            &.guest-search {
-	                
+
 	                .entry {
-	                    
+
 	                    &.search {
 	                        .calc-width( 100, 150 );
 	                    }
@@ -2281,7 +2287,7 @@ body { overflow: hidden; }
 
 	            &.number {
 	                .box-shadow(inset 1px 0 1px rgba(0,0,0,.15));
-	                
+
 	                //Code to avoid cleanup issue in pagination
 			        &.ng-animate.ng-leave.ng-leave-active {
 			            display: none;
@@ -2293,8 +2299,8 @@ body { overflow: hidden; }
 	            }
 
 	            &:active {
-	                .box-shadow(inset 0 0 2px rgba(0,0,0,.15)); 
-	            }            
+	                .box-shadow(inset 0 0 2px rgba(0,0,0,.15));
+	            }
 
 	            &.active {
 	                cursor: default;
@@ -2319,7 +2325,7 @@ body { overflow: hidden; }
 	                    .square(0px);
 	                }
 
-	                &:active { 
+	                &:active {
 	                    background-color: rgba(0,0,0,.2);
 	                    .box-shadow(inset 0 0 2px rgba(0,0,0,.15)); }
 	                }
@@ -2361,9 +2367,9 @@ body { overflow: hidden; }
 			text-align: right;
 			.float;
 
-			p { 
+			p {
 				line-height: 40px;
-				margin: 0 20px 0 0; 
+				margin: 0 20px 0 0;
 				.pull-right;
 			}
 
@@ -2415,7 +2421,7 @@ body { overflow: hidden; }
 	        .show();
 	    }
 	}
-	
+
 /* Grey label				==============================*/
 	.label {
 		text-transform: uppercase;
@@ -2463,7 +2469,7 @@ body { overflow: hidden; }
 
 		&.accompany {
 			img,
-			.icons { 
+			.icons {
 				position: absolute;
 				top: 0;
 				left: 0;
@@ -2484,7 +2490,7 @@ body { overflow: hidden; }
         	.square(50px);
 
         	&.accompany {
-				img { 
+				img {
 					width: 40px;
 					&:nth-child(2) { width: 35px; }
 				}
@@ -2551,7 +2557,7 @@ body { overflow: hidden; }
 					margin: 0 0 0 10px;
 
 					&.code {
-						font-size: 21px; 
+						font-size: 21px;
 						font-weight: 300;
 						margin: 0;
 					}
@@ -2565,7 +2571,7 @@ body { overflow: hidden; }
 				}
 			}
 
-			&.primary { 
+			&.primary {
 				.value { font-weight: 600; }
 			}
 		}
@@ -2577,20 +2583,20 @@ body { overflow: hidden; }
 				.pull-left;
 
 				img { .size(auto, 100%); }
-			}		
+			}
 		}
 
-		&.item-loyalty { 
+		&.item-loyalty {
 			span {
 				line-height: 50px;
 
-				&.value.code { 
-					font-size: 24px; 
-					margin-right: 5px; 
+				&.value.code {
+					font-size: 24px;
+					margin-right: 5px;
 				}
 
 				&.number,
-				&.value.number { margin: 0; }	
+				&.value.number { margin: 0; }
 			}
 		}
 	}
@@ -2621,7 +2627,7 @@ body { overflow: hidden; }
 				background: @white;
 				.translate3d(-50%, -50%, 0);
 				.box-shadow(0 0 2px rgba(0,0,0,.3));
-				#border-radius > .rounded();	
+				#border-radius > .rounded();
 
 				strong {
 					font-size: 24px;
@@ -2639,8 +2645,8 @@ body { overflow: hidden; }
 				}
 			}
 
-			&.hidden { 
-				#fade > .out(); 
+			&.hidden {
+				#fade > .out();
 			}
 		}
 
@@ -2650,7 +2656,7 @@ body { overflow: hidden; }
             display: table;
             .float;
 
-            li { 
+            li {
                 display: inline-block;
                 cursor: pointer;
                 margin: 0 0 0 1px;
@@ -2665,8 +2671,8 @@ body { overflow: hidden; }
                 .clickable;
                 #border-radius > .rounded(0);
 
-                &:hover { 
-                    color: @logoPrimary; 
+                &:hover {
+                    color: @logoPrimary;
                     .box-shadow();
                 }
 
@@ -2692,7 +2698,7 @@ body { overflow: hidden; }
             .clickable;
 
             .card-logo { margin-right: 20px; }
-            
+
             > .number,
             > .date { .calc-width(50, 60); }
 
@@ -2701,7 +2707,7 @@ body { overflow: hidden; }
             	top: 10px;
             	right: 0;
 
-            	&.icon-ok-10 { 
+            	&.icon-ok-10 {
             		top: 20px;
             		right: 40px;
             	}
@@ -2709,7 +2715,7 @@ body { overflow: hidden; }
 
             &.disabled {
 	            opacity: 0.75
-	        } 
+	        }
         }
 
 		/* Data ***/
@@ -2754,14 +2760,14 @@ body { overflow: hidden; }
                         font-weight: 600;
                     }
 
-                    &.data-off { 
+                    &.data-off {
                         left: auto;
                         right: 0;
 
                         .switch-icon { margin: 0 5px 0 0; }
                     }
-                    
-                    &.data-on { 
+
+                    &.data-on {
                         left: auto;
                         right: 100%;
 
@@ -2785,7 +2791,7 @@ body { overflow: hidden; }
             	.inline {
             		font-size: 14px;
             		text-transform: uppercase;
-            	}            	
+            	}
 
             	.only-number {
 					font-size: 30px;
@@ -2824,7 +2830,7 @@ body { overflow: hidden; }
 				}
 
 				&.active {
-					padding-bottom: 11px;	            	
+					padding-bottom: 11px;
 	            	border-bottom: 1px solid rgba(0,0,0,.1);
 
 	            	.only-number { .show; }
@@ -2833,7 +2839,7 @@ body { overflow: hidden; }
 
             &.margin {
             	margin-right: 20px;
-            	.calc-width(50, 20); 
+            	.calc-width(50, 20);
             }
 
             &.full-width {
@@ -2870,8 +2876,8 @@ body { overflow: hidden; }
 	        &.card-action {
 	            width: 10%;
 
-	            .button { 
-	            	font-size: 14px !important; 
+	            .button {
+	            	font-size: 14px !important;
             		line-height: 38px !important;
             		padding: 0 !important;
             		margin-top: 24px;
@@ -2881,9 +2887,10 @@ body { overflow: hidden; }
 
             /* Amount + reference ***/
             &.amount {
+                width: 100%;
         		.float;
 
-        		input { 
+        		input {
                     .pull-left;
 
                     &.amount {
@@ -2896,13 +2903,19 @@ body { overflow: hidden; }
                     &.fee { width: 20% !important; }
                 }
 
+                .select {
+                    margin-left: 10px;
+                    width: 80px;
+                    .pull-left;
+                }
+
                 .delimiter,
                 .total {
                 	line-height: 39px;
                 	text-transform: uppercase;
                 }
 
-                .delimiter { 
+                .delimiter {
                 	font-size: 14px;
                 	text-align: center;
                 	width: 30px;
@@ -2953,16 +2966,16 @@ body { overflow: hidden; }
                 margin-bottom: 10px;
             }
 
-            .actions { 
+            .actions {
             	padding-top: 0;
                 border-top: 0;
 
-                .button { 
+                .button {
                     &.blue { margin-right: 20px; }
 
-                    &.blank { 
+                    &.blank {
                         padding: 15px;
-                        
+
                         &:nth-child(3) {
                             margin: 20px auto 0;
                             .show;
@@ -2977,7 +2990,7 @@ body { overflow: hidden; }
         	margin-top: 20px;
             padding-top: 20px;
             border-top: 1px solid rgba(0,0,0,.1);
-            
+
             clear: both;
 
         	.notice {
@@ -3001,7 +3014,7 @@ body { overflow: hidden; }
 						.pull-right;
 	        		}
 
-	        		&:last-child { 
+	        		&:last-child {
 	        			margin-bottom: 0;
 	        			padding-bottom: 0;
 	        			border-bottom: 0;
@@ -3009,7 +3022,7 @@ body { overflow: hidden; }
 	        	}
 	        }
         }
-        
+
         /* Actions ***/
 		.actions {
 			text-align: center;
@@ -3019,14 +3032,14 @@ body { overflow: hidden; }
 			clear: both;
 			.show;
 
-			.button { 
+			.button {
                 font-size: 18px;
                 line-height: 24px;
-                padding: 15px 25px;
+                padding: 15px 15px;
             }
 		}
 	}
-	
+
 /* No content				==============================*/
 	.no-content {
 		display: table;
@@ -3039,7 +3052,7 @@ body { overflow: hidden; }
 			display: table-cell;
 			vertical-align: middle;
 
-			.h1 { 
+			.h1 {
 				font-size: 36px;
 				line-height: 36px;
 				font-weight: 700;
@@ -3053,7 +3066,7 @@ body { overflow: hidden; }
 
 				strong { font-weight: 600; }
 
-				a { 
+				a {
 					color: @green;
 					font-weight: 600;
 
@@ -3067,13 +3080,13 @@ body { overflow: hidden; }
 		&#no-results {
 			visibility: visible;
 			.transition;
-			.opacity(100); 
+			.opacity(100);
 			#fade > .in();
 
-			&.hidden { 
+			&.hidden {
 				visibility: hidden;
 				.opacity(0);
-				#fade > .out();  
+				#fade > .out();
 			}
 		}
 	}
@@ -3088,7 +3101,7 @@ body { overflow: hidden; }
 			z-index: 90;
 			.float;
 			.box-shadow(0 1px 1px rgba(0,0,0,.1));
-			.show;		
+			.show;
 
 			.data { .pull-right; }
 			.actions { .pull-left; }
@@ -3143,7 +3156,7 @@ body { overflow: hidden; }
 				font-size: 14px;
 				line-height: 30px;
 				height: 30px;
-				padding: 0 10px; 
+				padding: 0 10px;
 			}
 
 			.button.icon-expand {
@@ -3210,7 +3223,7 @@ body { overflow: hidden; }
 				.box-shadow(1px 0 1px rgba(0,0,0,.2));
 
 				> .wrapper { padding: 0; }
-				> .iScrollVerticalScrollbar { 
+				> .iScrollVerticalScrollbar {
 					right: 7px;
 
 					.iScrollIndicator { background: rgba(0,0,0,.05); }
@@ -3274,9 +3287,9 @@ body { overflow: hidden; }
 					> .wrapper { padding-bottom: 80px; }
 					> .iScrollVerticalScrollbar {
 						bottom: 100px;
-						z-index: 4; 
+						z-index: 4;
 					}
-					
+
 					.actions {
 						position: absolute;
 						bottom: 0;
@@ -3317,7 +3330,7 @@ body { overflow: hidden; }
 				}
 
 				&:hover,
-				&:active { 
+				&:active {
 					.box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
 				}
 			}
@@ -3380,7 +3393,7 @@ body { overflow: hidden; }
                 .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
 
                 time,
-                p { 
+                p {
                     color: @grey3;
                     text-decoration: line-through;
                 }
@@ -3388,7 +3401,7 @@ body { overflow: hidden; }
 		}
 	}
 
-        
+
         #actions-search&.action_filters_visible{
                 height:107px !important;
         }
@@ -3426,7 +3439,7 @@ body { overflow: hidden; }
             button {//post and cancel buttons from new action
                 width: 100% !important;
             }
-            
+
         }
         .actions-manager > .content-right > .summary > div > div > .summary > .add-content {
             .h2{
@@ -3466,21 +3479,21 @@ body { overflow: hidden; }
 		    	.scrollable { position: relative; }
 		    }
 
-		    .content-left { 
+		    .content-left {
 		    	left: 0;
 		    	width: 40%;
 
-		        .scrollable { 
+		        .scrollable {
 		        	z-index: 90;
 		        	.calc-height(100, 60);
 
-		        	.iScrollVerticalScrollbar { 
+		        	.iScrollVerticalScrollbar {
 		            	left: 5px;
 		            	right: auto;
 
 		            	.iScrollIndicator { background: rgba(0,0,0,.1); }
 		            }
-	        
+
 			        li {
 			        	position: relative;
 		                padding: 10px 40px 10px 60px;
@@ -3510,7 +3523,7 @@ body { overflow: hidden; }
 		                	&.icon-completed { color: @green; }
 		                	&.icon-specials { color: @blue; }
 		                }
-		                
+
 		                .data {
 		                	h3 {
 		                		font-size: 18px;
@@ -3523,7 +3536,7 @@ body { overflow: hidden; }
 							   	-webkit-line-clamp: 2;
 							   	-webkit-box-orient: vertical;
 
-		                		.count { 
+		                		.count {
 		                			margin-left: 5px;
 		                			color: @grey3;
 		                		}
@@ -3585,7 +3598,7 @@ body { overflow: hidden; }
 		                		background: @white;
 		                		text-shadow: none;
 		                	}
-		                }	                
+		                }
 		            }
 
 		            &.filter-open { .calc-height(100, 110); }
@@ -3617,16 +3630,16 @@ body { overflow: hidden; }
 					}
 	            }
 
-	            .no-content { 
+	            .no-content {
 	                .calc-height(100, 60);
 	            }
 		    }
 
-		    .content-right { 
+		    .content-right {
 		    	right: 0;
 		    	width: 60%;
 		    	.gradient-horizontal(@softRedStart, @softRedEnd);
-		    	
+
 		    	.sender-details {
 		    		position: relative;
 	                padding: 20px;
@@ -3658,9 +3671,9 @@ body { overflow: hidden; }
 	                	right: 120px;
 	                    width: 200px;
 
-						.date { 
+						.date {
 							font-size: 14px;
-							line-height: 20px; 
+							line-height: 20px;
 
 							&:first-child { margin-bottom: 5px; }
 						}
@@ -3679,7 +3692,7 @@ body { overflow: hidden; }
 	                        justify-content: center;
 	                        align-items: center;
 	                        h1 {
-	                            max-height: 50px; 
+	                            max-height: 50px;
 	                            width:100%;
 	                            display:block;
 	                            white-space: normal;
@@ -3692,14 +3705,14 @@ body { overflow: hidden; }
 	                    }
 	                }
 
-	                .button { 
+	                .button {
 	                	position: absolute;
 	                	top: 25px;
 	                	right: 20px;
 	                	padding: 0;
 	                	width: 100px;
 	                	.show;
-	                }                  
+	                }
 	            }
 
 	            .summary {
@@ -3712,7 +3725,7 @@ body { overflow: hidden; }
 	                .calc-width(100, 40);
 	                .calc-height(100, 130);
 
-	                h3 { 
+	                h3 {
 	                    font-weight: 600;
 	                    font-size: 24px;
 	                }
@@ -3721,7 +3734,7 @@ body { overflow: hidden; }
 	                    padding: 0 10px;
 	                    .calc-height( 100, 40 );
 
-	                    .iScrollVerticalScrollbar { 
+	                    .iScrollVerticalScrollbar {
 	                        right: 0;
 
 	                        .iScrollIndicator { background: rgba( 0, 0, 0, 0.1 ); }
@@ -3749,7 +3762,7 @@ body { overflow: hidden; }
 	                    color: @grey3;
 	                    font-size: 14px;
 	                    margin-bottom: 10px;
-	                     
+
 	                    .label {
 	                        font-size: 12px;
 	                        line-height: 1.5;
@@ -3781,7 +3794,7 @@ body { overflow: hidden; }
 	                            line-height: 1;
 	                            color: @grey3;
 
-	                            strong { 
+	                            strong {
 	                                text-transform: none;
 	                                color: @black;
 	                                font-weight: 600;
@@ -3798,16 +3811,16 @@ body { overflow: hidden; }
 
 	                        &.completed {
 	                            background: #d2e9ba;
-	                            li { 
+	                            li {
 	                                color: @black;
-	                                .opacity(70); 
+	                                .opacity(70);
 	                            }
 	                        }
 	                    }
-	                } 
+	                }
 
 	                .entry {
-	                    margin-bottom: 10px; 
+	                    margin-bottom: 10px;
 
 	                    input,
 	                    select,
@@ -3845,11 +3858,11 @@ body { overflow: hidden; }
 	                }
 	            }
 
-	            .add-content { 
+	            .add-content {
 	                text-align: left;
 	                .calc-height(100, 40);
 
-	                .message { 
+	                .message {
 	                    text-transform: uppercase;
 	                    text-align: center;
 	                    margin-bottom: 30px;
@@ -3861,8 +3874,8 @@ body { overflow: hidden; }
 	                    padding: 0 10px;
 	                    overflow: hidden;
 	                    .calc-height(100, 70);
-	                    
-	                    .iScrollVerticalScrollbar { 
+
+	                    .iScrollVerticalScrollbar {
 	                        right: 0;
 
 	                        .iScrollIndicator { background: rgba( 0, 0, 0, 0.1 ); }
@@ -3901,17 +3914,17 @@ body { overflow: hidden; }
 	                            #border-radius > .rounded(15px);
 	                        }
 
-	                        &.visible { 
+	                        &.visible {
 	                            visibility: visible;
 
-	                            .icons {    
-	                                .opacity(100); 
-	                                #fade > .in(); 
+	                            .icons {
+	                                .opacity(100);
+	                                #fade > .in();
 	                            }
 	                        }
 
 	                        &:hover,
-	                        &.active { 
+	                        &.active {
 	                            .icons { background-color: @logoPrimary; }
 	                        }
 	                    }
@@ -3947,7 +3960,7 @@ body { overflow: hidden; }
 	                    margin: 0 auto;
 	                    clear: none;
 	                    line-height: 48px;
-	                    width: 50%; 
+	                    width: 50%;
 	                    .pull-left;
 	                    .box-shadow(none);
 	                    #border-radius > .rounded(0);
@@ -4024,14 +4037,14 @@ body { overflow: hidden; }
 					.pull-left;
 					.size(40px, 50px);
 
-					&:first-child { 
+					&:first-child {
 						left: 0;
-						#border-radius > .left(); 
+						#border-radius > .left();
 					}
 
-					&:last-child { 
+					&:last-child {
 						right: 0;
-						#border-radius > .right(); 
+						#border-radius > .right();
 					}
 
 					&.active {
@@ -4068,7 +4081,7 @@ body { overflow: hidden; }
         bottom: 0;
         left: 0;
         padding: 0 10px 10px 10px;
-        z-index: 9990; 
+        z-index: 9990;
         background: lighten(@yellow, 30);
         .box-shadow(0 -1px 2px rgba(0,0,0,.15));
         .size(130px, 100%);
@@ -4101,7 +4114,7 @@ body { overflow: hidden; }
         #flexbox > .parent(row wrap, '', '', '');
 
         .button {
-            .calc-width(50, 5); 
+            .calc-width(50, 5);
         }
 
         .button.blank {
@@ -4186,7 +4199,7 @@ body { overflow: hidden; }
                 .pull-left;
 
                 &.check-in,
-                &.check-out { 
+                &.check-out {
                     background-image: @icons;
                     background-repeat: no-repeat;
 
@@ -4197,20 +4210,20 @@ body { overflow: hidden; }
                 }
 
                 &.availabile { background-color: rgba(137,189,85,.3); }
-                
+
                 &.unavailable { background-color: rgba(230,56,56,.3); }
 
-                &.check-in { 
+                &.check-in {
                     background-color: @green;
-                    background-position: 6px -115px; 
+                    background-position: 6px -115px;
 
-                    &.unavailable { 
+                    &.unavailable {
                     	background-position: 7px -595px;
                     	.rotate(180deg);
                     }
                 }
-                
-                &.check-out { 
+
+                &.check-out {
                     background-color: @red;
                     background-position: 6px -155px;
                 }
