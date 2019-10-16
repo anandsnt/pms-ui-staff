@@ -124,7 +124,8 @@ angular.module('sntRover')
                             xOrigin: item.origin,
                             xFinal: item.xFinal,
                             count: item.count,
-                            chartName: chartName
+                            chartName: chartName,
+                            elementId: chartName + "-" + item.type
                         }
                     });
                 });
@@ -172,7 +173,10 @@ angular.module('sntRover')
                     })
                     .enter()
                     .append("g")
-                    .attr("class", "subbar");
+                    .attr("class", "subbar")
+                    .attr("id", function(item){
+                        return item.elementId;
+                    });
 
                 bars.append("rect")
                     .attr("height", yScale.bandwidth())
@@ -233,8 +237,8 @@ angular.module('sntRover')
 
                 var firstLineHeight1 = yScale.bandwidth() * 4.5;
                 svg.append("line") // attach a line
-                    .style("stroke", "#A0A0A0") // colour the line
-                    .style("stroke-width", "1px")
+                    .style("stroke", "#000000") // colour the line
+                    .style("stroke-width", "2px")
                     .attr("x1", xScale(-1*maxValueInBotheDirections)) // x position of the first end of the line
                     .attr("y1", firstLineHeight1) // y position of the first end of the line
                     .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
@@ -242,8 +246,8 @@ angular.module('sntRover')
 
                 var firstLineHeight2 = yScale.bandwidth() * 6.5;
                 svg.append("line") // attach a line
-                    .style("stroke", "black") // colour the line
-                    .style("stroke-width", "2px")
+                    .style("stroke", "#A0A0A0") // colour the line
+                    .style("stroke-width", "1px")
                     .attr("x1", xScale(-1*maxValueInBotheDirections)) // x position of the first end of the line
                     .attr("y1", firstLineHeight2) // y position of the first end of the line
                     .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
@@ -256,12 +260,14 @@ angular.module('sntRover')
                 d3.select("#left-legend-arrivals").style("margin-top", arrivalsMarginTop + "px");
 
                 var arrivalsLegendHeightAndMarginBottom = $("#left-legend-arrivals").height() + 10;
-                var stayoverMarginTop =  2 * yBandwidth - arrivalsLegendHeightAndMarginBottom;
-                d3.select("#left-legend-stayover").style("margin-top", stayoverMarginTop + "px");
+                var departureMarginTop = 2 * yBandwidth - arrivalsLegendHeightAndMarginBottom;
+                d3.select("#left-legend-departure").style("margin-top", departureMarginTop + "px");
 
                 var stayOversLegendHeightAndMarginBottom = $("#left-legend-stayover").height() + 10;
-                var departureMarginTop = 2 * yBandwidth - stayOversLegendHeightAndMarginBottom;
-                d3.select("#left-legend-departure").style("margin-top", departureMarginTop + "px");
+                var stayoverMarginTop =  2 * yBandwidth - stayOversLegendHeightAndMarginBottom;
+                d3.select("#left-legend-stayover").style("margin-top", stayoverMarginTop + "px");
+
+                
 
                 var depLegendHeightAndMarginBottom = $("#left-legend-departure").height() + 10;
                 var roomsMarginTop = 2 * yBandwidth - depLegendHeightAndMarginBottom;
