@@ -993,7 +993,7 @@ angular.module('sntPay').controller('sntPaymentController',
                     return false;
                 }
 
-                if ($scope.selectedPaymentType === 'CC') {
+                if ($scope.selectedPaymentType === 'CC' && isReset) {
                     $scope.payment.selectedPaymentCurrencyId = $rootScope.hotelCurrencyId;
                     $scope.payment.selectedPaymentCurrencySymbol = $rootScope.currencySymbol;
                     $scope.payment.amount = $scope.originalAmount;
