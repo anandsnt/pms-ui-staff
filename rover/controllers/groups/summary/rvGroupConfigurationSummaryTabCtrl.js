@@ -1,8 +1,25 @@
-angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope', '$q', 'jsMappings', '$rootScope', 'rvGroupSrv', '$filter', '$stateParams', 'rvGroupConfigurationSrv', 'dateFilter', 'RVReservationSummarySrv', 'ngDialog', 'RVReservationAddonsSrv', 'RVReservationCardSrv', 'rvUtilSrv', '$state', 'rvPermissionSrv', '$timeout', 'rvGroupActionsSrv', 'RVContactInfoSrv', function($scope, $q, jsMappings, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state, rvPermissionSrv, $timeout, rvGroupActionsSrv, RVContactInfoSrv) {
-
-
+angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
+    '$scope',
+    '$q',
+    'jsMappings',
+    '$rootScope',
+    'rvGroupSrv',
+    '$filter',
+    '$stateParams',
+    'rvGroupConfigurationSrv',
+    'dateFilter',
+    'RVReservationSummarySrv',
+    'ngDialog',
+    'RVReservationAddonsSrv',
+    'RVReservationCardSrv',
+    'rvUtilSrv',
+    '$state',
+    'rvPermissionSrv',
+    '$timeout',
+    'rvGroupActionsSrv',
+    'RVContactInfoSrv',
+    function($scope, $q, jsMappings, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state, rvPermissionSrv, $timeout, rvGroupActionsSrv, RVContactInfoSrv) {
         var summaryMemento, demographicsMemento;
-        
 
         /**
          * Whether our summary data has changed
@@ -477,23 +494,31 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                     $scope.emit('hideLoader');
                 },
                 updateSegment = function() {
-                    var aptSegment = ''; // Variable to store the suitable segment ID
+                    var aptSegment = '', // Variable to store the suitable segment ID
+                        blockStartDate = $scope.groupConfigData.summary.block_from,
+                        blockEndDate = $scope.groupConfigData.summary.block_to;
 
                     // CICO-42249 - Flag to allow adding demographics for a newly created group
                     $scope.forceDemographics = $scope.shouldShowDemographics();
 
-                    if (!!$scope.groupConfigData.summary.block_to && !!$scope.groupConfigData.summary.block_from) {
-                        var dayDiff = Math.floor((new tzIndependentDate($scope.groupConfigData.summary.block_to) - new tzIndependentDate($scope.groupConfigData.summary.block_from)) / 86400000);
+                    if (!!blockStartDate && !!blockEndDate) {
+                        var blockPeriod = Math.floor((new tzIndependentDate(blockEndDate) - new tzIndependentDate(blockStartDate)) / 86400000),
+                            segments = _.sortBy($scope.groupSummaryData.demographics.segments, function(segment) { return segment.los; });
 
-                        angular.forEach($scope.groupSummaryData.demographics.segments, function(segment) {
-                            if (dayDiff < segment.los) {
+                        angular.forEach(segments, function(segment) {
+                            if (blockPeriod < segment.los) {
                                 if (!aptSegment) {
                                     aptSegment = segment.value;
+                                    // CICO-70889: Group Demographics. Only set the segment id when
+                                    // a value has been computed to prevent a user selected segment
+                                    // from being unintentionally overwritten.
+                                    $scope.groupConfigData.summary.demographics.segment_id = aptSegment;
                                 }
                             }
                         });
-                        $scope.groupSummaryData.computedSegment = !!aptSegment;
-                        $scope.groupConfigData.summary.demographics.segment_id = aptSegment;
+
+                        $scope.groupSummaryData.isComputedSegment = !!aptSegment;
+                        return $scope.groupSummaryData.isComputedSegment;
                     } else {
                         return false;
                     }
@@ -832,6 +857,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
             }
 
         };
+
         $scope.openBillingInformation = function() {
             if ($scope.isInAddMode()) {
                 // If the group has not been saved yet, prompt user for the same
@@ -1560,6 +1586,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                 releaseOnDate: $rootScope.businessDate,
                 demographics: null,
                 promptMandatoryDemographics: false,
+                isComputedSegment: false,
                 isDemographicsPopupOpen: false,
                 newNote: '',
                 // CICO-24928
@@ -1756,5 +1783,4 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
             $scope.computeSegment();
         }());
     }
-
 ]);
