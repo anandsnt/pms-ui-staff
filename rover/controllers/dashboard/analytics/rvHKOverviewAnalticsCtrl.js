@@ -1,10 +1,38 @@
 angular.module('sntRover')
-    .controller('rvAnalyticsBaseCtrl', ['$scope', 'sntActivity', '$timeout', '$filter',
+    .controller('rvHKOverviewAnalticsCtrl', ['$scope', 'sntActivity', '$timeout', '$filter',
         function($scope, sntActivity, $timeout, $filter) {
-            $scope.screenData = {};
+
+            var arrivalsColorScheme = d3.scaleOrdinal()
+                .range(["#B5D398", "#84B652", "#B7D599"])
+                .domain(["perfomed", "remaining"]);
+
+            var vacantColorScheme = d3.scaleOrdinal()
+                .range(["#DC3535", "#EC9319", "#B7D599"])
+                .domain(["dirty", "pickup", "clean"]);
+
+            var departuresColorScheme = d3.scaleOrdinal()
+                .range(["#DBA1A2", "#E13939"])
+                .domain(["perfomed","pending"]);
+
+            var stayoversColorScheme = d3.scaleOrdinal()
+                .range(["#BBE0ED", "#7FBED7"])
+                .domain(["perfomed", "remaining"]);
+
+            var roomsColorScheme = d3.scaleOrdinal()
+                .range(["#85B752", "#547A2F", "#ED941B", "#DE3838"])
+                .domain(["clean","inspected", "pickup",  "dirty"]);
+
+            var hkOverviewchartColorScheme = {
+                arrivalsColorScheme: arrivalsColorScheme,
+                vacantColorScheme: vacantColorScheme,
+                departuresColorScheme: departuresColorScheme,
+                roomsColorScheme: roomsColorScheme,
+                stayoversColorScheme: stayoversColorScheme
+            };
 
             // Draw bidirectional chart
-            $scope.drawBidirectionalChart = function (chartDetails) {
+            $scope.drawBidirectionalChart = function(chartDetails) {
+
                 $scope.screenData.mainHeading = $filter('translate')(chartDetails.chartData.label);
                 var chartAreaWidth = document.getElementById("analytics-chart").clientWidth;
                 var margin = {
@@ -50,20 +78,24 @@ angular.module('sntRover')
                     .append("g")
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-                var combinedItemsCountArray = [];
+                // var combinedItemsCountArray = [];
 
-                _.each(chartDetails.chartData.data, function(chart) {
-                    _.each(chart.contents.left_side, function(item) {
-                        combinedItemsCountArray.push(item.count);
-                    });
-                    _.each(chart.contents.right_side, function(item) {
-                        combinedItemsCountArray.push(item.count);
-                    });
-                });
+                // _.each(chartDetails.chartData.data, function(chart) {
+                //     _.each(chart.contents.left_side, function(item) {
+                //          // to delete
+                //          item.count = item.count < 3 ? _.random(20, 100) : item.count;
+                //         combinedItemsCountArray.push(item.count);
+                //     });
+                //     _.each(chart.contents.right_side, function(item) {
+                //         // to delete
+                //         item.count = item.count < 3 ? _.random(30, 100) : item.count;
+                //         combinedItemsCountArray.push(item.count);
+                //     });
+                // });
 
-                var largestItemCount = _.max(combinedItemsCountArray, function(count) {
-                    return count;
-                });
+                // var largestItemCount = _.max(combinedItemsCountArray, function(count) {
+                //     return count;
+                // });
 
                 chartDetails.chartData.data.forEach(function(chart) {
 
@@ -185,7 +217,7 @@ angular.module('sntRover')
                         return xScale(item.xFinal) - xScale(item.xOrigin);
                     })
                     .style("fill", function(item) {
-                        return chartDetails.chartColorScheme[item.chartName + 'ColorScheme'](item.type);
+                        return hkOverviewchartColorScheme[item.chartName + 'ColorScheme'](item.type);
                     })
                     .on("click", function(e) {
                         chartDetails.onBarChartClick(e);
@@ -267,11 +299,11 @@ angular.module('sntRover')
                     if (legend === "Arrivals") {
                         return margin.top + 1.5 * yBandwidth;
                     } else if (legend === "Departures") {
-                        return (2 * yBandwidth - previousElementHeightPlusBottomMargin("left-legend-arrivals") );
+                        return (2 * yBandwidth - previousElementHeightPlusBottomMargin("left-legend-arrivals"));
                     } else if (legend === "Stayovers") {
-                        return (2 * yBandwidth - previousElementHeightPlusBottomMargin("left-legend-departures") );
+                        return (2 * yBandwidth - previousElementHeightPlusBottomMargin("left-legend-departures"));
                     } else if (legend === "Clean") {
-                        return (2 * yBandwidth - previousElementHeightPlusBottomMargin("left-legend-stayovers") );
+                        return (2 * yBandwidth - previousElementHeightPlusBottomMargin("left-legend-stayovers"));
                     }
                 };
 
@@ -290,8 +322,8 @@ angular.module('sntRover')
 
                 leftSideLegendEntries.append("span")
                     .attr("class", "rect-label")
-                    .html(function(d) {
-                        return d;
+                    .html(function(label) {
+                        return label;
                     });
 
                 leftSideLegendEntries.style("margin-top", function(legend) {
@@ -310,11 +342,11 @@ angular.module('sntRover')
                     if (legend === "Arrivals") {
                         return margin.top + 1.5 * yBandwidth;
                     } else if (legend === "Departures") {
-                        return (2 * yBandwidth - previousElementHeightPlusBottomMargin("left-legend-arrivals") );
+                        return (2 * yBandwidth - previousElementHeightPlusBottomMargin("left-legend-arrivals"));
                     } else if (legend === "Stayovers") {
-                        return (2 * yBandwidth - previousElementHeightPlusBottomMargin("left-legend-departures") );
+                        return (2 * yBandwidth - previousElementHeightPlusBottomMargin("left-legend-departures"));
                     } else if (legend === "Pickup") {
-                        return (2 * yBandwidth - previousElementHeightPlusBottomMargin("left-legend-stayovers") );
+                        return (2 * yBandwidth - previousElementHeightPlusBottomMargin("left-legend-stayovers"));
                     }
                 };
                 var rightSideLegendEntries = rightSideLegendDiv.selectAll("dd")
@@ -332,14 +364,13 @@ angular.module('sntRover')
 
                 rightSideLegendEntries.append("span")
                     .attr("class", "rect-label")
-                    .html(function(d) {
-                        return d;
+                    .html(function(label) {
+                        return label;
                     });
 
                 rightSideLegendEntries.style("margin-top", function(legend) {
                     return setMarginForLegends(legend)
                 });
-            }
-
+            };
         }
     ]);

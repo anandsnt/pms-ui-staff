@@ -134,7 +134,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         // Pushing arrivals data structure
         workPriority.data.push(buildArrivals(that.activeReservations, date, false));
         // Pushing vacant data structure
-        workPriority.data.push(buildVacants(that.activeReservations, roomStatuses, false));
+        workPriority.data.push(buildVacants(that.activeReservations, that.roomStatuses, false));
         // Pushing departure data structure
         workPriority.data.push(buildDepartures(that.activeReservations, date));
         deferred.resolve(workPriority);
@@ -168,9 +168,9 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         }
 
         departues.contents.right_side.push({
-            type: 'remaining',
+            type: 'pending',
             count: remainingCount,
-            label: 'AN_REMAINING'
+            label: 'AN_PENDING'
         });
         return departues;
     };
