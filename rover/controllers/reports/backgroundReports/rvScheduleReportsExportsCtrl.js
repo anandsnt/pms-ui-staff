@@ -367,6 +367,10 @@ angular.module('sntRover')
                 }
             };
 
+            $scope.addListener('CLEAR_ERROR_MSG', ( ) => {
+                $scope.errorMessage = []; 
+            });
+
             // Handler for deleting the custom exports schedule
             $scope.deleteCustomExportSchedule = () => {
                 $scope.$broadcast('DELETE_CUSTOM_EXPORT_SCHEDULE');

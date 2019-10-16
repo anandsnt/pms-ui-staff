@@ -1170,7 +1170,8 @@ sntRover.controller('RVReportDetailsCtrl', [
                 case reportNames['COMPLIMENTARY_ROOM_REPORT']:
                 case reportNames['GROUP_ROOMS_REPORT']:
                 case reportNames['TRAVEL_AGENT_COMMISSIONS']:
-
+                case reportNames['DAILY_PRODUCTION_RATE']:
+                case reportNames['DAILY_PRODUCTION_DEMO']:
                     orientation = 'landscape';
                     break;
 
