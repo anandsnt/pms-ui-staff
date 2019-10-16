@@ -51,7 +51,7 @@ describe('rvGroupConfigurationSummaryTab', function () {
         var blockStartDate = '1970-01-01',
             blockEndDate = '1970-01-03',
             segments = [
-                {value: 2, name: 'Long Stay' , los: 5},
+                {value: 2, name: 'Long Stay', los: 5},
                 {value: 1, name: 'Short Stay', los: 3}
             ];
 

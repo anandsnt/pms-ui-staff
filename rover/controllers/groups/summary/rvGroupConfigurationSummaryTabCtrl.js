@@ -516,12 +516,10 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                                 }
                             }
                         });
-
-                        $scope.groupSummaryData.isComputedSegment = !!aptSegment;
-                        return $scope.groupSummaryData.isComputedSegment;
-                    } else {
-                        return false;
                     }
+
+                    $scope.groupSummaryData.isComputedSegment = !!aptSegment;
+                    return $scope.groupSummaryData.isComputedSegment;
                 };
 
             if ($scope.groupSummaryData.demographics === null) {
