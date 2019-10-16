@@ -747,6 +747,11 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             }, datePickerCommon);
             $scope.scheduleParams.export_date = reportUtils.processDate(exportDate).today;
 
+            $scope.exportCalenderOptions = angular.extend({
+                maxDate: tzIndependentDate($rootScope.businessDate)
+            }, datePickerCommon);
+            $scope.scheduleParams.export_to_date = reportUtils.processDate(exportDate).today;
+
             $scope.startsOnOptions = angular.extend({
                 minDate: tzIndependentDate($rootScope.businessDate),
                 onSelect: function(value) {
@@ -1238,6 +1243,13 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             return $scope.addingStage === STAGES.SHOW_SCHEDULE_LIST ||
                 $scope.addingStage === STAGES.SHOW_PARAMETERS ||
                 $scope.addingStage === STAGES.SHOW_DETAILS;
+        };
+
+        $scope.updateScrollOnUpdate = function () {
+            setTimeout(function(){
+                $scope.refreshSecondColumnScroll(true);
+            }, 3000)
+            
         };
         /*
          * Show export calender only for joyrnal export
