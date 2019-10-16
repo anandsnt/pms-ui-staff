@@ -1,13 +1,11 @@
 angular.module('sntRover')
     .controller('rvAnalyticsBaseCtrl', ['$scope', 'sntActivity', '$timeout', '$filter',
         function($scope, sntActivity, $timeout, $filter) {
-            $scope.screenData = {
-                chartLoaded: false,
-                legendStyle: {'visibility': 'hidden'}
-            };
+            $scope.screenData = {};
+
             // Draw bidirectional chart
-            $scope.drawBidirectionalChart = function reportWindowSize(chartDetails) {
-                $scope.mainHeading = $filter('translate')(chartDetails.chartData.label);
+            $scope.drawBidirectionalChart = function (chartDetails) {
+                $scope.screenData.mainHeading = $filter('translate')(chartDetails.chartData.label);
                 var chartAreaWidth = document.getElementById("analytics-chart").clientWidth;
                 var margin = {
                         top: 50,
@@ -174,7 +172,7 @@ angular.module('sntRover')
                     .enter()
                     .append("g")
                     .attr("class", "subbar")
-                    .attr("id", function(item){
+                    .attr("id", function(item) {
                         return item.elementId;
                     });
 
@@ -201,17 +199,17 @@ angular.module('sntRover')
                     .attr("x", function(item) {
                         return ((xScale(item.xOrigin) + xScale(item.xFinal)) / 2);
                     })
-                    .attr("y", function(item){
+                    .attr("y", function(item) {
                         return yScale.bandwidth() / 2;
                     })
                     .attr("dy", function(item) {
-                        return isSmallBarItem(item) ?  -1*(yScale.bandwidth() / 2 + 10):  "0.5em";
+                        return isSmallBarItem(item) ? -1 * (yScale.bandwidth() / 2 + 10) : "0.5em";
                     })
                     .attr("dx", function(item) {
-                        return isSmallBarItem(item) && item.xOrigin < 0 ?  "-0.5em" :  "0em";
+                        return isSmallBarItem(item) && item.xOrigin < 0 ? "-0.5em" : "0em";
                     })
                     .style("font-size", function(item) {
-                        return isSmallBarItem(item) ?  "10px" :  "15px";
+                        return isSmallBarItem(item) ? "10px" : "15px";
                     })
                     .style("text-anchor", "middle")
                     .text(function(item) {
@@ -230,7 +228,7 @@ angular.module('sntRover')
                 svg.append("line") // attach a line
                     .style("stroke", "#A0A0A0") // colour the line
                     .style("stroke-width", "1px")
-                    .attr("x1", xScale(-1*maxValueInBotheDirections)) // x position of the first end of the line
+                    .attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
                     .attr("y1", firstLineHeight) // y position of the first end of the line
                     .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
                     .attr("y2", firstLineHeight);
@@ -239,7 +237,7 @@ angular.module('sntRover')
                 svg.append("line") // attach a line
                     .style("stroke", "#000000") // colour the line
                     .style("stroke-width", "2px")
-                    .attr("x1", xScale(-1*maxValueInBotheDirections)) // x position of the first end of the line
+                    .attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
                     .attr("y1", firstLineHeight1) // y position of the first end of the line
                     .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
                     .attr("y2", firstLineHeight1);
@@ -248,49 +246,99 @@ angular.module('sntRover')
                 svg.append("line") // attach a line
                     .style("stroke", "#A0A0A0") // colour the line
                     .style("stroke-width", "1px")
-                    .attr("x1", xScale(-1*maxValueInBotheDirections)) // x position of the first end of the line
+                    .attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
                     .attr("y1", firstLineHeight2) // y position of the first end of the line
                     .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
                     .attr("y2", firstLineHeight2);
 
-                // Align left side legends to the chart
-                var yBandwidth = yScale.bandwidth();
-                var arrivalsMarginTop = margin.top + 1.5 * yBandwidth;
+                var previousElementHeightPlusBottomMargin = function(id) {
+                    return $("#" + id).height() + 10;
+                };
 
-                d3.select("#left-legend-arrivals").style("margin-top", arrivalsMarginTop + "px");
+                // Left side Legends
+                var leftSideLegendDiv = d3.select("#left-side-legend");
+                var leftSideLegendColor = d3.scaleOrdinal()
+                    .range(["#b7d499", "#dba2a2", "#bbe0ee", "#85b752", "#547a2f"])
+                    .domain(["Arrivals", "Departures", "Stayovers", "Clean", "Inspected"]);
 
-                var arrivalsLegendHeightAndMarginBottom = $("#left-legend-arrivals").height() + 10;
-                var departureMarginTop = 2 * yBandwidth - arrivalsLegendHeightAndMarginBottom;
-                d3.select("#left-legend-departure").style("margin-top", departureMarginTop + "px");
+                var setMarginForLegends = function(legend) {
+                    var yBandwidth = yScale.bandwidth();
 
-                var stayOversLegendHeightAndMarginBottom = $("#left-legend-stayover").height() + 10;
-                var stayoverMarginTop =  2 * yBandwidth - stayOversLegendHeightAndMarginBottom;
-                d3.select("#left-legend-stayover").style("margin-top", stayoverMarginTop + "px");
+                    if (legend === "Arrivals") {
+                        return margin.top + 1.5 * yBandwidth;
+                    } else if (legend === "Departures") {
+                        return (2 * yBandwidth - previousElementHeightPlusBottomMargin("left-legend-arrivals") );
+                    } else if (legend === "Stayovers") {
+                        return (2 * yBandwidth - previousElementHeightPlusBottomMargin("left-legend-departures") );
+                    } else if (legend === "Clean") {
+                        return (2 * yBandwidth - previousElementHeightPlusBottomMargin("left-legend-stayovers") );
+                    }
+                };
 
-                
+                var leftSideLegendEntries = leftSideLegendDiv.selectAll("dd")
+                    .data(leftSideLegendColor.domain().slice())
+                    .enter()
+                    .append("dd")
+                    .attr("class", "legend-item")
+                    .attr("id", function(item) {
+                        return "left-legend-" + item.toLowerCase();
+                    })
 
-                var depLegendHeightAndMarginBottom = $("#left-legend-departure").height() + 10;
-                var roomsMarginTop = 2 * yBandwidth - depLegendHeightAndMarginBottom;
-                d3.select("#left-legend-clean").style("margin-top", roomsMarginTop + "px");
+                leftSideLegendEntries.append("span")
+                    .attr("class", "rect")
+                    .style("background-color", leftSideLegendColor);
 
-                // Align right side legends to the chart
+                leftSideLegendEntries.append("span")
+                    .attr("class", "rect-label")
+                    .html(function(d) {
+                        return d;
+                    });
 
-                d3.select("#right-legend-arrivals").style("margin-top", arrivalsMarginTop + "px");
+                leftSideLegendEntries.style("margin-top", function(legend) {
+                    return setMarginForLegends(legend)
+                });
 
-                var arrivalsLegendHeightAndMarginBottom = $("#right-legend-arrivals").height() + 10;
-                var stayoverMarginTop =  2 * yBandwidth - arrivalsLegendHeightAndMarginBottom;
-                d3.select("#right-legend-stayovers").style("margin-top", stayoverMarginTop + "px");
+                // right side legends
+                var rightSideLegendDiv = d3.select("#right-side-legend");
+                var rightSideLegendColor = d3.scaleOrdinal()
+                    .range(["#84b652", "#e13939", "#7cbad3", "#ed941a", "#de3838"])
+                    .domain(["Arrivals", "Departures", "Stayovers", "Pickup", "Dirty"]);
 
-                var stayOversLegendHeightAndMarginBottom = $("#right-legend-stayovers").height() + 10;
-                var departureMarginTop = 2 * yBandwidth - stayOversLegendHeightAndMarginBottom;
-                d3.select("#right-legend-departures").style("margin-top", departureMarginTop + "px");
+                var setMarginForLegends = function(legend) {
+                    var yBandwidth = yScale.bandwidth();
 
-                var depLegendHeightAndMarginBottom = $("#right-legend-departures").height() + 10;
-                var roomsMarginTop = 2 * yBandwidth - depLegendHeightAndMarginBottom;
-                d3.select("#right-legend-pickup").style("margin-top", roomsMarginTop + "px");
+                    if (legend === "Arrivals") {
+                        return margin.top + 1.5 * yBandwidth;
+                    } else if (legend === "Departures") {
+                        return (2 * yBandwidth - previousElementHeightPlusBottomMargin("left-legend-arrivals") );
+                    } else if (legend === "Stayovers") {
+                        return (2 * yBandwidth - previousElementHeightPlusBottomMargin("left-legend-departures") );
+                    } else if (legend === "Pickup") {
+                        return (2 * yBandwidth - previousElementHeightPlusBottomMargin("left-legend-stayovers") );
+                    }
+                };
+                var rightSideLegendEntries = rightSideLegendDiv.selectAll("dd")
+                    .data(rightSideLegendColor.domain().slice())
+                    .enter()
+                    .append("dd")
+                    .attr("class", "legend-item")
+                    .attr("id", function(item) {
+                        return "left-legend-" + item.toLowerCase();
+                    })
 
-                $scope.screenData.chartLoaded = true;
-                $scope.screenData.legendStyle =  {'visibility': 'visible'};
+                rightSideLegendEntries.append("span")
+                    .attr("class", "rect")
+                    .style("background-color", rightSideLegendColor);
+
+                rightSideLegendEntries.append("span")
+                    .attr("class", "rect-label")
+                    .html(function(d) {
+                        return d;
+                    });
+
+                rightSideLegendEntries.style("margin-top", function(legend) {
+                    return setMarginForLegends(legend)
+                });
             }
 
         }

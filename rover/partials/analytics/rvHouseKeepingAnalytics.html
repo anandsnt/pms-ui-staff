@@ -1,61 +1,14 @@
 <h1 style="text-align: center; font-size: 35px;text-transform: uppercase;">
-	{{ mainHeading }}
+    {{ screenData.mainHeading }}
 </h1>
-
 <div class="wrapper">
- <!-- Chart -->
+    <!-- Chart -->
     <div class="analytics-chart with-legend-left with-legend-right">
-         <dl class="chart-legend legend-left" ng-style="screenData.legendStyle">
-                <dd class="legend-item" id="left-legend-arrivals">
-                    <span class="rect" style="background-color: #b7d499;"></span>
-                    <span class="rect-label">Arrivals</span>
-                </dd>
-                <dd class="legend-item" id="left-legend-departure">
-                    <span class="rect" style="background-color: #dba2a2;"></span>
-                    <span class="rect-label">Departures</span>
-                </dd>
-                <dd class="legend-item" id="left-legend-stayover">
-                    <span class="rect" style="background-color: #bbe0ee;"></span>
-                    <span class="rect-label">Stayovers</span>
-                </dd>
-                
-
-                <!-- <dt class="legend-title" id="left-legend-title-vacant">Vacant</dt> -->
-                <dd class="legend-item" id="left-legend-clean">
-                    <span class="rect" style="background-color: #85b752;"></span>
-                    <span class="rect-label">Clean</span>
-                </dd>
-                <dd class="legend-item" id="left-legend-inspected">
-                    <span class="rect" style="background-color: #547a2f;"></span>
-                    <span class="rect-label">Inspected</span>
-                </dd>
-            </dl>
-
+        <dl class="chart-legend legend-left" id="left-side-legend">
+        </dl>
         <div id="analytics-chart" class="chart-content">
         </div>
-
-       <dl class="chart-legend legend-right" ng-style="screenData.legendStyle">
-                <dd class="legend-item" id="right-legend-arrivals">
-                    <span class="rect" style="background-color: #84b652;"></span>
-                    <span class="rect-label">Arrivals</span>
-                </dd>
-                <dd class="legend-item" id="right-legend-departures">
-                    <span class="rect" style="background-color: #e13939;"></span>
-                    <span class="rect-label">Departures</span>
-                </dd>
-                <dd class="legend-item" id="right-legend-stayovers">
-                    <span class="rect" style="background-color: #7cbad3"></span>
-                    <span class="rect-label">Stayovers</span>
-                </dd>
-                <!-- <dt class="legend-title" id="right-legend-title-vacant">Vacant</dt> -->
-                <dd class="legend-item" id="right-legend-pickup">
-                    <span class="rect" style="background-color: #ed941a;"></span>
-                    <span class="rect-label">Pickup</span>
-                </dd>
-                <dd class="legend-item" id="right-legend-dirty">
-                    <span class="rect" style="background-color: #de3838;"></span>
-                    <span class="rect-label">Dirty</span>
-                </dd>
-            </dl>
+        <dl class="chart-legend legend-right" id="right-side-legend">
+        </dl>
     </div>
 </div>
