@@ -1,10 +1,13 @@
 angular.module('sntRover')
-    .controller('rvAnalyticsBaseCtrl', ['$scope', 'sntActivity', '$timeout',
-        function($scope, sntActivity, $timeout) {
-
+    .controller('rvAnalyticsBaseCtrl', ['$scope', 'sntActivity', '$timeout', '$filter',
+        function($scope, sntActivity, $timeout, $filter) {
+            $scope.screenData = {
+                chartLoaded: false,
+                legendStyle: {'visibility': 'hidden'}
+            };
             // Draw bidirectional chart
             $scope.drawBidirectionalChart = function reportWindowSize(chartDetails) {
-                $scope.mainHeading = chartDetails.chartData.label;
+                $scope.mainHeading = $filter('translate')(chartDetails.chartData.label);
                 var chartAreaWidth = document.getElementById("analytics-chart").clientWidth;
                 var margin = {
                         top: 50,
@@ -201,7 +204,7 @@ angular.module('sntRover')
                         return isSmallBarItem(item) ?  -1*(yScale.bandwidth() / 2 + 10):  "0.5em";
                     })
                     .attr("dx", function(item) {
-                        return isSmallBarItem(item) && item.xOrigin < 0 ?  "-0.5em" :  "0.5em";
+                        return isSmallBarItem(item) && item.xOrigin < 0 ?  "-0.5em" :  "0em";
                     })
                     .style("font-size", function(item) {
                         return isSmallBarItem(item) ?  "10px" :  "15px";
@@ -245,6 +248,43 @@ angular.module('sntRover')
                     .attr("y1", firstLineHeight2) // y position of the first end of the line
                     .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
                     .attr("y2", firstLineHeight2);
+
+                // Align left side legends to the chart
+                var yBandwidth = yScale.bandwidth();
+                var arrivalsMarginTop = margin.top + 1.5 * yBandwidth;
+
+                d3.select("#left-legend-arrivals").style("margin-top", arrivalsMarginTop + "px");
+
+                var arrivalsLegendHeightAndMarginBottom = $("#left-legend-arrivals").height() + 10;
+                var stayoverMarginTop =  2 * yBandwidth - arrivalsLegendHeightAndMarginBottom;
+                d3.select("#left-legend-stayover").style("margin-top", stayoverMarginTop + "px");
+
+                var stayOversLegendHeightAndMarginBottom = $("#left-legend-stayover").height() + 10;
+                var departureMarginTop = 2 * yBandwidth - stayOversLegendHeightAndMarginBottom;
+                d3.select("#left-legend-departure").style("margin-top", departureMarginTop + "px");
+
+                var depLegendHeightAndMarginBottom = $("#left-legend-departure").height() + 10;
+                var roomsMarginTop = 2 * yBandwidth - depLegendHeightAndMarginBottom;
+                d3.select("#left-legend-clean").style("margin-top", roomsMarginTop + "px");
+
+                // Align right side legends to the chart
+
+                d3.select("#right-legend-arrivals").style("margin-top", arrivalsMarginTop + "px");
+
+                var arrivalsLegendHeightAndMarginBottom = $("#right-legend-arrivals").height() + 10;
+                var stayoverMarginTop =  2 * yBandwidth - arrivalsLegendHeightAndMarginBottom;
+                d3.select("#right-legend-stayovers").style("margin-top", stayoverMarginTop + "px");
+
+                var stayOversLegendHeightAndMarginBottom = $("#right-legend-stayovers").height() + 10;
+                var departureMarginTop = 2 * yBandwidth - stayOversLegendHeightAndMarginBottom;
+                d3.select("#right-legend-departures").style("margin-top", departureMarginTop + "px");
+
+                var depLegendHeightAndMarginBottom = $("#right-legend-departures").height() + 10;
+                var roomsMarginTop = 2 * yBandwidth - depLegendHeightAndMarginBottom;
+                d3.select("#right-legend-pickup").style("margin-top", roomsMarginTop + "px");
+
+                $scope.screenData.chartLoaded = true;
+                $scope.screenData.legendStyle =  {'visibility': 'visible'};
             }
 
         }
