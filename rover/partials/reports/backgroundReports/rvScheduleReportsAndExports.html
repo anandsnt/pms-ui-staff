@@ -20,7 +20,7 @@
         class="content" 
         role="main" 
         ng-class="{'with-menu': (reportViewStore.showingScheduledReports || reportViewStore.showingExportReports || reportViewStore.showingCustomExports), 'with-notice': (!isToastEnabled && errorMessage && errorMessage.length > 0)}">
-        <snt-notify message="errorMessage"></snt-notify>
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <!-- Menu -->
     <div id="reports-menu" ng-include="'/assets/partials/reports/shared/rvReportMainMenu.html'" ng-if="reportViewStore.showingScheduledReports || reportViewStore.showingExportReports || reportViewStore.showingCustomExports"></div>
     <!-- Content -->
