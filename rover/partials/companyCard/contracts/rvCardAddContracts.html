@@ -1,43 +1,7 @@
 <div ng-controller="rvCardAddContractsCtrl" class="contracts-details" ng-show="!contractData.noContracts && contractData.mode === 'ADD'">
-    <!-- Add .searching when searching a contract -->
-    <div class="autocomplete-search contract-details-header">
-        <!-- Remove .with-button if we are not shwoing Unlink Contract button -->
-        <div class="search-header with-button hidden">
-            <div class="search">
-                <label>Link Existing Contract</label>
-                <!-- Add .visible to show clear query -->
-                <button class="clear-query">
-                    <span class="icons icon-clear-search">Clear query</span>
-                </button>
-                <button type="submit" name="submit" class="icons icon-search">Search</button>
-                <input name="find-contracts" class="query" placeholder="Search by Contract Name or Access Code" autocomplete="off" type="search">
-            </div>
-            <button type="button" class="button red">Unlink Contract</button>
-        </div>
-        <!-- Remove .hidden when searching -->
-        <ul class="autocomplete-results-header hidden">
-            <li class="contract-name">Contract Name</li>
-            <li class="start-date">Start Date</li>
-            <li class="end-date">End Date</li>
-            <li class="rate">Rate</li>
-        </ul>
-        <!-- Remove .hidden when searching -->
-        <div  class="scrollable hidden">
-            <div class="wrapper">
-                <!-- Add .linked if it's a linked contract already -->
-                <ul class="contract">
-                    <li class="contract-name">{contract name}</li>
-                    <li class="start-date">{start-date}</li>
-                    <li class="end-date">{end-date}</li>
-                    <li class="rate">{rate}</li>
-                </ul>
-                <!-- ... repeat for each found contract -->
-            </div>
-        </div>
-    </div>
     <!-- If we don't show the bottom form, add .without-footer -->
     <!-- If we don't show the search for some reason, add .without-header -->
-    <div class="contracts-details-form scrollable" ng-iscroll="cardNewContractsScroll">
+    <div class="contracts-details-form scrollable without-header" ng-iscroll="cardNewContractsScroll">
         <div class="wrapper float">
             <div class="holder left">
                 <strong class="h3">Contract Details</strong>
