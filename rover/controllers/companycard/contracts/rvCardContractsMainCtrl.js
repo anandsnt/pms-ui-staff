@@ -121,16 +121,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 		that.fetchContractDetails = function(contractId) {
 			var accountId = !_.isEmpty($scope.contactInformation) ? $scope.contactInformation.id : $stateParams.id;
 
-<<<<<<< HEAD
-			$scope.contractData.selectedContract = contractId;
-=======
 			$scope.contractData.selectedContractId = contractId;
-			if ($stateParams.id === "add") {
-				accountId = $scope.contactInformation.id;
-			} else {
-				accountId = $stateParams.id;
-			}
->>>>>>> 444ce4c76cddf607dde0aa08e08609fc44398795
 			var options = {
 				successCallBack: fetchContractDetailsSuccessCallback,
 				failureCallback: fetchContractDetailsFailureCallback,
@@ -219,38 +210,16 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
             saveContractNightsFailureCallback = function(error) {
                 setErrorMessage(error);
             },
-<<<<<<< HEAD
 			accountId = !_.isEmpty($scope.contactInformation) ? $scope.contactInformation.id : $stateParams.id,
 			options = {
 				successCallBack: saveContractNightsSuccessCallback,
 				failureCallBack: saveContractNightsFailureCallback,
 				params: {
 					"account_id": accountId,
-					"contract_id": $scope.contractData.selectedContract,
+					"contract_id": $scope.contractData.selectedContractId,
 					"postData": {'occupancy': data}
 				}
 			};
-=======
-            accountId;
-    
-            if ($stateParams.id === "add") {
-                accountId = $scope.contactInformation.id;
-            }
-            else {
-                accountId = $stateParams.id;
-            }
-    
-            var options = {
-                    successCallBack: saveContractNightsSuccessCallback,
-                    failureCallBack: saveContractNightsFailureCallback,
-                    params: {
-                        "account_id": accountId,
-                        "contract_id": $scope.contractData.selectedContractId,
-                        "postData": {'occupancy': data}
-                    }
-                };
-            
->>>>>>> 444ce4c76cddf607dde0aa08e08609fc44398795
             $scope.callAPI(rvCompanyCardContractsSrv.updateNight, options);
 		});
 
