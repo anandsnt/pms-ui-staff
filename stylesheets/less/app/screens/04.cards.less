@@ -570,7 +570,6 @@
                     }
                     
                     .entry {
-                        #fade > .in();
                         #pixel-to-percent > .width(432, 904);
 
                         label { margin-bottom: 0; }
@@ -932,8 +931,6 @@
                                 grid-column: span 2;
                             }
                         }
-
-                        &.hidden { #fade > .out(); }
                     }
 
                     &.left {
@@ -1540,6 +1537,16 @@
                                 .contracts-list-items {
                                     .calc-height( 100, 80 );
                                 }
+
+                                &.actions-2 {
+                                    .contracts-list-items {
+                                        .calc-height( 100, 130 );
+                                    }
+
+                                    .contracts-list-actions {
+                                        height: 130px;
+                                    }
+                                }
                             }
                         }
 
@@ -1664,15 +1671,39 @@
                                     .contract {
 
                                         li {
-                                            height: 35px;
-                                            line-height: 35px;
+                                            line-height: 1.2;
+                                            padding: 10px 0;
 
                                             .highlight { color: @logoPrimary; }
 
-                                            &.rate,
-                                            &.contract-name {
-                                                .nowrap();
+                                            &:not(.rate) {
                                                 padding-right: 10px;
+                                            }
+
+                                            &.rate {
+                                                span {
+                                                    .show();
+
+                                                    &:not(:last-child) {
+                                                        margin-bottom: 4px;
+                                                    }
+
+                                                    &.highlight { 
+                                                        display: inline;
+                                                        margin:0; 
+                                                    }
+
+                                                    &.more {
+                                                        display: inline;
+                                                        color: @grey3;
+                                                        margin: 0;
+                                                    }
+                                                }
+
+                                                em {
+                                                    text-transform: none;
+                                                    color: @grey3;
+                                                }
                                             }
                                         }
 
@@ -1827,7 +1858,6 @@
                                         font-weight: 600;
                                         padding: 10px 30px 10px 10px;
                                         list-style: none;
-                                        cursor: pointer;
                                         position: relative;
                                         #flexbox > .parent( row, space-between, '', '' );
                                         .box-shadow();
@@ -1836,14 +1866,22 @@
                                             margin-bottom: 10px;
                                         }
 
+                                        .rate-remove {
+                                            position: absolute;
+                                            right: 0;
+                                            height: 100%;
+                                            width: 40px;
+                                            top: 0;
+                                            box-shadow: none;
+                                            background: transparent;
+                                            border: none;
+                                            cursor: pointer;
+                                        }
+
                                         .icons {
                                             &.icon-remove-10 {
                                                 background-position: 3px -2624px;
                                                 background-size: 80px;
-                                                position: absolute;
-                                                right: 10px;
-                                                top: 0;
-                                                bottom: 0;
                                                 margin: auto;
                                                 border-radius: 14px;
                                                 background-color: @grey1;
@@ -1868,7 +1906,7 @@
                                             padding-right: 10px;
                                             color: @grey3;
 
-                                            .icons { .hide(); }
+                                            .rate-remove { .hide(); }
                                         }
                                     }
                                 }
