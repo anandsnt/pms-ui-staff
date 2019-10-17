@@ -721,6 +721,22 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 }
             }
 
+
+            if ( angular.isDefined($scope.selectedEntityDetails.to_date) ) {
+                $scope.scheduleParams.to_date = $scope.selectedEntityDetails.to_date;
+            } else {
+                $scope.scheduleParams.to_date = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days');
+
+                var todayDate = moment().startOf('day'),
+                    daysDiff = moment.duration(todayDate.diff($scope.scheduleParams.to_date)).asDays();
+                
+                if (daysDiff < 7) {
+                    $scope.scheduleParams.to_date = $scope.scheduleParams.to_date.format("L");
+                } else {
+                    $scope.scheduleParams.to_date = $scope.scheduleParams.to_date.calendar();
+                }
+            }
+
             if ( angular.isDefined($scope.selectedEntityDetails.time) ) {
                 $scope.scheduleParams.time = $scope.selectedEntityDetails.time;
             } else {
