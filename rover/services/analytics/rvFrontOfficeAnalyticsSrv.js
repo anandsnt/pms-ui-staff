@@ -13,10 +13,22 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
 		this.fdArrivalsManagement = function(date) {
             var deferred = $q.defer();
 
-            rvAnalyticsSrv.hkOverview(date).then(function(data) {
-                data.label = 'AN_ARRIVALS_MANAGEMENT';
-                data.dashboard_type = 'arrivals_management_chart';
-                deferred.resolve(data);
+            rvAnalyticsSrv.hkOverview(date).then(function(response) {
+                response.label = 'AN_ARRIVALS_MANAGEMENT';
+                response.dashboard_type = 'arrivals_management_chart';
+                response.data = _.reject(response.data, function(data){
+                    return data.type === 'stayovers';
+                });
+                response.data = _.sortBy(response.data, function(data) {
+                    if (data.type === 'arrivals') {
+                        return 0;
+                    } else if (data.type === "rooms") {
+                        return 1;
+                    } else {
+                        return 3;
+                    }
+                });
+                deferred.resolve(response);
             });
 
             return deferred.promise;

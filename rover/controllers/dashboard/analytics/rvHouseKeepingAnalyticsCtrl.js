@@ -1,11 +1,10 @@
-sntRover.controller('RVHouseKeepingAnalyticsCtrlController', ['$scope',
+sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 	'$rootScope',
 	'$state',
 	'$timeout',
-	'rvFrontOfficeAnalyticsSrv',
 	'rvAnalyticsSrv',
 	'$controller',
-	function($scope, $rootScope, $state, $timeout, rvFrontOfficeAnalyticsSrv, rvAnalyticsSrv, $controller) {
+	function($scope, $rootScope, $state, $timeout, rvAnalyticsSrv, $controller) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.screenData = {};
@@ -13,7 +12,7 @@ sntRover.controller('RVHouseKeepingAnalyticsCtrlController', ['$scope',
 		$controller('rvHKOverviewAnalticsCtrl', {
 			$scope: $scope
 		});
-		$controller('rvHkWokrPriorityBaseCtrl', {
+		$controller('rvHkWokrPriorityCtrl', {
 			$scope: $scope
 		});
 

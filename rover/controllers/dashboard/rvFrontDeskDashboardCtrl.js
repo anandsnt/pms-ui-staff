@@ -76,22 +76,22 @@ sntRover.controller('RVfrontDeskDashboardController',
       // call API and on Success show Analytics page
         $timeout(function() {
         $scope.dashboardFilter.analyticsActive = true;
-        var options = {
-            params: $rootScope.businessDate,
-            successCallBack: function() {
-                rvFrontOfficeAnalyticsSrv.fdArrivalsManagement($rootScope.businessDate).then(function(data) {
-                    console.log("I am inside  fdArrivalsManagement");
-                    console.log(data);
-                });
+        // var options = {
+        //     params: $rootScope.businessDate,
+        //     successCallBack: function() {
+        //         rvFrontOfficeAnalyticsSrv.fdArrivalsManagement($rootScope.businessDate).then(function(data) {
+        //             console.log("I am inside  fdArrivalsManagement");
+        //             console.log(data);
+        //         });
 
-                rvFrontOfficeAnalyticsSrv.fdWorkload($rootScope.businessDate).then(function(data) {
-                    console.log("I am inside  fdWorkload");
-                    console.log(data);
-                });
-            }
-        };
+        //         rvFrontOfficeAnalyticsSrv.fdWorkload($rootScope.businessDate).then(function(data) {
+        //             console.log("I am inside  fdWorkload");
+        //             console.log(data);
+        //         });
+        //     }
+        // };
 
-        $scope.callAPI(rvAnalyticsSrv.initRoomAndReservationApis, options);
+        // $scope.callAPI(rvAnalyticsSrv.initRoomAndReservationApis, options);
       }, 500);
     });
 }]);

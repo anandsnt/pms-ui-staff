@@ -114,6 +114,8 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 				return xScale(item.xFinal) - xScale(item.xOrigin);
 			})
 			.style("fill", function(item) {
+				console.log(item.chartName);
+				console.log(colorScheme[item.chartName + 'ColorScheme']);
 				return colorScheme[item.chartName + 'ColorScheme'](item.type);
 			})
 			.on("click", function(e) {
