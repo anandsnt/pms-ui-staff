@@ -1671,15 +1671,39 @@
                                     .contract {
 
                                         li {
-                                            height: 35px;
-                                            line-height: 35px;
+                                            line-height: 1.2;
+                                            padding: 10px 0;
 
                                             .highlight { color: @logoPrimary; }
 
-                                            &.rate,
-                                            &.contract-name {
-                                                .nowrap();
+                                            &:not(.rate) {
                                                 padding-right: 10px;
+                                            }
+
+                                            &.rate {
+                                                span {
+                                                    .show();
+
+                                                    &:not(:last-child) {
+                                                        margin-bottom: 4px;
+                                                    }
+
+                                                    &.highlight { 
+                                                        display: inline;
+                                                        margin:0; 
+                                                    }
+
+                                                    &.more {
+                                                        display: inline;
+                                                        color: @grey3;
+                                                        margin: 0;
+                                                    }
+                                                }
+
+                                                em {
+                                                    text-transform: none;
+                                                    color: @grey3;
+                                                }
                                             }
                                         }
 
