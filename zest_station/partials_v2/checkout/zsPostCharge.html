@@ -11,8 +11,7 @@
                     </div>
                     <div class="minibar-item-qty" ng-if="item.quantity>0">{{item.quantity}}</div>
                     <div class="minibar-item-actions">
-                        <button type="button" class="button"
-                            touch-press="updateQuantity(-1, $index, 1)">+</button>
+                        <button type="button" class="button" touch-press="updateQuantity(-1, $index, 1)">+</button>
                         <button type="button" class="button" ng-class="{'disabled': item.quantity<1}"
                             touch-press="updateQuantity(-1, $index, -1)" ng-disabled="item.quantity<1">-</button>
                     </div>
@@ -54,7 +53,8 @@
                     <div class="items" ng-iscroll="quantity-list-scroll">
                         <ul class="wrapper">
                             <li ng-repeat="item in chargeData.chargeItems" ng-if="item.quantity>0">
-                                <span class="name">{{item.quantity}}x {{item.name}}</span>
+                                <span class="name">{{item.quantity}}x
+                                    {{item.description_trl ? item.description_trl : item.name}}</span>
                                 <span class="cost">${{(item.quantity*item.unit_price) | number : 2}}</span>
                             </li>
                         </ul>
