@@ -339,7 +339,10 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             if ( $scope.scheduleParams.from_date ) {
                 params.from_date = $filter('date')($scope.scheduleParams.from_date, 'yyyy/MM/dd');
             }
-            
+
+            if ( $scope.scheduleParams.to_date ) {
+                params.to_date = $filter('date')($scope.scheduleParams.to_date, 'yyyy/MM/dd');
+            }            
 
             // fill 'frequency_id', 'starts_on', 'repeats_every' and 'ends_on_date'
             params.frequency_id = $scope.scheduleParams.frequency_id;
@@ -1256,7 +1259,16 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
          * Show export calender only for joyrnal export
          */
         $scope.shouldShowExportCalenderFromDate = function () {
-            if ($scope.selectedEntityDetails.report.title === 'Journal Export' || $scope.selectedEntityDetails.report.title === 'Invoice / Folio Export') {
+            if ($scope.selectedEntityDetails.report.title === 'Invoice / Folio Export') {
+                var dateFieldObject = _.find($scope.originalScheduleTimePeriods,
+                    function(item) {
+                        return item.value === 'DATE_RANGE'; }
+                    );
+
+                if (dateFieldObject.id === $scope.scheduleParams.time_period_id) {
+                    return true;
+                }
+            } else if ($scope.selectedEntityDetails.report.title === 'Journal Export') {
                 var dateFieldObject = _.find($scope.originalScheduleTimePeriods,
                     function(item) {
                         return item.value === 'DATE'; }
@@ -1273,7 +1285,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             if ($scope.selectedEntityDetails.report.title === 'Invoice / Folio Export') {
                 var dateFieldObject = _.find($scope.originalScheduleTimePeriods,
                     function(item) {
-                        return item.value === 'DATE'; }
+                        return item.value === 'DATE_RANGE'; }
                     );
 
                 if (dateFieldObject.id === $scope.scheduleParams.time_period_id) {
