@@ -447,7 +447,9 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			var contractedRates = rvCompanyCardContractsSrv.getContractedRates(),
 				isUpdateEnabledForNameInCard = true;
 
-			if (contractedRates.current_contracts.length > 0 || contractedRates.future_contracts.length > 0 || contractedRates.history_contracts.length > 0) {
+			if ((contractedRates.current_contracts && contractedRates.current_contracts.length > 0 ) || 
+				(contractedRates.future_contracts && contractedRates.future_contracts.length > 0 ) || 
+				(contractedRates.history_contracts && contractedRates.history_contracts.length > 0)) {
 				isUpdateEnabledForNameInCard = false;
 			}
 			return isUpdateEnabledForNameInCard;
