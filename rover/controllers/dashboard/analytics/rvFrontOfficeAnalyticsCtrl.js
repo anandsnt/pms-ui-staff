@@ -10,7 +10,7 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 		BaseCtrl.call(this, $scope);
 		$scope.screenData = {};
 
-		$controller('rvHKOverviewAnalticsCtrl', {
+		$controller('rvFrontOfficeWorkloadCtrl', {
 			$scope: $scope
 		});
 		$controller('rvFrontOfficeManagementAnalyticsCtrl', {
@@ -36,23 +36,37 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 
 		var renderManagementChart = function(data) {
 
-			rvFrontOfficeAnalyticsSrv.fdArrivalsManagement($rootScope.businessDate).then(function(data) {
-				console.log("I am inside  fdArrivalsManagement");
-				console.log(data);
+			// rvFrontOfficeAnalyticsSrv.fdArrivalsManagement($rootScope.businessDate).then(function(data) {
+			// 	console.log("I am inside  fdArrivalsManagement");
+			// 	console.log(data);
+			// 	try{
+
+			// 		var chartDetails = {
+			// 		chartData: data,
+			// 		onBarChartClick: onBarChartClick
+			// 	};
+			// 		$scope.drawArrivalManagementChart(chartDetails);
+			// 	} catch(e) {
+			// 		console.log(e)
+			// 	}
+				
+			// 	(data);
+			// });
+
+			rvFrontOfficeAnalyticsSrv.fdWorkload($rootScope.businessDate).then(function(data) {
+				//             console.log("I am inside  fdWorkload");
+				           console.log(data);
 				try{
 
 					var chartDetails = {
 					chartData: data,
 					onBarChartClick: onBarChartClick
 				};
-					$scope.drawArrivalManagementChart(chartDetails);
+					$scope.drawWorkLoadChart(chartDetails);
 				} catch(e) {
 					console.log(e)
 				}
-				
-				(data);
 			});
-
 		};
 
 

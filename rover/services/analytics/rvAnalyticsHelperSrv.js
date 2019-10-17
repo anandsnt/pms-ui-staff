@@ -47,7 +47,7 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 					item.xFinal = item.count;
 				} else {
 					// For all other elements, X origin  is count of previous item and X final is count of the item
-					item.origin = chart.contents.right_side[index - 1].count;
+					item.origin = chart.contents.right_side[index - 1].xFinal;
 					item.xFinal = item.origin + chart.contents.right_side[index].count;
 				}
 			});
@@ -152,6 +152,106 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 	this.addRandomNumbersForTesting = function(chartDetails) {
 		var combinedItemsCountArray = [];
 
+		var b = {
+			"type": "jena",
+			"label": "jena",
+			"contents": {
+				"right_side": [{
+					"type": "early_checkin",
+					"label": "AN_EARLY_CHECKIN",
+					"count": 0
+				}, {
+					"type": "checkin",
+					"label": "AN_CHECKIN",
+					"count": 1
+				}, {
+					"type": "vip_checkin",
+					"label": "AN_VIP_CHECKIN",
+					"count": 0
+				}, {
+					"type": "vip_checkout",
+					"label": "AN_VIP_CHECKOUT",
+					"count": 0
+				}, {
+					"type": "checkout",
+					"label": "AN_CHECKOUT",
+					"count": 0
+				}, {
+					"type": "late_checkout",
+					"label": "AN_LATE_CHECKOUT",
+					"count": 0
+				}]
+			}
+		};
+
+		//chartDetails.chartData.data.push(b);
+		var p = {
+			"type": "patrick",
+			"label": "jena",
+			"contents": {
+				"right_side": [{
+					"type": "early_checkin",
+					"label": "AN_EARLY_CHECKIN",
+					"count": 0
+				}, {
+					"type": "checkin",
+					"label": "AN_CHECKIN",
+					"count": 1
+				}, {
+					"type": "vip_checkin",
+					"label": "AN_VIP_CHECKIN",
+					"count": 0
+				}, {
+					"type": "vip_checkout",
+					"label": "AN_VIP_CHECKOUT",
+					"count": 0
+				}, {
+					"type": "checkout",
+					"label": "AN_CHECKOUT",
+					"count": 0
+				}, {
+					"type": "late_checkout",
+					"label": "AN_LATE_CHECKOUT",
+					"count": 0
+				}]
+			}
+		};
+		//chartDetails.chartData.data.push(p);
+
+		b.type = "Jane"
+		var c = {
+			"type": "jena",
+			"label": "jena",
+			"contents": {
+				"right_side": [{
+					"type": "early_checkin",
+					"label": "AN_EARLY_CHECKIN",
+					"count": 0
+				}, {
+					"type": "checkin",
+					"label": "AN_CHECKIN",
+					"count": 1
+				}, {
+					"type": "vip_checkin",
+					"label": "AN_VIP_CHECKIN",
+					"count": 0
+				}, {
+					"type": "vip_checkout",
+					"label": "AN_VIP_CHECKOUT",
+					"count": 0
+				}, {
+					"type": "checkout",
+					"label": "AN_CHECKOUT",
+					"count": 0
+				}, {
+					"type": "late_checkout",
+					"label": "AN_LATE_CHECKOUT",
+					"count": 0
+				}]
+			}
+		};
+		//chartDetails.chartData.data.push(c);
+
 		_.each(chartDetails.chartData.data, function(chart) {
 		    _.each(chart.contents.left_side, function(item) {
 		        // to delete
@@ -163,6 +263,9 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 		        item.count = item.count < 3 ?  _.random(20, 100) : item.count;
 		        combinedItemsCountArray.push(item.count);
 		    });
+		    // chart.contents.right_side.push(chart.contents.right_side[0]);
+		    // chart.contents.right_side.push(chart.contents.right_side[0]);
+		    // chart.contents.right_side.push(chart.contents.right_side[0]);
 		});
 
 		var largestItemCount = _.max(combinedItemsCountArray, function(count) {
