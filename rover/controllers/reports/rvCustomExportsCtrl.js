@@ -643,10 +643,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             var requestParams = getScheduleParams($scope.selectedEntityDetails.id),
                 onScheduleCreateSuccess = () => {
                     $scope.errorMessage = '';
-                    $scope.updateViewCol($scope.viewColsActions.ONE);
-                    $scope.viewState.currentStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
-                    $scope.customExportsData.isNewExport = false;
-                    fetchCustomExportsAndExportFrequencies();
+                    processDataSpaceListing();                    
                 },
                 onScheduleCreateFailure = (error) => {
                     $scope.errorMessage = error;
@@ -703,6 +700,15 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             });
         };
 
+        // Process data space listing
+        var processDataSpaceListing = () => {
+            initializeData();
+            configureNewExport();
+            $scope.customExportsData.isNewExport = true;
+            $scope.updateView($scope.reportViewActions.SHOW_CUSTOM_NEW_EXPORT);
+            $scope.updateViewCol($scope.viewColsActions.ONE);
+        };
+
         // Set up all the listeners here
         var setUpListeners = () => {
             $scope.addListener('UPDATE_CUSTOM_EXPORT_SCHEDULE', () => {
@@ -742,11 +748,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
 
             // Listener for creating new custom export
             $scope.addListener('CREATE_NEW_CUSTOM_EXPORT', function () {
-                initializeData();
-                configureNewExport();
-                $scope.customExportsData.isNewExport = true;
-                $scope.updateView($scope.reportViewActions.SHOW_CUSTOM_NEW_EXPORT);
-                $scope.updateViewCol($scope.viewColsActions.ONE);
+                processDataSpaceListing();
             });
 
             $scope.addListener('RESET_CURRENT_STAGE', () => {

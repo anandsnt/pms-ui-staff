@@ -1394,6 +1394,10 @@
                                 .button {
                                     height: 60px;
                                     font-size: 18px;
+
+                                    &:not(:last-child) {
+                                        margin-right: 10px;
+                                    }
                                 }
                             }
                         }
@@ -1810,7 +1814,7 @@
                                             .nowrap();
                                         }
 
-                                        .rate-code {
+                                        .rate-code {
                                             color: @grey3;
                                             font-size: 14px;
                                         }
@@ -1851,7 +1855,7 @@
                                             .nowrap();
                                         }
 
-                                        .rate-code {
+                                        .rate-code {
                                             color: @grey3;
                                             font-size: 14px;
                                             font-weight: 400;
@@ -3186,9 +3190,7 @@
                                     padding: 0px 20px;
                                     margin: 10px 0;
                                     height: 40px;
-                                    &.search {
-                                        .calc-width( 100, 570 );
-                                        
+                                    &.search { 
                                         .query {
                                             padding-right: 35px;
                                         }
@@ -3234,7 +3236,6 @@
                                             text-transform: uppercase;
                                             font-size: 14px;
                                             width: 50%;
-                                            #flexbox > .parent( '', '', '', '' );
                                             .pull-left;
                                             span {
                                                 position: static;
@@ -3655,7 +3656,7 @@
                                         margin-right: 10px;
                                         padding: 0;
 
-                                        input[type=text] {
+                                        input[type=text] {
                                             padding-right: 80px;
                                             .box-shadow(inset 1px 1px 0 rgba(0,0,0,.2));
                                         }
@@ -3779,7 +3780,7 @@
                            
                         }
 
-                        &:not(.no-filters) {
+                        &:not(.no-filters) {
                             .search-form {
                                 .button-filter {
                                     .box-shadow(inset 1px 1px 1px rgba(0,0,0,.3));

@@ -1,48 +1,12 @@
 <div ng-controller="rvCardAddContractsCtrl" class="contracts-details" ng-show="!contractData.noContracts && contractData.mode === 'ADD'">
-    <!-- Add .searching when searching a contract -->
-    <div class="autocomplete-search contract-details-header">
-        <!-- Remove .with-button if we are not shwoing Unlink Contract button -->
-        <div class="search-header with-button hidden">
-            <div class="search">
-                <label>Link Existing Contract</label>
-                <!-- Add .visible to show clear query -->
-                <button class="clear-query">
-                    <span class="icons icon-clear-search">Clear query</span>
-                </button>
-                <button type="submit" name="submit" class="icons icon-search">Search</button>
-                <input name="find-contracts" class="query" placeholder="Search by Contract Name or Access Code" autocomplete="off" type="search">
-            </div>
-            <button type="button" class="button red">Unlink Contract</button>
-        </div>
-        <!-- Remove .hidden when searching -->
-        <ul class="autocomplete-results-header hidden">
-            <li class="contract-name">Contract Name</li>
-            <li class="start-date">Start Date</li>
-            <li class="end-date">End Date</li>
-            <li class="rate">Rate</li>
-        </ul>
-        <!-- Remove .hidden when searching -->
-        <div  class="scrollable hidden">
-            <div class="wrapper">
-                <!-- Add .linked if it's a linked contract already -->
-                <ul class="contract">
-                    <li class="contract-name">{contract name}</li>
-                    <li class="start-date">{start-date}</li>
-                    <li class="end-date">{end-date}</li>
-                    <li class="rate">{rate}</li>
-                </ul>
-                <!-- ... repeat for each found contract -->
-            </div>
-        </div>
-    </div>
     <!-- If we don't show the bottom form, add .without-footer -->
     <!-- If we don't show the search for some reason, add .without-header -->
-    <div class="contracts-details-form scrollable" ng-iscroll="cardNewContractsScroll">
+    <div class="contracts-details-form scrollable without-header" ng-iscroll="cardNewContractsScroll">
         <div class="wrapper float">
             <div class="holder left">
                 <strong class="h3">Contract Details</strong>
                 <div class="entry only-switch margin">
-                    <label for="contract-status">Status</label>
+                    <label class="disable-element" for="contract-status">Status</label>
                     <!-- Add .on, when active. Remove otherwise -->
                     <div class="switch-button full-width" ng-class="{'on': addData.isActive}">
                         <input id="contract-status" ng-model="addData.isActive" ng-click="toggleActiveStatus()" type="checkbox">
@@ -57,22 +21,22 @@
                     </div>
                 </div>
                 <div class="entry margin">
-                    <label for="contract-name">Name</label>
+                    <label class="disable-element" for="contract-name">Name</label>
                     <!-- add readonly if it's read only -->
                     <input name="contract-name" id="contract-name" ng-model="addData.contractName" placeholder="Contract Name" type="text" />
                 </div>
                 <div class="entry">
-                    <label for="contract-code">Access Code</label>
+                    <label class="disable-element" for="contract-code">Access Code</label>
                     <!-- add readonly if it's read only -->
                     <input name="contract-code" id="contract-code" ng-model="addData.accessCode" placeholder="Access Code" type="text" />
                 </div>
                 <div class="entry margin has-datepicker">
-                    <label for="contract-start">Start Date</label>
+                    <label class="disable-element" for="contract-start">Start Date</label>
                     <!-- add readonly if it's read only -->
                     <input name="contract-start" id="contract-start" class="datepicker" ng-model="addData.startDate" placeholder="Select Start Date" maxlength="8" readonly type="text" ng-click="contractStart()"/>
                 </div>
                 <div class="entry has-datepicker">
-                    <label for="contract-end">End Date</label>
+                    <label class="disable-element" for="contract-end">End Date</label>
                     <!-- add readonly if it's read only -->
                     <input name="contract-end" id="contract-end" class="datepicker" ng-model="addData.endDate" placeholder="Select End Date" maxlength="8" readonly type="text" ng-click="contractEnd()"/>
                 </div>
@@ -80,7 +44,7 @@
                 <div include-replace ng-include="'/assets/partials/companyCard/contracts/rvCardSearchContractedRate.html'"></div>
 
                 <div class="entry margin">
-                    <label for="contracted-nights">Contracted nights</label>
+                    <label class="disable-element" for="contracted-nights">Contracted nights</label>
                      <!-- add readonly if it's read only -->
                     <input name="contracted-nights" id="contracted-nights" class=" contracted-nights" placeholder="Nights per month" ng-model="addData.contractedNights" maxlength="8" readonly type="text" ng-click="contractedNights()"/>
                 </div>
