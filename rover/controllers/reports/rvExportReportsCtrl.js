@@ -10,6 +10,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
     '$timeout',
     'rvUtilSrv',
     'ngDialog',
+    '$timeout',
     function(
         $rootScope,
         $scope,
@@ -21,7 +22,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
         $filter,
         $timeout,
         util,
-        ngDialog
+        ngDialog,
+        $timeout
     ) {
         var scheduleTimePeriods = [];
 
@@ -672,9 +674,13 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 }
             };
 
+            var businessDateMinusOne = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
+                .format($rootScope.momentFormatForAPI);
+
             var startsOn = $scope.selectedEntityDetails.starts_on || $rootScope.businessDate,
                 endsOnDate = $scope.selectedEntityDetails.ends_on_date || $rootScope.businessDate,
-                exportDate = $scope.selectedEntityDetails.from_date || $rootScope.businessDate;
+                exportDate = $scope.selectedEntityDetails.from_date || $rootScope.businessDate,
+                exportToDate = $scope.selectedEntityDetails.to_date || businessDateMinusOne;
 
             // saved emails/FTP
             var delieveryType = $scope.selectedEntityDetails.delivery_type ? $scope.selectedEntityDetails.delivery_type.value : '';
@@ -746,14 +752,21 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
              * max date is business date
              */
             $scope.exportFromCalenderOptions = angular.extend({
-                maxDate: tzIndependentDate($rootScope.businessDate)
+                maxDate: tzIndependentDate(businessDateMinusOne),
+                onSelect: function(value) {
+                    $scope.exportCalenderToOptions.minDate = value;
+                }
             }, datePickerCommon);
             $scope.scheduleParams.from_date = reportUtils.processDate(exportDate).today;
 
+            var businessDateMinusOne = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
+                .format($rootScope.momentFormatForAPI);
+
             $scope.exportCalenderToOptions = angular.extend({
-                maxDate: tzIndependentDate($rootScope.businessDate)
+                maxDate: tzIndependentDate($rootScope.businessDate),
+                minDate: tzIndependentDate(exportDate)
             }, datePickerCommon);
-            $scope.scheduleParams.export_to_date = reportUtils.processDate(exportDate).today;
+            $scope.scheduleParams.to_date = reportUtils.processDate(exportToDate).today;
 
             $scope.startsOnOptions = angular.extend({
                 minDate: tzIndependentDate($rootScope.businessDate),
@@ -1250,9 +1263,9 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
         };
 
         $scope.updateScrollOnUpdate = function () {
-            setTimeout(function(){
+            $timeout( function() {
                 $scope.refreshSecondColumnScroll(true);
-            }, 3000)
+            }, 1000);
             
         };
         /*

@@ -204,7 +204,8 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
 
             var startsOn = $scope.selectedEntityDetails.starts_on || $rootScope.businessDate,
                 endsOnDate = $scope.selectedEntityDetails.ends_on_date || $rootScope.businessDate,
-                exportDate = $scope.selectedEntityDetails.from_date || $rootScope.businessDate;
+                exportDate = $scope.selectedEntityDetails.from_date || $rootScope.businessDate,
+                exportToDate = $scope.selectedEntityDetails.to_date || $rootScope.businessDate;
 
 
             $scope.scheduleParams = {};
@@ -270,14 +271,17 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
              * max date is business date
              */
             $scope.exportFromCalenderOptions = angular.extend({
-                maxDate: tzIndependentDate($rootScope.businessDate)
+                maxDate: tzIndependentDate($rootScope.businessDate),
+                onSelect: function(value) {
+                    $scope.exportCalenderToOptions.minDate = value;
+                }
             }, datePickerCommon);
             $scope.scheduleParams.from_date = reportUtils.processDate(exportDate).today;
 
             $scope.exportCalenderToOptions = angular.extend({
                 maxDate: tzIndependentDate($rootScope.businessDate)
             }, datePickerCommon);
-            $scope.scheduleParams.to_date = reportUtils.processDate(exportDate).today;
+            $scope.scheduleParams.to_date = reportUtils.processDate(exportToDate).today;
             
             $scope.startsOnOptions = angular.extend({
                 minDate: tzIndependentDate($rootScope.businessDate),
