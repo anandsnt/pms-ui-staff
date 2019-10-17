@@ -30,7 +30,7 @@ sntRover.controller('RVHouseKeepingAnalyticsCtrlController', ['$scope',
 					onBarChartClick: onBarChartClick
 				};
 
-				$scope.drawBidirectionalChart(chartDetails);
+				$scope.drawHkOverviewChart(chartDetails);
 			});
         };
 
@@ -42,7 +42,7 @@ sntRover.controller('RVHouseKeepingAnalyticsCtrlController', ['$scope',
 					chartData: data,
 					onBarChartClick: onBarChartClick
 				};
-				$scope.drawHkWorkPriority(chartDetails);
+				$scope.drawHkWorkPriorityChart(chartDetails);
 			});
 
 		};
