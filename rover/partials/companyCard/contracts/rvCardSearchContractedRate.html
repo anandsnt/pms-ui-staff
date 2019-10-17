@@ -16,7 +16,7 @@
             <div class="wrapper">
                 <div class="card" ng-repeat="item in contractData.searchResults" ng-click="clickedOnResult($index)">
                     <span ng-bind-html="escapeNull(item.name)|highlight:contractData.rateSearchQuery:false" class="rate-name"></span>
-                    <span class="rate-code">{{item.code}}</span>
+                    <span ng-bind-html="escapeNull(item.code)|highlight:contractData.rateSearchQuery:false" class="rate-code"></span>
                 </div>
                 <!-- ... repeat for each rate -->
             </div>
