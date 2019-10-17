@@ -102,6 +102,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 		 * @param {Object} data - API response of detail fetch
 		 */
 		fetchContractDetailsSuccessCallback = function(data) {
+			setErrorMessage([]);
 			$scope.contractData.editData = data;
 			$scope.contractData.selectedRateList = data.contract_rates;
 			$scope.contractData.disableFields = data.end_date < $rootScope.businessDate;
@@ -147,7 +148,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 		/**
 		 * Function fetches the contracts on page load
 		 */
-		that.fetchContracts = function() {
+		that.fetchContracts = function(action, selectedContractId) {
 			$scope.contractData.accountId = !_.isEmpty($scope.contactInformation) ? $scope.contactInformation.id : $stateParams.id;
 			var options = {
 				successCallBack: fetchContractsListSuccessCallback,
