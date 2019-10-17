@@ -41,7 +41,7 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'rvC
             options = {
                 params: {
                     'account_id': accountId,
-                    "contract_id": $scope.contractData.selectedContract,
+                    "contract_id": $scope.contractData.selectedContractId,
                     'postData': changedData
                 },
                 failureCallBack: updateContractFailureCallback,
@@ -131,7 +131,7 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'rvC
                 successCallBack: unLinkContractSuccessCallback,
                 failureCallBack: unLinkContractFailureCallback,
                 params: {
-                    "id": $scope.contractData.selectedContract,
+                    "id": $scope.contractData.selectedContractId,
                     "account_id": $scope.contractData.accountId
                 }
             };

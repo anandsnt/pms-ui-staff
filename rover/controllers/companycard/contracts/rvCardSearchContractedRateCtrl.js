@@ -39,7 +39,7 @@ angular.module('sntRover').controller('rvCardSearchContractedRateCtrl', ['$scope
             };
 
             if ($scope.contractData.mode === 'EDIT') {
-                options.params.contract_id = $scope.contractData.selectedContract;
+                options.params.contract_id = $scope.contractData.selectedContractId;
             }
 
             $scope.callAPI(rvCompanyCardContractsSrv.fetchRateContract, options);
