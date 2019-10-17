@@ -254,7 +254,7 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
         $stateProvider.state('admin.clientSuccessManagerDetails', {
             templateUrl: '/assets/partials/clientSuccessManagers/adClientSuccessManagerAdd.html',
             controller: 'ADClientSuccessManagerDetailsCtrl',
-            url: '/clientSuccessManager/:action/:id'
+            url: '/clientSuccessManager/:id'
         });
 
         $stateProvider.state('admin.zestStationIDCollection', {
