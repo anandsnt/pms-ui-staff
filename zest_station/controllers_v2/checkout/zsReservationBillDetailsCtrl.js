@@ -344,8 +344,8 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                     }
                 }
                 // If there is ony one group, by default keep it open
-                if ($scope.chargeData.groupedItems.length === 1) {
-                    $scope.chargeData.groupedItems[0].is_open = true;
+                if (Object.keys($scope.chargeData.groupedItems).length === 1) {
+                    $scope.chargeData.groupedItems[Object.keys( $scope.chargeData.groupedItems)[0]].is_open = true;
                 }
 
                 setPostChargeContentHeight();

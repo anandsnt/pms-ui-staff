@@ -1050,13 +1050,14 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
                     if(tzIndependentDate(date) >= businessDate) {
     					details.rate.id = rateId;
     					var dayInfo = stayDetails[date],
-    						calculatedAmount = dayInfo && dayInfo.amount || stayDetails[ARRIVAL_DATE].amount;
+							calculatedAmount = dayInfo && dayInfo.amount || stayDetails[ARRIVAL_DATE].amount,
+							rateCurrency = dayInfo && dayInfo.rateCurrency || stayDetails[ARRIVAL_DATE].rateCurrency;
 
     					calculatedAmount = Number(parseFloat(calculatedAmount).toFixed(2));
     					details.rateDetails = {
     						actual_amount: calculatedAmount,
     						modified_amount: calculatedAmount,
-    						rateCurrency: dayInfo.rateCurrency
+    						rateCurrency: rateCurrency
     					};
 
 						if (rateId) {
