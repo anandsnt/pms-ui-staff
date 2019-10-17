@@ -206,23 +206,41 @@ angular.module('sntRover')
 				// rvAnalyticsHelperSrv.drawBarsOfBidirectonalChart(dataForDrawingBars);
 
 
-				var firstLineHeight = yScale.bandwidth()/2;
+				var firstHorizontalLineHeight = yScale.bandwidth()/2;
 				svg.append("line") // attach a line
 					.style("stroke", "#000000") // colour the line
 					.style("stroke-width", "2px")
-					.attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
-					.attr("y1", firstLineHeight) // y position of the first end of the line
+					.attr("x1", -100) // x position of the first end of the line
+					.attr("y1", firstHorizontalLineHeight) // y position of the first end of the line
 					.attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-					.attr("y2", firstLineHeight);
+					.attr("y2", firstHorizontalLineHeight);
 
-				var firstLineHeight1 = 2.5 * yScale.bandwidth();
+				var secondHorizontalLineHeight = 2.5 * yScale.bandwidth();
 				svg.append("line") // attach a line
 					.style("stroke", "#000000") // colour the line
 					.style("stroke-width", "2px")
-					.attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
-					.attr("y1", firstLineHeight1) // y position of the first end of the line
+					.attr("x1", -100) // x position of the first end of the line
+					.attr("y1", secondHorizontalLineHeight) // y position of the first end of the line
 					.attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-					.attr("y2", firstLineHeight1);
+					.attr("y2", secondHorizontalLineHeight);
+
+				var thirdHorizontalLineHeight = height;
+				svg.append("line") // attach a line
+					.style("stroke", "#000000") // colour the line
+					.style("stroke-width", "2px")
+					.attr("x1", 0) // x position of the first end of the line
+					.attr("y1", thirdHorizontalLineHeight) // y position of the first end of the line
+					.attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
+					.attr("y2", thirdHorizontalLineHeight);
+
+				var firstVericalLineHeight = height;
+				svg.append("line") // attach a line
+					.style("stroke", "#000000") // colour the line
+					.style("stroke-width", "2px")
+					.attr("x1", 0) // x position of the first end of the line
+					.attr("y1", 0) // y position of the first end of the line
+					.attr("x2", 0) // x position of the second end of the line
+					.attr("y2", firstVericalLineHeight);
 
 
 				// // right side legends
