@@ -163,6 +163,81 @@
     }
 }
 
+/* Analytics ***/
+#dashboard.analytics {
+
+    .analytics-chart {
+        display: grid;
+        grid-column-gap: 20px;
+
+        &.with-legend-left:not(.with-legend-right) {
+            grid-template-columns: 160px 1fr;
+        }
+
+        &.with-legend-right:not(.with-legend-left) {
+            grid-template-columns: 1fr 160px;
+        }
+
+        &.with-legend-left.with-legend-right {
+            grid-template-columns: 160px 1fr 160px;
+        }
+    }
+
+    .chart-legend {
+        display: flex;
+        flex-flow: column wrap;
+        font-size: 14px;
+        line-height: 1;
+        text-transform: uppercase;
+
+        .legend-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+
+            &:not(:first-child) {
+                margin-top: 10px;
+            }
+        }
+
+        .legend-item {
+            display: flex;
+            flex-flow: row wrap;
+            align-items: center;
+
+            &:not(:last-child) {
+                margin-bottom: 10px;
+            }
+        }
+
+        .rect {
+            .show();
+            .square(20px);
+        }
+
+        &.legend-left {
+            align-items: flex-end;
+
+            .rect {
+                order: 2;
+                margin-left: 8px;
+            }
+        }
+
+        &.legend-right {
+            align-items: flex-start;
+
+            .rect {
+                margin-right: 8px;
+            }
+        }
+    }
+
+    .chart-content {
+        
+    }
+}
+
 /* 768px+               ==============================*/
 @media only screen and (min-width: 768px) {
     #dashboard {
