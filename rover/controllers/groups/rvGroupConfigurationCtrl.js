@@ -1217,6 +1217,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 summaryData.release_date = $filter('date')(summaryData.release_date, $rootScope.dateFormatForAPI);
                 if (!summaryData.rate) {
                     summaryData.rate = -1;
+                    summary.contract_id = null;
                 }
 
                 updateGroupSummaryInProgress =  true;

@@ -1489,11 +1489,6 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                         }
                         sumData.rateSelectDataObject.push(rate);
                     });
-                    if (sumData.rateSelectDataObject.length === 1) {
-                        $scope.groupConfigData.summary.rate = '-1';
-                        $scope.groupConfigData.summary.contract_id = null;
-                    }
-
                 },
                 onFetchRatesFailure = function(errorMessage) {
                     $scope.errorMessage = errorMessage;
