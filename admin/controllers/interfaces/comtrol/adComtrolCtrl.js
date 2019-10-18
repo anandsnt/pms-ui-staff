@@ -14,6 +14,10 @@ admin.controller('adComtrolCtrl', ['$scope', 'config', 'adInterfacesSrv', 'ngDia
             return adInterfacesSrv.hotelSettings();
         };
 
+        var dataSwap = function() {
+            return adIFCSrv.post('comtrol', 'data_swap', {});
+        };
+
         $scope.interface = 'COMTROL';
 
         $scope.state = {
@@ -73,6 +77,14 @@ admin.controller('adComtrolCtrl', ['$scope', 'config', 'adInterfacesSrv', 'ngDia
             });
         };
 
+        $scope.onClickDataSwap = function () {
+            ngDialog.open({
+                template: '/assets/partials/interfaces/comtrol/adComtrolDataSwapWarning.html',
+                scope: $scope,
+                closeByDocument: true
+            });
+        };
+
         $scope.closeDialog = function () {
             ngDialog.close();
         };
@@ -81,6 +93,15 @@ admin.controller('adComtrolCtrl', ['$scope', 'config', 'adInterfacesSrv', 'ngDia
             $scope.callAPI(resetToken, {
                 successCallBack: function (response) {
                     $scope.authentication_token = response.authentication_token;
+                    $scope.closeDialog();
+                }
+            });
+        };
+
+        $scope.initiateDataSwap = function () {
+            $scope.callAPI(dataSwap, {
+                successCallBack: function(response) {
+                    $scope.dataSwapInitMessage = response.data;
                     $scope.closeDialog();
                 }
             });

@@ -745,6 +745,65 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
             // remove the orientation after similar delay
             removePrintOrientation();
         };
+        /* 
+		 * Should print AR invoice number
+		 * @param printData response
+		 * @param statement individual item
+		 */
+		$scope.shouldPrintArInvoiceNumber = function(printData, statement) {
+			var printArInvNo = false;
+
+			if (printData.is_print_ar_invoice_number_enabled && statement.ar_invoice_number) {
+				printArInvNo = true;
+			}
+
+			return printArInvNo;
+		};
+		/* 
+		 * Should print folio number
+		 * @param printData response
+		 * @param statement individual item
+		 */
+		$scope.shouldPrintFolioNumber = function(printData, statement) {
+			var printFolioNo = false;
+
+			if (!statement.ar_invoice_number) {
+				if (printData.is_print_ar_folio_number_enabled && statement.folio_number) {
+					printFolioNo = true;
+				} else if (!printData.is_print_ar_folio_number_enabled && (statement.folio_number || !statement.folio_number)) {
+					printFolioNo = false;
+				} 
+			} else {
+				if (!printData.is_print_ar_invoice_number_enabled && printData.is_print_ar_folio_number_enabled && statement.folio_number) {
+					printFolioNo = true;
+				} else if (!printData.is_print_ar_folio_number_enabled && (statement.folio_number || !statement.folio_number)) {
+					printFolioNo = false;
+				}
+			}
+
+			return printFolioNo;
+		};
+		/* 
+		 * Should print Invoice number
+		 * @param printData response
+		 * @param statement individual item
+		 */
+
+		$scope.shouldPrintInvoiceNumber = function(printData, statement) {
+			var printInvNo = false;
+
+			if (!printData.is_print_ar_invoice_number_enabled && !printData.is_print_ar_folio_number_enabled) {
+				printInvNo = true;
+			} else if (!printData.is_print_ar_invoice_number_enabled && printData.is_print_ar_folio_number_enabled && !statement.folio_number) {
+				printInvNo = true;
+			} else if (printData.is_print_ar_invoice_number_enabled && !statement.ar_invoice_number && printData.is_print_ar_folio_number_enabled && !statement.folio_number) {
+				printInvNo = true;
+			} else if (!statement.ar_invoice_number && !statement.folio_number) {
+				printInvNo = true;
+			}
+
+			return printInvNo;
+		};
 
         // print AR Statement
         var printArStatement = function(params) {
@@ -924,9 +983,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$("#add-balance").removeClass('no-print');
 			if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
 				$scope.$broadcast("UPDATE_WINDOW");
-			} else {
-				$scope.closeDialog();
-			}
+			} 
+			$scope.closeDialog();
 			$("body #loading").html('<div id="loading-spinner" ></div>');
 			$scope.switchArTransactionTab($scope.arFlags.currentSelectedArTab)
 			sntActivity.stop("PRINT_STARTED");
@@ -969,7 +1027,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					else if (parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices))
 					{
 						if (successData.is_copy_counter) {
-              copyCount = getCopyCount(successData);
+            				copyCount = getCopyCount(successData);
 						}
 						successData.invoiceLabel = successData.translation.copy_of_ar_invoice.replace("#count", copyCount);
 					}

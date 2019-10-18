@@ -14,7 +14,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 				disableFields: false,
 				noContracts: true,
 				noStatistics: true,
-				selectedContract: '',
+				selectedContractId: '',
 				rateSearchResult: [],
 				rateSearchQuery: '',
 				selectedRateList: [],
@@ -79,18 +79,18 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 			setSideListCount(currentContracts, futureContracts, pastContracts);
 
 			if (currentContracts.length !== 0 || pastContracts.length !== 0 || futureContracts.length !== 0) {
-				if (params.action === 'UNLINK' || $scope.contractData.selectedContract === '') {
-					$scope.contractData.selectedContract = data.contract_selected || '';
+				if (params.action === 'UNLINK' || $scope.contractData.selectedContractId === '') {
+					$scope.contractData.selectedContractId = data.contract_selected || '';
 				}
 				$scope.contractData.mode = 'EDIT';
 				$scope.contractData.noContracts = false;
-				that.fetchContractDetails($scope.contractData.selectedContract);
+				that.fetchContractDetails($scope.contractData.selectedContractId);
 			}
 			else {
 				// Reset the data object
 				init();
 			}
-			if ($scope.contractData.selectedContract !== '' && $scope.contractData.mode !== '') {
+			if ($scope.contractData.selectedContractId !== '' && $scope.contractData.mode !== '') {
 				refreshContractScrollers();
 			}
 		},
@@ -99,9 +99,10 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 		 * @param {Object} data - API response of detail fetch
 		 */
 		fetchContractDetailsSuccessCallback = function(data) {
+			setErrorMessage([]);
 			$scope.contractData.editData = data;
 			$scope.contractData.selectedRateList = data.contract_rates;
-			$scope.contractData.disableFields = data.end_date < $rootScope.businessDate;
+			$scope.contractData.disableFields = (data.end_date < $rootScope.businessDate) || !data.is_master_contract;
 			$scope.$broadcast('addDataReset');
 			$scope.$broadcast('refreshEditScroller');
 		},
@@ -118,14 +119,9 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 		 * Function to fetch the currently selected contract details
 		 */
 		that.fetchContractDetails = function(contractId) {
-			var accountId;
+			var accountId = !_.isEmpty($scope.contactInformation) ? $scope.contactInformation.id : $stateParams.id;
 
-			$scope.contractData.selectedContract = contractId;
-			if ($stateParams.id === "add") {
-				accountId = $scope.contactInformation.id;
-			} else {
-				accountId = $stateParams.id;
-			}
+			$scope.contractData.selectedContractId = contractId;
 			var options = {
 				successCallBack: fetchContractDetailsSuccessCallback,
 				failureCallback: fetchContractDetailsFailureCallback,
@@ -150,7 +146,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 		 * Function fetches the contracts on page load
 		 */
 		that.fetchContracts = function( action ) {
-			$scope.contractData.accountId = $stateParams.id === "add" ? $scope.contactInformation.id : $stateParams.id;
+			$scope.contractData.accountId = !_.isEmpty($scope.contactInformation) ? $scope.contactInformation.id : $stateParams.id;
 			var options = {
 				successCallBack: fetchContractsListSuccessCallback,
 				failureCallBack: fetchContractsListFailureCallback,
@@ -162,7 +158,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 				}
 			};
 
-			if ($scope.contractData.accountId !== undefined) {
+			if (!!$scope.contractData.accountId) {
 				$scope.callAPI(rvCompanyCardContractsSrv.fetchContractsList, options);
 			}
 		};
@@ -214,25 +210,16 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
             saveContractNightsFailureCallback = function(error) {
                 setErrorMessage(error);
             },
-            accountId;
-    
-            if ($stateParams.id === "add") {
-                accountId = $scope.contactInformation.id;
-            }
-            else {
-                accountId = $stateParams.id;
-            }
-    
-            var options = {
-                    successCallBack: saveContractNightsSuccessCallback,
-                    failureCallBack: saveContractNightsFailureCallback,
-                    params: {
-                        "account_id": accountId,
-                        "contract_id": $scope.contractData.selectedContract,
-                        "postData": {'occupancy': data}
-                    }
-                };
-            
+			accountId = !_.isEmpty($scope.contactInformation) ? $scope.contactInformation.id : $stateParams.id,
+			options = {
+				successCallBack: saveContractNightsSuccessCallback,
+				failureCallBack: saveContractNightsFailureCallback,
+				params: {
+					"account_id": accountId,
+					"contract_id": $scope.contractData.selectedContractId,
+					"postData": {'occupancy': data}
+				}
+			};
             $scope.callAPI(rvCompanyCardContractsSrv.updateNight, options);
 		});
 

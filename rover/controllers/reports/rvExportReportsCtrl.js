@@ -1176,6 +1176,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             $scope.updateViewCol($scope.viewColsActions.ONE);
 
             $scope.refreshReportSchedulesScroll(reset);
+            $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
 
             $scope.$emit('UPDATE_TITLE_AND_HEADING');
         };

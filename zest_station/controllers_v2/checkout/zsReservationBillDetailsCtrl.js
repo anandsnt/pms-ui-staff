@@ -289,6 +289,9 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             };
 
             var options = {
+                params: {
+                    locale: $translate.use()
+                },
                 successCallBack: fetchChargeGroupSuccess,
                 failureCallBack: fetchChargeGroupFailure
             };
@@ -341,8 +344,8 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                     }
                 }
                 // If there is ony one group, by default keep it open
-                if ($scope.chargeData.groupedItems.length === 1) {
-                    $scope.chargeData.groupedItems[0].is_open = true;
+                if (Object.keys($scope.chargeData.groupedItems).length === 1) {
+                    $scope.chargeData.groupedItems[Object.keys( $scope.chargeData.groupedItems)[0]].is_open = true;
                 }
 
                 setPostChargeContentHeight();
@@ -408,8 +411,10 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             }
             postData.items = updatedItems;
 
-            var postChargeFailure = function () {
-                $scope.showPostChargeScreen = true;
+            var postChargeFailure = function (error) {
+                $scope.errorMessage = error[0];
+                $scope.errorHeader = 'POST_ITEMS_ERROR_HEADER';
+                $scope.showPostErrorPopup = true;
             };
 
             var postChargeSuccess = function () {

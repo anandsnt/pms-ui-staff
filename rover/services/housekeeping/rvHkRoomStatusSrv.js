@@ -428,14 +428,14 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 		// fetch all HK cleaning staffs
 		var HKEmps = [];
 
-		this.fetchHKEmps = function() {
+		this.fetchHKEmps = function(params) {
 			var url = "/api/work_statistics/employees_list";
 			var deferred = $q.defer();
 
 			if (HKEmps.length) {
 				deferred.resolve(HKEmps);
 			} else {
-				BaseWebSrvV2.getJSON(url)
+				BaseWebSrvV2.getJSON(url, params)
 					.then(function(data) {
 						HKEmps = data.results;
 						deferred.resolve(HKEmps);

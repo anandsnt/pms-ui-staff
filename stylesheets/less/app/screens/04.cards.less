@@ -570,7 +570,6 @@
                     }
                     
                     .entry {
-                        #fade > .in();
                         #pixel-to-percent > .width(432, 904);
 
                         label { margin-bottom: 0; }
@@ -595,9 +594,14 @@
                             #border-radius > .rounded();
                             .show;
 
-                            &:hover,
-                            &:active { background-position: 95% -140px !important; }
+                            &:hover:not([disabled]),
+                            &:active:not([disabled]) { background-position: 95% -140px !important; }
 
+                            &[disabled] {
+                                cursor: default;
+                                background-color: rgba(0, 0, 0, 0.01) !important;
+                            }
+                            
                             @media @highdpi { background-image: @calendar2x; }
                         }
 
@@ -754,61 +758,6 @@
 
                                     &:last-child { margin-right: 0; }
                                 }
-                            }
-                        }
-
-                        &.find-rate {
-                            position: relative;
-                            
-                            .clear-query {
-                                position: absolute;
-                                top: 24px;
-                                right: 0;
-                                z-index: 99;
-                                visibility: hidden;
-                                background: @white;
-                                #border-radius > .right();
-                                .box-shadow(inset -1px 1px 1px rgba(0, 0, 0, .15));
-                                .square(40px);
-
-                                .icons {
-                                    position: absolute;
-                                    top: 12.5px;
-                                    right: 12.5px;
-                                    background-color: @grey2;
-                                    .hide-text;
-                                    .square(15px);
-                                    .opacity(0);
-                                    .show;
-                                    #fade > .out();
-                                    #border-radius > .rounded(15px);
-                                }
-
-                                &.visible { 
-                                    visibility: visible;
-
-                                    .icons {    
-                                        .opacity(100); 
-                                        #fade > .in(); 
-                                    }
-                                }
-
-                                &:hover,
-                                &.active { 
-                                    .icons { background-color: @logoPrimary; }
-                                }
-                            }
-
-                            input {
-                                padding-right: 40px;
-                                .nowrap();
-                            }
-
-                            .mini-select {
-                                position: absolute;
-                                top: 24px;
-                                right: 0;
-                                z-index: 9;
                             }
                         }
 
@@ -982,8 +931,6 @@
                                 grid-column: span 2;
                             }
                         }
-
-                        &.hidden { #fade > .out(); }
                     }
 
                     &.left {
@@ -1444,6 +1391,10 @@
                                 .button {
                                     height: 60px;
                                     font-size: 18px;
+
+                                    &:not(:last-child) {
+                                        margin-right: 10px;
+                                    }
                                 }
                             }
                         }
@@ -1603,7 +1554,7 @@
                             height: 100%;
                             position: relative;
                             .calc-width( 100, 265 );
-
+                            
                             .contract-details-header {
                                 background: @white;
                                 overflow: hidden;
@@ -1614,6 +1565,10 @@
                                     height: 60px;
                                     padding: 10px;
                                     #flexbox > .display();
+
+                                    label {
+                                        cursor: text;
+                                    }
 
                                     .search {
                                         padding: 0;
@@ -1665,8 +1620,6 @@
                                 &.autocomplete-search {
 
                                     .scrollable {
-                                        max-height: 100%;
-
                                         .iScrollVerticalScrollbar .iScrollIndicator {
                                             background: rgba(0,0,0,0.15);
                                         }
@@ -1681,13 +1634,14 @@
                                         text-transform: uppercase;
                                         font-size: 14px;
                                         padding: 0 20px;
+                                        border-bottom: 1px solid rgba( 0, 0, 0, 0.1 );
                                         #flexbox > .display();
 
                                         li {
                                             margin: 0;
 
                                             &.contract-name {
-                                                .calc-width( 100, 480 );
+                                                .calc-width( 100, 500 );
                                             }
 
                                             &.access-code {
@@ -1706,16 +1660,12 @@
                                                 width: 140px;
                                             }
                                         }
-
-                                        &:not(:last-child) {
-                                            box-shadow: 0 1px 0 rgba(0,0,0,.1);
-                                        }
                                     }
 
                                     .autocomplete-results-header {
                                         color: @grey3;
                                         font-weight: 600;
-
+                                        
                                         li {
                                             padding: 5px 0 10px 0;
                                             line-height: 1;
@@ -1742,6 +1692,11 @@
                                                         margin-bottom: 4px;
                                                     }
 
+                                                    &.highlight { 
+                                                        display: inline;
+                                                        margin:0; 
+                                                    }
+
                                                     &.more {
                                                         display: inline;
                                                         color: @grey3;
@@ -1765,20 +1720,21 @@
 
                                             &:after {
                                                 content: '';
-                                                .icons();
+
+                                            .icons();
                                                 position: absolute;
                                                 width: 14px;
                                                 height: 14px;
-                                                right: 10px;
+                                                right: 20px;
                                                 top: 10px;
                                                 background-size: 60px;
-                                                background-position: 0px -3679px;
+                                                background-position: 0px -3679px;   
 
                                                 @media @highdpi {
                                                     background-size: 60px;
                                                 }
                                             }
-
+                                            
                                         }
 
                                         &:last-child {
@@ -1821,11 +1777,6 @@
                                 position: relative;
                                 .calc-height( 100, 120 );
 
-                                input[disabled]:not(.icons) {
-                                    color: @black;
-                                    -webkit-text-fill-color: @black;
-                                }
-
                                 &.without-footer {
                                     .calc-height( 100, 60 );
                                 }
@@ -1859,26 +1810,14 @@
                                         }
                                     }
 
-                                    .switch-icon {
+                                    .switch-icon { 
                                         .gradient(@grey2, @grey3);
                                     }
-
+        
                                     .data-on {
-                                        .switch-icon {
-                                            .gradient(@greenStart, @greenEnd);
-                                        }
-                                    }
-
-                                    &.disabled {
-                                        .value { opacity: 0; }
-                                        .switch-icon {
-                                            .gradient-important(@grey2, @grey3);
-                                        }
-    
-                                        .data-on {
-                                            .switch-icon {
-                                                .gradient-important(@greenStart, @greenEnd);
-                                            }
+        
+                                        .switch-icon { 
+                                            .gradient(@greenStart, @greenEnd); 
                                         }
                                     }
                                 }
@@ -1923,23 +1862,30 @@
                                         font-weight: 600;
                                         padding: 10px 30px 10px 10px;
                                         list-style: none;
-                                        cursor: pointer;
                                         position: relative;
                                         #flexbox > .parent( row, space-between, '', '' );
                                         .box-shadow();
-
+        
                                         &:not(:last-child) {
                                             margin-bottom: 10px;
+                                        }
+
+                                        .rate-remove {
+                                            position: absolute;
+                                            right: 0;
+                                            height: 100%;
+                                            width: 40px;
+                                            top: 0;
+                                            box-shadow: none;
+                                            background: transparent;
+                                            border: none;
+                                            cursor: pointer;
                                         }
 
                                         .icons {
                                             &.icon-remove-10 {
                                                 background-position: 3px -2624px;
                                                 background-size: 80px;
-                                                position: absolute;
-                                                right: 10px;
-                                                top: 0;
-                                                bottom: 0;
                                                 margin: auto;
                                                 border-radius: 14px;
                                                 background-color: @grey1;
@@ -1964,7 +1910,7 @@
                                             padding-right: 10px;
                                             color: @grey3;
 
-                                            .icons { .hide(); }
+                                            .rate-remove { .hide(); }
                                         }
                                     }
                                 }
@@ -1979,14 +1925,6 @@
 
                             &.right {
                                 width: 215px;
-
-                                .button { 
-                                    width: 100%; 
-
-                                    &:not(:last-child) {
-                                        margin-bottom: 10px;
-                                    }
-                                }
 
                                 .no-content {
                                     padding: 0;
@@ -2013,7 +1951,7 @@
                                             width: 75px;
                                             background-position: 0px -1344px;
                                         }
-
+                                        
                                     }
                                 }
                             }
@@ -3294,9 +3232,7 @@
                                     padding: 0px 20px;
                                     margin: 10px 0;
                                     height: 40px;
-                                    &.search {
-                                        .calc-width( 100, 570 );
-                                        
+                                    &.search { 
                                         .query {
                                             padding-right: 35px;
                                         }
@@ -3342,7 +3278,6 @@
                                             text-transform: uppercase;
                                             font-size: 14px;
                                             width: 50%;
-                                            #flexbox > .parent( '', '', '', '' );
                                             .pull-left;
                                             span {
                                                 position: static;

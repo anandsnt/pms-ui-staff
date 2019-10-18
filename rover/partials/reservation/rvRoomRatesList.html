@@ -201,7 +201,7 @@
                                     <tfoot>
                                         <tr>
                                             <td colspan="5" class="total-label" translate>RESV_TOTAL_ROOM</td>
-                                            <td class="total-value" ng-if="!rate.isSuppressed">{{currencySymbol}}---{{rate.total | number:2}}</td>
+                                            <td class="total-value" ng-if="!rate.isSuppressed">{{rate.rateCurrency}}{{rate.total | number:2}}</td>
                                             <td ng-if="rate.isSuppressed">SR</td>
                                         </tr>
                                     </tfoot>

@@ -23,6 +23,10 @@
                     ng-class="{'orange' : state.activeTab === 'GENERIC', 'white' : state.activeTab !== 'GENERIC'}">
                 GENERIC MAPPINGS
             </button>
+            <button type="button" class="button add-data-inline toggle-tab" ng-click="changeTab('DATASWAP')"
+                    ng-class="{'orange' : state.activeTab === 'DATASWAP', 'white' : state.activeTab !== 'DATASWAP'}">
+                DATA SWAP
+            </button>
         </div>
     </header>
 
@@ -32,5 +36,6 @@
         <ng-include src="'/assets/partials/interfaces/comtrol/adComtrolGenericMappings.html'"></ng-include>
         <ng-include src="'/assets/partials/interfaces/comtrol/adComtrolRevenueCenter.html'"></ng-include>
         <ng-include src="'/assets/partials/interfaces/comtrol/adComtrolRoomMappings.html'"></ng-include>
+        <ng-include src="'/assets/partials/interfaces/comtrol/adComtrolDataSwap.html'"></ng-include>
     </section>
 </div>

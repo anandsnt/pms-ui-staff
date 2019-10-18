@@ -25,7 +25,7 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'rvCo
         var saveNewContractSuccessCallback = function(data) {
             $scope.$emit('setErrorMessage', []);
             $scope.contractData.mode = 'EDIT';
-            $scope.contractData.selectedContract = data.id;
+            $scope.contractData.selectedContractId = data.id;
             $scope.$emit('fetchContractsList');
             $scope.$emit('updateContractedNights', $scope.addData.occupancy);
             that.init();
@@ -52,7 +52,7 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'rvCo
                 contractedNights: 0,
                 contractedRates: [],
                 isActive: true,
-                occupancy: {}
+                occupancy: []
             };
         };
         
@@ -87,14 +87,8 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'rvCo
          * Function to save the new contract
          */
         $scope.saveNewContract = function() {
-            var accountId;
-
-            if ($stateParams.id === "add") {
-                accountId = $scope.contactInformation.id;
-            } else {
-                accountId = $stateParams.id;
-            }
-            var postData = {
+            var accountId = !_.isEmpty($scope.contactInformation) ? $scope.contactInformation.id : $stateParams.id,
+            postData = {
                 'access_code': $scope.addData.accessCode,
                 'contract_name': $scope.addData.contractName,
                 'begin_date': $scope.addData.startDate,
