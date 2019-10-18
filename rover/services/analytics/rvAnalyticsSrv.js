@@ -52,7 +52,9 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         var completedResCall = false;
         var completedRoomsCall = false;
 
-        that.fetchActiveReservation({ date: date }).then(function(data) {
+        that.fetchActiveReservation({
+            date: date
+        }).then(function(data) {
             that.activeReservations = data;
 
             completedResCall = true;
@@ -99,7 +101,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
 
     var constructHkOverview = function(deferred, date) {
         // Call after the HK Priority is done to avoid duplicate API calls
-        var hkInterval = window.setInterval(function(){
+        var hkInterval = window.setInterval(function() {
             if (calledHKApis) {
                 var hkOverview = {
                     dashboard_type: 'house_keeping_overview',
@@ -140,12 +142,15 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         deferred.resolve(workPriority);
     };
 
-    var buildDepartures = function(activeReservations, date, overview) {
-        var departures = activeReservations.filter(reservation => reservation.departure_date == date);
-        var departedCount = departures.filter(reservation => reservation.reservation_status === 'CHECKEDOUT').length;
+    var buildDepartures = function buildDepartures(activeReservations, date, overview) {
+        var departures = activeReservations.filter(function(reservation) {
+            return reservation.departure_date == date;
+        });
+        var departedCount = departures.filter(function(reservation) {
+            return reservation.reservation_status === 'CHECKEDOUT';
+        }).length;
         var lateCheckoutCount = 0;
         var remainingCount = departures.length - lateCheckoutCount - departedCount;
-
         var departues = {
             type: 'departures',
             label: 'AN_DEPARTURES',
@@ -175,25 +180,36 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         return departues;
     };
 
-    var buildVacants = function(activeReservations, roomStatuses, overview) {
+    var buildVacants = function buildVacants(activeReservations, roomStatuses, overview) {
         var rooms = roomStatuses;
         var dataType = 'rooms';
         var dataLabel = 'AN_ROOMS';
 
         if (!overview) {
-            var assignedRoomNumbers = activeReservations.filter(reservation => reservation.reservation_status === 'CHECKEDIN')
-                .map(reservation => reservation.arrival_room_number);
-
-            rooms = rooms.filter(room => !(assignedRoomNumbers.includes(room.room_number)));
-
+            var assignedRoomNumbers = activeReservations.filter(function(reservation) {
+                return reservation.reservation_status === 'CHECKEDIN';
+            }).map(function(reservation) {
+                return reservation.arrival_room_number;
+            });
+            rooms = rooms.filter(function(room) {
+                return !assignedRoomNumbers.includes(room.room_number);
+            });
             dataType = 'vacant';
             dataLabel = 'AN_VACANT';
         }
 
-        var inspectedCount = rooms.filter(room => room.status === 'INSPECTED').length;
-        var cleanCount = rooms.filter(room => room.status === 'CLEAN').length;
-        var dirtyCount = rooms.filter(room => room.status === 'DIRTY').length;
-        var pickupCount = rooms.filter(room => room.status === 'PICKUP').length;
+        var inspectedCount = rooms.filter(function(room) {
+            return room.status === 'INSPECTED';
+        }).length;
+        var cleanCount = rooms.filter(function(room) {
+            return room.status === 'CLEAN';
+        }).length;
+        var dirtyCount = rooms.filter(function(room) {
+            return room.status === 'DIRTY';
+        }).length;
+        var pickupCount = rooms.filter(function(room) {
+            return room.status === 'PICKUP';
+        }).length;
 
         return {
             type: dataType,
@@ -203,7 +219,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
                     type: 'dirty',
                     count: dirtyCount,
                     label: 'AN_DIRTY'
-                },{
+                }, {
                     type: 'pickup',
                     count: pickupCount,
                     label: 'PICKUP'
@@ -221,15 +237,16 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         };
     };
 
-    var buildArrivals = function(activeReservations, date, overview) {
-        var arrivals = activeReservations.filter(reservation => reservation.arrival_date == date);
-        // Performed checkin that day
-        var perfomedCount = arrivals.filter(reservation => reservation.reservation_status === 'CHECKEDIN').length;
+    var buildArrivals = function buildArrivals(activeReservations, date, overview) {
+        var arrivals = activeReservations.filter(function(reservation) {
+            return reservation.arrival_date == date;
+        }); // Performed checkin that day
 
+        var perfomedCount = arrivals.filter(function(reservation) {
+            return reservation.reservation_status === 'CHECKEDIN';
+        }).length;
         var earlyCheckinCount = 0;
-
         var remainingCount = arrivals.length - perfomedCount - earlyCheckinCount;
-
         var arrivals = {
             type: 'arrivals',
             label: 'AN_ARRIVALS',
@@ -241,9 +258,8 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
                 }],
                 right_side: []
             }
-        };
+        }; // For work priority we need to calculate immediate arrivals
 
-        // For work priority we need to calculate immediate arrivals
         if (!overview) {
             arrivals.contents.right_side.push({
                 type: 'early_checkin',
@@ -257,34 +273,38 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
             count: remainingCount,
             label: 'AN_REMAINING'
         });
-
         return arrivals;
     };
 
-    var buildStayOvers = function(activeReservations, roomStatuses, date) {
-        var stayOvers = activeReservations.filter(reservation => reservation.arrival_date !== date && reservation.departure_date !== date);
-
-        var cleanAndInspectedRooms = roomStatuses.filter( room => room.status === 'INSPECTED' || room.status === 'CLEAN')
-                                                 .map(room => room.room_number);
-        var cleanAndInspectedStayOversCount = stayOvers.filter(reservation => cleanAndInspectedRooms.includes(reservation.arrival_room_number)).length;
-
+    var buildStayOvers = function buildStayOvers(activeReservations, roomStatuses, date) {
+        var stayOvers = activeReservations.filter(function(reservation) {
+            return reservation.arrival_date !== date && reservation.departure_date !== date;
+        });
+        var cleanAndInspectedRooms = roomStatuses.filter(function(room) {
+            return room.status === 'INSPECTED' || room.status === 'CLEAN';
+        }).map(function(room) {
+            return room.room_number;
+        });
+        var cleanAndInspectedStayOversCount = stayOvers.filter(function(reservation) {
+            return cleanAndInspectedRooms.includes(reservation.arrival_room_number);
+        }).length;
         var dirtyOrPickupRoomsCount = stayOvers.length - cleanAndInspectedStayOversCount;
-
+        
         return {
-          type: 'stayovers',
-          label: 'AN_STAYOVERS',
-          contents: {
-              left_side: [{
-                  type: 'performed',
-                  label: 'AN_PERFOMED',
-                  count: cleanAndInspectedStayOversCount
-              }],
-              right_side: [{
-                  type: 'remaining',
-                  label: 'AN_REMAINING',
-                  count: dirtyOrPickupRoomsCount
-              }]
-          }
+            type: 'stayovers',
+            label: 'AN_STAYOVERS',
+            contents: {
+                left_side: [{
+                    type: 'performed',
+                    label: 'AN_PERFOMED',
+                    count: cleanAndInspectedStayOversCount
+                }],
+                right_side: [{
+                    type: 'remaining',
+                    label: 'AN_REMAINING',
+                    count: dirtyOrPickupRoomsCount
+                }]
+            }
         };
     };
 }]);

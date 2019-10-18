@@ -29,7 +29,7 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 					};
 
 					$scope.drawWorkLoadChart(chartDetails);
-				};
+				});
 		};
 		var renderFrontOfficeManagementChart = function(data) {
 
