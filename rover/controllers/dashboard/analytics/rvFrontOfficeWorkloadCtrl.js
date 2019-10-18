@@ -91,7 +91,7 @@ angular.module('sntRover')
 							count: item.count,
 							chartName: chartName,
 							elementId: chartName + "-" + item.type
-						}
+						};
 					});
 				});
 
@@ -126,7 +126,8 @@ angular.module('sntRover')
 
 				var vakken = svg.selectAll(".type")
 					.data(chartDetails.chartData.data)
-					.enter().append("g")
+					.enter()
+					.append("g")
 					.attr("class", "bar")
 					.attr("transform", function(chart) {
 						return "translate(0," + yScale(chart.type) + ")";
@@ -188,7 +189,7 @@ angular.module('sntRover')
 					});
 
 				// Draw horizontal line on top of REMAINING
-				var yPositionOfRemainingTopLine = yScale.bandwidth()/2;
+				var yPositionOfRemainingTopLine = yScale.bandwidth() / 2;
 
 				svg.append("line") // attach a line
 					.style("stroke", "#000000") // colour the line
@@ -255,8 +256,6 @@ angular.module('sntRover')
 					.html(function(label) {
 						return label;
 					});
-
-				
-			}
+			};
 		}
 	]);

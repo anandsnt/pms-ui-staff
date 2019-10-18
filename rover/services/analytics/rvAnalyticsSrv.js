@@ -250,7 +250,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         }).length;
         var earlyCheckinCount = 0;
         var remainingCount = arrivals.length - perfomedCount - earlyCheckinCount;
-        var arrivals = {
+        var arrivalsData = {
             type: 'arrivals',
             label: 'AN_ARRIVALS',
             contents: {
@@ -264,19 +264,19 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         }; // For work priority we need to calculate immediate arrivals
 
         if (!overview) {
-            arrivals.contents.right_side.push({
+            arrivalsData.contents.right_side.push({
                 type: 'early_checkin',
                 count: earlyCheckinCount,
                 label: 'AN_EARLY_CHECKIN'
             });
         }
 
-        arrivals.contents.right_side.push({
+        arrivalsData.contents.right_side.push({
             type: 'remaining',
             count: remainingCount,
             label: 'AN_REMAINING'
         });
-        return arrivals;
+        return arrivalsData;
     };
 
     var buildStayOvers = function buildStayOvers(activeReservations, roomStatuses, date) {

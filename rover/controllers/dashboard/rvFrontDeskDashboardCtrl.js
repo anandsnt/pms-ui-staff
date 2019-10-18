@@ -1,6 +1,6 @@
 sntRover.controller('RVfrontDeskDashboardController',
-    ['$scope', '$rootScope', 'RVDashboardSrv', '$timeout', 'rvFrontOfficeAnalyticsSrv', 'rvAnalyticsSrv',
-        function($scope, $rootScope, RVDashboardSrv, $timeout, rvFrontOfficeAnalyticsSrv, rvAnalyticsSrv) {
+    ['$scope', '$rootScope', 'RVDashboardSrv', '$timeout', 'rvFrontOfficeAnalyticsSrv',
+        function($scope, $rootScope, RVDashboardSrv, $timeout, rvFrontOfficeAnalyticsSrv) {
 	// inheriting some useful things
 	BaseCtrl.call(this, $scope);
     var that = this;
@@ -11,10 +11,10 @@ sntRover.controller('RVfrontDeskDashboardController',
         'show_rate_of_day': false
     };
 
-    RVDashboardSrv.fetchStatisticData(requestParams).then(function(data){
+    RVDashboardSrv.fetchStatisticData(requestParams).then(function(data) {
         $scope.statistics = data;
     });
-
+    
 	// scroller related settings
 	var scrollerOptions = {click: true, preventDefault: false};
 

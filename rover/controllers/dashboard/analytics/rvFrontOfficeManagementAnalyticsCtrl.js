@@ -154,8 +154,7 @@ angular.module('sntRover')
                     } else if (legend === "Dirty") {
                         return yBandwidth / 2 - singleLegendHeightPlusMargin + yInnerPadding;
                     } else if (legend === "Perfomed") {
-                        var heightOfThreeLegends = singleLegendHeightPlusMargin * 3;
-                        var marginTopOfPerfomed = yBandwidth - heightOfThreeLegends + yInnerPadding + yBandwidth / 2;
+                        var marginTopOfPerfomed = yBandwidth - (singleLegendHeightPlusMargin * 3) + yInnerPadding + yBandwidth / 2;
                         
                         return marginTopOfPerfomed;
                     }
@@ -198,16 +197,10 @@ angular.module('sntRover')
 
                     if (legend === "Early Check in") {
                         return margin.top + yInnerPadding + yBandwidth / 2;
-                    } else if (legend === "Inspected") {
-                        var heightOfThreeLegends = singleLegendHeightPlusMargin * 2;
-                        var marginTop = yBandwidth / 2 - heightOfThreeLegends + yInnerPadding + yBandwidth / 2;
-                        
-                        return marginTop;
-                    } else if (legend === "Late checkout") {
-                        var heightOfThreeLegends = singleLegendHeightPlusMargin * 1;
-                        var marginTop = yBandwidth / 2 - heightOfThreeLegends + yInnerPadding + yBandwidth / 2;
-                        
-                        return marginTop;
+                    } else if (legend === "Inspected") {   
+                        return yBandwidth / 2 - (singleLegendHeightPlusMargin * 2) + yInnerPadding + yBandwidth / 2;
+                    } else if (legend === "Late checkout") {                        
+                        return yBandwidth / 2 - singleLegendHeightPlusMargin + yInnerPadding + yBandwidth / 2;;
                     } else if (legend === "Pickup") {
                         return 2 * yBandwidth - singleLegendHeightPlusMargin;
                     }
@@ -219,7 +212,7 @@ angular.module('sntRover')
                     .attr("class", "legend-item")
                     .attr("id", function(item) {
                         return "left-legend-" + item.toLowerCase();
-                    })
+                    });
 
                 rightSideLegendEntries.append("span")
                     .attr("class", "rect")
@@ -234,6 +227,6 @@ angular.module('sntRover')
                 rightSideLegendEntries.style("margin-top", function(legend) {
                     return setMarginForRightSideLegends(legend, singleLegendHeightPlusMargin);
                 });
-            }
+            };
         }
     ]);

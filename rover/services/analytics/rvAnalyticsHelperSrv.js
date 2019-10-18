@@ -89,7 +89,8 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 
 		var vakken = svg.selectAll(".type")
 			.data(chartDetails.chartData.data)
-			.enter().append("g")
+			.enter()
+			.append("g")
 			.attr("class", "bar")
 			.attr("transform", function(chart) {
 				return "translate(0," + yScale(chart.type) + ")";
@@ -133,7 +134,7 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 			.attr("x", function(item) {
 				return ((xScale(item.xOrigin) + xScale(item.xFinal)) / 2);
 			})
-			.attr("y", function(item) {
+			.attr("y", function() {
 				return yScale.bandwidth() / 2;
 			})
 			.attr("dy", function(item) {

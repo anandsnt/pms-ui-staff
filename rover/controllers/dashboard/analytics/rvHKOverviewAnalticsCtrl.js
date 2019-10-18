@@ -63,10 +63,9 @@ angular.module('sntRover')
                 var yAxis = d3.axisLeft()
                     .scale(yScale)
                     .ticks(5)
-                    //.tickSizeInner(-width)
                     .tickSizeOuter(0)
                     .tickPadding(10)
-                    .tickFormat(function(d) {
+                    .tickFormat(function() {
                         return "";
                     });
 
@@ -123,6 +122,7 @@ angular.module('sntRover')
                     .attr("y2", height);
 
                 var firstLineHeight = yScale.bandwidth() * 2.5;
+
                 svg.append("line") // attach a line
                     .style("stroke", "#A0A0A0") // colour the line
                     .style("stroke-width", "1px")
@@ -132,6 +132,7 @@ angular.module('sntRover')
                     .attr("y2", firstLineHeight);
 
                 var firstLineHeight1 = yScale.bandwidth() * 4.5;
+
                 svg.append("line") // attach a line
                     .style("stroke", "#000000") // colour the line
                     .style("stroke-width", "2px")
@@ -141,6 +142,7 @@ angular.module('sntRover')
                     .attr("y2", firstLineHeight1);
 
                 var firstLineHeight2 = yScale.bandwidth() * 6.5;
+
                 svg.append("line") // attach a line
                     .style("stroke", "#A0A0A0") // colour the line
                     .style("stroke-width", "1px")
@@ -222,7 +224,7 @@ angular.module('sntRover')
                     .attr("class", "legend-item")
                     .attr("id", function(item) {
                         return "left-legend-" + item.toLowerCase();
-                    })
+                    });
 
                 rightSideLegendEntries.append("span")
                     .attr("class", "rect")

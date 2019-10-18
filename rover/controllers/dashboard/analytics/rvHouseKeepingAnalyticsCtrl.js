@@ -16,7 +16,7 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 			$scope: $scope
 		});
 
-		var onBarChartClick = function (e) {
+		var onBarChartClick = function () {
 			// console.log(JSON.stringify(e));
 		};
 

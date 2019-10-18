@@ -52,11 +52,9 @@ angular.module('sntRover')
                 var yAxis = d3.axisLeft()
                     .scale(yScale)
                     .ticks(5)
-                    //.tickSizeInner(-width)
                     .tickSizeOuter(0)
                     .tickPadding(10)
                     .tickFormat(function(d) {
-                        console.log(d);
                         return d.toUpperCase();
                     });
 
@@ -115,6 +113,7 @@ angular.module('sntRover')
                     .attr("y2", height);
 
                 var firstLineHeight = 1.5 * yInnerPadding + yScale.bandwidth();
+
                 svg.append("line") // attach a line
                     .style("stroke", "#A0A0A0") // colour the line
                     .style("stroke-width", "0.5px")
@@ -123,7 +122,8 @@ angular.module('sntRover')
                     .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
                     .attr("y2", firstLineHeight);
 
-                var firstLineHeight1 = 2.5 * yInnerPadding + 2 * yScale.bandwidth();;
+                var firstLineHeight1 = 2.5 * yInnerPadding + 2 * yScale.bandwidth();
+
                 svg.append("line") // attach a line
                     .style("stroke", "#A0A0A0") // colour the line
                     .style("stroke-width", "0.5px")
@@ -148,14 +148,12 @@ angular.module('sntRover')
                     if (legend === "Arrivals") {
                         return margin.top + yInnerPadding + yBandwidth / 2;
                     } else if (legend === "Dirty") {
-                        var marginTop = yBandwidth / 2 - previousElementHeightPlusBottomMargin("left-legend-arrivals") + yInnerPadding;
-
-                        return marginTop;
+                        return yBandwidth / 2 - previousElementHeightPlusBottomMargin("left-legend-arrivals") + yInnerPadding;
                     } else if (legend === "Perfomed") {
                         var dirtyLegendHeight = previousElementHeightPlusBottomMargin("left-legend-arrivals");
                         var heightOfThreeLegends = dirtyLegendHeight * 3;
-                        var marginTop = yBandwidth - heightOfThreeLegends + yInnerPadding + yBandwidth / 2;
-                        return marginTop;
+
+                        return yBandwidth - heightOfThreeLegends + yInnerPadding + yBandwidth / 2;
                     }
                 };
 
@@ -166,7 +164,7 @@ angular.module('sntRover')
                     .attr("class", "legend-item")
                     .attr("id", function(item) {
                         return "left-legend-" + item.toLowerCase();
-                    })
+                    });
 
                 leftSideLegendEntries.append("span")
                     .attr("class", "rect")
@@ -179,7 +177,7 @@ angular.module('sntRover')
                     });
 
                 leftSideLegendEntries.style("margin-top", function(legend) {
-                    return setMarginForLegends(legend)
+                    return setMarginForLegends(legend);
                 });
 
                 // right side legends
@@ -188,7 +186,7 @@ angular.module('sntRover')
                     .range(["#84B652", "#83B450", "#567D30", "#AB2727", "#DC3535"])
                     .domain(["Early Check in", "Remaining", "Inspected", "Late checkout", "Pending"]);
 
-                var setMarginForLegends = function(legend) {
+                var setMarginForRightLegends = function(legend) {
                     var yBandwidth = yScale.bandwidth();
 
                     if (legend === "Early Check in") {
@@ -196,13 +194,13 @@ angular.module('sntRover')
                     } else if (legend === "Inspected") {
                         var dirtyLegendHeight = previousElementHeightPlusBottomMargin("left-legend-arrivals");
                         var heightOfThreeLegends = dirtyLegendHeight * 2;
-                        var marginTop = yBandwidth / 2 - heightOfThreeLegends + yInnerPadding + yBandwidth / 2;
-                        return marginTop;
+
+                        return yBandwidth / 2 - heightOfThreeLegends + yInnerPadding + yBandwidth / 2;
                     } else if (legend === "Late checkout") {
                         var dirtyLegendHeight = previousElementHeightPlusBottomMargin("left-legend-arrivals");
                         var heightOfThreeLegends = dirtyLegendHeight * 1;
-                        var marginTop = yBandwidth / 2 - heightOfThreeLegends + yInnerPadding + yBandwidth / 2;
-                        return marginTop;
+
+                        return yBandwidth / 2 - heightOfThreeLegends + yInnerPadding + yBandwidth / 2;
                     } else if (legend === "Pickup") {
                         return 2 * yBandwidth - previousElementHeightPlusBottomMargin("left-legend-stayovers");
                     }
@@ -214,7 +212,7 @@ angular.module('sntRover')
                     .attr("class", "legend-item")
                     .attr("id", function(item) {
                         return "left-legend-" + item.toLowerCase();
-                    })
+                    });
 
                 rightSideLegendEntries.append("span")
                     .attr("class", "rect")
@@ -227,7 +225,7 @@ angular.module('sntRover')
                     });
 
                 rightSideLegendEntries.style("margin-top", function(legend) {
-                    return setMarginForLegends(legend)
+                    return setMarginForRightLegends(legend)
                 });
             }
         }
