@@ -21,77 +21,35 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 			console.log(JSON.stringify(e));
 		};
 
-		var renderHkOverview = function(date) {
-            // Calling HK Overview Build Graph
-			rvAnalyticsSrv.hkOverview(date).then(function(data) {
-				console.log(data);
+		var renderfdWorkloadChart = function(date) {
+			rvFrontOfficeAnalyticsSrv.fdWorkload($rootScope.businessDate).then(function(data) {
+					var chartDetails = {
+						chartData: data,
+						onBarChartClick: onBarChartClick
+					};
+
+					$scope.drawWorkLoadChart(chartDetails);
+				};
+		};
+		var renderFrontOfficeManagementChart = function(data) {
+
+			rvFrontOfficeAnalyticsSrv.fdArrivalsManagement($rootScope.businessDate).then(function(data) {
+
 				var chartDetails = {
 					chartData: data,
 					onBarChartClick: onBarChartClick
 				};
 
-				$scope.drawHkOverviewChart(chartDetails);
-			});
-        };
-
-		var renderManagementChart = function(data) {
-
-			// rvFrontOfficeAnalyticsSrv.fdArrivalsManagement($rootScope.businessDate).then(function(data) {
-			// 	console.log("I am inside  fdArrivalsManagement");
-			// 	console.log(data);
-			// 	try{
-
-			// 		var chartDetails = {
-			// 		chartData: data,
-			// 		onBarChartClick: onBarChartClick
-			// 	};
-			// 		$scope.drawArrivalManagementChart(chartDetails);
-			// 	} catch(e) {
-			// 		console.log(e)
-			// 	}
-				
-			// 	(data);
-			// });
-
-			rvFrontOfficeAnalyticsSrv.fdWorkload($rootScope.businessDate).then(function(data) {
-				//             console.log("I am inside  fdWorkload");
-				           console.log(data);
-				try{
-
-					var chartDetails = {
-					chartData: data,
-					onBarChartClick: onBarChartClick
-				};
-					$scope.drawWorkLoadChart(chartDetails);
-				} catch(e) {
-					console.log(e)
-				}
+				$scope.drawArrivalManagementChart(chartDetails);
 			});
 		};
 
-
 		(function() {
-
-			// var options = {
-			// 	params: $rootScope.businessDate,
-			// 	successCallBack: function() {
-			// 		renderHkWorkPriority($rootScope.businessDate)
-   //                  //renderHkOverview($rootScope.businessDate);
-			// 	}
-			// };
-
-			// $scope.callAPI(rvAnalyticsSrv.initRoomAndReservationApis, options);
 
 			var options = {
 				params: $rootScope.businessDate,
 				successCallBack: function() {
-					
-					renderManagementChart();
-
-					// rvFrontOfficeAnalyticsSrv.fdWorkload($rootScope.businessDate).then(function(data) {
-					// 	console.log("I am inside  fdWorkload");
-					// 	console.log(data);
-					// });
+					renderFrontOfficeManagementChart();
 				}
 			};
 

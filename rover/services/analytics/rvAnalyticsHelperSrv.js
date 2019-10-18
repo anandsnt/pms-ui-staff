@@ -48,7 +48,7 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 				} else {
 					// For all other elements, X origin  is count of previous item and X final is count of the item
 					item.origin = chart.contents.right_side[index - 1].xFinal;
-					item.xFinal = item.origin + chart.contents.right_side[index].count;
+					item.xFinal = item.origin + item.count;
 				}
 			});
 
@@ -137,7 +137,7 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 				return isSmallBarItem(item) ? -1 * (yScale.bandwidth() / 2 + 10) : "0.5em";
 			})
 			.attr("dx", function(item) {
-				return isSmallBarItem(item) && item.xOrigin < 0 ? "-0.5em" : "0em";
+				return isSmallBarItem(item) && item.xOrigin <= 0 ? "-0.5em" : "0em";
 			})
 			.style("font-size", function(item) {
 				return isSmallBarItem(item) ? "10px" : "15px";

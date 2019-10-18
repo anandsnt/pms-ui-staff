@@ -123,14 +123,23 @@ angular.module('sntRover')
                     .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
                     .attr("y2", firstLineHeight);
 
-                var firstLineHeight1 = 2.5 * yInnerPadding + 2 * yScale.bandwidth();;
+                var secondLineHeight = 2.5 * yInnerPadding + 2 * yScale.bandwidth();;
                 svg.append("line") // attach a line
                     .style("stroke", "#A0A0A0") // colour the line
                     .style("stroke-width", "0.5px")
                     .attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
-                    .attr("y1", firstLineHeight1) // y position of the first end of the line
+                    .attr("y1", secondLineHeight) // y position of the first end of the line
                     .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-                    .attr("y2", firstLineHeight1);
+                    .attr("y2", secondLineHeight);
+
+                var thirdLineHeight = height;
+                svg.append("line") // attach a line
+                    .style("stroke", "#000000") // colour the line
+                    .style("stroke-width", "2px")
+                    .attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
+                    .attr("y1", height) // y position of the first end of the line
+                    .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
+                    .attr("y2", height);
 
                 var previousElementHeightPlusBottomMargin = function(id) {
                     return $("#" + id).height() + 10;
