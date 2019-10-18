@@ -36,7 +36,6 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 		var renderHkWorkPriority = function(date) {
 			// Calling HK Overview Build Graph
 			rvAnalyticsSrv.hkWorkPriority(date).then(function(data) {
-				console.log(data);
 				var chartDetails = {
 					chartData: data,
 					onBarChartClick: onBarChartClick

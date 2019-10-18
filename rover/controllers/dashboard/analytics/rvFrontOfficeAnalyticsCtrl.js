@@ -21,7 +21,7 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 			console.log(JSON.stringify(e));
 		};
 
-		var renderfdWorkloadChart = function(date) {
+		var renderfdWorkloadChart = function() {
 			rvFrontOfficeAnalyticsSrv.fdWorkload($rootScope.businessDate).then(function(data) {
 					var chartDetails = {
 						chartData: data,
@@ -31,7 +31,7 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 					$scope.drawWorkLoadChart(chartDetails);
 				});
 		};
-		var renderFrontOfficeManagementChart = function(data) {
+		var renderFrontOfficeManagementChart = function() {
 
 			rvFrontOfficeAnalyticsSrv.fdArrivalsManagement($rootScope.businessDate).then(function(data) {
 
@@ -49,7 +49,8 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 			var options = {
 				params: $rootScope.businessDate,
 				successCallBack: function() {
-					renderFrontOfficeManagementChart();
+					 renderFrontOfficeManagementChart();
+					//renderfdWorkloadChart();
 				}
 			};
 

@@ -17,8 +17,8 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 			var combinedArray = chart.contents.left_side.concat(chart.contents.right_side);
 
 			// Let count be 90, 40, 30 - based on calculation below the following will the calculated values
-			// item 1 = { xOrigin : -160 , xFinal : -70 }
-			// item 2 = { xOrigin : -70 , xFinal : -30 }
+			// item 1 = { xOrigin : -1 * ( 90 + 40 + 30) = -160 , xFinal : -1 * (160 - 90) = -70 }
+			// item 2 = { xOrigin : item 1 xFinal = -70 , xFinal : -1 * (70-40) = -30 }
 			// item 2 = { xOrigin : -30 , xFinal : 0 }
 
 			var totalCountInLeftSide =  _.reduce(chart.contents.left_side, function(totalCount, item) {              
@@ -37,8 +37,8 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 
 			// Let count be 10, 25, 35 - based on calculation below the following will the calculated values
 			// item 1 = { xOrigin : 0  , xFinal : 10 }
-			// item 2 = { xOrigin : 10 , xFinal : 25 }
-			// item 2 = { xOrigin : 25 , xFinal : 35 }
+			// item 2 = { xOrigin : item 1 xFinal = 10 , xFinal : item 2 xOrigin + count = 10 + 25 = 35 }
+			// item 2 = { xOrigin : item 2 xFinal = 35 , xFinal : item 3 xOrigin + count = 35 + 35 = 70 }
 
 			chart.contents.right_side = _.each(chart.contents.right_side, function(item, index) {
 				// For first item X origin is 0 and xFinal is count 

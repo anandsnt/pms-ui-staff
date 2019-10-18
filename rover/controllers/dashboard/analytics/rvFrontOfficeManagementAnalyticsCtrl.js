@@ -52,11 +52,9 @@ angular.module('sntRover')
                 var yAxis = d3.axisLeft()
                     .scale(yScale)
                     .ticks(5)
-                    //.tickSizeInner(-width)
                     .tickSizeOuter(0)
                     .tickPadding(10)
                     .tickFormat(function(d) {
-                        console.log(d);
                         return d.toUpperCase();
                     });
 
@@ -115,6 +113,7 @@ angular.module('sntRover')
                     .attr("y2", height);
 
                 var firstLineHeight = 1.5 * yInnerPadding + yScale.bandwidth();
+
                 svg.append("line") // attach a line
                     .style("stroke", "#A0A0A0") // colour the line
                     .style("stroke-width", "0.5px")
@@ -123,7 +122,8 @@ angular.module('sntRover')
                     .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
                     .attr("y2", firstLineHeight);
 
-                var secondLineHeight = 2.5 * yInnerPadding + 2 * yScale.bandwidth();;
+                var secondLineHeight = 2.5 * yInnerPadding + 2 * yScale.bandwidth();
+
                 svg.append("line") // attach a line
                     .style("stroke", "#A0A0A0") // colour the line
                     .style("stroke-width", "0.5px")
@@ -133,6 +133,7 @@ angular.module('sntRover')
                     .attr("y2", secondLineHeight);
 
                 var thirdLineHeight = height;
+
                 svg.append("line") // attach a line
                     .style("stroke", "#000000") // colour the line
                     .style("stroke-width", "2px")
@@ -141,30 +142,24 @@ angular.module('sntRover')
                     .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
                     .attr("y2", height);
 
-                var previousElementHeightPlusBottomMargin = function(id) {
-                    return $("#" + id).height() + 10;
-                };
-
                 // Left side Legends
                 var leftSideLegendDiv = d3.select("#left-side-legend");
                 var leftSideLegendColor = d3.scaleOrdinal()
                     .range(["#C2D6AE", "#DE3636", "#ED9319", "#84B651", "#E29D9D"])
                     .domain(["Arrivals", "Dirty", "Pickup", "Clean", "Perfomed"]);
 
-                var setMarginForLegends = function(legend) {
+                var setMarginForLeftSideLegends = function(legend, singleLegendHeightPlusMargin) {
                     var yBandwidth = yScale.bandwidth();
 
                     if (legend === "Arrivals") {
                         return margin.top + yInnerPadding + yBandwidth / 2;
                     } else if (legend === "Dirty") {
-                        var marginTop = yBandwidth / 2 - previousElementHeightPlusBottomMargin("left-legend-arrivals") + yInnerPadding;
-
-                        return marginTop;
+                        return yBandwidth / 2 - singleLegendHeightPlusMargin + yInnerPadding;
                     } else if (legend === "Perfomed") {
-                        var dirtyLegendHeight = previousElementHeightPlusBottomMargin("left-legend-arrivals");
-                        var heightOfThreeLegends = dirtyLegendHeight * 3;
-                        var marginTop = yBandwidth - heightOfThreeLegends + yInnerPadding + yBandwidth / 2;
-                        return marginTop;
+                        var heightOfThreeLegends = singleLegendHeightPlusMargin * 3;
+                        var marginTopOfPerfomed = yBandwidth - heightOfThreeLegends + yInnerPadding + yBandwidth / 2;
+                        
+                        return marginTopOfPerfomed;
                     }
                 };
 
@@ -175,7 +170,7 @@ angular.module('sntRover')
                     .attr("class", "legend-item")
                     .attr("id", function(item) {
                         return "left-legend-" + item.toLowerCase();
-                    })
+                    });
 
                 leftSideLegendEntries.append("span")
                     .attr("class", "rect")
@@ -187,8 +182,11 @@ angular.module('sntRover')
                         return label;
                     });
 
+                // TODO: For now lets assume all legends are of same height. So we will take one and use as reference.
+                var singleLegendHeightPlusMargin = $("#left-legend-arrivals").height() + 10;
+
                 leftSideLegendEntries.style("margin-top", function(legend) {
-                    return setMarginForLegends(legend)
+                    return setMarginForLeftSideLegends(legend, singleLegendHeightPlusMargin);
                 });
 
                 // right side legends
@@ -197,23 +195,23 @@ angular.module('sntRover')
                     .range(["#84B652", "#83B450", "#567D30", "#AB2727", "#DC3535"])
                     .domain(["Early Check in", "Remaining", "Inspected", "Late checkout", "Pending"]);
 
-                var setMarginForLegends = function(legend) {
+                var setMarginForRightSideLegends = function(legend, singleLegendHeightPlusMargin) {
                     var yBandwidth = yScale.bandwidth();
 
                     if (legend === "Early Check in") {
                         return margin.top + yInnerPadding + yBandwidth / 2;
                     } else if (legend === "Inspected") {
-                        var dirtyLegendHeight = previousElementHeightPlusBottomMargin("left-legend-arrivals");
-                        var heightOfThreeLegends = dirtyLegendHeight * 2;
+                        var heightOfThreeLegends = singleLegendHeightPlusMargin * 2;
                         var marginTop = yBandwidth / 2 - heightOfThreeLegends + yInnerPadding + yBandwidth / 2;
+                        
                         return marginTop;
                     } else if (legend === "Late checkout") {
-                        var dirtyLegendHeight = previousElementHeightPlusBottomMargin("left-legend-arrivals");
-                        var heightOfThreeLegends = dirtyLegendHeight * 1;
+                        var heightOfThreeLegends = singleLegendHeightPlusMargin * 1;
                         var marginTop = yBandwidth / 2 - heightOfThreeLegends + yInnerPadding + yBandwidth / 2;
+                        
                         return marginTop;
                     } else if (legend === "Pickup") {
-                        return 2 * yBandwidth - previousElementHeightPlusBottomMargin("left-legend-stayovers");
+                        return 2 * yBandwidth - singleLegendHeightPlusMargin;
                     }
                 };
                 var rightSideLegendEntries = rightSideLegendDiv.selectAll("dd")
@@ -236,7 +234,7 @@ angular.module('sntRover')
                     });
 
                 rightSideLegendEntries.style("margin-top", function(legend) {
-                    return setMarginForLegends(legend)
+                    return setMarginForRightSideLegends(legend, singleLegendHeightPlusMargin);
                 });
             }
         }

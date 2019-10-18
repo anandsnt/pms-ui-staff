@@ -35,17 +35,14 @@ angular.module('sntRover')
 					.tickFormat(function(d) {
 						// X axis... treat -ve values as positive
 						return (d < 0) ? (d * -1) : d;
-					})
-					//.attr("style","{ 'stroke': 'black', 'fill': 'none', 'stroke-width': '1px'}");
+					});
 
 				var yAxis = d3.axisLeft()
 					.scale(yScale)
 					.ticks(5)
-					//.tickSizeInner(-width)
 					.tickSizeOuter(0)
 					.tickPadding(10)
 					.tickFormat(function(d) {
-						console.log(d);
 						return d.toUpperCase();
 					});
 
@@ -57,11 +54,12 @@ angular.module('sntRover')
 					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 				// DEBUGING CODE
-				chartDetails = rvAnalyticsHelperSrv.addRandomNumbersForTesting(chartDetails);
+				// chartDetails = rvAnalyticsHelperSrv.addRandomNumbersForTesting(chartDetails);
 
 				chartDetails.chartData.data.forEach(function(chart) {
 
 					var chartName = chart.type;
+
 					// sort right side items in ascending order
 					chart.contents.right_side = _.sortBy(chart.contents.right_side, function(item) {
 						return item.count;
@@ -69,8 +67,8 @@ angular.module('sntRover')
 
 					// Let count be 10, 25, 35 - based on calculation below the following will the calculated values
 					// item 1 = { xOrigin : 0  , xFinal : 10 }
-					// item 2 = { xOrigin : 10 , xFinal : 25 }
-					// item 2 = { xOrigin : 25 , xFinal : 35 }
+					// item 2 = { xOrigin : item 1 xFinal = 10 , xFinal : item 2 xOrigin + count = 10 + 25 = 35 }
+					// item 2 = { xOrigin : item 2 xFinal = 35 , xFinal : item 3 xOrigin + count = 35 + 35 = 70 }
 
 					chart.contents.right_side = _.each(chart.contents.right_side, function(item, index) {
 						// For first item X origin is 0 and xFinal is count 
@@ -79,7 +77,7 @@ angular.module('sntRover')
 							item.xFinal = item.count;
 						} else {
 							// For all other elements, X origin  is count of previous item and X final is count of the item
-							item.origin = chart.contents.right_side[index - 1].xFinal;;
+							item.origin = chart.contents.right_side[index - 1].xFinal;
 							item.xFinal = item.origin + chart.contents.right_side[index].count;
 						}
 					});
@@ -126,23 +124,6 @@ angular.module('sntRover')
 					.attr("class", "y axis left-most")
 					.call(yAxis);
 
-				//              var dataForDrawingBars = {
-				//                  svg: svg,
-				//                  yScale: yScale,
-				//                  xScale: xScale,
-				//                  chartDetails: chartDetails,
-				//                  colorScheme: colorScheme,
-				//                  maxValue: maxValueInBotheDirections
-				//              };
-
-
-				//              var svg = barData.svg,
-				// yScale = barData.yScale,
-				// xScale = barData.xScale,
-				// chartDetails = barData.chartDetails,
-				// colorScheme = barData.colorScheme,
-				// maxValue = barData.maxValue;
-
 				var vakken = svg.selectAll(".type")
 					.data(chartDetails.chartData.data)
 					.enter().append("g")
@@ -181,13 +162,15 @@ angular.module('sntRover')
 
 				var isSmallBarItem = function(item) {
 					var itemPercantage = item.count * 100 / maxValueInBotheDirections;
+
 					return itemPercantage < 5;
 				};
+
 				bars.append("text")
 					.attr("x", function(item) {
 						return ((xScale(item.xOrigin) + xScale(item.xFinal)) / 2);
 					})
-					.attr("y", function(item) {
+					.attr("y", function() {
 						return yScale.bandwidth() / 2;
 					})
 					.attr("dy", function(item) {
@@ -203,44 +186,48 @@ angular.module('sntRover')
 					.text(function(item) {
 						return item.count !== 0 ? item.count : '';
 					});
-				// rvAnalyticsHelperSrv.drawBarsOfBidirectonalChart(dataForDrawingBars);
 
+				// Draw horizontal line on top of REMAINING
+				var yPositionOfRemainingTopLine = yScale.bandwidth()/2;
 
-				var firstHorizontalLineHeight = yScale.bandwidth()/2;
 				svg.append("line") // attach a line
 					.style("stroke", "#000000") // colour the line
 					.style("stroke-width", "2px")
 					.attr("x1", -100) // x position of the first end of the line
-					.attr("y1", firstHorizontalLineHeight) // y position of the first end of the line
+					.attr("y1", yPositionOfRemainingTopLine) // y position of the first end of the line
 					.attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-					.attr("y2", firstHorizontalLineHeight);
+					.attr("y2", yPositionOfRemainingTopLine);
 
-				var secondHorizontalLineHeight = 2.5 * yScale.bandwidth();
+				// Draw horizontal line under REMAINING
+				var yPositionOfRemainingBottomLine = 2.5 * yScale.bandwidth();
+
 				svg.append("line") // attach a line
 					.style("stroke", "#000000") // colour the line
 					.style("stroke-width", "2px")
 					.attr("x1", -100) // x position of the first end of the line
-					.attr("y1", secondHorizontalLineHeight) // y position of the first end of the line
+					.attr("y1", yPositionOfRemainingBottomLine) // y position of the first end of the line
 					.attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-					.attr("y2", secondHorizontalLineHeight);
+					.attr("y2", yPositionOfRemainingBottomLine);
 
-				var thirdHorizontalLineHeight = height;
+				// Draw thick line on top of x-axis
+				var yPositionOfXaxis = height;
+
 				svg.append("line") // attach a line
 					.style("stroke", "#000000") // colour the line
 					.style("stroke-width", "2px")
 					.attr("x1", 0) // x position of the first end of the line
-					.attr("y1", thirdHorizontalLineHeight) // y position of the first end of the line
+					.attr("y1", yPositionOfXaxis) // y position of the first end of the line
 					.attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-					.attr("y2", thirdHorizontalLineHeight);
+					.attr("y2", yPositionOfXaxis);
 
-				var firstVericalLineHeight = height;
+				// Draw thick line on top of y-axis
 				svg.append("line") // attach a line
 					.style("stroke", "#000000") // colour the line
 					.style("stroke-width", "2px")
 					.attr("x1", 0) // x position of the first end of the line
 					.attr("y1", 0) // y position of the first end of the line
 					.attr("x2", 0) // x position of the second end of the line
-					.attr("y2", firstVericalLineHeight);
+					.attr("y2", height);
 
 
 				// // right side legends
@@ -257,7 +244,7 @@ angular.module('sntRover')
 					.attr("class", "legend-item")
 					.attr("id", function(item) {
 						return "left-legend-" + item.toLowerCase();
-					})
+					});
 
 				rightSideLegendEntries.append("span")
 					.attr("class", "rect")

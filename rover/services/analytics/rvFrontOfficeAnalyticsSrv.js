@@ -1,22 +1,22 @@
 angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
-	'$q',
-	'rvBaseWebSrvV2',
-	'rvAnalyticsSrv',
-	function($q, rvBaseWebSrvV2, rvAnalyticsSrv) {
+    '$q',
+    'rvBaseWebSrvV2',
+    'rvAnalyticsSrv',
+    function($q, rvBaseWebSrvV2, rvAnalyticsSrv) {
 
-		this.fetchFrontDeskAnalyticsData = function(params) {
-			var url = '/sample_json/dashboard/dashboardAnalytics.json';
+        this.fetchFrontDeskAnalyticsData = function(params) {
+            var url = '/sample_json/dashboard/dashboardAnalytics.json';
 
-			return rvBaseWebSrvV2.getJSON(url, params);
-		};
+            return rvBaseWebSrvV2.getJSON(url, params);
+        };
 
-		this.fdArrivalsManagement = function(date) {
+        this.fdArrivalsManagement = function(date) {
             var deferred = $q.defer();
 
             rvAnalyticsSrv.hkOverview(date).then(function(response) {
                 response.label = 'AN_ARRIVALS_MANAGEMENT';
                 response.dashboard_type = 'arrivals_management_chart';
-                response.data = _.reject(response.data, function(data){
+                response.data = _.reject(response.data, function(data) {
                     return data.type === 'stayovers';
                 });
                 response.data = _.sortBy(response.data, function(data) {
@@ -34,27 +34,27 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
             return deferred.promise;
         };
 
-		this.fdWorkload = function(date) {
+        this.fdWorkload = function(date) {
             var deferred = $q.defer();
             constructFdWorkLoad(deferred, date);
             return deferred.promise;
         };
 
-		/*
-		 * Constructing the front desk workload graphs
-		 */
-		var constructFdWorkLoad = function(deferred, date) {
+        /*
+         * Constructing the front desk workload graphs
+         */
+        var constructFdWorkLoad = function(deferred, date) {
             var fdWorkLoad = {
                 dashboard_type: 'frontdesk_workload',
                 label: 'AN_WORKLOAD',
                 data: []
             };
 
-            var arrivingReservations = rvAnalyticsSrv.activeReservations.filter(function(reservation){
+            var arrivingReservations = rvAnalyticsSrv.activeReservations.filter(function(reservation) {
                 return reservation.arrival_date === date;
             });
 
-            var departingReservations = rvAnalyticsSrv.activeReservations.filter(function(reservation){
+            var departingReservations = rvAnalyticsSrv.activeReservations.filter(function(reservation) {
                 return reservation.departure_date === date;
             });
 
@@ -88,10 +88,10 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
             return deferred.resolve(fdWorkLoad);
         };
 
-		/*
-		 * Construct the users checkin / checkout activity
-		 */
-		var constructUserCiCoActivity = function(arrivals, departures) {
+        /*
+         * Construct the users checkin / checkout activity
+         */
+        var constructUserCiCoActivity = function(arrivals, departures) {
             var usersActivity = {};
             var userInitData = {
                 earlyCheckin: 0,
@@ -114,11 +114,11 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
         /*
          * Build the user's checkin reservatons activity
          */
-		var constructUserCiActivity = function(reservations, userInitData, usersActivity) {
-            reservations.forEach(function(reservation){
+        var constructUserCiActivity = function(reservations, userInitData, usersActivity) {
+            reservations.forEach(function(reservation) {
                 var user = 'REMAINING';
                 if (reservation.reservation_status !== 'RESERVED') {
-                    if (reservation.ci_agent === null ) {
+                    if (reservation.ci_agent === null) {
                         return;
                     } else {
                         user = reservation.ci_agent;
@@ -131,7 +131,7 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
 
                 if (isVip(reservation)) {
                     usersActivity[user].vipCheckin = usersActivity[user].vipCheckin + 1;
-                } else if(isEarlyCheckin(reservation)) {
+                } else if (isEarlyCheckin(reservation)) {
                     usersActivity[user].earlyCheckin = usersActivity[user].earlyCheckin + 1;
                 } else {
                     usersActivity[user].checkin = usersActivity[user].checkin + 1;
@@ -140,14 +140,14 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
             });
         };
 
-		/*
-		 * Build the user's checkout reservatons activity
-		 */
+        /*
+         * Build the user's checkout reservatons activity
+         */
         var constructUserCoActivity = function(reservations, userInitData, usersActivity) {
-            reservations.forEach(function(reservation){
+            reservations.forEach(function(reservation) {
                 var user = 'REMAINING';
                 if (reservation.reservation_status !== 'CHECKEDIN') {
-                    if (reservation.co_agent === null ) {
+                    if (reservation.co_agent === null) {
                         return;
                     } else {
                         user = reservation.co_agent;
@@ -160,7 +160,7 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
 
                 if (isVip(reservation)) {
                     usersActivity[user].vipCheckout = usersActivity[user].vipCheckout + 1;
-                } else if(isLateCheckout(reservation)) {
+                } else if (isLateCheckout(reservation)) {
                     usersActivity[user].lateCheckout = usersActivity[user].lateCheckout + 1;
                 } else {
                     usersActivity[user].checkout = usersActivity[user].checkout + 1;
@@ -168,11 +168,11 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
             });
         };
 
-		/*
-		 * Function to determine if a reservation is early checkin
-		 */
-		var isEarlyCheckin = function(reservation) {
-		    return false;
+        /*
+         * Function to determine if a reservation is early checkin
+         */
+        var isEarlyCheckin = function(reservation) {
+            return false;
         };
 
         /*
@@ -188,5 +188,5 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
         var isVip = function(reservation) {
             return reservation.vip === 't';
         };
-	}
+    }
 ]);
