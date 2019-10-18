@@ -54,7 +54,7 @@ angular.module('sntRover')
 					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 				// DEBUGING CODE
-				chartDetails = rvAnalyticsHelperSrv.addRandomNumbersForTesting(chartDetails);
+				// chartDetails = rvAnalyticsHelperSrv.addRandomNumbersForTesting(chartDetails);
 
 				chartDetails.chartData.data.forEach(function(chart) {
 

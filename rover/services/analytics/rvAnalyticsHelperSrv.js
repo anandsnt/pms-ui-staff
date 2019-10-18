@@ -26,6 +26,8 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 				return item.count + totalCount;            
 			}, 0);
 
+			//chart.maxValueInOneSie = totalCountInLeftSide > totalCountInRightSide ? totalCountInLeftSide : totalCountInRightSide;
+
 			chart.contents.left_side = _.each(chart.contents.left_side, function(item, index) {
 				if (index === 0) {
 					item.origin = -1 * totalCountInLeftSide;
@@ -53,6 +55,10 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 				}
 			});
 
+			var totalCountInRightSide = chart.contents.right_side.length ? chart.contents.right_side[chart.contents.right_side.length -1].xFinal : 0;
+
+			chart.maxValueInOneSide = totalCountInLeftSide > totalCountInRightSide ? totalCountInLeftSide : totalCountInRightSide;
+
 			chart.boxes = combinedArray.map(function(item) {
 				return {
 					type: item.type,
@@ -66,14 +72,11 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 			});
 		});
 
-		// get minimum and maximum values to plot
-		chartDetails.min_val = d3.min(chartDetails.chartData.data, function(chart) {
-			return chart.boxes["0"].xOrigin;
-		});
-		chartDetails.max_val = d3.max(chartDetails.chartData.data, function(chart) {
-			return chart.boxes[chart.boxes.length - 1].xFinal;
+		var barGraphWithMaxValue = _.max(chartDetails.chartData.data, function(chartDetail) {
+			return chartDetail.maxValueInOneSide;
 		});
 
+		chartDetails.maxValueInOneSide = barGraphWithMaxValue.maxValueInOneSide;
 
 		return chartDetails;
 	};

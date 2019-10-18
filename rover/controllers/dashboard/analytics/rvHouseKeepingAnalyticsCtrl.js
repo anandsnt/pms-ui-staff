@@ -51,8 +51,8 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 			var options = {
 				params: $rootScope.businessDate,
 				successCallBack: function() {
-					renderHkWorkPriority($rootScope.businessDate);
-                    //renderHkOverview($rootScope.businessDate);
+					renderHkWorkPriority($rootScope.businessDate);		
+                    // renderHkOverview($rootScope.businessDate);
 				}
 			};
 
