@@ -5,6 +5,7 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 		chartDetails.chartData.data.forEach(function(chart) {
 
 			var chartName = chart.type;
+
 			// sort left side items in descending order
 			chart.contents.left_side = _.sortBy(chart.contents.left_side, function(item) {
 				return -1 * item.count;
@@ -61,7 +62,7 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 					count: item.count,
 					chartName: chartName,
 					elementId: chartName + "-" + item.type
-				}
+				};
 			});
 		});
 
@@ -114,8 +115,8 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 				return xScale(item.xFinal) - xScale(item.xOrigin);
 			})
 			.style("fill", function(item) {
-				console.log(item.chartName);
-				console.log(colorScheme[item.chartName + 'ColorScheme']);
+				// console.log(item.chartName);
+				// console.log(colorScheme[item.chartName + 'ColorScheme']);
 				return colorScheme[item.chartName + 'ColorScheme'](item.type);
 			})
 			.on("click", function(e) {
@@ -124,8 +125,10 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 
 		var isSmallBarItem = function(item) {
 			var itemPercantage = item.count * 100 / maxValue;
+
 			return (itemPercantage < 8 || itemPercantage > 4 && item.count < 10);
 		};
+
 		bars.append("text")
 			.attr("x", function(item) {
 				return ((xScale(item.xOrigin) + xScale(item.xFinal)) / 2);
@@ -152,125 +155,134 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 	this.addRandomNumbersForTesting = function(chartDetails) {
 		var combinedItemsCountArray = [];
 
-		var b = {
-			"type": "jena",
-			"label": "jena",
-			"contents": {
-				"right_side": [{
-					"type": "early_checkin",
-					"label": "AN_EARLY_CHECKIN",
-					"count": 0
-				}, {
-					"type": "checkin",
-					"label": "AN_CHECKIN",
-					"count": 1
-				}, {
-					"type": "vip_checkin",
-					"label": "AN_VIP_CHECKIN",
-					"count": 0
-				}, {
-					"type": "vip_checkout",
-					"label": "AN_VIP_CHECKOUT",
-					"count": 0
-				}, {
-					"type": "checkout",
-					"label": "AN_CHECKOUT",
-					"count": 0
-				}, {
-					"type": "late_checkout",
-					"label": "AN_LATE_CHECKOUT",
-					"count": 0
-				}]
-			}
-		};
+		var workPriority = false;
 
-		//chartDetails.chartData.data.push(b);
-		var p = {
-			"type": "patrick",
-			"label": "jena",
-			"contents": {
-				"right_side": [{
-					"type": "early_checkin",
-					"label": "AN_EARLY_CHECKIN",
-					"count": 0
-				}, {
-					"type": "checkin",
-					"label": "AN_CHECKIN",
-					"count": 1
-				}, {
-					"type": "vip_checkin",
-					"label": "AN_VIP_CHECKIN",
-					"count": 0
-				}, {
-					"type": "vip_checkout",
-					"label": "AN_VIP_CHECKOUT",
-					"count": 0
-				}, {
-					"type": "checkout",
-					"label": "AN_CHECKOUT",
-					"count": 0
-				}, {
-					"type": "late_checkout",
-					"label": "AN_LATE_CHECKOUT",
-					"count": 0
-				}]
-			}
-		};
-		//chartDetails.chartData.data.push(p);
+		if (workPriority) {
+			var b = {
+				"type": "jena",
+				"label": "jena",
+				"contents": {
+					"right_side": [{
+						"type": "early_checkin",
+						"label": "AN_EARLY_CHECKIN",
+						"count": 0
+					}, {
+						"type": "checkin",
+						"label": "AN_CHECKIN",
+						"count": 1
+					}, {
+						"type": "vip_checkin",
+						"label": "AN_VIP_CHECKIN",
+						"count": 0
+					}, {
+						"type": "vip_checkout",
+						"label": "AN_VIP_CHECKOUT",
+						"count": 0
+					}, {
+						"type": "checkout",
+						"label": "AN_CHECKOUT",
+						"count": 0
+					}, {
+						"type": "late_checkout",
+						"label": "AN_LATE_CHECKOUT",
+						"count": 0
+					}]
+				}
+			};
 
-		b.type = "Jane"
-		var c = {
-			"type": "jena",
-			"label": "jena",
-			"contents": {
-				"right_side": [{
-					"type": "early_checkin",
-					"label": "AN_EARLY_CHECKIN",
-					"count": 0
-				}, {
-					"type": "checkin",
-					"label": "AN_CHECKIN",
-					"count": 1
-				}, {
-					"type": "vip_checkin",
-					"label": "AN_VIP_CHECKIN",
-					"count": 0
-				}, {
-					"type": "vip_checkout",
-					"label": "AN_VIP_CHECKOUT",
-					"count": 0
-				}, {
-					"type": "checkout",
-					"label": "AN_CHECKOUT",
-					"count": 0
-				}, {
-					"type": "late_checkout",
-					"label": "AN_LATE_CHECKOUT",
-					"count": 0
-				}]
-			}
-		};
-		//chartDetails.chartData.data.push(c);
+			var a = b;
+			a.type = "Jamie";
+			a.label = "Jamie";
+
+			chartDetails.chartData.data.push(a);
+
+			var p = angular.copy(b);
+			p.type = "patrick";
+			p.label = "patrick";
+			chartDetails.chartData.data.push(p);
+
+			var q = angular.copy(b);
+			q.type = "Simon";
+			q.label = "Simon";
+			chartDetails.chartData.data.push(q);
+
+			var r = angular.copy(b);
+			r.type = "Seeman";
+			r.label = "Seeman";
+			chartDetails.chartData.data.push(r);
+
+			var w = angular.copy(b);
+			w.type = "Jane";
+			w.label = "Jane";
+			chartDetails.chartData.data.push(w);
+
+			var z = angular.copy(b);
+			z.type = "Alison";
+			z.label = "Alison";
+			chartDetails.chartData.data.push(z);
+
+			var aa = angular.copy(b);
+			aa.type = "Amy";
+			aa.label = "Amy";
+			chartDetails.chartData.data.push(aa);
+
+			var bb = angular.copy(b);
+			bb.type = "Jackson";
+			bb.label = "Jackson";
+			chartDetails.chartData.data.push(bb);
+
+			var aw = angular.copy(b);
+			aw.type = "Piper";
+			aw.label = "Piper";
+			chartDetails.chartData.data.push(aw);
+
+			var awa = angular.copy(b);
+			awa.type = "Richard";
+			awa.label = "Richard";
+			chartDetails.chartData.data.push(awa);
+
+			var awb = angular.copy(b);
+			awb.type = "Johan";
+			awb.label = "Johan";
+			chartDetails.chartData.data.push(awb);
+
+			var awc = angular.copy(b);
+			awc.type = "Peter";
+			awc.label = "Peter";
+			chartDetails.chartData.data.push(awc);
+
+			var awd = angular.copy(b);
+			awd.type = "Samson";
+			awd.label = "Samson";
+			chartDetails.chartData.data.push(awd);
+
+			var awe = angular.copy(b);
+			awe.type = "Samuel";
+			awe.label = "Samuel";
+			chartDetails.chartData.data.push(awe);
+
+		}
 
 		_.each(chartDetails.chartData.data, function(chart) {
-		    _.each(chart.contents.left_side, function(item) {
-		        // to delete
-		        item.count = item.count < 3 ?  _.random(20, 100) : item.count;
-		        combinedItemsCountArray.push(item.count);
-		    });
-		    _.each(chart.contents.right_side, function(item) {
-		        //to delete
-		        item.count = item.count < 3 ?  _.random(20, 100) : item.count;
-		        combinedItemsCountArray.push(item.count);
-		    });
-		    // chart.contents.right_side.push(chart.contents.right_side[0]);
-		    // chart.contents.right_side.push(chart.contents.right_side[0]);
-		    // chart.contents.right_side.push(chart.contents.right_side[0]);
+			_.each(chart.contents.left_side, function(item) {
+				// to delete
+				item.count = item.count < 3 ? _.random(20, 100) : item.count;
+				combinedItemsCountArray.push(item.count);
+			});
+			_.each(chart.contents.right_side, function(item) {
+				//to delete
+				item.count = item.count < 3 ? _.random(20, 100) : item.count;
+				combinedItemsCountArray.push(item.count);
+			});
+			// chart.contents.right_side.push(chart.contents.right_side[0]);
+			// chart.contents.right_side.push(chart.contents.right_side[0]);
+			// chart.contents.right_side.push(chart.contents.right_side[0]);
 		});
 
-		var largestItemCount = _.max(combinedItemsCountArray, function(count) {
-		    return count;
-		});
+		// var largestItemCount = _.max(combinedItemsCountArray, function(count) {
+		//     return count;
+		// });
+
 		return chartDetails;
 	};
 }]);

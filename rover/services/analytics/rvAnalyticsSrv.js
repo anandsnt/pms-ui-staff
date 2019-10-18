@@ -61,7 +61,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
 
             if (completedRoomsCall) {
                 calledHKApis = true;
-                deferred.resolve()
+                deferred.resolve();
             }
         });
 
@@ -71,7 +71,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
             completedRoomsCall = true;
             if (completedResCall) {
                 calledHKApis = true;
-                deferred.resolve()
+                deferred.resolve();
             }
         });
         return deferred.promise;
@@ -108,6 +108,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
                     label: 'AN_HOUSEKEEPING_OVER_VIEW',
                     data: []
                 };
+
                 // Pushing arrivals data structure
                 hkOverview.data.push(buildArrivals(that.activeReservations, date, true));
                 // Pushing departure data structure
@@ -133,6 +134,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
             label: 'AN_WORK_PRIORITY_CHART',
             data: []
         };
+
         // Pushing arrivals data structure
         workPriority.data.push(buildArrivals(that.activeReservations, date, false));
         // Pushing vacant data structure
@@ -144,7 +146,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
 
     var buildDepartures = function buildDepartures(activeReservations, date, overview) {
         var departures = activeReservations.filter(function(reservation) {
-            return reservation.departure_date == date;
+            return reservation.departure_date === date;
         });
         var departedCount = departures.filter(function(reservation) {
             return reservation.reservation_status === 'CHECKEDOUT';
@@ -239,7 +241,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
 
     var buildArrivals = function buildArrivals(activeReservations, date, overview) {
         var arrivals = activeReservations.filter(function(reservation) {
-            return reservation.arrival_date == date;
+            return reservation.arrival_date === date;
         }); // Performed checkin that day
 
         var perfomedCount = arrivals.filter(function(reservation) {

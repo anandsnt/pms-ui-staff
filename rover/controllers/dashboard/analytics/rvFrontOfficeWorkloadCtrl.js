@@ -54,7 +54,7 @@ angular.module('sntRover')
 					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 				// DEBUGING CODE
-				// chartDetails = rvAnalyticsHelperSrv.addRandomNumbersForTesting(chartDetails);
+				chartDetails = rvAnalyticsHelperSrv.addRandomNumbersForTesting(chartDetails);
 
 				chartDetails.chartData.data.forEach(function(chart) {
 
@@ -163,7 +163,7 @@ angular.module('sntRover')
 				var isSmallBarItem = function(item) {
 					var itemPercantage = item.count * 100 / maxValueInBotheDirections;
 
-					return itemPercantage < 5;
+					return itemPercantage < 3;
 				};
 
 				bars.append("text")
@@ -180,7 +180,7 @@ angular.module('sntRover')
 						return isSmallBarItem(item) && item.xOrigin < 0 ? "-0.5em" : "0em";
 					})
 					.style("font-size", function(item) {
-						return isSmallBarItem(item) ? "10px" : "15px";
+						return isSmallBarItem(item) ? "10px" : "13px";
 					})
 					.style("text-anchor", "middle")
 					.text(function(item) {

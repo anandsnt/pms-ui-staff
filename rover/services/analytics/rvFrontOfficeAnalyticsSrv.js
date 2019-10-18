@@ -20,13 +20,16 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
                     return data.type === 'stayovers';
                 });
                 response.data = _.sortBy(response.data, function(data) {
+                    var index;
+
                     if (data.type === 'arrivals') {
-                        return 0;
+                        index = 0;
                     } else if (data.type === "rooms") {
-                        return 1;
+                        index = 1;
                     } else {
-                        return 3;
+                        index = 3;
                     }
+                    return index;
                 });
                 deferred.resolve(response);
             });
@@ -36,6 +39,7 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
 
         this.fdWorkload = function(date) {
             var deferred = $q.defer();
+
             constructFdWorkLoad(deferred, date);
             return deferred.promise;
         };
@@ -74,7 +78,9 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
                 };
 
                 elements.forEach(function(element) {
-                    var elementInUnderscore = element.split(/(?=[A-Z])/).join('_').toLowerCase();
+                    var elementInUnderscore = element.split(/(?=[A-Z])/).join('_')
+                                              .toLowerCase();
+
                     userActivityElement.contents.right_side.push({
                         type: elementInUnderscore,
                         label: "AN_" + elementInUnderscore.toUpperCase(),
@@ -101,6 +107,7 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
                 checkout: 0,
                 lateCheckout: 0
             };
+
             // Calculate the arrivals info
             constructUserCiActivity(arrivals, userInitData, usersActivity);
 
@@ -117,6 +124,7 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
         var constructUserCiActivity = function(reservations, userInitData, usersActivity) {
             reservations.forEach(function(reservation) {
                 var user = 'REMAINING';
+
                 if (reservation.reservation_status !== 'RESERVED') {
                     if (reservation.ci_agent === null) {
                         return;
@@ -127,7 +135,7 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
 
                 if (typeof usersActivity[user] === 'undefined') {
                     usersActivity[user] = $.extend({}, userInitData);
-                };
+                }
 
                 if (isVip(reservation)) {
                     usersActivity[user].vipCheckin = usersActivity[user].vipCheckin + 1;
@@ -146,6 +154,7 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
         var constructUserCoActivity = function(reservations, userInitData, usersActivity) {
             reservations.forEach(function(reservation) {
                 var user = 'REMAINING';
+
                 if (reservation.reservation_status !== 'CHECKEDIN') {
                     if (reservation.co_agent === null) {
                         return;
@@ -156,7 +165,7 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
 
                 if (typeof usersActivity[user] === 'undefined') {
                     usersActivity[user] = $.extend({}, userInitData);
-                };
+                }
 
                 if (isVip(reservation)) {
                     usersActivity[user].vipCheckout = usersActivity[user].vipCheckout + 1;

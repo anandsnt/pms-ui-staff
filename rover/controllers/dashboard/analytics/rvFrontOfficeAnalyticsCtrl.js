@@ -49,8 +49,8 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 			var options = {
 				params: $rootScope.businessDate,
 				successCallBack: function() {
-					 renderFrontOfficeManagementChart();
-					//renderfdWorkloadChart();
+					// renderFrontOfficeManagementChart();
+					renderfdWorkloadChart();
 				}
 			};
 
