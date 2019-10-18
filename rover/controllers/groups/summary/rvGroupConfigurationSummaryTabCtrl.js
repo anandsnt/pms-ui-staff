@@ -1018,7 +1018,15 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
          * @returns {undefined}
          */
         $scope.onRateChange = function() {
-            var summaryData = $scope.groupConfigData.summary;
+            var summaryData = $scope.groupConfigData.summary,
+                contractId;
+            
+            _.each($scope.groupSummaryData.rateSelectDataObject, function(rate) {
+                if (rate.id === summaryData.rate) {
+                    contractId = rate.contract_id;
+                    $scope.groupConfigData.summary.contract_id = contractId;
+                }
+            });
 
             if (!summaryData.group_id) {
                 return false;
@@ -1026,7 +1034,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 
             var params = {
                 group_id: summaryData.group_id,
-                rate_id: summaryData.rate
+                rate_id: summaryData.rate,
+                contract_id: contractId
             };
             var options = {
                 successCallBack: onRateChangeSuccessCallBack,
@@ -1475,9 +1484,11 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                         else {
                             rate.groupName = 'Group Rates';
                         }
+                        if (rate.id === $scope.groupConfigData.summary.rate) {
+                            $scope.groupConfigData.summary.contract_id = rate.contract_id;
+                        }
                         sumData.rateSelectDataObject.push(rate);
                     });
-
                 },
                 onFetchRatesFailure = function(errorMessage) {
                     $scope.errorMessage = errorMessage;

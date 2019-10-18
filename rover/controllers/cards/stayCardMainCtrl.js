@@ -1252,7 +1252,6 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					id: room.rateId
 				}, success);
 				for (var ms = new tzIndependentDate($scope.reservationData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
-
 					room.stayDates[dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd')] = {
 						guests: {
 							adults: room.numAdults,
@@ -1268,6 +1267,10 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 							is_discount_allowed: 'true'
 						}
 					};
+					if (!!room.contract_id) {
+						room.stayDates[dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd')].contractId = room.contract_id;
+						delete room.contract_id;
+					}
 				}
 			});
 

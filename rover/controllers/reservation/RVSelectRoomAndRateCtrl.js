@@ -547,6 +547,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							defaultRoomTypeAvailability: rate.availability,
 							defaultADR: rate.adr,
 							contractName: isCorporate ? rate.contract_name : '',
+							contractId: isCorporate ? rate.contract_id : '',
 							rooms: [],
 							restriction: rate.restrictions,
 							hasRoomsList: false,
@@ -1043,7 +1044,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 				navigateOut();
 			},
-			populateStayDates = function(stayDetails, rateId, roomIndex, roomTypeId) {
+			populateStayDates = function(stayDetails, rateId, roomIndex, roomTypeId, contractId) {
                 var businessDate = tzIndependentDate($rootScope.businessDate);
 
 				_.each(ROOMS[roomIndex].stayDates, function(details, date) {
@@ -1068,6 +1069,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						}
 						// CICO-59948 Updating the selected room type for the stay dates from business date onwards
 						details.roomTypeId = roomTypeId;
+						details.contractId = contractId;
                 	}
 				});
 			},
@@ -1672,6 +1674,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					for (roomIndex = $scope.stateCheck.roomDetails.firstIndex; roomIndex <= $scope.stateCheck.roomDetails.lastIndex; roomIndex++) {
 						currentRoom = ROOMS[roomIndex];
 						currentRoom.stayDates[activeDate].rateCurrency = rateInfo.rateCurrency;
+						currentRoom.stayDates[activeDate].contractId = rateInfo.contractId;
 						currentRoom.stayDates[activeDate].rateDetails = {
 							actual_amount: rateAmount,
 							modified_amount: rateAmount,
@@ -1719,7 +1722,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							rateTotal: rateInfo.totalAmount
 						});
 
-						populateStayDates(secondary.dates, rateId, i, roomId);
+						populateStayDates(secondary.dates, rateId, i, roomId, rateInfo.contractId);
 
 						$scope.reservationData.rateDetails[i] = angular.copy(ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates);
 
