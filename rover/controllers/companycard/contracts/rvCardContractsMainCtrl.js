@@ -20,8 +20,8 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 				selectedRateList: [],
 				selectedRateIdList: [],
 				accountId: '',
-				showNightsModal: false,
 				hasEditAccessCodePermission: rvPermissionSrv.getPermissionValue('EDIT_CONTRACT_ACCESS_CODE'),
+				hasDeleteContractPermission: rvPermissionSrv.getPermissionValue('DELETE_CONTRACT'),
 				linkContractsSearch: {
 					query: '',
 					results: []
