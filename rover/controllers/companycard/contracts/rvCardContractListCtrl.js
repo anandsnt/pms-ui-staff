@@ -37,6 +37,9 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
         $scope.fetchDetails = function(contractId) {
             if (contractId !== $scope.contractData.selectedContractId || $scope.contractData.mode !== 'EDIT') {
                 $scope.contractData.mode = 'EDIT';
+                // Reset Contract Link Search Component.
+                $scope.contractData.linkContractsSearch.query = '';
+                $scope.contractData.linkContractsSearch.results = [];
                 $scope.$emit('fetchContract', contractId);
             }
         };
@@ -45,8 +48,12 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
          */
         $scope.newContract = function() {
             $scope.contractData.mode = 'ADD';
+            // Reset Contract Rate Search Component.
             $scope.contractData.selectedRateList = [];
             $scope.contractData.rateSearchQuery = '';
+            // Reset Contract Link Search Component.
+            $scope.contractData.linkContractsSearch.query = '';
+            $scope.contractData.linkContractsSearch.results = [];
             $scope.$emit('refreshContractsScroll');
         };
 

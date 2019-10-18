@@ -16,6 +16,7 @@
         <!-- Remove .hidden when searching -->
         <ul class="autocomplete-results-header" ng-show="contractData.linkContractsSearch.results.length > 0">
             <li class="contract-name">Contract Name</li>
+            <li class="access-code">Access Code</li>
             <li class="start-date">Start Date</li>
             <li class="end-date">End Date</li>
             <li class="rate">Rate</li>
@@ -26,6 +27,7 @@
                 <!-- Add .linked if it's a linked contract already -->
                 <ul class="contract" ng-click="clickedOnResult($index)" ng-repeat="item in contractData.linkContractsSearch.results" ng-class="{'linked': item.is_already_linked}">
                     <li class="contract-name" ng-bind-html="escapeNull(item.contract_name)|highlight:contractData.linkContractsSearch.query:false"></li>
+                    <li class="access-code" ng-bind-html="escapeNull(item.access_code)|highlight:contractData.linkContractsSearch.query:false"></li>
                     <li class="start-date">{{item.begin_date}}</li>
                     <li class="end-date">{{item.end_date}}</li>
                     <li class="rate" ng-if="item.rates.length <= 3">

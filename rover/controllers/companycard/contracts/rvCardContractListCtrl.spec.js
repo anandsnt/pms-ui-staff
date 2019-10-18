@@ -13,7 +13,11 @@ describe('rvCardContractListCtrl', function() {
         });
         angular.extend($scope, {
             contractData: {
-                mode: 'EDIT'
+                mode: 'EDIT',
+                linkContractsSearch: {
+                    query: '',
+                    results: []
+                }
             }
         });
     });
