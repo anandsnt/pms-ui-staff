@@ -70,8 +70,7 @@ angular.module('sntRover')
 
                 chartDetails = rvAnalyticsHelperSrv.processBiDirectionalChart(chartDetails);
 
-                var maxValueInBotheDirections = chartDetails.min_val > chartDetails.max_val ?
-                    chartDetails.min_val : chartDetails.max_val;
+                var maxValueInBotheDirections = chartDetails.maxValueInOneSide;
 
                 // set scales for x axis
                 xScale.domain([-1 * maxValueInBotheDirections, maxValueInBotheDirections]).nice();
