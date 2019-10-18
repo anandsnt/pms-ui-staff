@@ -200,7 +200,7 @@ angular.module('sntRover')
                     } else if (legend === "Inspected") {   
                         return yBandwidth / 2 - (singleLegendHeightPlusMargin * 2) + yInnerPadding + yBandwidth / 2;
                     } else if (legend === "Late checkout") {                        
-                        return yBandwidth / 2 - singleLegendHeightPlusMargin + yInnerPadding + yBandwidth / 2;;
+                        return yBandwidth / 2 - singleLegendHeightPlusMargin + yInnerPadding + yBandwidth / 2;
                     } else if (legend === "Pickup") {
                         return 2 * yBandwidth - singleLegendHeightPlusMargin;
                     }

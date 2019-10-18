@@ -142,16 +142,15 @@ angular.module('sntRover')
                     .range(["#C2D6AE", "#DE3636", "#ED9319", "#84B651", "#E29D9D"])
                     .domain(["Arrivals", "Dirty", "Pickup", "Clean", "Perfomed"]);
 
-                var setMarginForLegends = function(legend) {
+                var setMarginForLegends = function(legend, singleLegendHeightPlusMargin) {
                     var yBandwidth = yScale.bandwidth();
 
                     if (legend === "Arrivals") {
                         return margin.top + yInnerPadding + yBandwidth / 2;
                     } else if (legend === "Dirty") {
-                        return yBandwidth / 2 - previousElementHeightPlusBottomMargin("left-legend-arrivals") + yInnerPadding;
+                        return yBandwidth / 2 - singleLegendHeightPlusMargin + yInnerPadding;
                     } else if (legend === "Perfomed") {
-                        var dirtyLegendHeight = previousElementHeightPlusBottomMargin("left-legend-arrivals");
-                        var heightOfThreeLegends = dirtyLegendHeight * 3;
+                        var heightOfThreeLegends = singleLegendHeightPlusMargin * 3;
 
                         return yBandwidth - heightOfThreeLegends + yInnerPadding + yBandwidth / 2;
                     }
@@ -176,8 +175,11 @@ angular.module('sntRover')
                         return label;
                     });
 
+                // TODO: For now lets assume all legends are of same height. So we will take one and use as reference.
+                var singleLegendHeightPlusMargin = $("#left-legend-arrivals").height() + 10;
+
                 leftSideLegendEntries.style("margin-top", function(legend) {
-                    return setMarginForLegends(legend);
+                    return setMarginForLegends(legend, singleLegendHeightPlusMargin);
                 });
 
                 // right side legends
@@ -192,15 +194,10 @@ angular.module('sntRover')
                     if (legend === "Early Check in") {
                         return margin.top + yInnerPadding + yBandwidth / 2;
                     } else if (legend === "Inspected") {
-                        var dirtyLegendHeight = previousElementHeightPlusBottomMargin("left-legend-arrivals");
-                        var heightOfThreeLegends = dirtyLegendHeight * 2;
-
-                        return yBandwidth / 2 - heightOfThreeLegends + yInnerPadding + yBandwidth / 2;
+                        var heightOfTwoLegends = singleLegendHeightPlusMargin * 2;
+                        return yBandwidth / 2 - heightOfTwoLegends + yInnerPadding + yBandwidth / 2;
                     } else if (legend === "Late checkout") {
-                        var dirtyLegendHeight = previousElementHeightPlusBottomMargin("left-legend-arrivals");
-                        var heightOfThreeLegends = dirtyLegendHeight * 1;
-
-                        return yBandwidth / 2 - heightOfThreeLegends + yInnerPadding + yBandwidth / 2;
+                        return yBandwidth / 2 - singleLegendHeightPlusMargin + yInnerPadding + yBandwidth / 2;
                     } else if (legend === "Pickup") {
                         return 2 * yBandwidth - previousElementHeightPlusBottomMargin("left-legend-stayovers");
                     }
@@ -225,8 +222,8 @@ angular.module('sntRover')
                     });
 
                 rightSideLegendEntries.style("margin-top", function(legend) {
-                    return setMarginForRightLegends(legend)
+                    return setMarginForRightLegends(legend);
                 });
-            }
+            };
         }
     ]);

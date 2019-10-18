@@ -1,6 +1,6 @@
 sntRover.controller('RVfrontDeskDashboardController',
-    ['$scope', '$rootScope', 'RVDashboardSrv', '$timeout', 'rvFrontOfficeAnalyticsSrv',
-        function($scope, $rootScope, RVDashboardSrv, $timeout, rvFrontOfficeAnalyticsSrv) {
+    ['$scope', '$rootScope', 'RVDashboardSrv', '$timeout',
+        function($scope, $rootScope, RVDashboardSrv, $timeout) {
 	// inheriting some useful things
 	BaseCtrl.call(this, $scope);
     var that = this;
