@@ -10,7 +10,6 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
     '$timeout',
     'rvUtilSrv',
     'ngDialog',
-    '$timeout',
     function(
         $rootScope,
         $scope,
@@ -22,8 +21,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
         $filter,
         $timeout,
         util,
-        ngDialog,
-        $timeout
+        ngDialog
     ) {
         var scheduleTimePeriods = [];
 
@@ -222,6 +220,9 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             }
             if ( $scope.scheduleParams.from_date ) {
                 params.from_date = $scope.scheduleParams.from_date;
+            }
+            if ( $scope.scheduleParams.to_date ) {
+                params.to_date = $scope.scheduleParams.to_date;
             }
 
             // fill 'frequency_id', 'starts_on', 'repeats_every' and 'ends_on_date'
@@ -679,7 +680,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             var startsOn = $scope.selectedEntityDetails.starts_on || $rootScope.businessDate,
                 endsOnDate = $scope.selectedEntityDetails.ends_on_date || $rootScope.businessDate,
-                exportDate = $scope.selectedEntityDetails.from_date || $rootScope.businessDate,
+                exportDate = $scope.selectedEntityDetails.from_date || null,
                 exportToDate = $scope.selectedEntityDetails.to_date || businessDateMinusOne;
 
             // saved emails/FTP
@@ -773,7 +774,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                     $scope.exportCalenderToOptions.minDate = value;
                 }
             }, datePickerCommon);
-            $scope.scheduleParams.from_date = reportUtils.processDate(exportDate).today;
+            $scope.scheduleParams.from_date = (exportDate === null) ? null : reportUtils.processDate(exportDate).today;
 
             var businessDateMinusOne = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
                 .format($rootScope.momentFormatForAPI);
