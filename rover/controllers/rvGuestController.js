@@ -1006,28 +1006,30 @@ angular.module('sntRover').controller('guestCardController', [
                             if (item.current_contracts.length > 0) {
                                 companyData.rateList = item.current_contracts;
                                 companyData.rate = item.current_contracts[0];
-                                companyData.rate.difference = (function() {
-                                    if (parseInt(companyData.rate.based_on.value) < 0) {
-                                        if (companyData.rate.based_on.type === "amount") {
-                                            return $scope.currencySymbol + (parseFloat(companyData.rate.based_on.value) * -1).toFixed(2) + " off ";
-                                        } else {
-                                            return (parseFloat(companyData.rate.based_on.value) * -1) + "%" + " off ";
+                                if (!_.isEmpty(companyData.rate)) {
+                                    companyData.rate.difference = (function() {
+                                        if (parseInt(companyData.rate.based_on && companyData.rate.based_on.value) < 0) {
+                                            if (companyData.rate.based_on.type === "amount") {
+                                                return $scope.currencySymbol + (parseFloat(companyData.rate.based_on.value) * -1).toFixed(2) + " off ";
+                                            } else {
+                                                return (parseFloat(companyData.rate.based_on.value) * -1) + "%" + " off ";
+                                            }
+    
                                         }
-
-                                    }
-                                    return "";
-                                })();
-
-                                companyData.rate.surplus = (function() {
-                                    if (parseInt(companyData.rate.based_on.value) > 0) {
-                                        if (companyData.rate.based_on.type === "amount") {
-                                            return " plus " + $scope.currencySymbol + parseFloat(companyData.rate.based_on.value).toFixed(2);
-                                        } else {
-                                            return " plus " + parseFloat(companyData.rate.based_on.value) + "%";
+                                        return "";
+                                    })();
+    
+                                    companyData.rate.surplus = (function() {
+                                        if (parseInt(companyData.rate.based_on && companyData.rate.based_on.value) > 0) {
+                                            if (companyData.rate.based_on.type === "amount") {
+                                                return " plus " + $scope.currencySymbol + parseFloat(companyData.rate.based_on.value).toFixed(2);
+                                            } else {
+                                                return " plus " + parseFloat(companyData.rate.based_on.value) + "%";
+                                            }
                                         }
-                                    }
-                                    return "";
-                                })();
+                                        return "";
+                                    })();
+                                }
                             }
 
                             companyData.email = item.email;
@@ -1047,7 +1049,8 @@ angular.module('sntRover').controller('guestCardController', [
                     'city': $scope.searchData.companyCard.companyCity,
                     'account_number': $scope.searchData.companyCard.companyCorpId,
                     'from_date': ($scope.viewState.identifier === "CREATION" || $scope.viewState.identifier === "CONFIRM") ? $scope.reservationData.arrivalDate : new Date($scope.reservation.reservation_card.arrival_date).toISOString().slice(0, 10).replace(/-/g, "-"),
-                    'to_date': ($scope.viewState.identifier === "CREATION" || $scope.viewState.identifier === "CONFIRM") ? $scope.reservationData.departureDate : new Date($scope.reservation.reservation_card.departure_date).toISOString().slice(0, 10).replace(/-/g, "-")
+                    'to_date': ($scope.viewState.identifier === "CREATION" || $scope.viewState.identifier === "CONFIRM") ? $scope.reservationData.departureDate : new Date($scope.reservation.reservation_card.departure_date).toISOString().slice(0, 10).replace(/-/g, "-"),
+                    'reservation_id': $scope.viewState.identifier === "STAY_CARD" ? $scope.reservationData.reservationId : null
                 };
 
                 $scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchCompanies);
@@ -1087,28 +1090,30 @@ angular.module('sntRover').controller('guestCardController', [
                             }
                             if (item.current_contracts.length > 0) {
                                 travelAgentData.rate = item.current_contracts[0];
-                                travelAgentData.rate.difference = (function() {
-                                    if (parseInt(travelAgentData.rate.based_on.value) < 0) {
-                                        if (travelAgentData.rate.based_on.type === "amount") {
-                                            return $scope.currencySymbol + (parseFloat(travelAgentData.rate.based_on.value) * -1).toFixed(2) + " off ";
-                                        } else {
-                                            return (parseFloat(travelAgentData.rate.based_on.value) * -1) + "%" + " off ";
+                                if (!_.isEmpty(travelAgentData.rate)) {
+                                    travelAgentData.rate.difference = (function() {
+                                        if (parseInt(travelAgentData.rate.based_on && travelAgentData.rate.based_on.value) < 0) {
+                                            if (travelAgentData.rate.based_on.type === "amount") {
+                                                return $scope.currencySymbol + (parseFloat(travelAgentData.rate.based_on.value) * -1).toFixed(2) + " off ";
+                                            } else {
+                                                return (parseFloat(travelAgentData.rate.based_on.value) * -1) + "%" + " off ";
+                                            }
+    
                                         }
-
-                                    }
-                                    return "";
-                                })();
-
-                                travelAgentData.rate.surplus = (function() {
-                                    if (parseInt(travelAgentData.rate.based_on.value) > 0) {
-                                        if (travelAgentData.rate.based_on.type === "amount") {
-                                            return " plus " + $scope.currencySymbol + parseFloat(travelAgentData.rate.based_on.value).toFixed(2);
-                                        } else {
-                                            return " plus " + parseFloat(travelAgentData.rate.based_on.value) + "%";
+                                        return "";
+                                    })();
+    
+                                    travelAgentData.rate.surplus = (function() {
+                                        if (parseInt(travelAgentData.rate.based_on && travelAgentData.rate.based_on.value) > 0) {
+                                            if (travelAgentData.rate.based_on.type === "amount") {
+                                                return " plus " + $scope.currencySymbol + parseFloat(travelAgentData.rate.based_on.value).toFixed(2);
+                                            } else {
+                                                return " plus " + parseFloat(travelAgentData.rate.based_on.value) + "%";
+                                            }
                                         }
-                                    }
-                                    return "";
-                                })();
+                                        return "";
+                                    })();
+                                }
                             }
                             travelAgentData.email = item.email;
                             travelAgentData.phone = item.phone;
@@ -1125,7 +1130,8 @@ angular.module('sntRover').controller('guestCardController', [
                     'city': $scope.searchData.travelAgentCard.travelAgentCity,
                     'account_number': $scope.searchData.travelAgentCard.travelAgentIATA,
                     'from_date': ($scope.viewState.identifier === "CREATION" || $scope.viewState.identifier === "CONFIRM") ? $scope.reservationData.arrivalDate : new Date($scope.reservation.reservation_card.arrival_date).toISOString().slice(0, 10).replace(/-/g, "-"),
-                    'to_date': ($scope.viewState.identifier === "CREATION" || $scope.viewState.identifier === "CONFIRM") ? $scope.reservationData.departureDate : new Date($scope.reservation.reservation_card.departure_date).toISOString().slice(0, 10).replace(/-/g, "-")
+                    'to_date': ($scope.viewState.identifier === "CREATION" || $scope.viewState.identifier === "CONFIRM") ? $scope.reservationData.departureDate : new Date($scope.reservation.reservation_card.departure_date).toISOString().slice(0, 10).replace(/-/g, "-"),
+                    'reservation_id': $scope.viewState.identifier === "STAY_CARD" ? $scope.reservationData.reservationId : null
                 };
 
                 $scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchTravelAgents);
