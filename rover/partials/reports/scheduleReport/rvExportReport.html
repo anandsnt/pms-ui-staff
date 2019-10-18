@@ -52,7 +52,7 @@
             <div class="entry">
                 <label for="time-period">Time Period</label>
                 <div class="select">
-                    <select ng-model="scheduleParams.time_period_id"
+                    <select ng-change="updateScrollOnUpdate()" ng-model="scheduleParams.time_period_id"
                         ng-options="timePeriod.id as timePeriod.description for timePeriod in scheduleTimePeriods"
                         ng-disabled="isGuestBalanceReport"
                         iscroll-stop-propagation>
@@ -61,16 +61,31 @@
                 </div>
             </div>
 
-            <div class="entry" ng-show="shouldShowExportCalenderDate()">
-                <label for="schedule-start">
+            <div class="entry" ng-show="shouldShowExportCalenderFromDate()">
+                <label for="schedule-start" ng-if="selectedEntityDetails.report.title === 'Journal Export'">
                    Date
+                </label>
+                <label for="schedule-start" ng-if="selectedEntityDetails.report.title === 'Invoice / Folio Export'">
+                   From Date
                 </label>
                 <div class="has-datepicker">
                     <button class="clear-query"><span class="icons icon-clear-search">Clear query</span></button>
-                    <input type="text" class="datepicker" ui-date="exportCalenderOptions" ng-model="scheduleParams.export_date" placeholder="MM-DD-YYYY" readonly>
+                    <input type="text" class="datepicker" ui-date="exportFromCalenderOptions" ng-model="scheduleParams.from_date" placeholder="MM-DD-YYYY" readonly>
 
                 </div>
             </div>
+
+            <div class="entry" ng-show="shouldShowExportCalenderToDate()">
+                <label for="schedule-start">
+                   To Date
+                </label>
+                <div class="has-datepicker">
+                    <button class="clear-query"><span class="icons icon-clear-search">Clear query</span></button>
+                    <input type="text" class="datepicker" ui-date="exportCalenderToOptions" ng-model="scheduleParams.to_date" placeholder="MM-DD-YYYY" readonly>
+
+                </div>
+            </div>
+
 
             <multi-option-selection ng-show="isGuestBalanceReport"
                 label="Guest/Account"
