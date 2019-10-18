@@ -17,13 +17,12 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 		});
 
 		var onBarChartClick = function (e) {
-			console.log(JSON.stringify(e));
+			// console.log(JSON.stringify(e));
 		};
 
 		var renderHkOverview = function(date) {
             // Calling HK Overview Build Graph
 			rvAnalyticsSrv.hkOverview(date).then(function(data) {
-				console.log(data);
 				var chartDetails = {
 					chartData: data,
 					onBarChartClick: onBarChartClick
@@ -40,6 +39,7 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 					chartData: data,
 					onBarChartClick: onBarChartClick
 				};
+
 				$scope.drawHkWorkPriorityChart(chartDetails);
 			});
 
@@ -51,8 +51,8 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 			var options = {
 				params: $rootScope.businessDate,
 				successCallBack: function() {
-					renderHkWorkPriority($rootScope.businessDate)
-                    //renderHkOverview($rootScope.businessDate);
+					// renderHkWorkPriority($rootScope.businessDate);
+                    renderHkOverview($rootScope.businessDate);
 				}
 			};
 

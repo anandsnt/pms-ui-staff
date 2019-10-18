@@ -132,8 +132,6 @@ angular.module('sntRover')
                     .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
                     .attr("y2", secondLineHeight);
 
-                var thirdLineHeight = height;
-
                 svg.append("line") // attach a line
                     .style("stroke", "#000000") // colour the line
                     .style("stroke-width", "2px")

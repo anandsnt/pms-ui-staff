@@ -191,72 +191,86 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 			};
 
 			var a = b;
+
 			a.type = "Jamie";
 			a.label = "Jamie";
 
 			chartDetails.chartData.data.push(a);
 
 			var p = angular.copy(b);
+
 			p.type = "patrick";
 			p.label = "patrick";
 			chartDetails.chartData.data.push(p);
 
 			var q = angular.copy(b);
+
 			q.type = "Simon";
 			q.label = "Simon";
 			chartDetails.chartData.data.push(q);
 
 			var r = angular.copy(b);
+
 			r.type = "Seeman";
 			r.label = "Seeman";
 			chartDetails.chartData.data.push(r);
 
 			var w = angular.copy(b);
+
 			w.type = "Jane";
 			w.label = "Jane";
 			chartDetails.chartData.data.push(w);
 
 			var z = angular.copy(b);
+
 			z.type = "Alison";
 			z.label = "Alison";
 			chartDetails.chartData.data.push(z);
 
 			var aa = angular.copy(b);
+
 			aa.type = "Amy";
 			aa.label = "Amy";
 			chartDetails.chartData.data.push(aa);
 
 			var bb = angular.copy(b);
+
 			bb.type = "Jackson";
 			bb.label = "Jackson";
 			chartDetails.chartData.data.push(bb);
 
 			var aw = angular.copy(b);
+
 			aw.type = "Piper";
 			aw.label = "Piper";
 			chartDetails.chartData.data.push(aw);
 
 			var awa = angular.copy(b);
+
 			awa.type = "Richard";
 			awa.label = "Richard";
 			chartDetails.chartData.data.push(awa);
 
 			var awb = angular.copy(b);
+
 			awb.type = "Johan";
 			awb.label = "Johan";
 			chartDetails.chartData.data.push(awb);
 
 			var awc = angular.copy(b);
+
 			awc.type = "Peter";
 			awc.label = "Peter";
 			chartDetails.chartData.data.push(awc);
 
 			var awd = angular.copy(b);
+
 			awd.type = "Samson";
 			awd.label = "Samson";
 			chartDetails.chartData.data.push(awd);
 
 			var awe = angular.copy(b);
+
 			awe.type = "Samuel";
 			awe.label = "Samuel";
 			chartDetails.chartData.data.push(awe);
@@ -270,7 +284,7 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 				combinedItemsCountArray.push(item.count);
 			});
 			_.each(chart.contents.right_side, function(item) {
-				//to delete
+				// to delete
 				item.count = item.count < 3 ? _.random(20, 100) : item.count;
 				combinedItemsCountArray.push(item.count);
 			});

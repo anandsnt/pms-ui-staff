@@ -180,7 +180,7 @@ angular.module('sntRover')
                     .attr("class", "legend-item")
                     .attr("id", function(item) {
                         return "left-legend-" + item.toLowerCase();
-                    })
+                    });
 
                 leftSideLegendEntries.append("span")
                     .attr("class", "rect")
@@ -193,7 +193,7 @@ angular.module('sntRover')
                     });
 
                 leftSideLegendEntries.style("margin-top", function(legend) {
-                    return setMarginForLegends(legend)
+                    return setMarginForLegends(legend);
                 });
 
                 // right side legends
@@ -202,7 +202,7 @@ angular.module('sntRover')
                     .range(["#84b652", "#e13939", "#7cbad3", "#ed941a", "#de3838"])
                     .domain(["Arrivals", "Departures", "Stayovers", "Pickup", "Dirty"]);
 
-                var setMarginForLegends = function(legend) {
+                var setMarginForRightSideLegends = function(legend) {
                     var yBandwidth = yScale.bandwidth();
 
                     if (legend === "Arrivals") {
@@ -235,7 +235,7 @@ angular.module('sntRover')
                     });
 
                 rightSideLegendEntries.style("margin-top", function(legend) {
-                    return setMarginForLegends(legend)
+                    return setMarginForRightSideLegends(legend);
                 });
             };
         }

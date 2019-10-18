@@ -193,6 +193,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
             }).map(function(reservation) {
                 return reservation.arrival_room_number;
             });
+            
             rooms = rooms.filter(function(room) {
                 return !assignedRoomNumbers.includes(room.room_number);
             });

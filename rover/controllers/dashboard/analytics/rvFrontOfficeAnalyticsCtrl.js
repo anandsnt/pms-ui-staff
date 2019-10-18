@@ -18,7 +18,7 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 		});
 
 		var onBarChartClick = function (e) {
-			console.log(JSON.stringify(e));
+			// console.log(JSON.stringify(e));
 		};
 
 		var renderfdWorkloadChart = function() {
