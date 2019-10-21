@@ -91,6 +91,15 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'rvC
         };
 
         /**
+         * Restore the original contract data
+         */
+        $scope.restoreContract = function() {
+            $scope.contractData.linkContractsSearch.query = '';
+            $scope.contractData.linkContractsSearch.results = [];
+            $scope.$emit('fetchContract', $scope.contractData.selectedContractId);
+        };
+
+        /**
          * Determine if access code should be editable
          */
         $scope.editAccessCode = function() {
