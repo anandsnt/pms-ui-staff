@@ -159,7 +159,7 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 	this.addRandomNumbersForTesting = function(chartDetails) {
 		var combinedItemsCountArray = [];
 
-		var workPriority = true;
+		var workPriority = false;
 
 		if (workPriority) {
 			var b = {
