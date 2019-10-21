@@ -9,6 +9,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		$scope.isAddTax = false;
 		$scope.isEditTax = false;
 		$scope.isEdit = false;
+		$scope.disableChargeCodeType = false;
 		$scope.disableViennaTax = false;
 		$scope.successMessage = "";
 		$scope.warningMessage = "";
@@ -102,6 +103,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		$scope.addNewClicked = function() {
 			$scope.editId = "";
 			setDefaultLanguage();
+			$scope.disableChargeCodeType = false;
 			$scope.disableAddTax = false;
 			$scope.viennaTaxCounter = 0;
 			$scope.currentClickedElement = -1;
@@ -210,6 +212,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		 * To fetch the charge code details for edit screen.
 		 */
 		$scope.editSelected = function(index, value) {
+			$scope.disableChargeCodeType = false;
 			$scope.warningMessage = "";
 			$scope.isAddTax = false;
 			$scope.isAdd = false;
@@ -243,6 +246,9 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 					value: $rootScope.currencySymbol,
 					name: "amount"
 				}];
+				if ($scope.prefetchData.selected_charge_code_type === "12") {
+					$scope.disableChargeCodeType = true;
+				}
 
 				// Generating calculation rules list.
 				angular.forEach($scope.prefetchData.linked_charge_codes, function(item, index) {
@@ -336,9 +342,6 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 						$scope.data[parseInt($scope.currentClickedElement)].charge_group = data.charge_group;
 						$scope.data[parseInt($scope.currentClickedElement)].charge_code_type = data.charge_code_type;
 						$scope.data[parseInt($scope.currentClickedElement)].link_with = data.link_with;
-					if ($scope.isDepositSelected()) {
-						$scope.data.splice($scope.currentClickedElement, 1);
-					}
 				} 
 				else {
 					$scope.data.push(data);

@@ -39,7 +39,20 @@
 					<span class="ng-binding ng-scope">{{warningMessage}}</span></section>
 				</div>
 
-				<ad-dropdown label="{{'CHARGE_CODE_TYPE'| translate}}" label-in-drop-down="{{'CHARGE_CODE_TYPE'| translate}}" list="prefetchData.charge_code_types" selected-Id='prefetchData.selected_charge_code_type' required = "yes" div-class="entry full-width"  on-change="onChangeChargeCodeType"></ad-dropdown>
+				<div class="entry full-width" required="required">
+					<label class="ng-binding">
+						{{'CHARGE_CODE_TYPE'| translate}}
+						<strong class="" ng-show="isStandAlone"> * </strong>
+					</label>
+					<div class="select">
+						<select ng-model="prefetchData.selected_charge_code_type" ng-change="onChangeChargeCodeType(prefetchData.selected_charge_code_type)">
+							<option value="" disabled>Charge code type</option>
+							<option value="{{chargeCodeType.value}}" ng-repeat="chargeCodeType in prefetchData.charge_code_types" ng-disabled="disableChargeCodeType">
+							{{chargeCodeType.name}}
+							</option>
+						</select>
+					</div>
+				</div>
 
 				<div class="entry full-width" ng-if="isAllowanceType(prefetchData.selected_charge_code_type)">
                     <label for="overage-charge">
