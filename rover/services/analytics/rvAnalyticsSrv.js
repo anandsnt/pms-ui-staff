@@ -7,6 +7,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
 
     // Variables for API returned data
     that.activeReservations = null;
+    that.yesterdaysReservations = null;
     that.roomStatuses = null;
 
     /*
