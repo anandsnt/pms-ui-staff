@@ -1,7 +1,7 @@
 <div ng-controller="rvCardEditContractsCtrl" class="contracts-details" ng-show="!contractData.noContracts && contractData.mode === 'EDIT'">
     <!-- If we don't show the bottom form, add .without-footer -->
     <!-- If we don't show the search for some reason, add .without-header -->
-    <div class="contracts-details-form scrollable without-header" ng-class="{'without-footer': contractData.disableFields}" ng-iscroll="editContractScroller">
+    <div class="contracts-details-form scrollable without-header" ng-class="{'without-footer': contractData.isPastContract}" ng-iscroll="editContractScroller">
         <div class="wrapper float">
             <div class="holder left">
                 <strong class="h3">Contract Details</strong>
@@ -44,7 +44,7 @@
                     <input ng-disabled="contractData.disableFields" name="contracted-nights" id="contracted-nights" class=" contracted-nights" placeholder="Nights per month" ng-model="contractData.editData.total_contracted_nights" ng-click="editContractedNights()" maxlength="8" readonly type="text" />
                 </div>
             </div>
-            <div class="holder right" ng-if="!contractData.disableFields">
+            <div class="holder right" ng-if="!contractData.isPastContract">
                 <!-- show only if we can unlink the contract -->
                 <button ng-if="!contractData.editData.is_master_contract" ng-click="clickedUnlinkContracts()" type="button" class="button white red-text">Unlink Contract</button>
                 <!-- show only if we can delete the contract -->
@@ -52,7 +52,7 @@
             </div>
         </div>
     </div>
-    <div class="contract-details-footer" ng-if="!contractData.disableFields">
+    <div class="contract-details-footer" ng-if="!contractData.isPastContract">
         <button type="button" class="button blank" ng-click="restoreContract()">Cancel</button>
         <button type="button" class="button green" ng-click="updateContract()">Update Contract</button>
     </div>
