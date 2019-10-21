@@ -768,15 +768,15 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			var printFolioNo = false;
 
 			if (!statement.ar_invoice_number) {
-				if (printData.is_print_ar_folio_number_enabled && statement.folio_number) {
+				if (printData.is_print_folio_enabled && statement.folio_number) {
 					printFolioNo = true;
-				} else if (!printData.is_print_ar_folio_number_enabled && (statement.folio_number || !statement.folio_number)) {
+				} else if (!printData.is_print_folio_enabled && (statement.folio_number || !statement.folio_number)) {
 					printFolioNo = false;
 				} 
 			} else {
-				if (!printData.is_print_ar_invoice_number_enabled && printData.is_print_ar_folio_number_enabled && statement.folio_number) {
+				if (!printData.is_print_ar_invoice_number_enabled && printData.is_print_folio_enabled && statement.folio_number) {
 					printFolioNo = true;
-				} else if (!printData.is_print_ar_folio_number_enabled && (statement.folio_number || !statement.folio_number)) {
+				} else if (!printData.is_print_folio_enabled && (statement.folio_number || !statement.folio_number)) {
 					printFolioNo = false;
 				}
 			}
@@ -792,11 +792,11 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.shouldPrintInvoiceNumber = function(printData, statement) {
 			var printInvNo = false;
 
-			if (!printData.is_print_ar_invoice_number_enabled && !printData.is_print_ar_folio_number_enabled) {
+			if (!printData.is_print_ar_invoice_number_enabled && !printData.is_print_folio_enabled) {
 				printInvNo = true;
-			} else if (!printData.is_print_ar_invoice_number_enabled && printData.is_print_ar_folio_number_enabled && !statement.folio_number) {
+			} else if (!printData.is_print_ar_invoice_number_enabled && printData.is_print_folio_enabled && !statement.folio_number) {
 				printInvNo = true;
-			} else if (printData.is_print_ar_invoice_number_enabled && !statement.ar_invoice_number && printData.is_print_ar_folio_number_enabled && !statement.folio_number) {
+			} else if (printData.is_print_ar_invoice_number_enabled && !statement.ar_invoice_number && printData.is_print_folio_enabled && !statement.folio_number) {
 				printInvNo = true;
 			} else if (!statement.ar_invoice_number && !statement.folio_number) {
 				printInvNo = true;
