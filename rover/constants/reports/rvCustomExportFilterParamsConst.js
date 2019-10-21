@@ -33,6 +33,7 @@ sntRover.constant('RVCustomExportFilterParamsConst', {
 	'MARKET': 'MARKET',
 	'ORIGIN': 'ORIGIN',
 	'SEGMENT': 'SEGMENT',
-	'SOURCE': 'SOURCE'
+	'SOURCE': 'SOURCE',
+	'USER_NAME': 'USER_NAME'
 	
 });

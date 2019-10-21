@@ -483,6 +483,27 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                     selectedFilter.isMultiSelect = true;
                     deferred.resolve(selectedFilter);
                 });
+            },
+
+            /**
+             * Populate charge code types
+             * @param {Object} selectedFilter selected filter
+             * @param {Array} selectedValues array of selected values
+             * @param {Object} deferred - deferred object
+             * @return {void} 
+             */
+            populateChargeCodeTypes = ( selectedFilter, selectedValues, deferred ) => {
+                rvCustomExportSrv.getReferenceValuesByType('charge_code_type').then(function (data) {
+                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, 'value');
+                    selectedFilter.options = {
+                        hasSearch: false,
+                        selectAll: selectedValues ? data.length === selectedValues.length : true,
+                        key: 'description',
+                        value_key: 'value'
+                    };
+                    selectedFilter.isMultiSelect = true;
+                    deferred.resolve(selectedFilter);
+                });
             };
 
         /**
@@ -526,10 +547,12 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                     populateRoomNos(selectedFilter, selectedValues, deferred);
                     break;
                 case customExportFilterParamsConst['ARRIVAL_RATE_CODE']:
+                case customExportFilterParamsConst['RATE_CODE']:
                     populateRateList(selectedFilter, selectedValues, deferred);
                     break;
                 case customExportFilterParamsConst['CI_AGENT']:
                 case customExportFilterParamsConst['CO_AGENT']:
+                case customExportFilterParamsConst['USER_NAME']:
                     populateCICOAgents(selectedFilter, selectedValues, deferred);
                     break;
                 case customExportFilterParamsConst['CI_APPLICATION']:
@@ -577,6 +600,9 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                     break;
                 case customExportFilterParamsConst['NATIONALITY']:
                     populateCountryOrNationality(selectedFilter, selectedValues, deferred, 'value', 'code');
+                    break;
+                case customExportFilterParamsConst['CHARGE_TYPE']:
+                    populateChargeCodeTypes(selectedFilter, selectedValues, deferred);
                     break;
                 default:
 
