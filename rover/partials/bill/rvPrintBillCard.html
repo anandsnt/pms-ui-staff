@@ -96,6 +96,9 @@
                 <strong ng-if="printData.reference_number">{{printData.translation.reference_number}}:</strong>{{printData.reference_number}}<br ng-if="printData.reference_number" />
                 <strong ng-if="printData.payment_due_in_days">{{printData.translation.payment_due_days}}:</strong>{{printData.payment_due_in_days}}<br/>
             </div>
+            <div ng-if="printData.is_deposit_invoice && printData.deposit_folio_number">
+                <strong><span ng-if = "printData.folio_label">{{printData.folio_label}}:</span><span ng-if = "!printData.folio_label">{{printData.translation.folio_number}}:</span></strong>{{printData.deposit_folio_number}}<br/>
+            </div>
         </div>
         <div class="info-right">
             <strong ng-if="printData.card_details.type ==='COMPANY' && printData.card_details.corporate_id" >{{printData.translation.corp_id}}:</strong>{{printData.card_details.corporate_id}}<br ng-if="printData.card_details.type ==='COMPANY'"/>
@@ -264,7 +267,7 @@
 <br><br>
 <strong ng-if="printData.tax_breakdown_for_deposit.details.length>0 && printData.deposit_folio_number" >Paid Deposit Breakdown</strong>
 <br>
-<span ng-if="printData.tax_breakdown_for_deposit.details.length>0 && printData.deposit_folio_number">
+<span ng-if="printData.tax_breakdown_for_deposit.details.length>0 && printData.deposit_folio_number && !printData.is_deposit_invoice">
     <strong >Deposit Folio Number: </strong>{{printData.deposit_folio_number}}<br/>
 </span>
 <table class="invoice-details extended-tax-table" ng-if="printData.tax_breakdown_for_deposit.details.length>0 && printData.is_deposit_invoice">
