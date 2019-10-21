@@ -202,23 +202,39 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
 
             var startsOn = $scope.selectedEntityDetails.starts_on || $rootScope.businessDate,
                 endsOnDate = $scope.selectedEntityDetails.ends_on_date || $rootScope.businessDate,
-                exportDate = $scope.selectedEntityDetails.export_date || $rootScope.businessDate;
+                exportDate = $scope.selectedEntityDetails.from_date || $rootScope.businessDate,
+                exportToDate = $scope.selectedEntityDetails.to_date || $rootScope.businessDate;
 
 
             $scope.scheduleParams = {};
 
-            if ( angular.isDefined($scope.selectedEntityDetails.export_date) ) {
-                $scope.scheduleParams.export_date = $scope.selectedEntityDetails.export_date;
+            if ( angular.isDefined($scope.selectedEntityDetails.from_date) ) {
+                $scope.scheduleParams.from_date = $scope.selectedEntityDetails.from_date;
             } else {
-                $scope.scheduleParams.export_date = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days');
+                $scope.scheduleParams.from_date = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days');
 
                 var todayDate = moment().startOf('day'),
-                    daysDiff = moment.duration(todayDate.diff($scope.scheduleParams.export_date)).asDays();
+                    daysDiff = moment.duration(todayDate.diff($scope.scheduleParams.from_date)).asDays();
                 
                 if (daysDiff < 7) {
-                    $scope.scheduleParams.export_date = $scope.scheduleParams.export_date.format("L");
+                    $scope.scheduleParams.from_date = $scope.scheduleParams.from_date.format("L");
                 } else {
-                    $scope.scheduleParams.export_date = $scope.scheduleParams.export_date.calendar();
+                    $scope.scheduleParams.from_date = $scope.scheduleParams.from_date.calendar();
+                }
+            }
+
+            if ( angular.isDefined($scope.selectedEntityDetails.to_date) ) {
+                $scope.scheduleParams.to_date = $scope.selectedEntityDetails.to_date;
+            } else {
+                $scope.scheduleParams.to_date = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days');
+
+                var todayDate = moment().startOf('day'),
+                    daysDiff = moment.duration(todayDate.diff($scope.scheduleParams.to_date)).asDays();
+                
+                if (daysDiff < 7) {
+                    $scope.scheduleParams.to_date = $scope.scheduleParams.to_date.format("L");
+                } else {
+                    $scope.scheduleParams.to_date = $scope.scheduleParams.to_date.calendar();
                 }
             }
 
@@ -252,11 +268,19 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
              * Export Calender Options
              * max date is business date
              */
-            $scope.exportCalenderOptions = angular.extend({
+            $scope.exportFromCalenderOptions = angular.extend({
+                maxDate: tzIndependentDate($rootScope.businessDate),
+                onSelect: function(value) {
+                    $scope.exportCalenderToOptions.minDate = value;
+                }
+            }, datePickerCommon);
+            $scope.scheduleParams.from_date = reportUtils.processDate(exportDate).today;
+
+            $scope.exportCalenderToOptions = angular.extend({
                 maxDate: tzIndependentDate($rootScope.businessDate)
             }, datePickerCommon);
-            $scope.scheduleParams.export_date = reportUtils.processDate(exportDate).today;
-
+            $scope.scheduleParams.to_date = reportUtils.processDate(exportToDate).today;
+            
             $scope.startsOnOptions = angular.extend({
                 minDate: tzIndependentDate($rootScope.businessDate),
                 onSelect: function(value) {
@@ -339,7 +363,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                     
                     $timeout( () => {
                         refreshScroll(EXPORT_LIST_SCROLLER, true);
-                    }, 1000);
+                    }, 800);
                     
 
                 },
@@ -411,7 +435,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
          * @param {Number} reportId - id of the report
          * @return {void}
          */
-        var loadReqData = (reportId, isSavedSchedule ) => {
+        var loadReqData = (reportId, isSavedSchedule) => {
             var onSuccess = ( payload ) => {
                     $scope.selectedEntityDetails.columns = angular.copy(payload.columns);
                     $scope.selectedEntityDetails.active = true;
@@ -576,8 +600,8 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 params.time = $scope.scheduleParams.time;
             }
             
-            if ( $scope.scheduleParams.export_date ) {
-                params.export_date = $filter('date')($scope.scheduleParams.export_date, 'yyyy/MM/dd');
+            if ( $scope.scheduleParams.from_date ) {
+                params.from_date = $filter('date')($scope.scheduleParams.from_date, 'yyyy/MM/dd');
             }
             
 
@@ -641,10 +665,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             var requestParams = getScheduleParams($scope.selectedEntityDetails.id),
                 onScheduleCreateSuccess = () => {
                     $scope.errorMessage = '';
-                    $scope.updateViewCol($scope.viewColsActions.ONE);
-                    $scope.viewState.currentStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
-                    $scope.customExportsData.isNewExport = false;
-                    fetchCustomExportsAndExportFrequencies();
+                    processDataSpaceListing();                    
                 },
                 onScheduleCreateFailure = (error) => {
                     $scope.errorMessage = error;
@@ -701,6 +722,15 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             });
         };
 
+        // Process data space listing
+        var processDataSpaceListing = () => {
+            initializeData();
+            configureNewExport();
+            $scope.customExportsData.isNewExport = true;
+            $scope.updateView($scope.reportViewActions.SHOW_CUSTOM_NEW_EXPORT);
+            $scope.updateViewCol($scope.viewColsActions.ONE);
+        };
+
         // Set up all the listeners here
         var setUpListeners = () => {
             $scope.addListener('UPDATE_CUSTOM_EXPORT_SCHEDULE', () => {
@@ -723,7 +753,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 resetPreviousSelections();
                 $timeout(function () {
                     refreshScroll(EXPORT_LIST_SCROLLER, true);
-                }, 200);
+                }, 300);
             });
     
             $scope.addListener('CREATE_NEW_CUSTOM_EXPORT_SCHEDULE', () => {
@@ -740,15 +770,15 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
 
             // Listener for creating new custom export
             $scope.addListener('CREATE_NEW_CUSTOM_EXPORT', function () {
-                initializeData();
-                configureNewExport();
-                $scope.customExportsData.isNewExport = true;
-                $scope.updateView($scope.reportViewActions.SHOW_CUSTOM_NEW_EXPORT);
-                $scope.updateViewCol($scope.viewColsActions.ONE);
+                processDataSpaceListing();
             });
 
             $scope.addListener('RESET_CURRENT_STAGE', () => {
                 $scope.viewState.currentStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
+            });
+
+            $scope.addListener('DELETE_CUSTOM_EXPORT_SCHEDULE', () => {
+                confirmDelete();
             });
         };
 
@@ -852,6 +882,122 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             };
             $scope.scheduleParams = {};
             $scope.emailList = [];
+        };
+
+        // Confirm user before deleting the schedule
+        var confirmDelete = function() {
+            ngDialog.open({
+                template: '/assets/partials/reports/scheduleReport/rvConfirmDeleteSchedule.html',
+                scope: $scope
+            });
+        };
+
+        // Delete a schedule
+        $scope.deleteSchedule = function() {
+            var success = function() {
+                $scope.errorMessage = '';
+                $scope.updateViewCol($scope.viewColsActions.ONE);
+                $scope.customExportsData.isNewExport = false;
+                $scope.viewState.currentStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
+                fetchCustomExportsAndExportFrequencies();
+            };
+
+            var failed = function(errors) {
+                $scope.errorMessage = errors;
+            };
+
+            $scope.closeDialog();
+            $scope.callAPI(reportsSrv.deleteSchedule, {
+                params: {
+                    id: $scope.selectedEntityDetails.id
+                },
+                onSuccess: success,
+                onFailure: failed
+            });
+        };
+
+        // Run the schedule now
+        $scope.runScheduleNow = function () {
+            var params = {
+                id: $scope.selectedEntityDetails.id
+            };
+
+            var getFtpAddress = function (id) {
+                var has;
+                var ret = {
+                    description: '',
+                    url: ''
+                };
+
+                if ( $scope.ftpServerList.length ) {
+                    has = _.find($scope.ftpServerList, { id: id }) || ret;
+                    ret = {
+                        description: has.description,
+                        url: has.url
+                    };
+                }
+
+                return ret;
+            },
+            getCloudAccountDetails = function (id) {
+                var has;
+                var ret = {
+                    description: ''
+                };
+
+                if ($scope.scheduleParams.delivery_id === 'GOOGLE DRIVE' && $scope.googleDriveAccountList.length) {
+                    has = _.find($scope.googleDriveAccountList, { id: id }) || ret;
+                    ret = {
+                        description: has.description
+                    }; 
+                }
+
+                if ($scope.scheduleParams.delivery_id === 'DROPBOX' && $scope.dropBoxAccountList.length) {
+                    has = _.find($scope.dropBoxAccountList, { id: id }) || ret;
+                    ret = {
+                        description: has.description
+                    }; 
+                }
+
+                return ret;
+            };
+
+            var showResponse = function () {
+                $scope.runNowData = {
+                    isEmail: $scope.checkDeliveryType('EMAIL'),
+                    isFtp: $scope.checkDeliveryType('SFTP'),
+                    isGoogleDrive: $scope.checkDeliveryType('GOOGLE DRIVE'),
+                    isDropbox: $scope.checkDeliveryType('DROPBOX'),
+                    isSingleEmail: $scope.emailList.length === 1,
+                    ftpAddress: getFtpAddress($scope.scheduleParams.selectedFtpRecipient),
+                    cloudDetails: getCloudAccountDetails($scope.scheduleParams.selectedCloudAccount)
+                };
+
+                ngDialog.open({
+                    template: '/assets/partials/reports/scheduleReport/rvRunScheduleNowUpdate.html',
+                    scope: $scope
+                });
+            };
+
+            var success = function() {
+                $scope.errorMessage = '';
+
+                $scope.runScheduleNowSuccess = true;
+                showResponse();
+            };
+
+            var failed = function(errors) {
+                $scope.errorMessage = errors;
+
+                $scope.runScheduleNowSuccess = false;
+                showResponse();
+            };
+
+            $scope.callAPI(reportsSrv.runScheduleNow, {
+                params: params,
+                onSuccess: success,
+                onFailure: failed
+            });
         };
 
         /**

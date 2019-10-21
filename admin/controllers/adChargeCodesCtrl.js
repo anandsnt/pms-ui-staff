@@ -210,6 +210,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		 * To fetch the charge code details for edit screen.
 		 */
 		$scope.editSelected = function(index, value) {
+			$scope.warningMessage = "";
 			$scope.isAddTax = false;
 			$scope.isAdd = false;
 			$scope.disableAddTax = false;
@@ -225,6 +226,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				$scope.prefetchData = {};
 				$scope.selected_payment_type.id = -1;
 				$scope.prefetchData = data;
+				$scope.prefetchData.amount = parseInt($scope.prefetchData.amount).toFixed(2);
 				$scope.prefetchData.allow_manual_posting = angular.isUndefined(data.allow_manual_posting) ? false : data.allow_manual_posting;
 				$scope.prefetchData.selected_fees_code = $scope.prefetchData.selected_fees_code || '';
 				$scope.prefetchData.linked_deposit_charge_code_id = $scope.prefetchData.linked_deposit_charge_code_id || '';
@@ -335,6 +337,9 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 						$scope.data[parseInt($scope.currentClickedElement)].charge_group = data.charge_group;
 						$scope.data[parseInt($scope.currentClickedElement)].charge_code_type = data.charge_code_type;
 						$scope.data[parseInt($scope.currentClickedElement)].link_with = data.link_with;
+					if ($scope.isDepositSelected()) {
+						$scope.data.splice($scope.currentClickedElement, 1);
+					}
 				} 
 				else {
 					$scope.data.push(data);

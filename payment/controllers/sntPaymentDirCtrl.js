@@ -993,7 +993,7 @@ angular.module('sntPay').controller('sntPaymentController',
                     return false;
                 }
 
-                if ($scope.selectedPaymentType === 'CC') {
+                if (isReset) {
                     $scope.payment.selectedPaymentCurrencyId = $rootScope.hotelCurrencyId;
                     $scope.payment.selectedPaymentCurrencySymbol = $rootScope.currencySymbol;
                     $scope.payment.amount = $scope.originalAmount;
@@ -1065,8 +1065,8 @@ angular.module('sntPay').controller('sntPaymentController',
             $scope.onPaymentCurrencyChange = function() {
                 $scope.payment.selectedPaymentCurrencySymbol = (_.find($scope.paymentCurrencyList, {"id": $scope.payment.selectedPaymentCurrencyId})).symbol;
                 var paramsToApi = {
-                    "amount": parseInt($scope.originalAmount),
-                    "fee": parseInt($scope.originalFee),
+                    "amount": parseFloat($scope.originalAmount),
+                    "fee": parseFloat($scope.originalFee),
                     "currency_id": parseInt($scope.payment.selectedPaymentCurrencyId),
                     "date": $rootScope.businessDate
                 };

@@ -162,7 +162,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             } else {
                 $scope.callAPI(zsCheckinSrv.fetchAddonDetails, {
                     params: {
-                        'id': $scope.selectedReservation.id
+                        'id': $scope.selectedReservation.id,
+                        'is_kiosk': true
                     },
                     'successCallBack': fetchCompleted
                 });
@@ -244,7 +245,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
             if (!$stateParams.isQuickJump || $stateParams.isQuickJump === 'false') {
                 fetchReservationDetails();
-                fetchAddons();
+                    fetchAddons();
                 if ($scope.selectedReservation.skipRoomUpsell) {
                     $scope.selectedReservation.is_upsell_available = false;
                 } else {

@@ -23,6 +23,7 @@ sntRover.constant('RVCustomExportFilterParamsConst', {
 	'MEMBERSHIP': 'MEMBERSHIP',
 	'MEMBERSHIP_LEVEL': 'MEMBERSHIP_LEVEL',
 	'STAY_TYPE': 'STAY_TYPE',
+	'ORIGIN_CODE': 'ORIGIN_CODE',
 	'CHARGE_GROUP': 'CHARGE_GROUP',
 	'CHARGE_CODE_DESC': 'CHARGE_CODE_DESC',
 	'CHARGE_CODE': 'CHARGE_CODE',
@@ -35,5 +36,4 @@ sntRover.constant('RVCustomExportFilterParamsConst', {
 	'SEGMENT': 'SEGMENT',
 	'SOURCE': 'SOURCE',
 	'USER_NAME': 'USER_NAME'
-	
 });

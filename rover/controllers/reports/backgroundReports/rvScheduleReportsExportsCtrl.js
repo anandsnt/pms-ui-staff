@@ -7,13 +7,15 @@ angular.module('sntRover')
             '$stateParams',
             '$rootScope',
             'Toggles',
+            'ngDialog',
             function ($scope,
                       $timeout,
                       $state,
                       $filter,
                       $stateParams,
                       $rootScope,
-                      Toggles) {
+                      Toggles,
+                      ngDialog) {
 
             BaseCtrl.call(this, $scope);
 
@@ -345,12 +347,33 @@ angular.module('sntRover')
 
             // Listener for showing the error msg
             $scope.addListener('SHOW_ERROR_MSG_EVENT', (event, msg) => {
-                $scope.errorMessage = msg instanceof Array ? msg[0] : msg;
+                $scope.errorMessage = msg || []; 
             });
 
             // Clear the error msg
             $scope.clearErrorMsg = () => {
                 $scope.errorMessage = '';
+            };
+
+            // Handler for changing the output format
+            $scope.onOutputFormatChange = () => {
+                var selectedFormat = _.find($scope.customExportsData.exportFormats, {id: $scope.customExportsScheduleParams.format});
+                
+                if (selectedFormat && ( selectedFormat.value === 'XML' || selectedFormat.value === 'JSON') ) {
+                    ngDialog.open({
+                        template: '/assets/partials/common/rvWarningPopup.html',
+                        scope: $scope
+                    });
+                }
+            };
+
+            $scope.addListener('CLEAR_ERROR_MSG', ( ) => {
+                $scope.errorMessage = []; 
+            });
+
+            // Handler for deleting the custom exports schedule
+            $scope.deleteCustomExportSchedule = () => {
+                $scope.$broadcast('DELETE_CUSTOM_EXPORT_SCHEDULE');
             };
 
             (function () {
