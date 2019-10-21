@@ -1,14 +1,16 @@
 sntRover.controller('RVdashboardController',
     ['$scope', 'ngDialog', 'RVDashboardSrv', 'RVSearchSrv', 'dashBoarddata',
         '$rootScope', '$filter', '$state', 'RVWorkstationSrv', 'roomTypes', '$timeout', '$interval', '$log',
-        'RVHotelDetailsSrv', '$transitions',
+        'RVHotelDetailsSrv', '$transitions', 'Toggles',
         function($scope, ngDialog, RVDashboardSrv, RVSearchSrv, dashBoarddata,
                  $rootScope, $filter, $state, RVWorkstationSrv, roomTypes, $timeout, $interval, $log,
-                 RVHotelDetailsSrv, $transitions) {
+                 RVHotelDetailsSrv, $transitions, Toggles) {
 
             // setting the heading of the screen
             $scope.heading = 'DASHBOARD_HEADING';
-
+            $scope.dashboardFilter = {
+                analyticsActive: false
+            };
             // We are not showing the backbutton now, so setting as blank
             $scope.backButtonCaption = ''; // if it is not blank, backbutton will show, otherwise dont
             $scope.roomTypes = roomTypes;
@@ -376,4 +378,15 @@ sntRover.controller('RVdashboardController',
                 $scope.callAPI(RVHotelDetailsSrv.fetchInfrasecDetails, options);
             };
 
+            $scope.analyticsDashboardEnabled = Toggles.isEnabled('dashboard_analytics');
+
+            $scope.dashboardFilter.analyticsActive = false;
+
+            $scope.toggleAnalyticsView = function() {
+                if ($scope.dashboardFilter.analyticsActive) {
+                    $scope.dashboardFilter.analyticsActive = false;
+                } else {
+                    $scope.$broadcast('SHOW_ANALYTICS_DASHBOARD');
+                }
+            };
         }]);
