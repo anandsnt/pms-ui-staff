@@ -49,6 +49,15 @@
                     </div>
                 </td>
             </tr>
+            <tr>
+                <td>Folio Tax report </td>
+                <td>
+                    <div class="switch-button" ng-class="{'on' : legalSettings.is_folio_tax_report_enabled}">
+                        <input name="no-modify" id="no-modify" value="no-modify" ng-model="legalSettings.is_folio_tax_report_enabled" type="checkbox" checked="">
+                        <span class="switch-icon"></span>
+                    </div>
+                </td>
+            </tr>
         </tbody> 
     </table>
 </div>
