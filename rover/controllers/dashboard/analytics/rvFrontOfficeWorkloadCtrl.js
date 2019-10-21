@@ -21,7 +21,7 @@ angular.module('sntRover')
 					height = window.innerHeight * 2 / 3 - margin.top - margin.bottom;
 
 				var yScale = d3.scaleBand()
-					.rangeRound([0, height + 10])
+					.rangeRound([0, height])
 					.padding(.5);
 
 				var xScale = d3.scaleLinear()
@@ -112,6 +112,21 @@ angular.module('sntRover')
 					return chart.type;
 				}));
 
+				var setFontSizeBasedOnNumberOfRows = function() {
+					var totalRowsPresent = chartDetails.chartData.data.length;
+					var fontSize;
+
+					if (totalRowsPresent > 20) {
+						fontSize = "6px";
+					} else if (totalRowsPresent > 15) {
+						fontSize = "8px";
+					} else {
+						fontSize = "10px";
+					}
+
+					return fontSize;
+				};
+
 				// Add x axis
 				svg.append("g")
 					.attr("class", "x axis")
@@ -120,9 +135,11 @@ angular.module('sntRover')
 
 				// Add left side axis
 				svg.append("g")
-					.style("font-size", "18px")
 					.attr("class", "y axis left-most")
-					.call(yAxis);
+					.call(yAxis)
+					.style("font-size", function() {
+						return setFontSizeBasedOnNumberOfRows();
+					});
 
 				var vakken = svg.selectAll(".type")
 					.data(chartDetails.chartData.data)
@@ -130,7 +147,22 @@ angular.module('sntRover')
 					.append("g")
 					.attr("class", "bar")
 					.attr("transform", function(chart) {
-						return "translate(0," + yScale(chart.type) + ")";
+
+						var indexOfChart;
+						_.each(chartDetails.chartData.data, function(data, index) {
+							if (data.type === chart.type) {
+								indexOfChart = index;
+							}
+						});
+
+						var yOffset;
+						if (indexOfChart === 0) {
+							yOffset = yScale.bandwidth();
+						} else {
+							yOffset = (indexOfChart + indexOfChart + 1) * yScale.bandwidth();
+						}
+
+						return "translate(0," + yOffset + ")";
 					});
 
 				var bars = vakken.selectAll("rect")
@@ -181,7 +213,9 @@ angular.module('sntRover')
 						return isSmallBarItem(item) && item.xOrigin < 0 ? "-0.5em" : "0em";
 					})
 					.style("font-size", function(item) {
-						return isSmallBarItem(item) ? "10px" : "13px";
+						var fontSize = setFontSizeBasedOnNumberOfRows();
+
+						return isSmallBarItem(item) ? "10px" : fontSize;
 					})
 					.style("text-anchor", "middle")
 					.text(function(item) {
@@ -233,11 +267,11 @@ angular.module('sntRover')
 
 				// // right side legends
 				var rightSideLegendDiv = d3.select("#right-side-legend")
-										.style("margin-top", yScale.bandwidth());
+					.style("margin-top", yScale.bandwidth());
 				var rightSideLegendColor = d3.scaleOrdinal()
 					.range(["#50762A", "#83B451", "#EAC710", "#DD3636", "#A99113", "#AC2727"])
 					.domain(["Early Check in", "VIP checkin", "VIP checkout", "Late checkout", "Checkout", "Checkin"]);
-	
+
 				var rightSideLegendEntries = rightSideLegendDiv.selectAll("dd")
 					.data(rightSideLegendColor.domain().slice())
 					.enter()
