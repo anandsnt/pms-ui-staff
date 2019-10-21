@@ -21,7 +21,7 @@ angular.module('sntRover')
 					height = window.innerHeight * 2 / 3 - margin.top - margin.bottom;
 
 				var yScale = d3.scaleBand()
-					.rangeRound([0, height + 10])
+					.rangeRound([0, height])
 					.padding(.5);
 
 				var xScale = d3.scaleLinear()
@@ -46,9 +46,10 @@ angular.module('sntRover')
 						return d.toUpperCase();
 					});
 
+				var svgHeight = height + margin.top + margin.bottom;
 				var svg = d3.select("#analytics-chart").append("svg")
 					.attr("width", width + margin.left + margin.right)
-					.attr("height", height + margin.top + margin.bottom)
+					.attr("height", svgHeight)
 					.attr("id", "d3-plot")
 					.append("g")
 					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -112,6 +113,21 @@ angular.module('sntRover')
 					return chart.type;
 				}));
 
+				var setFontSizeBasedOnNumberOfRows = function() {
+					var totalRowsPresent = chartDetails.chartData.data.length;
+					var fontSize;
+
+					if (totalRowsPresent > 20) {
+						fontSize = "6px";
+					} else if (totalRowsPresent > 15) {
+						fontSize = "8px";
+					} else {
+						fontSize = "10px";
+					}
+
+					return fontSize;
+				};
+
 				// Add x axis
 				svg.append("g")
 					.attr("class", "x axis")
@@ -120,16 +136,23 @@ angular.module('sntRover')
 
 				// Add left side axis
 				svg.append("g")
-					.style("font-size", "18px")
 					.attr("class", "y axis left-most")
-					.call(yAxis);
+					.call(yAxis)
+					.style("font-size", function() {
+						return setFontSizeBasedOnNumberOfRows();
+					});
 
+				var remainingTypeYoffset;
 				var vakken = svg.selectAll(".type")
 					.data(chartDetails.chartData.data)
 					.enter()
 					.append("g")
 					.attr("class", "bar")
 					.attr("transform", function(chart) {
+
+						if (chart.type === 'REMAINING') {
+							remainingTypeYoffset = yScale(chart.type);
+						}
 						return "translate(0," + yScale(chart.type) + ")";
 					});
 
@@ -181,7 +204,9 @@ angular.module('sntRover')
 						return isSmallBarItem(item) && item.xOrigin < 0 ? "-0.5em" : "0em";
 					})
 					.style("font-size", function(item) {
-						return isSmallBarItem(item) ? "10px" : "13px";
+						var fontSize = setFontSizeBasedOnNumberOfRows();
+
+						return isSmallBarItem(item) ? "10px" : fontSize;
 					})
 					.style("text-anchor", "middle")
 					.text(function(item) {
@@ -189,22 +214,23 @@ angular.module('sntRover')
 					});
 
 				// Draw horizontal line on top of REMAINING
-				var yPositionOfRemainingTopLine = yScale.bandwidth() / 2;
+				var yPositionOfRemainingTopLine = remainingTypeYoffset - yScale.bandwidth() / 2;
+				var strokeWidthOfLines = chartDetails.chartData.data.length > 20 ? "1px" : "2px";
 
 				svg.append("line") // attach a line
 					.style("stroke", "#000000") // colour the line
-					.style("stroke-width", "2px")
+					.style("stroke-width", strokeWidthOfLines)
 					.attr("x1", -100) // x position of the first end of the line
 					.attr("y1", yPositionOfRemainingTopLine) // y position of the first end of the line
 					.attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
 					.attr("y2", yPositionOfRemainingTopLine);
 
 				// Draw horizontal line under REMAINING
-				var yPositionOfRemainingBottomLine = 2.5 * yScale.bandwidth();
+				var yPositionOfRemainingBottomLine = yPositionOfRemainingTopLine + 2 * yScale.bandwidth();
 
 				svg.append("line") // attach a line
 					.style("stroke", "#000000") // colour the line
-					.style("stroke-width", "2px")
+					.style("stroke-width", strokeWidthOfLines)
 					.attr("x1", -100) // x position of the first end of the line
 					.attr("y1", yPositionOfRemainingBottomLine) // y position of the first end of the line
 					.attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
@@ -215,7 +241,7 @@ angular.module('sntRover')
 
 				svg.append("line") // attach a line
 					.style("stroke", "#000000") // colour the line
-					.style("stroke-width", "2px")
+					.style("stroke-width", strokeWidthOfLines)
 					.attr("x1", 0) // x position of the first end of the line
 					.attr("y1", yPositionOfXaxis) // y position of the first end of the line
 					.attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
@@ -224,7 +250,7 @@ angular.module('sntRover')
 				// Draw thick line on top of y-axis
 				svg.append("line") // attach a line
 					.style("stroke", "#000000") // colour the line
-					.style("stroke-width", "2px")
+					.style("stroke-width", strokeWidthOfLines)
 					.attr("x1", 0) // x position of the first end of the line
 					.attr("y1", 0) // y position of the first end of the line
 					.attr("x2", 0) // x position of the second end of the line
@@ -233,11 +259,11 @@ angular.module('sntRover')
 
 				// // right side legends
 				var rightSideLegendDiv = d3.select("#right-side-legend")
-										.style("margin-top", yScale.bandwidth());
+					.style("margin-top", yScale.bandwidth());
 				var rightSideLegendColor = d3.scaleOrdinal()
 					.range(["#50762A", "#83B451", "#EAC710", "#DD3636", "#A99113", "#AC2727"])
 					.domain(["Early Check in", "VIP checkin", "VIP checkout", "Late checkout", "Checkout", "Checkin"]);
-	
+
 				var rightSideLegendEntries = rightSideLegendDiv.selectAll("dd")
 					.data(rightSideLegendColor.domain().slice())
 					.enter()
