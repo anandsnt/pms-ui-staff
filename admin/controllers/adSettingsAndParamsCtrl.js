@@ -71,7 +71,7 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
             'check_guest_auth_for_interface_postings': $scope.check_guest_auth_for_interface_postings,
             'auto_charge_deposit': $scope.auto_charge_deposit,
             'is_multi_currency_enabled': $scope.is_multi_currency_enabled,
-            'invoice_currency': parseInt($scope.invoice_currency, 10),
+            'invoice_currency': ($scope.invoice_currency === null) ? '' : parseInt($scope.invoice_currency, 10),
             'rate_currencies': $scope.selectedRateCurrencies,
             'payment_currencies': $scope.selectedPaymentCurrencies
         };
