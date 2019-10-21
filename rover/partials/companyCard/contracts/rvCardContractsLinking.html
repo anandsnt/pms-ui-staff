@@ -28,8 +28,8 @@
                 <ul class="contract" ng-click="clickedOnResult($index)" ng-repeat="item in contractData.linkContractsSearch.results" ng-class="{'linked': item.is_already_linked}">
                     <li class="contract-name" ng-bind-html="escapeNull(item.contract_name)|highlight:contractData.linkContractsSearch.query:false"></li>
                     <li class="access-code" ng-bind-html="escapeNull(item.access_code)|highlight:contractData.linkContractsSearch.query:false"></li>
-                    <li class="start-date">{{item.begin_date}}</li>
-                    <li class="end-date">{{item.end_date}}</li>
+                    <li class="start-date">{{item.begin_date | date:dateFormat}}</li>
+                    <li class="end-date">{{item.end_date | date:dateFormat}}</li>
                     <li class="rate" ng-if="item.rates.length <= 3">
                         {{item.rates.join()}}
                     </li>

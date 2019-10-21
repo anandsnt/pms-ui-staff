@@ -33,12 +33,12 @@
                 <div class="entry margin has-datepicker">
                     <label class="disable-element" for="contract-start">Start Date</label>
                     <!-- add readonly if it's read only -->
-                    <input name="contract-start" id="contract-start" class="datepicker" ng-model="addData.startDate" placeholder="Select Start Date" maxlength="8" readonly type="text" ng-click="contractStart()"/>
+                    <input name="contract-start" id="contract-start" class="datepicker" ng-model="addData.startDate | date:dateFormat" placeholder="Select Start Date" maxlength="8" readonly type="text" ng-click="contractStart()"/>
                 </div>
                 <div class="entry has-datepicker">
                     <label class="disable-element" for="contract-end">End Date</label>
                     <!-- add readonly if it's read only -->
-                    <input name="contract-end" id="contract-end" class="datepicker" ng-model="addData.endDate" placeholder="Select End Date" maxlength="8" readonly type="text" ng-click="contractEnd()"/>
+                    <input name="contract-end" id="contract-end" class="datepicker" ng-model="addData.endDate | date:dateFormat" placeholder="Select End Date" maxlength="8" readonly type="text" ng-click="contractEnd()"/>
                 </div>
 
                 <div include-replace ng-include="'/assets/partials/companyCard/contracts/rvCardSearchContractedRate.html'"></div>
