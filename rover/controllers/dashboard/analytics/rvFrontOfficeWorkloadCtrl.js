@@ -46,9 +46,10 @@ angular.module('sntRover')
 						return d.toUpperCase();
 					});
 
+				var svgHeight = height + margin.top + margin.bottom;
 				var svg = d3.select("#analytics-chart").append("svg")
 					.attr("width", width + margin.left + margin.right)
-					.attr("height", height + margin.top + margin.bottom)
+					.attr("height", svgHeight)
 					.attr("id", "d3-plot")
 					.append("g")
 					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -141,6 +142,7 @@ angular.module('sntRover')
 						return setFontSizeBasedOnNumberOfRows();
 					});
 
+				var remainingTypeYoffset;
 				var vakken = svg.selectAll(".type")
 					.data(chartDetails.chartData.data)
 					.enter()
@@ -148,21 +150,10 @@ angular.module('sntRover')
 					.attr("class", "bar")
 					.attr("transform", function(chart) {
 
-						var indexOfChart;
-						_.each(chartDetails.chartData.data, function(data, index) {
-							if (data.type === chart.type) {
-								indexOfChart = index;
-							}
-						});
-
-						var yOffset;
-						if (indexOfChart === 0) {
-							yOffset = yScale.bandwidth();
-						} else {
-							yOffset = (indexOfChart + indexOfChart + 1) * yScale.bandwidth();
+						if (chart.type === 'REMAINING') {
+							remainingTypeYoffset = yScale(chart.type);
 						}
-
-						return "translate(0," + yOffset + ")";
+						return "translate(0," + yScale(chart.type) + ")";
 					});
 
 				var bars = vakken.selectAll("rect")
@@ -223,22 +214,23 @@ angular.module('sntRover')
 					});
 
 				// Draw horizontal line on top of REMAINING
-				var yPositionOfRemainingTopLine = yScale.bandwidth() / 2;
+				var yPositionOfRemainingTopLine = remainingTypeYoffset - yScale.bandwidth() / 2;
+				var strokeWidthOfLines = chartDetails.chartData.data.length > 20 ? "1px" : "2px";
 
 				svg.append("line") // attach a line
 					.style("stroke", "#000000") // colour the line
-					.style("stroke-width", "2px")
+					.style("stroke-width", strokeWidthOfLines)
 					.attr("x1", -100) // x position of the first end of the line
 					.attr("y1", yPositionOfRemainingTopLine) // y position of the first end of the line
 					.attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
 					.attr("y2", yPositionOfRemainingTopLine);
 
 				// Draw horizontal line under REMAINING
-				var yPositionOfRemainingBottomLine = 2.5 * yScale.bandwidth();
+				var yPositionOfRemainingBottomLine = yPositionOfRemainingTopLine + 2 * yScale.bandwidth();
 
 				svg.append("line") // attach a line
 					.style("stroke", "#000000") // colour the line
-					.style("stroke-width", "2px")
+					.style("stroke-width", strokeWidthOfLines)
 					.attr("x1", -100) // x position of the first end of the line
 					.attr("y1", yPositionOfRemainingBottomLine) // y position of the first end of the line
 					.attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
@@ -249,7 +241,7 @@ angular.module('sntRover')
 
 				svg.append("line") // attach a line
 					.style("stroke", "#000000") // colour the line
-					.style("stroke-width", "2px")
+					.style("stroke-width", strokeWidthOfLines)
 					.attr("x1", 0) // x position of the first end of the line
 					.attr("y1", yPositionOfXaxis) // y position of the first end of the line
 					.attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
@@ -258,7 +250,7 @@ angular.module('sntRover')
 				// Draw thick line on top of y-axis
 				svg.append("line") // attach a line
 					.style("stroke", "#000000") // colour the line
-					.style("stroke-width", "2px")
+					.style("stroke-width", strokeWidthOfLines)
 					.attr("x1", 0) // x position of the first end of the line
 					.attr("y1", 0) // y position of the first end of the line
 					.attr("x2", 0) // x position of the second end of the line
