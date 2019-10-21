@@ -60,7 +60,7 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'rvC
                     $scope.$emit('setErrorMessage', error);
                 },
                 deleteContractSuccessCallback = function(data) {
-                    $scope.contractData.selectedContract = '';
+                    $scope.contractData.selectedContractId = '';
                     $scope.$emit('fetchContractsList');
                 };
 
@@ -72,7 +72,7 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'rvC
             var options = {
                 params: {
                     'account_id': accountId,
-                    "contract_id": $scope.contractData.selectedContract
+                    "contract_id": $scope.contractData.selectedContractId
                 },
                 failureCallBack: deleteContractFailureCallback,
                 successCallBack: deleteContractSuccessCallback
