@@ -31,7 +31,7 @@
            ng-disabled="!payment.isEditable || splitBillEnabled"
            class="amount"
            ng-if="payment.isRateSuppressed"
-           value="{{'SUPPRESSED_RATES_TEXT' | translate}}" />
+           value="{{'SUPPRESSED_RATES_TEXT' | translate}}" />                                                                                                                                                                                                                                                                                                                       
 
     <span ng-show="feeData.showFee" class="delimiter">+</span>
 
@@ -65,6 +65,14 @@
           </strong>
         </span>
 </div>
+
+<div class="entry full-width" ng-if="hotelConfig.paymentGateway === 'SHIJI' && payment.shiji_token_enable_offline">
+    <label for="auth-code">{{ 'ENTER_MANUAL_AUTH_CODE' | translate }}</label>
+    <input id="auth-code"
+           ng-model="payment.auth_code"
+           type="text" />
+</div>
+
 <!-- Reference field - use only when it exsits; This configuration is available in the Admin/Financials -->
 <div class="entry full-width reference" ng-show="hotelConfig.isStandAlone">
     <label>Reference</label>

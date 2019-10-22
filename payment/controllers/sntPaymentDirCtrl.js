@@ -124,6 +124,10 @@ angular.module('sntPay').controller('sntPaymentController',
                     };
                 }
 
+                if ($scope.hotelConfig.paymentGateway === 'SHIJI') {
+                    params.postData.auth_code = $scope.payment.auth_code;
+                }
+
                 return params;
             }
 
