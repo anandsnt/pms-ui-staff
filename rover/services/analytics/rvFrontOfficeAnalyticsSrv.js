@@ -21,6 +21,19 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
             return rvBaseWebSrvV2.getJSON(url, params);
         };
 
+        var reArrangeElements = function(chart) {
+
+            var combinedArray = chart.contents.left_side.concat(chart.contents.right_side);
+
+            chart.contents.left_side = _.reject(combinedArray, function(item) {
+                return item.type === "inspected";
+            });
+
+            chart.contents.right_side = _.filter(combinedArray, function(item) {
+                return item.type === "inspected";
+            });
+        };
+
         /*
          * Front desk arrivals and stay-overs data
          */
@@ -33,18 +46,20 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
                 response.data = _.reject(response.data, function(data) {
                     return data.type === 'stayovers';
                 });
+
                 response.data = _.sortBy(response.data, function(data) {
-                    var index;
 
                     if (data.type === 'arrivals') {
-                        index = 0;
+                        data.index = 0;
                     } else if (data.type === "rooms") {
-                        index = 1;
+                        data.index = 1;
+                        reArrangeElements(data);
                     } else {
-                        index = 3;
+                        data.index = 2;
                     }
-                    return index;
+                    return data.index;
                 });
+                
                 deferred.resolve(response);
             });
 
@@ -65,16 +80,19 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
         this.fdFoActivity = function(date) {
             var deferred = $q.defer();
 
-            var yesterday = moment(date).subtract(1, 'days').format('YYYY-MM-DD');
+            var yesterday = moment(date).subtract(1, 'days')
+                .format('YYYY-MM-DD');
 
             sntActivity.start('YESTERDAYS_RESERVATION');
 
-            rvAnalyticsSrv.fetchActiveReservation({ date: yesterday }).then(function(yesterdaysReservations) {
+            rvAnalyticsSrv.fetchActiveReservation({
+                date: yesterday
+            }).then(function(yesterdaysReservations) {
                 rvAnalyticsSrv.yesterdaysReservations = yesterdaysReservations;
 
                 constructFoActivity(date, yesterday, deferred);
 
-            }).finally(function(){
+            }).finally(function() {
                 sntActivity.stop('YESTERDAYS_RESERVATION');
             });
 
@@ -116,7 +134,7 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
 
                 elements.forEach(function(element) {
                     var elementInUnderscore = element.split(/(?=[A-Z])/).join('_')
-                                              .toLowerCase();
+                        .toLowerCase();
 
                     userActivityElement.contents.right_side.push({
                         type: elementInUnderscore,
@@ -245,6 +263,7 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
         var buildCheckinActivity = function(arrivals, foActivity, isToday) {
             arrivals.forEach(function(reservation) {
                 var dayKey = 'yesterday';
+
                 if (isToday) {
                     dayKey = 'today';
                 }
@@ -265,6 +284,7 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
         var buildCheckoutActivity = function(departures, foActivity, isToday) {
             departures.forEach(function(reservation) {
                 var dayKey = 'yesterday';
+
                 if (isToday) {
                     dayKey = 'today';
                 }
@@ -284,8 +304,9 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
         // Init the data for the structure
         var initFoActivityDataStructure = function(foActivity) {
             var date = new Date();
+
             // Construct the 6 AM to 5 AM
-            for(var hour = 6; hour <= 29; hour ++) {
+            for (var hour = 6; hour <= 29; hour++) {
                 foActivity.data[moment(date.setHours(hour)).format('h A')] = {
                     today: $.extend({}, userInitData),
                     yesterday: $.extend({}, userInitData)

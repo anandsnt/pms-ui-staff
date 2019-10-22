@@ -67,7 +67,7 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 				}
 			});
 
-			var totalCountInRightSide = chart.contents.right_side.length ? chart.contents.right_side[chart.contents.right_side.length -1].xFinal : 0;
+			var totalCountInRightSide = chart.contents.right_side.length ? chart.contents.right_side[chart.contents.right_side.length - 1].xFinal : 0;
 
 			chart.maxValueInOneSide = totalCountInLeftSide > totalCountInRightSide ? totalCountInLeftSide : totalCountInRightSide;
 
@@ -118,7 +118,7 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 			})
 			.enter()
 			.append("g")
-			.attr("class" , function(item){
+			.attr("class", function(item) {
 				return cssClassMappings ? cssClassMappings[item.chartName + "_" + item.type] : "";
 			})
 			.attr("id", function(item) {
@@ -209,10 +209,10 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 				}
 			};
 
-			
-			var i =0;
+
+			var i = 0;
 			var c = {};
-			for (i = 0; i <= 24;i++) {
+			for (i = 0; i <= 24; i++) {
 				c[i] = angular.copy(b);
 				c[i].type = c[i].type + i;
 				c[i].label = c[i].label + i;
