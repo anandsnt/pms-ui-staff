@@ -66,7 +66,7 @@
         </span>
 </div>
 
-<div class="entry full-width" ng-if="hotelConfig.paymentGateway === 'SHIJI' && payment.shiji_token_enable_offline">
+<div class="entry full-width" ng-if="selectedPaymentType === 'CC' && hotelConfig.paymentGateway === 'SHIJI' && payment.shiji_token_enable_offline">
     <label for="auth-code">{{ 'ENTER_MANUAL_AUTH_CODE' | translate }}</label>
     <input id="auth-code"
            ng-model="payment.auth_code"
