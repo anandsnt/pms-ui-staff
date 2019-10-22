@@ -49,12 +49,10 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
 
         // Refresh the given scroller
         var refreshScroll = function(name, reset) {
-
-            $scope.refreshScroller(name);
-
             if ( !! reset && $scope.myScroll.hasOwnProperty(name) ) {
                 $scope.myScroll[name].scrollTo(0, 0, SCROLL_REFRESH_DELAY);
             }
+            $scope.refreshScroller(name);
         };
 
         // helper function
@@ -141,14 +139,16 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             };
 
             var hasExportName = function () {
-                return !!$scope.customExportsScheduleParams.exportName;
-            };
+                    return !!$scope.customExportsScheduleParams.exportName;
+                },
+                hasOutputFormat = function () {
+                    return !!$scope.customExportsScheduleParams.format;
+                },
+                hasSelectedColumns = function () {
+                    return $scope.selectedColumns.length;  
+                };
 
-            var hasOutputFormat = function () {
-                return !!$scope.customExportsScheduleParams.format;
-            };
-
-            return hasFrequency() && hasValidDistribution() && hasExportName() && hasOutputFormat();
+            return hasFrequency() && hasValidDistribution() && hasExportName() && hasOutputFormat() && hasSelectedColumns();
         };
 
         var fillValidationErrors = function() {
