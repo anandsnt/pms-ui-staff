@@ -70,7 +70,7 @@ angular.module('sntRover').service('rvMenuSrv',
      * @return {Boolean}
      */
     var shouldShowCurrencyExchangeInFinancialsMenu = function() {
-        return RVHotelDetailsSrv.hotelDetails.is_multi_currency_enabled;
+        return RVHotelDetailsSrv.hotelDetails.is_multi_currency_enabled && RVHotelDetailsSrv.hotelDetails.currency_list_for_exchange.length > 0;
     };
     /**
      * Decide whether the QuickText submenu is to be shown
