@@ -1561,11 +1561,11 @@ sntRover.controller('reservationDetailsController',
 
 			var postData = {
 				"payment_method_id": $scope.authData.selectedCardDetails.payment_id,
-				"amount": $scope.authData.authAmount
+				"amount": $scope.authData.authAmount,
+				"auth_code": $scope.authData.manualAuthCode
 			};
 
 			if ($scope.authData.isManual) {
-				postData.auth_code = $scope.authData.manualAuthCode;
 				$scope.invokeApi(RVCCAuthorizationSrv.manualVoiceAuth, postData, onAuthorizationSuccess, onAuthorizationFaliure);
 			} else {
 				$scope.invokeApi(RVCCAuthorizationSrv.manualAuthorization, postData, onAuthorizationSuccess, onAuthorizationFaliure);
@@ -1579,7 +1579,7 @@ sntRover.controller('reservationDetailsController',
 
 		// To handle authorize button click on 'auth amount popup' ..
 		$scope.authorize = function() {
-			if ($scope.authData.isManual) {
+			if ($scope.authData.isManual || ($rootScope.hotelDetails.payment_gateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline)) {
 				manualAuthAPICall(); // No need to show Auth in progress message
 			} else {
 				ngDialog.close(); // Closing the 'auth amount popup' ..
