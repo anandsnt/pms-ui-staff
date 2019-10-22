@@ -21,6 +21,19 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
             return rvBaseWebSrvV2.getJSON(url, params);
         };
 
+        var reArrangeElements = function(chart) {
+
+            var combinedArray = chart.contents.left_side.concat(chart.contents.right_side);
+
+            chart.contents.left_side = _.reject(combinedArray, function(item) {
+                return item.type === "inspected";
+            });
+
+            chart.contents.right_side = _.filter(combinedArray, function(item) {
+                return item.type === "inspected";
+            });
+        };
+
         /*
          * Front desk arrivals and stay-overs data
          */
@@ -33,18 +46,20 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
                 response.data = _.reject(response.data, function(data) {
                     return data.type === 'stayovers';
                 });
+
                 response.data = _.sortBy(response.data, function(data) {
-                    var index;
 
                     if (data.type === 'arrivals') {
-                        index = 0;
+                        data.index = 0;
                     } else if (data.type === "rooms") {
-                        index = 1;
+                        data.index = 1;
+                        reArrangeElements(data);
                     } else {
-                        index = 3;
+                        data.index = 2;
                     }
-                    return index;
+                    return data.index;
                 });
+                
                 deferred.resolve(response);
             });
 
@@ -289,7 +304,7 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
         // Init the data for the structure
         var initFoActivityDataStructure = function(foActivity) {
             var date = new Date();
-            
+
             // Construct the 6 AM to 5 AM
             for (var hour = 6; hour <= 29; hour++) {
                 foActivity.data[moment(date.setHours(hour)).format('h A')] = {

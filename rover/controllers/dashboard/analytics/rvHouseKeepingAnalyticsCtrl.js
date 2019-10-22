@@ -82,7 +82,7 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 					} else {
 						renderHkWorkPriority();
 					}
-				}, 100);
+				}, 0);
 			});
 		});
 
