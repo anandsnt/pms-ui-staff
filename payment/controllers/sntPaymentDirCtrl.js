@@ -1438,7 +1438,7 @@ angular.module('sntPay').controller('sntPaymentController',
                         ($scope.splitBillEnabled && $scope.numSplits > $scope.completedSplitPayments);
 
                 return (isMLIEMV || $scope.hotelConfig.paymentGateway === 'sixpayments' ||
-                        $scope.hotelConfig.paymentGateway === 'SHIJI') &&
+                        ($scope.hotelConfig.paymentGateway === 'SHIJI' && !$rootScope.hotelDetails.shiji_token_enable_offline)) &&
                         $scope.selectedPaymentType === 'CC' &&
                         $scope.payment.screenMode === 'PAYMENT_MODE' &&
                         isPendingPayment && $scope.actionType !== 'AR_REFUND_PAYMENT';
