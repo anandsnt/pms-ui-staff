@@ -1315,6 +1315,16 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 }
             }
 
+            // include VAT year
+            if ( report.hasLanguages ) {
+                key         = reportParams['SELECTED_LANGUAGE'];
+                params[key] = report.chosenLanguage;
+
+                if ( changeAppliedFilter ) {
+                    $scope.appliedFilter['selected_language'] = report.language;
+                }
+            }
+
              // include VAT year
             if ( report.hasVatYear ) {
                 key         = reportParams['VAT_YEAR'];
@@ -1879,7 +1889,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                         $scope.appliedFilter.assigned_departments = ['All Departments'];
                     }
                 }
-            }
+            }                        
 
             // include travel agents
             if (report.hasOwnProperty('hasTravelAgentsSearch')) {

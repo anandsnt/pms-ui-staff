@@ -413,6 +413,14 @@
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasDepartments.data"
     options="uiChosenReport.hasDepartments.options"></multi-option-selection>
+<div class="entry" ng-show="uiChosenReport.hasLanguages && uiChosenReport.hasLanguages.data.length">
+    <label>Language</label>
+    <div class="select">
+        <select ng-model="uiChosenReport.chosenLanguage" ng-options="languages.id as languages.language for languages in uiChosenReport.hasLanguages.data" ng-change="sortByChanged(uiChosenReport)" iscroll-stop-propagation>
+            <option value="">Select Language</option>
+        </select>
+    </div>
+</div>
 
 <div class="entry" ng-show="uiChosenReport.hasMinNoOfDaysNotOccupied">
     <label>Min. Days Not Occupied</label>
