@@ -434,6 +434,13 @@ angular.module('reportsModule')
                     }
                     );
                     break;
+                case reportNames['FOLIO_TAX_REPORT']:
+                    report['filters'].push({
+                        'value': "INCLUDE_LANGUAGE",
+                        'description': "Include Language"
+                    }
+                    );
+                    break;
 
                 case reportNames['TAX_EXEMPT']:
                     report['filters'].push({
