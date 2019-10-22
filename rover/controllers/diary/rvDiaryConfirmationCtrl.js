@@ -86,6 +86,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
                             if (selected_type === "TRAVELAGENT") {
                                 item.travel_agent_id = $scope.gridProps.filter.rate.id;
                             }
+                            item.contract_id = $scope.gridProps.contractId;
                         }
                         $scope.vaultSelections.rooms.push(item);
 

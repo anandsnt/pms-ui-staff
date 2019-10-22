@@ -208,7 +208,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 	var popupCalendar = function(clickedOn) {
 		$scope.clickedOn = clickedOn;
 		ngDialog.open({
-			template: '/assets/partials/companyCard/rvCompanyCardContractsCalendar.html',
+			template: '/assets/partials/companyCard/contracts/rvCompanyCardContractsCalendar.html',
 			controller: 'RVCompanyCardActivityLogDatePickerController',
 			className: '',
 			scope: $scope

@@ -1099,6 +1099,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
 
                     if (!$scope.groupConfigData.summary.rate) {
                         $scope.groupConfigData.summary.rate = -1;
+                        $scope.groupConfigData.summary.contract_id = null;
                     }
 
                     if ($scope.groupConfigData.summary.tax_exempt_type_id === "" || $scope.groupConfigData.summary === null) {
@@ -1216,6 +1217,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 summaryData.release_date = $filter('date')(summaryData.release_date, $rootScope.dateFormatForAPI);
                 if (!summaryData.rate) {
                     summaryData.rate = -1;
+                    summaryData.contract_id = null;
                 }
 
                 updateGroupSummaryInProgress =  true;
