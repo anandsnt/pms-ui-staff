@@ -1146,7 +1146,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 $scope.payment.linkedCreditCards = _.where(data.existing_payments, {
                     is_credit_card: true
                 });
-                $scope.payment.shiji_token_enable_offline = data.shiji_token_enable_offline
+                $scope.payment.shiji_token_enable_offline = data.shiji_token_enable_offline;
 
                 if ($scope.payment.linkedCreditCards.length > 0) {
                     refreshScroller('cardsList');
