@@ -2,15 +2,11 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
     '$scope',
     'RVCustomExportSrv',
     '$timeout',
-    '$rootScope',
-    'RVreportsSrv',
     'RVCustomExportsUtilFac',
     'sntActivity',
     function($scope, 
         RVCustomExportSrv,
         $timeout,
-        $rootScope,
-        reportsSrv,
         RVCustomExportsUtilFac,
         sntActivity ) {
 
@@ -235,8 +231,10 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
                     }
 
                 });
-
-                $scope.refreshFilterScroller(true);
+                $timeout( function () {
+                    $scope.refreshFilterScroller(true);
+                }, 200);
+                
             });
         };
 
