@@ -278,6 +278,7 @@ admin.controller('ADRulesRestrictionCtrl', [
             var callback = function(data) {
                 // clear any previous data
                 $scope.singleRule = data;
+                $scope.singleRule.amount = parseInt($scope.singleRule.amount).toFixed(2);
                 $scope.singleRule.allow_deposit_edit = (data.allow_deposit_edit !== "" &&  data.allow_deposit_edit) ? true : false;
                 $scope.singleRule.policy_type = 'CANCELLATION_POLICY';
                 $scope.showCancelForm = true;
