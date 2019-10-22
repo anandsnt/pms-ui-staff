@@ -301,38 +301,62 @@ angular.module('sntRover').service('RVreportsSubSrv', [
         };     
 
 
-        service.fetchMarkets = function(params) {
+        service.fetchMarkets = function(shouldIncludeInactive) {
+            var url = '/api/market_segments?is_active=true';
+
+            if (shouldIncludeInactive) {
+                url = '/api/market_segments';
+            }
+
             return callApi({
                 name: 'markets',
                 method: 'getJSON',
-                url: '/api/market_segments?is_active=true',
+                url: url,
                 resKey: 'markets'
             });
         };
 
-        service.fetchSegments = function(params) {
+        service.fetchSegments = function(shouldIncludeInactive) {
+            var url = '/api/segments?is_active=true';
+
+            if (shouldIncludeInactive) {
+                url = '/api/segments';
+            }
+
             return callApi({
                 name: 'segments',
                 method: 'getJSON',
-                url: '/api/segments?is_active=true',
+                url: url,
                 resKey: 'segments'
             });
         };
 
-        service.fetchSources = function() {
+        service.fetchSources = function(shouldIncludeInactive) {
+            var url = 'api/sources?is_active=true';
+
+            if (shouldIncludeInactive) {
+                url = 'api/sources';
+            }
+
             return callApi({
                 name: 'sources',
                 method: 'getJSON',
-                url: 'api/sources?is_active=true',
+                url: url,
                 resKey: 'sources'
             });
         };
 
-        service.fetchBookingOrigins = function() {
+        service.fetchBookingOrigins = function(shouldIncludeInactive) {
+            var url = 'api/booking_origins?is_active=true';
+
+            if (shouldIncludeInactive) {
+                url = 'api/booking_origins';
+            }
+
             return callApi({
                 name: 'bookingOrigins',
                 method: 'getJSON',
-                url: 'api/booking_origins?is_active=true',
+                url: url,
                 resKey: 'booking_origins'
             });
         };
