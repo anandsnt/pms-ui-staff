@@ -6,16 +6,26 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 
 			var chartName = chart.type;
 
-			// sort left side items in descending order
-			chart.contents.left_side = _.sortBy(chart.contents.left_side, function(item) {
-				return -1 * item.count;
-			});
-			// sort right side items in ascending order
-			chart.contents.right_side = _.sortBy(chart.contents.right_side, function(item) {
-				return item.count;
-			});
+			// // sort left side items in descending order
+			// chart.contents.left_side = _.sortBy(chart.contents.left_side, function(item) {
+			// 	return -1 * item.count;
+			// });
+			// // sort right side items in ascending order
+			// chart.contents.right_side = _.sortBy(chart.contents.right_side, function(item) {
+			// 	return item.count;
+			// });
 			// Join left side and right arrays and start chart from left side
 			var combinedArray = chart.contents.left_side.concat(chart.contents.right_side);
+
+			// DEBUG CODE
+			// chart.contents.left_side = _.each(chart.contents.left_side, function(item, index) {
+			// 	item.count = item.count < 10 ? 30 : item.count; 
+			// });
+			// chart.contents.right_side = _.each(chart.contents.right_side, function(item, index) {
+			// 	item.count = item.count < 10 ? 30 : item.count; 
+			// });
+			// DEBUG CODE
+
 
 			// Let count be 90, 40, 30 - based on calculation below the following will the calculated values
 			// item 1 = { xOrigin : -1 * ( 90 + 40 + 30) = -160 , xFinal : -1 * (160 - 90) = -70 }
@@ -29,6 +39,7 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 			//chart.maxValueInOneSie = totalCountInLeftSide > totalCountInRightSide ? totalCountInLeftSide : totalCountInRightSide;
 
 			chart.contents.left_side = _.each(chart.contents.left_side, function(item, index) {
+				chartDetails[item.type + "_" + chartName + "_count"] = item.count;
 				if (index === 0) {
 					item.origin = -1 * totalCountInLeftSide;
 					item.xFinal = -1 * (totalCountInLeftSide - item.count);
@@ -44,6 +55,7 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 			// item 2 = { xOrigin : item 2 xFinal = 35 , xFinal : item 3 xOrigin + count = 35 + 35 = 70 }
 
 			chart.contents.right_side = _.each(chart.contents.right_side, function(item, index) {
+				chartDetails[item.type + "_" + chartName + "_count"] = item.count;
 				// For first item X origin is 0 and xFinal is count 
 				if (index === 0) {
 					item.origin = 0;
@@ -88,7 +100,8 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 			xScale = barData.xScale,
 			chartDetails = barData.chartDetails,
 			colorScheme = barData.colorScheme,
-			maxValue = barData.maxValue;
+			maxValue = barData.maxValue,
+			cssClassMappings = barData.cssClassMappings;
 
 		var vakken = svg.selectAll(".type")
 			.data(chartDetails.chartData.data)
@@ -105,7 +118,9 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 			})
 			.enter()
 			.append("g")
-			.attr("class", "subbar")
+			.attr("class" , function(item){
+				return cssClassMappings ? cssClassMappings[item.chartName + "_" + item.type] : "";
+			})
 			.attr("id", function(item) {
 				return item.elementId;
 			});
@@ -124,35 +139,35 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 				return colorScheme[item.chartName + 'ColorScheme'](item.type);
 			})
 			.on("click", function(e) {
-				chartDetails.onBarChartClick(e);
+				barData.onBarChartClick(e);
 			});
 
-		var isSmallBarItem = function(item) {
-			var itemPercantage = item.count * 100 / maxValue;
+		// var isSmallBarItem = function(item) {
+		// 	var itemPercantage = item.count * 100 / maxValue;
 
-			return (itemPercantage < 8 || itemPercantage > 4 && item.count < 10);
-		};
+		// 	return (itemPercantage < 8 || itemPercantage > 4 && item.count < 10);
+		// };
 
-		bars.append("text")
-			.attr("x", function(item) {
-				return ((xScale(item.xOrigin) + xScale(item.xFinal)) / 2);
-			})
-			.attr("y", function() {
-				return yScale.bandwidth() / 2;
-			})
-			.attr("dy", function(item) {
-				return isSmallBarItem(item) ? -1 * (yScale.bandwidth() / 2 + 10) : "0.5em";
-			})
-			.attr("dx", function(item) {
-				return isSmallBarItem(item) && item.xOrigin <= 0 ? "-0.5em" : "0em";
-			})
-			.style("font-size", function(item) {
-				return isSmallBarItem(item) ? "10px" : "15px";
-			})
-			.style("text-anchor", "middle")
-			.text(function(item) {
-				return item.count !== 0 ? item.count : '';
-			});
+		// bars.append("text")
+		// 	.attr("x", function(item) {
+		// 		return ((xScale(item.xOrigin) + xScale(item.xFinal)) / 2);
+		// 	})
+		// 	.attr("y", function() {
+		// 		return yScale.bandwidth() / 2;
+		// 	})
+		// 	.attr("dy", function(item) {
+		// 		return isSmallBarItem(item) ? -1 * (yScale.bandwidth() / 2 + 10) : "0.5em";
+		// 	})
+		// 	.attr("dx", function(item) {
+		// 		return isSmallBarItem(item) && item.xOrigin <= 0 ? "-0.5em" : "0em";
+		// 	})
+		// 	.style("font-size", function(item) {
+		// 		return isSmallBarItem(item) ? "10px" : "15px";
+		// 	})
+		// 	.style("text-anchor", "middle")
+		// 	.text(function(item) {
+		// 		return item.count !== 0 ? item.count : '';
+		// 	});
 	};
 
 
@@ -197,7 +212,7 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 			
 			var i =0;
 			var c = {};
-			for (i = 0; i <= 2;i++) {
+			for (i = 0; i <= 24;i++) {
 				c[i] = angular.copy(b);
 				c[i].type = c[i].type + i;
 				c[i].label = c[i].label + i;
