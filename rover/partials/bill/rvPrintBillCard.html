@@ -9,6 +9,7 @@
 <!-- Case 1: Guest Bill -->
 <div class="info-container" ng-if="!printData.is_from_cards">
     <div class="info-left">
+
         <span ng-bind-html="printData.guest_details.address"></span>
         <div class="info-bottom" ng-if="!printData.is_deposit_invoice">
             <strong >{{printData.translation.invoice_date}}: </strong>{{printData.invoice_date | date:dateFormat}}<br/>
@@ -36,7 +37,9 @@
             <span ng-show="printData.register_id !== '' && isInfrasecActivated && isInfrasecActivatedForWorkstation">
                 <strong >{{printData.translation.register_id}}: </strong> {{printData.register_id}}
             </span>
-
+        </div>
+        <div ng-if="printData.is_deposit_invoice && printData.deposit_folio_number">
+            <strong><span ng-if = "printData.folio_label">{{printData.folio_label}}:</span><span ng-if = "!printData.folio_label">{{printData.translation.folio_number}}:</span></strong>{{printData.deposit_folio_number}}<br/>
         </div>
     </div>
     <div class="info-right">
@@ -69,7 +72,7 @@
     <div class="info-bottom float">
         <div class="info-left">
             <div ng-if="!printData.is_deposit_invoice">
-                <strong >{{printData.translation.invoice_date}}:</strong>{{printData.invoice_date | date:dateFormat}}<br/>
+                <strong >{{printData.translation.invoice_date}}: </strong>{{printData.invoice_date | date:dateFormat}}<br/>
                 <span ng-show="!printData.is_informational_invoice && printData.is_print_invoice_enabled && (printData.is_print_ar_invoice_number_enabled  && printData.is_db_payment_exists ? false : true)">
                     <strong >{{printData.translation.invoice_number}}:</strong>{{printData.invoice_number}}<br/>
                 </span>
