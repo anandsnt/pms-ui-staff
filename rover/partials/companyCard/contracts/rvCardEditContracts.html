@@ -1,0 +1,59 @@
+<div ng-controller="rvCardEditContractsCtrl" class="contracts-details" ng-show="!contractData.noContracts && contractData.mode === 'EDIT'">
+    <!-- If we don't show the bottom form, add .without-footer -->
+    <!-- If we don't show the search for some reason, add .without-header -->
+    <div class="contracts-details-form scrollable without-header" ng-class="{'without-footer': contractData.isPastContract}" ng-iscroll="editContractScroller">
+        <div class="wrapper float">
+            <div class="holder left">
+                <strong class="h3">Contract Details</strong>
+                <div class="entry only-switch margin">
+                    <label class="disable-element" for="contract-status">Status</label>
+                    <!-- Add .on, when active. Remove otherwise -->
+                    <div class="switch-button full-width" ng-class="{'on': contractData.editData.is_active && !contractData.disableFields, 'disabled': contractData.disableFields}">
+                        <input id="contract-status" ng-model="contractData.editData.is_active" ng-click="toggleActiveStatus()" type="checkbox">
+                        <label class="data-off">
+                            <span class="value">Active</span>
+                            <span class="switch-icon">Inactive</span>
+                        </label>
+                        <label class="data-on">
+                            <span class="switch-icon">Active</span>
+                            <span class="value">Inactive</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="entry margin">
+                    <label class="disable-element" for="contract-name">Name</label>
+                    <input ng-readonly="contractData.disableFields" name="contract-name" id="contract-name" ng-model="contractData.editData.contract_name" placeholder="Contract Name" type="text" />
+                </div>
+                <div class="entry">
+                    <label class="disable-element" for="contract-code">Access Code</label>
+                    <input ng-readonly="editAccessCode()" name="contract-code" id="contract-code"  ng-model="contractData.editData.access_code" placeholder="Access Code" type="text" />
+                </div>
+                <div class="entry margin has-datepicker">
+                    <label class="disable-element" for="contract-start">Start Date</label>
+                    <input ng-disabled="contractData.disableFields" name="contract-start" id="contract-start" class="datepicker" ng-model="contractData.editData.begin_date | date:dateFormat" ng-click="contractStart()" placeholder="Select Start Date" maxlength="8" readonly type="text" />
+                </div>
+                <div class="entry has-datepicker">
+                    <label class="disable-element" for="contract-end">End Date</label>
+                    <input ng-disabled="contractData.disableFields" name="contract-end" id="contract-end" class="datepicker" ng-model="contractData.editData.end_date | date:dateFormat" ng-click="contractEnd()" placeholder="Select End Date" maxlength="8" readonly type="text" />
+                </div>
+
+                <div include-replace ng-include="'/assets/partials/companyCard/contracts/rvCardSearchContractedRate.html'"></div>
+
+                <div class="entry margin">
+                    <label class="disable-element" for="contracted-nights">Contracted nights</label>
+                    <input ng-disabled="contractData.disableFields" name="contracted-nights" id="contracted-nights" class=" contracted-nights" placeholder="Nights per month" ng-model="contractData.editData.total_contracted_nights" ng-click="editContractedNights()" maxlength="8" readonly type="text" />
+                </div>
+            </div>
+            <div class="holder right" ng-if="!contractData.isPastContract">
+                <!-- show only if we can unlink the contract -->
+                <button ng-if="!contractData.editData.is_master_contract" ng-click="clickedUnlinkContracts()" type="button" class="button white red-text">Unlink Contract</button>
+                <!-- show only if we can delete the contract -->
+                <button ng-if="contractData.editData.is_master_contract && contractData.hasDeleteContractPermission" type="button" class="button red" ng-click="deleteContract()">Delete Contract</button>
+            </div>
+        </div>
+    </div>
+    <div class="contract-details-footer" ng-if="!contractData.isPastContract">
+        <button type="button" class="button blank" ng-click="restoreContract()">Cancel</button>
+        <button type="button" class="button green" ng-click="updateContract()">Update Contract</button>
+    </div>
+</div>
