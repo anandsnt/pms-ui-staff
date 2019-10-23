@@ -62,6 +62,7 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 			rvFrontOfficeAnalyticsSrv.fdFoActivity(date).then(function(data) {
 				console.log(JSON.stringify(data));
 				try {
+					d3.select('#analytics-chart').selectAll('svg').remove();
 					$scope.drawFrontOfficeActivity(data);
 				} catch (e) {
 					console.log(e)
