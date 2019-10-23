@@ -250,19 +250,30 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
 
             initFoActivityDataStructure(foActivity);
 
-            // Todays CI/CO data
-            constructCiCoActivity(today, rvAnalyticsSrv.activeReservations, foActivity, true);
-            // Yesterdays CI/CO data
-            constructCiCoActivity(yesterday, rvAnalyticsSrv.yesterdaysReservations, foActivity, false);
-            // Format data
-            //foActivity= 
-            var formatedData = formatFoActivityData(foActivity)
-            var finalData = {
-                dashboard_type: 'frontdesk_activity',
-                label: 'AN_FO_ACTIVITY',
-                'todays_data': formatedData.todays_data,
-                'yesterdays_data': formatedData.yesterdays_data
-            };
+            console.log("______________/n/n/n/n");
+            console.log(JSON.stringify(foActivity));
+            console.log("______________/n/n/n/n");
+
+            // To debug in prod test
+            try {
+                // Todays CI/CO data
+                constructCiCoActivity(today, rvAnalyticsSrv.activeReservations, foActivity, true);
+                // Yesterdays CI/CO data
+                constructCiCoActivity(yesterday, rvAnalyticsSrv.yesterdaysReservations, foActivity, false);
+                // Format data
+                //foActivity= 
+                var formatedData = formatFoActivityData(foActivity);
+                var finalData = {
+                    dashboard_type: 'frontdesk_activity',
+                    label: 'AN_FO_ACTIVITY',
+                    'todays_data': formatedData.todays_data,
+                    'yesterdays_data': formatedData.yesterdays_data
+                };
+            } catch (e) {
+                console.log(e);
+            }
+
+           
             return deferred.resolve(finalData);
         };
 
