@@ -172,14 +172,14 @@ angular.module('sntRover')
                 var leftSideLegendDiv = d3.select("#left-side-legend");
                 var leftSideLegendColor = d3.scaleOrdinal()
                     .range(["#b7d499", "#dba2a2", "#bbe0ee", "#85b752", "#547a2f"])
-                    .domain(["Arrivals", "Departures", "Stayovers", "Clean", "Inspected"]);
+                    .domain(["Checked In", "Checked Out", "Stays Clean", "Clean", "Inspected"]);
 
                 var setMarginForLegends = function(legend, singleLegendHeightPlusMargin) {
                     var yBandwidth = yScale.bandwidth();
 
-                    if (legend === "Arrivals") {
+                    if (legend === "Checked In") {
                         return margin.top + 1.5 * yBandwidth;
-                    } else if (legend === "Departures" || legend === "Stayovers" || legend === "Clean") {
+                    } else if (legend === "Checked Out" || legend === "Stays Clean" || legend === "Clean") {
                         return (2 * yBandwidth - singleLegendHeightPlusMargin);
                     }
                 };
@@ -190,7 +190,9 @@ angular.module('sntRover')
                     .append("dd")
                     .attr("class", "legend-item")
                     .attr("id", function(item) {
-                        return "left-legend-" + item.toLowerCase();
+                        var itemName = item.replace(' ', '-');
+
+                        return "left-legend-" + itemName.toLowerCase();
                     });
 
                 leftSideLegendEntries.append("span")
@@ -202,11 +204,11 @@ angular.module('sntRover')
                     .html(function(label) {
                         var text;
 
-                        if (label === "Arrivals") {
+                        if (label === "Checked In") {
                             text = label + " (" + chartDetails.perfomed_arrivals_count + ")";
-                        } else if (label === "Departures") {
+                        } else if (label === "Checked Out") {
                             text = label + " (" + chartDetails.perfomed_departures_count + ")";
-                        } else if (label === "Stayovers") {
+                        } else if (label === "Stays Clean") {
                             text = label + " (" + chartDetails.perfomed_stayovers_count + ")";
                         } else if (label === "Clean") {
                             text = label + " (" + chartDetails.clean_rooms_count + ")";
@@ -216,8 +218,24 @@ angular.module('sntRover')
                         return text;
                     });
 
+                svg.append("text")
+                    .attr("x", xScale(-1*maxValueInBotheDirections / 2))
+                    .attr("y", height + 20)
+                    .attr("dy", ".35em")
+                    .style("font-size", "20px")
+                    .style("font-style", "italic")
+                    .text("DONE");
+
+                svg.append("text")
+                    .attr("x", xScale(maxValueInBotheDirections / 2))
+                    .attr("y", height + 20)
+                    .attr("dy", ".35em")
+                    .style("font-size", "20px")
+                    .style("font-style", "italic")
+                    .text("REMAINING");
+
                 // TODO: For now lets assume all legends are of same height. So we will take one and use as reference.
-                var singleLegendHeightPlusMargin = $("#left-legend-arrivals").height() + 10;
+                var singleLegendHeightPlusMargin = $("#left-legend-checked-in").height() + 10;
 
                 leftSideLegendEntries.style("margin-top", function(legend) {
                     return setMarginForLegends(legend, singleLegendHeightPlusMargin);
@@ -226,15 +244,15 @@ angular.module('sntRover')
                 // right side legends
                 var rightSideLegendDiv = d3.select("#right-side-legend");
                 var rightSideLegendColor = d3.scaleOrdinal()
-                    .range(["#84b652", "#e13939", "#7cbad3", "#ed941a", "#de3838"])
-                    .domain(["Arrivals", "Departures", "Stayovers", "Pickup", "Dirty"]);
+                    .range(["#84b652", "#e13939", "#7cbad3", "#de3838", "#ed941a"])
+                    .domain(["Arrivals", "Departures", "Stays Dirty", "Dirty", "Pickup"]);
 
                 var setMarginForRightSideLegends = function(legend, singleLegendHeightPlusMargin) {
                     var yBandwidth = yScale.bandwidth();
 
                     if (legend === "Arrivals") {
                         return margin.top + 1.5 * yBandwidth;
-                    } else if (legend === "Departures" || legend === "Stayovers" || legend === "Pickup") {
+                    } else if (legend === "Departures" || legend === "Stays Dirty" || legend === "Dirty") {
                         return (2 * yBandwidth - singleLegendHeightPlusMargin);
                     }
                 };
@@ -244,7 +262,9 @@ angular.module('sntRover')
                     .append("dd")
                     .attr("class", "legend-item")
                     .attr("id", function(item) {
-                        return "left-legend-" + item.toLowerCase();
+                        var itemName = item.replace(' ', '-');
+
+                        return "right-legend-" + itemName.toLowerCase();
                     });
 
                 rightSideLegendEntries.append("span")
@@ -260,7 +280,7 @@ angular.module('sntRover')
                             text = label + " (" + chartDetails.remaining_arrivals_count + ")";
                         } else if (label === "Departures") {
                             text = label + " (" + chartDetails.pending_departures_count + ")";
-                        } else if (label === "Stayovers") {
+                        } else if (label === "Stays Dirty") {
                             text = label + " (" + chartDetails.remaining_stayovers_count + ")";
                         } else if (label === "Pickup") {
                             text = label + " (" + chartDetails.pickup_rooms_count + ")";
