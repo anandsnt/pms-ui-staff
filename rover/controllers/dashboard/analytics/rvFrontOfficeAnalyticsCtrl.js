@@ -23,7 +23,7 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 			$scope: $scope
 		});
 
-		
+
 
 		var onBarChartClick = function() {
 			// console.log(JSON.stringify(e));
@@ -81,6 +81,9 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 			if ($scope.screenData.selectedChart === 'ARRIVALS_MANAGEMENT') {
 				$scope.screenData.selectedChart = 'WORK_LOAD';
 				renderfdWorkloadChart();
+			} else if ($scope.screenData.selectedChart === 'WORK_LOAD') {
+				$scope.screenData.selectedChart = 'FO_ACTIVITY';
+				renderFrontOfficeActivity();
 			} else {
 				$scope.screenData.selectedChart = 'ARRIVALS_MANAGEMENT';
 				renderFrontOfficeManagementChart();
@@ -96,8 +99,10 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 					// Redraw chart
 					if ($scope.screenData.selectedChart === 'ARRIVALS_MANAGEMENT') {
 						renderFrontOfficeManagementChart();
-					} else {
+					} else if ($scope.screenData.selectedChart === 'WORK_LOAD') {
 						renderfdWorkloadChart();
+					} else {
+						renderFrontOfficeActivity();
 					}
 				}, 0);
 			});

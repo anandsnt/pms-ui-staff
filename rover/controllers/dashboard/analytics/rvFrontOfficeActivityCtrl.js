@@ -4,27 +4,41 @@ angular.module('sntRover')
 
       $scope.drawFrontOfficeActivity = function(chartData) {
 
-        ///////
+        $scope.screenData.mainHeading = $filter('translate')(chartData.label);
 
-        _.each(chartData.todays_data, function(item) {
-          item.earlyCheckin = item.earlyCheckin < 2 ? _.random(10, 100) : item.earlyCheckin;
-          item.checkin = item.checkin < 2 ? _.random(10, 100) : item.checkin;
-          item.vipCheckin = item.vipCheckin < 2 ? _.random(10, 100) : item.vipCheckin;
-          item.vipCheckout = item.vipCheckout < 2 ? _.random(10, 100) : item.vipCheckout;
-          item.checkout = item.checkout < 2 ? _.random(10, 100) : item.checkout;
-          item.lateCheckout = item.lateCheckout < 2 ? _.random(10, 100) : item.lateCheckout;
-        });
+        /////// debuging code
+        // TO DELETE
 
-        _.each(chartData.yesterdays_data, function(item) {
-          item.earlyCheckin = item.earlyCheckin < 2 ? _.random(10, 100) : item.earlyCheckin;
-          item.checkin = item.checkin < 2 ? _.random(10, 100) : item.checkin;
-          item.vipCheckin = item.vipCheckin < 2 ? _.random(10, 100) : item.vipCheckin;
-          item.vipCheckout = item.vipCheckout < 2 ? _.random(10, 100) : item.vipCheckout;
-          item.checkout = item.checkout < 2 ? _.random(10, 100) : item.checkout;
-          item.lateCheckout = item.lateCheckout < 2 ? _.random(10, 100) : item.lateCheckout;
-        });
+        // _.each(chartData.todays_data, function(item) {
+        //   item.earlyCheckin = item.earlyCheckin < 2 ? _.random(10, 100) : item.earlyCheckin;
+        //   item.checkin = item.checkin < 2 ? _.random(10, 100) : item.checkin;
+        //   item.vipCheckin = item.vipCheckin < 2 ? _.random(10, 100) : item.vipCheckin;
+        //   item.vipCheckout = item.vipCheckout < 2 ? _.random(10, 100) : item.vipCheckout;
+        //   item.checkout = item.checkout < 2 ? _.random(10, 100) : item.checkout;
+        //   item.lateCheckout = item.lateCheckout < 2 ? _.random(10, 100) : item.lateCheckout;
+        // });
+
+        // _.each(chartData.yesterdays_data, function(item) {
+        //   item.earlyCheckin = item.earlyCheckin < 2 ? _.random(10, 100) : item.earlyCheckin;
+        //   item.checkin = item.checkin < 2 ? _.random(10, 100) : item.checkin;
+        //   item.vipCheckin = item.vipCheckin < 2 ? _.random(10, 100) : item.vipCheckin;
+        //   item.vipCheckout = item.vipCheckout < 2 ? _.random(10, 100) : item.vipCheckout;
+        //   item.checkout = item.checkout < 2 ? _.random(10, 100) : item.checkout;
+        //   item.lateCheckout = item.lateCheckout < 2 ? _.random(10, 100) : item.lateCheckout;
+        // });
 
         //////
+
+        console.log("\n\n\n\n\n\n\n\n\n");
+        console.log(JSON.stringify(chartData.todays_data));
+        console.log("\n\n\n\n\n\n\n\n\n");
+        console.log(JSON.stringify(chartData.yesterdays_data));
+        console.log("\n\n\n\n\n\n\n\n\n");
+
+        /////// debuging code ends here
+
+        
+
 
         var emptyElement = {
           "earlyCheckin": 0,
@@ -69,17 +83,25 @@ angular.module('sntRover')
             return d[1];
           }));
         }));
+
         var ydomain_max = d3.max(datasets.flat().map(function(row) {
           return d3.max(row.map(function(d) {
             return d[1];
           }));
         }));
+
         var yscale = d3.scaleLinear().domain([0, ydomain_max]).range([h - padding, padding]);
-        var todaysColorMapping = d3.scaleOrdinal()
+
+        // var todaysColorMapping = d3.scaleOrdinal()
+        //   .range(["#BBC9B0", "#97C16D", "#EACC2B", "#A18709", "#DE3938", "#AC2625"])
+        //   .domain(chartKeys);
+
+        // var yesterdaysColorMapping = d3.scaleOrdinal()
+        //   .range(["#D5DDCE", "#DDE6D2", "#F4EBC6", "#F4F4F1", "#F2ECEC", "#F2EAE9"])
+        //   .domain(chartKeys);
+
+        var colorMapping = d3.scaleOrdinal()
           .range(["#BBC9B0", "#97C16D", "#EACC2B", "#A18709", "#DE3938", "#AC2625"])
-          .domain(chartKeys);
-        var yesterdaysColorMapping = d3.scaleOrdinal()
-          .range(["#D5DDCE", "#DDE6D2", "#F4EBC6", "#F4F4F1", "#F2ECEC", "#F2EAE9"])
           .domain(chartKeys);
 
         var xaxis = d3.axisBottom(xscale);
@@ -94,7 +116,7 @@ angular.module('sntRover')
             //   return gnum === 0 ? todaysColorMapping(d.key) : yesterdaysColorMapping(d.key);
             // })
             .attr('fill', function(d) {
-              return gnum === 0 ? todaysColorMapping(d.key) : todaysColorMapping(d.key);
+              return colorMapping(d.key);
             })
             .attr('fill-opacity', function(d) {
               return gnum === 0 ? 1 : 0.3;
@@ -104,8 +126,9 @@ angular.module('sntRover')
               return d;
             }).enter().append('rect')
             .attr('x', function(d, i) {
-              var a = xscale(xlabels[i]) + xscale.bandwidth() / 2 * gnum;
-              return a + gnum * 5;
+              var xOffset = xscale(xlabels[i]) + xscale.bandwidth() / 2 * gnum;
+
+              return xOffset + gnum * 2; // xOffset + some margin
             })
             .style("margin-right", "10px")
             .attr('y', function(d) {
@@ -118,8 +141,40 @@ angular.module('sntRover')
               return yscale(d[0]) - yscale(d[1]);
             });
         });
-        svg.append('g').attr('class', 'axis x').attr('transform', 'translate(0,' + (h - padding) + ")").call(xaxis);
-        svg.append('g').attr('class', 'axis y').attr('transform', 'translate(' + padding + ",0)").call(yaxis);
+        svg.append('g')
+          .attr('class', 'axis x')
+          .attr('transform', 'translate(0,' + (h - padding) + ")")
+          .call(xaxis);
+
+        svg.append('g')
+          .attr('class', 'axis y')
+          .attr('transform', 'translate(' + padding + ",0)")
+          .call(yaxis);
+
+        var rightSideLegendDiv = d3.select("#right-side-legend");
+        var rightSideLegendColor = d3.scaleOrdinal()
+          .range(["#BBC9B0", "#97C16D", "#EACC2B", "#A18709", "#DE3938", "#AC2625"])
+          .domain(chartKeys);
+
+
+        var rightSideLegendEntries = rightSideLegendDiv.selectAll("dd")
+          .data(rightSideLegendColor.domain().slice())
+          .enter()
+          .append("dd")
+          .attr("class", "legend-item")
+          .attr("id", function(item) {
+            return "left-legend-" + item.toLowerCase();
+          });
+
+        rightSideLegendEntries.append("span")
+          .attr("class", "rect")
+          .style("background-color", rightSideLegendColor);
+
+        rightSideLegendEntries.append("span")
+          .attr("class", "rect-label")
+          .html(function(label) {
+            return label;
+          });
       }
     }
   ]);
