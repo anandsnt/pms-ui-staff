@@ -88,6 +88,13 @@
                     <input type="text" ng-model="authData.manualAuthCode" ng-class="{ 'hidden' : !authData.isManual }" placeholder="{{'ENTER_MANUAL_AUTH_CODE' | translate }}" />
             </div>
 
+            <div class="entry full-width" ng-if="paymentGateway == 'SHIJI' && hotelDetails.shiji_token_enable_offline && authData.selectedCardDetails.last_auth_date == ''">
+                <label for="auth-code">
+                    {{ 'ENTER_MANUAL_AUTH_CODE' | translate }}
+                </label>
+                <input type="text" id="auth-code" ng-model="authData.manualAuthCode" />
+            </div>
+
             <div class="actions">
                 <button ng-click="authorize()" ng-disabled="!authData.manualCCAuthPermission || (authData.authAmount|number) <= 0"
                         ng-class="{'grey':!authData.manualCCAuthPermission || (authData.authAmount|number) <= 0 }"

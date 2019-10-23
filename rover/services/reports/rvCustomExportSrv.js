@@ -592,6 +592,22 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
+        /**
+         * Get reservation types
+         */
+        this.getReservationTypes = () => {
+            var deferred = $q.defer(),
+                url = 'api/reservation_types';
+
+            sntBaseWebSrv.getJSON(url).then(function (response) {
+                deferred.resolve(response.reservation_types);
+            }, function (error) {
+                deferred.resolve(error);
+            });
+
+            return deferred.promise;
+        };
+
 
         this.processFilterSelections = ( filterValues ) => {
             var promises = [],
