@@ -8,7 +8,7 @@
                 <div class="entry only-switch margin">
                     <label class="disable-element" for="contract-status">Status</label>
                     <!-- Add .on, when active. Remove otherwise -->
-                    <div class="switch-button full-width" ng-class="{'on': contractData.editData.is_active && !contractData.disableFields, 'disabled': contractData.disableFields}">
+                    <div class="switch-button full-width" ng-class="{'on': contractData.editData.is_active, 'disabled': contractData.disableFields}">
                         <input id="contract-status" ng-model="contractData.editData.is_active" ng-click="toggleActiveStatus()" type="checkbox">
                         <label class="data-off">
                             <span class="value">Active</span>
