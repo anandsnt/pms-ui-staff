@@ -12,7 +12,7 @@
 			<rv-textbox value="guestCardData.contactInfo.tax_number" label = "Tax Number" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.tax_number, 'margin')}}"></rv-textbox>
 			<div ng-if="guestCardData.contactInfo.guestAdminSettings.date_of_birth.is_visible" class="entry has-datepicker" ng-class="{'no-print': !birthdayText}">
 				<label for="birthday"> Birthday <strong ng-if="guestCardData.contactInfo.guestAdminSettings.date_of_birth.is_mandatory_on_guest_card_creation">*</strong></label>
-				<input type="text" ng-model="guestCardData.contactInfo.birthday | date:dateFormat" name="guest-birthday" maxlength="8" id="guest-birthday" class="datepicker" ng-click="popupCalendarForGuestContactInfoDate('birthday')" readonly />
+				<input type="text" ng-value="guestCardData.contactInfo.birthday | date:dateFormat" name="guest-birthday" maxlength="8" id="guest-birthday" class="datepicker" ng-click="popupCalendarForGuestContactInfoDate('birthday')" readonly />
 			</div>
 
 			<div ng-if="guestCardData.contactInfo.guestAdminSettings.nationality.is_visible" class="entry margin" ng-class="{'no-print': !guestCardData.contactInfo.nationality_id}">
