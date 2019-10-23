@@ -1,0 +1,10 @@
+<!-- If there are NO contracts, show this. -->
+<div class="info" ng-show="contractData.noContracts">
+    <span class="icon-no-content icon-contracts"></span>
+    <strong class="h1">No Contracts</strong>
+    <span class="h2">{{contactInformation.account_details.account_name}} has no contracts.</span>
+    <!-- Wehn clicked, it will show the contracts.html to search the contract -->
+    <button type="button" class="button blue" ng-click="moveToLinkContract()">Link Existing Contract</button>
+    <!-- Wehn clicked, it will show the contracts.html to enter the contract -->
+    <button type="button" class="button green" ng-click="createFirstContract()">Create New Contract</button>
+</div>

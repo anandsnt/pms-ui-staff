@@ -498,6 +498,124 @@
 		box-shadow: inset 1px 1px 1px rgba(0,0,0,.1);
 		border-radius: 3px;
 	}
+
+/* Autocomplete Search */
+	.autocomplete-search {
+		
+		.scrollable {
+			position: relative;
+			max-height: 400px;
+			display: none;
+
+			.wrapper {
+				padding: 0;
+			}
+
+			.card {
+				line-height: 1em;
+				padding: 10px;
+				cursor: pointer;
+				width: 100%;
+				text-transform: uppercase;
+				font-size: 14px;
+				line-height: 20px;
+				.box-shadow();
+				.nowrap();
+
+				.guest-image {
+					background-size: 50px;
+					margin-right: 10px;
+					.square( 20px );
+	
+					&.icon-company {
+						background-color: @ccard;
+						background-position: 6px -1437px;
+					}
+	
+					&.icon-travel-agent {
+						background-color: @tacard;
+						background-position: 5.5px -1486px;
+					}
+				}
+			}
+		}
+
+		.search {
+			padding: 10px;
+			position: relative;
+			.box-shadow(none);
+
+			input {
+				padding: 0 30px;
+				font-weight: 600;
+				color: @logoPrimary;
+				#border-radius > .rounded(25px);
+			}
+
+			.clear-query,
+			.icon-search {
+				position: absolute;
+			}
+
+			.clear-query {
+				position: absolute;
+				top: 10px;
+				right: 10px;
+				z-index: 99;
+				visibility: hidden;
+				.size(40px, 40px);
+
+				.icons {
+					position: absolute;
+					top: 13px;
+					right: 12.5px;
+					background-color: @grey2;
+					.hide-text;
+					.square(15px);
+					.opacity(0);
+					.show;
+					#fade > .out();
+					#border-radius > .rounded(15px);
+				}
+
+				&.visible { 
+					visibility: visible;
+
+					.icons {    
+						.opacity(100); 
+						#fade > .in(); 
+					}
+				}
+
+				&:hover,
+				&.active { 
+					.icons { background-color: @logoPrimary; }
+				}
+			}
+
+			.icon-search {
+				top: 20px;
+				left: 20px;
+			}
+		}
+
+		.highlight { color: @logoPrimary; }
+
+		&.searching {
+			background: @white;
+			.box-shadow();
+
+			.search {
+				input {
+					background-color: @grey1;
+				}
+			}
+
+			.scrollable {
+				display: block;
+			}
+		}
+	}
 	
 /* 6. IE
 ==========================================================*/

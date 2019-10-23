@@ -830,6 +830,11 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     Availability.read(params)
                     .then(function(data) {
                         if (data && data.results) {
+                            if (data.contract_id) {
+                                _data_Store.set({
+                                    contractId: data.contract_id
+                                });
+                            }
                             var availability = data.results[0].availability;
                             var roomTypes = data.results[0].room_types;
                             var match;

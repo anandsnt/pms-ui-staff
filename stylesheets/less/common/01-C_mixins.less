@@ -254,6 +254,17 @@
 		background-repeat: repeat;
 	}
 
+	.gradient-important(@startColor, @endColor) {
+		background-image: -moz-linear-gradient(top, @startColor, @endColor) !important;
+		background-image: -ms-linear-gradient(top, @startColor, @endColor) !important;
+		background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@startColor), to(@endColor)) !important;
+		background-image: -webkit-linear-gradient(top, @startColor, @endColor) !important;
+		background-image: -o-linear-gradient(top, @startColor, @endColor) !important;
+		background-image: linear-gradient(top, @startColor, @endColor) !important;
+		background-color: mix(@startColor, @endColor, 60%) !important;
+		background-repeat: repeat;
+	}
+
 	.gradient-horizontal(@startColor, @endColor) {
 		background-image: -moz-linear-gradient(left, @startColor, @endColor);
 		background-image: -ms-linear-gradient(left, @startColor, @endColor);
