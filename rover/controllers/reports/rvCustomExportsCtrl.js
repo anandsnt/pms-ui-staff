@@ -49,12 +49,10 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
 
         // Refresh the given scroller
         var refreshScroll = function(name, reset) {
-
-            $scope.refreshScroller(name);
-
             if ( !! reset && $scope.myScroll.hasOwnProperty(name) ) {
                 $scope.myScroll[name].scrollTo(0, 0, SCROLL_REFRESH_DELAY);
             }
+            $scope.refreshScroller(name);
         };
 
         // helper function

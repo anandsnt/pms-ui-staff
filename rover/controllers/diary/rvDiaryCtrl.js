@@ -1472,6 +1472,10 @@ angular.module('sntRover')
                         this.availability.resize.last_arrival_time = this.availability.resize.current_arrival_time;
                         this.availability.resize.last_departure_time = this.availability.resize.current_departure_time;
                     }
+                    var contractId = rvDiarySrv.data_Store.get('contractId');
+                    if (contractId) {
+                        this.contractId = contractId;
+                    }
 
                     $scope.initPassiveEditMode({
                         start_date: new Date(row_item_data[meta.occupancy.start_date]),
