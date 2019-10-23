@@ -324,7 +324,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
             label: 'AN_STAYOVERS',
             contents: {
                 left_side: [{
-                    type: 'performed',
+                    type: 'perfomed',
                     label: 'AN_PERFOMED',
                     count: cleanAndInspectedStayOversCount
                 }],
