@@ -19,7 +19,7 @@
 					<div class="entry" ng-hide="isAllowanceType(prefetchData.selected_charge_code_type)">
 						<label translate>ALLOW_MANUAL_POSTINGS</label>
 
-						<div id="div-upsell-rooms" class="switch-button single"
+						<div id="div-upsell-rooms" class="switch-button single manual_posting"
 						ng-class="{ on : prefetchData.allow_manual_posting }">
 							<input type="checkbox" name="upsell-rooms" ng-model="prefetchData.allow_manual_posting" ng-disabled="disableChargeCodeType || prefetchData.selected_charge_code_type === '12' ">
 							<span class="switch-icon"></span>
