@@ -54,8 +54,8 @@ angular.module('sntRover')
                     .ticks(5)
                     .tickSizeOuter(0)
                     .tickPadding(10)
-                    .tickFormat(function(d) {
-                        return d.toUpperCase();
+                    .tickFormat(function() {
+                        return "";
                     });
 
                 var svg = d3.select("#analytics-chart").append("svg")
@@ -121,15 +121,15 @@ angular.module('sntRover')
                     .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
                     .attr("y2", firstLineHeight);
 
-                var firstLineHeight1 = 2.5 * yInnerPadding + 2 * yScale.bandwidth();
+                var secondLineHeight = 2.5 * yInnerPadding + 2 * yScale.bandwidth();
 
                 svg.append("line") // attach a line
                     .style("stroke", "#A0A0A0") // colour the line
                     .style("stroke-width", "0.5px")
                     .attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
-                    .attr("y1", firstLineHeight1) // y position of the first end of the line
+                    .attr("y1", secondLineHeight) // y position of the first end of the line
                     .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-                    .attr("y2", firstLineHeight1);
+                    .attr("y2", secondLineHeight);
 
                 var previousElementHeightPlusBottomMargin = function(id) {
                     return $("#" + id).height() + 10;
@@ -171,7 +171,21 @@ angular.module('sntRover')
                 leftSideLegendEntries.append("span")
                     .attr("class", "rect-label")
                     .html(function(label) {
-                        return label;
+                        var text;
+
+                        if (label === "Arrivals") {
+                            text = label + " (" + chartDetails.perfomed_arrivals_count + ")";
+                        } else if (label === "Dirty") {
+                            text = label + " (" + chartDetails.dirty_vacant_count + ")";
+                        } else if (label === "Pickup") {
+                            text = label + " (" + chartDetails.pickup_vacant_count + ")";
+                        } else if (label === "Clean") {
+                            text = label + " (" + chartDetails.clean_vacant_count + ")";
+                        } 
+                        else if (label === "Perfomed") {
+                            text = label + " (" + chartDetails.perfomed_departures_count + ")";
+                        }
+                        return text;
                     });
 
                 // TODO: For now lets assume all legends are of same height. So we will take one and use as reference.
@@ -217,7 +231,21 @@ angular.module('sntRover')
                 rightSideLegendEntries.append("span")
                     .attr("class", "rect-label")
                     .html(function(label) {
-                        return label;
+                        var text;
+
+                        if (label === "Early Check in") {
+                            text = label + " (" + chartDetails.early_checkin_arrivals_count + ")";
+                        } else if (label === "Remaining") {
+                            text = label + " (" + chartDetails.remaining_arrivals_count + ")";
+                        } else if (label === "Inspected") {
+                            text = label + " (" + chartDetails.inspected_vacant_count + ")";
+                        } else if (label === "Late checkout") {
+                            text = label + " (" + chartDetails.late_checkout_departures_count + ")";
+                        } 
+                        else if (label === "Pending") {
+                            text = label + " (" + chartDetails.pending_departures_count + ")";
+                        }
+                        return text;
                     });
 
                 rightSideLegendEntries.style("margin-top", function(legend) {
