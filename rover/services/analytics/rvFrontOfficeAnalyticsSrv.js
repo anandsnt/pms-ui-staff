@@ -224,13 +224,27 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
             });
         };
 
+        var formatFoActivityData = function (foActivity) {
+            var finalData = {
+                'todays_data': [],
+                'yesterdays_data': []
+            };
+
+            for (var key in foActivity.data) {
+                foActivity.data[key].today.time = key;
+                finalData.todays_data.push(foActivity.data[key].today);
+                foActivity.data[key].yesterday.time = key;
+                finalData.yesterdays_data.push(foActivity.data[key].yesterday);
+            }
+
+            return finalData;
+        };
+
         /*
          * Build the data structure for FO CI/CO activity by hour basis
          */
         var constructFoActivity = function(today, yesterday, deferred) {
             var foActivity = {
-                dashboard_type: 'frontdesk_activity',
-                label: 'AN_FO_ACTIVITY',
                 data: {}
             };
 
@@ -240,9 +254,17 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
             constructCiCoActivity(today, rvAnalyticsSrv.activeReservations, foActivity, true);
             // Yesterdays CI/CO data
             constructCiCoActivity(yesterday, rvAnalyticsSrv.yesterdaysReservations, foActivity, false);
-            return deferred.resolve(foActivity);
+            // Format data
+            //foActivity= 
+            var formatedData = formatFoActivityData(foActivity)
+            var finalData = {
+                dashboard_type: 'frontdesk_activity',
+                label: 'AN_FO_ACTIVITY',
+                'todays_data': formatedData.todays_data,
+                'yesterdays_data': formatedData.yesterdays_data
+            };
+            return deferred.resolve(finalData);
         };
-
 
         var constructCiCoActivity = function(date, reservations, foActivity, isToday) {
             var arrivingReservations = reservations.filter(function(reservation) {

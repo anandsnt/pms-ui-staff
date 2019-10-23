@@ -118,11 +118,11 @@ angular.module('sntRover')
 					var fontSize;
 
 					if (totalRowsPresent > 20) {
-						fontSize = "6px";
-					} else if (totalRowsPresent > 15) {
-						fontSize = "8px";
-					} else {
 						fontSize = "10px";
+					} else if (totalRowsPresent > 15) {
+						fontSize = "12px";
+					} else {
+						fontSize = "13px";
 					}
 
 					return fontSize;
@@ -210,7 +210,7 @@ angular.module('sntRover')
 					})
 					.style("text-anchor", "middle")
 					.text(function(item) {
-						return item.count !== 0 ? item.count : '';
+						return item.count !== 0  || chartDetails.chartData.data.length < 15 ? item.count : '';
 					});
 
 				// Draw horizontal line on top of REMAINING
