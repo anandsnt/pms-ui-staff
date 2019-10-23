@@ -131,24 +131,20 @@ angular.module('sntRover')
                     .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
                     .attr("y2", secondLineHeight);
 
-                var previousElementHeightPlusBottomMargin = function(id) {
-                    return $("#" + id).height() + 10;
-                };
-
                 // Left side Legends
                 var leftSideLegendDiv = d3.select("#left-side-legend");
                 var leftSideLegendColor = d3.scaleOrdinal()
                     .range(["#C2D6AE", "#DE3636", "#ED9319", "#84B651", "#E29D9D"])
-                    .domain(["Arrivals", "Dirty", "Pickup", "Clean", "Perfomed"]);
+                    .domain(["Checked In", "Dirty", "Pickup", "Clean", "Checked Out"]);
 
                 var setMarginForLegends = function(legend, singleLegendHeightPlusMargin) {
                     var yBandwidth = yScale.bandwidth();
 
-                    if (legend === "Arrivals") {
+                    if (legend === "Checked In") {
                         return margin.top + yInnerPadding + yBandwidth / 2;
                     } else if (legend === "Dirty") {
                         return yBandwidth / 2 - singleLegendHeightPlusMargin + yInnerPadding;
-                    } else if (legend === "Perfomed") {
+                    } else if (legend === "Checked Out") {
                         var heightOfThreeLegends = singleLegendHeightPlusMargin * 3;
 
                         return yBandwidth - heightOfThreeLegends + yInnerPadding + yBandwidth / 2;
@@ -161,7 +157,9 @@ angular.module('sntRover')
                     .append("dd")
                     .attr("class", "legend-item")
                     .attr("id", function(item) {
-                        return "left-legend-" + item.toLowerCase();
+                        var itemName = item.replace(' ', '-');
+
+                        return "left-legend-" + itemName.toLowerCase();
                     });
 
                 leftSideLegendEntries.append("span")
@@ -173,7 +171,7 @@ angular.module('sntRover')
                     .html(function(label) {
                         var text;
 
-                        if (label === "Arrivals") {
+                        if (label === "Checked In") {
                             text = label + " (" + chartDetails.perfomed_arrivals_count + ")";
                         } else if (label === "Dirty") {
                             text = label + " (" + chartDetails.dirty_vacant_count + ")";
@@ -182,14 +180,14 @@ angular.module('sntRover')
                         } else if (label === "Clean") {
                             text = label + " (" + chartDetails.clean_vacant_count + ")";
                         } 
-                        else if (label === "Perfomed") {
+                        else if (label === "Checked Out") {
                             text = label + " (" + chartDetails.perfomed_departures_count + ")";
                         }
                         return text;
                     });
 
                 // TODO: For now lets assume all legends are of same height. So we will take one and use as reference.
-                var singleLegendHeightPlusMargin = $("#left-legend-arrivals").height() + 10;
+                var singleLegendHeightPlusMargin = $("#left-legend-checked-in").height() + 10;
 
                 leftSideLegendEntries.style("margin-top", function(legend) {
                     return setMarginForLegends(legend, singleLegendHeightPlusMargin);
@@ -212,7 +210,7 @@ angular.module('sntRover')
                     } else if (legend === "Late checkout") {
                         return yBandwidth / 2 - singleLegendHeightPlusMargin + yInnerPadding + yBandwidth / 2;
                     } else if (legend === "Pickup") {
-                        return 2 * yBandwidth - previousElementHeightPlusBottomMargin("left-legend-stayovers");
+                        return 2 * yBandwidth - singleLegendHeightPlusMargin;
                     }
                 };
                 var rightSideLegendEntries = rightSideLegendDiv.selectAll("dd")
@@ -221,7 +219,9 @@ angular.module('sntRover')
                     .append("dd")
                     .attr("class", "legend-item")
                     .attr("id", function(item) {
-                        return "left-legend-" + item.toLowerCase();
+                        var itemName = item.replace(' ', '-');
+
+                        return "right-legend-" + itemName.toLowerCase();
                     });
 
                 rightSideLegendEntries.append("span")

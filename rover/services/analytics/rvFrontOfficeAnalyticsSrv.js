@@ -40,7 +40,7 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
         this.fdArrivalsManagement = function(date) {
             var deferred = $q.defer();
 
-            rvAnalyticsSrv.hkOverview(date).then(function(response) {
+            rvAnalyticsSrv.hkOverview(date, true).then(function(response) {
                 response.label = 'AN_ARRIVALS_MANAGEMENT';
                 response.dashboard_type = 'arrivals_management_chart';
                 response.data = _.reject(response.data, function(data) {
