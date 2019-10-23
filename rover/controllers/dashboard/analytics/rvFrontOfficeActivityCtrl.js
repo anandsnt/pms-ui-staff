@@ -37,9 +37,6 @@ angular.module('sntRover')
 
         /////// debuging code ends here
 
-        
-
-
         var emptyElement = {
           "earlyCheckin": 0,
           "checkin": 0,
@@ -76,13 +73,17 @@ angular.module('sntRover')
         var xlabels = chartData.todays_data.map(function(d) {
           return d['time'];
         });
-        var xscale = d3.scaleBand().domain(xlabels).range([padding, w - padding]).paddingInner(0.5);
+        var xscale = d3.scaleBand()
+                       .domain(xlabels)
+                       .range([padding, w - padding])
+                       .paddingInner(0.5);
 
-        var ydomain_min = d3.min(datasets.flat().map(function(row) {
-          return d3.min(row.map(function(d) {
-            return d[1];
-          }));
-        }));
+        var ydomain_min = d3.min(datasets.flat()
+                          .map(function(row) {
+                            return d3.min(row.map(function(d) {
+                              return d[1];
+                            }));
+                          }));
 
         var ydomain_max = d3.max(datasets.flat().map(function(row) {
           return d3.max(row.map(function(d) {
@@ -124,7 +125,8 @@ angular.module('sntRover')
             .attr('class', 'group' + gnum)
             .selectAll('rect').data(function(d) {
               return d;
-            }).enter().append('rect')
+            }).enter()
+            .append('rect')
             .attr('x', function(d, i) {
               var xOffset = xscale(xlabels[i]) + xscale.bandwidth() / 2 * gnum;
 
@@ -175,6 +177,6 @@ angular.module('sntRover')
           .html(function(label) {
             return label;
           });
-      }
+      };
     }
   ]);
