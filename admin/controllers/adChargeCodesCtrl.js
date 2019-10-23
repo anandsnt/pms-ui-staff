@@ -183,7 +183,6 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				$scope.prefetchData.selected_charge_group = allowanceChargeGroup.value;
 			} else if (selectedType === '12') {
 				$scope.warningMessage = 'The recommended naming convention for Deposit Charge codes is DEP001, DEP002, DEP003, etc.';
-				$(".manual_posting").removeClass('on');
 			} else {
 				$scope.warningMessage = '';
 			}
