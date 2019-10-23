@@ -2322,6 +2322,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     response = responseForTaxExempt(response);
                 }
 
+                if (chosenReport.title === reportNames['FOLIO_TAX_REPORT']) {
+                    $scope.vatTotals = response.vat_totals;
+                }
+
                 $scope.totals = response.totals || [];
                 $scope.headers = response.headers || [];
                 $scope.subHeaders = response.sub_headers || [];

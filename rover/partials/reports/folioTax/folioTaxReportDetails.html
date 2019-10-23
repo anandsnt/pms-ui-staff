@@ -1,0 +1,89 @@
+<!-- Report content -->
+    <div id="report-content" class="report-content grid scrollable"> <!-- Add class "with-pagination" if pagination is shown -->
+        <div class="wrapper">
+            <table class="invoice-tax-reports">
+                <thead>
+                    <tr>
+                        <th><span class="sort sorting-asc">Room</span></th>
+                        <th><span>Folio/Invoice/AR Invoice No.</span></th>
+                        <th><span>Guest/Account Name</span></th>
+                        <th><span>Tax ID</span></th>
+                        <th><span>VAT</span></th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td colspan="3">
+                            Date Range from <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.toDate | date:dateFormat }}</span><br>
+                        </td>
+                        <td colspan="2">
+                             <li>
+                                Business date <span>{{ userInfo.business_date | date:dateFormat }}</span><br/>
+                                User <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
+                            </li>
+                        </td>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    <tr ng-repeat="eachRow in results">
+                        <td>{{eachRow.room_no}}</td>
+                        <td>{{eachRow.folio_no}}/{{eachRow.invoice_no}}/{{eachRow.ar_invoice_no}}</td>
+                        <td>{{eachRow.guest_or_account_name}}</td>
+                        <td>{{eachRow.tax_id}}</td>
+                        <td class="vat-groupings">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <td><strong>%</strong></td>
+                                        <td><strong>Gross</strong></td>
+                                        <td><strong>Net</strong></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="vatRow in eachRow.vat_groups">
+                                        <td>{{vatRow.vat_percentage}}</td>
+                                        <td>
+                                            <span class="currency">{{currencySymbol}}</span>{{vatRow.gross_amount}}
+                                        </td>
+                                        <td>
+                                            <span class="currency">{{currencySymbol}}</span>{{vatRow.net_amount}}
+                                        </td>
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr class="totals">
+                        <td colspan="4">
+                            <strong>Totals</strong>
+                        </td>
+                        <td class="vat-groupings">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <td><strong>%</strong></td>
+                                        <td><strong>Gross</strong></td>
+                                        <td><strong>Net</strong></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="vatTotalRow in vatTotals">
+                                        <td>{{vatTotalRow.total_vat_percentage}}</td>
+                                        <td>
+                                            <span class="currency">{{currencySymbol}}</span>{{vatTotalRow.total_gross_amount}}
+                                        </td>
+                                        <td>
+                                            <span class="currency">{{currencySymbol}}</span>{{vatTotalRow.total_net_amount}}
+                                        </td>
+                                    </tr>
+                                    
+                                </tbody>    
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>          
+        </div>
+    </div>
