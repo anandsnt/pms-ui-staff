@@ -32,7 +32,7 @@ angular.module('sntRover')
 
                 "Checked Out": "bar bar-red bar-light",
                 "Late checkout": "bar bar-red",
-                "Pending": "bar bar-soft-red"
+                "Pending": "bar bar-red bar-light"
             };
 
             $scope.drawHkWorkPriorityChart = function(chartDetails) {
