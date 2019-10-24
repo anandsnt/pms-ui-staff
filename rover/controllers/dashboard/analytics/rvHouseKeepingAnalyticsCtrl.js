@@ -40,10 +40,13 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
         };
 
 		var renderHkWorkPriority = function() {
+		    var hotelCheckinTime = $rootScope.hotelDetails.hotel_checkin_time;
+		    var hotelCheckoutTime = $rootScope.hotelDetails.hotel_checkout_time;
+
 			$scope.screenData.mainHeading = "";
 			// Calling HK Overview Build Graph
-			rvAnalyticsSrv.hkWorkPriority(date).then(function(data) {
-				console.log(data);
+			rvAnalyticsSrv.hkWorkPriority(date, hotelCheckinTime, hotelCheckoutTime).then(function(data) {
+
 				var chartDetails = {
 					chartData: data,
 					onBarChartClick: onBarChartClick
