@@ -1819,7 +1819,7 @@
             /* CC modal ***/
             &.card-content {
                 padding: 20px 0;
-                width: 640px;
+                width: 820px;
 
                 .scrollable {
                     position: relative;
@@ -1842,13 +1842,49 @@
 
                 .active-item {
                     position: relative;
-                    line-height: 50px;
                     padding: 0 20px;
+                    line-height: 50px;
                     .calc-width(100, 60);
-                    .clickable;
+                    .clickable();
+                    #flexbox > .parent(flex row, '', center, '');
+
+                    .card-logo,
+                    > span {
+                        float: none;
+                        margin-top: 0;
+                        #flexbox > .parent(flex row, '', center, '');
+
+                        &:not(:last-child) {
+                            margin-right: 20px;
+                        }
+                    }
+
+                    .card-logo {
+                        .size(30px, 40px);
+
+                        img {
+                            object-fit: contain;
+                            .square(100%);
+                        }
+                    }
 
                     > span {
-                        margin-right: 60px;
+
+                        .value {
+                            font-size: 16px;
+                            margin-left: 5px;
+
+                            &.name {
+                                max-width: 240px;
+                                .nowrap();
+                            }
+
+                            &.primary {
+                                font-size: 12px;
+                                font-weight: 600;
+                                margin-left: 0;
+                            }
+                        }
 
                         &.icons,
                         &.primary {
