@@ -110,8 +110,8 @@ sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope'
     changeMonth: true,
     yearRange: "-5:+5",
     dateFormat: 'yy-mm-dd',
+    maxDate: $rootScope.businessDate,
     onSelect: function(dateText, inst) {
-      alert(dateText)
       $scope.dashboardFilter.datePicked = dateText;
       $scope.$broadcast('RELOAD_DATA_WITH_SELECTED_FILTER', {
         "room_type_id": $scope.dashboardFilter.selectedRoomTypeId,
