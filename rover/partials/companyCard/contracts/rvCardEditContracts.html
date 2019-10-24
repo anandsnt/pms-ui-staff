@@ -52,7 +52,7 @@
             </div>
         </div>
     </div>
-    <div class="contract-details-footer" ng-if="!contractData.isPastContract">
+    <div class="contract-details-footer" ng-if="!contractData.isPastContract || !contractData.disableFields">
         <button type="button" class="button green" ng-click="updateContract()">Update Contract</button>
     </div>
 </div>
