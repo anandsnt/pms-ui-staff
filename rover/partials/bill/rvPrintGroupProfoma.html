@@ -108,20 +108,20 @@
             -->
             <tr class="first" ng-repeat="item in printData.transactions">
                 <td class="date" rowspan="item.occupancy_details.length">{{item.date}}</td>
-                <td class="type">{{item.occupancy_details[0].room_type_name}}</td>
+                <td class="type">{{item.occupancy_details[0].room_type}}</td>
                 <td class="occ">{{item.occupancy_details[0].ocuupancy}}</td>
                 <td class="align-right amount">
-                    <span class="currency">$</span>{{item.occupancy_details[0].ocuupancy}}
+                    <span class="currency">{{currencySymbol}}</span>{{item.occupancy_details[0].item_price | number: precisonTwo }}
                 </td>
                 <td class="align-right qty">{{item.occupancy_details[0].quantity}}</td>
                 <td class="align-right amount">
-                    <span class="currency">$</span>{{item.occupancy_details[0].amount}}
+                    <span class="currency">{{currencySymbol}}</span>{{item.occupancy_details[0].amount | number: precisonTwo }}
                 </td>
                 <td class="align-right amount">
-                    <span class="currency">$</span>{{item.occupancy_details[0].item_price}}
+                    <span class="currency">{{currencySymbol}}</span>{{item.occupancy_details[0].amount | number: precisonTwo }}
                 </td>
                 <td class="align-right amount" valign="bottom" rowspan="{rowspan}">
-                    <span class="currency">$</span>{{item.total_amount}}
+                    <span class="currency">{{currencySymbol}}</span>{{item.total_amount | number: precisonTwo }}
                 </td>
             </tr>
             <!-- ... repeat for every first item for the date -->
@@ -129,12 +129,12 @@
             <!-- Other items on that date  -->
             <!-- Add class .last if it's the last item of that date -->
             <tr ng-repeat="item in printData.transactions.occupancy_details" ng-if="$index >= 1" ng-class="{'last' : $last}">
-                <td class="type">{{item.room_type_name}}</td>
+                <td class="type">{{item.room_type}}</td>
                 <td class="occ">{{item.ocuupancy}}</td>
-                <td class="align-right amount"><span class="currency">$</span>{{item.ocuupancy}}</td>
+                <td class="align-right amount"><span class="currency">{{currencySymbol}}</span>{{item.item_price | number: precisonTwo }}</td>
                 <td class="align-right qty">{{item.quantity}}</td>
-                <td class="align-right amount"><span class="currency">$</span>{{item.amount}}</td>
-                <td class="align-right amount"><span class="currency">$</span>{{item.item_price}}</td>
+                <td class="align-right amount"><span class="currency">{{currencySymbol}}</span>{{item.amount | number: precisonTwo }}</td>
+                <td class="align-right amount"><span class="currency">{{currencySymbol}}</span>{{item.amount | number: precisonTwo }}</td>
             </tr>
             <!-- ... repeat for each other item for the date -->
            
