@@ -60,8 +60,8 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 
 		var clearAllExistingChartElements = function() {
 			document.getElementById("left-side-legend").innerHTML = "";
-			document.getElementById("analytics-chart").innerHTML = "";
 			document.getElementById("right-side-legend").innerHTML = "";
+			document.getElementById("analytics-chart").innerHTML = "";
 		};
 
 		var drawChart = function() {
@@ -103,7 +103,8 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 			var options = {
 				params: params,
 				successCallBack: function() {
-                    renderHkOverview();
+					clearAllExistingChartElements();
+                    drawChart();
                 }
 			};
 
