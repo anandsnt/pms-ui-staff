@@ -380,6 +380,15 @@ sntRover.controller('RVbillCardController',
 	$scope.hasPermissionToMoveCharges = function() {
 		return rvPermissionSrv.getPermissionValue ('MOVE_CHARGES');
 	};
+
+	/**
+	* function to check whether the user has permission
+	* to detokenize CC
+	* @return {Boolean}
+	*/
+	$scope.hasPermissionToDetokenizeCC = function() {
+		return rvPermissionSrv.getPermissionValue ('DETOKENIZE');
+	};
 	/**
     * Method to decide whether the signature box should show or not
     * @param {none}
