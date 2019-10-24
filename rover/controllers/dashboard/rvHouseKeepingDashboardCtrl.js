@@ -101,4 +101,6 @@ sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope'
     }, 500);
   });
 
+  $scope.$emit('SET_DEFAULT_ANALYTICS_MENU' , 'HK_OVERVIEW');
+
 }]);
