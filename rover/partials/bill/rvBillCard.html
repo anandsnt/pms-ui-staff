@@ -115,9 +115,11 @@
 									<div class="payment" ng-show="billTab.credit_card_details.payment_type !== 'CC' && billTab.is_active">
 										{{billTab.credit_card_details.payment_type_description}}
 									</div>
-									<figure class="card-logo" ng-show="billTab.credit_card_details.payment_type == 'CC' &&billTab.is_active">
-										<img ng-if="billTab.credit_card_details.card_code !== ''" ng-src="/assets/images/{{billTab.credit_card_details.card_code}}.png" alt="" class="credit-card-image">
-										<span class="number"> {{billTab.credit_card_details.card_number}}</span>
+									<figure class="card-logo" ng-class="{'blank':hotelDetails.shiji_detokenization_allowed}" ng-show="billTab.credit_card_details.payment_type == 'CC' &&billTab.is_active">
+										<img ng-if="billTab.credit_card_details.card_code !== '' && !hotelDetails.shiji_detokenization_allowed" ng-src="/assets/images/{{billTab.credit_card_details.card_code}}.png" alt="" class="credit-card-image">
+										<img ng-if="hotelDetails.shiji_detokenization_allowed" ng-src="/assets/images/credit-card-blank.png" alt="" class="credit-card-image">
+										<span class="number" ng-if="!hotelDetails.shiji_detokenization_allowed"> {{billTab.credit_card_details.card_number}}</span>
+										<span class="number" ng-if="hotelDetails.shiji_detokenization_allowed"> ****</span>
 									</figure>
 									<span class="icons icon-room-lock" ng-show="!billTab.is_active && (billTab.is_control_code_exist || billTab.is_folio_number_exists)"></span> 
 									<div class="payment" ng-show="billTab.is_moved_to_ar">Moved to A/R</div>
