@@ -20,6 +20,7 @@ sntRover.controller('RVbillCardController',
 	'sntActivity',
 	'RVReservationStateService',
 	'$log',
+	'sntPaymentSrv',
 	function($scope, $rootScope,
 			$state, $stateParams,
 			RVBillCardSrv, reservationBillData,
@@ -31,7 +32,7 @@ sntRover.controller('RVbillCardController',
 			$sce,
 
 			RVKeyPopupSrv, RVPaymentSrv,
-			RVSearchSrv, rvPermissionSrv, jsMappings, $q, sntActivity, RVReservationStateService, $log) {
+			RVSearchSrv, rvPermissionSrv, jsMappings, $q, sntActivity, RVReservationStateService, $log, sntPaymentSrv) {
 
 
 	BaseCtrl.call(this, $scope);
@@ -1069,6 +1070,18 @@ sntRover.controller('RVbillCardController',
 			ngDialog.open({
 				template: '/assets/partials/payment/rvShowPaymentList.html',
 				controller: 'RVShowPaymentListCtrl',
+				className: '',
+				scope: $scope
+			});
+	};
+
+	$scope.openDetokenizationPopup = function() {
+		var paths = sntPaymentSrv.resolvePaths($scope.hotelDetails.payment_gateway, {});
+
+        $scope.detokenizeUrl = paths.iFrameUrl + "&reservation_id=" + $scope.reservationBillData.reservation_id + "&token=" 
+        					 + $scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.token;
+		ngDialog.open({
+				template: '/assets/partials/payment/rvDetokenizeCC.html',
 				className: '',
 				scope: $scope
 			});
