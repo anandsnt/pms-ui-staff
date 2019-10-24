@@ -5,7 +5,7 @@
 
     <div class='select'>
         <select ng-class="{'placeholder': ngModel == ''}"
-                convert-to-number
+                convert-to-number skip-conversion="{{skipNumberConversion}}"
                 id="{{id}}"
                 name="{{name}}"
                 class="{{selboxClass}}"

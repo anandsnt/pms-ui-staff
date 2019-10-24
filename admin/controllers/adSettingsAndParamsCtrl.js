@@ -1,28 +1,52 @@
 admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'settingsAndParamsData', 'chargeCodes', function($scope, settingsAndParamsSrv, settingsAndParamsData, chargeCodes) {
 
-	BaseCtrl.call(this, $scope);
-	$scope.ccBatchProcessingOptions = [{
-            "value": "PAYMENT_GATEWAY",
-            "name": "Payment Gateway"
-        },
-        {
-            "value": "HOTEL",
-            "name": "Hotel"
-        }];
+    BaseCtrl.call(this, $scope);
+    $scope.ccBatchProcessingOptions = [{
+        'value': 'PAYMENT_GATEWAY',
+        'name': 'Payment Gateway'
+    },
+    {
+        'value': 'HOTEL',
+        'name': 'Hotel'
+    }];
 
-    $scope.cc_batch_processing = settingsAndParamsData.cc_batch_processing === null ? "" : settingsAndParamsData.cc_batch_processing;
+    $scope.cc_batch_processing = settingsAndParamsData.cc_batch_processing === null ? '' : settingsAndParamsData.cc_batch_processing;
     $scope.cc_auto_settlement_by_eod = settingsAndParamsData.cc_auto_settlement_by_eod;
 
-	$scope.hours = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
-	$scope.minutes = ["00", "15", "30", "45"];
+    $scope.hours = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+    $scope.minutes = ['00', '15', '30', '45'];
 
-
+    $scope.selectedRateCurrencies = settingsAndParamsData.rate_currencies.length > 0 ? settingsAndParamsData.rate_currencies : [];
+    $scope.selectedPaymentCurrencies = settingsAndParamsData.payment_currencies.length > 0 ? settingsAndParamsData.payment_currencies : [];
     $scope.data = settingsAndParamsData.business_date;
     $scope.chargeCodes = chargeCodes;
     $scope.selected_charge_code = settingsAndParamsData.no_show_charge_code_id;
     $scope.selected_group_charge_code = settingsAndParamsData.group_charge_code_id;
     $scope.emailRecipientsForEodReports = settingsAndParamsData.email_recipients_for_eod_reports;
     $scope.check_guest_auth_for_interface_postings = settingsAndParamsData.check_guest_auth_for_interface_postings;
+    $scope.auto_charge_deposit = settingsAndParamsData.auto_charge_deposit;
+    $scope.is_multi_currency = settingsAndParamsData.is_multi_currency;
+    $scope.is_multi_currency_enabled = settingsAndParamsData.is_multi_currency_enabled;
+    $scope.currency_list = settingsAndParamsData.currency_list;
+    $scope.rate_currency_list = angular.copy(settingsAndParamsData.currency_list);
+    angular.forEach($scope.rate_currency_list, function(item) {
+        if (_.indexOf(settingsAndParamsData.rate_currencies, item.id) !== -1) {
+            item.is_selected = true;
+        } else {
+            item.is_selected = false;
+        }        
+    });
+    $scope.payment_currency_list = angular.copy(settingsAndParamsData.currency_list);
+    angular.forEach($scope.payment_currency_list, function(item) {
+        if (_.indexOf(settingsAndParamsData.payment_currencies, item.id) !== -1) {
+            item.is_selected = true;
+        } else {
+            item.is_selected = false;
+        }        
+    });
+    $scope.invoice_currency = settingsAndParamsData.invoice_currency; 
+    $scope.invoice_currency = angular.isDefined($scope.invoice_currency) ? $scope.invoice_currency.id : '';
+
 
     /**
     * To handle save button action
@@ -31,23 +55,59 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
     $scope.saveClick = function() {
 
         var saveDetailsSuccessCallback = function() {
-             $scope.$emit('hideLoader');
-             $scope.goBackToPreviousState();
+            $scope.$emit('hideLoader');
+            $scope.goBackToPreviousState();
             
         };
-        var selectedChargeCode = ( typeof $scope.selected_charge_code === 'undefined' ) ? "" : $scope.selected_charge_code;
-        var groupChargeCode = ( typeof $scope.selected_group_charge_code === 'undefined' ) ? "" : $scope.selected_group_charge_code;
-        var dataToSend = {	"no_show_charge_code_id": selectedChargeCode,
-        					"business_date": $scope.data,
-        					"group_charge_code_id": groupChargeCode,
-        					"cc_batch_processing": $scope.cc_batch_processing,
-        					"cc_auto_settlement_by_eod": $scope.cc_auto_settlement_by_eod,
-                            "email_recipients_for_eod_reports": $scope.emailRecipientsForEodReports,
-                            "check_guest_auth_for_interface_postings": $scope.check_guest_auth_for_interface_postings
-        				};
+        var selectedChargeCode = typeof $scope.selected_charge_code === 'undefined' ? '' : $scope.selected_charge_code;
+        var groupChargeCode = typeof $scope.selected_group_charge_code === 'undefined' ? '' : $scope.selected_group_charge_code;
+        var dataToSend = {
+            'no_show_charge_code_id': selectedChargeCode,
+            'business_date': $scope.data,
+            'group_charge_code_id': groupChargeCode,
+            'cc_batch_processing': $scope.cc_batch_processing,
+            'cc_auto_settlement_by_eod': $scope.cc_auto_settlement_by_eod,
+            'email_recipients_for_eod_reports': $scope.emailRecipientsForEodReports,
+            'check_guest_auth_for_interface_postings': $scope.check_guest_auth_for_interface_postings,
+            'auto_charge_deposit': $scope.auto_charge_deposit,
+            'is_multi_currency_enabled': $scope.is_multi_currency_enabled,
+            'invoice_currency': ($scope.invoice_currency === null) ? '' : parseInt($scope.invoice_currency, 10),
+            'rate_currencies': $scope.selectedRateCurrencies,
+            'payment_currencies': $scope.selectedPaymentCurrencies
+        };
 
         $scope.invokeApi(settingsAndParamsSrv.saveSettingsAndParamsSrv, dataToSend, saveDetailsSuccessCallback);
     };
+    /*
+     * Selected currency 
+     * @param currencyCode code of currency
+     */
+    $scope.selectedRateCurrency = function(id) {
+        if ((_.findWhere($scope.rate_currency_list, {"id": id})).is_selected) {
+            if (_.indexOf($scope.selectedRateCurrencies, id) !== -1) {
+                $scope.selectedRateCurrencies.splice(_.indexOf($scope.selectedRateCurrencies, id), 1);
+                (_.findWhere($scope.rate_currency_list, {"id": id})).is_selected = false;
+            }           
+        } else {
+            $scope.selectedRateCurrencies.push(id);
+            (_.findWhere($scope.rate_currency_list, {"id": id})).is_selected = true;            
+        }       
+    };
 
+    /*
+     * Selected currency 
+     * @param currencyCode code of currency
+     */
+    $scope.selectedPaymentCurrency = function(id) {
+        if ((_.findWhere($scope.payment_currency_list, {"id": id})).is_selected) {
+            if (_.indexOf($scope.selectedPaymentCurrencies, id) !== -1) {
+                $scope.selectedPaymentCurrencies.splice(_.indexOf($scope.selectedPaymentCurrencies, id), 1);
+                (_.findWhere($scope.payment_currency_list, {"id": id})).is_selected = false;
+            }           
+        } else {
+            $scope.selectedPaymentCurrencies.push(id);
+            (_.findWhere($scope.payment_currency_list, {"id": id})).is_selected = true;            
+        }       
+    };
 
 }]);

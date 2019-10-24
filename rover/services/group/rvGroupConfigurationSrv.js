@@ -9,13 +9,14 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			"group_code": null,
 			"first_name": "",
 			"last_name": "",
-			"contact_phone": "",
-			"contact_email": "",
+			"contact_phone": null,
+			"contact_email": null,
 			"demographics": {
 				"reservation_type_id": "",
 				"market_segment_id": "",
 				"source_id": "",
-				"booking_origin_id": ""
+				"booking_origin_id": "",
+				"segment_id": ""
 			},
 			"travel_agent": null,
 			"company": null,
@@ -270,14 +271,16 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 		/** * DEPRICATED 'summaryHolder{}' & 'getAccountSummary()' ***/
 
 		this.getGroupSummary = function(params) {
-			var deferred = $q.defer();
+			var deferred = $q.defer(),
+			    url = '';
 
 			if (params.groupId === "NEW_GROUP") {
 				deferred.resolve(angular.copy({
 					"groupSummary": self.baseConfigurationSummary
 				}));
 			} else {
-				url = 'api/groups/' + params.groupId;
+				var url = 'api/groups/' + params.groupId;
+
 				rvBaseWebSrvV2.getJSON(url).then(
 					function(groupSummary) {
 						var postingAccId = groupSummary.posting_account_id,
@@ -286,6 +289,9 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 						if ( groupSummary.rate === null ) {
 							groupSummary.rate = -1;
 						}
+
+						groupSummary.country_id = groupSummary.country_id ? groupSummary.country_id : '';
+            			groupSummary.nationality = groupSummary.nationality ? groupSummary.nationality : '';
 
 						self.lastFetchedGroup = {
 							id: groupSummary.group_id,
@@ -352,6 +358,8 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 		this.updateGroupSummary = function(data) {
 			var deferred = $q.defer(),
 				url = 'api/groups/' + data.summary.group_id;
+
+            self.processGroupUpdatePostData (data.summary);
 
 			rvBaseWebSrvV2.putJSON(url, data.summary)
 				.then(function(data) {
@@ -604,5 +612,21 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
                 });
             return deferred.promise;
         };
+
+        // Process the group update post data
+       this.processGroupUpdatePostData = function (summary) {
+            var isCompanyObjEmpty = isObjectAllValuesEmpty(summary.company),
+                isTravelAgentObjEmpty = isObjectAllValuesEmpty(summary.travel_agent);
+
+            if (isCompanyObjEmpty) {
+                summary.company = {};
+            }
+            if (isTravelAgentObjEmpty) {
+                summary.travel_agent = {};
+            }
+            summary = replaceValueWithinObject(summary, "", null);
+       };
 	}
+
+
 ]);

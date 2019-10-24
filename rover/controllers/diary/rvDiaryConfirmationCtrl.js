@@ -86,6 +86,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
                             if (selected_type === "TRAVELAGENT") {
                                 item.travel_agent_id = $scope.gridProps.filter.rate.id;
                             }
+                            item.contract_id = $scope.gridProps.contractId;
                         }
                         $scope.vaultSelections.rooms.push(item);
 
@@ -130,7 +131,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
             var fetchSuccess = function(isAddonsConfigured) {
                 $scope.saveToVault('temporaryReservationDataFromDiaryScreen', $scope.vaultSelections);
                 // CICO-9429
-                if ( !$rootScope.isHourlyRateOn && $rootScope.isAddonOn && isAddonsConfigured) {
+                if ( !$rootScope.isHourlyRateOn && $rootScope.isAddonOn && isAddonsConfigured && $rootScope.hotelDiaryConfig.mode !== 'FULL' ) {
                     var arrival_date = $scope.vaultSelections.arrival_date;
                     var departure_date = $scope.vaultSelections.departure_date;
 

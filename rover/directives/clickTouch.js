@@ -22,7 +22,7 @@ sntRover.directive('clickTouch', function($timeout, $parse) {
                     if (event.preventDefault) {
                         event.preventDefault();
                     }
-                    if ( ! eventShallPass && event.stopPropagation ) {
+                    if (!eventShallPass && event.stopPropagation ) {
                         event.stopPropagation();
                     }
                 }

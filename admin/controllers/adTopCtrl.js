@@ -11,7 +11,11 @@ angular.module('admin').controller('adTopCtrl',
 
             var setPropertyAndNavigate = function(uuid) {
                 if ('snt' === $state.current.name && $rootScope.isSntAdmin) {
-                    $window.history.pushState("initial", "Showing Dashboard", "/admin/snt");
+                    $timeout(function () {
+                        $window.history.replaceState(null, "SNT Admin", '/admin/snt');
+                        // NOTE: This listener is not removed on $destroy on purpose!
+                        $rootScope.$on('$locationChangeStart', routeChange);
+                    });
                 } else {
                     if (uuid) {
                         $window.history.pushState("initial", "Showing Dashboard", "/admin/h/" + uuid);
@@ -19,10 +23,9 @@ angular.module('admin').controller('adTopCtrl',
                     } else {
                         // fetch uuid and then navigate
                     }
+                    $rootScope.$on('$locationChangeStart', routeChange);
                 }
 
-                // NOTE: This listener is not removed on $destroy on purpose!
-                $rootScope.$on('$locationChangeStart', routeChange);
                 if ($stateParams.state) {
                     var params = ($stateParams.params && angular.fromJson(decodeURI($stateParams.params))) || {};
 
@@ -36,10 +39,12 @@ angular.module('admin').controller('adTopCtrl',
 
             (function() {
                 $rootScope.adminRole = adminDashboardConfigData['admin_role'];
-                $rootScope.isServiceProvider = adminDashboardConfigData['is_service_provider'];
+                $rootScope.isServiceProvider = adminDashboardConfigData['is_service_provider'] ||
+                    adminDashboardConfigData['is_service_provider_admin'];
                 $rootScope.hotelId = adminDashboardConfigData['hotel_id'];
                 $rootScope.isPmsConfigured = adminDashboardConfigData['is_pms_configured'] === 'true';
                 $rootScope.isSntAdmin = $rootScope.adminRole === 'snt-admin';
+                $rootScope.isChainAdmin = adminDashboardConfigData['is_chain_admin'];
 
                 if ($stateParams.uuid || ( $rootScope.isSntAdmin && 'snt' === $state.current.name)) {
                     setPropertyAndNavigate($stateParams.uuid);

@@ -3,11 +3,12 @@ module.exports = function(gulp, $, options) {
     var runSequence         = require('run-sequence'),
         GUESTWEB_V2_TEMPLATE_ROOT  = '../views/layouts/',
         GUESTWEB_V2_HTML_FILE         = GUESTWEB_V2_TEMPLATE_ROOT + 'guestweb_v2.html',
-        extend                 = require('util')._extend,
-        options             = extend({
-            'GUESTWEB_V2_TEMPLATE_ROOT'    : GUESTWEB_V2_TEMPLATE_ROOT,
-            'GUESTWEB_V2_HTML_FILE'         : GUESTWEB_V2_HTML_FILE
-        }, options);
+        _ = require('lodash');
+
+    _.extend(options, {
+        'GUESTWEB_V2_TEMPLATE_ROOT': GUESTWEB_V2_TEMPLATE_ROOT,
+        'GUESTWEB_V2_HTML_FILE': GUESTWEB_V2_HTML_FILE
+    });
 
     require('./guestweb_v2/guestweb_v2_js_gulp')(gulp, $, options);
     require('./guestweb_v2/guestweb_v2_css_gulp')(gulp, $, options);

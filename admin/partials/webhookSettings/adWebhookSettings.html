@@ -1,0 +1,105 @@
+<div class="data-holder">
+    <form class="form inline-form float">
+        <fieldset class="holder full-width">
+            <div class="form-title">
+                <h3>Settings</h3>
+                <em class="status"> {{'MANDATORY_FIELDS_MESSAGE1' | translate}} <strong>*</strong>
+                    {{'MANDATORY_FIELDS_MESSAGE2' | translate}} </em>
+            </div>
+            <fieldset class="holder left">
+                <ad-dropdown-name savemodel="webHook.delivery_type"
+                                  valueproperty="delivery_type"
+                                  label-in-drop-down="Select a Delivery Type"
+                                  required="yes"
+                                  change-handler="onWebHookTypeChange"
+                                  change-handler-param="webHook"
+                                  property="delivery_type_display"
+                                  list="meta.deliveryTypes"
+                                  label="{{'WEBHOOK_TYPE'| translate}}"
+                                  div-class="full-width">
+                </ad-dropdown-name>
+
+                <ad-textbox value="webHook.url"
+                            required="yes"
+                            label="{{'URL'| translate}}"
+                            styleclass="full-width"></ad-textbox>
+            </fieldset>
+
+            <fieldset class="holder right">
+                <div class="entry full-width" ng-show="webHook.delivery_type==='mlife'">
+                    <label> {{ 'CONFIGURATION' | translate }} </label>
+                    <textarea json-text ng-model='webHook.options' rows="6"
+                              placeholder="Enter Configuration in JSON format"></textarea>
+                </div>
+                <div class="entry full-width" ng-show="webHook.delivery_type==='generic'">
+                    <button style="margin: 24px;"
+                            ng-click="testURLConnectivity(webHook);"
+                            class="button ng-binding blue">TEST ENDPOINT
+                    </button>
+                </div>
+                <div class="entry full-width"  ng-if="webHook.delivery_type==='generic' && (webHook.testMessage.request || webHook.testMessage.response)" snt-highlight-syntax>
+                  <strong>Request</strong>
+                  <pre class="interface-message brush: js; auto-links: false">
+                      {{webHook.testMessage.request}}
+                  </pre>
+                  <strong>Response</strong>
+                  <pre class="interface-message brush: js; auto-links: false">
+                      {{webHook.testMessage.response}}
+                  </pre>
+                </div>
+            </fieldset>
+
+        </fieldset>
+
+        <fieldset class="holder full-width" ng-show="webHook.canEditEvents">
+            <div class="form-title">
+                <h3>Subscriptions</h3>
+            </div>
+            <!-- <fieldset class="holder left">
+                <ad-textarea rows="2" div-class="full-width"
+                             text-area-class="full-width"
+                             value="webHook.selectedEvents"
+                             disabled="true"
+                             label="{{ 'SELECTED_SUBSCRIPTIONS' | translate}}" placeholder="">
+                </ad-textarea>
+            </fieldset> -->
+            <fieldset class="holder left">
+                <ad-textbox inputtype="text"
+                            value="eventSearch"
+                            div-class="full-width"
+                            label="{{'SEARCH'| translate}}"></ad-textbox>
+                <div class="entry full-width">
+                    <div ivh-treeview="webHook.availableEvents"
+                         ivh-treeview-expand-to-depth="-1"
+                         ivh-treeview-filter="eventSearch">
+                        <script type="text/ng-template">
+                            <span ivh-treeview-toggle>
+                                        <span ivh-treeview-twistie></span>
+                                        </span>
+                            <ad-tree-selector-checkbox></ad-tree-selector-checkbox>
+                            <span class="ivh-treeview-node-label"
+                                  style="padding-left: 10px;"
+                                  ivh-treeview-toggle>
+                                            {{trvw.label(node) | translate}}
+                                            </span>
+                            <div style="margin-top: 1em;" ivh-treeview-children></div>
+                        </script>
+                    </div>
+                </div>
+            </fieldset>
+        </fieldset>
+        <div class="actions float">
+            <button type="button" ng-click="onCancelEdit()" class="button blank edit-data-inline"
+                    translate>
+                CANCEL
+            </button>
+            <button type="button" ng-click="onUpdate(webHook)" class="button green edit-data-inline"
+                    ng-class="{'grey' : webHook.url == '' || webHook.delivery_type == ''}"
+                    ng-disabled="webHook.url == '' || webHook.delivery_type == ''"
+                    translate>
+                SAVE_CHANGES
+            </button>
+        </div>
+    </form>
+</div>
+

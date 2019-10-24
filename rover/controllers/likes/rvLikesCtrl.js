@@ -1,6 +1,6 @@
 
-sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', '$stateParams', 'RVContactInfoSrv',
-	function($scope, RVLikesSrv, dateFilter, $stateParams, RVContactInfoSrv) {
+sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'RVGuestCardsSrv', 'dateFilter', '$stateParams',
+	function($scope, RVLikesSrv, RVGuestCardsSrv, dateFilter, $stateParams) {
 
 
 		$scope.errorMessage = "";
@@ -8,8 +8,9 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 		$scope.guestLikesData = {};
 		$scope.setScroller('likes_info');
 		$scope.calculatedHeight = 274; // height of Preferences + News paper + Room type + error message div
-		var presentLikeInfo  = {};
-		var updateData = {};
+		var presentLikeInfo  = {},
+		    updateData = {},
+		    isInitMethodInvoked = false;
 
 		$scope.$on('clearNotifications', function() {
 			$scope.errorMessage = "";
@@ -24,10 +25,13 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 			};
 			var data = {
 				'userId': $scope.guestCardData.contactInfo.user_id,
-				'isRefresh': $stateParams.isrefresh || 'true'
+				'isRefresh': $stateParams.isrefresh || true
 			};
 
-			$scope.invokeApi(RVLikesSrv.fetchLikes, data, $scope.fetchLikesSuccessCallback, fetchLikesFailureCallback, 'NONE');
+			if ($scope.guestCardData.contactInfo && $scope.guestCardData.contactInfo.user_id) {
+				$scope.invokeApi(RVLikesSrv.fetchLikes, data, $scope.fetchLikesSuccessCallback, fetchLikesFailureCallback, 'NONE');
+			}
+			
 		};
 		$scope.fetchLikesSuccessCallback = function(data) {
 
@@ -131,7 +135,32 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 			$scope.refreshScroller('likes_info');
 		});
 
-		$scope.saveLikes = function() {
+		/**
+		 * This function is used to get the guest id while taking the guest card from the menu
+		 * as well as during the create reservation flow
+		 */
+		var getGuestId = function () {
+			var guestId;
+
+			// Guest id during the create reservation flow
+			if ($scope.reservationData && $scope.reservationData.guest && $scope.reservationData.guest.id) {
+				guestId = $scope.reservationData.guest.id;
+			// Guest id while navigating to the guest card from the menu
+			} else if ($scope.guestCardData && $scope.guestCardData.contactInfo && 
+				$scope.guestCardData.contactInfo.user_id) {
+				guestId = $scope.guestCardData.contactInfo.user_id;
+			}
+
+			return guestId;
+
+		};
+
+        /**
+         * Save likes
+         * @param {object} data response object
+         * @return {undefined}
+         */
+		$scope.saveLikes = function (data) {
 
 			var saveUserInfoSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
@@ -200,16 +229,17 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 				// updateData.preference.push(preferenceUpdateData);
 			});
 
-			var dataToUpdate = JSON.parse(JSON.stringify(updateData));
-		    var dataUpdated = (angular.equals(dataToUpdate, presentLikeInfo)) ? true : false;
+			var dataToUpdate = JSON.parse(JSON.stringify(updateData)),
+				dataUpdated = (angular.equals(dataToUpdate, presentLikeInfo)) ? true : false,
+				guestId = getGuestId(),
+				isGuestFetchComplete = data && data.isFromGuestCardSection ? true : RVGuestCardsSrv.isGuestFetchComplete(guestId),
+				saveData = {
+					userId: guestId,
+					data: updateData
+				};
 
-			var saveData = {
-				userId: $scope.guestCardData.contactInfo.user_id,
-				data: updateData
-			};
-
-            if ($scope.reservationData.guest.id &&
-                RVContactInfoSrv.isGuestFetchComplete($scope.reservationData.guest.id) && !dataUpdated) {
+            if (guestId &&
+                isGuestFetchComplete && !dataUpdated) {
                 $scope.invokeApi(RVLikesSrv.saveLikes, saveData, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
             }
 		};
@@ -218,9 +248,11 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 		/**
 		 * to handle click actins outside this tab
 		 */
-		$scope.$on('SAVELIKES', function() {
-			$scope.saveLikes();
+		var saveLikeListener = $scope.$on('SAVELIKES', function(event, data) {
+			$scope.saveLikes(data);
 		});
+
+		$scope.$on('$destroy', saveLikeListener);
 
 		$scope.changedCheckboxPreference = function(parentIndex, index) {
 			angular.forEach($scope.guestLikesData.preferences[parentIndex].values, function(value, key) {
@@ -232,10 +264,14 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 
 		$scope.changedRadioComboPreference = function(index) {
 			_.each($scope.guestLikesData.preferences[index]['values'], function(item) {
-				item.isChecked = false;
 
 				if ( item.id === $scope.guestLikesData.preferences[index]['isChecked'] ) {
-					item.isChecked = true;
+					item.isChecked = !item.isChecked;
+					if (!item.isChecked) {
+						$scope.guestCardData.likes.preferences[index].isChecked = "";
+					}
+				} else {
+					item.isChecked = false;	
 				}
 			});
 		};
@@ -278,6 +314,36 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 			return showRoomFeature;
 		};
 
+		var guestLikeTabActivateListener = $scope.$on('GUESTLIKETABACTIVE', function () {			
 
+			/**
+			 * Restrict the api call to trigger only once within a guest card
+			 * No need to invoke the api every time while switching the tabs
+			 */
+			if (!isInitMethodInvoked) {
+				isInitMethodInvoked = true;
+				$scope.init();
+			}			
+		});
+
+		$scope.$on('$destroy', guestLikeTabActivateListener);
+
+		// Checks whether any of the room feature is selected
+		$scope.hasRoomFeatures = function() {
+			var isAnyFeatureOptionSelected = false;
+			
+			_.each($scope.guestLikesData.room_features, function(value, key) {
+				_.each(value.values, function(roomFeatureValue, roomFeatureKey) {					
+
+					if (roomFeatureValue.isSelected) {
+						isAnyFeatureOptionSelected = true;
+					}
+
+				});
+			});			
+			return isAnyFeatureOptionSelected;
+		};
+
+		$scope.init();
 	}
 ]);

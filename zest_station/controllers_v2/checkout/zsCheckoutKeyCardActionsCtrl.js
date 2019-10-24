@@ -56,6 +56,7 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
             } else if (data.is_checked_out) {
                 $scope.zestStationData.keyCardInserted = true;
                 $scope.alreadyCheckedOut = true;
+                $scope.$emit('CAPTURE_KEY_CARD');
             } else {
                 $scope.zestStationData.keyCardInserted = true;
                 var stateParams = {
@@ -67,7 +68,8 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
                     'first_name': data.first_name,
                     'last_name': data.last_name,
                     'days_of_stay': data.days_of_stay,
-                    'hours_of_stay': data.hours_of_stay
+                    'hours_of_stay': data.hours_of_stay,
+                    'restrict_post': data.restrict_post
                 };
 
                 $state.go('zest_station.checkoutReservationBill', stateParams);
@@ -176,7 +178,6 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
         };
 
         $scope.alreadyCheckedOutActions = function() {
-            $scope.$emit('EJECT_KEYCARD');
             $state.go('zest_station.home');
         };
     }

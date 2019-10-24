@@ -345,6 +345,8 @@
             .box-shadow(1px 1px 2px 1px rgba(0,0,0,.15));
             min-width: 160px;
 
+            .print-date { .hide() }
+
             .info {
                 display: flex;
                 flex-flow: row wrap;
@@ -506,16 +508,20 @@
             margin: 10px 0 20px;
             height: 40px;
             .calc-width(100, 40);
+
+            &.orange {
+                margin-bottom: 0;
+            }
         }
 
         .worksheet-content {
             position: relative;
             padding-top: 20px;
             border-top: 2px solid rgba(0,0,0,.1);
-            .calc-height(100, 110);
+            .calc-height(100, 130);
         }
 
-        .wrapper { padding-bottom: 20px; }
+        .wrapper { padding-bottom: 40px; }
     }
 
     /* Assigned rooms ***/

@@ -1,0 +1,13 @@
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog">
+    <div class="modal-content loyalty-gms">
+        <button id="modal-close" type="button" class="modal-close" ng-click = "closeGMSDialog()">
+            <span class="icons icon-close invert"></span>
+        </button>
+        <div class="entry full-width">
+            <div id="notification-message" ng-include="'/assets/partials/common/notification_message.html'"></div>
+        </div>
+        <div id="gms-frame-container">
+            <iframe id="gms-iframe" ng-src="{{trustSrc(GMSiFrameSrc)}}" seamless sandbox="allow-same-origin allow-scripts allow-forms allow-pointer-lock allow-top-navigation"></iframe>
+        </div>
+    </div>
+</div>

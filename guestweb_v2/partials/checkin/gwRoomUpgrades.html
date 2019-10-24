@@ -19,9 +19,9 @@
             <div class="section-container">
                 <div class="carousel-view">
                     <carousel>
-                        <slide ng-repeat="upgradeOption in upgradeOptions" active="upgradeOption.active">
+                        <slide ng-repeat="upgradeOption in upgradeOptions.upsell_room_types" active="upgradeOption.active">
                             <div class="center-align">
-                                <img ng-src="returnUpgradeRoomImage(upgradeOption.room_type_image)" err-Src="/assets/guestweb_v2/img/image_not_available.png" class="room-image" />
+                                <img ng-src="{{upgradeOption.room_type_image ? upgradeOption.room_type_image : '/assets/guestweb_v2/images/image_not_available.png'}}" class="room-image" id="{{upgradeOption.room_type_image}}" />
                             </div>
                             <div class="upgrade-details" style="overflow: hidden">
                                 <div class="col-xs-9 room-info mob-paddding-top-5">
@@ -53,7 +53,7 @@
                     <br/>
                     <div ng-click="noThanksClicked()" class="proceed-to-checkin">
                         <div class="white-arrow"></div>
-                        <span>NO,THANKS, PROCEED TO <strong>CHECK IN</strong></span>
+                        <span>NO THANKS, PROCEED TO <strong>CHECK IN</strong></span>
                     </div>
                 </div>
             </div>

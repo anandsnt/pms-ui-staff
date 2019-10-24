@@ -1,4 +1,5 @@
-angular.module('sntRover').controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees', 'workTypes', 'shifts', 'floors', '$timeout',
+angular.module('sntRover').controller('RVWorkManagementCtrl', 
+	['$rootScope', '$scope', 'employees', 'workTypes', 'shifts', 'floors', '$timeout',
 	function($rootScope, $scope, employees, workTypes, shifts, floors, $timeout) {
 
 		BaseCtrl.call(this, $scope);

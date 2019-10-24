@@ -29,14 +29,22 @@ sntZestStation.service('zsCheckoutSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseW
 
                 response.charge_details_list = [];
                 response.credit_details_list = [];
+                response.full_charge_details_list = [];
+
                 angular.forEach(response.fee_details, function(fees, index1) {
                     angular.forEach(fees.charge_details, function(charge, index2) {
                         charge.date = fees.date;
+                        charge.date_in_day_month = fees.date_in_day_month;
+                        charge.is_charge_details = true;
                         response.charge_details_list.push(charge);
+                        response.full_charge_details_list.push(charge);
                     });
                     angular.forEach(fees.credit_details, function(credit, index3) {
                         credit.date = fees.date;
+                        credit.date_in_day_month = fees.date_in_day_month;
+                        credit.is_charge_details = false;
                         response.credit_details_list.push(credit);
+                        response.full_charge_details_list.push(credit);
                     });
                 });
                 deferred.resolve(response);
@@ -144,6 +152,73 @@ sntZestStation.service('zsCheckoutSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseW
             return deferred.promise;
         };
 
+        this.validateCC = function(params) {
+            var deferred = $q.defer(),
+                url = 'guest/reservations/' + params.id + '/validate_cc';
 
+            zsBaseWebSrv2.getJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        /*
+        * Service function to get groups
+        * @method GET
+        * @return {object} defer promise
+        */
+        this.fetchChargeGroups = function (params) {
+
+            var deferred = $q.defer();
+            var url = "/api/charge_groups.json";
+
+            zsBaseWebSrv.getJSON(url, params).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        /*
+        * Service function to get items
+        * @method GET
+        * @param {object} data
+        * @return {object} defer promise
+        */
+        this.fetchChargeItems = function (params) {
+            var deferred = $q.defer();
+            var url = "/api/charge_codes/items_and_charge_codes.json";
+
+            zsBaseWebSrv.getJSON(url, params).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        /*
+		* Service function to post charge
+		* @method POST
+		* @param {object} data
+		* @return {object} defer promise
+		*/
+        this.postCharges = function (params) {
+            var deferred = $q.defer();
+            var url = '/staff/items/post_items_to_bill?application=KIOSK';
+
+            zsBaseWebSrv.postJSON(url, params)
+                .then(function (data) {
+                    deferred.resolve(data);
+                }, function (data) {
+                    deferred.reject(data);
+                });
+
+            return deferred.promise;
+        };
     }
 ]);

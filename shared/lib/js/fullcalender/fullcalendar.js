@@ -1071,7 +1071,7 @@ function EventManager(options, _sources) {
 						}
         				//checking whether a user is logged in
         				if (jqxhr.status == "401") { sntapp.logout(); return;}
-                		if (jqxhr.status=="501" || jqxhr.status=="502" || jqxhr.status=="503") {
+                		if (jqxhr.status=="501" || jqxhr.status=="502" || jqxhr.status=="503" || jqxhr.status=="504") {
 
         				    location.href = XHR_STATUS.INTERNAL_SERVER_ERROR;
         				    return;

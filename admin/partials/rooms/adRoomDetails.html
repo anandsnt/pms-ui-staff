@@ -10,6 +10,14 @@
 					</span>
 				</h2>
 				<a ng-click="goBack()" id="go_back" data-type="load-details" class="action back">{{ 'BACK_TO_ROOMS' | translate }}</a>
+				<div class="filters language">
+					<label for="email-hotel-logo" translate> SELECT LANGUAGE </label>
+					<div class="select">
+						<select ng-model="locale" name="locale" ng-change="onLocaleChange()">
+							<option ng-repeat="locale in languages.locales" value="{{locale.value}}" ng-selected="locale.value==locale"> {{locale.description}} </option>
+						</select>
+					</div>
+				</div>
 			</header>
 			<section class="content-scroll" id="room-detail-content">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
@@ -38,20 +46,21 @@
 				</ad-select-number>
 
 
+				<ad-dropdown div-class='full-width' label-in-drop-down="{{ 'SELECT_ROOM_TYPE' | translate }}" label='Select room type' sel-class='placeholder' id='room-type' name='room-type' list='data.room_types' required='yes' selected-Id='data.room_type_id' on-change="roomTypeChanged"></ad-dropdown>
 
-				<ad-dropdown div-class='full-width' label-in-drop-down="{{ 'SELECT_ROOM_TYPE' | translate }}"label='Select room type' sel-class='placeholder' id='room-type' name='room-type' list='data.room_types' required='yes' selected-Id='data.room_type_id' on-change="roomTypeChanged"></ad-dropdown>
-				
+				<ad-dropdown id="section" selbox-class="placeholder" label="Housekeeping Section" div-class="full-width" label-in-drop-down="Housekeeping Section" list="data.hk_sections" selected-Id='data.hk_section_id'></ad-dropdown>
+
 				<div class="entry full-width" ng-show="shouldShowAddSuiteRooms()">
 					<ul class="entry-list">
 						<li ng-repeat="componentRooms in availableComponentRooms">
 							<label class="entry-list-label">{{componentRooms.room_type_name}} [Total configurable count: {{componentRooms.total_configurable_rooms}}]</label>
-							<div class="select entry-list-input">								
+							<div class="select entry-list-input">
 								<select ng-change="selectedConfiguredRoom(componentRooms.selected_room_number, componentRooms.id, componentRooms.room_type_name )" ng-model="componentRooms.selected_room_number">
 									<option value="">Room No</option>
-									<option value="{{rooms.room_no}}" ng-repeat="rooms in componentRooms.rooms">{{rooms.room_no}}</option>		
+									<option value="{{rooms.room_no}}" ng-repeat="rooms in componentRooms.rooms">{{rooms.room_no}}</option>
 								</select>
 							</div>
-						</li>						
+						</li>
 					</ul>
 
 					<label for="select-option1">
@@ -69,6 +78,19 @@
 					</div>
 				</div>
 
+				<ad-checkbox
+                     is-checked="data.is_component_suite_door"
+                     label="{{ 'SUITE_DOOR' | translate}}"
+                     div-class="full-width">
+    			</ad-checkbox>
+
+    			<ad-checkbox
+                     is-checked="data.is_available_for_day_use"
+                     is-hide="!dayUseEnabled || data.room_type_is_suite"
+                     label="{{ 'AVAILABLE_FOR_DAY_USE' | translate}}"
+                     div-class="full-width">
+    			</ad-checkbox>
+
 				<div class="entry full-width">
 					<label for="room-picture">
 						{{ 'IMAGE' | translate }}
@@ -82,6 +104,7 @@
 						<img ng-src="{{data.room_image}}" id="file-preview" alt="">
 					</span>
 				</div>
+				<ad-textarea ng-if="::isRoomLocationInstructionsEnabled" rows="4" div-class="full-width" text-area-class="full-width" value="data.instructions" label="{{ 'ROOM_LOCATION_INSTRUCTIONS' | translate}}" placeholder="{{ 'ROOM_LOCATION_INSTRUCTIONS' | translate}}"></ad-textarea>
 				<div ng-hide="isStandAlone">
 					<ad-checkbox is-checked="data.is_exclude_from_manual_room_assignment" label="{{ 'EXCLUDE_FROM_MANUAL_ROOM_ASSIGNMENT' | translate}}" div-class="full-width" ></ad-checkbox>
 					<ad-checkbox is-checked="data.is_exclude_from_auto_room_assignment" label="{{ 'EXCLUDE_FROM_AUTO_ROOM_ASSIGNMENT' | translate}}" div-class="full-width" ></ad-checkbox>

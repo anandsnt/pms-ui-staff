@@ -1,23 +1,30 @@
-sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$scope', 'ngDialog', '$stateParams', '$state', 'RVReservationCardSrv', 'RVPaymentSrv', '$timeout', '$filter',
-	function($rootScope, $scope, ngDialog, $stateParams, $state, RVReservationCardSrv, RVPaymentSrv, $timeout, $filter) {
+sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$scope', 'ngDialog', '$stateParams', '$state', 'RVReservationCardSrv', 'RVPaymentSrv', '$timeout', 'RVNightlyDiarySrv',
+	function($rootScope, $scope, ngDialog, $stateParams, $state, RVReservationCardSrv, RVPaymentSrv, $timeout, RVNightlyDiarySrv) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.errorMessage = "";
 
 		$scope.cancellationData = {
-			reason: ""
+			reason: "",
+			locale: $scope.languageData.selected_language_code
 		};
 
 		$scope.DailogeState.isCancelled = false ;
 
 		$scope.completeCancellationProcess = function() {
-
 			if ($scope.DailogeState.isCancelled) {
-				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-					"id": $stateParams.id || $scope.reservationData.reservationId,
-					"confirmationId": $stateParams.confirmationId || $scope.reservationData.confirmNum,
-					"isrefresh": false
-				});
+				if ($state.current.name === 'rover.reservation.staycard.reservationcard.reservationdetails') {
+					$stateParams.isrefresh = true;
+					$state.reload($state.current.name);					
+				} else {
+					// CICO-58191
+					$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+						id: $scope.reservationData.reservationId || $scope.reservationData.reservation_card.reservation_id,
+						confirmationId: $scope.reservationData.confirmNum || $scope.reservationData.reservation_card.confirmation_num,
+						isrefresh: true
+					});
+				}
+				
 			}
 			$scope.closeDialog();
 		};
@@ -29,6 +36,18 @@ sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$sco
 				// Since RVCancelReservation and RVCancelReservationDepositController do the same above,
 				// its functions are written in parent controller.Ie reservationActionsController
 				$scope.DailogeState.isCancelled = true ;
+
+				var params = RVNightlyDiarySrv.getCache();
+
+				if (typeof params !== 'undefined') {
+					params.currentSelectedReservationId = "";
+	                params.currentSelectedRoomId = "";
+	                params.currentSelectedReservation = "";
+				}
+                
+
+				RVNightlyDiarySrv.updateCache(params);
+
 				$scope.$emit('hideLoader');
 			};
 

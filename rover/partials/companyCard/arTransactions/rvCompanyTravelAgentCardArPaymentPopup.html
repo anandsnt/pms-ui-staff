@@ -1,0 +1,49 @@
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
+    <form method="post" action="" class="modal-content form ar-transaction payment-allocation">
+        <button class="modal-close" id="modal-close" type="button" ng-click="closePopup()"><span class="icons icon-close invert"></span></button>
+
+        <!-- If selecting payment for allocation -->
+        <strong class="h2 message" ng-if="type === 'ALLOCATE'">Select payment for allocation</strong>
+         <strong class="h2 message" ng-if="type === 'REFUND'">Select payment for Refund</strong>
+        <span class="text">Please select one of the unallocated payments to proceed.</span>
+        <div class="payments scrollable" id="payment-allocation" ng-iscroll="payment-allocation">
+            <div class="wrapper">
+                <ul class="search-results">
+                    <li class="reservation transaction payment  unallocated" ng-hide="payment.is_partially_paid" ng-repeat="payment in payments">
+                        <div class="faux-anchor ">
+                            <div class="data">
+                                <h2>{{::payment.payment_type}}</h2>
+                                <div class="payment-data">
+                                    <figure class="card-logo" ng-if="!!payment.card_details">
+                                        <img ng-src="/assets/images/{{payment.card_details.card_code.toLowerCase()}}.png" alt="">
+                                    </figure>
+                                    <span class="number" ng-if="!!payment.card_details">{{::payment.card_details.last_digits}}</span>
+                                    <span class="date" ng-if="!!payment.card_details">Date <span class="value">{{::payment.card_details.expire_date}}</span></span>
+                                    <span class="reference">Reference <span class="value">{{::payment.reference_text}}</span></span>
+                                </div>
+                            </div>
+                            <div class="payment-date">
+                                <span class="icons small-icon icon-time time-black"></span>
+                                <time datetime="2017-08-15 12:08 AM">
+                                    <span class="date">{{::payment.transaction_date | date : dateFormat}}</span>
+                                    <span class="time">{{::payment.transaction_time}}</span>
+                                </time>
+                            </div>
+                            <div class="amount green" ng-if="type === 'ALLOCATE'">
+                                <span class="currency">{{currencySymbol}}</span>{{::payment.available_amount}}
+                            </div>
+                            <div class="amount green" ng-if="type === 'REFUND'">
+                                <span class="currency">{{currencySymbol}}</span>{{::payment.amount | number: precisonTwo}}
+                            </div>
+                            <!-- if allocation -->
+                            <button ng-show="arFlags.hasAllocateUnallocatePermission && type === 'ALLOCATE'" type="button" class="button green" ng-click="updateAllocatedPayment(payment)">Allocate</button>
+                            <!-- if allocation -->
+                            <button ng-show="type === 'REFUND'" type="button" class="button blue" ng-click="clickedRefundButton(payment)">Refund</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </form>
+
+</div>

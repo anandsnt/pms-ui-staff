@@ -38,7 +38,11 @@ module.exports = {
                     jsLibRoot + 'fullcalender/**/*.js',
                     'rover/directives/includeReplaceDir.js',
 
-                    'rover/directives/convertToNumber/*js'
+                    'rover/directives/convertToNumber/*js',
+                    'rover/directives/stringToNumber/*js',
+
+                    // Eliminate all spec files
+                    '!**/*.spec.js'
 				]
 			};
 		return assetsForScreen;

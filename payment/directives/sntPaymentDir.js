@@ -6,9 +6,12 @@ angular.module('sntPay').directive('sntPayment', function() {
             hotelConfig: '=', // hotel settings related
             paymentTypes: '=', // the payment types present
             selectedPaymentType: '=?', // selected initial payment type
+            paymentCurrencyList: '=',
             reservationId: '@',
+            rateCurrency: '@',
             postingAccountId: '=?',
             billId: '=?',
+            arTransactionId: '=?', // param used for ar payment refund
             accountId: '@',
             groupId: '@',
             allotmentId: '@',
@@ -16,6 +19,7 @@ angular.module('sntPay').directive('sntPayment', function() {
             billNumber: '=',
             amount: '=', // amount to pay
             selectedCC: '=?', // selected CC details
+            referenceText: '=?', // selected CC details
             actionType: '@',
             depositPolicyName: '@',
             isEditable: '=?', // is the amount editable

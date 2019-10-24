@@ -1,0 +1,14 @@
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
+    <div class="modal-content report-in-progress alert">
+        <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></button>
+
+		<span class="icons icon-popup-success"></span>
+        <strong class="h2 message">Report Requested</strong>
+        <span class="text in-progress">You can access it in the Reports Inbox Section</span>
+        <div id="actions" class="actions">
+            <!-- Opens the Inbox Reports Screen -->
+            <button type="button" class="button blue" ng-click="navigateToReportInbox()">Go to Inbox</button>
+            <button type="button" class="button blank" ng-click="closeDialog()">Close Window</button>
+        </div>
+    </div>
+</div>

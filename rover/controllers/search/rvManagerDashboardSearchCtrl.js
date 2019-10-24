@@ -1,4 +1,5 @@
-sntRover.controller('rvManagerDashboardSearchController', ['$scope', '$rootScope', '$state', '$stateParams', '$filter', '$vault',  function($scope, $rootScope, $state, $stateParams, $filter, $vault) {
+sntRover.controller('rvManagerDashboardSearchController', ['$scope', '$transitions',
+    function($scope, $transitions) {
 
 	/*
 	* Controller class for dashboard search,
@@ -8,7 +9,6 @@ sntRover.controller('rvManagerDashboardSearchController', ['$scope', '$rootScope
 	var that = this;
 
   	BaseCtrl.call( this, $scope );
-
 
 	// setting the scroller for view
 	var scrollerOptions = {
@@ -36,7 +36,6 @@ sntRover.controller('rvManagerDashboardSearchController', ['$scope', '$rootScope
         backToDashboard();
     });
 
-
     /**
     * function used to back onto dashboard screen
     */
@@ -59,11 +58,10 @@ sntRover.controller('rvManagerDashboardSearchController', ['$scope', '$rootScope
         backToDashboard();
     });
 
-
     /**
     * When leaving this, we need to reset the back button text
     */
-    $scope.$on('$stateChangeSuccess', function(event) {
+    $transitions.onSuccess({}, function() {
         // setting the backbutton & showing the caption
         $scope.$emit("UpdateSearchBackbuttonCaption", "");
     });

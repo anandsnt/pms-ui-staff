@@ -1,4 +1,4 @@
-sntRover.controller('RVSocialLobbyCrl', [
+sntRover.controller('RVSocialLobbyCtrl', [
     '$scope',
     '$rootScope',
     '$filter',

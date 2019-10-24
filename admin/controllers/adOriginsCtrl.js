@@ -35,9 +35,6 @@ admin.controller('ADOriginsCtrl', ['$scope', 'ADOriginsSrv', '$anchorScroll', '$
 			$scope.state.editStore = angular.copy($scope.data.booking_origins[index]);
 		};
 
-		$scope.setDefaultOriginSiteminder = function() {};
-
-
 		/*
 		 * To get the template of edit screen
 		 * @param {int} index of the selected item

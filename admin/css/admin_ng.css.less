@@ -5,20 +5,20 @@
 @import "stylesheets/less/common/01-A_reset.less";
 
 @import "stylesheets/less/common/01-B_variables.less";
-@import "stylesheets/less/admin/01-B_variables.less"; 
+@import "stylesheets/less/admin/01-B_variables.less";
 
-@import "stylesheets/less/common/01-C_mixins.less"; 
-@import "stylesheets/less/common/01-D_mixins-animations.less"; 
+@import "stylesheets/less/common/01-C_mixins.less";
+@import "stylesheets/less/common/01-D_mixins-animations.less";
 
 /* 2. TYPOGRAPHY
 ==========================================================*/
-@import "stylesheets/less/common/02_typography.less"; 
-@import "stylesheets/less/admin/02_typography.less"; 
+@import "stylesheets/less/common/02_typography.less";
+@import "stylesheets/less/admin/02_typography.less";
 
 /* 3. GRAPHICAL ELEMENTS
 ==========================================================*/
-@import "stylesheets/less/common/03_graphics.less"; 
-@import "stylesheets/less/admin/03_graphics.less"; 
+@import "stylesheets/less/common/03_graphics.less";
+@import "stylesheets/less/admin/03_graphics.less";
 
 /* 4. LAYOUT
 ==========================================================*/
@@ -37,7 +37,7 @@
 @import "stylesheets/less/admin/05-B_forms.less";
 
 @import "stylesheets/less/common/05-C_plugins.less";
-@import "stylesheets/less/admin/06-C_plugins.less"; 
+@import "stylesheets/less/admin/06-C_plugins.less";
 
 
 /* 6. IE
@@ -61,11 +61,11 @@
         padding: 0;
 
         li {
-            .toggle-filter { 
+            .toggle-filter {
                 background-size: 14px;
                 background-repeat: no-repeat;
-                background-image: @arrowDown2x; 
-                .show; 
+                background-image: @arrowDown2x;
+                .show;
 
                 &.active { background-image: @arrowUp2x; }
             }
@@ -73,7 +73,7 @@
             .data { margin-left: 0; }
 
             .configure-report {
-                
+
                 .button.purple {
                     &:last-child { right: 10px; }
                 }
@@ -93,12 +93,12 @@
 
 /* CICO-24493 report overrides stop ***/
 
-.ui-match { 
+.ui-match {
   color: #F6991B !important; margin-right: 0px !important;
 }
 
 
-.form_add_new_rate{  
+.form_add_new_rate{
   box-shadow: none;
   .holder.left{
     .entry{
@@ -114,8 +114,8 @@
           height:36px;
           display: inline-block;
           text-align: center;
-          line-height: 38px; 
-          margin-left:3px; 
+          line-height: 38px;
+          margin-left:3px;
           margin-top:3px;
           &.active{
             border-radius: 2px;
@@ -127,13 +127,13 @@
             transition:all 0.3s ease-in-out;
           }
           &:first-child{
-            float:left;  
+            float:left;
           }
           &:nth-child(2){
             margin-left:0px;
-            margin-right:3px; 
-            float:right;   
-          } 
+            margin-right:3px;
+            float:right;
+          }
         }
         &.disabled{
           cursor: not-allowed;
@@ -146,7 +146,7 @@
       &.margin{
         margin-right: 3%;
       }
-    }  
+    }
   }
 }
 .day_night_rates{
@@ -171,7 +171,7 @@
     text-transform: none;
 }
 .assigned_room_text{
-color:#78D622 !important;   
+color:#78D622 !important;
 }
 
 .center_align{
@@ -214,7 +214,7 @@ height: 271px;
 
 }
 .red_gradient {
-   
+
   background-color: #dd0500;
   background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#e76e3a), to(#dd0500));
   background: -moz-linear-gradient(top, #e76e3a 0%, #dd0500 100%);
@@ -235,7 +235,7 @@ height: 271px;
     color:#ff860d !important;
 }
 .actions_margin_top{
-  
+
   margin-top:20px;
 }
 .cursor_pointer{
@@ -256,7 +256,7 @@ height: 271px;
 }
 .add_new_date_range_container{
   border:1px dashed #929292;
-  height:54px; 
+  height:54px;
   padding-top:15px;
 
   span{
@@ -280,7 +280,7 @@ height: 271px;
     display:inline-flex;
 }
 .switch-label{
-    margin-top: 12px; 
+    margin-top: 12px;
     margin-right: 10px;
 }
 .rate_range_checkbox{
@@ -369,7 +369,7 @@ height: 271px;
 .pickadate-cell .pickadate-disabled.pickadate-outofrange-disabled,
 .pickadate-cell .pickadate-disabled.pickadate-outofrange-disabled a {
 
-  
+
   color: transparent;
   cursor: default;
   -webkit-user-select: none;
@@ -448,7 +448,7 @@ height: 271px;
   user-select: none;
 }
 .date-picker-bg{
-  
+
   background: url("cssimg/texture.png") repeat scroll 0 0 #FCFCFC;
   padding:10px;
   margin:5px;
@@ -482,7 +482,7 @@ height: 271px;
   height:46px;
 }
 .pickadate-prev,.pickadate-next{
-  
+
   width:30px;
   padding:15px 5px !important;
 }
@@ -516,9 +516,9 @@ height: 410px;
 /*------------------date -picker ends here-------------------------- */
 
 .form-rate-config {
-    width:100%; 
-    padding-left:0px; 
-    padding-right:0px; 
+    width:100%;
+    padding-left:0px;
+    padding-right:0px;
     box-shadow:none !important;
 }
 
@@ -557,7 +557,7 @@ height: 410px;
     vertical-align: middle;
 
     .icon-group {
-        width:120px; 
+        width:120px;
         float:right;
     }
 }
@@ -580,13 +580,13 @@ height: 410px;
   }
   #ratetable td.room-type{
       text-align:right !important;
-  } 
+  }
 
   .hourly-config{
     &.day{
-      width: 50%; 
+      width: 50%;
     }
-  }  
+  }
 
 }
 
@@ -628,7 +628,7 @@ height: 410px;
 .right-arrow-green{
    background-position: 13px -1349px;
    cursor: pointer;
-   
+
 }
 
 .cursor-hand{
@@ -716,7 +716,7 @@ height: 410px;
 }
 
 header.content-title a.action.back {
-    background-position: 0 -585px;  
+    background-position: 0 -585px;
 }
 
 section.content-scroll {
@@ -756,7 +756,7 @@ section.content-scroll {
 }
 
 /* style to fix sorting icons in edit mode */
-.ng-table th {  
+.ng-table th {
 
     text-align: left !important;
 }
@@ -825,7 +825,7 @@ td{
 }
 
 .date-delete{
-  width: 28px; 
+  width: 28px;
   margin-left: 0px;
   margin-top: 7px;
   height: 35px;
@@ -840,6 +840,25 @@ td{
   background: #fce2e3;
   float: right;
   width:39px;
+}
+.item-delete-wrapper{
+  background: #d8d8d8;
+  float: right;
+  width:80px;
+}
+.item-delete-text{
+  vertical-align: middle;
+  height: 20px;
+  padding-top: 11px;
+  display: block;
+  color: #e50b0b;
+}
+.item-delete {
+  width: 28px;
+  margin-left: 0;
+  margin-top: 7px;
+  height: 32px;
+  float: left;
 }
 .link-with{
   padding-top:0px;
@@ -881,9 +900,9 @@ td{
   display: inline-block;
 }
 
-.ui-datepicker-trigger-btn { 
+.ui-datepicker-trigger-btn {
   margin-left:36px;
-  width:85% !important; 
+  width:85% !important;
 }
 
 .inline-channel-editing.smaller-spacing{
@@ -939,7 +958,7 @@ td{
 	font-size:13px;
 	width:100%;
 	.night_rates{
-		float: left; 
+		float: left;
 		width: 15%;
     padding-top: 20px;
     z-index: 999;
@@ -955,7 +974,7 @@ td{
 		width:70%;
 		float:left;
 		// box-shadow: inset 8px 0px 3px -3px #e2e2e2,inset -8px 0px 3px -3px #e2e2e2;
-		padding-left: 20px;		
+		padding-left: 20px;
     padding-top: 20px;
 		overflow-x:scroll;
 		.default_night_price{
@@ -964,17 +983,17 @@ td{
 				background-color: #e5e6eb !important;
 			}
 		}
-    
+
     .hourly_grid_time{
       color:#f6991b;
       &.night_time{
         color:#c5c5c5;
-      }  
+      }
       &.day_checkout_time{
         color:#f6991b;
       }
     }
-    
+
 		.night_rate_entry{
 			margin-right: 10px;
 			width: 80px;
@@ -986,7 +1005,7 @@ td{
 		}
 	}
 	.movers{
-		width: 15% !important;    
+		width: 15% !important;
 		float: right;
 		margin-top: 50px;
 	}
@@ -1011,8 +1030,8 @@ td{
       -moz-border-radius-topright: 5px;
       -moz-border-radius-bottomright: 5px;
       border-top-right-radius: 5px;
-      border-bottom-right-radius: 5px;    
-      position: relative;      
+      border-bottom-right-radius: 5px;
+      position: relative;
       width: 135px;
       display: inline-block;
       left: 0px;
@@ -1021,7 +1040,7 @@ td{
       -moz-box-shadow: 7px 1px 7px -4px rgba(0,0,0,0.75);
       box-shadow: 7px 1px 7px -4px rgba(0,0,0,0.75);
       line-height: 12px;
-      height: 45px;      
+      height: 45px;
       &.closed{
         left:0px;
         background: #ffffff url(/assets/arrow-right.png) 95% 50% no-repeat;
@@ -1036,18 +1055,18 @@ td{
       background: #fcfcfc;
       padding-bottom: 25px;
       padding-right: 15px;
-      position: absolute;            
+      position: absolute;
       z-index: 101;
       left: 15%;
       -webkit-box-shadow: 7px 1px 7px -4px rgba(0,0,0,0.75);
       -moz-box-shadow: 7px 1px 7px -4px rgba(0,0,0,0.75);
       box-shadow: 7px 1px 7px -4px rgba(0,0,0,0.75);
-      &.closed{        
+      &.closed{
         width: 10px;
-        padding-right: 10px;        
+        padding-right: 10px;
       }
       &.open{
-        width: 300px;        
+        width: 300px;
       }
     }
   }
@@ -1115,7 +1134,7 @@ td{
 .key-server-details-title{
   margin-top: 50px;
   margin-bottom: 20px;
-} 
+}
 
 
 // CICO-16112 update for the CMS item image picker
@@ -1135,7 +1154,7 @@ td{
   margin : 10px 0 !important;
 }
 //CICO-10180
-.header-switch-btn{ 
+.header-switch-btn{
     margin-left:10px;
     margin-top: 5px;
 }
@@ -1278,13 +1297,13 @@ div.move-all-icons{
     padding-top: 10px !important;
     width: 720px !important;
     height: 505px;
-    
+
        // left: 50%;
       //  position: relative;
     > .siteminder-date-picker{
         padding-top: 10px !important;
     }
-    
+
 }
 #siteminder-date-picker > table > tbody > tr > td > div > .ui-datepicker{
     height:425px !important;
@@ -1298,7 +1317,7 @@ div.move-all-icons{
     width: 100% !important;
 }
 .zest-admin-indent-20{
-    margin-left: 20px; 
+    margin-left: 20px;
     width: 100%;
 }
 .zest-admin-label-inline{
@@ -1315,7 +1334,7 @@ div.move-all-icons{
         color: black !important;
     }
     &.hold-left{
-        margin-left: -20px; 
+        margin-left: -20px;
     }
     &.admin-pre-label{
         margin-top:-10px !important;
@@ -1390,7 +1409,7 @@ div.move-all-icons{
     right: 5px;
     bottom: 20px;
     z-index: 99;
-    
+
     .iScrollIndicator {
         position: absolute;
         width: 100%;
@@ -1411,17 +1430,18 @@ div.move-all-icons{
   padding:0px !important;
 }
 .station-language-entry>div{
-  width: 45.75% !important; 
+  width: 80% !important;
 }
-.station-image-preview{
+.upload-image-preview{
   position: absolute;
   margin-top: 15px;
   max-width: 425px;
   max-height: 245px;
+  z-index: 100;
 }
 
 /* ============/
-Help-tip can be used to add tips in our admin areas which are not clear to users, since most areas are configured once and forgotten 
+Help-tip can be used to add tips in our admin areas which are not clear to users, since most areas are configured once and forgotten
 /=============*/
 
 .help-tip{
@@ -1492,8 +1512,8 @@ Help-tip can be used to add tips in our admin areas which are not clear to users
 /* CSS animation */
 
 @-webkit-keyframes fadeIn {
-  0% { 
-    opacity:0; 
+  0% {
+    opacity:0;
     transform: scale(0.6);
   }
 
@@ -1519,14 +1539,15 @@ end of help-tip
 .station-lang-download-popup{
     padding: 15px !important;
     border-radius: .3em !important;
+    background: #fff;
 }
 /* Modal window       ==============================*/
-   
+
     #modal,
     .inline-modal {
         width: 100%;
-        
-        .modal-content { 
+
+        .modal-content {
             /* Release Notes Full Screen ***/
             &.release-notes-popup {
                 .square(100%);
@@ -1617,7 +1638,7 @@ end of help-tip
                     text-transform: uppercase;
                     height: 30px;
 
-                    &.data-off { 
+                    &.data-off {
                       .switch-icon { .gradient(@redStart, @redEnd); }
                     }
 
@@ -1634,8 +1655,8 @@ end of help-tip
         .show;
       }
 
-      .message { 
-        margin: 10px 0 20px 0; 
+      .message {
+        margin: 10px 0 20px 0;
         text-align: center;
         font-weight: 600;
 
@@ -1665,8 +1686,8 @@ end of help-tip
         padding-bottom: 20px;
         text-align: center;
 
-        &.red { 
-          color: @red; 
+        &.red {
+          color: @red;
           text-decoration: line-through;
         }
       }
@@ -1688,7 +1709,7 @@ end of help-tip
         display: table;
         .float;
 
-        li { 
+        li {
                   display: inline-block;
                     cursor: pointer;
                     margin: 0 0 0 1px;
@@ -1705,8 +1726,8 @@ end of help-tip
 
                     a { color: @textColor; }
 
-                    &:hover { 
-                        color: @logoPrimary; 
+                    &:hover {
+                        color: @logoPrimary;
                         .box-shadow();
 
                         a { color: @logoPrimary; }
@@ -1727,11 +1748,11 @@ end of help-tip
                 }
       }
 
-      .button { 
+      .button {
         font-size: 18px;
         line-height: 50px;
-        width: 100%; 
-        .show; 
+        width: 100%;
+        .show;
 
         &.blank {
           color: @textColor;
@@ -1758,8 +1779,8 @@ end of help-tip
       text-align: center;
     }
 
-    &.modal-show { 
-      visibility: visible; 
+    &.modal-show {
+      visibility: visible;
 
       .modal-content {
         .scale3d(1, 1, 1);
@@ -1814,7 +1835,7 @@ end of help-tip
 .addon-lang-dropdown {
   position: absolute;
   right: 0;
-  top: -21px;
+  top: 50px;
   right: 0;
   width: 19%;
   border: 1px #f5f5f5 solid;
@@ -1828,3 +1849,46 @@ end of help-tip
   padding: 3px 15px;
   background: yellow;
 }
+
+.station-device {
+    padding:15px;
+
+    .small-problem>a{
+      color: darkorange;
+    }
+    .Out-of-Order>a{
+      color: red;
+    }
+
+}
+
+.oos-reason{
+    padding-left: 3%;
+}
+.oos-reason-cls:first-child{
+      font-weight: 900;
+}
+.more-cls, .less-cls {
+    float: right;
+    padding: 15px;
+    font-weight: 800;
+}
+.less-cls {
+    float: left;
+}
+.fa-user-svg{
+    width: 15px;
+    height: 15px;
+}
+.device-title-cls {
+      position: relative;
+      bottom: -15px;
+}
+
+/* Zest station admin - language style updates ***/
+.language-delete {
+  float: right;
+  margin-top: -15px;
+}
+
+/* Zest station admin - language style updates end ***/

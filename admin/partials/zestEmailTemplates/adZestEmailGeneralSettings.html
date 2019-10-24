@@ -1,0 +1,100 @@
+<div id="wrapper" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()" ng-cloak>
+    <header class="content-title float">
+        <h2 translate>GENERAL_EMAIL_SETTINGS</h2>
+        <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
+        <h4 ng-hide="hotelDetails.is_dynamic_template_on">{{ 'CONTACT_SNT_FOR_DETAILS' | translate }} <a href="{{ 'SNT_HELP_DESK_LINK' | translate}}" target="_blank">{{ 'SNT_HELP_DESK'| translate }}</a></h4>
+        <br/>
+    </header>
+    <section class="content-scroll" ng-style="{ 'margin-top' : hotelDetails.is_dynamic_template_on ? '10px' : '40px' }">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+        <div>
+            <form class="form zest-web-settins-form float">
+                <fieldset class="holder left max-width">
+                    <div class="form-title full-width">
+                        <h3><span translate>COLOR_SEC_LABEL</span></h3>
+                    </div>
+                </fieldset>
+                <fieldset class="holder left">
+                    <div class="entry entry-color-picker">
+                        <label translate="">MAIN_BG</label>
+                        <ui-colorpicker ng-model="generalSettings.main_bg"></ui-colorpicker>
+                        <input ng-model="generalSettings.main_bg">
+                    </div>
+                    <div class="entry entry-color-picker">
+                        <label translate="">TEXT_COLOR</label>
+                        <ui-colorpicker ng-model="generalSettings.text_color"></ui-colorpicker>
+                        <input ng-model="generalSettings.text_color">
+                    </div>
+                    <div class="entry entry-color-picker">
+                        <label translate="">BTN_BG</label>
+                        <ui-colorpicker ng-model="generalSettings.button_bg"></ui-colorpicker>
+                        <input ng-model="generalSettings.button_bg">
+                    </div>
+                    <div class="entry entry-color-picker">
+                        <label translate="">BTN_TEXT_COLOR</label>
+                        <ui-colorpicker ng-model="generalSettings.button_text_color"></ui-colorpicker>
+                        <input ng-model="generalSettings.button_text_color">
+                    </div>
+                    <div class="entry entry-color-picker">
+                        <label translate="">BTN_BORDER_COLOR</label>
+                        <ui-colorpicker ng-model="generalSettings.button_border_color"></ui-colorpicker>
+                        <input ng-model="generalSettings.button_border_color">
+                    </div>
+                </fieldset>
+                <fieldset class="holder right">
+                    <div class="form-title full-width">
+                        <h3><span translate>GENERAL_TEXT_SETTINGS</span></h3>
+                    </div>
+                    <ad-toggle-button is-checked="generalSettings.show_last_name" label="{{ 'SHOW_GUEST_LAST_NAME' | translate}}" div-class="full-width"></ad-toggle-button>
+                     <div id="options" class="entry">
+                        <label>
+                            {{ 'EMAIL_TOP_PORTION_TEXT_ALIGNMENT' | translate}}
+                        </label>
+                        <label class="radio" ng-class="{'checked':generalSettings.email_top_text_alignment == 'center'}">
+                            <span class="icon-form icon-radio " ng-class="{checked:generalSettings.email_top_text_alignment=='center'}"></span>
+                            <input type="radio" value="center" ng-model="generalSettings.email_top_text_alignment"> {{ 'CENTER' | translate}}
+                        </label>
+                        <label class="radio" ng-class="{'checked':generalSettings.email_top_text_alignment == 'left'}">
+                            <span class="icon-form icon-radio " ng-class="{checked:generalSettings.email_top_text_alignment == 'left'}"></span>
+                            <input type="radio" value="left" ng-model="generalSettings.email_top_text_alignment"> {{ 'LEFT' | translate}}
+                        </label>
+                    </div>
+                    <div id="options" class="entry">
+                        <label>
+                            {{ 'EMAIL_BOTTOM_PORTION_TEXT_ALIGNMENT' | translate}}
+                        </label>
+                        <label class="radio" ng-class="{'checked':generalSettings.email_bottom_text_alignment == 'center'}">
+                            <span class="icon-form icon-radio " ng-class="{checked:generalSettings.email_bottom_text_alignment=='center'}"></span>
+                            <input type="radio" value="center" ng-model="generalSettings.email_bottom_text_alignment"> {{ 'CENTER' | translate}}
+                        </label>
+                        <label class="radio" ng-class="{'checked':generalSettings.email_bottom_text_alignment == 'left'}">
+                            <span class="icon-form icon-radio " ng-class="{checked:generalSettings.email_bottom_text_alignment == 'left'}"></span>
+                            <input type="radio" value="left" ng-model="generalSettings.email_bottom_text_alignment"> {{ 'LEFT' | translate}}
+                        </label>
+                    </div>
+                    <ad-textbox value="generalSettings.hotel_greetings_text" label="{{'HOTEL_GREETINGS_TEXT' | translate}}" styleclass="full-width"></ad-textbox>
+                    <ad-textbox value="generalSettings.footer_starting_text" label="{{'FOOTER_STARTING_TEXT' | translate}}" styleclass="full-width"></ad-textbox>
+                    <ad-textbox value="generalSettings.phone_number_prefix_text" label="{{'PREFIX_TEXT' | translate}}" styleclass="full-width"></ad-textbox>
+                    <ad-textbox value="generalSettings.hotel_phone_number" label="{{'PHONE_NUMBER' | translate}}" styleclass="full-width"></ad-textbox>
+                    <ad-textbox value="generalSettings.privacy_policy_text" label="{{'PRIVACY_POLICY_TEXT' | translate}}" styleclass="full-width"></ad-textbox>
+                    <ad-textbox value="generalSettings.privacy_policy_link" label="{{'PRIVACY_POLICY_LINK' | translate}}" styleclass="full-width"></ad-textbox>
+                    <ad-textbox value="generalSettings.terms_n_conditions_text" label="{{'TERMS_AND_CONDITIONS_TEXT' | translate}}" styleclass="full-width"></ad-textbox>
+                    <ad-textbox value="generalSettings.terms_n_conditions_link" label="{{'TERMS_AND_CONDITIONS_LINK' | translate}}" styleclass="full-width"></ad-textbox>
+                    <ad-textbox value="generalSettings.rights_reserved_text" label="{{'RIGHTS_RESERVED_TEXT' | translate}}" styleclass="full-width"></ad-textbox>
+                </fieldset>
+                <div class="actions float">
+                    <button type="button" id="cancel" class="button blank add-data-inline" ng-click="cancelClicked()" translate>
+                        CANCEL
+                    </button>
+                    <button type="button" like-type="common" id="update" class="button ng-binding blue" ng-click="previewClicked()">
+                        PREVIEW
+                    </button>
+                    <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSettings()" translate>
+                        SAVE_CHANGES
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+</div>

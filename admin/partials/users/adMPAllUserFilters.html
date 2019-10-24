@@ -1,0 +1,36 @@
+<div class="chain-filters">
+    <div id="hotel-select" class="hotel-select" >
+        <div class="hotel-selected select" ng-show="flagObject.selectedAllHotels===true" ng-click="toggleHotelFilters()">Showing All Hotels</div>
+        <div class="hotel-selected select" ng-show="selectedMPHotelIdsInFilter.length>=1 && !flagObject.selectedAllHotels" ng-click="toggleHotelFilters()">Showing {{selectedMPHotelIdsInFilter.length}} Hotel(s)</div>
+
+        <div class="hotel-select-options" ng-class="{'hidden': !flagObject.showHotelFilters}"> 
+            <label for="all-hotels" class="checkbox">
+                <span class="icon-form icon-checkbox" ng-class="{'checked': flagObject.selectedAllHotels===true}"></span>
+                <input id="all-hotels" type="checkbox" ng-model="flagObject.selectedAllHotels" ng-change="hotelFilterChange({id:'all'})" ng-disabled="flagObject.selectedAllHotels"/>
+                Show All Hotels
+            </label>
+            <div class="break">Or select hotel(s) form the list</div>
+            <div class="hotels-list">
+                <label class="checkbox" ng-repeat="hotel in multiPropertyHotelDetails" for="hotel-id">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked': hotel.selected===true}"></span>
+                    <input id="hotel-id" ng-model="hotel.selected" type="checkbox" ng-change="hotelFilterChange(hotel)" ng-disabled="hotel.selected===true && selectedMPHotelIdsInFilter.length===1">
+                    {{ hotel.hotel_name }}, {{hotel.city}}
+                    <span class="chain-home-hotel" ng-show="hotel.id===homeHotelId">Home</span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <!-- Departments -->
+    <div class="select">
+        <select id="chain-departments" ng-model="flagObject.departmentSelected" ng-change="deptSelectChange(flagObject.departmentSelected)">
+            <option value="-1">All Departments</option> <!-- Selected by default -->
+            <option ng-repeat="department in multiPropertyDepartmentDetails" ng-value="department.id" ng-show="department.showFilter===true">{{ department.name }}</option>
+        </select>
+    </div>
+    <!-- Chain Admins only -->
+    <label for="chain-admins" class="checkbox">
+        <span class="icon-form icon-checkbox" ng-class="{'checked': flagObject.showChainAdminsOnly===true}"></span>
+        <input id="chain-admins" type="checkbox" ng-model="flagObject.showChainAdminsOnly" ng-change="showChainAdminsOnlyFilter()">
+        Show only Chain Admins
+    </label>
+</div>

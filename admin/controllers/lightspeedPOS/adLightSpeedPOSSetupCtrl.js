@@ -35,9 +35,21 @@ angular.module('admin').controller('adLightSpeedPOSSetupCtrl',
                 $scope.lightspeed.enabled = !$scope.lightspeed.enabled;
             };
 
+            $scope.toggleFloorEnabled = function() {
+                 $scope.lightspeed.floors_enabled = !$scope.lightspeed.floors_enabled;
+            };
+
+            $scope.toggleStopEODChargeImportEnabled = function() {
+                 $scope.lightspeed.stop_eod_charge_import_enabled = !$scope.lightspeed.stop_eod_charge_import_enabled;
+            };
+
             $scope.saveLightSpeedPOSSetup = function(cb) {
+                var requestObj = dclone($scope.lightspeed);
+
+                $scope.deletePropertyIfRequired(requestObj, 'password');
+
                 var params = {
-                    lightspeed: _.omit(dclone($scope.lightspeed), 'charge_code_name', 'payment_charge_code_name')
+                    lightspeed: _.omit(requestObj, 'charge_code_name', 'payment_charge_code_name')
                 };
 
                 if (!$scope.lightspeed.enabled) {
@@ -137,5 +149,6 @@ angular.module('admin').controller('adLightSpeedPOSSetupCtrl',
                 };
 
                 $scope.lightspeed = lightSpeedSetupValues;
+                $scope.setDefaultDisplayPassword($scope.lightspeed, 'password');
             }());
         }]);

@@ -27,10 +27,8 @@
 
 		<div id="group-activity-content" class="tab-details">	    
 	    <!-- Search pagination, if applicable{_shared/pagination.html} -->
-		    <div class="search-pagination hk-pagination" ng-show="!isPrevButtonDisabled()||!isNextButtonDisabled()">
-		        <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()">Next</button>
-		        <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()">Previous</button>
-		        <p>Showing <strong>{{start}}-{{end}}</strong> of <strong id="total-count">{{count}}</strong> items</p>
+		    <div ng-show="!isPrevButtonDisabled()||!isNextButtonDisabled()">
+		        <rv-pagination page-options="accountActivityLogPagination" page-data="count"></rv-pagination>
 		    </div>	
 		        
 		    <div id="report-content" class="report-content scrollable" ng-iscroll="report_content" ng-iscroll-delay="1000" ng-class="{'with-pagination' : !isPrevButtonDisabled()||!isNextButtonDisabled()}"> 

@@ -1,11 +1,13 @@
 <form id="allotment-reservations" name="allotment-reservations" ng-click="clearErrorMessage()" class="form card-tab scrollable rooming-list inner-header" ng-controller="rvAllotmentReservationsListCtrl">
+	<!--common header for fullscreen mode-->
+	<div ng-include="'/assets/partials/common/rvFullscreenHeader.html'" class="fullscreen-header"></div>
 	<div class="tab-header" ng-class="{'no-print' : isPrintRegistrationCard}">
 		<div class="search-form has-dates" ng-class="{'open': shouldShowAddReservationFields()}">
 			<!-- Toggle class "open" when button on L4 is clicked (that will open the form). For new groups / when no reservations in rooming list, have class "open" there by default (e.g. make the form opened by default) -->
 			<div class="entry filter">
-				<button type="button" class="button icons icon-add-60" 
-				ng-click="toggleAddMode()" 
-				ng-class="{'icon-add-60': !shouldShowAddReservationFields(), 
+				<button type="button" class="button icons icon-add-60"
+				ng-click="toggleAddMode()"
+				ng-class="{'icon-add-60': !shouldShowAddReservationFields(),
 						'icon-remove-60': shouldShowAddReservationFields(), 'hidden' : isCancelledAllotment()}">
 					<!-- Remove class "icon-add-60" with "icon-remove-60" when clicked -->
 				 	{{'ALLOTMENT_ADD_RESERVATIONS'|translate}}
@@ -28,7 +30,7 @@
 					</button>
 					<input id="rooming-date-to" type="text" class="range-datepicker red" readonly ui-date="reservationAddToDateOptions" value="{{reservationAddToDate|date:dateFormat}}" rv-clear-text-box listen-this="reservationAddToDate" />
 				</div>
-			</div>			
+			</div>
 
 			<div class="entry type">
 				<label for="rooming-room-type">{{'ALLOTMENT_ROOM_TYPE'|translate}}</label>
@@ -71,8 +73,8 @@
 		</div>
 	    <div class="search-form has-dates" ng-class="{'open': shouldShowSearchReservationFields()}">  <!-- Toggle class "open" when button on L59 is clicked (that will open the form). -->
 	        <div class="entry filter">
-	            <button type="button" class="button icons icon-search-60" ng-click="toggleSearchMode()" 
-				ng-class="{'icon-search-60': !shouldShowSearchReservationFields(), 
+	            <button type="button" class="button icons icon-search-60" ng-click="toggleSearchMode()"
+				ng-class="{'icon-search-60': !shouldShowSearchReservationFields(),
 						'icon-remove-60': shouldShowSearchReservationFields(), 'hidden' : isCancelledAllotment()}"> <!-- When L59 clicked, replace class "icon-search-60" with class "icon-remove-60" -->
 	                Search Reservations
 	            </button>
@@ -82,7 +84,7 @@
 	                <span class="icons icon-clear-search">Clear query</span>
 	            </button>
 	            <button type="button" name="submit" class="icons icon-search">Search</button>
-	            <input class="query" placeholder="Search by Name, Room No. or Confirmation No." type="search" autocomplete="off"  
+	            <input class="query" placeholder="Search by Name, Room No. or Confirmation No." type="search" autocomplete="off"
 	            		rv-delay-textbox
                         delay="1000"
                         function-to-fire="searchAllotmentReservations"ng-model="searchQuery"/>
@@ -109,7 +111,7 @@
 	                Update
 	            </button>
 	        </div> -->
-	    </div>		
+	    </div>
 		<ul class="totals dual-search">
 			<li>
 				<div class="data">
@@ -163,8 +165,8 @@
 	    <!-- Rooming List Header -->
 	    <ul class="rooming-list-header" ng-show="!shouldShowNoReservations()">
 	        <li class="check">
-	            <label class="checkbox inline" for="rooming-list-all" ng-class="{'disabled' : isCancelledAllotment()}"> 
-	                <span class="icon-form icon-checkbox" 
+	            <label class="checkbox inline" for="rooming-list-all" ng-class="{'disabled' : isCancelledAllotment()}">
+	                <span class="icon-form icon-checkbox"
 	                    ng-class="{'checked': whetherAllReservationsSelected(), 'semi-checked': whetherReservationsArePartiallySelected()}"></span> <!-- Add class "checked" if checked or all items in rooming list are selected. Add class "semi-checked" (and make sure it has no class "checked") when not all items in the rooming list are selected -->
 	                <input id="rooming-list-all" ng-disabled="isCancelledAllotment()" type="checkbox" ng-click="toggleAllSelection()" />
 	            </label>
@@ -179,7 +181,7 @@
 	    </ul>
 
 		    <!-- Rooming List Content -->
-	    <div id="rooming-grid" class="rooming-grid scrollable" 
+	    <div id="rooming-grid" class="rooming-grid scrollable"
 	        ng-show="!shouldShowNoReservations()"
 	        ng-class="{'with-pagination': shouldShowPagination()}"
 	        ng-iscroll="rooming_list" ng-iscroll-delay="100"> <!-- Add class "with-pagination" if pagination is used -->
@@ -188,7 +190,7 @@
 	            <li class="reservation rooming-list" ng-repeat="reservation in reservations" ngrepeatend>
 
 	                <div class="check">
-	                    <label class="checkbox inline" for="guest-id" ng-class="{'disabled' : isCancelledAllotment()}"> 
+	                    <label class="checkbox inline" for="guest-id" ng-class="{'disabled' : isCancelledAllotment()}">
 	                        <span class="icon-form icon-checkbox" ng-class="{'checked': isReservationInSelectedReservation(reservation)}"></span> <!-- Add class "checked" if checked -->
 	                        <input id="guest-id" type="checkbox" ng-click="addOrRemoveFromSelectedReservation(reservation)" ng-disabled="isCancelledAllotment()">
 	                    </label>
@@ -206,14 +208,14 @@
 	                        </h2>
 	                        <span class="room" ng-show="!isRoomUnAssigned(reservation)">
 	                            <!-- Add class "unassigned" if new room -->
-	                            {{'ALLOTMENT_ROOM'|translate}} 
+	                            {{'ALLOTMENT_ROOM'|translate}}
 	                            <span ng-class="getRoomStatusClass(reservation)" ng-bind-html="escapeNull(reservation.room_number)|highlight:searchQuery:false">
 	                            </span>
 	                            <!-- If new room, show this instead: Unassigned -->
 	                        </span>
 	                        <span class="room unassigned" ng-show="isRoomUnAssigned(reservation)"> <!-- Add class "unassigned" if new room -->
-	                           {{'ALLOTMENT_UNASSIGNED'|translate}} 
-	                        </span> 
+	                           {{'ALLOTMENT_UNASSIGNED'|translate}}
+	                        </span>
 	                        |
 	                       	<span class="confirmation" ng-bind-html="escapeNull(reservation.confirm_no)|highlight:searchQuery:false"></span>
 	                        </div>
@@ -233,7 +235,7 @@
 	                        </div>
 	                        <div class="rate">
 	                            {{reservation.rate_amount}}
-	                        </div>                        
+	                        </div>
 	                        <div class="reservation-status">
 	                            <!-- No status if it's a new room -->
 	                            <span class="guest-status" ng-class="getReservationClass(reservation)">{{reservation.reservation_status}}</span>
@@ -241,7 +243,8 @@
 	                    </a>
 	                </li>
 	            </ul>
-	        </div>
+	        </div>	        
+		    <rv-pagination page-options="pageOptions" page-data="totalResultCount"></rv-pagination>
 	    </div>
 	</div>
 	<!-- Registration card -->

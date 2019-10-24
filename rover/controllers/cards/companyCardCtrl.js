@@ -1,8 +1,9 @@
-angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCardSrv', '$timeout', 'ngDialog', '$filter', '$stateParams',
-	function($scope, $rootScope, RVCompanyCardSrv, $timeout, ngDialog, $filter, $stateParams) {
+angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCardSrv', '$timeout', 'ngDialog', '$filter', '$stateParams', 'rvPermissionSrv',
+	function($scope, $rootScope, RVCompanyCardSrv, $timeout, ngDialog, $filter, $stateParams, rvPermissionSrv) {
 		$scope.searchMode = true;
 		$scope.account_type = 'COMPANY';
 		$scope.currentSelectedTab = 'cc-contact-info';
+		$scope.isGlobalToggleReadOnly = !rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE');
 
 		// initialize company search fields
 		$scope.companySearchIntiated = false;
@@ -24,7 +25,7 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 				if ($scope.viewState.isAddNewCard) {
 					$scope.$broadcast("setCardContactErrorMessage", [$filter('translate')('COMPANY_SAVE_PROMPT')]);
 				} else {
-					saveContactInformation($scope.contactInformation);
+					saveContactInformation();
 				}
 			}
 			if ($scope.currentSelectedTab === 'cc-contracts' && tabToSwitch !== 'cc-contracts') {
@@ -47,6 +48,11 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 			}
 			else if (tabToSwitch === 'cc-notes') {
 				$scope.$broadcast("fetchNotes");
+			} else if (tabToSwitch === 'statistics') {
+				$scope.$broadcast("LOAD_STATISTICS");
+			}
+			if (tabToSwitch === 'cc-activity-log') {
+				$scope.$broadcast("activityLogTabActive");
 			}
 			if (tabToSwitch === 'cc-ar-transactions' && !isArNumberAvailable) {
 			  	console.warn("Save AR Account and Navigate to AR Transactions");
@@ -102,6 +108,7 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 			ngDialog.close();
 		};
 		var callCompanyCardServices = function() {
+			
 			var param = {
 				'id': $scope.reservationDetails.companyCard.id
 			};
@@ -134,6 +141,7 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 		/* -------AR account ends here-----------*/
 
 		$scope.$on('companyCardAvailable', function(obj, isNew) {
+		
 			$scope.searchMode = false;
 			$scope.contactInformation = $scope.companyContactInformation;
 			// object holding copy of contact information
@@ -147,12 +155,14 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 				$scope.contactInformation.account_details.account_number = $scope.searchData.companyCard.companyCorpId;
 			}
 			$scope.$broadcast("contactTabActive");
+			$scope.$broadcast("UPDATE_CONTACT_INFO");
 			$timeout(function() {
 				$scope.$emit('hideLoader');
 			}, 1000);
 			if (!isNew) {
 				callCompanyCardServices();
-			}
+			}	
+			
 		});
 
 		$scope.$on("companyCardDetached", function() {
@@ -177,6 +187,32 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 			$scope.searchMode = false;
 			$scope.$emit('hideLoader');
 		});
+		/*
+		 * Toggle global button
+		 */
+		$scope.toggleGlobalButton = function() {
+			if (rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
+				$scope.contactInformation.is_global_enabled = !$scope.contactInformation.is_global_enabled;
+			}
+
+		};
+		/*
+		 * Check - update enabled or not
+		 */
+		$scope.isUpdateEnabled = function() {
+			var isDisabledFields = false;
+
+			if ($scope.contactInformation.is_global_enabled) {
+				if (!rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
+					isDisabledFields = true;
+				}
+			} else {
+				if (!rvPermissionSrv.getPermissionValue ('EDIT_COMPANY_CARD')) {
+					isDisabledFields = true;
+				}
+			}
+			return isDisabledFields;
+		};
 
 		/**
 		 * function to handle click operation on company card, mainly used for saving
@@ -202,12 +238,12 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 		$scope.$on("saveContactInformation", function(event) {
 			event.preventDefault();
 			event.stopPropagation();
-			saveContactInformation($scope.contactInformation);
+			saveContactInformation();
 		});
 
 		$scope.$on("saveCompanyContactInformation", function(event) {
 			event.preventDefault();
-			saveContactInformation($scope.contactInformation);
+			saveContactInformation();
 		});
 
 		/**
@@ -215,7 +251,8 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 		 */
 		$scope.$on("OUTSIDECLICKED", function(event, targetElement) {
 			event.preventDefault();
-			saveContactInformation($scope.contactInformation);
+
+			saveContactInformation();
 			$scope.checkOutsideClick(targetElement);
 			$rootScope.$broadcast("saveArAccount");
 			$rootScope.$broadcast("saveContract");
@@ -225,7 +262,6 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 		 * success callback of save contact data
 		 */
 		var successCallbackOfContactSaveData = function(data) {
-			$scope.$emit("hideLoader");
 			$scope.reservationDetails.companyCard.id = data.id;
 			$scope.contactInformation.id = data.id;
 			$rootScope.$broadcast("IDGENERATED", { 'id': data.id });
@@ -256,21 +292,16 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 					$scope.reservationData.company.name = $scope.contactInformation.account_details.account_name;
 				}
 			}
-
-			// taking a deep copy of copy of contact info. for handling save operation
-			// we are not associating with scope in order to avoid watch
-			presentContactInfo = angular.copy($scope.contactInformation);
 		};
 
 		$scope.clickedSaveCard = function(cardType) {
-			saveContactInformation($scope.contactInformation);
+			saveContactInformation();
 		};
 
 		/**
 		 * failure callback of save contact data
 		 */
 		var failureCallbackOfContactSaveData = function(errorMessage) {
-			$scope.$emit("hideLoader");
 			$scope.errorMessage = errorMessage;
 			$scope.currentSelectedTab = 'cc-contact-info';
 		};
@@ -283,34 +314,54 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 		var saveContactInformation = function(data) {
 			var dataUpdated = false;
 
-			if (!angular.equals(data, presentContactInfo)) {
-				dataUpdated = true;
-			}
+            data = data || $scope.contactInformation;
+
+            // NOTE: Commission details aren't applicable for company card
+            if (!angular.equals(_.omit(data, ['commission_details']), _.omit(presentContactInfo, ['commission_details']))) {
+                dataUpdated = true;
+                presentContactInfo = angular.copy($scope.contactInformation);
+            }
+
 			if (typeof data !== 'undefined' && (dataUpdated || $scope.viewState.isAddNewCard)) {
 				var dataToSend = JSON.parse(JSON.stringify(data));
 
-				for (key in dataToSend) {
-					if (typeof dataToSend[key] !== "undefined" && data[key] !== null && data[key] !== "") {
-						// in add case's first api call, presentContactInfo will be empty object
-						if (JSON.stringify(presentContactInfo) !== '{}') {
-							for (subDictKey in dataToSend[key]) {
-								if (typeof dataToSend[key][subDictKey] === 'undefined' || dataToSend[key][subDictKey] === presentContactInfo[key][subDictKey]) {
-									delete dataToSend[key][subDictKey];
-								}
-							}
-						}
-					} else {
-						delete dataToSend[key];
-					}
-				}
 				if (typeof dataToSend.countries !== 'undefined') {
 					delete dataToSend['countries'];
 				}
+				// CICO-49040 : Hadling passing blank string.
+				if (dataToSend.account_details.account_number === "") {
+					dataToSend.account_details.account_number = null;
+				}
+				// CICO-50810 : Hadling passing blank string.
+				if ( typeof dataToSend.primary_contact_details === 'undefined' ) {
+					dataToSend.primary_contact_details = {};
+					dataToSend.primary_contact_details.contact_email = null;
+				}
+				else if (dataToSend.primary_contact_details.contact_email === "") {
+					dataToSend.primary_contact_details.contact_email = null;
+				}
+				if ( typeof dataToSend.address_details === 'undefined' ) {
+					dataToSend.address_details = {};
+				}
 				dataToSend.account_type = $scope.account_type;
-				$scope.invokeApi(RVCompanyCardSrv.saveContactInformation, dataToSend, successCallbackOfContactSaveData, failureCallbackOfContactSaveData);
+				var options = {
+					params: dataToSend,
+					successCallBack: successCallbackOfContactSaveData,
+					failureCallBack: failureCallbackOfContactSaveData
+				};
+
+				$scope.callAPI(RVCompanyCardSrv.saveContactInformation, options);
 			}
 		};
 
+		/**
+		* function to check whether the user has permission
+		* to create/edit AR Account.
+		* @return {Boolean}
+		*/
+		$scope.hasPermissionToCreateArAccount = function() {
+			return rvPermissionSrv.getPermissionValue ('CREATE_AR_ACCOUNT');
+		};
 	}
 ]);
 

@@ -1,5 +1,5 @@
-sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardSrv', 'ngDialog', '$timeout', 'RVContactInfoSrv',
-	function($scope, $rootScope, RVGuestCardSrv, ngDialog, $timeout, RVContactInfoSrv) {
+sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardsSrv', 'ngDialog', '$timeout', 'RVContactInfoSrv',
+	function($scope, $rootScope, RVGuestCardsSrv, ngDialog, $timeout, RVContactInfoSrv) {
 
 		// Browser chokes when he tries to do the following two thing at the same time:
 		// 		1. Slide in staycard
@@ -21,6 +21,10 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
 
 
 		$scope.paymentData = {};
+
+        if ($scope.reservationData.justCreatedRes) {
+            $rootScope.$broadcast('reload-loyalty-section-data', {});
+        }
 
 		/*
 		 * To get the payment tab payments list
@@ -155,8 +159,9 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
 			// 		Hence, in order to get the updated list of cards against a guest, make the guest details request before
 			// fetching the card details
             if (!$rootScope.isStandAlone &&
-                !RVContactInfoSrv.isGuestFetchComplete($scope.reservationData.guest.id)) {
-                $scope.callAPI(RVContactInfoSrv.getGuestDetails, {
+                !RVGuestCardsSrv.isGuestFetchComplete($scope.reservationData.guest.id)) {
+                $scope.callAPI(RVContactInfoSrv.getGuestDetailsById, {
+                    params: $scope.reservationData.guest.id,
                     successCallBack: function(data) {
                         $scope.$emit("UPDATE_GUEST_CARD_DETAILS", data);
                         openPaymentListDialog();
@@ -179,6 +184,44 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
                         scope: $scope
                     });
                 };
+
+                // Get reservation status based style class
+                $scope.getGuestStatusIcon = function(reservationStatus, isOptedLateCheckOut) {
+                    var viewStatus = "";
+
+                    if ("CHECKING_OUT" === reservationStatus) {
+                        viewStatus = "check-out";
+                    } else if ("CHECKEDOUT" === reservationStatus || "DEPARTED" === reservationStatus) {
+                        viewStatus = "departed";
+                    } else if ( ("CHECKEDIN" === reservationStatus || "CHECKING_IN" === reservationStatus) && isOptedLateCheckOut === true) {
+                        viewStatus = "late-check-out";
+                    } else if ("CHECKING_IN" === reservationStatus) {
+                        viewStatus = "check-in";
+                    } else if ("CHECKEDIN" === reservationStatus) {
+                        viewStatus = "inhouse";
+                    } else if ("RESERVED" === reservationStatus) {
+                        viewStatus = "arrival";
+                    } else if (("NOSHOW" === reservationStatus) || ("NOSHOW_CURRENT" === reservationStatus)) {
+                        viewStatus = "no-show";
+                    } else if ("CANCELED" === reservationStatus) {
+                        viewStatus = "cancel";
+                    } else if ("DEPARTED" === reservationStatus) {
+                        viewStatus = "check-out";
+                    }
+                    return viewStatus;
+                };
+
+        $scope.$on('PRIMARY_GUEST_ID_CHANGED', function(event, data) {
+
+            $scope.guestCardData.contactInfo.id_type = data.id_type;
+            $scope.guestCardData.contactInfo.gender_id = data.gender_id;
+            $scope.guestCardData.contactInfo.nationality_id = data.nationality_id;
+            $scope.guestCardData.contactInfo.id_number = data.id_number;
+            $scope.guestCardData.contactInfo.birthday = data.birthday;
+            if (data.faceImage) {
+                $scope.guestCardData.contactInfo.avatar = data.faceImage;
+            }
+        });
 
 	}
 ]);

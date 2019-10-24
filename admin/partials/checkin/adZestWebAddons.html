@@ -1,7 +1,10 @@
 <section id="replacing-div-second" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
     <header class="content-title float">
-        <h2 translate>UPSELL_ADONS</h2>
+        <h2 translate>ZEST_WEB_SETTINGS</h2>
         <a ng-click="goBackToPreviousState()" data-type="load-details" class="action back" translate>BACK</a>
+        <a class="action no-icon" ui-sref="admin.ratesAddons" translate>ADDON_SETTINGS</a>
+        <a class="action no-icon" ui-sref="admin.upsellAddonSettings" translate>ZEST_UPSELL_ADDONS</a>
+        <a class="action no-icon" ui-sref="admin.zestStationAddons" ng-show="showZestStationSettings" translate>ZEST_STATION_SETTINGS</a>
     </header>
     <!-- list mode -->
     <section class="content-scroll">

@@ -110,7 +110,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
 
             var url = "/admin/rates/" + params.id + "/edit.json";
 
-            ADBaseWebSrv.getJSON(url).then(function (data) {
+            ADBaseWebSrv.getJSON(url, params).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
                 deferred.reject(data);
@@ -137,29 +137,8 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
 
         this.rateDetails = {};
 
-        // get rate details
-        this.fetchDetails = function (params) {
-            var deferred = $q.defer();
-
-            // fetch hotel business date
-            that.fetchHotelInfo = function () {
-                var url = "/api/rover_header_info";
-
-                ADBaseWebSrvV2.getJSON(url).then(function (data) {
-                    data = data.data;
-                    that.rateDetails.business_date = data.business_date;
-                    deferred.resolve(that.rateDetails);
-                }, function (data) {
-                    deferred.reject(data);
-                });
-
-            };
-
-            var url = "/api/rates/" + params.rateId;
-
-            ADBaseWebSrvV2.getJSON(url).then(function (data) {
-                that.rateDetails = data;
-                var chargeCodes = data.commission_details.charge_codes,
+        this.setUpCommissionData = function(data) {
+            var chargeCodes = data.commission_details.charge_codes,
                     selectedChargeCodes = data.commission_details.selected_commission_charge_code_ids;
                 
                 if ( typeof chargeCodes !== 'undefined' && chargeCodes.length > 0 ) {
@@ -177,12 +156,53 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
                         }
                     });
                 }
+        };
+
+        // get rate details
+        this.fetchDetails = function (params) {
+            var deferred = $q.defer();
+            
+            // fetch hotel business date
+            that.fetchHotelInfo = function () {
+                var url = "/api/rover_header_info";
+
+                ADBaseWebSrvV2.getJSON(url).then(function (data) {
+                    data = data.data;
+                    that.rateDetails.business_date = data.business_date;
+                    deferred.resolve(that.rateDetails);
+                }, function (data) {
+                    deferred.reject(data);
+                });
+
+            };
+
+            var url = "/api/rates/" + params.rateId;
+
+            ADBaseWebSrvV2.getJSON(url, params).then(function (data) {
+                that.rateDetails = data;
+                that.setUpCommissionData(data);
 
                 that.fetchHotelInfo();
             }, function (data) {
                 deferred.reject(data);
             });
             return deferred.promise;
+        };
+
+        this.uploadCSVFile = function(params) {
+            var deferred = $q.defer();
+            var url = "/api/rates/upload";
+
+            ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
+                deferred.resolve(data.results);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.fetchRoomTypes = function (id) {
+            return ADBaseWebSrvV2.getJSON('/api/rates/' + id + '/fetch_room_types');
         };
 
     }

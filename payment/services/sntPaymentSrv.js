@@ -1,7 +1,8 @@
 angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG', '$log', '$timeout', 'sntAuthorizationSrv',
     function($q, $http, $location, PAYMENT_CONFIG, $log, $timeout, sntAuthorizationSrv) {
         var service = this,
-            state = {};
+            state = {},
+            TERMINAL_POLLING_INTERVAL_MS = 3000;
 
         service.set = function(key, status) {
             state[key] = status;
@@ -17,13 +18,13 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
             // so form error as array if you modifying it
             
 
-if (status === 406) { // 406- Network error
+            if (status === 406) { // 406- Network error
                 deferred.reject(errors);
             } else if (status === 422) { // 422
                 deferred.reject(errors);
             } else if (status === 500) { // 500- Internal Server Error
                 deferred.reject(['Internal server error occured']);
-            } else if (status === 501 || status === 502 || status === 503) { // 500- Internal Server Error
+            } else if (status === 501 || status === 502 || status === 503 || status === 504) { // 500- Internal Server Error
                 $window.location.href = '/500';
             } else if (status === 401) { // 401- Unauthorized
                 // so lets redirect to login page
@@ -73,6 +74,32 @@ if (status === 406) { // 406- Network error
 
             $http.get(url).then(function(response) {
                 deferred.resolve(response.data.data);
+            }, function(error) {
+                deferred.reject(error);
+            });
+            return deferred.promise;
+        };
+
+        service.getConvertedAmount = function(params) {
+
+            var deferred = $q.defer(),
+                url = '/api/hotel_currency_conversions/converted_payment_amount?amount=' + params.amount + '&currency_id=' + params.currency_id + '&date=' + params.date + '&fee=' + params.fee;
+
+            $http.get(url).then(function(response) {
+                deferred.resolve(response.data);
+            }, function(error) {
+                deferred.reject(error);
+            });
+            return deferred.promise;
+        };
+        
+        service.checkWorkStationMandatoryFields = function(workstationId) {
+
+            var deferred = $q.defer(),
+                url = '/api/workstations/workstation_status?workstation_id=' + workstationId;
+
+            $http.get(url).then(function(response) {
+                deferred.resolve(response.data);
             }, function(error) {
                 deferred.reject(error);
             });
@@ -147,7 +174,9 @@ if (status === 406) { // 406- Network error
                 "VS": 'VA',
                 "VX": 'VA',
                 "MX": 'DS', // Six iframe returns MX for discover. not good,
-                "MV": 'MC'
+                "MV": 'MC',
+                "CU": 'CU',
+                "DK": 'DK'
             };
 
             return sixCreditCardTypes[cardCode.toUpperCase()] || 'credit-card';
@@ -196,7 +225,7 @@ if (status === 406) { // 406- Network error
                             $timeout(function() {
                                 $log.info("POLLING::-> for emv terminal response");
                                 pollToTerminal(async_callback_url);
-                            }, 5000);
+                            }, TERMINAL_POLLING_INTERVAL_MS);
                         } else {
                             clearInterval(refreshIntervalId);
                             deferred.resolve(data);
@@ -263,7 +292,7 @@ if (status === 406) { // 406- Network error
                     // TODO: comment the assignment below before commits and pushes.
                     // NOTE:This sample json helps to mock the response
                     // For further info : https://stayntouch.atlassian.net/wiki/display/ROV/SIXPayment+Service+Design+Document
-                    // var async_callback_url = '/sample_json/payment/get_six_pay_token.json';
+                    // async_callback_url = '/sample_json/payment/get_six_pay_token.json';
 
                     $http.get(async_callback_url).then(function(response) {
                         var data = response.data,
@@ -274,7 +303,7 @@ if (status === 406) { // 406- Network error
                             $timeout(function() {
                                 $log.info("POLLING::-> for emv terminal response");
                                 pollToTerminal(async_callback_url);
-                            }, 5000);
+                            }, TERMINAL_POLLING_INTERVAL_MS);
                         } else {
                             clearInterval(refreshIntervalId);
                             deferred.resolve(data);
@@ -368,22 +397,31 @@ if (status === 406) { // 406- Network error
         service.resolvePaths = function(gateWay, params) {
             var iFrameUrlWithParams = "",
                 paymentGatewayUIInterfaceUrl = PAYMENT_CONFIG[gateWay].partial;
-
-            switch (gateWay) {
-                case "MLI":
-                case "CBA":
-                case "SHIJI":
-                    break;
-                case "sixpayments":
-                    var time = new Date().getTime(),
-                        service_action = PAYMENT_CONFIG[gateWay].params.service_action;
+            var getiFrameUrlWithParams = function() {
+                var time = new Date().getTime(),
+                        service_action = PAYMENT_CONFIG[gateWay].params.service_action,
+                        jwt = localStorage.getItem('jwt') || '';
 
                     iFrameUrlWithParams = PAYMENT_CONFIG[gateWay].iFrameUrl + '?' +
                         "card_holder_first_name=" + params.card_holder_first_name +
                         "&card_holder_last_name=" + params.card_holder_last_name +
                         "&service_action=" + service_action +
                         "&time=" + time +
+                        "&auth_token=" + jwt +
                         "&hotel_uuid=" + sntAuthorizationSrv.getProperty() ;
+                    return iFrameUrlWithParams;
+            };
+
+            switch (gateWay) {
+                case "MLI":
+                case "CBA":
+                case "CBA_AND_MLI":
+                    break;
+                case "SHIJI":
+                    iFrameUrlWithParams = getiFrameUrlWithParams();
+                    break;
+                case "sixpayments":
+                    iFrameUrlWithParams = getiFrameUrlWithParams();
                     break;
                 default:
                     throw new Error("Payment Gateway not configured");
@@ -493,7 +531,7 @@ if (status === 406) { // 406- Network error
 
         service.checkARStatus = function(postingAccountId) {
             var deferred = $q.defer();
-            var url = 'api/posting_accounts/' + postingAccountId + '/is_ar_account_attached';
+            var url = 'api/posting_accounts/' + postingAccountId + '/check_ar_account_attached';
 
             $http.get(url).then(response => {
                 deferred.resolve(response.data);
@@ -521,5 +559,38 @@ if (status === 406) { // 406- Network error
             return !!amount && !isNaN(Number(amount)) && Number(amount) !== 0;
         };
 
-    }
-]);
+        service.isAddCardAction = function(actoionType) {
+            let addCardActionTypes = ['ADD_PAYMENT_GUEST_CARD', 'ADD_PAYMENT_BILL', 'ADD_PAYMENT_STAY_CARD'];
+            
+            return _.contains(addCardActionTypes, actoionType);
+        };
+
+        service.sampleMLISwipedCardResponse = {
+            "cardType": "VA",
+            "cardNumber": "xxxx-xxxx-xxxx-0135",
+            "nameOnCard": "UAT USA/TEST CARD 19",
+            "cardExpiry": "1912",
+            "cardExpiryMonth": "12",
+            "cardExpiryYear": "19",
+            "et2": "",
+            "ksn": "FFFF987654165420000E",
+            "pan": "476173000000**35",
+            "etb": "DA9693715C1DC7B6183F830BF0713E9FE849D0275D30FFF2677F44FB34383B4BE8A2CE89D62D2CC138668CFB914C2D998602969CC58326B5BDD1585174A846FD90096C75903BA1907C4B820B3AE9441F317F21DBDB2CCE8327E24C56CE6866A39085467D0C4D15528B1240C8777B83634DEA58EFD3D90AA3",
+            "token": "8045832471460135",
+            "isEncrypted": true
+        };
+
+        service.mockCba = false;
+
+        service.getShijiPayCreditCardType = function(cardCode) {
+            var shijiCreditCardTypes = {
+                "American Express": 'AX',
+                "Discover Card": 'DS',
+                "JCB": 'JCB',
+                "MasterCard": 'MC',
+                "Visa": 'VA'
+            };
+
+            return shijiCreditCardTypes[cardCode] || '';
+        };
+}]);

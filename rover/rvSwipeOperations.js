@@ -40,11 +40,12 @@ var SwipeOperation = function() {
             "cardExpiryMonth": swipedCardData.RVCardReadExpDate.slice(-2),
             "cardExpiryYear": swipedCardData.RVCardReadExpDate.substring(0, 2),
             "et2": swipedCardData.RVCardReadTrack2,
-            'ksn': swipedCardData.RVCardReadTrack2KSN,
+            'ksn': swipedCardData.RVCardReadETBKSN || swipedCardData.RVCardReadTrack2KSN,
             'pan': swipedCardData.RVCardReadMaskedPAN,
             'etb': swipedCardData.RVCardReadETB,
             'swipeFrom': swipedCardData.swipeFrom,
-            'token': swipedCardData.token
+            'token': swipedCardData.token,
+            'isEncrypted': swipedCardData.RVCardReadIsEncrypted !== 0 && swipedCardData.RVCardReadIsEncrypted !== '0'
         };
 
         return swipedCardDataToRender;
@@ -62,7 +63,9 @@ var SwipeOperation = function() {
             "payment_type": "CC",
             "expiryMonth": swipedCardData.cardExpiryMonth,
             "expiryYear": swipedCardData.cardExpiryYear,
-            "cardNumber": swipedCardData.cardNumber
+            "cardNumber": swipedCardData.cardNumber,
+            "etb": swipedCardData.etb,
+            'is_encrypted': swipedCardData.isEncrypted
         };
 
         return swipedCardDataToSave;

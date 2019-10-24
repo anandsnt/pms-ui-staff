@@ -1,11 +1,13 @@
-sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 'ngDialog', 'RVKeyPopupSrv', '$filter', '$timeout', '$log',
-		function($rootScope, $scope, $state, ngDialog, RVKeyPopupSrv, $filter, $timeout, $log) {
-	BaseCtrl.call(this, $scope);
+sntRover.controller('RVKeyEncodePopupCtrl', [
+    '$rootScope', '$scope', '$state', 'ngDialog', 'RVKeyPopupSrv', '$filter', '$timeout', '$log', 'sntActivity', '$window', 'rvUtilSrv',
+    function ($rootScope, $scope, $state, ngDialog, RVKeyPopupSrv, $filter, $timeout, $log, sntActivity, $window, rvUtilSrv) {
+        BaseCtrl.call(this, $scope);
 	var that = this;
 
 	var scopeState = {
 		isCheckingDeviceConnection: false
 	};
+    var deviceConnectionCheckTimer;
 
 	this.setStatusAndMessage = function(message, status) {
 		$scope.statusMessage = message;
@@ -15,6 +17,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
             $scope.keyType = data.type;
         });
 	$scope.init = function() {
+	    var use_tablet_encoding;
 
 		$scope.$emit('HOLD_OBSERVE_FOR_SWIPE_RESETS');
 
@@ -23,16 +26,13 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 
 		// If SAFLOK_MSR is the chosen encoder type, we would show a dropdown with active encoders listed.
 		/** *************************CICO-11444 *****************************************/
-		$scope.encoderSelected = "";
 		if ($scope.fromView === "checkin") {
 			$scope.isRemoteEncodingEnabled = $scope.reservationBillData.is_remote_encoder_enabled;
 		} else {
 			$scope.isRemoteEncodingEnabled = $scope.reservationData.reservation_card.is_remote_encoder_enabled;
 		}
 
-		if (sessionStorage.encoderSelected && sessionStorage.encoderSelected !== '') {
-			$scope.encoderSelected = parseInt(sessionStorage.encoderSelected);
-		}
+        $scope.encoderSelected = sessionStorage.encoderSelected || '';
 
 		/** ***************************************************************************/
 
@@ -46,6 +46,8 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 			$scope.data.is_late_checkout = false;
 			$scope.data.confirmNumber = $scope.reservationBillData.confirm_no;
 			$scope.data.roomNumber = $scope.reservationBillData.room_number;
+			$scope.data.key_settings = $scope.reservationBillData.key_settings;
+			$scope.data.reservation_id = $scope.reservationBillData.reservation_id;
 		// If the keypopup inviked from inhouse - staycard card)
 		} else {
 			reservationStatus = $scope.reservationData.reservation_card.reservation_status;
@@ -53,7 +55,10 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 			$scope.data.is_late_checkout = $scope.reservationData.reservation_card.is_opted_late_checkout;
 			$scope.data.confirmNumber = $scope.reservationData.reservation_card.confirmation_num;
 			$scope.data.roomNumber = $scope.reservationData.reservation_card.room_number;
-
+			$scope.data.key_settings = $scope.reservationData.reservation_card.key_settings;
+			$scope.data.room_pin = $scope.reservationData.room_pin;
+			$scope.data.reservation_id = $scope.reservationData.reservation_card.reservation_id;
+			$scope.data.room_pin_interface = $scope.reservationData.reservation_card.room_pin_interface;
 		}
 
     	if ($scope.data.is_late_checkout) {
@@ -108,22 +113,85 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
         } else {
             $scope.buttonText = $filter('translate')('KEY_DUPLICATE_BUTTON_TEXT');
         }
+
         // as per CICO-31909 Initally we check if the device is connected
         // check if it is a desktop or iPad
         $scope.isIpad = sntapp.browser === 'rv_native' && sntapp.cordovaLoaded;
-		
-        if ($scope.isIpad && $scope.isRemoteEncodingEnabled) {
+
+        // CICO-70280 Incase of comtrol key servers, the settings will have a disable_tablet_key_encoding flag set to true
+        // Key encoding can't be done with bluetooth encoders in case of comtrol
+        use_tablet_encoding = !$scope.hotelDetails.disable_tablet_key_encoding && $scope.isIpad;
+
+        if (use_tablet_encoding && $scope.isRemoteEncodingEnabled) {
             $scope.deviceConnecting = true;
             that.setStatusAndMessage($filter('translate')('CONNECTING_TO_KEY_CARD_READER'), 'pending');
+
             $scope.showDeviceConnectingMessge();
             $scope.showPrintKeyOptions = true;
             $scope.encoderSelected = '';
-        } else if (!$scope.isIpad && $scope.isRemoteEncodingEnabled) {
+        } else if (!use_tablet_encoding && $scope.isRemoteEncodingEnabled) {
             $scope.showTabletOption = false;
             showPrintKeyOptions(true);
         } else {
+
             $scope.showDeviceConnectingMessge();
         }
+	};
+
+	var getPrintContent = function() {
+		
+	 var pincodeContent = '<div class="only-print" style="height: 320px;display: table;position: absolute;top:10px;padding: 20px;text-align: center;float: left;    width: 100%;">' +
+	 						'<h1 style="font-size: 48px;font-weight: 300;width: 100%;margin: 0 auto;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;display: block;">' +
+								'<span >' + $scope.guestCardData.contactInfo.first_name + " " + $scope.guestCardData.contactInfo.last_name + '</span>' +
+				            
+	            				'</br><span >Room: ' + $scope.data.roomNumber + '</span>' +
+							'</h1>' +
+							'</br><span > Reservation ' + $scope.data.confirmNumber + '</span>' +
+						   '</div>' +
+			'<div class="only-print" style="height: 320px;display: table;position: absolute;bottom:100px;padding: 20px;text-align: center;float: left;    width: 100%;"> <span >Pin Code</span>' +
+	        '</br></br><span >Room Pin Code is</span></br>' +
+	        '<span style="font-size: 80px;font-weight: 700;letter-spacing: 10px;display: block;line-height: 80px;height: 80px;margin-top: 50px;margin-bottom: 40px;">' + $scope.data.room_pin + '</span></div>';
+
+	 return pincodeContent;
+
+	};
+
+	$scope.printPinCode = function() {
+
+    $('.nav-bar').addClass('no-print');
+    $('.cards-header').addClass('no-print');
+    $('.card-tabs-nav').addClass('no-print');
+
+    var pinEl = document.createElement("div");
+
+    pinEl.innerHTML = getPrintContent();
+        // var currenBody = document.body.innerHTML;
+    document.body.appendChild(pinEl);
+
+    var printCompletedActions = function() {
+        $timeout(function() {
+
+            $('.nav-bar').removeClass('no-print');
+            $('.cards-header').removeClass('no-print');
+            $('.card-tabs-nav').removeClass('no-print');
+            document.body.removeChild(pinEl);
+
+        }, 100);
+    };
+
+    $timeout(function() {
+        if (sntapp.cordovaLoaded) {
+            cordova.exec(printCompletedActions,
+                function(error) {
+                    // handle error if needed
+                    printCompletedActions();
+                }, 'RVCardPlugin', 'printWebView', ['', '0', '', 'L']);
+        } else {
+            $window.print();
+            printCompletedActions();
+        }
+    }, 100);
+
 	};
 
 	$scope.isPrintKeyEnabled = function() {
@@ -131,10 +199,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 			return false;
 		}
 		if ($scope.numberOfKeysSelected > 0) {
-			if ($scope.isRemoteEncodingEnabled && $scope.encoderSelected === "") {
-				return false;
-			}
-			return true;
+			return !($scope.isRemoteEncodingEnabled && $scope.encoderSelected === "");
 		}
 	};
 
@@ -157,7 +222,8 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 
 		that.noOfErrorMethodCalled++;
 		secondsAfterCalled = that.noOfErrorMethodCalled * 1000;
-		setTimeout(function() {
+
+		deviceConnectionCheckTimer = $timeout(function() {
 			if (secondsAfterCalled <= that.MAX_SEC_FOR_DEVICE_CONNECTION_CHECK) { // 10seconds
                 var checkDeviceConnection = function() {
 					$log.info('deviceready listener...');
@@ -168,12 +234,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
                     document.removeEventListener("deviceready", checkDeviceConnection, false);
                 };
 
-                if (that.noOfErrorMethodCalled > 1 && $scope.isIpad) {
-                    sntCordovaInit();
-                    document.addEventListener("deviceready", checkDeviceConnection, false);
-                } else {
-                    $scope.showDeviceConnectingMessge();
-                }
+                $scope.showDeviceConnectingMessge();
 			}
 		}, 1000);
 		if (secondsAfterCalled > that.MAX_SEC_FOR_DEVICE_CONNECTION_CHECK) {
@@ -196,6 +257,8 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
             if (!$scope.$$phase) {
                 $scope.$apply();
             }
+
+            sntActivity.stop('CHECK_DEVICE_CONNECTION');
 		}
 
 	};
@@ -232,9 +295,11 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		}
 		else {
 			try {
+                sntActivity.start('CHECK_DEVICE_CONNECTION');
 				sntapp.cardReader.checkDeviceConnected(callBack);
 			} catch (e) {
 				showDeviceNotConnected();
+                sntActivity.stop('CHECK_DEVICE_CONNECTION');
 			}
 		}
 	};
@@ -265,12 +330,13 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 	};
 
 	$scope.clickedPrintKey = function() {
-		if ($scope.numberOfKeysSelected === 0) {
+		if ($scope.numberOfKeysSelected === 0 || !$scope.isPrintKeyEnabled()) {
 			return;
 		}
         // if tablet chosen it means we need to get the details of device connected
         if ($scope.encoderSelected === '-1') {
             $scope.writingInProgress = true;
+
             that.getCardInfo();
             return false;
         }
@@ -298,14 +364,15 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 			sntapp.cardReader.retrieveCardInfoDebug(options);
 		}
 		else {
+            sntActivity.start('RETRIEVE_CARD_INFO');
 			sntapp.cardReader.retrieveCardInfo(options);
 		}
 
 	};
 
 	that.showCardInfoFetchFailedMsg = function(errorObject) {
-		$scope.$emit('hideLoader');
-		// Asynchrounous action. so we need to notify angular that a change has occured.
+        sntActivity.stop('RETRIEVE_CARD_INFO');
+        // Asynchrounous action. so we need to notify angular that a change has occured.
 		// It lets you to start the digestion cycle explicitly
 		$scope.$apply();
 		var message = $filter('translate')('KEY_UNABLE_TO_READ_STATUS') + errorObject['RVErrorDesc'];
@@ -313,24 +380,80 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		that.showKeyPrintFailure(message);
 	};
 	/*
+	* Server call to send the email with pincode.
+	*/
+	$scope.sendEmailWithPincode = function() {
+		var successCallback = function() {
+			mailSent();
+		};
+		var failureCallback = function() {
+			mailFailed();
+		};
+		var postParams = { "reservation_id": $scope.data.reservation_id };
+
+		$scope.callAPI(RVKeyPopupSrv.sendEmailWithPincode, {
+            params: postParams,
+            successCallBack: successCallback,
+            failureCallBack: failureCallback
+        });
+	};
+
+	/*
+    * Server call to generate pincode.
+    */
+    $scope.generatePinCode = function() {
+        var successCallback = function(response) {
+            $scope.data.room_pin = response.pin;
+        };
+        var failureCallback = function(errorMessage) {
+            $scope.errorMessage = errorMessage;
+        };
+        var postParams = { "confirmation_number": $scope.data.confirmNumber, interface: $scope.data.room_pin_interface };
+
+        $scope.callAPI(RVKeyPopupSrv.generatePinCode, {
+            params: postParams,
+            successCallBack: successCallback,
+            failureCallBack: failureCallback
+        });
+    };
+
+	/*
+    *  Shows the popup to show the email send status
+    */
+    var showEmailSentStatusPopup = function() {
+        ngDialog.open({
+            template: '/assets/partials/popups/rvEmailSentStatusPopup.html',
+            className: '',
+            scope: $scope
+        });
+    };
+
+    var mailSent = function() {
+        // Handle mail Sent Success
+        $scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
+        $scope.status = "success";
+        showEmailSentStatusPopup();
+    };
+
+    var mailFailed = function() {
+        $scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
+        $scope.status = "alert";
+        showEmailSentStatusPopup();
+    };
+    
+	/*
 	* Server call to fetch the key data.
 	*/
 	this.callKeyFetchAPI = function(cardInfo) {
-		$scope.$emit('hideLoader');
+        sntActivity.start('GET_KEY_IMAGE');
 		that.setStatusAndMessage($filter('translate')('KEY_GETTING_KEY_IMAGE_STATUS'), 'pending');
-		var reservationId = '';
 
-		if ($scope.viewFromBillScreen) {
-			reservationId = $scope.reservationBillData.reservation_id;
-		} else {
-			reservationId = $scope.reservationData.reservation_card.reservation_id;
-		}
-	    var postParams = {"reservation_id": reservationId, "key": 1, "is_additional": true};
+	    var postParams = {"reservation_id": $scope.data.reservation_id, "key": 1, "is_additional": true};
 	    // for initial case the key we are requesting is not additional
 
 	    if (!that.isAdditional) {
 	    	that.isAdditional = true;
-	    	var postParams = {"reservation_id": reservationId, "key": 1, "is_additional": false};
+	    	var postParams = {"reservation_id": $scope.data.reservation_id, "key": 1, "is_additional": false};
 	    }
 	    if (typeof cardInfo !== 'undefined') {
 	    	postParams.card_info = cardInfo;
@@ -345,27 +468,27 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
         }
 
 	    $scope.invokeApi(RVKeyPopupSrv.fetchKeyFromServer, postParams, that.keyFetchSuccess, that.keyFetchFailed);
-
+        sntActivity.stop('RETRIEVE_CARD_INFO');
 	};
 
 	/*
 	* Success callback for key fetching
 	*/
 	this.keyFetchSuccess = function(response) {
-		$scope.$emit('hideLoader');
 		that.keyData = response;
 		that.printKeys();
+        sntActivity.stop('GET_KEY_IMAGE');
 	};
 
 	/*
 	* Key fetch failed callback. Show a print key failure status
 	*/
 	this.keyFetchFailed = function(errorMessage) {
-		$scope.$emit('hideLoader');
-		$scope.errorMessage = errorMessage;
+        $scope.errorMessage = errorMessage;
 		var message = $filter('translate')('KEY_CREATION_FAILED_STATUS');
 
 		that.showKeyPrintFailure(message);
+        sntActivity.stop('GET_KEY_IMAGE');
 
 	};
 
@@ -434,15 +557,16 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 				$scope.printedKeysCount = index;
 				$scope.buttonText = 'Print key ' + (index + 1) + '/' + that.printKeyStatus.length;
 				$scope.$apply();
+
+                sntActivity.stop('WRITE_KEY_CARD');
+
 				if (that.numOfKeys === 0) {
 					that.showKeyPrintSuccess();
 					return true;
 				}
-
-
 			},
 			'failureCallBack': function(errorObject) {
-				$scope.$emit('hideLoader');
+
 				if (that.numOfKeys > 0) {
 					that.setStatusAndMessage($filter('translate')('KEY_CREATION_FAILED_STATUS_LONG') + ': '  + errorObject['RVErrorDesc'], 'error');
 				}
@@ -451,8 +575,10 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 
 					that.showKeyPrintFailure(message);
 				}
+
 				$scope.$apply();
 
+                sntActivity.stop('WRITE_KEY_CARD');
 			},
 			arguments: keyData
 		};
@@ -461,6 +587,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 			sntapp.cardReader.writeKeyDataDebug(options);
 		}
 		else {
+            sntActivity.start('WRITE_KEY_CARD');
 			sntapp.cardReader.writeKeyData(options);
 		}
 
@@ -575,9 +702,10 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 	};
 
 	var showPrintKeyOptions = function (status) {
-		// if status === false, they are not able to connect. I dont know why these type of designs
+		// if status === false or 0 (in case of Android), they are not able to connect. I dont know why these type of designs
 		// we have to call failurecallback on that
-		if (status === false) {
+		if (status === false || status === 0) {
+
 			return showDeviceNotConnected();
 		}
 
@@ -594,7 +722,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
             }
             $scope.encoderSelected = '-1';
         } else {
-            $scope.encoderSelected = '';
+            $scope.encoderSelected = sessionStorage.encoderSelected || '';
 		}
 
 		$scope.$emit('hideLoader');
@@ -614,7 +742,9 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
         if (status) {
             that.setStatusAndMessage($filter('translate')('KEY_CONNECTED_STATUS'), 'success');
         }
+
         showPrintKeyOptions(status);
+        sntActivity.stop('CHECK_DEVICE_CONNECTION');
     };
 
 	var showKeysPrinted = function() {
@@ -643,6 +773,8 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		$scope.showPrintKeyOptions = false;
 		$scope.deviceNotConnected = false;
 		$scope.pressedCancelStatus = true;
+        // CICO-43771
+        $timeout.cancel(deviceConnectionCheckTimer);
 
 		$('#encoder-type').blur();
 		// TODO:verfiy if required
@@ -674,11 +806,21 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 
 	// Close popup
 	$scope.closeDialog = function() {
-        $scope.$emit('RESUME_OBSERVE_FOR_SWIPE_RESETS');
-		ngDialog.close();
+		
+		if ($scope.fromView === 'checkin' && $scope.data.key_settings === "pin") {
+			$scope.goToStaycard();
+
+		} else if ($scope.fromView === 'checkin') {
+			$scope.pressedCancel();
+
+		} else {
+	        $scope.$emit('RESUME_OBSERVE_FOR_SWIPE_RESETS');
+			ngDialog.close();	
+		}
 	};
 	// To handle close button click
 	$scope.goToStaycard = function() {
+		$scope.fromView = '';
 		$scope.closeDialog();
 		$state.go('rover.reservation.staycard.reservationcard.reservationdetails',
 				{"id": $scope.reservationBillData.reservation_id,
@@ -686,8 +828,13 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 
 	};
 	$scope.goToSearch = function() {
+		$scope.fromView = '';
 		$scope.closeDialog();
 		$state.go('rover.search');
 
 	};
+	var reservationEmail = !!$scope.guestCardData.contactInfo.email ? $scope.guestCardData.contactInfo.email : '';
+
+	$scope.hasValidEmail = rvUtilSrv.isEmailValid(reservationEmail);
+	
 }]);

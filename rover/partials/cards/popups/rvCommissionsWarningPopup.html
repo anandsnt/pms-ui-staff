@@ -1,0 +1,17 @@
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
+    <div class="modal-content alert">
+        <button id="modal-close" type="button" class="modal-close" ng-if="ngDialogData.cardData" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
+        <button id="modal-close" type="button" class="modal-close" ng-if="!ngDialogData.cardData" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
+
+        <span class="icons icon-popup-alert"></span>
+        <span class="h2 message" translate>RESERVATION_COMMISSIONS_WARNING</span>
+        <button type="button" class="button blank" ng-if="ngDialogData.cardData"
+            ng-click="setSelectedTACard(ngDialogData.cardData)">
+            CONTINUE
+        </button>
+         <button type="button" class="button blank" ng-if="!ngDialogData.cardData"
+            ng-click="closeDialog()">
+            OK
+        </button>
+    </div>
+</div>

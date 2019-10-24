@@ -26,7 +26,9 @@
                 <div class="form-title full-width">
                     <h3><span translate>REG_CARD</span> </h3>
                 </div>
+                <ad-textbox value="zestSettings.kiosk_reg_card_email_subject"  label="{{'CUSTOM_REG_CARD_EMAIL_SUBJECT'| translate}}" placeholder="" styleclass="full-width"></ad-textbox>
                 <ad-textbox value="zestSettings.kiosk_reg_card_heading_text"  label="{{'CUSTOM_REG_CARD_HEADING'| translate}}" placeholder="" styleclass="full-width"></ad-textbox>
+                <ad-textbox value="zestSettings.kiosk_reg_card_room_pin_text"  label="{{'ROOM_PIN_PREFIX_TEXT'| translate}}" placeholder="" styleclass="full-width" hide="!zestSettings.show_room_pin"></ad-textbox>
                 <div class="entry full-width">
                     <label translate>
                         REG_CARD_TEXT
@@ -36,23 +38,28 @@
             </fieldset>
             <fieldset class="holder right">
                 <div class="form-title full-width">
-                    <h3><span translate>ENFORCE_DEPOSIT </span> </h3>
-                </div>
-                <ad-toggle-button is-checked="zestSettings.enforce_deposit" label="{{'ENFORCE_DEPOSIT'| translate}}" div-class="full-width"></ad-toggle-button>
-            </fieldset>
-            <fieldset class="holder left">
-                <div class="form-title full-width">
                     <h3><span translate>ON_SCREEN_ROOM_NUMBER </span> </h3>
                 </div>
                 <ad-toggle-button is-checked="zestSettings.show_room_number" label="{{'ON_SCREEN_ROOM_NUMBER'| translate}}" div-class="full-width"></ad-toggle-button>
             </fieldset>
-            <fieldset class="holder right">
+            <fieldset class="holder left">
                 <div class="form-title full-width">
                     <h3><span translate>COLLECT_USER_NATIONALITY </span> </h3>
                 </div>
                 <ad-toggle-button is-checked="zestSettings.check_in_collect_nationality" label="{{'COLLECT_USER_NATIONALITY'| translate}}" div-class="full-width"></ad-toggle-button>
+                <ad-form-sub-title title="COUNRTY_FILTER_INSTRUCTIONS" hide="!zestSettings.check_in_collect_nationality"></ad-form-sub-title>
+                <ad-checkbox is-checked="zestSettings.kiosk_enforce_country_sort" 
+                                label="{{'ENFORCE_COUNTRY_SORT'| translate}}" 
+                                div-class="full-width" 
+                                is-disabled="zestSettings.use_free_form_country_selection" 
+                                is-hide="!zestSettings.check_in_collect_nationality"></ad-checkbox>
+                <ad-checkbox is-checked="zestSettings.use_free_form_country_selection" 
+                                label="{{'FREE_FORM_COUNTRY_SELECT'| translate}}" 
+                                div-class="full-width" 
+                                is-disabled="zestSettings.kiosk_enforce_country_sort" 
+                                is-hide="!zestSettings.check_in_collect_nationality"></ad-checkbox>
             </fieldset>
-            <fieldset class="holder left">
+            <fieldset class="holder right">
                 <div class="form-title full-width">
                     <h3><span translate>SECOND_AUTHENTICATION</span> </h3>
                 </div>
@@ -61,7 +68,7 @@
                 <ad-checkbox is-checked="zestSettings.checkin_screen.authentication_settings.confirmation" label="{{ 'CONFIRMATION' | translate}}"></ad-checkbox>
                 <ad-checkbox is-checked="zestSettings.checkin_screen.authentication_settings.number_of_nights" label="{{ 'AUTH_NO_OF_NIGHTS' | translate}}"></ad-checkbox>
             </fieldset>
-            <fieldset class="holder right">
+            <fieldset class="holder left">
                 <div class="form-title full-width">
                     <h3><span translate>OWS_GUEST_MESSAGES </span> </h3>
                 </div>
@@ -69,29 +76,24 @@
             </fieldset>
 
 
-            <fieldset class="holder left">
+            <fieldset class="holder right">
                 <div class="form-title full-width">
-                    <h3><span translate>BYPASS_CC_FOR_PREPAID_RESERVATIOIN </span> </h3>
+                    <h3><span translate>CREDIT_CARD_AND_PAYMENT_OPTIONS </span> </h3>
                 </div>
-                <ad-toggle-button is-checked="zestSettings.bypass_cc_for_prepaid_reservation" label="{{'BYPASS_CC_FOR_PREPAID_RESERVATIOIN'| translate}}" div-class="full-width"></ad-toggle-button>
+                <ad-toggle-button is-checked="zestSettings.bypass_cc_for_prepaid_reservation" label="{{'BYPASS_CC_FOR_PREPAID_RESERVATIOIN'| translate}}"></ad-toggle-button>
+                <ad-toggle-button is-checked="zestSettings.enforce_deposit" label="{{'ENFORCE_DEPOSIT'| translate}}"></ad-toggle-button>
+                <ad-toggle-button is-checked="zestSettings.bypass_kiosk_signature" label="{{'BYPASS_SIGNATURE_CAPTURE'| translate}}"></ad-toggle-button>
+                <ad-toggle-button is-checked="zestSettings.bypass_kiosk_cc_auth" label="{{'BYPASS_CC_AUTH'| translate}}"></ad-toggle-button>
+                <ad-toggle-button is-checked="zestSettings.kiosk_prevent_non_cc_guests" label="{{'SEND_NON_CC_TO_STAFF'| translate}}"></ad-toggle-button>
             </fieldset>
 
 
-            <fieldset class="holder right">
+            <fieldset class="holder left">
                 <div class="form-title full-width">
                     <h3><span translate>DISPLAY_TERMS_AND_CONDITIONS </span> </h3>
                 </div>
                 <ad-toggle-button is-checked="zestSettings.kiosk_display_terms_and_condition" label="{{'DISPLAY_TERMS_AND_CONDITIONS'| translate}}" div-class="full-width"></ad-toggle-button>
             </fieldset>
-
-
-            <fieldset class="holder left">
-                <div class="form-title full-width">
-                    <h3><span translate>ADDRESS_COUNTRY_LIST </span> </h3>
-                </div>
-                <ad-toggle-button is-checked="zestSettings.kiosk_enforce_country_sort" label="{{'ENFORCE_COUNTRY_SORT'| translate}}" div-class="full-width"></ad-toggle-button>
-            </fieldset>
-
 
             <fieldset class="holder right">
                 <div class="form-title full-width">
@@ -103,9 +105,69 @@
 
             <fieldset class="holder left">
                 <div class="form-title full-width">
-                    <h3><span translate>USE_ADD_REMOVE_GUESTS </span> </h3>
+                    <h3><span translate>ADD_UPDATE_GUEST_DETAILS </span> </h3>
                 </div>
-                <ad-toggle-button is-checked="zestSettings.kiosk_add_remove_guests" label="{{'USE_ADD_REMOVE_GUESTS'| translate}}" div-class="full-width"></ad-toggle-button>
+                <!-- <ad-toggle-button is-checked="zestSettings.kiosk_add_remove_guests" label="{{'USE_ADD_REMOVE_GUESTS'| translate}}" div-class="full-width"></ad-toggle-button> -->
+                <ad-toggle-button is-checked="zestSettings.kiosk_collect_guest_address" label="{{'COLLECT_GUEST_ADDRESS'| translate}}" div-class="full-width"></ad-toggle-button>
+            </fieldset>
+
+            <fieldset class="holder right">
+                <div class="form-title full-width">
+                    <h3>
+                        <span translate>ADD_LOYALTY_PGMS</span>
+                    </h3>
+                </div>
+                <ad-toggle-button is-checked="zestSettings.add_loyalty_pgms" label="{{'ADD_LOYALTY_PGMS'| translate}}" div-class="full-width"></ad-toggle-button>
+            </fieldset>
+
+            <fieldset class="holder left" ng-if="zestSettings.is_snt_id_scan_enabled">
+                <div class="form-title full-width">
+                    <h3><span translate>SCAN_ID_TO_FIND_RESERVATION </span> </h3>
+                </div>
+                <ad-toggle-button is-checked="zestSettings.scan_id_to_find_reservations" div-class="full-width"></ad-toggle-button>
+            </fieldset>
+
+            <fieldset class="holder left" >
+                <div class="form-title full-width">
+                    <h3><span translate>STATION_PASSPORT_ENTRY_HEADER </span> </h3>
+                </div>
+                <ad-toggle-button is-checked="zestSettings.enable_passport_entry" label="{{'STATION_PASSPORT_ENTRY_LABEL'| translate}}" on-update="onPassportEntryToggled"  div-class="full-width"></ad-toggle-button>
+
+                <ad-toggle-button ng-if="zestSettings.enable_passport_entry" is-checked="zestSettings.bypass_passport_entry" label="{{'STATION_PASSPORT_ENTRY_BYPASS_LABEL'| translate}}"  div-class="full-width"></ad-toggle-button>
+
+            </fieldset>
+
+            <fieldset class="holder full-width" ng-if="::isKioskExcludePaymentMethods">
+                <div class="form-title">
+                    <h3>
+                        <span translate>EXCLUDE</span>
+                        {{ 'PAYMENT_TYPES' |  translate }}
+                    </h3>
+                </div>
+                <div class="entry has-sortable" style="width: 48%; margin-right: 2%;">
+                    <label class="center_align">
+                        <em class="rate_roomtype_text" translate="ALLOWED_PAYMENT_TYPES"></em>
+                    </label>
+                    <ul class="boxes sortable ui-sortable short-list"  data-type="target"  data-drop="true" ng-model="allowedPaymentTypes" style="overflow-y: scroll !important;" jqyoui-droppable="{multiple:true}" data-jqyoui-options="{accept:'.exclude-payment-types'}">
+                        <li ng-repeat="paymentType in allowedPaymentTypes" data-drag="true" ng-model="allowedPaymentTypes" jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem'}" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}" class="allowed-payment-types li-draggable">
+                            <span class="icons icon-handle"></span>
+                            <span class="icons icon-handle"></span>
+                            {{ paymentType.description }}
+                        </li>
+                    </ul>
+                </div>
+                <div class="entry has-sortable" style="width: 48%;">
+                    <label class="center_align">
+                        <em class="rate_roomtype_text" translate="EXCLUDED_PAYMENT_TYPES"></em>
+                    </label>
+                    <ul class="boxes sortable ui-sortable short-list" data-type="source" data-drop="true" ng-model="excludedPaymentTypes" jqyoui-droppable="{multiple:true}" data-jqyoui-options="{accept:'.allowed-payment-types'}">
+                        <li ng-repeat="paymentType in excludedPaymentTypes" class="exclude-payment-types li-draggable" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}" data-drag="true" ng-model="excludedPaymentTypes" jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }">
+                            <span class="icons icon-handle"></span>
+                            <span class="icons icon-handle"></span>
+                            {{ paymentType.description }}
+                        </li>
+                    </ul>
+                </div>
             </fieldset>
 
 

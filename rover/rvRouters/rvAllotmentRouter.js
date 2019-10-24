@@ -12,7 +12,7 @@ angular.module('allotmentModule', [])
             templateUrl: '/assets/partials/allotments/rvAllotmentRoot.html',
             controller: 'rvAllotmentRootCtrl',
             resolve: {
-                allotmentAssets: function(jsMappings, mappingList) {
+                allotmentAssets: function(jsMappings) {
                     return jsMappings.fetchAssets(['rover.allotments', 'directives']);
                 }
             }
@@ -49,17 +49,14 @@ angular.module('allotmentModule', [])
 
         // group summary : CICO-12790
         $stateProvider.state('rover.allotments.config', {
-            url: '/config/:id/:activeTab/:newAllotmentName',
+            url: '/config',
             templateUrl: '/assets/partials/allotments/rvAllotmentConfiguration.html',
             controller: 'rvAllotmentConfigurationCtrl',
-            onEnter: ['$stateParams', function($stateParams) {
-                if (!$stateParams.id) {
-                    $stateParams.id = "NEW_ALLOTMENT";
-                }
-                if (!$stateParams.activeTab) {
-                    $stateParams.activeTab = "SUMMARY";
-                }
-            }],
+            params: {
+                id: 'NEW_ALLOTMENT',
+                activeTab: 'SUMMARY',
+                newAllotmentName: ''
+            },
             resolve: {
                 loadPaymentMapping: function (jsMappings) {
                     return jsMappings.loadPaymentMapping();
@@ -82,7 +79,11 @@ angular.module('allotmentModule', [])
                     };
 
                     return rvAllotmentConfigurationSrv.getHoldStatusList (params);
+                },
+                hotelSettings: function (RVReservationBaseSearchSrv, allotmentAssets) {
+                    return RVReservationBaseSearchSrv.fetchHotelReservationSettings();
                 }
+
             }
 
         });

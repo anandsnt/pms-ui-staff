@@ -1,4 +1,6 @@
-sntRover.controller('rvFrontDeskDashboardSearchController', ['$scope', '$state', '$stateParams', '$filter', '$rootScope', '$vault', function($scope, $state, $stateParams, $filter, $rootScope, $vault) {
+sntRover.controller('rvFrontDeskDashboardSearchController', [
+    '$scope', '$state', '$stateParams', '$filter', '$rootScope', '$transitions',
+        function($scope, $state, $stateParams, $filter, $rootScope, $transitions) {
 
 	/*
 	* Controller class for dashboard search,
@@ -8,7 +10,6 @@ sntRover.controller('rvFrontDeskDashboardSearchController', ['$scope', '$state',
 	var that = this;
 
   	BaseCtrl.call(this, $scope);
-
 
 	// setting the scroller for view
 	var scrollerOptions = {
@@ -31,7 +32,6 @@ sntRover.controller('rvFrontDeskDashboardSearchController', ['$scope', '$state',
             $scope.$broadcast("showAddNewGuestButton", true);
         }
     });
-
 
   	// click function on search area, mainly for closing the drawer
   	$scope.clickedOnSearchArea = function($event) {
@@ -72,15 +72,14 @@ sntRover.controller('rvFrontDeskDashboardSearchController', ['$scope', '$state',
     * recievable function to handle backbutton click on header area
     * will backto dashboard
     */
-    $scope.$on("HeaderBackButtonClicked", function(event) {
+    $scope.$on("HeaderBackButtonClicked", function() {
         backToDashboard();
     });
-
 
     /**
     * When leaving this, we need to reset the back button text
     */
-    $scope.$on('$stateChangeSuccess', function(event) {
+    $transitions.onSuccess({}, function() {
         // setting the backbutton & showing the caption
         $scope.$emit("UpdateSearchBackbuttonCaption", "");
     });
@@ -88,7 +87,7 @@ sntRover.controller('rvFrontDeskDashboardSearchController', ['$scope', '$state',
     /**
     * on what action taken, on search results clearing
     */
-    $scope.$on("SearchResultsCleared", function(event) {
+    $scope.$on("SearchResultsCleared", function() {
         backToDashboard();
     });
 }]);

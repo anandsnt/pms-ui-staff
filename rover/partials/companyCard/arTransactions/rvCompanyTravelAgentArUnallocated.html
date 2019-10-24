@@ -1,0 +1,104 @@
+<ul class="search-results">
+    <li class="reservation transaction payment unallocated" ng-repeat="unallocatedCreditTransaction in arDataObj.unallocatedList track by $index">
+
+        <div class="faux-anchor" ng-class="{'active': unallocatedCreditTransaction.active , 'toggle has-arrow': unallocatedCreditTransaction.is_partially_paid}" ng-click="clickedUnallocatedListItem( $index )" >
+            <div class="data">
+                <h2>{{unallocatedCreditTransaction.payment_type}}</h2>
+                <div class="payment-data">
+                    <!-- if card, show card logo -->
+                    <figure class="card-logo" ng-show="unallocatedCreditTransaction.is_cc_payment">
+                        <img ng-src="/assets/images/{{unallocatedCreditTransaction.card_details.card_code.toLowerCase()}}.png" alt="">
+                    </figure>
+                    <!-- if number, show ending number -->
+                    <span class="number" ng-show="unallocatedCreditTransaction.is_cc_payment">{{unallocatedCreditTransaction.card_details.last_digits}}</span>
+                    <!-- if exp date, show exp date -->
+                    <span class="date" ng-show="unallocatedCreditTransaction.is_cc_payment">Date <span class="value">{{unallocatedCreditTransaction.card_details.expire_date | date:dateFormat}}</span></span>
+                    <!-- if reference, show reference -->
+                    <span class="reference" ng-show="unallocatedCreditTransaction.reference_text">Reference <span class="value">{{unallocatedCreditTransaction.reference_text}}</span></span>
+                </div>
+            </div>
+            <div class="payment-date">
+                <span class="icons small-icon icon-time time-black"></span>
+                <time datetime="">
+                    <span class="date">{{unallocatedCreditTransaction.transaction_date | date:dateFormat}}</span>
+                    <span class="time">{{unallocatedCreditTransaction.transaction_time}}</span>
+                </time>
+            </div>
+            <!-- if partially unallocated add .partially-paid -->
+            <div class="amount green" ng-class="{'partially-paid': unallocatedCreditTransaction.is_partially_paid}">
+                <!-- if partially unallocated, show icon -->
+                <span class="icons icon-wallet-green" ng-show="unallocatedCreditTransaction.is_partially_paid"></span>
+
+                <span class="currency">{{currencySymbol}}</span>{{unallocatedCreditTransaction.amount | number:2 }}
+            </div>
+
+            <button ng-show="arFlags.hasAllocateUnallocatePermission" type="button" class="button green" ng-click="clickedAllocateButton($event, $index)">Allocate</button>
+        </div>
+
+        <ul class="search-results" ng-show="unallocatedCreditTransaction.active">
+            <li class="reservation transaction" ng-repeat="item in unallocatedCreditTransaction.transactions">
+                <div class="faux-anchor">
+                    <div class="data" ng-if="item.associated_type === 'PostingAccount'">
+                        <h2>{{item.account_name}}</h2>
+                        <span class="invoice">Invoice #<span class="value">{{item.invoice_number}}</span></span>
+                        <span class="invoice">Account #<span class="value">{{item.account_number}}</span></span>
+                    </div>
+                    <div class="data" ng-if="item.associated_type !== 'PostingAccount'">
+                        <h2>{{item.guest_last_name}}, {{item.guest_first_name}}</h2>
+                        <span class="invoice">Invoice #<span class="value">{{item.invoice_number}}</span></span>
+                        <span ng-hide="item.is_manual_balance" class="confirmation">Conf #<span class="value">{{item.reservation_confirm_no}}</span></span>
+                    </div>
+
+                    <!-- Case 1: Nightly -->
+                    <div class="reservation-time" ng-if="item.reservation_arrival_date !== item.reservation_dep_date">
+                        <div class="check-icons">
+                            <span class="guest-status check-in" ng-if="!item.is_manual_balance">arrival</span>
+                            <span class="guest-status check-out" ng-hide="item.associated_type === 'PostingAccount'">arrival</span>
+                        </div>
+                        <div class="check-times">
+                            <time class="guest-time" ng-if="!item.is_manual_balance">
+                                <span>{{item.reservation_arrival_date | date : dateFormat}}</span>
+                                <span class="hours">{{item.reservation_arrival_time}}</span>
+                            </time>
+                            <time class="guest-time">
+                                <span>{{item.reservation_dep_date | date : dateFormat}}</span>
+                                <span class="hours">{{item.reservation_dep_time}}</span>
+                            </time>
+                        </div>
+                    </div>
+
+                    <!-- Case 2: Daily Reservation -->
+                    <div class="reservation-time daily" ng-if="item.reservation_arrival_date === item.reservation_dep_date">
+                        <div class="check-icons">
+                            <span class="guest-status check-in">arrival</span>
+                            <span class="guest-status check-out">arrival</span>
+                        </div>
+                        <div class="check-times">
+                            <div class="guest-hours">
+                                <time class="guest-time">{{item.reservation_arrival_time}}</time> - <time class="guest-time">{{item.reservation_dep_time}}</time>
+                            </div>
+                            <span class="date">{{item.reservation_arrival_date | date : dateFormat}}</span>
+                        </div>
+                    </div>
+                    
+                    <!-- if daily reservation add .red -->
+                    <div class="reservation-type red" ng-if="item.is_day_use">D</div>
+                    <div class="reservation-type" ng-if="!item.is_day_use && hotelDiaryConfig.mode === 'FULL'">N</div>
+
+                    <div class="amount paid">
+                        {{currencySymbol}} {{item.amount | number:2 }}
+                    </div>
+                    <button ng-show="arFlags.hasAllocateUnallocatePermission" type="button" class="button white with-icon" ng-click="clickedUnallocate(item)">
+                        <span class="icons icon-remove-40"></span>
+                    </button>
+                </div>
+            </li>
+
+        </ul>
+    </li>
+    <li>
+        <!-- To fix scroll: The footer for pagination and select payment is coming above the list so the last entry will 
+        not be visible-->
+        <div>&nbsp;</div>
+    </li>
+</ul>

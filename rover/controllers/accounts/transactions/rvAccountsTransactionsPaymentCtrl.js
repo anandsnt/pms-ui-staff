@@ -121,7 +121,6 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
             renderDefaultValues();
         };
 
-
         /*
          * Retrive data to be displayed in the payment screen - payment types and credit card types
          *
@@ -294,7 +293,6 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
 
         });
 
-
         /*
          * Success call back of success payment
          */
@@ -302,9 +300,11 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
             $scope.$emit("hideLoader");
             $scope.depositPaidSuccesFully = true;
             $scope.authorizedCode = data.authorization_code;
+            data.isFromPaymentSuccess = true;
             $scope.$emit('UPDATE_TRANSACTION_DATA', data);
             $scope.showArSelection = false;
         };
+        
         var failurePayment = function(error) {
             $scope.$emit("hideLoader");
             $scope.errorMessage = error;

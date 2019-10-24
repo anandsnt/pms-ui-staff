@@ -1,11 +1,11 @@
 <div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog">
-    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-    <form class="modal-content form group-guest">
+    <form class="modal-content form group-guest" ng-cloak>
         <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert" /></button>
         <span class="message h2">
             Edit Guest
         </span>
         <div class="holder">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <div class="entry margin">
                 <label for="firstname">First Name</label>
                 <input id="firstname" placeholder="Pending" ng-model="ngDialogData.firstname" type="text" ng-disabled="shouldDisableNameField(ngDialogData)" />
@@ -73,16 +73,15 @@
                 <label for="room">Room</label>
                 <div class="select">
                     <select id="room" ng-disabled="shouldDisableChangeRoom(ngDialogData)" ng-model="ngDialogData.room_id" ng-class="{'placeholder': isEmptyRoomNumber(ngDialogData.room_no)}"
-                    ng-change="changedReservationRoom()">
+                    ng-change="changedReservationRoom()" ng-options="roomData.id as roomData.room_number for roomData in ngDialogData.roomsFreeToAssign">
                         <!-- Add class "placeholder" if "N/A" set as option -->
                         <option value="" ng-selected="isEmptyRoomNumber(ngDialogData.room_no)">N/A</option>
-                        <option value="{{roomData.id}}" ng-selected="ngDialogData.room_id===roomData.id" ng-repeat="roomData in ngDialogData.roomsFreeToAssign">{{roomData.room_number}}</option>
                     </select>
                 </div>
             </div>
         </div>
         <!-- Actions -->
-        <div id="account-actions" class="actions">
+        <div id="account-actions" class="actions" ng-cloak>
             <button type="button" class="button red"
                 ng-class="{'grey' : shouldDisableRemoveButton(ngDialogData)}"
                 ng-click="removeReservation(ngDialogData)">
@@ -96,14 +95,14 @@
             </button>
             <button type="button" class="button green"
                 ng-class="{'grey' : shouldDisableCheckinButton(ngDialogData)}"
-                ng-hide="shouldShowCheckinButton(ngDialogData)"
+                ng-if="::!shouldShowCheckinButton(ngDialogData)"
                 ng-click="checkinReservation(ngDialogData);"
                 ng-disabled="shouldDisableCheckinButton(ngDialogData)">
                 Check In
             </button>
             <button type="button" class="button red"
                 ng-class="{'grey' : shouldDisableCheckoutButton(ngDialogData)}"
-                ng-show="shouldShowCheckoutButton(ngDialogData)"
+                ng-if="::shouldShowCheckoutButton(ngDialogData)"
                 ng-disabled="shouldDisableCheckoutButton(ngDialogData)"
                 ng-click="checkoutReservation(ngDialogData);">
                 Check Out

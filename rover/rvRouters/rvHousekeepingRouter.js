@@ -7,7 +7,7 @@ angular.module('housekeepingModule', [])
             templateUrl: '/assets/partials/housekeeping/rvHousekeeping.html',
             controller: 'RVHkAppCtrl',
             resolve: {
-                housekeepingAssets: function(jsMappings, mappingList) {
+                housekeepingAssets: function(jsMappings) {
                     return jsMappings.fetchAssets(['rover.housekeeping', 'directives']);
                 }
             }
@@ -18,7 +18,7 @@ angular.module('housekeepingModule', [])
             templateUrl: '/assets/partials/housekeeping/rvHkRoomStatus.html',
             controller: 'RVHkRoomStatusCtrl',
             resolve: {
-                fetchPayload: function(RVHkRoomStatusSrv, $stateParams, $rootScope, housekeepingAssets) {
+                fetchPayload: function(RVHkRoomStatusSrv, $stateParams, $rootScope, housekeepingAssets, $state) {
                     if (!!$stateParams && !!$stateParams.roomStatus) {
                         var filterStatus = {
                             'INHOUSE_DIRTY': ['dirty', 'stayover'],
@@ -38,16 +38,21 @@ angular.module('housekeepingModule', [])
                         }
 
                         // RESET: since a housekeeping dashboard can disturb these props
-                        RVHkRoomStatusSrv.currentFilters.page  = 1;
+                        RVHkRoomStatusSrv.currentFilters.page  = $stateParams.page;
                         RVHkRoomStatusSrv.currentFilters.query = '';
 
                         return RVHkRoomStatusSrv.fetchPayload({ isStandAlone: $rootScope.isStandAlone });
                     } else {
+                        RVHkRoomStatusSrv.currentFilters.page  = $stateParams.page;
                         return RVHkRoomStatusSrv.fetchPayload({ isStandAlone: $stateParams.isStandAlone || $rootScope.isStandAlone });
                     }
                 },
                 employees: function(RVHkRoomStatusSrv, $rootScope, housekeepingAssets) {
-                    return $rootScope.isStandAlone ? RVHkRoomStatusSrv.fetchHKEmps() : [];
+                    var params = {
+                        per_page: 9999
+                    };
+
+                    return $rootScope.isStandAlone ? RVHkRoomStatusSrv.fetchHKEmps(params) : [];
                 },
                 roomTypes: function(RVHkRoomStatusSrv, housekeepingAssets) {
                     return RVHkRoomStatusSrv.fetchRoomTypes();
@@ -61,6 +66,9 @@ angular.module('housekeepingModule', [])
                 allRoomIDs: function(RVHkRoomStatusSrv, housekeepingAssets) {
                     return RVHkRoomStatusSrv.fetchAllRoomIDs();
                 }
+            },
+            params: {
+                page: 1
             }
         });
 
@@ -72,6 +80,9 @@ angular.module('housekeepingModule', [])
                 roomDetailsData: function(RVHkRoomDetailsSrv, $stateParams, housekeepingAssets) {
                     return RVHkRoomDetailsSrv.fetch($stateParams.id);
                 }
+            },
+            params: {
+                page: 1
             }
         });
         $stateProvider.state('rover.housekeeping.roomDetails.log', {
@@ -103,21 +114,27 @@ angular.module('housekeepingModule', [])
             templateUrl: '/assets/partials/workManagement/rvWorkManagement.html',
             controller: 'RVWorkManagementCtrl',
             resolve: {
-                workManagementAssets: function(jsMappings, mappingList) {
-                    return jsMappings.fetchAssets(['rover.workManagement', 'directives']);
+                employees: function(RVWorkManagementSrv) {
+                    var params = {
+                        page: 1,
+                        per_page: 9999
+                    };
+                    
+                    return RVWorkManagementSrv.fetchMaids(params);
                 },
-                employees: function(RVWorkManagementSrv, workManagementAssets) {
-                    return RVWorkManagementSrv.fetchMaids();
-                },
-                workTypes: function(RVWorkManagementSrv, workManagementAssets) {
+                workTypes: function(RVWorkManagementSrv) {
                     return RVWorkManagementSrv.fetchWorkTypes();
                 },
-                shifts: function(RVWorkManagementSrv, workManagementAssets) {
+                shifts: function(RVWorkManagementSrv) {
                     return RVWorkManagementSrv.fetchShifts();
                 },
-                floors: function(RVHkRoomStatusSrv, workManagementAssets) {
+                floors: function(RVHkRoomStatusSrv) {
                     return RVHkRoomStatusSrv.fetchFloors();
                 }
+            },
+            lazyLoad: function ($transition$) {
+                return $transition$.injector().get('jsMappings')
+                    .fetchAssets(['rover.workManagement', 'directives']);
             }
         });
 
@@ -128,25 +145,31 @@ angular.module('housekeepingModule', [])
         });
 
         $stateProvider.state('rover.workManagement.multiSheet', {
-            url: '/multisheet/:date',
+            url: '/multisheet/:date/{filterParams:json}',
             templateUrl: '/assets/partials/workManagement/rvWorkManagementMultiSheet.html',
             controller: 'RVWorkManagementMultiSheetCtrl',
+            params: {filterParams: null},
             resolve: {
-                allUnassigned: function(RVWorkManagementSrv, $stateParams, workManagementAssets) {
+                allUnassigned: function(RVWorkManagementSrv, $stateParams) {
                     return RVWorkManagementSrv.fetchAllUnassigned({
                         date: $stateParams.date
                     });
                 },
-                activeWorksheetEmp: function(RVHkRoomStatusSrv, workManagementAssets) {
+                activeWorksheetEmp: function(RVHkRoomStatusSrv) {
                     return RVHkRoomStatusSrv.fetchActiveWorksheetEmp();
                 },
-                fetchHKStaffs: function(RVWorkManagementSrv, workManagementAssets) {
-                    return RVWorkManagementSrv.fetchHKStaffs();
+                fetchHKStaffs: function(RVWorkManagementSrv) {
+                    var params = {
+                        page: 1,
+                        per_page: 9999
+                    };
+
+                    return RVWorkManagementSrv.fetchHKStaffs(params);
                 },
                 allRoomTypes: function(RVHkRoomStatusSrv) {
                     return RVHkRoomStatusSrv.fetchAllRoomTypes();
                 },
-                payload: function(fetchHKStaffs, RVWorkManagementSrv, $stateParams, workManagementAssets) {
+                payload: function(fetchHKStaffs, RVWorkManagementSrv, $stateParams) {
                     var unassignedRoomsParam = {
                         date: $stateParams.date
                     };
@@ -166,12 +189,12 @@ angular.module('housekeepingModule', [])
             templateUrl: '/assets/partials/workManagement/rvWorkManagementSingleSheet.html',
             controller: 'RVWorkManagementSingleSheetCtrl',
             resolve: {
-                wmWorkSheet: function(RVWorkManagementSrv, $stateParams, workManagementAssets) {
+                wmWorkSheet: function(RVWorkManagementSrv, $stateParams) {
                     return RVWorkManagementSrv.fetchWorkSheet({
                         id: $stateParams.id
                     });
                 },
-                allUnassigned: function(RVWorkManagementSrv, $stateParams, workManagementAssets) {
+                allUnassigned: function(RVWorkManagementSrv, $stateParams) {
                     return RVWorkManagementSrv.fetchAllUnassigned({
                         date: $stateParams.date
                     });

@@ -23,9 +23,12 @@ admin.directive('adDropdownName', function($timeout) {
             prefixValue: '@',
             labelProperties: '=',
             isDisabled: '=',
-            changeHandler: '='
+            changeHandler: '=',
+            changeHandlerParam: '=',
+            skipNumberConversion: '@'
         },
         link: function($scope) {
+            
             if (typeof $scope.options !== 'undefined') {
                 if ($scope.options.hasOwnProperty('showOptionsIf')) {
                     $scope.showOptionsIf = $scope.options.showOptionsIf;
@@ -39,7 +42,7 @@ admin.directive('adDropdownName', function($timeout) {
             $scope.onChange = function() {
                 if ($scope.changeHandler) {
                     $timeout(function() {
-                        $scope.changeHandler($scope.ngModel);
+                        $scope.changeHandler($scope.ngModel, $scope.changeHandlerParam);
                     });
                 }
             };

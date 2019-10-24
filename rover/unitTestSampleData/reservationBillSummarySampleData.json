@@ -1,0 +1,803 @@
+{
+    "key_settings": "encode",
+    "hotel_selected_key_system": "",
+    "reservation_id": 2192441,
+    "icare_enabled": "false",
+    "combined_key_room_charge_create": "false",
+    "confirm_no": "100337",
+    "reservation_status": "CHECKEDOUT",
+    "room_number": "404",
+    "room_status": "NOTREADY",
+    "restrict_post": true,
+    "room_type": "STU",
+    "room_type_name": "Studio",
+    "checkin_date": "2017-12-08",
+    "checkout_date": "2017-12-09",
+    "number_of_nights": 1,
+    "fo_status": "OCCUPIED",
+    "currency_code": "ISK",
+    "is_promotions_and_email_set": false,
+    "required_signature_at": "CHECKIN",
+    "is_auto_assign_ar_numbers": "false",
+    "room_ready_status": "DIRTY",
+    "use_inspected": "true",
+    "use_pickup": "false",
+    "checkin_inspected_only": "false",
+    "enable_room_status_at_checkout": "true",
+    "is_charges_accepted_from_mobile_web": false,
+    "charges_accepted_at": "",
+    "signature_details": {
+        "is_signed": "true",
+        "signed_image": "data:image/png;base64,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IECAAAECBBIFlGyJ+FYTIECAAAECBAgQIECAAAECBAjUEFCy1bijFAQIECBAgAABAgQIECBAgAABAokCSrZEfKsJECBAgAABAgQIECBAgAABAgRqCCjZatxRCgIECBAgQIAAAQIECBAgQIAAgUQBJVsivtUECBAgQIAAAQIECBAgQIAAAQI1BJRsNe4oBQECBAgQIECAAAECBAgQIECAQKKAki0R32oCBAgQIECAAAECBAgQIECAAIEaAkq2GneUggABAgQIECBAgAABAgQIECBAIFFAyZaIbzUBAgQIECBAgAABAgQIECBAgEANASVbjTtKQYAAAQIECBAgQIAAAQIECBAgkCigZEvEt5oAAQIECBAgQIAAAQIECBAgQKCGgJKtxh2lIECAAAECBAgQIECAAAECBAgQSBRQsiXiW02AAAECBAgQIECAAAECBAgQIFBDQMlW445SECBAgAABAgQIECBAgAABAgQIJAoo2RLxrSZAgAABAgQIECBAgAABAgQIEKghoGSrcUcpCBAgQIAAAQIECBAgQIAAAQIEEgWUbIn4VhMgQIAAAQIECBAgQIAAAQIECNQQULLVuKMUBAgQIECAAAECBAgQIECAAAECiQJKtkR8qwkQIECAAAECBAgQIECAAAECBGoIKNlq3FEKAgQIECBAgAABAgQIECBAgACBRAElWyK+1QQIECBAgAABAgQIECBAgAABAjUElGw17igFAQIECBAgQIAAAQIECBAgQIBAooCSLRHfagIECBAgQIAAAQIECBAgQIAAgRoCSrYad5SCAAECBAgQIECAAAECBAgQIEAgUUDJlohvNQECBAgQIECAAAECBAgQIECAQA0BJVuNO0pBgAABAgQIECBAgAABAgQIECCQKKBkS8S3mgABAgQIECBAgAABAgQIECBAoIaAkq3GHaUgQIAAAQIECBAgQIAAAQIECBBIFFCyJeJbTYAAAQIECBAgQIAAAQIECBAgUENAyVbjjlIQIECAAAECBAgQIECAAAECBAgkCijZEvGtJkCAAAECBAgQIECAAAECBAgQqCGgZKtxRykIECBAgAABAgQIECBAgAABAgQSBZRsifhWEyBAgAABAgQIECBAgAABAgQI1BBQstW4oxQECBAgQIAAAQIECBAgQIAAAQKJAkq2RHyrCRAgQIAAAQIECBAgQIAAAQIEaggo2WrcUQoCBAgQIECAAAECBAgQIECAAIFEASVbIr7VBAgQIECAAAECBAgQIECAAAECNQSUbDXuKAUBAgQIECBAgAABAgQIECBAgECigJItEd9qAgQIECBAgAABAgQIECBAgACBGgJKthp3lIIAAQIECBAgQIAAAQIECBAgQCBRQMmWiG81AQIECBAgQIAAAQIECBAgQIBADQElW407SkGAAAECBAgQIECAAAECBAgQIJAooGRLxLeaAAECBAgQIECAAAECBAgQIECghoCSrcYdpSBAgAABAgQIECBAgAABAgQIEEgUULIl4ltNgAABAgQIECBAgAABAgQIECBQQ0DJVuOOUhAgQIAAAQIECBAgQIAAAQIECCQKKNkS8a0mQIAAAQIECBAgQIAAAQIECBCoIaBkq3FHKQgQIECAAAECBAgQIECAAAECBBIFlGyJ+FYTIECAAAECBAgQIECAAAECBAjUEFCy1bijFAQIECBAgAABAgQIECBAgAABAokCSrZEfKsJECBAgAABAgQIECBAgAABAgRqCCjZatxRCgIECBAgQIAAAQIECBAgQIAAgUQBJVsivtUECBAgQIAAAQIECBAgQIAAAQI1BJRsNe4oBQECBAgQIECAAAECBAgQIECAQKKAki0R32oCBAgQIECAAAECBAgQIECAAIEaAkq2GneUggABAgQIECBAgAABAgQIECBAIFFAyZaIbzUBAgQIECBAgAABAgQIECBAgEANASVbjTtKQYAAAQIECBAgQIAAAQIECBAgkCigZEvEt5oAAQIECBAgQIAAAQIECBAgQKCGgJKtxh2lIECAAAECBAgQIECAAAECBAgQSBRQsiXiW02AAAECBAgQIECAAAECBAgQIFBDQMlW445SECBAgAABAgQIECBAgAABAgQIJAoo2RLxrSZAgAABAgQIECBAgAABAgQIEKghoGSrcUcpCBAgQIAAAQIECBAgQIAAAQIEEgWUbIn4VhMgQIAAAQIECBAgQIAAAQIECNQQULLVuKMUBAgQIECAAAECBAgQIECAAAECiQJKtkR8qwkQIECAAAECBAgQIECAAAECBGoIKNlq3FEKAgQIECBAgAABAgQIECBAgACBRAElWyK+1QQIECBAgAABAgQIECBAgAABAjUElGw17igFAQIECBAgQIAAAQIECBAgQIBAooCSLRHfagIECBAgQIAAAQIECBAgQIAAgRoCSrYad5SCAAECBAgQIECAAAECBAgQIEAgUUDJlohvNQECBAgQIECAAAECBAgQIECAQA0BJVuNO0pBgAABAgQIECBAgAABAgQIECCQKKBkS8S3mgABAgQIECBAgAABAgQIECBAoIaAkq3GHaUgQIAAAQIECBAgQIAAAQIECBBIFFCyJeJbTYAAAQIECBAgQIAAAQIECBAgUENAyVbjjlIQIECAAAECBAgQIECAAAECBAgkCijZEvGtJkCAAAECBAgQIECAAAECBAgQqCGgZKtxRykIECBAgAABAgQIECBAgAABAgQSBZRsifhWEyBAgAABAgQIECBAgAABAgQI1BBQstW4oxQECBAgQIAAAQIECBAgQIAAAQKJAkq2RHyrCRAgQIAAAQIECBAgQIAAAQIEaggo2WrcUQoCBAgQIECAAAECBAgQIECAAIFEASVbIr7VBAgQIECAAAECBAgQIECAAAECNQSUbDXuKAUBAgQIECBAgAABAgQIECBAgECigJItEd9qAgQIECBAgAABAgQIECBAgACBGgJKthp3lIIAAQIECBAgQIAAAQIECBAgQCBRQMmWiG81AQIECBAgQIAAAQIECBAgQIBADQElW407SkGAAAECBAgQIECAAAECBAgQIJAooGRLxLeaAAECBAgQIECAAAECBAgQIECghoCSrcYdpSBAgAABAgQIECBAgAABAgQIEEgUULIl4ltNgAABAgQIECBAgAABAgQIECBQQ0DJVuOOUhAgQIAAAQIECBAgQIAAAQIECCQKKNkS8a0mQIAAAQIECBAgQIAAAQIECBCoIaBkq3FHKQgQIECAAAECBAgQIECAAAECBBIFlGyJ+FYTIECAAAECBAgQIECAAAECBAjUEFCy1bijFAQIECBAgAABAgQIECBAgAABAokCSrZEfKsJECBAgAABAgQIECBAgAABAgRqCCjZatxRCgIECBAgQIAAAQIECBAgQIAAgUQBJVsivtUECBAgQIAAAQIECBAgQIAAAQI1BJRsNe4oBQECBAgQIECAAAECBAgQIECAQKKAki0R32oCBAgQIECAAAECBAgQIECAAIEaAkq2GneUggABAgQIECBAgAABAgQIECBAIFFAyZaIbzUBAgQIECBAgAABAgQIECBAgEANASVbjTtKQYAAAQIECBAgQIAAAQIECBAgkCigZEvEt5oAAQIECBAgQIAAAQIECBAgQKCGgJKtxh2lIECAAAECBAgQIECAAAECBAgQSBRQsiXiW02AAAECBAgQIECAAAECBAgQIFBDQMlW445SECBAgAABAgQIECBAgAABAgQIJAoo2RLxrSZAgAABAgQIECBAgAABAgQIEKghoGSrcUcpCBAgQIAAAQIECBAgQIAAAQIEEgWUbIn4VhMgQIAAAQIECBAgQIAAAQIECNQQULLVuKMUBAgQIECAAAECBAgQIECAAAECiQJKtkR8qwkQIECAAAECBAgQIECAAAECBGoIKNlq3FEKAgQIECBAgAABAgQIECBAgACBRAElWyK+1QQIECBAgAABAgQIECBAgAABAjUElGw17igFAQIECBAgQIAAAQIECBAgQIBAooCSLRHfagIECBAgQIAAAQIECBAgQIAAgRoCSrYad5SCAAECBAgQIECAAAECBAgQIEAgUUDJlohvNQECBAgQIECAAAECBAgQIECAQA0BJVuNO0pBgAABAgQIECBAgAABAgQIECCQKKBkS8S3mgABAgQIECBAgAABAgQIECBAoIaAkq3GHaUgQIAAAQIECBAgQIAAAQIECBBIFFCyJeJbTYAAAQIECBAgQIAAAQIECBAgUENAyVbjjlIQIECAAAECBAgQIECAAAECBAgkCijZEvGtJkCAAAECBAgQIECAAAECBAgQqCGgZKtxRykIECBAgAABAgQIECBAgAABAgQSBZRsifhWEyBAgAABAgQIECBAgAABAgQI1BBQstW4oxQECBAgQIAAAQIECBAgQIAAAQKJAkq2RHyrCRAgQIAAAQIECBAgQIAAAQIEaggo2WrcUQoCBAgQIECAAAECBAgQIECAAIFEASVbIr7VBAgQIECAAAECBAgQIECAAAECNQSUbDXuKAUBAgQIECBAgAABAgQIECBAgECigJItEd9qAgQIECBAgAABAgQIECBAgACBGgJKthp3lIIAAQIECBAgQIAAAQIECBAgQCBRQMmWiG81AQIECBAgQIAAAQIECBAgQIBADQElW407SkGAAAECBAgQIECAAAECBAgQIJAooGRLxLeaAAECBAgQIECAAAECBAgQIECghoCSrcYdpSBAgAABAgQIECBAgAABAgQIEEgUULIl4ltNgAABAgQIECBAgAABAgQIECBQQ0DJVuOOUhAgQIAAAQIECBAgQIAAAQIECCQKKNkS8a0mQIAAAQIECBAgQIAAAQIECBCoIaBkq3FHKQgQIECAAAECBAgQIECAAAECBBIFlGyJ+FYTIECAAAECBAgQIECAAAECBAjUEFCy1bijFAQIECBAgAABAgQIECBAgAABAokCSrZEfKsJECBAgAABAgQIECBAgAABAgRqCCjZatxRCgIECBAgQIAAAQIECBAgQIAAgUQBJVsivtUECBAgQIAAAQIECBAgQIAAAQI1BJRsNe4oBQECBAgQIECAAAECBAgQIECAQKKAki0R32oCBAgQIECAAAECBAgQIECAAIEaAkq2GneUggABAgQIECBAgAABAgQIECBAIFFAyZaIbzUBAgQIECBAgAABAgQIECBAgEANASVbjTtKQYAAAQIECBAgQIAAAQIECBAgkCigZEvEt5oAAQIECBAgQIAAAQIECBAgQKCGgJKtxh2lIECAAAECBAgQIECAAAECBAgQSBRQsiXiW02AAAECBAgQIECAAAECBAgQIFBDQMlW445SECBAgAABAgQIECBAgAABAgQIJAoo2RLxrSZAgAABAgQIECBAgAABAgQIEKghoGSrcUcpCBAgQIAAAQIECBAgQIAAAQIEEgWUbIn4VhMgQIAAAQIECBAgQIAAAQIECNQQULLVuKMUBAgQIECAAAECBAgQIECAAAECiQJKtkR8qwkQIECAAAECBAgQIECAAAECBGoIKNlq3FEKAgQIECBAgAABAgQIECBAgACBRAElWyK+1QQIECBAgAABAgQIECBAgAABAjUElGw17igFAQIECBAgQIAAAQIECBAgQIBAooCSLRHfagIECBAgQIAAAQIECBAgQIAAgRoCSrYad5SCAAECBAgQIECAAAECBAgQIEAgUUDJlohvNQECBAgQIECAAAECBAgQIECAQA0BJVuNO0pBgAABAgQIECBAgAABAgQIECCQKKBkS8S3mgABAgQIECBAgAABAgQIECBAoIaAkq3GHaUgQIAAAQIECBAgQIAAAQIECBBIFFCyJeJbTYAAAQIECBAgQIAAAQIECBAgUENAyVbjjlIQIECAAAECBAgQIECAAAECBAgkCijZEvGtJkCAAAECBAgQIECAAAECBAgQqCGgZKtxRykIECBAgAABAgQIECBAgAABAgQSBZRsifhWEyBAgAABAgQIECBAgAABAgQI1BBQstW4oxQECBAgQIAAAQIECBAgQIAAAQKJAkq2RHyrCRAgQIAAAQIECBAgQIAAAQIEaggo2WrcUQoCBAgQIECAAAECBAgQIECAAIFEASVbIr7VBAgQIECAAAECBAgQIECAAAECNQSUbDXuKAUBAgQIECBAgAABAgQIEKZ0yoAAAAY1SURBVCBAgECigJItEd9qAgQIECBAgAABAgQIECBAgACBGgJKthp3lIIAAQIECBAgQIAAAQIECBAgQCBRQMmWiG81AQIECBAgQIAAAQIECBAgQIBADQElW407SkGAAAECBAgQIECAAAECBAgQIJAooGRLxLeaAAECBAgQIECAAAECBAgQIECghoCSrcYdpSBAgAABAgQIECBAgAABAgQIEEgUULIl4ltNgAABAgQIECBAgAABAgQIECBQQ0DJVuOOUhAgQIAAAQIECBAgQIAAAQIECCQKKNkS8a0mQIAAAQIECBAgQIAAAQIECBCoIaBkq3FHKQgQIECAAAECBAgQIECAAAECBBIFlGyJ+FYTIECAAAECBAgQIECAAAECBAjUEFCy1bijFAQIECBAgAABAgQIECBAgAABAokCSrZEfKsJECBAgAABAgQIECBAgAABAgRqCCjZatxRCgIECBAgQIAAAQIECBAgQIAAgUQBJVsivtUECBAgQIAAAQIECBAgQIAAAQI1BJRsNe4oBQECBAgQIECAAAECBAgQIECAQKKAki0R32oCBAgQIECAAAECBAgQIECAAIEaAkq2GneUggABAgQIECBAgAABAgQIECBAIFFAyZaIbzUBAgQIECBAgAABAgQIECBAgEANASVbjTtKQYAAAQIECBAgQIAAAQIECBAgkCigZEvEt5oAAQIECBAgQIAAAQIECBAgQKCGgJKtxh2lIECAAAECBAgQIECAAAECBAgQSBRQsiXiW02AAAECBAgQIECAAAECBAgQIFBDQMlW445SECBAgAABAgQIECBAgAABAgQIJAoo2RLxrSZAgAABAgQIECBAgAABAgQIEKghoGSrcUcpCBAgQIAAAQIECBAgQIAAAQIEEgWUbIn4VhMgQIAAAQIECBAgQIAAAQIECNQQULLVuKMUBAgQIECAAAECBAgQIECAAAECiQJKtkR8qwkQIECAAAECBAgQIECAAAECBGoIKNlq3FEKAgQIECBAgAABAgQIECBAgACBRAElWyK+1QQIECBAgAABAgQIECBAgAABAjUElGw17igFAQIECBAgQIAAAQIECBAgQIBAooCSLRHfagIECBAgQIAAAQIECBAgQIAAgRoCSrYad5SCAAECBAgQIECAAAECBAgQIEAgUUDJlohvNQECBAgQIECAAAECBAgQIECAQA0BJVuNO0pBgAABAgQIECBAgAABAgQIECCQKKBkS8S3mgABAgQIECBAgAABAgQIECBAoIaAkq3GHaUgQIAAAQIECBAgQIAAAQIECBBIFFCyJeJbTYAAAQIECBAgQIAAAQIECBAgUENAyVbjjlIQIECAAAECBAgQIECAAAECBAgkCijZEvGtJkCAAAECBAgQIECAAAECBAgQqCGgZKtxRykIECBAgAABAgQIECBAgAABAgQSBZRsifhWEyBAgAABAgQIECBAgAABAgQI1BBQstW4oxQECBAgQIAAAQIECBAgQIAAAQKJAkq2RHyrCRAgQIAAAQIECBAgQIAAAQIEaggo2WrcUQoCBAgQIECAAAECBAgQIECAAIFEASVbIr7VBAgQIECAAAECBAgQIECAAAECNQSUbDXuKAUBAgQIECBAgAABAgQIECBAgECigJItEd9qAgQIECBAgAABAgQIECBAgACBGgJKthp3lIIAAQIECBAgQIAAAQIECBAgQCBRQMmWiG81AQIECBAgQIAAAQIECBAgQIBADQElW407SkGAAAECBAgQIECAAAECBAgQIJAooGRLxLeaAAECBAgQIECAAAECBAgQIECghoCSrcYdpSBAgAABAgQIECBAgAABAgQIEEgUULIl4ltNgAABAgQIECBAgAABAgQIECBQQ0DJVuOOUhAgQIAAAQIECBAgQIAAAQIECCQKKNkS8a0mQIAAAQIECBAgQIAAAQIECBCoIaBkq3FHKQgQIECAAAECBAgQIECAAAECBBIFlGyJ+FYTIECAAAECBAgQIECAAAECBAjUEFCy1bijFAQIECBAgAABAgQIECBAgAABAokCSrZEfKsJECBAgAABAgQIECBAgAABAgRqCCjZatxRCgIECBAgQIAAAQIECBAgQIAAgUSB/wWQ7nBVmpivDQAAAABJRU5ErkJggg==",
+        "signed_date": "2018-04-24",
+        "signed_time": "01:13 PM",
+        "signed_time_utc": "11:13 AM"
+    },
+    "sharer_information": [],
+    "is_advance_bill": true,
+    "is_rate_suppressed_present_in_stay_dates": false,
+    "reservation_balance": "-37.00",
+    "bills": [{
+        "is_transactions_exist": true,
+        "is_routing_exist": false,
+        "bill_id": 113087,
+        "is_active": true,
+        "is_payment_exist": true,
+        "is_moved_to_ar": false,
+        "is_control_code_exist": false,
+        "is_account_attached": false,
+        "account_id": null,
+        "bill_number": "1",
+        "total_amount": "65.00",
+        "total_payments": "102.00",
+        "credit_card_details": {
+            "payment_type": "CA",
+            "payment_type_description": "Cash Payment",
+            "card_code": "",
+            "card_number": "",
+            "card_expiry": "",
+            "payment_id": 268612,
+            "card_name": null,
+            "is_swiped": false,
+            "fees_information": {},
+            "auth_color_code": "black"
+        },
+        "guest_or_company_name": "",
+        "has_crossed_credit_limit": false,
+        "is_allow_direct_debit": true,
+        "group_items": [{
+            "title": "Tax",
+            "amount": "10.91",
+            "expense_details": [{
+                "expense": "0.91",
+                "location": "Inclusive Tax",
+                "date": "2017-12-08",
+                "transaction_id": null,
+                "id": 173777
+            }, {
+                "expense": "10.0",
+                "location": "Swatch Bharath Tax",
+                "date": "2017-12-08",
+                "transaction_id": null,
+                "id": 173764
+            }]
+        }, {
+            "title": "Room",
+            "amount": "19.09",
+            "expense_details": [{
+                "expense": "5.0",
+                "location": "Room rent with tourist tax",
+                "date": "2017-12-08",
+                "transaction_id": null,
+                "id": 173778
+            }, {
+                "expense": "9.09",
+                "location": "Accommodation Charge with Incl Tax",
+                "date": "2017-12-08",
+                "transaction_id": null,
+                "id": 173776
+            }, {
+                "expense": "5.0",
+                "location": "Room rent with tourist tax",
+                "date": "2017-12-08",
+                "transaction_id": null,
+                "id": 173775
+            }]
+        }, {
+            "title": "Add-On",
+            "amount": "35.00",
+            "expense_details": [{
+                "expense": "10.0",
+                "location": "Parking",
+                "date": "2017-12-08",
+                "transaction_id": null,
+                "id": 173765
+            }, {
+                "expense": "25.0",
+                "location": "Add-On",
+                "date": "2017-12-08",
+                "transaction_id": null,
+                "id": 173763
+            }]
+        }],
+        "is_rate_suppressed": false,
+        "total_fees": [{
+            "total_amount": "65.00",
+            "balance_amount": "-37.00",
+            "is_rate_suppressed": false,
+            "fees_date": "2017-12-08",
+            "fees_details": [{
+                "type": {
+                    "created_at": "2014-01-03T14:50:34Z",
+                    "description": "PAYMENT",
+                    "id": 2,
+                    "updated_at": "2014-01-03T14:50:34Z",
+                    "value": "PAYMENT"
+                },
+                "date": "2017-12-08",
+                "description": [{
+                    "parent_transaction_exist": false,
+                    "item_description": null,
+                    "fees_desc": "Cash Payment",
+                    "charge_code": "201",
+                    "charge_code_type": "PAYMENT",
+                    "card_number": null
+                }],
+                "credits": "12.00",
+                "is_rate_suppressed": false,
+                "transaction_id": null,
+                "id": 173507,
+                "item_ids": [],
+                "reference_text": "",
+                "reference_text_on_edit": null,
+                "show_ref_on_invoice": false,
+                "adjustment_reason": null,
+                "is_description_edited": false
+            }, {
+                "type": {
+                    "created_at": "2014-01-03T14:50:34Z",
+                    "description": "ADDON",
+                    "id": 3,
+                    "updated_at": "2014-01-03T14:50:34Z",
+                    "value": "ADDON"
+                },
+                "date": "2017-12-08",
+                "description": [{
+                    "parent_transaction_exist": false,
+                    "item_description": "Pepsi",
+                    "fees_desc": "Add-On",
+                    "charge_code": "AD1234",
+                    "charge_code_type": "ADDON",
+                    "fees_amount": "25.00",
+                    "is_rate_suppressed": false
+                }],
+                "credits": "",
+                "is_rate_suppressed": false,
+                "transaction_id": null,
+                "id": 173763,
+                "item_ids": [],
+                "reference_text": "",
+                "reference_text_on_edit": "",
+                "show_ref_on_invoice": true,
+                "adjustment_reason": null,
+                "is_description_edited": false
+            }, {
+                "type": {
+                    "created_at": "2014-01-03T14:50:34Z",
+                    "description": "TAX",
+                    "id": 1,
+                    "updated_at": "2014-01-03T14:50:34Z",
+                    "value": "TAX"
+                },
+                "date": "2017-12-08",
+                "description": [{
+                    "parent_transaction_exist": true,
+                    "item_description": null,
+                    "fees_desc": "Swatch Bharath Tax",
+                    "charge_code": "Swatch Bharath Tax",
+                    "charge_code_type": "TAX",
+                    "fees_amount": "10.00",
+                    "is_rate_suppressed": false
+                }],
+                "credits": "",
+                "is_rate_suppressed": false,
+                "transaction_id": null,
+                "id": 173764,
+                "item_ids": [],
+                "reference_text": "",
+                "reference_text_on_edit": "",
+                "show_ref_on_invoice": true,
+                "adjustment_reason": null,
+                "is_description_edited": false
+            }, {
+                "type": {
+                    "created_at": "2014-01-03T14:50:34Z",
+                    "description": "OTHERS",
+                    "id": 4,
+                    "updated_at": "2014-01-03T14:50:34Z",
+                    "value": "OTHERS"
+                },
+                "date": "2017-12-08",
+                "description": [{
+                    "parent_transaction_exist": false,
+                    "item_description": "Parking",
+                    "fees_desc": "Parking",
+                    "charge_code": "Parking",
+                    "charge_code_type": "OTHERS",
+                    "fees_amount": "10.00",
+                    "is_rate_suppressed": false
+                }],
+                "credits": "",
+                "is_rate_suppressed": false,
+                "transaction_id": null,
+                "id": 173765,
+                "item_ids": [],
+                "reference_text": "",
+                "reference_text_on_edit": "",
+                "show_ref_on_invoice": true,
+                "adjustment_reason": null,
+                "is_description_edited": false
+            }, {
+                "type": {
+                    "created_at": "2014-01-03T14:50:34Z",
+                    "description": "PAYMENT",
+                    "id": 2,
+                    "updated_at": "2014-01-03T14:50:34Z",
+                    "value": "PAYMENT"
+                },
+                "date": "2017-12-08",
+                "description": [{
+                    "parent_transaction_exist": false,
+                    "item_description": null,
+                    "fees_desc": "Cash Payment",
+                    "charge_code": "201",
+                    "charge_code_type": "PAYMENT",
+                    "card_number": null
+                }],
+                "credits": "33.00",
+                "is_rate_suppressed": false,
+                "transaction_id": null,
+                "id": 173769,
+                "item_ids": [],
+                "reference_text": "",
+                "reference_text_on_edit": null,
+                "show_ref_on_invoice": true,
+                "adjustment_reason": null,
+                "is_description_edited": false
+            }, {
+                "type": {
+                    "created_at": "2014-01-03T14:50:34Z",
+                    "description": "PAYMENT",
+                    "id": 2,
+                    "updated_at": "2014-01-03T14:50:34Z",
+                    "value": "PAYMENT"
+                },
+                "date": "2017-12-08",
+                "description": [{
+                    "parent_transaction_exist": false,
+                    "item_description": null,
+                    "fees_desc": "Cash Payment",
+                    "charge_code": "201",
+                    "charge_code_type": "PAYMENT",
+                    "card_number": null
+                }],
+                "credits": "10.00",
+                "is_rate_suppressed": false,
+                "transaction_id": null,
+                "id": 173772,
+                "item_ids": [],
+                "reference_text": "",
+                "reference_text_on_edit": null,
+                "show_ref_on_invoice": true,
+                "adjustment_reason": null,
+                "is_description_edited": false
+            }, {
+                "type": {
+                    "created_at": "2014-02-24T12:29:22Z",
+                    "description": "ROOM",
+                    "id": 5,
+                    "updated_at": "2014-02-24T12:29:22Z",
+                    "value": "ROOM"
+                },
+                "date": "2017-12-08",
+                "description": [{
+                    "parent_transaction_exist": false,
+                    "item_description": null,
+                    "fees_desc": "Room rent with tourist tax",
+                    "charge_code": "4507",
+                    "charge_code_type": "ROOM",
+                    "fees_amount": "5.00",
+                    "is_rate_suppressed": false
+                }],
+                "credits": "",
+                "is_rate_suppressed": false,
+                "transaction_id": null,
+                "id": 173775,
+                "item_ids": [],
+                "reference_text": "",
+                "reference_text_on_edit": null,
+                "show_ref_on_invoice": null,
+                "adjustment_reason": null,
+                "is_description_edited": false
+            }, {
+                "type": {
+                    "created_at": "2014-02-24T12:29:22Z",
+                    "description": "ROOM",
+                    "id": 5,
+                    "updated_at": "2014-02-24T12:29:22Z",
+                    "value": "ROOM"
+                },
+                "date": "2017-12-08",
+                "description": [{
+                    "parent_transaction_exist": false,
+                    "item_description": null,
+                    "fees_desc": "Accommodation Charge with Incl Tax",
+                    "charge_code": "Accommodation Charge with Incl Tax",
+                    "charge_code_type": "ROOM",
+                    "fees_amount": "10.00",
+                    "is_rate_suppressed": false
+                }],
+                "credits": "",
+                "is_rate_suppressed": false,
+                "transaction_id": null,
+                "id": 173776,
+                "item_ids": [],
+                "reference_text": "",
+                "reference_text_on_edit": null,
+                "show_ref_on_invoice": null,
+                "adjustment_reason": null,
+                "is_description_edited": false
+            }, {
+                "type": {
+                    "created_at": "2014-02-24T12:29:22Z",
+                    "description": "ROOM",
+                    "id": 5,
+                    "updated_at": "2014-02-24T12:29:22Z",
+                    "value": "ROOM"
+                },
+                "date": "2017-12-08",
+                "description": [{
+                    "parent_transaction_exist": false,
+                    "item_description": null,
+                    "fees_desc": "Room rent with tourist tax",
+                    "charge_code": "4507",
+                    "charge_code_type": "ROOM",
+                    "fees_amount": "5.00",
+                    "is_rate_suppressed": false
+                }],
+                "credits": "",
+                "is_rate_suppressed": false,
+                "transaction_id": null,
+                "id": 173778,
+                "item_ids": [],
+                "reference_text": "",
+                "reference_text_on_edit": null,
+                "show_ref_on_invoice": null,
+                "adjustment_reason": null,
+                "is_description_edited": false
+            }, {
+                "type": {
+                    "created_at": "2014-01-03T14:50:34Z",
+                    "description": "PAYMENT",
+                    "id": 2,
+                    "updated_at": "2014-01-03T14:50:34Z",
+                    "value": "PAYMENT"
+                },
+                "date": "2017-12-08",
+                "description": [{
+                    "parent_transaction_exist": false,
+                    "item_description": null,
+                    "fees_desc": "Cash Payment",
+                    "charge_code": "201",
+                    "charge_code_type": "PAYMENT",
+                    "card_number": null
+                }],
+                "credits": "25.00",
+                "is_rate_suppressed": false,
+                "transaction_id": null,
+                "id": 173779,
+                "item_ids": [],
+                "reference_text": "",
+                "reference_text_on_edit": null,
+                "show_ref_on_invoice": true,
+                "adjustment_reason": null,
+                "is_description_edited": false
+            }, {
+                "type": {
+                    "created_at": "2014-01-03T14:50:34Z",
+                    "description": "PAYMENT",
+                    "id": 2,
+                    "updated_at": "2014-01-03T14:50:34Z",
+                    "value": "PAYMENT"
+                },
+                "date": "2017-12-08",
+                "description": [{
+                    "parent_transaction_exist": false,
+                    "item_description": null,
+                    "fees_desc": "Cash Payment",
+                    "charge_code": "201",
+                    "charge_code_type": "PAYMENT",
+                    "card_number": null
+                }],
+                "credits": "22.00",
+                "is_rate_suppressed": false,
+                "transaction_id": null,
+                "id": 173780,
+                "item_ids": [],
+                "reference_text": "",
+                "reference_text_on_edit": null,
+                "show_ref_on_invoice": true,
+                "adjustment_reason": null,
+                "is_description_edited": false
+            }]
+        }],
+        "days": [{
+            "date": "2017-12-08",
+            "amount": "5.00",
+            "is_rate_suppressed": false,
+            "rate_name": "Rate with Tourist Tax",
+            "rate_description": "Rate with Tourist Tax",
+            "room_type_name": "Studio",
+            "room_type_description": ""
+        }, {
+            "date": "2017-12-09",
+            "amount": "5.00",
+            "is_rate_suppressed": false,
+            "rate_name": "Rate with Tourist Tax",
+            "rate_description": "Rate with Tourist Tax",
+            "room_type_name": "Studio",
+            "room_type_description": ""
+        }],
+        "ar_number": null
+    }, {
+        "is_transactions_exist": true,
+        "is_routing_exist": true,
+        "bill_id": 113122,
+        "is_active": false,
+        "is_payment_exist": true,
+        "is_moved_to_ar": true,
+        "is_control_code_exist": false,
+        "is_account_attached": true,
+        "account_id": 240,
+        "bill_number": "2",
+        "total_amount": "44.00",
+        "total_payments": "44.00",
+        "credit_card_details": {
+            "payment_type": "DB",
+            "payment_type_description": "Direct Bill",
+            "card_code": "",
+            "card_number": "",
+            "card_expiry": "",
+            "payment_id": 274144,
+            "card_name": null,
+            "is_swiped": false,
+            "fees_information": {},
+            "auth_color_code": "black"
+        },
+        "guest_or_company_name": "Stayntouch CC",
+        "has_crossed_credit_limit": false,
+        "is_allow_direct_debit": true,
+        "group_items": [{
+            "title": "Food & Beverages",
+            "amount": "34.00",
+            "expense_details": [{
+                "expense": "34.0",
+                "location": "Charge for drinks",
+                "date": "2017-12-08",
+                "transaction_id": null,
+                "id": 173767
+            }]
+        }, {
+            "title": "Add-On",
+            "amount": "10.00",
+            "expense_details": [{
+                "expense": "10.0",
+                "location": "Parking",
+                "date": "2017-12-08",
+                "transaction_id": null,
+                "id": 173766
+            }]
+        }],
+        "is_rate_suppressed": false,
+        "total_fees": [{
+            "total_amount": "44.00",
+            "balance_amount": "0.00",
+            "is_rate_suppressed": false,
+            "fees_date": "2017-12-08",
+            "fees_details": [{
+                "type": {
+                    "created_at": "2014-01-03T14:50:34Z",
+                    "description": "OTHERS",
+                    "id": 4,
+                    "updated_at": "2014-01-03T14:50:34Z",
+                    "value": "OTHERS"
+                },
+                "date": "2017-12-08",
+                "description": [{
+                    "parent_transaction_exist": false,
+                    "item_description": "Parking",
+                    "fees_desc": "Parking",
+                    "charge_code": "Parking",
+                    "charge_code_type": "OTHERS",
+                    "fees_amount": "10.00",
+                    "is_rate_suppressed": false
+                }],
+                "credits": "",
+                "is_rate_suppressed": false,
+                "transaction_id": null,
+                "id": 173766,
+                "item_ids": [],
+                "reference_text": "",
+                "reference_text_on_edit": "",
+                "show_ref_on_invoice": true,
+                "adjustment_reason": null,
+                "is_description_edited": false
+            }, {
+                "type": {
+                    "created_at": "2014-01-03T14:50:34Z",
+                    "description": "ADDON",
+                    "id": 3,
+                    "updated_at": "2014-01-03T14:50:34Z",
+                    "value": "ADDON"
+                },
+                "date": "2017-12-08",
+                "description": [{
+                    "parent_transaction_exist": false,
+                    "item_description": "Sprite",
+                    "fees_desc": "Charge for drinks",
+                    "charge_code": "Drinks",
+                    "charge_code_type": "ADDON",
+                    "fees_amount": "34.00",
+                    "is_rate_suppressed": false
+                }],
+                "credits": "",
+                "is_rate_suppressed": false,
+                "transaction_id": null,
+                "id": 173767,
+                "item_ids": [],
+                "reference_text": "",
+                "reference_text_on_edit": "",
+                "show_ref_on_invoice": true,
+                "adjustment_reason": null,
+                "is_description_edited": false
+            }, {
+                "type": {
+                    "created_at": "2014-01-03T14:50:34Z",
+                    "description": "PAYMENT",
+                    "id": 2,
+                    "updated_at": "2014-01-03T14:50:34Z",
+                    "value": "PAYMENT"
+                },
+                "date": "2017-12-08",
+                "description": [{
+                    "parent_transaction_exist": false,
+                    "item_description": null,
+                    "fees_desc": "Direct Bill",
+                    "charge_code": "210",
+                    "charge_code_type": "PAYMENT",
+                    "card_number": null
+                }],
+                "credits": "44.00",
+                "is_rate_suppressed": false,
+                "transaction_id": null,
+                "id": 173770,
+                "item_ids": [],
+                "reference_text": "",
+                "reference_text_on_edit": null,
+                "show_ref_on_invoice": true,
+                "adjustment_reason": null,
+                "is_description_edited": false
+            }]
+        }],
+        "days": [],
+        "ar_number": "112121221"
+    }, {
+        "is_transactions_exist": true,
+        "is_routing_exist": false,
+        "bill_id": 113204,
+        "is_active": true,
+        "is_payment_exist": true,
+        "is_moved_to_ar": false,
+        "is_control_code_exist": false,
+        "is_account_attached": false,
+        "account_id": null,
+        "bill_number": "3",
+        "total_amount": "10.00",
+        "total_payments": "10.00",
+        "credit_card_details": {
+            "payment_type": "CK",
+            "payment_type_description": "Check Payment",
+            "card_code": "",
+            "card_number": "",
+            "card_expiry": "",
+            "payment_id": 274145,
+            "card_name": null,
+            "is_swiped": false,
+            "fees_information": {},
+            "auth_color_code": "black"
+        },
+        "guest_or_company_name": "",
+        "has_crossed_credit_limit": false,
+        "is_allow_direct_debit": true,
+        "group_items": [{
+            "title": "Add-On",
+            "amount": "10.00",
+            "expense_details": [{
+                "expense": "10.0",
+                "location": "Parking",
+                "date": "2017-12-08",
+                "transaction_id": null,
+                "id": 173768
+            }]
+        }],
+        "is_rate_suppressed": false,
+        "total_fees": [{
+            "total_amount": "10.00",
+            "balance_amount": "0.00",
+            "is_rate_suppressed": false,
+            "fees_date": "2017-12-08",
+            "fees_details": [{
+                "type": {
+                    "created_at": "2014-01-03T14:50:34Z",
+                    "description": "OTHERS",
+                    "id": 4,
+                    "updated_at": "2014-01-03T14:50:34Z",
+                    "value": "OTHERS"
+                },
+                "date": "2017-12-08",
+                "description": [{
+                    "parent_transaction_exist": false,
+                    "item_description": "Parking",
+                    "fees_desc": "Parking",
+                    "charge_code": "Parking",
+                    "charge_code_type": "OTHERS",
+                    "fees_amount": "10.00",
+                    "is_rate_suppressed": false
+                }],
+                "credits": "",
+                "is_rate_suppressed": false,
+                "transaction_id": null,
+                "id": 173768,
+                "item_ids": [],
+                "reference_text": "",
+                "reference_text_on_edit": "",
+                "show_ref_on_invoice": true,
+                "adjustment_reason": null,
+                "is_description_edited": false
+            }, {
+                "type": {
+                    "created_at": "2014-01-03T14:50:34Z",
+                    "description": "PAYMENT",
+                    "id": 2,
+                    "updated_at": "2014-01-03T14:50:34Z",
+                    "value": "PAYMENT"
+                },
+                "date": "2017-12-08",
+                "description": [{
+                    "parent_transaction_exist": false,
+                    "item_description": null,
+                    "fees_desc": "Check  Payment",
+                    "charge_code": "202",
+                    "charge_code_type": "PAYMENT",
+                    "card_number": null
+                }],
+                "credits": "10.00",
+                "is_rate_suppressed": false,
+                "transaction_id": null,
+                "id": 173771,
+                "item_ids": [],
+                "reference_text": "",
+                "reference_text_on_edit": null,
+                "show_ref_on_invoice": true,
+                "adjustment_reason": null,
+                "is_description_edited": false
+            }]
+        }],
+        "days": [],
+        "ar_number": null
+    }, {
+        "is_transactions_exist": false,
+        "is_routing_exist": true,
+        "bill_id": 113205,
+        "is_active": true,
+        "is_payment_exist": false,
+        "is_moved_to_ar": false,
+        "is_control_code_exist": false,
+        "is_account_attached": false,
+        "account_id": null,
+        "bill_number": "4",
+        "credit_card_details": {
+            "payment_type": "CA",
+            "payment_type_description": "Cash Payment",
+            "card_code": "",
+            "card_number": "",
+            "card_expiry": "",
+            "payment_id": 274149,
+            "card_name": null,
+            "is_swiped": false,
+            "fees_information": {},
+            "auth_color_code": "black"
+        },
+        "guest_or_company_name": "Dennis J k",
+        "has_crossed_credit_limit": false,
+        "is_allow_direct_debit": true,
+        "group_items": [],
+        "total_amount": "0.00",
+        "total_payments": "0.00",
+        "is_rate_suppressed": false,
+        "total_fees": [{
+            "total_amount": "0.00",
+            "balance_amount": "0.00",
+            "is_rate_suppressed": false,
+            "fees_date": "2017-12-08",
+            "fees_details": []
+        }],
+        "days": [],
+        "ar_number": null
+    }, {
+        "is_transactions_exist": false,
+        "is_routing_exist": false,
+        "bill_id": 113212,
+        "is_active": true,
+        "is_payment_exist": false,
+        "is_moved_to_ar": false,
+        "is_control_code_exist": false,
+        "is_account_attached": false,
+        "account_id": null,
+        "bill_number": "5",
+        "credit_card_details": {},
+        "guest_or_company_name": "",
+        "has_crossed_credit_limit": false,
+        "is_allow_direct_debit": true,
+        "group_items": [],
+        "total_amount": "0.00",
+        "total_payments": "0.00",
+        "is_rate_suppressed": false,
+        "total_fees": [{
+            "total_amount": "0.00",
+            "balance_amount": "0.00",
+            "is_rate_suppressed": false,
+            "fees_date": "2017-12-08",
+            "fees_details": []
+        }],
+        "days": [],
+        "ar_number": null
+    }],
+    "number_of_bills": 5,
+    "routing_array": [{
+        "routing_id": 11977,
+        "bill_number": "2",
+        "details": "1003",
+        "guest_or_company": "",
+        "room_no": ""
+    }, {
+        "routing_id": 11984,
+        "bill_number": "4",
+        "details": "Tax",
+        "guest_or_company": "Dennis J k",
+        "room_no": ""
+    }],
+    "incoming_routing_array": [],
+    "account_id": 240,
+    "ar_number": "112121221",
+    "is_hourly": false,
+    "deposit_amount": "0.00",
+    "is_disabled_terms_conditions_checkin": "false",
+    "is_disabled_cc_swipe": true,
+    "is_early_departure_penalty_disabled": false,
+    "is_res_posting_control_disabled": true,
+    "is_linked_to_group_account": false,
+    "routing_info": {
+        "incoming_from_room": false,
+        "out_going_to_room": true,
+        "out_going_to_comp_tra": true
+    },
+    "hide_rates": null,
+    "is_upsell_available": false,
+    "is_show_registration_card_button": false,
+    "is_remote_encoder_enabled": false,
+    "is_eod_in_progress": false,
+    "is_eod_manual_started": false,
+    "is_eod_failed": true,
+    "is_eod_process_running": true
+}

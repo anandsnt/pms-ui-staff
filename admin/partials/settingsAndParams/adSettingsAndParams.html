@@ -6,14 +6,13 @@
 				<a id="go_back" data-type="load-details" class="action back" ng-click="goBackToPreviousState()"translate>BACK</a>
 			</header>
 			<section class="content-scroll">
+
 				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 				<form  class="form float" >
 					<div class="form-title full-width">
 						<h3><span translate>CHANGE_BUSSINESS_DAY</span></h3>
 					</div>
 					<fieldset class="holder left">
-						<div></div>
-
 						<!-- Switch -->
 						<ad-toggle-button is-checked=" data.is_auto_change_bussiness_date" label="Auto Change Business Date"></ad-toggle-button>
 						<div class="entry">
@@ -75,19 +74,64 @@
 
 					</fieldset>
 
-					<div class="form-title full-width">
-						<h3><span translate>PAYMENT_GATEWAY_SETTINGS</span></h3>
-					</div>
-					<fieldset class="holder left">
-						<ad-toggle-button div-class="full-width" is-checked="check_guest_auth_for_interface_postings" label="{{'CHECK_AUTH_INTERFACE' | translate }}"></ad-toggle-button>
-					</fieldset>
+                    <fieldset class="holder left pull-left">
+                        <div class="form-title full-width">
+                            <h3><span translate>PAYMENT_GATEWAY_SETTINGS</span></h3>
+                        </div>
+                        <ad-toggle-button div-class="full-width" is-checked="check_guest_auth_for_interface_postings" label="{{'CHECK_AUTH_INTERFACE' | translate }}"></ad-toggle-button>
+                    </fieldset>
 
+                    <fieldset class="holder pull-right">
+                        <div class="form-title full-width">
+                            <h3><span translate>AUTO_CHARGE</span></h3>
+                        </div>
+                        <ad-toggle-button div-class="full-width" is-checked="auto_charge_deposit" label="{{'AUTO_CHARGE_DEPOSIT' | translate }}"></ad-toggle-button>
+                    </fieldset>
 
-					<div class="actions float">
-						<button type="button" id="cancel" class="button blank" ng-click="goBackToPreviousState()"translate>
+                    <fieldset class="holder left pull-left">
+                        <div class="form-title full-width">
+                            <h3><span translate>MULTI_CURRENCY</span></h3>
+                        </div>
+                        <ad-toggle-button div-class="full-width" is-checked="is_multi_currency_enabled" label="{{'ENABLE_MULTIPLE_CURRENCIES' | translate }}"></ad-toggle-button>
+
+                        <div class="entry" ng-show="is_multi_currency_enabled">
+							<label> Hotel Invoice Currency <strong>*</strong> </label>
+							<div class="select">
+								<select 
+										ng-model="invoice_currency"
+										ng-options="currency.id as currency.code for currency in currency_list">
+										<option value="">Select Invoice Currency</option>
+								</select>
+							</div>
+						</div>
+						<div class="entry full-width actions_margin_top" ng-show="is_multi_currency_enabled">
+							<label> Hotel Rate Currencies <strong>*</strong> </label>
+							<div id="available-charge-codes" class="boxes col2">
+								<ad-checkbox ng-repeat="currency in rate_currency_list"
+								is-checked="currency.is_selected"
+								label="{{currency.code +' - ' + currency.symbol}}"
+								parent-label-class="room-likes" span-class="checkbox-background"
+								on-click="selectedRateCurrency(currency.id)"></ad-checkbox>
+							</div>
+						</div>
+
+						<div class="entry full-width actions_margin_top" ng-show="is_multi_currency_enabled">
+							<label> Hotel Payment Currencies <strong>*</strong> </label>
+							<div id="available-charge-codes" class="boxes col2">
+								<ad-checkbox ng-repeat="currency in payment_currency_list"
+								is-checked="currency.is_selected"
+								label="{{currency.code +' - ' + currency.symbol}}"
+								parent-label-class="room-likes" span-class="checkbox-background"
+								on-click="selectedPaymentCurrency(currency.id)"></ad-checkbox>
+							</div>
+						</div>					
+           		  
+            		</fieldset>
+					<div class="actions">
+						<button type="button" id="cancel" class="button blank" ng-click="goBackToPreviousState()" translate>
 							CANCEL
 						</button>
-						<button type="button" id="save" class="button green" ng-click="saveClick()"translate>
+						<button type="button" id="save" class="button green" ng-click="saveClick()" translate>
 							SAVE_CHANGES
 						</button>
 					</div>

@@ -1,0 +1,130 @@
+<section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click='clearErrorMessage()' ng-show="selectedDeviceId == -1">
+    <div>
+        <header class="content-title float">
+            <h2> Registered Devices </h2>
+            <span class="count"> ({{totalCount}}) </span>
+            <a ng-click="goBackToPreviousState()" class="action back ng-scope" translate="">Services</a>
+            <div class="filters">
+                <p class="filter-label">Service Type</p>
+                <div class="filter select" style="width:200px;">
+                    <div class="entry" style="width:200px;">
+                        <div class="select">
+                            <select class="placeholder" ng-model="filterType" ng-options="opt.value for opt in filterList" style="width:200px;">
+                                <option value="">Filter by Service Type</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <section class="content-scroll">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+            <span class="count-show">Show</span>
+            <div class="select table-count rates-table-count">
+                <select ng-model="displyCount" ng-options="opt for opt in displayCountList"></select>
+            </div>
+            <span class="count-entries">entries</span>
+            <div class="entry table-search">
+                <span class="search-text">Search</span>
+                <span class="icons icon-search" name="submit" type="submit"></span>
+                <input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000" function-to-fire="searchEntered" />
+            </div>
+            <div id="new-form-holder"></div>
+            <!--ng-table component -->
+            <table class="grid" ng-table="tableParams" template-pagination="custom/pager" ng-class="{'edit-data': currentClickedElement == $index}">
+                <tbody>
+                    <tr ng-repeat="device in $data" class="device-list">
+                        <td data-title="'Name'" sortable="'device_name'" header-class="width-30" ng-hide="currentClickedElement == $index" ng-click="deviceSelected(device)">
+                            <strong> {{device.device_name}}</strong>
+                        </td>
+                        <td data-title="'Device ID'" sortable="'unique_id'" header-class="width-30" ng-hide="currentClickedElement == $index" ng-click="deviceSelected(device)">
+                            <strong> {{device.unique_id}}</strong>
+                        </td>
+                        <td data-title="'Version'" sortable="'app_version'" header-class="width-20" ng-hide="currentClickedElement == $index" ng-click="deviceSelected(device)">
+                            <strong>{{device.app_version}}</strong>
+                        </td>
+                        <td data-title="'Upgrade Status'" sortable="'build_status'" header-class="width-20" ng-hide="currentClickedElement == $index" ng-click="deviceSelected(device)">
+                            <strong ng-class="{'red-text': device.build_status == 'FAILED', 'green-text': device.build_status == 'SUCCESS'}">{{device.build_status}}</strong>
+                        </td>
+                        <td data-title="'Exclude Upgrade'" sortable="'is_excluded_from_auto_upgrade'" header-class="width-20" ng-hide="currentClickedElement == $index">
+                            <div class="entry full-width">
+                                <div class="switch-button single" ng-class="{ on : device.is_excluded_from_auto_upgrade }" ng-click="toggleManualUpgrade(device)">
+                                    <input type="checkbox">
+                                    <span class="switch-icon"></span>
+                                </div>
+
+                            </div>
+                        </td>
+
+                </tbody>
+            </table>
+        </section>
+        <!--end -->
+        <!--Custom pagination footer goes here-->
+        <script type="text/ng-template" id="custom/pager">
+            <div class="pager">
+                <span ng-show="totalCount>0">Showing {{startCount}} to {{endCount}} of {{totalCount}} items</span>
+                <span ng-show="totalCount==0">Showing 0 items</span>
+                <ul class="ng-cloak">
+                    <li ng-repeat="page in pages" ng-class="{'previous': page.type == 'prev', 'next': page.type == 'next'}" ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+                        <a ng-switch-when="prev" ng-click="params.page(1)" class="page" ng-class="{'disabled': !page.active}">First</a>
+                        <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Previous</a>
+                        <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+                        <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+                        <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Next</a>
+                        <a ng-switch-when="next" ng-click="params.page(totalPage)" class="page" ng-class="{'disabled': !page.active}">Last</a>
+                    </li>
+                </ul>
+            </div>
+        </script>
+        <!--end-->
+    </div>
+</section>
+<section class="content current" ng-show="selectedDeviceId !== -1">
+    <header class="content-title float">
+        <h2>Edit</h2>
+        <a ng-click="resetDeviceSelection()" class="action back ng-scope" translate="">Registered Devices</a>
+    </header>
+    <section class="content-scroll">
+        <div class="form">
+            <fieldset class="holder left">
+                <div class="entry full-width">
+                    <label for="enable_debugging" translate> DEBUGGING_SWITCH_LABEL </label>
+                    <div class="switch-button single" ng-class="{ on : selectedDevice.is_logging_enabled }">
+                        <input type="checkbox" ng-model="selectedDevice.is_logging_enabled">
+                        <span class="switch-icon"></span>
+                    </div>
+                </div>
+                <ad-textbox value="selectedDevice.unique_id" label="Device ID" styleclass="full-width" disabled="true"></ad-textbox>
+                <ad-textbox value="selectedDevice.application" label="{{'DEBUG_APP_LABEL' | translate}}" styleclass="full-width" disabled="true"></ad-textbox>
+                <ad-textbox value="selectedDevice.last_logged_in_user" label="{{'DEBUG_DEVICE_USER_LABEL' | translate}}" styleclass="full-width" disabled="true"></ad-textbox>
+                <ad-textbox value="selectedDevice.device_name" label="{{'DEBUG_DEVICE_NAME_LABEL' | translate}}" styleclass="full-width" disabled="true"></ad-textbox>
+            </fieldset>
+            <fieldset class="holder right">
+                <ad-dropdown label-in-drop-down="{{'DEBUG_DURATION_PLACEHOLDER' | translate}}" list="hours" selected-id='selectedDevice.hours_log_enabled' div-class="full-width" selbox-class="placeholder" label="{{'DEBUG_DURATION_LABEL' | translate}}" on-change="changeDuration"></ad-dropdown>
+                <ad-textbox ng-show="selectedDevice.logging_start_time != ''" value="getDisplayTime(selectedDevice.logging_start_time)" label="{{'START_LABEL' | translate}}" disabled="true" styleclass="full-width"></ad-textbox>
+                <ad-textbox ng-show="selectedDevice.logging_end_time != ''" value="getDisplayTime(selectedDevice.logging_end_time)" label="{{'END_LABEL' | translate}}" disabled="true" styleclass="full-width"></ad-textbox>
+                <ad-textbox value="selectedDevice.device_type" label="{{'DEBUG_DEVICE_TYPE_LABEL' | translate}}" disabled="true" styleclass="full-width"></ad-textbox>
+                <ad-textbox value="selectedDevice.device_version" label="{{'DEBUG_DEVICE_VERSION_LABEL' | translate}}" disabled="true" styleclass="full-width"></ad-textbox>
+                <ad-textbox value="selectedDevice.app_version" label="{{'DEBUG_APP_VERSION_LABEL' | translate}}" disabled="true" styleclass="full-width"></ad-textbox>
+            </fieldset>
+            <fieldset class="holder left" ng-show="selectedDevice.service_type">
+                <div class="form-title">
+                    <h3><span>Installed Service Details</span> </h3>
+                </div>
+                <ad-textbox value="selectedDevice.service_type" label="{{'SERVICE_TYPE' | translate}}" disabled="true" styleclass="full-width" readonly="yes"></ad-textbox>
+                <ad-textbox value="selectedDevice.build_status" label="{{'BUILD_STATUS' | translate}}" disabled="true" styleclass="full-width" readonly="yes"></ad-textbox>
+                <ad-textarea value="selectedDevice.build_status_info" label="{{'BUILD_STATUS_INFO' | translate}}" div-class="full-width" text-area-class="full-width"  disabled="true"></ad-textbox>
+            </fieldset>
+            <div class="actions float">
+                <button type="button" id="cancel" class="button blank add-data-inline" ng-click="resetDeviceSelection()" translate>
+                    CANCEL
+                </button>
+                <button type="button" like-type="common" id="update" class="button  ng-binding green" ng-click="saveDebugSettings()" translate>
+                    SAVE_CHANGES
+                </button>
+            </div>
+        </div>
+    </section>
+</section>

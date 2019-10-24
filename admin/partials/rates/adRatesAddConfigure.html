@@ -6,7 +6,7 @@
     <div style="float:right"><img src="/assets/cssimg/arrow-down.png"></div>
 </div>
 <!-- Expanded View -->
-    <div ng-show="rateMenu === 'dateRange.{{ dateRange.id }}'">
+    <div ng-show="rateMenu === 'dateRange.{{ dateRange.id }}'" ng-class="{'overlay' : rateData.is_global_contract}">
     <form class="form form-rate-config">
         <div style="width:100%;">
             <ul>        

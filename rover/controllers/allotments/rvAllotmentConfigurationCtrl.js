@@ -11,7 +11,8 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
     'rvPermissionSrv',
     '$timeout',
     'rvAccountTransactionsSrv',
-    function($scope, $rootScope, rvAllotmentSrv, $filter, $stateParams, rvAllotmentConfigurationSrv, summaryData, holdStatusList, $state, rvPermissionSrv, $timeout, rvAccountTransactionsSrv) {
+    'hotelSettings',
+    function($scope, $rootScope, rvAllotmentSrv, $filter, $stateParams, rvAllotmentConfigurationSrv, summaryData, holdStatusList, $state, rvPermissionSrv, $timeout, rvAccountTransactionsSrv, hotelSettings) {
 
         BaseCtrl.call(this, $scope);
         $scope.isDisabledDatePicker = ($stateParams.id !== "NEW_ALLOTMENT") ? true :  false;
@@ -277,6 +278,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
         };
         var onAllotmentSaveSuccess = function(data) {
             $scope.allotmentConfigData.summary.allotment_id = data.allotment_id;
+            $scope.allotmentConfigData.summary.commission_details = data.commission_details;
             $state.go('rover.allotments.config', {
                 id: data.allotment_id
             });
@@ -292,6 +294,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          * @return undefined
          */
         $scope.saveNewAllotment = function() {
+            $scope.closeDialog ();
             $scope.errorMessage = "";
             if (rvPermissionSrv.getPermissionValue('CREATE_ALLOTMENT_SUMMARY') && !$scope.allotmentConfigData.summary.allotment_id) {
                 if (ifMandatoryValuesEntered()) {
@@ -318,6 +321,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
 
         var refreshSummaryDataAfterUpdate = false;
         var onAllotmentUpdateSuccess = function(data) {
+            $scope.allotmentConfigData.summary.commission_details = data.commission_details;
             // client controllers should get an infromation whether updation was success
             $scope.$broadcast("UPDATED_ALLOTMENT_INFO", angular.copy($scope.allotmentConfigData.summary));
             $scope.allotmentSummaryMemento = angular.copy($scope.allotmentConfigData.summary);
@@ -586,11 +590,24 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             }
         };
 
+        // Method invoked while clicking the Save Allotment btn in header
+        $scope.createNewAllotment = function () {
+            $scope.$broadcast('CREATE_ALLOTMENT');
+        };
+
+        // Event published from summary ctrl while saving the demographics
+        $scope.$on('SAVE_ALLOTMENT', function () {
+            $scope.saveNewAllotment();
+        });
+
         /**
          * function to initialize things for allotment config.
          * @return - None
          */
         var initAllotmentConfig = function() {
+
+            // CICO-42249 - Hotel settings
+            $scope.hotelSettings = hotelSettings;
 
             // forming the data model if it is in add mode or populating the data if it is in edit mode
             $scope.initializeDataModelForSummaryScreen();

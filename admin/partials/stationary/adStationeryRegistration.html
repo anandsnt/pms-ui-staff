@@ -1,0 +1,36 @@
+<div class="stationery-items">
+    <h4>Template</h4>
+    <div class="entry">
+        <label>Registration Template</label>
+        <div class="select">
+            <select convert-to-number ng-model="data.selected_guest_registration_template">
+                <option value="" translate> SELECT_REGISTRATION_TEMPLATE </option>
+                <option ng-repeat="item in data.guest_registration_template" value="{{item.value}}" ng-selected="item.value == data.selected_guest_registration_template">{{item.name}}</option>
+            </select>
+        </div>
+    </div>
+</div>
+<div class="stationery-settings">
+    <h4>Settings</h4>
+    <div class="entry">
+        <label for="registration-card-print" class="switch-label">Show Reg.Card Print Button</label>
+        <div class="switch-button" ng-class = "{'on': data.is_show_registration_card_button}"> <!-- Add class 'on' when L18 is checked -->
+            <input id="registration-card-print" type="checkbox" ng-model="data.is_show_registration_card_button"> 
+            <span class="switch-icon"></span>
+        </div>
+    </div>
+    <div class="entry">
+        <label for="registration-vehicle" class="switch-label">Show Vehicle Information</label>
+        <div class="switch-button" ng-class = "{'on': data.show_vehicle_information}"> <!-- Add class 'on' when L25 is checked -->
+            <input id="registration-vehicle" type="checkbox" ng-model="data.show_vehicle_information"> 
+            <span class="switch-icon"></span>
+        </div>
+    </div>
+    <div class="entry">
+        <label for="registration-vehicle" class="switch-label" translate>SHOW_CONTACT_INFO</label>
+        <div class="switch-button" ng-class = "{'on': data.reg_card_show_contact_info}">
+            <input type="checkbox" ng-model="data.reg_card_show_contact_info"> 
+            <span class="switch-icon"></span>
+        </div>
+    </div>
+</div>

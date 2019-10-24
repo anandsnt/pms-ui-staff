@@ -128,8 +128,14 @@ this.chromeExtensionListener = function() {
                 zestSntApp.toggleLanguageTags();
             } else if (e.altKey && e.keyCode === 67) { // C - No-Check-in
                 zestSntApp.toggleNoCheckIns();
-            } else if (e.altKey && e.keyCode === 68) { // D - Demo mode
+            } else if (e.altKey && e.keyCode === 68 && !e.shiftKey) { // D - Demo mode
                 zestSntApp.toggleDemoModeOnOff();
+            } else if (e.altKey && e.keyCode === 68 && e.shiftKey) { // D - Demo mode + fake reservation
+                // 
+                // - upon selecting a work flow, the user will be able to test a fake reservation
+                // fields will act as though the reservation is real and will go through the demo / success flow
+                // 
+                zestSntApp.toggleDemoFlowModeOnOff();
             } else if (e.altKey && e.keyCode === 73 && !e.metaKey) { // I - info (dont show if holding cmd key on mac- ie. when bringing up dev console)
                 zestSntApp.debugTimers(true);
             } else if (e.altKey && e.keyCode === 74) { // J - Jumper (screen jumping)

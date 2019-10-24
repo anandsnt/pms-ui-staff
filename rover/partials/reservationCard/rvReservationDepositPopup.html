@@ -9,12 +9,14 @@
             <snt-payment 
                 hotel-config="hotelPaymentConfig"
                 workstation-id = "{{workstation_id}}"
-                reservation-id="{{reservationId}}" 
+                reservation-id="{{reservationId}}"
+                bill-id="reservationData.reservation_card.default_bill_id"
                 bill-number="billNumber"
                 payment-types="passData.details.paymentTypes" 
                 selected-payment-type="paymentType"
                 selected-c-c="depositDetails.attached_card"
                 amount='depositAmount' 
+                rate-currency="{{rateCurrency}}"
                 action-type="DEPOSIT" 
                 deposit-policy-name="{{depositPolicyName}}"
                 is-editable='isDepositEditable'
@@ -22,7 +24,8 @@
                 has-permission='hasPermissionToMakePayment()' 
                 form-template-url='/assets/partials/reservationCard/rvSntDepositPayment.html' 
                 first-name="{{firstName}}"
-                last-name="{{lastName}}"
+                last-name="{{lastName}}" 
+                payment-currency-list="paymentCurrencyList" 
                 ng-show="!errorOccured && !depositPaidSuccesFully">
             </snt-payment>
             <!-- Deposit payment successfully -->

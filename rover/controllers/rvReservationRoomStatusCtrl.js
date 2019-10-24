@@ -35,9 +35,13 @@ angular.module('sntRover').controller('reservationRoomStatus',
 		return reservationRoomClass;
 	};
 
-	$scope.getRoomStatusClass = function(reservationStatus, roomStatus, foStatus, roomReadyStatus, checkinInspectedOnly) {
+	$scope.getRoomStatusClass = function(reservationStatus, roomStatus, foStatus, roomReadyStatus, checkinInspectedOnly, serviceStatus) {
 
-		var reservationRoomStatusClass = "";
+        var reservationRoomStatusClass = "";
+        
+        if (serviceStatus === 'OUT_OF_SERVICE' || serviceStatus === 'OUT_OF_ORDER') {
+            return 'room-grey';   
+        }
 
 		if (reservationStatus === 'CHECKING_IN') {
 
@@ -100,14 +104,16 @@ angular.module('sntRover').controller('reservationRoomStatus',
 
 		var showKey = false;
 
-        // Check if no key encode as per CICO-29735
-		if (keySettings !== "no_key_delivery" && ((reservationStatus === 'CHECKING_IN' && $scope.reservationData.reservation_card.room_number !== '') || reservationStatus === 'CHECKING_OUT' || reservationStatus === 'CHECKEDIN')) {
-			showKey = true;
-		}
-                // then check if the current user has permission
-                if (!$scope.hasPermissionToCreateKeys()) {
-                    showKey = false;
-                }
+        // Key or PIN button is to be shown/hidden based on the reservation status and key settings
+        if (keySettings !== "no_key_delivery" &&
+            ((reservationStatus === 'CHECKING_IN' && $scope.reservationData.reservation_card.room_number !== '' && $scope.reservationData.reservation_card.key_settings !== 'pin') ||
+                reservationStatus === 'CHECKING_OUT' || reservationStatus === 'CHECKEDIN')) {
+            showKey = true;
+        }
+        // then check if the current user has permission
+        if (!$scope.hasPermissionToCreateKeys()) {
+            showKey = false;
+        }
 		return showKey;
 	};
         $scope.hasPermissionToCreateKeys = function() {
@@ -143,7 +149,19 @@ angular.module('sntRover').controller('reservationRoomStatus',
                         className: '',
                         scope: $scope
                     });
-		} else if ($scope.reservationData.reservation_card.reservation_status !== 'CHECKING_IN') {
+		} else if (keySettings === "pin") {
+            var options = {
+                params: {
+                    'reservation_id': $scope.reservationData.reservation_card.reservation_id
+                },
+                successCallBack: function(response) {
+                    $scope.reservationData.room_pin = response.room_pin;
+                    openKeyEncodePopup();
+                }
+            };
+
+            $scope.callAPI(RVReservationSummarySrv.retrieveRoomPin, options);
+        } else if ($scope.reservationData.reservation_card.reservation_status !== 'CHECKING_IN') {
                     ngDialog.open({
                         template: '/assets/partials/keys/rvKeyPopupNewDuplicate.html',
                         controller: 'RVKeyQRCodePopupController',
@@ -176,12 +194,13 @@ angular.module('sntRover').controller('reservationRoomStatus',
                                      scope: $scope
                             });
                     };
-
+                    
+                    // why is success always assumed, and failure not handled? no possibility of failure?
                     $scope.invokeApi(RVKeyPopupSrv.fetchKeyQRCodeData, { "reservationId": reservationId }, successCallback);
 		}
 
 		// Display the key encoder popup
-		else if (keySettings === "encode" || keySettings === "mobile_key_encode") {
+		else if (keySettings === "encode" || keySettings === "mobile_key_encode" ) {
             if ($scope.reservationData.reservation_card.is_remote_encoder_enabled && $scope.encoderTypes !== undefined && $scope.encoderTypes.length <= 0) {
                 fetchEncoderTypes();
             } else {
@@ -191,15 +210,22 @@ angular.module('sntRover').controller('reservationRoomStatus',
         };
 
         $scope.duplicateKeyInit = function() {
+            $scope.$emit('showLoader');
             $scope.keyType = 'Duplicate';
-            $scope.keyInitPopup();
-            $rootScope.$broadcast('MAKE_KEY_TYPE', {type: 'Duplicate'});
+            // add minor delay so user can see the interaction was success, pending api response
+            $timeout(function() {
+                $scope.keyInitPopup();
+            }, 150);
         };
 
         $scope.newKeyInit = function() {
+            $scope.$emit('showLoader');
             $scope.keyType = 'New';
-            $scope.keyInitPopup();
-            $rootScope.$broadcast('MAKE_KEY_TYPE', {type: 'New'});
+            // add minor delay so user can see the interaction was success, pending api response
+            $timeout(function() {
+                $scope.keyInitPopup();
+            }, 150);
+            
         };
 
 	var openKeyEncodePopup = function() {
@@ -207,8 +233,17 @@ angular.module('sntRover').controller('reservationRoomStatus',
 		    template: '/assets/partials/keys/rvKeyEncodePopup.html',
 		    controller: 'RVKeyEncodePopupCtrl',
 		    className: '',
-		    scope: $scope
+		    scope: $scope,
+            closeByDocument: false
 		});
+        
+        $timeout(function() {
+            if ($scope.keyType === 'New') {
+                $rootScope.$broadcast('MAKE_KEY_TYPE', {type: 'New'});
+            } else {
+                $rootScope.$broadcast('MAKE_KEY_TYPE', {type: 'Duplicate'});
+            }
+        }, 0);
 	};
 
 	// Fetch encoder types for if remote encoding enabled
@@ -249,7 +284,8 @@ angular.module('sntRover').controller('reservationRoomStatus',
 		RVReservationCardSrv.checkinDateForDiary = $scope.reservationData.reservation_card.arrival_date.replace(/-/g, '/');
 		$state.go('rover.diary', {
 			reservation_id: $scope.reservationData.reservation_card.reservation_id,
-			checkin_date: $scope.reservationData.reservation_card.arrival_date
+			checkin_date: $scope.reservationData.reservation_card.arrival_date,
+            is_nightly_reservation: !$scope.reservationData.reservation_card.is_hourly_reservation
 		});
 	};
 	/**
@@ -267,13 +303,27 @@ angular.module('sntRover').controller('reservationRoomStatus',
         var isUpgradeAvaiable = $scope.reservationData.reservation_card.is_upsell_available === "true" && (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN'),
             cannotMoveState   =  $scope.reservationData.reservation_card.cannot_move_room && $scope.reservationData.reservation_card.room_number !== "";
 
-		if ($scope.reservationData.reservation_card.is_hourly_reservation) {
-			gotToDiaryInEditMode ();
+		if ($rootScope.hotelDiaryConfig.mode === 'FULL' || $scope.reservationData.reservation_card.is_hourly_reservation) {
+			gotToDiaryInEditMode();
 		} else if ($scope.isFutureReservation($scope.reservationData.reservation_card.reservation_status)) {
 
-			$state.go("rover.reservation.staycard.roomassignment", {reservation_id: $scope.reservationData.reservation_card.reservation_id, room_type: $scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton", "upgrade_available": isUpgradeAvaiable, "cannot_move_room": cannotMoveState});
+			$state.go("rover.reservation.staycard.roomassignment", {
+                reservation_id: $scope.reservationData.reservation_card.reservation_id,
+                room_type: $scope.reservationData.reservation_card.room_type_code,
+                clickedButton: "roomButton",
+                upgrade_available: isUpgradeAvaiable,
+                cannot_move_room: cannotMoveState,
+                roomTypeId: $scope.reservationData.reservation_card.room_type_id
+            });
 		} else if ($scope.reservationData.reservation_card.reservation_status === "CHECKEDIN" && $rootScope.isStandAlone) { // As part of CICO-27631 added Check for overlay hotels
-			$state.go("rover.reservation.staycard.roomassignment", {reservation_id: $scope.reservationData.reservation_card.reservation_id, room_type: $scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton", "upgrade_available": isUpgradeAvaiable, "cannot_move_room": cannotMoveState});
+			$state.go("rover.reservation.staycard.roomassignment", {
+                reservation_id: $scope.reservationData.reservation_card.reservation_id,
+                room_type: $scope.reservationData.reservation_card.room_type_code,
+                clickedButton: "roomButton",
+                upgrade_available: isUpgradeAvaiable,
+                cannot_move_room: cannotMoveState,
+                roomTypeId: $scope.reservationData.reservation_card.room_type_id
+            });
 		}
 
 	};
@@ -303,9 +353,10 @@ angular.module('sntRover').controller('reservationRoomStatus',
 
     $scope.showDoNotMoveToggleButton = function() {
         var shouldShowDNMToggleButton = true,
-            reservationStatus = $scope.reservationData.reservation_card.reservation_status;
+            reservationStatus = $scope.reservationData.reservation_card.reservation_status,
+            buttonIsOn = $scope.reservationData.reservation_card.cannot_move_room;
 
-        if (!$scope.isStandAlone || reservationStatus === 'NOSHOW' || reservationStatus === 'CHECKEDOUT' || reservationStatus === 'CANCELED' || $scope.reservationData.reservation_card.room_number === "" || !rvPermissionSrv.getPermissionValue('DO_NOT_MOVE_RESERVATION')) {
+        if (!$scope.isStandAlone || reservationStatus === 'NOSHOW' || reservationStatus === 'CHECKEDOUT' || reservationStatus === 'CANCELED' || ($scope.reservationData.reservation_card.room_number === "" && !buttonIsOn ) || !rvPermissionSrv.getPermissionValue('DO_NOT_MOVE_RESERVATION')) {
             shouldShowDNMToggleButton = false;
         }
 
@@ -358,6 +409,12 @@ angular.module('sntRover').controller('reservationRoomStatus',
         var hideUpgradeButton = function() {
             return $scope.hasAnySharerCheckedin() || $scope.reservationData.reservation_card.is_suite || $rootScope.isHourlyRateOn;
         };
+
+    // Checks whether original room type should be shown in staycard
+    $scope.shouldShowOriginalRoomType = function() {
+        return ($scope.reservationData.reservation_card.room_type_description && $scope.reservationData.reservation_card.original_room_type_desc &&
+            $scope.reservationData.reservation_card.room_type_description !== $scope.reservationData.reservation_card.original_room_type_desc);
+    };
 
         /**
          * initiation

@@ -278,16 +278,25 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 				_fetchRoomListPost.call(this);
 			}
 
-			function _fetchWorkAssignments (workTypes) {
-				fetchedWorkTypes = workTypes;
+            function _fetchWorkAssignments(workTypes) {
+                fetchedWorkTypes = workTypes;
 
-				var params = {
-					'date': $rootScope.businessDate,
-					'employee_ids': [$rootScope.userId]
-				};
+                var params = {
+                    'date': $rootScope.businessDate,
+                    'employee_ids': [$rootScope.userId]
+                };
 
-				this.fetchWorkAssignments( params ).then( _checkHasActiveWorkSheet.bind(this) );
-			}
+                /**
+                 * In case of maintenance staff (HK), the rooms assigned to him/ her are shown
+                 * Hence, an additional API call is made to verify if the user has any assigned rooms for tasks
+                 */
+
+                if ($rootScope.isMaintenanceStaff) {
+                    this.fetchWorkAssignments(params).then(_checkHasActiveWorkSheet.bind(this));
+                } else {
+                    _fetchRoomListPost.call(this);
+                }
+            }
 
 			function _checkHasActiveWorkSheet (assignments) {
 				var employee = assignments.employees.length && assignments.employees[0] || null,
@@ -419,14 +428,14 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 		// fetch all HK cleaning staffs
 		var HKEmps = [];
 
-		this.fetchHKEmps = function() {
+		this.fetchHKEmps = function(params) {
 			var url = "/api/work_statistics/employees_list";
 			var deferred = $q.defer();
 
 			if (HKEmps.length) {
 				deferred.resolve(HKEmps);
 			} else {
-				BaseWebSrvV2.getJSON(url)
+				BaseWebSrvV2.getJSON(url, params)
 					.then(function(data) {
 						HKEmps = data.results;
 						deferred.resolve(HKEmps);

@@ -27,14 +27,14 @@
                        delay="1000"
                        function-to-fire="onChangeGiftCard"
                        type="text"/>
-                <label ng-show="giftCard.amountAvailable"> Available Card Balance({{currencySymbol}}) </label>
+                <label ng-show="giftCard.amountAvailable"> Available Card Balance(<span class="currency">{{payment.selectedPaymentCurrencySymbol}}</span>) </label>
                 <input ng-show="giftCard.amountAvailable"
                        ng-readonly="true"
                        ng-model="giftCard.availableBalance"
                        type="text"/>
             </div>
-            <div class="entry full-width">
-                <label>Amount to pay (<span>{{currencySymbol}}</span>)</label>
+            <div class="entry amount">
+                <label>Amount to pay (<span><span class="currency">{{payment.selectedPaymentCurrencySymbol}}</span></span>)</label>
                 <input ng-change="onPaymentInfoChange()"
                        ng-model="payment.amount"
                        type="text"
@@ -64,26 +64,32 @@
 
                 <span ng-show="feeData.showFee" class="delimiter">fee</span>
 
+                <div class="select" ng-hide="selectedPaymentType === 'CC' ">
+                    <select ng-options="paymentCurrency.id as paymentCurrency.symbol for paymentCurrency in paymentCurrencyList" ng-change="onPaymentCurrencyChange()" ng-model="payment.selectedPaymentCurrencyId">
+                        <option style="display:none" value="">Select Currency</option>
+                    </select>
+                </div>
                 <span ng-show="feeData.showFee" class="total">
-          Total:
-          <strong ng-if="!payment.isRateSuppressed">
-              {{currencySymbol}}{{feeData.totalOfValueAndFee}}
-          </strong>
-          <strong ng-if="payment.isRateSuppressed">
-              {{'SUPPRESSED_RATES_TEXT' | translate}}
-          </strong>
-        </span>
+                  Total:
+                  <strong ng-if="!payment.isRateSuppressed">
+                      <span class="currency">{{payment.selectedPaymentCurrencySymbol}}</span>{{feeData.totalOfValueAndFee}}
+                  </strong>
+                  <strong ng-if="payment.isRateSuppressed">
+                      {{'SUPPRESSED_RATES_TEXT' | translate}}
+                  </strong>
+                </span>
             </div>
         </div>
 
-        <div class="entry full-width reference" ng-show="isDisplayRef">
+        <div class="entry full-width reference">
             <label>Reference</label>
             <input ng-model="payment.referenceText" type="text"/>
         </div>
 
         <div class="actions" ng-show="!!selectedPaymentType">
             <button type="button" class="button blue" ng-click="payLater()">Pay deposit later</button>
-            <button type="button" class="button green" ng-click="submitPayment()" ng-hide="shouldHidePaymentButton()">
+            <button type="button" class="button green" ng-disabled="shouldHidePaymentButton()"
+            ng-class="{'grey':shouldHidePaymentButton()}" ng-click="submitPayment()">
                 Pay
                 deposit now
             </button>
@@ -100,13 +106,13 @@
             <li ng-if="feeData.showFee">
                 Amount paid:
                 <span class="value">
-                    {{currencySymbol}}{{payment.amount}} + {{currencySymbol}}{{feeData.calculatedFee}} fee
+                    <i class="currency">{{payment.selectedPaymentCurrencySymbol}}</i>{{payment.amount}} + <i class="currency">{{payment.selectedPaymentCurrencySymbol}}</i>{{feeData.calculatedFee}} fee
                 </span>
             </li>
             <li ng-if="!feeData.showFee">
                 Amount paid:
                 <span class="value">
-                    {{currencySymbol}}{{payment.amount}}
+                    <i class="currency">{{payment.selectedPaymentCurrencySymbol}}</i>{{payment.amount}}
                 </span>
             </li>
         </ul>

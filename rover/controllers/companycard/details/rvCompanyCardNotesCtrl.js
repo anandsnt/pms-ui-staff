@@ -111,7 +111,9 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
             'note': data.note,
             'time': data.time,
             'date': data.date,
-            'id': data.id
+            'id': data.id,
+            'hotel_name': data.hotel_name,
+            'is_editable': data.is_editable
         };
 
         $scope.notes.unshift(0);
@@ -195,9 +197,11 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
     * @return {undefined}
     */
     $scope.clickedOnNote = function(note) {
-        $scope.editingNote  = note;
-        $scope.noteText     = note.note;
-        };
+        if ( note.is_editable ) {
+            $scope.editingNote  = note;
+            $scope.noteText     = note.note;
+        }
+    };
 
         /**
         * to cancel edit mode

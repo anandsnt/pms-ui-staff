@@ -1,9 +1,9 @@
 <!-- Add .open to show the popup -->
-<div class="popup" ng-class="{'open':showAddonPopup}">
+<div class="popup" ng-class="{'open':showAddonPopup && !selectedAddon.isLco}">
    <div class="popup-content add-on">
       <!-- <i class="close-popup" touch-press="closePopup()"></i> -->
       <div class="add-on-picture">
-         <img src="{{selectedAddon.image}}" />
+         <img ng-src="{{selectedAddon.image}}" onError="this.onerror=null;this.src='/assets/images/room_type_image_not_available.png';"/>
       </div>
       <div class="add-on-content">
          <h2>{{selectedAddon.name}}</h2>
@@ -27,14 +27,59 @@
                   <button type="button" class="button" click-touch="incrementAddonQtyForNonRoomFlatType()" ng-class="{'disabled':selectedAddonCount ===1}" ng-disabled="selectedAddonCount === 1">+</button>
                </div>
                <button type="button" data-action="popup" class="button transparent" click-touch="addOnDoneButtonClicked(selectedAddon)" ng-class="{'transparent text-red':selectedAddonCount === 0 && selectedAddon.is_selected}">
-               <text data-ng-bind-html="getTagValue('DONE')" editable-text="DONE"></text>
+               <text data-ng-bind-html="getTagValue('DONE_BTN')" editable-text="DONE"></text>
                </button>
             </div>
          </div>
       </div>
    </div>
 </div>
+
+
 <!-- Add .open to show the popup -->
+<div class="popup" ng-class="{'open':showAddonPopup && selectedAddon.isLco}">
+    <div class="popup-content add-on large">
+        <div class="add-on-content">
+        <h2> 
+            <text data-ng-bind-html="getTagValue('LATE_CHECKOUT_HEADING')" editable-text="LATE_CHECKOUT_HEADING">
+            </text>
+         </h2>
+         <p>
+            <text data-ng-bind-html="getTagValue('LATE_CHECKOUT_INSTRUCTIONS')" editable-text="LATE_CHECKOUT_INSTRUCTIONS">
+            </text>
+         </p>
+        <!-- CASE 2: Late Checkout Addon (use this instead of L21-L40) -->
+         <nav id="options" role="nav">
+            <ul role="menu">
+               <li ng-repeat="addon in selectedAddon.addons">
+                  <button type="button" class="button option" ng-class="{'not-selected': addon.addon_id !== selectedLcoAddonId}" ng-click="selectDeselectLco(addon)"><!-- When time is selected, add class 'not-selected' to all slots which are NOT SELECTED. If there's not time slot selected, remove class 'not-selected' from all. -->
+                     <span class="icon-text">{{addon.time}} PM</span>
+                     <span ng-show="theme === 'yotel'" class="icon-img"ng-include="icons.url.late_checkout_icon"></span>
+                     <!-- If Yotel, show icon:
+                     {../assets/yotel/icons/checkout.svg} -->
+                  </button>
+                  <span class="amount">{{zestStationData.currencySymbol}}{{addon.amount | number:2}}</span>
+                  <span ng-show="addon.display_suffix">{{addon.suffix_label}}</span>
+               </li>
+            </ul>
+         </nav>
+         <div class="price">
+         <div class="action">
+            <button type="button" data-action="popup" class="button transparent" click-touch="addRemoveLcoAddon()" ng-show="selectedLcoAddonId !== ''" ng-class="{'text-red':lcoRemoveMode()}">
+            <text data-ng-bind-html="getTagValue('ADD_ADDON')" editable-text="ADD_ADDON" ng-hide="lcoRemoveMode()"></text>
+            <text data-ng-bind-html="getTagValue('REMOVE_ADDON')" editable-text="REMOVE_ADDON" ng-show="lcoRemoveMode()" class="transparent text-red"></text>
+            </button>
+            <button type="button" data-action="popup" class="button transparent" click-touch="lcoAddonsBackAction()">
+            <text data-ng-bind-html="getTagValue('NAV_BACK')" editable-text="NAV_BACK"></text>
+            </button>
+         </div>
+         </div>
+        </div>
+    </div>
+</div>
+
+
+      <!-- Add .open to show the popup -->
 <div class="popup" ng-class="{'open':showErrorPopUp}">
    <!-- Remove class "open" to hide popup content -->
    <div class="popup-content">
@@ -43,36 +88,41 @@
       </h2>
       <h3 editable-text="{{errorMessage}}"> {{errorMessage | translate}}</h3>
       <button type="button" class="button" click-touch='showErrorPopUp = false'>
-         <text data-ng-bind-html="getTagValue('DONE')" editable-text="DONE"></text>
+         <text data-ng-bind-html="getTagValue('DONE_BTN')" editable-text="DONE"></text>
       </button>
    </div>
 </div>
 <!-- add .open when showing popuo -->
 <div id="popup-overlay" ng-class="{'open':showAddonPopup || showErrorPopUp}"></div>
+<!-- Show blank section -->
+<section id="main" ng-hide="loadingCompleted"></section>
 <!-- Content -->
-<section id="main" class="addon-screen" role="main" ng-show="mode !== 'SINGLE_ADDON_ERROR' && loadingCompleted">
+<section id="main" class="addon-screen" role="main" ng-if="mode !== 'SINGLE_ADDON_ERROR' && loadingCompleted">
    <div id="content">
       <h1>
          <text data-ng-bind-html="getTagValue('ADD_ON_HEADING')" editable-text="ADD_ON_HEADING"></text>
       </h1>
-      <!--  <h3> <text editable-text="ADD_ON_TOTAL_TEXT">{{'ADD_ON_TOTAL_TEXT' | translate}}</text>&nbsp;{{zestStationData.currencySymbol}}{{getAmountTotal()}}</h3> -->
       <div id="upgrades">
-         <ul class="add-on-list add-on-list-columns" ng-if="addonsList.length > 1" ng-class="{'add-on-list-rows':viewableAddons.length >= 4}">
-            <li class="add-on" ng-repeat="addon in viewableAddons" click-touch="addonSelected(addon)" ng-class="{'selected':addon.is_selected || addon.quantity >0}">
+         <ul class="add-on-list add-on-list-columns" ng-if="addonsList.length > 1 || (addonsList.length && addonsList[0].isLco)" ng-class="{'add-on-list-rows':pageData.viewableItems.length >= 4}">
+            <li class="add-on" ng-repeat="addon in pageData.viewableItems" click-touch="addonSelected(addon)" ng-class="{'selected':addon.is_selected || addon.quantity >0}">
                <div class="add-on-picture">
-                  <img src="{{addon.image}}">
+                  <img ng-src="{{addon.image}}" onError="this.onerror=null;this.src='/assets/images/room_type_image_not_available.png';">
                </div>
                <div class="add-on-content">
-                  <h2>{{addon.name}}<span ng-show="addon.quantity>0">&nbsp;({{addon.quantity}})</span></h2>
-                  <div class="price">
+                  <h2 ng-hide="addon.isLco">{{addon.name}}<span ng-show="addon.quantity>0">&nbsp;({{addon.quantity}})</span></h2>
+                  <h2 ng-show="addon.isLco">
+                      <text data-ng-bind-html="getTagValue('LATE_CHECKOUT_HEADING')" editable-text="LATE_CHECKOUT_HEADING">
+                      </text>
+                  </h2>
+                  <div class="price" ng-hide="addon.isLco">
                      {{zestStationData.currencySymbol}}{{addon.amount}}
                   </div>
                </div>
             </li>
          </ul>
-         <ul class="add-on-list" ng-if="addonsList.length === 1">
+         <ul class="add-on-list" ng-if="addonsList.length === 1 && !addonsList[0].isLco">
             <li class="add-on">
-               <div class="add-on-picture">
+               <div class="add-on-picture single-addon-image">
                   <img src="{{selectedAddon.image}}">
                </div>
                <div class="add-on-content">
@@ -106,7 +156,7 @@
                         <div> 
                            <br>
                            <button type="button" data-action="popup" class="button transparent" click-touch="addOnDoneButtonClicked(selectedAddon)" editable-text="DONE" style="margin:0 auto;" ng-class="{'transparent text-red':selectedAddonCount === 0 && selectedAddon.is_selected}">
-                              <text data-ng-bind-html="getTagValue('DONE')" editable-text="DONE"></text>
+                              <text data-ng-bind-html="getTagValue('DONE_BTN')" editable-text="DONE"></text>
                            </button>
                         </div>
                      </div>
@@ -119,7 +169,7 @@
          <!-- If there is no navigation, remove the text and leave '<p class="text"></p>-->
          <p class="text">
             <text data-ng-bind-html="getTagValue('ADD_ON_FOOTER_1')" editable-text="ADD_ON_FOOTER_1"></text>
-            &nbsp;{{pageStartingIndex}}-{{pageEndingIndex}}&nbsp;
+            &nbsp;{{pageData.pageStartingIndex}}-{{pageData.pageEndingIndex}}&nbsp;
             <text data-ng-bind-html="getTagValue('ADD_ON_FOOTER_2')" editable-text="ADD_ON_FOOTER_2"></text>
             &nbsp;{{addonsList.length}}&nbsp;
             <text data-ng-bind-html="getTagValue('ADD_ON_FOOTER_3')" editable-text="ADD_ON_FOOTER_3"></text>
@@ -127,19 +177,19 @@
          <!-- Remove this .button-group element when there is no navigation -->
          <div class="button-group" ng-if="addonsList.length > 1">
             <!-- add 'disabled="disabled"' if there is no previous page -->
-            <button type="button" class="button only-icon" click-touch="viewPreviousPage()" ng-hide="disablePreviousButton">
+            <button type="button" class="button only-icon" click-touch="paginationAction(pageData.disablePreviousButton, false)" ng-hide="pageData.disablePreviousButton">
                <div ng-include="icons.url.left_arrow_icon"></div>
             </button>
             <!-- touchstart is not following ng-disable, so for now keeping two versions -->
-            <button type="button" class="button only-icon" ng-show="disablePreviousButton" disabled="disabled">
+            <button type="button" class="button only-icon" ng-show="pageData.disablePreviousButton" disabled="disabled">
                <div ng-include="icons.url.left_arrow_icon"></div>
             </button>
             <!-- add 'disabled="disabled"' if there is no next page -->
-            <button type="button" class="button only-icon" click-touch="viewNextPage()" ng-hide="disableNextButton">
+            <button type="button" class="button only-icon" click-touch="paginationAction(pageData.disableNextButton, true)" ng-hide="pageData.disableNextButton">
                <div ng-include="icons.url.right_arrow_icon"></div>
             </button>
             <!-- touchstart is not following ng-disable, so for now keeping two versions -->
-            <button type="button" class="button only-icon" ng-show="disableNextButton" disabled="disabled">
+            <button type="button" class="button only-icon" ng-show="pageData.disableNextButton" disabled="disabled">
                <div ng-include="icons.url.right_arrow_icon"></div>
             </button>
          </div>
@@ -149,6 +199,7 @@
       </div>
    </div>
 </section>
+
 <section id="main" class="addon-screen centered" role="main" ng-show="mode === 'SINGLE_ADDON_ERROR'">
    <div id="content">
       <h1 editable-text="{{errorHeader}}">{{ errorHeader | translate}}</h1>

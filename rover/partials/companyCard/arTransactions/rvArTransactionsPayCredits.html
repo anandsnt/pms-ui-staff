@@ -1,0 +1,31 @@
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-click="clearErrorMessage()" ng-cloak>
+    <form ng-show="!showSixPayLoader" method="post" action="pay-bill" id="pay-bill" name="pay-bill" class="modal-content form pay-bill"
+          ng-class="{'select-card':showCCPage}">
+        <button id="modal-close" type="button" class="modal-close" ng-click="handleCloseDialog()"><span class="icons icon-close invert"></button>
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <!-- Title when not paying from bill screen -->
+        <strong class="h2 message">
+           {{'SUBMIT_PAYMENT' | translate}} 
+        </strong>
+
+        <div class="payment-form">
+            <snt-payment
+                    hotel-config="hotelPaymentConfig"
+                    workstation-id="{{workstation_id}}"
+                    bill-id="arDataObj.company_or_ta_bill_id"
+                    payment-types="renderData.paymentTypes"
+                    selected-payment-type="saveData.paymentType"
+                    bill-number="billNumber"
+                    ar-transaction-id = "passData.payment.transaction_id" 
+                    amount='renderData.defaultPaymentAmount'
+                    action-type="{{actionType}}" 
+                    allocate-payment-after-posting = "allocatePaymentAfterPosting"
+                    has-permission='hasPermissionToMakePayment()' 
+                    selected-c-c='passData.payment.card_details'
+                    reference-text='passData.payment.reference_text' 
+                    payment-currency-list="paymentCurrencyList" 
+                    form-template-url='/assets/partials/payment/rvARPaymentPartial.html'>
+            </snt-payment>
+        </div>
+    </form>
+</div>

@@ -18,13 +18,22 @@ module.exports = {
 			nonMinifiedFiles: [
 				sharedRoot + 'directives/documentTouchMovePrevent/*.js',
                 sharedRoot + 'directives/clickTouch/clickTouch.js',
+                sharedRoot + 'interceptors/**/*.js',
+
+                loginRoot + 'loginApp.js',
+                loginRoot + 'loginRouter.js',
 				loginRoot + "**/*.js",
+
 				jsLibRoot + 'iscroll.js',
 				jsLibRoot + 'ng-iscroll.js',
 				'!'+loginRoot+'stationLoginJsAssetList.js',
                 // these files used for zest station chromeapp 
                 // (need to prompt for virtual keyboard if launched from within a chrome-app)
-				zestRoot + 'zsVirtualKeyboard.js'
+				zestRoot + 'zsVirtualKeyboard.js',
+                // Eliminate all spec files
+                '!**/*.spec.js',
+                '!**/*.conf.js'
+
 			]	
 		};
 		return loginJsAssets;

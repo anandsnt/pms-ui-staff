@@ -1,0 +1,63 @@
+<div id="guest-card-header" class="card-header" >
+    <section>
+        <figure class="guest-image" ng-click="switchCard('guest-card')">
+            <img ng-src="{{guestCardData.contactInfo.avatar}}" />
+             <span class="stay-count" ng-if="guestCardData.contactInfo.stay_count > 0 && isStandAlone">{{guestCardData.contactInfo.stay_count}}</span>
+            <span class="vip" ng-show="guestCardData.contactInfo.vip">VIP</span>
+        </figure>
+        <form name="change-name" id="change-name" class="dual-actions">
+            <div class="holder">
+                <div class="entry no-print" ng-click="openGuestCard()">
+                    <input type="text" class="masked-input h1" data-size="{{guestCardData.contactInfo.first_name.length}}"  ng-model="guestCardData.contactInfo.first_name" placeholder="First Name" ng-blur="updateContactInfo()" auto-grow-field />
+                    <input type="text" class="masked-input h1" data-size="{{guestCardData.contactInfo.last_name.length}}" ng-model="guestCardData.contactInfo.last_name" placeholder="Last Name" ng-blur="updateContactInfo()" auto-grow-field />
+                </div>
+                <div class="only-print name">
+                    {{guestCardData.contactInfo.first_name}} {{guestCardData.contactInfo.last_name}}
+                </div>
+                <span class="icons icon-notes" ng-show="guestCardData.contactInfo.notes_count"></span>
+                <strong class="status">{{guestCardData.selectedLoyaltyLevel}}</strong>
+                <div  class="switch-button" ng-class="{ 'on': guestCardData.contactInfo.vip}">
+                    <input name="vip" id="vip" type="checkbox" ng-model="guestCardData.contactInfo.vip" ng-click="vipToggleClicked()"/>
+                    <label class="data-off">
+                        <span class="switch-icon vip" >VIP</span>
+                        <span class="value">Off</span>
+                    </label>
+                    <label class="data-on">
+                        <span class="value">On</span>
+                        <span class="switch-icon vip">VIP</span>
+                    </label>
+                </div>
+
+            </div>
+            <div class="holder data no-print">
+                <input type="text" data-size="{{guestCardData.contactInfo.address.city.length}}" class="masked-input icons icon-gc-location" placeholder="" ng-model="guestCardData.contactInfo.address.city" ng-blur="updateContactInfo()" auto-grow-field />
+                <input type="text" data-size="{{guestCardData.contactInfo.address.state.length}}" class="masked-input" ng-model="guestCardData.contactInfo.address.state" ng-blur="updateContactInfo()" auto-grow-field />
+                <input type="text" id="gc-mobile" data-size="{{guestCardData.contactInfo.mobile.length}}" class="masked-input icons icon-gc-mobile" ng-model="guestCardData.contactInfo.mobile" ng-blur="updateContactInfo()" auto-grow-field />
+                <input type="tel" data-size="{{guestCardData.contactInfo.phone.length}}" class="masked-input icons icon-gc-phone" ng-model="guestCardData.contactInfo.phone" ng-blur="updateContactInfo()" auto-grow-field />
+                <input type="text" data-size="{{guestCardData.contactInfo.email.length}}" class="masked-input icons icon-gc-email" ng-model="guestCardData.contactInfo.email" ng-blur="updateContactInfo()" auto-grow-field />
+            </div>
+            <ul class="only-print">
+                <li ng-if="guestCardData.contactInfo.address.city">City: {{guestCardData.contactInfo.address.city}}</li>
+                <li ng-if="guestCardData.contactInfo.address.state">State: {{guestCardData.contactInfo.address.state}}</li>
+                <li ng-if="guestCardData.contactInfo.mobile">Mobile: {{guestCardData.contactInfo.mobile}}</li>
+                <li ng-if="guestCardData.contactInfo.phone">Phone: {{guestCardData.contactInfo.phone}}</li>
+                <li ng-if="guestCardData.contactInfo.email">Email: {{guestCardData.contactInfo.email}}</li>
+            </ul>
+        </form>
+        <div class="card-actions dual-actions" ng-if="viewState.isAddNewCard">
+            <button class="button green ng-scope" type="button" ng-click="clickedSaveGuestCard()" translate="">Save new card</button>
+            <button class="button red ng-scope" type="button" ng-click="clickedDiscardGuestCard()" translate="">Discard</button>
+        </div>
+        <div class="card-actions dual-actions" ng-show="!viewState.isAddNewCard"> 
+            <button type="button" class="button add-new-button" ng-click="createReservationFromGuestCard()">+ {{ 'CREATE_RESERVATION' | translate}}</button>
+            <button type="button" class="button toggle has-arrow" ng-click="toggleCardActions()" ng-class="{'active' : manageCardState.isOpen, '' : !manageCardState.isOpen}">Manage Card</button>            
+            <div class="manage-cards" ng-class="{'hidden': !manageCardState.isOpen, '' : manageCardState.isOpen}">
+                <button type="button" class="button blue" ng-click="printGuestCard()">Print Card</button>
+                <button type="button" class="button" ng-click="removeGuestDetails(guestCardData.contactInfo.user_id)" ng-class="{'grey':shouldDisableRemoveGuestBtn(),'white red-text': !shouldDisableRemoveGuestBtn()}" ng-disabled="shouldDisableRemoveGuestBtn()">Remove</button>
+                <button type="button" class="button purple" ng-hide="true">Archive Card</button>
+                <button type="button" class="button red" ng-hide="true">Delete Card</button>
+            </div> 
+        </div>               
+    </section>    
+</div>
+{{}}

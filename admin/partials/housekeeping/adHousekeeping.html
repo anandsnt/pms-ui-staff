@@ -19,6 +19,12 @@
 
                                             <ad-checkbox is-checked="data.enable_room_status_at_checkout" label="{{'ROOM_STATUS_UPDATE_CHECKOUT_LABEL' | translate}}" div-class="full-width"></ad-checkbox>
 
+		            <div id="options" class="entry full-width">
+		            	<label translate>AUTO_ASSIGN</label>
+		                <ad-radio-dir dir-model="data.hk_auto_assign_type" dir-value="BY_EMPLOYEES" dir-label="By Employees"></ad-radio-dir>
+		                <ad-radio-dir dir-model="data.hk_auto_assign_type" dir-value="BY_SECTION_AND_TIME" dir-label="By Section and Time"></ad-radio-dir>
+		            </div>
+
 				</fieldset>
 
 				<div class="actions float">

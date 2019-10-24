@@ -9,14 +9,14 @@ module.exports = {
 				jsLibRoot + 'jquery-ui.min.js',
 				jsLibRoot + 'jquery.ui.touch-punch.min.js',
 				jsLibRoot + 'jquery.qtip.min.js',
-				jsLibRoot + 'angular.min.js',
-				jsLibRoot + 'angular-route.min.js', 
-				jsLibRoot + 'angular-ui-router.min.js', 
-				jsLibRoot + 'angular-animate.min.js', 
+				jsLibRoot + 'angular.1.7.7.min.js',
+				jsLibRoot + 'angular-route.1.7.7.min.js',
+				jsLibRoot + 'angular-ui-router.1.0.15.min.js',
+				jsLibRoot + 'angular-animate.1.7.7.min.js',
 				jsLibRoot + 'angular-dragdrop.min.js',
-				jsLibRoot + 'angular-sanitize.min.js',
-				jsLibRoot + 'angular-translate.min.js',
-				jsLibRoot + 'angular-translate-loader-static-files.min.js', 
+				jsLibRoot + 'angular-sanitize.1.7.7.min.js',
+				jsLibRoot + 'angular-translate.2.18.1.min.js',
+				jsLibRoot + 'angular-translate-loader-static-files.2.18.1.min.js',
 				jsLibRoot + 'ui-utils.min.js',
 				jsLibRoot + 'underscore.min.js',
 				jsLibRoot + 'ngDialog.min.js',
@@ -24,7 +24,13 @@ module.exports = {
 				jsLibRoot + 'spectrum.js',
 				jsLibRoot + 'SyntaxHighlighter/shCore.js',
 				jsLibRoot + 'SyntaxHighlighter/shBrushXml.js',
-				jsLibRoot + 'SyntaxHighlighter/shBrushJScript.js'
+				jsLibRoot + 'SyntaxHighlighter/shBrushJScript.js',
+				jsLibRoot + 'treeview/ivh-treeview.min.js',
+				jsLibRoot + 'moment.min.js',
+				jsLibRoot + 'gapi.min.js',
+                jsLibRoot + 'toastr/toastr.min.js',
+                // Eliminate all spec files
+                '!**/*.spec.js'
 			],
 			nonMinifiedFiles: [
 				jsLibRoot + 'sortable.js',				
@@ -42,8 +48,14 @@ module.exports = {
 				sharedRoot + 'directives/ngClassWithoutAnimation/*.js',
                 sharedRoot + 'directives/convertToNumber/*.js',
 				sharedRoot + 'directives/tooltip/qtip2.js',
+				sharedRoot + 'directives/touchPress/touchPress.js',
+				sharedRoot + 'directives/activityIndicator/sntActivityIndicator.js',
+                sharedRoot + 'sntTransitionManager/**/*.js',
 				sharedRoot + 'baseCtrl.js',
 				sharedRoot + 'iBeaconOperations.js',
+                sharedRoot + 'sntUtils/app.js',
+                sharedRoot + 'sntUtils/**/*.js',
+
 				jsLibRoot + 'date.js',
 				adminRoot + 'adRouter/**/*.js',
 				adminRoot + 'adApp.js',
@@ -53,10 +65,14 @@ module.exports = {
 				adminRoot + 'directives/**/*.js',
 				adminRoot + 'services/**/*.js',
 				adminRoot + 'filters/*.js',
+				adminRoot + 'directives/multiOptionSelection/adminMultiOptionSelection.js',
 				sharedRoot + 'directives/uiColorpicker/uiColorpicker.js',
 				sharedRoot + 'directives/onScroll/onScroll.js',
 				sharedRoot + 'directives/limitInputRange/limitInputRange.js',
+				sharedRoot + 'integrations/*.js',
 				adminRoot + 'constants/**/*.js',
+                // Eliminate all spec files
+                '!**/*.spec.js'
 			]
 		};		
 		

@@ -1,0 +1,57 @@
+<section class="content current admin-scrollfix" div-touch-move-stop-propogate>
+    <div>
+        <header class="content-title float">
+            <h2 translate="">MONSCIERGE_SETUP</h2>
+            <a id="go_back" data-type="load-details" class="action back" ng-click="goBackToPreviousState()">Back</a>
+        </header>
+        <section class="content-scroll">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+            <div style="overflow-y:auto;" name="edit-guest-review" method="post" class="form float">
+                <ad-toggle-button is-checked="data.enabled" is-disabled = "isPmsProductionEnv && hotel_code != 'YOBOS'"
+                                      label="{{'ACTIVE'| translate}}"></ad-toggle-button>
+                <fieldset class="holder full-width" ng-show="data.enabled">
+                    <ad-form-title full-width="true" form-title="{{'MONSCIERGE_SETTINGS' | translate}}"></ad-form-title>
+                    
+                    <ad-textbox value="data.oauth_url " label="{{ 'MONSCIERGE_OAUTH_URL' | translate}}"></ad-textbox>
+
+                    <ad-textbox value="data.requests_url " label="{{ 'MONSCIERGE_WEB_REQUEST_URL' | translate}}"></ad-textbox>
+
+                    <ad-textbox value="data.place_id " label="{{ 'MONSCIERGE_PROPERTY_ID' | translate}}"></ad-textbox>
+
+
+                </fieldset>
+
+                <fieldset class="holder full-width" ng-show="data.enabled">
+                    <ad-form-title full-width="true" form-title="{{'MONSCIERGE_IOS_LABEL' | translate}}"></ad-form-title>
+                    <ad-textbox value="data.ios_client_id " label="{{ 'MONSCIERGE_CLIENT_ID' | translate}}"></ad-textbox>
+                    <ad-textbox 
+                        value="data.ios_client_secret "
+                        label="{{ 'MONSCIERGE_CLIENT_SECRET' | translate}}"
+                        inputtype="password"
+                        click-handler="onPasswordClick(data, 'ios_client_secret')"
+                        ></ad-textbox>
+                </fieldset>
+
+                <fieldset class="holder full-width" ng-show="data.enabled">
+                    <ad-form-title full-width="true" form-title="{{'MONSCIERGE_ANDROID_LABEL' | translate}}"></ad-form-title>
+                    <ad-textbox value="data.android_client_id " label="{{ 'MONSCIERGE_CLIENT_ID' | translate}}"></ad-textbox>
+                    <ad-textbox value="data.android_client_secret "
+                                label="{{ 'MONSCIERGE_CLIENT_SECRET' | translate}}"
+                                inputtype="password"
+                                click-handler="onPasswordClick(data, 'android_client_secret')"
+                                ></ad-textbox>
+                </fieldset>
+
+                <div class="actions float">
+                    <button type="button" class="button blank add-data-inline" ng-click="goBackToPreviousState()">
+                        Cancel
+                    </button>
+                    <button type="button" class="button green" ng-click="saveSettings()">
+                        Save changes
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>

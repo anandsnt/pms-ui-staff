@@ -28,7 +28,8 @@ angular.module('sntRover').service('rvAccountsConfigurationSrv', ['$q', 'rvBaseW
 			if (params.accountId === "NEW_ACCOUNT") {
 				deferred.resolve(angular.copy(self.baseAccountSummaryData));
 			} else {
-				url = 'api/posting_accounts/' + params.accountId;
+				var url = 'api/posting_accounts/' + params.accountId;
+				
 				rvBaseWebSrvV2.getJSON(url).then(
 					function(data) {
 						deferred.resolve(data);
@@ -58,12 +59,11 @@ angular.module('sntRover').service('rvAccountsConfigurationSrv', ['$q', 'rvBaseW
 
 		this.updateBillingRefNumber = function(data) {
 			var deferred = $q.defer(),
-				url = 'api/posting_accounts/' + data.summary.posting_account_id,
-				params = {
-						custom_reference_number: data.custom_reference_number
-						};
+				url = 'api/posting_accounts/' + data.summary.posting_account_id;
 
-			rvBaseWebSrvV2.putJSON(url, params)
+                data.summary.custom_reference_number = data.custom_reference_number;
+
+			rvBaseWebSrvV2.putJSON(url, data.summary)
 				.then(function(data) {
 					deferred.resolve(data);
 				}, function(data) {
@@ -103,7 +103,7 @@ angular.module('sntRover').service('rvAccountsConfigurationSrv', ['$q', 'rvBaseW
 			return deferred.promise;
 		};
 
-		// CICO-24928 
+		// CICO-24928
 		this.updateAccountNote = function(data) {
 			var deferred = $q.defer(),
 				url = 'api/notes/' + data.id;

@@ -1,0 +1,462 @@
+{
+    "reservation_card": {
+        "timeline": "current",
+        "confirmation_num": "100337",
+        "reservation_status": "CHECKEDOUT",
+        "arrival_date": "2017-12-08",
+        "departure_date": "2017-12-09",
+        "group_name": "",
+        "group_id": "",
+        "group_block_from": "",
+        "group_block_to": "",
+        "group_status": "",
+        "group_rate_id": null,
+        "group_cc_id": null,
+        "group_ta_id": null,
+        "allotment_name": "",
+        "allotment_id": "",
+        "allotment_status": "",
+        "accompaying_guests": [{
+            "guest_name": "Dennis J k",
+            "id": 796663,
+            "last_name": "J k",
+            "first_name": "Dennis",
+            "guest_type": "ADULT",
+            "$$hashKey": "object:4757"
+        }],
+        "guests_total": 2,
+        "number_of_infants": 0,
+        "number_of_adults": 2,
+        "number_of_children": 0,
+        "guarentee_type": "Deposit Received",
+        "has_smartbands": false,
+        "room_number": "404",
+        "room_id": "14974",
+        "is_exclude_from_manual_checkin": false,
+        "key_settings": "encode",
+        "room_status": "NOTREADY",
+        "fo_status": "OCCUPIED",
+        "room_type_description": "Studio",
+        "room_type_code": "STU",
+        "membership_type": "",
+        "avg_daily_rate": "5",
+        "total_rate": "5",
+        "rate_name": "Rate with Tourist Tax",
+        "rate_description": "Rate with Tourist Tax",
+        "total_nights": 1,
+        "loyalty_level": {
+            "selected_loyalty": null,
+            "frequentFlyerProgram": [],
+            "hotelLoyaltyProgram": []
+        },
+        "reservation_id": 2192441,
+        "payment_details": {
+            "card_type_image": "images/.png",
+            "card_number": "",
+            "card_expiry": "",
+            "is_swiped": false,
+            "id": 268612,
+            "auth_color_code": "black",
+            "card_name": "",
+            "card_type_name": null
+        },
+        "wake_up_time": {
+            "today_date": "2017-12-08",
+            "tomorrow_date": "2017-12-09"
+        },
+        "is_force_upsell": "false",
+        "news_paper_pref": {
+            "news_papers": [],
+            "selected_newspaper": ""
+        },
+        "payment_type": 268612,
+        "currency_code": "ISK",
+        "balance_amount": "-37.00",
+        "enable_nights": "false",
+        "is_late_checkout_on": true,
+        "is_opted_late_checkout": false,
+        "late_checkout_time": null,
+        "routings": "",
+        "deposit_attributes": {
+            "room_cost": "5.00",
+            "packages": "0.00",
+            "sub_total": "5.00",
+            "fees": "0.00",
+            "stay_total": "5.00",
+            "nightly_charges": "0.00",
+            "total_cost_of_stay": "5.00",
+            "deposit_paid": "156.00",
+            "outstanding_stay_total": "-151.00",
+            "currency_code": "kr.",
+            "deposit_dues": [{
+                "due_date": "2018-01-05",
+                "due_amount": "5.00",
+                "paid": true
+            }],
+            "balance_deposit_amount": "0.00"
+        },
+        "payment_method_used": "CA",
+        "restrict_post": true,
+        "payment_method_description": "Cash Payment",
+        "has_any_credit_card_attached_bill": false,
+        "is_rates_suppressed": "false",
+        "text_rates_suppressed": "",
+        "arrival_time": " 1:15 PM",
+        "departure_time": "11:00 AM",
+        "is_routing_available": "true",
+        "room_ready_status": "DIRTY",
+        "use_inspected": "true",
+        "use_pickup": "false",
+        "checkin_inspected_only": "false",
+        "is_reservation_queued": "false",
+        "is_queue_rooms_on": "false",
+        "icare_enabled": "false",
+        "smartband_has_balance": "false",
+        "booking_origin_id": null,
+        "market_segment_id": 102,
+        "source_id": null,
+        "segment_id": null,
+        "reservation_type_id": 5,
+        "is_pre_checkin": false,
+        "is_rate_suppressed_present_in_stay_dates": false,
+        "combined_key_room_charge_create": "false",
+        "stay_dates": [{
+            "adults": 2,
+            "children": 0,
+            "infants": 0,
+            "date": "2017-12-08",
+            "rate": {
+                "actual_amount": "5.00",
+                "modified_amount": "5.00",
+                "is_discount_allowed": "true",
+                "is_suppressed": ""
+            },
+            "rate_id": 17980,
+            "room_type_id": 807,
+            "rate_config": {
+                "child": 5,
+                "double": 5,
+                "extra_adult": 5,
+                "single": 5
+            }
+        }],
+        "is_multiple_rates": false,
+        "is_hourly_reservation": false,
+        "no_of_hours": "NA",
+        "max_occupancy": null,
+        "deposit_amount": "0.00",
+        "deposit_policy": {
+            "id": 73,
+            "name": "Deposit Policy 01",
+            "description": "Deposit Policy 01",
+            "amount": "100.0",
+            "amount_type": "percent"
+        },
+        "is_disabled_email_phone_dialog": "",
+        "hotel_selected_key_system": "",
+        "is_remote_encoder_enabled": false,
+        "is_package_exist": false,
+        "package_count": "0",
+        "sharer_information": {},
+        "commission_details": {
+            "is_on": true,
+            "commission_origin": "Rate",
+            "commission_value": 10,
+            "commission_type": "amount",
+            "is_prepaid": false
+        },
+        "hide_rates": null,
+        "company_card_id": 240,
+        "travel_agent_card_id": 353,
+        "company_card_name": "Stayntouch CC",
+        "travel_agent_card_name": "AmazonTA",
+        "is_custom_text_per_reservation": false,
+        "cannot_move_room": false,
+        "room_pin": null,
+        "is_suite": false,
+        "default_bill_id": 113087,
+        "station_offer_mobilekey": "disabled"
+    },
+    "paymentTypes": [{
+        "id": 3,
+        "name": "CA",
+        "description": "Cash Payment",
+        "is_display_reference": true,
+        "charge_code": {
+            "id": 13110,
+            "fees_information": {}
+        },
+        "values": []
+    }, {
+        "id": 4,
+        "name": "CK",
+        "description": "Check Payment",
+        "is_display_reference": true,
+        "charge_code": {
+            "id": 13111,
+            "fees_information": {}
+        },
+        "values": []
+    }, {
+        "id": 1,
+        "name": "CC",
+        "description": "Credit Card",
+        "is_display_reference": true,
+        "charge_code": {},
+        "values": [{
+            "id": 6,
+            "cardname": "American Express",
+            "cardcode": "AX",
+            "is_display_reference": true,
+            "charge_code": {
+                "id": 13114,
+                "fees_information": {}
+            }
+        }, {
+            "id": 3,
+            "cardname": "Diners Club",
+            "cardcode": "DC",
+            "is_display_reference": true,
+            "charge_code": {
+                "id": 28896,
+                "fees_information": {}
+            }
+        }, {
+            "id": 4,
+            "cardname": "Discover",
+            "cardcode": "DS",
+            "is_display_reference": true,
+            "charge_code": {
+                "id": 13117,
+                "fees_information": {}
+            }
+        }, {
+            "id": 5,
+            "cardname": "Japan Credit Bureau",
+            "cardcode": "JCB",
+            "is_display_reference": true,
+            "charge_code": {
+                "id": 13115,
+                "fees_information": {}
+            }
+        }, {
+            "id": 8,
+            "cardname": "Maestro Int",
+            "cardcode": "MA",
+            "is_display_reference": true,
+            "charge_code": {
+                "id": 13118,
+                "fees_information": {}
+            }
+        }, {
+            "id": 2,
+            "cardname": "Master Card",
+            "cardcode": "MC",
+            "is_display_reference": true,
+            "charge_code": {
+                "id": 13113,
+                "fees_information": {}
+            }
+        }, {
+            "id": 7,
+            "cardname": "UK Maestro",
+            "cardcode": "UM",
+            "is_display_reference": true,
+            "charge_code": {
+                "id": 81933,
+                "fees_information": {}
+            }
+        }, {
+            "id": 1,
+            "cardname": "Visa",
+            "cardcode": "VA",
+            "is_display_reference": true,
+            "charge_code": {
+                "id": 13112,
+                "fees_information": {}
+            }
+        }]
+    }, {
+        "id": 59,
+        "name": "GIFT_CARD",
+        "description": "Gift Card",
+        "is_display_reference": true,
+        "charge_code": {},
+        "values": []
+    }, {
+        "id": 46,
+        "name": "PAYPAL",
+        "description": "Paypal",
+        "is_display_reference": true,
+        "charge_code": {
+            "id": 13309,
+            "fees_information": {}
+        },
+        "values": []
+    }, {
+        "id": 143,
+        "name": "UPI",
+        "description": "Upi",
+        "is_display_reference": true,
+        "charge_code": {
+            "id": 28897,
+            "fees_information": {}
+        },
+        "values": []
+    }],
+    "paymentMethods": [{
+        "id": 3,
+        "name": "CA",
+        "description": "Cash Payment",
+        "is_display_reference": true,
+        "charge_code": {
+            "id": 13110,
+            "fees_information": {}
+        },
+        "values": []
+    }, {
+        "id": 4,
+        "name": "CK",
+        "description": "Check Payment",
+        "is_display_reference": true,
+        "charge_code": {
+            "id": 13111,
+            "fees_information": {}
+        },
+        "values": []
+    }, {
+        "id": 1,
+        "name": "CC",
+        "description": "Credit Card",
+        "is_display_reference": true,
+        "charge_code": {},
+        "values": [{
+            "id": 6,
+            "cardname": "American Express",
+            "cardcode": "AX",
+            "is_display_reference": true,
+            "charge_code": {
+                "id": 13114,
+                "fees_information": {}
+            }
+        }, {
+            "id": 3,
+            "cardname": "Diners Club",
+            "cardcode": "DC",
+            "is_display_reference": true,
+            "charge_code": {
+                "id": 28896,
+                "fees_information": {}
+            }
+        }, {
+            "id": 4,
+            "cardname": "Discover",
+            "cardcode": "DS",
+            "is_display_reference": true,
+            "charge_code": {
+                "id": 13117,
+                "fees_information": {}
+            }
+        }, {
+            "id": 5,
+            "cardname": "Japan Credit Bureau",
+            "cardcode": "JCB",
+            "is_display_reference": true,
+            "charge_code": {
+                "id": 13115,
+                "fees_information": {}
+            }
+        }, {
+            "id": 8,
+            "cardname": "Maestro Int",
+            "cardcode": "MA",
+            "is_display_reference": true,
+            "charge_code": {
+                "id": 13118,
+                "fees_information": {}
+            }
+        }, {
+            "id": 2,
+            "cardname": "Master Card",
+            "cardcode": "MC",
+            "is_display_reference": true,
+            "charge_code": {
+                "id": 13113,
+                "fees_information": {}
+            }
+        }, {
+            "id": 7,
+            "cardname": "UK Maestro",
+            "cardcode": "UM",
+            "is_display_reference": true,
+            "charge_code": {
+                "id": 81933,
+                "fees_information": {}
+            }
+        }, {
+            "id": 1,
+            "cardname": "Visa",
+            "cardcode": "VA",
+            "is_display_reference": true,
+            "charge_code": {
+                "id": 13112,
+                "fees_information": {}
+            }
+        }]
+    }, {
+        "id": 59,
+        "name": "GIFT_CARD",
+        "description": "Gift Card",
+        "is_display_reference": true,
+        "charge_code": {},
+        "values": []
+    }, {
+        "id": 46,
+        "name": "PAYPAL",
+        "description": "Paypal",
+        "is_display_reference": true,
+        "charge_code": {
+            "id": 13309,
+            "fees_information": {}
+        },
+        "values": []
+    }, {
+        "id": 143,
+        "name": "UPI",
+        "description": "Upi",
+        "is_display_reference": true,
+        "charge_code": {
+            "id": 28897,
+            "fees_information": {}
+        },
+        "values": []
+    }],
+    "reseravationDepositData": {
+        "deposit_amount": "0.00",
+        "deposit_policy": {
+            "amount": "100.0",
+            "amount_type": "percent",
+            "description": "Deposit Policy 01",
+            "id": 73,
+            "name": "Deposit Policy 01",
+            "post_type": "STAY",
+            "allow_deposit_edit": null
+        },
+        "attached_card": {
+            "value": 268612,
+            "card_code": "",
+            "ending_with": "",
+            "expiry_date": "",
+            "holder_name": "",
+            "is_credit_card": false,
+            "fees_information": {}
+        },
+        "is_hourly": false,
+        "is_eod_in_progress": false,
+        "is_eod_manual_started": false,
+        "is_eod_failed": true,
+        "is_eod_process_running": true
+    },
+    "justCreatedRes": false,
+    "check_in_via_queue": false
+}

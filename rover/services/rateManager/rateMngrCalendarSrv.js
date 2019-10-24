@@ -356,13 +356,13 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
 			   		}
 			   	});
 		   		rr.restrictions = rate.restrictions;
-		   		rr.single = rate.single;
-		   		rr["double"] = rate["double"];
-		   		rr.extra_adult = rate.extra_adult;
-		   		rr.child = rate.child;
+		   		rr.single = rate.rate_currency + "-" + rate.single;
+		   		rr["double"] = rate.rate_currency + "-" + rate["double"];
+		   		rr.extra_adult = rate.rate_currency + "-" + rate.extra_adult;
+		   		rr.child = rate.rate_currency + "-" + rate.child;
 		   		// ( CICO-9555
-		   		rr.isHourly	= rate.is_hourly;
-		   		rr.nightly	= rate.nightly_rate;
+		   		rr.isHourly	= rate.rate_currency + "-" + rate.is_hourly;
+		   		rr.nightly	= rate.rate_currency + "-" + rate.nightly_rate;
 		   		// CICO-9555 )
 		   		rateData[item.date] = rr;
 		   	}

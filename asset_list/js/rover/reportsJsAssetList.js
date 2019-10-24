@@ -13,7 +13,14 @@ module.exports = {
 				roverRoot + "constants/reports/**/*.js",
 				roverRoot + "controllers/reports/**/*.js",
 				reportReactViewRoot + "**/*.js",
-				'shared/directives/numbersOnly/numbersOnly.js'
+				'shared/directives/numbersOnly/numbersOnly.js',
+				roverRoot + 'services/reservation/rvReservationBaseSearchSrv.js',
+				'shared/sntUtils/sntFeatureToggles.js',
+				roverRoot + 'directives/customExports/durationFilter/durationFilterDir.js',
+				roverRoot + 'directives/customExports/rangeFilter/rangeFilterDir.js',
+				roverRoot + 'directives/customExports/optionFilter/optionFilterDir.js',
+                // Eliminate all spec files
+                '!**/*.spec.js'
 			]
 		};
 		return reportJsAssets;

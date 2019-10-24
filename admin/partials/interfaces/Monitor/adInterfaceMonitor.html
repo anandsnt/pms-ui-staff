@@ -1,0 +1,44 @@
+<div id="wrapper" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
+    <header class="content-title float">
+        <h2 translate>
+            MONITOR_SCREEN
+        </h2>
+        <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
+
+    </header>
+    <section class="content-scroll">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+
+        <table class="grid">
+            <tbody>
+            <tr ng-repeat="interface in externalInterfaces">
+                <td>
+                    <span style="margin-top: 16px;"><strong>{{interface}}</strong></span>
+                    <div class="form" style="padding: 0;" ng-if="interface ==='COMTROL'">
+                        <div class="entry full-width">
+                            <textarea rows="4"
+                                      ng-model="state.comtrolList"
+                                      ng-change="onComtrolListChange()"
+                                      class="full-width">
+                            </textarea>
+                        </div>
+                        <div class="actions float" ng-show="state.unsavedComtrolList">
+                            <button type="button" class="button blank add-data-inline"
+                                    ng-click="onCancelEditComtrolList()" translate>
+                                CANCEL
+                            </button>
+                            <button type="button" like-type="common" class="button ng-binding green"
+                                    ng-click="onSaveComtrolList()" translate>
+                                SAVE_CHANGES
+                            </button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+            <thead>
+            </thead>
+        </table>
+    </section>
+</div>

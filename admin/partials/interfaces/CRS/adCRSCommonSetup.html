@@ -4,9 +4,6 @@
         <fieldset class="holder left">
             <ad-toggle-button is-checked="config.enabled"
                               label="{{'ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
-            <!-- TODO: Remove below toggle button once windusurfer new-gen is a blockbuster -->
-            <ad-toggle-button is-checked="config.disable_legacy" ng-if="availableSettings.indexOf('disable_legacy') > -1"
-                              label="{{'DISABLE_LEGACY'| translate}}"></ad-toggle-button>
         </fieldset>
     </div>
 
@@ -25,10 +22,15 @@
                         inputtype="text" value="config.user_name"
                         label="{{'USER_NAME'| translate}}"
                         styleclass="full-width"></ad-textbox>
-            <ad-textbox ng-if="availableSettings.indexOf('password') > -1"
-                        inputtype="password"
+            <ad-textbox inputtype="password"
                         value="config.password"
                         label="{{'PASSWORD'| translate}}"
+                        styleclass="full-width"
+                        click-handler="onPasswordClick(config, 'password')"></ad-textbox>
+            <ad-textbox ng-if="availableSettings.indexOf('inbound_end_point') > -1"
+                        inputtype="text"
+                        value="config.inbound_end_point"
+                        label="{{'INBOUND_URL'| translate}}"
                         styleclass="full-width"></ad-textbox>
         </fieldset>
 
@@ -57,14 +59,37 @@
             <ad-toggle-button negative-logic="true"
                               is-checked="config.disable_feature_upload_inventory"
                               label="{{'FEATURE_UPLOAD_INVENTORY'| translate}}"></ad-toggle-button>
-        </fieldset>
-        <fieldset class="holder left">
             <ad-toggle-button negative-logic="true"
                               is-checked="config.disable_feature_upload_rate"
                               label="{{'FEATURE_UPLOAD_RATE'| translate}}"></ad-toggle-button>
             <ad-toggle-button negative-logic="true"
                               is-checked="config.disable_feature_upload_restriction"
                               label="{{'FEATURE_UPLOAD_RESTRICTION'| translate}}"></ad-toggle-button>
+        </fieldset>
+        <fieldset class="holder right"
+                  ng-if="availableSettings.indexOf('enhance_deposit_notes') > -1">
+            <ad-toggle-button is-checked="config.enhance_deposit_notes"
+                              label="{{'ENHANCE_DEPOSIT_NOTES'| translate}}"></ad-toggle-button>
+        </fieldset>
+        <fieldset class="holder right"
+                  ng-if="availableSettings.indexOf('calculate_rate_after_tax') > -1">
+            <div class="entry full-width">
+                <label>RATE CALCULATION</label>
+                <div class="switch-container">
+                    <div class="switch-button with-text"
+                         ng-class="{'on' : config.calculate_rate_after_tax}">
+                        <input type="checkbox" ng-model="config.calculate_rate_after_tax"/>
+                        <label class="data-off">
+                            <span class="value">AFTER TAX</span>
+                            <span class="button orange">BEFORE TAX</span>
+                        </label>
+                        <label class="data-on">
+                            <span class="button orange">AFTER TAX</span>
+                            <span class="value">BEFORE TAX</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
         </fieldset>
     </fieldset>
 
@@ -78,6 +103,7 @@
                               valueproperty="id"
                               property="name"
                               list="rates"
+                              required="yes"
                               label="{{'DEFAULT_RATE'| translate}}"
                               div-class="full-width">
             </ad-dropdown-name>
@@ -97,6 +123,15 @@
                               property="description"
                               list="paymentMethods"
                               label="{{'DEFAULT_PAYMENT_METHOD'| translate}}"
+                              div-class="full-width">
+            </ad-dropdown-name>
+            <ad-dropdown-name ng-if="availableSettings.indexOf('room_type_id') > -1"
+                              savemodel="config.room_type_id"
+                              valueproperty="id"
+                              property="name"
+                              required="yes"
+                              list="roomTypes"
+                              label="{{'DEFAULT_ROOM_TYPE'| translate}}"
                               div-class="full-width">
             </ad-dropdown-name>
         </fieldset>

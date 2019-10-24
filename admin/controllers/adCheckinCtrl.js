@@ -10,7 +10,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
    * To set the preveous state as admin.dashboard/Zest in all cases
    */
   $rootScope.previousState = 'admin.dashboard';
-  $rootScope.previousStateParam = '1';
+  $rootScope.previousStateParam = ($scope.isChainAdminMenuPresent && $scope.isChainAdminMenuPresent.length === 0) ? '1' : '2';
 
   $scope.init = function () {
     $scope.checkinData = {};
@@ -397,7 +397,8 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
       'zest_web_checkin_details_about_mobile_app' : $scope.checkinData.zest_web_checkin_details_about_mobile_app,
       'zest_web_checkin_mobile_app_call_to_action' : $scope.checkinData.zest_web_checkin_mobile_app_call_to_action,
       'zest_web_include_app_store_banner' : $scope.checkinData.zest_web_include_app_store_banner,
-      'zest_web_include_google_play_banner' : $scope.checkinData.zest_web_include_google_play_banner
+      'zest_web_include_google_play_banner' : $scope.checkinData.zest_web_include_google_play_banner,
+      'zestweb_cc_authorization_amount': $scope.checkinData.zestweb_cc_authorization_amount
     };
 
     if($scope.surveyQuestionImage === $scope.checkinData.survey_question_image){

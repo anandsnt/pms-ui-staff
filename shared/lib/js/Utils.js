@@ -56,7 +56,7 @@ Date.prototype.getDSTDifference = function() {
 var CurrencyInfoMappings = {
 
     'AED': [2, 'dh', '\u062f.\u0625.', 'DH'],
-    'AUD': [2, '$', 'AU$'],
+    'AUD': [2, '$', '$'],
     'BDT': [2, '\u09F3', 'Tk'],
     'BRL': [2, 'R$', 'R$'],
     'CAD': [2, '$', 'C$'],
@@ -65,16 +65,18 @@ var CurrencyInfoMappings = {
     'CNY': [2, '¥', 'RMB¥'],
     'COP': [0, '$', 'COL$'],
     'CRC': [0, '\u20a1', 'CR\u20a1'],
-    'CZK': [2, 'K\u010d', 'K\u010d'],
-    'DKK': [18, 'kr', 'kr'],
+    'CZK': [2, 'Kč', 'Kč'],
+    'DKK': [18, 'kr.', 'kr'],
     'DOP': [2, '$', 'RD$'],
     'EGP': [2, '£', 'LE'],
     'EUR': [18, '€', '€'],
     'GBP': [2, '£', 'GB£'],
     'HKD': [2, '$', 'HK$'],
+    'HUF': [2, 'Ft', 'Ft'],    
     'ILS': [2, '\u20AA', 'IL\u20AA'],
     'INR': [2, '\u20B9', 'Rs'],
-    'ISK': [0, 'kr', 'kr'],
+    'IDR': [2, 'Rp', 'Rp'],
+    'ISK': [0, 'kr.', 'kr'],
     'JMD': [2, '$', 'JA$'],
     'JPY': [0, '¥', 'JP¥'],
     'KRW': [0, '\u20A9', 'KR₩'],
@@ -82,23 +84,25 @@ var CurrencyInfoMappings = {
     'MNT': [0, '\u20AE', 'MN₮'],
     'MXN': [2, '$', 'Mex$'],
     'MYR': [2, 'RM', 'RM'],
-    'NOK': [18, 'kr', 'NOkr'],
+    'NOK': [18, 'kr.', 'NOkr'],
+    'NZD': [18, '$', '$'],
     'PAB': [2, 'B/.', 'B/.'],
     'PEN': [2, 'S/.', 'S/.'],
-    'PHP': [2, '\u20B1', 'Php'],
+    'PHP': [2, '₱', '₱'],
     'PKR': [0, 'Rs', 'PKRs.'],
     'RUB': [42, 'руб.', 'руб.'],
     'SAR': [2, 'Rial', 'Rial'],
-    'SEK': [2, 'kr', 'kr'],
+    'SEK': [2, 'kr.', 'kr'],
     'SGD': [2, '$', 'S$'],
     'THB': [2, '\u0e3f', 'THB'],
-    'TRY': [2, 'TL', 'YTL'],
+    'TRY': [2, '₺', ''],
     'TWD': [2, 'NT$', 'NT$'],
     'USD': [2, '$', 'US$'],
     'UYU': [2, '$', 'UY$'],
     'VND': [0, '\u20AB', 'VN\u20AB'],
     'YER': [0, 'Rial', 'Rial'],
-    'ZAR': [2, 'R', 'ZAR']
+    'ZAR': [2, 'R', 'R'],
+    'PLN': [2, 'zł', 'zł']
 };
 
 /**
@@ -592,6 +596,7 @@ var tConvertToAPIFormat = function(hh, mm, ampm){
 	return time;
 
 }
+
 //retrieve month name from index
 function getMonthName(monthIndex){
     var monthName = new Array(12);
@@ -665,3 +670,80 @@ var checkIfReferencetextAvailableForCC = function(paymentTypes,selectedPaymentTy
 var getObjectLength = function(obj) {
     return Object.keys(obj).length;
 }
+
+// Replace a value with in object with another value
+var replaceValueWithinObject = function (obj, findStr, replaceObj ) {
+
+    Object.keys(obj).forEach(function (key) {
+        if ( obj[key] != null && typeof obj[key] === 'object') {
+            return replaceValueWithinObject(obj[key], findStr, replaceObj);
+        } else if (obj[key] === findStr) {
+            obj[key] = replaceObj;
+        }
+    });
+};
+
+// Check whether the object has got all key values as empty
+var isObjectAllValuesEmpty = function (obj) {
+    var emptyKeys = [];
+
+    _.each ( obj, function (value, key) {
+        if (value == "") {
+            emptyKeys.push(key);
+        }
+    });
+    return ( emptyKeys.length == Object.keys(obj).length );
+};
+// Convert the given date object to timezone independent date
+var getTzIndependentDate = function(dateObj) {   
+
+    var r = dateObj.getTime();
+
+    if ( (dateObj.getHours() != 0) || (dateObj.getMinutes() != 0) ) {
+        r += dateObj.getTimezoneOffset() * 60 * 1000;
+    }
+
+    if ( dateObj.getTimezoneOffset() < 0 ) {
+        r -= dateObj.getTimezoneOffset() * 60 * 1000;
+    }
+
+    var adjustedDate = new Date(r)
+
+    if(adjustedDate.isOnDST()){
+        return new Date(r += Math.abs(dateObj.getDSTDifference()) * 60 * 1000);
+    }
+
+    return adjustedDate;
+};
+// Get timezone independent date for the given day, month and year
+var getTZIndependentDateFromDayMonthYear = function(day, month, year) {
+    var d = new Date(year, month-1, day);
+
+    return getTzIndependentDate(d);
+
+};
+
+var isValidEmail = function(email) {
+    return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email));
+}
+
+// Get display password to show in the password form fields
+var getTemporaryDisplayPassword = function() {
+    // Strong password generated randomly for display purpose only
+    return '-R#h!bVsALm-';
+};
+
+/**
+ * Checks whether the given array is empty or not
+ * @param {Array} arr 
+ * @return {Boolean}
+ */
+var isEmptyArray = function (arr) {
+    return arr.length === 0;
+};
+
+var removeKeysFromObj = function (obj, keys) {
+    for (var i = 0; i < keys.length; i++) {
+        delete obj[keys[i]];
+    }
+};

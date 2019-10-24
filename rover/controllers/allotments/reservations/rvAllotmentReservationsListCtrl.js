@@ -29,7 +29,8 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
 
     BaseCtrl.call(this, $scope);
 
-    var currentMode;
+    var currentMode,
+        PAGINATION_ID = 'ALLOTMENT_RESERVATION_LIST';
 
     /**
      * util function to check whether a string is empty
@@ -252,7 +253,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
 
       if (possibleStartDefaultDate < new tzIndependentDate($rootScope.businessDate)) {
         possibleStartDefaultDate = new tzIndependentDate($rootScope.businessDate);
-      }      
+      }
 
       // if we are in edit mode, we have to set the min/max date
       if (!$scope.isInAddMode()) {
@@ -408,29 +409,34 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       $scope.isPrintRegistrationCard = true;
       $rootScope.addNoPrintClass = true;
 
+      var onPrintCompletion = function() {
+        $timeout(function() {
+          $scope.isPrintRegistrationCard = false;
+          $rootScope.addNoPrintClass = false;
+          // CICO-9569 to solve the hotel logo issue
+          $('header .logo').removeClass('logo-hide');
+          $('header .h2').addClass('text-hide');
+  
+          // remove the orientation after similar delay
+          removePrintOrientation();
+        }, 100);
+      };
+
       $timeout(function() {
         /*
          *   ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
          */
-        window.print();
+        
         if (sntapp.cordovaLoaded) {
-          cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+          cordova.exec(onPrintCompletion, function() {
+            onPrintCompletion();
+          }, 'RVCardPlugin', 'printWebView', ['', '0', '', 'L']);
+        } else {
+          window.print();
+          onPrintCompletion();
         }
       }, 100);
-
-      /*
-       *   ======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
-       */
-      $timeout(function() {
-        $scope.isPrintRegistrationCard = false;
-        $rootScope.addNoPrintClass = false;
-        // CICO-9569 to solve the hotel logo issue
-        $('header .logo').removeClass('logo-hide');
-        $('header .h2').addClass('text-hide');
-
-        // remove the orientation after similar delay
-        removePrintOrientation();
-      }, 100);
+     
     };
 
     var failureCallbackOfRegistrationCardData = function(errorData) {
@@ -686,27 +692,32 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       $(this).off('load');
       $(this).remove();
 
-      // yes we have everything we wanted
-      window.print();
+      var onPrintCompletion = function() {
+        $timeout(function() {
+          $scope.print_type = '';
+          removePrintOrientation();
+          $scope.reservations = util.deepCopy($scope.resevationsBeforePrint);
+          $scope.resevationsBeforePrint = [];
+        }, 1200);
+      };
 
       // if we are in the app
       $timeout(function() {
         if (sntapp.cordovaLoaded) {
           cordova.exec(
-              function(success) {},
-              function(error) {},
+            onPrintCompletion,
+              function() {
+                onPrintCompletion();
+              },
               'RVCardPlugin',
-              'printWebView', []
+              'printWebView', ['', '0', '', 'L']
           );
+        } else {
+          window.print();
+          onPrintCompletion();
         }
       }, 300);
-
-      $timeout(function() {
-        $scope.print_type = '';
-        removePrintOrientation();
-        $scope.reservations = util.deepCopy($scope.resevationsBeforePrint);
-        $scope.resevationsBeforePrint = [];
-      }, 1200);
+      
     };
 
     /**
@@ -916,23 +927,11 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
  * @return {[type]}      [description]
  */
     var successCallBackOfAddReservations = function(data) {
-      $scope.newReservations = [];
-      _.each(data.results, function(reservation) {
-        $scope.newReservations.push(reservation);
-        $scope.reservations.unshift(reservation);
-      });
-
-      // total result count
-      $scope.totalResultCount += (data.results.length);
-
-      // pickup
-      $scope.totalPickUpCount = data.total_picked_count;
-
-      // we changed data, so
-      refreshScrollers();
-
-      // rooming data will change after adding some reservation
-      $scope.fetchConfiguredRoomTypeDetails();
+      $scope.reservations = [];
+      $scope.page = 1;
+      $scope.start    = 1;
+      $scope.end      = undefined;
+      callInitialAPIs();
     };
 
     /**
@@ -1073,7 +1072,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       $scope.reservations = data.results;
 
       // total result count
-      $scope.totalResultCount = data.total_count;
+      $scope.totalResultCount = data.total_result;
 
       // pickup
       $scope.totalPickUpCount = data.total_picked_count;
@@ -1087,18 +1086,23 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
 
       // we changed data, so
       refreshScrollers();
+
+      $timeout(function() {
+        $scope.$broadcast('updatePagination', PAGINATION_ID);
+      }, 100);
     };
 
     /**
      * utility function to form API params for group search
      * return {Object}
      */
-    var formFetchReservationsParams = function(isSearching) {
+    var formFetchReservationsParams = function(isSearching, pageNo) {
+      pageNo = pageNo || 1;
       var params = {
         id: $scope.allotmentConfigData.summary.allotment_id,
         payLoad: {
           per_page: $scope.perPage,
-          page: $scope.page,
+          page: pageNo,
           sort_by: $scope.sorting_field,
           sort_dir: $scope.sort_dir
         }
@@ -1117,11 +1121,13 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
     };
 
     /**
-     * to fetch reservations against group
-     * @return - None
+     * Fetch reservations created against allotment
+     * @param {Boolean} isSearching - is a search request
+     * @param {Number} pageNo current page no
+     * @return {void}
      */
-    $scope.fetchReservations = function(isSearching) {
-      var params = formFetchReservationsParams(isSearching);
+    $scope.fetchReservations = function(isSearching, pageNo) {
+      var params = formFetchReservationsParams(isSearching, pageNo);
       var options = {
         params: params,
         successCallBack: successCallBackOfFetchReservations
@@ -1257,84 +1263,14 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
     $scope.shouldShowPagination = function() {
       return ($scope.totalResultCount >= $scope.perPage);
     };
-
-    /**
-     * should we disable next button
-     * @return {Boolean}
-     */
-    $scope.isNextButtonDisabled = function() {
-      return ($scope.end >= $scope.totalResultCount);
-    };
-
-    /**
-     * should we disable prev button
-     * @return {Boolean}
-     */
-    $scope.isPrevButtonDisabled = function() {
-      return ($scope.start === 1);
-    };
-
-    /**
-     * function to trgger on clicking the next button
-     * will call the search API after updating the current page
-     * return - None
-     */
-    $scope.loadPrevSet = function() {
-      var isAtEnd = ($scope.end === $scope.totalResultCount);
-
-      if (isAtEnd) {
-        // last diff will be diff from our normal diff
-        var lastDiff = ($scope.totalResultCount % $scope.perPage);
-
-        if (lastDiff === 0) {
-          lastDiff = $scope.perPage;
-        }
-
-        $scope.start = $scope.start - $scope.perPage;
-        $scope.end = $scope.end - lastDiff;
-      } else {
-        $scope.start = $scope.start - $scope.perPage;
-        $scope.end = $scope.end - $scope.perPage;
-      }
-
-      // Decreasing the page param used for API calling
-      $scope.page--;
-
-      // yes we are calling the API
-      $scope.fetchReservations(isReservationListInSearchMode());
-    };
-
-    /**
-     * function to trgger on clicking the next button
-     * will call the search API after updating the current page
-     * return - None
-     */
-    $scope.loadNextSet = function() {
-      $scope.start = $scope.start + $scope.perPage;
-      var willNextBeEnd = (($scope.end + $scope.perPage) > $scope.totalResultCount);
-
-      if (willNextBeEnd) {
-        $scope.end = $scope.totalResultCount;
-      } else {
-        $scope.end = $scope.end + $scope.perPage;
-      }
-
-      // Increasing the page param used for API calling
-      $scope.page++;
-
-      // yes we are calling the API
-      $scope.fetchReservations(isReservationListInSearchMode());
-    };
-
+    
     /**
      * Pagination things
      * @return {undefined}
      */
     var initialisePagination = function() {
       // pagination
-      $scope.perPage  = rvAllotmentReservationsListSrv.DEFAULT_PER_PAGE;
-      $scope.start    = 1;
-      $scope.end      = undefined;
+      $scope.perPage  = rvAllotmentReservationsListSrv.DEFAULT_PER_PAGE;      
       // what is page that we are requesting in the API
       $scope.page     = 1;
     };
@@ -1687,6 +1623,15 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       callInitialAPIs();
     });
 
+    // Configure pagination options
+    var configurePagination = function() {
+      $scope.pageOptions = {
+        id: PAGINATION_ID,
+        perPage: $scope.perPage,
+        api: [$scope.fetchReservations, false]
+      };
+    };
+
     /**
      * Function to initialise allotment reservation list
      * @return - None
@@ -1709,6 +1654,8 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
 
       // pagination
       initialisePagination();
+
+      configurePagination();
 
       // calling initially required APIs
       // CICO-17898 The initial APIs need to be called in the scenario while we come back to the Rooming List Tab from the stay card

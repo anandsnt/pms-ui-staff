@@ -7,7 +7,8 @@ admin.directive('appFilereader', function($q) {
         , require: '?ngModel'
         , scope: {
             fileNameKey: '@fileNameKey',
-            emitData: '@emitData'
+            emitData: '@emitData',
+            fileChanged: '&fileChanged'
         }
         , link: function(scope, element, attrs, ngModel) {
             if (!ngModel) {
@@ -50,6 +51,11 @@ admin.directive('appFilereader', function($q) {
                         scope.$parent[scope.fileNameKey] = file.name;
                     } else {
                         scope.$parent.fileName = file.name;
+                    }
+                    if (scope.$parent.fileChanged) {
+                        scope.$parent.fileChanged({
+                            'file': file
+                        });
                     }
                     scope.$apply();
                     return deferred.promise;

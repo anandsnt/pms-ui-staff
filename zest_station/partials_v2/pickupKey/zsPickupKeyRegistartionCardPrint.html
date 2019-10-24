@@ -19,7 +19,7 @@
             <text data-ng-bind-html="getTagValue('PRINT_FAILED_AND_KEY_FAILED')" editable-text="PRINT_FAILED_AND_KEY_FAILED"></text>
         </h3>
         <button type="button" class="button done-btn" click-touch="clickedOnCloseButton()" ng-style="doneButtonStyle" ng-show="showDoneButton">
-            <text data-ng-bind-html="getTagValue('DONE')" editable-text="DONE"></text>
+            <text data-ng-bind-html="getTagValue('DONE_BTN')" editable-text="DONE"></text>
         </button>
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
@@ -48,9 +48,10 @@
             <text data-ng-bind-html="getTagValue('IN_ROOM')" editable-text="IN_ROOM"></text>
         </span>
         <strong>{{printRegCardData.room_number}}</strong>
+        <h3>{{printRegCardData.room_instructions}}</h3>
     </div>
     <!-- If text outputs multiple <p> tags then wrap it with <div class="terms"> instead of <p id="terms"> -->
-    <p class="terms">{{printRegCardData.reg_card_text}}</p>
+    <p class="terms" data-ng-bind-html="trustAsHtml(printRegCardData.reg_card_text)" style="width:80%; margin: 0 auto;"></p>
 </section>
 <div class="room page-print" ng-show="theme === 'yotel'">
     <section id="registration-card" class="page-print">
@@ -72,6 +73,10 @@
             <br>
             <br>
             <strong class="large_txt">{{printRegCardData.room_number}}</strong>
+            <br>
+            <br>
+            <br>
+            <span>{{printRegCardData.room_instructions}}</span>
             <br>
             <br>
             <br>

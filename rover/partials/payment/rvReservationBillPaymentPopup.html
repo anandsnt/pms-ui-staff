@@ -41,6 +41,30 @@
 
         <!-- Payment Form -->
         <div class="payment-form">
+            <!-- Authorization Code & Number -->
+            <div class="feedback no-top-border"
+                 style="margin-top: 0; padding-top: 0;"
+                 ng-show="paymentDetails.paymentSuccess && (!splitBillEnabled || paymentDetails.authorizationCode)">
+                <div class="notice success" ng-if="!splitBillEnabled">Amount paid!</div>
+                <ul class="transaction" style="width: 80%;">
+                    <li ng-show="!!paymentDetails.authorizationCode">
+                        Your Authorize code is: <span class="auth">{{paymentDetails.authorizationCode}}</span>
+                    </li>
+                    <li ng-if="!splitBillEnabled && paymentDetails.feePaid">
+                        Amount paid:
+                        <span class="value">
+                            <i class="currency">{{currencySymbol}} </i>
+                            {{paymentDetails.amount |number:2}} <i class="currency" ng-show="paymentDetails.showFee"> + {{currencySymbol}}
+                            {{paymentDetails.feePaid |number:2}} fee </i>
+                        </span>
+                    </li>
+                    <li ng-if="!splitBillEnabled && !paymentDetails.feePaid">
+                        Amount paid:
+                        <span class="value">
+                        <i class="currency">{{currencySymbol}}</i>{{paymentDetails.amount}}</span>
+                    </li>
+                </ul>
+            </div>
             <!-- Split payment -->
             <div class="entry split" ng-class="{active: splitBillEnabled }"
                  ng-hide="depositPaidSuccesFully || defaultPaymentTypeOfBill === 'GIFT_CARD' || defaultPaymentTypeOfBill === 'DB' || !isStandAlone">
@@ -75,7 +99,6 @@
                     5
                 </label>
             </div>
-
             <snt-payment
                     hotel-config="hotelPaymentConfig"
                     workstation-id="{{workstation_id}}"
@@ -96,7 +119,8 @@
                     last-name="{{guestCardData.contactInfo.last_name}}"
                     split-bill-enabled="splitBillEnabled"
                     num-splits="splitePaymentDetail.totalNoOfsplits"
-                    completed-split-payments="splitePaymentDetail.completedSplitPayments"
+                    completed-split-payments="splitePaymentDetail.completedSplitPayments" 
+                    payment-currency-list="paymentCurrencyList" 
                     ng-show="!errorOccured && !depositPaidSuccesFully">
             </snt-payment>
             <div class="actions" ng-hide="!depositPaidSuccesFully">

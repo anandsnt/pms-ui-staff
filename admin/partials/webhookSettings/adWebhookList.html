@@ -1,0 +1,55 @@
+<div id="wrapper" class="content current admin-scrollfix" div-touch-move-stop-propogate
+     ng-click="clearErrorMessage()" ng-cloak="">
+    <header class="content-title float">
+        <h2>WEBHOOKS</h2>
+        <span class="count">({{totalCount}})</span>
+        <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
+        <button ng-click="onClickAdd()" class="action add" scrollup="replacing-div-first">Add new</button>
+    </header>
+    <section class="content-scroll">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+
+        <div id="add-new" ng-show="state.mode === 'ADD'"
+             ng-include="'/assets/partials/webhookSettings/adWebhookAdd.html'">
+        </div>
+
+        <table id="brands" class="grid datatable dataTable"
+               ng-show="webHooks.length - state.deletedCount > 0"
+               ng-table="itemList" template-pagination="nil">
+            <tbody>
+            <tr ng-repeat="webHook in webHooks track by $index" ng-hide="webHook.isDeleted">
+                <td data-item="1" data-title="'DELIVERY TYPE'" ng-click="onSelect($index, webHook)"
+                    header-class="width-20" ng-hide="state.selected === $index">
+                    <a class="edit-data-inline">
+                        {{webHook.delivery_type | translate}}
+                    </a>
+                </td>
+                <td data-item="2" data-title="'URL'" ng-click="onSelect($index, webHook)"
+                    header-class="width-60" ng-hide="state.selected === $index">
+                    <a class="edit-data-inline">
+                        {{webHook.url}}
+                    </a>
+                </td>
+
+                <td data-item="3" data-title="'ACTIVE'"
+                    header-class="width-10" ng-hide="state.selected === $index">
+                    <div class="entry">
+                        <div class="switch-button single" ng-class="{ on: webHook.active }">
+                            <input type="checkbox" ng-click="onToggleActive(webHook)">
+                            <span class="switch-icon"></span>
+                        </div>
+                    </div>
+                </td>
+
+                <td data-item="4" header-class="width-10" data-title="'Delete'" class="delete"
+                    ng-hide="state.selected === $index">
+                    <a class="icons icon-delete large-icon" ng-click="onClickDelete(webHook)"></a>
+                </td>
+
+                <td colspan="4" ng-show="state.selected === $index"
+                    ng-include="'/assets/partials/webhookSettings/adWebhookSettings.html'"></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</div>

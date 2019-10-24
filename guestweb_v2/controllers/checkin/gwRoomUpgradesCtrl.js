@@ -17,14 +17,13 @@ sntGuestWeb.controller('gwRoomUpgradeController', ['$scope', '$state', '$control
 		 * Room Upgrades fetch actions starts here
 		 */
 
-		$scope.returnUpgradeRoomImage = function(room_type_image) {
-			console.log((room_type_image.length > 0) ? room_type_image : 'room-image.png');
-			return (room_type_image.length > 0) ? room_type_image : 'room-image.png';
-		};
-
 		var onUpgradeFetchSuccess = function(response) {
 			$scope.upgradeOptions = response;
 			$scope.isUpgradesFetching = false;
+			// if no upgrades are available
+			if (!response.upsell_room_types.length) {
+				$scope.noThanksClicked();
+			}
 		};
 		var onUpgradeFetchFailure = function(response) {
 			// to do - continue process - no fatal error
@@ -51,7 +50,11 @@ sntGuestWeb.controller('gwRoomUpgradeController', ['$scope', '$state', '$control
 				'upgrade_room_type_id': upsellOption.upgrade_room_type_id
 			};
 			var onUpgradeSuccess = function() {
-				GwWebSrv.zestwebData.roomUpgraded  = false;
+				GwWebSrv.zestwebData.roomUpgraded = true;
+				var reservationDetails = GwCheckinSrv.getcheckinData();
+				
+				reservationDetails.room_type = upsellOption.upgrade_room_type_name;
+				GwCheckinSrv.setcheckinData(reservationDetails);
 				$state.go('checkinReservationDetails');
 			};
 			var onUpgradeFailure = function() {
@@ -64,16 +67,23 @@ sntGuestWeb.controller('gwRoomUpgradeController', ['$scope', '$state', '$control
 			};
 
 			if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
-				GwWebSrv.zestwebData.roomUpgraded  = true;
+				GwWebSrv.zestwebData.roomUpgraded = true;
 				$state.go('checkinReservationDetails');
-			}
-			else {
+			} else {
 				$scope.callAPI(GwCheckinSrv.upgradeRoom, options);
 			}
 		};
 
 		$scope.noThanksClicked = function() {
-			$state.go('termsAndConditions');
+			if (GwWebSrv.zestwebData.isAddonUpsellActive) {
+				$state.go('offerAddons');
+			} else if (GwWebSrv.zestwebData.guestAddressOn) {
+				$state.go('updateGuestDetails');
+			} else if (GwWebSrv.zestwebData.isAutoCheckinOn) {
+				$state.go('etaUpdation');
+			} else {
+				$state.go('checkinFinal');
+			}
 		};
 	}
 ]);

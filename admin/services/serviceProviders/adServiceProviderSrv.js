@@ -87,7 +87,7 @@ admin.service('ADServiceProviderSrv', ['$http', '$q', 'ADBaseWebSrvV2', function
     */
     this.getServiceProviderUserDetails = function(request) {
         var deferred = $q.defer();        
-        var url = '/admin/users/' + request.id + '/edit.json';
+        var url = '/admin/users/' + request.id + '/edit.json?service_provider_id=' + request.service_provider_id;
 
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
@@ -175,23 +175,6 @@ admin.service('ADServiceProviderSrv', ['$http', '$q', 'ADBaseWebSrvV2', function
             deferred.reject(data);
         });
         return deferred.promise;
-    };
-    /**
-    * To delete user
-    * @param {object} data - data to delete
-    * @return {object}
-    */
-    this.deleteUser = function(data) {
-        var deferred = $q.defer();
-        var url = '/admin/users/' + data.id;
-
-           ADBaseWebSrvV2.deleteJSON(url, data).then(function(data) {           
-            deferred.resolve(data);
-        }, function(data) {
-            deferred.reject(data);
-        });
-        return deferred.promise;
-
     };
     /**
     * To send invitation mail

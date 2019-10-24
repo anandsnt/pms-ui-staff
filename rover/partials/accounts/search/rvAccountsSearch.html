@@ -48,10 +48,11 @@
     <a ng-click="gotoAddNewAccount()" class="add-new-button" ng-show="shouldShowAddNewButton()" translate>ACCOUNTS_ADD_NEW</a>
 </form>
 <!-- Pagination -->
-<div class="search-pagination" ng-show="shouldShowPagination()">
-    <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()" translate>ACCOUNTS_NEXT</button>
+<div>
+    <!-- <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()" translate>ACCOUNTS_NEXT</button>
     <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()" translate>ACCOUNTS_PREVIOUS</button>
-    <p >{{'ACCOUNTS_SHOWING'|translate}} <strong>{{start}}-{{end}}</strong> {{'ACCOUNTS_SHOWING_OF'|translate}} <strong id="total-count">{{totalResultCount}}</strong> {{'ACCOUNTS_ITEMS'|translate}}</p>
+    <p >{{'ACCOUNTS_SHOWING'|translate}} <strong>{{start}}-{{end}}</strong> {{'ACCOUNTS_SHOWING_OF'|translate}} <strong id="total-count">{{totalResultCount}}</strong> {{'ACCOUNTS_ITEMS'|translate}}</p> -->
+    <rv-pagination page-options="accountSearchPagination" page-data="totalResultCount"></rv-pagination>
 </div>
 
 <!-- Search panel - WITH RESULTS -->
@@ -95,9 +96,10 @@
                         <span class="icons icon-guest-travelagent" ng-hide="isEmpty(account.travel_agent)">
                             {{account.travel_agent}}
                         </span>
+                        <span class="icons icon-group" ng-if="!isEmpty(account.group)">{{account.group}}</span>
                     </div>
                     <div class="info">
-                        <strong ng-class="getClassAgainstBalance(account)">{{currencySymbol}}{{account.balance | number: precisonTwo}}</strong> <!-- Add class="red" if > 0 -->
+                        <strong ng-class="getClassAgainstBalance(account)"><span class="currency currency-decoration">{{currencySymbol}}</span>{{account.balance | number: precisonTwo}}</strong> <!-- Add class="red" if > 0 -->
                         <span translate>BALANCE</span>
                     </div>     
                     

@@ -1,9 +1,18 @@
-angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout', 'RVCompanyCardSrv', 'ngDialog', '$filter', '$stateParams',
-	function($scope, $rootScope, $timeout, RVCompanyCardSrv, ngDialog, $filter, $stateParams) {
+angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout', 'RVCompanyCardSrv', 'rvCompanyCardContractsSrv', 'ngDialog', '$filter', '$stateParams', 'rvPermissionSrv',
+	function($scope, $rootScope, $timeout, RVCompanyCardSrv, rvCompanyCardContractsSrv, ngDialog, $filter, $stateParams, rvPermissionSrv) {
 
 		$scope.searchMode = true;
 		$scope.account_type = 'TRAVELAGENT';
 		$scope.currentSelectedTab = 'cc-contact-info';
+		$scope.isGlobalToggleReadOnly = !rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE');
+
+		// To store changes in other hotels' commissions data
+		var updatedOtherHotelsInfo = [];
+
+		$scope.hasPermissionToViewCommissionTab = function() {
+			return rvPermissionSrv.getPermissionValue ('VIEW_COMMISSIONS_TAB');
+		};
+		$scope.isCommissionTabAvailable = $scope.hasPermissionToViewCommissionTab();
 
 		$scope.switchTabTo = function($event, tabToSwitch) {
 			$event.stopPropagation();
@@ -41,6 +50,14 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			else if (tabToSwitch === 'cc-notes') {
 				$scope.$broadcast("fetchNotes");
 				$scope.isWithFilters = false;
+			} else if (tabToSwitch === 'statistics') {
+				$scope.$broadcast("LOAD_STATISTICS");
+			} 
+			else if (tabToSwitch === 'cc-commissions') {
+				$scope.$broadcast("commissionsTabActive");
+			}
+			else if (tabToSwitch === 'cc-activity-log') {
+				$scope.$broadcast("activityLogTabActive");
 			}
 			if (tabToSwitch === 'cc-ar-transactions' && !isArNumberAvailable) {
 			  	console.warn("Save AR Account and Navigate to AR Transactions");
@@ -53,7 +70,7 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 		$scope.$on('ARTransactionSearchFilter', function(e, data) {
 			$scope.isWithFilters = data;
 		});
-
+		
 		var presentContactInfo = {};
 		/* -------AR account starts here-----------*/
 
@@ -121,11 +138,9 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			};
 
 			$scope.invokeApi(RVCompanyCardSrv.fetchArAccountDetails, param, successCallbackFetchArDetails);
-
 		};
 
 		/* -------AR account ends here-----------*/
-
 		$scope.$on('travelAgentFetchComplete', function(obj, isNew) {
 			$scope.searchMode = false;
 			$scope.contactInformation = $scope.travelAgentInformation;
@@ -143,14 +158,15 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			}
 
 			$scope.$broadcast("contactTabActive");
+			$scope.$broadcast("UPDATE_CONTACT_INFO");
 			$timeout(function() {
 				$scope.$emit('hideLoader');
 			}, 1000);
 			if (!isNew) {
 				callCompanyCardServices();
 			}
+			$scope.displayShowPropertiesButton = !$scope.contactInformation.commission_details.is_global_commission;
 		});
-
 
 		$scope.$on("travelAgentSearchInitiated", function() {
 			$scope.companySearchIntiated = true;
@@ -190,16 +206,65 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 		/**
 		 * recieving function for save contact with data
 		 */
-		$scope.$on("saveContactInformation", function(event) {
+		$scope.$on("saveContactInformation", function(event, dataToUpdate) {
 			event.preventDefault();
 			event.stopPropagation();
-			saveContactInformation($scope.contactInformation);
+			// If property commission details are saved from the popup, copy back the deep copy objects back to the model and save
+			// TODO: what is be to done, when this API is failed ??? - like assign back old value
+			if (dataToUpdate && dataToUpdate.other_hotels_info) {
+				$scope.contactInformation.commission_details.other_hotels_info = dataToUpdate.other_hotels_info;
+				saveContactInformation($scope.contactInformation, dataToUpdate.hotel_info_changed_from_popup);
+			} else {
+				saveContactInformation($scope.contactInformation);
+			}
 		});
 
 		$scope.$on("saveTravelAgentContactInformation", function(event) {
 			event.preventDefault();
 			saveContactInformation($scope.contactInformation);
 		});
+		/*
+		 * Toggle global button
+		 */
+        $scope.toggleGlobalButton = function() {
+			if (rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
+				$scope.contactInformation.is_global_enabled = !$scope.contactInformation.is_global_enabled;
+				$scope.contactInformation.account_type = $scope.account_type;
+			}
+		};
+		$scope.shouldShowCommissionsTab = function() {
+			return $scope.account_type === 'TRAVELAGENT';
+		};
+
+		$scope.isUpdateEnabledForTravelAgent = function() {
+			if ($scope.contactInformation.is_global_enabled === undefined) {
+				return;
+			}
+			var isDisabledFields = false;
+
+			if ($scope.contactInformation.is_global_enabled) {
+				if (!rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
+					isDisabledFields = true;
+				}
+			} else {
+				if (!rvPermissionSrv.getPermissionValue ('EDIT_TRAVEL_AGENT_CARD')) {
+					isDisabledFields = true;
+				}
+			}
+			return isDisabledFields;
+		};
+		/*
+		 * If contract rate exists then should not allow editing name of CC/TA - CICO-56441
+		 */
+		$scope.isUpdateEnabledForName = function() {
+			var contractedRates = rvCompanyCardContractsSrv.getContractedRates(),
+				isUpdateEnabledForNameInCard = true;
+
+			if ( ( contractedRates.current_contracts && contractedRates.current_contracts.length > 0 ) || ( contractedRates.future_contracts && contractedRates.future_contracts.length > 0 )|| ( contractedRates.history_contracts && contractedRates.history_contracts.length > 0 ) ) {
+				isUpdateEnabledForNameInCard = false;
+			}
+			return isUpdateEnabledForNameInCard;
+		};		
 
 		/**
 		 * a reciever function to do operation on outside click, which is generated by outside click directive
@@ -215,8 +280,25 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 		/**
 		 * success callback of save contact data
 		 */
-		var successCallbackOfContactSaveData = function(data) {
-			$scope.$emit("hideLoader");
+		var successCallbackOfContactSaveData = function(data, hotelInfoChangedFromPopup) {
+
+			// Close the hotel info popup on saving
+			if (hotelInfoChangedFromPopup) {
+				ngDialog.close();
+			}
+
+			/** Set the other hotels' commission details same as that of current hotel's,
+			 *  when contact information saved with global commission true.
+			 **/
+			if ($scope.contactInformation.commission_details.is_global_commission) {
+				angular.forEach($scope.contactInformation.commission_details.other_hotels_info, function (item) {
+					item.commission_type = $scope.contactInformation.commission_details.commission_type;
+					item.type = $scope.contactInformation.commission_details.type;
+					item.value = $scope.contactInformation.commission_details.value;
+					item.is_prepaid = $scope.contactInformation.commission_details.is_prepaid;
+				});
+			}
+
 			$scope.contactInformation.id = data.id;
 			$scope.reservationDetails.travelAgent.id = data.id;
 			$rootScope.$broadcast("IDGENERATED", { 'id': data.id });
@@ -258,48 +340,103 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 		 * failure callback of save contact data
 		 */
 		var failureCallbackOfContactSaveData = function(errorMessage) {
-			$scope.$emit("hideLoader");
-			$scope.errorMessage = errorMessage;
+			$scope.$broadcast("setCardContactErrorMessage", errorMessage);
 			$scope.currentSelectedTab = 'cc-contact-info';
 		};
 
 		$scope.clickedSaveCard = function(cardType) {
+			// show commission warning popup if departure date has passed
+			if (cardType === 'travel_agent' && $scope.reservationData.status === "CHECKEDOUT" && (new Date($scope.userInfo.business_date) > new Date($scope.reservationData.departureDate))) {
+				// show warning popup
+				ngDialog.open({
+					template: '/assets/partials/cards/popups/rvNewTACommissionsWarningPopup.html',
+					className: '',
+					closeByDocument: false,
+					closeByEscape: false,
+					scope: $scope
+				});
+			} else {
+				saveContactInformation($scope.contactInformation);
+			}
+		};
+
+		$scope.saveNewTACard = function ($event) {
+			$event.stopPropagation();
+			ngDialog.close();
 			saveContactInformation($scope.contactInformation);
+		};
+
+		var ifDataPresent = function(data, presentContactInfo) {
+			return (data && data.commission_details && presentContactInfo && presentContactInfo.commission_details);
 		};
 
 		/**
 		 * function used to save the contact data, it will save only if there is any
 		 * change found in the present contact info.
 		 */
-		var saveContactInformation = function(data) {
+		var saveContactInformation = function(data, hotelInfoChangedFromPopup) {
 			var dataUpdated = false;
 
-			if (!angular.equals(data, presentContactInfo)) {
+			updatedOtherHotelsInfo = [];
+
+			if (ifDataPresent(data, presentContactInfo) && !angular.equals(data, presentContactInfo)) {
 				dataUpdated = true;
+				angular.forEach(data.commission_details.other_hotels_info, function (next) {
+					angular.forEach(presentContactInfo.commission_details.other_hotels_info, function (present) {
+						if ((next.id === present.id) && !_.isMatch(next, present)) {
+							updatedOtherHotelsInfo.push(next);
+						}
+					});
+				});
 			}
 			if (typeof data !== 'undefined' && (dataUpdated || $scope.isAddNewCard)) {
 				var dataToSend = JSON.parse(JSON.stringify(data));
 
-				for (key in dataToSend) {
-					if (typeof dataToSend[key] !== "undefined" && data[key] !== null && data[key] !== "") {
-						// in add case's first api call, presentContactInfo will be empty object
-						if (JSON.stringify(presentContactInfo) !== '{}') {
-							for (subDictKey in dataToSend[key]) {
-								if (typeof dataToSend[key][subDictKey] === 'undefined' || dataToSend[key][subDictKey] === presentContactInfo[key][subDictKey]) {
-									delete dataToSend[key][subDictKey];
-								}
-							}
-						}
-					} else {
-						delete dataToSend[key];
-					}
-				}
+				dataToSend.commission_details.other_hotels_info = angular.copy(updatedOtherHotelsInfo);
+
 				if (typeof dataToSend.countries !== 'undefined') {
 					delete dataToSend['countries'];
 				}
+				// CICO-49040 : Hadling passing blank string.
+				if (dataToSend.account_details.account_number === "") {
+					dataToSend.account_details.account_number = null;
+				}
+				// CICO-50810 : Hadling passing blank string.
+				if ( typeof dataToSend.primary_contact_details === 'undefined' ) {
+					dataToSend.primary_contact_details = {};
+					dataToSend.primary_contact_details.contact_email = null;
+				}
+				else if (dataToSend.primary_contact_details.contact_email === "") {
+					dataToSend.primary_contact_details.contact_email = null;
+				}
+				if ( typeof dataToSend.address_details === 'undefined' ) {
+					dataToSend.address_details = {};
+				}
 				dataToSend.account_type = $scope.account_type;
-				$scope.invokeApi(RVCompanyCardSrv.saveContactInformation, dataToSend, successCallbackOfContactSaveData, failureCallbackOfContactSaveData);
+				var options = {
+					params: dataToSend,
+					successCallBack: function(response) {
+						successCallbackOfContactSaveData(response, hotelInfoChangedFromPopup);
+					},
+					failureCallBack: failureCallbackOfContactSaveData
+				};
+
+				$scope.callAPI(RVCompanyCardSrv.saveContactInformation, options);
+			} else {
+				// Close the hotel info popup on saving
+				if (hotelInfoChangedFromPopup) {
+					ngDialog.close();
+				}
 			}
+		};
+
+		/**
+		* function to check whether the user has permission
+		* to create/edit AR Account.
+		* @return {Boolean}
+		*/
+		$scope.hasPermissionToCreateArAccount = function() {
+			return rvPermissionSrv.getPermissionValue ('CREATE_AR_ACCOUNT');
 		};
 	}
 ]);

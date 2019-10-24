@@ -4,6 +4,7 @@ angular.module('sntPay').controller('payCreateARPopupCtrl', ['$scope', 'sntPayme
         $scope.ar_number = "";
         $scope.errorMessage = "";
         $scope.showARNumberInput = false;
+        $scope.isCreateButtonDisabled = false;
 
         $scope.onClickCreate = function() {
             if (!!$scope.ngDialogData.is_auto_assign_ar_numbers) {
@@ -29,6 +30,10 @@ angular.module('sntPay').controller('payCreateARPopupCtrl', ['$scope', 'sntPayme
             }, errorMessage => {
                 $scope.$emit("hideLoader");
                 $scope.errorMessage = errorMessage;
+                $scope.isCreateButtonDisabled = false;
+                if ($scope.errorMessage[0] === "Please complete required AR Account Information") {
+                    $scope.isCreateButtonDisabled = true;
+                }
             });
         };
 

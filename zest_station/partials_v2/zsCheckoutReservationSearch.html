@@ -6,7 +6,7 @@
         </h1>
         <form method="post" class="form">
             <div class="entry input">
-                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('last-name')" click-touch="showOnScreenKeyboard('last-name')" ng-model="reservationParams.last_name" enter-press="lastNameEntered()" id="last-name" touch-press/>
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('last-name')" click-touch="showOnScreenKeyboard('last-name')" ng-model="reservationParams.last_name" enter-press="lastNameEntered()" id="last-name" ng-keydown="resetTime()" touch-press />
             </div>
             <div class="entry action">
                 <button type="button" class="button" click-touch="lastNameEntered()">
@@ -20,7 +20,7 @@
         <h1>
             <text data-ng-bind-html="getTagValue('NEXT_ROOM_NUMBER')" editable-text="NEXT_ROOM_NUMBER"></text>
         </h1>
-         <form class="form" ng-if='showTowers'>
+        <form class="form" ng-if='showTowers'>
             <div class="entry">
                 <select ng-model="tower.selected" class="checkout-screen-select-box" ng-change="changedTheSelectedTower()">
                     <option ng-repeat="tower in towerList" ng-selected="tower.value === tower.selected" value="{{tower.value}}">{{tower.name}}</option>
@@ -29,7 +29,7 @@
         </form>
         <form method="post" class="form">
             <div class="entry input">
-                <input type="tel" placeholder="" ng-focus="showOnScreenKeyboard('room-number')" click-touch="showOnScreenKeyboard('room-number')" ng-model="reservationParams.room_no" enter-press="roomNumberEntered()" id="room-number" touch-press/>
+                <input type="tel" placeholder="" ng-focus="showOnScreenKeyboard('room-number')" click-touch="showOnScreenKeyboard('room-number')" ng-model="reservationParams.room_no" enter-press="roomNumberEntered()" id="room-number" ng-keydown="resetTime()" touch-press/>
             </div>
             <div class="entry action">
                 <button type="button" class="button" click-touch="roomNumberEntered()">
@@ -105,11 +105,3 @@
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
 </section>
-
-
-
-
-
-
-
-

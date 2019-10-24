@@ -133,32 +133,45 @@
 													<span class="vip" ng-show="row.vip==true">VIP</span>
 				                    			</figure>
 
-				                    			<div class="data" ng-class="{'no-guest-info': escapeNull(row.company)=='' && escapeNull(row.travel_agent)=='' && escapeNull(row.group)=='' && escapeNull(row.allotment)==''}">
+				                    			<div class="data">
+					                    			<div class="guest-info" ng-hide="escapeNull(row.company)=='' && escapeNull(row.travel_agent)=='' && escapeNull(row.group)==''">
+								                        <span class="guest-company" ng-hide="escapeNull(row.company)==''" ng-bind-html="escapeNull(row.company)|highlight:search.guest_company_agent:false">{{row.company}}</span>
+								                        <span class="guest-travelagent" ng-hide="escapeNull(row.travel_agent)==''" ng-bind-html="escapeNull(row.travel_agent)|highlight:search.guest_company_agent:false">{{row.travel_agent}}</span>
+								                        <span class="group" ng-hide="escapeNull(row.group)==''" ng-bind-html="escapeNull(row.group)|highlight:search.guest_company_agent:false"></span>
+								                        <span class="allotment" ng-hide="escapeNull(row.allotment)==''" ng-bind-html="escapeNull(row.allotment)|highlight:search.guest_company_agent:false"></span>
+								                    </div>
 				                    				<h2 ng-bind-html="row.lastname + ' ' +row.firstname|highlight:search.guest_company_agent:false" ng-class="{'grey' : row.is_accompanying_guest=='1'}"></h2>
-				                    				<span class="confirmation" ng-bind-html="row.confirmation|highlight:search.guest_company_agent:false">{{row.confirmation}}</span>
-				                    				<span class="icons icon-location" ng-hide="escapeNull(row.location)==''" >{{escapeNull(row.location)}}</span>
+
+				                    				<div class="guest-meta">
+				                    					<span class="confirmation" ng-bind-html="row.confirmation|highlight:search.guest_company_agent:false">{{row.confirmation}}</span>
+				                    					<span class="icons icon-location" ng-if="escapeNullStr(row.location) !== ''">{{escapeNullStr(row.location)}}</span>
+                            							<span class="icons icon-location no-location" ng-if="escapeNullStr(row.location) === ''">N/A</span>
+				                    				</div>
 				                    			</div>
 
-				                    			<div class="guest-info" ng-hide="escapeNull(row.company)=='' && escapeNull(row.travel_agent)=='' && escapeNull(row.group)==''">
-							                        <span class="icons icon-guest-company" ng-hide="escapeNull(row.company)==''" ng-bind-html="escapeNull(row.company)|highlight:search.guest_company_agent:false">{{row.company}}</span>
-							                        <span class="icons icon-guest-travelagent" ng-hide="escapeNull(row.travel_agent)==''" ng-bind-html="escapeNull(row.travel_agent)|highlight:search.guest_company_agent:false">{{row.travel_agent}}</span>
-							                        <span class="icons icon-group" ng-hide="escapeNull(row.group)==''" ng-bind-html="escapeNull(row.group)|highlight:search.guest_company_agent:false"></span>
-							                        <span class="icons icon-allotment" ng-hide="escapeNull(row.allotment)==''" ng-bind-html="escapeNull(row.allotment)|highlight:search.guest_company_agent:false"></span>
-							                    </div>
-
 							                    <div class="reservation-info">
-							                    	<span class="guest-status {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout)}}"></span>
-							                    	<strong class="room-number" ng-class="getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only)">
-														<span ng-class="{'highlight': row.room.indexOf(search.room) != -1 && search.room!='' && search.room.length>=3 }">{{row.room}}</span>
-													</strong>
 
-							                    	<span class="room-status" ng-show="getRoomStatusMapped(row.roomstatus, row.fostatus) == 'not-ready' && row.reservation_status == 'CHECKING_IN'"  >{{row.fostatus}}</span>
+							                    	<div class="reservation-type red" ng-if="row.is_day_use">D</div>
+                        							<div class="reservation-type" ng-if="!row.is_day_use && hotelDiaryConfig.mode === 'FULL'">N</div>
+
+							                    	<span class="guest-status {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout)}}"></span>
+
+							                    	<div class="room-info">
+							                    		<div class="room-number-info">
+							                    			<strong class="room-number" ng-class="getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only)">
+																<span ng-class="{'highlight': row.room.indexOf(search.room) != -1 && search.room!='' && search.room.length>=3 }">{{row.room}}</span>
+															</strong>
+							                    			<span class="icons icon-suite-orange" ng-if="row.is_suite_room && !isReservationQueued(row.is_reservation_queued, row.is_queue_rooms_on, row.reservation_status)">Suite</span>
+															<span class="room-status" ng-show="getRoomStatusMapped(row.roomstatus, row.fostatus) == 'not-ready' && row.reservation_status == 'CHECKING_IN'"  >{{row.fostatus}}</span>
+							                    		</div>
+							                    	</div>
+							                    	
 							                    	<span class="late-checkout-time" ng-hide="escapeNull(row.late_checkout_time)==''&&row.reservation_status!='CHECKING_OUT'&&row.is_opted_late_checkout==false">
 														{{row.late_checkout_time}}
 													</span>
 
-							                    	<span class="icons icon-queued" ng-if="isReservationQueued(row.is_reservation_queued, row.is_queue_rooms_on, row.reservation_status) && !row.is_suite_room"></span>
-							                    	<span class="icons icon-suite" ng-if="row.is_suite_room && !isReservationQueued(row.is_reservation_queued, row.is_queue_rooms_on, row.reservation_status)">Suite</span>
+							                    	<span class="icons icon-queued-red" ng-if="isReservationQueued(row.is_reservation_queued, row.is_queue_rooms_on, row.reservation_status) && !row.is_suite_room"></span>
+
 							                    	<div class="room-icons" ng-if="row.is_suite_room && isReservationQueued(row.is_reservation_queued, row.is_queue_rooms_on, row.reservation_status)">
 							                    		<span class="icons icon-suite"></span>
 							                    		<span class="icons icon-queued"></span>
@@ -226,15 +239,8 @@
 					</ul>
 				</div>
 
-				<div class="search-pagination" ng-show="fetchedData.total_count > fetchedData.perPage && fetchedItems.length > 0">
+				<rv-pagination page-options="postChargePaginationObj" page-data="fetchedData.totalCount"></rv-pagination>
 
-					<button type="button" class="button dark-grey next" ng-click="loadNextSet($event)" ng-disabled="isNextButtonDisabled()" translate>NEXT</button>
-
-                    <button type="button" class="button dark-grey prev" ng-click="loadPrevSet($event)" ng-disabled="isPrevButtonDisabled()" translate>PREVIOUS</button>
-
-                    <p><strong>{{ fetchedData.start }}-{{ fetchedData.end }}</strong> {{ 'OF' | translate }} <strong>{{ fetchedData.total_count }}</strong> {{ 'ITEMS' | translate }}</p>
-
-				</div>
 			</fieldset>
 			<!-- Right side -->
 			<fieldset class="content-right">
@@ -247,7 +253,7 @@
 						    <option ng-repeat="no in fetchedData.bill_numbers" ng-selected="{{no == billNumber}}" value="{{ no }}">
 						        {{ no }}
 						    </option>
-						    <option value="{{fetchedData.bill_numbers.length+1}}" ng-show="fetchedData.bill_numbers.length<10 && isStandAlone">{{fetchedData.bill_numbers.length+1}} &nbsp;&nbsp;({{'NEW_BILL'|translate}})</option>
+						    <option value="{{fetchedData.bill_numbers.length+1}}" ng-show="isStandAlone">{{fetchedData.bill_numbers.length+1}} &nbsp;&nbsp;({{'NEW_BILL'|translate}})</option>
 						</select>
 					</div>
 					<!-- we have to replicate code as option is not being hidden in devices -->
@@ -264,7 +270,7 @@
 						<strong class="h1" translate>0_ITEM_SELECTED</strong>
 					</div>
 				</div>
-				<div id="items-added" ng-show="showItemSummaryList()" >
+				<div id="items-added" ng-show="showItemSummaryList()" ng-class="{'charge-details': showItemSummaryList(), 'grid-only': !showItemSummaryList()}">
 					<div id="items-summary" class="scrollable" ng-iscroll="items_summary">
 
 						<ul class="wrapper">
@@ -339,13 +345,28 @@
 							</button>
 						</div>
 					</div>
-					<div class="actions float">
-
-						<button ng-if="!isOutsidePostCharge" type="button" id="post" class="button modal-close" ng-disabled="disablePostChargeButton || shouldDisablePostCharge()" ng-click="postCharges()" ng-class="{'green': !shouldDisablePostCharge(), 'grey': disablePostChargeButton || shouldDisablePostCharge()}" translate>POST_CHARGE</button>
-
-						<button ng-disabled="disableOutsidePostChargeButton" ng-if="isOutsidePostCharge" type="button" id="post" class="button green modal-close" ng-click="clickedPostCharges($event)" ng-class="{'grey': !isCardAttched}" translate>POST_CHARGE</button>
-
-						<button type="button" id="cancel" class="button blank modal-close" ng-click="closeDialog()" translate>CANCEL</button>
+					
+					<div id="actions" class="form">
+						<div class="entry full-width" ng-repeat="each in selectedChargeItemHash" ng-show="each.name === selectedChargeItem.name && isStandAlone">
+							<label for="reference">Reference & Description</label>
+							<input id="reference" ng-model="each.reference_text" placeholder="Enter charge reference" value="" type="text" />
+							<label class="checkbox inline" for="show-on-guest-bill" ng-class="{'checked': each.show_ref_on_invoice}"> <!-- Add class 'checked' when L68 is checked --> 
+								<span class="icon-form icon-checkbox" ng-class="{'checked': each.show_ref_on_invoice}"></span> <!-- Add class 'checked' when L68 is checked -->
+								<input id="show-on-guest-bill" type="checkbox" ng-model="each.show_ref_on_invoice">
+								Show Reference on Guest Invoice
+							</label>
+							<input id="reference" placeholder="Enter charge description" value="" type="text" ng-hide="true"/>
+							<label class="checkbox inline" for="override-description" ng-hide="true"> <!-- Add class 'checked' when L74 is checked -->
+								<span class="icon-form icon-checkbox" ></span> <!-- Add class 'checked' when L74 is checked -->
+								<input id="override-description" type="checkbox" >
+								Override Original Description
+							</label>
+						</div>
+						<div class="actions float">
+							<button type="button" id="cancel" class="button blank modal-close" ng-click="closeDialog()" translate>CANCEL</button>
+							<button ng-if="!isOutsidePostCharge" type="button" id="post" class="button modal-close" ng-disabled="disablePostChargeButton || shouldDisablePostCharge()" ng-click="postCharges()" ng-class="{'green': !shouldDisablePostCharge(), 'grey': disablePostChargeButton || shouldDisablePostCharge()}" translate>POST_CHARGE</button><!-- can have class grey instead of green when generic post charge -->
+							<button ng-disabled="disableOutsidePostChargeButton" ng-if="isOutsidePostCharge" type="button" id="post" class="button green modal-close" ng-click="clickedPostCharges($event)" ng-class="{'grey': !isCardAttched}" translate>POST_CHARGE</button>
+						</div>					
 					</div>
 				</div>
 			</fieldset>

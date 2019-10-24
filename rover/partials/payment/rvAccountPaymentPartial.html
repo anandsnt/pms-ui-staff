@@ -1,5 +1,5 @@
 <!-- Fields -->
-<div class="entry full-width" ng-class="{'amount': feeData.showFee}"
+<div class="entry amount" ng-class="{'amount': feeData.showFee}"
      ng-hide="paymentAttempted && !isPaymentFailure">
 
     <!-- gift card -->
@@ -12,7 +12,7 @@
                function-to-fire="onChangeGiftCard"
                type="text"/>
 
-        <label ng-show="giftCard.amountAvailable"> Available Card Balance ({{currencySymbol}}) </label>
+        <label ng-show="giftCard.amountAvailable"> Available Card Balance (<span class="currency">{{payment.selectedPaymentCurrencySymbol}}</span>) </label>
 
         <input ng-show="giftCard.amountAvailable"
                ng-readonly="true"
@@ -20,7 +20,7 @@
                type="text"/>
     </section>
 
-    <label>Amount to pay (<span>{{currencySymbol}}</span>)</label>
+    <label>Amount to pay (<span><span class="currency">{{payment.selectedPaymentCurrencySymbol}}</span></span>)</label>
 
     <input ng-change="onPaymentInfoChange()"
            ng-model="payment.amount"
@@ -39,15 +39,21 @@
 
     <span ng-show="feeData.showFee" class="delimiter">fee</span>
 
+    <div class="select" ng-hide="selectedPaymentType === 'CC' ">
+        <select ng-options="paymentCurrency.id as paymentCurrency.symbol for paymentCurrency in paymentCurrencyList" ng-change="onPaymentCurrencyChange()" ng-model="payment.selectedPaymentCurrencyId">
+            <option style="display:none" value="">Select Currency</option>
+        </select>
+    </div>
+
     <span ng-show="feeData.showFee" class="total">
           Total:
           <strong>
-              {{currencySymbol}}{{feeData.totalOfValueAndFee}}
+              <span class="currency">{{payment.selectedPaymentCurrencySymbol}}</span>{{feeData.totalOfValueAndFee}}
           </strong>
         </span>
 </div>
 <!-- Reference field - use only when it exsits; This configuration is available in the Admin/Financials -->
-<div class="entry full-width reference" ng-show="isDisplayRef">
+<div class="entry full-width reference" ng-hide="paymentAttempted && !isPaymentFailure">
     <label>Reference</label>
     <input ng-model="payment.referenceText" type="text" />
 </div>
@@ -62,13 +68,13 @@
         <li ng-if="feeData.showFee">
             Amount paid:
             <span class="value">
-                {{currencySymbol}}{{payment.amount |number:2}} + {{currencySymbol}}{{feeData.calculatedFee|number:2}} fee
+                <span class="currency">{{payment.selectedPaymentCurrencySymbol}}</span>{{payment.amount |number:2}} + <span class="currency">{{currencySymbol}}</span>{{feeData.calculatedFee|number:2}} fee
             </span>
         </li>
         <li ng-if="!feeData.showFee">
             Amount paid:
             <span class="value">
-                {{currencySymbol}}{{payment.amount}}
+                <i class="currency">{{payment.selectedPaymentCurrencySymbol}}</i>{{payment.amount}}
             </span>
         </li>
     </ul>
@@ -81,15 +87,15 @@
     </button>
     <button type="button" class="button green" click-touch="submitAccountPayment()"
             ng-disabled="shouldHidePaymentButton()"
-            ng-class="{'green': !shouldHidePaymentButton(),'grey':shouldHidePaymentButton()}"
+            ng-class="{'grey':shouldHidePaymentButton()}"
             ng-show="!isRefund()">
         MAKE PAYMENT
     </button>
     <button type="button" class="button blue" click-touch="submitAccountPayment()"
             ng-disabled="shouldHidePaymentButton()"
-            ng-class="{'green': !shouldHidePaymentButton(),'grey':shouldHidePaymentButton()}"
+            ng-class="{'grey':shouldHidePaymentButton()}"
             ng-show="isRefund()">
-        REFUND {{currencySymbol}}{{ -1 * payment.amount | number:2 }}
+        REFUND <span class="currency">{{payment.selectedPaymentCurrencySymbol}}</span>{{ -1 * payment.amount | number:2 }}
     </button>
 </div>
 <div class="actions" ng-show="paymentAttempted && !isPaymentFailure">

@@ -5,7 +5,12 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 		$urlRouterProvider.otherwise('/zest_station/h/');
 
         $stateProvider.state('top', {
-            url: '/zest_station/h/:uuid?state',
+            url: '/zest_station/h/:uuid?state&token',
+            onEnter: ['$stateParams', '$window', function ($stateParams, $window) {
+                if ($stateParams.token) {
+                    $window.localStorage.setItem('jwt', $stateParams.token);
+                }
+            }],
             controller: 'zsTopCtrl'
         });
 
@@ -24,10 +29,18 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 				languageTranslations: function(zsGeneralSrv, languages, $translate) {
 					var languages = languages.languages.length ? languages.languages : [{'name': 'english', 'position': 1}];
 
-					var sortedLanguages = _.sortBy(languages, 'position'),
-						defaultLanguage = sortedLanguages[0],
-						defaultLanguageConfig = zsGeneralSrv.languageValueMappingsForUI[defaultLanguage.name],
-						defaultLangShortCode = defaultLanguageConfig.code;
+					var sortedLanguages = _.sortBy(languages, 'position');
+                    var defaultLanguage = _.find(sortedLanguages, function(language) {
+                            return language.is_default;
+	                    }),
+						defaultLangShortCode = defaultLanguage.code;
+
+                    // Remove inactive languages
+					sortedLanguages = _.filter(sortedLanguages, function(language) {
+						return language.active;
+					});
+
+					zsGeneralSrv.defaultLangShortCode = defaultLangShortCode;
 
 					return zsGeneralSrv.fetchTranslations(sortedLanguages)
 						.then(function(translationFiles) {
@@ -50,6 +63,15 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 				},
 				hotelLanguages: function(zsGeneralSrv) {
 					return zsGeneralSrv.fetchHotelLanguageList();
+				},
+				hotelTranslations: function(zsGeneralSrv) {
+					return zsGeneralSrv.fetchHotelTranslations();
+				},
+				defaultTranslations: function(zsGeneralSrv) {
+					return zsGeneralSrv.fetchDefaultTranslations();
+				},
+				configurableImagesData: function(zsGeneralSrv) {
+					return zsGeneralSrv.getImages();
 				}
 			}
 		});
@@ -66,7 +88,10 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 		});
 
         $stateProvider.state('zest_station.speakToStaff', {
-            url: '/speakToStaff/:message',
+            url: '/speakToStaff',
+            params: {
+                message: ''
+            },
             templateUrl: '/assets/partials_v2/zsSpeakToStaff.html',
             controller: 'zsSpeakToStaffCtrl',
          	jumper: true,
@@ -91,6 +116,29 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 	        label: 'Out of Service',
 	        icon: 'out_of_service.png',
 	        tags: ['sleepy']
+        });
+
+        $stateProvider.state('zest_station.manualKeyPickup', {
+        	url: '/manualKeyPickUp',
+            params: {
+                reservation_id: '',
+                room_no: '',
+                first_name: '',
+                guest_id: '',
+                email: '',
+                mode: ''
+            },
+            templateUrl: '/assets/partials_v2/zsManualKeyPickup.html',
+            controller: 'zsManualKeyPickUpCtrl'
+        });
+
+        $stateProvider.state('zest_station.sntIDScan', {
+        	url: '/sntIDScan',
+            params: {
+                params: ''
+            },
+            templateUrl: '/assets/partials_v2/idScan/zsIDScanMain.html',
+            controller: 'zsSntIDScanCtrl'
         });
 
 	}

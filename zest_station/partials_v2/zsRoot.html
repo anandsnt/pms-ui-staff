@@ -12,8 +12,9 @@
           url.hostname.indexOf('localhost') !== -1) {
 
           inDevEnvironment = true, inLocalEnv = false;
-            if (url.hostname.indexOf('localhost') !== -1) {
-                // dont track in local environment
+            if (url.hostname.indexOf('localhost') !== -1 || url.hostname.indexOf('192.168.') !== -1) {
+                // dont track in local environment unless for dev testing
+                // if this is true, then it should be using the dev-environment tracking id
                 inLocalEnv = true;
             }
         }
@@ -26,38 +27,30 @@
         // production tracking id
         analyticTrackingID = 'UA-96932423-1';
     }
-    
-    // <!-- // actual analytic code \\ -->
-    var _gaq = _gaq || [];
-    // registeres the tracking ID as Active for this page, in prep for async / event calls
-    _gaq.push(['_setAccount', analyticTrackingID]);
-    _gaq.push(['_trackPageview']);
 
-    (function() {
-        var ga = document.createElement('script');
-        ga.type = 'text/javascript';
-        ga.async = true;
-        ga.src = ('https://ssl') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(ga, s);
-    })();
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', analyticTrackingID, 'auto');
+    ga('set', 'anonymizeIp', true);
+    ga('send', 'pageview');
 
     var trackAnalyticEvent = function(event_name, event_type) {
         if (!inLocalEnv) {
-            _gaq.push(['_trackEvent', event_name, event_type]);
+            ga('send', 'event', event_name, event_type, 'station');
+            // ga('send', 'event', 'category', 'action', 'opt_label');
         }
     }
-    
-
     // end of analytic code
 </script>
 
-<div ng-show="hasLoader" id="loading">
-    <div id="loading-spinner"></div>
-</div>
+<activity-indicator></activity-indicator>
 
 <div class='oos_reason' ng-show='zestStationData.workstationStatus === "out-of-order" && zestStationData.timeDebugger !== "true" && zestStationData.theme === "yotel"'>
     {{zestStationData.workstationOooReason}}
+    <span ng-show='zestStationData.workstationOooReason==="" && zestStationData.sessionOosReason.length>0'>{{zestStationData.lastOOSReason}}</span>
 </div>
 
 <div ng-include="'/assets/partials_v2/zsDiagnostics.html'"></div>
@@ -69,27 +62,7 @@
 
 
 <div ng-include="'/assets/partials_v2/zsTabletHeader.html'"></div>
-<!--PopUp For External webPage-->
-<div class="popup iframe-popup open" ng-if="showExternalWebPage">
-    <div class="popup-content iframe-content">
-        <i class="close-popup" touch-press="closeExternalWebPage()"></i>
-        <iframe click-touch="showKeyboardOnInput()" id="booking_iframe" src="{{zestStationData.home_screen.booking_pop_up.booking_engine_url| trustAsResourceUrl}}" seamless sandbox="allow-same-origin allow-scripts allow-forms allow-pointer-lock"></iframe>
-    </div>
-</div>
 
-
-<div class="popup iframe-popup open" ng-show="zestStationData.showTemplateList">
-    <div class="popup-content iframe-content">
-        <i class="close-popup" touch-press='zestStationData.showTemplateList = false' ></i>
-        <div class='template-switch-container'>
-            <div ng-repeat="(key, value) in themeTemplateList" class='template-switch-box' touch-press="selectThemeFromTemplateList(value.name)" ng-style="{'background-image':'url(/assets/zest_station/css/icons/default/previews/{{value.name}}.png)'}">
-                <span class='theme-switch-name'>
-                    {{value.name}}
-                </span>
-            </div>
-        </div>
-    </div>
-</div>
 <!-- Popup -->
 <div class="popup" ng-class="{'open':zestStationData.timeOut && !showLanguagePopup}">
     <!-- Remove class "open" to hide popup content -->
@@ -105,7 +78,5 @@
 
 <div id="popup-overlay" ng-class="{'open':zestStationData.timeOut}"></div>
 <!-- Remove class "open" to hide popup overlay -->
-<div ng-controller="zsThemeActionsCtrl">
-    <ui-view></ui-view>
-</div>
+<ui-view></ui-view>
 <div ng-include="'/assets/partials_v2/zsTabletFooter.html'"></div>

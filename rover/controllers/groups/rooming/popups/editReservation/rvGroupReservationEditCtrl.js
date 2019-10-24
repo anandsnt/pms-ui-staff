@@ -23,7 +23,8 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
     BaseCtrl.call(this, $scope);
     var parentScope = $scope.$parent;
     // variables
-    var initialPopupData = {};
+    var initialPopupData = {},
+        bulkCheckoutPopup;
 
     var fieldsEnabled = {
       date: true,
@@ -273,6 +274,22 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
      * @param {object} Selected Reservation
      */
     $scope.checkoutReservation = function(reservation) {
+        if (reservation.is_bulk_checkout_in_progress) {
+            var data = {
+                message: 'BULK_CHECKOUT_PROCESS_IN_PROGRESS',
+                isFailure: true
+            };
+
+            bulkCheckoutPopup = ngDialog.open({
+                                    template: '/assets/partials/popups/rvInfoPopup.html',
+                                    closeByDocument: true,
+                                    scope: $scope,
+                                    data: JSON.stringify(data)
+                                });
+
+            return;
+        }
+
         var summaryData     = $scope.groupConfigData.summary,
             dataForPopup    = {
                                 group_name: summaryData.group_name,
@@ -448,7 +465,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
             canChekin: !!reservation.room_no && rStatus === "CHECKING_IN",
             isNoShow: rStatus === "NOSHOW",
             isGuestAttached: !!reservation.lastname,
-            isPastArrival: new tzIndependentDate($rootScope.businessDate) >= new tzIndependentDate(reservation.arrival_date)
+            isPastArrival: new tzIndependentDate($rootScope.businessDate) >= new tzIndependentDate(reservation.arrival_date.split('T')[0])
         };
     };
 
@@ -459,6 +476,14 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
     var initializeVariables = function() {
         _.extend(initialPopupData, $scope.ngDialogData);
         $scope.reservationStatusFlags = computeReservationStatusFlags($scope.ngDialogData);
+    };
+
+    // CICO-49191 Get the min date that can be chosen for a group reservation
+    var getReservationMinDate = function (groupInfo) {
+      var minDate = groupInfo.block_from > $rootScope.businessDate ? 
+                    groupInfo.block_from : $rootScope.businessDate;
+
+      return new tzIndependentDate(minDate);
     };
 
     /**
@@ -473,7 +498,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
         var commonDateOptions = {
             dateFormat: $rootScope.jqDateFormat,
             numberOfMonths: 1,
-            minDate: new tzIndependentDate(refData.block_from),
+            minDate: getReservationMinDate(refData),
             maxDate: new tzIndependentDate(refData.block_to),
             beforeShow: function(input, inst) {
                 $('#ui-datepicker-div').addClass('reservation hide-arrow');
@@ -503,6 +528,15 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
             onSelect: reservationToDateChoosed
         }, commonDateOptions);
     };
+
+        /**
+         * Close the bulk checkout status popup
+         */
+        $scope.closeErrorDialog = function() {
+            if (bulkCheckoutPopup) {
+                bulkCheckoutPopup.close();
+            }
+        };
     /**
     * Initialization of pop
     * @return {[type]} [description]

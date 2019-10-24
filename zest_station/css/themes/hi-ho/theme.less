@@ -12,6 +12,7 @@
 	@actionBackground: 		@brandColor;
 	
 	@inputBackground: 		#707070;
+	@inputColor:			@textColor;
 	@transparentColor: 		rgba(255,255,255,.5);
 
 /* 2. TYPOGRAPHY
@@ -135,6 +136,11 @@
 				}
 
 			}
+		}
+
+		.minibar-items .minibar-item .minibar-item-actions .button.disabled,
+		.minibar-items .minibar-item .minibar-item-actions .button[disabled] {
+			color: darken( @brandColor, 15 );
 		}	
 	}
 

@@ -128,7 +128,7 @@ admin.service('ADInterfaceLogsSrv', ['$http', '$q', 'ADBaseWebSrvV2',
                 ellipsis = '\n....';
 
             if (isJSON) {
-                message.request = indentJSON(request.substring(0, requestCharacterLimit));
+                message.request = indentJSON(request).substring(0, requestCharacterLimit);
             } else {
                 message.request = indentXML(request.substring(0, requestCharacterLimit));
             }
@@ -149,7 +149,7 @@ admin.service('ADInterfaceLogsSrv', ['$http', '$q', 'ADBaseWebSrvV2',
          * @return {deferred.promise|{then, catch, finally}} Promise for a request to fetch the list of interfaces
          */
         service.fetchInterfaces = function() {
-            return ADBaseWebSrvV2.getJSON('/admin/hotel_ext_interfaces');
+            return ADBaseWebSrvV2.getJSON('/ifc/proxy/interfaces/index');
         };
 
         /**
@@ -179,6 +179,7 @@ admin.service('ADInterfaceLogsSrv', ['$http', '$q', 'ADBaseWebSrvV2',
             $http({
                 method: 'GET',
                 url: params.url,
+                transformResponse: false,
                 data: params.payload
             }).then(function(response) {
 

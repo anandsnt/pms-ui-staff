@@ -1,5 +1,5 @@
-admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTableParams', '$filter', '$timeout', '$state', '$rootScope', '$location', '$anchorScroll',
-	function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state, $rootScope, $location, $anchorScroll) {
+admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTableParams', '$filter', '$timeout', '$state', '$rootScope', '$location', '$anchorScroll', 'ngDialog', 'ADRatesAddonsSrv', 'availableLanguages',
+    function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state, $rootScope, $location, $anchorScroll, ngDialog, ADRatesAddonsSrv, availableLanguages) {
 
 		ADBaseTableCtrl.call(this, $scope, ngTableParams);
 		$scope.$emit("changedSelectedMenu", 5);
@@ -9,7 +9,10 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		$scope.isAddTax = false;
 		$scope.isEditTax = false;
 		$scope.isEdit = false;
+		$scope.disableChargeCodeType = false;
+		$scope.disableViennaTax = false;
 		$scope.successMessage = "";
+		$scope.warningMessage = "";
 
 		$scope.selected_payment_type = {};
 		$scope.selected_payment_type.id = -1;
@@ -18,6 +21,18 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
         $scope.stateAttributes = {
             selectedPaymentType: ''
         };
+
+        $scope.availableLanguagesSet = availableLanguages;
+		var defaultLanguage = _.filter(availableLanguages.languages, function(language) {
+			return language.is_default;
+		});
+		var setDefaultLanguage = function() {
+			$scope.selectedLanguage = {
+				code: defaultLanguage.length ? defaultLanguage[0].code : 'en'
+			};
+		};
+	    
+	    setDefaultLanguage();
 
         /**
          * Method to generate a unique key from value and is_cc_type for the paymentType
@@ -72,7 +87,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				$scope.$digest();
 			}
 		};
-		
+
 		var scrollTop = function() {
 			$(".content-scroll").scrollTop(0);
 			$scope.$emit('hideLoader');
@@ -86,8 +101,11 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		 * To fetch the charge code details for add screen.
 		 */
 		$scope.addNewClicked = function() {
-
-
+			$scope.editId = "";
+			setDefaultLanguage();
+			$scope.disableChargeCodeType = false;
+			$scope.disableAddTax = false;
+			$scope.viennaTaxCounter = 0;
 			$scope.currentClickedElement = -1;
 			$scope.isAddTax = false;
 			$timeout(function() {
@@ -97,9 +115,9 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			var fetchNewDetailsSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.isAdd = true;
-				$scope.prefetchData = {};
 				$scope.selected_payment_type.id = -1;
 				$scope.prefetchData = data;
+				$scope.prefetchData.allow_manual_posting = false;
 				$scope.addIDForPaymentTypes();
                 $scope.stateAttributes.selectedPaymentType = "";
 				$scope.prefetchData.linked_charge_codes = [];
@@ -113,11 +131,31 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				// Default amount sign for FEES and TAXES to be positive
 				$scope.prefetchData.selected_amount_sign = '+';
 				$scope.prefetchData.selected_amount_symbol = 'amount';
+
+				$scope.prefetchData.overage_charge_code_id = "";
+				$scope.prefetchData.spillage_charge_code_id = "";
 				// Add New is at the top of the content window, scroll up for the user
 				scrollTop();
 			};
 
 			$scope.invokeApi(ADChargeCodesSrv.fetchAddData, {}, fetchNewDetailsSuccessCallback);
+		};
+
+		var fetchChargeCodesForAllowance = function() {
+			var chargeCodesSuccessCallback = function(data) {
+                $scope.chargeCodes = data.results;
+                $scope.$emit('hideLoader');
+            };
+
+            $scope.invokeApi(ADRatesAddonsSrv.fetchChargeCodes, {}, chargeCodesSuccessCallback, '', 'NONE');
+		};
+
+		$scope.isAllowanceType = function(allowanceType) {
+			var allowanceChargeCodeType = _.find($scope.prefetchData.charge_code_types, {
+				name: "ALLOWANCE"
+	        });
+	        
+	        return allowanceChargeCodeType.value === allowanceType;
 		};
 
 		/**
@@ -133,6 +171,40 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			if (selectedType === '1') {
 				$scope.prefetchData.selected_amount_sign = '+';
 				$scope.prefetchData.selected_amount_symbol = 'amount';
+				$scope.warningMessage = 'The recommended naming convention for Deposit VAT Charge codes is DEP001, DEP002, DEP003, etc.';
+			} else if ($scope.isAllowanceType(selectedType)) {
+				if (_.isUndefined($scope.chargeCodes)) {
+					fetchChargeCodesForAllowance();
+				}				
+				var allowanceChargeGroup = _.find($scope.prefetchData.charge_groups, {
+	                name: "Allowance"
+	            });
+
+				$scope.prefetchData.selected_charge_group = allowanceChargeGroup.value;
+			} else if (selectedType === '12') {
+				$scope.warningMessage = 'The recommended naming convention for Deposit Charge codes is DEP001, DEP002, DEP003, etc.';
+			} else {
+				$scope.warningMessage = '';
+			}
+		};
+
+		$scope.clearWarningMessage = function () {
+			$scope.warningMessage = '';
+		};
+
+		$scope.onChangeChargeGroup = function (chargeGroupID) {
+			var chargeGroupp = _.find($scope.prefetchData.charge_groups, {
+	            value: chargeGroupID
+	        });
+	        
+			if (chargeGroupp.name === "Allowance") {
+				if (_.isUndefined($scope.chargeCodes)) {
+					fetchChargeCodesForAllowance();
+				}
+
+				$scope.prefetchData.selected_charge_code_type = _.find($scope.prefetchData.charge_code_types, {
+					name: "ALLOWANCE"
+		        }).value;
 			}
 		};
 
@@ -140,20 +212,27 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		 * To fetch the charge code details for edit screen.
 		 */
 		$scope.editSelected = function(index, value) {
+			$scope.disableChargeCodeType = false;
+			$scope.warningMessage = "";
 			$scope.isAddTax = false;
 			$scope.isAdd = false;
+			$scope.disableAddTax = false;
 			$scope.editId = value;
+			$scope.currentClickedElement = index;
 			var data = {
-				'editId': value
+				'editId': value,
+				'locale': $scope.selectedLanguage.code
 			};
 
 			var editSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
-				$scope.currentClickedElement = index;
 				$scope.prefetchData = {};
 				$scope.selected_payment_type.id = -1;
 				$scope.prefetchData = data;
+				$scope.prefetchData.amount = parseInt($scope.prefetchData.amount).toFixed(2);
+				$scope.prefetchData.allow_manual_posting = angular.isUndefined(data.allow_manual_posting) ? false : data.allow_manual_posting;
 				$scope.prefetchData.selected_fees_code = $scope.prefetchData.selected_fees_code || '';
+				$scope.prefetchData.linked_deposit_charge_code_id = $scope.prefetchData.linked_deposit_charge_code_id || '';
 				$scope.addIDForPaymentTypes();
                 $scope.stateAttributes.selectedPaymentType = getPaymentTypeCompositeID({
                     value: $scope.prefetchData.selected_payment_type,
@@ -168,6 +247,9 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 					value: $rootScope.currencySymbol,
 					name: "amount"
 				}];
+				if ($scope.prefetchData.selected_charge_code_type === "12") {
+					$scope.disableChargeCodeType = true;
+				}
 
 				// Generating calculation rules list.
 				angular.forEach($scope.prefetchData.linked_charge_codes, function(item, index) {
@@ -195,10 +277,22 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 					});
 					$scope.prefetchData.link_with.push(obj);
 				});
+				if ($scope.prefetchData.selected_charge_code_type) {
+					fetchChargeCodesForAllowance();
+				}
 			};
 
 			$scope.invokeApi(ADChargeCodesSrv.fetchEditData, data, editSuccessCallback);
 		};
+
+		$scope.onLanguageChange = function() {
+			if ($scope.editId) {
+				$scope.editSelected($scope.currentClickedElement, $scope.editId);
+			} else {
+				return;
+			}
+		};
+
 		/*
 		 * To add unique ids to the payment type list
 		 * NOTE: The payment types obtained in the response DO NOT have a unique identifier
@@ -241,21 +335,16 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		 */
 		$scope.clickedSave = function() {
 			var saveSuccessCallback = function(data) {
+				setDefaultLanguage();
 				$scope.$emit('hideLoader');
 				if ($scope.isEdit) {
-                                    var p = parseInt($scope.currentClickedElement);
-
-                                    if ($scope.orderedData) {
-                                    if ($scope.orderedData[p]) {
-					$scope.orderedData[parseInt($scope.currentClickedElement)].charge_code = data.charge_code;
-					$scope.orderedData[parseInt($scope.currentClickedElement)].description = data.description;
-					$scope.orderedData[parseInt($scope.currentClickedElement)].charge_group = data.charge_group;
-					$scope.orderedData[parseInt($scope.currentClickedElement)].charge_code_type = data.charge_code_type;
-					$scope.orderedData[parseInt($scope.currentClickedElement)].link_with = data.link_with;
-                                    }
-                                    }
-
-				} else {
+						$scope.data[parseInt($scope.currentClickedElement)].charge_code = data.charge_code;
+						$scope.data[parseInt($scope.currentClickedElement)].description = data.description;
+						$scope.data[parseInt($scope.currentClickedElement)].charge_group = data.charge_group;
+						$scope.data[parseInt($scope.currentClickedElement)].charge_code_type = data.charge_code_type;
+						$scope.data[parseInt($scope.currentClickedElement)].link_with = data.link_with;
+				} 
+				else {
 					$scope.data.push(data);
 					$scope.tableParams.reload();
 				}
@@ -271,7 +360,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			};
 			// To create Charge code Link with list frm scope.
 			var selected_link_with = [];
-
+			
 			angular.forEach($scope.prefetchData.link_with, function(item, index) {
 				if (item.is_checked === 'true') {
 					selected_link_with.push(item.value);
@@ -283,10 +372,16 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				item.calculation_rule_list = $scope.generateCalculationRule(index);
 				item.calculation_rules = [];
 				if (item.calculation_rule_list.length !== 0 && item.selected_calculation_rule) {
-					item.calculation_rules = item.calculation_rule_list[parseInt(item.selected_calculation_rule)].charge_code_id_list;
+					item.calculation_rules = item.calculation_rule_list[parseInt(item.selected_calculation_rule, 10)].charge_code_id_list;
+				} // Tax 2 of Vienna Tax needs Charge code id of Tax 1 in Calculation rule array
+				else if ($scope.prefetchData.linked_charge_codes[0].is_vienna_tax) {
+					$scope.prefetchData.is_vienna_tax = true;
+					if ($scope.prefetchData.linked_charge_codes[1]) {
+						$scope.prefetchData.linked_charge_codes[1].calculation_rules = $scope.prefetchData.linked_charge_codes[1].calculation_rule_list[1].charge_code_id_list;
+					}
 				}
 			});
-            
+
 			var unwantedKeys = ["charge_code_types", "payment_types", "charge_groups", "link_with", "amount_types", "tax_codes", "post_types", "symbolList"];
 			var postData = dclone($scope.prefetchData, unwantedKeys);
 
@@ -308,7 +403,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
                             $scope.validForm = false;
                             return;
                         }
-
+            postData.locale = $scope.selectedLanguage.code;
 
 			$scope.invokeApi(ADChargeCodesSrv.save, postData, saveSuccessCallback);
 		};
@@ -316,12 +411,14 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		 * To handle cancel button click.
 		 */
 		$scope.clickedCancel = function() {
+			setDefaultLanguage();
 			if ($scope.isAdd) {
 				$scope.isAdd = false;
 			}
 			if ($scope.isEdit) {
 				$scope.isEdit = false;
 			}
+			$scope.currentClickedElement = -1;
 		};
 		/*
 		 * To handle import from PMS button click.
@@ -395,16 +492,35 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		 * To fetch the tax details for add screen.
 		 */
 		$scope.addTaxClicked = function() {
+			var taxCount = $scope.prefetchData.linked_charge_codes.length,
+				i = taxCount,
+				isNotVienna = false;
+
 			$scope.isAddTax = true;
 			$scope.isEditTax = false;
+			$scope.viennaTaxCounter = 0;
+			$scope.disableViennaTax = false;
 			// To find the count of prefetched tax details already there in UI.
-			var taxCount = $scope.prefetchData.linked_charge_codes.length;
-
 			$scope.addData = {
 				"id": taxCount + 1,
 				"is_inclusive": false,
+				"is_vienna_tax": false,
 				"calculation_rule_list": $scope.generateCalculationRule(taxCount)
 			};
+			if (taxCount === 1 && $scope.prefetchData.linked_charge_codes[0].is_vienna_tax) {
+				$scope.addData.is_inclusive = true;
+				$scope.addData.is_vienna_tax = true;
+				$scope.disableViennaTax = true;
+			}
+			while (i--) {
+				if (!$scope.prefetchData.linked_charge_codes[i].is_vienna_tax) {
+					isNotVienna = true;
+				}
+			}
+			if (isNotVienna) {
+				$scope.disableViennaTax = true;
+			}
+			
 		};
 		/*
 		 * To handle cancel button click on tax creation.
@@ -418,8 +534,20 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		var tempEditData = [];
 
 		$scope.editSelectedTax = function(index) {
+			var taxCount = $scope.prefetchData.linked_charge_codes.length,
+				i = taxCount,
+				isNotVienna = false;
+
 			$scope.isEditTax = true;
 			$scope.isAddTax = false;
+			while (i--) {
+				if (!$scope.prefetchData.linked_charge_codes[i].is_vienna_tax) {
+					isNotVienna = true;
+				}
+			}
+			if (isNotVienna || !$scope.prefetchData.is_vienna_tax_enabled) {
+				$scope.disableViennaTax = true;
+			}
 			$scope.currentClickedTaxElement = index;
 			// Taking a deep copy edit data , need when we cancel out edit screen.
 			tempEditData = dclone($scope.prefetchData.linked_charge_codes[index], []);
@@ -445,6 +573,17 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			$scope.prefetchData.linked_charge_codes.push($scope.addData);
 			$scope.addData = {};
 			$scope.isAddTax = false;
+			var taxCount = $scope.prefetchData.linked_charge_codes.length,
+				i = taxCount;
+
+			while (i--) {
+				if ($scope.prefetchData.linked_charge_codes[i].is_vienna_tax) {
+					$scope.viennaTaxCounter += 1;
+					if ($scope.viennaTaxCounter === 2) {
+						$scope.disableAddTax = true;
+					}
+				}
+			}
 		};
 		/*
 		 * To handle inclusive/exclusive radio button click.
@@ -454,6 +593,17 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				$scope.addData.is_inclusive = value;
 			} else if ($scope.isEditTax) {
 				$scope.prefetchData.linked_charge_codes[index].is_inclusive = value;
+			}
+		};
+		/*
+		 * To handle inclusive/exclusive radio button click.
+		 */
+		$scope.toggleViennaTax = function(index) {
+			if ($scope.isAddTax) {
+				$scope.addData.is_inclusive = true;
+			} else if ($scope.isEditTax) {
+				$scope.prefetchData.linked_charge_codes[index].is_inclusive = true;
+				$scope.prefetchData.linked_charge_codes[index].is_vienna_tax = $scope.addData.is_vienna_tax;
 			}
 		};
 
@@ -480,7 +630,19 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 
 			// 1.
 			$scope.prefetchData.linked_charge_codes.splice(index, 1);
+			$scope.disableAddTax = false;
+			$scope.viennaTaxCounter = 0;
+			var taxCount = $scope.prefetchData.linked_charge_codes.length,
+				i = taxCount;
 
+			while (i--) {
+				if ($scope.prefetchData.linked_charge_codes[i].is_vienna_tax) {
+					$scope.viennaTaxCounter += 1;
+					if ($scope.viennaTaxCounter === 2) {
+						$scope.disableAddTax = true;
+					}
+				}
+			}
 			// 2.
 			// https://stayntouch.atlassian.net/browse/CICO-9576?focusedCommentId=52342&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-52342
 			_.each($scope.prefetchData.linked_charge_codes, function(tax) {
@@ -491,6 +653,112 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			// NA as there is a save changes button
 
 		};
+
+        /**
+         * CICO-40001 hide add tax for Tax, Tourist tax and Payment
+         * @return {Boolean} hide or not
+         */
+        $scope.shouldHideAddTaxOption = function () {
+            return $scope.isPmsConfigured || $scope.isTaxSelected() || $scope.isPaymentSelected() || $scope.isTouristTaxSelected();
+        };
+
+        $scope.isTaxSelected = function () {
+            return parseInt($scope.prefetchData.selected_charge_code_type, 10) === ADChargeCodesSrv.getChargeCodeTypeValue('TAX');
+        };
+
+        $scope.isPaymentSelected = function () {
+            return parseInt($scope.prefetchData.selected_charge_code_type, 10) === ADChargeCodesSrv.getChargeCodeTypeValue('PAYMENT');
+        };
+
+        $scope.isTouristTaxSelected = function () {
+            return parseInt($scope.prefetchData.selected_charge_code_type, 10) === ADChargeCodesSrv.getChargeCodeTypeValue('TOURIST TAX');
+        };
+
+        $scope.isFeesSelected = function () {
+            return parseInt($scope.prefetchData.selected_charge_code_type, 10) === ADChargeCodesSrv.getChargeCodeTypeValue('FEES');
+		};
+		
+        $scope.isDepositSelected = function () {
+            return parseInt($scope.prefetchData.selected_charge_code_type, 10) === ADChargeCodesSrv.getChargeCodeTypeValue('DEPOSIT');
+		};
+		
+        $scope.isArManualBalanceSelected = function () {
+            return parseInt($scope.prefetchData.selected_charge_code_type, 10) === ADChargeCodesSrv.getChargeCodeTypeValue('AR MANUAL BALANCE');
+        };
+		
+        $scope.isArManualCreditSelected = function () {
+            return parseInt($scope.prefetchData.selected_charge_code_type, 10) === ADChargeCodesSrv.getChargeCodeTypeValue('AR MANUAL CREDIT');
+		};
+
+        /**
+         * CICO-40001
+         * Filter charge codes in add tax form based on exclusive_only flag
+         * @param  {Object} editData data when in edit mode
+         * @return {Boolean} show or not
+         */
+        $scope.filterTaxCodes = function (editData) {
+            return function (item) {
+                if ($scope.isEditTax && editData.is_inclusive) {
+                    return !item.exclusive_only;
+                }
+
+                if ($scope.isAddTax && $scope.addData.is_inclusive) {
+                    return !item.exclusive_only;
+				}
+
+                return true;
+            };
+		};
+		
+		$scope.filterViennaTaxCodes = function (editData) {
+            return function (item) {
+                if ($scope.isEditTax && editData.is_vienna_tax) {
+                    return item.vienna_applicable;
+                }
+
+                if ($scope.isAddTax && $scope.addData.is_vienna_tax) {
+                    return item.vienna_applicable;
+				}
+
+                return true;
+            };
+		};
+
+	$scope.openCsvUploadPopup = function() {
+		$scope.csvData = {
+			'csv_file': ''
+		};
+		ngDialog.open({
+			template: '/assets/partials/popups/adCsvUploadPopUp.html',
+			className: 'ngdialog-theme-default1 modal-theme1',
+			closeByDocument: true,
+			scope: $scope
+		});
+	};
+
+	$scope.uploadCSVFile = function() {
+		var uploadCSVFileSuccess = function() {
+			$scope.successMessage = $filter('translate')('IMPORT_IS_IN_PROGRESS');
+			ngDialog.close();
+			$timeout(function() {
+				$scope.successMessage = "";
+			}, 10000);
+		};
+		var options = {
+			params: $scope.csvData,
+			onSuccess: uploadCSVFileSuccess,
+			onFailure: function(err) {
+				ngDialog.close();
+				$scope.errorMessage = err;
+			}
+		};
+
+		$scope.callAPI(ADChargeCodesSrv.uploadCSVFile, options);
+	};
+
+	$scope.showListPageItems = function() {
+		return $scope.currentClickedElement === -1 && (!$scope.isEdit || !$scope.isAdd);
+	};
 
 	}
 ]);

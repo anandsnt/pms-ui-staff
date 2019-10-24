@@ -1,0 +1,639 @@
+{
+	"data": {
+		"bill_id": 121647,
+		"bill_number": "4",
+		"is_active": true,
+		"is_folio_number_exists": false,
+		"is_moved_to_ar": false,
+		"is_control_code_exist": false,
+		"credit_card_details": {
+			"payment_type": "CK",
+			"payment_type_description": "Check Payment",
+			"card_code": "",
+			"card_number": "",
+			"card_expiry": "",
+			"payment_id": 702249,
+			"card_name": null,
+			"is_swiped": false,
+			"fees_information": {},
+			"auth_color_code": "black"
+		},
+		"total_amount": "274.27",
+		"is_payment_exist": false,
+		"is_transactions_exist": true,
+		"is_routing_exist": true,
+		"is_account_attached": true,
+		"account_id": 508,
+		"guest_or_company_name": "Redbus",
+		"has_crossed_credit_limit": false,
+		"is_allow_direct_debit": true,
+		"ar_number": "ADR14526",
+		"group_items": [{
+			"title": "Add-On",
+			"amount": "30.00",
+			"expense_details": [{
+				"expense": "10.0",
+				"location": "Parking",
+				"date": "2018-05-11",
+				"transaction_id": null,
+				"id": 196821
+			}, {
+				"expense": "10.0",
+				"location": "Parking",
+				"date": "2018-05-11",
+				"transaction_id": null,
+				"id": 196846
+			}, {
+				"expense": "10.0",
+				"location": "Parking",
+				"date": "2018-05-11",
+				"transaction_id": null,
+				"id": 196830
+			}]
+		}, {
+			"title": "Food & Beverages",
+			"amount": "149.64",
+			"expense_details": [{
+				"expense": "34.0",
+				"location": "Charge for drinks",
+				"date": "2018-05-11",
+				"transaction_id": null,
+				"id": 196837
+			}, {
+				"expense": "34.0",
+				"location": "Charge for drinks",
+				"date": "2018-05-11",
+				"transaction_id": null,
+				"id": 196831
+			}, {
+				"expense": "34.0",
+				"location": "Charge for drinks",
+				"date": "2018-05-11",
+				"transaction_id": null,
+				"id": 196822
+			}, {
+				"expense": "13.64",
+				"location": "Beverages",
+				"date": "2018-05-11",
+				"transaction_id": null,
+				"id": 196828
+			}, {
+				"expense": "34.0",
+				"location": "Charge for drinks",
+				"date": "2018-05-11",
+				"transaction_id": null,
+				"id": 196847
+			}]
+		}, {
+			"title": "Others",
+			"amount": "81.82",
+			"expense_details": [{
+				"expense": "13.64",
+				"location": "Item with incl tax",
+				"date": "2018-05-11",
+				"transaction_id": null,
+				"id": 196835
+			}, {
+				"expense": "18.18",
+				"location": "Item with incl & excl tax",
+				"date": "2018-05-11",
+				"transaction_id": null,
+				"id": 196838
+			}, {
+				"expense": "18.18",
+				"location": "Item with incl & excl tax",
+				"date": "2018-05-11",
+				"transaction_id": null,
+				"id": 196832
+			}, {
+				"expense": "18.18",
+				"location": "Item with incl & excl tax",
+				"date": "2018-05-11",
+				"transaction_id": null,
+				"id": 196823
+			}, {
+				"expense": "13.64",
+				"location": "Item with incl tax",
+				"date": "2018-05-11",
+				"transaction_id": null,
+				"id": 196826
+			}]
+		}, {
+			"title": "Tax",
+			"amount": "12.81",
+			"expense_details": [{
+				"expense": "1.82",
+				"location": "Inclusive Tax",
+				"date": "2018-05-11",
+				"transaction_id": null,
+				"id": 196833
+			}, {
+				"expense": "1.09",
+				"location": "Exclusive Tax",
+				"date": "2018-05-11",
+				"transaction_id": null,
+				"id": 196834
+			}, {
+				"expense": "1.36",
+				"location": "Inclusive Tax",
+				"date": "2018-05-11",
+				"transaction_id": null,
+				"id": 196836
+			}, {
+				"expense": "1.82",
+				"location": "Inclusive Tax",
+				"date": "2018-05-11",
+				"transaction_id": null,
+				"id": 196839
+			}, {
+				"expense": "1.09",
+				"location": "Exclusive Tax",
+				"date": "2018-05-11",
+				"transaction_id": null,
+				"id": 196840
+			}, {
+				"expense": "1.82",
+				"location": "Inclusive Tax",
+				"date": "2018-05-11",
+				"transaction_id": null,
+				"id": 196824
+			}, {
+				"expense": "1.09",
+				"location": "Exclusive Tax",
+				"date": "2018-05-11",
+				"transaction_id": null,
+				"id": 196825
+			}, {
+				"expense": "1.36",
+				"location": "Inclusive Tax",
+				"date": "2018-05-11",
+				"transaction_id": null,
+				"id": 196827
+			}, {
+				"expense": "1.36",
+				"location": "Inclusive Tax",
+				"date": "2018-05-11",
+				"transaction_id": null,
+				"id": 196829
+			}]
+		}],
+		"total_fees": [{
+			"total_amount": "274.27",
+			"balance_amount": "274.27",
+			"is_rate_suppressed": false,
+			"fees_date": "2018-05-11",
+			"fees_details": [{
+				"type": {
+					"created_at": "2014-01-03T14:50:34Z",
+					"description": "OTHERS",
+					"id": 4,
+					"updated_at": "2014-01-03T14:50:34Z",
+					"value": "OTHERS"
+				},
+				"date": "2018-05-11",
+				"description": [{
+					"parent_transaction_exist": false,
+					"item_description": "Parking",
+					"fees_desc": "Parking",
+					"charge_code": "Parking",
+					"charge_code_type": "OTHERS",
+					"fees_amount": "10.00",
+					"is_rate_suppressed": false
+				}],
+				"credits": "",
+				"is_rate_suppressed": false,
+				"transaction_id": null,
+				"id": 196821,
+				"item_ids": [],
+				"reference_text": "Tony Stark, RESV #100445, ROOM #102",
+				"reference_text_on_edit": "",
+				"show_ref_on_invoice": true,
+				"adjustment_reason": null,
+				"is_description_edited": false
+			}, {
+				"type": {
+					"created_at": "2014-01-03T14:50:34Z",
+					"description": "ADDON",
+					"id": 3,
+					"updated_at": "2014-01-03T14:50:34Z",
+					"value": "ADDON"
+				},
+				"date": "2018-05-11",
+				"description": [{
+					"parent_transaction_exist": false,
+					"item_description": "Sprite",
+					"fees_desc": "Charge for drinks",
+					"charge_code": "Drinks",
+					"charge_code_type": "ADDON",
+					"fees_amount": "34.00",
+					"is_rate_suppressed": false
+				}],
+				"credits": "",
+				"is_rate_suppressed": false,
+				"transaction_id": null,
+				"id": 196822,
+				"item_ids": [],
+				"reference_text": "Tony Stark, RESV #100445, ROOM #102",
+				"reference_text_on_edit": "",
+				"show_ref_on_invoice": true,
+				"adjustment_reason": null,
+				"is_description_edited": false
+			}, {
+				"type": {
+					"created_at": "2014-01-03T14:50:34Z",
+					"description": "OTHERS",
+					"id": 4,
+					"updated_at": "2014-01-03T14:50:34Z",
+					"value": "OTHERS"
+				},
+				"date": "2018-05-11",
+				"description": [{
+					"parent_transaction_exist": false,
+					"item_description": "French Fries",
+					"fees_desc": "Item with incl & excl tax",
+					"charge_code": "4004",
+					"charge_code_type": "OTHERS",
+					"fees_amount": "20.00",
+					"is_rate_suppressed": false
+				}],
+				"credits": "",
+				"is_rate_suppressed": false,
+				"transaction_id": null,
+				"id": 196823,
+				"item_ids": [],
+				"reference_text": "Tony Stark, RESV #100445, ROOM #102",
+				"reference_text_on_edit": "",
+				"show_ref_on_invoice": true,
+				"adjustment_reason": null,
+				"is_description_edited": false
+			}, {
+				"type": {
+					"created_at": "2014-01-03T14:50:34Z",
+					"description": "TAX",
+					"id": 1,
+					"updated_at": "2014-01-03T14:50:34Z",
+					"value": "TAX"
+				},
+				"date": "2018-05-11",
+				"description": [{
+					"parent_transaction_exist": true,
+					"item_description": null,
+					"fees_desc": "Exclusive Tax",
+					"charge_code": "1002",
+					"charge_code_type": "TAX",
+					"fees_amount": "1.09",
+					"is_rate_suppressed": false
+				}],
+				"credits": "",
+				"is_rate_suppressed": false,
+				"transaction_id": null,
+				"id": 196825,
+				"item_ids": [],
+				"reference_text": "Tony Stark, RESV #100445, ROOM #102",
+				"reference_text_on_edit": "",
+				"show_ref_on_invoice": true,
+				"adjustment_reason": null,
+				"is_description_edited": false
+			}, {
+				"type": {
+					"created_at": "2014-01-03T14:50:34Z",
+					"description": "OTHERS",
+					"id": 4,
+					"updated_at": "2014-01-03T14:50:34Z",
+					"value": "OTHERS"
+				},
+				"date": "2018-05-11",
+				"description": [{
+					"parent_transaction_exist": false,
+					"item_description": "Spanish Fries",
+					"fees_desc": "Item with incl tax",
+					"charge_code": "4002",
+					"charge_code_type": "OTHERS",
+					"fees_amount": "15.00",
+					"is_rate_suppressed": false
+				}],
+				"credits": "",
+				"is_rate_suppressed": false,
+				"transaction_id": null,
+				"id": 196826,
+				"item_ids": [],
+				"reference_text": "Tony Stark, RESV #100445, ROOM #102",
+				"reference_text_on_edit": "",
+				"show_ref_on_invoice": true,
+				"adjustment_reason": null,
+				"is_description_edited": false
+			}, {
+				"type": {
+					"created_at": "2014-01-03T14:50:34Z",
+					"description": "OTHERS",
+					"id": 4,
+					"updated_at": "2014-01-03T14:50:34Z",
+					"value": "OTHERS"
+				},
+				"date": "2018-05-11",
+				"description": [{
+					"parent_transaction_exist": false,
+					"item_description": "Water",
+					"fees_desc": "Beverages",
+					"charge_code": "Beverages",
+					"charge_code_type": "OTHERS",
+					"fees_amount": "15.00",
+					"is_rate_suppressed": false
+				}],
+				"credits": "",
+				"is_rate_suppressed": false,
+				"transaction_id": null,
+				"id": 196828,
+				"item_ids": [],
+				"reference_text": "Tony Stark, RESV #100445, ROOM #102",
+				"reference_text_on_edit": "",
+				"show_ref_on_invoice": true,
+				"adjustment_reason": null,
+				"is_description_edited": false
+			}, {
+				"type": {
+					"created_at": "2014-01-03T14:50:34Z",
+					"description": "OTHERS",
+					"id": 4,
+					"updated_at": "2014-01-03T14:50:34Z",
+					"value": "OTHERS"
+				},
+				"date": "2018-05-11",
+				"description": [{
+					"parent_transaction_exist": false,
+					"item_description": "Parking",
+					"fees_desc": "Parking",
+					"charge_code": "Parking",
+					"charge_code_type": "OTHERS",
+					"fees_amount": "10.00",
+					"is_rate_suppressed": false
+				}],
+				"credits": "",
+				"is_rate_suppressed": false,
+				"transaction_id": null,
+				"id": 196830,
+				"item_ids": [],
+				"reference_text": "Tony Stark, RESV #100445, ROOM #102",
+				"reference_text_on_edit": "",
+				"show_ref_on_invoice": true,
+				"adjustment_reason": null,
+				"is_description_edited": false
+			}, {
+				"type": {
+					"created_at": "2014-01-03T14:50:34Z",
+					"description": "ADDON",
+					"id": 3,
+					"updated_at": "2014-01-03T14:50:34Z",
+					"value": "ADDON"
+				},
+				"date": "2018-05-11",
+				"description": [{
+					"parent_transaction_exist": false,
+					"item_description": "Sprite",
+					"fees_desc": "Charge for drinks",
+					"charge_code": "Drinks",
+					"charge_code_type": "ADDON",
+					"fees_amount": "34.00",
+					"is_rate_suppressed": false
+				}],
+				"credits": "",
+				"is_rate_suppressed": false,
+				"transaction_id": null,
+				"id": 196831,
+				"item_ids": [],
+				"reference_text": "Tony Stark, RESV #100445, ROOM #102",
+				"reference_text_on_edit": "",
+				"show_ref_on_invoice": true,
+				"adjustment_reason": null,
+				"is_description_edited": false
+			}, {
+				"type": {
+					"created_at": "2014-01-03T14:50:34Z",
+					"description": "OTHERS",
+					"id": 4,
+					"updated_at": "2014-01-03T14:50:34Z",
+					"value": "OTHERS"
+				},
+				"date": "2018-05-11",
+				"description": [{
+					"parent_transaction_exist": false,
+					"item_description": "French Fries",
+					"fees_desc": "Item with incl & excl tax",
+					"charge_code": "4004",
+					"charge_code_type": "OTHERS",
+					"fees_amount": "20.00",
+					"is_rate_suppressed": false
+				}],
+				"credits": "",
+				"is_rate_suppressed": false,
+				"transaction_id": null,
+				"id": 196832,
+				"item_ids": [],
+				"reference_text": "Tony Stark, RESV #100445, ROOM #102",
+				"reference_text_on_edit": "",
+				"show_ref_on_invoice": true,
+				"adjustment_reason": null,
+				"is_description_edited": false
+			}, {
+				"type": {
+					"created_at": "2014-01-03T14:50:34Z",
+					"description": "TAX",
+					"id": 1,
+					"updated_at": "2014-01-03T14:50:34Z",
+					"value": "TAX"
+				},
+				"date": "2018-05-11",
+				"description": [{
+					"parent_transaction_exist": true,
+					"item_description": null,
+					"fees_desc": "Exclusive Tax",
+					"charge_code": "1002",
+					"charge_code_type": "TAX",
+					"fees_amount": "1.09",
+					"is_rate_suppressed": false
+				}],
+				"credits": "",
+				"is_rate_suppressed": false,
+				"transaction_id": null,
+				"id": 196834,
+				"item_ids": [],
+				"reference_text": "Tony Stark, RESV #100445, ROOM #102",
+				"reference_text_on_edit": "",
+				"show_ref_on_invoice": true,
+				"adjustment_reason": null,
+				"is_description_edited": false
+			}, {
+				"type": {
+					"created_at": "2014-01-03T14:50:34Z",
+					"description": "OTHERS",
+					"id": 4,
+					"updated_at": "2014-01-03T14:50:34Z",
+					"value": "OTHERS"
+				},
+				"date": "2018-05-11",
+				"description": [{
+					"parent_transaction_exist": false,
+					"item_description": "Spanish Fries",
+					"fees_desc": "Item with incl tax",
+					"charge_code": "4002",
+					"charge_code_type": "OTHERS",
+					"fees_amount": "15.00",
+					"is_rate_suppressed": false
+				}],
+				"credits": "",
+				"is_rate_suppressed": false,
+				"transaction_id": null,
+				"id": 196835,
+				"item_ids": [],
+				"reference_text": "Tony Stark, RESV #100445, ROOM #102",
+				"reference_text_on_edit": "",
+				"show_ref_on_invoice": true,
+				"adjustment_reason": null,
+				"is_description_edited": false
+			}, {
+				"type": {
+					"created_at": "2014-01-03T14:50:34Z",
+					"description": "ADDON",
+					"id": 3,
+					"updated_at": "2014-01-03T14:50:34Z",
+					"value": "ADDON"
+				},
+				"date": "2018-05-11",
+				"description": [{
+					"parent_transaction_exist": false,
+					"item_description": "Sprite",
+					"fees_desc": "Charge for drinks",
+					"charge_code": "Drinks",
+					"charge_code_type": "ADDON",
+					"fees_amount": "34.00",
+					"is_rate_suppressed": false
+				}],
+				"credits": "",
+				"is_rate_suppressed": false,
+				"transaction_id": null,
+				"id": 196837,
+				"item_ids": [],
+				"reference_text": "Tony Stark, RESV #100445, ROOM #102",
+				"reference_text_on_edit": "",
+				"show_ref_on_invoice": true,
+				"adjustment_reason": null,
+				"is_description_edited": false
+			}, {
+				"type": {
+					"created_at": "2014-01-03T14:50:34Z",
+					"description": "OTHERS",
+					"id": 4,
+					"updated_at": "2014-01-03T14:50:34Z",
+					"value": "OTHERS"
+				},
+				"date": "2018-05-11",
+				"description": [{
+					"parent_transaction_exist": false,
+					"item_description": "French Fries",
+					"fees_desc": "Item with incl & excl tax",
+					"charge_code": "4004",
+					"charge_code_type": "OTHERS",
+					"fees_amount": "20.00",
+					"is_rate_suppressed": false
+				}],
+				"credits": "",
+				"is_rate_suppressed": false,
+				"transaction_id": null,
+				"id": 196838,
+				"item_ids": [],
+				"reference_text": "Tony Stark, RESV #100445, ROOM #102",
+				"reference_text_on_edit": "",
+				"show_ref_on_invoice": true,
+				"adjustment_reason": null,
+				"is_description_edited": false
+			}, {
+				"type": {
+					"created_at": "2014-01-03T14:50:34Z",
+					"description": "TAX",
+					"id": 1,
+					"updated_at": "2014-01-03T14:50:34Z",
+					"value": "TAX"
+				},
+				"date": "2018-05-11",
+				"description": [{
+					"parent_transaction_exist": true,
+					"item_description": null,
+					"fees_desc": "Exclusive Tax",
+					"charge_code": "1002",
+					"charge_code_type": "TAX",
+					"fees_amount": "1.09",
+					"is_rate_suppressed": false
+				}],
+				"credits": "",
+				"is_rate_suppressed": false,
+				"transaction_id": null,
+				"id": 196840,
+				"item_ids": [],
+				"reference_text": "Tony Stark, RESV #100445, ROOM #102",
+				"reference_text_on_edit": "",
+				"show_ref_on_invoice": true,
+				"adjustment_reason": null,
+				"is_description_edited": false
+			}, {
+				"type": {
+					"created_at": "2014-01-03T14:50:34Z",
+					"description": "OTHERS",
+					"id": 4,
+					"updated_at": "2014-01-03T14:50:34Z",
+					"value": "OTHERS"
+				},
+				"date": "2018-05-11",
+				"description": [{
+					"parent_transaction_exist": false,
+					"item_description": "Parking",
+					"fees_desc": "Parking",
+					"charge_code": "Parking",
+					"charge_code_type": "OTHERS",
+					"fees_amount": "10.00",
+					"is_rate_suppressed": false
+				}],
+				"credits": "",
+				"is_rate_suppressed": false,
+				"transaction_id": null,
+				"id": 196846,
+				"item_ids": [],
+				"reference_text": "Tony Stark, RESV #100445, ROOM #102",
+				"reference_text_on_edit": "",
+				"show_ref_on_invoice": true,
+				"adjustment_reason": null,
+				"is_description_edited": false
+			}, {
+				"type": {
+					"created_at": "2014-01-03T14:50:34Z",
+					"description": "ADDON",
+					"id": 3,
+					"updated_at": "2014-01-03T14:50:34Z",
+					"value": "ADDON"
+				},
+				"date": "2018-05-11",
+				"description": [{
+					"parent_transaction_exist": false,
+					"item_description": "Sprite",
+					"fees_desc": "Charge for drinks",
+					"charge_code": "Drinks",
+					"charge_code_type": "ADDON",
+					"fees_amount": "34.00",
+					"is_rate_suppressed": false
+				}],
+				"credits": "",
+				"is_rate_suppressed": false,
+				"transaction_id": null,
+				"id": 196847,
+				"item_ids": [],
+				"reference_text": "Tony Stark, RESV #100445, ROOM #102",
+				"reference_text_on_edit": "",
+				"show_ref_on_invoice": true,
+				"adjustment_reason": null,
+				"is_description_edited": false
+			}]
+		}],
+		"is_rate_suppressed": false,
+		"days": []
+	},
+	"errors": []
+}

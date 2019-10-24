@@ -32,6 +32,9 @@
 		&.icon-allotments { background-position: 0 -870px; }
 		&.icon-settings { background-position: 0 -930px; }
         &.icon-layers { background-position: 0 -990px; }
+        &.icon-alert { background-position: 0 -1035px; }
+        &.icon-invoice { background-position: 0 -1095px; }
+        &.icon-contracts { background-position: 0 -1155px; }
 
 		@media only screen and (min-width: 600px) {
 			background-size: 125px;
@@ -55,6 +58,9 @@
 			&.icon-allotments { background-position: 0 -1800px; }
 			&.icon-settings { background-position: 0 -1920px; }
             &.icon-layers { background-position: 0 -2040px; }
+            &.icon-alert { background-position: 0 -2160px; }
+            &.icon-invoice { background-position: 0 -2280px; }
+            &.icon-contracts { background-position: 0 -2400px; }
 		}
 
 		@media @highdpi { background-image: @iconNoContent2x; }
@@ -232,6 +238,7 @@
 				&.icon-revenue { background-position: 50% -5250px; }
 				&.icon-payments { background-position: 50% -5370px; }
 				&.icon-cashier { background-position: 50% -5490px; }
+				&.icon-balance { background-position: 50% -12088px; }
 
 				&.icon-total { background-position: 50% -8070px; }
 				&.icon-prestay { background-position: 50% -8130px; }
@@ -269,7 +276,13 @@
 
 			&.icon-phone { background-position: 3px -4234px; }
 			&.icon-email-grey { background-position: 2px -4293px; }
-			&.icon-contracts { background-position: 0 -7658px; }
+			&.icon-contracts { 
+				background-position: 0 -7658px;
+
+				&.active {
+                    background-position: 0 -12760px;
+                }
+			}
 
 			&.icon-gc-location { background-position: 10px -269px; }
 			&.icon-gc-phone { background-position: 10px -308px; }
@@ -277,6 +290,7 @@
 			&.icon-gc-company { background-position: 5px -3512px; }
 			&.icon-gc-ta { background-position: 5px -3632px; }
 			&.icon-gc-mobile { background-position: 10px -9989px; }
+			&.icon-gc-group { background-position: 4px -7714px; }
 
 			&.icon-notes { background-position: 0 -8980px; }
 
@@ -287,12 +301,31 @@
 	            .square(40px);
 			}
 
+            &.icon-queued-red { 
+                background-position: 0 -12874px; 
+                .hide-text;
+                .size(30px, 25px);
+            }
+
 			&.icon-suite {
                 .hide-text;
                 background-position: 0px -10237px;
                 .size(20px, 25px);
             }
 
+            &.icon-suite-white {
+                .hide-text;
+                background-position: 0px -10357px;
+                .size(20px, 25px);
+            }
+
+            &.icon-suite-orange {
+                .hide-text;
+                background-position: 0px -12816px;
+                .size(20px, 25px);
+            }
+
+            &.icon-wallet-green { background-position: 0px -10960px; }
 
 		/* Reservation - Display ***/
 			&.icon-company { background-position: 15px -3448px; }
@@ -313,6 +346,9 @@
 			&.icon-charge { background-position: 4px -6340px; }
 			&.icon-move { background-position: -1px -6459px; }
 			&.icon-cc { background-position: 0 -7480px; }
+
+			&.icon-print-unavailable { background-position: 0 -11440px; }
+            &.icon-export-unavailable { background-position: 0 -11380px; }
 
 			&.icon-trash {
 				.square(20px);
@@ -347,6 +383,13 @@
 
 				&.time-in { background-position: 10px -4050px; }
 				&.time-out { background-position: 10px -4110px; }
+				&.time-in-big,
+                &.time-out-big {
+                    .square(80px);
+                }
+                &.time-in-big { background-position: 0px -9820px; }
+                &.time-out-big { background-position: 0px -9700px; }
+                &.time-black { background-position: 0px -11020px; }
 			}
 
 			&.icon-room-lock { background-position: 0 -9040px; }
@@ -355,6 +398,11 @@
 
 			&.icon-hold {
                 background-position: 0px -9220px;
+
+                &.black {
+                    background-position: 0px -9280px; 
+                }
+                
                 &.red {
                     background-position: 0px -9340px;
                 }
@@ -376,8 +424,25 @@
                 background-position: 0px -10840px;
             }
 
+            &.icon-identity-card-grey {
+                background-position: 0px -12220px;
+            }
+
+            .icon-identity-card-red {
+                background-position: 10px -12560px;
+            }
+
+            &.icon-identity-card-missing {
+                background-position: 0px -12280px;
+                .size(55px, 60px);
+            }
+
             &.icon-content-unavailable {
                 background-position: 0px -10900px;
+            }
+
+            &.icon-blocked-white {
+                background-position: 0px -12160px;
             }
 
 		/* Credit Cards ***/
@@ -437,6 +502,9 @@
                     background-position: 0px -10420px;
                 }
             }
+
+            &.icon-diary-dayuse { background-position: 0 -12640px; }
+            &.icon-diary-nightuse { background-position: 5px -12697px; }
 
 		/* Social Lobby ***/
 			&.icon-show-conversations {
@@ -531,6 +599,13 @@
 				.square(14px);
 			}
 
+			&.icon-edit-40 {
+                background-color: transparent;
+                background-position: 0px -11200px;
+                .hide-text;
+                .square(40px);
+            }
+
 			&.icon-ok-20 {
 				background-position: 0 -8860px;
 				.square(20px);
@@ -556,10 +631,15 @@
 			&.icon-double-arrow {
 				background: @icons 10px -1587px no-repeat;
 				.square(40px);
+
 				@media @highdpi {
 					background-image: @icons2x;
 					background-size: 120px;
 				}
+
+				&.black {
+                   background-position: 2px -1537px;
+                }
 			}
 
 		/* Actions ***/
@@ -576,6 +656,16 @@
 					&.icon-completed { background-position: 8px -7420px; }
 					&.icon-specials { background-position: 8px -8620px; }
 				}
+
+				&.icon-100w {
+                    width: 100px;
+                    height: 55px;
+
+                    &.icon-unassigned { background-position: 30px -11860px; }
+                    &.icon-assigned { background-position: 32px -11920px; }
+                    &.icon-completed { background-position: 32px -11980px; }
+                    &.icon-delete { background-position: 33px -12040px; }
+                }
 			}
 
 			&.icon-action-report {
@@ -586,16 +676,36 @@
                 &.icon-completed { background-position: 0 -10180px; }
             }
 
+        /* Rooms ***/
+
+            &.icon-blocked {
+                background-position: 0 -10660px;
+            }
+
+            &.icon-available {
+                background-position: 0 -10720px;
+            }
+
+            &.icon-picked-up {
+                background-position: 0 -10780px;
+            }
+
 		/* Rotations */
-		&.rotate-down {
-			transform:rotate(-90deg);
-		}
-		&.rotate-up {
-			transform:rotate(90deg);
-		}
-		&.rotate-right {
-			transform:rotate(180deg);
-		}
+			&.rotate-down {
+				transform:rotate(-90deg);
+			}
+			&.rotate-up {
+				transform:rotate(90deg);
+			}
+			&.rotate-right {
+				transform:rotate(180deg);
+			}
+
+		/* Commissions */
+            &.icon-release { background-position: 0px -11314px;}
+
+        /* Billing ***/
+            &.icon-split-charge { background-position: 0px -12340px; }
 
 		/* @2x Icons ***/
 		@media @highdpi {
@@ -707,6 +817,40 @@
 			background-image: @iconReports2x;
 			background-size: 30px;
 		}
+
+		&.icon-20w {
+            .square(20px);
+            background-size: 20px;
+
+            /* Report menu icons ***/
+            &.icon-all-reports { background-position: 0 -340px; }
+            &.icon-schedule { background-position: 0 -360px; }
+            &.icon-category { background-position: 0 -380px; }
+            &.icon-user { background-position: 0 -400px; }
+
+
+            /* Individual report icons ***/
+            &.icon-check-in-check-out { background-position: 0 1px;}
+            &.icon-upsell { background-position: 0 -20px;}
+            &.icon-check-out { background-position: 0 -40px;}
+            &.icon-check-in { background-position: 0 -60px;}
+            &.icon-booking { background-position: 0 -80px;}
+            &.icon-occupancy { background-position: 0 -100px;}
+            &.icon-activity { background-position: 0 -120px;}
+            &.icon-deposit { background-position: 0 -140px;}
+            &.icon-reservations { background-position: 0 -160px;}
+            &.icon-transactions { background-position: 0 -180px;}
+            &.icon-comparison { background-position: 0 -200px;}
+            &.icon-forecast { background-position: 0 -220px;}
+            &.icon-market { background-position: 0 -240px;}
+            &.icon-rate { background-position: 0 -260px;}
+            &.icon-group { background-position: 0 -280px;}
+            &.icon-balance { background-position: 0 -300px; }
+            &.icon-cards { background-position: 0 -320px; }
+            &.icon-action { background-position: 0px -460px; }
+            &.icon-room { background-position: 0 -440px; }
+            &.icon-travel-agent { background-position: 0px -480px; }
+        }
 	}
 
 /* Tabs icons			==================================*/
@@ -868,6 +1012,19 @@
 	@media only screen and (min-width: 600px) {
 		.search-indicator { .square(20px); }
 	}
+
+	.global-card,
+    .stay-count {
+        font-size: 12px;
+        line-height: 20px;
+        font-weight: 600;
+        text-transform: uppercase;
+        text-align: center;
+        color: @white;
+        background: @blue;
+        .square(20px);
+        #border-radius > .rounded(50%);
+    }
 
 	.stars {
 		display: inline-block;

@@ -9,7 +9,10 @@ admin.service('ADHotelDetailsSrv', [
     *   An getter method to add deatils for a new hotel.
     */
    var that = this;
+
    var hotelDetailsData = {};
+
+   this.currentHotelDetails = {};
 
 	that.fetchAddData = function() {
 		var deferred = $q.defer();
@@ -26,7 +29,7 @@ admin.service('ADHotelDetailsSrv', [
 	};
 
         that.fetchLanguages = function(deferred) {
-            var url = '/api/reference_values.json?type=language',
+            var url = '/admin/locales.json?',
                 UUID = ADHotelListSrv.getSelectedProperty();
 
             if (UUID) {
@@ -34,7 +37,7 @@ admin.service('ADHotelDetailsSrv', [
             }
 
             ADBaseWebSrvV2.getJSON(url).then(function(data) {
-                hotelDetailsData.languages = data;
+                hotelDetailsData.languages = data.locales;
                 deferred.resolve(hotelDetailsData);
             }, function(data) {
                 deferred.reject(data);
@@ -140,4 +143,66 @@ admin.service('ADHotelDetailsSrv', [
 		});
 		return deferred.promise;
 	};
+
+	/**
+    *   Method to de-select MP flag from SNT Admin.
+    *   @param {Object} data - details of a hotel.
+    */
+	that.deSelectMPFlag = function(data) {
+		var deferred = $q.defer(),
+			url = '/admin/hotels/' + data.hotel_id + '/deselect_multi_property';
+
+        ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
+		    deferred.resolve(data);
+		}, function(data) {
+		    deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+	/*
+	 * get the financial legal settings
+	 */
+	that.getFinancialLegalSettings = function(data) {
+		var deferred = $q.defer(),
+			url = '/admin/hotels/' + data.hotel_id + '/legal_settings';
+
+        ADBaseWebSrvV2.getJSON(url, data).then(function(data) {
+		    deferred.resolve(data);
+		}, function(data) {
+		    deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+	/*
+	 * update the financial legal settings
+	 */
+	that.updateFinancialLegalSettings = function(params) {
+		var deferred = $q.defer(),
+			url = '/admin/hotels/' + params.hotel_id + '/legal_settings';
+
+        ADBaseWebSrvV2.putJSON(url, params.data).then(function(data) {
+		    deferred.resolve(data);
+		}, function(data) {
+		    deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	/**
+	 * Get hotel details
+	 */
+	this.fetchHotelDetails = function () {
+		var deferred = $q.defer();
+		var url = '/api/hotel_settings.json';
+
+		ADBaseWebSrvV2.getJSON(url).then(function (data) {
+			data.is_auto_change_bussiness_date = data.business_date.is_auto_change_bussiness_date;
+			_.extend(that.currentHotelDetails, data);
+			deferred.resolve(data);
+		}, function (errorMessage) {
+			deferred.reject(errorMessage);
+		});
+		return deferred.promise;
+	};
+	
 }]);

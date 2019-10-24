@@ -298,6 +298,18 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                     return params;
                 }
+                function dateRangeForDateChange(start_date, end_date) {
+                    var s_comp = start_date.toComponents(),
+                        e_comp = end_date.toComponents(),
+                        params = {
+                            begin_time: '00:00',
+                            end_time: '23:59',
+                            begin_date: s_comp.date.toDateString(),
+                            end_date: e_comp.date.toDateString()
+                        };
+
+                    return params;
+                }
 
                 /**
                 *
@@ -356,14 +368,14 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         _.each(inactiveRooms, function(value, index) {
 
                            if (value.room_id === room.id) {
-                                hour = value.from_time.split(":")[0];
-                                min = value.from_time.split(":")[1];
+                                hour = value.from_time === null ? 0 : value.from_time.split(":")[0];
+                                min = value.from_time === null ? 0 : value.from_time.split(":")[1];
                                 startTime = new tzIndependentDate(value.from_date);
                                 startTime.setHours (hour, min, 0);
 
                                 // end time
-                                hour = value.to_time.split(":")[0];
-                                min = value.to_time.split(":")[1];
+                                hour = value.to_time === null ? 0 : value.to_time.split(":")[0];
+                                min = value.to_time === null ? 0 : value.to_time.split(":")[1];
                                 endTime = new tzIndependentDate(value.to_date);
                                 endTime.setHours (hour, min, 0);
 
@@ -377,6 +389,12 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         });
 
                     room[meta.room.hk_status] = meta.room.hk_status_map[room.hk_status];
+                    // For Inspected Only Hotel, Adding class for clean not-inspected case
+                    room[meta.room.hk_status] += ( room.hk_status === 'CLEAN' && !room.is_inspected ) ? ' not-inspected' : '';
+                    // Add class when room is OOO/OOS
+                    if ( room.room_service_status === 'OUT_OF_ORDER' || room.room_service_status === 'OUT_OF_SERVICE') {
+                        room[meta.room.hk_status] = 'unavailable';
+                    }
                     return room;
                 }),
 
@@ -443,16 +461,16 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     if (!occupancy[m.maintenance]) {
                     occupancy[m.maintenance]  = room_type[meta.maintenance.time_span];
                     }
-                    occupancy[m.room_type]      = angular.lowercase(room_type.name);
-                    occupancy[m.status]         = angular.lowercase(occupancy[m.status]);
+                    occupancy[m.room_type]      = room_type.name.toLowerCase();
+                    occupancy[m.status]         = occupancy[m.status].toLowerCase();
                     if (occupancy[m.status]          === 'reserved') {
                         occupancy[m.status]         = 'reserved';
                     } else if (occupancy[m.status]   === 'checkedin') {
                         occupancy[m.status]         = 'inhouse';
                     } else if (occupancy[m.status]   === 'checkedout') {
-                        occupancy[m.status]         = 'check-out';
-                    } else if (occupancy[m.status]   === 'checking_out') {
                         occupancy[m.status]         = 'departed';
+                    } else if (occupancy[m.status]   === 'checking_out') {
+                        occupancy[m.status]         = 'check-out';
                     } else if (occupancy[m.status]   ===  'checking_in') {
                         occupancy[m.status]         = 'check-in';
                     }
@@ -515,7 +533,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         slot[m.start_date]          = start_date.getTime();
                         slot[m.end_date]            = end_date.getTime();
                         slot[m.maintenance]         = room_type[meta.maintenance.time_span];
-                        slot[m.room_type]           = angular.lowercase(room_type.name);
+                        slot[m.room_type]           = room_type.name.toLowerCase();
                     }
                     return slot;
                 },
@@ -592,12 +610,14 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         var start_date = time.toStartDate();
                         var end_date = time.x_p;
 
+                        // CICO-43712
+                        start_date.setHours(0, 0, 0);
                         end_date.setHours(0, 0, 0);
                         $q.all([Maintenance.read(),
                                 RoomType.read(),
-                                InActiveRoomSlots.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))),
+                                InActiveRoomSlots.read(dateRangeForDateChange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))),
                                 Room.read(),
-                                Occupancy.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))), // time.toStartDate(), time.toEndDate())),
+                                Occupancy.read(dateRangeForDateChange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))), // time.toStartDate(), time.toEndDate())),
                                 AvailabilityCount.read(dateRange(start_date, end_date))])
                                 .then(function(data_array) {
                                     _.reduce([
@@ -649,6 +669,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                             ));
 
                         }, function(err) {
+                            q.reject(err);
                         });
 
                     return q.promise;
@@ -669,9 +690,9 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         __this = this;
 
                     $q.all([
-                            InActiveRoomSlots.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))),
+                            InActiveRoomSlots.read(dateRangeForDateChange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))),
                             Room.read(),
-                            Occupancy.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))), // time.toStartDate(), time.toEndDate())),
+                            Occupancy.read(dateRangeForDateChange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))), // time.toStartDate(), time.toEndDate())),
                             AvailabilityCount.read(dateRange(time.x_n, time.x_p))])
                             .then(function(data_array) {
                                 // if there is any reservation transfter initiated from one day to another
@@ -777,25 +798,28 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                 /* Primary Method to obtian Available Slots for a given range, room type, and optional
                   GUID*/
                 this.Availability = function(params) {
-                    var start_date         = params.start_date,
+                    var self               = this,
+                        start_date         = params.start_date,
                         end_date           = params.end_date,
                         room_type_id       = params.room_type_id,
                         rate_type          = params.rate_type,
                         account_id         = params.account_id,
+                        reservation_id     = params.reservation_id,
                         GUID               = params.GUID,
-                        _data_Store        = this.data_Store,
+                        _data_Store        = self.data_Store,
                         q                  = $q.defer(),
                         guid               = GUID || _.uniqueId('avl-'),
                         is_unassigned_room = params.is_unassigned_room,
                         params             = dateRange(start_date, end_date, room_type_id, rate_type);
-
-                    var self = this;
 
                     // If rate_type is available
                     if (rate_type) {
                         if (account_id) {
                             _.extend(params, { account_id: account_id });
                         }
+                    }
+                    if (reservation_id) {
+                        _.extend(params, { reservation_id: reservation_id });
                     }
 
                     // if from unassigned room
@@ -806,6 +830,11 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     Availability.read(params)
                     .then(function(data) {
                         if (data && data.results) {
+                            if (data.contract_id) {
+                                _data_Store.set({
+                                    contractId: data.contract_id
+                                });
+                            }
                             var availability = data.results[0].availability;
                             var roomTypes = data.results[0].room_types;
                             var match;
@@ -857,7 +886,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                    });
 
                     return q.promise;
-                };
+                }.bind(this);
 
                 /**
                 * primary method to get availability against a room
@@ -1062,9 +1091,13 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                 this.fetchUnassignedRoomList = function(params) {
                     var deferred = $q.defer();
-                    var url = '/api/hourly_occupancy/unassigned_list?date=' + params.date;
+                    var url = '/api/hourly_occupancy/unassigned_list?date=' + params.date,
+                        businessDate = $rootScope.businessDate;
 
                     rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                        angular.forEach(data.reservations, function(reservation) {
+                            reservation.statusClass = reservation.arrival_date === businessDate ? 'guest check-in' : 'guest no-status';
+                        });
                         deferred.resolve(data.reservations);
                     }, function(error) {
                         deferred.reject(error);

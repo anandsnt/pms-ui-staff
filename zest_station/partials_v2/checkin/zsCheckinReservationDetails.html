@@ -1,23 +1,23 @@
 <!-- Content -->
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'RESERVATION_DETAILS'">
-    
-    
+
+
     <div id="content" ng-show="isReservationDetailsFetched">
         <h1>
             <text data-ng-bind-html="getTagValue('RES_DETAIL_HEADER')" editable-text="RES_DETAIL_HEADER"></text>
         </h1>
         <div id="flex-holder">
             <!-- Calculate {maxheight} with this formula: window.height - combined heights of <h1>, <h2> and <h3> elements + 8
-                - if some <h> elements are missing just exclude them or use 0. 
+                - if some <h> elements are missing just exclude them or use 0.
                 - 8 is added to make sure bottom rounded corner is set off screen
             -->
-            
+
             <div id="textual" class="reservation-details pull-left scrollable fill-height" ng-iscroll="res-details" ng-iscroll-delay="100" ng-init="setScroll()"> <!-- Add ng-scroll here style="max-height:{maxheight}px;" -->
                 <div class="wrapper">
                     <div id="guests">
                         <p class="px-space">
-                            <strong>{{selectedReservation.guest_details[0].last_name}}, {{selectedReservation.guest_details[0].first_name}} </strong>                          
-                            <span>{{selectedReservation.guest_details.length}} 
+                            <strong>{{selectedReservation.guest_details[0].last_name}}, {{selectedReservation.guest_details[0].first_name}} </strong>
+                            <span>{{selectedReservation.reservation_details.guests_total}}
                                 <text data-ng-bind-html="getTagValue('RESIDENTS')" editable-text="RESIDENTS"></text>
                             </span>
                             {{selectedReservation.reservation_details.room_type_description}}
@@ -26,9 +26,19 @@
                             <text data-ng-bind-html="getTagValue('ADDTL_RESIDENTS')" editable-text="ADDTL_RESIDENTS"></text>
                              ({{selectedReservation.guest_details.length-1}})
                          </p>
-                        <button ng-if='zestStationData.kiosk_add_remove_guests' type="button" class="button add-remove-btn" touch-press="addRemove()" >
+                        <!-- <button ng-if='zestStationData.kiosk_add_remove_guests' type="button" class="button add-remove-btn" touch-press="addRemove()" >
                             <text data-ng-bind-html="getTagValue('ADD_REMOVE_GUESTS')" editable-text="ADD_REMOVE_GUESTS"></text>
-                        </button>
+                        </button> -->
+                        <div id="payment" ng-show="selectedReservation.reservation_details.payment_method_used === 'CC'">
+                            <h4 data-ng-bind-html="getTagValue('PAYMENT_METHOD')" editable-text="PAYMENT_METHOD"></h4>
+                            <p>
+                                <strong>{{selectedReservation.reservation_details.payment_details.card_type_name}}</strong>
+                                <br>
+                                <span data-ng-bind-html="getTagValue('ENDING_WITH')" editable-text="ENDING_WITH"></span> {{selectedReservation.reservation_details.payment_details.card_number}}
+                                <br>
+                                <span data-ng-bind-html="getTagValue('EXPIRES')" editable-text="EXPIRES"></span>  {{selectedReservation.reservation_details.payment_details.card_expiry}}
+                            </p>
+                        </div>
                     </div>
                     <ul id="rate" class="reservation-details">
                         <li >
@@ -39,7 +49,7 @@
                             {{zestStationData.isHourlyRateOn ? 'HOURLY_RATE' : 'AVG_DAILY' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.avg_daily_rate | number :2}}</span>
                         </li>
                         <li ng-hide="isRateSuppressed()" ng-repeat="addon in selectedReservation.addons">
-                            {{addon.name}} 
+                            {{addon.name}}
                             <!-- hide the addon qty and addon amount till the calculations are done in API -->
                            <!--  ({{addon.addon_count}}) -->
                             <span ng-show='{{!addon.is_inclusive}} && false'>{{zestStationData.currencySymbol}}{{addon.amount | number :2}}</span>
@@ -47,9 +57,9 @@
                                 <text data-ng-bind-html="getTagValue('INCLUDED')" editable-text="INCLUDED"></text>
                             </span>
                         </li>
-                        
+
                         <li class="break"></li>
-                        
+
                         <li ng-hide="isRateSuppressed()" class="sub">
                             <text data-ng-bind-html="getTagValue('RES_TAX_FEES')" editable-text="RES_TAX_FEES"></text>
                         <span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.fees | number :2}}</span></li>
@@ -81,9 +91,9 @@
             </div>
         </div>
     </div>
-    
-    
-    
+
+
+
 <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" ></span>
 </section>
 
@@ -98,14 +108,14 @@
                     <h4><label>
                         <text data-ng-bind-html="getTagValue('TERMS_CONDITIONS_HEADER')" editable-text="TERMS_CONDITIONS_HEADER"></text>
                     </label></h4>
-                    <div id="terms" data-ng-bind-html="trustAsHtml(zestStationData.hotelTermsAndConditions)"></div>
+                    <div id="terms" data-ng-bind-html="trustAsHtml(hotelTermsAndConditions)"></div>
                 </div>
             </div>
             <div id="actions" class="pull-right">
                 <button type="button" class="button" touch-press="agreeTerms()" ><label>
                     <text data-ng-bind-html="getTagValue('TERMS_CONDITIONS_ACCEPT')" editable-text="TERMS_CONDITIONS_ACCEPT"></text>
                 </label></button>
-                <button type="button" class="button transparent" touch-press="clickedOnCloseButton()" ><label> 
+                <button type="button" class="button transparent" touch-press="clickedOnCloseButton()" ><label>
                     <text data-ng-bind-html="getTagValue('TERMS_CONDITIONS_CANCEL')" editable-text="TERMS_CONDITIONS_CANCEL"></text>
                 </label></button>
                 <p><strong >
@@ -118,3 +128,7 @@
     </div>
 <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" ></span>
 </section>
+
+<div ng-if="zestStationData.add_loyalty_pgms">
+    <ng-include src="'/assets/partials_v2/checkin/loyalty/zsCheckinLoyaltyMain.html'" ng-show="mode === 'LOYALTY_PROGRAMS'" ng-controller="zsCheckinLoyaltyCtrl"></ng-include>
+</div>

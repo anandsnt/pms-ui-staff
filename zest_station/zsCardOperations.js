@@ -1,5 +1,4 @@
 var CardOperation = function() {
-	console.info('card operation started');
 	// class for handling operations with payment device
 
 	var that = this;
@@ -31,7 +30,7 @@ var CardOperation = function() {
 		} else if (action === null) {
 			return false;
 		} else {
-			if (cordova) {
+			if (typeof cordova !== typeof undefined) {
 				// calling cordova service
 				cordova.exec(
 					// if success call back require any parameters
@@ -172,5 +171,13 @@ var CardOperation = function() {
 		options['action'] = "writeBeaconID";
 		that.callCordovaService(options);
 	};
+
+	this.getConnectedDeviceDetails = function (options) {
+        options['service'] = "RVDevicePlugin";
+        options['action'] = "getDevicesStates";
+        options['timeout'] = 31000;
+
+        that.callCordovaService(options);
+    };
 
 };

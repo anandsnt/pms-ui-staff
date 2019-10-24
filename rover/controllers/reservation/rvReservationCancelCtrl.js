@@ -1,5 +1,5 @@
-	sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParams', 'RVPaymentSrv', '$timeout', 'RVReservationCardSrv', '$state', '$filter', '$q', 'RVReservationSummarySrv', '$window',
-		function($rootScope, $scope, $stateParams, RVPaymentSrv, $timeout, RVReservationCardSrv, $state, $filter, $q, RVReservationSummarySrv, $window) {
+	sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParams', 'RVPaymentSrv', '$timeout', 'RVReservationCardSrv', '$state', '$filter', '$q', 'RVReservationSummarySrv', '$window', 'RVNightlyDiarySrv',
+		function($rootScope, $scope, $stateParams, RVPaymentSrv, $timeout, RVReservationCardSrv, $state, $filter, $q, RVReservationSummarySrv, $window, RVNightlyDiarySrv) {
 
 			BaseCtrl.call(this, $scope);
 			$scope.errorMessage = '';
@@ -20,7 +20,8 @@
 				cardNumber: "",
 				expiry_date: "",
 				card_type: "",
-				addToGuestCard: false
+				addToGuestCard: false,
+				locale: $scope.languageData.selected_language_code
 			};
 			$scope.cancellationData.paymentType = "";
 			$scope.DailogeState = typeof $scope.$parent.DailogeState !== 'undefined' ? $scope.$parent.DailogeState : {};
@@ -266,12 +267,21 @@
 
 			$scope.completeCancellationProcess = function() {
 				if ($scope.DailogeState.isCancelled) {
-					$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-						"id": $scope.reservationData.reservationId || $scope.reservationParentData.reservationId,
-						"confirmationId": $scope.reservationData.confirmNum || $scope.reservationParentData.confirmNum,
-						"isrefresh": false
-					});
+					if ($state.current.name === 'rover.reservation.staycard.reservationcard.reservationdetails') {
+						$stateParams.isrefresh = true;
+						$state.reload($state.current.name);
+						
+					} else {
+						// CICO-58191
+						$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+							id: $scope.reservationData.reservationId || $scope.reservationData.reservation_card.reservation_id,
+							confirmationId: $scope.reservationData.confirmNum || $scope.reservationData.reservation_card.confirmation_num,
+							isrefresh: true
+						});
+					}
+					
 				}
+
 				$scope.closeReservationCancelModal();
 			};
 
@@ -285,6 +295,17 @@
 						// its functions are written in parent controller.Ie reservationActionsController
 						$scope.$emit('hideLoader');
 						$scope.DailogeState.isCancelled = true ;
+						var params = RVNightlyDiarySrv.getCache();
+
+						if (typeof params !== 'undefined') {
+							params.currentSelectedReservationId = "";
+			                params.currentSelectedRoomId = "";
+			                params.currentSelectedReservation = "";
+						}
+		                
+
+		                RVNightlyDiarySrv.updateCache(params);
+
 					},
 					onCancelFailure = function(data) {
 						$scope.$emit('hideLoader');
@@ -495,11 +516,20 @@
 				$scope.closeDialog();
 			};
 
+			// CICO-66822
+			var cancelOriginalData = dclone($scope.DailogeState);
+
 			// -- CICO-17706 --//
 			$scope.DailogeState = {};
 			$scope.DailogeState.successMessage = '';
 			$scope.DailogeState.failureMessage = '';
 			$scope.DailogeState.isCancelled = $scope.passData.isCancelled || false;
+
+			// CICO-66822
+			$scope.DailogeState.bookerEmail = cancelOriginalData.bookerEmail;
+            $scope.DailogeState.isGuestEmailSelected = cancelOriginalData.isGuestEmailSelected;
+            $scope.DailogeState.isBookerEmailSelected = cancelOriginalData.isBookerEmailSelected;
+            $scope.DailogeState.guestEmail = cancelOriginalData.guestEmail;
 
 			// Checking whether email is attached with guest card or not
 			$scope.isEmailAttached = function() {
@@ -522,11 +552,24 @@
 			};
 
 			// Action against email button in staycard.
-			$scope.sendReservationCancellation = function() {
+			$scope.sendReservationCancellation = function(locale) {
 				var postData = {
-					"type": "cancellation",
-					"emails": $scope.isEmailAttached() ? [$scope.guestCardData.contactInfo.email] : [$scope.DailogeState.sendConfirmatonMailTo]
-				};
+						"type": "cancellation",
+						"locale": locale
+					};
+
+				if ($scope.DailogeState.isGuestEmailSelected ) {
+					postData.primary_email = $scope.DailogeState.guestEmail;
+				}
+	
+				if ($scope.DailogeState.isBookerEmailSelected) {
+					postData.booker_email = $scope.DailogeState.bookerEmail;
+				}
+	
+				if (!$scope.hasEmails() && $scope.DailogeState.sendConfirmatonMailTo) {
+					postData.primary_email = $scope.DailogeState.sendConfirmatonMailTo;
+				}
+
 				var data = {
 					"postData": postData,
 					"reservationId": $scope.passData.reservationId
@@ -554,20 +597,30 @@
 				$("header .logo").hide();
 				$("header .h2").hide();
 
+				var onPrintCompletion = function() {
+					$timeout(function() {
+						$("header .logo").show();
+						$("header .h2").show();
+						removePrintOrientation();
+					}, 100);
+				};
+
 				$timeout(function() {
-					$window.print();
 					if (sntapp.cordovaLoaded) {
-						cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-					}
-					$("header .logo").show();
-					$("header .h2").show();
+						cordova.exec(onPrintCompletion, function() {
+							onPrintCompletion();
+						}, 'RVCardPlugin', 'printWebView', []);
+					} else {
+						$window.print();
+						onPrintCompletion();	
+					}					
 				}, 400);
 				// remove the orientation after similar delay
 				$timeout(removePrintOrientation, 100);
 			};
 
 			// Action against print button in staycard.
-			$scope.printReservationCancellation = function() {
+			$scope.printReservationCancellation = function(locale) {
 				var succesfullCallback = function(data) {
 					$scope.printData = data.data;
 					printPage();
@@ -580,7 +633,8 @@
 					successCallBack: succesfullCallback,
 					failureCallBack: failureCallbackPrint,
 					params: {
-						'reservation_id': $scope.passData.reservationId
+						'reservation_id': $scope.passData.reservationId,
+						'locale': locale
 					}
 				});
 			};
@@ -596,6 +650,25 @@
 			$scope.$on("PAYMENT_ACTION_CONTINUE", function(e, data) {
 				$scope.cancelReservation(data);
 			});
+
+			/**
+			 * Should disable the send email btn in the cancellation popup
+			 * @param {String} locale - locale chosen from the popup
+			 */
+			$scope.shouldDisableSendCancellationEmailBtn = function () {
+				return  !$scope.DailogeState.isGuestEmailSelected &&
+						!$scope.DailogeState.isBookerEmailSelected &&
+						!$scope.DailogeState.sendConfirmatonMailTo;
+				
+			};
+
+			/**
+			 * Checks whether there are any emails configured
+			 */
+			$scope.hasEmails = function () {
+				return !!$scope.guestCardData.contactInfo.email || !!$scope.reservationData.reservation_card.booker_email;
+			};
+
 		}
 	]);
 

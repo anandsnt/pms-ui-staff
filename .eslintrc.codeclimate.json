@@ -2,7 +2,8 @@
     "env": {
         "browser": true,
         "es6": true,
-        "jquery": true
+        "jquery": true,
+        "jasmine": true
     },
     "globals": {
         "angular": false,
@@ -22,7 +23,6 @@
         "ADBaseTableCtrl": true,
         "tzIndependentDate": true,
         "getJqDateFormat": false,
-        "moment": false,
         "getTimeFormated": true,
         "CardReaderCtrl": false,
         "sntCordovaInit": false,
@@ -30,7 +30,16 @@
         "jsHue": false,
         "SyntaxHighlighter": false,
         "webSocketOperations": false,
-        "moment": false
+        "moment": false,
+        "SwipeOperation": false,
+        "FastClick": false,
+        "module": false,
+        "inject": false,
+        "CBAMockOperation": false,
+        "sntZestStation": false,
+        "require": false,
+        "toastr": false,
+        "d3": true
     },
     "installedESLint": true,
     "parserOptions": {

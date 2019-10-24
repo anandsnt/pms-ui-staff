@@ -3,6 +3,11 @@
     restrict: 'AE',
     link: function(scope, element, attrs, opt) {
          element.bind('tap touchend click', function(event) {
+
+            // touch end triggeres after a grag n drop also
+            if (scope.isDragging) {
+                return;
+            }
              try {
                 if (element) {
                     if (arguments[0].target.nodeName === 'INPUT') {

@@ -105,7 +105,10 @@
                     .calc-width(100, 10);
                 }
 
-                .inner { line-height: 50px; }
+                .inner { 
+                    line-height: 50px; 
+                    height: 50px;
+                }
             }
         }
 
@@ -160,6 +163,19 @@
                 &:after { background-color: @grey1; }
             }
 
+            .checkbox {
+                font-size: 14px;
+                text-transform: uppercase;
+                padding-right: 10px;
+                background-color: @grey1;
+                margin-right: 10px;
+                .pull-left;
+
+                .icon-form {
+                    background-color: @white;
+                }
+            }
+
             .button {
                 .square(40px);
                 .pull-right;
@@ -210,12 +226,13 @@
                         }
 
                         &.different {
+                            background-color: rgba(0, 0, 0, 0.2);
 
                             td {
-                                .inner {
+                                .inner,
+                                .button {
                                     margin-top:5px;
-                                }
-                                background-color: rgba(0, 0, 0, 0.2);
+                                }    
                             }
                         }
                     }
@@ -229,15 +246,24 @@
 
                     td { width: 55px; }
 
+                    .button,
                     .inner {
                         font-size: 18px;
-                        margin: 0 5px 5px;
-                        background-color: @white;
-                        #border-radius > .rounded();
 
                         &.unavailable { color: @red; }
                         &.disabled { color: @grey2; }
                         &.warning { background-color: rgba(248, 230, 230, .8); }
+                    }
+
+                    .button {
+                        font-weight: 400;
+                        font-style: italic;
+                    }
+
+                    .inner {
+                        margin: 0 5px 5px;
+                        background-color: @white;
+                        #border-radius > .rounded();                        
                     }                    
                 }
 
@@ -345,6 +371,14 @@
                         color: darken(#c51779, 20%);
                     }
                     .grid-col { background-color: #c51779;}
+                }
+
+                &.red {
+                    th { color: @softRedStart; }
+                    .different th {
+                        color: darken(@softRedStart, 20%);
+                    }
+                    .grid-col { background-color: @softRedStart;}
                 }
             }
         }

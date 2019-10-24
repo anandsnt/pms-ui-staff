@@ -5,19 +5,19 @@
 @import "stylesheets/less/common/01-A_reset.less";
 
 @import "stylesheets/less/common/01-B_variables.less";
-@import "stylesheets/less/app/01-B_variables.less"; 
+@import "stylesheets/less/app/01-B_variables.less";
 
-@import "stylesheets/less/common/01-C_mixins.less"; 
-@import "stylesheets/less/common/01-D_mixins-animations.less"; 
+@import "stylesheets/less/common/01-C_mixins.less";
+@import "stylesheets/less/common/01-D_mixins-animations.less";
 
 /* 2. TYPOGRAPHY
 ==========================================================*/
-@import "stylesheets/less/common/02_typography.less"; 
+@import "stylesheets/less/common/02_typography.less";
 
 /* 3. GRAPHICAL ELEMENTS
 ==========================================================*/
-@import "stylesheets/less/common/03_graphics.less"; 
-@import "stylesheets/less/app/03_graphics.less"; 
+@import "stylesheets/less/common/03_graphics.less";
+@import "stylesheets/less/app/03_graphics.less";
 
 /* 4. LAYOUT
 ==========================================================*/
@@ -33,19 +33,19 @@
 @import "stylesheets/less/app/05-B_forms.less";
 
 @import "stylesheets/less/common/05-C_plugins.less";
-@import "stylesheets/less/app/05-C_plugins.less"; 
+@import "stylesheets/less/app/05-C_plugins.less";
 
 /* 6. IE
 ==========================================================*/
-@import "stylesheets/less/app/06_ie.less"; 
+@import "stylesheets/less/app/06_ie.less";
 
-/* 7. MEDIA QUERIES    
-==========================================================*/   
-@media only print {    
-    @import "stylesheets/less/app/07_print.less";    
+/* 7. MEDIA QUERIES
+==========================================================*/
+@media only print {
+    @import "stylesheets/less/app/07_print.less";
 }
 
-@import "stylesheets/less/app/08_smartband.less"; 
+@import "stylesheets/less/app/08_smartband.less";
 
 
 /* x. Rover Angular Animations
@@ -538,12 +538,17 @@ Padding for the ows error popup
     text-align: center;
 }
 
-.overlay{
+.overlay {
     opacity: 0.5;
     pointer-events: none;
     cursor: default;
 }
 
+/* CICO-36015 : Disable Element */
+.disable-element {
+    pointer-events: none;
+    cursor: default;
+}
 
 .padding-30{
   padding:30px !important;
@@ -1074,14 +1079,7 @@ Padding for the ows error popup
   width: 100%;
   height: 480px;
 }
-.agree-terms-and-conditions {
-  cursor: pointer;
-  text-decoration: underline;
-}
 
-.termsandconditions-checkbox{
-  width: 30px !important;
-}
 #modal .modal-content.terms .actions .button.green {
   padding: 0 35px;
 }
@@ -1093,11 +1091,6 @@ Padding for the ows error popup
   float:left !important;
   width:50%;
 
-}
-
-#modal .modal-content.shared-room {
-  width: 480px !important;
-  height: 600px !important;
 }
 
 
@@ -1318,6 +1311,10 @@ span.keys-msg-bold{
 @media only print{
   #confirmation-print-template{
     .show
+  }
+  #cancellation-print-template,
+  #cancellation-print-template table {
+    text-transform: none;
   }
   .ngdialog{
     position: absolute !important;
@@ -1601,7 +1598,7 @@ span.keys-msg-bold{
 #six-payment-loader {
     position: absolute;
     padding: 40px;
-      top: calc(~"50% - 70px"); 
+      top: calc(~"50% - 70px");
       height: 140px;
       width: 360px;
       left: calc(~"50% - 180px");
@@ -1609,3 +1606,62 @@ span.keys-msg-bold{
       background: #fff;
       z-index: 21000;
   }
+
+
+.toggle-display {
+  display: block !important;
+}
+
+@media print {
+  .toggle-display {
+    display: none !important;
+  }
+}
+
+div#guest-id.modal-content {
+  height:auto;
+}
+
+.guest-documents.scan-mode {
+  grid-template-columns: calc(100%) !important;
+}
+.half-width-buttons{
+  width: 50% !important;
+  margin: 0 auto;
+}
+
+.invoice-page-break {
+  page-break-after: always;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+
+/* DASHBOARD ANALYTICS */
+
+/* to hide left side Y axis*/
+.left-most path,
+.hidden-bar {
+  display: none;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #A0A0A0;
+}
+.y.axis.inner path,
+.y.axis.inner line {
+  fill: #000;
+  stroke: #000;
+}
+
+.tick line {
+  opacity: 0.2;
+}
+
+.invoice-table {
+  display:table-row-group;
+}

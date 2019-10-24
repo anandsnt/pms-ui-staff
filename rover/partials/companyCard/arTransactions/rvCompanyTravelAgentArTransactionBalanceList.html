@@ -1,0 +1,219 @@
+<ul class="search-results">
+    <!-- if checked, add class .selected -->
+    <li class="reservation transaction with-checkbox reservation-transaction" ng-class="{'selected': balance.isSelected }" ng-repeat="balance in arDataObj.balanceList track by $index" ng-click="clickedOnParentList( $event, $index )">
+        <label class="checkbox inline" ng-class="{'checked': balance.isSelected }">
+            <span ng-hide="balance.amount < 0" class="icon-form icon-checkbox" ng-class="{'checked': balance.isSelected }"></span>
+            <input value="4" type="checkbox" ng-class="{'checked': balance.isSelected }">
+        </label>
+        <div class="faux-anchor has-arrow toggle" ng-class="{ 'active': balance.active}">
+                <!-- add class .group/.allotment if group or allotment -->
+            <div class="data" ng-if="balance.associated_type === 'Reservation'">
+                <!-- add class .group/.allotment if group or allotment -->
+                <h2 ng-if="balance.guest_first_name!==null && balance.guest_last_name!==null">
+                    {{balance.guest_last_name}},  {{balance.guest_first_name}}
+                </h2>
+                <h2 ng-if="balance.guest_first_name!=='' && balance.guest_last_name===''">
+                    {{balance.guest_first_name}}
+                </h2>
+                <h2 ng-if="balance.guest_first_name==='' && balance.guest_last_name!==''">
+                    {{balance.guest_last_name}}
+                </h2>
+                <span class="invoice" ng-if="arDataObj.isPrintArInvoiceNumberEnabled && balance.ar_invoice_number!==null">
+                    {{arDataObj.arInvoiceLabel}} #<span class="value">{{balance.ar_invoice_number}}</span>
+                </span>
+				<span class="invoice">
+					Invoice #<span class="value">{{balance.invoice_number}}</span>
+				</span>
+                
+				<span class="confirmation" ng-if="balance.external_reference_number!==null">
+					Ext #<span class="value">{{balance.external_reference_number}}</span>
+				</span>
+				<span class="confirmation" ng-if="balance.external_reference_number===null">
+					Conf #<span class="value">{{balance.reservation_confirm_no}}</span>
+				</span>
+			</div>
+
+			<div class="data" ng-if="balance.is_manual_balance">
+				<!-- add class .group/.allotment if group or allotment -->
+				<h2>
+					{{balance.guest_first_name}}
+				</h2>                 
+			   
+			</div>
+
+			<div class="data" ng-if="balance.associated_type === 'PostingAccount'">
+				<!-- add class .group/.allotment if group or allotment -->
+				<h2>
+					{{balance.account_name}}
+				</h2> 
+                <span class="invoice" ng-if="arDataObj.isPrintArInvoiceNumberEnabled && balance.ar_invoice_number!==null">
+                    {{arDataObj.arInvoiceLabel}} #<span class="value">{{balance.ar_invoice_number}}</span>
+                </span>               
+
+				<span class="invoice">
+					Account #<span class="value">{{balance.account_number}}</span>
+				</span>
+			   
+			</div>
+			
+            <!-- Case 1: Nightly -->
+            <div class="reservation-time" ng-if="balance.reservation_arrival_date !== balance.reservation_dep_date">
+                <div class="check-icons">
+                    <span class="guest-status check-in" ng-if="!balance.is_manual_balance && balance.associated_type !== 'PostingAccount'">arrival</span>
+                    <span class="guest-status check-out" ng-hide="balance.associated_type === 'PostingAccount'">arrival</span>
+                </div>
+                <div class="check-times">
+                    <time class="guest-time" ng-if="!balance.is_manual_balance && balance.associated_type !== 'PostingAccount'">
+                        <span>{{balance.reservation_arrival_date | date : dateFormat}}</span>
+                        <span class="hours">{{balance.reservation_arrival_time}}</span>
+                    </time>
+                    <time class="guest-time">
+                        <span>{{balance.reservation_dep_date | date : dateFormat}}</span>
+                        <span class="hours">{{balance.reservation_dep_time}}</span>
+                    </time>
+                </div>
+            </div>
+
+            <!-- Case 2: Daily Reservation -->
+            <div class="reservation-time daily" ng-if="balance.reservation_arrival_date === balance.reservation_dep_date">
+                <div class="check-icons">
+                    <span class="guest-status check-in">arrival</span>
+                    <span class="guest-status check-out">arrival</span>
+                </div>
+                <div class="check-times">
+                    <div class="guest-hours">
+                        <time class="guest-time">{{balance.reservation_arrival_time}}</time> - <time class="guest-time">{{balance.reservation_dep_time}}</time>
+                    </div>
+                    <span class="date">{{balance.reservation_arrival_date | date : dateFormat}}</span>
+                </div>
+            </div>
+            
+            <!-- if daily reservation add .red -->
+            <div class="reservation-type red" ng-if="balance.is_day_use">D</div>
+            <div class="reservation-type" ng-if="!balance.is_day_use && hotelDiaryConfig.mode === 'FULL'">N</div>
+
+            <div class="balance balance-now">
+                Invoiced Amount 
+                <strong class="red"><span class="currency">{{currencySymbol}}</span>{{balance.balanceNow | number:2}}</strong>
+            </div>
+            <div class="balance balance-after">
+                Remaining Balance
+                <strong class="green"><span class="currency">{{currencySymbol}}</span>{{balance.balanceAfter | number:2}}</strong>
+            </div>
+            <div class="amount unpaid" ng-class="{'partially-paid':balance.is_partially_paid}">
+                <span ng-if="balance.is_partially_paid" class="icons icon-wallet-green"></span>
+                <span class="currency">{{currencySymbol}}</span>{{balance.amount | number:2}}
+            </div>
+            <div class="amount input">
+                <span class="currency">{{currencySymbol}}</span>
+                <input class="text-box" type="text" value="{{balance.amount}}" ng-model="balance.amount" ng-change="changeBalanceAmount($index)" ng-blur="addDecimal($index)">
+            </div>
+        </div>
+        <div class="grid-items" ng-show="balance.active">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="date" scope="col">Date</th>
+                        <th scope="col">Charge Code</th>
+                        <th class="description" scope="col">Description</th>
+                        <th class="fees" scope="col">Fees</th>
+                        <th class="credits" scope="col">Credits</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <!-- 'row-class' => 'odd' or 'even' on each new charge item
+                          1. tr => 'odd',
+                          2. tr => 'even',
+                             'If charge item has charge items'
+                             tr.charge-items => 'even'
+                          3. tr => 'odd' ...
+                     -->
+                    <tr ng-repeat="debit in balance.debits" ng-class="{'odd': $odd, 'even': $even}">
+                        <td>{{ debit.date | date : dateFormat}}</td>
+                        <td><span ng-if="isStandAlone && !debit.is_group_by_ref">{{ debit.charge_code }}</span></td>
+                        <td class="description" ng-class="{'toggle':isStandAlone && debit.is_group_by_ref, 'active': debit.isExpanded}" ng-click = "expandGroupedCharge(debit)">
+                        <div class="payment-data">
+                            <span class="type">{{ debit.description }}</span>
+                            <span class="reference">{{ debit.reference_text }}</span>
+                        </div>
+                        <span class="icons icon-double-arrow" ng-if="isStandAlone && debit.is_group_by_ref"></span>
+                            <!-- Lightspeed Data -->
+                            <ul class = 'charge-items light-speed-data' ng-if = "isStandAlone && debit.is_group_by_ref" ng-class = "{'hidden': !debit.isExpanded}">
+                                <li ng-repeat = "object in debit.light_speed_data"><span>{{object.description}}</span></li>
+                            </ul>
+                            <!-- Lightspeed Data -->
+                        </td>
+                        <td class="fees">
+                            <span ng-if="debit.fees" class="currency">{{ currencySymbol }}</span>{{ debit.fees | number:2 }}
+                            <!-- Lightspeed Data -->
+                            <ul class = 'charge-items light-speed-data' ng-if = "isStandAlone && debit.is_group_by_ref" ng-class = "{'hidden': !debit.isExpanded}">
+                                <li ng-repeat = "object in debit.light_speed_data"><span class = "cost"><span class="currency">{{currencySymbol}}</span>{{object.amount | number:2 }}</span></li>
+                            </ul>
+                            <!-- Lightspeed Data -->
+                        </td>
+                        <td class="credits">
+                            <span ng-if="debit.credits" class="currency">{{ currencySymbol }}</span>{{ debit.credits | number:2 }}
+                        </td>
+                        <td class="action">
+                            <!-- Show this if possible to edit charge
+                                 opens /modals/ar-edit-charge.html
+                             -->
+                            <button class="button blank with-icon only-icon open-modal button-edit" ng-show="(!balance.is_partially_paid && !balance.is_manual_balance && debit.credits === null) && (!roverObj.noModifyInvoice)" ng-click="clickedEditIconToAdjustInvoice($parent.$index, $index)">
+                                <span class="icons icon-edit-40"></span>
+                            </button>
+                        </td>
+                    </tr>
+
+                    <tr ng-repeat="payment in balance.payments" ng-class="{'odd': $odd, 'even': $even}">
+                        <td>{{ payment.transaction_date | date : dateFormat}}</td>
+                        <td>{{ payment.charge_code}}</td>
+                        <td class="description">
+                            <div class="payment-data" ng-if="payment.is_cc_payment">
+                                <figure class="card-logo">
+                                    <img ng-src="/assets/images/{{payment.card_details.card_code.toLowerCase()}}.png" alt="">
+                                </figure>
+                                <span class="number">{{payment.card_details.last_digits}}</span>
+                                <span class="date"><span class="value">{{payment.card_details.expire_date | date : dateFormat}}</span></span>
+                                <span class="reference">{{payment.reference_text}}</span>
+                            </div>
+                            <div class="payment-data" ng-if="!payment.is_cc_payment">
+                                <span class="type">{{payment.payment_type}}</span>
+                                <span class="reference">{{payment.reference_text}}</span>
+                            </div>
+                        </td>
+                        <td class="fees"></td>
+                        <td class="credits">
+                            <span class="currency">{{ currencySymbol }}</span>{{payment.amount | number:2}}
+                               
+                        </td>
+                         <td class="action">
+
+                            <button class="button blank with-icon only-icon open-modal" ng-show="arFlags.hasAllocateUnallocatePermission" ng-click="clickedUnallocateButton(payment)">
+                                <span class="icons icon-remove-40"></span>
+                            </button>                     
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <div class="actions">
+                <button type="button" ng-show="balance.amount < 0" class="button red" ng-click="moveToCreditButtonClicked(balance)">MOVE TO CREDIT</button>
+                <button type="button" ng-show="arFlags.viewFromOutside && !balance.is_manual_balance" class="button brand-colors" ng-click="goToReservationDetails($index)">StayCard</button>
+                <button type="button" ng-click="moveInvoiceButtonClick(balance)" ng-show="!balance.is_partially_paid" class="button purple">Move Invoice</button>
+                <button type="button" class="button blue" ng-click="showFormatBillPopup($index, false)">Print Invoice</button>
+                <button type="button" class="button green white-text" ng-click="clickedPostCharge($index)" ng-show="!balance.is_manual_balance && !roverObj.noModifyInvoice">Post Charge</button>
+                <button type="button" class="button white purple-text hidden">Edit Charges</button>
+            </div>
+        </div>
+	</li>
+	<li id="add-balance">
+		<!-- On click Show Manual Balance Billing Content -->
+		<button class="add-new-button" ng-show="!roverObj.noModifyInvoice" ng-click="showAddBalanceScreen()">Add Manual Balance</button>
+	</li>
+    <li ng-if="!printBillCardActive">
+        <!-- To fix scroll -->
+        <button>&nbsp;</button>
+    </li>
+    
+</ul>

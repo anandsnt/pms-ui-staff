@@ -193,7 +193,10 @@
 			Guarantee Types: <span>{{ appliedFilter.guarantees.join(', ') }}</span>
 		</div>
 
-
+		<!-- chosen markets -->
+		<div ng-if="appliedFilter.segments.length">
+			Markets: <span>{{ appliedFilter.segments.join(', ') }}</span>
+		</div>
 
 		<!-- chosen charge groups -->
 		<div ng-if="appliedFilter.chargeGroups.length">
@@ -226,7 +229,7 @@
 
 		<!-- Minimum revenue -->
 		<div ng-if="appliedFilter.hasMinRevenue">
-			Minimum Revenue: <span>{{ appliedFilter.hasMinRevenue | currency:currencySymbol:2 }}</span>
+			Minimum Revenue: <span><span class="currency">{{ appliedFilter.hasMinRevenue | currency:currencySymbol:2 }}</span></span>
 		</div>
 
 

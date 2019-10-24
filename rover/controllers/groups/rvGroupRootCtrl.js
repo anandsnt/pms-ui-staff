@@ -16,6 +16,8 @@ angular.module('sntRover').controller('rvGroupRootCtrl',	[
 			$scope.setTitle ($filter('translate')(heading));
 		};
 
-        CardReaderCtrl.call(this, $scope, $rootScope, $timeout, $interval, $log);
-        $scope.observeForSwipe();
+		if (!$rootScope.disableObserveForSwipe) {
+            CardReaderCtrl.call(this, $scope, $rootScope, $timeout, $interval, $log);
+            $scope.observeForSwipe();
+        }
 	}]);

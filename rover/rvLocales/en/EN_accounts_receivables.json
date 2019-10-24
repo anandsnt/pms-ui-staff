@@ -12,5 +12,14 @@
 "OPEN_GUEST_BILLS" 	: "Open Guest Bills",
 "UNPAID_BALANCE" 	: "Unpaid Balance",
 "OPEN_BILLS" 		: "Open Bills",
-"BALANCE" 			: "Balance"
-
+"BALANCE" 			: "Balance",
+"ALLOCATE_PAYMENT_AFTER_POSTING": "Allocate Payment After Posting",
+"SHOW_REFERENCE_ON_GUEST_INVOICE": "Show reference on guest invoice",
+"POST_CHARGE"       : "Post Charge",
+"NEW_CHARGE"        : "New Charge",
+"TOTAL"     		: "Total",
+"REFERENCE"     	: "Reference",
+"POST"     			: "Post",
+"CREDIT"			: "Credit",
+"OPEN_BALANCE"		: "Open Balance",
+"AR_BALANCE"		: "AR Balance"

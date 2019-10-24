@@ -11,6 +11,7 @@
 	@actionBackground: 		@brandColor;
 	
 	@inputBackground: 		@white;
+	@inputColor:			@textColor;
 	@transparentColor: 		rgba(128,128,128,.5);
 
 
@@ -66,6 +67,26 @@
 		    border-radius: 0em !important;
 		}
 	}
+	.button-class{
+		background: white !important;
+	    color: black !important;
+	    border-style: solid !important;
+	    border-width: 1px !important;
+	    border-radius: 0em !important;
+	}
+	.popup .popup-content #message-action {
+		.button{
+			.button-class;
+		    &.print,&.email{
+		    	.button-class;
+		    }
+		}
+	}
+	.ows-msg-section{
+		.button{
+			.button-class;
+		}
+	}
 	.room-upsell-content,.addon-screen>#content {
     	padding-top: 0;
     	height: 90% !important;
@@ -76,6 +97,10 @@
 	    border-style: solid !important;
 	    border-width: 1px !important;
 	    border-radius: 0em !important;
+	}
+	#keys.icmp-key-image {
+		margin-bottom: 40px;
+        margin-top: 30px !important;
 	}
 	.add_remove_main {
 		padding-top:8% !important;
@@ -167,111 +192,10 @@
     	display: -webkit-inline-box;
     }
 
-	#public {
-
-		h1,
-		.button {
-			font-weight: 900;
-		}
-
-		input,
-		textarea {
-			box-shadow: inset 1px 1px 0 rgba(0,0,0,.1);
-			#rounded > .round(2px);
-		}
-
-		select {
-			box-shadow: 1px 1px 0 rgba(0,0,0,.1);
-			#rounded > .round(2px);
-		}
-
-
-
-		.button {
-			&.disabled,
-			&[disabled] {
-				background: rgba(0,0,0,0.2);
-			}
-		}
-
-		.entry.input {
-			.icons {
-				fill: @brandColor;
-			}
-		}
-		
-		#logo {
-    		margin-top: 16% !important;
-			.logo {
-				width: 335px;
-				height: auto;
-			}
-		}
-
-		#options {
-			
-			li {
-				font-weight: 900;
-
-				span {
-					font-weight: 400;
-				}
-			}
-
-			.icon-text {
-				color: @white;
-			}
-
-			.icons {
-				fill: @white;
-			}
-
-			li.break {
-				padding-top: 60px;
-
-				&:after,
-				&:before {
-					display: none;
-				}
-			}
-		}
-
-		#selection {
-			li {
-				.details {
-					background-color: fade(@brandColor, 5);
-				}
-			}
-		}
-
-		#guests {
-			.button {
-				color: @white;
-				background-color: @brandColor;
-			}
-		} 
-
-		.add-on-list {
-	    	li {
-
-	    		&:not(.selected){
-	    			border-color: rgba(0,0,0,0.05);
-
-		    		.add-on-content {
-		    			background: rgba(0,0,0,0.05);
-		    		}
-	    		}
-	    		
-	    	}
-	    }
-
-		#textual,
-		.popup {
-			.icons {
-				fill: @white;
-			}
-		}
-	}
+    #options.options-menu {
+      margin-top: 45px !important;
+    }
+   
 	input:not(.editor-mode-cls) {
 		border-bottom-color: black !important; 
 		border-bottom-style: solid !important; 
@@ -296,10 +220,6 @@
 
 	#departure-date{
     	width: 85%;
-	}
-
-	form {
-		height:7%;
 	}
 	
 	.admin-screen-title {
@@ -363,26 +283,35 @@
 	height: 90% !important;
 }
 
-
-
-
-#icon-date {
-	height: 50% !important;
+.entry&.input > ng-include > #icon-date {
+ 	height: 50% !important;
 	padding: 10px;
 	margin-top: 24px !important;
 	margin-left:-6.25% !important;
+	margin-bottom: -38.5px;
 
-	 @media only screen and (min-width: 1024px) and (max-width: 1024px) { 
-        position: absolute;
-
-		height: 50% !important;
-		padding: 9px;
-		margin-top: -9px !important;
-		margin-left: -8.25% !important
+    @media only screen and (min-width: 1024px) and (max-width: 1024px) { 
+      	position: absolute;
+	    margin-bottom: 0!important;
+	    height: 63%!important;
+	    padding: 8px;
+	    margin-top: -8px!important;
+        margin-left: -3.25%!important;
     }
 
+    @media only screen and (min-width: 1366px) and (max-width: 1366px) { 
+	    position: absolute;
+	    margin-bottom: 0!important;
+	    height: 65%!important;
+	    padding: 9px;
+	    margin-top: -9px!important;
+	    margin-left: -2.25%!important;
+    }
 }
-
+/*Home Screen "Book-Now"*/
+.button&.option>div>#icon-date {
+    position: initial !important;
+}
 
 .details {
 	border-bottom-style: solid;
@@ -394,9 +323,7 @@
     width: 80% !important;
     margin-bottom: -10% !important;
 }
-.input-field-contents:not(.email-entry, .admin-field-contents){
-    width: 60% !important;
-}
+
 .email-entry-div,.email-entry-mode>div{
 	width: 60% !important;
 	
@@ -490,4 +417,14 @@
 }
 .check_in_add_remove > .input-field-contents {
 	height: 45% !important;
+}
+.station-terms{
+    margin-bottom: 100px;
+}
+.add-on-content #options li .option{
+		border-radius: 150px !important;
+}
+
+.details.guest-icons {
+	padding: .5% !important;
 }

@@ -5,9 +5,20 @@
 sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWebSrv2', '$rootScope',
     function($http, $q, zsBaseWebSrv, zsBaseWebSrv2, $rootScope) {
 
-        var that = this;
+        var that = this,
+            TERMINAL_POLLING_INTERVAL_MS = 3000;
 
         this.checkInReservations = [];
+        this.currentReservationIdDetails = {};
+
+        this.setCurrentReservationIdDetails = function(data) {
+            that.currentReservationIdDetails = data;
+        };
+
+        this.getCurrentReservationIdDetails = function() {
+            return that.currentReservationIdDetails;
+        };
+
         this.setCheckInReservations = function(data) {
             that.checkInReservations = [];
             that.checkInReservations = data;
@@ -37,79 +48,19 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             });
             return deferred.promise;
         };
-
-        this.authorizeCC = function(postData) {
-            // send is_emv_request = true, to init sixpay device and capture card
-             // var deferred = $q.defer();
-             //    var url = '/api/cc/authorize';
-             //    zsBaseWebSrv.postJSON(url, postData).then(function(data) {
-             //            deferred.resolve(data);
-             //    }, function(data) {
-             //            deferred.reject(data);
-             //    });
-             //    return deferred.promise;
-            var timeStampInSeconds = 0;
-            var incrementTimer = function() {
-                timeStampInSeconds++;
-            };
-            var refreshIntervalId = setInterval(incrementTimer, 1000);
-
+        // add / remove additional guests from reservation
+        this.getGuestTabDetails = function(data) {
             var deferred = $q.defer();
-            var url = '/api/cc/authorize';
-            var pollToTerminal = function(async_callback_url) {
-                // we will continously communicate with the terminal till
-                // the timeout set for the hotel
-                if (timeStampInSeconds >= $rootScope.emvTimeout) {
-                    var errors = ['Request timed out. Unable to process the transaction'];
+            var url = '/api/reservations/' + data.reservation_id + '/reservations_guest_details';
 
-                    clearInterval(refreshIntervalId);
-                    deferred.reject(errors);
-                } else {
-                    zsBaseWebSrv.getJSONWithSpecialStatusHandling(async_callback_url).then(function(data) {
-                        // if the request is still not proccesed
-                        if (!!data.status && data.status === 'processing_not_completed' || data === 'null') {
-                            // is this same URL ?
-                            setTimeout(function() {
-                                console.info('POLLING::-> for emv terminal response');
-                                pollToTerminal(async_callback_url);
-                            }, 5000);
-                        } else {
-                            clearInterval(refreshIntervalId);
-                            deferred.resolve(data);
-                        }
-                    }, function(data) {
-                        if (typeof data === 'undefined') {
-                            pollToTerminal(async_callback_url);
-                        } else {
-                            clearInterval(refreshIntervalId);
-                            deferred.reject(data);
-                        }
-                    });
-                }
-            };
-
-
-            zsBaseWebSrv.postJSONWithSpecialStatusHandling(url, postData).then(function(data) {
-                // if connect to emv terminal is neeeded
-                // need to poll oftently to avoid
-                // timeout issues
-                if (postData.is_emv_request) {
-                    if (!!data.status && data.status === 'processing_not_completed') {
-                        pollToTerminal(data.location_header);
-                    } else {
-                        clearInterval(refreshIntervalId);
-                        deferred.resolve(data);
-                    }
-                } else {
-                    clearInterval(refreshIntervalId);
-                    deferred.resolve(data);
-                }
+            zsBaseWebSrv.getJSON(url, data).then(function(data) {
+                deferred.resolve(data);
             }, function(data) {
-                clearInterval(refreshIntervalId);
                 deferred.reject(data);
             });
             return deferred.promise;
         };
+
         this.fetchReservations = function(params) {
             var deferred = $q.defer(),
                 url = '/api/reservations';
@@ -129,7 +80,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
          * @return {*|promise|{then, catch, finally}|e}
          */
         this.fetchReservationDetails = function(param) {
-            var url = '/staff/staycards/reservation_details.json?is_kiosk=true&reservation_id=' + param.id,
+            var url = '/staff/staycards/reservation_details.json?is_kiosk=true&reservation_id=' + param.id + '&log_action=' + param.log_action,
                 deferred = $q.defer();
 
             // To fetch the latest guest details, the following parameter has to be sent to trigger a fetchProfile OWS request
@@ -198,9 +149,12 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.fetchAddonDetails = function(param) {
             var deferred = $q.defer(),
-                url = '/staff/staycards/reservation_addons?reservation_id=' + param.id;
+                url = '/staff/staycards/reservation_addons';
 
-            zsBaseWebSrv.getJSON(url).then(function(data) {
+            zsBaseWebSrv.getJSON(url, {
+                reservation_id: param.id,
+                is_kiosk: param.is_kiosk
+            }).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
@@ -306,7 +260,12 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.checkInGuest = function(params) {
             var deferred = $q.defer(),
                 url = '/staff/checkin';
-
+            var selectedReservation = that.getSelectedCheckInReservation();
+            
+            if (selectedReservation.reservation_details.accepted_terms_and_conditions) {
+                params.accepted_terms_and_conditions = selectedReservation.reservation_details.accepted_terms_and_conditions;
+            }
+            
             zsBaseWebSrv2.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
@@ -335,7 +294,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var deferred = $q.defer();
             var url = '/api/reservations/' + params.id + '/print_registration_card';
 
-            zsBaseWebSrv.getJSON(url).then(function(data) {
+            zsBaseWebSrv.getJSON(url, {'locale': params.locale}).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
@@ -350,6 +309,30 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 url = '/guest/reservations/assign_room';
 
             zsBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.fetchReservationAddress = function(id) {
+            var deferred = $q.defer(),
+                url = '/guest_web/guest_details/' +id;
+
+            zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.saveGuestAddress = function(params) {
+            var deferred = $q.defer(),
+                url = '/guest_web/guest_details/' + params.reservation_id;
+
+            zsBaseWebSrv.putJSON(url, params).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
@@ -492,7 +475,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var data = params;
 
             data.application = 'KIOSK';
-            
+
             zsBaseWebSrv.postJSON(url, data).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
@@ -525,18 +508,28 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
+        this.fetchLateCheckoutSettings = function(param) {
+            var deferred = $q.defer();
+            var url = '/admin/hotel/get_late_checkout_setup.json';
+
+            zsBaseWebSrv2.getJSON(url, param).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 
         this.acceptPassport = function(params) {
-            // TODO: Update to match API spec once API part is in progress/done
             var deferred = $q.defer();
             var url = '/zest_station/log_passport_scanning';
-            
+
             params.is_kiosk = true;
 
             var data = params;
 
             data.application = 'KIOSK';
-            
+
             zsBaseWebSrv.postJSON(url, data).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
@@ -544,7 +537,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             });
             return deferred.promise;
         };
-        
+
         this.savePassport = function(params) {
             var deferred = $q.defer();
             var url = '/api/guest_identity';
@@ -554,7 +547,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var data = params;
 
             data.application = 'KIOSK';
-            
+
             zsBaseWebSrv.postJSON(url, data).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
@@ -563,6 +556,100 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
+        this.checkIDType = function(params) {
+            var deferred = $q.defer();
+            var url = '/api/guest_identity/' + params.reservation_id + '/scan_type?guest_id_type=passport';
 
+            params.is_kiosk = true;
+
+            zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+        
+        this.eciDemoData = { "early_checkin_on": true, "early_checkin_available": true, "checkin_time": " 3:00 PM", "eci_upsell_limit_reached": false, "offer_eci_bypass": false, "is_room_already_assigned": true, "is_room_ready": false, "is_donot_move_room_marked": false, "guest_arriving_today": true, "reservation_in_early_checkin_window": true, "early_checkin_charge": "\u00a353.00", "is_early_checkin_purchased": false, "is_early_checkin_bundled": false, "is_early_checkin_bundled_by_addon": false, "free_eci_for_vips": true, "is_vip": false, "early_checkin_restrict_hour_for_display": " 9", "early_checkin_restrict_hour": "09", "early_checkin_restrict_minute": "45", "early_checkin_restrict_primetime": "PM", "early_checkin_restrict_time": "09:45:00 PM", "early_checkin_offer_id": 1836 };
+
+        this.resDetailsDemoData = { "status": "success", "data": { "reservation_card": { "timeline": "current", "confirmation_num": "101182", "reservation_status": "CHECKEDIN", "arrival_date": "2017-04-17", "departure_date": "2017-04-18", "group_name": "", "group_id": "", "group_block_from": "", "group_block_to": "", "group_rate_id": null, "allotment_name": "", "allotment_id": "", "accompaying_guests": [{ "guest_name": "guest" }], "guests_total": 2, "number_of_infants": 0, "number_of_adults": 2, "number_of_children": 0, "guarentee_type": "Deposit Requested", "has_smartbands": false, "room_number": "249", "room_id": "12712", "is_exclude_from_manual_checkin": false, "key_settings": "encode", "room_status": "NOTREADY", "fo_status": "OCCUPIED", "room_type_description": "PREMIUM VIEW QUEEN CABIN", "room_type_code": "PRQ", "membership_type": "", "avg_daily_rate": "139", "total_rate": "139", "rate_name": "Complimentary Early Check In", "rate_description": "Free", "total_nights": 1, "loyalty_level": { "selected_loyalty": null, "frequentFlyerProgram": [], "hotelLoyaltyProgram": [] }, "reservation_id": 1654218, "payment_details": { "card_type_image": "images/.png", "card_number": "", "card_expiry": "", "is_swiped": false, "id": 51857, "auth_color_code": "black", "card_name": "" }, "wake_up_time": { "today_date": "2017-04-17", "tomorrow_date": "2017-04-18" }, "is_force_upsell": "true", "news_paper_pref": { "news_papers": [], "selected_newspaper": "" }, "payment_type": 51857, "currency_code": "GBP", "balance_amount": "0.00", "enable_nights": "false", "is_late_checkout_on": true, "is_opted_late_checkout": false, "late_checkout_time": null, "routings": "", "deposit_attributes": { "room_cost": "139.00", "packages": "0.00", "sub_total": "139.00", "fees": "0.00", "stay_total": "139.00", "nightly_charges": "0.00", "total_cost_of_stay": "139.00", "deposit_paid": "0.00", "outstanding_stay_total": "139.00", "currency_code": null, "deposit_dues": [{ "due_date": "2017-07-18", "due_amount": "139.00", "paid": false }], "balance_deposit_amount": "139.00" }, "payment_method_used": "CA", "restrict_post": true, "payment_method_description": "Cash Payment", "has_any_credit_card_attached_bill": false, "is_rates_suppressed": "false", "text_rates_suppressed": "", "arrival_time": "12:02 PM", "departure_time": "11:00 AM", "is_routing_available": "false", "room_ready_status": "CLEAN", "use_inspected": "false", "use_pickup": "false", "checkin_inspected_only": "false", "is_reservation_queued": "false", "is_queue_rooms_on": "false", "icare_enabled": "false", "smartband_has_balance": "false", "booking_origin_id": null, "market_segment_id": null, "source_id": null, "segment_id": null, "reservation_type_id": 4, "is_pre_checkin": false, "is_rate_suppressed_present_in_stay_dates": "false", "combined_key_room_charge_create": "false", "stay_dates": [{ "adults": 2, "children": 0, "infants": 0, "date": "2017-04-17", "rate": { "actual_amount": "139.00", "modified_amount": "139.00", "is_discount_allowed": "true", "is_suppressed": "false" }, "rate_id": 2222, "room_type_id": 235, "rate_config": { "child": 0.0, "double": 139.0, "extra_adult": 0.0, "single": 139.0 } }], "is_multiple_rates": false, "is_hourly_reservation": false, "no_of_hours": "NA", "max_occupancy": 4, "deposit_amount": "139.00", "deposit_policy": { "id": 30, "name": "Deposite", "description": "the full amount for deposit", "amount": 100.0, "amount_type": "percent" }, "is_disabled_email_phone_dialog": "", "hotel_selected_key_system": "SAFLOK", "is_remote_encoder_enabled": true, "is_package_exist": false, "package_count": "0", "sharer_information": {}, "commission_details": { "is_on": false, "commission_origin": null, "commission_value": 0.0, "commission_type": null, "is_prepaid": null }, "hide_rates": null, "company_card_id": null, "travel_agent_card_id": null, "company_card_name": null, "travel_agent_card_name": null, "is_custom_text_per_reservation": false, "cannot_move_room": false, "room_pin": null, "is_suite": false, "default_bill_id": 96063, "station_offer_mobilekey": "disabled" } }, "errors": [], "is_eod_in_progress": false, "is_eod_manual_started": false, "is_eod_failed": false, "is_eod_process_running": false };
+
+        this.fetchResDemoData = { "results": [{ "id": 1654218, "arrival_date": "2017-04-17", "departure_date": "2017-04-18", "confirmation_number": "101182", "arrival_time": "15:00", "departure_time": "11:00", "room": "249", "company_account_number": "", "travel_agent_account_number": "", "reservation_type": "DEPOSIT_REQUESTED", "promotion_id": null, "is_rate_suppressed": "false", "avg_rate": "139.0", "is_checked_in": "false", "guest_details": [{ "id": 476005, "is_primary": true, "title": "", "first_name": "Guest", "last_name": "Smith", "email": "test@stayntouch.com", "is_email_blacklisted": false, "birthday": "", "job_title": "", "works_at": "", "is_opted_promotion_email": false, "is_vip": true, "home_phone": null, "mobile_phone": null, "address": { "street": null, "city": "", "state": null, "postal_code": null, "country": null } }] }] };
+
+        this.findResDemoData = { "reservation_id": 1654207, "email": "test@stayntouch.com", "guest_detail_id": 475484, "has_cc": false, "first_name": "guest", "last_name": 'last_name', "days_of_stay": 44, "is_checked_out": false, "is_checked_in": true, "is_departing_today": false, "guest_arriving_today": true };
+
+        this.guestDetailsDemoData = { "adult_count": 1, "children_count": 0, "infants_count": 0, "varying_occupancy": false, "primary_guest_details": { "first_name": "guest", "last_name": "guest", "is_vip": false, "image": "http://localhost:3000/assets/images/avatar-trans.png", "is_passport_present": true }, "accompanying_guests_details": [{ "first_name": "guest", "last_name": "x2", "image": "http://localhost:3000/assets/images/avatar-trans.png", "id": 615589, "guest_type": "ADULT", "guest_type_id": 1, "is_passport_present": false }] };
+
+        this.getSampleIdFrontSideData = function (params) {
+            var deferred = $q.defer();
+            var url = (params.demoModeScanCount % 2 === 0) ? '/sample_json/zest_station/sample_passport_data.json': '/sample_json/zest_station/sample_id_front_side_data.json';
+
+            zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.getSampleIdBackSideData = function () {
+            var deferred = $q.defer();
+            var url = '/sample_json/zest_station/sample_id_back_side_data.json';
+
+            zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.getSampleAcuantIdScanDetails = function() {
+            var deferred = $q.defer();
+            var url = '/sample_json/zest_station/acuant_sample_response.json';
+
+            zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+
+        };
+        
+        this.saveFaceImage = function(params) {
+            var url = '/staff/guest_cards/' + params.guest_id + '.json';
+            
+            return zsBaseWebSrv.putJSON(url, params);
+        };
+
+        this.getRoomUpsellSettings = function() {
+            var url = '/admin/room_upsells/room_upsell_options.json';
+
+            return zsBaseWebSrv2.getJSON(url);
+        };
+
+        this.preCheckinReservation = function(params) {
+            var url = '/api/reservations/' + params.reservation_id + '/pre_checkin';
+
+            return zsBaseWebSrv2.postJSON(url, params);
+        };
+
+        this.addNotes = function (params) {
+            
+            var url = '/reservation_notes';
+
+            return zsBaseWebSrv2.postJSON(url, params);
+        };
+
+        var passportBypassReason;
+
+        this.savePassportBypassReason = function (bypassReason) {
+            passportBypassReason = bypassReason;
+        };
+ 
+        this.getPassportBypassReason = function () {
+            return passportBypassReason;
+        };
     }
 ]);

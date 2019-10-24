@@ -15,7 +15,6 @@ module.exports = {
 				roverRoot + "controllers/diary/**/*.js",
 				//please dont change the order
 				diaryViewRoot + "util.js",
-				diaryViewRoot + "diary-unassgined-room-panel.js",
 				diaryViewRoot + "diary-toggle.js",
 				diaryViewRoot + "diary-grid-row-inactive-rooms.js",
 				diaryViewRoot + "diary-toggle-panel.js",
@@ -32,7 +31,10 @@ module.exports = {
 				diaryViewRoot + "diary-timeline.js",
 				diaryViewRoot + "diary-timeline-panel.js",
 				diaryViewRoot + "diary-grid-panel.js",
-				diaryViewRoot + "diary-content.js"
+				diaryViewRoot + "diary-content.js",
+
+                // Eliminate all spec files
+                '!**/*.spec.js'
 			]
 		};
 

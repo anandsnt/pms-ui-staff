@@ -1,4 +1,6 @@
-angular.module('sntRover').service('RVJournalSrv', ['$http', '$q', 'BaseWebSrvV2', 'RVBaseWebSrv', '$rootScope', function($http, $q, BaseWebSrvV2, RVBaseWebSrv, $rootScope) {
+angular.module('sntRover').service('RVJournalSrv', 
+	['$http', '$q', 'BaseWebSrvV2', 'RVBaseWebSrv', '$rootScope', 'sntBaseWebSrv',
+	function($http, $q, BaseWebSrvV2, RVBaseWebSrv, $rootScope, sntBaseWebSrv) {
 
    	this.filterData = {};
 	this.revenueData = {};
@@ -64,14 +66,63 @@ angular.module('sntRover').service('RVJournalSrv', ['$http', '$q', 'BaseWebSrvV2
     };
 
     /*
+     * Service function to fetch filters
+     * @return {object} departments
+     */
+	that.getFilterData = function () {
+		var deferred = $q.defer(),
+			url = "/api/financial_transactions/journal_filter_options";
+
+		sntBaseWebSrv.getJSON(url).then(function (data) {
+
+			deferred.resolve(data);
+		}, function (data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+    /*
      * Service function to fetch journal summary
      * @return {object} journal summary
      */
     that.fetchSummaryData = function (params) {
     	var deferred = $q.defer(),
-        	url = "api/financial_transactions/daily_balance_details?date=" + params.date;
+        	url = "api/financial_transactions/daily_balance_details";
 
-        BaseWebSrvV2.getJSON(url).then(function (data) {
+        BaseWebSrvV2.getJSON(url, params).then(function (data) {
+            deferred.resolve(data);
+        }, function (data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
+		/*
+		* Service function to fetch journal summary
+		* @return {object} journal summary
+		*/
+		that.fetchPrintDateTime = function () {
+			var deferred = $q.defer(),
+			url = "api/financial_transactions/print_date_time";
+
+			BaseWebSrvV2.getJSON(url).then(function (data) {
+				deferred.resolve(data);
+			}, function (data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		}; 
+
+    /*
+     * Service function to fetch journal summary
+     * @return {object} journal summary
+     */
+    that.fetchBalanceDetails = function (params) {
+    	var deferred = $q.defer(),
+        	url = "api/financial_transactions/daily_balance_details";
+
+        BaseWebSrvV2.postJSON(url, params).then(function (data) {
             deferred.resolve(data);
         }, function (data) {
             deferred.reject(data);
@@ -83,11 +134,11 @@ angular.module('sntRover').service('RVJournalSrv', ['$http', '$q', 'BaseWebSrvV2
      * Service function to fetch journal summary
      * @return {object} journal summary
      */
-    that.fetchBalanceDetails = function (params) {
+    that.fetchBalanceTabDetails = function (params) {
     	var deferred = $q.defer(),
-        	url = "api/financial_transactions/daily_balance_details";
+        	url = "api/financial_transactions/journal_balance_details";
 
-        BaseWebSrvV2.postJSON(url, params).then(function (data) {
+        BaseWebSrvV2.getJSON(url, params).then(function (data) {
             deferred.resolve(data);
         }, function (data) {
             deferred.reject(data);
@@ -138,11 +189,6 @@ angular.module('sntRover').service('RVJournalSrv', ['$http', '$q', 'BaseWebSrvV2
 
             angular.forEach(data.charge_codes, function(charge_codes, index2) {
             	charge_codes.active = false;
-            	charge_codes.page_no = 1;
-            	charge_codes.start = 1;
-            	charge_codes.end = 1;
-            	charge_codes.nextAction = false;
-        		charge_codes.prevAction = false;
             });
 		   	deferred.resolve(data);
 		}, function(data) {
@@ -178,20 +224,10 @@ angular.module('sntRover').service('RVJournalSrv', ['$http', '$q', 'BaseWebSrvV2
 				if (payment_types.payment_type === "Credit Card") {
 		            angular.forEach(payment_types.credit_cards, function(credit_cards, index2) {
 		            	credit_cards.active = false ;
-		            	credit_cards.page_no = 1;
-		            	credit_cards.start = 1;
-		            	credit_cards.end = 1;
-		            	credit_cards.nextAction = false;
-        				credit_cards.prevAction = false;
 		            });
 	        	}
 	        	else {
 	        		payment_types.active = false;
-	        		payment_types.page_no = 1;
-	            	payment_types.start = 1;
-	            	payment_types.end = 1;
-	            	payment_types.nextAction = false;
-        			payment_types.prevAction = false;
 	        	}
 	        });
 		   	deferred.resolve(data);

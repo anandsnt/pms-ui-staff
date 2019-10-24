@@ -21,7 +21,7 @@
 				<input type="text" ng-model="data.city" value="{{data.city}}" required="yes" placeholder="Enter city name" name="hotel-city" id="hotel-city">
 			</div>
 
-			<div class="entry">
+			<div class="entry" ng-class="{'with-button': isAdminSnt}">
 				<label for="hotel-country"> Country <strong>*</strong> </label>
 				<div class="select">
 					<select convert-to-number ng-model="data.country" name="hotel-country" id="hotel-country" class="placeholder">
@@ -30,6 +30,7 @@
 
 					</select>
 				</div>
+				<button type="button" ng-show="isAdminSnt && isEdit" class="button blue" ng-click="clickedLegalSettings()">Legal Settings</button>
 			</div>
 
 			<ad-textbox value="data.alternate_name" name = "alternate-hotel-name" id = "alternate-hotel-name" label = "Alternate Name" placeholder = "Enter alternate name" required = "no" ></ad-textbox>
@@ -93,7 +94,7 @@
 			</div>
 			<ad-textbox value="data.number_of_rooms" label = "Number of rooms" placeholder = "Type number" readonly="{{isFieldsReadOnly}}"></ad-textbox>
 
-			<div class="entry full-width actions_margin_top">
+	<!-- 		<div class="entry full-width actions_margin_top">
 					<label for="hotel-service-provider"> Services Provided <strong>*</strong> </label>
 					<div ng-class="{'overlay' : isFieldsReadOnly === 'yes'}"  id="services-provided" class="boxes col2">
 						<fieldset class="holder left">
@@ -107,6 +108,8 @@
 	                            <input type="radio" name="hotel_pms_type" ng-model="data.hotel_pms_type" id="pms_overlay_service" value="OWS" />
 	                            PMS Overlay
 	                        </label>
+	                        <ad-textbox ng-if="isAdminSnt && data.country === swedenCountryId" label="Max. Control Unit (SE) workstations" value="data.max_control_unit"  placeholder="Enter Max. Control Unit (SE) workstations" name="max control unit" id="max control unit"></ad-textbox>	                        
+	                        <ad-checkbox on-click="clickedMultiPropertyCheckbox()" is-checked="data.is_multi_property" is-hide="data.hotel_pms_type=='OWS'" label="Multi Property" div-class="full-width"></ad-checkbox>
                         </fieldset>
                         <fieldset class="holder right">
                         	<label class="checkbox" ng-repeat="interfaceType in data.interface_types">
@@ -117,7 +120,50 @@
                     	</fieldset>
 
 					</div>
+			</div> -->
+			<!--  -->
+			<div class="entry full-width">
+			    <label for="is-pms">Services Provided <strong>*</strong></label>
+			    <div class="boxes col3" ng-class="{'overlay' : isFieldsReadOnly === 'yes'}">
+			        <div class="switch-container">
+			            <div class="switch-button with-text" ng-class = "{'on': data.is_overlay_hotel }" style="width: 250px;">
+			                <!-- Add class 'on' when input below is checked -->
+			                <input id="is-pms" type="checkbox" ng-model="data.is_overlay_hotel"> <!-- PMS when this is checked. If not checked then it's Overlay -->
+			                <label class="data-on">
+			                    <span class="value">PMS</span>
+			                    <span class="button orange">Overlay</span>
+			                </label>
+			                <label class="data-off">
+			                    <span class="button orange">PMS</span>
+			                    <span class="value">Overlay</span>
+			                </label>
+			            </div>
+			        </div>
+			        <div class="inline" ng-if="data.hotel_pms_type !== 'OWS' || (isAdminSnt && data.country === swedenCountryId)">
+			        	 <ad-textbox styleclass="full-width" label="Max. Control Unit (SE) workstations" value="data.max_control_unit"  placeholder="Enter Max. Control Unit (SE) workstations" name="max control unit" id="max control unit" ng-if="isAdminSnt && data.country === swedenCountryId"></ad-textbox>	                        
+	                     <ad-checkbox on-click="clickedMultiPropertyCheckbox()" is-checked="data.is_multi_property" label="Multi Property" div-class="full-width" is-hide="data.hotel_pms_type=='OWS'"></ad-checkbox>
+	                </div>
+	                <div class="inline">
+	                     <label class="checkbox" ng-repeat="interfaceType in data.interface_types">
+							<ad-checkboxgrp toggle="toggleInterfaceType($index)" label="{{interfaceType.description}}" is-checked="interfaceType.is_checked" option-id="interfaceType.id" ng-hide="interfaceType.value == 'PMS_OVERLAY_HOUSEKEEPING' && data.hotel_pms_type != 'OWS' "></ad-checkboxgrp>
+						</label>
+        			</div>
+			        <div class="inline" ng-if="data.is_overlay_hotel && isAdminSnt">
+			            <ad-toggle-button is-checked="data.enable_oracle_data_center"
+                              label="In Oracle Datacenter?"></ad-toggle-button>
+			            <div class="entry full-width" ng-if="data.enable_oracle_data_center">
+			                <!-- Remove class 'hidden' when Oracle Datacenter is checked -->
+			                <label for="datacenters">Select Datacenter</label>
+			                <div class="select white">
+			                    <select ng-model="data.oracle_data_center_id" id="datacenters"  ng-options="datacenter.id as datacenter.name for datacenter in oracleDataCenters">
+									<option value="" class="placeholder" disabled="">Select Datacenter</option>
+								</select>
+			                </div>
+			            </div>
+			        </div>
+    			</div>
 			</div>
+
 
 		</fieldset>
 		<fieldset ng-show="isEdit">
@@ -138,6 +184,9 @@
 					<label for="hotel-zipcode"> ZipCode</label>
 					<input type="text" ng-model="data.zipcode" value="{{data.zipcode}}" required="" placeholder="Enter zip code" name="hotel-zipcode" id="hotel-zipcode">
 				</div>
+				<ad-textbox value="data.tax_id" label="{{'TAX_ID' | translate}}" placeholder="{{'TAX_ID_PLACEHOLDER' | translate}}" styleclass="half-width" ng-if="isStandAlone && !isHourlyRatesEnabled"></ad-textbox>
+				<ad-textbox value="data.swift_code" label="{{'SWIFT_CODE' | translate}}" placeholder="{{'SWIFT_PLACEHOLDER' | translate}}" styleclass="half-width" ng-if="isStandAlone && !isHourlyRatesEnabled"></ad-textbox>
+				<ad-textbox value="data.police_hotel_code" label="{{'HOTEL_POLICE_EXPORT_CODE' | translate}}" placeholder="{{'HOTEL_POLICE_EXPORT_CODE_PLACEHOLDER' | translate}}" styleclass="half-width"></ad-textbox>
 				<div class="entry full-width registration-for-rover" ng-if="!isAdminSnt">
 					<label for="rover"> Rover Registration </label>
 					<div  id="registration-for-rover" class="boxes">
@@ -153,12 +202,7 @@
 					</div>
 				</div>
 
-				<div class="entry">
-					<label for="terms_and_conditions" translate>
-					TERMS_AND_CONDITIONS_LABEL
-					</label>
-					<textarea class="full-width terms_height" id="terms_and_conditions" type="" ng-model="data.terms_and_conditions"></textarea>
-				</div>
+				
 
 				<div class="entry full-width">
 	                             <div class="entry inline-flex" >
@@ -277,6 +321,31 @@
 						</select>
 					</div>
 				</div>
+				<div class="entry is-pms-tokenized" ng-if="!isAdminSnt && data.hotel_pms_type !=='OWS'">
+					<label >Enable Invoice Number Sequence</label>
+					<div class="switch-button single" ng-class="{ on : data.enable_mod_type == true }" ng-click="toggleInvoiceSequence()">
+						<input type="checkbox" value="{{data.enable_mod_type}}" name="is-mod-enabled" id="is-mod-enabled">
+						<span class="switch-icon"></span>
+					</div>
+				</div>
+				<div class="entry">
+					<label for="hotel-time-zone"> Property Currency Format</label>
+					<div class="select">
+						<select convert-to-number ng-model="data.hotel_currency_format" name="hotel-time-zone" id="hotel-time-zone" class="placeholder" >
+							<option value=""> Property Currency Format </option>
+							<option ng-repeat="formats in data.currency_formats"  value="{{formats.id}}" ng-selected="formats.id==data.hotel_currency_format">{{formats.value}}</option>
+						</select>
+					</div>
+				</div>
+				<div class="entry is-pms-tokenized" ng-if="data.enable_mod_type">
+					<label>Invoice Number Sequence</label>
+					<div class="select">
+						<select convert-to-number ng-model="data.selected_mod_type_id" class="placeholder" >
+							<option value=""> Select Invoice Number Sequence</option>
+							<option ng-repeat="mod_type in data.mod_types" value="{{mod_type.id}}" ng-selected="mod_type.id===data.selected_mod_type_id">{{mod_type.value}}</option>
+						</select>					
+					</div>
+				</div>
 				<div class="entry is-pms-tokenized" ng-if="isAdminSnt && data.hotel_pms_type ==='OWS'">
 					<label for="is-pms-tokenized">PMS Tokenized</label>
 					<div class="switch-button single" ng-class="{ on : data.is_pms_tokenized == 'true' }" ng-click="toggleClicked()">
@@ -289,6 +358,14 @@
 					<label for="auto-logout"> Auto logout delay [Minutes] <strong>*</strong> </label>
 					<input type="text" ng-model="data.auto_logout_delay" value="{{data.auto_logout_delay}}" required="yes" placeholder="Enter auto logout delay" name="auto-logout" id="auto-logout">
 				</div>
+				
+				<div class="entry is-pms-tokenized" ng-if="!isAdminSnt">
+					<label >Mandatory workstation</label>
+					<div class="switch-button single" ng-class="{ on : data.is_workstation_mandatory}" >
+						<input type="checkbox" ng-model="data.is_workstation_mandatory" value="{{data.is_workstation_mandatory}}" name="is-mod-enabled" id="is-mod-enabled">
+						<span class="switch-icon"></span>
+					</div>
+				</div>
 				<div class="entry" ng-if="!isAdminSnt">
 					<label for="password_expiry"> Password Expiry [Days] <strong>*</strong> </label>
 					<input type="text" ng-model="data.password_expiry" value="{{data.password_expiry}}" required="yes" placeholder="Enter password expiry delay" name="password_expiry">
@@ -298,7 +375,7 @@
 					<input type="text" ng-model="data.website_address" value="{{data.website_address}}" required="no" placeholder="Enter website address" name="website_address">
 				</div>
 				<div class="entry">
-					<label for="hotel_email_address"> Hotel Email Address </label>
+					<label for="hotel_email_address"> Hotel Email Address <strong>*</strong></label>
 					<input type="text" ng-model="data.hotel_email_address" value="{{data.hotel_email_address}}" required="no">
 				</div>
 				<div class="entry date has-datepicker" ng-if="isAdminSnt">
@@ -309,7 +386,7 @@
 	                </button>
 				</div>
 				<div class="entry" ng-if="isAdminSnt">
-					<label for="hotel-pms-type"> Language </label>
+					<label for="hotel-pms-type"> Language <strong>*</strong></label>
 					<div class="select">
 						<select convert-to-number ng-model="data.selected_language" name="hotel-pms-type" id="hotel-pms-type" class="placeholder">
 							<option value=""> Language </option>
@@ -381,6 +458,14 @@
 					</div>
 				</div>
 
+				<div class="entry is-pms-tokenized" ng-if="isAdminSnt">
+					<label for="Allowance">ENABLE ALLOWANCE</label>
+					<div class="switch-button single" ng-class="{ on : data.is_allowance_enabled}" >
+						<input type="checkbox" ng-model="data.is_allowance_enabled" name="Allowance" id="allowance">
+						<span class="switch-icon"></span>
+					</div>
+				</div>
+
 				<!-- will show only for standalone  & snt admin -->
 				<div class="entry is-pms-tokenized" ng-if="isAdminSnt && data.hotel_pms_type ===''">
 					<label for="hold-status-flag-enabled">Enable HOLD - flag for IBE</label>
@@ -419,6 +504,8 @@
 
 				<ad-toggle-button is-checked="data.enable_offline_checkout" label="{{'WEB_CHEKOUT_OFFLINE_LABEL' | translate}}" is-hide="!isAdminSnt || data.hotel_pms_type !=='OWS'"></ad-toggle-button>
 
+				<ad-toggle-button is-checked="data.enable_offline_check_in" label="{{'WEB_CHECKIN_OFFLINE_LABEL' | translate}}" is-hide="!isAdminSnt || data.hotel_pms_type !=='OWS'"></ad-toggle-button>
+
 				<div class="entry is-pms-tokenized" ng-if="isAdminSnt && data.hotel_pms_type ==='OWS'">
 					<label>Privacy Check</label>
 					<div class="switch-button single" ng-class="{ on : data.is_email_privacy_check == true }" ng-click="data.is_email_privacy_check = !data.is_email_privacy_check">
@@ -426,6 +513,10 @@
 						<span class="switch-icon"></span>
 					</div>
 				</div>
+
+                <ad-toggle-button is-checked="data.use_ows_chip_and_pin_flag" label="{{'OWS_CHIP_N_PIN' | translate}}" is-hide="!isAdminSnt || data.hotel_pms_type !=='OWS'"></ad-toggle-button>
+
+                <ad-toggle-button is-checked="data.use_ows_opi_auth" label="{{'OWS_OPI_AUTH' | translate}}" is-hide="!isAdminSnt || data.hotel_pms_type !=='OWS'"></ad-toggle-button>
 
 				<!-- <div class="entry">
 					<label for="hotel_from_address"> LANGUAGE <strong>*</strong></label>
@@ -436,8 +527,8 @@
 				</div> -->
 
 				<div class="entry full-width" ng-if="!isAdminSnt">
-					<label for="hotel-logo"> Hotel Logo Image for Rover (316x70px 9:2 ratio)  </label>
-					<div class="file-upload with-preview">
+					<label for="hotel-logo"> Hotel Logo Image for Rover (316x70px 9:2 ratio)</label>
+					<div class="file-upload with-preview logo-preview">
 						<span class="input">{{hotel_logo_file}}</span>
 						<a id="deleteLogo" class="icons icon-delete large-icon delete_item" ng-if="isLogoAvailable(data.hotel_logo)" ng-click = "data.hotel_logo = 'false'"></a>
 						<input type="file" ng-model="data.hotel_logo" accept="image/*" app-filereader />
@@ -445,12 +536,12 @@
 							Choose file
 						</button>
 					</div>
-					<span class="file-preview"> <img ng-src="{{data.hotel_logo}}" alt="" height="112" width="auto"> </span>
+					<span class="file-preview logo-preview"> <img ng-src="{{data.hotel_logo}}" alt=""> </span>
 				</div>
 
 				<div class="entry full-width" ng-if="!isAdminSnt">
-					<label for="hotel-logo"> Hotel Logo Image for Templates (500x115px)  </label>
-					<div class="file-upload with-preview">
+					<label for="hotel-logo"> Hotel Logo Image for Templates (500x115px)</label>
+					<div class="file-upload with-preview logo-preview">
 						<span class="input">{{hotel_template_logo_file}}</span>
 						<a id="deleteLogo" class="icons icon-delete large-icon delete_item" ng-if="isLogoAvailable(data.hotel_template_logo)" ng-click = "data.hotel_template_logo = 'false'"></a>
 						<input type="file" ng-model="data.hotel_template_logo" accept="image/*" app-filereader />
@@ -458,7 +549,7 @@
 							Choose file
 						</button>
 					</div>
-					<span class="file-preview"> <img src="{{data.hotel_template_logo}}" alt="" height="112" width="auto"> </span>
+					<span class="file-preview logo-preview"> <img src="{{data.hotel_template_logo}}" alt=""> </span>
 				</div>
 			</fieldset>
 
@@ -640,10 +731,30 @@
 						<span class="switch-icon"></span>
 					</div>
 				</div>
-				<div class="entry" ng-show="data.payment_gateway === 'MLI' && data.mli_emv_enabled && data.hotel_pms_type == ''">
+				<div class="entry full-width" ng-if="data.payment_gateway === 'MLI'"
+                     ng-show="data.payment_gateway === 'MLI' && data.mli_emv_enabled && data.hotel_pms_type == ''">
 					<label for="mli-transaction-access-url"> MLI Transaction Access URL </label>
-					<input type="text" ng-model="data.mli_txn_access_url" value="{{data.mli_txn_access_url}}" placeholder="Enter MLI transaction access url" name="merchantlink_txn_access_url" id="mli-transaction-access-url">
+					<input type="text" ng-model="data.mli_txn_access_url" value="{{data.mli_txn_access_url}}"
+						   placeholder="https://[Public IP for PosLynx]/thinclient/mobile/api.php"
+						   name="merchantlink_txn_access_url"
+						   id="mli-transaction-access-url">
+					<!-- CICO-45001 --->
+					<span class="help-block">
+
+						Note: Access URL format is https://[Public IP for PosLynx]/thinclient/mobile/api.php.
+				  	[Public IP for PosLynx] should be replaced with the domain name or the public IP of the PosLynx machine.
+					</span>
 				</div>
+
+                <ad-toggle-button is-checked="data.mli_cba_enabled" label="Enable CBA Payment Type" is-hide="!isAdminSnt || data.payment_gateway !== 'MLI'"></ad-toggle-button>
+
+                <div class="entry" ng-if="isAdminSnt && data.payment_gateway === 'MLI' && data.mli_cba_enabled">
+                    <label for="mli-emv-enabled">
+                        CBA Staff Notification Email
+                    </label>
+                    <input type="text" ng-model="data.cba_notification_email"
+                           value="{{data.cba_notification_email}}" placeholder="Email Address For Staff Notification">
+                </div>
 
 				<div class="entry full-width" ng-if="data.payment_gateway === 'MLI'">
 					<button type="button" id="test-mli-payment-gateway" class="button blue" ng-click="testMLIPaymentGateway()">
@@ -687,6 +798,15 @@
 					</label>
 					<input type="text" ng-model="data.six_server_port" value="{{data.six_server_port}}">
 				</div>
+                <div class="entry" ng-if="data.payment_gateway === 'sixpayments'">
+                    <label>
+                        Use Timestamp In Hotel's Timezone
+                    </label>
+                    <div class="switch-button single" ng-class="{ on : data.six_use_hotel_timezone == true}" ng-click="data.six_use_hotel_timezone = !data.six_use_hotel_timezone">
+                        <input type="checkbox" value="{{data.six_use_hotel_timezone}}">
+                        <span class="switch-icon"></span>
+                    </div>
+                </div>
 				<div class="entry" ng-if="data.payment_gateway === 'sixpayments'">
 					<label for="six-server-port">
 						Six Payments Communication Protocol
@@ -702,47 +822,113 @@
 						HTTPS
 					</label>
 				</div>
-                <!--SHIJI STARTS-->
-                <div class="entry" ng-if="data.payment_gateway === 'SHIJI'">
-                    <label for="shiji-merchant-id">
-                        Merchant ID
-                    </label>
-                    <input type="text" ng-model="data.shiji_merchant_id" value="{{data.shiji_merchant_id}}">
+			</fieldset>
+
+            <!--SHIJI STARTS-->
+            <fieldset class="holder left" ng-if="isAdminSnt && data.payment_gateway === 'SHIJI'">
+                <div class="form-title">
+                    <h3><span>Shiji Token</span> Settings </h3>
+                    <em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
                 </div>
-                <div class="entry" ng-if="data.payment_gateway === 'SHIJI'">
-                    <label for="shiji-partner-id">
+                <div class="entry">
+                    <label>
                         Partner ID
                     </label>
-                    <input type="text" ng-model="data.shiji_partner_id" value="{{data.shiji_partner_id}}">
+                    <input type="text" ng-model="data.shiji_token_partner_id" value="{{data.shiji_token_partner_id}}">
                 </div>
-                <div class="entry" ng-if="data.payment_gateway === 'SHIJI'">
-                    <label for="shiji-key">
+                <div class="entry">
+                    <label>
+                        Repository ID
+                    </label>
+                    <input type="text" ng-model="data.shiji_token_repository_id" value="{{data.shiji_token_repository_id}}">
+                </div>
+                <div class="entry">
+                    <label>
+                        Tokenization URL
+                    </label>
+                    <input type="text" value="{{data.shiji_token_url}}" ng-model="data.shiji_token_url">
+                </div>
+                <div class="entry">
+                    <label>
                         Platform SSL Key
                     </label>
-                    <input type="text" ng-model="data.shiji_key" value="{{data.shiji_key}}">
+                    <input type="text" ng-model="data.shiji_token_key" value="{{data.shiji_token_key}}">
                 </div>
-
-                <div class="entry" ng-if="data.payment_gateway === 'SHIJI'">
-                    <label for="shiji-payment-gateway-url">
-                        Gateway URL
+                <div class="entry">
+                    <label>
+                        API User
                     </label>
-                    <input type="text" value="{{data.shiji_payment_gateway_url}}" readonly="readonly">
+                    <input type="text" ng-model="data.shiji_token_api_user" value="{{data.shiji_token_api_user}}">
                 </div>
-                <!--SHIJI ENDS-->
-				<div class="entry full-width">
-					<label>Allow CC processors per payment methods</label>
-					<div class="switch-button single" ng-class="{ on : data.allow_cc_processors_per_payment_methods == true }" ng-click="data.allow_cc_processors_per_payment_methods = !data.allow_cc_processors_per_payment_methods">
-						<input type="checkbox" value="{{data.allow_cc_processors_per_payment_methods}}">
+                <div class="entry">
+                    <label>
+                        API Password
+                    </label>
+                    <input type="text" ng-model="data.shiji_token_api_password" value="{{data.shiji_token_api_password}}">
+                </div>
+                <div class="entry">
+                    <label>
+                        Token Channel
+                    </label>
+                    <div class="select white">
+                        <select ng-model="data.shiji_token_channel" id="shiji_token_channel"  ng-options="shijiTokenChannel.code as shijiTokenChannel.name for shijiTokenChannel in shijiTokenChannels">
+                            <option value="" class="placeholder" disabled="">Select Token Channel</option>
+                        </select>
+                    </div>
+                </div>
+				<div class="entry">
+					<label>Offline</label>
+					<div class="switch-button single" ng-class="{ on : data.shiji_token_enable_offline }"
+						ng-click="data.shiji_token_enable_offline = !data.shiji_token_enable_offline">
+						<input type="checkbox" value="{{data.shiji_token_enable_offline}}">
 						<span class="switch-icon"></span>
 					</div>
 				</div>
-				<div class="entry">
-					<label>
-						EMV TIMEOUT
-					</label>
-					<input type="text" ng-model="data.emv_timeout">
-				</div>
-			</fieldset>
+            </fieldset>
+            <fieldset class="holder right" ng-if="isAdminSnt && data.payment_gateway === 'SHIJI' && !data.shiji_token_enable_offline">
+                <div class="form-title">
+                    <h3><span>Shiji Cloud Payment</span> Settings </h3>
+                    <em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+                </div>
+
+                <div class="entry">
+                    <label>
+                        Merchant ID
+                    </label>
+                    <input type="text" ng-model="data.shiji_cloud_merchant_id" value="{{data.shiji_cloud_merchant_id}}">
+                </div>
+                <div class="entry">
+                    <label>
+                        Terminal ID
+                    </label>
+                    <input type="text" ng-model="data.shiji_cloud_terminal_id" value="{{data.shiji_cloud_terminal_id}}">
+                </div>
+                <div class="entry">
+                    <label>
+                        Cloud Payment URL
+                    </label>
+                    <input type="text" value="{{data.shiji_cloud_url}}" ng-model="data.shiji_cloud_url">
+                </div>
+                <div class="entry">
+                    <label>
+                        Platform SSL Key
+                    </label>
+                    <input type="text" ng-model="data.shiji_cloud_key" value="{{data.shiji_cloud_key}}">
+                </div>
+                <div class="entry">
+                    <label>
+                        API User
+                    </label>
+                    <input type="text" ng-model="data.shiji_cloud_api_user" value="{{data.shiji_cloud_api_user}}">
+                </div>
+                <div class="entry">
+                    <label>
+                        API Password
+                    </label>
+                    <input type="text" ng-model="data.shiji_cloud_api_password" value="{{data.shiji_cloud_api_password}}">
+                </div>
+            </fieldset>
+            <!--SHIJI ENDS-->
 			<fieldset class="holder right" ng-if="isAdminSnt && data.payment_gateway == 'MLI'" >
 				<div class="form-title">
 					<h3><span>Hotel</span> MerchantLink Settings </h3>
@@ -758,6 +944,22 @@
 					<input type="text" ng-model="data.mli_chain_code" value="{{data.mli_chain_code}}" placeholder="Enter MLI chain code" name="mli-chain-code" id="mli-chain-code">
 				</div>
 
+                <div class="entry">
+                    <div class="switch-container">
+                        <div class="switch-button with-text" ng-class = "{'on': data.mli_use_sha1 }" style="width: 250px;">
+                            <!-- Add class 'on' when input below is checked -->
+                            <input id="is-mli-use-sha2" type="checkbox" ng-model="data.mli_use_sha1">
+                            <label class="data-on">
+                                <span class="value">SHA2 CERT</span>
+                                <span class="button orange">SHA1 CERT</span>
+                            </label>
+                            <label class="data-off">
+                                <span class="button orange">SHA2 CERT</span>
+                                <span class="value">SHA1 CERT</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
 				<div class="entry full-width">
 					<label for="certificate">
 						 MerchantLink Token Certificate
@@ -774,7 +976,8 @@
 
 				<div class="entry full-width">
 					<label for="mli-access-url"> MerchantLink Access URL </label>
-					<input type="text" ng-model="data.mli_access_url" value="{{data.mli_access_url}}" readonly="true" name="mli-access-url" id="mli-access-url" readonly>
+                    <input type="text" ng-show="data.mli_use_sha1" ng-model="data.mli_access_url" value="{{data.mli_access_url}}" readonly="true" name="mli-access-url" id="mli-access-url" readonly>
+					<input type="text" ng-hide="data.mli_use_sha1" ng-model="data.mli_sha2_access_url" value="{{data.mli_sha2_access_url}}" readonly="true" name="mli-access-url" id="mli-access-url" readonly>
 				</div>
 
 				<button type="button" id="test-mli-connectivity" ng-click="clickedTestMliConnectivity()" class="button blue">
@@ -782,6 +985,22 @@
 				</button>
 
 			</fieldset>
+
+			<fieldset class="holder left" ng-if="isAdminSnt">
+                <div class="entry full-width">
+                    <label>Allow CC processors per payment methods</label>
+                    <div class="switch-button single" ng-class="{ on : data.allow_cc_processors_per_payment_methods == true }" ng-click="data.allow_cc_processors_per_payment_methods = !data.allow_cc_processors_per_payment_methods">
+                        <input type="checkbox" value="{{data.allow_cc_processors_per_payment_methods}}">
+                        <span class="switch-icon"></span>
+                    </div>
+                </div>
+                <div class="entry">
+                    <label>
+                        EMV TIMEOUT
+                    </label>
+                    <input type="text" ng-model="data.emv_timeout">
+                </div>
+            </fieldset>
 
 			<fieldset class="holder right" ng-if="isAdminSnt">
 				<div class="form-title">
@@ -877,7 +1096,7 @@
 			<button type="button" ng-click="clickedSave()" class="button green">
 				Save Changes
 			</button>
-			<button type="button" ui-sref="admin.users({id:id})" ng-if="isAdminSnt && isEdit" class="button green">
+			<button type="button" ng-disabled="!data.hotel_code" ng-class="{'grey': !data.hotel_code}" ui-sref="admin.users({id:id})" ng-if="isAdminSnt && isEdit" class="button green">
 				User Setup
 			</button>
 		</div>

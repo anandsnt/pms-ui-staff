@@ -30,7 +30,8 @@
                     amount='renderData.defaultPaymentAmount'
                     action-type="GROUP_SUBMIT_PAYMENT"
                     posting-account-id="accountConfigData.summary.posting_account_id"
-                    has-permission='hasPermissionToMakePayment()'
+                    has-permission='hasPermissionToMakePayment()' 
+                    payment-currency-list="paymentCurrencyList" 
                     form-template-url='/assets/partials/payment/rvAccountPaymentPartial.html'>
             </snt-payment>
         </div>

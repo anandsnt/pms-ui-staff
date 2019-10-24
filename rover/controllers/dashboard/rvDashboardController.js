@@ -1,12 +1,16 @@
 sntRover.controller('RVdashboardController',
     ['$scope', 'ngDialog', 'RVDashboardSrv', 'RVSearchSrv', 'dashBoarddata',
         '$rootScope', '$filter', '$state', 'RVWorkstationSrv', 'roomTypes', '$timeout', '$interval', '$log',
+        'RVHotelDetailsSrv', '$transitions', 'Toggles',
         function($scope, ngDialog, RVDashboardSrv, RVSearchSrv, dashBoarddata,
-                 $rootScope, $filter, $state, RVWorkstationSrv, roomTypes, $timeout, $interval, $log) {
+                 $rootScope, $filter, $state, RVWorkstationSrv, roomTypes, $timeout, $interval, $log,
+                 RVHotelDetailsSrv, $transitions, Toggles) {
 
             // setting the heading of the screen
             $scope.heading = 'DASHBOARD_HEADING';
-
+            $scope.dashboardFilter = {
+                analyticsActive: false
+            };
             // We are not showing the backbutton now, so setting as blank
             $scope.backButtonCaption = ''; // if it is not blank, backbutton will show, otherwise dont
             $scope.roomTypes = roomTypes;
@@ -134,7 +138,7 @@ sntRover.controller('RVdashboardController',
                 fetchReleaseNotes();
             };
 
-            $scope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
+            $transitions.onError({}, function () {
                 $scope.errorMessage = 'Sorry the feature you are looking for is not implemented yet, or some  errors are occured!!!';
             });
 
@@ -169,7 +173,23 @@ sntRover.controller('RVdashboardController',
                             createWorkstationForNonAdminUsers();
                         }
                     } else {
+                        
                         $rootScope.workstation_id = data.id;
+                        if (($rootScope.hotelPaymentConfig.paymentGateway === 'MLI' && $rootScope.hotelPaymentConfig.isEMVEnabled) ||
+                            $rootScope.hotelPaymentConfig.paymentGateway === 'sixpayments') {
+                            var options = {
+                                params: {
+                                    'hotel_id': $scope.hotelDetails.userHotelsData.current_hotel_id
+                                },
+                                'loader': 'none',
+                                'failureCallBack': function() {
+                                    // do nothing
+                                }
+                            };
+
+                            $scope.callAPI(RVWorkstationSrv.cancelEMVActions, options);
+                        }
+                        setInfrasecDetails();
                         $scope.$emit('hideLoader');
                     }
                 },
@@ -189,22 +209,22 @@ sntRover.controller('RVdashboardController',
 
                 } else {
 
-                    // Check whether UUID is set from the WS response. We will check it 3 times
-                    // in an interval of 500ms. If the UUID is not set by that time, we will use the default
+                    // Check whether UUID is set from the WS response. We will check it 14 times (2800ms)
+                    // in an interval of 200ms. If the UUID is not set by that time, we will use the default
                     // value 'DEFAULT'
                     if (!$scope.getDeviceId()) {
-                        var count = 3;
-                        var deviceIdCheckTimer = setInterval(function() {
+                        var count = 14;
+                        var deviceIdCheckTimer = $interval(function () {
                             if ($scope.getDeviceId()) {
-                                clearInterval(deviceIdCheckTimer);
+                                $interval.cancel(deviceIdCheckTimer);
                                 invokeSetWorkstationApi();
-                            } else if (!$scope.getDeviceId() && count == 0) {
-                                $rootScope.UUID = "DEFAULT";
-                                clearInterval(deviceIdCheckTimer);
+                            } else if (!$scope.getDeviceId() && count === 0) {
+                                $rootScope.UUID = 'DEFAULT';
+                                $interval.cancel(deviceIdCheckTimer);
                                 invokeSetWorkstationApi();
                             }
                             count--;
-                        }, 500);
+                        }, 200);
                     } else {
                         invokeSetWorkstationApi();
                     }
@@ -264,6 +284,8 @@ sntRover.controller('RVdashboardController',
                 return deviceId;
             };
 
+
+            // TODO: 49259 Move this to the router; use the redirectTo parameter (https://ui-router.github.io/guide/ng1/migrate-to-1_0#state-hook-redirectto)
             var reddirectToDefaultDashboard = function() {
                 var defaultDashboardMappedWithStates = {
                     'FRONT_DESK': 'rover.dashboard.frontoffice',
@@ -319,7 +341,7 @@ sntRover.controller('RVdashboardController',
                 $scope.$broadcast("HeaderBackButtonClicked");
             };
 
-            if ($rootScope.isDashboardSwipeEnabled) {
+            if ($rootScope.isDashboardSwipeEnabled && !$rootScope.disableObserveForSwipe) {
                 CardReaderCtrl.call(this, $scope, $rootScope, $timeout, $interval, $log);
                 $scope.observeForSwipe(6);
             } else if (sntapp.cordovaLoaded && 'rv_native' === sntapp.browser) {
@@ -332,5 +354,39 @@ sntRover.controller('RVdashboardController',
                     }
                 });
             }
+            /*
+             * success callback of fetch infrasec details 
+             */ 
+            var successCallBackOfSetInfrasecDetails = function(data) {
+                $rootScope.isInfrasecActivated = data.data.is_infrasec_activated_for_hotel;
+                $rootScope.isInfrasecActivatedForWorkstation = data.data.is_infrasec_activated_for_workstation;      
+            };
 
+            /*
+             * function to set infrasec details
+             */
+            var setInfrasecDetails = function() {
+                var params  = {
+                    workstation_id: $rootScope.workstation_id
+                };
+
+                var options = {
+                    params: params,
+                    successCallBack: successCallBackOfSetInfrasecDetails
+                };
+
+                $scope.callAPI(RVHotelDetailsSrv.fetchInfrasecDetails, options);
+            };
+
+            $scope.analyticsDashboardEnabled = Toggles.isEnabled('dashboard_analytics');
+
+            $scope.dashboardFilter.analyticsActive = false;
+
+            $scope.toggleAnalyticsView = function() {
+                if ($scope.dashboardFilter.analyticsActive) {
+                    $scope.dashboardFilter.analyticsActive = false;
+                } else {
+                    $scope.$broadcast('SHOW_ANALYTICS_DASHBOARD');
+                }
+            };
         }]);

@@ -1,27 +1,14 @@
-// To fix the issue with csrf token in ajax requests
-admin.config(function($httpProvider) {
-    $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-    var m = document.getElementsByTagName('meta');
-
-    for (var i in m) {
-        if (m[i].name === 'csrf-token') {
-            $httpProvider.defaults.headers.common['X-CSRF-Token'] = m[i].content;
-            break;
-        }
-    }
-});
-
-
-admin.service('ADBaseWebSrvV2', ['$http', '$q', '$window', function($http, $q, $window) {
+admin.service('ADBaseWebSrvV2', ['$http', '$q', '$window', '$rootScope', function($http, $q, $window, $rootScope) {
 
     /**
      *   A http requester method for calling webservice
      *   @param {function} function of the method to call like $http.get, $http.put..
      *   @param {string} webservice url
      *   @param {Object} data for webservice
+     *   @param {Boolean} flag for switching to status handling
      *   @return {promise}
      */
-    this.callWebService = function(httpMethod, url, params, data) {
+    this.callWebService = function(httpMethod, url, params, handleStatus) {
         var deferred = $q.defer(),
             httpDict = {};
 
@@ -40,7 +27,25 @@ admin.service('ADBaseWebSrvV2', ['$http', '$q', '$window', function($http, $q, $
         }
 
         $http(httpDict).then(function(response) {
-            deferred.resolve(response.data);
+            if (handleStatus) {
+                var data = response.data,
+                    status = response.status,
+                    headers = response.headers;
+
+                // 202 ---> The request has been accepted for processing, but the processing has not been completed.
+                // 102 ---> This code indicates that the server has received and is processing the request, but no response is available yet
+                if (status === 202 || status === 102 || status === 250) {
+                    deferred.resolve({
+                        'status': 'processing_not_completed',
+                        'location_header': headers('Location')
+                    });
+                } else {
+                    deferred.resolve(data);
+                }
+            } else {
+                deferred.resolve(response.data);
+            }
+
         }, function(response) {
             var errors = response.data,
                 status = response.status;
@@ -54,6 +59,9 @@ admin.service('ADBaseWebSrvV2', ['$http', '$q', '$window', function($http, $q, $
                 deferred.reject(['Internal server error occured']);
             } else if (status === 501 || status === 502 || status === 503) { // 500- Internal Server Error
                 $window.location.href = '/500';
+            } else if (status === 504) {
+                $rootScope.showTimeoutError();
+                return;
             }
             else if (status === 401) { // 401- Unauthorized
                 // so lets redirect to login page
@@ -75,6 +83,10 @@ admin.service('ADBaseWebSrvV2', ['$http', '$q', '$window', function($http, $q, $
 
     this.postJSON = function(url, data) {
         return this.callWebService("POST", url, data);
+    };
+
+    this.postJSONWithSpecialStatusHandling = function(url, data) {
+        return this.callWebService("POST", url, data, true);
     };
 
     this.deleteJSON = function(url, params) {

@@ -1,0 +1,33 @@
+<div id="wrapper" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()" ng-cloak>
+    <header class="content-title float">
+        <h2>{{mainHeading}}</h2>
+        <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
+        <h4 ng-hide="hotelDetails.is_dynamic_template_on">{{ 'CONTACT_SNT_FOR_DETAILS' | translate }} <a href="{{ 'SNT_HELP_DESK_LINK' | translate}}" target="_blank">{{ 'SNT_HELP_DESK'| translate }}</a></h4>
+        <br/>
+    </header>
+    <section class="content-scroll" ng-style="{ 'margin-top' : hotelDetails.is_dynamic_template_on ? '10px' : '40px' }">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+        <div>
+            <form class="form zest-web-settins-form float">
+                <fieldset class="holder left">
+                    <ad-textbox value="data.subject_text" label="{{'EMAIL_SUBJECT_TEXT' | translate}}" styleclass="full-width"></ad-textbox>
+                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.email_text_1" label="{{ 'EMAIL_TOP_PORTION_TEXT' | translate}}" placeholder=""></ad-textarea>
+                    <ad-textbox hide="hideButtonField" value="data.button_text" label="{{'EMAIL_BUTTON_TEXT' | translate}}" styleclass="full-width"></ad-textbox>
+                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.email_text_2" label="{{ 'EMAIL_BOTTOM_PORTION_TEXT' | translate}}" placeholder="" hide="hideTextTwoField"></ad-textarea>
+                </fieldset>
+                <div class="actions float">
+                    <button type="button" id="cancel" class="button blank add-data-inline" ng-click="cancelClicked()" translate>
+                        CANCEL
+                    </button>
+                    <button type="button" like-type="common" id="update" class="button ng-binding blue" ng-click="previewClicked()">
+                        PREVIEW
+                    </button>
+                    <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSettings()" translate>
+                        SAVE_CHANGES
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+</div>

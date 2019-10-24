@@ -1,0 +1,15 @@
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
+    <div class="modal-content">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <span ng-if="::!hotelDetails.use_ows_opi_auth" class="h3 message">PLEASE SWIPE CREDIT CARD</span>
+        <button ng-if="::hotelDetails.use_ows_opi_auth"
+                class="button blue"
+                ng-click="addCardOWS()">
+            {{state.numAttempts ? 'TRY AGAIN' : 'ADD CARD TO FILE'}}
+        </button>
+        <br>
+        <button id="ok" class="button red modal-close" ng-click="closeDialog()">
+            {{hotelDetails.use_ows_opi_auth ? 'SKIP' : 'NO SWIPE'}}
+        </button>
+    </div>
+</div>

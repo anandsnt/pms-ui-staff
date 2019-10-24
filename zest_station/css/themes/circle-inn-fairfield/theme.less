@@ -12,6 +12,7 @@
 	@actionBackground: 		@brandColor;
 	
 	@inputBackground: 		#707070;
+	@inputColor:			@white;
 	@transparentColor: 		rgba(0,0,0,.35);
 
 /* 2. TYPOGRAPHY
@@ -82,10 +83,7 @@
 	
 	#circle-inn-fairfield {
 
-		input,
-		select {
-			color: @white;
-		}
+		 
 
 		.button {
 			&:not(.text-red){
@@ -168,6 +166,9 @@
 					}
 				}
 			}
+			#options .amount{
+				color: @brandColor;
+			} 
 		}
 		
 	}
@@ -183,3 +184,9 @@
 	.jumper {
 		background-color: #d6d6d6 !important;
 	}
+
+    .iframe-content{
+    	position: fixed !important;
+    	-webkit-overflow-scrolling: touch !important;
+  		overflow-y: scroll !important;
+    }

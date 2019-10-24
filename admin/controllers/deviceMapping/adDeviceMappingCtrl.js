@@ -1,5 +1,5 @@
-admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', 'ADDeviceSrv', 'ADKeyEncoderSrv', 'ADEmvTerminalsSrv', '$timeout', '$location', '$anchorScroll',
-    function(ngTableParams, $scope, $state, ADDeviceSrv, ADKeyEncoderSrv, ADEmvTerminalsSrv, $timeout, $location, $anchorScroll) {
+admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$rootScope', '$scope', '$state', 'ADDeviceSrv', 'ADKeyEncoderSrv', 'ADEmvTerminalsSrv', '$timeout', '$location', '$anchorScroll',
+    function(ngTableParams, $rootScope, $scope, $state, ADDeviceSrv, ADKeyEncoderSrv, ADEmvTerminalsSrv, $timeout, $location, $anchorScroll) {
 
         $scope.errorMessage = '';
         ADBaseTableCtrl.call(this, $scope, ngTableParams);
@@ -7,6 +7,7 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
         $scope.isAddMode = false;
         $scope.addEditTitle = "";
         $scope.isEditMode = false;
+        
         /*
          * To fetch list of device mappings
          */
@@ -113,9 +114,26 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
 
             $scope.callAPI(ADEmvTerminalsSrv.fetchItemList, options);
         };
+        /*
+         * Function to get the hotel infrasec (blackbox) details
+         */
+        $scope.getInfrasecDetails = function() {
+            var onSuccessGetInfrasecDetails = function(data) {
+                $scope.infrasecDetails = data.data;           
+            };
+            var options = {
+                params: {
+                    hotel_id: $rootScope.hotelId
+                },
+                successCallBack: onSuccessGetInfrasecDetails
+            };
+
+            $scope.callAPI(ADEmvTerminalsSrv.getHotelInfrasecDetails, options);
+        };
 
         $scope.fetchKeyEncoderList();
         $scope.fetchEmvList();
+        $scope.getInfrasecDetails();
 
         // To list device mappings
         /*
@@ -156,6 +174,8 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
             $scope.isDeviceIdReadOnly = "no";
             $scope.addEditTitle = "ADD";
             $scope.mapping = {};
+            $scope.mapping.register_identity = '';
+            $scope.mapping.is_mobile = false;
             $timeout(function() {
                 $location.hash('new-form-holder');
                 $anchorScroll();
@@ -294,6 +314,13 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
             // CICO-10506 //zest station
             if (!$scope.mapping.is_out_of_order) {
                 $scope.mapping.is_out_of_order = false;
+            }
+            if ($scope.infrasecDetails.country_name === $rootScope.infrasecSpecificCountry 
+                && $scope.infrasecDetails.is_infrasec_activated 
+                && $scope.infrasecDetails.max_control_unit > 0) {
+                data.is_control_unit_enabled = $scope.mapping.is_control_unit_enabled;
+                data.register_identity = $scope.mapping.register_identity !== '' ? $scope.mapping.register_identity : null;
+                data.is_mobile = $scope.mapping.is_mobile;
             }
             data.is_out_of_order = $scope.mapping.is_out_of_order;
 

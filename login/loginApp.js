@@ -1,9 +1,21 @@
-var login = angular.module('login', ['ui.router', 'documentTouchMovePrevent', 'ngSanitize', 'ng-iscroll', 'ngDialog', 'clickTouch']);
+var login = angular.module('login', [
+    'ui.router',
+    'documentTouchMovePrevent',
+    'ngSanitize',
+    'ng-iscroll',
+    'ngDialog',
+    'clickTouch',
+    'sharedHttpInterceptor']);
 
+angular.module('login').config([
+    '$httpProvider', function($httpProvider) {
+        $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+        $httpProvider.interceptors.push('sharedHttpInterceptor');
+    }]);
 /*
  * Set page Titles
  */
-login.run(function($rootScope) {
+angular.module('login').run(function($rootScope) {
     $rootScope.$on('$stateChangeStart',
             function(event, toState, toParams, fromState, fromParams) {
             $rootScope.title = toState.title;
@@ -11,7 +23,7 @@ login.run(function($rootScope) {
 });
 
 
-login.controller('loginRootCtrl', ['$scope', function($scope) {
+angular.module('login').controller('loginRootCtrl', ['$scope', function($scope) {
 	$scope.hasLoader = false;
 	$scope.signingIn = false;
 	$scope.$on("signingIn", function(event) {
@@ -23,8 +35,13 @@ login.controller('loginRootCtrl', ['$scope', function($scope) {
  * Login Controller - Handles login and local storage on succesfull login
  * Redirects to specific ur on succesfull login
  */
-login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', 'ngDialog', function($scope, loginSrv, $window, $state, resetSrv, ngDialog) {
+angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', 'ngDialog', '$timeout', 'marketingItems', '$rootScope', function($scope, loginSrv, $window, $state, resetSrv, ngDialog, $timeout, marketingItems, $rootScope) {
 	 $scope.data = {};
+	 $scope.data.roverVersion = "";
+	 // CICO-65478 Marketing items that is shown in login screen
+	 $scope.marketingItems = marketingItems;
+	 $rootScope.isModalShowing = false;
+
 
 	 if (localStorage.email) {
 	 	$scope.data.email = localStorage.email;
@@ -195,13 +212,135 @@ login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'reset
         } else {
             $window.open('https://stayntouch.freshdesk.com/support/home', '_blank');
         }
+	};
+
+	var loadURLCounter = 0;
+
+	$scope.showDebugOptions = function() {
+		$scope.data.domainURL = "https://";
+		loadURLCounter++;
+		if (loadURLCounter >= 5) {
+			ngDialog.open({
+				template: '/assets/partials/debugingOptions.html',
+				scope: $scope
+			});
+			$scope.data.showDebugOptions = true;
+			$scope.data.isLoadingUrl = false;
+		}
+		$timeout(function() {
+			loadURLCounter = 0;
+		}, 5000);
+	};
+
+	$scope.isIPad = navigator.userAgent.match(/iPad/i) != null;
+
+	$scope.loadDomainURL = function() {
+		$window.location = $scope.data.domainURL;
+	};
+
+	$scope.switchRoverInstance = function() {
+		cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'switchRoverInstance', []);
+	};
+
+	var loadCordovaWithVersion = function(version) {
+		var script_node = document.createElement('script');
+
+		script_node.setAttribute('src', '/assets/shared/cordova/' + version + '/cordova.js');
+		script_node.setAttribute('type', 'application/javascript');
+		document.body.appendChild(script_node);
+	};
+
+	// for now load cordova 4_5_5
+	loadCordovaWithVersion('4_5_5');
+
+	$scope.loadDomainURL = function() {
+		$window.location = $scope.data.domainURL;
+	};
+
+	$scope.loadTestPage = function() {
+		cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'loadTestClient', [window.location.href]);
+	};
+
+	$scope.onSystemStatusClick = function() {
+		if (sntapp.cordovaLoaded) {
+			ngDialog.open({
+				template: '/assets/partials/systemStatus.html',
+				className: '',
+				controller: '',
+				scope: $scope
+			});
+		} else {
+			$window.open('https://status.stayntouch.com', '_blank');
+		}
+	};
+
+	$scope.successCallbackGetVersion = function(response) {
+		var versionNumber = response.data.data;
+
+		$scope.data.roverVersion = versionNumber;
+	};
+	loginSrv.getApplicationVersion({}, $scope.successCallbackGetVersion);
+
+	/**
+	 * Add script/script content dynamically to the html
+	 * @param {String} content - script content
+	 * @param {Boolean} isCode is script file or code
+	 * @return {void}
+	 */
+    var addMarketingContentScript = function(content, isCode) {
+
+        var script = $window.document.createElement('script');
+    
+        isCode = isCode || false;
+
+        if ( ! isCode ) {
+            script.src = content;
+        } else {
+            script.text = content;
+        }
+        $window.document.body.appendChild(script);
     };
 
+	/**
+	 * Show the marketing content details
+	 * @param {Object} event click event object
+	 * @param {Object} marketingItem contains the marketing content details
+	 * @return {void}
+	 */
+    $scope.showMarketingContent = function (event, marketingItem) {
+        if (!marketingItem.url) {
+            event.preventDefault();
+
+            // Load the javascript file first
+            if (marketingItem.form_script_file && !$window.MktoForms2) {
+                addMarketingContentScript(marketingItem.form_script_file, false);	
+            }
+			
+            $rootScope.isModalShowing = true;
+
+            // This is used in new.html for loading the contents of the popup
+            $rootScope.marketingItem = marketingItem;
+            // Load the form html
+            $('.right-content').html(marketingItem.form_html);
+            $timeout(function() {
+                addMarketingContentScript(marketingItem.get_script_code, true);	
+            }, 1000);
+			
+        } else {
+            $window.open(marketingItem.url, '_blank');
+        }
+    };
+
+	// Closes the popup opened for marketing content
+    $rootScope.closePopup = function() {
+        $rootScope.isModalShowing = false;
+    };
+	
 }]);
 /*
  * Reset Password Controller - First time login of snt admin
  */
-login.controller('resetCtrl', ['$scope', 'resetSrv', '$window', '$state', '$stateParams', 'ngDialog', function($scope, resetSrv, $window, $state, $stateParams, ngDialog) {
+angular.module('login').controller('resetCtrl', ['$scope', 'resetSrv', 'loginSrv', '$window', '$state', '$stateParams', 'ngDialog', function($scope, resetSrv, loginSrv, $window, $state, $stateParams, ngDialog) {
 	 $scope.data = {};
 	 $scope.data.token = $stateParams.token;
 
@@ -267,6 +406,26 @@ login.controller('resetCtrl', ['$scope', 'resetSrv', '$window', '$state', '$stat
             $window.open('https://stayntouch.freshdesk.com/support/home', '_blank');
         }
     };
+
+	$scope.onSystemStatusClick = function() {
+		if (sntapp.cordovaLoaded) {
+			ngDialog.open({
+				template: '/assets/partials/systemStatus.html',
+				className: '',
+				controller: '',
+				scope: $scope
+			});
+		} else {
+			$window.open('https://status.stayntouch.com', '_blank');
+		}
+	};
+
+	$scope.successCallbackGetVersion = function(response) {
+		var versionNumber = response.data.data;
+
+		$scope.data.roverVersion = versionNumber;
+	};
+	loginSrv.getApplicationVersion({}, $scope.successCallbackGetVersion);
 
 }]);
 /*
@@ -377,9 +536,22 @@ login.controller('activateCtrl', ['$scope', 'resetSrv', '$window', '$state', '$s
         }
     };
 
+    $scope.onSystemStatusClick = function() {
+		if (sntapp.cordovaLoaded) {
+			ngDialog.open({
+				template: '/assets/partials/systemStatus.html',
+				className: '',
+				controller: '',
+				scope: $scope
+			});
+		} else {
+			$window.open('https://status.stayntouch.com', '_blank');
+		}
+	};
+
 }]);
 
-login.controller('stationLoginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', 'ngDialog', function($scope, loginSrv, $window, $state, resetSrv, ngDialog) {
+angular.module('login').controller('stationLoginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', 'ngDialog', function($scope, loginSrv, $window, $state, resetSrv, ngDialog) {
         // when using stationlogin on touch-screen, a keyboard should prompt
         // also, we will set a localStorage flag to relay to zest station, we are inside an app
         // only chrome-apps + electron app should be using " /stationlogin#/stationlogin " to enter rover/zest station
@@ -418,6 +590,19 @@ login.controller('stationLoginCtrl', ['$scope', 'loginSrv', '$window', '$state',
 	            $window.open('https://stayntouch.freshdesk.com/support/home', '_blank');
 	        }
 	    };
+
+		$scope.onSystemStatusClick = function() {
+			if (sntapp.cordovaLoaded) {
+				ngDialog.open({
+					template: '/assets/partials/systemStatus.html',
+					className: '',
+					controller: '',
+					scope: $scope
+				});
+			} else {
+				$window.open('https://status.stayntouch.com', '_blank');
+			}
+		};
 
         if (localStorage.email) {
                $scope.data.email = localStorage.email;
@@ -494,8 +679,16 @@ login.controller('stationLoginCtrl', ['$scope', 'loginSrv', '$window', '$state',
                 $scope.submit();
                 e.preventDefault();
                 e.stopPropagation();
-            } 
+            }
 
         }
         document.addEventListener('keydown', doc_keyDown, false); // listen for hotkeys to work with chrome extension
+
+        $scope.successCallbackGetVersion = function(response) {
+			var versionNumber = response.data.data;
+
+			$scope.data.roverVersion = versionNumber;
+		};
+		
+		loginSrv.getApplicationVersion({}, $scope.successCallbackGetVersion);
 }]);

@@ -1,47 +1,113 @@
 <section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
-	<div id="add-new-item" data-view="ItemsDetailsView">
-		<header class="content-title float">
-			<h2 ng-show="mod == 'edit'">{{'EDIT' | translate}} <span>{{itemDetails.name}} </span></h2>
-			<h2 ng-show="mod == 'add'" translate>ADD_NEW_EMV_TERMINALS</h2>
-			
-			<a data-type="load-details" class="action back" ng-click="goBack()" translate>BACK_TO_EMV_TERMINALS</a>
-			<em class="status required" ng-show="mod == 'edit'">
-				{{'MANDATORY_FIELDS_MESSAGE1' | translate}}
-				<strong>*</strong>
-				{{'MANDATORY_FIELDS_MESSAGE2' | translate}}
-			</em>
-		</header>
-		<section class="content-scroll">
-			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-			<form name="item-details" method="post" class="form float">
-				<fieldset class="holder full-width float" ng-show="mod == 'add'">
-					<div class="form-title" >
-						<h3>
-							<span translate>ADD_NEW</span>
-							{{'EMV_TERMINAL' | translate}}
-						</h3>
-						<em class="status">
-							{{'MANDATORY_FIELDS_MESSAGE1' | translate}}
-							<strong>*</strong>
-							{{'MANDATORY_FIELDS_MESSAGE2' | translate}}
-						</em>
-					</div>
-				</fieldset>
-				<fieldset class="holder left float">
-					<ad-textbox value="itemDetails.name" name = "item_desc" id = "item_desc" label = "{{'TERMINAL_NAME' |translate}}" placeholder = "{{'TERMINAL_NAME_PLACEHOLDER' |translate}}" required = "yes" styleclass="full-width" ></ad-textbox>
+    <div id="add-new-item" data-view="ItemsDetailsView">
+        <header class="content-title float">
+            <h2 ng-show="mod == 'edit'">{{'EDIT' | translate}} <span>{{itemDetails.name}} </span></h2>
+            <h2 ng-show="mod == 'add'" translate>ADD_NEW_EMV_TERMINALS</h2>
 
-					<ad-textbox value="itemDetails.terminal_identifier" name = "unit_price" id = "unit_price" label = "{{'TERMINAL_ID' |translate}}" placeholder = "{{'TERMINAL_ID_PLACEHOLDER' |translate}}" required = "yes" styleclass="full-width" ></ad-textbox>
+            <a data-type="load-details" class="action back" ng-click="goBack()" translate>BACK_TO_EMV_TERMINALS</a>
+            <em class="status required" ng-show="mod == 'edit'">
+                {{'MANDATORY_FIELDS_MESSAGE1' | translate}}
+                <strong>*</strong>
+                {{'MANDATORY_FIELDS_MESSAGE2' | translate}}
+            </em>
+        </header>
+        <section class="content-scroll">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <form name="item-details" method="post" class="form float">
+                <fieldset class="holder full-width float" ng-show="mod == 'add'">
+                    <div class="form-title">
+                        <h3>
+                            <span translate>ADD_NEW</span>
+                            {{'EMV_TERMINAL' | translate}}
+                        </h3>
+                        <em class="status">
+                            {{'MANDATORY_FIELDS_MESSAGE1' | translate}}
+                            <strong>*</strong>
+                            {{'MANDATORY_FIELDS_MESSAGE2' | translate}}
+                        </em>
+                    </div>
+                </fieldset>
+                <fieldset class="holder left float">
+                    <ad-textbox value="itemDetails.name" name="item_desc" id="item_desc"
+                                label="{{'TERMINAL_NAME' |translate}}"
+                                placeholder="{{'TERMINAL_NAME_PLACEHOLDER' |translate}}" required="yes"
+                                styleclass="full-width"></ad-textbox>
 
-					<ad-textbox inputtype="password" ng-show="mliEmvEnabled" value="itemDetails.terminal_access_code" name = "terminal_access_code" id = "terminal_access_code" label = "{{'TERMINAL_ACCESS_CODE' |translate}}" placeholder = "{{'TERMINAL_ACCESS_CODE_PLACEHOLDER' |translate}}" styleclass="full-width" ></ad-textbox>
-				</fieldset>
-				
-				<div class="actions float">
-					<button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBack()" translate>CANCEL</button>
+                    <ad-textbox value="itemDetails.terminal_identifier" name="unit_price" id="unit_price"
+                                label="{{'TERMINAL_ID' |translate}}"
+                                placeholder="{{'TERMINAL_ID_PLACEHOLDER' |translate}}" required="yes"
+                                styleclass="full-width"></ad-textbox>
 
-					<button type="button" id="save" class="button green add-data-inline"  ng-click="saveItemDetails()" translate>SAVE_CHANGES</button>
+                    <ad-textbox inputtype="password" ng-show="mliEmvEnabled" value="itemDetails.terminal_access_code"
+                                name="terminal_access_code" id="terminal_access_code"
+                                label="{{'TERMINAL_ACCESS_CODE' |translate}}"
+                                placeholder="{{'TERMINAL_ACCESS_CODE_PLACEHOLDER' |translate}}"
+                                styleclass="full-width"></ad-textbox>
+                </fieldset>
 
-				</div>
-			</form>
-		</section>
-	</div>
+                <fieldset class="holder right float" ng-show="::mliEmvEnabled && adminRole === 'hotel-admin'">
+                    <div class="entry">
+                        <label>PINPAD COMMANDS</label>
+                        <div class="select">
+                            <select ng-model="selectedTerminalCommand"
+                                    ng-class="{'placeholder': !selectedTerminalCommand}">
+                                <option value="">Select a command</option>
+                                <option ng-repeat="command in itemDetails.pinpad_commands"
+                                        value="{{command}}">
+                                    {{command}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="entry">
+                        <button style="margin: 24px;"
+                                ng-disabled="!selectedTerminalCommand"
+                                ng-click="runTerminalCommand();"
+                                ng-class="{'grey': !selectedTerminalCommand}"
+                                class="button ng-binding blue sm-refresh-btn">RUN
+                        </button>
+                    </div>
+                    <div class="entry full-width" ng-if="pinpadData.request || pinpadData.request">
+                        <label>
+                            <span style="font-weight: bold">Response Status&nbsp;&nbsp;</span>
+                            <span class="oauth-status success" ng-if="pinpadData.isSuccess">
+                                {{'PINPAD_SUCCESS' | translate}}
+                            </span>
+                            <span class="oauth-status" ng-if="!pinpadData.isSuccess">
+                                {{'PINPAD_ERROR' | translate}}
+                            </span>
+                        </label>
+
+                    </div>
+                    <div class="entry full-width" snt-highlight-syntax ng-if="pinpadData.request">
+                        <label>
+                            Request
+                        </label>
+                        <pre class="interface-message auto-links: false; brush: xml">
+                            {{pinpadData.request}}
+                        </pre>
+                    </div>
+                    <div class="entry full-width" snt-highlight-syntax ng-if="pinpadData.response">
+                        <label>
+                            Response
+                        </label>
+                        <pre class="interface-message auto-links: false; brush: xml">
+                            {{pinpadData.response}}
+                        </pre>
+                    </div>
+                </fieldset>
+
+                <div class="actions float">
+                    <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBack()"
+                            translate>CANCEL
+                    </button>
+
+                    <button type="button" id="save" class="button green add-data-inline" ng-click="saveItemDetails()"
+                            translate>SAVE_CHANGES
+                    </button>
+
+                </div>
+            </form>
+        </section>
+    </div>
 </section>

@@ -1,0 +1,46 @@
+<div id="modal" role="dialog" class="modal-show">
+	<div class="modal-content chain-hotels">
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<span class="message h3">{{subscriptionData.full_name}} subscriptions</span>
+		<div class="hotels-list">
+			<table id="chain-users" class="grid">
+				<thead>
+					<tr>
+						<th>Hotel</th>
+						<th class="cell-role">User Role</th>
+						<th class="cell-date">Last Active</th>
+						<th class="cell-button"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="hotel in subscriptionData.hotels">
+						<td>
+							<div class="cell-wrapper">
+								<span class="hotel" ng-class="{ 'subscribed': hotel.is_subscribed }">{{hotel.hotel_name}}</span>
+								<span class="icons icon-added" ng-if="hotel.is_subscribed"></span>
+								<span class="chain-home-hotel" ng-if="hotel.is_home_hotel">Home</span>
+							</div>
+						</td>
+						<td>
+							<div class="select" ng-class="{'overlay' : hotel.is_home_hotel || subscriptionData.is_chain_admin}">
+								<select ng-class="{'placeholder' : hotel.selected_role_id === ''}" ng-model="hotel.selected_role_id" ng-options="role.id as role.name for role in hotel.roles" ng-change="roleChanged(hotel)">
+			                        <option ng-if="!hotel.is_subscribed" ng-selected = "!hotel.is_subscribed" value=''>Missing Role</option>
+			                    </select>
+							</div>
+						</td>
+						<td>
+							<em ng-if="hotel.is_subscribed">{{ hotel.last_login_date | date : dateFormat }} {{ hotel.last_login_time }}</em>
+						</td>
+						<td ng-class="{'overlay' : subscriptionData.is_chain_admin }">
+							<button type="button" class="button white red-text" ng-if="hotel.is_subscribed && !hotel.is_home_hotel" ng-click="clickedUnsubscribe(hotel)">Unsubscribe</button>
+							<button type="button" class="button" ng-if="!hotel.is_subscribed && !hotel.is_home_hotel" ng-disabled="hotel.selected_role_id === ''" ng-class="{'grey': hotel.selected_role_id === '', 'green' : hotel.selected_role_id != ''}" ng-click="clickedSubscribe(hotel)">Subscribe</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="actions">
+			<button type="button" class="button blank modal-close" ng-click="closePopup()">Close Window</button>
+		</div>
+	</div>
+</div>

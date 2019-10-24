@@ -17,6 +17,13 @@
             <li ng-class="{'ui-tabs-active': current == 'guest-loyalty'}" click-touch="guestCardTabSwitch('guest-loyalty')" ng-hide='!loyaltyTabEnabled' ng-show='loyaltyTabEnabled' >
                 <a id="guest-loyalty">Loyalty</a>
             </li>
+            <li ng-class="{'ui-tabs-active': current == 'guest-statistics'}" click-touch="guestCardTabSwitch('guest-statistics')" ng-if="isStandAlone && !isHourlyRateOn">
+                <a href="#gc-statistics">Statistics</a>
+                <button type="button" class="button white icons icon-expand" rv-fullscreen fs-sub-header="Statistics" fs-toggle-class="fullscreen-card">Fullscreen</button>
+            </li>
+            <li ng-class="{'ui-tabs-active': current == 'activity-log'}" click-touch="guestCardTabSwitch('activity-log')">
+                <a>Activity Log</a>
+            </li>
             <li ng-if="isStandAlone" ng-class="{'ui-tabs-active': current == 'notes'}" ng-click="guestCardTabSwitch('notes')">
                 <a id="guest-credit">Notes</a>
             </li>             
@@ -30,7 +37,11 @@
         <span ng-include="'/assets/partials/guestCard/guestCardPayment.html'"></span>
         <!-- Guest Card Tab 4 loyalty-->
         <span ng-include="'/assets/partials/guestCard/guestCardLoyalty.html'"></span>
-        <!-- Guest Card Tab 4 loyalty-->
+        <!-- Guest Card Tab 5 Statistics -->
+        <span ng-include="'/assets/partials/guestCard/rvGuestCardStatistics.html'"></span>
+        <!-- Guest Card Tab 6 Activity Log-->
+        <span ng-show="current == 'activity-log' && isStandAlone" ng-include="'/assets/partials/guestCard/guestCardActivityLog.html'"></span>
+        <!-- Guest Card Tab 7 Notes-->
         <span ng-if="current == 'notes' && isStandAlone" ng-include="'/assets/partials/guestCard/guestCardNotes.html'"></span>
     </div>
 
@@ -51,15 +62,14 @@
                         <a ng-click="selectGuest(guest, $event)">
                             <figure class="guest-image">
                                 <img ng-src="{{ guest.image }}" alt="" />
+                                <span class="stay-count" ng-if="guest.stayCount > 0 && isStandAlone">{{::guest.stayCount}}</span>
                                 <span ng-show="guest.vip" class="vip">VIP</span>
                             </figure>
                             <div class="data" ng-class="{'no-stay': guest.stayCount == 0}">
                                 <h2>
                                     <span ng-bind-html="guest.firstName | highlight:searchData.guestCard.guestFirstName:false"></span>
                                     <span ng-bind-html="guest.lastName | highlight:searchData.guestCard.guestLastName:false"></span>
-                                </h2>
-                                <span class="stay-count" ng-if="guest.stayCount > 1">{{ guest.stayCount }} stays</span>
-                                <span class="stay-count" ng-if="guest.stayCount == 1">{{ guest.stayCount }} stay</span>
+                                </h2>                                
                                 <span class="confirmation" ng-if="guest.address.postalCode != '' && guest.address.postalCode != null">{{ guest.address.postalCode}}</span>
                                 <span class="icons icon-location" ng-hide = "(guest.address.city == null || guest.address.city == '') && (guest.address.state =='' || guest.address.state == null)">
                                     <span ng-bind-html="guest.address.city | highlight:searchData.guestCard.guestCity:false"></span>

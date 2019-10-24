@@ -28,8 +28,8 @@ sntGuestWeb.controller('BaseController', ['$scope', '$state', function($scope, $
 			params = options["params"] ? options["params"] : null,
 			loader = options["loader"] ? options["loader"] : 'BLOCKER',
 			showLoader = loader.toUpperCase() === 'BLOCKER' ? true : false,
-			successCallBack = options["successCallBack"] ? options["successCallBack"] : $scope.fetchedCompleted,
-			failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : $scope.fetchedFailed,
+			successCallBack = options["successCallBack"] ? options["successCallBack"] : options['onSuccess'] ? options['onSuccess'] : $scope.fetchedCompleted,
+			failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : options['onFailure'] ? options['onFailure'] : $scope.fetchedFailed,
 			successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null,
 			failureCallBackParameters = options["failureCallBackParameters"] ? options["failureCallBackParameters"] : null;
 

@@ -3,7 +3,7 @@ angular.module('admin').controller('ADInterfaceLogsCtrl', ['$scope', '$rootScope
     function($scope, $rootScope, interfaces, currentTime, dateFilter, ADInterfaceLogsSrv,
              ADHotelListSrv, ngTableParams, $timeout, $log) {
 
-        var currentHour, currentMinute;
+        var currentHour, currentMinute, isLoadComplete;
 
         /**
          *
@@ -54,6 +54,10 @@ angular.module('admin').controller('ADInterfaceLogsCtrl', ['$scope', '$rootScope
         };
 
         $scope.search = function($defer, params) {
+            if (!isLoadComplete) {
+                isLoadComplete = 1;
+                return;
+            }
             $scope.$emit('showLoader');
             $scope.errorMessage = '';
 

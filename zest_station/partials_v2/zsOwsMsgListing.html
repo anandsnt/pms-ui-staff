@@ -15,7 +15,7 @@
         </div>
         <!-- If multiple messages, show: -->
         <div id="message-action">
-            <button type="button" class="button print" touch-press='printOwsMsg()'>
+            <button type="button" class="button print" touch-press='printOwsMsg()' ng-hide="isEmpty('PRINT')">
                 <text data-ng-bind-html="getTagValue('PRINT')" editable-text="PRINT"></text>
             </button>
             <button type="button" class="button email" touch-press='emailOwsMsg()' ng-show="showEmailButton">
@@ -26,7 +26,7 @@
                 <text data-ng-bind-html="getTagValue('NEXT')" editable-text="NEXT"></text>
             </button>
             <button ng-show="isLastOwsMsg" type="button" class="button" touch-press='closePopup()'><span>
-                <text data-ng-bind-html="getTagValue('DONE')" editable-text="DONE"></text>
+                <text data-ng-bind-html="getTagValue('DONE_BTN')" editable-text="DONE"></text>
             </span></button>
         </div>
     </div>

@@ -30,7 +30,12 @@
                     "sorting-desc" when DESC sorting -->
                 <tr>
                     <th ng-repeat="item in subHeaders track by $index">
-                        <span ng-class="{'sort': hasSort($index), 'sorting-asc': isAsc($index), 'sorting-desc': isDesc($index)}" ng-click="sortResultBy(chosenReport.sortByOptions[$index], chosenReport)">
+                        <span ng-class="{'sort': hasSort($index), 'sorting-asc': isAsc($index), 'sorting-desc': isDesc($index)}" 
+                              ng-click="sortResultBy(chosenReport.sortByOptions[$index], chosenReport)" 
+                              ng-if="!isBackgroundReportsEnabled && !chosenReport.sortByOptions[$index].disableSort">
+                            {{ item }}
+                        </span>
+                        <span ng-if="isBackgroundReportsEnabled || chosenReport.sortByOptions[$index].disableSort">
                             {{ item }}
                         </span>
                     </th>
@@ -44,7 +49,8 @@
                     "sorting-desc" when DESC sorting -->
                 <tr>
                     <th ng-repeat="sortBy in chosenReport.sortByOptions track by $index" class="{{ sortBy.description | lowercase }}" colspan="{{ sortBy.colspan }}">
-                        <span class="sort" ng-class="{'sorting-asc': (sortBy.sortDir === true), 'sorting-desc': (sortBy.sortDir === false)}" ng-click="sortResultBy(sortBy)">{{sortBy.sortDir}}{{ sortBy.description }}</span>
+                        <span class="sort" ng-class="{'sorting-asc': (sortBy.sortDir === true), 'sorting-desc': (sortBy.sortDir === false)}" ng-click="sortResultBy(sortBy)" ng-if="!isBackgroundReportsEnabled">{{sortBy.sortDir}}{{ sortBy.description }}</span>
+                        <span ng-if="isBackgroundReportsEnabled">{{sortBy.sortDir}}{{ sortBy.description }}</span>
                     </th>
                 </tr>
             </thead>
@@ -65,5 +71,5 @@
     <p>Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong id="total-count">{{ netTotalCount }}</strong> items</p>
 </div>
 
-<rv-pagination  page-options="paginationConfig" page-data="totalCount" ng-if="shouldShowNewPagination() && totalCount > 0 && showReportDetails">
+<rv-pagination  page-options="paginationConfig" page-data="totalCount" ng-if="shouldShowNewPagination() && totalCount > 0">
 </rv-pagination>

@@ -42,7 +42,7 @@
                     <div class="entry" ng-repeat="tab in reservationData.tabs">
                         <label>{{'ROOM_TYPE'|translate}} {{$index+1}}
                             <!-- If not room 1 enable removal: -->
-                            <button type="button" class="remove-room icons icon-remove-10" ng-hide="$first" ng-click="removeTabFromSidebar($index)">Remove Room</button>
+                            <button type="button" class="remove-room icons icon-remove-10" ng-if="!$first" ng-click="removeTabFromSidebar($index)">Remove Room</button>
                         </label>
                         <span ng-show="room.varyingOccupancy" translate>VAR_OCCUPANCY</span>
                         <div class="select adults">
@@ -71,7 +71,7 @@
                         </div>
                         <div class="select rooms">
                             <label class="label" translate>ROOMS</label>
-                            <select ng-model="tab.roomCount" iscroll-stop-propagation ng-change="onRoomCountChange($index)" ng-disabled="isHourlyRateOn">
+                            <select ng-model="tab.roomCount" iscroll-stop-propagation ng-change="onRoomCountChange($index)" ng-disabled="isHourlyRateOn || !!reservationData.reservationId">
                                 <option ng-repeat="i in [1, otherData.maxRoomCount] | makeRange" value="{{i}}" ng-selected="i==tab.roomCount">
                                     {{i}}
                                 </option>

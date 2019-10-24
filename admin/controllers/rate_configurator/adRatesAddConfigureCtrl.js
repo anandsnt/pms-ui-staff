@@ -368,6 +368,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
                 $scope.data.sets[selectedIndex].isEnabled = false;
                 $scope.otherData.setChanged = false;
+                fetchData($scope.dateRange.id);
             };
 
             // if set id is null, then it is a new set - save it

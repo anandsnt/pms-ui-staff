@@ -30,6 +30,10 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
          *  -> switch from invoke to callAPI
          *  
          */
+        
+        $scope.$on('CLICKED_ON_CANCEL_BUTTON', function () {
+            $scope.$emit('CANCEL_EMV_ACTIONS');
+        });
 
         $scope.continue = function() {
             // this is a debugging function, user will touch the icon to skip payment screen,
@@ -83,6 +87,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         };
 
         var onClickBack = function() {
+            $scope.$emit('CANCEL_EMV_ACTIONS');
             $state.go('zest_station.checkInReservationDetails', $stateParams);
         };
 
@@ -129,7 +134,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                     $scope.callAPI(zsPaymentSrv.submitDeposit, {
                         params: params,
                         'successCallBack': successSixPayDeposit,
-                        'failureCallBack': onSwipeError,
+                        'failureCallBack': emvFailureActions,
                         'loader': 'none'
                     });
                     // $scope.invokeApi(zsPaymentSrv.submitDeposit, params, successSixPayDeposit, onSwipeError, "NONE"); 
@@ -210,6 +215,8 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         };
 
         var goToSwipeError = function() {
+            $scope.$emit('hideLoader');
+            $scope.$emit('RUN_APPLY');
             if (atCardSwipeScreen()) {
                 $scope.zestStationData.waitingForSwipe = false;
                 $scope.swipeTimeout = false;
@@ -220,10 +227,24 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         var successSavePayment = function(response) {
             if (atCardSwipeScreen()) {
                 $scope.$emit('hideLoader');
-                if (response.status === 'success') {
-                    goToCardSign();
+                
+                var authAtCheckinRequired = $stateParams.authorize_cc_at_checkin  === 'true',
+                    authCCAmount = $stateParams.pre_auth_amount_for_zest_station;
+
+                // In deposit mode the card is just saved now.
+                // Will add the authorization related to deposit flow later - CICO-54295
+                if ($stateParams.mode !== 'DEPOSIT' && authAtCheckinRequired && parseInt(authCCAmount) > 0) {
+                    $scope.callAPI(zsPaymentSrv.authorizeCC, {
+                        params: {
+                            'payment_method_id': response.id,
+                            'reservation_id': $stateParams.reservation_id,
+                            'amount': authCCAmount
+                        },
+                        'successCallBack': goToCardSign,
+                        'failureCallBack': emvFailureActions
+                    });
                 } else {
-                    goToSwipeError();
+                    goToCardSign();
                 }
             }
         };
@@ -375,8 +396,11 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             }
         };
 
-        var isSixpay = function() {
-            if ($scope.zestStationData.paymentGateway === 'sixpayments') {
+        var isEmvEnabled = function() {
+            var paymentGateway = $scope.zestStationData.paymentGateway;
+
+            // EMV requests are used for six payments and MLI with EMV enabled in SNT admin
+            if (paymentGateway === 'sixpayments' || (paymentGateway === 'MLI' && $scope.zestStationData.mliEmvEnabled) || paymentGateway === 'SHIJI') {
                 return true;
             }
             return false;
@@ -537,10 +561,10 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 });
 
             } else {
-                $scope.callAPI(zsCheckinSrv.authorizeCC, {
+                $scope.callAPI(zsPaymentSrv.authorizeCC, {
                     params: data,
                     'successCallBack': onSuccessCaptureAuth,
-                    'failureCallBack': onSwipeError,
+                    'failureCallBack': emvFailureActions,
                     'loader': 'none'
                 });
             }
@@ -567,9 +591,13 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             }
 
         };
+        var emvFailureActions = function () {
+            $scope.$emit('CANCEL_EMV_ACTIONS');
+            onSwipeError();
+        };
 
-        var startSixPayPayment = function() {
-            $log.log(':: starting six pay payment ::');
+        var startEmvTerminalActions = function() {
+            $log.log(':: starting EMV pay payment ::');
             $log.log('isDepositMode(): ', isDepositMode());
             // If starting from deposit mode, we will be taking a (payment) which is different than an auth
             // payment will be paid but not saved to the reservation staycard,
@@ -658,12 +686,11 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 // the card to the staycard
                 setCCAuthSettings();
             }
-            var sixPay = isSixpay();
 
-            $log.log('sixPay: ' + sixPay);
+            $log.log('isEmvEnabled: ' + isEmvEnabled());
             // check if a Sixpay hotel or MLI
             // then depending on the swipe configuration, initialize the device
-            if (!sixPay) { // mli
+            if (!isEmvEnabled()) { // mli
                 $log.info('mli');
                     // socket = Sankyo
                 if (swipeFromSocket()) {
@@ -681,12 +708,20 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 }
             } else { // sixpay
                 $log.info('sixpay payment');
-                startSixPayPayment();
+                startEmvTerminalActions();
 
             }
         };
 
         init();
+
+        document.addEventListener('MOCK_MLI_CC_SWIPE', function() {
+            $scope.$emit('showLoader');
+            $timeout(function() {
+                $scope.$emit('hideLoader');
+                processSwipeCardData(zsPaymentSrv.sampleMLISwipedCardResponse);
+            }, 1000);
+        });
 
     }
 ]);

@@ -83,6 +83,151 @@
 					}
 				}
 			}
+
+			/* Multi select dropdown ***/
+		 
+		    .multi-select { 
+		        position: relative;
+		        padding: 0 10px;
+		        line-height: 40px;
+		        cursor: pointer;
+		        z-index: 40;
+		        .nowrap();
+		        .faux-clickable;
+		        background-color: @grey1;
+
+		        &.placeholder {
+		            color: @grey3;
+		            font-style: italic;
+		        }
+
+		        &.active {
+		            .box-shadow(1px 0 0 rgba(0,0,0,.15));
+		            #border-radius > .bottom(0px);
+		        }
+
+		        &:after {
+		            content: "";
+		            position: absolute;
+		            top: 0;
+		            right: 0;
+		            background: @grey1 @selectArrow no-repeat 50% 50%;
+		            background-size: 6px 4px;
+		            pointer-events: none;
+		            z-index: 999;
+		            .size(100%, 25px);
+		            #border-radius > .right();
+		        }
+		    }
+
+		    .multi-select-options {
+		        margin-top: -1px;
+		        background-color: @grey1;
+		        z-index: 10;
+		        #border-radius > .bottom();
+		        .box-shadow(1px 1px 0 rgba(0,0,0,.15));
+		        .transition;
+		        #fade > .in();
+
+		        .entry {
+		            width: 100%;
+		            float: none;
+		            margin: 0;
+		            padding: 0;
+		        }
+
+		        .search {
+		            position: relative;
+		            padding: 10px;
+		            overflow: hidden;
+		            background: rgba(0,0,0,.1);
+		            .size(60px, 100%);
+
+		            .icon-search {
+		                position: absolute;
+		                top: 20px;
+		                left: 20px;
+		                z-index: 99;
+		            }
+
+		            .query {
+		                width: 100%;
+		                font-size: 18px;
+		                font-weight: 700;
+		                padding-left: 30px;
+		                color: @logoPrimary; 
+		                z-index: 9;
+		                background: @grey1;
+		                .box-shadow(inset 1px 1px 0 rgba(0,0,0,.15));
+		                #border-radius > .rounded(25px);
+
+		                &:focus,
+		                &:active { .box-shadow(inset 1px 1px 0 rgba(0,0,0,.3)); }
+		            }
+
+		            .clear-query {
+		                position: absolute;
+		                top: 10px;
+		                right: 10px;
+		                z-index: 99;
+		                .square(40px);
+
+		                .icons {
+		                    position: absolute;
+		                    top: 12.5px;
+		                    right: 12.5px;
+		                    background-color: @grey2;
+		                    .hide-text;
+		                    .square(15px);
+		                    .opacity(0);
+		                    .show;
+		                    #fade > .out();
+		                    #border-radius > .rounded(15px);
+		                }
+
+		                &.visible { 
+		                    .icons {
+		                        .opacity(100); 
+		                        #fade > .in(); 
+		                    }
+		                }
+
+		                &:hover,
+		                &.active { 
+		                    .icons { background-color: @logoPrimary; }
+		                }
+		            }
+		        }
+
+		        .checkbox {
+		            padding: 0 10px 0 40px;
+
+		            .icon-form { 
+		                left: 10px;
+		            }
+
+		            &:not(:last-child) {
+		                .box-shadow(0 1px 0 rgba(0,0,0,.1));
+		            }
+
+		            .option-name,
+		            .option-number {  
+		                display: block;
+		                white-space: nowrap;
+		                text-overflow: ellipsis;
+		                overflow: hidden;
+		                line-height: 1;
+		            }
+
+		            .option-name { 
+		                color: inherit;
+		                line-height: 16px;
+		                margin-top: 5px;
+		            }
+		        }
+
+		        &.hidden { #fade > .out(); }
+		    }
 		}
 
 		/* Disabled part of form ***/
@@ -346,6 +491,132 @@
 		}			
 	}
 
+/* List of settings				==========================*/
+	.setings-group {
+		padding: 10px 20px;
+		background-color: rgba(0,0,0,.05);
+		box-shadow: inset 1px 1px 1px rgba(0,0,0,.1);
+		border-radius: 3px;
+	}
+
+/* Autocomplete Search */
+	.autocomplete-search {
+		
+		.scrollable {
+			position: relative;
+			max-height: 400px;
+			display: none;
+
+			.wrapper {
+				padding: 0;
+			}
+
+			.card {
+				line-height: 1em;
+				padding: 10px;
+				cursor: pointer;
+				width: 100%;
+				text-transform: uppercase;
+				font-size: 14px;
+				line-height: 20px;
+				.box-shadow();
+				.nowrap();
+
+				.guest-image {
+					background-size: 50px;
+					margin-right: 10px;
+					.square( 20px );
+	
+					&.icon-company {
+						background-color: @ccard;
+						background-position: 6px -1437px;
+					}
+	
+					&.icon-travel-agent {
+						background-color: @tacard;
+						background-position: 5.5px -1486px;
+					}
+				}
+			}
+		}
+
+		.search {
+			padding: 10px;
+			position: relative;
+			.box-shadow(none);
+
+			input {
+				padding: 0 30px;
+				font-weight: 600;
+				color: @logoPrimary;
+				#border-radius > .rounded(25px);
+			}
+
+			.clear-query,
+			.icon-search {
+				position: absolute;
+			}
+
+			.clear-query {
+				position: absolute;
+				top: 10px;
+				right: 10px;
+				z-index: 99;
+				visibility: hidden;
+				.size(40px, 40px);
+
+				.icons {
+					position: absolute;
+					top: 13px;
+					right: 12.5px;
+					background-color: @grey2;
+					.hide-text;
+					.square(15px);
+					.opacity(0);
+					.show;
+					#fade > .out();
+					#border-radius > .rounded(15px);
+				}
+
+				&.visible { 
+					visibility: visible;
+
+					.icons {    
+						.opacity(100); 
+						#fade > .in(); 
+					}
+				}
+
+				&:hover,
+				&.active { 
+					.icons { background-color: @logoPrimary; }
+				}
+			}
+
+			.icon-search {
+				top: 20px;
+				left: 20px;
+			}
+		}
+
+		.highlight { color: @logoPrimary; }
+
+		&.searching {
+			background: @white;
+			.box-shadow();
+
+			.search {
+				input {
+					background-color: @grey1;
+				}
+			}
+
+			.scrollable {
+				display: block;
+			}
+		}
+	}
+	
 /* 6. IE
 ==========================================================*/
 /* 7. RESPONSIVE

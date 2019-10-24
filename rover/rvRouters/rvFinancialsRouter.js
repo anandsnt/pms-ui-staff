@@ -7,16 +7,20 @@ angular.module('FinancialsModule', [])
         templateUrl: '/assets/partials/financials/rvFinancials.html',
         controller: 'RVFinancialsController',
         resolve: {
-            jsAssets: function(jsMappings, mappingList) {
-                return jsMappings.fetchAssets(['rover.financials']);
+            jsAssets: function(jsMappings) {
+                return jsMappings.fetchAssets(['rover.financials', 'directives']);
             }
         }
     });
 
     $stateProvider.state('rover.financials.journal', {
-        url: '/journal/:id',
+        url: '/journal',
         templateUrl: '/assets/partials/financials/journal/rvJournal.html',
         controller: 'RVJournalController',
+        params: {
+            tab: "SUMMARY",
+            id: null
+        },
         resolve: {
             journalResponse: function(RVJournalSrv, jsAssets) {
                 if ( !!RVJournalSrv ) {
@@ -24,6 +28,9 @@ angular.module('FinancialsModule', [])
                 } else {
                     return {};
                 }
+            },
+            journalFilters: function(RVJournalSrv) {
+                return RVJournalSrv.getFilterData();
             }
         }
     });
@@ -42,6 +49,32 @@ angular.module('FinancialsModule', [])
     $stateProvider.state('rover.financials.commisions', {
         url: '/commissionSummary',
         templateUrl: '/assets/partials/financials/commissions/rvCommissionsSummary.html',
-        controller: 'RVCommissionsSummaryController'
+        controller: 'RVCommissionsSummaryController',
+        resolve: {
+            businessDate: function(RVCommissionsSrv, jsAssets) {
+                    return RVCommissionsSrv.fetchHotelBusinessDate();
+            }
+        }
     });
+    $stateProvider.state('rover.financials.invoiceSearch', {
+        url: '/invoiceSearch',
+        templateUrl: '/assets/partials/financials/invoiceSearch/rvInvoiceSearch.html',
+        controller: 'RVInvoiceSearchController',
+        params: {
+            isFromStayCard: false
+        },
+        resolve: {
+            filterOptions: function(RVInvoiceSearchSrv, jsAssets) {
+                    return RVInvoiceSearchSrv.getFilterOptions();
+            }
+        }
     });
+    $stateProvider.state('rover.financials.autoCharge', {
+        url: '/autoCharge',
+        templateUrl: '/assets/partials/financials/autocharge/rvAutoCharge.html',
+        controller: 'RVAutoChargeController',
+        params: {
+            isFromStayCard: null
+        }
+    });
+});

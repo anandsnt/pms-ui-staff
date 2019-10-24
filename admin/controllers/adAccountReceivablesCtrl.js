@@ -1,33 +1,50 @@
 admin.controller('ADAccountReceivablesCtrl', ['$scope', '$state', 'ADHotelSettingsSrv', function($scope, $state, ADHotelSettingsSrv) {
-
-	$scope.errorMessage = '';
+	
 	BaseCtrl.call(this, $scope);
-
-	$scope.fetchAccountReceivableStatus = function() {
-
+	$scope.errorMessage = '';
+	
+	// Fetch details on account receivables screen.
+	var fetchAccountReceivableStatus = function() {
+		// Succss callback
 		var successCallbackFetch = function(data) {
 			$scope.data = data;
-			$scope.$emit('hideLoader');
+		},
+		// Failure callback
+		failureCallbackFetch = function(errorMessage) {
+			$scope.errorMessage = errorMessage;
+		},
+		// option object
+		options = {
+			params: {},
+			successCallBack: successCallbackFetch,
+			failureCallBack: failureCallbackFetch
 		};
 
-		$scope.invokeApi(ADHotelSettingsSrv.fetch, "", successCallbackFetch);
-
+		$scope.callAPI(ADHotelSettingsSrv.fetch, options);
 	};
 
+	// Handle save button action
 	$scope.saveAccountReceivableStatus = function() {
 
-			var data = {};
-
-			data.ar_number_settings = $scope.data.ar_number_settings;
-			var postSuccess = function() {
-				$scope.$emit('hideLoader');
-
+			var settings = $scope.data.ar_number_settings,
+				postData = {
+				'ar_number_settings': {
+					'is_auto_assign_ar_numbers': settings.is_auto_assign_ar_numbers
+				}
 			};
 
-			$scope.invokeApi(ADHotelSettingsSrv.update, data, postSuccess);
+			if (!!settings.selected_manual_charge_code_id) {
+				postData.ar_number_settings.selected_manual_charge_code_id = settings.selected_manual_charge_code_id;
+			}
+
+			// option object
+			var options = {
+				params: postData
+			};
+
+			$scope.callAPI(ADHotelSettingsSrv.update, options);
 	};
-	$scope.fetchAccountReceivableStatus();
-
-
+	
+	fetchAccountReceivableStatus();
 }]);
 

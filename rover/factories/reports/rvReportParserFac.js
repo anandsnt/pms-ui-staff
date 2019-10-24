@@ -261,7 +261,7 @@ sntRover.factory('RVReportParserFac', [
              * WHY? Coz we have to!
              */
 
-            var i, j;
+            var i, j, uuid;
 
             var returnObj = {};
 
@@ -278,7 +278,7 @@ sntRover.factory('RVReportParserFac', [
                 ithUuid,
                 roomName;
 
-            for (dateKey in apiResponse) {
+            for (var dateKey in apiResponse) {
                 if ( ! apiResponse.hasOwnProperty(dateKey) ) {
                     continue;
                 }
@@ -385,9 +385,11 @@ sntRover.factory('RVReportParserFac', [
                 actionData = {},
                 cancelData = {},
                 adjustData = [],
-                options    = options;
+                options    = options,
+                guestNoteData = {},
+                reservationNoteData = {};
 
-            var i, j;
+            var i, j, m, n;
 
             var excludeReports = function(names) {
                 return !!_.find(names, function(n) {

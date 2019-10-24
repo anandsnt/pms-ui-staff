@@ -11,6 +11,7 @@
 	@actionBackground: 		@brandColor;
 	
 	@inputBackground: 		#707070;
+    @inputColor:            @textColor;
 	@transparentColor: 		rgba(255,255,255,.5);
 
 /* 2. TYPOGRAPHY
@@ -52,8 +53,9 @@
         background-size: contain;
         width: 100%;
 	    height: 100%;
-	    background-position: center;
+	    background-position: left;
 	    margin-top: -4.5%;
+		margin-left: 5%;
     }
 
 /* 4. LAYOUT
@@ -145,3 +147,26 @@
 .check_in_add_remove > .input-field-contents {
 	height: 45% !important;
 }
+
+/*
+	=======
+	The following styles were added as part of CICO-44466. 
+	These changes needs to be implemented across all Zest Station Templates and removed from here afterwards.
+*/
+.add-on-list {
+    &:not(.add-on-list-columns) {
+        &:not(.add-on-list-rows) {
+            .add-on-picture {
+            	flex-flow: column nowrap;
+            	align-items: center;
+            }
+        }
+    }
+}
+
+.add-on .add-on-picture {
+    display: flex;
+}
+/*
+	=======
+*/

@@ -2,7 +2,7 @@
     <!--  Home -->
     <section id="main" class="centered kiosk" role="main">
         <div id="content">
-            <nav id="options" class="large-icons" role="nav">
+            <nav id="options" class="home" role="nav" ng-class="{'large-icons': zestStationData.iconCount <= 3}">
                 <ul role="menu">
                     <li ng-if="zestStationData.home_screen.pickup_keys">
                         <button type="button" class="button option" touch-press='clickedOnPickUpKey()'>
@@ -36,21 +36,48 @@
                         </button>
                         <text data-ng-bind-html="getTagValue('BOOK_NOW')" editable-text="BOOK_NOW"></text>
                     </li>
-                </ul>
+                    <li ng-if="zestStationData.showWalkinReservationOption">
+                        <button type="button" class="button option" touch-press='startWalkinReservationFlow()'>
+                            <div ng-include="icons.url.booknow"></div>
+                        </button>
+                        <text data-ng-bind-html="getTagValue('WALK_IN')" editable-text="WALK_IN"></text>
+                    </li>
+                </ul> 
             </nav>
         </div>
-        <div id="actions" class="align-center languages">
-            <button type="button" class="button language" ng-hide="!zestStationData.zest_lang.enabled" touch-press="selectLanguage(language)" ng-class="{'selected': language.name === selectedLanguage.name }" ng-repeat="language in languages">
-                {{language.language_name_in_local}}
-            </button>
-        </div>
+        <div id="actions" class="languages-list" ng-if="zestStationData.zest_lang.enabled && shouldShowLanguageSelection()">
+            <!-- Active Language -->
+            <p class="selected-language">
+                <img ng-if="selectedLanguage.icon" src="{{ selectedLanguage.icon }}" class="icons icon-flag" alt=""></img>
+                {{ selectedLanguage.foreign_label ? selectedLanguage.foreign_label : selectedLanguage.name }}
+            </p>
+
+            <!-- Other Languages -->
+            <div id="language-options" ng-iscroll="language-list" ng-iscroll-delay="100" class="scrollable" > <!-- Add HORIZONTAL ng-scroll here -->
+                <div class="wrapper" style="width: {{ languageListWidth }};">
+                    <button type="button" class="button with-icon"
+                     ng-repeat="language in languages"
+                     ng-hide="!language.active || language == selectedLanguage"
+                    ng-class="{'no-flag': !language.icon}" id="language-{{$index}}" touch-press="selectLanguage(language)">
+                        <img ng-if="language.icon" ng-src="{{ language.icon }}" class="icons icon-flag"></img>
+                        <span class="label-main">{{language.name}}</span>
+                        <span class="label-secondary">{{language.foreign_label}}</span>
+                    </button>
+                </div>
+            </div>
+
+            </div>
         <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
     </section>
     <!--PopUp For External webPage-->
-    <div class="popup iframe-popup open" ng-if="showExternalWebPage">
-        <div class="popup-content iframe-content">
-            <i class="close-popup" touch-press="closeExternalWebPage()"></i>
-            <iframe click-touch="showKeyboardOnInput()" id="booking_iframe" src="{{zestStationData.home_screen.booking_pop_up.booking_engine_url| trustAsResourceUrl}}" seamless sandbox="allow-same-origin allow-scripts allow-forms allow-pointer-lock"></iframe>
+    <div class="popup iframe-popup open" ng-show="showExternalWebPage">
+        <i class="close-popup" touch-press="closeExternalWebPage()"></i>
+        <div class="popup-content iframe-content" style="overflow: auto!important; -webkit-overflow-scrolling: touch!important;">
+            <iframe click-touch="showKeyboardOnInput()" id="booking_iframe"
+                    style="width: 100%; height: 96vh; display: block; overflow: scroll; -webkit-overflow-scrolling: touch;"
+                    src="{{zestStationData.home_screen.booking_pop_up.booking_engine_url| trustAsResourceUrl}}"
+                    seamless
+                    sandbox="allow-same-origin allow-scripts allow-forms allow-pointer-lock"></iframe>
         </div>
     </div>
 </div>

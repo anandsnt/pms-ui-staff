@@ -2,16 +2,20 @@ module.exports = {
 	getList : function() {
 		var controllerRoot 	= 'rover/controllers/',
             sharedJs 		= 'shared/lib/js/',
-			servicesRoot 	= 'rover/services/';
+			servicesRoot 	= 'rover/services/',
+            sharedRoot      = 'shared/';
             
             return {
                 minifiedFiles: [
-                    sharedJs + 'jquery.qtip.min.js' // FOR ROOM & RATES CALENDAR  
+                    sharedJs + 'jquery.qtip.min.js', // FOR ROOM & RATES CALENDAR  
+                    sharedJs + 'jsZip/jszip.min.js',
+                    sharedJs + 'fileSaver/filesaver.min.js'
                 ],
                 nonMinifiedFiles: [
                     'rover/filters/rangeFilter.js',
                     controllerRoot + "rvGuestController.js",
-                    controllerRoot + "rvContactInfoDatePickerCtrl.js",
+                    // controllerRoot + "rvContactInfoDatePickerCtrl.js",
+                    controllerRoot + "rvAllContactInfoDatePickerCtrl.js",
                     controllerRoot + "rvAddLoyaltyProgramController.js",
                     controllerRoot + "rvGuestCardLoyaltyCtrl.js",
                     controllerRoot + "rvReservationRoomStatusCtrl.js",
@@ -33,6 +37,11 @@ module.exports = {
                     controllerRoot + "smartbands/**/**.js",
                     controllerRoot + "validateCheckout/**/**.js",
                     controllerRoot + "validateCheckin/**/**.js",
+                    controllerRoot + "guestCardBaseCtrl.js",
+                    controllerRoot + "guests/rvGuestCardActivityLogCtrl.js",
+                    controllerRoot + 'rvStatisticsBaseCtrl.js',
+                    controllerRoot + 'guests/rvGuestCardStatisticsCtrl.js',
+                    controllerRoot + "rvGuestCompanyTravelAgentStatisticsCtrl.js",
 
                     servicesRoot + "validateCheckin/**/**.js",
                     servicesRoot + "housekeeping/rvHkRoomDetailsSrv.js",
@@ -52,7 +61,21 @@ module.exports = {
                     servicesRoot + "rvLoyaltyProgramSrv.js",
                     servicesRoot + "bill/rvBillCardSrv.js",
                     servicesRoot + "guestcard/notes/rvGuestCardNotesSrv.js",
-                    servicesRoot + "rvCCAuthorizationSrv.js"
+                    servicesRoot + "guestcard/rvGuestCardActivityLogSrv.js",
+                    servicesRoot + "guestcard/rvGuestCardSrv.js",
+                    servicesRoot + "rvCCAuthorizationSrv.js",
+                    servicesRoot + "nightlyDiary/**/*.js",
+                    servicesRoot + "roomAssignment/rvRoomAssignmentSrv.js",
+                    servicesRoot + "roomAssignment/rvUpgradesSrv.js",
+                    servicesRoot + "guestcard/rvGuestCardSrv.js",
+                    sharedRoot + "sntIDCollection/sntIDCollectionApp.js",
+                    sharedRoot + "sntIDCollection/services/*.js",
+                    sharedRoot + "sntIDCollection/constants/*.js",
+                    sharedRoot + "sntIDCollection/controllers/*.js",
+                    servicesRoot + "bill/rvBillCardSrv.js",		    
+
+                    // Eliminate all spec files
+                    '!**/*.spec.js'
                 ]
             };
 	}

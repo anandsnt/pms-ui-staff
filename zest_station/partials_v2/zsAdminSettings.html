@@ -79,10 +79,44 @@
                         </select>
                     </div>
                 </div>
+
+
                 <div id="order-reason" class="entry with-label" ng-show="zestStationData.workstationStatus === 'out-of-order'">
-                    <label>Out of Order Reason</label>
+                    <label click-touch='toggleOOSHist()'>Out of Order Reason</label>
+                    <label click-touch='toggleOOSHist()' ng-if="zestStationData.sessionOosReason.length > 0" class='admin-label-description' >Tap here to see history of Out of Order Reasons</label>
+                    <label ng-if="zestStationData.sessionOosReason.length===0" class='admin-label-description'>No Out of Order history this session</label>
                     <input readonly="" class="read-only" ng-model="zestStationData.workstationOooReason">
                 </div>
+
+                <div class="entry with-label" ng-show="isIpad && zestStationData.is_snt_id_scan_enabled && idCaptureFeature">
+                    <label>ID auto detection</label>
+                    <div class="entry select">
+                        <select id="order-status" ng-model="useIdAutoCapture" ng-change="autoIdDetectionChanged()">
+                            <option value="">Select</option>
+                            <option value="YES">YES</option>
+                            <option value="NO">NO</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="entry with-label oos-reason-hist" ng-hide="!show_oos_history" ng-repeat="reason in zestStationData.sessionOosReason">
+                    <label></label>
+                    <label class='admin-label-description'>{{reason.datetime}}</label>
+                    <input readonly="" class="read-only" type='text' value='{{reason.reason}}'>
+                </div>
+
+                <div class="entry with-label" ng-show="isIpad">
+                    <label>Connected Device Name</label>
+                    <input readonly="" class="read-only" type='text' value="{{zestStationData.connectedDeviceDetails.device_short_name}}">
+                </div>
+
+                <div id="handler-connected-status" class="entry with-label" ng-show="isIpad">
+                    <label>Device Status</label>
+                    <!--label class='admin-label-description'></label-->
+                    <input readonly="" class="read-only visible" ng-model="zestStationData.connectedDeviceDetails.device_connection_state" ng-class='{"green-text":zestStationData.connectedDeviceDetails.device_connection_state == "Connected","red-text":zestStationData.connectedDeviceDetails.device_connection_state !== "Connected", "black-text" : zestStationData.connectedDeviceDetails.device_connection_state === "N/A"}'>
+                    <div class='refresh-svg' touch-press='fetchDeviceStatus()' ng-class='{"station-mini-loading":zestStationData.connectedDeviceDetails.device_connection_state == "refreshing..."}'></div>
+                </div>
+
                 <div class="entry with-label">
                     <label class='admin-item-label'>Station Idle Timer</label>
                     <div class="entry select">
@@ -92,6 +126,7 @@
                         </select>
                     </div>
                 </div>
+
                 <div class="entry with-label">
                     <label>Idle Screen Prompt After (seconds)</label>
                     <label class='admin-label-description'>Prompt user to see if they are still using the Station after {{zestStationData.idle_timer.prompt}} seconds of no activity</label>
@@ -108,6 +143,22 @@
                     <div class="entry select" touch-press='openPrinterMenu()'>
                         <select disabled="true" ng-model="zestStationData.printer_selected">
                             <option value="">{{printerLabel}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="entry with-label" ng-show="zestStationData.useExtCamera">
+                    <label>ID scan Camera</label>
+                    <div class="entry select">
+                        <select ng-model="selectedCamera" class="placeholder" ng-options="camera.id as camera.label for camera in zestStationData.connectedCameras">
+                            <option value="">Select Camera</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="entry with-label" ng-show="zestStationData.useExtCamera && zestStationData.kiosk_scan_mode === 'id_scan_with_facial_verification'">
+                    <label>ID scan Camera for selfie</label>
+                    <div class="entry select">
+                        <select ng-model="selectedFRCamera" class="placeholder" ng-options="camera.id as camera.label for camera in zestStationData.connectedCameras">
+                            <option value="">Select Camera</option>
                         </select>
                     </div>
                 </div>
@@ -197,6 +248,18 @@
                         </select>
                     </div>
                 </div>
+
+               <!--  <div class="entry with-label" ng-if='zestStationData.check_in_collect_passport'>
+                    <label>Guest ID Scan Override</label>
+                    <label class='admin-label-description'>Enable Samsotech Scanning with for Passports or Passports and Guest IDs </label>
+                    <div class="entry select">
+                        <select class='admin-editor-toggle' ng-model="zestStationData.v1GuestIDScanning">
+                            <option value="true">Scan Passports Only</option>
+                            <option value="false">Passports + Guest IDs</option>
+                        </select>
+                    </div>
+                </div> -->
+
                 <div class="entry with-label" ng-show="showDebugModeOption && zestStationData.kiosk_is_hue_active">
                     <label>Test Hue Light</label>
                     <label class='admin-label-description'>Test the connectivity of the Hue light corresponding to the selected workstation</label>
@@ -211,17 +274,11 @@
                         Light OFF
                     </div>
                 </div>
-                <div class="entry with-label" ng-show="showDebugModeOption">
-                    <label>Test Double-Sided Scanning</label>
-                    <label class='admin-label-description'>Click to
-                        <span ng-show='zestStationData.doubleSidedScan'>Disable</span>
-                        <span ng-show='!zestStationData.doubleSidedScan'>Enable</span>
-                    </label>
-                    <div ng-show='!zestStationData.doubleSidedScan' class="select button done-btn" type="button" touch-press="zestStationData.doubleSidedScan=true">
-                        Enable
-                    </div>
-                    <div ng-show='zestStationData.doubleSidedScan' class="select button done-btn" type="button" touch-press="zestStationData.doubleSidedScan=false">
-                        Disable
+                <div class="entry with-label" ng-show="showDebugModeOption && isIpad && zestStationData.zest_printer_option === 'RECEIPT'">
+                    <label>Print Sample Reg. card</label>
+                    <label class='admin-label-description'></label>
+                    <div class="select button done-btn" type="button" touch-press="printSampleReceipt()">
+                        Print
                     </div>
                 </div>
             </div>
@@ -240,3 +297,24 @@
         </button>
     </div>
 </section>
+<!-- Popup -->
+<div class="popup" ng-class="{'open': showPrintMsgPopup}">
+    <div class="popup-content">
+        <h2 class="nocaps">
+            {{ printMessage }}
+        </h2>
+        <button type="button" class="button idle-timeout-btn" click-touch='closePrintErrorPopup();'>
+            CLOSE
+        </button>
+    </div>
+</div>
+
+<div id="popup-overlay" ng-class="{'open': showPrintMsgPopup}" 
+    style="background: #e5e5e5;
+            width: 100%;
+            height: 100%;
+            z-index: 800;
+            position: fixed;
+            opacity: 0.8;
+            top: 0;">
+</div>

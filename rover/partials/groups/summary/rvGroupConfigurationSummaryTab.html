@@ -2,7 +2,6 @@
     <div class="wrapper">
         <div class="holder left">
             <strong class="h3" translate>GROUP_INFO</strong>
-            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <div class="entry full-width">
                 <label for="group-name">
                     {{ 'NAME' | translate}}
@@ -12,7 +11,7 @@
             </div>
             <div class="entry margin">
                 <label for="group-code" translate>GROUP_CODE</label>
-                <input id="group-code" ng-model="groupConfigData.summary.group_code" type="text" ng-disabled="groupConfigData.summary.linked_external_interface || isInStaycardScreen()"/>
+                <input id="group-code" ng-model="groupConfigData.summary.group_code" type="text" ng-disabled="groupConfigData.summary.linked_external_interface || isInStaycardScreen() || !isInAddMode()"/>
             </div>
             <div class="entry">
                 <label for="group-firstname" translate>CONTACT_FIRST_NAME</label>
@@ -30,8 +29,32 @@
                 <label for="group-email" translate>CONTACT_EMAIL</label>
                 <input id="group-email" ng-model="groupConfigData.summary.contact_email" type="text" ng-disabled="isInStaycardScreen()"/>
             </div>
+            <div class="entry break full-width" ng-if="roverObj.forceNationalityAtCheckin || roverObj.forceCountryAtCheckin">
+                <div class="entry margin" ng-show="roverObj.forceNationalityAtCheckin">
+                    <label for="group-nationality">
+                        {{'NATIONALITY' | translate}}
+                    </label>
+                    <div class="select">
+                        <select  iscroll-stop-propagation ng-model="groupConfigData.summary.nationality">
+                            <option value="">Select Nationality</option>
+                            <option value="{{country.code}}" ng-repeat="country in countries" ng-selected="country.code == groupConfigData.summary.nationality">{{country.value}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="entry" ng-show="roverObj.forceCountryAtCheckin">
+                    <label for="group-country">
+                        {{'COUNTRY' | translate}}
+                    </label>
+                    <div class="select">
+                        <select convert-to-number iscroll-stop-propagation ng-model="groupConfigData.summary.country_id">
+                            <option value="">Select Country</option>
+                            <option value="{{country.id}}" ng-repeat="country in countries" ng-selected="country.id == groupConfigData.summary.country_id">{{country.value}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
             <div class="entry break full-width card-buttons" ng-hide="isInStaycardScreen()">
-                <a ng-click="openDemographicsPopup();" class="button" ng-class="{'grey': isInAddMode(), 'white brand-text': !isInAddMode()}" translate>DEMOGRAPHICS</a>
+                <a ng-click="openDemographicsPopup(false, true);" class="button" ng-class="{'grey': isInAddMode(), 'white brand-text': !isInAddMode()}" translate>DEMOGRAPHICS</a>
                 
                 <a ng-click="openBillingInformation();" class="button blue" ng-if="groupConfigData.summary.posting_account_billing_info" translate>BILLING_INFORMATION</a>
 
@@ -116,6 +139,36 @@
                 <label for="group-pickup" TRANSLATE>PICK_UP</label>
                 <input id="group-pickup" ng-model="groupConfigData.summary.rooms_pickup" type="text" readonly ng-disabled="isInStaycardScreen()"/>
             </div>
+             <!-- If TA is liked to this group, show commission toggle  -->
+            <div class="entry commission margin" ng-show="groupConfigData.summary.group_id && groupConfigData.summary.travel_agent.id">
+                <label for="travel-agent-commission" translate>COMMISSION</label>
+                <div class="switch-button" ng-class="{'on': groupConfigData.summary.commission_details.is_on}"> <!-- Add class 'on' when L94 is checked -->
+                    <input id="travel-agent-commission" ng-model="groupConfigData.summary.commission_details.is_on" type="checkbox" />
+                    <label class="data-off">
+                        <span class="value">Off</span>
+                        <span class="switch-icon">On</span>
+                    </label>
+                    <label class="data-on">
+                        <span class="switch-icon grey">Off</span>
+                        <span class="value">On</span>
+                    </label>
+                </div>
+                <!-- Show only when commission is turned on: -->
+                <input ng-model="groupConfigData.summary.commission_details.value" type="text" ng-show="groupConfigData.summary.commission_details.is_on"/>
+                <div class="select" ng-show="groupConfigData.summary.commission_details.is_on">
+                    <select name="travel-agent-commission-type" ng-model="groupConfigData.summary.commission_details.type">
+                        <option value="percent">%</option>
+                        <option value="amount">{{currencySymbol}}</option>
+                    </select>
+                </div>
+                <!-- Show  only when commission is turned on & type is set to $ -->
+                <div class="select" ng-show="groupConfigData.summary.commission_details.is_on && groupConfigData.summary.commission_details.type === 'amount'">
+                    <select ng-model="groupConfigData.summary.commission_details.commission_type">
+                        <option value="NIGHT" translate>PER_STAY</option>
+                        <option value="STAY" translate>PER_NIGHT</option>
+                    </select>
+                </div>
+            </div>
             <div class="entry full-width with-button">
                 <label for="group-rate" translate>RATE</label>
                 <div class="select">
@@ -123,8 +176,8 @@
                             ng-model="groupConfigData.summary.rate"
                             ng-change="onRateChange()"
                             ng-disabled="shouldDisableRateChange()"
+                            snt-placeholder="SELECT_RATE"
                             ng-options="rate.id as rate.name group by rate.groupName for rate in groupSummaryData.rateSelectDataObject">
-                        <option value="" selected disabled>Select Rate</option>
                     </select>
                 </div>
                 <a ng-click="!groupConfigData.summary.is_cancelled ? (isInAddMode() ? manageAddons() : viewAddons()) : false" class="button with-icon" ng-class="{'brand-colors' : !isInAddMode() && !groupConfigData.summary.is_cancelled, 'grey' : isInAddMode() || !!groupConfigData.summary.is_cancelled}">
@@ -136,6 +189,47 @@
                     <span class="icons icon-addons"></span> Add-Ons
                 </a>
             </div>
+            <!--Hide Rate Toggle Starts -->
+            <div class="entry full-width tax-exempt" ng-if="!isInAddMode()" >
+                <label for="group-hide-rates" translate>HIDE_RATE</label>
+                <div class="switch-button" ng-click="clickedShowRate()" ng-class="{'on': groupConfigData.summary.hide_rates}" >
+
+                    <input type="checkbox" ng-model="groupConfigData.summary.hide_rates" ng-checked="groupConfigData.summary.hide_rates" />
+                    <label class="data-off">
+                        <span class="value">Off</span>
+                        <span class="switch-icon">On</span>
+                    </label>
+                    <label class="data-on">
+                        <span class="switch-icon grey">Off</span>
+                        <span class="value">On</span>
+                    </label>
+                </div>
+            </div>
+            <!--Hide Rate Toggle Ends -->
+             <!-- Tax Exempt -->
+            <div class="entry full-width tax-exempt" ng-if="shouldShowTaxExempt()" >
+                <label for="group-tax-exempt">Tax Exempt </label>
+                <div class="switch-button" ng-click="clickedTaxExemptToggle()" ng-class="{'on': groupConfigData.summary.is_tax_exempt}" >
+
+                    <input type="checkbox" ng-model="groupConfigData.summary.is_tax_exempt" ng-checked="groupConfigData.summary.is_tax_exempt" />
+                    <label class="data-off">
+                        <span class="value">Off</span>
+                        <span class="switch-icon">On</span>
+                    </label>
+                    <label class="data-on">
+                        <span class="switch-icon grey">Off</span>
+                        <span class="value">On</span>
+                    </label>
+                </div>
+
+                <div id="group-tax-exempt-type" class="select" ng-show="groupConfigData.summary.is_tax_exempt">
+                    <select ng-model="groupConfigData.summary.tax_exempt_type_id"
+                            ng-options="taxExempt.id as taxExempt.name for taxExempt in taxExemptTypes">
+                    </select>
+                </div>
+                <textarea rows="4" ng-show="groupConfigData.summary.is_tax_exempt" ng-model="groupConfigData.summary.tax_exempt_ref_text" placeholder="{{'TAX_EXEMPT_REFERENCE' | translate}}" maxlength="200"></textarea>
+            </div>
+
             <!-- Notes -->
             <strong class="h3 margin">Notes</strong>
             <div class="entry full-width no-label with-notes">
@@ -161,7 +255,7 @@
                         </time>
                         <button type="button" class="icons icon-trash" ng-click="removeGroupNote($event, note.note_id)">Delete post</button>
                     </div>
-                    <p>{{note.description}}</p>
+                    <p ng-bind-html="note.description"></p>
                 </li>
             </ul>
         </div>

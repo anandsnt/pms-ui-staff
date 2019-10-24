@@ -1,0 +1,54 @@
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" >
+	<form method="post" id="ar-edit-charge-options" name="ar-edit-charge" class="modal-content form edit-charge ar-charge">
+    <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()">
+        <span class="icons icon-close invert"></span>
+    </button>
+    
+    <fieldset id="edit-charge" name="edit-charge" class="edit-charge">
+        <span class="h2 message">Adjust charge code</span>
+
+        <span class="text" ng-show="!selectedTransaction.is_group_by_ref">
+            {{adjustData.charge_desc}}
+            <!-- if not a grouped charge show this: -->
+            <strong><span class="currency">{{currencySymbol}}</span> {{adjustData.amount}}</strong>
+        </span>
+        
+        <!-- if a grouped charge
+                If a charge is not selected, disable the adjust button-->
+        <div id="choose-charge" class="entry full-width" ng-show="selectedTransaction.is_group_by_ref">
+            <label for="new-amount">Charge:</label>
+            <div class="select">
+                <select class="placeholder" ng-model="selectCharge">
+                    <option value="" class="placeholder">Select a Charge</option>
+                    <option ng-repeat="group in adjustData.charge_details" value="{{group.financial_transaction_id}}">{{group.charge_desc}}(<span class="currency">{{currencySymbol}}</span> {{group.amount}})</option>                   
+                </select>
+             <!--    <select class="placeholder" ng-model="selectCharge" ng-options="group.charge_desc for group in adjustData.charge_details"  ></select> -->
+            </div>
+        </div>
+  
+
+        <div id="edit-amount" class="entry full-width">
+            <label for="new-amount">New Amount (<span class="currency">{{currencySymbol}}</span>)</label>
+            <input name="new-amount" id="new-amount" placeholder="Enter value" value="adjustData.amount" type="text" ng-disabled="selectedTransaction.is_adjustment" ng-model="adjustData.amount" ng-blur="enteredAmount()" />
+        </div>
+        
+        <div class="entry full-width reference" ng-hide="selectedInvoice.is_manual_balance">
+            <label for="reference">Reference</label>
+             <input name="reference" id="reference" placeholder="Enter Reference" value="adjustData.reference_text" type="text" ng-model="adjustData.reference_text" />
+        </div>
+
+        <div class="entry full-width" ng-hide="selectedInvoice.is_manual_balance">
+		    <label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': show_reference_on_guest_invoice}">
+		        <span class="icon-form icon-checkbox" ng-class="{'checked': show_reference_on_guest_invoice}"></span>
+		        <input ng-model="show_reference_on_guest_invoice" id="add-in-guest-card" value="1" type="checkbox" /> {{'SHOW_REFERENCE_ON_GUEST_INVOICE' | translate}}
+		    </label>
+		</div>     
+
+        <div class="actions">
+            <button type="button"  class="button green" ng-click="clickedAdjust()">Adjust</button>
+            <button type="button"  class="button blank" ng-click="closeDialog()">Cancel</button> 
+        </div>
+
+    </fieldset>
+</form>
+</div>

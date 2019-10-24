@@ -5,7 +5,7 @@
         <fieldset id="edit-charge" name="edit-charge" class="edit-charge">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <span class="h2 message" translate>EDIT_CHARGE</span>
-            <span class="text">{{selectedTransaction.desc}}<strong>{{currencySymbol}}{{selectedTransaction.amount}}</strong></span>
+            <span class="text">{{selectedTransaction.desc}}<strong class="currency">{{currencySymbol}}{{selectedTransaction.amount}}</strong></span>
             <ul id="change-edit-type" class="modal-options">
                 <li ng-class="{'active':!chargeCodeActive, 'disabled': shouldDisableEditChargeAmount() }" ng-click="!shouldDisableEditChargeAmount() && setchargeCodeActive(false)" translate>AMOUNT</li>
                 <li ng-class="{'active':chargeCodeActive, 'disabled': shouldDisableEditChargeCode() }" ng-click="!shouldDisableEditChargeCode() && setchargeCodeActive(true)" translate>CHARGE_CODE</li>
@@ -13,7 +13,7 @@
 
             <!-- Edit amount field -->
             <div id="edit-amount" class="entry full-width" ng-hide="chargeCodeActive">
-                <label for="new-amount">{{'NEW_AMOUNT' | translate}}(<span>{{currencySymbol}}</span>)</label>
+                <label for="new-amount">{{'NEW_AMOUNT' | translate}}(<span class="currency">{{currencySymbol}}</span>)</label>
                 <input name="new-amount" id="new-amount" placeholder="{{'ENTER_VALUE_PLACEHOLDER' | translate}}" ng-model="newAmount" type="text" />
             </div>
 
@@ -41,12 +41,23 @@
             <div class="entry full-width">
                 <textarea placeholder="Adjustment reason" ng-model="adjustmentReason" rows="2"></textarea>
             </div>
+            <!-- Reference  -->
+            <div class="entry full-width break">
+                <label for="reference">Reference</label>
+                <input id="reference" placeholder="Enter reference" value="" ng-model="reference_text" type="text" />
+                <label class="checkbox inline" ng-class="{'checked': show_ref_on_invoice}"> <!-- Add class 'checked' when L135 is checked -->
+                    <span class="icon-form icon-checkbox" ng-class="{'checked': show_ref_on_invoice}"></span> <!-- Add class 'checked' when L135 is checked -->
+                    <input type="checkbox" ng-model="show_ref_on_invoice">
+                    Show Reference on Guest Invoice
+                </label>
+            </div
             <!-- Preview, hidden until amount edited or charge code changed -->
-            <div id="edit-preview" class="entry full-width notice" ng-show="selectedChargeCode.description.length>0 || newAmount.length>0">
+            <div id="edit-preview" class="entry full-width notice" ng-show="(selectedChargeCode.description.length>0 || newAmount.length>0) && errorMessage===''">
                 <strong class="h4" translate>CHARGE_WILL_APPEAR_AS</strong>
                 <ul>
                     <li>
                         <strong class="flag" translate>ADJUSTMENT</strong>
+
                         <span ng-hide="selectedChargeCode">
                         {{selectedTransaction.desc}} </span>
                         <span ng-show="selectedChargeCode">{{selectedChargeCode.description}}</span>               
@@ -55,7 +66,7 @@
                 </ul>
             </div>
             <div>
-                <button type="button" class="button green modal-close guest-bill-edit-buttons" ng-click="editCharge(newAmount, selectedChargeCode, adjustmentReason)">{{getEditChargeButtonText() | translate}}</button>
+                <button type="button" class="button green modal-close guest-bill-edit-buttons" ng-click="editCharge()">{{getEditChargeButtonText() | translate}}</button>
                 <button type="button" class="button blank guest-bill-edit-buttons" ng-click="callActionsPopupAction('close')" translate>CANCEL</button> 
             </div>
         </fieldset>

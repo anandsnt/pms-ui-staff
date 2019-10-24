@@ -2,47 +2,44 @@ angular
 .module('diaryModule', [])
 .config(function($stateProvider, $urlRouterProvider, $translateProvider) {
     $stateProvider.state('rover.diary', {
-        url: '/diary/?reservation_id&checkin_date',
+        url: '/diary/?reservation_id&checkin_date&origin&is_nightly_reservation',
         templateUrl: '/assets/partials/diary/rvDiary.html',
         controller: 'rvDiaryCtrl',
         resolve: {
-            diaryAssets: function(jsMappings, mappingList) {
-                return jsMappings.fetchAssets(['react.files', 'rover.diary', 'directives'], ['react']);
-            },
-            propertyTime: function(RVReservationBaseSearchSrv, diaryAssets) {
+            propertyTime: function(RVReservationBaseSearchSrv, $stateParams) {
+                if (!!$stateParams.checkin_date) {
+                    return RVReservationBaseSearchSrv.fetchCurrentTime($stateParams.checkin_date);
+                }
+                
                 return RVReservationBaseSearchSrv.fetchCurrentTime();
             },
-            baseSearchData: function(RVReservationBaseSearchSrv, diaryAssets) {
+            baseSearchData: function(RVReservationBaseSearchSrv) {
                 return RVReservationBaseSearchSrv.fetchBaseSearchData();
             },
-            payload: function($rootScope, rvDiarySrv, $stateParams, $vault, baseSearchData, propertyTime, diaryAssets) {
+            payload: function($rootScope, rvDiarySrv, $stateParams, $vault, baseSearchData, propertyTime) {
                 var start_date = propertyTime.hotel_time.date;
 
-                if ($stateParams.checkin_date) {
+                if (!!$stateParams.checkin_date) {
                     start_date = $stateParams.checkin_date;
                 }
                 return rvDiarySrv.load(rvDiarySrv.properDateTimeCreation(start_date), rvDiarySrv.ArrivalFromCreateReservation());
             }
+        },
+        lazyLoad: function ($transition$) {
+            return $transition$.injector().get('jsMappings')
+                .fetchAssets(['react.files', 'rover.diary', 'directives'], ['react']);
         }
     });
+
     $stateProvider.state('rover.nightlyDiary', {
-        url: '/nightlyDiary/?reservation_id&start_date&isFromStayCard',
+        url: '/nightlyDiary/?reservation_id&room_id&start_date&origin&confirm_id',
         templateUrl: '/assets/partials/nightlyDiary/rvNightlyDiary.html',
         controller: 'rvNightlyDiaryMainController',
         resolve: {
-            reactAssets: function(jsMappings, mappingList) {
-                return jsMappings.fetchAssets(['react.files', 'directives'], ['react']);
-            },
-            reduxAssets: function(jsMappings, reactAssets) {
-                return jsMappings.fetchAssets(['redux.files']);
-            },
-            diaryAssets: function(jsMappings, reduxAssets) {
-                return jsMappings.fetchAssets(['rover.nightlyDiary']);
-            },
-            roomsList: function(RVNightlyDiarySrv, $rootScope, diaryAssets, $stateParams) {
+            roomsList: function(RVNightlyDiarySrv, $rootScope, $stateParams) {
                 var params = {};
 
-                if ($stateParams.isFromStayCard) {
+                if ($stateParams.origin === 'STAYCARD') {
                     params = RVNightlyDiarySrv.getCache();
                 }
                 else {
@@ -51,10 +48,10 @@ angular
                 }
                 return RVNightlyDiarySrv.fetchRoomsList(params);
             },
-            datesList: function(RVNightlyDiarySrv, $rootScope, diaryAssets, $stateParams) {
+            datesList: function(RVNightlyDiarySrv, $rootScope, $stateParams) {
                 var params = {};
 
-                if ($stateParams.isFromStayCard) {
+                if ($stateParams.origin === 'STAYCARD') {
                     params = RVNightlyDiarySrv.getCache();
                 }
                 else {
@@ -69,10 +66,10 @@ angular
                 }
                 return RVNightlyDiarySrv.fetchDatesList(params);
             },
-            reservationsList: function(RVNightlyDiarySrv, $rootScope, diaryAssets, $stateParams) {
+            reservationsList: function(RVNightlyDiarySrv, $rootScope, $stateParams) {
                 var params = {};
 
-                if ($stateParams.isFromStayCard) {
+                if ($stateParams.origin === 'STAYCARD') {
                     params = RVNightlyDiarySrv.getCache();
                 }
                 else {
@@ -83,7 +80,29 @@ angular
                     params.per_page = 50;
                 }
                 return RVNightlyDiarySrv.fetchReservationsList(params);
+            },
+            unassignedReservationList: function(RVNightlyDiarySrv, $rootScope, $stateParams) {
+                var params = {}, cacheData = {};
+
+                if ($stateParams.origin === 'STAYCARD') {
+                    cacheData = RVNightlyDiarySrv.getCache();
+                    params.date = cacheData.start_date;
+                }
+                else {
+                    if (!!$stateParams.start_date) {
+                        params.date = $stateParams.start_date;
+                    }
+                    else {
+                        params.date = $rootScope.businessDate;
+                    }
+                }
+                
+                return RVNightlyDiarySrv.fetchUnassignedReservationList(params);
             }
+        },
+        lazyLoad: function($transition$) {
+            return $transition$.injector().get('jsMappings')
+                .fetchAssets(['react.files', 'redux.files', 'rover.nightlyDiary', 'directives'], ['react']);
         }
     });
 });

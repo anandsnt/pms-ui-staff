@@ -9,8 +9,8 @@ admin.controller('ADTranslationCtrl', ['$scope', '$rootScope', '$state', 'ADTran
         var params = {};
 
         params.locale = $scope.filter.locale;
-        params.menu_option_id = $scope.filter.menuOption;
-        params.option_item_id = $scope.filter.item;
+        params.menu_option_id = $scope.filter.menuOption || 1;
+        params.option_item_id = $scope.filter.item || 1;
         return params;
 
     };
@@ -22,6 +22,10 @@ admin.controller('ADTranslationCtrl', ['$scope', '$rootScope', '$state', 'ADTran
                   loadTable();
                 } else {
                     $scope.tableParams.reload();
+                }
+                if (typeof $scope.filter.menuOption == 'undefined') {
+                    $scope.filter.menuOption = $scope.menuDetails.menu_options[0].id;
+                    $scope.filter.item = $scope.menuDetails.menu_options[0].option_items[0].id;
                 }
 
             },
@@ -137,7 +141,7 @@ admin.controller('ADTranslationCtrl', ['$scope', '$rootScope', '$state', 'ADTran
                                         $filter('orderBy')($scope.data, params.orderBy()) :
                                         $scope.data;
 
-                    $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                    $defer.resolve(orderedData);
                 }
         });
     };
@@ -150,8 +154,6 @@ admin.controller('ADTranslationCtrl', ['$scope', '$rootScope', '$state', 'ADTran
         $scope.menuDetails = menuDetails;
         $scope.filter = {
             locale: $scope.languages.default_locale,
-            menuOption: $scope.menuDetails.menu_options[0].id,
-            item: $scope.menuDetails.menu_options[0].option_items[0].id,
             searchText: ""
         };
 
@@ -159,7 +161,7 @@ admin.controller('ADTranslationCtrl', ['$scope', '$rootScope', '$state', 'ADTran
         $scope.data = [];
         getLabelTranslations();
     };
-
-    init();
+    
+    init();    
 
 }]);

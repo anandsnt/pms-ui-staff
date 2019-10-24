@@ -37,4 +37,8 @@
     "MENU_ACCOUNTING":"Accounting Interface",
     "MENU_REVENUE":"Revenue",
     "MENU_COMMISIONS":"Commissions",
-    "MENU_REPORTS":"Reports"
+    "MENU_REPORTS":"Reports",
+    "MENU_GUESTS": "Guests",
+    "MENU_NEW_REPORT": "New Report",
+    "MENU_REPORTS_INBOX": "Reports Inbox",
+    "MENU_SCHEDULE_REPORT_OR_EXPORT": "Schedule a Report/Export"

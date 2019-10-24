@@ -9,6 +9,7 @@ sntRover.controller('RVDepositBalanceCtrl', [
     '$timeout',
     'rvPermissionSrv',
     'RVReservationCardSrv',
+    '$state',
     function($scope,
              ngDialog,
              $rootScope,
@@ -16,7 +17,7 @@ sntRover.controller('RVDepositBalanceCtrl', [
              RVPaymentSrv,
              $stateParams,
              $filter,
-             $timeout, rvPermissionSrv, RVReservationCardSrv) {
+             $timeout, rvPermissionSrv, RVReservationCardSrv, $state) {
 
         BaseCtrl.call(this, $scope);
 
@@ -66,6 +67,7 @@ sntRover.controller('RVDepositBalanceCtrl', [
         $scope.showAddtoGuestCard = true;
         $scope.shouldCardAvailable = false;
         $scope.depositBalanceMakePaymentData = {};
+        $scope.depositBalanceMakePaymentData.rateCurrency = $scope.depositBalanceData.data.rate_currency;
         $scope.depositBalanceMakePaymentData.amount = parseFloat($scope.depositBalanceData.data.balance_deposit_amount).toFixed(2);
         $scope.refundAmount = 0;
 
@@ -109,6 +111,13 @@ sntRover.controller('RVDepositBalanceCtrl', [
             }, 500);
 
         };
+        
+        /*
+         * Refresh scroll on changing the payment type
+         */
+        $scope.$on("PAYMENT_TYPE_CHANGED", function() {
+           refreshPaymentScroll();
+        });
 
         $scope.reservationData.reservation_card.payment_method_used = ($scope.reservationData.reservation_card.payment_method_used) ? $scope.reservationData.reservation_card.payment_method_used : "";
         $scope.validPayment = true;
@@ -153,7 +162,7 @@ sntRover.controller('RVDepositBalanceCtrl', [
                     buttonClass = "grey";
                 }
             }
-            
+
             return buttonClass;
         };
 
@@ -165,7 +174,7 @@ sntRover.controller('RVDepositBalanceCtrl', [
             } else {
                 buttonClass = "grey";
             }
-            
+
             return buttonClass;
         };
 
@@ -234,7 +243,7 @@ sntRover.controller('RVDepositBalanceCtrl', [
 
                 iFrame.src = iFrame.src;
             }
-            
+
         };
 
         /*
@@ -392,6 +401,9 @@ sntRover.controller('RVDepositBalanceCtrl', [
             // Update reservation type
             $rootScope.$broadcast('UPDATERESERVATIONTYPE', data.reservation_type_id);
             $rootScope.$broadcast('UPDATE_DEPOSIT_BALANCE_FLAG', false);
+
+            // CICO-42399 - Reload staycard after successful payment
+            $state.reload($state.$current.name);
         };
 
 

@@ -1,0 +1,61 @@
+<div id="action-summary" class="action-summary scrollable" ng-iscroll="actionSummaryScroller" ng-iscroll-delay="500">
+    <div class="wrapper">
+                <span class="icons icon-action icon-{{selectedAction.action_status}} icon-100w">{{getActionStatusInfo(selectedAction)}}</span>
+
+                <h3>{{selectedAction.description}}</h3>
+                <span class="info">Created {{selectedAction.created_at_date}} at {{selectedAction.created_at_time}}<span ng-if="selectedAction.assigned_to"> by {{selectedAction.assigned_to.name}}</span></span>
+
+                <div class="info-lists">
+                    <ul>
+                        <li>
+                            Assigned to
+                            <!-- add class .red if unassigned -->
+                            <!-- if unnasigned, 'Department' = Unassigned -->
+                            <strong ng-if="selectedAction.assigned_to">{{selectedAction.assigned_to.name}}</strong>
+                            <strong ng-if="!selectedAction.assigned_to" class="red">Unassigned</strong>
+                        </li>
+                        <li>
+                            Date Due
+                            <strong>{{selectedAction.due_at_date}}</strong>
+                        </li>
+                        <li>
+                            Time Due
+                            <strong>{{selectedAction.due_at_time_str}}</strong>
+                        </li>
+                    </ul>
+                    <!-- If completed -->
+                    <ul class="completed" ng-if="selectedAction.action_status === 'COMPLETED' ">
+                        <li>
+                            Completed by
+                            <strong ng-if="selectedAction.completed_by">{{selectedAction.completed_by.name}}</strong>
+                        </li>
+                        <li>
+                            Date Completed
+                            <strong>{{selectedAction.completed_at | date: dateFormat}}</strong>
+                        </li>
+                        <li>
+                            Time Completed
+                            <strong>{{selectedAction.completed_at | date: "hh:mm a"}}</strong>
+                        </li>
+                    </ul>                    
+                </div>
+    </div> 
+</div>
+                <!-- Add .hidden when showing edit or new action screen -->
+            <!-- if Delete status add class .inline -->
+<div class="detail-actions" ng-show="actionSelected === 'selected'" ng-class="{'inline': selectedAction.action_status === 'delete'}">
+    
+    <!-- If Unnasigned or assigned -->                               
+    <button type="button" class="button white purple-text" ng-click="prepareEditAction(selectedAction)" ng-class="{'overlay': !hasPermissionToEditAction(), 'hidden': !shouldShowEditAndCompleteBtns(selectedAction)}">Edit</button>
+    <button type="button" class="button white green-text" ng-click="completeAction()" ng-class="{'hidden': !shouldShowEditAndCompleteBtns(selectedAction)}">Complete</button>
+    
+    <!-- If unnasigned, assigned or completed -->
+    <button type="button" class="button white red-text"  ng-click="prepareDeletAction()" ng-class="{'overlay': !hasPermissionToDeleteAction(), 'hidden': !shouldShowDeleteBtn(selectedAction)}">Delete</button>
+  
+
+    <!-- if delete status -->
+    <button type="button" class="button blank" ng-click="cancelDelete()" ng-class="{'hidden': selectedAction.action_status !== 'delete' }">Cancel</button>
+    <button type="button" class="button red" ng-click="deleteAction()" ng-class="{'hidden': selectedAction.action_status !== 'delete' }">Delete Action</button>
+    
+</div>
+          

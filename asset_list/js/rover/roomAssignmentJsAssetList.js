@@ -10,7 +10,10 @@ module.exports = {
 					controllerRoot + "roomAssignment/**/*.js",
 					controllerRoot + "upgrades/**/*.js",
 					servicesRoot + "roomAssignment/**/*.js",
-					servicesRoot + "nightlyDiary/**/*.js"
+					servicesRoot + "nightlyDiary/**/*.js",
+
+                    // Eliminate all spec files
+                    '!**/*.spec.js'
 				]
 		};
 		return assetsForView;

@@ -12,7 +12,7 @@
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
         <ul class="dashboard-items float">
             <li ng-repeat="submenu in subComponents">
-                <a data-type="load-listing" class="{{submenu.icon_class}}">
+                <a data-type="load-listing" class="{{submenu.icon_class || 'icon-admin-menu icon-settings'}}">
                     {{submenu.name}}
                 </a>
                 <a ng-controller="ADMappingCtrl" class="text" data-type="load-listing"

@@ -7,17 +7,14 @@ module.exports = {
 				filename: roverJsListRoot + 'diaryJsAssetList.js',
 				babelify: false
 			},
-			'rover.todo': {
-				filename: roverJsListRoot + 'todoJsAssetList.js',
-				babelify: true
-			},
 			'rover.dashboard': {
 				filename: roverJsListRoot + 'dashboardJsAssetList.js',
 				babelify: false
 			},
 			'rover.reservation': {
 				filename: roverJsListRoot + 'stayCardJsAssetList.js',
-				babelify: false
+                modules: true,
+				babelify: true
 			},
 			'rover.availability': {
 				filename: roverJsListRoot + 'availabilityJsAssetList.js',
@@ -25,7 +22,7 @@ module.exports = {
 			},
 			'rover.reports': {
 				filename: roverJsListRoot + 'reportsJsAssetList.js',
-				babelify: false
+				babelify: true
 			},
 			'rover.rateManager': {
 				filename: roverJsListRoot + 'newRateManagerJsAssetList.js',
@@ -50,7 +47,7 @@ module.exports = {
 			},
 			'rover.financials': {
 				filename: roverJsListRoot + 'financialsJsAssetList.js',
-				babelify: false
+				babelify: true
 			},
 			'postcharge': {
 				filename: roverJsListRoot + 'postChargeJsAssetList.js',
@@ -102,11 +99,15 @@ module.exports = {
 			},
 			'rover.actionsManager': {
 				filename: roverJsListRoot + 'actionJsAssetList.js',
-				babelify: false
+				babelify: true
+			},
+			'rover.quicktext': {
+				filename: roverJsListRoot + 'quicktextJsAssetList.js',
+				babelify: true
 			},
 			'rover.companycardsearch': {
 				filename: roverJsListRoot + 'companyCardSearchJsAssetList.js',
-				babelify: false
+				babelify: true
 			},
 			'rover.companycarddetails': {
 				filename: roverJsListRoot + 'companyCardDetailsJsAssetList.js',
@@ -122,6 +123,23 @@ module.exports = {
 			},
 			'rover.reservation.staycard.roomassignment': {
 				filename: roverJsListRoot + 'roomAssignmentJsAssetList.js',
+				babelify: false
+			},
+			'rover.overbooking': {
+				filename: roverJsListRoot + 'overBookingJsAssetList.js',
+				babelify: true
+			},
+			'rover.guestcardsearch': {
+				filename: roverJsListRoot + 'guestCardSearchJsAssetList.js',
+				babelify: false
+			},
+			'rover.guestcarddetails': {
+				filename: roverJsListRoot + 'guestCardDetailsJsAssetList.js',
+                modules: true,
+				babelify: true
+			},
+			'rover.reportAnalytics': {
+				filename: roverJsListRoot + 'reportsAnalyticsAssetsList.js',
 				babelify: false
 			}
 		};

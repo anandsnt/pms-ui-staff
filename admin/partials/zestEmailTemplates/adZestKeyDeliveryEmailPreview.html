@@ -1,0 +1,289 @@
+<html>
+   <head>
+      <style type="text/css">
+         .zest-web-main-container {
+         margin: 0;
+         width: 750;
+         border-radius: 25px;
+         border-style: solid;
+         border-width: 25px;
+         margin: 0 auto;
+         height: auto;
+         }
+         body,
+         table,
+         td,
+         a {
+         -webkit-text-size-adjust: 100%;
+         -ms-text-size-adjust: 100%;
+         }
+         .zest-web-main-container a {
+            text-decoration: underline;
+         }
+         /* Prevent WebKit and Windows mobile changing default text sizes */
+         table,
+         td {
+         mso-table-lspace: 0pt;
+         mso-table-rspace: 0pt;
+         }
+         /* Remove spacing between tables in Outlook 2007 and up */
+         img {
+         -ms-interpolation-mode: bicubic;
+         }
+         /* Allow smoother rendering of resized image in Internet Explorer */
+         /* RESET STYLES */
+         img {
+         border: 0;
+         height: auto;
+         line-height: 100%;
+         outline: none;
+         text-decoration: none;
+         }
+         table {
+         border-collapse: collapse !important;
+         }
+         body {
+         height: 100% !important;
+         margin: 0 !important;
+         padding: 0 !important;
+         width: 100% !important;
+         }
+         /* iOS BLUE LINKS */
+         a[x-apple-data-detectors] {
+         color: inherit !important;
+         text-decoration: none !important;
+         font-size: inherit !important;
+         font-family: inherit !important;
+         font-weight: inherit !important;
+         line-height: inherit !important;
+         }
+         /* MOBILE STYLES */
+         @media screen and (max-width: 525px) {
+         /* ALLOWS FOR FLUID TABLES */
+         .wrapper {
+         width: 100% !important;
+         max-width: 100% !important;
+         }
+         /* ADJUSTS LAYOUT OF LOGO IMAGE */
+         .logo img {
+         margin: 0 auto !important;
+         }
+         /* USE THESE CLASSES TO HIDE CONTENT ON MOBILE */
+         .mobile-hide {
+         display: none !important;
+         }
+         .img-max {
+         max-width: 100% !important;
+         width: 100% !important;
+         height: auto !important;
+         }
+         /* FULL-WIDTH TABLES */
+         .responsive-table {
+         width: 100% !important;
+         }
+         /* UTILITY CLASSES FOR ADJUSTING PADDING ON MOBILE */
+         .padding {
+         padding: 10px 5% 15px 5% !important;
+         }
+         .padding-meta {
+         padding: 30px 5% 0px 5% !important;
+         text-align: center;
+         }
+         .padding-copy {
+         padding: 10px 5% 10px 5% !important;
+         text-align: center;
+         }
+         .no-padding {
+         padding: 0 !important;
+         }
+         .section-padding {
+         padding: 50px 15px 50px 15px !important;
+         }
+         /* ADJUST BUTTONS ON MOBILE */
+         .mobile-button-container {
+         margin: 0 auto;
+         width: 100% !important;
+         }
+         .mobile-button {
+         padding: 15px !important;
+         border: 0 !important;
+         font-size: 16px !important;
+         display: block !important;
+         }
+         }
+         /* ANDROID CENTER FIX */
+         div[style*="margin: 16px 0;"] {
+         margin: 0 !important;
+         }
+         b{
+         font-weight: bold;
+         }
+         i{
+         font-style: italic;
+         }
+      </style>
+   </head>
+   <body>
+      <div class="zest-web-main-container" id="zest-web-main-container" style="{{data.main_bg_style}};">
+         <div style="width:700px;margin:0 auto;">
+            <!-- HEADER
+               -->
+            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+               <tr>
+                  <td align="center">
+                     <table border="0" cellpadding="0" cellspacing="0" class="wrapper" width="100%">
+                        <tr>
+                           <td align="center" class="logo" style="padding: 40px 0;" valign="top">
+                              <img border="0" src="{{hotelDetails.hotel_logo}}" style="display: block; font-family: Helvetica, Arial, sans-serif; color: #ffffff; font-size: 16px;max-width: 400px;margin: 0 auto;" alt=''/>
+                           </td>
+                        </tr>
+                     </table>
+                  </td>
+               </tr>
+               <tr>
+                  <td align="center" class="section-padding" style="padding: 30px 50px;">
+                     <table border="0" cellpadding="0" cellspacing="0" class="responsive-table" style="margin:0 auto;">
+                        <tr>
+                           <td>
+                              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                 <tr>
+                                    <td>
+                                       <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                          <tr>
+                                             <td align="center" class="padding-copy" style="font-size: {{generalSettings.text_1_font_size}}px; font-family: Helvetica, Arial, sans-serif; padding-top: 10px;color: {{generalSettings.text_color}};text-align: {{generalSettings.email_top_text_alignment}};">
+                                                {{generalSettings.hotel_greetings_text}} first_name<span ng-show="generalSettings.show_last_name">&nbsp;last_name</span>
+                                                , 
+                                                <text ng-bind-html="trustHtml(data.email_text_1)"></text>
+                                             </td>
+                                          </tr>
+                                       </table>
+                                    </td>
+                                 </tr>
+                              </table>
+                           </td>
+                        </tr>
+                     </table>
+                  </td>
+               </tr>
+               <tr>
+                  <td align="center" class="section-padding" style="padding: 25px 15px 70px 15px;">
+                     <table border="0" cellpadding="0" cellspacing="0" class="responsive-table" >
+                        <tr>
+                           <td>
+                              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                 <tr>
+                                    <td align="center">
+                                       <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                          <tr>
+                                             <td align="center" class="padding" style="padding-top: 25px;">
+                                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                   <tr ng-if="!isMobileKeyEmail">
+                                                      <td>
+                                                         <!-- COPY -->
+                                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                            <tr>
+                                                               <td align="center" style="padding: 10px 0 0 0; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: {{generalSettings.text_color}};text-align: center;" class="padding-copy">
+                                                                  <span style="font-size: {{keyDeliveryCommonSettings.room_text_font_size}}px" ng-bind-html="trustHtml(keyDeliveryCommonSettings.room_text)">
+                                                                  </span>&nbsp;<span style="font-size: {{keyDeliveryCommonSettings.room_no_font_size}}px;color: {{generalSettings.text_color}};">
+                                                                  {{roomNumber}}
+                                                                  </span>
+                                                               </td>
+                                                            </tr>
+                                                         </table>
+                                                      </td>
+                                                   </tr>
+                                                   <tr ng-if="!isMobileKeyEmail">
+                                                      <td style="padding:60px 50px;">
+                                                         <!-- COPY -->
+                                                         <table border="0" cellspacing="0" cellpadding="0" style="margin: 0 auto;" width="100%">
+                                                            <tr>
+                                                               <td ng-if="isQRMail">
+                                                                  <img src="{{keyImage}}" alt="" />
+                                                               </td>
+                                                               <td colspan="5" style="padding:20px 0px;font-size: {{generalSettings.text_2_font_size}}px;font-family: Helvetica, Arial, sans-serif;text-align: {{generalSettings.email_bottom_text_alignment}}">
+                                                                  <p style="color:{{generalSettings.text_color}};;">
+                                                                     <span ng-bind-html="trustHtml(data.email_text_2)"></span>
+                                                                  </p>
+                                                               </td>
+                                                            </tr>
+                                                         </table>
+                                                         <table width="100%" border="0" cellspacing="0" cellpadding="0" ng-if="isQRMail">
+                                                            <tr>
+                                                               <td align="center" style="padding-top:50px;text-align: center;"> <img src="{{qrImage}}" alt="" style="max-width: 300px;" /> </td>
+                                                            </tr>
+                                                         </table>
+                                                      </td>
+                                                   </tr>
+                                                   <tr>
+                                                      <td align="center">
+                                                         <!-- COPY -->
+                                                         <!-- both present -->
+                                                         <table width="100%" border="0" cellspacing="0" cellpadding="0" ng-if=" keyDeliveryCommonSettings.show_mobile_apps || isMobileKeyEmail">
+                                                            <tr>
+                                                               <td></td>
+                                                               <td align="center" style="padding: 60px 0 0 0;text-align: center;" ng-if="hotelDetails.app_store_app_present">
+                                                                  <a href="{{}}">
+                                                                  <img src="{{hotelDetails.app_store_img}}" style="max-width:110px;padding-bottom: 30px;" width="110" />
+                                                                  </a>
+                                                               </td>
+                                                               <td align="center" style="padding: 60px 0 0 0;text-align: center;" ng-if="hotelDetails.play_store_app_present">
+                                                                  <a href="{{}}">
+                                                                  <img src="{{hotelDetails.play_store_img}}" style="max-width:110px;padding-bottom: 30px;" width="110" />
+                                                                  </a>
+                                                               </td>
+                                                               <td></td>
+                                                            </tr>
+                                                         </table>
+                                                         <!--  -->
+                                                      </td>
+                                                   </tr>
+                                                </table>
+                                             </td>
+                                          </tr>
+                                       </table>
+                                    </td>
+                                 </tr>
+                              </table>
+                           </td>
+                        </tr>
+                     </table>
+                  </td>
+               </tr>
+               <tr>
+                  <td align="center" style="padding: 20px 0px;">
+                     <table align="center" border="0" cellpadding="0" cellspacing="0" class="responsive-table" style="max-width: 700px;" width="100%">
+                        <tr>
+                           <td align="center" style="font-size: {{generalSettings.footer_font_size}}px; line-height: 18px; font-family: Helvetica, Arial, sans-serif;text-align: center;">
+                              <p style="color: {{generalSettings.text_color}}">
+                                 {{generalSettings.footer_starting_text}}&nbsp;{{hotelDetails.hotel_name}} - <a href="{{hotelDetails.hotel_address}}" style="color: {{generalSettings.text_color}}">{{hotelDetails.hotel_address}}
+                                 </a>
+                              </p>
+                              <p style="color:{{generalSettings.text_color}}">
+                                 &copy;{{hotelDetails.current_year}} {{hotelDetails.hotel_brand}}
+                                 <span style="color: {{generalSettings.text_color}}">&nbsp;|&nbsp;</span>
+                                 {{generalSettings.rights_reserved_text}}
+                              </p>
+                              <p style="color:{{generalSettings.text_color}}">    {{hotelDetails.location_adress}}
+                              </p>
+                              <p style="color:{{generalSettings.text_color}}" ng-if="generalSettings.hotel_phone_number.length >0"> {{generalSettings.phone_number_prefix_text}}&nbsp;<a style="color: {{generalSettings.text_color}};" href="tel:{{generalSettings.hotel_phone_number}}" target="_blank">
+                                 {{generalSettings.hotel_phone_number}}
+                                 </a>
+                              </p>
+                              <p>
+                                 <a style="color: {{generalSettings.text_color}};" href="{{generalSettings.privacy_policy_link}}" target="_blank">
+                                 {{generalSettings.privacy_policy_text}}
+                                 </a><span style="color:{{generalSettings.text_color}}">&nbsp;|&nbsp;</span>
+                                 <a style="color: {{generalSettings.text_color}};" href="{{generalSettings.terms_n_conditions_link}}" target="_blank">
+                                 {{generalSettings.terms_n_conditions_text}}
+                                 </a>
+                              </p>
+                           </td>
+                        </tr>
+                     </table>
+                  </td>
+               </tr>
+            </table>
+         </div>
+      </div>
+   </body>
+</html>

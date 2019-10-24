@@ -1,0 +1,17 @@
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
+    <div class="modal-content alert">
+        <button id="modal-close" type="button" class="modal-close" ng-click="cancelChangeDatesAction()">
+            <span class="icons icon-close invert"></span>
+        </button>
+
+        <span class="icons icon-popup-alert"></span>
+        <span class="h2 message" translate>
+            HOUSE_AND_ROOMTYPE_OVERBOOK
+        </span>
+
+        <button type="button" class="button blank" ng-if="shouldShowProceedButtonInNoAvailaility()" ng-click="cancelChangeDatesAction()">Cancel</button>
+
+        <!-- 09.no-availability-no-overbook.png -->
+        <button type="button" class="button blank" ng-if="!shouldShowProceedButtonInNoAvailaility()" ng-click="cancelChangeDatesAction()">Close Window</button> 
+    </div>
+</div>

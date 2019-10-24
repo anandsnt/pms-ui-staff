@@ -6,43 +6,63 @@ module.exports = {
 		controllerRoot 	= roverRoot + 'controllers/',
 		serviceRoot 	= roverRoot + 'services/',
 		directiveRoot	= roverRoot + 'directives/',
+		constantsRoot	= roverRoot + 'constants/',
 		roverJsAssets 	= {
 			minifiedFiles: [
 				jsLibRoot + 'jquery.min.js',
 				jsLibRoot + 'jquery-ui.min.js',
 				jsLibRoot + 'jquery.ui.touch-punch.min.js',
-				jsLibRoot + 'angular.min.js',
-				jsLibRoot + 'angular-route.min.js',
-				jsLibRoot + 'angular-ui-router.min.js',
-				jsLibRoot + 'angular-animate.min.js',
+				jsLibRoot + 'angular.1.7.7.min.js',
+				jsLibRoot + 'angular-route.1.7.7.min.js',
+				jsLibRoot + 'angular-ui-router.1.0.15.min.js',
+				jsLibRoot + 'angular-animate.1.7.7.min.js',
 				jsLibRoot + 'angular-dragdrop.min.js',
 				jsLibRoot + 'oclazyload/ocLazyLoad.min.js',
-				jsLibRoot + 'angular-sanitize.min.js',
-				jsLibRoot + 'angular-translate.min.js',
-				jsLibRoot + 'angular-translate-loader-static-files.min.js',
+				jsLibRoot + 'angular-sanitize.1.7.7.min.js',
+				jsLibRoot + 'angular-translate.2.18.1.min.js',
+				jsLibRoot + 'angular-translate-loader-static-files.2.18.1.min.js',
 				jsLibRoot + 'ui-utils.min.js',
 				jsLibRoot + 'underscore.min.js',
 				jsLibRoot + 'ngDialog.min.js',
-				jsLibRoot + 'fastclick.min.js',
-				jsLibRoot + 'moment.min.js'
+                jsLibRoot + 'fastclick/fastclick.min.js',
+				jsLibRoot + 'moment.min.js',
+                jsLibRoot + 'toastr/toastr.min.js',
+                jsLibRoot + 'd3/d3.v5.min.js',
+                jsLibRoot + 'd3/d3-scale.v3.min.js',
+                // Eliminate all spec files
+                '!**/*.spec.js'
 			],
 			nonMinifiedFiles: [
 				jsLibRoot + 'iscroll.js',
 				jsLibRoot + 'ng-iscroll.js',
 				jsLibRoot + 'Utils.js',
 				jsLibRoot + 'date.js',
+				jsLibRoot + 'fastclick/snt-fastclick-override.js',
+				jsLibRoot + 'sortable.js',
 
 				sharedRoot + 'interceptors/**/*.js',
 				sharedRoot + 'directives/**/*.js',
 				sharedRoot + 'baseCtrl.js',
                 sharedRoot + 'cardReaderCtrl.js',
-                sharedRoot + 'cordova.js',
+                // sharedRoot + 'cordova.js',
+                sharedRoot + 'sntTransitionManager/**/*.js',
+                sharedRoot + 'sntCurrency/sntCurrencyFilter.js',
+                sharedRoot + 'sntCanvasUtil/**/*.js',
+                sharedRoot + 'sntUtils/app.js',
+                sharedRoot + 'sntUtils/**/*.js',
 
 				roverRoot + 'rvRouters/**/*.js',
 				roverRoot + 'rvApp.js',
-				roverRoot + 'rvRouter.js', roverRoot + 'rvCardOperations.js', roverRoot + 'rvMLIOperations.js', roverRoot + 'rvUUIDService.js', roverRoot + 'rvDesktopUUIDService.js',
-				roverRoot + 'rvSwipeOperations.js', roverRoot + 'rvCacheVaultModule.js',
-				roverRoot + 'rvDesktopCardOperations.js', roverRoot + 'rvSntApp.js',
+				roverRoot + 'rvRouter.js',
+                roverRoot + 'rvCardOperations.js',
+                roverRoot + 'rvMockCardOperations.js',
+                roverRoot + 'rvMLIOperations.js',
+                roverRoot + 'rvUUIDService.js',
+                roverRoot + 'rvDesktopUUIDService.js',
+				roverRoot + 'rvSwipeOperations.js',
+                roverRoot + 'rvCacheVaultModule.js',
+				roverRoot + 'rvDesktopCardOperations.js',
+                roverRoot + 'rvSntApp.js',
 
 				roverRoot + 'filters/roundFilter.js',
 				roverRoot + 'filters/highlightWordsFilter.js',
@@ -56,6 +76,7 @@ module.exports = {
 				controllerRoot + 'errorPopup/rvTimeoutErrorCtrl.js',
 				controllerRoot + 'workstation/rvWorkstationCtrl.js',
                 controllerRoot + 'rvOWSErrorCtrl.js',
+                controllerRoot + 'deviceStatus/rvDeviceStatusCtrl.js',
 
 				serviceRoot + 'baseWebSrvV2.js',
 				serviceRoot + 'rvBaseWebSrv.js',
@@ -72,8 +93,15 @@ module.exports = {
 				serviceRoot + 'availability/rvAvailabilitySrv.js',
 				serviceRoot + 'workstation/workstationSrv.js',
 				serviceRoot + 'housekeeping/rvHkRoomStatusSrv.js',
+				serviceRoot + 'deviceStatus/rvDeviceStatusSrv.js',
+                serviceRoot + 'analytics/**/*.js',
+
 				directiveRoot + 'Outside Click handler/outsideClickDirective.js',
-				directiveRoot + 'pagination/*.js'
+				directiveRoot + 'pagination/*.js',
+				directiveRoot + 'fullscreen/*.js',
+
+                // Eliminate all spec files
+                '!**/*.spec.js'
 			]
 		};
 

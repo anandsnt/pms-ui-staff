@@ -72,12 +72,10 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 					// propogate values
 					copyValuesThroughDates(each.dates, 'release_days', value);
 					each.copy_values_to_all = true;
-					each.start_date = formatDateForAPI(timeLineStart);
-					each.end_date = formatDateForAPI($scope.massUpdateEndDate);
 				});
 
 				// Save room block now.
-				$scope.saveReleaseDays();
+				$scope.saveReleaseDays(value, $scope.massUpdateEndDate);
 				$timeout($scope.closeDialog, 100);
 
 			}
@@ -137,7 +135,8 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 					}
 				}
 			} else {
-				$scope.errorMessage = error;
+                $scope.$emit('UPDATE_ERR_MSG', error);
+                $scope.closeDialog();
 			}
 		};
 

@@ -1,5 +1,6 @@
-angular.module('sntRover').controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout', 'RVContactInfoSrv', 'RVGuestCardLoyaltySrv',
-	function($scope, RVCompanyCardSrv, $timeout, RVContactInfoSrv) {
+angular.module('sntRover').controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout', 'RVContactInfoSrv', 'RVSearchSrv', 'rvPermissionSrv', '$rootScope',
+	function($scope, RVCompanyCardSrv, $timeout, RVContactInfoSrv, RVSearchSrv, rvPermissionSrv, $rootScope) {
+        GuestCardBaseCtrl.call (this, $scope, RVSearchSrv, RVContactInfoSrv, rvPermissionSrv, $rootScope);
 		$scope.searchMode = true;
 		$scope.guestCardData.selectedLoyaltyLevel = "";
                 $scope.loyaltyTabEnabled = false;
@@ -69,6 +70,13 @@ angular.module('sntRover').controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCa
                     $scope.invokeApi(RVCompanyCardSrv.fetchHotelLoyaltiesHlps, {}, loyaltyFetchsuccessCallbackhlps);
                     $scope.invokeApi(RVCompanyCardSrv.fetchHotelLoyaltiesFfp, {}, loyaltyFetchsuccessCallbackffp);
                  };
+
+        // Listener to update the guest card action manage btn status
+        var guestCardActionButtonStatusUpdateListener = $scope.$on('UPDATE_GUEST_CARD_ACTIONS_BUTTON_STATUS', function (event, data) {
+            $scope.manageCardState.isOpen = data.status;
+        });
+
+        $scope.$on('$destroy', guestCardActionButtonStatusUpdateListener);
 
 	}
 ]);

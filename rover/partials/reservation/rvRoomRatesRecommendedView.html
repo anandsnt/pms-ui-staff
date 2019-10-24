@@ -4,16 +4,17 @@
             <h2>{{rate.name}}</h2>
 
             <span ng-show="rate.restriction.length < 3" class="restriction-icon {{eachRestriction.restrictionIcon}} {{eachRestriction.restrictionBgClass}}"  ng-repeat="eachRestriction in rate.restriction">{{eachRestriction.days}}</span>
-            <span ng-show="rate.restriction.length >= 3" class="restriction-icon bg-drk" >R</span>
-             <span class="corporate" ng-if="rate.isCorporate" translate>CORPORATE_LABEL</span>
+            <span ng-show="rate.restriction.length >= 3" class="restriction-icon bg-drk">R</span>
+             <span class="corporate" ng-if="rate.isCorporate">{{'CORPORATE_LABEL' | translate}} : {{rate.contractName}}</span>
              <span class="corporate" ng-if="rate.isPromotion">PROMOTION</span>
              <span class="corporate" ng-if="rate.isMember">MEMBER</span>
              <span class="corporate" ng-if="rate.isGroupRate">GROUP</span>
              <span class="corporate" ng-if="rate.isAllotmentRate">ALLOTMENT</span>
         </div>
         <div class="book-rate" ng-if="rate.isCollapsed">
+            <span class="reservation-type red" ng-if="rate.isDayUse">D</span>
             <div class="price" ng-if="!rate.isSuppressed">
-                {{currencySymbol}}{{rate.defaultADR | number: 2}}
+                {{rate.rateCurrency}}{{rate.defaultADR | number: 2}}
                 <span translate>RESV_AVG_NIGHT</span>
             </div>
             <div class="price" ng-if="rate.isSuppressed">
@@ -29,7 +30,7 @@
                 ng-hide="(stateCheck.selectedStayDate.rate.id == rate.id &&
                     (stateCheck.selectedStayDate.roomType.id == rate.defaultRoomTypeId ||
                         reservationData.rooms[activeRoom].roomTypeId == rate.defaultRoomTypeId )) ||
-                            restrictIfOverbook(rate.defaultRoomTypeId,rate.id)"
+                            restrictIfOverbook(rate.defaultRoomTypeId,rate.id,rate.defaultRoomTypeAvailability)"
                 ng-click="handleBooking(rate.defaultRoomTypeId,rate.id,$event)" translate>
                 RESV_BOOK
             </button>
@@ -65,7 +66,7 @@
                     </span>
                 </h3>  -->
                 <div class="price" ng-if="!rate.isSuppressed">
-                    {{currencySymbol}}{{room.adr | number: 2}}
+                    {{room.rateCurrency}}{{room.adr | number: 2}}
                     <span translate>RESV_AVG_NIGHT</span>
                 </div>
                 <div class="price" ng-if="rate.isSuppressed">
@@ -75,7 +76,7 @@
                 <button ng-show="stateCheck.selectedStayDate.rate.id == rate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id)" class="button white blue-text" ng-click="handleNoEdit($event,room.id,rate.id)">
                     CURRENT RATE
                 </button>
-                <button class="button {{room.buttonClass}}" ng-hide="room.isSuiteUnavailable || (stateCheck.selectedStayDate.rate.id == rate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id)) || restrictIfOverbook(room.id,rate.id)" ng-click="handleBooking(room.id,rate.id, $event)" translate>RESV_BOOK
+                <button class="button {{room.buttonClass}}" ng-hide="room.isSuiteUnavailable || (stateCheck.selectedStayDate.rate.id == rate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id)) || restrictIfOverbook(room.id,rate.id,room.availability)" ng-click="handleBooking(room.id,rate.id, $event)" translate>RESV_BOOK
                 </button>
             </a>
             <div class="rate-details" ng-if="room.showDays">
@@ -99,30 +100,30 @@
                     <tfoot>
                         <tr>
                             <td colspan="5" class="total-label" translate>RESV_TOTAL_ROOM</td>
-                            <td class="total-value" ng-if="!rate.isSuppressed">{{currencySymbol}}{{room.total | number:2}}</td>
+                            <td class="total-value" ng-if="!rate.isSuppressed">{{room.rateCurrency}}{{room.total | number:2}}</td>
                             <td ng-if="rate.isSuppressed">SR</td>
                         </tr>
                     </tfoot>
                     <tbody>
                         <tr ng-repeat="day in room.dates">
                             <td>
-                                {{day.obj | date: fulldayInWeek }}, {{day.obj | date: dateFormat }}
+                               {{day.obj | date: fulldayInWeek }}, {{day.obj | date: dateFormat }}
                             </td>
                             <!-- Room charge -->
-                            <td ng-if="!rate.isSuppressed">{{currencySymbol}}{{day.amount | number: 2}}</td>
+                            <td ng-if="!rate.isSuppressed">{{day.rateCurrency}}{{day.amount | number: 2}}</td>
                             <td ng-if="rate.isSuppressed">SR</td>
                             <!-- Add on -->
                             <td ng-if="!rate.isSuppressed && !day.inclusiveAddonsExist">{{currencySymbol}}{{day.addon | number: 2}}</td>
                             <td ng-if="!rate.isSuppressed && !!day.inclusiveAddonsExist">INCL</td>
                             <td ng-if="rate.isSuppressed">SR</td>
                             <!-- taxes -->
-                            <td ng-if="!rate.isSuppressed">{{currencySymbol}}{{day.tax.incl | number: 2}}</td>
+                            <td ng-if="!rate.isSuppressed">{{day.rateCurrency}}{{day.tax.incl | number: 2}}</td>
                             <td ng-if="rate.isSuppressed">SR</td>
                             <!-- excl taxes -->
-                            <td ng-if="!rate.isSuppressed">{{currencySymbol}}{{day.tax.excl | number: 2}}</td>
+                            <td ng-if="!rate.isSuppressed">{{day.rateCurrency}}{{day.tax.excl | number: 2}}</td>
                             <td ng-if="rate.isSuppressed">SR</td>
                             <!-- incl taxes -->
-                            <td ng-if="!rate.isSuppressed">{{currencySymbol}}{{day.total | number: 2}}</td>
+                            <td ng-if="!rate.isSuppressed">{{day.rateCurrency}}{{day.total | number: 2}}</td>
                             <td ng-if="rate.isSuppressed">SR</td>
                             <td class="edit"></td>
                         </tr>

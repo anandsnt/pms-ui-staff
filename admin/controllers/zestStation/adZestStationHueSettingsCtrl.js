@@ -1,16 +1,80 @@
-admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', 'kioskSettings', '$log',
+admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$state', '$rootScope', '$stateParams', 'ADZestStationSrv', 'kioskSettings', '$log',
 	function($scope, $state, $rootScope, $stateParams, ADZestStationSrv, kioskSettings, $log) {
 
 
 		var initialize = (function() {
 			BaseCtrl.call(this, $scope);
-			$scope.$emit('changedSelectedMenu', 10);
 			$scope.errorMessage = '';
 			$scope.successMessage = '';
 			$scope.hueSettings = kioskSettings;
 			$scope.availableBridges = []; // Have to manulay discover bridges
 			$scope.availableLights = []; // Have to manulay discover lights
+			$scope.hueSettings.hue_value = 0;
+			$scope.lightEffects = [{
+				id: 0,
+				name: "None"
+			}, {
+				id: 1,
+				name: "Once"
+			}, {
+				id: 2,
+				name: "Multiple"
+			}];
+			$scope.quickSet = [0, 36, 73, 109, 145, 181, 218, 254];
+			$scope.quickHueSet = [{
+				id: 0,
+				label: '0 - Red'
+			}, {
+				id: 1,
+				label: '1'
+			}, {
+				id: 2,
+				label: '2 - Orange'
+			}, {
+				id: 3,
+				label: '3'
+			}, {
+				id: 4,
+				label: '4'
+			}, {
+				id: 5,
+				label: '5 - Yellow'
+			}, {
+				id: 6,
+				label: '6'
+			}, {
+				id: 7,
+				label: '7 - Green'
+			}, {
+				id: 8,
+				label: '8'
+			}, {
+				id: 9,
+				label: '9'
+			}, {
+				id: 10,
+				label: '10'
+			}, {
+				id: 11,
+				label: '11 - Blue'
+			}, {
+				id: 12,
+				label: '12'
+			}, {
+				id: 13,
+				label: '13 - Violet'
+			}, {
+				id: 14,
+				label: '14'
+			}, {
+				id: 15,
+				label: '15'
+			}];
 		}());
+
+		$scope.setHue = function() {
+			$scope.hueSettings.light_hue = Math.round(65535 * $scope.hueSettings.hue_value / 16);
+		};
 
 		var ws, runDigestCycle = function() {
 				if (!$scope.$$phase) {
@@ -85,7 +149,15 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 		 * @return {[type]} [description]
 		 */
 		function createNewWebSocketConnection() {
-			ws = new WebSocket("wss://localhost:4649/CCSwipeService");
+			var wsSwipeUrl = $rootScope.wsCCSwipeUrl;
+			var wsSwipePort = $rootScope.wsCCSwipePort;
+			var port = (_.isUndefined(wsSwipePort) || wsSwipePort === '' || wsSwipePort === null) ? 4649 : wsSwipePort;
+
+			if (_.isUndefined(wsSwipeUrl) || wsSwipeUrl === '') {
+				ws = new WebSocket('wss://localhost:' + port + '/CCSwipeService');
+			} else {
+				ws = new WebSocket(wsSwipeUrl + ':' + port + '/CCSwipeService');
+			}
 			// Triggers when websocket connection is established.
 			ws.onopen = function() {
 				$log.info("Connected. Warning : Clicking on Connect multipple times will create multipple connections to the server");
@@ -154,7 +226,11 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 				"hueLightAppkey": $scope.hueSettings.hue_user_name,
 				"shouldLight": "1",
 				"lightColor": $scope.hueSettings.hue_light_color_hex,
-				"lightList": [$scope.hueSettings.hue_test_light_id]
+				"lightList": [$scope.hueSettings.hue_test_light_id],
+				"brightness": $scope.hueSettings.hue_brightness,
+				"blink": $scope.hueSettings.hue_blinking_effect
+				// "hue": $scope.hueSettings.light_hue,
+				// "saturation": $scope.hueSettings.hue_light_saturation
 			};
 			var jsonstring = JSON.stringify(json);
 			

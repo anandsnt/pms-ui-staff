@@ -157,6 +157,18 @@
     "PRIMARY_EXTERNAL_REFERENCE": " [PRIMARY]",
 
 
-    "GUEST_ID_BUTTON": "GUEST ID"
+    "GUEST_ID_BUTTON": "GUEST ID",
+    "GUEST_ID_MISSING_BUTTON": "GUEST ID MISSING",
+    "CONTINUE_TO_CHECKIN_BUTTON": "Continue To Checkin",
 
+    "NEW_GUEST": "New Guest",
+    "GUEST_CARD": "Guest Card",
+    "CREATE_RESERVATION": "New Reservation",
+    "FIND_GUESTS": "Find Guests",
+    "REVERSE_CHECKIN": "Reverse Check In",
+    "CHECK_IN_REVERSED": "Check In Reversed",
+    "PLEASE_SET_ROOM_STATUS": "Please set housekeeping status",
 
+    "PRINT_LETTER": "Print Letter",
+    "SEND_EMAIL": "Send Email",
+    "CLOSE_WINDOW": "Close Window"

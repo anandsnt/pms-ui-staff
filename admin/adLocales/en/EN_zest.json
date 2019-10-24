@@ -96,8 +96,10 @@
 "GUESWEB_DEMO_MODE_ON" :"Zest web demo mode",
 "COUNTRY_SORT" : "Country sort",
 "ENFORCE_COUNTRY_SORT" : "Enforce country sort order",
+"FREE_FORM_COUNTRY_SELECT": "Free form country Select",
+"COUNRTY_FILTER_INSTRUCTIONS": "By default, the country list will be in alphabetical order. To narrow results further, use the filters below.",
 "ADDRESS_COUNTRY_LIST" : "Address country list",
-"VALIDATE_FIRST_NAME" : "Validate First Name",
+"VALIDATE_FIRST_NAME" : "Validate First Name Initial",
 "SINGLE" : "SINGLE",
 "DOUBLE" : "DOUBLE",
 "OPT_IN" : "Opt In",
@@ -152,9 +154,19 @@
 "UPSELL_ADONS": "Upsell Add Ons",
 "ADDONS_INSTRUCTION": "Control the Add Ons offered during check in. Drag and drop to control display order",
 
-"GUEST_ID_SETUP":"Guest ID Scan Setup",
-"VIEW_GUEST_ID":"View Scanned Guest IDs"
+"AUTHORIZATION_AMOUNT": "Authorization amount",
 
+"GUEST_ID_SETUP":"Guest ID Scan Setup",
+"VIEW_GUEST_ID":"View Scanned Guest IDs",
+"GUEST_ID_TYPES":"ID Types",
+"ID_TYPES_PASSPORT":"Passport",
+
+
+"MANUAL_ID_VERIFFICATION": "One-time Manual ID verification",
+"ASSIGN_PIN_FOR_STAFF_TO_VERIFY_ID": "To approve guest ID's, each staff member needs an staff ID. After saving this setting, please go to user setup to add",
+"GO_TO_USERS": "Go to User setup",
+
+"AUTHENTICATE_CC": "Authenticate Credit Card"
 
 
 

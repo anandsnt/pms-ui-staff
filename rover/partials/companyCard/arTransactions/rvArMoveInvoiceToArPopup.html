@@ -1,0 +1,144 @@
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
+	<div class="modal-content ar-move-invoice" ng-class="{'confirm': moveInvoiceData.isConfirmInvoiceMoveScreen }">
+		<button ng-click="closeDialog()" class="modal-close dark-title" id="modal-close" type="button"><span class="icons icon-close"></span></button>
+		<div class="modal-header">
+			<div class="modal-header-left">
+				<figure class="guest-image">
+					<img ng-src="{{moveInvoiceHeaderData.image}}" alt="">
+				</figure>
+				<div class="data">
+					<h2 ng-if="moveInvoiceHeaderData.associatedType !== 'PostingAccount'">{{moveInvoiceHeaderData.firstName}} {{moveInvoiceHeaderData.lastName}}</h2>
+					<h2 ng-if="moveInvoiceHeaderData.associatedType === 'PostingAccount'">{{moveInvoiceHeaderData.accountName}}</h2>
+					<div class="information">
+						<span ng-if="moveInvoiceHeaderData.invoiceNumber && moveInvoiceHeaderData.associatedType !== 'PostingAccount'" class="invoice">{{ 'INVOICE#' | translate }}<span class="value">{{moveInvoiceHeaderData.invoiceNumber}}</span></span>
+						<span ng-if="moveInvoiceHeaderData.invoiceNumber && moveInvoiceHeaderData.associatedType === 'PostingAccount'" class="invoice">{{ 'ACCOUNT#' | translate }}<span class="value">{{moveInvoiceHeaderData.invoiceNumber}}</span></span>
+						<span ng-if="moveInvoiceHeaderData.confirmationNumber" class="confirmation">{{ 'CONF#' | translate }}<span class="value">{{moveInvoiceHeaderData.confirmationNumber}}</span></span>		
+					</div>
+				</div>
+			</div>
+			<div class="modal-header-right">
+				<div class="guest-dates">
+					<div class="guest-date arrival" ng-if="moveInvoiceHeaderData.arrivalDate"> 
+		                <span class="guest-status small-icon check-in" translate>CHECKIN</span> 
+		                <time datetime="{Check In datetime | exp. 2017-08-31T12:00:00}"> 
+		                    <span class="date">{{moveInvoiceHeaderData.arrivalDate | date:dateFormat }}</span> 
+		                    <span class="time">{{moveInvoiceHeaderData.arrivalTime}}</span> 
+		                </time> 
+		            </div> 
+		            <div class="guest-date departure" ng-if="moveInvoiceHeaderData.departureDate"> 
+		                <span class="guest-status small-icon check-out" translate>CHECKOUT</span> 
+		                <time datetime="{Check Out datetime | exp. 2017-08-31T12:00:00}"> 
+		                    <span class="date">{{moveInvoiceHeaderData.departureDate | date:dateFormat }}</span> 
+		                    <span class="time">{{moveInvoiceHeaderData.departureTime}}</span> 
+		                </time> 
+		            </div> 
+				</div>
+				<div class="stay-cost">
+					<span class="currency">{{currencySymbol}}</span>
+					{{moveInvoiceHeaderData.amount | number:2 }}
+				</div>
+			</div>
+		</div>
+		<div class="modal-body">
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<div class="search-form" ng-hide="moveInvoiceData.isConfirmInvoiceMoveScreen">
+				<div class="entry search">
+		            <button ng-click="clearSearchQuery()" ng-show="moveInvoiceData.query.length > 0" class="clear-query" ng-class="{'visible': moveInvoiceData.query.length > 0 }">
+		                <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
+		            </button>
+		            <button type="submit" name="submit" class="icons icon-search" translate>SEARCH</button>
+		            <input ng-change="changedSearchQuery()" ng-model="moveInvoiceData.query" class="query" placeholder="{{ 'SEARCH_TXT_AR_ACCOUNT' | translate }}" type="search" autocomplete="off">
+		        </div>
+			</div>
+
+			<section ng-hide="moveInvoiceData.isConfirmInvoiceMoveScreen" class="ar-card-results scrollable" ng-class="{'no-results': !moveInvoiceData.searchResult.accounts.length > 0, 'with-pagination': showPagination() }" role="complementary" ng-iscroll="arMoveInvoiceListScroll" ng-isroll-delay="500">
+			    <div class="wrapper">
+			        <ul class="search-results">
+
+			        	<li class="no-content" ng-hide="moveInvoiceData.searchResult.accounts.length > 0">
+			        		<div class="info">
+			        			<span class="icon-no-content icon-groups"></span>
+			        			<strong class="h1" translate>MOVE_TO_ANOTHER_AR_ACCOUNT</strong>
+			        			<span class="h2">
+			        				{{ 'SEARCH_BY' | translate }}<strong>{{'NAME' | translate }}</strong>, <strong>{{'NUMBER' | translate }}</strong>, <strong>{{ 'DISPLAY_NAME' | translate }}</strong>, <strong>{{ 'ADDRESS' | translate }}</strong> {{ 'OR' | translate }}<strong>{{ 'CITY' | translate }}</strong>
+			        			</span>
+			        		</div>
+			        	</li>
+
+			        	<li ng-click="clickedOnCard(account)" class="card all-cards" ng-if="moveInvoiceData.searchResult.accounts.length > 0 " ng-repeat="account in moveInvoiceData.searchResult.accounts">
+	 						<div class="faux-anchor">
+	 							<div class="guest-image icons" ng-class="{'icon-company': account.type === 'COMPANY', 'icon-travel-agent': account.type === 'TRAVELAGENT' }"></div>
+	 							<div class="data">
+	 								<h2 ng-bind-html="getHighlightedHTML(account.account_name, moveInvoiceData.query)"></h2>
+	 								<div class="information">
+	 									<span class="number">{{account.ar_number}}</span>
+	 									<span ng-class="{'icons': account.location}" class="icon-location">{{account.location}}</span>
+	 									<span ng-if="account.type === 'COMPANY'" ng-class="{'icons': account.account_number}" class="icon-guest-company">{{account.account_number}}</span>
+	 									<span ng-if="account.type === 'TRAVELAGENT'" ng-class="{'icons': account.account_number}" class="icon-guest-travelagent">{{account.account_number}}</span>
+	 									<span ng-class="{'icons': account.ageing_date}" class="icon-time">{{account.ageing_date}}</span>
+	 								</div>
+	 							</div>
+	 						</div>
+	 					</li>
+
+			        </ul>
+			    </div>
+	 		</section>
+	 		<!-- Include if we need pagination -->
+	 		<rv-pagination ng-show="showPagination()" page-options="accountListPagination" page-data="moveInvoiceData.searchResult.total_result"></rv-pagination>
+
+	 		<div class="confirm-move" ng-show="moveInvoiceData.isConfirmInvoiceMoveScreen">
+	 			<strong class="h2 message" translate>CONFIRM_INVOICE_MOVE</strong>
+	 			<div class="confirm-card confirm-from">
+	 				<span class="type" translate>FROM</span>
+	 				<div class="ar-card-results">
+		 				<ul class="search-results">
+		 					<li class="card all-cards">
+		 						<div class="faux-anchor disabled">
+		 							<div class="guest-image icons" ng-class="{'icon-company': moveInvoiceData.fromAccount.type === 'COMPANY', 'icon-travel-agent': moveInvoiceData.fromAccount.type === 'TRAVELAGENT' }"></div>
+		 							<div class="data">
+		 								<h2>{{moveInvoiceData.fromAccount.accountName}}</h2>
+		 								<div class="information">
+		 									<span class="number">{{moveInvoiceData.fromAccount.accountName}}</span>
+		 									<span ng-class="{'icons': moveInvoiceData.fromAccount.location}" class="icon-location">{{moveInvoiceData.fromAccount.location}}</span>
+		 									<span ng-if="moveInvoiceData.fromAccount.type === 'COMPANY'" ng-class="{'icons': moveInvoiceData.fromAccount.accountNumber}" class="icon-guest-company">{{moveInvoiceData.fromAccount.accountNumber}}</span>
+	 										<span ng-if="moveInvoiceData.fromAccount.type === 'TRAVELAGENT'" ng-class="{'icons': moveInvoiceData.fromAccount.accountNumber}" class="icon-guest-travelagent">{{moveInvoiceData.fromAccount.accountNumber}}</span>
+	 										<span ng-class="{'icons': moveInvoiceData.fromAccount.ageingDate}" class="icon-time">{{moveInvoiceData.fromAccount.ageingDate}}</span>
+		 								</div>
+		 							</div>
+		 						</div>
+		 					</li>
+		 				</ul>
+		 			</div>
+	 			</div>
+	 			<div class="confirm-card confirm-to">
+	 				<span class="type" translate>TO</span>
+	 				<div class="ar-card-results">
+		 				<ul class="search-results">
+		 					<li class="card all-cards">
+		 						<div class="faux-anchor with-button">
+			 						<div class="guest-image icons" ng-class="{'icon-company': moveInvoiceData.toAccount.type === 'COMPANY', 'icon-travel-agent': moveInvoiceData.toAccount.type === 'TRAVELAGENT' }"></div>
+		 							<div class="data">
+		 								<h2>{{moveInvoiceData.toAccount.accountName}}</h2>
+		 								<div class="information">
+		 									<span class="number">{{moveInvoiceData.toAccount.accountName}}</span>
+		 									<span ng-class="{'icons': moveInvoiceData.toAccount.location}" class="icon-location">{{moveInvoiceData.toAccount.location}}</span>
+		 									<span ng-if="moveInvoiceData.toAccount.type === 'COMPANY'" ng-class="{'icons': moveInvoiceData.toAccount.accountNumber}" class="icon-guest-company">{{moveInvoiceData.toAccount.accountNumber}}</span>
+	 										<span ng-if="moveInvoiceData.toAccount.type === 'TRAVELAGENT'" ng-class="{'icons': moveInvoiceData.toAccount.accountNumber}" class="icon-guest-travelagent">{{moveInvoiceData.toAccount.accountNumber}}</span>
+	 										<span ng-class="{'icons': moveInvoiceData.toAccount.ageingDate}" class="icon-time">{{moveInvoiceData.toAccount.ageingDate}}</span>
+		 								</div>
+		 							</div>
+		 							<button ng-click="changeButtonClick()" type="button" class="button blue" translate>CHANGE</button>
+		 						</div>
+		 					</li>
+		 				</ul>
+		 			</div>
+	 			</div>
+	 			<div class="actions">
+	 				<button ng-click="closeDialog()" type="button" class="button blank" translate>CANCEL</button>
+					<button ng-click="moveInvoiceButtonClick()" type="button" class="button green" translate>MOVE_INVOICE</button>
+	 			</div>
+	 		</div>
+		</div>
+	</div>
+</div>

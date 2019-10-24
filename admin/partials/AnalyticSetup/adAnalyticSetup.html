@@ -1,64 +1,274 @@
-<div id="wrapper" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()" >
-	<header class="content-title float">
-		<h2 translate>ANALYTIC_SETUP_HEADER</h2>
-		<a ng-click ="goBackToPreviousState()" class="action back" translate>BACK</a>
-	</header>
-	<section class="content-scroll">
-		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-		<div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
-		<form class="form float" >	
-		    <fieldset class="holder left" ng-show="!isHotelAdmin">
-				
-			
-		    	<ad-textbox value="data.product_cross_customer.tracker_guest_web"  name = "zest-web" id = "zest-web" label = "{{'ZEST_WEB_LABEL' | translate}}" placeholder = "{{'PLACEHOLDER_TRACKING_ID' | translate }}" styleclass="full-width" ></ad-textbox>
-				
-				<ad-textbox value="data.product_cross_customer.tracker_zest_ios"  name = "zest-ios" id = "zest-ios" label = "{{'ZEST_IOS_LABEL' | translate}}" placeholder = "{{'PLACEHOLDER_TRACKING_ID' | translate }}"  readonly="{{readOnly}}" styleclass="full-width"></ad-textbox>
+<div id="wrapper" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
+    <header class="content-title float">
+        <h2 ng-hide='showStationDashboard' translate>ANALYTIC_SETUP_HEADER</h2>
+        <a ng-hide='showStationDashboard' ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
+        <a ng-show='!isHotelAdmin && !showStationDashboard' ng-click="toggleStationDashboard()" class="action" style='background-position-y: 100px;' translate>STATION_DASHBOARD</a>
+        <h2 ng-show='showStationDashboard' translate>STATION_DASHBOARD</h2>
+        <a ng-show='showStationDashboard' ng-click="toggleStationDashboard()" class="action back" translate>BACK</a>
+    </header>
+    <section class="content-scroll">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+        <form class="form float" ng-hide='showStationDashboard'>
+            <fieldset class="holder left" ng-show="!isHotelAdmin">
+                <ad-textbox value="data.product_cross_customer.tracker_guest_web" name="zest-web" id="zest-web" label="{{'ZEST_WEB_LABEL' | translate}}" placeholder="{{'PLACEHOLDER_TRACKING_ID' | translate }}" styleclass="full-width"></ad-textbox>
+                <ad-textbox value="data.product_cross_customer.tracker_zest_ios" name="zest-ios" id="zest-ios" label="{{'ZEST_IOS_LABEL' | translate}}" placeholder="{{'PLACEHOLDER_TRACKING_ID' | translate }}" readonly="{{readOnly}}" styleclass="full-width"></ad-textbox>
+                <ad-textbox label="{{'ZEST_ANDROID_LABEL' | translate}}" value="data.product_cross_customer.tracker_zest_android" placeholder="{{'PLACEHOLDER_TRACKING_ID' | translate }}" name="zest-android" id="zest-android" styleclass="full-width"></ad-textbox>
+            </fieldset>
+            <fieldset class="holder left" ng-show="isHotelAdmin">
+                <div class="form-title full-width">
+                    <h3><span translate>SNT_TRACKERS_TITLE</span> </h3>
+                </div>
+                <ad-textbox value="data.product_customer.tracker_guest_web" name="zest-web" id="zest-web" label="{{'ZEST_WEB_LABEL' | translate}}" placeholder="{{'PLACEHOLDER_TRACKING_ID' | translate }}" styleclass="full-width"></ad-textbox>
+                <ad-textbox value="data.product_customer.tracker_zest_ios" name="zest-ios" id="zest-ios" label="{{'ZEST_IOS_LABEL' | translate}}" placeholder="{{'PLACEHOLDER_TRACKING_ID' | translate }}" readonly="{{readOnly}}" styleclass="full-width"></ad-textbox>
+                <ad-textbox label="{{'ZEST_ANDROID_LABEL' | translate}}" value="data.product_customer.tracker_zest_android" placeholder="{{'PLACEHOLDER_TRACKING_ID' | translate }}" name="zest-android" id="zest-android" styleclass="full-width"></ad-textbox>
+            </fieldset>
+            <fieldset class="holder right" ng-show="isHotelAdmin">
+                <div class="form-title full-width">
+                    <h3><span translate>HOTEL_TRACKERS_TITLE</span> </h3>
+                </div>
+                <ad-select-number label-in-drop-down="{{'SELECT_SERVICE' | translate}}" items="data.available_trackers" selected-id='data.product_customer_proprietary.selected_tracker' selbox-class="placeholder" div-class="full-width" label="{{'ANALYTIC_SERVICE_LABEL' | translate}}">
+                </ad-select-number>
+                <ad-textbox value="data.product_customer_proprietary.tracker_guest_web" name="zest-web" id="zest-web" label="{{'ZEST_WEB_LABEL' | translate}}" placeholder="{{'PLACEHOLDER_TRACKING_ID' | translate }}" styleclass="full-width"></ad-textbox>
+                <ad-textbox value="data.product_customer_proprietary.tracker_zest_ios" name="zest-ios" id="zest-ios" label="{{'ZEST_IOS_LABEL' | translate}}" placeholder="{{'PLACEHOLDER_TRACKING_ID' | translate }}" readonly="{{readOnly}}" styleclass="full-width"></ad-textbox>
+                <ad-textbox label="{{'ZEST_ANDROID_LABEL' | translate}}" value="data.product_customer_proprietary.tracker_zest_android" placeholder="{{'PLACEHOLDER_TRACKING_ID' | translate }}" name="zest-android" id="zest-android" styleclass="full-width"></ad-textbox>
+            </fieldset>
+            <div class="actions float">
+                <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
+                    CANCEL
+                </button>
+                <button type="button" like-type="common" id="update" class="button  ng-binding green" ng-click="saveAnalyticSetup()" translate>
+                    SAVE_CHANGES
+                </button>
+            </div>
+        </form>
+        <form class="form float" ng-show='showStationDashboard'>
+            <script src="https://apis.google.com/js/client:platform.js"></script>
+            <fieldset class="" ng-show="!isHotelAdmin">
+                <meta name="google-signin-client_id" content="864320523517-3knpgsou4qd4nd878s4rs3fffuvoo4gg.apps.googleusercontent.com">
+                <meta name="google-signin-scope" content="https://www.googleapis.com/auth/analytics.readonly">
+                <fieldset class="holder left">
+                    <h1 ng-show='!signedIn'>Please Sign In</h1>
+                    <!-- The Sign-in button. This will run `queryReports()` on success. -->
+                    <p id='sign-in-btn' class="g-signin2" data-onsuccess="onSigninSuccess" data-onfailure="onSignInFailure">Sign-In</p>
+                    <p id='sign-out-btn' style='display:none; ' class="g-signin" ng-click='signOut()'>
+                        <button class="button blue">Google Sign-Out</button>
+                    </p>
+                    <label class="radio" style='margin-top: 5%'>
+                        <span class="icon-form icon-radio" ng-class="{'checked': VIEW_ID_SELECTED =='PMS_PRODUCTION'}"></span>
+                        <input name="audience" value="PMS_PRODUCTION" type="radio" ng-model="VIEW_ID_SELECTED" />
+                        <span>Production</span>
+                    </label>
+                    <label class="radio" style='margin-bottom: -5%'>
+                        <span class="icon-form icon-radio" ng-class="{'checked': VIEW_ID_SELECTED =='PMS_DEV'}"></span>
+                        <input name="audience" value="PMS_DEV" type="radio" ng-model="VIEW_ID_SELECTED" />
+                        <span>Dev/Release</span>
+                    </label>
+                </fieldset>
+                <fieldset class="holder right">
+                    <div style='display: -webkit-box;'>
+                        <input placeholder="From Date" type="text" id="datepicker-from">
+                        </p>
+                        <input placeholder="To Date" type="text" id="datepicker-to">
+                        <button class="button green" ng-click='searchByDate()'>Search</button>
+                    </div>
+                        <input placeholder='Filter events' type='text' ng-model='eventFilter' style='background-color: lightgrey; background-color: lightgrey; width: 63%;margin-top: 15px;' ng-class='{"hidden":showDeviceDetails===""}'>
+                </fieldset>
+                <div class='lmask' ng-click='clickedMask()' ng-show='showDeviceDetails!==""'></div>
+                <div class='loader' ng-show='loading'></div>
+                <!-- Do not remove this header id, its used to inject new data on refresh calls -->
+                <p id='header'></p>
+                <section ng-hide='showDeviceDetails!==""' class="">
+                    <table class="grid">
+                        <tbody>
+                            <tr ng-repeat="hotel in hotelList">
+                                <td ng-click="viewHotelDetails(hotel)">
+                                    <a data-item="3" data-colspan="2" class="edit-data-inline"> {{hotel.name.toUpperCase()}}, {{hotel.devices.length}} online</a>
+                                    <div ng-show='showHotelDetails === hotel.name' ng-repeat="device in hotel.devices" class='station-device'>
+                                        <div ng-class='{"small-problem":device.status==="Out-of-Order", "no-bueno":device.status==="bad"}' ng-click='viewDeviceDetails(device);'>
+                                            <a data-item="1" data-colspan="1" class="edit-data-inline" style=''> 
+                                                <span class='device-title-cls'>
+                                                    {{device.workstation_name}}
+                                                </span>
+                                                <span class='device-status-cls' style='float:right'>
+                                                    {{device.status}} 
+                                                </span>
+                                                <br>
+                                                <span style='float:right'> 
+                                                    {{device.info.lastUpdate}}
+                                                </span>
+                                                <br>
 
-				<ad-textbox label="{{'ZEST_ANDROID_LABEL' | translate}}" value="data.product_cross_customer.tracker_zest_android"  placeholder="{{'PLACEHOLDER_TRACKING_ID' | translate }}" name="zest-android" id="zest-android" styleclass="full-width"></ad-textbox>		
-				
-			</fieldset>	
-			<fieldset class="holder left" ng-show="isHotelAdmin">
-				<div class="form-title full-width">
-							<h3><span translate>SNT_TRACKERS_TITLE</span> </h3>
-						</div>
-			
-		    	<ad-textbox value="data.product_customer.tracker_guest_web"  name = "zest-web" id = "zest-web" label = "{{'ZEST_WEB_LABEL' | translate}}" placeholder = "{{'PLACEHOLDER_TRACKING_ID' | translate }}"  styleclass="full-width"></ad-textbox>
-				
-				<ad-textbox value="data.product_customer.tracker_zest_ios"  name = "zest-ios" id = "zest-ios" label = "{{'ZEST_IOS_LABEL' | translate}}" placeholder = "{{'PLACEHOLDER_TRACKING_ID' | translate }}"  readonly="{{readOnly}}" styleclass="full-width"></ad-textbox>
+                                                <span style='float:right'> 
+                                                    {{device.events.length}} events found
+                                                </span>
+                                                <br>
 
-				<ad-textbox label="{{'ZEST_ANDROID_LABEL' | translate}}" value="data.product_customer.tracker_zest_android"   placeholder="{{'PLACEHOLDER_TRACKING_ID' | translate }}" name="zest-android" id="zest-android" styleclass="full-width"></ad-textbox>		
-				
-			</fieldset>
-			
-			<fieldset class="holder right" ng-show="isHotelAdmin">
-				<div class="form-title full-width">
-							<h3><span translate>HOTEL_TRACKERS_TITLE</span> </h3>
-						</div>
+                                            </a>
+                                        </div>
+                                        <hr>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+                <div class='device-details-view' ng-class='{"hidden":showDeviceDetails===""}' style='margin-top: 5%'>
+                    
+                    <div class='device-view-cls'>
+                        <span style='font-size: x-large; color:black'>{{getHotelName(deviceDetailsToShow.info.theme)}}, {{deviceDetailsToShow.workstation_name}}</span>
+                        <!--span style='color:black; position: absolute;right: 2.25%;'>Filter: <input type='text' ng-model='deviceEventFilter'></span-->
+                        <div class="list-group device-view">
+                            <a class="list-group-item" ng-repeat="evt in deviceDetailsToShow.events | limitTo:evtLimit | filter:eventFilter track by $index">
+                                <div>
+                                    <div ng-click='showEvtDetails(evt, $index)'>
+                                        <i ng-show='evt.workstation_status==="in-order"' ng-show='evt.workstation_status==="out-of-order"'>
+                                        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="15px" height="15px" 
+                                             viewBox="0 0 297 297" style="enable-background:new 0 0 297 297;" transform="scale(-1,1) scale(-1,-1)" xml:space="preserve">
+                                        <path d="M25.602,222.329h35.366c9.577,0,17.935-5.288,22.327-13.093l18.965,6.322c9.336,3.112,24.109,10.402,32.256,15.918
+                                            l56.128,38.003c7.1,4.808,15.63,6.401,23.411,4.366c7.361-1.926,13.317-6.791,16.772-13.701c6.414-12.834,3.407-31.679-6.846-42.9
+                                            l-10.022-10.643h52.472c8.179,0.067,15.809-3.104,21.598-8.861c5.784-5.757,8.972-13.409,8.972-21.549v-0.934
+                                            c0-7.479-2.71-14.334-7.193-19.647c4.483-5.314,7.193-12.169,7.193-19.65v-1.521c0-11.857-6.801-22.146-16.704-27.197
+                                            c1.61-3.711,2.508-7.802,2.508-12.102V93.62c0-12.518-7.579-23.295-18.389-27.993c1.4-3.499,2.18-7.313,2.18-11.304v-1.521
+                                            c0-16.825-13.687-30.514-30.512-30.514l-75.89,0.001c-12.454,0-30.938,4.363-42.083,9.934L82.381,50.09
+                                            C77.802,43.118,69.916,38.5,60.968,38.5H25.602C11.486,38.5,0,49.985,0,64.1v132.628C0,210.844,11.486,222.329,25.602,222.329z
+                                             M252.292,84.837c4.845,0,8.783,3.94,8.783,8.783v1.521c0,4.845-3.939,8.785-8.783,8.785H239.52
+                                            c-5.999,0-10.864,4.865-10.864,10.865c0,5.999,4.865,10.864,10.864,10.864h26.966c4.845,0,8.785,3.94,8.785,8.784v1.521
+                                            c0,4.845-3.94,8.785-8.785,8.785h-21.171c-5.999,0-10.864,4.863-10.864,10.864c0,5.999,4.865,10.864,10.864,10.864h21.171
+                                            c4.845,0,8.785,3.941,8.785,8.783v0.934c0,2.315-0.913,4.496-2.568,6.144c-1.647,1.638-3.817,2.296-6.103,2.296
+                                            c-0.015,0-0.031,0-0.047,0h-77.31c-0.023,0-0.045,0-0.068,0c-5.969,0-10.826,4.579-10.864,10.556c-0.018,2.771,1.014,5.3,2.71,7.229
+                                            l26.919,29.485c4.628,5.065,5.655,14.121,3.452,18.53c-0.632,1.261-1.585,2.067-2.837,2.395c-1.723,0.455-3.809-0.037-5.729-1.338
+                                            l-56.128-38.003c-9.816-6.646-26.316-14.789-37.567-18.539l-22.561-7.521V72.29l41.26-20.632c8.142-4.07,23.265-7.641,32.364-7.641
+                                            l75.89-0.001c4.844,0,8.782,3.94,8.782,8.785v1.521c0,4.845-3.938,8.785-8.782,8.785h-12.772c-5.999,0-10.864,4.864-10.864,10.864
+                                            s4.865,10.864,10.864,10.864H252.292z M21.729,64.1c0-2.098,1.774-3.871,3.873-3.871h35.366c2.102,0,3.873,1.774,3.873,3.871
+                                            v132.628c0,2.099-1.771,3.873-3.873,3.873H25.602c-2.099,0-3.873-1.774-3.873-3.873V64.1z"/>
+                                        </svg>
+                                    </i>
+                                        <i ng-show='evt.workstation_status==="out-of-order"'>
+                                        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="15px" height="15px" 
+                                             viewBox="0 0 297 297" style="enable-background:new 0 0 297 297;" transform="scale(-1,1) scale(-1,1)" xml:space="preserve">
+                                        <path d="M25.602,222.329h35.366c9.577,0,17.935-5.288,22.327-13.093l18.965,6.322c9.336,3.112,24.109,10.402,32.256,15.918
+                                            l56.128,38.003c7.1,4.808,15.63,6.401,23.411,4.366c7.361-1.926,13.317-6.791,16.772-13.701c6.414-12.834,3.407-31.679-6.846-42.9
+                                            l-10.022-10.643h52.472c8.179,0.067,15.809-3.104,21.598-8.861c5.784-5.757,8.972-13.409,8.972-21.549v-0.934
+                                            c0-7.479-2.71-14.334-7.193-19.647c4.483-5.314,7.193-12.169,7.193-19.65v-1.521c0-11.857-6.801-22.146-16.704-27.197
+                                            c1.61-3.711,2.508-7.802,2.508-12.102V93.62c0-12.518-7.579-23.295-18.389-27.993c1.4-3.499,2.18-7.313,2.18-11.304v-1.521
+                                            c0-16.825-13.687-30.514-30.512-30.514l-75.89,0.001c-12.454,0-30.938,4.363-42.083,9.934L82.381,50.09
+                                            C77.802,43.118,69.916,38.5,60.968,38.5H25.602C11.486,38.5,0,49.985,0,64.1v132.628C0,210.844,11.486,222.329,25.602,222.329z
+                                             M252.292,84.837c4.845,0,8.783,3.94,8.783,8.783v1.521c0,4.845-3.939,8.785-8.783,8.785H239.52
+                                            c-5.999,0-10.864,4.865-10.864,10.865c0,5.999,4.865,10.864,10.864,10.864h26.966c4.845,0,8.785,3.94,8.785,8.784v1.521
+                                            c0,4.845-3.94,8.785-8.785,8.785h-21.171c-5.999,0-10.864,4.863-10.864,10.864c0,5.999,4.865,10.864,10.864,10.864h21.171
+                                            c4.845,0,8.785,3.941,8.785,8.783v0.934c0,2.315-0.913,4.496-2.568,6.144c-1.647,1.638-3.817,2.296-6.103,2.296
+                                            c-0.015,0-0.031,0-0.047,0h-77.31c-0.023,0-0.045,0-0.068,0c-5.969,0-10.826,4.579-10.864,10.556c-0.018,2.771,1.014,5.3,2.71,7.229
+                                            l26.919,29.485c4.628,5.065,5.655,14.121,3.452,18.53c-0.632,1.261-1.585,2.067-2.837,2.395c-1.723,0.455-3.809-0.037-5.729-1.338
+                                            l-56.128-38.003c-9.816-6.646-26.316-14.789-37.567-18.539l-22.561-7.521V72.29l41.26-20.632c8.142-4.07,23.265-7.641,32.364-7.641
+                                            l75.89-0.001c4.844,0,8.782,3.94,8.782,8.785v1.521c0,4.845-3.938,8.785-8.782,8.785h-12.772c-5.999,0-10.864,4.864-10.864,10.864
+                                            s4.865,10.864,10.864,10.864H252.292z M21.729,64.1c0-2.098,1.774-3.871,3.873-3.871h35.366c2.102,0,3.873,1.774,3.873,3.871
+                                            v132.628c0,2.099-1.771,3.873-3.873,3.873H25.602c-2.099,0-3.873-1.774-3.873-3.873V64.1z"/>
+                                        </svg>
+                                    </i> {{evt.workstation_status}}
+                                    <i ng-show='evt.current_screen!=="zest_station.home" && evt.current_screen!=="zest_station.outOfService" && evt.current_screen!=="device.going_offline" && evt.current_screen!=="device.back_online"'>
 
-			    <ad-select-number label-in-drop-down="{{'SELECT_SERVICE' | translate}}"
-								  items="data.available_trackers"
-								  selected-id='data.product_customer_proprietary.selected_tracker'
-								  selbox-class="placeholder"
-								  div-class="full-width" label="{{'ANALYTIC_SERVICE_LABEL' | translate}}">
-				</ad-select-number>
-				
-				<ad-textbox value="data.product_customer_proprietary.tracker_guest_web"  name = "zest-web" id = "zest-web" label = "{{'ZEST_WEB_LABEL' | translate}}" placeholder = "{{'PLACEHOLDER_TRACKING_ID' | translate }}"  styleclass="full-width"></ad-textbox>
-				
-				<ad-textbox value="data.product_customer_proprietary.tracker_zest_ios"  name = "zest-ios" id = "zest-ios" label = "{{'ZEST_IOS_LABEL' | translate}}" placeholder = "{{'PLACEHOLDER_TRACKING_ID' | translate }}"  readonly="{{readOnly}}" styleclass="full-width"></ad-textbox>
+                                        <svg class='fa-user-svg' version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="15px" height="15px" viewBox="0 0 400.613 400.613" style="enable-background:new 0 0 400.613 400.613;"xml:space="preserve"><g><path d="M277.664,208.01h-16.123c31.146-20.152,51.804-55.194,51.804-94.972C313.345,50.708,262.637,0,200.307,0S87.269,50.708,87.269,113.038c0,39.778,20.656,74.82,51.804,94.972H122.95c-41.434,0-75.143,33.707-75.143,75.141v104.963c0,6.904,5.597,12.5,12.5,12.5h280c6.903,0,12.5-5.596,12.5-12.5V283.15C352.807,241.717,319.098,208.01,277.664,208.01zM112.269,113.038c0-48.544,39.493-88.038,88.038-88.038c48.544,0,88.038,39.494,88.038,88.038c0,48.543-39.494,88.036-88.038,88.036C151.762,201.074,112.269,161.581,112.269,113.038z M236.88,219.998l-36.573,36.574l-36.573-36.573c11.477,3.935,23.779,6.075,36.573,6.075S225.404,223.934,236.88,219.998z M327.807,375.613h-34v-60.059c0-6.904-5.597-12.5-12.5-12.5s-12.5,5.596-12.5,12.5v60.059h-137v-60.059c0-6.904-5.597-12.5-12.5-12.5s-12.5,5.596-12.5,12.5v60.059h-34V283.15c0-27.647,22.494-50.141,50.143-50.141h18.439l50.079,50.078c2.441,2.441,5.64,3.661,8.839,3.661s6.396-1.22,8.839-3.661l50.079-50.078h18.439c27.648,0,50.143,22.492,50.143,50.141V375.613z"/></g></svg>
+                                    </i>
 
-				<ad-textbox label="{{'ZEST_ANDROID_LABEL' | translate}}" value="data.product_customer_proprietary.tracker_zest_android"  placeholder="{{'PLACEHOLDER_TRACKING_ID' | translate }}" name="zest-android" id="zest-android" styleclass="full-width"></ad-textbox>			
-				
-			</fieldset>		
 
-			<div class="actions float">
-				<button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
-					CANCEL
-				</button>
-				<button type="button" like-type="common" id="update" class="button  ng-binding green" ng-click="saveAnalyticSetup()" translate>
-					SAVE_CHANGES
-				</button>
-			</div>
+                                        <i ng-show='evt.current_screen === "zest_station.admin"'>
+                                           <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="15px" height="15px" viewBox="0 0 297 297" style="enable-background:new 0 0 297 297;" xml:space="preserve">
+                                            <path id="XMLID_66_" d="M263.169,268.655h9.526c4.418,0,8,3.582,8,8s-3.582,8-8,8h-9.526c-4.418,0-8-3.582-8-8
+                                                S258.751,268.655,263.169,268.655z M121.802,108.344c0-10.082,1.745-20.022,5.078-29.393c0.119-0.444,0.277-0.881,0.476-1.306
+                                                c3.138-8.402,7.562-16.324,13.156-23.45V8c0-4.418,3.582-8,8-8h122.165c4.418,0,8,3.582,8,8v46.354
+                                                c12.006,15.371,18.583,34.417,18.583,53.989c0,32.146-17.589,60.987-44.345,76.26l-2.755,14.1c-0.746,3.818-4.093,6.467-7.843,6.467
+                                                c-0.509,0-1.024-0.049-1.543-0.15c-4.336-0.847-7.165-5.049-6.317-9.386l0.656-3.356c-2.77,0.843-5.599,1.552-8.486,2.123
+                                                c-4.335,0.855-8.542-1.963-9.399-6.297s1.963-8.542,6.297-9.399c33.454-6.611,57.735-36.203,57.735-70.361
+                                                c0-13.699-3.941-27.083-11.232-38.535c-15.355,15.766-37.592,27.6-61.412,32.373c-25.137,5.037-49.752,1.854-69.255-8.691
+                                                c-1.03,4.855-1.559,9.833-1.559,14.853c0,34.159,24.281,63.75,57.735,70.361c4.334,0.856,7.154,5.064,6.297,9.399
+                                                c-0.857,4.335-5.071,7.152-9.399,6.297c-2.888-0.571-5.718-1.281-8.487-2.123l0.656,3.357c0.847,4.336-1.981,8.538-6.318,9.385
+                                                c-4.334,0.849-8.538-1.981-9.385-6.318l-2.754-14.099C139.392,169.33,121.802,140.49,121.802,108.344z M156.512,49.025h106.165V16
+                                                H156.512V49.025z M144.521,78.045c32.651,19.745,79.105,10,107.109-13.02h-99.266C149.282,69.091,146.657,73.458,144.521,78.045z
+                                                 M311.216,243.417v104.03c0,3.083-1.771,5.892-4.554,7.22l-63.164,30.148l0.342,5.001c0.178,2.605-0.927,5.134-2.959,6.773
+                                                L215.21,417.29c-1.462,1.179-3.241,1.772-5.022,1.772c-0.219,0-0.438-0.009-0.656-0.027c-1.996,0.165-4.036-0.421-5.678-1.746
+                                                l-25.673-20.701c-2.033-1.639-3.138-4.168-2.96-6.774l0.342-5.002l-63.162-30.147c-2.783-1.328-4.554-4.137-4.554-7.22v-104.03
+                                                c0-3.034,1.716-5.806,4.431-7.16l40.246-20.066c1.108-0.553,2.331-0.84,3.569-0.84h21.549l11.351-9.674
+                                                c1.447-1.233,3.287-1.911,5.189-1.911h30.699c1.902,0,3.742,0.678,5.189,1.911l11.352,9.675l21.55-0.001
+                                                c1.239,0,2.461,0.288,3.57,0.84l40.244,20.066C309.501,237.611,311.216,240.383,311.216,243.417z M184.623,252.416l-9.225-7.862
+                                                c-1.784-1.52-2.811-3.746-2.811-6.089v-7.115h-14.611l-34.13,17.017V342.4l52.891,25.245L184.623,252.416z M227.593,386.75
+                                                l-0.419-6.126c-0.008-0.094-0.014-0.187-0.019-0.28l-8.146-119.052h-18.957l-8.142,118.971c-0.006,0.147-0.016,0.293-0.03,0.441
+                                                l-0.414,6.045l18.064,14.565L227.593,386.75z M230.476,227.045l-8.542-7.28h-24.806l-8.542,7.28v7.727l9.443,8.048
+                                                c0.023,0.019,0.046,0.039,0.068,0.058l2.834,2.415h17.197l12.347-10.521V227.045z M295.216,248.367l-34.128-17.017h-14.613v7.115
+                                                c0,2.344-1.027,4.569-2.811,6.089l-9.225,7.861l7.884,115.23l52.893-25.246V248.367z"/>
+                                            </svg>
+                                        </i>
 
-		</form>
-	</section>
+                                    <i ng-show='evt.current_screen==="device.back_online"'>
+                                        <svg height="12.5" width="12.5">
+                                          <circle cx="6.25" cy="6.25" r="5"  stroke-width="2" fill="yellowgreen" />
+                                        </svg> 
+                                    </i>
+
+                                    <i ng-show='evt.current_screen==="device.going_offline"'>
+                                        <svg height="12.5" width="12.5">
+                                          <circle cx="6.25" cy="6.25" r="5"  stroke-width="2" fill="red" />
+                                        </svg> 
+                                    </i>
+
+                                    <span class="pull-right text-muted small"><em>{{evt.kiosk_time}}</em></span>
+                                    </div>
+                                    <div class='event-details ' ng-show='showEvts===$index' style='border-width: 1px;border-style: solid;border-radius: .5em;padding: 2px;'>
+                                        <!-- instead of coding to specific params, 
+                                             just dump anything sent from the json object in station/baseCtrl.js 
+                                             *format Reasons and Activity items
+                                         -->
+                                        <div ng-repeat="(key, val) in evt">
+                                            <span ng-if='key!=="session_oos_reasons" && key!=="session_activity" && key!=="historical_oos_reasons" '>{{key}} : {{val}}</span>
+
+                                            <!-- session_oos_reasons -->
+                                            <div ng-if='key==="session_oos_reasons" ' class='oos-reason-cls '>
+                                                <div>
+                                                    Out of Order Reasons (this session)
+                                                </div>
+                                                <div class='oos-reason ' ng-repeat='(k, v) in val '>
+                                                    {{v.reason}} : {{v.datetime}}
+                                                </div>
+                                            </div>
+
+                                            <!-- historical_oos_reasons -->
+                                            <div ng-if='key==="historical_oos_reasons"' class='oos-reason-cls'>
+                                                <div ng-click='showEvtOOSHistory()'>
+                                                    Out of Order Reasons (historical) {{val.length}} total
+                                                    <span ng-show='showOOSEvts && val.length > 0'>(click here to hide) &#8593;</span>
+                                                    <span ng-show='!showOOSEvts && val.length > 0'>(click here to show) &#8595;</span>
+                                                </div>
+                                                <div class='oos-reason ' ng-repeat='(k, v) in val ' ng-show='showOOSEvts'>
+                                                    {{v.reason}} : {{v.datetime}}
+                                                </div>
+                                            </div>
+
+                                            <!-- session_activity -->
+                                            <div ng-if='key==="session_activity" ' class='oos-reason-cls '>
+                                                <div>
+                                                    Activity (this session)
+                                                </div>
+                                                <div class='oos-reason ' ng-repeat='(k, v) in val '>
+                                                    {{v.flow}} | {{v.activity}}, {{v.mode}} [{{v.conf}}] : {{v.datetime}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                </div>
+                            </a>
+                            <a href ng-click="incrementLimit('all')" class='more-cls all' ng-hide='deviceDetailsToShow.events.length <= evtLimit'>All</a>
+                            <a href ng-click="incrementLimit()" class='more-cls' ng-hide='deviceDetailsToShow.events.length <= evtLimit'>More</a>
+                            <a href ng-click="decrementLimit()" class='less-cls' ng-show='evtLimit > defaultEvtLimit'>Less</a>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="actions float">
+                <button type="button" id="close" class="button blank add-data-inline" ng-click="toggleStationDashboard()" translate>
+                    BACK
+                </button>
+            </div>
+        </form>
+    </section>
 </div>

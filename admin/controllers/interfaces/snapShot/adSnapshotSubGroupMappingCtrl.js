@@ -1,11 +1,21 @@
-admin.controller('adsnapshotSubGroupMappingCtrl', ['$scope', 'ADChargeCodesSrv', 'adSnapShotSetupSrv', 'ngTableParams',
-	function($scope, ADChargeCodesSrv, adSnapShotSetupSrv, ngTableParams) {
+admin.controller('adsnapshotSubGroupMappingCtrl', ['$scope', 'ADChargeCodesSrv', 'ADChargeGroupsSrv', 'adSnapShotSetupSrv', 'ngTableParams',
+	function($scope, ADChargeCodesSrv, ADChargeGroupsSrv, adSnapShotSetupSrv, ngTableParams) {
 
 		ADBaseTableCtrl.call(this, $scope, ngTableParams);
 		
 		$scope.successMessage = "";
 		$scope.subgroups = ['FB', 'AUX', 'ACC'];
 
+        $scope.fetchSettings = function() {
+			var onFetchSettingsSucces = function(data) {
+					$scope.snapshotData = data;
+				},
+				options = {
+					successCallBack: onFetchSettingsSucces
+				};
+
+			$scope.callAPI(adSnapShotSetupSrv.fetchChargeGroupMapping, options);
+		};
 
 		$scope.fetchTableData = function($defer, params) {
 			var getParams = $scope.calculateGetParams(params);
@@ -25,7 +35,6 @@ admin.controller('adsnapshotSubGroupMappingCtrl', ['$scope', 'ADChargeCodesSrv',
 			$scope.invokeApi(ADChargeCodesSrv.fetch, getParams, fetchSuccessOfItemList);
 		};
 
-
 		$scope.loadTable = function() {
 			$scope.tableParams = new ngTableParams({
 					page: 1,  // show first page
@@ -40,6 +49,7 @@ admin.controller('adsnapshotSubGroupMappingCtrl', ['$scope', 'ADChargeCodesSrv',
 		};
 
 		$scope.loadTable();
+		$scope.fetchSettings();
 
 		$scope.saveMapping = function() {
 			var mappedChargeCodes = [], mapped_charge_code;
@@ -63,5 +73,16 @@ admin.controller('adsnapshotSubGroupMappingCtrl', ['$scope', 'ADChargeCodesSrv',
 			
 		};
 
+        $scope.saveSettings = function() {
+			var onSaveSettingsSucces = function() {
+					$scope.successMessage = 'Success, Your settings has been saved.';
+				},
+				options = {
+					params: $scope.snapshotData,
+					successCallBack: onSaveSettingsSucces
+				};
+
+			$scope.callAPI(adSnapShotSetupSrv.saveChargeGroupMapping, options);
+		};
 	}
 ]);

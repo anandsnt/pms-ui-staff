@@ -1,0 +1,98 @@
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
+	<form method="post" class="modal-content form ar-transaction payment-unallocation">
+		<button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
+		
+		<strong class="h2 message">Unallocate payment</strong>
+		<span class="text">This will unallocate the payment from this invoice.</span>
+
+		<div class="amount">
+		 	<strong><span class="currency">{{currencySymbol}}</span>{{selectedUnAllocatedItem.amount}}</strong>
+		 	Allocated {{selectedUnAllocatedItem.allocation_date | date : dateFormat}} {{selectedUnAllocatedItem.allocation_time}}
+		</div>
+		 
+		<div class="information">
+			<span>From Bill</span>
+			<ul class="search-results">
+				<li class="reservation transaction">
+					<div class="faux-anchor">
+
+						<div class="data">
+							<h2>{{selectedUnAllocatedItem.from_bill.invoice_name}}</h2>
+							<span class="invoice">Invoice #<span class="value">{{selectedUnAllocatedItem.from_bill.invoice_number}}</span></span>
+							<span class="confirmation">Ext #<span class="value">{{selectedUnAllocatedItem.from_bill.external_reference_number}}</span></span>
+						
+						</div>
+
+						<div class="guest-date arrival">
+							<span class="guest-status small-icon check-in">check-in</span>
+							<time datetime="{arrival-datetime}">
+								<span class="date">{{selectedUnAllocatedItem.from_bill.arrival_date | date : dateFormat}}</span>
+								<span class="time">{{selectedUnAllocatedItem.from_bill.arrival_time}}</span>
+							</time>
+						</div>
+
+						<div class="guest-date departure">
+							<span class="guest-status small-icon check-out">check-out</span>
+							<time datetime="{departure-datetime}">
+								<span class="date">{{selectedUnAllocatedItem.from_bill.dep_date | date : dateFormat}}</span>
+								<span class="time">{{selectedUnAllocatedItem.from_bill.dep_time}}</span>
+							</time>
+						</div>
+
+						<div class="balance balance-after">
+							Balance Remaining
+							<strong class="red"><span class="currency">{{currencySymbol}}</span>{{selectedUnAllocatedItem.from_bill.balance_after}}</strong>
+						</div>
+
+
+					</div>
+				</li>
+			</ul>
+		</div>
+	 
+
+		<div class="information">
+			<span>To payment</span>
+			<ul class="search-results">
+				<li class="reservation transaction payment">
+					<div class="faux-anchor">
+					<div class="data">
+						<h2>{{selectedUnAllocatedItem.to_payment.payment_type}}</h2>
+						<div class="payment-data">
+							<!-- if has logo -->
+							<figure class="card-logo">
+								<img ng-src="/assets/images/{{selectedUnAllocatedItem.to_payment.card_details.card_code.toLowerCase()}}.png" alt="">
+							</figure>
+	                        <!-- if has ending number -->
+	                        <span class="number">{{selectedUnAllocatedItem.to_payment.card_details.last_digits}}</span>
+	                        <!-- if has exp date -->
+	                        <span class="date">Date <span class="value">{{selectedUnAllocatedItem.to_payment.card_details.expire_date}}</span></span>
+	                        <!-- if has reference -->
+	                        <span class="reference">Reference <span class="value">{{selectedUnAllocatedItem.to_payment.reference_text}}</span></span>
+	                    </div>
+					</div>
+					<div class="payment-date">
+						<span class="icons small-icon icon-time time-black"></span>
+						<time datetime="{payment-datetime}">
+							<span class="date">{{selectedUnAllocatedItem.to_payment.transaction_date | date : dateFormat}}</span>
+							<span class="time">{{selectedUnAllocatedItem.to_payment.transaction_time}}</span>
+						</time>
+					</div>
+
+					<div class="balance balance-after">
+						Credit After
+						<strong class="green"><span class="currency">{{currencySymbol}}</span>{{selectedUnAllocatedItem.to_payment.credit_after}}</strong>
+					</div>
+
+
+				</div>
+				</li>
+			</ul>
+		</div>
+
+		<div class="actions">
+			<button class="button blank" ng-click="closeDialog()">Cancel</button>
+			<button class="button red" ng-click="unAllocate()">Unallocate</button>
+		</div>
+	</form>
+</div>

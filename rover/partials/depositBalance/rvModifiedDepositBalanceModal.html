@@ -9,47 +9,47 @@
 			<ul id="expenses" class="expenses">
 				<li>
 					Room Cost
-					<span ng-if="isBalanceAmountShown()"> {{currencySymbol}}{{depositBalanceData.data.room_cost}} </span>
+					<span ng-if="isBalanceAmountShown()"> <span class="currency">{{currencySymbol}}</span>{{depositBalanceData.data.room_cost}} </span>
                     <span ng-if="!isBalanceAmountShown()">{{'SUPPRESSED_RATES_TEXT' | translate}} </span>
 				</li>
 				<li>
 					Packages
-					<span ng-if="isBalanceAmountShown()"> {{currencySymbol}}{{depositBalanceData.data.packages}} </span>
+					<span ng-if="isBalanceAmountShown()"> <span class="currency">{{currencySymbol}}</span>{{depositBalanceData.data.packages}} </span>
                     <span ng-if="!isBalanceAmountShown()">{{'SUPPRESSED_RATES_TEXT' | translate}} </span>
 				</li>
 				<li class="total">
 					Sub Total
-					<span ng-if="isBalanceAmountShown()"> {{currencySymbol}}{{depositBalanceData.data.sub_total}} </span>
+					<span ng-if="isBalanceAmountShown()"> <span class="currency">{{currencySymbol}}</span>{{depositBalanceData.data.sub_total}} </span>
                     <span ng-if="!isBalanceAmountShown()">{{'SUPPRESSED_RATES_TEXT' | translate}} </span>
 				</li>
 				<li>
 					Fees
-					<span ng-if="isBalanceAmountShown()"> {{currencySymbol}}{{depositBalanceData.data.fees}} </span>
+					<span ng-if="isBalanceAmountShown()"> <span class="currency">{{currencySymbol}}</span>{{depositBalanceData.data.fees}} </span>
                     <span ng-if="!isBalanceAmountShown()">{{'SUPPRESSED_RATES_TEXT' | translate}} </span>
 				</li>
 				<li class="total">
 					Stay Total
-					<span ng-if="isBalanceAmountShown()"> {{currencySymbol}}{{depositBalanceData.data.stay_total}} </span>
+					<span ng-if="isBalanceAmountShown()"> <span class="currency">{{currencySymbol}}</span>{{depositBalanceData.data.stay_total}} </span>
                     <span ng-if="!isBalanceAmountShown()">{{'SUPPRESSED_RATES_TEXT' | translate}} </span>
 				</li>
 				<li>
 					Nightly Charge
-					<span ng-if="isBalanceAmountShown()"> {{currencySymbol}}{{depositBalanceData.data.nightly_charges}} </span>
+					<span ng-if="isBalanceAmountShown()"> <span class="currency">{{currencySymbol}}</span>{{depositBalanceData.data.nightly_charges}} </span>
                     <span ng-if="!isBalanceAmountShown()">{{'SUPPRESSED_RATES_TEXT' | translate}} </span>
 				</li>
 				<li class="total final">
 					Total Cost of Stay
-					<span ng-if="isBalanceAmountShown()"> {{currencySymbol}}{{depositBalanceData.data.total_cost_of_stay}} </span>
+					<span ng-if="isBalanceAmountShown()"> <span class="currency">{{currencySymbol}}</span>{{depositBalanceData.data.total_cost_of_stay}} </span>
                     <span ng-if="!isBalanceAmountShown()">{{'SUPPRESSED_RATES_TEXT' | translate}} </span>
 				</li>
 				<li class="deposit">
 					Deposit Paid
-					<span class="green" ng-if="isBalanceAmountShown()"> {{currencySymbol}}{{depositBalanceData.data.deposit_paid}} </span>
+					<span class="green" ng-if="isBalanceAmountShown()"> <span class="currency">{{currencySymbol}}</span>{{depositBalanceData.data.deposit_paid}} </span>
                     <span ng-if="!isBalanceAmountShown()">{{'SUPPRESSED_RATES_TEXT' | translate}} </span>
 				</li>
 				<li class="balance">
 					Outstanding Stay Total
-					<span class="red" ng-if="isBalanceAmountShown()"> {{currencySymbol}}{{depositBalanceData.data.outstanding_stay_total}} </span>
+					<span class="red" ng-if="isBalanceAmountShown()"> <span class="currency">{{currencySymbol}}</span>{{depositBalanceData.data.outstanding_stay_total}} </span>
                     <span ng-if="!isBalanceAmountShown()">{{'SUPPRESSED_RATES_TEXT' | translate}} </span>
 
 				</li>
@@ -60,31 +60,31 @@
             <strong class="h2 message">Balance</strong>
             <ul id="expenses" class="expenses">
                 <li ng-show="depositBalanceData.account_type=='GROUP'">Projected Room Revenue
-                	<span>{{currencySymbol}}{{depositBalanceData.projected_revenue_details.room_revenue | number:2}}</span>
+                	<span><span class="currency">{{currencySymbol}}</span>{{depositBalanceData.projected_revenue_details.room_revenue | number:2}}</span>
                 </li>
                 <li ng-show="depositBalanceData.account_type=='GROUP'">Projected Add-On Revenue
-                	<span>{{currencySymbol}}{{depositBalanceData.projected_revenue_details.package_revenue | number:2}}</span>
+                	<span><span class="currency">{{currencySymbol}}</span>{{depositBalanceData.projected_revenue_details.package_revenue | number:2}}</span>
                 </li>
                 <li ng-show="depositBalanceData.account_type=='GROUP'">Projected Tax
-                	<span>{{currencySymbol}}{{depositBalanceData.projected_revenue_details.exclusive_tax | number:2}}</span>
+                	<span><span class="currency">{{currencySymbol}}</span>{{depositBalanceData.projected_revenue_details.exclusive_tax | number:2}}</span>
                 </li>
                 <li class="total" ng-show="depositBalanceData.account_type=='GROUP'">Total Projected Revenue
-                	<span>{{currencySymbol}}{{depositBalanceData.projected_revenue_details.total_revenue | number:2}}</span>
+                	<span><span class="currency">{{currencySymbol}}</span>{{depositBalanceData.projected_revenue_details.total_revenue | number:2}}</span>
                 </li>
                 <li>Actual Room Revenue
-                	<span>{{currencySymbol}}{{depositBalanceData.actual_revenue_details.room_revenue | number:2}}</span>
+                	<span><span class="currency">{{currencySymbol}}</span>{{depositBalanceData.actual_revenue_details.room_revenue | number:2}}</span>
                 </li>
                 <li>Actual Add-On Revenue
-                	<span>{{currencySymbol}}{{depositBalanceData.actual_revenue_details.package_revenue | number:2 }}</span>
+                	<span><span class="currency">{{currencySymbol}}</span>{{depositBalanceData.actual_revenue_details.package_revenue | number:2 }}</span>
                 </li>
                 <li>Actual Tax
-                	<span>{{currencySymbol}}{{depositBalanceData.actual_revenue_details.exclusive_tax | number:2}}</span>
+                	<span><span class="currency">{{currencySymbol}}</span>{{depositBalanceData.actual_revenue_details.exclusive_tax | number:2}}</span>
                 </li>
                 <li class="deposit">Total Balance
-                	<span class="red">{{currencySymbol}}{{depositBalanceData.current_balance | number:2}}</span>
+                	<span class="red"><span class="currency">{{currencySymbol}}</span>{{depositBalanceData.current_balance | number:2}}</span>
                 </li>
                 <li class="balance">Payments Received
-                	<span class="green">{{currencySymbol}}{{depositBalanceData.payments_received | number:2}}</span>
+                	<span class="green"><span class="currency">{{currencySymbol}}</span>{{depositBalanceData.payments_received | number:2}}</span>
                 </li>
             </ul>
         </fieldset>
@@ -93,13 +93,13 @@
 		<fieldset class="content-right">
 			<strong class="h2 message">Deposit</strong>
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-			<div class="dates notice" ng-if="depositBalanceData.data.deposit_dues">
+			<div class="dates notice" ng-if="depositBalanceData.data.deposit_dues.length > 0" >
             	<strong>Deposit Due</strong>
                     <div class="scrollable" ng-iscroll="deopositdue" >
                             <ul class="wrapper ">
                             <li ng-repeat="depositDue in depositBalanceData.data.deposit_dues" ng-class="{'paid': depositDue.paid, 'due': !depositDue.paid}">
                             {{depositDue.due_date | date : dateFormat}}
-                            <span ng-if="isBalanceAmountShown()">{{currencySymbol}}{{depositDue.due_amount}}</span>
+                            <span ng-if="isBalanceAmountShown()"><span class="currency">{{currencySymbol}}</span>{{depositDue.due_amount}}</span>
                             <span ng-if="!isBalanceAmountShown()">{{'SUPPRESSED_RATES_TEXT' | translate}}</span>
                             </li>
                             </ul>
@@ -112,7 +112,7 @@
                             <ul class="wrapper ">
                             <li ng-repeat="paidDeposit in depositBalanceData.paid_deposits" class="due">
                             {{paidDeposit.date | date : dateFormat}}
-                            <span>{{currencySymbol}}{{paidDeposit.amount}}</span>
+                            <span><span class="currency">{{currencySymbol}}</span>{{paidDeposit.amount}}</span>
                             </li>
                             </ul>
                     </div>
@@ -124,6 +124,7 @@
 							reservation-id="{{reservationData.reservation_card.reservation_id}}"
                             bill-id="depositBalanceData.primary_bill_id"
 							bill-number="billNumber"
+							rate-currency="{{depositBalanceMakePaymentData.rateCurrency}}"
 							payment-types="passData.details.paymentTypes"
 							selected-payment-type="depositBalanceMakePaymentData.payment_type"
 							selected-c-c="depositDetails.attached_card"
@@ -135,7 +136,8 @@
 							is-rate-suppressed='isReservationRateSuppressed'
 							has-permission='hasPermissionToMakePayment()'
 							form-template-url='/assets/partials/payment/rvDepositBalancePartial.html'
-							first-name="{{passData.details.firstName}}"
+							first-name="{{passData.details.firstName}}" 
+							payment-currency-list="paymentCurrencyList" 
 							last-name="{{passData.details.lastName}}">
 					</snt-payment>
                 </div>

@@ -54,6 +54,22 @@ angular.module('sntRover').service('RVPostChargeSrvV2', ['$http', '$q', 'BaseWeb
         });
         return deferred.promise;
     };
+    /*
+     * Post charges from AR invoice
+     */
+
+    this.postChargesFromArInvoice = function( params ) {
+
+		var deferred = $q.defer();
+		var url = '/api/accounts/' + params.accountId + '/ar_transactions/' + params.arTransactionId + '/post_charge_to_invoice';
+
+		BaseWebSrvV2.postJSON( url, params.postChargeData ).then(function( data ) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
 
 
 }]);

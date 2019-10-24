@@ -1,5 +1,5 @@
-<div ng-show="hasLoader" id="loading"><div id="loading-spinner" ></div></div> 
-
+<activity-indicator></activity-indicator>
+<div>
 <!-- loader for EMV terminal actions -->
 <div ng-show="showSixPayLoader" id="loading">
     <div id="six-payment-loader">
@@ -28,5 +28,15 @@
 
 <!-- Menu -->
 <nav id="main-menu" role="navigation"  ng-include="'/assets/partials/dashboard/rvLeftNavbar.html'"
-     ng-class-without-animation="{'menu-open': menuOpen, 'menu-hotel':showHotelSwitchList, 'ng-animate': !menuOpen}">
+     ng-class-without-animation="{'menu-open': menuOpen, 'menu-hotel' : showHotelSwitchList, 'ng-animate': !menuOpen}">
 </nav>
+
+<div class="release-notes" ng-show="showDeviceConnectivityStatus && isIpad">
+    <div class="release-notes_content device-status">
+        <strong class="release-notes_text">{{deviceDetails}}</strong>
+        <div class="release-notes_action">
+            <button class="button blank" ng-click="showDeviceConnectivityStatus = false">Close</button>
+            <a class="button blue" target="_blank" ng-click="fetchDeviceStatus()">View Details</a>
+        </div>
+    </div>
+</div>  

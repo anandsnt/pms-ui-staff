@@ -47,7 +47,23 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
                 $scope.mode = 'DISPENSE_KEY_MODE';
             }
             $scope.setScreenIcon('key');
+
+            // for Manual key creation navigate to new screen.
+            if ($scope.zestStationData.kiosk_key_creation_method === 'manual') {
+                $state.go('zest_station.manualKeyPickup', {
+                    'mode': 'CHECKIN',
+                    'guest_id': $stateParams.guest_id,
+                    'email': $stateParams.email,
+                    'reservation_id': $stateParams.reservation_id,
+                    'room_no': $stateParams.room_no,
+                    'first_name': $stateParams.first_name
+                });
+            }
         }());
+
+        $scope.$on('CLICKED_ON_CANCEL_BUTTON', function () {
+            $scope.$emit('EJECT_KEYCARD');
+        });
 
         $scope.guestDetails = {
             "guestEmail": $stateParams.email
@@ -68,7 +84,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
                 'key_type': $scope.keyTypeselected
             };
             
-            stateParams.key_success = status === 'success';
+            stateParams.key_success = status === 'success' ? 'true' : 'false';
             // check if a registration card delivery option is present (from Admin>Station>Check-in), if none are checked, go directly to final screen
             var registration_card = $scope.zestStationData.registration_card;
 

@@ -126,7 +126,11 @@ sntZestStation.directive('editableText', [function() {
             };
 
             var editorModeIsEnabled = function(rootScope) {
-                return rootScope.editorModeEnabled === 'true';
+                if (rootScope) {
+                    return rootScope.editorModeEnabled === 'true';
+                } 
+                return false;
+                
             };
 
             var turnOFFTags = function(scope) {
@@ -267,7 +271,7 @@ sntZestStation.directive('editableText', [function() {
                             onWindowsDevice = window.navigator.userAgent.toLowerCase().indexOf('window') !== -1;
 
                         if (!isTouchDevice || !onWindowsDevice) {
-                            $inputField.one('blur', save).focus();
+                            $inputField.on('blur', save).focus();
                         }
 
                     }, 0); // wait for the dom to be ready, otherwise element listeners wont set properly

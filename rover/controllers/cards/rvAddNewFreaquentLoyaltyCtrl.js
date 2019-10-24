@@ -26,13 +26,22 @@ sntRover.controller('RVAddNewFreaquentLoyaltyContrller', ['$scope', '$rootScope'
 		user_membership.membership_type = $scope.userMembershipType;
 		user_membership.membership_level = "";
 		$scope.newLoyalty = user_membership;
+
+		var reservationId = $scope.reservationData && $scope.reservationData.reservationId ? $scope.reservationData.reservationId : "";
+		
 		var data = {'user_id': $scope.$parent.guestCardData.userId,
 					'guest_id': $scope.$parent.guestCardData.guestId,
 					'user_membership': user_membership,
-					'reservation_id': $scope.reservationData.reservationId
+					'reservation_id': reservationId
 					};
 
-		$scope.invokeApi(RVGuestCardLoyaltySrv.createLoyalties, data, loyaltyPostsuccessCallback, loyaltyPostErrorCallback);
+		var options = {
+			params: data,
+			successCallBack: loyaltyPostsuccessCallback,
+			failureCallBack: loyaltyPostErrorCallback
+		};
+
+		$scope.callAPI(RVGuestCardLoyaltySrv.createLoyalties, options);		
 	};
 
 	$scope.cancel = function() {

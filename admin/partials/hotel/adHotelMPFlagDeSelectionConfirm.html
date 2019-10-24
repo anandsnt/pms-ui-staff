@@ -1,0 +1,10 @@
+<div id="modal" class="modal-show" role="dialog">
+	<form method="post" class="modal-content">
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<span class="message h4">{{data.hotel_name}} will now be de-selected from Multi property</span>
+		<div class="entry">
+			<button translate="" ng-click='clickedContinue()' class="button green" translate="">CONTINUE</button>
+			<button translate="" ng-click='clickedCancel()' class="button blank modal-close" translate="">CANCEL</button>
+		</div>
+	</form>
+</div>

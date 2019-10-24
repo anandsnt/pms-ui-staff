@@ -1,0 +1,181 @@
+{
+	"isCheckedTrue": [{
+		"name": "00_a",
+		"id": 611,
+		"isChecked": true
+	}, {
+		"name": "00_b",
+		"id": 612,
+		"isChecked": true
+	}, {
+		"name": "BB",
+		"id": 628,
+		"isChecked": true
+	}, {
+		"name": "Bunk",
+		"id": 232,
+		"isChecked": true
+	}, {
+		"name": "comp_one",
+		"id": 584,
+		"isChecked": true
+	}, {
+		"name": "comp_two",
+		"id": 585,
+		"isChecked": true
+	}, {
+		"name": "Deluxe room",
+		"id": 66,
+		"isChecked": true
+	}, {
+		"name": "Kristine",
+		"id": 630,
+		"isChecked": true
+	}, {
+		"name": "Loft",
+		"id": 90,
+		"isChecked": true
+	}, {
+		"name": "Loft XL",
+		"id": 97,
+		"isChecked": true
+	}, {
+		"name": "Loft XXL",
+		"id": 93,
+		"isChecked": true
+	}, {
+		"name": "Opossums' Demo Suite 1",
+		"id": 438,
+		"isChecked": true
+	}, {
+		"name": "Qwerty",
+		"id": 604,
+		"isChecked": true
+	}, {
+		"name": "Rijksmuseum view",
+		"id": 92,
+		"isChecked": true
+	}, {
+		"name": "Room",
+		"id": 121,
+		"isChecked": true
+	}, {
+		"name": "Shineeta Test",
+		"id": 473,
+		"isChecked": true
+	}, {
+		"name": "Suite1",
+		"id": 94,
+		"isChecked": true
+	}, {
+		"name": "Superior Double",
+		"id": 227,
+		"isChecked": true
+	}, {
+		"name": "Superior King",
+		"id": 120,
+		"isChecked": true
+	}, {
+		"name": "Test",
+		"id": 625,
+		"isChecked": true
+	}, {
+		"name": "Test Regression",
+		"id": 470,
+		"isChecked": true
+	}, {
+		"name": "Wall view",
+		"id": 91,
+		"isChecked": true
+	}],
+	"isCheckedFalse": [{
+		"name": "00_a",
+		"id": 611,
+		"isChecked": false
+	}, {
+		"name": "00_b",
+		"id": 612,
+		"isChecked": false
+	}, {
+		"name": "BB",
+		"id": 628,
+		"isChecked": false
+	}, {
+		"name": "Bunk",
+		"id": 232,
+		"isChecked": false
+	}, {
+		"name": "comp_one",
+		"id": 584,
+		"isChecked": false
+	}, {
+		"name": "comp_two",
+		"id": 585,
+		"isChecked": false
+	}, {
+		"name": "Deluxe room",
+		"id": 66,
+		"isChecked": false
+	}, {
+		"name": "Kristine",
+		"id": 630,
+		"isChecked": false
+	}, {
+		"name": "Loft",
+		"id": 90,
+		"isChecked": false
+	}, {
+		"name": "Loft XL",
+		"id": 97,
+		"isChecked": false
+	}, {
+		"name": "Loft XXL",
+		"id": 93,
+		"isChecked": false
+	}, {
+		"name": "Opossums' Demo Suite 1",
+		"id": 438,
+		"isChecked": false
+	}, {
+		"name": "Qwerty",
+		"id": 604,
+		"isChecked": false
+	}, {
+		"name": "Rijksmuseum view",
+		"id": 92,
+		
+		"isChecked": false
+	}, {
+		"name": "Room",
+		"id": 121,
+		"isChecked": false
+	}, {
+		"name": "Shineeta Test",
+		"id": 473,
+		"isChecked": false
+	}, {
+		"name": "Suite1",
+		"id": 94,
+		"isChecked": false
+	}, {
+		"name": "Superior Double",
+		"id": 227,
+		"isChecked": false
+	}, {
+		"name": "Superior King",
+		"id": 120,
+		"isChecked": false
+	}, {
+		"name": "Test",
+		"id": 625,
+		"isChecked": false
+	}, {
+		"name": "Test Regression",
+		"id": 470,
+		"isChecked": false
+	}, {
+		"name": "Wall view",
+		"id": 91,
+		"isChecked": false
+	}]
+}

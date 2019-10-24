@@ -61,6 +61,9 @@
     <!-- Unassigned rooms -->
     <section id="unassigned-rooms">
         <h2 translate>UNASSIGNED</h2>
+        <button type="button" class="button orange" ng-click="executeAutoAssign()">
+ 			{{'AUTO_ASSIGN' | translate}}
+        </button>
         <button type="button" class="button white with-icon only-icon"
                 ng-click="showFilter()">
             <span class="icons icon-filter"></span>
@@ -98,6 +101,24 @@
                             </span>
                         </h3>
                         <span class="task">{{task.task_name}}</span>
+                         <!-- Show if room is occupied -->
+                        <div class="print-date" ng-show="multiSheetState.allRooms[room.room_index].fo_status === 'OCCUPIED'">
+
+                            <div class="arrival-date">
+                                <span class="guest-status check-in">check-in</span>
+                                <time datetime="{{multiSheetState.allRooms[room.room_index].arrival_date}}">
+                                    {{formatDateForUI(multiSheetState.allRooms[room.room_index].arrival_date)}}
+                                </time>
+                            </div>
+
+                            <div class="departure-date">
+                                <span class="guest-status check-out">check-out</span>
+                                <time datetime="{{multiSheetState.allRooms[room.room_index].dep_date}}">
+                                    {{formatDateForUI(multiSheetState.allRooms[room.room_index].dep_date)}}
+                                </time>
+                            </div>
+
+                        </div>
                         <!--<span ng-show="room.is_vip" class="vip" translate>VIP</span>-->
                     </li>
                 </ul>
@@ -151,7 +172,7 @@
                     data-drop="true"
                     jqyoui-droppable="{multiple:true, onDrop:'dropToAssign(event, dropped)'}"
                     data-jqyoui-options="{accept: '#assigned-rooms .worksheet-task, #unassigned-rooms .worksheet-task'}"
-                    ng-iscroll="assignedRoomList-{{$index}}"
+                    ng-iscroll="assignedRoomList-{{employee.id}}"
                 >
                     <div class="wrapper">
                         <ul class="worksheet-room"
@@ -171,7 +192,7 @@
                                     <span ng-class="getReservationStatusClass(multiSheetState.allRooms[room.room_index])"
                                         ng-bind="getReservationStatusValue(multiSheetState.allRooms[room.room_index])"></span>
                                     <span ng-class="getCurrentStatusClass(multiSheetState.allRooms[room.room_index])">{{ multiSheetState.allRooms[room.room_index].current_status }}</span>
-                                </div>                               
+                                </div>
                                 <h3>
                                     <span class="icons icon-suite" ng-show="multiSheetState.allRooms[room.room_index].is_suite">Suite room</span>
                                     {{task.room_no}}
@@ -181,6 +202,23 @@
                                     </span>
                                 </h3>
                                 <span class="task">{{task.task_name}}</span>
+                                <div class="print-date" ng-show="multiSheetState.allRooms[room.room_index].fo_status === 'OCCUPIED'">
+
+                                    <div class="arrival-date">
+                                        <span class="guest-status check-in">check-in</span>
+                                        <time datetime="{{multiSheetState.allRooms[room.room_index].arrival_date}}">
+                                            {{formatDateForUI(multiSheetState.allRooms[room.room_index].arrival_date)}}
+                                        </time>
+                                    </div>
+
+                                    <div class="departure-date">
+                                        <span class="guest-status check-out">check-out</span>
+                                        <time datetime="{{multiSheetState.allRooms[room.room_index].dep_date}}">
+                                            {{formatDateForUI(multiSheetState.allRooms[room.room_index].dep_date)}}
+                                        </time>
+                                    </div>
+
+                                </div>
                                 <!--<span ng-show="room.is_vip" class="vip" translate>VIP</span>-->
                                 <!-- If task is completed, IT SHOULD BE LOCKED AND USER SHOULD NOT BE ABLE TO MOVE IT. Also, add:-->
                                 <span class="icons icon-ok-10" ng-show="task.is_completed"></span>

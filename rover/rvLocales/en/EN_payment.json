@@ -31,6 +31,7 @@
     "AR_ACCOUNT_NIL": "Account Receivable Not Created",
     "ENTER_AR_ACCOUNT_NUMBER": "Enter A/R Account Number",
     "AR_ACCOUNT_NOT_CREATED": "AR account not yet created for this card",
+    "AR_ACCOUNT_NO_PERMISSION": "You do not have permission to create AR account",
     "CREATE_AR_ACCOUNT": "Create Account",
     "SELECT_WINDOW": "Select Bill",
 
@@ -51,4 +52,10 @@
     "DO_NOT_AUTHORIZE": "Do Not Authorize Card",
     "SELECT_CREDIT_CARD":"Select Credit Card",
     "CREDIT_CARD_LIST_EMPTY_ERROR":"Deposit refund can not be processed to this payment type. Manual processing required",
-    "ENDING_WITH" : "Ending with "
+    "ENDING_WITH" : "Ending with ",
+
+    "USE_IPAD_TO_USE_CBA": "Please use Rover iPad Application to use CBA",
+    "CBA_TIMED_OUT": "The operation timed out, Please check device connectivity.",
+    "GET_TOKEN": "Get Token",
+    "PLEASE_SWIPE_NOW": "PLEASE SWIPE NOW",
+    "ADD_A_CC_AND_COME_BACK": "PLEASE ADD A NEW CARD AND RETURN TO THIS SCREEN"

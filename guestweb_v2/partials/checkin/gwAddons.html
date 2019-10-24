@@ -1,0 +1,115 @@
+<!-- main section starts here -->
+<div class="container">
+    <!-- request text -->
+    <div class="row" ng-show="isLoading && !netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="request-text">Your request is being processed. This may take a few seconds..... please wait!</p>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+    <!-- error message -->
+    <div class="row" ng-show="netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="error-text">
+                Our apologies, something went wrong, please complete your check-in at our front desk. You can also call the hotel at <a href="tel: {{hotelPhone}}" class="phone-text">{{hotelPhone}}.</a>
+            </p>
+            <a class="btn btn-template margin-top-10 grey-btn" ng-click="goToNextPage()"> Skip</a>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+    <!-- main content -->
+    <div class="row" ng-hide="isLoading || netWorkError">
+        <!-- detailed view -->
+        <div class="col-md-8 top-spacing sm-no-top-spacing section-container float-none addon-section-container" ng-show="mode === 'DETAILED_VIEW' && !selectedAddon.isLco">
+            <img src="{{selectedAddon.image_original}}" class="content-image  margin-top-20" alt="">
+            <p class="main-text no-text-case bold-text margin-top-20" ng-bind="addonPurchaseMsgForDisplay" ng-hide="showPurchaseStatus"></p>
+            <div ng-hide="showPurchaseStatus" class="addon-details">
+                <p class="sub-main-text margin-top-20 no-text-case price-details">{{currencySymbol}}{{selectedAddon.amount}} <span ng-show="upsellDisplayOrderAmountFirst">{{selectedAddon.amount_type_label}}&nbsp;{{selectedAddon.post_type_label}}&nbsp;</span><span ng-hide="upsellDisplayOrderAmountFirst">{{selectedAddon.post_type_label}}&nbsp;{{selectedAddon.amount_type_label}}&nbsp;</span><span ng-show="selectedAddon.display_suffix">{{selectedAddon.suffix_label}}</span></p>
+                <p class="sub-main-text margin-top-20" ng-bind-html="selectedAddonDescrition"></p>
+                <br/>
+                <div ng-show="isAddonFlatOrRoomType(selectedAddon)">
+                    <p class="sub-main-text">Select quantity</p>
+                    <div class="row">
+                        <div class="select-style addon-numbers">
+                            <select ng-model="selectedAddonQuantity">
+                                <option value="">select</option>
+                                <option value="{{i}}" ng-repeat="i in quantityList">{{i}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!-- submit -->
+                <a class="btn btn-template margin-top-20" ng-click="purchaseAddon(selectedAddon)" ng-hide="hideAddAddonButton()">Add</a>
+                <a class="btn btn-template margin-top-20" ng-click="removeAddon(selectedAddon)" ng-show="hideAddAddonButton()">Remove</a>
+                <div class="row no-thanks-wrap margin-top-20">
+                    <p class="center-align no-thanks">
+                        <a ng-click="noThanksClicked()" class="sub-text no-text-case">Skip</a>
+                    </p>
+                </div>
+            </div>
+            <div ng-show="showPurchaseStatus" class="margin-bottom-10">
+                <p class="main-text no-text-case bold-text margin-top-20" ng-bind="selectedAddon.title"></p>
+                <p class="sub-main-text no-text-case margin-top-20">{{purchaseStatusText}}</p>
+                <a class="btn btn-template margin-top-80 margin-bottom-10" ng-click="doneClicked()">Done</a>
+            </div>
+        </div>
+
+        <!-- LCO addon -->
+        <div class="col-md-8 top-spacing sm-no-top-spacing section-container float-none addon-section-container" ng-show="mode === 'DETAILED_VIEW' && selectedAddon.isLco">
+            <img ng-src="{{selectedAddon.image_original}}" class="content-image  margin-top-20" alt="">
+            <p class="main-text no-text-case bold-text margin-top-20" ng-bind="addonPurchaseMsgForDisplay" ng-hide="showPurchaseStatus"></p>
+            <div ng-hide="showPurchaseStatus" class="addon-details">
+                <p class="sub-main-text margin-top-20" ng-bind="selectedAddon.description"></p>
+                <br/>
+                <!-- submit -->
+                <div ng-repeat="addon in selectedAddon.lco_addons" class="margin-top-40">
+                    <p class="main-text no-text-case bold-text margin-top-20">{{addon.name}}</p>
+                    <p class="sub-main-text no-text-case">Extend your stay till&nbsp;<b>{{addon.time}} PM</b>&nbsp;at&nbsp;<b>{{currencySymbol}}{{addon.amount}}</b></p>
+                    <a class="btn btn-template margin-top-20" ng-click="purchaseAddon(addon)" ng-hide="addon.is_selected" ng-class="{'disabled-addon' : isOneLcoAdded() && !addon.is_selected}">Add</a>
+                    <a class="btn btn-template margin-top-20" ng-click="removeAddon(addon)" ng-show="addon.is_selected">{{addonRemove}}</a>
+                </div>
+                <div class="row no-thanks-wrap margin-top-20">
+                    <p class="center-align no-thanks">
+                        <a ng-click="noThanksClicked()" class="sub-text no-text-case">Skip</a>
+                    </p>
+                </div>
+            </div>
+            <div ng-show="showPurchaseStatus" class="margin-bottom-10">
+                <p class="main-text no-text-case bold-text margin-top-20" ng-bind="selectedAddon.title"></p>
+                <p class="sub-main-text no-text-case margin-top-20">{{purchaseStatusText}}</p>
+                <a class="btn btn-template margin-top-80 margin-bottom-10" ng-click="doneClicked()">Done</a>
+            </div>
+        </div>
+
+        <!-- List view -->
+        <div class="col-md-8 top-spacing sm-no-top-spacing section-container float-none addon-section-container" ng-show="mode === 'LIST_VIEW'">
+            <p class="main-text no-text-case">Enhance Your Stay</p>
+            <p class="sub-main-text no-text-case margin-top-20">showing {{addonList.length}} of {{addonList.length}}</p>
+            <div ng-repeat="addon in addonList" class="addon-container margin-top-10" ng-click="addonSelected(addon)" ng-class="{'selected':((addon.is_selected || addon.quantity > 0) && !addon.isLco) || (addon.isLco && isOneLcoAdded())}">
+                <div class="content-image">
+                    <img ng-src="{{addon.image}}" alt="" width="100%" height="auto" ng-hide="addon.isLco">
+                    <img ng-src="{{lateCheckoutBundleImage}}"  alt="" width="100%" height="auto" ng-show="addon.isLco">
+                </div>
+                <div class="content-desc">
+                    <p class="sub-main-text no-text-case margin-top-10">{{addon.name | limitTo: 50 }}{{addon.name.length > 50? '...' : ''}}<span ng-show="isAddonFlatOrRoomType(addon) && addon.quantity > 0">&nbsp;({{addon.quantity}})</span></p>
+                    <p class="sub-main-text  no-text-case margin-top-20" ng-hide="addon.isLco">{{currencySymbol}}{{addon.amount}} <span ng-show="upsellDisplayOrderAmountFirst">{{addon.amount_type_label}}&nbsp;{{addon.post_type_label}}&nbsp;</span><span ng-hide="upsellDisplayOrderAmountFirst">{{addon.post_type_label}}&nbsp;{{addon.amount_type_label}}&nbsp;</span>&nbsp;<span ng-show="addon.display_suffix">{{addon.suffix_label}}</span></p>
+                    <!-- LCO text -->
+                    <p class="sub-main-text  no-text-case margin-top-20" ng-show="addon.isLco">
+                        .
+                    </p>
+                </div>
+            </div>
+            <a class="btn btn-template margin-top-20" ng-click="noThanksClicked()">Continue</a>
+            <div class="row no-thanks-wrap margin-top-20">
+                <p class="center-align no-thanks">
+                    <a ng-click="noThanksClicked()" class="sub-text no-text-case">Skip</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

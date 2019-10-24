@@ -32,7 +32,14 @@ this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFai
         that.ws.send('{"Command" : "cmd_scan_qr_passport_scanner"}');
     };
     this.CapturePassport = function() { // captures QR code data from the ARH/Samsotech Passport scanner
-        that.ws.send('{"Command" : "cmd_scan_passport"}');
+        var v1Scanning = angular.element('#header').scope().$parent.zestStationData.v1GuestIDScanning;// to be removed after 3.0
+        
+        if (v1Scanning === 'true') {
+            that.ws.send('{"Command" : "cmd_scan_passport"}');
+        } else {
+            // default if not configured
+            that.ws.send('{"Command" : "cmd_samsotech_scan_passport"}');// (ENHANCED LIBRARY)
+        }
     };
     this.CaptureQRViaDatalogic = function() { // captures QR code data (reservation id) from the Datalogic scanner
         that.ws.send('{"Command" : "cmd_scan_qr_datalogic"}');
@@ -54,9 +61,17 @@ this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFai
         that.ws.send(jsonstring);
     };
 
+    this.fetchDeviceId = function() {
+        that.ws.send('{"Command" : "cmd_device_uid"}');
+    };
+
+    this.enableDeviceLogging = function() {
+        that.ws.send('{"Command" : "cmd_enable_debug_log"}');
+    };
+
     this.connect = function() {
         try {
-            var port = (!_.isUndefined(wsSwipePort) && wsSwipePort !== '') ? wsSwipePort : 4649;
+            var port = (_.isUndefined(wsSwipePort) || wsSwipePort === '' || wsSwipePort === null) ? 4649 : wsSwipePort;
             
             if (_.isUndefined(wsSwipeUrl) || wsSwipeUrl === '') {
                 that.ws = new WebSocket('wss://localhost:' + port + '/CCSwipeService');

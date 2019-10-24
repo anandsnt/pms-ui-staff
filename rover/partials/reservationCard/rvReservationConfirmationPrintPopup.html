@@ -19,55 +19,61 @@
                     </select>
                 </div>
             </div>
-
-            <div class="entry" ng-show="reservationData.reservation_card.is_custom_text_per_reservation">
-                <label for="custom-text" translate>CONF_CUSTOM_TEXT</label>
+            <div class="entry">
+                <label for="custom-text">Email Type</label>
                 <div class="switch-button" ng-class="{ 'on' : ngData.enable_confirmation_custom_text }">
-                    <input ng-click="enableConfirmationCustomText();" id="custom-text" value="{value}" type="checkbox" />
+                    <input id="custom-text" value="{value}" type="checkbox" ng-click="enableConfirmationCustomText()"/>
                     <label class="data-off">
-                        <span class="value" translate>NO</span>
-                        <span class="switch-icon" translate>YES</span>
+                        <span class="value">Default</span>
+                        <span class="switch-icon">Custom</span>
                     </label>
                     <label class="data-on">
-                        <span class="switch-icon" translate>NO</span>
-                        <span class="value" translate>YES</span>
+                        <span class="switch-icon">Default</span>
+                        <span class="value">Custom</span>
                     </label>
                 </div>
             </div>
         </div>
-     
-        <div class="entry full-width" ng-show="ngData.enable_confirmation_custom_text">
-            <label for="email-title" translate>TITLE</label>
-            <input ng-model="ngData.confirmation_custom_title" id="email-title" value="" type="text" />
+        <div class="entry full-width" ng-if="ngData.enable_confirmation_custom_text">
+            <label for="email-title">Subject</label>
+            <input id="email-title" value="" type="text" ng-model="ngData.confirmation_custom_title" placeholder="Enter confirmation email subject"/>
         </div>
-        <div class="entry full-width" ng-show="ngData.enable_confirmation_custom_text">
-            <label for="email-text" translate>TEXT</label>
-            <textarea ng-model="ngData.confirmation_custom_text" id="email-text" rows="2"></textarea>
+        <div class="entry full-width" ng-if="ngData.enable_confirmation_custom_text">
+            <label for="email-text">Content</label>
+            <textarea id="email-text" rows="2" ng-model="ngData.confirmation_custom_text" placeholder="Enter confirmation email content"></textarea>
         </div>
 
-        <!-- Show only if no email in guest card -->
-        <div class="entry full-width" ng-if="!isEmailAttached()" >
-            <label for="guest-email" translate>EMAIL</label>
-            <input name="guest-email" id="guest-email" type="text" autocomplete="off" ng-model="ngData.sendConfirmatonMailTo"/>
-        </div>
+        <div class="confirmation-emails entry full-width">
+            <label for="guest-email">Send To</label>
         
+            <!-- If no email is present -->
+            <input name="guest-email" id="guest-email" value="" type="text" autocomplete="off" ng-if="!hasEmails()" ng-model="ngData.sendConfirmatonMailTo"/>
+                        
+            <!-- If Emails are present -->
+            <label class="checkbox" ng-if="ngData.guestEmail">
+                <span class="icon-form icon-checkbox" ng-class="{'checked': ngData.isGuestEmailSelected}"></span>
+                <input type="checkbox" name="guest_email[]" value="{Email}" ng-model="ngData.isGuestEmailSelected"/>
+                {{ngData.guestEmail}}
+            </label>
+            <label class="checkbox" ng-if="ngData.bookerEmail">
+                <span class="icon-form icon-checkbox" ng-class="{'checked': ngData.isBookerEmailSelected}"></span>
+                <input type="checkbox" name="guest_email[]" value="{Booker Email}" ng-model="ngData.isBookerEmailSelected" />
+                {{ngData.bookerEmail}}
+            </label>
+        </div>
+               
         <div class="actions">
-            <button type="button" class="button with-icon Grey" ng-show ="sendConfirmationLetter && (!ngData.sendConfirmatonMailTo&&!isEmailAttached())">
+            <button type="button" class="button" ng-class="{'grey' : shouldDisableSendConfirmationEmailBtn(), 'blue': !shouldDisableSendConfirmationEmailBtn() }" ng-if="sendConfirmationLetter" ng-click="sendConfirmationEmail()">
              <!-- Grey when no email, otherwise blue -->
                 <span class="icons icon-email"></span>
-                {{'EMAIL_CONFIRMATION' | translate}}
+                {{'SEND_EMAIL' | translate}}
             </button>
-            <button type="button" class="button with-icon blue" ng-show ="sendConfirmationLetter && (ngData.sendConfirmatonMailTo || isEmailAttached())" ng-click="sendConfirmationEmail()">
-             <!-- Grey when no email, otherwise blue -->
-                <span class="icons icon-email"></span>
-                {{'EMAIL_CONFIRMATION' | translate}}
-            </button>  
                  
-            <button ng-show="printConfirmationLetter" type="button" class="button with-icon blue" ng-click="printReservation()">
+            <button ng-if="printConfirmationLetter" type="button" class="button with-icon orange" ng-click="printReservation()">
                 <span class="icons icon-print"></span>
-                {{'PRINT_CONFIRMATION' | translate}}
+                {{'PRINT_LETTER' | translate}}
             </button>
-            <button type="button" class="button blank" ng-click="closeDialog()" translate>CLOSE</button> 
+            <button type="button" class="button blank" ng-click="closeDialog()" translate>CLOSE_WINDOW</button> 
         </div>
     </form>
 </div>

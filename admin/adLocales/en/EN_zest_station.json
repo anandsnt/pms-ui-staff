@@ -20,15 +20,17 @@
 "PRINT":"Print",
 "AUTO_PRINT":"Auto Print",
 
-"STATION_LANGUAGE_FILE_ATTACHED":"File Attached",
-"STATION_LANGUAGE_CHOOSE_FILE":"Choose File...",
-"STATION_LANGUAGE_ATTACH_FILE":"Attach File",
-
-
 "STATION_LANGUAGE_SUPPORT":"Language Support",
 "STATION_LANGUAGE_SUPPORT_SWITCH":"Multi-Language Support",
 "STATION_LANGUAGE_DEFAULT":"Default Language",
 "STATION_LANGUAGE_DEFAULT_PLACEHOLDER":"Select Language",
+"STATION_LANGUAGE_ADD_LABEL":"Add Language",
+"STATION_LANGUAGE_NAME_LABEL":"Language Name",
+"STATION_LANGUAGE_ENGLISH_LABEL":"Language Label (English)",
+"STATION_LANGUAGE_FOREIGN_LABEL":"Language Label (Foreign)",
+"STATION_LANGUAGE_ACTIVE_LABEL":"Enable",
+"STATION_LANGUAGE_FLAG_LABEL":"Flag icon",
+"STATION_LANGUAGE_TRANSLATION_FILE_LABEL": "Language File",
 
 
 "STATION_LANGUAGE_ENGLISH":"English",
@@ -39,9 +41,9 @@
 "STATION_LANGUAGE_CASTELLANO":"Castellano",
 
 "STATION_GUEST_ID_ACTIVATE" :"Guest ID Scan",
-"STATION_REMOVE_FILE" :"Remove File",
+"USE_V1_SCAN": "Use V1 lib for passport scan",
 
-"STATION_GUEST_ID_ACTIVATE_DESCRIPTION" :"Prompt to Scan Guest ID(s) During Check-In and Pickup Keys",
+"STATION_GUEST_ID_ACTIVATE_DESCRIPTION" :"During Check-In and Pickup Keys - SAMSOTECH",
 
 "ACTIVATE_BOOKING_ENGINE_POPUP" :"Activate Booking Engine Popup",
 "BOOKING_URL":"Booking Engine URL",
@@ -51,6 +53,7 @@
 "CHECKOUT":"Check Out",
 "CHECKIN":"Check In",
 "REG_CARD_TEXT":"Registration Card Text",
+"CUSTOM_REG_CARD_EMAIL_SUBJECT": "Custom Registration Subject",
 "CUSTOM_REG_CARD_HEADING": "Custom Registration Card Heading text",
 "REG_CARD":"Registration Card",
 "ON_SCREEN_ROOM_NUMBER":"On-Screen Room Number",
@@ -87,15 +90,23 @@
 "MLI_DESKTOP_SWIPE_CHROME":"MLI Desktop Swipe - Chrome Only - Merchantlink Processor",
 "INFINEA_INGENICO_CC_IPAD":"Infinea/ Ingenico - ipad Only - Merchantlink Processor",
 "KEY_CREATION_METHOD":"Key Creation Method",
-"KEY_CREATION_IMAGE":"Sankyo Create Key In-Progress Image",
+"KEY_CREATION_IMAGE":"Create Key In-Progress Image",
 "REMOTE_ENCODING_CHROME_IPAD":"Remote Encoding - Chrome or iPad - Ving, Salto, Saflok",
 "SANKYO_ENCODING":"Sankyo Encoding - Chrome only - Atlas (Saflok) only - Uses websocket",
 "INGENICO_INFINEA_KEY":"Infinea/Ingenico - iPad Only - Ving, Salto, Saflok",
 "USE_SOCKET_PRINTING" : "Use Socket print",
 "USE_SOCKET_PRINTING_DESC" : "turn this ON if Station is being run on a Windows-touchscreen computer, not a Tablet device",
 "USE_ZEST_STATION_HANDLER" : "Use Zest Station Handler",
+"ADD_UPDATE_GUEST_DETAILS": "Add/Update Guest Details",
 "USE_ADD_REMOVE_GUESTS" : "Add/Remove Guests",
+"COLLECT_GUEST_ADDRESS": "Collect Guest Address",
 "ZEST_STATION_OUT_OF_ORDER_TRESHOLD" : "Out of Order Threshold",
+
+"ZEST_STATION_OFFLINE_SETTINGS" : "Offline Re-Connect Settings",
+"ZEST_STATION_OFFLINE_RECONNECT" : "Retry Connect (in seconds)",
+"ZEST_STATION_OFFLINE_RECONNECT_SELECT" : "Select",
+
+
 "UPSELL_INSTRUCTIONS" : "Control the room upsells offered to the guest on Zest Station",
 "OFFER_ROOM_UPSELLS_TO_GUEST" : "Offer room upsells to guests",
 "DISPLAY_ROOM_UPSELL_OFFER_BY" : "Display the room upsell offers by:",
@@ -132,11 +143,57 @@
 "TURN_OFF_LIGHT": "Turn OFF light",
 "TEST_SETTINGS_INSTRUCTIONS": "If you already know the required light ID, enter the ID in the light ID field. Else click on get lights list button to list all the available lights. Please note that the lights have to be reachable.",
 "HUE_LIGHT_ID": "Hue Light ID",
-"LIGHT_COLOR_INSTRUCTIONS": "Please enter the 6 digit hex color." 
+"LIGHT_COLOR_INSTRUCTIONS": "Please enter the 6 digit hex color." ,
+"LIGHT_BRIGHTNESS": "Light Brightness (0-254)",
+"LIGHT_BLINKING_EFFECT": "Blinking effect",
+"HUE": "Hue (0-65535)",
+"SATURATION": "Saturation (0-254)",
+"CREDIT_CARD_AND_PAYMENT_OPTIONS": "Credit Card & Payment Options",
+"BYPASS_SIGNATURE_CAPTURE": "Bypass Signature Capture",
+"BYPASS_CC_AUTH": "Bypass CC Authorization (Always bypass CC collection)",
+"COLLECT_BALANCE": "Collect balance",
+"MANUAL": "Manual",
+"SEND_NON_CC_TO_STAFF": "Only Allow CC Guaranteed Reservations",
+"SHOW_PIN_LABEL": "Show PIN code",
 
+"STAFF_NOTIFICATION_SOUND": "Staff notification sound",
+"ROOM_PIN_PREFIX_TEXT": "Room PIN text",
+"RE_VERIFY_IDS": "Re-Verify ID",
+"ALWAYS_REQUIRE_STAFF_TO_VERIFY_IDS_IN_PICKUP_KEY": "Always require staff to verify ID during the key pick up",
 
+"ADD_LOYALTY_PGMS": "Add Loyalty Programs",
+"CONFIGURABLE_IMAGES": "Configurable Images",
+"FILE_ATTACHED":"File Attached",
+"CHOOSE_FILE":"Choose File...",
+"ATTACH_FILE":"Attach File",
+"REMOVE_FILE" :"Remove File",
 
+"SWIPE_CC_FOR_AUTH": "Swipe CC for Authorization",
+"SWIPE_CC_FOR_PAYMENT": "Swipe CC for Payment",
+"KEY_CONFIRMATION_IMG": "Key confirmation image",
+"SCAN_ID_TO_FIND_RESERVATION": "Scan ID to find Reservations",
+"STATION_PASSPORT_ENTRY_HEADER": "Passport entry settings",
+"STATION_PASSPORT_ENTRY_LABEL": "Collect passport number",
+"STATION_PASSPORT_ENTRY_BYPASS_LABEL": "Bypass passport entry",
+"STATION_PASSPORT_ENTRY_BYPASS_REASON_LABEL": "Passport bypass reason",
+"ADD_NEW_REASON": "Add new reason",
 
+"WALK_IN_RESERVATIONS": "Walk-in Reservations",
+"WALK_IN_RESERVATIONS_INSTRUCTIONS": "",
+"WALK_IN_RATE_CODE": "Walk-in Rate code",
+"WALK_IN_MARKET": "Walk-in Market",
+"WALK_IN_ORIGIN": "Walk-in Origin",
+"WALK_IN_SOURCE": "Walk-in Source",
+"WALK_IN_SOURCE": "Walk-in Source",
+"WALKIN_FLOW": "Walk-in flow",
+"TRADITIONAL": "Traditional",
+"UPSELL_ORIENTED": "Upsell oriented",
 
-        
-        
+"EXCLUDE": "EXCLUDE",
+"PAYMENT_TYPES": "PAYMENT TYPES",
+"ALLOWED_PAYMENT_TYPES": "ALLOWED PAYMENT TYPES",
+"EXCLUDED_PAYMENT_TYPES": "EXCLUDED PAYMENT TYPES",
+
+"GUEST_CHARGES": "Guest charges",
+"ALLOWED_ITEMS": "Allowed Items",
+"AVAILABLE_ITEMS": "Available Items"

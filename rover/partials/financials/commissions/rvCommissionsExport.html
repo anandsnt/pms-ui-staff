@@ -1,0 +1,94 @@
+<div role="dialog" id="modal" class="modal-show">
+<!-- Add .exporting when exporting -->
+<!-- Add .success when success -->
+<!-- Add .error on error -->
+<div class="modal-content form commissions" ng-class="{'exporting': exportInProgess, 'success': exportSuccess, 'error': exportFailed}">
+    <button class="modal-close" id="modal-close" type="button" ng-click="closeThisDialog()"><span class="icons icon-close invert"></span></button>
+    
+    <span class="h2 message">Export</span> 
+
+    <!-- On default: -->
+    <span class="text" ng-hide="exportInProgess || exportFailed || exportSuccess" translate>EXPORT_AND_PAY_COMMISSIONS</span>
+
+    <!-- On exporting -->
+    <span class="text" ng-show="exportInProgess && filterData.selectedExportType ==='standard'" translate>EXPORT_IN_PROGRESS_MSG</span>
+    <span class="text" ng-show="exportInProgess && filterData.selectedExportType !=='standard'" translate>EXPORT_IN_PROGRESS_CUSTOM_MSG</span>
+ 
+
+    <!-- On error -->
+    <span class="text" ng-show="exportFailed" translate>Export of commission records failed.</span>
+
+    <!-- On success -->
+    <span class="text" ng-show="exportSuccess" translate>EXPORT_SUCCESS</span>
+    
+    <div class="notice">
+        <strong class="amount"><span class="currency">{{ ::currencySymbol }}</span>{{::commissionsData.amount_totals.unpaid | number: precisonTwo}}</strong>
+        <span class="bills">{{ filterData.billStatus.value === 'ON_HOLD' ? commissionsData.bill_count_totals.on_hold : commissionsData.bill_count_totals.open }} Bills</span>
+    </div>
+    <!-- If export interfaces available -->
+    <div class="entry full-width" ng-hide="exportInProgess || exportFailed || exportSuccess">
+        <label translate>EXPORT_TYPE</label>
+       <div class="options">
+            <label class="radio" ng-class="{'checked':filterData.selectedExportType === 'standard'}">
+                <span class="icon-form icon-radio " ng-class="{checked:filterData.selectedExportType ==='standard'}"></span>
+                <input type="radio" value="standard" ng-model="filterData.selectedExportType"> {{ 'STD_CSV_EXPORT' | translate}}
+            </label>
+            <label class="radio" ng-class="{'checked':filterData.selectedExportType === 'onyx'}" ng-if="filterData.exportType === 'onyx'">
+                <span class="icon-form icon-radio " ng-class="{checked:filterData.selectedExportType ==='onyx'}"></span>
+                <input type="radio" value="onyx" ng-model="filterData.selectedExportType"> {{ 'ONYX_EXPORT' | translate}}
+            </label>
+            <label class="radio" ng-class="{'checked':filterData.selectedExportType === 'tacs'}" ng-if="filterData.exportType === 'tacs'">
+                <span class="icon-form icon-radio " ng-class="{checked:filterData.selectedExportType ==='tacs'}"></span>
+                <input type="radio" value="tacs" ng-model="filterData.selectedExportType"> {{ 'TACS_EXPORT' | translate}}
+            </label>
+        </div>
+
+    </div>
+    <!--  
+    <div class="entry full-width">
+        <label class="checkbox"> 
+            <span class="icon-form icon-checkbox"></span>
+            <input value="{value}" type="checkbox" />
+            Include Non-Commissionable Reservations
+        </label>
+    </div>
+    -->
+    <div class="entry full-width" ng-hide="exportInProgess || exportFailed || exportSuccess">
+        <label class="checkbox">
+            <span class="icon-form icon-checkbox" ng-class="{'checked': filterData.email_report}"></span>
+            <input name="email_reposrt" ng-model="filterData.email_report" type="checkbox" />
+            {{ 'EMAIL_PAYMENT_REPORT_SWITCH' | translate }}
+        </label>
+    </div>
+    
+    <div class="entry full-width" ng-hide="exportInProgess || exportFailed || exportSuccess">
+        <label>
+            {{ 'ADD_RECIPIENT' | translate }}
+            <strong>*</strong>
+        </label>
+        <input ng-model="filterData.receipientEmail">
+    </div>
+
+    <div class="actions">
+        <!-- On Default: -->
+       <button type="button" class="button" ng-disabled="!isValidEmail()" ng-class="{'grey': !isValidEmail() ,'green':isValidEmail()}" ng-click="exportCommisions()"  ng-hide="exportInProgess || exportFailed || exportSuccess" translate>EXPORT</button>
+
+        <button type="button" id="cancel" class="button blank" ng-click="closeThisDialog()" translate>CANCEL</button>
+
+        <!-- On Error --
+            <button type="button" class="button blue">Try Again</button>
+            <button type="button" id="cancel" class="button blank">Cancel</button>
+        -->
+
+        <!-- On Success --
+            <!-- If we have set records to paid add .disabled & disabled=disabled, change text to "Records set to Paid!" --
+            <button type="button" class="button green">Set Records to Paid</button>
+            
+            <!-- If generated add .disabled & disabled=disabled, change text to "Payment report generated" --
+            <button type="button" class="button blue">Generate Payment Record</button>
+            
+            <button type="button" id="cancel" class="button blank">Close Window</button>
+        -->
+    </div>
+</div>
+</div>

@@ -11,6 +11,7 @@
 	@actionBackground: 		@white;
 
 	@inputBackground: 		rgba(0,0,0,.3);
+    @inputColor:            @white;
 	@transparentColor: 		rgba(255,255,255,.5);
 
 	@grey1:					#dededc;
@@ -73,6 +74,7 @@
 		}
 
 		#header {
+            .transition();
 			#flexbox > .parent('', '', flex-end, '');
 
 			.button {
@@ -116,8 +118,9 @@
 		#main {
 			top: 140px;
 			left: 20px;
-			background: @backgroundColor url("../css/themes/yotel/background.png") no-repeat;
+			background: @backgroundColor url("../css/themes/yotel/background.png") 50% 100% no-repeat;
 			background-size: cover;
+            .transition();
 			#rounded > .round();
 			#calc > #height > .remove(100%, 160px);
 			#calc > #width > .remove(100%, 40px);
@@ -156,6 +159,50 @@
 	            }
 	        }
 	    }
+
+        .add-on {
+            #options {
+                li {
+                    button.option{
+                        height:130px;
+                    }
+                    .option {
+                        color: @brandColor;
+                        position:relative;
+                        .icon-text {
+                            position:absolute;
+                            padding: 25px 0;
+                        }
+
+                        .icon-checkout-upsell {
+                            path:nth-child(2) {
+                                fill: @brandColor !important;
+                            }
+                        }
+
+                        &.not-selected {
+                            color: fade(@black, 40);
+
+                            .icon-checkout-upsell {
+                                path:nth-child(2),
+                                path:nth-child(3) {
+                                    fill: #cbcbcb !important;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            &.selected {
+                border-color: @brandColor;
+                background-color: @brandColor;
+
+                .add-on-content {
+                    color: @white;
+                }
+            }
+        }
 
 		#textual {
 			&.review-bill {
@@ -239,6 +286,11 @@
         }
 
 
+        .minibar-items .minibar-item .minibar-item-actions .button.disabled,
+        .minibar-items .minibar-item .minibar-item-actions .button[disabled] {
+            background: #dedede;
+        }
+        
         /* commenting out admin settings
 
 
@@ -307,7 +359,7 @@
             overflow-x:visible !important;
         }
         .ui-keyboard-has-focus{
-            z-index:7999;
+            z-index:100000;
             width: 56% !important;
             bottom: 10px;
         }
@@ -447,31 +499,6 @@
     }
 }
 
-
-
-@media (min-height: 800px) {
-    #options li .option {
-        width: 100% !important;
-        height: 35% !important;
-    }
-    #options.large-icons li .option {
-        width: 90% !important;
-        height: 40% !important;
-    }
-}
-
-
-@media (min-height: 1240px) {
-    #options li .option {
-        width: 100% !important;
-        height: 35% !important;
-    }
-    #options.large-icons li .option {
-        width: 90% !important;
-        height: 25% !important;
-    }
-}
-
 /********************************* key board style fixes ********************/
 
 .ui-keyboard-button{
@@ -569,3 +596,47 @@
 .add-guest-mode-content{
     height: 100% !important;
 }
+.eci-content{
+    h1 {
+        font-size: 41px;
+    }
+    h3 {
+        font-size: 36px;
+    }
+    nav > ul > li {
+        text {
+            font-size: 38px;
+        }
+        h3 {
+            font-size: 28px;
+            text {
+                font-size: 28px;
+            }
+        }
+    }
+}
+
+
+/* Onscreen keyboard ***/
+@keyboardShift:         120px;
+
+&.showing-keyboard#yotel {
+
+    #header {
+        margin-top: -@keyboardShift;
+    }
+
+    #screen-icon {
+        top: 90px - @keyboardShift;
+    }
+
+    #main {
+        top: 140px - @keyboardShift;
+        #calc > #height > .remove(100%, 160px - @keyboardShift);
+    }          
+}
+
+.lift-popup {
+    top: 20% !important;
+}
+

@@ -1,0 +1,58 @@
+<div class="manual-balance">
+    <table>
+        <thead>
+            <tr>
+                <th class="name" translate>NAME</th>
+                <th class="invoice-no" translate>INVOICE_NO</th>
+                <th class="date" translate>AGING_DATE</th>
+                <th class="amount" translate>AMOUNT</th>
+                <th class="action"></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr ng-repeat = "item in manualBalanceObj.manualBalanceList" >
+                <td class="name">
+                    <div class="entry">
+                        <input type="text" ng-model="item.name"/>
+                    </div>
+                </td>
+                <td class="invoice-no">
+                    <div class="entry">
+                        <input type="text" ng-model="item.invoiceNo"/>
+                    </div>
+                </td>
+                <td class="date">
+                    <div class="entry has-datepicker">
+                        <button class="clear-query" ng-class="{'visible': escapeNull(item.departureDate) !=''}">
+                            <span class="icons icon-clear-search" ng-click="clearDateSelection($index)" translate>CLEAR_QUERY</span>
+                        </button>
+                        <input type="text" class="datepicker hasDatepicker" value="{{ item.departureDate | date : dateFormat }}" ng-click="popupArDateCalendar($index)" readonly />
+                    </div>
+                </td>
+                <td class="amount">
+                    <span class="currency">{{currencySymbol}}</span>
+                    <div class="entry">
+                        <input type="text" ng-model="item.amount"/>
+                    </div>
+                </td>
+                <td class="action">
+                    <button class="button icon-only" ng-class="{'grey overlay': balanceObjIsEmpty($index) && $last }">
+                        <span class="icons icon-add-60" ng-if="$last" ng-click="addBalanceRow($index)"></span>
+                        <span class="icons icon-remove-40" ng-if="!$last" ng-click="removeBalanceRow($index)"></span>
+                    <button>
+                </td>
+            </tr>
+
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4">
+                    {{ 'TOTAL' | translate }}
+                    <strong><span class="currency">{{currencySymbol}}</span>{{ calculateTotalBalance() | number:2 }}</strong>
+                </td>
+                <td></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

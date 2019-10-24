@@ -1,0 +1,36 @@
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
+	<div class="modal-content form overbooking"> 
+	    <button id="modal-close" ng-click="closeDialog()" type="button" class="modal-close"><span class="icons icon-close invert"></button>
+	    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+	    <strong class="h2 message">{{overBookingObj.editData.date | date:fulldayInWeek}} , {{overBookingObj.editData.date | date:shortMonthAndDate}}</strong>
+	    <em class="text warning" translate>OVERBOOKING_WARN_MSG_EDIT</em>
+	    <em class="text warning" ng-if="overBookingObj.editData.type == 'HOUSE'" translate>HOUSE_LIMIT</em>
+	    <em class="text warning" ng-if="overBookingObj.editData.type == 'ROOM_TYPE'">{{overBookingObj.editData.roomTypeName}}</em>
+	    
+	    <!-- Limit Value -->
+	    <div class="entry full-width entry-limit">
+	        <div class="limit-input">
+	        	<label class="switch-label" for="limit-value" ng-if="overBookingObj.editData.type == 'HOUSE'" translate>HOUSE_LIMIT</label>
+	        	<label class="switch-label" for="limit-value" ng-if="overBookingObj.editData.type == 'ROOM_TYPE'" translate>ROOM_TYPE_VALUE</label>
+	            <div class="switch-button overlay hidden"> <!-- Add class 'on' if L12 is checked -->
+	                <input id="limit-type" type="checkbox"> <!-- Rooms number if not checked, percentage if checked -->
+	                <label class="data-off">
+	                    <span class="switch-icon" translate>RMS</span>
+	                    <span class="value">%</span>
+	                </label>
+	                <label class="data-on">
+	                    <span class="value" translate>RMS</span>
+	                    <span class="switch-icon">%</span>
+	                </label>
+	            </div>
+	            <input type="number" ng-model="overBookingObj.editData.limitValue" id="limit-value" />
+	        </div>
+	    </div>
+
+	    <!-- Actions -->
+	    <div class="actions">
+	        <button type="button" ng-click="editOverBookingApiCall()" class="button green" translate>SET_LIMT</button>
+	        <button type="button" ng-click="closeDialog()" class="button blank" translate>CANCEL</button>
+	    </div>
+	</div>
+</div>

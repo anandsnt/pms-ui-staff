@@ -38,6 +38,7 @@
       </strong>
       <figure class="guest-image">
         <img src="{{ roomDetails.avatar_src }}" alt="">
+        <span class="stay-count" ng-if="roomDetails.guest_stay_count > 0 && isStandAlone">{{::roomDetails.guest_stay_count}}</span>
         <span ng-if="roomDetails.is_vip == 'true'" class="vip">VIP</span>
       </figure>
       <h2>

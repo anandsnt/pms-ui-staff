@@ -9,12 +9,12 @@ is_ledger
 
 <tr ng-repeat="item in ledgerEntries">
 	<td class="code long-code break">{{ item.section }}</td>
-	<td class="break">{{ item.today | currency:currencySymbol:2 }}</td>
-	<td>{{ item.mtd | currency:currencySymbol:2 }}</td>
-	<td>{{ item.last_year_mtd | currency:currencySymbol:2 }}</td>
-	<td class="break" ng-class="{ 'red': item.mtd_variance < 0 }">{{ item.mtd_variance | currency:currencySymbol:2 }}</td>
-	<td>{{ item.ytd | currency:currencySymbol:2 }}</td>
-	<td>{{ item.last_year_ytd | currency:currencySymbol:2 }}</td>
+	<td class="break"><span class="currency">{{ item.today | currency:currencySymbol:2 }}</span></td>
+	<td><span class="currency">{{ item.mtd | currency:currencySymbol:2 }}</span></td>
+	<td><span class="currency">{{ item.last_year_mtd | currency:currencySymbol:2 }}</span></td>
+	<td class="break" ng-class="{ 'red': item.mtd_variance < 0 }"><span class="currency">{{ item.mtd_variance | currency:currencySymbol:2 }}</span></td>
+	<td><span class="currency">{{ item.ytd | currency:currencySymbol:2 }}</span></td>
+	<td><span class="currency">{{ item.last_year_ytd | currency:currencySymbol:2 }}</span></td>
 	<td ng-class="{ 'red': item.ytd_variance < 0 }">{{ item.ytd_variance | currency:currencySymbol:2 }}</td>
 </tr>
 
@@ -31,13 +31,13 @@ is_ledger
 
 <tr class="total" ng-repeat="item in totalEntries">
 	<td class="code long-code break">{{ item.section }}</td>
-	<td class="break">{{ item.today | currency:currencySymbol:2 }}</td>
-	<td>{{ item.mtd | currency:currencySymbol:2 }}</td>
-	<td>{{ item.last_year_mtd | currency:currencySymbol:2 }}</td>
-	<td class="break" ng-class="{ 'red': item.mtd_variance < 0 }">{{ item.mtd_variance | currency:currencySymbol:2 }}</td>
-	<td>{{ item.ytd | currency:currencySymbol:2 }}</td>
-	<td>{{ item.last_year_ytd | currency:currencySymbol:2 }}</td>
-	<td ng-class="{ 'red': item.ytd_variance < 0 }">{{ item.ytd_variance | currency:currencySymbol:2 }}</td>
+	<td class="break"><span class="currency">{{ item.today | currency:currencySymbol:2 }}</span></td>
+	<td><span class="currency">{{ item.mtd | currency:currencySymbol:2 }}</span></td>
+	<td><span class="currency">{{ item.last_year_mtd | currency:currencySymbol:2 }}</span></td>
+	<td class="break" ng-class="{ 'red': item.mtd_variance < 0 }"><span class="currency">{{ item.mtd_variance | currency:currencySymbol:2 }}</span></td>
+	<td><span class="currency">{{ item.ytd | currency:currencySymbol:2 }}</span></td>
+	<td><span class="currency">{{ item.last_year_ytd | currency:currencySymbol:2 }}</span></td>
+	<td ng-class="{ 'red': item.ytd_variance < 0 }"><span class="currency">{{ item.ytd_variance | currency:currencySymbol:2 }}</span></td>
 </tr>
 
 
@@ -89,36 +89,36 @@ is_ledger
 	<td ng-if="!item.isChargeCodePagination"
     class="break"
   >
-    {{ item.today | currency:currencySymbol:2 }}
+    <span class="currency">{{ item.today | currency:currencySymbol:2 }}</span>
   </td>
 
 	<td ng-if="!item.isChargeCodePagination">
-    {{ item.mtd | currency:currencySymbol:2 }}
+    <span class="currency">{{ item.mtd | currency:currencySymbol:2 }}</span>
   </td>
 
 	<td ng-if="!item.isChargeCodePagination">
-    {{ item.last_year_mtd | currency:currencySymbol:2 }}
+    <span class="currency">{{ item.last_year_mtd | currency:currencySymbol:2 }}</span>
   </td>
 
 	<td ng-if="!item.isChargeCodePagination"
     class="break"
     ng-class="{ 'red': item.mtd_variance < 0 }"
   >
-    {{ item.mtd_variance | currency:currencySymbol:2 }}
+    <span class="currency">{{ item.mtd_variance | currency:currencySymbol:2 }}</span>
   </td>
 
 	<td ng-if="!item.isChargeCodePagination">
-    {{ item.ytd | currency:currencySymbol:2 }}
+    <span class="currency">{{ item.ytd | currency:currencySymbol:2 }}</span>
   </td>
 
 	<td ng-if="!item.isChargeCodePagination">
-    {{ item.last_year_ytd | currency:currencySymbol:2 }}
+   <span class="currency"> {{ item.last_year_ytd | currency:currencySymbol:2 }}</span>
   </td>
 
 	<td ng-if="!item.isChargeCodePagination"
     ng-class="{ 'red': item.ytd_variance < 0 }"
   >
-    {{ item.ytd_variance | currency:currencySymbol:2 }}
+    <span class="currency">{{ item.ytd_variance | currency:currencySymbol:2 }}</span>
   </td>
 </tr>
 
@@ -137,25 +137,25 @@ is_ledger
   <td class="code long-code break" ng-click="togglePaymentGroup($index)">{{item.section}}
     <span class="icons icon-double-arrow"></span>
   </td>
-  <td class="break">{{item.today | currency:currencySymbol:2}}</td>
-  <td>{{item.mtd | currency:currencySymbol:2}}</td>
-  <td>{{item.last_year_mtd | currency:currencySymbol:2}}</td>
-  <td class="break" ng-class="{ 'red': item.mtd_variance < 0 }">{{item.mtd_variance | currency:currencySymbol:2}}</td>
-  <td>{{item.ytd | currency:currencySymbol:2}}</td>
-  <td>{{item.last_year_ytd | currency:currencySymbol:2}}</td>
-  <td ng-class="{ 'red': item.ytd_variance   < 0 }">{{item.ytd_variance | currency:currencySymbol:2}}</td>
+  <td class="break"><span class="currency">{{item.today | currency:currencySymbol:2}}</span></td>
+  <td><span class="currency">{{item.mtd | currency:currencySymbol:2}}</span></td>
+  <td><span class="currency">{{item.last_year_mtd | currency:currencySymbol:2}}</span></td>
+  <td class="break" ng-class="{ 'red': item.mtd_variance < 0 }"><span class="currency">{{item.mtd_variance | currency:currencySymbol:2}}</span></td>
+  <td><span class="currency">{{item.ytd | currency:currencySymbol:2}}</span></td>
+  <td><span class="currency">{{item.last_year_ytd | currency:currencySymbol:2}}</span></td>
+  <td ng-class="{ 'red': item.ytd_variance   < 0 }"><span class="currency">{{item.ytd_variance | currency:currencySymbol:2}}</span></td>
 </tr>
 <tr ng-repeat="paymentGroupItem in item.paymentGroupEntries.charge_codes track by $index" class="charge-code toggle" >
   <td class="code long-code break">{{paymentGroupItem.name}}
 
   </td>
-  <td class="break">{{paymentGroupItem.today | currency:currencySymbol:2}}</td>
-  <td>{{paymentGroupItem.mtd | currency:currencySymbol:2}}</td>
-  <td>{{paymentGroupItem.last_year_mtd | currency:currencySymbol:2}}</td>
-  <td class="break" ng-class="{ 'red': item.mtd_variance < 0 }">{{paymentGroupItem.mtd_variance | currency:currencySymbol:2}}</td>
-  <td>{{paymentGroupItem.ytd | currency:currencySymbol:2}}</td>
-  <td>{{paymentGroupItem.last_year_ytd | currency:currencySymbol:2}}</td>
-  <td ng-class="{ 'red': item.ytd_variance   < 0 }">{{paymentGroupItem.ytd_variance | currency:currencySymbol:2}}</td>
+  <td class="break"><span class="currency">{{paymentGroupItem.today | currency:currencySymbol:2}}</span></td>
+  <td><span class="currency">{{paymentGroupItem.mtd | currency:currencySymbol:2}}</span></td>
+  <td><span class="currency">{{paymentGroupItem.last_year_mtd | currency:currencySymbol:2}}</span></td>
+  <td class="break" ng-class="{ 'red': item.mtd_variance < 0 }"><span class="currency">{{paymentGroupItem.mtd_variance | currency:currencySymbol:2}}</span></td>
+  <td><span class="currency">{{paymentGroupItem.ytd | currency:currencySymbol:2}}</span></td>
+  <td><span class="currency">{{paymentGroupItem.last_year_ytd | currency:currencySymbol:2}}</span></td>
+  <td ng-class="{ 'red': item.ytd_variance   < 0 }"><span class="currency">{{paymentGroupItem.ytd_variance | currency:currencySymbol:2}}</span></td>
 </tr>
 <tr ng-repeat-end  class="charge-code">
    <td class="code long-code break"></td>
@@ -169,7 +169,8 @@ is_ledger
     <rv-pagination page-options="item.insidePaginationData" page-data="item.totalInsidePagination"></rv-pagination>
   </td>
 </tr>
-<tr class="grouped" ng-show="ledgerDepositEntries.length > 0">
+
+<tr class="grouped" ng-show="balanceEntries.length > 0">
   <td class="code long-code break"></td>
   <td class="break">LEDGER DATA</td>
   <td></td>
@@ -183,7 +184,7 @@ is_ledger
 <tr ng-repeat="item in balanceEntries track by $index" class="charge-group" >
   <td class="code long-code break" >{{item.section}}
   </td>
-  <td class="break" ng-class="{ 'red': item.today < 0 }">{{item.today | currency:currencySymbol:2}}</td>
+  <td class="break" ng-class="{ 'red': item.today < 0 }"><span class="currency">{{item.today | currency:currencySymbol:2}}</span></td>
   <td></td>
   <td></td>
   <td class="break"></td>
@@ -206,7 +207,7 @@ is_ledger
 <tr ng-repeat="item in ledgerDepositEntries track by $index" class="charge-group" >
   <td class="code long-code break" >{{item.section}}
   </td>
-  <td class="break" ng-class="{ 'red': item.today < 0 }">{{item.today | currency:currencySymbol:2}}</td>
+  <td class="break" ng-class="{ 'red': item.today < 0 }"><span class="currency">{{item.today | currency:currencySymbol:2}}</span></td>
   <td></td>
   <td></td>
   <td class="break"></td>
@@ -228,7 +229,7 @@ is_ledger
 <tr ng-repeat="item in ledgerGuestEntries track by $index" class="charge-group" >
   <td class="code long-code break" >{{item.section}}
   </td>
-  <td class="break" ng-class="{ 'red': item.today < 0 }">{{item.today | currency:currencySymbol:2}}</td>
+  <td class="break" ng-class="{ 'red': item.today < 0 }"><span class="currency">{{item.today | currency:currencySymbol:2}}</span></td>
   <td></td>
   <td></td>
   <td class="break"></td>
@@ -251,7 +252,7 @@ is_ledger
 <tr ng-repeat="item in ledgerAREntries track by $index" class="charge-group" >
   <td class="code long-code break" >{{item.section}}
   </td>
-  <td class="break" ng-class="{ 'red': item.today < 0 }">{{item.today | currency:currencySymbol:2}}</td>
+  <td class="break" ng-class="{ 'red': item.today < 0 }"><span class="currency">{{item.today | currency:currencySymbol:2}}</span></td>
   <td></td>
   <td></td>
   <td class="break"></td>
@@ -273,7 +274,7 @@ is_ledger
 
 <tr class="charge-group" ng-repeat="item in ledgerTotalVariance track by $index"  ng-show="ledgerTotalVariance.length > 0">
   <td class="code long-code break"><strong>{{item.section}}</strong></td>
-  <td class="break" > <strong ng-class="{ 'red': item.today < 0 }"> {{item.today | currency:currencySymbol:2}} </strong></td>
+  <td class="break" > <strong ng-class="{ 'red': item.today < 0 }"> <span class="currency">{{item.today | currency:currencySymbol:2}} </span></strong></td>
   <td></td>
   <td></td>
   <td class="break"></td>
@@ -284,7 +285,7 @@ is_ledger
 
 <tr class="charge-group" ng-repeat="item in ledgerTotalClosingBalance track by $index"  ng-show="ledgerTotalClosingBalance.length > 0">
   <td class="code long-code break"><strong>{{item.section}}</strong></td>
-  <td class="break" > <strong ng-class="{ 'red': item.today < 0 }"> {{item.today | currency:currencySymbol:2}} </strong></td>
+  <td class="break" > <strong ng-class="{ 'red': item.today < 0 }"> <span class="currency">{{item.today | currency:currencySymbol:2}}</span> </strong></td>
   <td></td>
   <td></td>
   <td class="break"></td>

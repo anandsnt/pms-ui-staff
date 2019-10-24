@@ -1,6 +1,9 @@
 <!-- DEMO MODE -->
 
-<span ng-show="zestStationData.demoModeEnabled == 'true'" class="demo-text dev-cls top-left-demo">demo</span>
+<span ng-show="zestStationData.demoModeEnabled == 'true'" class="demo-text dev-cls top-left-demo">demo
+    <span ng-show="zestStationData.fakeReservation == 'true'" class=""> + R</span>
+</span>
+
 
 <!-- NO-CHECK-IN -->
 <span ng-show="zestStationData.noCheckInsDebugger == 'true'" class="demo-text dev-cls top-left-demo" ng-class="{'demo-second-cls':zestStationData.demoModeEnabled == 'true'}">NCI</span>
@@ -47,8 +50,10 @@
         <span ng-show='isIpad'>iPad/iPhone</span>
         <span ng-show='inChromeApp && !inElectron'>Windows App (C)</span>
         <span ng-show='inElectron'>Windows App (E)</span>
-        <span ng-show='!isIpad && !inChromeApp'>Web Browser</span>
-        <span>Make Keys [<span>{{zestStationData.makeTotalKeys}}</span>]</span>
+
+        <span ng-show='!isIpad && !inChromeApp'>Web Browser</span><br>
+        <span>Make Keys [<span>{{zestStationData.makeTotalKeys}}</span>]</span><br>
+        <span>*diagnostics {{zestStationData.ltrack}}</span>
         <br>
 
         <!-- Credit Card Swipe Amount Requested -->

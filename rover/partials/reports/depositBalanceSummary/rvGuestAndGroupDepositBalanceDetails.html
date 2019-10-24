@@ -16,8 +16,8 @@
         <span ng-repeat="resultItem in results">
             <ul class="card-meta">
                 <li class="name">Deposit Transactions on {{ resultItem.transaction_date | date : dateFormat }}</li>
-                <li class="balance green">{{resultItem.total_credit | currency:currencySymbol:2 }}</li>
-                <li class="balance red">{{resultItem.total_debit | currency:currencySymbol:2 }}</li>
+                <li class="balance green"><span class="currency">{{resultItem.total_credit | currency:currencySymbol:2 }}</span></li>
+                <li class="balance red"><span class="currency">{{resultItem.total_debit | currency:currencySymbol:2 }}</span></li>
             </ul>
             <table class="balance-reports deposit-balance-summary">
 
@@ -36,7 +36,10 @@
                     </tr> -->
                     <tr>
                     <th ng-repeat="item in subHeaders track by $index">
-                        <span ng-class="{'sort': hasSort($index), 'sorting-asc': isAsc($index), 'sorting-desc': isDesc($index)}" ng-click="sortResultBy(chosenReport.sortByOptions[$index], chosenReport)">
+                        <span ng-class="{'sort': hasSort($index), 'sorting-asc': isAsc($index), 'sorting-desc': isDesc($index)}" ng-click="sortResultBy(chosenReport.sortByOptions[$index], chosenReport)" ng-if="!isBackgroundReportsEnabled">
+                            {{ item }}
+                        </span>
+                        <span ng-if="isBackgroundReportsEnabled">
                             {{ item }}
                         </span>
                     </th>
@@ -55,6 +58,6 @@
     </div>
 </div>
 
-<rv-pagination  page-options="paginationConfig" page-data="totalCount" ng-if="showReportDetails">
+<rv-pagination  page-options="paginationConfig" page-data="totalCount">
 </rv-pagination>
 

@@ -13,7 +13,10 @@
         <table class="forecast-reports large-grid forecast-group">
             <thead>
                 <tr class="top-row">
-                    <th colspan="2" class="date"><span class="sort" ng-class="{ 'sorting-asc': !!chosenReport.sortByOptions[0] && chosenReport.sortByOptions[0]['sortDir'] === true, 'sorting-desc': !!chosenReport.sortByOptions[0] && chosenReport.sortByOptions[0]['sortDir'] === false }" ng-click="sortResultBy(chosenReport.sortByOptions[0])">Date</span></th>
+                    <th colspan="2" class="date">
+                        <span class="sort" ng-class="{ 'sorting-asc': !!chosenReport.sortByOptions[0] && chosenReport.sortByOptions[0]['sortDir'] === true, 'sorting-desc': !!chosenReport.sortByOptions[0] && chosenReport.sortByOptions[0]['sortDir'] === false }" ng-click="sortResultBy(chosenReport.sortByOptions[0])" ng-if="!isBackgroundReportsEnabled">Date</span>
+                        <span ng-if="isBackgroundReportsEnabled">Date</span>
+                    </th>
                     <th colspan="1" class="break">Individual</th>
                     <th colspan="1" class="break">Group/Allotments</th>
                     <th colspan="3" class="break">Rooms Total</th>
@@ -48,5 +51,5 @@
     </div>
 </div>
 
-<rv-pagination  page-options="paginationConfig" page-data="totalCount" ng-if="showReportDetails">
+<rv-pagination  page-options="paginationConfig" page-data="totalCount">
 </rv-pagination>

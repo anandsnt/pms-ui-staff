@@ -17,5 +17,5 @@
     <span>{{transaction.charge_description}}</span>
     <span class="reference">{{transaction.charge_code}}</span>
 </td>
-<td class="balance red">{{transaction.debit | currency:currencySymbol:2 }}</td>
-<td class="balance green">{{transaction.credit | currency:currencySymbol:2 }}</td>
+<td class="balance red"><span class="currency">{{transaction.debit | currency:currencySymbol:2 }}</span></td>
+<td class="balance green"><span class="currency">{{transaction.credit | currency:currencySymbol:2 }}</span></td>

@@ -1,4 +1,5 @@
 input,
+textarea,
 select,
 .button:not(.ng-hide) {
     font-family: @fontFamily;
@@ -18,19 +19,52 @@ li {
     }
 }
 
-input {
-    color: @textColor;
+input,
+textarea {
+    color: @inputColor;
     background: @inputBackground;
+    width: 100%;
+}
+
+input {
     padding: 0 20px;
-    .size(64px, 100%);
+    height: 64px;   
+}
+
+textarea {
+    padding: 20px;
+    resize: none;
 }
 
 select {
-    color: @textColor;
+    color: @inputColor;
     background: @inputBackground;
     padding: 0 20px;
     cursor: pointer;
     .size(64px, 100%);
+}
+
+input,
+select {
+    &::-webkit-input-placeholder {
+        font-style: italic;
+        color: fade(contrast(@inputBackground), 50);
+    }
+
+    &::-moz-placeholder {
+        font-style: italic;
+        color: fade(contrast(@inputBackground), 50);
+    }
+
+    &:-ms-input-placeholder {
+        font-style: italic;
+        color: fade(contrast(@inputBackground), 50);
+    }
+
+    &:-moz-placeholder {
+        font-style: italic;
+        color: fade(contrast(@inputBackground), 50);
+    }
 }
 
 .button {
@@ -90,7 +124,6 @@ select {
     &.disabled,
     &[disabled] {
         opacity: 0.3;
-        background: rgba(255, 255, 255, 0.5);
     }
 }
 
@@ -99,13 +132,22 @@ select {
     #flexbox > .flex();
     #flexbox > .parent(row wrap, flex-start, flex-start, '');
     &.short {
-        width: 50% !important;
+        width: 60% !important;
         margin: 0 auto;
     }
-}
 
-.form:not(.ng-hide) {
-    display: table !important;
+    &.no-action {
+        .action { .hide(); }
+        .entry {
+            &.input {
+                width: 100%;
+            }
+        }
+    }
+
+    &.full-width {
+        width: 100%;
+    }
 }
 
 .entry {
@@ -127,10 +169,62 @@ select {
             .square(0);
             .show;
         }
+
+        &.with-icon {
+            .icons {
+                position: absolute;
+                top: 20px;
+                left: 20px;
+                fill: @inputColor;
+                opacity: 0.8;
+                .square(24px);
+            }
+
+            select {
+                padding-left: 54px;
+            }
+        }
+
+        &.with-label {
+            select {
+                padding-left: calc(~"100% - 62px");
+                text-align: right;
+                font-weight: 600;
+                font-size: 28px;
+            }
+
+            label {
+                position: absolute;
+                width: auto;
+                top: 20px;
+                left: 20px;
+                text-transform: uppercase;
+                color: @inputColor;
+                opacity: 0.5;
+                font-size: 18px;
+                line-height: 24px;
+            }
+
+            &.with-icon {
+                label {
+                    left: 54px;
+                }
+            }
+        }
     }
+
+    &.select-with-button {
+        padding-bottom: 0;
+        margin: 0 10px 0 0;
+        #calc > #width > .remove(85%, 10px);
+        .box-shadow(none);
+    }
+
     &.input {
-        display: table-cell !important;
-        width: 100% !important;
+        position: relative;
+        #calc > #width > .remove(85%, 10px);
+        margin-right: 10px;
+
         .icons {
             position: absolute;
             top: 10px;
@@ -145,7 +239,7 @@ select {
         font-style: italic;
     }
     &.select-with-button {
-        width: 84.1%;
+        width: 82%;
         margin-right: 3px;
     }
     &.with-label {
@@ -188,6 +282,27 @@ select {
     }
     &.action {
         padding-left: 10px;
+        width: 15%;
+    }
+    &.entry-address {
+        margin: 0 20px 20px 0;
+        #calc > #width > .remove(35%, 13.33px);
+        float: left;
+
+        &.address-small {
+            #calc > #width > .remove(25%, 13.33px);
+        }
+        &.select {
+            clear: inherit;
+            .box-shadow(none);
+        }
+        &.address-col {
+            #calc > #width > .remove(33%, 13.33px);
+        }
+
+        &:nth-child(3n) {
+            margin-right: 0;
+        }
     }
 }
 
@@ -353,47 +468,31 @@ select {
     display: block !important;
 }
 
+/*
+    Specify which icon-date 
+    Check-in > Select by Date (inside input field)
+    or
+    Home Screen "Book-Now"
+ */
+/*Check-in > Select by Date (inside input field)*/
+.entry&.input > ng-include > .icons&.icon-date {
+    position: absolute !important;
+    margin-left: -6% !important;
 
-
-
-
-#icon-date {
-    position: absolute;
-    margin-left: -6%;
-    margin-top: .5%;
     @media only screen and (min-width: 1024px) and (max-width: 1024px) { 
-        position: absolute;
-        margin-left: -6%;
+        margin-left: -11% !important;
         margin-top: .5%;
     }
-    
+
     @media only screen and (min-width: 1366px) and (max-width: 1366px) { 
-        position: absolute;
-        margin-left: -5%;
-        margin-top: 1%;
-        height: 48.5%;
-        top: 40%;
+        margin-left: -11% !important;
+        margin-top: 0% !important;
     }
 }
-
-#icon-date {
-
-    @media only screen and (min-width: 1024px) and (max-width: 1024px) { 
-        position: absolute;
-        margin-left: -6%;
-        margin-top: .5%;
-    }
-
-    @media only screen and (min-width: 1024px) and (max-width: 1024px) { 
-        position: absolute;
-        margin-left: -6%;
-        margin-top: .5%;
-    }
+/*Home Screen "Book-Now"*/
+.button&.option>div>#icon-date {
+    position: initial !important;
 }
-
-
-
-
 
 select::-ms-expand {
     display: none;
@@ -407,3 +506,53 @@ select {
     /*border: none; - if you want the border removed*/
 }
 
+.oos-reason-hist{
+    border-width: 0px;
+    border-color: @brandColor;
+    border-style: ridge;
+    border-bottom-width: 1px;
+    border-spacing: 2px;
+}
+
+.guest-icons {
+    height: 50px;
+    width: 50px;
+    background-image: @guesticons;
+    background-repeat: no-repeat;
+    border: 0;
+    .show;
+    &.icon-student {
+        background-position: 5px -21073px;
+    }
+
+    &.icon-infant {
+        background-position: 5px -21197px;
+    }
+
+    &.icon-adult {
+        background-position: 5px -20957px;
+    }
+}
+.clear-text-icon{
+    cursor: pointer;
+}
+#textual.country-list.fill-height {
+    max-height: 200px !important;
+    min-height: 0px !important;
+}
+
+#country-id-search {
+    #calc > #width > .remove(75%, 10px);
+}
+.country-list {
+    #calc > #width > .remove(75%, 10px) !important;
+    ul {
+        margin-bottom: 0px;
+        height: auto;
+        li {
+            border-bottom: 1px #e5e5e5 solid;
+            cursor:  pointer;
+            padding: 10px;
+        }
+    }
+}

@@ -4,56 +4,45 @@
             <text data-ng-bind-html="getTagValue('NATIONALITY')" editable-text="NATIONALITY"></text>
         </h1>
         <!-- <h3>Subheading text here</h3> -->
-        <form method="post" class="form">
-
-            <div class="entry input select-with-button " ng-class="{'autocomplete-border':showingAutoCompleteArea == true}" id='country-select-div'>
-                <!--input type='text' id='country-selector'-->
-
-                <select
-                ng-if="!zestStationData.kiosk_enforce_country_sort"
-                focus-on='input'
-                focus-on-trigger='showingAutoComplete'
-                id='country-selector' 
-                class="turn-to-ac select" 
-                name="Country" 
-                autocorrect="off" 
-                autocomplete="off"
-                ng-options="country.id as country.value for country in countryList" 
-                ng-model="selectedCountry.id" 
-                ng-keydown='showingAutoComplete()'>
-                    <option style="display:none" value="" class=""></option>
+        <form method="post" class="form" ng-if="!zestStationData.use_free_form_country_selection">
+            <div class="entry select select-with-button" style="float:  left;box-shadow:none;">
+                <select ng-if="!zestStationData.kiosk_enforce_country_sort" focus-on='input' focus-on-trigger='showingAutoComplete' id='country-selector' name="Country" ng-options="country.id as country.name for country in countryList" ng-model="selectedCountry.id" style="padding-left:10px;" ng-change="countryChanged()">
+                    <option value="">{{'SELECT_COUNTRY' | translate}}</option>
                 </select>
-
                 <!-- sorted -->
-
-                <select 
-                ng-if="zestStationData.kiosk_enforce_country_sort"
-                focus-on='input'
-                focus-on-trigger='showingAutoComplete'
-                id='country-selector' 
-                class="turn-to-ac select" 
-                name="Country" 
-                autocorrect="off" 
-                autocomplete="off"
-                ng-model="selectedCountry.id" >
-                    <option value="">{{SELECT_COUNTRY}}</option><!-- TODO need to have this translatable -->
+                <select ng-if="zestStationData.kiosk_enforce_country_sort" focus-on='input' focus-on-trigger='showingAutoComplete' id='country-selector' class="turn-to-ac select" name="Country" autocorrect="off" autocomplete="off" ng-model="selectedCountry.id" style="padding-left:10px;">
+                    <option value="">{{'SELECT_COUNTRY' | translate}}</option>
+                    <!-- TODO need to have this translatable -->
                     <option ng-repeat="country in sortedCountries" value="{{country.id}}" ng-selected="country.id==countrySelected"> {{country.name}} </option>
                     <option value="" ng-show="sortedCountries.length > 0" disabled> ------------------ </option>
                     <option ng-repeat="country in unSortedCountries" value="{{country.id}}" ng-selected="country.id==countrySelected"> {{country.name}} </option>
                 </select>
-
             </div>
-
-            <div ng-if="zestStationData.theme === 'yotel'" class='clear-nationality-btn' ng-include="icons.url.clear_icon" click-touch="clearNationality()"></div>
-
-            <div class="entry action">
+            <div class="entry action" style="float:right;width:17%;">
                 <button type="button" class="button save-nationality-btn" ng-click="saveNationality()">
                     <text data-ng-bind-html="getTagValue('NEXT_BTN')" editable-text="NEXT_BTN"></text>
                 </button>
             </div>
-
         </form>
-
-    </div>
-    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
-</section>
+        <!--  -->
+        <form method="post" class="form" ng-if="zestStationData.use_free_form_country_selection">
+            <div class="entry input" id="country-id-search">
+                <input type="text" placeholder="{{'TYPE_IN_OR_SCROLL_DOWN' | translate}}" ng-focus="inputFieldFocus()" click-touch="inputFieldFocus()" ng-model="selectedCountry.searchInput" enter-press="firstNameEntered()" ng-keydown="resetTime()" id="country-id" ng-change="inputFieldFocus()" touch-press/>
+            </div>
+            <ng-include src="icons.url.clear_text" click-touch="clearNationality()"></ng-include>
+            <div class="entry action">
+                <button type="button" class="button" click-touch="saveNationality();">
+                    <text data-ng-bind-html="getTagValue('NEXT_BTN')" editable-text="NEXT_BTN"></text>
+                </button>
+            </div>
+            <div ng-hide="hideNationsList" id="textual" ng-iscroll="country-list" ng-iscroll-delay="100" ng-init="setScroll()" class="country-list pull-left station-terms scrollable fill-height">
+                <ul class="wrapper">
+                    <li ng-repeat="country in countryList | filter : selectedCountry.searchInput" ng-click="countrySelected(country)">{{ country.name }}</li>
+                    <li ng-show="(countryList | filter:selectedCountry.searchInput).length == 0" translate>NO_COUNTRY_MATCH</li>
+                </ul>
+            </div>
+        </form>
+        </div>
+        <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
+    </section>
+    

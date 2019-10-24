@@ -1,0 +1,107 @@
+<div id="bill{{currentActiveBill}}-complete" class="complete-registration form"
+     ng-controller="RVReservationCheckInFlowCtrl"
+     ng-if="clickedButton == 'checkinButton'">
+    <div class="entry">
+        <label class="checkbox inline"
+               ng-show="reservationBillData.is_disabled_terms_conditions_checkin === 'false'">
+            <span class="icon-form icon-checkbox" ng-class="{'checked': saveData.termsAndConditions}"></span>
+            <input type="checkbox" class="termsandconditions-checkbox" ng-model="saveData.termsAndConditions">
+            <div class="agree-terms-and-conditions" click-touch="termsAndConditionsClicked()">{{ 'T_AND_C_TEXT' |
+                translate }} checkin
+            </div>
+        </label>
+        <label id="subscribe-via-email" class="checkbox inline checked">
+            <span class="icon-form icon-checkbox" ng-class="{'checked': saveData.promotions}"></span>
+            <input type="checkbox" value="1" name="checkin" checked="" ng-model="saveData.promotions">
+            {{ 'PROMO_NEWS_BY_EMAIL_TEXT' | translate }} </label>
+    </div>
+    <div class="actions">
+        <!-- Complete checkin button disabled out until ready / vacant room is assigned -->
+
+        <!-- Advance put in Queue flow now exists, from admin -> rooms -> housekeeping -> ENABLE ADVANCED QUEUE PRE-CHECKIN -->
+        <!--  if using the advanced queue flow, only via 'Put in Queue' will the button text change, all other functionality is the same: CICO-19673-->
+        <button ng-show="!putInQueue"
+                click-touch="checkIn()"
+                data-room-status="READY"
+                data-reseravation-status="CHECKING_IN"
+                data-required-signature="CHECKIN"
+                data-key-settings="encode"
+                data-fo-status="VACANT"
+                class="button green" translate>
+            COMPLETE_CHECKIN
+        </button>
+        <button ng-show="putInQueue"
+                id="checkin-button" click-touch="clickedCompleteAddToQueue()"
+                data-room-status="READY"
+                data-reseravation-status="CHECKING_IN"
+                data-required-signature="CHECKIN"
+                data-key-settings="encode"
+                data-fo-status="VACANT"
+                class="button green" translate>
+            COMPLETE_ADD_TO_QUEUE
+        </button>
+    </div>
+</div>
+
+<!-- Checkout screen -->
+<div id="bill{{currentActiveBill}}-complete"
+     class="complete-registration form"
+     ng-controller="RVReservationCheckInFlowCtrl"
+     ng-if="(clickedButton == 'checkoutButton') && (reservationBillData.reservation_status === 'CHECKING_OUT' || reservationBillData.reservation_status === 'CHECKEDIN')">
+
+
+    <div class="entry">
+        <label class="checkbox inline" ng-if=" currentActiveBill === 0 && hasPermissionToShowCheckoutWithoutSettlement()">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked': isCheckoutWithoutSettlement }"></span>
+            <input type="checkbox" ng-click="toggleCheckoutWithoutSettlement()" ng-model="isCheckoutWithoutSettlement">
+            {{ 'CHECK_OUT_WITHOUT_SETTLEMENT' | translate }}
+        </label>
+        <label class="checkbox inline" ng-if="reservationBillData.is_email_enabled_on_checkout"> <!-- Add class 'single' if this is the only checkbox visible -->
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked': emailOptedStatusList[currentActiveBill].isOptedForEmail }"></span>
+            <input type="checkbox" ng-click="toggleOptedForEmail()">
+            <div ng-if="!reservationBillData.bills[currentActiveBill].is_account_attached">Email Bill #{{currentActiveBill+1}} to Guest Email</div>
+            <div ng-if="reservationBillData.bills[currentActiveBill].is_account_attached">Email Bill #{{currentActiveBill+1}} to Company/Travel Agent Email</div>
+        </label>
+        <!--
+        CICO-9597 : While required_signature_at is not 'CHECKOUT',
+                    #terms-and-conditions field is making hidden and
+                    acceptCharges always chekcked or saveData.acceptCharges = true.
+    -->
+        <label id="terms-and-conditions" for="terms" class="checkbox inline" ng-if="(currentActiveBill+1) === reservationBillData.bills.length" ng-class="{ 'hidden': reservationBillData.required_signature_at !== 'CHECKOUT' }">
+            <span ng-if="reservationBillData.required_signature_at !== 'CHECKOUT'" class="icon-form icon-checkbox" ng-class="{'checked': true}">{{saveData.acceptCharges = true}}</span>
+            <span ng-if="reservationBillData.required_signature_at === 'CHECKOUT'" class="icon-form icon-checkbox" ng-class="{'checked': saveData.acceptCharges }"></span>
+            <input type="checkbox" ng-model="saveData.acceptCharges">
+            {{ 'ACCEPT_CHARGE_TEXT' | translate }}
+        </label>
+    </div>
+
+    <div class="actions" ng-if="(currentActiveBill+1) != reservationBillData.bills.length">
+        <button type="submit" ng-click="clickedReviewButton(currentActiveBill)" class="button"
+                ng-class="{'grey':(reviewStatusArray[currentActiveBill].reviewStatus),'red':(!reviewStatusArray[currentActiveBill].reviewStatus)}"
+                ng-disabled="reviewStatusArray[currentActiveBill].reviewStatus">
+            {{ 'REVIEW_BILL' | translate }}
+            {{reservationBillData.bills[currentActiveBill].bill_number}}
+            {{ 'AND_CONTINUE' | translate }}
+        </button>
+    </div>
+
+    <div class="actions" ng-if="(currentActiveBill+1) === reservationBillData.bills.length">
+        <button type="submit" click-touch="clickedCompleteCheckout()" id="complete-checkout-button" data-reseravation-status="CHECKEDIN" data-required-signature="CHECKIN" class="button red"
+                ng-class='{"overlay":checkoutInProgress || checkoutStatus === "success"}' ng-disabled='checkoutInProgress || checkoutStatus === "success"'>
+            {{ 'REVIEW_BILL' | translate }}
+            {{reservationBillData.bills[currentActiveBill].bill_number}}
+            {{ billData.bill_number }}
+            {{ 'AND_COMPLETE_CHECKOUT' | translate }}
+        </button>
+    </div>
+</div>
+<!-- Reverse Checkout screen -->
+<div id="bill{{currentActiveBill}}-complete" class="complete-registration form"
+     ng-controller="RVReservationCheckInFlowCtrl"
+     ng-if="clickedButton == 'reverseCheckoutButton'">
+    <div class="actions">
+        <button type="submit" ng-click="clickedReverseCheckoutButton()" class="button purple">
+            REVERSE CHECKOUT
+        </button>
+    </div>
+</div>

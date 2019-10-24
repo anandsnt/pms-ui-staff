@@ -1,0 +1,49 @@
+<section  class="content current admin-scrollfix" div-touch-move-stop-propogate>
+	<div data-view="PaymentMethodsView" class="inline-edit">
+		<header class="content-title float">
+			<h2 translate> TAX_EXEMPTS </h2>
+			<span class="count"> (
+				{{data.length}}
+				) </span>
+			<a id="add-new-button" ui-sref="admin.adTaxExemptDetails({taxExemptId:''})" class="action add" translate>ADD_NEW</a>
+		</header>
+		<section class="content-scroll">
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<table id="items" class="grid datatable dataTable" ng-table="tableParams" template-pagination="custom/pager">
+				<tr role="row" ng-repeat="item in $data">
+					<td class="sorting" header-class="text-left width-60" data-title="'Name'">
+						<a ui-sref="admin.adTaxExemptDetails({taxExemptId: item.id})">{{item.name}}</a>
+					</td>
+					<td class="sorting" header-class="text-left width-30" data-title="'Charge Codes'">
+						<div class="linkwith" ng-repeat="item in item.charge_codes">
+							{{item.charge_code}}
+						</div>
+					</td>	
+					<td class="sorting" data-title="'Delete'" header-class="text-right width-10">
+						<a class="icons icon-delete large-icon delete_item" ng-click="deleteTaxExempt(item.id)"></a>
+					</td>					
+				</tr>				
+			</table>
+			<script type="text/ng-template" id="custom/pager">
+				<div class = "pager">
+					<span ng-show="totalCount>0">Showing {{startCount}} to {{endCount}} of {{totalCount}} items</span>
+					<span ng-show="totalCount==0">Showing 0 items</span>
+					<ul class="ng-cloak">
+		              	<li ng-repeat="page in pages"
+			                ng-class="{'previous': page.type == 'prev', 'next': page.type == 'next'}"
+			                ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+		
+			                <a ng-switch-when="prev" ng-click="params.page(1)" class="page" ng-class="{'disabled': !page.active}">First</a>
+			                <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Previous</a>
+			                <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+			                
+			                <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+			                <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Next</a>
+			                <a ng-switch-when="next" ng-click="params.page(totalPage)" class="page" ng-class="{'disabled': !page.active}">Last</a>
+			          	</li>
+		            </ul>
+		        </div>
+		    </script>
+		</section>
+	</div>
+</section>

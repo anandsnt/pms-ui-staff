@@ -39,8 +39,8 @@
 				</ul>
 				<p class="rate">
 					<span class="number" ng-show="!isStayRatesSuppressed">
-						<span id="avg-daily-rate">{{currencySymbol}}{{avgRate}}</span>
-						/<strong id="total-stay-cost">{{currencySymbol}}{{totRate}}</strong>
+						<span id="avg-daily-rate">{{totCurrencySymbol}}{{avgRate}}</span>
+						/<strong id="total-stay-cost">{{totCurrencySymbol}}{{totRate}}</strong>
 					</span>
 					<span class="number" ng-show="isStayRatesSuppressed">
 						<span id="avg-daily-rate" translate>SUPPRESSED_RATES_TEXT</span>
@@ -49,7 +49,7 @@
 					{{stayDetails.calendarDetails.rate_desc}}
 				</p>
 				<div class="action">
-					<a id="confirm-changes"  data-transition="nested-view reload-content" class="button back-button brand-colors" ng-click="confirmUpdates()" translate>CONFIRM_UPDATES</a>
+					<a id="confirm-changes"  data-transition="nested-view reload-content" class="button back-button brand-colors" ng-click="clickedStayRangeChangeConfirmButton()" translate>CONFIRM_UPDATES</a>
 					<button type="button" id="reset-dates" class="button blank" ng-click="resetDates()" translate>CANCEL</button>
 				</div>
 			</div>
@@ -97,7 +97,7 @@
 			<span class="h2" translate>PLEASE_SEE_FRONT_DESK</span>
 			<button type="button" id="reset-dates" class="button blank" ng-click="resetDates()" translate>RESET_DATES</button>
 		</div>
-	</div>	
+	</div>
 
 	<!-- Room is under Maintenance -->
 	<div id="room-locked" class="updates-content no-content" ng-show="rightSideReservationUpdates=='MAINTENANCE'" ng-class="{'hidden': rightSideReservationUpdates!='MAINTENANCE'}">
@@ -120,7 +120,7 @@
 		<div id="unassign-room" class="details scrollable">
 			<div class="wrapper">
 				<h3 class="unnasign-from-guest">
-					<span ng-repeat="restriction in stayDetails.restrictions">
+					<span ng-repeat="restriction in stayDetails.restrictions | unique: restriction.name">
                         {{restriction.name}}
                         <span ng-show="restriction.days!= null">&nbsp;{{'OF'|translate}}&nbsp;</span>
                         <strong>{{restriction.days}}</strong>{{$last ? '' : ', '}}
@@ -167,6 +167,15 @@
 		</div>
 	</div>
 
+	<!-- For standalone properties ensure max reservation length is 92 or less  -->
+	<div class="updates-content no-content" ng-show="rightSideReservationUpdates=='MAX_LENGTH_EXCEEDED'" ng-class="{'hidden': rightSideReservationUpdates!='MAX_LENGTH_EXCEEDED'}">
+		<div class="info">
+			<strong class="h1" translate>VALIDATION_MSG_MAX_LENGTH_EXCEEDED</strong>
+			<span class="h2" translate>PLEASE_SEE_FRONT_DESK</span>
+			<button type="button" class="button blank" ng-click="resetDates()" translate>RESET_DATES</button>
+		</div>
+	</div>
+
 	<!--no house or room type availabile. User will be provided with an option to go to the find room and rates screen -->
 	<div id="unable-to-extend" class="updates-content no-content" ng-show="rightSideReservationUpdates=='NO_HOUSE_AVAILABLE'" ng-class="{'hidden': rightSideReservationUpdates!='NO_HOUSE_AVAILABLE'}">
 		<div class="info">
@@ -194,6 +203,14 @@
 			<button type="button"id="reset-dates" class="button blank" ng-click="resetDates()" translate>
 				RESET_DATES
 			</button>
+		</div>
+	</div>
+
+	<div id="room-locked" class="updates-content no-content" ng-show="rightSideReservationUpdates=='NO_ROOM_MOVE'" ng-class="{'hidden': rightSideReservationUpdates!='NO_ROOM_MOVE'}">
+		<div class="info">
+			<strong class="h1" translate>NO_ROOM_MOVE</strong>
+			<span class="h2" translate>PLEASE_SEE_FRONT_DESK</span>
+			<button type="button" id="reset-dates" class="button blank" ng-click="resetDates()" translate>RESET_DATES</button>
 		</div>
 	</div>
 

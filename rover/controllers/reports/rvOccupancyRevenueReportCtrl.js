@@ -15,41 +15,75 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 		$scope.stateStore = {
 			occupancy: [{
 				key: "available_rooms",
-				name: "Available Rooms"
+                name: "Available Rooms"
 			}, {
 				key: "out_of_order_rooms",
-				name: "Out of Order Rooms"
+                name: "Out of Order Rooms"
 			}, {
 				key: "occupied_rooms",
-				name: "Occupied Rooms"
+                name: "Occupied Rooms"
 			}, {
 				key: "complimentary_rooms",
-				name: "Complimentary Rooms"
+                name: "Complimentary Rooms"
 			}, {
 				key: "occupied_minus_comp",
-				name: "Occupied Rooms (Excl. Comp.)"
-			}],
+                name: "Occupied Rooms (Excl. Comp.)"
+            }],
+            dayUseOccupancy: [
+                {
+                    key: 'occupied_day_use_rooms',
+                    name: 'Occupied Day Use Reservations'
+                },
+                {
+                    key: 'complimentary_day_use_rooms',
+                    name: 'Day Use Complimentary Rooms'
+                },
+                {
+                    key: 'occupied_day_use_minus_comp',
+                    name: 'Occupied Day Use Rooms (Excl. Comp.)'
+                }
+            ],
 			occupancyTotals: [{
 				key: "total_occupancy_in_percentage",
-				name: "Total Occ."
+                name: "Total Occ."
 			}, {
 				key: "total_occupancy_minus_comp_in_percentage",
-				name: "Total Occ. (Excl. Comp.)"
-			}],
+                name: "Total Occ. (Excl. Comp.)"
+            }],
+            dayUseOccTotals: [
+                {
+                    key: 'total_day_use_occupancy_in_percentage',
+                    name: 'Total Day Use Occ.'
+                },
+                {
+                    key: 'total_day_use_occupancy_minus_comp_in_percentage',
+                    name: 'Total Day Use Occ. (Excl. Comp.)'
+                }
+            ],
 			revenues: [{
 				key: "rev_par",
-				name: "RevPar"
+                name: "RevPar"
 			}, {
 				key: "adr_inclusive_complimentary_rooms",
-				name: "ADR (Incl. Comp.)"
+                name: "ADR (Incl. Comp.)"
 			}, {
 				key: "adr_exclusive_complimentary_rooms",
-				name: "ADR (Excl. Comp.)"
-			}],
+                name: "ADR (Excl. Comp.)"
+            }],
+            dayUseRevenue: [
+                {
+                    key: 'day_use_adr_inclusive_complimentary_rooms',
+                    name: 'Day Use ADR (Incl. Comp.)'
+                },
+                {
+                    key: 'day_use_adr_exclusive_complimentary_rooms',
+                    name: 'Day Use ADR (Excl. Comp.)'
+                }
+            ],
 			revenueTotals: [{
 				key: "total_revenue",
-				name: "Total Revenue"
-			}]
+                name: "Total Revenue"
+            }]
 		};
 
 		$scope.setScroller('leftPanelScroll', {
@@ -65,8 +99,8 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 
 
 		// keep a quick ref to flags way up in the sky
-		$scope.chosenLastYear = $scope.$parent.chosenReport.chosenOptions.include_last_year;
-		$scope.chosenVariance = $scope.$parent.chosenReport.chosenOptions.include_variance;
+		$scope.chosenLastYear = $scope.$parent.chosenReport.chosenOptions.include_last_year || ($scope.$parent.chosenReport.usedFilters && $scope.$parent.chosenReport.usedFilters.include_last_year);
+		$scope.chosenVariance = $scope.$parent.chosenReport.chosenOptions.include_variance || ($scope.$parent.chosenReport.usedFilters && $scope.$parent.chosenReport.usedFilters.include_variance);
 
 
 		$scope.selectedDays = [];
@@ -158,7 +192,30 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			} else {
 				return '';
 			}
+        };
+        
+        /*
+        *  
+        *  @param {number}  [chargeGroupIndex - index of chargeGroup]
+        *  @param {number}  [columnIndex - index corresponding to date]
+        *  @return {number} [revenue for the chargeCode corresponding to the date]
+        */
+		$scope.getChargeCodeDayUseValue = function(chargeGroupIndex, columnIndex) {
+            var candidate = $scope.results.day_use_charge_groups[chargeGroupIndex][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenLastYear + !!$scope.chosenVariance))]],
+                returnVal = '';
+
+			if (candidate) {
+				if (!!$scope.chosenLastYear && !!$scope.chosenVariance) {
+					returnVal = (columnIndex % 3 === 0) ? candidate.this_year : (columnIndex % 3 === 2) ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+				} else if (!!$scope.chosenLastYear || !!$scope.chosenVariance) {
+					returnVal = (columnIndex % 2 === 0) ? candidate.this_year : !!$scope.chosenVariance ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+				} else {
+					returnVal = candidate.this_year;
+				}
+			}
+            return returnVal;
 		};
+
 
 		$scope.getMarketOccupancyValue = function(marketIndex, columnIndex) {
 			var candidate = $scope.results.market_room_number[marketIndex][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenLastYear + !!$scope.chosenVariance))]];
@@ -190,12 +247,49 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			} else {
 				return '';
 			}
+        };
+
+        /*
+        *  
+        *  @param {number}  [marketIndex - index of market]
+        *  @param {number}  [columnIndex - index corresponding to date]
+        *  @return {number} [revenue for the market corresponding to the date]
+        */
+        $scope.getDayUseMarketRevenueValue = function(marketIndex, columnIndex) {
+            var candidate = $scope.results.day_use_market_revenue[marketIndex][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenLastYear + !!$scope.chosenVariance))]],
+                returnVal = '';
+
+			if (candidate) {
+				if (!!$scope.chosenLastYear && !!$scope.chosenVariance) {
+					returnVal = (columnIndex % 3 === 0) ? candidate.this_year : (columnIndex % 3 === 2) ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+				} else if (!!$scope.chosenLastYear || !!$scope.chosenVariance) {
+					returnVal = (columnIndex % 2 === 0) ? candidate.this_year : !!$scope.chosenVariance ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+				} else {
+					returnVal = candidate.this_year;
+				}
+			}
+            return returnVal;
 		};
 
 		function refreshScrollers() {
 			$scope.refreshScroller('rightPanelScroll');
 			$scope.refreshScroller('leftPanelScroll');
 		}
+
+		// Add selected attribute to those markets which were chosen while running the report
+		var tagSelectedMarkets = function(selectedMarketIds) {
+			if (!selectedMarketIds) {
+				return;
+			}
+			_.each( $scope.markets.data, function(market) {
+				var isSelected = _.find( selectedMarketIds, { value: market.value} );
+
+				if (isSelected) {
+					market.selected = true;
+				}
+
+			});
+		};
 
 		function init() {
 
@@ -213,26 +307,40 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			$scope.marketExists = false;
 			// since we moved these from main controller
             // CICO-38515 - Copied the market list which is already set
-			$scope.markets = angular.copy(chosenReport.hasMarketsList);
-            // CICO-38515 - Removed the last item in the list "UNDEFINED" which is "UNASSIGNED" here
-            // Here the api provides the data for the "UNASSIGNED" ones
-            $scope.markets.data.pop();
+			$scope.markets = JSON.parse(JSON.stringify(chosenReport.hasMarketsList));
+            
+            $scope.isUndefinedMarketSelected = false;
+
+            // CICO-54574
+            if ($rootScope.isBackgroundReportsEnabled) {
+            	tagSelectedMarkets(chosenReport.appliedFilter.market_ids);
+            }            
 
 			angular.forEach($scope.markets.data, function(marketValue, index) {
-				if (marketValue.hasOwnProperty("selected")) {
-					$scope.marketExists = true;
+				if (marketValue.hasOwnProperty("selected") && marketValue.selected) {
+					$scope.marketExists = true;					
 					return true;
 				}
 			});
+
+
+			// CICO-38515 - Removed the last item in the list "UNDEFINED" which is "UNASSIGNED" here
+            // Here the api provides the data for the "UNASSIGNED" ones
+           _.find($scope.markets.data,  {name: 'UNDEFINED'}).name = "Unassigned";
+            
 
 			// deep check if we have these flags choosen by the user
 			var hasIncludeLastYear = _.find(chosenReport.hasGeneralOptions.data, { paramKey: 'include_last_year' });
 
 			$scope.chosenLastYear = !! hasIncludeLastYear ? hasIncludeLastYear.selected : false;
+			$scope.chosenLastYear = $scope.chosenLastYear || ($scope.$parent.chosenReport.usedFilters && $scope.$parent.chosenReport.usedFilters.include_last_year);
 
 			var hasIncludeVariance = _.find(chosenReport.hasGeneralOptions.data, { paramKey: 'include_variance' });
 
 			$scope.chosenVariance = !! hasIncludeVariance ? hasIncludeVariance.selected : false;
+			$scope.chosenVariance = $scope.chosenVariance || ($scope.$parent.chosenReport.usedFilters && $scope.$parent.chosenReport.usedFilters.include_variance);
+            
+            $scope.showDayUseComponent = chosenReport.usedFilters ? chosenReport.usedFilters.include_day_use : chosenReport.include_day_use;
 
 			$scope.selectedDays = [];
 			for (; ms <= last; ms += step) {

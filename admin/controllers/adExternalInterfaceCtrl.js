@@ -1,6 +1,18 @@
-admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controller', 'ngDialog', 'adExternalInterfaceCommonSrv', 'adSiteminderSetupSrv', 'adSynxisSetupSrv', 'adZDirectSetupSrv', 'adTravelTripperSetupSrv', 'adGivexSetupSrv', 'ADChannelMgrSrv', '$state', '$filter', '$stateParams',
-  function ($scope, $rootScope, $controller, ngDialog, adExternalInterfaceCommonSrv, adSiteminderSetupSrv, adSynxisSetupSrv, adZDirectSetupSrv, adTravelTripperSetupSrv, adGivexSetupSrv, ADChannelMgrSrv, $state, $filter, $stateParams) {
-    $scope.$emit("changedSelectedMenu", 8);
+admin.controller('adExternalInterfaceCtrl',
+    ['$scope', '$rootScope', '$controller', 'ngDialog', 'adExternalInterfaceCommonSrv', 'adSiteminderSetupSrv',
+        'adSynxisSetupSrv', 'adZDirectSetupSrv', 'adTravelTripperSetupSrv', 'adGivexSetupSrv',
+        'ADChannelMgrSrv', '$state', '$filter',
+        function ($scope, $rootScope, $controller, ngDialog, adExternalInterfaceCommonSrv, adSiteminderSetupSrv,
+                  adSynxisSetupSrv, adZDirectSetupSrv, adTravelTripperSetupSrv, adGivexSetupSrv,
+                  ADChannelMgrSrv, $state, $filter) {
+
+            $scope.$emit('changedSelectedMenu', (function () {
+                return _.indexOf($scope.data.menus,
+                    _.findWhere($scope.data.menus, {
+                        menu_id: 9 // 9 is ID returned by API for the Interfaces Menu
+                    }));
+            })());
+
     $scope.errorMessage = '';
     $scope.successMessage = '';
     $scope.isLoading = true;
@@ -61,11 +73,11 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
       'admin.givexSetup': {'controller': adGivexSetupSrv, 'name': $scope.simpleName, 'service_name': 'adGivexSetupSrv'}
     };
     $scope.init = function () {
-      var interface = $scope.interfaceConfig[$scope.currentState];
+      var currentInterface = $scope.interfaceConfig[$scope.currentState];
 
-      if (interface) {
-        $scope.serviceController = interface.controller;
-        $scope.interfaceName = interface.name;
+      if (currentInterface) {
+        $scope.serviceController = currentInterface.controller;
+        $scope.interfaceName = currentInterface.name;
         // fetch payment methods, source origins, then values
 
         $scope.fetchSetup();
@@ -216,14 +228,21 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
       url: '',
       secondary_url: ''
     };
+
+    // Process the givex data to update the display password
+    var processGivexData = function () {
+        $scope.setDefaultDisplayPassword($scope.givex, 'password');
+    };
+
     $scope.fetchSetupSuccessCallback = function (data) {
         if (data.data && data.data.product_cross_customer) {
             $scope.interface = data.data.product_cross_customer.interface_id;
-            $scope.fetchManagerDetails();
+            $scope.fetchMinimalRateDetails();
         }
         
       if ($scope.interfaceName === 'Givex') {
         $scope.givex = data;
+        processGivexData();
         $scope.$emit('hideLoader');
       } else if ($scope.interfaceName === 'ZDirect') {
         $scope.data = data;
@@ -239,6 +258,11 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
         // load up origins and payment methods
         $scope.invokeApi(adExternalInterfaceCommonSrv.fetchOrigins, {}, fetchOriginsSuccessCallback);
         $scope.invokeApi(adExternalInterfaceCommonSrv.fetchPaymethods, {}, fetchPaymethodsSuccess);
+        $scope.invokeApi(adExternalInterfaceCommonSrv.fetchRoomTypes, {}, fetchRoomTypesSuccess);
+        // default source code is available only for Siteminder now.
+        if ($scope.interfaceName === 'Siteminder') {
+          $scope.invokeApi(adExternalInterfaceCommonSrv.fetchSourceCodes, {}, fetchSourceCodeSuccess);
+        }
 
         $scope.setRefreshTime();
       }
@@ -287,6 +311,18 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
       }
     };
 
+    $scope.roomTypes = [];
+    var fetchRoomTypesSuccess = function(data) {
+        if ($scope.interfaceName !== 'Givex' && $scope.interfaceName !== 'ZDirect') {
+            $scope.roomTypes = data.room_types;
+        }
+    };
+
+    $scope.sourceCodes = [];
+    var fetchSourceCodeSuccess = function(data) {
+        $scope.sourceCodes = data.sources;
+    };
+
     if ($scope.interfaceName !== 'Givex') {
         // Set the selected payment and origin
         var setPayment = function() {
@@ -314,22 +350,24 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
     }
     $scope.populateRateSelection = function() {
         $scope.rateSelection = [];
-        var rates = $scope.channel_manager_rates;
-        var rate;
+        var rates = $scope.minimalRates,
+            rate;
 
         for (var i in rates) {
-            rate = rates[i].rate;
+            rate = {
+              id: rates[i].id,
+              rate_name: rates[i].name
+            };
             if (rate) {
                 $scope.rateSelection.push(rate);
             }
         }
     };
-    $scope.rateSelection = [];
-    
-    $scope.fetchManagerDetails = function() {
+
+    $scope.fetchMinimalRateDetails = function() {
         var fetchSuccess = function (data) {
             $scope.$emit('hideLoader');
-            $scope.channel_manager_rates = data.data.channel_manager_rates;
+            $scope.minimalRates = data.results;
             $scope.populateRateSelection();
         };
         var fetchFailure = function(data) {
@@ -337,7 +375,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
             $scope.$emit('hideLoader');
         };
 
-        $scope.invokeApi(ADChannelMgrSrv.fetchManagerDetails, {'id': $scope.interface}, fetchSuccess, fetchFailure);
+        $scope.invokeApi(ADChannelMgrSrv.fetchMinimalRateDetails, {'exclude_expired': true}, fetchSuccess, fetchFailure);
     };
 
     $scope.init();
@@ -346,7 +384,11 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
         var saveData = $scope.lastSaved;
 
         if ($scope.interfaceName === 'Givex') {
-        $scope.invokeApi($scope.serviceController.saveSetup, $scope.givex, $scope.saveSetupSuccessCallback, $scope.saveSetupFailureCallback);
+          var params = dclone($scope.givex);
+
+          $scope.deletePropertyIfRequired(params, 'password');
+          
+        $scope.invokeApi($scope.serviceController.saveSetup, params, $scope.saveSetupSuccessCallback, $scope.saveSetupFailureCallback);
       } else if ($scope.interfaceName === 'ZDirect') {
         $scope.invokeApi($scope.serviceController.saveSetup, saveData, $scope.saveSetupSuccessCallback, $scope.saveSetupFailureCallback);
       } else {
@@ -389,11 +431,18 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
         $scope.successMessage = $scope.interfaceName + ' Save Success';
         $scope.$emit('hideLoader');
       };
+
       $scope.saveSetupFailureCallback = function (data) {
-        $scope.isLoading = false;
-        $scope.errorMessage = $scope.interfaceName + ' Save Failed ';
-        $scope.$emit('hideLoader');
+          $scope.isLoading = false;
+          if (data && data.length) {
+              $scope.errorMessage = data;
+          } else {
+              $scope.errorMessage = $scope.interfaceName + ' Save Failed ';
+          }
+
+          $scope.$emit('hideLoader');
       };
+
     $scope.saveSetup = function () {
         var saveData;
 

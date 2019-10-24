@@ -9,7 +9,6 @@ admin.controller('ADRatePromotionsCtrl', [
 			selectedAssignedPromotion: -1
 		};
 
-
 		$scope.toggleAvailablePromotion = function(index) {
 			if (index !== $scope.state.selectedAvailablePromotion) {
 				$scope.state.selectedAvailablePromotion = index;
@@ -41,6 +40,7 @@ admin.controller('ADRatePromotionsCtrl', [
 						$scope.state.availablePromotions.push(promo);
 					}
 				});
+				$scope.$emit('hideLoader');
 			};
 
 			if (!!$scope.rateData && !!$scope.rateData.id) {
@@ -97,6 +97,11 @@ admin.controller('ADRatePromotionsCtrl', [
 			});
 		};
 
-		$scope.initRatePromotions();
+		// CICO-56662
+		var listener = $scope.$on('INIT_PROMOTIONS', function() {
+			$scope.initRatePromotions();
+		});
+
+		$scope.$on('$destroy', listener );
 	}
 ]);

@@ -74,7 +74,8 @@ admin.controller('ADTemplateConfigurationCtrl', ['$scope', '$state', 'ADHotelLis
 		var postData = {
 			"hotel_id": $scope.clickedHotel,
 			"hotel_theme": assignedTheme,
-			"templates": assignedEmailTemplates
+			"templates": assignedEmailTemplates,
+			"use_common_email_templates": $scope.hotelConfig.use_common_email_templates
 		};
 
 

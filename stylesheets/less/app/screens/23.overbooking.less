@@ -1,0 +1,398 @@
+@media not print {
+    /* Header ***/
+    .overbooking-header {
+        position: relative;
+        padding: 0 10px;
+        background: @white;
+        z-index: 40;
+        .box-shadow(0 1px 2px 1px rgba(0,0,0,.1));
+        .size(60px, 100%);
+        #flexbox > .parent(row wrap, '', '', '');
+
+        .entry {
+            position: relative;
+            padding: 10px 10px 10px 0;
+            #flexbox > .parent(row wrap, '', '', '');
+
+            &.date {
+                width: 300px;
+
+                .button {
+                    background-color: @grey1;
+                    .square(40px);
+                }
+
+                .icon-double-arrow {
+                    background-size: 96px;
+                    background-position: 3px -1227px;
+                }
+            }
+
+            &:not(.room-type) {
+                margin-right: 10px;
+                box-shadow: inset -1px 0 0 rgba(0,0,0,.1);
+            }
+        }
+
+        .entry-data {
+            background: @grey1 @calendar no-repeat 94% 10px;
+            background-size: 20px;
+            position: relative;
+            margin:0 5px;
+            #border-radius > .rounded();
+            .box-shadow();
+            .calc-width(100, 90);
+            height: 40px;
+            .show;
+
+            input {
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 99;
+                cursor: pointer;
+                .square(100%);
+                .opacity(0);
+            }
+
+            .date-range {
+                line-height: 40px;
+                font-size: 16px;
+                font-weight: 600;
+                display: inline-block;
+                padding-left: 10px;
+            }
+
+            @media @highdpi {
+                background-image: @calendar2x;
+            }
+
+            &:hover { background-position: 94% -40px; }
+        }
+
+        .checkbox {
+            font-size: 14px;
+            text-transform: uppercase;
+            background-color: @grey1;
+            padding-right: 20px;
+            margin: 0;
+
+            .icon-form {
+                background-color: @white;
+            }
+        }
+
+        /* Multi select dropdown ***/
+        .multi-select { 
+            position: relative;
+            padding: 10px 30px 0 10px;
+            cursor: pointer;
+            text-transform: uppercase;
+            z-index: 40;
+            .size(40px, 160px);
+            .faux-clickable;
+            background-color: @grey1;
+
+            label {
+                position: absolute;
+                top: 0;
+                left: 10px;
+                font-size: 12px;
+                margin: 0;
+                color: @grey3;
+            }
+
+            .value {
+                font-size: 14px;
+                line-height: 30px;
+                .nowrap();
+            }
+
+            &.active {
+                .box-shadow(1px 0 0 rgba(0,0,0,.2));
+                #border-radius > .bottom(0px);
+            }
+
+            &:after {
+                content: "";
+                position: absolute;
+                top: 0;
+                right: 0;
+                background: @grey1 @selectArrow no-repeat 50% 50%;
+                background-size: 6px 4px;
+                pointer-events: none;
+                z-index: 999;
+                .size(100%, 25px);
+                #border-radius > .right();
+            }
+        }
+
+        .multi-select-options {
+            position: absolute;
+            top: 50px;
+            left: 0;
+            margin-top: -1px;
+            background-color: @grey1;
+            max-height: 40vh;
+            width: 240px;
+            z-index: 99;
+            #border-radius > .bottom();
+            .box-shadow(~'inset 0 1px 0 rgba(0,0,0,.1), 1px 1px 0 rgba(0,0,0,.2)');
+            .transition();
+
+            .checkbox {
+                white-space: normal;
+                height: auto;
+                min-height: 40px;
+                line-height: 1;
+                padding: 10px 10px 10px 40px;
+                width: 100%;
+                #border-radius > .rounded(0px);
+                #flexbox > .parent(row wrap, '', center, '');
+
+                .icon-form { 
+                    left: 10px; 
+                }
+
+                &:not(last-child) { 
+                    .box-shadow(0 1px 0 rgba(0,0,0,.1));
+                }
+            }
+        }
+
+        .actions {
+            padding: 10px 0;
+            margin-left: auto;
+
+            .button {
+                font-size: 14px;
+
+                &.only-icon {
+                    padding: 0;
+                    .square(40px);
+                }
+
+                &:not(:last-child) {
+                    margin-right: 10px;
+                }
+            }
+        }
+    }
+
+    /* Content ***/
+    .overbooking-content {
+        position: absolute;
+        top: 120px;
+        left: 0;
+        z-index: 20;
+        .calc-height(100, 120);
+        #flexbox > .parent(row nowrap, '', '', '');
+
+        .row {
+            width: 100%;
+            #flexbox > .parent(row nowrap, '', '', '');
+
+            &:not(:last-child) {
+                margin-bottom: 5px;
+            }
+        }
+
+        .cell {
+            position: relative;
+            cursor: pointer;
+            line-height: 40px;
+            background: @white;
+            text-align: right;
+            .size(40px, 7.14%);
+            .transition();
+            #flexbox > .parent(row nowrap, '', '', '');
+            #border-radius > .rounded();
+
+            .rooms {
+                font-size: 14px;
+                font-style: italic;
+                color: rgba(0,0,0,.4);
+                background-color: rgba(0,0,0,.05);
+                width: 0px;
+                overflow: hidden;
+                .transition();
+
+                &.unavailable {
+                    color: @red;
+                }
+            }
+
+            .limit {
+                padding: 0 10px;
+                width: 100%;
+                .transition();
+            }
+
+            &:after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                box-shadow: inset 0 0 0 1px rgba(0,0,0,.1), inset 1px 1px 1px rgba(0,0,0,.2);
+                .show();
+                .square(100%);
+                #border-radius > .rounded();
+            }
+
+            &.weekend {
+                background-color: #f5fcff;
+            }
+
+            &:not(:last-child) {
+                margin-right: 5px;
+            }
+
+            &:hover {
+                box-shadow: inset 0 0 0 1px rgba(0,0,0,.1), inset 1px 1px 2px rgba(0,0,0,.2);
+            }
+
+            &:active {
+                box-shadow: inset 0 0 0 1px rgba(0,0,0,.1), inset 0 0 2px rgba(0,0,0,.4);
+            }
+        }
+
+        .iScrollVerticalScrollbar { 
+            top: 10px;
+            right: 10px;
+        }
+
+        .iScrollHorizontalScrollbar {
+            top: auto;
+            bottom: 10px;
+            left: 10px;
+        }
+
+        /* Timeline with dates and house limit ***/
+        .overbooking-timeline {
+            position: relative;
+            background-color: @gcard;
+            .size(95px, 100%);
+            #flexbox > .parent(column wrap, space-between, '', '');
+
+            .wrapper {
+                padding: 5px;
+            }
+
+            .iScrollHorizontalScrollbar {
+                .hide();
+            }
+
+            .label {
+                color: @white;
+                margin-top: auto;
+                margin-left: auto;
+                font-weight: 600;
+                line-height: 40px;
+            }
+
+            .row {
+                overflow: hidden;
+                .size(40px, 100%);
+            }
+
+            .day {
+                cursor: default;
+                color: @white;
+                line-height: 1;
+                text-align: center;
+                text-transform: uppercase;
+                background-color: rgba(0,0,0,.2);
+                padding: 7px 5px;
+                flex-wrap: wrap;
+
+                span {
+                    font-size: 12px;
+                    width: 100%;
+                    .show();
+                }
+
+                strong {
+                    font-weight: 600;
+                    font-size: 14px;
+                    width: 100%;
+                }
+                    
+                &.weekend {
+                    background-color: #5d808e;
+                }
+
+                &:after {
+                    .hide();
+                }
+
+                &:hover,
+                &:active {
+                    box-shadow: none;
+                }
+
+                &:not(:last-child) {
+                    margin-right: 5px;
+                }
+            }
+
+            .limit {
+                font-size: 18px;
+                font-weight: 600;
+            }
+        }
+
+        /* Grid with rows ***/
+        .overbooking-grid {
+            position: relative;
+            .calc-height(100, 95);
+
+            .wrapper {
+                padding: 5px;
+            }
+        }
+
+        /* Room Types (left side) ***/
+        .overbooking-rooms {
+            width: 180px;
+            
+            .row {
+                font-size: 14px;
+                line-height: 1;
+                text-transform: uppercase;
+                text-align: right;
+                padding: 0 5px;
+                height: 40px;
+                overflow: hidden;
+                #flexbox > .parent(column wrap, center, flex-end, '');
+            }
+
+            .iScrollVerticalScrollbar {
+                .hide();
+            }
+        }
+
+        /* Overbooking Limits (right side) ***/
+        .overbooking-limits {
+            width: calc(~'100vw - 180px');
+            box-shadow: 0 -2px 3px rgba(0,0,0,.4);
+        }
+
+        /* Showing rooms left to sell ***/ 
+        &.showing-rooms {
+            .rooms {
+                width: 40px;
+                padding: 0 10px;
+            }
+
+            .limit {
+                .calc-width(100, 40);
+            }
+
+            .overbooking-limits {
+                .wrapper {
+                    min-width: 1400px;
+                }
+            }
+        }
+    }
+}

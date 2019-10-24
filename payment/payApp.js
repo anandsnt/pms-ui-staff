@@ -5,5 +5,7 @@ angular.module('sntPay', [
     'oc.lazyLoad',
     'ng-iscroll',
     'ngDialog',
-    'sharedHttpInterceptor'
+    'sharedHttpInterceptor',
+    'sntActivityIndicator',
+    'snt.utils'
 ]);

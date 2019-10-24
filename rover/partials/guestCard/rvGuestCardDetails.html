@@ -1,0 +1,14 @@
+<div ng-include="'/assets/partials/common/header.html'"></div>
+<div class="guest-card cards fullscreen" id="guest-card" ng-class="{'card-print': printState.clicked }">
+    <div class="cards-wrapper">
+        <!-- Header -->
+        <header class="cards-header">            
+            <section ng-include="'/assets/partials/guestCard/rvGuestCardHeaderSection.html'"></section>         
+        </header>
+
+        <!-- Content -->
+        <div class="cards-content">
+            <section ng-include="'/assets/partials/guestCard/rvGuestCardContentSection.html'"></section>
+        </div>
+    </div>
+</div>

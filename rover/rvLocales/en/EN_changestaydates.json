@@ -1,11 +1,11 @@
-	
+
 	"DRAG_AND_DROP_TO_CHANGE_STAY_DATES": "Drag & drop to change stay dates",
 	"ARRIVAL" : "Arrival",
 	"NO_AVAILABILITY" : "No availability",
 	"MID_STAY" : "Mid stay",
 	"ROOM_AVAILABLE" : "Room available",
 	"DEPARTURE" : "Departure",
-	
+
 	"IS_NOT_AVAILABLE" : "is not available.",
 	"RESET_DATES": "Reset dates",
 	"PLEASE_SELECT_ANOTHER_ROOM" : "Please select another room or",
@@ -36,9 +36,12 @@
 	"RESTRICTION": "Restriction",
 	"CANCEL": "cancel",
 	"SUPPRESSED_RATES_TEXT": "SR",
-	"ROOM_UNAVAILABLE": "Selected room is currently occupied. Can't extend reservation for the selected date range"
+	"ROOM_UNAVAILABLE": "Selected room is currently occupied. Can't extend reservation for the selected date range",
+	"NO_ROOM_MOVE": "Assigned room not available for selected dates. Please re-assign room",
+	"VALIDATION_MSG_MAX_LENGTH_EXCEEDED" : "Length of stay exceeds maximum allowed duration."
 
 
 
 
-	
+
+
