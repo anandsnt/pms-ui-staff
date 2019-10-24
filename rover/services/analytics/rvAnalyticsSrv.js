@@ -32,13 +32,13 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
     /*
      * Function To Fetch Current Room Status
      */
-    this.fetchRoomStatus = function() {
+    this.fetchRoomStatus = function(params) {
 
         // Webservice calling section
         var deferred = $q.defer();
         var url = 'redshift/analytics/room_status';
 
-        rvBaseWebSrvV2.getJSON(url, {})
+        rvBaseWebSrvV2.getJSON(url, params)
             .then(function(data) {
 
                 deferred.resolve(data);
