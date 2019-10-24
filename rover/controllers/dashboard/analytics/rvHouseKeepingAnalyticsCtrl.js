@@ -8,7 +8,7 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 
 		BaseCtrl.call(this, $scope);
 		$scope.screenData = {
-			selectedChart : 'OVERVIEW'
+			selectedChart : 'HK_OVERVIEW'
 		};
 
 		$controller('rvHKOverviewAnalticsCtrl', {
@@ -25,6 +25,7 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 		var date = $rootScope.businessDate;
 
 		var renderHkOverview = function() {
+			$scope.screenData.mainHeading = "";
             // Calling HK Overview Build Graph
 			rvAnalyticsSrv.hkOverview(date).then(function(data) {
 				console.log(data);
@@ -39,6 +40,7 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
         };
 
 		var renderHkWorkPriority = function() {
+			$scope.screenData.mainHeading = "";
 			// Calling HK Overview Build Graph
 			rvAnalyticsSrv.hkWorkPriority(date).then(function(data) {
 				console.log(data);
@@ -59,14 +61,11 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 			document.getElementById("right-side-legend").innerHTML = "";
 		};
 
-		$scope.changeChart = function() {
-			clearAllExistingChartElements();
-			if ($scope.screenData.selectedChart === 'OVERVIEW') {
-				$scope.screenData.selectedChart = 'WORK_PRIORITY';
-				renderHkWorkPriority();
-			} else {
-				$scope.screenData.selectedChart = 'OVERVIEW';
+		var drawChart = function() {
+			if ($scope.screenData.selectedChart === 'HK_OVERVIEW') {
 				renderHkOverview();
+			} else {
+				renderHkWorkPriority();
 			}
 		};
 
@@ -77,17 +76,18 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 					d3.select('#analytics-chart').selectAll('svg').remove();
 					clearAllExistingChartElements();
 					// Redraw chart
-					if ($scope.screenData.selectedChart === 'OVERVIEW') {
-						renderHkOverview();
-					} else {
-						renderHkWorkPriority();
-					}
+					drawChart();
 				}, 0);
 			});
 		});
 
 		$scope.$on("$destroy", function() {
 			$(window).off("resize.doResize");
+		});
+
+		$scope.$on('ANALYTICS_MENU_CHANGED', function(e, selectedChart){
+			$scope.screenData.selectedChart = selectedChart;
+			drawChart();
 		});
 
 		(function() {

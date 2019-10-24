@@ -31,16 +31,19 @@ angular.module('sntRover')
             };
 
             var cssClassMappings = {
-                arrivals_perfomed: "bar bar-green bar-dark",
-                arrivals_remaining: "bar bar-green bar-light",
-                departures_perfomed: "bar bar-red bar-dark",
-                departures_remaining: "bar bar-red bar-light",
-                stayovers_perfomed: "bar bar-blue bar-dark",
-                stayovers_remaining: "bar bar-blue bar-light",
-                rooms_clean: "bar bar-green bar-light",
-                rooms_inspected: "bar bar-green bar-dark",
-                rooms_pickup: "bar bar-orange bar-dark",
-                rooms_dirty: "bar bar-red bar-dark"
+                "Checked In": "bar bar-green bar-light",
+                "Arrivals": "bar bar-green",
+
+                "Checked Out": "bar bar-red bar-light",
+                "Departures": "bar bar-red",
+
+                "Stays Clean": "bar bar-blue bar-light",
+                "Stays Dirty": "bar bar-blue",
+
+                "Clean": "bar bar-green",
+                "Inspected": "bar bar-green bar-dark",
+                "Dirty": "bar bar-orange",
+                "Pickup": "bar bar-red"
             };
 
             $scope.drawHkOverviewChart = function(chartDetails) {
@@ -90,7 +93,7 @@ angular.module('sntRover')
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
                 // DEBUGING CODE
-                // chartDetails = rvAnalyticsHelperSrv.addRandomNumbersForTesting(chartDetails);
+                chartDetails = rvAnalyticsHelperSrv.addRandomNumbersForTesting(chartDetails);
 
                 chartDetails = rvAnalyticsHelperSrv.processBiDirectionalChart(chartDetails);
                 console.log(chartDetails);
@@ -123,7 +126,7 @@ angular.module('sntRover')
                     chartDetails: chartDetails,
                     colorScheme: colorScheme,
                     maxValue: maxValueInBotheDirections,
-                    cssClassMappings: cssClassMappings,
+                    // cssClassMappings: cssClassMappings,
                     onBarChartClick: chartDetails.onBarChartClick
                 };
 
@@ -196,39 +199,45 @@ angular.module('sntRover')
                     });
 
                 leftSideLegendEntries.append("span")
-                    .attr("class", "rect")
-                    .style("background-color", leftSideLegendColor);
-
-                leftSideLegendEntries.append("span")
-                    .attr("class", "rect-label")
+                    .attr("class", function(label){
+                        return cssClassMappings[label];
+                    })
                     .html(function(label) {
                         var text;
 
                         if (label === "Checked In") {
-                            text = label + " (" + chartDetails.perfomed_arrivals_count + ")";
+                            text = chartDetails.perfomed_arrivals_count;
                         } else if (label === "Checked Out") {
-                            text = label + " (" + chartDetails.perfomed_departures_count + ")";
+                            text = chartDetails.perfomed_departures_count;
                         } else if (label === "Stays Clean") {
-                            text = label + " (" + chartDetails.perfomed_stayovers_count + ")";
+                            text = chartDetails.perfomed_stayovers_count;
                         } else if (label === "Clean") {
-                            text = label + " (" + chartDetails.clean_rooms_count + ")";
+                            text = chartDetails.clean_rooms_count;
                         } else if (label === "Inspected") {
-                            text = label + " (" + chartDetails.inspected_rooms_count + ")";
+                            text = chartDetails.inspected_rooms_count;
                         }
                         return text;
                     });
+                    // .style("background-color", leftSideLegendColor);
+
+                leftSideLegendEntries.append("span")
+                    .attr("class", "bar-label")
+                    .html(function(label) {
+                        return label;
+                    });
+                    
 
                 svg.append("text")
                     .attr("x", xScale(-1*maxValueInBotheDirections / 2))
-                    .attr("y", height + 20)
+                    .attr("y", - 20)
                     .attr("dy", ".35em")
                     .style("font-size", "20px")
                     .style("font-style", "italic")
-                    .text("DONE");
+                    .text("PERFOMED");
 
                 svg.append("text")
                     .attr("x", xScale(maxValueInBotheDirections / 2))
-                    .attr("y", height + 20)
+                    .attr("y", - 20)
                     .attr("dy", ".35em")
                     .style("font-size", "20px")
                     .style("font-style", "italic")
@@ -268,26 +277,30 @@ angular.module('sntRover')
                     });
 
                 rightSideLegendEntries.append("span")
-                    .attr("class", "rect")
-                    .style("background-color", rightSideLegendColor);
-
-                rightSideLegendEntries.append("span")
-                    .attr("class", "rect-label")
+                    .attr("class", function(label){
+                        return cssClassMappings[label];
+                    })
                     .html(function(label) {
                         var text;
 
                         if (label === "Arrivals") {
-                            text = label + " (" + chartDetails.remaining_arrivals_count + ")";
+                            text = chartDetails.remaining_arrivals_count;
                         } else if (label === "Departures") {
-                            text = label + " (" + chartDetails.pending_departures_count + ")";
+                            text = chartDetails.pending_departures_count;
                         } else if (label === "Stays Dirty") {
-                            text = label + " (" + chartDetails.remaining_stayovers_count + ")";
+                            text = chartDetails.remaining_stayovers_count;
                         } else if (label === "Pickup") {
-                            text = label + " (" + chartDetails.pickup_rooms_count + ")";
+                            text = chartDetails.pickup_rooms_count;
                         } else if (label === "Dirty") {
-                            text = label + " (" + chartDetails.dirty_rooms_count + ")";
+                            text = chartDetails.dirty_rooms_count;
                         }
                         return text;
+                    });
+
+                rightSideLegendEntries.append("span")
+                    .attr("class", "bar-label")
+                    .html(function(label) {
+                        return label;
                     });
 
                 rightSideLegendEntries.style("margin-top", function(legend) {
