@@ -230,24 +230,26 @@ angular.module('sntRover')
                         return label;
                     });
 
+                if (maxValueInBotheDirections > 0) {
+                    svg.append("text")
+                        .attr("x", xScale(-1 * maxValueInBotheDirections / 2))
+                        .attr("y", -20)
+                        .attr("dy", ".35em")
+                        .style("font-size", "20px")
+                        .style("font-style", "italic")
+                        .style("fill", "#B1B1B1")
+                        .text("PERFOMED");
 
-                svg.append("text")
-                    .attr("x", xScale(-1 * maxValueInBotheDirections / 2))
-                    .attr("y", -20)
-                    .attr("dy", ".35em")
-                    .style("font-size", "20px")
-                    .style("font-style", "italic")
-                    .style("fill", "#B1B1B1")
-                    .text("PERFOMED");
-
-                svg.append("text")
-                    .attr("x", xScale(maxValueInBotheDirections / 2))
-                    .attr("y", -20)
-                    .attr("dy", ".35em")
-                    .style("font-size", "20px")
-                    .style("font-style", "italic")
-                    .style("fill", "#B1B1B1")
-                    .text("REMAINING");
+                    svg.append("text")
+                        .attr("x", xScale(maxValueInBotheDirections / 2))
+                        .attr("y", -20)
+                        .attr("dy", ".35em")
+                        .style("font-size", "20px")
+                        .style("font-style", "italic")
+                        .style("fill", "#B1B1B1")
+                        .text("REMAINING");
+                }
+               
 
                 // TODO: For now lets assume all legends are of same height. So we will take one and use as reference.
                 var singleLegendHeightPlusMargin = $("#left-legend-checked-in").height() + 10;
