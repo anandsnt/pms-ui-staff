@@ -14,16 +14,14 @@
             </div>
         </div>
 
-        <!-- Config section and search come here! -->
         <section ng-show="state.mode !== 'ADD'">
-        <div class="controls-holder filters">
-            <div class="table-search three-column">
-                <span class="search-text">Search</span>
-                <span class="icons icon-search" name="submit" type="submit"></span>
-                <input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm"
-                       delay="1000" function-to-fire="searchEntered"/>
+            <div class="controls-holder filters">
+                <div class="table-search three-column">
+                    <span name="submit" type="submit"/>
+                    <input placeholder="Search Mappings..." autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000"
+                        function-to-fire="searchEntered" />
+                </div>
             </div>
-        </div>
         </section>
 
         <form ng-show="state.mode=='ADD'" class="form float">
