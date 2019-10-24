@@ -8,7 +8,7 @@
                 <div class="entry only-switch margin">
                     <label class="disable-element" for="contract-status">Status</label>
                     <!-- Add .on, when active. Remove otherwise -->
-                    <div class="switch-button full-width" ng-class="{'on': contractData.editData.is_active && !contractData.disableFields, 'disabled': contractData.disableFields}">
+                    <div class="switch-button full-width" ng-class="{'on': contractData.editData.is_active, 'disable-element': contractData.disableFields}">
                         <input id="contract-status" ng-model="contractData.editData.is_active" ng-click="toggleActiveStatus()" type="checkbox">
                         <label class="data-off">
                             <span class="value">Active</span>
@@ -30,11 +30,11 @@
                 </div>
                 <div class="entry margin has-datepicker">
                     <label class="disable-element" for="contract-start">Start Date</label>
-                    <input ng-disabled="contractData.disableFields" name="contract-start" id="contract-start" class="datepicker" ng-model="contractData.editData.begin_date | date:dateFormat" ng-click="contractStart()" placeholder="Select Start Date" maxlength="8" readonly type="text" />
+                    <input ng-disabled="contractData.disableFields" name="contract-start" id="contract-start" class="datepicker" ng-model="contractData.editData.begin_date" ng-value="contractData.editData.begin_date | date:dateFormat" ng-click="contractStart()" placeholder="Select Start Date" maxlength="8" readonly type="text" />
                 </div>
                 <div class="entry has-datepicker">
                     <label class="disable-element" for="contract-end">End Date</label>
-                    <input ng-disabled="contractData.disableFields" name="contract-end" id="contract-end" class="datepicker" ng-model="contractData.editData.end_date | date:dateFormat" ng-click="contractEnd()" placeholder="Select End Date" maxlength="8" readonly type="text" />
+                    <input ng-disabled="contractData.disableFields" name="contract-end" id="contract-end" class="datepicker" ng-model="contractData.editData.end_date" ng-value="contractData.editData.end_date | date:dateFormat" ng-click="contractEnd()" placeholder="Select End Date" maxlength="8" readonly type="text" />
                 </div>
 
                 <div include-replace ng-include="'/assets/partials/companyCard/contracts/rvCardSearchContractedRate.html'"></div>
@@ -52,7 +52,7 @@
             </div>
         </div>
     </div>
-    <div class="contract-details-footer" ng-if="!contractData.isPastContract">
+    <div class="contract-details-footer" ng-if="!contractData.isPastContract || !contractData.disableFields">
         <button type="button" class="button blank" ng-click="restoreContract()">Cancel</button>
         <button type="button" class="button green" ng-click="updateContract()">Update Contract</button>
     </div>

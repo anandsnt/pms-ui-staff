@@ -876,8 +876,16 @@
                         </select>
                     </div>
                 </div>
+				<div class="entry">
+					<label>Offline</label>
+					<div class="switch-button single" ng-class="{ on : data.shiji_token_enable_offline }"
+						ng-click="data.shiji_token_enable_offline = !data.shiji_token_enable_offline">
+						<input type="checkbox" value="{{data.shiji_token_enable_offline}}">
+						<span class="switch-icon"></span>
+					</div>
+				</div>
             </fieldset>
-            <fieldset class="holder right" ng-if="isAdminSnt && data.payment_gateway === 'SHIJI'">
+            <fieldset class="holder right" ng-if="isAdminSnt && data.payment_gateway === 'SHIJI' && !data.shiji_token_enable_offline">
                 <div class="form-title">
                     <h3><span>Shiji Cloud Payment</span> Settings </h3>
                     <em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>

@@ -3,7 +3,7 @@ angular.module('sntRover')
         function($scope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv) {
 
             var arrivalsColorScheme = d3.scaleOrdinal()
-                .range(["#B5D297", "#54792F", "#84B751"])
+                .range(["#B5D297", "#557A2F", "#84B751"])
                 .domain(["perfomed", "early_checkin", "remaining"]);
 
             var departuresColorScheme = d3.scaleOrdinal()
@@ -54,9 +54,7 @@ angular.module('sntRover')
                     .ticks(5)
                     .tickSizeOuter(0)
                     .tickPadding(10)
-                    .tickFormat(function(d) {
-                        return d.toUpperCase();
-                    });
+                    .tickFormat("");
 
                 var svg = d3.select("#analytics-chart").append("svg")
                     .attr("width", width + margin.left + margin.right)
@@ -69,6 +67,7 @@ angular.module('sntRover')
                 // chartDetails = rvAnalyticsHelperSrv.addRandomNumbersForTesting(chartDetails);
 
                 chartDetails = rvAnalyticsHelperSrv.processBiDirectionalChart(chartDetails);
+                console.log(chartDetails);
 
                 var maxValueInBotheDirections = chartDetails.maxValueInOneSide;
 
@@ -143,16 +142,16 @@ angular.module('sntRover')
                 var leftSideLegendDiv = d3.select("#left-side-legend");
                 var leftSideLegendColor = d3.scaleOrdinal()
                     .range(["#C2D6AE", "#DE3636", "#ED9319", "#84B651", "#E29D9D"])
-                    .domain(["Arrivals", "Dirty", "Pickup", "Clean", "Perfomed"]);
+                    .domain(["Checked In", "Dirty", "Pickup", "Clean", "Checked out"]);
 
                 var setMarginForLeftSideLegends = function(legend, singleLegendHeightPlusMargin) {
                     var yBandwidth = yScale.bandwidth();
 
-                    if (legend === "Arrivals") {
+                    if (legend === "Checked In") {
                         return margin.top + yInnerPadding + yBandwidth / 2;
                     } else if (legend === "Dirty") {
                         return yBandwidth / 2 - singleLegendHeightPlusMargin + yInnerPadding;
-                    } else if (legend === "Perfomed") {
+                    } else if (legend === "Checked out") {
                         var marginTopOfPerfomed = yBandwidth - (singleLegendHeightPlusMargin * 3) + yInnerPadding + yBandwidth / 2;
                         
                         return marginTopOfPerfomed;
@@ -165,7 +164,9 @@ angular.module('sntRover')
                     .append("dd")
                     .attr("class", "legend-item")
                     .attr("id", function(item) {
-                        return "left-legend-" + item.toLowerCase();
+                        var itemName = item.replace(' ', '-');
+
+                        return "left-legend-" + itemName.toLowerCase();
                     });
 
                 leftSideLegendEntries.append("span")
@@ -175,11 +176,25 @@ angular.module('sntRover')
                 leftSideLegendEntries.append("span")
                     .attr("class", "rect-label")
                     .html(function(label) {
-                        return label;
+                        var text;
+
+                        if (label === "Checked In") {
+                            text = label + " (" + chartDetails.perfomed_arrivals_count + ")";
+                        } else if (label === "Dirty") {
+                            text = label + " (" + chartDetails.dirty_rooms_count + ")";
+                        } else if (label === "Pickup") {
+                            text = label + " (" + chartDetails.pickup_rooms_count + ")";
+                        } else if (label === "Clean") {
+                            text = label + " (" + chartDetails.clean_rooms_count + ")";
+                        } 
+                        else if (label === "Checked out") {
+                            text = label + " (" + chartDetails.perfomed_departures_count + ")";
+                        }
+                        return text;
                     });
 
                 // TODO: For now lets assume all legends are of same height. So we will take one and use as reference.
-                var singleLegendHeightPlusMargin = $("#left-legend-arrivals").height() + 10;
+                var singleLegendHeightPlusMargin = $("#left-legend-checked-in").height() + 10;
 
                 leftSideLegendEntries.style("margin-top", function(legend) {
                     return setMarginForLeftSideLegends(legend, singleLegendHeightPlusMargin);
@@ -188,7 +203,7 @@ angular.module('sntRover')
                 // right side legends
                 var rightSideLegendDiv = d3.select("#right-side-legend");
                 var rightSideLegendColor = d3.scaleOrdinal()
-                    .range(["#84B652", "#83B450", "#567D30", "#AB2727", "#DC3535"])
+                    .range(["#557A2F", "#83B450", "#567D30", "#AB2727", "#DC3535"])
                     .domain(["Early Check in", "Remaining", "Inspected", "Late checkout", "Pending"]);
 
                 var setMarginForRightSideLegends = function(legend, singleLegendHeightPlusMargin) {
@@ -210,7 +225,9 @@ angular.module('sntRover')
                     .append("dd")
                     .attr("class", "legend-item")
                     .attr("id", function(item) {
-                        return "left-legend-" + item.toLowerCase();
+                        var itemName = item.replace(' ', '-');
+
+                        return "right-legend-" + itemName.toLowerCase();
                     });
 
                 rightSideLegendEntries.append("span")
@@ -220,7 +237,23 @@ angular.module('sntRover')
                 rightSideLegendEntries.append("span")
                     .attr("class", "rect-label")
                     .html(function(label) {
-                        return label;
+                        var text;
+
+                        if (label === "Early Check in") {
+                            text = label + " (0)";
+                            // text = label + " (" + chartDetails.early_checkin_arrivals_count + ")";
+                        } else if (label === "Remaining") {
+                            text = label + " (" + chartDetails.remaining_arrivals_count + ")";
+                        } else if (label === "Inspected") {
+                            text = label + " (" + chartDetails.inspected_rooms_count + ")";
+                        } else if (label === "Late checkout") {
+                            text = label + " (0)";
+                            // text = label + " (" + chartDetails.late_checkout_departures_count + ")";
+                        } 
+                        else if (label === "Pending") {
+                            text = label + " (" + chartDetails.pending_departures_count + ")";
+                        }
+                        return text;
                     });
 
                 rightSideLegendEntries.style("margin-top", function(legend) {

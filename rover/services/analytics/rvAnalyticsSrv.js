@@ -7,6 +7,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
 
     // Variables for API returned data
     that.activeReservations = null;
+    that.yesterdaysReservations = null;
     that.roomStatuses = null;
 
     /*
@@ -91,15 +92,15 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
     /*
      * This function will return the data structure for HK Work Priority
      */
-    this.hkOverview = function(date) {
+    this.hkOverview = function(date, isArrivalsManagement) {
         var deferred = $q.defer();
 
-        constructHkOverview(deferred, date);
+        constructHkOverview(deferred, date, isArrivalsManagement);
 
         return deferred.promise;
     };
 
-    var constructHkOverview = function(deferred, date) {
+    var constructHkOverview = function(deferred, date, isArrivalsManagement) {
         // Call after the HK Priority is done to avoid duplicate API calls
         var hkInterval = window.setInterval(function() {
             if (calledHKApis) {
@@ -108,15 +109,16 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
                     label: 'AN_HOUSEKEEPING_OVER_VIEW',
                     data: []
                 };
+                var isOverview = isArrivalsManagement ? false : true;
 
                 // Pushing arrivals data structure
-                hkOverview.data.push(buildArrivals(that.activeReservations, date, true));
+                hkOverview.data.push(buildArrivals(that.activeReservations, date, isOverview, isArrivalsManagement));
                 // Pushing departure data structure
-                hkOverview.data.push(buildDepartures(that.activeReservations, date, true));
+                hkOverview.data.push(buildDepartures(that.activeReservations, date, isOverview, isArrivalsManagement));
                 // Pushing Stayovers data structure
                 hkOverview.data.push(buildStayOvers(that.activeReservations, that.roomStatuses, date));
                 // Pushing vacant data structure
-                hkOverview.data.push(buildVacants(that.activeReservations, that.roomStatuses, true));
+                hkOverview.data.push(buildVacants(that.activeReservations, that.roomStatuses, isOverview, isArrivalsManagement));
                 window.clearInterval(hkInterval);
 
                 deferred.resolve(hkOverview);
@@ -182,12 +184,12 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         return departues;
     };
 
-    var buildVacants = function buildVacants(activeReservations, roomStatuses, overview) {
+    var buildVacants = function buildVacants(activeReservations, roomStatuses, overview, isArrivalsManagement) {
         var rooms = roomStatuses;
         var dataType = 'rooms';
         var dataLabel = 'AN_ROOMS';
 
-        if (!overview) {
+        if (!overview && !isArrivalsManagement) {
             var assignedRoomNumbers = activeReservations.filter(function(reservation) {
                 return reservation.reservation_status === 'CHECKEDIN';
             }).map(function(reservation) {
@@ -214,10 +216,34 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
             return room.status === 'PICKUP';
         }).length;
 
-        return {
+        var vacantRoomsData = {
             type: dataType,
-            label: dataLabel,
-            contents: {
+            label: dataLabel
+        };
+
+        if (overview) {
+            vacantRoomsData.contents = {
+                left_side: [{
+                    type: 'clean',
+                    count: cleanCount,
+                    label: 'AN_CLEAN'
+                }, {
+                    type: 'inspected',
+                    count: inspectedCount,
+                    label: 'AN_INSPECTED'
+                }],
+                right_side: [{
+                    type: 'dirty',
+                    count: dirtyCount,
+                    label: 'AN_DIRTY'
+                }, {
+                    type: 'pickup',
+                    count: pickupCount,
+                    label: 'PICKUP'
+                }]
+            };
+        } else {
+            vacantRoomsData.contents = {
                 left_side: [{
                     type: 'dirty',
                     count: dirtyCount,
@@ -236,8 +262,9 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
                     count: inspectedCount,
                     label: 'AN_INSPECTED'
                 }]
-            }
-        };
+            };
+        }
+        return vacantRoomsData;
     };
 
     var buildArrivals = function buildArrivals(activeReservations, date, overview) {
@@ -298,7 +325,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
             label: 'AN_STAYOVERS',
             contents: {
                 left_side: [{
-                    type: 'performed',
+                    type: 'perfomed',
                     label: 'AN_PERFOMED',
                     count: cleanAndInspectedStayOversCount
                 }],

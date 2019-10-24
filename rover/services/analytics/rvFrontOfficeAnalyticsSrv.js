@@ -1,8 +1,19 @@
 angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
     '$q',
+    'sntActivity',
     'rvBaseWebSrvV2',
     'rvAnalyticsSrv',
-    function($q, rvBaseWebSrvV2, rvAnalyticsSrv) {
+    function($q, sntActivity, rvBaseWebSrvV2, rvAnalyticsSrv) {
+
+        // This variable is used in FO activity and Workload
+        var userInitData = {
+            earlyCheckin: 0,
+            checkin: 0,
+            vipCheckin: 0,
+            vipCheckout: 0,
+            checkout: 0,
+            lateCheckout: 0
+        };
 
         this.fetchFrontDeskAnalyticsData = function(params) {
             var url = '/sample_json/dashboard/dashboardAnalytics.json';
@@ -10,37 +21,81 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
             return rvBaseWebSrvV2.getJSON(url, params);
         };
 
+        var reArrangeElements = function(chart) {
+
+            var combinedArray = chart.contents.left_side.concat(chart.contents.right_side);
+
+            chart.contents.left_side = _.reject(combinedArray, function(item) {
+                return item.type === "inspected";
+            });
+
+            chart.contents.right_side = _.filter(combinedArray, function(item) {
+                return item.type === "inspected";
+            });
+        };
+
+        /*
+         * Front desk arrivals and stay-overs data
+         */
         this.fdArrivalsManagement = function(date) {
             var deferred = $q.defer();
 
-            rvAnalyticsSrv.hkOverview(date).then(function(response) {
+            rvAnalyticsSrv.hkOverview(date, true).then(function(response) {
                 response.label = 'AN_ARRIVALS_MANAGEMENT';
                 response.dashboard_type = 'arrivals_management_chart';
                 response.data = _.reject(response.data, function(data) {
                     return data.type === 'stayovers';
                 });
+
                 response.data = _.sortBy(response.data, function(data) {
-                    var index;
 
                     if (data.type === 'arrivals') {
-                        index = 0;
+                        data.index = 0;
                     } else if (data.type === "rooms") {
-                        index = 1;
+                        data.index = 1;
+                        reArrangeElements(data);
                     } else {
-                        index = 3;
+                        data.index = 2;
                     }
-                    return index;
+                    return data.index;
                 });
+                
                 deferred.resolve(response);
             });
 
             return deferred.promise;
         };
 
+        /*
+         * Front desk workload data
+         */
         this.fdWorkload = function(date) {
             var deferred = $q.defer();
 
             constructFdWorkLoad(deferred, date);
+            return deferred.promise;
+        };
+
+
+        this.fdFoActivity = function(date) {
+            var deferred = $q.defer();
+
+            var yesterday = moment(date).subtract(1, 'days')
+                .format('YYYY-MM-DD');
+
+            sntActivity.start('YESTERDAYS_RESERVATION');
+
+            rvAnalyticsSrv.fetchActiveReservation({
+                date: yesterday
+            }).then(function(yesterdaysReservations) {
+                rvAnalyticsSrv.yesterdaysReservations = yesterdaysReservations;
+
+                constructFoActivity(date, yesterday, deferred);
+
+            }).finally(function() {
+                sntActivity.stop('YESTERDAYS_RESERVATION');
+            });
+
             return deferred.promise;
         };
 
@@ -79,7 +134,7 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
 
                 elements.forEach(function(element) {
                     var elementInUnderscore = element.split(/(?=[A-Z])/).join('_')
-                                              .toLowerCase();
+                        .toLowerCase();
 
                     userActivityElement.contents.right_side.push({
                         type: elementInUnderscore,
@@ -99,14 +154,6 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
          */
         var constructUserCiCoActivity = function(arrivals, departures) {
             var usersActivity = {};
-            var userInitData = {
-                earlyCheckin: 0,
-                checkin: 0,
-                vipCheckin: 0,
-                vipCheckout: 0,
-                checkout: 0,
-                lateCheckout: 0
-            };
 
             // Calculate the arrivals info
             constructUserCiActivity(arrivals, userInitData, usersActivity);
@@ -175,6 +222,129 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
                     usersActivity[user].checkout = usersActivity[user].checkout + 1;
                 }
             });
+        };
+
+        var formatFoActivityData = function (foActivity) {
+            var finalData = {
+                'todays_data': [],
+                'yesterdays_data': []
+            };
+
+            for (var key in foActivity.data) {
+                foActivity.data[key].today.time = key;
+                finalData.todays_data.push(foActivity.data[key].today);
+                foActivity.data[key].yesterday.time = key;
+                finalData.yesterdays_data.push(foActivity.data[key].yesterday);
+            }
+
+            return finalData;
+        };
+
+        /*
+         * Build the data structure for FO CI/CO activity by hour basis
+         */
+        var constructFoActivity = function(today, yesterday, deferred) {
+            var foActivity = {
+                data: {}
+            };
+
+            initFoActivityDataStructure(foActivity);
+
+            console.log("______________/n/n/n/n");
+            console.log(JSON.stringify(foActivity));
+            console.log("______________/n/n/n/n");
+
+            // To debug in prod test
+            try {
+                // Todays CI/CO data
+                constructCiCoActivity(today, rvAnalyticsSrv.activeReservations, foActivity, true);
+                // Yesterdays CI/CO data
+                constructCiCoActivity(yesterday, rvAnalyticsSrv.yesterdaysReservations, foActivity, false);
+                // Format data
+                //foActivity= 
+                var formatedData = formatFoActivityData(foActivity);
+                var finalData = {
+                    dashboard_type: 'frontdesk_activity',
+                    label: 'AN_FO_ACTIVITY',
+                    'todays_data': formatedData.todays_data,
+                    'yesterdays_data': formatedData.yesterdays_data
+                };
+            } catch (e) {
+                console.log(e);
+            }
+
+           
+            return deferred.resolve(finalData);
+        };
+
+        var constructCiCoActivity = function(date, reservations, foActivity, isToday) {
+            var arrivingReservations = reservations.filter(function(reservation) {
+                return reservation.arrival_date === date;
+            });
+
+            var departingReservations = reservations.filter(function(reservation) {
+                return reservation.departure_date === date;
+            });
+
+            buildCheckinActivity(arrivingReservations, foActivity, isToday);
+
+            buildCheckoutActivity(departingReservations, foActivity, isToday);
+        };
+
+
+        // Build the checkin activity for todays and yesterdays arrivals
+        var buildCheckinActivity = function(arrivals, foActivity, isToday) {
+            arrivals.forEach(function(reservation) {
+                var dayKey = 'yesterday';
+
+                if (isToday) {
+                    dayKey = 'today';
+                }
+                var hourActivity = foActivity.data[moment(reservation.eta_hz).format('h A')];
+
+                if (isVip(reservation)) {
+                    hourActivity[dayKey].vipCheckin = hourActivity[dayKey].vipCheckin + 1;
+                } else if (isLateCheckout(reservation)) {
+                    hourActivity[dayKey].earlyCheckin = hourActivity[dayKey].earlyCheckin + 1;
+                } else {
+                    hourActivity[dayKey].checkin = hourActivity[dayKey].checkin + 1;
+                }
+
+            });
+        };
+
+        // Build the checkout activity for todays and yesterdays departues
+        var buildCheckoutActivity = function(departures, foActivity, isToday) {
+            departures.forEach(function(reservation) {
+                var dayKey = 'yesterday';
+
+                if (isToday) {
+                    dayKey = 'today';
+                }
+                var hourActivity = foActivity.data[moment(reservation.etd_hz).format('h A')];
+
+                if (isVip(reservation)) {
+                    hourActivity[dayKey].vipCheckout = hourActivity[dayKey].vipCheckout + 1;
+                } else if (isLateCheckout(reservation)) {
+                    hourActivity[dayKey].lateCheckout = hourActivity[dayKey].lateCheckout + 1;
+                } else {
+                    hourActivity[dayKey].checkout = hourActivity[dayKey].checkout + 1;
+                }
+
+            });
+        };
+
+        // Init the data for the structure
+        var initFoActivityDataStructure = function(foActivity) {
+            var date = new Date();
+
+            // Construct the 6 AM to 5 AM
+            for (var hour = 6; hour <= 29; hour++) {
+                foActivity.data[moment(date.setHours(hour)).format('h A')] = {
+                    today: $.extend({}, userInitData),
+                    yesterday: $.extend({}, userInitData)
+                };
+            }
         };
 
         /*

@@ -38,6 +38,7 @@ angular.module('sntRover').service('RVReservationPackageSrv', ['$http', '$q', 'r
 		addonItem.title = item.name;
 		addonItem.description = item.description;
 		addonItem.price = item.amount;
+		addonItem.addon_value = item.addon_value;
 		addonItem.rateCurrency = item.rate_currency;
 		addonItem.taxes = item.taxes;
 		addonItem.stay = "";
