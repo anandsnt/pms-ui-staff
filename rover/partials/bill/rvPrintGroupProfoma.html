@@ -1,0 +1,147 @@
+<div class="invoice-logo envelope">
+    <img ng-src="{{printData.hotel_logo}}" alt="" />
+    <h1>{{printData.hotel_name}}</h1>
+    <span ng-bind-html="printData.hotel_address" ng-if="printData.show_hotel_address"></span>
+    
+    <span class="type">Proforma Invoice(temp)</span>
+</div>
+
+<div class="info-container account-info">
+    <div class="float">
+        <div class="info-left">
+
+            <!-- If exists 
+            {Company/TA Name}<br/>
+            -->
+            {(((TEMP)))Bill Name}<br/>
+            {Address 1}<br/>
+            {Address 2}<br/> 
+            {City, State, Postal Code}<br/>
+            {Country}
+
+            <div class="info-bottom">
+                <strong>(TEMP)Payment Receipt No.:</strong> {payment-receipt}
+            </div>
+        </div>
+    </div>
+    <div class="info-bottom float">
+        <div class="info-left">
+            <strong>{{printData.translation.group_start_date}}: </strong> {{printData.group_start_date}}<br/>
+            <strong>{{printData.translation.group_end_date}}: </strong> {{printData.group_end_date}}<br/> 
+            <<!-- strong>{{printData.translation.po_number}}: </strong> {{printData.po_number}}<br/>  
+            <strong>{{printData.translation.payment_date}}: </strong> {{printData.payment_date}} -->
+        </div>
+    </div>
+</div>
+
+<div class="invoice-header">
+</div>
+
+<div class="invoice-body">
+    <table class="invoice-details proforma-details">
+        <thead>
+            <tr>
+                <th class="date">{{printData.translation.date}}</th> 
+                <th class="type">{{printData.translation.type}}</th>
+                <th class="occ">{{printData.translation.occupancy}}</th>
+                <th class="align-right amount">{{printData.translation.item_price}}</th>
+                <th class="align-right qty">{{printData.translation.quantity}}</th>
+                <th class="align-right amount">Debit</th>
+                <th class="align-right amount">Credit</th>
+                <th class="align-right amount">{{printData.translation.total}}</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <td colspan="7"><strong>{{printData.translation.total_charge}}</strong></td>
+                <td><strong>{{currencySymbol}}{{printData.total_fees}}</strong>
+                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.invoice_currency_total_fees !== null">
+                        {{invoiceCurrencySymbol}}{{printData.invoice_currency_total_fees}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7"><strong>{{printData.translation.total_credits}}</strong></td>
+                <td><strong>{{currencySymbol}}{{printData.credits}} </strong>
+                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.invoice_currency_credits !== null">
+                        {{invoiceCurrencySymbol}}{{printData.invoice_currency_credits}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7"><strong>{{printData.translation.balance}}</strong></td>
+                <td><strong>{{currencySymbol}}{{printData.balance}} </strong>
+                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.invoice_currency_balance !== null">
+                        {{invoiceCurrencySymbol}}{{printData.invoice_currency_balance}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7">{{printData.translation.net_amount}}</td>
+                <td><strong>{{currencySymbol}}{{printData.net_amount}}</strong>
+                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.invoice_currency_net_amount !== null">
+                        {{invoiceCurrencySymbol}}{{printData.invoice_currency_net_amount}}
+                    </div>
+                </td>
+            </tr>
+            <tr ng-if="!printData.has_enabled_extended_tax_breakdown" ng-repeat="item in printData.tax_details">
+                <td colspan="7">{{item.description}}</td>
+                <td>
+                    {{currencySymbol}}{{item.amount | number: precisonTwo}}
+                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.invoice_currency_net_amount !== null">
+                        {{invoiceCurrencySymbol}}{{item.invoice_currency_amount}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7">{{printData.translation.total_incl_tax}}</td>
+                <td>
+                    {{printData.total_incl_tax}}
+                </td>
+            </tr>            
+        </tfoot>
+        <tbody>
+            <!-- First item on that date 
+
+                'rowspan' - total number of rows (data) for that date
+
+            -->
+            <tr class="first" ng-repeat="item in printData.transactions">
+                <td class="date" rowspan="item.occupancy_details.length">{{item.date}}</td>
+                <td class="type">{{item.occupancy_details[0].room_type_name}}</td>
+                <td class="occ">{{item.occupancy_details[0].ocuupancy}}</td>
+                <td class="align-right amount">
+                    <span class="currency">$</span>{{item.occupancy_details[0].ocuupancy}}
+                </td>
+                <td class="align-right qty">{{item.occupancy_details[0].quantity}}</td>
+                <td class="align-right amount">
+                    <span class="currency">$</span>{{item.occupancy_details[0].amount}}
+                </td>
+                <td class="align-right amount">
+                    <span class="currency">$</span>{{item.occupancy_details[0].item_price}}
+                </td>
+                <td class="align-right amount" valign="bottom" rowspan="{rowspan}">
+                    <span class="currency">$</span>{{item.total_amount}}
+                </td>
+            </tr>
+            <!-- ... repeat for every first item for the date -->
+
+            <!-- Other items on that date  -->
+            <!-- Add class .last if it's the last item of that date -->
+            <tr ng-repeat="item in printData.transactions.occupancy_details" ng-if="$index >= 1" ng-class="{'last' : $last}">
+                <td class="type">{{item.room_type_name}}</td>
+                <td class="occ">{{item.ocuupancy}}</td>
+                <td class="align-right amount"><span class="currency">$</span>{{item.ocuupancy}}</td>
+                <td class="align-right qty">{{item.quantity}}</td>
+                <td class="align-right amount"><span class="currency">$</span>{{item.amount}}</td>
+                <td class="align-right amount"><span class="currency">$</span>{{item.item_price}}</td>
+            </tr>
+            <!-- ... repeat for each other item for the date -->
+           
+        </tbody>
+    </table>
+</div>
+
+<div class="invoice-footer text-center">
+    {footer}
+</div>
