@@ -91,17 +91,29 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 			drawChart();
 		});
 
-		(function() {
 
+		var fetchData = function (date, roomTypeId) {
+			var params = {
+				"date": date,
+				"room_type_id": roomTypeId
+			};
 			var options = {
-				params: $rootScope.businessDate,
+				params: params,
 				successCallBack: function() {
                     renderHkOverview();
                 }
 			};
 
 			$scope.callAPI(rvAnalyticsSrv.initRoomAndReservationApis, options);
+		};
 
+
+		$scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER', function(e, filter) {
+			fetchData(filter.date, filter.room_type_id);
+		});
+
+		(function() {
+			fetchData($scope.dashboardFilter.datePicked, $scope.dashboardFilter.selectedRoomTypeId)
 		})();
 	}
 ]);
