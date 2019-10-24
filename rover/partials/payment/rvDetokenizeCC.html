@@ -1,0 +1,22 @@
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" >
+	
+	<div class="modal-content card-content">
+		<button type="button" id="modal-close" class="modal-close" ng-click="closeDialog()">
+			<span class="icons icon-close invert"></span>
+		</button>
+		<span class="h3 message solo">Credit Card Details</span>
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<br>
+		<div class="scrollable scroll-payment-list"  id="paymentList" ng-iscroll='paymentList' ng-iscroll-delay='300' >
+			
+			<iframe class="payment-iframe iframe-scroll" src={{detokenizeUrl}} id="iframe-token" seamless></iframe>
+		</div>
+
+		<div class="actions">
+		    <button type="button" id="close" class="button blank modal-close" ng-click="closeDialog()">
+		        Close
+		    </button>
+		</div>
+
+	</div>
+</div>
