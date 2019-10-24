@@ -19,6 +19,12 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 			$scope: $scope
 		});
 
+		$controller('rvFrontOfficeActivityCtrl', {
+			$scope: $scope
+		});
+
+
+
 		var onBarChartClick = function() {
 			// console.log(JSON.stringify(e));
 		};
@@ -39,7 +45,7 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 		var renderFrontOfficeManagementChart = function() {
 
 			rvFrontOfficeAnalyticsSrv.fdArrivalsManagement(date).then(function(data) {
-				console.log(data);
+				console.log(JSON.stringify(data));
 				var chartDetails = {
 					chartData: data,
 					onBarChartClick: onBarChartClick
@@ -47,6 +53,20 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 
 				d3.select('#analytics-chart').selectAll('svg').remove();
 				$scope.drawArrivalManagementChart(chartDetails);
+			});
+		};
+
+
+		var renderFrontOfficeActivity = function() {
+
+			rvFrontOfficeAnalyticsSrv.fdFoActivity(date).then(function(data) {
+				console.log(JSON.stringify(data));
+				try {
+					d3.select('#analytics-chart').selectAll('svg').remove();
+					$scope.drawFrontOfficeActivity(data);
+				} catch (e) {
+					console.log(e)
+				}
 			});
 		};
 
@@ -62,6 +82,9 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 			if ($scope.screenData.selectedChart === 'ARRIVALS_MANAGEMENT') {
 				$scope.screenData.selectedChart = 'WORK_LOAD';
 				renderfdWorkloadChart();
+			} else if ($scope.screenData.selectedChart === 'WORK_LOAD') {
+				$scope.screenData.selectedChart = 'FO_ACTIVITY';
+				renderFrontOfficeActivity();
 			} else {
 				$scope.screenData.selectedChart = 'ARRIVALS_MANAGEMENT';
 				renderFrontOfficeManagementChart();
@@ -77,8 +100,10 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 					// Redraw chart
 					if ($scope.screenData.selectedChart === 'ARRIVALS_MANAGEMENT') {
 						renderFrontOfficeManagementChart();
-					} else {
+					} else if ($scope.screenData.selectedChart === 'WORK_LOAD') {
 						renderfdWorkloadChart();
+					} else {
+						renderFrontOfficeActivity();
 					}
 				}, 0);
 			});
@@ -93,7 +118,8 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 			var options = {
 				params: $rootScope.businessDate,
 				successCallBack: function() {
-					renderFrontOfficeManagementChart();
+					renderFrontOfficeActivity();
+					//renderFrontOfficeManagementChart();
 					// renderfdWorkloadChart();
 				}
 			};
