@@ -93,16 +93,18 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
          * @param {Object} selectedFilter selected filter
          * @param {Array} selectedValues array of selected values
          * @param {Object} deferred - deferred object
+         * @param {String} displayKey - key used to display label
+         * @param {String} valueKey - key used to display value
          * @return {void} 
          */
-        var populateBookingOrigins = (selectedFilter, selectedValues, deferred) => {
-                reportSubSrv.fetchBookingOrigins().then(function (data) {
-                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues);
+        var populateBookingOrigins = (selectedFilter, selectedValues, deferred, displayKey, valueKey) => {
+                reportSubSrv.fetchBookingOrigins(true).then(function (data) {
+                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, valueKey);
                     selectedFilter.options = {
                         selectAll: selectedValues ? data.length === selectedValues.length : true,
                         hasSearch: false,
-                        key: 'name',
-                        value_key: 'value'
+                        key: displayKey,
+                        value_key: valueKey
                     };
                     selectedFilter.isMultiSelect = true;
 
@@ -115,16 +117,18 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              * @param {Object} selectedFilter selected filter
              * @param {Array} selectedValues array of selected values
              * @param {Object} deferred - deferred object
+             * @param {String} displayKey - key used to display label
+             * @param {String} valueKey - key used to display value
              * @return {void} 
              */
-            populateMarkets = ( selectedFilter, selectedValues, deferred ) => {
-                reportSubSrv.fetchMarkets().then(function (data) {
-                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues);
+            populateMarkets = ( selectedFilter, selectedValues, deferred, displayKey, valueKey) => {
+                reportSubSrv.fetchMarkets(true).then(function (data) {
+                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, valueKey);
                     selectedFilter.options = {
                         selectAll: selectedValues ? data.length === selectedValues.length : true,
                         hasSearch: false,
-                        key: 'name',
-                        value_key: 'value'
+                        key: displayKey,
+                        value_key: valueKey
                     };
                     selectedFilter.isMultiSelect = true;
                     deferred.resolve(selectedFilter);
@@ -158,16 +162,18 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              * @param {Object} selectedFilter selected filter
              * @param {Array} selectedValues array of selected values
              * @param {Object} deferred - deferred object
+             * @param {String} displayKey - key used to display label
+             * @param {String} valueKey - key used to display value
              * @return {void} 
              */
-            populateSource = ( selectedFilter, selectedValues, deferred ) => {
-                reportSubSrv.fetchSources().then(function (data) {
-                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues);
+            populateSource = ( selectedFilter, selectedValues, deferred, displayKey, valueKey) => {
+                reportSubSrv.fetchSources(true).then(function (data) {
+                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, valueKey);
                     selectedFilter.options = {
                         hasSearch: false,
                         selectAll: selectedValues ? data.length === selectedValues.length : true,
-                        key: 'name',
-                        value_key: 'value'
+                        key: displayKey,
+                        value_key: valueKey
                     };
                     selectedFilter.isMultiSelect = true;
                     deferred.resolve(selectedFilter);
@@ -179,16 +185,18 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              * @param {Object} selectedFilter selected filter
              * @param {Array} selectedValues array of selected values
              * @param {Object} deferred - deferred object
+             * @param {String} displayKey - key used to display label
+             * @param {String} valueKey - key used to display value
              * @return {void} 
              */
-            populateSegments = ( selectedFilter, selectedValues, deferred ) => {
-                reportSubSrv.fetchSegments().then(function (data) {
-                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues);
+            populateSegments = ( selectedFilter, selectedValues, deferred, displayKey, valueKey) => {
+                reportSubSrv.fetchSegments(true).then(function (data) {
+                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, valueKey);
                     selectedFilter.options = {
                         hasSearch: false,
                         selectAll: selectedValues ? data.length === selectedValues.length : true,
-                        key: 'name',
-                        value_key: 'value'
+                        key: displayKey,
+                        value_key: valueKey
                     };
                     selectedFilter.isMultiSelect = true;
                     deferred.resolve(selectedFilter);
@@ -420,6 +428,129 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                     selectedFilter.entryStyle = noTextTransformStyle;
                     deferred.resolve(selectedFilter);
                 });
+            },
+            /**
+             * Populate charge groups
+             * @param {Object} selectedFilter selected filter
+             * @param {Array} selectedValues array of selected values
+             * @param {Object} deferred - deferred object
+             * @return {void} 
+             */
+            populateChargeGroups = ( selectedFilter, selectedValues, deferred ) => {
+                reportSubSrv.fetchChargeNAddonGroups().then(function (data) {
+                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, 'name');
+                    selectedFilter.options = {
+                        hasSearch: false,
+                        selectAll: selectedValues ? data.length === selectedValues.length : true,
+                        key: 'name',
+                        value_key: 'name'
+                    };
+                    selectedFilter.isMultiSelect = true;
+                    deferred.resolve(selectedFilter);
+                });
+            },
+            /**
+             * Populate charge codes
+             * @param {Object} selectedFilter selected filter
+             * @param {Array} selectedValues array of selected values
+             * @param {Object} deferred - deferred object
+             * @return {void} 
+             */
+            populateChargeCodes = ( selectedFilter, selectedValues, deferred ) => {
+                reportSubSrv.fetchChargeCodes().then(function (data) {
+                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, 'name');
+                    selectedFilter.options = {
+                        hasSearch: false,
+                        selectAll: selectedValues ? data.length === selectedValues.length : true,
+                        key: 'name',
+                        value_key: 'name'
+                    };
+                    selectedFilter.isMultiSelect = true;
+                    deferred.resolve(selectedFilter);
+                });
+            },
+            /**
+             * Populate charge code description
+             * @param {Object} selectedFilter selected filter
+             * @param {Array} selectedValues array of selected values
+             * @param {Object} deferred - deferred object
+             * @return {void} 
+             */
+            populateChargeCodeDescription = ( selectedFilter, selectedValues, deferred ) => {
+                reportSubSrv.fetchChargeCodes().then(function (data) {
+                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, 'description');
+                    selectedFilter.options = {
+                        hasSearch: false,
+                        selectAll: selectedValues ? data.length === selectedValues.length : true,
+                        key: 'description',
+                        value_key: 'description'
+                    };
+                    selectedFilter.isMultiSelect = true;
+                    deferred.resolve(selectedFilter);
+                });
+            },
+
+            /**
+             * Populate charge code types
+             * @param {Object} selectedFilter selected filter
+             * @param {Array} selectedValues array of selected values
+             * @param {Object} deferred - deferred object
+             * @return {void} 
+             */
+            populateChargeCodeTypes = ( selectedFilter, selectedValues, deferred ) => {
+                rvCustomExportSrv.getReferenceValuesByType('charge_code_type').then(function (data) {
+                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, 'value');
+                    selectedFilter.options = {
+                        hasSearch: false,
+                        selectAll: selectedValues ? data.length === selectedValues.length : true,
+                        key: 'description',
+                        value_key: 'value'
+                    };
+                    selectedFilter.isMultiSelect = true;
+                    deferred.resolve(selectedFilter);
+                });
+            },
+
+            /**
+             * Populate hold status
+             * @param {Object} selectedFilter selected filter
+             * @param {Array} selectedValues array of selected values
+             * @param {Object} deferred - deferred object
+             * @return {void} 
+             */
+            populateHoldStatus = ( selectedFilter, selectedValues, deferred ) => {
+                reportSubSrv.fetchHoldStatus().then(function (data) {
+                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, 'name');
+                    selectedFilter.options = {
+                        hasSearch: false,
+                        selectAll: selectedValues ? data.length === selectedValues.length : true,
+                        key: 'name',
+                        value_key: 'name'
+                    };
+                    selectedFilter.isMultiSelect = true;
+                    deferred.resolve(selectedFilter);
+                });
+            },
+
+            /**
+             * Populate reservation types
+             * @param {Object} selectedFilter selected filter
+             * @param {Array} selectedValues array of selected values
+             * @param {Object} deferred - deferred object
+             * @return {void} 
+             */
+            populateReservationTypes = ( selectedFilter, selectedValues, deferred ) => {
+                rvCustomExportSrv.getReservationTypes().then(function (data) {
+                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, 'value');
+                    selectedFilter.options = {
+                        hasSearch: false,
+                        selectAll: selectedValues ? data.length === selectedValues.length : true,
+                        key: 'name',
+                        value_key: 'value'
+                    };
+                    selectedFilter.isMultiSelect = true;
+                    deferred.resolve(selectedFilter);
+                });
             };
 
         /**
@@ -435,19 +566,19 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
             switch (selectedFieldName) {
                 case customExportFilterParamsConst['BOOKING_ORIGIN_CODE']:
                 case customExportFilterParamsConst['ORIGIN_CODE']:
-                    populateBookingOrigins(selectedFilter, selectedValues, deferred);
+                    populateBookingOrigins(selectedFilter, selectedValues, deferred, 'name', 'value');
                     break;
                 case customExportFilterParamsConst['MARKET_CODE']:
-                    populateMarkets(selectedFilter, selectedValues, deferred);
+                    populateMarkets(selectedFilter, selectedValues, deferred, 'name', 'value');
                     break;
                 case customExportFilterParamsConst['RESERVATION_STATUS']:
                     populateReservationStatus(selectedFilter, selectedValues, deferred);
                     break;
                 case customExportFilterParamsConst['SOURCE_CODE']:
-                    populateSource(selectedFilter, selectedValues, deferred);
+                    populateSource(selectedFilter, selectedValues, deferred, 'name', 'value');
                     break;
                 case customExportFilterParamsConst['SEGMENT_CODE']:
-                    populateSegments(selectedFilter, selectedValues, deferred);
+                    populateSegments(selectedFilter, selectedValues, deferred, 'name', 'value');
                     break;
                 case customExportFilterParamsConst['ROOM_TYPE']:
                 case customExportFilterParamsConst['ARRIVAL_ROOM_TYPE']:
@@ -456,16 +587,21 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                     break;
                 case customExportFilterParamsConst['ACTIVE']:
                 case customExportFilterParamsConst['VIP']:
+                case customExportFilterParamsConst['POST_STAY']:
+                case customExportFilterParamsConst['PRE_STAY']:
+                case customExportFilterParamsConst['TAX_EXEMPT']:
                     populateDualStates(boolStateOptions, selectedFilter, selectedValues, deferred);
                     break;
                 case customExportFilterParamsConst['ROOM_NO']:
                     populateRoomNos(selectedFilter, selectedValues, deferred);
                     break;
                 case customExportFilterParamsConst['ARRIVAL_RATE_CODE']:
+                case customExportFilterParamsConst['RATE_CODE']:
                     populateRateList(selectedFilter, selectedValues, deferred);
                     break;
                 case customExportFilterParamsConst['CI_AGENT']:
                 case customExportFilterParamsConst['CO_AGENT']:
+                case customExportFilterParamsConst['USER_NAME']:
                     populateCICOAgents(selectedFilter, selectedValues, deferred);
                     break;
                 case customExportFilterParamsConst['CI_APPLICATION']:
@@ -490,8 +626,38 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                 case customExportFilterParamsConst['STAY_TYPE']:
                     populateDualStates(dayNightUseIndicator, selectedFilter, selectedValues, deferred);
                     break;
+                case customExportFilterParamsConst['CHARGE_GROUP']:
+                    populateChargeGroups(selectedFilter, selectedValues, deferred);
+                    break;
+                case customExportFilterParamsConst['CHARGE_CODE']:
+                    populateChargeCodes(selectedFilter, selectedValues, deferred);
+                    break;
+                case customExportFilterParamsConst['CHARGE_CODE_DESC']:
+                    populateChargeCodeDescription(selectedFilter, selectedValues, deferred);
+                    break;
+                case customExportFilterParamsConst['ORIGIN']:
+                    populateBookingOrigins(selectedFilter, selectedValues, deferred, 'name', 'name');
+                    break;
+                case customExportFilterParamsConst['MARKET']:
+                    populateMarkets(selectedFilter, selectedValues, deferred, 'name', 'name');
+                    break;
+                case customExportFilterParamsConst['SOURCE']:
+                    populateSource(selectedFilter, selectedValues, deferred, 'name', 'name');
+                    break;
+                case customExportFilterParamsConst['SEGMENT']:
+                    populateSegments(selectedFilter, selectedValues, deferred, 'name', 'name');
+                    break;
                 case customExportFilterParamsConst['NATIONALITY']:
                     populateCountryOrNationality(selectedFilter, selectedValues, deferred, 'value', 'code');
+                    break;
+                case customExportFilterParamsConst['CHARGE_TYPE']:
+                    populateChargeCodeTypes(selectedFilter, selectedValues, deferred);
+                    break;
+                case customExportFilterParamsConst['HOLD_STATUS']:
+                    populateHoldStatus(selectedFilter, selectedValues, deferred);
+                    break;
+                case customExportFilterParamsConst['RESERVATION_TYPE']:
+                    populateReservationTypes(selectedFilter, selectedValues, deferred);
                     break;
                 default:
 

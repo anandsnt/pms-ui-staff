@@ -49,12 +49,10 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
 
         // Refresh the given scroller
         var refreshScroll = function(name, reset) {
-
-            $scope.refreshScroller(name);
-
             if ( !! reset && $scope.myScroll.hasOwnProperty(name) ) {
                 $scope.myScroll[name].scrollTo(0, 0, SCROLL_REFRESH_DELAY);
             }
+            $scope.refreshScroller(name);
         };
 
         // helper function
@@ -141,14 +139,16 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             };
 
             var hasExportName = function () {
-                return !!$scope.customExportsScheduleParams.exportName;
-            };
+                    return !!$scope.customExportsScheduleParams.exportName;
+                },
+                hasOutputFormat = function () {
+                    return !!$scope.customExportsScheduleParams.format;
+                },
+                hasSelectedColumns = function () {
+                    return $scope.selectedColumns.length;  
+                };
 
-            var hasOutputFormat = function () {
-                return !!$scope.customExportsScheduleParams.format;
-            };
-
-            return hasFrequency() && hasValidDistribution() && hasExportName() && hasOutputFormat();
+            return hasFrequency() && hasValidDistribution() && hasExportName() && hasOutputFormat() && hasSelectedColumns();
         };
 
         var fillValidationErrors = function() {
@@ -204,23 +204,39 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
 
             var startsOn = $scope.selectedEntityDetails.starts_on || $rootScope.businessDate,
                 endsOnDate = $scope.selectedEntityDetails.ends_on_date || $rootScope.businessDate,
-                exportDate = $scope.selectedEntityDetails.export_date || $rootScope.businessDate;
+                exportDate = $scope.selectedEntityDetails.from_date || $rootScope.businessDate,
+                exportToDate = $scope.selectedEntityDetails.to_date || $rootScope.businessDate;
 
 
             $scope.scheduleParams = {};
 
-            if ( angular.isDefined($scope.selectedEntityDetails.export_date) ) {
-                $scope.scheduleParams.export_date = $scope.selectedEntityDetails.export_date;
+            if ( angular.isDefined($scope.selectedEntityDetails.from_date) ) {
+                $scope.scheduleParams.from_date = $scope.selectedEntityDetails.from_date;
             } else {
-                $scope.scheduleParams.export_date = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days');
+                $scope.scheduleParams.from_date = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days');
 
                 var todayDate = moment().startOf('day'),
-                    daysDiff = moment.duration(todayDate.diff($scope.scheduleParams.export_date)).asDays();
+                    daysDiff = moment.duration(todayDate.diff($scope.scheduleParams.from_date)).asDays();
                 
                 if (daysDiff < 7) {
-                    $scope.scheduleParams.export_date = $scope.scheduleParams.export_date.format("L");
+                    $scope.scheduleParams.from_date = $scope.scheduleParams.from_date.format("L");
                 } else {
-                    $scope.scheduleParams.export_date = $scope.scheduleParams.export_date.calendar();
+                    $scope.scheduleParams.from_date = $scope.scheduleParams.from_date.calendar();
+                }
+            }
+
+            if ( angular.isDefined($scope.selectedEntityDetails.to_date) ) {
+                $scope.scheduleParams.to_date = $scope.selectedEntityDetails.to_date;
+            } else {
+                $scope.scheduleParams.to_date = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days');
+
+                var todayDate = moment().startOf('day'),
+                    daysDiff = moment.duration(todayDate.diff($scope.scheduleParams.to_date)).asDays();
+                
+                if (daysDiff < 7) {
+                    $scope.scheduleParams.to_date = $scope.scheduleParams.to_date.format("L");
+                } else {
+                    $scope.scheduleParams.to_date = $scope.scheduleParams.to_date.calendar();
                 }
             }
 
@@ -254,11 +270,19 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
              * Export Calender Options
              * max date is business date
              */
-            $scope.exportCalenderOptions = angular.extend({
+            $scope.exportFromCalenderOptions = angular.extend({
+                maxDate: tzIndependentDate($rootScope.businessDate),
+                onSelect: function(value) {
+                    $scope.exportCalenderToOptions.minDate = value;
+                }
+            }, datePickerCommon);
+            $scope.scheduleParams.from_date = reportUtils.processDate(exportDate).today;
+
+            $scope.exportCalenderToOptions = angular.extend({
                 maxDate: tzIndependentDate($rootScope.businessDate)
             }, datePickerCommon);
-            $scope.scheduleParams.export_date = reportUtils.processDate(exportDate).today;
-
+            $scope.scheduleParams.to_date = reportUtils.processDate(exportToDate).today;
+            
             $scope.startsOnOptions = angular.extend({
                 minDate: tzIndependentDate($rootScope.businessDate),
                 onSelect: function(value) {
@@ -578,8 +602,8 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 params.time = $scope.scheduleParams.time;
             }
             
-            if ( $scope.scheduleParams.export_date ) {
-                params.export_date = $filter('date')($scope.scheduleParams.export_date, 'yyyy/MM/dd');
+            if ( $scope.scheduleParams.from_date ) {
+                params.from_date = $filter('date')($scope.scheduleParams.from_date, 'yyyy/MM/dd');
             }
             
 

@@ -56,17 +56,18 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'rvC
          */
         $scope.deleteContract = function() {
             var accountId,
-                deleteContractFailureCallback = function(error) {
-                    $scope.$emit('setErrorMessage', error);
-                },
-                deleteContractSuccessCallback = function(data) {
-                    $scope.contractData.selectedContractId = '';
-                    $scope.$emit('fetchContractsList');
-                };
+            deleteContractFailureCallback = function(error) {
+                $scope.$emit('setErrorMessage', error);
+            },
+            deleteContractSuccessCallback = function() {
+                $scope.contractData.selectedContractId = '';
+                $scope.$emit('fetchContractsList');
+            };
 
             if ($stateParams.id === "add") {
                 accountId = $scope.contactInformation.id;
-            } else {
+            }
+            else {
                 accountId = $stateParams.id;
             }
             var options = {
@@ -79,7 +80,7 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'rvC
             };
 
             $scope.callAPI(rvCompanyCardContractsSrv.deleteContract, options);
-        }
+        };
 
         /**
          * Function to toggle contract active status
@@ -88,6 +89,15 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'rvC
             if (!$scope.contractData.disableFields) {
                 $scope.contractData.editData.is_active = !$scope.contractData.editData.is_active;
             }
+        };
+
+        /**
+         * Restore the original contract data
+         */
+        $scope.restoreContract = function() {
+            $scope.contractData.linkContractsSearch.query = '';
+            $scope.contractData.linkContractsSearch.results = [];
+            $scope.$emit('fetchContract', $scope.contractData.selectedContractId);
         };
 
         /**

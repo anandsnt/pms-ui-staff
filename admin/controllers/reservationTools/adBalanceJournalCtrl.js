@@ -35,8 +35,7 @@ admin.controller('ADBalanceJournalCtrl', [
 		 */
 		$scope.startJob = function() {
 			var successCallback = function(data) {
-				var endDate = moment(tzIndependentDate($scope.payload.end_date)).format("DD-MM-YYYY"),
-					firstDate = moment(tzIndependentDate($scope.payload.first_date)).format("DD-MM-YYYY");
+				var endDate = moment(tzIndependentDate($scope.payload.end_date)).format($rootScope.hotelDateFormat);
 				
 				$(".balance-status").addClass('notice');
 				$(".balance-status").removeClass('success');
@@ -45,7 +44,7 @@ admin.controller('ADBalanceJournalCtrl', [
 				$scope.showPercentage = false;
 				$scope.balanceJournalJobId = data.job_id;
 				$scope.jobStatusTitle = "Balancing started";
-				$scope.jobStatusText = "Balancing journal from " + firstDate + " to " + endDate;
+				$scope.jobStatusText = "Balancing journal from " + $scope.payload.first_date + " to " + endDate;
 				$scope.cancelOrChangeBtnTxt = "";
 				$scope.runButtonText = "REFRESH STATUS";
 				$scope.runForDiffDatesText = "";

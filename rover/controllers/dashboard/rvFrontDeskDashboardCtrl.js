@@ -1,9 +1,20 @@
-sntRover.controller('RVfrontDeskDashboardController', ['$scope', '$rootScope', 'statistics', function($scope, $rootScope, statistics) {
+sntRover.controller('RVfrontDeskDashboardController',
+    ['$scope', '$rootScope', 'RVDashboardSrv', '$timeout',
+        function($scope, $rootScope, RVDashboardSrv, $timeout) {
 	// inheriting some useful things
 	BaseCtrl.call(this, $scope);
     var that = this;
 
-  $scope.statistics = statistics;
+    var requestParams = {
+        'show_adr': false,
+        'show_upsell': true,
+        'show_rate_of_day': false
+    };
+
+    RVDashboardSrv.fetchStatisticData(requestParams).then(function(data) {
+        $scope.statistics = data;
+    });
+    
 	// scroller related settings
 	var scrollerOptions = {click: true, preventDefault: false};
 
@@ -60,4 +71,27 @@ sntRover.controller('RVfrontDeskDashboardController', ['$scope', '$rootScope', '
     setTimeout(function() {
       $scope.refreshScroller('dashboard_scroller');
     }, 500);
+
+    $scope.$on('SHOW_ANALYTICS_DASHBOARD', function() {
+      // call API and on Success show Analytics page
+        $timeout(function() {
+        $scope.dashboardFilter.analyticsActive = true;
+        // var options = {
+        //     params: $rootScope.businessDate,
+        //     successCallBack: function() {
+        //         rvFrontOfficeAnalyticsSrv.fdArrivalsManagement($rootScope.businessDate).then(function(data) {
+        //             console.log("I am inside  fdArrivalsManagement");
+        //             console.log(data);
+        //         });
+
+        //         rvFrontOfficeAnalyticsSrv.fdWorkload($rootScope.businessDate).then(function(data) {
+        //             console.log("I am inside  fdWorkload");
+        //             console.log(data);
+        //         });
+        //     }
+        // };
+
+        // $scope.callAPI(rvAnalyticsSrv.initRoomAndReservationApis, options);
+      }, 500);
+    });
 }]);
