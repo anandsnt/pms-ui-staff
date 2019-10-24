@@ -48,14 +48,12 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         return deferred.promise;
     };
 
-    this.initRoomAndReservationApis = function(date) {
+    this.initRoomAndReservationApis = function(params) {
         var deferred = $q.defer();
         var completedResCall = false;
         var completedRoomsCall = false;
 
-        that.fetchActiveReservation({
-            date: date
-        }).then(function(data) {
+        that.fetchActiveReservation(params).then(function(data) {
             that.activeReservations = data;
 
             completedResCall = true;
