@@ -457,6 +457,18 @@
             options="chosenReport.hasIncludeAgingBalance.options"></multi-option-selection>
         </div>
 
+
+        <!--item_58 -->
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasLanguages && chosenReport.hasLanguages.data.length" ng-class="{'active': filterItemsToggle.item_58}" ng-click="toggleFilterItems('item_58')">
+            <span class="title">Language</span>
+        </a>
+        <div class="report-col settings-content" ng-show="chosenReport.hasLanguages && chosenReport.hasLanguages.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_58 }">
+            <select ng-model="chosenReport.chosenLanguage" ng-options="languages.id as languages.language for languages in chosenReport.hasLanguages.data" ng-change="sortByChanged(chosenReport)" iscroll-stop-propagation>
+            <option value="">Select Language</option>
+        </select>
+        </div>
+
+
         <!--item-47-->
         <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasAccountSearch && chosenReport.hasAccountSearch.data.length" ng-class="{ 'active': filterItemsToggle.item_47 }" ng-click="toggleFilterItems('item_47')">
             <span class="title">Accounts</span>
