@@ -3,7 +3,8 @@ angular.module('sntRover')
         function($scope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv) {
 
             var arrivalsColorScheme = d3.scaleOrdinal()
-                .range(["#B5D398", "#84B652", "#B7D599"])
+                // .range(["#B5D398", "#84B652", "#B7D599"])
+                .range(['#98D371', '#84B652'])
                 .domain(["perfomed", "remaining"]);
 
             var vacantColorScheme = d3.scaleOrdinal()
@@ -11,15 +12,18 @@ angular.module('sntRover')
                 .domain(["dirty", "pickup", "clean"]);
 
             var departuresColorScheme = d3.scaleOrdinal()
-                .range(["#DBA1A2", "#E13939"])
+                // .range(["#DBA1A2", "#E13939"])
+                .range(['#E57F70', '#E42012'])
                 .domain(["perfomed", "pending"]);
 
             var stayoversColorScheme = d3.scaleOrdinal()
-                .range(["#BBE0ED", "#7FBED7"])
+                // .range(["#BBE0ED", "#7FBED7"])
+                .range(["#C7DCE5", "#7FBED7"])
                 .domain(["perfomed", "remaining"]);
 
             var roomsColorScheme = d3.scaleOrdinal()
-                .range(["#84B652", "#557B30", "#EA9219", "#DF3635"])
+                // .range(["#84B652", "#557B30", "#EA9219", "#DF3635"])
+                .range(["#6DD420", "#408B10", "#FF920F", "#E44B1C"])
                 .domain(["clean", "inspected", "pickup", "dirty"]);
 
             var colorScheme = {
@@ -42,8 +46,8 @@ angular.module('sntRover')
 
                 "Clean": "bar bar-green",
                 "Inspected": "bar bar-green bar-dark",
-                "Dirty": "bar bar-orange",
-                "Pickup": "bar bar-red"
+                "Dirty": "bar bar-red",
+                "Pickup": "bar bar-orange"
             };
 
             $scope.drawHkOverviewChart = function(chartDetails) {
@@ -93,7 +97,7 @@ angular.module('sntRover')
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
                 // DEBUGING CODE
-                chartDetails = rvAnalyticsHelperSrv.addRandomNumbersForTesting(chartDetails);
+                // chartDetails = rvAnalyticsHelperSrv.addRandomNumbersForTesting(chartDetails);
 
                 chartDetails = rvAnalyticsHelperSrv.processBiDirectionalChart(chartDetails);
                 console.log(chartDetails);
@@ -154,7 +158,7 @@ angular.module('sntRover')
                 var firstLineHeight1 = yScale.bandwidth() * 4.5;
 
                 svg.append("line") // attach a line
-                    .style("stroke", "#000000") // colour the line
+                    .style("stroke", "#B1B1B1") // colour the line
                     .style("stroke-width", "2px")
                     .attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
                     .attr("y1", firstLineHeight1) // y position of the first end of the line
@@ -199,7 +203,7 @@ angular.module('sntRover')
                     });
 
                 leftSideLegendEntries.append("span")
-                    .attr("class", function(label){
+                    .attr("class", function(label) {
                         return cssClassMappings[label];
                     })
                     .html(function(label) {
@@ -218,29 +222,31 @@ angular.module('sntRover')
                         }
                         return text;
                     });
-                    // .style("background-color", leftSideLegendColor);
+                // .style("background-color", leftSideLegendColor);
 
                 leftSideLegendEntries.append("span")
                     .attr("class", "bar-label")
                     .html(function(label) {
                         return label;
                     });
-                    
+
 
                 svg.append("text")
-                    .attr("x", xScale(-1*maxValueInBotheDirections / 2))
-                    .attr("y", - 20)
+                    .attr("x", xScale(-1 * maxValueInBotheDirections / 2))
+                    .attr("y", -20)
                     .attr("dy", ".35em")
                     .style("font-size", "20px")
                     .style("font-style", "italic")
+                    .style("fill", "#B1B1B1")
                     .text("PERFOMED");
 
                 svg.append("text")
                     .attr("x", xScale(maxValueInBotheDirections / 2))
-                    .attr("y", - 20)
+                    .attr("y", -20)
                     .attr("dy", ".35em")
                     .style("font-size", "20px")
                     .style("font-style", "italic")
+                    .style("fill", "#B1B1B1")
                     .text("REMAINING");
 
                 // TODO: For now lets assume all legends are of same height. So we will take one and use as reference.
@@ -277,7 +283,7 @@ angular.module('sntRover')
                     });
 
                 rightSideLegendEntries.append("span")
-                    .attr("class", function(label){
+                    .attr("class", function(label) {
                         return cssClassMappings[label];
                     })
                     .html(function(label) {

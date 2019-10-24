@@ -87,6 +87,7 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 
 		$scope.$on('ANALYTICS_MENU_CHANGED', function(e, selectedChart){
 			$scope.screenData.selectedChart = selectedChart;
+			clearAllExistingChartElements();
 			drawChart();
 		});
 
