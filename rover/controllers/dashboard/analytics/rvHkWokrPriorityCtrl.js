@@ -20,6 +20,21 @@ angular.module('sntRover')
                 departuresColorScheme: departuresColorScheme
             };
 
+            var cssClassMappings = {
+                "Checked In": "bar bar-green bar-light",
+                "Early Check in": "bar bar-green",
+                "Remaining": "bar bar-green bar-light",
+
+                "Dirty": "bar bar-orange",
+                "Pickup": "bar bar-red",
+                "Clean": "bar bar-green",
+                "Inspected": "bar bar-green bar-dark",
+
+                "Checked Out": "bar bar-red bar-light",
+                "Late checkout": "bar bar-red",
+                "Pending": "bar bar-red"
+            };
+
             $scope.drawHkWorkPriorityChart = function(chartDetails) {
                 $scope.screenData.mainHeading = $filter('translate')(chartDetails.chartData.label);
                 var chartAreaWidth = document.getElementById("analytics-chart").clientWidth;
@@ -163,27 +178,30 @@ angular.module('sntRover')
                     });
 
                 leftSideLegendEntries.append("span")
-                    .attr("class", "rect")
-                    .style("background-color", leftSideLegendColor);
-
-                leftSideLegendEntries.append("span")
-                    .attr("class", "rect-label")
+                    .attr("class", function(label) {
+                        return cssClassMappings[label];
+                    })
                     .html(function(label) {
                         var text;
 
                         if (label === "Checked In") {
-                            text = label + " (" + chartDetails.perfomed_arrivals_count + ")";
+                            text = chartDetails.perfomed_arrivals_count;
                         } else if (label === "Dirty") {
-                            text = label + " (" + chartDetails.dirty_vacant_count + ")";
+                            text = chartDetails.dirty_vacant_count;
                         } else if (label === "Pickup") {
-                            text = label + " (" + chartDetails.pickup_vacant_count + ")";
+                            text = chartDetails.pickup_vacant_count;
                         } else if (label === "Clean") {
-                            text = label + " (" + chartDetails.clean_vacant_count + ")";
-                        } 
-                        else if (label === "Checked Out") {
-                            text = label + " (" + chartDetails.perfomed_departures_count + ")";
+                            text = chartDetails.clean_vacant_count;
+                        } else if (label === "Checked Out") {
+                            text = chartDetails.perfomed_departures_count;
                         }
                         return text;
+                    });
+
+                leftSideLegendEntries.append("span")
+                    .attr("class", "bar-label")
+                    .html(function(label) {
+                        return label;
                     });
 
                 // TODO: For now lets assume all legends are of same height. So we will take one and use as reference.
@@ -225,27 +243,30 @@ angular.module('sntRover')
                     });
 
                 rightSideLegendEntries.append("span")
-                    .attr("class", "rect")
-                    .style("background-color", rightSideLegendColor);
-
-                rightSideLegendEntries.append("span")
-                    .attr("class", "rect-label")
+                    .attr("class", function(label) {
+                        return cssClassMappings[label];
+                    })
                     .html(function(label) {
                         var text;
 
                         if (label === "Early Check in") {
-                            text = label + " (" + chartDetails.early_checkin_arrivals_count + ")";
+                            text = chartDetails.early_checkin_arrivals_count;
                         } else if (label === "Remaining") {
-                            text = label + " (" + chartDetails.remaining_arrivals_count + ")";
+                            text = chartDetails.remaining_arrivals_count;
                         } else if (label === "Inspected") {
-                            text = label + " (" + chartDetails.inspected_vacant_count + ")";
+                            text = chartDetails.inspected_vacant_count;
                         } else if (label === "Late checkout") {
-                            text = label + " (" + chartDetails.late_checkout_departures_count + ")";
-                        } 
-                        else if (label === "Pending") {
-                            text = label + " (" + chartDetails.pending_departures_count + ")";
+                            text = chartDetails.late_checkout_departures_count;
+                        } else if (label === "Pending") {
+                            text = chartDetails.pending_departures_count;
                         }
                         return text;
+                    });
+
+                rightSideLegendEntries.append("span")
+                    .attr("class", "bar-label")
+                    .html(function(label) {
+                        return label;
                     });
 
                 rightSideLegendEntries.style("margin-top", function(legend) {
