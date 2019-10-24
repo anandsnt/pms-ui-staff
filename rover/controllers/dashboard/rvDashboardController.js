@@ -385,6 +385,7 @@ sntRover.controller('RVdashboardController',
             $scope.toggleAnalyticsView = function() {
                 if ($scope.dashboardFilter.analyticsActive) {
                     $scope.dashboardFilter.analyticsActive = false;
+                    $scope.$broadcast('RESET_ANALYTICS_FILTERS');
                 } else {
                     $scope.$broadcast('SHOW_ANALYTICS_DASHBOARD');
                 }
