@@ -64,7 +64,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
             }
         });
 
-        that.fetchRoomStatus().then(function(data) {
+        that.fetchRoomStatus(params).then(function(data) {
             that.roomStatuses = data;
 
             completedRoomsCall = true;
