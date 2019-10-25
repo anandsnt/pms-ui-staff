@@ -278,17 +278,19 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
         };
 
         var constructCiCoActivity = function(date, reservations, foActivity, isToday) {
-            var arrivingReservations = reservations.filter(function(reservation) {
-                return reservation.arrival_date === date;
+            // Arrived reservations
+            var arrivedReservations = reservations.filter(function(reservation) {
+                return reservation.arrival_date === date && reservation.reservation_status !== 'RESERVED';
             });
 
-            var departingReservations = reservations.filter(function(reservation) {
-                return reservation.departure_date === date;
+            // Departed reservations
+            var departedReservations = reservations.filter(function(reservation) {
+                return reservation.departure_date === date && reservation.reservation_status === 'CHECKEDOUT';
             });
 
-            buildCheckinActivity(arrivingReservations, foActivity, isToday);
+            buildCheckinActivity(arrivedReservations, foActivity, isToday);
 
-            buildCheckoutActivity(departingReservations, foActivity, isToday);
+            buildCheckoutActivity(departedReservations, foActivity, isToday);
         };
 
 
