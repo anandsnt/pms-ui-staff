@@ -184,7 +184,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         var dataType = 'rooms';
         var dataLabel = 'AN_ROOMS';
 
-        if (!overview && !isArrivalsManagement) {
+        if (!isArrivalsManagement) {
             var assignedRoomNumbers = activeReservations.filter(function(reservation) {
                 return reservation.reservation_status === 'CHECKEDIN';
             }).map(function(reservation) {
