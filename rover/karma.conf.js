@@ -39,6 +39,7 @@ module.exports = function(config) {
             '../shared/sntCanvasUtil/**/*.js',
             '../shared/sntUtils/app.js',
             '../shared/sntUtils/**/*.js',
+            '../payment/constants/payConfig.js',
             './rvApp.js',
             './rvSntApp.js',
             './rvCacheVaultModule.js',
@@ -57,8 +58,7 @@ module.exports = function(config) {
             '../shared/baseCtrl.js',
             './partials/**/*.html',
             '../shared/directives/restrictMinVal/restrictMinValDir.js',
-            '../shared/lib/js/sortable.js',
-            '../payment/services/sntPaymentSrv.js'
+            '../shared/lib/js/sortable.js'
         ],
 
         // preprocess matching files before serving them to the browser
