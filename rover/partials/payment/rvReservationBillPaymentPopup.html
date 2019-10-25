@@ -61,7 +61,7 @@
                     <li ng-if="!splitBillEnabled && !paymentDetails.feePaid">
                         Amount paid:
                         <span class="value">
-                        <i class="currency">{{currencySymbol}}</i>{{paymentDetails.amount}}</span>
+                        <i class="currency">{{currencySymbol}}</i>{{paymentDetails.amount| number: precisonTwo}}</span>
                     </li>
                 </ul>
             </div>
