@@ -32,7 +32,10 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 		var date = $rootScope.businessDate;
 
 		var renderfdWorkloadChart = function() {
-			rvFrontOfficeAnalyticsSrv.fdWorkload(date).then(function(data) {
+            var hotelCheckinTime = $rootScope.hotelDetails.hotel_checkin_time;
+            var hotelCheckoutTime = $rootScope.hotelDetails.hotel_checkout_time;
+
+			rvFrontOfficeAnalyticsSrv.fdWorkload(date, hotelCheckinTime, hotelCheckoutTime).then(function(data) {
 				var chartDetails = {
 					chartData: data,
 					onBarChartClick: onBarChartClick

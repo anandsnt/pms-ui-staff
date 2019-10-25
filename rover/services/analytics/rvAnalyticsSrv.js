@@ -146,7 +146,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         }).length;
 
         var lateCheckoutCount = departures.filter(function(reservation) {
-            return reservation.reservation_status === 'CHECKEDIN' && isLateCheckout(reservation, hotelCheckoutTime);
+            return reservation.reservation_status === 'CHECKEDIN' && that.isLateCheckout(reservation, hotelCheckoutTime);
         }).length;
 
         var remainingCount = departures.length - lateCheckoutCount - departedCount;
@@ -275,7 +275,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         }).length;
 
         var earlyCheckinCount = arrivals.filter(function(reservation) {
-            return reservation.reservation_status === 'RESERVED' && isEarlyCheckin(reservation, hotelCheckinTime);
+            return reservation.reservation_status === 'RESERVED' && that.isEarlyCheckin(reservation, hotelCheckinTime);
         }).length;
 
         var remainingCount = arrivals.length - perfomedCount - earlyCheckinCount;
@@ -343,7 +343,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
     /*
      * Function to determine if a reservation is early checkin
      */
-    var isEarlyCheckin = function(reservation, hotelCheckinTime) {
+    this.isEarlyCheckin = function(reservation, hotelCheckinTime) {
         var eta = new Date(reservation.eta_hz);
         var hotelStdCheckinTime = new Date(hotelCheckinTime);
 
@@ -358,7 +358,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
     /*
      * Function to determine if a reservation is late checkout
      */
-    var isLateCheckout = function(reservation, hotelCheckoutTime) {
+    this.isLateCheckout = function(reservation, hotelCheckoutTime) {
         var etd = new Date(reservation.etd_hz);
         var hotelStdCheckoutTime = new Date(hotelCheckoutTime);
 
@@ -373,7 +373,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
     /*
      * Function to determine if a reservation is VIP or not
      */
-    var isVip = function(reservation) {
+    this.isVip = function(reservation) {
         return reservation.vip === 't';
     };
 }]);

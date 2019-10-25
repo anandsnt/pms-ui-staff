@@ -69,10 +69,10 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
         /*
          * Front desk workload data
          */
-        this.fdWorkload = function(date) {
+        this.fdWorkload = function(date, hotelCheckinTime, hotelCheckoutTime) {
             var deferred = $q.defer();
 
-            constructFdWorkLoad(deferred, date);
+            constructFdWorkLoad(deferred, date, hotelCheckinTime, hotelCheckoutTime);
             return deferred.promise;
         };
 
@@ -102,7 +102,7 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
         /*
          * Constructing the front desk workload graphs
          */
-        var constructFdWorkLoad = function(deferred, date) {
+        var constructFdWorkLoad = function(deferred, date, hotelCheckinTime, hotelCheckoutTime) {
             var fdWorkLoad = {
                 dashboard_type: 'frontdesk_workload',
                 label: 'AN_WORKLOAD',
@@ -117,7 +117,7 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
                 return reservation.departure_date === date;
             });
 
-            var userActivity = constructUserCiCoActivity(arrivingReservations, departingReservations);
+            var userActivity = constructUserCiCoActivity(arrivingReservations, departingReservations, hotelCheckinTime, hotelCheckoutTime);
 
             var users = Object.keys(userActivity);
 
@@ -152,15 +152,15 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
         /*
          * Construct the users checkin / checkout activity
          */
-        var constructUserCiCoActivity = function(arrivals, departures) {
+        var constructUserCiCoActivity = function(arrivals, departures, hotelCheckinTime, hotelCheckoutTime) {
             var usersActivity = {};
 
             // Calculate the arrivals info
-            constructUserCiActivity(arrivals, userInitData, usersActivity);
+            constructUserCiActivity(arrivals, userInitData, usersActivity, hotelCheckinTime);
 
 
             // Calculate the departues info
-            constructUserCoActivity(departures, userInitData, usersActivity);
+            constructUserCoActivity(departures, userInitData, usersActivity, hotelCheckoutTime);
 
             return usersActivity;
         };
@@ -168,7 +168,7 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
         /*
          * Build the user's checkin reservatons activity
          */
-        var constructUserCiActivity = function(reservations, userInitData, usersActivity) {
+        var constructUserCiActivity = function(reservations, userInitData, usersActivity, hotelCheckinTime) {
             reservations.forEach(function(reservation) {
                 var user = 'REMAINING';
 
@@ -186,7 +186,7 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
 
                 if (rvAnalyticsSrv.isVip(reservation)) {
                     usersActivity[user].vipCheckin = usersActivity[user].vipCheckin + 1;
-                } else if (rvAnalyticsSrv.isEarlyCheckin(reservation)) {
+                } else if (rvAnalyticsSrv.isEarlyCheckin(reservation, hotelCheckinTime)) {
                     usersActivity[user].earlyCheckin = usersActivity[user].earlyCheckin + 1;
                 } else {
                     usersActivity[user].checkin = usersActivity[user].checkin + 1;
@@ -198,7 +198,7 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
         /*
          * Build the user's checkout reservatons activity
          */
-        var constructUserCoActivity = function(reservations, userInitData, usersActivity) {
+        var constructUserCoActivity = function(reservations, userInitData, usersActivity, hotelCheckoutTime) {
             reservations.forEach(function(reservation) {
                 var user = 'REMAINING';
 
@@ -216,7 +216,7 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
 
                 if (rvAnalyticsSrv.isVip(reservation)) {
                     usersActivity[user].vipCheckout = usersActivity[user].vipCheckout + 1;
-                } else if (rvAnalyticsSrv.isLateCheckout(reservation)) {
+                } else if (rvAnalyticsSrv.isLateCheckout(reservation, hotelCheckoutTime)) {
                     usersActivity[user].lateCheckout = usersActivity[user].lateCheckout + 1;
                 } else {
                     usersActivity[user].checkout = usersActivity[user].checkout + 1;
