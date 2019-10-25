@@ -215,7 +215,7 @@ angular.module('sntRover')
                 var rightSideLegendDiv = d3.select("#right-side-legend");
                 var rightSideLegendColor = d3.scaleOrdinal()
                     .range(["#84B652", "#83B450", "#567D30", "#AB2727", "#DC3535"])
-                    .domain(["Early Check in", "Remaining", "Inspected", "Late checkout", "Pending"]);
+                    .domain(["Early Check in", "Remaining", "Inspected", "Pending", "Late checkout"]);
 
                 var setMarginForRightLegends = function(legend) {
                     var yBandwidth = yScale.bandwidth();
@@ -225,7 +225,7 @@ angular.module('sntRover')
                     } else if (legend === "Inspected") {
                         var heightOfTwoLegends = singleLegendHeightPlusMargin * 2;
                         return yBandwidth / 2 - heightOfTwoLegends + yInnerPadding + yBandwidth / 2;
-                    } else if (legend === "Late checkout") {
+                    } else if (legend === "Pending") {
                         return yBandwidth / 2 - singleLegendHeightPlusMargin + yInnerPadding + yBandwidth / 2;
                     } else if (legend === "Pickup") {
                         return 2 * yBandwidth - singleLegendHeightPlusMargin;
