@@ -1006,7 +1006,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         function genParams(report, page, perPage, changeAppliedFilter) {
             var params = {
                 'page': page,
-                'per_page': 25,
+                'per_page': perPage,
                 'fiterFromDate': report.usedFilters && report.usedFilters.from_date ? report.usedFilters.from_date : null,
                 'filterToDate': report.usedFilters && report.usedFilters.to_date ? report.usedFilters.to_date : null
             };

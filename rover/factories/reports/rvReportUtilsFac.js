@@ -1421,10 +1421,6 @@ angular.module('reportsModule')
                 var foundFilter,
                     customData;
 
-                    // _.each(data, function(departmentData) {
-                    //   departmentData.id = departmentData.value;
-                    // });
-
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'INCLUDE_LANGUAGE' });
                     if ( !! foundFilter ) {
