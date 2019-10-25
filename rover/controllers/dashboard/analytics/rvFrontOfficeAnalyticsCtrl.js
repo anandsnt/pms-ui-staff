@@ -67,12 +67,8 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 
 			rvFrontOfficeAnalyticsSrv.fdFoActivity(date).then(function(data) {
 				console.log(JSON.stringify(data));
-				try {
-					d3.select('#analytics-chart').selectAll('svg').remove();
-					$scope.drawFrontOfficeActivity(data);
-				} catch (e) {
-					console.log(e)
-				}
+				d3.select('#analytics-chart').selectAll('svg').remove();
+				$scope.drawFrontOfficeActivity(data);
 			});
 		};
 
@@ -85,6 +81,7 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 
 		var drawChart = function() {
 			clearAllExistingChartElements();
+			$scope.screenData.mainHeading = "";
 			if ($scope.screenData.selectedChart === 'FO_ARRIVALS') {
 				renderFrontOfficeManagementChart();
 			} else if ($scope.screenData.selectedChart === 'FO_WORK_LOAD') {
@@ -108,6 +105,7 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 
 		$scope.$on('ANALYTICS_MENU_CHANGED', function(e, selectedChart){
 			$scope.screenData.selectedChart = selectedChart;
+			clearAllExistingChartElements();
 			drawChart();
 		});
 

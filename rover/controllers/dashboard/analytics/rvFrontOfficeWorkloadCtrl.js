@@ -2,11 +2,19 @@ angular.module('sntRover')
 	.controller('rvFrontOfficeWorkloadCtrl', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvAnalyticsHelperSrv',
 		function($scope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv) {
 
-
 			var colorScheme = d3.scaleOrdinal()
-				.range(["#50762A", "#83B451", "#EAC710", "#DD3636", "#A99113", "#AC2727"])
-				.domain(["early_checkin", "vip_checkin", "vip_checkout", "late_checkout", "checkout", "checkin"]);
+				.range(["#4D9316", "#68D41E", "#9ED474", "#AF2B12", "#E46C68", "#E58874"])
+				.domain(["early_checkin", "vip_checkin", "checkin","vip_checkout", "checkout", "late_checkout"]);
 
+			var cssClassMappings = {
+                "Early Check in": "bar bar-green bar-dark",
+                "Checkin": "bar bar-green bar-light",
+                "VIP checkin": "bar bar-green",
+
+                "VIP checkout": "bar bar-red bar-dark",
+                "Late checkout": "bar bar-red bar-light",
+                "Checkout": "bar bar-red",
+            };
 
 			$scope.drawWorkLoadChart = function(chartDetails) {
 				$scope.screenData.mainHeading = $filter('translate')(chartDetails.chartData.label);
@@ -57,14 +65,14 @@ angular.module('sntRover')
 				// DEBUGING CODE
 				// chartDetails = rvAnalyticsHelperSrv.addRandomNumbersForTesting(chartDetails);
 
+				// sort right side items in ascending order
+				chartDetails.chartData.data = _.sortBy(chartDetails.chartData.data, function(item, index) {
+					return item.type === 'REMAINING' ? 0 : 1;
+				});
+
 				chartDetails.chartData.data.forEach(function(chart) {
 
 					var chartName = chart.type;
-
-					// sort right side items in ascending order
-					chart.contents.right_side = _.sortBy(chart.contents.right_side, function(item) {
-						return item.count;
-					});
 
 					// Let count be 10, 25, 35 - based on calculation below the following will the calculated values
 					// item 1 = { xOrigin : 0  , xFinal : 10 }
@@ -261,8 +269,8 @@ angular.module('sntRover')
 				var rightSideLegendDiv = d3.select("#right-side-legend")
 					.style("margin-top", yScale.bandwidth());
 				var rightSideLegendColor = d3.scaleOrdinal()
-					.range(["#50762A", "#83B451", "#EAC710", "#DD3636", "#A99113", "#AC2727"])
-					.domain(["Early Check in", "VIP checkin", "VIP checkout", "Late checkout", "Checkout", "Checkin"]);
+					.range(["#50762A", "#83B451","#AC2727", "#EAC710", "#A99113", "#DD3636"])
+					.domain(["Early Check in", "VIP checkin", "Checkin", "VIP checkout", "Checkout", "Late checkout"]);
 
 				var rightSideLegendEntries = rightSideLegendDiv.selectAll("dd")
 					.data(rightSideLegendColor.domain().slice())
@@ -270,18 +278,25 @@ angular.module('sntRover')
 					.append("dd")
 					.attr("class", "legend-item")
 					.attr("id", function(item) {
-						return "left-legend-" + item.toLowerCase();
+						return "right-legend-" + item.toLowerCase();
 					});
 
 				rightSideLegendEntries.append("span")
-					.attr("class", "rect")
-					.style("background-color", rightSideLegendColor);
+					.attr("class", function(label) {
+                        return cssClassMappings[label];
+                    });
 
 				rightSideLegendEntries.append("span")
-					.attr("class", "rect-label")
+					.attr("class", "bar-label")
 					.html(function(label) {
 						return label;
 					});
+
+				var legendMarginTop = (height - margin.top) / 2 + "px";
+
+				$('#right-side-legend').css({
+					"margin-top": legendMarginTop
+				});
 			};
 		}
 	]);
