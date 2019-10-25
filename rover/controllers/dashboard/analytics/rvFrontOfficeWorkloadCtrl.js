@@ -113,16 +113,16 @@ angular.module('sntRover')
 					return chart.type;
 				}));
 
-				var setFontSizeBasedOnNumberOfRows = function() {
+				var setFontSizeBasedOnNumberOfRows = function(isBarText) {
 					var totalRowsPresent = chartDetails.chartData.data.length;
 					var fontSize;
 
 					if (totalRowsPresent > 20) {
-						fontSize = "6px";
+						fontSize = isBarText ? "0px" :"10px";
 					} else if (totalRowsPresent > 15) {
-						fontSize = "8px";
+						fontSize = isBarText ? "8px" :"12px";
 					} else {
-						fontSize = "10px";
+						fontSize = isBarText ? "10px" :"13px";
 					}
 
 					return fontSize;
@@ -204,13 +204,13 @@ angular.module('sntRover')
 						return isSmallBarItem(item) && item.xOrigin < 0 ? "-0.5em" : "0em";
 					})
 					.style("font-size", function(item) {
-						var fontSize = setFontSizeBasedOnNumberOfRows();
+						var fontSize = setFontSizeBasedOnNumberOfRows(true);
 
-						return isSmallBarItem(item) ? "10px" : fontSize;
+						return isSmallBarItem(item) ? "0px" : fontSize;
 					})
 					.style("text-anchor", "middle")
 					.text(function(item) {
-						return item.count !== 0 ? item.count : '';
+						return item.count !== 0  || chartDetails.chartData.data.length < 15 ? item.count : '';
 					});
 
 				// Draw horizontal line on top of REMAINING
