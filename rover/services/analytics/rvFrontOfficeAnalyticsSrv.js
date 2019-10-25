@@ -184,9 +184,9 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
                     usersActivity[user] = $.extend({}, userInitData);
                 }
 
-                if (isVip(reservation)) {
+                if (rvAnalyticsSrv.isVip(reservation)) {
                     usersActivity[user].vipCheckin = usersActivity[user].vipCheckin + 1;
-                } else if (isEarlyCheckin(reservation)) {
+                } else if (rvAnalyticsSrv.isEarlyCheckin(reservation)) {
                     usersActivity[user].earlyCheckin = usersActivity[user].earlyCheckin + 1;
                 } else {
                     usersActivity[user].checkin = usersActivity[user].checkin + 1;
@@ -214,9 +214,9 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
                     usersActivity[user] = $.extend({}, userInitData);
                 }
 
-                if (isVip(reservation)) {
+                if (rvAnalyticsSrv.isVip(reservation)) {
                     usersActivity[user].vipCheckout = usersActivity[user].vipCheckout + 1;
-                } else if (isLateCheckout(reservation)) {
+                } else if (rvAnalyticsSrv.isLateCheckout(reservation)) {
                     usersActivity[user].lateCheckout = usersActivity[user].lateCheckout + 1;
                 } else {
                     usersActivity[user].checkout = usersActivity[user].checkout + 1;
@@ -302,9 +302,9 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
                 }
                 var hourActivity = foActivity.data[moment(reservation.eta_hz).format('h A')];
 
-                if (isVip(reservation)) {
+                if (rvAnalyticsSrv.isVip(reservation)) {
                     hourActivity[dayKey].vipCheckin = hourActivity[dayKey].vipCheckin + 1;
-                } else if (isLateCheckout(reservation)) {
+                } else if (rvAnalyticsSrv.isLateCheckout(reservation)) {
                     hourActivity[dayKey].earlyCheckin = hourActivity[dayKey].earlyCheckin + 1;
                 } else {
                     hourActivity[dayKey].checkin = hourActivity[dayKey].checkin + 1;
@@ -323,9 +323,9 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
                 }
                 var hourActivity = foActivity.data[moment(reservation.etd_hz).format('h A')];
 
-                if (isVip(reservation)) {
+                if (rvAnalyticsSrv.isVip(reservation)) {
                     hourActivity[dayKey].vipCheckout = hourActivity[dayKey].vipCheckout + 1;
-                } else if (isLateCheckout(reservation)) {
+                } else if (rvAnalyticsSrv.isLateCheckout(reservation)) {
                     hourActivity[dayKey].lateCheckout = hourActivity[dayKey].lateCheckout + 1;
                 } else {
                     hourActivity[dayKey].checkout = hourActivity[dayKey].checkout + 1;
@@ -345,27 +345,6 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
                     yesterday: $.extend({}, userInitData)
                 };
             }
-        };
-
-        /*
-         * Function to determine if a reservation is early checkin
-         */
-        var isEarlyCheckin = function(reservation) {
-            return false;
-        };
-
-        /*
-         * Function to determine if a reservation is late checkout
-         */
-        var isLateCheckout = function(reservation) {
-            return false;
-        };
-
-        /*
-         * Function to determine if a reservation is VIP or not
-         */
-        var isVip = function(reservation) {
-            return reservation.vip === 't';
         };
     }
 ]);

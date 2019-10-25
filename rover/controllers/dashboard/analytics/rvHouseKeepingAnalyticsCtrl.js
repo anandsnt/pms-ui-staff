@@ -8,7 +8,7 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 
 		BaseCtrl.call(this, $scope);
 		$scope.screenData = {
-			selectedChart : 'OVERVIEW'
+			selectedChart : 'HK_OVERVIEW'
 		};
 
 		$controller('rvHKOverviewAnalticsCtrl', {
@@ -25,8 +25,9 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 		var date = $rootScope.businessDate;
 
 		var renderHkOverview = function() {
+			$scope.screenData.mainHeading = "";
             // Calling HK Overview Build Graph
-			rvAnalyticsSrv.hkOverview(date).then(function(data) {
+			rvAnalyticsSrv.hkOverview($scope.dashboardFilter.datePicked).then(function(data) {
 				console.log(data);
 				var chartDetails = {
 					chartData: data,
@@ -39,9 +40,13 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
         };
 
 		var renderHkWorkPriority = function() {
+		    var hotelCheckinTime = $rootScope.hotelDetails.hotel_checkin_time;
+		    var hotelCheckoutTime = $rootScope.hotelDetails.hotel_checkout_time;
+
+			$scope.screenData.mainHeading = "";
 			// Calling HK Overview Build Graph
-			rvAnalyticsSrv.hkWorkPriority(date).then(function(data) {
-				console.log(data);
+			rvAnalyticsSrv.hkWorkPriority($scope.dashboardFilter.datePicked, hotelCheckinTime, hotelCheckoutTime).then(function(data) {
+
 				var chartDetails = {
 					chartData: data,
 					onBarChartClick: onBarChartClick
@@ -55,18 +60,15 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 
 		var clearAllExistingChartElements = function() {
 			document.getElementById("left-side-legend").innerHTML = "";
-			document.getElementById("analytics-chart").innerHTML = "";
 			document.getElementById("right-side-legend").innerHTML = "";
+			document.getElementById("analytics-chart").innerHTML = "";
 		};
 
-		$scope.changeChart = function() {
-			clearAllExistingChartElements();
-			if ($scope.screenData.selectedChart === 'OVERVIEW') {
-				$scope.screenData.selectedChart = 'WORK_PRIORITY';
-				renderHkWorkPriority();
-			} else {
-				$scope.screenData.selectedChart = 'OVERVIEW';
+		var drawChart = function() {
+			if ($scope.screenData.selectedChart === 'HK_OVERVIEW') {
 				renderHkOverview();
+			} else {
+				renderHkWorkPriority();
 			}
 		};
 
@@ -77,11 +79,7 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 					d3.select('#analytics-chart').selectAll('svg').remove();
 					clearAllExistingChartElements();
 					// Redraw chart
-					if ($scope.screenData.selectedChart === 'OVERVIEW') {
-						renderHkOverview();
-					} else {
-						renderHkWorkPriority();
-					}
+					drawChart();
 				}, 0);
 			});
 		});
@@ -90,17 +88,43 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 			$(window).off("resize.doResize");
 		});
 
-		(function() {
+		$scope.$on('ANALYTICS_MENU_CHANGED', function(e, selectedChart){
+			$scope.screenData.selectedChart = selectedChart;
+			clearAllExistingChartElements();
+			drawChart();
+		});
 
+
+		var fetchData = function (date, roomTypeId) {
+			var params = {
+				"date": date,
+				"room_type_id": roomTypeId
+			};
 			var options = {
-				params: $rootScope.businessDate,
+				params: params,
 				successCallBack: function() {
-                    renderHkOverview();
+					clearAllExistingChartElements();
+                    drawChart();
                 }
 			};
 
 			$scope.callAPI(rvAnalyticsSrv.initRoomAndReservationApis, options);
+		};
 
+
+		$scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER', function(e, filter) {
+			fetchData(filter.date, filter.room_type_id);
+		});
+
+		$scope.$on('RESET_ANALYTICS_FILTERS', function (){
+			$scope.dashboardFilter.datePicked = $rootScope.businessDate;
+			$scope.dashboardFilter.selectedRoomTypeId = "";
+			$scope.dashboardFilter.selectedAnalyticsMenu = "HK_OVERVIEW";
+			$scope.screenData.selectedChart = "HK_OVERVIEW";
+		});
+
+		(function() {
+			fetchData($scope.dashboardFilter.datePicked, $scope.dashboardFilter.selectedRoomTypeId)
 		})();
 	}
 ]);
