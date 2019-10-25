@@ -385,8 +385,19 @@ sntRover.controller('RVdashboardController',
             $scope.toggleAnalyticsView = function() {
                 if ($scope.dashboardFilter.analyticsActive) {
                     $scope.dashboardFilter.analyticsActive = false;
+                    $scope.$broadcast('RESET_ANALYTICS_FILTERS');
                 } else {
                     $scope.$broadcast('SHOW_ANALYTICS_DASHBOARD');
                 }
             };
+
+            $scope.changeAnalyticsView = function (selectedChart) {
+                $scope.dashboardFilter.selectedAnalyticsMenu = selectedChart;
+                $scope.$broadcast('ANALYTICS_MENU_CHANGED', selectedChart);
+            };
+
+            $scope.$on('SET_DEFAULT_ANALYTICS_MENU', function(e, selectedChart) {
+                $scope.dashboardFilter.selectedAnalyticsMenu = selectedChart;
+            });
+
         }]);

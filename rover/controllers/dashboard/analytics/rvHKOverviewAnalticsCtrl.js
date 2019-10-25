@@ -3,7 +3,8 @@ angular.module('sntRover')
         function($scope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv) {
 
             var arrivalsColorScheme = d3.scaleOrdinal()
-                .range(["#B5D398", "#84B652", "#B7D599"])
+                // .range(["#B5D398", "#84B652", "#B7D599"])
+                .range(['#98D371', '#84B652'])
                 .domain(["perfomed", "remaining"]);
 
             var vacantColorScheme = d3.scaleOrdinal()
@@ -11,15 +12,18 @@ angular.module('sntRover')
                 .domain(["dirty", "pickup", "clean"]);
 
             var departuresColorScheme = d3.scaleOrdinal()
-                .range(["#DBA1A2", "#E13939"])
+                // .range(["#DBA1A2", "#E13939"])
+                .range(['#E57F70', '#E42012'])
                 .domain(["perfomed", "pending"]);
 
             var stayoversColorScheme = d3.scaleOrdinal()
-                .range(["#BBE0ED", "#7FBED7"])
+                // .range(["#BBE0ED", "#7FBED7"])
+                .range(["#C7DCE5", "#7FBED7"])
                 .domain(["perfomed", "remaining"]);
 
             var roomsColorScheme = d3.scaleOrdinal()
-                .range(["#84B652", "#557B30", "#EA9219", "#DF3635"])
+                // .range(["#84B652", "#557B30", "#EA9219", "#DF3635"])
+                .range(["#6DD420", "#408B10", "#FF920F", "#E44B1C"])
                 .domain(["clean", "inspected", "pickup", "dirty"]);
 
             var colorScheme = {
@@ -31,16 +35,19 @@ angular.module('sntRover')
             };
 
             var cssClassMappings = {
-                arrivals_perfomed: "bar bar-green bar-dark",
-                arrivals_remaining: "bar bar-green bar-light",
-                departures_perfomed: "bar bar-red bar-dark",
-                departures_remaining: "bar bar-red bar-light",
-                stayovers_perfomed: "bar bar-blue bar-dark",
-                stayovers_remaining: "bar bar-blue bar-light",
-                rooms_clean: "bar bar-green bar-light",
-                rooms_inspected: "bar bar-green bar-dark",
-                rooms_pickup: "bar bar-orange bar-dark",
-                rooms_dirty: "bar bar-red bar-dark"
+                "Checked In": "bar bar-green bar-light",
+                "Arrivals": "bar bar-green",
+
+                "Checked Out": "bar bar-red bar-light",
+                "Departures": "bar bar-red",
+
+                "Stays Clean": "bar bar-blue bar-light",
+                "Stays Dirty": "bar bar-blue",
+
+                "Clean": "bar bar-green",
+                "Inspected": "bar bar-green bar-dark",
+                "Dirty": "bar bar-red",
+                "Pickup": "bar bar-orange"
             };
 
             $scope.drawHkOverviewChart = function(chartDetails) {
@@ -123,7 +130,7 @@ angular.module('sntRover')
                     chartDetails: chartDetails,
                     colorScheme: colorScheme,
                     maxValue: maxValueInBotheDirections,
-                    cssClassMappings: cssClassMappings,
+                    // cssClassMappings: cssClassMappings,
                     onBarChartClick: chartDetails.onBarChartClick
                 };
 
@@ -151,7 +158,7 @@ angular.module('sntRover')
                 var firstLineHeight1 = yScale.bandwidth() * 4.5;
 
                 svg.append("line") // attach a line
-                    .style("stroke", "#000000") // colour the line
+                    .style("stroke", "#B1B1B1") // colour the line
                     .style("stroke-width", "2px")
                     .attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
                     .attr("y1", firstLineHeight1) // y position of the first end of the line
@@ -196,43 +203,53 @@ angular.module('sntRover')
                     });
 
                 leftSideLegendEntries.append("span")
-                    .attr("class", "rect")
-                    .style("background-color", leftSideLegendColor);
-
-                leftSideLegendEntries.append("span")
-                    .attr("class", "rect-label")
+                    .attr("class", function(label) {
+                        return cssClassMappings[label];
+                    })
                     .html(function(label) {
                         var text;
 
                         if (label === "Checked In") {
-                            text = label + " (" + chartDetails.perfomed_arrivals_count + ")";
+                            text = chartDetails.perfomed_arrivals_count;
                         } else if (label === "Checked Out") {
-                            text = label + " (" + chartDetails.perfomed_departures_count + ")";
+                            text = chartDetails.perfomed_departures_count;
                         } else if (label === "Stays Clean") {
-                            text = label + " (" + chartDetails.perfomed_stayovers_count + ")";
+                            text = chartDetails.perfomed_stayovers_count;
                         } else if (label === "Clean") {
-                            text = label + " (" + chartDetails.clean_rooms_count + ")";
+                            text = chartDetails.clean_rooms_count;
                         } else if (label === "Inspected") {
-                            text = label + " (" + chartDetails.inspected_rooms_count + ")";
+                            text = chartDetails.inspected_rooms_count;
                         }
                         return text;
                     });
+                // .style("background-color", leftSideLegendColor);
 
-                svg.append("text")
-                    .attr("x", xScale(-1*maxValueInBotheDirections / 2))
-                    .attr("y", height + 20)
-                    .attr("dy", ".35em")
-                    .style("font-size", "20px")
-                    .style("font-style", "italic")
-                    .text("DONE");
+                leftSideLegendEntries.append("span")
+                    .attr("class", "bar-label")
+                    .html(function(label) {
+                        return label;
+                    });
 
-                svg.append("text")
-                    .attr("x", xScale(maxValueInBotheDirections / 2))
-                    .attr("y", height + 20)
-                    .attr("dy", ".35em")
-                    .style("font-size", "20px")
-                    .style("font-style", "italic")
-                    .text("REMAINING");
+                if (maxValueInBotheDirections > 0) {
+                    svg.append("text")
+                        .attr("x", xScale(-1 * maxValueInBotheDirections / 2))
+                        .attr("y", -20)
+                        .attr("dy", ".35em")
+                        .style("font-size", "20px")
+                        .style("font-style", "italic")
+                        .style("fill", "#B1B1B1")
+                        .text("PERFOMED");
+
+                    svg.append("text")
+                        .attr("x", xScale(maxValueInBotheDirections / 2))
+                        .attr("y", -20)
+                        .attr("dy", ".35em")
+                        .style("font-size", "20px")
+                        .style("font-style", "italic")
+                        .style("fill", "#B1B1B1")
+                        .text("REMAINING");
+                }
+               
 
                 // TODO: For now lets assume all legends are of same height. So we will take one and use as reference.
                 var singleLegendHeightPlusMargin = $("#left-legend-checked-in").height() + 10;
@@ -268,26 +285,30 @@ angular.module('sntRover')
                     });
 
                 rightSideLegendEntries.append("span")
-                    .attr("class", "rect")
-                    .style("background-color", rightSideLegendColor);
-
-                rightSideLegendEntries.append("span")
-                    .attr("class", "rect-label")
+                    .attr("class", function(label) {
+                        return cssClassMappings[label];
+                    })
                     .html(function(label) {
                         var text;
 
                         if (label === "Arrivals") {
-                            text = label + " (" + chartDetails.remaining_arrivals_count + ")";
+                            text = chartDetails.remaining_arrivals_count;
                         } else if (label === "Departures") {
-                            text = label + " (" + chartDetails.pending_departures_count + ")";
+                            text = chartDetails.pending_departures_count;
                         } else if (label === "Stays Dirty") {
-                            text = label + " (" + chartDetails.remaining_stayovers_count + ")";
+                            text = chartDetails.remaining_stayovers_count;
                         } else if (label === "Pickup") {
-                            text = label + " (" + chartDetails.pickup_rooms_count + ")";
+                            text = chartDetails.pickup_rooms_count;
                         } else if (label === "Dirty") {
-                            text = label + " (" + chartDetails.dirty_rooms_count + ")";
+                            text = chartDetails.dirty_rooms_count;
                         }
                         return text;
+                    });
+
+                rightSideLegendEntries.append("span")
+                    .attr("class", "bar-label")
+                    .html(function(label) {
+                        return label;
                     });
 
                 rightSideLegendEntries.style("margin-top", function(legend) {
