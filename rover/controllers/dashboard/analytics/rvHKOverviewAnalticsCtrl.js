@@ -23,7 +23,7 @@ angular.module('sntRover')
 
             var roomsColorScheme = d3.scaleOrdinal()
                 // .range(["#84B652", "#557B30", "#EA9219", "#DF3635"])
-                .range(["#3B890F", "#5D9C1B", "#FFA716", "#E62A13"])
+                .range(["#60D318","#3B890F", "#FFA716", "#E62A13"])
                 .domain(["clean", "inspected", "pickup", "dirty"]);
 
             var colorScheme = {
