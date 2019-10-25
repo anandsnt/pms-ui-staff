@@ -163,6 +163,12 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
             }
         };
 
+        departues.contents.right_side.push({
+            type: 'pending',
+            count: remainingCount,
+            label: 'AN_PENDING'
+        });
+
         if (!overview) {
             departues.contents.right_side.push({
                 type: 'late_checkout',
@@ -171,11 +177,6 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
             });
         }
 
-        departues.contents.right_side.push({
-            type: 'pending',
-            count: remainingCount,
-            label: 'AN_PENDING'
-        });
         return departues;
     };
 
@@ -194,8 +195,10 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
             rooms = rooms.filter(function(room) {
                 return !assignedRoomNumbers.includes(room.room_number);
             });
-            dataType = 'vacant';
-            dataLabel = 'AN_VACANT';
+            if (!overview) {
+                dataType = 'vacant';
+                dataLabel = 'AN_VACANT';
+            }
         }
 
         var inspectedCount = rooms.filter(function(room) {
