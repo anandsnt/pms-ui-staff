@@ -37,7 +37,7 @@ describe('Filter: sntCurrency', function() {
 		it ('with Invalid Input', function() {
 			input = '123.45.6';
 			result = $filter('sntCurrency')(input, that);
-			expect(result).toBe(undefined);
+			expect(result).toBe('$');
 		});
 	});
 
@@ -70,7 +70,7 @@ describe('Filter: sntCurrency', function() {
 		it ('with Invalid Input', function() {
 			input = 'abcd';
 			result = $filter('sntCurrency')(input, that);
-			expect(result).toBe(undefined);
+			expect(result).toBe('$');
 		});
 	});
 
@@ -103,7 +103,7 @@ describe('Filter: sntCurrency', function() {
 		it ('with Invalid Input', function() {
 			input = '123+45.6';
 			result = $filter('sntCurrency')(input, that);
-			expect(result).toBe(undefined);
+			expect(result).toBe('$');
 		});
 	});
 
@@ -136,13 +136,14 @@ describe('Filter: sntCurrency', function() {
 		it ('with Invalid data', function() {
 			input = '12,345.60';
 			result = $filter('sntCurrency')(input, that);
-			expect(result).toBe(undefined);
+			expect(result).toBe('$');
 		});
 	});
 
 	it ('Test isWithoutSymbol = true and currencyFormat = 1,222,00 ', function() {
 
 		var input = 1234567890.12345,
+			customCurrency = 'kr',
 			isWithoutSymbol = true,
 			result = '',
 			that = {
@@ -150,12 +151,29 @@ describe('Filter: sntCurrency', function() {
 				currencyFormat: '1,222,00'
 			};
 
-		result = $filter('sntCurrency')(input, that, isWithoutSymbol);
+		result = $filter('sntCurrency')(input, that, null, isWithoutSymbol);
 
 		expect(result).toBe('1,234,567,890,12');
 	});
 
 	it ('Test isWithoutSymbol = true and currencyFormat = 1,222,00 and precision = 3 ', function() {
+
+		var input = 1234567890.12345,
+			customCurrency = 'kr',
+			isWithoutSymbol = true,
+			precision = 3,
+			result = '',
+			that = {
+				currencySymbol: '$',
+				currencyFormat: '1,222,00'
+			};
+
+		result = $filter('sntCurrency')(input, that, null, isWithoutSymbol, precision);
+
+		expect(result).toBe('1,234,567,890,123');
+	});
+
+	it ('Test customCurrency = null and isWithoutSymbol = null and currencyFormat = 1,222,00 and precision = 3 ', function() {
 
 		var input = 1234567890.12345,
 			isWithoutSymbol = true,
@@ -166,9 +184,26 @@ describe('Filter: sntCurrency', function() {
 				currencyFormat: '1,222,00'
 			};
 
-		result = $filter('sntCurrency')(input, that, isWithoutSymbol, precision);
+		result = $filter('sntCurrency')(input, that, null, null, precision);
+		
+		expect(result).toBe('<span class="currency">$</span> 1,234,567,890,123');
+	});
 
-		expect(result).toBe('1,234,567,890,123');
+	it ('Test customCurrency = "kr" and currencyFormat = 1,222,00', function() {
+
+		var input = 1234567890.12345,
+			customCurrency = 'kr',
+			isWithoutSymbol = true,
+			precision = 3,
+			result = '',
+			that = {
+				currencySymbol: '$',
+				currencyFormat: '1,222,00'
+			};
+
+		result = $filter('sntCurrency')(input, that, customCurrency);
+		
+		expect(result).toBe('<span class="currency">kr</span> 1,234,567,890,12');
 	});
 });
 

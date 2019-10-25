@@ -1,13 +1,15 @@
 angular.module('sntCurrencyFilter', []).filter('sntCurrency', function() {
-	return function(input, scope, isWithoutSymbol, precision) {
+	return function(input, scope, customCurrencySymbol, isWithoutSymbol, precision) {
 
 		var DEFAULT_PRECISION = 2;
 
 		if (typeof input !== 'undefined' && scope) {
+			// If passing custom currency (eg: rate currency).
+			var currencySymbol = customCurrencySymbol ? customCurrencySymbol : scope.currencySymbol;
 
 			if (isNaN(input)) {
 				console.warn("sntCurrency exception :: Invalid input - ", input);
-				return;
+				return currencySymbol;
 			}
 			else if (typeof input !== 'string') {
 				input = input.toString();
@@ -15,9 +17,9 @@ angular.module('sntCurrencyFilter', []).filter('sntCurrency', function() {
 
 			var paramObj = {
 				input: input,
-				symbol: scope.currencySymbol,
+				symbol: currencySymbol,
 				isWithoutSymbol: !!isWithoutSymbol,
-				precision: typeof precision === 'undefined' ? DEFAULT_PRECISION : precision
+				precision: precision ? precision : DEFAULT_PRECISION
 			};
 
 			switch (scope.currencyFormat) {
