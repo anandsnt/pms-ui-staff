@@ -1,14 +1,14 @@
 <!-- Report content -->
-    <div id="report-content" class="report-content grid scrollable"> <!-- Add class "with-pagination" if pagination is shown -->
+    <div id="report-content" class="report-content grid scrollable" ng-iscroll="report-details-scroll"> <!-- Add class "with-pagination" if pagination is shown -->
         <div class="wrapper">
             <table class="invoice-tax-reports">
                 <thead>
                     <tr>
-                        <th><span class="sort sorting-asc">Room</span></th>
-                        <th><span>Folio No.</span></th>
-                        <th><span>Guest/Account Name</span></th>
-                        <th><span>Tax ID</span></th>
-                        <th><span>Tax</span></th>
+                        <th><span class="sort sorting-asc">{{results.translated_headers.room}}</span></th>
+                        <th><span>{{results.translated_headers.folio_number}}</span></th>
+                        <th><span>{{results.translated_headers.guest_name}}/{{results.translated_headers.account_name}}</span></th>
+                        <th><span>{{results.translated_headers.tax_id}}</span></th>
+                        <th><span>{{results.translated_headers.tax}}</span></th>
                     </tr>
                 </thead>
                 <tfoot>
@@ -25,7 +25,7 @@
                     </tr>
                 </tfoot>
                 <tbody>
-                    <tr ng-repeat="eachRow in results">
+                    <tr ng-repeat="eachRow in results.bill_results">
                         <td>{{eachRow.room_number}}</td>
                         <td>{{eachRow.folio_number}}</td>
                         <td>{{eachRow.guest_or_account_name}}</td>
@@ -34,19 +34,20 @@
                             <table>
                                 <thead>
                                     <tr>
-                                        <td><strong>Charge Code</strong></td>
-                                        <td><strong>Gross</strong></td>
-                                        <td><strong>Net</strong></td>
+                                        <td><strong>{{results.translated_headers.charge_code}}</strong></td>
+                                        <td><strong>{{results.translated_headers.gross}}</strong></td>
+                                        <td><strong>{{results.translated_headers.net}}</strong></td>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="taxRow in eachRow.tax_groups">
-                                        <td>{{taxRow.tax_charge_code}}</td>
+                                        <td>{{taxRow.charge_code_value}}</td>
                                         <td>
-                                            <span class="currency">{{currencySymbol}}</span>{{taxRow.gross_amount}}
+                                            <span ng-bind-html="taxRow.gross_amount | sntCurrency:this">                                          
                                         </td>
                                         <td>
-                                            <span class="currency">{{currencySymbol}}</span>{{taxRow.net_amount}}
+                                            <span ng-bind-html="taxRow.net_amount | sntCurrency:this">         
+                                            
                                         </td>
                                     </tr>
                                     
@@ -54,8 +55,7 @@
                             </table>
                         </td>
                     </tr>
-
-                    <tr class="totals">
+                    <tr class="totals" ng-if="paginationConfig.totalPages === paginationConfig.currentPage">
                         <td colspan="4">
                             <strong>Totals</strong>
                         </td>
@@ -63,19 +63,21 @@
                             <table>
                                 <thead>
                                     <tr>
-                                        <td><strong>Charge Code</strong></td>
-                                        <td><strong>Gross</strong></td>
-                                        <td><strong>Net</strong></td>
+                                        <td><strong>{{results.translated_headers.charge_code}}</strong></td>
+                                        <td><strong>{{results.translated_headers.gross}}</strong></td>
+                                        <td><strong>{{results.translated_headers.net}}</strong></td>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="taxTotalRow in totals">
-                                        <td>{{taxTotalRow.tax_charge_code}}</td>
+                                        <td>{{taxTotalRow.charge_code_value}}</td>
                                         <td>
-                                            <span class="currency">{{currencySymbol}}</span>{{taxTotalRow.total_gross_amount}}
+                                             <span ng-bind-html="taxTotalRow.total_gross_amount | sntCurrency:this">
+                                           
                                         </td>
                                         <td>
-                                            <span class="currency">{{currencySymbol}}</span>{{taxTotalRow.total_net_amount}}
+                                            <span ng-bind-html="taxTotalRow.total_net_amount | sntCurrency:this">     
+                                           
                                         </td>
                                     </tr>
                                     
@@ -85,5 +87,6 @@
                     </tr>
                 </tbody>
             </table>          
-        </div>
+        </div>        
     </div>
+    <rv-pagination  page-options="paginationConfig" page-data="totalCount"></rv-pagination>

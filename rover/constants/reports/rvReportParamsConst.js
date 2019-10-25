@@ -20,7 +20,7 @@ angular.module('reportsModule')
 
         'FROM_TIME': 'from_time',
         'TO_TIME': 'to_time',
-        'SELECTED_LANGUAGE': 'language_id',
+        'SELECTED_LANGUAGE': 'locale',
         'SORT_FIELD': 'sort_field',
         'SORT_DIR': 'sort_dir',
 

@@ -1006,7 +1006,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         function genParams(report, page, perPage, changeAppliedFilter) {
             var params = {
                 'page': page,
-                'per_page': perPage,
+                'per_page': 25,
                 'fiterFromDate': report.usedFilters && report.usedFilters.from_date ? report.usedFilters.from_date : null,
                 'filterToDate': report.usedFilters && report.usedFilters.to_date ? report.usedFilters.to_date : null
             };
@@ -1319,7 +1319,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             // include VAT year
             if ( report.hasLanguages ) {
                 key         = reportParams['SELECTED_LANGUAGE'];
-                params[key] = report.chosenLanguage;
+                params[key] = report.locale;
 
                 if ( changeAppliedFilter ) {
                     $scope.appliedFilter['selected_language'] = report.language;
