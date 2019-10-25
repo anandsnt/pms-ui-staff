@@ -601,6 +601,15 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
+        service.fetchLanguages = function() {
+            return callApi({
+                name: 'languages',
+                method: 'getJSON',
+                url: 'api/guest_languages',
+                resKey: 'languages'
+            });
+        };        
+
         service.getChargeCodes = function(params) {
             return callApi({
                 method: 'getJSON',

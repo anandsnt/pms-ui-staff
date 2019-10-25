@@ -229,7 +229,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             item_54: false,
             item_55: false,
             item_56: false,
-            item_57: false
+            item_57: false,
+            item_58: false
         };
         $scope.toggleFilterItems = function (item) {
             if (!$scope.filterItemsToggle.hasOwnProperty(item)) {
@@ -1313,6 +1314,16 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 }
             }
 
+            // include VAT year
+            if ( report.hasLanguages ) {
+                key         = reportParams['SELECTED_LANGUAGE'];
+                params[key] = report.locale;
+
+                if ( changeAppliedFilter ) {
+                    $scope.appliedFilter['selected_language'] = report.language;
+                }
+            }
+
              // include VAT year
             if ( report.hasVatYear ) {
                 key         = reportParams['VAT_YEAR'];
@@ -1877,7 +1888,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                         $scope.appliedFilter.assigned_departments = ['All Departments'];
                     }
                 }
-            }
+            }                        
 
             // include travel agents
             if (report.hasOwnProperty('hasTravelAgentsSearch')) {
@@ -2308,7 +2319,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 if (chosenReport.title === reportNames['TAX_EXEMPT']) {
                     // Response modified to handle the different tax exempt types in each date
                     response = responseForTaxExempt(response);
-                }
+                }               
 
                 $scope.totals = response.totals || [];
                 $scope.headers = response.headers || [];
