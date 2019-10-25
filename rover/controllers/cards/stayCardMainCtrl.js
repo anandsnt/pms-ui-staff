@@ -933,6 +933,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				$scope.searchData.companyCard.companyName = "";
 				$scope.searchData.companyCard.companyCity = "";
 				$scope.searchData.companyCard.companyCorpId = "";
+				$scope.searchData.companyCard.contractAccessCode = "";
 				$scope.showContractedRates({
 					companyCard: cardData.id,
 					travelAgent: $scope.reservationDetails.travelAgent.id
@@ -946,6 +947,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				$scope.searchData.travelAgentCard.travelAgentName = "";
 				$scope.searchData.travelAgentCard.travelAgentCity = "";
 				$scope.searchData.travelAgentCard.travelAgentIATA = "";
+				$scope.searchData.travelAgentCard.contractAccessCode = "";
 				$scope.showContractedRates({
 					companyCard: $scope.reservationData.company.id,
 					travelAgent: cardData.id
