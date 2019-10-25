@@ -764,6 +764,10 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             } else {
                 $scope.scheduleParams.scheduleEndsOn = 'NEVER';
             }
+
+            var businessDateMinusOne = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
+                .format($rootScope.momentFormatForAPI);
+                
             /*
              * Export Calender Options
              * max date is business date
@@ -775,9 +779,6 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 }
             }, datePickerCommon);
             $scope.scheduleParams.from_date = (exportDate === null) ? null : reportUtils.processDate(exportDate).today;
-
-            var businessDateMinusOne = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
-                .format($rootScope.momentFormatForAPI);
 
             $scope.exportCalenderToOptions = angular.extend({
                 maxDate: tzIndependentDate($rootScope.businessDate),
