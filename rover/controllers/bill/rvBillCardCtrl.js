@@ -2670,6 +2670,7 @@ sntRover.controller('RVbillCardController',
 		// remove the orientation after similar delay
 		removePrintOrientation();
 		$scope.printBillCardActive = false;
+		$scope.printGroupProfomaActive = false;
 		$("body #loading").html('<div id="loading-spinner" ></div>');// CICO-56119
 		$scope.reloadCurrentActiveBill();
 	};
@@ -2702,6 +2703,10 @@ sntRover.controller('RVbillCardController',
 					$scope.printBillCardActive = true;
 					$scope.$emit('hideLoader');
 
+					if (successData.is_group && successData.is_proforma_invoice) {
+						$scope.printBillCardActive = false;
+						$scope.printGroupProfomaActive = true;
+					}
 
 					if ($scope.billFormat.isInformationalInvoice) {
 						successData.invoiceLabel = successData.translation.information_invoice;
