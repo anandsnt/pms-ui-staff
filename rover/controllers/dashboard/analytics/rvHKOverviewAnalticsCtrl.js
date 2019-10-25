@@ -4,7 +4,7 @@ angular.module('sntRover')
 
             var arrivalsColorScheme = d3.scaleOrdinal()
                 // .range(["#B5D398", "#84B652", "#B7D599"])
-                .range(['#98D371', '#84B652'])
+                .range(['#ADD87E', '#81D828'])
                 .domain(["perfomed", "remaining"]);
 
             var vacantColorScheme = d3.scaleOrdinal()
@@ -13,17 +13,17 @@ angular.module('sntRover')
 
             var departuresColorScheme = d3.scaleOrdinal()
                 // .range(["#DBA1A2", "#E13939"])
-                .range(['#E57F70', '#E42012'])
+                .range(['#E68E77', '#E62D13'])
                 .domain(["perfomed", "pending"]);
 
             var stayoversColorScheme = d3.scaleOrdinal()
                 // .range(["#BBE0ED", "#7FBED7"])
-                .range(["#C7DCE5", "#7FBED7"])
+                .range(["#BED4E6", "#63AFE5"])
                 .domain(["perfomed", "remaining"]);
 
             var roomsColorScheme = d3.scaleOrdinal()
                 // .range(["#84B652", "#557B30", "#EA9219", "#DF3635"])
-                .range(["#6DD420", "#408B10", "#FF920F", "#E44B1C"])
+                .range(["#60D318","#3B890F", "#FFA716", "#E62A13"])
                 .domain(["clean", "inspected", "pickup", "dirty"]);
 
             var colorScheme = {
