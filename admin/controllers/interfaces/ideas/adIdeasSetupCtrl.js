@@ -1,6 +1,7 @@
 angular.module('admin').controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 'config', 'adInterfacesSrv', 'chargeGroups', 'dateFilter', 'adIFCSrv',
     function ($scope, $rootScope, config, adInterfacesSrv, chargeGroups, dateFilter, adIFCSrv) {
         BaseCtrl.call(this, $scope);
+        
         $scope.interface = 'ideas';
         $scope.exportDate = $rootScope.businessDate;
         $scope.isServiceProvider = !!$rootScope.isServiceProvider;
