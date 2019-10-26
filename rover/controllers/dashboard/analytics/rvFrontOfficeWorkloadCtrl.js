@@ -227,7 +227,7 @@ angular.module('sntRover')
 
 				if (maxValueInBotheDirections > 0) {
 					svg.append("line") // attach a line
-						.style("stroke", "#000000") // colour the line
+						.style("stroke", "#A0A0A0") // colour the line
 						.style("stroke-width", strokeWidthOfLines)
 						.attr("x1", -100) // x position of the first end of the line
 						.attr("y1", yPositionOfRemainingTopLine) // y position of the first end of the line
@@ -238,7 +238,7 @@ angular.module('sntRover')
 					var yPositionOfRemainingBottomLine = yPositionOfRemainingTopLine + 2 * yScale.bandwidth();
 
 					svg.append("line") // attach a line
-						.style("stroke", "#000000") // colour the line
+						.style("stroke", "#A0A0A0") // colour the line
 						.style("stroke-width", strokeWidthOfLines)
 						.attr("x1", -100) // x position of the first end of the line
 						.attr("y1", yPositionOfRemainingBottomLine) // y position of the first end of the line
@@ -249,7 +249,7 @@ angular.module('sntRover')
 					var yPositionOfXaxis = height;
 
 					svg.append("line") // attach a line
-						.style("stroke", "#000000") // colour the line
+						.style("stroke", "#A0A0A0") // colour the line
 						.style("stroke-width", strokeWidthOfLines)
 						.attr("x1", 0) // x position of the first end of the line
 						.attr("y1", yPositionOfXaxis) // y position of the first end of the line
@@ -258,7 +258,7 @@ angular.module('sntRover')
 
 					// Draw thick line on top of y-axis
 					svg.append("line") // attach a line
-						.style("stroke", "#000000") // colour the line
+						.style("stroke", "#A0A0A0") // colour the line
 						.style("stroke-width", strokeWidthOfLines)
 						.attr("x1", 0) // x position of the first end of the line
 						.attr("y1", 0) // y position of the first end of the line
