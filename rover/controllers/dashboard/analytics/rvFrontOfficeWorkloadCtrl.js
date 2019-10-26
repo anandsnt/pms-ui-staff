@@ -225,45 +225,46 @@ angular.module('sntRover')
 				var yPositionOfRemainingTopLine = remainingTypeYoffset - yScale.bandwidth() / 2;
 				var strokeWidthOfLines = chartDetails.chartData.data.length > 20 ? "1px" : "2px";
 
-				svg.append("line") // attach a line
-					.style("stroke", "#000000") // colour the line
-					.style("stroke-width", strokeWidthOfLines)
-					.attr("x1", -100) // x position of the first end of the line
-					.attr("y1", yPositionOfRemainingTopLine) // y position of the first end of the line
-					.attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-					.attr("y2", yPositionOfRemainingTopLine);
+				if (maxValueInBotheDirections > 0) {
+					svg.append("line") // attach a line
+						.style("stroke", "#000000") // colour the line
+						.style("stroke-width", strokeWidthOfLines)
+						.attr("x1", -100) // x position of the first end of the line
+						.attr("y1", yPositionOfRemainingTopLine) // y position of the first end of the line
+						.attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
+						.attr("y2", yPositionOfRemainingTopLine);
 
-				// Draw horizontal line under REMAINING
-				var yPositionOfRemainingBottomLine = yPositionOfRemainingTopLine + 2 * yScale.bandwidth();
+					// Draw horizontal line under REMAINING
+					var yPositionOfRemainingBottomLine = yPositionOfRemainingTopLine + 2 * yScale.bandwidth();
 
-				svg.append("line") // attach a line
-					.style("stroke", "#000000") // colour the line
-					.style("stroke-width", strokeWidthOfLines)
-					.attr("x1", -100) // x position of the first end of the line
-					.attr("y1", yPositionOfRemainingBottomLine) // y position of the first end of the line
-					.attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-					.attr("y2", yPositionOfRemainingBottomLine);
+					svg.append("line") // attach a line
+						.style("stroke", "#000000") // colour the line
+						.style("stroke-width", strokeWidthOfLines)
+						.attr("x1", -100) // x position of the first end of the line
+						.attr("y1", yPositionOfRemainingBottomLine) // y position of the first end of the line
+						.attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
+						.attr("y2", yPositionOfRemainingBottomLine);
 
-				// Draw thick line on top of x-axis
-				var yPositionOfXaxis = height;
+					// Draw thick line on top of x-axis
+					var yPositionOfXaxis = height;
 
-				svg.append("line") // attach a line
-					.style("stroke", "#000000") // colour the line
-					.style("stroke-width", strokeWidthOfLines)
-					.attr("x1", 0) // x position of the first end of the line
-					.attr("y1", yPositionOfXaxis) // y position of the first end of the line
-					.attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-					.attr("y2", yPositionOfXaxis);
+					svg.append("line") // attach a line
+						.style("stroke", "#000000") // colour the line
+						.style("stroke-width", strokeWidthOfLines)
+						.attr("x1", 0) // x position of the first end of the line
+						.attr("y1", yPositionOfXaxis) // y position of the first end of the line
+						.attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
+						.attr("y2", yPositionOfXaxis);
 
-				// Draw thick line on top of y-axis
-				svg.append("line") // attach a line
-					.style("stroke", "#000000") // colour the line
-					.style("stroke-width", strokeWidthOfLines)
-					.attr("x1", 0) // x position of the first end of the line
-					.attr("y1", 0) // y position of the first end of the line
-					.attr("x2", 0) // x position of the second end of the line
-					.attr("y2", height);
-
+					// Draw thick line on top of y-axis
+					svg.append("line") // attach a line
+						.style("stroke", "#000000") // colour the line
+						.style("stroke-width", strokeWidthOfLines)
+						.attr("x1", 0) // x position of the first end of the line
+						.attr("y1", 0) // y position of the first end of the line
+						.attr("x2", 0) // x position of the second end of the line
+						.attr("y2", height);
+				}
 
 				// // right side legends
 				var rightSideLegendDiv = d3.select("#right-side-legend")

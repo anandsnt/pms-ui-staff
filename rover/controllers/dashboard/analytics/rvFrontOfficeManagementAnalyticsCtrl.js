@@ -125,6 +125,18 @@ angular.module('sntRover')
                     .attr("x2", xScale(0))
                     .attr("y2", height);
 
+
+                var topHorizontalLine = 0;
+
+                svg.append("line") // attach a line
+                    .style("stroke", "#A0A0A0") // colour the line
+                    .style("stroke-width", "1px")
+                    .attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
+                    .attr("y1", topHorizontalLine) // y position of the first end of the line
+                    .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
+                    .attr("y2", topHorizontalLine);
+
+
                 var firstLineHeight = 1.5 * yInnerPadding + yScale.bandwidth();
 
                 svg.append("line") // attach a line
@@ -145,13 +157,69 @@ angular.module('sntRover')
                     .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
                     .attr("y2", secondLineHeight);
 
-                svg.append("line") // attach a line
-                    .style("stroke", "#000000") // colour the line
-                    .style("stroke-width", "2px")
-                    .attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
-                    .attr("y1", height) // y position of the first end of the line
-                    .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-                    .attr("y2", height);
+                // svg.append("line") // attach a line
+                //     .style("stroke", "#A0A0A0") // colour the line
+                //     .style("stroke-width", "2px")
+                //     .attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
+                //     .attr("y1", height) // y position of the first end of the line
+                //     .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
+                //     .attr("y2", height);
+
+                if (maxValueInBotheDirections > 0) {
+                    svg.append("text")
+                        .attr("x", xScale(-1 * maxValueInBotheDirections * 3/ 4))
+                        .attr("y", 12.5)
+                        .attr("dy", ".35em")
+                        .style("font-size", "15px")
+                        .style("font-style", "italic")
+                        .style("fill", "#B1B1B1")
+                        .text("PERFOMED");
+
+                    svg.append("text")
+                        .attr("x", xScale(maxValueInBotheDirections / 4))
+                        .attr("y", 12.5)
+                        .attr("dy", ".35em")
+                        .style("font-size", "15px")
+                        .style("font-style", "italic")
+                        .style("fill", "#B1B1B1")
+                        .text("REMAINING");
+
+                    svg.append("text")
+                        .attr("x", xScale(-1 * maxValueInBotheDirections * 3/ 4))
+                        .attr("y", firstLineHeight + 12.5)
+                        .attr("dy", ".35em")
+                        .style("font-size", "15px")
+                        .style("font-style", "italic")
+                        .style("fill", "#B1B1B1")
+                        .text("VACANT NOT READY");
+
+                    svg.append("text")
+                        .attr("x", xScale(maxValueInBotheDirections / 4))
+                        .attr("y", firstLineHeight + 12.5)
+                        .attr("dy", ".35em")
+                        .style("font-size", "15px")
+                        .style("font-style", "italic")
+                        .style("fill", "#B1B1B1")
+                        .text("VACANT READY");
+
+                    svg.append("text")
+                        .attr("x", xScale(-1 * maxValueInBotheDirections * 3/ 4))
+                        .attr("y", secondLineHeight + 12.5)
+                        .attr("dy", ".35em")
+                        .style("font-size", "15px")
+                        .style("font-style", "italic")
+                        .style("fill", "#B1B1B1")
+                        .text("PERFOMED");
+
+                    svg.append("text")
+                        .attr("x", xScale(maxValueInBotheDirections / 4))
+                        .attr("y", secondLineHeight + 12.5)
+                        .attr("dy", ".35em")
+                        .style("font-size", "15px")
+                        .style("font-style", "italic")
+                        .style("fill", "#B1B1B1")
+                        .text("REMAINING");
+                }
 
                 // Left side Legends
                 var leftSideLegendDiv = d3.select("#left-side-legend");
