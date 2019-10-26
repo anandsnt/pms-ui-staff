@@ -148,6 +148,36 @@ angular.module('sntRover')
                     .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
                     .attr("y2", secondLineHeight);
 
+
+                if (maxValueInBotheDirections > 0) {
+                    svg.append("text")
+                        .attr("x", xScale(-1 * maxValueInBotheDirections * 3/ 4))
+                        .attr("y", 12.5)
+                        .attr("dy", ".35em")
+                        .style("font-size", "15px")
+                        .style("font-style", "italic")
+                        .style("fill", "#B1B1B1")
+                        .text("ARRIVALS");
+
+                    svg.append("text")
+                        .attr("x", xScale(-1 * maxValueInBotheDirections * 3/ 4))
+                        .attr("y", firstLineHeight + 12.5)
+                        .attr("dy", ".35em")
+                        .style("font-size", "15px")
+                        .style("font-style", "italic")
+                        .style("fill", "#B1B1B1")
+                        .text("VACANT");
+
+                    svg.append("text")
+                        .attr("x", xScale(-1 * maxValueInBotheDirections * 3/ 4))
+                        .attr("y", secondLineHeight + 12.5)
+                        .attr("dy", ".35em")
+                        .style("font-size", "15px")
+                        .style("font-style", "italic")
+                        .style("fill", "#B1B1B1")
+                        .text("DEPARTURES");
+                }
+
                 /************************** LEFT LEGEND STARTS HERE ************************/
                 var leftSideLegendDiv = d3.select("#left-side-legend");
                 var yBandwidth = yScale.bandwidth();
