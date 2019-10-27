@@ -878,9 +878,15 @@
                 </div>
 				<div class="entry">
 					<label>Offline</label>
-					<div class="switch-button single" ng-class="{ on : data.shiji_token_enable_offline }"
-						ng-click="data.shiji_token_enable_offline = !data.shiji_token_enable_offline">
-						<input type="checkbox" value="{{data.shiji_token_enable_offline}}">
+					<div class="switch-button single" ng-class="{ on : data.shiji_token_enable_offline }">
+						<input type="checkbox" ng-model="data.shiji_token_enable_offline">
+						<span class="switch-icon"></span>
+					</div>
+				</div>
+				<div class="entry">
+					<label>Detokenization</label>
+					<div class="switch-button single" ng-class="{ on : data.shiji_detokenization_allowed }">
+						<input type="checkbox" ng-model="data.shiji_detokenization_allowed">
 						<span class="switch-icon"></span>
 					</div>
 				</div>

@@ -39,6 +39,7 @@ module.exports = function(config) {
             '../shared/sntCanvasUtil/**/*.js',
             '../shared/sntUtils/app.js',
             '../shared/sntUtils/**/*.js',
+            '../payment/constants/payConfig.js',
             './rvApp.js',
             './rvSntApp.js',
             './rvCacheVaultModule.js',
