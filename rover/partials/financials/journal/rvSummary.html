@@ -14,10 +14,10 @@
             <h3 ng-if="(data.summaryData.deposit_debits !== 0 || data.summaryData.deposit_credits !== 0)" class="has-arrow toggle" ng-class="{'active': data.summaryData.deposit_balance.active }" ng-click="toggleJournalSummaryItem('DEPOSIT_BALANCE')" translate>DEPOSIT_BAL</h3>
             <h3 ng-if="(data.summaryData.deposit_debits === 0 && data.summaryData.deposit_credits === 0)" translate>DEPOSIT_BAL</h3>
             <ul>
-                <li>{{'OPENING' | translate}}<span><span class="currency">{{currencySymbol}}</span> {{data.summaryData.deposit_opening_balance | number: precisonTwo }}</span></li>
-                <li>{{'DEBIT' | translate}}<span><span class="currency">{{currencySymbol}}</span> {{data.summaryData.deposit_debits | number: precisonTwo }}</span></li>
-                <li>{{'CREDIT' | translate}}<span><span class="currency">{{currencySymbol}}</span> {{data.summaryData.deposit_credits | number: precisonTwo }}</span></li>
-                <li>{{'CLOSING' | translate}}<span><span class="currency">{{currencySymbol}}</span> {{data.summaryData.deposit_closing_balance | number: precisonTwo }}</span></li>
+                <li>{{'OPENING' | translate}}<span ng-bind-html="data.summaryData.deposit_opening_balance | sntCurrency:this:'$$'"></span></li>
+                <li>{{'DEBIT' | translate}}<span ng-bind-html="data.summaryData.deposit_debits | sntCurrency:this:null:true"></span></li>
+                <li>{{'CREDIT' | translate}}<span ng-bind-html="data.summaryData.deposit_credits | sntCurrency:this:null:null:3"></span></li>
+                <li>{{'CLOSING' | translate}}<span ng-bind-html="data.summaryData.deposit_closing_balance | sntCurrency:this"></li>
             </ul>
         </div>
 
@@ -60,12 +60,8 @@
                                 <strong class="cell-row">{{item.charge_code}}</strong>
                                 <span class="cell-row grey-text">{{item.charge_desc}}</span>
                             </td>
-                            <td class="align-right" >
-                                <span class="currency" ng-show="item.debit !== '' && item.debit !== null">{{currencySymbol}}</span>{{item.debit | number: precisonTwo}}
-                            </td>
-                            <td class="align-right">
-                                <span class="currency"  ng-show="item.credit !== '' && item.credit !== null">{{currencySymbol}}</span>{{item.credit | number: precisonTwo}}
-                            </td>
+                            <td class="align-right" ng-show="item.credit !== '' && item.credit !== null" ng-bind-html="item.debit | sntCurrency:this"></td>
+                            <td class="align-right" ng-show="item.credit !== '' && item.credit !== null" ng-bind-html="item.credit | sntCurrency:this"></td>
                         </tr>
                         
                         <!-- Pagination -->
@@ -82,10 +78,10 @@
             <h3 ng-if="(data.summaryData.guest_debits !== 0 || data.summaryData.guest_credits !== 0)" class="has-arrow toggle" ng-class="{'active': data.summaryData.guest_balance.active }" ng-click="toggleJournalSummaryItem('GUEST_BALANCE')" translate>GUEST_BAL</h3>
             <h3 ng-if="(data.summaryData.guest_debits === 0 && data.summaryData.guest_credits === 0)" translate>GUEST_BAL</h3>
             <ul>
-                <li><span><span class="currency">{{currencySymbol}}</span> {{data.summaryData.guest_opening_balance | number: precisonTwo }}</span></li>
-                <li><span><span class="currency">{{currencySymbol}}</span> {{data.summaryData.guest_debits | number: precisonTwo }}</span></li>
-                <li><span><span class="currency">{{currencySymbol}}</span> {{data.summaryData.guest_credits | number: precisonTwo }}</span></li>
-                <li><span><span class="currency">{{currencySymbol}}</span> {{data.summaryData.guest_closing_balance | number: precisonTwo }}</span></li>
+                <li><span ng-bind-html="data.summaryData.guest_opening_balance | sntCurrency:this"></span></li>
+                <li><span ng-bind-html="data.summaryData.guest_debits | sntCurrency:this"></span></li>
+                <li><span ng-bind-html="data.summaryData.guest_credits | sntCurrency:this"></span></li>
+                <li><span ng-bind-html="data.summaryData.guest_closing_balance | sntCurrency:this"></li>
             </ul>
         </div>
 
@@ -128,11 +124,8 @@
                             <strong class="cell-row">{{item.charge_code}}</strong>
                             <span class="cell-row grey-text">{{item.charge_desc}}</span>
                         </td>
-                        <td class="align-right" >
-                            <span class="currency" ng-show="item.debit !== '' && item.debit !== null">{{currencySymbol}}</span>{{item.debit | number: precisonTwo}}
-                        </td>
-                        <td class="align-right" >
-                            <span class="currency" ng-show="item.credit !== '' && item.credit !== null">{{currencySymbol}}</span>{{item.credit | number: precisonTwo}}
+                        <td class="align-right" ng-show="item.debit !== '' && item.debit !== null" ng-bind-html="item.debit | sntCurrency:this"></td>
+                        <td class="align-right" ng-show="item.credit !== '' && item.credit !== null" ng-bind-html="item.credit | sntCurrency:this">
                         </td>
                     </tr>
                     
@@ -150,10 +143,10 @@
             <h3 ng-if="(data.summaryData.ar_debits !== 0 || data.summaryData.ar_credits !== 0)" class="has-arrow toggle" ng-class="{'active': data.summaryData.ar_balance.active }" ng-click="toggleJournalSummaryItem('AR_BALANCE')" translate>AR_BALANCE</h3>
             <h3 ng-if="(data.summaryData.ar_debits === 0 && data.summaryData.ar_credits === 0)" translate>AR_BALANCE</h3>
             <ul>
-                <li><span><span class="currency">{{currencySymbol}}</span> {{data.summaryData.ar_opening_balance | number: precisonTwo }}</span></li>
-                <li><span><span class="currency">{{currencySymbol}}</span> {{data.summaryData.ar_debits | number: precisonTwo }}</span></li>
-                <li><span><span class="currency">{{currencySymbol}}</span> {{data.summaryData.ar_credits | number: precisonTwo }}</span></li>
-                <li><span><span class="currency">{{currencySymbol}}</span> {{data.summaryData.ar_closing_balance | number: precisonTwo }}</span></li>
+                <li><span ng-bind-html="data.summaryData.ar_opening_balance | sntCurrency:this"></span></li>
+                <li><span ng-bind-html="data.summaryData.ar_debits | sntCurrency:this"></span></li>
+                <li><span ng-bind-html="data.summaryData.ar_credits | sntCurrency:this"></span></li>
+                <li><span ng-bind-html="data.summaryData.ar_closing_balance | sntCurrency:this"></li>
             </ul>
         </div>
 
@@ -196,11 +189,8 @@
                             <strong class="cell-row">{{item.charge_code}}</strong>
                             <span class="cell-row grey-text">{{item.charge_desc}}</span>
                         </td>
-                        <td class="align-right" >
-                            <span class="currency" ng-show="item.debit !== '' && item.debit !== null">{{currencySymbol}}</span>{{item.debit | number: precisonTwo}}
-                        </td>
-                        <td class="align-right" >
-                            <span class="currency" ng-show="item.credit !== '' && item.credit !== null">{{currencySymbol}}</span>{{item.credit | number: precisonTwo}}
+                        <td class="align-right" ng-show="item.debit !== '' && item.debit !== null" ng-bind-html="item.debit | sntCurrency:this"></td>
+                        <td class="align-right" ng-show="item.credit !== '' && item.credit !== null" ng-bind-html="item.credit | sntCurrency:this">
                         </td>
                     </tr>
                     
@@ -218,28 +208,16 @@
             <h3 translate>TOTALS</h3>
             <ul>
                 <li>
-                    <span>
-                        <span class="currency">{{currencySymbol}}</span> 
-                        {{data.summaryData.deposit_opening_balance+data.summaryData.guest_opening_balance+data.summaryData.ar_opening_balance | number: precisonTwo }}
-                    </span>
+                    <span ng-bind-html="(data.summaryData.deposit_opening_balance+data.summaryData.guest_opening_balance+data.summaryData.ar_opening_balance) | sntCurrency:this"></span>
                 </li>
                 <li>
-                    <span>
-                        <span class="currency">{{currencySymbol}}</span> 
-                        {{data.summaryData.deposit_debits+data.summaryData.guest_debits+data.summaryData.ar_debits | number: precisonTwo }}
-                    </span>
+                    <span ng-bind-html="(data.summaryData.deposit_debits+data.summaryData.guest_debits+data.summaryData.ar_debits) | sntCurrency:this"></span>
                 </li>
                 <li>
-                    <span>
-                        <span class="currency">{{currencySymbol}}</span> 
-                        {{data.summaryData.deposit_credits+data.summaryData.guest_credits+data.summaryData.ar_credits | number: precisonTwo }}
-                    </span>
+                    <span ng-bind-html="(data.summaryData.deposit_credits+data.summaryData.guest_credits+data.summaryData.ar_credits) | sntCurrency:this"></span>
                 </li>
                 <li>
-                    <span>
-                        <span class="currency">{{currencySymbol}}</span> 
-                        {{data.summaryData.deposit_closing_balance+data.summaryData.guest_closing_balance+data.summaryData.ar_closing_balance | number: precisonTwo }}
-                    </span>
+                    <span ng-bind-html="(data.summaryData.deposit_closing_balance+data.summaryData.guest_closing_balance+data.summaryData.ar_closing_balance) | sntCurrency:this"></span>
                 </li>
             </ul>
         </div>
