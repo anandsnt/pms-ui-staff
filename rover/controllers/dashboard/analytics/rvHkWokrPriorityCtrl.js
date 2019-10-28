@@ -3,15 +3,15 @@ angular.module('sntRover')
         function($scope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv) {
 
             var arrivalsColorScheme = d3.scaleOrdinal()
-                .range(["#B5D297", "#54792F", "#84B751"])
+                .range(["#97D470", "#468F14", "#7CD724"])
                 .domain(["perfomed", "early_checkin", "remaining"]);
 
             var vacantColorScheme = d3.scaleOrdinal()
-                .range(["#DC3535", "#EE931B", "#84B551", "#547A2F"])
+                .range(["#E62A13", "#D67F11", "#66D41D", "#448E13"])
                 .domain(["dirty", "pickup", "clean", "inspected"]);
 
             var departuresColorScheme = d3.scaleOrdinal()
-                .range(["#DBA1A1", "#AD2727", "#DC3535"])
+                .range(["#E57D70", "#B92C13", "#E62A13"])
                 .domain(["perfomed", "late_checkout", "pending"]);
 
             var colorScheme = {
@@ -22,17 +22,17 @@ angular.module('sntRover')
 
             var cssClassMappings = {
                 "Checked In": "bar bar-green bar-light",
-                "Early Check in": "bar bar-green",
-                "Remaining": "bar bar-green bar-light",
+                "Early Check in": "bar bar-green bar-dark",
+                "Remaining": "bar bar-green",
 
-                "Dirty": "bar bar-orange",
-                "Pickup": "bar bar-red",
+                "Dirty": "bar bar-red",
+                "Pickup": "bar bar-orange",
                 "Clean": "bar bar-green",
                 "Inspected": "bar bar-green bar-dark",
 
                 "Checked Out": "bar bar-red bar-light",
-                "Late checkout": "bar bar-red",
-                "Pending": "bar bar-red bar-light"
+                "Late checkout": "bar bar-red bar-dark",
+                "Pending": "bar bar-red"
             };
 
             $scope.drawHkWorkPriorityChart = function(chartDetails) {
@@ -215,7 +215,7 @@ angular.module('sntRover')
                 var rightSideLegendDiv = d3.select("#right-side-legend");
                 var rightSideLegendColor = d3.scaleOrdinal()
                     .range(["#84B652", "#83B450", "#567D30", "#AB2727", "#DC3535"])
-                    .domain(["Early Check in", "Remaining", "Inspected", "Late checkout", "Pending"]);
+                    .domain(["Early Check in", "Remaining", "Inspected", "Pending", "Late checkout"]);
 
                 var setMarginForRightLegends = function(legend) {
                     var yBandwidth = yScale.bandwidth();
@@ -225,7 +225,7 @@ angular.module('sntRover')
                     } else if (legend === "Inspected") {
                         var heightOfTwoLegends = singleLegendHeightPlusMargin * 2;
                         return yBandwidth / 2 - heightOfTwoLegends + yInnerPadding + yBandwidth / 2;
-                    } else if (legend === "Late checkout") {
+                    } else if (legend === "Pending") {
                         return yBandwidth / 2 - singleLegendHeightPlusMargin + yInnerPadding + yBandwidth / 2;
                     } else if (legend === "Pickup") {
                         return 2 * yBandwidth - singleLegendHeightPlusMargin;
