@@ -1,5 +1,5 @@
 <div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
-    <div class="modal-content alert">
+    <div class="modal-content alert" ng-if="hotelDetails.payment_gateway !== 'SHIJI' || !hotelDetails.shiji_token_enable_offline">
 
         <!-- Step 1: In progress -->
         <section ng-show="authState === 'IN_PROGRESS'">
@@ -33,4 +33,45 @@
             </button>
         </section>
     </div>
+
+    <form class="modal-content form new-content has-card select-card"
+        ng-if="hotelDetails.payment_gateway === 'SHIJI' && hotelDetails.shiji_token_enable_offline">
+
+        <button type="button" id="modal-close" class="modal-close" ng-click="closeDialog()">
+            <span class="icons icon-close invert"></span>
+        </button>
+
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+
+        <strong class="h2 message">{{ 'SAVE_AUTHORIZATION' | translate }}</strong>
+
+        <div class="payment-form">
+
+            <div class="entry full-width">
+                <label for="auth-amount">
+                    {{ 'AMOUNT' | translate }} (<span>{{ currencySymbol }}</span>)
+                </label>
+                <input ng-model="authData.amount" id="auth-amount" value="" type="number" />
+            </div>
+
+            <div class="entry full-width">
+                <label for="auth-code">
+                    {{ 'MANUAL_AUTH_CODE' | translate }}
+                </label>
+                <input type="text" id="auth-code" ng-model="authData.auth_code" />
+            </div>
+
+            <div class="actions">
+                <button type="button" class="button blank modal-close" ng-click="cancelAuthProcess()" translate>
+                    CANCEL
+                </button>
+                <button type="button" class="button green" ng-click="authorize();"
+                    ng-class="{'grey': !authData.amount || !authData.auth_code}"
+                    ng-disabled="!authData.amount || !authData.auth_code" translate>
+                    AUTHORIZE
+                </button>
+            </div>
+
+        </div>
+    </form>
 </div>

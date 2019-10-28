@@ -1,0 +1,92 @@
+<!-- Report content -->
+    <div id="report-content" class="report-content grid scrollable" ng-iscroll="report-details-scroll"> <!-- Add class "with-pagination" if pagination is shown -->
+        <div class="wrapper">
+            <table class="invoice-tax-reports">
+                <thead>
+                    <tr>
+                        <th><span class="sort sorting-asc">{{results.translated_headers.room}}</span></th>
+                        <th><span>{{results.translated_headers.folio_number}}</span></th>
+                        <th><span>{{results.translated_headers.guest_name}}/{{results.translated_headers.account_name}}</span></th>
+                        <th><span>{{results.translated_headers.tax_id}}</span></th>
+                        <th><span>{{results.translated_headers.tax}}</span></th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td colspan="3">
+                            Date Range from <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.toDate | date:dateFormat }}</span><br>
+                        </td>
+                        <td colspan="2">
+                             <li>
+                                Business date <span>{{ userInfo.business_date | date:dateFormat }}</span><br/>
+                                User <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
+                            </li>
+                        </td>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    <tr ng-repeat="eachRow in results.bill_results">
+                        <td>{{eachRow.room_number}}</td>
+                        <td>{{eachRow.folio_number}}</td>
+                        <td>{{eachRow.guest_or_account_name}}</td>
+                        <td>{{eachRow.tax_id}}</td>
+                        <td class="vat-groupings">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <td><strong>{{results.translated_headers.charge_code}}</strong></td>
+                                        <td><strong>{{results.translated_headers.gross}}</strong></td>
+                                        <td><strong>{{results.translated_headers.net}}</strong></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="taxRow in eachRow.tax_groups">
+                                        <td>{{taxRow.charge_code_value}}</td>
+                                        <td>
+                                            <span ng-bind-html="taxRow.gross_amount | sntCurrency:this">                                          
+                                        </td>
+                                        <td>
+                                            <span ng-bind-html="taxRow.net_amount | sntCurrency:this">         
+                                            
+                                        </td>
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr class="totals" ng-if="paginationConfig.totalPages === paginationConfig.currentPage">
+                        <td colspan="4">
+                            <strong>{{results.translated_headers.total}}</strong>
+                        </td>
+                        <td class="vat-groupings">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <td><strong>{{results.translated_headers.charge_code}}</strong></td>
+                                        <td><strong>{{results.translated_headers.gross}}</strong></td>
+                                        <td><strong>{{results.translated_headers.net}}</strong></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="taxTotalRow in results.totals">
+                                        <td>{{taxTotalRow.charge_code_value}}</td>
+                                        <td>
+                                             <span ng-bind-html="taxTotalRow.total_gross_amount | sntCurrency:this">
+                                           
+                                        </td>
+                                        <td>
+                                            <span ng-bind-html="taxTotalRow.total_net_amount | sntCurrency:this">     
+                                           
+                                        </td>
+                                    </tr>
+                                    
+                                </tbody>    
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>          
+        </div>        
+    </div>
+    <rv-pagination  page-options="paginationConfig" page-data="totalCount"></rv-pagination>
