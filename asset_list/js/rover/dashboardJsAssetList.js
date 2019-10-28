@@ -7,6 +7,7 @@ module.exports = {
 		serviceRoot 	= roverRoot + 'services/',
 		directiveRoot	= roverRoot + 'directives/',
 		constantsRoot	= roverRoot + 'constants/',
+		paymentRoot     = 'payment/constants/',
 		roverJsAssets 	= {
 			minifiedFiles: [
 				jsLibRoot + 'jquery.min.js',
@@ -99,6 +100,8 @@ module.exports = {
 				directiveRoot + 'Outside Click handler/outsideClickDirective.js',
 				directiveRoot + 'pagination/*.js',
 				directiveRoot + 'fullscreen/*.js',
+
+				paymentRoot + 'payConfig.js',
 
                 // Eliminate all spec files
                 '!**/*.spec.js'
