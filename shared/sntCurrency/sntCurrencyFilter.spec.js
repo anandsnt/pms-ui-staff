@@ -143,7 +143,6 @@ describe('Filter: sntCurrency', function() {
 	it ('Test isWithoutSymbol = true and currencyFormat = 1,222,00 ', function() {
 
 		var input = 1234567890.12345,
-			customCurrency = 'kr',
 			isWithoutSymbol = true,
 			result = '',
 			that = {
@@ -159,7 +158,6 @@ describe('Filter: sntCurrency', function() {
 	it ('Test isWithoutSymbol = true and currencyFormat = 1,222,00 and precision = 3 ', function() {
 
 		var input = 1234567890.12345,
-			customCurrency = 'kr',
 			isWithoutSymbol = true,
 			precision = 3,
 			result = '',
@@ -176,7 +174,6 @@ describe('Filter: sntCurrency', function() {
 	it ('Test customCurrency = null and isWithoutSymbol = null and currencyFormat = 1,222,00 and precision = 3 ', function() {
 
 		var input = 1234567890.12345,
-			isWithoutSymbol = true,
 			precision = 3,
 			result = '',
 			that = {
@@ -193,8 +190,6 @@ describe('Filter: sntCurrency', function() {
 
 		var input = 1234567890.12345,
 			customCurrency = 'kr',
-			isWithoutSymbol = true,
-			precision = 3,
 			result = '',
 			that = {
 				currencySymbol: '$',
