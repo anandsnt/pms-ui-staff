@@ -8,20 +8,16 @@ angular.module('sntCurrencyFilter', []).filter('sntCurrency', function() {
 			var currencySymbol = customCurrencySymbol ? customCurrencySymbol : scope.currencySymbol,
 				precisionValue = precision ? precision : DEFAULT_PRECISION;
 
-			if (isNaN(input)) {
-				console.warn("sntCurrency exception :: Invalid input - ", input);
+			if (isNaN(input) || input === '' || input === null) {
 				return currencySymbol;
 			}
-			else {
-				input = parseFloat(input);
-				input = input.toFixed(precisionValue);
-			}
+			// Update the input value based on precision.
+			input = parseFloat(input).toFixed(precisionValue);
 
 			var paramObj = {
 				input: input,
 				symbol: currencySymbol,
-				isWithoutSymbol: !!isWithoutSymbol,
-				precision: precisionValue
+				isWithoutSymbol: !!isWithoutSymbol
 			};
 
 			switch (scope.currencyFormat) {
@@ -140,7 +136,7 @@ function processSntCurrency( paramObj ) {
 		processData = processData + getSeperatorType(paramObj.fractionSeperatorType) + fractionPart;
 	}
 
-	// STEP-5 : Append currency symbol based on isWithoutSymbol flag.
+	// STEP-4 : Append currency symbol based on isWithoutSymbol flag.
 	if (paramObj.isWithoutSymbol) {
 		sntCurrency = processData;
 	}
