@@ -292,6 +292,9 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         resolve: {
             config: ['adInterfacesSrv', function(adInterfacesSrv) {
                 return adInterfacesSrv.getSettings('vectron');
+            }],
+            chargeCodes: ['ADChargeCodesSrv', function(ADChargeCodesSrv) {
+                return ADChargeCodesSrv.fetch();
             }]
         }
     });
