@@ -438,7 +438,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
 
     this.filterReservationsByRoomType = function(reservations, roomType) {
       return reservations.filter(function(reservation) {
-          reservation.arrival_room_type === roomType || reservation.departure_room_type === roomType;
+          return reservation.arrival_room_type === roomType || reservation.departure_room_type === roomType;
       });
     };
 }]);
