@@ -3,11 +3,12 @@ module.exports = {
 		var sharedRoot 	= 'shared/',
 		jsLibRoot 		= sharedRoot + 'lib/js/',
 		roverRoot 		= 'rover/',
+		paymenRootPath      = 'payment/',
 		controllerRoot 	= roverRoot + 'controllers/',
 		serviceRoot 	= roverRoot + 'services/',
 		directiveRoot	= roverRoot + 'directives/',
 		constantsRoot	= roverRoot + 'constants/',
-		paymentRoot     = 'payment/constants/',
+		paymentRoot     = paymenRootPath + 'constants/',
 		roverJsAssets 	= {
 			minifiedFiles: [
 				jsLibRoot + 'jquery.min.js',
