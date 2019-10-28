@@ -113,7 +113,9 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 
 
 		$scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER', function(e, filter) {
-			fetchData(filter.date, filter.room_type_id);
+            rvAnalyticsSrv.selectedRoomType = filter.room_type;
+            clearAllExistingChartElements();
+            drawChart();
 		});
 
 		$scope.$on('RESET_ANALYTICS_FILTERS', function (){
