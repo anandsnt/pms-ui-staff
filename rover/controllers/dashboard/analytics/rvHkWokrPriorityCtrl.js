@@ -3,21 +3,36 @@ angular.module('sntRover')
         function($scope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv) {
 
             var arrivalsColorScheme = d3.scaleOrdinal()
-                .range(["#B5D297", "#54792F", "#84B751"])
+                .range(["#97D470", "#468F14", "#7CD724"])
                 .domain(["perfomed", "early_checkin", "remaining"]);
 
             var vacantColorScheme = d3.scaleOrdinal()
-                .range(["#DC3535", "#EE931B", "#84B551", "#547A2F"])
+                .range(["#E62A13", "#D67F11", "#66D41D", "#448E13"])
                 .domain(["dirty", "pickup", "clean", "inspected"]);
 
             var departuresColorScheme = d3.scaleOrdinal()
-                .range(["#DBA1A1", "#AD2727", "#DC3535"])
+                .range(["#E57D70", "#B92C13", "#E62A13"])
                 .domain(["perfomed", "late_checkout", "pending"]);
 
             var colorScheme = {
                 arrivalsColorScheme: arrivalsColorScheme,
                 vacantColorScheme: vacantColorScheme,
                 departuresColorScheme: departuresColorScheme
+            };
+
+            var cssClassMappings = {
+                "Checked In": "bar bar-green bar-light",
+                "Early Check in": "bar bar-green bar-dark",
+                "Remaining": "bar bar-green",
+
+                "Dirty": "bar bar-red",
+                "Pickup": "bar bar-orange",
+                "Clean": "bar bar-green",
+                "Inspected": "bar bar-green bar-dark",
+
+                "Checked Out": "bar bar-red bar-light",
+                "Late checkout": "bar bar-red bar-dark",
+                "Pending": "bar bar-red"
             };
 
             $scope.drawHkWorkPriorityChart = function(chartDetails) {
@@ -131,24 +146,20 @@ angular.module('sntRover')
                     .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
                     .attr("y2", secondLineHeight);
 
-                var previousElementHeightPlusBottomMargin = function(id) {
-                    return $("#" + id).height() + 10;
-                };
-
                 // Left side Legends
                 var leftSideLegendDiv = d3.select("#left-side-legend");
                 var leftSideLegendColor = d3.scaleOrdinal()
                     .range(["#C2D6AE", "#DE3636", "#ED9319", "#84B651", "#E29D9D"])
-                    .domain(["Arrivals", "Dirty", "Pickup", "Clean", "Perfomed"]);
+                    .domain(["Checked In", "Dirty", "Pickup", "Clean", "Checked Out"]);
 
                 var setMarginForLegends = function(legend, singleLegendHeightPlusMargin) {
                     var yBandwidth = yScale.bandwidth();
 
-                    if (legend === "Arrivals") {
+                    if (legend === "Checked In") {
                         return margin.top + yInnerPadding + yBandwidth / 2;
                     } else if (legend === "Dirty") {
                         return yBandwidth / 2 - singleLegendHeightPlusMargin + yInnerPadding;
-                    } else if (legend === "Perfomed") {
+                    } else if (legend === "Checked Out") {
                         var heightOfThreeLegends = singleLegendHeightPlusMargin * 3;
 
                         return yBandwidth - heightOfThreeLegends + yInnerPadding + yBandwidth / 2;
@@ -161,35 +172,40 @@ angular.module('sntRover')
                     .append("dd")
                     .attr("class", "legend-item")
                     .attr("id", function(item) {
-                        return "left-legend-" + item.toLowerCase();
+                        var itemName = item.replace(' ', '-');
+
+                        return "left-legend-" + itemName.toLowerCase();
                     });
 
                 leftSideLegendEntries.append("span")
-                    .attr("class", "rect")
-                    .style("background-color", leftSideLegendColor);
-
-                leftSideLegendEntries.append("span")
-                    .attr("class", "rect-label")
+                    .attr("class", function(label) {
+                        return cssClassMappings[label];
+                    })
                     .html(function(label) {
                         var text;
 
-                        if (label === "Arrivals") {
-                            text = label + " (" + chartDetails.perfomed_arrivals_count + ")";
+                        if (label === "Checked In") {
+                            text = chartDetails.perfomed_arrivals_count;
                         } else if (label === "Dirty") {
-                            text = label + " (" + chartDetails.dirty_vacant_count + ")";
+                            text = chartDetails.dirty_vacant_count;
                         } else if (label === "Pickup") {
-                            text = label + " (" + chartDetails.pickup_vacant_count + ")";
+                            text = chartDetails.pickup_vacant_count;
                         } else if (label === "Clean") {
-                            text = label + " (" + chartDetails.clean_vacant_count + ")";
-                        } 
-                        else if (label === "Perfomed") {
-                            text = label + " (" + chartDetails.perfomed_departures_count + ")";
+                            text = chartDetails.clean_vacant_count;
+                        } else if (label === "Checked Out") {
+                            text = chartDetails.perfomed_departures_count;
                         }
                         return text;
                     });
 
+                leftSideLegendEntries.append("span")
+                    .attr("class", "bar-label")
+                    .html(function(label) {
+                        return label;
+                    });
+
                 // TODO: For now lets assume all legends are of same height. So we will take one and use as reference.
-                var singleLegendHeightPlusMargin = $("#left-legend-arrivals").height() + 10;
+                var singleLegendHeightPlusMargin = $("#left-legend-checked-in").height() + 10;
 
                 leftSideLegendEntries.style("margin-top", function(legend) {
                     return setMarginForLegends(legend, singleLegendHeightPlusMargin);
@@ -199,7 +215,7 @@ angular.module('sntRover')
                 var rightSideLegendDiv = d3.select("#right-side-legend");
                 var rightSideLegendColor = d3.scaleOrdinal()
                     .range(["#84B652", "#83B450", "#567D30", "#AB2727", "#DC3535"])
-                    .domain(["Early Check in", "Remaining", "Inspected", "Late checkout", "Pending"]);
+                    .domain(["Early Check in", "Remaining", "Inspected", "Pending", "Late checkout"]);
 
                 var setMarginForRightLegends = function(legend) {
                     var yBandwidth = yScale.bandwidth();
@@ -209,10 +225,10 @@ angular.module('sntRover')
                     } else if (legend === "Inspected") {
                         var heightOfTwoLegends = singleLegendHeightPlusMargin * 2;
                         return yBandwidth / 2 - heightOfTwoLegends + yInnerPadding + yBandwidth / 2;
-                    } else if (legend === "Late checkout") {
+                    } else if (legend === "Pending") {
                         return yBandwidth / 2 - singleLegendHeightPlusMargin + yInnerPadding + yBandwidth / 2;
                     } else if (legend === "Pickup") {
-                        return 2 * yBandwidth - previousElementHeightPlusBottomMargin("left-legend-stayovers");
+                        return 2 * yBandwidth - singleLegendHeightPlusMargin;
                     }
                 };
                 var rightSideLegendEntries = rightSideLegendDiv.selectAll("dd")
@@ -221,31 +237,36 @@ angular.module('sntRover')
                     .append("dd")
                     .attr("class", "legend-item")
                     .attr("id", function(item) {
-                        return "left-legend-" + item.toLowerCase();
+                        var itemName = item.replace(' ', '-');
+
+                        return "right-legend-" + itemName.toLowerCase();
                     });
 
                 rightSideLegendEntries.append("span")
-                    .attr("class", "rect")
-                    .style("background-color", rightSideLegendColor);
-
-                rightSideLegendEntries.append("span")
-                    .attr("class", "rect-label")
+                    .attr("class", function(label) {
+                        return cssClassMappings[label];
+                    })
                     .html(function(label) {
                         var text;
 
                         if (label === "Early Check in") {
-                            text = label + " (" + chartDetails.early_checkin_arrivals_count + ")";
+                            text = chartDetails.early_checkin_arrivals_count;
                         } else if (label === "Remaining") {
-                            text = label + " (" + chartDetails.remaining_arrivals_count + ")";
+                            text = chartDetails.remaining_arrivals_count;
                         } else if (label === "Inspected") {
-                            text = label + " (" + chartDetails.inspected_vacant_count + ")";
+                            text = chartDetails.inspected_vacant_count;
                         } else if (label === "Late checkout") {
-                            text = label + " (" + chartDetails.late_checkout_departures_count + ")";
-                        } 
-                        else if (label === "Pending") {
-                            text = label + " (" + chartDetails.pending_departures_count + ")";
+                            text = chartDetails.late_checkout_departures_count;
+                        } else if (label === "Pending") {
+                            text = chartDetails.pending_departures_count;
                         }
                         return text;
+                    });
+
+                rightSideLegendEntries.append("span")
+                    .attr("class", "bar-label")
+                    .html(function(label) {
+                        return label;
                     });
 
                 rightSideLegendEntries.style("margin-top", function(legend) {

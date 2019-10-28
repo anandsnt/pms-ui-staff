@@ -1,4 +1,4 @@
-sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope', '$state', '$timeout', function($scope, $rootScope, $state, $timeout) {
+sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope', '$state', '$timeout', 'ngDialog', function($scope, $rootScope, $state, $timeout, ngDialog) {
 	// inheriting some useful things
 	BaseCtrl.call(this, $scope);
     var that = this;
@@ -100,5 +100,14 @@ sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope'
       $scope.dashboardFilter.analyticsActive = true;
     }, 500);
   });
+
+  $scope.$emit('SET_DEFAULT_ANALYTICS_MENU' , 'HK_OVERVIEW');
+
+  $scope.onHkAnlayticsRoomTypeChange = function() {
+    $scope.$broadcast('RELOAD_DATA_WITH_SELECTED_FILTER', {
+      "room_type_id": $scope.dashboardFilter.selectedRoomTypeId,
+      "date": $scope.dashboardFilter.datePicked
+    });
+  };
 
 }]);

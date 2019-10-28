@@ -6,35 +6,47 @@
 		</button>
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<br>
-		<div class="scrollable scroll-payment-list"  id="paymentList" ng-iscroll='paymentList' ng-iscroll-delay='300' >
-			<div ng-show="paymentListLength>0">
-				<a class="active-item existing_payments float item-payment" ng-click="clickPaymentItem(paymentlist.value, paymentlist.card_code, paymentlist.ending_with, paymentlist.expiry_date, paymentlist.is_swiped, paymentlist.auth_color_code)" ng-repeat="paymentlist in paymentListData.existing_payments" >
-					<figure class="card-logo">
-						<img src="/assets/images/{{paymentlist.card_code}}.png" alt="">
-					</figure> 
-					<span class="number"> <span translate>ENDING_WITH </span>
-						<span class="value number"> {{paymentlist.ending_with}} </span> 
-					</span> 
-					<span class="date"> <span translate>DATE </span>
-						<span class="value date"> {{paymentlist.expiry_date}}  </span> 
-					</span> 
-					<span class="name"> <span translate>NAME </span>
-						<span class="value name"> {{paymentlist.holder_name}} </span> 
-					</span> 
-					<span class="in-gc" ng-show="paymentlist.is_in_guest_card">
-						<span translate>IN_GUEST_CARD </span>
-					</span>
-					<span class="primary" ng-show="paymentlist.value == paymentListData.selected_payment">
-					 	<span class="value primary" translate>SELECTED</span>
-					</span>
-					<br clear="all">
-				 </a>
-				 <a class="add-new-button add-new-payment" ng-click="openAddNewPaymentModel()" ng-if="dataToPaymentList.isFromBillCard">+ New Payment Method</a>
-			</div>
-			<div ng-show="showNoValues">
-				No credit cards are saved to guest card
+		<div class="no-content" ng-if="showNoValues">
+			<div class="info">
+				<span class="icon-no-content icon-card"></span>
+				<strong class="h1">No Credit Cards saved to Guest Card</strong>
 			</div>
 		</div>
-
+		<div class="scrollable" ng-iscroll='paymentList' ng-iscroll-delay='300'>
+			<div class="wrapper">
+				<div class="payment-method" 
+					 ng-repeat="paymentlist in paymentListData.existing_payments">
+					<button type="button" 
+							class="active-item item-payment"
+							ng-click="clickPaymentItem(paymentlist.value, paymentlist.card_code, paymentlist.ending_with, paymentlist.expiry_date, paymentlist.is_swiped, paymentlist.auth_color_code)">
+						<figure class="card-logo">
+							<img src="/assets/images/{{paymentlist.card_code}}.png" alt="" />
+						</figure>
+						<span class="number"><span translate>ENDING_WITH </span>
+							<span class="value number">{{paymentlist.ending_with}}</span>
+						</span>
+						<span class="date"><span translate>DATE </span>
+							<span class="value date"> {{paymentlist.expiry_date}} </span>
+						</span>
+						<span class="name"> <span translate>NAME </span>
+							<span class="value name"> {{paymentlist.holder_name}} </span> 
+						</span>
+						<span class="in-gc" ng-show="paymentlist.is_in_guest_card">
+							<span translate>IN_GUEST_CARD </span>
+						</span>
+						<span class="primary" ng-show="paymentlist.value == paymentListData.selected_payment">
+							<span class="value primary" translate>SELECTED</span>
+						</span> 
+					</button>
+					<button type="button" 
+							class="icons icon-remove-40" 
+							data-action="delete-payment" 
+							ng-show="(shouldShowCreditCardDeleteBtn() && (paymentlist.value != paymentListData.selected_payment))"
+							ng-click="deleteCreditCard(paymentlist.value)">Remove</button>
+				</div>
+			</div>
+		</div>		
+		<a class="add-new-button" ng-click="openAddNewPaymentModel()" ng-if="dataToPaymentList.isFromBillCard">+ New Payment Method</a>
 	</div>
+	
 </div>

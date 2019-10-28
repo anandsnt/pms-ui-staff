@@ -112,4 +112,34 @@ sntRover.controller('RVShowPaymentListCtrl', ['$rootScope', '$scope', '$state', 
             $rootScope.$emit('OPENPAYMENTMODEL');
         };
 
+        /**
+         * Delete the given credit card
+         * @param {Number} paymentMethodId - the id of the given credit card
+         * @return {void}
+         */
+        $scope.deleteCreditCard = function ( paymentMethodId ) {
+            var onDeleteSuccess = function () {
+                    $scope.closeDialog();
+                },
+                onDeleteFailure = function ( error ) {
+                    $scope.errorMessage = error;
+                };
+
+            $scope.callAPI(RVPaymentSrv.deleteCreditCard, {
+                onSuccess: onDeleteSuccess,
+                onFailure: onDeleteFailure,
+                params: {
+                    reservation_id: reservationId,
+                    payment_method_id: paymentMethodId
+                }
+            });
+        };
+
+        /**
+         * Should show the credit card delete btn
+         */
+        $scope.shouldShowCreditCardDeleteBtn = function () {
+            return $state.current.name === 'rover.reservation.staycard.reservationcard.reservationdetails';
+        };
+
     }]);
