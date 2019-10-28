@@ -115,6 +115,14 @@
                         img { .size(auto, 40px); }
                     }
 
+                    .card-logo {
+                        &.blank {
+                            img {
+                                .size(20px, auto);
+                            }
+                        }
+                    }
+
                     &.error,
                     &.has-icon {
                         position: relative;
@@ -864,6 +872,14 @@
                         align-items: none;
                         .show;
                     }
+
+                    &.blank {
+                        width: 40px;
+                        text-align: right;
+                        img {
+                            .size(25px, auto);
+                        }
+                    }
                 }
 
                 .type,
@@ -910,6 +926,16 @@
                 margin: 10px;
                 .square(40px);
                 .pull-left;
+
+                &.unmask-button {
+                    margin: 0 10px;
+                    .size( 60px, 65px );
+                    
+                    .icon-eye {
+                        background-size: 100px;
+                        background-position: 0 -10782px;
+                    }
+                }
             }
         }
 

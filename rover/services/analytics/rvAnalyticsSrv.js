@@ -146,7 +146,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         }).length;
 
         var lateCheckoutCount = departures.filter(function(reservation) {
-            return reservation.reservation_status === 'CHECKEDIN' && isLateCheckout(reservation, hotelCheckoutTime);
+            return reservation.reservation_status === 'CHECKEDIN' && that.isLateCheckout(reservation, hotelCheckoutTime);
         }).length;
 
         var remainingCount = departures.length - lateCheckoutCount - departedCount;
@@ -163,6 +163,12 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
             }
         };
 
+        departues.contents.right_side.push({
+            type: 'pending',
+            count: remainingCount,
+            label: 'AN_PENDING'
+        });
+
         if (!overview) {
             departues.contents.right_side.push({
                 type: 'late_checkout',
@@ -171,11 +177,6 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
             });
         }
 
-        departues.contents.right_side.push({
-            type: 'pending',
-            count: remainingCount,
-            label: 'AN_PENDING'
-        });
         return departues;
     };
 
@@ -184,7 +185,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         var dataType = 'rooms';
         var dataLabel = 'AN_ROOMS';
 
-        if (!overview && !isArrivalsManagement) {
+        if (!isArrivalsManagement) {
             var assignedRoomNumbers = activeReservations.filter(function(reservation) {
                 return reservation.reservation_status === 'CHECKEDIN';
             }).map(function(reservation) {
@@ -194,8 +195,10 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
             rooms = rooms.filter(function(room) {
                 return !assignedRoomNumbers.includes(room.room_number);
             });
-            dataType = 'vacant';
-            dataLabel = 'AN_VACANT';
+            if (!overview) {
+                dataType = 'vacant';
+                dataLabel = 'AN_VACANT';
+            }
         }
 
         var inspectedCount = rooms.filter(function(room) {
@@ -272,7 +275,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         }).length;
 
         var earlyCheckinCount = arrivals.filter(function(reservation) {
-            return reservation.reservation_status === 'RESERVED' && isEarlyCheckin(reservation, hotelCheckinTime);
+            return reservation.reservation_status === 'RESERVED' && that.isEarlyCheckin(reservation, hotelCheckinTime);
         }).length;
 
         var remainingCount = arrivals.length - perfomedCount - earlyCheckinCount;
@@ -340,7 +343,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
     /*
      * Function to determine if a reservation is early checkin
      */
-    var isEarlyCheckin = function(reservation, hotelCheckinTime) {
+    this.isEarlyCheckin = function(reservation, hotelCheckinTime) {
         var eta = new Date(reservation.eta_hz);
         var hotelStdCheckinTime = new Date(hotelCheckinTime);
 
@@ -355,7 +358,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
     /*
      * Function to determine if a reservation is late checkout
      */
-    var isLateCheckout = function(reservation, hotelCheckoutTime) {
+    this.isLateCheckout = function(reservation, hotelCheckoutTime) {
         var etd = new Date(reservation.etd_hz);
         var hotelStdCheckoutTime = new Date(hotelCheckoutTime);
 
@@ -370,7 +373,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
     /*
      * Function to determine if a reservation is VIP or not
      */
-    var isVip = function(reservation) {
+    this.isVip = function(reservation) {
         return reservation.vip === 't';
     };
 }]);

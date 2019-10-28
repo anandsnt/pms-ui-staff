@@ -9,7 +9,7 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 
 		BaseCtrl.call(this, $scope);
 		$scope.screenData = {
-			selectedChart: 'ARRIVALS_MANAGEMENT'
+			selectedChart: 'FO_ARRIVALS'
 		};
 
 		$controller('rvFrontOfficeWorkloadCtrl', {
@@ -32,7 +32,10 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 		var date = $rootScope.businessDate;
 
 		var renderfdWorkloadChart = function() {
-			rvFrontOfficeAnalyticsSrv.fdWorkload(date).then(function(data) {
+            var hotelCheckinTime = $rootScope.hotelDetails.hotel_checkin_time;
+            var hotelCheckoutTime = $rootScope.hotelDetails.hotel_checkout_time;
+
+			rvFrontOfficeAnalyticsSrv.fdWorkload(date, hotelCheckinTime, hotelCheckoutTime).then(function(data) {
 				var chartDetails = {
 					chartData: data,
 					onBarChartClick: onBarChartClick
@@ -50,9 +53,12 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 					chartData: data,
 					onBarChartClick: onBarChartClick
 				};
-
+				try {
 				d3.select('#analytics-chart').selectAll('svg').remove();
 				$scope.drawArrivalManagementChart(chartDetails);
+				} catch (e) {
+					console.log(e)
+				}
 			});
 		};
 
@@ -61,12 +67,8 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 
 			rvFrontOfficeAnalyticsSrv.fdFoActivity(date).then(function(data) {
 				console.log(JSON.stringify(data));
-				try {
-					d3.select('#analytics-chart').selectAll('svg').remove();
-					$scope.drawFrontOfficeActivity(data);
-				} catch (e) {
-					console.log(e)
-				}
+				d3.select('#analytics-chart').selectAll('svg').remove();
+				$scope.drawFrontOfficeActivity(data);
 			});
 		};
 
@@ -77,17 +79,15 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 			document.getElementById("right-side-legend").innerHTML = "";
 		};
 
-		$scope.changeChart = function() {
+		var drawChart = function() {
 			clearAllExistingChartElements();
-			if ($scope.screenData.selectedChart === 'ARRIVALS_MANAGEMENT') {
-				$scope.screenData.selectedChart = 'WORK_LOAD';
-				renderfdWorkloadChart();
-			} else if ($scope.screenData.selectedChart === 'WORK_LOAD') {
-				$scope.screenData.selectedChart = 'FO_ACTIVITY';
-				renderFrontOfficeActivity();
-			} else {
-				$scope.screenData.selectedChart = 'ARRIVALS_MANAGEMENT';
+			$scope.screenData.mainHeading = "";
+			if ($scope.screenData.selectedChart === 'FO_ARRIVALS') {
 				renderFrontOfficeManagementChart();
+			} else if ($scope.screenData.selectedChart === 'FO_WORK_LOAD') {
+				renderfdWorkloadChart();
+			} else if ($scope.screenData.selectedChart = 'FO_ACTIVITY') {
+				renderFrontOfficeActivity();
 			}
 		};
 
@@ -98,34 +98,50 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 					d3.select('#analytics-chart').selectAll('svg').remove();
 					clearAllExistingChartElements();
 					// Redraw chart
-					if ($scope.screenData.selectedChart === 'ARRIVALS_MANAGEMENT') {
-						renderFrontOfficeManagementChart();
-					} else if ($scope.screenData.selectedChart === 'WORK_LOAD') {
-						renderfdWorkloadChart();
-					} else {
-						renderFrontOfficeActivity();
-					}
+					drawChart();
 				}, 0);
 			});
+		});
+
+		$scope.$on('ANALYTICS_MENU_CHANGED', function(e, selectedChart){
+			$scope.screenData.selectedChart = selectedChart;
+			clearAllExistingChartElements();
+			drawChart();
 		});
 
 		$scope.$on("$destroy", function() {
 			$(window).off("resize.doResize");
 		});
 
-		(function() {
-
+		var fetchData = function (date, roomTypeId) {
+			var params = {
+				"date": date,
+				"room_type_id": roomTypeId
+			};
 			var options = {
-				params: $rootScope.businessDate,
+				params: params,
 				successCallBack: function() {
-					renderFrontOfficeActivity();
-					//renderFrontOfficeManagementChart();
-					// renderfdWorkloadChart();
-				}
+					clearAllExistingChartElements();
+                    drawChart();
+                }
 			};
 
 			$scope.callAPI(rvAnalyticsSrv.initRoomAndReservationApis, options);
+		};
 
+		$scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER', function(e, filter) {
+			fetchData(filter.date, filter.room_type_id);
+		});
+
+		$scope.$on('RESET_ANALYTICS_FILTERS', function (){
+			$scope.dashboardFilter.datePicked = $rootScope.businessDate;
+			$scope.dashboardFilter.selectedRoomTypeId = "";
+			$scope.dashboardFilter.selectedAnalyticsMenu = "HK_OVERVIEW";
+			$scope.screenData.selectedChart = "HK_OVERVIEW";
+		});
+
+		(function() {
+			fetchData($scope.dashboardFilter.datePicked, $scope.dashboardFilter.selectedRoomTypeId)
 		})();
 	}
 ]);
