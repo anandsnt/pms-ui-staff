@@ -25,7 +25,9 @@
 	</form> -->
 	<!--  -->
 	<!-- Search form -->
-	<div id="dashboard-search-form" class="search-form has-options dashboard single-option has-room-types has-dates" role="search"> <!-- Add class 'single-option' if Work type is set to all. When showing analytics clear all classes and use just 'search-form dashboard-analytics'. -->
+
+	<!--  WHEN SUMMARY IS ON -->
+	<div id="dashboard-search-form" class="search-form has-options dashboard single-option has-room-types has-dates" role="search" ng-if="!dashboardFilter.analyticsActive"> <!-- Add class 'single-option' if Work type is set to all. When showing analytics clear all classes and use just 'search-form dashboard-analytics'. -->
 	    <div class="entry switch">
             <div class="switch-button off" ng-class="{ 'on' : !dashboardFilter.analyticsActive }">
                 <input id="room-task-toggle" value="" type="checkbox" ng-click="toggleAnalyticsView()" checked="">
@@ -39,23 +41,7 @@
                 </label>
             </div>
         </div>
-        <div class="entry room-types" ng-show="dashboardFilter.analyticsActive">
-	        <div class="select with-label">
-	            <label for="room-type">Room Type</label>
-	            <select id="room-type" ng-model="room_type_id" ng-change="onRoomTypeChange()">
-	                <option value="" selected="" translate>SHOW_ALL</option>
-	                <option value="{{::roomType.id}}" ng-repeat="roomType in ::roomTypes track by $index">{{::roomType.name}}</option>
-	            </select>
-	        </div>
-		 </div>
-		 <div class="entry dates" ng-show="dashboardFilter.analyticsActive">
-		        <div class="entry-data has-datepicker">
-		            <label for="dashboard-date-from">Date</label>
-		            <input name="dashboard-date-from" id="dashboard-date-from" class="hasDatepicker" readonly="" type="text" placeholder="{{fromDate | date : dateFormat }}" value="{{fromDate| date : dateFormat}}" />
-		            <button ng-click="showCalendar('RVReservationSearchFromDatepickerCtrl')" type="button" class="ui-datepicker-trigger"></button>
-		        </div>
-		</div>
-	    <div class="entry search" ng-hide="dashboardFilter.analyticsActive">
+	    <div class="entry search">
 	        <a href="#" id="dashboard-clear-query" class="clear-query" ng-show="query != ''" ng-click = "clearResults()" ng-class="{'visible': query != ''}">
 				<span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
 			</a>
@@ -78,6 +64,71 @@
 	        </div>
 	    </div>
 	</div>
+
+	<!-- WHEN ANALYTCIS IS ON -->
+
+	<div id="dashboard-search-form" class="search-form dashboard-analytics has-room-types" role="search" ng-if="dashboardFilter.analyticsActive">
+	    <div class="entry switch">
+	        <div class="switch-button off" ng-class="{ 'on' : !dashboardFilter.analyticsActive }">
+                <input id="room-task-toggle" value="" type="checkbox" ng-click="toggleAnalyticsView()" checked="">
+                <label class="data-off">
+                    <span class="value">SUMMARY</span>
+                    <span class="switch-icon">ANALYTICS</span>
+                </label>
+                <label class="data-on">
+                    <span class="switch-icon">SUMMARY</span>
+                    <span class="value">ANALYTICS</span>
+                </label>
+            </div>
+	    </div>
+	    <div class="entry options" ng-show="false">
+	        <label for="analytics-room-type" class="faux-select">
+	            <span class="label">Showing</span>
+	            <strong>All Room Types</strong>
+	        </label>
+	        <div class="faux-select-options hidden">
+	            <label class="checkbox inline checked">
+	                <span class="icon-form icon-checkbox"></span>
+	                <input id="all-room-types" value="all" type="checkbox" checked /> <!-- Checked by default. When checked all other room types need to be unchecked. When any room type is checked this must me unchecked -->
+	                All Room Types
+	            </label>
+	            <label class="checkbox inline" ng-repeat="roomType in ::roomTypes track by $index" ng-class="{'checked': roomType.is_selected}">
+	                <span class="icon-form icon-checkbox"></span>
+	                <input ng-model="roomType.is_selected" type="checkbox" />
+	                {{::roomType.name}}
+	            </label>
+	        </div>
+	    </div>
+		<div class="entry room-types">
+		    <div class="select with-label">
+		        <label for="room-type">Room Type</label>
+		        <select id="room-type" ng-model="dashboardFilter.selectedRoomTypeId" ng-change="onHkAnlayticsRoomTypeChange()">
+		            <option value="" selected="" translate>SHOW_ALL</option>
+		            <option value="{{::roomType.id}}" ng-repeat="roomType in ::roomTypes track by $index">{{::roomType.name}}</option>
+		        </select>
+		    </div>
+		</div>
+
+	   <!-- <div class="entry dates">
+	        <div class="entry-data has-datepicker">
+	            <input id="analytics-date" type="text" class="datepicker" 
+	            ng-model="dashboardFilter.datePicked"
+	            ng-click="showCalendar()" ng-change="onDateChanged()" readonly />
+	        </div>
+	    </div> -->
+
+	   <!-- <div class="entry-data has-datepicker">
+			<label for="dashboard-date-from">Date</label>
+			<input name="dashboard-date-from" id="dashboard-date-from" class="hasDatepicker" readonly="" type="text" placeholder="{{fromDate | date : dateFormat }}" value="{{fromDate| date : dateFormat}}"/>
+			<button ng-click="showCalendar('RVReservationSearchFromDatepickerCtrl')" type="button" class="ui-datepicker-trigger"></button>
+		</div> -->
+
+	   <ul class="filters" ng-show="dashboardFilter.analyticsActive">
+	        <li ng-click="changeAnalyticsView('HK_OVERVIEW')" ng-class="{'active' : dashboardFilter.selectedAnalyticsMenu === 'HK_OVERVIEW' }">Overview</li>
+	        <li ng-click="changeAnalyticsView('HK_WORK_PRIORITY')" ng-class="{'active' : dashboardFilter.selectedAnalyticsMenu === 'HK_WORK_PRIORITY'}">Work Priority</li>
+    	</ul>
+	</div>
+
 
 	<!--  -->
 

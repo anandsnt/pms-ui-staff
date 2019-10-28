@@ -75,6 +75,10 @@
 
 <!-- Payment method -->
 <div class="block-item item-payment">
+	<button ng-if="hotelDetails.shiji_detokenization_allowed && hasPermissionToDetokenizeCC()" ng-click="openDetokenizationPopup()" type="button" class="button with-icon blue unmask-button">
+        <span class="icons icon-eye"></span> 
+                            Unmask
+    </button>
 	<!-- Credit Card -->
 	<button type="button" class="next-view" ng-show="billData.credit_card_details.payment_type == 'CC'" ng-click="showPaymentList()" ng-disabled="!billData.is_active" ng-class="{ 'overlay' : !billData.is_active }">
 		<figure class="card-logo">

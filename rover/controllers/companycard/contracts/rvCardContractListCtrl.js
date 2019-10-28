@@ -62,6 +62,9 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
          */
         $scope.linkContract = function() {
             $scope.contractData.mode = 'LINK';
+            // Reset Contract Link Search Component.
+            $scope.contractData.linkContractsSearch.query = '';
+            $scope.contractData.linkContractsSearch.results = [];
         };
 
         /**
