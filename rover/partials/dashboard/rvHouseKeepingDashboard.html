@@ -16,9 +16,12 @@
     </section>
     <!-- ANALYTICS VIEW -->
     <section id="dashboard" class="content scrollable analytics" role="main"
+             ng-iscroll="analytics_scroller" ng-iscroll-delay="100"
              ng-if="dashboardFilter.analyticsActive">
-            <ng-include src="'/assets/partials/analytics/rvHouseKeepingAnalytics.html'" ng-controller="RVHouseKeepingAnalyticsController">
-            </ng-include>
+            <div class="wrapper">
+                <ng-include src="'/assets/partials/analytics/rvHouseKeepingAnalytics.html'" ng-controller="RVHouseKeepingAnalyticsController">
+                </ng-include>
+            </div>
     </section>
 </div>
 

@@ -238,6 +238,8 @@ angular.module('sntRover')
   
 
         /************************** RIGHT LEGEND END HERE ************************/
+
+        $scope.$emit('REFRESH_ANALTICS_SCROLLER');
       };
     }
   ]);

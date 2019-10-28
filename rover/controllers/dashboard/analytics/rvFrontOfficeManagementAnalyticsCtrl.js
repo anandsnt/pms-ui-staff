@@ -350,6 +350,8 @@ angular.module('sntRover')
                 rightSideLegendEntries.style("margin-top", function(legend) {
                     return setMarginForRightSideLegends(legend, singleLegendHeightPlusMargin);
                 });
+
+                $scope.$emit('REFRESH_ANALTICS_SCROLLER');
             };
         }
     ]);

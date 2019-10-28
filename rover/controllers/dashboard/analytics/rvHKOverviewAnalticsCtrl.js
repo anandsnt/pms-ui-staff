@@ -337,6 +337,8 @@ angular.module('sntRover')
                 rvAnalyticsHelperSrv.addLegendItems(cssClassMappings, rightSideLegendDiv, roomsLegendData);
 
                 /************************** RIGHT LEGEND ENDS HERE ************************/
+                
+                $scope.$emit('REFRESH_ANALTICS_SCROLLER');
             };
         }
     ]);
