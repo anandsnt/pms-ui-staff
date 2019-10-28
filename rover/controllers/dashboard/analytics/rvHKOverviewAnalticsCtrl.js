@@ -180,7 +180,7 @@ angular.module('sntRover')
                         .style("font-size", "20px")
                         .style("font-style", "italic")
                         .style("fill", "#B1B1B1")
-                        .text("PERFOMED");
+                        .text("PERFORMED");
 
                     svg.append("text")
                         .attr("x", xScale(maxValueInBotheDirections / 2))

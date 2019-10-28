@@ -244,20 +244,19 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         var dataType = 'rooms';
         var dataLabel = 'AN_ROOMS';
 
-        if (!isArrivalsManagement) {
-            var assignedRoomNumbers = activeReservations.filter(function(reservation) {
-                return reservation.reservation_status === 'CHECKEDIN';
-            }).map(function(reservation) {
-                return reservation.arrival_room_number;
-            });
-            
-            rooms = rooms.filter(function(room) {
-                return !assignedRoomNumbers.includes(room.room_number);
-            });
-            if (!overview) {
-                dataType = 'vacant';
-                dataLabel = 'AN_VACANT';
-            }
+        var assignedRoomNumbers = activeReservations.filter(function(reservation) {
+            return reservation.reservation_status === 'CHECKEDIN';
+        }).map(function(reservation) {
+            return reservation.arrival_room_number;
+        });
+
+        rooms = rooms.filter(function(room) {
+            return !assignedRoomNumbers.includes(room.room_number);
+        });
+
+        if (!isArrivalsManagement && !overview) {
+            dataType = 'vacant';
+            dataLabel = 'AN_VACANT';
         }
 
         var inspectedCount = rooms.filter(function(room) {
@@ -438,7 +437,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
 
     this.filterReservationsByRoomType = function(reservations, roomType) {
       return reservations.filter(function(reservation) {
-          reservation.arrival_room_type === roomType || reservation.departure_room_type === roomType;
+          return reservation.arrival_room_type === roomType || reservation.departure_room_type === roomType;
       });
     };
 }]);
