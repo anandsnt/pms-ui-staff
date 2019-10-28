@@ -69,7 +69,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="taxTotalRow in totals">
+                                    <tr ng-repeat="taxTotalRow in results.totals">
                                         <td>{{taxTotalRow.charge_code_value}}</td>
                                         <td>
                                              <span ng-bind-html="taxTotalRow.total_gross_amount | sntCurrency:this">

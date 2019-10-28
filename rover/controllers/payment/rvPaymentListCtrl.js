@@ -1,7 +1,11 @@
 sntRover.controller('RVShowPaymentListCtrl', ['$rootScope', '$scope', '$state', 'RVPaymentSrv', 'ngDialog',
-    function($rootScope, $scope, $state, RVPaymentSrv, ngDialog) {
+    'rvPermissionSrv',
+    function($rootScope, $scope, $state, RVPaymentSrv, ngDialog, rvPermissionSrv) {
         BaseCtrl.call(this, $scope);
         $scope.showNoValues = false;
+
+        var hasCreditCardRemovalPermission = rvPermissionSrv.getPermissionValue('REMOVE_CREDIT_CARD_FROM_STAYCARD');
+
         $scope.paymentListSuccess = function(data) {
             $scope.$emit('hideLoader');
             $scope.paymentListData = data;
@@ -139,7 +143,7 @@ sntRover.controller('RVShowPaymentListCtrl', ['$rootScope', '$scope', '$state', 
          * Should show the credit card delete btn
          */
         $scope.shouldShowCreditCardDeleteBtn = function () {
-            return $state.current.name === 'rover.reservation.staycard.reservationcard.reservationdetails';
+            return hasCreditCardRemovalPermission && $state.current.name === 'rover.reservation.staycard.reservationcard.reservationdetails';
         };
 
     }]);

@@ -170,6 +170,32 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 		// 	});
 	};
 
+	this.addLegendItems = function(cssClassMappings, parentElement, legendData) {
+
+		parentElement
+			.append("dt")
+			.attr("class", "legend-title")
+			.attr("id", legendData.id)
+			.html(legendData.title)
+			.style("margin-top", legendData.margin_top + "px");
+
+		_.each(legendData.items, function(item) {
+			parentElement
+				.append("dd")
+				.attr("class", "legend-item")
+				.attr("id", item.id).append("span")
+				.attr("class", function(label) {
+					return cssClassMappings[item.label];
+				})
+				.html(item.count);
+
+			d3.select("#" + item.id)
+				.append("span")
+				.attr("class", "bar-label")
+				.html(item.label)
+		});
+	};
+
 
 	this.addRandomNumbersForTesting = function(chartDetails) {
 		var combinedItemsCountArray = [];
@@ -212,7 +238,7 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 
 			var i = 0;
 			var c = {};
-			for (i = 0; i <= 24; i++) {
+			for (i = 0; i <= 10; i++) {
 				c[i] = angular.copy(b);
 				c[i].type = c[i].type + i;
 				c[i].label = c[i].label + i;

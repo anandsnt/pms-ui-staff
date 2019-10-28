@@ -6,6 +6,17 @@ angular.module('sntRover')
 
         $scope.screenData.mainHeading = $filter('translate')(chartData.label);
 
+
+        var cssClassMappings = {        
+          "Early Check in": "bar bar-green bar-dark",
+          "Checkin": "bar bar-green bar-light",
+          "VIP checkin": "bar bar-green",
+
+          "VIP checkout": "bar bar-red bar-dark",
+          "Late checkout": "bar bar-red bar-light",
+          "Checkout": "bar bar-red"
+        };
+
         /////// debuging code
         // TO DELETE
 
@@ -102,7 +113,7 @@ angular.module('sntRover')
         //   .domain(chartKeys);
 
         var colorMapping = d3.scaleOrdinal()
-          .range(["#BBC9B0", "#97C16D", "#EACC2B", "#A18709", "#DE3938", "#AC2625"])
+          .range(["#569819", "#9BD472", "#6ED420", "#E42715", "#E53318", "#E58A75"])
           .domain(chartKeys);
 
         var xaxis = d3.axisBottom(xscale);
@@ -156,7 +167,7 @@ angular.module('sntRover')
         var rightSideLegendDiv = d3.select("#right-side-legend");
         var rightSideLegendColor = d3.scaleOrdinal()
           .range(["#BBC9B0", "#97C16D", "#EACC2B", "#A18709", "#DE3938", "#AC2625"])
-          .domain(chartKeys);
+          .domain(["Early Check in", "VIP checkin", "Checkin", "VIP checkout", "Checkout", "Late checkout"]);
 
 
         var rightSideLegendEntries = rightSideLegendDiv.selectAll("dd")
@@ -169,14 +180,21 @@ angular.module('sntRover')
           });
 
         rightSideLegendEntries.append("span")
-          .attr("class", "rect")
-          .style("background-color", rightSideLegendColor);
+          .attr("class", function(label) {
+            return cssClassMappings[label];
+          });
 
         rightSideLegendEntries.append("span")
-          .attr("class", "rect-label")
+          .attr("class", "bar-label")
           .html(function(label) {
             return label;
           });
+
+        var legendMarginTop = h / 4 + "px";
+
+        $('#right-side-legend').css({
+          "margin-top": legendMarginTop
+        });
       };
     }
   ]);
