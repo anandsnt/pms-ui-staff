@@ -143,7 +143,8 @@ sntRover.controller('RVShowPaymentListCtrl', ['$rootScope', '$scope', '$state', 
          * Should show the credit card delete btn
          */
         $scope.shouldShowCreditCardDeleteBtn = function () {
-            return hasCreditCardRemovalPermission && $state.current.name === 'rover.reservation.staycard.reservationcard.reservationdetails';
+            return $rootScope.isStandAlone && hasCreditCardRemovalPermission && 
+                    ($state.current.name === 'rover.reservation.staycard.reservationcard.reservationdetails');
         };
 
     }]);
