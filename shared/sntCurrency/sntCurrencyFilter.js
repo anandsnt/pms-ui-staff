@@ -5,21 +5,23 @@ angular.module('sntCurrencyFilter', []).filter('sntCurrency', function() {
 
 		if (typeof input !== 'undefined' && scope) {
 			// If passing custom currency (eg: rate currency).
-			var currencySymbol = customCurrencySymbol ? customCurrencySymbol : scope.currencySymbol;
+			var currencySymbol = customCurrencySymbol ? customCurrencySymbol : scope.currencySymbol,
+				precisionValue = precision ? precision : DEFAULT_PRECISION;
 
 			if (isNaN(input)) {
 				console.warn("sntCurrency exception :: Invalid input - ", input);
 				return currencySymbol;
 			}
-			else if (typeof input !== 'string') {
-				input = input.toString();
+			else {
+				input = parseFloat(input);
+				input = input.toFixed(precisionValue);
 			}
 
 			var paramObj = {
 				input: input,
 				symbol: currencySymbol,
 				isWithoutSymbol: !!isWithoutSymbol,
-				precision: precision ? precision : DEFAULT_PRECISION
+				precision: precisionValue
 			};
 
 			switch (scope.currencyFormat) {
@@ -133,16 +135,9 @@ function processSntCurrency( paramObj ) {
 	processData = processIntegerPart(integerPart, paramObj.integerSeperatorType);
 
 	if ( fractionPart !== null && paramObj.fractionSeperatorType !== null) {
-		// STEP-3 : Appending central seperator.
-		// Eg : '1,234,567' + '.' => '1,234,567.'
-		processData = processData + getSeperatorType(paramObj.fractionSeperatorType);
-			
-		// Calculating precision on fractional part.
-		var fraction = fractionPart.slice(0, paramObj.precision);
-			
-		// STEP-4 : Add fractional part.
-		// Eg : '1,234,567.' + '89' => '1,234,567.89'
-		processData = processData + fraction;
+		// STEP-3 : Appending central seperator and fractional part.
+		// Eg : '1,234,567' + '.' + '89' => '1,234,567.89'
+		processData = processData + getSeperatorType(paramObj.fractionSeperatorType) + fractionPart;
 	}
 
 	// STEP-5 : Append currency symbol based on isWithoutSymbol flag.

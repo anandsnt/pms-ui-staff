@@ -25,7 +25,7 @@ describe('Filter: sntCurrency', function() {
 		it ('with Interger part only', function() {
 			input = 1234567890;
 			result = $filter('sntCurrency')(input, that);
-			expect(result).toBe('<span class="currency">$</span> 1,234,567,890');
+			expect(result).toBe('<span class="currency">$</span> 1,234,567,890,00');
 		});
 
 		it ('with Fraction part only', function() {
@@ -58,7 +58,7 @@ describe('Filter: sntCurrency', function() {
 		it ('with Interger part only', function() {
 			input = 1234567890;
 			result = $filter('sntCurrency')(input, that);
-			expect(result).toBe('<span class="currency">$</span> 1,234,567,890');
+			expect(result).toBe('<span class="currency">$</span> 1,234,567,890.00');
 		});
 
 		it ('with Fraction part only', function() {
