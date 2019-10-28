@@ -287,13 +287,10 @@
 						</div>
 
 						<!-- Invoice -->
-						<div id="invoiceDiv" ng-if="printBillCardActive && !printGroupProfomaActive" class="invoice invoice-page-break" ng-include="'/assets/partials/bill/rvPrintBillCard.html'"></div>
+						<div id="invoiceDiv" ng-if="printBillCardActive" class="invoice invoice-page-break" ng-include="'/assets/partials/bill/rvPrintBillCard.html'"></div>
 
 						<!-- Invoice -->
 						<div id="invoiceDiv" ng-if="printReceiptActive" class="invoice" ng-include="'/assets/partials/bill/rvPrintReceipt.html'"></div>
-
-						<!-- Invoice -->
-						<div id="invoiceDiv" ng-if="printGroupProfomaActive" class="invoice invoice-page-break" ng-include="'/assets/partials/bill/rvPrintGroupProfoma.html'"></div>
 
 						<!-- Balance / Signature / Card -->
 						<div class="total-stay-fees" ng-include="'/assets/partials/bill/rvTotalStayFees.html'" ></div>

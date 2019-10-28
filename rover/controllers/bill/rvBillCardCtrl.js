@@ -2727,11 +2727,6 @@ sntRover.controller('RVbillCardController',
 					$scope.printBillCardActive = true;
 					$scope.$emit('hideLoader');
 
-					if (successData.is_group && successData.is_proforma_invoice) {
-						$scope.printBillCardActive = false;
-						$scope.printGroupProfomaActive = true;
-					}
-
 					if ($scope.billFormat.isInformationalInvoice) {
 						successData.invoiceLabel = successData.translation.information_invoice;
 					}
