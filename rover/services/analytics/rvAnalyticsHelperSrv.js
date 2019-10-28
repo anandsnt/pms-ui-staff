@@ -200,7 +200,7 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 	this.addRandomNumbersForTesting = function(chartDetails) {
 		var combinedItemsCountArray = [];
 
-		var workPriority = false;
+		var workPriority = chartDetails.chartData.label === 'AN_WORKLOAD'; ;
 
 		if (workPriority) {
 			var b = {
@@ -238,7 +238,7 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 
 			var i = 0;
 			var c = {};
-			for (i = 0; i <= 10; i++) {
+			for (i = 0; i <= 20; i++) {
 				c[i] = angular.copy(b);
 				c[i].type = c[i].type + i;
 				c[i].label = c[i].label + i;
