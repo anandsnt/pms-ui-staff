@@ -270,8 +270,22 @@
 		/* Search Results ***/
 			&.icon-location {  background-position: 0px -36px; }
 			&.icon-group { background-position: 0 -77px; }
-			&.icon-guest-company { background-position: 0 -758px; }
-			&.icon-guest-travelagent { background-position: 0 -818px; }
+			&.icon-guest-company { 
+                background-position: 0 -758px;
+
+                &.colored {
+                    background-position: 0 -13118px;
+                    color: @ccard;
+                } 
+            }
+			&.icon-guest-travelagent { 
+                background-position: 0 -818px;
+
+                &.colored {
+                    background-position: 0 -13178px;
+                    color: @tacard;
+                } 
+            }
 			&.icon-allotment { background-position: 0 -8317px; }
 
 			&.icon-phone { background-position: 3px -4234px; }
@@ -692,6 +706,17 @@
 
             &.icon-picked-up {
                 background-position: 0 -10780px;
+            }
+
+        /* Contracts */
+            &.icon-single-arrow {
+                background-position: 2px -12998px;
+                .square(13px);
+            }
+
+            &.icon-connect {
+                background-position: 0 -13058px;
+                .size(15px,20px);
             }
 
 		/* Rotations */

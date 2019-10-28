@@ -3982,6 +3982,151 @@
                     }
                 }
             }
+
+            /* Contract - under CO/TA Contracts tab when searching */
+            &.contract {
+                position: relative;
+                height: 50px;
+
+                &:not(:last-child) {
+                    margin-bottom: 15px;
+                }
+
+                .faux-anchor {
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                    #flexbox > .parent( row, '', center, '' );
+                }
+
+                &.linked {
+
+                    .contract-status,
+                    .contract-dates,
+                    .contract-historical,
+                    .contract-rates,
+                    .contract-details,
+                    .icon-connect {
+                        opacity: 0.35;
+                    }
+                    
+
+                    &:after {
+                        content: '';
+                        .icons();
+                        position: absolute;
+                        width: 14px;
+                        height: 14px;
+                        right: 10px;
+                        top: 0;
+                        bottom: 0;
+                        margin: auto;
+                        background-size: 60px;
+                        background-position: 0px -3679px;
+
+                        @media @highdpi {
+                            background-size: 60px;
+                        }
+                    }
+
+                }
+
+                .icon-connect {
+                    position: absolute;
+                    top: 5px;
+                    right: 5px;
+                }
+                
+                .contract-status,
+                .contract-dates,
+                .contract-historical,
+                .contract-rates,
+                .contract-details {
+                    .pull-left;
+                }
+
+                .contract-dates {
+                    width: 85px;
+                    font-size: 12px;
+
+                    .start-date,
+                    .end-date {
+                        display: block;
+                    }
+                }
+
+                .contract-historical {
+                    width: 90px;
+                    font-size: 12px;
+                    text-transform: uppercase;
+
+                    .future {
+                        color: @grey3;
+                    }
+                }
+
+                .contract-rates {
+                    width: 225px;
+                    font-size: 12px;
+                    text-transform: uppercase;
+
+                    .more {
+                        display: inline;
+                        color: @grey3;
+                        margin: 0;
+                    }
+                }
+
+                .contract-status {
+                    width: 70px;
+                    font-size: 12px;
+                    text-transform: uppercase;
+
+                    .icon-contracts {
+                        padding-left: 17px;
+
+                        &.active {
+                            color: @green;
+                        }
+                    }
+                }
+
+                .contract-details {
+                    .calc-width( 100, 480);
+
+                    h2 {
+                        font-size: 16px;
+                    }
+
+                    .access-code {
+                        width: 90px;
+                        font-size: 13px;
+                        text-transform: uppercase;
+                        color: @black;
+                        font-weight: 600;
+                        .pull-left;
+                    }
+
+                    .icons {
+                        font-size: 12px;
+                        padding-left: 20px;
+                        line-height: 18px;
+                        height: 16px;
+                        text-transform: uppercase;
+                        background-size: 80px;
+                        .pull-left;
+
+                        &.colored {
+                            &.icon-guest-company {
+                                background-position: 0 -8743px;
+                            }
+
+                            &.icon-guest-travelagent {
+                                background-position: 0 -8783px;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
