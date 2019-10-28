@@ -37,10 +37,10 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
         /*
          * Front desk arrivals and stay-overs data
          */
-        this.fdArrivalsManagement = function(date) {
+        this.fdArrivalsManagement = function(date, hotelCheckinTime, hotelCheckoutTime) {
             var deferred = $q.defer();
 
-            rvAnalyticsSrv.hkOverview(date, true).then(function(response) {
+            rvAnalyticsSrv.hkOverview(date, true,  hotelCheckinTime, hotelCheckoutTime).then(function(response) {
                 response.label = 'AN_ARRIVALS_MANAGEMENT';
                 response.dashboard_type = 'arrivals_management_chart';
                 response.data = _.reject(response.data, function(data) {

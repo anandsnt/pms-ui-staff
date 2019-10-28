@@ -141,15 +141,15 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
     /*
      * This function will return the data structure for HK Work Priority
      */
-    this.hkOverview = function(date, isArrivalsManagement) {
+    this.hkOverview = function(date, isArrivalsManagement, hotelCheckinTime, hotelCheckoutTime) {
         var deferred = $q.defer();
 
-        constructHkOverview(deferred, date, isArrivalsManagement);
+        constructHkOverview(deferred, date, isArrivalsManagement, hotelCheckinTime, hotelCheckoutTime);
 
         return deferred.promise;
     };
 
-    var constructHkOverview = function(deferred, date, isArrivalsManagement) {
+    var constructHkOverview = function(deferred, date, isArrivalsManagement, hotelCheckinTime, hotelCheckoutTime) {
         var hkOverview = {
             dashboard_type: 'house_keeping_overview',
             label: 'AN_HOUSEKEEPING_OVER_VIEW',
@@ -162,9 +162,9 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         var rooms = that.filterdRoomStatuses();
 
         // Pushing arrivals data structure
-        hkOverview.data.push(buildArrivals(reservations, date, isOverview, isArrivalsManagement));
+        hkOverview.data.push(buildArrivals(reservations, date, isOverview, hotelCheckinTime));
         // Pushing departure data structure
-        hkOverview.data.push(buildDepartures(reservations, date, isOverview, isArrivalsManagement));
+        hkOverview.data.push(buildDepartures(reservations, date, isOverview, hotelCheckoutTime));
         // Pushing Stayovers data structure
         hkOverview.data.push(buildStayOvers(reservations, rooms, date));
         // Pushing vacant data structure

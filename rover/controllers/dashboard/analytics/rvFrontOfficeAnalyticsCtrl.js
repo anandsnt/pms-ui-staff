@@ -46,8 +46,10 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 			});
 		};
 		var renderFrontOfficeManagementChart = function() {
+            var hotelCheckinTime = $rootScope.hotelDetails.hotel_checkin_time;
+            var hotelCheckoutTime = $rootScope.hotelDetails.hotel_checkout_time;
 
-			rvFrontOfficeAnalyticsSrv.fdArrivalsManagement(date).then(function(data) {
+			rvFrontOfficeAnalyticsSrv.fdArrivalsManagement(date, hotelCheckinTime, hotelCheckoutTime).then(function(data) {
 				console.log(JSON.stringify(data));
 				var chartDetails = {
 					chartData: data,
