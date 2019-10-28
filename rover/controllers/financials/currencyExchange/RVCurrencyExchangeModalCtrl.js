@@ -15,7 +15,7 @@ sntRover.controller('RVCurrencyExchangeModalController',
             $scope.exchangeCurrencyList = $rootScope.exchangeCurrencyList;
             $scope.selected_rate_currency  = (_.first($scope.exchangeCurrencyList)).id;
             $scope.selected_rate_currency_symbol  = (_.first($scope.exchangeCurrencyList)).symbol;
-            $scope.isInvoiceCurrency = ( $rootScope.invoiceCurrencyObject !=="" ) ? $scope.selected_rate_currency === (_.find($rootScope.exchangeCurrencyList, {"id": $rootScope.invoiceCurrencyObject.id})).id : false;
+            $scope.isInvoiceCurrency = ( $rootScope.invoiceCurrencyObject !== "" ) ? $scope.selected_rate_currency === (_.find($rootScope.exchangeCurrencyList, {"id": $rootScope.invoiceCurrencyObject.id})).id : false;
             
             var delay = 200,
                 noOfDays = 7,
