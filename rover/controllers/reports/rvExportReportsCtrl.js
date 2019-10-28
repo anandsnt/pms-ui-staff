@@ -219,10 +219,10 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 params.time_period_id = $scope.scheduleParams.time_period_id;
             }
             if ( $scope.scheduleParams.from_date ) {
-                params.from_date = $scope.scheduleParams.from_date;
+                params.from_date = $filter('date')($scope.scheduleParams.from_date, $rootScope.dateFormatForAPI);
             }
             if ( $scope.scheduleParams.to_date ) {
-                params.to_date = $scope.scheduleParams.to_date;
+                params.to_date = $filter('date')($scope.scheduleParams.to_date, $rootScope.dateFormatForAPI);
             }
 
             // fill 'frequency_id', 'starts_on', 'repeats_every' and 'ends_on_date'
@@ -781,7 +781,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             $scope.scheduleParams.from_date = (exportDate === null) ? null : reportUtils.processDate(exportDate).today;
 
             $scope.exportCalenderToOptions = angular.extend({
-                maxDate: tzIndependentDate($rootScope.businessDate),
+                maxDate: tzIndependentDate(businessDateMinusOne),
                 minDate: tzIndependentDate(exportDate)
             }, datePickerCommon);
             $scope.scheduleParams.to_date = reportUtils.processDate(exportToDate).today;
