@@ -62,21 +62,19 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 			});
 		};
 
-
-		var renderFrontOfficeActivity = function() {
-
-			rvFrontOfficeAnalyticsSrv.fdFoActivity(date).then(function(data) {
-				console.log(JSON.stringify(data));
-				d3.select('#analytics-chart').selectAll('svg').remove();
-				$scope.drawFrontOfficeActivity(data);
-			});
-		};
-
-
 		var clearAllExistingChartElements = function() {
 			document.getElementById("left-side-legend").innerHTML = "";
 			document.getElementById("analytics-chart").innerHTML = "";
 			document.getElementById("right-side-legend").innerHTML = "";
+		};
+
+		var renderFrontOfficeActivity = function() {
+
+			rvFrontOfficeAnalyticsSrv.fdFoActivity(date).then(function(data) {
+				clearAllExistingChartElements();
+				d3.select('#analytics-chart').selectAll('svg').remove();
+				$scope.drawFrontOfficeActivity(data);
+			});
 		};
 
 		var drawChart = function() {

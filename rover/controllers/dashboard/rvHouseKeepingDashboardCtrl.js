@@ -6,6 +6,7 @@ sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope'
 	var scrollerOptions = {click: true, preventDefault: false};
 
   	$scope.setScroller('dashboard_scroller', scrollerOptions);
+    $scope.setScroller('analytics_scroller', scrollerOptions);
 
 
   	$scope.showDashboard = true; // variable used to hide/show dabshboard
@@ -109,5 +110,13 @@ sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope'
       "date": $scope.dashboardFilter.datePicked
     });
   };
+
+  var refreshAnalyticsScroller = function() {
+    $timeout(function() {
+      $scope.refreshScroller('analytics_scroller');
+    }, 500);
+  };
+
+  $scope.$on('REFRESH_ANALTICS_SCROLLER', refreshAnalyticsScroller);
 
 }]);

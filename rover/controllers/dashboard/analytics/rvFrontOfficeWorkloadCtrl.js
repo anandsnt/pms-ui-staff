@@ -293,7 +293,8 @@ angular.module('sntRover')
 					.html(function(d) {
 						return d;
 					});
-			
+				
+				$scope.$emit('REFRESH_ANALTICS_SCROLLER');
 			};
 		}
 	]);
