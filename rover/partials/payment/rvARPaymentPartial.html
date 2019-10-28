@@ -61,7 +61,7 @@
         <li ng-if="!feeData.showFee">
             Amount paid:
             <span class="value">
-                {{payment.selectedPaymentCurrencySymbol}}{{payment.amount}}
+                {{payment.selectedPaymentCurrencySymbol}}{{payment.amount | number: precisonTwo}}
             </span>
         </li>
     </ul>

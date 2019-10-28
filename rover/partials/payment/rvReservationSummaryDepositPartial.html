@@ -119,7 +119,7 @@
             <li ng-if="!feeData.showFee">
                 Amount paid:
                 <span class="value">
-                    <i class="currency">{{payment.selectedPaymentCurrencySymbol}}</i>{{payment.amount}}
+                    <i class="currency">{{payment.selectedPaymentCurrencySymbol}}</i>{{payment.amount | number: precisonTwo}}
                 </span>
             </li>
         </ul>
