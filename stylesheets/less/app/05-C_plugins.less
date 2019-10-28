@@ -1818,41 +1818,124 @@
 
             /* CC modal ***/
             &.card-content {
-                width: 920px;
+                padding: 20px 0;
+                width: 820px;
+
+                .scrollable {
+                    position: relative;
+                    max-height: 440px;
+                }
+
+                .wrapper {
+                    padding: 0 20px;
+                }
+
+                .iScrollVerticalScrollbar {
+                    top: 0;
+                    bottom: 0;
+                }
+
+                .payment-method {
+                    margin-bottom: 10px;
+                    #flexbox > .parent( row, flex-start, center, '');
+                }
 
                 .active-item {
                     position: relative;
-                    line-height: 50px;
                     padding: 0 20px;
-                    margin-bottom: 10px;
-                    .clickable;
+                    line-height: 50px;
+                    .calc-width(100, 60);
+                    .clickable();
+                    #flexbox > .parent(flex row, '', center, '');
+
+                    .card-logo,
+                    > span {
+                        float: none;
+                        margin-top: 0;
+                        #flexbox > .parent(flex row, '', center, '');
+
+                        &:not(:last-child) {
+                            margin-right: 20px;
+                        }
+                    }
+
+                    .card-logo {
+                        .size(30px, 40px);
+
+                        img {
+                            object-fit: contain;
+                            .square(100%);
+                        }
+                    }
 
                     > span {
-                        &.number { width: 150px; }
-                        &.date { width: 100px; }
-                        &.name {
-                            width: 240px;
 
-                            .value {
-                                white-space: nowrap;
-                                text-overflow: ellipsis;
-                                overflow: hidden;
+                        .value {
+                            font-size: 16px;
+                            margin-left: 5px;
+
+                            &.name {
+                                max-width: 240px;
+                                .nowrap();
+                            }
+
+                            &.primary {
+                                font-size: 12px;
+                                font-weight: 600;
+                                margin-left: 0;
                             }
                         }
 
-                        &.in-gc { 
-                            width: 90px;
+                        &.icons,
+                        &.primary {
+                            position: absolute;
                             margin-right: 0;
-                            .pull-right;
+                        }
+
+                        &.icons {
+                            top: 10px;
+                            right: 20px;
                         }
 
                         &.primary {
-                            position: absolute;
                             top: 0;
-                            right: 125px;
-                            margin-right: 0;
+                            right: 60px;
                         }
                     }
+                }
+
+                .icon-remove-40 {
+                    margin-left: 10px;
+                    background-position: 15px -3745px;
+                    .clickable;
+                    .square(50px);
+                }
+
+                .add-new-button {
+                    margin: 20px auto 0;
+                    width: 280px;
+                    .show();
+                }
+
+                .no-content {
+
+                    .icon-no-content {
+                        background-size: 60px;
+                        .square(60px);
+
+                        &.icon-card {
+                            background-position: 0 -340px;
+                        }
+                    }
+
+                    .h1 {
+                        font-size: 24px;
+                        line-height: 1.2;
+                    }
+                }
+
+                &.no-cards {
+                    width: 360px;
                 }
             }
 
@@ -8847,7 +8930,7 @@
                     }
                 }                
 
-                .filters {
+                .filters {
                     padding: 30px 20px 10px 20px;
                     .size(80px, 100%);
                     #flexbox > .parent(row wrap, center, center, '');
