@@ -411,6 +411,7 @@ sntRover.controller('RVdashboardController',
 
                 $scope.dashboardFilter.datePicked = angular.copy($rootScope.businessDate);
 
+                $scope.datePicked = moment($rootScope.businessDate).format('YYYY-MM-DD');
                 $scope.dateOptions = {
                     changeYear: true,
                     changeMonth: true,
