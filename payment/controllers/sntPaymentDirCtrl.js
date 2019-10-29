@@ -1573,7 +1573,7 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 config = $scope.hotelConfig;
 
-                isEMVEnabled = config.paymentGateway === 'sixpayments' || config.paymentGateway === 'SHIJI' ||
+                isEMVEnabled = config.paymentGateway === 'sixpayments' || (config.paymentGateway === 'SHIJI' && !$rootScope.hotelDetails.shiji_token_enable_offline) ||
                     ((config.paymentGateway === 'MLI' || config.paymentGateway === 'CBA_AND_MLI') && config.isEMVEnabled);
 
                 $scope.paymentAttempted = false;
@@ -1581,6 +1581,10 @@ angular.module('sntPay').controller('sntPaymentController',
                 $scope.showSelectedCard();
                 if ($rootScope.isWorkStationMandatory) {
                     $scope.checkWorkStationMandatoryFields();
+                }
+
+                if ($scope.selectedPaymentType === 'CC' && $scope.selectedCC && $scope.hotelConfig.paymentGateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline) {
+                    $scope.payment.auth_code = $scope.selectedCC.auth_code;
                 }
 
             })();
