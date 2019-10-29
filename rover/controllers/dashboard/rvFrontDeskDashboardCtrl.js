@@ -19,6 +19,7 @@ sntRover.controller('RVfrontDeskDashboardController',
 	var scrollerOptions = {click: true, preventDefault: false};
 
   	$scope.setScroller('dashboard_scroller', scrollerOptions);
+    $scope.setScroller('analytics_scroller', scrollerOptions);
 
   	$scope.showDashboard = true; // variable used to hide/show dabshboard
     // changing the header
@@ -73,4 +74,12 @@ sntRover.controller('RVfrontDeskDashboardController',
     }, 500);
 
     $scope.$emit('SET_DEFAULT_ANALYTICS_MENU', 'FO_ARRIVALS');
+
+    var refreshAnalyticsScroller = function() {
+      $timeout(function() {
+        $scope.refreshScroller('analytics_scroller');
+      }, 500);
+    };
+
+    $scope.$on('REFRESH_ANALTICS_SCROLLER', refreshAnalyticsScroller);
 }]);

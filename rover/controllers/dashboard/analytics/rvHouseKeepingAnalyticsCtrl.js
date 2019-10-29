@@ -25,9 +25,12 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 		var date = $rootScope.businessDate;
 
 		var renderHkOverview = function() {
+            var hotelCheckinTime = $rootScope.hotelDetails.hotel_checkin_time;
+            var hotelCheckoutTime = $rootScope.hotelDetails.hotel_checkout_time;
+
 			$scope.screenData.mainHeading = "";
             // Calling HK Overview Build Graph
-			rvAnalyticsSrv.hkOverview($scope.dashboardFilter.datePicked).then(function(data) {
+			rvAnalyticsSrv.hkOverview($scope.dashboardFilter.datePicked, false, hotelCheckinTime, hotelCheckoutTime).then(function(data) {
 				console.log(data);
 				var chartDetails = {
 					chartData: data,
@@ -113,7 +116,9 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 
 
 		$scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER', function(e, filter) {
-			fetchData(filter.date, filter.room_type_id);
+            rvAnalyticsSrv.selectedRoomType = filter.room_type;
+            clearAllExistingChartElements();
+            drawChart();
 		});
 
 		$scope.$on('RESET_ANALYTICS_FILTERS', function (){

@@ -387,6 +387,7 @@ sntRover.controller('RVdashboardController',
                     if ($scope.dashboardFilter.analyticsActive) {
                         $scope.dashboardFilter.analyticsActive = false;
                         $scope.$broadcast('RESET_ANALYTICS_FILTERS');
+                        $scope.$broadcast("showDashboardArea", true);
                     } else {
                         $scope.dashboardFilter.analyticsActive = true;
                     }
@@ -403,7 +404,7 @@ sntRover.controller('RVdashboardController',
 
                 $scope.onAnlayticsRoomTypeChange = function() {
                     $scope.$broadcast('RELOAD_DATA_WITH_SELECTED_FILTER', {
-                        "room_type_id": $scope.dashboardFilter.selectedRoomTypeId,
+                        "room_type": $scope.dashboardFilter.selectedRoomType,
                         "date": $scope.dashboardFilter.datePicked
                     });
                 };
