@@ -1583,6 +1583,10 @@ angular.module('sntPay').controller('sntPaymentController',
                     $scope.checkWorkStationMandatoryFields();
                 }
 
+                if ($scope.selectedPaymentType === 'CC' && $scope.selectedCC && $scope.hotelConfig.paymentGateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline) {
+                    $scope.payment.auth_code = $scope.selectedCC.auth_code;
+                }
+
             })();
 
         }
