@@ -65,8 +65,7 @@
             </tr>
             <tr>
                 <td colspan="7">{{printData.translation.net_amount}}</td>
-                <td><strong>{{currencySymbol}}{{printData.proforma_bill_transactions.net_amount | number: precisonTwo }}</strong>
-                </td>
+                <td>{{currencySymbol}}{{printData.proforma_bill_transactions.net_amount | number: precisonTwo }}</td>
             </tr>
             <tr ng-if="!printData.has_enabled_extended_tax_breakdown" ng-repeat="tax in printData.bill_transactions_info.tax_info">
                 <td colspan="7">{{tax.tax_charge_code_desc}}</td>
@@ -75,7 +74,7 @@
             <tr>
                 <td colspan="7">{{printData.translation.total_incl_tax }}</td>
                 <td>
-                    <strong>{{currencySymbol}}{{printData.proforma_bill_transactions.total_incl_tax| number: precisonTwo }}</strong>
+                    {{currencySymbol}}{{printData.proforma_bill_transactions.total_incl_tax| number: precisonTwo }}
                 </td>
             </tr>            
         </tfoot>
