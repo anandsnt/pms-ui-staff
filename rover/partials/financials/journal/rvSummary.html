@@ -14,9 +14,9 @@
             <h3 ng-if="(data.summaryData.deposit_debits !== 0 || data.summaryData.deposit_credits !== 0)" class="has-arrow toggle" ng-class="{'active': data.summaryData.deposit_balance.active }" ng-click="toggleJournalSummaryItem('DEPOSIT_BALANCE')" translate>DEPOSIT_BAL</h3>
             <h3 ng-if="(data.summaryData.deposit_debits === 0 && data.summaryData.deposit_credits === 0)" translate>DEPOSIT_BAL</h3>
             <ul>
-                <li>{{'OPENING' | translate}}<span ng-bind-html="data.summaryData.deposit_opening_balance | sntCurrency:this:'$$'"></span></li>
-                <li>{{'DEBIT' | translate}}<span ng-bind-html="data.summaryData.deposit_debits | sntCurrency:this:null:true"></span></li>
-                <li>{{'CREDIT' | translate}}<span ng-bind-html="data.summaryData.deposit_credits | sntCurrency:this:null:null:3"></span></li>
+                <li>{{'OPENING' | translate}}<span ng-bind-html="data.summaryData.deposit_opening_balance | sntCurrency:this"></span></li>
+                <li>{{'DEBIT' | translate}}<span ng-bind-html="data.summaryData.deposit_debits | sntCurrency:this:null"></span></li>
+                <li>{{'CREDIT' | translate}}<span ng-bind-html="data.summaryData.deposit_credits | sntCurrency:this"></span></li>
                 <li>{{'CLOSING' | translate}}<span ng-bind-html="data.summaryData.deposit_closing_balance | sntCurrency:this"></li>
             </ul>
         </div>
