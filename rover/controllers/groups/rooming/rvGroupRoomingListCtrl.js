@@ -12,6 +12,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
   '$state',
   '$window',
   '$stateParams',
+  'RVContactInfoSrv',
   function (
     $scope,
     $rootScope,
@@ -25,7 +26,8 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
     rvGroupConfigurationSrv,
     $state,
     $window,
-    $stateParams) {
+    $stateParams,
+    RVContactInfoSrv) {
 
         BaseCtrl.call(this, $scope);
         $scope.isPrintClicked = false;
@@ -1789,11 +1791,17 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          * @return - None
          */
         $scope.openEmailPrintPopup = function() {
-                // if ($scope.groupConfigData && $scope.groupConfigData.summary && !!$scope.groupConfigData.summary.contact_email) {
-                //     $scope.sendEmail($scope.groupConfigData.summary.contact_email);
-                // } else {
-                    $scope.isAnyPopupOpen = true;
-                    setEmailPrintFiltersDefaults();
+            $scope.isAnyPopupOpen = true;
+            setEmailPrintFiltersDefaults();
+           
+            var fetchGuestLanguageSuccess = function(data) {
+                    $scope.ngData = {};
+                    $scope.languageData = data;
+                    $scope.printEmailConfig = {
+                        locale: data.selected_language_code,
+                        showLanguageField: data.show_language_field
+                    };
+
                     ngDialog.open({
                         template: '/assets/partials/groups/rooming/popups/general/rvRoomingListEmailPrompt.html',
                         className: '',
@@ -1801,13 +1809,20 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                         closeByDocument: false,
                         closeByEscape: false
                     });
+                
+                },
+                options = {
+                    onSuccess: fetchGuestLanguageSuccess
+                };
 
-                // }
-            };
-            /**
-             * Function to send e-mail of Rooming list.API call goes here.
-             * @return - None
-             */
+            $scope.callAPI(RVContactInfoSrv.fetchGuestLanguages, options);
+                
+        };
+
+        /**
+         * Function to send e-mail of Rooming list.API call goes here.
+         * @return - None
+         */
         $scope.sendEmail = function(mailTo) {
             if (!mailTo) {
                 $scope.errorMessage =  ["Please enter email!!"];
@@ -1831,7 +1846,8 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 "exclude_cancel": $scope.exclude_cancel,
                 "exclude_room_no": $scope.emailPrintFilters.excludeRoomNumber,
                 "exclude_accompany_guests": $scope.emailPrintFilters.excludeAccompanyingGuests,
-                "exclude_room_type": $scope.emailPrintFilters.excludeRoomType
+                "exclude_room_type": $scope.emailPrintFilters.excludeRoomType,
+                locale: $scope.printEmailConfig.locale
             };
 
             $scope.callAPI(rvGroupRoomingListSrv.emailInvoice, {
