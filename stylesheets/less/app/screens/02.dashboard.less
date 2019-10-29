@@ -163,6 +163,292 @@
     }
 }
 
+/* Analytics ***/
+#dashboard.analytics {
+
+    .bar {
+        color: @white;
+        text-shadow: 1px 1px 0 rgba(0,0,0,.2);
+        font-weight: 600;
+        .transition();
+
+        &.bar-green {
+
+            &:not(.bar-dark):not(.bar-light) {
+                .gradient (@greenStart, @greenEnd);
+
+                &:hover,
+                &:active { .gradient (@greenEnd, @greenStart); }
+            }
+
+            &.bar-dark {
+                .gradient (@greenDarkStart, @greenDarkEnd);
+
+                &:hover,
+                &:active { .gradient (@greenDarkEnd, @greenDarkStart); }
+            }
+
+            &.bar-light {
+                .gradient (@greenLightStart, @greenLightEnd);
+
+                &:hover,
+                &:active { .gradient (@greenLightEnd, @greenLightStart); }
+            }
+        }
+        
+        &.bar-red {
+
+            &:not(.bar-dark):not(.bar-light) {
+                .gradient (@redStart, @redEnd);
+
+                &:hover,
+                &:active { .gradient (@redEnd, @redStart); }
+            }
+
+            &.bar-dark {
+                .gradient (@redDarkStart, @redDarkEnd);
+
+                &:hover,
+                &:active { .gradient (@redDarkEnd, @redDarkStart); }
+            }
+
+            &.bar-light {
+                .gradient (@redLightStart, @redLightEnd);
+
+                &:hover,
+                &:active { .gradient (@redLightEnd, @redLightStart); }
+            }
+        }
+
+        &.bar-blue {
+
+            &:not(.bar-dark):not(.bar-light) {
+                .gradient (@blueStart, @blueEnd);
+
+                &:hover,
+                &:active { .gradient (@blueEnd, @blueStart); }
+            }
+
+            &.bar-dark {
+                .gradient (darken(@blueStart, 10), darken(@blueEnd, 10));
+
+                &:hover,
+                &:active { .gradient (darken(@blueEnd, 10), darken(@blueStart, 10)); }
+            }
+
+            &.bar-light {
+                .gradient (@blueLightStart, @blueLightEnd);
+
+                &:hover,
+                &:active { .gradient (@blueLightEnd, @blueLightStart); }
+            }
+        }
+
+        &.bar-yellow {
+
+            &:not(.bar-dark):not(.bar-light) {
+                .gradient (@yellowStart, @yellowEnd);
+
+                &:hover,
+                &:active { .gradient (@yellowEnd, @yellowStart); }
+            }
+
+            &.bar-dark {
+                .gradient (@yellowDarkStart, @yellowDarkEnd);
+
+                &:hover,
+                &:active { .gradient (@yellowDarkEnd, @yellowDarkStart); }
+            }
+
+            &.bar-light {
+                .gradient (desaturate(@yellowStart, 5), desaturate(@yellowEnd, 5));
+
+                &:hover,
+                &:active { .gradient (desaturate(@yellowEnd, 5), desaturate(@yellowStart, 5)); }
+            }
+        }
+
+        &.bar-orange {
+            .gradient (@orangeStart, @orangeEnd);
+
+            &:hover,
+            &:active { .gradient (@orangeEnd, @orangeStart); }
+        }
+    }
+
+    svg {
+        .bar {
+            text {
+                fill: @white;
+            }
+        }
+    }
+
+    .analytics-chart {
+        display: grid;
+        grid-column-gap: 20px;
+
+        &.with-legend-left:not(.with-legend-right) {
+            grid-template-columns: 180px 1fr;
+        }
+
+        &.with-legend-right:not(.with-legend-left) {
+            grid-template-columns: 1fr 180px;
+        }
+
+        &.with-legend-left.with-legend-right {
+            grid-template-columns: 180px 1fr 180px;
+        }
+    }
+
+    .chart-legend {
+        display: flex;
+        flex-flow: column wrap;
+        font-size: 14px;
+        line-height: 1;
+        text-transform: uppercase;
+
+        .legend-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+
+            &:not(:first-child) {
+                margin-top: 10px;
+            }
+        }
+
+        .legend-item {
+            cursor: pointer;
+            display: flex;
+            flex-flow: row wrap;
+            align-items: center;
+            background-color: @white;
+            border-radius: 3px;
+            box-shadow: inset 0 -1px 0 rgba(0,0,0,.2);
+            width: 100%;
+            .transition();
+
+            &:not(:last-child) {
+                margin-bottom: 10px;
+            }
+
+            &:hover,
+            &:active {
+                box-shadow: inset 1px 1px 1px rgba(0,0,0,.2);
+
+                .bar {
+                    box-shadow: inset 0 1px 1px rgba(0,0,0,.2);
+
+                    &.bar-green {
+
+                        &:not(.bar-dark):not(.bar-light) {
+                            .gradient (@greenEnd, @greenStart);
+                        }
+
+                        &.bar-dark {
+                            .gradient (@greenDarkEnd, @greenDarkStart);
+                        }
+
+                        &.bar-light {
+                            .gradient (@greenLightEnd, @greenLightStart);
+                        }
+                    }
+                    
+                    &.bar-red {
+
+                        &:not(.bar-dark):not(.bar-light) {
+                            .gradient (@redEnd, @redStart);
+                        }
+
+                        &.bar-dark {
+                            .gradient (@redDarkEnd, @redDarkStart);
+                        }
+
+                        &.bar-light {
+                            .gradient (@redLightEnd, @redLightStart);
+                        }
+                    }
+
+                    &.bar-blue {
+
+                        &:not(.bar-dark):not(.bar-light) {
+                            .gradient (@blueEnd, @blueStart);
+                        }
+
+                        &.bar-dark {
+                            .gradient (darken(@blueEnd, 10), darken(@blueStart, 10));
+                        }
+
+                        &.bar-light {
+                            .gradient (@blueLightEnd, @blueLightStart);
+                        }
+                    }
+
+                    &.bar-yellow {
+
+                        &:not(.bar-dark):not(.bar-light) {
+                            .gradient (@yellowEnd, @yellowStart);
+                        }
+
+                        &.bar-dark {
+                            .gradient (@yellowDarkEnd, @yellowDarkStart);
+                        }
+
+                        &.bar-light {
+                            .gradient (desaturate(@yellowEnd, 5), desaturate(@yellowStart, 5));
+                        }
+                    }
+
+                    &.bar-orange {
+                        .gradient (@orangeEnd, @orangeStart);
+                    }
+                }
+            }
+        }
+
+        .bar-label {
+            flex: 1 1 auto;
+            font-size: 14px;
+            line-height: 30px;
+            padding: 0 10px;
+        }
+
+        .bar {
+            text-align: center;
+            line-height: 30px;
+            padding: 0 5px;
+            box-shadow: inset 0 -1px 0 rgba(0,0,0,.2);
+            .show();
+            .size(30px, 40px);
+        }
+
+        &.legend-left {
+            align-items: flex-end;
+
+            .bar {
+                order: 2;
+                border-top-right-radius: 3px;
+                border-bottom-right-radius: 3px;
+                
+            }
+        }
+
+        &.legend-right {
+            align-items: flex-start;
+
+            .bar {
+                border-top-left-radius: 3px;
+                border-bottom-left-radius: 3px;
+            }
+        }
+    }
+
+    .chart-content {
+        
+    }
+}
+
 /* 768px+               ==============================*/
 @media only screen and (min-width: 768px) {
     #dashboard {

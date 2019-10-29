@@ -97,7 +97,7 @@ angular.module('sntRover').service('RVreportsSrv', [
              'Invoice / Folio Export': [
                 'YESTERDAY',
                 'TODAY',
-                'DATE'
+                'DATE_RANGE'
              ],
              'Clairvoyix Stays Export': [
              	'YESTERDAY',
@@ -417,7 +417,7 @@ angular.module('sntRover').service('RVreportsSrv', [
 
 		service.createSchedule = function(params) {
 			var deferred = $q.defer(),
-				url = 'admin/export_schedules/';
+				url = 'admin/export_schedules';
 
 			var success = function(data) {
 				deferred.resolve(data);
