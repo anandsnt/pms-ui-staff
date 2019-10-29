@@ -180,7 +180,7 @@ angular.module('sntRover')
                         .style("font-size", "20px")
                         .style("font-style", "italic")
                         .style("fill", "#B1B1B1")
-                        .text("PERFOMED");
+                        .text("PERFORMED");
 
                     svg.append("text")
                         .attr("x", xScale(maxValueInBotheDirections / 2))
@@ -337,6 +337,8 @@ angular.module('sntRover')
                 rvAnalyticsHelperSrv.addLegendItems(cssClassMappings, rightSideLegendDiv, roomsLegendData);
 
                 /************************** RIGHT LEGEND ENDS HERE ************************/
+                
+                $scope.$emit('REFRESH_ANALTICS_SCROLLER');
             };
         }
     ]);

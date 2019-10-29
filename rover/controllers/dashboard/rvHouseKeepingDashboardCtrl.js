@@ -6,6 +6,7 @@ sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope'
 	var scrollerOptions = {click: true, preventDefault: false};
 
   	$scope.setScroller('dashboard_scroller', scrollerOptions);
+    $scope.setScroller('analytics_scroller', scrollerOptions);
 
 
   	$scope.showDashboard = true; // variable used to hide/show dabshboard
@@ -105,9 +106,17 @@ sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope'
 
   $scope.onHkAnlayticsRoomTypeChange = function() {
     $scope.$broadcast('RELOAD_DATA_WITH_SELECTED_FILTER', {
-      "room_type_id": $scope.dashboardFilter.selectedRoomTypeId,
+      "room_type": $scope.dashboardFilter.selectedRoomType,
       "date": $scope.dashboardFilter.datePicked
     });
   };
+
+  var refreshAnalyticsScroller = function() {
+    $timeout(function() {
+      $scope.refreshScroller('analytics_scroller');
+    }, 500);
+  };
+
+  $scope.$on('REFRESH_ANALTICS_SCROLLER', refreshAnalyticsScroller);
 
 }]);

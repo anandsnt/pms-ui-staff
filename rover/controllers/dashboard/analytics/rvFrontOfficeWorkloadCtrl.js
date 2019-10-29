@@ -266,38 +266,35 @@ angular.module('sntRover')
 						.attr("y2", height);
 				}
 
-				// // right side legends
-				var rightSideLegendDiv = d3.select("#right-side-legend")
-					.style("margin-top", yScale.bandwidth());
+				var rightSideLegendDiv = d3.select("#right-side-legend");
+
 				var rightSideLegendColor = d3.scaleOrdinal()
-					.range(["#50762A", "#83B451","#AC2727", "#EAC710", "#A99113", "#DD3636"])
+					.range(["#50762A", "#83B451", "#AC2727", "#EAC710", "#A99113", "#DD3636"])
 					.domain(["Early Check in", "VIP checkin", "Checkin", "VIP checkout", "Checkout", "Late checkout"]);
 
-				var rightSideLegendEntries = rightSideLegendDiv.selectAll("dd")
+				rightSideLegendDiv
+					.append("dt")
+					.attr("class", "legend-title")
+					.attr("id", "todays-data");
+
+				var rightSideLegendList = rightSideLegendDiv.append("ul");
+
+				var rightSideLegendEntries = rightSideLegendList.selectAll("li")
 					.data(rightSideLegendColor.domain().slice())
 					.enter()
-					.append("dd")
-					.attr("class", "legend-item")
-					.attr("id", function(item) {
-						return "right-legend-" + item.toLowerCase();
-					});
+					.append("li");
 
 				rightSideLegendEntries.append("span")
-					.attr("class", function(label) {
-                        return cssClassMappings[label];
-                    });
+					.attr("class", "rect")
+					.style("background-color", rightSideLegendColor);
 
 				rightSideLegendEntries.append("span")
-					.attr("class", "bar-label")
-					.html(function(label) {
-						return label;
+					.attr("class", "label")
+					.html(function(d) {
+						return d;
 					});
-
-				var legendMarginTop = (height - margin.top) / 2 + "px";
-
-				$('#right-side-legend').css({
-					"margin-top": legendMarginTop
-				});
+				
+				$scope.$emit('REFRESH_ANALTICS_SCROLLER');
 			};
 		}
 	]);
