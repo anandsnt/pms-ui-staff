@@ -249,6 +249,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                 $scope.rulesSubtitle = $scope.singleRule.name + ' Rule';
 
                 _.each($scope.singleRule.schedules, function(schedule) {
+                    schedule.amount = parseInt(schedule.amount).toFixed(2);
                     if (parseInt(schedule.advance_days) === 0) {
                         schedule.advance_days_selection = 0;
                     } else if (parseInt(schedule.advance_days) === 9999) {
