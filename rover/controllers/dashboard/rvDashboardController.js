@@ -416,11 +416,11 @@ sntRover.controller('RVdashboardController',
                     changeMonth: true,
                     yearRange: "-5:+5",
                     dateFormat: 'yy-mm-dd',
-                    maxDate: $rootScope.businessDate,
+                    maxDate: moment($rootScope.businessDate).add(3, 'days').format('YYYY-MM-DD'),
                     onSelect: function(dateText, inst) {
                         $scope.dashboardFilter.datePicked = dateText;
-                        $scope.$broadcast('RELOAD_DATA_WITH_SELECTED_FILTER', {
-                            "room_type_id": $scope.dashboardFilter.selectedRoomTypeId,
+                        $scope.$broadcast('RELOAD_DATA_WITH_DATE_FILTER', {
+                            "room_type": $scope.dashboardFilter.selectedRoomType,
                             "date": $scope.dashboardFilter.datePicked
                         });
                         ngDialog.close();
