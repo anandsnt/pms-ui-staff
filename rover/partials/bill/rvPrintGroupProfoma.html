@@ -24,8 +24,8 @@
         <div class="info-left">
             <strong>{{printData.translation.group_start_date}}: </strong> {{printData.group_start_date}}<br/>
             <strong>{{printData.translation.group_end_date}}: </strong> {{printData.group_end_date}}<br/> 
-            <!-- <strong>{{printData.translation.po_number}}: </strong> {{printData.po_number}}<br/>  
-            <strong>{{printData.translation.payment_date}}: </strong> {{printData.payment_date}} -->
+            <strong ng-if="printData.po_number">{{printData.translation.po_number}}: </strong> {{printData.po_number}}<br/>  
+            <strong ng-if="printData.payment_date">{{printData.translation.payment_date}}: </strong> {{printData.payment_date}}
         </div>
     </div>
 </div>
@@ -50,28 +50,32 @@
         <tfoot>
             <tr>
                 <td colspan="7"><strong>{{printData.translation.total_charge}}</strong></td>
-                <td><strong>{{currencySymbol}}{{printData.proforma_bill_transactions.total_charge}}</strong>
+                <td><strong>{{currencySymbol}}{{printData.proforma_bill_transactions.total_charge | number: precisonTwo }}</strong>
                 </td>
             </tr>
             <tr>
                 <td colspan="7"><strong>{{printData.translation.total_credits}}</strong></td>
-                <td><strong>{{currencySymbol}}{{printData.proforma_bill_transactions.total_credit}} </strong>
+                <td><strong>{{currencySymbol}}{{printData.proforma_bill_transactions.total_credit | number: precisonTwo }} </strong>
                 </td>
             </tr>
             <tr>
                 <td colspan="7"><strong>{{printData.translation.balance}}</strong></td>
-                <td><strong>{{currencySymbol}}{{printData.proforma_bill_transactions.balance}} </strong>
+                <td><strong>{{currencySymbol}}{{printData.proforma_bill_transactions.balance | number: precisonTwo }} </strong>
                 </td>
             </tr>
             <tr>
                 <td colspan="7">{{printData.translation.net_amount}}</td>
-                <td><strong>{{currencySymbol}}{{printData.proforma_bill_transactions.net_amount}}</strong>
+                <td><strong>{{currencySymbol}}{{printData.proforma_bill_transactions.net_amount | number: precisonTwo }}</strong>
                 </td>
             </tr>
+            <tr ng-if="!printData.has_enabled_extended_tax_breakdown" ng-repeat="tax in printData.bill_transactions_info.tax_info">
+                <td colspan="7">{{tax.tax_charge_code_desc}}</td>
+                <td>{{currencySymbol}}{{tax.amount | number: precisonTwo }}</td>
+            </tr>
             <tr>
-                <td colspan="7">{{printData.translation.total_incl_tax}}</td>
+                <td colspan="7">{{printData.translation.total_incl_tax }}</td>
                 <td>
-                    <strong>{{currencySymbol}}{{printData.proforma_bill_transactions.total_incl_tax}}</strong>
+                    <strong>{{currencySymbol}}{{printData.proforma_bill_transactions.total_incl_tax| number: precisonTwo }}</strong>
                 </td>
             </tr>            
         </tfoot>
@@ -81,28 +85,28 @@
                 <td class="type">{{item.occupancy_details[0].room_type}}</td>
                 <td class="occ">{{item.occupancy_details[0].ocuupancy}}</td>
                 <td class="align-right amount">
-                    <span class="currency">{{currencySymbol}}</span>{{item.occupancy_details[0].item_price | number: precisonTwo }}
+                    <span class="currency" ng-if="item.occupancy_details[0].item_price">{{currencySymbol}}</span>{{item.occupancy_details[0].item_price | number: precisonTwo }}
                 </td>
                 <td class="align-right qty">{{item.occupancy_details[0].quantity}}</td>
                 <td class="align-right amount">
-                    <span class="currency">{{currencySymbol}}</span>{{item.occupancy_details[0].debit | number: precisonTwo }}
+                    <span class="currency" ng-if="item.occupancy_details[0].debit">{{currencySymbol}}</span>{{item.occupancy_details[0].debit | number: precisonTwo }}
                 </td>
                 <td class="align-right amount">
-                    <span class="currency">{{currencySymbol}}</span>{{item.occupancy_details[0].credit | number: precisonTwo }}
+                    <span class="currency" ng-if="item.occupancy_details[0].credit">{{currencySymbol}}</span>{{item.occupancy_details[0].credit | number: precisonTwo }}
                 </td>
                 <td></td>
             </tr>
 
             <tr ng-repeat-end ng-repeat="occupancyData in item.occupancy_details" ng-if="$index >= 1" ng-class="{'last' : $last}">
                 <td></td>
-                <td class="type">{{occupancyData.room_type}}::</td>
+                <td class="type">{{occupancyData.room_type}}</td>
                 <td class="occ">{{occupancyData.ocuupancy}}</td>
-                <td class="align-right amount"><span class="currency">{{currencySymbol}}</span>{{occupancyData.item_price | number: precisonTwo }}</td>
+                <td class="align-right amount"><span class="currency" ng-if="occupancyData.item_price">{{currencySymbol}}</span>{{occupancyData.item_price | number: precisonTwo }}</td>
                 <td class="align-right qty">{{occupancyData.quantity}}</td>
-                <td class="align-right amount"><span class="currency">{{currencySymbol}}</span>{{occupancyData.debit | number: precisonTwo }}</td>
-                <td class="align-right amount"><span class="currency">{{currencySymbol}}</span>{{occupancyData.credit | number: precisonTwo }}</td>
+                <td class="align-right amount"><span class="currency" ng-if="occupancyData.debit">{{currencySymbol}}</span>{{occupancyData.debit | number: precisonTwo }}</td>
+                <td class="align-right amount"><span class="currency" ng-if="occupancyData.credit">{{currencySymbol}}</span>{{occupancyData.credit | number: precisonTwo }}</td>
                 <td class="align-right amount" valign="bottom" rowspan="{rowspan}" ng-if="$last">
-                    <span class="currency">{{currencySymbol}}</span>{{item.total_amount | number: precisonTwo }}
+                    <span class="currency" ng-if="item.total_amount">{{currencySymbol}}</span>{{item.total_amount | number: precisonTwo }}
                 </td>
 
             </tr>
