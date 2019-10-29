@@ -181,6 +181,7 @@ angular.module('sntRover')
 
 
                 /************************** DRAW HORIZONTAL LINES IN GRAPH ************************/
+                var horizontalRectWidths = xScale(maxValueInBotheDirections) - xScale(-1 * maxValueInBotheDirections);
 
                 svg.append("g")
                     .append("rect")
@@ -188,7 +189,7 @@ angular.module('sntRover')
                     .attr("x", xScale(-1 * maxValueInBotheDirections))
                     .attr("y", 0)
                     .attr("height", 4)
-                    .attr("width", 2 * xScale(maxValueInBotheDirections));
+                    .attr("width", horizontalRectWidths);
 
                 var firstHorizontalLine = yScale.bandwidth() * 2.5;
 
@@ -198,7 +199,7 @@ angular.module('sntRover')
                     .attr("x", xScale(-1 * maxValueInBotheDirections))
                     .attr("y", firstHorizontalLine)
                     .attr("height", 4)
-                    .attr("width", 2 * xScale(maxValueInBotheDirections));
+                    .attr("width", horizontalRectWidths);
 
                 var secondHorizontalLine = yScale.bandwidth() * 4.5;
 
@@ -208,7 +209,7 @@ angular.module('sntRover')
                     .attr("x", xScale(-1 * maxValueInBotheDirections))
                     .attr("y", secondHorizontalLine)
                     .attr("height", 4)
-                    .attr("width", 2 * xScale(maxValueInBotheDirections));
+                    .attr("width", horizontalRectWidths);
 
                 var thirdHorizontalLine = yScale.bandwidth() * 6.5;
 
@@ -218,7 +219,7 @@ angular.module('sntRover')
                     .attr("x", xScale(-1 * maxValueInBotheDirections))
                     .attr("y", thirdHorizontalLine)
                     .attr("height", 4)
-                    .attr("width", 2 * xScale(maxValueInBotheDirections));
+                    .attr("width", horizontalRectWidths);
 
                 if (maxValueInBotheDirections > 0) {
 
