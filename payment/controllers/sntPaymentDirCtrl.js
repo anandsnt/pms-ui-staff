@@ -1573,7 +1573,7 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 config = $scope.hotelConfig;
 
-                isEMVEnabled = config.paymentGateway === 'sixpayments' || config.paymentGateway === 'SHIJI' ||
+                isEMVEnabled = config.paymentGateway === 'sixpayments' || (config.paymentGateway === 'SHIJI' && !$rootScope.hotelDetails.shiji_token_enable_offline)||
                     ((config.paymentGateway === 'MLI' || config.paymentGateway === 'CBA_AND_MLI') && config.isEMVEnabled);
 
                 $scope.paymentAttempted = false;
