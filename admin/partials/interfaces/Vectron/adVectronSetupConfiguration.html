@@ -18,6 +18,16 @@
             <fieldset class="holder full-width">
                 <fieldset class="holder left">
                     <ad-textbox required="yes" inputtype="text" value="config.hotel_code" name="name" id="name" label="{{'VECTRON_HOTEL_CODE' | translate}}" styleclass="full-width"></ad-textbox>
+                    <ad-dropdown-name savemodel="config.open_discount_charge_code"
+                                      valueproperty="charge_code"
+                                      required="yes"
+                                      label-properties="['charge_code', 'description']"
+                                      label-in-drop-down="Select Default Charge Code"
+                                      list="chargeCodes"
+                                      label="{{'Default Charge Code'| translate}}"
+                                      skip-number-conversion="true"
+                                      div-class="full-width">
+                    </ad-dropdown-name>
                 </fieldset>
                 <fieldset class="holder full-width">
                     <ad-textbox inputtype="text" value="config.authentication_token" name="authentication-token" id="authentication-token" label="{{'VECTRON_AUTHENTICATION_TOKEN' | translate}}"

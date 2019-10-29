@@ -37,10 +37,10 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
         /*
          * Front desk arrivals and stay-overs data
          */
-        this.fdArrivalsManagement = function(date) {
+        this.fdArrivalsManagement = function(date, hotelCheckinTime, hotelCheckoutTime) {
             var deferred = $q.defer();
 
-            rvAnalyticsSrv.hkOverview(date, true).then(function(response) {
+            rvAnalyticsSrv.hkOverview(date, true,  hotelCheckinTime, hotelCheckoutTime).then(function(response) {
                 response.label = 'AN_ARRIVALS_MANAGEMENT';
                 response.dashboard_type = 'arrivals_management_chart';
                 response.data = _.reject(response.data, function(data) {
@@ -69,10 +69,10 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
         /*
          * Front desk workload data
          */
-        this.fdWorkload = function(date) {
+        this.fdWorkload = function(date, hotelCheckinTime, hotelCheckoutTime) {
             var deferred = $q.defer();
 
-            constructFdWorkLoad(deferred, date);
+            constructFdWorkLoad(deferred, date, hotelCheckinTime, hotelCheckoutTime);
             return deferred.promise;
         };
 
@@ -83,18 +83,7 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
             var yesterday = moment(date).subtract(1, 'days')
                 .format('YYYY-MM-DD');
 
-            sntActivity.start('YESTERDAYS_RESERVATION');
-
-            rvAnalyticsSrv.fetchActiveReservation({
-                date: yesterday
-            }).then(function(yesterdaysReservations) {
-                rvAnalyticsSrv.yesterdaysReservations = yesterdaysReservations;
-
-                constructFoActivity(date, yesterday, deferred);
-
-            }).finally(function() {
-                sntActivity.stop('YESTERDAYS_RESERVATION');
-            });
+            constructFoActivity(date, yesterday, deferred);
 
             return deferred.promise;
         };
@@ -102,26 +91,28 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
         /*
          * Constructing the front desk workload graphs
          */
-        var constructFdWorkLoad = function(deferred, date) {
+        var constructFdWorkLoad = function(deferred, date, hotelCheckinTime, hotelCheckoutTime) {
             var fdWorkLoad = {
                 dashboard_type: 'frontdesk_workload',
                 label: 'AN_WORKLOAD',
                 data: []
             };
 
-            var arrivingReservations = rvAnalyticsSrv.activeReservations.filter(function(reservation) {
+            var reservations = rvAnalyticsSrv.filteredReservations();
+
+            var arrivingReservations = reservations.filter(function(reservation) {
                 return reservation.arrival_date === date;
             });
 
-            var departingReservations = rvAnalyticsSrv.activeReservations.filter(function(reservation) {
+            var departingReservations = reservations.filter(function(reservation) {
                 return reservation.departure_date === date;
             });
 
-            var userActivity = constructUserCiCoActivity(arrivingReservations, departingReservations);
+            var userActivity = constructUserCiCoActivity(arrivingReservations, departingReservations, hotelCheckinTime, hotelCheckoutTime);
 
             var users = Object.keys(userActivity);
 
-            var elements = ['earlyCheckin', 'checkin', 'vipCheckin', 'vipCheckout', 'checkout', 'lateCheckout'];
+            var elements = ['earlyCheckin', 'vipCheckin', 'checkin', 'vipCheckout', 'checkout', 'lateCheckout'];
 
             users.forEach(function(user) {
                 var userActivityElement = {
@@ -152,15 +143,15 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
         /*
          * Construct the users checkin / checkout activity
          */
-        var constructUserCiCoActivity = function(arrivals, departures) {
+        var constructUserCiCoActivity = function(arrivals, departures, hotelCheckinTime, hotelCheckoutTime) {
             var usersActivity = {};
 
             // Calculate the arrivals info
-            constructUserCiActivity(arrivals, userInitData, usersActivity);
+            constructUserCiActivity(arrivals, userInitData, usersActivity, hotelCheckinTime);
 
 
             // Calculate the departues info
-            constructUserCoActivity(departures, userInitData, usersActivity);
+            constructUserCoActivity(departures, userInitData, usersActivity, hotelCheckoutTime);
 
             return usersActivity;
         };
@@ -168,15 +159,15 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
         /*
          * Build the user's checkin reservatons activity
          */
-        var constructUserCiActivity = function(reservations, userInitData, usersActivity) {
+        var constructUserCiActivity = function(reservations, userInitData, usersActivity, hotelCheckinTime) {
             reservations.forEach(function(reservation) {
                 var user = 'REMAINING';
 
                 if (reservation.reservation_status !== 'RESERVED') {
-                    if (reservation.ci_agent === null) {
-                        return;
-                    } else {
+                    if (reservation.ci_agent) {
                         user = reservation.ci_agent;
+                    } else {
+                        return;
                     }
                 }
 
@@ -186,7 +177,7 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
 
                 if (rvAnalyticsSrv.isVip(reservation)) {
                     usersActivity[user].vipCheckin = usersActivity[user].vipCheckin + 1;
-                } else if (rvAnalyticsSrv.isEarlyCheckin(reservation)) {
+                } else if (rvAnalyticsSrv.isEarlyCheckin(reservation, hotelCheckinTime)) {
                     usersActivity[user].earlyCheckin = usersActivity[user].earlyCheckin + 1;
                 } else {
                     usersActivity[user].checkin = usersActivity[user].checkin + 1;
@@ -198,15 +189,15 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
         /*
          * Build the user's checkout reservatons activity
          */
-        var constructUserCoActivity = function(reservations, userInitData, usersActivity) {
+        var constructUserCoActivity = function(reservations, userInitData, usersActivity, hotelCheckoutTime) {
             reservations.forEach(function(reservation) {
                 var user = 'REMAINING';
 
                 if (reservation.reservation_status !== 'CHECKEDIN') {
-                    if (reservation.co_agent === null) {
-                        return;
-                    } else {
+                    if (reservation.co_agent) {
                         user = reservation.co_agent;
+                    } else {
+                        return;
                     }
                 }
 
@@ -216,7 +207,7 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
 
                 if (rvAnalyticsSrv.isVip(reservation)) {
                     usersActivity[user].vipCheckout = usersActivity[user].vipCheckout + 1;
-                } else if (rvAnalyticsSrv.isLateCheckout(reservation)) {
+                } else if (rvAnalyticsSrv.isLateCheckout(reservation, hotelCheckoutTime)) {
                     usersActivity[user].lateCheckout = usersActivity[user].lateCheckout + 1;
                 } else {
                     usersActivity[user].checkout = usersActivity[user].checkout + 1;
@@ -257,9 +248,10 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
             // To debug in prod test
             try {
                 // Todays CI/CO data
-                constructCiCoActivity(today, rvAnalyticsSrv.activeReservations, foActivity, true);
+                constructCiCoActivity(today, rvAnalyticsSrv.filteredReservations(), foActivity, true);
+
                 // Yesterdays CI/CO data
-                constructCiCoActivity(yesterday, rvAnalyticsSrv.yesterdaysReservations, foActivity, false);
+                constructCiCoActivity(yesterday, rvAnalyticsSrv.filteredYesterdaysReservations(), foActivity, false);
                 // Format data
                 //foActivity= 
                 var formatedData = formatFoActivityData(foActivity);
@@ -278,17 +270,19 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
         };
 
         var constructCiCoActivity = function(date, reservations, foActivity, isToday) {
-            var arrivingReservations = reservations.filter(function(reservation) {
-                return reservation.arrival_date === date;
+            // Arrived reservations
+            var arrivedReservations = reservations.filter(function(reservation) {
+                return reservation.arrival_date === date && reservation.reservation_status !== 'RESERVED';
             });
 
-            var departingReservations = reservations.filter(function(reservation) {
-                return reservation.departure_date === date;
+            // Departed reservations
+            var departedReservations = reservations.filter(function(reservation) {
+                return reservation.departure_date === date && reservation.reservation_status === 'CHECKEDOUT';
             });
 
-            buildCheckinActivity(arrivingReservations, foActivity, isToday);
+            buildCheckinActivity(arrivedReservations, foActivity, isToday);
 
-            buildCheckoutActivity(departingReservations, foActivity, isToday);
+            buildCheckoutActivity(departedReservations, foActivity, isToday);
         };
 
 
