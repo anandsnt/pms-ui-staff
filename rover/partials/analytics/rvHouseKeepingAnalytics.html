@@ -1,8 +1,8 @@
-<h2>
-    {{ screenData.mainHeading }}
-</h2>
-<p ng-if="!screenData.hideChartData">Last update: {{ screenData.analyticsDataUpdatedTime }}</p>
 <div class="wrapper">
+    <h2>
+        {{ screenData.mainHeading }}
+    </h2>
+    <p ng-if="!screenData.hideChartData">Last update: {{ screenData.analyticsDataUpdatedTime }}</p>
     <!-- Chart -->
     <div class="analytics-chart with-legend-left with-legend-right">
         <dl class="chart-legend legend-left" id="left-side-legend">

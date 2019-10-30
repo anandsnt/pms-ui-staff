@@ -55,7 +55,7 @@ angular.module('sntRover')
 					});
 
 				var svgHeight = height + margin.top + margin.bottom;
-				var svg = d3.select("#analytics-chart").append("svg")
+				var svg = d3.select("#d3-plot").append("svg")
 					.attr("width", width + margin.left + margin.right)
 					.attr("height", svgHeight)
 					.attr("id", "d3-plot")
@@ -295,6 +295,7 @@ angular.module('sntRover')
 					});
 				
 				$scope.$emit('REFRESH_ANALTICS_SCROLLER');
+				$scope.screenData.hideChartData = false;
 			};
 		}
 	]);

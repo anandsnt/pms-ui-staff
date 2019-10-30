@@ -95,7 +95,7 @@ angular.module('sntRover')
 
                 var yScale = d3.scaleBand()
                     .rangeRound([0, height + 10])
-                    .padding(.3);
+                    .padding(.4);
 
                 var xScale = d3.scaleLinear()
                     .rangeRound([0, width]);

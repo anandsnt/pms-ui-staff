@@ -2,24 +2,6 @@ angular.module('sntRover')
     .controller('rvFrontOfficeManagementAnalyticsCtrl', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvAnalyticsHelperSrv',
         function($scope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv) {
 
-            var arrivalsColorScheme = d3.scaleOrdinal()
-                .range(["#ABD77B", "#4A9115", "#65D31B"])
-                .domain(["perfomed", "early_checkin", "remaining"]);
-
-            var departuresColorScheme = d3.scaleOrdinal()
-                .range(["#E6987B", "#BB4119", "#E62711"])
-                .domain(["perfomed", "late_checkout", "pending"]);
-
-            var roomsColorScheme = d3.scaleOrdinal()
-                .range(["#E62A13", "#FFA316", "#7FD726", "#448E13"])
-                .domain(["dirty", "pickup", "clean", "inspected"]);
-
-            var colorScheme = {
-                arrivalsColorScheme: arrivalsColorScheme,
-                roomsColorScheme: roomsColorScheme,
-                departuresColorScheme: departuresColorScheme
-            };
-
             var cssClassMappings = {
                 "Checked In": "bar bar-green bar-light",
                 "Early Check in": "bar bar-green bar-dark",
@@ -35,6 +17,69 @@ angular.module('sntRover')
                 "Pickup": "bar bar-orange"
             };
 
+            var colorMappings = {
+                "arrivals_perfomed": {
+                    "legend_class": "bar bar-green bar-light",
+                    "fill": "greenLight",
+                    "onmouseover_fill": "greenLightHover",
+                    "onmouseout_fill": "greenLight"
+                },
+                "arrivals_early_checkin": {
+                    "legend_class": "bar bar-green bar-dark",
+                    "fill": "greenDark",
+                    "onmouseover_fill": "greenDarkHover",
+                    "onmouseout_fill": "greenDark"
+                },
+                "arrivals_remaining": {
+                    "legend_class": "bar bar-green",
+                    "fill": "green",
+                    "onmouseover_fill": "greenHover",
+                    "onmouseout_fill": "green"
+                },
+                "departures_perfomed": {
+                    "legend_class": "bar bar-red bar-light",
+                    "fill": "redLight",
+                    "onmouseover_fill": "redLightHover",
+                    "onmouseout_fill": "redLight"
+                },
+                "departures_pending": {
+                    "legend_class": "bar bar-red",
+                    "fill": "red",
+                    "onmouseover_fill": "redHover",
+                    "onmouseout_fill": "red"
+                },
+                "departures_late_checkout": {
+                    "legend_class": "bar bar-red bar-dark",
+                    "fill": "redDark",
+                    "onmouseover_fill": "redDarkHover",
+                    "onmouseout_fill": "redDark"
+                },
+                "rooms_clean": {
+                    "legend_class": "bar bar-green",
+                    "fill": "green",
+                    "onmouseover_fill": "greenHover",
+                    "onmouseout_fill": "green"
+                },
+                "rooms_inspected": {
+                    "legend_class": "bar bar-green bar-dark",
+                    "fill": "greenDark",
+                    "onmouseover_fill": "greenDarkHover",
+                    "onmouseout_fill": "greenDark"
+                },
+                "rooms_dirty": {
+                    "legend_class": "bar bar-red",
+                    "fill": "red",
+                    "onmouseover_fill": "redHover",
+                    "onmouseout_fill": "red"
+                },
+                "rooms_pickup": {
+                    "legend_class": "bar bar-orange",
+                    "fill": "orange",
+                    "onmouseover_fill": "orangeHover",
+                    "onmouseout_fill": "orange"
+                }
+            };
+
             $scope.drawArrivalManagementChart = function(chartDetails) {
                 $scope.screenData.mainHeading = $filter('translate')(chartDetails.chartData.label);
                 var chartAreaWidth = document.getElementById("analytics-chart").clientWidth;
@@ -45,11 +90,11 @@ angular.module('sntRover')
                         left: 150
                     },
                     width = chartAreaWidth - margin.left - margin.right,
-                    height = window.innerHeight * 2 / 3 - margin.top - margin.bottom;
+                    height = window.innerHeight * (1 / 2 + 2 / 3) / 2 - margin.top - margin.bottom;
 
                 var yScale = d3.scaleBand()
                     .rangeRound([0, height + 10])
-                    .padding(.3);
+                    .padding(.4);
 
                 var xScale = d3.scaleLinear()
                     .rangeRound([0, width]);
@@ -61,7 +106,7 @@ angular.module('sntRover')
                     .tickSizeInner(-height)
                     .tickFormat(function(d) {
                         // X axis... treat -ve values as positive
-                        return (d < 0) ? (d * -1) : d;
+                        return (d < 0) ? (d * -1) : d === 0 ? "" : d;
                     });
 
                 var yAxis = d3.axisLeft()
@@ -71,7 +116,7 @@ angular.module('sntRover')
                     .tickPadding(10)
                     .tickFormat("");
 
-                var svg = d3.select("#analytics-chart").append("svg")
+                var svg = d3.select("#d3-plot").append("svg")
                     .attr("width", width + margin.left + margin.right)
                     .attr("height", height + margin.top + margin.bottom)
                     .attr("id", "d3-plot")
@@ -111,113 +156,113 @@ angular.module('sntRover')
                     yScale: yScale,
                     xScale: xScale,
                     chartDetails: chartDetails,
-                    colorScheme: colorScheme,
-                    maxValue: maxValueInBotheDirections
+                    // colorScheme: colorScheme,
+                    maxValue: maxValueInBotheDirections,
+                    colorMappings: colorMappings
                 };
 
-                rvAnalyticsHelperSrv.drawBarsOfBidirectonalChart(dataForDrawingBars);
+                rvAnalyticsHelperSrv.drawBarChart(dataForDrawingBars);
 
                 // Add extra Y axis to the middle of the graph
                 svg.append("g")
-                    .attr("class", "y axis inner")
-                    .append("line")
-                    .attr("x1", xScale(0))
-                    .attr("x2", xScale(0))
-                    .attr("y2", height);
+                    .append("rect")
+                    .attr("class", "chart-breakpoint-line")
+                    .attr("x", xScale(0))
+                    .attr("y", -40)
+                    .attr("height", height + margin.top + 40)
+                    .attr("width", 4);
 
 
                 var topHorizontalLine = 0;
 
-                svg.append("line") // attach a line
-                    .style("stroke", "#A0A0A0") // colour the line
-                    .style("stroke-width", "1px")
-                    .attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
-                    .attr("y1", topHorizontalLine) // y position of the first end of the line
-                    .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-                    .attr("y2", topHorizontalLine);
+                // svg.append("line") // attach a line
+                //     .style("stroke", "#A0A0A0") // colour the line
+                //     .style("stroke-width", "1px")
+                //     .attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
+                //     .attr("y1", topHorizontalLine) // y position of the first end of the line
+                //     .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
+                //     .attr("y2", topHorizontalLine);
 
+                var horizontalRectWidths = xScale(maxValueInBotheDirections) - xScale(-1 * maxValueInBotheDirections);
+
+                svg.append("g")
+                    .append("rect")
+                    .attr("class", "chart-breakpoint-line")
+                    .attr("x", xScale(-1 * maxValueInBotheDirections))
+                    .attr("y", topHorizontalLine)
+                    .attr("height", 4)
+                    .attr("width", horizontalRectWidths);
 
                 var firstLineHeight = 1.5 * yInnerPadding + yScale.bandwidth();
 
-                svg.append("line") // attach a line
-                    .style("stroke", "#A0A0A0") // colour the line
-                    .style("stroke-width", "0.5px")
-                    .attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
-                    .attr("y1", firstLineHeight) // y position of the first end of the line
-                    .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-                    .attr("y2", firstLineHeight);
-
-                var secondLineHeight = 2.5 * yInnerPadding + 2 * yScale.bandwidth();
-
-                svg.append("line") // attach a line
-                    .style("stroke", "#A0A0A0") // colour the line
-                    .style("stroke-width", "0.5px")
-                    .attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
-                    .attr("y1", secondLineHeight) // y position of the first end of the line
-                    .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-                    .attr("y2", secondLineHeight);
+                svg.append("g")
+                    .append("rect")
+                    .attr("class", "chart-breakpoint-line")
+                    .attr("x", xScale(-1 * maxValueInBotheDirections))
+                    .attr("y", firstLineHeight)
+                    .attr("height", 4)
+                    .attr("width", horizontalRectWidths);
 
                 // svg.append("line") // attach a line
                 //     .style("stroke", "#A0A0A0") // colour the line
-                //     .style("stroke-width", "2px")
+                //     .style("stroke-width", "0.5px")
                 //     .attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
-                //     .attr("y1", height) // y position of the first end of the line
+                //     .attr("y1", firstLineHeight) // y position of the first end of the line
                 //     .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-                //     .attr("y2", height);
+                //     .attr("y2", firstLineHeight);
+
+                var secondLineHeight = 2.5 * yInnerPadding + 2 * yScale.bandwidth();
+
+                svg.append("g")
+                    .append("rect")
+                    .attr("class", "chart-breakpoint-line")
+                    .attr("x", xScale(-1 * maxValueInBotheDirections))
+                    .attr("y", secondLineHeight)
+                    .attr("height", 4)
+                    .attr("width", horizontalRectWidths);
 
                 if (maxValueInBotheDirections > 0) {
+
                     svg.append("text")
-                        .attr("x", xScale(-1 * maxValueInBotheDirections * 3/ 4))
-                        .attr("y", 12.5)
+                        .attr("x", xScale(-1 * maxValueInBotheDirections * 3 / 4))
+                        .attr("y", 15)
                         .attr("dy", ".35em")
-                        .style("font-size", "15px")
-                        .style("font-style", "italic")
-                        .style("fill", "#B1B1B1")
-                        .text("PERFOMED");
+                        .attr("class", "chart-area-label")
+                        .text("PERFORMED");
 
                     svg.append("text")
                         .attr("x", xScale(maxValueInBotheDirections / 4))
-                        .attr("y", 12.5)
+                        .attr("y", 15)
                         .attr("dy", ".35em")
-                        .style("font-size", "15px")
-                        .style("font-style", "italic")
-                        .style("fill", "#B1B1B1")
+                        .attr("class", "chart-area-label")
                         .text("REMAINING");
 
                     svg.append("text")
-                        .attr("x", xScale(-1 * maxValueInBotheDirections * 3/ 4))
-                        .attr("y", firstLineHeight + 12.5)
+                        .attr("x", xScale(-1 * maxValueInBotheDirections * 3 / 4))
+                        .attr("y", firstLineHeight + 15)
                         .attr("dy", ".35em")
-                        .style("font-size", "15px")
-                        .style("font-style", "italic")
-                        .style("fill", "#B1B1B1")
+                        .attr("class", "chart-area-label")
                         .text("VACANT NOT READY");
 
                     svg.append("text")
                         .attr("x", xScale(maxValueInBotheDirections / 4))
-                        .attr("y", firstLineHeight + 12.5)
+                        .attr("y", firstLineHeight + 15)
                         .attr("dy", ".35em")
-                        .style("font-size", "15px")
-                        .style("font-style", "italic")
-                        .style("fill", "#B1B1B1")
+                        .attr("class", "chart-area-label")
                         .text("VACANT READY");
 
                     svg.append("text")
-                        .attr("x", xScale(-1 * maxValueInBotheDirections * 3/ 4))
-                        .attr("y", secondLineHeight + 12.5)
+                        .attr("x", xScale(-1 * maxValueInBotheDirections * 3 / 4))
+                        .attr("y", secondLineHeight + 15)
                         .attr("dy", ".35em")
-                        .style("font-size", "15px")
-                        .style("font-style", "italic")
-                        .style("fill", "#B1B1B1")
-                        .text("PERFOMED");
+                        .attr("class", "chart-area-label")
+                        .text("PERFORMED");
 
                     svg.append("text")
                         .attr("x", xScale(maxValueInBotheDirections / 4))
-                        .attr("y", secondLineHeight + 12.5)
+                        .attr("y", secondLineHeight + 15)
                         .attr("dy", ".35em")
-                        .style("font-size", "15px")
-                        .style("font-style", "italic")
-                        .style("fill", "#B1B1B1")
+                        .attr("class", "chart-area-label")
                         .text("REMAINING");
                 }
 
@@ -236,7 +281,7 @@ angular.module('sntRover')
                         return yBandwidth / 2 - singleLegendHeightPlusMargin + yInnerPadding;
                     } else if (legend === "Checked out") {
                         var marginTopOfPerfomed = yBandwidth - (singleLegendHeightPlusMargin * 3) + yInnerPadding + yBandwidth / 2;
-                        
+
                         return marginTopOfPerfomed;
                     }
                 };
@@ -297,9 +342,9 @@ angular.module('sntRover')
 
                     if (legend === "Early Check in") {
                         return margin.top + yInnerPadding + yBandwidth / 2;
-                    } else if (legend === "Inspected") {   
+                    } else if (legend === "Inspected") {
                         return yBandwidth / 2 - (singleLegendHeightPlusMargin * 2) + yInnerPadding + yBandwidth / 2;
-                    } else if (legend === "Pending") {                        
+                    } else if (legend === "Pending") {
                         return yBandwidth / 2 - singleLegendHeightPlusMargin + yInnerPadding + yBandwidth / 2;
                     } else if (legend === "Pickup") {
                         return 2 * yBandwidth - singleLegendHeightPlusMargin;
@@ -352,6 +397,7 @@ angular.module('sntRover')
                 });
 
                 $scope.$emit('REFRESH_ANALTICS_SCROLLER');
+                $scope.screenData.hideChartData = false;
             };
         }
     ]);
