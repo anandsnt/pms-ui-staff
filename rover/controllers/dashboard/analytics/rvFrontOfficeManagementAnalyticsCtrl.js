@@ -3,21 +3,36 @@ angular.module('sntRover')
         function($scope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv) {
 
             var arrivalsColorScheme = d3.scaleOrdinal()
-                .range(["#B5D297", "#557A2F", "#84B751"])
+                .range(["#ABD77B", "#4A9115", "#65D31B"])
                 .domain(["perfomed", "early_checkin", "remaining"]);
 
             var departuresColorScheme = d3.scaleOrdinal()
-                .range(["#DBA1A1", "#AD2727", "#DC3535"])
+                .range(["#E6987B", "#BB4119", "#E62711"])
                 .domain(["perfomed", "late_checkout", "pending"]);
 
             var roomsColorScheme = d3.scaleOrdinal()
-                .range(["#DC3535", "#EE931B", "#84B551", "#547A2F"])
+                .range(["#E62A13", "#FFA316", "#7FD726", "#448E13"])
                 .domain(["dirty", "pickup", "clean", "inspected"]);
 
             var colorScheme = {
                 arrivalsColorScheme: arrivalsColorScheme,
                 roomsColorScheme: roomsColorScheme,
                 departuresColorScheme: departuresColorScheme
+            };
+
+            var cssClassMappings = {
+                "Checked In": "bar bar-green bar-light",
+                "Early Check in": "bar bar-green bar-dark",
+                "Remaining": "bar bar-green",
+
+                "Checked out": "bar bar-red bar-light",
+                "Late checkout": "bar bar-red bar-dark",
+                "Pending": "bar bar-red",
+
+                "Clean": "bar bar-green",
+                "Inspected": "bar bar-green bar-dark",
+                "Dirty": "bar bar-red",
+                "Pickup": "bar bar-orange"
             };
 
             $scope.drawArrivalManagementChart = function(chartDetails) {
@@ -110,6 +125,18 @@ angular.module('sntRover')
                     .attr("x2", xScale(0))
                     .attr("y2", height);
 
+
+                var topHorizontalLine = 0;
+
+                svg.append("line") // attach a line
+                    .style("stroke", "#A0A0A0") // colour the line
+                    .style("stroke-width", "1px")
+                    .attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
+                    .attr("y1", topHorizontalLine) // y position of the first end of the line
+                    .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
+                    .attr("y2", topHorizontalLine);
+
+
                 var firstLineHeight = 1.5 * yInnerPadding + yScale.bandwidth();
 
                 svg.append("line") // attach a line
@@ -130,13 +157,69 @@ angular.module('sntRover')
                     .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
                     .attr("y2", secondLineHeight);
 
-                svg.append("line") // attach a line
-                    .style("stroke", "#000000") // colour the line
-                    .style("stroke-width", "2px")
-                    .attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
-                    .attr("y1", height) // y position of the first end of the line
-                    .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-                    .attr("y2", height);
+                // svg.append("line") // attach a line
+                //     .style("stroke", "#A0A0A0") // colour the line
+                //     .style("stroke-width", "2px")
+                //     .attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
+                //     .attr("y1", height) // y position of the first end of the line
+                //     .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
+                //     .attr("y2", height);
+
+                if (maxValueInBotheDirections > 0) {
+                    svg.append("text")
+                        .attr("x", xScale(-1 * maxValueInBotheDirections * 3/ 4))
+                        .attr("y", 12.5)
+                        .attr("dy", ".35em")
+                        .style("font-size", "15px")
+                        .style("font-style", "italic")
+                        .style("fill", "#B1B1B1")
+                        .text("PERFORMED");
+
+                    svg.append("text")
+                        .attr("x", xScale(maxValueInBotheDirections / 4))
+                        .attr("y", 12.5)
+                        .attr("dy", ".35em")
+                        .style("font-size", "15px")
+                        .style("font-style", "italic")
+                        .style("fill", "#B1B1B1")
+                        .text("REMAINING");
+
+                    svg.append("text")
+                        .attr("x", xScale(-1 * maxValueInBotheDirections * 3/ 4))
+                        .attr("y", firstLineHeight + 12.5)
+                        .attr("dy", ".35em")
+                        .style("font-size", "15px")
+                        .style("font-style", "italic")
+                        .style("fill", "#B1B1B1")
+                        .text("VACANT NOT READY");
+
+                    svg.append("text")
+                        .attr("x", xScale(maxValueInBotheDirections / 4))
+                        .attr("y", firstLineHeight + 12.5)
+                        .attr("dy", ".35em")
+                        .style("font-size", "15px")
+                        .style("font-style", "italic")
+                        .style("fill", "#B1B1B1")
+                        .text("VACANT READY");
+
+                    svg.append("text")
+                        .attr("x", xScale(-1 * maxValueInBotheDirections * 3/ 4))
+                        .attr("y", secondLineHeight + 12.5)
+                        .attr("dy", ".35em")
+                        .style("font-size", "15px")
+                        .style("font-style", "italic")
+                        .style("fill", "#B1B1B1")
+                        .text("PERFORMED");
+
+                    svg.append("text")
+                        .attr("x", xScale(maxValueInBotheDirections / 4))
+                        .attr("y", secondLineHeight + 12.5)
+                        .attr("dy", ".35em")
+                        .style("font-size", "15px")
+                        .style("font-style", "italic")
+                        .style("fill", "#B1B1B1")
+                        .text("REMAINING");
+                }
 
                 // Left side Legends
                 var leftSideLegendDiv = d3.select("#left-side-legend");
@@ -170,27 +253,30 @@ angular.module('sntRover')
                     });
 
                 leftSideLegendEntries.append("span")
-                    .attr("class", "rect")
-                    .style("background-color", leftSideLegendColor);
-
-                leftSideLegendEntries.append("span")
-                    .attr("class", "rect-label")
+                    .attr("class", function(label) {
+                        return cssClassMappings[label];
+                    })
                     .html(function(label) {
                         var text;
 
                         if (label === "Checked In") {
-                            text = label + " (" + chartDetails.perfomed_arrivals_count + ")";
+                            text = chartDetails.perfomed_arrivals_count;
                         } else if (label === "Dirty") {
-                            text = label + " (" + chartDetails.dirty_rooms_count + ")";
+                            text = chartDetails.dirty_rooms_count;
                         } else if (label === "Pickup") {
-                            text = label + " (" + chartDetails.pickup_rooms_count + ")";
+                            text = chartDetails.pickup_rooms_count;
                         } else if (label === "Clean") {
-                            text = label + " (" + chartDetails.clean_rooms_count + ")";
-                        } 
-                        else if (label === "Checked out") {
-                            text = label + " (" + chartDetails.perfomed_departures_count + ")";
+                            text = chartDetails.clean_rooms_count;
+                        } else if (label === "Checked out") {
+                            text = chartDetails.perfomed_departures_count;
                         }
                         return text;
+                    });
+
+                leftSideLegendEntries.append("span")
+                    .attr("class", "bar-label")
+                    .html(function(label) {
+                        return label;
                     });
 
                 // TODO: For now lets assume all legends are of same height. So we will take one and use as reference.
@@ -203,8 +289,8 @@ angular.module('sntRover')
                 // right side legends
                 var rightSideLegendDiv = d3.select("#right-side-legend");
                 var rightSideLegendColor = d3.scaleOrdinal()
-                    .range(["#557A2F", "#83B450", "#567D30", "#AB2727", "#DC3535"])
-                    .domain(["Early Check in", "Remaining", "Inspected", "Late checkout", "Pending"]);
+                    .range(["#557A2F", "#83B450", "#567D30", "#DC3535", "#AB2727"])
+                    .domain(["Early Check in", "Remaining", "Inspected", "Pending", "Late checkout"]);
 
                 var setMarginForRightSideLegends = function(legend, singleLegendHeightPlusMargin) {
                     var yBandwidth = yScale.bandwidth();
@@ -213,7 +299,7 @@ angular.module('sntRover')
                         return margin.top + yInnerPadding + yBandwidth / 2;
                     } else if (legend === "Inspected") {   
                         return yBandwidth / 2 - (singleLegendHeightPlusMargin * 2) + yInnerPadding + yBandwidth / 2;
-                    } else if (legend === "Late checkout") {                        
+                    } else if (legend === "Pending") {                        
                         return yBandwidth / 2 - singleLegendHeightPlusMargin + yInnerPadding + yBandwidth / 2;
                     } else if (legend === "Pickup") {
                         return 2 * yBandwidth - singleLegendHeightPlusMargin;
@@ -231,34 +317,41 @@ angular.module('sntRover')
                     });
 
                 rightSideLegendEntries.append("span")
-                    .attr("class", "rect")
-                    .style("background-color", rightSideLegendColor);
-
-                rightSideLegendEntries.append("span")
-                    .attr("class", "rect-label")
+                    .attr("class", function(label) {
+                        return cssClassMappings[label];
+                    })
                     .html(function(label) {
                         var text;
 
                         if (label === "Early Check in") {
-                            text = label + " (0)";
-                            // text = label + " (" + chartDetails.early_checkin_arrivals_count + ")";
+                            text = chartDetails.early_checkin_arrivals_count;
                         } else if (label === "Remaining") {
-                            text = label + " (" + chartDetails.remaining_arrivals_count + ")";
+                            text = chartDetails.remaining_arrivals_count;
                         } else if (label === "Inspected") {
-                            text = label + " (" + chartDetails.inspected_rooms_count + ")";
+                            text = chartDetails.inspected_rooms_count;
                         } else if (label === "Late checkout") {
-                            text = label + " (0)";
-                            // text = label + " (" + chartDetails.late_checkout_departures_count + ")";
-                        } 
-                        else if (label === "Pending") {
-                            text = label + " (" + chartDetails.pending_departures_count + ")";
+                            text = chartDetails.late_checkout_departures_count;
+                        } else if (label === "Pending") {
+                            text = chartDetails.pending_departures_count;
                         }
                         return text;
                     });
 
+                rightSideLegendEntries.append("span")
+                    .attr("class", "bar-label")
+                    .html(function(label) {
+                        return label;
+                    });
+
+                $("#right-side-legend").css({
+                    'margin-top': '0px'
+                });
+
                 rightSideLegendEntries.style("margin-top", function(legend) {
                     return setMarginForRightSideLegends(legend, singleLegendHeightPlusMargin);
                 });
+
+                $scope.$emit('REFRESH_ANALTICS_SCROLLER');
             };
         }
     ]);

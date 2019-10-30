@@ -1037,7 +1037,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 // If the changed payment type is CC and payment gateway is MLI show CC addition options
                 // If there are attached cards, show them first
                 if (!!selectedPaymentType && selectedPaymentType.name === 'CC') {
-                    if ($scope.selectedPaymentType === 'CC' && $scope.hotelConfig.paymentGateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline) {
+                    if (isReset && $scope.selectedPaymentType === 'CC' && $scope.hotelConfig.paymentGateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline) {
                         changeToCardAddMode();
                     } else if (PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl) {
                         // Add to guestcard feature for C&P
@@ -1452,6 +1452,10 @@ angular.module('sntPay').controller('sntPaymentController',
                 $scope.$broadcast('GET_SHIJI_TOKEN');
             };
 
+            $scope.getShijiOfflineStatus = function() {
+                return $rootScope.hotelDetails.shiji_token_enable_offline;
+            };
+
             /** **************** init ***********************************************/
 
             (function () {
@@ -1569,7 +1573,7 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 config = $scope.hotelConfig;
 
-                isEMVEnabled = config.paymentGateway === 'sixpayments' || config.paymentGateway === 'SHIJI' ||
+                isEMVEnabled = config.paymentGateway === 'sixpayments' || (config.paymentGateway === 'SHIJI' && !$rootScope.hotelDetails.shiji_token_enable_offline) ||
                     ((config.paymentGateway === 'MLI' || config.paymentGateway === 'CBA_AND_MLI') && config.isEMVEnabled);
 
                 $scope.paymentAttempted = false;
@@ -1577,6 +1581,10 @@ angular.module('sntPay').controller('sntPaymentController',
                 $scope.showSelectedCard();
                 if ($rootScope.isWorkStationMandatory) {
                     $scope.checkWorkStationMandatoryFields();
+                }
+
+                if ($scope.selectedPaymentType === 'CC' && $scope.selectedCC && $scope.hotelConfig.paymentGateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline) {
+                    $scope.payment.auth_code = $scope.selectedCC.auth_code;
                 }
 
             })();

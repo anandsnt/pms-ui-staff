@@ -21,11 +21,11 @@
             {{receiptPrintData.guest_details.country_name}}
         </span>
         <span ng-if="!isFromBillCard">
-            <strong>Account Name:</strong> {{receiptPrintData.account_name}} <br />
-            <strong>Account Number:</strong> {{receiptPrintData.account_number}} <br />
+            <strong>{{receiptPrintData.receipt_translations.account_name}}:</strong> {{receiptPrintData.account_name}} <br />
+            <strong>{{receiptPrintData.receipt_translations.account_number}}:</strong> {{receiptPrintData.account_number}} <br />
         </span>
         <div class="info-bottom">
-            <strong>Payment Receipt No:</strong> {{receiptPrintData.receipt_no}}
+            <strong>{{receiptPrintData.receipt_translations.payment_receipt_number}}:</strong> {{receiptPrintData.receipt_no}}
         </div>
     </div>
     <div class="info-right" ng-if="isFromBillCard">           
@@ -40,14 +40,14 @@
     <table class="invoice-details">
         <thead>
             <tr>
-                <th>Date of Payment</th>
-                <th>Payment Type</th>
-                <th class="align-right receipt-amount">Amount</th> 
+                <th>{{receiptPrintData.receipt_translations.date_of_payment}}</th>
+                <th>{{receiptPrintData.receipt_translations.payment_type}}</th>
+                <th class="align-right receipt-amount">{{receiptPrintData.receipt_translations.amount}}</th>
             </tr>
         </thead>
         <tfoot>
             <tr>
-                <td colspan="2"><strong>Total Amount</strong></td>
+                <td colspan="2"><strong>{{receiptPrintData.receipt_translations.total_amount}}</strong></td>
                 <td>
                     <strong><span class="currency">{{receiptPrintData.currency_symbol}}</span>{{receiptPrintData.payments.total_amount | number: precisonTwo }}</strong>
                     <div class="converted-currency" ng-if="receiptPrintData.payments.total_converted_amount !== '' && receiptPrintData.payments.total_converted_amount !== null">

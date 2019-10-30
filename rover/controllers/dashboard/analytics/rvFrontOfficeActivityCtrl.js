@@ -6,6 +6,17 @@ angular.module('sntRover')
 
         $scope.screenData.mainHeading = $filter('translate')(chartData.label);
 
+
+        var cssClassMappings = {        
+          "Early Check in": "bar bar-green bar-dark",
+          "Checkin": "bar bar-green bar-light",
+          "VIP checkin": "bar bar-green",
+
+          "VIP checkout": "bar bar-red bar-dark",
+          "Late checkout": "bar bar-red bar-light",
+          "Checkout": "bar bar-red"
+        };
+
         /////// debuging code
         // TO DELETE
 
@@ -102,7 +113,7 @@ angular.module('sntRover')
         //   .domain(chartKeys);
 
         var colorMapping = d3.scaleOrdinal()
-          .range(["#BBC9B0", "#97C16D", "#EACC2B", "#A18709", "#DE3938", "#AC2625"])
+          .range(["#569819", "#9BD472", "#6ED420", "#E42715", "#E53318", "#E58A75"])
           .domain(chartKeys);
 
         var xaxis = d3.axisBottom(xscale);
@@ -153,30 +164,82 @@ angular.module('sntRover')
           .attr('transform', 'translate(' + padding + ",0)")
           .call(yaxis);
 
-        var rightSideLegendDiv = d3.select("#right-side-legend");
-        var rightSideLegendColor = d3.scaleOrdinal()
+        /************************** LEFT LEGEND STARTS HERE ************************/
+
+          var leftSideLegend = d3.select("#left-side-legend");
+
+          var leftSideLegendColor = d3.scaleOrdinal()
           .range(["#BBC9B0", "#97C16D", "#EACC2B", "#A18709", "#DE3938", "#AC2625"])
-          .domain(chartKeys);
+          .domain(["Early Check in", "VIP checkin", "Checkin", "VIP checkout", "Checkout", "Late checkout"]);
+
+          leftSideLegend
+          .append("dt")
+          .attr("class", "legend-title")
+          .attr("id", "todays-data")
+          .html("Today");
+
+          var lefttSideLegendList = leftSideLegend.append("ul");
+
+          var lefttSideLegendEntries = lefttSideLegendList.selectAll("li")
+          .data(leftSideLegendColor.domain().slice())
+          .enter()
+          .append("li");
 
 
-        var rightSideLegendEntries = rightSideLegendDiv.selectAll("dd")
+          // append rectangle and text:
+          lefttSideLegendEntries.append("span")
+          .attr("class", "rect")
+          .style("background-color", leftSideLegendColor);
+
+          lefttSideLegendEntries.append("span")
+          .attr("class", "label")
+          .html(function(d) {
+            return d;
+          });
+
+        /************************** LEFT LEGEND END HERE ************************/
+
+        /************************** RIGHT LEGEND STARTS HERE ************************/
+
+          var rightSideLegend = d3.select("#right-side-legend");
+
+          var rightSideLegendColor = d3.scaleOrdinal()
+          .range(["rgba(187, 201, 176, 0.3)", "rgba(151, 193, 109, 0.3)", "rgba(234, 204, 43, 0.3)", 
+                  "rgba(161, 135, 9, 0.3)", "rgba(222, 57, 56, 0.3)", "rgba(172, 38, 37, 0.3)"])
+          .domain(["Early Check in", "VIP checkin", "Checkin", "VIP checkout", "Checkout", "Late checkout"]);
+
+          rightSideLegend
+          .append("dt")
+          .attr("class", "legend-title")
+          .attr("id", "todays-data")
+          .html("Yesterday");
+
+          var rightSideLegendList = rightSideLegend.append("ul");
+
+          var rightSideLegendEntries = rightSideLegendList.selectAll("li")
           .data(rightSideLegendColor.domain().slice())
           .enter()
-          .append("dd")
-          .attr("class", "legend-item")
-          .attr("id", function(item) {
-            return "left-legend-" + item.toLowerCase();
-          });
+          .append("li");
 
-        rightSideLegendEntries.append("span")
+
+          // append rectangle and text:
+          rightSideLegendEntries.append("span")
           .attr("class", "rect")
+          .style("background-color", function(d){
+            console.log(d)
+          })
           .style("background-color", rightSideLegendColor);
 
-        rightSideLegendEntries.append("span")
-          .attr("class", "rect-label")
-          .html(function(label) {
-            return label;
+          rightSideLegendEntries.append("span")
+          .attr("class", "label")
+          .html(function(d) {
+          return d;
           });
+  
+
+        /************************** RIGHT LEGEND END HERE ************************/
+
+        $scope.$emit('REFRESH_ANALTICS_SCROLLER');
       };
     }
   ]);

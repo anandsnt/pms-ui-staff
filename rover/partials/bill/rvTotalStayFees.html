@@ -75,7 +75,7 @@
 
 <!-- Payment method -->
 <div class="block-item item-payment">
-	<button ng-if="hotelDetails.shiji_detokenization_allowed && hasPermissionToDetokenizeCC()" ng-click="openDetokenizationPopup()" type="button" class="button with-icon blue unmask-button">
+	<button ng-if="hotelDetails.shiji_detokenization_allowed && hasPermissionToDetokenizeCC() && billData.credit_card_details.payment_type == 'CC'" ng-click="openDetokenizationPopup()" type="button" class="button with-icon blue unmask-button">
         <span class="icons icon-eye"></span> 
                             Unmask
     </button>

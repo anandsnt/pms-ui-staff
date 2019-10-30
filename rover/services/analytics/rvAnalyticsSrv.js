@@ -9,6 +9,9 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
     that.activeReservations = null;
     that.yesterdaysReservations = null;
     that.roomStatuses = null;
+    that.selectedRoomType = "";
+    that.hotelCheckinTime = null;
+    that.hotelCheckoutTime = null;
 
     /*
      * Function To Fetch Active Reservation for that day
@@ -49,22 +52,36 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
     };
 
     this.initRoomAndReservationApis = function(params) {
+
         var deferred = $q.defer();
         var completedResCall = false;
         var completedRoomsCall = false;
 
-        that.fetchActiveReservation(params).then(function(data) {
+        var isFromFrontDesk = params.isFromFrontDesk;
+
+        that.fetchActiveReservation(params).then(function (data) {
             that.activeReservations = data;
 
+            // From House keeping
             completedResCall = true;
 
             if (completedRoomsCall) {
                 calledHKApis = true;
                 deferred.resolve();
             }
+
         });
 
-        that.fetchRoomStatus(params).then(function(data) {
+        if (isFromFrontDesk) {
+            var yesterday = moment(params.date).subtract(1, 'days')
+                                .format('YYYY-MM-DD');
+            that.fetchActiveReservation({ date: yesterday }).then(function (yesterdaysReservations) {
+               that.yesterdaysReservations = yesterdaysReservations
+            });
+
+        }
+
+        that.fetchRoomStatus(params).then(function (data) {
             that.roomStatuses = data;
 
             completedRoomsCall = true;
@@ -74,15 +91,59 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
             }
         });
         return deferred.promise;
+
+    };
+
+    /*
+     * Apply filter on active reservations
+     */
+    this.filteredReservations = function() {
+        var reservations = that.activeReservations;
+        // Filter reservations by room type
+        if (that.selectedRoomType) {
+            reservations = that.filterReservationsByRoomType(reservations, that.selectedRoomType);
+        };
+        return reservations;
+    };
+
+    /*
+     * Filtered yesterdays reservations
+     */
+    this.filteredYesterdaysReservations = function() {
+        var reservations = that.yesterdaysReservations;
+        // Filter reservations by room type
+        if (that.selectedRoomType) {
+            reservations = that.filterReservationsByRoomType(reservations, that.selectedRoomType);
+        };
+        return reservations;
+    };
+
+    this.filterdRoomStatuses = function() {
+        var rooms = that.roomStatuses;
+        // Filter reservations by room type
+        if (that.selectedRoomType) {
+            rooms = that.roomStatuses.filter(function(room) {
+                return room.room_type === that.selectedRoomType;
+            });
+        }
+        return rooms;
+    };
+
+    /*
+     * When controller initialize set the hotel checkin and checkout time
+     */
+    this.setHotelCiCoTime = function(hotelDetails) {
+        that.hotelCheckinTime = hotelDetails.hotel_checkin_time;
+        that.hotelCheckoutTime = hotelDetails.hotel_checkout_time;
     };
 
     /*
      * This function will return the data structure for HK Work Priority
      */
-    this.hkWorkPriority = function(date, hotelCheckinTime, hotelCheckoutTime) {
+    this.hkWorkPriority = function(date) {
         var deferred = $q.defer();
 
-        constructHkWorkPriority(deferred, date, hotelCheckinTime, hotelCheckoutTime);
+        constructHkWorkPriority(deferred, date);
 
         return deferred.promise;
     };
@@ -106,14 +167,18 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         };
         var isOverview = isArrivalsManagement ? false : true;
 
+        var reservations = that.filteredReservations();
+
+        var rooms = that.filterdRoomStatuses();
+
         // Pushing arrivals data structure
-        hkOverview.data.push(buildArrivals(that.activeReservations, date, isOverview, isArrivalsManagement));
+        hkOverview.data.push(buildArrivals(reservations, date, isOverview));
         // Pushing departure data structure
-        hkOverview.data.push(buildDepartures(that.activeReservations, date, isOverview, isArrivalsManagement));
+        hkOverview.data.push(buildDepartures(reservations, date, isOverview));
         // Pushing Stayovers data structure
-        hkOverview.data.push(buildStayOvers(that.activeReservations, that.roomStatuses, date));
+        hkOverview.data.push(buildStayOvers(reservations, rooms, date));
         // Pushing vacant data structure
-        hkOverview.data.push(buildVacants(that.activeReservations, that.roomStatuses, isOverview, isArrivalsManagement));
+        hkOverview.data.push(buildVacants(reservations, rooms, isOverview, isArrivalsManagement));
 
         deferred.resolve(hkOverview);
     };
@@ -121,23 +186,27 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
     /*
      * Moved the complex data structure building to front-end to help server to scale by using more load on UI
      */
-    var constructHkWorkPriority = function(deferred, date, hotelCheckinTime, hotelCheckoutTime) {
+    var constructHkWorkPriority = function(deferred, date) {
         var workPriority = {
             dashboard_type: 'work_priority',
             label: 'AN_WORK_PRIORITY_CHART',
             data: []
         };
 
+        var reservations = that.filteredReservations();
+
+        var rooms = that.filterdRoomStatuses();
+
         // Pushing arrivals data structure
-        workPriority.data.push(buildArrivals(that.activeReservations, date, false, hotelCheckinTime));
+        workPriority.data.push(buildArrivals(reservations, date, false));
         // Pushing vacant data structure
-        workPriority.data.push(buildVacants(that.activeReservations, that.roomStatuses, false));
+        workPriority.data.push(buildVacants(reservations, rooms, false));
         // Pushing departure data structure
-        workPriority.data.push(buildDepartures(that.activeReservations, date, false, hotelCheckoutTime));
+        workPriority.data.push(buildDepartures(reservations, date, false));
         deferred.resolve(workPriority);
     };
 
-    var buildDepartures = function buildDepartures(activeReservations, date, overview, hotelCheckoutTime) {
+    var buildDepartures = function(activeReservations, date, overview) {
         var departures = activeReservations.filter(function(reservation) {
             return reservation.departure_date === date;
         });
@@ -146,7 +215,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         }).length;
 
         var lateCheckoutCount = departures.filter(function(reservation) {
-            return reservation.reservation_status === 'CHECKEDIN' && isLateCheckout(reservation, hotelCheckoutTime);
+            return reservation.reservation_status === 'CHECKEDIN' && that.isLateCheckout(reservation);
         }).length;
 
         var remainingCount = departures.length - lateCheckoutCount - departedCount;
@@ -163,6 +232,12 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
             }
         };
 
+        departues.contents.right_side.push({
+            type: 'pending',
+            count: remainingCount,
+            label: 'AN_PENDING'
+        });
+
         if (!overview) {
             departues.contents.right_side.push({
                 type: 'late_checkout',
@@ -171,29 +246,25 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
             });
         }
 
-        departues.contents.right_side.push({
-            type: 'pending',
-            count: remainingCount,
-            label: 'AN_PENDING'
-        });
         return departues;
     };
 
-    var buildVacants = function buildVacants(activeReservations, roomStatuses, overview, isArrivalsManagement) {
+    var buildVacants = function(activeReservations, roomStatuses, overview, isArrivalsManagement) {
         var rooms = roomStatuses;
         var dataType = 'rooms';
         var dataLabel = 'AN_ROOMS';
 
-        if (!isArrivalsManagement) {
-            var assignedRoomNumbers = activeReservations.filter(function(reservation) {
-                return reservation.reservation_status === 'CHECKEDIN';
-            }).map(function(reservation) {
-                return reservation.arrival_room_number;
-            });
-            
-            rooms = rooms.filter(function(room) {
-                return !assignedRoomNumbers.includes(room.room_number);
-            });
+        var assignedRoomNumbers = activeReservations.filter(function(reservation) {
+            return reservation.reservation_status === 'CHECKEDIN';
+        }).map(function(reservation) {
+            return reservation.arrival_room_number;
+        });
+
+        rooms = rooms.filter(function(room) {
+            return !assignedRoomNumbers.includes(room.room_number);
+        });
+
+        if (!isArrivalsManagement && !overview) {
             dataType = 'vacant';
             dataLabel = 'AN_VACANT';
         }
@@ -262,7 +333,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         return vacantRoomsData;
     };
 
-    var buildArrivals = function buildArrivals(activeReservations, date, overview, hotelCheckinTime) {
+    var buildArrivals = function(activeReservations, date, overview) {
         var arrivals = activeReservations.filter(function(reservation) {
             return reservation.arrival_date === date;
         }); // Performed checkin that day
@@ -271,11 +342,8 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
             return reservation.reservation_status === 'CHECKEDIN';
         }).length;
 
-        var earlyCheckinCount = arrivals.filter(function(reservation) {
-            return reservation.reservation_status === 'RESERVED' && isEarlyCheckin(reservation, hotelCheckinTime);
-        }).length;
+        var earlyCheckinCount = 0;
 
-        var remainingCount = arrivals.length - perfomedCount - earlyCheckinCount;
         var arrivalsData = {
             type: 'arrivals',
             label: 'AN_ARRIVALS',
@@ -290,12 +358,17 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         }; // For work priority we need to calculate immediate arrivals
 
         if (!overview) {
+            earlyCheckinCount = arrivals.filter(function(reservation) {
+                return reservation.reservation_status === 'RESERVED' && that.isEarlyCheckin(reservation);
+            }).length;
             arrivalsData.contents.right_side.push({
                 type: 'early_checkin',
                 count: earlyCheckinCount,
                 label: 'AN_EARLY_CHECKIN'
             });
         }
+
+        var remainingCount = arrivals.length - perfomedCount - earlyCheckinCount;
 
         arrivalsData.contents.right_side.push({
             type: 'remaining',
@@ -305,7 +378,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         return arrivalsData;
     };
 
-    var buildStayOvers = function buildStayOvers(activeReservations, roomStatuses, date) {
+    var buildStayOvers = function(activeReservations, roomStatuses, date) {
         var stayOvers = activeReservations.filter(function(reservation) {
             return reservation.reservation_status === 'CHECKEDIN' && reservation.departure_date !== date;
         });
@@ -340,9 +413,9 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
     /*
      * Function to determine if a reservation is early checkin
      */
-    var isEarlyCheckin = function(reservation, hotelCheckinTime) {
+    this.isEarlyCheckin = function(reservation) {
         var eta = new Date(reservation.eta_hz);
-        var hotelStdCheckinTime = new Date(hotelCheckinTime);
+        var hotelStdCheckinTime = new Date(that.hotelCheckinTime);
 
         if(hotelStdCheckinTime.getHours() > eta.getHours()) {
             return true;
@@ -355,9 +428,9 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
     /*
      * Function to determine if a reservation is late checkout
      */
-    var isLateCheckout = function(reservation, hotelCheckoutTime) {
+    this.isLateCheckout = function(reservation) {
         var etd = new Date(reservation.etd_hz);
-        var hotelStdCheckoutTime = new Date(hotelCheckoutTime);
+        var hotelStdCheckoutTime = new Date(that.hotelCheckoutTime);
 
         if(hotelStdCheckoutTime.getHours() < etd.getHours()) {
             return true;
@@ -370,7 +443,13 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
     /*
      * Function to determine if a reservation is VIP or not
      */
-    var isVip = function(reservation) {
+    this.isVip = function(reservation) {
         return reservation.vip === 't';
+    };
+
+    this.filterReservationsByRoomType = function(reservations, roomType) {
+      return reservations.filter(function(reservation) {
+          return reservation.arrival_room_type === roomType || reservation.departure_room_type === roomType;
+      });
     };
 }]);
