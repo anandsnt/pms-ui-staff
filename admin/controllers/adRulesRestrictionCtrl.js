@@ -249,7 +249,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                 $scope.rulesSubtitle = $scope.singleRule.name + ' Rule';
 
                 _.each($scope.singleRule.schedules, function(schedule) {
-                    schedule.amount = parseInt(schedule.amount).toFixed(2);
+                    schedule.amount = parseFloat(schedule.amount).toFixed(2);
                     if (parseInt(schedule.advance_days) === 0) {
                         schedule.advance_days_selection = 0;
                     } else if (parseInt(schedule.advance_days) === 9999) {
@@ -279,7 +279,7 @@ admin.controller('ADRulesRestrictionCtrl', [
             var callback = function(data) {
                 // clear any previous data
                 $scope.singleRule = data;
-                $scope.singleRule.amount = parseInt($scope.singleRule.amount).toFixed(2);
+                $scope.singleRule.amount = parseFloat($scope.singleRule.amount).toFixed(2);
                 $scope.singleRule.allow_deposit_edit = (data.allow_deposit_edit !== "" &&  data.allow_deposit_edit) ? true : false;
                 $scope.singleRule.policy_type = 'CANCELLATION_POLICY';
                 $scope.showCancelForm = true;
