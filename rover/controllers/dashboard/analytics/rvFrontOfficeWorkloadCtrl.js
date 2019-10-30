@@ -61,7 +61,7 @@ angular.module('sntRover')
 						left: 150
 					},
 					width = chartAreaWidth - margin.left - margin.right,
-					height = window.innerHeight * (2 / 3 + 1/2)/2 - margin.top - margin.bottom;
+					height = window.innerHeight * (2 / 3 + 1 / 2) / 2 - margin.top - margin.bottom;
 
 				var yScale = d3.scaleBand()
 					.rangeRound([0, height])
@@ -221,17 +221,17 @@ angular.module('sntRover')
 					.attr("fill", function(item) {
 						var fillColor = colorMappings[item.type].fill;
 
-						return "url(#" + fillColor + ")"
+						return "url(#" + fillColor + ")";
 					})
 					.attr("onmouseover", function(item) {
 						var mouseoverColor = colorMappings[item.type].onmouseover_fill;
 
-						return "evt.target.setAttribute('fill', 'url(#" + colorMappings[item.type].onmouseover_fill + " )');"
+						return "evt.target.setAttribute('fill', 'url(#" + mouseoverColor + " )');";
 					})
 					.attr("onmouseout", function(item) {
 						var mouseoutColor = colorMappings[item.type].onmouseout_fill;
 
-						return "evt.target.setAttribute('fill', 'url(#" + mouseoutColor + " )');"
+						return "evt.target.setAttribute('fill', 'url(#" + mouseoutColor + " )');";
 					})
 					.on("click", function(e) {
 						chartDetails.onBarChartClick(e);

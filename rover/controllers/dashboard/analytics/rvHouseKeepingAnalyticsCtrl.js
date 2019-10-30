@@ -39,7 +39,7 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 					onBarChartClick: onBarChartClick
 				};
 
-				//d3.select('#analytics-chart').selectAll('svg').remove();
+				// d3.select('#analytics-chart').selectAll('svg').remove();
 				$scope.drawHkOverviewChart(chartDetails);
 			});
         };

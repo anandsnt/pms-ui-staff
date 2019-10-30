@@ -94,7 +94,7 @@ angular.module('sntRover')
                         left: 150
                     },
                     width = chartAreaWidth - margin.left - margin.right,
-                    height = window.innerHeight * (1/2 + 2/3) / 2 - margin.top - margin.bottom;
+                    height = window.innerHeight * (1 / 2 + 2 / 3) / 2 - margin.top - margin.bottom;
 
                 var yScale = d3.scaleBand()
                     .rangeRound([0, height + 10])

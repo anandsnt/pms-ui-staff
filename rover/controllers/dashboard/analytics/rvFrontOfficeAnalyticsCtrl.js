@@ -68,7 +68,6 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 		var clearAllExistingChartElements = function() {
 			d3.select('#d3-plot').selectAll('svg').remove();
 			document.getElementById("left-side-legend").innerHTML = "";
-			//document.getElementById("analytics-chart").innerHTML = "";
 			document.getElementById("right-side-legend").innerHTML = "";
 		};
 
