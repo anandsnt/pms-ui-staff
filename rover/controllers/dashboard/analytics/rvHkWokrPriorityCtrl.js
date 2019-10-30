@@ -2,24 +2,6 @@ angular.module('sntRover')
     .controller('rvHkWokrPriorityCtrl', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvAnalyticsHelperSrv',
         function($scope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv) {
 
-            var arrivalsColorScheme = d3.scaleOrdinal()
-                .range(["#97D470", "#468F14", "#7CD724"])
-                .domain(["perfomed", "early_checkin", "remaining"]);
-
-            var vacantColorScheme = d3.scaleOrdinal()
-                .range(["#E62A13", "#D67F11", "#66D41D", "#448E13"])
-                .domain(["dirty", "pickup", "clean", "inspected"]);
-
-            var departuresColorScheme = d3.scaleOrdinal()
-                .range(["#E57D70", "#B92C13", "#E62A13"])
-                .domain(["perfomed", "late_checkout", "pending"]);
-
-            var colorScheme = {
-                arrivalsColorScheme: arrivalsColorScheme,
-                vacantColorScheme: vacantColorScheme,
-                departuresColorScheme: departuresColorScheme
-            };
-
             var cssClassMappings = {
                 "Checked In": "bar bar-green bar-light",
                 "Early Check in": "bar bar-green bar-dark",
@@ -35,6 +17,70 @@ angular.module('sntRover')
                 "Pending": "bar bar-red"
             };
 
+
+            var colorMappings = {
+                "arrivals_perfomed": {
+                    "legend_class": "bar bar-green bar-light",
+                    "fill": "greenLight",
+                    "onmouseover_fill": "greenLightHover",
+                    "onmouseout_fill": "greenLight"
+                },
+                "arrivals_early_checkin": {
+                    "legend_class": "bar bar-green bar-dark",
+                    "fill": "greenDark",
+                    "onmouseover_fill": "greenDarkHover",
+                    "onmouseout_fill": "greenDark"
+                },
+                "arrivals_remaining": {
+                    "legend_class": "bar bar-green",
+                    "fill": "green",
+                    "onmouseover_fill": "greenHover",
+                    "onmouseout_fill": "green"
+                },
+                "departures_perfomed": {
+                    "legend_class": "bar bar-red bar-light",
+                    "fill": "redLight",
+                    "onmouseover_fill": "redLightHover",
+                    "onmouseout_fill": "redLight"
+                },
+                "departures_pending": {
+                    "legend_class": "bar bar-red",
+                    "fill": "red",
+                    "onmouseover_fill": "redHover",
+                    "onmouseout_fill": "red"
+                },
+                "departures_late_checkout": {
+                    "legend_class": "bar bar-red bar-dark",
+                    "fill": "redDark",
+                    "onmouseover_fill": "redDarkHover",
+                    "onmouseout_fill": "redDark"
+                },
+                "vacant_clean": {
+                    "legend_class": "bar bar-green",
+                    "fill": "green",
+                    "onmouseover_fill": "greenHover",
+                    "onmouseout_fill": "green"
+                },
+                "vacant_inspected": {
+                    "legend_class": "bar bar-green bar-dark",
+                    "fill": "greenDark",
+                    "onmouseover_fill": "greenDarkHover",
+                    "onmouseout_fill": "greenDark"
+                },
+                "vacant_dirty": {
+                    "legend_class": "bar bar-red",
+                    "fill": "red",
+                    "onmouseover_fill": "redHover",
+                    "onmouseout_fill": "red"
+                },
+                "vacant_pickup": {
+                    "legend_class": "bar bar-orange",
+                    "fill": "orange",
+                    "onmouseover_fill": "orangeHover",
+                    "onmouseout_fill": "orange"
+                }
+            };
+
             $scope.drawHkWorkPriorityChart = function(chartDetails) {
                 $scope.screenData.mainHeading = $filter('translate')(chartDetails.chartData.label);
                 var chartAreaWidth = document.getElementById("analytics-chart").clientWidth;
@@ -45,11 +91,11 @@ angular.module('sntRover')
                         left: 150
                     },
                     width = chartAreaWidth - margin.left - margin.right,
-                    height = window.innerHeight * 2 / 3 - margin.top - margin.bottom;
+                    height = window.innerHeight * (1/2 + 2/3) / 2 - margin.top - margin.bottom;
 
                 var yScale = d3.scaleBand()
                     .rangeRound([0, height + 10])
-                    .padding(.3);
+                    .padding(.4);
 
                 var xScale = d3.scaleLinear()
                     .rangeRound([0, width]);
@@ -61,7 +107,7 @@ angular.module('sntRover')
                     .tickSizeInner(-height)
                     .tickFormat(function(d) {
                         // X axis... treat -ve values as positive
-                        return (d < 0) ? (d * -1) : d;
+                        return (d < 0) ? (d * -1) : d === 0 ? "" : d;
                     });
 
                 var yAxis = d3.axisLeft()
@@ -73,7 +119,7 @@ angular.module('sntRover')
                         return "";
                     });
 
-                var svg = d3.select("#analytics-chart").append("svg")
+                var svg = d3.select("#d3-plot").append("svg")
                     .attr("width", width + margin.left + margin.right)
                     .attr("height", height + margin.top + margin.bottom)
                     .attr("id", "d3-plot")
@@ -112,69 +158,74 @@ angular.module('sntRover')
                     yScale: yScale,
                     xScale: xScale,
                     chartDetails: chartDetails,
-                    colorScheme: colorScheme,
-                    maxValue: maxValueInBotheDirections
+                    maxValue: maxValueInBotheDirections,
+                    colorMappings: colorMappings
                 };
 
-                rvAnalyticsHelperSrv.drawBarsOfBidirectonalChart(dataForDrawingBars);
+                rvAnalyticsHelperSrv.drawBarChart(dataForDrawingBars);
+
+                // rvAnalyticsHelperSrv.drawBarsOfBidirectonalChart(dataForDrawingBars);
 
                 // Add extra Y axis to the middle of the graph
                 svg.append("g")
-                    .attr("class", "y axis inner")
-                    .append("line")
-                    .attr("x1", xScale(0))
-                    .attr("x2", xScale(0))
-                    .attr("y2", height);
-
+                    .append("rect")
+                    .attr("class", "chart-breakpoint-line")
+                    .attr("x", xScale(0))
+                    .attr("y", -40)
+                    .attr("height", height + margin.top + 40)
+                    .attr("width", 4);
                 /************************** DRAW HORIZONTAL LINES IN GRAPH ************************/
+                var horizontalRectWidths = xScale(maxValueInBotheDirections) - xScale(-1 * maxValueInBotheDirections);
 
-                var firstLineHeight = 1.5 * yInnerPadding + yScale.bandwidth();
+                svg.append("g")
+                    .append("rect")
+                    .attr("class", "chart-breakpoint-line")
+                    .attr("x", xScale(-1 * maxValueInBotheDirections))
+                    .attr("y", 0)
+                    .attr("height", 4)
+                    .attr("width", horizontalRectWidths);
 
-                svg.append("line") // attach a line
-                    .style("stroke", "#A0A0A0") // colour the line
-                    .style("stroke-width", "0.5px")
-                    .attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
-                    .attr("y1", firstLineHeight) // y position of the first end of the line
-                    .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-                    .attr("y2", firstLineHeight);
+                var firstHorizontalLine = 1.5 * yInnerPadding + yScale.bandwidth();
 
-                var secondLineHeight = 2.5 * yInnerPadding + 2 * yScale.bandwidth();
+                svg.append("g")
+                    .append("rect")
+                    .attr("class", "chart-breakpoint-line")
+                    .attr("x", xScale(-1 * maxValueInBotheDirections))
+                    .attr("y", firstHorizontalLine)
+                    .attr("height", 4)
+                    .attr("width", horizontalRectWidths);
 
-                svg.append("line") // attach a line
-                    .style("stroke", "#A0A0A0") // colour the line
-                    .style("stroke-width", "0.5px")
-                    .attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
-                    .attr("y1", secondLineHeight) // y position of the first end of the line
-                    .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-                    .attr("y2", secondLineHeight);
+                var secondHorizontalLine = 2.5 * yInnerPadding + 2 * yScale.bandwidth();
+
+                svg.append("g")
+                    .append("rect")
+                    .attr("class", "chart-breakpoint-line")
+                    .attr("x", xScale(-1 * maxValueInBotheDirections))
+                    .attr("y", secondHorizontalLine)
+                    .attr("height", 4)
+                    .attr("width", horizontalRectWidths);
 
 
                 if (maxValueInBotheDirections > 0) {
                     svg.append("text")
-                        .attr("x", xScale(-1 * maxValueInBotheDirections * 3/ 4))
-                        .attr("y", 12.5)
+                        .attr("x", xScale(-1 * maxValueInBotheDirections))
+                        .attr("y", 15)
                         .attr("dy", ".35em")
-                        .style("font-size", "15px")
-                        .style("font-style", "italic")
-                        .style("fill", "#B1B1B1")
+                        .attr("class", "chart-area-label")
                         .text("ARRIVALS");
 
                     svg.append("text")
-                        .attr("x", xScale(-1 * maxValueInBotheDirections * 3/ 4))
-                        .attr("y", firstLineHeight + 12.5)
+                        .attr("x", xScale(-1 * maxValueInBotheDirections))
+                        .attr("y", firstHorizontalLine + 15)
                         .attr("dy", ".35em")
-                        .style("font-size", "15px")
-                        .style("font-style", "italic")
-                        .style("fill", "#B1B1B1")
+                        .attr("class", "chart-area-label")
                         .text("VACANT");
 
                     svg.append("text")
-                        .attr("x", xScale(-1 * maxValueInBotheDirections * 3/ 4))
-                        .attr("y", secondLineHeight + 12.5)
+                        .attr("x", xScale(-1 * maxValueInBotheDirections))
+                        .attr("y", secondHorizontalLine + 15)
                         .attr("dy", ".35em")
-                        .style("font-size", "15px")
-                        .style("font-style", "italic")
-                        .style("fill", "#B1B1B1")
+                        .attr("class", "chart-area-label")
                         .text("DEPARTURES");
                 }
 
@@ -185,7 +236,7 @@ angular.module('sntRover')
                 var arrivalsLeftLegendData = {
                     "title": "Arrivals",
                     "id": "arrivals-right-title-left",
-                    "margin_top": firstLineHeight - yInnerPadding/2 - yBandwidth/2,
+                    "margin_top": firstHorizontalLine - yInnerPadding / 2 - yBandwidth / 2,
                     "items": [{
                         "id": "left-legend-arrivals",
                         "class": cssClassMappings["Checked In"],
@@ -245,7 +296,7 @@ angular.module('sntRover')
                 var arrivalsRightLegendData = {
                     "title": "Arrivals",
                     "id": "arrivals-right-title",
-                    "margin_top": firstLineHeight - yInnerPadding/2 - yBandwidth/2,
+                    "margin_top": firstHorizontalLine - yInnerPadding / 2 - yBandwidth / 2,
                     "items": [{
                         "id": "right-legend-early-checkin",
                         "class": cssClassMappings["Early Check in"],
@@ -278,7 +329,7 @@ angular.module('sntRover')
                 var departuresRightLegendData = {
                     "title": "Departures",
                     "id": "departures-right-title",
-                    "margin_top": yBandwidth -  singleLegendTitleHeightPlusMargin,
+                    "margin_top": yBandwidth - singleLegendTitleHeightPlusMargin,
                     "items": [{
                         "id": "right-legend-pending",
                         "class": cssClassMappings["Pending"],
@@ -297,6 +348,7 @@ angular.module('sntRover')
                 /************************** RIGHT LEGEND ENDS HERE ************************/
 
                 $scope.$emit('REFRESH_ANALTICS_SCROLLER');
+                $scope.screenData.hideChartData = false;
             };
         }
     ]);

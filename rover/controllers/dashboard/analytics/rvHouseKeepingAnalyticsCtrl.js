@@ -12,7 +12,9 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
         rvAnalyticsSrv.setHotelCiCoTime($rootScope.hotelDetails);
 
 		$scope.screenData = {
-			selectedChart : 'HK_OVERVIEW'
+			selectedChart : 'HK_OVERVIEW',
+			hideChartData: true,
+			analyticsDataUpdatedTime: ""
 		};
 
 		$controller('rvHKOverviewAnalticsCtrl', {
@@ -37,7 +39,7 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 					onBarChartClick: onBarChartClick
 				};
 
-				d3.select('#analytics-chart').selectAll('svg').remove();
+				// d3.select('#analytics-chart').selectAll('svg').remove();
 				$scope.drawHkOverviewChart(chartDetails);
 			});
         };
@@ -52,7 +54,7 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 					onBarChartClick: onBarChartClick
 				};
 
-				d3.select('#analytics-chart').selectAll('svg').remove();
+				d3.select('#d3-plot').selectAll('svg').remove();
 				$scope.drawHkWorkPriorityChart(chartDetails);
 			});
 
@@ -61,10 +63,11 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 		var clearAllExistingChartElements = function() {
 			document.getElementById("left-side-legend").innerHTML = "";
 			document.getElementById("right-side-legend").innerHTML = "";
-			document.getElementById("analytics-chart").innerHTML = "";
+			document.getElementById("d3-plot").innerHTML = "";
 		};
 
 		var drawChart = function() {
+			$scope.screenData.hideChartData = true;
 			if ($scope.screenData.selectedChart === 'HK_OVERVIEW') {
 				renderHkOverview();
 			} else {
@@ -76,7 +79,7 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 			$scope.$apply(function() {
 				$timeout(function() {
 					// Clear existing chart
-					d3.select('#analytics-chart').selectAll('svg').remove();
+					d3.select('#d3-plot').selectAll('svg').remove();
 					clearAllExistingChartElements();
 					// Redraw chart
 					drawChart();
@@ -90,6 +93,7 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 
 		$scope.$on('ANALYTICS_MENU_CHANGED', function(e, selectedChart){
 			$scope.screenData.selectedChart = selectedChart;
+			d3.select('#d3-plot').selectAll('svg').remove();
 			clearAllExistingChartElements();
 			drawChart();
 		});
@@ -103,12 +107,18 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 			var options = {
 				params: params,
 				successCallBack: function() {
+					$scope.screenData.analyticsDataUpdatedTime = moment().format("MM ddd, YYYY hh:mm:ss a");
+					d3.select('#d3-plot').selectAll('svg').remove();
 					clearAllExistingChartElements();
-                    drawChart();
+					drawChart();
                 }
 			};
 
 			$scope.callAPI(rvAnalyticsSrv.initRoomAndReservationApis, options);
+		};
+
+		$scope.refreshChart = function (){
+			fetchData($scope.dashboardFilter.datePicked, $scope.dashboardFilter.selectedRoomTypeId)
 		};
 
 
@@ -126,7 +136,7 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 		});
 
 		(function() {
-			fetchData($scope.dashboardFilter.datePicked, $scope.dashboardFilter.selectedRoomTypeId)
+			fetchData($scope.dashboardFilter.datePicked, $scope.dashboardFilter.selectedRoomTypeId);
 		})();
 	}
 ]);
