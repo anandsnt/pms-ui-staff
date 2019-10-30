@@ -59,7 +59,8 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
                         card_expiry: cardDetails.expiry_date,
                         payment_id: response.id,
                         is_swiped: cardDetails.is_swiped,
-                        auth_color_code: cardDetails.auth_color_code
+                        auth_color_code: cardDetails.auth_color_code,
+                        token: cardDetails.token
                     });
 
                     $scope.paymentData.bills[billIndex].credit_card_details.payment_type = paymentType;
