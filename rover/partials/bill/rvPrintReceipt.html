@@ -66,7 +66,7 @@
                 </td>
                 <td class="align-right receipt-amount">
                     <span class="currency">{{receiptPrintData.currency_symbol}}</span>{{receiptPrintData.payments.amount | number: precisonTwo }}
-                    <div class="converted-currency" ng-if="receiptPrintData.payments.converted_amount !== '' && receiptPrintData.payments.converted_amount !== null && invoiceCurrencySymbol !='' ">
+                    <div class="converted-currency" ng-if="receiptPrintData.payments.converted_amount !== '' && receiptPrintData.payments.converted_amount !== null && invoiceCurrencySymbol !=='' ">
                         <span class="currency">{{receiptPrintData.converted_currency_symbol}}</span>{{receiptPrintData.payments.converted_amount | number: precisonTwo }}
                     </div>
                 </td>
