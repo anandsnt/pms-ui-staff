@@ -1576,24 +1576,23 @@ sntRover.controller('RVbillCardController',
                };
 
             $scope.successPutInQueueCallBack = function() {
-                    $scope.$emit('hideLoader');
-                    $scope.reservationData.reservation_card.is_reservation_queued = "true";
-                    $scope.$emit('UPDATE_QUEUE_ROOMS_COUNT', 'add');
-                    RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.reservation_id, $scope.reservationData);
+                var useAdvancedQueueFlow = $rootScope.advanced_queue_flow_enabled;
+                var roomKeyDelivery = $scope.reservationBillData.key_settings; // as per CICO-29735
 
-                    var useAdvancedQueFlow = $rootScope.advanced_queue_flow_enabled;
-                    // as per CICO-29735
-                    var keySettings = $scope.reservationData.reservation_card.key_settings;
+                $scope.$emit('hideLoader');
+                $scope.reservationData.reservation_card.is_reservation_queued = "true";
+                $scope.$emit('UPDATE_QUEUE_ROOMS_COUNT', 'add');
+                RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.reservation_id, $scope.reservationData);
 
-                    if (useAdvancedQueFlow && keySettings !== "no_key_delivery") {
-                        setTimeout(function() {
-                            // then prompt for keys
-                            $rootScope.$broadcast('clickedIconKeyFromQueue');// signals rvReservationRoomStatusCtrl to init the keys popup
-                        }, 1250);
-                        $scope.goToStayCardFromAddToQueue();
-                    } else {
-                        $scope.goToStayCardFromAddToQueue();
-                    }
+                if (useAdvancedQueueFlow && roomKeyDelivery !== "no_key_delivery") {
+                    setTimeout(function() {
+                        // signal rvReservationRoomStatusCtrl to init the keys popup
+                        $rootScope.$broadcast('clickedIconKeyFromQueue');
+                    }, 1250);
+                    $scope.goToStayCardFromAddToQueue();
+                } else {
+                    $scope.goToStayCardFromAddToQueue();
+                }
             };
             $scope.failPutInQueueCallBack = function(err) {
                     $scope.$emit('hideLoader');
