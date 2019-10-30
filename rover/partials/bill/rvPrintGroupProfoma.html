@@ -31,6 +31,7 @@
 </div>
 
 <div class="invoice-header">
+    {{printData.custom_text_header}}
 </div>
 
 <div class="invoice-body">
@@ -79,7 +80,7 @@
             </tr>            
         </tfoot>
         <tbody>
-            <tr class="first" ng-repeat-start="item in printData.proforma_bill_transactions.transaction_details">
+            <tr class="first" ng-repeat-start="item in printData.proforma_bill_transactions.transaction_details"  ng-class="{'last' : printData.proforma_bill_transactions.transaction_details[$index].occupancy_details.length === 1}">
                 <td class="date">{{item.date}}</td>
                 <td class="type">{{item.occupancy_details[0].room_type}}</td>
                 <td class="occ">{{item.occupancy_details[0].ocuupancy}}</td>
@@ -93,7 +94,9 @@
                 <td class="align-right amount">
                     <span class="currency" ng-if="item.occupancy_details[0].credit">{{currencySymbol}}</span>{{item.occupancy_details[0].credit | number: precisonTwo }}
                 </td>
-                <td></td>
+                <td class="align-right amount" valign="bottom" ng-if="printData.proforma_bill_transactions.transaction_details[$index].occupancy_details.length === 1">
+                    <span class="currency" ng-if="item.total_amount">{{currencySymbol}}</span>{{item.total_amount | number: precisonTwo }}
+                </td>
             </tr>
 
             <tr ng-repeat-end ng-repeat="occupancyData in item.occupancy_details" ng-if="$index >= 1" ng-class="{'last' : $last}">
@@ -114,5 +117,5 @@
     </table>
 </div>
 
-<div class="invoice-footer text-center">
+<div class="invoice-footer text-center" ng-bind-html="trustAsHtml(printData.custom_text_footer)">
 </div>
