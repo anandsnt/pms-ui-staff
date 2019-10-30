@@ -90,7 +90,9 @@ angular.module('sntRover')
                         left: 150
                     },
                     width = chartAreaWidth - margin.left - margin.right,
-                    height = window.innerHeight * (1 / 2 + 2 / 3) / 2 - margin.top - margin.bottom;
+                    maxHeight = 500,
+                    calculatedHeight = window.innerHeight * (1 / 2 + 2 / 3) / 2 - margin.top - margin.bottom,
+                    height = calculatedHeight > maxHeight ? maxHeight : calculatedHeight;
 
                 var yScale = d3.scaleBand()
                     .rangeRound([0, height + 10])
@@ -141,7 +143,8 @@ angular.module('sntRover')
 
                 // Add x axis
                 svg.append("g")
-                    .attr("class", "x axis")
+                    .attr("class", "x axis bottom-axis")
+                    .attr("id", "bottom-axis")
                     .attr("transform", "translate(0," + height + ")")
                     .call(xAxis);
 
@@ -174,21 +177,13 @@ angular.module('sntRover')
 
 
                 var topHorizontalLine = 0;
-
-                // svg.append("line") // attach a line
-                //     .style("stroke", "#A0A0A0") // colour the line
-                //     .style("stroke-width", "1px")
-                //     .attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
-                //     .attr("y1", topHorizontalLine) // y position of the first end of the line
-                //     .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-                //     .attr("y2", topHorizontalLine);
-
-                var horizontalRectWidths = xScale(maxValueInBotheDirections) - xScale(-1 * maxValueInBotheDirections);
+                var horizontalRectWidths = xScale(maxValueInBotheDirections) - xScale(-1 * maxValueInBotheDirections) + 2 * xScale(50);
+                var lineXOffset = xScale(-1 * (maxValueInBotheDirections + 50));
 
                 svg.append("g")
                     .append("rect")
                     .attr("class", "chart-breakpoint-line")
-                    .attr("x", xScale(-1 * maxValueInBotheDirections))
+                    .attr("x", lineXOffset)
                     .attr("y", topHorizontalLine)
                     .attr("height", 4)
                     .attr("width", horizontalRectWidths);
@@ -198,27 +193,29 @@ angular.module('sntRover')
                 svg.append("g")
                     .append("rect")
                     .attr("class", "chart-breakpoint-line")
-                    .attr("x", xScale(-1 * maxValueInBotheDirections))
+                    .attr("x", lineXOffset)
                     .attr("y", firstLineHeight)
                     .attr("height", 4)
                     .attr("width", horizontalRectWidths);
-
-                // svg.append("line") // attach a line
-                //     .style("stroke", "#A0A0A0") // colour the line
-                //     .style("stroke-width", "0.5px")
-                //     .attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
-                //     .attr("y1", firstLineHeight) // y position of the first end of the line
-                //     .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-                //     .attr("y2", firstLineHeight);
 
                 var secondLineHeight = 2.5 * yInnerPadding + 2 * yScale.bandwidth();
 
                 svg.append("g")
                     .append("rect")
                     .attr("class", "chart-breakpoint-line")
-                    .attr("x", xScale(-1 * maxValueInBotheDirections))
+                    .attr("x", lineXOffset)
                     .attr("y", secondLineHeight)
                     .attr("height", 4)
+                    .attr("width", horizontalRectWidths);
+
+                var finalHorizontalLine = height - 3;
+
+                svg.append("g")
+                    .append("rect")
+                    .attr("class", "chart-breakpoint-line")
+                    .attr("x", lineXOffset)
+                    .attr("y", finalHorizontalLine)
+                    .attr("height", 3)
                     .attr("width", horizontalRectWidths);
 
                 if (maxValueInBotheDirections > 0) {
