@@ -164,7 +164,9 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
                 var user = 'REMAINING';
 
                 if (reservation.reservation_status !== 'RESERVED') {
-                    if (reservation.ci_agent) {
+                    if (reservation.ci_application !== 'ROVER' && reservation.ci_application) {
+                        user = reservation.ci_application;
+                    } else if (reservation.ci_agent) {
                         user = reservation.ci_agent;
                     } else {
                         return;
@@ -194,7 +196,9 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
                 var user = 'REMAINING';
 
                 if (reservation.reservation_status !== 'CHECKEDIN') {
-                    if (reservation.co_agent) {
+                    if (reservation.co_application !== 'ROVER' && reservation.co_application) {
+                        user = reservation.co_application;
+                    } else if (reservation.co_agent) {
                         user = reservation.co_agent;
                     } else {
                         return;
@@ -240,10 +244,6 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
             };
 
             initFoActivityDataStructure(foActivity);
-
-            console.log("______________/n/n/n/n");
-            console.log(JSON.stringify(foActivity));
-            console.log("______________/n/n/n/n");
 
             // To debug in prod test
             try {
