@@ -88,10 +88,12 @@ angular.module('sntRover')
                         top: 50,
                         right: 20,
                         bottom: 30,
-                        left: 150
+                        left: 50
                     },
                     width = chartAreaWidth - margin.left - margin.right,
-                    height = window.innerHeight * (1/2 + 2/3) / 2 - margin.top - margin.bottom;
+                    maxHeight = 500,
+                    calculatedHeight = window.innerHeight * (1 / 2 + 2 / 3) / 2 - margin.top - margin.bottom,
+                    height = calculatedHeight > maxHeight ? maxHeight : calculatedHeight;
 
                 var yScale = d3.scaleBand()
                     .rangeRound([0, height + 10])
@@ -143,7 +145,8 @@ angular.module('sntRover')
 
                 // Add x axis
                 svg.append("g")
-                    .attr("class", "x axis")
+                    .attr("class", "x axis bottom-axis")
+                    .attr("id", "bottom-axis")
                     .attr("transform", "translate(0," + height + ")")
                     .call(xAxis);
 
@@ -175,12 +178,13 @@ angular.module('sntRover')
                     .attr("height", height + margin.top + 40)
                     .attr("width", 4);
                 /************************** DRAW HORIZONTAL LINES IN GRAPH ************************/
-                var horizontalRectWidths = xScale(maxValueInBotheDirections) - xScale(-1 * maxValueInBotheDirections);
+                var horizontalRectWidths = xScale(maxValueInBotheDirections) - xScale(-1 * maxValueInBotheDirections) + 2 * xScale(50);
+                var lineXOffset = xScale(-1 * (maxValueInBotheDirections + 50));
 
                 svg.append("g")
                     .append("rect")
                     .attr("class", "chart-breakpoint-line")
-                    .attr("x", xScale(-1 * maxValueInBotheDirections))
+                    .attr("x", lineXOffset)
                     .attr("y", 0)
                     .attr("height", 4)
                     .attr("width", horizontalRectWidths);
@@ -190,7 +194,7 @@ angular.module('sntRover')
                 svg.append("g")
                     .append("rect")
                     .attr("class", "chart-breakpoint-line")
-                    .attr("x", xScale(-1 * maxValueInBotheDirections))
+                    .attr("x",lineXOffset)
                     .attr("y", firstHorizontalLine)
                     .attr("height", 4)
                     .attr("width", horizontalRectWidths);
@@ -200,29 +204,41 @@ angular.module('sntRover')
                 svg.append("g")
                     .append("rect")
                     .attr("class", "chart-breakpoint-line")
-                    .attr("x", xScale(-1 * maxValueInBotheDirections))
+                    .attr("x", lineXOffset)
                     .attr("y", secondHorizontalLine)
                     .attr("height", 4)
                     .attr("width", horizontalRectWidths);
 
+                var finalHorizontalLine = height - 3;
+
+                svg.append("g")
+                    .append("rect")
+                    .attr("class", "chart-breakpoint-line")
+                    .attr("x", lineXOffset)
+                    .attr("y", finalHorizontalLine)
+                    .attr("height", 3)
+                    .attr("width", horizontalRectWidths);
+
 
                 if (maxValueInBotheDirections > 0) {
+                    var textOffset = xScale(-1 * maxValueInBotheDirections);
+
                     svg.append("text")
-                        .attr("x", xScale(-1 * maxValueInBotheDirections))
+                        .attr("x", textOffset)
                         .attr("y", 15)
                         .attr("dy", ".35em")
                         .attr("class", "chart-area-label")
                         .text("ARRIVALS");
 
                     svg.append("text")
-                        .attr("x", xScale(-1 * maxValueInBotheDirections))
+                        .attr("x", textOffset)
                         .attr("y", firstHorizontalLine + 15)
                         .attr("dy", ".35em")
                         .attr("class", "chart-area-label")
                         .text("VACANT");
 
                     svg.append("text")
-                        .attr("x", xScale(-1 * maxValueInBotheDirections))
+                        .attr("x", textOffset)
                         .attr("y", secondHorizontalLine + 15)
                         .attr("dy", ".35em")
                         .attr("class", "chart-area-label")
