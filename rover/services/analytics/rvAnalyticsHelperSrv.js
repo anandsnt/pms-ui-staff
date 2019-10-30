@@ -196,81 +196,6 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 		});
 	};
 
-
-	this.addRandomNumbersForTesting = function(chartDetails) {
-		var combinedItemsCountArray = [];
-
-		var workPriority = chartDetails.chartData.label === 'AN_WORKLOAD'; ;
-
-		if (workPriority) {
-			var b = {
-				"type": "jena",
-				"label": "jena",
-				"contents": {
-					"right_side": [{
-						"type": "early_checkin",
-						"label": "AN_EARLY_CHECKIN",
-						"count": 0
-					}, {
-						"type": "checkin",
-						"label": "AN_CHECKIN",
-						"count": 1
-					}, {
-						"type": "vip_checkin",
-						"label": "AN_VIP_CHECKIN",
-						"count": 0
-					}, {
-						"type": "vip_checkout",
-						"label": "AN_VIP_CHECKOUT",
-						"count": 0
-					}, {
-						"type": "checkout",
-						"label": "AN_CHECKOUT",
-						"count": 0
-					}, {
-						"type": "late_checkout",
-						"label": "AN_LATE_CHECKOUT",
-						"count": 0
-					}]
-				}
-			};
-
-
-			var i = 0;
-			var c = {};
-			for (i = 0; i <= 20; i++) {
-				c[i] = angular.copy(b);
-				c[i].type = c[i].type + i;
-				c[i].label = c[i].label + i;
-				c[i].count = _.random(20, 100);
-				chartDetails.chartData.data.push(c[i]);
-			}
-
-		}
-
-		_.each(chartDetails.chartData.data, function(chart) {
-			_.each(chart.contents.left_side, function(item) {
-				// to delete
-				item.count = item.count < 3 ? _.random(20, 100) : item.count;
-				combinedItemsCountArray.push(item.count);
-			});
-			_.each(chart.contents.right_side, function(item) {
-				// to delete
-				item.count = item.count < 3 ? _.random(20, 100) : item.count;
-				combinedItemsCountArray.push(item.count);
-			});
-			// chart.contents.right_side.push(chart.contents.right_side[0]);
-			// chart.contents.right_side.push(chart.contents.right_side[0]);
-			// chart.contents.right_side.push(chart.contents.right_side[0]);
-		});
-
-		// var largestItemCount = _.max(combinedItemsCountArray, function(count) {
-		//     return count;
-		// });
-
-		return chartDetails;
-	};
-
 	this.drawBarChart = function(barData) {
 		var svg = barData.svg,
 			yScale = barData.yScale,
@@ -328,5 +253,80 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 			.on("click", function(e) {
 				barData.onBarChartClick(e);
 			});
+	};
+
+
+	this.addRandomNumbersForTesting = function(chartDetails) {
+		var combinedItemsCountArray = [];
+
+		var workPriority = chartDetails.chartData.label === 'AN_WORKLOAD'; ;
+
+		if (workPriority) {
+			var b = {
+				"type": "jena",
+				"label": "jena",
+				"contents": {
+					"right_side": [{
+						"type": "early_checkin",
+						"label": "AN_EARLY_CHECKIN",
+						"count": 0
+					}, {
+						"type": "checkin",
+						"label": "AN_CHECKIN",
+						"count": 1
+					}, {
+						"type": "vip_checkin",
+						"label": "AN_VIP_CHECKIN",
+						"count": 0
+					}, {
+						"type": "vip_checkout",
+						"label": "AN_VIP_CHECKOUT",
+						"count": 0
+					}, {
+						"type": "checkout",
+						"label": "AN_CHECKOUT",
+						"count": 0
+					}, {
+						"type": "late_checkout",
+						"label": "AN_LATE_CHECKOUT",
+						"count": 0
+					}]
+				}
+			};
+
+
+			var i = 0;
+			var c = {};
+			for (i = 0; i <= 24; i++) {
+				c[i] = angular.copy(b);
+				c[i].type = c[i].type + i;
+				c[i].label = c[i].label + i;
+				c[i].count = _.random(20, 100);
+				chartDetails.chartData.data.push(c[i]);
+			}
+
+		}
+
+		_.each(chartDetails.chartData.data, function(chart) {
+			_.each(chart.contents.left_side, function(item) {
+				// to delete
+				item.count = item.count < 3 ? _.random(20, 100) : item.count;
+				combinedItemsCountArray.push(item.count);
+			});
+			_.each(chart.contents.right_side, function(item) {
+				// to delete
+				item.count = item.count < 3 ? _.random(20, 100) : item.count;
+				combinedItemsCountArray.push(item.count);
+			});
+			// chart.contents.right_side.push(chart.contents.right_side[0]);
+			// chart.contents.right_side.push(chart.contents.right_side[0]);
+			// chart.contents.right_side.push(chart.contents.right_side[0]);
+		});
+
+		// var largestItemCount = _.max(combinedItemsCountArray, function(count) {
+		//     return count;
+		// });
+
+		return chartDetails;
 	};
 }]);
