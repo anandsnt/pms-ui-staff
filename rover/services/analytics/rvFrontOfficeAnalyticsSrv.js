@@ -37,10 +37,10 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
         /*
          * Front desk arrivals and stay-overs data
          */
-        this.fdArrivalsManagement = function(date) {
+        this.fdArrivalsManagement = function(date, hotelCheckinTime, hotelCheckoutTime) {
             var deferred = $q.defer();
 
-            rvAnalyticsSrv.hkOverview(date, true).then(function(response) {
+            rvAnalyticsSrv.hkOverview(date, true,  hotelCheckinTime, hotelCheckoutTime).then(function(response) {
                 response.label = 'AN_ARRIVALS_MANAGEMENT';
                 response.dashboard_type = 'arrivals_management_chart';
                 response.data = _.reject(response.data, function(data) {
@@ -83,18 +83,7 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
             var yesterday = moment(date).subtract(1, 'days')
                 .format('YYYY-MM-DD');
 
-            sntActivity.start('YESTERDAYS_RESERVATION');
-
-            rvAnalyticsSrv.fetchActiveReservation({
-                date: yesterday
-            }).then(function(yesterdaysReservations) {
-                rvAnalyticsSrv.yesterdaysReservations = yesterdaysReservations;
-
-                constructFoActivity(date, yesterday, deferred);
-
-            }).finally(function() {
-                sntActivity.stop('YESTERDAYS_RESERVATION');
-            });
+            constructFoActivity(date, yesterday, deferred);
 
             return deferred.promise;
         };
@@ -109,11 +98,13 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
                 data: []
             };
 
-            var arrivingReservations = rvAnalyticsSrv.activeReservations.filter(function(reservation) {
+            var reservations = rvAnalyticsSrv.filteredReservations();
+
+            var arrivingReservations = reservations.filter(function(reservation) {
                 return reservation.arrival_date === date;
             });
 
-            var departingReservations = rvAnalyticsSrv.activeReservations.filter(function(reservation) {
+            var departingReservations = reservations.filter(function(reservation) {
                 return reservation.departure_date === date;
             });
 
@@ -173,10 +164,12 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
                 var user = 'REMAINING';
 
                 if (reservation.reservation_status !== 'RESERVED') {
-                    if (reservation.ci_agent === null) {
-                        return;
-                    } else {
+                    if (reservation.ci_application !== 'ROVER' && reservation.ci_application) {
+                        user = reservation.ci_application;
+                    } else if (reservation.ci_agent) {
                         user = reservation.ci_agent;
+                    } else {
+                        return;
                     }
                 }
 
@@ -203,10 +196,12 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
                 var user = 'REMAINING';
 
                 if (reservation.reservation_status !== 'CHECKEDIN') {
-                    if (reservation.co_agent === null) {
-                        return;
-                    } else {
+                    if (reservation.co_application !== 'ROVER' && reservation.co_application) {
+                        user = reservation.co_application;
+                    } else if (reservation.co_agent) {
                         user = reservation.co_agent;
+                    } else {
+                        return;
                     }
                 }
 
@@ -250,16 +245,13 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
 
             initFoActivityDataStructure(foActivity);
 
-            console.log("______________/n/n/n/n");
-            console.log(JSON.stringify(foActivity));
-            console.log("______________/n/n/n/n");
-
             // To debug in prod test
             try {
                 // Todays CI/CO data
-                constructCiCoActivity(today, rvAnalyticsSrv.activeReservations, foActivity, true);
+                constructCiCoActivity(today, rvAnalyticsSrv.filteredReservations(), foActivity, true);
+
                 // Yesterdays CI/CO data
-                constructCiCoActivity(yesterday, rvAnalyticsSrv.yesterdaysReservations, foActivity, false);
+                constructCiCoActivity(yesterday, rvAnalyticsSrv.filteredYesterdaysReservations(), foActivity, false);
                 // Format data
                 //foActivity= 
                 var formatedData = formatFoActivityData(foActivity);

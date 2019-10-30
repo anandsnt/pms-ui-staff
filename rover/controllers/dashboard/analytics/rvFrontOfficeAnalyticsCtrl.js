@@ -8,6 +8,10 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 	function($scope, $rootScope, $state, $timeout, rvFrontOfficeAnalyticsSrv, rvAnalyticsSrv, $controller) {
 
 		BaseCtrl.call(this, $scope);
+
+        // Setting the CI / CO time
+        rvAnalyticsSrv.setHotelCiCoTime($rootScope.hotelDetails);
+
 		$scope.screenData = {
 			selectedChart: 'FO_ARRIVALS',
 			hideChartData: true,
@@ -34,10 +38,7 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 		var date = $rootScope.businessDate;
 
 		var renderfdWorkloadChart = function() {
-            var hotelCheckinTime = $rootScope.hotelDetails.hotel_checkin_time;
-            var hotelCheckoutTime = $rootScope.hotelDetails.hotel_checkout_time;
-
-			rvFrontOfficeAnalyticsSrv.fdWorkload(date, hotelCheckinTime, hotelCheckoutTime).then(function(data) {
+			rvFrontOfficeAnalyticsSrv.fdWorkload(date).then(function(data) {
 				var chartDetails = {
 					chartData: data,
 					onBarChartClick: onBarChartClick
@@ -47,8 +48,8 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 				$scope.drawWorkLoadChart(chartDetails);
 			});
 		};
-		var renderFrontOfficeManagementChart = function() {
 
+		var renderFrontOfficeManagementChart = function() {
 			rvFrontOfficeAnalyticsSrv.fdArrivalsManagement(date).then(function(data) {
 				console.log(JSON.stringify(data));
 				var chartDetails = {
@@ -115,10 +116,10 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 			$(window).off("resize.doResize");
 		});
 
-		var fetchData = function (date, roomTypeId) {
+		var fetchData = function (date) {
 			var params = {
 				"date": date,
-				"room_type_id": roomTypeId
+                "isFromFrontDesk": true
 			};
 			var options = {
 				params: params,
@@ -133,12 +134,14 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 		};
 
 		$scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER', function(e, filter) {
-			fetchData(filter.date, filter.room_type_id);
+		    rvAnalyticsSrv.selectedRoomType = filter.room_type;
+            clearAllExistingChartElements();
+            drawChart();
 		});
 
 		$scope.$on('RESET_ANALYTICS_FILTERS', function (){
 			$scope.dashboardFilter.datePicked = $rootScope.businessDate;
-			$scope.dashboardFilter.selectedRoomTypeId = "";
+			$scope.dashboardFilter.selectedRoomType = "";
 			$scope.dashboardFilter.selectedAnalyticsMenu = "HK_OVERVIEW";
 			$scope.screenData.selectedChart = "HK_OVERVIEW";
 		});
@@ -146,8 +149,15 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 			fetchData($scope.dashboardFilter.datePicked, $scope.dashboardFilter.selectedRoomTypeId)
 		};
 
+		/*
+		 * Reload graph with date picker change
+		 */
+		$scope.$on('RELOAD_DATA_WITH_DATE_FILTER', function() {
+            fetchData($scope.dashboardFilter.datePicked);
+        });
+
 		(function() {
-			fetchData($scope.dashboardFilter.datePicked, $scope.dashboardFilter.selectedRoomTypeId)
+			fetchData($scope.dashboardFilter.datePicked)
 		})();
 	}
 ]);
