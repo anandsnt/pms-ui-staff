@@ -2694,7 +2694,6 @@ sntRover.controller('RVbillCardController',
 		// remove the orientation after similar delay
 		removePrintOrientation();
 		$scope.printBillCardActive = false;
-		$scope.printGroupProfomaActive = false;
 		$("body #loading").html('<div id="loading-spinner" ></div>');// CICO-56119
 		$scope.reloadCurrentActiveBill();
 	};
