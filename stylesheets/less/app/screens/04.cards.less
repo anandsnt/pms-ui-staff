@@ -1606,6 +1606,7 @@
                                 }
 
                                 .account-linked-contracts {
+                                    .box-shadow( 1px 1px 0px rgba( 0, 0, 0, 0.15));
                                     .contract-list-items-section {
                                         h2 {
                                             background: rgba( 255, 255, 255, 0.5 );
@@ -1667,26 +1668,38 @@
 
                                     .contract-link {
                                         position: relative;
+                                        height: 40px;
                                         #flexbox > .parent( row, center, center, '' );
-                                        .size( 60px, 100% );
+                                        
+                                        &:not(.without-lines) {
+                                            .size( 60px, 100% );
 
-                                        &:before,
-                                        &:after {
-                                            content: '';
-                                            position: absolute;
-                                            width: 2px;
-                                            height: calc(~"50% - 10px");
-                                            background: rgba( 0, 0, 0, 0.15 );
+                                            &:before,
+                                            &:after {
+                                                content: '';
+                                                position: absolute;
+                                                width: 2px;
+                                                height: calc(~"50% - 10px");
+                                                background: rgba( 0, 0, 0, 0.15 );
+                                            }
+
+                                            &:before {
+                                                top: 0;
+                                                left: calc(~"50% - 1px");
+                                            }
+
+                                            &:after {
+                                                bottom: 0;
+                                                left: calc(~"50% - 1px");
+                                            }
                                         }
 
-                                        &:before {
-                                            top: 0;
-                                            left: calc(~"50% - 1px");
-                                        }
-
-                                        &:after {
-                                            bottom: 0;
-                                            left: calc(~"50% - 1px");
+                                        &.without-lines {
+                                            background: rgba(255, 255, 255, 0.5);
+                                            padding: 0 30px 0 10px;
+                                            text-align: left;
+                                            justify-content: left;
+                                            .box-shadow(1px 0 1px rgba( 0, 0, 0, 0.15));
                                         }
                                         
                                         span {
