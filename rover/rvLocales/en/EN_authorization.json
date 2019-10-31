@@ -10,4 +10,6 @@
 "AUTHORIZE" : "Authorize",
 "RELEASE" : "Release",
 "CREDIT_CARD_AUTHORIZATION" : "Credit Card Authorization",
-"ENTER_MANUAL_AUTH_CODE": "Enter Auth Code"
+"ENTER_MANUAL_AUTH_CODE": "Enter Auth Code",
+"MANUAL_AUTH_CODE": "Auth Code",
+"SAVE_AUTHORIZATION": "Save authorization"

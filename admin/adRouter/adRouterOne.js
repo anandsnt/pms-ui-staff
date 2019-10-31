@@ -93,7 +93,7 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
             }
 
 		});
-		
+
 		$stateProvider.state('admin.adminuserdetails', {
 			templateUrl: '/assets/partials/adminUsers/adAdminUserDetails.html',
 			controller: 'ADAdminUserDetailsCtrl',
@@ -220,7 +220,7 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
                 action: undefined
             }
 		});
-    
+
 
 		$stateProvider.state('admin.autoSyncInventory', {
 			templateUrl: '/assets/partials/tools/adTools.html',
@@ -254,7 +254,11 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
         $stateProvider.state('admin.clientSuccessManagerDetails', {
             templateUrl: '/assets/partials/clientSuccessManagers/adClientSuccessManagerAdd.html',
             controller: 'ADClientSuccessManagerDetailsCtrl',
-            url: '/clientSuccessManager/:id'
+			url: '/clientSuccessManager',
+			params: {
+				action: undefined,
+				id: undefined
+			}
         });
 
         $stateProvider.state('admin.zestStationIDCollection', {

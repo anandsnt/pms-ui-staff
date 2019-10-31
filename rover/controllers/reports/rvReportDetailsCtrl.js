@@ -232,6 +232,10 @@ sntRover.controller('RVReportDetailsCtrl', [
                     $scope.isBalanceReport = true;
                     $scope.isArAgingReport = true;
                     break;
+                 case reportNames['FOLIO_TAX_REPORT']:
+                    $scope.hasNoTotals = false;
+                    $scope.isFolioTaxReport = true;
+                    break;                    
                 case reportNames['FORECAST_GUEST_GROUPS']:
                     $scope.isForecastGuestGroup = true;
                     break;
@@ -807,7 +811,14 @@ sntRover.controller('RVReportDetailsCtrl', [
                     $scope.showReportHeader = true;
                     $scope.showPrintOption = true;
                     $scope.detailsTemplateUrl = '/assets/partials/reports/taxExempt/taxExemptReportDetails.html';
-                    break;                  
+                    break;
+
+                case reportNames['FOLIO_TAX_REPORT']:
+                    $scope.hasReportTotals = true;
+                    $scope.showReportHeader = true;
+                    $scope.showPrintOption = true;
+                    $scope.detailsTemplateUrl = '/assets/partials/reports/folioTax/folioTaxReportDetails.html';
+                    break;             
 
                 default:
                     $scope.hasReportTotals = true;
@@ -1170,7 +1181,9 @@ sntRover.controller('RVReportDetailsCtrl', [
                 case reportNames['COMPLIMENTARY_ROOM_REPORT']:
                 case reportNames['GROUP_ROOMS_REPORT']:
                 case reportNames['TRAVEL_AGENT_COMMISSIONS']:
-
+                case reportNames['DAILY_PRODUCTION_RATE']:
+                case reportNames['DAILY_PRODUCTION_DEMO']:
+                case reportNames['FOLIO_TAX_REPORT']:
                     orientation = 'landscape';
                     break;
 

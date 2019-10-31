@@ -1,0 +1,343 @@
+<div ng-controller = "rvReservationSearchWidgetController" >
+	    <!--  
+		<form method="get" action="" name="reservations-search-form" id="reservations-search-form" class="has-bulk-checkout search-form has-dates has-room-types enable-adding" role="search"  outside-click-handler ng-class="{'has-bulk-checkout': isDueoutShowing }" ng-if="showDashboard"><!--TODO: verify enable-adding -->
+			 <!-- When showing departures  
+			<div class="entry switch" ng-if="isDueoutShowing">
+				<!-- remove .on when showing Bulk Checkout 
+				<div class="switch-button" ng-class="{'on': !isBulkCheckoutSelected}">
+					<input value="" type="checkbox" checked="" ng-model="isBulkCheckoutSelected" ng-change="onDeparturesScreenTabViewChange()" ng-disabled="shouldDisableBulkCheckoutOption()">
+					<label class="data-off">
+						<span class="value">All</span>
+						<span class="switch-icon">Bulk Checkout</span>
+					</label>
+					<label class="data-on">
+						<span class="switch-icon">All</span>
+						<span class="value">Bulk Checkout</span>
+					</label>
+				</div>
+			</div>
+			
+			<!-- remove .hidden when showing bulk checkout 
+			<div class="entry open-balance" ng-if="isDueoutShowing" ng-class="{'hidden': !isBulkCheckoutSelected}">
+				<label class="checkbox" for="open-balance">
+					<span class="icon-form icon-checkbox" ng-class="{'checked': allowOpenBalanceCheckout}"></span>
+					<input id="open-balance" value="1" type="checkbox" ng-model="allowOpenBalanceCheckout" ng-click="toggleAllowOpenBalanceCheckoutFilter()">
+					ALLOW OPEN BALANCE CHECK OUT
+				</label>
+			</div>
+			
+			<!-- remove .hidden when showing bulk checkout 
+			<div class="entry notice-checkout" ng-if="isDueoutShowing" ng-class="{'hidden': !isBulkCheckoutSelected}">
+				<div class="notice">
+					This will check out a total of <span class="count">{{bulkCheckoutReservationsCount}}</span> reservations
+				</div>
+				<button type="button" class="button red" ng-click="performBulkCheckout()" ng-disabled="results.length === 0" ng-class="{'grey': results.length === 0}">Check out</button>
+			</div>
+		
+			<div class="entry search" ng-class="{'hidden':  ng-hide="isBulkCheckoutSelected"}">
+				<button id="dashboard-clear-query" class="clear-query" ng-click="clearResults($event)" ng-class="{'visible': textInQueryBox!=''}">
+					<span class="icons icon-clear-search">Clear query</span>
+				</button>
+				<button type="submit" name="submit" class="icons icon-search">Search</button>
+				<input name="reservations-query" id="reservations-query" class="query" placeholder="Search by Name, Group, Room No. or Confirmation No." type="search" autocomplete="off" ng-change="queryEntered()" ng-click="focusOnSearchText()" ng-blur="checkSearchResults()" ng-model="textInQueryBox" focus-me="focusSearchField"/>
+			</div>
+			<div class="entry room-types" ng-class="{'hidden': isBulkCheckoutSelected}">
+				<div class="select with-label">
+					<label for="room-type">Room Type</label>
+					<select id="room-type" ng-model="room_type_id" ng-change="onRoomTypeChange()">
+						<option value="" selected="" translate>SHOW_ALL</option>
+						<option value="{{::roomType.id}}" ng-repeat="roomType in ::roomTypes track by $index">{{::roomType.name}}</option>
+					</select>
+				</div>
+			</div>
+			<div class="entry dates" ng-class="{'hidden': isBulkCheckoutSelected}">
+				<div class="entry-data has-datepicker">
+					<label for="dashboard-date-from">From</label>
+					<input name="dashboard-date-from" id="dashboard-date-from" class="hasDatepicker" readonly="" type="text" placeholder="{{fromDate | date : dateFormat }}" value="{{fromDate| date : dateFormat}}"/>
+					<button ng-click="showCalendar('RVReservationSearchFromDatepickerCtrl')" type="button" class="ui-datepicker-trigger"></button>
+				</div>
+				<div class="entry-data has-datepicker">
+					<label for="dashboard-date-to">To</label>
+					<button id="dashboard-date-to-clear" class="clear-query" ng-class="{'visible': escapeNull(toDate) !=''}">
+						<span class="icons icon-clear-search" ng-click="clearToDateClicked()">Clear query</span>
+					</button>
+	
+					<input name="dashboard-date-to" id="dashboard-date-to" class="datepicker" placeholder="{{toDate | date : dateFormat}}" value="{{toDate| date : dateFormat}}" readonly="" type="text" />
+					<button ng-click="showCalendar('RVReservationSearchToDatepickerCtrl')" type="button" class="ui-datepicker-trigger"></button>
+				</div>
+			</div>
+			<!-- Add reservation 
+			<a class="add-new-button" ui-sref="rover.reservation.search" ng-show="isStandAlone" ng-class="{'hidden': isBulkCheckoutSelected}">+ New</a>
+		</form> -->
+
+
+		<!-- ANALYTCIS OFF -->
+
+		<div id="dashboard-search-form " class="search-form has-dates has-room-types enable-adding dashboard" role="search" outside-click-handler ng-class="{'has-bulk-checkout': isDueoutShowing}" ng-if="!dashboardFilter.analyticsActive" ng-cloak>
+		    <!-- When showing departures -->
+		    <div class="entry switch" ng-if="isDueoutShowing">
+		        <!-- remove .on when showing Bulk Checkout -->
+		        <div class="switch-button" ng-class="{'on': !isBulkCheckoutSelected}">
+		            <input value="" type="checkbox" checked="" ng-model="isBulkCheckoutSelected" ng-change="onDeparturesScreenTabViewChange()" ng-disabled="shouldDisableBulkCheckoutOption()">
+		            <label class="data-off">
+		                <span class="value">All</span>
+		                <span class="switch-icon">Bulk Checkout</span>
+		            </label>
+		            <label class="data-on">
+		                <span class="switch-icon">All</span>
+		                <span class="value">Bulk Checkout</span>
+		            </label>
+		        </div>
+		    </div>
+		    <!-- remove .hidden when showing bulk checkout -->
+		    <div class="entry open-balance" ng-if="isDueoutShowing && isBulkCheckoutSelected">
+		        <label class="checkbox" for="open-balance">
+		            <span class="icon-form icon-checkbox" ng-class="{'checked': allowOpenBalanceCheckout}"></span>
+		            <input id="open-balance" value="1" type="checkbox" ng-model="allowOpenBalanceCheckout" ng-click="toggleAllowOpenBalanceCheckoutFilter()">
+		            ALLOW OPEN BALANCE CHECK OUT
+		        </label>
+		    </div>
+		    <!-- remove .hidden when showing bulk checkout -->
+		    <div class="entry notice-checkout" ng-if="isDueoutShowing && isBulkCheckoutSelected">
+		        <div class="notice">
+		            This will check out a total of <span class="count">{{bulkCheckoutReservationsCount}}</span> reservations
+		        </div>
+		        <button type="button" class="button red" ng-click="performBulkCheckout()" ng-disabled="results.length === 0" ng-class="{'grey': results.length === 0}">Check out</button>
+		    </div>
+		    <!-- When showing analytics clear all classes and use just 'search-form dashboard-analytics'. -->
+		    <div class="entry switch ng-scope">
+		        <div class="switch-button off" ng-class="{ 'on' : !dashboardFilter.analyticsActive }">
+		            <input id="analytics-toggle" value="" type="checkbox" ng-click="toggleAnalyticsView()" checked="">
+		            <label class="data-off">
+		                <span class="value">SUMMARY</span>
+		                <span class="switch-icon">ANALYTICS</span>
+		            </label>
+		            <label class="data-on">
+		                <span class="switch-icon">SUMMARY</span>
+		                <span class="value">ANALYTICS</span>
+		            </label>
+		        </div>
+		    </div>
+		    <div class="entry search" ng-hide="isBulkCheckoutSelected">
+		        <button id="dashboard-clear-query" class="clear-query" ng-click="clearResults($event)" ng-class="{'visible': textInQueryBox!=''}">
+		            <span class="icons icon-clear-search">Clear query</span>
+		        </button>
+		        <button type="submit" name="submit" class="icons icon-search">Search</button>
+		        <input name="reservations-query" id="reservations-query" class="query" placeholder="Search by Name, Group, Room No. or Confirmation No." type="search" autocomplete="off" ng-change="queryEntered()" ng-click="focusOnSearchText()" ng-blur="checkSearchResults()" ng-model="textInQueryBox" focus-me="focusSearchField" />
+		    </div>
+		    <div class="entry room-types" ng-hide="isBulkCheckoutSelected">
+		        <div class="select with-label">
+		            <label for="room-type">Room Type</label>
+		            <select id="room-type" ng-model="room_type_id" ng-change="onRoomTypeChange()">
+		                <option value="" selected="" translate>SHOW_ALL</option>
+		                <option value="{{::roomType.id}}" ng-repeat="roomType in ::roomTypes track by $index">{{::roomType.name}}</option>
+		            </select>
+		        </div>
+		    </div>
+		    <div class="entry dates" ng-hide="isBulkCheckoutSelected">
+		        <div class="entry-data has-datepicker">
+		            <label for="dashboard-date-from">From</label>
+		            <input name="dashboard-date-from" id="dashboard-date-from" class="hasDatepicker" readonly="" type="text" placeholder="{{fromDate | date : dateFormat }}" value="{{fromDate| date : dateFormat}}" />
+		            <button ng-click="showCalendar('RVReservationSearchFromDatepickerCtrl')" type="button" class="ui-datepicker-trigger"></button>
+		        </div>
+		        <div class="entry-data has-datepicker">
+		            <label for="dashboard-date-to">To</label>
+		            <button id="dashboard-date-to-clear" class="clear-query" ng-class="{'visible': escapeNull(toDate) !=''}">
+		                <span class="icons icon-clear-search" ng-click="clearToDateClicked()">Clear query</span>
+		            </button>
+		            <input name="dashboard-date-to" id="dashboard-date-to" class="datepicker" placeholder="{{toDate | date : dateFormat}}" value="{{toDate| date : dateFormat}}" readonly="" type="text" />
+		            <button ng-click="showCalendar('RVReservationSearchToDatepickerCtrl')" type="button" class="ui-datepicker-trigger"></button>
+		        </div>
+		    </div>
+		    <!-- Add reservation -->
+		    <a class="add-new-button" ui-sref="rover.reservation.search" ng-show="isStandAlone" ng-if="!isBulkCheckoutSelected">+ New</a>
+		</div>
+		<!-- ANALYTICS ON -->
+		<div id="dashboard-search-form " class="search-form has-dates has-room-types dashboard-analytics dashboard" role="search" ng-if="dashboardFilter.analyticsActive" outside-click-handler ng-cloak>
+		    <!-- When showing analytics clear all classes and use just 'search-form dashboard-analytics'. -->
+		    <div class="entry switch ng-scope">
+		        <div class="switch-button off" ng-class="{ 'on' : !dashboardFilter.analyticsActive }">
+		            <input id="analytics-toggle" value="" type="checkbox" ng-click="toggleAnalyticsView()" checked="">
+		            <label class="data-off">
+		                <span class="value">SUMMARY</span>
+		                <span class="switch-icon">ANALYTICS</span>
+		            </label>
+		            <label class="data-on">
+		                <span class="switch-icon">SUMMARY</span>
+		                <span class="value">ANALYTICS</span>
+		            </label>
+		        </div>
+		    </div>
+		    <div class="entry room-types">
+		        <div class="select with-label">
+		            <label for="room-type">Room Type</label>
+		            <select id="room-type" ng-model="dashboardFilter.selectedRoomType" ng-change="onAnlayticsRoomTypeChange()">
+		                <option value="" selected="" translate>SHOW_ALL</option>
+		                <option value="{{::roomType.code}}" ng-repeat="roomType in ::roomTypes track by $index">{{::roomType.name}}</option>
+		            </select>
+		        </div>
+		    </div>
+		    <div class="entry dates">
+		        <div class="entry-data has-datepicker">
+		            <!-- <label for="analytics-date">Date</label> -->
+		            <input id="analytics-date" type="text" class="datepicker" ng-model="dashboardFilter.datePicked" ng-click="showAnalyticsCalendar()" ng-change="onDateChanged()" readonly />
+		        </div>
+		    </div>
+		    <ul class="filters">
+		        <li ng-click="changeAnalyticsView('FO_ARRIVALS')" ng-class="{'active' : dashboardFilter.selectedAnalyticsMenu === 'FO_ARRIVALS' }">Arrivals</li>
+		        <li ng-click="changeAnalyticsView('FO_WORK_LOAD')" ng-class="{'active' : dashboardFilter.selectedAnalyticsMenu === 'FO_WORK_LOAD' }">Workload</li>
+		        <li ng-click="changeAnalyticsView('FO_ACTIVITY')" ng-class="{'active' : dashboardFilter.selectedAnalyticsMenu === 'FO_ACTIVITY' }">Activity</li>
+		    </ul>
+		</div>
+
+
+
+		<!--  -->
+		<div ng-show="totalSearchResults > searchPerPage && results.length > 0 && showSearchResultsArea">
+		   <rv-pagination page-options="dashboardSearchPagination" page-data="totalSearchResults"></rv-pagination>
+		</div>
+
+	<section ng-attr-id="{{search_area_id}}" class="content scrollable" ng-class="{'no-pagination': ((totalSearchResults <= searchPerPage && results.length > 0) || isSwiped), 'no-results' : results.length == 0, 'hidden': !showSearchResultsArea, 'showing-search': searchAreaIsOpening, 'closing-search': searchAreaIsHiding, 'device-overflow': isFromDevice }" role="complementary" ng-show="showSearchResultsArea" ng-iscroll="result_showing_area" ng-iscroll-delay="1000" >
+	    <div class="wrapper">
+	    	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+	        <ul id="dashboard-search-results" class="search-results" > <!-- since parent id & class must have roles in displaying the bottom results, we are seperating these -->
+				<li class="find-reservation" ng-repeat="row in results" ng-show="row.is_row_visible" ngrepeatend ngrepeatstarted ng-class="{'show-balance': isBulkCheckoutSelected && isDueoutShowing}">
+					<a ng-class="getReservationClass(row.reservation_status)" ng-click="goToReservationDetails($event,row.id, row.confirmation)"> <!-- add class "accompany" if it's a accompanying guest -->
+                    <figure class="guest-image" ng-class="{'accompany': row.images.length >1}" ng-show="row.images.length!=0 "><!-- add class "accompany" if it's a accompanying guest -->
+                       <img ng-repeat="image in row.images" ng-src="{{image.guest_image}}" ng-class="{'first-image':(row.images.length >1 && image.is_primary==true)}">
+                        <!-- if it's accompanying guest, show this as well:
+                        <img src="{accompanying-guest-image-or-avatar}" alt="" />-->
+                        <span class="stay-count" ng-if="row.stay_count > 0 && isStandAlone">{{::row.stay_count}}</span>
+                        <span class="vip" ng-show="row.vip==1">VIP</span>
+                    </figure>
+
+                    <div class="data">
+                        <div class="guest-info">
+                            <span class="guest-company" ng-if="escapeNull(row.company)!=''" ng-bind-html="escapeNull(row.company)|highlight:textInQueryBox:false"></span>
+                            <span class="guest-travelagent" ng-if="escapeNull(row.travel_agent)!=''" ng-bind-html="escapeNull(row.travel_agent)|highlight:textInQueryBox:false"></span>
+                            <span class="group" ng-if="escapeNull(row.group)!=''" ng-bind-html="escapeNull(row.group)|highlight:textInQueryBox:false"></span>
+                            <span class="allotment" ng-if="escapeNull(row.allotment)!=''" ng-bind-html="escapeNull(row.allotment)|highlight:textInQueryBox:false"></span>
+                        </div>
+                        <!-- Add .cancelled if the guest has cancelled or no show -->
+                        <h2 ng-show="escapeNull(row.lastname) != '' || escapeNull(row.firstname) != ''" ng-bind-html="getGuestName(row.firstname, row.lastname)| highlightWords:searchWords" ng-class="{'cancelled' : row.reservation_status == 'CANCELED' || row.reservation_status == 'NO SHOW'}">
+                        </h2>
+                        <h2 class="pending" ng-if="escapeNull(row.lastname) == '' && escapeNull(row.firstname) == '' " translate>PENDING</h2>
+
+                        <div class="guest-meta">
+                            <span class="confirmation">
+                                <span class="confirmation-text">{{getConfirmationNoText(row)}}</span>
+                                <span ng-bind-html="getConfirmationNo(row) | highlight:textInQueryBox:false" ng-if="textInQueryBox.length >= 5"></span>
+                                <span ng-bind-html="getConfirmationNo(row)" ng-if="textInQueryBox.length < 5"></span>
+                            </span>
+                            <span class="icons icon-location" ng-if="escapeNullStr(row.location) !== ''">{{escapeNullStr(row.location)}}</span>
+                            <span class="icons icon-location no-location" ng-if="escapeNullStr(row.location) === ''">N/A</span>
+                        </div>
+                    </div>
+
+                    <!-- If Daily reservation add .daily -->
+                    <div class="reservation-time" ng-class="{'daily': row.arrival_date === row.departure_date}">
+                        <div class="check-icons">
+                            <span class="guest-status check-in">arrival</span>
+                            <span class="guest-status check-out">departure</span>
+                        </div>
+                        <div class="check-times">
+                            <!-- If nightly reservation -->
+                            <time class="guest-time" ng-if="row.arrival_date !== row.departure_date">
+                                <span>{{row.arrival_date| date : dateFormat}}</span>
+                                <span class="hours">{{getTimeConverted(row.arrival_time)}}</span>
+                            </time>
+                            <time class="guest-time" ng-if="row.arrival_date !== row.departure_date">
+                                <span>{{row.departure_date| date : dateFormat}}</span>
+                                <span class="hours">{{getTimeConverted(row.late_checkout_time || row.departure_time)}}</span>
+                            </time>
+
+                            <!-- If daily reservation -->
+                            <div class="guest-hours" ng-if="row.arrival_date === row.departure_date">
+                                <time class="guest-time">{{getTimeConverted(row.arrival_time)}}</time> - <time class="guest-time">{{getTimeConverted(row.late_checkout_time || row.departure_time)}}</time>
+                            </div>
+                            <span class="date" ng-if="row.arrival_date === row.departure_date">{{row.arrival_date| date : dateFormat}}</span>
+                            
+                        </div>
+                    </div>
+
+                    <div class="reservation-info">
+
+                    	<div class="reservation-type red" ng-if="row.is_day_use">D</div>
+                        <div class="reservation-type" ng-if="!row.is_day_use && hotelDiaryConfig.mode === 'FULL'">N</div>
+
+                        <div class="reservation-status">
+                            <span class="guest-status {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin , row.arrival_date)}}">{{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin, row.arrival_date)}}</span>
+                        </div>
+
+                        <div class="room-info">
+                            <div class="room-number-info">
+                                <strong class="room-number {{getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only, row.room_service_status, row.room)}}" ng-bind-html="getRoomNo(row.room) | highlight:textInQueryBox:false"></strong>
+                                <span class="icons icon-suite-orange" ng-if="row.is_suite_room"></span>
+                                <span class="room-status" ng-if="showStatus(row)" ng-class="{'green':!row.is_room_due_out}">{{getRoomStatus(row)}}</span>
+                            </div>
+                            <span class="room-type">{{row.room_type}}</span>
+                            <span class="icons icon-queued-red"
+                                    ng-if="isReservationQueued(row.is_reservation_queued, row.is_queue_rooms_on, row.reservation_status)"
+                                >
+                                Queued
+                                <span class="time" pretty-time-ago="row.is_queued_till"></span>
+                            </span>
+                        </div>
+					</div>
+
+					<!-- Available on Departures -->
+					<div class="reservation-balance" ng-if="isBulkCheckoutSelected">
+						<span class="currency">{{currencySymbol}}</span>
+						{{row.balance | number : 2}}
+					</div>
+                </a>
+				</li>
+
+				<li class="no-content" ng-show="showNoMatches(results, textInQueryBox.trim().length, isTyping, isSwiped)" >
+					<div class="info">
+						<span class="icon-no-content icon-search"></span>
+						<strong class="h1">No matches </strong>
+						<span class="h2">Check that you didn't mispell the <strong>Name</strong> or
+							<strong>Group</strong>, or typed in the wrong <strong>Room </strong> or
+							<strong>Confirmation</strong> number
+							<span ng-show="results.length==0 && showAddNewGuestButton">, or
+							<a ui-sref="rover.reservation.search">Add a New Guest <a/></span>
+						</span>
+						.
+					</div>
+				</li>
+				<li class="no-content" ng-show="results.length == 0 && searchType != 'default' && (isLateCheckoutList && textInQueryBox=='')">
+					<div class="info">
+						<span class="icon-no-content icon-search"></span>
+						<strong class="h1">No guests opted for late checkout </strong>
+					</div>
+				</li>
+				<li class="no-content" ng-show="results.length == 0 && textInQueryBox.trim().length<=3 && !swipeNoResults">
+					<div class="info">
+						<span class="icon-no-content icon-search"></span>
+						<strong class="h1">Find Guests</strong>
+						<span class="h2">
+							Search by
+							<strong>Name</strong>,
+							<strong>Group</strong>,
+							<strong>Room No.</strong>
+							or
+							<strong>Confirmation No.</strong>
+						</span>
+					</div>
+				</li>
+				<li class="no-content" ng-show="swipeNoResults">
+					<div class="info">
+						<span class="icon-no-content icon-search" ></span>
+						<strong class="h1">No matches </strong>
+						<span class="h2">Enter different search criteria to find reservation / guest.
+
+						</span>
+
+					</div>
+				</li>
+	        </ul>
+	    </div>
+	</section>
+</div>
+

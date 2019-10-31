@@ -1,13 +1,25 @@
-sntRover.controller('RVfrontDeskDashboardController', ['$scope', '$rootScope', 'statistics', function($scope, $rootScope, statistics) {
+sntRover.controller('RVfrontDeskDashboardController',
+    ['$scope', '$rootScope', 'RVDashboardSrv', '$timeout', 'ngDialog',
+        function($scope, $rootScope, RVDashboardSrv, $timeout, ngDialog) {
 	// inheriting some useful things
 	BaseCtrl.call(this, $scope);
     var that = this;
 
-  $scope.statistics = statistics;
+    var requestParams = {
+        'show_adr': false,
+        'show_upsell': true,
+        'show_rate_of_day': false
+    };
+
+    RVDashboardSrv.fetchStatisticData(requestParams).then(function(data) {
+        $scope.statistics = data;
+    });
+    
 	// scroller related settings
 	var scrollerOptions = {click: true, preventDefault: false};
 
   	$scope.setScroller('dashboard_scroller', scrollerOptions);
+    $scope.setScroller('analytics_scroller', scrollerOptions);
 
   	$scope.showDashboard = true; // variable used to hide/show dabshboard
     // changing the header
@@ -60,4 +72,14 @@ sntRover.controller('RVfrontDeskDashboardController', ['$scope', '$rootScope', '
     setTimeout(function() {
       $scope.refreshScroller('dashboard_scroller');
     }, 500);
+
+    $scope.$emit('SET_DEFAULT_ANALYTICS_MENU', 'FO_ARRIVALS');
+
+    var refreshAnalyticsScroller = function() {
+      $timeout(function() {
+        $scope.refreshScroller('analytics_scroller');
+      }, 500);
+    };
+
+    $scope.$on('REFRESH_ANALTICS_SCROLLER', refreshAnalyticsScroller);
 }]);

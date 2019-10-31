@@ -170,12 +170,12 @@ sntZestStation.service('zsCheckoutSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseW
         * @method GET
         * @return {object} defer promise
         */
-        this.fetchChargeGroups = function () {
+        this.fetchChargeGroups = function (params) {
 
             var deferred = $q.defer();
             var url = "/api/charge_groups.json";
 
-            zsBaseWebSrv.getJSON(url).then(function (data) {
+            zsBaseWebSrv.getJSON(url, params).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
                 deferred.reject(data);

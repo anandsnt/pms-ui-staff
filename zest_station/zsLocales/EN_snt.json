@@ -855,6 +855,7 @@
     "TOTAL": "Total",
     "POST_ITEMS": "Post Items",
     "ADD_CHARGE": "Add Charge",
+    "POST_ITEMS_ERROR_HEADER": "Posting failed!",
 
     "PASSPORT_DETAILS_HEADER": "Your Passport Information is Required",
     "ENTER_PASSPORT_NUMBER_LABEL": "Enter number",

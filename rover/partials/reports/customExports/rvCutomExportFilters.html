@@ -56,13 +56,13 @@
             
         </div>
         <div class="entry">
-            <label for="add-filter" class="add-new-button">
+            <label for="add-filter" class="add-new-button" ng-hide="shouldHideAddFilter()">
                 + Add Filter
                 <select id="add-filter" class="capitalize" ng-model="filterData.primaryFilter" ng-change="changePrimaryFilter()">
                     <option value="">Select a filter</option>
-                    <option value="DURATION">Duration</option>
-                    <option value="RANGE">Range</option>
-                    <option value="OPTION">Options</option>
+                    <option value="DURATION" ng-hide="shouldHideDurationFilter()">Duration</option>
+                    <option value="RANGE" ng-hide="shouldHideRangeFilter()">Range</option>
+                    <option value="OPTION" ng-hide="shouldHideOptionFilter()">Options</option>
                 </select>
             </label>
             <button type="button" class="button red" 

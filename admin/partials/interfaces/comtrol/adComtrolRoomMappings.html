@@ -77,14 +77,15 @@
               id="externalMappings"
               aria-hidden="false">
             <!-- Config section and search come here! -->
-            <div class="controls-holder filters">
-                <div class="table-search three-column">
-                    <span class="search-text">Search</span>
-                    <span class="icons icon-search" name="submit" type="submit"></span>
-                    <input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm"
-                           delay="1000" function-to-fire="searchEntered"/>
+            <section ng-show="state.mode !== 'ADD'">
+                <div class="controls-holder filters">
+                    <div class="table-search three-column">
+                        <span name="submit" type="submit" />
+                        <input placeholder="Search Mappings..." autocomplete="off" type="text" ad-delay-textbox
+                            ng-model="searchTerm" delay="1000" function-to-fire="searchEntered" />
+                    </div>
                 </div>
-            </div>
+            </section>
 
             <table class="grid"
                    ng-table="tableParams"

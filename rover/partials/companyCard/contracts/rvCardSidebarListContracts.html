@@ -1,0 +1,45 @@
+<!-- If there are contracts, show this. -->
+<!-- If we don't show sidebar actions, remove .with-actions -->
+<div ng-controller="rvCardContractListCtrl" class="contracts-list with-actions" ng-class="{'actions-2': contractData.mode === 'EDIT'}" ng-show="!contractData.noContracts">
+    <div class="contracts-list-items scrollable" ng-iscroll="contractListScroller">
+        <div class="wrapper">
+            <!-- If it has no items, add .no-items -->
+            <!-- If it's opened, add .open -->
+            <div class="contract-list-items-section"
+                ng-repeat="item in contractData.contractsList"
+                ng-class="{'no-items': item.count === 0, 'open': item.opened}">
+                <h2 ng-click="openContractsList(item)">
+                    {{item.type}}
+                    <span class="count">{{item.count}}</span>
+                    <!-- If there are items, show arrow
+                      'status-class':
+                        - 'rotate-uo' -> when opened
+                        - 'rotate-down' -> when closed -->
+                    <span ng-show="item.count !== 0"
+                        class="icons icon-double-arrow black "
+                        ng-class="{'rotate-up': item.opened,
+                            'rotate-down': !item.opened}">
+                    </span>
+                </h2>
+                <ul>
+                    <!-- Add class .active if showing this contact -->
+                    <li ng-repeat="contract in item.contracts"
+                        ng-click="fetchDetails(contract.id)"
+                        ng-class="{'active': (contract.id === contractData.selectedContractId && contractData.mode === 'EDIT'),
+                                'inactive': !contract.is_active}">
+                        <h3 class="item-title">{{contract.contract_name}}</h3>
+                        <div class="item-info">
+                            <span>{{contract.contract_start_date}}</span>
+                            <span>{{contract.contract_end_date}}</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Show this to enable creating contracts. -->
+    <div class="contracts-list-actions">
+        <button ng-hide="contractData.mode === 'LINK'" type="button" class="button blue" ng-click="linkContract()">Link Existing Contract</button>
+        <button ng-hide="contractData.mode === 'ADD'" type="button" class="button green" ng-click="newContract()">Create New Contract</button>
+    </div>
+</div>

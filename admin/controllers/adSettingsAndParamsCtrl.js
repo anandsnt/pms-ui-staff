@@ -44,8 +44,8 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
             item.is_selected = false;
         }        
     });
-    $scope.selected_invoice_currency = settingsAndParamsData.selected_invoice_currency; 
-    $scope.invoice_currency = angular.isDefined($scope.selected_invoice_currency) ? $scope.selected_invoice_currency.id : '';
+    $scope.invoice_currency = settingsAndParamsData.invoice_currency; 
+    $scope.invoice_currency = angular.isDefined($scope.invoice_currency) ? $scope.invoice_currency.id : '';
 
 
     /**
@@ -71,7 +71,7 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
             'check_guest_auth_for_interface_postings': $scope.check_guest_auth_for_interface_postings,
             'auto_charge_deposit': $scope.auto_charge_deposit,
             'is_multi_currency_enabled': $scope.is_multi_currency_enabled,
-            'invoice_currency': parseInt($scope.invoice_currency, 10),
+            'invoice_currency': ($scope.invoice_currency === null) ? '' : parseInt($scope.invoice_currency, 10),
             'rate_currencies': $scope.selectedRateCurrencies,
             'payment_currencies': $scope.selectedPaymentCurrencies
         };
