@@ -804,7 +804,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         corporateid: '',
                         iataNumber: '',
                         /* Address*/
-                        address: item.account_address  
+                        address: item.account_address,
+                        contract_access_code: item.current_contracts.length > 0 ? item.current_contracts[0].access_code : null
                     };
 
                     // making sure that the newly created 'eachItem'

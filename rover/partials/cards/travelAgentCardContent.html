@@ -81,7 +81,9 @@
                                 </div>
          
                                 <span class="confirmation">{{ travelAgent.address.postalCode }}</span>
-                                <span class="icons icon-contracts access-code" ng-if="travelAgent.contract_access_code">{{travelAgent.contract_access_code}}</span>
+                                <span class="icons icon-contracts access-code" ng-if="travelAgent.contract_access_code"
+                                    ng-bind-html="getHighlightedHTML(travelAgent.contract_access_code, searchData.travelAgentCard.travelAgentName)">
+                                </span>
                                 <span class="icons icon-location" ng-if="travelAgent.account_address != '' "> 
                                     
                                     {{travelAgent.account_address}}

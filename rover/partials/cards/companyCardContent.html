@@ -78,8 +78,8 @@
                                     <span ng-if="company.isMultipleContracts" class="icons icon-contracts">Multiple Contracts</span>
                                 </div>
                                 <span class="confirmation">{{ company.address.postalCode }}</span>
-                                <span class="icons icon-contracts access-code" ng-if="company.contract_access_code">
-                                    <span ng-bind-html="getHighlightedHTML(company.contract_access_code, searchData.companyCard.contractAccessCode)"></span>
+                                <span class="icons icon-contracts access-code" ng-if="company.contract_access_code"
+                                    ng-bind-html="getHighlightedHTML(company.contract_access_code, searchData.companyCard.companyName)">
                                 </span>
                                 <span class="icons icon-location" ng-if="company.account_address != '' && icon-location != null">
                                     <span ng-bind-html="getHighlightedHTML(company.account_address, searchData.companyCard.companyCity)"></span>

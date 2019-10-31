@@ -183,14 +183,12 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
             companyCard: {
                 companyName: '',
                 companyCity: '',
-                companyCorpId: '',
-                contractAccessCode: ''
+                companyCorpId: ''
             },
             travelAgentCard: {
                 travelAgentName: '',
                 travelAgentCity: '',
-                travelAgentIATA: '',
-                contractAccessCode: ''
+                travelAgentIATA: ''
             },
             groupCard: {
                 name: '',

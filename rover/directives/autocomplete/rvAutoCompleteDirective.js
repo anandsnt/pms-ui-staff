@@ -42,7 +42,7 @@ sntRover.directive('autoComplete', ['highlightFilter',
                                  * 2. call highlightFilter to highlight the search
                                  */
                                 if (!!item.contract_access_code) {
-                                    var highLighted = highlightFilter(item.contract_access_code, $scope.ngModel),
+                                    var highLighted = highlightFilter(item.contract_access_code, scope.ngModel),
                                         accessCode = $("<span></span>").html(highLighted);
 
                                     accessCode.addClass('icons icon-contracts access-code');
@@ -64,7 +64,7 @@ sntRover.directive('autoComplete', ['highlightFilter',
                                 defIcon = 'icon-travel-agent';
                                 $result.addClass("autocomplete-result");
                                 if (!!item.contract_access_code) {
-                                    var highLighted = highlightFilter(item.contract_access_code, $scope.ngModel),
+                                    var highLighted = highlightFilter(item.contract_access_code, scope.ngModel),
                                         accessCode = $("<span></span>").html(highLighted);
 
                                     accessCode.addClass('icons icon-contracts access-code');
