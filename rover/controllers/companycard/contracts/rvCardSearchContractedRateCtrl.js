@@ -2,7 +2,8 @@ angular.module('sntRover').controller('rvCardSearchContractedRateCtrl', ['$scope
 	function($scope, rvCompanyCardContractsSrv, $timeout) {
         
         BaseCtrl.call(this, $scope);
-        var that = this;
+        var that = this,
+            SCROLL_DELAY = 500;
 
         that.initialise = function() {
             $scope.contractData.searchResults = [];
@@ -13,7 +14,7 @@ angular.module('sntRover').controller('rvCardSearchContractedRateCtrl', ['$scope
         that.refreshSearchList = function() {
             $timeout(function() {
                 $scope.refreshScroller('searchResultsList');
-            }, 500);
+            }, SCROLL_DELAY);
         };
 
         /* 
