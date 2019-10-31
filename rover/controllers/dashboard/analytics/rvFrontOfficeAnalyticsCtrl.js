@@ -116,6 +116,7 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 		});
 
 		var fetchData = function (date) {
+			$('base').attr('href', '/');
 			var params = {
 				"date": date,
                 "isFromFrontDesk": true
@@ -123,6 +124,7 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 			var options = {
 				params: params,
 				successCallBack: function() {
+					$('base').attr('href', '#');
 					$scope.screenData.analyticsDataUpdatedTime = moment().format("MM ddd, YYYY hh:mm:ss a");
 					clearAllExistingChartElements();
                     drawChart();
@@ -154,6 +156,10 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 		$scope.$on('RELOAD_DATA_WITH_DATE_FILTER', function() {
             fetchData($scope.dashboardFilter.datePicked);
         });
+
+        $scope.$on("$destroy", function() {
+			$('base').attr('href', '/');
+		});
 
 		(function() {
 			fetchData($scope.dashboardFilter.datePicked)

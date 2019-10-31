@@ -85,9 +85,9 @@ angular.module('sntRover')
                 var chartAreaWidth = document.getElementById("analytics-chart").clientWidth;
                 var margin = {
                         top: 50,
-                        right: 20,
+                        right: 100,
                         bottom: 30,
-                        left: 150
+                        left: 100
                     },
                     width = chartAreaWidth - margin.left - margin.right,
                     maxHeight = 500,
@@ -220,43 +220,46 @@ angular.module('sntRover')
 
                 if (maxValueInBotheDirections > 0) {
 
+                    var leftSideXOffset = xScale(-1 * maxValueInBotheDirections * 3 / 4);
+                    var rightSideXOffset = xScale(maxValueInBotheDirections / 4);
+
                     svg.append("text")
-                        .attr("x", xScale(-1 * maxValueInBotheDirections * 3 / 4))
+                        .attr("x", leftSideXOffset)
                         .attr("y", 15)
                         .attr("dy", ".35em")
                         .attr("class", "chart-area-label")
                         .text("PERFORMED");
 
                     svg.append("text")
-                        .attr("x", xScale(maxValueInBotheDirections / 4))
+                        .attr("x", rightSideXOffset)
                         .attr("y", 15)
                         .attr("dy", ".35em")
                         .attr("class", "chart-area-label")
                         .text("REMAINING");
 
                     svg.append("text")
-                        .attr("x", xScale(-1 * maxValueInBotheDirections * 3 / 4))
+                        .attr("x", leftSideXOffset)
                         .attr("y", firstLineHeight + 15)
                         .attr("dy", ".35em")
                         .attr("class", "chart-area-label")
                         .text("VACANT NOT READY");
 
                     svg.append("text")
-                        .attr("x", xScale(maxValueInBotheDirections / 4))
+                        .attr("x", rightSideXOffset)
                         .attr("y", firstLineHeight + 15)
                         .attr("dy", ".35em")
                         .attr("class", "chart-area-label")
                         .text("VACANT READY");
 
                     svg.append("text")
-                        .attr("x", xScale(-1 * maxValueInBotheDirections * 3 / 4))
+                        .attr("x", leftSideXOffset)
                         .attr("y", secondLineHeight + 15)
                         .attr("dy", ".35em")
                         .attr("class", "chart-area-label")
                         .text("PERFORMED");
 
                     svg.append("text")
-                        .attr("x", xScale(maxValueInBotheDirections / 4))
+                        .attr("x", rightSideXOffset)
                         .attr("y", secondLineHeight + 15)
                         .attr("dy", ".35em")
                         .attr("class", "chart-area-label")
