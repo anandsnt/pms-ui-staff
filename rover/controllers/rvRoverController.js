@@ -186,6 +186,7 @@ sntRover.controller('roverController', [
 
         $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
         $rootScope.isAnMPHotel = hotelDetails.is_multi_property;
+        $rootScope.isFolioTaxEnabled = hotelDetails.is_folio_tax_report_enabled;
 
          /**
          * CICO-34068
