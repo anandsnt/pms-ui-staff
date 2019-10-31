@@ -289,11 +289,12 @@ angular.module('sntRover')
                 };
 
                 rvAnalyticsHelperSrv.addLegendItems(cssClassMappings, leftSideLegendDiv, vacantLeftLegendData);
+                var calculatedMarginTop = yBandwidth - 3 * singleLegendTitleHeightPlusMargin;
 
                 var departuresLeftLegendData = {
                     "title": "Departures",
                     "id": "departures-left-title",
-                    "margin_top": yBandwidth - 3 * singleLegendTitleHeightPlusMargin,
+                    "margin_top": calculatedMarginTop > 0 ? calculatedMarginTop : 0,
                     "items": [{
                         "id": "left-legend-departures",
                         "class": cssClassMappings["Checked Out"],

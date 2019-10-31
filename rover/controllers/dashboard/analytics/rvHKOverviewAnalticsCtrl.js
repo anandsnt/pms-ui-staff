@@ -238,14 +238,14 @@ angular.module('sntRover')
                 if (maxValueInBotheDirections > 0) {
 
                     svg.append("text")
-                        .attr("x", xScale(-1 * maxValueInBotheDirections / 2))
+                        .attr("x", xScale(-1 * maxValueInBotheDirections * 3 / 4))
                         .attr("y", -20)
                         .attr("dy", ".35em")
                         .attr("class", "chart-area-label")
                         .text("Perfomed");
 
                     svg.append("text")
-                        .attr("x", xScale(maxValueInBotheDirections / 2))
+                        .attr("x", xScale(maxValueInBotheDirections / 4))
                         .attr("y", -20)
                         .attr("dy", ".35em")
                         .attr("class", "chart-area-label")
