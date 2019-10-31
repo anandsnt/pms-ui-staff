@@ -3,7 +3,7 @@ angular.module('sntRover').controller('rvCardSearchContractedRateCtrl', ['$scope
         
         BaseCtrl.call(this, $scope);
         var that = this,
-            SCROLL_DELAY = 1000;
+            SCROLL_DELAY = 500;
 
         that.initialise = function() {
             $scope.contractData.searchResults = [];

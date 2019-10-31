@@ -8,9 +8,9 @@
 
 		<div include-replace ng-include="'/assets/partials/companyCard/contracts/rvCardContractsLinking.html'"></div>
 		
-		<div include-replace ng-include="'/assets/partials/companyCard/contracts/rvCardAddContracts.html'"></div>
+		<div include-replace ng-if="contractData.mode === 'ADD'" ng-include="'/assets/partials/companyCard/contracts/rvCardAddContracts.html'"></div>
 
-		<div include-replace ng-include="'/assets/partials/companyCard/contracts/rvCardEditContracts.html'"></div>
+		<div include-replace ng-if="contractData.mode === 'EDIT'" ng-include="'/assets/partials/companyCard/contracts/rvCardEditContracts.html'"></div>
 
 		<div include-replace ng-include="'/assets/partials/companyCard/contracts/rvCardNoContracts.html'"></div>
         
