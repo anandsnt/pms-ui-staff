@@ -22,6 +22,19 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
             refreshScroller();
         };
 
+        // Clear Rate search.
+        var clearRateSearchBox = function() {
+            // Reset Contract Rate Search Component.
+            $scope.contractData.selectedRateList = [];
+            $scope.contractData.rateSearchQuery = '';
+        },
+        // Clear Rate search.
+        clearContractLinkSearchBox = function() {
+            // Reset Contract Link Search Component.
+            $scope.contractData.linkContractsSearch.query = '';
+            $scope.contractData.linkContractsSearch.results = [];
+        };
+
         /**
          * Open the selected contracts list
          * @param {String} listType - PAST, PRESENT, FUTURE string values
@@ -37,9 +50,8 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
         $scope.fetchDetails = function(contractId) {
             if (contractId !== $scope.contractData.selectedContractId || $scope.contractData.mode !== 'EDIT') {
                 $scope.contractData.mode = 'EDIT';
-                // Reset Contract Link Search Component.
-                $scope.contractData.linkContractsSearch.query = '';
-                $scope.contractData.linkContractsSearch.results = [];
+                clearRateSearchBox();
+                clearContractLinkSearchBox();
                 $scope.$emit('fetchContract', contractId);
             }
         };
@@ -48,12 +60,8 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
          */
         $scope.newContract = function() {
             $scope.contractData.mode = 'ADD';
-            // Reset Contract Rate Search Component.
-            $scope.contractData.selectedRateList = [];
-            $scope.contractData.rateSearchQuery = '';
-            // Reset Contract Link Search Component.
-            $scope.contractData.linkContractsSearch.query = '';
-            $scope.contractData.linkContractsSearch.results = [];
+            clearRateSearchBox();
+            clearContractLinkSearchBox();
             $scope.$emit('refreshContractsScroll');
         };
 
@@ -62,9 +70,8 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
          */
         $scope.linkContract = function() {
             $scope.contractData.mode = 'LINK';
-            // Reset Contract Link Search Component.
-            $scope.contractData.linkContractsSearch.query = '';
-            $scope.contractData.linkContractsSearch.results = [];
+            clearRateSearchBox();
+            clearContractLinkSearchBox();
         };
 
         /**
