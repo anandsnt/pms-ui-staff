@@ -1096,6 +1096,10 @@ sntRover.controller('RVbillCardController',
 				className: '',
 				scope: $scope
 			});
+		$scope.startActivity("iframe");
+		$timeout(function() {
+			$scope.stopActivity("iframe");
+		}, 8000);
 	};
 	 /*
 	  * Show the payment list of guest card for selection
