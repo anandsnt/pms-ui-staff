@@ -229,7 +229,6 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				$scope.prefetchData = {};
 				$scope.selected_payment_type.id = -1;
 				$scope.prefetchData = data;
-				$scope.prefetchData.amount = parseFloat($scope.prefetchData.amount).toFixed(2);
 				$scope.prefetchData.allow_manual_posting = angular.isUndefined(data.allow_manual_posting) ? false : data.allow_manual_posting;
 				$scope.prefetchData.selected_fees_code = $scope.prefetchData.selected_fees_code || '';
 				$scope.prefetchData.linked_deposit_charge_code_id = $scope.prefetchData.linked_deposit_charge_code_id || '';
