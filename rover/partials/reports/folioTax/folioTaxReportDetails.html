@@ -1,5 +1,5 @@
 <!-- Report content -->
-    <div id="report-content" class="report-content grid scrollable" ng-iscroll="report-details-scroll"> <!-- Add class "with-pagination" if pagination is shown -->
+    <div id="report-content" ng-hide="hasNoResults" class="report-content grid scrollable" ng-iscroll="report-details-scroll"> <!-- Add class "with-pagination" if pagination is shown -->
         <div class="wrapper">
             <table class="invoice-tax-reports">
                 <thead>
@@ -69,7 +69,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="taxTotalRow in totals">
+                                    <tr ng-repeat="taxTotalRow in results.totals">
                                         <td>{{taxTotalRow.charge_code_value}}</td>
                                         <td>
                                              <span ng-bind-html="taxTotalRow.total_gross_amount | sntCurrency:this">
