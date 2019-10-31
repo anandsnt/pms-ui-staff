@@ -1763,6 +1763,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             $scope.isPrintClicked = true;
             $scope.resevationsBeforePrint = util.deepCopy($scope.reservations);
             $scope.reservations = data.results;
+            $scope.translations = data.translations;
             $scope.print_type = 'rooming_list';
 
         };
@@ -1777,7 +1778,8 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 per_page: 1000,
                 exclude_cancel: $scope.exclude_cancel,
                 sort_field: $scope.sort_field,
-                sort_dir: $scope.sort_dir
+                sort_dir: $scope.sort_dir,
+                locale: $scope.printEmailConfig.locale
             };
             var options = {
                 params: params,
@@ -2049,6 +2051,8 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             }
 
             setEmailPrintFiltersDefaults();
+
+            $scope.translations = {};
             
         }());
 
