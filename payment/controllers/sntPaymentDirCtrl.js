@@ -822,7 +822,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 // check if chip and pin is selected in case of six payments or SHIJI
                 // the rest of actions will in paySixPayController
                 if ($scope.selectedPaymentType === 'CC' &&
-                    ($scope.hotelConfig.paymentGateway === 'sixpayments' || $scope.hotelConfig.paymentGateway === 'SHIJI') &&
+                    ($scope.hotelConfig.paymentGateway === 'sixpayments' || ($scope.hotelConfig.paymentGateway === 'SHIJI' && !$rootScope.hotelDetails.shiji_token_enable_offline)) &&
                     !$scope.payment.isManualEntryInsideIFrame) {
                     $scope.$broadcast('INITIATE_CHIP_AND_PIN_PAYMENT', params);
                     return;
