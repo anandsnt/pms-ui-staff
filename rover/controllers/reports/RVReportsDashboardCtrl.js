@@ -151,8 +151,11 @@ angular.module('sntRover')
                 $scope.updateViewCol($scope.viewColsActions.ONE);
 
                 if (query.length < 3) {
-                    for (i = 0, j = source.length; i < j; i++) {
+                    for (i = 0, j = source.length; i < j; i++) {                        
                         source[i].filteredOut = false;
+                        if (!$rootScope.isFolioTaxEnabled && source[i].method === "folio_tax_report") {
+                            source[i].filteredOut = true;
+                        }
                     }
 
                     refreshScroller();
@@ -168,6 +171,9 @@ angular.module('sntRover')
                         source[i].title.toLowerCase() : source[i].report.description.toLowerCase();
 
                     source[i].filteredOut = title.indexOf(query) === -1;
+                    if (!$rootScope.isFolioTaxEnabled && source[i].method === "folio_tax_report") {
+                        source[i].filteredOut = true;
+                    }
                 }
 
                 refreshScroller();
