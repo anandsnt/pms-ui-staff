@@ -1451,6 +1451,9 @@ sntRover.controller('reservationDetailsController',
 					});
 					// Default to select the first CC as active one.
 					$scope.selectCCforAuth(0);
+					if ($rootScope.hotelDetails.payment_gateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline) {
+						$scope.authData.manualAuthCode = $scope.authData.billData[0].last_authorization.code;
+					}
 					// Handle scroller
 					var scrollerOptions = { preventDefault: false };
 
@@ -1604,6 +1607,15 @@ sntRover.controller('reservationDetailsController',
 				}, 100);
 			}
 
+		};
+
+		$scope.isShijiOfflineAuthCodeEmpty = function() {
+			if($rootScope.hotelDetails.payment_gateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline) {
+				if (!$scope.authData.manualAuthCode) {
+					return true
+				}
+			}
+			return false;
 		};
 
     // Handle TRY AGAIN on auth failure popup.
