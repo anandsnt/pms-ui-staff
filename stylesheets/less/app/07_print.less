@@ -4422,6 +4422,45 @@
                         }
                     }
                 }
+
+                &.proforma-details {
+                    table-layout: fixed;
+                    
+                    td,
+                    th {
+                        &.amount {
+                            width: 50pt;
+                        }
+
+                        &.qty { width: 25pt; }
+                        &.date { width: 50pt; }
+                        &.occ {width: 60pt; }
+
+                        
+                    }
+
+                    tr {
+                        &.first {
+                            td {
+                                padding-top: 5pt;
+                            }
+                        }
+                        &.last {
+                            td {
+                                border-bottom: 1px solid @grey2;
+                                padding-bottom: 5pt;
+                            }
+                        }
+
+                        td {
+                            &[rowspan] {
+                                border-bottom: 1px solid @grey2;
+                                page-break-inside: avoid;
+                                padding-bottom: 5pt;
+                            }
+                        }
+                    }
+                }
             }
         }
 
