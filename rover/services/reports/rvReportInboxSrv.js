@@ -1211,17 +1211,21 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
         this.formatReportList = (generatedReports, reportList) => {
             let selectedReport;
 
-            _.each(generatedReports, function(report) {
+            _.each(generatedReports, function(report, key) {
                 selectedReport = _.find(reportList, {id: report.report_id});
-                report.name = selectedReport.title;
-                report.reportIconCls = selectedReport.reportIconCls;
-                report.shouldShowExport = selectedReport.display_export_button;
-                report.shouldDisplayView = selectedReport.display_show_button;
-                report.isExpanded = false;
-                reportUtils.parseDatesInObject(report.filters.rawData);
-                report.rawData = report.filters.rawData; 
-                report.appliedFilter = report.filters.appliedFilter;               
-                self.fillReportDates(report);
+                if (selectedReport) {
+                    report.name = selectedReport.title;
+                    report.reportIconCls = selectedReport.reportIconCls;
+                    report.shouldShowExport = selectedReport.display_export_button;
+                    report.shouldDisplayView = selectedReport.display_show_button;
+                    report.isExpanded = false;
+                    reportUtils.parseDatesInObject(report.filters.rawData);
+                    report.rawData = report.filters.rawData; 
+                    report.appliedFilter = report.filters.appliedFilter;               
+                    self.fillReportDates(report);
+                } else {
+                    delete generatedReports[key];
+                }
             });
             
             return generatedReports;
