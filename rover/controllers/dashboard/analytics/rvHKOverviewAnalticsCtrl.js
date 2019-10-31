@@ -81,11 +81,9 @@ angular.module('sntRover')
                 }
             };
 
-
             $scope.drawHkOverviewChart = function(chartDetails) {
 
                 $scope.screenData.mainHeading = $filter('translate')(chartDetails.chartData.label);
-
                 var chartAreaWidth = document.getElementById("analytics-chart").clientWidth;
                 var margin = {
                         top: 50,
@@ -127,17 +125,13 @@ angular.module('sntRover')
                 var svg = d3.select("#d3-plot").append("svg")
                     .attr("width", width + margin.left + margin.right)
                     .attr("height", height + margin.top + margin.bottom)
-                    //.attr("id", "d3-plot")
                     .append("g")
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
 
                 // DEBUGING CODE
                 // chartDetails = rvAnalyticsHelperSrv.addRandomNumbersForTesting(chartDetails);
 
                 chartDetails = rvAnalyticsHelperSrv.processBiDirectionalChart(chartDetails);
-                console.log(chartDetails);
-
                 var maxValueInBotheDirections = chartDetails.maxValueInOneSide;
 
                 // set scales for x axis
@@ -159,7 +153,6 @@ angular.module('sntRover')
                     .attr("class", "y axis left-most")
                     .call(yAxis);
 
-
                 var dataForDrawingBars = {          
                     svg: svg,
                     yScale: yScale,
@@ -173,7 +166,6 @@ angular.module('sntRover')
                 rvAnalyticsHelperSrv.drawBarChart(dataForDrawingBars);
 
                 // Add extra Y axis to the middle of the graph
-
                 svg.append("g")
                     .append("rect")
                     .attr("class", "chart-breakpoint-line")
@@ -182,58 +174,40 @@ angular.module('sntRover')
                     .attr("height", height + margin.top + 40)
                     .attr("width", 4);
 
-
                 /************************** DRAW HORIZONTAL LINES IN GRAPH ************************/
+
                 var horizontalRectWidths = xScale(maxValueInBotheDirections) - xScale(-1 * maxValueInBotheDirections) + 2 * xScale(50);
                 var lineXOffset = xScale(-1 * (maxValueInBotheDirections + 50));
+                var rectCommonAttrs = {
+                    svg: svg,
+                    xOffset: lineXOffset,
+                    height: 4,
+                    width: horizontalRectWidths
+                };
 
-                svg.append("g")
-                    .append("rect")
-                    .attr("class", "chart-breakpoint-line")
-                    .attr("x", lineXOffset)
-                    .attr("y", 0)
-                    .attr("height", 4)
-                    .attr("width", horizontalRectWidths);
+                // first line 
+                rvAnalyticsHelperSrv.drawRectLines(_.extend(rectCommonAttrs, {
+                    yOffset: 0
+                }));
+                // second line
+                rvAnalyticsHelperSrv.drawRectLines(_.extend(rectCommonAttrs, {
+                    yOffset: yScale.bandwidth() * 2.5
+                }));
+                // third line
+                rvAnalyticsHelperSrv.drawRectLines(_.extend(rectCommonAttrs, {
+                    yOffset: yScale.bandwidth() * 4.5
+                }));
+                // fourth line
+                rvAnalyticsHelperSrv.drawRectLines(_.extend(rectCommonAttrs, {
+                    yOffset: yScale.bandwidth() * 6.5
+                }));
+                // fifth line
+                rectCommonAttrs.height = 3;
+                rvAnalyticsHelperSrv.drawRectLines(_.extend(rectCommonAttrs, {
+                    yOffset: height - 3
+                }));
 
-                var firstHorizontalLine = yScale.bandwidth() * 2.5;
-
-                svg.append("g")
-                    .append("rect")
-                    .attr("class", "chart-breakpoint-line")
-                    .attr("x", lineXOffset)
-                    .attr("y", firstHorizontalLine)
-                    .attr("height", 4)
-                    .attr("width", horizontalRectWidths);
-
-                var secondHorizontalLine = yScale.bandwidth() * 4.5;
-
-                svg.append("g")
-                    .append("rect")
-                    .attr("class", "chart-breakpoint-line")
-                    .attr("x", lineXOffset)
-                    .attr("y", secondHorizontalLine)
-                    .attr("height", 4)
-                    .attr("width", horizontalRectWidths);
-
-                var thirdHorizontalLine = yScale.bandwidth() * 6.5;
-
-                svg.append("g")
-                    .append("rect")
-                    .attr("class", "chart-breakpoint-line")
-                    .attr("x", lineXOffset)
-                    .attr("y", thirdHorizontalLine)
-                    .attr("height", 4)
-                    .attr("width", horizontalRectWidths);
-
-                var finalHorizontalLine = height - 3;
-
-                svg.append("g")
-                    .append("rect")
-                    .attr("class", "chart-breakpoint-line")
-                    .attr("x", lineXOffset)
-                    .attr("y", finalHorizontalLine)
-                    .attr("height", 3)
-                    .attr("width", horizontalRectWidths);
+                /************************** DRAW HORIZONTAL LINES IN GRAPH ENDS ************************/
 
                 if (maxValueInBotheDirections > 0) {
 
@@ -257,6 +231,7 @@ angular.module('sntRover')
                 var leftSideLegendDiv = d3.select("#left-side-legend");
                 var yBandwidth = yScale.bandwidth();
 
+                // ARRIVALS LEFT LEGEND
                 var arrivalsLeftLegendData = {
                     "title": "Arrivals",
                     "id": "arrivals-right-title-left",
@@ -274,6 +249,7 @@ angular.module('sntRover')
                 var singleLegendTitleHeightPlusMargin = $("#arrivals-right-title-left").height() + 10;
                 var singleLegendItemHeightPlusMargin = $("#left-legend-arrivals").height() + 10;
 
+                // DEPARTURES LEFT LEGEND
                 var departuresLeftLegendData = {
                     "title": "Departures",
                     "id": "departures-left-title",
@@ -289,6 +265,7 @@ angular.module('sntRover')
 
                 rvAnalyticsHelperSrv.addLegendItems(legendColorMappings, leftSideLegendDiv, departuresLeftLegendData);
 
+                // STAYOVERS LEFT LEGEND
                 var stayOversLeftLegendData = {
                     "title": "Stayovers",
                     "id": "stayovers-left-title",
@@ -304,7 +281,7 @@ angular.module('sntRover')
 
                 rvAnalyticsHelperSrv.addLegendItems(legendColorMappings, leftSideLegendDiv, stayOversLeftLegendData);
 
-
+                // ROOMS LEFT LEGEND
                 var roomsLeftLegendData = {
                     "title": "Rooms",
                     "id": "rooms-right-title",
@@ -331,7 +308,7 @@ angular.module('sntRover')
 
                 var rightSideLegendDiv = d3.select("#right-side-legend");
 
-                var yBandwidth = yScale.bandwidth();
+                // ARRIVALS RIGHT LEGEND
                 var arrivalsRightLegendData = {
                     "title": "Arrivals",
                     "id": "arrivals-right-title",
@@ -346,6 +323,7 @@ angular.module('sntRover')
 
                 rvAnalyticsHelperSrv.addLegendItems(legendColorMappings, rightSideLegendDiv, arrivalsRightLegendData);
 
+                // DEPARTURES RIGHT LEGEND
                 var departuresRightLegendData = {
                     "title": "Departures",
                     "id": "departures-right-title",
@@ -361,6 +339,7 @@ angular.module('sntRover')
 
                 rvAnalyticsHelperSrv.addLegendItems(legendColorMappings, rightSideLegendDiv, departuresRightLegendData);
 
+                // STAYOVERS RIGHT LEGEND
                 var stayOversLegendData = {
                     "title": "Stayovers",
                     "id": "departures-right-title",
@@ -376,6 +355,7 @@ angular.module('sntRover')
 
                 rvAnalyticsHelperSrv.addLegendItems(legendColorMappings, rightSideLegendDiv, stayOversLegendData);
 
+                // ROOMS RIGHT LEGEND
                 var roomsLegendData = {
                     "title": "Rooms",
                     "id": "rooms-right-title",
