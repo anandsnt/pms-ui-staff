@@ -2,9 +2,44 @@ angular.module('sntRover')
 	.controller('rvFrontOfficeWorkloadCtrl', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvAnalyticsHelperSrv',
 		function($scope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv) {
 
-			var colorScheme = d3.scaleOrdinal()
-				.range(["#4D9316", "#68D41E", "#9ED474", "#AF2B12", "#E46C68", "#E58874"])
-				.domain(["early_checkin", "vip_checkin", "checkin","vip_checkout", "checkout", "late_checkout"]);
+			var colorMappings = {
+				"early_checkin": {
+                    "legend_class": "bar bar-green bar-dark",
+                    "fill": "greenDark",
+                    "onmouseover_fill": "greenDarkHover",
+                    "onmouseout_fill": "greenDark"
+                },
+                "checkin": {
+                    "legend_class": "bar bar-green bar-light",
+                    "fill": "greenLight",
+                    "onmouseover_fill": "greenLightHover",
+                    "onmouseout_fill": "greenLight"
+                },
+                "vip_checkin": {
+                    "legend_class": "bar bar-green",
+                    "fill": "green",
+                    "onmouseover_fill": "greenHover",
+                    "onmouseout_fill": "green"
+                },
+                "vip_checkout": {
+                    "legend_class": "bar bar-red bar-light",
+                    "fill": "redLight",
+                    "onmouseover_fill": "redLightHover",
+                    "onmouseout_fill": "redLight"
+                },
+                "checkout": {
+                    "legend_class": "bar bar-red",
+                    "fill": "red",
+                    "onmouseover_fill": "redHover",
+                    "onmouseout_fill": "red"
+                },
+                "late_checkout": {
+                    "legend_class": "bar bar-red bar-dark",
+                    "fill": "redDark",
+                    "onmouseover_fill": "redDarkHover",
+                    "onmouseout_fill": "redDark"
+                }
+            };
 
 			var cssClassMappings = {
                 "Early Check in": "bar bar-green bar-dark",
@@ -26,7 +61,7 @@ angular.module('sntRover')
 						left: 150
 					},
 					width = chartAreaWidth - margin.left - margin.right,
-					height = window.innerHeight * 2 / 3 - margin.top - margin.bottom;
+					height = window.innerHeight * (2 / 3 + 1 / 2) / 2 - margin.top - margin.bottom;
 
 				var yScale = d3.scaleBand()
 					.rangeRound([0, height])
@@ -55,7 +90,7 @@ angular.module('sntRover')
 					});
 
 				var svgHeight = height + margin.top + margin.bottom;
-				var svg = d3.select("#analytics-chart").append("svg")
+				var svg = d3.select("#d3-plot").append("svg")
 					.attr("width", width + margin.left + margin.right)
 					.attr("height", svgHeight)
 					.attr("id", "d3-plot")
@@ -183,10 +218,20 @@ angular.module('sntRover')
 					.attr("width", function(item) {
 						return xScale(item.xFinal) - xScale(item.xOrigin);
 					})
-					.style("fill", function(item) {
-						// console.log(item.chartName);
-						// console.log(colorScheme[item.chartName + 'ColorScheme']);
-						return colorScheme(item.type);
+					.attr("fill", function(item) {
+						var fillColor = colorMappings[item.type].fill;
+
+						return "url(#" + fillColor + ")";
+					})
+					.attr("onmouseover", function(item) {
+						var mouseoverColor = colorMappings[item.type].onmouseover_fill;
+
+						return "evt.target.setAttribute('fill', 'url(#" + mouseoverColor + " )');";
+					})
+					.attr("onmouseout", function(item) {
+						var mouseoutColor = colorMappings[item.type].onmouseout_fill;
+
+						return "evt.target.setAttribute('fill', 'url(#" + mouseoutColor + " )');";
 					})
 					.on("click", function(e) {
 						chartDetails.onBarChartClick(e);
@@ -269,7 +314,7 @@ angular.module('sntRover')
 				var rightSideLegendDiv = d3.select("#right-side-legend");
 
 				var rightSideLegendColor = d3.scaleOrdinal()
-					.range(["#50762A", "#83B451", "#AC2727", "#EAC710", "#A99113", "#DD3636"])
+					.range(["#569716", "#72D423", "#A3D577", "#E59278", "#E53D13", "#B13312"])
 					.domain(["Early Check in", "VIP checkin", "Checkin", "VIP checkout", "Checkout", "Late checkout"]);
 
 				rightSideLegendDiv
@@ -295,6 +340,7 @@ angular.module('sntRover')
 					});
 				
 				$scope.$emit('REFRESH_ANALTICS_SCROLLER');
+				$scope.screenData.hideChartData = false;
 			};
 		}
 	]);

@@ -13,7 +13,9 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
         rvAnalyticsSrv.setHotelCiCoTime($rootScope.hotelDetails);
 
 		$scope.screenData = {
-			selectedChart: 'FO_ARRIVALS'
+			selectedChart: 'FO_ARRIVALS',
+			hideChartData: true,
+			analyticsDataUpdatedTime: ""
 		};
 
 		$controller('rvFrontOfficeWorkloadCtrl', {
@@ -42,7 +44,7 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 					onBarChartClick: onBarChartClick
 				};
 
-				d3.select('#analytics-chart').selectAll('svg').remove();
+				d3.select('#d3-plot').selectAll('svg').remove();
 				$scope.drawWorkLoadChart(chartDetails);
 			});
 		};
@@ -55,7 +57,7 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 					onBarChartClick: onBarChartClick
 				};
 				try {
-				d3.select('#analytics-chart').selectAll('svg').remove();
+				d3.select('#d3-plot').selectAll('svg').remove();
 				$scope.drawArrivalManagementChart(chartDetails);
 				} catch (e) {
 					console.log(e)
@@ -64,8 +66,8 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 		};
 
 		var clearAllExistingChartElements = function() {
+			d3.select('#d3-plot').selectAll('svg').remove();
 			document.getElementById("left-side-legend").innerHTML = "";
-			document.getElementById("analytics-chart").innerHTML = "";
 			document.getElementById("right-side-legend").innerHTML = "";
 		};
 
@@ -73,12 +75,13 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 
 			rvFrontOfficeAnalyticsSrv.fdFoActivity(date).then(function(data) {
 				clearAllExistingChartElements();
-				d3.select('#analytics-chart').selectAll('svg').remove();
+				d3.select('#d3-plot').selectAll('svg').remove();
 				$scope.drawFrontOfficeActivity(data);
 			});
 		};
 
 		var drawChart = function() {
+			$scope.screenData.hideChartData = true;
 			clearAllExistingChartElements();
 			$scope.screenData.mainHeading = "";
 			if ($scope.screenData.selectedChart === 'FO_ARRIVALS') {
@@ -94,7 +97,7 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 			$scope.$apply(function() {
 				$timeout(function() {
 					// Clear existing chart
-					d3.select('#analytics-chart').selectAll('svg').remove();
+					d3.select('#d3-plot').selectAll('svg').remove();
 					clearAllExistingChartElements();
 					// Redraw chart
 					drawChart();
@@ -120,6 +123,7 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 			var options = {
 				params: params,
 				successCallBack: function() {
+					$scope.screenData.analyticsDataUpdatedTime = moment().format("MM ddd, YYYY hh:mm:ss a");
 					clearAllExistingChartElements();
                     drawChart();
                 }
@@ -140,6 +144,9 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 			$scope.dashboardFilter.selectedAnalyticsMenu = "HK_OVERVIEW";
 			$scope.screenData.selectedChart = "HK_OVERVIEW";
 		});
+		$scope.refreshChart = function (){
+			fetchData($scope.dashboardFilter.datePicked, $scope.dashboardFilter.selectedRoomTypeId)
+		};
 
 		/*
 		 * Reload graph with date picker change

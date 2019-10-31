@@ -65,7 +65,7 @@ angular.module('sntRover')
           h = 500,
           padding = 40;
 
-        var svg = d3.select("#analytics-chart")
+        var svg = d3.select("#d3-plot")
           .append("svg")
           .attr('width', w)
           .attr('height', h);
@@ -240,6 +240,7 @@ angular.module('sntRover')
         /************************** RIGHT LEGEND END HERE ************************/
 
         $scope.$emit('REFRESH_ANALTICS_SCROLLER');
+        $scope.screenData.hideChartData = false;
       };
     }
   ]);
