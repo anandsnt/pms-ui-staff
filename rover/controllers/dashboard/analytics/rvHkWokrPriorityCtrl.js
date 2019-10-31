@@ -2,24 +2,6 @@ angular.module('sntRover')
     .controller('rvHkWokrPriorityCtrl', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvAnalyticsHelperSrv',
         function($scope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv) {
 
-            var arrivalsColorScheme = d3.scaleOrdinal()
-                .range(["#97D470", "#468F14", "#7CD724"])
-                .domain(["perfomed", "early_checkin", "remaining"]);
-
-            var vacantColorScheme = d3.scaleOrdinal()
-                .range(["#E62A13", "#D67F11", "#66D41D", "#448E13"])
-                .domain(["dirty", "pickup", "clean", "inspected"]);
-
-            var departuresColorScheme = d3.scaleOrdinal()
-                .range(["#E57D70", "#B92C13", "#E62A13"])
-                .domain(["perfomed", "late_checkout", "pending"]);
-
-            var colorScheme = {
-                arrivalsColorScheme: arrivalsColorScheme,
-                vacantColorScheme: vacantColorScheme,
-                departuresColorScheme: departuresColorScheme
-            };
-
             var cssClassMappings = {
                 "Checked In": "bar bar-green bar-light",
                 "Early Check in": "bar bar-green bar-dark",
@@ -35,6 +17,70 @@ angular.module('sntRover')
                 "Pending": "bar bar-red"
             };
 
+
+            var colorMappings = {
+                "arrivals_perfomed": {
+                    "legend_class": "bar bar-green bar-light",
+                    "fill": "greenLight",
+                    "onmouseover_fill": "greenLightHover",
+                    "onmouseout_fill": "greenLight"
+                },
+                "arrivals_early_checkin": {
+                    "legend_class": "bar bar-green bar-dark",
+                    "fill": "greenDark",
+                    "onmouseover_fill": "greenDarkHover",
+                    "onmouseout_fill": "greenDark"
+                },
+                "arrivals_remaining": {
+                    "legend_class": "bar bar-green",
+                    "fill": "green",
+                    "onmouseover_fill": "greenHover",
+                    "onmouseout_fill": "green"
+                },
+                "departures_perfomed": {
+                    "legend_class": "bar bar-red bar-light",
+                    "fill": "redLight",
+                    "onmouseover_fill": "redLightHover",
+                    "onmouseout_fill": "redLight"
+                },
+                "departures_pending": {
+                    "legend_class": "bar bar-red",
+                    "fill": "red",
+                    "onmouseover_fill": "redHover",
+                    "onmouseout_fill": "red"
+                },
+                "departures_late_checkout": {
+                    "legend_class": "bar bar-red bar-dark",
+                    "fill": "redDark",
+                    "onmouseover_fill": "redDarkHover",
+                    "onmouseout_fill": "redDark"
+                },
+                "vacant_clean": {
+                    "legend_class": "bar bar-green",
+                    "fill": "green",
+                    "onmouseover_fill": "greenHover",
+                    "onmouseout_fill": "green"
+                },
+                "vacant_inspected": {
+                    "legend_class": "bar bar-green bar-dark",
+                    "fill": "greenDark",
+                    "onmouseover_fill": "greenDarkHover",
+                    "onmouseout_fill": "greenDark"
+                },
+                "vacant_dirty": {
+                    "legend_class": "bar bar-red",
+                    "fill": "red",
+                    "onmouseover_fill": "redHover",
+                    "onmouseout_fill": "red"
+                },
+                "vacant_pickup": {
+                    "legend_class": "bar bar-orange",
+                    "fill": "orange",
+                    "onmouseover_fill": "orangeHover",
+                    "onmouseout_fill": "orange"
+                }
+            };
+
             $scope.drawHkWorkPriorityChart = function(chartDetails) {
                 $scope.screenData.mainHeading = $filter('translate')(chartDetails.chartData.label);
                 var chartAreaWidth = document.getElementById("analytics-chart").clientWidth;
@@ -42,14 +88,16 @@ angular.module('sntRover')
                         top: 50,
                         right: 20,
                         bottom: 30,
-                        left: 150
+                        left: 50
                     },
                     width = chartAreaWidth - margin.left - margin.right,
-                    height = window.innerHeight * 2 / 3 - margin.top - margin.bottom;
+                    maxHeight = 500,
+                    calculatedHeight = window.innerHeight * (1 / 2 + 2 / 3) / 2 - margin.top - margin.bottom,
+                    height = calculatedHeight > maxHeight ? maxHeight : calculatedHeight;
 
                 var yScale = d3.scaleBand()
                     .rangeRound([0, height + 10])
-                    .padding(.3);
+                    .padding(.4);
 
                 var xScale = d3.scaleLinear()
                     .rangeRound([0, width]);
@@ -61,7 +109,7 @@ angular.module('sntRover')
                     .tickSizeInner(-height)
                     .tickFormat(function(d) {
                         // X axis... treat -ve values as positive
-                        return (d < 0) ? (d * -1) : d;
+                        return (d < 0) ? (d * -1) : d === 0 ? "" : d;
                     });
 
                 var yAxis = d3.axisLeft()
@@ -73,7 +121,7 @@ angular.module('sntRover')
                         return "";
                     });
 
-                var svg = d3.select("#analytics-chart").append("svg")
+                var svg = d3.select("#d3-plot").append("svg")
                     .attr("width", width + margin.left + margin.right)
                     .attr("height", height + margin.top + margin.bottom)
                     .attr("id", "d3-plot")
@@ -97,7 +145,8 @@ angular.module('sntRover')
 
                 // Add x axis
                 svg.append("g")
-                    .attr("class", "x axis")
+                    .attr("class", "x axis bottom-axis")
+                    .attr("id", "bottom-axis")
                     .attr("transform", "translate(0," + height + ")")
                     .call(xAxis);
 
@@ -112,166 +161,210 @@ angular.module('sntRover')
                     yScale: yScale,
                     xScale: xScale,
                     chartDetails: chartDetails,
-                    colorScheme: colorScheme,
-                    maxValue: maxValueInBotheDirections
+                    maxValue: maxValueInBotheDirections,
+                    colorMappings: colorMappings
                 };
 
-                rvAnalyticsHelperSrv.drawBarsOfBidirectonalChart(dataForDrawingBars);
+                rvAnalyticsHelperSrv.drawBarChart(dataForDrawingBars);
+
+                // rvAnalyticsHelperSrv.drawBarsOfBidirectonalChart(dataForDrawingBars);
 
                 // Add extra Y axis to the middle of the graph
                 svg.append("g")
-                    .attr("class", "y axis inner")
-                    .append("line")
-                    .attr("x1", xScale(0))
-                    .attr("x2", xScale(0))
-                    .attr("y2", height);
+                    .append("rect")
+                    .attr("class", "chart-breakpoint-line")
+                    .attr("x", xScale(0))
+                    .attr("y", -40)
+                    .attr("height", height + margin.top + 40)
+                    .attr("width", 4);
+                /************************** DRAW HORIZONTAL LINES IN GRAPH ************************/
+                var horizontalRectWidths = xScale(maxValueInBotheDirections) - xScale(-1 * maxValueInBotheDirections) + 2 * xScale(50);
+                var lineXOffset = xScale(-1 * (maxValueInBotheDirections + 50));
 
-                var firstLineHeight = 1.5 * yInnerPadding + yScale.bandwidth();
+                svg.append("g")
+                    .append("rect")
+                    .attr("class", "chart-breakpoint-line")
+                    .attr("x", lineXOffset)
+                    .attr("y", 0)
+                    .attr("height", 4)
+                    .attr("width", horizontalRectWidths);
 
-                svg.append("line") // attach a line
-                    .style("stroke", "#A0A0A0") // colour the line
-                    .style("stroke-width", "0.5px")
-                    .attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
-                    .attr("y1", firstLineHeight) // y position of the first end of the line
-                    .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-                    .attr("y2", firstLineHeight);
+                var firstHorizontalLine = 1.5 * yInnerPadding + yScale.bandwidth();
 
-                var secondLineHeight = 2.5 * yInnerPadding + 2 * yScale.bandwidth();
+                svg.append("g")
+                    .append("rect")
+                    .attr("class", "chart-breakpoint-line")
+                    .attr("x",lineXOffset)
+                    .attr("y", firstHorizontalLine)
+                    .attr("height", 4)
+                    .attr("width", horizontalRectWidths);
 
-                svg.append("line") // attach a line
-                    .style("stroke", "#A0A0A0") // colour the line
-                    .style("stroke-width", "0.5px")
-                    .attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
-                    .attr("y1", secondLineHeight) // y position of the first end of the line
-                    .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-                    .attr("y2", secondLineHeight);
+                var secondHorizontalLine = 2.5 * yInnerPadding + 2 * yScale.bandwidth();
 
-                // Left side Legends
+                svg.append("g")
+                    .append("rect")
+                    .attr("class", "chart-breakpoint-line")
+                    .attr("x", lineXOffset)
+                    .attr("y", secondHorizontalLine)
+                    .attr("height", 4)
+                    .attr("width", horizontalRectWidths);
+
+                var finalHorizontalLine = height - 3;
+
+                svg.append("g")
+                    .append("rect")
+                    .attr("class", "chart-breakpoint-line")
+                    .attr("x", lineXOffset)
+                    .attr("y", finalHorizontalLine)
+                    .attr("height", 3)
+                    .attr("width", horizontalRectWidths);
+
+
+                if (maxValueInBotheDirections > 0) {
+                    var textOffset = xScale(-1 * maxValueInBotheDirections);
+
+                    svg.append("text")
+                        .attr("x", textOffset)
+                        .attr("y", 15)
+                        .attr("dy", ".35em")
+                        .attr("class", "chart-area-label")
+                        .text("ARRIVALS");
+
+                    svg.append("text")
+                        .attr("x", textOffset)
+                        .attr("y", firstHorizontalLine + 15)
+                        .attr("dy", ".35em")
+                        .attr("class", "chart-area-label")
+                        .text("VACANT");
+
+                    svg.append("text")
+                        .attr("x", textOffset)
+                        .attr("y", secondHorizontalLine + 15)
+                        .attr("dy", ".35em")
+                        .attr("class", "chart-area-label")
+                        .text("DEPARTURES");
+                }
+
+                /************************** LEFT LEGEND STARTS HERE ************************/
                 var leftSideLegendDiv = d3.select("#left-side-legend");
-                var leftSideLegendColor = d3.scaleOrdinal()
-                    .range(["#C2D6AE", "#DE3636", "#ED9319", "#84B651", "#E29D9D"])
-                    .domain(["Checked In", "Dirty", "Pickup", "Clean", "Checked Out"]);
+                var yBandwidth = yScale.bandwidth();
 
-                var setMarginForLegends = function(legend, singleLegendHeightPlusMargin) {
-                    var yBandwidth = yScale.bandwidth();
-
-                    if (legend === "Checked In") {
-                        return margin.top + yInnerPadding + yBandwidth / 2;
-                    } else if (legend === "Dirty") {
-                        return yBandwidth / 2 - singleLegendHeightPlusMargin + yInnerPadding;
-                    } else if (legend === "Checked Out") {
-                        var heightOfThreeLegends = singleLegendHeightPlusMargin * 3;
-
-                        return yBandwidth - heightOfThreeLegends + yInnerPadding + yBandwidth / 2;
-                    }
+                var arrivalsLeftLegendData = {
+                    "title": "Arrivals",
+                    "id": "arrivals-right-title-left",
+                    "margin_top": firstHorizontalLine - yInnerPadding / 2 - yBandwidth / 2,
+                    "items": [{
+                        "id": "left-legend-arrivals",
+                        "class": cssClassMappings["Checked In"],
+                        "label": "Checked In",
+                        "count": chartDetails.perfomed_arrivals_count
+                    }]
                 };
 
-                var leftSideLegendEntries = leftSideLegendDiv.selectAll("dd")
-                    .data(leftSideLegendColor.domain().slice())
-                    .enter()
-                    .append("dd")
-                    .attr("class", "legend-item")
-                    .attr("id", function(item) {
-                        var itemName = item.replace(' ', '-');
+                rvAnalyticsHelperSrv.addLegendItems(cssClassMappings, leftSideLegendDiv, arrivalsLeftLegendData);
 
-                        return "left-legend-" + itemName.toLowerCase();
-                    });
+                var singleLegendTitleHeightPlusMargin = $("#arrivals-right-title-left").height() + 10;
+                var singleLegendItemHeightPlusMargin = $("#left-legend-arrivals").height() + 10;
 
-                leftSideLegendEntries.append("span")
-                    .attr("class", function(label) {
-                        return cssClassMappings[label];
-                    })
-                    .html(function(label) {
-                        var text;
+                var vacantLeftLegendData = {
+                    "title": "Vacant",
+                    "id": "vacant-left-title",
+                    "margin_top": yBandwidth - singleLegendTitleHeightPlusMargin,
+                    "items": [{
+                        "id": "left-legend-dirty",
+                        "class": cssClassMappings["Dirty"],
+                        "label": "Dirty",
+                        "count": chartDetails.dirty_vacant_count
+                    }, {
+                        "id": "left-legend-pickup",
+                        "class": cssClassMappings["Pickup"],
+                        "label": "Pickup",
+                        "count": chartDetails.pickup_vacant_count
+                    }, {
+                        "id": "left-legend-clean",
+                        "class": cssClassMappings["Clean"],
+                        "label": "Clean",
+                        "count": chartDetails.clean_vacant_count
+                    }]
+                };
 
-                        if (label === "Checked In") {
-                            text = chartDetails.perfomed_arrivals_count;
-                        } else if (label === "Dirty") {
-                            text = chartDetails.dirty_vacant_count;
-                        } else if (label === "Pickup") {
-                            text = chartDetails.pickup_vacant_count;
-                        } else if (label === "Clean") {
-                            text = chartDetails.clean_vacant_count;
-                        } else if (label === "Checked Out") {
-                            text = chartDetails.perfomed_departures_count;
-                        }
-                        return text;
-                    });
+                rvAnalyticsHelperSrv.addLegendItems(cssClassMappings, leftSideLegendDiv, vacantLeftLegendData);
 
-                leftSideLegendEntries.append("span")
-                    .attr("class", "bar-label")
-                    .html(function(label) {
-                        return label;
-                    });
+                var departuresLeftLegendData = {
+                    "title": "Departures",
+                    "id": "departures-left-title",
+                    "margin_top": yBandwidth - 3 * singleLegendTitleHeightPlusMargin,
+                    "items": [{
+                        "id": "left-legend-departures",
+                        "class": cssClassMappings["Checked Out"],
+                        "label": "Checked Out",
+                        "count": chartDetails.perfomed_departures_count
+                    }]
+                };
 
-                // TODO: For now lets assume all legends are of same height. So we will take one and use as reference.
-                var singleLegendHeightPlusMargin = $("#left-legend-checked-in").height() + 10;
+                rvAnalyticsHelperSrv.addLegendItems(cssClassMappings, leftSideLegendDiv, departuresLeftLegendData);
 
-                leftSideLegendEntries.style("margin-top", function(legend) {
-                    return setMarginForLegends(legend, singleLegendHeightPlusMargin);
-                });
+                /************************** LEFT LEGEND END HERE ************************/
 
-                // right side legends
+                /************************** RIGHT LEGEND STARTS HERE ************************/
                 var rightSideLegendDiv = d3.select("#right-side-legend");
-                var rightSideLegendColor = d3.scaleOrdinal()
-                    .range(["#84B652", "#83B450", "#567D30", "#AB2727", "#DC3535"])
-                    .domain(["Early Check in", "Remaining", "Inspected", "Pending", "Late checkout"]);
 
-                var setMarginForRightLegends = function(legend) {
-                    var yBandwidth = yScale.bandwidth();
-
-                    if (legend === "Early Check in") {
-                        return margin.top + yInnerPadding + yBandwidth / 2;
-                    } else if (legend === "Inspected") {
-                        var heightOfTwoLegends = singleLegendHeightPlusMargin * 2;
-                        return yBandwidth / 2 - heightOfTwoLegends + yInnerPadding + yBandwidth / 2;
-                    } else if (legend === "Pending") {
-                        return yBandwidth / 2 - singleLegendHeightPlusMargin + yInnerPadding + yBandwidth / 2;
-                    } else if (legend === "Pickup") {
-                        return 2 * yBandwidth - singleLegendHeightPlusMargin;
-                    }
+                var arrivalsRightLegendData = {
+                    "title": "Arrivals",
+                    "id": "arrivals-right-title",
+                    "margin_top": firstHorizontalLine - yInnerPadding / 2 - yBandwidth / 2,
+                    "items": [{
+                        "id": "right-legend-early-checkin",
+                        "class": cssClassMappings["Early Check in"],
+                        "label": "Early Check in",
+                        "count": chartDetails.early_checkin_arrivals_count
+                    }, {
+                        "id": "right-legend-remaining",
+                        "class": cssClassMappings["Remaining"],
+                        "label": "Remaining",
+                        "count": chartDetails.remaining_arrivals_count
+                    }]
                 };
-                var rightSideLegendEntries = rightSideLegendDiv.selectAll("dd")
-                    .data(rightSideLegendColor.domain().slice())
-                    .enter()
-                    .append("dd")
-                    .attr("class", "legend-item")
-                    .attr("id", function(item) {
-                        var itemName = item.replace(' ', '-');
 
-                        return "right-legend-" + itemName.toLowerCase();
-                    });
+                rvAnalyticsHelperSrv.addLegendItems(cssClassMappings, rightSideLegendDiv, arrivalsRightLegendData);
 
-                rightSideLegendEntries.append("span")
-                    .attr("class", function(label) {
-                        return cssClassMappings[label];
-                    })
-                    .html(function(label) {
-                        var text;
+                var vacantRightLegendData = {
+                    "title": "Vacant",
+                    "id": "vacnt-right-title",
+                    "margin_top": yBandwidth - 2 * singleLegendTitleHeightPlusMargin,
+                    "items": [{
+                        "id": "right-legend-dirty",
+                        "class": cssClassMappings["Inspected"],
+                        "label": "Inspected",
+                        "count": chartDetails.inspected_vacant_count
+                    }]
+                };
 
-                        if (label === "Early Check in") {
-                            text = chartDetails.early_checkin_arrivals_count;
-                        } else if (label === "Remaining") {
-                            text = chartDetails.remaining_arrivals_count;
-                        } else if (label === "Inspected") {
-                            text = chartDetails.inspected_vacant_count;
-                        } else if (label === "Late checkout") {
-                            text = chartDetails.late_checkout_departures_count;
-                        } else if (label === "Pending") {
-                            text = chartDetails.pending_departures_count;
-                        }
-                        return text;
-                    });
+                rvAnalyticsHelperSrv.addLegendItems(cssClassMappings, rightSideLegendDiv, vacantRightLegendData);
 
-                rightSideLegendEntries.append("span")
-                    .attr("class", "bar-label")
-                    .html(function(label) {
-                        return label;
-                    });
+                var departuresRightLegendData = {
+                    "title": "Departures",
+                    "id": "departures-right-title",
+                    "margin_top": yBandwidth - singleLegendTitleHeightPlusMargin,
+                    "items": [{
+                        "id": "right-legend-pending",
+                        "class": cssClassMappings["Pending"],
+                        "label": "Pending",
+                        "count": chartDetails.pending_departures_count
+                    }, {
+                        "id": "right-legend-lc",
+                        "class": cssClassMappings["Late checkout"],
+                        "label": "Late checkout",
+                        "count": chartDetails.late_checkout_departures_count
+                    }]
+                };
 
-                rightSideLegendEntries.style("margin-top", function(legend) {
-                    return setMarginForRightLegends(legend);
-                });
+                rvAnalyticsHelperSrv.addLegendItems(cssClassMappings, rightSideLegendDiv, departuresRightLegendData);
+
+                /************************** RIGHT LEGEND ENDS HERE ************************/
+
+                $scope.$emit('REFRESH_ANALTICS_SCROLLER');
+                $scope.screenData.hideChartData = false;
             };
         }
     ]);

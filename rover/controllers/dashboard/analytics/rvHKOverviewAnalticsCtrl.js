@@ -2,39 +2,7 @@ angular.module('sntRover')
     .controller('rvHKOverviewAnalticsCtrl', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvAnalyticsHelperSrv',
         function($scope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv) {
 
-            var arrivalsColorScheme = d3.scaleOrdinal()
-                // .range(["#B5D398", "#84B652", "#B7D599"])
-                .range(['#ADD87E', '#81D828'])
-                .domain(["perfomed", "remaining"]);
-
-            var vacantColorScheme = d3.scaleOrdinal()
-                .range(["#DC3535", "#EC9319", "#B7D599"])
-                .domain(["dirty", "pickup", "clean"]);
-
-            var departuresColorScheme = d3.scaleOrdinal()
-                // .range(["#DBA1A2", "#E13939"])
-                .range(['#E68E77', '#E62D13'])
-                .domain(["perfomed", "pending"]);
-
-            var stayoversColorScheme = d3.scaleOrdinal()
-                // .range(["#BBE0ED", "#7FBED7"])
-                .range(["#BED4E6", "#63AFE5"])
-                .domain(["perfomed", "remaining"]);
-
-            var roomsColorScheme = d3.scaleOrdinal()
-                // .range(["#84B652", "#557B30", "#EA9219", "#DF3635"])
-                .range(["#60D318","#3B890F", "#FFA716", "#E62A13"])
-                .domain(["clean", "inspected", "pickup", "dirty"]);
-
-            var colorScheme = {
-                arrivalsColorScheme: arrivalsColorScheme,
-                vacantColorScheme: vacantColorScheme,
-                departuresColorScheme: departuresColorScheme,
-                roomsColorScheme: roomsColorScheme,
-                stayoversColorScheme: stayoversColorScheme
-            };
-
-            var cssClassMappings = {
+            var legendColorMappings = {
                 "Checked In": "bar bar-green bar-light",
                 "Arrivals": "bar bar-green",
 
@@ -50,18 +18,85 @@ angular.module('sntRover')
                 "Pickup": "bar bar-orange"
             };
 
+            var colorMappings = {
+                "arrivals_perfomed": {
+                    "legend_class": "bar bar-green bar-light",
+                    "fill": "greenLight",
+                    "onmouseover_fill": "greenLightHover",
+                    "onmouseout_fill": "greenLight"
+                },
+                "arrivals_remaining": {
+                    "legend_class": "bar bar-green",
+                    "fill": "green",
+                    "onmouseover_fill": "greenHover",
+                    "onmouseout_fill": "green"
+                },
+                "departures_perfomed": {
+                    "legend_class": "bar bar-red bar-light",
+                    "fill": "redLight",
+                    "onmouseover_fill": "redLightHover",
+                    "onmouseout_fill": "redLight"
+                },
+                "departures_pending": {
+                    "legend_class": "bar bar-red",
+                    "fill": "red",
+                    "onmouseover_fill": "redHover",
+                    "onmouseout_fill": "red"
+                },
+                "stayovers_perfomed": {
+                    "legend_class": "bar bar-blue bar-light",
+                    "fill": "blueLight",
+                    "onmouseover_fill": "blueLightHover",
+                    "onmouseout_fill": "blueLight"
+                },
+                "stayovers_remaining": {
+                    "legend_class": "bar bar-blue",
+                    "fill": "blue",
+                    "onmouseover_fill": "blueHover",
+                    "onmouseout_fill": "blue"
+                },
+                "rooms_clean": {
+                    "legend_class": "bar bar-green",
+                    "fill": "green",
+                    "onmouseover_fill": "greenHover",
+                    "onmouseout_fill": "green"
+                },
+                "rooms_inspected": {
+                    "legend_class": "bar bar-green bar-dark",
+                    "fill": "greenDark",
+                    "onmouseover_fill": "greenDarkHover",
+                    "onmouseout_fill": "greenDark"
+                },
+                "rooms_dirty": {
+                    "legend_class": "bar bar-red",
+                    "fill": "red",
+                    "onmouseover_fill": "redHover",
+                    "onmouseout_fill": "red"
+                },
+                "rooms_pickup": {
+                    "legend_class": "bar bar-orange",
+                    "fill": "orange",
+                    "onmouseover_fill": "orangeHover",
+                    "onmouseout_fill": "orange"
+                }
+            };
+
+
             $scope.drawHkOverviewChart = function(chartDetails) {
 
                 $scope.screenData.mainHeading = $filter('translate')(chartDetails.chartData.label);
+
                 var chartAreaWidth = document.getElementById("analytics-chart").clientWidth;
                 var margin = {
                         top: 50,
-                        right: 20,
+                        right: 50,
                         bottom: 30,
-                        left: 150
+                        left: 50
                     },
                     width = chartAreaWidth - margin.left - margin.right,
-                    height = window.innerHeight * 2 / 3 - margin.top - margin.bottom;
+                    maxHeight = 500,
+                    calculatedHeight = window.innerHeight * (1 / 2 + 2 / 3) / 2 - margin.top - margin.bottom,
+                    height = calculatedHeight > maxHeight ? maxHeight : calculatedHeight;
 
                 var yScale = d3.scaleBand()
                     .rangeRound([0, height + 10])
@@ -77,7 +112,7 @@ angular.module('sntRover')
                     .tickSizeInner(-height)
                     .tickFormat(function(d) {
                         // X axis... treat -ve values as positive
-                        return (d < 0) ? (d * -1) : d;
+                        return (d < 0) ? (d * -1) : d === 0 ? "" : d;
                     });
 
                 var yAxis = d3.axisLeft()
@@ -89,12 +124,13 @@ angular.module('sntRover')
                         return "";
                     });
 
-                var svg = d3.select("#analytics-chart").append("svg")
+                var svg = d3.select("#d3-plot").append("svg")
                     .attr("width", width + margin.left + margin.right)
                     .attr("height", height + margin.top + margin.bottom)
-                    .attr("id", "d3-plot")
+                    //.attr("id", "d3-plot")
                     .append("g")
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
 
                 // DEBUGING CODE
                 // chartDetails = rvAnalyticsHelperSrv.addRandomNumbersForTesting(chartDetails);
@@ -112,7 +148,8 @@ angular.module('sntRover')
 
                 // Add x axis
                 svg.append("g")
-                    .attr("class", "x axis")
+                    .attr("class", "x axis bottom-axis")
+                    .attr("id", "bottom-axis")
                     .attr("transform", "translate(0," + height + ")")
                     .call(xAxis);
 
@@ -128,192 +165,241 @@ angular.module('sntRover')
                     yScale: yScale,
                     xScale: xScale,
                     chartDetails: chartDetails,
-                    colorScheme: colorScheme,
                     maxValue: maxValueInBotheDirections,
-                    // cssClassMappings: cssClassMappings,
-                    onBarChartClick: chartDetails.onBarChartClick
+                    onBarChartClick: chartDetails.onBarChartClick,
+                    colorMappings: colorMappings
                 };
 
-                        
-                rvAnalyticsHelperSrv.drawBarsOfBidirectonalChart(dataForDrawingBars);
+                rvAnalyticsHelperSrv.drawBarChart(dataForDrawingBars);
 
                 // Add extra Y axis to the middle of the graph
+
                 svg.append("g")
-                    .attr("class", "y axis inner")
-                    .append("line")
-                    .attr("x1", xScale(0))
-                    .attr("x2", xScale(0))
-                    .attr("y2", height);
+                    .append("rect")
+                    .attr("class", "chart-breakpoint-line")
+                    .attr("x", xScale(0))
+                    .attr("y", -40)
+                    .attr("height", height + margin.top + 40)
+                    .attr("width", 4);
 
-                var firstLineHeight = yScale.bandwidth() * 2.5;
 
-                svg.append("line") // attach a line
-                    .style("stroke", "#A0A0A0") // colour the line
-                    .style("stroke-width", "1px")
-                    .attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
-                    .attr("y1", firstLineHeight) // y position of the first end of the line
-                    .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-                    .attr("y2", firstLineHeight);
+                /************************** DRAW HORIZONTAL LINES IN GRAPH ************************/
+                var horizontalRectWidths = xScale(maxValueInBotheDirections) - xScale(-1 * maxValueInBotheDirections) + 2 * xScale(50);
+                var lineXOffset = xScale(-1 * (maxValueInBotheDirections + 50));
 
-                var firstLineHeight1 = yScale.bandwidth() * 4.5;
+                svg.append("g")
+                    .append("rect")
+                    .attr("class", "chart-breakpoint-line")
+                    .attr("x", lineXOffset)
+                    .attr("y", 0)
+                    .attr("height", 4)
+                    .attr("width", horizontalRectWidths);
 
-                svg.append("line") // attach a line
-                    .style("stroke", "#B1B1B1") // colour the line
-                    .style("stroke-width", "2px")
-                    .attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
-                    .attr("y1", firstLineHeight1) // y position of the first end of the line
-                    .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-                    .attr("y2", firstLineHeight1);
+                var firstHorizontalLine = yScale.bandwidth() * 2.5;
 
-                var firstLineHeight2 = yScale.bandwidth() * 6.5;
+                svg.append("g")
+                    .append("rect")
+                    .attr("class", "chart-breakpoint-line")
+                    .attr("x", lineXOffset)
+                    .attr("y", firstHorizontalLine)
+                    .attr("height", 4)
+                    .attr("width", horizontalRectWidths);
 
-                svg.append("line") // attach a line
-                    .style("stroke", "#A0A0A0") // colour the line
-                    .style("stroke-width", "1px")
-                    .attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
-                    .attr("y1", firstLineHeight2) // y position of the first end of the line
-                    .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-                    .attr("y2", firstLineHeight2);
+                var secondHorizontalLine = yScale.bandwidth() * 4.5;
 
-                // Left side Legends
-                var leftSideLegendDiv = d3.select("#left-side-legend");
-                var leftSideLegendColor = d3.scaleOrdinal()
-                    .range(["#b7d499", "#dba2a2", "#bbe0ee", "#85b752", "#547a2f"])
-                    .domain(["Checked In", "Checked Out", "Stays Clean", "Clean", "Inspected"]);
+                svg.append("g")
+                    .append("rect")
+                    .attr("class", "chart-breakpoint-line")
+                    .attr("x", lineXOffset)
+                    .attr("y", secondHorizontalLine)
+                    .attr("height", 4)
+                    .attr("width", horizontalRectWidths);
 
-                var setMarginForLegends = function(legend, singleLegendHeightPlusMargin) {
-                    var yBandwidth = yScale.bandwidth();
+                var thirdHorizontalLine = yScale.bandwidth() * 6.5;
 
-                    if (legend === "Checked In") {
-                        return margin.top + 1.5 * yBandwidth;
-                    } else if (legend === "Checked Out" || legend === "Stays Clean" || legend === "Clean") {
-                        return (2 * yBandwidth - singleLegendHeightPlusMargin);
-                    }
-                };
+                svg.append("g")
+                    .append("rect")
+                    .attr("class", "chart-breakpoint-line")
+                    .attr("x", lineXOffset)
+                    .attr("y", thirdHorizontalLine)
+                    .attr("height", 4)
+                    .attr("width", horizontalRectWidths);
 
-                var leftSideLegendEntries = leftSideLegendDiv.selectAll("dd")
-                    .data(leftSideLegendColor.domain().slice())
-                    .enter()
-                    .append("dd")
-                    .attr("class", "legend-item")
-                    .attr("id", function(item) {
-                        var itemName = item.replace(' ', '-');
+                var finalHorizontalLine = height - 3;
 
-                        return "left-legend-" + itemName.toLowerCase();
-                    });
-
-                leftSideLegendEntries.append("span")
-                    .attr("class", function(label) {
-                        return cssClassMappings[label];
-                    })
-                    .html(function(label) {
-                        var text;
-
-                        if (label === "Checked In") {
-                            text = chartDetails.perfomed_arrivals_count;
-                        } else if (label === "Checked Out") {
-                            text = chartDetails.perfomed_departures_count;
-                        } else if (label === "Stays Clean") {
-                            text = chartDetails.perfomed_stayovers_count;
-                        } else if (label === "Clean") {
-                            text = chartDetails.clean_rooms_count;
-                        } else if (label === "Inspected") {
-                            text = chartDetails.inspected_rooms_count;
-                        }
-                        return text;
-                    });
-                // .style("background-color", leftSideLegendColor);
-
-                leftSideLegendEntries.append("span")
-                    .attr("class", "bar-label")
-                    .html(function(label) {
-                        return label;
-                    });
+                svg.append("g")
+                    .append("rect")
+                    .attr("class", "chart-breakpoint-line")
+                    .attr("x", lineXOffset)
+                    .attr("y", finalHorizontalLine)
+                    .attr("height", 3)
+                    .attr("width", horizontalRectWidths);
 
                 if (maxValueInBotheDirections > 0) {
+
                     svg.append("text")
                         .attr("x", xScale(-1 * maxValueInBotheDirections / 2))
                         .attr("y", -20)
                         .attr("dy", ".35em")
-                        .style("font-size", "20px")
-                        .style("font-style", "italic")
-                        .style("fill", "#B1B1B1")
-                        .text("PERFOMED");
+                        .attr("class", "chart-area-label")
+                        .text("Perfomed");
 
                     svg.append("text")
                         .attr("x", xScale(maxValueInBotheDirections / 2))
                         .attr("y", -20)
                         .attr("dy", ".35em")
-                        .style("font-size", "20px")
-                        .style("font-style", "italic")
-                        .style("fill", "#B1B1B1")
-                        .text("REMAINING");
+                        .attr("class", "chart-area-label")
+                        .text("Remaining");
                 }
-               
 
-                // TODO: For now lets assume all legends are of same height. So we will take one and use as reference.
-                var singleLegendHeightPlusMargin = $("#left-legend-checked-in").height() + 10;
+                /************************** LEFT LEGEND STARTS HERE ************************/
 
-                leftSideLegendEntries.style("margin-top", function(legend) {
-                    return setMarginForLegends(legend, singleLegendHeightPlusMargin);
-                });
+                var leftSideLegendDiv = d3.select("#left-side-legend");
+                var yBandwidth = yScale.bandwidth();
 
-                // right side legends
-                var rightSideLegendDiv = d3.select("#right-side-legend");
-                var rightSideLegendColor = d3.scaleOrdinal()
-                    .range(["#84b652", "#e13939", "#7cbad3", "#de3838", "#ed941a"])
-                    .domain(["Arrivals", "Departures", "Stays Dirty", "Dirty", "Pickup"]);
-
-                var setMarginForRightSideLegends = function(legend, singleLegendHeightPlusMargin) {
-                    var yBandwidth = yScale.bandwidth();
-
-                    if (legend === "Arrivals") {
-                        return margin.top + 1.5 * yBandwidth;
-                    } else if (legend === "Departures" || legend === "Stays Dirty" || legend === "Dirty") {
-                        return (2 * yBandwidth - singleLegendHeightPlusMargin);
-                    }
+                var arrivalsLeftLegendData = {
+                    "title": "Arrivals",
+                    "id": "arrivals-right-title-left",
+                    "margin_top": margin.top + yBandwidth,
+                    "items": [{
+                        "id": "left-legend-arrivals",
+                        "class": legendColorMappings["Checked In"],
+                        "label": "Checked In",
+                        "count": chartDetails.perfomed_arrivals_count
+                    }]
                 };
-                var rightSideLegendEntries = rightSideLegendDiv.selectAll("dd")
-                    .data(rightSideLegendColor.domain().slice())
-                    .enter()
-                    .append("dd")
-                    .attr("class", "legend-item")
-                    .attr("id", function(item) {
-                        var itemName = item.replace(' ', '-');
 
-                        return "right-legend-" + itemName.toLowerCase();
-                    });
+                rvAnalyticsHelperSrv.addLegendItems(legendColorMappings, leftSideLegendDiv, arrivalsLeftLegendData);
 
-                rightSideLegendEntries.append("span")
-                    .attr("class", function(label) {
-                        return cssClassMappings[label];
-                    })
-                    .html(function(label) {
-                        var text;
+                var singleLegendTitleHeightPlusMargin = $("#arrivals-right-title-left").height() + 10;
+                var singleLegendItemHeightPlusMargin = $("#left-legend-arrivals").height() + 10;
 
-                        if (label === "Arrivals") {
-                            text = chartDetails.remaining_arrivals_count;
-                        } else if (label === "Departures") {
-                            text = chartDetails.pending_departures_count;
-                        } else if (label === "Stays Dirty") {
-                            text = chartDetails.remaining_stayovers_count;
-                        } else if (label === "Pickup") {
-                            text = chartDetails.pickup_rooms_count;
-                        } else if (label === "Dirty") {
-                            text = chartDetails.dirty_rooms_count;
-                        }
-                        return text;
-                    });
+                var departuresLeftLegendData = {
+                    "title": "Departures",
+                    "id": "departures-left-title",
+                    "margin_top": 2 * yBandwidth -
+                        (singleLegendTitleHeightPlusMargin + singleLegendItemHeightPlusMargin),
+                    "items": [{
+                        "id": "left-legend-departures",
+                        "class": legendColorMappings["Checked Out"],
+                        "label": "Checked Out",
+                        "count": chartDetails.perfomed_departures_count
+                    }]
+                };
 
-                rightSideLegendEntries.append("span")
-                    .attr("class", "bar-label")
-                    .html(function(label) {
-                        return label;
-                    });
+                rvAnalyticsHelperSrv.addLegendItems(legendColorMappings, leftSideLegendDiv, departuresLeftLegendData);
 
-                rightSideLegendEntries.style("margin-top", function(legend) {
-                    return setMarginForRightSideLegends(legend, singleLegendHeightPlusMargin);
-                });
+                var stayOversLeftLegendData = {
+                    "title": "Stayovers",
+                    "id": "stayovers-left-title",
+                    "margin_top": 2 * yBandwidth -
+                        (singleLegendTitleHeightPlusMargin + singleLegendItemHeightPlusMargin),
+                    "items": [{
+                        "id": "left-legend-stayovers",
+                        "class": legendColorMappings["Stays Dirty"],
+                        "label": "Stays Clean",
+                        "count": chartDetails.perfomed_stayovers_count
+                    }]
+                };
+
+                rvAnalyticsHelperSrv.addLegendItems(legendColorMappings, leftSideLegendDiv, stayOversLeftLegendData);
+
+
+                var roomsLeftLegendData = {
+                    "title": "Rooms",
+                    "id": "rooms-right-title",
+                    "margin_top": 2 * yBandwidth -
+                        (singleLegendTitleHeightPlusMargin + singleLegendItemHeightPlusMargin),
+                    "items": [{
+                        "id": "left-legend-clean",
+                        "class": legendColorMappings["Clean"],
+                        "label": "Clean",
+                        "count": chartDetails.clean_rooms_count
+                    }, {
+                        "id": "left-legend-pickup",
+                        "class": legendColorMappings["Inspected"],
+                        "label": "Inspected",
+                        "count": chartDetails.inspected_rooms_count
+                    }]
+                };
+
+                rvAnalyticsHelperSrv.addLegendItems(legendColorMappings, leftSideLegendDiv, roomsLeftLegendData);
+
+                /************************** LEFT LEGEND END HERE ************************/
+
+                /************************** RIGHT LEGEND STARTS HERE ************************/
+
+                var rightSideLegendDiv = d3.select("#right-side-legend");
+
+                var yBandwidth = yScale.bandwidth();
+                var arrivalsRightLegendData = {
+                    "title": "Arrivals",
+                    "id": "arrivals-right-title",
+                    "margin_top": margin.top + yBandwidth,
+                    "items": [{
+                        "id": "right-legend-arrivals",
+                        "class": legendColorMappings["Arrivals"],
+                        "label": "Arrivals",
+                        "count": chartDetails.remaining_arrivals_count
+                    }]
+                };
+
+                rvAnalyticsHelperSrv.addLegendItems(legendColorMappings, rightSideLegendDiv, arrivalsRightLegendData);
+
+                var departuresRightLegendData = {
+                    "title": "Departures",
+                    "id": "departures-right-title",
+                    "margin_top": 2 * yBandwidth -
+                        (singleLegendTitleHeightPlusMargin + singleLegendItemHeightPlusMargin),
+                    "items": [{
+                        "id": "right-legend-departures",
+                        "class": legendColorMappings["Departures"],
+                        "label": "Departures",
+                        "count": chartDetails.pending_departures_count
+                    }]
+                };
+
+                rvAnalyticsHelperSrv.addLegendItems(legendColorMappings, rightSideLegendDiv, departuresRightLegendData);
+
+                var stayOversLegendData = {
+                    "title": "Stayovers",
+                    "id": "departures-right-title",
+                    "margin_top": 2 * yBandwidth -
+                        (singleLegendTitleHeightPlusMargin + singleLegendItemHeightPlusMargin),
+                    "items": [{
+                        "id": "right-legend-stayovers",
+                        "class": legendColorMappings["Stays Dirty"],
+                        "label": "Stays Dirty",
+                        "count": chartDetails.remaining_stayovers_count
+                    }]
+                };
+
+                rvAnalyticsHelperSrv.addLegendItems(legendColorMappings, rightSideLegendDiv, stayOversLegendData);
+
+                var roomsLegendData = {
+                    "title": "Rooms",
+                    "id": "rooms-right-title",
+                    "margin_top": 2 * yBandwidth -
+                        (singleLegendTitleHeightPlusMargin + singleLegendItemHeightPlusMargin),
+                    "items": [{
+                        "id": "right-legend-dirty",
+                        "class": legendColorMappings["Dirty"],
+                        "label": "Dirty",
+                        "count": chartDetails.dirty_rooms_count
+                    }, {
+                        "id": "right-legend-pickup",
+                        "class": legendColorMappings["Pickup"],
+                        "label": "Pickup",
+                        "count": chartDetails.pickup_rooms_count
+                    }]
+                };
+
+                rvAnalyticsHelperSrv.addLegendItems(legendColorMappings, rightSideLegendDiv, roomsLegendData);
+
+                /************************** RIGHT LEGEND ENDS HERE ************************/
+
+                $scope.$emit('REFRESH_ANALTICS_SCROLLER');
+                $scope.screenData.hideChartData = false;
             };
         }
     ]);

@@ -2,11 +2,54 @@ angular.module('sntRover')
 	.controller('rvFrontOfficeWorkloadCtrl', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvAnalyticsHelperSrv',
 		function($scope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv) {
 
+			var colorMappings = {
+				"early_checkin": {
+                    "legend_class": "bar bar-green bar-dark",
+                    "fill": "greenDark",
+                    "onmouseover_fill": "greenDarkHover",
+                    "onmouseout_fill": "greenDark"
+                },
+                "checkin": {
+                    "legend_class": "bar bar-green bar-light",
+                    "fill": "greenLight",
+                    "onmouseover_fill": "greenLightHover",
+                    "onmouseout_fill": "greenLight"
+                },
+                "vip_checkin": {
+                    "legend_class": "bar bar-green",
+                    "fill": "green",
+                    "onmouseover_fill": "greenHover",
+                    "onmouseout_fill": "green"
+                },
+                "vip_checkout": {
+                    "legend_class": "bar bar-red bar-light",
+                    "fill": "redLight",
+                    "onmouseover_fill": "redLightHover",
+                    "onmouseout_fill": "redLight"
+                },
+                "checkout": {
+                    "legend_class": "bar bar-red",
+                    "fill": "red",
+                    "onmouseover_fill": "redHover",
+                    "onmouseout_fill": "red"
+                },
+                "late_checkout": {
+                    "legend_class": "bar bar-red bar-dark",
+                    "fill": "redDark",
+                    "onmouseover_fill": "redDarkHover",
+                    "onmouseout_fill": "redDark"
+                }
+            };
 
-			var colorScheme = d3.scaleOrdinal()
-				.range(["#50762A", "#83B451", "#EAC710", "#DD3636", "#A99113", "#AC2727"])
-				.domain(["early_checkin", "vip_checkin", "vip_checkout", "late_checkout", "checkout", "checkin"]);
+			var cssClassMappings = {
+                "Early Check in": "bar bar-green bar-dark",
+                "Checkin": "bar bar-green bar-light",
+                "VIP checkin": "bar bar-green",
 
+                "VIP checkout": "bar bar-red bar-dark",
+                "Late checkout": "bar bar-red bar-light",
+                "Checkout": "bar bar-red",
+            };
 
 			$scope.drawWorkLoadChart = function(chartDetails) {
 				$scope.screenData.mainHeading = $filter('translate')(chartDetails.chartData.label);
@@ -18,7 +61,7 @@ angular.module('sntRover')
 						left: 150
 					},
 					width = chartAreaWidth - margin.left - margin.right,
-					height = window.innerHeight * 2 / 3 - margin.top - margin.bottom;
+					height = window.innerHeight * (2 / 3 + 1 / 2) / 2 - margin.top - margin.bottom;
 
 				var yScale = d3.scaleBand()
 					.rangeRound([0, height])
@@ -47,7 +90,7 @@ angular.module('sntRover')
 					});
 
 				var svgHeight = height + margin.top + margin.bottom;
-				var svg = d3.select("#analytics-chart").append("svg")
+				var svg = d3.select("#d3-plot").append("svg")
 					.attr("width", width + margin.left + margin.right)
 					.attr("height", svgHeight)
 					.attr("id", "d3-plot")
@@ -57,14 +100,14 @@ angular.module('sntRover')
 				// DEBUGING CODE
 				// chartDetails = rvAnalyticsHelperSrv.addRandomNumbersForTesting(chartDetails);
 
+				// sort right side items in ascending order
+				chartDetails.chartData.data = _.sortBy(chartDetails.chartData.data, function(item, index) {
+					return item.type === 'REMAINING' ? 0 : 1;
+				});
+
 				chartDetails.chartData.data.forEach(function(chart) {
 
 					var chartName = chart.type;
-
-					// sort right side items in ascending order
-					chart.contents.right_side = _.sortBy(chart.contents.right_side, function(item) {
-						return item.count;
-					});
 
 					// Let count be 10, 25, 35 - based on calculation below the following will the calculated values
 					// item 1 = { xOrigin : 0  , xFinal : 10 }
@@ -175,10 +218,20 @@ angular.module('sntRover')
 					.attr("width", function(item) {
 						return xScale(item.xFinal) - xScale(item.xOrigin);
 					})
-					.style("fill", function(item) {
-						// console.log(item.chartName);
-						// console.log(colorScheme[item.chartName + 'ColorScheme']);
-						return colorScheme(item.type);
+					.attr("fill", function(item) {
+						var fillColor = colorMappings[item.type].fill;
+
+						return "url(#" + fillColor + ")";
+					})
+					.attr("onmouseover", function(item) {
+						var mouseoverColor = colorMappings[item.type].onmouseover_fill;
+
+						return "evt.target.setAttribute('fill', 'url(#" + mouseoverColor + " )');";
+					})
+					.attr("onmouseout", function(item) {
+						var mouseoutColor = colorMappings[item.type].onmouseout_fill;
+
+						return "evt.target.setAttribute('fill', 'url(#" + mouseoutColor + " )');";
 					})
 					.on("click", function(e) {
 						chartDetails.onBarChartClick(e);
@@ -217,71 +270,77 @@ angular.module('sntRover')
 				var yPositionOfRemainingTopLine = remainingTypeYoffset - yScale.bandwidth() / 2;
 				var strokeWidthOfLines = chartDetails.chartData.data.length > 20 ? "1px" : "2px";
 
-				svg.append("line") // attach a line
-					.style("stroke", "#000000") // colour the line
-					.style("stroke-width", strokeWidthOfLines)
-					.attr("x1", -100) // x position of the first end of the line
-					.attr("y1", yPositionOfRemainingTopLine) // y position of the first end of the line
-					.attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-					.attr("y2", yPositionOfRemainingTopLine);
+				if (maxValueInBotheDirections > 0) {
+					svg.append("line") // attach a line
+						.style("stroke", "#A0A0A0") // colour the line
+						.style("stroke-width", strokeWidthOfLines)
+						.attr("x1", -100) // x position of the first end of the line
+						.attr("y1", yPositionOfRemainingTopLine) // y position of the first end of the line
+						.attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
+						.attr("y2", yPositionOfRemainingTopLine);
 
-				// Draw horizontal line under REMAINING
-				var yPositionOfRemainingBottomLine = yPositionOfRemainingTopLine + 2 * yScale.bandwidth();
+					// Draw horizontal line under REMAINING
+					var yPositionOfRemainingBottomLine = yPositionOfRemainingTopLine + 2 * yScale.bandwidth();
 
-				svg.append("line") // attach a line
-					.style("stroke", "#000000") // colour the line
-					.style("stroke-width", strokeWidthOfLines)
-					.attr("x1", -100) // x position of the first end of the line
-					.attr("y1", yPositionOfRemainingBottomLine) // y position of the first end of the line
-					.attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-					.attr("y2", yPositionOfRemainingBottomLine);
+					svg.append("line") // attach a line
+						.style("stroke", "#A0A0A0") // colour the line
+						.style("stroke-width", strokeWidthOfLines)
+						.attr("x1", -100) // x position of the first end of the line
+						.attr("y1", yPositionOfRemainingBottomLine) // y position of the first end of the line
+						.attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
+						.attr("y2", yPositionOfRemainingBottomLine);
 
-				// Draw thick line on top of x-axis
-				var yPositionOfXaxis = height;
+					// Draw thick line on top of x-axis
+					var yPositionOfXaxis = height;
 
-				svg.append("line") // attach a line
-					.style("stroke", "#000000") // colour the line
-					.style("stroke-width", strokeWidthOfLines)
-					.attr("x1", 0) // x position of the first end of the line
-					.attr("y1", yPositionOfXaxis) // y position of the first end of the line
-					.attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-					.attr("y2", yPositionOfXaxis);
+					svg.append("line") // attach a line
+						.style("stroke", "#A0A0A0") // colour the line
+						.style("stroke-width", strokeWidthOfLines)
+						.attr("x1", 0) // x position of the first end of the line
+						.attr("y1", yPositionOfXaxis) // y position of the first end of the line
+						.attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
+						.attr("y2", yPositionOfXaxis);
 
-				// Draw thick line on top of y-axis
-				svg.append("line") // attach a line
-					.style("stroke", "#000000") // colour the line
-					.style("stroke-width", strokeWidthOfLines)
-					.attr("x1", 0) // x position of the first end of the line
-					.attr("y1", 0) // y position of the first end of the line
-					.attr("x2", 0) // x position of the second end of the line
-					.attr("y2", height);
+					// Draw thick line on top of y-axis
+					svg.append("line") // attach a line
+						.style("stroke", "#A0A0A0") // colour the line
+						.style("stroke-width", strokeWidthOfLines)
+						.attr("x1", 0) // x position of the first end of the line
+						.attr("y1", 0) // y position of the first end of the line
+						.attr("x2", 0) // x position of the second end of the line
+						.attr("y2", height);
+				}
 
+				var rightSideLegendDiv = d3.select("#right-side-legend");
 
-				// // right side legends
-				var rightSideLegendDiv = d3.select("#right-side-legend")
-					.style("margin-top", yScale.bandwidth());
 				var rightSideLegendColor = d3.scaleOrdinal()
-					.range(["#50762A", "#83B451", "#EAC710", "#DD3636", "#A99113", "#AC2727"])
-					.domain(["Early Check in", "VIP checkin", "VIP checkout", "Late checkout", "Checkout", "Checkin"]);
+					.range(["#569716", "#72D423", "#A3D577", "#E59278", "#E53D13", "#B13312"])
+					.domain(["Early Check in", "VIP checkin", "Checkin", "VIP checkout", "Checkout", "Late checkout"]);
 
-				var rightSideLegendEntries = rightSideLegendDiv.selectAll("dd")
+				rightSideLegendDiv
+					.append("dt")
+					.attr("class", "legend-title")
+					.attr("id", "todays-data");
+
+				var rightSideLegendList = rightSideLegendDiv.append("ul");
+
+				var rightSideLegendEntries = rightSideLegendList.selectAll("li")
 					.data(rightSideLegendColor.domain().slice())
 					.enter()
-					.append("dd")
-					.attr("class", "legend-item")
-					.attr("id", function(item) {
-						return "left-legend-" + item.toLowerCase();
-					});
+					.append("li");
 
 				rightSideLegendEntries.append("span")
 					.attr("class", "rect")
 					.style("background-color", rightSideLegendColor);
 
 				rightSideLegendEntries.append("span")
-					.attr("class", "rect-label")
-					.html(function(label) {
-						return label;
+					.attr("class", "label")
+					.html(function(d) {
+						return d;
 					});
+				
+				$scope.$emit('REFRESH_ANALTICS_SCROLLER');
+				$scope.screenData.hideChartData = false;
 			};
 		}
 	]);

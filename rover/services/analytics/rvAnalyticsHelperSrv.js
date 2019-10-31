@@ -170,11 +170,96 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 		// 	});
 	};
 
+	this.addLegendItems = function(cssClassMappings, parentElement, legendData) {
+
+		parentElement
+			.append("dt")
+			.attr("class", "legend-title")
+			.attr("id", legendData.id)
+			.html(legendData.title)
+			.style("margin-top", legendData.margin_top + "px");
+
+		_.each(legendData.items, function(item) {
+			parentElement
+				.append("dd")
+				.attr("class", "legend-item")
+				.attr("id", item.id).append("span")
+				.attr("class", function(label) {
+					return cssClassMappings[item.label];
+				})
+				.html(item.count);
+
+			d3.select("#" + item.id)
+				.append("span")
+				.attr("class", "bar-label")
+				.html(item.label)
+		});
+	};
+
+	this.drawBarChart = function(barData) {
+		var svg = barData.svg,
+			yScale = barData.yScale,
+			xScale = barData.xScale,
+			chartDetails = barData.chartDetails,
+			maxValue = barData.maxValue,
+			cssClassMappings = barData.cssClassMappings,
+			colorMappings = barData.colorMappings;
+
+		var vakken = svg.selectAll(".type")
+			.data(chartDetails.chartData.data)
+			.enter()
+			.append("g")
+			.attr("class", "bar")
+			.attr("transform", function(chart) {
+				return "translate(0," + yScale(chart.type) + ")";
+			});
+
+		var bars = vakken.selectAll("rect")
+			.data(function(mainItem) {
+				return mainItem.boxes;
+			})
+			.enter()
+			.append("g")
+			.attr("class", function(item) {
+				return cssClassMappings ? cssClassMappings[item.chartName + "_" + item.type] : "";
+			})
+			.attr("id", function(item) {
+				return item.elementId;
+			});
+
+		bars.append("rect")
+			.attr("height", yScale.bandwidth())
+			.attr("x", function(item) {
+				return xScale(item.xOrigin);
+			})
+			.attr("width", function(item) {
+				return xScale(item.xFinal) - xScale(item.xOrigin);
+			})
+			.attr("fill", function(item) {
+				var fillColor = colorMappings[item.chartName + "_" + item.type].fill;
+
+				return "url(#" + fillColor + ")"
+			})
+			.attr("onmouseover", function(item) {
+				var mouseoverColor = colorMappings[item.chartName + "_" + item.type].onmouseover_fill;
+
+				return "evt.target.setAttribute('fill', 'url(#" + colorMappings[item.chartName + "_" + item.type].onmouseover_fill + " )');"
+			})
+			.attr("onmouseout", function(item) {
+				var mouseoutColor = colorMappings[item.chartName + "_" + item.type].onmouseout_fill;
+
+				return "evt.target.setAttribute('fill', 'url(#" + mouseoutColor + " )');"
+			})
+			.on("click", function(e) {
+				barData.onBarChartClick(e);
+			});
+	};
+
 
 	this.addRandomNumbersForTesting = function(chartDetails) {
 		var combinedItemsCountArray = [];
 
-		var workPriority = false;
+		var workPriority = chartDetails.chartData.label === 'AN_WORKLOAD'; ;
 
 		if (workPriority) {
 			var b = {

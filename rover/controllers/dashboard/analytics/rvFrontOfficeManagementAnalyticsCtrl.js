@@ -2,22 +2,82 @@ angular.module('sntRover')
     .controller('rvFrontOfficeManagementAnalyticsCtrl', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvAnalyticsHelperSrv',
         function($scope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv) {
 
-            var arrivalsColorScheme = d3.scaleOrdinal()
-                .range(["#B5D297", "#557A2F", "#84B751"])
-                .domain(["perfomed", "early_checkin", "remaining"]);
+            var cssClassMappings = {
+                "Checked In": "bar bar-green bar-light",
+                "Early Check in": "bar bar-green bar-dark",
+                "Remaining": "bar bar-green",
 
-            var departuresColorScheme = d3.scaleOrdinal()
-                .range(["#DBA1A1", "#AD2727", "#DC3535"])
-                .domain(["perfomed", "late_checkout", "pending"]);
+                "Checked out": "bar bar-red bar-light",
+                "Late checkout": "bar bar-red bar-dark",
+                "Pending": "bar bar-red",
 
-            var roomsColorScheme = d3.scaleOrdinal()
-                .range(["#DC3535", "#EE931B", "#84B551", "#547A2F"])
-                .domain(["dirty", "pickup", "clean", "inspected"]);
+                "Clean": "bar bar-green",
+                "Inspected": "bar bar-green bar-dark",
+                "Dirty": "bar bar-red",
+                "Pickup": "bar bar-orange"
+            };
 
-            var colorScheme = {
-                arrivalsColorScheme: arrivalsColorScheme,
-                roomsColorScheme: roomsColorScheme,
-                departuresColorScheme: departuresColorScheme
+            var colorMappings = {
+                "arrivals_perfomed": {
+                    "legend_class": "bar bar-green bar-light",
+                    "fill": "greenLight",
+                    "onmouseover_fill": "greenLightHover",
+                    "onmouseout_fill": "greenLight"
+                },
+                "arrivals_early_checkin": {
+                    "legend_class": "bar bar-green bar-dark",
+                    "fill": "greenDark",
+                    "onmouseover_fill": "greenDarkHover",
+                    "onmouseout_fill": "greenDark"
+                },
+                "arrivals_remaining": {
+                    "legend_class": "bar bar-green",
+                    "fill": "green",
+                    "onmouseover_fill": "greenHover",
+                    "onmouseout_fill": "green"
+                },
+                "departures_perfomed": {
+                    "legend_class": "bar bar-red bar-light",
+                    "fill": "redLight",
+                    "onmouseover_fill": "redLightHover",
+                    "onmouseout_fill": "redLight"
+                },
+                "departures_pending": {
+                    "legend_class": "bar bar-red",
+                    "fill": "red",
+                    "onmouseover_fill": "redHover",
+                    "onmouseout_fill": "red"
+                },
+                "departures_late_checkout": {
+                    "legend_class": "bar bar-red bar-dark",
+                    "fill": "redDark",
+                    "onmouseover_fill": "redDarkHover",
+                    "onmouseout_fill": "redDark"
+                },
+                "rooms_clean": {
+                    "legend_class": "bar bar-green",
+                    "fill": "green",
+                    "onmouseover_fill": "greenHover",
+                    "onmouseout_fill": "green"
+                },
+                "rooms_inspected": {
+                    "legend_class": "bar bar-green bar-dark",
+                    "fill": "greenDark",
+                    "onmouseover_fill": "greenDarkHover",
+                    "onmouseout_fill": "greenDark"
+                },
+                "rooms_dirty": {
+                    "legend_class": "bar bar-red",
+                    "fill": "red",
+                    "onmouseover_fill": "redHover",
+                    "onmouseout_fill": "red"
+                },
+                "rooms_pickup": {
+                    "legend_class": "bar bar-orange",
+                    "fill": "orange",
+                    "onmouseover_fill": "orangeHover",
+                    "onmouseout_fill": "orange"
+                }
             };
 
             $scope.drawArrivalManagementChart = function(chartDetails) {
@@ -30,11 +90,13 @@ angular.module('sntRover')
                         left: 150
                     },
                     width = chartAreaWidth - margin.left - margin.right,
-                    height = window.innerHeight * 2 / 3 - margin.top - margin.bottom;
+                    maxHeight = 500,
+                    calculatedHeight = window.innerHeight * (1 / 2 + 2 / 3) / 2 - margin.top - margin.bottom,
+                    height = calculatedHeight > maxHeight ? maxHeight : calculatedHeight;
 
                 var yScale = d3.scaleBand()
                     .rangeRound([0, height + 10])
-                    .padding(.3);
+                    .padding(.4);
 
                 var xScale = d3.scaleLinear()
                     .rangeRound([0, width]);
@@ -46,7 +108,7 @@ angular.module('sntRover')
                     .tickSizeInner(-height)
                     .tickFormat(function(d) {
                         // X axis... treat -ve values as positive
-                        return (d < 0) ? (d * -1) : d;
+                        return (d < 0) ? (d * -1) : d === 0 ? "" : d;
                     });
 
                 var yAxis = d3.axisLeft()
@@ -56,7 +118,7 @@ angular.module('sntRover')
                     .tickPadding(10)
                     .tickFormat("");
 
-                var svg = d3.select("#analytics-chart").append("svg")
+                var svg = d3.select("#d3-plot").append("svg")
                     .attr("width", width + margin.left + margin.right)
                     .attr("height", height + margin.top + margin.bottom)
                     .attr("id", "d3-plot")
@@ -81,7 +143,8 @@ angular.module('sntRover')
 
                 // Add x axis
                 svg.append("g")
-                    .attr("class", "x axis")
+                    .attr("class", "x axis bottom-axis")
+                    .attr("id", "bottom-axis")
                     .attr("transform", "translate(0," + height + ")")
                     .call(xAxis);
 
@@ -96,47 +159,109 @@ angular.module('sntRover')
                     yScale: yScale,
                     xScale: xScale,
                     chartDetails: chartDetails,
-                    colorScheme: colorScheme,
-                    maxValue: maxValueInBotheDirections
+                    // colorScheme: colorScheme,
+                    maxValue: maxValueInBotheDirections,
+                    colorMappings: colorMappings
                 };
 
-                rvAnalyticsHelperSrv.drawBarsOfBidirectonalChart(dataForDrawingBars);
+                rvAnalyticsHelperSrv.drawBarChart(dataForDrawingBars);
 
                 // Add extra Y axis to the middle of the graph
                 svg.append("g")
-                    .attr("class", "y axis inner")
-                    .append("line")
-                    .attr("x1", xScale(0))
-                    .attr("x2", xScale(0))
-                    .attr("y2", height);
+                    .append("rect")
+                    .attr("class", "chart-breakpoint-line")
+                    .attr("x", xScale(0))
+                    .attr("y", -40)
+                    .attr("height", height + margin.top + 40)
+                    .attr("width", 4);
+
+
+                var topHorizontalLine = 0;
+                var horizontalRectWidths = xScale(maxValueInBotheDirections) - xScale(-1 * maxValueInBotheDirections) + 2 * xScale(50);
+                var lineXOffset = xScale(-1 * (maxValueInBotheDirections + 50));
+
+                svg.append("g")
+                    .append("rect")
+                    .attr("class", "chart-breakpoint-line")
+                    .attr("x", lineXOffset)
+                    .attr("y", topHorizontalLine)
+                    .attr("height", 4)
+                    .attr("width", horizontalRectWidths);
 
                 var firstLineHeight = 1.5 * yInnerPadding + yScale.bandwidth();
 
-                svg.append("line") // attach a line
-                    .style("stroke", "#A0A0A0") // colour the line
-                    .style("stroke-width", "0.5px")
-                    .attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
-                    .attr("y1", firstLineHeight) // y position of the first end of the line
-                    .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-                    .attr("y2", firstLineHeight);
+                svg.append("g")
+                    .append("rect")
+                    .attr("class", "chart-breakpoint-line")
+                    .attr("x", lineXOffset)
+                    .attr("y", firstLineHeight)
+                    .attr("height", 4)
+                    .attr("width", horizontalRectWidths);
 
                 var secondLineHeight = 2.5 * yInnerPadding + 2 * yScale.bandwidth();
 
-                svg.append("line") // attach a line
-                    .style("stroke", "#A0A0A0") // colour the line
-                    .style("stroke-width", "0.5px")
-                    .attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
-                    .attr("y1", secondLineHeight) // y position of the first end of the line
-                    .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-                    .attr("y2", secondLineHeight);
+                svg.append("g")
+                    .append("rect")
+                    .attr("class", "chart-breakpoint-line")
+                    .attr("x", lineXOffset)
+                    .attr("y", secondLineHeight)
+                    .attr("height", 4)
+                    .attr("width", horizontalRectWidths);
 
-                svg.append("line") // attach a line
-                    .style("stroke", "#000000") // colour the line
-                    .style("stroke-width", "2px")
-                    .attr("x1", xScale(-1 * maxValueInBotheDirections)) // x position of the first end of the line
-                    .attr("y1", height) // y position of the first end of the line
-                    .attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-                    .attr("y2", height);
+                var finalHorizontalLine = height - 3;
+
+                svg.append("g")
+                    .append("rect")
+                    .attr("class", "chart-breakpoint-line")
+                    .attr("x", lineXOffset)
+                    .attr("y", finalHorizontalLine)
+                    .attr("height", 3)
+                    .attr("width", horizontalRectWidths);
+
+                if (maxValueInBotheDirections > 0) {
+
+                    svg.append("text")
+                        .attr("x", xScale(-1 * maxValueInBotheDirections * 3 / 4))
+                        .attr("y", 15)
+                        .attr("dy", ".35em")
+                        .attr("class", "chart-area-label")
+                        .text("PERFORMED");
+
+                    svg.append("text")
+                        .attr("x", xScale(maxValueInBotheDirections / 4))
+                        .attr("y", 15)
+                        .attr("dy", ".35em")
+                        .attr("class", "chart-area-label")
+                        .text("REMAINING");
+
+                    svg.append("text")
+                        .attr("x", xScale(-1 * maxValueInBotheDirections * 3 / 4))
+                        .attr("y", firstLineHeight + 15)
+                        .attr("dy", ".35em")
+                        .attr("class", "chart-area-label")
+                        .text("VACANT NOT READY");
+
+                    svg.append("text")
+                        .attr("x", xScale(maxValueInBotheDirections / 4))
+                        .attr("y", firstLineHeight + 15)
+                        .attr("dy", ".35em")
+                        .attr("class", "chart-area-label")
+                        .text("VACANT READY");
+
+                    svg.append("text")
+                        .attr("x", xScale(-1 * maxValueInBotheDirections * 3 / 4))
+                        .attr("y", secondLineHeight + 15)
+                        .attr("dy", ".35em")
+                        .attr("class", "chart-area-label")
+                        .text("PERFORMED");
+
+                    svg.append("text")
+                        .attr("x", xScale(maxValueInBotheDirections / 4))
+                        .attr("y", secondLineHeight + 15)
+                        .attr("dy", ".35em")
+                        .attr("class", "chart-area-label")
+                        .text("REMAINING");
+                }
 
                 // Left side Legends
                 var leftSideLegendDiv = d3.select("#left-side-legend");
@@ -153,7 +278,7 @@ angular.module('sntRover')
                         return yBandwidth / 2 - singleLegendHeightPlusMargin + yInnerPadding;
                     } else if (legend === "Checked out") {
                         var marginTopOfPerfomed = yBandwidth - (singleLegendHeightPlusMargin * 3) + yInnerPadding + yBandwidth / 2;
-                        
+
                         return marginTopOfPerfomed;
                     }
                 };
@@ -170,27 +295,30 @@ angular.module('sntRover')
                     });
 
                 leftSideLegendEntries.append("span")
-                    .attr("class", "rect")
-                    .style("background-color", leftSideLegendColor);
-
-                leftSideLegendEntries.append("span")
-                    .attr("class", "rect-label")
+                    .attr("class", function(label) {
+                        return cssClassMappings[label];
+                    })
                     .html(function(label) {
                         var text;
 
                         if (label === "Checked In") {
-                            text = label + " (" + chartDetails.perfomed_arrivals_count + ")";
+                            text = chartDetails.perfomed_arrivals_count;
                         } else if (label === "Dirty") {
-                            text = label + " (" + chartDetails.dirty_rooms_count + ")";
+                            text = chartDetails.dirty_rooms_count;
                         } else if (label === "Pickup") {
-                            text = label + " (" + chartDetails.pickup_rooms_count + ")";
+                            text = chartDetails.pickup_rooms_count;
                         } else if (label === "Clean") {
-                            text = label + " (" + chartDetails.clean_rooms_count + ")";
-                        } 
-                        else if (label === "Checked out") {
-                            text = label + " (" + chartDetails.perfomed_departures_count + ")";
+                            text = chartDetails.clean_rooms_count;
+                        } else if (label === "Checked out") {
+                            text = chartDetails.perfomed_departures_count;
                         }
                         return text;
+                    });
+
+                leftSideLegendEntries.append("span")
+                    .attr("class", "bar-label")
+                    .html(function(label) {
+                        return label;
                     });
 
                 // TODO: For now lets assume all legends are of same height. So we will take one and use as reference.
@@ -203,17 +331,17 @@ angular.module('sntRover')
                 // right side legends
                 var rightSideLegendDiv = d3.select("#right-side-legend");
                 var rightSideLegendColor = d3.scaleOrdinal()
-                    .range(["#557A2F", "#83B450", "#567D30", "#AB2727", "#DC3535"])
-                    .domain(["Early Check in", "Remaining", "Inspected", "Late checkout", "Pending"]);
+                    .range(["#557A2F", "#83B450", "#567D30", "#DC3535", "#AB2727"])
+                    .domain(["Early Check in", "Remaining", "Inspected", "Pending", "Late checkout"]);
 
                 var setMarginForRightSideLegends = function(legend, singleLegendHeightPlusMargin) {
                     var yBandwidth = yScale.bandwidth();
 
                     if (legend === "Early Check in") {
                         return margin.top + yInnerPadding + yBandwidth / 2;
-                    } else if (legend === "Inspected") {   
+                    } else if (legend === "Inspected") {
                         return yBandwidth / 2 - (singleLegendHeightPlusMargin * 2) + yInnerPadding + yBandwidth / 2;
-                    } else if (legend === "Late checkout") {                        
+                    } else if (legend === "Pending") {
                         return yBandwidth / 2 - singleLegendHeightPlusMargin + yInnerPadding + yBandwidth / 2;
                     } else if (legend === "Pickup") {
                         return 2 * yBandwidth - singleLegendHeightPlusMargin;
@@ -231,34 +359,42 @@ angular.module('sntRover')
                     });
 
                 rightSideLegendEntries.append("span")
-                    .attr("class", "rect")
-                    .style("background-color", rightSideLegendColor);
-
-                rightSideLegendEntries.append("span")
-                    .attr("class", "rect-label")
+                    .attr("class", function(label) {
+                        return cssClassMappings[label];
+                    })
                     .html(function(label) {
                         var text;
 
                         if (label === "Early Check in") {
-                            text = label + " (0)";
-                            // text = label + " (" + chartDetails.early_checkin_arrivals_count + ")";
+                            text = chartDetails.early_checkin_arrivals_count;
                         } else if (label === "Remaining") {
-                            text = label + " (" + chartDetails.remaining_arrivals_count + ")";
+                            text = chartDetails.remaining_arrivals_count;
                         } else if (label === "Inspected") {
-                            text = label + " (" + chartDetails.inspected_rooms_count + ")";
+                            text = chartDetails.inspected_rooms_count;
                         } else if (label === "Late checkout") {
-                            text = label + " (0)";
-                            // text = label + " (" + chartDetails.late_checkout_departures_count + ")";
-                        } 
-                        else if (label === "Pending") {
-                            text = label + " (" + chartDetails.pending_departures_count + ")";
+                            text = chartDetails.late_checkout_departures_count;
+                        } else if (label === "Pending") {
+                            text = chartDetails.pending_departures_count;
                         }
                         return text;
                     });
 
+                rightSideLegendEntries.append("span")
+                    .attr("class", "bar-label")
+                    .html(function(label) {
+                        return label;
+                    });
+
+                $("#right-side-legend").css({
+                    'margin-top': '0px'
+                });
+
                 rightSideLegendEntries.style("margin-top", function(legend) {
                     return setMarginForRightSideLegends(legend, singleLegendHeightPlusMargin);
                 });
+
+                $scope.$emit('REFRESH_ANALTICS_SCROLLER');
+                $scope.screenData.hideChartData = false;
             };
         }
     ]);

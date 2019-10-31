@@ -1535,10 +1535,14 @@ sntRover.controller('reservationDetailsController',
 			var onAuthorizationSuccess = function(response) {
 				$scope.$emit('hideLoader');
 				authSuccess(response);
-				if ($scope.authData.isManual) {
+				if ($scope.authData.isManual || ($rootScope.hotelDetails.payment_gateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline)) {
 					$scope.authData.isManual = false; // reset 
 					$scope.authData.authAmount = ''; // reset
-					$scope.authData.manualAuthCode = ''; // reset
+					if ($rootScope.hotelDetails.payment_gateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline) {
+						$scope.authData.manualAuthCode = response.auth_code;
+					} else {
+						$scope.authData.manualAuthCode = ''; // reset
+					}
 					ngDialog.close(); // reload popup with new data from the API
 					$scope.showAuthAmountPopUp();
 				}
