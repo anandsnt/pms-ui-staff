@@ -255,6 +255,72 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 			});
 	};
 
+	this.drawRectLines = function(rect) {
+		rect.svg.append("g")
+			.append("rect")
+			.attr("class", "chart-breakpoint-line")
+			.attr("x", rect.xOffset)
+			.attr("y", rect.yOffset)
+			.attr("height", rect.height)
+			.attr("width", rect.width);
+	};
+
+	this.gradientMappings = {
+		"greenLight": {
+			"legend_class": "bar bar-green bar-light",
+			"fill": "greenLight",
+			"onmouseover_fill": "greenLightHover",
+			"onmouseout_fill": "greenLight"
+		},
+		"greenDark": {
+			"legend_class": "bar bar-green bar-dark",
+			"fill": "greenDark",
+			"onmouseover_fill": "greenDarkHover",
+			"onmouseout_fill": "greenDark"
+		},
+		"green": {
+			"legend_class": "bar bar-green",
+			"fill": "green",
+			"onmouseover_fill": "greenHover",
+			"onmouseout_fill": "green"
+		},
+		"redLight": {
+			"legend_class": "bar bar-red bar-light",
+			"fill": "redLight",
+			"onmouseover_fill": "redLightHover",
+			"onmouseout_fill": "redLight"
+		},
+		"red": {
+			"legend_class": "bar bar-red",
+			"fill": "red",
+			"onmouseover_fill": "redHover",
+			"onmouseout_fill": "red"
+		},
+		"redDark": {
+			"legend_class": "bar bar-red bar-dark",
+			"fill": "redDark",
+			"onmouseover_fill": "redDarkHover",
+			"onmouseout_fill": "redDark"
+		},
+		"orange": {
+			"legend_class": "bar bar-orange",
+			"fill": "orange",
+			"onmouseover_fill": "orangeHover",
+			"onmouseout_fill": "orange"
+		},
+		"blueLight": {
+			"legend_class": "bar bar-blue bar-light",
+			"fill": "blueLight",
+			"onmouseover_fill": "blueLightHover",
+			"onmouseout_fill": "blueLight"
+		},
+		"blue": {
+			"legend_class": "bar bar-blue",
+			"fill": "blue",
+			"onmouseover_fill": "blueHover",
+			"onmouseout_fill": "blue"
+		}
+	};
 
 	this.addRandomNumbersForTesting = function(chartDetails) {
 		var combinedItemsCountArray = [];
@@ -297,7 +363,7 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 
 			var i = 0;
 			var c = {};
-			for (i = 0; i <= 24; i++) {
+			for (i = 0; i <= 5; i++) {
 				c[i] = angular.copy(b);
 				c[i].type = c[i].type + i;
 				c[i].label = c[i].label + i;

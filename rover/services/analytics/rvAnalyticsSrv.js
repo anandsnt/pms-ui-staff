@@ -417,7 +417,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         var eta = moment(reservation.eta_hz);
         var hotelStdCheckinTime = moment(that.hotelCheckinTime);
 
-        if(hotelStdCheckinTime.hours() > eta.hours()) {
+        if (hotelStdCheckinTime.hours() > eta.hours()) {
             return true;
         } else if (hotelStdCheckinTime.hours() === eta.hours()) {
             return hotelStdCheckinTime.minutes() > eta.minutes();
@@ -432,7 +432,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         var etd = moment(reservation.etd_hz);
         var hotelStdCheckoutTime = moment(that.hotelCheckoutTime);
 
-        if(hotelStdCheckoutTime.hours() < etd.hours()) {
+        if (hotelStdCheckoutTime.hours() < etd.hours()) {
             return true;
         } else if (hotelStdCheckoutTime.hours() === etd.hours()) {
             return hotelStdCheckoutTime.minutes() < etd.minutes();
