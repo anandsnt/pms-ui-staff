@@ -1,0 +1,121 @@
+<div class="invoice-logo envelope">
+    <img ng-src="{{printData.hotel_logo}}" alt="" />
+    <h1>{{printData.hotel_name}}</h1>
+    <span ng-bind-html="printData.hotel_address" ng-if="printData.show_hotel_address"></span>
+    
+    <span class="type">{{printData.translation.proforma_invoice}}</span>
+</div>
+
+<div class="info-container account-info">
+    <div class="float">
+        <div class="info-left">
+            <span ng-if="printData.card_type === 'COMPANY'">
+                <span>{{printData.company_card_details.name}}</span><br ng-if="printData.company_card_details.name" />
+                <span ng-bind-html="printData.company_card_details.address"></span>
+            </span>
+
+            <span ng-if="printData.card_type === 'TRAVELAGENT'">
+                <span>{{printData.ta_card_details.name}}</span><br ng-if="printData.ta_card_details.name" />
+                <span ng-bind-html="printData.ta_card_details.address"></span>
+            </span>
+        </div>
+    </div>
+    <div class="info-bottom float">
+        <div class="info-left">
+            <strong>{{printData.translation.group_start_date}}: </strong> {{printData.group_start_date}}<br/>
+            <strong>{{printData.translation.group_end_date}}: </strong> {{printData.group_end_date}}<br/> 
+            <strong ng-if="printData.po_number">{{printData.translation.po_number}}: </strong> {{printData.po_number}}<br/>  
+            <strong ng-if="printData.payment_date">{{printData.translation.payment_date}}: </strong> {{printData.payment_date}}
+        </div>
+    </div>
+</div>
+
+<div class="invoice-header">
+    {{printData.custom_text_header}}
+</div>
+
+<div class="invoice-body">
+    <table class="invoice-details proforma-details">
+        <thead>
+            <tr>
+                <th class="date">{{printData.translation.date}}</th> 
+                <th class="type">{{printData.translation.type}}</th>
+                <th class="occ">{{printData.translation.occupancy}}</th>
+                <th class="align-right amount">{{printData.translation.item_price}}</th>
+                <th class="align-right qty">{{printData.translation.quantity}}</th>
+                <th class="align-right amount">Debit</th>
+                <th class="align-right amount">Credit</th>
+                <th class="align-right amount">{{printData.translation.total}}</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <td colspan="7"><strong>{{printData.translation.total_charge}}</strong></td>
+                <td><strong><span ng-bind-html="printData.proforma_bill_transactions.total_charge | sntCurrency:this:currencySymbol"></span></strong>
+
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7"><strong>{{printData.translation.total_credits}}</strong></td>
+                <td><strong><span ng-bind-html="printData.proforma_bill_transactions.total_credit | sntCurrency:this:currencySymbol"></span></strong>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7"><strong>{{printData.translation.balance}}</strong></td>
+                <td><strong><span ng-bind-html="printData.proforma_bill_transactions.balance | sntCurrency:this:currencySymbol"></span></strong>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7">{{printData.translation.net_amount}}</td>
+                <td><span ng-bind-html="printData.proforma_bill_transactions.net_amount | sntCurrency:this:currencySymbol"></span></td>
+            </tr>
+            <tr ng-if="!printData.has_enabled_extended_tax_breakdown" ng-repeat="tax in printData.bill_transactions_info.tax_info">
+                <td colspan="7">{{tax.tax_charge_code_desc}}</td>
+                <td><span ng-bind-html="tax.amount | sntCurrency:this:currencySymbol"></span></td>
+            </tr>
+            <tr>
+                <td colspan="7">{{printData.translation.total_incl_tax }}</td>
+                <td>
+                    <span ng-bind-html="printData.proforma_bill_transactions.total_incl_tax | sntCurrency:this:currencySymbol"></span>
+                </td>
+            </tr>            
+        </tfoot>
+        <tbody>
+            <tr class="first" ng-repeat-start="item in printData.proforma_bill_transactions.transaction_details"  ng-class="{'last' : printData.proforma_bill_transactions.transaction_details[$index].occupancy_details.length === 1}">
+                <td class="date">{{item.date}}</td>
+                <td class="type">{{item.occupancy_details[0].room_type}}</td>
+                <td class="occ">{{item.occupancy_details[0].ocuupancy}}</td>
+                <td class="align-right amount">
+                    <span ng-if="item.occupancy_details[0].item_price" ng-bind-html="item.occupancy_details[0].item_price | sntCurrency:this:currencySymbol" ></span>
+                </td>
+                <td class="align-right qty">{{item.occupancy_details[0].quantity}}</td>
+                <td class="align-right amount">
+                    <span ng-if="item.occupancy_details[0].debit" ng-bind-html="item.occupancy_details[0].debit | sntCurrency:this:currencySymbol" ></span>
+                </td>
+                <td class="align-right amount">
+                    <span ng-if="item.occupancy_details[0].credit" ng-bind-html="item.occupancy_details[0].credit | sntCurrency:this:currencySymbol" ></span>
+                </td>
+                <td class="align-right amount" valign="bottom" ng-if="printData.proforma_bill_transactions.transaction_details[$index].occupancy_details.length === 1">
+                    <span ng-if="item.total_amount" ng-bind-html="item.total_amount | sntCurrency:this:currencySymbol" ></span>
+                </td>
+            </tr>
+
+            <tr ng-repeat-end ng-repeat="occupancyData in item.occupancy_details" ng-if="$index >= 1" ng-class="{'last' : $last}">
+                <td></td>
+                <td class="type">{{occupancyData.room_type}}</td>
+                <td class="occ">{{occupancyData.ocuupancy}}</td>
+                <td class="align-right amount"><span ng-if="occupancyData.item_price" ng-bind-html="occupancyData.item_price | sntCurrency:this:currencySymbol"></span></td>
+                <td class="align-right qty">{{occupancyData.quantity}}</td>
+                <td class="align-right amount"><span ng-if="occupancyData.debit" ng-bind-html="occupancyData.debit | sntCurrency:this:currencySymbol"></span></td>
+                <td class="align-right amount"><span ng-if="occupancyData.credit" ng-bind-html="occupancyData.credit | sntCurrency:this:currencySymbol"></span></td>
+                <td class="align-right amount" valign="bottom" rowspan="{rowspan}" ng-if="$last"><span ng-if="item.total_amount" ng-bind-html="item.total_amount | sntCurrency:this:currencySymbol"></span>
+                </td>
+
+            </tr>
+           
+        </tbody>
+    </table>
+</div>
+
+<div class="invoice-footer text-center" ng-bind-html="trustAsHtml(printData.custom_text_footer)">
+</div>
