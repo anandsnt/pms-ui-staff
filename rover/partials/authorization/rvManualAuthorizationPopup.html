@@ -96,8 +96,8 @@
             </div>
 
             <div class="actions">
-                <button ng-click="authorize()" ng-disabled="!authData.manualCCAuthPermission || (authData.authAmount|number) <= 0"
-                        ng-class="{'grey':!authData.manualCCAuthPermission || (authData.authAmount|number) <= 0 }"
+                <button ng-click="authorize()" ng-disabled="isShijiOfflineAuthCodeEmpty() || !authData.manualCCAuthPermission || (authData.authAmount|number) <= 0"
+                        ng-class="{'grey': isShijiOfflineAuthCodeEmpty() || !authData.manualCCAuthPermission || (authData.authAmount|number) <= 0 }"
                         type="button" class="button green" translate>
                     AUTHORIZE
                 </button>
