@@ -533,7 +533,7 @@ admin.controller('ADRatesAddonDetailsCtrl', [
         });
         // filter out disabled languages
         availableLanguages.locales = _.reject(availableLanguages.locales, function(locale) {
-            return !locale.is_show_on_guest_card;
+            return !locale.is_show_on_guest_card && availableLanguages.selected_language_code !== locale.value;
         });
 
         $scope.languages = availableLanguages;
