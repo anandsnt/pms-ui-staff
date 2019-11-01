@@ -10,7 +10,6 @@ angular.module('sntRover').service('RVreportsSrv', [
 	function($q, rvBaseWebSrvV2, subSrv, $vault, $http, applyFlags, reportUtils, setupDates) {
 		var service       = {},
 			choosenReport = {},
-			printClicked = false,
 			selectedReport = {},
 			config = {};
 
@@ -543,11 +542,11 @@ angular.module('sntRover').service('RVreportsSrv', [
 		
 		service.saveCofigurationData = function (data) {
 			config = data;
-		}
+		};
 		
 		service.getCofigurationData = function () {
 			return config;
-		}
+		};
 
 		return service;
 	}

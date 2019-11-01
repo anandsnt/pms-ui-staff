@@ -36,11 +36,11 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 paginatedResult,
                 reportName = params.reportTitle,
                 fromDate,
-                toDate
+                toDate;
 
                 if (reportName === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ||
-                reportName === reportNames['DAILY_PRODUCTION_DEMO'] ||
-                reportName === reportNames['DAILY_PRODUCTION_RATE']) {
+                    reportName === reportNames['DAILY_PRODUCTION_DEMO'] ||
+                    reportName === reportNames['DAILY_PRODUCTION_RATE']) {
                     hasDateFilters = true;
                 }
                 if (params.fiterFromDate && params.filterToDate && hasDateFilters) {
