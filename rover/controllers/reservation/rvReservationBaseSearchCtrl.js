@@ -655,9 +655,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     var navigationAction = function() {
                         var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
 
-                        if ( $scope.reservationData.numNights !== 0 ) {
-                            $scope.clearArrivalAndDepartureTime();
-                        }
+                        // if ( $scope.reservationData.numNights !== 0 ) {
+                        //     $scope.clearArrivalAndDepartureTime();
+                        // }
 
                         $state.go(roomAndRatesState, {
                             'from_date': $scope.reservationData.arrivalDate,
