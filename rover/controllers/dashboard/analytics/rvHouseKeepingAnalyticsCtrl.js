@@ -100,6 +100,7 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 
 
 		var fetchData = function (date, roomTypeId) {
+			$('base').attr('href', '/');
 			var params = {
 				"date": date,
 				"room_type_id": roomTypeId
@@ -107,6 +108,7 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 			var options = {
 				params: params,
 				successCallBack: function() {
+					$('base').attr('href','#');
 					$scope.screenData.analyticsDataUpdatedTime = moment().format("MM ddd, YYYY hh:mm:ss a");
 					d3.select('#d3-plot').selectAll('svg').remove();
 					clearAllExistingChartElements();
@@ -133,6 +135,10 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 			$scope.dashboardFilter.selectedRoomTypeId = "";
 			$scope.dashboardFilter.selectedAnalyticsMenu = "HK_OVERVIEW";
 			$scope.screenData.selectedChart = "HK_OVERVIEW";
+		});
+
+		$scope.$on("$destroy", function() {
+			$('base').attr('href', '/');
 		});
 
 		(function() {

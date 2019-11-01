@@ -414,13 +414,13 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
      * Function to determine if a reservation is early checkin
      */
     this.isEarlyCheckin = function(reservation) {
-        var eta = new Date(reservation.eta_hz);
-        var hotelStdCheckinTime = new Date(that.hotelCheckinTime);
+        var eta = moment(reservation.eta_hz);
+        var hotelStdCheckinTime = moment(that.hotelCheckinTime);
 
-        if(hotelStdCheckinTime.getHours() > eta.getHours()) {
+        if (hotelStdCheckinTime.hours() > eta.hours()) {
             return true;
-        } else if (hotelStdCheckinTime.getHours() === eta.getHours()) {
-            return hotelStdCheckinTime.getMinutes() > eta.getMinutes();
+        } else if (hotelStdCheckinTime.hours() === eta.hours()) {
+            return hotelStdCheckinTime.minutes() > eta.minutes();
         }
         return false;
     };
@@ -429,13 +429,13 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
      * Function to determine if a reservation is late checkout
      */
     this.isLateCheckout = function(reservation) {
-        var etd = new Date(reservation.etd_hz);
-        var hotelStdCheckoutTime = new Date(that.hotelCheckoutTime);
+        var etd = moment(reservation.etd_hz);
+        var hotelStdCheckoutTime = moment(that.hotelCheckoutTime);
 
-        if(hotelStdCheckoutTime.getHours() < etd.getHours()) {
+        if (hotelStdCheckoutTime.hours() < etd.hours()) {
             return true;
-        } else if (hotelStdCheckoutTime.getHours() === etd.getHours()) {
-            return hotelStdCheckoutTime.getMinutes() < etd.getMinutes();
+        } else if (hotelStdCheckoutTime.hours() === etd.hours()) {
+            return hotelStdCheckoutTime.minutes() < etd.minutes();
         }
         return false;
     };

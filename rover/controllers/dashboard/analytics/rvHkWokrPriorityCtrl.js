@@ -7,78 +7,29 @@ angular.module('sntRover')
                 "Early Check in": "bar bar-green bar-dark",
                 "Remaining": "bar bar-green",
 
+                "Checked Out": "bar bar-red bar-light",
+                "Late checkout": "bar bar-red bar-dark",
+                "Pending": "bar bar-red",
+
                 "Dirty": "bar bar-red",
                 "Pickup": "bar bar-orange",
                 "Clean": "bar bar-green",
-                "Inspected": "bar bar-green bar-dark",
-
-                "Checked Out": "bar bar-red bar-light",
-                "Late checkout": "bar bar-red bar-dark",
-                "Pending": "bar bar-red"
+                "Inspected": "bar bar-green bar-dark"
             };
 
-
             var colorMappings = {
-                "arrivals_perfomed": {
-                    "legend_class": "bar bar-green bar-light",
-                    "fill": "greenLight",
-                    "onmouseover_fill": "greenLightHover",
-                    "onmouseout_fill": "greenLight"
-                },
-                "arrivals_early_checkin": {
-                    "legend_class": "bar bar-green bar-dark",
-                    "fill": "greenDark",
-                    "onmouseover_fill": "greenDarkHover",
-                    "onmouseout_fill": "greenDark"
-                },
-                "arrivals_remaining": {
-                    "legend_class": "bar bar-green",
-                    "fill": "green",
-                    "onmouseover_fill": "greenHover",
-                    "onmouseout_fill": "green"
-                },
-                "departures_perfomed": {
-                    "legend_class": "bar bar-red bar-light",
-                    "fill": "redLight",
-                    "onmouseover_fill": "redLightHover",
-                    "onmouseout_fill": "redLight"
-                },
-                "departures_pending": {
-                    "legend_class": "bar bar-red",
-                    "fill": "red",
-                    "onmouseover_fill": "redHover",
-                    "onmouseout_fill": "red"
-                },
-                "departures_late_checkout": {
-                    "legend_class": "bar bar-red bar-dark",
-                    "fill": "redDark",
-                    "onmouseover_fill": "redDarkHover",
-                    "onmouseout_fill": "redDark"
-                },
-                "vacant_clean": {
-                    "legend_class": "bar bar-green",
-                    "fill": "green",
-                    "onmouseover_fill": "greenHover",
-                    "onmouseout_fill": "green"
-                },
-                "vacant_inspected": {
-                    "legend_class": "bar bar-green bar-dark",
-                    "fill": "greenDark",
-                    "onmouseover_fill": "greenDarkHover",
-                    "onmouseout_fill": "greenDark"
-                },
-                "vacant_dirty": {
-                    "legend_class": "bar bar-red",
-                    "fill": "red",
-                    "onmouseover_fill": "redHover",
-                    "onmouseout_fill": "red"
-                },
-                "vacant_pickup": {
-                    "legend_class": "bar bar-orange",
-                    "fill": "orange",
-                    "onmouseover_fill": "orangeHover",
-                    "onmouseout_fill": "orange"
-                }
+                "arrivals_perfomed": rvAnalyticsHelperSrv.gradientMappings['greenLight'],
+                "arrivals_early_checkin": rvAnalyticsHelperSrv.gradientMappings['greenDark'],
+                "arrivals_remaining": rvAnalyticsHelperSrv.gradientMappings['green'],
+
+                "departures_perfomed": rvAnalyticsHelperSrv.gradientMappings['redLight'],
+                "departures_pending": rvAnalyticsHelperSrv.gradientMappings['red'],
+                "departures_late_checkout": rvAnalyticsHelperSrv.gradientMappings['redDark'],
+
+                "vacant_clean": rvAnalyticsHelperSrv.gradientMappings['green'],
+                "vacant_inspected": rvAnalyticsHelperSrv.gradientMappings['greenDark'],
+                "vacant_dirty": rvAnalyticsHelperSrv.gradientMappings['red'],
+                "vacant_pickup": rvAnalyticsHelperSrv.gradientMappings['orange']
             };
 
             $scope.drawHkWorkPriorityChart = function(chartDetails) {
@@ -167,8 +118,6 @@ angular.module('sntRover')
 
                 rvAnalyticsHelperSrv.drawBarChart(dataForDrawingBars);
 
-                // rvAnalyticsHelperSrv.drawBarsOfBidirectonalChart(dataForDrawingBars);
-
                 // Add extra Y axis to the middle of the graph
                 svg.append("g")
                     .append("rect")
@@ -177,48 +126,42 @@ angular.module('sntRover')
                     .attr("y", -40)
                     .attr("height", height + margin.top + 40)
                     .attr("width", 4);
+
                 /************************** DRAW HORIZONTAL LINES IN GRAPH ************************/
+
                 var horizontalRectWidths = xScale(maxValueInBotheDirections) - xScale(-1 * maxValueInBotheDirections) + 2 * xScale(50);
                 var lineXOffset = xScale(-1 * (maxValueInBotheDirections + 50));
+                var rectCommonAttrs = {
+                    svg: svg,
+                    xOffset: lineXOffset,
+                    height: 4,
+                    width: horizontalRectWidths
+                };
 
-                svg.append("g")
-                    .append("rect")
-                    .attr("class", "chart-breakpoint-line")
-                    .attr("x", lineXOffset)
-                    .attr("y", 0)
-                    .attr("height", 4)
-                    .attr("width", horizontalRectWidths);
+                // first line 
+                rvAnalyticsHelperSrv.drawRectLines(_.extend(rectCommonAttrs, {
+                    yOffset: 0
+                }));
+                var secondHorizontalLineYoffset = 1.5 * yInnerPadding + yScale.bandwidth();
 
-                var firstHorizontalLine = 1.5 * yInnerPadding + yScale.bandwidth();
+                // second line
+                rvAnalyticsHelperSrv.drawRectLines(_.extend(rectCommonAttrs, {
+                    yOffset: secondHorizontalLineYoffset
+                }));
 
-                svg.append("g")
-                    .append("rect")
-                    .attr("class", "chart-breakpoint-line")
-                    .attr("x",lineXOffset)
-                    .attr("y", firstHorizontalLine)
-                    .attr("height", 4)
-                    .attr("width", horizontalRectWidths);
+                var thirdHorizontalLineYoffset = 2.5 * yInnerPadding + 2 * yScale.bandwidth();
 
-                var secondHorizontalLine = 2.5 * yInnerPadding + 2 * yScale.bandwidth();
+                // third line
+                rvAnalyticsHelperSrv.drawRectLines(_.extend(rectCommonAttrs, {
+                    yOffset: thirdHorizontalLineYoffset
+                }));
+                // fourth line
+                rectCommonAttrs.height = 3;
+                rvAnalyticsHelperSrv.drawRectLines(_.extend(rectCommonAttrs, {
+                    yOffset: height - 3
+                }));
 
-                svg.append("g")
-                    .append("rect")
-                    .attr("class", "chart-breakpoint-line")
-                    .attr("x", lineXOffset)
-                    .attr("y", secondHorizontalLine)
-                    .attr("height", 4)
-                    .attr("width", horizontalRectWidths);
-
-                var finalHorizontalLine = height - 3;
-
-                svg.append("g")
-                    .append("rect")
-                    .attr("class", "chart-breakpoint-line")
-                    .attr("x", lineXOffset)
-                    .attr("y", finalHorizontalLine)
-                    .attr("height", 3)
-                    .attr("width", horizontalRectWidths);
-
+                /************************** DRAW HORIZONTAL LINES IN GRAPH ENDS ************************/
 
                 if (maxValueInBotheDirections > 0) {
                     var textOffset = xScale(-1 * maxValueInBotheDirections);
@@ -232,27 +175,28 @@ angular.module('sntRover')
 
                     svg.append("text")
                         .attr("x", textOffset)
-                        .attr("y", firstHorizontalLine + 15)
+                        .attr("y", secondHorizontalLineYoffset + 15)
                         .attr("dy", ".35em")
                         .attr("class", "chart-area-label")
                         .text("VACANT");
 
                     svg.append("text")
                         .attr("x", textOffset)
-                        .attr("y", secondHorizontalLine + 15)
+                        .attr("y", thirdHorizontalLineYoffset + 15)
                         .attr("dy", ".35em")
                         .attr("class", "chart-area-label")
                         .text("DEPARTURES");
                 }
 
                 /************************** LEFT LEGEND STARTS HERE ************************/
+
                 var leftSideLegendDiv = d3.select("#left-side-legend");
                 var yBandwidth = yScale.bandwidth();
 
                 var arrivalsLeftLegendData = {
                     "title": "Arrivals",
                     "id": "arrivals-right-title-left",
-                    "margin_top": firstHorizontalLine - yInnerPadding / 2 - yBandwidth / 2,
+                    "margin_top": secondHorizontalLineYoffset - yInnerPadding / 2 - yBandwidth / 2,
                     "items": [{
                         "id": "left-legend-arrivals",
                         "class": cssClassMappings["Checked In"],
@@ -289,11 +233,12 @@ angular.module('sntRover')
                 };
 
                 rvAnalyticsHelperSrv.addLegendItems(cssClassMappings, leftSideLegendDiv, vacantLeftLegendData);
+                var calculatedMarginTop = yBandwidth - 3 * singleLegendTitleHeightPlusMargin;
 
                 var departuresLeftLegendData = {
                     "title": "Departures",
                     "id": "departures-left-title",
-                    "margin_top": yBandwidth - 3 * singleLegendTitleHeightPlusMargin,
+                    "margin_top": calculatedMarginTop > 0 ? calculatedMarginTop : 0,
                     "items": [{
                         "id": "left-legend-departures",
                         "class": cssClassMappings["Checked Out"],
@@ -307,12 +252,13 @@ angular.module('sntRover')
                 /************************** LEFT LEGEND END HERE ************************/
 
                 /************************** RIGHT LEGEND STARTS HERE ************************/
+
                 var rightSideLegendDiv = d3.select("#right-side-legend");
 
                 var arrivalsRightLegendData = {
                     "title": "Arrivals",
                     "id": "arrivals-right-title",
-                    "margin_top": firstHorizontalLine - yInnerPadding / 2 - yBandwidth / 2,
+                    "margin_top": secondHorizontalLineYoffset - yInnerPadding / 2 - yBandwidth / 2,
                     "items": [{
                         "id": "right-legend-early-checkin",
                         "class": cssClassMappings["Early Check in"],

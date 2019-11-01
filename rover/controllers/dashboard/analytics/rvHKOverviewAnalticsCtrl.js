@@ -19,73 +19,21 @@ angular.module('sntRover')
             };
 
             var colorMappings = {
-                "arrivals_perfomed": {
-                    "legend_class": "bar bar-green bar-light",
-                    "fill": "greenLight",
-                    "onmouseover_fill": "greenLightHover",
-                    "onmouseout_fill": "greenLight"
-                },
-                "arrivals_remaining": {
-                    "legend_class": "bar bar-green",
-                    "fill": "green",
-                    "onmouseover_fill": "greenHover",
-                    "onmouseout_fill": "green"
-                },
-                "departures_perfomed": {
-                    "legend_class": "bar bar-red bar-light",
-                    "fill": "redLight",
-                    "onmouseover_fill": "redLightHover",
-                    "onmouseout_fill": "redLight"
-                },
-                "departures_pending": {
-                    "legend_class": "bar bar-red",
-                    "fill": "red",
-                    "onmouseover_fill": "redHover",
-                    "onmouseout_fill": "red"
-                },
-                "stayovers_perfomed": {
-                    "legend_class": "bar bar-blue bar-light",
-                    "fill": "blueLight",
-                    "onmouseover_fill": "blueLightHover",
-                    "onmouseout_fill": "blueLight"
-                },
-                "stayovers_remaining": {
-                    "legend_class": "bar bar-blue",
-                    "fill": "blue",
-                    "onmouseover_fill": "blueHover",
-                    "onmouseout_fill": "blue"
-                },
-                "rooms_clean": {
-                    "legend_class": "bar bar-green",
-                    "fill": "green",
-                    "onmouseover_fill": "greenHover",
-                    "onmouseout_fill": "green"
-                },
-                "rooms_inspected": {
-                    "legend_class": "bar bar-green bar-dark",
-                    "fill": "greenDark",
-                    "onmouseover_fill": "greenDarkHover",
-                    "onmouseout_fill": "greenDark"
-                },
-                "rooms_dirty": {
-                    "legend_class": "bar bar-red",
-                    "fill": "red",
-                    "onmouseover_fill": "redHover",
-                    "onmouseout_fill": "red"
-                },
-                "rooms_pickup": {
-                    "legend_class": "bar bar-orange",
-                    "fill": "orange",
-                    "onmouseover_fill": "orangeHover",
-                    "onmouseout_fill": "orange"
-                }
+                "arrivals_perfomed": rvAnalyticsHelperSrv.gradientMappings['greenLight'],
+                "arrivals_remaining": rvAnalyticsHelperSrv.gradientMappings['green'],
+                "departures_perfomed": rvAnalyticsHelperSrv.gradientMappings['greenDark'],
+                "departures_pending": rvAnalyticsHelperSrv.gradientMappings['red'],
+                "stayovers_perfomed": rvAnalyticsHelperSrv.gradientMappings['blueLight'],
+                "stayovers_remaining" : rvAnalyticsHelperSrv.gradientMappings['blue'],
+                "rooms_clean": rvAnalyticsHelperSrv.gradientMappings['green'],
+                "rooms_inspected": rvAnalyticsHelperSrv.gradientMappings['greenDark'],
+                "rooms_dirty": rvAnalyticsHelperSrv.gradientMappings['red'],
+                "rooms_pickup":rvAnalyticsHelperSrv.gradientMappings['orange']
             };
-
 
             $scope.drawHkOverviewChart = function(chartDetails) {
 
                 $scope.screenData.mainHeading = $filter('translate')(chartDetails.chartData.label);
-
                 var chartAreaWidth = document.getElementById("analytics-chart").clientWidth;
                 var margin = {
                         top: 50,
@@ -127,17 +75,13 @@ angular.module('sntRover')
                 var svg = d3.select("#d3-plot").append("svg")
                     .attr("width", width + margin.left + margin.right)
                     .attr("height", height + margin.top + margin.bottom)
-                    //.attr("id", "d3-plot")
                     .append("g")
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
 
                 // DEBUGING CODE
                 // chartDetails = rvAnalyticsHelperSrv.addRandomNumbersForTesting(chartDetails);
 
                 chartDetails = rvAnalyticsHelperSrv.processBiDirectionalChart(chartDetails);
-                console.log(chartDetails);
-
                 var maxValueInBotheDirections = chartDetails.maxValueInOneSide;
 
                 // set scales for x axis
@@ -159,7 +103,6 @@ angular.module('sntRover')
                     .attr("class", "y axis left-most")
                     .call(yAxis);
 
-
                 var dataForDrawingBars = {          
                     svg: svg,
                     yScale: yScale,
@@ -173,7 +116,6 @@ angular.module('sntRover')
                 rvAnalyticsHelperSrv.drawBarChart(dataForDrawingBars);
 
                 // Add extra Y axis to the middle of the graph
-
                 svg.append("g")
                     .append("rect")
                     .attr("class", "chart-breakpoint-line")
@@ -182,70 +124,52 @@ angular.module('sntRover')
                     .attr("height", height + margin.top + 40)
                     .attr("width", 4);
 
-
                 /************************** DRAW HORIZONTAL LINES IN GRAPH ************************/
+
                 var horizontalRectWidths = xScale(maxValueInBotheDirections) - xScale(-1 * maxValueInBotheDirections) + 2 * xScale(50);
                 var lineXOffset = xScale(-1 * (maxValueInBotheDirections + 50));
+                var rectCommonAttrs = {
+                    svg: svg,
+                    xOffset: lineXOffset,
+                    height: 4,
+                    width: horizontalRectWidths
+                };
 
-                svg.append("g")
-                    .append("rect")
-                    .attr("class", "chart-breakpoint-line")
-                    .attr("x", lineXOffset)
-                    .attr("y", 0)
-                    .attr("height", 4)
-                    .attr("width", horizontalRectWidths);
+                // first line 
+                rvAnalyticsHelperSrv.drawRectLines(_.extend(rectCommonAttrs, {
+                    yOffset: 0
+                }));
+                // second line
+                rvAnalyticsHelperSrv.drawRectLines(_.extend(rectCommonAttrs, {
+                    yOffset: yScale.bandwidth() * 2.5
+                }));
+                // third line
+                rvAnalyticsHelperSrv.drawRectLines(_.extend(rectCommonAttrs, {
+                    yOffset: yScale.bandwidth() * 4.5
+                }));
+                // fourth line
+                rvAnalyticsHelperSrv.drawRectLines(_.extend(rectCommonAttrs, {
+                    yOffset: yScale.bandwidth() * 6.5
+                }));
+                // fifth line
+                rectCommonAttrs.height = 3;
+                rvAnalyticsHelperSrv.drawRectLines(_.extend(rectCommonAttrs, {
+                    yOffset: height - 3
+                }));
 
-                var firstHorizontalLine = yScale.bandwidth() * 2.5;
-
-                svg.append("g")
-                    .append("rect")
-                    .attr("class", "chart-breakpoint-line")
-                    .attr("x", lineXOffset)
-                    .attr("y", firstHorizontalLine)
-                    .attr("height", 4)
-                    .attr("width", horizontalRectWidths);
-
-                var secondHorizontalLine = yScale.bandwidth() * 4.5;
-
-                svg.append("g")
-                    .append("rect")
-                    .attr("class", "chart-breakpoint-line")
-                    .attr("x", lineXOffset)
-                    .attr("y", secondHorizontalLine)
-                    .attr("height", 4)
-                    .attr("width", horizontalRectWidths);
-
-                var thirdHorizontalLine = yScale.bandwidth() * 6.5;
-
-                svg.append("g")
-                    .append("rect")
-                    .attr("class", "chart-breakpoint-line")
-                    .attr("x", lineXOffset)
-                    .attr("y", thirdHorizontalLine)
-                    .attr("height", 4)
-                    .attr("width", horizontalRectWidths);
-
-                var finalHorizontalLine = height - 3;
-
-                svg.append("g")
-                    .append("rect")
-                    .attr("class", "chart-breakpoint-line")
-                    .attr("x", lineXOffset)
-                    .attr("y", finalHorizontalLine)
-                    .attr("height", 3)
-                    .attr("width", horizontalRectWidths);
+                /************************** DRAW HORIZONTAL LINES IN GRAPH ENDS ************************/
 
                 if (maxValueInBotheDirections > 0) {
 
                     svg.append("text")
-                        .attr("x", xScale(-1 * maxValueInBotheDirections / 2))
+                        .attr("x", xScale(-1 * maxValueInBotheDirections * 3 / 4))
                         .attr("y", -20)
                         .attr("dy", ".35em")
                         .attr("class", "chart-area-label")
                         .text("Perfomed");
 
                     svg.append("text")
-                        .attr("x", xScale(maxValueInBotheDirections / 2))
+                        .attr("x", xScale(maxValueInBotheDirections / 4))
                         .attr("y", -20)
                         .attr("dy", ".35em")
                         .attr("class", "chart-area-label")
@@ -257,6 +181,7 @@ angular.module('sntRover')
                 var leftSideLegendDiv = d3.select("#left-side-legend");
                 var yBandwidth = yScale.bandwidth();
 
+                // ARRIVALS LEFT LEGEND
                 var arrivalsLeftLegendData = {
                     "title": "Arrivals",
                     "id": "arrivals-right-title-left",
@@ -274,6 +199,7 @@ angular.module('sntRover')
                 var singleLegendTitleHeightPlusMargin = $("#arrivals-right-title-left").height() + 10;
                 var singleLegendItemHeightPlusMargin = $("#left-legend-arrivals").height() + 10;
 
+                // DEPARTURES LEFT LEGEND
                 var departuresLeftLegendData = {
                     "title": "Departures",
                     "id": "departures-left-title",
@@ -289,6 +215,7 @@ angular.module('sntRover')
 
                 rvAnalyticsHelperSrv.addLegendItems(legendColorMappings, leftSideLegendDiv, departuresLeftLegendData);
 
+                // STAYOVERS LEFT LEGEND
                 var stayOversLeftLegendData = {
                     "title": "Stayovers",
                     "id": "stayovers-left-title",
@@ -304,7 +231,7 @@ angular.module('sntRover')
 
                 rvAnalyticsHelperSrv.addLegendItems(legendColorMappings, leftSideLegendDiv, stayOversLeftLegendData);
 
-
+                // ROOMS LEFT LEGEND
                 var roomsLeftLegendData = {
                     "title": "Rooms",
                     "id": "rooms-right-title",
@@ -331,7 +258,7 @@ angular.module('sntRover')
 
                 var rightSideLegendDiv = d3.select("#right-side-legend");
 
-                var yBandwidth = yScale.bandwidth();
+                // ARRIVALS RIGHT LEGEND
                 var arrivalsRightLegendData = {
                     "title": "Arrivals",
                     "id": "arrivals-right-title",
@@ -346,6 +273,7 @@ angular.module('sntRover')
 
                 rvAnalyticsHelperSrv.addLegendItems(legendColorMappings, rightSideLegendDiv, arrivalsRightLegendData);
 
+                // DEPARTURES RIGHT LEGEND
                 var departuresRightLegendData = {
                     "title": "Departures",
                     "id": "departures-right-title",
@@ -361,6 +289,7 @@ angular.module('sntRover')
 
                 rvAnalyticsHelperSrv.addLegendItems(legendColorMappings, rightSideLegendDiv, departuresRightLegendData);
 
+                // STAYOVERS RIGHT LEGEND
                 var stayOversLegendData = {
                     "title": "Stayovers",
                     "id": "departures-right-title",
@@ -376,6 +305,7 @@ angular.module('sntRover')
 
                 rvAnalyticsHelperSrv.addLegendItems(legendColorMappings, rightSideLegendDiv, stayOversLegendData);
 
+                // ROOMS RIGHT LEGEND
                 var roomsLegendData = {
                     "title": "Rooms",
                     "id": "rooms-right-title",

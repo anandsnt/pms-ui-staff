@@ -73,8 +73,9 @@
                         </span>
         </li>
         <li ng-if="!feeData.showFee">
-            Amount paid: <span class="value">{{currencySymbol}}{{payment.amount}}
-                        </span>
+           Amount paid:
+           <span class="value" ng-bind-html="payment.amount | sntCurrency:this">
+           </span>
         </li>
     </ul>
 </div>
