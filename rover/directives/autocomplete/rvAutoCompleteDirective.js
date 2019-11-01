@@ -19,7 +19,6 @@ sntRover.directive('autoComplete', ['highlightFilter',
                     .data('ui-autocomplete')
                     ._renderItem = function(ul, item) {
                         ul.addClass(scope.ulClass);
-
                         // CICO-26513
                         ulElement = ul;
                         ul.off('touchmove').on('touchmove', function(e) {
@@ -80,13 +79,11 @@ sntRover.directive('autoComplete', ['highlightFilter',
                             default:
                                 break;
                         }
-
                         if (item.image) {
                             $image = '<img src="' + item.image + '">';
                         } else {
                             $image = '<span class="icons ' + defIcon + '">' + defIconText + '</span>';
                         }
-
                         if (item.type) {
                             $($image).prependTo($result);
                         }
@@ -99,14 +96,12 @@ sntRover.directive('autoComplete', ['highlightFilter',
                         this.menu.element.outerHeight($(el).offset().top - $(document).scrollTop() - 10);
                     }
                 };
-
-
                 var isEmail = function(email) {
                     var regex = /\S+@\S+\.\S+/;
 
                     return regex.test(email);
-                };
-                var inst;
+                },
+                inst;
 
                 if ( scope.insertEmail ) {
                     $(el).on('keypress', function(e) {
@@ -127,8 +122,6 @@ sntRover.directive('autoComplete', ['highlightFilter',
                         }
                     });
                 }
-                
-
                 scope.$on('$destroy', function() {
                     $(el).autocomplete( "destroy" );
                     scope.insertEmail && $(el).off('keypress');

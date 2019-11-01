@@ -787,21 +787,17 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             // so that jquery could show the suggestions on the UI
             var processDisplay = function(data) {
                 $scope.$emit("hideLoader");
-
                 _.each(data.accounts, function(item) {
                     eachItem = {};
                     eachItem = {
                         label: item.account_name,
                         value: item.account_name,
                         image: item.company_logo,
-
-                        // only for our understanding
-                        // jq-ui autocomplete wont use it
+                        // only for our understanding jq-ui autocomplete wont use it
                         type: item.account_type,
                         id: item.id,
                         corporateid: '',
                         iataNumber: '',
-                        /* Address*/
                         address: item.account_address,
                         contract_access_code: item.current_contracts.length > 0 ? item.current_contracts[0].access_code : null
                     };
@@ -818,7 +814,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         companyCardResults.push(eachItem);
                     }
                 });
-
                 if ($scope.reservationData.rooms.length === 1 && !!data.groups && data.groups.length > 0) {
                     _.each(data.groups, function(group) {
                         companyCardResults.push({
@@ -832,7 +827,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         });
                     });
                 }
-
                 if ($scope.reservationData.rooms.length === 1 && !!data.allotments && data.allotments.length > 0) {
                     _.each(data.allotments, function(allotment) {
                         companyCardResults.push({
@@ -846,8 +840,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         });
                     });
                 }
-                // call response callback function
-                // with the processed results array
+                // call response callback function with the processed results array
                 response(companyCardResults);
             };
 
