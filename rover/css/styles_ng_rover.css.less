@@ -1658,12 +1658,38 @@ div#guest-id.modal-content {
   stroke: #B1B1B1;
 }
 
+.x.axis.bottom-axis path {
+  stroke: #E8E8E8;
+  stroke-width: 1px;
+}
+
 .tick line {
   opacity: 0.2;
 }
 
 .invoice-table {
   display:table-row-group;
+}
+
+#right-side-legend,
+#left-side-legend {
+  ul {
+    list-style-type: none;
+  }
+
+  ul li {
+    margin-top: 20px;
+    .label {
+      margin-left: 10px;
+      float: none;
+      display: inline-block;
+    }
+    .rect {
+      width: 10px;
+      height: 10px;
+      display: inline-block;
+    }
+  }
 }
 
 .left-right-pad20 {

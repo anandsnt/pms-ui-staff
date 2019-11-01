@@ -55,6 +55,7 @@ angular.module('sntRover').controller('rvCardSearchContractedRateCtrl', ['$scope
         // Handle clear search.
         $scope.clearQuery = function() {
             $scope.contractData.rateSearchQuery = '';
+            $scope.$emit('refreshContractsScroll');
         };
         /* 
          *  Handle click on each item in the result list

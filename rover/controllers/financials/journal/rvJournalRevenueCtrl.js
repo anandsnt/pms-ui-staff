@@ -21,10 +21,12 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
 	var initRevenueData = function(origin) {
 
 		var successCallBackFetchRevenueData = function(data) {
-			$scope.data.revenueData = {};
-            $scope.data.activeChargeGroups = [];
+			$scope.data.revenueData = {};           
 			$scope.data.revenueData = data;
-            $scope.data.activeChargeGroups = data.charge_groups;
+            if ($scope.data.selectedChargeGroup === "") {
+                $scope.data.activeChargeGroups = [];
+                $scope.data.activeChargeGroups = data.charge_groups;
+            }            
             $scope.errorMessage = "";
 			refreshRevenueScroller();
             if (origin !== "SUMMARY_DATE_CHANGED") {
@@ -39,7 +41,8 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
             "from_date": $scope.data.fromDate,
             "to_date": $scope.data.toDate,
             "employee_ids": $scope.data.selectedEmployeeList,
-            "department_ids": $scope.data.selectedDepartmentList
+            "department_ids": $scope.data.selectedDepartmentList,
+            "charge_group_id": $scope.data.selectedChargeGroup
         };
 
         if ($scope.data.query !== "") {
