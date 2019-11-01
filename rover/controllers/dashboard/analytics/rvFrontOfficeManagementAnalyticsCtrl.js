@@ -163,52 +163,47 @@ angular.module('sntRover')
 
                 /************************** DRAW HORIZONTAL LINES IN GRAPH ENDS ************************/
 
+
+                /************************** ADD TEXTS INSIDE CHART ************************/
+
                 if (maxValueInBotheDirections > 0) {
 
                     var leftSideXOffset = xScale(-1 * maxValueInBotheDirections * 7 / 8);
                     var rightSideXOffset = xScale(maxValueInBotheDirections / 8);
+                    var textLabels = [{
+                        "side": "left",
+                        "yOffset": 15,
+                        "text": "PERFORMED"
+                    }, {
+                        "side": "right",
+                        "yOffset": 15,
+                        "text": "REMAINING"
+                    }, {
+                        "side": "left",
+                        "yOffset": secondHorizontalLineYoffset + 15,
+                        "text": "NOT READY"
+                    }, {
+                        "side": "right",
+                        "yOffset": secondHorizontalLineYoffset + 15,
+                        "text": "READY"
+                    }, {
+                        "side": "left",
+                        "yOffset": thirdHorizontalLineYoffset + 15,
+                        "text": "PERFORMED"
+                    }, {
+                        "side": "right",
+                        "yOffset": thirdHorizontalLineYoffset + 15,
+                        "text": "REMAINING"
+                    }];
 
-                    svg.append("text")
-                        .attr("x", leftSideXOffset)
-                        .attr("y", 15)
-                        .attr("dy", ".35em")
-                        .attr("class", "chart-area-label")
-                        .text("PERFORMED");
-
-                    svg.append("text")
-                        .attr("x", rightSideXOffset)
-                        .attr("y", 15)
-                        .attr("dy", ".35em")
-                        .attr("class", "chart-area-label")
-                        .text("REMAINING");
-
-                    svg.append("text")
-                        .attr("x", leftSideXOffset)
-                        .attr("y", secondHorizontalLineYoffset + 15)
-                        .attr("dy", ".35em")
-                        .attr("class", "chart-area-label")
-                        .text("NOT READY");
-
-                    svg.append("text")
-                        .attr("x", rightSideXOffset)
-                        .attr("y", secondHorizontalLineYoffset + 15)
-                        .attr("dy", ".35em")
-                        .attr("class", "chart-area-label")
-                        .text("READY");
-
-                    svg.append("text")
-                        .attr("x", leftSideXOffset)
-                        .attr("y", thirdHorizontalLineYoffset + 15)
-                        .attr("dy", ".35em")
-                        .attr("class", "chart-area-label")
-                        .text("PERFORMED");
-
-                    svg.append("text")
-                        .attr("x", rightSideXOffset)
-                        .attr("y", thirdHorizontalLineYoffset + 15)
-                        .attr("dy", ".35em")
-                        .attr("class", "chart-area-label")
-                        .text("REMAINING");
+                    _.each(textLabels, function(textLabel) {
+                        rvAnalyticsHelperSrv.addTextsToChart({
+                            svg: svg,
+                            xOffset: textLabel.side === "left" ? leftSideXOffset : rightSideXOffset,
+                            yOffset: textLabel.yOffset,
+                            label: textLabel.text
+                        });
+                    });
                 }
 
                 /************************** LEFT LEGEND STARTS HERE ************************/

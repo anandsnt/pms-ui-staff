@@ -322,6 +322,15 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 		}
 	};
 
+	this.addTextsToChart = function(textData) {
+		textData.svg.append("text")
+			.attr("x", textData.xOffset)
+			.attr("y", textData.yOffset)
+			.attr("dy", ".35em")
+			.attr("class", "chart-area-label")
+			.text(textData.label);
+	};
+
 	this.addRandomNumbersForTesting = function(chartDetails) {
 		var combinedItemsCountArray = [];
 
