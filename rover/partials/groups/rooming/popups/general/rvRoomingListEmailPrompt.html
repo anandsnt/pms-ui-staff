@@ -17,6 +17,15 @@
             <label >Email Address</label>
             <input type="email" name="email" ng-model="mailInvoiceTo"  placeholder="Enter an Email" value=""/>
         </div>
+        <div class="entry full-width" ng-if="printEmailConfig.showLanguageField">
+            <label for="languages">Language</label>
+            <div class="select">
+                <select convert-to-number iscroll-stop-propagation ng-model="printEmailConfig.locale">
+                    <option value="{{item.code}}" ng-if="item.is_show_on_guest_card" ng-repeat="item in languageData.languages"
+                        ng-selected="item.code === printEmailConfig.locale">{{item.language}}</option>
+                </select>
+            </div>
+        </div>
 
         <div class="entry full-width">
             <label>Exclude</label>
