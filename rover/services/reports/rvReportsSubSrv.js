@@ -3,7 +3,8 @@ angular.module('sntRover').service('RVreportsSubSrv', [
     'rvBaseWebSrvV2',
     'rvReportsCache',
     'RVReportMsgsConst',
-    function($q, rvBaseWebSrvV2, reportsCache, RVReportMsgsConst) {
+    'RVReportNamesConst',
+    function($q, rvBaseWebSrvV2, reportsCache, RVReportMsgsConst, reportNames) {
         var service = {};
 
         var store = {};
@@ -31,9 +32,34 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             var results = angular.copy(service.cachedInboxReport).results,
                 start = (params.page - 1) * params.per_page,
                 end = start + params.per_page,
+                hasDateFilters = false,
+                paginatedResult,
+                reportName = params.reportTitle,
+                fromDate,
+                toDate
+
+                if (reportName === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ||
+                reportName === reportNames['DAILY_PRODUCTION_DEMO'] ||
+                reportName === reportNames['DAILY_PRODUCTION_RATE']) {
+                    hasDateFilters = true;
+                }
+                if (params.fiterFromDate && params.filterToDate && hasDateFilters) {
+                    fromDate = new Date(params.fiterFromDate);
+                    toDate = new Date(params.filterToDate);
+                    var itemDate;
+                
+                    results = Object.keys(results).reduce(function (obj, k) {
+                        itemDate = new Date(k);
+                
+                        if (itemDate >= fromDate && itemDate <= toDate) {
+                            obj[k] = results[k];
+                        }
+                        return obj;
+                    }, {});
+                }
                 paginatedResult = _.isArray(results) ? results.slice(start, end)
                     : results;
-
+            
             return paginatedResult;
         };
         /**

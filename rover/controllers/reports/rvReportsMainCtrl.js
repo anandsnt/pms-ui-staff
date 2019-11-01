@@ -1006,7 +1006,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         function genParams(report, page, perPage, changeAppliedFilter) {
             var params = {
                 'page': page,
-                'per_page': perPage                
+                'per_page': perPage,
+                'per_page': perPage,
+                'fiterFromDate': report.usedFilters && report.usedFilters.from_date ? report.usedFilters.from_date : null,
+                'filterToDate': report.usedFilters && report.usedFilters.to_date ? report.usedFilters.to_date : null             
             };
 
             // For Report Inbox, set id as generated id and skip all other params
@@ -2239,11 +2242,12 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         };
 
         // generate reports
-        $scope.genReport = function (changeView, loadPage, resultPerPageOverride) {
+        $scope.genReport = function (changeView, loadPage, resultPerPageOverride, reloadreportNeeded) {
             var chosenReport = reportsSrv.getChoosenReport(),
                 page = loadPage || 1,
                 msg = '';
 
+            $scope.reloadreportNeeded = reloadreportNeeded;
             changeView = 'boolean' === typeof changeView ? changeView : true;
             var params = genParams(chosenReport, page, resultPerPageOverride || $scope.resultsPerPage);
 
@@ -2984,6 +2988,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         (function () {
             var transitionParams = $state.transition.params();
 
+            $scope.reloadreportNeeded = false;
+            
             if (transitionParams.report) {
                 $scope.selectedReport = transitionParams.report;
                 $scope.genReport(true, transitionParams.page);

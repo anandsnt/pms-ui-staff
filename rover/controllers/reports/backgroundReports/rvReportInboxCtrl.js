@@ -13,6 +13,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
     'RVReportUtilsFac',
     '$q',
     'RVReportMsgsConst',
+    'ngDialog',
     function (
         $rootScope, 
         $scope,
@@ -27,19 +28,19 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         reportsSubSrv,
         reportUtils,
         $q, 
-        reportMsgs ) {
+        reportMsgs,
+        ngDialog ) {
 
         var self = this;
 
         BaseCtrl.call(this, $scope);
 
         $scope.viewStatus.showDetails = false;
-        
+        $scope.maxDateRange = 1;
 
         const REPORT_INBOX_SCROLLER = 'report-inbox-scroller',
             REPORT_FILTERS_PROC_ACTIVITY = 'report_filters_proc_activity',
             PAGINATION_ID = 'report_inbox_pagination';
-
 
         // Navigate to new report request section
         $scope.createNewReport = () => {
@@ -309,6 +310,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
                     'travel_agent_ids': $scope.$parent.travel_agents
                 };
 
+            reportsSrv.saveCofigurationData(config);
             return config;
         };
         /*
@@ -326,9 +328,18 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
                         return selectedreport.report_id === report.id;
                     }),
                    deffered = $q.defer();
+                   reportName = selectedreport.name;
             
 
             choosenReport.usedFilters = selectedreport.filters;
+
+            if (reportName === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ||
+                reportName === reportNames['DAILY_PRODUCTION_DEMO'] ||
+                reportName === reportNames['DAILY_PRODUCTION_RATE']) {
+                
+                choosenReport.usedFilters.to_date = $filter('date')(selectedreport.filterToDate, 'yyyy-MM-dd');
+                choosenReport.usedFilters.from_date = $filter('date')(selectedreport.filterFromDate, 'yyyy-MM-dd');
+            }
 
             // generatedReportId is required make API call
             choosenReport.generatedReportId = selectedreport.id;
@@ -346,8 +357,8 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
                 // Setting the raw data containing the filter state while running the report
                 // These filter data is used in some of the reports controller 
                 choosenReport = _.extend(JSON.parse(JSON.stringify(choosenReport)), selectedreport.rawData);
-                choosenReport.appliedFilter = selectedreport.appliedFilter;
-                
+                choosenReport.appliedFilter = selectedreport.appliedFilter;            
+
                 reportsSrv.setChoosenReport( choosenReport );
                 deffered.resolve();
             });            
@@ -360,16 +371,24 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         * @params Object Selected report object
         * @return none
         * */
-        $scope.showGeneratedReport = function( selectedreport ) {
+        $scope.showGeneratedReportFromInbox = function( selectedreport ) {
+            $scope.viewStatus.showDetails = true;
+
+            delete selectedreport.filterFromDate;
+            delete selectedreport.filterToDate;
+            delete selectedreport.filters.from_date;
+            delete selectedreport.filters.to_date;
+
+            reportsSrv.setSelectedReport(selectedreport);
+
             if ( (selectedreport.shouldShowExport && !selectedreport.shouldDisplayView) || $scope.shouldDisableInboxItem(selectedreport) ) {
                 return;
             }
             
-            var mainCtrlScope = $scope.$parent;
-
-            setChoosenReport(selectedreport).then(function() {
-               mainCtrlScope.genReport(); 
-            });
+            reportsSrv.setSelectedReport(selectedreport);
+            $timeout(function () {
+                $rootScope.$broadcast('SHOW_GEN_REPORT');
+            }, 100);
                   
         };
        
@@ -416,14 +435,14 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
          * @params Object report selected generated report
          * @return void
          */
-        $scope.printReport = (report) => {
-            var mainCtrlScope = $scope.$parent; 
-
-            setChoosenReport(report).then(function() {
-                mainCtrlScope.genReport(false, 1, 99999);
-            });
-            reportsSrv.setPrintClicked(true); 
-
+        $scope.printReportFromInbox = (report) => {
+            
+            // This flag will make the report details page and its controller
+            $scope.viewStatus.showDetails = true;
+            reportsSrv.setSelectedReport(report);
+            $timeout(function () {
+                $rootScope.$broadcast('PRINT_INBOX_REPORT');
+            }, 100);
         };
 
         $scope.addListener(reportMsgs['REPORT_API_FAILED'], function(event, data) {

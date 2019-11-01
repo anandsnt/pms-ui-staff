@@ -14,14 +14,63 @@ sntRover.controller('RVReportDetailsCtrl', [
     '$log',
     'RVReportUtilsFac',
     'sntActivity',
+    '$q',
+    'RVReportsInboxSrv',
+    'RVreportsSubSrv',
     function ($scope, $rootScope, $filter, $timeout, $window, reportsSrv, reportParser,
-              reportMsgs, reportNames, ngDialog, $state, reportPaginationIds, $log, reportUtils, sntActivity) {
+              reportMsgs, reportNames, ngDialog, $state, reportPaginationIds, $log, reportUtils, sntActivity, $q, RVReportsInboxSrv, reportsSubSrv) {
 
         BaseCtrl.call(this, $scope);
 
 
         var REPORT_DETAILS_SCROLL = 'report-details-scroll';
         var REPORT_FILTER_SIDEBAR_SCROLL = 'report-filter-sidebar-scroll';
+
+        var datePickerCommon = {
+            dateFormat: $rootScope.jqDateFormat,
+            numberOfMonths: 1,
+            changeYear: true,
+            changeMonth: true,
+            beforeShow: function beforeShow(input, inst) {
+                $('#ui-datepicker-div');
+                $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
+            },
+            onClose: function onClose(value) {
+                $('#ui-datepicker-div');
+                $('#ui-datepicker-overlay').remove();
+                $scope.showRemoveDateBtn();
+            }
+        };
+        
+        function $_onSelect(value, dayOffset, effectObj) {
+            if (value instanceof Date) {
+                return value;
+            }
+        
+            var format = $rootScope.dateFormat.toUpperCase(),
+                day,
+                month,
+                year,
+                date;
+        
+            if (format === 'MM-DD-YYYY' || format === 'MM/DD/YYYY') {
+                day = parseInt(value.substring(3, 5));
+                month = parseInt(value.substring(0, 2));
+            } else if (format === 'DD-MM-YYYY' || format === 'DD/MM/YYYY') {
+                day = parseInt(value.substring(0, 2));
+                month = parseInt(value.substring(3, 5));
+            }
+        
+            year = parseInt(value.substring(6, 10));
+            date = new Date(year, month - 1, day + dayOffset);
+        
+            if (effectObj) {
+                effectObj.maxDate = date;
+            } else {
+                return date;
+            }
+        }
+                
 
         var setScroller = function () {
             // setting scroller things
@@ -1119,10 +1168,11 @@ sntRover.controller('RVReportDetailsCtrl', [
         // call the method here.
         // READ MORE: rvReportsMainCtrl:L#:61-75
         $scope.fetchFullReport = function () {
+            var currentReport = reportsSrv.getSelectedReport();
             if ('function' == typeof $scope.printOptions.showModal) {
                 $scope.printOptions.showModal();
             } else {
-                $_fetchFullReport();
+                $scope.printReport(currentReport);
             }
         };
 
@@ -1213,6 +1263,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 		// print the page
 		var printReport = function() {
 
+            var mainCtrlScope = $scope.$parent,
+                reportName = $scope.chosenReport.title,
+                isProductionReport = false;
+
             // add the orientation
             addPrintOrientation();
 
@@ -1264,7 +1318,7 @@ sntRover.controller('RVReportDetailsCtrl', [
                             reportsSrv.setPrintClicked(false);
                             $scope.viewStatus.showDetails = false;
                             if ($state.$current.name !== 'rover.reports.show' && reportsSrv.getChoosenReport()) {
-                            reportsSrv.setChoosenReport({});  
+                                reportsSrv.setChoosenReport({}); 
                             }
                             sntActivity.stop("PRINTING_FROM_REPORT_INBOX");
                             
@@ -1274,6 +1328,16 @@ sntRover.controller('RVReportDetailsCtrl', [
                         }
                         
                     }, 2000);
+
+                    if (reportName === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ||
+                        reportName === reportNames['DAILY_PRODUCTION_DEMO'] ||
+                        reportName === reportNames['DAILY_PRODUCTION_RATE']) {
+                        
+                            isProductionReport = true;
+                    }
+                    if ($scope.reportDatesInitialized && isProductionReport) {
+                        $scope.showGeneratedReport();
+                    }
                 };
 
                 // this will show the popup with full report
@@ -1509,6 +1573,29 @@ sntRover.controller('RVReportDetailsCtrl', [
         $scope.getReservationStatus = function(reservationStatus) {
             return getReservationStatusClass(reservationStatus);
         };
+
+        var printReportFromInboxListner = $rootScope.$on('PRINT_INBOX_REPORT', function () {
+            var currentReport = reportsSrv.getSelectedReport();
+        
+            $scope.reportDatesInitialized = false;
+            $scope.printReport(currentReport);
+        });
+        
+        var showGenReportEventListner = $rootScope.$on('SHOW_GEN_REPORT', function () {
+            var currentReport = reportsSrv.getSelectedReport(),
+                mainCtrlScope = $scope.$parent;
+        
+            setChoosenReport(currentReport).then(function () {
+                mainCtrlScope.genReport(null, null, null, false);
+            });
+        });
+
+        // destroy listners
+        
+        $scope.$on('$destroy', printReportFromInboxListner);
+        $scope.$on('$destroy', showGenReportEventListner);
+        
+        
         
         // Invokes actual print 
         var invokePrint = () => {
@@ -1527,18 +1614,21 @@ sntRover.controller('RVReportDetailsCtrl', [
         };
 
         // Setting up the data for the report for printing
-        var loadPrintView = () => {
+        var loadPrintView = (reloadReportNeeded) => {
             $scope.errorMessage = []; 
 
             afterFetch();
             $scope.$emit('UPDATE_REPORT_HEADING', {heading: $scope.heading});            
-            findBackNames(); 
+            findBackNames();
+            if(reloadReportNeeded) {
+                $rootScope.$broadcast('RELOAD_RESULTS');
+            }
             invokePrint();
         };
 
         // Listener for the printing the report
-        var printReportListener = $scope.$on('PRINT_REPORT', function() {
-            loadPrintView();             
+        var printReportListener = $scope.$on('PRINT_REPORT', function(flagParam) {
+            loadPrintView(flagParam.targetScope.reloadreportNeeded);          
         });
 
         // Listener for printing the report having modal with options
@@ -1546,13 +1636,288 @@ sntRover.controller('RVReportDetailsCtrl', [
             printReport();
         });
 
+        /**
+        * Print the report from the report inbox
+        * @params Object report selected generated report
+        * @return void
+        */
+        $scope.printReport = (report) => {
+            var reportName = report.name,
+                mainCtrlScope = $scope.$parent,
+                fromDate;
+        
+            reportsSrv.setSelectedReport(report);
+            $scope.currentReport = report;
+        
+            if (reportName === reportNames['DAILY_PRODUCTION_RATE']) {
+                $scope.maxDateRange = 2;
+            } else {
+                $scope.maxDateRange = 1;
+            }
+        
+            if (reportName === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ||
+                reportName === reportNames['DAILY_PRODUCTION_DEMO'] ||
+                reportName === reportNames['DAILY_PRODUCTION_RATE']) {
+        
+                $scope.fromDateOptions = angular.extend({}, datePickerCommon);
+                $scope.untilDateOptions = angular.extend({}, datePickerCommon);
+        
+                $scope.fromDateOptions.minDate = $scope.currentReport.fromDate;
+                $scope.fromDateOptions.maxDate = $scope.currentReport.toDate;
+        
+                // initialize until date base on the from date
+                // CICO-33536 - fix for date format
+                fromDate = $filter('date')($scope.currentReport.fromDate, $rootScope.dateFormat);
+        
+                $scope.currentReport.filterToDate = $_onSelect($scope.fromDateOptions.maxDate, 0);
+                $scope.currentReport.filterFromDate = $_onSelect(fromDate, 0);
+        
+                // set min and max limits for until date
+                $scope.untilDateOptions.minDate = $scope.currentReport.fromDate;
+                $scope.untilDateOptions.maxDate = $scope.currentReport.toDate;
+        
+                ngDialog.open({
+                    template: '/assets/partials/reports/rvPrintReportSelectDatePopup.html',
+                    className: 'ngdialog-theme-default',
+                    scope: $scope
+                });
+            } else {
+                setChoosenReport($scope.currentReport).then(function () {
+                    $_fetchFullReport();
+                });
+                reportsSrv.setPrintClicked(true);
+            }        
+        };
+        
+        // Perform the actual print
+        $scope.continuePrint = function () {
+            var mainCtrlScope = $scope.$parent,
+                startDate = moment($scope.currentReport.filterFromDate, 'D/M/YYYY'),
+                untilDate = moment($scope.currentReport.filterToDate, 'D/M/YYYY'),
+                numberOfDays = untilDate.diff(startDate, 'days') + 1;
+
+            $scope.errorMsg = '';
+
+            if (numberOfDays > $scope.maxDateRange) {
+                $scope.errorMsg = 'Allowed limit exceeded';
+            } else {
+                ngDialog.close();
+                setChoosenReport($scope.currentReport).then(function () {
+                    mainCtrlScope.genReport(false, 1, 99999, true);
+                });
+                reportsSrv.setPrintClicked(true);
+            }
+        };
+
+        // Adjust start date filter
+        $scope.adjustStartDate = function () {
+            if ($scope.currentReport.filterFromDate > $scope.currentReport.filterToDate) {
+                $scope.currentReport.filterFromDate = $scope.currentReport.filterToDate;
+            }
+            $scope.errorMsg = '';
+            $scope.errorMessage = [];
+        };
+
+        // Adjust to date filter
+        $scope.adjustUntilDate = function () {
+            if ($scope.currentReport.filterFromDate > $scope.currentReport.filterToDate) {
+                $scope.currentReport.filterFromDate = $scope.currentReport.filterToDate;
+            }
+            $scope.errorMessage = [];
+            $scope.errorMsg = '';
+        };
+
+        // Close the modal
+        $scope.deleteModal = function () {
+            self.fetchGeneratedReports(false, 1);
+            $scope.errorMsg = '';
+            ngDialog.close();
+        };
+
+        /**
+         * Fill the necessary data from the report list into each of the generated report
+         * @param {Array} generatedReportList array of generated reports
+         * @param {Array} reportList - array of reports available
+         * @return {Array} array of processed generated reports
+         *
+         */
+        self.getFormatedGeneratedReports = (generatedReportList, reportList) => {
+            return RVReportsInboxSrv.formatReportList(generatedReportList, reportList);
+        };
+
+        // Refresh pagination controls
+        self.refreshPagination = () => {
+            $scope.refreshPagination(PAGINATION_ID);
+        };
+
+        // Refreshes and set the scroller position
+        self.refreshAndAdjustScroll = () => {
+            $timeout(() => {
+                $scope.refreshScroller(REPORT_INBOX_SCROLLER);
+                $timeout(() => {
+                    $scope.getScroller(REPORT_INBOX_SCROLLER).scrollTo(0, 0);
+                }, 200);
+            }, 800);
+        };
+
+        /**
+         * Generate request params for fetching the generated reports
+         * @param {Number} pageNo current page no
+         * @return {Object} params api request parameter object
+         */
+        self.generateRequestParams = (pageNo) => {
+            let params = {
+                user_id: $rootScope.userId,
+                generated_date: $scope.reportInboxData.filter.selectedDate,
+                per_page: RVReportsInboxSrv.PER_PAGE,
+                page: pageNo,
+                query: $scope.reportInboxData.filter.searchTerm
+            };
+
+            return params;
+        };
+
+        /**
+         * Fetches the generated reports
+         * @param {Number} pageNo current page no
+         * @return {void}
+         */
+        self.fetchGeneratedReports = (shouldRefreshDropDownDates, pageNo) => {
+            $scope.reportInboxPageState.returnPage = pageNo;
+
+            let onReportsFetchSuccess = (data) => {
+                $scope.reportInboxData.generatedReports = self.getFormatedGeneratedReports(data.results, $scope.reportList);
+                $scope.totalResultCount = data.total_count;
+                if (shouldRefreshDropDownDates) {
+                    if ($rootScope.serverDate !== data.background_report_default_date) {
+                        $rootScope.serverDate = data.background_report_default_date;
+                        $scope.dateDropDown = self.createDateDropdownData();
+                        $scope.reportInboxData.filter.selectedDate = $filter('date')($rootScope.serverDate, 'yyyy-MM-dd');
+                        self.fetchGeneratedReports(false, 1);
+                    }
+
+                }
+                self.refreshPagination();
+                self.refreshAndAdjustScroll();
+            },
+                options = {
+                    onSuccess: onReportsFetchSuccess,
+                    params: self.generateRequestParams(pageNo)
+                };
+
+            $scope.callAPI(RVReportsInboxSrv.fetchReportInbox, options);
+
+        };
+
+        /**
+         * Decides when to disable the report inbox item
+         * @param {Object} report selected generated report
+         * @return {Boolean} true/fals based on the status
+         */
+        $scope.shouldDisableInboxItem = (report) => {
+            return report.message || report.status.value === 'IN_PROGRESS' || report.status.value === 'REQUESTED';
+        };
+
+                /*
+        * handle Show Button action's in report inbox screen
+        * @params Object Selected report object
+        * @return none
+        * */
+        $scope.showGeneratedReport = function () {
+
+            var mainCtrlScope = $scope.$parent,
+                selectedreport = reportsSrv.getSelectedReport();
+
+            delete selectedreport.filterFromDate;
+            delete selectedreport.filterToDate;
+            delete selectedreport.filters.from_date;
+            delete selectedreport.filters.to_date;
+
+            $timeout(function () {
+                setChoosenReport(selectedreport).then(function() {
+                    mainCtrlScope.genReport(null, null, null, false);
+                });
+            }, 1000);
+
+        };
+
+        /*
+        * store selected report to service,
+        *  Case 1: For Inbox Report, append generatedReportId for choosenReport
+        *  Case 2: For normal Report, use default id
+        * @params Object Selected report object
+        * @return none
+        * */
+        var setChoosenReport = function (selectedreport) {
+            var lastReportID = reportsSrv.getChoosenReport() ? reportsSrv.getChoosenReport().id : null,
+                mainCtrlScope = $scope.$parent,
+                choosenReport = _.find($scope.reportList,
+                    function (report) {
+                        return selectedreport.report_id === report.id;
+                    }),
+                deffered = $q.defer(),
+                reportName = selectedreport.name,
+                conf;
+
+
+            choosenReport.usedFilters = selectedreport.filters;
+
+            if (reportName === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ||
+                reportName === reportNames['DAILY_PRODUCTION_DEMO'] ||
+                reportName === reportNames['DAILY_PRODUCTION_RATE']
+            ) {
+                choosenReport.usedFilters.to_date = $filter('date')(selectedreport.filterToDate, 'yyyy-MM-dd');
+                choosenReport.usedFilters.from_date = $filter('date')(selectedreport.filterFromDate, 'yyyy-MM-dd');
+            }
+
+            // generatedReportId is required make API call
+            choosenReport.generatedReportId = selectedreport.id;
+            // if the two reports are not the same, just call
+            // 'resetSelf' on printOption to clear out any method
+            // that may have been created a specific report ctrl
+            // READ MORE: rvReportsMainCtrl:L#:61-75
+            if (lastReportID !== selectedreport.id) {
+                mainCtrlScope.printOptions.resetSelf();
+            }
+            reportsSrv.processSelectedReport(choosenReport, reportsSrv.getCofigurationData());
+
+            reportUtils.findFillFilters(choosenReport, $scope.$parent.reportList).
+                then(function () {
+                    // Setting the raw data containing the filter state while running the report
+                    // These filter data is used in some of the reports controller 
+                    choosenReport = _.extend(JSON.parse(JSON.stringify(choosenReport)), selectedreport.rawData);
+                    choosenReport.appliedFilter = selectedreport.appliedFilter;
+
+                    reportsSrv.setChoosenReport(choosenReport);
+                    deffered.resolve();
+                });
+
+            return deffered.promise;
+        };
+
+
+
+
         // Destroying the listeners
         $scope.$on('$destroy', printReportListener);
         $scope.$on('$destroy', printModalReportListener);
 
         (function () {
 
-            // Don't need to set the back button during print from report inbox
+            var chosenDate = $state.params.date ? $state.params.date : $rootScope.serverDate;
+            
+            $scope.reportDatesInitialized = true;
+
+            $scope.reportInboxData = {
+                selectedReportAppliedFilters: {},
+                generatedReports: [],
+                filter: {
+                    selectedDate: $filter('date')(chosenDate, 'yyyy-MM-dd'),
+                    searchTerm: ''
+                },
+                isReportInboxOpen: false
+            };
+                        // Don't need to set the back button during print from report inbox
             if (!reportsSrv.getPrintClickedState()) {
                 var title = $filter('translate')('REPORTS');
 
