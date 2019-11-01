@@ -228,12 +228,10 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 			});
 
 		bars.append("rect")
+			.attr("class", "rect-bars")
 			.attr("height", yScale.bandwidth())
 			.attr("x", function(item) {
 				return xScale(item.xOrigin);
-			})
-			.attr("width", function(item) {
-				return xScale(item.xFinal) - xScale(item.xOrigin);
 			})
 			.attr("fill", function(item) {
 				var fillColor = colorMappings[item.chartName + "_" + item.type].fill;
@@ -252,6 +250,13 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 			})
 			.on("click", function(e) {
 				barData.onBarChartClick(e);
+			});
+
+		d3.selectAll(".rect-bars")
+			.transition()
+			.duration(300)
+			.attr("width", function(item) {
+				return xScale(item.xFinal) - xScale(item.xOrigin);
 			});
 	};
 
