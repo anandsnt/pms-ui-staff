@@ -1096,6 +1096,10 @@ sntRover.controller('RVbillCardController',
 				className: '',
 				scope: $scope
 			});
+		$scope.startActivity("iframe");
+		$timeout(function() {
+			$scope.stopActivity("iframe");
+		}, 8000);
 	};
 	 /*
 	  * Show the payment list of guest card for selection
@@ -2724,7 +2728,6 @@ sntRover.controller('RVbillCardController',
 					$scope.isPrintRegistrationCard = false;
 					$scope.printBillCardActive = true;
 					$scope.$emit('hideLoader');
-
 
 					if ($scope.billFormat.isInformationalInvoice) {
 						successData.invoiceLabel = successData.translation.information_invoice;
