@@ -70,6 +70,7 @@ sntRover.controller('RVShowPaymentListCtrl', ['$rootScope', '$scope', '$state', 
                     $scope.dataToPaymentList.bills[billIndex].credit_card_details.auth_color_code = colorCode;
                     // CICO-35346
                     $scope.dataToPaymentList.bills[billIndex].credit_card_details.payment_id = data.id;
+                    $scope.dataToPaymentList.bills[billIndex].credit_card_details.token = data.token;
 
                     // CICO-9739 : To update on reservation card payment section while updating from bill#1 credit card type.
                     if (billIndex === 0) {
@@ -143,7 +144,8 @@ sntRover.controller('RVShowPaymentListCtrl', ['$rootScope', '$scope', '$state', 
          * Should show the credit card delete btn
          */
         $scope.shouldShowCreditCardDeleteBtn = function () {
-            return hasCreditCardRemovalPermission && $state.current.name === 'rover.reservation.staycard.reservationcard.reservationdetails';
+            return $rootScope.isStandAlone && hasCreditCardRemovalPermission && 
+                    ($state.current.name === 'rover.reservation.staycard.reservationcard.reservationdetails');
         };
 
     }]);
