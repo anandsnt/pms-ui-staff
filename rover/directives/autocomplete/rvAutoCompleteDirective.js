@@ -25,26 +25,21 @@ sntRover.directive('autoComplete', ['highlightFilter',
                         ul.off('touchmove').on('touchmove', function(e) {
                             e.stopPropagation();
                         });
-
                         var $content = highlightFilter(item.label, scope.ngModel),
                             $result = $("<a></a>").html($content),
                             defIcon = '',
                             defIconText = '',
-                            $image = '';
+                            $image = '',
+                            highLighted = null,
+                            accessCode = null;
                         
                         switch (item.type) {
                             case 'COMPANY':
                                 defIcon = 'icon-company';
                                 $result.addClass("autocomplete-result");
-                                /**
-                                 * after merging siyana's code,
-                                 * 1. change the condition
-                                 * 2. call highlightFilter to highlight the search
-                                 */
-                                if (!!item.contract_access_code) {
-                                    var highLighted = highlightFilter(item.contract_access_code, scope.ngModel),
-                                        accessCode = $("<span></span>").html(highLighted);
-
+                                if (item.contract_access_code) {
+                                    highLighted = highlightFilter(item.contract_access_code, scope.ngModel);
+                                    accessCode = $("<span></span>").html(highLighted);
                                     accessCode.addClass('icons icon-contracts access-code');
                                     $result.append(accessCode);
                                 }
@@ -55,18 +50,15 @@ sntRover.directive('autoComplete', ['highlightFilter',
                                     $result.append(address);
                                 }
                                 break;
-
                             case 'ALLOTMENT':
                                 defIcon = 'icon-allotment';
                                 break;
-
                             case 'TRAVELAGENT':
                                 defIcon = 'icon-travel-agent';
                                 $result.addClass("autocomplete-result");
-                                if (!!item.contract_access_code) {
-                                    var highLighted = highlightFilter(item.contract_access_code, scope.ngModel),
-                                        accessCode = $("<span></span>").html(highLighted);
-
+                                if (item.contract_access_code) {
+                                    highLighted = highlightFilter(item.contract_access_code, scope.ngModel);
+                                    accessCode = $("<span></span>").html(highLighted);
                                     accessCode.addClass('icons icon-contracts access-code');
                                     $result.append(accessCode);
                                 }
@@ -77,7 +69,6 @@ sntRover.directive('autoComplete', ['highlightFilter',
                                     $result.append(address);
                                 }
                                 break;
-
                             case 'GROUP':
                                 defIcon = 'icon-group-large';
                                 defIconText = 'G';

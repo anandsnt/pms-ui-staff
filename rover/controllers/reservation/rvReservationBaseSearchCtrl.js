@@ -777,7 +777,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         // jquery autocomplete Souce handler
         // get two arguments - request object and response callback function
         var autoCompleteSourceHandler = function(request, response) {
-
             var companyCardResults = [],
                 lastSearchText = '',
                 eachItem = {},
@@ -791,7 +790,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
                 _.each(data.accounts, function(item) {
                     eachItem = {};
-
                     eachItem = {
                         label: item.account_name,
                         value: item.account_name,
@@ -807,14 +805,12 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         address: item.account_address,
                         contract_access_code: item.current_contracts.length > 0 ? item.current_contracts[0].access_code : null
                     };
-
                     // making sure that the newly created 'eachItem'
                     // doesnt exist in 'companyCardResults' array
                     // so as to avoid duplicate entry
                     hasItem = _.find($scope.companyCardResults, function(item) {
                         return eachItem.id === item.id;
                     });
-
                     // yep we just witnessed an loop inside loop, its necessary
                     // worst case senario - too many results and 'eachItem' is-a-new-item
                     // will loop the entire 'companyCardResults'
