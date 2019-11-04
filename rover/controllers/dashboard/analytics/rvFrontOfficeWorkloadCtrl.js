@@ -212,11 +212,9 @@ angular.module('sntRover')
 
 				bars.append("rect")
 					.attr("height", yScale.bandwidth())
+					.attr("class", "rect-bars")
 					.attr("x", function(item) {
 						return xScale(item.xOrigin);
-					})
-					.attr("width", function(item) {
-						return xScale(item.xFinal) - xScale(item.xOrigin);
 					})
 					.attr("fill", function(item) {
 						var fillColor = colorMappings[item.type].fill;
@@ -235,6 +233,13 @@ angular.module('sntRover')
 					})
 					.on("click", function(e) {
 						chartDetails.onBarChartClick(e);
+					});
+
+				d3.selectAll(".rect-bars")
+					.transition()
+					.duration(300)
+					.attr("width", function(item) {
+						return xScale(item.xFinal) - xScale(item.xOrigin);
 					});
 
 				var isSmallBarItem = function(item) {

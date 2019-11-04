@@ -21,7 +21,7 @@ angular.module('sntRover')
             var colorMappings = {
                 "arrivals_perfomed": rvAnalyticsHelperSrv.gradientMappings['greenLight'],
                 "arrivals_remaining": rvAnalyticsHelperSrv.gradientMappings['green'],
-                "departures_perfomed": rvAnalyticsHelperSrv.gradientMappings['greenDark'],
+                "departures_perfomed": rvAnalyticsHelperSrv.gradientMappings['redLight'],
                 "departures_pending": rvAnalyticsHelperSrv.gradientMappings['red'],
                 "stayovers_perfomed": rvAnalyticsHelperSrv.gradientMappings['blueLight'],
                 "stayovers_remaining" : rvAnalyticsHelperSrv.gradientMappings['blue'],

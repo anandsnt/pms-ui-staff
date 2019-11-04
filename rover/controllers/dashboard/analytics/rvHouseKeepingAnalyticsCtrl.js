@@ -8,11 +8,13 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 
 		BaseCtrl.call(this, $scope);
 
+		var initialBaseHrefValue = $('base').attr('href');
+
 		// Setting the CI / CO time
-        rvAnalyticsSrv.setHotelCiCoTime($rootScope.hotelDetails);
+		rvAnalyticsSrv.setHotelCiCoTime($rootScope.hotelDetails);
 
 		$scope.screenData = {
-			selectedChart : 'HK_OVERVIEW',
+			selectedChart: 'HK_OVERVIEW',
 			hideChartData: true,
 			analyticsDataUpdatedTime: ""
 		};
@@ -24,7 +26,7 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 			$scope: $scope
 		});
 
-		var onBarChartClick = function (e) {
+		var onBarChartClick = function(e) {
 			// console.log(JSON.stringify(e));
 		};
 
@@ -32,17 +34,17 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 
 		var renderHkOverview = function() {
 			$scope.screenData.mainHeading = "";
-            // Calling HK Overview Build Graph
+			// Calling HK Overview Build Graph
 			rvAnalyticsSrv.hkOverview($scope.dashboardFilter.datePicked, false).then(function(data) {
 				var chartDetails = {
 					chartData: data,
 					onBarChartClick: onBarChartClick
 				};
 
-				// d3.select('#analytics-chart').selectAll('svg').remove();
+				d3.select('#d3-plot').selectAll('svg').remove();
 				$scope.drawHkOverviewChart(chartDetails);
 			});
-        };
+		};
 
 		var renderHkWorkPriority = function() {
 			$scope.screenData.mainHeading = "";
@@ -57,7 +59,6 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 				d3.select('#d3-plot').selectAll('svg').remove();
 				$scope.drawHkWorkPriorityChart(chartDetails);
 			});
-
 		};
 
 		var clearAllExistingChartElements = function() {
@@ -91,16 +92,15 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 			$(window).off("resize.doResize");
 		});
 
-		$scope.$on('ANALYTICS_MENU_CHANGED', function(e, selectedChart){
+		$scope.$on('ANALYTICS_MENU_CHANGED', function(e, selectedChart) {
 			$scope.screenData.selectedChart = selectedChart;
 			d3.select('#d3-plot').selectAll('svg').remove();
 			clearAllExistingChartElements();
 			drawChart();
 		});
 
-
-		var fetchData = function (date, roomTypeId) {
-			$('base').attr('href', '/');
+		var fetchData = function(date, roomTypeId) {
+			$('base').attr('href', initialBaseHrefValue);
 			var params = {
 				"date": date,
 				"room_type_id": roomTypeId
@@ -108,29 +108,28 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 			var options = {
 				params: params,
 				successCallBack: function() {
-					$('base').attr('href','#');
+					$('base').attr('href', '#');
 					$scope.screenData.analyticsDataUpdatedTime = moment().format("MM ddd, YYYY hh:mm:ss a");
 					d3.select('#d3-plot').selectAll('svg').remove();
 					clearAllExistingChartElements();
 					drawChart();
-                }
+				}
 			};
 
 			$scope.callAPI(rvAnalyticsSrv.initRoomAndReservationApis, options);
 		};
 
-		$scope.refreshChart = function (){
+		$scope.refreshChart = function() {
 			fetchData($scope.dashboardFilter.datePicked, $scope.dashboardFilter.selectedRoomTypeId)
 		};
 
-
 		$scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER', function(e, filter) {
-            rvAnalyticsSrv.selectedRoomType = filter.room_type;
-            clearAllExistingChartElements();
-            drawChart();
+			rvAnalyticsSrv.selectedRoomType = filter.room_type;
+			clearAllExistingChartElements();
+			drawChart();
 		});
 
-		$scope.$on('RESET_ANALYTICS_FILTERS', function (){
+		$scope.$on('RESET_ANALYTICS_FILTERS', function() {
 			$scope.dashboardFilter.datePicked = $rootScope.businessDate;
 			$scope.dashboardFilter.selectedRoomTypeId = "";
 			$scope.dashboardFilter.selectedAnalyticsMenu = "HK_OVERVIEW";
@@ -138,7 +137,7 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 		});
 
 		$scope.$on("$destroy", function() {
-			$('base').attr('href', '/');
+			$('base').attr('href', initialBaseHrefValue);
 		});
 
 		(function() {
