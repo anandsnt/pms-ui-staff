@@ -101,7 +101,7 @@ sntRover.controller('RVInvoiceSearchController',
 		$scope.clickedNoQrCode = function() {
 			$timeout(function() {
 				$scope.searchInvoice();
-			}, 700)
+			}, 700);
 		};
 		/*
 		 * Method to search invoice
