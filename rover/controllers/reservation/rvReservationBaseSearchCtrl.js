@@ -655,9 +655,12 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     var navigationAction = function() {
                         var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
 
-                        // if ( $scope.reservationData.numNights !== 0 ) {
-                        //     $scope.clearArrivalAndDepartureTime();
-                        // }
+                        if ( $scope.reservationData.numNights !== 0 ) {
+                            $scope.fullCheckinTime = moment($rootScope.hotelDetails.default_arrival_time_for_nightly).format('hh:mm A');
+                            $scope.fullCheckoutTime = moment($rootScope.hotelDetails.default_dep_time_for_nightly).format('hh:mm A');
+                            $scope.mapToCheckinTime();
+                            $scope.mapToCheckoutTime();
+                        }
 
                         $state.go(roomAndRatesState, {
                             'from_date': $scope.reservationData.arrivalDate,
