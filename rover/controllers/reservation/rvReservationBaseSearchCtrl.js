@@ -656,7 +656,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
 
                         if ( $scope.reservationData.numNights !== 0 ) {
-                            $scope.clearArrivalAndDepartureTime();
+                            $scope.fullCheckinTime = $rootScope.hotelDetails.default_arrival_time_for_nightly;
+                            $scope.fullCheckoutTime = $rootScope.hotelDetails.default_dep_time_for_nightly;
+                            $scope.mapToCheckinTime();
+                            $scope.mapToCheckoutTime();
                         }
 
                         $state.go(roomAndRatesState, {
