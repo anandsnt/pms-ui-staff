@@ -61,6 +61,7 @@
                     <ul id="rate">
                         <li class="sub">
                             <text data-ng-bind-html="getTagValue('BILL_SUB')" editable-text="BILL_SUB"></text>
+                            <span ng-if="spillage_included">( {{'ALLOWANCE_SPILLAGE_INCLUDE' |translate}} ):</span>
                         <span>{{zestStationData.currency}}{{net_amount}}</span></li>
                         <li class="sub">
                             <text data-ng-bind-html="getTagValue('BILL_DEP')" editable-text="BILL_DEP"></text>
