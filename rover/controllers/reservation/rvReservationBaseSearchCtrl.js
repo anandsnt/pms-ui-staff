@@ -780,7 +780,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         // jquery autocomplete Souce handler
         // get two arguments - request object and response callback function
         var autoCompleteSourceHandler = function(request, response) {
-
             var companyCardResults = [],
                 lastSearchText = '',
                 eachItem = {},
@@ -791,32 +790,26 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             // so that jquery could show the suggestions on the UI
             var processDisplay = function(data) {
                 $scope.$emit("hideLoader");
-
                 _.each(data.accounts, function(item) {
                     eachItem = {};
-
                     eachItem = {
                         label: item.account_name,
                         value: item.account_name,
                         image: item.company_logo,
-
-                        // only for our understanding
-                        // jq-ui autocomplete wont use it
+                        // only for our understanding jq-ui autocomplete wont use it
                         type: item.account_type,
                         id: item.id,
                         corporateid: '',
                         iataNumber: '',
-                        /* Address*/
-                        address: item.account_address  
+                        address: item.account_address,
+                        contract_access_code: item.current_contracts.length > 0 ? item.current_contracts[0].access_code : null
                     };
-
                     // making sure that the newly created 'eachItem'
                     // doesnt exist in 'companyCardResults' array
                     // so as to avoid duplicate entry
                     hasItem = _.find($scope.companyCardResults, function(item) {
                         return eachItem.id === item.id;
                     });
-
                     // yep we just witnessed an loop inside loop, its necessary
                     // worst case senario - too many results and 'eachItem' is-a-new-item
                     // will loop the entire 'companyCardResults'
@@ -824,7 +817,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         companyCardResults.push(eachItem);
                     }
                 });
-
                 if ($scope.reservationData.rooms.length === 1 && !!data.groups && data.groups.length > 0) {
                     _.each(data.groups, function(group) {
                         companyCardResults.push({
@@ -838,7 +830,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         });
                     });
                 }
-
                 if ($scope.reservationData.rooms.length === 1 && !!data.allotments && data.allotments.length > 0) {
                     _.each(data.allotments, function(allotment) {
                         companyCardResults.push({
@@ -852,8 +843,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         });
                     });
                 }
-                // call response callback function
-                // with the processed results array
+                // call response callback function with the processed results array
                 response(companyCardResults);
             };
 

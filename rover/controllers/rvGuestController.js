@@ -1007,6 +1007,7 @@ angular.module('sntRover').controller('guestCardController', [
                                 companyData.rateList = item.current_contracts;
                                 companyData.rate = item.current_contracts[0];
                                 if (!_.isEmpty(companyData.rate)) {
+                                    companyData.contract_access_code = companyData.rate.access_code;
                                     companyData.rate.difference = (function() {
                                         if (parseInt(companyData.rate.based_on && companyData.rate.based_on.value) < 0) {
                                             if (companyData.rate.based_on.type === "amount") {
@@ -1091,6 +1092,7 @@ angular.module('sntRover').controller('guestCardController', [
                             if (item.current_contracts.length > 0) {
                                 travelAgentData.rate = item.current_contracts[0];
                                 if (!_.isEmpty(travelAgentData.rate)) {
+                                    travelAgentData.contract_access_code = travelAgentData.rate.access_code;
                                     travelAgentData.rate.difference = (function() {
                                         if (parseInt(travelAgentData.rate.based_on && travelAgentData.rate.based_on.value) < 0) {
                                             if (travelAgentData.rate.based_on.type === "amount") {
