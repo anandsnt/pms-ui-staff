@@ -19,7 +19,12 @@ sntRover.controller('RVfrontDeskDashboardController',
 	var scrollerOptions = {click: true, preventDefault: false};
 
   	$scope.setScroller('dashboard_scroller', scrollerOptions);
-    $scope.setScroller('analytics_scroller', scrollerOptions);
+    $scope.setScroller('analytics_scroller', {
+      preventDefaultException: {
+        tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/
+      },
+      preventDefault: false
+    });
 
   	$scope.showDashboard = true; // variable used to hide/show dabshboard
     // changing the header

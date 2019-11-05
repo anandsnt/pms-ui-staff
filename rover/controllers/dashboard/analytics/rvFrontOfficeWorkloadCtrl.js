@@ -16,16 +16,16 @@ angular.module('sntRover')
                     "onmouseout_fill": "greenLight"
                 },
                 "vip_checkin": {
-                    "legend_class": "bar bar-green",
-                    "fill": "green",
-                    "onmouseover_fill": "greenHover",
-                    "onmouseout_fill": "green"
+                    "legend_class": "bar bar-yellow",
+                    "fill": "yellow",
+                    "onmouseover_fill": "yellow",
+                    "onmouseout_fill": "yellow"
                 },
                 "vip_checkout": {
-                    "legend_class": "bar bar-red bar-light",
-                    "fill": "redLight",
-                    "onmouseover_fill": "redLightHover",
-                    "onmouseout_fill": "redLight"
+                    "legend_class": "bar bar-yellow bar-dark",
+                    "fill": "yellowDark",
+                    "onmouseover_fill": "yellowDarkHover",
+                    "onmouseout_fill": "yellowDark"
                 },
                 "checkout": {
                     "legend_class": "bar bar-red",
@@ -41,13 +41,13 @@ angular.module('sntRover')
                 }
             };
 
-			var cssClassMappings = {
+			var legendColorMappings = {
                 "Early Check in": "bar bar-green bar-dark",
                 "Checkin": "bar bar-green bar-light",
-                "VIP checkin": "bar bar-green",
+                "VIP checkin": "bar  bar-yellow",
 
-                "VIP checkout": "bar bar-red bar-dark",
-                "Late checkout": "bar bar-red bar-light",
+                "VIP checkout": "bar bar-yellow bar-dark",
+                "Late checkout": "bar bar-red bar-dark",
                 "Checkout": "bar bar-red",
             };
 
@@ -105,9 +105,16 @@ angular.module('sntRover')
 				chartDetails.chartData.data = _.sortBy(chartDetails.chartData.data, function(item, index) {
 					return item.type === 'REMAINING' ? 0 : 1;
 				});
+				var totalActionsCount = {
+					early_checkin: 0,
+					vip_checkin: 0,
+					checkin: 0,
+					vip_checkout: 0,
+					checkout: 0,
+					late_checkout: 0
+				};
 
 				chartDetails.chartData.data.forEach(function(chart) {
-
 					var chartName = chart.type;
 
 					// Let count be 10, 25, 35 - based on calculation below the following will the calculated values
@@ -125,6 +132,7 @@ angular.module('sntRover')
 							item.origin = chart.contents.right_side[index - 1].xFinal;
 							item.xFinal = item.origin + chart.contents.right_side[index].count;
 						}
+						totalActionsCount[item.type] = totalActionsCount[item.type] + item.count;
 					});
 
 					chart.boxes = chart.contents.right_side.map(function(item) {
@@ -243,107 +251,131 @@ angular.module('sntRover')
 						return xScale(item.xFinal) - xScale(item.xOrigin);
 					});
 
-				var isSmallBarItem = function(item) {
-					var itemPercantage = item.count * 100 / maxValueInBotheDirections;
+				// TODO: Delete commented code after verifying total count
+				
+				// var isSmallBarItem = function(item) {
+				// 	var itemPercantage = item.count * 100 / maxValueInBotheDirections;
 
-					return itemPercantage < 3;
-				};
+				// 	return itemPercantage < 3;
+				// };
 
-				bars.append("text")
-					.attr("x", function(item) {
-						return ((xScale(item.xOrigin) + xScale(item.xFinal)) / 2);
-					})
-					.attr("y", function() {
-						return yScale.bandwidth() / 2;
-					})
-					.attr("dy", function(item) {
-						return isSmallBarItem(item) ? -1 * (yScale.bandwidth() / 2 + 10) : "0.5em";
-					})
-					.attr("dx", function(item) {
-						return isSmallBarItem(item) && item.xOrigin < 0 ? "-0.5em" : "0em";
-					})
-					.style("font-size", function(item) {
-						var fontSize = setFontSizeBasedOnNumberOfRows(true);
+				// bars.append("text")
+				// 	.attr("x", function(item) {
+				// 		return ((xScale(item.xOrigin) + xScale(item.xFinal)) / 2);
+				// 	})
+				// 	.attr("y", function() {
+				// 		return yScale.bandwidth() / 2;
+				// 	})
+				// 	.attr("dy", function(item) {
+				// 		return isSmallBarItem(item) ? -1 * (yScale.bandwidth() / 2 + 10) : "0.5em";
+				// 	})
+				// 	.attr("dx", function(item) {
+				// 		return isSmallBarItem(item) && item.xOrigin < 0 ? "-0.5em" : "0em";
+				// 	})
+				// 	.style("font-size", function(item) {
+				// 		var fontSize = setFontSizeBasedOnNumberOfRows(true);
 
-						return isSmallBarItem(item) ? "0px" : fontSize;
-					})
-					.style("text-anchor", "middle")
-					.text(function(item) {
-						return item.count !== 0  || chartDetails.chartData.data.length < 15 ? item.count : '';
-					});
+				// 		return isSmallBarItem(item) ? "0px" : fontSize;
+				// 	})
+				// 	.style("text-anchor", "middle")
+				// 	.text(function(item) {
+				// 		return item.count !== 0  || chartDetails.chartData.data.length < 15 ? item.count : '';
+				// 	});
 
 				// Draw horizontal line on top of REMAINING
-				var yPositionOfRemainingTopLine = remainingTypeYoffset - yScale.bandwidth() / 2;
-				var strokeWidthOfLines = chartDetails.chartData.data.length > 20 ? "1px" : "2px";
 
 				if (maxValueInBotheDirections > 0) {
-					svg.append("line") // attach a line
-						.style("stroke", "#A0A0A0") // colour the line
-						.style("stroke-width", strokeWidthOfLines)
-						.attr("x1", -100) // x position of the first end of the line
-						.attr("y1", yPositionOfRemainingTopLine) // y position of the first end of the line
-						.attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-						.attr("y2", yPositionOfRemainingTopLine);
 
-					// Draw horizontal line under REMAINING
+					// var horizontalRectWidths = xScale(maxValueInBotheDirections) - xScale(-1 * maxValueInBotheDirections) + 2 * xScale(50);
+					//             var lineXOffset = xScale(-1 * (maxValueInBotheDirections + 50));
+
+					var rectCommonAttrs = {
+						svg: svg,
+						xOffset: -100,
+						height: 2,
+						width: xScale(maxValueInBotheDirections) + xScale(100)
+					};
+
+					var yPositionOfRemainingTopLine = remainingTypeYoffset - yScale.bandwidth() / 2;
+					// first line 
+					rvAnalyticsHelperSrv.drawRectLines(_.extend(rectCommonAttrs, {
+						yOffset: yPositionOfRemainingTopLine
+					}));
+
 					var yPositionOfRemainingBottomLine = yPositionOfRemainingTopLine + 2 * yScale.bandwidth();
 
-					svg.append("line") // attach a line
-						.style("stroke", "#A0A0A0") // colour the line
-						.style("stroke-width", strokeWidthOfLines)
-						.attr("x1", -100) // x position of the first end of the line
-						.attr("y1", yPositionOfRemainingBottomLine) // y position of the first end of the line
-						.attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-						.attr("y2", yPositionOfRemainingBottomLine);
+					rvAnalyticsHelperSrv.drawRectLines(_.extend(rectCommonAttrs, {
+						yOffset: yPositionOfRemainingBottomLine
+					}));
 
-					// Draw thick line on top of x-axis
-					var yPositionOfXaxis = height;
-
-					svg.append("line") // attach a line
-						.style("stroke", "#A0A0A0") // colour the line
-						.style("stroke-width", strokeWidthOfLines)
-						.attr("x1", 0) // x position of the first end of the line
-						.attr("y1", yPositionOfXaxis) // y position of the first end of the line
-						.attr("x2", xScale(maxValueInBotheDirections)) // x position of the second end of the line
-						.attr("y2", yPositionOfXaxis);
-
-					// Draw thick line on top of y-axis
-					svg.append("line") // attach a line
-						.style("stroke", "#A0A0A0") // colour the line
-						.style("stroke-width", strokeWidthOfLines)
-						.attr("x1", 0) // x position of the first end of the line
-						.attr("y1", 0) // y position of the first end of the line
-						.attr("x2", 0) // x position of the second end of the line
-						.attr("y2", height);
-				}
-
-				var rightSideLegendDiv = d3.select("#right-side-legend");
-
-				var rightSideLegendColor = d3.scaleOrdinal()
-					.range(["#569716", "#72D423", "#A3D577", "#E59278", "#E53D13", "#B13312"])
-					.domain(["Early Check in", "VIP checkin", "Checkin", "VIP checkout", "Checkout", "Late checkout"]);
-
-				rightSideLegendDiv
-					.append("dt")
-					.attr("class", "legend-title")
-					.attr("id", "todays-data");
-
-				var rightSideLegendList = rightSideLegendDiv.append("ul");
-
-				var rightSideLegendEntries = rightSideLegendList.selectAll("li")
-					.data(rightSideLegendColor.domain().slice())
-					.enter()
-					.append("li");
-
-				rightSideLegendEntries.append("span")
-					.attr("class", "rect")
-					.style("background-color", rightSideLegendColor);
-
-				rightSideLegendEntries.append("span")
-					.attr("class", "label")
-					.html(function(d) {
-						return d;
+					rvAnalyticsHelperSrv.drawRectLines({
+						svg: svg,
+						xOffset: 0,
+						height: 2,
+						width: xScale(maxValueInBotheDirections),
+						yOffset: height
 					});
+
+					rvAnalyticsHelperSrv.drawRectLines({
+						svg: svg,
+						xOffset: 0,
+						height: height,
+						width: 2,
+						yOffset: 0
+					});
+				}
+				
+				var rightSideLegendDiv = d3.select("#right-side-legend");
+				var arrivalsLegendData = {
+                    "title": "Arrivals",
+                    "id": "arrivals-right-title",
+                    "margin_top": 0,
+                    "items": [{
+                        "id": "right-legend-early-checkin",
+                        "class": legendColorMappings["Early Check in"],
+                        "label": "Early Check in",
+                        "count": totalActionsCount.early_checkin
+                    },
+                    {
+                        "id": "right-legend-checkin",
+                        "class": legendColorMappings["Checkin"],
+                        "label": "Checkin",
+                        "count": totalActionsCount.checkin
+                    },{
+                        "id": "right-legend-vip-checkin",
+                        "class": legendColorMappings["VIP checkin"],
+                        "label": "VIP checkin",
+                        "count": totalActionsCount.vip_checkin
+                    }]
+                };
+                var departuresLegendData = {
+                    "title": "Departures",
+                    "id": "departures-right-title",
+                    "margin_top": 10,
+                    "items": [{
+                        "id": "right-legend-vip-checkout",
+                        "class": legendColorMappings["VIP checkout"],
+                        "label": "VIP checkout",
+                        "count": totalActionsCount.vip_checkout
+                    },
+                    {
+                        "id": "right-legend-checkout",
+                        "class": legendColorMappings["Checkout"],
+                        "label": "Checkout",
+                        "count": totalActionsCount.checkout
+                    },
+                    {
+                        "id": "right-legend-late-checkout",
+                        "class": legendColorMappings["Late checkout"],
+                        "label": "Late checkout",
+                        "count": totalActionsCount.late_checkout
+                    }]
+                };
+
+                rvAnalyticsHelperSrv.addLegendItems(legendColorMappings, rightSideLegendDiv, arrivalsLegendData);
+                rvAnalyticsHelperSrv.addLegendItems(legendColorMappings, rightSideLegendDiv, departuresLegendData);
+
+                d3.select(".x.axis path").style("stroke", "#D8D8D8");
 				
 				$scope.$emit('REFRESH_ANALTICS_SCROLLER');
 				$scope.screenData.hideChartData = false;
