@@ -2,7 +2,7 @@
 	<h3 class="block-title">
         Rates &amp; Add Ons
         <!-- Show this when showing the contract name -->
-        <span class="block-text block-input">{{reservationData.reservation_card.contract_name}}</span>
+        <span class="block-text block-input">{{reservationData.reservation_card.contracts.length > 0 ? 'Multiple' :reservationData.reservation_card.contracts[0]}}</span>
     </h3>
 	<a ng-class="{'overlay':reservationData.reservation_card.reservation_status === 'CANCELED'}" id="stay-card-total-stay-cost" class="has-arrow next-view hover-hand" ng-click="showEditReservationPrompt()">
 		<span class="number" ng-show="!isRateAmountShown()">
