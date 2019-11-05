@@ -17,6 +17,45 @@ angular.module('sntRover')
           "Checkout": "bar bar-red"
         };
 
+        var colorMappings = {
+          "earlyCheckin": {
+            "legend_class": "bar bar-green bar-dark",
+            "fill": "greenDark",
+            "onmouseover_fill": "greenDarkHover",
+            "onmouseout_fill": "greenDark"
+          },
+          "checkin": {
+            "legend_class": "bar bar-green bar-light",
+            "fill": "greenLight",
+            "onmouseover_fill": "greenLightHover",
+            "onmouseout_fill": "greenLight"
+          },
+          "vipCheckin": {
+            "legend_class": "bar bar-green",
+            "fill": "green",
+            "onmouseover_fill": "greenHover",
+            "onmouseout_fill": "green"
+          },
+          "vipCheckout": {
+            "legend_class": "bar bar-red bar-light",
+            "fill": "redLight",
+            "onmouseover_fill": "redLightHover",
+            "onmouseout_fill": "redLight"
+          },
+          "checkout": {
+            "legend_class": "bar bar-red",
+            "fill": "red",
+            "onmouseover_fill": "redHover",
+            "onmouseout_fill": "red"
+          },
+          "lateCheckout": {
+            "legend_class": "bar bar-red bar-dark",
+            "fill": "redDark",
+            "onmouseover_fill": "redDarkHover",
+            "onmouseout_fill": "redDark"
+          }
+        };
+
         /////// debuging code
         // TO DELETE
 
@@ -85,16 +124,16 @@ angular.module('sntRover')
           return d['time'];
         });
         var xscale = d3.scaleBand()
-                       .domain(xlabels)
-                       .range([padding, w - padding])
-                       .paddingInner(0.5);
+          .domain(xlabels)
+          .range([padding, w - padding])
+          .paddingInner(0.5);
 
         var ydomain_min = d3.min(datasets.flat()
-                          .map(function(row) {
-                            return d3.min(row.map(function(d) {
-                              return d[1];
-                            }));
-                          }));
+          .map(function(row) {
+            return d3.min(row.map(function(d) {
+              return d[1];
+            }));
+          }));
 
         var ydomain_max = d3.max(datasets.flat().map(function(row) {
           return d3.max(row.map(function(d) {
@@ -116,7 +155,9 @@ angular.module('sntRover')
           .range(["#569819", "#9BD472", "#6ED420", "#E42715", "#E53318", "#E58A75"])
           .domain(chartKeys);
 
-        var xaxis = d3.axisBottom(xscale);
+        var xaxis = d3.axisBottom()
+          .scale(xscale)
+          .tickPadding(15);
         var yaxis = d3.axisLeft(yscale);
 
         d3.range(num_groups).forEach(function(gnum) {
@@ -127,8 +168,20 @@ angular.module('sntRover')
             // .attr('fill', function(d) {
             //   return gnum === 0 ? todaysColorMapping(d.key) : yesterdaysColorMapping(d.key);
             // })
-            .attr('fill', function(d) {
-              return colorMapping(d.key);
+            .attr("fill", function(item) {
+              var fillColor = colorMappings[item.key].fill;
+
+              return "url(#" + fillColor + ")";
+            })
+            .attr("onmouseover", function(item) {
+              var mouseoverColor = colorMappings[item.key].onmouseover_fill;
+
+              return "evt.target.setAttribute('fill', 'url(#" + mouseoverColor + " )');";
+            })
+            .attr("onmouseout", function(item) {
+              var mouseoutColor = colorMappings[item.key].onmouseout_fill;
+
+              return "evt.target.setAttribute('fill', 'url(#" + mouseoutColor + " )');";
             })
             .attr('fill-opacity', function(d) {
               return gnum === 0 ? 1 : 0.3;
@@ -138,6 +191,7 @@ angular.module('sntRover')
               return d;
             }).enter()
             .append('rect')
+            .attr("class", "rect-bars")
             .attr('x', function(d, i) {
               var xOffset = xscale(xlabels[i]) + xscale.bandwidth() / 2 * gnum;
 
@@ -149,11 +203,14 @@ angular.module('sntRover')
             })
             .attr('width', function() {
               return (xscale.bandwidth() / num_groups);
-            })
-            .attr('height', function(d) {
-              return yscale(d[0]) - yscale(d[1]);
             });
         });
+        d3.selectAll(".rect-bars")
+          .transition()
+          .duration(800)
+          .attr('height', function(d) {
+            return yscale(d[0]) - yscale(d[1]);
+          });
         svg.append('g')
           .attr('class', 'axis x')
           .attr('transform', 'translate(0,' + (h - padding) + ")")
@@ -166,32 +223,32 @@ angular.module('sntRover')
 
         /************************** LEFT LEGEND STARTS HERE ************************/
 
-          var leftSideLegend = d3.select("#left-side-legend");
+        var leftSideLegend = d3.select("#left-side-legend");
 
-          var leftSideLegendColor = d3.scaleOrdinal()
+        var leftSideLegendColor = d3.scaleOrdinal()
           .range(["#BBC9B0", "#97C16D", "#EACC2B", "#A18709", "#DE3938", "#AC2625"])
           .domain(["Early Check in", "VIP checkin", "Checkin", "VIP checkout", "Checkout", "Late checkout"]);
 
-          leftSideLegend
+        leftSideLegend
           .append("dt")
           .attr("class", "legend-title")
           .attr("id", "todays-data")
           .html("Today");
 
-          var lefttSideLegendList = leftSideLegend.append("ul");
+        var lefttSideLegendList = leftSideLegend.append("ul");
 
-          var lefttSideLegendEntries = lefttSideLegendList.selectAll("li")
+        var lefttSideLegendEntries = lefttSideLegendList.selectAll("li")
           .data(leftSideLegendColor.domain().slice())
           .enter()
           .append("li");
 
 
-          // append rectangle and text:
-          lefttSideLegendEntries.append("span")
+        // append rectangle and text:
+        lefttSideLegendEntries.append("span")
           .attr("class", "rect")
           .style("background-color", leftSideLegendColor);
 
-          lefttSideLegendEntries.append("span")
+        lefttSideLegendEntries.append("span")
           .attr("class", "label")
           .html(function(d) {
             return d;
@@ -201,41 +258,42 @@ angular.module('sntRover')
 
         /************************** RIGHT LEGEND STARTS HERE ************************/
 
-          var rightSideLegend = d3.select("#right-side-legend");
+        var rightSideLegend = d3.select("#right-side-legend");
 
-          var rightSideLegendColor = d3.scaleOrdinal()
-          .range(["rgba(187, 201, 176, 0.3)", "rgba(151, 193, 109, 0.3)", "rgba(234, 204, 43, 0.3)", 
-                  "rgba(161, 135, 9, 0.3)", "rgba(222, 57, 56, 0.3)", "rgba(172, 38, 37, 0.3)"])
+        var rightSideLegendColor = d3.scaleOrdinal()
+          .range(["rgba(187, 201, 176, 0.3)", "rgba(151, 193, 109, 0.3)", "rgba(234, 204, 43, 0.3)",
+            "rgba(161, 135, 9, 0.3)", "rgba(222, 57, 56, 0.3)", "rgba(172, 38, 37, 0.3)"
+          ])
           .domain(["Early Check in", "VIP checkin", "Checkin", "VIP checkout", "Checkout", "Late checkout"]);
 
-          rightSideLegend
+        rightSideLegend
           .append("dt")
           .attr("class", "legend-title")
           .attr("id", "todays-data")
           .html("Yesterday");
 
-          var rightSideLegendList = rightSideLegend.append("ul");
+        var rightSideLegendList = rightSideLegend.append("ul");
 
-          var rightSideLegendEntries = rightSideLegendList.selectAll("li")
+        var rightSideLegendEntries = rightSideLegendList.selectAll("li")
           .data(rightSideLegendColor.domain().slice())
           .enter()
           .append("li");
 
 
-          // append rectangle and text:
-          rightSideLegendEntries.append("span")
+        // append rectangle and text:
+        rightSideLegendEntries.append("span")
           .attr("class", "rect")
-          .style("background-color", function(d){
+          .style("background-color", function(d) {
             console.log(d)
           })
           .style("background-color", rightSideLegendColor);
 
-          rightSideLegendEntries.append("span")
+        rightSideLegendEntries.append("span")
           .attr("class", "label")
           .html(function(d) {
-          return d;
+            return d;
           });
-  
+
 
         /************************** RIGHT LEGEND END HERE ************************/
 

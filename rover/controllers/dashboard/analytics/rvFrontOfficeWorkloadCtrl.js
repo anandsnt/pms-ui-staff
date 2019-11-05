@@ -78,7 +78,8 @@ angular.module('sntRover')
 					.tickFormat(function(d) {
 						// X axis... treat -ve values as positive
 						return (d < 0) ? (d * -1) : d;
-					});
+					})
+					.tickPadding(15);
 
 				var yAxis = d3.axisLeft()
 					.scale(yScale)

@@ -61,7 +61,8 @@ angular.module('sntRover')
                     .tickFormat(function(d) {
                         // X axis... treat -ve values as positive
                         return (d < 0) ? (d * -1) : d === 0 ? "" : d;
-                    });
+                    })
+                    .tickPadding(15);
 
                 var yAxis = d3.axisLeft()
                     .scale(yScale)
@@ -152,7 +153,6 @@ angular.module('sntRover')
                     yOffset: yScale.bandwidth() * 6.5
                 }));
                 // fifth line
-                rectCommonAttrs.height = 3;
                 rvAnalyticsHelperSrv.drawRectLines(_.extend(rectCommonAttrs, {
                     yOffset: height - 3
                 }));
