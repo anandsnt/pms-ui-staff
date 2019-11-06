@@ -377,7 +377,7 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 
 			var i = 0;
 			var c = {};
-			for (i = 0; i <= 5; i++) {
+			for (i = 0; i <= 10; i++) {
 				c[i] = angular.copy(b);
 				c[i].type = c[i].type + i;
 				c[i].label = c[i].label + i;
@@ -408,5 +408,27 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 		// });
 
 		return chartDetails;
+	};
+
+	this.addDebugDataForFoActivity = function(chartData) {
+		_.each(chartData.todays_data, function(item) {
+			item.earlyCheckin = item.earlyCheckin < 2 ? _.random(1, 10) : item.earlyCheckin;
+			item.checkin = item.checkin < 2 ? _.random(1, 10) : item.checkin;
+			item.vipCheckin = item.vipCheckin < 2 ? _.random(1, 10) : item.vipCheckin;
+			item.vipCheckout = item.vipCheckout < 2 ? _.random(1, 10) : item.vipCheckout;
+			item.checkout = item.checkout < 2 ? _.random(1, 10) : item.checkout;
+			item.lateCheckout = item.lateCheckout < 2 ? _.random(1, 10) : item.lateCheckout;
+		});
+
+		_.each(chartData.yesterdays_data, function(item) {
+			item.earlyCheckin = item.earlyCheckin < 2 ? _.random(1, 10) : item.earlyCheckin;
+			item.checkin = item.checkin < 2 ? _.random(1, 10) : item.checkin;
+			item.vipCheckin = item.vipCheckin < 2 ? _.random(1, 10) : item.vipCheckin;
+			item.vipCheckout = item.vipCheckout < 2 ? _.random(1, 10) : item.vipCheckout;
+			item.checkout = item.checkout < 2 ? _.random(1, 10) : item.checkout;
+			item.lateCheckout = item.lateCheckout < 2 ? _.random(1, 10) : item.lateCheckout;
+		});
+
+		return chartData;
 	};
 }]);
