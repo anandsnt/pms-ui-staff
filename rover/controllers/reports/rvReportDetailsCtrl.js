@@ -1169,6 +1169,7 @@ sntRover.controller('RVReportDetailsCtrl', [
         // READ MORE: rvReportsMainCtrl:L#:61-75
         $scope.fetchFullReport = function () {
             var currentReport = reportsSrv.getSelectedReport();
+
             if ('function' == typeof $scope.printOptions.showModal) {
                 $scope.printOptions.showModal();
             } else {
@@ -1263,8 +1264,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		// print the page
 		var printReport = function() {
 
-            var mainCtrlScope = $scope.$parent,
-                reportName = $scope.chosenReport.title,
+            var reportName = $scope.chosenReport.title,
                 isProductionReport = false;
 
             // add the orientation
@@ -1595,8 +1595,6 @@ sntRover.controller('RVReportDetailsCtrl', [
         $scope.$on('$destroy', printReportFromInboxListner);
         $scope.$on('$destroy', showGenReportEventListner);
         
-        
-        
         // Invokes actual print 
         var invokePrint = () => {
             $timeout(function() {
@@ -1620,7 +1618,7 @@ sntRover.controller('RVReportDetailsCtrl', [
             afterFetch();
             $scope.$emit('UPDATE_REPORT_HEADING', {heading: $scope.heading});            
             findBackNames();
-            if(reloadReportNeeded) {
+            if (reloadReportNeeded) {
                 $rootScope.$broadcast('RELOAD_RESULTS');
             }
             invokePrint();
@@ -1643,7 +1641,6 @@ sntRover.controller('RVReportDetailsCtrl', [
         */
         $scope.printReport = (report) => {
             var reportName = report.name,
-                mainCtrlScope = $scope.$parent,
                 fromDate;
         
             reportsSrv.setSelectedReport(report);
@@ -1729,7 +1726,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 
         // Close the modal
         $scope.deleteModal = function () {
-            self.fetchGeneratedReports(false, 1);
             $scope.errorMsg = '';
             ngDialog.close();
         };
@@ -1743,70 +1739,6 @@ sntRover.controller('RVReportDetailsCtrl', [
          */
         self.getFormatedGeneratedReports = (generatedReportList, reportList) => {
             return RVReportsInboxSrv.formatReportList(generatedReportList, reportList);
-        };
-
-        // Refresh pagination controls
-        self.refreshPagination = () => {
-            $scope.refreshPagination(PAGINATION_ID);
-        };
-
-        // Refreshes and set the scroller position
-        self.refreshAndAdjustScroll = () => {
-            $timeout(() => {
-                $scope.refreshScroller(REPORT_INBOX_SCROLLER);
-                $timeout(() => {
-                    $scope.getScroller(REPORT_INBOX_SCROLLER).scrollTo(0, 0);
-                }, 200);
-            }, 800);
-        };
-
-        /**
-         * Generate request params for fetching the generated reports
-         * @param {Number} pageNo current page no
-         * @return {Object} params api request parameter object
-         */
-        self.generateRequestParams = (pageNo) => {
-            let params = {
-                user_id: $rootScope.userId,
-                generated_date: $scope.reportInboxData.filter.selectedDate,
-                per_page: RVReportsInboxSrv.PER_PAGE,
-                page: pageNo,
-                query: $scope.reportInboxData.filter.searchTerm
-            };
-
-            return params;
-        };
-
-        /**
-         * Fetches the generated reports
-         * @param {Number} pageNo current page no
-         * @return {void}
-         */
-        self.fetchGeneratedReports = (shouldRefreshDropDownDates, pageNo) => {
-            $scope.reportInboxPageState.returnPage = pageNo;
-
-            let onReportsFetchSuccess = (data) => {
-                $scope.reportInboxData.generatedReports = self.getFormatedGeneratedReports(data.results, $scope.reportList);
-                $scope.totalResultCount = data.total_count;
-                if (shouldRefreshDropDownDates) {
-                    if ($rootScope.serverDate !== data.background_report_default_date) {
-                        $rootScope.serverDate = data.background_report_default_date;
-                        $scope.dateDropDown = self.createDateDropdownData();
-                        $scope.reportInboxData.filter.selectedDate = $filter('date')($rootScope.serverDate, 'yyyy-MM-dd');
-                        self.fetchGeneratedReports(false, 1);
-                    }
-
-                }
-                self.refreshPagination();
-                self.refreshAndAdjustScroll();
-            },
-                options = {
-                    onSuccess: onReportsFetchSuccess,
-                    params: self.generateRequestParams(pageNo)
-                };
-
-            $scope.callAPI(RVReportsInboxSrv.fetchReportInbox, options);
-
         };
 
         /**
@@ -1856,9 +1788,7 @@ sntRover.controller('RVReportDetailsCtrl', [
                         return selectedreport.report_id === report.id;
                     }),
                 deffered = $q.defer(),
-                reportName = selectedreport.name,
-                conf;
-
+                reportName = selectedreport.name;
 
             choosenReport.usedFilters = selectedreport.filters;
 
@@ -1894,9 +1824,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 
             return deffered.promise;
         };
-
-
-
 
         // Destroying the listeners
         $scope.$on('$destroy', printReportListener);

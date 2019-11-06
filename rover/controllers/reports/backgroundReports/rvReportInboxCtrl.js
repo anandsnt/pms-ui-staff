@@ -13,7 +13,6 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
     'RVReportUtilsFac',
     '$q',
     'RVReportMsgsConst',
-    'ngDialog',
     function (
         $rootScope, 
         $scope,
@@ -28,8 +27,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         reportsSubSrv,
         reportUtils,
         $q, 
-        reportMsgs,
-        ngDialog ) {
+        reportMsgs ) {
 
         var self = this;
 
@@ -327,7 +325,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
                     function(report) {
                         return selectedreport.report_id === report.id;
                     }),
-                   deffered = $q.defer();
+                   deffered = $q.defer(),
                    reportName = selectedreport.name;
             
 
