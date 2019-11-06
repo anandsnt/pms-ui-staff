@@ -120,6 +120,7 @@ angular.module('sntRover')
             var reportPrinting;
             var reportUpdated;
             var reportPageChanged;
+            var reloadResultsListner;
 
             BaseCtrl.call(this, $scope);
 
@@ -835,10 +836,12 @@ angular.module('sntRover')
             reportPrinting = $scope.$on(reportMsgs['REPORT_PRINTING'], reInit);
             reportUpdated = $scope.$on(reportMsgs['REPORT_UPDATED'], reInit);
             reportPageChanged = $scope.$on(reportMsgs['REPORT_PAGE_CHANGED'], reInit);
+            reloadResultsListner = $rootScope.$on('RELOAD_RESULTS', reInit);
 
             $scope.$on('$destroy', reportSubmited);
             $scope.$on('$destroy', reportUpdated);
             $scope.$on('$destroy', reportPrinting);
             $scope.$on('$destroy', reportPageChanged);
+            $scope.$on('$destroy', reloadResultsListner);
         }
     ]);

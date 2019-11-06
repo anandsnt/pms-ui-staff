@@ -232,4 +232,6 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 			}, 100);
 
 		};
+
+		$scope.$on('ANALYTICS_VIEW_ACTIVE', $scope.clearResults);
 }]);
