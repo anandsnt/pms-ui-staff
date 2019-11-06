@@ -140,4 +140,14 @@
 "SAFEACCOUNTING_HEADER": "Integrations > Back Office > Safe Accounting",
 "STAAH_HEADER": "Integrations > Central Reservation System > STAAH",
 "AUTHENTICATION_TOKEN": "Authentication Token",
-"charge_code_cost_center": "Charge Code - Cost Center"
+"charge_code_cost_center": "Charge Code - Cost Center",
+"LEGAL_ENTITY": "Legal Entity",
+"ESTABLISHMENT_FIELD": "Establishment Field",
+"PAYMENT_JOURNAL_ID": "Payment Journal Id",
+"TURNOVER_TRANSACTION_JOURNAL_ID": "Turnover Transaction Journal Id",
+"AR_POSTING": "AR Posting",
+"GL_CODE_GUEST_CHARGE_LEDGER_OFFSET": "GL Code for Guest/Charge Ledger Offset",
+"GL_CODE_DEPOSIT_LEDGER_OFFSET": "GL Code for Deposit Ledger Offset",
+"GL_CODE_AR_LEDGER_OFFSET": "GL Code for AR Ledger Offset",
+"CEGID_HEADER": "CEGID",
+"charge_code_analytic_code": "Charge Code - Analytic Code"

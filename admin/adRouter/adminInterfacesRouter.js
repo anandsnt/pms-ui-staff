@@ -974,4 +974,16 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.cegid', {
+        templateUrl: '/assets/partials/interfaces/cegid/adCegid.html',
+        controller: 'adCegidController',
+        url: '/cegid',
+        resolve: {
+            config: [
+                'adInterfacesSrv', function (adInterfacesSrv) {
+                    return adInterfacesSrv.getSettings('cegid');
+                }]
+        }
+    });
+
 });

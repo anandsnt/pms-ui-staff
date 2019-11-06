@@ -7,6 +7,7 @@ admin.controller('adInterfaceMappingCtrl', [
 
         var mappingText = {
             'cancellation_code': 'Cancellation Codes',
+            'charge_code_analytic_code': 'Charge Code - Analytic Code',
             'charge_code': 'Charge Code - General Ledger',
             'charge_code_cost_center': 'Charge Code - Cost Center',
             'charge_code_department_code': 'Charge Code - Department Code',
@@ -22,6 +23,7 @@ admin.controller('adInterfaceMappingCtrl', [
         };
 
         var mappingPartials = {
+            'CEGID': '/assets/partials/interfaces/cegid/adCegidMapping.html',
             'DATAPLUS': '/assets/partials/interfaces/dataplus/adDataplusMappingDetailView.html',
             'DELPHI': '/assets/partials/interfaces/delphi/mapping.html',
             'DERBYSOFT': '/assets/partials/interfaces/DerbySoft/adDerbySoftMappingDetailView.html',
