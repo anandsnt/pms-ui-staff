@@ -1451,6 +1451,9 @@ sntRover.controller('reservationDetailsController',
 					});
 					// Default to select the first CC as active one.
 					$scope.selectCCforAuth(0);
+					if ($rootScope.hotelDetails.payment_gateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline) {
+						$scope.authData.manualAuthCode = $scope.authData.billData[0].last_authorization.code;
+					}
 					// Handle scroller
 					var scrollerOptions = { preventDefault: false };
 
@@ -1535,10 +1538,14 @@ sntRover.controller('reservationDetailsController',
 			var onAuthorizationSuccess = function(response) {
 				$scope.$emit('hideLoader');
 				authSuccess(response);
-				if ($scope.authData.isManual) {
+				if ($scope.authData.isManual || ($rootScope.hotelDetails.payment_gateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline)) {
 					$scope.authData.isManual = false; // reset 
 					$scope.authData.authAmount = ''; // reset
-					$scope.authData.manualAuthCode = ''; // reset
+					if ($rootScope.hotelDetails.payment_gateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline) {
+						$scope.authData.manualAuthCode = response.auth_code;
+					} else {
+						$scope.authData.manualAuthCode = ''; // reset
+					}
 					ngDialog.close(); // reload popup with new data from the API
 					$scope.showAuthAmountPopUp();
 				}
@@ -1561,11 +1568,11 @@ sntRover.controller('reservationDetailsController',
 
 			var postData = {
 				"payment_method_id": $scope.authData.selectedCardDetails.payment_id,
-				"amount": $scope.authData.authAmount
+				"amount": $scope.authData.authAmount,
+				"auth_code": $scope.authData.manualAuthCode
 			};
 
 			if ($scope.authData.isManual) {
-				postData.auth_code = $scope.authData.manualAuthCode;
 				$scope.invokeApi(RVCCAuthorizationSrv.manualVoiceAuth, postData, onAuthorizationSuccess, onAuthorizationFaliure);
 			} else {
 				$scope.invokeApi(RVCCAuthorizationSrv.manualAuthorization, postData, onAuthorizationSuccess, onAuthorizationFaliure);
@@ -1579,7 +1586,7 @@ sntRover.controller('reservationDetailsController',
 
 		// To handle authorize button click on 'auth amount popup' ..
 		$scope.authorize = function() {
-			if ($scope.authData.isManual) {
+			if ($scope.authData.isManual || ($rootScope.hotelDetails.payment_gateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline)) {
 				manualAuthAPICall(); // No need to show Auth in progress message
 			} else {
 				ngDialog.close(); // Closing the 'auth amount popup' ..
@@ -1600,6 +1607,15 @@ sntRover.controller('reservationDetailsController',
 				}, 100);
 			}
 
+		};
+
+		$scope.isShijiOfflineAuthCodeEmpty = function() {
+			if($rootScope.hotelDetails.payment_gateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline) {
+				if (!$scope.authData.manualAuthCode) {
+					return true
+				}
+			}
+			return false;
 		};
 
     // Handle TRY AGAIN on auth failure popup.

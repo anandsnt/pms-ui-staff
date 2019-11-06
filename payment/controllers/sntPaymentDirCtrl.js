@@ -124,6 +124,10 @@ angular.module('sntPay').controller('sntPaymentController',
                     };
                 }
 
+                if ($scope.hotelConfig.paymentGateway === 'SHIJI') {
+                    params.postData.auth_code = $scope.payment.auth_code;
+                }
+
                 return params;
             }
 
@@ -818,7 +822,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 // check if chip and pin is selected in case of six payments or SHIJI
                 // the rest of actions will in paySixPayController
                 if ($scope.selectedPaymentType === 'CC' &&
-                    ($scope.hotelConfig.paymentGateway === 'sixpayments' || $scope.hotelConfig.paymentGateway === 'SHIJI') &&
+                    ($scope.hotelConfig.paymentGateway === 'sixpayments' || ($scope.hotelConfig.paymentGateway === 'SHIJI' && !$rootScope.hotelDetails.shiji_token_enable_offline)) &&
                     !$scope.payment.isManualEntryInsideIFrame) {
                     $scope.$broadcast('INITIATE_CHIP_AND_PIN_PAYMENT', params);
                     return;
@@ -1033,7 +1037,9 @@ angular.module('sntPay').controller('sntPaymentController',
                 // If the changed payment type is CC and payment gateway is MLI show CC addition options
                 // If there are attached cards, show them first
                 if (!!selectedPaymentType && selectedPaymentType.name === 'CC') {
-                    if (PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl) {
+                    if (isReset && $scope.selectedPaymentType === 'CC' && $scope.hotelConfig.paymentGateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline) {
+                        changeToCardAddMode();
+                    } else if (PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl) {
                         // Add to guestcard feature for C&P
                         //  The payment info may change after adding a payment method; in such a case, should not reset back to C&P mode
                         $scope.selectedCC = $scope.selectedCC || {};
@@ -1140,6 +1146,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 $scope.payment.linkedCreditCards = _.where(data.existing_payments, {
                     is_credit_card: true
                 });
+                $scope.payment.shiji_token_enable_offline = data.shiji_token_enable_offline;
 
                 if ($scope.payment.linkedCreditCards.length > 0) {
                     refreshScroller('cardsList');
@@ -1435,7 +1442,7 @@ angular.module('sntPay').controller('sntPaymentController',
                         ($scope.splitBillEnabled && $scope.numSplits > $scope.completedSplitPayments);
 
                 return (isMLIEMV || $scope.hotelConfig.paymentGateway === 'sixpayments' ||
-                        $scope.hotelConfig.paymentGateway === 'SHIJI') &&
+                        ($scope.hotelConfig.paymentGateway === 'SHIJI' && !$rootScope.hotelDetails.shiji_token_enable_offline)) &&
                         $scope.selectedPaymentType === 'CC' &&
                         $scope.payment.screenMode === 'PAYMENT_MODE' &&
                         isPendingPayment && $scope.actionType !== 'AR_REFUND_PAYMENT';
@@ -1443,6 +1450,10 @@ angular.module('sntPay').controller('sntPaymentController',
 
             $scope.getShijiToken = function() {
                 $scope.$broadcast('GET_SHIJI_TOKEN');
+            };
+
+            $scope.getShijiOfflineStatus = function() {
+                return $rootScope.hotelDetails.shiji_token_enable_offline;
             };
 
             /** **************** init ***********************************************/
@@ -1562,7 +1573,7 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 config = $scope.hotelConfig;
 
-                isEMVEnabled = config.paymentGateway === 'sixpayments' || config.paymentGateway === 'SHIJI' ||
+                isEMVEnabled = config.paymentGateway === 'sixpayments' || (config.paymentGateway === 'SHIJI' && !$rootScope.hotelDetails.shiji_token_enable_offline) ||
                     ((config.paymentGateway === 'MLI' || config.paymentGateway === 'CBA_AND_MLI') && config.isEMVEnabled);
 
                 $scope.paymentAttempted = false;
@@ -1570,6 +1581,10 @@ angular.module('sntPay').controller('sntPaymentController',
                 $scope.showSelectedCard();
                 if ($rootScope.isWorkStationMandatory) {
                     $scope.checkWorkStationMandatoryFields();
+                }
+
+                if ($scope.selectedPaymentType === 'CC' && $scope.selectedCC && $scope.hotelConfig.paymentGateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline) {
+                    $scope.payment.auth_code = $scope.selectedCC.auth_code;
                 }
 
             })();

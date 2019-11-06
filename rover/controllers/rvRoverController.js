@@ -158,10 +158,10 @@ sntRover.controller('roverController', [
         $rootScope.hotelCurrencyId = hotelDetails.currency.id;
         $rootScope.currencySymbol = getCurrencySign(hotelDetails.currency.value);
         $rootScope.isMultiCurrencyEnabled = hotelDetails.is_multi_currency_enabled;
-        $rootScope.invoiceCurrencySymbol = hotelDetails.is_multi_currency_enabled ? getCurrencySign(hotelDetails.selected_invoice_currency.value) : '';
+        $rootScope.invoiceCurrencySymbol = hotelDetails.is_multi_currency_enabled && hotelDetails.invoice_currency !== "" ? getCurrencySign(hotelDetails.invoice_currency.value) : '';
         // CICO-35453 Currency Format
         $rootScope.currencyFormat = hotelDetails.currency_format && hotelDetails.currency_format.value;
-        $rootScope.invoiceCurrencyObject = hotelDetails.selected_invoice_currency;
+        $rootScope.invoiceCurrencyObject = hotelDetails.invoice_currency;
         $rootScope.exchangeCurrencyList = hotelDetails.currency_list_for_exchange;
         $rootScope.dateFormat = getDateFormat(hotelDetails.date_format.value);
         $rootScope.jqDateFormat = getJqDateFormat(hotelDetails.date_format.value);
@@ -186,6 +186,7 @@ sntRover.controller('roverController', [
 
         $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
         $rootScope.isAnMPHotel = hotelDetails.is_multi_property;
+        $rootScope.isFolioTaxEnabled = hotelDetails.is_folio_tax_report_enabled;
 
          /**
          * CICO-34068

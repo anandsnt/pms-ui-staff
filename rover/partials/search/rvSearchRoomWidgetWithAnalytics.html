@@ -1,0 +1,200 @@
+<!-- Search form -->
+<div ng-controller="rvHouseKeepingDashboardRoomSearchCtrl" >
+	<!-- <form name="dashboard-search-form" id="dashboard-search-form" class="search-form has-options room-search" role="search">
+        <div class="entry switch ng-scope">
+            <div class="switch-button off" ng-class="{ 'on' : !dashboardFilter.analyticsActive }">
+                <input id="room-task-toggle" value="" type="checkbox" ng-click="toggleAnalyticsView()" checked="">
+                <label class="data-off">
+                    <span class="value">SUMMARY</span>
+                    <span class="switch-icon">ANALYTICS</span>
+                </label>
+                <label class="data-on">
+                    <span class="switch-icon">SUMMARY</span>
+                    <span class="value">ANALYTICS</span>
+                </label>
+            </div>
+        </div>
+        <div class="entry search" ng-if="!dashboardFilter.analyticsActive">
+			<a href="#" id="dashboard-clear-query" class="clear-query" ng-show="query != ''" ng-click = "clearResults()" ng-class="{'visible': query != ''}">
+				<span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
+			</a>
+
+			<button type="submit" name="submit" class="icons icon-search" translate>MENU_SEARCH</button>
+			<input name="dashboard-query" id="dashboard-query" class="query" placeholder="{{ 'ENTER_ROOM_NUMBER' | translate }}" type="search" autocomplete="off" ng-focus="focusedOnQueryBox()"  ng-model="query" ng-change="filterByQuery()" ng-blur="focusedOutOnQueryBox()">
+		</div>
+	</form> -->
+	<!--  -->
+	<!-- Search form -->
+
+	<!--  WHEN SUMMARY IS ON -->
+	<div id="dashboard-search-form" class="search-form has-options dashboard single-option has-room-types has-dates" role="search" ng-if="!dashboardFilter.analyticsActive"> <!-- Add class 'single-option' if Work type is set to all. When showing analytics clear all classes and use just 'search-form dashboard-analytics'. -->
+	    <div class="entry switch">
+            <div class="switch-button off" ng-class="{ 'on' : !dashboardFilter.analyticsActive }">
+                <input id="room-task-toggle" value="" type="checkbox" ng-click="toggleAnalyticsView()" checked="">
+                <label class="data-off">
+                    <span class="value">SUMMARY</span>
+                    <span class="switch-icon">ANALYTICS</span>
+                </label>
+                <label class="data-on">
+                    <span class="switch-icon">SUMMARY</span>
+                    <span class="value">ANALYTICS</span>
+                </label>
+            </div>
+        </div>
+	    <div class="entry search">
+	        <a href="#" id="dashboard-clear-query" class="clear-query" ng-show="query != ''" ng-click = "clearResults()" ng-class="{'visible': query != ''}">
+				<span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
+			</a>
+	        <button type="submit" name="submit" class="icons icon-search" translate>MENU_SEARCH</button>
+	        <input name="dashboard-query" id="dashboard-query" class="query" placeholder="{{ 'ENTER_ROOM_NUMBER' | translate }}" type="search" autocomplete="off" ng-focus="focusedOnQueryBox()"  ng-model="query" ng-change="filterByQuery()" ng-blur="focusedOutOnQueryBox()">
+	    </div>
+	    <div class="entry options" ng-if="false">
+	        <div class="select">
+	            <select id="work-type" name="work-type">
+	                <option value="">All Work Types</option>
+	                <option value="daily-cleaning" selected>Daily Cleaning</option>
+	            </select>
+	        </div>
+	        <!-- If Work type is set to All, don't show this dropdown -->
+	        <div class="select">
+	            <select id="employees" name="employees" class="placeholder">
+	                <option value="" selected>All Employees</option>
+	                <option value="">{Employee}</option>
+	            </select>
+	        </div>
+	    </div>
+	</div>
+
+	<!-- WHEN ANALYTCIS IS ON -->
+
+	<div id="dashboard-search-form" class="search-form dashboard-analytics has-room-types" role="search" ng-if="dashboardFilter.analyticsActive">
+	    <div class="entry switch">
+	        <div class="switch-button off" ng-class="{ 'on' : !dashboardFilter.analyticsActive }">
+                <input id="room-task-toggle" value="" type="checkbox" ng-click="toggleAnalyticsView()" checked="">
+                <label class="data-off">
+                    <span class="value">SUMMARY</span>
+                    <span class="switch-icon">ANALYTICS</span>
+                </label>
+                <label class="data-on">
+                    <span class="switch-icon">SUMMARY</span>
+                    <span class="value">ANALYTICS</span>
+                </label>
+            </div>
+	    </div>
+	    <div class="entry options" ng-show="false">
+	        <label for="analytics-room-type" class="faux-select">
+	            <span class="label">Showing</span>
+	            <strong>All Room Types</strong>
+	        </label>
+	        <div class="faux-select-options hidden">
+	            <label class="checkbox inline checked">
+	                <span class="icon-form icon-checkbox"></span>
+	                <input id="all-room-types" value="all" type="checkbox" checked /> <!-- Checked by default. When checked all other room types need to be unchecked. When any room type is checked this must me unchecked -->
+	                All Room Types
+	            </label>
+	            <label class="checkbox inline" ng-repeat="roomType in ::roomTypes track by $index" ng-class="{'checked': roomType.is_selected}">
+	                <span class="icon-form icon-checkbox"></span>
+	                <input ng-model="roomType.is_selected" type="checkbox" />
+	                {{::roomType.name}}
+	            </label>
+	        </div>
+	    </div>
+		<div class="entry room-types">
+		    <div class="select with-label">
+		        <label for="room-type">Room Type</label>
+		        <select id="room-type" ng-model="dashboardFilter.selectedRoomTypeId" ng-change="onHkAnlayticsRoomTypeChange()">
+		            <option value="" selected="" translate>SHOW_ALL</option>
+		            <option value="{{::roomType.id}}" ng-repeat="roomType in ::roomTypes track by $index">{{::roomType.name}}</option>
+		        </select>
+		    </div>
+		</div>
+
+	   <!-- <div class="entry dates">
+	        <div class="entry-data has-datepicker">
+	            <input id="analytics-date" type="text" class="datepicker" 
+	            ng-model="dashboardFilter.datePicked"
+	            ng-click="showCalendar()" ng-change="onDateChanged()" readonly />
+	        </div>
+	    </div> -->
+
+	   <!-- <div class="entry-data has-datepicker">
+			<label for="dashboard-date-from">Date</label>
+			<input name="dashboard-date-from" id="dashboard-date-from" class="hasDatepicker" readonly="" type="text" placeholder="{{fromDate | date : dateFormat }}" value="{{fromDate| date : dateFormat}}"/>
+			<button ng-click="showCalendar('RVReservationSearchFromDatepickerCtrl')" type="button" class="ui-datepicker-trigger"></button>
+		</div> -->
+
+	   <ul class="filters" ng-show="dashboardFilter.analyticsActive">
+	        <li ng-click="changeAnalyticsView('HK_OVERVIEW')" ng-class="{'active' : dashboardFilter.selectedAnalyticsMenu === 'HK_OVERVIEW' }">Overview</li>
+	        <li ng-click="changeAnalyticsView('HK_WORK_PRIORITY')" ng-class="{'active' : dashboardFilter.selectedAnalyticsMenu === 'HK_WORK_PRIORITY'}">Work Priority</li>
+    	</ul>
+	</div>
+
+
+	<!--  -->
+
+	<div ng-show="showSearchResultsArea">
+
+		<!-- Rooms list -->
+		<section id="dashboard-search" class="content scrollable" ng-iscroll="result_showing_area" ng-iscroll-delay="1000" ng-class="{'no-results': uiTotalCount == 0}">
+			<div class="wrapper" id="rooms">
+				<ul id="dashboard-search-results" class="search-results" ng-hide="uiTotalCount == 0">
+					<li class="room" ng-repeat="room in rooms">
+						<a ng-click="roomListItemClicked()" ui-sref="rover.housekeeping.roomDetails({ id: room.id })" ng-class="{ 'with-image': room.is_occupied }"> <!-- Add  class="with-image" if room is occupied -->
+							<div class="data">
+								<h2 class="{{ room.roomStatusClass }}">{{ room.room_no }}</h2> <!-- If room is ooo or oos, class should be 'out'. Otherwise, use {room-status} -->
+								<span class="room-status {{ room.roomStatusClass }}">{{ room.description }}</span>
+							</div>
+							<div class="reservation-status">
+								<!-- {leaveStatusClass} can be check-out(for due out or departed) or inhouse(for stayover) --> 
+								<div class="current {{ room.leaveStatusClass }}">
+									<span class="guest-status {{ room.leaveStatusClass }}">{{ room.room_reservation_status }}</span>
+									<!-- Show only if applicable, {departure-time} can be time or 'out' if departed -->
+									<span ng-if="room.room_reservation_status == 'Departed'">OUT</span>
+									<span ng-if="room.room_reservation_status != 'Departed'">{{ room.departure_time }}</span>
+								</div>
+								<!-- {enterStatusClass} can be check-in(for arrival or arrived) or no-show(if room is not allocated to guest) -->
+								<div class="next {{ room.enterStatusClass }}">
+									<span class="guest-status {{ room.enterStatusClass }}">{{ room.room_reservation_status }}</span>
+									<!-- Show only if applicable, {arrival-time} can only be time -->
+									<span>{{ room.arrival_time }}</span>
+								</div>
+							</div>
+							<!-- Show if room is assigned or ooo/oos -->
+							<div class="additional-info" ng-if="isStandAlone">
+								<!-- Show only if room is assigned -->   <!-- if the room is departed or stayover -->         
+								<span ng-if="room.assignee_maid.id" class="assigned">{{ room.assignee_maid.name }}</span>
+								<span ng-if="!room.assignee_maid.id && (room.room_reservation_status == 'Departed' || room.room_reservation_status == 'STAYOVER')" class="unassigned">Unassigned</span>
+
+								<!-- Show only if room is not in service -->
+								<span ng-if="room.room_reservation_hk_status == 2" class="service-status">Out of Service</span>
+								<span ng-if="room.room_reservation_hk_status == 3" class="service-status">Out of Order</span>
+							</div>
+							<!-- Show only if room is occupied -->
+							<figure class="guest-image" ng-if="room.is_occupied">
+								<span ng-if="room.is_vip" class="vip" translate>VIP</span>
+								<img src="{{room.avatar_src}}" alt="" />
+							</figure>
+						</a>
+				    </li>
+				</ul>
+				<!-- Empty -->
+				<ul id="dashboard-search-results" class="search-results" ng-show="uiTotalCount == 0">
+					<li class="no-content">
+						<div class="info">
+							<span class="icon-no-content icon-room"></span>
+							<strong class="h1">Find Rooms</strong>
+							<span class="h2">Search by <strong>Room Number</strong></span>
+						</div>
+					</li>
+				</ul>			
+			</div>
+		</section>
+
+		<div class="search-pagination" ng-show="(rooms | filter:{display_room:true}).length === 50 && (!disablePrevBtn || !disableNextBtn)">
+		    <button type="button" class="button dark-grey next" ng-click="loadNextPage()" ng-disabled="disableNextBtn">Next</button>
+		    <button type="button" class="button dark-grey prev" ng-click="loadPrevPage()" ng-disabled="disablePrevBtn">Previous</button>
+		    <p>Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong id="total-count">{{ netTotalCount }}</strong> items</p>
+		</div>
+
+	</div>
+</div>

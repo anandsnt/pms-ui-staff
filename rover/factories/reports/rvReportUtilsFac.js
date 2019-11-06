@@ -434,6 +434,13 @@ angular.module('reportsModule')
                     }
                     );
                     break;
+                case reportNames['FOLIO_TAX_REPORT']:
+                    report['filters'].push({
+                        'value': "INCLUDE_LANGUAGE",
+                        'description': "Include Language"
+                    }
+                    );
+                    break;
 
                 case reportNames['TAX_EXEMPT']:
                     report['filters'].push({
@@ -951,11 +958,13 @@ angular.module('reportsModule')
                     reportsSubSrv.fetchDepartments()
                         .then( fillDepartments );
                 } else if ( 'INCLUDE_COMPLETION_STATUS' === filter.value && ! filter.filled) {
-                    // requested++;
                     fillCompletionStatus();
                 } else if ( 'INCLUDE_AGING_BALANCE' === filter.value && ! filter.filled) {
-                    // requested++;
                     fillAgingBalance();
+                } else if ( 'INCLUDE_LANGUAGE' === filter.value && ! filter.filled) {
+                    requested++;
+                    reportsSubSrv.fetchLanguages()
+                        .then( fillLanguages );
                 } else if ( 'TAX_EXEMPT_TYPE' === filter.value && ! filter.filled) {
                     requested++;
                     reportsSubSrv.fetchTaxExemptTypes()
@@ -1407,6 +1416,31 @@ angular.module('reportsModule')
                 completed++;
                 checkAllCompleted();
             }
+
+            function fillLanguages(data) {
+                var foundFilter,
+                    customData;
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'INCLUDE_LANGUAGE' });
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+
+                        report.hasLanguages = {
+                            data: angular.copy( data ),
+                            options: {
+                                hasSearch: false,
+                                selectAll: true,
+                                key: 'language',
+                                defaultValue: 'Select Language'
+                            }
+                        };
+                    }
+                });
+
+                completed++;
+                checkAllCompleted();
+            }            
 
             function fillRateCodeList (data) {
                 var foundFilter;

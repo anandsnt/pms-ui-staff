@@ -312,7 +312,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.popupCalendar = function(clickedOn) {
 			$scope.clickedOn = clickedOn;
 			ngDialog.open({
-				template: '/assets/partials/companyCard/rvCompanyCardContractsCalendar.html',
+				template: '/assets/partials/companyCard/contracts/rvCompanyCardContractsCalendar.html',
 				controller: 'RVArTransactionsDatePickerController',
 				className: '',
 				scope: $scope
@@ -983,9 +983,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$("#add-balance").removeClass('no-print');
 			if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
 				$scope.$broadcast("UPDATE_WINDOW");
-			} else {
-				$scope.closeDialog();
-			}
+			} 
+			$scope.closeDialog();
 			$("body #loading").html('<div id="loading-spinner" ></div>');
 			$scope.switchArTransactionTab($scope.arFlags.currentSelectedArTab)
 			sntActivity.stop("PRINT_STARTED");
@@ -1028,7 +1027,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					else if (parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices))
 					{
 						if (successData.is_copy_counter) {
-              copyCount = getCopyCount(successData);
+            				copyCount = getCopyCount(successData);
 						}
 						successData.invoiceLabel = successData.translation.copy_of_ar_invoice.replace("#count", copyCount);
 					}

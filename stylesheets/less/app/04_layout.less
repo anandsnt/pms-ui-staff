@@ -2251,6 +2251,227 @@ body { overflow: hidden; }
 	                }
 	            }
 	        }
+
+	        /* Dashboard Analytics ***/
+	        &.card-search,
+	        &.dashboard,
+	        &.dashboard-analytics {
+	            .switch-button {
+	                width: 100%;
+	                background: rgba(0,0,0,.1);
+	                #border-radius > .rounded();
+	                .show;
+	                .size( 40px, 100% );
+
+	                input {
+	                    .square(100%);
+	                }
+
+	                &:not(.disabled) {
+	                    .data-off,
+	                    .data-on {
+	                        .switch-icon {
+	                            color: @black;
+	                        }
+	                    }
+	                }
+
+	                .data-off,
+	                .data-on {
+	                    font-size: 14px;
+	                    line-height: 30px;
+	                    height: 30px;
+	                    text-transform: uppercase;
+
+	                    .switch-icon {
+	                        text-shadow: none;
+	                        .clickable;
+	                        background: @white;
+	                    }
+
+	                    .value {
+	                        color: @grey3;
+	                        font-weight: 600;
+	                    }
+
+	                    &.data-off {
+	                        left: auto;
+	                        right: 0;
+
+	                        .switch-icon { margin: 0 5px 0 0; }
+	                    }
+
+	                    &.data-on {
+	                        left: auto;
+	                        right: 100%;
+
+	                        .switch-icon { margin: 0 0 0 5px; }
+	                    }
+	                }
+
+	                &.on {
+	                    .data-off { left: auto; right: -100%; }
+	                    .data-on { left: auto; right: 0; }
+	                }
+	            }
+	        }
+
+	        /* Dashboard Analytics ***/
+	        &.dashboard,
+	        &.dashboard-analytics {
+	            .entry {
+	                &.switch {
+	                    width: 180px;
+	                }
+
+	                &.search {
+	                    .calc-width(100, 200);
+	                }
+	            }
+	        }
+
+	        &.dashboard-analytics {
+	            position: relative;
+	            overflow: visible;
+
+	            .faux-select {
+	                .label {
+	                    top: 2px;
+	                    font-size: 12px;
+	                }
+
+	                strong {
+	                    font-size: 14px;
+	                    font-weight: 400;
+	                }
+	            }
+
+	            .faux-select-options {
+	                width: auto;
+	                min-width: 100%;
+	                max-width: 320px;
+
+	                .checkbox, 
+	                .radio {
+	                    font-size: 14px;
+	                    padding: 0 10px 0 40px;
+	                }
+	            }
+
+	            .entry {
+	                &.options {
+	                    width: 180px;
+	                }
+
+	                &.dates {
+	                    width: 160px;
+
+	                    .entry-data {
+	                        width: 100%;
+
+	                        input {
+	                            font-size: 14px;
+	                        }
+	                    }
+	                }
+	            }
+
+	            .filters {
+	                position: absolute;
+	                top: 0;
+	                right: 0;
+	                margin-left: auto;
+	                #flexbox > .parent(row wrap, '', '', '');
+
+	                li {
+	                    position: relative;
+	                    cursor: pointer;
+	                    font-size: 16px;
+	                    line-height: 60px;
+	                    text-align: center;
+	                    text-transform: uppercase;
+	                    padding: 0 20px;
+	                    color: @black;
+	                    background: rgba(0,0,0,.1);
+	                    margin: 0;
+	                    height: 60px;
+	                    white-space: nowrap;
+	                    text-overflow: ellipsis;
+
+	                    &:not(:last-child) {
+	                        .box-shadow(1px 0 0 rgba(0,0,0,.2));
+	                    }
+
+	                    &.active {
+	                        cursor: default;
+	                        color: @white;
+	                        font-weight: 600;
+	                        text-shadow: 1px 1px 0 rgba(0,0,0,.2);
+	                        .box-shadow(0 1px 1px rgba(0,0,0,.1));
+	                        .gradient(@logoGradientStart, @logoGradientEnd);
+
+	                        &:after {
+	                            content: "";
+	                            position: absolute;
+	                            left: 50%;
+	                            bottom: -10px;
+	                            width: 0; 
+	                            height: 0; 
+	                            margin-left: -10px;
+	                            border-top: 10px solid @logoGradientEnd;
+	                            border-left: 10px solid transparent;
+	                            border-right: 10px solid transparent;
+	                            z-index: 1000;
+	                        }
+	                    }
+	                }
+	            }
+	        }
+
+	        /* Manager / FO Dashboard **/
+	        &.dashboard.has-dates.has-room-types.enable-adding {
+	            .entry {
+	                &.search {
+	                    .calc-width(100, 740);
+	                }
+
+	                &.dates {
+	                    width: 260px;
+
+	                    .entry-data {
+	                        .calc-width(50, 5);
+	                    }
+	                }
+
+	                &.room-types {
+	                    width: 140px;
+	                }
+	            }
+	        }
+
+	        /* HK Dashboard ***/
+	        &.dashboard.has-options {
+	            .entry {
+	                &.search {
+	                    .calc-width(100, 520);
+	                }
+
+	                &.options {
+	                    width: 320px;
+	                }
+	            }
+
+	            &.single-option {
+	                .entry {
+	                    &.search {
+	                        .calc-width(100, 360);
+	                    }
+	                    &.options {
+	                        width: 160px;
+	                    }
+	                }
+	            }
+	        }
 		}
 	}
 

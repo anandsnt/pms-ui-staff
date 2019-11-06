@@ -26,18 +26,20 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         reportNames,
         reportsSubSrv,
         reportUtils,
-        $q, reportMsgs) {
+        $q, 
+        reportMsgs ) {
 
         var self = this;
 
         BaseCtrl.call(this, $scope);
 
         $scope.viewStatus.showDetails = false;
+        
 
         const REPORT_INBOX_SCROLLER = 'report-inbox-scroller',
             REPORT_FILTERS_PROC_ACTIVITY = 'report_filters_proc_activity',
             PAGINATION_ID = 'report_inbox_pagination';
-        
+
 
         // Navigate to new report request section
         $scope.createNewReport = () => {
@@ -324,8 +326,10 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
                         return selectedreport.report_id === report.id;
                     }),
                    deffered = $q.defer();
+            
 
             choosenReport.usedFilters = selectedreport.filters;
+
             // generatedReportId is required make API call
             choosenReport.generatedReportId = selectedreport.id;
             // if the two reports are not the same, just call
@@ -343,6 +347,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
                 // These filter data is used in some of the reports controller 
                 choosenReport = _.extend(JSON.parse(JSON.stringify(choosenReport)), selectedreport.rawData);
                 choosenReport.appliedFilter = selectedreport.appliedFilter;
+                
                 reportsSrv.setChoosenReport( choosenReport );
                 deffered.resolve();
             });            
@@ -411,14 +416,14 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
          * @params Object report selected generated report
          * @return void
          */
-        $scope.printReport = (report) => { 
-            var mainCtrlScope = $scope.$parent;
+        $scope.printReport = (report) => {
+            var mainCtrlScope = $scope.$parent; 
 
             setChoosenReport(report).then(function() {
                 mainCtrlScope.genReport(false, 1, 99999);
             });
-            reportsSrv.setPrintClicked(true);                       
-            
+            reportsSrv.setPrintClicked(true); 
+
         };
 
         $scope.addListener(reportMsgs['REPORT_API_FAILED'], function(event, data) {

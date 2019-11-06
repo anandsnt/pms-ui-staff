@@ -245,7 +245,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
             if (!$stateParams.isQuickJump || $stateParams.isQuickJump === 'false') {
                 fetchReservationDetails();
-                fetchAddons();
+                    fetchAddons();
                 if ($scope.selectedReservation.skipRoomUpsell) {
                     $scope.selectedReservation.is_upsell_available = false;
                 } else {

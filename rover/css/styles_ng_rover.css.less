@@ -1638,6 +1638,33 @@ div#guest-id.modal-content {
   text-transform: capitalize;
 }
 
+/* DASHBOARD ANALYTICS */
+
+/* to hide left side Y axis*/
+.left-most path,
+.hidden-bar {
+  display: none;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #A0A0A0;
+}
+.y.axis.inner path,
+.y.axis.inner line {
+  fill: #B1B1B1;
+  stroke: #B1B1B1;
+}
+
+.tick line {
+  opacity: 0.2;
+}
+
 .invoice-table {
   display:table-row-group;
+}
+
+.left-right-pad20 {
+  padding: 0px 20px;
 }

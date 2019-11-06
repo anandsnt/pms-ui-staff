@@ -2,15 +2,11 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
     '$scope',
     'RVCustomExportSrv',
     '$timeout',
-    '$rootScope',
-    'RVreportsSrv',
     'RVCustomExportsUtilFac',
     'sntActivity',
     function($scope, 
         RVCustomExportSrv,
         $timeout,
-        $rootScope,
-        reportsSrv,
         RVCustomExportsUtilFac,
         sntActivity ) {
 
@@ -25,6 +21,7 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
         const CUSTOM_EXPORT_FILTERS_SCROLLER = 'custom-export-filters-scroller';
         const RANGE_FILTER_OPERATORS = 3;
         const SCROLL_REFRESH_DELAY = 100;
+        const RANGE_SUB_FILTERS_COUNT = 3;
 
         // Set the scroller
         $scope.setScroller(CUSTOM_EXPORT_FILTERS_SCROLLER, {
@@ -235,8 +232,10 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
                     }
 
                 });
-
-                $scope.refreshFilterScroller(true);
+                $timeout( function () {
+                    $scope.refreshFilterScroller(true);
+                }, 200);
+                
             });
         };
 
@@ -244,6 +243,66 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
         $scope.addListener('UPDATE_FILTER_SELECTIONS', () => {
             processFilterSelections();
         });
+
+        // Hide condition for option filter
+        $scope.shouldHideOptionFilter = () => {
+            var appliedOptionFilters = _.filter($scope.filterData.appliedFilters, (filter) => {
+                    return filter.isOption;
+                }),
+                availableOptionsFilters = $scope.selectedEntityDetails &&
+                    $scope.selectedEntityDetails.processedFilters &&
+                    $scope.selectedEntityDetails.processedFilters['OPTION'];
+
+            return !availableOptionsFilters ||
+                (availableOptionsFilters && (availableOptionsFilters.length === appliedOptionFilters.length));
+        };
+
+        // Hide condition for range filter
+        $scope.shouldHideRangeFilter = () => {
+            var appliedRangeFilters = _.filter($scope.filterData.appliedFilters, (filter) => {
+                    return filter.isRange;
+                }),
+                availableRangeFilters = $scope.selectedEntityDetails &&
+                    $scope.selectedEntityDetails.processedFilters &&
+                    $scope.selectedEntityDetails.processedFilters['RANGE'];
+
+            // We can choose 3 operators for each of the field, and hence the 3 in the condition below
+            return !availableRangeFilters ||
+                (availableRangeFilters && ( (availableRangeFilters.length * RANGE_SUB_FILTERS_COUNT) === appliedRangeFilters.length));
+        };
+
+        // Hide condition for duration filter
+        $scope.shouldHideDurationFilter = () => {
+            var appliedDurationFilters = _.filter($scope.filterData.appliedFilters, (filter) => {
+                    return filter.isDuration;
+                }),
+                availableDurationFilters = $scope.selectedEntityDetails &&
+                    $scope.selectedEntityDetails.processedFilters &&
+                    $scope.selectedEntityDetails.processedFilters['DURATION'];
+
+            return !availableDurationFilters ||
+                (availableDurationFilters && (availableDurationFilters.length === appliedDurationFilters.length));
+        };
+
+        // Hide condition for add filter btn
+        $scope.shouldHideAddFilter = () => {
+            var optionFilterCount = ($scope.selectedEntityDetails &&
+                $scope.selectedEntityDetails.processedFilters &&
+                $scope.selectedEntityDetails.processedFilters['OPTION'] &&
+                $scope.selectedEntityDetails.processedFilters['OPTION'].length) || 0,
+
+                durationFilterCount = ($scope.selectedEntityDetails &&
+                    $scope.selectedEntityDetails.processedFilters &&
+                    $scope.selectedEntityDetails.processedFilters['DURATION'] && 
+                    $scope.selectedEntityDetails.processedFilters['DURATION'].length ) || 0,
+
+                rangeFiltersCount = ($scope.selectedEntityDetails &&
+                    $scope.selectedEntityDetails.processedFilters &&
+                    $scope.selectedEntityDetails.processedFilters['RANGE'] && 
+                    ($scope.selectedEntityDetails.processedFilters['RANGE'].length * RANGE_SUB_FILTERS_COUNT)) || 0;
+
+            return $scope.filterData.appliedFilters.length === (optionFilterCount + durationFilterCount + rangeFiltersCount);
+        };
 
 
     }

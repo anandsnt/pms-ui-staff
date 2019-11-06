@@ -1,9 +1,20 @@
-sntRover.controller('RVfrontDeskDashboardController', ['$scope', '$rootScope', 'statistics', function($scope, $rootScope, statistics) {
+sntRover.controller('RVfrontDeskDashboardController',
+    ['$scope', '$rootScope', 'RVDashboardSrv', '$timeout', 'ngDialog',
+        function($scope, $rootScope, RVDashboardSrv, $timeout, ngDialog) {
 	// inheriting some useful things
 	BaseCtrl.call(this, $scope);
     var that = this;
 
-  $scope.statistics = statistics;
+    var requestParams = {
+        'show_adr': false,
+        'show_upsell': true,
+        'show_rate_of_day': false
+    };
+
+    RVDashboardSrv.fetchStatisticData(requestParams).then(function(data) {
+        $scope.statistics = data;
+    });
+    
 	// scroller related settings
 	var scrollerOptions = {click: true, preventDefault: false};
 
@@ -60,4 +71,6 @@ sntRover.controller('RVfrontDeskDashboardController', ['$scope', '$rootScope', '
     setTimeout(function() {
       $scope.refreshScroller('dashboard_scroller');
     }, 500);
+
+    $scope.$emit('SET_DEFAULT_ANALYTICS_MENU', 'FO_ARRIVALS');
 }]);
