@@ -27,7 +27,7 @@ admin.controller('adCegidController', ['$scope', 'config', 'adInterfacesSrv',
          * @return {undefined}
          */
         $scope.saveSetup = function () {
-            var params = $scope.config
+            var params = $scope.config;
 
             $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
