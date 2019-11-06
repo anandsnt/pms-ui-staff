@@ -112,7 +112,7 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
 
             var users = Object.keys(userActivity);
 
-            var elements = ['earlyCheckin', 'vipCheckin', 'checkin', 'vipCheckout', 'checkout', 'lateCheckout'];
+            var elements = ['earlyCheckin', 'checkin', 'vipCheckin', 'vipCheckout', 'checkout', 'lateCheckout'];
 
             users.forEach(function(user) {
                 var userActivityElement = {

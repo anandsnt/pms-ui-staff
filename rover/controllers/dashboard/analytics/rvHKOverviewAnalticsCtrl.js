@@ -21,7 +21,7 @@ angular.module('sntRover')
             var colorMappings = {
                 "arrivals_perfomed": rvAnalyticsHelperSrv.gradientMappings['greenLight'],
                 "arrivals_remaining": rvAnalyticsHelperSrv.gradientMappings['green'],
-                "departures_perfomed": rvAnalyticsHelperSrv.gradientMappings['greenDark'],
+                "departures_perfomed": rvAnalyticsHelperSrv.gradientMappings['redLight'],
                 "departures_pending": rvAnalyticsHelperSrv.gradientMappings['red'],
                 "stayovers_perfomed": rvAnalyticsHelperSrv.gradientMappings['blueLight'],
                 "stayovers_remaining" : rvAnalyticsHelperSrv.gradientMappings['blue'],
@@ -61,7 +61,8 @@ angular.module('sntRover')
                     .tickFormat(function(d) {
                         // X axis... treat -ve values as positive
                         return (d < 0) ? (d * -1) : d === 0 ? "" : d;
-                    });
+                    })
+                    .tickPadding(15);
 
                 var yAxis = d3.axisLeft()
                     .scale(yScale)
@@ -152,7 +153,6 @@ angular.module('sntRover')
                     yOffset: yScale.bandwidth() * 6.5
                 }));
                 // fifth line
-                rectCommonAttrs.height = 3;
                 rvAnalyticsHelperSrv.drawRectLines(_.extend(rectCommonAttrs, {
                     yOffset: height - 3
                 }));

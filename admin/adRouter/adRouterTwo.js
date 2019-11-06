@@ -451,7 +451,7 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
             },
             availableLanguages: function(ADTranslationSrv) {
                 return ADTranslationSrv.getActiveGuestLanguages({
-                    show_only_active_languages: true
+                    show_only_active_languages: false
                 });
             },
             singleAddon: function (ADRatesAddonsSrv, $stateParams) {

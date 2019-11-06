@@ -4,16 +4,26 @@
     </h2>
     <p ng-if="!screenData.hideChartData">Last update: {{ screenData.analyticsDataUpdatedTime }}</p>
     <!-- Chart -->
-    <div class="analytics-chart with-legend-left with-legend-right">
-        <dl class="chart-legend legend-left" id="left-side-legend">
+    <div class="analytics-chart with-legend-right" ng-class="{ 'with-legend-left' : screenData.selectedChart === 'FO_ARRIVALS' }">
+        <dl class="chart-legend legend-left" id="left-side-legend" ng-if="screenData.selectedChart === 'FO_ARRIVALS'">
         </dl>
         <div id="analytics-chart" class="chart-content">
             <div id="d3-plot">
             </div>
-            <button type="button" class="button white refresh-chart" ng-if="!screenData.hideChartData" ng-click="refreshChart()">
-                <span class="icons icon-reset"></span>
-                Refresh Chart
-            </button>
+            <div class="chart-actions" ng-show="!screenData.hideChartData">
+                <label class="checkbox" ng-class="{'checked': screenData.showPreviousDayData}"
+                    ng-show="screenData.selectedChart === 'FO_ACTIVITY'"
+                    ng-click="togglePreviousDayData()">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked': screenData.showPreviousDayData}"></span>
+                    <input id="show-remaining" type="checkbox" ng-model="screenData.showPreviousDayData" ng-change="previousDaySelectionChanged()">
+                    Show Day Before
+                </label>
+                <button type="button" class="button white refresh-chart" ng-click="refreshChart()">
+                    <span class="icons icon-reset"></span>
+                    Refresh Chart
+                </button>
+            </div>
+
             <svg>
                 <defs>
                     <!-- Shadow -->
@@ -128,7 +138,7 @@
                         <stop offset="100%" style="stop-color:#c7ba28"></stop>
                     </linearGradient>
                     <linearGradient id="yellowDarkHover" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" style="stop-color:#c7ba28"></stop>
+                        <stop offset="0%" style="stop-color:#c9ac28"></stop>
                         <stop offset="100%" style="stop-color:#c7ba28"></stop>
                     </linearGradient>
                 </defs>

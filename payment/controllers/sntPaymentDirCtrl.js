@@ -1267,7 +1267,9 @@ angular.module('sntPay').controller('sntPaymentController',
                         params,
                         data: {
                             id: null,
-                            credit_card_type: $scope.selectedCC.card_code
+                            credit_card_type: $scope.selectedCC.card_code,
+                            ending_with: $scope.selectedCC.ending_with,
+                            expiry_date: $scope.selectedCC.expiry_date
                         }
                     });
                     // Don't make save payment call for swipes during submit payment

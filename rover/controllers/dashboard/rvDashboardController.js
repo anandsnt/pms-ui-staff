@@ -389,7 +389,9 @@ sntRover.controller('RVdashboardController',
                         $scope.$broadcast('RESET_ANALYTICS_FILTERS');
                         $scope.$broadcast("showDashboardArea", true);
                     } else {
+                        $scope.$broadcast('ANALYTICS_VIEW_ACTIVE');
                         $scope.dashboardFilter.analyticsActive = true;
+                        $scope.clearResults();
                     }
                 };
 
