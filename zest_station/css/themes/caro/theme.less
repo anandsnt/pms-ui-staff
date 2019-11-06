@@ -1,0 +1,218 @@
+/* StayNTouch Zest Station Styles | Amrath Theme */
+
+/* 1. COLORS
+==========================================================*/
+@brandColor:            #cdcdcd;
+    
+@textColor:             @black;
+@backgroundColor:       @white;
+
+@actionColor:           @black;
+@actionBackground:      @brandColor;
+
+@inputBackground:       #707070;
+@inputColor:            @white;
+@transparentColor:      rgba(0,0,0,.5);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+
+@fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+
+/* 3. IMAGES
+==========================================================*/
+@background: @backgroundColor;
+@backgroundSize: '';
+
+@headerIconsColor:      @white;
+@headerIconsActive:     @white;
+
+.icons { 
+    &.icon-create-key {
+        fill: @brandColor;
+        stroke: @brandColor;
+    }
+
+    &.icon-no-print { stroke: @black; }
+
+    &.icon-oos {
+        fill: @brandColor;
+    }
+
+
+}
+
+.logo-svg{
+    background-image: url("../css/themes/caro/logo.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 198px;
+    height: 77px;
+    background-position: center;
+}
+
+/* 4. LAYOUT
+==========================================================*/
+
+#caro {
+
+    #header {
+        height: 145px;
+        background: #f9d349;
+    }
+
+    #main {
+        #calc > #height > .remove(100%, 145px);
+        top: 145px;
+
+        &.centered {
+            padding-top: 100px;
+            #content {
+                height: 100%;
+            }
+        }
+    }
+    .entry.input:not(.select) {
+        .icons {
+            fill: @brandColor;
+        }
+    }
+    
+    #logo {
+        padding-top: 0;
+
+        .logo {
+            width: auto;
+            height: 75px;
+        }
+    }
+
+    #options {
+      
+        li.radio-option {
+            input[type=radio]:not(:checked) + .button {
+                background: rgba(42, 39, 39, 0.1);
+            }
+        }
+    }
+
+    #guests {
+        .button {
+            color: @black;
+            background: @brandColor;
+        }
+    } 
+
+    .add-on-list {
+
+        // The second row is getting chunked on lower viewport height
+        @media screen and (max-height:800px) {
+            &.add-on-list-rows {
+                li:nth-child(n+4) {
+                    margin-top: 0;
+                }
+            }
+        }
+    }
+
+    .add-on {
+
+        .input-group {
+            input {
+                color: @black;
+            }
+        }
+
+        &:not(.selected) {
+            .add-on-content {
+                background: #f0f0f0;
+            }
+            border-color: #f0f0f0;
+        }
+
+        .add-on-content { 
+            .price { 
+                strong {
+                    color: @black;
+                }
+            } 
+        }
+        
+    }
+
+    #textual {
+        background: #f0f0f0;
+         
+
+        &:before,
+        &:after {
+            background: #f0f0f0;
+        }
+
+        #rate {
+            li {
+                &.total {
+                    color: @black;
+                }
+            }
+        }
+    }
+
+    #rate {
+        li {
+            &.sub {
+                color: #a1a1a1;
+            }
+        }
+    }
+ 
+
+    .popup {
+        .add-on {
+            .add-on-content {
+                background: @white;
+            }
+        }
+    }
+
+    #upgrade {
+        background-color: #f0f0f0;
+        
+        .upgrade-price {
+            background-color: @brandColor;
+            
+        }
+    }
+
+    .upgrade-list {
+        .upgrade-content {
+            background: #f0f0f0;
+            border-color: #f0f0f0;
+        }
+        &.upgrade-list-v2 {
+            .upgrade-content {
+                background: #f0f0f0;
+            }
+        }
+    }
+
+    #selection {
+       
+            li {
+                .details {
+                    background: fade( @brandColor, 50 );
+                    color: @black;
+                }
+            }
+        
+    }
+    .minibar-item.group,
+    .minibar-review .review-container {
+        background-color: #f0f0f0
+    }
+
+    .minibar-items .minibar-item .minibar-item-qty {
+        color: @black;
+    }
+}
