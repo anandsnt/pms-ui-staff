@@ -112,12 +112,22 @@ admin.controller('ADRatesAddonsCtrl', [
                 });
             }
         };
-        $scope.sortByDescription = function() {
+        $scope.sortByActiveDate = function() {
             if ($scope.currentClickedAddon === -1) {
                 $scope.tableParams.sorting({
-                    'description': $scope.tableParams.isSortBy('description', 'asc') ? 'desc' : 'asc'
+                    'end_date': $scope.tableParams.isSortBy('end_date', 'asc') ? 'desc' : 'asc'
                 });
             }
+        };
+
+        $scope.getActiveDate = function(item) {
+            var dateStr = '';
+            if (!item.begin_date && !item.end_date) {
+                dateStr = 'N/A';
+            } else {
+                dateStr = (item.begin_date ? item.begin_date : 'N/A') + ' to ' + (item.end_date ? item.end_date : 'N/A');
+            }
+            return dateStr;
         };
 
         /**
