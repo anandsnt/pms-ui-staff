@@ -1,45 +1,79 @@
-<div ng-controller="rvCardContractsLinkingCtrl" class="contracts-details" ng-show="!contractData.noContracts && contractData.mode === 'LINK'">
-    <!-- Add .searching when searching a contract -->
-    <div class="autocomplete-search contract-details-header" ng-class="{'searching': contractData.linkContractsSearch.query !== ''}">
-        <!-- Remove .with-button if we are not shwoing Unlink Contract button -->
-        <div class="search-header">
-            <div class="search">
-                <label>Link Existing Contract</label>
-                <!-- Add .visible to show clear query -->
+<span ng-controller="rvCardContractsLinkingCtrl">
+
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+
+    <!-- Show this when searching for linked contracts -->
+    <div class="tab-header">
+        <div class="search-form">
+            <div class="entry search">
                 <button class="clear-query" ng-class="{'visible': contractData.linkContractsSearch.query !== ''}">
-                    <span class="icons icon-clear-search" ng-click="clearQuery()" ng-show="contractData.linkContractsSearch.results.length > 0">Clear query</span>
+                    <span class="icons icon-clear-search" ng-click="clearQuery()" ng-show="contractData.linkContractsSearch.query.length > 0">Clear query</span>
                 </button>
                 <button type="submit" name="submit" class="icons icon-search">Search</button>
-                <input ng-model="contractData.linkContractsSearch.query" ng-change="searchContracts()" name="find-contracts" class="query" placeholder="Search by Contract Name or Access Code" autocomplete="off" type="search">
+                <input ng-model="contractData.linkContractsSearch.query" ng-change="searchContracts()" name="find-contracts" class="query" placeholder="Search by Name, Access Code or Account" autocomplete="off" type="search">
             </div>
         </div>
-        <!-- Remove .hidden when searching -->
-        <ul class="autocomplete-results-header" ng-show="contractData.linkContractsSearch.results.length > 0">
-            <li class="contract-name">Contract Name</li>
-            <li class="access-code">Access Code</li>
-            <li class="start-date">Start Date</li>
-            <li class="end-date">End Date</li>
-            <li class="rate">Rate</li>
-        </ul>
-        <!-- Remove .hidden when searching -->
-        <div  class="scrollable" ng-iscroll='searchContractsResultsList' ng-show="contractData.linkContractsSearch.results.length > 0">
-            <div class="wrapper">
-                <!-- Add .linked if it's a linked contract already -->
-                <ul class="contract" ng-click="clickedOnResult($index)" ng-repeat="item in contractData.linkContractsSearch.results" ng-class="{'linked': item.is_already_linked}">
-                    <li class="contract-name" ng-bind-html="escapeNull(item.contract_name)|highlight:contractData.linkContractsSearch.query:false"></li>
-                    <li class="access-code" ng-bind-html="escapeNull(item.access_code)|highlight:contractData.linkContractsSearch.query:false"></li>
-                    <li class="start-date">{{item.begin_date | date:dateFormat}}</li>
-                    <li class="end-date">{{item.end_date | date:dateFormat}}</li>
-                    <li class="rate" ng-if="item.rates.length <= 3">
-                        {{item.rates.join()}}
-                    </li>
-                    <li class="rate" ng-if="item.rates.length > 3" ng-init="showMore = true">
-                        {{ showMore ? item.rates.slice(0, 3).join() : item.rates.join()}}
-                        <span ng-show="showMore" ng-click="showMore = false" class="more">+ {{item.rates.length - 3}} More</span>
-                    </li>
-                </ul>
-                <!-- ... repeat for each found contract -->
+        <div class="actions">
+            <button ng-click="cancelSearch()" type="button" class="button blank">Cancel Search</button>
+        </div>
+    </div>
+
+    <div class="tab-details scrollable">
+
+        <!-- Show when initially showing the search form or when the search form is empty -->
+        <div class="info" ng-show="contractData.linkContractsSearch.results.length === 0">
+            <span class="icon-no-content icon-contracts"></span>
+            <strong class="h1">No Contracts</strong>
+            <span class="h2">Search by <strong>Constract Name</strong> or <strong>Access Code</strong></span>
+        </div>
+
+        <!-- Show this when we found some contracts -->
+        <div class="contracts-search-results" ng-show="contractData.linkContractsSearch.results.length > 0">
+            <ul class="contracts-search-results-header">
+                <li class="contract-details">
+                    Contract Details
+                </li>
+                <li class="contract-rates">
+                    Rates(s)
+                </li>
+                <li class="contract-dates">
+                    Dates
+                </li>
+                <li class="contract-status">
+                    Status
+                </li>
+            </ul>
+            <div class="contracts-search-results-content scrollable" ng-iscroll="searchContractsResultsList">
+                <div class="wrapper">
+                    <ul class="search-results">
+                        <li class="contract">
+                            <div class="faux-anchor" ng-click="clickedOnResult($index)" ng-repeat="item in contractData.linkContractsSearch.results">
+                                <div class="contract-details data">
+                                    <h2 ng-bind-html="escapeNull(item.contract_name)|highlight:contractData.linkContractsSearch.query:false"></h2>
+                                    <span class="access-code" ng-bind-html="escapeNull(item.access_code)|highlight:contractData.linkContractsSearch.query:false"></span>
+                                    <!-- If company show this -->
+                                    <span class="icons icon-guest-company colored" ng-if="item.account_details.type === 'COMPANY'">{{item.account_details.name}}</span>
+                                    <!-- If travel agent show this -->
+                                    <span class="icons icon-guest-travelagent colored" ng-if="item.account_details.type === 'TRAVELAGENT'">{{item.account_details.name}}</span>
+
+                                </div>
+                                <div class="contract-rates" ng-if="item.rates.length > 3" ng-init="showMore = true">
+                                    {{ showMore ? item.rates.slice(0, 3).join() : item.rates.join()}}
+                                    <span ng-show="showMore" ng-click="showMore = false" class="more">+ {{item.rates.length - 3}} More</span>
+                                </div>
+                                <div class="contract-dates">
+                                    <span class="start-date">{{item.begin_date | date:dateFormat}}</span>
+                                    <span class="end-date">{{item.end_date | date:dateFormat}}</span>
+                                </div>
+                                <div class="contract-status">
+                                    <!-- Add .active if active -->
+                                    <span class="icons icon-contracts" ng-class="{'active': item.is_active}">{{item.is_active ? 'Active': 'Inactive'}}</span>
+                                </div>
+                            </div>
+                        </li>                
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</span>
