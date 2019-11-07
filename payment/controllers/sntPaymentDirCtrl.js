@@ -805,6 +805,12 @@ angular.module('sntPay').controller('sntPaymentController',
                 cancellConfirmDBpopup();
             });
 
+            let isEMVEnabledForOverlayDeposit = function() {
+                return !$scope.hotelConfig.isStandAlone &&
+                    $rootScope.hotelDetails.enable_emv_for_overlay &&
+                    $scope.actionType === 'DEPOSIT_BALANCE_PAYMENT';
+            };
+
             $scope.submitPayment = function (payLoad) {
                 var errorMessage = ['Please enter a valid amount'],
                     paymentTypeId, // for CC payments, we need payment type id
@@ -822,7 +828,9 @@ angular.module('sntPay').controller('sntPaymentController',
                 // check if chip and pin is selected in case of six payments or SHIJI
                 // the rest of actions will in paySixPayController
                 if ($scope.selectedPaymentType === 'CC' &&
-                    ($scope.hotelConfig.paymentGateway === 'sixpayments' || ($scope.hotelConfig.paymentGateway === 'SHIJI' && !$rootScope.hotelDetails.shiji_token_enable_offline)) &&
+                    ($scope.hotelConfig.paymentGateway === 'sixpayments' ||
+                     ($scope.hotelConfig.paymentGateway === 'SHIJI' && !$rootScope.hotelDetails.shiji_token_enable_offline) ||
+                     isEMVEnabledForOverlayDeposit()) &&
                     !$scope.payment.isManualEntryInsideIFrame) {
                     $scope.$broadcast('INITIATE_CHIP_AND_PIN_PAYMENT', params);
                     return;
@@ -1000,7 +1008,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 if (isReset) {
                     $scope.payment.selectedPaymentCurrencyId = $rootScope.hotelCurrencyId;
                     $scope.payment.selectedPaymentCurrencySymbol = $rootScope.currencySymbol;
-                    $scope.payment.amount = $scope.originalAmount;
+                    $scope.payment.amount = parseFloat($scope.originalAmount);
                     $scope.feeData.calculatedFee = $scope.originalFee;
                 }                
 
@@ -1059,7 +1067,9 @@ angular.module('sntPay').controller('sntPaymentController',
                         }
                         // Add to guestcard feature for C&P
                         $scope.payment.showAddToGuestCard = !!$scope.reservationId && !$scope.payment.isManualEntryInsideIFrame;
-                    } else if (!isCardSelectionDisabled() && !$scope.showSelectedCard()) {
+                    } else if (!isCardSelectionDisabled() &&
+                               !$scope.showSelectedCard() &&
+                               !isEMVEnabledForOverlayDeposit()) {
                         //  In case no card has been selected yet, move to add card mode
                         changeToCardAddMode();
                     }
@@ -1444,7 +1454,8 @@ angular.module('sntPay').controller('sntPaymentController',
                         ($scope.splitBillEnabled && $scope.numSplits > $scope.completedSplitPayments);
 
                 return (isMLIEMV || $scope.hotelConfig.paymentGateway === 'sixpayments' ||
-                        ($scope.hotelConfig.paymentGateway === 'SHIJI' && !$rootScope.hotelDetails.shiji_token_enable_offline)) &&
+                        ($scope.hotelConfig.paymentGateway === 'SHIJI' && !$rootScope.hotelDetails.shiji_token_enable_offline) ||
+                        isEMVEnabledForOverlayDeposit()) &&
                         $scope.selectedPaymentType === 'CC' &&
                         $scope.payment.screenMode === 'PAYMENT_MODE' &&
                         isPendingPayment && $scope.actionType !== 'AR_REFUND_PAYMENT';
@@ -1557,7 +1568,10 @@ angular.module('sntPay').controller('sntPaymentController',
                 /**
                  *
                  */
-                if (!$scope.hotelConfig.isStandAlone && !isCardSelectionDisabled() && $scope.hotelConfig.paymentGateway !== 'CBA_AND_MLI') {
+                if (!$scope.hotelConfig.isStandAlone &&
+                    !isCardSelectionDisabled() &&
+                    $scope.hotelConfig.paymentGateway !== 'CBA_AND_MLI' &&
+                    !isEMVEnabledForOverlayDeposit()) {
                     changeToCardAddMode();
                 }
 
