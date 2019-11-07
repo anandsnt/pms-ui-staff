@@ -27,15 +27,13 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 		});
 
 		var onBarChartClick = function(e) {
-			var clickedElementData = {
-				type: e.type
-			};
-			console.log(clickedElementData);
-			console.log(JSON.stringify(e));
+			console.log(e);
 		};
 
-		var onLegendClick = function(e) {
-			console.log(JSON.stringify(e));
+		var onLegendClick = function(e, item) {
+			console.log(item.item_name);
+			//console.log(e.target.id);
+			//console.log(JSON.stringify(e));
 		};
 
 		var date = $rootScope.businessDate;

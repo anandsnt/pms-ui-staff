@@ -93,83 +93,6 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 		return chartDetails;
 	};
 
-
-	this.drawBarsOfBidirectonalChart = function(barData) {
-		var svg = barData.svg,
-			yScale = barData.yScale,
-			xScale = barData.xScale,
-			chartDetails = barData.chartDetails,
-			colorScheme = barData.colorScheme,
-			maxValue = barData.maxValue,
-			cssClassMappings = barData.cssClassMappings;
-
-		var vakken = svg.selectAll(".type")
-			.data(chartDetails.chartData.data)
-			.enter()
-			.append("g")
-			.attr("class", "bar")
-			.attr("transform", function(chart) {
-				return "translate(0," + yScale(chart.type) + ")";
-			});
-
-		var bars = vakken.selectAll("rect")
-			.data(function(mainItem) {
-				return mainItem.boxes;
-			})
-			.enter()
-			.append("g")
-			.attr("class", function(item) {
-				return cssClassMappings ? cssClassMappings[item.chartName + "_" + item.type] : "";
-			})
-			.attr("id", function(item) {
-				return item.elementId;
-			});
-
-		bars.append("rect")
-			.attr("height", yScale.bandwidth())
-			.attr("x", function(item) {
-				return xScale(item.xOrigin);
-			})
-			.attr("width", function(item) {
-				return xScale(item.xFinal) - xScale(item.xOrigin);
-			})
-			.style("fill", function(item) {
-				// console.log(item.chartName);
-				// console.log(colorScheme[item.chartName + 'ColorScheme']);
-				return colorScheme[item.chartName + 'ColorScheme'](item.type);
-			})
-			.on("click", function(e) {
-				barData.onBarChartClick(e);
-			});
-
-		// var isSmallBarItem = function(item) {
-		// 	var itemPercantage = item.count * 100 / maxValue;
-
-		// 	return (itemPercantage < 8 || itemPercantage > 4 && item.count < 10);
-		// };
-
-		// bars.append("text")
-		// 	.attr("x", function(item) {
-		// 		return ((xScale(item.xOrigin) + xScale(item.xFinal)) / 2);
-		// 	})
-		// 	.attr("y", function() {
-		// 		return yScale.bandwidth() / 2;
-		// 	})
-		// 	.attr("dy", function(item) {
-		// 		return isSmallBarItem(item) ? -1 * (yScale.bandwidth() / 2 + 10) : "0.5em";
-		// 	})
-		// 	.attr("dx", function(item) {
-		// 		return isSmallBarItem(item) && item.xOrigin <= 0 ? "-0.5em" : "0em";
-		// 	})
-		// 	.style("font-size", function(item) {
-		// 		return isSmallBarItem(item) ? "10px" : "15px";
-		// 	})
-		// 	.style("text-anchor", "middle")
-		// 	.text(function(item) {
-		// 		return item.count !== 0 ? item.count : '';
-		// 	});
-	};
-
 	this.addLegendItems = function(cssClassMappings, parentElement, legendData, onLegendClick) {
 
 		parentElement
@@ -211,20 +134,27 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 			legendItem.parentElement
 				.append("dd")
 				.attr("class", "legend-item")
-				.attr("id", item.id).append("span")
+				.attr("id", item.id)
+				.append("span")
+				.attr("id", item.id + "-count")
 				.attr("class", function(label) {
-					return legendItem.cssClassMappings[item.label];
+					return item.class;
 				})
 				.html(item.count);
-
-			$("#" + item.id).click(function(e){
-				legendItem.onLegendClick(e);
-			});
 
 			d3.select("#" + item.id)
 				.append("span")
 				.attr("class", "bar-label")
-				.html(item.label)
+				.attr("id", item.id + "-label")
+				.html(item.label);
+
+			var onClickEvent = function(e) {
+				// console.log(item);
+				legendItem.onLegendClick(e, item);
+			};
+
+			$("#" + item.id + "-label").click(onClickEvent);
+			$("#" + item.id + "-count").click(onClickEvent);
 		});
 	};
 
@@ -281,7 +211,9 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 				return "evt.target.setAttribute('fill', 'url(#" + mouseoutColor + " )');"
 			})
 			.on("click", function(e) {
-				barData.onBarChartClick(e);
+				var clickeElement = e.elementId ? e.elementId.replace("-", "_") : "";
+
+				barData.onBarChartClick(clickeElement);
 			});
 
 		d3.selectAll(".rect-bars")
@@ -371,7 +303,7 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 	this.addRandomNumbersForTesting = function(chartDetails) {
 		var combinedItemsCountArray = [];
 
-		var workPriority = chartDetails.chartData.label === 'AN_WORKLOAD'; ;
+		var workPriority = chartDetails.chartData.label === 'AN_WORKLOAD';;
 
 		if (workPriority) {
 			var b = {
