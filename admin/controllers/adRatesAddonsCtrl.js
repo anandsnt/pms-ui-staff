@@ -44,7 +44,7 @@ admin.controller('ADRatesAddonsCtrl', [
                 params.total(data.total_count);
 
                 // sort the results
-                $scope.data = params.sorting() ?
+                $scope.data = (params.sorting() && params.orderBy()[0].slice(1, 9) !== 'end_date') ?
                     $filter('orderBy')(data.results, params.orderBy()) :
                     data.results;
 
