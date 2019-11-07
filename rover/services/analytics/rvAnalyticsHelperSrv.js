@@ -148,9 +148,8 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 				.attr("id", item.id + "-label")
 				.html(item.label);
 
-			var onClickEvent = function(e) {
-				// console.log(item);
-				legendItem.onLegendClick(e, item);
+			var onClickEvent = function() {
+				legendItem.onLegendClick(item.item_name);
 			};
 
 			$("#" + item.id + "-label").click(onClickEvent);

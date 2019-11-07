@@ -269,18 +269,13 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
             dataLabel = 'AN_VACANT';
         }
 
-        var inspectedCount = rooms.filter(function(room) {
-            return room.status === 'INSPECTED';
-        }).length;
-        var cleanCount = rooms.filter(function(room) {
-            return room.status === 'CLEAN';
-        }).length;
-        var dirtyCount = rooms.filter(function(room) {
-            return room.status === 'DIRTY';
-        }).length;
-        var pickupCount = rooms.filter(function(room) {
-            return room.status === 'PICKUP';
-        }).length;
+        var inspectedCount = getInspectedRooms(rooms).length;
+
+        var cleanCount = getCleanRooms(rooms).length;
+
+        var dirtyCount = getDirtyRooms(rooms).length;
+
+        var pickupCount = getPickupRooms(rooms).length;
 
         var vacantRoomsData = {
             type: dataType,
@@ -380,17 +375,14 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
     };
 
     var buildStayOvers = function(activeReservations, roomStatuses, date) {
-        var stayOvers = activeReservations.filter(function(reservation) {
-            return reservation.reservation_status === 'CHECKEDIN' && reservation.departure_date !== date;
-        });
-        var cleanAndInspectedRooms = roomStatuses.filter(function(room) {
-            return room.status === 'INSPECTED' || room.status === 'CLEAN';
-        }).map(function(room) {
-            return room.room_number;
-        });
+        var stayOvers = getStayOvers(activeReservations, date);
+
+        var cleanAndInspectedRooms = getCleanAndInspectedRooms(roomStatuses);
+
         var cleanAndInspectedStayOversCount = stayOvers.filter(function(reservation) {
             return cleanAndInspectedRooms.includes(reservation.arrival_room_number);
         }).length;
+
         var dirtyOrPickupRoomsCount = stayOvers.length - cleanAndInspectedStayOversCount;
         
         return {
@@ -452,5 +444,107 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
       return reservations.filter(function(reservation) {
           return reservation.arrival_room_type === roomType || reservation.departure_room_type === roomType;
       });
+    };
+
+    /*
+     * This method is to get the reservations based on filters
+     */
+    this.getReservations = function(filterArgs) {
+        var reservations = that.filteredReservations();
+        var date = filterArgs.date;
+        switch(filterArgs.type) {
+            case 'arrivals_perfomed':
+                reservations = reservations.filter(function(reservation) {
+                    return reservation.arrival_date === date && reservation.reservation_status !== 'RESERVED';
+                });
+            case 'arrivals_remaining':
+                reservations = reservations.filter(function(reservation) {
+                    return reservation.arrival_date === date && reservation.reservation_status === 'RESERVED';
+                });
+            case 'departures_pending':
+                reservations = reservations.filter(function(reservation) {
+                    return reservation.departure_date === date && reservation.reservation_status === 'CHECKEDIN';
+                });
+            case 'departures_perfomed':
+                reservations = reservations.filter(function(reservation) {
+                    return reservation.departure_date === date && reservation.reservation_status === 'CHECKEDOUT';
+                });
+            case 'stayovers_perfomed':
+                var stayOvers = getStayOvers(reservations, date);
+                var cleanAndInspectedRooms = getCleanAndInspectedRooms(reservations);
+
+                reservations = stayOvers.filter(function(reservation) {
+                    return cleanAndInspectedRooms.includes(reservation.arrival_room_number);
+                });
+            case 'stayovers_remaining':
+                var stayOvers = getStayOvers(reservations, date);
+                var cleanAndInspectedRooms = getCleanAndInspectedRooms(that.filterdRoomStatuses());
+                reservations = stayOvers.filter(function(reservation) {
+                    return !cleanAndInspectedRooms.includes(reservation.arrival_room_number);
+                });
+            default:
+                break;
+        };
+        return reservations;
+    };
+
+    /*
+     * This method is used for getting the rooms based on filters
+     */
+    this.getRooms = function(filterArgs) {
+        var rooms = that.filterdRoomStatuses();
+
+        switch(filterArgs.type) {
+            case 'rooms_clean':
+                rooms = getCleanRooms(rooms);
+            case 'rooms_inspected':
+                rooms = getInspectedRooms(rooms);
+            case 'rooms_dirty':
+                rooms = getDirtyRooms(rooms);
+            case 'rooms_pickup':
+                rooms = getPickupRooms(rooms);
+            default:
+                break;
+        };
+
+        return rooms;
+    };
+
+    var getStayOvers = function(reservations, date) {
+        return reservations.filter(function(reservation) {
+            return reservation.reservation_status === 'CHECKEDIN' && reservation.departure_date !== date;
+        });
+    };
+
+    var getCleanAndInspectedRooms = function(rooms) {
+        return rooms.filter(function(room) {
+            return room.status === 'INSPECTED' || room.status === 'CLEAN';
+        }).map(function(room) {
+            return room.room_number;
+        });
+    };
+
+    var getInspectedRooms = function(rooms) {
+        return rooms.filter(function(room) {
+            return room.status === 'INSPECTED';
+        });
+    };
+
+    var getCleanRooms = function(rooms) {
+        return rooms.filter(function(room) {
+            return room.status === 'CLEAN';
+        });
+    };
+
+    var getDirtyRooms = function(rooms) {
+        return rooms.filter(function(room) {
+            return room.status === 'DIRTY';
+        });
+    };
+
+    var getPickupRooms = function(rooms) {
+        return rooms.filter(function(room) {
+            return room.status === 'PICKUP';
+        });
     };
 }]);

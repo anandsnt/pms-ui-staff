@@ -26,14 +26,25 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 			$scope: $scope
 		});
 
-		var onBarChartClick = function(e) {
-			console.log(e);
+		var getChartDetails = function(type) {
+			var clickedElementData = {
+				type: type,
+				date: $scope.dashboardFilter.datePicked,
+			};
+
+			console.log("\n\n type - " + type + "\n\n")
+			console.log("\n\n get ROOMS \n\n")
+			console.log(rvAnalyticsSrv.getRooms(clickedElementData));
+			console.log("\n\n get RESERVATIONS \n\n")
+			console.log(rvAnalyticsSrv.getReservations(clickedElementData));
+		}
+
+		var onBarChartClick = function(type) {
+			getChartDetails(type);
 		};
 
-		var onLegendClick = function(e, item) {
-			console.log(item.item_name);
-			//console.log(e.target.id);
-			//console.log(JSON.stringify(e));
+		var onLegendClick = function(type) {
+			getChartDetails(type);
 		};
 
 		var date = $rootScope.businessDate;
