@@ -26,7 +26,7 @@ angular.module('sntRover').controller('rvCardContractsLinkingCtrl', ['$scope', '
                 that.refreshSearchList();
             },
             fetchContractsForLinkingFailureCallback = function(errorMessage) {
-                $scope.$emit('setErrorMessage', errorMessage);
+                $scope.errorMessage = errorMessage;
             };
 
             $scope.contractData.accountId = $stateParams.id === "add" ? $scope.contactInformation.id : $stateParams.id;
@@ -47,6 +47,9 @@ angular.module('sntRover').controller('rvCardContractsLinkingCtrl', ['$scope', '
             if ($scope.contractData.linkContractsSearch.query.length > 2) {
                 that.fetchContractsForLinking();
             }
+            else {
+                $scope.contractData.linkContractsSearch.results = [];
+            }
         };
         // Handle clear search.
         $scope.clearQuery = function() {
@@ -61,13 +64,12 @@ angular.module('sntRover').controller('rvCardContractsLinkingCtrl', ['$scope', '
             var clickedItem = $scope.contractData.linkContractsSearch.results[index];
 
             var linkContractSuccessCallback = function() {
-                //clickedItem.is_already_linked = true;
                 $scope.contractData.selectedContractId = clickedItem.id;
                 $scope.contractData.linkContractsSearch.query = '';
                 $scope.$emit('fetchContractsList');
             },
             linkContractFailureCallback = function(errorMessage) {
-                $scope.$emit('setErrorMessage', errorMessage);
+                $scope.errorMessage = errorMessage;
             };
 
             var options = {

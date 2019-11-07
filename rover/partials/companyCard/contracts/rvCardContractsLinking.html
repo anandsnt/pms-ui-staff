@@ -17,7 +17,7 @@
     </div>
 
     <div class="tab-details scrollable" ng-class="{'searching' : contractData.linkContractsSearch.results.length > 0, 'no-content': contractData.linkContractsSearch.results.length === 0 }">
-        
+
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
         <!-- Show when initially showing the search form or when the search form is empty -->
@@ -46,8 +46,8 @@
             <div class="contracts-search-results-content scrollable" ng-iscroll="searchContractsResultsList">
                 <div class="wrapper">
                     <ul class="search-results">
-                        <li class="contract">
-                            <div class="faux-anchor" ng-click="clickedOnResult($index)" ng-repeat="item in contractData.linkContractsSearch.results">
+                        <li class="contract" ng-click="clickedOnResult($index)" ng-repeat="item in contractData.linkContractsSearch.results">
+                            <div class="faux-anchor">
                                 <div class="contract-details data">
                                     <h2 ng-bind-html="escapeNull(item.contract_name)|highlight:contractData.linkContractsSearch.query:false"></h2>
                                     <span class="access-code" ng-bind-html="escapeNull(item.access_code)|highlight:contractData.linkContractsSearch.query:false"></span>
