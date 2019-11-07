@@ -58,6 +58,15 @@
                     </div>
                 </td>
             </tr>
+            <tr ng-if="!data.is_overlay_hotel">
+                <td>French nationality export </td>
+                <td>
+                    <div class="switch-button" ng-class="{'on' : legalSettings.is_french_export_enabled}">
+                        <input name="no-modify" id="no-modify" value="no-modify" ng-model="legalSettings.is_french_export_enabled" type="checkbox" checked="">
+                        <span class="switch-icon"></span>
+                    </div>
+                </td>
+            </tr>
         </tbody> 
     </table>
 </div>
