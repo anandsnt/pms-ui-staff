@@ -180,6 +180,11 @@ angular.module('sntRover')
 
                 var leftSideLegendDiv = d3.select("#left-side-legend");
                 var yBandwidth = yScale.bandwidth();
+                var leftLegendCommonData = {
+                    cssClassMappings: legendColorMappings,
+                    parentElement: leftSideLegendDiv,
+                    onLegendClick: chartDetails.onLegendClick
+                };
 
                 // ARRIVALS LEFT LEGEND
                 var arrivalsLeftLegendData = {
@@ -194,7 +199,15 @@ angular.module('sntRover')
                     }]
                 };
 
-                rvAnalyticsHelperSrv.addLegendItems(legendColorMappings, leftSideLegendDiv, arrivalsLeftLegendData);
+                try {
+                rvAnalyticsHelperSrv.addLegendItemsToChart(_.extend(leftLegendCommonData, {
+                    legendData: arrivalsLeftLegendData
+                }));
+
+            } catch(e){
+                console.log(e)
+            }
+                //rvAnalyticsHelperSrv.addLegendItems(legendColorMappings, leftSideLegendDiv, arrivalsLeftLegendData);
 
                 var singleLegendTitleHeightPlusMargin = $("#arrivals-right-title-left").height() + 10;
                 var singleLegendItemHeightPlusMargin = $("#left-legend-arrivals").height() + 10;

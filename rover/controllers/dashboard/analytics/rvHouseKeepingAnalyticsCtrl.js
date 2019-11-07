@@ -27,7 +27,15 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 		});
 
 		var onBarChartClick = function(e) {
-			// console.log(JSON.stringify(e));
+			var clickedElementData = {
+				type: e.type
+			};
+			console.log(clickedElementData);
+			console.log(JSON.stringify(e));
+		};
+
+		var onLegendClick = function(e) {
+			console.log(JSON.stringify(e));
 		};
 
 		var date = $rootScope.businessDate;
@@ -38,7 +46,8 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 			rvAnalyticsSrv.hkOverview($scope.dashboardFilter.datePicked, false).then(function(data) {
 				var chartDetails = {
 					chartData: data,
-					onBarChartClick: onBarChartClick
+					onBarChartClick: onBarChartClick,
+					onLegendClick: onLegendClick
 				};
 
 				d3.select('#d3-plot').selectAll('svg').remove();
@@ -53,7 +62,8 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 
 				var chartDetails = {
 					chartData: data,
-					onBarChartClick: onBarChartClick
+					onBarChartClick: onBarChartClick,
+					onLegendClick: onLegendClick
 				};
 
 				d3.select('#d3-plot').selectAll('svg').remove();

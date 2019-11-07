@@ -170,7 +170,7 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 		// 	});
 	};
 
-	this.addLegendItems = function(cssClassMappings, parentElement, legendData) {
+	this.addLegendItems = function(cssClassMappings, parentElement, legendData, onLegendClick) {
 
 		parentElement
 			.append("dt")
@@ -188,6 +188,38 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 					return cssClassMappings[item.label];
 				})
 				.html(item.count);
+
+			d3.select("#" + item.id)
+				.append("span")
+				.attr("class", "bar-label")
+				.html(item.label)
+		});
+	};
+
+	this.addLegendItemsToChart = function(legendItem) {
+
+		// cssClassMappings, parentElement, legendData, onLegendClick
+
+		legendItem.parentElement
+			.append("dt")
+			.attr("class", "legend-title")
+			.attr("id", legendItem.legendData.id)
+			.html(legendItem.legendData.title)
+			.style("margin-top", legendItem.legendData.margin_top + "px");
+
+		_.each(legendItem.legendData.items, function(item) {
+			legendItem.parentElement
+				.append("dd")
+				.attr("class", "legend-item")
+				.attr("id", item.id).append("span")
+				.attr("class", function(label) {
+					return legendItem.cssClassMappings[item.label];
+				})
+				.html(item.count);
+
+			$("#" + item.id).click(function(e){
+				legendItem.onLegendClick(e);
+			});
 
 			d3.select("#" + item.id)
 				.append("span")
