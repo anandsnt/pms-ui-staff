@@ -1452,15 +1452,15 @@
                             }
 
                             .contract-dates {
-                                width: 85px;
+                                width: 100px;
                             }
 
                             .contract-rates {
-                                width: 315px;
+                                width: 380px;
                             }
 
                             .contract-details {
-                                .calc-width( 100, 500)
+                                .calc-width( 100, 580)
                             }
 
                             .contract-details {
@@ -1500,6 +1500,10 @@
                             .contracts-list-items {
                                 position: relative;
                                 height: 100%;
+
+                                .wrapper {
+                                    padding: 20px;
+                                }
 
                                 .button {
                                     width: 100%;
@@ -1653,112 +1657,114 @@
                                                 }
                                             }
                                         }
+
+                                        &:last-child {
+                                            ul {
+                                                li {
+                                                    &:last-child {
+                                                        border-bottom: none;
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
 
-                                &.contracts-linked {
+                                .contract-link {
+                                    position: relative;
+                                    height: 40px;
+                                    #flexbox > .parent( row, center, center, '' );
+                                    &:not(.without-lines) {
+                                        .size( 60px, 100% );
+
+                                        &:before,
+                                        &:after {
+                                            content: '';
+                                            position: absolute;
+                                            width: 2px;
+                                            height: calc(~"50% - 10px");
+                                            background: rgba( 0, 0, 0, 0.15 );
+                                        }
+
+                                        &:before {
+                                            top: 0;
+                                            left: calc(~"50% - 1px");
+                                        }
+
+                                        &:after {
+                                            bottom: 0;
+                                            left: calc(~"50% - 1px");
+                                        }
+                                    }
+
+                                    &.without-lines {
+                                        background: rgba(255, 255, 255, 0.5);
+                                        padding: 0 30px 0 10px;
+                                        text-align: left;
+                                        justify-content: left;
+                                        .box-shadow(1px 0 1px rgba( 0, 0, 0, 0.15));
+                                    }
                                     
-                                    .wrapper {
-                                        padding: 20px;
+                                    span {
+                                        font-size: 14px;
+                                        line-height: 14px;
+                                        text-transform: uppercase;
+                                        font-weight: 600;
                                     }
+                                }
 
-                                    .contract-link {
+                                .contract {
+                                    padding: 10px 25px 10px 10px;
+                                    background-color: @white;
+                                    background-position: calc(~"100% - 10px" ) 50%;
+                                    cursor: pointer;
+                                    .box-shadow();
+
+                                    &.with-image {
                                         position: relative;
-                                        height: 40px;
-                                        #flexbox > .parent( row, center, center, '' );
+                                        padding-left: 45px;
                                         
-                                        &:not(.without-lines) {
-                                            .size( 60px, 100% );
-
-                                            &:before,
-                                            &:after {
-                                                content: '';
-                                                position: absolute;
-                                                width: 2px;
-                                                height: calc(~"50% - 10px");
-                                                background: rgba( 0, 0, 0, 0.15 );
-                                            }
-
-                                            &:before {
-                                                top: 0;
-                                                left: calc(~"50% - 1px");
-                                            }
-
-                                            &:after {
-                                                bottom: 0;
-                                                left: calc(~"50% - 1px");
-                                            }
+                                        &:not(:last-child) {
+                                            margin-bottom: 10px;
                                         }
 
-                                        &.without-lines {
-                                            background: rgba(255, 255, 255, 0.5);
-                                            padding: 0 30px 0 10px;
-                                            text-align: left;
-                                            justify-content: left;
-                                            .box-shadow(1px 0 1px rgba( 0, 0, 0, 0.15));
-                                        }
-                                        
-                                        span {
-                                            font-size: 14px;
-                                            line-height: 14px;
-                                            text-transform: uppercase;
-                                            font-weight: 600;
+                                        .guest-image {
+                                            position: absolute;
+                                            top: 10px;
+                                            left: 10px;
+                                            .square(25px);
+
+                                            &.icons {
+                                                background-size: 80px;
+                                            }
+                        
+                                            &.icon-company {
+                                                background-color: @ccard;
+                                                background-position: 8px -2340px;
+                                            }
+                        
+                                            &.icon-travel-agent {
+                                                background-color: @tacard;
+                                                background-position: 5px -2381px;
+                                            }
                                         }
                                     }
 
-                                    .contract {
-                                        padding: 10px 25px 10px 10px;
-                                        background-color: @white;
-                                        background-position: calc(~"100% - 10px" ) 50%;
-                                        cursor: pointer;
-                                        .box-shadow();
+                                    .item-title {
+                                        color: @black;
+                                        font-size: 16px;
+                                        font-weight: 700;
+                                    }
 
-                                        &.with-image {
-                                            position: relative;
-                                            padding-left: 45px;
-                                            
-                                            &:not(:last-child) {
-                                                margin-bottom: 10px;
-                                            }
+                                    .item-info {
+                                        font-size: 14px;
+                                        color: @grey3;
+                                        line-height: 1;
+                                        #flexbox > .parent( row, flex-start, '', '' );
 
-                                            .guest-image {
-                                                position: absolute;
-                                                top: 10px;
-                                                left: 10px;
-                                                .square(25px);
-
-                                                &.icons {
-                                                    background-size: 80px;
-                                                }
-                            
-                                                &.icon-company {
-                                                    background-color: @ccard;
-                                                    background-position: 8px -2340px;
-                                                }
-                            
-                                                &.icon-travel-agent {
-                                                    background-color: @tacard;
-                                                    background-position: 5px -2381px;
-                                                }
-                                            }
-                                        }
-
-                                        .item-title {
-                                            color: @black;
-                                            font-size: 16px;
-                                            font-weight: 700;
-                                        }
-
-                                        .item-info {
-                                            font-size: 14px;
-                                            color: @grey3;
-                                            line-height: 1;
-                                            #flexbox > .parent( row, flex-start, '', '' );
-
-                                            .icon-single-arrow {
-                                                .opacity(35);
-                                                margin: 0 5px;
-                                            }
+                                        .icon-single-arrow {
+                                            .opacity(35);
+                                            margin: 0 5px;
                                         }
                                     }
                                 }
@@ -2036,55 +2042,18 @@
 
                         .holder {
                             &.left {
-                                margin-right: 20px;
-                                .calc-width( 100, 235 );
-
-                                &.short {
-                                    .calc-width( 100, 275 );
-                                }
+                                margin-right: 40px;
+                                .calc-width( 100, 340 );
                             }
 
                             &.right {
-                                width: 215px;
+                                width: 300px;
 
                                 .button { 
                                     width: 100%; 
 
                                     &:not(:last-child) {
                                         margin-bottom: 10px;
-                                    }
-                                }
-
-                                &.wide {
-                                    width: 250px;
-                                }
-
-                                .no-content {
-                                    padding: 0;
-
-                                    .info {
-                                        .h1 {
-                                            font-size: 18px;
-                                            margin: 0;
-                                            line-height: 1;
-                                        }
-
-                                        .h2 {
-                                            font-size: 15px;
-                                            line-height: 21px;
-                                        }
-                                    }
-
-                                    .icon-no-content {
-                                        margin-top: 20px;
-
-                                        &.icon-contracts {
-                                            background-size: 70px;
-                                            height: 70px;
-                                            width: 75px;
-                                            background-position: 0px -1344px;
-                                        }
-
                                     }
                                 }
                             }
