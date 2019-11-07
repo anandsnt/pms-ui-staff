@@ -132,8 +132,13 @@ admin.controller('ADRatesAddonsCtrl', [
         };
 
         $scope.isAddOnExpired = function(item) {
-            var endDate = new Date(item.end_date);
-            var businessDate = new Date($rootScope.businessDate);
+            var endDate, businessDate;
+
+            if (!item.end_date) {
+                return false;
+            }
+            endDate = new Date(item.end_date);
+            businessDate = new Date($rootScope.businessDate);
             if ( endDate < businessDate) {
                 return true;
             }

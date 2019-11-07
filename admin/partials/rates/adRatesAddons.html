@@ -41,6 +41,7 @@
 
 						<td header-class="width-50" ng-hide="currentClickedAddon === $index" >	
 							{{ getActiveDate(item) }}
+							<em ng-if="isAddOnExpired(item)">(Expired)</em>
 						</td>
 						<td header-class="width-10" ng-hide="currentClickedAddon === $index || !(showZestWebSettings || showZestStationSettings)">	
 							<a class="{{returnAddonUpseellClass(item)}}">upsell</a>
