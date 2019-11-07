@@ -452,23 +452,28 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
     this.getReservations = function(filterArgs) {
         var reservations = that.filteredReservations();
         var date = filterArgs.date;
+
         switch(filterArgs.type) {
             case 'arrivals_perfomed':
                 reservations = reservations.filter(function(reservation) {
                     return reservation.arrival_date === date && reservation.reservation_status !== 'RESERVED';
                 });
+                break;
             case 'arrivals_remaining':
                 reservations = reservations.filter(function(reservation) {
                     return reservation.arrival_date === date && reservation.reservation_status === 'RESERVED';
                 });
+                break;
             case 'departures_pending':
                 reservations = reservations.filter(function(reservation) {
                     return reservation.departure_date === date && reservation.reservation_status === 'CHECKEDIN';
                 });
+                break;
             case 'departures_perfomed':
                 reservations = reservations.filter(function(reservation) {
                     return reservation.departure_date === date && reservation.reservation_status === 'CHECKEDOUT';
                 });
+                break;
             case 'stayovers_perfomed':
                 var stayOvers = getStayOvers(reservations, date);
                 var cleanAndInspectedRooms = getCleanAndInspectedRooms(reservations);
@@ -476,12 +481,14 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
                 reservations = stayOvers.filter(function(reservation) {
                     return cleanAndInspectedRooms.includes(reservation.arrival_room_number);
                 });
+                break;
             case 'stayovers_remaining':
                 var stayOvers = getStayOvers(reservations, date);
                 var cleanAndInspectedRooms = getCleanAndInspectedRooms(that.filterdRoomStatuses());
                 reservations = stayOvers.filter(function(reservation) {
                     return !cleanAndInspectedRooms.includes(reservation.arrival_room_number);
                 });
+                break;
             default:
                 break;
         };
@@ -497,12 +504,16 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         switch(filterArgs.type) {
             case 'rooms_clean':
                 rooms = getCleanRooms(rooms);
+                break;
             case 'rooms_inspected':
                 rooms = getInspectedRooms(rooms);
+                break;
             case 'rooms_dirty':
                 rooms = getDirtyRooms(rooms);
+                break;
             case 'rooms_pickup':
                 rooms = getPickupRooms(rooms);
+                break;
             default:
                 break;
         };
