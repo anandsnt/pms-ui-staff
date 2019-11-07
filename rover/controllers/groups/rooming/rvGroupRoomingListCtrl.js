@@ -1706,8 +1706,11 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                         $timeout(function() {
                             $scope.print_type = '';
                             removePrintOrientation();
+                            $scope.translations = {};
                             $scope.reservations = util.deepCopy($scope.resevationsBeforePrint);
                             $scope.resevationsBeforePrint = [];
+                            $scope.$emit('UPDATE_HEADING', $scope.headingBeforePrint);
+                            $scope.headingBeforePrint = '';
     
                         }, 1200);
                         $timeout(function() {
@@ -1765,6 +1768,8 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             $scope.reservations = data.results;
             $scope.translations = data.translations;
             $scope.print_type = 'rooming_list';
+            $scope.headingBeforePrint = $scope.heading;
+            $scope.$emit('UPDATE_HEADING', $scope.translations['group_details']);
 
         };
 
