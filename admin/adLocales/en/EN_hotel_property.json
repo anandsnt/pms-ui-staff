@@ -2,5 +2,6 @@
 "PMS" : "PMS",
 "PMS_OVERLAY" : "PMS Overlay",
 "OWS_CHIP_N_PIN": "ENABLE OWS CHIP AND PIN FLAG",
-"OWS_OPI_AUTH": "Enable OWS OPI Authorization"
+"OWS_OPI_AUTH": "Enable OWS OPI Authorization",
+"EMV_FOR_OVERLAY": "Enable EMV Payment"
 

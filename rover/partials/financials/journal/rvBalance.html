@@ -1,5 +1,5 @@
 <span ng-controller="RVJournalBalanceController" ng-click="clickedOnPayment($event)">
-    <div id="journal-content" class="journal-content balance" ng-if="!balanceData.is_eod_not_run">
+    <div id="journal-content" class="journal-content balance" ng-if="!balanceData.data_available">
 
         <div class="journal-summary balance-summary first">
             <h3>Deposit Ledger</h3>
@@ -86,7 +86,7 @@
         </div>
         
     </div>
-    <div id="journal-content" class="journal-content no-content" ng-if="balanceData.is_eod_not_run">
+    <div id="journal-content" class="journal-content no-content" ng-if="balanceData.data_available">
         <div class="info">
             <span class="icon-no-content icon-rates"></span>
             <strong class="h1">No Data Available</strong>

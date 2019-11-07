@@ -1235,5 +1235,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			ngDialog.close();
 		};
 
+    	$scope.$on('ANALYTICS_VIEW_ACTIVE', $scope.clearResults);
 	}
 ]);

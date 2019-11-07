@@ -16,7 +16,8 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 		$scope.screenData = {
 			selectedChart: 'FO_ARRIVALS',
 			hideChartData: true,
-			analyticsDataUpdatedTime: ""
+			analyticsDataUpdatedTime: "",
+			showPreviousDayData: false
 		};
 
 		$controller('rvFrontOfficeWorkloadCtrl', {
@@ -60,7 +61,9 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 
 		var clearAllExistingChartElements = function() {
 			d3.select('#d3-plot').selectAll('svg').remove();
-			document.getElementById("left-side-legend").innerHTML = "";
+			if (document.getElementById("left-side-legend")) {
+				document.getElementById("left-side-legend").innerHTML = "";
+			}
 			document.getElementById("right-side-legend").innerHTML = "";
 		};
 
@@ -98,10 +101,12 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 			});
 		});
 
-		$scope.$on('ANALYTICS_MENU_CHANGED', function(e, selectedChart){
+		$scope.$on('ANALYTICS_MENU_CHANGED', function(e, selectedChart) {
 			$scope.screenData.selectedChart = selectedChart;
-			clearAllExistingChartElements();
-			drawChart();
+			$timeout(function() {
+				clearAllExistingChartElements();
+				drawChart();
+			}, 0);
 		});
 
 		$scope.$on("$destroy", function() {
@@ -153,6 +158,11 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
         $scope.$on("$destroy", function() {
 			$('base').attr('href', initialBaseHrefValue);
 		});
+
+		$scope.previousDaySelectionChanged = function() {
+			clearAllExistingChartElements();
+            drawChart();
+		};
 
 		(function() {
 			fetchData($scope.dashboardFilter.datePicked)
