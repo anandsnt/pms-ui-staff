@@ -2,34 +2,19 @@ angular.module('sntRover')
     .controller('rvHkWokrPriorityCtrl', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvAnalyticsHelperSrv',
         function($scope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv) {
 
-            var cssClassMappings = {
-                "Checked In": "bar bar-green bar-light",
-                "Early Check in": "bar bar-green bar-dark",
-                "Remaining": "bar bar-green",
-
-                "Checked Out": "bar bar-red bar-light",
-                "Late checkout": "bar bar-red bar-dark",
-                "Pending": "bar bar-red",
-
-                "Dirty": "bar bar-red",
-                "Pickup": "bar bar-orange",
-                "Clean": "bar bar-green",
-                "Inspected": "bar bar-green bar-dark"
-            };
-
             var colorMappings = {
-                "arrivals_perfomed": rvAnalyticsHelperSrv.gradientMappings['greenLight'],
-                "arrivals_early_checkin": rvAnalyticsHelperSrv.gradientMappings['greenDark'],
-                "arrivals_remaining": rvAnalyticsHelperSrv.gradientMappings['green'],
+                "arrivals_perfomed": rvAnalyticsHelperSrv.constructColorMappings('arrivals_perfomed', 'greenLight'),
+                "arrivals_early_checkin": rvAnalyticsHelperSrv.constructColorMappings('arrivals_perfomed', 'greenDark'),
+                "arrivals_remaining": rvAnalyticsHelperSrv.constructColorMappings('arrivals_remaining', 'green'),
 
-                "departures_perfomed": rvAnalyticsHelperSrv.gradientMappings['redLight'],
-                "departures_pending": rvAnalyticsHelperSrv.gradientMappings['red'],
-                "departures_late_checkout": rvAnalyticsHelperSrv.gradientMappings['redDark'],
+                "departures_perfomed": rvAnalyticsHelperSrv.constructColorMappings('departures_perfomed', 'redLight'),
+                "departures_pending": rvAnalyticsHelperSrv.constructColorMappings('departures_pending', 'red'),
+                "departures_late_checkout": rvAnalyticsHelperSrv.constructColorMappings('departures_late_checkout', 'redDark'),
 
-                "vacant_clean": rvAnalyticsHelperSrv.gradientMappings['green'],
-                "vacant_inspected": rvAnalyticsHelperSrv.gradientMappings['greenDark'],
-                "vacant_dirty": rvAnalyticsHelperSrv.gradientMappings['red'],
-                "vacant_pickup": rvAnalyticsHelperSrv.gradientMappings['orange']
+                "vacant_clean": rvAnalyticsHelperSrv.constructColorMappings('vacant_clean', 'green'),
+                "vacant_inspected": rvAnalyticsHelperSrv.constructColorMappings('vacant_inspected', 'greenDark'),
+                "vacant_dirty": rvAnalyticsHelperSrv.constructColorMappings('vacant_dirty', 'red'),
+                "vacant_pickup": rvAnalyticsHelperSrv.constructColorMappings('vacant_pickup', 'orange')
             };
 
             $scope.drawHkWorkPriorityChart = function(chartDetails) {
@@ -114,7 +99,8 @@ angular.module('sntRover')
                     xScale: xScale,
                     chartDetails: chartDetails,
                     maxValue: maxValueInBotheDirections,
-                    colorMappings: colorMappings
+                    colorMappings: colorMappings,
+                    onBarChartClick: chartDetails.onBarChartClick
                 };
 
                 rvAnalyticsHelperSrv.drawBarChart(dataForDrawingBars);
@@ -192,6 +178,10 @@ angular.module('sntRover')
 
                 var leftSideLegendDiv = d3.select("#left-side-legend");
                 var yBandwidth = yScale.bandwidth();
+                var leftLegendCommonData = {
+                    parentElement: leftSideLegendDiv,
+                    onLegendClick: chartDetails.onLegendClick
+                };
 
                 var arrivalsLeftLegendData = {
                     "title": "Arrivals",
@@ -199,13 +189,16 @@ angular.module('sntRover')
                     "margin_top": secondHorizontalLineYoffset - yInnerPadding / 2 - yBandwidth / 2,
                     "items": [{
                         "id": "left-legend-arrivals",
-                        "class": cssClassMappings["Checked In"],
+                        "class": colorMappings.arrivals_perfomed.legend_class,
                         "label": "Checked In",
-                        "count": chartDetails.perfomed_arrivals_count
+                        "count": chartDetails.perfomed_arrivals_count,
+                        "item_name": colorMappings.arrivals_perfomed.item_name,
                     }]
                 };
 
-                rvAnalyticsHelperSrv.addLegendItems(cssClassMappings, leftSideLegendDiv, arrivalsLeftLegendData);
+                rvAnalyticsHelperSrv.addLegendItemsToChart(_.extend(leftLegendCommonData, {
+                    legendData: arrivalsLeftLegendData
+                }));
 
                 var singleLegendTitleHeightPlusMargin = $("#arrivals-right-title-left").height() + 10;
                 var singleLegendItemHeightPlusMargin = $("#left-legend-arrivals").height() + 10;
@@ -216,23 +209,29 @@ angular.module('sntRover')
                     "margin_top": yBandwidth - singleLegendTitleHeightPlusMargin,
                     "items": [{
                         "id": "left-legend-dirty",
-                        "class": cssClassMappings["Dirty"],
+                        "class": colorMappings.vacant_dirty.legend_class,
                         "label": "Dirty",
-                        "count": chartDetails.dirty_vacant_count
+                        "count": chartDetails.dirty_vacant_count,
+                        "item_name": colorMappings.vacant_dirty.item_name
                     }, {
                         "id": "left-legend-pickup",
-                        "class": cssClassMappings["Pickup"],
+                        "class": colorMappings.vacant_pickup.legend_class,
                         "label": "Pickup",
-                        "count": chartDetails.pickup_vacant_count
+                        "count": chartDetails.pickup_vacant_count,
+                        "item_name": colorMappings.vacant_pickup.item_name
                     }, {
                         "id": "left-legend-clean",
-                        "class": cssClassMappings["Clean"],
+                        "class": colorMappings.vacant_clean.legend_class,
                         "label": "Clean",
-                        "count": chartDetails.clean_vacant_count
+                        "count": chartDetails.clean_vacant_count,
+                        "item_name": colorMappings.vacant_clean.item_name
                     }]
                 };
 
-                rvAnalyticsHelperSrv.addLegendItems(cssClassMappings, leftSideLegendDiv, vacantLeftLegendData);
+                rvAnalyticsHelperSrv.addLegendItemsToChart(_.extend(leftLegendCommonData, {
+                    legendData: vacantLeftLegendData
+                }));
+
                 var calculatedMarginTop = yBandwidth - 3 * singleLegendTitleHeightPlusMargin;
 
                 var departuresLeftLegendData = {
@@ -241,19 +240,26 @@ angular.module('sntRover')
                     "margin_top": calculatedMarginTop > 0 ? calculatedMarginTop : 0,
                     "items": [{
                         "id": "left-legend-departures",
-                        "class": cssClassMappings["Checked Out"],
+                        "class": colorMappings.departures_perfomed.legend_class,
                         "label": "Checked Out",
-                        "count": chartDetails.perfomed_departures_count
+                        "count": chartDetails.perfomed_departures_count,
+                        "item_name": colorMappings.departures_perfomed.item_name
                     }]
                 };
 
-                rvAnalyticsHelperSrv.addLegendItems(cssClassMappings, leftSideLegendDiv, departuresLeftLegendData);
+                rvAnalyticsHelperSrv.addLegendItemsToChart(_.extend(leftLegendCommonData, {
+                    legendData: departuresLeftLegendData
+                }));
 
                 /************************** LEFT LEGEND END HERE ************************/
 
                 /************************** RIGHT LEGEND STARTS HERE ************************/
 
                 var rightSideLegendDiv = d3.select("#right-side-legend");
+                var rightLegendCommonData = {
+                    parentElement: rightSideLegendDiv,
+                    onLegendClick: chartDetails.onLegendClick
+                };
 
                 var arrivalsRightLegendData = {
                     "title": "Arrivals",
@@ -261,18 +267,22 @@ angular.module('sntRover')
                     "margin_top": secondHorizontalLineYoffset - yInnerPadding / 2 - yBandwidth / 2,
                     "items": [{
                         "id": "right-legend-early-checkin",
-                        "class": cssClassMappings["Early Check in"],
+                        "class": colorMappings.arrivals_early_checkin.legend_class,
                         "label": "Early Check in",
-                        "count": chartDetails.early_checkin_arrivals_count
+                        "count": chartDetails.early_checkin_arrivals_count,
+                        "item_name": colorMappings.arrivals_early_checkin.item_name
                     }, {
                         "id": "right-legend-remaining",
-                        "class": cssClassMappings["Remaining"],
+                        "class": colorMappings.arrivals_remaining.legend_class,
                         "label": "Remaining",
-                        "count": chartDetails.remaining_arrivals_count
+                        "count": chartDetails.remaining_arrivals_count,
+                        "item_name": colorMappings.arrivals_remaining.item_name
                     }]
                 };
 
-                rvAnalyticsHelperSrv.addLegendItems(cssClassMappings, rightSideLegendDiv, arrivalsRightLegendData);
+                rvAnalyticsHelperSrv.addLegendItemsToChart(_.extend(rightLegendCommonData, {
+                    legendData: arrivalsRightLegendData
+                }));
 
                 var vacantRightLegendData = {
                     "title": "Vacant",
@@ -280,13 +290,16 @@ angular.module('sntRover')
                     "margin_top": yBandwidth - 2 * singleLegendTitleHeightPlusMargin,
                     "items": [{
                         "id": "right-legend-dirty",
-                        "class": cssClassMappings["Inspected"],
+                        "class": colorMappings.vacant_inspected.legend_class,
                         "label": "Inspected",
-                        "count": chartDetails.inspected_vacant_count
+                        "count": chartDetails.inspected_vacant_count,
+                        "item_name": colorMappings.vacant_inspected.item_name
                     }]
                 };
 
-                rvAnalyticsHelperSrv.addLegendItems(cssClassMappings, rightSideLegendDiv, vacantRightLegendData);
+                rvAnalyticsHelperSrv.addLegendItemsToChart(_.extend(rightLegendCommonData, {
+                    legendData: vacantRightLegendData
+                }));
 
                 var departuresRightLegendData = {
                     "title": "Departures",
@@ -294,18 +307,22 @@ angular.module('sntRover')
                     "margin_top": yBandwidth - singleLegendTitleHeightPlusMargin,
                     "items": [{
                         "id": "right-legend-pending",
-                        "class": cssClassMappings["Pending"],
+                        "class": colorMappings.departures_pending.legend_class,
                         "label": "Pending",
-                        "count": chartDetails.pending_departures_count
+                        "count": chartDetails.pending_departures_count,
+                        "item_name": colorMappings.departures_pending.item_name
                     }, {
                         "id": "right-legend-lc",
-                        "class": cssClassMappings["Late checkout"],
+                        "class": colorMappings.departures_late_checkout.legend_class,
                         "label": "Late checkout",
-                        "count": chartDetails.late_checkout_departures_count
+                        "count": chartDetails.late_checkout_departures_count,
+                        "item_name": colorMappings.departures_late_checkout.item_name
                     }]
                 };
 
-                rvAnalyticsHelperSrv.addLegendItems(cssClassMappings, rightSideLegendDiv, departuresRightLegendData);
+                rvAnalyticsHelperSrv.addLegendItemsToChart(_.extend(rightLegendCommonData, {
+                    legendData: departuresRightLegendData
+                }));
 
                 /************************** RIGHT LEGEND ENDS HERE ************************/
 

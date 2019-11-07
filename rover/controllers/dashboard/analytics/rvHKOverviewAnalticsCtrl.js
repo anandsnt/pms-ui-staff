@@ -245,10 +245,10 @@ angular.module('sntRover')
                         "item_name": colorMappings.rooms_clean.item_name
                     }, {
                         "id": "left-legend-pickup",
-                        "class": colorMappings.rooms_pickup.legend_class,
+                        "class": colorMappings.rooms_inspected.legend_class,
                         "label": "Inspected",
                         "count": chartDetails.inspected_rooms_count,
-                        "item_name": colorMappings.rooms_pickup.item_name
+                        "item_name": colorMappings.rooms_inspected.item_name
                     }]
                 };
 
