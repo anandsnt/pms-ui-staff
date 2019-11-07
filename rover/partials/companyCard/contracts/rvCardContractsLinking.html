@@ -1,7 +1,5 @@
 <span ng-controller="rvCardContractsLinkingCtrl">
 
-    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-
     <!-- Show this when searching for linked contracts -->
     <div class="tab-header">
         <div class="search-form">
@@ -18,7 +16,9 @@
         </div>
     </div>
 
-    <div class="tab-details scrollable">
+    <div class="tab-details scrollable" ng-class="{'searching' : contractData.linkContractsSearch.results.length > 0, 'no-content': contractData.linkContractsSearch.results.length === 0 }">
+        
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
         <!-- Show when initially showing the search form or when the search form is empty -->
         <div class="info" ng-show="contractData.linkContractsSearch.results.length === 0">
@@ -55,7 +55,9 @@
                                     <span class="icons icon-guest-company colored" ng-if="item.account_details.type === 'COMPANY'">{{item.account_details.name}}</span>
                                     <!-- If travel agent show this -->
                                     <span class="icons icon-guest-travelagent colored" ng-if="item.account_details.type === 'TRAVELAGENT'">{{item.account_details.name}}</span>
-
+                                </div>
+                                <div class="contract-rates" ng-if="item.rates.length <= 3">
+                                    {{item.rates.join()}}
                                 </div>
                                 <div class="contract-rates" ng-if="item.rates.length > 3" ng-init="showMore = true">
                                     {{ showMore ? item.rates.slice(0, 3).join() : item.rates.join()}}
