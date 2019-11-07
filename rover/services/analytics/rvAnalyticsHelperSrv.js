@@ -290,6 +290,12 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 		}
 	};
 
+	this.constructColorMappings = function(item_name, color) {
+		return _.extend({
+			item_name: item_name
+		}, this.gradientMappings[color]);
+	};
+
 	this.addTextsToChart = function(textData) {
 		textData.svg.append("text")
 			.attr("x", textData.xOffset)

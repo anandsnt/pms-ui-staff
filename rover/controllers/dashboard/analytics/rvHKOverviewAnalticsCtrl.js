@@ -2,26 +2,20 @@ angular.module('sntRover')
     .controller('rvHKOverviewAnalticsCtrl', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvAnalyticsHelperSrv',
         function($scope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv) {
 
-            var constructColorMappings = function(item_name, color) {
-                return _.extend({
-                    item_name: item_name
-                }, rvAnalyticsHelperSrv.gradientMappings[color]);
-            };
-
             var colorMappings = {
-                "arrivals_perfomed": constructColorMappings('arrivals_perfomed', 'greenLight'),
-                "arrivals_remaining": constructColorMappings('arrivals_remaining', 'green'),
+                "arrivals_perfomed": rvAnalyticsHelperSrv.constructColorMappings('arrivals_perfomed', 'greenLight'),
+                "arrivals_remaining": rvAnalyticsHelperSrv.constructColorMappings('arrivals_remaining', 'green'),
 
-                "departures_perfomed": constructColorMappings('departures_perfomed', 'redLight'),
-                "departures_pending": constructColorMappings('departures_pending', 'red'),
+                "departures_perfomed": rvAnalyticsHelperSrv.constructColorMappings('departures_perfomed', 'redLight'),
+                "departures_pending": rvAnalyticsHelperSrv.constructColorMappings('departures_pending', 'red'),
 
-                "stayovers_perfomed": constructColorMappings('stayovers_perfomed', 'blueLight'),
-                "stayovers_remaining": constructColorMappings('stayovers_remaining', 'blue'),
+                "stayovers_perfomed": rvAnalyticsHelperSrv.constructColorMappings('stayovers_perfomed', 'blueLight'),
+                "stayovers_remaining": rvAnalyticsHelperSrv.constructColorMappings('stayovers_remaining', 'blue'),
 
-                "rooms_clean": constructColorMappings('rooms_clean', 'green'),
-                "rooms_inspected": constructColorMappings('rooms_inspected', 'greenDark'),
-                "rooms_dirty": constructColorMappings('rooms_dirty', 'red'),
-                "rooms_pickup": constructColorMappings('rooms_pickup', 'orange')
+                "rooms_clean": rvAnalyticsHelperSrv.constructColorMappings('rooms_clean', 'green'),
+                "rooms_inspected": rvAnalyticsHelperSrv.constructColorMappings('rooms_inspected', 'greenDark'),
+                "rooms_dirty": rvAnalyticsHelperSrv.constructColorMappings('rooms_dirty', 'red'),
+                "rooms_pickup": rvAnalyticsHelperSrv.constructColorMappings('rooms_pickup', 'orange')
             };
 
             $scope.drawHkOverviewChart = function(chartDetails) {
@@ -73,7 +67,7 @@ angular.module('sntRover')
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
                 // DEBUGING CODE
-                chartDetails = rvAnalyticsHelperSrv.addRandomNumbersForTesting(chartDetails);
+                // chartDetails = rvAnalyticsHelperSrv.addRandomNumbersForTesting(chartDetails);
 
                 chartDetails = rvAnalyticsHelperSrv.processBiDirectionalChart(chartDetails);
                 var maxValueInBotheDirections = chartDetails.maxValueInOneSide;
