@@ -36,12 +36,14 @@
 				<tbody>
 					<tr ng-repeat="item in  data track by $index" ng-class = "{'inactive': isAddOnExpired(item)}">
 						<td header-class="width-30" ng-click="editSingle()" ng-hide="currentClickedAddon === $index" >
-							<a class="edit-data-inline">{{ item.name }}</a>
+							<a class="edit-data-inline">
+								{{ item.name }}
+								<span ng-if="isAddOnExpired(item)" class="tag">Expired</span>
+							</a>
 						</td>
 
 						<td header-class="width-50" ng-hide="currentClickedAddon === $index" >	
 							{{ getActiveDate(item) }}
-							<em ng-if="isAddOnExpired(item)">(Expired)</em>
 						</td>
 						<td header-class="width-10" ng-hide="currentClickedAddon === $index || !(showZestWebSettings || showZestStationSettings)">	
 							<a class="{{returnAddonUpseellClass(item)}}">upsell</a>
