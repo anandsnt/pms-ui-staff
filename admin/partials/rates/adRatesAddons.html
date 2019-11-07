@@ -34,7 +34,7 @@
 
 			<table id="addons" class="grid" ng-table="tableParams" ng-hide="isAddMode" template-pagination="custom/pager" template-header="custom/header">
 				<tbody>
-					<tr ng-repeat="item in  data track by $index">
+					<tr ng-repeat="item in  data track by $index" ng-class = "{'inactive': isAddOnExpired(item)}">
 						<td header-class="width-30" ng-click="editSingle()" ng-hide="currentClickedAddon === $index" >
 							<a class="edit-data-inline">{{ item.name }}</a>
 						</td>

@@ -122,12 +122,22 @@ admin.controller('ADRatesAddonsCtrl', [
 
         $scope.getActiveDate = function(item) {
             var dateStr = '';
+
             if (!item.begin_date && !item.end_date) {
                 dateStr = 'N/A';
             } else {
                 dateStr = (item.begin_date ? item.begin_date : 'N/A') + ' to ' + (item.end_date ? item.end_date : 'N/A');
             }
             return dateStr;
+        };
+
+        $scope.isAddOnExpired = function(item) {
+            var endDate = new Date(item.end_date);
+            var businessDate = new Date($rootScope.businessDate);
+            if ( endDate < businessDate) {
+                return true;
+            }
+            return false;
         };
 
         /**
