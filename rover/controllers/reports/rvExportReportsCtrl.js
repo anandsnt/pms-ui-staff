@@ -562,7 +562,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Switzerland Zurich Police Export': true,
                 'Spain Barcelona Police Export': true,
                 'Invoice / Folio Export': true,
-                'French Nationality Export': true
+                'Nationality Export - France': true
             };
 
             var forRunOnceOnly = {
@@ -583,7 +583,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Switzerland Zurich Police Export': true,
                 'Spain Barcelona Police Export': true,
                 'Austria Nationality Export': true,
-                'French Nationality Export': true
+                'Nationality Export - France': true
             };
 
             var forWeekly = {
@@ -609,7 +609,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Spain Barcelona Police Export': true,
                 'Austria Nationality Export': true,
                 'Invoice / Folio Export': true,
-                'French Nationality Export': true
+                'Nationality Export - France': true
             };
 
             var forHourly = {
