@@ -1,10 +1,26 @@
-admin.controller('ADChargeGroupsCtrl', ['$scope', 'ADChargeGroupsSrv', '$anchorScroll', '$timeout', '$location',
-	function($scope, ADChargeGroupsSrv, $anchorScroll, $timeout, $location) {
+admin.controller('ADChargeGroupsCtrl', ['$scope', 'ADChargeGroupsSrv', '$anchorScroll', '$timeout', '$location', 'availableLanguages',
+	function($scope, ADChargeGroupsSrv, $anchorScroll, $timeout, $location, availableLanguages) {
 
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("changedSelectedMenu", 5);
 	$scope.currentClickedElement = -1;
 	$scope.preveousItem = "";
+
+	$scope.availableLanguagesSet = availableLanguages;
+	var defaultLanguage = _.filter(availableLanguages.languages, function(language) {
+		return language.is_default;
+	});
+	var setDefaultLanguage = function() {
+		$scope.selectedLanguage = {
+			code: defaultLanguage.length ? defaultLanguage[0].code : 'en'
+		};
+	};
+	    
+	    setDefaultLanguage();
+
+	$scope.onLanguageChange = function() {
+		$scope.invokeApi(ADChargeGroupsSrv.fetch, { 'locale': $scope.selectedLanguage.code }, fetchSuccessCallback);
+	};
     /*
     * To fetch charge groups list
     */
@@ -13,7 +29,7 @@ admin.controller('ADChargeGroupsCtrl', ['$scope', 'ADChargeGroupsSrv', '$anchorS
 		$scope.data = data;
 	};
 
-	$scope.invokeApi(ADChargeGroupsSrv.fetch, {}, fetchSuccessCallback);
+	$scope.invokeApi(ADChargeGroupsSrv.fetch, { 'locale': $scope.selectedLanguage.code }, fetchSuccessCallback);
 
     /*
     * To render edit screen
@@ -46,6 +62,7 @@ admin.controller('ADChargeGroupsCtrl', ['$scope', 'ADChargeGroupsSrv', '$anchorS
 			$scope.preveousItem = "";
 		}
 		$scope.data.name = "";
+		$scope.data.charge_group_trl = "";
 		$scope.currentClickedElement = -1;
 	};
 	/*
@@ -67,10 +84,11 @@ admin.controller('ADChargeGroupsCtrl', ['$scope', 'ADChargeGroupsSrv', '$anchorS
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 			$scope.data.name = "";
+			$scope.charge_group_trl = "";
 			$scope.data.charge_groups.push(data);
 		};
 
-  		$scope.invokeApi(ADChargeGroupsSrv.save, { 'name': $scope.data.name }, postSuccess);
+  		$scope.invokeApi(ADChargeGroupsSrv.save, { 'name': $scope.data.name, 'locale': $scope.selectedLanguage.code, 'charge_group_trl': $scope.data.charge_group_trl }, postSuccess);
 	};
 	/*
     * To handle save button in edit box.
@@ -81,6 +99,7 @@ admin.controller('ADChargeGroupsCtrl', ['$scope', 'ADChargeGroupsSrv', '$anchorS
 			$scope.currentClickedElement = -1;
 		};
  		var data = $scope.data.charge_groups[$scope.currentClickedElement];
+ 		data.locale = $scope.selectedLanguage.code;
 
   		$scope.invokeApi(ADChargeGroupsSrv.update, data, postSuccess);
    	};
