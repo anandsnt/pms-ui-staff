@@ -147,7 +147,7 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'LAST_NOVEMBER',
                 'LAST_DECEMBER'
             ],
-            'French Nationality Export': [
+            'Nationality Export - France': [
                 'TODAY',
                 'YESTERDAY',
                 'LAST_MONTH',
