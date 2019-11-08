@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$scope', 'rvCompanyCardContractsSrv',
-	function($timeout, $scope, rvCompanyCardContractsSrv) {
+angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$scope', 'rvCompanyCardContractsSrv', 'ngDialog',
+	function($timeout, $scope, rvCompanyCardContractsSrv, ngDialog) {
         BaseCtrl.call(this, $scope);
         $scope.setScroller('contractListScroller');
         var refreshScroller = function() {
@@ -20,6 +20,7 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
                 });
             });
             refreshScroller();
+            $scope.contractData.isContractLinkBarExpanded = false;
         };
 
         // Clear Rate search.
@@ -75,7 +76,8 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
         };
 
         // Handle unlink Contract
-        $scope.clickedUnlinkContracts = function() {
+        $scope.unlinkContractsCofirmed = function() {
+            $scope.closeDialog();
             var unLinkContractSuccessCallback = function() {
                 $scope.$emit('fetchContractsList', 'UNLINK');
             },
@@ -93,6 +95,22 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
             };
 
             $scope.callAPI(rvCompanyCardContractsSrv.unLinkContract, options);
+        };
+
+        // Handle unlink Contract click to show confirm popup.
+        $scope.clickedUnlinkContracts = function() {
+            $scope.cardName = $scope.contactInformation.account_details.account_name;
+            ngDialog.open({
+                template: '/assets/partials/companyCard/contracts/rvConfirmUnlinkContract.html',
+                className: '',
+                closeByDocument: false,
+                scope: $scope
+            });
+        };
+
+        // Expand / Collapse contract link bar
+        $scope.clickContractLinkBar = function() {
+            $scope.contractData.isContractLinkBarExpanded = !$scope.contractData.isContractLinkBarExpanded;
         };
 
         /**

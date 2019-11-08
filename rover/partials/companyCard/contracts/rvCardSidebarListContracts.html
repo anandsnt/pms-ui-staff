@@ -11,7 +11,7 @@
 
             <!-- Contract that is linked from/to -->
             <!-- Add .active if clicked on it to show present, future and past -->
-            <div class="contract has-arrow toggle">
+            <div ng-click="clickContractLinkBar()" class="contract has-arrow toggle" ng-class="{'active': contractData.isContractLinkBarExpanded}">
                 <h3 class="item-title">{{contractData.editData.contract_name}}</h3>
                 <div class="item-info">
                     <span>{{contractData.editData.begin_date}}</span>
@@ -22,7 +22,7 @@
 
             <!-- If it has no items, add .no-items -->
             <!-- If it's opened, add .open -->
-            <div class="contract-list-items-section"
+            <div ng-show="contractData.isContractLinkBarExpanded" class="contract-list-items-section"
                 ng-repeat="item in contractData.contractsList"
                 ng-class="{'no-items': item.count === 0, 'open': item.opened}">
                 <h2 ng-click="openContractsList(item)">
