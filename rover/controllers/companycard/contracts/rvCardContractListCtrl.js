@@ -20,7 +20,6 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
                 });
             });
             refreshScroller();
-            $scope.contractData.isContractLinkBarExpanded = false;
         };
 
         // Clear Rate search.
