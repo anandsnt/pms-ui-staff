@@ -19,7 +19,7 @@
                 <div ng-repeat="(group_id, group) in chargeData.groupedItems" ng-if="group.id !== -1"
                     class="minibar-item group" ng-class="{'expanded': group.is_open}">
                     <div class="minibar-item-info">
-                        <h3 class="minibar-item-title">{{group.name}}</h3>
+                        <h3 class="minibar-item-title">{{group.charge_group_trl}}</h3>
                         <div class="minibar-item-meta">{{group.description}}</div>
                     </div>
                     <div class="minibar-item-qty" ng-style="{'visibility': (group.quantity>0) ? 'visible' : 'hidden'}">
