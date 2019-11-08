@@ -11,7 +11,7 @@ angular.module('sntRover').service('RVreportsSrv', [
 		var service       = {},
 			choosenReport = {},
 			selectedReport = {},
-            config = {};
+            config = {},
             printClicked = false;
 
         var SCHEDULE_TYPES = {
