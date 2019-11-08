@@ -98,6 +98,17 @@ angular.module('sntRover').controller('rvCardSearchContractedRateCtrl', ['$scope
             });
         };
 
+        // Show Error Message in popup.
+        var showErrorMessagePopup = function( errorMessage ) {
+            $scope.rateErrorMessage = errorMessage[0];
+            ngDialog.open({
+                template: '/assets/partials/companyCard/contracts/rvErrorOnRemoveRate.html',
+                className: '',
+                closeByDocument: false,
+                scope: $scope
+            });
+        };
+
         // Unlink a Rate after confirmation popup.
         $scope.confirmRemoveRate = function( rateId ) {
             $scope.closeDialog();
@@ -109,8 +120,8 @@ angular.module('sntRover').controller('rvCardSearchContractedRateCtrl', ['$scope
                 $scope.contractData.selectedRateList.splice(removeIndex, 1);
                 $scope.$emit('refreshContractsScroll');
             },
-            unlinkRateFailureCallback = function(errorMessage) {
-                $scope.$emit('setErrorMessage', errorMessage);
+            unlinkRateFailureCallback = function( errorMessage ) {
+                showErrorMessagePopup(errorMessage);
             };
 
             var options = {
