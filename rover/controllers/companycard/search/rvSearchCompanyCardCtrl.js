@@ -315,6 +315,24 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		};
 
 		/**
+		 * Function to check if multiple rates exists on any of the contracts
+		 * @param {Object} account the account object
+		 * @return {Boolean}
+		 */
+		$scope.isRateMultiple = function(account) {
+			var rateMultiple = false;
+
+			if (account.current_contracts && account.current_contracts.length !== 0) {
+				angular.forEach(account.current_contracts, function(contract) {
+					if (contract.contract_rates.length > 1) {
+						rateMultiple = true;
+					}
+				});
+			}
+			return rateMultiple;
+		};
+
+		/**
 		 *  Get style class for the pagination control
 		 */
 		$scope.getStyleClasses = function() {
