@@ -4,7 +4,8 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 	'$timeout',
 	'rvAnalyticsSrv',
 	'$controller',
-	function($scope, $rootScope, $state, $timeout, rvAnalyticsSrv, $controller) {
+	'ngDialog',
+	function($scope, $rootScope, $state, $timeout, rvAnalyticsSrv, $controller, ngDialog) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -26,18 +27,50 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 			$scope: $scope
 		});
 
+		var showChartDetails = function() {
+			ngDialog.open({
+				template: '/assets/partials/dashboard/analyticsPopups/analyticsDetailsView.html',
+				className: '',
+				scope: $scope,
+				closeByDocument: false,
+				closeByEscape: false
+			});
+		};
+
 		var getChartDetails = function(type) {
 			var clickedElementData = {
 				type: type,
 				date: $scope.dashboardFilter.datePicked,
 			};
 
+			var roomsTypeArray = ["rooms_clean",
+								 "rooms_inspected",
+								 "rooms_dirty",
+								 "rooms_pickup",
+								 "vacant_clean",
+								 "vacant_inspected",
+								 "vacant_dirty",
+								 "vacant_pickup"];
+
+			if (_.indexOf(roomsTypeArray, type) !== -1) {
+				$scope.detailsType = 'ROOM';
+				$scope.detailedList = rvAnalyticsSrv.getRooms(clickedElementData);
+			} else {
+				$scope.detailsType = 'RESERVATION';
+				$scope.detailedList = rvAnalyticsSrv.getReservations(clickedElementData);
+			}
+			showChartDetails();
+
 			console.log("\n\n type - " + type + "\n\n")
 			console.log("\n\n get ROOMS \n\n")
 			console.log(rvAnalyticsSrv.getRooms(clickedElementData));
 			console.log("\n\n get RESERVATIONS \n\n")
 			console.log(rvAnalyticsSrv.getReservations(clickedElementData));
-		}
+		};
+
+		$scope.closeDialog = function (){
+			ngDialog.close()
+		};
 
 		var onBarChartClick = function(type) {
 			getChartDetails(type);
