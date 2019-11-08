@@ -675,15 +675,17 @@ angular.module('sntRover')
                     dayNum, monNum,
                     mapData = [],
                     maxMonthDates = [],
-                    minMonthDates = [];
+                    minMonthDates = [],
+                    dateObject;                    
 
                 _.map(fullDates, function(date) {
                     singleDate = date;
-                    var dateObj = {
-                        dayNum : parseInt( date.split('-')[2], 10 ),
-                        monNum : parseInt( date.split('-')[1], 10 )
-                    }
-                    mapData.push(dateObj);
+                    dateObject = {
+                        dayNum: parseInt( date.split('-')[2], 10 ),
+                        monNum: parseInt( date.split('-')[1], 10 )
+                    };
+
+                    mapData.push(dateObject);
                     return isNaN(dayNum) ? 1 : dayNum;
                 });
 
@@ -696,10 +698,10 @@ angular.module('sntRover')
                     maxMonth = _.max(months);
 
                 _.each(mapData, function(dateObj) {
-                    if(dateObj.monNum === minMonth) {
+                    if (dateObj.monNum === minMonth) {
                         minMonthDates.push(dateObj);
                     }
-                    if(dateObj.monNum === maxMonth) {
+                    if (dateObj.monNum === maxMonth) {
                         maxMonthDates.push(dateObj);
                     }
                 });
@@ -858,10 +860,11 @@ angular.module('sntRover')
                 meta.length = meta.keys.length;
 
                 var mergedData = {};
-                if(meta.length === 2) {
+
+                if (meta.length === 2) {
                     _.each(chunks, function(dateObj) {
                         _.each(dateObj, function(dataObj, date) {
-                            if(!mergedData[date]) {
+                            if (!mergedData[date]) {
                                 mergedData[date] = dataObj;
                             }
                         });                                          
