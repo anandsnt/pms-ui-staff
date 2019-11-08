@@ -44,7 +44,7 @@ admin.controller('ADRatesAddonsCtrl', [
                 params.total(data.total_count);
 
                 // sort the results
-                $scope.data = params.sorting() ?
+                $scope.data = (params.sorting() && params.orderBy()[0].slice(1, 9) !== 'end_date') ?
                     $filter('orderBy')(data.results, params.orderBy()) :
                     data.results;
 
@@ -112,12 +112,37 @@ admin.controller('ADRatesAddonsCtrl', [
                 });
             }
         };
-        $scope.sortByDescription = function() {
+        $scope.sortByActiveDate = function() {
             if ($scope.currentClickedAddon === -1) {
                 $scope.tableParams.sorting({
-                    'description': $scope.tableParams.isSortBy('description', 'asc') ? 'desc' : 'asc'
+                    'end_date': $scope.tableParams.isSortBy('end_date', 'asc') ? 'desc' : 'asc'
                 });
             }
+        };
+
+        $scope.getActiveDate = function(item) {
+            var dateStr = '';
+
+            if (!item.begin_date && !item.end_date) {
+                dateStr = 'N/A';
+            } else {
+                dateStr = (item.begin_date ? item.begin_date : 'N/A') + ' to ' + (item.end_date ? item.end_date : 'N/A');
+            }
+            return dateStr;
+        };
+
+        $scope.isAddOnExpired = function(item) {
+            var endDate, businessDate;
+
+            if (!item.end_date) {
+                return false;
+            }
+            endDate = new Date(item.end_date);
+            businessDate = new Date($rootScope.businessDate);
+            if ( endDate < businessDate) {
+                return true;
+            }
+            return false;
         };
 
         /**
