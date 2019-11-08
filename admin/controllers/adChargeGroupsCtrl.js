@@ -84,7 +84,7 @@ admin.controller('ADChargeGroupsCtrl', ['$scope', 'ADChargeGroupsSrv', '$anchorS
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 			$scope.data.name = "";
-			$scope.charge_group_trl = "";
+			$scope.data.charge_group_trl = "";
 			$scope.data.charge_groups.push(data);
 		};
 
