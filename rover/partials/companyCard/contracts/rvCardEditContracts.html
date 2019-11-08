@@ -41,10 +41,9 @@
                     <input ng-disabled="contractData.disableFields" name="contracted-nights" id="contracted-nights" class=" contracted-nights" placeholder="Nights per month" ng-model="contractData.editData.total_contracted_nights" ng-click="editContractedNights()" maxlength="8" readonly type="text" />
                 </div>
             </div>
-
-            <div class="holder right" ng-if="!contractData.isPastContract">
+            <div class="holder right">
                 <!-- show only if we can delete the contract -->
-                <button ng-if="contractData.editData.is_master_contract && contractData.hasDeleteContractPermission" type="button" class="button red" ng-click="deleteContract()">Delete Contract</button>
+                <button ng-if="contractData.editData.is_master_contract && contractData.hasDeleteContractPermission && !contractData.isPastContract" type="button" class="button red" ng-click="deleteContract()">Delete Contract</button>
                 <div include-replace ng-include="'/assets/partials/companyCard/contracts/rvCardSearchContractedRate.html'"></div>
             </div>
         </div>

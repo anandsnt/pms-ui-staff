@@ -14,7 +14,6 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 				disableFields: false,
 				isPastContract: false,
 				noContracts: true,
-				noStatistics: true,			// TODO : Remove
 				selectedContractId: '',
 				rateSearchResult: [],
 				rateSearchQuery: '',
@@ -232,7 +231,6 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 		 */
 		$scope.createFirstContract = function() {
 			$scope.contractData.mode = 'ADD';
-			// $scope.contractData.noContracts = false;
 			refreshContractScrollers();
 		};
 
@@ -241,7 +239,6 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 		 */
 		$scope.moveToLinkContract = function() {
 			$scope.contractData.mode = 'LINK';
-			// $scope.contractData.noContracts = false;
 			refreshContractScrollers();
 		};
 		
