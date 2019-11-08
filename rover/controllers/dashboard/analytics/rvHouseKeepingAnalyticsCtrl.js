@@ -109,7 +109,7 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 				params: params,
 				successCallBack: function() {
 					$('base').attr('href', '#');
-					$scope.screenData.analyticsDataUpdatedTime = moment().format("MM ddd, YYYY hh:mm:ss a");
+					$scope.screenData.analyticsDataUpdatedTime = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
 					d3.select('#d3-plot').selectAll('svg').remove();
 					clearAllExistingChartElements();
 					drawChart();
