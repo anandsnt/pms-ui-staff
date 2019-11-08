@@ -5,8 +5,8 @@
 		</button>
 	    <span class="icons icon-popup-alert"></span>
 	    <span class="h2 message">You are about to remove a rate</span>
-	    <p class="text">{text}</p>
-	    <button class="button red" ng-click="clickedRemoveRate()">Remove Rate</button>
+	    <p class="text">Once removed, rate "{{rateObj.name}}" will no longer be associated with "{{contractData.editData.contract_name}}".</p>
+	    <button class="button red" ng-click="confirmRemoveRate(rateObj.id)">Remove Rate</button>
 	    <button class="button blank" ng-click="closeDialog()">Cancel</button>
 	</div>
 </div>
