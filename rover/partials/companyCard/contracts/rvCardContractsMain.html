@@ -1,14 +1,14 @@
 <!-- Company Card Tab - Contracts -->
 <form ng-controller="rvCardContractsMainCtrl" method="post" id="cc-contracts" name="cc-contracts" class="form card-tab inner-header contracts" ng-show="currentSelectedTab == 'cc-contracts'">
-    
+	
 	<div ng-if="contractData.mode === 'LINK'" include-replace ng-include="'/assets/partials/companyCard/contracts/rvCardContractsLinking.html'"></div>
 
     <!-- Add .no-content if no contracts -->
-    <div ng-if="contractData.mode !== 'LINK'" class="tab-details scrollable" ng-class="{'no-content': contractData.noContracts}">
+    <div ng-if="contractData.mode !== 'LINK'" class="tab-details scrollable" ng-class="{'no-content': contractData.mode === ''}">
 
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
-		<div include-replace ng-if="contractData.mode === 'ADD' || contractData.mode === 'EDIT'" ng-include="'/assets/partials/companyCard/contracts/rvCardSidebarListContracts.html'"></div>
+		<div include-replace ng-if="(contractData.mode === 'ADD' || contractData.mode === 'EDIT')" ng-include="'/assets/partials/companyCard/contracts/rvCardSidebarListContracts.html'"></div>
 		
 		<div include-replace ng-if="contractData.mode === 'ADD'" ng-include="'/assets/partials/companyCard/contracts/rvCardAddContracts.html'"></div>
 

@@ -110,6 +110,7 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
         // Expand / Collapse contract link bar
         $scope.clickContractLinkBar = function() {
             $scope.contractData.isContractLinkBarExpanded = !$scope.contractData.isContractLinkBarExpanded;
+            refreshScroller();
         };
 
         /**

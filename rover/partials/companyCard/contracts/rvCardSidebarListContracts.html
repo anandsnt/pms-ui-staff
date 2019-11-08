@@ -1,7 +1,16 @@
 <!-- If there are contracts, show this. -->
 <!-- If we don't show sidebar actions, remove .with-actions -->
-<div ng-controller="rvCardContractListCtrl" class="contracts-list with-actions" ng-class="{'actions-2': contractData.mode === 'EDIT'}" ng-show="!contractData.noContracts">
-    <div class="contracts-list-items scrollable" ng-iscroll="contractListScroller">
+<div ng-controller="rvCardContractListCtrl" class="contracts-list with-actions" ng-class="{'actions-2': contractData.mode === 'EDIT'}">
+    <!-- Show these if we are creating a new contract -->
+    <div class="no-content" ng-if="(contractData.noContracts && contractData.mode === 'ADD')">
+        <div class="info">
+            <span class="icon-no-content icon-contracts-black"></span>
+            <strong class="h1">Creating new Contract</strong>
+            <span class="h2">Once saved it will appear here</span>
+        </div>
+    </div>
+
+    <div class="contracts-list-items scrollable" ng-if="!(contractData.noContracts && contractData.mode === 'ADD')" ng-iscroll="contractListScroller">
         <div class="wrapper">
 
             <!-- Show when collapsing the list of linked contracts -->

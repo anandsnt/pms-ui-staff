@@ -157,7 +157,5 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'rvC
                 });
             }            
         };
-
-        
     }
 ]);
