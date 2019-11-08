@@ -1145,13 +1145,23 @@ angular.module('sntRover').controller('guestCardController', [
             }
         };
 
+        var singleRateName = '';
+
+        /**
+         * Function to get rate name, if one exists on any of the contracts
+         * @return {Boolean}
+         */
+        $scope.getRateName = function() {
+            return singleRateName;
+        };
+
         /**
          * Function to check if multiple rates exists on any of the contracts
          * @param {Object} account the account object
-		 * @return {Boolean}
+		 * @return {Number}
          */
-        $scope.isMultipleRate = function(account) {
-            var rateMultiple = false,
+        $scope.ratesCount = function(account) {
+            var rateCount = 0,
                 activeContracts;
 
             if (account.account_type === 'TRAVELAGENT') {
@@ -1163,12 +1173,13 @@ angular.module('sntRover').controller('guestCardController', [
 
             if (activeContracts && activeContracts.length !== 0) {
 				angular.forEach(activeContracts, function(contract) {
-					if (contract.contract_rates.length > 1) {
-						rateMultiple = true;
+					if (contract.contract_rates.length !== 0) {
+                        rateCount += contract.contract_rates.length;
+                        singleRateName = contract.contract_rates[0].rate_name;
 					}
 				});
             }
-            return rateMultiple;
+            return rateCount;
         };
         $scope.checkFuture = function(cardType, card, useCardRate) {
             // Changing this reservation only will unlink the stay card from the previous company / travel agent card and assign it to the newly selected card.

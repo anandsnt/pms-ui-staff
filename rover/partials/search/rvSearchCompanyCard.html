@@ -111,10 +111,10 @@
                                 <span class="icons icon-location" ng-if="escapeNull(row.account_address)!==''">{{row.account_address}}</span>
                             </div>
 
-                            <div class="rate" ng-if="row.current_contracts.length === 1 && row.current_contracts[0].contract_rates.length === 1">
-                                {{row.current_contracts[0].contract_rates[0].rate_name}}
+                            <div class="rate" ng-if="ratesCount(row) === 1">
+                                {{getRateName()}}
                             </div>
-                            <div class="rate" ng-if="isRateMultiple(row)">
+                            <div class="rate" ng-if="ratesCount(row) > 1">
                                 <span class="label">Multiple</span>
                             </div>
                             <span ng-if="row.current_contracts.length > 1" class="icons icon-contracts">Multiple

@@ -73,11 +73,11 @@
                                 'no-access-code': escapeNull(travelAgent.contract_access_code) === ''}">
                                 <div class="info">
                                     <h2 ng-bind-html="getHighlightedHTML(travelAgent.account_name, searchData.travelAgentCard.travelAgentName)"></h2>
-                                    <div class="rate" ng-show="travelAgent.activeContracts.length === 1 && travelAgent.rate.contract_rates.length === 1">
+                                    <div class="rate" ng-show="ratesCount(travelAgent) === 1">
                                         <span class="label">Rate</span> 
-                                        {{travelAgent.rate.contract_rates[0].rate_name}}
+                                        {{getRateName()}}
                                     </div>
-                                    <div class="rate" ng-show="isMultipleRate(travelAgent)">
+                                    <div class="rate" ng-show="ratesCount(travelAgent) > 1">
                                         <span class="label">Multiple</span>
                                     </div>
                                     <span ng-if="travelAgent.activeContracts.length > 1" class="icons icon-contracts">Multiple Contracts</span>
