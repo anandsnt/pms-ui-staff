@@ -877,7 +877,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             activeFilterIndex = activeFilterIndex - 1;
 
             showingData.splice(showingData.length - 1, 1);
-
+            cachedRateAndRestrictionResponseData = [];
             fetchDailyRates(lastSelectedFilterValues[activeFilterIndex]);
 
             $scope.showBackButton = true;
