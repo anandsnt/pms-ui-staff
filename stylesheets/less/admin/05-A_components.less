@@ -1952,7 +1952,226 @@
             grid-column-gap: 20px;
             grid-row-gap: 20px;
         }
-    } 
+    }
+
+/* Tax Amount Configuration - Financials > Charge Codes ==*/
+    .tax-amounts {
+        .tax-amount {
+            .float;
+
+            &:not(:last-child) {
+                margin-bottom: 10px;
+            }
+
+            .tax-amount-data {
+                background-color: @grey1;
+                #flexbox > .parent( '', '', '', '' );
+                .calc-width( 100, 50 );
+                .pull-left;
+                .box-shadow();
+
+                input[data-currency] {
+                    position: relative;
+                    padding-left: 20px;
+
+                    &:before {
+                        content: attr(data-currency);
+                        position: absolute;
+                        left: 0px;
+                        top: 0;
+                    }
+                }
+
+                .input {
+                    position: relative;
+                    
+                    .currency {
+                        position: absolute;
+                        text-align: right;
+                        top: 0;
+                        left: 0;
+                        line-height: 40px;
+                        padding-right: 5px;
+                        font-size: 14px;
+                        color: @grey3;
+                        .size( 40px, 25px );
+                    }
+
+                    input {
+                        padding-left: 25px;
+                    }
+                }
+
+                .select {
+                    select { padding-right: 25px }
+                    
+                    select,
+                    &:after {
+                        background-color: @white;
+                    }
+                }
+
+                .amount {
+                    background: rgba( 0, 0, 0, 0.05 );
+                    padding: 10px;
+                    width: 160px;
+                    .float;
+
+                    .select {
+                        width: 45px;
+                        .pull-left;
+
+                        select {
+                            .box-shadow(inset 1px 1px 0 rgba(0, 0, 0, 0.15));
+                        }
+                    }
+
+                    .input {
+                        .pull-left;
+                        .calc-width( 100, 45 );
+
+                        input {
+                            background: @white;
+                            .box-shadow(inset 0px 1px 0 rgba(0, 0, 0, 0.15));
+                        }
+                    }
+                }
+
+                .conditions { 
+                    padding: 10px;
+                    .calc-width( 100, 160 );
+
+                    .condition {
+                        #flexbox > .parent( row, '', center, '' );
+
+                        &:not(:last-child) {
+                            margin-bottom: 10px;
+                        }
+
+                        label {
+                            margin: 0;
+
+                            &:not(.add-new-button){
+                                font-weight: 400;
+                                color: @grey3;
+                                padding-right: 5px;
+                            }
+
+                            &.add-new-button {
+                                box-shadow: none;
+                                text-shadow: none;
+                                height: 35px;
+                                line-height: 35px;
+                                position: relative;
+                                width: 130px;
+                                &:not(:first-child){
+                                    margin-left: 10px;
+                                }
+                        
+                                select {
+                                    opacity: 0;
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    width: 100%;
+                                    height: 100%;
+                                }
+                            }
+                        }
+
+                        .has-datepicker,
+                        .input,
+                        .small-input {
+                            + label {
+                                padding-left: 5px;
+                            }
+                        }
+
+                        .has-datepicker {
+                            .ui-datepicker-trigger {
+                                height: 35px;
+                                background-image: @icons;
+                                background-position: 90px -971px;
+                                background-size: 35px;
+                                opacity: 0.15;
+
+                                @media @highdpi {
+                                    background-image: @icons2x;
+                                }
+                            }
+                        }
+
+                        .small-input {
+                            width: 45px;
+                        }
+
+                        .input {
+                            width: 120px;
+
+                            .currency {
+                                line-height: 35px;
+                                height: 35px;
+                            }
+                        }
+
+                        input {
+                            background-color: @white;
+                            min-height: 35px;
+                            height: 35px;
+                            line-height: 35px;
+
+                            &.datepicker {
+                                width: 120px;
+                            }
+                        }
+
+                        .multiSelect { 
+                            .button {
+                                min-height: 35px !important;
+                                height: 35px;
+                                line-height: 35px;
+                            }
+                        }
+
+                        > .button {
+                            margin-left: 10px;
+                            padding: 0;
+                            .square(35px);
+                            #flexbox > .parent( row, center, '', '' );
+
+                            .icons {
+                                background-size: 40px;
+                                &.icon-delete {
+                                    background-position: 3px -517px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            .tax-amount-action {
+                margin-left: 10px;
+                width: 40px;
+                .pull-left;
+
+                button {
+                    background-color: @grey1;
+                    .box-shadow();
+
+                    &.icons {
+                        &.icon-delete {
+                            &.large-icon { 
+                                .square( 40px );
+                                background-position: 12px -638px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 /* 6. IE
 ==========================================================*/
 /* 7. RESPONSIVE
