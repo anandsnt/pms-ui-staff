@@ -148,6 +148,9 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
                     $scope.reservationData.guest.address = $scope.guestCardData.contactInfo.address;
 
                     $scope.reservationData.guest.loyaltyNumber = $scope.guestLoyaltyNumber;
+                    if ($scope.reservationData.reservationId) {
+                        attachGuestToReservation($scope.reservationData.reservationId, $scope.reservationData.guest.id, true);
+                    }
                 }
                 $scope.guestCardData.userId = data.id;
                 if (!$scope.isGuestCardFromMenu) {

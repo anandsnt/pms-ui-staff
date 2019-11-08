@@ -7,9 +7,11 @@ angular.module('sntRover').service('RVreportsSrv', [
     'RVReportApplyFlags',
     'RVReportUtilsFac',
     'RVReportSetupDates',
-    function($q, rvBaseWebSrvV2, subSrv, $vault, $http, applyFlags, reportUtils, setupDates) {
-        var service       = {},
-            choosenReport = {},
+	function($q, rvBaseWebSrvV2, subSrv, $vault, $http, applyFlags, reportUtils, setupDates) {
+		var service       = {},
+			choosenReport = {},
+			selectedReport = {},
+            config = {};
             printClicked = false;
 
         var SCHEDULE_TYPES = {
@@ -546,7 +548,23 @@ angular.module('sntRover').service('RVreportsSrv', [
             // to process the group by for this report
             reportUtils.processGroupBy( report );
 
-        };
+		};
+		
+		service.setSelectedReport = function (item) {
+			selectedReport = item;
+		};
+		
+		service.getSelectedReport = function () {
+			return selectedReport;
+		};
+		
+		service.saveCofigurationData = function (data) {
+			config = data;
+		};
+		
+		service.getCofigurationData = function () {
+			return config;
+		};
 
         return service;
     }
