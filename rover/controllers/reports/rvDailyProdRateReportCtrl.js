@@ -670,23 +670,56 @@ angular.module('sntRover')
              * @return {object}       processed dates
              */
             function getFromUntilDates(chunk) {
-                var fullDates = _.keys(chunk);
-                var singleDate;
-                var dayNum;
+                var fullDates = _.keys(chunk),
+                    singleDate,
+                    dayNum, monNum,
+                    mapData = [],
+                    maxMonthDates = [],
+                    minMonthDates = [];
 
-                var dates = _.map(fullDates, function(date) {
+                _.map(fullDates, function(date) {
                     singleDate = date;
-                    dayNum = parseInt( date.split('-')[2], 10 );
+                    var dateObj = {
+                        dayNum : parseInt( date.split('-')[2], 10 ),
+                        monNum : parseInt( date.split('-')[1], 10 )
+                    }
+                    mapData.push(dateObj);
                     return isNaN(dayNum) ? 1 : dayNum;
                 });
 
-                var fromDay = _.min(dates);
-                var untilDay = _.max(dates);
+                var months = _.map(fullDates, function(date) {
+                    monNum = parseInt( date.split('-')[1], 10 );
+                    return isNaN(monNum) ? 1 : monNum;
+                });
+
+                var minMonth = _.min(months),
+                    maxMonth = _.max(months);
+
+                _.each(mapData, function(dateObj) {
+                    if(dateObj.monNum === minMonth) {
+                        minMonthDates.push(dateObj);
+                    }
+                    if(dateObj.monNum === maxMonth) {
+                        maxMonthDates.push(dateObj);
+                    }
+                });
+
+                var minMonthDatesArr = _.map(minMonthDates, function(dateObj) {
+                    return isNaN(dateObj.dayNum) ? 1 : dateObj.dayNum;
+                });
+
+                var maxMonthDatesArr = _.map(maxMonthDates, function(dateObj) {
+                    return isNaN(dateObj.dayNum) ? 1 : dateObj.dayNum;
+                });
+
+                var minDay = _.min(minMonthDatesArr);
+                var maxDay = _.max(maxMonthDatesArr);
+
                 var sdSplit = singleDate.split('-');
 
                 return {
-                    fromDate: sdSplit[0] + '-' + sdSplit[1] + '-' + fromDay,
-                    untilDate: sdSplit[0] + '-' + sdSplit[1] + '-' + untilDay
+                    fromDate: sdSplit[0] + '-' + minMonth + '-' + minDay,
+                    untilDate: sdSplit[0] + '-' + maxMonth + '-' + maxDay
                 };
             }
 
@@ -823,6 +856,18 @@ angular.module('sntRover')
 
                 meta.keys = _.keys(chunks);
                 meta.length = meta.keys.length;
+
+                var mergedData = {};
+                if(meta.length === 2) {
+                    _.each(chunks, function(dateObj) {
+                        _.each(dateObj, function(dataObj, date) {
+                            if(!mergedData[date]) {
+                                mergedData[date] = dataObj;
+                            }
+                        });                                          
+                    });
+                    chunks[meta.keys[0]] = mergedData;
+                }
                 meta.index = 0;
 
                 return {
