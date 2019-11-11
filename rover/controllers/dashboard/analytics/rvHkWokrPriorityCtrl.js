@@ -14,7 +14,9 @@ angular.module('sntRover')
                 "vacant_clean": rvAnalyticsHelperSrv.constructColorMappings('vacant_clean', 'green'),
                 "vacant_inspected": rvAnalyticsHelperSrv.constructColorMappings('vacant_inspected', 'greenDark'),
                 "vacant_dirty": rvAnalyticsHelperSrv.constructColorMappings('vacant_dirty', 'red'),
-                "vacant_pickup": rvAnalyticsHelperSrv.constructColorMappings('vacant_pickup', 'orange')
+                "vacant_pickup": rvAnalyticsHelperSrv.constructColorMappings('vacant_pickup', 'orange'),
+
+                "vacant_pending_inspected_rooms": rvAnalyticsHelperSrv.constructColorMappings('pending_inspected_rooms', 'blueLight')
             };
 
             $scope.drawHkWorkPriorityChart = function(chartDetails) {
@@ -67,6 +69,29 @@ angular.module('sntRover')
 
                 // DEBUGING CODE
                 // chartDetails = rvAnalyticsHelperSrv.addRandomNumbersForTesting(chartDetails);
+
+                var arrivalsPendingPlusEarlyCheckin = _.find(chartDetails.chartData.data, function(chart) {
+                    return chart.type === "arrivals";
+                });
+                var arrivalsPendingPlusEarlyCheckinCount = _.reduce(arrivalsPendingPlusEarlyCheckin.contents.right_side, function(memo, item) {
+                    return memo.count + item.count;
+                });
+
+                var vacantRoomsData = _.find(chartDetails.chartData.data, function(chart) {
+                    return chart.type === "vacant";
+                });
+                var InspectedVacantRooms = vacantRoomsData.contents.right_side[0].count;
+
+                // if Inspected rooms are less than sum of Early checkin and remaining arrivals, we need to indicate the 
+                // remaining Inspected rooms that needs to be ready by the time guests arrives
+                if (arrivalsPendingPlusEarlyCheckinCount > InspectedVacantRooms) {
+                    var pendingInspectedRooms = {
+                        type: "pending_inspected_rooms",
+                        count: parseInt(arrivalsPendingPlusEarlyCheckinCount) - parseInt(InspectedVacantRooms)
+                    };
+
+                    vacantRoomsData.contents.right_side.push(pendingInspectedRooms);
+                };
 
                 chartDetails = rvAnalyticsHelperSrv.processBiDirectionalChart(chartDetails);
 
@@ -289,13 +314,30 @@ angular.module('sntRover')
                     "id": "vacnt-right-title",
                     "margin_top": yBandwidth - 2 * singleLegendTitleHeightPlusMargin,
                     "items": [{
-                        "id": "right-legend-dirty",
+                        "id": "right-legend-inspected",
                         "class": colorMappings.vacant_inspected.legend_class,
                         "label": "Inspected",
                         "count": chartDetails.inspected_vacant_count,
                         "item_name": colorMappings.vacant_inspected.item_name
                     }]
                 };
+
+                var marginTopForRightSideDeps;
+
+                if (arrivalsPendingPlusEarlyCheckinCount > InspectedVacantRooms) {
+                    var pendingInspected = {
+                        "id": "right-legend-pending-inspected",
+                        "class": colorMappings.vacant_pending_inspected_rooms.legend_class,
+                        "label": "To Inspect",
+                        "count": parseInt(arrivalsPendingPlusEarlyCheckinCount) - parseInt(InspectedVacantRooms),
+                        "item_name": colorMappings.vacant_pending_inspected_rooms.item_name
+                    };
+
+                    vacantRightLegendData.items.push(pendingInspected);
+                    marginTopForRightSideDeps = yBandwidth - 2 * singleLegendTitleHeightPlusMargin;
+                } else {
+                    marginTopForRightSideDeps = yBandwidth - singleLegendTitleHeightPlusMargin;
+                }
 
                 rvAnalyticsHelperSrv.addLegendItemsToChart(_.extend(rightLegendCommonData, {
                     legendData: vacantRightLegendData
@@ -304,7 +346,7 @@ angular.module('sntRover')
                 var departuresRightLegendData = {
                     "title": "Departures",
                     "id": "departures-right-title",
-                    "margin_top": yBandwidth - singleLegendTitleHeightPlusMargin,
+                    "margin_top": marginTopForRightSideDeps,
                     "items": [{
                         "id": "right-legend-pending",
                         "class": colorMappings.departures_pending.legend_class,
