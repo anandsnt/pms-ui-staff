@@ -165,7 +165,10 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			if (!isNew) {
 				callCompanyCardServices();
 			}
-			$scope.displayShowPropertiesButton = !$scope.contactInformation.commission_details.is_global_commission;
+			if ($scope.contactInformation.commission_details) {
+				$scope.displayShowPropertiesButton = !$scope.contactInformation.commission_details.is_global_commission;
+			}
+			
 		});
 
 		$scope.$on("travelAgentSearchInitiated", function() {
@@ -290,7 +293,7 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			/** Set the other hotels' commission details same as that of current hotel's,
 			 *  when contact information saved with global commission true.
 			 **/
-			if ($scope.contactInformation.commission_details.is_global_commission) {
+			if ($scope.contactInformation.commission_details && $scope.contactInformation.commission_details.is_global_commission) {
 				angular.forEach($scope.contactInformation.commission_details.other_hotels_info, function (item) {
 					item.commission_type = $scope.contactInformation.commission_details.commission_type;
 					item.type = $scope.contactInformation.commission_details.type;
@@ -389,10 +392,12 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 					});
 				});
 			}
-			if (typeof data !== 'undefined' && (dataUpdated || $scope.isAddNewCard)) {
+			if (typeof data !== 'undefined' && (dataUpdated || $scope.viewState.isAddNewCard)) {
 				var dataToSend = JSON.parse(JSON.stringify(data));
 
-				dataToSend.commission_details.other_hotels_info = angular.copy(updatedOtherHotelsInfo);
+				if (dataToSend.commission_details) {
+					dataToSend.commission_details.other_hotels_info = angular.copy(updatedOtherHotelsInfo);
+				}
 
 				if (typeof dataToSend.countries !== 'undefined') {
 					delete dataToSend['countries'];

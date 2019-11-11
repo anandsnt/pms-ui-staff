@@ -1308,7 +1308,8 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                                     label: each.account_name,
                                     value: each.id,
                                     address: each.account_address,
-                                    type: each.account_type
+                                    type: each.account_type,
+                                    contract_access_code: each.current_contracts.length > 0 ? each.current_contracts[0].access_code : null
                                 };
                                 list.push(entry);
                             });
@@ -1349,7 +1350,8 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                                     label: each.account_name,
                                     value: each.id,
                                     address: each.account_address,
-                                    type: each.account_type
+                                    type: each.account_type,
+                                    contract_access_code: each.current_contracts.length > 0 ? each.current_contracts[0].access_code : null
                                 };
                                 list.push(entry);
                             });

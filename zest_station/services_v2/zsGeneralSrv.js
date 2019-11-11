@@ -108,7 +108,9 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'belvedere': 'Belvedere-on-Hudson',
             'delavan': 'The Delavan Hotel and Spa',
             'garden-place': 'Garden Place Hotel',
-            'crowne': 'Crowne Plaza Brussels'
+            'crowne': 'Crowne Plaza Brussels',
+            'indigo': 'Hotel Indigo Brussels',
+            'caro': 'Caro Short Stay'
         };
 
         this.isThemeConfigured = function(theme) {

@@ -387,8 +387,11 @@ sntRover.controller('RVdashboardController',
                     if ($scope.dashboardFilter.analyticsActive) {
                         $scope.dashboardFilter.analyticsActive = false;
                         $scope.$broadcast('RESET_ANALYTICS_FILTERS');
+                        $scope.$broadcast("showDashboardArea", true);
                     } else {
+                        $scope.$broadcast('ANALYTICS_VIEW_ACTIVE');
                         $scope.dashboardFilter.analyticsActive = true;
+                        $scope.clearResults();
                     }
                 };
 
@@ -403,23 +406,24 @@ sntRover.controller('RVdashboardController',
 
                 $scope.onAnlayticsRoomTypeChange = function() {
                     $scope.$broadcast('RELOAD_DATA_WITH_SELECTED_FILTER', {
-                        "room_type_id": $scope.dashboardFilter.selectedRoomTypeId,
+                        "room_type": $scope.dashboardFilter.selectedRoomType,
                         "date": $scope.dashboardFilter.datePicked
                     });
                 };
 
                 $scope.dashboardFilter.datePicked = angular.copy($rootScope.businessDate);
 
+                $scope.datePicked = moment($rootScope.businessDate).format('YYYY-MM-DD');
                 $scope.dateOptions = {
                     changeYear: true,
                     changeMonth: true,
                     yearRange: "-5:+5",
                     dateFormat: 'yy-mm-dd',
-                    maxDate: $rootScope.businessDate,
+                    maxDate: moment($rootScope.businessDate).add(3, 'days').format('YYYY-MM-DD'),
                     onSelect: function(dateText, inst) {
                         $scope.dashboardFilter.datePicked = dateText;
-                        $scope.$broadcast('RELOAD_DATA_WITH_SELECTED_FILTER', {
-                            "room_type_id": $scope.dashboardFilter.selectedRoomTypeId,
+                        $scope.$broadcast('RELOAD_DATA_WITH_DATE_FILTER', {
+                            "room_type": $scope.dashboardFilter.selectedRoomType,
                             "date": $scope.dashboardFilter.datePicked
                         });
                         ngDialog.close();

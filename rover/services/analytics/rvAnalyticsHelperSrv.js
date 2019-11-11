@@ -170,11 +170,176 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 		// 	});
 	};
 
+	this.addLegendItems = function(cssClassMappings, parentElement, legendData) {
+
+		parentElement
+			.append("dt")
+			.attr("class", "legend-title")
+			.attr("id", legendData.id)
+			.html(legendData.title)
+			.style("margin-top", legendData.margin_top + "px");
+
+		_.each(legendData.items, function(item) {
+			parentElement
+				.append("dd")
+				.attr("class", "legend-item")
+				.attr("id", item.id).append("span")
+				.attr("class", function(label) {
+					return cssClassMappings[item.label];
+				})
+				.html(item.count);
+
+			d3.select("#" + item.id)
+				.append("span")
+				.attr("class", "bar-label")
+				.html(item.label)
+		});
+	};
+
+	this.drawBarChart = function(barData) {
+		var svg = barData.svg,
+			yScale = barData.yScale,
+			xScale = barData.xScale,
+			chartDetails = barData.chartDetails,
+			maxValue = barData.maxValue,
+			cssClassMappings = barData.cssClassMappings,
+			colorMappings = barData.colorMappings;
+
+		var vakken = svg.selectAll(".type")
+			.data(chartDetails.chartData.data)
+			.enter()
+			.append("g")
+			.attr("class", "bar")
+			.attr("transform", function(chart) {
+				return "translate(0," + yScale(chart.type) + ")";
+			});
+
+		var bars = vakken.selectAll("rect")
+			.data(function(mainItem) {
+				return mainItem.boxes;
+			})
+			.enter()
+			.append("g")
+			.attr("class", function(item) {
+				return cssClassMappings ? cssClassMappings[item.chartName + "_" + item.type] : "";
+			})
+			.attr("id", function(item) {
+				return item.elementId;
+			});
+
+		bars.append("rect")
+			.attr("class", "rect-bars")
+			.attr("height", yScale.bandwidth())
+			.attr("x", function(item) {
+				return xScale(item.xOrigin);
+			})
+			.attr("fill", function(item) {
+				var fillColor = colorMappings[item.chartName + "_" + item.type].fill;
+
+				return "url(#" + fillColor + ")"
+			})
+			.attr("onmouseover", function(item) {
+				var mouseoverColor = colorMappings[item.chartName + "_" + item.type].onmouseover_fill;
+
+				return "evt.target.setAttribute('fill', 'url(#" + colorMappings[item.chartName + "_" + item.type].onmouseover_fill + " )');"
+			})
+			.attr("onmouseout", function(item) {
+				var mouseoutColor = colorMappings[item.chartName + "_" + item.type].onmouseout_fill;
+
+				return "evt.target.setAttribute('fill', 'url(#" + mouseoutColor + " )');"
+			})
+			.on("click", function(e) {
+				barData.onBarChartClick(e);
+			});
+
+		d3.selectAll(".rect-bars")
+			.transition()
+			.duration(300)
+			.attr("width", function(item) {
+				return xScale(item.xFinal) - xScale(item.xOrigin);
+			});
+	};
+
+	this.drawRectLines = function(rect) {
+		rect.svg.append("g")
+			.append("rect")
+			.attr("class", "chart-breakpoint-line")
+			.attr("x", rect.xOffset)
+			.attr("y", rect.yOffset)
+			.attr("height", rect.height)
+			.attr("width", rect.width);
+	};
+
+	this.gradientMappings = {
+		"greenLight": {
+			"legend_class": "bar bar-green bar-light",
+			"fill": "greenLight",
+			"onmouseover_fill": "greenLightHover",
+			"onmouseout_fill": "greenLight"
+		},
+		"greenDark": {
+			"legend_class": "bar bar-green bar-dark",
+			"fill": "greenDark",
+			"onmouseover_fill": "greenDarkHover",
+			"onmouseout_fill": "greenDark"
+		},
+		"green": {
+			"legend_class": "bar bar-green",
+			"fill": "green",
+			"onmouseover_fill": "greenHover",
+			"onmouseout_fill": "green"
+		},
+		"redLight": {
+			"legend_class": "bar bar-red bar-light",
+			"fill": "redLight",
+			"onmouseover_fill": "redLightHover",
+			"onmouseout_fill": "redLight"
+		},
+		"red": {
+			"legend_class": "bar bar-red",
+			"fill": "red",
+			"onmouseover_fill": "redHover",
+			"onmouseout_fill": "red"
+		},
+		"redDark": {
+			"legend_class": "bar bar-red bar-dark",
+			"fill": "redDark",
+			"onmouseover_fill": "redDarkHover",
+			"onmouseout_fill": "redDark"
+		},
+		"orange": {
+			"legend_class": "bar bar-orange",
+			"fill": "orange",
+			"onmouseover_fill": "orangeHover",
+			"onmouseout_fill": "orange"
+		},
+		"blueLight": {
+			"legend_class": "bar bar-blue bar-light",
+			"fill": "blueLight",
+			"onmouseover_fill": "blueLightHover",
+			"onmouseout_fill": "blueLight"
+		},
+		"blue": {
+			"legend_class": "bar bar-blue",
+			"fill": "blue",
+			"onmouseover_fill": "blueHover",
+			"onmouseout_fill": "blue"
+		}
+	};
+
+	this.addTextsToChart = function(textData) {
+		textData.svg.append("text")
+			.attr("x", textData.xOffset)
+			.attr("y", textData.yOffset)
+			.attr("dy", ".35em")
+			.attr("class", "chart-area-label")
+			.text(textData.label);
+	};
 
 	this.addRandomNumbersForTesting = function(chartDetails) {
 		var combinedItemsCountArray = [];
 
-		var workPriority = false;
+		var workPriority = chartDetails.chartData.label === 'AN_WORKLOAD'; ;
 
 		if (workPriority) {
 			var b = {
@@ -212,7 +377,7 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 
 			var i = 0;
 			var c = {};
-			for (i = 0; i <= 24; i++) {
+			for (i = 0; i <= 10; i++) {
 				c[i] = angular.copy(b);
 				c[i].type = c[i].type + i;
 				c[i].label = c[i].label + i;
@@ -243,5 +408,27 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 		// });
 
 		return chartDetails;
+	};
+
+	this.addDebugDataForFoActivity = function(chartData) {
+		_.each(chartData.todays_data, function(item) {
+			item.earlyCheckin = item.earlyCheckin < 2 ? _.random(1, 10) : item.earlyCheckin;
+			item.checkin = item.checkin < 2 ? _.random(1, 10) : item.checkin;
+			item.vipCheckin = item.vipCheckin < 2 ? _.random(1, 10) : item.vipCheckin;
+			item.vipCheckout = item.vipCheckout < 2 ? _.random(1, 10) : item.vipCheckout;
+			item.checkout = item.checkout < 2 ? _.random(1, 10) : item.checkout;
+			item.lateCheckout = item.lateCheckout < 2 ? _.random(1, 10) : item.lateCheckout;
+		});
+
+		_.each(chartData.yesterdays_data, function(item) {
+			item.earlyCheckin = item.earlyCheckin < 2 ? _.random(1, 10) : item.earlyCheckin;
+			item.checkin = item.checkin < 2 ? _.random(1, 10) : item.checkin;
+			item.vipCheckin = item.vipCheckin < 2 ? _.random(1, 10) : item.vipCheckin;
+			item.vipCheckout = item.vipCheckout < 2 ? _.random(1, 10) : item.vipCheckout;
+			item.checkout = item.checkout < 2 ? _.random(1, 10) : item.checkout;
+			item.lateCheckout = item.lateCheckout < 2 ? _.random(1, 10) : item.lateCheckout;
+		});
+
+		return chartData;
 	};
 }]);

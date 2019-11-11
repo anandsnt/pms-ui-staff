@@ -877,7 +877,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             activeFilterIndex = activeFilterIndex - 1;
 
             showingData.splice(showingData.length - 1, 1);
-
+            cachedRateAndRestrictionResponseData = [];
             fetchDailyRates(lastSelectedFilterValues[activeFilterIndex]);
 
             $scope.showBackButton = true;
@@ -2440,6 +2440,14 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fetchRoomTypeAndRestrictions(newFilterValues);
             }
             else if ($scope.isRoomTypeView && $scope.chosenTab === 'RATES') {
+                $scope.isRateView = false;
+                $scope.isRateTypeView = false;
+                $scope.isRoomTypeView = true;
+                if (newFilterValues.selectedRates.length === 1) {
+                    fetchSingleRateDetailsAndRestrictions(newFilterValues);
+                }
+            }
+            else if ($scope.isRoomTypeView && $scope.chosenTab === 'RATE_TYPES') {
                 $scope.isRateView = false;
                 $scope.isRateTypeView = false;
                 $scope.isRoomTypeView = true;

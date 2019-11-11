@@ -27,7 +27,7 @@
 	<!-- Search form -->
 
 	<!--  WHEN SUMMARY IS ON -->
-	<div id="dashboard-search-form" class="search-form has-options dashboard single-option has-room-types has-dates" role="search" ng-if="!dashboardFilter.analyticsActive"> <!-- Add class 'single-option' if Work type is set to all. When showing analytics clear all classes and use just 'search-form dashboard-analytics'. -->
+	<div id="dashboard-search-form" class="search-form has-options dashboard single-option has-room-types has-dates" role="search" ng-show="!dashboardFilter.analyticsActive"> <!-- Add class 'single-option' if Work type is set to all. When showing analytics clear all classes and use just 'search-form dashboard-analytics'. -->
 	    <div class="entry switch">
             <div class="switch-button off" ng-class="{ 'on' : !dashboardFilter.analyticsActive }">
                 <input id="room-task-toggle" value="" type="checkbox" ng-click="toggleAnalyticsView()" checked="">
@@ -102,9 +102,9 @@
 		<div class="entry room-types">
 		    <div class="select with-label">
 		        <label for="room-type">Room Type</label>
-		        <select id="room-type" ng-model="dashboardFilter.selectedRoomTypeId" ng-change="onHkAnlayticsRoomTypeChange()">
+		        <select id="room-type" ng-model="dashboardFilter.selectedRoomType" ng-change="onHkAnlayticsRoomTypeChange()">
 		            <option value="" selected="" translate>SHOW_ALL</option>
-		            <option value="{{::roomType.id}}" ng-repeat="roomType in ::roomTypes track by $index">{{::roomType.name}}</option>
+		            <option value="{{::roomType.code}}" ng-repeat="roomType in ::roomTypes track by $index">{{::roomType.name}}</option>
 		        </select>
 		    </div>
 		</div>
@@ -132,7 +132,7 @@
 
 	<!--  -->
 
-	<div ng-show="showSearchResultsArea">
+	<div ng-show="showSearchResultsArea && !dashboardFilter.analyticsActive">
 
 		<!-- Rooms list -->
 		<section id="dashboard-search" class="content scrollable" ng-iscroll="result_showing_area" ng-iscroll-delay="1000" ng-class="{'no-results': uiTotalCount == 0}">

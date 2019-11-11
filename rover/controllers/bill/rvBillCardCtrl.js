@@ -2729,7 +2729,6 @@ sntRover.controller('RVbillCardController',
 					$scope.printBillCardActive = true;
 					$scope.$emit('hideLoader');
 
-
 					if ($scope.billFormat.isInformationalInvoice) {
 						successData.invoiceLabel = successData.translation.information_invoice;
 					}

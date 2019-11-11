@@ -250,7 +250,14 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
     $stateProvider.state('admin.chargeGroups', {
         templateUrl: '/assets/partials/chargeGroups/adChargeGroups.html',
         controller: 'ADChargeGroupsCtrl',
-        url: '/chargeGroups'
+        url: '/chargeGroups',
+        resolve: {
+            availableLanguages: function(ADTranslationSrv) {
+                return ADTranslationSrv.getActiveGuestLanguages({
+                    show_only_active_languages: true
+                });
+            }
+        }
     });
 
     $stateProvider.state('admin.taxExemptTypes', {
@@ -451,7 +458,7 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
             },
             availableLanguages: function(ADTranslationSrv) {
                 return ADTranslationSrv.getActiveGuestLanguages({
-                    show_only_active_languages: true
+                    show_only_active_languages: false
                 });
             },
             singleAddon: function (ADRatesAddonsSrv, $stateParams) {
