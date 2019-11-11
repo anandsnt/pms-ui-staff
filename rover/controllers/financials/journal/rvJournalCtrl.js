@@ -32,10 +32,10 @@ sntRover.controller('RVJournalController',
     $scope.data.activePaymentTypes = [];
     $scope.data.selectedDepartmentList = [];
     $scope.data.selectedEmployeeList = [];
-    $scope.data.isDrawerOpened = false;
     $scope.data.reportType  = "";
     $scope.data.query = "";
     $scope.data.isShowSummaryTab  = true;
+    $scope.data.isDrawerOpened = true;
 
     $scope.data.isRevenueToggleSummaryActive = true;
     $scope.data.isPaymentToggleSummaryActive = true;
@@ -109,7 +109,7 @@ sntRover.controller('RVJournalController',
         var tabName = $scope.data.activeTab;
 
         if (tabName === 'SUMMARY') {
-            $scope.data.isExpandedViewSummary = !$scope.data.isExpandedViewSummary;
+            $scope.data.isExpandedViewSummary = $scope.data.isExpandedViewSummary ? false : true;
             $scope.$broadcast("EXPAND_SUMMARY_SCREEN");
         } else if (tabName === 'PAYMENTS') {
             if (!isFromSearch) {
@@ -349,11 +349,14 @@ sntRover.controller('RVJournalController',
             $rootScope.$broadcast('REFRESHPAYMENTCONTENT');
             $scope.data.searchFilterOptions.splice(5, 1);
         }
-        else if (tabName === 'SUMMARY') {
+        else if (tabName === 'SUMMARY') {  
             $rootScope.$broadcast('REFRESHSUMMARYCONTENT');
             $scope.data.searchFilterOptions.push($scope.data.arInvoiceFilter);
+            $scope.data.isDrawerOpened = true;
         }
-    	$scope.$broadcast("CLOSEPRINTBOX");
+        if (tabName !== 'SUMMARY') { 
+            $scope.$broadcast("CLOSEPRINTBOX");
+        }
         $scope.data.isActiveRevenueFilter = false;
     };
 
