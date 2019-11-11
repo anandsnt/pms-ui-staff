@@ -111,13 +111,15 @@
                                 <span class="icons icon-location" ng-if="escapeNull(row.account_address)!==''">{{row.account_address}}</span>
                             </div>
 
-                            <div class="rate" ng-if="row.current_contracts.length > 0">
-                                <span class="label">Rate</span>
-                                {{row.current_contracts[0].based_on.name}}
+                            <div class="rate" ng-if="ratesCount(row) === 1">
+                                {{getRateName()}}
+                            </div>
+                            <div class="rate" ng-if="ratesCount(row) > 1">
+                                <span class="label">Multiple</span>
                             </div>
                             <span ng-if="row.current_contracts.length > 1" class="icons icon-contracts">Multiple
                             </span>
-                            <span class="icons icon-contracts active" ng-if="row.current_contracts.length === 1">Active</span>
+                            <span class="icons icon-contracts active" ng-if="row.current_contracts.length === 1">{{row.current_contracts[0].name}}</span>
                         </a>
                     </li>
                     <li class="no-content" ng-show="results.length === 0 && textInQueryBox !== ''">
