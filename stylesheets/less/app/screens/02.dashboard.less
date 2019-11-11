@@ -183,11 +183,6 @@
         font-weight: 600;
         .transition();
 
-        rect {
-            cursor: pointer;
-            .transition();
-        }
-
         &.bar-green {
 
             &:not(.bar-dark):not(.bar-light) {
@@ -289,6 +284,13 @@
 
             &:hover,
             &:active { .gradient (@orangeEnd, @orangeStart); }
+        }
+
+        &.bar-warning {
+            color: darken(@yellow, 30);
+            text-shadow: none;
+            background: lighten(@yellow, 20);
+            box-shadow: inset 0 0 0 1px @yellow;
         }
     }
 
@@ -459,9 +461,17 @@
         .bar {
             z-index: 10;
 
-            rect {
+            rect:not(.bar-warning) {
+                cursor: pointer;
                 filter: url(#shadow);
             }
+        }
+
+        .bar-warning {
+            fill: fade(@yellow, 40);
+            stroke: @yellow;
+            stroke-dasharray: 4;
+            stroke-width: 2px;
         }
 
         .chart-area-label {
@@ -503,6 +513,39 @@
                 .show();
                 .square(20px);
             }
+        }
+    }
+
+    .chart-actions {
+        margin: 20px 0;
+        #flexbox > .parent(row wrap, '', center, '');
+
+        .refresh-chart {
+            position: relative;
+            padding: 0 20px 0 40px;
+            font-size: 14px;
+            font-weight: 400;
+            width: 160px;
+            .show();
+
+            .icons {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                .show();
+                .square(20px);
+            }
+        }
+
+        .checkbox {
+            margin: 0;
+            padding-right: 10px;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        *:not(:last-child) {
+            margin-right: 10px;
         }
     }
 }

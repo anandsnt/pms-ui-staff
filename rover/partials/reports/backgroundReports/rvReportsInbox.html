@@ -70,7 +70,7 @@
                 <span class="status {{getColorCodeForReportStatus(report)}}" ng-show="shouldDisableInboxItem(report)">{{getRequestedReportStatus(report)}}</span>
                 
                                 <!-- On click, when not expanded, will go to the generated report screen-->
-                                <div class="report-item-wrapper" ng-click="showGeneratedReport(report)">
+                                <div class="report-item-wrapper" ng-click="showGeneratedReportFromInbox(report)">
                                     <!-- 'icon-class' -> Icon class from all-reports.html -->
                                     <span class="{{report.reportIconCls}} icon-20w"></span>
                                     <div class="data">
@@ -98,7 +98,7 @@
                                 </div>
                                 <!-- If disabled, there are no actions -->
                                 <div class="report-actions" ng-if="!shouldDisableInboxItem(report)">
-                                    <button type="button" class="button green" ng-click="showGeneratedReport(report)" ng-show="report.shouldDisplayView">Show</button>
+                                    <button type="button" class="button green" ng-click="showGeneratedReportFromInbox(report)" ng-show="report.shouldDisplayView">Show</button>
                                     <!-- If export exists -->
                                     <button type="button" class="button with-icon purple" ng-show="report.shouldShowExport" ng-click="exportCSV(report)">
                                         <span class="icons icon-save"></span>
@@ -111,7 +111,7 @@
                                     <!-- if print exists -->
                                     <!-- this will put the report HTML inside the .only-print in dashboard.html -->
                                     <!-- If this report has a print modal {report-date-range, report-print-options}, show that modal -->
-                                    <button type="button" class="button with-icon blue" ng-click="printReport(report)" ng-if="report.shouldDisplayView">
+                                    <button type="button" class="button with-icon blue" ng-click="printReportFromInbox(report)" ng-if="report.shouldDisplayView">
                                         <span class="icons icon-print"></span>
                                         <span class="text">Print</span>
                                     </button>
