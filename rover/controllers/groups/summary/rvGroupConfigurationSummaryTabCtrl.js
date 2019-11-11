@@ -1502,16 +1502,33 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                     });
                     // group rates by contracted and group rates.
                     _.each(data.results, function(rate) {
-                        if (rate.is_contracted) {
-                            rate.groupName = 'Company/ Travel Agent Contract';
+                        var setNewRate = function(groupName, contract) {
+                            var newRateObj = {};
+                            newRateObj.id = rate.id;
+                            newRateObj.groupName = groupName;
+                            newRateObj.name = contract ? rate.name + '(' + contract.name + ')' : rate.name;
+                            newRateObj.contract_id = contract ? contract.id : null;
+                            sumData.rateSelectDataObject.push(newRateObj);
+                            if (rate.id === $scope.groupConfigData.summary.rate) {
+                                $scope.groupConfigData.summary.contract_id = newRateObj.contract_id;
+                            }
+                        };
+
+                        if (!rate.is_contracted) {
+                            setNewRate('Group Rates');
                         }
                         else {
-                            rate.groupName = 'Group Rates';
+                            if (rate.company_contracts.length !== 0) {
+                                angular.forEach(rate.company_contracts, function(contract) {
+                                    setNewRate('Company Contract', contract);
+                                });
+                            }
+                            if (rate.travel_agent_contracts.length !== 0) {
+                                angular.forEach(rate.travel_agent_contracts, function(contract) {
+                                    setNewRate('Travel Agent Contract', contract);
+                                });
+                            }
                         }
-                        if (rate.id === $scope.groupConfigData.summary.rate) {
-                            $scope.groupConfigData.summary.contract_id = rate.contract_id;
-                        }
-                        sumData.rateSelectDataObject.push(rate);
                     });
                 },
                 onFetchRatesFailure = function(errorMessage) {
