@@ -29,8 +29,8 @@
 					<fieldset class="holder right" ng-if="isStandAlone">
 						<ad-toggle-button label="{{'BULK_CHECKOUT_SEND_INVOICES' | translate}}" is-checked="invoiceSettings.bulk_checkout_send_invoice"></ad-toggle-button>
 					</fieldset>
-					<fieldset class="holder left">
-						<ad-toggle-button label="{{'TOURIST_TAX' | translate}}" is-checked="invoiceSettings.enable_tourist_tax_feature"></ad-toggle-button>
+					<fieldset class="holder left" ng-class="{'overlay': invoiceSettings.should_not_allow_tourist_tax_toggling }">
+						<ad-toggle-button label="{{'TOURIST_TAX' | translate}}" is-checked="invoiceSettings.enable_tourist_tax_feature"></ad-toggle-button>	
 					</fieldset>
 
 					<div class="actions float">
