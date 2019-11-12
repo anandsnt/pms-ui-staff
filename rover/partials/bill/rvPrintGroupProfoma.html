@@ -27,6 +27,13 @@
             <strong ng-if="printData.po_number">{{printData.translation.po_number}}: </strong> {{printData.po_number}}<br/>  
             <strong ng-if="printData.payment_date">{{printData.translation.payment_date}}: </strong> {{printData.payment_date | date:dateFormat}}
         </div>
+
+        <div class="info-right" ng-if="printData.card_type === 'COMPANY'">
+            <strong >{{printData.translation.account_name}}:&nbsp;</strong>{{printData.account_name}}<br/>
+        </div>
+        <div class="info-right" ng-if="printData.card_type === 'TRAVELAGENT'">
+            <strong >{{printData.translation.account_name}}:&nbsp;</strong>{{printData.account_name}}<br/>
+        </div>
     </div>
 </div>
 
