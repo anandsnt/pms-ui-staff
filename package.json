@@ -87,7 +87,7 @@
   },
   "scripts": {
     "gulp": "gulp",
-    "glite": "gulp --no-gw --no-zs",
+    "glite": "gulp --no-zs",
     "lint": "eslint -c .eslintrc.json .",
     "lintRover": "eslint -c .eslintrc.json rover",
     "lintAdmin": "eslint -c .eslintrc.json admin",
