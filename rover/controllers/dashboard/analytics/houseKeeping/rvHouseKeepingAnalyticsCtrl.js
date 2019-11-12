@@ -28,13 +28,13 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 		});
 
 		var showChartDetails = function() {
-			// ngDialog.open({
-			// 	template: '/assets/partials/dashboard/analyticsPopups/analyticsDetailsView.html',
-			// 	className: '',
-			// 	scope: $scope,
-			// 	closeByDocument: false,
-			// 	closeByEscape: false
-			// });
+			ngDialog.open({
+				template: '/assets/partials/dashboard/analyticsPopups/analyticsDetailsView.html',
+				className: '',
+				scope: $scope,
+				closeByDocument: false,
+				closeByEscape: false
+			});
 		};
 
 		var getChartDetails = function(type) {

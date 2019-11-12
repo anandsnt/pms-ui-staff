@@ -1,0 +1,150 @@
+<div class="wrapper">
+    <h2>
+        {{ screenData.mainHeading }}
+    </h2>
+    <p ng-if="!screenData.hideChartData">Last update: {{ screenData.analyticsDataUpdatedTime }}</p>
+    <!-- Chart -->
+    <div class="analytics-chart with-legend-right" ng-class="{ 'with-legend-left' : screenData.selectedChart === 'FO_ARRIVALS' }">
+        <dl class="chart-legend legend-left" id="left-side-legend" ng-if="screenData.selectedChart === 'FO_ARRIVALS'">
+        </dl>
+        <div id="analytics-chart" class="chart-content">
+            <div id="d3-plot">
+            </div>
+            <div class="chart-actions" ng-show="!screenData.hideChartData">
+                <label class="checkbox" ng-class="{'checked': screenData.showPreviousDayData}"
+                    ng-show="screenData.selectedChart === 'FO_ACTIVITY'"
+                    ng-click="togglePreviousDayData()">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked': screenData.showPreviousDayData}"></span>
+                    <input id="show-remaining" type="checkbox" ng-model="screenData.showPreviousDayData" ng-change="previousDaySelectionChanged()">
+                    Show Day Before
+                </label>
+                <button type="button" class="button white refresh-chart" ng-click="refreshChart()">
+                    <span class="icons icon-reset"></span>
+                    Refresh Chart
+                </button>
+            </div>
+
+            <svg>
+                <defs>
+                    <!-- Shadow -->
+                    <filter id="shadow">
+                        <feDropShadow dx=".5" dy=".5" stdDeviation=".5" flood-opacity=".5" filterUnits="userSpaceOnUse"></feDropShadow>
+                    </filter>
+                    <pattern id="texture" patternUnits="userSpaceOnUse" width="40" height="40">
+                        <image xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAAAAACreq1xAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2RpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDpGNDM0QjUyQUY0MDNFMzExQUM4Q0MwQTgyMEUzRjYyNyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpCMkYxOTFCMDI0NjExMUUzQkU4QUI2OTcxRjVGQjI5MyIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpCMkYxOTFBRjI0NjExMUUzQkU4QUI2OTcxRjVGQjI5MyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IFdpbmRvd3MiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpEM0RCMzk1REU0MUFFMzExOTRBM0RCOTM4RUMwNUZEQyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpGNDM0QjUyQUY0MDNFMzExQUM4Q0MwQTgyMEUzRjYyNyIvPiA8L3JkZjpEZXNjcmlwdGlv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" x="0" y="0" width="40" height="40"></image>
+                    </pattern>
+                    <!-- Gradient - Orange -->
+                    <linearGradient id="orange" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#ffb319"></stop>
+                        <stop offset="100%" style="stop-color:#ff860d"></stop>
+                    </linearGradient>
+                    <linearGradient id="orangeHover" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#ff860d"></stop>
+                        <stop offset="100%" style="stop-color:#ffb319"></stop>
+                    </linearGradient>
+                    <!-- Gradient - Red -->
+                    <linearGradient id="red" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#e56322"></stop>
+                        <stop offset="100%" style="stop-color:#e50b0b"></stop>
+                    </linearGradient>
+                    <linearGradient id="redHover" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#e50b0b"></stop>
+                        <stop offset="100%" style="stop-color:#e56322"></stop>
+                    </linearGradient>
+                    <!-- Gradient - RedLight -->
+                    <linearGradient id="redLight" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#e5a17e"></stop>
+                        <stop offset="100%" style="stop-color:#e56767"></stop>
+                    </linearGradient>
+                    <linearGradient id="redLightHover" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#e56767"></stop>
+                        <stop offset="100%" style="stop-color:#e5a17e"></stop>
+                    </linearGradient>
+                    <!-- Gradient - RedDark -->
+                    <linearGradient id="redDark" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#cc581f"></stop>
+                        <stop offset="100%" style="stop-color:#990808"></stop>
+                    </linearGradient>
+                    <linearGradient id="redDarkHover" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#990808"></stop>
+                        <stop offset="100%" style="stop-color:#cc581f"></stop>
+                    </linearGradient>
+                    <!-- Gradient - Green -->
+                    <linearGradient id="green" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#90d92b"></stop>
+                        <stop offset="100%" style="stop-color:#54d115"></stop>
+                    </linearGradient>
+                    <linearGradient id="greenHover" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#54d115"></stop>
+                        <stop offset="100%" style="stop-color:#90d92b"></stop>
+                    </linearGradient>
+                    <!-- Gradient - GreenLight -->
+                    <linearGradient id="greenLight" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#b5d982"></stop>
+                        <stop offset="100%" style="stop-color:#8bd169"></stop>
+                    </linearGradient>
+                    <linearGradient id="greenLightHover" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#8bd169"></stop>
+                        <stop offset="100%" style="stop-color:#b5d982"></stop>
+                    </linearGradient>
+                    <!-- Gradient - GreenDark -->
+                    <linearGradient id="greenDark" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#6ea621"></stop>
+                        <stop offset="100%" style="stop-color:#35850d"></stop>
+                    </linearGradient>
+                    <linearGradient id="greenDarkHover" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#35850d"></stop>
+                        <stop offset="100%" style="stop-color:#6ea621"></stop>
+                    </linearGradient>
+                    <!-- Gradient - Blue -->
+                    <linearGradient id="blue" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#73d2e5"></stop>
+                        <stop offset="100%" style="stop-color:#5ca1e5"></stop>
+                    </linearGradient>
+                    <linearGradient id="blueHover" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#5ca1e5"></stop>
+                        <stop offset="100%" style="stop-color:#73d2e5"></stop>
+                    </linearGradient>
+                    <!-- Gradient - BlueLight -->
+                    <linearGradient id="blueLight" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#cfe2e5"></stop>
+                        <stop offset="100%" style="stop-color:#b8cfe5"></stop>
+                    </linearGradient>
+                    <linearGradient id="blueLightHover" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#b8cfe5"></stop>
+                        <stop offset="100%" style="stop-color:#cfe2e5"></stop>
+                    </linearGradient>
+                    <!-- Gradient - Purple -->
+                    <linearGradient id="purple" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#a65fba"></stop>
+                        <stop offset="100%" style="stop-color:#9053a3"></stop>
+                    </linearGradient>
+                    <linearGradient id="purpleHover" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#9053a3"></stop>
+                        <stop offset="100%" style="stop-color:#a65fba"></stop>
+                    </linearGradient>
+                    <!-- Gradient - Yellow -->
+                    <linearGradient id="yellow" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#fae500"></stop>
+                        <stop offset="100%" style="stop-color:#fed100"></stop>
+                    </linearGradient>
+                    <linearGradient id="yellowHover" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#fed100"></stop>
+                        <stop offset="100%" style="stop-color:#fae500"></stop>
+                    </linearGradient>
+                    <!-- Gradient - YellowDark -->
+                    <linearGradient id="yellowDark" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#c7ba28"></stop>
+                        <stop offset="100%" style="stop-color:#c7ba28"></stop>
+                    </linearGradient>
+                    <linearGradient id="yellowDarkHover" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#c9ac28"></stop>
+                        <stop offset="100%" style="stop-color:#c7ba28"></stop>
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
+        <dl class="chart-legend legend-right" id="right-side-legend">
+        </dl>
+    </div>
+</div>
