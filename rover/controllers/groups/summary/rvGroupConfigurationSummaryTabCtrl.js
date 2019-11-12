@@ -1050,8 +1050,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
         $scope.onRateChange = function() {
             var summaryData = $scope.groupConfigData.summary,
                 uniqId = summaryData.uniqId,
-                rateId = uniqId.split(':')[0],
-                contractId = uniqId.split(':')[1];
+                rateId = uniqId.split(':')[1],
+                contractId = uniqId.split(':')[2];
 
             if (!summaryData.group_id) {
                 return false;
@@ -1513,7 +1513,10 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                         var setNewRate = function(groupName, contract) {
                             var newRateObj = {};
                             newRateObj.id = rate.id;
-                            newRateObj.uniqId = contract ? rate.id + ':' + contract.id : rate.id + '';
+                            newRateObj.uniqId = groupName === 'Company Contract' ? $scope.groupConfigData.summary.company.id + ':' + rate.id :
+                                                groupName === 'Travel Agent Contract' ? $scope.groupConfigData.summary.travel_agent.id + ':' + rate.id :
+                                                ':' + rate.id;
+                            newRateObj.uniqId += contract ? ':' + contract.id : ':';
                             newRateObj.groupName = groupName;
                             newRateObj.name = contract ? rate.name + '(' + contract.name + ')' : rate.name;
                             newRateObj.contract_id = contract ? contract.id : null;
