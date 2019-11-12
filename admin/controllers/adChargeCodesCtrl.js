@@ -1,5 +1,5 @@
-admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTableParams', '$filter', '$timeout', '$state', '$rootScope', '$location', '$anchorScroll', 'ngDialog', 'ADRatesAddonsSrv', 'availableLanguages',
-    function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state, $rootScope, $location, $anchorScroll, ngDialog, ADRatesAddonsSrv, availableLanguages) {
+admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTableParams', '$filter', '$timeout', '$state', '$rootScope', '$location', '$anchorScroll', 'ngDialog', 'ADRatesAddonsSrv', 'availableLanguages', 'ADRoomTypesSrv',
+    function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state, $rootScope, $location, $anchorScroll, ngDialog, ADRatesAddonsSrv, availableLanguages, ADRoomTypesSrv) {
 
 		ADBaseTableCtrl.call(this, $scope, ngTableParams);
 		$scope.$emit("changedSelectedMenu", 5);
@@ -21,6 +21,32 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
         $scope.stateAttributes = {
             selectedPaymentType: ''
         };
+
+        var customTaxRuleObject = {
+				"amount": 0.00,
+				"shouldHideDateRange": true,
+				"shouldHideNightRange": true,
+				"shouldHideRoomRateRange": true,
+				"shouldHideRoomType": true
+			};
+
+        $scope.fetchRoomTypes = function() {
+        	var successCallbackFetchRooms = function(response) {
+        			$scope.roomTypes = response.room_types;
+        			$scope.roomTypes.map(function(group) {
+				      // if(excludedGroupIds.indexOf(group.id) > -1) {
+				        // group.ticked = true;
+				      // }
+				    });
+	        	}, options = {
+					params: {},
+					successCallBack: successCallbackFetchRooms
+				};
+
+        	$scope.callAPI(ADRoomTypesSrv.fetch, options);
+        };        
+
+        $scope.fetchRoomTypes();
 
         $scope.availableLanguagesSet = availableLanguages;
 		var defaultLanguage = _.filter(availableLanguages.languages, function(language) {
@@ -93,6 +119,95 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			$scope.$emit('hideLoader');
 			runDigestCycle();
 		};
+
+		var isEmptyValue = function(value) {
+			var returnValue = true;
+
+			if (value !== '' && value !== null) {
+				returnValue = false;
+			}
+			return returnValue;
+		};
+
+		$scope.onSelectRule = function(index) {
+			if ($scope.prefetchData.custom_tax_rules[index].selectedTaxRule === "DATE_RANGE") {
+				$scope.prefetchData.custom_tax_rules[index].from_date = '';
+				$scope.prefetchData.custom_tax_rules[index].to_date = '';
+				$scope.prefetchData.custom_tax_rules[index].shouldHideDateRange = false;
+
+			} else if ($scope.prefetchData.custom_tax_rules[index].selectedTaxRule === "NIGHTS_RANGE") {
+				$scope.prefetchData.custom_tax_rules[index].from_night_count = '';
+				$scope.prefetchData.custom_tax_rules[index].to_night_count = '';
+				$scope.prefetchData.custom_tax_rules[index].shouldHideNightRange = false;
+			} else if ($scope.prefetchData.custom_tax_rules[index].selectedTaxRule === "ROOM_RATE_RANGE") {
+				$scope.prefetchData.custom_tax_rules[index].from_night_count = '';
+				$scope.prefetchData.custom_tax_rules[index].to_night_count = '';
+				$scope.prefetchData.custom_tax_rules[index].shouldHideRoomRateRange = false;
+			} else if ($scope.prefetchData.custom_tax_rules[index].selectedTaxRule === "ROOM_TYPES") {
+				$scope.prefetchData.custom_tax_rules[index].from_night_count = '';
+				$scope.prefetchData.custom_tax_rules[index].to_night_count = '';
+				$scope.prefetchData.custom_tax_rules[index].shouldHideRoomType = false;
+			}
+
+			// $scope.prefetchData.custom_tax_rules[index].remainingCustomTaxParameter = _.reject($scope.prefetchData.custom_tax_rules[index].remainingCustomTaxParameter, function(item) {
+			// 	return item.value === $scope.prefetchData.custom_tax_rules[index].selectedTaxRule;
+			// });
+			
+		};
+
+		$scope.addNewTaxRule = function() {
+			$scope.prefetchData.custom_tax_rules.push(dclone(customTaxRuleObject));
+			$scope.$digest();
+		}
+
+
+		var setUpCustomTaxRulesData = function(customTaxRules, customTaxParameter) {
+			angular.forEach(customTaxRules, function(item, index) {
+				item.remainingCustomTaxParameter = angular.copy(customTaxParameter);
+				// TO DO: REmove each rules based on config
+				if (item.from_date && !isEmptyValue(item.from_date) && item.to_date && !isEmptyValue(item.to_date)) {
+					item.remainingCustomTaxParameter = _.reject(item.remainingCustomTaxParameter, function(item) {
+						return item.value === "DATE_RANGE";
+					});
+				}
+				if (item.from_night_count && !isEmptyValue(item.from_night_count) && item.to_night_count && !isEmptyValue(item.to_night_count)) {
+				
+					item.remainingCustomTaxParameter = _.reject(item.remainingCustomTaxParameter, function(item) {
+						return item.value === "NIGHTS_RANGE";
+					});
+				}
+
+				if (item.from_rate && !isEmptyValue(item.from_rate) && item.to_rate && !isEmptyValue(item.to_rate)) {
+
+				
+					item.remainingCustomTaxParameter = _.reject(item.remainingCustomTaxParameter, function(item) {
+						return item.value === "ROOM_RATE_RANGE";
+					});
+				}
+
+				if (item.room_types && item.room_types.length > 0) {
+					item.remainingCustomTaxParameter = _.reject(item.remainingCustomTaxParameter, function(item) {
+						return item.value === "ROOM_TYPES";
+					});
+				}
+
+				if (_.indexOf(_.pluck(item.remainingCustomTaxParameter, 'value'), "DATE_RANGE") !== -1) {
+					item.shouldHideDateRange = true;
+				}
+				if (_.indexOf(_.pluck(item.remainingCustomTaxParameter, 'value'), "NIGHTS_RANGE") !== -1) {
+					item.shouldHideNightRange = true;
+				}
+				if (_.indexOf(_.pluck(item.remainingCustomTaxParameter, 'value'), "ROOM_RATE_RANGE") !== -1) {
+					item.shouldHideRoomRateRange = true;
+				}
+				if (_.indexOf(_.pluck(item.remainingCustomTaxParameter, 'value'), "ROOM_TYPES") !== -1) {
+					item.shouldHideRoomType = true;
+				}
+
+			});
+			return customTaxRules;
+		};
+
 		/*
 		 * To fetch charge code list
 		 */
@@ -116,6 +231,25 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				$scope.$emit('hideLoader');
 				$scope.isAdd = true;
 				$scope.selected_payment_type.id = -1;
+
+
+
+
+
+
+
+				data.custom_tax_parameters = [{id: 1, value: "DATE_RANGE", description: "Date Range"},
+ {id: 2, value: "ROOM_RATE_RANGE", description: "Room Rate Range"},
+ {id: 3, value: "NIGHTS_RANGE", description: "Nights Range"},
+ {id: 4, value: "ROOM_TYPES", description: "Room Types"}];
+				
+				data.custom_tax_rules = [];
+				data.custom_tax_rules.push(dclone(customTaxRuleObject));
+
+				data.custom_tax_rules = setUpCustomTaxRulesData(data.custom_tax_rules, data.custom_tax_parameters);
+
+
+
 				$scope.prefetchData = data;
 				$scope.prefetchData.allow_manual_posting = false;
 				$scope.addIDForPaymentTypes();
@@ -222,16 +356,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			var data = {
 				'editId': value,
 				'locale': $scope.selectedLanguage.code
-			};
-
-			var isEmptyValue = function(value) {
-				var returnValue = true;
-
-				if (value !== '' && value !== null) {
-					returnValue = false;
-				}
-				return returnValue;
-			};
+			};			
 
 			var editSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
@@ -420,6 +545,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		 * To handle save button click.
 		 */
 		$scope.clickedSave = function() {
+
 			var saveSuccessCallback = function(data) {
 				setDefaultLanguage();
 				$scope.$emit('hideLoader');

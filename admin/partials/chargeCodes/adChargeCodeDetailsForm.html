@@ -203,7 +203,11 @@
 	            <div class="entry full-width">
 	                <label for="flat-or-percentage">Configure Tax Amounts <strong>*</strong></label>
 	                <div class="tax-amounts">
-	                    <div class="tax-amount" ng-repeat="item in prefetchData.custom_tax_rules">
+
+
+
+
+	                    <div class="tax-amount" ng-repeat="item in prefetchData.custom_tax_rules track by $index">
 	                        <div class="tax-amount-data">
 	                            <div class="amount">
 	                                <div class="select">
@@ -327,53 +331,24 @@
 	                                    
 	                                    <!-- This .multiSelect is the HTML provided by the Multiselect used inside of the Admin side, an Angular component probably
 	                                    -->
-	                                    <span class="multiSelect inlineBlock" max-height="300px">
-	                                        <button type="button" class="button multiSelectButton">1 selected<span class="caret"></span>
-	                                        </button>
-	                                        <div class="checkboxLayer">
-	                                            <form>
-	                                                <div class="helperContainer">
-	                                                    <div class="line">
-	                                                        <button type="button" class="helperButton">✓&nbsp; Select All</button>
-	                                                        <button type="button" class="helperButton">×&nbsp; Select None</button>
-	                                                        <button type="button" class="helperButton" style="float:right">↶&nbsp; Reset</button>
-	                                                    </div>
-	                                                    <div class="line" style="position:relative">
-	                                                        <input placeholder="Search..." type="text" class="inputFilter">
-	                                                        <button type="button" class="clearButton">×</button>
-	                                                    </div>
-	                                                </div>
-	                                                <div class="checkBoxContainer" style="max-height: 300px; overflow-y:scroll">
-
-	                                                    <!-- Add .selected if selected -->
-	                                                    <div class="multiSelectItem vertical selected">
-	                                                        <div class="acol">
-	                                                            <label>
-	                                                                <input class="checkbox focusable" type="checkbox" checked="checked">
-	                                                                Room Type 1
-	                                                            </label>
-	                                                        </div>
-	                                                        <!-- Show this if selected --
-	                                                        <span class="tickMark">✔</span>
-	                                                        -->
-	                                                    </div>
-	                                                    ... repeat for each room type
-	                                                </div>
-	                                            </form>
-	                                        </div>
-	                                    </span>
+	                                    <div multi-select  on-open="fetchRoomTypes()" input-model="roomTypes" button-label="id" item-label="name" tick-property="ticked" max-labels="0" default-label="None selected" max-height="300px">
+                        				</div>
+	                                    <!-- ========================= -->
 	                                    <!-- Removes condition on click -->
 	                                    <button type="button" class="button white">
 	                                        <span class="icons icon-delete large-icon"></span>
 	                                    </button>
 
 	                                    <!-- Show this if it's the last condition in the list and there are more conditions left in the option -->
-	                                    <label class="add-new-button">
+	                                    
+	                                </div>
+	                                <div class="condition">
+	                                	<label class="add-new-button">
 	                                        + Add Tax Rule
-	                                        <select>
+	                                        <select ng-change="onSelectRule($index)" ng-model="item.selectedTaxRule">
 	                                            <!-- Remove options for condition selected -->
 	                                            <option value="">Select Tax Rule</option>
-	                                            <option value="date-range" ng-repeat="customTax in item.remainingCustomTaxParameter">{{customTax.value}}</option>
+	                                            <option value="{{customTax.value}}" ng-repeat="customTax in item.remainingCustomTaxParameter">{{customTax.value}}</option>
 	                                            
 	                                        </select>
 	                                    </label>
@@ -381,10 +356,11 @@
 	                            </div>
 	                        </div>
 	                        <div class="tax-amount-action">
-	                            <button type="button" class="icons icon-delete large-icon"></button>
+	                            <button type="button" class="icons icon-delete small-icon"></button>
+	                            <button type="button" class="icons icon-add large-icon" ng-click="addNewTaxRule()"></button>
 	                        </div>
 	                    </div>
-	                    ... repeat for each tax amount
+	                    
 	                </div>
 	            </div>
 	        </fieldset>
