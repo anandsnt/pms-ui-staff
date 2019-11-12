@@ -22,10 +22,10 @@
     </div>
     <div class="info-bottom float">
         <div class="info-left">
-            <strong>{{printData.translation.group_start_date}}: </strong> {{printData.group_start_date}}<br/>
-            <strong>{{printData.translation.group_end_date}}: </strong> {{printData.group_end_date}}<br/> 
+            <strong>{{printData.translation.group_start_date}}: </strong> {{printData.group_start_date | date:dateFormat}}<br/>
+            <strong>{{printData.translation.group_end_date}}: </strong> {{printData.group_end_date | date:dateFormat}}<br/> 
             <strong ng-if="printData.po_number">{{printData.translation.po_number}}: </strong> {{printData.po_number}}<br/>  
-            <strong ng-if="printData.payment_date">{{printData.translation.payment_date}}: </strong> {{printData.payment_date}}
+            <strong ng-if="printData.payment_date">{{printData.translation.payment_date}}: </strong> {{printData.payment_date | date:dateFormat}}
         </div>
     </div>
 </div>
@@ -38,7 +38,7 @@
     <table class="invoice-details proforma-details">
         <thead>
             <tr>
-                <th class="date">{{printData.translation.date}}</th> 
+                <th class="date">{{printData.translation.date | date:dateFormat}}</th> 
                 <th class="type">{{printData.translation.type}}</th>
                 <th class="occ">{{printData.translation.occupancy}}</th>
                 <th class="align-right amount">{{printData.translation.item_price}}</th>
@@ -82,7 +82,7 @@
         </tfoot>
         <tbody>
             <tr class="first" ng-repeat-start="item in printData.proforma_bill_transactions.transaction_details"  ng-class="{'last' : printData.proforma_bill_transactions.transaction_details[$index].occupancy_details.length === 1}">
-                <td class="date">{{item.date}}</td>
+                <td class="date">{{item.date | date:dateFormat}}</td>
                 <td class="type">{{item.occupancy_details[0].room_type}}</td>
                 <td class="occ">{{item.occupancy_details[0].ocuupancy}}</td>
                 <td class="align-right amount">
