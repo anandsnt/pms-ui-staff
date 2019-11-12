@@ -314,6 +314,35 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 			});
 		};
 
+		var singleRateName = '';
+
+		/**
+		 * Function to return the single rate's name is any
+		 * @return {String}
+		 */
+		$scope.getRateName = function() {
+			return singleRateName;
+		};
+
+		/**
+		 * Function to check if multiple rates exists on any of the contracts
+		 * @param {Object} account the account object
+		 * @return {Boolean}
+		 */
+		$scope.ratesCount = function(account) {
+			var rateCount = false;
+
+			if (account.current_contracts && account.current_contracts.length !== 0) {
+				angular.forEach(account.current_contracts, function(contract) {
+					if (contract.contract_rates.length !== 0) {
+						rateCount += contract.contract_rates.length;
+                        singleRateName = contract.contract_rates[0].rate_name;
+					}
+				});
+			}
+			return rateCount;
+		};
+
 		/**
 		 *  Get style class for the pagination control
 		 */
