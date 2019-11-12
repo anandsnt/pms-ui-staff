@@ -1022,9 +1022,13 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
             if (!response.is_changed && !response.is_room_rate_available) {
                 showRateChangeWarningPopup();
                 $scope.groupConfigData.summary.rate = summaryMemento.rate;
+                $scope.groupConfigData.summary.contract_id = summaryMemento.contract_id;
+                $scope.groupConfigData.summary.uniqId = summaryMemento.uniqId;
             }
             else {
                 summaryMemento.rate = $scope.groupConfigData.summary.rate;
+                summaryMemento.contract_id = $scope.groupConfigData.summary.contract_id;
+                summaryMemento.uniqId = $scope.groupConfigData.summary.uniqId;
                 // fetch summary once rate is changed - as per CICO-31812 comments
                 $scope.$emit('FETCH_SUMMARY');
             }
@@ -1035,6 +1039,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
             $scope.errorMessage = errorMessage;
             $scope.$emit('showErrorMessage', errorMessage);
             $scope.groupConfigData.summary.rate = summaryMemento.rate;
+            $scope.groupConfigData.summary.contract_id = summaryMemento.contract_id;
+            $scope.groupConfigData.summary.uniqId = summaryMemento.uniqId;
         };
 
         /**
@@ -1043,22 +1049,24 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
          */
         $scope.onRateChange = function() {
             var summaryData = $scope.groupConfigData.summary,
-                contractId;
-            
-            _.each($scope.groupSummaryData.rateSelectDataObject, function(rate) {
-                if (rate.id === summaryData.rate) {
-                    contractId = rate.contract_id;
-                    $scope.groupConfigData.summary.contract_id = contractId;
-                }
-            });
+                uniqId = summaryData.uniqId,
+                rateId = uniqId.split(':')[0],
+                contractId = uniqId.split(':')[1];
 
             if (!summaryData.group_id) {
                 return false;
             }
 
+            _.each($scope.groupSummaryData.rateSelectDataObject, function(rate) {
+                if (rate.uniqId === summaryData.uniqId) {
+                    // contractId = rate.contract_id;
+                    $scope.groupConfigData.summary.contract_id = contractId;
+                }
+            });
+
             var params = {
                 group_id: summaryData.group_id,
-                rate_id: summaryData.rate,
+                rate_id: rateId,
                 contract_id: contractId
             };
             var options = {
@@ -1505,11 +1513,13 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                         var setNewRate = function(groupName, contract) {
                             var newRateObj = {};
                             newRateObj.id = rate.id;
+                            newRateObj.uniqId = contract ? rate.id + ':' + contract.id : rate.id + '';
                             newRateObj.groupName = groupName;
                             newRateObj.name = contract ? rate.name + '(' + contract.name + ')' : rate.name;
                             newRateObj.contract_id = contract ? contract.id : null;
                             sumData.rateSelectDataObject.push(newRateObj);
-                            if (rate.id === $scope.groupConfigData.summary.rate) {
+                            if (newRateObj.uniqId === $scope.groupConfigData.summary.uniqId) {
+                                $scope.groupConfigData.summary.rate = newRateObj.id;
                                 $scope.groupConfigData.summary.contract_id = newRateObj.contract_id;
                             }
                         };
