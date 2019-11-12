@@ -75,7 +75,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
         }
     };
 
-	var initSummaryData = function(is_from_search) {        
+	var initSummaryData = function(isFromSearch) {        
 
 		var successCallBackFetchSummaryData = function(responce) {
 
@@ -93,7 +93,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
             refreshSummaryScroller();
             $scope.$emit('hideLoader');
 
-            if (is_from_search) {
+            if (isFromSearch) {
                 if ($scope.data.query !== "") {
                     $scope.clickedJournalToggle();
                 } else {
