@@ -93,8 +93,12 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
             refreshSummaryScroller();
             $scope.$emit('hideLoader');
 
-            if (is_from_search && $scope.data.query !== "") {
-                $scope.clickedJournalToggle();
+            if (is_from_search) {
+                if ($scope.data.query !== "") {
+                    $scope.clickedJournalToggle();
+                } else {
+                    $scope.data.isExpandedViewSummary = false;
+                }
             }
 		};
 
