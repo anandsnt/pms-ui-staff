@@ -224,10 +224,97 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				'locale': $scope.selectedLanguage.code
 			};
 
+			var isEmptyValue = function(value) {
+				var returnValue = true;
+
+				if (value !== '' && value !== null) {
+					returnValue = false;
+				}
+				return returnValue;
+			};
+
 			var editSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.prefetchData = {};
 				$scope.selected_payment_type.id = -1;
+				data.custom_tax_parameters = [{id: 1, value: "DATE_RANGE", description: "Date Range"},
+ {id: 2, value: "ROOM_RATE_RANGE", description: "Room Rate Range"},
+ {id: 3, value: "NIGHTS_RANGE", description: "Nights Range"},
+ {id: 4, value: "ROOM_TYPES", description: "Room Types"}];
+				
+				data.custom_tax_rules = [
+				    {
+						"from_date": "10-12-2019",
+						"to_date": "22-12-2019",
+						"from_night_count": 1,
+						"to_night_count": 10,
+						"from_rate": 1,
+						"to_rate": 25,
+						"amount": 12.50,
+						"room_types": [201, 202]
+					},
+				 	{
+						"from_night_count": 11,
+						"to_night_count": 21,
+						"from_rate": 10,
+						"to_rate": 250,
+						"amount": 25.00,
+						"room_types": [201, 205]
+					},
+					{
+						"from_date": "10-12-2019",
+						"to_date": "22-12-2019",
+						"from_rate": 1,
+						"to_rate": 25,
+						"amount": 12.50,
+						"room_types": []
+					}];
+
+			
+				angular.forEach(data.custom_tax_rules, function(item, index) {
+					item.remainingCustomTaxParameter = angular.copy(data.custom_tax_parameters);
+					// TO DO: REmove each rules based on config
+					if (item.from_date && !isEmptyValue(item.from_date) && item.to_date && !isEmptyValue(item.to_date)) {
+						item.remainingCustomTaxParameter = _.reject(item.remainingCustomTaxParameter, function(item) {
+							return item.value === "DATE_RANGE";
+						});
+					}
+					if (item.from_night_count && !isEmptyValue(item.from_night_count) && item.to_night_count && !isEmptyValue(item.to_night_count)) {
+					
+						item.remainingCustomTaxParameter = _.reject(item.remainingCustomTaxParameter, function(item) {
+							return item.value === "NIGHTS_RANGE";
+						});
+					}
+
+					if (item.from_rate && !isEmptyValue(item.from_rate) && item.to_rate && !isEmptyValue(item.to_rate)) {
+
+					
+						item.remainingCustomTaxParameter = _.reject(item.remainingCustomTaxParameter, function(item) {
+							return item.value === "ROOM_RATE_RANGE";
+						});
+					}
+
+					if (item.room_types.length > 0) {
+						item.remainingCustomTaxParameter = _.reject(item.remainingCustomTaxParameter, function(item) {
+							return item.value === "ROOM_TYPES";
+						});
+					}
+
+					if (_.indexOf(_.pluck(item.remainingCustomTaxParameter, 'value'), "DATE_RANGE") !== -1) {
+						item.shouldHideDateRange = true;
+					}
+					if (_.indexOf(_.pluck(item.remainingCustomTaxParameter, 'value'), "NIGHTS_RANGE") !== -1) {
+						item.shouldHideNightRange = true;
+					}
+					if (_.indexOf(_.pluck(item.remainingCustomTaxParameter, 'value'), "ROOM_RATE_RANGE") !== -1) {
+						item.shouldHideRoomRateRange = true;
+					}
+					if (_.indexOf(_.pluck(item.remainingCustomTaxParameter, 'value'), "ROOM_TYPES") !== -1) {
+						item.shouldHideRoomType = true;
+					}
+
+				});
+
 				$scope.prefetchData = data;
 				$scope.prefetchData.allow_manual_posting = angular.isUndefined(data.allow_manual_posting) ? false : data.allow_manual_posting;
 				$scope.prefetchData.selected_fees_code = $scope.prefetchData.selected_fees_code || '';
