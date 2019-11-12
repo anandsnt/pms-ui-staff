@@ -93,7 +93,8 @@ module.exports = {
             'delavan': [themeCSSRoot + 'delavan.less'],
             'garden-place': [themeCSSRoot + 'garden-place.less'],
             'crowne': [themeCSSRoot + 'crowne.less'],
-            'indigo': [themeCSSRoot + 'indigo.less']
+            'indigo': [themeCSSRoot + 'indigo.less'],
+            'caro': [themeCSSRoot + 'caro.less']
         };
     }
 };

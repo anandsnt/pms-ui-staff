@@ -62,7 +62,7 @@ admin.controller('ADRatesAddonsCtrl', [
                 page: 1, // show first page
                 count: $scope.displyCount, // count per page
                 sorting: {
-                    name: 'asc' // initial sorting
+                    end_date: 'desc' // initial sorting
                 }
             }, {
                 total: 0, // length of data
