@@ -228,6 +228,26 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			return customTaxRules;
 		};
 
+		$scope.deleteTaxRule = function(indexToBeDeleted) {
+			$scope.prefetchData.custom_tax_rules = $scope.prefetchData.custom_tax_rules.splice(indexToBeDeleted);
+		};
+
+		$scope.deleteDateRange = function(indexToBeDeleted) {
+			$scope.prefetchData.custom_tax_rules[indexToBeDeleted].shouldHideDateRange = true;
+		};
+
+		$scope.deleteRateRange = function(indexToBeDeleted) {
+			$scope.prefetchData.custom_tax_rules[indexToBeDeleted].shouldHideRoomRateRange = true;
+		};
+
+		$scope.deleteNightsRange = function(indexToBeDeleted) {
+			$scope.prefetchData.custom_tax_rules[indexToBeDeleted].shouldHideNightRange = true;
+		};
+
+		$scope.deleteRoomTypes = function(indexToBeDeleted) {
+			$scope.prefetchData.custom_tax_rules[indexToBeDeleted].shouldHideRoomType = true;
+		};
+
 		/*
 		 * To fetch charge code list
 		 */
@@ -558,6 +578,8 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 
 			$scope.invokeApi(ADChargeCodesSrv.deleteItem, data, deleteSuccessCallback);
 		};
+
+
 		/*
 		 * To handle save button click.
 		 */

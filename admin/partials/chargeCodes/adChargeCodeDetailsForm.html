@@ -248,8 +248,8 @@
 	                                    <div class="has-datepicker">
 	                                        <input class="datepicker" ng-click = "showDatePickerChargeCode($index, 'to')" ng-model="item.to_date" id="date-range-to" value="{{item.to_date}}" />
 	                                    </div>
-	                                    <button type="button" class="button white">
-	                                        <span class="icons icon-delete large-icon"></span>
+	                                    <button type="button" class="button white" ng-click="deleteDateRange($index)">
+	                                        <span class="icons icon-delete large-icon" ></span>
 	                                    </button>
 	                                    <!-- Show this if it's the last condition in the list and there are more conditions left in the option --
 	                                    <label class="add-new-button">
@@ -284,7 +284,7 @@
 	                                            <!-- <option type="gross">Gross</option> -->
 	                                        </select>
 	                                    </div>
-	                                    <button type="button" class="button white">
+	                                    <button type="button" class="button white" ng-click="deleteRateRange($index)">
 	                                        <span class="icons icon-delete large-icon"></span>
 	                                    </button>
 	                                    <!-- Show this if it's the last condition in the list and there are more conditions left in the option --
@@ -307,7 +307,7 @@
 	                                    <input id="nights-range-from" class="small-input" value="{{item.from_night_count}}" ng-model="item.from_night_count" />
 	                                    <label for="nights-range-to">To</label>
 	                                    <input id="nights-range-to" class="small-input" ng-model="item.to_night_count" value="{{item.to_night_count}}" />
-	                                    <button type="button" class="button white">
+	                                    <button type="button" class="button white" ng-click="deleteNightsRange($index)"> 
 	                                        <span class="icons icon-delete large-icon"></span>
 	                                    </button>
 
@@ -335,7 +335,7 @@
                         				</div>
 	                                    <!-- ========================= -->
 	                                    <!-- Removes condition on click -->
-	                                    <button type="button" class="button white">
+	                                    <button type="button" class="button white" ng-click="deleteRoomTypes($index)">
 	                                        <span class="icons icon-delete large-icon"></span>
 	                                    </button>
 
@@ -356,8 +356,8 @@
 	                            </div>
 	                        </div>
 	                        <div class="tax-amount-action">
-	                            <button type="button" class="icons icon-delete small-icon"></button>
-	                            <button type="button" class="icons icon-add large-icon" ng-click="addNewTaxRule()"></button>
+	                            <button type="button" class="icons icon-delete small-icon" ng-click="deleteTaxRule($index)"></button>
+	                            <button type="button" class="icons icon-add large-icon" ng-if="$last" ng-click="addNewTaxRule()"></button>
 	                        </div>
 	                    </div>
 	                    
