@@ -3,11 +3,11 @@ admin.service('ADChargeGroupsSrv', ['$http', '$q', 'ADBaseWebSrv', function($htt
 	/**
     *   A getter method to return the charge group list
     */
-	this.fetch = function() {
+	this.fetch = function(data) {
 		var deferred = $q.defer();
 		var url = '/admin/charge_groups.json';
 
-		ADBaseWebSrv.getJSON(url).then(function(data) {
+		ADBaseWebSrv.getJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
 		    deferred.reject(data);

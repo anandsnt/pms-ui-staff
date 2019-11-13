@@ -1,11 +1,37 @@
 <!-- If there are contracts, show this. -->
 <!-- If we don't show sidebar actions, remove .with-actions -->
-<div ng-controller="rvCardContractListCtrl" class="contracts-list with-actions" ng-class="{'actions-2': contractData.mode === 'EDIT'}" ng-show="!contractData.noContracts">
-    <div class="contracts-list-items scrollable" ng-iscroll="contractListScroller">
+<div ng-controller="rvCardContractListCtrl" class="contracts-list with-actions" ng-class="{'actions-2': contractData.mode === 'EDIT'}">
+    <!-- Show these if we are creating a new contract -->
+    <div class="no-content" ng-if="(contractData.noContracts && contractData.mode === 'ADD')">
+        <div class="info">
+            <span class="icon-no-content icon-contracts-black"></span>
+            <strong class="h1">Creating new Contract</strong>
+            <span class="h2">Once saved it will appear here</span>
+        </div>
+    </div>
+
+    <div class="contracts-list-items scrollable" ng-if="!(contractData.noContracts && contractData.mode === 'ADD')" ng-iscroll="contractListScroller">
         <div class="wrapper">
+
+            <!-- Show when collapsing the list of linked contracts -->
+            <div class="contract-link without-lines">
+                <span>{{contractData.editData.is_master_contract ? 'Linked To' : 'Linked From'}}</span>
+            </div>
+
+            <!-- Contract that is linked from/to -->
+            <!-- Add .active if clicked on it to show present, future and past -->
+            <div ng-click="clickContractLinkBar()" class="contract has-arrow toggle" ng-class="{'active': contractData.isContractLinkBarExpanded}">
+                <h3 class="item-title">{{contractData.editData.contract_name}}</h3>
+                <div class="item-info">
+                    <span>{{contractData.editData.begin_date}}</span>
+                    <span class="icons icon-single-arrow"></span>
+                    <span>{{contractData.editData.end_date}}</span>
+                </div>
+            </div>
+
             <!-- If it has no items, add .no-items -->
             <!-- If it's opened, add .open -->
-            <div class="contract-list-items-section"
+            <div ng-show="contractData.isContractLinkBarExpanded" class="contract-list-items-section"
                 ng-repeat="item in contractData.contractsList"
                 ng-class="{'no-items': item.count === 0, 'open': item.opened}">
                 <h2 ng-click="openContractsList(item)">
@@ -35,6 +61,27 @@
                     </li>
                 </ul>
             </div>
+
+            <!-- Show when showing the linked contracts/contract -->
+            <div class="contract-link" ng-if="contractData.editData.account_details.length > 0">
+                <span>{{contractData.editData.is_master_contract ? 'Linked To' : 'Linked From'}}</span>
+            </div>
+
+            <div class="contract with-image" ng-repeat="account in contractData.editData.account_details">
+                <!-- If Company -->
+                <div class="guest-image icons icon-company" ng-if="item.account_details.type === 'COMPANY'"></div>
+                <!-- If Travel Agent -->
+                <div class="guest-image icons icon-travel-agent" ng-if="item.account_details.type === 'TRAVELAGENT'"></div>
+
+                <h3 class="item-title">{{account.name}}</h3>
+                <div class="item-info">
+                    {{account.address}}
+                </div>
+            </div>
+
+            <!-- Show this if we are viewing the Linked From contract that we can unlink -->
+            <button ng-if="!contractData.editData.is_master_contract" type="button" class="button red" ng-click="clickedUnlinkContracts()">Unlink Contract</button>
+
         </div>
     </div>
     <!-- Show this to enable creating contracts. -->

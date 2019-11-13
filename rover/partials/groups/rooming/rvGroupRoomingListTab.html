@@ -236,14 +236,14 @@
                                 <span ng-bind-html="escapeNull(reservation.accompanying_guest_last_name)|highlight:query:false"></span>, <span ng-bind-html="escapeNull(reservation.accompanying_guest_first_name)|highlight:query:false"></span>
                             </h2>
                         <h2 ng-show="isGuestBlank(reservation)">
-                            <span class="highlight">{{'GROUP_PENDING'|translate}}</span>
+                            <span class="highlight">{{ translations['pending'] || ('GROUP_PENDING'|translate) }}</span>
                         </h2>
                         <span class="room" ng-show="shouldShowAssignedRoom(reservation) ">
-                            {{'GROUP_ROOM'|translate}}
+                            {{ translations['room'] || ('GROUP_ROOM'|translate) }}
                             <span ng-class="getRoomStatusClass(reservation)" ng-bind-html="escapeNull(reservation.room_no)|highlight:query:false"></span>
                         </span>
                         <span class="room unassigned" ng-show="shouldShowUnAssigned(reservation)"> 
-                           {{'GROUP_UNASSIGNED'|translate}}
+                           {{ translations['unassigned'] || ('GROUP_UNASSIGNED'|translate) }}
                         </span> 
                         <span ng-show="shouldShowAssignedRoom(reservation) || shouldShowUnAssigned(reservation)">|</span>
                         <span class="confirmation" ng-bind-html="escapeNull(reservation.confirm_no)|highlight:query:false"></span>
@@ -285,7 +285,7 @@
 
                         <div class="room-info">
                             <strong class="room-type" ng-hide="emailPrintFilters.excludeRoomType && isPrintClicked">{{reservation.room_type_name}}</strong>
-                            <em class="room-occupancy">{{occupancyTextMap[reservation.occupancy]}}</em>
+                            <em class="room-occupancy">{{ translations[lowercase(occupancyTextMap[reservation.occupancy])] || occupancyTextMap[reservation.occupancy] }}</em>
                         </div>
                         <div class="rate" ng-hide="groupConfigData.summary.hide_rates && isPrintClicked">
                             {{reservation.room_rate_amount}}

@@ -33,7 +33,7 @@
 "FEES_CODE":"Fees code",
 "FEES":"Fees",
 "MINIMUM_AMOUNT_TO_CHARGE_FEE":"Minimum amount to charge fee",
-"INVOICES" : "Invoices",
+"FINANCIAL_SETTINGS" : "Financial Settings",
 "FIRST_INVOICE_NO" : "First Invoice Number",
 "INVOICE_NO_PREFIX" : "Invoice Number Prefix",
 "PLACEHOLDER_FIRST_INVOICE_NO" : "Enter First Invoice Number",

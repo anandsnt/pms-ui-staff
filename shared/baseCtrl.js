@@ -380,4 +380,14 @@ BaseCtrl = function($scope) {
         return parseFloat(num);
     };
 
+    /**
+     * Converts string to lowercase
+     * @param {String} str- input string
+     * @return {String} transformed string
+     */
+    $scope.lowercase = function (str) {
+        str = str || '';
+        return str.toLowerCase(); 
+    };
+
 };
