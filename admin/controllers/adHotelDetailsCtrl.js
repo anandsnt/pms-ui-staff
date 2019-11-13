@@ -549,4 +549,14 @@ admin.controller('ADHotelDetailsCtrl', [
             controller: 'adHotelLegalSettingsController'
         });
     };
+
+    (function () {
+        if ($rootScope.isSntAdmin) {
+            $scope.callAPI(ADHotelDetailsSrv.getThemes, {
+                successCallBack: function (response) {
+                    $scope.themes = response.themes;
+                }
+            });
+        }
+    })();
 }]);
