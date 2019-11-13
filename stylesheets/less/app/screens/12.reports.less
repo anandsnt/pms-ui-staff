@@ -2165,8 +2165,7 @@
             &.action-manager-reports,
             &.card-authorization-check-reports,
             &.not-occupied-rooms-reports,
-            &.room-reports,
-            &.invoice-tax-reports {
+            &.room-reports {
 
                 th {
                     line-height: 35px;
@@ -3967,41 +3966,6 @@
                     padding-left: 20px;
                     color: @grey3;
                     font-size: 12px;
-                }
-            }
-
-            &.invoice-tax-reports {
-                td {
-                    table {
-                        table-layout: fixed;
-                        thead {
-                            td {
-                                padding-top: 0;
-                                border-bottom: 1px solid rgba(0,0,0,0.1);
-                            }
-                        }
-                    }
-
-                    &.vat-groupings {
-                        padding-top: 0;
-                        width: 300px;
-
-                        td {
-                            &:first-child {
-                                width: 60px;
-                            }
-                        }
-                    }
-                }
-
-                tr {
-                    &.totals {
-                        table {
-                            td {
-                                background: none;
-                            }
-                        }
-                    }
                 }
             }
         }
