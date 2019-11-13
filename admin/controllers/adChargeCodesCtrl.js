@@ -174,6 +174,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 
 		$scope.addNewTaxRule = function() {
 			customTaxRuleObject.remainingCustomTaxParameter = customTaxParameter;
+			customTaxRuleObject.allRoomTypes = $scope.roomTypes;
 			$scope.prefetchData.custom_tax_rules.push(dclone(customTaxRuleObject));
 			$scope.$digest();
 		}
@@ -586,6 +587,10 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				}
 				$scope.successMessage = 'Success!';
 			};
+
+			var failureCallback = function(error) {
+				$scope.prefetchData.custom_tax_rules = currentCustomTaxRules;
+			};
 			// To create Charge code Link with list frm scope.
 			var selected_link_with = [];
 			
@@ -609,7 +614,10 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 					}
 				}
 			});
-			var customTaxRulesToApi = [];
+			var customTaxRulesToApi = [],
+
+				currentCustomTaxRules = angular.copy($scope.prefetchData.custom_tax_rules); // Used if the API fails need to show the same in UI
+
 			angular.forEach($scope.prefetchData.custom_tax_rules, function(item, index) {
 				item.room_types = [];
 				angular.forEach(item.allRoomTypes, function(roomItem, roomIndex) {
@@ -649,7 +657,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
                         }
             postData.locale = $scope.selectedLanguage.code;
 
-			$scope.invokeApi(ADChargeCodesSrv.save, postData, saveSuccessCallback);
+			$scope.invokeApi(ADChargeCodesSrv.save, postData, saveSuccessCallback, failureCallback);
 		};
 		/*
 		 * To handle cancel button click.

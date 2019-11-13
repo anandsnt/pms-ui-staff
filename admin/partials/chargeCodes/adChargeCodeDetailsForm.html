@@ -239,7 +239,7 @@
 
 
 	                                <!-- Date Range condition example -->
-	                                <div class="condition date-range" ng-hide="item.shouldHideDateRange">
+	                                <div class="condition date-range" ng-if="!item.shouldHideDateRange">
 	                                    <label for="date-range-from">Date From</label>
 	                                    <div class="has-datepicker">
 	                                        <input class="datepicker" ng-click = "showDatePickerChargeCode($index, 'from')" id="date-range-from" ng-model="item.from_date" value="{{item.from_date}}" />
@@ -266,7 +266,7 @@
 	                                </div>
 
 	                                <!-- Room Rate conditon example -->
-	                                <div class="condition room-rate-range" ng-hide="item.shouldHideRoomRateRange">
+	                                <div class="condition room-rate-range" ng-if="!item.shouldHideRoomRateRange">
 	                                    <label for="rate-range-from">Rate From</label>
 	                                    <div class="input">
 	                                        <span class="currency">{{currencySymbol}}</span>
@@ -302,7 +302,7 @@
 	                                </div>
 
 	                                <!-- Nights Range condition example -->
-	                                <div class="condition nights-range" ng-hide="item.shouldHideNightRange">
+	                                <div class="condition nights-range" ng-if="!item.shouldHideNightRange">
 	                                    <label for="nights-range-from">Nights From</label>
 	                                    <input id="nights-range-from" class="small-input" value="{{item.from_night_count}}" ng-model="item.from_night_count" />
 	                                    <label for="nights-range-to">To</label>
@@ -326,7 +326,7 @@
 	                                </div>
 
 	                                <!-- Room Types condition example -->
-	                                <div class="condition room-types-range" ng-hide="item.shouldHideRoomType">
+	                                <div class="condition room-types-range" ng-if="!item.shouldHideRoomType">
 	                                    <label for="types-range-from">Room Type(s)</label>
 	                                    
 	                                    <!-- This .multiSelect is the HTML provided by the Multiselect used inside of the Admin side, an Angular component probably
