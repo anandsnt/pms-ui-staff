@@ -26,7 +26,7 @@ angular.module('sntRover').controller('rvCardContractsLinkingCtrl', ['$scope', '
                 that.refreshSearchList();
             },
             fetchContractsForLinkingFailureCallback = function(errorMessage) {
-                $scope.$emit('setErrorMessage', errorMessage);
+                $scope.errorMessage = errorMessage;
             };
 
             $scope.contractData.accountId = $stateParams.id === "add" ? $scope.contactInformation.id : $stateParams.id;
@@ -47,10 +47,14 @@ angular.module('sntRover').controller('rvCardContractsLinkingCtrl', ['$scope', '
             if ($scope.contractData.linkContractsSearch.query.length > 2) {
                 that.fetchContractsForLinking();
             }
+            else {
+                $scope.contractData.linkContractsSearch.results = [];
+            }
         };
         // Handle clear search.
         $scope.clearQuery = function() {
             $scope.contractData.linkContractsSearch.query = '';
+            $scope.contractData.linkContractsSearch.results = [];
         };
         /* 
          *  Handle click on each item in the result list
@@ -59,27 +63,34 @@ angular.module('sntRover').controller('rvCardContractsLinkingCtrl', ['$scope', '
         $scope.clickedOnResult = function( index ) {
             var clickedItem = $scope.contractData.linkContractsSearch.results[index];
 
-            if (!clickedItem.is_already_linked) {
-                var linkContractSuccessCallback = function() {
-                    clickedItem.is_already_linked = true;
-                    $scope.contractData.selectedContractId = clickedItem.id;
-                    $scope.contractData.linkContractsSearch.query = '';
-                    $scope.$emit('fetchContractsList');
-                },
-                linkContractFailureCallback = function(errorMessage) {
-                    $scope.$emit('setErrorMessage', errorMessage);
-                };
+            var linkContractSuccessCallback = function() {
+                $scope.contractData.selectedContractId = clickedItem.id;
+                $scope.contractData.linkContractsSearch.query = '';
+                $scope.$emit('fetchContractsList');
+            },
+            linkContractFailureCallback = function(errorMessage) {
+                $scope.errorMessage = errorMessage;
+            };
 
-                var options = {
-                    successCallBack: linkContractSuccessCallback,
-                    failureCallBack: linkContractFailureCallback,
-                    params: {
-                        "id": clickedItem.id,
-                        "account_id": $scope.contractData.accountId
-                    }
-                };
+            var options = {
+                successCallBack: linkContractSuccessCallback,
+                failureCallBack: linkContractFailureCallback,
+                params: {
+                    "id": clickedItem.id,
+                    "account_id": $scope.contractData.accountId
+                }
+            };
 
-                $scope.callAPI(rvCompanyCardContractsSrv.linkContract, options);
+            $scope.callAPI(rvCompanyCardContractsSrv.linkContract, options);
+        };
+
+        // Handle Cancel Search
+        $scope.cancelSearch = function() {
+            if ($scope.contractData.noContracts) {
+                $scope.contractData.mode = '';
+            }
+            else {
+                $scope.contractData.mode = 'EDIT';
             }
         };
         
