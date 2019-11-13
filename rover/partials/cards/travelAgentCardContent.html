@@ -80,8 +80,8 @@
                                     <div class="rate" ng-show="ratesCount(travelAgent) > 1">
                                         <span class="label">Multiple</span>
                                     </div>
-                                    <span ng-if="travelAgent.activeContracts.length > 1" class="icons icon-contracts">Multiple Contracts</span>
-                                    <span ng-if="travelAgent.activeContracts.length === 1" class="icons icon-contracts">{{travelAgent.rate.name}}</span>
+                                    <span ng-if="travelAgent.activeContracts.length > 1" class="icons icon-contracts active">Multiple Contracts</span>
+                                    <span ng-if="travelAgent.activeContracts.length === 1" class="icons icon-contracts active">{{travelAgent.rate.name}}</span>
                                 </div>
          
                                 <span class="confirmation">{{ travelAgent.address.postalCode }}</span>
