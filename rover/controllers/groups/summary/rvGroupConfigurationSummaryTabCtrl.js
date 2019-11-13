@@ -1513,6 +1513,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                     _.each(data.results, function(rate) {
                         var setNewRate = function(groupName, contract) {
                             var newRateObj = {};
+
                             newRateObj.id = rate.id;
                             newRateObj.uniqId = contract ? rate.id + ':' + contract.id : rate.id + ':';
                             newRateObj.groupName = groupName;
