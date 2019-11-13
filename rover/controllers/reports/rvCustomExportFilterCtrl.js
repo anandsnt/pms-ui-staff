@@ -15,13 +15,12 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
         const filterTypes = {
             OPTIONS: 'OPTION',
             DURATION: 'DURATION',
-            RANGE: 'RANGE'
+            RANGE: 'RANGE',
+            GENERAL: 'GENERAL'
         };
 
         const CUSTOM_EXPORT_FILTERS_SCROLLER = 'custom-export-filters-scroller';
-        const RANGE_FILTER_OPERATORS = 3;
         const SCROLL_REFRESH_DELAY = 100;
-        const RANGE_SUB_FILTERS_COUNT = 3;
 
         // Set the scroller
         $scope.setScroller(CUSTOM_EXPORT_FILTERS_SCROLLER, {
@@ -33,7 +32,7 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
         $scope.refreshFilterScroller = (reset) => {
             $timeout(function () {
                 $scope.refreshScroller(CUSTOM_EXPORT_FILTERS_SCROLLER);
-            }, 100);
+            }, 1000);
 
             if ( !! reset && $scope.myScroll.hasOwnProperty(CUSTOM_EXPORT_FILTERS_SCROLLER) ) {
                 $scope.myScroll[CUSTOM_EXPORT_FILTERS_SCROLLER].scrollTo(0, 0, SCROLL_REFRESH_DELAY);
@@ -101,7 +100,7 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
                         selectedFirstLevel: each.value
                     });
 
-                    if (selectedRangeFieldNames.length !== RANGE_FILTER_OPERATORS) {
+                    if (selectedRangeFieldNames.length !== RVCustomExportsUtilFac.getRangeOperators().length ) {
                         availableRangeFieldNames.push(each);
                     }
 
@@ -124,6 +123,37 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
                 });
 
                 return availableDurationFieldNames;
+            },
+            createGeneralFilterEntry = ( filterType, selectedFirstLevel, selectedSecondLevel) => {
+                var fieldsCopy = angular.copy($scope.selectedEntityDetails.processedFilters[filterType]),
+                    filterFields = removeAlreadyExistsGeneralFilterFields(fieldsCopy),
+                    filterConfig = {
+                        firstLevelData: filterFields,
+                        secondLevelData: [],
+                        selectedFirstLevel: selectedFirstLevel || '',
+                        selectedSecondLevel: selectedSecondLevel || '',
+                        options: [],
+                        isGeneral: true                       
+                    };
+
+                return filterConfig;
+            },
+            removeAlreadyExistsGeneralFilterFields = ( fields ) => {
+                var availableGeneralFilterFieldNames = [];
+
+                _.each (fields, function (each) {
+                    var selectedGeneralFilterFieldNames = _.filter($scope.filterData.appliedFilters, {
+                        isGeneral: true,
+                        selectedFirstLevel: each.value
+                    });
+
+                    if (selectedGeneralFilterFieldNames.length !== RVCustomExportsUtilFac.getGeneralOperators().length ) {
+                        availableGeneralFilterFieldNames.push(each);
+                    }
+
+                });
+
+                return availableGeneralFilterFieldNames;
             };
 
         // Creates new filter entry object
@@ -136,6 +166,8 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
                 filter = createRangeEntry(filterType);
             } else if (filterTypes.OPTIONS === filterType) {
                 filter = createOptionEntry(filterType);
+            } else if (filterTypes.GENERAL === filterType) {
+                filter = createGeneralFilterEntry(filterType);
             }
 
             return filter;
@@ -176,7 +208,8 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
                     'options',
                     'rangeValue',
                     'isMultiSelect',
-                    'hasDualState'
+                    'hasDualState',
+                    'isGeneral'
                 ]);
                 RVCustomExportsUtilFac.populateOptions(selectedFieldName, selectedFilter, selectedSecondLevel).then(function (filter) {
                     selectedFilter = filter;
@@ -191,9 +224,23 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
                     'options',
                     'rangeValue',
                     'isMultiSelect',
-                    'hasDualState'
+                    'hasDualState',
+                    'isGeneral'
                 ]);
                 RVCustomExportsUtilFac.populateRangeOperators(selectedFieldName, selectedFilter, $scope.filterData.appliedFilters, selectedSecondLevel, rangeValue);
+            } else if (selectedFilter.isGeneral) {
+                removeKeysFromObj(selectedFilter, [
+                    'isOption',
+                    'isDuration',
+                    'secondLevelData',
+                    'selectedSecondLevel',
+                    'options',
+                    'rangeValue',
+                    'isMultiSelect',
+                    'hasDualState',
+                    'isRange'
+                ]);
+                RVCustomExportsUtilFac.populateGeneralOperators(selectedFieldName, selectedFilter, $scope.filterData.appliedFilters, selectedSecondLevel);
             }
 
         };
@@ -229,12 +276,13 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
                         filter = createOptionEntry(filterType, key);
                         $scope.filterData.appliedFilters.push(filter);
                         $scope.onFirstLevelFieldChange(key, ($scope.filterData.appliedFilters.length - 1), value);
+                    } else if (filterType === filterTypes.GENERAL) {
+                        filter = createGeneralFilterEntry(filterType, key);
+                        $scope.filterData.appliedFilters.push(filter);
+                        $scope.onFirstLevelFieldChange(key, ($scope.filterData.appliedFilters.length - 1), value);
                     }
 
                 });
-                $timeout( function () {
-                    $scope.refreshFilterScroller(true);
-                }, 200);
                 
             });
         };
@@ -268,7 +316,7 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
 
             // We can choose 3 operators for each of the field, and hence the 3 in the condition below
             return !availableRangeFilters ||
-                (availableRangeFilters && ( (availableRangeFilters.length * RANGE_SUB_FILTERS_COUNT) === appliedRangeFilters.length));
+                (availableRangeFilters && ( (availableRangeFilters.length * (RVCustomExportsUtilFac.getRangeOperators().length)) === appliedRangeFilters.length));
         };
 
         // Hide condition for duration filter
@@ -299,9 +347,19 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
                 rangeFiltersCount = ($scope.selectedEntityDetails &&
                     $scope.selectedEntityDetails.processedFilters &&
                     $scope.selectedEntityDetails.processedFilters['RANGE'] && 
-                    ($scope.selectedEntityDetails.processedFilters['RANGE'].length * RANGE_SUB_FILTERS_COUNT)) || 0;
+                    ($scope.selectedEntityDetails.processedFilters['RANGE'].length * (RVCustomExportsUtilFac.getRangeOperators().length))) || 0,
 
-            return $scope.filterData.appliedFilters.length === (optionFilterCount + durationFilterCount + rangeFiltersCount);
+                generalFiltersCount = ($scope.selectedEntityDetails &&
+                    $scope.selectedEntityDetails.processedFilters &&
+                    $scope.selectedEntityDetails.processedFilters['GENERAL'] && 
+                    ($scope.selectedEntityDetails.processedFilters['GENERAL'].length * ( RVCustomExportsUtilFac.getGeneralOperators().length) )) || 0;
+
+            return $scope.filterData.appliedFilters.length === (optionFilterCount + durationFilterCount + rangeFiltersCount + generalFiltersCount);
+        };
+
+        // This will be called when the last item in the filter list is rendered
+        $scope.onFilterProcessComplete = () => {
+            $scope.refreshFilterScroller(true);
         };
 
 
