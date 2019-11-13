@@ -12,7 +12,7 @@
             </div>
         </div>
         
-        <div class="entry-wrapper" ng-repeat="appliedFilter in filterData.appliedFilters track by $index">
+        <div class="entry-wrapper" ng-repeat="appliedFilter in filterData.appliedFilters track by $index" ng-init="$last && onFilterProcessComplete()">
             <duration-filter
                 ng-if="appliedFilter.isDuration" 
                 first-level-data = "appliedFilter.firstLevelData"

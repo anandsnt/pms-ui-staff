@@ -21,7 +21,6 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
 
         const CUSTOM_EXPORT_FILTERS_SCROLLER = 'custom-export-filters-scroller';
         const SCROLL_REFRESH_DELAY = 100;
-        const RANGE_SUB_FILTERS_COUNT = 3;
 
         // Set the scroller
         $scope.setScroller(CUSTOM_EXPORT_FILTERS_SCROLLER, {
@@ -33,7 +32,7 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
         $scope.refreshFilterScroller = (reset) => {
             $timeout(function () {
                 $scope.refreshScroller(CUSTOM_EXPORT_FILTERS_SCROLLER);
-            }, 100);
+            }, 1000);
 
             if ( !! reset && $scope.myScroll.hasOwnProperty(CUSTOM_EXPORT_FILTERS_SCROLLER) ) {
                 $scope.myScroll[CUSTOM_EXPORT_FILTERS_SCROLLER].scrollTo(0, 0, SCROLL_REFRESH_DELAY);
@@ -277,12 +276,13 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
                         filter = createOptionEntry(filterType, key);
                         $scope.filterData.appliedFilters.push(filter);
                         $scope.onFirstLevelFieldChange(key, ($scope.filterData.appliedFilters.length - 1), value);
+                    } else if (filterType === filterTypes.GENERAL) {
+                        filter = createGeneralFilterEntry(filterType, key);
+                        $scope.filterData.appliedFilters.push(filter);
+                        $scope.onFirstLevelFieldChange(key, ($scope.filterData.appliedFilters.length - 1), value);
                     }
 
                 });
-                $timeout( function () {
-                    $scope.refreshFilterScroller(true);
-                }, 200);
                 
             });
         };
@@ -355,6 +355,11 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
                     ($scope.selectedEntityDetails.processedFilters['GENERAL'].length * ( RVCustomExportsUtilFac.getGeneralOperators().length) )) || 0;
 
             return $scope.filterData.appliedFilters.length === (optionFilterCount + durationFilterCount + rangeFiltersCount + generalFiltersCount);
+        };
+
+        // This will be called when the last item in the filter list is rendered
+        $scope.onFilterProcessComplete = () => {
+            $scope.refreshFilterScroller(true);
         };
 
 
