@@ -1050,8 +1050,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
         $scope.onRateChange = function() {
             var summaryData = $scope.groupConfigData.summary,
                 uniqId = summaryData.uniqId,
-                rateId = uniqId.split(':')[1],
-                contractId = uniqId.split(':')[2];
+                rateId = uniqId.split(':')[0],
+                contractId = uniqId.split(':')[1];
 
             if (!summaryData.group_id) {
                 return false;
@@ -1506,26 +1506,27 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                     // add custom rate obect
                     sumData.rateSelectDataObject.push({
                         id: '-1',
-                        name: 'Custom Rate'
+                        name: 'Custom Rate',
+                        uniqId: '-1'
                     });
                     // group rates by contracted and group rates.
                     _.each(data.results, function(rate) {
                         var setNewRate = function(groupName, contract) {
                             var newRateObj = {};
                             newRateObj.id = rate.id;
-                            newRateObj.uniqId = groupName === 'Company Contract' ? $scope.groupConfigData.summary.company.id + ':' + rate.id :
-                                                groupName === 'Travel Agent Contract' ? $scope.groupConfigData.summary.travel_agent.id + ':' + rate.id :
-                                                ':' + rate.id;
-                            newRateObj.uniqId += contract ? ':' + contract.id : ':';
+                            newRateObj.uniqId = contract ? rate.id + ':' + contract.id : rate.id + ':';
                             newRateObj.groupName = groupName;
                             newRateObj.name = contract ? rate.name + '(' + contract.name + ')' : rate.name;
                             newRateObj.contract_id = contract ? contract.id : null;
                             sumData.rateSelectDataObject.push(newRateObj);
-                            if (newRateObj.uniqId === $scope.groupConfigData.summary.uniqId) {
-                                $scope.groupConfigData.summary.rate = newRateObj.id;
-                                $scope.groupConfigData.summary.contract_id = newRateObj.contract_id;
+                            if (newRateObj.id === $scope.groupConfigData.summary.rate && newRateObj.contract_id === $scope.groupConfigData.summary.contract_id) {
+                                $scope.groupConfigData.summary.uniqId = newRateObj.uniqId;
                             }
                         };
+
+                        if ($scope.groupConfigData.summary.rate === '-1') {
+                            $scope.groupConfigData.summary.uniqId = '-1';
+                        }
 
                         if (!rate.is_contracted) {
                             setNewRate('Group Rates');

@@ -1099,6 +1099,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
 
                     if (!$scope.groupConfigData.summary.rate) {
                         $scope.groupConfigData.summary.rate = -1;
+                        $scope.groupConfigData.summary.uniqId = '-1';
                         $scope.groupConfigData.summary.contract_id = null;
                     }
 
