@@ -38,5 +38,6 @@ sntRover.constant('RVCustomExportFilterParamsConst', {
 	'USER_NAME': 'USER_NAME',
 	'HOLD_STATUS': 'HOLD_STATUS',
 	'RESERVATION_TYPE': 'RESERVATION_TYPE',
-	'TAX_EXEMPT': 'TAX_EXEMPT'
+	'TAX_EXEMPT': 'TAX_EXEMPT',
+	'GLOBAL': 'GLOBAL'
 });
