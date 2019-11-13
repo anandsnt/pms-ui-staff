@@ -242,11 +242,11 @@
 	                                <div class="condition date-range" ng-hide="item.shouldHideDateRange">
 	                                    <label for="date-range-from">Date From</label>
 	                                    <div class="has-datepicker">
-	                                        <input class="datepicker" id="date-range-from" value="{{item.from_date}}" />
+	                                        <input class="datepicker" ng-click = "showDatePickerChargeCode($index, 'from')" id="date-range-from" ng-model="item.from_date" value="{{item.from_date}}" />
 	                                    </div>
 	                                    <label for="date-range-to">To</label>
 	                                    <div class="has-datepicker">
-	                                        <input class="datepicker" id="date-range-to" value="{{item.to_date}}" />
+	                                        <input class="datepicker" ng-click = "showDatePickerChargeCode($index, 'to')" ng-model="item.to_date" id="date-range-to" value="{{item.to_date}}" />
 	                                    </div>
 	                                    <button type="button" class="button white">
 	                                        <span class="icons icon-delete large-icon"></span>
@@ -270,18 +270,18 @@
 	                                    <label for="rate-range-from">Rate From</label>
 	                                    <div class="input">
 	                                        <span class="currency">{{currencySymbol}}</span>
-	                                        <input type="number" id="rate-range-from" step="0.01" placeholder="0.00" value="{{item.from_rate}}" />
+	                                        <input type="number" id="rate-range-from" step="0.01" placeholder="0.00" ng-model="item.from_rate" value="{{item.from_rate}}" />
 	                                    </div>
 	                                    <label for="rate-range-to">To</label>
 	                                    <div class="input">
 	                                        <span class="currency">{{currencySymbol}}</span>
-	                                        <input type="number" id="rate-range-to" step="0.01" placeholder="0.00" value="{{item.to_rate}}" />
+	                                        <input type="number" id="rate-range-to" step="0.01" placeholder="0.00" value="{{item.to_rate}}" ng-model="item.to_rate" />
 	                                    </div>
 	                                    <label for="rate-range-type">Is</label>
 	                                    <div class="select">
 	                                        <select id="rate-range-type">
 	                                            <option type="net">Net</option>
-	                                            <option type="gross">Gross</option>
+	                                            <!-- <option type="gross">Gross</option> -->
 	                                        </select>
 	                                    </div>
 	                                    <button type="button" class="button white">
@@ -304,9 +304,9 @@
 	                                <!-- Nights Range condition example -->
 	                                <div class="condition nights-range" ng-hide="item.shouldHideNightRange">
 	                                    <label for="nights-range-from">Nights From</label>
-	                                    <input id="nights-range-from" class="small-input" value="{{item.from_night_count}}" />
+	                                    <input id="nights-range-from" class="small-input" value="{{item.from_night_count}}" ng-model="item.from_night_count" />
 	                                    <label for="nights-range-to">To</label>
-	                                    <input id="nights-range-to" class="small-input" value="{{item.to_night_count}}" />
+	                                    <input id="nights-range-to" class="small-input" ng-model="item.to_night_count" value="{{item.to_night_count}}" />
 	                                    <button type="button" class="button white">
 	                                        <span class="icons icon-delete large-icon"></span>
 	                                    </button>
@@ -331,7 +331,7 @@
 	                                    
 	                                    <!-- This .multiSelect is the HTML provided by the Multiselect used inside of the Admin side, an Angular component probably
 	                                    -->
-	                                    <div multi-select  on-open="fetchRoomTypes()" input-model="roomTypes" button-label="id" item-label="name" tick-property="ticked" max-labels="0" default-label="None selected" max-height="300px">
+	                                    <div multi-select  on-open="fetchRoomTypes()" input-model="item.allRoomTypes" button-label="id" item-label="name" tick-property="ticked" max-labels="0" default-label="None selected" max-height="300px">
                         				</div>
 	                                    <!-- ========================= -->
 	                                    <!-- Removes condition on click -->

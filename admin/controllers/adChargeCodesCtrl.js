@@ -30,14 +30,19 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				"shouldHideRoomType": true
 			};
 
+		var customTaxParameter = [{id: 1, value: "DATE_RANGE", description: "Date Range"},
+								 {id: 2, value: "ROOM_RATE_RANGE", description: "Room Rate Range"},
+								 {id: 3, value: "NIGHTS_RANGE", description: "Nights Range"},
+								 {id: 4, value: "ROOM_TYPES", description: "Room Types"}];
+
         $scope.fetchRoomTypes = function() {
         	var successCallbackFetchRooms = function(response) {
         			$scope.roomTypes = response.room_types;
-        			$scope.roomTypes.map(function(group) {
-				      // if(excludedGroupIds.indexOf(group.id) > -1) {
-				        // group.ticked = true;
-				      // }
-				    });
+        // 			$scope.roomTypes.map(function(group) {
+				    //   // if(excludedGroupIds.indexOf(group.id) > -1) {
+				    //     // group.ticked = true;
+				    //   // }
+				    // });
 	        	}, options = {
 					params: {},
 					successCallBack: successCallbackFetchRooms
@@ -129,6 +134,18 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			return returnValue;
 		};
 
+		$scope.showDatePickerChargeCode = function(index, whichDate) {
+			$scope.currentTaxIndex = index;
+			$scope.whichDate = whichDate;
+	        ngDialog.open({
+                template: '/assets/partials/chargeCodes/adChargeCodeDatepicker.html',
+                controller: 'ADchargeCodeDatepickerCtrl',
+                className: 'ngdialog-theme-default single-calendar-modal',
+                scope: $scope,
+                closeByDocument: true
+            });
+		};
+
 		$scope.onSelectRule = function(index) {
 			if ($scope.prefetchData.custom_tax_rules[index].selectedTaxRule === "DATE_RANGE") {
 				$scope.prefetchData.custom_tax_rules[index].from_date = '';
@@ -149,13 +166,14 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				$scope.prefetchData.custom_tax_rules[index].shouldHideRoomType = false;
 			}
 
-			// $scope.prefetchData.custom_tax_rules[index].remainingCustomTaxParameter = _.reject($scope.prefetchData.custom_tax_rules[index].remainingCustomTaxParameter, function(item) {
-			// 	return item.value === $scope.prefetchData.custom_tax_rules[index].selectedTaxRule;
-			// });
+			$scope.prefetchData.custom_tax_rules[index].remainingCustomTaxParameter = _.reject($scope.prefetchData.custom_tax_rules[index].remainingCustomTaxParameter, function(item) {
+				return item.value === $scope.prefetchData.custom_tax_rules[index].selectedTaxRule;
+			});
 			
 		};
 
 		$scope.addNewTaxRule = function() {
+			customTaxRuleObject.remainingCustomTaxParameter = customTaxParameter;
 			$scope.prefetchData.custom_tax_rules.push(dclone(customTaxRuleObject));
 			$scope.$digest();
 		}
@@ -163,6 +181,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 
 		var setUpCustomTaxRulesData = function(customTaxRules, customTaxParameter) {
 			angular.forEach(customTaxRules, function(item, index) {
+				item.allRoomTypes = $scope.roomTypes;
 				item.remainingCustomTaxParameter = angular.copy(customTaxParameter);
 				// TO DO: REmove each rules based on config
 				if (item.from_date && !isEmptyValue(item.from_date) && item.to_date && !isEmptyValue(item.to_date)) {
@@ -238,10 +257,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 
 
 
-				data.custom_tax_parameters = [{id: 1, value: "DATE_RANGE", description: "Date Range"},
- {id: 2, value: "ROOM_RATE_RANGE", description: "Room Rate Range"},
- {id: 3, value: "NIGHTS_RANGE", description: "Nights Range"},
- {id: 4, value: "ROOM_TYPES", description: "Room Types"}];
+				data.custom_tax_parameters = customTaxParameter;
 				
 				data.custom_tax_rules = [];
 				data.custom_tax_rules.push(dclone(customTaxRuleObject));
@@ -593,6 +609,22 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 					}
 				}
 			});
+			var customTaxRulesToApi = [];
+			angular.forEach($scope.prefetchData.custom_tax_rules, function(item, index) {
+				item.room_types = [];
+				angular.forEach(item.allRoomTypes, function(roomItem, roomIndex) {
+					if (roomItem.ticked) {
+						item.room_types.push(parseInt(roomItem.id));
+					}
+				});
+
+				var unwantedKeys = ["allRoomTypes", "remainingCustomTaxParameter", "selectedTaxRule", "shouldHideDateRange", "shouldHideNightRange", "shouldHideRoomRateRange", "shouldHideRoomType"];
+				 item = dclone(item, unwantedKeys);
+				 customTaxRulesToApi.push(item)
+			});
+
+
+			$scope.prefetchData.custom_tax_rules = customTaxRulesToApi;
 
 			var unwantedKeys = ["charge_code_types", "payment_types", "charge_groups", "link_with", "amount_types", "tax_codes", "post_types", "symbolList"];
 			var postData = dclone($scope.prefetchData, unwantedKeys);
