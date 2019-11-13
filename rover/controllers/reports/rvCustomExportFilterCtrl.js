@@ -362,6 +362,19 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
             $scope.refreshFilterScroller(true);
         };
 
+        // Hide condition for general filter
+        $scope.shouldHideGeneralFilter = () => {
+            var appliedGeneralFilters = _.filter($scope.filterData.appliedFilters, (filter) => {
+                    return filter.isGeneral;
+                }),
+                availableGeneralFilters = $scope.selectedEntityDetails &&
+                    $scope.selectedEntityDetails.processedFilters &&
+                    $scope.selectedEntityDetails.processedFilters['GENERAL'];
+
+            return !availableGeneralFilters ||
+                (availableGeneralFilters && ( (availableGeneralFilters.length * (RVCustomExportsUtilFac.getGeneralOperators().length)) === appliedGeneralFilters.length));
+        };
+
 
     }
 ]);
