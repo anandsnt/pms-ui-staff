@@ -1,23 +1,23 @@
-<div class="wrapper">
+<div class="wrapper" id="wrapper">
     <h2>
         {{ screenData.mainHeading }}
     </h2>
     <p ng-if="!screenData.hideChartData">Last update: {{ screenData.analyticsDataUpdatedTime }}</p>
     <!-- Chart -->
-    <div class="analytics-chart with-legend-right" ng-class="{ 'with-legend-left' : screenData.selectedChart === 'FO_ARRIVALS' }">
+    <div class="analytics-chart" ng-class="{ 'with-legend-left' : screenData.selectedChart === 'FO_ARRIVALS' }">
         <dl class="chart-legend legend-left" id="left-side-legend" ng-if="screenData.selectedChart === 'FO_ARRIVALS'">
         </dl>
         <div id="analytics-chart" class="chart-content">
             <div id="d3-plot">
             </div>
             <div class="chart-actions" ng-show="!screenData.hideChartData">
-                <label class="checkbox" ng-class="{'checked': screenData.showPreviousDayData}"
+              <!--   <label class="checkbox" ng-class="{'checked': screenData.showPreviousDayData}"
                     ng-show="screenData.selectedChart === 'FO_ACTIVITY'"
                     ng-click="togglePreviousDayData()">
                     <span class="icon-form icon-checkbox" ng-class="{'checked': screenData.showPreviousDayData}"></span>
                     <input id="show-remaining" type="checkbox" ng-model="screenData.showPreviousDayData" ng-change="previousDaySelectionChanged()">
                     Show Day Before
-                </label>
+                </label> -->
                 <button type="button" class="button white refresh-chart" ng-click="refreshChart()">
                     <span class="icons icon-reset"></span>
                     Refresh Chart

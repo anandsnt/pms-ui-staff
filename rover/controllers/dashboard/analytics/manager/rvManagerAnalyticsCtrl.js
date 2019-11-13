@@ -26,7 +26,7 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 		$controller('rvFrontOfficeManagementAnalyticsCtrl', {
 			$scope: $scope
 		});
-		$controller('rvFrontOfficeActivityCtrl', {
+		$controller('rvManagerSpiderChartCtrl', {
 			$scope: $scope
 		});
 
@@ -61,6 +61,10 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 
 		var clearAllExistingChartElements = function() {
 			d3.select('#d3-plot').selectAll('svg').remove();
+			var divElements = d3.select('#d3-plot').selectAll('div');
+			if (divElements) {
+				divElements.remove();
+			}
 			if (document.getElementById("left-side-legend")) {
 				document.getElementById("left-side-legend").innerHTML = "";
 			}
