@@ -131,7 +131,10 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			$scope.$emit('hideLoader');
 			runDigestCycle();
 		};
-
+		/*
+		 * To check is empty value
+		 * @param value is value
+		 */
 		var isEmptyValue = function(value) {
 			var returnValue = true;
 
@@ -140,7 +143,11 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			}
 			return returnValue;
 		};
-
+		/*
+		 * To show date picker
+		 * @param index is index
+		 * @param whichDate from date or to date
+		 */
 		$scope.showDatePickerChargeCode = function(index, whichDate) {
 			$scope.currentTaxIndex = index;
 			$scope.whichDate = whichDate;
@@ -152,7 +159,10 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
                 closeByDocument: true
             });
 		};
-
+		/*
+		 * ON select any rule remove the same from dropdown
+		 * @param index is index
+		 */
 		$scope.onSelectRule = function(index) {
 			if ($scope.prefetchData.custom_tax_rules[index].selectedTaxRule === "DATE_RANGE") {
 				$scope.prefetchData.custom_tax_rules[index].from_date = '';
@@ -178,7 +188,9 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			});
 			
 		};
-
+		/*
+		 * On click + button
+		 */
 		$scope.addNewTaxRule = function() {
 			customTaxRuleObject.remainingCustomTaxParameter = customTaxParameter;
 			customTaxRuleObject.allRoomTypes = $scope.roomTypes;
@@ -186,7 +198,11 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			$scope.$digest();
 		}
 
-
+		/*
+		 * To setup custom tax rules and add different data to work the same
+		 * @param customTaxRules is the different rule
+		 * @param customTaxParameter tax parameters
+		 */
 		var setUpCustomTaxRulesData = function(customTaxRules, customTaxParameter) {
 			angular.forEach(customTaxRules, function(item, index) {
 				item.allRoomTypes = $scope.roomTypes;
@@ -230,7 +246,9 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			});
 			return customTaxRules;
 		};
-
+		/*
+		 * Delete Tax rule
+		 */
 		$scope.deleteTaxRule = function(indexToBeDeleted) {
 			$scope.prefetchData.custom_tax_rules = $scope.prefetchData.custom_tax_rules.splice(indexToBeDeleted);
 		};
@@ -286,17 +304,10 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				$scope.$emit('hideLoader');
 				$scope.isAdd = true;
 				$scope.selected_payment_type.id = -1;
-
-
-				data.custom_tax_parameters = customTaxParameter;
-				
+				data.custom_tax_parameters = customTaxParameter;				
 				data.custom_tax_rules = [];
 				data.custom_tax_rules.push(dclone(customTaxRuleObject));
-
 				data.custom_tax_rules = setUpCustomTaxRulesData(data.custom_tax_rules, data.custom_tax_parameters);
-
-
-
 				$scope.prefetchData = data;
 				$scope.prefetchData.allow_manual_posting = false;
 				$scope.addIDForPaymentTypes();
