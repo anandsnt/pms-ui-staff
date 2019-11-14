@@ -65,6 +65,7 @@ angular.module('sntRover').controller('rvCardContractsLinkingCtrl', ['$scope', '
 
             var linkContractSuccessCallback = function() {
                 $scope.contractData.selectedContractId = clickedItem.id;
+                $scope.contractData.isContractLinkBarExpanded = false;
                 $scope.contractData.linkContractsSearch.query = '';
                 $scope.$emit('fetchContractsList');
             },
