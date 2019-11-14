@@ -69,9 +69,9 @@
 
             <div ng-show="contractData.editData.account_details.length > 0 && !contractData.isContractLinkBarExpanded" class="contract with-image" ng-repeat="account in contractData.editData.account_details">
                 <!-- If Company -->
-                <div class="guest-image icons icon-company" ng-if="item.account_details.type === 'COMPANY'"></div>
+                <div class="guest-image icons icon-company" ng-if="account.type === 'COMPANY'"></div>
                 <!-- If Travel Agent -->
-                <div class="guest-image icons icon-travel-agent" ng-if="item.account_details.type === 'TRAVELAGENT'"></div>
+                <div class="guest-image icons icon-travel-agent" ng-if="account.type === 'TRAVELAGENT'"></div>
 
                 <h3 class="item-title">{{account.name}}</h3>
                 <div class="item-info">
