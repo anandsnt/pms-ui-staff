@@ -1,0 +1,254 @@
+/* StayNTouch Zest Station Styles | Arc Theme */
+
+/* 1. COLORS
+==========================================================*/
+@brandColor:            #b9b9b9;
+    
+@textColor:             @white;
+@backgroundColor:       #424649;
+
+@actionColor:           #262626;
+@actionBackground:      @brandColor;
+
+@inputBackground:       #707070;
+@inputColor:            @white;
+@transparentColor:      rgba(0,0,0,.5);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+
+@fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+
+/* 3. IMAGES
+==========================================================*/
+@background: @backgroundColor;
+@backgroundSize: '';
+
+@headerIconsColor:      @black;
+@headerIconsActive:     @black;
+
+.icons { 
+    &.icon-create-key {
+        fill: @brandColor;
+        stroke: @brandColor;
+    }
+
+    &.icon-no-print { stroke: @white; }
+
+    &.icon-oos {
+        fill: @brandColor;
+    }
+
+    &.icon-arrow-left,
+    &.icon-arrow-right {
+        fill: none;
+        stroke: @actionColor;
+    }
+    
+    &.icon-arrow-down {
+        fill: @brandColor;
+    }
+}
+
+.logo-svg{
+    background-image: url("../css/themes/lenaustrasse/logo.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    height: 105px;
+    width: 171px;
+}
+
+/* 4. LAYOUT
+==========================================================*/
+
+#lenaustrasse {
+
+    #header {
+        height: 150px;
+
+        .button {
+            .icons {
+                fill: #f0f0f0;
+            }
+        }
+    }
+
+    #main {
+        #calc > #height > .remove(100%, 150px);
+        top: 150px;
+
+        &.centered {
+            padding-top: 100px;
+            #content {
+                height: 100%;
+            }
+        }
+    }
+
+    input,
+    select,
+    /* Popup fixes start */
+    textarea
+    /* Popup fixes end */  {
+        background: @inputBackground;
+        color: @inputColor;
+    }
+
+    .button {
+        &.transparent:not(.text-red) {
+            color: #f0f0f0;
+            
+            .icons {
+                &.icon-arrow-left,
+                &.icon-arrow-right {
+                    stroke: #f0f0f0;
+                }
+            }
+        }
+    }
+    
+    #logo {
+        padding-top: 0;
+        margin-top: 40px;
+        .logo {
+            width: auto;
+            height: 105px;
+        }
+    }
+
+    #options {
+        
+        .icon-text {
+            color: @white;
+        }
+
+         
+
+        li.break {
+            padding-top: 60px;
+
+            &:after,
+            &:before {
+                display: none;
+            }
+        }
+
+        li { 
+            &.radio-option {
+                input[type=radio]:not(:checked) + .button {
+                    opacity: 0.25;
+                    background: @brandColor;
+                }
+            }
+        }
+    }
+
+    #selection {
+        li {
+            .details {
+                background-color: #f0f0f0;
+                color: @actionColor;
+            }
+        }
+    }
+
+    #guests {
+        .button {
+            color: @white;
+            background-color: @black;
+        }
+    } 
+
+     
+
+    .upgrade-list {
+        li {
+            &:not(.selected) {
+                border-color: #f0f0f0;
+
+                .upgrade-content {
+                    background-color: #f0f0f0;
+                    color: @actionColor;
+                }
+            }
+        }
+    }
+
+    .add-on-list {
+        li {
+
+            &:not(.selected){
+                border-color: #f0f0f0;
+
+                .add-on-content {
+                    background: #f0f0f0;
+                }
+            }
+            
+        }
+    }
+
+    .add-on {
+        .add-on-content {
+            .price {
+                strong {
+                    color: @actionColor;
+                }
+            }
+            .action { 
+                .button.transparent:not(.text-red) {
+                    color: @actionColor;
+                } 
+            }
+        }
+        .input-group {
+            input {
+                color: @black;
+            }
+        }
+    }
+
+    #textual {
+        background: #f0f0f0;
+        
+        #rate {
+            li {
+                &.total {
+                    color: @black;
+                }
+            }
+        }
+
+        &:before,
+        &:after {
+            background: #f0f0f0;
+        }
+
+    }
+
+    #rate {
+        li {
+            &.sub {
+                color: #a1a1a1;
+            }
+        }
+    }
+
+    #textual,
+    .popup {
+        .icons {
+            fill: @white;
+        }
+    }
+
+    .minibar-items .minibar-item .minibar-item-qty {
+        color: @actionColor;
+    }
+
+    .minibar-item,
+    .minibar-review .review-container {
+        background: #ececec;
+    }
+}
