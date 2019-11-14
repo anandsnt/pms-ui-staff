@@ -551,7 +551,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             _.each ($scope.selectedColumns, (column, index) => {
                 selectedField = {
                     field_name: column.name,
-                    mapped_name: column.customColLabel,
+                    mapped_name: column.customColLabel || column.name,
                     sequence_order: index + 1
                 };
                 fieldMappings.push(selectedField);
@@ -565,7 +565,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
 
             _.each($scope.filterData.appliedFilters, function (filter) {
                 paramKey = (filter.selectedFirstLevel).toLowerCase();
-                if (filter.isDuration) {
+                if (filter.isDuration || filter.isGeneral) {
                     if (filter.selectedSecondLevel) {
                         filterValues[paramKey] = filter.selectedSecondLevel;
                     }

@@ -1574,6 +1574,7 @@ sntRover.controller('RVReportDetailsCtrl', [
             return getReservationStatusClass(reservationStatus);
         };
 
+
         var printReportFromInboxListner = $rootScope.$on('PRINT_INBOX_REPORT', function () {
             var currentReport = reportsSrv.getSelectedReport();
         
@@ -1584,10 +1585,13 @@ sntRover.controller('RVReportDetailsCtrl', [
         var showGenReportEventListner = $rootScope.$on('SHOW_GEN_REPORT', function () {
             var currentReport = reportsSrv.getSelectedReport(),
                 mainCtrlScope = $scope.$parent;
-        
-            setChoosenReport(currentReport).then(function () {
-                mainCtrlScope.genReport(null, null, null, false);
-            });
+
+            $timeout(function () {
+                setChoosenReport(currentReport).then(function () {
+                    mainCtrlScope.genReport(null, null, null, false);
+                });
+            }, 3000);
+
         });
 
         // destroy listners

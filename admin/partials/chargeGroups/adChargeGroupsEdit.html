@@ -1,6 +1,8 @@
 <div class="data-holder">
-	<form class="form single-field-form float">
-		<ad-textbox value="item.name" name = "item-name" label = "" placeholder = "Enter charge group" required = ""></ad-textbox>
+	<form class="form inline-form float">
+		<ad-textbox value="item.name" name = "item-name" label = "charge group" placeholder = "Enter charge group" required = ""></ad-textbox>
+
+		<ad-textbox value="item.charge_group_trl" name = "item-name" label = "Charge Group (Translation)" placeholder = "Enter charge group translation" required = ""></ad-textbox>
 
 		<div class="actions float">
 			<button type="button" class="button blank edit-data-inline" ng-click="clickedCancel()" translate>

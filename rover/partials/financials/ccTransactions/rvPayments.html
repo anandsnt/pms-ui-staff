@@ -28,6 +28,7 @@
                                 <th scope="col" translate>GUEST_NAME</th>
                                 <th scope="col" translate>AUTH_CODE</th>
                                 <th scope="col" translate>AMOUNT</th>
+                                <th ng-show="manualCCEnabled" scope="col" translate>BANK_COMMISSION</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -39,7 +40,8 @@
                                 <td>{{transaction.reservation_no}}</td>
                                 <td>{{transaction.guest_name}}</td>
                                 <td>{{transaction.auth_code}}</td>
-                                <td>{{currencySymbol}}{{transaction.amount|number:2}}</td> 
+                                <td>{{currencySymbol}}{{transaction.amount|number:2}}</td>
+                                <td ng-show="manualCCEnabled">{{currencySymbol}}{{transaction.bank_commission|number:2}}</td>
                             </tr>
                         </tbody>
                     </table>
