@@ -14,8 +14,8 @@
         <div class="wrapper">
 
             <!-- Show when collapsing the list of linked contracts -->
-            <div class="contract-link without-lines" ng-if="contractData.editData.account_details.length > 0 && !contractData.isContractLinkBarExpanded">
-                <span>{{contractData.editData.is_master_contract ? 'Linked To' : 'Linked From'}}</span>
+            <div class="contract-link without-lines" ng-if="!contractData.isContractLinkBarExpanded">
+                <span>{{contractData.editData.is_master_contract ? 'MASTER CONTRACT' : 'SUB CONTRACT'}}</span>
             </div>
 
             <!-- Contract that is linked from/to -->
