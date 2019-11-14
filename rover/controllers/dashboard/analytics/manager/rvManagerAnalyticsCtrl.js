@@ -82,6 +82,21 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 
             $scope.callAPI(rvManagersAnalyticsSrv.roomPerformanceKPR, options);
 
+
+            var options = {
+                params: {
+                    start_date: moment($scope.dashboardFilter.datePicked).subtract(7, 'days').format('YYYY-MM-DD'),
+                    end_date: $scope.dashboardFilter.datePicked,
+                    group_by: 'market_id'
+                },
+                successCallBack: function(data) {
+                    console.log(data);
+                }
+            };
+
+            $scope.callAPI(rvManagersAnalyticsSrv.distributions, options);
+
+
 			rvFrontOfficeAnalyticsSrv.fdFoActivity($scope.dashboardFilter.datePicked).then(function(data) {
 				clearAllExistingChartElements();
 				d3.select('#d3-plot').selectAll('svg').remove();

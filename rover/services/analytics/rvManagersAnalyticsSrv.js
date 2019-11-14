@@ -19,4 +19,31 @@ angular.module('sntRover').service('rvManagersAnalyticsSrv', [
 
             return deferred.promise;
         };
+
+        this.distributions = function(params) {
+            var deferred = $q.defer();
+
+            var url = '/redshift/analytics/distributions';
+
+            rvBaseWebSrvV2.getJSON(url, params)
+                .then(function(data) {
+                    deferred.resolve(formatDistribution(data));
+                }, function(data) {
+                    deferred.reject(data);
+                });
+
+            return deferred.promise;
+        };
+
+        var formatDistribution = function(distributions) {
+            var formatedData = {};
+            distributions.forEach(function(distribution) {
+                if (formatedData[distribution.date] === undefined) {
+                    formatedData[distribution.date] = [];
+                }
+                formatedData[distribution.date].push(distribution);
+            });
+
+            return formatedData;
+        };
     }]);
