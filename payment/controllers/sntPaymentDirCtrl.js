@@ -19,7 +19,6 @@ angular.module('sntPay').controller('sntPaymentController',
                 },
                 isEMVEnabled;
             var isInIpadApp = sntapp.browser === 'rv_native' && sntapp.cordovaLoaded;
-
             // ---------------------------------------------------------------------------------------------------------
             $scope.payment = {
                 referenceText: $scope.referenceText,
@@ -546,6 +545,38 @@ angular.module('sntPay').controller('sntPaymentController',
                     }, errorMessage => {
                         $scope.$emit('ERROR_OCCURED', errorMessage);
                         sntActivity.stop('ADD_PAYMENT_GUEST_CARD');
+                    });
+                } else if ($scope.selectedPaymentType === 'CC'
+                    && $scope.actionType === 'ADD_PAYMENT_CO_TA'
+                    && $scope.payment.tokenizedCardData
+                    && $scope.payment.tokenizedCardData.apiParams) {
+
+                    sntActivity.start('ADD_PAYMENT');
+                    sntPaymentSrv.savePaymentDetails({
+                        ...$scope.payment.tokenizedCardData.apiParams,
+                        workstation_id: $scope.hotelConfig.workstationId,
+                        account_id: $scope.accountId,
+                        is_from_wallet: $scope.isFromWallet
+                    }).then(response => {
+                        var cardDetails = $scope.payment.tokenizedCardData;
+
+                        $scope.$emit('SUCCESS_LINK_PAYMENT', {
+                            response: {
+                                ...response.data,
+                                addToGuestCard: $scope.payment.addToGuestCardSelected
+                            },
+                            selectedPaymentType: $scope.selectedPaymentType,
+                            cardDetails: {
+                                'card_code': cardDetails.cardDisplayData.card_code,
+                                'ending_with': cardDetails.cardDisplayData.ending_with,
+                                'expiry_date': cardDetails.cardDisplayData.expiry_date,
+                                'card_name': cardDetails.apiParams.name_on_card || cardDetails.apiParams.card_name
+                            }
+                        });
+                        sntActivity.stop('ADD_PAYMENT');
+                    }, errorMessage => {
+                        $scope.$emit('ERROR_OCCURED', errorMessage);
+                        sntActivity.stop('ADD_PAYMENT');
                     });
                 } else if ($scope.selectedPaymentType === 'CC'
                     && /^ADD_PAYMENT_/.test($scope.actionType)

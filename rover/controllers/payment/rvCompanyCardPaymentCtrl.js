@@ -1,5 +1,5 @@
-sntRover.controller('RVPaymentCompanyCardCtrl', ['$rootScope', '$scope', '$state', 'RVPaymentSrv', 'ngDialog',
-    function ($rootScope, $scope, $state, RVPaymentSrv, ngDialog) {
+sntRover.controller('RVPaymentCompanyCardCtrl', ['$rootScope', '$scope', '$state', 'RVPaymentSrv', 'RVCompanyCardSrv', 'ngDialog',
+    function ($rootScope, $scope, $state, RVPaymentSrv, RVCompanyCardSrv, ngDialog) {
         BaseCtrl.call(this, $scope);
 
         $scope.$on('clearNotifications', function () {
@@ -9,7 +9,9 @@ sntRover.controller('RVPaymentCompanyCardCtrl', ['$rootScope', '$scope', '$state
 
         var paymentData = {
             "data": [],
-            "paymentTypes": []
+            "paymentTypes": [],
+            "accountId": $scope.contactInformation.id,
+            'isFromWallet': true,
         };
 
         $scope.paymentData = paymentData;
@@ -31,12 +33,10 @@ sntRover.controller('RVPaymentCompanyCardCtrl', ['$rootScope', '$scope', '$state
                         return obj.name === 'CC';
                     });
                     var passData = {
-                        'guest_id': '',
-                        'isFromGuestCard': false,
-                        'details': {
-                            'firstName': '',
-                            'lastName': ''
-                        }
+                        'fromView': 'companyTravelAgent',
+                        'isFromWallet': true,
+                        'accountId': $scope.contactInformation.id,
+                        'details': {}
                     };
                     var paymentData = $scope.paymentData;
                     // NOTE : As of now only guest cards can be added as payment types and associated with a guest card
@@ -46,6 +46,25 @@ sntRover.controller('RVPaymentCompanyCardCtrl', ['$rootScope', '$scope', '$state
                 }
             });
         };
+
+        $scope.fetchAttachedPaymentTypes = function() {
+
+            var successCallback = function(data) {
+                $scope.paymentData = data;
+                $scope.$parent.$emit('hideLoader');
+                refreshScrollers();
+            };
+            var errorCallback = function(errorMessage) {
+                $scope.$parent.$emit('hideLoader');
+                $scope.$emit('displayErrorMessage', errorMessage);
+            };
+    
+            $scope.invokeApi(RVCompanyCardSrv.fetchCompanyPaymentData, $scope.contactInformation.id, successCallback, errorCallback);
+        };
+        
+        $scope.addListener('wallet', function() {
+            $scope.fetchAttachedPaymentTypes();
+        });
         /*
       * To open set as as primary or delete payment
       */
@@ -61,7 +80,7 @@ sntRover.controller('RVPaymentCompanyCardCtrl', ['$rootScope', '$scope', '$state
         };
 
 
-        $scope.$on('ADDEDNEWPAYMENTTOGUEST', function (event, data) {
+        $scope.$on('ADDEDNEWPAYMENTTOCOTA', function (event, data) {
             if (typeof $scope.paymentData.data === 'undefined') {
                 $scope.paymentData.data = [];
             }

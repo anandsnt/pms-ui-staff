@@ -37,6 +37,8 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
                     return 'ADD_PAYMENT_GUEST_CARD';
                 } else if ($scope.paymentData.isFromBillCard || $scope.passData.fromView === "billcard") {
                     return 'ADD_PAYMENT_BILL';
+                } else if ($scope.passData.fromView === "companyTravelAgent") {
+                    return 'ADD_PAYMENT_CO_TA'; 
                 }
                 return 'ADD_PAYMENT_STAY_CARD';
             };
@@ -125,6 +127,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 
                 $scope.closeDialog();
             };
+            
 
             /**
              * Handles successful payment addition in the guest card
@@ -170,6 +173,29 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
             };
 
             /**
+             * Handles successful payment addition in the Company Travel Agent
+             * @param response
+             * @param paymentType
+             * @param cardDetails
+             */
+            var handleCompanyAddPaymentSuccess = function(response, paymentType, cardDetails) {
+                // NOTE: For Guest Cards - ONLY CC can be added as a payment
+                $rootScope.$broadcast('ADDEDNEWPAYMENTTOCOTA', {
+                    "card_code": cardDetails.card_code,
+                    "mli_token": cardDetails.ending_with,
+                    "card_expiry": cardDetails.expiry_date,
+                    "card_name": cardDetails.card_name,
+                    "id": response.id,
+                    "isSelected": true,
+                    "is_primary": false,
+                    "payment_type": paymentType || "CC",
+                    "payment_type_id": 1
+                });
+
+                $scope.closeDialog();
+            };
+
+            /**
              * Listener for add payment success
              * Event would be emitted from the directive in the PAYMENT MODULE
              */
@@ -180,6 +206,9 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
                         break;
                     case 'ADD_PAYMENT_GUEST_CARD':
                         handleGuestCardAddPaymentSuccess(params.response, params.selectedPaymentType, params.cardDetails);
+                        break;
+                    case 'ADD_PAYMENT_CO_TA':
+                        handleCompanyAddPaymentSuccess(params.response, params.selectedPaymentType, params.cardDetails);
                         break;
                     default:
                         handleStayCardAddPaymentSuccess(params.response, params.selectedPaymentType, params.cardDetails);
