@@ -73,7 +73,8 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
             'is_multi_currency_enabled': $scope.is_multi_currency_enabled,
             'invoice_currency': ($scope.invoice_currency === null) ? '' : parseInt($scope.invoice_currency, 10),
             'rate_currencies': $scope.selectedRateCurrencies,
-            'payment_currencies': $scope.selectedPaymentCurrencies
+            'payment_currencies': $scope.selectedPaymentCurrencies,
+            'is_post_during_eod': $scope.is_post_during_eod
         };
 
         $scope.invokeApi(settingsAndParamsSrv.saveSettingsAndParamsSrv, dataToSend, saveDetailsSuccessCallback);
