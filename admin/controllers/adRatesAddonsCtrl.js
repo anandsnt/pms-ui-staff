@@ -34,6 +34,11 @@ admin.controller('ADRatesAddonsCtrl', [
         $scope.fetchTableData = function($defer, params) {
             var getParams = $scope.calculateGetParams(params);
 
+            if (!getParams.sort_field) {
+                getParams.sort_field = null;
+                getParams.sort_dir = null;
+            }
+
             $scope.currentClickedAddon = -1;
 
             var fetchSuccessOfItemList = function(data) {
@@ -44,7 +49,7 @@ admin.controller('ADRatesAddonsCtrl', [
                 params.total(data.total_count);
 
                 // sort the results
-                $scope.data = (params.sorting() && params.orderBy()[0].slice(1, 9) !== 'end_date') ?
+                $scope.data = (params.sorting() && params.orderBy().length && params.orderBy()[0].slice(1, 9) !== 'end_date') ?
                     $filter('orderBy')(data.results, params.orderBy()) :
                     data.results;
 
@@ -61,9 +66,7 @@ admin.controller('ADRatesAddonsCtrl', [
             $scope.tableParams = new ngTableParams({
                 page: 1, // show first page
                 count: $scope.displyCount, // count per page
-                sorting: {
-                    end_date: 'desc' // initial sorting
-                }
+                sorting: {} // initial sorting
             }, {
                 total: 0, // length of data
                 getData: $scope.fetchTableData
