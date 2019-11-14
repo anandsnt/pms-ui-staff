@@ -3,9 +3,10 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 	'$state',
 	'$timeout',
 	'rvFrontOfficeAnalyticsSrv',
+	'rvManagersAnalyticsSrv',
 	'rvAnalyticsSrv',
 	'$controller',
-	function($scope, $rootScope, $state, $timeout, rvFrontOfficeAnalyticsSrv, rvAnalyticsSrv, $controller) {
+	function($scope, $rootScope, $state, $timeout, rvFrontOfficeAnalyticsSrv, rvManagersAnalyticsSrv, rvAnalyticsSrv, $controller) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -72,6 +73,14 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 		};
 
 		var renderFrontOfficeActivity = function() {
+            var options = {
+                params: { date: $scope.dashboardFilter.datePicked },
+                successCallBack: function(data) {
+                    console.log(data);
+                }
+            };
+
+            $scope.callAPI(rvManagersAnalyticsSrv.roomPerformanceKPR, options);
 
 			rvFrontOfficeAnalyticsSrv.fdFoActivity($scope.dashboardFilter.datePicked).then(function(data) {
 				clearAllExistingChartElements();
