@@ -67,7 +67,7 @@
                 <span>{{contractData.editData.is_master_contract ? 'Linked To' : 'Linked From'}}</span>
             </div>
 
-            <div class="contract with-image" ng-repeat="account in contractData.editData.account_details">
+            <div ng-show="contractData.editData.account_details.length > 0 && !contractData.isContractLinkBarExpanded" class="contract with-image" ng-repeat="account in contractData.editData.account_details">
                 <!-- If Company -->
                 <div class="guest-image icons icon-company" ng-if="item.account_details.type === 'COMPANY'"></div>
                 <!-- If Travel Agent -->
@@ -80,7 +80,7 @@
             </div>
 
             <!-- Show this if we are viewing the Linked From contract that we can unlink -->
-            <button ng-if="!contractData.editData.is_master_contract" type="button" class="button red" ng-click="clickedUnlinkContracts()">Unlink Contract</button>
+            <button ng-if="!contractData.editData.is_master_contract && !contractData.isContractLinkBarExpanded" type="button" class="button red" ng-click="clickedUnlinkContracts()">Unlink Contract</button>
 
         </div>
     </div>
