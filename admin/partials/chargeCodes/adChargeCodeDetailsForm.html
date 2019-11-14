@@ -199,14 +199,10 @@
 
 			</fieldset>
 
-			<fieldset class="holder full-width">
+			<fieldset class="holder full-width" ng-if="isTaxSelected()">
 	            <div class="entry full-width">
 	                <label for="flat-or-percentage">Configure Tax Amounts <strong>*</strong></label>
 	                <div class="tax-amounts">
-
-
-
-
 	                    <div class="tax-amount" ng-repeat="item in prefetchData.custom_tax_rules track by $index">
 	                        <div class="tax-amount-data">
 	                            <div class="amount">
@@ -216,27 +212,12 @@
 	                                    </select>
 	                                </div>
 	                                <div class="input">
-	                                    <span class="currency">{{currencySymbol}}</span>
-	                                    <input type="number" step="0.01" placeholder="amount" value="{{item.amount}}" />
+	                                    <span class="currency" ng-if="prefetchData.selected_amount_symbol === 'amount'">{{currencySymbol}}</span>
+	                                    <span class="currency" ng-if="prefetchData.selected_amount_symbol === 'percent'">%</span>
+	                                    <input type="number" step="0.01" placeholder="amount" ng-model="item.amount" value="{{item.amount}}" />
 	                                </div>
 	                            </div>
-	                            <div class="conditions">
-
-	                                <!-- This is used when there are no conditions yet to show only the add new tax rule --
-	                                <div class="condition">
-	                                    <label class="add-new-button">
-	                                        + Add Tax Rule
-	                                        <select>
-	                                            <!-- Remove options for condition selected --
-	                                            <option value="">Select Tax Rule</option>
-	                                            <option value="date-range">Date Range</option>
-	                                            <option value="room-rate-range">Room Rate Range</option>
-	                                            <option value="nights-range">Nights Range</option>
-	                                            <option value="room-types">Room Type(s)</option>
-	                                        </select>
-	                                    </label>
-	                                </div>-->
-
+	                            <div class="conditions">	                               
 
 	                                <!-- Date Range condition example -->
 	                                <div class="condition date-range" ng-if="!item.shouldHideDateRange">
@@ -251,18 +232,7 @@
 	                                    <button type="button" class="button white" ng-click="deleteDateRange($index)">
 	                                        <span class="icons icon-delete large-icon" ></span>
 	                                    </button>
-	                                    <!-- Show this if it's the last condition in the list and there are more conditions left in the option --
-	                                    <label class="add-new-button">
-	                                        + Add Tax Rule
-	                                        <select>
-	                                            <!-- Remove options for condition selected --
-	                                            <option value="">Select Tax Rule</option>
-	                                            <option value="date-range">Date Range</option>
-	                                            <option value="room-rate-range">Room Rate Range</option>
-	                                            <option value="nights-range">Nights Range</option>
-	                                            <option value="room-types">Room Type(s)</option>
-	                                        </select>
-	                                    </label>-->
+	                                    
 	                                </div>
 
 	                                <!-- Room Rate conditon example -->
@@ -278,27 +248,16 @@
 	                                        <input type="number" id="rate-range-to" step="0.01" placeholder="0.00" value="{{item.to_rate}}" ng-model="item.to_rate" />
 	                                    </div>
 	                                    <label for="rate-range-type">Is</label>
-	                                    <div class="select">
+	                                   <!--  <div class="select"> NOT REMOVING NOW. NEED IT LATER
 	                                        <select id="rate-range-type">
 	                                            <option type="net">Net</option>
-	                                            <!-- <option type="gross">Gross</option> -->
+	                                            <option type="gross">Gross</option>
 	                                        </select>
-	                                    </div>
+	                                    </div> -->
 	                                    <button type="button" class="button white" ng-click="deleteRateRange($index)">
 	                                        <span class="icons icon-delete large-icon"></span>
 	                                    </button>
-	                                    <!-- Show this if it's the last condition in the list and there are more conditions left in the option --
-	                                    <label class="add-new-button">
-	                                        + Add Tax Rule
-	                                        <select>
-	                                            <!-- Remove options for condition selected --
-	                                            <option value="">Select Tax Rule</option>
-	                                            <option value="date-range">Date Range</option>
-	                                            <option value="room-rate-range">Room Rate Range</option>
-	                                            <option value="nights-range">Nights Range</option>
-	                                            <option value="room-types">Room Type(s)</option>
-	                                        </select>
-	                                    </label>-->
+	                                    
 	                                </div>
 
 	                                <!-- Nights Range condition example -->
@@ -309,20 +268,7 @@
 	                                    <input id="nights-range-to" class="small-input" ng-model="item.to_night_count" value="{{item.to_night_count}}" />
 	                                    <button type="button" class="button white" ng-click="deleteNightsRange($index)"> 
 	                                        <span class="icons icon-delete large-icon"></span>
-	                                    </button>
-
-	                                    <!-- Show this if it's the last condition in the list and there are more conditions left in the option --
-	                                    <label class="add-new-button">
-	                                        + Add Tax Rule
-	                                        <select>
-	                                            <!-- Remove options for condition selected --
-	                                            <option value="">Select Tax Rule</option>
-	                                            <option value="date-range">Date Range</option>
-	                                            <option value="room-rate-range">Room Rate Range</option>
-	                                            <option value="nights-range">Nights Range</option>
-	                                            <option value="room-types">Room Type(s)</option>
-	                                        </select>
-	                                    </label>-->
+	                                    </button>	                                    
 	                                </div>
 
 	                                <!-- Room Types condition example -->
@@ -348,7 +294,7 @@
 	                                        <select ng-change="onSelectRule($index)" ng-model="item.selectedTaxRule">
 	                                            <!-- Remove options for condition selected -->
 	                                            <option value="">Select Tax Rule</option>
-	                                            <option value="{{customTax.value}}" ng-repeat="customTax in item.remainingCustomTaxParameter">{{customTax.value}}</option>
+	                                            <option value="{{customTax.value}}" ng-repeat="customTax in item.remainingCustomTaxParameter">{{customTax.description}}</option>
 	                                            
 	                                        </select>
 	                                    </label>

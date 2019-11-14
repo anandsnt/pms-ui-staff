@@ -137,14 +137,14 @@ admin.service('ADChargeCodesSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 		return deferred.promise;
 	};
 
-	/**
-    *   A getter method to return the charge codes list
+   /**
+    *  To fetch custom tax parameters
     */
-	this.fetchCustomTaxParameter = function(params) {
+	this.fetchCustomTaxParameter = function() {
 		var deferred = $q.defer();
 		var url = '/api/charge_codes/custom_tax_parameters';
 
-		ADBaseWebSrv.getJSON(url, params).then(function(data) {
+		ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
 		    deferred.reject(data);
