@@ -1,0 +1,15 @@
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
+	<div class="modal-content alert contract-alert">
+	    <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()">
+	    	<span class="icons icon-close invert"></span>
+	    </button>
+	    <span class="icons icon-popup-alert"></span>
+	    <span class="h2 message">You are about to unlink a contract</span>
+	    <p class="text">Once unlinked, contract"{{contractData.editData.contract_name}}" will no longer be associated with "{{cardName}}"</p>
+	    <p class="text">
+	        The contract will remain available in the system and can be linked again.
+	    </p>
+	    <button class="button red" ng-click="unlinkContractsCofirmed()">Unlink Contract</button>
+	    <button class="button blank" ng-click="closeDialog()">Cancel</button>
+	</div>
+</div>
