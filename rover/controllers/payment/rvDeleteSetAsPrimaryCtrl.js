@@ -1,4 +1,4 @@
-sntRover.controller('RVDeleteSetAsPrimaryCtrl', ['$rootScope', '$scope', '$state', 'RVPaymentSrv', 'ngDialog', function($rootScope, $scope, $state, RVPaymentSrv, ngDialog) {
+sntRover.controller('RVDeleteSetAsPrimaryCtrl', ['$rootScope', '$scope', '$state', 'RVPaymentSrv', 'RVCompanyCardSrv', 'ngDialog', function($rootScope, $scope, $state, RVPaymentSrv, RVCompanyCardSrv, ngDialog) {
 	BaseCtrl.call(this, $scope);
 	$scope.successSetAsPrimary = function() {
 		angular.forEach($scope.paymentData.data, function(value, key) {
@@ -22,19 +22,35 @@ sntRover.controller('RVDeleteSetAsPrimaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.closeDialog() ;
 	};
 	$scope.setAsPrimary = function() {
-		var data = {
-			"id": $scope.paymentData.payment_id,
-			"user_id": $scope.paymentData.user_id
-		};
-
-		$scope.invokeApi(RVPaymentSrv.setAsPrimary, data, $scope.successSetAsPrimary, $scope.failureCallBack);
+		if (!$scope.paymentData.isFromWallet) {
+			var data = {
+				"id": $scope.paymentData.payment_id,
+				"user_id": $scope.paymentData.user_id
+			};
+			$scope.invokeApi(RVPaymentSrv.setAsPrimary, data, $scope.successSetAsPrimary, $scope.failureCallBack);
+		} else {
+			var data = {
+				"associated_payment_method_id": $scope.paymentData.payment_id,
+				"account_id": $scope.paymentData.accountId
+			};
+			$scope.invokeApi(RVCompanyCardSrv.setAsPrimary, data, $scope.successSetAsPrimary, $scope.failureCallBack);
+		}
 	};
 	$scope.deletePayment = function() {
-		var data = {
-			"id": $scope.paymentData.payment_id
-		};
+		if (!$scope.paymentData.isFromWallet) {
+			var data = {
+				"id": $scope.paymentData.payment_id
+			};
 
-		$scope.invokeApi(RVPaymentSrv.deletePayment, data, $scope.successDelete, $scope.failureCallBack);
+			$scope.invokeApi(RVPaymentSrv.deletePayment, data, $scope.successDelete, $scope.failureCallBack);
+		} else {
+			var data = {
+				"associated_payment_method_id": $scope.paymentData.payment_id,
+				"account_id": $scope.paymentData.accountId
+			};
+
+			$scope.invokeApi(RVCompanyCardSrv.deletePayment, data, $scope.successDelete, $scope.failureCallBack);
+		}
 	};
 
 }]);

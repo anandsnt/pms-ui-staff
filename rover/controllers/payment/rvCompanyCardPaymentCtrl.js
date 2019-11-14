@@ -10,8 +10,6 @@ sntRover.controller('RVPaymentCompanyCardCtrl', ['$rootScope', '$scope', '$state
         var paymentData = {
             "data": [],
             "paymentTypes": [],
-            "accountId": $scope.contactInformation.id,
-            'isFromWallet': true,
         };
 
         $scope.paymentData = paymentData;
@@ -71,7 +69,9 @@ sntRover.controller('RVPaymentCompanyCardCtrl', ['$rootScope', '$scope', '$state
         $scope.openDeleteSetAsPrimaryModal = function (id, index) {
             $scope.paymentData.payment_id = id;
             $scope.paymentData.index = index;
-
+            $scope.paymentData.accountId = $scope.contactInformation.id;
+            $scope.paymentData.isFromWallet = true;
+            
             ngDialog.open({
                 template: '/assets/partials/payment/rvDeleteSetAsPrimary.html',
                 controller: 'RVDeleteSetAsPrimaryCtrl',

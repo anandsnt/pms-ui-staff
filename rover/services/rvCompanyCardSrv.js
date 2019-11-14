@@ -50,10 +50,10 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
             return deferred.promise;
         };
 
-        this.setAsPrimary = function(accountId) {
+        this.setAsPrimary = function(data) {
             var deferred = $q.defer();
     
-            var url = 'api/accounts/:' + accountId + '/set_wallet_payment_method_primary';
+            var url = 'api/accounts/' + data.account_id + '/set_wallet_payment_method_primary';
     
             rvBaseWebSrvV2.postJSON(url, data).then(function(data) {
                     deferred.resolve(data);
@@ -62,9 +62,9 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
                 });
             return deferred.promise;
         };
-        this.deletePayment = function(accountId) {
+        this.deletePayment = function(data) {
             var deferred = $q.defer();
-            var url = 'api/accounts/:' + accountId + '/delete_wallet_payment_methods';
+            var url = 'api/accounts/' + data.account_id + '/delete_wallet_payment_methods';
     
             rvBaseWebSrvV2.postJSON(url, data).then(function(data) {
                     deferred.resolve(data);
