@@ -50,6 +50,7 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
         $scope.fetchDetails = function(contractId) {
             if (contractId !== $scope.contractData.selectedContractId || $scope.contractData.mode !== 'EDIT') {
                 $scope.contractData.mode = 'EDIT';
+                $scope.contractData.isContractLinkBarExpanded = false;
                 clearRateSearchBox();
                 clearContractLinkSearchBox();
                 $scope.$emit('fetchContract', contractId);
