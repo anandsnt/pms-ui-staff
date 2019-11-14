@@ -80,7 +80,7 @@ sntRover.directive('autoComplete', ['highlightFilter',
                                 break;
                         }
                         if (item.image) {
-                            $image = '<img src="' + item.image + '">';
+                            $image = '<img  src="' + item.image + '" class="account-image icons">';
                         } else {
                             $image = '<span class="account-image icons ' + defIcon + '">' + defIconText + '</span>';
                         }
