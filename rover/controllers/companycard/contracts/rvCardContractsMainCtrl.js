@@ -26,7 +26,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 					query: '',
 					results: []
 				},
-				isContractLinkBarExpanded: true
+				isContractLinkBarExpanded: false
 			};
 		},
 		that = this;
