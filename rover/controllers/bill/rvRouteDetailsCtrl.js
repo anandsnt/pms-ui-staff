@@ -343,6 +343,10 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
                 $scope.showPayment = false;
                 $scope.$parent.$emit('hideLoader');
             }
+            else if ($scope.selectedEntity.entity_type === "COMPANY_CARD" || $scope.selectedEntity.entity_type === "TRAVEL_AGENT" ) {
+                $scope.showPayment = true;
+                $scope.fetchAttachedPaymentTypes();
+            }
             else if ($scope.reservationData.reservation_id !== $scope.selectedEntity.id && $scope.selectedEntity.entity_type === 'RESERVATION') {
                 $scope.$parent.$emit('hideLoader');
             }
