@@ -339,7 +339,8 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         }); // Performed checkin that day
 
         var perfomedCount = arrivals.filter(function(reservation) {
-            return reservation.reservation_status === 'CHECKEDIN';
+            return reservation.reservation_status === 'CHECKEDIN' ||
+            reservation.reservation_status === 'CHECKEDOUT';
         }).length;
 
         var earlyCheckinCount = 0;

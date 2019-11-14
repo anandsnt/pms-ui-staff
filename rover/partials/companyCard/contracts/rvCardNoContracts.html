@@ -1,5 +1,5 @@
 <!-- If there are NO contracts, show this. -->
-<div class="info" ng-show="contractData.noContracts">
+<div class="info" ng-show="contractData.noContracts && contractData.mode === ''">
     <span class="icon-no-content icon-contracts"></span>
     <strong class="h1">No Contracts</strong>
     <span class="h2">{{contactInformation.account_details.account_name}} has no contracts.</span>

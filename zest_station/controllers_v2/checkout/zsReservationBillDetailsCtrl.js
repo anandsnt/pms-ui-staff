@@ -69,6 +69,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             $scope.deposit = response.bill_details.credits;
             $scope.balance = response.bill_details.balance;
             $scope.bill_id = response.bill_details.primary_bill_id;
+            $scope.spillage_included = response.bill_details.spillage_included;
 
             $scope.paymentDetails = response.payment_details;
 

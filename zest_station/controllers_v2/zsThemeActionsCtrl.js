@@ -9,6 +9,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 
         BaseCtrl.call(this, $scope);
         var qbicPath = '/assets/zest_station/css/icons/qbic';
+        var caroPath = '/assets/zest_station/css/icons/caro';
 
         var setSvgsToBeLoaded = function(iconsPath, commonIconsPath, useCommonIcons, diffHomeIconsOnly) {
             var iconBasePath = !useCommonIcons ? iconsPath : commonIconsPath;
@@ -111,6 +112,11 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                 $scope.icons.url.checkin = qbicPath + '/checkin.svg';
                 $scope.icons.url.checkout = qbicPath + '/checkout.svg';
                 $scope.icons.url.new_location = qbicPath + '/add-new.svg';
+            }
+            if ($scope.zestStationData.theme === 'caro') {
+                $scope.icons.url.key = caroPath + '/key.svg';
+                $scope.icons.url.checkin = caroPath + '/checkin.svg';
+                $scope.icons.url.checkout = caroPath + '/checkout.svg';
             }
         };
 

@@ -228,12 +228,10 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 			});
 
 		bars.append("rect")
+			.attr("class", "rect-bars")
 			.attr("height", yScale.bandwidth())
 			.attr("x", function(item) {
 				return xScale(item.xOrigin);
-			})
-			.attr("width", function(item) {
-				return xScale(item.xFinal) - xScale(item.xOrigin);
 			})
 			.attr("fill", function(item) {
 				var fillColor = colorMappings[item.chartName + "_" + item.type].fill;
@@ -252,6 +250,13 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 			})
 			.on("click", function(e) {
 				barData.onBarChartClick(e);
+			});
+
+		d3.selectAll(".rect-bars")
+			.transition()
+			.duration(300)
+			.attr("width", function(item) {
+				return xScale(item.xFinal) - xScale(item.xOrigin);
 			});
 	};
 
@@ -322,6 +327,15 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 		}
 	};
 
+	this.addTextsToChart = function(textData) {
+		textData.svg.append("text")
+			.attr("x", textData.xOffset)
+			.attr("y", textData.yOffset)
+			.attr("dy", ".35em")
+			.attr("class", "chart-area-label")
+			.text(textData.label);
+	};
+
 	this.addRandomNumbersForTesting = function(chartDetails) {
 		var combinedItemsCountArray = [];
 
@@ -363,7 +377,7 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 
 			var i = 0;
 			var c = {};
-			for (i = 0; i <= 5; i++) {
+			for (i = 0; i <= 10; i++) {
 				c[i] = angular.copy(b);
 				c[i].type = c[i].type + i;
 				c[i].label = c[i].label + i;
@@ -394,5 +408,27 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 		// });
 
 		return chartDetails;
+	};
+
+	this.addDebugDataForFoActivity = function(chartData) {
+		_.each(chartData.todays_data, function(item) {
+			item.earlyCheckin = item.earlyCheckin < 2 ? _.random(1, 10) : item.earlyCheckin;
+			item.checkin = item.checkin < 2 ? _.random(1, 10) : item.checkin;
+			item.vipCheckin = item.vipCheckin < 2 ? _.random(1, 10) : item.vipCheckin;
+			item.vipCheckout = item.vipCheckout < 2 ? _.random(1, 10) : item.vipCheckout;
+			item.checkout = item.checkout < 2 ? _.random(1, 10) : item.checkout;
+			item.lateCheckout = item.lateCheckout < 2 ? _.random(1, 10) : item.lateCheckout;
+		});
+
+		_.each(chartData.yesterdays_data, function(item) {
+			item.earlyCheckin = item.earlyCheckin < 2 ? _.random(1, 10) : item.earlyCheckin;
+			item.checkin = item.checkin < 2 ? _.random(1, 10) : item.checkin;
+			item.vipCheckin = item.vipCheckin < 2 ? _.random(1, 10) : item.vipCheckin;
+			item.vipCheckout = item.vipCheckout < 2 ? _.random(1, 10) : item.vipCheckout;
+			item.checkout = item.checkout < 2 ? _.random(1, 10) : item.checkout;
+			item.lateCheckout = item.lateCheckout < 2 ? _.random(1, 10) : item.lateCheckout;
+		});
+
+		return chartData;
 	};
 }]);

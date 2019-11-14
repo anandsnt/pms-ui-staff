@@ -5,103 +5,114 @@
         <span><span class="currency">{{currencySymbol}}</span> {{ data.revenueData.total_revenue | number: precisonTwo}}</span>
     </li>
 </ul>
+<span ng-controller="RVJournalRevenueController" ng-click="clickedOnRevenue($event)">
+    <ul class="journal-groups">
+        <li ng-click="clickedRevenueGroup('')" ng-class="{'active':data.activeRevenueTab === ''}"><span class="icons icon-navbar only-icon icon-total"></span>{{'TOTAL' | translate}}</li>
 
-<!-- Content REVENUE-->
-<div id="journal-content" class="journal-content scrollable revenue" ng-controller="RVJournalRevenueController" ng-iscroll='revenue_content' ng-click="clickedOnRevenue($event)">
-    
-    <div class="wrapper">
-        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-        <div id="journal-grid" class="journal-grid" ng-class="{'print-details': !data.isRevenueToggleSummaryActive}">
+        <li ng-click="clickedRevenueGroup('PRE_STAY')" ng-class="{'active':data.activeRevenueTab === 'PRE_STAY'}"><span class="icons icon-navbar only-icon icon-prestay" ng-click="prestay=true"></span>{{'PRE_STAY' | translate}}</li>
 
-            <ul class="grid-header revenue">
-                <li class="name" translate>CHARGE_GROUPS</li>
-                <li class="number" translate>NUMBER</li>
-                <li class="value" translate>AMOUNT</li>
-            </ul>
+        <li ng-click="clickedRevenueGroup('IN_HOUSE')" ng-class="{'active':data.activeRevenueTab === 'IN_HOUSE'}"><span class="icons icon-navbar only-icon icon-inhouse"></span>{{'IN_HOUSE' | translate}}</li>
 
-                <!-- First level - charge groups -->
-                <div class="grid-group" ng-repeat="(index1 ,level1) in data.revenueData.charge_groups">
+        <li ng-click="clickedRevenueGroup('POST_STAY')" ng-class="{'active':data.activeRevenueTab === 'POST_STAY'}"><span class="icons icon-navbar only-icon icon-poststay"></span>{{'POST_STAY' | translate}}</li>
+    </ul>
 
-                    <a ng-click="clickedFirstLevel(index1)" ng-class="{'active':level1.active, 'has-arrow':checkHasArrowFirstLevel(index1)}" class="revenue-title toggle">
-                        <strong class="name">{{level1.name}}</strong>
-                        <span class="number" >{{escapeNullData(level1.number)}}</span>
-                        <span class="value"><span class="currency">{{currencySymbol}}</span> {{ level1.total | number: precisonTwo}}</span>
-                    </a>
-                    <!-- Second level - charge codes -->
-                    <div ng-show="level1.active" ng-repeat="(index2 ,level2) in level1.charge_codes" class="grid-charge">
+    <!-- Content REVENUE-->
+    <div id="journal-content" class="journal-content scrollable revenue" ng-iscroll='revenue_content'>
+        
+        <div class="wrapper">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <div id="journal-grid" class="journal-grid" ng-class="{'print-details': !data.isRevenueToggleSummaryActive}">
 
-                        <a ng-click="clickedSecondLevel(index1 ,index2)" ng-class="{'active':level2.active , 'has-arrow':checkHasArrowSecondLevel(index1, index2)}" class="revenue-title toggle">
-                            <span class="code short-text">{{level2.code}}</span>
-                            <strong class="name">{{level2.name}}</strong>
-                            <span class="value"><span class="currency">{{currencySymbol}}</span> {{ level2.total | number: precisonTwo}}</span>
+                <ul class="grid-header revenue">
+                    <li class="name" translate>CHARGE_GROUPS</li>
+                    <li class="number" translate>NUMBER</li>
+                    <li class="value" translate>AMOUNT</li>
+                </ul>
+
+                    <!-- First level - charge groups -->
+                    <div class="grid-group" ng-repeat="(index1 ,level1) in data.revenueData.charge_groups">
+
+                        <a ng-click="clickedFirstLevel(index1)" ng-class="{'active':level1.active, 'has-arrow':checkHasArrowFirstLevel(index1)}" class="revenue-title toggle">
+                            <strong class="name">{{level1.name}}</strong>
+                            <span class="number" >{{escapeNullData(level1.number)}}</span>
+                            <span class="value"><span class="currency">{{currencySymbol}}</span> {{ level1.total | number: precisonTwo}}</span>
                         </a>
+                        <!-- Second level - charge codes -->
+                        <div ng-show="level1.active" ng-repeat="(index2 ,level2) in level1.charge_codes" class="grid-charge">
 
-                        <!-- Third level - transactions  -->
-                        <table ng-show="level2.active" class="grid-items">
-                            <thead ng-show="level2.transactions.length > 0">
-                                <tr>
-                                    <th>Room</th>
-                                    <th class="cell-reservation">Reservation</th>
-                                    <th>Invoice / Folio No.</th>
-                                    <th>Date & Time</th>
-                                    <th class="cell-details">Details</th>
-                                    <th class="align-right">Debit</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="(index3 ,level3) in level2.transactions">
-                                    <td>{{level3.room}}<br/>{{level3.account_no}}</td>
-                                    <td>
-                                        <strong class="cell-row">{{level3.name}}<br/>{{level3.account_name}}</strong>
-                                        <em class="cell-row grey-text" >{{level3.accompany_guest_name}}</em>
-                                        <span class="cell-row">{{level3.reservation_number}}</span>
-                                    </td>
-                                    <td>{{level3.invoice_or_folio}}</td>
-                                    <td>
-                                        <span class="cell-row">{{level3.date}}</span>
-                                        <span class="cell-row grey-text">{{level3.time}}</span>
-                                    </td>
-                                    <td>
-                                        <span class="cell-row" ng-bind-html="level3.details"></span>
-                                        <!-- If adjusted, show like this: 
-                                        <span class="cell-row"><em class="adjusted">Adjustment</em> - {Adjustment Reason}</span>-->
-                                    </td>
-                                    <td class="align-right" >
-                                        <span class="currency" ng-show="item.debit !== '' && item.debit !== null">{{currencySymbol}}</span> {{level3.debit | number: precisonTwo}}
-                                    </td>
-                                </tr>
-                                
-                                <!-- Pagination -->
-                                <tr class="pagination">
-                                    <td colspan="6" ng-if="level2.chargeCodePagination">
-                                        <rv-pagination page-options="level2.chargeCodePagination" page-data="level2.total_count"></rv-pagination>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                            <a ng-click="clickedSecondLevel(index1 ,index2)" ng-class="{'active':level2.active , 'has-arrow':checkHasArrowSecondLevel(index1, index2)}" class="revenue-title toggle">
+                                <span class="code short-text">{{level2.code}}</span>
+                                <strong class="name">{{level2.name}}</strong>
+                                <span class="value"><span class="currency">{{currencySymbol}}</span> {{ level2.total | number: precisonTwo}}</span>
+                            </a>
+
+                            <!-- Third level - transactions  -->
+                            <table ng-show="level2.active" class="grid-items">
+                                <thead ng-show="level2.transactions.length > 0">
+                                    <tr>
+                                        <th>Room</th>
+                                        <th class="cell-reservation">Reservation</th>
+                                        <th>Invoice / Folio No.</th>
+                                        <th>Date & Time</th>
+                                        <th class="cell-details">Details</th>
+                                        <th class="align-right">Debit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="(index3 ,level3) in level2.transactions">
+                                        <td>{{level3.room}}<br/>{{level3.account_no}}</td>
+                                        <td>
+                                            <strong class="cell-row">{{level3.name}}<br/>{{level3.account_name}}</strong>
+                                            <em class="cell-row grey-text" >{{level3.accompany_guest_name}}</em>
+                                            <span class="cell-row">{{level3.reservation_number}}</span>
+                                        </td>
+                                        <td>{{level3.invoice_or_folio}}</td>
+                                        <td>
+                                            <span class="cell-row">{{level3.date}}</span>
+                                            <span class="cell-row grey-text">{{level3.time}}</span>
+                                        </td>
+                                        <td>
+                                            <span class="cell-row" ng-bind-html="level3.details"></span>
+                                            <!-- If adjusted, show like this: 
+                                            <span class="cell-row"><em class="adjusted">Adjustment</em> - {Adjustment Reason}</span>-->
+                                        </td>
+                                        <td class="align-right" >
+                                            <span class="currency" ng-show="item.debit !== '' && item.debit !== null">{{currencySymbol}}</span> {{level3.debit | number: precisonTwo}}
+                                        </td>
+                                    </tr>
+                                    
+                                    <!-- Pagination -->
+                                    <tr class="pagination">
+                                        <td colspan="6" ng-if="level2.chargeCodePagination">
+                                            <rv-pagination page-options="level2.chargeCodePagination" page-data="level2.total_count"></rv-pagination>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="grid-footer">
+                        <p class="payment"><span translate>TOTAL</span> <span class="currency">{{currencySymbol}}</span> {{ data.revenueData.total_revenue | number: precisonTwo}}</p>
                     </div>
                 </div>
 
-                <div class="grid-footer">
-                    <p class="payment"><span translate>TOTAL</span> <span class="currency">{{currencySymbol}}</span> {{ data.revenueData.total_revenue | number: precisonTwo}}</p>
-                </div>
-            </div>
-
+        </div>
     </div>
-</div>
 
 
-<!-- Print footer -->
-<ul class="journal-footer-print">
-    <li>
-        From <span>{{ data.fromDate | date : dateFormat }}</span> to <span>{{ data.toDate | date : dateFormat }}</span><br />
-        Departments(s) <span>{{data.selectedDepartmentName.join(', ')}}</span><br />
-        Employee(s) <span>{{data.selectedEmployeesName.join(', ')}}</span><br />
-        Charge Group(s) <span>{{ data.uiSelectedChargeGroup }}</span>
-    </li>
-    <li>
-        Business date <span>{{ userInfo.business_date | date:dateFormat }}</span><br />
-        User <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span><br />
-        Time printed: {{data.printDate}} {{data.printTime}}
-    </li>
-</ul>
+    <!-- Print footer -->
+    <ul class="journal-footer-print">
+        <li>
+            From <span>{{ data.fromDate | date : dateFormat }}</span> to <span>{{ data.toDate | date : dateFormat }}</span><br />
+            Departments(s) <span>{{data.selectedDepartmentName.join(', ')}}</span><br />
+            Employee(s) <span>{{data.selectedEmployeesName.join(', ')}}</span><br />
+            Charge Group(s) <span>{{ data.uiSelectedChargeGroup }}</span>
+        </li>
+        <li>
+            Business date <span>{{ userInfo.business_date | date:dateFormat }}</span><br />
+            User <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span><br />
+            Time printed: {{data.printDate}} {{data.printTime}}
+        </li>
+    </ul>
+</span>

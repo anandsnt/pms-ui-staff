@@ -91,7 +91,10 @@ module.exports = {
             'concordia': [themeCSSRoot + 'concordia.less'],
             'belvedere': [themeCSSRoot + 'belvedere.less'],
             'delavan': [themeCSSRoot + 'delavan.less'],
-            'garden-place': [themeCSSRoot + 'garden-place.less']
+            'garden-place': [themeCSSRoot + 'garden-place.less'],
+            'crowne': [themeCSSRoot + 'crowne.less'],
+            'indigo': [themeCSSRoot + 'indigo.less'],
+            'caro': [themeCSSRoot + 'caro.less']
         };
     }
 };

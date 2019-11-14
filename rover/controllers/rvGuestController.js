@@ -1007,6 +1007,7 @@ angular.module('sntRover').controller('guestCardController', [
                                 companyData.rateList = item.current_contracts;
                                 companyData.rate = item.current_contracts[0];
                                 if (!_.isEmpty(companyData.rate)) {
+                                    companyData.contract_access_code = companyData.rate.access_code;
                                     companyData.rate.difference = (function() {
                                         if (parseInt(companyData.rate.based_on && companyData.rate.based_on.value) < 0) {
                                             if (companyData.rate.based_on.type === "amount") {
@@ -1089,8 +1090,10 @@ angular.module('sntRover').controller('guestCardController', [
                                 travelAgentData.address.state = item.address.state;
                             }
                             if (item.current_contracts.length > 0) {
+                                travelAgentData.activeContracts = item.current_contracts;
                                 travelAgentData.rate = item.current_contracts[0];
                                 if (!_.isEmpty(travelAgentData.rate)) {
+                                    travelAgentData.contract_access_code = travelAgentData.rate.access_code;
                                     travelAgentData.rate.difference = (function() {
                                         if (parseInt(travelAgentData.rate.based_on && travelAgentData.rate.based_on.value) < 0) {
                                             if (travelAgentData.rate.based_on.type === "amount") {
@@ -1140,6 +1143,43 @@ angular.module('sntRover').controller('guestCardController', [
                 $scope.travelAgentSearchIntiated = false;
                 $scope.$broadcast('travelAgentSearchStopped');
             }
+        };
+
+        var singleRateName = '';
+
+        /**
+         * Function to get rate name, if one exists on any of the contracts
+         * @return {Boolean}
+         */
+        $scope.getRateName = function() {
+            return singleRateName;
+        };
+
+        /**
+         * Function to check if multiple rates exists on any of the contracts
+         * @param {Object} account the account object
+		 * @return {Number}
+         */
+        $scope.ratesCount = function(account) {
+            var rateCount = 0,
+                activeContracts;
+
+            if (account.account_type === 'TRAVELAGENT') {
+                activeContracts = account.activeContracts;
+            }
+            else if (account.account_type === 'COMPANY') {
+                activeContracts = account.rateList;
+            }
+
+            if (activeContracts && activeContracts.length !== 0) {
+				angular.forEach(activeContracts, function(contract) {
+					if (contract.contract_rates.length !== 0) {
+                        rateCount += contract.contract_rates.length;
+                        singleRateName = contract.contract_rates[0].rate_name;
+					}
+				});
+            }
+            return rateCount;
         };
         $scope.checkFuture = function(cardType, card, useCardRate) {
             // Changing this reservation only will unlink the stay card from the previous company / travel agent card and assign it to the newly selected card.

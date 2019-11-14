@@ -2881,6 +2881,42 @@
                 }
             }
 
+            &.invoice-tax-reports {
+                td {
+                    table {
+                        table-layout: fixed;
+                        thead {
+                            td {
+                                border-bottom: 1px solid rgba(0,0,0,0.1);
+                            }
+                        }
+                    }
+
+                    &.vat-groupings {
+                        padding-top: 0;
+                        width: 300px;
+
+                        td {
+                            &:first-child {
+                                width: 60px;
+                            }
+                        }
+                    }
+                
+                }
+
+                tr {
+                    &.totals {
+                        table {
+                            td {
+                                background: none;
+                                font-weight: 600;
+                            }
+                        }
+                    }
+                }
+            }
+
         }
 
         &.with-graphs {
