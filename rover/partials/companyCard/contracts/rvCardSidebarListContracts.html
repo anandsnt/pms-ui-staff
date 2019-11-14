@@ -14,7 +14,7 @@
         <div class="wrapper">
 
             <!-- Show when collapsing the list of linked contracts -->
-            <div class="contract-link without-lines">
+            <div class="contract-link without-lines" ng-if="contractData.editData.account_details.length > 0 && !contractData.isContractLinkBarExpanded">
                 <span>{{contractData.editData.is_master_contract ? 'Linked To' : 'Linked From'}}</span>
             </div>
 
@@ -23,9 +23,9 @@
             <div ng-click="clickContractLinkBar()" class="contract has-arrow toggle" ng-class="{'active': contractData.isContractLinkBarExpanded}">
                 <h3 class="item-title">{{contractData.editData.contract_name}}</h3>
                 <div class="item-info">
-                    <span>{{contractData.editData.begin_date}}</span>
+                    <span>{{contractData.editData.begin_date | date:dateFormat}}</span>
                     <span class="icons icon-single-arrow"></span>
-                    <span>{{contractData.editData.end_date}}</span>
+                    <span>{{contractData.editData.end_date | date:dateFormat}}</span>
                 </div>
             </div>
 
@@ -55,15 +55,15 @@
                                 'inactive': !contract.is_active}">
                         <h3 class="item-title">{{contract.contract_name}}</h3>
                         <div class="item-info">
-                            <span>{{contract.contract_start_date}}</span>
-                            <span>{{contract.contract_end_date}}</span>
+                            <span>{{contract.contract_start_date | date:dateFormat}}</span>
+                            <span>{{contract.contract_end_date | date:dateFormat}}</span>
                         </div>
                     </li>
                 </ul>
             </div>
 
             <!-- Show when showing the linked contracts/contract -->
-            <div class="contract-link" ng-if="contractData.editData.account_details.length > 0">
+            <div class="contract-link" ng-if="contractData.editData.account_details.length > 0 && !contractData.isContractLinkBarExpanded">
                 <span>{{contractData.editData.is_master_contract ? 'Linked To' : 'Linked From'}}</span>
             </div>
 
