@@ -382,12 +382,12 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             if ( (selectedreport.shouldShowExport && !selectedreport.shouldDisplayView) || $scope.shouldDisableInboxItem(selectedreport) ) {
                 return;
             }
-            
+
             reportsSrv.setSelectedReport(selectedreport);
-            $timeout(function () {
-                $rootScope.$broadcast('SHOW_GEN_REPORT');
-            }, 100);
-                  
+
+            $scope.$emit('showLoader');
+            $rootScope.$broadcast('SHOW_GEN_REPORT');      
+
         };
        
         /*
