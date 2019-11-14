@@ -42,14 +42,13 @@
                 </div>
             </div>
             <div class="holder right">
-                <!-- show only if we can delete the contract -->
-                <button ng-if="contractData.editData.is_master_contract && contractData.hasDeleteContractPermission && !contractData.isPastContract" type="button" class="button red" ng-click="deleteContract()">Delete Contract</button>
                 <div include-replace ng-include="'/assets/partials/companyCard/contracts/rvCardSearchContractedRate.html'"></div>
             </div>
         </div>
     </div>
-    <div class="contract-details-footer" ng-if="!(contractData.isPastContract || contractData.disableFields)">
-        <button type="button" class="button blank" ng-click="restoreContract()">Cancel</button>
-        <button type="button" class="button green" ng-click="updateContract()">Save Changes</button>
+    <div class="contract-details-footer">
+        <button ng-if="contractData.editData.is_master_contract && contractData.hasDeleteContractPermission && !contractData.isPastContract" type="button" class="button red" ng-click="deleteContract()">Delete Contract</button>
+        <button ng-if="!contractData.isPastContract && !contractData.disableFields" type="button" class="button blank" ng-click="restoreContract()">Cancel</button>
+        <button ng-if="!contractData.isPastContract && !contractData.disableFields" type="button" class="button green" ng-click="updateContract()">Save Changes</button>
     </div>
 </div>
