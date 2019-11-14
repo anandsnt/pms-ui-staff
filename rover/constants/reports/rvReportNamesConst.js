@@ -53,6 +53,7 @@ angular.module('reportsModule')
     'ADDON_UPSELLS': 'Add On Upsell',
     'YEARLY_TAX': 'Yearly Tax Report',
     'TAX_EXEMPT': 'Tax Exempt',
-    'FOLIO_TAX_REPORT': 'Folio Tax Report'
+    'FOLIO_TAX_REPORT': 'Folio Tax Report',
+    'GUESTS_INHOUSE_BY_NATIONALITY': 'Guests In House by Nationality'
 });
 
