@@ -649,8 +649,12 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				});
 
 				var unwantedKeys = ["allRoomTypes", "remainingCustomTaxParameter", "selectedTaxRule", "shouldHideDateRange", "shouldHideNightRange", "shouldHideRoomRateRange", "shouldHideRoomType"];
-				 item = dclone(item, unwantedKeys);
-				 customTaxRulesToApi.push(item)
+				
+				if (item.roomTypes.length > 0) {
+					unwantedKeys.push("roomTypes");
+				}
+				item = dclone(item, unwantedKeys);
+				customTaxRulesToApi.push(item)
 			});
 
 
