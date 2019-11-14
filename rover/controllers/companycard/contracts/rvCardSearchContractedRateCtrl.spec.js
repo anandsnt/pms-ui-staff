@@ -28,6 +28,9 @@ describe('rvCardSearchContractedRateCtrl', function() {
             },
             refreshScroller: function refreshScroller() {
                 return true;
+            },
+            closeDialog: function() {
+                return true;
             }
         });
 
@@ -63,18 +66,22 @@ describe('rvCardSearchContractedRateCtrl', function() {
                 'name': 'rate-4',
                 'id': 4
             }];
-
-        $scope.contractData.selectedRateList = [];
+        $scope.contractData.selectedContractId = '123';
         $scope.contractData.searchResults = searchResult;
+
+        spyOn(rvCompanyCardContractsSrv, "linkRate").and.callFake(function() {
+            var deferred = $q.defer();
+
+            deferred.resolve({});
+            return deferred.promise;
+        });
 
         $scope.clickedOnResult(2);
 
-        expect($scope.contractData.selectedRateList[0].name).toEqual('rate-3');
-        expect($scope.contractData.rateSearchQuery).toEqual('');
-        expect($scope.contractData.searchResults).toEqual([]);
+        expect(rvCompanyCardContractsSrv.linkRate).toHaveBeenCalled();
     });
 
-    it('Check Remove item', function() {
+    it('Check Confirm Remove item', function() {
         that.initialise();
         var selectedRateList = [
             {
@@ -95,12 +102,18 @@ describe('rvCardSearchContractedRateCtrl', function() {
                 'id': 4
             }
         ],
-        index = 1;
-
+        rateId = 3;
+        $scope.contractData.selectedContractId = '123';
         $scope.contractData.selectedRateList = selectedRateList;
-        $scope.removeRate(index);
+        
+        spyOn(rvCompanyCardContractsSrv, "unlinkRate").and.callFake(function() {
+            var deferred = $q.defer();
 
-        expect($scope.contractData.selectedRateList[index].id).not.toEqual(2);
+            deferred.resolve({});
+            return deferred.promise;
+        });
+        $scope.confirmRemoveRate(rateId);
+        expect(rvCompanyCardContractsSrv.unlinkRate).toHaveBeenCalled();
     });
 
     it('Check search rate API call', function() {

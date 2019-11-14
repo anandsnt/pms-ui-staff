@@ -111,7 +111,7 @@ angular.module('sntRover').controller('rvCardSearchContractedRateCtrl', ['$scope
 
         // Unlink a Rate after confirmation popup.
         $scope.confirmRemoveRate = function( rateId ) {
-            $scope.closeDialog();
+            ngDialog.close();
             var unlinkRateSuccessCallback = function() {
                 var removeIndex = $scope.contractData.selectedRateList.map(function(item) { 
                                     return item.id; 
