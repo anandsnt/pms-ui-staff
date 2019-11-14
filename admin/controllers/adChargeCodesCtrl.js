@@ -35,23 +35,37 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 								 {id: 3, value: "NIGHTS_RANGE", description: "Nights Range"},
 								 {id: 4, value: "ROOM_TYPES", description: "Room Types"}];
 
-        $scope.fetchRoomTypes = function() {
-        	var successCallbackFetchRooms = function(response) {
-        			$scope.roomTypes = response.room_types;
-        // 			$scope.roomTypes.map(function(group) {
-				    //   // if(excludedGroupIds.indexOf(group.id) > -1) {
-				    //     // group.ticked = true;
-				    //   // }
-				    // });
-	        	}, options = {
+		$scope.fetchRoomTypes = function() {
+			var successCallbackFetchRooms = function(response) {
+				$scope.roomTypes = response.room_types;
+				// 			$scope.roomTypes.map(function(group) {
+				//   // if(excludedGroupIds.indexOf(group.id) > -1) {
+				//     // group.ticked = true;
+				//   // }
+				// });
+				}, options = {
+				params: {},
+				successCallBack: successCallbackFetchRooms
+			};
+
+			$scope.callAPI(ADRoomTypesSrv.fetch, options);
+		};        
+
+		$scope.fetchRoomTypes();
+
+		$scope.fetchCustomTaxParameter = function() {
+			var successCallbackFetchCustomTaxParameter = function(response) {
+				customTaxParameter = response;
+
+				}, options = {
 					params: {},
-					successCallBack: successCallbackFetchRooms
+					successCallBack: successCallbackFetchCustomTaxParameter
 				};
 
-        	$scope.callAPI(ADRoomTypesSrv.fetch, options);
-        };        
+			$scope.callAPI(ADChargeCodesSrv.fetchCustomTaxParameter, options);
+		};        
 
-        $scope.fetchRoomTypes();
+        $scope.fetchCustomTaxParameter();
 
         $scope.availableLanguagesSet = availableLanguages;
 		var defaultLanguage = _.filter(availableLanguages.languages, function(language) {
@@ -271,11 +285,6 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				$scope.$emit('hideLoader');
 				$scope.isAdd = true;
 				$scope.selected_payment_type.id = -1;
-
-
-
-
-
 
 
 				data.custom_tax_parameters = customTaxParameter;
