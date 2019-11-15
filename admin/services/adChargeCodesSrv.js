@@ -144,7 +144,7 @@ admin.service('ADChargeCodesSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 		var deferred = $q.defer();
 		var url = '/api/charge_codes/custom_tax_parameters';
 
-		ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
+		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
 		    deferred.reject(data);
