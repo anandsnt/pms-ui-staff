@@ -986,6 +986,10 @@ sntRover.controller('RVReportDetailsCtrl', [
                     template = '/assets/partials/reports/taxExempt/rvComplimentaryRoomReport.html';
                     break;
 
+                case reportNames['GUESTS_INHOUSE_BY_NATIONALITY']:
+                    template = '/assets/partials/reports/guestInhouseByNationalityReport/reportRow.html';
+                    break;
+
                 // Default report row
                 default:
                     template = '/assets/partials/reports/shared/rvCommonReportRow.html';
