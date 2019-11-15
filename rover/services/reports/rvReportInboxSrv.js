@@ -939,7 +939,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
         };
 
         /**
-         * Fill Account names
+         * Fill selected countries
          * @param {Array} value 
          * @param {String} key the key to be used in the formatted filter
          * @param {Promises} promises array of promises
@@ -951,7 +951,12 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                 formatedFilter[reportInboxFilterLabelConst[key]] = [];
             }
             promises.push(RVreportsSubSrv.fetchCountries().then(function(countries) {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(countries, value, 'id'), 'account_name').join(',');
+                // Here -1 is for UNDEFINED entry
+                if (value.length === (countries.length + 1)) { 
+                    formatedFilter[reportInboxFilterLabelConst[key]] = 'All Countries'; 
+                } else {
+                    formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(countries, value, 'id'), 'value').join(',');
+                }
             })); 
         };
         
