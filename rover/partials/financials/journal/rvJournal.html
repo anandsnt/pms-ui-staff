@@ -119,7 +119,11 @@
     </form>
 
 
-    <form ng-controller="RVJournalPrintController" id="journal-print-options" class="journal-print" role="complementary" ng-class="{ 'open': data.isDrawerOpened }" ui-jq="resizable" resize ui-options="resizableOptions" style="height: {{data.printBoxHeight}}px;" ng-click="clickedDrawer($event)">
+    <form ng-if="data.activeTab !== 'SUMMARY'" ng-controller="RVJournalPrintController" id="journal-print-options" class="journal-print" role="complementary" ng-class="{ 'open': data.isDrawerOpened }" ui-jq="resizable" resize ui-options="resizableOptions" style="height: {{data.printBoxHeight}}px;" ng-click="clickedDrawer($event)">
+        <div ng-include="'/assets/partials/financials/journal/rvPrintBox.html'"></div>
+    </form>
+
+    <form ng-if="data.activeTab === 'SUMMARY'" ng-controller="RVJournalPrintController" id="journal-print-options" class="journal-print" ng-class="{ 'open': data.isDrawerOpened }">
         <div ng-include="'/assets/partials/financials/journal/rvPrintBox.html'"></div>
     </form>
 

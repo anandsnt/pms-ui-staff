@@ -55,8 +55,9 @@ angular.module('sntRover')
         'RVReportNamesConst',
         '$filter',
         '$timeout',
+        '$state',
         // eslint-disable-next-line max-params
-        function($rootScope, $scope, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout) {
+        function($rootScope, $scope, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, $state) {
             var refData;
             var chunksStore;
 
@@ -578,6 +579,11 @@ angular.module('sntRover')
             function init() {
                 var results = mainCtrlScope.results;
 
+                // If the controller is invoked from report inbox, its for print only
+                if ($state.current.name === 'rover.reports.inbox') {
+                    $scope.isPrintClicked = true;
+                }
+
                 chunksStore = chunksStoreComposer(results);
                 startProcessChunk();
             }
@@ -859,18 +865,21 @@ angular.module('sntRover')
                 meta.keys = _.keys(chunks);
                 meta.length = meta.keys.length;
 
-                var mergedData = {};
+                if ($scope.isPrintClicked) {
+                    var mergedData = {};
 
-                if (meta.length === 2) {
-                    _.each(chunks, function(dateObj) {
-                        _.each(dateObj, function(dataObj, date) {
-                            if (!mergedData[date]) {
-                                mergedData[date] = dataObj;
-                            }
-                        });                                          
-                    });
-                    chunks[meta.keys[0]] = mergedData;
+                    if (meta.length > 1) {
+                        _.each(chunks, function(dateObj) {
+                            _.each(dateObj, function(dataObj, date) {
+                                if (!mergedData[date]) {
+                                    mergedData[date] = dataObj;
+                                }
+                            });                                          
+                        });
+                        chunks[meta.keys[0]] = mergedData;
+                    }
                 }
+                
                 meta.index = 0;
 
                 return {
@@ -880,11 +889,17 @@ angular.module('sntRover')
                 };
             }
 
-            reportSubmited = $scope.$on(reportMsgs['REPORT_SUBMITED'], reInit);
+            reportSubmited = $scope.$on(reportMsgs['REPORT_SUBMITED'], () => {
+                $scope.isPrintClicked = false;
+                reInit(); 
+            });
             reportPrinting = $scope.$on(reportMsgs['REPORT_PRINTING'], reInit);
             reportUpdated = $scope.$on(reportMsgs['REPORT_UPDATED'], reInit);
             reportPageChanged = $scope.$on(reportMsgs['REPORT_PAGE_CHANGED'], reInit);
-            reloadResultsListner = $rootScope.$on('RELOAD_RESULTS', reInit);
+            reloadResultsListner = $rootScope.$on('RELOAD_RESULTS', () => {
+                $scope.isPrintClicked = true;
+                reInit();
+            });
 
             $scope.$on('$destroy', reportSubmited);
             $scope.$on('$destroy', reportUpdated);

@@ -51,6 +51,5 @@ describe('rvCardContractsMainCtrl', function() {
     it('click on new contract button', function() {
         $scope.createFirstContract();
         expect($scope.contractData.mode).toEqual('ADD');
-        expect($scope.contractData.noContracts).toBeFalsy();
     });
 });

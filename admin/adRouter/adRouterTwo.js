@@ -721,10 +721,10 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         url: '/emailBlacklist'
     });
 
-    $stateProvider.state('admin.invoices', {
+    $stateProvider.state('admin.financialSettings', {
         templateUrl: '/assets/partials/invoices/adInvoiceSettings.html',
         controller: 'ADInvoiceSettingsCtrl',
-        url: '/invoiceSettings',
+        url: '/financialSettings',
         resolve: {
             invoiceSettingsData: function (ADInvoiceSettingsSrv) {
                 return ADInvoiceSettingsSrv.fetchInvoiceSettings();

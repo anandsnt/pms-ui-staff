@@ -185,7 +185,7 @@
 		    </div>
 		    <ul class="filters">
 		        <li ng-click="changeAnalyticsView('FO_ARRIVALS')" ng-class="{'active' : dashboardFilter.selectedAnalyticsMenu === 'FO_ARRIVALS' }">Arrivals</li>
-		        <li ng-click="changeAnalyticsView('FO_WORK_LOAD')" ng-class="{'active' : dashboardFilter.selectedAnalyticsMenu === 'FO_WORK_LOAD' }">Workload</li>
+		        <li ng-if="includeManagementInformation" ng-click="changeAnalyticsView('FO_WORK_LOAD')" ng-class="{'active' : dashboardFilter.selectedAnalyticsMenu === 'FO_WORK_LOAD' }">Workload</li>
 		        <li ng-click="changeAnalyticsView('FO_ACTIVITY')" ng-class="{'active' : dashboardFilter.selectedAnalyticsMenu === 'FO_ACTIVITY' }">Activity</li>
 		    </ul>
 		</div>

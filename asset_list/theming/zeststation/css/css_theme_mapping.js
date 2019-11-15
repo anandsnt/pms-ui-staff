@@ -94,7 +94,9 @@ module.exports = {
             'garden-place': [themeCSSRoot + 'garden-place.less'],
             'crowne': [themeCSSRoot + 'crowne.less'],
             'indigo': [themeCSSRoot + 'indigo.less'],
-            'caro': [themeCSSRoot + 'caro.less']
+            'caro': [themeCSSRoot + 'caro.less'],
+            'schani-wien': [themeCSSRoot + 'schani-wien.less'],
+            'glencoe': [themeCSSRoot + 'glencoe.less']
         };
     }
 };

@@ -341,7 +341,7 @@
 
                 &.card {
                     padding-left: 15px;
-                    .calc-width( 100, 480 );
+                    .calc-width( 100, 530 );
                 }
 
                 &.rate {
@@ -349,7 +349,7 @@
                 }
 
                 &.contract {
-                    width: 155px;
+                    width: 205px;
                     .pull-right;
                 }
             }
@@ -416,7 +416,7 @@
 
                     .data {
                         height: 35px;
-                        .calc-width(100, 505 );
+                        .calc-width(100, 555 );
                         #flexbox > .parent( column, center, '', '' );
 
                         &.no-address {
@@ -437,14 +437,15 @@
                     }
 
                     .icon-contracts {
-                        background-position: 0px -7653px;
+                        background-position: 0px -7652px;
                         line-height: 30px;
-                        width: 120px;
+                        width: 170px;
                         margin: 0;
+                        .nowrap();
 
                         &.active {
                             color: @green;
-                            background-position: 0 -12753px;
+                            background-position: 0 -12752px;
                         }
                     }
                 }
@@ -4013,6 +4014,103 @@
                                         }
                                     }
                                 }
+                            }
+                        }
+                    }
+                }
+            }
+
+            /* Contract - under CO/TA Contracts tab when searching */
+            &.contract {
+                position: relative;
+                height: 50px;
+
+                &:not(:last-child) {
+                    margin-bottom: 15px;
+                }
+
+                .faux-anchor {
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                    #flexbox > .parent( row, '', center, '' );
+                }
+                
+                .contract-status,
+                .contract-dates,
+                .contract-rates,
+                .contract-details {
+                    .pull-left;
+                }
+
+                .contract-dates {
+                    width: 100px;
+                    font-size: 14px;
+
+                    .start-date,
+                    .end-date {
+                        display: block;
+                    }
+                }
+
+                .contract-rates {
+                    .calc-width( 100, 520 );
+                    font-size: 14px;
+                    padding-right: 15px;
+                    text-transform: uppercase;
+
+                    .more {
+                        display: inline;
+                        color: @grey3;
+                        margin: 0;
+                    }
+                }
+
+                .contract-status {
+                    width: 70px;
+                    font-size: 14px;
+                    text-transform: uppercase;
+
+                    .icon-contracts {
+                        padding-left: 17px;
+
+                        &.active {
+                            color: @green;
+                        }
+                    }
+                }
+
+                .contract-details {
+                    width: 330px;
+
+                    h2 {
+                        font-size: 18px;
+                    }
+
+                    .access-code {
+                        width: 90px;
+                        font-size: 14px;
+                        text-transform: uppercase;
+                        color: @black;
+                        font-weight: 600;
+                        .pull-left;
+                    }
+
+                    .icons {
+                        font-size: 14px;
+                        padding-left: 20px;
+                        line-height: 18px;
+                        height: 16px;
+                        text-transform: uppercase;
+                        background-size: 80px;
+                        .pull-left;
+
+                        &.colored {
+                            &.icon-guest-company {
+                                background-position: 0 -8743px;
+                            }
+
+                            &.icon-guest-travelagent {
+                                background-position: 0 -8783px;
                             }
                         }
                     }
