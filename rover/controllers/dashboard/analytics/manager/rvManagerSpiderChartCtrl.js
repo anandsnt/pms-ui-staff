@@ -225,11 +225,11 @@ angular.module('sntRover')
 							$("#" + position + "-rev-par-label2").remove();
 
 							if (e.target.id.includes("rev-par")) {
-								addLabelToChart(labelAttrs.adr, labelAttrs.isLeftSide, labelAttrs.isDownSide);
 								addLabelToChart(labelAttrs.revPar, labelAttrs.isLeftSide, labelAttrs.isDownSide);
+								addLabelToChart(labelAttrs.adr, labelAttrs.isLeftSide, labelAttrs.isDownSide);
 							} else {
-								addLabelToChart(labelAttrs.revPar, labelAttrs.isLeftSide, labelAttrs.isDownSide);
 								addLabelToChart(labelAttrs.adr, labelAttrs.isLeftSide, labelAttrs.isDownSide);
+								addLabelToChart(labelAttrs.revPar, labelAttrs.isLeftSide, labelAttrs.isDownSide);
 							}
 
 							$("#" + position + "-adr-rect").click(onClickOnLabel);
