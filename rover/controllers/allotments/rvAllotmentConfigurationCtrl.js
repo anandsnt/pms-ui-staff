@@ -300,6 +300,8 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                 if (ifMandatoryValuesEntered()) {
                     if (!$scope.allotmentConfigData.summary.rate) {
                         $scope.allotmentConfigData.summary.rate = -1;
+                        $scope.allotmentConfigData.summary.uniqId = '-1';
+                        $scope.allotmentConfigData.summary.contract_id = null;
                     }
                     var options = {
                         successCallBack: onAllotmentSaveSuccess,

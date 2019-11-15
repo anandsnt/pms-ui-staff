@@ -498,8 +498,12 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			if (!data.is_changed && !data.is_room_rate_available) {
 				showChangeDateNotPossiblePopup();
 				$scope.allotmentConfigData.summary.rate = summaryMemento.rate;
+				$scope.allotmentConfigData.summary.contract_id = summaryMemento.contract_id;
+				$scope.allotmentConfigData.summary.uniqId = summaryMemento.uniqId;
 			} else {
 			  summaryMemento.rate = $scope.allotmentConfigData.summary.rate;
+			  summaryMemento.contract_id = $scope.allotmentConfigData.summary.contract_id;
+			  summaryMemento.uniqId = $scope.allotmentConfigData.summary.uniqId;
 			}
 		};
 
@@ -512,6 +516,8 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = errorMessage;
 			$scope.allotmentConfigData.summary.rate = summaryMemento.rate;
+			$scope.allotmentConfigData.summary.contract_id = summaryMemento.contract_id;
+			$scope.allotmentConfigData.summary.uniqId = summaryMemento.uniqId;
 		};
 
 		/**
@@ -519,15 +525,24 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 * @return {undefined}
 		 */
 		$scope.onRateChange = function() {
-			var summaryData = $scope.allotmentConfigData.summary;
+			var summaryData = $scope.allotmentConfigData.summary,
+				uniqId = summaryData.uniqId,
+				rateId = uniqId.split(':')[0],
+				contractId = uniqId.split(':')[1];
 
 			if (!summaryData.allotment_id) {
 				return false;
 			}
+			_.each($scope.allotmentSummaryData.rateSelectDataObject, function(rate) {
+                if (rate.uniqId === summaryData.uniqId) {
+                    $scope.allotmentConfigData.summary.contract_id = contractId;
+                }
+            });
 
 			var params = {
 				allotment_id: summaryData.allotment_id,
-				rate_id: summaryData.rate
+				rate_id: rateId,
+				contract_id: contractId
 			};
 
 			var options = {
@@ -899,17 +914,44 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 	        // add custom rate obect
 	        sumData.rateSelectDataObject.push({
 	            id: '-1',
-	            name: 'Custom Rate'
+				name: 'Custom Rate',
+				uniqId: '-1'
 	        });
 	        // group rates by contracted and group rates.
 	        _.each(data.results, function(rate) {
-	            if (rate.is_contracted) {
-	                rate.groupName = 'Company/ Travel Agent Contract';
-	            }
-	            else {
-	                rate.groupName = 'Group Rates';
-	            }
-	            sumData.rateSelectDataObject.push(rate);
+				var setNewRate = function(groupName, contract) {
+					var newRateObj = {};
+
+					newRateObj.id = rate.id;
+					newRateObj.groupName = groupName;
+					newRateObj.uniqId = contract ? rate.id + ':' + contract.id : rate.id + ':';
+					newRateObj.name = contract ? rate.name + '(' + contract.name + ')' : rate.name;
+					newRateObj.contract_id = contract ? contract.id : null;
+					sumData.rateSelectDataObject.push(newRateObj);
+					if (newRateObj.id === $scope.allotmentConfigData.summary.rate && newRateObj.contract_id === $scope.allotmentConfigData.summary.contract_id) {
+						$scope.allotmentConfigData.summary.uniqId = newRateObj.uniqId;
+					}
+				}
+
+				if ($scope.allotmentConfigData.summary.rate === '-1') {
+					$scope.allotmentConfigData.summary.uniqId = '-1';
+				}
+
+				if (!rate.is_contracted) {
+					setNewRate('Group Rates');
+				}
+				else {
+					if (rate.company_contracts.length !== 0) {
+						angular.forEach(rate.company_contracts, function(contract) {
+							setNewRate('Company Contract', contract);
+						});
+					}
+					if (rate.travel_agent_contracts.length !== 0) {
+						angular.forEach(rate.travel_agent_contracts, function(contract) {
+							setNewRate('Travel Agent Contract', contract);
+						});
+					}
+				}
 			});
 
 		};
