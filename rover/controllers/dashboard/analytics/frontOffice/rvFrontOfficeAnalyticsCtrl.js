@@ -123,7 +123,7 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 				params: params,
 				successCallBack: function() {
 					$('base').attr('href', '#');
-					$scope.screenData.analyticsDataUpdatedTime = moment().format("MM ddd, YYYY hh:mm:ss a");
+					$scope.screenData.analyticsDataUpdatedTime = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
 					clearAllExistingChartElements();
                     drawChart();
                 }

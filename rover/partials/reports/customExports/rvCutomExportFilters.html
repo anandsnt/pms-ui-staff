@@ -12,7 +12,7 @@
             </div>
         </div>
         
-        <div class="entry-wrapper" ng-repeat="appliedFilter in filterData.appliedFilters track by $index">
+        <div class="entry-wrapper" ng-repeat="appliedFilter in filterData.appliedFilters track by $index" ng-init="$last && onFilterProcessComplete()">
             <duration-filter
                 ng-if="appliedFilter.isDuration" 
                 first-level-data = "appliedFilter.firstLevelData"
@@ -52,6 +52,23 @@
                 >
 
             </option-filter>
+            <general-filter
+                ng-if="appliedFilter.isGeneral"
+                first-level-data = "appliedFilter.firstLevelData"
+                second-level-data = "appliedFilter.secondLevelData"
+                selected-first-level = "appliedFilter.selectedFirstLevel"
+                selected-second-level = "appliedFilter.selectedSecondLevel"
+                filter-pos = "$index"
+                on-remove = "removeFilter(filterPos)"
+                is-multi-select = "appliedFilter.isMultiSelect"
+                options = "appliedFilter.options"
+                on-first-level-field-change = "onFirstLevelFieldChange(fieldName, filterPos)"
+                on-selectbox-expand ="refreshFilterScroller"
+                has-dual-state = "appliedFilter.hasDualState"
+                entry-display-style = "appliedFilter.entryStyle"
+                >
+
+            </option-filter>
 
             
         </div>
@@ -63,6 +80,7 @@
                     <option value="DURATION" ng-hide="shouldHideDurationFilter()">Duration</option>
                     <option value="RANGE" ng-hide="shouldHideRangeFilter()">Range</option>
                     <option value="OPTION" ng-hide="shouldHideOptionFilter()">Options</option>
+                    <option value="GENERAL" ng-hide="shouldHideGeneralFilter()">General</option>
                 </select>
             </label>
             <button type="button" class="button red" 

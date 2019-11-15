@@ -1574,6 +1574,7 @@ sntRover.controller('RVReportDetailsCtrl', [
             return getReservationStatusClass(reservationStatus);
         };
 
+
         var printReportFromInboxListner = $rootScope.$on('PRINT_INBOX_REPORT', function () {
             var currentReport = reportsSrv.getSelectedReport();
         
@@ -1581,19 +1582,8 @@ sntRover.controller('RVReportDetailsCtrl', [
             $scope.printReport(currentReport);
         });
         
-        var showGenReportEventListner = $rootScope.$on('SHOW_GEN_REPORT', function () {
-            var currentReport = reportsSrv.getSelectedReport(),
-                mainCtrlScope = $scope.$parent;
-        
-            setChoosenReport(currentReport).then(function () {
-                mainCtrlScope.genReport(null, null, null, false);
-            });
-        });
-
         // destroy listners
-        
         $scope.$on('$destroy', printReportFromInboxListner);
-        $scope.$on('$destroy', showGenReportEventListner);
         
         // Invokes actual print 
         var invokePrint = () => {

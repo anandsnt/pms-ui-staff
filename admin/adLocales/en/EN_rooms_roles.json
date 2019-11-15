@@ -43,6 +43,7 @@
     "SELECT_DEFAULT_DASHBOARD":"Select Default Dashboard",
     "DEFAULT_DASHBOARD":"Default Dashboard",
     "CHAIN_ADMIN":"Chain Admin",
+    "INCLUDE_MANAGEMENT_INFORMATION": "Include Management Information",
 
     "BILLING_GROUPS": "Billing Groups",
     "SUITE_DOOR": "SUITE DOOR",

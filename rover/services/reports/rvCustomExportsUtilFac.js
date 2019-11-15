@@ -44,6 +44,10 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
             'text-transform': 'none'
         };
 
+        const GENERAL_FILTERS = [
+            { label: 'Is not null', value: 'is_not_null'}
+        ];
+
         /**
          * Group the filter fields by filter type
          * @param {Array} filters all filter fields
@@ -590,6 +594,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                 case customExportFilterParamsConst['POST_STAY']:
                 case customExportFilterParamsConst['PRE_STAY']:
                 case customExportFilterParamsConst['TAX_EXEMPT']:
+                case customExportFilterParamsConst['GLOBAL']:
                     populateDualStates(boolStateOptions, selectedFilter, selectedValues, deferred);
                     break;
                 case customExportFilterParamsConst['ROOM_NO']:
@@ -691,9 +696,37 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
 
         };
 
+        /**
+         * Populated range filter values
+         * @param {String} selectedFieldName selected field name
+         * @param {Object} selectedFilter selected filter
+         * @param {Array} appliedFilters array of appliedfilters
+         * @param {String} selectedSecondLevel selected second level
+         * @param {Number} rangeValue range value
+         */
+        var populateGeneralOperators = (selectedFieldName, selectedFilter, appliedFilters, selectedSecondLevel) => {
+            var appliedGeneralOperators = _.filter(appliedFilters, function ( each ) {
+                    return each.selectedFirstLevel === selectedFieldName;
+                }),
+                appliedGeneralOperatorNames = _.pluck(appliedGeneralOperators, 'selectedSecondLevel');
+
+            var availableOperators = _.filter(GENERAL_FILTERS, function (each) {
+                return appliedGeneralOperatorNames.indexOf(each.value) === -1;
+            });
+            
+            selectedFilter.secondLevelData = availableOperators;
+            selectedFilter.selectedSecondLevel = selectedSecondLevel;
+
+        };
+
         // Get available range operators
         var getRangeOperators = () => {
             return rangeOperators;
+        };
+
+        // Get available range operators
+        var getGeneralOperators = () => {
+            return GENERAL_FILTERS;
         };
 
         // Object holding factory functions
@@ -701,7 +734,9 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
             processFilters: processFilters,
             populateOptions: populateOptions,
             getRangeOperators: getRangeOperators,
-            populateRangeOperators: populateRangeOperators
+            populateRangeOperators: populateRangeOperators,
+            populateGeneralOperators: populateGeneralOperators,
+            getGeneralOperators: getGeneralOperators
         };
 
         return factory;

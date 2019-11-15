@@ -815,6 +815,9 @@ admin.controller('ADAppCtrl', [
             $rootScope.mliEmvEnabled = data.mli_emv_enabled && data.payment_gateway === 'MLI';
 
             $rootScope.mliAndCBAEnabled = data.payment_gateway === 'MLI' && data.mli_cba_enabled;
+
+            $rootScope.manualCCEnabled = data.payment_gateway === 'SHIJI' && data.shiji_token_enable_offline;
+
             hideAnalyticsReportMenu = data.hide_analytics_menu;
 
             /*

@@ -51,7 +51,15 @@
                     <input ng-model = "editData.restrict_post" type="checkbox">
                 </label>
             </div>
+
 		</fieldset>
+
+        <ad-textbox ng-if="editData.is_cc && manualCCEnabled" value="editData.processing_bank" name="processing-bank"
+                    label="Processing Bank" placeholder="Processing Bank" required="no"></ad-textbox>
+
+        <ad-textbox ng-if="editData.is_cc && manualCCEnabled" value="editData.bank_commission" name="bank-commission"
+                    label="Bank Commission" placeholder="Bank Commission" required="no"></ad-textbox>
+
 		<div class='actions float'>
 			<button class='button blank edit-data-inline' id='cancel' type='button' ng-click="clickCancel()" translate>
 				CANCEL
