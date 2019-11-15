@@ -1,12 +1,21 @@
-<div ng-controller="rvCardAddContractsCtrl" class="contracts-details" ng-show="!contractData.noContracts && contractData.mode === 'ADD'">
+<div ng-controller="rvCardAddContractsCtrl" class="contracts-details">
     <!-- If we don't show the bottom form, add .without-footer -->
     <!-- If we don't show the search for some reason, add .without-header -->
-    <div class="contracts-details-form scrollable without-header" ng-iscroll="cardNewContractsScroll">
+    <div class="contracts-details-form scrollable" ng-iscroll="cardNewContractsScroll">
         <div class="wrapper float">
             <div class="holder left">
-                <strong class="h3">Contract Details</strong>
-                <div class="entry only-switch margin">
-                    <label class="disable-element" for="contract-status">Status</label>
+                <div class="entry full-width">
+                    <label class="disable-element" for="linked-contract-name">Name</label>
+                    <!-- add readonly if it's read only -->
+                    <input name="contract-name" id="linked-contract-name" ng-model="addData.contractName" placeholder="Contract Name" type="text" />
+                </div>
+                <div class="entry margin">
+                    <label class="disable-element" for="contract-code">Access Code</label>
+                    <!-- add readonly if it's read only -->
+                    <input name="contract-code" id="linked-contract-code" ng-model="addData.accessCode" placeholder="Access Code" type="text" />
+                </div>
+                <div class="entry only-switch">
+                    <label class="disable-element" for="travel-agent-contract-status">Status</label>
                     <!-- Add .on, when active. Remove otherwise -->
                     <div class="switch-button full-width" ng-class="{'on': addData.isActive}">
                         <input id="contract-status" ng-model="addData.isActive" ng-click="toggleActiveStatus()" type="checkbox">
@@ -20,16 +29,6 @@
                         </label>
                     </div>
                 </div>
-                <div class="entry margin">
-                    <label class="disable-element" for="contract-name">Name</label>
-                    <!-- add readonly if it's read only -->
-                    <input name="contract-name" id="contract-name" ng-model="addData.contractName" placeholder="Contract Name" type="text" />
-                </div>
-                <div class="entry">
-                    <label class="disable-element" for="contract-code">Access Code</label>
-                    <!-- add readonly if it's read only -->
-                    <input name="contract-code" id="contract-code" ng-model="addData.accessCode" placeholder="Access Code" type="text" />
-                </div>
                 <div class="entry margin has-datepicker">
                     <label class="disable-element" for="contract-start">Start Date</label>
                     <!-- add readonly if it's read only -->
@@ -40,14 +39,14 @@
                     <!-- add readonly if it's read only -->
                     <input name="contract-end" id="contract-end" class="datepicker" ng-model="addData.endDate" ng-value="addData.endDate | date:dateFormat" placeholder="Select End Date" maxlength="8" readonly type="text" ng-click="contractEnd()"/>
                 </div>
-
-                <div include-replace ng-include="'/assets/partials/companyCard/contracts/rvCardSearchContractedRate.html'"></div>
-
                 <div class="entry margin">
                     <label class="disable-element" for="contracted-nights">Contracted nights</label>
                      <!-- add readonly if it's read only -->
                     <input name="contracted-nights" id="contracted-nights" class=" contracted-nights" placeholder="Nights per month" ng-model="addData.contractedNights" maxlength="8" readonly type="text" ng-click="contractedNights()"/>
                 </div>
+            </div>
+            <div class="holder right">
+                <div include-replace ng-include="'/assets/partials/companyCard/contracts/rvCardSearchContractedRate.html'"></div>
             </div>
         </div>
     </div>

@@ -2,28 +2,27 @@
     <label for="contracted-rate-query">Contracted Rate</label>
     <!-- Add .searching when seaching -->
     <!-- Add .hidden to hide it/when not editable -->
-    <div class="entry full-width autocomplete-search" ng-class="{'searching': contractData.rateSearchQuery !== ''}">
-        <div class="search">
-            <button id="faux-select-clear-query" class="clear-query" ng-class="{'visible': contractData.rateSearchQuery !== ''}">
-                <span class="icons icon-clear-search" ng-click="clearQuery()" ng-show="contractData.searchResults.length > 0">Clear query</span>
+    <div class="entry full-width autocomplete-search compact" ng-class="{'searching': contractData.rateSearchQuery !== ''}">
+        <div class="search" ng-hide="contractData.disableFields">
+            <button id="contract-rate-clear-query" class="clear-query" ng-click="clearQuery()" ng-class="{'visible': contractData.rateSearchQuery !== ''}" ng-show="contractData.searchResults.length > 0">
+                <span class="icons icon-clear-search">Clear query</span>
             </button>
             <button type="submit" name="submit" class="icons icon-search">Search</button>
              <!-- add readonly if it's read only -->
-            <input ng-readonly="contractData.disableFields && contractData.mode === 'EDIT'" ng-model="contractData.rateSearchQuery" ng-change="searchRate()" name="faux-select-query" id="contracted-rate-query" class="query" placeholder="Search by Rate Name or Code" autocomplete="off" type="search">
+            <input ng-readonly="contractData.disableFields && contractData.mode === 'EDIT'" ng-model="contractData.rateSearchQuery" ng-change="searchRate()" name="faux-select-query" id="contract-rate-query" class="query" placeholder="Search by Rate Name or Code" autocomplete="off" type="search">
         </div>
         <!-- remove .hidden when searching -->
-        <div class="scrollable" ng-class="{'hidden': contractData.rateSearchQuery === ''}" ng-iscroll='searchResultsList' ng-iscroll-delay='1000'>
+        <div class="scrollable" ng-hide="contractData.disableFields" ng-class="{'hidden': contractData.rateSearchQuery === ''}" ng-iscroll='searchResultsList' ng-iscroll-delay='1000'>
             <div class="wrapper">
                 <div class="card" ng-repeat="item in contractData.searchResults" ng-click="clickedOnResult($index)">
                     <span ng-bind-html="escapeNull(item.name)|highlight:contractData.rateSearchQuery:false" class="rate-name"></span>
                     <span ng-bind-html="escapeNull(item.code)|highlight:contractData.rateSearchQuery:false" class="rate-code"></span>
                 </div>
-                <!-- ... repeat for each rate -->
             </div>
         </div>
     </div>
     <!-- Add .disabled when not editable -->
-    <div class="contracted-rates" ng-class="{'disabled': contractData.disableFields}">
+    <div class="contracted-rates compact" ng-class="{'disabled': contractData.disableFields}">
         <li ng-repeat="rate in contractData.selectedRateList">
             <span class="rate-name">{{rate.name}}</span>
             <span class="rate-code">{{rate.code}}</span>
@@ -32,6 +31,5 @@
                 <span class="icons icon-remove-10"></span>
             </button>
         </li>
-        <!-- ... repeat for each rate -->
     </div>
 </div>
