@@ -77,6 +77,7 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 		};
 
 		var drawChart = function() {
+			$('base').attr('href', '#');
 			$scope.screenData.hideChartData = true;
 			clearAllExistingChartElements();
 			$scope.screenData.mainHeading = "";
@@ -87,6 +88,7 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 			} else if ($scope.screenData.selectedChart = 'FO_ACTIVITY') {
 				renderFrontOfficeActivity();
 			}
+			$('base').attr('href', initialBaseHrefValue);
 		};
 
 		$(window).on("resize.doResize", function() {
@@ -114,7 +116,6 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 		});
 
 		var fetchData = function (date) {
-			$('base').attr('href', initialBaseHrefValue);
 			var params = {
 				"date": date,
                 "isFromFrontDesk": true
@@ -122,7 +123,6 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 			var options = {
 				params: params,
 				successCallBack: function() {
-					$('base').attr('href', '#');
 					$scope.screenData.analyticsDataUpdatedTime = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
 					clearAllExistingChartElements();
                     drawChart();

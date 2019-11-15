@@ -16,6 +16,7 @@
     <!-- ANALYTICS VIEW -->
     <section id="dashboard" class="content scrollable analytics" role = "main"
              ng-iscroll="analytics_scroller" ng-iscroll-delay="100"
+             ng-controller="RVfrontDeskDashboardController"
              ng-if="dashboardFilter.analyticsActive">
         <div class="wrapper">
             <div ng-include="'/assets/partials/analytics/rvFrontDeskAnalytics.html'" ng-controller="rvFrontOfficeAnalyticsCtrlController"></div>
