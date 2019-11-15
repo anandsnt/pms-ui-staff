@@ -1208,6 +1208,30 @@ angular.module('sntPay').controller('sntPaymentController',
                             $scope.$emit('PAYMENT_FAILED', errorMessage);
                             sntActivity.stop('FETCH_ATTACHED_CARDS');
                         });
+                } else if ($scope.accountId) {
+                    sntActivity.start('FETCH_ATTACHED_CARDS');
+
+                    sntPaymentSrv.getCoTaLinkedCardList($scope.accountId).then(
+                        response => {
+                            onFetchLinkedCreditCardListSuccess(response);
+                            sntActivity.stop('FETCH_ATTACHED_CARDS');
+                        },
+                        errorMessage => {
+                            $scope.$emit('PAYMENT_FAILED', errorMessage);
+                            sntActivity.stop('FETCH_ATTACHED_CARDS');
+                        });
+                } else if ($scope.postingAccountId) {
+                    sntActivity.start('FETCH_ATTACHED_CARDS');
+
+                    sntPaymentSrv.getAccountsLinkedCardList($scope.postingAccountId).then(
+                        response => {
+                            onFetchLinkedCreditCardListSuccess(response);
+                            sntActivity.stop('FETCH_ATTACHED_CARDS');
+                        },
+                        errorMessage => {
+                            $scope.$emit('PAYMENT_FAILED', errorMessage);
+                            sntActivity.stop('FETCH_ATTACHED_CARDS');
+                        });
                 } else {
                     $scope.payment.linkedCreditCards = [];
                 }
