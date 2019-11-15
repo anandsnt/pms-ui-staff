@@ -38,6 +38,43 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
             return deferred.promise;
         };
 
+        this.fetchCompanyPaymentData = function(accountId) {
+            var deferred = $q.defer();
+            var url = '/staff/payments/payment.json?account_id=' + accountId;
+    
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                    deferred.resolve(data);
+                }, function(data) {
+                    deferred.reject(data);
+                });
+            return deferred.promise;
+        };
+
+        this.setAsPrimary = function(data) {
+            var deferred = $q.defer();
+    
+            var url = 'api/accounts/' + data.account_id + '/set_wallet_payment_method_primary';
+    
+            rvBaseWebSrvV2.postJSON(url, data).then(function(data) {
+                    deferred.resolve(data);
+                }, function(data) {
+                    deferred.reject(data);
+                });
+            return deferred.promise;
+        };
+
+        this.deletePayment = function(data) {
+            var deferred = $q.defer();
+            var url = 'api/accounts/' + data.account_id + '/delete_wallet_payment_methods';
+    
+            rvBaseWebSrvV2.postJSON(url, data).then(function(data) {
+                    deferred.resolve(data);
+                }, function(data) {
+                    deferred.reject(data);
+                });
+            return deferred.promise;
+        };
+
         this.fetchContactInformationMandatoryFields = function() {
             var deferred = $q.defer(),
                 url = '/admin/co_ta_settings/current_settings.json';
@@ -47,6 +84,18 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
             }, function(errorMessage) {
                 deferred.reject(errorMessage);
             });
+            return deferred.promise;
+        };
+
+        this.fetchAccountPaymentData = function(accountId) {
+            var deferred = $q.defer();
+            var url = '/staff/payments/payment.json?account_id=' + accountId;
+    
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                    deferred.resolve(data);
+                }, function(data) {
+                    deferred.reject(data);
+                });
             return deferred.promise;
         };
 
