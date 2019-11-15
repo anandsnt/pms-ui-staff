@@ -8,8 +8,6 @@ sntZestStation.controller('zsThemeActionsCtrl', [
     function($scope, $state, $timeout, zsHotelDetailsSrv, zsGeneralSrv, $log) {
 
         BaseCtrl.call(this, $scope);
-        var qbicPath = '/assets/zest_station/css/icons/qbic';
-        var caroPath = '/assets/zest_station/css/icons/caro';
 
         var setSvgsToBeLoaded = function(iconsPath, commonIconsPath, useCommonIcons, diffHomeIconsOnly) {
             var iconBasePath = !useCommonIcons ? iconsPath : commonIconsPath;
@@ -97,6 +95,10 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                     $scope.icons.url.logo = iconsPath + '/logo-print.svg';
                 }
                 $scope.icons.url.logo = iconsPath + '/logo-print.svg';
+
+                if ($scope.zestStationData.theme === 'qbic') {
+                    $scope.icons.url.new_location = iconsPath + '/add-new.svg';
+                }
             }
 
             if ($scope.zestStationData.theme === 'yotel') {
@@ -106,17 +108,6 @@ sntZestStation.controller('zsThemeActionsCtrl', [
             if ($scope.zestStationData.theme === 'public_v2') {
                 $scope.icons.url.pen = $scope.icons.url.keyboard;
                 $scope.icons.url.checkmark = iconsPath + '/checkmark.svg';
-            }
-            if ($scope.zestStationData.theme === 'qbic') {
-                $scope.icons.url.key = qbicPath + '/key.svg';
-                $scope.icons.url.checkin = qbicPath + '/checkin.svg';
-                $scope.icons.url.checkout = qbicPath + '/checkout.svg';
-                $scope.icons.url.new_location = qbicPath + '/add-new.svg';
-            }
-            if ($scope.zestStationData.theme === 'caro') {
-                $scope.icons.url.key = caroPath + '/key.svg';
-                $scope.icons.url.checkin = caroPath + '/checkin.svg';
-                $scope.icons.url.checkout = caroPath + '/checkout.svg';
             }
         };
 
@@ -190,7 +181,11 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                     'huntley',
                     'queen',
                     'belle',
-                    'ihg'
+                    'ihg',
+                    'qbic',
+                    'caro',
+                    'schani-wien',
+                    'glencoe'
                 ],
                 nonCircleNavIcons = ['public_v2'];// minor adjustment to the back/close icons for some themes (only show the inner x or <)
 
