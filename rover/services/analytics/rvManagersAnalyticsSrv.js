@@ -2,8 +2,7 @@ angular.module('sntRover').service('rvManagersAnalyticsSrv', [
     '$q',
     'sntActivity',
     'rvBaseWebSrvV2',
-    'rvAnalyticsSrv',
-    function($q, sntActivity, rvBaseWebSrvV2, rvAnalyticsSrv) {
+    function($q, sntActivity, rvBaseWebSrvV2) {
 
         this.roomPerformanceKPR = function(params) {
             var deferred = $q.defer();
@@ -37,6 +36,7 @@ angular.module('sntRover').service('rvManagersAnalyticsSrv', [
 
         var formatDistribution = function(distributions) {
             var formatedData = {};
+
             distributions.forEach(function(distribution) {
                 if (formatedData[distribution.date] === undefined) {
                     formatedData[distribution.date] = [];
@@ -46,4 +46,5 @@ angular.module('sntRover').service('rvManagersAnalyticsSrv', [
 
             return formatedData;
         };
-    }]);
+    }
+]);

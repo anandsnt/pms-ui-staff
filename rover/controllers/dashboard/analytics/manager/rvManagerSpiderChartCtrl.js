@@ -26,6 +26,7 @@ angular.module('sntRover')
 				// 		"occupancy": "45.98"
 				// 	}
 				// }
+				$scope.screenData.mainHeading = $filter('translate')("AN_ROOM_PERFOMANCE_KPR");
 				console.log(chartData);
 
 				var chartDataArray = Object.keys(chartData).map(function(key) {
@@ -42,10 +43,6 @@ angular.module('sntRover')
 				});
 				var maxValueForChart = maxAdr.adr > maxRevPar.rev_par ? maxAdr.adr : maxRevPar.rev_par;
 
-				console.log(chartDataArray);
-				console.log(maxValueForChart);
-
-				$scope.screenData.mainHeading = "SAMPLE HEADING";
 				try {
 					var chartWidth = 800;
 					var chartHeight = 800;
@@ -103,8 +100,10 @@ angular.module('sntRover')
 					var roundedInvidual = roundToNextThousand(individual);
 
 					var axisValues;
+
 					if (baseValue >= 1000) {
 						var factor = baseValue / 1000;
+
 						axisValues = [roundedInvidual / baseValue + "k",
 							roundedInvidual * 2 / baseValue * factor + "k",
 							roundedInvidual * 3 / baseValue * factor + "k",
@@ -148,7 +147,7 @@ angular.module('sntRover')
 							.attr("width", width);
 					}
 
-					var addAxisLabelsToChart = function(textData, isXaxis, isLabel) {
+					var addAxisLabelsToChart = function(textData, isXaxis) {
 						var label = (textData.type === "occupany") ?
 							(textData.label ? textData.label + "%" : "") :
 							"$" + textData.label;
@@ -179,7 +178,7 @@ angular.module('sntRover')
 								return isLeftSide ? "-2em" : "2em";
 							})
 							.attr("dy", function() {
-								return isDownSide ? "2em" : "-1em"
+								return isDownSide ? "2em" : "-1em";
 							})
 							.attr("class", "")
 							.style("font-size", "10px")
@@ -190,13 +189,13 @@ angular.module('sntRover')
 					var yAxisLabels = rvAnalyticsHelperSrv.getYAxisValues(axisValues, x, y);
 
 					for (var i = 0; i <= yAxisLabels.length - 1; i++) {
-						addAxisLabelsToChart(yAxisLabels[i])
+						addAxisLabelsToChart(yAxisLabels[i]);
 					};
 
 					var xAxisLabels = rvAnalyticsHelperSrv.getXAxisValues(axisValues, x, y);
 
 					for (var i = 0; i <= xAxisLabels.length - 1; i++) {
-						addAxisLabelsToChart(xAxisLabels[i], true)
+						addAxisLabelsToChart(xAxisLabels[i], true);
 					};
 
 					var labelMappings;
@@ -206,11 +205,11 @@ angular.module('sntRover')
 						var position;
 
 						if (e.target.id && e.target.id.includes("left-top")) {
-							position = "left-top"
+							position = "left-top";
 						} else if (e.target.id && e.target.id.includes("right-top")) {
-							position = "right-top"
+							position = "right-top";
 						} else if (e.target.id && e.target.id.includes("left-bottom")) {
-							position = "left-bottom"
+							position = "left-bottom";
 						} else if (e.target.id && e.target.id.includes("right-bottom")) {
 							position = "right-bottom";
 						}
@@ -245,8 +244,10 @@ angular.module('sntRover')
 					var addLabelToChart = function(label, isLeftSide, isDownSide) {
 
 						var xValue = 0.5 + (parseInt(label.value) - parseInt(roundedInvidual)) * valueOfOne;
+						
 						xValue = isLeftSide ? -1 * xValue : xValue;
 						var rectYvalue = 0.5 + (parseInt(label.value) - parseInt(roundedInvidual)) * valueOfOne;
+						
 						rectYvalue = isDownSide ? -1 * rectYvalue : rectYvalue;
 
 						var rectWidth = x(0.3) - x(0);
@@ -274,7 +275,7 @@ angular.module('sntRover')
 								return rectWidth;
 							})
 							.attr('height', function() {
-								return y(0) - y(0.15)
+								return y(0) - y(0.15);
 							})
 							.attr("id", label.id + "-rect")
 							.attr("fill", label.backgroundColor)
@@ -307,12 +308,8 @@ angular.module('sntRover')
 						}
 
 						textLabelGroup.append("text")
-							.attr('x', function(d, i) {
-								return xOffsetText; // xOffset + some margin
-							})
-							.attr('y', function(d) {
-								return yOffsetText2;
-							})
+							.attr('x', xOffsetText)
+							.attr('y', yOffsetText2)
 							.attr("id", label.id + "-label2")
 							.style("font-size", "15px")
 							.style("fill", "white")
@@ -325,7 +322,7 @@ angular.module('sntRover')
 					var lowestValue = maxValueForChart / 5;
 					var oneDivisonConversion = .0001;
 
-					/******************************  Let Top Quadrant ******************************/
+					/**  ****************************  Let Top Quadrant ******************************/
 					var yesterDaysOccupany = parseFloat(chartData.yesterday.occupancy);
 
 					yesterDaysOccupany = yesterDaysOccupany > 25 ? yesterDaysOccupany : parseInt(yesterDaysOccupany);
@@ -368,9 +365,9 @@ angular.module('sntRover')
 					$("#left-top-rev-par-rect").click(onClickOnLabel);
 
 
-					/******************************  Let Top Quadrant ends here ******************************/
+					/**  ****************************  Let Top Quadrant ends here ******************************/
 
-					/******************************  Right Top Quadrant ******************************/
+					/**  ****************************  Right Top Quadrant ******************************/
 
 					var todaysOccupany = parseFloat(chartData.today.occupancy);
 
@@ -413,9 +410,9 @@ angular.module('sntRover')
 					$("#right-top-adr-rect").click(onClickOnLabel);
 					$("#right-top-rev-par-rect").click(onClickOnLabel);
 
-					/******************************  Right Top Quadrant ends here ******************************/
+					/**  ****************************  Right Top Quadrant ends here ******************************/
 
-					/******************************  Let Bottom Quadrant ******************************/
+					/**  ****************************  Let Bottom Quadrant ******************************/
 
 					var mtdOccupany = parseFloat(chartData.mtd.occupancy);
 
@@ -460,9 +457,9 @@ angular.module('sntRover')
 					$("#left-bottom-rev-par-rect").click(onClickOnLabel);
 					$("#left-bottom-adr-rect").click(onClickOnLabel);
 
-					/******************************  Left Bottom Quadrant ends here ******************************/
+					/**  ****************************  Left Bottom Quadrant ends here ******************************/
 
-					/******************************  Right Bottom Quadrant ******************************/
+					/**  ****************************  Right Bottom Quadrant ******************************/
 					var ytdOccupany = parseFloat(chartData.ytd.occupancy);
 
 					ytdOccupany = ytdOccupany > 25 ? ytdOccupany : parseInt(ytdOccupany);
@@ -506,7 +503,7 @@ angular.module('sntRover')
 					$("#right-bottom-rev-par-rect").click(onClickOnLabel);
 					$("#right-bottom-adr-rect").click(onClickOnLabel);
 
-					/******************************  Right Bottom Quadrant ends here ******************************/
+					/**  ****************************  Right Bottom Quadrant ends here ******************************/
 
 					labelMappings = {
 						"right-top": {
@@ -538,7 +535,7 @@ angular.module('sntRover')
 							"isDownSide": true
 						}
 					};
-					/******************************  Let Bottom Quadrant ******************************/
+					/**  ****************************  Let Bottom Quadrant ******************************/
 
 
 					var addMainLabelsOnGraph = function(label) {
@@ -588,8 +585,8 @@ angular.module('sntRover')
 					_.each(chartMainLabels, function(mainLabel) {
 						addMainLabelsOnGraph(mainLabel);
 					});
-				} catch (E) {
-					console.log(E)
+				} catch (e) {
+					console.log(e);
 				}
 
 				$scope.$emit('REFRESH_ANALTICS_SCROLLER');

@@ -501,7 +501,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
     this.getRooms = function(filterArgs) {
         var rooms = that.filterdRoomStatuses();
 
-        switch(filterArgs.type) {
+        switch (filterArgs.type) {
             case 'rooms_clean':
                 rooms = getCleanRooms(rooms);
                 break;
