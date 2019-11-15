@@ -19,6 +19,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 },
                 isEMVEnabled;
             var isInIpadApp = sntapp.browser === 'rv_native' && sntapp.cordovaLoaded;
+            
             // ---------------------------------------------------------------------------------------------------------
             $scope.payment = {
                 referenceText: $scope.referenceText,

@@ -9,7 +9,7 @@ sntRover.controller('RVPaymentCompanyCardCtrl', ['$rootScope', '$scope', '$state
 
         var paymentData = {
             "data": [],
-            "paymentTypes": [],
+            "paymentTypes": []
         };
 
         $scope.paymentData = paymentData;
@@ -50,7 +50,6 @@ sntRover.controller('RVPaymentCompanyCardCtrl', ['$rootScope', '$scope', '$state
             var successCallback = function(data) {
                 $scope.paymentData = data;
                 $scope.$parent.$emit('hideLoader');
-                refreshScrollers();
             };
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
