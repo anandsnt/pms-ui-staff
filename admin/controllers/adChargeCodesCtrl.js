@@ -45,7 +45,9 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		};        
 
 		$scope.fetchRoomTypes();
-
+		/*
+		 * Get custom tax parameter
+		 */
 		$scope.fetchCustomTaxParameter = function() {
 			var successCallbackFetchCustomTaxParameter = function(response) {
 				customTaxParameter = response.results;
@@ -604,10 +606,12 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				if ($scope.isEdit) {
 					$scope.isEdit = false;
 				}
-				$scope.successMessage = 'Success!';
+
+				$scope.successMessage = 'Success!';				
 			};
 
 			var failureCallback = function(error) {
+				$scope.errorMessage = error[0];
 				$scope.prefetchData.custom_tax_rules = currentCustomTaxRules;
 			};
 			// To create Charge code Link with list frm scope.
@@ -647,9 +651,22 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 
 				var unwantedKeys = ["allRoomTypes", "remainingCustomTaxParameter", "selectedTaxRule", "shouldHideDateRange", "shouldHideNightRange", "shouldHideRoomRateRange", "shouldHideRoomType"];
 				
-				if (item.room_types && item.room_types.length === 0) {
+				if ((item.room_types && item.room_types.length === 0) || (item.shouldHideRoomType)) {
 					unwantedKeys.push("room_types");
 				}
+				if (item.shouldHideDateRange) {
+					unwantedKeys.push("from_date");
+					unwantedKeys.push("to_date");
+				}
+				if (item.shouldHideNightRange) {
+					unwantedKeys.push("from_night_count");
+					unwantedKeys.push("to_night_count");
+				}
+				if (item.shouldHideRoomRateRange) {
+					unwantedKeys.push("from_rate");
+					unwantedKeys.push("to_rate");
+				}
+				
 				item = dclone(item, unwantedKeys);
 				customTaxRulesToApi.push(item);
 			});
