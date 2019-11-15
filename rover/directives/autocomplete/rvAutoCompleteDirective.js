@@ -69,7 +69,7 @@ sntRover.directive('autoComplete', ['highlightFilter',
                                 }
                                 break;
                             case 'GROUP':
-                                defIcon = 'icon-group-large';
+                                defIcon = 'icon-group';
                                 defIconText = 'G';
                                 break;
                             case 'PROMO':
