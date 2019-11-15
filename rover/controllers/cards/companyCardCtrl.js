@@ -48,6 +48,9 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 			}
 			else if (tabToSwitch === 'cc-notes') {
 				$scope.$broadcast("fetchNotes");
+			} 
+			else if (tabToSwitch === 'wallet') {
+				$scope.$broadcast("wallet");
 			} else if (tabToSwitch === 'statistics') {
 				$scope.$broadcast("LOAD_STATISTICS");
 			}
