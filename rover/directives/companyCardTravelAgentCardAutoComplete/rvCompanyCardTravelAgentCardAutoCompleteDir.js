@@ -57,9 +57,9 @@
       };
 
       if (item.company_logo) {
-        $image = '<img src="' + item.company_logo + '">';
+        $image = '<img src="' + item.company_logo + '" class="account-image icons">';
       } else {
-        $image = '<span class="icons ' + defIcon + '"></span>';
+        $image = '<span class="account-image icons ' + defIcon + '"></span>';
       }
 
       if (item.account_type) {

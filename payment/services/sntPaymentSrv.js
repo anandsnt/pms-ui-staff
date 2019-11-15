@@ -80,6 +80,32 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
             return deferred.promise;
         };
 
+        service.getAccountsLinkedCardList = function(AccountId) {
+
+            var deferred = $q.defer(),
+                url = 'staff/payments/fetch_attached_credit_cards?posting_account_id=' + AccountId;
+
+            $http.get(url).then(function(response) {
+                deferred.resolve(response.data.data);
+            }, function(error) {
+                deferred.reject(error);
+            });
+            return deferred.promise;
+        };
+
+        service.getCoTaLinkedCardList = function(AccountId) {
+
+            var deferred = $q.defer(),
+                url = 'staff/payments/fetch_attached_credit_cards?account_id=' + AccountId;
+
+            $http.get(url).then(function(response) {
+                deferred.resolve(response.data.data);
+            }, function(error) {
+                deferred.reject(error);
+            });
+            return deferred.promise;
+        };
+
         service.getConvertedAmount = function(params) {
 
             var deferred = $q.defer(),

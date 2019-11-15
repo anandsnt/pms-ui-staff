@@ -370,24 +370,26 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         * @return none
         * */
         $scope.showGeneratedReportFromInbox = function( selectedreport ) {
-            $scope.viewStatus.showDetails = true;
-
             delete selectedreport.filterFromDate;
             delete selectedreport.filterToDate;
             delete selectedreport.filters.from_date;
             delete selectedreport.filters.to_date;
 
-            reportsSrv.setSelectedReport(selectedreport);
+            var mainCtrlScope = $scope.$parent;
 
             if ( (selectedreport.shouldShowExport && !selectedreport.shouldDisplayView) || $scope.shouldDisableInboxItem(selectedreport) ) {
                 return;
             }
-            
+
             reportsSrv.setSelectedReport(selectedreport);
+
+            $scope.$emit('showLoader');
             $timeout(function () {
-                $rootScope.$broadcast('SHOW_GEN_REPORT');
-            }, 100);
-                  
+                setChoosenReport(selectedreport).then(function () {
+                    mainCtrlScope.genReport(null, null, null, false);
+                });
+            }, 2000);
+
         };
        
         /*

@@ -281,8 +281,10 @@ sntRover.controller('roverController', [
          */
         $scope.userInfo = userInfoDetails;
         $scope.isPmsConfigured = $scope.userInfo.is_pms_configured;
+
         $rootScope.adminRole = $scope.userInfo.user_role;
         $rootScope.isHotelStaff = $scope.userInfo.is_staff;
+        $rootScope.includeManagementInformation = $scope.userInfo.include_management_information;
 
         // self executing check
         $rootScope.isMaintenanceStaff = (function (roles) {

@@ -1934,6 +1934,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     // in case if all reservation status are selected
                     if (changeAppliedFilter && report['hasIncludeCountry']['data'].length === selected.length) {
                         $scope.appliedFilter.hasIncludeCountry = ['All countries'];
+                        params[key].push('-1'); // For the UNDEFINED entry
                     }
                 }
             }

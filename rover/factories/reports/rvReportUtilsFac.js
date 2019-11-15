@@ -907,6 +907,12 @@ angular.module('reportsModule')
                         .then( fillRoomTypeList );
                 }
 
+                else if ('RATE_TYPE' === filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchRateTypesAndRateList()
+                        .then( fillRateTypesAndRateList );
+                }
+
                 else if ('RESTRICTION' === filter.value && ! filter.filled ) {
                     requested++;
                     reportsSubSrv.fetchRestrictionList()
