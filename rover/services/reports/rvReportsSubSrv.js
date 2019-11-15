@@ -73,7 +73,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 toatalCount = response.total_count,
                 lastPage = Math.ceil(toatalCount / params.per_page);
 
-            return params.page === lastPage ? response.results_total_row : null;
+            return (toatalCount < params.per_page || params.page === lastPage ) ? response.results_total_row : null;
         };
         /**
          * Abstract the response based on params

@@ -390,4 +390,21 @@ BaseCtrl = function($scope) {
         return str.toLowerCase(); 
     };
 
+    /**
+     * Get the length of the object or array
+     * @param {Object | Array} -array or object
+     * @return {Number} length - length of the object or array
+     */
+    $scope.lengthObjArr = function (objOrArr) {
+        var length;
+
+        if (_.isObject(objOrArr)) {
+            length = _.keys(objOrArr).length;
+        } else if (_.isArray(objOrArr)) {
+            length = objOrArr.length;
+        }
+
+        return length;
+    };
+
 };
