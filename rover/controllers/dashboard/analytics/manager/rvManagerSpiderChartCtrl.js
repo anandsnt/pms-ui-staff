@@ -144,9 +144,12 @@ angular.module('sntRover')
 							})
 							.attr("x", x(-.1 * (i + 1)))
 							.attr("y", y(.1 * (i + 1)))
+							.transition()
+							.duration(1000)
 							.attr("height", height)
-							.attr("width", width);
+							.attr("width", width)
 					}
+
 
 					var addAxisLabelsToChart = function(textData, isXaxis) {
 						var label = (textData.type === "occupany") ?
@@ -276,6 +279,8 @@ angular.module('sntRover')
 							.attr('y', function(d) {
 								return yOffset;
 							})
+							.transition()
+							.duration(1000)
 							.attr('width', function() {
 								return rectWidth;
 							})
