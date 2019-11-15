@@ -305,6 +305,233 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 			.text(textData.label);
 	};
 
+	this.getYAxisValues = function(axisValues, x, y) {
+
+		var yAxisValues = [{
+				"type": "occupany",
+				"label": "",
+				"xOffset": x(0),
+				"yOffset": y(0)
+			}, {
+				"type": "occupany",
+				"label": "25",
+				"xOffset": x(0),
+				"yOffset": y(0.1)
+			}, {
+				"type": "occupany",
+				"label": "50",
+				"xOffset": x(0),
+				"yOffset": y(0.2)
+			}, {
+				"type": "occupany",
+				"label": "75",
+				"xOffset": x(0),
+				"yOffset": y(0.3)
+			}, {
+				"type": "occupany",
+				"label": "",
+				"xOffset": x(0),
+				"yOffset": y(0.4)
+			}, {
+				"type": "occupany",
+				"label": "25",
+				"xOffset": x(0),
+				"yOffset": y(-0.1)
+			}, {
+				"type": "occupany",
+				"label": "50",
+				"xOffset": x(0),
+				"yOffset": y(-0.2)
+			}, {
+				"type": "occupany",
+				"label": "75",
+				"xOffset": x(0),
+				"yOffset": y(-0.3)
+			}, {
+				"type": "occupany",
+				"label": "",
+				"xOffset": x(0),
+				"yOffset": y(-0.4)
+			},
+
+			{
+				"type": "revenue",
+				"label": axisValues[0],
+				"xOffset": x(0),
+				"yOffset": y(-0.5)
+			}, {
+				"type": "revenue",
+				"label": axisValues[1],
+				"xOffset": x(0),
+				"yOffset": y(-0.6)
+			}, {
+				"type": "revenue",
+				"label": axisValues[2],
+				"xOffset": x(0),
+				"yOffset": y(-0.7)
+			}, {
+				"type": "revenue",
+				"label": axisValues[3],
+				"xOffset": x(0),
+				"yOffset": y(-0.8)
+			}, {
+				"type": "revenue",
+				"label": axisValues[4],
+				"xOffset": x(0),
+				"yOffset": y(-0.9)
+			}, {
+				"type": "revenue",
+				"label": axisValues[5],
+				"xOffset": x(0),
+				"yOffset": y(-1)
+			}, {
+				"type": "revenue",
+				"label": axisValues[0],
+				"xOffset": x(0),
+				"yOffset": y(0.5)
+			}, {
+				"type": "revenue",
+				"label": axisValues[1],
+				"xOffset": x(0),
+				"yOffset": y(0.6)
+			}, {
+				"type": "revenue",
+				"label": axisValues[2],
+				"xOffset": x(0),
+				"yOffset": y(0.7)
+			}, {
+				"type": "revenue",
+				"label": axisValues[3],
+				"xOffset": x(0),
+				"yOffset": y(0.8)
+			}, {
+				"type": "revenue",
+				"label": axisValues[4],
+				"xOffset": x(0),
+				"yOffset": y(0.9)
+			}, {
+				"type": "revenue",
+				"label": axisValues[5],
+				"xOffset": x(0),
+				"yOffset": y(1)
+			}
+		];
+
+		return yAxisValues;
+	};
+
+
+	this.getXAxisValues = function(axisValues, x, y) {
+		var xAxisLabels = [{
+			"type": "occupany",
+			"label": "",
+			"xOffset": x(0),
+			"yOffset": y(0)
+		}, {
+			"type": "occupany",
+			"label": "25",
+			"xOffset": x(0.1),
+			"yOffset": y(0)
+		}, {
+			"type": "occupany",
+			"label": "50",
+			"xOffset": x(0.2),
+			"yOffset": y(0)
+		}, {
+			"type": "occupany",
+			"label": "75",
+			"xOffset": x(0.3),
+			"yOffset": y(0)
+		}, {
+			"type": "occupany",
+			"label": "",
+			"xOffset": x(0.4),
+			"yOffset": y(0)
+		}, {
+			"type": "occupany",
+			"label": "25",
+			"xOffset": x(-0.1),
+			"yOffset": y(0)
+		}, {
+			"type": "occupany",
+			"label": "50",
+			"xOffset": x(-0.2),
+			"yOffset": y(0)
+		}, {
+			"type": "occupany",
+			"label": "75",
+			"xOffset": x(-0.3),
+			"yOffset": y(0)
+		}, {
+			"type": "occupany",
+			"label": "",
+			"xOffset": x(-0.4),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[0],
+			"xOffset": x(-0.5),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[1],
+			"xOffset": x(-0.6),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[2],
+			"xOffset": x(-0.7),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[3],
+			"xOffset": x(-0.8),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[4],
+			"xOffset": x(-0.9),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[5],
+			"xOffset": x(-1),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[0],
+			"xOffset": x(0.5),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[1],
+			"xOffset": x(0.6),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[2],
+			"xOffset": x(0.7),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[3],
+			"xOffset": x(0.8),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[4],
+			"xOffset": x(0.9),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[5],
+			"xOffset": x(1),
+			"yOffset": y(0)
+		}];
+
+		return xAxisLabels;
+	};
+
 	this.addRandomNumbersForTesting = function(chartDetails) {
 		var combinedItemsCountArray = [];
 
@@ -364,7 +591,17 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 			});
 			_.each(chart.contents.right_side, function(item) {
 				// to delete
+				if (item.type == "early_checkin") {
+					item.count = 30;
+				} 
+				else if (item.type == "remaining") {
+					item.count = 90;
+				} else if(item.type === 'inspected'){
+					item.count = 15;
+				} else{
 				item.count = item.count < 3 ? _.random(20, 100) : item.count;
+
+				}
 				combinedItemsCountArray.push(item.count);
 			});
 			// chart.contents.right_side.push(chart.contents.right_side[0]);

@@ -195,5 +195,6 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
     }, 500);
   };
 
+ $scope.dashboardFilter.isManagerDashboard = true;
  $scope.$on('REFRESH_ANALTICS_SCROLLER', refreshAnalyticsScroller);
 }]);

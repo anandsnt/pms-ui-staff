@@ -2,28 +2,79 @@ angular.module('sntRover')
 	.controller('rvManagerSpiderChartCtrl', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvAnalyticsHelperSrv',
 		function($scope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv) {
 
-			$scope.drawFrontOfficeActivity = function(chartData) {
+			$scope.drawPerfomceChart = function(chartData) {
+
+				// chartData = {
+				// 	"today": {
+				// 		"adr": "1000.00",
+				// 		"rev_par": "900.00",
+				// 		"occupancy": "90"
+				// 	},
+				// 	"yesterday": {
+				// 		"adr": "9000.00",
+				// 		"rev_par": "900.00",
+				// 		"occupancy": "80"
+				// 	},
+				// 	"mtd": {
+				// 		"adr": "1000.00",
+				// 		"rev_par": "900.00",
+				// 		"occupancy": "67"
+				// 	},
+				// 	"ytd": {
+				// 		"adr": "500.00",
+				// 		"rev_par": "900.00",
+				// 		"occupancy": "45.98"
+				// 	}
+				// }
+				console.log(chartData);
+
+				var chartDataArray = Object.keys(chartData).map(function(key) {
+					return _.extend({
+						type: key
+					}, chartData[key]);
+				});
+
+				var maxAdr = _.max(chartDataArray, function(data) {
+					return parseFloat(data.adr);
+				});
+				var maxRevPar = _.max(chartDataArray, function(data) {
+					return parseFloat(data.rev_par);
+				});
+				var maxValueForChart = maxAdr.adr > maxRevPar.rev_par ? maxAdr.adr : maxRevPar.rev_par;
+
+				console.log(chartDataArray);
+				console.log(maxValueForChart);
+
 				$scope.screenData.mainHeading = "SAMPLE HEADING";
 				try {
-					var w = 800;
-					var h = 800;
-					var pad = 20;
-					var left_pad = 50;
+					var chartWidth = 800;
+					var chartHeight = 800;
+					var padding = 50;
+					var leftPadding = 50;
 
 					var svg = d3.select("#d3-plot")
 						.append("svg")
-						.attr("width", w)
-						.attr("height", h);
+						.attr("width", chartWidth)
+						.attr("height", chartHeight);
 
 					var x = d3.scaleLinear().
 					domain([-1, 1])
-						.range([left_pad, w - pad]);
+						.range([leftPadding, chartWidth - padding]);
+
 					var y = d3.scaleLinear()
 						.domain([1, -1])
-						.range([pad, h - pad * 2]);
+						.range([padding, chartHeight - padding * 2]);
 
-					var xAxis = d3.axisBottom().scale(x).ticks([]).tickSizeOuter(0);
-					var yAxis = d3.axisLeft().scale(y).ticks([]).tickSizeOuter(0);
+					var xAxis = d3.axisBottom()
+						.scale(x)
+						.ticks([])
+						.tickSizeOuter(0);
+					var yAxis = d3
+						.axisLeft()
+						.scale(y)
+						.ticks([])
+						.tickSizeOuter(0);
+
 
 					svg.append("g")
 						.attr("class", "axis")
@@ -35,34 +86,25 @@ angular.module('sntRover')
 						.attr("transform", "translate(" + x(0) + ", 0)")
 						.call(yAxis);
 
-
-
-					var maxValue = 5000;
-
 					var baseValue = 1;
+					maxValueForChart = parseInt(maxValueForChart);
+					var maxValueForChartLength = maxValueForChart.toString().length;
 
-					var maxValueLength = maxValue.toString().length;
-
-					if (maxValueLength > 1) {
-						for (var i = 0; i < maxValueLength - 1; i++) {
+					if (maxValueForChartLength > 1) {
+						for (var i = 0; i < maxValueForChartLength - 1; i++) {
 							baseValue = baseValue * 10;
 						}
 					}
 
-
 					function roundToNextThousand(x) {
 						return Math.ceil(x / baseValue) * baseValue;
 					}
-
-					var individual = parseInt(maxValue) / 6;
+					var individual = parseInt(maxValueForChart) / 6;
 					var roundedInvidual = roundToNextThousand(individual);
-
-					console.log(roundToNextThousand(individual));
 
 					var axisValues;
 					if (baseValue >= 1000) {
 						var factor = baseValue / 1000;
-
 						axisValues = [roundedInvidual / baseValue + "k",
 							roundedInvidual * 2 / baseValue * factor + "k",
 							roundedInvidual * 3 / baseValue * factor + "k",
@@ -80,11 +122,10 @@ angular.module('sntRover')
 						];
 					}
 
-
 					var valueOfOne = 0.1 / roundedInvidual;
-					console.log(axisValues);
 
-					for (i = 0; i < 10; i++) {
+					// Draw 10 squares
+					for (var i = 0; i < 10; i++) {
 
 						var width = x(.1 * (i + 1)) - x(-.1 * (i + 1));
 						var height = y(-.1 * (i + 1)) - y(.1 * (i + 1));
@@ -94,9 +135,11 @@ angular.module('sntRover')
 							.attr("class", "chart-rect")
 							.attr("id", "line_" + i)
 							.attr("stroke-width", function() {
+								// for the fourth sqaures, add thick lines
 								return i === 3 ? 2 : 1;
 							})
 							.style("stroke", function() {
+								// for the fourth sqaures, paint black
 								return i === 3 ? "black" : "lightgray";
 							})
 							.attr("x", x(-.1 * (i + 1)))
@@ -105,550 +148,446 @@ angular.module('sntRover')
 							.attr("width", width);
 					}
 
-					var addYAXisLabels = function(textData, isXaxis, isLabel) {
+					var addAxisLabelsToChart = function(textData, isXaxis, isLabel) {
+						var label = (textData.type === "occupany") ?
+							(textData.label ? textData.label + "%" : "") :
+							"$" + textData.label;
+
 						svg.append("text")
 							.attr("x", textData.xOffset)
 							.attr("y", textData.yOffset)
 							.attr("dx", function() {
-								return isXaxis ? "-1em" : isLabel ? "1em" : ".35em"
+								return isXaxis ? "-1em" : ".35em";
 							})
 							.attr("dy", function() {
 								return isXaxis ? "1em" : ".35em"
 							})
 							.attr("class", "")
 							.style("font-size", "10px")
-							.text(textData.label ? "$" + textData.label : "");
+							.text(label);
 					};
 
+					var addTextToTheChart = function(textData, isLeftSide, isDownSide) {
+						var label = (textData.type === "occupany") ?
+							(textData.label ? textData.label + "%" : "") :
+							"$" + textData.label;
 
-					var yAxisLabels = [{
-							"label": "0 %",
-							"xOffset": x(0),
-							"yOffset": y(0)
-						}, {
-							"label": "25 %",
-							"xOffset": x(0),
-							"yOffset": y(0.1)
-						}, {
-							"label": "50 %",
-							"xOffset": x(0),
-							"yOffset": y(0.2)
-						}, {
-							"label": "75 %",
-							"xOffset": x(0),
-							"yOffset": y(0.3)
-						}, {
-							"label": "",
-							"xOffset": x(0),
-							"yOffset": y(0.4)
-						}, {
-							"label": "25 %",
-							"xOffset": x(0),
-							"yOffset": y(-0.1)
-						}, {
-							"label": "50 %",
-							"xOffset": x(0),
-							"yOffset": y(-0.2)
-						}, {
-							"label": "75 %",
-							"xOffset": x(0),
-							"yOffset": y(-0.3)
-						}, {
-							"label": "",
-							"xOffset": x(0),
-							"yOffset": y(-0.4)
-						},
+						svg.append("text")
+							.attr("x", textData.xOffset)
+							.attr("y", textData.yOffset)
+							.attr("dx", function() {
+								return isLeftSide ? "-2em" : "2em";
+							})
+							.attr("dy", function() {
+								return isDownSide ? "2em" : "-1em"
+							})
+							.attr("class", "")
+							.style("font-size", "10px")
+							.style("font-weight", "bold")
+							.text(label);
+					};
 
-						{
-							"label": axisValues[0],
-							"xOffset": x(0),
-							"yOffset": y(-0.5)
-						}, {
-							"label": axisValues[1],
-							"xOffset": x(0),
-							"yOffset": y(-0.6)
-						}, {
-							"label": axisValues[2],
-							"xOffset": x(0),
-							"yOffset": y(-0.7)
-						}, {
-							"label": axisValues[3],
-							"xOffset": x(0),
-							"yOffset": y(-0.8)
-						}, {
-							"label": axisValues[4],
-							"xOffset": x(0),
-							"yOffset": y(-0.9)
-						}, {
-							"label": axisValues[5],
-							"xOffset": x(0),
-							"yOffset": y(-1)
-						}, {
-							"label": axisValues[0],
-							"xOffset": x(0),
-							"yOffset": y(0.5)
-						}, {
-							"label": axisValues[1],
-							"xOffset": x(0),
-							"yOffset": y(0.6)
-						}, {
-							"label": axisValues[2],
-							"xOffset": x(0),
-							"yOffset": y(0.7)
-						}, {
-							"label": axisValues[3],
-							"xOffset": x(0),
-							"yOffset": y(0.8)
-						}, {
-							"label": axisValues[4],
-							"xOffset": x(0),
-							"yOffset": y(0.9)
-						}, {
-							"label": axisValues[5],
-							"xOffset": x(0),
-							"yOffset": y(1)
+					var yAxisLabels = rvAnalyticsHelperSrv.getYAxisValues(axisValues, x, y);
+
+					for (var i = 0; i <= yAxisLabels.length - 1; i++) {
+						addAxisLabelsToChart(yAxisLabels[i])
+					};
+
+					var xAxisLabels = rvAnalyticsHelperSrv.getXAxisValues(axisValues, x, y);
+
+					for (var i = 0; i <= xAxisLabels.length - 1; i++) {
+						addAxisLabelsToChart(xAxisLabels[i], true)
+					};
+
+					var labelMappings;
+
+					var onClickOnLabel = function(e) {
+						console.log(e.target.id);
+						var position;
+
+						if (e.target.id && e.target.id.includes("left-top")) {
+							position = "left-top"
+						} else if (e.target.id && e.target.id.includes("right-top")) {
+							position = "right-top"
+						} else if (e.target.id && e.target.id.includes("left-bottom")) {
+							position = "left-bottom"
+						} else if (e.target.id && e.target.id.includes("right-bottom")) {
+							position = "right-bottom";
 						}
-					];
+						var labelAttrs = labelMappings[position]
 
-					for (i = 0; i <= yAxisLabels.length - 1; i++) {
-						addYAXisLabels(yAxisLabels[i])
-					}
+						if (position) {
+							$("#" + position + "-adr-rect").remove();
+							$("#" + position + "-adr-label1").remove();
+							$("#" + position + "-adr-label2").remove();
+							$("#" + position + "-rev-par-rect").remove();
+							$("#" + position + "-rev-par-label1").remove();
+							$("#" + position + "-rev-par-label2").remove();
 
+							if (e.target.id.includes("rev-par")) {
+								addLabelToChart(labelAttrs.adr, labelAttrs.isLeftSide, labelAttrs.isDownSide);
+								addLabelToChart(labelAttrs.revPar, labelAttrs.isLeftSide, labelAttrs.isDownSide);
+							} else {
+								addLabelToChart(labelAttrs.revPar, labelAttrs.isLeftSide, labelAttrs.isDownSide);
+								addLabelToChart(labelAttrs.adr, labelAttrs.isLeftSide, labelAttrs.isDownSide);
+							}
 
-
-					var xAxisLabels = [{
-						"label": axisValues[0],
-						"xOffset": x(-0.5),
-						"yOffset": y(0)
-					}, {
-						"label": axisValues[1],
-						"xOffset": x(-0.6),
-						"yOffset": y(0)
-					}, {
-						"label": axisValues[2],
-						"xOffset": x(-0.7),
-						"yOffset": y(0)
-					}, {
-						"label": axisValues[3],
-						"xOffset": x(-0.8),
-						"yOffset": y(0)
-					}, {
-						"label": axisValues[4],
-						"xOffset": x(-0.9),
-						"yOffset": y(0)
-					}, {
-						"label": axisValues[5],
-						"xOffset": x(-1),
-						"yOffset": y(0)
-					}, {
-						"label": axisValues[0],
-						"xOffset": x(0.5),
-						"yOffset": y(0)
-					}, {
-						"label": axisValues[1],
-						"xOffset": x(0.6),
-						"yOffset": y(0)
-					}, {
-						"label": axisValues[2],
-						"xOffset": x(0.7),
-						"yOffset": y(0)
-					}, {
-						"label": axisValues[3],
-						"xOffset": x(0.8),
-						"yOffset": y(0)
-					}, {
-						"label": axisValues[4],
-						"xOffset": x(0.9),
-						"yOffset": y(0)
-					}, {
-						"label": axisValues[5],
-						"xOffset": x(1),
-						"yOffset": y(0)
-					}]
-
-
-					for (i = 0; i <= xAxisLabels.length - 1; i++) {
-						addYAXisLabels(xAxisLabels[i], true)
-					}
-
-					// svg.selectAll("text")  
-					//            .style("text-anchor", "end")
-					//            .attr("dx", "-.8em")
-					//            .attr("dy", ".15em")
-					//            .attr("transform",function(d){
-					//              console.log(d)
-					//              return  "translate (0,0)rotate(-65)" 
-					//            });
-					///////////////////////////////////////////////////////////////////////
-					svg.append("circle").
-					attr("cx", x(-0.3))
-						.attr("cy", y(0.3))
-						.attr("r", 8)
-						.attr("fill", "#89BD55");
-
-
-					var firstData = {
-						"label": "75 %",
-						"xOffset": x(-0.3),
-						"yOffset": y(0.3)
-					}
-
-					addYAXisLabels(firstData, false, true)
-
-					svg.append("circle").
-					attr("cx", x(0.1))
-						.attr("cy", y(0.1))
-						.attr("r", 8)
-						.attr("fill", "#E63838");
-
-					var secondData = {
-						"label": "25 %",
-						"xOffset": x(0.1),
-						"yOffset": y(0.1)
-					}
-
-					addYAXisLabels(secondData, false, true)
-
-					svg.append("circle").
-					attr("cx", x(57 * 0.1 / 25))
-						.attr("cy", y(-57 * 0.1 / 25))
-						.attr("r", 8)
-						.attr("fill", "#F6991B");
-
-					var secondData = {
-						"label": "57 %",
-						"xOffset": x(57 * 0.1 / 25),
-						"yOffset": y(-57 * 0.1 / 25)
-					}
-
-					addYAXisLabels(secondData, false, true)
-
-					svg.append("circle").
-					attr("cx", x(-90 * 0.1 / 25))
-						.attr("cy", y(-90 * 0.1 / 25))
-						.attr("r", 8)
-						.attr("fill", "#89BD55");
-
-
-					var firstData = {
-						"label": "90 %",
-						"xOffset": x(-90 * 0.1 / 25),
-						"yOffset": y(-90 * 0.1 / 25)
-					}
-
-					addYAXisLabels(firstData, false, true)
-					///////////////////////////////////////////////////////////////////////
-
-
-					var height = 200
-					var width = 500
-
-
-					var addLeftSideOffsetPlusLeftMargin = function(leftSideOffset) {
-						return document.getElementById("d3-plot").offsetLeft + leftSideOffset + "px"
-					};
-
-					var addLabels = function(d) {
-						var div = d3.select('#d3-plot').append('div')
-							.style('position', 'absolute')
-							.style('top', d.top)
-							.style('left', d.left)
-							.style('width', "80px")
-							.style('height', "40px")
-							.style('background-color', d.backgroundColor)
-							.style('color', "white")
-							.style("text-align", "center")
-							.style("font-size", "9px")
-
-
-						if (baseValue >= 1000) {
-							var factor = baseValue / 1000;
-
-							d.value = d.value * factor + "k";
+							$("#" + position + "-adr-rect").click(onClickOnLabel);
+							$("#" + position + "-adr-label1").click(onClickOnLabel);
+							$("#" + position + "-adr-label2").click(onClickOnLabel);
+							$("#" + position + "-rev-par-rect").click(onClickOnLabel);
+							$("#" + position + "-rev-par-label1").click(onClickOnLabel);
+							$("#" + position + "-rev-par-label2").click(onClickOnLabel);
 						}
-						div.append("p")
-							.html(d.label);
-						div.append("p")
-							.html("$" + d.value);
-					}
-
-					var lowestValue = maxValue / 5;
-					var oneDivisonConversion = .0001;
-
-					var leftSideMarinCalculation = function(isLeftSide, value) {
-						var xValue = 0.5 + (parseInt(value) - parseInt(lowestValue)) * valueOfOne;
-						xValue = isLeftSide ? -1 * xValue : xValue;
-
-						return addLeftSideOffsetPlusLeftMargin(x(xValue))
 					};
 
-					var topSideMarginCalculation = function(isDownSide, value) {
-						var yValue = 0.5 + (parseInt(value) - parseInt(lowestValue)) * valueOfOne;
-						yValue = isDownSide ? -1 * yValue : yValue;
-
-						return y(yValue) + "px";
-					};
-
-					var lowestValue = maxValue / 5;;
-					var oneDivisonConversion = .0001;
 
 					var addLabelToChart = function(label, isLeftSide, isDownSide) {
 
 						var xValue = 0.5 + (parseInt(label.value) - parseInt(roundedInvidual)) * valueOfOne;
 						xValue = isLeftSide ? -1 * xValue : xValue;
-						var yValue = 0.5 + (parseInt(label.value) - parseInt(roundedInvidual)) * valueOfOne;
-						yValue = isDownSide ? -1 * yValue : yValue;
-						
-						var text1 = svg.append("g");
+						var rectYvalue = 0.5 + (parseInt(label.value) - parseInt(roundedInvidual)) * valueOfOne;
+						rectYvalue = isDownSide ? -1 * rectYvalue : rectYvalue;
 
-						text1.append('rect')
+						var rectWidth = x(0.3) - x(0);
+						var xOffset = x(xValue) - rectWidth / 2,
+							yOffset = y(rectYvalue) - (y(0) - y(0.15)) / 2,
+
+							xOffsetText = x(xValue) - rectWidth / 4,
+
+							yOffsetText = y(rectYvalue) - (y(0) - y(0.15)) / 6,
+							yOffsetText2 = y(rectYvalue) + (y(0) - y(0.15)) / 4;
+
+
+						var textLabelGroup = svg.append("g");
+
+						textLabelGroup.append('rect')
 							.attr("class", "rect-bars")
 							.attr('x', function(d, i) {
-								return x(xValue); // xOffset + some margin
+								return xOffset; // xOffset + some margin
 							})
 							.style("margin-right", "10px")
 							.attr('y', function(d) {
-								return y(yValue);
+								return yOffset;
 							})
 							.attr('width', function() {
-								return 100;
+								return rectWidth;
 							})
 							.attr('height', function() {
-								return 50;
+								return y(0) - y(0.15)
 							})
-							.attr("fill", label.backgroundColor);
+							.attr("id", label.id + "-rect")
+							.attr("fill", label.backgroundColor)
+							.attr("stroke-width", "1")
+							.attr("stroke", "#000")
+							.style("cursor", "pointer");
 
-						text1.append("text")
-							.attr('x', function(d, i) {
+						$("#" + label.id + "-rect").click(onClickOnLabel);
 
-								return x(xValue + 0.05); // xOffset + some margin
-							})
-							.attr('y', function(d) {
-								return y(yValue - 0.05);
-							})
+						textLabelGroup.append("text")
+							.attr('x', xOffsetText)
+							.attr('y', yOffsetText)
+							.attr("id", label.id + "-label1")
 							.style("font-size", "15px")
 							.style("fill", "white")
-							.text(label.label);
+							.text(label.label)
+							.style("cursor", "pointer");
 
+						$("#" + label.id + "-label1").click(onClickOnLabel);
+
+						var labelText = label.value;
 						if (baseValue >= 1000) {
 							var factor = 1 / 1000;
 
-							label.value = label.value * factor;
+							labelText = labelText * factor;
 						};
-						label.value = $filter('number')(label.value, 2);
+						labelText = parseFloat(labelText).toFixed(2);
 						if (baseValue >= 1000) {
-							label.value = label.value + "k";
+							labelText = labelText + "k";
 						}
-						
 
-						text1.append("text")
+						textLabelGroup.append("text")
 							.attr('x', function(d, i) {
-								return x(xValue + 0.05); // xOffset + some margin
+								return xOffsetText; // xOffset + some margin
 							})
 							.attr('y', function(d) {
-								return y(yValue - 0.1);
+								return yOffsetText2;
 							})
+							.attr("id", label.id + "-label2")
 							.style("font-size", "15px")
 							.style("fill", "white")
-							.text("$" + label.value);
+							.text("$" + labelText)
+							.style("cursor", "pointer");
+
+						$("#" + label.id + "-label2").click(onClickOnLabel);
 					}
 
+					var lowestValue = maxValueForChart / 5;
+					var oneDivisonConversion = .0001;
 
+					/******************************  Let Top Quadrant ******************************/
+					var yesterDaysOccupany = parseFloat(chartData.yesterday.occupancy);
 
-					var leftTop = {
-						"class": "bottomRight",
+					yesterDaysOccupany = yesterDaysOccupany > 25 ? yesterDaysOccupany : parseInt(yesterDaysOccupany);
+
+					svg.append("circle").
+					attr("cx", x(-1 * yesterDaysOccupany * 0.1 / 25))
+						.attr("cy", y(yesterDaysOccupany * 0.1 / 25))
+						.attr("r",  yesterDaysOccupany > 25 ? 8 : 4)
+						.attr("fill", "#89BD55");
+
+					var leftTopQuadrantOccupany = {
+						"type": "occupany",
+						"label": yesterDaysOccupany,
+						"xOffset": x(-1 * yesterDaysOccupany * 0.1 / 25),
+						"yOffset": y(yesterDaysOccupany * 0.1 / 25)
+					};
+
+					addTextToTheChart(leftTopQuadrantOccupany, true, false);
+
+					var leftTopQuadrantADR = {
 						"top": y(0.6) + "px",
-						"left": addLeftSideOffsetPlusLeftMargin(x(-0.6)),
 						"backgroundColor": "#E63838",
 						"label": "ADR",
-						"value": maxValue
-					}
+						"value": chartData.yesterday.adr,
+						"id": "left-top-adr"
+					};
 
+					addLabelToChart(leftTopQuadrantADR, true, false);
 
-					addLabelToChart(leftTop, true, false);
-
-					var leftTop = {
-						"class": "bottomRight",
-						// "top": y(0.5) + "px",
+					var leftTopQuadrantRevPar = {
 						"backgroundColor": "#E63838",
 						"label": "REVPAR",
-						"value": maxValue / 2
-					}
-					addLabelToChart(leftTop, true, false);
+						"value": chartData.yesterday.rev_par,
+						"id": "left-top-rev-par"
+					};
 
-					// leftTop.top = topSideMarginCalculation(false, leftTop.value);
-					// leftTop.left = leftSideMarinCalculation(true,leftTop.value);
+					addLabelToChart(leftTopQuadrantRevPar, true, false);
 
-					// addLabels(leftTop);
+					$("#left-top-adr-rect").click(onClickOnLabel);
+					$("#left-top-rev-par-rect").click(onClickOnLabel);
 
-					var rightTop = {
+
+					/******************************  Let Top Quadrant ends here ******************************/
+
+					/******************************  Right Top Quadrant ******************************/
+
+					var todaysOccupany = parseFloat(chartData.today.occupancy);
+
+					todaysOccupany = todaysOccupany > 25 ? todaysOccupany : parseInt(todaysOccupany);
+					svg.append("circle").
+					attr("cx", x(todaysOccupany * 0.1 / 25))
+						.attr("cy", y(todaysOccupany * 0.1 / 25))
+						.attr("r", todaysOccupany > 25 ? 8 : 4)
+						.attr("fill", "#E63838");
+
+					var rightTopQuadrantOccupany = {
+						"type": "occupany",
+						"label": todaysOccupany,
+						"xOffset": x(todaysOccupany * 0.1 / 25),
+						"yOffset": y(todaysOccupany * 0.1 / 25)
+					};
+
+					addTextToTheChart(rightTopQuadrantOccupany, false, false);
+
+					var rightTopQuadrantAdr = {
 						"class": "bottomRight",
-						// "top": y(0.7) + "px",
 						"backgroundColor": "#89BD55",
 						"label": "ADR",
-						"value": maxValue / 2.5
-					}
-					// rightTop.top = topSideMarginCalculation(false, rightTop.value);
-					// rightTop.left = leftSideMarinCalculation(false,rightTop.value);
+						"value": chartData.today.adr,
+						"id": "right-top-adr"
+					};
 
-					addLabelToChart(rightTop, false, false);
-
-					var rightTop = {
+					var rightTopQuadrantRevPar = {
 						"class": "bottomRight",
 						"top": y(0.5) + "px",
-						"left": addLeftSideOffsetPlusLeftMargin(x(0.5)),
 						"backgroundColor": "#89BD55",
 						"label": "REVPAR",
-						"value": maxValue / 3
-					}
+						"value": chartData.today.rev_par,
+						"id": "right-top-rev-par"
+					};
 
-					addLabelToChart(rightTop, false, false);
+					addLabelToChart(rightTopQuadrantAdr, false, false);
+					addLabelToChart(rightTopQuadrantRevPar, false, false);
 
-					var leftBottom = {
+					$("#right-top-adr-rect").click(onClickOnLabel);
+					$("#right-top-rev-par-rect").click(onClickOnLabel);
+
+					/******************************  Right Top Quadrant ends here ******************************/
+
+					/******************************  Let Bottom Quadrant ******************************/
+
+					var mtdOccupany = parseFloat(chartData.mtd.occupancy);
+
+					mtdOccupany = mtdOccupany > 25 ? mtdOccupany : parseInt(mtdOccupany);
+
+					svg.append("circle").
+					attr("cx", x(-1 * mtdOccupany * 0.1 / 25))
+						.attr("cy", y(-1 * mtdOccupany * 0.1 / 25))
+						.attr("r", mtdOccupany > 25 ? 8 : 4)
+						.attr("fill", "#0000FF");
+
+					var leftBottomOccupancy = {
+						"type": "occupany",
+						"label": mtdOccupany,
+						"xOffset": x(-1 * mtdOccupany * 0.1 / 25),
+						"yOffset": y(-1 * mtdOccupany * 0.1 / 25)
+					};
+
+					addTextToTheChart(leftBottomOccupancy, true, true);
+
+					var leftBottomAdr = {
 						"class": "bottomRight",
 						"top": y(-0.8) + "px",
-						"left": addLeftSideOffsetPlusLeftMargin(x(-0.8)),
 						"backgroundColor": "#F6991B",
 						"label": "ADR",
-						"value": maxValue / 4
-					}
-					addLabelToChart(leftBottom, true, true);
+						"value": chartData.mtd.adr,
+						"id": "left-bottom-adr"
+					};
+					addLabelToChart(leftBottomAdr, true, true);
 
-					var leftBottom = {
+					var leftBottomRevPar = {
 						"class": "bottomRight",
 						"top": y(-0.5) + "px",
-						"left": addLeftSideOffsetPlusLeftMargin(x(-0.5)),
 						"backgroundColor": "#F6991B",
 						"label": "REVPAR",
-						"value": maxValue / 5
-					}
+						"value": chartData.mtd.rev_par,
+						"id": "left-bottom-rev-par"
+					};
 
-					addLabelToChart(leftBottom, true, true);
+					addLabelToChart(leftBottomRevPar, true, true);
 
-					var rightBottom = {
+					$("#left-bottom-rev-par-rect").click(onClickOnLabel);
+					$("#left-bottom-adr-rect").click(onClickOnLabel);
+
+					/******************************  Left Bottom Quadrant ends here ******************************/
+
+					/******************************  Right Bottom Quadrant ******************************/
+					var ytdOccupany = parseFloat(chartData.ytd.occupancy);
+
+					ytdOccupany = ytdOccupany > 25 ? ytdOccupany : parseInt(ytdOccupany);
+					svg.append("circle").
+					attr("cx", x(ytdOccupany * 0.1 / 25))
+						.attr("cy", y(-1 * ytdOccupany * 0.1 / 25))
+						.attr("r", ytdOccupany > 25 ? 8 : 4)
+						.attr("fill", "#F6991B");
+
+					var rightBottomOccupancy = {
+						"type": "occupany",
+						"label": ytdOccupany,
+						"xOffset": x(ytdOccupany * 0.1 / 25),
+						"yOffset": y(-1 * ytdOccupany * 0.1 / 25)
+					};
+
+					addTextToTheChart(rightBottomOccupancy, false, true)
+
+					var rightBottomAdr = {
 						"class": "bottomRight",
 						"top": y(-0.7) + "px",
-						"left": addLeftSideOffsetPlusLeftMargin(x(0.7)),
 						"backgroundColor": "#89BD55",
 						"label": "ADR",
-						"value": maxValue / 2
-					}
+						"value": chartData.ytd.adr,
+						"id": "right-bottom-adr"
+					};
 
-					addLabelToChart(rightBottom, false, true);
+					addLabelToChart(rightBottomAdr, false, true);
 
-					var rightBottom = {
+					var rightBottomRevPar = {
 						"class": "bottomRight",
 						"top": y(-0.5) + "px",
-						"left": addLeftSideOffsetPlusLeftMargin(x(0.5)),
 						"backgroundColor": "#89BD55",
 						"label": "REVPAR",
-						"value": maxValue / 3
-					}
-
-					addLabelToChart(rightBottom, false, true);
-
-					///////////////////////////////////////////////////////////////////
-
-					var addMainLabelsOnGraph = function(d) {
-						var div = d3.select('#d3-plot').append('div')
-							.style('position', 'absolute')
-							.style('top', d.top)
-							.style('left', d.left)
-							.style('width', d.width)
-							.style('height', "40px")
-							.style('background-color', d.backgroundColor)
-							.style('color', "white")
-							.style("text-align", "center")
-							.style("font-size", "9px")
-							.style("opacity", "0.8")
-
-						div.append("p")
-							.html(d.label);
+						"value": chartData.ytd.rev_par,
+						"id": "right-bottom-rev-par"
 					};
 
-					var addMainLabelsOnGraph1 = function(label, isLeftSide, isTop) {
+					addLabelToChart(rightBottomRevPar, false, true);
 
-						var xValue = isLeftSide ? -0.3 : 0;
-						var yValue = isTop ? 1 : -0.9;
-						var yValueText = isTop ? 0.95 : -0.95;
+					$("#right-bottom-rev-par-rect").click(onClickOnLabel);
+					$("#right-bottom-adr-rect").click(onClickOnLabel);
 
-						var text1 = svg.append("g");
+					/******************************  Right Bottom Quadrant ends here ******************************/
 
-						text1.append('rect')
+					labelMappings = {
+						"right-top": {
+							"position": "right-top",
+							"adr": rightTopQuadrantAdr,
+							"revPar": rightTopQuadrantRevPar,
+							"isLeftSide": false,
+							"isDownSide": false
+						},
+						"left-top": {
+							"position": "left-top",
+							"adr": leftTopQuadrantADR,
+							"revPar": leftTopQuadrantRevPar,
+							"isLeftSide": true,
+							"isDownSide": false
+						},
+						"left-bottom": {
+							"position": "left-bottom",
+							"adr": leftBottomAdr,
+							"revPar": leftBottomRevPar,
+							"isLeftSide": true,
+							"isDownSide": true
+						},
+						"right-bottom": {
+							"position": "right-bottom",
+							"adr": rightBottomAdr,
+							"revPar": rightBottomRevPar,
+							"isLeftSide": false,
+							"isDownSide": true
+						}
+					};
+					/******************************  Let Bottom Quadrant ******************************/
+
+
+					var addMainLabelsOnGraph = function(label) {
+
+						var xValue = label.isLeftSide ? -0.3 : 0;
+						var rectYvalue = label.isDownSide ? -0.9 : 1;
+						var textrectYvalue = label.isDownSide ? -0.95 : 0.95;
+
+						var textLabelGroup = svg.append("g");
+
+						textLabelGroup.append('rect')
 							.attr("class", "rect-bars")
-							.attr('x', function(d, i) {
-								return x(xValue); // xOffset + some margin
-							})
+							.attr('x', x(xValue))
 							.style("margin-right", "10px")
-							.attr('y', function(d) {
-								return y(yValue);
-							})
-							.attr('width', function() {
-								return x(0.3) - x(0);
-							})
-							.attr('height', function() {
-								return y(0) - y(0.1);
-							})
-							.attr("fill", label.backgroundColor)
+							.attr('y', y(rectYvalue))
+							.attr('width', x(0.3) - x(0))
+							.attr('height', y(0) - y(0.1))
+							.attr("fill", "#6B6C6E")
 							.style("fill-opacity", "0.8");
 
-						text1.append("text")
-							.attr('x', function(d, i) {
-
-								return x(xValue + 0.05); // xOffset + some margin
-							})
-							.attr('y', function(d) {
-								return y(yValueText);
-							})
+						textLabelGroup.append("text")
+							.attr('x', x(xValue + 0.05))
+							.attr('y', y(textrectYvalue))
 							.style("font-size", "15px")
 							.style("fill", "white")
-							.text(label.label);
-					}
-
-					var topLeftMainLabel = {
-						"top": y(1) + "px",
-						"left": addLeftSideOffsetPlusLeftMargin(x(-0.25)),
-						"width": x(0) - x(-0.25) + "px",
-						"backgroundColor": "#6B6C6E",
-						"label": "Yesterday"
+							.text(label.text);
 					};
 
-					addMainLabelsOnGraph1(topLeftMainLabel, true, true);
+					var chartMainLabels = [{
+						"text": "YESTERDAY",
+						"isLeftSide": true,
+						"isDownSide": false
+					}, {
+						"text": "TODAY",
+						"isLeftSide": false,
+						"isDownSide": false
+					}, {
+						"text": "MTD",
+						"isLeftSide": true,
+						"isDownSide": true
+					}, {
+						"text": "YTD",
+						"isLeftSide": false,
+						"isDownSide": true
+					}];
 
-
-					var rightBottom = {
-						"class": "bottomRight",
-						"top": y(1) + "px",
-						"left": addLeftSideOffsetPlusLeftMargin(x(0)),
-						"width": x(0.25) - x(0) + "px",
-						"backgroundColor": "#6B6C6E",
-						"label": "Today"
-					};
-
-					addMainLabelsOnGraph1(rightBottom, false, true);
-
-					///////////////////////////////////////////////////////////
-
-					var rightBottom = {
-						"class": "bottomRight",
-						"top": y(-0.95) + "px",
-						"left": addLeftSideOffsetPlusLeftMargin(x(-0.25)),
-						"width": x(0) - x(-0.25) + "px",
-						"backgroundColor": "#6B6C6E",
-						"label": "MTD"
-					};
-
-					addMainLabelsOnGraph1(rightBottom, true, false);
-
-					var rightBottom = {
-						"class": "bottomRight",
-						"top": y(-0.95) + "px",
-						"left": addLeftSideOffsetPlusLeftMargin(x(0)),
-						"width": x(0.25) - x(0) + "px",
-						"backgroundColor": "#6B6C6E",
-						"label": "YTD"
-					};
-					addMainLabelsOnGraph1(rightBottom, false, false);
+					_.each(chartMainLabels, function(mainLabel) {
+						addMainLabelsOnGraph(mainLabel);
+					});
 				} catch (E) {
 					console.log(E)
 				}
