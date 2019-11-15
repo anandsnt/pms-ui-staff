@@ -8,6 +8,11 @@ sntZestStation.controller('zsThemeActionsCtrl', [
     function($scope, $state, $timeout, zsHotelDetailsSrv, zsGeneralSrv, $log) {
 
         BaseCtrl.call(this, $scope);
+<<<<<<< HEAD
+=======
+        var qbicPath = '/assets/zest_station/css/icons/qbic';
+        var caroPath = '/assets/zest_station/css/icons/caro';
+>>>>>>> 29d8a0f3860f0b5d91f4cdaf38a5d5103887189e
 
         var setSvgsToBeLoaded = function(iconsPath, commonIconsPath, useCommonIcons, diffHomeIconsOnly) {
             var iconBasePath = !useCommonIcons ? iconsPath : commonIconsPath;
@@ -109,6 +114,20 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                 $scope.icons.url.pen = $scope.icons.url.keyboard;
                 $scope.icons.url.checkmark = iconsPath + '/checkmark.svg';
             }
+<<<<<<< HEAD
+=======
+            if ($scope.zestStationData.theme === 'qbic') {
+                $scope.icons.url.key = qbicPath + '/key.svg';
+                $scope.icons.url.checkin = qbicPath + '/checkin.svg';
+                $scope.icons.url.checkout = qbicPath + '/checkout.svg';
+                $scope.icons.url.new_location = qbicPath + '/add-new.svg';
+            }
+            if ($scope.zestStationData.theme === 'caro') {
+                $scope.icons.url.key = caroPath + '/key.svg';
+                $scope.icons.url.checkin = caroPath + '/checkin.svg';
+                $scope.icons.url.checkout = caroPath + '/checkout.svg';
+            }
+>>>>>>> 29d8a0f3860f0b5d91f4cdaf38a5d5103887189e
         };
 
         $scope.$on('changeIconsBasedOnHotelSetting', function() {

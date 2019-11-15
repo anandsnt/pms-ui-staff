@@ -131,9 +131,9 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'LAST_OCTOBER',
                 'LAST_NOVEMBER',
                 'LAST_DECEMBER'
-            ],
-            'Austria Nationality Export': [
-                'LAST_MONTH',
+			 ],
+			 'Austria Nationality Export': [
+				        'LAST_MONTH',
                 'LAST_JANUARY',
                 'LAST_FEBRUARY',
                 'LAST_MARCH',
@@ -147,7 +147,7 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'LAST_NOVEMBER',
                 'LAST_DECEMBER'
             ],
-            'Nationality Export - France': [
+            'Criterion Hospitality CC Export': [
                 'TODAY',
                 'YESTERDAY',
                 'LAST_MONTH',
@@ -164,7 +164,7 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'LAST_NOVEMBER',
                 'LAST_DECEMBER'
             ],
-            'Criterion Hospitality CC Export': [
+            'Nationality Export - France': [
                 'TODAY',
                 'YESTERDAY',
                 'LAST_MONTH',
