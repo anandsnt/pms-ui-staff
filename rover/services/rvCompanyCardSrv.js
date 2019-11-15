@@ -62,6 +62,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
                 });
             return deferred.promise;
         };
+
         this.deletePayment = function(data) {
             var deferred = $q.defer();
             var url = 'api/accounts/' + data.account_id + '/delete_wallet_payment_methods';
@@ -83,6 +84,18 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
             }, function(errorMessage) {
                 deferred.reject(errorMessage);
             });
+            return deferred.promise;
+        };
+
+        this.fetchAccountPaymentData = function(accountId) {
+            var deferred = $q.defer();
+            var url = '/staff/payments/payment.json?account_id=' + accountId;
+    
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                    deferred.resolve(data);
+                }, function(data) {
+                    deferred.reject(data);
+                });
             return deferred.promise;
         };
 
