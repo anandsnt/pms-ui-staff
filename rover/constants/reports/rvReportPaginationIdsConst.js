@@ -25,5 +25,6 @@ angular.module('reportsModule').constant('RVReportPaginationIdsConst', {
     'Group Rooms Report': 'GROUP_ROOMS_REPORT',
     'Add On Upsell': 'ADDON_UPSELLS',
     'Tax Exempt': 'TAX_EXEMPT',
-    'Folio Tax Report': 'FOLIO_TAX_REPORT'
+    'Folio Tax Report': 'FOLIO_TAX_REPORT',
+    'Guests In House by Nationality': 'GUESTS_INHOUSE_BY_NATIONALITY'
 });
