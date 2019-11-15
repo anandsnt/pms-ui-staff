@@ -14,8 +14,8 @@
         <div class="wrapper">
 
             <!-- Show when collapsing the list of linked contracts -->
-            <div class="contract-link without-lines" ng-if="contractData.editData.account_details.length > 0 && !contractData.isContractLinkBarExpanded">
-                <span>{{contractData.editData.is_master_contract ? 'Linked To' : 'Linked From'}}</span>
+            <div class="contract-link without-lines" ng-if="!contractData.isContractLinkBarExpanded">
+                <span>{{contractData.editData.is_master_contract ? 'MASTER CONTRACT' : 'SUB CONTRACT'}}</span>
             </div>
 
             <!-- Contract that is linked from/to -->
@@ -28,40 +28,43 @@
                     <span>{{contractData.editData.end_date | date:dateFormat}}</span>
                 </div>
             </div>
-
-            <!-- If it has no items, add .no-items -->
-            <!-- If it's opened, add .open -->
-            <div ng-show="contractData.isContractLinkBarExpanded" class="contract-list-items-section"
-                ng-repeat="item in contractData.contractsList"
-                ng-class="{'no-items': item.count === 0, 'open': item.opened}">
-                <h2 ng-click="openContractsList(item)">
-                    {{item.type}}
-                    <span class="count">{{item.count}}</span>
-                    <!-- If there are items, show arrow
-                      'status-class':
-                        - 'rotate-uo' -> when opened
-                        - 'rotate-down' -> when closed -->
-                    <span ng-show="item.count !== 0"
-                        class="icons icon-double-arrow black "
-                        ng-class="{'rotate-up': item.opened,
-                            'rotate-down': !item.opened}">
-                    </span>
-                </h2>
-                <ul>
-                    <!-- Add class .active if showing this contact -->
-                    <li ng-repeat="contract in item.contracts"
-                        ng-click="fetchDetails(contract.id)"
-                        ng-class="{'active': (contract.id === contractData.selectedContractId && contractData.mode === 'EDIT'),
-                                'inactive': !contract.is_active}">
-                        <h3 class="item-title">{{contract.contract_name}}</h3>
-                        <div class="item-info">
-                            <span>{{contract.contract_start_date | date:dateFormat}}</span>
-                            <span>{{contract.contract_end_date | date:dateFormat}}</span>
-                        </div>
-                    </li>
-                </ul>
+            
+            <div class="account-linked-contracts">
+                <!-- If it has no items, add .no-items -->
+                <!-- If it's opened, add .open -->
+                <div ng-show="contractData.isContractLinkBarExpanded" class="contract-list-items-section"
+                    ng-repeat="item in contractData.contractsList"
+                    ng-class="{'no-items': item.count === 0, 'open': item.opened}">
+                    <h2 ng-click="openContractsList(item)">
+                        {{item.type}}
+                        <span class="count">{{item.count}}</span>
+                        <!-- If there are items, show arrow
+                          'status-class':
+                            - 'rotate-uo' -> when opened
+                            - 'rotate-down' -> when closed -->
+                        <span ng-show="item.count !== 0"
+                            class="icons icon-double-arrow black "
+                            ng-class="{'rotate-up': item.opened,
+                                'rotate-down': !item.opened}">
+                        </span>
+                    </h2>
+                    <ul>
+                        <!-- Add class .active if showing this contact -->
+                        <li ng-repeat="contract in item.contracts"
+                            ng-click="fetchDetails(contract.id)"
+                            ng-class="{'active': (contract.id === contractData.selectedContractId && contractData.mode === 'EDIT'),
+                                    'inactive': !contract.is_active}">
+                            <h3 class="item-title">{{contract.contract_name}}</h3>
+                            <div class="item-info">
+                                <span>{{contract.contract_start_date | date:dateFormat}}</span>
+                                <span class="icons icon-single-arrow"></span>
+                                <span>{{contract.contract_end_date | date:dateFormat}}</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
-
+            
             <!-- Show when showing the linked contracts/contract -->
             <div class="contract-link" ng-if="contractData.editData.account_details.length > 0 && !contractData.isContractLinkBarExpanded">
                 <span>{{contractData.editData.is_master_contract ? 'Linked To' : 'Linked From'}}</span>

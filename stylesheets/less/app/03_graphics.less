@@ -759,14 +759,16 @@
 		&.toggle-filter {
 			background-image: @arrowDown;
 
-			&.settings-title { background-image: @arrowDownTrans; }
+			&.settings-title,
+            &.contract  { background-image: @arrowDownTrans; }
 		}
 
 		&.toggle.active,
 		&.toggle-filter.active {
 			background-image: @arrowUp;
 
-			&.settings-title { background-image: @arrowUpTrans; }
+			&.settings-title,
+            &.contract  { background-image: @arrowUpTrans; }
 		}
 
 		&.settings-title { background-position: 205px 50%; }
@@ -782,7 +784,8 @@
 				background-image: @arrowDown2x;
 				background-size: 14px 14px;
 
-				&.settings-title { background-image: @arrowDownTrans2x; }
+				&.settings-title,
+                &.contract  { background-image: @arrowDownTrans2x; }
 			}
 
 			&.toggle.active,
@@ -790,7 +793,8 @@
 				background-image: @arrowUp2x;
 				background-size: 14px 14px;
 
-				&.settings-title { background-image: @arrowUpTrans2x; }
+				&.settings-title,
+                &.contract  { background-image: @arrowUpTrans2x; }
 			}
 		}
 	}
