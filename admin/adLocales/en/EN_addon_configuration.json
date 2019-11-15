@@ -11,5 +11,11 @@
 "ALLOWANCE_VALUE_PLACEHOLDER" : "ENTER VALUE",
 "SPILLAGE_REFUND_LABEL" : "SPILLAGE REFUND %",
 "SPILLAGE_REFUND_PLACEHOLDER" : "ENTER SPILLAGE REFUND",
-"BACK_TO_ADDONS_LABEL" : "Back to Addons"
+"BACK_TO_ADDONS_LABEL" : "Back to Addons",
+"OCCUPANCY_TYPE" : "Occupancy Type",
+"CUSTOM_POST_TYPE" : "Custom Post Type",
+"POST_DAY": "Post Day",
+"FREEQUENCY_DAYS": "freequency (days)",
+"FREEQUENCY_MONTHS": "freequency (months)",
+"FREEQUENCY_WEEKS": "freequency (weeks)"
 
