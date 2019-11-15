@@ -141,4 +141,28 @@ angular.module('sntRover').service('rvCompanyCardContractsSrv', ['$q', 'sntBaseW
         return deferred.promise;
     };
 
+    this.linkRate = function(params) {
+        var deferred = $q.defer(),
+            url = '/api/contracts/link_rate';
+
+        sntBaseWebSrv.postJSON(url, params).then(function(data) {
+            deferred.resolve(data);
+        }, function(data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
+    this.unlinkRate = function(params) {
+        var deferred = $q.defer(),
+            url = '/api/contracts/unlink_rate';
+
+        sntBaseWebSrv.postJSON(url, params).then(function(data) {
+            deferred.resolve(data);
+        }, function(data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
 }]);
