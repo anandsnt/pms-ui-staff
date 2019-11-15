@@ -1,6 +1,6 @@
 angular.module('sntRover')
-	.controller('rvManagerSpiderChartCtrl', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvAnalyticsHelperSrv',
-		function($scope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv) {
+	.controller('rvManagerSpiderChartCtrl', ['$scope', '$rootScope',  'sntActivity', '$timeout', '$filter', 'rvAnalyticsHelperSrv',
+		function($scope, $rootScope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv) {
 
 			$scope.drawPerfomceChart = function(chartData) {
 
@@ -26,6 +26,7 @@ angular.module('sntRover')
 				// 		"occupancy": "45.98"
 				// 	}
 				// }
+
 				$scope.screenData.mainHeading = $filter('translate')("AN_ROOM_PERFOMANCE_KPR");
 				console.log(chartData);
 
@@ -150,7 +151,7 @@ angular.module('sntRover')
 					var addAxisLabelsToChart = function(textData, isXaxis) {
 						var label = (textData.type === "occupany") ?
 							(textData.label ? textData.label + "%" : "") :
-							"$" + textData.label;
+							$rootScope.currencySymbol + textData.label;
 
 						svg.append("text")
 							.attr("x", textData.xOffset)
@@ -243,6 +244,10 @@ angular.module('sntRover')
 
 					var addLabelToChart = function(label, isLeftSide, isDownSide) {
 
+						if (parseFloat(label.value) === 0) {
+							// don't Draw
+							return;
+						}
 						var xValue = 0.5 + (parseInt(label.value) - parseInt(roundedInvidual)) * valueOfOne;
 						
 						xValue = isLeftSide ? -1 * xValue : xValue;
@@ -313,7 +318,7 @@ angular.module('sntRover')
 							.attr("id", label.id + "-label2")
 							.style("font-size", "15px")
 							.style("fill", "white")
-							.text("$" + labelText)
+							.text($rootScope.currencySymbol + labelText)
 							.style("cursor", "pointer");
 
 						$("#" + label.id + "-label2").click(onClickOnLabel);

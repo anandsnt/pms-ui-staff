@@ -168,7 +168,7 @@
 		            </label>
 		        </div>
 		    </div>
-		    <div class="entry room-types">
+		    <div class="entry room-types" ng-if="!dashboardFilter.isManagerDashboard">
 		        <div class="select with-label">
 		            <label for="room-type">Room Type</label>
 		            <select id="room-type" ng-model="dashboardFilter.selectedRoomType" ng-change="onAnlayticsRoomTypeChange()">
