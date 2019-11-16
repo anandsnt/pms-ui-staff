@@ -127,7 +127,9 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 			} else {
 				renderHkWorkPriority();
 			}
-			$('base').attr('href', initialBaseHrefValue);
+			$timeout(function() {
+				$('base').attr('href', initialBaseHrefValue);
+			}, 2000);
 		};
 
 		$(window).on("resize.doResize", function() {
