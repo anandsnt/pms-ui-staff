@@ -88,7 +88,9 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 			} else if ($scope.screenData.selectedChart = 'FO_ACTIVITY') {
 				renderFrontOfficeActivity();
 			}
-			$('base').attr('href', initialBaseHrefValue);
+			$timeout(function() {
+				$('base').attr('href', initialBaseHrefValue);
+			}, 2000);
 		};
 
 		$(window).on("resize.doResize", function() {

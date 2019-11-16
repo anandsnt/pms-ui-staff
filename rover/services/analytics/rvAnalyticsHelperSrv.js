@@ -79,7 +79,7 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 					xFinal: item.xFinal,
 					count: item.count,
 					chartName: chartName,
-					elementId: chartName + "-" + item.type
+					elementId: item.type === "pending_inspected_rooms" ? "rooms-short" : chartName + "-" + item.type
 				};
 			});
 		});
@@ -189,7 +189,9 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 			});
 
 		bars.append("rect")
-			.attr("class", "rect-bars")
+			.attr("class", function (item) {
+				return item.type === "pending_inspected_rooms" ? "bar-warning rect-bars" : "rect-bars";
+			})
 			.attr("height", yScale.bandwidth())
 			.attr("x", function(item) {
 				return xScale(item.xOrigin);
@@ -287,6 +289,11 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 			"fill": "blue",
 			"onmouseover_fill": "blueHover",
 			"onmouseout_fill": "blue"
+		},
+		"warning": {
+			"legend_class": "bar bar-warning",
+			"id": "room_short",
+			"rect_class": "bar-warning"
 		}
 	};
 

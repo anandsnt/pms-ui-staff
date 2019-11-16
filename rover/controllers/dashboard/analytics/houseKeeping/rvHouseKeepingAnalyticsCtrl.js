@@ -28,13 +28,13 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 		});
 
 		var showChartDetails = function() {
-			ngDialog.open({
-				template: '/assets/partials/dashboard/analyticsPopups/analyticsDetailsView.html',
-				className: '',
-				scope: $scope,
-				closeByDocument: false,
-				closeByEscape: false
-			});
+			// ngDialog.open({
+			// 	template: '/assets/partials/dashboard/analyticsPopups/analyticsDetailsView.html',
+			// 	className: '',
+			// 	scope: $scope,
+			// 	closeByDocument: false,
+			// 	closeByEscape: false
+			// });
 		};
 
 		var getChartDetails = function(type) {
@@ -127,7 +127,9 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 			} else {
 				renderHkWorkPriority();
 			}
-			$('base').attr('href', initialBaseHrefValue);
+			$timeout(function() {
+				$('base').attr('href', initialBaseHrefValue);
+			}, 2000);
 		};
 
 		$(window).on("resize.doResize", function() {
