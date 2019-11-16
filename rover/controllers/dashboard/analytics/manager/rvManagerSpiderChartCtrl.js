@@ -42,7 +42,7 @@ angular.module('sntRover')
 				var maxRevPar = _.max(chartDataArray, function(data) {
 					return parseFloat(data.rev_par);
 				});
-				var maxValueForChart = maxAdr.adr > maxRevPar.rev_par ? maxAdr.adr : maxRevPar.rev_par;
+				var maxValueForChart = parseInt(maxAdr.adr) > parseInt(maxRevPar.rev_par) ? maxAdr.adr : maxRevPar.rev_par;
 
 				try {
 					var chartWidth = 800;
