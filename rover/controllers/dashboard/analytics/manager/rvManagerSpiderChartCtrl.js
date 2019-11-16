@@ -228,11 +228,11 @@ angular.module('sntRover')
 							$("#" + position + "-rev-par-label2").remove();
 
 							if (e.target.id.includes("rev-par")) {
-								addLabelToChart(labelAttrs.revPar, labelAttrs.isLeftSide, labelAttrs.isDownSide);
-								addLabelToChart(labelAttrs.adr, labelAttrs.isLeftSide, labelAttrs.isDownSide);
+								addLabelToChart(labelAttrs.revPar, labelAttrs.isLeftSide, labelAttrs.isDownSide, true);
+								addLabelToChart(labelAttrs.adr, labelAttrs.isLeftSide, labelAttrs.isDownSide, true);
 							} else {
-								addLabelToChart(labelAttrs.adr, labelAttrs.isLeftSide, labelAttrs.isDownSide);
-								addLabelToChart(labelAttrs.revPar, labelAttrs.isLeftSide, labelAttrs.isDownSide);
+								addLabelToChart(labelAttrs.adr, labelAttrs.isLeftSide, labelAttrs.isDownSide, true);
+								addLabelToChart(labelAttrs.revPar, labelAttrs.isLeftSide, labelAttrs.isDownSide, true);
 							}
 
 							$("#" + position + "-adr-rect").click(onClickOnLabel);
@@ -245,7 +245,7 @@ angular.module('sntRover')
 					};
 
 
-					var addLabelToChart = function(label, isLeftSide, isDownSide) {
+					var addLabelToChart = function(label, isLeftSide, isDownSide, isRedraw) {
 
 						if (parseFloat(label.value) === 0) {
 							// don't Draw
@@ -269,7 +269,8 @@ angular.module('sntRover')
 
 
 						var textLabelGroup = svg.append("g");
-
+						var animationDuration = isRedraw ? 200 : 1000;
+						
 						textLabelGroup.append('rect')
 							.attr("class", "rect-bars")
 							.attr('x', function(d, i) {
@@ -280,7 +281,7 @@ angular.module('sntRover')
 								return yOffset;
 							})
 							.transition()
-							.duration(1000)
+							.duration(animationDuration)
 							.attr('width', function() {
 								return rectWidth;
 							})
