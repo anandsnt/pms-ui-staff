@@ -93,6 +93,7 @@ angular.module('sntRover').controller('rvCardContractsLinkingCtrl', ['$scope', '
             }
             else {
                 $scope.contractData.mode = 'EDIT';
+                $scope.$emit('fetchContract', $scope.contractData.selectedContractId);
             }
         };
         
