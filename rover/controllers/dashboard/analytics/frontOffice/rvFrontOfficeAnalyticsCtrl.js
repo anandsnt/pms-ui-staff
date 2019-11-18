@@ -81,15 +81,18 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 			$scope.screenData.hideChartData = true;
 			clearAllExistingChartElements();
 			$scope.screenData.mainHeading = "";
-			if ($scope.screenData.selectedChart === 'FO_ARRIVALS') {
-				renderFrontOfficeManagementChart();
-			} else if ($scope.screenData.selectedChart === 'FO_WORK_LOAD') {
-				renderfdWorkloadChart();
-			} else if ($scope.screenData.selectedChart = 'FO_ACTIVITY') {
-				renderFrontOfficeActivity();
-			}
-		};
+			// Add a small timeout to make sure no residue elements are present to alter the chart width calculations
+			$timeout(function() {
+				if ($scope.screenData.selectedChart === 'FO_ARRIVALS') {
+					renderFrontOfficeManagementChart();
+				} else if ($scope.screenData.selectedChart === 'FO_WORK_LOAD') {
+					renderfdWorkloadChart();
+				} else if ($scope.screenData.selectedChart = 'FO_ACTIVITY') {
+					renderFrontOfficeActivity();
+				}
+			}, 10);
 
+		};
 		$(window).on("resize.doResize", function() {
 			$scope.$apply(function() {
 				$timeout(function() {
