@@ -42,7 +42,7 @@ angular.module('sntRover')
 				var maxRevPar = _.max(chartDataArray, function(data) {
 					return parseFloat(data.rev_par);
 				});
-				var maxValueForChart = maxAdr.adr > maxRevPar.rev_par ? maxAdr.adr : maxRevPar.rev_par;
+				var maxValueForChart = parseInt(maxAdr.adr) > parseInt(maxRevPar.rev_par) ? maxAdr.adr : maxRevPar.rev_par;
 
 				try {
 					var chartWidth = 800;
@@ -144,9 +144,12 @@ angular.module('sntRover')
 							})
 							.attr("x", x(-.1 * (i + 1)))
 							.attr("y", y(.1 * (i + 1)))
+							.transition()
+							.duration(1000)
 							.attr("height", height)
-							.attr("width", width);
+							.attr("width", width)
 					}
+
 
 					var addAxisLabelsToChart = function(textData, isXaxis) {
 						var label = (textData.type === "occupany") ?
@@ -225,11 +228,11 @@ angular.module('sntRover')
 							$("#" + position + "-rev-par-label2").remove();
 
 							if (e.target.id.includes("rev-par")) {
-								addLabelToChart(labelAttrs.revPar, labelAttrs.isLeftSide, labelAttrs.isDownSide);
-								addLabelToChart(labelAttrs.adr, labelAttrs.isLeftSide, labelAttrs.isDownSide);
+								addLabelToChart(labelAttrs.revPar, labelAttrs.isLeftSide, labelAttrs.isDownSide, true);
+								addLabelToChart(labelAttrs.adr, labelAttrs.isLeftSide, labelAttrs.isDownSide, true);
 							} else {
-								addLabelToChart(labelAttrs.adr, labelAttrs.isLeftSide, labelAttrs.isDownSide);
-								addLabelToChart(labelAttrs.revPar, labelAttrs.isLeftSide, labelAttrs.isDownSide);
+								addLabelToChart(labelAttrs.adr, labelAttrs.isLeftSide, labelAttrs.isDownSide, true);
+								addLabelToChart(labelAttrs.revPar, labelAttrs.isLeftSide, labelAttrs.isDownSide, true);
 							}
 
 							$("#" + position + "-adr-rect").click(onClickOnLabel);
@@ -242,7 +245,7 @@ angular.module('sntRover')
 					};
 
 
-					var addLabelToChart = function(label, isLeftSide, isDownSide) {
+					var addLabelToChart = function(label, isLeftSide, isDownSide, isRedraw) {
 
 						if (parseFloat(label.value) === 0) {
 							// don't Draw
@@ -266,7 +269,8 @@ angular.module('sntRover')
 
 
 						var textLabelGroup = svg.append("g");
-
+						var animationDuration = isRedraw ? 200 : 1000;
+						
 						textLabelGroup.append('rect')
 							.attr("class", "rect-bars")
 							.attr('x', function(d, i) {
@@ -276,6 +280,8 @@ angular.module('sntRover')
 							.attr('y', function(d) {
 								return yOffset;
 							})
+							.transition()
+							.duration(animationDuration)
 							.attr('width', function() {
 								return rectWidth;
 							})

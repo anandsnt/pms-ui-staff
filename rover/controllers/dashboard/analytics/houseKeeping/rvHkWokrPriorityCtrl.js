@@ -16,7 +16,7 @@ angular.module('sntRover')
                 "vacant_dirty": rvAnalyticsHelperSrv.constructColorMappings('vacant_dirty', 'red'),
                 "vacant_pickup": rvAnalyticsHelperSrv.constructColorMappings('vacant_pickup', 'orange'),
 
-                "vacant_pending_inspected_rooms": rvAnalyticsHelperSrv.constructColorMappings('pending_inspected_rooms', 'blueLight')
+                "vacant_pending_inspected_rooms": rvAnalyticsHelperSrv.constructColorMappings('pending_inspected_rooms', 'warning')
             };
 
             $scope.drawHkWorkPriorityChart = function(chartDetails) {
@@ -328,7 +328,7 @@ angular.module('sntRover')
                     var pendingInspected = {
                         "id": "right-legend-pending-inspected",
                         "class": colorMappings.vacant_pending_inspected_rooms.legend_class,
-                        "label": "To Inspect",
+                        "label": "Short",
                         "count": parseInt(arrivalsPendingPlusEarlyCheckinCount) - parseInt(InspectedVacantRooms),
                         "item_name": colorMappings.vacant_pending_inspected_rooms.item_name
                     };

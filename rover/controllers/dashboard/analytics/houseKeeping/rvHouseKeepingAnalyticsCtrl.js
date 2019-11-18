@@ -28,13 +28,13 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 		});
 
 		var showChartDetails = function() {
-			ngDialog.open({
-				template: '/assets/partials/dashboard/analyticsPopups/analyticsDetailsView.html',
-				className: '',
-				scope: $scope,
-				closeByDocument: false,
-				closeByEscape: false
-			});
+			// ngDialog.open({
+			// 	template: '/assets/partials/dashboard/analyticsPopups/analyticsDetailsView.html',
+			// 	className: '',
+			// 	scope: $scope,
+			// 	closeByDocument: false,
+			// 	closeByEscape: false
+			// });
 		};
 
 		var getChartDetails = function(type) {
@@ -127,7 +127,6 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 			} else {
 				renderHkWorkPriority();
 			}
-			$('base').attr('href', initialBaseHrefValue);
 		};
 
 		$(window).on("resize.doResize", function() {
@@ -154,6 +153,7 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 		});
 
 		var fetchData = function(date, roomTypeId) {
+			$('base').attr('href', initialBaseHrefValue);
 			var params = {
 				"date": date,
 				"room_type_id": roomTypeId
@@ -161,6 +161,7 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 			var options = {
 				params: params,
 				successCallBack: function() {
+					$('base').attr('href', '#');
 					$scope.screenData.analyticsDataUpdatedTime = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
 					d3.select('#d3-plot').selectAll('svg').remove();
 					clearAllExistingChartElements();
@@ -190,6 +191,11 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 
 		$scope.$on("$destroy", function() {
 			$('base').attr('href', initialBaseHrefValue);
+		});
+		$scope.$on("SIDE_MENU_TOGGLE", function(e, data) {
+			if (data.menuOpen) {
+				$('base').attr('href', "/");
+			}
 		});
 
 		(function() {
