@@ -1176,6 +1176,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 
             if ('function' == typeof $scope.printOptions.showModal) {
                 $scope.printOptions.showModal();
+            } else if(!$rootScope.isBackgroundReportsEnabled) {
+                $_fetchFullReport();
             } else {
                 $scope.printReport(currentReport);
             }
