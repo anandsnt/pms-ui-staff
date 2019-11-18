@@ -30,7 +30,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
             {
                 label: 'N',
                 value: 'N'
-            } 
+            }
         ];
 
 
@@ -45,7 +45,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
         };
 
         const GENERAL_FILTERS = [
-            { label: 'Is not null', value: 'is_not_null'}
+            { label: 'Is not null', value: 'is not null'}
         ];
 
         /**
@@ -59,13 +59,13 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
             _.each(filters, (filter) => {
                 if (!filterOptions[filter.filter_type]) {
                     filterOptions[filter.filter_type] = [];
-                } 
+                }
 
                 filterOptions[filter.filter_type].push({
                     label: filter.description,
                     value: filter.value
-                }); 
-            
+                });
+
             });
 
             return filterOptions;
@@ -99,7 +99,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
          * @param {Object} deferred - deferred object
          * @param {String} displayKey - key used to display label
          * @param {String} valueKey - key used to display value
-         * @return {void} 
+         * @return {void}
          */
         var populateBookingOrigins = (selectedFilter, selectedValues, deferred, displayKey, valueKey) => {
                 reportSubSrv.fetchBookingOrigins(true).then(function (data) {
@@ -123,7 +123,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              * @param {Object} deferred - deferred object
              * @param {String} displayKey - key used to display label
              * @param {String} valueKey - key used to display value
-             * @return {void} 
+             * @return {void}
              */
             populateMarkets = ( selectedFilter, selectedValues, deferred, displayKey, valueKey) => {
                 reportSubSrv.fetchMarkets(true).then(function (data) {
@@ -144,7 +144,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              * @param {Object} selectedFilter selected filter
              * @param {Array} selectedValues array of selected values
              * @param {Object} deferred - deferred object
-             * @return {void} 
+             * @return {void}
              */
             populateReservationStatus = ( selectedFilter, selectedValues, deferred ) => {
                 rvCustomExportSrv.getReferenceValuesByType('reservation_status').then(function (data) {
@@ -168,7 +168,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              * @param {Object} deferred - deferred object
              * @param {String} displayKey - key used to display label
              * @param {String} valueKey - key used to display value
-             * @return {void} 
+             * @return {void}
              */
             populateSource = ( selectedFilter, selectedValues, deferred, displayKey, valueKey) => {
                 reportSubSrv.fetchSources(true).then(function (data) {
@@ -191,7 +191,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              * @param {Object} deferred - deferred object
              * @param {String} displayKey - key used to display label
              * @param {String} valueKey - key used to display value
-             * @return {void} 
+             * @return {void}
              */
             populateSegments = ( selectedFilter, selectedValues, deferred, displayKey, valueKey) => {
                 reportSubSrv.fetchSegments(true).then(function (data) {
@@ -212,7 +212,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              * @param {Object} selectedFilter selected filter
              * @param {Array} selectedValues array of selected values
              * @param {Object} deferred - deferred object
-             * @return {void} 
+             * @return {void}
              */
             populateRoomTypes = ( selectedFilter, selectedValues, deferred ) => {
                 reportSubSrv.fetchRoomTypeList().then(function (data) {
@@ -233,7 +233,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              * @param {Object} selectedFilter selected filter
              * @param {Array} selectedValues array of selected values
              * @param {Object} deferred - deferred object
-             * @return {void} 
+             * @return {void}
              */
             populateDualStates = (stateOptions, selectedFilter, selectedValues, deferred ) => {
                 selectedFilter.secondLevelData = angular.copy(stateOptions);
@@ -247,7 +247,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              * @param {Object} selectedFilter selected filter
              * @param {Array} selectedValues array of selected values
              * @param {Object} deferred - deferred object
-             * @return {void} 
+             * @return {void}
              */
             populateRoomNos = ( selectedFilter, selectedValues, deferred ) => {
                 rvCustomExportSrv.getRoomNos().then(function (data) {
@@ -268,7 +268,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              * @param {Object} selectedFilter selected filter
              * @param {Array} selectedValues array of selected values
              * @param {Object} deferred - deferred object
-             * @return {void} 
+             * @return {void}
              */
             populateRateList = ( selectedFilter, selectedValues, deferred ) => {
                 rvCustomExportSrv.getRateList().then(function (data) {
@@ -289,7 +289,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              * @param {Object} selectedFilter selected filter
              * @param {Array} selectedValues array of selected values
              * @param {Object} deferred - deferred object
-             * @return {void} 
+             * @return {void}
              */
             populateCICOAgents = ( selectedFilter, selectedValues, deferred ) => {
                 rvCustomExportSrv.getCICOAgents().then(function (data) {
@@ -311,7 +311,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              * @param {Object} selectedFilter selected filter
              * @param {Array} selectedValues array of selected values
              * @param {Object} deferred - deferred object
-             * @return {void} 
+             * @return {void}
              */
             populateCICOApplications = ( selectedFilter, selectedValues, deferred ) => {
                 rvCustomExportSrv.getCICOApplications().then(function (data) {
@@ -333,7 +333,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              * @param {Object} selectedFilter selected filter
              * @param {Array} selectedValues array of selected values
              * @param {Object} deferred - deferred object
-             * @return {void} 
+             * @return {void}
              */
             populateCountryOrNationality = ( selectedFilter, selectedValues, deferred, displayKey, valueKey ) => {
                 rvCustomExportSrv.getCountries().then(function (data) {
@@ -354,7 +354,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              * @param {Object} selectedFilter selected filter
              * @param {Array} selectedValues array of selected values
              * @param {Object} deferred - deferred object
-             * @return {void} 
+             * @return {void}
              */
             populateLanguage = ( selectedFilter, selectedValues, deferred ) => {
                 rvCustomExportSrv.getGuestLanguages().then(function (data) {
@@ -375,7 +375,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              * @param {Object} selectedFilter selected filter
              * @param {Array} selectedValues array of selected values
              * @param {Object} deferred - deferred object
-             * @return {void} 
+             * @return {void}
              */
             populatePaymentMethods = ( selectedFilter, selectedValues, deferred ) => {
                 rvCustomExportSrv.getPaymentMethods().then(function (data) {
@@ -396,7 +396,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              * @param {Object} selectedFilter selected filter
              * @param {Array} selectedValues array of selected values
              * @param {Object} deferred - deferred object
-             * @return {void} 
+             * @return {void}
              */
             populateMemberships = ( selectedFilter, selectedValues, deferred ) => {
                 rvCustomExportSrv.getMemberShips().then(function (data) {
@@ -417,7 +417,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              * @param {Object} selectedFilter selected filter
              * @param {Array} selectedValues array of selected values
              * @param {Object} deferred - deferred object
-             * @return {void} 
+             * @return {void}
              */
             populateMembershipLevels = ( selectedFilter, selectedValues, deferred ) => {
                 rvCustomExportSrv.getMemberShipLevels().then(function (data) {
@@ -438,7 +438,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              * @param {Object} selectedFilter selected filter
              * @param {Array} selectedValues array of selected values
              * @param {Object} deferred - deferred object
-             * @return {void} 
+             * @return {void}
              */
             populateChargeGroups = ( selectedFilter, selectedValues, deferred ) => {
                 reportSubSrv.fetchChargeNAddonGroups().then(function (data) {
@@ -458,7 +458,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              * @param {Object} selectedFilter selected filter
              * @param {Array} selectedValues array of selected values
              * @param {Object} deferred - deferred object
-             * @return {void} 
+             * @return {void}
              */
             populateChargeCodes = ( selectedFilter, selectedValues, deferred ) => {
                 reportSubSrv.fetchChargeCodes().then(function (data) {
@@ -478,7 +478,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              * @param {Object} selectedFilter selected filter
              * @param {Array} selectedValues array of selected values
              * @param {Object} deferred - deferred object
-             * @return {void} 
+             * @return {void}
              */
             populateChargeCodeDescription = ( selectedFilter, selectedValues, deferred ) => {
                 reportSubSrv.fetchChargeCodes().then(function (data) {
@@ -499,7 +499,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              * @param {Object} selectedFilter selected filter
              * @param {Array} selectedValues array of selected values
              * @param {Object} deferred - deferred object
-             * @return {void} 
+             * @return {void}
              */
             populateChargeCodeTypes = ( selectedFilter, selectedValues, deferred ) => {
                 rvCustomExportSrv.getReferenceValuesByType('charge_code_type').then(function (data) {
@@ -520,7 +520,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              * @param {Object} selectedFilter selected filter
              * @param {Array} selectedValues array of selected values
              * @param {Object} deferred - deferred object
-             * @return {void} 
+             * @return {void}
              */
             populateHoldStatus = ( selectedFilter, selectedValues, deferred ) => {
                 reportSubSrv.fetchHoldStatus().then(function (data) {
@@ -541,7 +541,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
              * @param {Object} selectedFilter selected filter
              * @param {Array} selectedValues array of selected values
              * @param {Object} deferred - deferred object
-             * @return {void} 
+             * @return {void}
              */
             populateReservationTypes = ( selectedFilter, selectedValues, deferred ) => {
                 rvCustomExportSrv.getReservationTypes().then(function (data) {
@@ -689,7 +689,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
             var availableOperators = _.filter(getRangeOperators(), function (each) {
                 return appliedRangeOperatorNames.indexOf(each.value) === -1;
             });
-            
+
             selectedFilter.secondLevelData = availableOperators;
             selectedFilter.selectedSecondLevel = selectedSecondLevel;
             selectedFilter.rangeValue = rangeValue;
@@ -713,7 +713,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
             var availableOperators = _.filter(GENERAL_FILTERS, function (each) {
                 return appliedGeneralOperatorNames.indexOf(each.value) === -1;
             });
-            
+
             selectedFilter.secondLevelData = availableOperators;
             selectedFilter.selectedSecondLevel = selectedSecondLevel;
 
