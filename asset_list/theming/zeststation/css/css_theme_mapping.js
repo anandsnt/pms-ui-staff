@@ -93,7 +93,11 @@ module.exports = {
             'delavan': [themeCSSRoot + 'delavan.less'],
             'garden-place': [themeCSSRoot + 'garden-place.less'],
             'crowne': [themeCSSRoot + 'crowne.less'],
-            'indigo': [themeCSSRoot + 'indigo.less']
+            'indigo': [themeCSSRoot + 'indigo.less'],
+            'caro': [themeCSSRoot + 'caro.less'],
+            'schani-wien': [themeCSSRoot + 'schani-wien.less'],
+            'glencoe': [themeCSSRoot + 'glencoe.less'],
+            'schani-salon': [themeCSSRoot + 'schani-salon.less']
         };
     }
 };

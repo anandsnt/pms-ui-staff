@@ -7,10 +7,10 @@ angular.module('sntRover').service('RVreportsSrv', [
     'RVReportApplyFlags',
     'RVReportUtilsFac',
     'RVReportSetupDates',
-	function($q, rvBaseWebSrvV2, subSrv, $vault, $http, applyFlags, reportUtils, setupDates) {
-		var service       = {},
-			choosenReport = {},
-			selectedReport = {},
+    function($q, rvBaseWebSrvV2, subSrv, $vault, $http, applyFlags, reportUtils, setupDates) {
+        var service       = {},
+            choosenReport = {},
+            selectedReport = {},
             config = {},
             printClicked = false;
 
@@ -131,8 +131,25 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'LAST_OCTOBER',
                 'LAST_NOVEMBER',
                 'LAST_DECEMBER'
+             ],
+             'Austria Nationality Export': [
+                'LAST_MONTH',
+                'LAST_JANUARY',
+                'LAST_FEBRUARY',
+                'LAST_MARCH',
+                'LAST_APRIL',
+                'LAST_MAY',
+                'LAST_JUNE',
+                'LAST_JULY',
+                'LAST_AUGUST',
+                'LAST_SEPTEMBER',
+                'LAST_OCTOBER',
+                'LAST_NOVEMBER',
+                'LAST_DECEMBER'
             ],
-            'Austria Nationality Export': [
+            'Criterion Hospitality CC Export': [
+                'TODAY',
+                'YESTERDAY',
                 'LAST_MONTH',
                 'LAST_JANUARY',
                 'LAST_FEBRUARY',
@@ -548,23 +565,23 @@ angular.module('sntRover').service('RVreportsSrv', [
             // to process the group by for this report
             reportUtils.processGroupBy( report );
 
-		};
-		
-		service.setSelectedReport = function (item) {
-			selectedReport = item;
-		};
-		
-		service.getSelectedReport = function () {
-			return selectedReport;
-		};
-		
-		service.saveCofigurationData = function (data) {
-			config = data;
-		};
-		
-		service.getCofigurationData = function () {
-			return config;
-		};
+        };
+        
+        service.setSelectedReport = function (item) {
+            selectedReport = item;
+        };
+        
+        service.getSelectedReport = function () {
+            return selectedReport;
+        };
+        
+        service.saveCofigurationData = function (data) {
+            config = data;
+        };
+        
+        service.getCofigurationData = function () {
+            return config;
+        };
 
         return service;
     }

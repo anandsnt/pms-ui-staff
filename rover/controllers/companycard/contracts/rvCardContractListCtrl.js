@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$scope',
-	function($timeout, $scope) {
+angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$scope', 'rvCompanyCardContractsSrv', 'ngDialog',
+	function($timeout, $scope, rvCompanyCardContractsSrv, ngDialog) {
         BaseCtrl.call(this, $scope);
         $scope.setScroller('contractListScroller');
         var refreshScroller = function() {
@@ -50,6 +50,7 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
         $scope.fetchDetails = function(contractId) {
             if (contractId !== $scope.contractData.selectedContractId || $scope.contractData.mode !== 'EDIT') {
                 $scope.contractData.mode = 'EDIT';
+                $scope.contractData.isContractLinkBarExpanded = false;
                 clearRateSearchBox();
                 clearContractLinkSearchBox();
                 $scope.$emit('fetchContract', contractId);
@@ -60,6 +61,7 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
          */
         $scope.newContract = function() {
             $scope.contractData.mode = 'ADD';
+            $scope.contractData.disableFields = false;
             clearRateSearchBox();
             clearContractLinkSearchBox();
             $scope.$emit('refreshContractsScroll');
@@ -72,6 +74,45 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
             $scope.contractData.mode = 'LINK';
             clearRateSearchBox();
             clearContractLinkSearchBox();
+        };
+
+        // Handle unlink Contract
+        $scope.unlinkContractsCofirmed = function() {
+            $scope.closeDialog();
+            var unLinkContractSuccessCallback = function() {
+                $scope.$emit('fetchContractsList', 'UNLINK');
+            },
+            unLinkContractFailureCallback = function(errorMessage) {
+                $scope.$emit('setErrorMessage', errorMessage);
+            };
+
+            var options = {
+                successCallBack: unLinkContractSuccessCallback,
+                failureCallBack: unLinkContractFailureCallback,
+                params: {
+                    "id": $scope.contractData.selectedContractId,
+                    "account_id": $scope.contractData.accountId
+                }
+            };
+
+            $scope.callAPI(rvCompanyCardContractsSrv.unLinkContract, options);
+        };
+
+        // Handle unlink Contract click to show confirm popup.
+        $scope.clickedUnlinkContracts = function() {
+            $scope.cardName = $scope.contactInformation.account_details.account_name;
+            ngDialog.open({
+                template: '/assets/partials/companyCard/contracts/rvConfirmUnlinkContract.html',
+                className: '',
+                closeByDocument: false,
+                scope: $scope
+            });
+        };
+
+        // Expand / Collapse contract link bar
+        $scope.clickContractLinkBar = function() {
+            $scope.contractData.isContractLinkBarExpanded = !$scope.contractData.isContractLinkBarExpanded;
+            refreshScroller();
         };
 
         /**

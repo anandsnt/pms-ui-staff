@@ -8,6 +8,7 @@ angular.module('sntPay').directive('sntPayment', function() {
             selectedPaymentType: '=?', // selected initial payment type
             paymentCurrencyList: '=',
             reservationId: '@',
+            isFromWallet: '@',
             rateCurrency: '@',
             postingAccountId: '=?',
             billId: '=?',

@@ -195,7 +195,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                         data: {
                             isUpdate: false
                         }
-                    }); 
+                    });
                 } else {
                     $scope.navigateToSchedulableReportList();
                 }
@@ -273,7 +273,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
         $scope.navigateToSchedulesList = (params) => {
             ngDialog.close();
             var updatedIndex = _.findIndex($scope.$parent.$parent.schedulesList, { id: params.id });
-            
+
             if ( !! $scope.selectedSchedule && $scope.selectedSchedule.active ) {
                 $scope.selectedSchedule.active = false;
             }
@@ -315,11 +315,11 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                             isUpdate: true,
                             params: params
                         }
-                    }); 
+                    });
                 } else {
                     $scope.navigateToSchedulesList(params);
                 }
-                
+
             };
 
             var failed = function(errors) {
@@ -345,7 +345,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             if ( $scope.scheduleParams.to_date ) {
                 params.to_date = $filter('date')($scope.scheduleParams.to_date, 'yyyy/MM/dd');
-            }            
+            }
 
             // fill 'frequency_id', 'starts_on', 'repeats_every' and 'ends_on_date'
             params.frequency_id = $scope.scheduleParams.frequency_id;
@@ -562,7 +562,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Switzerland Zurich Police Export': true,
                 'Spain Barcelona Police Export': true,
                 'Invoice / Folio Export': true,
-                'Nationality Export - France': true
+                'Nationality Export - France': true,
+                'Criterion Hospitality CC Export': true
             };
 
             var forRunOnceOnly = {
@@ -583,7 +584,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Switzerland Zurich Police Export': true,
                 'Spain Barcelona Police Export': true,
                 'Austria Nationality Export': true,
-                'Nationality Export - France': true
+                'Nationality Export - France': true,
+                'Criterion Hospitality CC Export': true
             };
 
             var forWeekly = {
@@ -609,7 +611,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Spain Barcelona Police Export': true,
                 'Austria Nationality Export': true,
                 'Invoice / Folio Export': true,
-                'Nationality Export - France': true
+                'Nationality Export - France': true,
+                'Criterion Hospitality CC Export': true
             };
 
             var forHourly = {
@@ -717,7 +720,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
                 var todayDate = moment().startOf('day'),
                     daysDiff = moment.duration(todayDate.diff($scope.scheduleParams.from_date)).asDays();
-                
+
                 if (daysDiff < 7) {
                     $scope.scheduleParams.from_date = $scope.scheduleParams.from_date.format("L");
                 } else {
@@ -733,7 +736,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
                 var todayDate = moment().startOf('day'),
                     daysDiff = moment.duration(todayDate.diff($scope.scheduleParams.to_date)).asDays();
-                
+
                 if (daysDiff < 7) {
                     $scope.scheduleParams.to_date = $scope.scheduleParams.to_date.format("L");
                 } else {
@@ -770,7 +773,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             var businessDateMinusOne = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
                 .format($rootScope.momentFormatForAPI);
-                
+
             /*
              * Export Calender Options
              * max date is business date
@@ -1287,7 +1290,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             $timeout( function() {
                 $scope.refreshSecondColumnScroll(true);
             }, 1000);
-            
+
         };
         /*
          * Show export calender only for joyrnal export
@@ -1328,7 +1331,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             }
             return false;
         };
-        
+
 
         $scope.notRunOnce = function () {
             var match = _.find($scope.originalScheduleFrequency, { id: $scope.scheduleParams.frequency_id }) || {};
@@ -1353,7 +1356,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
         });
 
         $scope.$on('$destroy', createNewExportScheduleListener);
-        
+
         $scope.addListener('RESET_CURRENT_STAGE', () => {
             $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
         });
