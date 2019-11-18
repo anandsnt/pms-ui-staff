@@ -1559,7 +1559,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		};
 
 		/* This method is shared between the RATE and ROOM TYPE views */
-		$scope.handleBooking = function(roomId, rateId, event, flags, afterFetch) {
+		$scope.handleBooking = function(roomId, rateId, event, flags, afterFetch, contractId) {
 
 			if (!!event) {
 				event.stopPropagation();
@@ -1580,7 +1580,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				rateInfo = secondary;							
 			} else if ($scope.stateCheck.activeView === 'RATE' || $scope.stateCheck.activeView === 'RECOMMENDED') {
 				var rate = _.find($scope.display.rateFirstGrid, {
-					id: rateId
+					id: rateId,
+					contractId: contractId
 				});
 
 				secondary = _.find(rate.rooms, {
@@ -1600,7 +1601,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			if (!afterFetch) {
 				fetchTaxRateAddonMeta(rateId, function() {
 					computeDetails(secondary, function() {
-						$scope.handleBooking(roomId, rateId, event, flags, true);
+						$scope.handleBooking(roomId, rateId, event, flags, true, contractId);
 					});
 				});
 			} else {
