@@ -114,7 +114,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'schani-wien': 'Hotel Schani Wien',
             'glencoe': 'Glencoe House',
             'schani-salon': 'Hotel Schani Salon',
-            'spatz': 'Hotel Spatz'
+            'spatz': 'Hotel Spatz',
+            'lenaustrasse': 'Apartment City Lenaustrasse'
         };
 
         this.isThemeConfigured = function(theme) {

@@ -98,7 +98,8 @@ module.exports = {
             'schani-wien': [themeCSSRoot + 'schani-wien.less'],
             'glencoe': [themeCSSRoot + 'glencoe.less'],
             'schani-salon': [themeCSSRoot + 'schani-salon.less'],
-            'spatz': [themeCSSRoot + 'spatz.less']
+            'spatz': [themeCSSRoot + 'spatz.less'],
+            'lenaustrasse': [themeCSSRoot + 'lenaustrasse.less']
         };
     }
 };
