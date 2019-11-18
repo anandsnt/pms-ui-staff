@@ -205,7 +205,8 @@ angular.module('sntRover')
 					var labelMappings;
 
 					var addClickEvents = function(position, isRedraw) {
-						var animationDuration = isRedraw ? 200 : 1000;
+						// To make sure the elements are drawn before click event is attached
+						var animationDuration = isRedraw ? 250 : 1050;
 
 						$timeout(function() {
 							$("#" + position + "-adr-rect").click(onClickOnLabel);
@@ -233,6 +234,13 @@ angular.module('sntRover')
 						var labelAttrs = labelMappings[position]
 
 						if (position) {
+							$("#" + position + "-adr-rect").unbind("click");
+							$("#" + position + "-adr-label1").unbind("click");
+							$("#" + position + "-adr-label2").unbind("click");
+							$("#" + position + "-rev-par-rect").unbind("click");
+							$("#" + position + "-rev-par-label1").unbind("click");
+							$("#" + position + "-rev-par-label2").unbind("click");
+							
 							$("#" + position + "-adr-rect").remove();
 							$("#" + position + "-adr-label1").remove();
 							$("#" + position + "-adr-label2").remove();
@@ -302,7 +310,6 @@ angular.module('sntRover')
 							.attr("stroke", "#000")
 							.style("cursor", "pointer");
 
-						$("#" + label.id + "-rect").click(onClickOnLabel);
 
 						textLabelGroup.append("text")
 							.attr('x', xOffsetText)
@@ -313,7 +320,6 @@ angular.module('sntRover')
 							.text(label.label)
 							.style("cursor", "pointer");
 
-						$("#" + label.id + "-label1").click(onClickOnLabel);
 
 						var labelText = label.value;
 						if (baseValue >= 1000) {
@@ -335,7 +341,6 @@ angular.module('sntRover')
 							.text($rootScope.currencySymbol + labelText)
 							.style("cursor", "pointer");
 
-						$("#" + label.id + "-label2").click(onClickOnLabel);
 					}
 
 					var lowestValue = maxValueForChart / 5;
