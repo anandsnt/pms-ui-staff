@@ -298,7 +298,7 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
 
                 if (rvAnalyticsSrv.isVip(reservation)) {
                     hourActivity[dayKey].vipCheckin = hourActivity[dayKey].vipCheckin + 1;
-                } else if (rvAnalyticsSrv.isLateCheckout(reservation)) {
+                } else if (rvAnalyticsSrv.isEarlyCheckin(reservation)) {
                     hourActivity[dayKey].earlyCheckin = hourActivity[dayKey].earlyCheckin + 1;
                 } else {
                     hourActivity[dayKey].checkin = hourActivity[dayKey].checkin + 1;
