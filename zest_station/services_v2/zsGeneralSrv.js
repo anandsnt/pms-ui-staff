@@ -113,7 +113,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'caro': 'Caro Short Stay',
             'schani-wien': 'Hotel Schani Wien',
             'glencoe': 'Glencoe House',
-            'schani-salon': 'Hotel Schani Salon'
+            'schani-salon': 'Hotel Schani Salon',
+            'spatz': 'Hotel Spatz'
         };
 
         this.isThemeConfigured = function(theme) {
