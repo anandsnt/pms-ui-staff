@@ -204,6 +204,19 @@ angular.module('sntRover')
 
 					var labelMappings;
 
+					var addClickEvents = function(position, isRedraw) {
+						var animationDuration = isRedraw ? 200 : 1000;
+
+						$timeout(function() {
+							$("#" + position + "-adr-rect").click(onClickOnLabel);
+							$("#" + position + "-adr-label1").click(onClickOnLabel);
+							$("#" + position + "-adr-label2").click(onClickOnLabel);
+							$("#" + position + "-rev-par-rect").click(onClickOnLabel);
+							$("#" + position + "-rev-par-label1").click(onClickOnLabel);
+							$("#" + position + "-rev-par-label2").click(onClickOnLabel);
+						}, animationDuration);
+					};
+
 					var onClickOnLabel = function(e) {
 						console.log(e.target.id);
 						var position;
@@ -235,12 +248,7 @@ angular.module('sntRover')
 								addLabelToChart(labelAttrs.revPar, labelAttrs.isLeftSide, labelAttrs.isDownSide, true);
 							}
 
-							$("#" + position + "-adr-rect").click(onClickOnLabel);
-							$("#" + position + "-adr-label1").click(onClickOnLabel);
-							$("#" + position + "-adr-label2").click(onClickOnLabel);
-							$("#" + position + "-rev-par-rect").click(onClickOnLabel);
-							$("#" + position + "-rev-par-label1").click(onClickOnLabel);
-							$("#" + position + "-rev-par-label2").click(onClickOnLabel);
+							addClickEvents(position, true);
 						}
 					};
 
@@ -371,9 +379,8 @@ angular.module('sntRover')
 					};
 
 					addLabelToChart(leftTopQuadrantRevPar, true, false);
-
-					$("#left-top-adr-rect").click(onClickOnLabel);
-					$("#left-top-rev-par-rect").click(onClickOnLabel);
+					addClickEvents("left-top", false);
+					
 
 
 					/**  ****************************  Let Top Quadrant ends here ******************************/
@@ -417,9 +424,7 @@ angular.module('sntRover')
 
 					addLabelToChart(rightTopQuadrantAdr, false, false);
 					addLabelToChart(rightTopQuadrantRevPar, false, false);
-
-					$("#right-top-adr-rect").click(onClickOnLabel);
-					$("#right-top-rev-par-rect").click(onClickOnLabel);
+					addClickEvents("right-top", false);
 
 					/**  ****************************  Right Top Quadrant ends here ******************************/
 
@@ -464,9 +469,7 @@ angular.module('sntRover')
 					};
 
 					addLabelToChart(leftBottomRevPar, true, true);
-
-					$("#left-bottom-rev-par-rect").click(onClickOnLabel);
-					$("#left-bottom-adr-rect").click(onClickOnLabel);
+					addClickEvents("left-bottom", false);
 
 					/**  ****************************  Left Bottom Quadrant ends here ******************************/
 
@@ -510,9 +513,7 @@ angular.module('sntRover')
 					};
 
 					addLabelToChart(rightBottomRevPar, false, true);
-
-					$("#right-bottom-rev-par-rect").click(onClickOnLabel);
-					$("#right-bottom-adr-rect").click(onClickOnLabel);
+					addClickEvents("right-bottom", false);
 
 					/**  ****************************  Right Bottom Quadrant ends here ******************************/
 
