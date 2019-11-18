@@ -97,7 +97,8 @@ module.exports = {
             'caro': [themeCSSRoot + 'caro.less'],
             'schani-wien': [themeCSSRoot + 'schani-wien.less'],
             'glencoe': [themeCSSRoot + 'glencoe.less'],
-            'schani-salon': [themeCSSRoot + 'schani-salon.less']
+            'schani-salon': [themeCSSRoot + 'schani-salon.less'],
+            'spatz': [themeCSSRoot + 'spatz.less']
         };
     }
 };
