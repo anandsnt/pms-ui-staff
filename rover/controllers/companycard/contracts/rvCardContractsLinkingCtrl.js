@@ -87,11 +87,13 @@ angular.module('sntRover').controller('rvCardContractsLinkingCtrl', ['$scope', '
 
         // Handle Cancel Search
         $scope.cancelSearch = function() {
+            $scope.contractData.linkContractsSearch.query = '';
             if ($scope.contractData.noContracts) {
                 $scope.contractData.mode = '';
             }
             else {
                 $scope.contractData.mode = 'EDIT';
+                $scope.$emit('fetchContract', $scope.contractData.selectedContractId);
             }
         };
         
