@@ -366,6 +366,7 @@ admin.controller('ADRatesAddonDetailsCtrl', [
                 spillage_refund_percentage: $scope.singleAddon.spillage_refund_percentage,
                 ref_currency_code_id: $scope.singleAddon.ref_currency_code_id,
                 post_day_of_the_week: $scope.singleAddon.post_day_of_the_week,
+                post_day_of_the_month: $scope.singleAddon.post_day_of_the_month,
                 frequency: $scope.singleAddon.frequency,
                 frequency_type: $scope.singleAddon.frequency_type
             };
