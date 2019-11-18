@@ -112,7 +112,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'indigo': 'Hotel Indigo Brussels',
             'caro': 'Caro Short Stay',
             'schani-wien': 'Hotel Schani Wien',
-            'glencoe': 'Glencoe House'
+            'glencoe': 'Glencoe House',
+            'schani-salon': 'Hotel Schani Salon'
         };
 
         this.isThemeConfigured = function(theme) {
