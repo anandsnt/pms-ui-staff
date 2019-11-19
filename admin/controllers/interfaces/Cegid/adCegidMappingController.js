@@ -152,7 +152,7 @@ admin.controller('adCegidMappingController', [
             if ($scope.state.meta.charge_codes) {
                 $scope.state.vat_codes = $scope.state.meta.charge_codes.map(function(charge_code) {
                     return {
-                        vat_code: charge_code.link_with[0] || 'No Vat Code for This Charge Code',
+                        vat_code: charge_code.link_with[0] || 'N/A',
                         charge_code: charge_code.charge_code
                     }
                 });
