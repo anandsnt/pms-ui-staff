@@ -1,7 +1,8 @@
 <!-- Report content -->
-    <div id="report-content" ng-hide="hasNoResults" class="report-content grid scrollable" ng-iscroll="report-details-scroll"> <!-- Add class "with-pagination" if pagination is shown -->
+    <div id="report-content" ng-hide="hasNoResults" class="report-content grid scrollable" ng-iscroll="report-details-scroll"> 
+    <!-- Add class "with-pagination" if pagination is shown -->
         <div class="wrapper">
-            <table class="invoice-tax-reports">
+            <table class="statistics-reports invoice-tax-reports">
                 <thead>
                     <tr>
                         <th><span>{{summaryCounts.translated_headers.room}}</span></th>
@@ -33,7 +34,7 @@
                         <td class="vat-groupings">
                             <table>
                                 <thead>
-                                    <tr>
+                                    <tr class="bottom-row">
                                         <td><strong>{{summaryCounts.translated_headers.charge_code}}</strong></td>
                                         <td><strong>{{summaryCounts.translated_headers.gross}}</strong></td>
                                         <td><strong>{{summaryCounts.translated_headers.net}}</strong></td>
