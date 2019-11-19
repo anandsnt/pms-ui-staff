@@ -77,18 +77,22 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 		};
 
 		var drawChart = function() {
+			$('base').attr('href', '#');
 			$scope.screenData.hideChartData = true;
 			clearAllExistingChartElements();
 			$scope.screenData.mainHeading = "";
-			if ($scope.screenData.selectedChart === 'FO_ARRIVALS') {
-				renderFrontOfficeManagementChart();
-			} else if ($scope.screenData.selectedChart === 'FO_WORK_LOAD') {
-				renderfdWorkloadChart();
-			} else if ($scope.screenData.selectedChart = 'FO_ACTIVITY') {
-				renderFrontOfficeActivity();
-			}
-		};
+			// Add a small timeout to make sure no residue elements are present to alter the chart width calculations
+			$timeout(function() {
+				if ($scope.screenData.selectedChart === 'FO_ARRIVALS') {
+					renderFrontOfficeManagementChart();
+				} else if ($scope.screenData.selectedChart === 'FO_WORK_LOAD') {
+					renderfdWorkloadChart();
+				} else if ($scope.screenData.selectedChart = 'FO_ACTIVITY') {
+					renderFrontOfficeActivity();
+				}
+			}, 10);
 
+		};
 		$(window).on("resize.doResize", function() {
 			$scope.$apply(function() {
 				$timeout(function() {
@@ -163,6 +167,12 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 			clearAllExistingChartElements();
             drawChart();
 		};
+
+		$scope.$on("SIDE_MENU_TOGGLE", function(e, data) {
+			if (data.menuOpen) {
+				$('base').attr('href', "/");
+			}
+		});
 
 		(function() {
 			fetchData($scope.dashboardFilter.datePicked)
