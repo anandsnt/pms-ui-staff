@@ -95,7 +95,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
 
             if (isFromSearch) {
                 if ($scope.data.query !== "") {
-                    $scope.clickedJournalToggle();
+                    $scope.clickedJournalToggle(false, false);
                 } else {
                     $scope.data.isExpandedViewSummary = false;
                 }
