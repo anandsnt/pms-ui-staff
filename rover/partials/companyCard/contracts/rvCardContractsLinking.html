@@ -24,7 +24,7 @@
         <div class="info" ng-show="contractData.linkContractsSearch.results.length === 0">
             <span class="icon-no-content icon-contracts"></span>
             <strong class="h1">No Contracts</strong>
-            <span class="h2">Search by <strong>Constract Name</strong> or <strong>Access Code</strong></span>
+            <span class="h2">Search by <strong>Contract Name</strong> or <strong>Access Code</strong></span>
         </div>
 
         <!-- Show this when we found some contracts -->
@@ -52,9 +52,9 @@
                                     <h2 ng-bind-html="escapeNull(item.contract_name)|highlight:contractData.linkContractsSearch.query:false"></h2>
                                     <span class="access-code" ng-bind-html="escapeNull(item.access_code)|highlight:contractData.linkContractsSearch.query:false"></span>
                                     <!-- If company show this -->
-                                    <span class="icons icon-guest-company colored" ng-if="item.account_details.type === 'COMPANY'">{{item.account_details.name}}</span>
+                                    <span class="icons icon-guest-company colored" ng-if="item.account_details.type === 'COMPANY'" ng-bind-html="escapeNull(item.account_details.name)|highlight:contractData.linkContractsSearch.query:false"></span>
                                     <!-- If travel agent show this -->
-                                    <span class="icons icon-guest-travelagent colored" ng-if="item.account_details.type === 'TRAVELAGENT'">{{item.account_details.name}}</span>
+                                    <span class="icons icon-guest-travelagent colored" ng-if="item.account_details.type === 'TRAVELAGENT'" ng-bind-html="escapeNull(item.account_details.name)|highlight:contractData.linkContractsSearch.query:false"></span>
                                 </div>
                                 <div class="contract-rates" ng-if="item.rates.length <= 3">
                                     {{item.rates.join()}}

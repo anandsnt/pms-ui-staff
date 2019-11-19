@@ -986,6 +986,10 @@ sntRover.controller('RVReportDetailsCtrl', [
                     template = '/assets/partials/reports/taxExempt/rvComplimentaryRoomReport.html';
                     break;
 
+                case reportNames['GUESTS_INHOUSE_BY_NATIONALITY']:
+                    template = '/assets/partials/reports/guestInhouseByNationalityReport/reportRow.html';
+                    break;
+
                 // Default report row
                 default:
                     template = '/assets/partials/reports/shared/rvCommonReportRow.html';
@@ -1172,6 +1176,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 
             if ('function' == typeof $scope.printOptions.showModal) {
                 $scope.printOptions.showModal();
+            } else if (!$rootScope.isBackgroundReportsEnabled) {
+                $_fetchFullReport();
             } else {
                 $scope.printReport(currentReport);
             }
@@ -1574,6 +1580,7 @@ sntRover.controller('RVReportDetailsCtrl', [
             return getReservationStatusClass(reservationStatus);
         };
 
+
         var printReportFromInboxListner = $rootScope.$on('PRINT_INBOX_REPORT', function () {
             var currentReport = reportsSrv.getSelectedReport();
         
@@ -1581,19 +1588,8 @@ sntRover.controller('RVReportDetailsCtrl', [
             $scope.printReport(currentReport);
         });
         
-        var showGenReportEventListner = $rootScope.$on('SHOW_GEN_REPORT', function () {
-            var currentReport = reportsSrv.getSelectedReport(),
-                mainCtrlScope = $scope.$parent;
-        
-            setChoosenReport(currentReport).then(function () {
-                mainCtrlScope.genReport(null, null, null, false);
-            });
-        });
-
         // destroy listners
-        
         $scope.$on('$destroy', printReportFromInboxListner);
-        $scope.$on('$destroy', showGenReportEventListner);
         
         // Invokes actual print 
         var invokePrint = () => {

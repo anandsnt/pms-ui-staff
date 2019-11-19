@@ -2,7 +2,8 @@
 
 <section id="dashboard" class="content scrollable" role = "main"
 ng-iscroll='dashboard_scroller' ng-iscroll-delay="100"
-ng-show="showDashboard" ng-click="clearErrorMessage()">
+ng-click="clearErrorMessage()"
+ng-if="showDashboard && !dashboardFilter.analyticsActive">
 	<div class="wrapper" data-ng-init="pageLoaded()" ng-class="{'has-release-notes' : !!activeNotification && showNotificationForCurrentUser && !isIpad }">
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<div ng-include="'/assets/partials/dashboard/rvDbGreetingMessageSection.html'"></div>
@@ -19,6 +20,14 @@ ng-show="showDashboard" ng-click="clearErrorMessage()">
 
 	</div>
 </section>
+<section id="dashboard" class="content scrollable analytics" role="main"
+         ng-iscroll="analytics_scroller" ng-iscroll-delay="100"
+         ng-if="dashboardFilter.analyticsActive">
+        <div class="wrapper">
+            <ng-include src="'/assets/partials/analytics/rvManagerAnalytics.html'" ng-controller="RVManagerAnalyticsController">
+            </ng-include>
+        </div>
+ </section>
 
 <div class="release-notes" ng-if="!!activeNotification && showNotificationForCurrentUser">
 	<div class="release-notes_hide">

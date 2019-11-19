@@ -67,7 +67,7 @@
                                     <span class="icons icon-double-arrow black expand-arrow" ng-class="{'active': report.isExpanded}"></span>
                                 </div>                                
             
-                <span class="status {{getColorCodeForReportStatus(report)}}" ng-show="shouldDisableInboxItem(report)">{{getRequestedReportStatus(report)}}</span>
+                <span class="status {{getColorCodeForReportStatus(report)}}" ng-show="shouldDisableInboxItem(report)">{{ getRequestedReportStatus(report) }}</span>
                 
                                 <!-- On click, when not expanded, will go to the generated report screen-->
                                 <div class="report-item-wrapper" ng-click="showGeneratedReportFromInbox(report)">

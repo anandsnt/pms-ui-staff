@@ -14,6 +14,10 @@
                 <a translate>STATISTICS</a>
                 <button type="button" class="button white icons icon-expand" rv-fullscreen fs-sub-header="Statistics" fs-toggle-class="fullscreen-card">Fullscreen</button>                            
             </li>
+            <li ng-class="{'ui-tabs-active': currentSelectedTab === 'wallet'}" ng-click="switchTabTo($event, 'wallet')">
+                <a translate>WALLET</a>
+                <button type="button" class="button white icons icon-expand" rv-fullscreen fs-sub-header="Wallet" fs-toggle-class="fullscreen-card">Fullscreen</button>                            
+            </li>
             <li ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-notes'}" ng-click="switchTabTo($event, 'cc-notes')">
                 <a translate>Notes</a>
             </li>
@@ -40,6 +44,8 @@
         <span ng-include="'/assets/partials/companyCard/contracts/rvCardContractsMain.html'"></span>
         <!--  Statistics -->
         <span ng-include="'/assets/partials/companyCard/rvCompanyCardTravelAgentStatistics.html'"></span>
+        <!-- Guest Card Tab 4 payments -->
+        <span ng-include="'/assets/partials/companyCard/companyCardPayment.html'"></span>
         <!-- Travel Agent - Commissions -->
         <span ng-include="'/assets/partials/companyCard/rvCompanyCardCommissions.html'" ng-controller="companyCardCommissionsCtrl"></span>
         <!-- Travel Agent - AR Accounts -->
@@ -78,7 +84,7 @@
                                         {{getRateName()}}
                                     </div>
                                     <div class="rate" ng-show="ratesCount(travelAgent) > 1">
-                                        <span class="label">Multiple</span>
+                                        <span class="label">Multiple Rates</span>
                                     </div>
                                     <span ng-if="travelAgent.activeContracts.length > 1" class="icons icon-contracts active">Multiple Contracts</span>
                                     <span ng-if="travelAgent.activeContracts.length === 1" class="icons icon-contracts active">{{travelAgent.rate.name}}</span>

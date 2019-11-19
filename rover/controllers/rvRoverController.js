@@ -614,6 +614,9 @@ sntRover.controller('roverController', [
             }
 
             $scope.menuOpen = !$scope.menuOpen;
+            $scope.$broadcast("SIDE_MENU_TOGGLE", {
+                "menuOpen": $scope.menuOpen
+            });
 
             // Bug fix for CICO-15718
             // Found that the issue appears when the keyboard comes over the screen
