@@ -47,42 +47,5 @@ angular.module('sntRover').service('rvManagersAnalyticsSrv', [
             return formatedData;
         };
 
-        this.getPrefinedValuesForDate = function(bussinessDate, date) {
-            var today = bussinessDate;
-            var definedDates = [{
-                "value": "Yesterday",
-                "date": moment(today).subtract(1, 'day').format("YYYY-MM-DD")
-            }, {
-                "value": "Today-2",
-                "date": moment(today).subtract(2, 'day').format("YYYY-MM-DD")
-            }, {
-                "value": "Today-3",
-                "date": moment(today).subtract(3, 'day').format("YYYY-MM-DD")
-            }, {
-                "value": "Today-4",
-                "date": moment(today).subtract(4, 'day').format("YYYY-MM-DD")
-            }, {
-                "value": "Today-5",
-                "date": moment(today).subtract(5, 'day').format("YYYY-MM-DD")
-            }, {
-                "value": "Today-6",
-                "date": moment(today).subtract(6, 'day').format("YYYY-MM-DD")
-            }];
-
-            var isPredefinedDate = function(date) {
-                return _.find(definedDates, function(definedDate) {
-                    return definedDate.date === date;
-                });
-            };
-
-            if (date === today) {
-                return today;
-            } else if (isPredefinedDate(date)) {
-                return isPredefinedDate(date).value;
-            }
-
-            return date;
-
-        };
     }
 ]);
