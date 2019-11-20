@@ -121,7 +121,7 @@
                     </div>
                     <!-- when the above bill is clicked to be opened, remove .hidden -->
                     <div ng-repeat-end class="bill-receipt-details" ng-show="bill.isOpened">
-                        <table>
+                        <table >
                             <thead>
                                 <tr>
                                     <th class="receipt-check"></th>
@@ -132,7 +132,7 @@
                                     <th class="amount">Credit</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody ng-show="!bill.showErrorMessage">
                                 <tr class="{ 'odd' || 'even' }" ng-repeat="transactions in bill.transactions" ng-show="transactions.is_visible_in_invoice_search">
                                     <td class="receipt-check" >
                                         <label class="checkbox inline" ng-class="{'checked': transactions.isChecked}" ng-if="transactions.should_retrigger" ng-click="clickedTransactionCheckbox(transactions.id, bill.billIndex, $index, invoiceReservationData.itemIndex)">
@@ -169,8 +169,13 @@
                                 </tr>
                                 <!-- ... repeat for each receipt -->
                             </tbody>
+                            <tbody ng-show="bill.showErrorMessage">
+                                <tr>
+                                    <td colspan="6" class="ar-popup-content">No payment transactions exists.</td>
+                                </tr>
+                            </tbody>
                         </table>
-                    </div>
+                    </div>                    
                     <!-- ... repeat L63-L95 for every bill in the reservation/account -->
                 </li>
                 <!-- ... repeat L61-L97 for every reservation/account -->
