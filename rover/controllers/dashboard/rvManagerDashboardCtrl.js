@@ -203,7 +203,7 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
     "code": "occupancy"
   }, {
     "name": "Occupied Rooms",
-    "code": "occupancy_rooms"
+    "code": "occupied_rooms"
   }, {
     "name": "ADR",
     "code": "adr"

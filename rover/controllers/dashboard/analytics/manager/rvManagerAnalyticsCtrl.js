@@ -80,12 +80,18 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 		var renderDistributionChart = function() {
 
 			$('base').attr('href', initialBaseHrefValue);
-			var options = {
-			    params: {
+
+			var params = {
 			        start_date: $scope.dashboardFilter.fromDate,
 			        end_date: $scope.dashboardFilter.toDate,
-			        group_by: $scope.dashboardFilter.aggType
-			    },
+			        chart_type: $scope.dashboardFilter.chartType
+			    }
+
+			if ($scope.dashboardFilter.aggType) {
+				params.group_by = $scope.dashboardFilter.aggType;
+			}
+			var options = {
+			    params: params,
 			    successCallBack: function(data) {
 			    	$('base').attr('href', '#');
 			    	$scope.screenData.analyticsDataUpdatedTime = moment().format("MM ddd, YYYY hh:mm:ss a");
@@ -185,13 +191,17 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 				$scope.screenData.mainHeading = chartTypeSelected.name;
 			}
 		};
+		$scope.$on('SET_PAGE_HEADING', setPageHeading);
+
 		$scope.$on('CHART_TYPE_CHANGED',function(e, data) {
 			setPageHeading();
+			drawChart();
 			console.log(data);
 		});
 
 		$scope.$on('CHART_AGGGREGATION_CHANGED',function(e, data) {
 			setPageHeading();
+			drawChart();
 			console.log(data);
 		});
 
