@@ -6,11 +6,11 @@
         <span class="h2 message" translate>COMPANY_CARD_DETACH_BILLING_INFO_WARNING</span>
 
         <button type="button" class="button red"
-            ng-click="closeDialog();updateGroupSummary()">
+            ng-click="closeDialog();detachCard(ngDialogData.cardType)">
             Detach Card
         </button>
         <button type="button" class="button blank"
-         ng-click="closeDialog();reloadPage()">
+         ng-click="closeDialog();cancelDetachment(ngDialogData.cardType)">
             Cancel
         </button>
     </div>

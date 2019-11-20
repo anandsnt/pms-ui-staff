@@ -13,6 +13,7 @@ module.exports = {
 			},
 			'rover.reservation': {
 				filename: roverJsListRoot + 'stayCardJsAssetList.js',
+                modules: true,
 				babelify: true
 			},
 			'rover.availability': {
@@ -106,7 +107,7 @@ module.exports = {
 			},
 			'rover.companycardsearch': {
 				filename: roverJsListRoot + 'companyCardSearchJsAssetList.js',
-				babelify: false
+				babelify: true
 			},
 			'rover.companycarddetails': {
 				filename: roverJsListRoot + 'companyCardDetailsJsAssetList.js',
@@ -134,8 +135,13 @@ module.exports = {
 			},
 			'rover.guestcarddetails': {
 				filename: roverJsListRoot + 'guestCardDetailsJsAssetList.js',
+                modules: true,
 				babelify: true
-			}			
+			},
+			'rover.reportAnalytics': {
+				filename: roverJsListRoot + 'reportsAnalyticsAssetsList.js',
+				babelify: false
+			}
 		};
 	}
 };

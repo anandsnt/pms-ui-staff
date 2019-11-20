@@ -1,0 +1,65 @@
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak>
+    <div class="modal-content form commissions-properties">
+        <button class="modal-close" id="modal-close" type="button" ng-click="clickedCancel()">
+            <span class="icons icon-close invert"></span>
+        </button>
+
+        <span class="h2 message">Commissions</span>
+        <span class="text">Edit commissions for the following properties</span>
+
+        <div class="grid">
+            <div class="grid-row with-cells header">
+                <div class="grid-cell">Property</div>
+                <div class="grid-cell">Commission</div>
+                <div class="grid-cell">$/%</div>
+                <div class="grid-cell">Per</div>
+                <div class="grid-cell">Prepaid</div>
+            </div>
+
+            <div class="grid-row scrollable" ng-iscroll="rvTACardPropertiesCommissionsScroll">
+                <!-- iScroll here -->
+                <div class="grid-row wrapper">
+                    <div class="grid-row with-cells"
+                        ng-repeat="property in hotelCommissionDetails track by property.id">
+                        <div class="grid-cell"><strong>{{ property.name }}</strong></div>
+                        <div class="grid-cell">
+                            <input ng-model="property.value" placeholder="Commission" name="Commission"
+                                value="{{property.value}}" type="number" string-to-number />
+                        </div>
+                        <div class="grid-cell">
+                            <div class="select">
+                                <select id="{{property.id}}-commission-type" name="commission-type"
+                                    value="property.type" ng-model="property.type">
+                                    <option value="percent">%</option>
+                                    <option value="amount">{{property.currency_symbol}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid-cell">
+                            <div class="select" ng-show="property.type === 'amount'">
+                                <select id="{{property.id}}-commission-per" ng-model="property.commission_type">
+                                    <option value="perStay" translate>PER_STAY</option>
+                                    <option value="perNight" translate>PER_NIGHT</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid-cell">
+                            <label id="{{property.id}}-commison-prepaid" class="checkbox inline"
+                                ng-class="{'checked': property.is_prepaid}">
+                                <span class="icon-form icon-checkbox"
+                                    ng-class="{'checked': property.is_prepaid }"></span>
+                                <input id="{{property.id}}-commison-prepaid" type="checkbox"
+                                    ng-model="property.is_prepaid" />
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button type="button" class="button blank" ng-click="clickedCancel()">Cancel</button>
+            <button type="button" class="button green" ng-click="saveChanges()">Save changes</button>
+        </div>
+    </div>
+</div>

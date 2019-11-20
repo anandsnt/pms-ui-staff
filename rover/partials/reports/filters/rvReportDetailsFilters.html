@@ -457,6 +457,18 @@
             options="chosenReport.hasIncludeAgingBalance.options"></multi-option-selection>
         </div>
 
+
+        <!--item_58 -->
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasLanguages && chosenReport.hasLanguages.data.length" ng-class="{'active': filterItemsToggle.item_58}" ng-click="toggleFilterItems('item_58')">
+            <span class="title">Language</span>
+        </a>
+        <div class="report-col settings-content" ng-show="chosenReport.hasLanguages && chosenReport.hasLanguages.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_58 }">
+            <select ng-model="chosenReport.locale" ng-options="languages.code as languages.language for languages in chosenReport.hasLanguages.data" ng-change="sortByChanged(chosenReport)" iscroll-stop-propagation>
+            <option value="">Select Language</option>
+        </select>
+        </div>
+
+
         <!--item-47-->
         <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasAccountSearch && chosenReport.hasAccountSearch.data.length" ng-class="{ 'active': filterItemsToggle.item_47 }" ng-click="toggleFilterItems('item_47')">
             <span class="title">Accounts</span>
@@ -466,7 +478,7 @@
                 on-update="refreshSidebarScroll"
                 data="chosenReport.hasAccountSearch.data"
                 options="chosenReport.hasAccountSearch.options"></multi-option-selection>
-        </div>
+        </div>        
 
         <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasTravelAgentsSearch && chosenReport.hasTravelAgentsSearch.data.length" ng-class="{ 'active': filterItemsToggle.item_49 }" ng-click="toggleFilterItems('item_49')">
             <span class="title">Travel Agents</span>
@@ -648,10 +660,6 @@
                 options="chosenReport.hasIncludeTaxExempts.options"></multi-option-selection>
         </div>
 
-
-
-
-
         <!-- item_35: Min. Revenue -->
         <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasMinRevenue" ng-class="{'active': filterItemsToggle.item_35}" ng-click="toggleFilterItems('item_35')">
             <span class="title">Revenue</span>
@@ -796,6 +804,28 @@
             </label>
         </div>        
         <!-- YEARLY VAT END-->
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasShowVatWithRates" ng-class="{'active': filterItemsToggle.item_55}" ng-click="toggleFilterItems('item_55')">
+            <span class="title">VAT</span>
+        </a>
+        <div class="report-col settings-content" ng-show="chosenReport.hasShowVatWithRates" ng-class="{ 'hidden': !filterItemsToggle.item_55 }">            
+             <label class="checkbox inline" ng-class="{'checked':chosenReport.show_vat_with_rates}">
+                <span class="icon-form icon-checkbox" ng-class="{'checked':chosenReport.show_vat_with_rates}"></span>
+                <input type="checkbox" checked="checked" ng-model="chosenReport.show_vat_with_rates">
+                SHOW VAT WITH RATES
+            </label>
+        </div> 
+
+        <!-- YEARLY VAT END-->
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasShowIncludeLongStays" ng-class="{'active': filterItemsToggle.item_57}" ng-click="toggleFilterItems('item_57')">
+            <span class="title">INCLUDE LONG STAYS</span>
+        </a>
+        <div class="report-col settings-content" ng-show="chosenReport.hasShowIncludeLongStays" ng-class="{ 'hidden': !filterItemsToggle.item_57 }">            
+             <label class="checkbox inline" ng-class="{'checked':chosenReport.include_long_stays}">
+                <span class="icon-form icon-checkbox" ng-class="{'checked':chosenReport.include_long_stays}"></span>
+                <input type="checkbox" checked="checked" ng-model="chosenReport.include_long_stays">
+                INCLUDE LONG STAYS
+            </label>
+        </div> 
 
 
         <!-- item_43: Completion Status -->
@@ -869,6 +899,16 @@
                  <select name="show-actionables" ng-model="chosenReport.showActionables" ng-options="action.value as action.name for action in chosenReport.hasShowActionables.data"  iscroll-stop-propagation>
                 </select>
             </div>
+        </div>
+        <!-- item 56-->
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasIncludeCountry && chosenReport.hasIncludeCountry.data.length" ng-class="{ 'active': filterItemsToggle.item_56 }" ng-click="toggleFilterItems('item_56')">
+            <span class="title">Country</span>
+        </a>
+        <div class="report-col settings-content" ng-show="chosenReport.hasIncludeCountry && chosenReport.hasIncludeCountry.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_56 }">
+            <multi-option-selection label="Select Country"
+                on-update="refreshSidebarScroll"
+                data="chosenReport.hasIncludeCountry.data"
+                options="chosenReport.hasIncludeCountry.options"></multi-option-selection>
         </div>
 
 

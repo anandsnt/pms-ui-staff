@@ -5,7 +5,7 @@ function ADBaseTableCtrl($scope, ngTableParams) {
     $scope.displyCount = 10;
     $scope.rateType = "";
     $scope.searchTerm = "";
-    $scope.filterType = {};
+    $scope.filterType = null;
     $scope.totalCount = 1;
     $scope.totalPage = 1;
     $scope.startCount = 1;
@@ -44,8 +44,8 @@ function ADBaseTableCtrl($scope, ngTableParams) {
         $scope.reloadTable();
     };
 
-    $scope.reloadTable = function() {
-        $scope.tableParams.page(1);
+    $scope.reloadTable = function(pageNumber) {
+        $scope.tableParams.page(pageNumber || 1);
         $scope.tableParams.reload();
     };
 

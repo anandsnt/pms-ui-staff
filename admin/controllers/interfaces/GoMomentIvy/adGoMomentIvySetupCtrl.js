@@ -1,8 +1,8 @@
-admin.controller('adGoMomentIvySetupCtrl', ['$scope', 'goMomentIvySetupValues', 'adInterfacesCommonConfigSrv',
-    function($scope, goMomentIvySetupValues, adInterfacesCommonConfigSrv) {
+admin.controller('adGoMomentIvySetupCtrl', ['$scope', 'config', 'adInterfacesSrv',
+    function($scope, config, adInterfacesSrv) {
         BaseCtrl.call(this, $scope);
 
-        $scope.interfaceIdentifier = 'GOMOMENTIVY';
+        $scope.interface = 'GOMOMENTIVY';
 
         /**
          * when clicked on check box to enable/diable GoMomentIvy
@@ -13,24 +13,22 @@ admin.controller('adGoMomentIvySetupCtrl', ['$scope', 'goMomentIvySetupValues', 
         };
 
         /**
-         * when the save is success
-         * @return {undefined}
-         */
-        var successCallBackOfSave = function() {
-            $scope.goBackToPreviousState();
-        };
-
-        /**
          * when we clicked on save button
          * @return {undefined}
          */
         $scope.saveSetup = function() {
-            $scope.callAPI(adInterfacesCommonConfigSrv.saveConfiguration, {
+            var params = dclone($scope.config);
+
+            $scope.deletePropertyIfRequired(params, 'access_token');
+            $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
-                    config: $scope.config,
-                    interfaceIdentifier: $scope.interfaceIdentifier
+                    settings: params,
+                    integration: $scope.interface.toLowerCase()
                 },
-                successCallBack: successCallBackOfSave
+                onSuccess: function() {
+                    $scope.errorMessage = '';
+                    $scope.successMessage = "SUCCESS: Settings Updated!";
+                }
             });
         };
 
@@ -39,6 +37,7 @@ admin.controller('adGoMomentIvySetupCtrl', ['$scope', 'goMomentIvySetupValues', 
          * @return {undefined}
          */
         (function() {
-            $scope.config = goMomentIvySetupValues;
+            $scope.config = config;
+            $scope.setDefaultDisplayPassword($scope.config, 'access_token');
         })();
     }]);

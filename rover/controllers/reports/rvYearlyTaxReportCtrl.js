@@ -24,6 +24,7 @@ angular.module('sntRover')
             that = this;
         
         that.arrayToPromise = [];
+        
         /*
          * Building data to queue promises
          * @vatType = vat type
@@ -189,10 +190,12 @@ angular.module('sntRover')
                 promises = [];
 
                 angular.forEach(arrayToPromise, function(item) {
+
                     var postParamsToApi = {
                             "year": $scope.chosenReport.year,
                             "with_vat_id": (item.accountVatType === 'WITH_VAT_ID'),
-                            "account_type_id": item.accountTypeId
+                            "account_type_id": item.accountTypeId,
+                            "country_ids": $scope.appliedFilter.country_ids
                         },
                         paramsToService = {
                             "postParamsToApi": postParamsToApi,
@@ -214,7 +217,7 @@ angular.module('sntRover')
                 sntActivity.stop("PROMISE_INITIATED");
                 if ($scope.isPrintClicked) {
                      $timeout(function() {
-                        $scope.$emit("YEARLY_TAX_REPORT_PRINT");
+                        $scope.$emit("PRINT_SELECTED_REPORT");
                     }, 700);
                 }
             };

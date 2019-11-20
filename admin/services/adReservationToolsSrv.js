@@ -66,11 +66,11 @@ admin.service('ADReservationToolsSrv', [
          */
         this.checkJobStatus = function(params) {
             var deferred = $q.defer(),
-                url      = 'api/schedule_jobs/' + params.id + '/status';
+                url      = '/admin/daily_balance_recalculations/' + params.id;
 
             ADBaseWebSrvV2.getJSON(url)
                 .then(function(data) {
-                    deferred.resolve(data.job_status);
+                    deferred.resolve(data);
                 }, function(errorMessage) {
                     deferred.reject(errorMessage);
                 });
@@ -113,5 +113,19 @@ admin.service('ADReservationToolsSrv', [
 
             return deferred.promise;
         };
+
+        this.fetchActivityLog = function(params) {
+            var deferred = $q.defer();
+            // per page and current page need to be defined
+            var url = "/admin/daily_balance_recalculations?page=" + params.page + "&per_page=" + params.per_page;
+
+            ADBaseWebSrvV2.getJSON(url).then(function(data) {
+                    deferred.resolve(data);
+            }, function(data) {
+                    deferred.reject(data);
+            });
+            return deferred.promise;
+	        };
+
     }
 ]);

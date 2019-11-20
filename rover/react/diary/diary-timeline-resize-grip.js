@@ -125,10 +125,10 @@ var TimelineResizeGrip = React.createClass({
 			reservation_status === "AVAILABLE" )) {
 			return true;
 		}
-		else if ( (reservation_status === "INHOUSE" || reservation_status === "DEPARTED") && direction === "DEPARTURE") {
+		else if ( (reservation_status === "INHOUSE" || reservation_status === "CHECK-OUT") && direction === "DEPARTURE") {
 			return true;
 		}
-		else if ((reservation_status === "INHOUSE" || reservation_status === "DEPARTED") && direction === "ARRIVAL") {
+		else if ((reservation_status === "INHOUSE" || reservation_status === "CHECK-OUT") && direction === "ARRIVAL") {
 			return false;
 		}
 		return false;
@@ -345,7 +345,7 @@ var TimelineResizeGrip = React.createClass({
 				React.DOM.span({
 					className: 'title'
 				},
-					React.DOM.label({}, label),
+					React.DOM.span({}, label),
 					React.DOM.span({
 						className: 'time'
 					}, time_txt)

@@ -11,7 +11,9 @@
             <li ng-repeat="feature in data track by $index">
                 <h3>{{feature.title}}</h3>
                 <p>{{feature.description}}</p>
-                <ad-toggle-button is-checked="feature.enabled" on-update="onFeatureUpdate" params="$index"></ad-toggle-button>
+                <ad-switch is-checked="feature.enabled">
+                    <input type="checkbox" ng-model="feature.enabled" ng-change="onFeatureUpdate($index)"/>
+                </ad-switch>
             </li>
         </ul>
     </section>

@@ -110,7 +110,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
 
             var url = "/admin/rates/" + params.id + "/edit.json";
 
-            ADBaseWebSrv.getJSON(url).then(function (data) {
+            ADBaseWebSrv.getJSON(url, params).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
                 deferred.reject(data);
@@ -137,6 +137,27 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
 
         this.rateDetails = {};
 
+        this.setUpCommissionData = function(data) {
+            var chargeCodes = data.commission_details.charge_codes,
+                    selectedChargeCodes = data.commission_details.selected_commission_charge_code_ids;
+                
+                if ( typeof chargeCodes !== 'undefined' && chargeCodes.length > 0 ) {
+                    
+                    angular.forEach( chargeCodes, function( item, index) {
+                        if ( typeof selectedChargeCodes !== 'undefined' && selectedChargeCodes.length > 0 ) {
+                            angular.forEach( selectedChargeCodes, function( id, index) {
+                                if (id === item.id) {
+                                    item.is_checked = true;
+                                }
+                            });
+                        }
+                        else {
+                            item.is_checked = false;
+                        }
+                    });
+                }
+        };
+
         // get rate details
         this.fetchDetails = function (params) {
             var deferred = $q.defer();
@@ -157,26 +178,9 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
 
             var url = "/api/rates/" + params.rateId;
 
-            ADBaseWebSrvV2.getJSON(url).then(function (data) {
+            ADBaseWebSrvV2.getJSON(url, params).then(function (data) {
                 that.rateDetails = data;
-                var chargeCodes = data.commission_details.charge_codes,
-                    selectedChargeCodes = data.commission_details.selected_commission_charge_code_ids;
-                
-                if ( typeof chargeCodes !== 'undefined' && chargeCodes.length > 0 ) {
-                    
-                    angular.forEach( chargeCodes, function( item, index) {
-                        if ( typeof selectedChargeCodes !== 'undefined' && selectedChargeCodes.length > 0 ) {
-                            angular.forEach( selectedChargeCodes, function( id, index) {
-                                if (id === item.id) {
-                                    item.is_checked = true;
-                                }
-                            });
-                        }
-                        else {
-                            item.is_checked = false;
-                        }
-                    });
-                }
+                that.setUpCommissionData(data);
 
                 that.fetchHotelInfo();
             }, function (data) {
@@ -195,6 +199,10 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
                 deferred.reject(data);
             });
             return deferred.promise;
+        };
+
+        this.fetchRoomTypes = function (id) {
+            return ADBaseWebSrvV2.getJSON('/api/rates/' + id + '/fetch_room_types');
         };
 
     }

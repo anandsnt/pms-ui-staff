@@ -11,6 +11,7 @@
     @actionBackground:      @brandColor;
     
     @inputBackground:       #f4f4f4;
+    @inputColor:            @white;
     @transparentColor:      rgba(0,0,0,.5);
 
 /* 2. TYPOGRAPHY
@@ -43,6 +44,10 @@
         &.icon-arrow-right {
             fill: none;
             stroke: @white;
+        }
+
+        &.icon-arrow-down {
+            fill: @brandColor;
         }
     
     }
@@ -92,9 +97,9 @@
         }
 
         input,
-        select {
+        select,
+        textarea {
             background: #707070;
-            color: @white;
 
             &::-webkit-input-placeholder {
                 color: fade( @white, 50 );

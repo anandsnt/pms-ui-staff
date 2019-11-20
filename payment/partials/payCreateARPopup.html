@@ -31,8 +31,8 @@
                         type="button" translate>
                     CANCEL
                 </button>
-                <button class="button green modal-close ng-scope" ng-click="createAccountReceivable()"
-                        type="button" translate>
+                <button class="button modal-close ng-scope" ng-click="createAccountReceivable()"
+                        type="button" translate ng-class="{'overlay grey': isCreateButtonDisabled, 'green': !isCreateButtonDisabled}">
                     CREATE
                 </button>
             </div>

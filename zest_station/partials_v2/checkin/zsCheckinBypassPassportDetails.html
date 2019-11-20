@@ -1,0 +1,16 @@
+<section id="main" class="centered" role="main">
+    <div id="content">
+        <h1>Your Passport Information is Required</h1>
+        <h3>Please select the reason of your bypass</h3>
+        <form method="post" class="form">
+            <div class="entry select select-with-button">
+                <select ng-model="guestDetails.bypass_reason">
+                    <option ng-repeat="x in bypassPassportReasons" value="{{x.description}}">{{x.description}}</option>
+                </select>
+            </div>
+            <div class="entry action">
+                <button type="button" class="button" click-touch="bypassPassportDetails()">Next</button>
+            </div>
+        </form>
+    </div>
+</section>

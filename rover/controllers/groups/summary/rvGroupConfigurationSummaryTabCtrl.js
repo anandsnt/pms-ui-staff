@@ -1,8 +1,25 @@
-angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope', '$q', 'jsMappings', '$rootScope', 'rvGroupSrv', '$filter', '$stateParams', 'rvGroupConfigurationSrv', 'dateFilter', 'RVReservationSummarySrv', 'ngDialog', 'RVReservationAddonsSrv', 'RVReservationCardSrv', 'rvUtilSrv', '$state', 'rvPermissionSrv', '$timeout', 'rvGroupActionsSrv', 'RVContactInfoSrv', function($scope, $q, jsMappings, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state, rvPermissionSrv, $timeout, rvGroupActionsSrv, RVContactInfoSrv) {
-
-
+angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
+    '$scope',
+    '$q',
+    'jsMappings',
+    '$rootScope',
+    'rvGroupSrv',
+    '$filter',
+    '$stateParams',
+    'rvGroupConfigurationSrv',
+    'dateFilter',
+    'RVReservationSummarySrv',
+    'ngDialog',
+    'RVReservationAddonsSrv',
+    'RVReservationCardSrv',
+    'rvUtilSrv',
+    '$state',
+    'rvPermissionSrv',
+    '$timeout',
+    'rvGroupActionsSrv',
+    'RVContactInfoSrv',
+    function($scope, $q, jsMappings, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state, rvPermissionSrv, $timeout, rvGroupActionsSrv, RVContactInfoSrv) {
         var summaryMemento, demographicsMemento;
-        
 
         /**
          * Whether our summary data has changed
@@ -52,6 +69,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
             // setting max date of from date
             $scope.fromDateOptions.maxDate = $scope.groupConfigData.summary.block_to;
         };
+
 
         /**
          * Our Move date, start date, end date change are defined in parent controller
@@ -143,6 +161,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
          */
         var failureCallBackOfEarlierArrivalDateChange = function(error) {
             $scope.errorMessage = error;
+            $scope.groupConfigData.summary.block_from = summaryMemento.block_from;
             $scope.emit('hideLoader');
         };
 
@@ -171,6 +190,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 
         var failureCallBackOfLaterArrivalDateChange = function(errorMessage) {
             $scope.errorMessage = errorMessage;
+            $scope.groupConfigData.summary.block_from = summaryMemento.block_from;
             $scope.emit('hideLoader');
         };
 
@@ -211,6 +231,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
          */
         var failureCallBackOfEarlierDepartureDateChange = function(errorMessage) {
             $scope.errorMessage = errorMessage;
+            $scope.groupConfigData.summary.block_to = summaryMemento.block_to;
             $scope.emit('hideLoader');
         };
 
@@ -248,6 +269,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
          */
         var failureCallBackOfLaterDepartureDateChange = function(errorMessage) {
             $scope.errorMessage = errorMessage;
+            $scope.groupConfigData.summary.block_to = summaryMemento.block_to;
             $scope.emit('hideLoader');
         };
 
@@ -472,26 +494,32 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                     $scope.emit('hideLoader');
                 },
                 updateSegment = function() {
-                    var aptSegment = ''; // Variable to store the suitable segment ID
+                    var aptSegment = '', // Variable to store the suitable segment ID
+                        blockStartDate = $scope.groupConfigData.summary.block_from,
+                        blockEndDate = $scope.groupConfigData.summary.block_to;
 
                     // CICO-42249 - Flag to allow adding demographics for a newly created group
                     $scope.forceDemographics = $scope.shouldShowDemographics();
 
-                    if (!!$scope.groupConfigData.summary.block_to && !!$scope.groupConfigData.summary.block_from) {
-                        var dayDiff = Math.floor((new tzIndependentDate($scope.groupConfigData.summary.block_to) - new tzIndependentDate($scope.groupConfigData.summary.block_from)) / 86400000);
+                    if (!!blockStartDate && !!blockEndDate) {
+                        var blockPeriod = Math.floor((new tzIndependentDate(blockEndDate) - new tzIndependentDate(blockStartDate)) / 86400000),
+                            segments = _.sortBy($scope.groupSummaryData.demographics.segments, function(segment) { return segment.los; });
 
-                        angular.forEach($scope.groupSummaryData.demographics.segments, function(segment) {
-                            if (dayDiff < segment.los) {
+                        angular.forEach(segments, function(segment) {
+                            if (blockPeriod < segment.los) {
                                 if (!aptSegment) {
                                     aptSegment = segment.value;
+                                    // CICO-70889: Group Demographics. Only set the segment id when
+                                    // a value has been computed to prevent a user selected segment
+                                    // from being unintentionally overwritten.
+                                    $scope.groupConfigData.summary.demographics.segment_id = aptSegment;
                                 }
                             }
                         });
-                        $scope.groupSummaryData.computedSegment = !!aptSegment;
-                        $scope.groupConfigData.summary.demographics.segment_id = aptSegment;
-                    } else {
-                        return false;
                     }
+
+                    $scope.groupSummaryData.isComputedSegment = !!aptSegment;
+                    return $scope.groupSummaryData.isComputedSegment;
                 };
 
             if ($scope.groupSummaryData.demographics === null) {
@@ -827,6 +855,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
             }
 
         };
+
         $scope.openBillingInformation = function() {
             if ($scope.isInAddMode()) {
                 // If the group has not been saved yet, prompt user for the same
@@ -920,7 +949,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                     is_salutation_enabled: false,
                     is_include_rooming_list: false,
                     personal_salutation: '',
-                    locale: data.selected_language_code
+                    locale: data.selected_language_code,
+                    showLanguageField: data.show_language_field
                 };
                 ngDialog.open({
                     template: '/assets/partials/groups/summary/groupSendConfirmationPopup.html',
@@ -987,12 +1017,18 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 
         var onRateChangeSuccessCallBack = function(response) {
             $scope.$emit('hideLoader');
+            $scope.groupConfigData.summary.commission_details = response.commission_details;
+            
             if (!response.is_changed && !response.is_room_rate_available) {
                 showRateChangeWarningPopup();
                 $scope.groupConfigData.summary.rate = summaryMemento.rate;
+                $scope.groupConfigData.summary.contract_id = summaryMemento.contract_id;
+                $scope.groupConfigData.summary.uniqId = summaryMemento.uniqId;
             }
             else {
                 summaryMemento.rate = $scope.groupConfigData.summary.rate;
+                summaryMemento.contract_id = $scope.groupConfigData.summary.contract_id;
+                summaryMemento.uniqId = $scope.groupConfigData.summary.uniqId;
                 // fetch summary once rate is changed - as per CICO-31812 comments
                 $scope.$emit('FETCH_SUMMARY');
             }
@@ -1001,7 +1037,10 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
         var onRateChangeFailureCallBack = function(errorMessage) {
             $scope.$emit('hideLoader');
             $scope.errorMessage = errorMessage;
+            $scope.$emit('showErrorMessage', errorMessage);
             $scope.groupConfigData.summary.rate = summaryMemento.rate;
+            $scope.groupConfigData.summary.contract_id = summaryMemento.contract_id;
+            $scope.groupConfigData.summary.uniqId = summaryMemento.uniqId;
         };
 
         /**
@@ -1009,15 +1048,26 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
          * @returns {undefined}
          */
         $scope.onRateChange = function() {
-            var summaryData = $scope.groupConfigData.summary;
+            var summaryData = $scope.groupConfigData.summary,
+                uniqId = summaryData.uniqId,
+                rateId = uniqId.split(':')[0],
+                contractId = uniqId.split(':')[1];
 
             if (!summaryData.group_id) {
                 return false;
             }
 
+            _.each($scope.groupSummaryData.rateSelectDataObject, function(rate) {
+                if (rate.uniqId === summaryData.uniqId) {
+                    // contractId = rate.contract_id;
+                    $scope.groupConfigData.summary.contract_id = contractId;
+                }
+            });
+
             var params = {
                 group_id: summaryData.group_id,
-                rate_id: summaryData.rate
+                rate_id: rateId,
+                contract_id: contractId
             };
             var options = {
                 successCallBack: onRateChangeSuccessCallBack,
@@ -1389,7 +1439,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
         // CICO-24928
         $scope.clickedOnNote = function(note) {
           $scope.groupSummaryData.editingNote = note;
-          $scope.groupSummaryData.newNote = note.description;
+          $scope.groupSummaryData.newNote = note.description.replace(new RegExp('<br/>', 'g'), '\n');
         };
         // CICO-24928
         $scope.cancelEditModeGroupNote = function() {
@@ -1456,19 +1506,45 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                     // add custom rate obect
                     sumData.rateSelectDataObject.push({
                         id: '-1',
-                        name: 'Custom Rate'
+                        name: 'Custom Rate',
+                        uniqId: '-1'
                     });
                     // group rates by contracted and group rates.
                     _.each(data.results, function(rate) {
-                        if (rate.is_contracted) {
-                            rate.groupName = 'Company/ Travel Agent Contract';
+                        var setNewRate = function(groupName, contract) {
+                            var newRateObj = {};
+
+                            newRateObj.id = rate.id;
+                            newRateObj.uniqId = contract ? rate.id + ':' + contract.id : rate.id + ':';
+                            newRateObj.groupName = groupName;
+                            newRateObj.name = contract ? rate.name + '(' + contract.name + ')' : rate.name;
+                            newRateObj.contract_id = contract ? contract.id : null;
+                            sumData.rateSelectDataObject.push(newRateObj);
+                            if (newRateObj.id === $scope.groupConfigData.summary.rate && newRateObj.contract_id === $scope.groupConfigData.summary.contract_id) {
+                                $scope.groupConfigData.summary.uniqId = newRateObj.uniqId;
+                            }
+                        };
+
+                        if ($scope.groupConfigData.summary.rate === '-1') {
+                            $scope.groupConfigData.summary.uniqId = '-1';
+                        }
+
+                        if (!rate.is_contracted) {
+                            setNewRate('Group Rates');
                         }
                         else {
-                            rate.groupName = 'Group Rates';
+                            if (rate.company_contracts.length !== 0) {
+                                angular.forEach(rate.company_contracts, function(contract) {
+                                    setNewRate('Company Contract', contract);
+                                });
+                            }
+                            if (rate.travel_agent_contracts.length !== 0) {
+                                angular.forEach(rate.travel_agent_contracts, function(contract) {
+                                    setNewRate('Travel Agent Contract', contract);
+                                });
+                            }
                         }
-                        sumData.rateSelectDataObject.push(rate);
                     });
-
                 },
                 onFetchRatesFailure = function(errorMessage) {
                     $scope.errorMessage = errorMessage;
@@ -1551,6 +1627,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                 releaseOnDate: $rootScope.businessDate,
                 demographics: null,
                 promptMandatoryDemographics: false,
+                isComputedSegment: false,
                 isDemographicsPopupOpen: false,
                 newNote: '',
                 // CICO-24928
@@ -1659,11 +1736,34 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
         $scope.clickedTaxExemptToggle = function() {
             if (!$scope.groupConfigData.summary.is_tax_exempt) {
                 $scope.groupConfigData.summary.tax_exempt_type_id = '';
+                $scope.groupConfigData.summary.tax_exempt_ref_text = '';
             } else {
                 if ($scope.groupConfigData.summary.tax_exempt_type_id === null || $scope.groupConfigData.summary.tax_exempt_type_id === "" || $scope.groupConfigData.summary.tax_exempt_type_id === undefined) {
                     $scope.groupConfigData.summary.tax_exempt_type_id = $scope.defaultTaxExemptTypeId;
                 }
             }           
+        };
+
+        /*
+         * Hide rates toggle button
+         * When this is turned on, we will not show rates on the stationary pages
+         */
+        $scope.clickedShowRate = function() {
+            $scope.groupConfigData.summary.hide_rates = !$scope.groupConfigData.summary.hide_rates;
+            var params = {
+                'group_id': $scope.groupConfigData.summary.group_id,
+                'hide_rates': $scope.groupConfigData.summary.hide_rates
+            };
+
+            $scope.callAPI(rvGroupConfigurationSrv.toggleHideRate, {
+                successCallBack: function() {
+                    $scope.errorMessage = "";
+                },
+                failureCallBack: function(errorData) {
+                    $scope.errorMessage = errorData;
+                },
+                params: params
+            });
         };
 
         /**
@@ -1724,5 +1824,4 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
             $scope.computeSegment();
         }());
     }
-
 ]);

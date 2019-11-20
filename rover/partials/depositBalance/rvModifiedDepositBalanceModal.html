@@ -93,7 +93,7 @@
 		<fieldset class="content-right">
 			<strong class="h2 message">Deposit</strong>
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-			<div class="dates notice" ng-if="depositBalanceData.data.deposit_dues">
+			<div class="dates notice" ng-if="depositBalanceData.data.deposit_dues.length > 0" >
             	<strong>Deposit Due</strong>
                     <div class="scrollable" ng-iscroll="deopositdue" >
                             <ul class="wrapper ">
@@ -124,6 +124,7 @@
 							reservation-id="{{reservationData.reservation_card.reservation_id}}"
                             bill-id="depositBalanceData.primary_bill_id"
 							bill-number="billNumber"
+							rate-currency="{{depositBalanceMakePaymentData.rateCurrency}}"
 							payment-types="passData.details.paymentTypes"
 							selected-payment-type="depositBalanceMakePaymentData.payment_type"
 							selected-c-c="depositDetails.attached_card"
@@ -135,7 +136,8 @@
 							is-rate-suppressed='isReservationRateSuppressed'
 							has-permission='hasPermissionToMakePayment()'
 							form-template-url='/assets/partials/payment/rvDepositBalancePartial.html'
-							first-name="{{passData.details.firstName}}"
+							first-name="{{passData.details.firstName}}" 
+							payment-currency-list="paymentCurrencyList" 
 							last-name="{{passData.details.lastName}}">
 					</snt-payment>
                 </div>

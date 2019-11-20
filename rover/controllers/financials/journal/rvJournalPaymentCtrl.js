@@ -9,14 +9,13 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
         }, 500);
     };
 
-    $rootScope.$on('REFRESHPAYMENTCONTENT', function() {
+    $scope.addListener('REFRESHPAYMENTCONTENT', function() {
         refreshPaymentScroll();
     });
 
 	var initPaymentData = function(origin) {
 		var successCallBackFetchPaymentData = function(data) {
 			$scope.data.paymentData = {};
-            $scope.data.selectedPaymentType = '';
 			$scope.data.paymentData = data;
 			$scope.data.activePaymentTypes = data.payment_types;
 
@@ -24,6 +23,9 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
 			refreshPaymentScroll();
             if (origin !== "SUMMARY_DATE_CHANGED") {
                 $scope.$emit('hideLoader');
+            }
+            if ($scope.data.isExpandedViewPayment) {
+                $scope.$emit("EXPAND_PAYMENT");
             }
 		};
 
@@ -35,22 +37,31 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
             "type": ($scope.data.activePaymentTab === "" ? "" : ($scope.data.activePaymentTab).toLowerCase())
         };
 
+        if ($scope.data.query !== "") {
+            postData.filter_id = $scope.data.filterId;
+            postData.query = $scope.data.query;
+        }
 		$scope.invokeApi(RVJournalSrv.fetchPaymentDataByPaymentTypes, postData, successCallBackFetchPaymentData);
 	};
 
-	initPaymentData("");
-
-    $rootScope.$on('fromDateChanged', function() {
+    if (!$scope.data.isExpandedViewPayment) {
+        initPaymentData();
+    }
+	
+    $scope.addListener('fromDateChanged', function() {
         initPaymentData("");
-        $rootScope.$broadcast('REFRESH_SUMMARY_DATA', $scope.data.fromDate);
     });
 
-    $rootScope.$on('toDateChanged', function() {
+    $scope.addListener('toDateChanged', function() {
         initPaymentData("");
+    });
+
+    $scope.addListener('PAYMENTSSEARCH', function() {
+        initPaymentData();
     });
 
     // CICO-28060 : Update dates for Revenue & Payments upon changing summary dates
-    $rootScope.$on('REFRESH_REVENUE_PAYMENT_DATA', function( event, data ) {
+    $scope.addListener('REFRESH_REVENUE_PAYMENT_DATA', function( event, data ) {
         $scope.data.fromDate = data.date;
         $scope.data.toDate   = data.date;
         initPaymentData(data.origin);
@@ -96,6 +107,11 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
                 "type": ($scope.data.activePaymentTab === "" ? "" : ($scope.data.activePaymentTab).toLowerCase())
             };
 
+            if ($scope.data.query !== "") {
+                postData.filter_id = $scope.data.filterId;
+                postData.query = $scope.data.query;
+            }
+
             $scope.invokeApi(RVJournalSrv.fetchPaymentDataByTransactions, postData, successCallBackFetchPaymentDataTransactions);
         }
         else {
@@ -103,8 +119,17 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
         }
     };
 
+    $scope.addListener('EXPAND_PAYMENT_SCREEN', function() {
+        
+        angular.forEach($scope.data.paymentData.payment_types, function(item, key) {
+            if ($scope.checkHasArrowFirstLevel(key)) {
+                $scope.clickedFirstLevel(key, true);
+            }
+        });
+    }); 
+
     /** Handle Expand/Collapse of Level1 **/
-    $scope.clickedFirstLevel = function(index1) {
+    $scope.clickedFirstLevel = function(index1, shouldExpandSecondLevel) {
 
         var toggleItem = $scope.data.paymentData.payment_types[index1];
 
@@ -123,6 +148,14 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
             // For Credit cards , level-2 data already exist , so just do expand/collapse only ..
             toggleItem.active = !toggleItem.active;
             refreshPaymentScroll();
+            if (shouldExpandSecondLevel) {
+                angular.forEach($scope.data.paymentData.payment_types[index1].credit_cards, function(item, key) {
+                    if ($scope.checkHasArrowSecondLevel(index1, key)) {
+                        $scope.clickedSecondLevel(index1, key);
+                    }
+                });
+                
+            }
         }
     };
 
@@ -149,7 +182,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
         if ((typeof item.credit_cards !== 'undefined') && (item.credit_cards.length > 0)) {
             hasArrow = true;
         }
-        else if ((typeof item.transactions !== 'undefined') && (item.transactions.length > 0)) {
+        else if (item.number > 0) {
             hasArrow = true;
         }
         return hasArrow;
@@ -158,9 +191,9 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
     /* To hide/show arrow button for Level2 */
     $scope.checkHasArrowSecondLevel = function(index1, index2) {
         var hasArrow = false,
-        item = $scope.data.paymentData.payment_types[index1].credit_cards[index2].transactions;
+        item = $scope.data.paymentData.payment_types[index1].credit_cards[index2];
 
-        if ((typeof item !== 'undefined') && (item.length > 0)) {
+        if (item.number > 0) {
             hasArrow = true;
         }
         return hasArrow;

@@ -39,8 +39,8 @@
 				</ul>
 				<p class="rate">
 					<span class="number" ng-show="!isStayRatesSuppressed">
-						<span id="avg-daily-rate">{{currencySymbol}}{{avgRate}}</span>
-						/<strong id="total-stay-cost">{{currencySymbol}}{{totRate}}</strong>
+						<span id="avg-daily-rate">{{totCurrencySymbol}}{{avgRate}}</span>
+						/<strong id="total-stay-cost">{{totCurrencySymbol}}{{totRate}}</strong>
 					</span>
 					<span class="number" ng-show="isStayRatesSuppressed">
 						<span id="avg-daily-rate" translate>SUPPRESSED_RATES_TEXT</span>
@@ -120,7 +120,7 @@
 		<div id="unassign-room" class="details scrollable">
 			<div class="wrapper">
 				<h3 class="unnasign-from-guest">
-					<span ng-repeat="restriction in stayDetails.restrictions">
+					<span ng-repeat="restriction in stayDetails.restrictions | unique: restriction.name">
                         {{restriction.name}}
                         <span ng-show="restriction.days!= null">&nbsp;{{'OF'|translate}}&nbsp;</span>
                         <strong>{{restriction.days}}</strong>{{$last ? '' : ', '}}

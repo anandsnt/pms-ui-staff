@@ -10,6 +10,7 @@ sntRover.controller('RVAccountReceivableMessagePopupCtrl',
 
 	$scope.isCreateNewARAccountMode = false;
 	$scope.data = {};
+	$scope.isCreateButtonDisabled = false;
 
 	$scope.createAccountAction = function() {
 
@@ -39,13 +40,17 @@ sntRover.controller('RVAccountReceivableMessagePopupCtrl',
 	$scope.failureCreate = function(errorMessage) {
 		$scope.$emit("hideLoader");
 		$scope.errorMessage = errorMessage;
+		$scope.isCreateButtonDisabled = false;
+		if ($scope.errorMessage[0] === "Please complete required AR Account Information") {
+			$scope.isCreateButtonDisabled = true;
+		}
 	};
 
 	$scope.createAccountReceivable = function( isAutoAssignARNumber ) {
 
 		var data = {
 			"id": $scope.reservationBillData.bills[$scope.currentActiveBill].account_id,
-			"ar_number": isAutoAssignARNumber ? "" : $scope.data.ar_number
+			"ar_number": isAutoAssignARNumber ? "" : $scope.data.ar_number			
 		};
 
 		$scope.invokeApi(RVCompanyCardSrv.saveARDetails, data, $scope.successCreate, $scope.failureCreate);

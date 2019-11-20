@@ -8,7 +8,7 @@
     <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
     <fieldset class="holder left">
 
-        <ad-checkbox ng-if="config.historical_data_sync_items && !isExport"
+        <ad-checkbox ng-if="historical_data_sync_items && !isExport"
                      is-checked="syncHistoricalData"
                      is-disabled="disableSyncHistoricalDataToggle"
                      change="onToggleHistoricalSync"

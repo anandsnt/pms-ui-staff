@@ -46,9 +46,7 @@
     // end of analytic code
 </script>
 
-<div ng-show="hasLoader" id="loading">
-    <div id="loading-spinner"></div>
-</div>
+<activity-indicator></activity-indicator>
 
 <div class='oos_reason' ng-show='zestStationData.workstationStatus === "out-of-order" && zestStationData.timeDebugger !== "true" && zestStationData.theme === "yotel"'>
     {{zestStationData.workstationOooReason}}
@@ -65,24 +63,6 @@
 
 <div ng-include="'/assets/partials_v2/zsTabletHeader.html'"></div>
 
-
-<div class="popup iframe-popup open" ng-show="zestStationData.showTemplateList">
-<i class="close-popup" touch-press='zestStationData.showTemplateList = false' ></i>
-    <div class="popup-content iframe-content">
-        <div class='template-switch-container'>
-            <div ng-repeat="(key, value) in themeTemplateList" class='template-switch-box' touch-press="selectThemeFromTemplateList(value.name)" ng-style="{'background-image':'url(/assets/zest_station/css/icons/default/previews/{{value.name}}.png)'}">
-                <span class='theme-switch-name'>
-                    {{value.name}}
-                </span>
-            </div>
-            <div ng-show='softResetCount==0' class='template-switch-box' touch-press="selectThemeFromTemplateList('sonic')" ng-style="{'background-image':'url(/assets/zest_station/css/icons/default/previews/sonic.png)'}">
-                <span class='theme-switch-name'>
-                    Sonic Switcher
-                </span>
-            </div>
-        </div>
-    </div>
-</div>
 <!-- Popup -->
 <div class="popup" ng-class="{'open':zestStationData.timeOut && !showLanguagePopup}">
     <!-- Remove class "open" to hide popup content -->

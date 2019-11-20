@@ -12,6 +12,7 @@
     @actionBackground:      @brandColor;
     
     @inputBackground:       #707070;
+    @inputColor:            @white;
     @transparentColor:      rgba(0,0,0,.35);
 
 /* 2. TYPOGRAPHY
@@ -56,6 +57,10 @@
             fill: @actionBackground !important;
             stroke: @actionBackground !important;
         }
+
+        &.icon-arrow-down {
+            fill: @brandColor;
+        }
     }
 
 /* 4. LAYOUT
@@ -70,11 +75,6 @@
             width: 300px;
             background-position: center;
             height: 120px;
-        }
-
-        input,
-        select {
-            color: @white;
         }
 
         #header {
@@ -214,6 +214,17 @@
 
             &.popup-content {
                 background: @white;
+            }
+        }
+
+        .minibar-item,
+        .minibar-review .review-container {
+            background: rgba(0,0,0,0.05);
+        }
+
+        .minibar-item {
+            .minibar-item {
+                background: transparent;
             }
         }
     }

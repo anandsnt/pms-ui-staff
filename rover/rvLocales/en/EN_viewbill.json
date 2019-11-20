@@ -29,6 +29,7 @@
     "DESCRIPTION" : "Description",
     "CREDITS" : "Credits",
     "STAY_FEES_AS_OF": "Stay fees (as of",
+    "ALLOWANCE_SPILLAGE_INCLUDE_HINT": ", includes spillage",
     "BALANCE_AS_OF" : "Balance (as of",
     "GUEST_BALANCE_AS_OF": "Guest Balance (as of",
     "MOVE_TO_BILL" : "Move to bill",

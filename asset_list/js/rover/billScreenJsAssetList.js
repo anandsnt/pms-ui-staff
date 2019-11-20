@@ -16,6 +16,7 @@ module.exports = {
 				controllerRoot + 'postCharge/*.js',
 				servicesRoot + "postCharge/*.js",
 				controllerRoot + "billFormat/rvBillFormatPopupController.js",
+				controllerRoot + "paymentReceipt/**/*.js",
 				servicesRoot + "bill/**/*.js",
 
                 // Eliminate all spec files

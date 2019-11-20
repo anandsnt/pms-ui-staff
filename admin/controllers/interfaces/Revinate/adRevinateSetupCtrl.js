@@ -1,6 +1,7 @@
 admin.controller('adRevinateSetupCtrl', ['$scope', '$rootScope', 'config', 'adInterfacesCommonConfigSrv', 'dateFilter',
     function($scope, $rootScope, config, adInterfacesCommonConfigSrv, dateFilter) {
-
+        BaseCtrl.call(this, $scope);
+        
         var interfaceIdentifier = 'revinate';
 
         $scope.sync = {
@@ -13,9 +14,13 @@ admin.controller('adRevinateSetupCtrl', ['$scope', '$rootScope', 'config', 'adIn
         };
 
         $scope.saveInterfaceConfig = function() {
+            var params = dclone($scope.config);
+
+            $scope.deletePropertyIfRequired(params, 'password');
+
             $scope.callAPI(adInterfacesCommonConfigSrv.saveConfiguration, {
                 params: {
-                    config: $scope.config,
+                    config: params,
                     interfaceIdentifier: interfaceIdentifier
                 },
                 onSuccess: function() {
@@ -64,6 +69,7 @@ admin.controller('adRevinateSetupCtrl', ['$scope', '$rootScope', 'config', 'adIn
             //    init
             $scope.config = config;
             $scope.interface = interfaceIdentifier;
+            $scope.setDefaultDisplayPassword($scope.config, 'password');
         })();
     }
 ]);

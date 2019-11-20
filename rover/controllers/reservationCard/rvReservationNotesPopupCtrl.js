@@ -96,7 +96,7 @@ sntRover.controller('RVReservationNotesPopupCtrl', ['$scope', '$rootScope', func
 	// CICO-24928
 	$scope.clickedOnNote = function(note) {
         $scope.editingNote  = note;
-        $scope.reservationnote = note.text;
+        $scope.reservationnote = note.text.replace(new RegExp('<br/>', 'g'), '\n');
     };
     // CICO-24928
     $scope.cancelEditModeReservationNote = function() {

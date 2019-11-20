@@ -130,9 +130,10 @@
         </div>
 
         <div class="entry button-grp">
-            <button type="button" class="button blank" ng-click="closeDialogImmediately()" translate>CLOSE_WINDOW
+            <button type="button" class="button blank" ng-click="closeDialogImmediately()" ng-hide="isIpad" translate>CLOSE_WINDOW
             </button>
             <button type="button" class="button green" ng-click="refreshDeviceStatus()" translate>REFRESH</button>
+            <button type="button" class="button blue" ng-click="sendLogFiles()" ng-show="isIpad" translate>SEND_LOG_FILES</button>
         </div>
     </div>
 </div>

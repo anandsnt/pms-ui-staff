@@ -266,13 +266,18 @@ admin.controller('ADStationaryCtrl',
 		$scope.currentSocialLink = false;
 	};
 
-	$scope.isLinkAvailable = function(index) {
-		if ( $scope.currentSocialLink == 'NEW') {
-			return _.pluck($scope.data.social_network_links, "type").indexOf($scope.socialNetworks[index].name) == -1; 
-		} else {
-			return _.pluck($scope.data.social_network_links, "type").indexOf($scope.socialNetworks[index].name) == -1 || $scope.data.social_network_links[$scope.currentSocialLink].type == $scope.socialNetworks[index].name;
-		}
-	};
+    $scope.isLinkAvailable = function (index) {
+        var socialNetworkName = $scope.socialNetworks[index].name,
+            linkType = _.pluck($scope.data.social_network_links, "type"),
+            networkLink = $scope.data.social_network_links[$scope.currentSocialLink] || {};
+
+        if ($scope.currentSocialLink === 'NEW') {
+            return linkType.indexOf(socialNetworkName) === -1;
+        }
+        return linkType.indexOf(socialNetworkName) === -1 ||
+            (networkLink.type === socialNetworkName);
+
+    };
 
 	/*
 	* Get invoked when the locale is changed

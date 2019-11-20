@@ -26,7 +26,14 @@
                 </fieldset>
                 <fieldset class="holder right">
                     <ad-textbox value="brite.url" name="url" id="url" label="{{'BRITE_PABX_URL'| translate}}" styleclass="full-width" ng-if="brite.enabled"></ad-textbox>
-                    <ad-textbox value="brite.api_key" name="api-key" id="api-key" label="{{'BRITE_PABX_API_KEY'| translate}}" styleclass="full-width" ng-if="brite.enabled"></ad-textbox>                    
+                    <ad-textbox value="brite.api_key" 
+                                name="api-key" 
+                                id="api-key" 
+                                label="{{'BRITE_PABX_API_KEY'| translate}}" 
+                                styleclass="full-width" 
+                                ng-if="brite.enabled"
+                                inputtype="password"
+                                click-handler="onPasswordClick(brite, 'api_key')"></ad-textbox>                    
                 </fieldset>                
             </fieldset>
 

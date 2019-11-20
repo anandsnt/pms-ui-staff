@@ -73,6 +73,27 @@ describe('rvReservationAdditionalController', function () {
                 $scope.updateTaxExemptData();
 
                 expect(RVReservationSummarySrv.saveTaxExempt).toHaveBeenCalled();
+                
+            });
+
+            // =======================
+            it('save tax exempt to have deen called and the values set when tax exempt not enabled', function() {
+
+                spyOn(RVReservationSummarySrv, "saveTaxExempt").and.callFake(function() {
+                    var deferred = $q.defer();
+
+                    deferred.resolve();
+                    return deferred.promise;
+                });
+
+                $scope.additionalDetails = {};
+                $scope.reservationParentData.reservationId = 14578;
+                $scope.additionalDetails.isTaxExemptEnabled = false;     
+
+                $scope.updateTaxExemptData();
+
+                expect(RVReservationSummarySrv.saveTaxExempt).toHaveBeenCalled();
+                expect($scope.additionalDetails.taxExemptRefText).toBe("");
             });
         });    
 });

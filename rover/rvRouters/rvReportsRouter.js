@@ -71,7 +71,18 @@ angular.module('reportsModule', [])
             controller: 'RVScheduleReportsAndExportsCtrl',
             params: {
                 showScheduledReports: false,
-                showScheduledExports: false
+                showScheduledExports: false,
+                showCustomExports: false
+            }
+        });
+
+        $stateProvider.state('rover.reportAnalytics', {
+            url: '/reportAnalytics',
+            templateUrl: '/assets/partials/reports/reportAnalytics/rvReportAnalytics.html',
+            controller: 'RVReportAnalyticsCtrl',
+            lazyLoad: function($transition$) {
+                return $transition$.injector().get('jsMappings').
+                fetchAssets(['rover.reportAnalytics']);
             }
         });
 

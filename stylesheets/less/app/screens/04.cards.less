@@ -570,7 +570,6 @@
                     }
                     
                     .entry {
-                        #fade > .in();
                         #pixel-to-percent > .width(432, 904);
 
                         label { margin-bottom: 0; }
@@ -595,9 +594,14 @@
                             #border-radius > .rounded();
                             .show;
 
-                            &:hover,
-                            &:active { background-position: 95% -140px !important; }
+                            &:hover:not([disabled]),
+                            &:active:not([disabled]) { background-position: 95% -140px !important; }
 
+                            &[disabled] {
+                                cursor: default;
+                                background-color: rgba(0, 0, 0, 0.01) !important;
+                            }
+                            
                             @media @highdpi { background-image: @calendar2x; }
                         }
 
@@ -715,7 +719,7 @@
 
                                 &.with-icon {
                                     padding: 0 20px 0 40px;
-                                    font-size: 16px;
+                                    font-size: 14px;
                                     line-height: 40px;
                                     overflow: visible;
                                     .size(40px, auto);
@@ -754,61 +758,6 @@
 
                                     &:last-child { margin-right: 0; }
                                 }
-                            }
-                        }
-
-                        &.find-rate {
-                            position: relative;
-                            
-                            .clear-query {
-                                position: absolute;
-                                top: 24px;
-                                right: 0;
-                                z-index: 99;
-                                visibility: hidden;
-                                background: @white;
-                                #border-radius > .right();
-                                .box-shadow(inset -1px 1px 1px rgba(0, 0, 0, .15));
-                                .square(40px);
-
-                                .icons {
-                                    position: absolute;
-                                    top: 12.5px;
-                                    right: 12.5px;
-                                    background-color: @grey2;
-                                    .hide-text;
-                                    .square(15px);
-                                    .opacity(0);
-                                    .show;
-                                    #fade > .out();
-                                    #border-radius > .rounded(15px);
-                                }
-
-                                &.visible { 
-                                    visibility: visible;
-
-                                    .icons {    
-                                        .opacity(100); 
-                                        #fade > .in(); 
-                                    }
-                                }
-
-                                &:hover,
-                                &.active { 
-                                    .icons { background-color: @logoPrimary; }
-                                }
-                            }
-
-                            input {
-                                padding-right: 40px;
-                                .nowrap();
-                            }
-
-                            .mini-select {
-                                position: absolute;
-                                top: 24px;
-                                right: 0;
-                                z-index: 9;
                             }
                         }
 
@@ -889,98 +838,99 @@
 
                         &.card-buttons {
                             .button {
-                                margin-bottom:10px;
+                                &:not(:last-child) { margin-bottom: 10px; }
+                                &:nth-child(even) { margin-left: 20px; }
                             }
                         }
+
 
                         &.has-datepicker {
                             .ui-datepicker-trigger { top: 24px; }
                         }
 
                         &.commission {
-                            .float;
+                            width: 100%;
+                            display: grid;
+                            grid-template-columns: calc(~'20% - 10px') calc(~'16% - 10px') calc(~'14% - 10px') 50%;
+                            grid-column-gap: 10px;
+                            margin-right: 0;
+
+                            label {
+                                grid-row: 1;
+                            }
+
+                            .switch-button,
+                            input,
+                            .select {
+                                grid-row: 2;
+                            }
 
                             .switch-button {
-                                margin-right: 10px;
                                 height: 40px;
-                                .calc-width(45, 10);
-                                .pull-left;
 
-                                input[type="checkbox"] { 
+                                input[type="checkbox"] {
                                     line-height: 40px;
                                     height: 40px;
-                                }   
-
-                                .data-off,
-                                .data-on {
-                                    line-height: 30px;
-                                    height: 30px;
-                                }   
-                            }
-
-                            input[type="text"] { 
-                                margin-right: 10px;
-                                .calc-width(30, 10);
-                                .pull-left;
-                            }
-
-                            .select { 
-                                .size(40px, 25%);
-                                .pull-left;
-                            }
-
-                            .checkbox { width: 100%; }
-                        }
-
-                        &.tax-exempt {
-                            .float;
-
-                            .switch-button {
-                                .pull-left;
-                                .size(40px, 120px);
-
-                                input[type="checkbox"] { 
-                                    line-height: 40px;
-                                    .size(40px, 100%);
-                                }   
-
-                                .data-off,
-                                .data-on {
-                                    left: auto;
-                                    line-height: 30px;
-                                    height: 30px;
-
-                                    &.data-off { 
-                                        right: -100%;
-
-                                        .switch-icon { 
-                                            margin: 0 5px 0 0; 
-                                        }
-                                    }
-                                    
-                                    &.data-on { 
-                                        right: 0;
-
-                                        .switch-icon { 
-                                            margin: 0 0 0 5px; 
-                                        }
-                                    }
                                 }
 
-                                &.on {
-                                    .data-off { right: 0; }
-                                    .data-on { right: 100%; }
+                                .data-off,
+                                .data-on {
+                                    line-height: 30px;
+                                    height: 30px;
                                 }
                             }
 
                             .select {
-                                margin-left: 10px;
-                                width: 180px;
-                                .pull-left;
+                                height: 40px;
+
+                                &:not(:first-of-type) {
+                                    #pixel-to-percent > .left-margin(40, 904);
+                                }
+                            }
+
+                            .checkbox {
+                                grid-column: span 2;
                             }
                         }
 
-                        &.hidden { #fade > .out(); }
+                        &.tax-exempt {
+                            width: 100%;
+                            display: grid;
+                            grid-template-columns: 120px calc(~'100% - 130px');;
+                            grid-column-gap: 10px;
+                            grid-row-gap: 10px;
+
+                            label {
+                                grid-row: 1;
+                            }
+
+                            .switch-button {
+                                grid-row: 2;
+                                height: 40px;
+
+                                input[type="checkbox"] {
+                                    line-height: 40px;
+                                    height: 40px;
+                                }
+
+                                .data-off,
+                                .data-on {
+                                    line-height: 30px;
+                                    height: 30px;
+                                }
+                            }
+
+                            .select {
+                                grid-row: 2;
+                                height: 40px;
+                            }
+
+
+                            textarea {
+                                grid-row: 3;
+                                grid-column: span 2;
+                            }
+                        }
                     }
 
                     &.left {
@@ -1429,66 +1379,712 @@
 
                 /* Contracts ***/
                 &.contracts {
-                    
+
                     .tab-header {
-                        padding: 20px;
+                        height: 60px;
+                        background-color: rgba( 0, 0, 0, 0.1 );
+                        #flexbox > .parent( row, '', center, '' );
 
-                        .entry {
-                            .calc-width(100, 240);
-                            .float;
-
-                            input,
-                            .select { 
-                                width: 220px;
-                                margin-right: 10px;
-                                .pull-left; 
-                            }
-
-                            .button { 
-                                width: 80px;
-                                .pull-left; 
-                            }
+                        .search-form {
+                            background: transparent;
+                            .calc-width( 100, 140 );
                         }
 
                         .actions {
-                            .button {
-                                &.green {
-                                    width: 120px;
-                                    margin-right: 0;
-                                }
-
-                                &.blank { 
-                                    width: 90px;
-                                    margin-right: 10px; 
-                                }
-                            }
+                            width: 140px;
+                            padding-right: 15px;
                         }
                     }
 
                     .tab-details {
-                        .holder {
-                            margin-bottom: 20px;
+                        height: 100%;
+
+                        &.searching {
+                            .calc-height( 100, 60 );
                         }
-                        
-                        .contract-stats {
-                            li {
-                                color: @grey3;
-                                text-transform: uppercase;
-                                margin-bottom: 20px;
-                                line-height: 30px;
-                                .float;
 
-                                span {
-                                    font-size: 30px;
-                                    font-weight: 300;
-                                    color: @textColor;
-                                    text-transform: none;
-                                    .pull-right;
+                        &.no-content {
+                            .icon-no-content { height: 90px; }
+                            .info {
+                                .h1 { margin-bottom: 0; }
+                                .h2 { margin-bottom: 20px; }
+                                .button {
+                                    height: 60px;
+                                    font-size: 18px;
 
-                                    &.green { color: @green; }
-                                    &.red { color: @red; }
-                                    &.blue { color: @blue; }
+                                    &:not(:last-child) {
+                                        margin-right: 10px;
+                                    }
                                 }
+                            }
+                        }
+
+                        &:not(.no-content):not(.searching) {
+                            #flexbox > .parent( row, '', '', '' );
+                        }
+
+                        .contracts-search-results { height: 100%; }
+                        .contracts-search-results-content {
+                            position: relative;
+                            .calc-height( 100, 40 );
+
+                            .iScrollVerticalScrollbar { top: 0; }
+            
+                            .search-results {
+                                padding-top: 0;
+                                padding-bottom: 20px;
+                            }
+                        }
+                        .contracts-search-results-header {
+                            padding: 15px 15px 5px 15px;
+                            height: 40px;
+                            font-size: 14px;
+                            text-transform: uppercase;
+                            color: @grey3;
+                            font-weight: 600;
+                            #flexbox > .parent( row, '', '', '' );
+
+                            li {
+                                margin: 0;
+                            }
+                            .contract-status {
+                                width: 90px;
+                            }
+
+                            .contract-dates {
+                                width: 100px;
+                            }
+
+                            .contract-rates {
+                                .calc-width( 100, 550)
+                            }
+
+                            .contract-details {
+                                width: 350px;
+                            }
+
+                            .contract-details {
+                                padding-left: 15px;
+                            }
+                        }
+
+                        .contracts-list {
+                            position: relative;
+                            background: rgba(0,0,0,.1);
+                            .size( 100%, 265px );
+                            .box-shadow( inset -2px 0px 0 rgba(0, 0, 0, 0.15));
+
+                            .no-content {
+                                padding: 0;
+
+                                .icon-no-content {
+                                    &.icon-contracts-black {
+                                        opacity: 0.15;
+                                        background-size: 80px;
+                                        background-position: -10px -1612px;
+                                        .square(60px);
+                                    }
+                                }
+
+                                .h1 {
+                                    font-size: 18px;
+                                    margin-bottom: 0;
+                                }
+
+                                .h2 {
+                                    font-size: 16px;
+                                    line-height: 16px;
+                                }
+                            }
+
+                            .contracts-list-items {
+                                position: relative;
+                                height: 100%;
+
+                                .wrapper {
+                                    padding: 20px;
+                                }
+
+                                .button {
+                                    width: 100%;
+                                    font-size: 14px;
+                                }
+
+                                .contract-list-items-section {
+
+                                    h2 {
+                                        padding: 0 40px 0 20px;
+                                        font-size: 16px;
+                                        font-weight: 600;
+                                        text-transform: uppercase;
+                                        background: rgba(0, 0, 0, 0.05);
+                                        width: 100%;
+                                        height: 40px;
+                                        line-height: 40px;
+                                        position: relative;
+                                        cursor: pointer;
+                                        #flexbox > .parent( row, space-between, '', '' );
+
+                                        .icons {
+                                            &.icon-double-arrow {
+                                                &.black {
+                                                    position: absolute;
+                                                    top: 12px;
+                                                    right: 18px;
+                                                    width: 14px;
+                                                    height: 13px;
+                                                    background-size: 100px;
+                                                    opacity: 0.3;
+                                                    background-position: 0px -1282px;
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    ul {
+                                        display: none;
+
+                                        li {
+                                            height: 50px;
+                                            margin: 0;
+                                            padding: 10px 20px;
+                                            cursor: pointer;
+
+                                            &.active {
+                                                cursor: default;
+                                                .background(@white);
+                                                .box-shadow(0px 2px 0 rgba(0, 0, 0, 0.15));
+                                            }
+
+                                            &.inactive {
+                                                color: @grey3;
+                                            }
+
+                                            &:not(:last-child):not(.active) {
+                                                .box-shadow(0px 1px 1px rgba(0, 0, 0, 0.1));
+                                            }
+
+                                            .item-title {
+                                                font-size: 16px;
+                                                font-weight: 600;
+                                                .nowrap();
+                                            }
+
+                                            .item-info {
+                                                font-size: 14px;
+                                                color: @grey3;
+                                                line-height: 1;
+                                                #flexbox > .parent( row, space-between, '', '' );
+                                            }
+                                        }
+                                    }
+
+                                    &.open {
+                                        h2 {
+                                            .icons {
+                                                &.icon-double-arrow {
+                                                    &.black {
+                                                        top: 13px;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        ul {
+                                            display: block;
+                                        }
+                                    }
+
+                                    &.no-items {
+                                        h2 {
+                                            color: @grey3;
+                                        }
+                                    }
+
+                                    &:not(.open):not(:last-child) {
+                                        border-bottom: 1px solid rgba( 0, 0, 0, 0.1 );
+                                    }
+                                }
+
+                                .account-linked-contracts {
+                                    .box-shadow( 1px 1px 0px rgba( 0, 0, 0, 0.15));
+                                    .contract-list-items-section {
+                                        h2 {
+                                            background: rgba( 255, 255, 255, 0.5 );
+                                            padding: 0 30px 0 10px;
+
+                                            .icons {
+                                                &.icon-double-arrow {
+                                                    &.black {
+                                            
+                                                        right: 9px;
+                                                         
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        ul {
+                                            li {
+                                                padding: 10px 25px 10px 10px;
+                                                background: @white;
+                                                border-bottom: 1px solid rgba( 0, 0, 0, 0.15 );
+                                                position: relative;
+
+                                                .icons {
+                                                    &.icon-contracts {
+                                                        position: absolute;
+                                                        right: 7px;
+                                                        top: 0;
+                                                        bottom: 0;
+                                                        margin: auto;
+                                                        .square( 15px );
+                                                    }
+                                                }
+
+                                                .item-info {
+                                                    color: rgba( 0, 0, 0, 0.35 );
+                                                    #flexbox > .parent( row, flex-start, '', '' );
+
+                                                    .icon-single-arrow {
+                                                        .opacity(35);
+                                                        margin: 0 5px;
+                                                    }
+                                                }
+
+                                                &.active {
+                                                    .item-title { color: @white; }
+                                                    .gradient (@logoGradientEnd, @logoGradientStart);
+                                                }
+                                            }
+                                        }
+
+                                        &:last-child {
+                                            ul {
+                                                li {
+                                                    &:last-child {
+                                                        border-bottom: none;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                .contract-link {
+                                    position: relative;
+                                    height: 40px;
+                                    #flexbox > .parent( row, center, center, '' );
+                                    &:not(.without-lines) {
+                                        .size( 60px, 100% );
+
+                                        &:before,
+                                        &:after {
+                                            content: '';
+                                            position: absolute;
+                                            width: 2px;
+                                            height: calc(~"50% - 10px");
+                                            background: rgba( 0, 0, 0, 0.15 );
+                                        }
+
+                                        &:before {
+                                            top: 0;
+                                            left: calc(~"50% - 1px");
+                                        }
+
+                                        &:after {
+                                            bottom: 0;
+                                            left: calc(~"50% - 1px");
+                                        }
+                                    }
+
+                                    &.without-lines {
+                                        background: rgba(255, 255, 255, 0.5);
+                                        padding: 0 30px 0 10px;
+                                        text-align: left;
+                                        justify-content: left;
+                                        .box-shadow(1px 0 1px rgba( 0, 0, 0, 0.15));
+                                    }
+                                    
+                                    span {
+                                        font-size: 14px;
+                                        line-height: 14px;
+                                        text-transform: uppercase;
+                                        font-weight: 600;
+                                    }
+                                }
+
+                                .contract {
+                                    padding: 10px 25px 10px 10px;
+                                    background-color: @white;
+                                    background-position: calc(~"100% - 10px" ) 50%;
+                                    cursor: pointer;
+                                    .box-shadow();
+
+                                    &.with-image {
+                                        position: relative;
+                                        padding-left: 45px;
+                                        min-height: 50px;
+                                        display: flex;
+                                        flex-direction: column;
+                                        justify-content: center;
+                                        
+                                        &:not(:last-child) {
+                                            margin-bottom: 10px;
+                                        }
+
+                                        .guest-image {
+                                            position: absolute;
+                                            top: 10px;
+                                            left: 10px;
+                                            .square(25px);
+
+                                            &.icons {
+                                                background-size: 80px;
+                                            }
+                        
+                                            &.icon-company {
+                                                background-color: @ccard;
+                                                background-position: 8px -2340px;
+                                            }
+                        
+                                            &.icon-travel-agent {
+                                                background-color: @tacard;
+                                                background-position: 5px -2381px;
+                                            }
+                                        }
+                                    }
+
+                                    .item-title {
+                                        color: @black;
+                                        font-size: 16px;
+                                        font-weight: 700;
+                                    }
+
+                                    .item-info {
+                                        font-size: 14px;
+                                        color: @grey3;
+                                        line-height: 1;
+                                        #flexbox > .parent( row, flex-start, '', '' );
+
+                                        .icon-single-arrow {
+                                            .opacity(35);
+                                            margin: 0 5px;
+                                        }
+                                    }
+                                }
+
+                                .iScrollVerticalScrollbar .iScrollIndicator {
+                                    background: rgba(0,0,0,0.15);
+                                }
+                            }
+
+                            .contracts-list-actions {
+                                display: block;
+                                background: #d0d0d0;
+                                position: absolute;
+                                left: 0;
+                                bottom: 0;
+                                padding: 20px;
+                                .size( 80px, 100% );
+                                .box-shadow(inset -2px 1px 0 rgba(0, 0, 0, 0.15));
+
+                                .button {
+                                    width: 100%;
+                                    font-size: 14px;
+
+                                    &:not(:last-child) {
+                                        margin-bottom: 10px;
+                                    }
+                                }
+                            }
+
+                            &.with-actions {
+                                .contracts-list-items {
+                                    .calc-height( 100, 80 );
+                                }
+
+                                &.actions-2 {
+                                    .contracts-list-items {
+                                        .calc-height( 100, 130 );
+                                    }
+
+                                    .contracts-list-actions {
+                                        height: 130px;
+                                    }
+                                }
+                            }
+                        }
+
+                        .contracts-details {
+                            height: 100%;
+                            position: relative;
+                            .calc-width( 100, 265 );
+
+                            .contract-details-footer {
+                                height: 60px;
+                                padding: 10px 15px;
+                                background: @white;
+                                position: relative;
+                                z-index: 10;
+                                .box-shadow(0px -1px 0 rgba(0, 0, 0, 0.15));
+                                #flexbox > .parent( row, flex-end, '', '' );
+
+                                .button {
+                                    &.red {
+                                        margin-right: auto;
+                                    }
+                                }
+                            }
+
+                            .contracts-details-form {
+                                position: relative;
+                                .calc-height( 100, 60 );
+
+                                input[disabled]:not(.icons) {
+                                    color: @black;
+                                    -webkit-text-fill-color: @black;
+                                }
+
+                                &.without-footer {
+                                    height: 100%;
+                                }
+
+                                > .wrapper { padding: 20px; }
+
+                                .switch-button {
+                                    max-width: 175px;
+
+                                    .data-on {
+                                        right: 100%;
+                                    }
+                                    .data-off {
+                                        right: 0;
+                                    }
+
+                                    &.on {
+                                        .data-on {
+                                            right: 0;
+                                        }
+                                        .data-off {
+                                            right: -100%;
+                                        }
+                                    }
+
+                                    .switch-icon {
+                                        .gradient(@grey2, @grey3);
+                                    }
+
+                                    .data-on {
+                                        .switch-icon {
+                                            .gradient(@greenStart, @greenEnd);
+                                        }
+                                    }
+
+                                    &.disabled {
+                                        .value { opacity: 0; }
+                                        .switch-icon {
+                                            .gradient-important(@grey2, @grey3);
+                                        }
+    
+                                        .data-on {
+                                            .switch-icon {
+                                                .gradient-important(@greenStart, @greenEnd);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                .autocomplete-search {
+                                    &:not(.searching):not(.compact) {
+                                        .search {
+                                            padding: 0;
+
+                                            .icon-search {
+                                                top: 10px;
+                                                left: 10px;
+                                            }
+
+                                            .clear-query {
+                                                top: 0;
+                                                right: 0;
+                                            }
+                                        }
+                                    }
+
+                                    &.compact {
+                                        margin: 0;
+                                        background: @white;
+                                        .box-shadow(); 
+
+                                        .search {
+                                            input {
+                                                background: @background;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                .find-rate {
+
+                                    .card {
+                                        #flexbox > .parent( row, space-between, '', '' );
+
+                                        .rate-name {
+                                            padding-right: 10px;
+                                            .nowrap();
+                                        }
+
+                                        .rate-code {
+                                            color: @grey3;
+                                            font-size: 14px;
+                                        }
+
+                                        &.linked {
+                                            position: relative;
+                                            padding-right: 30px;
+
+                                            span:not(.highlight) {
+                                                opacity: 0.35;
+                                            }
+
+                                            &:after {
+                                                content: '';
+                                                .icons();
+                                                position: absolute;
+                                                width: 14px;
+                                                height: 14px;
+                                                right: 10px;
+                                                top: 0;
+                                                bottom: 0;
+                                                margin: auto;
+                                                background-size: 60px;
+                                                background-position: 0px -3679px;
+
+                                                @media @highdpi {
+                                                    background-size: 60px;
+                                                }
+                                            }
+
+                                        }
+                                    }
+                                }
+
+                                .contracted-rates {
+                                    li {
+                                        background-color: @white;
+                                        font-weight: 600;
+                                        padding: 10px 40px 10px 10px;
+                                        list-style: none;
+                                        position: relative;
+                                        #flexbox > .parent( row, space-between, '', '' );
+                                        .box-shadow();
+
+                                        &:not(:last-child) {
+                                            margin-bottom: 10px;
+                                        }
+
+                                        .rate-remove {
+                                            position: absolute;
+                                            right: 0;
+                                            height: 100%;
+                                            width: 40px;
+                                            top: 0;
+                                            box-shadow: none;
+                                            background: transparent;
+                                            border: none;
+                                            cursor: pointer;
+                                        }
+
+                                        .icons {
+                                            &.icon-remove-10 {
+                                                background-position: 3px -2624px;
+                                                background-size: 80px;
+                                                margin: auto;
+                                                border-radius: 14px;
+                                                background-color: @grey1;
+                                            }
+                                        }
+
+                                        .rate-name {
+                                            padding-right: 10px;
+                                            .nowrap();
+                                        }
+
+                                        .rate-code {
+                                            color: @grey3;
+                                            font-size: 14px;
+                                            font-weight: 400;
+                                        }
+                                    }
+
+                                    &.disabled {
+                                        li {
+                                            cursor: default;
+                                            padding-right: 10px;
+                                            color: @grey3;
+
+                                            .rate-remove { .hide(); }
+                                        }
+                                    }
+
+                                    &.compact {
+                                        li {
+                                            margin: 0;
+                                            &:not(:last-child) {
+                                                border-bottom: 1px solid rgba( 0, 0, 0, 0.15 );
+                                            }
+                                        }
+
+                                        &.disabled {
+                                            li {
+                                                color: @black;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        .holder {
+                            &.left {
+                                margin-right: 40px;
+                                .calc-width( 100, 340 );
+                            }
+
+                            &.right {
+                                width: 300px;
+
+                                .button { 
+                                    width: 100%; 
+
+                                    &:not(:last-child) {
+                                        margin-bottom: 10px;
+                                    }
+                                }
+                            }
+                        }
+
+                        /* Occupancy graph ***/
+                        .occupancy-graph {
+                            position: relative;
+                            clear: both;
+                            background-color: @white;
+                            padding: 20px;
+                            margin-bottom: 20px;
+                            .box-shadow();
+                            #border-radius > .rounded();
+                            .show;
+
+                            .h3 {
+                                position: absolute;
+                                top: 20px;
+                                left: 20px;
+                                font-weight: 400;
+                            }
+
+                            .temporary-graph {
+                                width: 100%;
+                                height: auto;
                             }
                         }
                     }
@@ -2335,7 +2931,7 @@
 
                         .balance {
                             padding: 15px 20px;
-                            width: 220px;
+                            width: auto;
                             #flexbox > .parent(row wrap, '', center, '');
                             
                             li {
@@ -2362,7 +2958,8 @@
 
                         .actions {
                             height: 100%;
-                            .calc-width(100, 520);
+                            width: auto;
+                            margin-left: auto;
                             #flexbox > .parent(row wrap, flex-end, center, '');
 
                             li {
@@ -2422,7 +3019,7 @@
                             padding: 10px;
                             height: 60px;
                             background: none;
-                            .calc-width(100, 430);
+                            .calc-width(100, 275);
                             .pull-left;
                             .box-shadow(none);
 
@@ -2457,28 +3054,20 @@
                         }
 
                         .actions {
-                            width: 290px;
-                            height: 60px;
                             padding: 10px;
-                            box-shadow: inset 2px 00 rgba(0,0,0,.1);
+                            box-shadow: inset 2px 0 0 rgba(0,0,0,.1);
+                            .size(60px, 135px);
                             .pull-left;
                             
-                            .checkbox {
-                                text-transform: uppercase;
-                                font-size: 14px;
-                            }
-
                             .button {
-                                &.with-icon {
-                                    padding-left: 30px;
-                                    width: auto;
+                                padding-left: 30px;
+                                width: 100%;
 
-                                    .icons {
-                                        top: 10px;
-                                        left: 16px;
-                                    }
+                                .icons {
+                                    top: 10px;
+                                    left: 16px;
                                 }
-                            }                            
+                            }                             
                         }
 
                         @media @highdpi {
@@ -2935,26 +3524,32 @@
                             .float;
 
                             li {
-                                color: @white;
-                                font-size: 14px;
+                                color: @grey4;
+                                font-size: 13px;
                                 line-height: 35px;
+                                font-weight: 600;
                                 margin: 0 5px 0 0;
+                                text-transform: uppercase;
                                 .pull-left;
 
                                 &.sort {
                                     cursor: pointer;
                                     padding: 0 20px 0 10px;
                                     background-color: @grey2;
-                                    background-position: 95% 50%;
+                                    background-position: calc(~'100% - 10px') 50%;
                                     background-repeat: no-repeat;
                                     .nowrap();
                                     .box-shadow(1px 1px 0 rgba(0,0,0,.3));
 
                                     &.sorting-asc,
-                                    &.sorting-desc { background-color: darken(@grey2, 10); }
-                                    
-                                    &.sorting-asc { background-image: @arrowSortAsc; }
-                                    &.sorting-desc { background-image: @arrowSortDesc; }
+                                    &.sorting-desc { 
+                                        color: @white;
+                                        background-color: darken(@grey2, 20); 
+                                        background-size: 14px;
+                                    }
+
+                                    &.sorting-asc { background-image: @arrowSortAsc2x; }
+                                    &.sorting-desc { background-image: @arrowSortDesc2x; }
                                 }
 
                                 &.check {
@@ -2966,8 +3561,8 @@
                                         padding: 0;
                                         .size(35px, 60px);
 
-                                        .icon-form { 
-                                            top: 7px; 
+                                        .icon-form {
+                                            top: 7px;
                                             left: 20px;
                                         }
 
@@ -3089,7 +3684,7 @@
                             z-index: 20;
                             height: 60px;
                             #fade > .in();
-                            .calc-width(100, 365);
+                            .calc-width(100, 340);
                             .pull-left();
                             .box-shadow(inset -2px 0px 1px rgba(0,0,0,0.05));
 
@@ -3143,7 +3738,6 @@
                                 }
                             }
                             
-
                             .entry {
                                 padding: 0; 
                                 .box-shadow(none);
@@ -3189,7 +3783,7 @@
                                         margin-right: 10px;
                                         padding: 0;
 
-                                        input[type=text] {
+                                        input[type=text] {
                                             padding-right: 80px;
                                             .box-shadow(inset 1px 1px 0 rgba(0,0,0,.2));
                                         }
@@ -3242,6 +3836,12 @@
                                 }
                             }
 
+                            .button-filter {
+                                margin: 0;
+                                flex-basis: 40px;
+                                flex-shrink: 0;
+                            }
+
                             &.hidden,
                             &.ng-hide {
                                 visibility: hidden;
@@ -3253,7 +3853,7 @@
                         .totals {
                             background: @background;
                             padding: 10px 10px 10px 20px;
-                            .size(60px, 365px);
+                            .size(60px, 340px);
                             .pull-right();
                             #flexbox > .parent(row, space-between, center, center);
 
@@ -3263,7 +3863,7 @@
                                 text-transform: uppercase;
                                 font-size: 14px;
                                 line-height: 16px;
-                                width: 100px;
+                                padding-right: 20px;
 
                                 .value {
                                     font-weight: 600;
@@ -3282,6 +3882,10 @@
 
                                 &.action {
                                     width: 40px;
+                                    padding-right: 0;
+                                    flex-shrink: 0;
+                                    flex-basis: 40px;
+                                    margin-left: auto;
 
                                     .button {
                                         .square(40px);
@@ -3301,6 +3905,41 @@
                                 }
                             }
                            
+                        }
+
+                        &:not(.no-filters) {
+                            .search-form {
+                                .button-filter {
+                                    .box-shadow(inset 1px 1px 1px rgba(0,0,0,.3));
+                                    .gradient (@logoGradientEnd, @logoGradientStart);
+    
+                                    .icons {
+                                        &.icon-filter {
+                                            .icons > .icon-filter.active;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        &.no-filters {
+                            .search-form {
+                                width: 300px;
+                            }
+
+                            .totals {
+                                .calc-width(100, 300);
+                            }
+
+                            &.no-multi-property {
+                                .search-form {
+                                    width: 60px;
+                                }
+    
+                                .totals {
+                                    .calc-width(100, 60);
+                                } 
+                            }
                         }
                     }
 
@@ -3352,6 +3991,11 @@
                                 &.commission,
                                 &.revenue {
                                     width: 80px;
+                                    text-align: right;
+                                }
+
+                                &.commissionable {
+                                    width: 140px;
                                     text-align: right;
                                 }
                                 
@@ -3567,6 +4211,348 @@
                                 font-weight: 600;
                                 color: @grey4;
                             }
+                        }
+                    }
+                }
+
+                /* Card Statistics ***/
+                &.card-statistics {
+
+                    .statistics-summary,
+                    .statistics-details {
+                        display: grid;
+                        grid-template-columns: 200px auto;
+                        grid-template-rows: 100%;
+                        height: 100%;
+                    }
+
+                    .sidebar,
+                    .data {
+                        height: 100%;
+                    }
+
+                    .sidebar {
+                        background: rgba( 0, 0, 0, 0.1 );
+
+                        .sidebar-content {
+                            .row {
+                                padding-right: 20px;
+                                font-weight: 600;
+                                text-transform: uppercase;
+                                line-height: 50px;
+                                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                            }
+                        }
+                    }
+
+                    .statistics-data {
+                        .box-shadow(2px 0px 5px rgba( 0, 0, 0, 1 ));
+
+                        .row {
+                            display: grid;
+                            grid-template-columns: 33.3% 33.3% 33.3%;
+                        }
+                    }
+
+                    .no-data {
+                        color: @grey3;
+                    }
+
+                    .row {
+                        height: 50px;
+                        text-align: right;
+
+                        &.white {
+                            background: white;
+                        }
+
+                        &.row-head {
+                            height: 60px;
+
+                            .column {
+                                height: 60px;
+                                line-height: 40px;
+
+                                &:first-child {
+                                    padding-right: 10px;
+                                }
+
+                                strong,
+                                select {
+                                    font-weight: 600;
+                                    text-transform: uppercase;
+                                }
+                            }
+                        }
+
+                        &:not(.row-head) {
+                            .column {
+                                font-size: 24px;
+                                font-weight: 300;
+                            }
+                        }
+                    }
+
+                    .column {
+                        padding: 10px 20px 10px 10px;
+                        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                        height: 50px;
+                        line-height: 30px;
+                        position: relative;
+
+                        strong {
+                            font-weight: 600;
+                        }
+
+                        .stat {
+                            position: absolute;
+                            top: 10px;
+                            left: 0;
+                            font-size: 14px;
+                            font-weight: 600;
+                            line-height: 30px;
+
+                            &.green {
+                                color: @green;
+                            }
+
+                            &.red {
+                                color: @red;
+                            }
+
+                            .icons {
+                                float: left;
+                            }
+
+                            .neutral {
+                                display: block;
+                                float: left;
+                                position: relative;
+                                .square(30px);
+
+                                &:after {
+                                    content: '';
+                                    position: absolute;
+                                    width: 12px;
+                                    height: 2px;
+                                    background: black;
+                                    left: 0;
+                                    top: 0;
+                                    bottom: 0;
+                                    margin: auto;
+                                    right: 0;
+                                }
+                            }
+                        }
+
+                        &.white {
+                            background: white;
+                        }
+
+                        &:not(:last-child){
+                            border-right: 1px solid rgba(0, 0, 0, 0.1);
+                        }
+                    }
+
+                    .statistics-summary {
+                        .scrollable {
+                            position: relative;
+                            .calc-height(100, 60);
+                        }
+                    }
+
+                    .statistics-details {
+                        .scrollable {
+                            position: relative;
+                            .calc-height(100, 120);
+                        }
+                        .sidebar {
+                            .row-head {
+                                padding: 10px;
+                                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                            }
+
+                            .row {
+                                position: relative;
+
+                                .icon-double-arrow {
+                                    position: absolute;
+                                    left: 10px;
+                                    top: 0;
+                                    bottom: 0;
+                                    margin: auto;
+                                    background-size: 80px;
+                                    transform: rotate(-90deg);
+                                    .square(15px);
+
+                                    &.black {
+                                        background-position: 2px -1024px;
+                                    }
+                                }
+
+                                &.open {
+                                    .icon-double-arrow {
+                                        transform: rotate(90deg);
+                                    }
+                                }
+
+                                &.open + .row {
+                                    border-top: 1px solid rgba(0, 0, 0, 0.1);
+                                }
+                            }
+                        }
+                        .statistics-data {
+                            .column { padding: 10px; }
+                            .row {
+                                grid-template-columns: 10% 10% 10% 12% 16.5% 18% auto;
+
+                                &:not(.row-head) {
+                                    .column {
+                                        font-size: 16px;
+                                        font-weight: 400;
+                                    }
+                                }
+
+                                &.row-head {
+                                    .column { 
+                                        font-size: 14px;
+                                    }
+
+                                    &:nth-child(2) {
+                                        .column {
+                                            font-size: 21px;
+                                            font-weight: 300;
+                                        }
+                                    }
+                                }
+                            }
+
+                            .statistics-reservations {
+                                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+                                .search-results { padding: 20px; }
+                                
+                                .reservation {
+                                    .faux-anchor {
+                                        &:not(.no-arrow) {
+                                            background-position: 98% 50%;
+                                            background-image: @arrowRight;
+                                            background-repeat: no-repeat;
+                                            
+                                            @media @highdpi {
+                                                background-image: @arrowRight2x; 
+                                                background-size: 14px 14px;
+                                            }
+                                        }
+
+                                        &.no-arrow {
+                                            cursor: default !important;
+                                            pointer-events: none;
+                                        }
+                                    }
+                                    .no-number,
+                                    .grey { color: @grey3; }
+                                    .data {
+                                        .calc-width(100, 540);
+                                    }
+                                    
+                                    .guest-data {
+                                        width: 150px;
+                                        padding-right: 20px;
+                                        padding-left: 10px;
+                                        .pull-left;
+
+                                        > span {
+                                            display: block;
+                                            color: @grey3;
+                                            font-size: 14px;
+                                            text-transform: uppercase;
+                                            .nowrap();
+                                        }
+
+                                        > strong {
+                                            font-weight: 600
+                                        }  
+                                        
+                                        &.room {
+                                            > strong {
+                                                font-weight: 700;
+                                                font-size: 21px;
+                                            }
+                                        }
+                                    }
+                                    .reservation-time {
+                                        padding-left: 20px;
+                                    }
+                                    .reservation-type {
+                                        width: 30px;
+                                    }
+                                }
+
+                                .numbers-pagination,
+                                .search-pagination {
+                                    position: static;
+                                    left: auto;
+                                    bottom: auto;
+                                    height: 40px;
+                                    background: transparent;
+                                    padding: 0 20px;
+                                    margin-bottom: 20px;
+                                    .box-shadow(none);
+
+                                    .button { 
+                                        font-size: 14px; 
+                                    }
+
+                                    &:before,
+                                    &:after { .hide; }
+                                }
+                            }
+                        }
+                    }
+
+                    .filters {
+                        clear: both;
+                        width: 100%;
+                        height: 60px;
+                        padding: 10px;
+                        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                        .float;
+                        .show;
+
+                        li { 
+                            cursor: pointer;
+                            margin: 0 0 0 1px;
+                            font-size: 14px;
+                            line-height: 40px;
+                            text-align: center;
+                            color: @textColor;
+                            font-weight: 600;
+                            text-transform: uppercase;
+                            padding: 0 10px;
+                            .calc-width(50, 1);
+                            .clickable;
+                            #border-radius > .rounded(0);
+                            .pull-left;
+
+                            &:hover { 
+                                color: @logoPrimary; 
+                                .box-shadow();
+                            }
+
+                            &.active {
+                                cursor: default;
+                                color: @white;
+                                text-shadow: 1px 1px 0 rgba(0,0,0,.1);
+                                .box-shadow(~"inset 0 1px 1px rgba(0,0,0,.3)");
+                                .gradient (@logoGradientEnd, @logoGradientStart);
+                            }
+
+                            &:first-child {
+                                #border-radius > .left(); 
+                            }
+
+                            &:last-child { #border-radius > .right(); }
                         }
                     }
                 }

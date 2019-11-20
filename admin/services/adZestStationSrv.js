@@ -38,16 +38,22 @@ admin.service('ADZestStationSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
         return deferred.promise;
     };
 
-    this.loadTranslationFiles = function(params) {
-        var deferred = $q.defer();
-        var url = '/staff/locales/download/' + params.lang + '.json';
-        
-        ADBaseWebSrvV2.getJSON(url).then(function(data) {
-            deferred.resolve(data);
-        }, function(data) {
-            deferred.reject(data);
-        });
-        return deferred.promise;
+    this.saveImages = function(data) {
+        var url = '/api/hotel_settings/save_configurable_images';
+
+        return ADBaseWebSrvV2.postJSON(url, data);
+    };
+
+    this.getImages = function() {
+        var url = '/api/hotel_settings/configurable_images';
+
+        return ADBaseWebSrvV2.getJSON(url);
+    };
+
+     this.excludePaymenTypes = function(params) {
+        var url = '/admin/hotel_payment_types/apply_exclusion';
+
+        return ADBaseWebSrvV2.postJSON(url, params);
     };
 
 }]);

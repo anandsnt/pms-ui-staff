@@ -5,8 +5,12 @@ admin.directive('adSyncBlock', function () {
                 config: '=',
                 interface: '@',
                 historicalDateRangeDays: '@',
+                defaultDateRange: '=',
                 excludeToday: '=',
-                isExport: '='
+                isExport: '=',
+                historicalDataSyncItems: '=',
+                realTimeDataSyncItems: '=',
+                proxy: '@'
             },
             templateUrl: '/assets/directives/adSyncBlock/adSyncBlockPartial.html',
             controller: 'adSyncBlockCtrl'

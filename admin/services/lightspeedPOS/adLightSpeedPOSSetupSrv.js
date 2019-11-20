@@ -112,6 +112,19 @@ admin.service('adLightSpeedPOSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2',
             return deferred.promise;
         };
 
+        service.fetchProductGroups = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/hotel_settings/lightspeed/product_groups.json';
+
+            ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+        };
+
         service.fetchFloors = function(params) {
             var deferred = $q.defer(),
                 url = 'api/hotel_settings/lightspeed/' + params.id + '/floors.json';
@@ -128,6 +141,19 @@ admin.service('adLightSpeedPOSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2',
         service.fetchRestaurants = function() {
             var deferred = $q.defer(),
                 url = 'api/hotel_settings/restaurants.json';
+
+            ADBaseWebSrvV2.getJSON(url, {}).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+        };
+
+        service.fetchPaymentTypes = function() {
+            var deferred = $q.defer(),
+                url = 'api/hotel_settings/lightspeed/payment_types.json';
 
             ADBaseWebSrvV2.getJSON(url, {}).then(function(data) {
                 deferred.resolve(data);
@@ -156,6 +182,58 @@ admin.service('adLightSpeedPOSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2',
                 url = '/api/hotel_settings/lightspeed/save_charge_code_mappings';
 
             ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+        };
+
+        service.saveCopyMapings = function(params) {
+            var deferred = $q.defer(),
+                url = 'api/hotel_settings/lightspeed/copy_mappings';
+
+            ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+        };
+
+        service.fetchPostingAccountMapings = function (params) {
+            var deferred = $q.defer(),
+                url = '/api/hotel_settings/lightspeed/posting_account_mappings.json';
+
+            ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+        };
+
+        service.savePostingAccountMapings = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/hotel_settings/lightspeed/save_posting_account_mappings';
+
+            ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+        };
+
+        service.fetchAccounts = function() {
+            var deferred = $q.defer(),
+                url = 'api/posting_accounts.json';
+
+            ADBaseWebSrvV2.getJSON(url, {}).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);

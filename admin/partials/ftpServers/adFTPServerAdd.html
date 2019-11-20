@@ -37,7 +37,15 @@
                 <fieldset>
                      <ad-textbox value="serverDetails.username" name = "username" id = "username" label = "Username" placeholder = "Enter Username" required = "no" styleclass="full-width" ></ad-textbox>
 
-                    <ad-textbox inputtype="password" value="serverDetails.password" name = "password" id = "password" label = "Password" placeholder = "Enter Password" required = "no" styleclass="full-width" ></ad-textbox>
+                    <ad-textbox inputtype="password" 
+                                value="serverDetails.password" 
+                                name = "password"
+                                id = "password"
+                                label = "Password"
+                                placeholder = "Enter Password"
+                                required = "no"
+                                styleclass="full-width" 
+                                click-handler="onPasswordClick(serverDetails, 'password')"></ad-textbox>
 
                 </fieldset>
                 <fieldset class="holder left float">

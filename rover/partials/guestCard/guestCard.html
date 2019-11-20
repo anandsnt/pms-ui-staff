@@ -9,7 +9,7 @@
             <!-- Travel Agent Card Header-->
             <section ng-include="'/assets/partials/cards/header/travelAgentCardHeader.html'"></section>
             <!-- Group Card Header -->
-            <section ng-include="'/assets/partials/cards/header/groupCardHeader.html'" ng-if="!isHourlyRateOn"></section>            
+            <section ng-include="'/assets/partials/cards/header/groupCardHeader.html'" ng-if="!(isHourlyRateOn || hotelDiaryConfig.mode === 'FULL')"></section>            
         </header>
 
         <!-- Cards Content -->
@@ -21,7 +21,7 @@
             <!-- TA Card Content-->
             <section ng-include="'/assets/partials/cards/travelAgentCardContent.html'"></section>
             <!-- Group Card Content -->
-            <section ng-include="'/assets/partials/cards/groupCardContent.html'" ng-if="!isHourlyRateOn"></section>            
+            <section ng-include="'/assets/partials/cards/groupCardContent.html'" ng-if="!(isHourlyRateOn || hotelDiaryConfig.mode === 'FULL')"></section>            
         </div>
     </div>
 </div>

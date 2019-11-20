@@ -32,6 +32,8 @@
                                 <ad-checkbox is-checked="data.add_cancellation_policy_description" label="{{ 'ADD_CANCELLATION_POLICY_DESC' | translate}}" div-class="full-width"></ad-checkbox>
                             </div>
                         </div>
+                        <ad-toggle-button label="{{ 'COPY_HOTEL_ON_CONFIRMATION' | translate }}" is-checked="data.copy_hotel_on_confirmation" ></ad-toggle-button>
+                        <ad-textbox inputtype="text" value="data.hotel_email" styleclass="" label="{{ 'HOTEL_EMAIL' | translate }}" placeholder="" ng-if="data.copy_hotel_on_confirmation"></ad-textbox>
                     </div>
                 </div>
             </div>
@@ -128,6 +130,11 @@
                         <option ng-repeat="item in data.hotel_logo" value="{{item.value}}" ng-selected="item.value == data.email_logo_type">{{item.name}}</option>
                     </select>
                 </div>
+            </div>
+            <div class="entry entry-color-picker">
+                <label style="width: 300px; margin-bottom: 10px;" translate="">LOGO_BG</label>
+                <ui-colorpicker ng-model="data.logo_bg_color"></ui-colorpicker>
+                <input ng-model="data.logo_bg_color">
             </div>
             <h4>Settings - Letter</h4>
             <div class="entry" ng-if="data.print_confirmation_letter">

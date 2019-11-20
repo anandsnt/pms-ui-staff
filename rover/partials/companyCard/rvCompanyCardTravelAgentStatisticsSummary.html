@@ -1,0 +1,128 @@
+<div class="statistics-summary" ng-show="activeView === 'summary'">
+    <div class="sidebar">
+        <ul class="filters">
+            <li ng-click="setActiveView('summary')" ng-class="{'active': activeView === 'summary'}">Summary</li>
+            <li ng-click="setActiveView('details')" ng-class="{'active': activeView === 'details'}">Details</li>
+        </ul>
+        <div class="sidebar-content scrollable" ng-iscroll="cc-statistics-summary-sidebar-scroller">
+            <div class="wrapper">
+                <div class="row">Stays</div>
+                <div class="row">Nights</div>
+                <div class="row">Cancellations</div>
+                <div class="row">No Shows</div>
+                <div class="row">ADR</div>
+                <div class="row">Room Revenue</div>
+                <div class="row">Total Revenue</div>
+            </div>
+        </div>
+    </div>
+    <div class="statistics-data">
+        <div class="row row-head">
+            <div class="column">
+                <div class="select">
+                    <select ng-options="year.value as year.name for year in yearOptions" ng-model="filterData.selectedYear"
+                        ng-change="onChangeYear()">
+                    </select>
+                </div>
+            </div>
+            <div class="column white">
+                <strong>Year to date ({{ currentYear }})</strong>
+            </div>
+            <div class="column">
+                <strong>Total</strong>
+            </div>
+        </div>
+        <div class="scrollable" ng-iscroll="cc-statistics-summary-data-scroller">
+            <div class="wrapper">
+                <div class="row">
+                    <div class="column">{{statistics.summary.stay_count.annual}}</div>
+                    <div class="column white">
+                        <div class="stat {{getStatusClass(statistics.summary.stay_count.change_percent)}}">
+                            <span class="{{getStatusIconClass(statistics.summary.stay_count.change_percent)}}"></span>
+                            {{absVal(statistics.summary.stay_count.change_percent) | number: 2}}%
+                        </div>
+                        {{statistics.summary.stay_count.ytd}}
+                    </div>
+                    <div class="column">{{statistics.summary.stay_count.total}}</div>
+                </div>
+                <div class="row">
+                    <div class="column">{{statistics.summary.night_count.annual}}</div>
+                    <div class="column white">
+                        <div class="stat {{getStatusClass(statistics.summary.night_count.change_percent)}}">
+                            <span class="{{getStatusIconClass(statistics.summary.night_count.change_percent)}}"></span>
+                            {{absVal(statistics.summary.night_count.change_percent) | number: 2}}%
+                        </div>
+                        {{statistics.summary.night_count.ytd}}
+                    </div>
+                    <div class="column">{{statistics.summary.night_count.total}}</div>
+                </div>
+                <div class="row">
+                    <div class="column">{{statistics.summary.cancellation_count.annual}}</div>
+                    <div class="column white">
+                        <div class="stat {{getStatusClass(statistics.summary.cancellation_count.change_percent)}}">
+                            <span class="{{getStatusIconClass(statistics.summary.cancellation_count.change_percent)}}"></span>
+                            {{absVal(statistics.summary.cancellation_count.change_percent) | number: 2}}%
+                        </div>
+                        {{statistics.summary.cancellation_count.ytd}}
+                    </div>
+                    <div class="column">{{statistics.summary.cancellation_count.total}}</div>
+                </div>
+                <div class="row">
+                    <div class="column">{{statistics.summary.no_show_count.annual}}</div>
+                    <div class="column white">
+                        <div class="stat {{getStatusClass(statistics.summary.no_show_count.change_percent)}}">
+                            <span class="{{getStatusIconClass(statistics.summary.no_show_count.change_percent)}}"></span>
+                            {{absVal(statistics.summary.no_show_count.change_percent) | number: 2}}%
+                        </div>
+                        {{statistics.summary.no_show_count.ytd}}
+                    </div>
+                    <div class="column">{{statistics.summary.no_show_count.total}}</div>
+                </div>
+
+                <div class="row">
+                    <div class="column"><span class="currency">{{currencySymbol}}</span>{{statistics.summary.adr.annual
+                        | number: 2}}</div>
+                    <div class="column white">
+                        <div class="stat {{getStatusClass(statistics.summary.adr.change_percent)}}">
+                            <span class="{{getStatusIconClass(statistics.summary.adr.change_percent)}}"></span>
+                            {{absVal(statistics.summary.adr.change_percent) | number: 2}}%
+                        </div>
+                        <span class="currency">{{currencySymbol}}</span>{{statistics.summary.adr.ytd | number: 2}}
+                    </div>
+                    <div class="column"><span class="currency">{{currencySymbol}}</span>{{statistics.summary.adr.total
+                        | number: 2}}</div>
+                </div>
+                <div class="row">
+                    <div class="column"><span class="currency">{{currencySymbol}}</span>{{statistics.summary.room_revenue.annual
+                        | number: 2}}</div>
+                    <div class="column white">
+                        <div class="stat {{getStatusClass(statistics.summary.room_revenue.change_percent)}}">
+                            <span class="{{getStatusIconClass(statistics.summary.room_revenue.change_percent)}}"></span>
+                            {{absVal(statistics.summary.room_revenue.change_percent) | number: 2}}%
+                        </div>
+                        <span class="currency">{{currencySymbol}}</span>{{statistics.summary.room_revenue.ytd | number:
+                        2}}
+                    </div>
+                    <div class="column"><span class="currency">{{currencySymbol}}</span>{{statistics.summary.room_revenue.total
+                        | number: 2}}</div>
+                </div>
+
+                <div class="row">
+                    <div class="column"><strong><span class="currency">{{currencySymbol}}</span>{{statistics.summary.total_revenue.annual
+                            | number: 2}}</strong></div>
+                    <div class="column white">
+                        <div class="stat {{getStatusClass(statistics.summary.total_revenue.change_percent)}}">
+                            <span class="{{getStatusIconClass(statistics.summary.total_revenue.change_percent)}}"></span>
+                            {{absVal(statistics.summary.total_revenue.change_percent) | number: 2}}%
+                        </div>
+                        <strong><span class="currency">{{currencySymbol}}</span>{{statistics.summary.total_revenue.ytd
+                            | number: 2}}</strong>
+                    </div>
+                    <div class="column"><strong><span class="currency">{{currencySymbol}}</span>{{statistics.summary.total_revenue.total
+                            | number: 2}}</strong></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

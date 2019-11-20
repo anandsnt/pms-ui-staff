@@ -11,6 +11,7 @@
 	@actionBackground: 		@brandColor;
 	
 	@inputBackground: 		#707070;
+	@inputColor:			@white;
 	@transparentColor: 		rgba(0,0,0,.35);
 
 /* 2. TYPOGRAPHY
@@ -43,6 +44,10 @@
             fill: none;
             stroke: @white;
         }
+
+        &.icon-arrow-down {
+            fill: @brandColor;
+        }
 	}
 
 	.logo-svg{
@@ -60,10 +65,7 @@
 	
 	#freehand {
 
-		input,
-		select {
-			color: @white;
-		}
+	 
 
 		.button:not(.transparent):not(.blank):not(.option):not([disabled]):not(.disabled) {
 			background: fade(@actionBackground, 80%);

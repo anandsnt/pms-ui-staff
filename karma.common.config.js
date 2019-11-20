@@ -6,7 +6,7 @@ module.exports = function(config, module) {
 
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-        frameworks: ['jasmine-jquery', 'jasmine'],
+        frameworks: ['jasmine-jquery', 'jasmine', 'browserify'],
 
         // web server port
         port: 9876,

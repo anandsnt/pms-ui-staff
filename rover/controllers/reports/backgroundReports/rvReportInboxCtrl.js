@@ -12,6 +12,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
     'RVreportsSubSrv',
     'RVReportUtilsFac',
     '$q',
+    'RVReportMsgsConst',
     function (
         $rootScope, 
         $scope,
@@ -25,18 +26,19 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         reportNames,
         reportsSubSrv,
         reportUtils,
-        $q) {
+        $q, 
+        reportMsgs ) {
 
         var self = this;
 
         BaseCtrl.call(this, $scope);
 
         $scope.viewStatus.showDetails = false;
+        $scope.maxDateRange = 1;
 
         const REPORT_INBOX_SCROLLER = 'report-inbox-scroller',
             REPORT_FILTERS_PROC_ACTIVITY = 'report_filters_proc_activity',
             PAGINATION_ID = 'report_inbox_pagination';
-        
 
         // Navigate to new report request section
         $scope.createNewReport = () => {
@@ -208,12 +210,21 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
          * @param {Number} pageNo current page no
          * @return {void}
          */
-        self.fetchGeneratedReports = (pageNo) => {
+        self.fetchGeneratedReports = (shouldRefreshDropDownDates, pageNo) => {
             $scope.reportInboxPageState.returnPage = pageNo;
 
             let onReportsFetchSuccess = (data) => {
                     $scope.reportInboxData.generatedReports = self.getFormatedGeneratedReports(data.results, $scope.reportList);
                     $scope.totalResultCount = data.total_count;
+                    if (shouldRefreshDropDownDates) {
+                        if ($rootScope.serverDate !== data.background_report_default_date) {
+                            $rootScope.serverDate = data.background_report_default_date;
+                            $scope.dateDropDown = self.createDateDropdownData();
+                            $scope.reportInboxData.filter.selectedDate = $filter('date')($rootScope.serverDate, 'yyyy-MM-dd');
+                            self.fetchGeneratedReports(false, 1);
+                        }
+                        
+                    }
                     self.refreshPagination();
                     self.refreshAndAdjustScroll();
                 },                
@@ -230,7 +241,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         self.setPageOptions = () => {
             $scope.pageOptions = {
                 id: PAGINATION_ID,
-                api: self.fetchGeneratedReports,
+                api: [self.fetchGeneratedReports, false],
                 perPage: RVReportsInboxSrv.PER_PAGE
             };
         };
@@ -258,7 +269,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         // Refresh report inbox
         $scope.refreshReportInbox = () => {
             $scope.reportInboxPageState.returnDate = $scope.reportInboxData.filter.selectedDate;
-            self.fetchGeneratedReports(1);
+            self.fetchGeneratedReports(true, 1);
         };
 
         // Checks whether pagination should be shown or not
@@ -269,14 +280,14 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         // Filter the report inbox by name
         $scope.filterByQuery = _.debounce(() => {
             $scope.$apply(function() {
-                self.fetchGeneratedReports(1);
+                self.fetchGeneratedReports(false, 1);
             });            
         }, 800);
 
         // Clear the report search box
         $scope.clearQuery = function () {
             $scope.reportInboxData.filter.searchTerm = '';
-            self.fetchGeneratedReports(1);               
+            self.fetchGeneratedReports(false, 1);               
         };
 
         // Get master data for configuring the filters for reports
@@ -297,6 +308,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
                     'travel_agent_ids': $scope.$parent.travel_agents
                 };
 
+            reportsSrv.saveCofigurationData(config);
             return config;
         };
         /*
@@ -313,9 +325,20 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
                     function(report) {
                         return selectedreport.report_id === report.id;
                     }),
-                   deffered = $q.defer();
+                   deffered = $q.defer(),
+                   reportName = selectedreport.name;
+            
 
             choosenReport.usedFilters = selectedreport.filters;
+
+            if (reportName === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ||
+                reportName === reportNames['DAILY_PRODUCTION_DEMO'] ||
+                reportName === reportNames['DAILY_PRODUCTION_RATE']) {
+                
+                choosenReport.usedFilters.to_date = $filter('date')(selectedreport.filterToDate, 'yyyy-MM-dd');
+                choosenReport.usedFilters.from_date = $filter('date')(selectedreport.filterFromDate, 'yyyy-MM-dd');
+            }
+
             // generatedReportId is required make API call
             choosenReport.generatedReportId = selectedreport.id;
             // if the two reports are not the same, just call
@@ -332,7 +355,8 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
                 // Setting the raw data containing the filter state while running the report
                 // These filter data is used in some of the reports controller 
                 choosenReport = _.extend(JSON.parse(JSON.stringify(choosenReport)), selectedreport.rawData);
-                choosenReport.appliedFilter = selectedreport.appliedFilter;
+                choosenReport.appliedFilter = selectedreport.appliedFilter;            
+
                 reportsSrv.setChoosenReport( choosenReport );
                 deffered.resolve();
             });            
@@ -345,17 +369,27 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         * @params Object Selected report object
         * @return none
         * */
-        $scope.showGeneratedReport = function( selectedreport ) {
+        $scope.showGeneratedReportFromInbox = function( selectedreport ) {
+            delete selectedreport.filterFromDate;
+            delete selectedreport.filterToDate;
+            delete selectedreport.filters.from_date;
+            delete selectedreport.filters.to_date;
+
+            var mainCtrlScope = $scope.$parent;
+
             if ( (selectedreport.shouldShowExport && !selectedreport.shouldDisplayView) || $scope.shouldDisableInboxItem(selectedreport) ) {
                 return;
             }
-            
-            var mainCtrlScope = $scope.$parent;
 
-            setChoosenReport(selectedreport).then(function() {
-               mainCtrlScope.genReport(); 
-            });
-                  
+            reportsSrv.setSelectedReport(selectedreport);
+
+            $scope.$emit('showLoader');
+            $timeout(function () {
+                setChoosenReport(selectedreport).then(function () {
+                    mainCtrlScope.genReport(null, null, null, false);
+                });
+            }, 2000);
+
         };
        
         /*
@@ -401,15 +435,28 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
          * @params Object report selected generated report
          * @return void
          */
-        $scope.printReport = (report) => { 
-            var mainCtrlScope = $scope.$parent;
-
-            setChoosenReport(report).then(function() {
-                mainCtrlScope.genReport(false, 1, 99999);
-            });
-            reportsSrv.setPrintClicked(true);                       
+        $scope.printReportFromInbox = (report) => {
             
+            // This flag will make the report details page and its controller
+            $scope.viewStatus.showDetails = true;
+            reportsSrv.setSelectedReport(report);
+            $timeout(function () {
+                $rootScope.$broadcast('PRINT_INBOX_REPORT');
+            }, 100);
         };
+
+        $scope.addListener(reportMsgs['REPORT_API_FAILED'], function(event, data) {
+            $scope.errorMessage = data;
+        });
+
+        // Clear the error message
+        $scope.clearErrorMsg = () => {
+            $scope.errorMessage = '';
+        };
+
+        $scope.addListener('CLEAR_ERROR_MSG', ( ) => {
+            $scope.errorMessage = []; 
+        });
 
         // Initialize
         self.init = () => { 

@@ -49,12 +49,12 @@ admin.service('ADRoomTypesSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2'
 		 * @param {array} selected room type id
 		 * @return {object} selected room type details
 		 */
-		this.getRoomTypeDetails = function(data) {
+		this.getRoomTypeDetails = function(params) {
 			var deferred = $q.defer();
-			var id = data.id;
+			var id = params.id;
 			var url = '/admin/room_types/' + id + '/edit.json';
 
-			ADBaseWebSrv.getJSON(url).then(function(data) {
+			ADBaseWebSrv.getJSON(url, params).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
 				deferred.reject(data);
@@ -122,6 +122,26 @@ admin.service('ADRoomTypesSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2'
 				ADDailyWorkAssignmentSrv.resetRoomTypesList();
 			}, function(data) {
 				deferred.reject(data);
+			});
+			return deferred.promise;
+		};
+
+		/**
+	     * 	To update the order
+	     *	@param {object} - contains the key(s) :
+	     *		1. 'sort_dir' if sort by name.
+	     * 		2. 'room_type_id', 'sequence_number' if sort by drag & drop positions.
+	     *  @return {object} status/errors
+	     */
+		this.saveComponentOrder = function( params ) {
+
+			var deferred = $q.defer(),
+				url =  '/admin/room_types/assign_sequence';
+
+			ADBaseWebSrv.postJSON(url, params).then(function(data) {
+			    deferred.resolve(data);
+			}, function(data) {
+			    deferred.reject(data);
 			});
 			return deferred.promise;
 		};

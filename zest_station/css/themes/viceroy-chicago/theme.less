@@ -11,6 +11,7 @@
 	@actionBackground: 		@brandColor;
 	
 	@inputBackground: 		#707070;
+	@inputColor:			@white;
 	@transparentColor: 		rgba(0,0,0,.5);
 
 /* 2. TYPOGRAPHY
@@ -90,7 +91,6 @@
 		input,
 		select {
 			background: #707070;
-			color: @white;
 
 			&::-webkit-input-placeholder {
 				color: fade( @white, 50 );
@@ -247,5 +247,10 @@
 
 		.check_in_add_remove > .input-field-contents {
 			height: 45% !important;
+		}
+
+		.minibar-item,
+		.minibar-review .review-container {
+			background: #f1f1f1;
 		}
 	}

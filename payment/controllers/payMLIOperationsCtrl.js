@@ -110,7 +110,7 @@ angular.module('sntPay').controller('payMLIOperationsController',
                 isSwiped = true;
                 if ($scope.hotelConfig.isEMVEnabled) {
                     $scope.payment.isManualEntryInsideIFrame = true;
-                    $scope.sixPayEntryOptionChanged();
+                    $scope.toggleManualIframe();
                 }
                 swipedCCData = swipedCardData;
                 $scope.cardData.cardNumber = swipedCardData.cardNumber;

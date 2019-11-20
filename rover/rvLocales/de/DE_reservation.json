@@ -22,4 +22,5 @@
     "CONFIRM_RESERVATION": "Confirm Reservation",
     "RETURN_TO_DASHBOARD": "return to dashboard",
     "CREATE_NEW_FOR_GUEST": "create new for this guest",
-    "CANCEL_RESERVATION": "Cancel Reservation"
+    "CANCEL_RESERVATION": "Cancel Reservation",
+    "PLEASE_SET_ROOM_STATUS": "Please set housekeeping status"

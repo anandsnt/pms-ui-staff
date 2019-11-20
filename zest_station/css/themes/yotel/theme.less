@@ -11,6 +11,7 @@
 	@actionBackground: 		@white;
 
 	@inputBackground: 		rgba(0,0,0,.3);
+    @inputColor:            @white;
 	@transparentColor: 		rgba(255,255,255,.5);
 
 	@grey1:					#dededc;
@@ -285,6 +286,11 @@
         }
 
 
+        .minibar-items .minibar-item .minibar-item-actions .button.disabled,
+        .minibar-items .minibar-item .minibar-item-actions .button[disabled] {
+            background: #dedede;
+        }
+        
         /* commenting out admin settings
 
 
@@ -353,7 +359,7 @@
             overflow-x:visible !important;
         }
         .ui-keyboard-has-focus{
-            z-index:7999;
+            z-index:100000;
             width: 56% !important;
             bottom: 10px;
         }
@@ -493,31 +499,6 @@
     }
 }
 
-
-
-@media (min-height: 800px) {
-    #options li .option {
-        width: 100% !important;
-        height: 35% !important;
-    }
-    #options.large-icons li .option {
-        width: 90% !important;
-        height: 40% !important;
-    }
-}
-
-
-@media (min-height: 1240px) {
-    #options li .option {
-        width: 100% !important;
-        height: 35% !important;
-    }
-    #options.large-icons li .option {
-        width: 90% !important;
-        height: 25% !important;
-    }
-}
-
 /********************************* key board style fixes ********************/
 
 .ui-keyboard-button{
@@ -654,3 +635,8 @@
         #calc > #height > .remove(100%, 160px - @keyboardShift);
     }          
 }
+
+.lift-popup {
+    top: 20% !important;
+}
+

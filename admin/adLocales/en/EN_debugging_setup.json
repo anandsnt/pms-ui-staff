@@ -11,6 +11,7 @@
 "DEBUG_DURATION_LABEL": "Debug Duration (in hours)",
 "DEBUG_APP_LABEL": "Application :",
 "DEBUG_APP_VERSION_LABEL": "App version :",
+"SFTP_BUILD_PATH": "SFTP build path",
 "DEBUG_DEVICE_TYPE_LABEL": "Device type :",
 "DEBUG_DEVICE_VERSION_LABEL": "Device version :",
 "DEBUG_DEVICE_USER_LABEL": "Last logged in user :",

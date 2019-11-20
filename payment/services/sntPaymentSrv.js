@@ -18,7 +18,7 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
             // so form error as array if you modifying it
             
 
-if (status === 406) { // 406- Network error
+            if (status === 406) { // 406- Network error
                 deferred.reject(errors);
             } else if (status === 422) { // 422
                 deferred.reject(errors);
@@ -74,6 +74,58 @@ if (status === 406) { // 406- Network error
 
             $http.get(url).then(function(response) {
                 deferred.resolve(response.data.data);
+            }, function(error) {
+                deferred.reject(error);
+            });
+            return deferred.promise;
+        };
+
+        service.getAccountsLinkedCardList = function(AccountId) {
+
+            var deferred = $q.defer(),
+                url = 'staff/payments/fetch_attached_credit_cards?posting_account_id=' + AccountId;
+
+            $http.get(url).then(function(response) {
+                deferred.resolve(response.data.data);
+            }, function(error) {
+                deferred.reject(error);
+            });
+            return deferred.promise;
+        };
+
+        service.getCoTaLinkedCardList = function(AccountId) {
+
+            var deferred = $q.defer(),
+                url = 'staff/payments/fetch_attached_credit_cards?account_id=' + AccountId;
+
+            $http.get(url).then(function(response) {
+                deferred.resolve(response.data.data);
+            }, function(error) {
+                deferred.reject(error);
+            });
+            return deferred.promise;
+        };
+
+        service.getConvertedAmount = function(params) {
+
+            var deferred = $q.defer(),
+                url = '/api/hotel_currency_conversions/converted_payment_amount?amount=' + params.amount + '&currency_id=' + params.currency_id + '&date=' + params.date + '&fee=' + params.fee;
+
+            $http.get(url).then(function(response) {
+                deferred.resolve(response.data);
+            }, function(error) {
+                deferred.reject(error);
+            });
+            return deferred.promise;
+        };
+        
+        service.checkWorkStationMandatoryFields = function(workstationId) {
+
+            var deferred = $q.defer(),
+                url = '/api/workstations/workstation_status?workstation_id=' + workstationId;
+
+            $http.get(url).then(function(response) {
+                deferred.resolve(response.data);
             }, function(error) {
                 deferred.reject(error);
             });
@@ -371,23 +423,31 @@ if (status === 406) { // 406- Network error
         service.resolvePaths = function(gateWay, params) {
             var iFrameUrlWithParams = "",
                 paymentGatewayUIInterfaceUrl = PAYMENT_CONFIG[gateWay].partial;
-
-            switch (gateWay) {
-                case "MLI":
-                case "CBA":
-                case "SHIJI":
-                case "CBA_AND_MLI":
-                    break;
-                case "sixpayments":
-                    var time = new Date().getTime(),
-                        service_action = PAYMENT_CONFIG[gateWay].params.service_action;
+            var getiFrameUrlWithParams = function() {
+                var time = new Date().getTime(),
+                        service_action = PAYMENT_CONFIG[gateWay].params.service_action,
+                        jwt = localStorage.getItem('jwt') || '';
 
                     iFrameUrlWithParams = PAYMENT_CONFIG[gateWay].iFrameUrl + '?' +
                         "card_holder_first_name=" + params.card_holder_first_name +
                         "&card_holder_last_name=" + params.card_holder_last_name +
                         "&service_action=" + service_action +
                         "&time=" + time +
+                        "&auth_token=" + jwt +
                         "&hotel_uuid=" + sntAuthorizationSrv.getProperty() ;
+                    return iFrameUrlWithParams;
+            };
+
+            switch (gateWay) {
+                case "MLI":
+                case "CBA":
+                case "CBA_AND_MLI":
+                    break;
+                case "SHIJI":
+                    iFrameUrlWithParams = getiFrameUrlWithParams();
+                    break;
+                case "sixpayments":
+                    iFrameUrlWithParams = getiFrameUrlWithParams();
                     break;
                 default:
                     throw new Error("Payment Gateway not configured");
@@ -547,4 +607,16 @@ if (status === 406) { // 406- Network error
         };
 
         service.mockCba = false;
+
+        service.getShijiPayCreditCardType = function(cardCode) {
+            var shijiCreditCardTypes = {
+                "American Express": 'AX',
+                "Discover Card": 'DS',
+                "JCB": 'JCB',
+                "MasterCard": 'MC',
+                "Visa": 'VA'
+            };
+
+            return shijiCreditCardTypes[cardCode] || '';
+        };
 }]);

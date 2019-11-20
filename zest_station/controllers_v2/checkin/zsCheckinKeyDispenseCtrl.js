@@ -84,7 +84,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
                 'key_type': $scope.keyTypeselected
             };
             
-            stateParams.key_success = status === 'success';
+            stateParams.key_success = status === 'success' ? 'true' : 'false';
             // check if a registration card delivery option is present (from Admin>Station>Check-in), if none are checked, go directly to final screen
             var registration_card = $scope.zestStationData.registration_card;
 

@@ -13,7 +13,8 @@ admin.directive('adCheckboxtextLeft', function($timeout) {
             datagroup: '@datagroup',
             index: '@index',
             isDisabled: '=isDisabled',
-            width: '@'
+            width: '@',
+            toggleSelection: '&toggleSelection'
 	    },
 
     	templateUrl: '/assets/directives/checkBox/adCheckboxLeftText.html'

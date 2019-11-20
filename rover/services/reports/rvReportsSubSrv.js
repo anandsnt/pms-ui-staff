@@ -3,7 +3,8 @@ angular.module('sntRover').service('RVreportsSubSrv', [
     'rvBaseWebSrvV2',
     'rvReportsCache',
     'RVReportMsgsConst',
-    function($q, rvBaseWebSrvV2, reportsCache, RVReportMsgsConst) {
+    'RVReportNamesConst',
+    function($q, rvBaseWebSrvV2, reportsCache, RVReportMsgsConst, reportNames) {
         var service = {};
 
         var store = {};
@@ -31,9 +32,34 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             var results = angular.copy(service.cachedInboxReport).results,
                 start = (params.page - 1) * params.per_page,
                 end = start + params.per_page,
+                hasDateFilters = false,
+                paginatedResult,
+                reportName = params.reportTitle,
+                fromDate,
+                toDate;
+
+                if (reportName === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ||
+                    reportName === reportNames['DAILY_PRODUCTION_DEMO'] ||
+                    reportName === reportNames['DAILY_PRODUCTION_RATE']) {
+                    hasDateFilters = true;
+                }
+                if (params.fiterFromDate && params.filterToDate && hasDateFilters) {
+                    fromDate = new Date(params.fiterFromDate);
+                    toDate = new Date(params.filterToDate);
+                    var itemDate;
+                
+                    results = Object.keys(results).reduce(function (obj, k) {
+                        itemDate = new Date(k);
+                
+                        if (itemDate >= fromDate && itemDate <= toDate) {
+                            obj[k] = results[k];
+                        }
+                        return obj;
+                    }, {});
+                }
                 paginatedResult = _.isArray(results) ? results.slice(start, end)
                     : results;
-
+            
             return paginatedResult;
         };
         /**
@@ -47,7 +73,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 toatalCount = response.total_count,
                 lastPage = Math.ceil(toatalCount / params.per_page);
 
-            return params.page === lastPage ? response.results_total_row : null;
+            return (toatalCount < params.per_page || params.page === lastPage ) ? response.results_total_row : null;
         };
         /**
          * Abstract the response based on params
@@ -272,38 +298,62 @@ angular.module('sntRover').service('RVreportsSubSrv', [
         };     
 
 
-        service.fetchMarkets = function(params) {
+        service.fetchMarkets = function(shouldIncludeInactive) {
+            var url = '/api/market_segments?is_active=true';
+
+            if (shouldIncludeInactive) {
+                url = '/api/market_segments';
+            }
+
             return callApi({
                 name: 'markets',
                 method: 'getJSON',
-                url: '/api/market_segments?is_active=true',
+                url: url,
                 resKey: 'markets'
             });
         };
 
-        service.fetchSegments = function(params) {
+        service.fetchSegments = function(shouldIncludeInactive) {
+            var url = '/api/segments?is_active=true';
+
+            if (shouldIncludeInactive) {
+                url = '/api/segments';
+            }
+
             return callApi({
                 name: 'segments',
                 method: 'getJSON',
-                url: '/api/segments?is_active=true',
+                url: url,
                 resKey: 'segments'
             });
         };
 
-        service.fetchSources = function() {
+        service.fetchSources = function(shouldIncludeInactive) {
+            var url = 'api/sources?is_active=true';
+
+            if (shouldIncludeInactive) {
+                url = 'api/sources';
+            }
+
             return callApi({
                 name: 'sources',
                 method: 'getJSON',
-                url: 'api/sources?is_active=true',
+                url: url,
                 resKey: 'sources'
             });
         };
 
-        service.fetchBookingOrigins = function() {
+        service.fetchBookingOrigins = function(shouldIncludeInactive) {
+            var url = 'api/booking_origins?is_active=true';
+
+            if (shouldIncludeInactive) {
+                url = 'api/booking_origins';
+            }
+
             return callApi({
                 name: 'bookingOrigins',
                 method: 'getJSON',
-                url: 'api/booking_origins?is_active=true',
+                url: url,
                 resKey: 'booking_origins'
             });
         };
@@ -568,6 +618,24 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
+        service.fetchTaxExemptTypes = function() {
+            return callApi({
+                name: 'taxExempts',
+                method: 'getJSON',
+                url: 'api/tax_exempt_types',
+                resKey: 'results'
+            });
+        };
+
+        service.fetchLanguages = function() {
+            return callApi({
+                name: 'languages',
+                method: 'getJSON',
+                url: 'api/guest_languages',
+                resKey: 'languages'
+            });
+        };        
+
         service.getChargeCodes = function(params) {
             return callApi({
                 method: 'getJSON',
@@ -605,6 +673,18 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 params: params
             });
         };
+
+        service.fetchCountries = function(params) {
+            params = params || {};
+
+            return callApi({
+                name: 'accounts',
+                method: 'getJSON',
+                url: ' /ui/country_list',
+                resKey: '',
+                params: params
+            });
+        };        
 
         // Search groups based on query string
         service.fetchGroups = function(params) {
@@ -659,7 +739,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             var deferred = $q.defer(),
                 url = '/api/accounts/revenue_and_tax';
 
-            rvBaseWebSrvV2.getJSON(url, data.postParamsToApi).then(function(revenueData) {
+            rvBaseWebSrvV2.postJSON(url, data.postParamsToApi).then(function(revenueData) {
                 revenueData.accountVatType = data.accountVatType;
                 revenueData.isPrint = data.isPrint;
                 revenueData.accountTypeId = data.accountTypeId;

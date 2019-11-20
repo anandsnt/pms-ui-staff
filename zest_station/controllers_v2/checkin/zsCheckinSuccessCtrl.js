@@ -7,7 +7,7 @@ sntZestStation.controller('zsCheckinSuccessCtrl', [
     'zsUtilitySrv',
     function($scope, $stateParams, $state, zsEventConstants, zsCheckinSrv, zsUtilitySrv) {
 
-        var stateParams = $stateParams;
+        var stateParams = angular.copy($stateParams);
 
         $scope.user_name = stateParams.first_name;
         $scope.room = $stateParams.room_no;
@@ -45,7 +45,7 @@ sntZestStation.controller('zsCheckinSuccessCtrl', [
             owsMsgs = [],
             fetchOwsMessages = function() {
                 var onOwsMsgFetchSuccess = function(response) {
-                    if (response.messages.length > 0) {
+                    if (response.messages && response.messages.length > 0) {
                         owsMsgsPresent = true;
                         owsMsgs = response.messages;
                     } else {

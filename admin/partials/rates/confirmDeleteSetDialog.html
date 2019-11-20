@@ -1,14 +1,19 @@
-<div class="confirm-delete">
-    <header class="">
-        Rate set {{ deleteSetName }} will be deleted. Confirm?
-    </header>
-    <div class="confirm-button">
-	    <button type="button" id="cancel" class="button blank edit-data-inline float_left" ng-click="closeDialog()">
-	        No
-	    </button>
-	    <button type="button" id="update" class="button green edit-data-inline float_left" ng-click="deleteSet()">
-	        Yes
-	    </button>
-		<br clear='all'/>    
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
+    <div class="modal-content">
+    	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<div class="confirm-delete">
+		    <header class="">
+		        Rate set {{ deleteSetName }} will be deleted. Confirm?
+		    </header>
+		    <div class="confirm-button">
+			    <button type="button" id="cancel" class="button blank edit-data-inline float_left" ng-click="closeDialog()">
+			        No
+			    </button>
+			    <button type="button" id="update" class="button green edit-data-inline float_left" ng-click="deleteSet()">
+			        Yes
+			    </button>
+				<br clear='all'/>    
+			</div>
+		</div>
 	</div>
 </div>

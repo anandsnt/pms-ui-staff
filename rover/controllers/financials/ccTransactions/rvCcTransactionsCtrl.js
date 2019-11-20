@@ -7,7 +7,7 @@ sntRover.controller('RVccTransactionsController', ['$scope', '$filter', '$stateP
     $scope.$emit("updateRoverLeftMenu", "ccTransactions");
     
 	$scope.data = {};
-    $scope.data.activeTab = $stateParams.id === '' ? 0 : $stateParams.id;
+    $scope.data.activeTab = 0;
     $scope.data.transactionDate = $rootScope.businessDate;
     $scope.data.paymentData = {};
     $scope.data.authData = {};

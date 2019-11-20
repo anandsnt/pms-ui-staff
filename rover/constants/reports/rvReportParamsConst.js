@@ -20,7 +20,7 @@ angular.module('reportsModule')
 
         'FROM_TIME': 'from_time',
         'TO_TIME': 'to_time',
-
+        'SELECTED_LANGUAGE': 'locale',
         'SORT_FIELD': 'sort_field',
         'SORT_DIR': 'sort_dir',
 
@@ -118,5 +118,9 @@ angular.module('reportsModule')
         "GROUP_COMPANY_TA_CARD": "group_company_ta_card",
         "GROUP_CODE": "group_code",
         "TAX_EXEMPT_TYPE": "tax_exempt_type_ids",
-        "TA_CC_CARD": "ta_cc_card"
+        "TA_CC_CARD": "ta_cc_card",
+        "SHOW_VAT_WITH_RATES": "show_vat_with_rates",
+        "COUNTRY": "country_ids",
+        "INCLUDE_LONG_STAYS": "include_long_stays",
+        "INCLUDE_DAYUSE": "include_day_use"
     });

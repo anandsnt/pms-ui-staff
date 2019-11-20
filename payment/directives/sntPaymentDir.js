@@ -6,7 +6,10 @@ angular.module('sntPay').directive('sntPayment', function() {
             hotelConfig: '=', // hotel settings related
             paymentTypes: '=', // the payment types present
             selectedPaymentType: '=?', // selected initial payment type
+            paymentCurrencyList: '=',
             reservationId: '@',
+            isFromWallet: '@',
+            rateCurrency: '@',
             postingAccountId: '=?',
             billId: '=?',
             arTransactionId: '=?', // param used for ar payment refund

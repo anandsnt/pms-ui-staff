@@ -1,12 +1,12 @@
-<div class="entry full-width" ng-class="{'amount': feeData.showFee}"
+<div class="entry amount" ng-class="{'amount': feeData.showFee}"
      ng-hide="paymentAttempted && !isPaymentFailure">
 
-    <label>Amount to pay(<span>{{currencySymbol}}</span>)</label>
+    <label>Amount to pay(<span>{{payment.selectedPaymentCurrencySymbol}}</span>)</label>
 
     <input ng-change="onPaymentInfoChange()"
            ng-model="payment.amount"
            type="number" value="{{payment.amount}}" 
-           class="amount" pattern="^[1-9]\d*(?:\.\d+)?$" ng-disabled="actionType === 'AR_REFUND_PAYMENT'" onpaste="return false"/>
+           class="amount" ng-disabled="actionType === 'AR_REFUND_PAYMENT'" onpaste="return false"/>
 
     <span ng-show="feeData.showFee" class="delimiter">+</span>
 
@@ -19,15 +19,25 @@
 
 
     <span ng-show="feeData.showFee" class="delimiter">fee</span>
-
+    <div class="select" ng-hide="selectedPaymentType === 'CC' ">
+        <select ng-options="paymentCurrency.id as paymentCurrency.symbol for paymentCurrency in paymentCurrencyList" ng-change="onPaymentCurrencyChange()" ng-model="payment.selectedPaymentCurrencyId">
+            <option style="display:none" value="">Select Currency</option>
+        </select>
+    </div>
     <span ng-show="feeData.showFee" class="total">
           Total:
           <strong ng-if="!payment.isRateSuppressed">
-              {{currencySymbol}}{{feeData.totalOfValueAndFee}}
+              {{payment.selectedPaymentCurrencySymbol}}{{feeData.totalOfValueAndFee}}
           </strong>
     </span>
 </div>
 
+<div class="entry full-width" ng-if="selectedPaymentType === 'CC' && hotelConfig.paymentGateway === 'SHIJI' && getShijiOfflineStatus()">
+    <label for="auth-code">{{ 'ENTER_MANUAL_AUTH_CODE' | translate }}</label>
+    <input id="auth-code"
+        ng-model="payment.auth_code"
+        type="text" />
+</div>
 <!-- Reference field - use only when it exsits; This configuration is available in the Admin/Financials -->
 <div class="entry full-width reference"
      ng-show="((isDisplayRef && (!paymentAttempted || isPaymentFailure)) || actionType === 'AR_REFUND_PAYMENT')">
@@ -45,14 +55,13 @@
         <li ng-if="feeData.showFee">
             Amount paid:
             <span class="value">
-                {{currencySymbol}}{{payment.amount |number:2}} + {{currencySymbol}}{{feeData.calculatedFee|number:2}} fee
+                {{payment.selectedPaymentCurrencySymbol}}{{payment.amount |number:2}} + {{currencySymbol}}{{feeData.calculatedFee|number:2}} fee
             </span>
         </li>
         <li ng-if="!feeData.showFee">
-            Amount paid:
-            <span class="value">
-                {{currencySymbol}}{{payment.amount}}
-            </span>
+           Amount paid:
+           <span class="value" ng-bind-html="payment.amount | sntCurrency:this:payment.selectedPaymentCurrencySymbol">
+           </span>
         </li>
     </ul>
 </div>
@@ -70,7 +79,8 @@
       <button type="button" class="button blank modal-close" ng-click="closeThePopup()" translate>
           CANCEL
       </button>
-      <button type="button" class="button green" click-touch="submitPayment()"
+      <button type="button" class="button green" ng-disabled="shouldHidePaymentButton()"
+            ng-class="{'grey':shouldHidePaymentButton()}" click-touch="submitPayment()"
               ng-show="!isRefund()">
           MAKE PAYMENT
       </button>    
@@ -79,9 +89,10 @@
       <button type="button" class="button blank modal-close" ng-click="closeThePopup()" translate>
           CLOSE
       </button>
-      <button type="button" class="button blue" click-touch="submitPayment()"
+      <button type="button" class="button blue" ng-disabled="shouldHidePaymentButton()"
+            ng-class="{'grey':shouldHidePaymentButton()}" click-touch="submitPayment()"
               ng-show="isRefund()">
-          REFUND {{currencySymbol}}{{ -1 * payment.amount | number:2 }}
+          REFUND {{payment.selectedPaymentCurrencySymbol}}{{ -1 * payment.amount | number:2 }}
       </button>
   </div>
 </div>
