@@ -5,22 +5,34 @@ angular.module('sntRover')
 				var today = $rootScope.businessDate;
 				var definedDates = [{
 					"value": "Yesterday",
-					"date": moment(today).subtract(1, 'day').format("YYYY-MM-DD")
+					"date": moment(today)
+						.subtract(1, 'day')
+						.format("YYYY-MM-DD")
 				}, {
 					"value": "Today-2",
-					"date": moment(today).subtract(2, 'day').format("YYYY-MM-DD")
+					"date": moment(today)
+						.subtract(2, 'day')
+						.format("YYYY-MM-DD")
 				}, {
 					"value": "Today-3",
-					"date": moment(today).subtract(3, 'day').format("YYYY-MM-DD")
+					"date": moment(today)
+						.subtract(3, 'day')
+						.format("YYYY-MM-DD")
 				}, {
 					"value": "Today-4",
-					"date": moment(today).subtract(4, 'day').format("YYYY-MM-DD")
+					"date": moment(today)
+						.subtract(4, 'day')
+						.format("YYYY-MM-DD")
 				}, {
 					"value": "Today-5",
-					"date": moment(today).subtract(5, 'day').format("YYYY-MM-DD")
+					"date": moment(today)
+						.subtract(5, 'day')
+						.format("YYYY-MM-DD")
 				}, {
 					"value": "Today-6",
-					"date": moment(today).subtract(6, 'day').format("YYYY-MM-DD")
+					"date": moment(today)
+						.subtract(6, 'day')
+						.format("YYYY-MM-DD")
 				}];
 
 				var isPredefinedDate = function(date) {
@@ -36,8 +48,8 @@ angular.module('sntRover')
 				}
 
 				return $filter('date')(date, $rootScope.dateFormat);
-
 			};
+
 			$scope.drawDistributionChart = function(chartData) {
 				chartData = _.sortBy(chartData, function(data) {
 					return data.date;
@@ -46,8 +58,7 @@ angular.module('sntRover')
 				try {
 					var initStackedBarChart = {
 						draw: function(config) {
-							var me = this,
-								domEle = config.element,
+							var domEle = config.element,
 								stackKey = config.key,
 								data = config.data,
 								colors = config.colors,
@@ -61,18 +72,16 @@ angular.module('sntRover')
 								width = document.getElementById("analytics-chart").clientWidth - margin.left - margin.right,
 								height = 500 - margin.top - margin.bottom,
 								xScale = d3.scaleBand()
-								.range([0, width - 350])
+								.range([0, width - ((stackKey.length > 1) ? 350 : 0)])
 								.padding(0.5),
 								yScale = d3.scaleLinear()
 								.range([height, 0]);
 
 							var xAxis = d3.axisBottom(xScale)
-								// .tickFormat(d3.timeFormat("%b"))
 								.tickFormat(function(d) {
-									var a = moment(d).format('YYYY-MM-DD');
-									// console.log(d)
-									// console.log(a)
-									return getPrefinedValuesForDate(a);
+									var date = moment(d).format('YYYY-MM-DD');
+
+									return getPrefinedValuesForDate(date);
 								})
 								.tickSizeOuter(0)
 								.tickPadding(15),
@@ -86,16 +95,15 @@ angular.module('sntRover')
 								.append("g")
 								.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-								// remove -ve values coming for some reason
-								_.each(data, function(item) {
-									for (var key in item) {
-										// check if the property/key is defined in the object itself, not in parent
-										if (item.hasOwnProperty(key) && key !== "date") {
-											// console.log(key, item[key]);
-											item[key] = item[key] > 0 ? item[key] : 0;
-										}
+							// remove -ve values coming for some reason
+							_.each(data, function(item) {
+								for (var key in item) {
+									// check if the property/key is defined in the object itself, not in parent
+									if (item.hasOwnProperty(key) && key !== "date") {
+										item[key] = item[key] > 0 ? item[key] : 0;
 									}
-								});
+								}
+							});
 
 							var stack = d3.stack()
 								.keys(stackKey)
@@ -105,34 +113,22 @@ angular.module('sntRover')
 							var layers = stack(data);
 
 							xScale.domain(data.map(function(d) {
-								// console.log(d.date);
-								// console.log(parseDate(d.date))
-
 								return parseDate(d.date);
 							}));
 
-							var ydomain_min = d3.min(layers.flat()
+
+
+							var ydomainMax = d3.max(layers.flat()
 								.map(function(d) {
 									return d[1];
 								}));
-							// console.log("ydomain_min..........."+ydomain_min);
 
-							var ydomain_max = d3.max(layers.flat()
-												.map(function(d) {
-												return d[1];
-											}));
-							// console.log("ydomain_max..........."+ydomain_max);
-
-							var maxValue = d3.max(layers[layers.length - 1], function(d) {
-								// console.log(d[1] + " **** " + d[0]);
-								return d[1];
-							});
-
-							yScale.domain([0, ydomain_max]).nice();
+							yScale.domain([0, ydomainMax]).nice();
 
 							var layer = svg.selectAll(".layer")
 								.data(layers)
-								.enter().append("g")
+								.enter()
+								.append("g")
 								.attr("class", "layer")
 								.style("fill", function(d, i) {
 									return colors[i];
@@ -148,7 +144,6 @@ angular.module('sntRover')
 									return xScale(parseDate(d.data.date));
 								})
 								.attr("y", function(d) {
-									console.log()
 									return yScale(d[1]);
 								})
 								.attr("width", xScale.bandwidth())
@@ -159,13 +154,12 @@ angular.module('sntRover')
 									tooltip.style("display", "none");
 								})
 								.on("mousemove", function(d) {
-									// console.log(d);
 									var tooltipText = $filter('number')(d[1] - d[0], 2);
-
 									var xPosition = d3.mouse(this)[0] - 15;
 									var yPosition = d3.mouse(this)[1] - 25;
+
 									tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
-									tooltip.select("text").text(tooltipText);
+									tooltip.select("text").text(trooltipText);
 								});
 
 							d3.selectAll(".rect-bars")
@@ -173,8 +167,8 @@ angular.module('sntRover')
 								.duration(800)
 								.attr("height", function(d) {
 									return yScale(d[0]) > yScale(d[1]) ?
-										   yScale(d[0]) - yScale(d[1]) :
-										   yScale(d[1]) - yScale(d[0]);
+										yScale(d[0]) - yScale(d[1]) :
+										yScale(d[1]) - yScale(d[0]);
 								});
 
 							svg.append("g")
@@ -185,7 +179,7 @@ angular.module('sntRover')
 								.style("text-anchor", "end")
 								.attr("dx", "-.8em")
 								.attr("dy", data.length > 20 ? "-.7em" : "-.15em")
-								.attr("transform", "rotate(-65)");;
+								.attr("transform", "rotate(-65)");
 
 							svg.append("g")
 								.attr("class", "axis axis--y")
@@ -196,7 +190,7 @@ angular.module('sntRover')
 								svg: svg,
 								xOffset: 0,
 								height: 4,
-								width: width - 350,
+								width: width - ((stackKey.length > 1) ? 350 : 0),
 								yOffset: height
 							});
 							rvAnalyticsHelperSrv.drawRectLines({
@@ -258,24 +252,21 @@ angular.module('sntRover')
 						}
 					}
 
-
-
 					var chartDataKeys = [];
+
 					_.each(chartData, function(data) {
-						chartDataKeys = _.union(chartDataKeys, Object.keys(data))
+						chartDataKeys = _.union(chartDataKeys, Object.keys(data));
 					});
 
 					chartDataKeys = _.reject(chartDataKeys, function(chartDataKey) {
 						return chartDataKey === "date";
 					});
 
-					// console.log(chartDataKeys);
 
-
-					var colors = ["#ff0029", "#377eb8", "#66a61e", "#984ea3", "#00d2d5", "#ff7f00", "#af8d00", "#7f80cd", "#b3e900", "#c42e60", "#a65628", "#f781bf", "#8dd3c7", "#bebada", "#fb8072", "#80b1d3", "#fdb462", "#fccde5", "#bc80bd", "#ffed6f", "#c4eaff", "#cf8c00", "#1b9e77", "#d95f02", "#e7298a", "#e6ab02", "#a6761d", "#0097ff", "#00d067", "#000000", "#252525", "#525252", "#737373", "#969696", "#bdbdbd", "#f43600", "#4ba93b", "#5779bb", "#927acc", "#97ee3f", "#bf3947", "#9f5b00", "#f48758", "#8caed6", "#f2b94f", "#eff26e", "#e43872", "#d9b100", "#9d7a00", "#698cff", "#d9d9d9"]
+					var colors = ["#ff0029", "#377eb8", "#66a61e", "#984ea3", "#00d2d5", "#ff7f00", "#af8d00", "#7f80cd", "#b3e900", "#c42e60", "#a65628", "#f781bf", "#8dd3c7", "#bebada", "#fb8072", "#80b1d3", "#fdb462", "#fccde5", "#bc80bd", "#ffed6f", "#c4eaff", "#cf8c00", "#1b9e77", "#d95f02", "#e7298a", "#e6ab02", "#a6761d", "#0097ff", "#00d067", "#000000", "#252525", "#525252", "#737373", "#969696", "#bdbdbd", "#f43600", "#4ba93b", "#5779bb", "#927acc", "#97ee3f", "#bf3947", "#9f5b00", "#f48758", "#8caed6", "#f2b94f", "#eff26e", "#e43872", "#d9b100", "#9d7a00", "#698cff", "#d9d9d9"];
 
 					if (colors.length > chartDataKeys.length) {
-						colors = colors.slice(0, chartDataKeys.length)
+						colors = colors.slice(0, chartDataKeys.length);
 					} else {
 						for (var i = colors.length; i <= chartDataKeys.length - 1; i++) {
 							colors.push('#' + Math.floor(Math.random() * 16777215).toString(16));
@@ -291,8 +282,8 @@ angular.module('sntRover')
 
 					$scope.screenData.hideChartData = false;
 				} catch (E) {
-					// console.log(E)
+					console.log(E)
 				}
-			}
+			};
 		}
 	]);

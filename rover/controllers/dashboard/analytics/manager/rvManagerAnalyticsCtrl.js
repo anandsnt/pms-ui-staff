@@ -59,22 +59,6 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			};
 
 			$scope.callAPI(rvManagersAnalyticsSrv.roomPerformanceKPR, options);
-
-
-			// var options = {
-			//     params: {
-			//         start_date: moment($scope.dashboardFilter.datePicked).subtract(7, 'days').format('YYYY-MM-DD'),
-			//         end_date: $scope.dashboardFilter.datePicked,
-			//         group_by: 'market_id',
-            //         chart_type: 'adr'
-			//     },
-			//     successCallBack: function(data) {
-			//         console.log(data);
-			//     }
-			// };
-            //
-			// $scope.callAPI(rvManagersAnalyticsSrv.distributions, options);
-
 		};
 
 		var renderDistributionChart = function() {
@@ -82,23 +66,23 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			$('base').attr('href', initialBaseHrefValue);
 
 			var params = {
-			        start_date: $scope.dashboardFilter.fromDate,
-			        end_date: $scope.dashboardFilter.toDate,
-			        chart_type: $scope.dashboardFilter.chartType
-			    }
+				start_date: $scope.dashboardFilter.fromDate,
+				end_date: $scope.dashboardFilter.toDate,
+				chart_type: $scope.dashboardFilter.chartType
+			};
 
 			if ($scope.dashboardFilter.aggType) {
 				params.group_by = $scope.dashboardFilter.aggType;
 			}
 			var options = {
-			    params: params,
-			    successCallBack: function(data) {
-			    	$('base').attr('href', '#');
-			    	$scope.screenData.analyticsDataUpdatedTime = moment().format("MM ddd, YYYY hh:mm:ss a");
+				params: params,
+				successCallBack: function(data) {
+					$('base').attr('href', '#');
+					$scope.screenData.analyticsDataUpdatedTime = moment().format("MM ddd, YYYY hh:mm:ss a");
 					clearAllExistingChartElements();
-			        console.log(JSON.stringify(data));
-			        $scope.drawDistributionChart(data);
-			    }
+					console.log(JSON.stringify(data));
+					$scope.drawDistributionChart(data);
+				}
 			};
 
 			$scope.callAPI(rvManagersAnalyticsSrv.distributions, options);
@@ -112,7 +96,7 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			$scope.screenData.mainHeading = "";
 			if ($scope.screenData.selectedChart === 'PERFOMANCE') {
 				renderPerfomanceChart();
-			} else if ($scope.screenData.selectedChart === 'DISTRIBUTION'){
+			} else if ($scope.screenData.selectedChart === 'DISTRIBUTION') {
 				renderDistributionChart();
 			}
 		};
@@ -163,12 +147,7 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 		/*
 		 * Reload graph with date picker change
 		 */
-		$scope.$on('RELOAD_DATA_WITH_DATE_FILTER', function(e, data) {
-			// if(data.to_date) {
-			// 	console.log(date.to_date);
-			// } else if (date.from_date){
-			// 	console.log(date.from_date);
-			// }
+		$scope.$on('RELOAD_DATA_WITH_DATE_FILTER', function() {
 			drawChart();
 		});
 
@@ -176,7 +155,7 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			$('base').attr('href', initialBaseHrefValue);
 		});
 
-		
+
 		var setPageHeading = function() {
 			var chartTypeSelected = _.find($scope.dashboardFilter.chartTypes, function(chartType) {
 				return chartType.code === $scope.dashboardFilter.chartType;
@@ -193,21 +172,15 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 		};
 		$scope.$on('SET_PAGE_HEADING', setPageHeading);
 
-		$scope.$on('CHART_TYPE_CHANGED',function(e, data) {
+		$scope.$on('CHART_TYPE_CHANGED', function(e, data) {
 			setPageHeading();
 			drawChart();
-			console.log(data);
 		});
 
-		$scope.$on('CHART_AGGGREGATION_CHANGED',function(e, data) {
+		$scope.$on('CHART_AGGGREGATION_CHANGED', function(e, data) {
 			setPageHeading();
 			drawChart();
-			console.log(data);
 		});
-
-		$scope.$on('RELOAD_DATA_WITH_DATE_FILTER', function(e, data) {
-  			console.log(data);
-   		});
 
 		$scope.previousDaySelectionChanged = function() {
 			clearAllExistingChartElements();

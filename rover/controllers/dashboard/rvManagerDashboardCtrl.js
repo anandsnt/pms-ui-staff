@@ -248,8 +248,7 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
     changeMonth: true,
     yearRange: "-5:+5",
     dateFormat: 'yy-mm-dd',
-    maxDate: moment($rootScope.businessDate).add(3, 'days').format('YYYY-MM-DD'),
-    onSelect: function(dateText, inst) {
+    onSelect: function(dateText) {
       $scope.dashboardFilter.fromDate = dateText;
       $scope.$broadcast('RELOAD_DATA_WITH_DATE_FILTER', {
         "from_date": $scope.dashboardFilter.fromDate
@@ -263,11 +262,10 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
     changeMonth: true,
     yearRange: "-5:+5",
     dateFormat: 'yy-mm-dd',
-    maxDate: moment($rootScope.businessDate).add(3, 'days').format('YYYY-MM-DD'),
     onSelect: function(dateText, inst) {
       $scope.dashboardFilter.toDate = dateText;
       $scope.$broadcast('RELOAD_DATA_WITH_DATE_FILTER', {
-        "to_date": $scope.dashboardFilter.toDate,
+        "to_date": $scope.dashboardFilter.toDate
       });
       ngDialog.close();
     }

@@ -51,9 +51,11 @@ angular.module('sntRover').service('rvManagersAnalyticsSrv', [
             Object.keys(dataByDate).forEach(function(date) {
                 var dateElement = { date: date };
                 var dateDatas = dataByDate[date];
+
                 dateDatas.forEach(function(dateData) {
                     if (isAggregated) {
                         var key = dateData.value ? dateData.value : "N/A";
+                        
                         dateElement[key] = dateData[resultType];
                     } else {
                         dateElement[resultType] = dateData[resultType];

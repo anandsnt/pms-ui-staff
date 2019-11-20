@@ -428,7 +428,7 @@ sntRover.controller('RVdashboardController',
                     }
                 };
 
-                $scope.showAnalyticsCalendar = function(type) {
+                $scope.showAnalyticsDatePicker = function() {
                     $timeout(function() {
                         ngDialog.open({
                             template: '/assets/partials/search/rvDatePickerPopup.html',

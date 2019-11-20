@@ -1,5 +1,5 @@
-sntRover.controller('rvManagerDashboardSearchController', ['$scope', '$transitions', '$rootScope', 'ngDialog',
-    function($scope, $transitions, $rootScope, ngDialog) {
+sntRover.controller('rvManagerDashboardSearchController', ['$scope', '$transitions', '$rootScope',
+    function($scope, $transitions, $rootScope) {
 
 	/*
 	* Controller class for dashboard search,
