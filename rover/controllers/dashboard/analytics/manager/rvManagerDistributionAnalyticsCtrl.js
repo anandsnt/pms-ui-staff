@@ -70,8 +70,8 @@ angular.module('sntRover')
 								// .tickFormat(d3.timeFormat("%b"))
 								.tickFormat(function(d) {
 									var a = moment(d).format('YYYY-MM-DD');
-									console.log(d)
-									console.log(a)
+									// console.log(d)
+									// console.log(a)
 									return getPrefinedValuesForDate(a);
 								})
 								.tickSizeOuter(0)
@@ -86,6 +86,17 @@ angular.module('sntRover')
 								.append("g")
 								.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+								// remove -ve values coming for some reason
+								_.each(data, function(item) {
+									for (var key in item) {
+										// check if the property/key is defined in the object itself, not in parent
+										if (item.hasOwnProperty(key) && key !== "date") {
+											// console.log(key, item[key]);
+											item[key] = item[key] > 0 ? item[key] : 0;
+										}
+									}
+								});
+
 							var stack = d3.stack()
 								.keys(stackKey)
 								.order(d3.stackOrderNone)
@@ -94,17 +105,30 @@ angular.module('sntRover')
 							var layers = stack(data);
 
 							xScale.domain(data.map(function(d) {
-								console.log(d.date);
-								console.log(parseDate(d.date))
+								// console.log(d.date);
+								// console.log(parseDate(d.date))
 
 								return parseDate(d.date);
 							}));
 
+							var ydomain_min = d3.min(layers.flat()
+								.map(function(d) {
+									return d[1];
+								}));
+							// console.log("ydomain_min..........."+ydomain_min);
+
+							var ydomain_max = d3.max(layers.flat()
+												.map(function(d) {
+												return d[1];
+											}));
+							// console.log("ydomain_max..........."+ydomain_max);
+
 							var maxValue = d3.max(layers[layers.length - 1], function(d) {
+								// console.log(d[1] + " **** " + d[0]);
 								return d[1];
 							});
 
-							yScale.domain([0, maxValue]).nice();
+							yScale.domain([0, ydomain_max]).nice();
 
 							var layer = svg.selectAll(".layer")
 								.data(layers)
@@ -124,6 +148,7 @@ angular.module('sntRover')
 									return xScale(parseDate(d.data.date));
 								})
 								.attr("y", function(d) {
+									console.log()
 									return yScale(d[1]);
 								})
 								.attr("width", xScale.bandwidth())
@@ -134,18 +159,22 @@ angular.module('sntRover')
 									tooltip.style("display", "none");
 								})
 								.on("mousemove", function(d) {
-									console.log(d)
+									// console.log(d);
+									var tooltipText = $filter('number')(d[1] - d[0], 2);
+
 									var xPosition = d3.mouse(this)[0] - 15;
 									var yPosition = d3.mouse(this)[1] - 25;
 									tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
-									tooltip.select("text").text(d[1] - d[0]);
+									tooltip.select("text").text(tooltipText);
 								});
 
 							d3.selectAll(".rect-bars")
 								.transition()
 								.duration(800)
 								.attr("height", function(d) {
-									return yScale(d[0]) - yScale(d[1]);
+									return yScale(d[0]) > yScale(d[1]) ?
+										   yScale(d[0]) - yScale(d[1]) :
+										   yScale(d[1]) - yScale(d[0]);
 								});
 
 							svg.append("g")
@@ -155,7 +184,7 @@ angular.module('sntRover')
 								.selectAll("text")
 								.style("text-anchor", "end")
 								.attr("dx", "-.8em")
-								.attr("dy", ".15em")
+								.attr("dy", data.length > 20 ? "-.7em" : "-.15em")
 								.attr("transform", "rotate(-65)");;
 
 							svg.append("g")
@@ -240,7 +269,7 @@ angular.module('sntRover')
 						return chartDataKey === "date";
 					});
 
-					console.log(chartDataKeys);
+					// console.log(chartDataKeys);
 
 
 					var colors = ["#ff0029", "#377eb8", "#66a61e", "#984ea3", "#00d2d5", "#ff7f00", "#af8d00", "#7f80cd", "#b3e900", "#c42e60", "#a65628", "#f781bf", "#8dd3c7", "#bebada", "#fb8072", "#80b1d3", "#fdb462", "#fccde5", "#bc80bd", "#ffed6f", "#c4eaff", "#cf8c00", "#1b9e77", "#d95f02", "#e7298a", "#e6ab02", "#a6761d", "#0097ff", "#00d067", "#000000", "#252525", "#525252", "#737373", "#969696", "#bdbdbd", "#f43600", "#4ba93b", "#5779bb", "#927acc", "#97ee3f", "#bf3947", "#9f5b00", "#f48758", "#8caed6", "#f2b94f", "#eff26e", "#e43872", "#d9b100", "#9d7a00", "#698cff", "#d9d9d9"]
@@ -262,7 +291,7 @@ angular.module('sntRover')
 
 					$scope.screenData.hideChartData = false;
 				} catch (E) {
-					console.log(E)
+					// console.log(E)
 				}
 			}
 		}

@@ -178,7 +178,7 @@
 		        </div>
 		    </div>
 
-		    <div class="entry dates"  ng-if="!dashboardFilter.isManagerDashboard" >
+		    <div class="entry dates"  ng-if="dashboardFilter.selectedAnalyticsMenu !== 'DISTRIBUTION'" >
 		        <div class="entry-data has-datepicker">
 		            <label for="analytics-date">Date</label>
 		            <input id="analytics-date" type="text" class="datepicker" ng-model="dashboardFilter.datePicked" ng-click="showAnalyticsCalendar()" ng-change="onDateChanged()" readonly />
@@ -203,7 +203,7 @@
 		        <div class="select with-label">
 		            <label for="room-type">CHART TYPE</label>
 		            <select id="room-type" ng-model="dashboardFilter.chartType" ng-change="onChartTypeChanged()">
-		                <option value="" selected="" translate>SHOW_ALL</option>
+		                <!-- <option value="" selected="" translate>SHOW_ALL</option> -->
 		                <option value="{{::filter.code}}" ng-repeat="filter in ::dashboardFilter.chartTypes track by $index">{{::filter.name}}</option>
 		            </select>
 		        </div>

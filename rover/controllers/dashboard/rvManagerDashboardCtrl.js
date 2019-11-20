@@ -209,7 +209,7 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
     "code": "adr"
   }, {
     "name": "RevPAR",
-    "code": "rev_pr"
+    "code": "rev_par"
   }];
 
   $scope.dashboardFilter.chartType = "occupancy";
@@ -224,7 +224,7 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
     "name": "Source",
     "code": "source_id"
   }, {
-    "name": "Segmant",
+    "name": "Segment",
     "code": "segment_id"
   }, {
     "name": "Origin",
