@@ -580,6 +580,21 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
         }
         $scope.invokeApi(RVBillinginfoSrv.fetchDefaultAccountRouting, params, successCallback);
     };
+
+    $scope.fetchAttachedPaymentTypes = function() {
+
+        var successCallback = function(data) {
+            $scope.attachedPaymentTypes = data.data;
+            $scope.$parent.$emit('hideLoader');
+        };
+        var errorCallback = function(errorMessage) {
+            $scope.$parent.$emit('hideLoader');
+            $scope.$emit('displayErrorMessage', errorMessage);
+        };
+
+        $scope.invokeApi(RVCompanyCardSrv.fetchCompanyPaymentData, $scope.contactInformation.id, successCallback, errorCallback);
+    };
+
     /**
      * function to fetch available billing groups from the server
      */
@@ -592,6 +607,8 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
             }
             $scope.$parent.$emit('hideLoader');
             $scope.fetchDefaultAccountRouting();
+            $scope.fetchAttachedPaymentTypes();
+
         };
         var errorCallback = function(errorMessage) {
             $scope.$parent.$emit('hideLoader');
