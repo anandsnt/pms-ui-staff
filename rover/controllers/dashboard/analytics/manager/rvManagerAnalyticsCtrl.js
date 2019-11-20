@@ -25,6 +25,10 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			$scope: $scope
 		});
 
+		$controller('rvManagerDistributionAnalyticsCtrl', {
+			$scope: $scope
+		});
+
 		var clearAllExistingChartElements = function() {
 			d3.select('#d3-plot').selectAll('svg').remove();
 			var divElements = d3.select('#d3-plot').selectAll('div');
@@ -72,12 +76,37 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 
 		};
 
+		var renderDistributionChart = function() {
+
+			$('base').attr('href', initialBaseHrefValue);
+			var options = {
+			    params: {
+			        start_date: moment($scope.dashboardFilter.datePicked).subtract(7, 'days').format('YYYY-MM-DD'),
+			        end_date: $scope.dashboardFilter.datePicked,
+			        group_by: 'market_id'
+			    },
+			    successCallBack: function(data) {
+			    	$('base').attr('href', '#');
+			    	$scope.screenData.analyticsDataUpdatedTime = moment().format("MM ddd, YYYY hh:mm:ss a");
+					clearAllExistingChartElements();
+			        console.log(JSON.stringify(data));
+			        $scope.drawDistributionChart(data);
+			    }
+			};
+
+			$scope.callAPI(rvManagersAnalyticsSrv.distributions, options);
+			// var data = {}
+			// $scope.drawDistributionChart(data);
+		};
+
 		var drawChart = function() {
 			$scope.screenData.hideChartData = true;
 			clearAllExistingChartElements();
 			$scope.screenData.mainHeading = "";
-			if ($scope.screenData.selectedChart = 'PERFOMANCE') {
+			if ($scope.screenData.selectedChart === 'PERFOMANCE') {
 				renderPerfomanceChart();
+			} else if ($scope.screenData.selectedChart === 'DISTRIBUTION'){
+				renderDistributionChart();
 			}
 		};
 
@@ -131,6 +160,17 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 		$scope.$on("$destroy", function() {
 			$('base').attr('href', initialBaseHrefValue);
 		});
+
+		$scope.$on('FILTER_1_CHANGED',function(e, data) {
+			console.log(data);
+		});
+		$scope.$on('FILTER_2_CHANGED',function(e, data) {
+			console.log(data);
+		});
+
+		$scope.$on('RELOAD_DATA_WITH_DATE_FILTER', function(e, data) {
+  			console.log(data);
+   		});
 
 		$scope.previousDaySelectionChanged = function() {
 			clearAllExistingChartElements();

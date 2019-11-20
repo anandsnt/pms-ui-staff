@@ -177,21 +177,58 @@
 		            </select>
 		        </div>
 		    </div>
-		    <div class="entry dates">
+
+		    <div class="entry dates"  ng-if="!dashboardFilter.isManagerDashboard" >
 		        <div class="entry-data has-datepicker">
 		            <label for="analytics-date">Date</label>
 		            <input id="analytics-date" type="text" class="datepicker" ng-model="dashboardFilter.datePicked" ng-click="showAnalyticsCalendar()" ng-change="onDateChanged()" readonly />
 		        </div>
 		    </div>
+
+		    <div class="entry dates" ng-if="dashboardFilter.isManagerDashboard && dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION'">
+		        <div class="entry-data has-datepicker">
+		            <label for="analytics-date">FROM</label>
+		            <input id="analytics-date" type="text" class="datepicker" ng-model="dashboardFilter.datePicked" ng-click="showAnalyticsCalendar('fromDate')" ng-change="onDateChanged()" readonly />
+		        </div>
+		    </div>
+
+		    <div class="entry dates" ng-if="dashboardFilter.isManagerDashboard && dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION'">
+		        <div class="entry-data has-datepicker">
+		            <label for="analytics-date">TO</label>
+		            <input id="analytics-date" type="text" class="datepicker" ng-model="dashboardFilter.toDatePicked" ng-click="showAnalyticsCalendar('toDate')" ng-change="onDateChanged()" readonly />
+		        </div>
+		    </div>
+
+		    <div class="entry room-types" ng-if="dashboardFilter.isManagerDashboard && dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION'">
+		        <div class="select with-label">
+		            <label for="room-type">FILTER</label>
+		            <select id="room-type" ng-model="dashboardFilter.filter1" ng-change="onFilter1TypeChange()">
+		                <option value="" selected="" translate>SHOW_ALL</option>
+		                <option value="{{::filter.code}}" ng-repeat="filter in ::dashboardFilter.analyticsFilter1 track by $index">{{::filter.name}}</option>
+		            </select>
+		        </div>
+		    </div>
+
+		    <div class="entry room-types" ng-if="dashboardFilter.isManagerDashboard && dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION'">
+		        <div class="select with-label">
+		            <label for="room-type">STACK FILTER</label>
+		            <select id="room-type" ng-model="dashboardFilter.filter2" ng-change="onFilter2TypeChange()">
+		                <option value="" selected="" translate>Non stacked</option>
+		                <option value="{{::filter.code}}" ng-repeat="filter in ::dashboardFilter.analyticsFilter2 track by $index">{{::filter.name}}</option>
+		            </select>
+		        </div>
+		    </div>
+		    
 		    <ul class="filters" ng-if="!dashboardFilter.isManagerDashboard">
 		        <li ng-click="changeAnalyticsView('FO_ARRIVALS')" ng-class="{'active' : dashboardFilter.selectedAnalyticsMenu === 'FO_ARRIVALS' }">Arrivals</li>
-		        <li ng-if="includeManagementInformation" ng-click="changeAnalyticsView('FO_WORK_LOAD')" ng-class="{'active' : dashboardFilter.selectedAnalyticsMenu === 'FO_WORK_LOAD' }">Workload</li>
+		        <li  ng-click="changeAnalyticsView('FO_WORK_LOAD')" ng-class="{'active' : dashboardFilter.selectedAnalyticsMenu === 'FO_WORK_LOAD' }">Workload</li>
 		        <li ng-click="changeAnalyticsView('FO_ACTIVITY')" ng-class="{'active' : dashboardFilter.selectedAnalyticsMenu === 'FO_ACTIVITY' }">Activity</li>
 		    </ul>
 		    <ul class="filters" ng-if="dashboardFilter.isManagerDashboard">
 		       <!--  <li ng-click="changeAnalyticsView('FO_ARRIVALS')" ng-class="{'active' : dashboardFilter.selectedAnalyticsMenu === 'FO_ARRIVALS' }">Arrivals</li>
 		        <li ng-click="changeAnalyticsView('FO_WORK_LOAD')" ng-class="{'active' : dashboardFilter.selectedAnalyticsMenu === 'FO_WORK_LOAD' }">Workload</li> -->
 		        <li ng-click="changeAnalyticsView('PERFOMANCE')" ng-class="{'active' : dashboardFilter.selectedAnalyticsMenu === 'PERFOMANCE' }">Perfomance</li>
+		        <li ng-click="changeAnalyticsView('DISTRIBUTION')" ng-class="{'active' : dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION' }">Distribution</li>
 		    </ul>
 		</div>
 

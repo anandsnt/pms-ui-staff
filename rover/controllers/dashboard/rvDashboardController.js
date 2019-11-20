@@ -411,9 +411,12 @@ sntRover.controller('RVdashboardController',
                 };
 
                 $scope.dashboardFilter.datePicked = angular.copy($rootScope.businessDate);
+                $scope.dashboardFilter.toDatePicked = angular.copy($rootScope.businessDate);
 
                 $scope.datePicked = moment($rootScope.businessDate).format('YYYY-MM-DD');
-                $scope.dateOptions = {
+                $scope.toDatePicked = moment($rootScope.businessDate).format('YYYY-MM-DD');
+
+                var dateOptions = {
                     changeYear: true,
                     changeMonth: true,
                     yearRange: "-5:+5",
@@ -422,14 +425,30 @@ sntRover.controller('RVdashboardController',
                     onSelect: function(dateText, inst) {
                         $scope.dashboardFilter.datePicked = dateText;
                         $scope.$broadcast('RELOAD_DATA_WITH_DATE_FILTER', {
-                            "room_type": $scope.dashboardFilter.selectedRoomType,
                             "date": $scope.dashboardFilter.datePicked
                         });
                         ngDialog.close();
                     }
                 };
 
-                $scope.showAnalyticsCalendar = function() {
+                var toDateOptions = {
+                    changeYear: true,
+                    changeMonth: true,
+                    yearRange: "-5:+5",
+                    dateFormat: 'yy-mm-dd',
+                    maxDate: moment($rootScope.businessDate).add(3, 'days').format('YYYY-MM-DD'),
+                    onSelect: function(dateText, inst) {
+                        $scope.dashboardFilter.toDatePicked = dateText;
+                        $scope.$broadcast('RELOAD_DATA_WITH_DATE_FILTER', {
+                            "date": $scope.dashboardFilter.toDatePicked
+                        });
+                        ngDialog.close();
+                    }
+                };
+
+                $scope.showAnalyticsCalendar = function(type) {
+                    $scope.dateOptions = (type === 'toDate')  ? toDateOptions : dateOptions;
+
                     $timeout(function() {
                         ngDialog.open({
                             template: '/assets/partials/search/rvDatePickerPopup.html',
@@ -437,6 +456,18 @@ sntRover.controller('RVdashboardController',
                             scope: $scope
                         });
                     }, 1000);
+                };
+
+                $scope.onFilter1TypeChange = function() {
+                    $scope.$broadcast('FILTER_1_CHANGED', {
+                        type: $scope.dashboardFilter.filter1
+                    });
+                };
+
+                $scope.onFilter2TypeChange = function() {
+                    $scope.$broadcast('FILTER_2_CHANGED', {
+                        type: $scope.dashboardFilter.filter2
+                    });
                 };
             }
 
