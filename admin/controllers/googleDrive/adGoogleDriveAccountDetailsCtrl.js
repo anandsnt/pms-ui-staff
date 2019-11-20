@@ -8,6 +8,7 @@ admin.controller('ADGoogleDriveAccountDetailsCtrl', [
     
     BaseCtrl.call(this, $scope);
 
+    var ERROR_POPUP_CLOSED_BY_USER = 'popup_closed_by_user';
     /**
      * Navigate back to the previous state
      */
@@ -54,11 +55,23 @@ admin.controller('ADGoogleDriveAccountDetailsCtrl', [
                         $scope.$apply();
                     }, 700);
                 }
+            }, function(error) {
+                if (error.error === ERROR_POPUP_CLOSED_BY_USER) {
+                    $scope.errorMessage = ['No account has been selected'];
+                }
+                $scope.$apply();
             });
         } else {
             GAPI.call(this, $scope);
             $scope.errorMessage = ["Google client failed to load...please try again"];
         }
+    };
+
+    // Checks whether the save btn should be disabled or not
+    $scope.shouldDisableSave = function () {
+        var flag = !$scope.accountDetails.description || !$scope.accountDetails.access_token;
+        console.log(typeof flag);
+        return flag;
     };
 
     /**
@@ -72,7 +85,6 @@ admin.controller('ADGoogleDriveAccountDetailsCtrl', [
         if ($scope.isEdit) {
             $scope.accountDetails = $stateParams.data;
         } 
-
         startAuth();
         
     };
