@@ -1,9 +1,45 @@
 angular.module('sntRover')
-	.controller('rvManagerDistributionAnalyticsCtrl', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvManagersAnalyticsSrv', 'rvAnalyticsHelperSrv',
-		function($scope, sntActivity, $timeout, $filter, rvManagersAnalyticsSrv, rvAnalyticsHelperSrv) {
+	.controller('rvManagerDistributionAnalyticsCtrl', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvManagersAnalyticsSrv', 'rvAnalyticsHelperSrv', '$rootScope',
+		function($scope, sntActivity, $timeout, $filter, rvManagersAnalyticsSrv, rvAnalyticsHelperSrv, $rootScope) {
+			var getPrefinedValuesForDate = function(date) {
+            var today = $rootScope.businessDate;
+            var definedDates = [{
+                "value": "Yesterday",
+                "date": moment(today).subtract(1, 'day').format("YYYY-MM-DD")
+            }, {
+                "value": "Today-2",
+                "date": moment(today).subtract(2, 'day').format("YYYY-MM-DD")
+            }, {
+                "value": "Today-3",
+                "date": moment(today).subtract(3, 'day').format("YYYY-MM-DD")
+            }, {
+                "value": "Today-4",
+                "date": moment(today).subtract(4, 'day').format("YYYY-MM-DD")
+            }, {
+                "value": "Today-5",
+                "date": moment(today).subtract(5, 'day').format("YYYY-MM-DD")
+            }, {
+                "value": "Today-6",
+                "date": moment(today).subtract(6, 'day').format("YYYY-MM-DD")
+            }];
 
+            var isPredefinedDate = function(date) {
+                return _.find(definedDates, function(definedDate) {
+                    return definedDate.date === date;
+                });
+            };
+
+            if (date === today) {
+                return "Today";
+            } else if (isPredefinedDate(date)) {
+                return isPredefinedDate(date).value;
+            }
+
+            return $filter('date')(date,  $rootScope.dateFormat);
+
+        };
 			$scope.drawDistributionChart = function(data) {
-				$scope.screenData.mainHeading = $filter('translate')("AN_DISTRIBUTION");
+				$scope.$emit('CHART_TYPE_CHANGED');
 				try {
 					var initStackedBarChart = {
 						draw: function(config) {
@@ -18,7 +54,7 @@ angular.module('sntRover')
 									bottom: 30,
 									left: 50
 								},
-								parseDate = d3.timeParse("%m/%Y"),
+								parseDate = d3.timeParse("%Y-%m-%d"),
 								width = document.getElementById("analytics-chart").clientWidth - margin.left - margin.right,
 								height = 500 - margin.top - margin.bottom,
 								xScale = d3.scaleBand()
@@ -28,7 +64,13 @@ angular.module('sntRover')
 								.range([height, 0]);
 
 							var xAxis = d3.axisBottom(xScale)
-								.tickFormat(d3.timeFormat("%b"))
+								// .tickFormat(d3.timeFormat("%b"))
+								.tickFormat(function(d){
+									var a = moment(d).format('YYYY-MM-DD');
+									console.log(d)
+									console.log(a)
+									return getPrefinedValuesForDate(a);
+								})
 								.tickSizeOuter(0)
 								.tickPadding(15),
 								yAxis = d3.axisLeft(yScale)
@@ -49,6 +91,9 @@ angular.module('sntRover')
 							var layers = stack(data);
 
 							xScale.domain(data.map(function(d) {
+								console.log(d.date);
+								console.log(parseDate(d.date))
+
 								return parseDate(d.date);
 							}));
 
@@ -173,51 +218,135 @@ angular.module('sntRover')
 						}
 					}
 					var data = [{
-						"date": "3/1854",
-						"total": 0,
-						"disease disease disease disease": 10,
-						"wounds": 10,
-						"other": 20
+						"date": "2018-10-12",
+						"adr": 0,
+						"rev par": 10,
+						"occupancy": 10,
+						"occupied_rooms": 20
 					}, {
-						"date": "6/1854",
-						"total": 50,
-						"disease disease disease disease": 10,
-						"wounds": 10,
-						"other": 15
-					}, {
-						"date": "7/1854",
-						"total": 50,
-						"disease disease disease disease": 10,
-						"wounds": 10,
-						"other": 15
-					}, {
-						"date": "8/1854",
-						"total": 50,
-						"disease disease disease disease": 10,
-						"wounds": 10,
-						"other": 15
-					}, {
-						"date": "9/1854",
-						"total": 50,
-						"disease disease disease disease": 10,
-						"wounds": 10,
-						"other": 15
-					}, {
-						"date": "10/1854",
-						"total": 50,
-						"disease disease disease disease": 10,
-						"wounds": 10,
-						"other": 15
-					}, {
-						"date": "11/1854",
-						"total": 70,
-						"disease disease disease disease": 10,
-						"wounds": 10,
-						"other": 15
+						"date": "2018-10-11",
+						"adr": 10,
+						"rev par": 10,
+						"occupancy": 20,
+						"occupied_rooms": 20
+					},
+					{
+						"date": "2018-10-10",
+						"adr": 0,
+						"rev par": 10,
+						"occupancy": 50,
+						"occupied_rooms": 40
+					},
+					{
+						"date": "2018-10-09",
+						"adr": 0,
+						"rev par": 60,
+						"occupancy": 25,
+						"occupied_rooms": 20
+					},
+					{
+						"date": "2018-10-08",
+						"adr": 0,
+						"rev par": 60,
+						"occupancy": 25,
+						"occupied_rooms": 20
+					},
+					{
+						"date": "2018-10-07",
+						"adr": 0,
+						"rev par": 60,
+						"occupancy": 25,
+						"occupied_rooms": 20
+					},
+					{
+						"date": "2018-10-06",
+						"adr": 0,
+						"rev par": 60,
+						"occupancy": 50,
+						"occupied_rooms": 20
+					},
+					{
+						"date": "2018-10-05",
+						"adr": 0,
+						"rev par": 60,
+						"occupancy": 50,
+						"occupied_rooms": 20
+					}
+
+					// {
+					// 	"date": "6/1854",
+					// 	"total": 50,
+					// 	"rev par": 10,
+					// 	"occupancy": 10,
+					// 	"occupied_rooms": 15
+					// }, {
+					// 	"date": "7/1854",
+					// 	"total": 50,
+					// 	"rev par": 10,
+					// 	"occupancy": 10,
+					// 	"occupied_rooms": 15
+					// }, {
+					// 	"date": "8/1854",
+					// 	"total": 50,
+					// 	"rev par": 10,
+					// 	"occupancy": 10,
+					// 	"occupied_rooms": 15
+					// }, {
+					// 	"date": "9/1854",
+					// 	"total": 50,
+					// 	"rev par": 10,
+					// 	"occupancy": 10,
+					// 	"occupied_rooms": 15
+					// }, {
+					// 	"date": "10/1854",
+					// 	"total": 50,
+					// 	"rev par": 10,
+					// 	"occupancy": 10,
+					// 	"occupied_rooms": 15
+					// }, {
+					// 	"date": "11/1854",
+					// 	"total": 70,
+					// 	"rev par": 10,
+					// 	"occupancy": 10,
+					// 	"occupied_rooms": 15
+					// }
+
+					];
+
+					var data = [{
+						"date": "2018-10-12",
+						"adr": 12,
+					},
+					{
+						"date": "2018-10-11",
+						"adr": 12
+					}];
+
+					var data = [{
+						"date": "2018-10-12",
+						"occupancy": 15,
+					},
+					{
+						"date": "2018-10-11",
+						"occupancy": 26
+					}];
+
+					var data = [{
+						"date": "2018-10-12",
+						"standard king": 15,
+						"Deluxe king": 20,
+					},
+					{
+						"date": "2018-10-11",
+						"standard king": 35,
+						"Deluxe king": 34,
 					}];
 
 					var ii = 0;
-					var key = ["total", "disease disease disease disease", "wounds", "other"];
+					var key = ["adr", "rev par", "occupancy", "occupied_rooms"];
+					var key = ["occupancy"];
+					var key = ["standard king", "Deluxe king"];
+					//var key = ["adr"];
 					if (ii > 0) {
 						_.each(data, function(d) {
 							for (var i = 0; i <= ii; i++) {

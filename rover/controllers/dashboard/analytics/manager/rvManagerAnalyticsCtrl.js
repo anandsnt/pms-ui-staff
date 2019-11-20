@@ -81,9 +81,9 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			$('base').attr('href', initialBaseHrefValue);
 			var options = {
 			    params: {
-			        start_date: moment($scope.dashboardFilter.datePicked).subtract(7, 'days').format('YYYY-MM-DD'),
-			        end_date: $scope.dashboardFilter.datePicked,
-			        group_by: 'market_id'
+			        start_date: $scope.dashboardFilter.fromDate,
+			        end_date: $scope.dashboardFilter.toDate,
+			        group_by: $scope.dashboardFilter.aggType
 			    },
 			    successCallBack: function(data) {
 			    	$('base').attr('href', '#');
@@ -126,6 +126,8 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			$scope.screenData.selectedChart = selectedChart;
 			$timeout(function() {
 				clearAllExistingChartElements();
+				$scope.dashboardFilter.chartType = "occupancy";
+				$scope.dashboardFilter.aggType = "";
 				drawChart();
 			}, 0);
 		});
@@ -145,6 +147,7 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			$scope.dashboardFilter.selectedRoomType = "";
 			$scope.dashboardFilter.selectedAnalyticsMenu = "PERFOMANCE";
 			$scope.screenData.selectedChart = "PERFOMANCE";
+
 		});
 
 		$scope.refreshChart = function() {
@@ -153,7 +156,12 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 		/*
 		 * Reload graph with date picker change
 		 */
-		$scope.$on('RELOAD_DATA_WITH_DATE_FILTER', function() {
+		$scope.$on('RELOAD_DATA_WITH_DATE_FILTER', function(e, data) {
+			// if(data.to_date) {
+			// 	console.log(date.to_date);
+			// } else if (date.from_date){
+			// 	console.log(date.from_date);
+			// }
 			drawChart();
 		});
 
@@ -161,10 +169,28 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			$('base').attr('href', initialBaseHrefValue);
 		});
 
-		$scope.$on('FILTER_1_CHANGED',function(e, data) {
+		
+		var setPageHeading = function() {
+			var chartTypeSelected = _.find($scope.dashboardFilter.chartTypes, function(chartType) {
+				return chartType.code === $scope.dashboardFilter.chartType;
+			});
+			var aggTypeSelected = _.find($scope.dashboardFilter.aggTypes, function(aggType) {
+				return aggType.code === $scope.dashboardFilter.aggType;
+			});
+
+			if (aggTypeSelected) {
+				$scope.screenData.mainHeading = chartTypeSelected.name + " by " + aggTypeSelected.name;
+			} else {
+				$scope.screenData.mainHeading = chartTypeSelected.name;
+			}
+		};
+		$scope.$on('CHART_TYPE_CHANGED',function(e, data) {
+			setPageHeading();
 			console.log(data);
 		});
-		$scope.$on('FILTER_2_CHANGED',function(e, data) {
+
+		$scope.$on('CHART_AGGGREGATION_CHANGED',function(e, data) {
+			setPageHeading();
 			console.log(data);
 		});
 

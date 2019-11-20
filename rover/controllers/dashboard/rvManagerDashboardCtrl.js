@@ -1,4 +1,4 @@
-sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$state', '$vault', 'RVDashboardSrv', '$timeout', function($scope, $rootScope, $state, $vault, RVDashboardSrv, $timeout) {
+sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$state', '$vault', 'RVDashboardSrv', '$timeout', 'ngDialog', function($scope, $rootScope, $state, $vault, RVDashboardSrv, $timeout, ngDialog) {
   // inheriting some useful things
   BaseCtrl.call(this, $scope);
   var that = this;
@@ -195,6 +195,95 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
     }, 500);
   };
 
- $scope.dashboardFilter.isManagerDashboard = true;
- $scope.$on('REFRESH_ANALTICS_SCROLLER', refreshAnalyticsScroller);
+  $scope.dashboardFilter.isManagerDashboard = true;
+  $scope.$on('REFRESH_ANALTICS_SCROLLER', refreshAnalyticsScroller);
+
+  $scope.dashboardFilter.chartTypes = [{
+    "name": "Occupancy",
+    "code": "occupancy"
+  }, {
+    "name": "Occupied Rooms",
+    "code": "occupancy_rooms"
+  }, {
+    "name": "ADR",
+    "code": "adr"
+  }, {
+    "name": "RevPAR",
+    "code": "rev_pr"
+  }];
+
+  $scope.dashboardFilter.chartType = "occupancy";
+
+  $scope.dashboardFilter.aggTypes = [{
+    "name": "Room type",
+    "code": "room_type_id "
+  }, {
+    "name": "Market",
+    "code": "market_id"
+  }, {
+    "name": "Source",
+    "code": "source_id"
+  }, {
+    "name": "Segmant",
+    "code": "segment_id"
+  }, {
+    "name": "Origin",
+    "code": "booking_origin_id"
+  }];
+
+
+  $scope.onChartTypeChanged = function() {
+    $scope.$broadcast('CHART_TYPE_CHANGED');
+  };
+
+  $scope.onAggregationTypeChanged = function() {
+    $scope.$broadcast('CHART_AGGGREGATION_CHANGED');
+  };
+
+  $scope.dashboardFilter.toDate = angular.copy($rootScope.businessDate);
+  $scope.dashboardFilter.fromDate = angular.copy(moment($scope.dashboardFilter.toDate).subtract(7, 'days').format('YYYY-MM-DD'));
+
+  var dateOptions = {
+    changeYear: true,
+    changeMonth: true,
+    yearRange: "-5:+5",
+    dateFormat: 'yy-mm-dd',
+    maxDate: moment($rootScope.businessDate).add(3, 'days').format('YYYY-MM-DD'),
+    onSelect: function(dateText, inst) {
+      $scope.dashboardFilter.fromDate = dateText;
+      $scope.$broadcast('RELOAD_DATA_WITH_DATE_FILTER', {
+        "from_date": $scope.dashboardFilter.fromDate
+      });
+      ngDialog.close();
+    }
+  };
+
+  var toDateOptions = {
+    changeYear: true,
+    changeMonth: true,
+    yearRange: "-5:+5",
+    dateFormat: 'yy-mm-dd',
+    maxDate: moment($rootScope.businessDate).add(3, 'days').format('YYYY-MM-DD'),
+    onSelect: function(dateText, inst) {
+      $scope.dashboardFilter.toDate = dateText;
+      $scope.$broadcast('RELOAD_DATA_WITH_DATE_FILTER', {
+        "to_date": $scope.dashboardFilter.toDate,
+      });
+      ngDialog.close();
+    }
+  };
+
+  $scope.showAnalyticsCalendar = function(type) {
+    $scope.dateOptions = (type === 'toDate') ? toDateOptions : dateOptions;
+    $scope.datePicked = (type === 'toDate') ?
+      moment($scope.dashboardFilter.toDate).format('YYYY-MM-DD') :
+      moment($scope.dashboardFilter.fromDate).format('YYYY-MM-DD');
+    $timeout(function() {
+      ngDialog.open({
+        template: '/assets/partials/search/rvDatePickerPopup.html',
+        className: '',
+        scope: $scope
+      });
+    }, 1000);
+  };
 }]);

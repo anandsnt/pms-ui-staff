@@ -1,5 +1,5 @@
-sntRover.controller('rvManagerDashboardSearchController', ['$scope', '$transitions',
-    function($scope, $transitions) {
+sntRover.controller('rvManagerDashboardSearchController', ['$scope', '$transitions', '$rootScope', 'ngDialog',
+    function($scope, $transitions, $rootScope, ngDialog) {
 
 	/*
 	* Controller class for dashboard search,
@@ -72,36 +72,5 @@ sntRover.controller('rvManagerDashboardSearchController', ['$scope', '$transitio
     $scope.$on("SearchResultsCleared", function(event) {
         backToDashboard();
     });
-
-    $scope.dashboardFilter.analyticsFilter1 = [{
-        "name": "Occupancy",
-        "code": "occupancy"
-    }, {
-        "name": "Occupied Rooms",
-        "code": "occupancy_rooms"
-    }, {
-        "name": "ADR",
-        "code": "adr"
-    }, {
-        "name": "RevPAR",
-        "code": "rev_pr"
-    }];
-
-    $scope.dashboardFilter.analyticsFilter2 = [{
-        "name": "Room type",
-        "code": "room_type"
-    }, {
-        "name": "Market",
-        "code": "market_id"
-    }, {
-        "name": "Source",
-        "code": "source_id"
-    }, {
-        "name": "Channel",
-        "code": "channel_id"
-    }, {
-        "name": "Origin",
-        "code": "origin_id"
-    }];
 
 }]);
