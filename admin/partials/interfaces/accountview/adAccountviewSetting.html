@@ -29,6 +29,38 @@
                     </ad-textarea>
                 </fieldset>
             </fieldset>
+
+            <fieldset class="holder full-width">
+                <div class="form-title">
+                    <h3>SFTP <span>Access Configuration</span></h3>
+                </div>
+
+                <fieldset class="holder left">
+                    <ad-textbox inputtype="text"
+                                value="config.sftp_username"
+                                label="{{'USERNAME'| translate}}"
+                                styleclass="full-width"></ad-textbox>
+                    <ad-textbox inputtype="password"
+                                value="config.sftp_password"
+                                label="{{'PASSWORD'| translate}}"
+                                styleclass="full-width"></ad-textbox>
+                    <ad-textbox inputtype="number"
+                                value="config.sftp_port"
+                                label="{{'PORT'| translate}}"
+                                styleclass="full-width"
+                                placeholder="Default -> 22"></ad-textbox>
+                </fieldset>
+
+                <fieldset class="holder right">
+                    <ad-textbox inputtype="text"
+                                value="config.sftp_path"
+                                label="{{'PATH'| translate}}"
+                                styleclass="full-width"></ad-textbox>
+                    <ad-textbox inputtype="text" value="config.sftp_host"
+                                label="{{'HOST'| translate}}"
+                                styleclass="full-width"></ad-textbox>
+                </fieldset>
+            </fieldset>
         </div>
     </fieldset>
 

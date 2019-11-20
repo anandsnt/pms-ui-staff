@@ -6,6 +6,15 @@
 				{{data.charge_groups.length}}
 				) </span>
 			<a class="action add" ng-click="addNewClicked()" translate>ADD_NEW</a>
+			<div class="filters language" ng-if="(currentClickedElement !== -1) && availableLanguagesSet.show_language_field">
+	            <label for="email-hotel-logo" translate> SELECT LANGUAGE </label>
+	            <div class="select">
+	                <select ng-model="selectedLanguage.code" name="locale" ng-change="onLanguageChange()">
+	                    <option ng-repeat="locale in availableLanguagesSet.languages" value="{{locale.code}}" ng-selected="selectedLanguage.code == roomTypeData.locale"> {{locale.language}}
+	                    </option>
+	                </select>
+            	</div>
+        	</div>
 		</header>
 		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>

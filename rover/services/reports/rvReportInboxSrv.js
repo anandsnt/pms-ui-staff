@@ -937,6 +937,28 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                 formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(accounts, value, 'id'), 'account_name').join(',');
             })); 
         };
+
+        /**
+         * Fill selected countries
+         * @param {Array} value 
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
+        this.fillSelectedCountries = (value, key, promises, formatedFilter) => { 
+            if (!formatedFilter[reportInboxFilterLabelConst[key]]) {
+                formatedFilter[reportInboxFilterLabelConst[key]] = [];
+            }
+            promises.push(RVreportsSubSrv.fetchCountries().then(function(countries) {
+                // Here -1 is for UNDEFINED entry
+                if (value.length === (countries.length + 1)) { 
+                    formatedFilter[reportInboxFilterLabelConst[key]] = 'All Countries'; 
+                } else {
+                    formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(countries, value, 'id'), 'value').join(',');
+                }
+            })); 
+        };
         
         /**
          * Process filters for the given generated report
@@ -1148,6 +1170,9 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                     case reportParamsConst['GROUP_BY_USER']:
                     case reportParamsConst['GROUP_BY_GROUP_NAME']:
                         self.fillGroupByInfo(value, key, processedFilter);
+                        break;
+                    case reportParamsConst['COUNTRY']:
+                        self.fillSelectedCountries(value, key, promises, processedFilter);
                         break;
                 }
             });

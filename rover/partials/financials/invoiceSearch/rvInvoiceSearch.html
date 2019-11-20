@@ -42,9 +42,9 @@
             No Folio Number
         </label>
 
-        <label class="checkbox" ng-show="shouldShowReceipts()">
+        <label class="checkbox" ng-show="shouldShowReceipts()" ng-click="clickedNoQrCode()">
             <span class="icon-form icon-checkbox" ng-class="{'checked': invoiceSearchData.no_qr_code_only}"></span>
-            <input type="checkbox"  ng-model="invoiceSearchData.no_qr_code_only" ng-click="searchInvoice()"/>
+            <input type="checkbox" ng-model="invoiceSearchData.no_qr_code_only" />
             No QR code only
         </label>
 

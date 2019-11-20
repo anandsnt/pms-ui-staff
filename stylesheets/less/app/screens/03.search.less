@@ -341,7 +341,7 @@
 
                 &.card {
                     padding-left: 15px;
-                    .calc-width( 100, 480 );
+                    .calc-width( 100, 530 );
                 }
 
                 &.rate {
@@ -349,7 +349,7 @@
                 }
 
                 &.contract {
-                    width: 155px;
+                    width: 205px;
                     .pull-right;
                 }
             }
@@ -416,7 +416,7 @@
 
                     .data {
                         height: 35px;
-                        .calc-width(100, 505 );
+                        .calc-width(100, 555 );
                         #flexbox > .parent( column, center, '', '' );
 
                         &.no-address {
@@ -437,14 +437,15 @@
                     }
 
                     .icon-contracts {
-                        background-position: 0px -7653px;
+                        background-position: 0px -7652px;
                         line-height: 30px;
-                        width: 120px;
+                        width: 170px;
                         margin: 0;
+                        .nowrap();
 
                         &.active {
                             color: @green;
-                            background-position: 0 -12753px;
+                            background-position: 0 -12752px;
                         }
                     }
                 }
@@ -2854,6 +2855,15 @@
                         margin-right: 20px;
                         &:last-child { margin-right: 0; }
                         .calc-max-width(100, 630);
+
+                        &.icon-contracts {
+                            &.access-code {
+                                float: none;
+                                font-size: inherit;
+                                text-transform: none;
+                                width: auto;
+                            }
+                        }
                     }
 
                     .confirmation {
@@ -2863,19 +2873,29 @@
                     }
 
                     // State Classes:
-                    &.no-confirmation {
+                    &.no-confirmation {
                         .confirmation {
                             .hide();
                         }
                         .icons {
-                            .calc-max-width(33, 20); // 33 (3 Icons) - 20 (margin)
+                            .calc-max-width(25, 20); // 33 (3 Icons) - 20 (margin)
                         }
 
                         &.no-email,
                         &.no-phone,
-                        &.no-address {
+                        &.no-address,
+                        &.no-access-code {
                             .icons {
-                                .calc-max-width(50, 20); // 2 Icons - 20%
+                                .calc-max-width(33, 20); // 2 Icons - 20%
+                            }
+
+                            &.no-email,
+                            &.no-phone,
+                            &.no-address,
+                            &.no-access-code {
+                                .icons {
+                                    .calc-max-width(50, 20); // 2 Icons - 20%
+                                }
                             }
                         }
                     }
@@ -2884,18 +2904,34 @@
                         .icon-email-grey {
                             .hide();
                         }
-                        .icons {
-                            .calc-max-width(100, 520);
-                        }
+
                         &.no-phone,
-                        &.no-address {
+                        &.no-address,
+                        &.no-access-code {
                             .icons {
-                                .calc-max-width(100, 170); // 1 Icons & Conf
+                                .calc-max-width(100, 340); // 1 Icons & Conf
                             }
 
                             &.no-confirmation {
                                 .icons {
+                                    .calc-max-width(50, 20); // 2 Icons
+                                }
+                                .icons {
                                     max-width: 100%; // Only this Icon
+                                }
+                            }
+
+                            &.no-phone,
+                            &.no-address,
+                            &.no-access-code {
+                                .icons {
+                                    .calc-max-width(100, 170); // 1 Icons & Conf
+                                }
+
+                                &.no-confirmation {
+                                    .icons {
+                                        max-width: 100%; // Only this Icon
+                                    }
                                 }
                             }
                         }
@@ -2905,18 +2941,16 @@
                         .icon-phone {
                             .hide();
                         }
-                        .icons {
-                            .calc-max-width(100, 520);
-                        }
-                        &.no-email
-                        &.no-address {
+                        
+                        &.no-access-code,
+                        &.no-address {
                             .icons {
-                                .calc-max-width(100, 170); // 1 Icons & Conf
+                                .calc-max-width(100, 340); // 2 Icons & Conf
                             }
 
                             &.no-confirmation {
                                 .icons {
-                                    max-width: 100%; // Only this Icon
+                                    .calc-max-width(50, 20); // 2 Icons
                                 }
                             }
                         }
@@ -2926,20 +2960,23 @@
                         .icon-location {
                             .hide();
                         }
-                        .icons {
-                            .calc-max-width(100, 520);
-                        }
-                        &.no-email,
-                        &.no-phone {
+
+                        &.no-access-code {
                             .icons {
-                                .calc-max-width(100, 170); // 1 Icons & Conf
+                                .calc-max-width(100, 340); // 1 Icons & Conf
                             }
 
                             &.no-confirmation {
                                 .icons {
-                                    max-width: 100%; // Only this Icon
+                                    .calc-max-width(50, 20); // 2 Icons
                                 }
                             }
+                        }
+                    }
+
+                    &.no-access-code {
+                        .icons {
+                            &.access-code { .hide(); }
                         }
                     }
                 }
@@ -3977,6 +4014,103 @@
                                         }
                                     }
                                 }
+                            }
+                        }
+                    }
+                }
+            }
+
+            /* Contract - under CO/TA Contracts tab when searching */
+            &.contract {
+                position: relative;
+                height: 50px;
+
+                &:not(:last-child) {
+                    margin-bottom: 15px;
+                }
+
+                .faux-anchor {
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                    #flexbox > .parent( row, '', center, '' );
+                }
+                
+                .contract-status,
+                .contract-dates,
+                .contract-rates,
+                .contract-details {
+                    .pull-left;
+                }
+
+                .contract-dates {
+                    width: 100px;
+                    font-size: 14px;
+
+                    .start-date,
+                    .end-date {
+                        display: block;
+                    }
+                }
+
+                .contract-rates {
+                    .calc-width( 100, 520 );
+                    font-size: 14px;
+                    padding-right: 15px;
+                    text-transform: uppercase;
+
+                    .more {
+                        display: inline;
+                        color: @grey3;
+                        margin: 0;
+                    }
+                }
+
+                .contract-status {
+                    width: 70px;
+                    font-size: 14px;
+                    text-transform: uppercase;
+
+                    .icon-contracts {
+                        padding-left: 17px;
+
+                        &.active {
+                            color: @green;
+                        }
+                    }
+                }
+
+                .contract-details {
+                    width: 330px;
+
+                    h2 {
+                        font-size: 18px;
+                    }
+
+                    .access-code {
+                        width: 90px;
+                        font-size: 14px;
+                        text-transform: uppercase;
+                        color: @black;
+                        font-weight: 600;
+                        .pull-left;
+                    }
+
+                    .icons {
+                        font-size: 14px;
+                        padding-left: 20px;
+                        line-height: 18px;
+                        height: 16px;
+                        text-transform: uppercase;
+                        background-size: 80px;
+                        .pull-left;
+
+                        &.colored {
+                            &.icon-guest-company {
+                                background-position: 0 -8743px;
+                            }
+
+                            &.icon-guest-travelagent {
+                                background-position: 0 -8783px;
                             }
                         }
                     }

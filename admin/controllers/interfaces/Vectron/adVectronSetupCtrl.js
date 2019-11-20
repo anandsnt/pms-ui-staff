@@ -1,10 +1,8 @@
 admin.controller('ADVectronSetupCtrl', [
-    '$scope', 'config', 'adInterfacesSrv', 'adIFCSrv', 'ngDialog',
-    function ($scope, config, adInterfacesSrv, adIFCSrv, ngDialog) {
+    '$scope', 'config', 'chargeCodes', 'adInterfacesSrv', 'adIFCSrv', 'ngDialog',
+    function ($scope, config, chargeCodes, adInterfacesSrv, adIFCSrv, ngDialog) {
         BaseCtrl.call(this, $scope);
-
         $scope.interface = 'VECTRON';
-
         $scope.state = {
             activeTab: 'SETTING'
 
@@ -100,6 +98,7 @@ admin.controller('ADVectronSetupCtrl', [
         (function () {
             loadToken();
             $scope.config = config;
+            $scope.chargeCodes = chargeCodes.charge_codes;
         })();
     }
 ]);

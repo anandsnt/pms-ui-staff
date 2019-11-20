@@ -42,7 +42,7 @@ sntRover.controller('RVInvoiceSearchController',
 		$scope.shouldShowARInvoices =  function() {
 			return (_.findWhere($scope.filterOptions, {"name": "AR Invoices"})).id === $scope.invoiceSearchData.filter_id;
 		};		
-
+		$scope.invoiceSearchData.no_qr_code_only = false;
 		
 		$scope.setScroller('invoice-list', scrollOptions);
 		/**
@@ -96,6 +96,14 @@ sntRover.controller('RVInvoiceSearchController',
 			refreshScroll();
 		};
 		/*
+		 * Clicked No Qr code only
+		 */
+		$scope.clickedNoQrCode = function() {
+			$timeout(function() {
+				$scope.searchInvoice();
+			}, 700);
+		};
+		/*
 		 * Method to search invoice
 		 * @param page is page number of pagination
 		 */
@@ -145,10 +153,10 @@ sntRover.controller('RVInvoiceSearchController',
 						'to_date': $scope.invoiceSearchData.to_date
 					};
 
-					if ($scope.shouldShowInvoices) {
+					if ($scope.shouldShowInvoices()) {
 						params.no_folio_number_only = $scope.invoiceSearchData.no_folio_number_only;
 					}
-					if ($scope.shouldShowReceipts) {
+					if ($scope.shouldShowReceipts()) {
 						params.no_qr_code_only = $scope.invoiceSearchData.no_qr_code_only;
 					}
 
@@ -175,12 +183,20 @@ sntRover.controller('RVInvoiceSearchController',
 			$scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].isOpened = !$scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].isOpened;
 			if ($scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].isOpened) {
 				var successCallBackOfExpandBill = function(response) {
-					angular.forEach(response.transactions, function(item) {
-						item.isChecked = false;
-						item.bill_id = $scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].bill_id;
-					});					
-					$scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].transactions = response.transactions;
-					refreshScroll();
+					var transactionIndex = _.findIndex(response.transactions, {"is_visible_in_invoice_search": true});
+
+					if (transactionIndex === -1) {
+						$scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].showErrorMessage = true;
+					} else {
+						$scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].showErrorMessage = false;
+						angular.forEach(response.transactions, function(item) {
+							item.isChecked = false;
+							item.bill_id = $scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].bill_id;
+						});					
+						$scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].transactions = response.transactions;
+						refreshScroll();
+					}
+					
 				},
 				options = {
 					params: {

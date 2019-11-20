@@ -281,8 +281,10 @@ sntRover.controller('roverController', [
          */
         $scope.userInfo = userInfoDetails;
         $scope.isPmsConfigured = $scope.userInfo.is_pms_configured;
+
         $rootScope.adminRole = $scope.userInfo.user_role;
         $rootScope.isHotelStaff = $scope.userInfo.is_staff;
+        $rootScope.includeManagementInformation = $scope.userInfo.include_management_information;
 
         // self executing check
         $rootScope.isMaintenanceStaff = (function (roles) {
@@ -612,6 +614,9 @@ sntRover.controller('roverController', [
             }
 
             $scope.menuOpen = !$scope.menuOpen;
+            $scope.$broadcast("SIDE_MENU_TOGGLE", {
+                "menuOpen": $scope.menuOpen
+            });
 
             // Bug fix for CICO-15718
             // Found that the issue appears when the keyboard comes over the screen
