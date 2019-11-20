@@ -392,7 +392,6 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
      * function to fetch attached payment types from the server
      */
     $scope.fetchAttachedPaymentTypes = function() {
-
         var errorCallback = function(errorMessage) {
             $scope.$parent.$emit('hideLoader');
             $scope.$emit('displayErrorMessage', errorMessage);
@@ -581,7 +580,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
         $scope.invokeApi(RVBillinginfoSrv.fetchDefaultAccountRouting, params, successCallback);
     };
 
-    $scope.fetchAttachedPaymentTypes = function() {
+    $scope.fetchAttachedPayments = function() {
 
         var successCallback = function(data) {
             $scope.attachedPaymentTypes = data.data;
@@ -607,7 +606,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
             }
             $scope.$parent.$emit('hideLoader');
             $scope.fetchDefaultAccountRouting();
-            $scope.fetchAttachedPaymentTypes();
+            $scope.fetchAttachedPayments();
 
         };
         var errorCallback = function(errorMessage) {
