@@ -159,7 +159,7 @@ angular.module('sntRover')
 									var yPosition = d3.mouse(this)[1] - 25;
 
 									tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
-									tooltip.select("text").text(trooltipText);
+									tooltip.select("text").text(tooltipText);
 								});
 
 							d3.selectAll(".rect-bars")
