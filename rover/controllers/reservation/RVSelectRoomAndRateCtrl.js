@@ -1538,6 +1538,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 							if (rateId) {
 								var curRate = $scope.reservationData.ratesMeta[rateId];
+								
 								details.rate.name = curRate && curRate.name;
 								var rateAmount = Number(parseFloat($scope.stateCheck.stayDates[date].amount).toFixed(2));
 
