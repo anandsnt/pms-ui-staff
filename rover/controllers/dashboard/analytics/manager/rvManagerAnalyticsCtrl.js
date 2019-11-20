@@ -61,13 +61,14 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			//     params: {
 			//         start_date: moment($scope.dashboardFilter.datePicked).subtract(7, 'days').format('YYYY-MM-DD'),
 			//         end_date: $scope.dashboardFilter.datePicked,
-			//         group_by: 'market_id'
+			//         group_by: 'market_id',
+            //         chart_type: 'adr'
 			//     },
 			//     successCallBack: function(data) {
 			//         console.log(data);
 			//     }
 			// };
-
+            //
 			// $scope.callAPI(rvManagersAnalyticsSrv.distributions, options);
 
 		};
