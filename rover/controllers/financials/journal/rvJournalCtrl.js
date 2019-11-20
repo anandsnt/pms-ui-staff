@@ -105,11 +105,11 @@ sntRover.controller('RVJournalController',
     };
 
 
-    $scope.clickedJournalToggle = function (isFromSearch) {
+    $scope.clickedJournalToggle = function (isFromSearch, isFromClick) {
         var tabName = $scope.data.activeTab;
 
         if (tabName === 'SUMMARY') {
-            if ($scope.data.query !== "") {
+            if ($scope.data.query !== "" && !isFromClick) {
                 $scope.data.isExpandedViewSummary = true;
             } else {
                 $scope.data.isExpandedViewSummary = !$scope.data.isExpandedViewSummary;
