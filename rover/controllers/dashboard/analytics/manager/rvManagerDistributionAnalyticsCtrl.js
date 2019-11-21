@@ -1,55 +1,13 @@
 angular.module('sntRover')
 	.controller('rvManagerDistributionAnalyticsCtrl', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvManagersAnalyticsSrv', 'rvAnalyticsHelperSrv', '$rootScope',
 		function($scope, sntActivity, $timeout, $filter, rvManagersAnalyticsSrv, rvAnalyticsHelperSrv, $rootScope) {
-			var getPrefinedValuesForDate = function(date) {
+	
+			var checkIfDayIsToday = function (dateToCompare){
 				var today = $rootScope.businessDate;
-				var definedDates = [{
-					"value": "Yesterday",
-					"date": moment(today)
-						.subtract(1, 'day')
-						.format("YYYY-MM-DD")
-				}, {
-					"value": "Today-2",
-					"date": moment(today)
-						.subtract(2, 'day')
-						.format("YYYY-MM-DD")
-				}, {
-					"value": "Today-3",
-					"date": moment(today)
-						.subtract(3, 'day')
-						.format("YYYY-MM-DD")
-				}, {
-					"value": "Today-4",
-					"date": moment(today)
-						.subtract(4, 'day')
-						.format("YYYY-MM-DD")
-				}, {
-					"value": "Today-5",
-					"date": moment(today)
-						.subtract(5, 'day')
-						.format("YYYY-MM-DD")
-				}, {
-					"value": "Today-6",
-					"date": moment(today)
-						.subtract(6, 'day')
-						.format("YYYY-MM-DD")
-				}];
+				var date = moment(dateToCompare).format('YYYY-MM-DD');
 
-				var isPredefinedDate = function(date) {
-					return _.find(definedDates, function(definedDate) {
-						return definedDate.date === date;
-					});
-				};
-
-				if (date === today) {
-					return "Today";
-				} else if (isPredefinedDate(date)) {
-					return isPredefinedDate(date).value;
-				}
-
-				return $filter('date')(date, $rootScope.dateFormat);
+				return today === date;
 			};
-
 			$scope.drawDistributionChart = function(chartData) {
 				chartData = _.sortBy(chartData, function(data) {
 					return data.date;
@@ -78,13 +36,16 @@ angular.module('sntRover')
 								.range([height, 0]);
 
 							var xAxis = d3.axisBottom(xScale)
-								.tickFormat(function(d) {
-									var date = moment(d).format('YYYY-MM-DD');
+								.tickFormat(function(date) {
+									if (checkIfDayIsToday(date)) {
+										return "Today";
+									}
 
-									return getPrefinedValuesForDate(date);
+									return  moment(date).format('DD MMM');
 								})
 								.tickSizeOuter(0)
 								.tickPadding(15),
+
 								yAxis = d3.axisLeft(yScale)
 								.tickSizeOuter(0)
 								.tickPadding(5),
@@ -147,6 +108,7 @@ angular.module('sntRover')
 									return yScale(d[1]);
 								})
 								.attr("width", xScale.bandwidth())
+								.style("cursor", "pointer")
 								.on("mouseover", function() {
 									tooltip.style("display", null);
 								})
@@ -179,7 +141,13 @@ angular.module('sntRover')
 								.style("text-anchor", "end")
 								.attr("dx", "-.8em")
 								.attr("dy", data.length > 20 ? "-.7em" : "-.15em")
-								.attr("transform", "rotate(-65)");
+								.attr("transform", "rotate(-65)")
+								.attr("fill", function(date){
+									return checkIfDayIsToday(date) ? "#FFAB18" : "#000";
+								})
+								.attr("font-weight", function(date){
+									return checkIfDayIsToday(date) ? "bold" : "normal";
+								});
 
 							svg.append("g")
 								.attr("class", "axis axis--y")
