@@ -1509,42 +1509,38 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                         name: 'Custom Rate',
                         uniqId: '-1'
                     });
-                    // group rates by contracted and group rates.
-                    _.each(data.results, function(rate) {
-                        var setNewRate = function(groupName, contract) {
-                            var newRateObj = {};
-
-                            newRateObj.id = rate.id;
-                            newRateObj.uniqId = contract ? rate.id + ':' + contract.id : rate.id + ':';
-                            newRateObj.groupName = groupName;
-                            newRateObj.name = contract ? rate.name + '(' + contract.name + ')' : rate.name;
-                            newRateObj.contract_id = contract ? contract.id : null;
-                            sumData.rateSelectDataObject.push(newRateObj);
-                            if (newRateObj.id === $scope.groupConfigData.summary.rate && newRateObj.contract_id === $scope.groupConfigData.summary.contract_id) {
-                                $scope.groupConfigData.summary.uniqId = newRateObj.uniqId;
+                    /**
+                     * we have the company/travel-agent/group rates in separate arrays
+                     */
+                    var groupRatesBy = function(rateArray, groupName) {
+                        angular.forEach(rateArray, function(rate) {
+                            rate.groupName = groupName;
+                            if (rate.is_contracted) {
+                                rate.uniqId = rate.id + ':' + rate.contract_id;
+                                rate.name = rate.name + ' (' + rate.contract_name + ')';
                             }
-                        };
-
-                        if ($scope.groupConfigData.summary.rate === '-1') {
-                            $scope.groupConfigData.summary.uniqId = '-1';
-                        }
-
-                        if (!rate.is_contracted) {
-                            setNewRate('Group Rates');
-                        }
-                        else {
-                            if (rate.company_contracts.length !== 0) {
-                                angular.forEach(rate.company_contracts, function(contract) {
-                                    setNewRate('Company Contract', contract);
-                                });
+                            else {
+                                rate.uniqId = rate.id + ':';
                             }
-                            if (rate.travel_agent_contracts.length !== 0) {
-                                angular.forEach(rate.travel_agent_contracts, function(contract) {
-                                    setNewRate('Travel Agent Contract', contract);
-                                });
+                            sumData.rateSelectDataObject.push(rate);
+                            if (rate.id === $scope.groupConfigData.summary.rate && rate.contract_id === $scope.groupConfigData.summary.contract_id) {
+                                $scope.groupConfigData.summary.uniqId = rate.uniqId;
                             }
-                        }
-                    });
+                        });
+                    };
+
+                    if (data.group_rates.length !== 0) {
+                        groupRatesBy(data.group_rates, 'Group Rates');
+                    }
+                    if (data.company_rates.length !== 0) {
+                        groupRatesBy(data.company_rates, 'Company Contract');
+                    }
+                    if (data.travel_agent_rates.length !== 0) {
+                        groupRatesBy(data.travel_agent_rates, 'Travel Agent Contract');
+                    }
+                    if ($scope.groupConfigData.summary.rate === '-1') {
+                        $scope.groupConfigData.summary.uniqId = '-1';
+                    }
                 },
                 onFetchRatesFailure = function(errorMessage) {
                     $scope.errorMessage = errorMessage;
