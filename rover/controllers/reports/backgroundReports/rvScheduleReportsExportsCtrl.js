@@ -376,6 +376,11 @@ angular.module('sntRover')
                 $scope.$broadcast('DELETE_CUSTOM_EXPORT_SCHEDULE');
             };
 
+            // Show custom exports menu based on permission and toggle feature settings
+            $scope.shouldShowCustomExports = () => {
+                return $scope.isCustomExportsEnabled && $scope.hasPermissionToViewScheduleReport();
+            };
+
             (function () {
                 $scope.updateViewCol($scope.viewColsActions.ONE);
                 if ($stateParams.showScheduledReports) {

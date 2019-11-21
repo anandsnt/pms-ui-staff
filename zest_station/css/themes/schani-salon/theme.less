@@ -1,0 +1,215 @@
+/* StayNTouch Zest Station Styles | Arc Theme */
+
+/* 1. COLORS
+==========================================================*/
+@brandColor:            #6a346b;
+    
+@textColor:             @black;
+@backgroundColor:       @white;
+
+@actionColor:           @white;
+@actionBackground:      @brandColor;
+
+@inputBackground:       #707070;
+@inputColor:            @white;
+@transparentColor:      rgba(0,0,0,.5);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+
+@fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+
+/* 3. IMAGES
+==========================================================*/
+@background: @white;
+@backgroundSize: '';
+
+@headerIconsColor:      @black;
+@headerIconsActive:     @black;
+
+.icons { 
+    &.icon-create-key {
+        fill: @brandColor;
+        stroke: @brandColor;
+    }
+
+    &.icon-no-print { stroke: @white; }
+
+    &.icon-oos {
+        fill: @brandColor;
+    }
+
+    &.icon-arrow-left,
+    &.icon-arrow-right {
+        fill: none;
+        stroke: @white;
+    }
+    
+    &.icon-arrow-down {
+        fill: @brandColor;
+    }
+}
+
+.logo-svg{
+    background-image: url("../css/themes/schani-salon/logo.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    height: 100px;
+    width: 199px;
+}
+
+/* 4. LAYOUT
+==========================================================*/
+
+#schani-salon {
+
+    #header {
+        height: 145px;
+    }
+
+    #main {
+        #calc > #height > .remove(100%, 145px);
+        top: 145px;
+
+        &.centered {
+            padding-top: 100px;
+            #content {
+                height: 100%;
+            }
+        }
+    }
+
+    input,
+    select,
+    /* Popup fixes start */
+    textarea
+    /* Popup fixes end */  {
+        background: @inputBackground;
+        color: @inputColor;
+    }
+    
+    #logo {
+        padding-top: 0;
+
+        .logo {
+            width: auto;
+            height: 100px;
+        }
+    }
+
+    #options {
+        
+        .icon-text {
+            color: @white;
+        }
+
+        .icons {
+            fill: @white;
+        }
+
+        li.break {
+            padding-top: 60px;
+
+            &:after,
+            &:before {
+                display: none;
+            }
+        }
+    }
+
+    #selection {
+        li {
+            .details {
+                background-color: fade(@brandColor, 5);
+            }
+        }
+    }
+
+    #guests {
+        .button {
+            color: @white;
+            background-color: black;
+        }
+    } 
+
+    #upgrade {
+        .upgrade-price {
+            background-color: #ebebeb;
+        }
+    }
+
+    .upgrade-list {
+        li {
+            &:not(.selected) {
+                border-color: #ebebeb;
+
+                .upgrade-content {
+                    background-color: #ebebeb;
+                }
+            }
+        }
+    }
+
+    .add-on-list {
+        li {
+
+            &:not(.selected){
+                border-color: #ebebeb;
+
+                .add-on-content {
+                    background: #ebebeb;
+                }
+            }
+            
+        }
+    }
+
+    .add-on {
+
+        .input-group {
+            input {
+                color: @black;
+            }
+        }
+    }
+
+    #textual {
+        background: #ececec;
+        
+        #rate {
+            li {
+                &.total {
+                    color: @black;
+                }
+            }
+        }
+
+        &:before,
+        &:after {
+            background: #ececec;
+        }
+
+    }
+
+    #rate {
+        li {
+            &.sub {
+                color: #a1a1a1;
+            }
+        }
+    }
+
+    #textual,
+    .popup {
+        .icons {
+            fill: @white;
+        }
+    }
+
+    .minibar-item,
+    .minibar-review .review-container {
+        background: #ececec;
+    }
+}
