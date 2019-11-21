@@ -183,20 +183,12 @@ sntRover.controller('RVInvoiceSearchController',
 			$scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].isOpened = !$scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].isOpened;
 			if ($scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].isOpened) {
 				var successCallBackOfExpandBill = function(response) {
-					var transactionIndex = _.findIndex(response.transactions, {"is_visible_in_invoice_search": true});
-
-					if (transactionIndex === -1) {
-						$scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].showErrorMessage = true;
-					} else {
-						$scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].showErrorMessage = false;
-						angular.forEach(response.transactions, function(item) {
-							item.isChecked = false;
-							item.bill_id = $scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].bill_id;
-						});					
-						$scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].transactions = response.transactions;
-						refreshScroll();
-					}
-					
+					angular.forEach(response.transactions, function(item) {
+						item.isChecked = false;
+						item.bill_id = $scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].bill_id;
+					});					
+					$scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].transactions = response.transactions;
+					refreshScroll();
 				},
 				options = {
 					params: {
