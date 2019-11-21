@@ -25,6 +25,10 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			$scope: $scope
 		});
 
+		$controller('rvManagerDistributionAnalyticsCtrl', {
+			$scope: $scope
+		});
+
 		var clearAllExistingChartElements = function() {
 			d3.select('#d3-plot').selectAll('svg').remove();
 			var divElements = d3.select('#d3-plot').selectAll('div');
@@ -55,29 +59,45 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			};
 
 			$scope.callAPI(rvManagersAnalyticsSrv.roomPerformanceKPR, options);
+		};
 
+		var renderDistributionChart = function() {
 
-			// var options = {
-			//     params: {
-			//         start_date: moment($scope.dashboardFilter.datePicked).subtract(7, 'days').format('YYYY-MM-DD'),
-			//         end_date: $scope.dashboardFilter.datePicked,
-			//         group_by: 'market_id'
-			//     },
-			//     successCallBack: function(data) {
-			//         console.log(data);
-			//     }
-			// };
+			$('base').attr('href', initialBaseHrefValue);
 
-			// $scope.callAPI(rvManagersAnalyticsSrv.distributions, options);
+			var params = {
+				start_date: $scope.dashboardFilter.fromDate,
+				end_date: $scope.dashboardFilter.toDate,
+				chart_type: $scope.dashboardFilter.chartType
+			};
 
+			if ($scope.dashboardFilter.aggType) {
+				params.group_by = $scope.dashboardFilter.aggType;
+			}
+			var options = {
+				params: params,
+				successCallBack: function(data) {
+					$('base').attr('href', '#');
+					$scope.screenData.analyticsDataUpdatedTime = moment().format("MM ddd, YYYY hh:mm:ss a");
+					clearAllExistingChartElements();
+					console.log(JSON.stringify(data));
+					$scope.drawDistributionChart(data);
+				}
+			};
+
+			$scope.callAPI(rvManagersAnalyticsSrv.distributions, options);
+			// var data = {}
+			// $scope.drawDistributionChart(data);
 		};
 
 		var drawChart = function() {
 			$scope.screenData.hideChartData = true;
 			clearAllExistingChartElements();
 			$scope.screenData.mainHeading = "";
-			if ($scope.screenData.selectedChart = 'PERFOMANCE') {
+			if ($scope.screenData.selectedChart === 'PERFOMANCE') {
 				renderPerfomanceChart();
+			} else if ($scope.screenData.selectedChart === 'DISTRIBUTION') {
+				renderDistributionChart();
 			}
 		};
 
@@ -97,6 +117,8 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			$scope.screenData.selectedChart = selectedChart;
 			$timeout(function() {
 				clearAllExistingChartElements();
+				$scope.dashboardFilter.chartType = "occupancy";
+				$scope.dashboardFilter.aggType = "";
 				drawChart();
 			}, 0);
 		});
@@ -116,6 +138,7 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			$scope.dashboardFilter.selectedRoomType = "";
 			$scope.dashboardFilter.selectedAnalyticsMenu = "PERFOMANCE";
 			$scope.screenData.selectedChart = "PERFOMANCE";
+
 		});
 
 		$scope.refreshChart = function() {
@@ -130,6 +153,33 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 
 		$scope.$on("$destroy", function() {
 			$('base').attr('href', initialBaseHrefValue);
+		});
+
+
+		var setPageHeading = function() {
+			var chartTypeSelected = _.find($scope.dashboardFilter.chartTypes, function(chartType) {
+				return chartType.code === $scope.dashboardFilter.chartType;
+			});
+			var aggTypeSelected = _.find($scope.dashboardFilter.aggTypes, function(aggType) {
+				return aggType.code === $scope.dashboardFilter.aggType;
+			});
+
+			if (aggTypeSelected) {
+				$scope.screenData.mainHeading = chartTypeSelected.name + " by " + aggTypeSelected.name;
+			} else {
+				$scope.screenData.mainHeading = chartTypeSelected.name;
+			}
+		};
+		$scope.$on('SET_PAGE_HEADING', setPageHeading);
+
+		$scope.$on('CHART_TYPE_CHANGED', function(e, data) {
+			setPageHeading();
+			drawChart();
+		});
+
+		$scope.$on('CHART_AGGGREGATION_CHANGED', function(e, data) {
+			setPageHeading();
+			drawChart();
 		});
 
 		$scope.previousDaySelectionChanged = function() {
