@@ -105,7 +105,7 @@
 		        <button type="button" class="button red" ng-click="performBulkCheckout()" ng-disabled="results.length === 0" ng-class="{'grey': results.length === 0}">Check out</button>
 		    </div>
 		    <!-- When showing analytics clear all classes and use just 'search-form dashboard-analytics'. -->
-		    <div class="entry switch ng-scope">
+		    <div class="entry switch" ng-if="analyticsDashboardEnabled">
 		        <div class="switch-button off" ng-class="{ 'on' : !dashboardFilter.analyticsActive }">
 		            <input id="analytics-toggle" value="" type="checkbox" ng-click="toggleAnalyticsView()" checked="">
 		            <label class="data-off">
@@ -168,7 +168,7 @@
 		            </label>
 		        </div>
 		    </div>
-		    <div class="entry room-types">
+		    <div class="entry room-types" ng-if="!dashboardFilter.isManagerDashboard">
 		        <div class="select with-label">
 		            <label for="room-type">Room Type</label>
 		            <select id="room-type" ng-model="dashboardFilter.selectedRoomType" ng-change="onAnlayticsRoomTypeChange()">
@@ -183,10 +183,15 @@
 		            <input id="analytics-date" type="text" class="datepicker" ng-model="dashboardFilter.datePicked" ng-click="showAnalyticsCalendar()" ng-change="onDateChanged()" readonly />
 		        </div>
 		    </div>
-		    <ul class="filters">
+		    <ul class="filters" ng-if="!dashboardFilter.isManagerDashboard">
 		        <li ng-click="changeAnalyticsView('FO_ARRIVALS')" ng-class="{'active' : dashboardFilter.selectedAnalyticsMenu === 'FO_ARRIVALS' }">Arrivals</li>
 		        <li ng-if="includeManagementInformation" ng-click="changeAnalyticsView('FO_WORK_LOAD')" ng-class="{'active' : dashboardFilter.selectedAnalyticsMenu === 'FO_WORK_LOAD' }">Workload</li>
 		        <li ng-click="changeAnalyticsView('FO_ACTIVITY')" ng-class="{'active' : dashboardFilter.selectedAnalyticsMenu === 'FO_ACTIVITY' }">Activity</li>
+		    </ul>
+		    <ul class="filters" ng-if="dashboardFilter.isManagerDashboard">
+		       <!--  <li ng-click="changeAnalyticsView('FO_ARRIVALS')" ng-class="{'active' : dashboardFilter.selectedAnalyticsMenu === 'FO_ARRIVALS' }">Arrivals</li>
+		        <li ng-click="changeAnalyticsView('FO_WORK_LOAD')" ng-class="{'active' : dashboardFilter.selectedAnalyticsMenu === 'FO_WORK_LOAD' }">Workload</li> -->
+		        <li ng-click="changeAnalyticsView('PERFOMANCE')" ng-class="{'active' : dashboardFilter.selectedAnalyticsMenu === 'PERFOMANCE' }">Perfomance</li>
 		    </ul>
 		</div>
 

@@ -79,7 +79,7 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 					xFinal: item.xFinal,
 					count: item.count,
 					chartName: chartName,
-					elementId: chartName + "-" + item.type
+					elementId: item.type === "pending_inspected_rooms" ? "rooms-short" : chartName + "-" + item.type
 				};
 			});
 		});
@@ -93,84 +93,7 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 		return chartDetails;
 	};
 
-
-	this.drawBarsOfBidirectonalChart = function(barData) {
-		var svg = barData.svg,
-			yScale = barData.yScale,
-			xScale = barData.xScale,
-			chartDetails = barData.chartDetails,
-			colorScheme = barData.colorScheme,
-			maxValue = barData.maxValue,
-			cssClassMappings = barData.cssClassMappings;
-
-		var vakken = svg.selectAll(".type")
-			.data(chartDetails.chartData.data)
-			.enter()
-			.append("g")
-			.attr("class", "bar")
-			.attr("transform", function(chart) {
-				return "translate(0," + yScale(chart.type) + ")";
-			});
-
-		var bars = vakken.selectAll("rect")
-			.data(function(mainItem) {
-				return mainItem.boxes;
-			})
-			.enter()
-			.append("g")
-			.attr("class", function(item) {
-				return cssClassMappings ? cssClassMappings[item.chartName + "_" + item.type] : "";
-			})
-			.attr("id", function(item) {
-				return item.elementId;
-			});
-
-		bars.append("rect")
-			.attr("height", yScale.bandwidth())
-			.attr("x", function(item) {
-				return xScale(item.xOrigin);
-			})
-			.attr("width", function(item) {
-				return xScale(item.xFinal) - xScale(item.xOrigin);
-			})
-			.style("fill", function(item) {
-				// console.log(item.chartName);
-				// console.log(colorScheme[item.chartName + 'ColorScheme']);
-				return colorScheme[item.chartName + 'ColorScheme'](item.type);
-			})
-			.on("click", function(e) {
-				barData.onBarChartClick(e);
-			});
-
-		// var isSmallBarItem = function(item) {
-		// 	var itemPercantage = item.count * 100 / maxValue;
-
-		// 	return (itemPercantage < 8 || itemPercantage > 4 && item.count < 10);
-		// };
-
-		// bars.append("text")
-		// 	.attr("x", function(item) {
-		// 		return ((xScale(item.xOrigin) + xScale(item.xFinal)) / 2);
-		// 	})
-		// 	.attr("y", function() {
-		// 		return yScale.bandwidth() / 2;
-		// 	})
-		// 	.attr("dy", function(item) {
-		// 		return isSmallBarItem(item) ? -1 * (yScale.bandwidth() / 2 + 10) : "0.5em";
-		// 	})
-		// 	.attr("dx", function(item) {
-		// 		return isSmallBarItem(item) && item.xOrigin <= 0 ? "-0.5em" : "0em";
-		// 	})
-		// 	.style("font-size", function(item) {
-		// 		return isSmallBarItem(item) ? "10px" : "15px";
-		// 	})
-		// 	.style("text-anchor", "middle")
-		// 	.text(function(item) {
-		// 		return item.count !== 0 ? item.count : '';
-		// 	});
-	};
-
-	this.addLegendItems = function(cssClassMappings, parentElement, legendData) {
+	this.addLegendItems = function(cssClassMappings, parentElement, legendData, onLegendClick) {
 
 		parentElement
 			.append("dt")
@@ -193,6 +116,44 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 				.append("span")
 				.attr("class", "bar-label")
 				.html(item.label)
+		});
+	};
+
+	this.addLegendItemsToChart = function(legendItem) {
+
+		// cssClassMappings, parentElement, legendData, onLegendClick
+
+		legendItem.parentElement
+			.append("dt")
+			.attr("class", "legend-title")
+			.attr("id", legendItem.legendData.id)
+			.html(legendItem.legendData.title)
+			.style("margin-top", legendItem.legendData.margin_top + "px");
+
+		_.each(legendItem.legendData.items, function(item) {
+			legendItem.parentElement
+				.append("dd")
+				.attr("class", "legend-item")
+				.attr("id", item.id)
+				.append("span")
+				.attr("id", item.id + "-count")
+				.attr("class", function(label) {
+					return item.class;
+				})
+				.html(item.count);
+
+			d3.select("#" + item.id)
+				.append("span")
+				.attr("class", "bar-label")
+				.attr("id", item.id + "-label")
+				.html(item.label);
+
+			var onClickEvent = function() {
+				legendItem.onLegendClick(item.item_name);
+			};
+
+			$("#" + item.id + "-label").click(onClickEvent);
+			$("#" + item.id + "-count").click(onClickEvent);
 		});
 	};
 
@@ -228,7 +189,9 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 			});
 
 		bars.append("rect")
-			.attr("class", "rect-bars")
+			.attr("class", function (item) {
+				return item.type === "pending_inspected_rooms" ? "bar-warning rect-bars" : "rect-bars";
+			})
 			.attr("height", yScale.bandwidth())
 			.attr("x", function(item) {
 				return xScale(item.xOrigin);
@@ -249,7 +212,9 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 				return "evt.target.setAttribute('fill', 'url(#" + mouseoutColor + " )');"
 			})
 			.on("click", function(e) {
-				barData.onBarChartClick(e);
+				var clickeElement = e.elementId ? e.elementId.replace("-", "_") : "";
+
+				barData.onBarChartClick(clickeElement);
 			});
 
 		d3.selectAll(".rect-bars")
@@ -324,7 +289,18 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 			"fill": "blue",
 			"onmouseover_fill": "blueHover",
 			"onmouseout_fill": "blue"
+		},
+		"warning": {
+			"legend_class": "bar bar-warning",
+			"id": "room_short",
+			"rect_class": "bar-warning"
 		}
+	};
+
+	this.constructColorMappings = function(item_name, color) {
+		return _.extend({
+			item_name: item_name
+		}, this.gradientMappings[color]);
 	};
 
 	this.addTextsToChart = function(textData) {
@@ -336,10 +312,237 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 			.text(textData.label);
 	};
 
+	this.getYAxisValues = function(axisValues, x, y) {
+
+		var yAxisValues = [{
+				"type": "occupany",
+				"label": "",
+				"xOffset": x(0),
+				"yOffset": y(0)
+			}, {
+				"type": "occupany",
+				"label": "25",
+				"xOffset": x(0),
+				"yOffset": y(0.1)
+			}, {
+				"type": "occupany",
+				"label": "50",
+				"xOffset": x(0),
+				"yOffset": y(0.2)
+			}, {
+				"type": "occupany",
+				"label": "75",
+				"xOffset": x(0),
+				"yOffset": y(0.3)
+			}, {
+				"type": "occupany",
+				"label": "",
+				"xOffset": x(0),
+				"yOffset": y(0.4)
+			}, {
+				"type": "occupany",
+				"label": "25",
+				"xOffset": x(0),
+				"yOffset": y(-0.1)
+			}, {
+				"type": "occupany",
+				"label": "50",
+				"xOffset": x(0),
+				"yOffset": y(-0.2)
+			}, {
+				"type": "occupany",
+				"label": "75",
+				"xOffset": x(0),
+				"yOffset": y(-0.3)
+			}, {
+				"type": "occupany",
+				"label": "",
+				"xOffset": x(0),
+				"yOffset": y(-0.4)
+			},
+
+			{
+				"type": "revenue",
+				"label": axisValues[0],
+				"xOffset": x(0),
+				"yOffset": y(-0.5)
+			}, {
+				"type": "revenue",
+				"label": axisValues[1],
+				"xOffset": x(0),
+				"yOffset": y(-0.6)
+			}, {
+				"type": "revenue",
+				"label": axisValues[2],
+				"xOffset": x(0),
+				"yOffset": y(-0.7)
+			}, {
+				"type": "revenue",
+				"label": axisValues[3],
+				"xOffset": x(0),
+				"yOffset": y(-0.8)
+			}, {
+				"type": "revenue",
+				"label": axisValues[4],
+				"xOffset": x(0),
+				"yOffset": y(-0.9)
+			}, {
+				"type": "revenue",
+				"label": axisValues[5],
+				"xOffset": x(0),
+				"yOffset": y(-1)
+			}, {
+				"type": "revenue",
+				"label": axisValues[0],
+				"xOffset": x(0),
+				"yOffset": y(0.5)
+			}, {
+				"type": "revenue",
+				"label": axisValues[1],
+				"xOffset": x(0),
+				"yOffset": y(0.6)
+			}, {
+				"type": "revenue",
+				"label": axisValues[2],
+				"xOffset": x(0),
+				"yOffset": y(0.7)
+			}, {
+				"type": "revenue",
+				"label": axisValues[3],
+				"xOffset": x(0),
+				"yOffset": y(0.8)
+			}, {
+				"type": "revenue",
+				"label": axisValues[4],
+				"xOffset": x(0),
+				"yOffset": y(0.9)
+			}, {
+				"type": "revenue",
+				"label": axisValues[5],
+				"xOffset": x(0),
+				"yOffset": y(1)
+			}
+		];
+
+		return yAxisValues;
+	};
+
+
+	this.getXAxisValues = function(axisValues, x, y) {
+		var xAxisLabels = [{
+			"type": "occupany",
+			"label": "",
+			"xOffset": x(0),
+			"yOffset": y(0)
+		}, {
+			"type": "occupany",
+			"label": "25",
+			"xOffset": x(0.1),
+			"yOffset": y(0)
+		}, {
+			"type": "occupany",
+			"label": "50",
+			"xOffset": x(0.2),
+			"yOffset": y(0)
+		}, {
+			"type": "occupany",
+			"label": "75",
+			"xOffset": x(0.3),
+			"yOffset": y(0)
+		}, {
+			"type": "occupany",
+			"label": "",
+			"xOffset": x(0.4),
+			"yOffset": y(0)
+		}, {
+			"type": "occupany",
+			"label": "25",
+			"xOffset": x(-0.1),
+			"yOffset": y(0)
+		}, {
+			"type": "occupany",
+			"label": "50",
+			"xOffset": x(-0.2),
+			"yOffset": y(0)
+		}, {
+			"type": "occupany",
+			"label": "75",
+			"xOffset": x(-0.3),
+			"yOffset": y(0)
+		}, {
+			"type": "occupany",
+			"label": "",
+			"xOffset": x(-0.4),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[0],
+			"xOffset": x(-0.5),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[1],
+			"xOffset": x(-0.6),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[2],
+			"xOffset": x(-0.7),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[3],
+			"xOffset": x(-0.8),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[4],
+			"xOffset": x(-0.9),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[5],
+			"xOffset": x(-1),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[0],
+			"xOffset": x(0.5),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[1],
+			"xOffset": x(0.6),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[2],
+			"xOffset": x(0.7),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[3],
+			"xOffset": x(0.8),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[4],
+			"xOffset": x(0.9),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[5],
+			"xOffset": x(1),
+			"yOffset": y(0)
+		}];
+
+		return xAxisLabels;
+	};
+
 	this.addRandomNumbersForTesting = function(chartDetails) {
 		var combinedItemsCountArray = [];
 
-		var workPriority = chartDetails.chartData.label === 'AN_WORKLOAD'; ;
+		var workPriority = chartDetails.chartData.label === 'AN_WORKLOAD';;
 
 		if (workPriority) {
 			var b = {
@@ -395,7 +598,17 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 			});
 			_.each(chart.contents.right_side, function(item) {
 				// to delete
+				if (item.type == "early_checkin") {
+					item.count = 30;
+				} 
+				else if (item.type == "remaining") {
+					item.count = 90;
+				} else if(item.type === 'inspected'){
+					item.count = 15;
+				} else{
 				item.count = item.count < 3 ? _.random(20, 100) : item.count;
+
+				}
 				combinedItemsCountArray.push(item.count);
 			});
 			// chart.contents.right_side.push(chart.contents.right_side[0]);

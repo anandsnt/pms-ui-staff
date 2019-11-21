@@ -761,6 +761,12 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.company.id);
 					return false;
 				}
+				if (((card === 'company' && data.company.routings_count === 0) ||
+					(card === 'travel_agent' && data.travel_agent.routings_count === 0) ||
+					!data.has_conflicting_routes) &&
+					that.useCardRate) {
+					$scope.navigateToRoomAndRates();
+				}
 
 				that.reloadStaycard();
 			};

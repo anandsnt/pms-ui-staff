@@ -74,7 +74,7 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
             'invoice_currency': ($scope.invoice_currency === null) ? '' : parseInt($scope.invoice_currency, 10),
             'rate_currencies': $scope.selectedRateCurrencies,
             'payment_currencies': $scope.selectedPaymentCurrencies,
-            'is_post_during_eod': $scope.is_post_during_eod
+            'should_post_during_eod': $scope.should_post_during_eod
         };
 
         $scope.invokeApi(settingsAndParamsSrv.saveSettingsAndParamsSrv, dataToSend, saveDetailsSuccessCallback);
