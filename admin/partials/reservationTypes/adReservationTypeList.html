@@ -20,8 +20,8 @@
 						<td class="activate" >
 							<div class="entry" >
 							<label ></label>
-							<div class="switch-button single" ng-click="saveReservationType($index)" ng-class="{ on : resevationtype.is_active}" >
-								<input type="checkbox" ng-model="resevationtype.is_active"  value="" name=""  id="">
+							<div class="switch-button single"  ng-class="{ on : resevationtype.is_active}" >
+								<input type="checkbox" ng-model="resevationtype.is_active"  value="" name=""  id="" ng-change="saveReservationType($index)">
 								<span class="switch-icon"></span>
 
 							</div>

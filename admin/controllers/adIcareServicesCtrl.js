@@ -10,7 +10,8 @@ function($scope, $rootScope, $state,  $stateParams, ADICareServicesSrv) {
     */
     $scope.successCallbackRender = function(data) {
     	$scope.$emit('hideLoader');
-    	$scope.icare = data;
+		$scope.icare = data;
+		$scope.setDefaultDisplayPassword($scope.icare, 'icare_password');
     };
    /**
     * Render icare service screen
@@ -35,8 +36,11 @@ function($scope, $rootScope, $state,  $stateParams, ADICareServicesSrv) {
 	};
 
     $scope.saveClick = function() {
-    	var unwantedKeys = ["charge_codes"];
-        var newData = dclone($scope.icare, unwantedKeys);
+    	var unwantedKeys = ["charge_codes"],
+			newData = dclone($scope.icare, unwantedKeys);
+
+		$scope.deletePropertyIfRequired(newData, 'icare_password');
+		
     	var data = { "icare": newData };
 
     	$scope.invokeApi(ADICareServicesSrv.saveIcareServices, data, successCallbackSave, failureCallbackSave);

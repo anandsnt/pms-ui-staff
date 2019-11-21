@@ -216,7 +216,8 @@ angular.module('sntRover').service('RVReservationStateService', [
 				taxExclusiveStayTotal = 0.0; // Per Stay Exlusive Charges
 			var taxDescription = [],
 				taxesLookUp = {},
-				baseAmount = self.computeBaseAmount(taxableAmount, taxes, numAdults, numChildren);
+				baseAmount = self.computeBaseAmount(taxableAmount, taxes, numAdults, numChildren),
+				previousTaxCalculated = 0;
 
 			_.each(taxes, function(tax) {
 				// for every tax that is associated to the date proceed
@@ -232,25 +233,39 @@ angular.module('sntRover').service('RVReservationStateService', [
 						taxOn = baseAmount,
 						taxCalculated = 0;
 
-					if (taxData.amount_sign !== "+") {
-						taxData.amount = parseFloat(taxData.amount * -1.0);
-					}
+					// Vienna Tax calculations are different, It is handled here	
+					if (tax.is_vienna_tax) {
+						var taxOnVienna = taxableAmount;
 
-					if (!!tax.calculation_rules.length) {
-						_.each(tax.calculation_rules, function(tax) {
-							taxOn = !!taxesLookUp[tax] ? (taxOn + parseFloat(taxesLookUp[tax])) : taxOn;
-						});
-					}
+						if (!!tax.calculation_rules.length) {
+							var grossAmount = taxableAmount - previousTaxCalculated;
 
-					// THE TAX CALCULATION HAPPENS HERE
-					if (taxData.amount_symbol === '%') { // The formula for inclusive tax computation is different from that for exclusive. Kindly NOTE.
-						taxCalculated = parseFloat(multiplier * (parseFloat(taxValue / 100) * taxOn));
+							taxOnVienna = parseFloat((grossAmount * 100) / (100 + (parseFloat(taxValue) * multiplier)));
+							taxCalculated = multiplier * (grossAmount - taxOnVienna);
+						} else if (taxData.amount_symbol === '%') {
+							taxCalculated = parseFloat(multiplier * (parseFloat(taxValue / 100) * taxOnVienna));
+							previousTaxCalculated = taxCalculated;
+						}
 					} else {
-						taxCalculated = parseFloat(multiplier * parseFloat(taxValue)); // In case the tax is not a percentage amount, its plain multiplication with the tax's amount_type
+						if (taxData.amount_sign !== "+") {
+							taxData.amount = parseFloat(taxData.amount * -1.0);
+						}
+
+						if (!!tax.calculation_rules.length) {
+							_.each(tax.calculation_rules, function(tax) {
+								taxOn = !!taxesLookUp[tax] ? (taxOn + parseFloat(taxesLookUp[tax])) : taxOn;
+							});
+						}
+
+						// THE TAX CALCULATION HAPPENS HERE
+						if (taxData.amount_symbol === '%') { // The formula for inclusive tax computation is different from that for exclusive. Kindly NOTE.
+							taxCalculated = parseFloat(multiplier * (parseFloat(taxValue / 100) * taxOn));
+						} else {
+							taxCalculated = parseFloat(multiplier * parseFloat(taxValue)); // In case the tax is not a percentage amount, its plain multiplication with the tax's amount_type
+						}
+
+						taxesLookUp[taxData.id] = parseFloat(taxCalculated);
 					}
-
-					taxesLookUp[taxData.id] = parseFloat(taxCalculated);
-
 					if (taxData.post_type === 'NIGHT') { // NIGHT tax computations
 						if (isInclusive) {
 							taxInclusiveTotal = parseFloat(taxInclusiveTotal) + parseFloat(taxCalculated);
@@ -273,7 +288,7 @@ angular.module('sntRover').service('RVReservationStateService', [
 						description: taxData.description,
 						roomIndex: roomIndex
 					});
-				} else {}
+				}
 			});
 			return {
 				EXCL: {

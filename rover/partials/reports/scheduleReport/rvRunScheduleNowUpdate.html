@@ -15,6 +15,8 @@
 					<li style="margin: 0" ng-repeat="email in emailList">{{ email }}</li>
 				</ul>
 				<span ng-show="runNowData.isFtp">It will be delivered to <em>{{ runNowData.ftpAddress.description }} ({{ runNowData.ftpAddress.url }})</em> once completed.</span>
+				<span ng-show="runNowData.isGoogleDrive">It will be uploaded to <em>Google Drive ({{ runNowData.cloudDetails.description }})</em> once completed.</span>
+				<span ng-show="runNowData.isDropbox">It will be uploaded to <em>Dropbox ({{ runNowData.cloudDetails.description }})</em> once completed.</span>
 			</span>
 			<span class="red" ng-hide="runScheduleNowSuccess">Unable to put export in queue. Please try again.</span>
 		</span>

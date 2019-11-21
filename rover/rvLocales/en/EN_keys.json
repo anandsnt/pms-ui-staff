@@ -26,7 +26,7 @@
     
     
     "KEY_READING_STATUS" : "Reading key!",
-    "KEY_UNABLE_TO_READ_STATUS" : "Unable to read the key!",
+    "KEY_UNABLE_TO_READ_STATUS" : "Unable to read the key! ",
     "KEY_GETTING_KEY_IMAGE_STATUS" : "Getting key image!",
     "KEY_WRITING_PROGRESS_STATUS" : "Writing key!",
 

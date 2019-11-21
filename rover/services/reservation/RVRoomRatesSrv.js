@@ -58,11 +58,6 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
                 delete params.promotion_id;
                }
             }
-
-            if (currentRoomAndRateActiveView === "RECOMMENDED") {
-                delete params.room_type_id;
-            }
-
         };
 
         // --------------------------------------------------------------------------------------------------------------
@@ -148,7 +143,7 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
 
             if (activeView === "RATE" || (activeView === "RECOMMENDED" && (params.company_id || params.travel_agent_id || params.group_id
                 || params.promotion_code || params.promotion_id || params.is_member))) {
-                params.order = "ALPHABETICAL";
+                params.order = "RATE";
                 promises.push(service.fetchRateADRs(params, true).then(function(response) {
                     data = response;
                 }));

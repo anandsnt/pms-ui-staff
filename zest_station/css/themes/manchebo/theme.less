@@ -1,0 +1,175 @@
+/* StayNTouch Zest Station Styles | Manchebo Theme */
+
+/* 1. COLORS
+==========================================================*/
+@brandColor:            #81cdc6;
+    
+@textColor:             @black;
+@backgroundColor:       #f1efeb;
+
+@actionColor:           @white;
+@actionBackground:      @brandColor;
+
+@inputBackground:       #707070;
+@inputColor:            @white;
+@transparentColor:      fade(@textColor, 20%);
+
+@gradientStart:         #ffb319;
+@gradientEnd:           #ff860d;
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+
+@fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+/* 3. ICONS & IMAGES
+==========================================================*/
+@background:            @backgroundColor url("../css/themes/manchebo/background.jpg") no-repeat;
+@backgroundSize:        cover;
+
+@headerIconsColor:      @actionBackground;
+@headerIconsActive:     @textColor; 
+
+.icons { 
+    fill: @white; 
+
+    &.icon-no-print,
+    &.icon-pen,
+    &.icon-room { stroke: @white; }
+
+    &.icon-oos { fill: @actionBackground; }
+
+    &.icon-create-key {
+        fill: @actionBackground;
+        stroke: @actionBackground;
+    }
+
+    &.icon-arrow-left,
+    &.icon-arrow-right {
+        fill: none;
+        stroke: @white;
+    }
+
+    &.icon-arrow-down {
+        fill: @brandColor;
+    }
+}
+
+.logo-svg{
+    background-image: url("../css/themes/manchebo/logo.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    height: 30px;
+    width: 405px;
+    margin-top: 90px;
+}
+
+#guests {
+    .button {
+        background: @black;
+        color: @white;
+    }
+}
+
+#manchebo {
+
+    #header {
+        height: 125px; 
+
+        .icons {
+            fill: @black;
+        }
+    }
+
+    #main {
+        #calc > #height > .remove(100%, 125px);
+        top: 125px;
+
+        &.centered {
+            padding-top: 100px;
+            #content {
+                height: 100%;
+            }
+        }
+    }
+
+    #logo {
+        padding-top: 0;
+
+        .logo {
+            width: auto;
+            height: 30px;
+            margin-top: 90px;
+        }
+    }
+
+    #selection:not(.editable) { 
+        li {
+            .details {
+                background: @brandColor;
+                color: @white;
+            }
+        }
+    }
+    #rate {
+        li {
+            &.sub {
+                color: #a1a1a1;
+            }
+        }
+    }
+    #textual {
+        #rate {
+            li {
+                &.total {
+                    color: @black;
+                }
+            }
+        }
+    }
+
+    #upgrade {
+        .upgrade-price {
+            background: @brandColor;
+            color: @white;
+        }
+    }
+
+    .add-on {
+        &.selected {
+            background: @brandColor;
+            color: @white;
+            border-color: @brandColor;
+
+            .add-on-content {
+                background: @brandColor;
+                color: @white;
+            }
+        }
+
+        #options {
+            li {
+                .option {
+                    &:not(.not-selected) {
+                        background: @brandColor;
+                        color: @white;
+                    }
+                }
+            }
+        }
+    }
+
+    .popup-content {
+        .button:not(.transparent) {
+            background: @brandColor;
+            color: @white;
+        }
+
+        .button {
+            .icons {
+                fill: @white;
+            }
+        }
+    }
+}

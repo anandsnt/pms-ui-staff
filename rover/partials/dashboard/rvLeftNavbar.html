@@ -57,7 +57,7 @@
 <ul id="submenu" class="submenu" ng-class="{'active':menuOpen && showSubMenu && activeSubMenu.length > 0}">
 	<li ng-repeat="menuItem in activeSubMenu" ng-hide="menuItem.hidden">
 		<!--ng-repeat="menuItem in activeSubMenu | filter:{hidden:'!'+true}" ng-hide="menuItem.standAlone && !isStandAlone" -->
-		<a ng-class="{'active':selectedMenuIndex == menuItem.menuIndex}" ng-if="menuItem.action != ''" ui-sref="{{menuItem.action}}" ng-click="toggleDrawerMenu()" translate="{{menuItem.title}}"></a>
+		<a ng-class="{'active':selectedMenuIndex == menuItem.menuIndex}" ng-if="menuItem.action != ''" ui-sref="{{menuItem.action}}" ui-sref-opts="{custom: {fromMenuBar: true}}" ng-click="toggleDrawerMenu()" translate="{{menuItem.title}}"></a>
 		<a ng-class="{'active':selectedMenuIndex == menuItem.menuIndex}" ng-if="menuItem.action == '' && !menuItem.actionPopup" ng-click="toggleDrawerMenu()" translate="{{menuItem.title}}"></a>
 		<a ng-class="{'active':selectedMenuIndex == menuItem.menuIndex}" ng-if="menuItem.action == ''&& menuItem.actionPopup" ng-click="subMenuAction(menuItem.menuIndex)" translate="{{menuItem.title}}" ng-hide="menuItem.hideItem"></a>
 	</li>

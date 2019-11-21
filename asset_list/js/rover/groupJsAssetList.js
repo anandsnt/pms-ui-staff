@@ -23,6 +23,7 @@ module.exports = {
 				roverRoot + "services/reservation/rvReservationBaseSearchSrv.js",
 				servicesRoot + "rvContactInfoSrv.js",
 				servicesRoot + "actionTasks/rvActionTasksSrv.js",
+				servicesRoot + 'rvDropDownDataSrv.js',
 
                 // Eliminate all spec files
                 '!**/*.spec.js'

@@ -12,6 +12,7 @@
 	@actionBackground: 		@brandColor;
 	
 	@inputBackground: 		#707070;
+	@inputColor:			@textColor;
 	@transparentColor: 		rgba(0,0,0,.35);
 
 /* 2. TYPOGRAPHY
@@ -54,6 +55,9 @@
 			fill: @actionBackground !important;
 			stroke: @actionBackground !important;
 		}
+		&.icon-arrow-down {
+            fill: @brandColor;
+        }
 	}
 	.logo-svg{
 		background-image: url("../css/themes/row-nyc/logo.svg");

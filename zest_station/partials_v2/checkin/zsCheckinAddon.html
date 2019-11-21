@@ -3,7 +3,7 @@
    <div class="popup-content add-on">
       <!-- <i class="close-popup" touch-press="closePopup()"></i> -->
       <div class="add-on-picture">
-         <img src="{{selectedAddon.image}}" />
+         <img ng-src="{{selectedAddon.image}}" onError="this.onerror=null;this.src='/assets/images/room_type_image_not_available.png';"/>
       </div>
       <div class="add-on-content">
          <h2>{{selectedAddon.name}}</h2>
@@ -97,16 +97,16 @@
 <!-- Show blank section -->
 <section id="main" ng-hide="loadingCompleted"></section>
 <!-- Content -->
-<section id="main" class="addon-screen" role="main" ng-show="mode !== 'SINGLE_ADDON_ERROR' && loadingCompleted">
+<section id="main" class="addon-screen" role="main" ng-if="mode !== 'SINGLE_ADDON_ERROR' && loadingCompleted">
    <div id="content">
       <h1>
          <text data-ng-bind-html="getTagValue('ADD_ON_HEADING')" editable-text="ADD_ON_HEADING"></text>
       </h1>
       <div id="upgrades">
-         <ul class="add-on-list add-on-list-columns" ng-if="addonsList.length > 1" ng-class="{'add-on-list-rows':pageData.viewableItems.length >= 4}">
+         <ul class="add-on-list add-on-list-columns" ng-if="addonsList.length > 1 || (addonsList.length && addonsList[0].isLco)" ng-class="{'add-on-list-rows':pageData.viewableItems.length >= 4}">
             <li class="add-on" ng-repeat="addon in pageData.viewableItems" click-touch="addonSelected(addon)" ng-class="{'selected':addon.is_selected || addon.quantity >0}">
                <div class="add-on-picture">
-                  <img src="{{addon.image}}">
+                  <img ng-src="{{addon.image}}" onError="this.onerror=null;this.src='/assets/images/room_type_image_not_available.png';">
                </div>
                <div class="add-on-content">
                   <h2 ng-hide="addon.isLco">{{addon.name}}<span ng-show="addon.quantity>0">&nbsp;({{addon.quantity}})</span></h2>
@@ -120,7 +120,7 @@
                </div>
             </li>
          </ul>
-         <ul class="add-on-list" ng-if="addonsList.length === 1">
+         <ul class="add-on-list" ng-if="addonsList.length === 1 && !addonsList[0].isLco">
             <li class="add-on">
                <div class="add-on-picture single-addon-image">
                   <img src="{{selectedAddon.image}}">
@@ -199,6 +199,7 @@
       </div>
    </div>
 </section>
+
 <section id="main" class="addon-screen centered" role="main" ng-show="mode === 'SINGLE_ADDON_ERROR'">
    <div id="content">
       <h1 editable-text="{{errorHeader}}">{{ errorHeader | translate}}</h1>

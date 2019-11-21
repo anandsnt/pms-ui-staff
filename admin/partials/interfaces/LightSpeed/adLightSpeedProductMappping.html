@@ -24,9 +24,8 @@
     <div class="entry has-sortable">
         <label>Charge Codes</label>
         <div class="select">
-            <select ng-model="data.selectedChargeCode"
-                    ng-options="charge_code.charge_code for charge_code in chargeCodes"
-                    ng-change="filterMappedAndNonMappedProducts()">
+            <select ng-model="data.selectedChargeCode" ng-change="filterMappedAndNonMappedProducts()">
+               <option value="{{charge_code.value}}" ng-repeat="charge_code in chargeCodes">{{charge_code.charge_code}} - {{charge_code.description}}</option>
             </select>
         </div>
     </div>

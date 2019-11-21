@@ -5,7 +5,7 @@ const calculateNextPageItemCount = (state) => {
     var totalPage = Math.ceil(state.paginationData.totalCount / state.paginationData.perPage);
 
     if (state.paginationData.page === totalPage - 1) {
-        return state.paginationData.totalCount % state.paginationData.perPage;
+        return state.paginationData.totalCount - (state.paginationData.perPage * state.paginationData.page);
     }
     return state.paginationData.perPage;
 };

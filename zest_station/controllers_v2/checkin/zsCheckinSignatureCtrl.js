@@ -139,24 +139,40 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                 $log.log('skipping checkin guest, no-check-ins debugging is ON');
                 if (collectPassportEnabled && !$stateParams.passports_scanned) {
                     goToPassportScan();
-                } else {
+                } 
+                else if ($scope.zestStationData.enable_passport_entry) {
+                    $state.go('zest_station.zsCheckinPassportDetails', {
+                        params: JSON.stringify($stateParams)
+                    });
+                }
+                else {
                     afterGuestCheckinCallback({ 'status': 'success' });
                 }
                 
             } else {
-                if ($scope.zestStationData.kiosk_manual_id_scan) {
-                    var stateParams = $stateParams;
+                var stateParams = $stateParams;
 
-                    stateParams.signature = signatureBase64Data;
-                    stateParams = JSON.stringify(stateParams);
+                stateParams.signature = signatureBase64Data;
+                stateParams = JSON.stringify(stateParams);
 
+                if ($scope.zestStationData.id_scan_enabled) {
+                    $state.go('zest_station.sntIDScan', {
+                        params: stateParams
+                    });
+                } else if ($scope.zestStationData.kiosk_manual_id_scan) {
                     $state.go('zest_station.checkInIdVerification', {
                         params: stateParams
                     });
                 }
                 else if (collectPassportEnabled && !$stateParams.passports_scanned) {
                     goToPassportScan();
-                } else {
+                } 
+                else if ($scope.zestStationData.enable_passport_entry) {
+                    $state.go('zest_station.zsCheckinPassportDetails', {
+                        params: JSON.stringify($stateParams)
+                    });
+                }
+                else {
                     if ($scope.inDemoMode()) {
                         afterGuestCheckinCallback({ 'status': 'success' });
                     } else {

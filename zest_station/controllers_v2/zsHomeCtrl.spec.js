@@ -30,6 +30,9 @@ describe('zsHomeCtrl', function() {
             },
             'trackEvent': function() {
                 return false;
+            },
+            'resetTime': function() {
+                return false;
             }
         });
         $controller('zsHomeCtrl', {

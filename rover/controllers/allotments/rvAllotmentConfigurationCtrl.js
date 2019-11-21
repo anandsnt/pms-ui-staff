@@ -278,6 +278,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
         };
         var onAllotmentSaveSuccess = function(data) {
             $scope.allotmentConfigData.summary.allotment_id = data.allotment_id;
+            $scope.allotmentConfigData.summary.commission_details = data.commission_details;
             $state.go('rover.allotments.config', {
                 id: data.allotment_id
             });
@@ -320,6 +321,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
 
         var refreshSummaryDataAfterUpdate = false;
         var onAllotmentUpdateSuccess = function(data) {
+            $scope.allotmentConfigData.summary.commission_details = data.commission_details;
             // client controllers should get an infromation whether updation was success
             $scope.$broadcast("UPDATED_ALLOTMENT_INFO", angular.copy($scope.allotmentConfigData.summary));
             $scope.allotmentSummaryMemento = angular.copy($scope.allotmentConfigData.summary);
@@ -459,7 +461,8 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                                     label: each.account_name,
                                     value: each.id,
                                     address: each.account_address,
-                                    type: each.account_type
+                                    type: each.account_type,
+                                    contract_access_code: each.current_contracts.length > 0 ? each.current_contracts[0].access_code : null
                                 };
                                 list.push(entry);
                             });
@@ -500,7 +503,8 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                                     label: each.account_name,
                                     value: each.id,
                                     address: each.account_address,
-                                    type: each.account_type
+                                    type: each.account_type,
+                                    contract_access_code: each.current_contracts.length > 0 ? each.current_contracts[0].access_code : null
                                 };
                                 list.push(entry);
                             });

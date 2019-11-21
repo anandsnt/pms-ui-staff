@@ -8,6 +8,7 @@
 "CHARGE_GROUP":"Charge Group",
 "CHARGE_CODE_TYPE":"Charge Code Type",
 "PAYMENT_TYPE":"Payment Type",
+"DEPOSIT_CHARGE_CODE":"Deposit Charge Code",
 "AMOUNT":"Amount",
 "AMOUNT_TYPE":"Amount Type",
 "SELECT_AMOUNT_TYPE":"Select Amount Type",
@@ -22,6 +23,7 @@
 "TAX":"TAX",
 "INCLUSIVE":"Inclusive",
 "EXCLUSIVE":"Exclusive",
+"VIENNA_TAX":"Vienna Tax",
 "CALCULATION_RULE":"Calculation Rule",
 "ACCOUNTS_RECEIVABLES_STATUS_LABEL":"Automatically assign A/R Numbers",
 "ACCOUNTS_RECEIVABLES_TITLE":"Account Receivables",
@@ -31,7 +33,7 @@
 "FEES_CODE":"Fees code",
 "FEES":"Fees",
 "MINIMUM_AMOUNT_TO_CHARGE_FEE":"Minimum amount to charge fee",
-"INVOICES" : "Invoices",
+"FINANCIAL_SETTINGS" : "Financial Settings",
 "FIRST_INVOICE_NO" : "First Invoice Number",
 "INVOICE_NO_PREFIX" : "Invoice Number Prefix",
 "PLACEHOLDER_FIRST_INVOICE_NO" : "Enter First Invoice Number",
@@ -42,4 +44,7 @@
 "ADD_NEW_TAX_EXEMPT_TYPE":"Add New Tax Exempt Type",
 "BACK_TO_TAX_EXEMPT_TYPES":"Back to Tax Exempt Types",
 "SELECT_CHARGE_CODES": "Select Charge Codes",
-"DEFAULT_TAX_EXEMPT_TYPE": "Default Tax Exempt Type"
+"DEFAULT_TAX_EXEMPT_TYPE": "Default Tax Exempt Type",
+
+"CHARGE_CODE_TRANSLATION":"Charge code (Translation)",
+"CHARGE_CODE_TRANSLATION_PLACEHOLDER":"Enter translation for charge code"

@@ -15,7 +15,8 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 				"reservation_type_id": "",
 				"market_segment_id": "",
 				"source_id": "",
-				"booking_origin_id": ""
+				"booking_origin_id": "",
+				"segment_id": ""
 			},
 			"travel_agent": null,
 			"company": null,
@@ -288,6 +289,9 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 						if ( groupSummary.rate === null ) {
 							groupSummary.rate = -1;
 						}
+
+						groupSummary.country_id = groupSummary.country_id ? groupSummary.country_id : '';
+            			groupSummary.nationality = groupSummary.nationality ? groupSummary.nationality : '';
 
 						self.lastFetchedGroup = {
 							id: groupSummary.group_id,

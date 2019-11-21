@@ -4,7 +4,8 @@ angular.module('sntRover')
     'RVReportParserFac',
     '$timeout',
     'RVReportMsgsConst',
-    function($scope, reportParser, $timeout, reportMsgs) {
+    '$rootScope',
+    function($scope, reportParser, $timeout, reportMsgs, $rootScope) {
         var DELAY_50 = 50;
         var DELAY_10 = 10;
         var DELAY_100 = 100;
@@ -59,11 +60,13 @@ angular.module('sntRover')
         var reportPrinting = $scope.$on(reportMsgs['REPORT_PRINTING'], renderReport);
         var reportUpdated = $scope.$on(reportMsgs['REPORT_UPDATED'], reRenderReport);
         var reportPageChanged = $scope.$on(reportMsgs['REPORT_PAGE_CHANGED'], reRenderReport);
+        var reloadResultsListner = $rootScope.$on('RELOAD_RESULTS', reRenderReport);
 
         $scope.$on('$destroy', reportSubmited);
         $scope.$on('$destroy', reportUpdated);
         $scope.$on('$destroy', reportPrinting);
         $scope.$on('$destroy', reportPageChanged);
+        $scope.$on('$destroy', reloadResultsListner);
 
         BaseCtrl.call(this, $scope);
 

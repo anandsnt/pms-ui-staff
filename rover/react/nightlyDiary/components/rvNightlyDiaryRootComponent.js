@@ -8,7 +8,7 @@ const NightlyDiaryRootComponent = createClass ({
 
     },
     scrollToNthelement(n) {
-         let width = document.getElementsByClassName("room")[1].clientHeight,
+         let width = document.getElementsByClassName("room not-clickable")[0].clientHeight,
              scrollTo = n * width ;
  
         this.scrollToPos(scrollTo);
@@ -28,30 +28,6 @@ const NightlyDiaryRootComponent = createClass ({
                     <NightlyDiaryRoomsListContainer/>
 
                     <NightlyDiaryReservationsListContainer/>
-                </div>
-            </div>
-            <div className="diary-nightly-sidebar diary-nightly-unassigned hidden">
-                <div className="sidebar-header">
-                    <h2>Unassigned</h2>
-                    <p>Drag & Drop to assign a room</p>
-                </div>
-                <div className="unassigned-labels">
-                    <div className="data">Name / Room Type</div>
-                    <div className="arrival">Arrival</div>
-                    <div className="nights">Nights</div>
-                </div>
-                <div className="unassigned-list scrollable">
-                    <div className="wrapper">
-                        <div className="guest check-in">
-                            <div className="data">
-                                <strong className="name"></strong>
-                                <span className="vip"></span>
-                                <span className="room"></span>
-                            </div>
-                            <div className="arrival"></div>
-                            <div className="nights"></div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

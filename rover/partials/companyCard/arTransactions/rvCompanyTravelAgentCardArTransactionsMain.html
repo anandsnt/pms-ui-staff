@@ -17,7 +17,7 @@
                     <span class="icons icon-clear-search">Clear query</span>
                 </button>
                 <button type="submit" name="submit" class="icons icon-search">Search</button>
-                <input name="ar-transaction-query" id="arTransactionQuery" class="query" placeholder="Search by Name, Room No. or Confirmation No." type="search" autocomplete="off" ng-keyup="queryEntered()" ng-model="filterData.query" />
+                <input name="ar-transaction-query" id="arTransactionQuery" class="query" placeholder="Search by Name, Room No. or Confirmation No. or AR Invoice No." type="search" autocomplete="off" ng-keyup="queryEntered()" ng-model="filterData.query" />
             </div>
             <div class="entry dates">
                 <div class="entry-data has-datepicker">
@@ -35,14 +35,7 @@
             </div>
         </div>
         <div class="actions">
-            <div class="entry" ng-show="showIncludePayments()">
-                <label class="checkbox inline">
-                    <span class="icon-form icon-checkbox" ng-class="{'checked': filterData.includePayments }"></span>
-                    <input type="checkbox" ng-model="filterData.includePayments"  value="{{filterData.includePayments}}">
-                    Include Payments
-                </label>
-            </div>
-            <button type="button" class="button orange with-icon" ng-click="clickedArStatementButton()">
+            <button type="button" class="button orange with-icon" ng-click="clickedArStatementButton()"> 
                 <span class="icons icon-invoice"></span>
                 Statement
             </button>
@@ -57,6 +50,7 @@
         <!-- {tabs/ar-transactions.html} -->
 
         <div include-replace ng-include="'/assets/partials/companyCard/arTransactions/rvArStatementPrintTemplate.html'"></div>
+        <div class="invoice" include-replace ng-if="printBillCardActive" ng-include="'/assets/partials/companyCard/arTransactions/rvArInvoice.html'"></div>
 
         <!-- {tabs/ar-statement.html} -->
 
@@ -74,3 +68,5 @@
         </div>
     </div> -->
 </form>
+
+

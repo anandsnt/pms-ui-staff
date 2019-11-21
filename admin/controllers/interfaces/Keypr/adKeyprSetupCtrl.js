@@ -1,25 +1,26 @@
-angular.module('admin').controller('adKeyprSetupCtrl', ['$scope', '$rootScope', 'config', 'adInterfacesCommonConfigSrv',
-    function($scope, $rootScope, config, adInterfacesCommonConfigSrv) {
+angular.module('admin').controller('adKeyprSetupCtrl', ['$scope', '$rootScope', 'config', 'adInterfacesSrv',
+    function($scope, $rootScope, config, adInterfacesSrv) {
+        BaseCtrl.call(this, $scope);
 
-        var interfaceIdentifier = 'keypr';
+        $scope.integration = 'KEYPR';
 
-        $scope.sync = {
-            start_date: null,
-            end_date: null
-        };
 
         $scope.toggleEnabled = function() {
             config.enabled = !config.enabled;
         };
 
-        $scope.saveInterfaceConfig = function() {
-            $scope.callAPI(adInterfacesCommonConfigSrv.saveConfiguration, {
+        $scope.saveSetup = function() {
+            var params = dclone($scope.config);
+
+            $scope.deletePropertyIfRequired(params, 'access_token');
+            $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
-                    config: $scope.config,
-                    interfaceIdentifier: interfaceIdentifier
+                    settings: params,
+                    integration: $scope.integration.toLowerCase()
                 },
                 onSuccess: function() {
-                    $scope.goBackToPreviousState();
+                    $scope.errorMessage = '';
+                    $scope.successMessage = 'SUCCESS! Settings updated!';
                 }
             });
         };
@@ -27,6 +28,7 @@ angular.module('admin').controller('adKeyprSetupCtrl', ['$scope', '$rootScope', 
         (function() {
             //    init
             $scope.config = config;
+            $scope.setDefaultDisplayPassword($scope.config, 'access_token');
         })();
     }
 ]);

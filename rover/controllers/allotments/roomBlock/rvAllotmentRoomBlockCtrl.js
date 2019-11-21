@@ -280,7 +280,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableSingleEntryBox = function(dateData, roomType) {			
-			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled || !dateData.isModifiable || !$scope.isValueConfigured(dateData.single_contract) ) ;
+			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled || !dateData.isModifiable ) ;
 		};
 
 		/**
@@ -290,7 +290,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableDoubleEntryBox = function(dateData, roomType) {
-			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled || !dateData.isModifiable || !$scope.isValueConfigured(dateData.double_contract));
+			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled || !dateData.isModifiable );
 		};
 
 		/**
@@ -300,7 +300,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableTripleEntryBox = function(dateData, roomType) {
-			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled || !dateData.isModifiable || !$scope.isValueConfigured(dateData.triple_contract) );
+			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled || !dateData.isModifiable );
 		};
 
 		/**
@@ -310,7 +310,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableQuadrupleEntryBox = function(dateData, roomType) {
-			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled || !dateData.isModifiable || !$scope.isValueConfigured(dateData.quadruple_contract) );
+			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled || !dateData.isModifiable );
 		};
 
 		/**
@@ -824,11 +824,23 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			$scope.callAPI(rvAllotmentConfigurationSrv.saveRoomBlockBookings, options);
 		};
 
-		$scope.saveReleaseDays = function() {
+		$scope.saveReleaseDays = function(massUpdateReleaseDays, massUpdateEndDate) {
 			var params = {
 				allotment_id: $scope.allotmentConfigData.summary.allotment_id,
 				results: $scope.allotmentConfigData.roomblock.selected_room_types_and_bookings
-			};
+			},
+			allotmentStartDate = $scope.allotmentConfigData.summary.block_from,
+			businessDate = new tzIndependentDate($rootScope.businessDate);
+
+			if (massUpdateReleaseDays) {
+				params.start_date = allotmentStartDate;
+				if (allotmentStartDate < businessDate) {
+					params.start_date = businessDate;
+				}
+				params.start_date = formatDateForAPI(params.start_date);
+				params.release_days = parseInt(massUpdateReleaseDays);				
+				params.end_date = formatDateForAPI(massUpdateEndDate);
+			}
 
 			var options = {
 				params: params,

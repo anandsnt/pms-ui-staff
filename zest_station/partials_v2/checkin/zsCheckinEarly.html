@@ -38,7 +38,7 @@
         <h3 ng-show="mode === 'EARLY_CHECKIN_SELECT'">
             <text data-ng-bind-html="getTagValue('EARLY_AVAIL_SUB_HEADER')" editable-text="EARLY_AVAIL_SUB_HEADER"></text> {{standardCheckinTime}} <br>
              
-            <text data-ng-bind-html="getTagValue('EARLY_AVAIL_SUB_HEADER_2')" editable-text="EARLY_AVAIL_SUB_HEADER_2"></text> {{early_checkin_charge}} 
+            <text data-ng-bind-html="getTagValue('EARLY_AVAIL_SUB_HEADER_2')" editable-text="EARLY_AVAIL_SUB_HEADER_2"></text> {{ early_checkin_charge }}
         </h3>
 
         <!-- pre-paid -->
@@ -75,10 +75,10 @@
                         <div ng-include="icons.url.key"></div>
                     </button>
                     <text data-ng-bind-html="getTagValue('EARLY_AVAIL_PURCHASE')" editable-text="EARLY_AVAIL_PURCHASE"></text>
-                    <h3>
+                    <h3 class="span">
                         <text data-ng-bind-html="getTagValue('EARLY_AVAIL_PURCHASE_SUB')" editable-text="EARLY_AVAIL_PURCHASE_SUB"></text>
 
-                        {{early_checkin_charge}} 
+                        {{early_checkin_charge}}
 
                         <text data-ng-bind-html="getTagValue('EARLY_AVAIL_PURCHASE_SUB_2')" editable-text="EARLY_AVAIL_PURCHASE_SUB_2"></text>
                     </h3>

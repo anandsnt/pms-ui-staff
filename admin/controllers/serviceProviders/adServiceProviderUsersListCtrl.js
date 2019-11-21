@@ -84,23 +84,6 @@ admin.controller('ADServiceProviderUserListCtrl', ['$scope', '$rootScope', '$q',
     $scope.clickedShowInactiveUsers = function() {
         $scope.reloadTable();
     };
-
-   /**
-    * To delete user
-    * @param {int} index of the selected user
-    * @param {string} user id
-    */
-    $scope.deleteUser = function(userId, index) {
-        var data = {
-            'id': userId
-        };
-        var successDelete = function() {
-            $scope.data.splice(index, 1);
-            $scope.$emit('hideLoader');			
-        };
-
-        $scope.invokeApi(ADServiceProviderSrv.deleteUser, data, successDelete );
-    };
 	/**
     *Initiating
     */	

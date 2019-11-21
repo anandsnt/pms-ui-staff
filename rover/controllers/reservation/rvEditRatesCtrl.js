@@ -5,6 +5,8 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 		
 		BaseCtrl.call (this, $scope);
 
+		var stayDatesOriginal = dclone($scope.ngDialogData.room.stayDates);
+
 		$scope.refreshRateDetails = function() {
             $timeout(function() {
     			$scope.refreshScroller('rateDetails');
@@ -40,13 +42,12 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 		 * function to save comment against rate change
 		 * will save comment if something entered
 		 */
-		$scope.saveCommentAgainstRateChange = function() {
-			// proceed only if something entered
-			if ($scope.adjustment_reason.trim() === "") {
-				return;
-			}
+		$scope.saveCommentAgainstRateChange = function(callback) {
 			// forming the API params
-			var params = {};
+			var params = {},
+				onReservationNoteSuccess = function() {
+					callback();
+				};
 
 			params.reservation_id = getReservationID();
 			params.text = $scope.adjustment_reason;
@@ -54,7 +55,8 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 			params.note_topic = 1;
 
 			var options = {
-				params: params
+				params: params,
+				onSuccess: onReservationNoteSuccess
 			};
 
 			$scope.callAPI(RVReservationCardSrv.saveReservationNote, options);
@@ -65,7 +67,12 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 			$scope.errorMessage = '';
 			if (!$scope.otherData.forceAdjustmentReason ||
 				($scope.otherData.forceAdjustmentReason && !!$scope.adjustment_reason && !!$scope.adjustment_reason.trim())) {
-				_.each(room.stayDates, function(stayDate) {
+				 var isRateModified = false;
+
+				_.each(room.stayDates, function(stayDate, idx) {
+					if (stayDatesOriginal[idx] && ( stayDatesOriginal[idx].rateDetails.modified_amount !== stayDate.rateDetails.modified_amount) ) {
+						isRateModified = true;
+					}
 					stayDate.rateDetails.modified_amount = parseFloat(stayDate.rateDetails.modified_amount).toFixed(2);
 					if (isNaN(stayDate.rateDetails.modified_amount)) {
 						stayDate.rateDetails.modified_amount = parseFloat(stayDate.rateDetails.actual_amount).toFixed(2);
@@ -73,27 +80,37 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 				});
 
 				$scope.reservationData.rooms[index] = room;
+				$scope.reservationData.has_reason = !!$scope.adjustment_reason.trim();
 
-				// comment box will appear in every box
-				$scope.saveCommentAgainstRateChange();
+				var reservationUpdateCallback = function() {
+					if ($scope.reservationData.isHourly && !$stateParams.id) {
+						$scope.computeHourlyTotalandTaxes();
+					} else {
+						$scope.computeTotalStayCost();
+					}
+	
+					if ($stateParams.id) { // IN STAY CARD .. Reload staycard
+						$scope.saveReservation('rover.reservation.staycard.reservationcard.reservationdetails', {
+							"id": getReservationID(),
+							"confirmationId": getConfirmationNumber(),
+							"isrefresh": false
+						});
+					} else {
+						$scope.saveReservation('', '', index);
+					}
+					$scope.closeDialog();
+				};
 
-
-				if ($scope.reservationData.isHourly && !$stateParams.id) {
-					$scope.computeHourlyTotalandTaxes();
+				if (isRateModified) {
+					if ($scope.adjustment_reason.trim() === "") {
+						reservationUpdateCallback();
+					} else {
+						$scope.saveCommentAgainstRateChange(reservationUpdateCallback);
+					}
 				} else {
-					$scope.computeTotalStayCost();
+					$scope.closeDialog();
 				}
-
-				if ($stateParams.id) { // IN STAY CARD .. Reload staycard
-					$scope.saveReservation('rover.reservation.staycard.reservationcard.reservationdetails', {
-						"id": getReservationID(),
-						"confirmationId": getConfirmationNumber(),
-						"isrefresh": false
-					});
-				} else {
-					$scope.saveReservation('', '', index);
-				}
-				$scope.closeDialog();
+				
 			} else {
 				$scope.errorMessage = ['Please enter Adjustment Reason'];
 			}

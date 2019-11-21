@@ -67,6 +67,7 @@ sntRover.controller('RVDepositBalanceCtrl', [
         $scope.showAddtoGuestCard = true;
         $scope.shouldCardAvailable = false;
         $scope.depositBalanceMakePaymentData = {};
+        $scope.depositBalanceMakePaymentData.rateCurrency = $scope.depositBalanceData.data.rate_currency;
         $scope.depositBalanceMakePaymentData.amount = parseFloat($scope.depositBalanceData.data.balance_deposit_amount).toFixed(2);
         $scope.refundAmount = 0;
 

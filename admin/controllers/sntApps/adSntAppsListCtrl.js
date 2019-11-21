@@ -133,39 +133,21 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 			resetSelectedApp();
 		};
 
-		var checkIfFileTypeisInValid = function() {
-			return ($scope.filterType.value === 'Rover Service Mac' && !$scope.fileName.endsWith(".pkg")) ||
-				($scope.filterType.value !== 'Rover Service Mac' && !$scope.fileName.endsWith(".exe"));
-		};
-
 		var uploadBuild = function() {
-			if (checkIfFileTypeisInValid()) {
-				$scope.errorMessage = ['Wrong file extension !'];
-			}
-			// processing the huge build param will take time in backend
-			// so inorder to avoid that, check if build is presnet in UI
-			else if (_.isEmpty($scope.selectedApp.build)) {
-				$scope.errorMessage = ['Upload Build is mandatory']
-			} else {
-				var params = angular.copy($scope.selectedApp);
+			
+			var params = angular.copy($scope.selectedApp);
 
-				params.service_application_type_id = $scope.filterType.id;
-				if ($scope.screenMode === 'ADD_BUILD' || $scope.fileName !== 'File Attached') {
-					params.file_name = $scope.fileName;
+			params.service_application_type_id = $scope.filterType.id;
+			if ($scope.screenMode === 'ADD_BUILD' || $scope.fileName !== 'File Attached') {
+				params.file_name = $scope.fileName;
+			}
+
+			$scope.callAPI(adAppVersionsSrv.uploadBuild, {
+				params: params,
+				successCallBack: function() {
+                    fetchAppVersions();
 				}
-
-				$scope.callAPI(adAppVersionsSrv.uploadBuild, {
-					params: params,
-					successCallBack: function() {
-						ngDialog.open({
-							template: '/assets/partials/sntApps/adUPloadInProgressPopup.html',
-							className: 'ngdialog-theme-default',
-							scope: $scope,
-							closeByDocument: false
-						});
-					}
-				});
-			}
+			});
 		};
 
 		$scope.continueToVersionList = function () {
@@ -174,12 +156,13 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 		};
 
 		$scope.checkIfVersionIsValid = function() {
+            $scope.fileName = $scope.selectedApp.sftp_path;
 			$scope.clearErrorMessage();
 			$scope.callAPI(adAppVersionsSrv.checkIfVersionIsValid, {
 				params: {
 					version: $scope.selectedApp.version,
 					service_application_type_id: $scope.filterType.id,
-					file_name: $scope.fileName
+					sftp_path: $scope.selectedApp.sftp_path
 				},
 				successCallBack: uploadBuild
 			});
@@ -240,20 +223,6 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 				successCallBack: saveFTPSuccess,
 				failureCallBack: saveFTPFailure
 			});
-		};
-		$scope.fileChanged = function(data) {
-			$scope.errorMessage = '';
-			$scope.selectedApp.version = '';
-			// extract the build version from the filename (eg:- rover-v1.0.5-installer.exe)
-			var tmpStr = data.file.name.match("-v(.*)-");
-
-			if (checkIfFileTypeisInValid()) {
-				$scope.errorMessage = ['Wrong file extension !'];
-			} else if (!tmpStr || tmpStr.length < 1) {
-				$scope.errorMessage = ["Wrong file name format ! The file name should include the build version in the format '-vx.x.x-'"];
-			} else if (tmpStr && tmpStr.length > 1) {
-				$scope.selectedApp.version = tmpStr[1];
-			}
 		};
 
 		(function() {

@@ -1,7 +1,7 @@
 sntZestStation.controller('zsAdminCtrl', [
     '$scope',
-    '$state', 'zsEventConstants', 'zsGeneralSrv', 'zsLoginSrv', '$window', '$rootScope', '$timeout',
-    function($scope, $state, zsEventConstants, zsGeneralSrv, zsLoginSrv, $window, $rootScope, $timeout) {
+    '$state', 'zsEventConstants', 'zsGeneralSrv', 'zsLoginSrv', '$window', '$rootScope', '$timeout', 'zsReceiptPrintHelperSrv', '$log',
+    function($scope, $state, zsEventConstants, zsGeneralSrv, zsLoginSrv, $window, $rootScope, $timeout, zsReceiptPrintHelperSrv, $log) {
 
         BaseCtrl.call(this, $scope);
         var  isLightTurnedOn = false; // initially consider the HUE light status to be turned OFF.
@@ -241,9 +241,12 @@ sntZestStation.controller('zsAdminCtrl', [
                 console.info('login out');
             }
             $scope.reportGoingOffline('logout');
-             $timeout(function() {
-                $window.location.href = '/station_logout';
-            }, 500);
+
+            zsGeneralSrv.signOut().finally(function() {
+               $timeout(function () {
+                   $window.location.href = '/station_logout';
+               });
+             });
             
         };
 
@@ -320,6 +323,8 @@ sntZestStation.controller('zsAdminCtrl', [
                     }
                     $scope.cancelAdminSettings(true);
                 }
+
+                localStorage.setItem('snt_zs_printer', $scope.savedSettings.printer);
             };
             var failureCallBack = function() {
                 console.warn('unable to save workstation settings');
@@ -400,7 +405,9 @@ sntZestStation.controller('zsAdminCtrl', [
                 successCallBack: successCallBack,
                 failureCallBack: failureCallBack
             };
-
+            
+            localStorage.setItem('ID_SCAN_CAMERA_ID', $scope.selectedCamera);
+            localStorage.setItem('FR_CAMERA_ID', $scope.selectedFRCamera);
             $scope.callAPI(zsGeneralSrv.saveSettings, options);
         };
 
@@ -496,6 +503,42 @@ sntZestStation.controller('zsAdminCtrl', [
             $scope.cardReader.getConnectedDeviceDetails(callBacks);
         };
 
+        $scope.showPrintMsgPopup = false;
+        $scope.printMessage = "";
+
+        $scope.closePrintErrorPopup = function () {
+             $scope.showPrintMsgPopup = false;
+        };
+        $scope.printSampleReceipt = function() {
+            var printRegCardData = {
+                'room_number': '500',
+                'dep_date': '10/10/2018'
+            };
+            var receiptPrinterParams = zsReceiptPrintHelperSrv.setUpStringForReceiptRegCard(printRegCardData, $scope.zestStationData);
+            var printFailedActions = function (errorData) {
+                $scope.$emit('hideLoader');
+                $scope.printMessage = errorData ? 'Print Error: ' + errorData.RVErrorDesc : 'Print Error';
+                $scope.showPrintMsgPopup = true;
+            };
+            var printSuccessActions = function () {
+                $scope.$emit('hideLoader');
+                $scope.printMessage = 'Print success';
+                $scope.showPrintMsgPopup = true;
+            };
+
+            if ($scope.isIpad && typeof cordova !== typeof undefined) {
+                $scope.$emit('showLoader');
+                cordova.exec(printSuccessActions,
+                         printFailedActions,
+                        'RVCardPlugin',
+                        'printReceipt', [ receiptPrinterParams ]);
+            }
+            $log.info(receiptPrinterParams);
+        };
+
+        $scope.selectedCamera = localStorage.getItem('ID_SCAN_CAMERA_ID');
+        $scope.selectedFRCamera = localStorage.getItem('FR_CAMERA_ID');
+
         // initialize
         (function() {
             var localDebugging = false, // change this if testing locally, be sure to make false if going up to dev/release/prod
@@ -543,7 +586,18 @@ sntZestStation.controller('zsAdminCtrl', [
             if ($scope.isIpad) {
                 $scope.fetchDeviceStatus();
             }
+            if ($scope.zestStationData.id_scan_enabled) {
+                $scope.$emit('CHECK_FOR_EXTERNAL_CAMERAS');
+            }
 
+            $scope.idCaptureFeature = retrieveFeatureDetails($scope.zestStationData.featuresSupportedInIosApp, 'CAPTURE_ID');
+
+            if ($scope.idCaptureFeature) {
+                $scope.useIdAutoCapture = (localStorage.getItem('useAutoDetection') && localStorage.getItem('useAutoDetection') === "YES") ? "YES" : "NO";
+                $scope.autoIdDetectionChanged = function() {
+                    localStorage.setItem('useAutoDetection', $scope.useIdAutoCapture === "YES" ? "YES" : "NO");
+                };
+            }
         }());
     }
 ]);

@@ -11,6 +11,7 @@
     @actionBackground:      @brandColor;
     
     @inputBackground:       #707070;
+    @inputColor:            @white;
     @transparentColor:      rgba(0,0,0,.5);
 
 /* 2. TYPOGRAPHY
@@ -44,6 +45,10 @@
             fill: none;
             stroke: @white;
         }
+
+        &.icon-arrow-down {
+            fill: @brandColor;
+        }
     
     }
 
@@ -73,7 +78,7 @@
         input,
         select {
             background: @inputBackground;
-            color: @white;
+            color: @inputColor;
         }
         
         #logo {
@@ -167,5 +172,10 @@
             .icons {
                 fill: @white;
             }
+        }
+
+        .minibar-item,
+        .minibar-review .review-container {
+            background: #ececec;
         }
     }

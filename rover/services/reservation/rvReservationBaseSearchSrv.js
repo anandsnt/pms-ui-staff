@@ -1,5 +1,5 @@
-angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2', 'dateFilter',
-    function($q, RVBaseWebSrvV2, dateFilter) {
+angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2', 'sntBaseWebSrv', 'dateFilter',
+    function($q, RVBaseWebSrvV2, sntBaseWebSrv, dateFilter) {
 
         var that = this;
 
@@ -54,6 +54,105 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
             }
             return level;
         };
+
+        this.timeSlots = [
+            {value: '12:00 AM', label: '12:00 AM', fullDayValue: 0 },
+            {value: '12:15 AM', label: '12:15 AM', fullDayValue: 15 },
+            {value: '12:30 AM', label: '12:30 AM', fullDayValue: 30 },
+            {value: '12:45 AM', label: '12:45 AM', fullDayValue: 45 },
+            {value: '01:00 AM', label: '01:00 AM', fullDayValue: 100 },
+            {value: '01:15 AM', label: '01:15 AM', fullDayValue: 115 },
+            {value: '01:30 AM', label: '01:30 AM', fullDayValue: 130 },
+            {value: '01:45 AM', label: '01:45 AM', fullDayValue: 145  },
+            {value: '02:00 AM', label: '02:00 AM', fullDayValue: 200 },
+            {value: '02:15 AM', label: '02:15 AM', fullDayValue: 215 },
+            {value: '02:30 AM', label: '02:30 AM', fullDayValue: 230 },
+            {value: '02:45 AM', label: '02:45 AM', fullDayValue: 245 },
+            {value: '03:00 AM', label: '03:00 AM', fullDayValue: 300 },
+            {value: '03:15 AM', label: '03:15 AM', fullDayValue: 315 },
+            {value: '03:30 AM', label: '03:30 AM', fullDayValue: 330 },
+            {value: '03:45 AM', label: '03:45 AM', fullDayValue: 345 },
+            {value: '04:00 AM', label: '04:00 AM', fullDayValue: 400 },
+            {value: '04:15 AM', label: '04:15 AM', fullDayValue: 415 },
+            {value: '04:30 AM', label: '04:30 AM', fullDayValue: 430 },
+            {value: '04:45 AM', label: '04:45 AM', fullDayValue: 445 },
+            {value: '05:00 AM', label: '05:00 AM', fullDayValue: 500 },
+            {value: '05:15 AM', label: '05:15 AM', fullDayValue: 515 },
+            {value: '05:30 AM', label: '05:30 AM', fullDayValue: 530 },
+            {value: '05:45 AM', label: '05:45 AM', fullDayValue: 545 },
+            {value: '06:00 AM', label: '06:00 AM', fullDayValue: 600 },
+            {value: '06:15 AM', label: '06:15 AM', fullDayValue: 615 },
+            {value: '06:30 AM', label: '06:30 AM', fullDayValue: 630 },
+            {value: '06:45 AM', label: '06:45 AM', fullDayValue: 645 },
+            {value: '07:00 AM', label: '07:00 AM', fullDayValue: 700 },
+            {value: '07:15 AM', label: '07:15 AM', fullDayValue: 715 },
+            {value: '07:30 AM', label: '07:30 AM', fullDayValue: 730 },
+            {value: '07:45 AM', label: '07:45 AM', fullDayValue: 745 },
+            {value: '08:00 AM', label: '08:00 AM', fullDayValue: 800 },
+            {value: '08:15 AM', label: '08:15 AM', fullDayValue: 815 },
+            {value: '08:30 AM', label: '08:30 AM', fullDayValue: 830 },
+            {value: '08:45 AM', label: '08:45 AM', fullDayValue: 845 },
+            {value: '09:00 AM', label: '09:00 AM', fullDayValue: 900 },
+            {value: '09:15 AM', label: '09:15 AM', fullDayValue: 915 },
+            {value: '09:30 AM', label: '09:30 AM', fullDayValue: 930 },
+            {value: '09:45 AM', label: '09:45 AM', fullDayValue: 945 },
+            {value: '10:00 AM', label: '10:00 AM', fullDayValue: 1000 },
+            {value: '10:15 AM', label: '10:15 AM', fullDayValue: 1015 },
+            {value: '10:30 AM', label: '10:30 AM', fullDayValue: 1030 },
+            {value: '10:45 AM', label: '10:45 AM', fullDayValue: 1045 },
+            {value: '11:00 AM', label: '11:00 AM', fullDayValue: 1100 },
+            {value: '11:15 AM', label: '11:15 AM', fullDayValue: 1115 },
+            {value: '11:30 AM', label: '11:30 AM', fullDayValue: 1130 },
+            {value: '11:45 AM', label: '11:45 AM', fullDayValue: 1145 },
+            {value: '12:00 PM', label: '12:00 PM', fullDayValue: 1200 },
+            {value: '12:15 PM', label: '12:15 PM', fullDayValue: 1215 },
+            {value: '12:30 PM', label: '12:30 PM', fullDayValue: 1230 },
+            {value: '12:45 PM', label: '12:45 PM', fullDayValue: 1245 },
+            {value: '01:00 PM', label: '01:00 PM', fullDayValue: 1300 },
+            {value: '01:15 PM', label: '01:15 PM', fullDayValue: 1315 },
+            {value: '01:30 PM', label: '01:30 PM', fullDayValue: 1330 },
+            {value: '01:45 PM', label: '01:45 PM', fullDayValue: 1345 },
+            {value: '02:00 PM', label: '02:00 PM', fullDayValue: 1400 },
+            {value: '02:15 PM', label: '02:15 PM', fullDayValue: 1415 },
+            {value: '02:30 PM', label: '02:30 PM', fullDayValue: 1430 },
+            {value: '02:45 PM', label: '02:45 PM', fullDayValue: 1445 },
+            {value: '03:00 PM', label: '03:00 PM', fullDayValue: 1500 },
+            {value: '03:15 PM', label: '03:15 PM', fullDayValue: 1515 },
+            {value: '03:30 PM', label: '03:30 PM', fullDayValue: 1530 },
+            {value: '03:45 PM', label: '03:45 PM', fullDayValue: 1545 },
+            {value: '04:00 PM', label: '04:00 PM', fullDayValue: 1600 },
+            {value: '04:15 PM', label: '04:15 PM', fullDayValue: 1615 },
+            {value: '04:30 PM', label: '04:30 PM', fullDayValue: 1630 },
+            {value: '04:45 AM', label: '04:45 PM', fullDayValue: 1645 },
+            {value: '05:00 PM', label: '05:00 PM', fullDayValue: 1700 },
+            {value: '05:15 PM', label: '05:15 PM', fullDayValue: 1715 },
+            {value: '05:30 PM', label: '05:30 PM', fullDayValue: 1730 },
+            {value: '05:45 PM', label: '05:45 PM', fullDayValue: 1745 },
+            {value: '06:00 PM', label: '06:00 PM', fullDayValue: 1800 },
+            {value: '06:15 PM', label: '06:15 PM', fullDayValue: 1815 },
+            {value: '06:30 PM', label: '06:30 PM', fullDayValue: 1830 },
+            {value: '06:45 PM', label: '06:45 PM', fullDayValue: 1845 },
+            {value: '07:00 PM', label: '07:00 PM', fullDayValue: 1900 },
+            {value: '07:15 PM', label: '07:15 PM', fullDayValue: 1915 },
+            {value: '07:30 PM', label: '07:30 PM', fullDayValue: 1930 },
+            {value: '07:45 PM', label: '07:45 PM', fullDayValue: 1945 },
+            {value: '08:00 PM', label: '08:00 PM', fullDayValue: 2000 },
+            {value: '08:15 PM', label: '08:15 PM', fullDayValue: 2015 },
+            {value: '08:30 PM', label: '08:30 PM', fullDayValue: 2030 },
+            {value: '08:45 PM', label: '08:45 PM', fullDayValue: 2045 },
+            {value: '09:00 PM', label: '09:00 PM', fullDayValue: 2100 },
+            {value: '09:15 PM', label: '09:15 PM', fullDayValue: 2115 },
+            {value: '09:30 PM', label: '09:30 PM', fullDayValue: 2130 },
+            {value: '09:45 PM', label: '09:45 PM', fullDayValue: 2145 },
+            {value: '10:00 PM', label: '10:00 PM', fullDayValue: 2200 },
+            {value: '10:15 PM', label: '10:15 PM', fullDayValue: 2215 },
+            {value: '10:30 PM', label: '10:30 PM', fullDayValue: 2230 },
+            {value: '10:45 PM', label: '10:45 PM', fullDayValue: 2245 },
+            {value: '11:00 PM', label: '11:00 PM', fullDayValue: 2300 },
+            {value: '11:15 PM', label: '11:15 PM', fullDayValue: 2315 },
+            {value: '11:30 PM', label: '11:30 PM', fullDayValue: 2330 },
+            {value: '11:45 PM', label: '11:45 PM', fullDayValue: 2345 }
+        ];
 
         this.fetchBaseSearchData = function() {
             var deferred = $q.defer();
@@ -122,12 +221,14 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
             return deferred.promise;
         };
 
-
-        this.fetchCurrentTime = function() {
-            var deferred = $q.defer();
-            var url = '/api/hotel_current_time';
+        this.fetchCurrentTime = function(start_date) {
+            var deferred = $q.defer(),
+                url = '/api/hotel_current_time';
 
             RVBaseWebSrvV2.getJSON(url).then(function(data) {
+                if (start_date && typeof start_date === 'string') {
+                    data.hotel_time.date = start_date;
+                }
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
@@ -252,6 +353,18 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
 
             RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
                 deferred.resolve(response.results);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.checkDiaryAvailability = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/nightly_diary/availability';
+
+            RVBaseWebSrvV2.postJSON(url, params).then(function(response) {
+                deferred.resolve(response);
             }, function(data) {
                 deferred.reject(data);
             });
@@ -392,11 +505,11 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
         var formFilteredRateIds = function(params) {
             var fetchList = _.reject(params.rate_ids,
                 function(rate_id) {
-                if (!!that.rateDetailsList[rate_id] && Date.now() < that.rateDetailsList[rate_id]['expiryDate']) {
-                    return true;
-                }
-                return false;
-            });
+                    if (!!that.rateDetailsList[rate_id] && Date.now() < that.rateDetailsList[rate_id]['expiryDate']) {
+                        return true;
+                    }
+                    return false;
+                });
 
             return fetchList;
         };
@@ -413,21 +526,21 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
                 url = '/api/rates/search.json',
                 payload = {};
 
-                payload['rate_ids'] = fetchRateListIds;
-                if (fetchRateListIds.length === 0) {
-                    deferred.resolve({});
-                } else {
-                    RVBaseWebSrvV2.postJSON(url, payload).then(function(response) {
-                        _.each(response.results, function(rate) {
-                            that.rateDetailsList[rate.id] = {
-                                expiryDate: Date.now() + (that.cache['config'].lifeSpan * 1000),
-                                details: rate };
-                        });
-                        deferred.resolve(response.results);
-                    }, function(data) {
-                        deferred.reject(data);
+            payload['rate_ids'] = fetchRateListIds;
+            if (fetchRateListIds.length === 0) {
+                deferred.resolve({});
+            } else {
+                RVBaseWebSrvV2.postJSON(url, payload).then(function(response) {
+                    _.each(response.results, function(rate) {
+                        that.rateDetailsList[rate.id] = {
+                            expiryDate: Date.now() + (that.cache['config'].lifeSpan * 1000),
+                            details: rate };
                     });
-                }
+                    deferred.resolve(response.results);
+                }, function(data) {
+                    deferred.reject(data);
+                });
+            }
 
             return deferred.promise;
         };
@@ -545,12 +658,12 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
             var deferred = $q.defer(),
                 url = "/api/hotel_settings/show_hotel_reservation_settings";
 
-            RVBaseWebSrvV2.getJSON(url).then(function(data) {                    
-                    deferred.resolve(data);
+            RVBaseWebSrvV2.getJSON(url).then(function(data) {
+                deferred.resolve(data);
             }, function(errorMessage) {
-                    deferred.reject(errorMessage);
+                deferred.reject(errorMessage);
             });
-            
+
             return deferred.promise;
         };
         /**
@@ -581,26 +694,42 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
                 url = '/api/rates/search.json',
                 payload = {};
 
-                payload['rate_ids'] = fetchRateListIds;
-                if (fetchRateListIds.length === 0) {
-                    deferred.resolve({});
-                } else {
-                    RVBaseWebSrvV2.postJSON(url, payload).then(function(response) {
-                        _.each(response.results, function(rate) {
-                            that.rateDetailsList[rate.id] = {
-                                expiryDate: Date.now() + (that.cache['config'].lifeSpan * 1000),
-                                details: rate };
-                        });
-                        var cachedRateIds = _.difference(params.rate_ids, fetchRateListIds);
-
-                        _.each(cachedRateIds, function(rateId) {
-                            response.results.push(that.rateDetailsList[rateId].details);
-                        });
-                        deferred.resolve(response.results);
-                    }, function(data) {
-                        deferred.reject(data);
+            payload['rate_ids'] = fetchRateListIds;
+            if (fetchRateListIds.length === 0) {
+                deferred.resolve({});
+            } else {
+                RVBaseWebSrvV2.postJSON(url, payload).then(function(response) {
+                    _.each(response.results, function(rate) {
+                        that.rateDetailsList[rate.id] = {
+                            expiryDate: Date.now() + (that.cache['config'].lifeSpan * 1000),
+                            details: rate };
                     });
-                }
+                    var cachedRateIds = _.difference(params.rate_ids, fetchRateListIds);
+
+                    _.each(cachedRateIds, function(rateId) {
+                        response.results.push(that.rateDetailsList[rateId].details);
+                    });
+                    deferred.resolve(response.results);
+                }, function(data) {
+                    deferred.reject(data);
+                });
+            }
+
+            return deferred.promise;
+        };
+
+        /**
+         * checkTimeBasedAvailability for FULL mode hotels.
+         */
+        this.checkTimeBasedAvailabilityAPI = function(params) {
+            var deferred = $q.defer(),
+                url = "api/availability/time_based_room_type_and_house_avl";
+
+            sntBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
 
             return deferred.promise;
         };

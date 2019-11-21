@@ -107,4 +107,8 @@ angular.module('sntRover').service('RVDashboardSrv', ['$q', 'RVBaseWebSrv', 'rvB
 		return deferred.promise;
 	};
 
+    this.signOut = function() {
+        return rvBaseWebSrvV2.getJSON('/logout');
+    };
+
 }]);

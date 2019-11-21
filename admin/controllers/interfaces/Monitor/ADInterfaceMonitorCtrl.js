@@ -31,7 +31,7 @@ angular.module('admin').controller('ADInterfaceMonitorCtrl', ['$scope', 'interfa
 
             $scope.externalInterfaces = interfaceList.sort();
 
-            if ($scope.externalInterfaces.indexOf('IFCCOMTROL') > -1) {
+            if ($scope.externalInterfaces.indexOf('COMTROL') > -1) {
                 $scope.callAPI(ADInterfaceMonitorSrv.fetchLlpts, {
                     successCallBack: function (response) {
                         $scope.state.originalComtrolList = response['llpts_installed_interfaces'] || '';

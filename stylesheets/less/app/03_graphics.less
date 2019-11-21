@@ -34,6 +34,8 @@
         &.icon-layers { background-position: 0 -990px; }
         &.icon-alert { background-position: 0 -1035px; }
         &.icon-invoice { background-position: 0 -1095px; }
+        &.icon-contracts { background-position: 0 -1155px; }
+        &.icon-contracts-black { background-position: 0 -1215px; }
 
 		@media only screen and (min-width: 600px) {
 			background-size: 125px;
@@ -59,6 +61,8 @@
             &.icon-layers { background-position: 0 -2040px; }
             &.icon-alert { background-position: 0 -2160px; }
             &.icon-invoice { background-position: 0 -2280px; }
+            &.icon-contracts { background-position: 0 -2400px; }
+            &.icon-contracts-black { background-position: 0 -2520px; }
 		}
 
 		@media @highdpi { background-image: @iconNoContent2x; }
@@ -158,7 +162,8 @@
 			}
 
 			&.icon-popup-alert,
-			&.icon-popup-success {
+			&.icon-popup-success,
+            &.icon-popup-error {
 				.square(50px);
 				.show;
 			}
@@ -168,6 +173,8 @@
 
 				&.white { background-position: 2px -7600px; }
 			}
+            
+            &.icon-popup-error { background-position: 2px -12515px; }
 
 		/* Search ***/
 			&.icon-search {
@@ -236,6 +243,7 @@
 				&.icon-revenue { background-position: 50% -5250px; }
 				&.icon-payments { background-position: 50% -5370px; }
 				&.icon-cashier { background-position: 50% -5490px; }
+				&.icon-balance { background-position: 50% -12088px; }
 
 				&.icon-total { background-position: 50% -8070px; }
 				&.icon-prestay { background-position: 50% -8130px; }
@@ -267,13 +275,33 @@
 		/* Search Results ***/
 			&.icon-location {  background-position: 0px -36px; }
 			&.icon-group { background-position: 0 -77px; }
-			&.icon-guest-company { background-position: 0 -758px; }
-			&.icon-guest-travelagent { background-position: 0 -818px; }
+			&.icon-guest-company { 
+                background-position: 0 -758px;
+
+                &.colored {
+                    background-position: 0 -13118px;
+                    color: @ccard;
+                } 
+            }
+			&.icon-guest-travelagent { 
+                background-position: 0 -818px;
+
+                &.colored {
+                    background-position: 0 -13178px;
+                    color: @tacard;
+                } 
+            }
 			&.icon-allotment { background-position: 0 -8317px; }
 
 			&.icon-phone { background-position: 3px -4234px; }
 			&.icon-email-grey { background-position: 2px -4293px; }
-			&.icon-contracts { background-position: 0 -7658px; }
+			&.icon-contracts { 
+				background-position: 0 -7658px;
+
+				&.active {
+                    background-position: 0 -12760px;
+                }
+			}
 
 			&.icon-gc-location { background-position: 10px -269px; }
 			&.icon-gc-phone { background-position: 10px -308px; }
@@ -281,6 +309,7 @@
 			&.icon-gc-company { background-position: 5px -3512px; }
 			&.icon-gc-ta { background-position: 5px -3632px; }
 			&.icon-gc-mobile { background-position: 10px -9989px; }
+			&.icon-gc-group { background-position: 4px -7714px; }
 
 			&.icon-notes { background-position: 0 -8980px; }
 
@@ -291,6 +320,12 @@
 	            .square(40px);
 			}
 
+            &.icon-queued-red { 
+                background-position: 0 -12874px; 
+                .hide-text;
+                .size(30px, 25px);
+            }
+
 			&.icon-suite {
                 .hide-text;
                 background-position: 0px -10237px;
@@ -300,6 +335,12 @@
             &.icon-suite-white {
                 .hide-text;
                 background-position: 0px -10357px;
+                .size(20px, 25px);
+            }
+
+            &.icon-suite-orange {
+                .hide-text;
+                background-position: 0px -12816px;
                 .size(20px, 25px);
             }
 
@@ -402,8 +443,25 @@
                 background-position: 0px -10840px;
             }
 
+            &.icon-identity-card-grey {
+                background-position: 0px -12220px;
+            }
+
+            .icon-identity-card-red {
+                background-position: 10px -12560px;
+            }
+
+            &.icon-identity-card-missing {
+                background-position: 0px -12280px;
+                .size(55px, 60px);
+            }
+
             &.icon-content-unavailable {
                 background-position: 0px -10900px;
+            }
+
+            &.icon-blocked-white {
+                background-position: 0px -12160px;
             }
 
 		/* Credit Cards ***/
@@ -432,6 +490,10 @@
 				&.success { background-position: 5px -6570px; }
 				&.failure { background-position: 5px -6630px; }
 			}
+
+            &.icon-eye { 
+                background-position: 0 -12934px;
+            }
 
 		/* Housekeeping ***/
 			&.icon-room {
@@ -463,6 +525,9 @@
                     background-position: 0px -10420px;
                 }
             }
+
+            &.icon-diary-dayuse { background-position: 0 -12640px; }
+            &.icon-diary-nightuse { background-position: 5px -12697px; }
 
 		/* Social Lobby ***/
 			&.icon-show-conversations {
@@ -648,6 +713,17 @@
                 background-position: 0 -10780px;
             }
 
+        /* Contracts */
+            &.icon-single-arrow {
+                background-position: 2px -12998px;
+                .square(13px);
+            }
+
+            &.icon-connect {
+                background-position: 0 -13058px;
+                .size(15px,20px);
+            }
+
 		/* Rotations */
 			&.rotate-down {
 				transform:rotate(-90deg);
@@ -661,6 +737,9 @@
 
 		/* Commissions */
             &.icon-release { background-position: 0px -11314px;}
+
+        /* Billing ***/
+            &.icon-split-charge { background-position: 0px -12340px; }
 
 		/* @2x Icons ***/
 		@media @highdpi {
@@ -683,14 +762,16 @@
 		&.toggle-filter {
 			background-image: @arrowDown;
 
-			&.settings-title { background-image: @arrowDownTrans; }
+			&.settings-title,
+            &.contract  { background-image: @arrowDownTrans; }
 		}
 
 		&.toggle.active,
 		&.toggle-filter.active {
 			background-image: @arrowUp;
 
-			&.settings-title { background-image: @arrowUpTrans; }
+			&.settings-title,
+            &.contract  { background-image: @arrowUpTrans; }
 		}
 
 		&.settings-title { background-position: 205px 50%; }
@@ -706,7 +787,8 @@
 				background-image: @arrowDown2x;
 				background-size: 14px 14px;
 
-				&.settings-title { background-image: @arrowDownTrans2x; }
+				&.settings-title,
+                &.contract  { background-image: @arrowDownTrans2x; }
 			}
 
 			&.toggle.active,
@@ -714,7 +796,8 @@
 				background-image: @arrowUp2x;
 				background-size: 14px 14px;
 
-				&.settings-title { background-image: @arrowUpTrans2x; }
+				&.settings-title,
+                &.contract  { background-image: @arrowUpTrans2x; }
 			}
 		}
 	}

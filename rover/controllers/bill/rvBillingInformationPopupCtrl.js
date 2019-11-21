@@ -137,7 +137,7 @@ sntRover.controller('rvBillingInformationPopupCtrl', ['$scope', '$rootScope', '$
                     "id": data.id
                 });
             }
-
+            $scope.selectedEntity.split_charge_by_50 = false;
         }
         else if (type === 'ACCOUNT') {
         	var data = $scope.results.accounts[index];
@@ -175,6 +175,7 @@ sntRover.controller('rvBillingInformationPopupCtrl', ['$scope', '$rootScope', '$
                 $scope.selectedEntity.entity_type = 'TRAVEL_AGENT';
                 $scope.selectedEntity.account_address = data.account_address;
             }
+            $scope.selectedEntity.split_charge_by_50 = false;
         }
         else if (type === 'GROUP' || type === 'HOUSE') {
             var data = $scope.results.posting_accounts[index];
@@ -200,8 +201,9 @@ sntRover.controller('rvBillingInformationPopupCtrl', ['$scope', '$rootScope', '$
                     }
                 });
             }
-
+            $scope.selectedEntity.split_charge_by_50 = false;
         }
+
 	};
 
     /* function to select the attached entity

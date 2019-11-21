@@ -31,8 +31,8 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
             if (!$scope.$parent.isNewsPaperPreferenceAvailable()) {
                 return;
             }
-            // If GMS setting is on, show GMS iframe, else default - CICO-50633
-            if (GMSData.GMSSettings.membership_feature) {
+            // If GMS setting and membership feature is on, show GMS iframe, else default - CICO-50633 & CICO-60486
+            if (GMSData.GMSSettings.membership_feature && GMSData.GMSSettings.enabled) {
                 ngDialog.open(GMSDialog);
             } else {
                 ngDialog.open(AddLoyaltyProgramDiaolg);
@@ -175,6 +175,19 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
         $scope.ffpProgramsActive = function(b) {
             $scope.hotelFrequentFlyerProgramEnabled = b;
             $scope.$parent.reservationData.use_ffp = b;
+        };
+
+        // Checks whether the loyalty section section should be shown or not based on the admin settings
+        // FFP/HLP can be enabled/disabled from the admin settings - Guest cards setup    
+        $scope.shouldShowLoyalty = function() {
+            var shouldShow = $scope.reservationData.use_hlp || 
+                             $scope.reservationData.use_ffp || 
+                             $scope.$parent.reservationData.use_hlp ||
+                             $scope.$parent.reservationData.use_ffp ||
+                             ($scope.reservationData.reservation_card.loyalty_level && $scope.reservationData.reservation_card.loyalty_level.use_ffp) ||
+                             ($scope.reservationData.reservation_card.loyalty_level && $scope.reservationData.reservation_card.loyalty_level.use_hlp);
+
+            return shouldShow;
         };
 
         var getGMSSettings = function () {

@@ -2,6 +2,8 @@ sntRover.controller('RVccPaymentsController', ['$scope', '$filter', '$stateParam
 
 	BaseCtrl.call(this, $scope);
 
+    $rootScope.manualCCEnabled = $rootScope.hotelDetails.payment_gateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline;
+
 	$scope.setScroller('payment_content', {});
     var refreshPaymentScroll = function() {
         setTimeout(function() {
@@ -26,7 +28,7 @@ sntRover.controller('RVccPaymentsController', ['$scope', '$filter', '$stateParam
 	initPaymentData();
 
 	// Handle change transaction date
-    $rootScope.$on('transactionDateChanged', function() {
+    $scope.$on('transactionDateChanged', function() {
         initPaymentData();
     });
 

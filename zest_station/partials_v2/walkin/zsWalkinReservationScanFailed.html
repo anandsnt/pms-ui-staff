@@ -1,0 +1,20 @@
+<section id="main" class="centered" role="main">
+    <div id="content">
+        <h1 ng-show="screenData.scanMode == 'ID_DATA_EXPIRED'" translate>
+            GI_ID_EXPIRED
+        </h1>
+        <h1 ng-show="screenData.scanMode == 'ANALYSING_ID_DATA_FAILED'" translate>
+            GI_ID_ANALYSING_FAILED
+        </h1>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press="startScanning()">
+                        <div ng-include="icons.url.user_with_id"></div>
+                    </button>
+                    {{ 'GI_RESTART_SCANNING' | translate }}    
+                </li>
+            </ul>
+        </nav>
+    </div>
+</section>

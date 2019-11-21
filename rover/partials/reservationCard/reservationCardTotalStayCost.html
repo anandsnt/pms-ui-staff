@@ -1,11 +1,16 @@
 <div class="block-item item-rate " ng-class="{'has-button':isStandAlone && otherData.isAddonEnabled && reservationData.reservation_card.reservation_status != 'CANCELED'}" >
-	<h3 class="block-title"> Rates &amp; Add Ons</h3>
+	<h3 class="block-title">
+        Rates &amp; Add Ons
+        <!-- Show this when showing the contract name -->
+
+        <span class="block-text block-input">{{reservationData.reservation_card.contracts.length > 1 ? 'Multiple' :reservationData.reservation_card.contracts[0]}}</span>
+    </h3>
 	<a ng-class="{'overlay':reservationData.reservation_card.reservation_status === 'CANCELED'}" id="stay-card-total-stay-cost" class="has-arrow next-view hover-hand" ng-click="showEditReservationPrompt()">
 		<span class="number" ng-show="!isRateAmountShown()">
 			{{::reservationData.reservation_card.text_rates_suppressed}}
 		</span>
 		<span class="number" ng-show="isRateAmountShown()">
-			{{::currencySymbol}}{{::reservationData.reservation_card.avg_daily_rate}}
+			{{::reservationData.reservation_card.rate_currency}}{{::reservationData.reservation_card.avg_daily_rate}}
 		</span>
 		<span ng-hide="reservationParentData.is_modified == true && isStandAlone" class="rate">
 			{{reservationData.reservation_card.is_multiple_rates == true ? 'Multiple' :reservationData.reservation_card.rate_name}}

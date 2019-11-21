@@ -50,7 +50,8 @@ angular.module('sntRover').service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrv
 				{},
 				{
 					per_page: params.per_page,
-					page: params.page
+					page: params.page,
+					locale: params.locale || 'en' // default locale when not set
 				}
 			);
 

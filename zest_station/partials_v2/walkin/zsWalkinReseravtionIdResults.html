@@ -1,0 +1,113 @@
+<section id="main" class="guest-id-verify" role="main">
+   <div id="flex-holder">
+      <div id="textual" class="review-bill scrollable" ng-iscroll="passport-validate" style="height: 75%;">
+         <div class="wrapper passport-details">
+            <div id="bill">
+               <h1 translate>
+                  REVIEW_WALKIN_GUEST_DATA
+               </h1>
+               <h2 translate>
+                  REVIEW_WALKIN_GUEST_DATA_INSTRUCTIONS
+               </h2>
+               <div class="entry with-label">
+                  <label translate>
+                  GID_REVIEW_LAST_NAME
+                  </label>
+                  <input type="text" ng-model='idScanData.selectedGuest.scannedDetails.last_name' class='disabled'/>
+               </div>
+               <div class="entry with-label">
+                  <label translate>
+                  GID_REVIEW_FIRST_NAME
+                  </label>
+                  <input type="text" ng-model='idScanData.selectedGuest.scannedDetails.first_name' class='disabled' />
+               </div>
+               <!-- Passport / Guest ID Scan preview -->
+               <!-- <img id='image-preview' class='gid-image-preview'
+                  ng-show='idScanData.selectedGuest.front_image_data'
+                  data-ng-src="{{idScanData.selectedGuest.front_image_data}}" 
+                  src-error='' 
+                  >
+               <img id='image-preview-back' ng-show='idScanData.selectedGuest.back_image_data'  class='gid-image-preview' 
+                  data-ng-src="{{idScanData.selectedGuest.back_image_data}}" 
+                  src-error='' 
+                  > -->
+               <!--// Passport / Guest ID Scan preview -->
+              <!--  <div class="entry with-label bold-label">
+                  <label translate>
+                  GID_REVIEW_PASS_DETAILS
+                  </label>
+               </div> -->
+               <div class="entry with-label">
+                  <label translate>
+                  GID_REVIEW_DOB
+                  </label>
+                  <input type="text" value='idScanData.selectedGuest.scannedDetails.dob' ng-model='idScanData.selectedGuest.scannedDetails.date_of_birth' class="disabled"/>
+               </div>
+               <div class="entry with-label" ng-if="idScanData.selectedGuest.scannedDetails.id_scan_info && idScanData.selectedGuest.scannedDetails.id_scan_info.personal_id_no">
+                  <label translate>
+                  GID_REVIEW_PERSONAL_NUMBER
+                  </label>
+                  <input type="text" ng-model='idScanData.selectedGuest.scannedDetails.id_scan_info.personal_id_no' class="disabled"/>
+               </div>
+               <div class="entry with-label">
+                  <label translate>
+                  GID_REVIEW_DOC_NUMBER
+                  </label>
+                  <input type="text" ng-model='idScanData.selectedGuest.scannedDetails.document_number' class="disabled"/>
+               </div>
+               <div class="entry with-label">
+                  <label translate>
+                  GID_REVIEW_EXPIRY
+                  </label>
+                  <input type="text" ng-model='idScanData.selectedGuest.scannedDetails.expiration_date' class="disabled"/>
+               </div>
+               <div class="entry with-label" ng-show="idScanData.selectedGuest.scannedDetails.id_scan_info.address_line_1">
+                  <label translate>
+                  GID_REVIEW_STREET_1
+                  </label>
+                  <input type="text" ng-model='idScanData.selectedGuest.scannedDetails.id_scan_info.address_line_1'  class="disabled"/>
+               </div>
+               <div class="entry with-label" ng-show="idScanData.selectedGuest.scannedDetails.id_scan_info.address_line_2">
+                  <label translate>
+                  GID_REVIEW_STREET_2
+                  </label>
+                  <input type="text" ng-model='idScanData.selectedGuest.scannedDetails.id_scan_info.address_line_2'  class="disabled"/>
+               </div>
+               <div class="entry with-label" ng-show="idScanData.selectedGuest.scannedDetails.id_scan_info.address_city">
+                  <label translate>
+                  GID_REVIEW_CITY
+                  </label>
+                  <input type="text" ng-model='idScanData.selectedGuest.scannedDetails.id_scan_info.address_city'  class="disabled"/>
+               </div>
+               <div class="entry with-label" ng-show="idScanData.selectedGuest.scannedDetails.id_scan_info.address_state">
+                  <label translate>
+                  GID_REVIEW_STATE
+                  </label>
+                  <input type="text" ng-model='idScanData.selectedGuest.scannedDetails.id_scan_info.address_state'  class="disabled"/>
+               </div>
+               <div class="entry with-label" ng-hide="idScanData.selectedGuest.scannedDetails.nationality_name">
+                  <label translate>
+                  GID_REVIEW_NATIONALITY
+                  </label>
+                  <input type="text" ng-model='idScanData.selectedGuest.scannedDetails.nationality'  class="disabled"/>
+               </div>
+               <div class="entry with-label" ng-show="idScanData.selectedGuest.scannedDetails.nationality_name">
+                  <label translate>
+                  GID_REVIEW_NATIONALITY
+                  </label>
+                  <input type="text" ng-model='idScanData.selectedGuest.scannedDetails.nationality_name'  class="disabled"/>
+               </div>
+               <br/><br/>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div id='actions' class="align-center guest-id-actions">
+      <button type="button" class="button" touch-press='rejectID(); resetTime()' translate>
+      GID_VERIFY_PASSPORT_REJECT
+      </button>
+      <button type="button" class="button" touch-press='acceptID(); resetTime()' translate>
+      GID_VERIFY_PASSPORT_ACCEPT
+      </button>
+   </div>
+</section>

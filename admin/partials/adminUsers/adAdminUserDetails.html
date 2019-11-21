@@ -1,0 +1,87 @@
+<section id="replacing-div-first" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
+	<div>
+		<header class="content-title float">
+			<h2 ng-show="mod == 'edit'">Edit User</h2>
+			<h2 ng-show="mod == 'add'">Add New User</h2>
+			<a id="go_back" data-type="load-details" class="action back" ui-sref='admin.adminUsers()'>Back</a>
+		</header>
+		<section class="content-scroll">
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<form user="2" id="edit-user" class="form float">
+				<fieldset class="holder left">
+					<div class="form-title">
+						<h3><span>User</span> details </h3>
+						<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+					</div>
+					<ad-textbox value="data.first_name" name = "first-name" id = "first-name" label = "First Name" placeholder = "Enter first name" required = "yes" ></ad-textbox>
+					<ad-textbox value="data.last_name" name = "last-name" id = "last-name" label = "Last Name" placeholder = "Enter last name" required = "yes" ></ad-textbox>
+					<div></div>
+					<ad-textbox value="data.job_title" name = "job-title" id = "job-title" label = "Job title" placeholder = "Enter job title" required = "yes" ></ad-textbox>
+					<ad-textbox value="data.phone" name = "phone" id = "phone" label = "Phone" placeholder = "Enter phone" required = "no" ></ad-textbox>
+
+					<div class="entry full-width">
+						<label> Picture </label>
+						<div class="file-upload with-preview">
+							<span class="input">{{fileName}}</span>
+							<input type="file" ng-model="image" accept="image/*" app-filereader />
+							<button type="button" class="button brand-colors">
+								 Choose file
+							</button>
+						</div>
+						<span class="file-preview"> <img ng-src="{{image}}" id="file-preview" alt=""> </span>
+					</div>
+
+				</fieldset>
+				<fieldset class="holder right">
+					<div class="form-title">
+						<h3><span>User</span> credentials </h3>
+						<em class="status"> <strong>All fields are mandatory!</strong> </em>
+					</div>
+					<ad-textbox value="data.email" name = "email" id = "email" label = "Email" placeholder = "Enter email address" required = "yes" styleclass="full-width" ></ad-textbox>
+					<ad-textbox value="data.confirm_email" name = "re-email" id = "re-email" label = "Re-type email" placeholder = "Enter email address" required = "yes" styleclass="full-width" ></ad-textbox>
+
+					<div class="entry full-width">
+						<label for="password"> Password <strong>*</strong> </label>
+						<input type="password" ng-model="data.password" required="yes" placeholder="Enter password" name="password" id="password" autocomplete="off" focus-me="focusOnPassword">
+					</div>
+
+					<div class="entry full-width">
+						<label for="confirm-password"> Re-type password <strong>*</strong> </label>
+						<input type="password" ng-model="data.confirm_password" required="yes" placeholder="Confirm password" name="re-password" id="confirm-password" autocomplete="off">
+					</div>
+
+					<div class="entry full-width" ng-show="manualIDScanEnabled">
+						<label translate>STAFF_ID</label>
+						<input type="password" ng-model="data.pin_code" placeholder="Staff ID"/>
+					</div>
+
+					<!-- Activation Status -->
+					<div class="entry re-invite" ng-show="mod == 'edit'">
+						<label> Activation Status </label>
+						<div ng-show="data.is_activated == 'true'">
+							ACTIVATED
+						</div>
+						<div ng-show="data.is_activated == 'false'">
+							PENDING
+						</div>
+					</div>
+					<div class="entry re-invite" ng-show="mod == 'edit'">
+						<label>
+							<button id="re-invite" ng-click="sendInvitation(data.user_id)" class="button" ng-disabled="disableReInviteButton(data)" ng-class="{'green': !disableReInviteButton(data), 'grey': disableReInviteButton(data)}">
+								Re-Invite
+							</button> </label>
+					</div>
+
+				</fieldset>
+				<div class="actions float">
+					<button type="button" id="cancel" class="button blank add-data-inline" ui-sref='admin.adminUsers'>
+						Cancel
+					</button>
+					<button type="button" id="save" class="button green add-data-inline" ng-click="saveUserDetails()">
+						Save changes
+					</button>
+				</div>
+			</form>
+		</section>
+	</div>
+</section>

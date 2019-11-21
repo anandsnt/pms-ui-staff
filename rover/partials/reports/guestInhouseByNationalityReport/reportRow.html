@@ -1,0 +1,15 @@
+<tr ng-repeat="each in results track by $index">
+    <td>{{each.country_code}}</td>
+    <td>{{each.country_description}}</td>
+    <td>{{each.arrival_guests}}</td>
+    <td>{{each.room_nights}}</td>
+    <td>{{each.stayover_guests}}</td>
+</tr>
+
+<tr class="totals" ng-if="lengthObjArr(resultsTotalRow)">
+    <td>Total</td>
+    <td></td>
+    <td class="rooms">{{ resultsTotalRow.total_arrival_guests }}</td>
+    <td class="rooms">{{ resultsTotalRow.total_room_nights }}</td>
+    <td class="rooms">{{ resultsTotalRow.total_stayover_guests }}</td>
+</tr>

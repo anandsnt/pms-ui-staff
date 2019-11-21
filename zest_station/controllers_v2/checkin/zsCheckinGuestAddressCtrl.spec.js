@@ -37,7 +37,7 @@ describe('zsCheckinGuestAddressCtrl', function() {
         });
         $scope.focusInputField = function () {
             return false;
-        };
+        };        
         zsCheckinSrv.setCheckInReservations([{
             id: 123
         }]);
@@ -53,7 +53,8 @@ describe('zsCheckinGuestAddressCtrl', function() {
             .toEqual(false);
     });
 
-    it('On selecting address on file, go to reservation details page', function () {
+    it('On selecting address on file, go to reervation details page', function () {
+        
         spyOn($state, 'go');
         $scope.usePresentAddress();
         expect($state.go)
@@ -99,6 +100,7 @@ describe('zsCheckinGuestAddressCtrl', function() {
                 'street2': '',
                 'country_id': '1'
             };
+            $scope.zestStationData = {};
             spyOn(zsCheckinSrv, 'saveGuestAddress')
                 .and
                 .callFake(function () {

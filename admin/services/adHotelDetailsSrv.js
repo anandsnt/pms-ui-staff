@@ -9,7 +9,10 @@ admin.service('ADHotelDetailsSrv', [
     *   An getter method to add deatils for a new hotel.
     */
    var that = this;
+
    var hotelDetailsData = {};
+
+   this.currentHotelDetails = {};
 
 	that.fetchAddData = function() {
 		var deferred = $q.defer();
@@ -181,6 +184,23 @@ admin.service('ADHotelDetailsSrv', [
 		    deferred.resolve(data);
 		}, function(data) {
 		    deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	/**
+	 * Get hotel details
+	 */
+	this.fetchHotelDetails = function () {
+		var deferred = $q.defer();
+		var url = '/api/hotel_settings.json';
+
+		ADBaseWebSrvV2.getJSON(url).then(function (data) {
+			data.is_auto_change_bussiness_date = data.business_date.is_auto_change_bussiness_date;
+			_.extend(that.currentHotelDetails, data);
+			deferred.resolve(data);
+		}, function (errorMessage) {
+			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
 	};

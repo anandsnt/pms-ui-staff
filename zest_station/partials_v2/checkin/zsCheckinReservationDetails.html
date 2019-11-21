@@ -26,9 +26,9 @@
                             <text data-ng-bind-html="getTagValue('ADDTL_RESIDENTS')" editable-text="ADDTL_RESIDENTS"></text>
                              ({{selectedReservation.guest_details.length-1}})
                          </p>
-                        <button ng-if='zestStationData.kiosk_add_remove_guests' type="button" class="button add-remove-btn" touch-press="addRemove()" >
+                        <!-- <button ng-if='zestStationData.kiosk_add_remove_guests' type="button" class="button add-remove-btn" touch-press="addRemove()" >
                             <text data-ng-bind-html="getTagValue('ADD_REMOVE_GUESTS')" editable-text="ADD_REMOVE_GUESTS"></text>
-                        </button>
+                        </button> -->
                         <div id="payment" ng-show="selectedReservation.reservation_details.payment_method_used === 'CC'">
                             <h4 data-ng-bind-html="getTagValue('PAYMENT_METHOD')" editable-text="PAYMENT_METHOD"></h4>
                             <p>

@@ -2,10 +2,12 @@ admin.controller('ADDashboardCtrl', ['$scope', '$state', '$stateParams', '$rootS
     $scope.$emit("changedSelectedMenu", $stateParams.menu);
     if (typeof $scope.data !== 'undefined') {
         $scope.selectedMenu = $scope.data.menus[$stateParams.menu];
+        $scope.policeExportEnabled = $scope.data.police_export_enabled;
+
 
         // CICO-36466 Admin Interfaces Menu to be sorted by alphabetical
         // NOTE: Currently only the Interfaces Menu items are sorted!
-        if ($scope.selectedMenu.menu_name === "Interfaces") {
+        if ($scope.selectedMenu && $scope.selectedMenu.menu_name === "Integrations") {
             $scope.selectedMenu.components = _.sortBy($scope.data.menus[$stateParams.menu].components, function(menu) {
                 return menu.name.toLowerCase();
             });

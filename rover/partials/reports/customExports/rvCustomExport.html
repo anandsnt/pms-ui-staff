@@ -1,0 +1,301 @@
+<!-- First column - Scheduled reports -->
+<div class="report-col main-col scrollable" ng-iscroll="exports-list-scroller"> <!-- Add vertical scroller here -->
+    <div class="wrapper">
+        <ul ng-if="customExportsData.isNewExport">
+            <li class="report-item" 
+                ng-repeat="dataSpace in customExportsData.customExportDataSpaces" 
+                ng-hide="dataSpace.filteredOut"
+                ng-click="clickDataSpace(dataSpace)"
+                ng-class="{'active': dataSpace.active}"> <!-- Add class "active" when selected + load filters in 2nd column -->
+                <span class="icon-report {report icon class}"></span>
+                <div class="data">
+                    <h2 ng-bind-html="escapeNull(dataSpace.report.title)|highlight:query:false"></h2><!-- Add .single-line if there is no info -->
+                    <em>{{dataSpace.report.description}}</em>
+                </div>
+            </li>
+        </ul>
+        <ul ng-if="!customExportsData.isNewExport && customExportsData.scheduledCustomExports.length > 0">
+            <li class="report-item" 
+                ng-repeat="scheduledExport in customExportsData.scheduledCustomExports"
+                ng-hide="scheduledExport.filteredOut"
+                ng-click="pickSchedule(scheduledExport)"
+                ng-class="{'active': scheduledExport.active}"> <!-- Add class "active" when selected + load filters in 2nd column -->
+                
+                <span class="icon-report {report icon class}"></span>
+                <div class="data">
+                    <h2 ng-bind-html="escapeNull(scheduledExport.report.description)|highlight:query:false"></h2><!-- Add .single-line if there is no info -->
+                    <em>{{scheduledExport.occurance}}</em>
+                </div>
+            </li>
+        </ul>
+        <div class="no-content"
+            ng-if="!customExportsData.scheduledCustomExports.length && !customExportsData.isNewExport">
+            <div class="info">
+                <span class="icon-no-content icon-reports"></span>
+                <strong class="h1">Exports unavailable</strong>
+                <span class="h2">You have no exports configured</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Second column - parameters -->
+<div class="report-col" ng-hide="shouldShowExportListOnly()">
+    <div class="scrollable no-buttons" ng-iscroll="report-cols-scroller"> <!-- Add vertical scroller here + add class "buttons-4" if it's an existing export -->
+        <div class="wrapper">
+            <h3>Select Fields<span>To include in Export</span></h3>
+            <div class="entry export-fields">
+                <label class="checkbox" ng-repeat="column in selectedEntityDetails.columns track by $index">
+                    <span class="icon-form icon-checkbox"
+                        ng-class="{'checked': column.selected}"></span>
+                    <input id="export-{{column.name}}" type="checkbox" ng-model="column.selected" ng-change="selectColumn(column)">
+                    {{column.name}}
+                </label>                
+            </div>         
+        </div>
+    </div>
+</div>
+
+<!-- Third column - details -->
+<div class="report-col" ng-hide="shouldShowExportListOnly()">
+    <div class="scrollable no-buttons" 
+        ng-class="{'no-fields': selectedColumns.length === 0 }"
+        ng-iscroll="report-selected-cols-scroller"> 
+        <div class="wrapper">
+            <h3>Set Order & Labels<span>Of Selected Fields</span></h3>
+            <div class="entry export-fields-order"
+                ng-if="selectedColumns.length > 0"
+                ui-sortable ng-model="selectedColumns">
+                
+                <div class="export-field" ng-repeat="col in selectedColumns">
+                    <span class="handle">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+                    <input type="text" value="{{col.name}}" placeholder="{{col.name}}" ng-model="col.customColLabel">
+                </div>
+            </div>
+
+            <div class="no-content" ng-if="selectedColumns.length === 0">
+                <div class="info">
+                    <strong>No Fields selected</strong>
+                    <span>Select some fields first</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Fourth column - Filters -->
+<div class="report-col" ng-controller="RVCustomExportFilterCtrl" ng-hide="shouldShowExportListOnly()" ng-include="'/assets/partials/reports/customExports/rvCutomExportFilters.html'">
+</div>
+
+<!-- Fifth column - Frequencies -->
+<div class="report-col" ng-hide="shouldShowExportListOnly()">
+    <div class="scrollable" ng-class="{'no-fields': selectedColumns.length === 0 }" ng-iscroll="schedule-details-scroller">
+        <div class="wrapper">
+            <h3>Frequency<span>Configure Export Frequency</span></h3>
+    
+            <div class="entry">
+                <label for="schedule-repeats">Repeats</label>
+                <div class="select">
+                    <select id="schedule-repeats" ng-options="freq.id as freq.description for freq in customExportsData.scheduleFrequencies"
+                        ng-model="scheduleParams.frequency_id" 
+                        ng-change="changeRepeats()"
+                        iscroll-stop-propagation>
+                        <option value="">Repeat type</option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry" ng-show="notRunOnce()">
+                <label for="schedule-repeats-every">Repeats Every</label>
+                <div class="entry-data entry-first">
+                    <input id="schedule-repeats-every" 
+                           type="number"
+                           restrict-min-val="5"
+                           placeholder="Min:5" 
+                           ng-model="scheduleParams.repeats_every"
+                           ng-if="hasMinutesRepeat()">
+                    <input id="schedule-repeats-every" 
+                           type="number" 
+                           placeholder="No." 
+                           ng-model="scheduleParams.repeats_every"
+                           ng-if="!hasMinutesRepeat()">
+                </div>
+                <div class="entry-data entry-second">
+                    <div class="select">
+                        <select id="schedule-repeats-every-label" ng-options="freq.id as freq.value for freq in customExportsData.scheduleFreqTypes"
+                            ng-model="scheduleParams.frequency_id" iscroll-stop-propagation>
+                            <option value="">Repeat per</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="entry">
+                <label for="schedule-start">
+                    Starts On
+                </label>
+                <div class="has-datepicker">
+                    <button class="clear-query"><span class="icons icon-clear-search">Clear query</span></button>
+                    <input id="schedule-start" class="datepicker" value="" placeholder="MM-DD-YYYY" ui-date="startsOnOptions"
+                        ng-model="scheduleParams.starts_on" readonly />
+                </div>
+            </div>
+            <div class="entry">
+                <label for="schedule-repeats">Starts At</label>
+                <div class="select">
+                    <select ng-model="scheduleParams.time" ng-options="time.value as time.name for time in timeSlots"
+                        iscroll-stop-propagation>
+                        <option value="">Time</option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry" ng-show="notRunOnce()">
+                <label>Ends On</label>
+                <div class="entry-data entry-first">
+                    <label for="schedule-ends-on-number" class="radio inline">
+                        <span class="icon-form icon-radio" ng-class="{ 'checked': scheduleParams.scheduleEndsOn === 'NUMBER' }">
+                        </span>
+                        <input type="radio" name="ends-on" checked ng-model="scheduleParams.scheduleEndsOn" value="NUMBER">
+                        After
+                    </label>
+                </div>
+                <div class="entry-data entry-second with-label">
+                    <input id="schedule-ends-on-number" type="number" placeholder="No." ng-model="scheduleParams.ends_on_after">
+                    <span class="label" ng-bind="getRepeatPer()"></span>
+                </div>
+                <div class="entry-data entry-first">
+                    <label for="schedule-ends-on-date" class="radio inline">
+                        <span class="icon-form icon-radio" ng-class="{ 'checked': scheduleParams.scheduleEndsOn === 'DATE' }"></span>
+                        <input id="schedule-ends-on-date" type="radio" name="ends-on" ng-model="scheduleParams.scheduleEndsOn"
+                            value="DATE">
+                        On
+                    </label>
+                </div>
+                <div class="entry-data entry-second">
+                    <div class="has-datepicker">
+                        <button class="clear-query"><span class="icons icon-clear-search">Clear query</span></button>
+                        <input id="schedule-ends-on-datepicker" class="datepicker" value="" placeholder="MM-DD-YYYY"
+                            readonly ui-date="endsOnOptions" ng-model="scheduleParams.ends_on_date" />
+                    </div>
+                </div>
+                <div class="entry-data full-width">
+                    <label for="schedule-ends-on-never" class="radio inline">
+                        <span class="icon-form icon-radio" ng-class="{ 'checked': scheduleParams.scheduleEndsOn === 'NEVER' }"></span>
+                        <input type="radio" id="schedule-ends-on-never" name="ends-on" ng-model="scheduleParams.scheduleEndsOn"
+                            value="NEVER">
+                        Never
+                    </label>
+                </div>
+    
+            </div>
+        </div>
+    </div>
+    <div class="column-actions" ng-if="!customExportsData.isNewExport">
+        <button type="button" class="button blue" ng-click="runScheduleNow()">Run Now</button>
+    </div>
+</div>
+
+<!-- Sixth column - Delivery -->
+<div class="report-col" ng-hide="shouldShowExportListOnly()">
+    <div class="scrollable"
+         ng-class="{'no-fields': selectedColumns.length === 0 }" 
+         ng-iscroll="delivery-options-scroller">
+        <div class="wrapper">
+            <h3>Delivery<span>Configure Method</span></h3>
+
+            <div class="entry join">
+                <label for="export-delivery">Delivery Method</label>
+                <div class="select">
+                    <select id="export-delivery"
+                            ng-options="deliveryType.value as deliveryType.description for deliveryType in customExportsData.deliveryTypes"
+                            ng-model="scheduleParams.delivery_id"
+                            ng-change=onDeliveryOptionChange()
+                            iscroll-stop-propagation>
+                        <option value="">Select Delivery Method</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- DELIVERY 1: Email -->
+            <div class="entry search" ng-show="checkDeliveryType('EMAIL')">
+                <label for="distribution-list-add-user">Add Recipient</label>
+                <button class="clear-query">
+                    <span class="icons icon-clear-search">Clear query</span>
+                </button>
+                <input id="distribution-list-add-user" 
+                       class="icons icon-search" 
+                       placeholder="Search by User Name" 
+                       type="search"
+                       auto-complete
+                       autocomplete="off"
+                       auto-options="userAutoCompleteSimple"
+                       insert-email="true" /> 
+            </div>
+            <!-- Display search results like this -->
+            <ul class="col-list" ng-show="checkDeliveryType('EMAIL')">
+                <li ng-repeat="email in emailList track by $index">
+                    {{ email }}
+                    <button type="button" class="button only-icon icons icon-remove-10" ng-click="removeEmail($index)">
+                        Remove from list
+                    </button>
+                </li>                
+            </ul>
+
+            <!-- DELIVERY 2: SFTP -->
+            <div class="entry join" ng-show="checkDeliveryType('SFTP') && ftpServerList.length">
+                <label for="export-sftp">Select SFTP Server</label>
+                <div class="select">
+                    <select id="export-sftp"
+                            ng-model="scheduleParams.selectedFtpRecipient" 
+                            ng-options="ftp.id as ftp.description for ftp in ftpServerList" 
+                            iscroll-stop-propagation>
+                        <option value="">Select SFTP Server</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="entry join" ng-show="checkDeliveryType('SFTP') && !ftpServerList.length">
+                <label for="export-sftp">No SFTP configured</label> 
+            </div>
+
+            <!-- DELIVER 3: Drive/Dropbox etc. -->
+            <div class="entry join" ng-show="checkDeliveryType('GOOGLE DRIVE') && googleDriveAccountList.length">
+                <label for="export-folder">Google Drive Folder</label>
+                <div class="select">
+                    <select id="export-folder"
+                            ng-options="googleDrive.id as googleDrive.description for googleDrive in googleDriveAccountList"
+                            ng-model="scheduleParams.selectedCloudAccount"
+                            iscroll-stop-propagation>
+                        <option value="">Select Google Drive Folder</option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry join" ng-show="checkDeliveryType('GOOGLE DRIVE') && !googleDriveAccountList.length">
+                <label for="export-folder">No Google Drive Accounts configured</label>
+            </div>
+            <div class="entry join" ng-show="checkDeliveryType('DROPBOX') && dropBoxAccountList.length">
+                <label for="export-folder">Dropbox</label>
+                <div class="select">
+                    <select id="export-folder"
+                            ng-options="dropbox.id as dropbox.description for dropbox in dropBoxAccountList"
+                            ng-model="scheduleParams.selectedCloudAccount"
+                            iscroll-stop-propagation>
+                        <option value="">Select Dropbox</option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry join" ng-show="checkDeliveryType('DROPBOX') && !dropBoxAccountList.length">
+                <label for="export-folder">No Dropbox accounts configured</label>
+            </div>
+        </div>
+    </div>
+</div>
+

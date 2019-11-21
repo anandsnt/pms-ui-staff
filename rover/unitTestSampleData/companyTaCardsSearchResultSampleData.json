@@ -1,0 +1,622 @@
+[
+    {
+      "id": 825,
+      "account_name": "38907 Test TA",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": false,
+      "account_address": "address1, city, India",
+      "address": {
+        "city": "city",
+        "state": "state"
+      },
+      "phone": "123",
+      "email": "test@testmail2.com",
+      "fax": "1222",
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 737,
+      "account_name": "ADVTEST",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": false,
+      "account_address": "Address 1, Tysons, United States, 22102",
+      "address": {
+        "city": "Tysons",
+        "state": "VA"
+      },
+      "phone": null,
+      "email": "nayan@stayntouch.com",
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 1179,
+      "account_name": "CICO-50099 Test",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": true,
+      "account_address": "Australia",
+      "address": {
+        "city": "",
+        "state": ""
+      },
+      "phone": null,
+      "email": null,
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 1180,
+      "account_name": "CICO-50099 Test TA",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": true,
+      "account_address": "",
+      "address": {
+        "city": null,
+        "state": null
+      },
+      "phone": null,
+      "email": null,
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 1178,
+      "account_name": "CICO-50544 Test",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": null,
+      "account_address": "",
+      "address": {
+        "city": null,
+        "state": null
+      },
+      "phone": null,
+      "email": null,
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 1214,
+      "account_name": "CICO-51630 Test 2",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": null,
+      "account_address": "",
+      "address": {
+        "city": null,
+        "state": null
+      },
+      "phone": null,
+      "email": null,
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 1220,
+      "account_name": "Demotestsusan",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": null,
+      "account_address": "",
+      "address": {
+        "city": null,
+        "state": null
+      },
+      "phone": null,
+      "email": null,
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 586,
+      "account_name": "Dream Travel",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": false,
+      "account_address": "1580 RICHMOND ROAD, STATEN ISLAND, United States, 10304",
+      "address": {
+        "city": "STATEN ISLAND",
+        "state": "NY"
+      },
+      "phone": "555-987-6600",
+      "email": "robinkozak@si.rr.com",
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 1101,
+      "account_name": "Garry Testing TA",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": null,
+      "account_address": "",
+      "address": {
+        "city": null,
+        "state": null
+      },
+      "phone": null,
+      "email": null,
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 983,
+      "account_name": "Kristine (Testing AR)",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": false,
+      "account_address": "123 Smallsville St, Bethesda",
+      "address": {
+        "city": "Bethesda",
+        "state": "MD"
+      },
+      "phone": "555-765-2312",
+      "email": "test@domain.com",
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 1175,
+      "account_name": "Kristine_Travel_Agent_Comm",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": null,
+      "account_address": "199 Saddle Road, Lafayette, 47905",
+      "address": {
+        "city": "Lafayette",
+        "state": "IN"
+      },
+      "phone": "555-555-5555",
+      "email": "555@domain.com",
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 387,
+      "account_name": "Latest ta",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": false,
+      "account_address": "OK",
+      "address": {
+        "city": null,
+        "state": null
+      },
+      "phone": null,
+      "email": null,
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 62,
+      "account_name": "latestTa",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": false,
+      "account_address": "",
+      "address": {
+        "city": null,
+        "state": null
+      },
+      "phone": null,
+      "email": null,
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 1146,
+      "account_name": "Nayan test 1",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": null,
+      "account_address": "Fast driver lane, Tysons, United States, 22102",
+      "address": {
+        "city": "Tysons",
+        "state": "VA"
+      },
+      "phone": "3300303030",
+      "email": "nayan@stayntouch.com",
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 993,
+      "account_name": "New travel test",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": false,
+      "account_address": "",
+      "address": {
+        "city": null,
+        "state": null
+      },
+      "phone": null,
+      "email": null,
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 572,
+      "account_name": "Qburstx",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": false,
+      "account_address": "",
+      "address": {
+        "city": null,
+        "state": null
+      },
+      "phone": null,
+      "email": null,
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 903,
+      "account_name": "Rate Code Test 123",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": false,
+      "account_address": "",
+      "address": {
+        "city": null,
+        "state": null
+      },
+      "phone": null,
+      "email": null,
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 446,
+      "account_name": "Shas Test Agency",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": false,
+      "account_address": "",
+      "address": {
+        "city": null,
+        "state": null
+      },
+      "phone": null,
+      "email": null,
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 445,
+      "account_name": "Shas Travel Agency",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": false,
+      "account_address": "",
+      "address": {
+        "city": null,
+        "state": null
+      },
+      "phone": null,
+      "email": null,
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 999,
+      "account_name": "StayDemoAR",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": false,
+      "account_address": "",
+      "address": {
+        "city": null,
+        "state": null
+      },
+      "phone": null,
+      "email": null,
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 223,
+      "account_name": "stayntouch TA",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": true,
+      "account_address": "8120 Woodmont Avenue, Bethseda, India, 20814",
+      "address": {
+        "city": "Bethseda",
+        "state": "MD"
+      },
+      "phone": "1923524123",
+      "email": "kingtester989@gmail.com",
+      "fax": null,
+      "current_contracts": [
+        {
+          "id": 3872,
+          "name": "demo1234 demo1234 demo1234",
+          "based_on": {
+            "id": 1717,
+            "name": "Arun Test Rate",
+            "value": "6.0",
+            "type": "amount"
+          }
+        }
+      ],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 894,
+      "account_name": "Test",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": false,
+      "account_address": "",
+      "address": {
+        "city": null,
+        "state": null
+      },
+      "phone": null,
+      "email": null,
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 740,
+      "account_name": "Test ADV",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": false,
+      "account_address": "",
+      "address": {
+        "city": null,
+        "state": null
+      },
+      "phone": null,
+      "email": null,
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 914,
+      "account_name": "Test Card 1",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": false,
+      "account_address": "",
+      "address": {
+        "city": null,
+        "state": null
+      },
+      "phone": null,
+      "email": null,
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 915,
+      "account_name": "Test Card 2",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": false,
+      "account_address": "",
+      "address": {
+        "city": null,
+        "state": null
+      },
+      "phone": null,
+      "email": null,
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 917,
+      "account_name": "Test Card 3",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": false,
+      "account_address": "",
+      "address": {
+        "city": null,
+        "state": null
+      },
+      "phone": null,
+      "email": null,
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 916,
+      "account_name": "Test Card 3",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": false,
+      "account_address": "",
+      "address": {
+        "city": null,
+        "state": null
+      },
+      "phone": null,
+      "email": null,
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 897,
+      "account_name": "Test Inc",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": false,
+      "account_address": "",
+      "address": {
+        "city": "",
+        "state": null
+      },
+      "phone": null,
+      "email": "NAYAN@STAYNTOUCH.COM",
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 896,
+      "account_name": "Test Inc",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": false,
+      "account_address": "",
+      "address": {
+        "city": "",
+        "state": null
+      },
+      "phone": null,
+      "email": "NAYAN@STAYNTOUCH.COM",
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 893,
+      "account_name": "Test ta",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": false,
+      "account_address": "",
+      "address": {
+        "city": null,
+        "state": null
+      },
+      "phone": null,
+      "email": null,
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 443,
+      "account_name": "Test TA card 01",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": false,
+      "account_address": "",
+      "address": {
+        "city": null,
+        "state": null
+      },
+      "phone": null,
+      "email": null,
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 1221,
+      "account_name": "Testerswwww",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": null,
+      "account_address": "",
+      "address": {
+        "city": null,
+        "state": null
+      },
+      "phone": null,
+      "email": null,
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 361,
+      "account_name": "TestTAC",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": false,
+      "account_address": "california",
+      "address": {
+        "city": null,
+        "state": null
+      },
+      "phone": null,
+      "email": null,
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 1222,
+      "account_name": "testting",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": null,
+      "account_address": "",
+      "address": null,
+      "phone": null,
+      "email": null,
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 635,
+      "account_name": "Thoshiba_test",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": false,
+      "account_address": "",
+      "address": {
+        "city": null,
+        "state": null
+      },
+      "phone": null,
+      "email": null,
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    },
+    {
+      "id": 1226,
+      "account_name": "Travel Agency",
+      "company_logo": "",
+      "account_type": "TRAVELAGENT",
+      "is_global_enabled": null,
+      "account_address": "",
+      "address": {
+        "city": null,
+        "state": null
+      },
+      "phone": null,
+      "email": null,
+      "fax": null,
+      "current_contracts": [],
+      "is_allow_direct_debit": true
+    }
+  ]

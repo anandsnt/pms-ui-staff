@@ -1,0 +1,21 @@
+<td colspan="4">
+    <form class="form">
+        <div class="holder full-width holder_margin">
+            <div class="form-title">
+                <h3>
+                    <span>Edit</span> Sequence
+                </h3>
+            </div>
+
+            <div class="entry">
+                <label>Sequence Name<strong>*</strong></label>
+                <input type="text" ng-model="selectedCustomSequence.name" placeholder="Enter Sequence Name" ng-change="$event.stopPropagation();">
+            </div>
+
+            <div class="actions float">
+                <button type="button" class="button blank" ng-click="cancel();$event.stopPropagation();">Cancel</button>
+                <button type="button" class="button green" ng-click="editCustomSequence();$event.stopPropagation();">Edit Sequence</button>
+            </div>
+        </div>
+    </form>
+</td>

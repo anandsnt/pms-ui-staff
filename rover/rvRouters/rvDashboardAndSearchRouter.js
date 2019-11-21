@@ -10,7 +10,9 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                 type: null,
                 from_page: null,
                 useCache: null,
-                isMobileCheckin: null
+                isMobileCheckin: null,
+                isBulkCheckoutSelected: null,
+                isAllowOpenBalanceCheckoutSelected: null
             },
             resolve: {
                 searchResultdata: function(RVSearchSrv, $stateParams) {
@@ -35,8 +37,18 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                         if ($stateParams.from_page === "DASHBOARD") {
                             RVSearchSrv.page = 1;
                         }
-                        // calling the webservice
-                        return RVSearchSrv.fetch(dataDict, $stateParams.useCache);
+
+                        if ($stateParams.isBulkCheckoutSelected) {
+                            var params = {
+                                allow_open_balance_checkout: !!$stateParams.isAllowOpenBalanceCheckoutSelected
+                            };
+
+                            return RVSearchSrv.fetchReservationsForBulkCheckout(params); 
+                        } else {
+                            // calling the webservice
+                            return RVSearchSrv.fetch(dataDict, $stateParams.useCache);
+                        }
+                        
                     } else if ( !!$stateParams.useCache && oldType !== "RESET") {
                         return RVSearchSrv.fetch({}, $stateParams.useCache);
                     } else {
@@ -72,24 +84,11 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
         });
         $stateProvider.state('rover.dashboard.frontoffice', {
             url: '/frontoffice',
-            templateUrl: '/assets/partials/dashboard/rvFrontDeskDashboard.html',
-            controller: 'RVfrontDeskDashboardController',
-            resolve: {
-                statistics: function(RVDashboardSrv) {
-                    var requestParams = {
-                        'show_adr': false,
-                        'show_upsell': true,
-                        'show_rate_of_day': false
-                    };
-
-                    return RVDashboardSrv.fetchStatisticData(requestParams);
-                }
-            }
+            templateUrl: '/assets/partials/dashboard/rvFrontDeskDashboard.html'
         });
         $stateProvider.state('rover.dashboard.housekeeping', {
             url: '/housekeeping',  // TODO: check can we reduced it to hk?
-            templateUrl: '/assets/partials/dashboard/rvHouseKeepingDashboard.html',
-            controller: 'RVhouseKeepingDashboardController'
+            templateUrl: '/assets/partials/dashboard/rvHouseKeepingDashboard.html'
         });
 
         /**
@@ -122,6 +121,14 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                         ngDialog.open({
                             template: '/assets/partials/postCharge/rvPostChargeV2.html',
                             controller: 'RVOutsidePostChargeController'
+                        });
+                    });
+               }
+               else if ($stateParams.type === 'currencyExchange') {
+                    jsMappings.fetchAssets(['rover.financials']).then(function() {
+                        ngDialog.open({
+                            template: '/assets/partials/financials/currencyExchange/rvCurrencyExchange.html',
+                            controller: 'RVCurrencyExchangeModalController'
                         });
                     });
                }

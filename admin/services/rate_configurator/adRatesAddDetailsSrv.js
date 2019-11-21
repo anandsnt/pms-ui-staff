@@ -1,5 +1,5 @@
-admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
-    function ($q, ADBaseWebSrvV2) {
+admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2', 'ADRatesSrv',
+    function ($q, ADBaseWebSrvV2, ADRatesSrv) {
 
         this.addRatesDetailsData = {};
         var that = this;
@@ -41,6 +41,7 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
 
                 ADBaseWebSrvV2.getJSON(url).then(function (data) {
                     that.addRatesDetailsData.restrictionDetails = data.results;
+                    that.addRatesDetailsData.roundingOptions = data.rate_round_types;
                     that.fetchSelectedRestrictions();
                 }, function (data) {
                     deferred.reject(data);
@@ -157,6 +158,9 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
                 var url = "/api/hotel_settings";
 
                 ADBaseWebSrvV2.getJSON(url).then(function (data) {
+                    if (!data.is_multi_currency_enabled) {
+                        data.currency_list_for_rate.push(data.currency);
+                    }
                     that.addRatesDetailsData.hotel_settings = data;
                     that.fetchChargeCodes();
                 }, function (data) {
@@ -235,6 +239,7 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
             var url = "/api/rates/" + param.rateId;
 
             ADBaseWebSrvV2.putJSON(url, data).then(function (data) {
+                ADRatesSrv.setUpCommissionData(data);
                 deferred.resolve(data);
             }, function (data) {
                 deferred.reject(data);

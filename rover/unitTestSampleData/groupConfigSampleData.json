@@ -1,0 +1,93 @@
+{
+    "activeTab": "TRANSACTIONS",
+    "summary": {
+        "group_id": 51228,
+        "group_name": "53694 - group",
+        "group_code": null,
+        "first_name": "",
+        "last_name": "",
+        "contact_phone": null,
+        "contact_email": null,
+        "hold_status": 1,
+        "block_from": "2019-01-11T00:00:00.000Z",
+        "block_to": "2019-02-20T00:00:00.000Z",
+        "release_date": "2019-01-11",
+        "rate": "-1",
+        "hide_rates": true,
+        "is_cancelled": false,
+        "rooms_total": 200,
+        "rooms_pickup": 40,
+        "posting_account_id": 5660,
+        "posting_account_billing_info": false,
+        "balance": "0.0",
+        "revenue_actual": "0.0",
+        "revenue_potential": "280.42",
+        "is_from_date_left_move_allowed": true,
+        "is_from_date_right_move_allowed": true,
+        "is_to_date_right_move_allowed": true,
+        "is_to_date_left_move_allowed": true,
+        "is_complete_move": false,
+        "is_a_past_group": false,
+        "linked_external_interface": null,
+        "first_dep_date": "2019-02-20",
+        "last_arrival_date": "2019-01-11",
+        "total_checked_in_reservations": 0,
+        "total_checked_out_reservations_count": null,
+        "group_room_types_count": 2,
+        "addons_count": 0,
+        "total_group_action_tasks_count": 0,
+        "pending_group_action_tasks_count": 0,
+        "demographics": {
+            "reservation_type_id": "",
+            "market_segment_id": "",
+            "source_id": "",
+            "booking_origin_id": "",
+            "segment_id": ""
+        },
+        "notes": [],
+        "commission_details": {},
+        "travel_agent": {
+            "id": "",
+            "name": ""
+        },
+        "company": {
+            "id": null,
+            "name": null
+        },
+        "is_tax_exempt": false,
+        "tax_exempt_type": {
+            "id": null,
+            "name": null
+        },
+        "tax_exempt_ref_text": null,
+        "is_eod_in_progress": false,
+        "is_eod_manual_started": false,
+        "is_eod_failed": true,
+        "is_eod_process_running": false,
+        "tax_exempt_type_id": null,
+        "selected_room_types_and_bookings": [],
+        "selected_room_types_and_occupanies": [],
+        "selected_room_types_and_rates": []
+    },
+    "holdStatusList": [{
+        "id": 1,
+        "name": "Definite",
+        "is_take_from_inventory": true,
+        "is_system": true,
+        "is_group_only": false,
+        "is_allotment_only": false,
+        "$$hashKey": "object:4272"
+    }, {
+        "id": 2,
+        "name": "Cancel",
+        "is_take_from_inventory": false,
+        "is_system": true,
+        "is_group_only": false,
+        "is_allotment_only": false,
+        "$$hashKey": "object:4273"
+    }],
+    "selectAddons": false,
+    "addons": {},
+    "selectedAddons": [],
+    "activeScreen": "GROUP_ACTUAL"
+}

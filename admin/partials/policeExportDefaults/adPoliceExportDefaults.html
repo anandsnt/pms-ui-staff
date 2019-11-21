@@ -1,0 +1,47 @@
+
+<section id="replacing-div-first" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
+		<div data-view="UpsellLateCheckoutView">
+			<section>
+				<header class="content-title float">
+					<h2>Police Export Defaults</h2>
+					<a id="go_back" data-type="load-details" class="action back" ng-click="goBackToPreviousState()"translate>BACK</a>
+				</header>
+				<section class="content-scroll">
+					<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+					<form  class="form float" >
+						<fieldset class="holder left">
+							<div class="entry">
+								<label>COUNTRY</label>
+								<div class="select">
+									<select ng-options="country.id as country.name for country in countries.countries" ng-model="countries.police_export_default_country_id">
+										<option style="display:none" value=""></option>
+									</select>
+								</div>
+							</div>
+						</fieldset>
+						<fieldset class="holder right">
+							<div class="entry margin">
+								<label>NATIONALITY</label>
+								<div class="select">
+									<select ng-options="nationality.id as nationality.name for nationality in nationalities.countries" ng-model="nationalities.police_export_default_nationality_id">
+										<option style="display:none" value=""></option>
+									</select>
+								</div>
+							</div>
+	
+						</fieldset>
+	
+						<div class="actions float">
+							<button type="button" id="cancel" class="button blank" ng-click="goBackToPreviousState()"translate>
+								CANCEL
+							</button>
+							<button type="button" id="save" class="button green" ng-click="clickedSave()"translate>
+								SAVE_CHANGES
+							</button>
+						</div>
+					</form>
+				</section>
+			</section>
+		</div>
+	</section>
+	

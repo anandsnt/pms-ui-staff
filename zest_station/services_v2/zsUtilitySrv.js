@@ -159,5 +159,15 @@ sntZestStation.service('zsUtilitySrv', ['$http', '$q', 'zsBaseWebSrv',
             ];
         };
 
+        this.retriveIdScanVerificationMethod = function(kiosk_scan_mode) {
+            if (kiosk_scan_mode === 'id_scan_with_staff_verification') {
+                return 'STAFF';
+            } else if (kiosk_scan_mode === 'id_scan_with_facial_verification') {
+                return 'FR';
+            } else {
+                return 'NONE';
+            }
+        };
+
     }
 ]);

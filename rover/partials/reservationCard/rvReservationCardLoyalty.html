@@ -1,5 +1,5 @@
-<form method="post" id="reservationcard-loyalty" ng-init="loadLoyaltyPrograms()" class="block-item item-loyalty has-button" ng-show='reservationData.use_hlp == true || reservationData.use_ffp == true || $parent.reservationData.use_hlp == true || $parent.reservationData.use_ffp == true'>
-	<h3 class="block-title" translate>LOYALTY_LABEL</h3>	
+<form method="post" id="reservationcard-loyalty" ng-init="loadLoyaltyPrograms()" class="block-item item-loyalty has-button" ng-show='shouldShowLoyalty()'>
+	<h3 class="block-title" translate>LOYALTY_LABEL</h3>
 	<div ng-class="{'overlay':reservationData.reservation_card.reservation_status === 'CANCELED'}" class="select-item loyalty">
 		<!-- Disable the loyalty select feature for 'NOSHOW', 'CHECKEDOUT', 'CANCELED' %reservations -->
 		<select iscroll-stop-propagation ng-model="selectedLoyaltyID" name="loyalty" id="loyalty" class="styled" ng-change="callSelectLoyaltyAPI(selectedLoyaltyID)" ng-disabled= "!isNewsPaperPreferenceAvailable()">

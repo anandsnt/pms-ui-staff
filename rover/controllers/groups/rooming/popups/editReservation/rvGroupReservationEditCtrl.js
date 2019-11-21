@@ -23,7 +23,8 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
     BaseCtrl.call(this, $scope);
     var parentScope = $scope.$parent;
     // variables
-    var initialPopupData = {};
+    var initialPopupData = {},
+        bulkCheckoutPopup;
 
     var fieldsEnabled = {
       date: true,
@@ -273,6 +274,22 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
      * @param {object} Selected Reservation
      */
     $scope.checkoutReservation = function(reservation) {
+        if (reservation.is_bulk_checkout_in_progress) {
+            var data = {
+                message: 'BULK_CHECKOUT_PROCESS_IN_PROGRESS',
+                isFailure: true
+            };
+
+            bulkCheckoutPopup = ngDialog.open({
+                                    template: '/assets/partials/popups/rvInfoPopup.html',
+                                    closeByDocument: true,
+                                    scope: $scope,
+                                    data: JSON.stringify(data)
+                                });
+
+            return;
+        }
+
         var summaryData     = $scope.groupConfigData.summary,
             dataForPopup    = {
                                 group_name: summaryData.group_name,
@@ -511,6 +528,15 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
             onSelect: reservationToDateChoosed
         }, commonDateOptions);
     };
+
+        /**
+         * Close the bulk checkout status popup
+         */
+        $scope.closeErrorDialog = function() {
+            if (bulkCheckoutPopup) {
+                bulkCheckoutPopup.close();
+            }
+        };
     /**
     * Initialization of pop
     * @return {[type]} [description]

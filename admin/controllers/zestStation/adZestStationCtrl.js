@@ -1,7 +1,9 @@
-admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', 'ngDialog', '$timeout', '$log', 'sntAuthorizationSrv', function($scope, $rootScope, $state, $stateParams, ADZestStationSrv, $filter, ngDialog, $timeout, $log, sntAuthorizationSrv) {
+admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', 'ngDialog', '$timeout', '$log', 'sntAuthorizationSrv', 'configurableImagesData', function($scope, $rootScope, $state, $stateParams, ADZestStationSrv, $filter, ngDialog, $timeout, $log, sntAuthorizationSrv, configurableImagesData) {
     BaseCtrl.call(this, $scope);
 
     $scope.data = {};
+    $scope.configurableImages = configurableImagesData.configurable_images;
+    
     var zestLanguageDataCopy = {};
 
     $scope.uploadedIcon = {
@@ -157,6 +159,12 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
 
         var fetchSuccess = function(data) {
             $scope.$emit('hideLoader');
+            // Rename the printter name
+            _.each(data.printer_options, function(printer) {
+                if (printer.value === 'RECEIPT') {
+                    printer.description = 'Receipt and Registration card';
+                }
+            });
             $scope.zestStationData = data;
             setupDefaultLanguageDropdown();
 
@@ -190,11 +198,9 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
     };
 
     $scope.saveSettings = function() {
-        // /handling for the api for now, api has some issue with the default image setting back to snt logo...
-        // api dev should resolve this at some point
-        if ($scope.zestSettings.key_create_file_uploaded.indexOf('/logo.png') !== -1) {
-            $scope.zestSettings.key_create_file_uploaded = 'false';
-        }
+
+        var apiParams  = angular.copy($scope.zestSettings);
+
         var saveSuccess = function() {
             $scope.zestSettings.zest_lang = angular.copy(zestLanguageDataCopy);
             $scope.successMessage = $filter('translate')('SETTINGS_HAVE_BEEN_SAVED');
@@ -202,166 +208,44 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
             angular.element(document.querySelector('.content-scroll')).scrollTop(0);
         };
 
+        var saveImages = function() {
+            $scope.configurableImages = $scope.configurableImages || {};
+
+            var imageApiParams = angular.copy($scope.configurableImages);
+
+            // pass '' for deleting image
+            _.each(Object.keys(imageApiParams), function(key) {
+                if (!imageApiParams[key]) {
+                    imageApiParams[key] = '';
+                }
+            });
+
+            var options = {
+                params: {
+                    'configurable_images': imageApiParams
+                },
+                successCallBack: saveSuccess
+            };
+
+            $scope.callAPI(ADZestStationSrv.saveImages, options);
+
+        };
+
         setUpTranslationFilesStatus();
 
         var dataToSend = {
-            'kiosk': $scope.zestSettings
+            'kiosk': apiParams
         };
 
-        $scope.invokeApi(ADZestStationSrv.save, dataToSend, saveSuccess);
+        $scope.invokeApi(ADZestStationSrv.save, dataToSend, saveImages);
     };
 
     $scope.closePrompt = function() {
         ngDialog.close();
     };
-    $scope.downloadPromptFileName = '';
-    $scope.downloadLang = function(lang) {
-        $timeout(function() {
-            $scope.downloadPromptFileName = lang + '.json';
-            var link = document.getElementById('download-link-popup'); // ie. en-download-link
-
-            link.href = 'staff/locales/download/' + lang + '?hotel_uuid=' + sntAuthorizationSrv.getProperty();
-        }, 500);
-        ngDialog.open({
-            template: '/assets/partials/zestStation/adZestStationLanguageFile.html',
-            className: 'ngdialog-theme-default single-calendar-modal',
-            scope: $scope,
-            closeByDocument: true
-        });
-    };
-
-    $scope.saveLanguageEditorChanges = function() {
-
-        var lang = $scope.editingLanguage;
-
-        $scope.languageEditorData = angular.copy($scope.languageEditorDataTmp);
-        // save ref in case needed for continuing to edit
-        languagesEditedInSession[lang].json = angular.copy($scope.languageEditorData);
-
-        var encoded = 'data:application/json;base64,' + window.btoa(unescape(encodeURIComponent(JSON.stringify($scope.languageEditorData))));
-
-        // current language being edited, for saving, need to save with long-name (ie. "english" instead of "en")
-        // check for default
-        if (lang === 'en') {
-            lang = 'english';
-
-        } else if (lang === 'fr') {
-            lang = 'french';
-
-        } else if (lang === 'es') {
-            lang = 'spanish';
-
-        } else if (lang === 'de') {
-            lang = 'german';
-
-        } else if (lang === 'it') {
-            lang = 'italian';
-
-        } else if (lang === 'cl') {
-            lang = 'castellano';
-
-        } else {
-            $log.log('need to add new language code here');
-        }
-
-        $scope.zestSettings.zest_lang[lang + '_translations_file'] = encoded;
-        $scope.closePrompt();
-    };
-    // when editing on-screen, need to fetch the language then show on-screen
-    // if a user closes the window, we need to persist the reference in case they
-    // want to continue editing
-    var languagesEditedInSession = [];
-    var continueEditing = function(lang) {
-        if (languagesEditedInSession[lang]) {
-            return true;
-        } // else
-        return false;
-    };
-    var openEditor = function(json) {
-        // converts object into a plyable array
-        $scope.languageEditorDataTmp = angular.copy(json);
-
-        ngDialog.open({
-            template: '/assets/partials/zestStation/adZestStationLanguageEditor.html',
-            className: 'ngdialog-theme-default single-calendar-modal language-editor',
-            scope: $scope,
-            closeByDocument: true
-        });
-    };
-
-    //  track which languages were fetched/edited already, 
-    //  we dont want to re-fetch when user accidentily closes the window and needs to re-open it
-    $scope.editLang = function(lang) {
-
-        $scope.editingLanguage = lang;
-        // shows user an on-screen prompt, with the tags and values, so they can edit in-screen
-
-        if (continueEditing(lang)) {
-
-            $log.log('continuing to edit...');
-            openEditor(languagesEditedInSession[lang].json);
-        } else {
-
-
-            $log.log('fetching language json file for editing');
-
-            var options = {
-                params: {
-                    'lang': lang
-                },
-                successCallBack: function(json) {
-                    $log.log(json); // show the info in console
-                    // reference to downloaded data in case user wants to continue editing after closing window
-                    languagesEditedInSession[lang] = {
-                        'json': json
-                    };
-                    openEditor(json);
-                }
-            };
-
-            $scope.callAPI(ADZestStationSrv.loadTranslationFiles, options);
-
-        }
-
-
-    };
-
-    $scope.searchbar = {
-        value: ''
-    };
-
-    // when editing a tags value with some filter
-    // if the text is not in the tag/value, the field
-    // may disappear, but if we track what is being editing/
-    // has-focus, we can allow that tag to stay until user is done editing
-    $scope.editingTag = '';
-    $scope.editingTagKey = function(k) {
-        $scope.editingTag = k;
-    };
 
     $scope.showLoader = function() {
         $scope.$emit('showLoader');
-    };
-
-    $scope.showResult = function(key, value) {
-        // show key/value as a result if returning true
-        // hide the field if user is searching/filtering
-        // and neither match the value entered
-        // 
-        var v = $scope.searchbar.value.toLowerCase(),
-            k = key.toLowerCase(),
-            txt = value.toLowerCase();
-
-        if ($scope.editingTag === key) { // see editingTagKey comments
-            return 'true';
-        } else if (v.length === 0) {
-            return 'true';
-        } else if (k.indexOf(v) !== -1) {
-            return 'true';
-        } else if (txt.indexOf(v) !== -1) {
-            return 'true';
-        }
-        return 'false';
     };
 
     $scope.saveAsText = '';

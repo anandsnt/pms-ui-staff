@@ -1,40 +1,46 @@
-admin.controller('adSalesforceSetupCtrl', ['$scope', '$rootScope', 'config', 'adInterfacesCommonConfigSrv', 'adSalesforceConfigSrv', '$window',
-    function($scope, $rootScope, config, adInterfacesCommonConfigSrv, adSalesforceConfigSrv, $window) {
-
-        var interfaceIdentifier = 'salesforce';
-
-        $scope.sync = {
-            start_date: null
+admin.controller('adSalesforceSetupCtrl', ['$scope', 'config', 'adInterfacesSrv',
+    function($scope, config, adInterfacesSrv) {
+        $scope.state = {
+            activeTab: "SETTING"
         };
+
+        $scope.interface = 'salesforce';
+
 
         $scope.toggleEnabled = function() {
-            config.enabled = !config.enabled;
+            $scope.config.enabled = !$scope.config.enabled;
         };
 
-        $scope.saveInterfaceConfig = function() {
-            $scope.callAPI(adInterfacesCommonConfigSrv.saveConfiguration, {
+        $scope.changeTab = function(name) {
+            // CICO-64155 disable data sync tab when integration not enabled
+            if (name === "DATA" && !$scope.config.enabled) {
+                $scope.errorMessage = ["Please enable integration to perform Data Sync..."];
+            } else {
+                $scope.state.activeTab = name;
+            }
+        };
+
+        $scope.saveSetup = function() {
+            var params = dclone($scope.config);
+
+            $scope.deletePropertyIfRequired(params, 'sftp_password');
+
+            $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
-                    config: $scope.config,
-                    interfaceIdentifier: interfaceIdentifier
+                    integration: $scope.interface.toLowerCase(),
+                    settings: params
                 },
                 onSuccess: function() {
-                    $scope.goBackToPreviousState();
+                    $scope.errorMessage = '';
+                    $scope.successMessage = 'SUCCESS: Settings Updated!';
                 }
-            });
-        };
-
-        $scope.authorize = function() {
-            $scope.callAPI(adSalesforceConfigSrv.authorize, {
-              onSuccess: function(data) {
-                $window.location.href = data.redirect_url;
-              }
             });
         };
 
         (function() {
             //    init
             $scope.config = config;
-            $scope.interface = interfaceIdentifier;
+            $scope.setDefaultDisplayPassword($scope.config, 'sftp_password');
         })();
     }
 ]);
