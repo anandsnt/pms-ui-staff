@@ -766,6 +766,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					!data.has_conflicting_routes) &&
 					that.useCardRate) {
 					$scope.navigateToRoomAndRates();
+					return false;
 				}
 
 				that.reloadStaycard();
