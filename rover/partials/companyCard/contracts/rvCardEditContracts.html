@@ -38,7 +38,7 @@
                 </div>
                 <div class="entry margin">
                     <label class="disable-element" for="contracted-nights">Contracted nights</label>
-                    <input ng-disabled="contractData.disableFields" name="contracted-nights" id="contracted-nights" class=" contracted-nights" placeholder="Nights per month" ng-model="contractData.editData.total_contracted_nights" ng-click="editContractedNights()" maxlength="8" readonly type="text" />
+                    <input ng-disabled="contractData.disableFields" ng-class="{'overlay': contractData.disableFields}" name="contracted-nights" id="contracted-nights" class=" contracted-nights" placeholder="Nights per month" ng-model="contractData.editData.total_contracted_nights" ng-click="editContractedNights()" maxlength="8" readonly type="text" />
                 </div>
             </div>
             <div class="holder right">
