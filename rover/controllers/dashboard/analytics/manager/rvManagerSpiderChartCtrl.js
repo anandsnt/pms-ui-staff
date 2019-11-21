@@ -204,6 +204,20 @@ angular.module('sntRover')
 
 					var labelMappings;
 
+					var addClickEvents = function(position, isRedraw) {
+						// To make sure the elements are drawn before click event is attached
+						var animationDuration = isRedraw ? 250 : 1050;
+
+						$timeout(function() {
+							$("#" + position + "-adr-rect").click(onClickOnLabel);
+							$("#" + position + "-adr-label1").click(onClickOnLabel);
+							$("#" + position + "-adr-label2").click(onClickOnLabel);
+							$("#" + position + "-rev-par-rect").click(onClickOnLabel);
+							$("#" + position + "-rev-par-label1").click(onClickOnLabel);
+							$("#" + position + "-rev-par-label2").click(onClickOnLabel);
+						}, animationDuration);
+					};
+
 					var onClickOnLabel = function(e) {
 						console.log(e.target.id);
 						var position;
@@ -220,6 +234,13 @@ angular.module('sntRover')
 						var labelAttrs = labelMappings[position]
 
 						if (position) {
+							$("#" + position + "-adr-rect").unbind("click");
+							$("#" + position + "-adr-label1").unbind("click");
+							$("#" + position + "-adr-label2").unbind("click");
+							$("#" + position + "-rev-par-rect").unbind("click");
+							$("#" + position + "-rev-par-label1").unbind("click");
+							$("#" + position + "-rev-par-label2").unbind("click");
+							
 							$("#" + position + "-adr-rect").remove();
 							$("#" + position + "-adr-label1").remove();
 							$("#" + position + "-adr-label2").remove();
@@ -235,12 +256,7 @@ angular.module('sntRover')
 								addLabelToChart(labelAttrs.revPar, labelAttrs.isLeftSide, labelAttrs.isDownSide, true);
 							}
 
-							$("#" + position + "-adr-rect").click(onClickOnLabel);
-							$("#" + position + "-adr-label1").click(onClickOnLabel);
-							$("#" + position + "-adr-label2").click(onClickOnLabel);
-							$("#" + position + "-rev-par-rect").click(onClickOnLabel);
-							$("#" + position + "-rev-par-label1").click(onClickOnLabel);
-							$("#" + position + "-rev-par-label2").click(onClickOnLabel);
+							addClickEvents(position, true);
 						}
 					};
 
@@ -294,7 +310,6 @@ angular.module('sntRover')
 							.attr("stroke", "#000")
 							.style("cursor", "pointer");
 
-						$("#" + label.id + "-rect").click(onClickOnLabel);
 
 						textLabelGroup.append("text")
 							.attr('x', xOffsetText)
@@ -305,7 +320,6 @@ angular.module('sntRover')
 							.text(label.label)
 							.style("cursor", "pointer");
 
-						$("#" + label.id + "-label1").click(onClickOnLabel);
 
 						var labelText = label.value;
 						if (baseValue >= 1000) {
@@ -327,7 +341,6 @@ angular.module('sntRover')
 							.text($rootScope.currencySymbol + labelText)
 							.style("cursor", "pointer");
 
-						$("#" + label.id + "-label2").click(onClickOnLabel);
 					}
 
 					var lowestValue = maxValueForChart / 5;
@@ -371,9 +384,8 @@ angular.module('sntRover')
 					};
 
 					addLabelToChart(leftTopQuadrantRevPar, true, false);
-
-					$("#left-top-adr-rect").click(onClickOnLabel);
-					$("#left-top-rev-par-rect").click(onClickOnLabel);
+					addClickEvents("left-top", false);
+					
 
 
 					/**  ****************************  Let Top Quadrant ends here ******************************/
@@ -417,9 +429,7 @@ angular.module('sntRover')
 
 					addLabelToChart(rightTopQuadrantAdr, false, false);
 					addLabelToChart(rightTopQuadrantRevPar, false, false);
-
-					$("#right-top-adr-rect").click(onClickOnLabel);
-					$("#right-top-rev-par-rect").click(onClickOnLabel);
+					addClickEvents("right-top", false);
 
 					/**  ****************************  Right Top Quadrant ends here ******************************/
 
@@ -464,9 +474,7 @@ angular.module('sntRover')
 					};
 
 					addLabelToChart(leftBottomRevPar, true, true);
-
-					$("#left-bottom-rev-par-rect").click(onClickOnLabel);
-					$("#left-bottom-adr-rect").click(onClickOnLabel);
+					addClickEvents("left-bottom", false);
 
 					/**  ****************************  Left Bottom Quadrant ends here ******************************/
 
@@ -510,9 +518,7 @@ angular.module('sntRover')
 					};
 
 					addLabelToChart(rightBottomRevPar, false, true);
-
-					$("#right-bottom-rev-par-rect").click(onClickOnLabel);
-					$("#right-bottom-adr-rect").click(onClickOnLabel);
+					addClickEvents("right-bottom", false);
 
 					/**  ****************************  Right Bottom Quadrant ends here ******************************/
 

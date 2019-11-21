@@ -81,18 +81,18 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 			$scope.screenData.hideChartData = true;
 			clearAllExistingChartElements();
 			$scope.screenData.mainHeading = "";
-			if ($scope.screenData.selectedChart === 'FO_ARRIVALS') {
-				renderFrontOfficeManagementChart();
-			} else if ($scope.screenData.selectedChart === 'FO_WORK_LOAD') {
-				renderfdWorkloadChart();
-			} else if ($scope.screenData.selectedChart = 'FO_ACTIVITY') {
-				renderFrontOfficeActivity();
-			}
+			// Add a small timeout to make sure no residue elements are present to alter the chart width calculations
 			$timeout(function() {
-				$('base').attr('href', initialBaseHrefValue);
-			}, 2000);
-		};
+				if ($scope.screenData.selectedChart === 'FO_ARRIVALS') {
+					renderFrontOfficeManagementChart();
+				} else if ($scope.screenData.selectedChart === 'FO_WORK_LOAD') {
+					renderfdWorkloadChart();
+				} else if ($scope.screenData.selectedChart = 'FO_ACTIVITY') {
+					renderFrontOfficeActivity();
+				}
+			}, 10);
 
+		};
 		$(window).on("resize.doResize", function() {
 			$scope.$apply(function() {
 				$timeout(function() {
@@ -118,6 +118,7 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 		});
 
 		var fetchData = function (date) {
+			$('base').attr('href', initialBaseHrefValue);
 			var params = {
 				"date": date,
                 "isFromFrontDesk": true
@@ -125,6 +126,7 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 			var options = {
 				params: params,
 				successCallBack: function() {
+					$('base').attr('href', '#');
 					$scope.screenData.analyticsDataUpdatedTime = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
 					clearAllExistingChartElements();
                     drawChart();
@@ -165,6 +167,12 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 			clearAllExistingChartElements();
             drawChart();
 		};
+
+		$scope.$on("SIDE_MENU_TOGGLE", function(e, data) {
+			if (data.menuOpen) {
+				$('base').attr('href', "/");
+			}
+		});
 
 		(function() {
 			fetchData($scope.dashboardFilter.datePicked)
