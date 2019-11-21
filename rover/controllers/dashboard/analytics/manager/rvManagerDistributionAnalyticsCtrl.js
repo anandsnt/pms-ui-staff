@@ -50,20 +50,6 @@ angular.module('sntRover')
 				return $filter('date')(date, $rootScope.dateFormat);
 			};
 
-			var textTruncate = function(str, length, ending) {
-				if (length == null) {
-					length = 100;
-				}
-				if (ending == null) {
-					ending = '...';
-				}
-				if (str.length > length) {
-					return str.substring(0, length - ending.length) + ending;
-				} else {
-					return str;
-				}
-			};
-
 			$scope.drawDistributionChart = function(chartData) {
 				chartData = _.sortBy(chartData, function(data) {
 					return data.date;
@@ -259,7 +245,7 @@ angular.module('sntRover')
 									.style("text-anchor", "start")
 									.style("font-size", "15px")
 									.text(function(d, i) {
-										return textTruncate(stackKey[i],35,'...');
+										return rvAnalyticsHelperSrv.textTruncate(stackKey[i], 35, '...');
 									});
 							}
 

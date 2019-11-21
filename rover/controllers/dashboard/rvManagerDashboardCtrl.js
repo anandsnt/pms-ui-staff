@@ -216,7 +216,7 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
 
   $scope.dashboardFilter.aggTypes = [{
     "name": "Room type",
-    "code": "room_type_id "
+    "code": "room_type_id"
   }, {
     "name": "Market",
     "code": "market_id"
