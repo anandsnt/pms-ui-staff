@@ -27,6 +27,7 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
     $scope.auto_charge_deposit = settingsAndParamsData.auto_charge_deposit;
     $scope.is_multi_currency = settingsAndParamsData.is_multi_currency;
     $scope.is_multi_currency_enabled = settingsAndParamsData.is_multi_currency_enabled;
+    $scope.should_post_during_eod = settingsAndParamsData.should_post_during_eod;
     $scope.currency_list = settingsAndParamsData.currency_list;
     $scope.rate_currency_list = angular.copy(settingsAndParamsData.currency_list);
     angular.forEach($scope.rate_currency_list, function(item) {
