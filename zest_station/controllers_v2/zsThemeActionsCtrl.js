@@ -185,7 +185,9 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                     'caro',
                     'schani-wien',
                     'glencoe',
-                    'schani-salon'
+                    'schani-salon',
+                    'spatz',
+                    'lenaustrasse'
                 ],
                 nonCircleNavIcons = ['public_v2'];// minor adjustment to the back/close icons for some themes (only show the inner x or <)
 
