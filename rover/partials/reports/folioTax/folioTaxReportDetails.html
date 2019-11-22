@@ -15,12 +15,12 @@
                 <tfoot>
                     <tr>
                         <td colspan="3">
-                            Date Range from <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.toDate | date:dateFormat }}</span><br>
+                            {{summaryCounts.translated_headers.date_range}} {{summaryCounts.translated_headers.from}} <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> {{summaryCounts.translated_headers.to}} <span>{{ appliedFilter.toDate | date:dateFormat }}</span><br>
                         </td>
                         <td colspan="2">
                              <li>
-                                Business date <span>{{ userInfo.business_date | date:dateFormat }}</span><br/>
-                                User <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
+                                {{summaryCounts.translated_headers.business_date}} <span>{{ userInfo.business_date | date:dateFormat }}</span><br/>
+                                {{summaryCounts.translated_headers.user}} <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
                             </li>
                         </td>
                     </tr>
