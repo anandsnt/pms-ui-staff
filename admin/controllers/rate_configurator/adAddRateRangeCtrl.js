@@ -71,7 +71,7 @@ admin
                  * to one day past the enddate of the last daterange
                  * TODO: Only if lastDate > businessDate
                  */
-                if (!_.isEmpty(lastSelectedDate)) {
+                if (!_.isEmpty(lastSelectedDate) && !checkIfPastDate(lastSelectedDate)) {
 
                     // Get next Day
                     dLastSelectedDate = new Date(  tzIndependentDate(lastSelectedDate).getTime() + 24 * 60 * 60 * 1000);
@@ -79,8 +79,17 @@ admin
                     $scope.begin_date = $filter('date')(dLastSelectedDate, rateFilterDefaults.DATE_FORMAT);
                     $scope.end_date = $scope.begin_date;
                 }
-
             };
+
+            /*
+             * Check if the date has passed the business date
+             */
+            function checkIfPastDate(date) {
+                if (new Date(tzIndependentDate($rootScope.businessDate)) > new Date(tzIndependentDate(date))) {
+                    return true;
+                }
+                return false;
+            }
 
             /*
              * Reset calendar action
