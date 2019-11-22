@@ -24,8 +24,9 @@
         <div class="info-left">
             <strong>{{printData.translation.group_start_date}}: </strong> {{printData.group_start_date | date:dateFormat}}<br/>
             <strong>{{printData.translation.group_end_date}}: </strong> {{printData.group_end_date | date:dateFormat}}<br/> 
-            <strong ng-if="printData.po_number">{{printData.translation.po_number}}: </strong> {{printData.po_number}}<br/>  
-            <strong ng-if="printData.payment_date">{{printData.translation.payment_date}}: </strong> {{printData.payment_date | date:dateFormat}}
+            <span ng-if="printData.po_number"><strong>{{printData.translation.po_number}}: </strong> {{printData.po_number}}<br/></span>  
+            <span ng-if="printData.payment_date"><strong>{{printData.translation.payment_date}}: </strong> {{printData.payment_date | date:dateFormat}}<br/></span> 
+            <span ng-if="printData.invoice_number"><strong>{{printData.translation.invoice_number}}: </strong> {{printData.invoice_number}}</span>
         </div>
 
         <div class="info-right" ng-if="printData.card_type === 'COMPANY'">

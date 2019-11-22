@@ -200,9 +200,8 @@ angular.module('sntRover')
                 }
 
                 for (i = 0, j = source.length; i < j; i++) {
-                    title = $scope.reportViewStore.showingAllReport ?
-                        source[i].title.toLowerCase() : source[i].report.description.toLowerCase();
-
+                    title = source[i].title || ( source[i].report && source[i].report.title);
+                    title = title.toLowerCase();
                     source[i].filteredOut = title.indexOf(query) === -1;
                 }
 
@@ -374,6 +373,11 @@ angular.module('sntRover')
             // Handler for deleting the custom exports schedule
             $scope.deleteCustomExportSchedule = () => {
                 $scope.$broadcast('DELETE_CUSTOM_EXPORT_SCHEDULE');
+            };
+
+            // Show custom exports menu based on permission and toggle feature settings
+            $scope.shouldShowCustomExports = () => {
+                return $scope.isCustomExportsEnabled && $scope.hasPermissionToViewScheduleReport();
             };
 
             (function () {

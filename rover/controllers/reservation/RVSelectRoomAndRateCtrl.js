@@ -736,7 +736,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					$scope.reservationData.rooms[roomIndex].isSuppressed = false;
 					_.each($scope.reservationData.rooms[roomIndex].stayDates, function(d, i) {
 						// Find if any of the selected rates is suppressed
-						var currentRateSuppressed = !!d.rate.id && !!$scope.reservationData.ratesMeta[d.rate.id].is_suppress_rate_on;
+						var currentRateSuppressed = !!d.rate.id && $scope.reservationData.ratesMeta[d.rate.id] && !!$scope.reservationData.ratesMeta[d.rate.id].is_suppress_rate_on;
 
 						if (typeof $scope.reservationData.rooms[roomIndex].isSuppressed === 'undefined') {
 							$scope.reservationData.rooms[roomIndex].isSuppressed = currentRateSuppressed;
@@ -1537,7 +1537,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							details.rate.id = rateId;
 
 							if (rateId) {
-								details.rate.name = $scope.reservationData.ratesMeta[rateId].name;
+								var curRate = $scope.reservationData.ratesMeta[rateId];
+								
+								details.rate.name = curRate && curRate.name;
 								var rateAmount = Number(parseFloat($scope.stateCheck.stayDates[date].amount).toFixed(2));
 
 								details.rateDetails = {
@@ -1546,10 +1548,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 									rateCurrency: details.rateCurrency
 								};
 
-								details.rateDetails.is_discount_allowed = $scope.reservationData.ratesMeta[rateId].is_discount_allowed_on === null ? 'false' : $scope
-									.reservationData.ratesMeta[rateId].is_discount_allowed_on.toString();// API returns true / false as a string ... Hence true in a string to maintain consistency
-								details.rateDetails.is_suppressed = $scope.reservationData.ratesMeta[rateId].is_suppress_rate_on === null ? 'false' : $scope.reservationData
-									.ratesMeta[rateId].is_suppress_rate_on.toString();						
+								details.rateDetails.is_discount_allowed = curRate && curRate.is_discount_allowed_on === null ? 'false' : curRate && curRate.is_discount_allowed_on.toString();// API returns true / false as a string ... Hence true in a string to maintain consistency
+								details.rateDetails.is_suppressed = curRate && curRate.is_suppress_rate_on === null ? 'false' : curRate && curRate.is_suppress_rate_on.toString();						
 							}
 						});
 					}
@@ -1654,6 +1654,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							currentRoom.rateId = [];
 							currentRoom.rateId.push(rateId);
 							currentRoom.stayDates[$scope.stateCheck.dateModeActiveDate].rate.id = rateId;
+							currentRoom.stayDates[$scope.stateCheck.dateModeActiveDate].contractId = contractId;
 							currentRoom.roomTypeName = $scope.reservationData.roomsMeta[roomId].name;
 							$scope.reservationData.rateDetails[i] = angular.copy(ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates);
 						}
@@ -1664,6 +1665,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					$scope.stateCheck.selectedStayDate.roomType = {
 						id: roomId
 					};
+					$scope.stateCheck.selectedStayDate.contractId = contractId;
 
 					var amount = secondary.dates[activeDate].amount,
 						rateAmount = Number(parseFloat(amount).toFixed(2));

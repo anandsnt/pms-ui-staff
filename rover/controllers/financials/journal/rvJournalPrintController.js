@@ -206,7 +206,7 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
             postData.query = $scope.data.query;
 		}
 
-		if ($scope.data.selectedPaymentType === "ALL") {
+		if ($scope.data.selectedPaymentType === "") {
 			postData.charge_code_id = "";
 		}
 		else if ($scope.data.selectedPaymentType === "" || typeof $scope.data.selectedPaymentType === "undefined") {
