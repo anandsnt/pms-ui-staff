@@ -81,8 +81,10 @@ admin
                 }
             };
 
-            /*
-             * Check if the date has passed the business date
+            /**
+             * Check if the date has passed the business date.
+             * @param {string} date Date to test.
+             * @returns {boolean} Past date flag.
              */
             function checkIfPastDate(date) {
                 if (new Date(tzIndependentDate($rootScope.businessDate)) > new Date(tzIndependentDate(date))) {
