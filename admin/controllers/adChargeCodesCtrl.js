@@ -423,6 +423,12 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				$scope.prefetchData = {};
 				$scope.selected_payment_type.id = -1;
 				data.custom_tax_parameters = customTaxParameter;
+
+				if (data.custom_tax_rules.length === 0) {
+					data.custom_tax_rules = [];
+					data.custom_tax_rules.push(dclone(customTaxRuleObject));
+					data.custom_tax_rules = setUpCustomTaxRulesData(data.custom_tax_rules, data.custom_tax_parameters);
+				}
 				
 				angular.forEach(data.custom_tax_rules, function(item, index) {
 					item.remainingCustomTaxParameter = angular.copy(data.custom_tax_parameters);
