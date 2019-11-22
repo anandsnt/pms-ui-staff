@@ -519,7 +519,15 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 * @return {undefined}
 		 */
 		$scope.onRateChange = function() {
-			var summaryData = $scope.allotmentConfigData.summary;
+			var summaryData = $scope.allotmentConfigData.summary,
+				contractId;
+
+            _.each($scope.allotmentSummaryData.rateSelectDataObject, function(rate) {
+                if (rate.id === summaryData.rate) {
+                    contractId = rate.contract_id;
+                    $scope.allotmentConfigData.summary.contract_id = contractId;
+                }
+            });
 
 			if (!summaryData.allotment_id) {
 				return false;
@@ -527,7 +535,8 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 
 			var params = {
 				allotment_id: summaryData.allotment_id,
-				rate_id: summaryData.rate
+				rate_id: summaryData.rate,
+				contract_id: contractId
 			};
 
 			var options = {
@@ -908,7 +917,10 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 	            }
 	            else {
 	                rate.groupName = 'Group Rates';
-	            }
+				}
+				if (rate.id === $scope.allotmentConfigData.summary.rate) {
+					$scope.allotmentConfigData.summary.contract_id = rate.contract_id;
+				}
 	            sumData.rateSelectDataObject.push(rate);
 			});
 

@@ -300,6 +300,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                 if (ifMandatoryValuesEntered()) {
                     if (!$scope.allotmentConfigData.summary.rate) {
                         $scope.allotmentConfigData.summary.rate = -1;
+                        $scope.allotmentConfigData.summary.contract_id = null;
                     }
                     var options = {
                         successCallBack: onAllotmentSaveSuccess,
@@ -361,6 +362,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                 summaryData.release_date = $filter('date')(summaryData.release_date, $rootScope.dateFormatForAPI);
                 if (!summaryData.rate) {
                     summaryData.rate = -1;
+                    summaryData.contract_id = null;
                 }
                 $scope.callAPI(rvAllotmentConfigurationSrv.updateAllotmentSummary, {
                     successCallBack: onAllotmentUpdateSuccess,
