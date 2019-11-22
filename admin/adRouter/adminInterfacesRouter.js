@@ -492,7 +492,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.sitemindersSetup', {
-        templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
+        templateUrl: '/assets/partials/interfaces/siteminder/adSiteminderSetup.html',
         controller: 'adCRSCommonCtrl',
         url: '/interfaces/setup',
         params: {
@@ -970,6 +970,18 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             config: [
                 'adInterfacesSrv', function (adInterfacesSrv) {
                     return adInterfacesSrv.getSettings('staah');
+                }]
+        }
+    });
+
+    $stateProvider.state('admin.cegid', {
+        templateUrl: '/assets/partials/interfaces/cegid/adCegid.html',
+        controller: 'adCegidController',
+        url: '/cegid',
+        resolve: {
+            config: [
+                'adInterfacesSrv', function (adInterfacesSrv) {
+                    return adInterfacesSrv.getSettings('cegid');
                 }]
         }
     });
