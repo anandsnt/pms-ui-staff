@@ -29,6 +29,10 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			$scope: $scope
 		});
 
+		$controller('rvMangerPaceChart', {
+			$scope: $scope
+		});
+
 		var clearAllExistingChartElements = function() {
 			d3.select('#d3-plot').selectAll('svg').remove();
 			var divElements = d3.select('#d3-plot').selectAll('div');
@@ -90,6 +94,21 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			// $scope.drawDistributionChart(data);
 		};
 
+		var renderPaceChart = function () {
+			var options = {
+                params: {
+                    date: $scope.dashboardFilter.datePicked
+                },
+                successCallBack: function(data) {
+                    console.log(data);
+                    clearAllExistingChartElements();
+                    $scope.drawPaceChart(data);
+                }
+            };
+            $scope.callAPI(rvManagersAnalyticsSrv.pace, options);
+			
+		};
+
 		var drawChart = function() {
 			$scope.screenData.hideChartData = true;
 			clearAllExistingChartElements();
@@ -98,6 +117,8 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 				renderPerfomanceChart();
 			} else if ($scope.screenData.selectedChart === 'DISTRIBUTION') {
 				renderDistributionChart();
+			} else if ($scope.screenData.selectedChart === 'PACE') {
+				renderPaceChart();
 			}
 		};
 
@@ -114,11 +135,15 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 		});
 
 		$scope.$on('ANALYTICS_MENU_CHANGED', function(e, selectedChart) {
+			if ($scope.screenData.selectedChart === selectedChart) {
+				return;
+			}
 			$scope.screenData.selectedChart = selectedChart;
 			$timeout(function() {
 				clearAllExistingChartElements();
 				$scope.dashboardFilter.chartType = "occupancy";
 				$scope.dashboardFilter.aggType = "";
+				$scope.dashboardFilter.datePicked = $rootScope.businessDate;
 				drawChart();
 			}, 0);
 		});
