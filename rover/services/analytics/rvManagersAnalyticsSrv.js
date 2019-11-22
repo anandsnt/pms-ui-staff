@@ -26,7 +26,9 @@ angular.module('sntRover').service('rvManagersAnalyticsSrv', [
 
             rvBaseWebSrvV2.getJSON(url, params)
                 .then(function(data) {
-                    deferred.resolve(formatDistribution(data));
+                    var isAggregated = params.group_by !== undefined;
+
+                    deferred.resolve(formatDistribution(data, params.chart_type, isAggregated));
                 }, function(data) {
                     deferred.reject(data);
                 });
@@ -34,17 +36,36 @@ angular.module('sntRover').service('rvManagersAnalyticsSrv', [
             return deferred.promise;
         };
 
-        var formatDistribution = function(distributions) {
-            var formatedData = {};
+        var formatDistribution = function(distributions, resultType, isAggregated) {
+            var dataByDate = {};
 
             distributions.forEach(function(distribution) {
-                if (formatedData[distribution.date] === undefined) {
-                    formatedData[distribution.date] = [];
+                if (dataByDate[distribution.date] === undefined) {
+                    dataByDate[distribution.date] = [];
                 }
-                formatedData[distribution.date].push(distribution);
+                dataByDate[distribution.date].push(distribution);
+            });
+
+            var formatedData = [];
+
+            Object.keys(dataByDate).forEach(function(date) {
+                var dateElement = { date: date };
+                var dateDatas = dataByDate[date];
+
+                dateDatas.forEach(function(dateData) {
+                    if (isAggregated) {
+                        var key = dateData.value ? dateData.value : "N/A";
+                        
+                        dateElement[key] = dateData[resultType];
+                    } else {
+                        dateElement[resultType] = dateData[resultType];
+                    }
+                });
+                formatedData.push(dateElement);
             });
 
             return formatedData;
         };
+
     }
 ]);
