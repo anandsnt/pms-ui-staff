@@ -72,7 +72,7 @@ angular.module('sntRover')
 								width = document.getElementById("analytics-chart").clientWidth - margin.left - margin.right,
 								height = 500 - margin.top - margin.bottom,
 								xScale = d3.scaleBand()
-								.range([0, width - ((stackKey.length > 1) ? 350 : 0)])
+								.range([0, width - ((stackKey.length > 1 || $scope.dashboardFilter.aggType) ? 350 : 0)])
 								.padding(0.5),
 								yScale = d3.scaleLinear()
 								.range([height, 0]);
@@ -190,7 +190,7 @@ angular.module('sntRover')
 								svg: svg,
 								xOffset: 0,
 								height: 4,
-								width: width - ((stackKey.length > 1) ? 350 : 0),
+								width: width - ((stackKey.length > 1 || $scope.dashboardFilter.aggType) ? 350 : 0),
 								yOffset: height
 							});
 							rvAnalyticsHelperSrv.drawRectLines({
@@ -221,13 +221,13 @@ angular.module('sntRover')
 								.attr("font-weight", "bold");
 
 							// var legendSvg = d3.select("#right-side-legend").append("svg")
-							if (stackKey.length > 1) {
+							if (stackKey.length > 1 || $scope.dashboardFilter.aggType) {
 								var legend = svg.selectAll(".legend")
 									.data(colors)
 									.enter().append("g")
 									.attr("class", "legend")
 									.attr("transform", function(d, i) {
-										return "translate(-250," + i * 30 + ")";
+										return "translate(-300," + i * 30 + ")";
 									});
 
 								legend.append("rect")
@@ -243,8 +243,9 @@ angular.module('sntRover')
 									.attr("y", 9)
 									.attr("dy", ".35em")
 									.style("text-anchor", "start")
+									.style("font-size", "15px")
 									.text(function(d, i) {
-										return stackKey[i];
+										return rvAnalyticsHelperSrv.textTruncate(stackKey[i], 35, '...');
 									});
 							}
 
