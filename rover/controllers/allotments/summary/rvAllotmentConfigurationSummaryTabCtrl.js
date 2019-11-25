@@ -530,14 +530,12 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				rateId = uniqId.split(':')[0],
 				contractId = uniqId.split(':')[1];
 
+			$scope.allotmentConfigData.summary.contract_id = contractId;
+			$scope.allotmentConfigData.summary.rate = rateId;
+
 			if (!summaryData.allotment_id) {
 				return false;
 			}
-			_.each($scope.allotmentSummaryData.rateSelectDataObject, function(rate) {
-                if (rate.uniqId === summaryData.uniqId) {
-                    $scope.allotmentConfigData.summary.contract_id = contractId;
-                }
-            });
 
 			var params = {
 				allotment_id: summaryData.allotment_id,
@@ -916,44 +914,42 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 	            id: '-1',
 				name: 'Custom Rate',
 				uniqId: '-1'
-	        });
-	        // group rates by contracted and group rates.
-	        _.each(data.results, function(rate) {
-				var setNewRate = function(groupName, contract) {
-					var newRateObj = {};
-
-					newRateObj.id = rate.id;
-					newRateObj.groupName = groupName;
-					newRateObj.uniqId = contract ? rate.id + ':' + contract.id : rate.id + ':';
-					newRateObj.name = contract ? rate.name + '(' + contract.name + ')' : rate.name;
-					newRateObj.contract_id = contract ? contract.id : null;
-					sumData.rateSelectDataObject.push(newRateObj);
-					if (newRateObj.id === $scope.allotmentConfigData.summary.rate && newRateObj.contract_id === $scope.allotmentConfigData.summary.contract_id) {
-						$scope.allotmentConfigData.summary.uniqId = newRateObj.uniqId;
-					}
-				}
-
-				if ($scope.allotmentConfigData.summary.rate === '-1') {
-					$scope.allotmentConfigData.summary.uniqId = '-1';
-				}
-
-				if (!rate.is_contracted) {
-					setNewRate('Group Rates');
-				}
-				else {
-					if (rate.company_contracts.length !== 0) {
-						angular.forEach(rate.company_contracts, function(contract) {
-							setNewRate('Company Contract', contract);
-						});
-					}
-					if (rate.travel_agent_contracts.length !== 0) {
-						angular.forEach(rate.travel_agent_contracts, function(contract) {
-							setNewRate('Travel Agent Contract', contract);
-						});
-					}
-				}
 			});
+			/**
+			 * we have the company/travel-agent/group rates in separate arrays
+			 */
+			var groupRatesBy = function(rateArray, groupName) {
+				angular.forEach(rateArray, function(rate) {
+					rate.groupName = groupName;
+					if (rate.is_contracted) {
+						rate.uniqId = rate.id + ':' + rate.contract_id;
+						rate.name = rate.name + ' (' + rate.contract_name + ')';
+						if (rate.id === $scope.allotmentConfigData.summary.rate && rate.contract_id === $scope.allotmentConfigData.summary.contract_id) {
+							$scope.allotmentConfigData.summary.uniqId = rate.uniqId;
+						}
+					}
+					else {
+						rate.uniqId = rate.id + ':';
+						if (rate.id === $scope.allotmentConfigData.summary.rate) {
+							$scope.allotmentConfigData.summary.uniqId = rate.uniqId;
+						}
+					}
+					sumData.rateSelectDataObject.push(rate);
+				});
+			};
 
+			if (data.group_rates.length !== 0) {
+				groupRatesBy(data.group_rates, 'Group Rates');
+			}
+			if (data.company_rates.length !== 0) {
+				groupRatesBy(data.company_rates, 'Company Contract');
+			}
+			if (data.travel_agent_rates.length !== 0) {
+				groupRatesBy(data.travel_agent_rates, 'Travel Agent Contract');
+			}
+			if ($scope.allotmentConfigData.summary.rate === '-1') {
+				$scope.allotmentConfigData.summary.uniqId = '-1';
+			}
 		};
 		var onFetchRatesFailure = function(errorMessage) {
 			$scope.errorMessage = errorMessage;
