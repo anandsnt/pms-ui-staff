@@ -99,7 +99,8 @@ module.exports = {
             'glencoe': [themeCSSRoot + 'glencoe.less'],
             'schani-salon': [themeCSSRoot + 'schani-salon.less'],
             'spatz': [themeCSSRoot + 'spatz.less'],
-            'lenaustrasse': [themeCSSRoot + 'lenaustrasse.less']
+            'lenaustrasse': [themeCSSRoot + 'lenaustrasse.less'],
+            'why-tysons': [themeCSSRoot + 'why-tysons.less']
         };
     }
 };
