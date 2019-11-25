@@ -10,7 +10,7 @@
         </div>
     </div>
 
-    <div class="contracts-list-items scrollable" ng-if="!(contractData.noContracts && contractData.mode === 'ADD')" ng-iscroll="contractListScroller">
+    <div class="contracts-list-items scrollable" ng-if="contractData.mode === 'EDIT'" ng-iscroll="contractListScroller">
         <div class="wrapper">
             <!-- If it has no items, add .no-items -->
             <!-- If it's opened, add .open -->
@@ -49,7 +49,7 @@
     </div>
     <!-- Show this to enable creating contracts. -->
     <div class="contracts-list-actions">
-        <button ng-hide="contractData.mode === 'LINK'" type="button" class="button blue" ng-click="linkContract()">Link Existing Contract</button>
-        <button ng-hide="contractData.mode === 'ADD'" type="button" class="button green" ng-click="newContract()">Create New Contract</button>
+        <button ng-show="contractData.mode === 'EDIT'" type="button" class="button blue" ng-click="linkContract()">Link Existing Contract</button>
+        <button ng-show="contractData.mode === 'EDIT'" type="button" class="button green" ng-click="newContract()">Create New Contract</button>
     </div>
 </div>
