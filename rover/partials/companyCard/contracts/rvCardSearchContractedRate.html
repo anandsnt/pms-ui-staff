@@ -21,6 +21,16 @@
             </div>
         </div>
     </div>
+
+    <!-- Show this when there are no contracted rates added -->
+    <div class="no-content" ng-if="contractData.selectedRateList.length === 0">
+        <div class="info">
+            <span class="icon-no-content icon-rates"></span>
+            <strong class="h4">No Rates</strong>
+            <span class="h2">There are no rates added to this contract</span>
+        </div>
+    </div>
+        
     <!-- Add .disabled when not editable -->
     <div class="contracted-rates compact" ng-class="{'disabled overlay': contractData.disableFields}">
         <li ng-repeat="rate in contractData.selectedRateList">
@@ -32,4 +42,5 @@
             </button>
         </li>
     </div>
+
 </div>
