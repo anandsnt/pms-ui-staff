@@ -685,6 +685,18 @@ body { overflow: hidden; }
 	                        .tab-details {
 	                            .calc-height(100,140);
 	                        }
+
+	                        &.contracts {
+	                            .tab-details {
+	                                &:not(.searching) {
+	                                    .calc-height(100,60);
+	                                }
+
+	                                &.searching {
+	                                    .calc-height(100,120);
+	                                }
+	                            }
+	                        }
 	                    }
 
 	                    &.transactions {
