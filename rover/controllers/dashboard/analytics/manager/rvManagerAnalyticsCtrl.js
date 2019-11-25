@@ -84,7 +84,6 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 					$('base').attr('href', '#');
 					$scope.screenData.analyticsDataUpdatedTime = moment().format("MM ddd, YYYY hh:mm:ss a");
 					clearAllExistingChartElements();
-					console.log(JSON.stringify(data));
 					$scope.drawDistributionChart(data);
 				}
 			};
@@ -100,7 +99,6 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
                     date: $scope.dashboardFilter.datePicked
                 },
                 successCallBack: function(data) {
-                    console.log(data);
                     clearAllExistingChartElements();
                     $scope.drawPaceChart(data);
                 }
