@@ -334,9 +334,7 @@ sntRover.controller('RVJournalController',
        // call filter service
        callCashierFilterService();
        retrieveCashierName();
-    };
-
-    
+    };    
 
     /* Cashier filter ends here */
 
