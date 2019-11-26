@@ -12,6 +12,7 @@ angular.module('sntRover')
 
 				var chartDataMaxArray = [];
 
+				// find maximum value that will appear in both side of X- axis
 				_.each(chartData, function(data) {
 
 					if (parseInt(data.new) + parseInt(data.on_the_books) > parseInt(data.cancellation)) {
@@ -19,14 +20,17 @@ angular.module('sntRover')
 					} else {
 						chartDataMaxArray.push(parseInt(data.cancellation));
 					}
+					// consider cancellation as -ve
 					if (data.cancellation > 0) {
 						data.cancellation = -1 * data.cancellation;
 					}
 
 				});
+
 				var data = chartData;
 				var stackKeys = ["on_the_books", "new", "cancellation"];
 				var stackKeysTags = ["On the books", "New", "Cancellation"];
+
 				var series = d3.stack()
 					.keys(stackKeys)
 					.offset(d3.stackOffsetDiverging)
@@ -74,16 +78,15 @@ angular.module('sntRover')
 					.data(function(d) {
 						return d;
 					})
-					.enter().append("rect")
+					.enter()
+					.append("rect")
+					.attr("class", "rect-bars")
 					.attr("width", xScale.bandwidth)
 					.attr("x", function(d) {
 						return xScale(d.data.date);
 					})
 					.attr("y", function(d) {
 						return yScale(d[1]);
-					})
-					.attr("height", function(d) {
-						return yScale(d[0]) - yScale(d[1]);
 					})
 					.style("cursor", "pointer")
 					.on("mouseover", function() {
@@ -98,6 +101,14 @@ angular.module('sntRover')
 
 						tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
 						tooltip.select("text").text(d[1] - d[0]);
+					});
+
+				// Add transition before setting height for animation
+				d3.selectAll(".rect-bars")
+					.transition()
+					.duration(800)
+					.attr("height", function(d) {
+						return yScale(d[0]) - yScale(d[1]);
 					});
 
 				var tooltip = svg.append("g")
@@ -141,14 +152,15 @@ angular.module('sntRover')
 					.tickPadding(10)
 					.tickSizeInner(0);
 
+				// Original X axis
 				svg.append("g")
 					.attr("transform", "translate(0," + yScale(0) + ")")
 					.call(xAxis);
-
+				// Original Y axis
 				svg.append("g")
 					.attr("transform", "translate(" + margin.left + ",0)")
 					.call(yAxis);
-
+				// Extra X axis to show ticks
 				svg.append("g")
 					.attr("transform", "translate(0," + yScale(-1 * maxValueInBothDirections) + ")")
 					.call(xAxisBottom)
@@ -164,14 +176,7 @@ angular.module('sntRover')
 						return checkIfDayIsToday(date) ? "bold" : "normal";
 					});
 
-				rvAnalyticsHelperSrv.drawRectLines({
-					svg: svg,
-					xOffset: margin.left,
-					height: 4,
-					width: width - 350,
-					yOffset: yScale(-1 * maxValueInBothDirections)
-				});
-
+				// Draw rect on top of the original X axis
 				rvAnalyticsHelperSrv.drawRectLines({
 					svg: svg,
 					xOffset: margin.left,
@@ -179,7 +184,15 @@ angular.module('sntRover')
 					width: width - 350,
 					yOffset: yScale(0)
 				});
-
+				// Draw rect on top of the extra X axis
+				rvAnalyticsHelperSrv.drawRectLines({
+					svg: svg,
+					xOffset: margin.left,
+					height: 4,
+					width: width - 350,
+					yOffset: yScale(-1 * maxValueInBothDirections)
+				});
+				// Draw rect on top of the Y axis
 				rvAnalyticsHelperSrv.drawRectLines({
 					svg: svg,
 					xOffset: margin.left,
