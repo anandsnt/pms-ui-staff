@@ -1405,7 +1405,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     // in case if all users are selected
                     if (changeAppliedFilter && report.empList.data.length === selected.length) {
                         $scope.appliedFilter.users = ['All Users'];
-                        params[key] = [];
+                        // CICO-70792 - No need to pass the param, when select all is selected
+                        delete params[key]; 
                     }
                 }
             }
