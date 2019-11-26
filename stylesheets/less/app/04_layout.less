@@ -962,6 +962,41 @@ body { overflow: hidden; }
 	                }
 				}
 
+				&.two-options {
+	                &.has-dates {
+	                    .entry {
+
+	                        &.search {
+	                            .calc-width( 100, 700 );
+	                        }
+
+	                        &.options {
+	                            width: 180px;
+
+	                            .faux-select-options {
+	                                padding-top: 5px;
+	                            }
+	                        }
+
+	                        &.dates {
+	                            width: 300px;
+
+	                            .entry-data {
+	                                .calc-width(50, 5);
+	                            }
+	                        }
+	                    }
+
+	                    &.enable-adding {
+	                        .entry {
+	                            &.search {
+	                                .calc-width( 100, 800 );
+	                            }
+	                        }
+	                    }
+	                }
+	            }
+
 				&.three-options {
 					.select,
 					.input {
@@ -1455,6 +1490,121 @@ body { overflow: hidden; }
 	                            text-transform: uppercase;
 	                            color: @grey3;
 	                        }
+	                    }
+	                }
+	            }
+	        }
+
+	        &.faux-options-open {
+	            overflow: visible;
+	        }
+
+	        .faux-select { 
+	            position: relative;
+	            padding: 5px 10px 0;
+	            line-height: 40px;
+	            height: 40px;
+	            cursor: pointer;
+	            z-index: 1030;
+	            .faux-clickable();
+	            text-align: left;
+	            margin: 0;
+	            text-transform: uppercase;
+
+	            &:after {
+	                content: '';
+	                position: absolute;
+	                top: 0;
+	                right: 0;
+	                background: @white @selectArrow no-repeat 50% 50%;
+	                background-size: 6px 4px;
+	                pointer-events: none;
+	                z-index: 999;
+	                .size(100%, 25px);
+	                #border-radius > .right();
+	            }
+
+	            .label {
+	                position: absolute;
+	                top: 0;
+	                left: 10px;
+	                font-size: 10px;
+	                line-height: 20px;
+	                text-transform: uppercase;
+	                color: #9d9d9d;
+	            }
+
+	            strong {
+	                font-size: 12px;
+	                font-weight: 600;
+	            }
+
+	            &.active {
+	                .box-shadow(none);
+	                &:after {
+	                    transform: rotate(180deg);
+	                }
+	            }
+	        }
+
+	        .faux-select-options {
+	            position: absolute;
+	            top: 40px;
+	            left: 10px;
+	            padding: 0;
+	            z-index: 1020;
+	            .calc-width(100,10);
+	            .faux-clickable;
+	            #fade > .in();
+
+	            .checkbox,
+	            .radio { 
+	                line-height: 30px;
+	                margin-bottom: 5px;
+	                text-align: left;
+	                text-transform: uppercase;
+	                font-size: 12px;
+	                padding-left: 40px;
+	                .show;
+
+	                .icon-form { 
+	                    top: 5px;
+	                    left: 10px;
+	                    &:not(.checked) {
+	                        background-color: @grey1;
+	                    }
+	                }
+
+	                input {
+	                    line-height: 30px;
+	                    min-height: 30px;
+	                }
+	            }
+
+	            &.hidden { #fade > .out(); }
+
+	            &.first-white {
+	                background: @grey1;
+
+	                label {
+	                    margin: 0;
+	                    padding: 5px 0px 5px 40px;
+
+	                    .icon-form {
+	                        top: 0;
+	                        bottom: 0;
+	                        margin: auto;
+	                    }
+
+	                    &.checked {
+	                        font-weight: 600;
+	                    }
+
+	                    &:not(:last-child) {
+	                        border-bottom: 1px solid rgba( 0, 0, 0, 0.15 );
+	                    }
+	                    &:first-child {
+	                        background: @white;
 	                    }
 	                }
 	            }
