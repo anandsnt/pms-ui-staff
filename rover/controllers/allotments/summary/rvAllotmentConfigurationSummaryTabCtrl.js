@@ -949,6 +949,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			if ($scope.allotmentConfigData.summary.rate === '-1') {
 				$scope.allotmentConfigData.summary.uniqId = '-1';
 			}
+			summaryMemento = angular.copy($scope.allotmentConfigData.summary);
 		};
 		var onFetchRatesFailure = function(errorMessage) {
 			$scope.errorMessage = errorMessage;
