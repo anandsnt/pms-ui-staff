@@ -320,9 +320,62 @@ sntRover.controller('RVReservationAddonsCtrl', [
             }
         };
 
+        $scope.selectPurchasedAddon = function(addon) {
+            $scope.selectedPurchesedAddon = addon;
+            $scope.selectedPurchesedAddon.selected_post_days = {};
+            $scope.selectedPurchesedAddon.startDate = $filter('date')($scope.reservationData.arrivalDate, $rootScope.dateFormat);
+            $scope.selectedPurchesedAddon.endDate = $filter('date')($scope.reservationData.departureDate, $rootScope.dateFormat);
+            $scope.togglePostDaysSelectionForAddon(false);
+
+        };
+
+        $scope.shouldShowSelectAllDaysOfWeek = function() {
+            var shouldShowSelectAllDaysOfWeek = false;
+            angular.forEach($scope.daysOfWeek, function(item, index) {
+                    if (!$scope.selectedPurchesedAddon.selected_post_days[item]) {
+                        shouldShowSelectAllDaysOfWeek = true;
+                    }
+                });
+            return shouldShowSelectAllDaysOfWeek;
+        };
+
+        $scope.shouldShowSelectNoDaysOfWeek = function() {
+            var shouldShowSelectNoDaysOfWeek = true;
+            angular.forEach($scope.daysOfWeek, function(item, index) {
+                    if (!$scope.selectedPurchesedAddon.selected_post_days[item]) {
+                        shouldShowSelectNoDaysOfWeek = false;
+                    }
+                });
+            return shouldShowSelectNoDaysOfWeek;
+        };
+
+        $scope.togglePostDaysSelectionForAddon = function(select) {
+            angular.forEach($scope.daysOfWeek, function(item, index) {
+                    $scope.selectedPurchesedAddon.selected_post_days[item] = select;
+                });
+        }
+        $scope.daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+        
+        var datePicker;
+        $scope.clickedOnDatePicker = function(datePickerFor) {
+            $scope.datePickerFor = datePickerFor;
+            datePicker = ngDialog.open({
+                template: '/assets/partials/common/rvDatePicker.html',
+                controller: 'RVAddonDatePickerController',
+                className: '',
+                scope: $scope,
+                closeByDocument: true
+            });
+        };
+
         $scope.closePopup = function() {
             ngDialog.close();
         };
+
+        $scope.closeCalendar = function() {
+            datePicker.close();
+        }
 
         $scope.refreshAddonsScroller = function() {
             $timeout(function() {

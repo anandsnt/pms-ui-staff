@@ -69,7 +69,7 @@ sntRover.directive('autoComplete', ['highlightFilter',
                                 }
                                 break;
                             case 'GROUP':
-                                defIcon = 'icon-group-large';
+                                defIcon = 'icon-group';
                                 defIconText = 'G';
                                 break;
                             case 'PROMO':
@@ -80,9 +80,9 @@ sntRover.directive('autoComplete', ['highlightFilter',
                                 break;
                         }
                         if (item.image) {
-                            $image = '<img src="' + item.image + '">';
+                            $image = '<img  src="' + item.image + '" class="account-image icons">';
                         } else {
-                            $image = '<span class="icons ' + defIcon + '">' + defIconText + '</span>';
+                            $image = '<span class="account-image icons ' + defIcon + '">' + defIconText + '</span>';
                         }
                         if (item.type) {
                             $($image).prependTo($result);
