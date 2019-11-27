@@ -239,6 +239,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     'is_active': true,
                     'is_not_rate_only': true,
                     'rate_id': $scope.reservationData.rooms[$scope.roomDetails.firstIndex].rateId,
+                    'reservation_id': $scope.reservationData.reservationId === undefined ? '' : $scope.reservationData.reservationId,
                     'no_pagination': true // Added for CICO-25066
                 }, successCallBackFetchAddons);
             },
