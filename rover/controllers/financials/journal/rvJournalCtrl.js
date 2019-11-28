@@ -334,7 +334,7 @@ sntRover.controller('RVJournalController',
        // call filter service
        callCashierFilterService();
        retrieveCashierName();
-    };
+    };    
 
     /* Cashier filter ends here */
 
@@ -355,7 +355,13 @@ sntRover.controller('RVJournalController',
         }
         else if (tabName === 'SUMMARY') {  
             $rootScope.$broadcast('REFRESHSUMMARYCONTENT');
-            $scope.data.searchFilterOptions.push($scope.data.arInvoiceFilter);
+            if (_.indexOf($scope.data.searchFilterOptions, _.findWhere($scope.data.searchFilterOptions, {
+                    value: "AR_INVOICE_NUMBER"
+                })) === -1) 
+            {
+                $scope.data.searchFilterOptions.push($scope.data.arInvoiceFilter);
+            }
+            
             $scope.data.isDrawerOpened = true;
         }
         if (tabName !== 'SUMMARY') { 

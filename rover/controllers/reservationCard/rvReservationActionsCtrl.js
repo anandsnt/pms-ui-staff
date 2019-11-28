@@ -65,6 +65,7 @@ sntRover.controller('reservationActionsController', [
             && reservationCard.is_reverse_checkout_allowed_for_hotel;
         $scope.shouldShowDemographicsInValidationPopup = false;
         $scope.shouldShowGuestInfoInValidationPopup = false;
+        $scope.hasPermissionToCheckin = rvPermissionSrv.getPermissionValue("CHECK_IN_RESERVATION");
 
         $scope.reverseCheckout = function(reservationId, clickedButton) {
             $state.go("rover.reservation.staycard.billcard", {
@@ -642,7 +643,6 @@ sntRover.controller('reservationActionsController', [
          * Before checking in we check if any deposit is left else noraml checkin
          *
          **************************************************************************/
-
         $scope.goToCheckin = function() {
             if ($scope.isGuestIdRequiredForCheckin()) {
                 $scope.toggleGuests(true);

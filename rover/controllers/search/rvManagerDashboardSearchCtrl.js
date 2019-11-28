@@ -1,5 +1,5 @@
-sntRover.controller('rvManagerDashboardSearchController', ['$scope', '$transitions',
-    function($scope, $transitions) {
+sntRover.controller('rvManagerDashboardSearchController', ['$scope', '$transitions', '$rootScope',
+    function($scope, $transitions, $rootScope) {
 
 	/*
 	* Controller class for dashboard search,
@@ -72,4 +72,5 @@ sntRover.controller('rvManagerDashboardSearchController', ['$scope', '$transitio
     $scope.$on("SearchResultsCleared", function(event) {
         backToDashboard();
     });
+
 }]);
