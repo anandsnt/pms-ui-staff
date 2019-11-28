@@ -979,6 +979,20 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		};
 
 		/**
+         * We need to refresh the rates once TA card info is changed
+         */
+        $scope.$on('TA_CARD_CHANGED', function(event) {
+            fetchApplicableRates();
+		});
+		
+		/**
+         * We need to refresh the rates once company card info is changed
+         */
+        $scope.$on('COMPANY_CARD_CHANGED', function(event) {
+            fetchApplicableRates();
+        });
+
+		/**
 		 * when a tab switch is there, parant controller will propogate an event
 		 * we will use this to fetch summary data
 		 */

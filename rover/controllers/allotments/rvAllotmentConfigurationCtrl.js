@@ -480,6 +480,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                     if (!$scope.isInAddMode()) {
                         $scope.updateAllotmentSummary(true);
                     }
+                    $scope.$broadcast("COMPANY_CARD_CHANGED");
                     runDigestCycle();
                     return false;
                 },
@@ -490,6 +491,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                         };
                         $scope.updateAllotmentSummary();
                     }
+                    $scope.$broadcast("COMPANY_CARD_CHANGED");
                 }
             }, cardsAutoCompleteCommon);
 
@@ -522,6 +524,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                     if (!$scope.isInAddMode()) {
                         $scope.updateAllotmentSummary(true);
                     }
+                    $scope.$broadcast("TA_CARD_CHANGED");
                     runDigestCycle();
                     return false;
                 },
@@ -532,6 +535,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                         };
                         $scope.updateAllotmentSummary();
                     }
+                    $scope.$broadcast("TA_CARD_CHANGED");
                 }
             }, cardsAutoCompleteCommon);
         };
