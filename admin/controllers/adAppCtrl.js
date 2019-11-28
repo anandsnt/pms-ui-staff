@@ -834,7 +834,24 @@ admin.controller('ADAppCtrl', [
 
             $rootScope.isAllowanceEnabled = data.is_allowance_enabled;
 
+            var isZestWebEnabled = data.is_zest_web_enabled || true;
+
             setupLeftMenu();
+            _.each($scope.data.menus, function(menu) {
+                menu.grayOutList = [];
+                
+                _.each(menu.components, function(component, index) {
+                    if(isZestWebEnabled && menu.menu_name === 'Zest' && component.name === 'Check In' || component.name === 'Check Out' ||
+                        component.name === 'Direct URL' || component.name === '' || component.name === 'Zest Web Common' ||
+                        component.name === 'Room Ready Email' || component.name === 'Zest Web Global Setup') {
+                        
+                        menu.grayOutList[index] = true;
+                    } else {
+                        menu.grayOutList[index] = false;
+                    }
+                });
+                console.log(menu);
+            });
         };
         /*
          * Function to get the current hotel language
