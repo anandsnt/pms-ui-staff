@@ -177,6 +177,10 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'rvC
                 }
             };
 
+            if ($scope.contractData.editData.is_master_contract) {
+                options.params.account_id = $scope.contractData.unlinkAccountId;
+            }
+
             $scope.callAPI(rvCompanyCardContractsSrv.unLinkContract, options);
         };
 
@@ -184,8 +188,14 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'rvC
         $scope.clickedUnlinkContracts = function( index ) {
             var clickedItem = $scope.contractData.editData.account_details[index];
             
-            $scope.contractData.unlinkAccountId = clickedItem.id;
-            $scope.cardName = $scope.contactInformation.account_details.account_name;
+            if ($scope.contractData.editData.is_master_contract) {
+                $scope.cardName = clickedItem.name;
+                $scope.contractData.unlinkAccountId = clickedItem.id;
+            }
+            else {
+                $scope.cardName = $scope.contactInformation.account_details.account_name;
+            }
+            
             ngDialog.open({
                 template: '/assets/partials/companyCard/contracts/rvConfirmUnlinkContract.html',
                 className: '',
