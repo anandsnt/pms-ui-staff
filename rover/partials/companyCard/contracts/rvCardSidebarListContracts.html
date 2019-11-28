@@ -14,7 +14,7 @@
         <div class="wrapper">
             <!-- If it has no items, add .no-items -->
             <!-- If it's opened, add .open -->
-            <div ng-show="contractData.isContractLinkBarExpanded" class="contract-list-items-section"
+            <div class="contract-list-items-section"
                 ng-repeat="item in contractData.contractsList"
                 ng-class="{'no-items': item.count === 0, 'open': item.opened}">
                 <h2 ng-click="openContractsList(item)">
@@ -42,6 +42,7 @@
                             <span class="icons icon-single-arrow"></span>
                             <span>{{contract.contract_end_date | date:dateFormat}}</span>
                         </div>
+                        <span class="icons icon-contracts" ng-class="{'active': contract.is_active && item.type !== 'PAST'}"></span>
                     </li>
                 </ul>
             </div>
