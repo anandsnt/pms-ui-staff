@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$scope', 'rvCompanyCardContractsSrv',
-	function($timeout, $scope, rvCompanyCardContractsSrv) {
+angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$scope',
+	function($timeout, $scope) {
         BaseCtrl.call(this, $scope);
         $scope.setScroller('contractListScroller');
         var refreshScroller = function() {
