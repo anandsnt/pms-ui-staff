@@ -720,8 +720,6 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 exportDate = $scope.selectedEntityDetails.from_date || null,
                 exportToDate = $scope.selectedEntityDetails.to_date || businessDateMinusOne;
 
-            // saved emails/FTP
-            var delieveryType = $scope.selectedEntityDetails.delivery_type ? $scope.selectedEntityDetails.delivery_type.value : '';
 
             var hasAccOrGuest, todayTimePeriod;
 
@@ -855,17 +853,6 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             $scope.timeSlots = reportUtils.createTimeSlots(TIME_SLOTS);
         };
 
-        /**
-         * Filter delivery types, show only EMAIL and SFTP options
-         * @param {Array} deliveryTypes all delivery types available in the system
-         * @return {void}
-         */
-        var filterDeliveryTypes = (deliveryTypes) => {
-            $scope.scheduleDeliveryTypes = _.filter(deliveryTypes, function (deliveryType) {
-                return deliveryType.value === 'EMAIL' || deliveryType.value === 'SFTP';
-            });
-        };
-
         var fetchReqDatas = function() {
             var reset = true;
 
@@ -878,7 +865,6 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 $scope.dropBoxAccountList = payload.dropBoxAccounts;
                 $scope.googleDriveAccountList = payload.googleDriveAccounts;
                 $scope.scheduleDeliveryTypes = payload.scheduleDeliveryTypes;
-                //filterDeliveryTypes(payload.scheduleDeliveryTypes);
 
                 // sort schedule list by report name
                 $scope.$parent.$parent.schedulesList = _.sortBy(
