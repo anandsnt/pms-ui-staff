@@ -44,6 +44,7 @@ angular.module('reportsModule')
                         'GROUP_ROOMS_REPORT': 'icon-report icon-room',
                         'YEARLY_TAX': 'icon-report icon-forecast',
                         'TAX_EXEMPT': 'icon-report icon-forecast',
+                        'GUESTS_INHOUSE_BY_NATIONALITY': 'icons icon-adult icon-20w',
                         /* default class name */
                         'DEFAULT': 'icon-report'
                     };

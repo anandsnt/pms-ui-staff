@@ -23,9 +23,9 @@
                                   styleclass="full-width"></ad-textbox>
                       <ad-textbox inputtype="text" value="config.ftp_username" label="FTP User Name"
                                   styleclass="full-width"></ad-textbox>
-                      <ad-textbox 
-                            inputtype="password" 
-                            value="config.ftp_password" 
+                      <ad-textbox
+                            inputtype="password"
+                            value="config.ftp_password"
                             label="FTP Password"
                             styleclass="full-width"
                             click-handler="onPasswordClick(config, 'ftp_password')"></ad-textbox>
@@ -44,6 +44,8 @@
                                   styleclass="full-width"></ad-textbox>
                       <ad-textbox inputtype="text" value="config.swift_code" label="Swift Code"
                                   styleclass="full-width"></ad-textbox>
+                      <ad-toggle-button is-checked="config.multi_currency_enabled"
+                                        label="{{'MULTI_CURRENCY'| translate}}"></ad-toggle-button>
                   </section>
               </fieldset>
             </fieldset>

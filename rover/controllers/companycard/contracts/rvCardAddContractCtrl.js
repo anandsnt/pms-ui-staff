@@ -54,6 +54,7 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'rvCo
                 isActive: true,
                 occupancy: []
             };
+            refreshScroller();
         };
         
         /**

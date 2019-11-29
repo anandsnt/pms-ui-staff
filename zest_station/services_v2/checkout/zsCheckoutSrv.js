@@ -118,6 +118,10 @@ sntZestStation.service('zsCheckoutSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseW
         this.fetchReservationFromUId = function(params) {
             var deferred = $q.defer();
             var url = '/api/reservations/find_by_key_uid';
+            // CICO-71659 - we should sent to API as encoded string only
+            if (params['keydata_ilco_34']) {
+               params['keydata_ilco_34'] = encodeURIComponent(params['keydata_ilco_34']);
+            }
 
             zsBaseWebSrv.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);

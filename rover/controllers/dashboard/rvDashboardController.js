@@ -380,24 +380,63 @@ sntRover.controller('RVdashboardController',
 
             $scope.analyticsDashboardEnabled = Toggles.isEnabled('dashboard_analytics');
 
-            $scope.dashboardFilter.analyticsActive = false;
+            if ($scope.analyticsDashboardEnabled) {
+                $scope.dashboardFilter.analyticsActive = false;
 
-            $scope.toggleAnalyticsView = function() {
-                if ($scope.dashboardFilter.analyticsActive) {
-                    $scope.dashboardFilter.analyticsActive = false;
-                    $scope.$broadcast('RESET_ANALYTICS_FILTERS');
-                } else {
-                    $scope.$broadcast('SHOW_ANALYTICS_DASHBOARD');
-                }
-            };
+                $scope.toggleAnalyticsView = function() {
+                    if ($scope.dashboardFilter.analyticsActive) {
+                        $scope.dashboardFilter.analyticsActive = false;
+                        $scope.$broadcast('RESET_ANALYTICS_FILTERS');
+                        $scope.$broadcast("showDashboardArea", true);
+                    } else {
+                        $scope.$broadcast('ANALYTICS_VIEW_ACTIVE');
+                        $scope.dashboardFilter.analyticsActive = true;
+                    }
+                };
 
-            $scope.changeAnalyticsView = function (selectedChart) {
-                $scope.dashboardFilter.selectedAnalyticsMenu = selectedChart;
-                $scope.$broadcast('ANALYTICS_MENU_CHANGED', selectedChart);
-            };
+                $scope.changeAnalyticsView = function(selectedChart) {
+                    $scope.dashboardFilter.selectedAnalyticsMenu = selectedChart;
+                    $scope.$broadcast('ANALYTICS_MENU_CHANGED', selectedChart);
+                };
 
-            $scope.$on('SET_DEFAULT_ANALYTICS_MENU', function(e, selectedChart) {
-                $scope.dashboardFilter.selectedAnalyticsMenu = selectedChart;
-            });
+                $scope.$on('SET_DEFAULT_ANALYTICS_MENU', function(e, selectedChart) {
+                    $scope.dashboardFilter.selectedAnalyticsMenu = selectedChart;
+                });
+
+                $scope.onAnlayticsRoomTypeChange = function() {
+                    $scope.$broadcast('RELOAD_DATA_WITH_SELECTED_FILTER', {
+                        "room_type": $scope.dashboardFilter.selectedRoomType,
+                        "date": $scope.dashboardFilter.datePicked
+                    });
+                };
+
+                $scope.dashboardFilter.datePicked = angular.copy($rootScope.businessDate);
+                $scope.datePicked = moment($rootScope.businessDate).format('YYYY-MM-DD');
+
+               $scope.dateOptions = {
+                    changeYear: true,
+                    changeMonth: true,
+                    yearRange: "-5:+5",
+                    dateFormat: 'yy-mm-dd',
+                    maxDate: moment($rootScope.businessDate).add(3, 'days').format('YYYY-MM-DD'),
+                    onSelect: function(dateText, inst) {
+                        $scope.dashboardFilter.datePicked = dateText;
+                        $scope.$broadcast('RELOAD_DATA_WITH_DATE_FILTER', {
+                            "date": $scope.dashboardFilter.datePicked
+                        });
+                        ngDialog.close();
+                    }
+                };
+
+                $scope.showAnalyticsDatePicker = function() {
+                    $timeout(function() {
+                        ngDialog.open({
+                            template: '/assets/partials/search/rvDatePickerPopup.html',
+                            className: '',
+                            scope: $scope
+                        });
+                    }, 1000);
+                };
+            }
 
         }]);

@@ -544,7 +544,8 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 				fees_information: cardDetails.fees_information,
 				holder_name: cardDetails.card_name,
 				is_credit_card: cardDetails.payment_type === "CC",
-				value: cardDetails.payment_id
+				value: cardDetails.payment_id,
+				auth_code: cardDetails.auth_code
 			};
 		});
 	};

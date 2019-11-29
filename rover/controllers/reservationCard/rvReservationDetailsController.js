@@ -347,7 +347,6 @@ sntRover.controller('reservationDetailsController',
 		var reservationMainData = $scope.$parent.reservationData;
 
 		$scope.reservationParentData = $scope.$parent.reservationData;
-
 		$scope.reservationData = reservationDetails;
 
 		/**
@@ -888,6 +887,10 @@ sntRover.controller('reservationDetailsController',
 			if ($scope.reservationData.reservation_card.reservation_status === 'CHECKEDIN') {
 				roomTypeId = $scope.reservationData.reservation_card.room_type_id;
 			}
+
+			angular.forEach($scope.reservationData.reservation_card.stay_dates, function(detail) {
+				$scope.$parent.reservationData.rooms[0].stayDates[detail.date].contractId = detail.contract_id;
+			});
 
 			$state.go(roomAndRatesState, {
 				from_date: arrival || reservationMainData.arrivalDate,
@@ -1451,6 +1454,9 @@ sntRover.controller('reservationDetailsController',
 					});
 					// Default to select the first CC as active one.
 					$scope.selectCCforAuth(0);
+					if ($rootScope.hotelDetails.payment_gateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline) {
+						$scope.authData.manualAuthCode = $scope.authData.billData[0].last_authorization.code;
+					}
 					// Handle scroller
 					var scrollerOptions = { preventDefault: false };
 
@@ -1535,10 +1541,14 @@ sntRover.controller('reservationDetailsController',
 			var onAuthorizationSuccess = function(response) {
 				$scope.$emit('hideLoader');
 				authSuccess(response);
-				if ($scope.authData.isManual) {
+				if ($scope.authData.isManual || ($rootScope.hotelDetails.payment_gateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline)) {
 					$scope.authData.isManual = false; // reset 
 					$scope.authData.authAmount = ''; // reset
-					$scope.authData.manualAuthCode = ''; // reset
+					if ($rootScope.hotelDetails.payment_gateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline) {
+						$scope.authData.manualAuthCode = response.auth_code;
+					} else {
+						$scope.authData.manualAuthCode = ''; // reset
+					}
 					ngDialog.close(); // reload popup with new data from the API
 					$scope.showAuthAmountPopUp();
 				}
@@ -1600,6 +1610,15 @@ sntRover.controller('reservationDetailsController',
 				}, 100);
 			}
 
+		};
+
+		$scope.isShijiOfflineAuthCodeEmpty = function() {
+			if($rootScope.hotelDetails.payment_gateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline) {
+				if (!$scope.authData.manualAuthCode) {
+					return true
+				}
+			}
+			return false;
 		};
 
     // Handle TRY AGAIN on auth failure popup.

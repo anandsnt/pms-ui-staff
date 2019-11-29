@@ -70,7 +70,7 @@
         </div>
     </div>
 
-    <div class="entry full-width" ng-if="selectedPaymentType === 'CC' && hotelConfig.paymentGateway === 'SHIJI' && payment.shiji_token_enable_offline">
+    <div class="entry full-width" ng-if="selectedPaymentType === 'CC' && hotelConfig.paymentGateway === 'SHIJI' && getShijiOfflineStatus()">
         <label for="auth-code">{{ 'ENTER_MANUAL_AUTH_CODE' | translate }}</label>
         <input id="auth-code"
             ng-model="payment.auth_code"
@@ -96,10 +96,9 @@
             </span>
         </li>
         <li ng-if="!feeData.showFee">
-            Amount paid:
-            <span class="value">
-                <i class="currency">{{payment.selectedPaymentCurrencySymbol}}</i>{{payment.amount}}
-            </span>
+           Amount paid:
+           <span class="value" ng-bind-html="payment.amount | sntCurrency:this:payment.selectedPaymentCurrencySymbol">
+           </span>
         </li>
     </ul>
 </div>

@@ -7,6 +7,7 @@ angular.module('sntRover').controller('rvGroupRootCtrl',	[
 	'$log',
 	function($scope, $rootScope, $filter, $timeout, $interval, $log) {
 
+		BaseCtrl.call(this, $scope);
 		/**
 		* function to set Headinng
 		* @return - {None}
@@ -19,5 +20,9 @@ angular.module('sntRover').controller('rvGroupRootCtrl',	[
 		if (!$rootScope.disableObserveForSwipe) {
             CardReaderCtrl.call(this, $scope, $rootScope, $timeout, $interval, $log);
             $scope.observeForSwipe();
-        }
+		}
+		
+		$scope.addListener('UPDATE_HEADING', function (event, heading) {
+			$scope.heading = heading;
+		});
 	}]);

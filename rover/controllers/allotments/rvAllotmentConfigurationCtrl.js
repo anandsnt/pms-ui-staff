@@ -300,6 +300,8 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                 if (ifMandatoryValuesEntered()) {
                     if (!$scope.allotmentConfigData.summary.rate) {
                         $scope.allotmentConfigData.summary.rate = -1;
+                        $scope.allotmentConfigData.summary.uniqId = '-1';
+                        $scope.allotmentConfigData.summary.contract_id = null;
                     }
                     var options = {
                         successCallBack: onAllotmentSaveSuccess,
@@ -361,6 +363,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                 summaryData.release_date = $filter('date')(summaryData.release_date, $rootScope.dateFormatForAPI);
                 if (!summaryData.rate) {
                     summaryData.rate = -1;
+                    summaryData.contract_id = null;
                 }
                 $scope.callAPI(rvAllotmentConfigurationSrv.updateAllotmentSummary, {
                     successCallBack: onAllotmentUpdateSuccess,
@@ -461,7 +464,8 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                                     label: each.account_name,
                                     value: each.id,
                                     address: each.account_address,
-                                    type: each.account_type
+                                    type: each.account_type,
+                                    contract_access_code: each.current_contracts.length > 0 ? each.current_contracts[0].access_code : null
                                 };
                                 list.push(entry);
                             });
@@ -476,6 +480,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                     if (!$scope.isInAddMode()) {
                         $scope.updateAllotmentSummary(true);
                     }
+                    $scope.$broadcast("COMPANY_CARD_CHANGED");
                     runDigestCycle();
                     return false;
                 },
@@ -486,6 +491,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                         };
                         $scope.updateAllotmentSummary();
                     }
+                    $scope.$broadcast("COMPANY_CARD_CHANGED");
                 }
             }, cardsAutoCompleteCommon);
 
@@ -502,7 +508,8 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                                     label: each.account_name,
                                     value: each.id,
                                     address: each.account_address,
-                                    type: each.account_type
+                                    type: each.account_type,
+                                    contract_access_code: each.current_contracts.length > 0 ? each.current_contracts[0].access_code : null
                                 };
                                 list.push(entry);
                             });
@@ -517,6 +524,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                     if (!$scope.isInAddMode()) {
                         $scope.updateAllotmentSummary(true);
                     }
+                    $scope.$broadcast("TA_CARD_CHANGED");
                     runDigestCycle();
                     return false;
                 },
@@ -527,6 +535,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                         };
                         $scope.updateAllotmentSummary();
                     }
+                    $scope.$broadcast("TA_CARD_CHANGED");
                 }
             }, cardsAutoCompleteCommon);
         };

@@ -43,7 +43,8 @@ var sntRover = angular.module('sntRover', [
         'sntCanvasUtil',
 		'snt.utils',
 		'ui.sortable',
-		'restrictMinVal'
+		'restrictMinVal',
+		'sntPayConfig'
 	]);
 
 sntRover.config([

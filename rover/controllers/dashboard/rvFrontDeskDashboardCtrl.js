@@ -1,6 +1,6 @@
 sntRover.controller('RVfrontDeskDashboardController',
-    ['$scope', '$rootScope', 'RVDashboardSrv', '$timeout',
-        function($scope, $rootScope, RVDashboardSrv, $timeout) {
+    ['$scope', '$rootScope', 'RVDashboardSrv', '$timeout', 'ngDialog',
+        function($scope, $rootScope, RVDashboardSrv, $timeout, ngDialog) {
 	// inheriting some useful things
 	BaseCtrl.call(this, $scope);
     var that = this;
@@ -19,6 +19,12 @@ sntRover.controller('RVfrontDeskDashboardController',
 	var scrollerOptions = {click: true, preventDefault: false};
 
   	$scope.setScroller('dashboard_scroller', scrollerOptions);
+    $scope.setScroller('analytics_scroller', {
+      preventDefaultException: {
+        tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/
+      },
+      preventDefault: false
+    });
 
   	$scope.showDashboard = true; // variable used to hide/show dabshboard
     // changing the header
@@ -72,26 +78,13 @@ sntRover.controller('RVfrontDeskDashboardController',
       $scope.refreshScroller('dashboard_scroller');
     }, 500);
 
-    $scope.$on('SHOW_ANALYTICS_DASHBOARD', function() {
-      // call API and on Success show Analytics page
-        $timeout(function() {
-        $scope.dashboardFilter.analyticsActive = true;
-        // var options = {
-        //     params: $rootScope.businessDate,
-        //     successCallBack: function() {
-        //         rvFrontOfficeAnalyticsSrv.fdArrivalsManagement($rootScope.businessDate).then(function(data) {
-        //             console.log("I am inside  fdArrivalsManagement");
-        //             console.log(data);
-        //         });
+    $scope.$emit('SET_DEFAULT_ANALYTICS_MENU', 'FO_ARRIVALS');
 
-        //         rvFrontOfficeAnalyticsSrv.fdWorkload($rootScope.businessDate).then(function(data) {
-        //             console.log("I am inside  fdWorkload");
-        //             console.log(data);
-        //         });
-        //     }
-        // };
-
-        // $scope.callAPI(rvAnalyticsSrv.initRoomAndReservationApis, options);
+    var refreshAnalyticsScroller = function() {
+      $timeout(function() {
+        $scope.refreshScroller('analytics_scroller');
       }, 500);
-    });
+    };
+
+    $scope.$on('REFRESH_ANALTICS_SCROLLER', refreshAnalyticsScroller);
 }]);

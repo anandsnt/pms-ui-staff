@@ -91,7 +91,16 @@ module.exports = {
             'concordia': [themeCSSRoot + 'concordia.less'],
             'belvedere': [themeCSSRoot + 'belvedere.less'],
             'delavan': [themeCSSRoot + 'delavan.less'],
-            'garden-place': [themeCSSRoot + 'garden-place.less']
+            'garden-place': [themeCSSRoot + 'garden-place.less'],
+            'crowne': [themeCSSRoot + 'crowne.less'],
+            'indigo': [themeCSSRoot + 'indigo.less'],
+            'caro': [themeCSSRoot + 'caro.less'],
+            'schani-wien': [themeCSSRoot + 'schani-wien.less'],
+            'glencoe': [themeCSSRoot + 'glencoe.less'],
+            'schani-salon': [themeCSSRoot + 'schani-salon.less'],
+            'spatz': [themeCSSRoot + 'spatz.less'],
+            'lenaustrasse': [themeCSSRoot + 'lenaustrasse.less'],
+            'why-tysons': [themeCSSRoot + 'why-tysons.less']
         };
     }
 };

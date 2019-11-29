@@ -107,7 +107,16 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'concordia': 'The Concordia',
             'belvedere': 'Belvedere-on-Hudson',
             'delavan': 'The Delavan Hotel and Spa',
-            'garden-place': 'Garden Place Hotel'
+            'garden-place': 'Garden Place Hotel',
+            'crowne': 'Crowne Plaza Brussels',
+            'indigo': 'Hotel Indigo Brussels',
+            'caro': 'Caro Short Stay',
+            'schani-wien': 'Hotel Schani Wien',
+            'glencoe': 'Glencoe House',
+            'schani-salon': 'Hotel Schani Salon',
+            'spatz': 'Hotel Spatz',
+            'lenaustrasse': 'Apartment City Lenaustrasse',
+            'why-tysons': 'Why Hotel Tysons Corner'
         };
 
         this.isThemeConfigured = function(theme) {

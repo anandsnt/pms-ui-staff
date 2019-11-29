@@ -38,31 +38,28 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 fromDate,
                 toDate;
 
-    
-            if (reportName === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] || 
-                reportName === reportNames['DAILY_PRODUCTION_DEMO'] || 
-                reportName === reportNames['DAILY_PRODUCTION_RATE']  
-                ) {
-
-                hasDateFilters = true;
-            }
-            if (params.fiterFromDate && params.filterToDate && hasDateFilters) {
-                fromDate = new Date(params.fiterFromDate);
-                toDate = new Date(params.filterToDate);
-                var itemDate;
-
-                results = Object.keys(results).reduce(function (obj, k) {
-                    itemDate = new Date(k);
-
-                    if (itemDate >= fromDate && itemDate <= toDate)  {
-                        obj[k] = results[k];
-                    }
-                    return obj;
-                }, {});
-            } 
-            paginatedResult = _.isArray(results) ? results.slice(start, end)
-                : results;
-
+                if (reportName === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ||
+                    reportName === reportNames['DAILY_PRODUCTION_DEMO'] ||
+                    reportName === reportNames['DAILY_PRODUCTION_RATE']) {
+                    hasDateFilters = true;
+                }
+                if (params.fiterFromDate && params.filterToDate && hasDateFilters) {
+                    fromDate = new Date(params.fiterFromDate);
+                    toDate = new Date(params.filterToDate);
+                    var itemDate;
+                
+                    results = Object.keys(results).reduce(function (obj, k) {
+                        itemDate = new Date(k);
+                
+                        if (itemDate >= fromDate && itemDate <= toDate) {
+                            obj[k] = results[k];
+                        }
+                        return obj;
+                    }, {});
+                }
+                paginatedResult = _.isArray(results) ? results.slice(start, end)
+                    : results;
+            
             return paginatedResult;
         };
         /**
@@ -76,7 +73,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 toatalCount = response.total_count,
                 lastPage = Math.ceil(toatalCount / params.per_page);
 
-            return params.page === lastPage ? response.results_total_row : null;
+            return (toatalCount < params.per_page || params.page === lastPage ) ? response.results_total_row : null;
         };
         /**
          * Abstract the response based on params
@@ -629,6 +626,15 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 resKey: 'results'
             });
         };
+
+        service.fetchLanguages = function() {
+            return callApi({
+                name: 'languages',
+                method: 'getJSON',
+                url: 'api/guest_languages',
+                resKey: 'languages'
+            });
+        };        
 
         service.getChargeCodes = function(params) {
             return callApi({

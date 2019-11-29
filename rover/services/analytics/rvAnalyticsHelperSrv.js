@@ -79,7 +79,7 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 					xFinal: item.xFinal,
 					count: item.count,
 					chartName: chartName,
-					elementId: chartName + "-" + item.type
+					elementId: item.type === "pending_inspected_rooms" ? "rooms-short" : chartName + "-" + item.type
 				};
 			});
 		});
@@ -93,15 +93,78 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 		return chartDetails;
 	};
 
+	this.addLegendItems = function(cssClassMappings, parentElement, legendData, onLegendClick) {
 
-	this.drawBarsOfBidirectonalChart = function(barData) {
+		parentElement
+			.append("dt")
+			.attr("class", "legend-title")
+			.attr("id", legendData.id)
+			.html(legendData.title)
+			.style("margin-top", legendData.margin_top + "px");
+
+		_.each(legendData.items, function(item) {
+			parentElement
+				.append("dd")
+				.attr("class", "legend-item")
+				.attr("id", item.id).append("span")
+				.attr("class", function(label) {
+					return cssClassMappings[item.label];
+				})
+				.html(item.count);
+
+			d3.select("#" + item.id)
+				.append("span")
+				.attr("class", "bar-label")
+				.html(item.label)
+		});
+	};
+
+	this.addLegendItemsToChart = function(legendItem) {
+
+		// cssClassMappings, parentElement, legendData, onLegendClick
+
+		legendItem.parentElement
+			.append("dt")
+			.attr("class", "legend-title")
+			.attr("id", legendItem.legendData.id)
+			.html(legendItem.legendData.title)
+			.style("margin-top", legendItem.legendData.margin_top + "px");
+
+		_.each(legendItem.legendData.items, function(item) {
+			legendItem.parentElement
+				.append("dd")
+				.attr("class", "legend-item")
+				.attr("id", item.id)
+				.append("span")
+				.attr("id", item.id + "-count")
+				.attr("class", function(label) {
+					return item.class;
+				})
+				.html(item.count);
+
+			d3.select("#" + item.id)
+				.append("span")
+				.attr("class", "bar-label")
+				.attr("id", item.id + "-label")
+				.html(item.label);
+
+			var onClickEvent = function() {
+				legendItem.onLegendClick(item.item_name);
+			};
+
+			$("#" + item.id + "-label").click(onClickEvent);
+			$("#" + item.id + "-count").click(onClickEvent);
+		});
+	};
+
+	this.drawBarChart = function(barData) {
 		var svg = barData.svg,
 			yScale = barData.yScale,
 			xScale = barData.xScale,
 			chartDetails = barData.chartDetails,
-			colorScheme = barData.colorScheme,
 			maxValue = barData.maxValue,
-			cssClassMappings = barData.cssClassMappings;
+			cssClassMappings = barData.cssClassMappings,
+			colorMappings = barData.colorMappings;
 
 		var vakken = svg.selectAll(".type")
 			.data(chartDetails.chartData.data)
@@ -126,55 +189,360 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 			});
 
 		bars.append("rect")
+			.attr("class", function (item) {
+				return item.type === "pending_inspected_rooms" ? "bar-warning rect-bars" : "rect-bars";
+			})
 			.attr("height", yScale.bandwidth())
 			.attr("x", function(item) {
 				return xScale(item.xOrigin);
 			})
-			.attr("width", function(item) {
-				return xScale(item.xFinal) - xScale(item.xOrigin);
+			.attr("fill", function(item) {
+				var fillColor = colorMappings[item.chartName + "_" + item.type].fill;
+
+				return "url(#" + fillColor + ")"
 			})
-			.style("fill", function(item) {
-				// console.log(item.chartName);
-				// console.log(colorScheme[item.chartName + 'ColorScheme']);
-				return colorScheme[item.chartName + 'ColorScheme'](item.type);
+			.attr("onmouseover", function(item) {
+				var mouseoverColor = colorMappings[item.chartName + "_" + item.type].onmouseover_fill;
+
+				return "evt.target.setAttribute('fill', 'url(#" + colorMappings[item.chartName + "_" + item.type].onmouseover_fill + " )');"
+			})
+			.attr("onmouseout", function(item) {
+				var mouseoutColor = colorMappings[item.chartName + "_" + item.type].onmouseout_fill;
+
+				return "evt.target.setAttribute('fill', 'url(#" + mouseoutColor + " )');"
 			})
 			.on("click", function(e) {
-				barData.onBarChartClick(e);
+				var clickeElement = e.elementId ? e.elementId.replace("-", "_") : "";
+
+				barData.onBarChartClick(clickeElement);
 			});
 
-		// var isSmallBarItem = function(item) {
-		// 	var itemPercantage = item.count * 100 / maxValue;
-
-		// 	return (itemPercantage < 8 || itemPercantage > 4 && item.count < 10);
-		// };
-
-		// bars.append("text")
-		// 	.attr("x", function(item) {
-		// 		return ((xScale(item.xOrigin) + xScale(item.xFinal)) / 2);
-		// 	})
-		// 	.attr("y", function() {
-		// 		return yScale.bandwidth() / 2;
-		// 	})
-		// 	.attr("dy", function(item) {
-		// 		return isSmallBarItem(item) ? -1 * (yScale.bandwidth() / 2 + 10) : "0.5em";
-		// 	})
-		// 	.attr("dx", function(item) {
-		// 		return isSmallBarItem(item) && item.xOrigin <= 0 ? "-0.5em" : "0em";
-		// 	})
-		// 	.style("font-size", function(item) {
-		// 		return isSmallBarItem(item) ? "10px" : "15px";
-		// 	})
-		// 	.style("text-anchor", "middle")
-		// 	.text(function(item) {
-		// 		return item.count !== 0 ? item.count : '';
-		// 	});
+		d3.selectAll(".rect-bars")
+			.transition()
+			.duration(300)
+			.attr("width", function(item) {
+				return xScale(item.xFinal) - xScale(item.xOrigin);
+			});
 	};
 
+	this.drawRectLines = function(rect) {
+		rect.svg.append("g")
+			.append("rect")
+			.attr("class", "chart-breakpoint-line")
+			.attr("x", rect.xOffset)
+			.attr("y", rect.yOffset)
+			.attr("height", rect.height)
+			.attr("width", rect.width);
+	};
+
+	this.gradientMappings = {
+		"greenLight": {
+			"legend_class": "bar bar-green bar-light",
+			"fill": "greenLight",
+			"onmouseover_fill": "greenLightHover",
+			"onmouseout_fill": "greenLight"
+		},
+		"greenDark": {
+			"legend_class": "bar bar-green bar-dark",
+			"fill": "greenDark",
+			"onmouseover_fill": "greenDarkHover",
+			"onmouseout_fill": "greenDark"
+		},
+		"green": {
+			"legend_class": "bar bar-green",
+			"fill": "green",
+			"onmouseover_fill": "greenHover",
+			"onmouseout_fill": "green"
+		},
+		"redLight": {
+			"legend_class": "bar bar-red bar-light",
+			"fill": "redLight",
+			"onmouseover_fill": "redLightHover",
+			"onmouseout_fill": "redLight"
+		},
+		"red": {
+			"legend_class": "bar bar-red",
+			"fill": "red",
+			"onmouseover_fill": "redHover",
+			"onmouseout_fill": "red"
+		},
+		"redDark": {
+			"legend_class": "bar bar-red bar-dark",
+			"fill": "redDark",
+			"onmouseover_fill": "redDarkHover",
+			"onmouseout_fill": "redDark"
+		},
+		"orange": {
+			"legend_class": "bar bar-orange",
+			"fill": "orange",
+			"onmouseover_fill": "orangeHover",
+			"onmouseout_fill": "orange"
+		},
+		"blueLight": {
+			"legend_class": "bar bar-blue bar-light",
+			"fill": "blueLight",
+			"onmouseover_fill": "blueLightHover",
+			"onmouseout_fill": "blueLight"
+		},
+		"blue": {
+			"legend_class": "bar bar-blue",
+			"fill": "blue",
+			"onmouseover_fill": "blueHover",
+			"onmouseout_fill": "blue"
+		},
+		"warning": {
+			"legend_class": "bar bar-warning",
+			"id": "room_short",
+			"rect_class": "bar-warning"
+		}
+	};
+
+	this.constructColorMappings = function(item_name, color) {
+		return _.extend({
+			item_name: item_name
+		}, this.gradientMappings[color]);
+	};
+
+	this.addTextsToChart = function(textData) {
+		textData.svg.append("text")
+			.attr("x", textData.xOffset)
+			.attr("y", textData.yOffset)
+			.attr("dy", ".35em")
+			.attr("class", "chart-area-label")
+			.text(textData.label);
+	};
+
+	this.getYAxisValues = function(axisValues, x, y) {
+
+		var yAxisValues = [{
+				"type": "occupany",
+				"label": "",
+				"xOffset": x(0),
+				"yOffset": y(0)
+			}, {
+				"type": "occupany",
+				"label": "25",
+				"xOffset": x(0),
+				"yOffset": y(0.1)
+			}, {
+				"type": "occupany",
+				"label": "50",
+				"xOffset": x(0),
+				"yOffset": y(0.2)
+			}, {
+				"type": "occupany",
+				"label": "75",
+				"xOffset": x(0),
+				"yOffset": y(0.3)
+			}, {
+				"type": "occupany",
+				"label": "",
+				"xOffset": x(0),
+				"yOffset": y(0.4)
+			}, {
+				"type": "occupany",
+				"label": "25",
+				"xOffset": x(0),
+				"yOffset": y(-0.1)
+			}, {
+				"type": "occupany",
+				"label": "50",
+				"xOffset": x(0),
+				"yOffset": y(-0.2)
+			}, {
+				"type": "occupany",
+				"label": "75",
+				"xOffset": x(0),
+				"yOffset": y(-0.3)
+			}, {
+				"type": "occupany",
+				"label": "",
+				"xOffset": x(0),
+				"yOffset": y(-0.4)
+			},
+
+			{
+				"type": "revenue",
+				"label": axisValues[0],
+				"xOffset": x(0),
+				"yOffset": y(-0.5)
+			}, {
+				"type": "revenue",
+				"label": axisValues[1],
+				"xOffset": x(0),
+				"yOffset": y(-0.6)
+			}, {
+				"type": "revenue",
+				"label": axisValues[2],
+				"xOffset": x(0),
+				"yOffset": y(-0.7)
+			}, {
+				"type": "revenue",
+				"label": axisValues[3],
+				"xOffset": x(0),
+				"yOffset": y(-0.8)
+			}, {
+				"type": "revenue",
+				"label": axisValues[4],
+				"xOffset": x(0),
+				"yOffset": y(-0.9)
+			}, {
+				"type": "revenue",
+				"label": axisValues[5],
+				"xOffset": x(0),
+				"yOffset": y(-1)
+			}, {
+				"type": "revenue",
+				"label": axisValues[0],
+				"xOffset": x(0),
+				"yOffset": y(0.5)
+			}, {
+				"type": "revenue",
+				"label": axisValues[1],
+				"xOffset": x(0),
+				"yOffset": y(0.6)
+			}, {
+				"type": "revenue",
+				"label": axisValues[2],
+				"xOffset": x(0),
+				"yOffset": y(0.7)
+			}, {
+				"type": "revenue",
+				"label": axisValues[3],
+				"xOffset": x(0),
+				"yOffset": y(0.8)
+			}, {
+				"type": "revenue",
+				"label": axisValues[4],
+				"xOffset": x(0),
+				"yOffset": y(0.9)
+			}, {
+				"type": "revenue",
+				"label": axisValues[5],
+				"xOffset": x(0),
+				"yOffset": y(1)
+			}
+		];
+
+		return yAxisValues;
+	};
+
+
+	this.getXAxisValues = function(axisValues, x, y) {
+		var xAxisLabels = [{
+			"type": "occupany",
+			"label": "",
+			"xOffset": x(0),
+			"yOffset": y(0)
+		}, {
+			"type": "occupany",
+			"label": "25",
+			"xOffset": x(0.1),
+			"yOffset": y(0)
+		}, {
+			"type": "occupany",
+			"label": "50",
+			"xOffset": x(0.2),
+			"yOffset": y(0)
+		}, {
+			"type": "occupany",
+			"label": "75",
+			"xOffset": x(0.3),
+			"yOffset": y(0)
+		}, {
+			"type": "occupany",
+			"label": "",
+			"xOffset": x(0.4),
+			"yOffset": y(0)
+		}, {
+			"type": "occupany",
+			"label": "25",
+			"xOffset": x(-0.1),
+			"yOffset": y(0)
+		}, {
+			"type": "occupany",
+			"label": "50",
+			"xOffset": x(-0.2),
+			"yOffset": y(0)
+		}, {
+			"type": "occupany",
+			"label": "75",
+			"xOffset": x(-0.3),
+			"yOffset": y(0)
+		}, {
+			"type": "occupany",
+			"label": "",
+			"xOffset": x(-0.4),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[0],
+			"xOffset": x(-0.5),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[1],
+			"xOffset": x(-0.6),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[2],
+			"xOffset": x(-0.7),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[3],
+			"xOffset": x(-0.8),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[4],
+			"xOffset": x(-0.9),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[5],
+			"xOffset": x(-1),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[0],
+			"xOffset": x(0.5),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[1],
+			"xOffset": x(0.6),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[2],
+			"xOffset": x(0.7),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[3],
+			"xOffset": x(0.8),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[4],
+			"xOffset": x(0.9),
+			"yOffset": y(0)
+		}, {
+			"type": "revenue",
+			"label": axisValues[5],
+			"xOffset": x(1),
+			"yOffset": y(0)
+		}];
+
+		return xAxisLabels;
+	};
 
 	this.addRandomNumbersForTesting = function(chartDetails) {
 		var combinedItemsCountArray = [];
 
-		var workPriority = false;
+		var workPriority = chartDetails.chartData.label === 'AN_WORKLOAD';;
 
 		if (workPriority) {
 			var b = {
@@ -212,7 +580,7 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 
 			var i = 0;
 			var c = {};
-			for (i = 0; i <= 24; i++) {
+			for (i = 0; i <= 10; i++) {
 				c[i] = angular.copy(b);
 				c[i].type = c[i].type + i;
 				c[i].label = c[i].label + i;
@@ -230,7 +598,17 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 			});
 			_.each(chart.contents.right_side, function(item) {
 				// to delete
+				if (item.type == "early_checkin") {
+					item.count = 30;
+				} 
+				else if (item.type == "remaining") {
+					item.count = 90;
+				} else if(item.type === 'inspected'){
+					item.count = 15;
+				} else{
 				item.count = item.count < 3 ? _.random(20, 100) : item.count;
+
+				}
 				combinedItemsCountArray.push(item.count);
 			});
 			// chart.contents.right_side.push(chart.contents.right_side[0]);
@@ -243,5 +621,41 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 		// });
 
 		return chartDetails;
+	};
+
+	this.addDebugDataForFoActivity = function(chartData) {
+		_.each(chartData.todays_data, function(item) {
+			item.earlyCheckin = item.earlyCheckin < 2 ? _.random(1, 10) : item.earlyCheckin;
+			item.checkin = item.checkin < 2 ? _.random(1, 10) : item.checkin;
+			item.vipCheckin = item.vipCheckin < 2 ? _.random(1, 10) : item.vipCheckin;
+			item.vipCheckout = item.vipCheckout < 2 ? _.random(1, 10) : item.vipCheckout;
+			item.checkout = item.checkout < 2 ? _.random(1, 10) : item.checkout;
+			item.lateCheckout = item.lateCheckout < 2 ? _.random(1, 10) : item.lateCheckout;
+		});
+
+		_.each(chartData.yesterdays_data, function(item) {
+			item.earlyCheckin = item.earlyCheckin < 2 ? _.random(1, 10) : item.earlyCheckin;
+			item.checkin = item.checkin < 2 ? _.random(1, 10) : item.checkin;
+			item.vipCheckin = item.vipCheckin < 2 ? _.random(1, 10) : item.vipCheckin;
+			item.vipCheckout = item.vipCheckout < 2 ? _.random(1, 10) : item.vipCheckout;
+			item.checkout = item.checkout < 2 ? _.random(1, 10) : item.checkout;
+			item.lateCheckout = item.lateCheckout < 2 ? _.random(1, 10) : item.lateCheckout;
+		});
+
+		return chartData;
+	};
+
+	this.textTruncate = function(str, length, ending) {
+		if (length == null) {
+			length = 100;
+		}
+		if (ending == null) {
+			ending = '...';
+		}
+		if (str.length > length) {
+			return str.substring(0, length - ending.length) + ending;
+		} else {
+			return str;
+		}
 	};
 }]);

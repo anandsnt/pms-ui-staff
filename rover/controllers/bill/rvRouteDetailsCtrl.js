@@ -1,4 +1,4 @@
-sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'RVBillinginfoSrv', 'rvPermissionSrv', 'RVGuestCardSrv', 'ngDialog', 'RVBillCardSrv', 'RVPaymentSrv', function($scope, $rootScope, $filter, RVBillinginfoSrv, rvPermissionSrv, RVGuestCardSrv, ngDialog, RVBillCardSrv, RVPaymentSrv) {
+sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'RVBillinginfoSrv', 'RVCompanyCardSrv', 'rvPermissionSrv', 'RVGuestCardSrv', 'ngDialog', 'RVBillCardSrv', 'RVPaymentSrv', function($scope, $rootScope, $filter, RVBillinginfoSrv, RVCompanyCardSrv, rvPermissionSrv, RVGuestCardSrv, ngDialog, RVBillCardSrv, RVPaymentSrv) {
 
     $scope.routeDetailsState = {
         newCard: null
@@ -15,6 +15,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
     $scope.swipedCardDataToSave = {};
     $scope.showCreditCardDropDown = false;
     $scope.isShownExistingCCPayment = false;
+    $scope.isCompanyTravelAgent = false;
     $scope.billNumberOnAddCC = '';
 
     if ($scope.selectedEntity.credit_card_details !== null && $scope.selectedEntity.credit_card_details !== undefined && $scope.selectedEntity.credit_card_details.hasOwnProperty('payment_type_description')) {
@@ -333,7 +334,6 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
      * function to fetch available billing groups from the server
      */
     $scope.fetchAvailableBillingGroups = function() {
-
         var successCallback = function(data) {
             $scope.availableBillingGroups = data;
             if (data.length === 0) {
@@ -342,6 +342,12 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
             if ($scope.selectedEntity.entity_type === "ALLOTMENT" || $scope.selectedEntity.entity_type === 'GROUP' || $scope.selectedEntity.entity_type === 'HOUSE') {
                 $scope.showPayment = false;
                 $scope.$parent.$emit('hideLoader');
+            }
+            else if ($scope.selectedEntity.entity_type === "COMPANY_CARD" || $scope.selectedEntity.entity_type === "TRAVEL_AGENT" ) {
+                $scope.showPayment = true;
+                $scope.isCompanyTravelAgent = true;
+                $scope.accountId = $scope.selectedEntity.id;
+                $scope.fetchAttachedPaymentTypes();
             }
             else if ($scope.reservationData.reservation_id !== $scope.selectedEntity.id && $scope.selectedEntity.entity_type === 'RESERVATION') {
                 $scope.$parent.$emit('hideLoader');
@@ -386,18 +392,30 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
      * function to fetch attached payment types from the server
      */
     $scope.fetchAttachedPaymentTypes = function() {
-
-        var successCallback = function(data) {
-            $scope.attachedPaymentTypes = data;
-            $scope.$parent.$emit('hideLoader');
-            refreshScrollers();
-        };
         var errorCallback = function(errorMessage) {
             $scope.$parent.$emit('hideLoader');
             $scope.$emit('displayErrorMessage', errorMessage);
         };
 
-        $scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, $scope.reservationData.user_id, successCallback, errorCallback);
+        if ($scope.isCompanyTravelAgent) {
+            var successCallback = function(data) {
+                $scope.attachedPaymentTypes = data.data;
+                $scope.$parent.$emit('hideLoader');
+                refreshScrollers();
+            };
+
+            $scope.invokeApi(RVCompanyCardSrv.fetchAccountPaymentData, $scope.accountId, successCallback, errorCallback);
+        } else {
+            var successCallback = function(data) {
+                $scope.attachedPaymentTypes = data;
+                $scope.$parent.$emit('hideLoader');
+                refreshScrollers();
+            };
+
+            $scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, $scope.reservationData.user_id, successCallback, errorCallback);
+
+        }
+        
     };
 
     /**
@@ -561,6 +579,21 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
         }
         $scope.invokeApi(RVBillinginfoSrv.fetchDefaultAccountRouting, params, successCallback);
     };
+
+    $scope.fetchAttachedPayments = function() {
+
+        var successCallback = function(data) {
+            $scope.attachedPaymentTypes = data.data;
+            $scope.$parent.$emit('hideLoader');
+        };
+        var errorCallback = function(errorMessage) {
+            $scope.$parent.$emit('hideLoader');
+            $scope.$emit('displayErrorMessage', errorMessage);
+        };
+
+        $scope.invokeApi(RVCompanyCardSrv.fetchCompanyPaymentData, $scope.contactInformation.id, successCallback, errorCallback);
+    };
+
     /**
      * function to fetch available billing groups from the server
      */
@@ -573,6 +606,8 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
             }
             $scope.$parent.$emit('hideLoader');
             $scope.fetchDefaultAccountRouting();
+            $scope.fetchAttachedPayments();
+
         };
         var errorCallback = function(errorMessage) {
             $scope.$parent.$emit('hideLoader');
@@ -770,7 +805,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
                 };
             }
 
-            if (data.tax_exempt_warning) {
+            if (data.tax_exempt_warning.length > 0) {
                 var message = [];
 
                     message.push(data.tax_exempt_warning);
@@ -814,6 +849,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
                 params.entity_type = "ALLOTMENT";
                 $scope.invokeApi(RVBillinginfoSrv.saveAllotmentDefaultAccountRouting, params, defaultRoutingSaveSuccess, errorCallback);
             } else {
+                params.attached_payment_method_id = $scope.selectedEntity.selected_payment;
                 $scope.invokeApi(RVBillinginfoSrv.saveDefaultAccountRouting, params, defaultRoutingSaveSuccess, errorCallback);
             }
         }

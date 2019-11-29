@@ -32,10 +32,10 @@ sntRover.controller('RVJournalController',
     $scope.data.activePaymentTypes = [];
     $scope.data.selectedDepartmentList = [];
     $scope.data.selectedEmployeeList = [];
-    $scope.data.isDrawerOpened = false;
     $scope.data.reportType  = "";
     $scope.data.query = "";
     $scope.data.isShowSummaryTab  = true;
+    $scope.data.isDrawerOpened = true;
 
     $scope.data.isRevenueToggleSummaryActive = true;
     $scope.data.isPaymentToggleSummaryActive = true;
@@ -105,11 +105,15 @@ sntRover.controller('RVJournalController',
     };
 
 
-    $scope.clickedJournalToggle = function (isFromSearch) {
+    $scope.clickedJournalToggle = function (isFromSearch, isFromClick) {
         var tabName = $scope.data.activeTab;
 
         if (tabName === 'SUMMARY') {
-            $scope.data.isExpandedViewSummary = !$scope.data.isExpandedViewSummary;
+            if ($scope.data.query !== "" && !isFromClick) {
+                $scope.data.isExpandedViewSummary = true;
+            } else {
+                $scope.data.isExpandedViewSummary = !$scope.data.isExpandedViewSummary;
+            }
             $scope.$broadcast("EXPAND_SUMMARY_SCREEN");
         } else if (tabName === 'PAYMENTS') {
             if (!isFromSearch) {
@@ -330,7 +334,7 @@ sntRover.controller('RVJournalController',
        // call filter service
        callCashierFilterService();
        retrieveCashierName();
-    };
+    };    
 
     /* Cashier filter ends here */
 
@@ -349,11 +353,20 @@ sntRover.controller('RVJournalController',
             $rootScope.$broadcast('REFRESHPAYMENTCONTENT');
             $scope.data.searchFilterOptions.splice(5, 1);
         }
-        else if (tabName === 'SUMMARY') {
+        else if (tabName === 'SUMMARY') {  
             $rootScope.$broadcast('REFRESHSUMMARYCONTENT');
-            $scope.data.searchFilterOptions.push($scope.data.arInvoiceFilter);
+            if (_.indexOf($scope.data.searchFilterOptions, _.findWhere($scope.data.searchFilterOptions, {
+                    value: "AR_INVOICE_NUMBER"
+                })) === -1) 
+            {
+                $scope.data.searchFilterOptions.push($scope.data.arInvoiceFilter);
+            }
+            
+            $scope.data.isDrawerOpened = true;
         }
-    	$scope.$broadcast("CLOSEPRINTBOX");
+        if (tabName !== 'SUMMARY') { 
+            $scope.$broadcast("CLOSEPRINTBOX");
+        }
         $scope.data.isActiveRevenueFilter = false;
     };
 

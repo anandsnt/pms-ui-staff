@@ -1,8 +1,9 @@
-angular.module('sntRover').controller('rvCardSearchContractedRateCtrl', ['$scope', 'rvCompanyCardContractsSrv', '$timeout',
-	function($scope, rvCompanyCardContractsSrv, $timeout) {
+angular.module('sntRover').controller('rvCardSearchContractedRateCtrl', ['$scope', 'rvCompanyCardContractsSrv', '$timeout', 'ngDialog',
+	function($scope, rvCompanyCardContractsSrv, $timeout, ngDialog) {
         
         BaseCtrl.call(this, $scope);
-        var that = this;
+        var that = this,
+            SCROLL_DELAY = 500;
 
         that.initialise = function() {
             $scope.contractData.searchResults = [];
@@ -13,7 +14,7 @@ angular.module('sntRover').controller('rvCardSearchContractedRateCtrl', ['$scope
         that.refreshSearchList = function() {
             $timeout(function() {
                 $scope.refreshScroller('searchResultsList');
-            }, 500);
+            }, SCROLL_DELAY);
         };
 
         /* 
@@ -54,31 +55,85 @@ angular.module('sntRover').controller('rvCardSearchContractedRateCtrl', ['$scope
         // Handle clear search.
         $scope.clearQuery = function() {
             $scope.contractData.rateSearchQuery = '';
+            $scope.$emit('refreshContractsScroll');
         };
         /* 
          *  Handle click on each item in the result list
          *  @params {Number} [index of the searchResults]
          */
         $scope.clickedOnResult = function( index ) {
-            $scope.contractData.selectedRateList.push($scope.contractData.searchResults[index]);
-            $scope.$emit('refreshContractsScroll');
-            $scope.contractData.searchResults = [];
-            $scope.contractData.rateSearchQuery = '';
+            var clickedItem = $scope.contractData.searchResults[index],
+            linkRateSuccessCallback = function() {
+                $scope.contractData.selectedRateList.push(clickedItem);
+                $scope.$emit('refreshContractsScroll');
+                $scope.contractData.searchResults = [];
+                $scope.contractData.rateSearchQuery = '';
+            },
+            linkRateFailureCallback = function(errorMessage) {
+                $scope.$emit('setErrorMessage', errorMessage);
+            };
+
+            var options = {
+                successCallBack: linkRateSuccessCallback,
+                failureCallBack: linkRateFailureCallback,
+                params: {
+                    "id": $scope.contractData.selectedContractId,
+                    "rate_id": clickedItem.id
+                }
+            };
+
+            $scope.callAPI(rvCompanyCardContractsSrv.linkRate, options);
         };
         /* 
          *  Handle click(for remove) on each item in the selected rate list
          *  @params {Number} [index of the selected rate list]
          */
         $scope.removeRate = function( index ) {
-            var clickedItem = $scope.contractData.selectedRateList[index];
+            $scope.rateObj = $scope.contractData.selectedRateList[index];
+            ngDialog.open({
+                template: '/assets/partials/companyCard/contracts/rvConfirmRemoveRate.html',
+                className: '',
+                closeByDocument: false,
+                scope: $scope
+            });
+        };
 
-            // get index of object with id:37
-            var removeIndex = $scope.contractData.selectedRateList.map(function(item) { 
-                                return item.id; 
-                            }).indexOf(clickedItem.id);
+        // Show Error Message in popup.
+        var showErrorMessagePopup = function( errorMessage ) {
+            $scope.rateErrorMessage = errorMessage[0];
+            ngDialog.open({
+                template: '/assets/partials/companyCard/contracts/rvErrorOnRemoveRate.html',
+                className: '',
+                closeByDocument: false,
+                scope: $scope
+            });
+        };
 
-            // remove object
-            $scope.contractData.selectedRateList.splice(removeIndex, 1);
+        // Unlink a Rate after confirmation popup.
+        $scope.confirmRemoveRate = function( rateId ) {
+            ngDialog.close();
+            var unlinkRateSuccessCallback = function() {
+                var removeIndex = $scope.contractData.selectedRateList.map(function(item) { 
+                                    return item.id; 
+                                }).indexOf(rateId);
+
+                $scope.contractData.selectedRateList.splice(removeIndex, 1);
+                $scope.$emit('refreshContractsScroll');
+            },
+            unlinkRateFailureCallback = function( errorMessage ) {
+                showErrorMessagePopup(errorMessage);
+            };
+
+            var options = {
+                successCallBack: unlinkRateSuccessCallback,
+                failureCallBack: unlinkRateFailureCallback,
+                params: {
+                    "id": $scope.contractData.selectedContractId,
+                    "rate_id": rateId
+                }
+            };
+
+            $scope.callAPI(rvCompanyCardContractsSrv.unlinkRate, options);
         };
 
         that.initialise();

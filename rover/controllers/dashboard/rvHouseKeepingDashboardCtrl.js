@@ -6,6 +6,7 @@ sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope'
 	var scrollerOptions = {click: true, preventDefault: false};
 
   	$scope.setScroller('dashboard_scroller', scrollerOptions);
+    $scope.setScroller('analytics_scroller', scrollerOptions);
 
 
   	$scope.showDashboard = true; // variable used to hide/show dabshboard
@@ -103,43 +104,19 @@ sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope'
 
   $scope.$emit('SET_DEFAULT_ANALYTICS_MENU' , 'HK_OVERVIEW');
 
-  $scope.dashboardFilter.datePicked = angular.copy($rootScope.businessDate);
-
-  $scope.dateOptions = {
-    changeYear: true,
-    changeMonth: true,
-    yearRange: "-5:+5",
-    dateFormat: 'yy-mm-dd',
-    maxDate: $rootScope.businessDate,
-    onSelect: function(dateText, inst) {
-      $scope.dashboardFilter.datePicked = dateText;
-      $scope.$broadcast('RELOAD_DATA_WITH_SELECTED_FILTER', {
-        "room_type_id": $scope.dashboardFilter.selectedRoomTypeId,
-        "date": $scope.dashboardFilter.datePicked
-      });
-      ngDialog.close();
-    }
-  };
-
-
-  $scope.showCalendar = function() {
-    $scope.focusSearchField = false;
-    $scope.$emit("showSearchResultsArea", true);
-    $timeout(function() {
-      ngDialog.open({
-        template: '/assets/partials/search/rvDatePickerPopup.html',
-        className: '',
-        scope: $scope
-      });
-    }, 1000);
-  };
-
-
   $scope.onHkAnlayticsRoomTypeChange = function() {
     $scope.$broadcast('RELOAD_DATA_WITH_SELECTED_FILTER', {
-      "room_type_id": $scope.dashboardFilter.selectedRoomTypeId,
+      "room_type": $scope.dashboardFilter.selectedRoomType,
       "date": $scope.dashboardFilter.datePicked
     });
   };
+
+  var refreshAnalyticsScroller = function() {
+    $timeout(function() {
+      $scope.refreshScroller('analytics_scroller');
+    }, 500);
+  };
+
+  $scope.$on('REFRESH_ANALTICS_SCROLLER', refreshAnalyticsScroller);
 
 }]);
