@@ -7,7 +7,8 @@ angular.module('sntRover').service('RVreportsSrv', [
     'RVReportApplyFlags',
     'RVReportUtilsFac',
     'RVReportSetupDates',
-    function($q, rvBaseWebSrvV2, subSrv, $vault, $http, applyFlags, reportUtils, setupDates) {
+    'RVCustomExportSrv',
+    function($q, rvBaseWebSrvV2, subSrv, $vault, $http, applyFlags, reportUtils, setupDates, customExportSrv) {
         var service       = {},
             choosenReport = {},
             selectedReport = {},
@@ -358,7 +359,7 @@ angular.module('sntRover').service('RVreportsSrv', [
         function schedulePayloadGenerator (type) {
             var deferred = $q.defer(),
                 payload = {},
-                apiCount = type === SCHEDULE_TYPES.SCHEDULE_REPORT ? 5 : 7,
+                apiCount = 9,
                 exportOnly = type === SCHEDULE_TYPES.EXPORT_SCHEDULE ? true : false;
 
             var shallWeResolve = function() {
@@ -394,13 +395,17 @@ angular.module('sntRover').service('RVreportsSrv', [
             subSrv.fetchSchedulableReports(exportOnly)
                 .then( success.bind(null, 'schedulableReports'), failed.bind(null, 'schedulableReports', []) );
 
-            if ( type === SCHEDULE_TYPES.EXPORT_SCHEDULE ) {
-                subSrv.fetchDeliveryTypes()
-                    .then( success.bind(null, 'scheduleDeliveryTypes'), failed.bind(null, 'scheduleDeliveryTypes', []) );
+            subSrv.fetchDeliveryTypes()
+                .then( success.bind(null, 'scheduleDeliveryTypes'), failed.bind(null, 'scheduleDeliveryTypes', []) );
 
-                subSrv.fetchFtpServers()
-                    .then( success.bind(null, 'ftpServerList'), failed.bind(null, 'ftpServerList', []) );
-            }
+            subSrv.fetchFtpServers()
+                .then( success.bind(null, 'ftpServerList'), failed.bind(null, 'ftpServerList', []) );
+            
+            customExportSrv.getCloudDrives('DROP_BOX')
+                .then( success.bind(null, 'dropBoxAccounts'), failed.bind(null, 'ftpServerList', []) );
+
+            customExportSrv.getCloudDrives('GOOGLE_DRIVE')
+                    .then( success.bind(null, 'googleDriveAccounts'), failed.bind(null, 'ftpServerList', []) );
 
             return deferred.promise;
         };
