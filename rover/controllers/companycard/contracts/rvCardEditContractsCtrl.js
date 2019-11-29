@@ -178,6 +178,7 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'rvC
             };
 
             if ($scope.contractData.editData.is_master_contract) {
+                options.params.from_account_id = $scope.contractData.accountId;
                 options.params.account_id = $scope.contractData.unlinkAccountId;
             }
 
