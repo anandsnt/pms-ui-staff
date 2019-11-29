@@ -32,6 +32,32 @@
 					<fieldset class="holder left" ng-class="{'overlay': invoiceSettings.should_not_allow_tourist_tax_toggling }">
 						<ad-toggle-button label="{{'TOURIST_TAX' | translate}}" is-checked="invoiceSettings.enable_tourist_tax_feature"></ad-toggle-button>	
 					</fieldset>
+					<fieldset class="holder right" ng-if="isStandAlone">
+						<ad-toggle-button label="{{'PAYMENT_ROUNDING' | translate}}" is-checked="invoiceSettings.enable_payment_rounding"></ad-toggle-button>
+						<div class="entry full-width" ng-if="invoiceSettings.enable_payment_rounding">
+							<label for="roundingFactor">{{'ROUNDING_FACTOR' | translate}}</label>
+							<div class="select">
+								<select id='selectEncoder' class='placeholder'
+									ng-options="rounding.id as rounding.value for rounding in invoiceSettings.rounding_factors" ng-model="invoiceSettings.selected_rounding_factor_id">
+									<option style="display:none" value="">{{"SELECT_ROUNDING_FACTOR" | translate}}</option>
+								</select>
+							</div>
+							<br>
+							<label for="roundingChargeCode">{{"ROUNDING_OFFSET_CHARGE_CODE" | translate}}</label>
+							<div class="select">
+							<select id='selectEncoder' class='placeholder'
+									ng-options="rounding.id as rounding.value for rounding in invoiceSettings.rounding_factors" ng-model="invoiceSettings.selected_rounding_offset_charge_code_id">
+									<option  value="">{{"NO_CHARGE_CODE" | translate}}</option>
+								</select>
+							</div>
+							<br>
+							<label for="roundingChargeCodeInvoice" class="checkbox">
+							<span class="icon-form icon-checkbox"></span> 
+							<input type="checkbox" ng-model="invoiceSettings.show_rounding_offset_charge_code_on_invoice" />
+							{{"SHOW_ROUNDING_OFFSET_CHARGE_CODE_ON_INVOICE" | translate}}
+							</label>
+							</div>
+					</fieldset>
 
 					<div class="actions float">
 						<button type="button" id="cancel" class="button blank" ng-click="goBackToPreviousState()"translate>
