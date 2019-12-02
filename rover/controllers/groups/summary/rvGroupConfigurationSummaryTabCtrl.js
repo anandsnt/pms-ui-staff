@@ -596,6 +596,17 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
         };
 
         /**
+         * set the payment date
+         * @param  {Object} date - Date object
+         * @param  {Object} datePickerObj - Date picker object
+         * @return {undefined}
+         */
+        var paymentDateChoosed = function(date, datePickerObj) {
+            $scope.groupConfigData.summary.payment_date = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+            runDigestCycle();
+        };
+
+        /**
          * every logic to disable the from date picker should be here
          * @return {Boolean} [description]
          */
@@ -694,6 +705,12 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                 disabled: shouldDisableReleaseDatePicker(),
                 minDate: tzIndependentDate($rootScope.businessDate),
                 maxDate: $scope.groupConfigData.summary.block_to
+            }, commonDateOptions);
+
+            // Payment date options
+            $scope.paymentDateOptions = _.extend({
+                onSelect: paymentDateChoosed,
+                minDate: tzIndependentDate($rootScope.businessDate),
             }, commonDateOptions);
 
             // summary memento will change we attach date picker to controller
