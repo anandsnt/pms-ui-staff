@@ -2034,18 +2034,10 @@
                             &.left {
                                 margin-right: 40px;
                                 .calc-width( 100, 340 );
-
-                                @media screen and (min-width:1280px) {
-                                    .calc-width( 100, 460 );
-                                }
                             }
 
                             &.right {
                                 width: 300px;
-
-                                @media screen and (min-width:1280px) {
-                                    width: 420px;
-                                }
 
                                 .button { 
                                     width: 100%; 
@@ -4798,4 +4790,25 @@
         padding-right: 2.5em !important;
     }
 
+}
+
+@media screen and (min-width: 1280px) {
+    .cards {
+        .card-content {
+            .card-tab{
+                &.contracts {
+                    .tab-details {
+                        .holder {
+                            &.left {
+                                .calc-width( 100, 460 );
+                            }
+                            &.right {
+                                width: 420px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
