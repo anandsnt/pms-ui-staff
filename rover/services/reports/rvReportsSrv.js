@@ -201,7 +201,25 @@ angular.module('sntRover').service('RVreportsSrv', [
              'Guest Balance Report': ['ALL'],
              'Daily Production': ['YESTERDAY'],
              'Daily Production by Demographics': ['YESTERDAY'],
-             'Daily Production by Rate': ['YESTERDAY']
+             'Daily Production by Rate': ['YESTERDAY'],
+             'Business on the Books': [
+                'LAST_MONTH',
+                'LAST_JANUARY',
+                'LAST_FEBRUARY',
+                'LAST_MARCH',
+                'LAST_APRIL',
+                'LAST_MAY',
+                'LAST_JUNE',
+                'LAST_JULY',
+                'LAST_AUGUST',
+                'LAST_SEPTEMBER',
+                'LAST_OCTOBER',
+                'LAST_NOVEMBER',
+                'LAST_DECEMBER',
+                'NEXT_MONTH' ,
+                'LAST_SEVEN_DAYS',
+                'NEXT_SEVEN_DAYS'
+             ]
         };
 
         var cacheKey = 'REPORT_PAYLOAD_CACHE';
