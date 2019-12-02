@@ -2,6 +2,14 @@
 ==========================================================*/
 body { overflow: hidden; }
 
+html.is-ipad {
+    height: 100vh;
+
+    body {
+      height: 100vh;
+    }
+}
+
 ::-webkit-selection {
     color: @white;
     background: @logoPrimary;
@@ -2363,7 +2371,7 @@ body { overflow: hidden; }
 	                min-width: 100%;
 	                max-width: 320px;
 
-	                .checkbox, 
+	                .checkbox,
 	                .radio {
 	                    font-size: 14px;
 	                    padding: 0 10px 0 40px;
@@ -2428,8 +2436,8 @@ body { overflow: hidden; }
 	                            position: absolute;
 	                            left: 50%;
 	                            bottom: -10px;
-	                            width: 0; 
-	                            height: 0; 
+	                            width: 0;
+	                            height: 0;
 	                            margin-left: -10px;
 	                            border-top: 10px solid @logoGradientEnd;
 	                            border-left: 10px solid transparent;
