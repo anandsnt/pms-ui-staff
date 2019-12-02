@@ -43,12 +43,29 @@ angular.module('sntRover').service('rvManagersAnalyticsSrv', [
 
             rvBaseWebSrvV2.getJSON(url, params)
                 .then(function(data) {
+                    data = processPaceData(data);
                     deferred.resolve(data);
                 }, function(data) {
                     deferred.reject(data);
                 });
 
             return deferred.promise;
+        };
+
+        var processPaceData = function(data) {
+            // TODO: Till we have zoomable chart, limit data for 1 month
+            if (data.length >= 30) {
+                var lastDay = data[data.length - 1];
+                var oneMonthBefore = moment(lastDay.date)
+                    .subtract(1, 'month')
+                    .format("YYYY-MM-DD");
+
+                data = _.filter(data, function(day) {
+                    return day.date >= oneMonthBefore;
+                });
+            };
+
+            return data;
         };
 
         var formatDistribution = function(distributions, resultType, isAggregated) {
