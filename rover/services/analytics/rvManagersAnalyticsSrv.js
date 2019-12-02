@@ -36,6 +36,21 @@ angular.module('sntRover').service('rvManagersAnalyticsSrv', [
             return deferred.promise;
         };
 
+        this.pace = function(params) {
+            var deferred = $q.defer();
+
+            var url = '/redshift/analytics/pace';
+
+            rvBaseWebSrvV2.getJSON(url, params)
+                .then(function(data) {
+                    deferred.resolve(data);
+                }, function(data) {
+                    deferred.reject(data);
+                });
+
+            return deferred.promise;
+        };
+
         var formatDistribution = function(distributions, resultType, isAggregated) {
             var dataByDate = {};
 
