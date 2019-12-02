@@ -11,7 +11,6 @@ admin.controller('ADInvoiceSettingsCtrl', [
         $scope.isFirstInvoiceNoReadOnly = invoiceSettingsData.first_invoice_no ? "yes" : "no";
 
         invoiceSettingsData.chargeCodes = chargeCodes;
-        invoiceSettingsData.show_rounding_offset_charge_code_on_invoice = false;
 
         var invoiceSettingsDataCopy = angular.copy(invoiceSettingsData);
 
