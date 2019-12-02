@@ -31,6 +31,11 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
          * @return {boolean}
          */
         $scope.isEmpty = util.isEmpty;
+        $scope.groupStatusObj = {
+            isExpanded: false,
+            list: [],
+            selectedStatus: 'SHOW ALL'
+        }
 
         /**
          * util function to get CSS class against diff. Hold status
@@ -221,6 +226,12 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
             $scope.search();
         };
 
+        var fetchStatusIdList = function() {
+            var statusIdList = [];
+
+            return statusIdList;
+        };
+
         /**
          * Utility function to form API params for group search
          * @param {Number} pageNo current page no
@@ -232,7 +243,8 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
                 from_date: $scope.fromDateForAPI !== '' ? $filter('date')($scope.fromDateForAPI, $rootScope.dateFormatForAPI) : '',
                 to_date: $scope.toDateForAPI !== '' ? $filter('date')($scope.toDateForAPI, $rootScope.dateFormatForAPI) : '',
                 per_page: $scope.perPage,
-                page: pageNo
+                page: pageNo,
+                status_ids: fetchStatusIdList()
             };
 
             return params;
