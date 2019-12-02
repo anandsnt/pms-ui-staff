@@ -4,6 +4,7 @@
     <div class="contracts-details-form scrollable" ng-class="{'without-footer': (contractData.isPastContract || !contractData.editData.is_master_contract)}" ng-iscroll="editContractScroller">
         <div class="wrapper float">
             <div class="holder left">
+                <strong class="h3">Contract Details</strong>
                 <div class="entry full-width">
                     <label class="disable-element" for="linked-contract-name">Name</label>
                     <input ng-readonly="contractData.disableFields" name="contract-name" id="linked-contract-name" ng-model="contractData.editData.contract_name" placeholder="Contract Name" type="text" />
@@ -16,7 +17,7 @@
                     <label class="disable-element" for="travel-agent-contract-status">Status</label>
                     <!-- Add .on, when active. Remove otherwise -->
                     <!-- Add .disabled when the switch is disabled -->
-                    <div class="switch-button full-width" ng-class="{'on': contractData.editData.is_active, 'disable-element': contractData.disableFields}">
+                    <div class="switch-button full-width" ng-class="{'on': contractData.editData.is_active, 'disabled': !contractData.editData.is_active, 'disable-element': contractData.disableFields}">
                         <input id="contract-status" ng-model="contractData.editData.is_active" ng-click="toggleActiveStatus()" type="checkbox">
                         <label class="data-off">
                             <span class="value">Active</span>
@@ -30,19 +31,46 @@
                 </div>
                 <div class="entry margin has-datepicker">
                     <label class="disable-element" for="contract-start">Start Date</label>
-                    <input ng-disabled="contractData.disableFields" ng-class="{'overlay': contractData.disableFields}" name="contract-start" id="contract-start" class="datepicker" ng-model="contractData.editData.begin_date" ng-value="contractData.editData.begin_date | date:dateFormat" ng-click="contractStart()" placeholder="Select Start Date" maxlength="8" readonly type="text" />
+                    <input ng-disabled="contractData.disableFields" name="contract-start" id="contract-start" class="datepicker" ng-model="contractData.editData.begin_date" ng-value="contractData.editData.begin_date | date:dateFormat" ng-click="contractStart()" placeholder="Select Start Date" maxlength="8" readonly type="text" />
                 </div>
                 <div class="entry has-datepicker">
                     <label class="disable-element" for="contract-end">End Date</label>
-                    <input ng-disabled="contractData.disableFields" ng-class="{'overlay': contractData.disableFields}" name="contract-end" id="contract-end" class="datepicker" ng-model="contractData.editData.end_date" ng-value="contractData.editData.end_date | date:dateFormat" ng-click="contractEnd()" placeholder="Select End Date" maxlength="8" readonly type="text" />
+                    <input ng-disabled="contractData.disableFields" name="contract-end" id="contract-end" class="datepicker" ng-model="contractData.editData.end_date" ng-value="contractData.editData.end_date | date:dateFormat" ng-click="contractEnd()" placeholder="Select End Date" maxlength="8" readonly type="text" />
                 </div>
                 <div class="entry margin">
                     <label class="disable-element" for="contracted-nights">Contracted nights</label>
-                    <input ng-disabled="contractData.disableFields" ng-class="{'overlay': contractData.disableFields}" name="contracted-nights" id="contracted-nights" class=" contracted-nights" placeholder="Nights per month" ng-model="contractData.editData.total_contracted_nights" ng-click="editContractedNights()" maxlength="8" readonly type="text" />
+                    <input ng-disabled="contractData.disableFields" name="contracted-nights" id="contracted-nights" class=" contracted-nights" placeholder="Nights per month" ng-model="contractData.editData.total_contracted_nights" ng-click="editContractedNights()" maxlength="8" readonly type="text" />
                 </div>
-            </div>
-            <div class="holder right">
                 <div include-replace ng-include="'/assets/partials/companyCard/contracts/rvCardSearchContractedRate.html'"></div>
+            </div>
+
+            <div class="holder right">
+                <strong class="h3">Linked To</strong>
+                <!-- hide this if there are no linked contracts -->
+                <div class="linked-contracts">
+                    <div class="linked-contract" ng-repeat="account in contractData.editData.account_details">
+                        <div class="contract with-image">
+                            <!-- If Company -->
+                            <div class="guest-image icons icon-company" ng-if="account.type === 'COMPANY'"></div>
+                            <!-- If Travel Agent -->
+                            <div class="guest-image icons icon-travel-agent" ng-if="account.type === 'TRAVELAGENT'"></div>
+
+                            <h3 class="item-title">{{account.name}}</h3>
+                            <div class="item-info">
+                                {{account.address}}
+                            </div>
+                        </div>
+                        <span class="remove-contract icons icon-remove-60" ng-click="clickedUnlinkContracts($index)">-</span>
+                    </div>
+                </div>
+                <!-- Show this when there are no linked contracts -->
+                <div class="no-content" ng-if="contractData.editData.account_details.length === 0">
+                    <div class="info">
+                        <span class="icon-no-content icon-cards"></span>
+                        <strong class="h4">No Links</strong>
+                        <span class="h2">Cards using this contract will appear here</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -116,7 +116,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'schani-salon': 'Hotel Schani Salon',
             'spatz': 'Hotel Spatz',
             'lenaustrasse': 'Apartment City Lenaustrasse',
-            'why-tysons': 'Why Hotel Tysons Corner'
+            'why-tysons': 'Why Hotel Tysons Corner',
+            'local-house': 'Local House'
         };
 
         this.isThemeConfigured = function(theme) {
