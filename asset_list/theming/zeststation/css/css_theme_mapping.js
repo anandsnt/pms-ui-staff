@@ -100,7 +100,8 @@ module.exports = {
             'schani-salon': [themeCSSRoot + 'schani-salon.less'],
             'spatz': [themeCSSRoot + 'spatz.less'],
             'lenaustrasse': [themeCSSRoot + 'lenaustrasse.less'],
-            'why-tysons': [themeCSSRoot + 'why-tysons.less']
+            'why-tysons': [themeCSSRoot + 'why-tysons.less'],
+            'local-house': [themeCSSRoot + 'local-house.less']
         };
     }
 };
