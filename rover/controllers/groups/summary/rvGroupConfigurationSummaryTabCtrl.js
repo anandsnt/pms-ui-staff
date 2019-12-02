@@ -710,7 +710,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
             // Payment date options
             $scope.paymentDateOptions = _.extend({
                 onSelect: paymentDateChoosed,
-                minDate: tzIndependentDate($rootScope.businessDate),
+                minDate: tzIndependentDate($rootScope.businessDate)
             }, commonDateOptions);
 
             // summary memento will change we attach date picker to controller
