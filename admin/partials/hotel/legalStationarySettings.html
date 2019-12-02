@@ -27,6 +27,15 @@
                 <td>
                     <input type="text" ng-model="legalSettings.first_reg_card_number" placeholder="Enter first registration card number">
                 </td>
+            </tr> 
+            <tr ng-show="legalSettings.austrian_reg_card_enabled">
+                <td>Fiscal Invoice template</td>
+                <td>
+                    <div class="switch-button" ng-class="{'on' : legalSettings.fiscal_invoice_template_enabled}">
+                        <input name="no-modify" id="no-modify" value="no-modify" ng-model="legalSettings.fiscal_invoice_template_enabled" type="checkbox" checked="">
+                        <span class="switch-icon"></span>
+                    </div>
+                </td>
             </tr>   
         </tbody>
     </table>
