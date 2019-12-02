@@ -46,16 +46,12 @@
 							<label for="roundingChargeCode">{{"ROUNDING_OFFSET_CHARGE_CODE" | translate}}</label>
 							<div class="select">
 							<select id='selectEncoder' class='placeholder'
-									ng-options="rounding.id as rounding.value for rounding in invoiceSettings.rounding_factors" ng-model="invoiceSettings.selected_rounding_offset_charge_code_id">
+									ng-options="chargeCode.value as chargeCode.description for chargeCode in invoiceSettings.chargeCodes" ng-model="invoiceSettings.selected_rounding_offset_charge_code_id">
 									<option  value="">{{"NO_CHARGE_CODE" | translate}}</option>
 								</select>
 							</div>
 							<br>
-							<label for="roundingChargeCodeInvoice" class="checkbox">
-							<span class="icon-form icon-checkbox"></span> 
-							<input type="checkbox" ng-model="invoiceSettings.show_rounding_offset_charge_code_on_invoice" />
-							{{"SHOW_ROUNDING_OFFSET_CHARGE_CODE_ON_INVOICE" | translate}}
-							</label>
+							<ad-checkbox is-checked="invoiceSettings.show_rounding_offset_charge_code_on_invoice" label="{{'SHOW_ROUNDING_OFFSET_CHARGE_CODE_ON_INVOICE' | translate}}" div-class="full-width"></ad-checkbox>
 							</div>
 					</fieldset>
 

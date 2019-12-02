@@ -3,11 +3,15 @@ admin.controller('ADInvoiceSettingsCtrl', [
     'invoiceSettingsData',
     'ADInvoiceSettingsSrv',
     '$filter',
-    function($scope, invoiceSettingsData, ADInvoiceSettingsSrv, $filter) {
+    'chargeCodes',
+    function($scope, invoiceSettingsData, ADInvoiceSettingsSrv, $filter, chargeCodes) {
 
     	BaseCtrl.call(this, $scope);
 
         $scope.isFirstInvoiceNoReadOnly = invoiceSettingsData.first_invoice_no ? "yes" : "no";
+
+        invoiceSettingsData.chargeCodes = chargeCodes;
+        invoiceSettingsData.show_rounding_offset_charge_code_on_invoice = false;
 
         var invoiceSettingsDataCopy = angular.copy(invoiceSettingsData);
 
