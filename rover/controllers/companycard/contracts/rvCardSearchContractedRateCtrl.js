@@ -71,14 +71,16 @@ angular.module('sntRover').controller('rvCardSearchContractedRateCtrl', ['$scope
             },
             linkRateFailureCallback = function(errorMessage) {
                 $scope.$emit('setErrorMessage', errorMessage);
-            };
+            },
+            accountId = !_.isEmpty($scope.contactInformation) ? $scope.contactInformation.id : $stateParams.id;
 
             var options = {
                 successCallBack: linkRateSuccessCallback,
                 failureCallBack: linkRateFailureCallback,
                 params: {
                     "id": $scope.contractData.selectedContractId,
-                    "rate_id": clickedItem.id
+                    "rate_id": clickedItem.id,
+                    "account_id": accountId
                 }
             };
 
@@ -122,14 +124,16 @@ angular.module('sntRover').controller('rvCardSearchContractedRateCtrl', ['$scope
             },
             unlinkRateFailureCallback = function( errorMessage ) {
                 showErrorMessagePopup(errorMessage);
-            };
+            },
+            accountId = !_.isEmpty($scope.contactInformation) ? $scope.contactInformation.id : $stateParams.id;
 
             var options = {
                 successCallBack: unlinkRateSuccessCallback,
                 failureCallBack: unlinkRateFailureCallback,
                 params: {
                     "id": $scope.contractData.selectedContractId,
-                    "rate_id": rateId
+                    "rate_id": rateId,
+                    "account_id": accountId
                 }
             };
 
