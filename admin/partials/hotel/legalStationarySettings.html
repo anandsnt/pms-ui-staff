@@ -28,7 +28,7 @@
                     <input type="text" ng-model="legalSettings.first_reg_card_number" placeholder="Enter first registration card number">
                 </td>
             </tr>
-            <tr>
+            <tr ng-show="legalSettings.is_vienna_tax_enabled">
                 <td>Fiscal Invoice template</td>
                 <td>
                     <div class="switch-button" ng-class="{'on' : legalSettings.fiscal_invoice_template_enabled}">
