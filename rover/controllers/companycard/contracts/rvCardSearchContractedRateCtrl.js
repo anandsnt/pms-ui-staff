@@ -35,7 +35,8 @@ angular.module('sntRover').controller('rvCardSearchContractedRateCtrl', ['$scope
                 failureCallBack: fetchRateContractFailureCallback,
                 params: {
                     'query': $scope.contractData.rateSearchQuery,
-                    'selected_rate_ids': _.pluck($scope.contractData.selectedRateList, 'id')
+                    'selected_rate_ids': _.pluck($scope.contractData.selectedRateList, 'id'),
+                    'account_id': $scope.contractData.accountId
                 }
             };
 
