@@ -163,6 +163,26 @@ angular.module('sntRover').service('rvGroupSrv', ['$q', 'rvBaseWebSrvV2',
             return group.is_take_from_inventory === 'true' ? '' : 'tentative';
         };
 
+        /**
+		 * Function to get list of Hold status to display
+		 * @return {Promise} - After resolving it will return the list of Hold status
+		 */
+		this.getHoldStatusList = function(params) {
+			var deferred = $q.defer(),
+
+				url = '/api/group_hold_statuses';
+
+			rvBaseWebSrvV2.getJSON(url, params).then(
+				function(data) {
+					deferred.resolve(data.data);
+				},
+				function(errorMessage) {
+					deferred.reject(errorMessage);
+				}
+			);
+
+			return deferred.promise;
+		};
 
 	}
 ]);

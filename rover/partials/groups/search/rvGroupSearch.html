@@ -30,19 +30,18 @@
 
     <div class="entry options">
         <!-- Add .active when showing the options for this dropdown -->
-        <label for="guest-status-input" data-target="#guest-status-options" class="faux-select">
+        <label for="guest-status-input" data-target="#guest-status-options" class="faux-select" ng-click="clickedGroupStatus()">
             <span class="label">Group Status</span>
             <strong>{{groupStatusObj.selectedStatus}}</strong>
         </label>
 
         <!-- Remove .hidden to show the faux options -->
         <div id="guest-status-options" class="faux-select-options" ng-show="groupStatusObj.isExpanded">
-            <label class="checkbox inline">
+            <label class="checkbox inline" ng-repeat="item in groupStatusObj.list">
                 <span class="icon-form icon-checkbox"></span>
                 <input name="group-status[]" value="{status}" type="checkbox">
-                {status}
+                {{item.name}}
             </label>
-            ... repeat for each status
         </div>
     </div>
 

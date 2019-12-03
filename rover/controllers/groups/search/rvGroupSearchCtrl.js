@@ -448,6 +448,23 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
             };
         };
 
+        var fetchHoldStatusList = function() {
+            var successCallBackOfgetHoldStatusList = function( data ) {
+                $scope.groupStatusObj.list = data.hold_status;
+            },
+            options = {
+                params: {
+                    is_group: true
+                },
+                successCallBack: successCallBackOfgetHoldStatusList,
+            };
+
+            $scope.callAPI(rvGroupSrv.getHoldStatusList, options);
+        };
+
+        $scope.clickedGroupStatus = function() {
+            $scope.groupStatusObj.isExpanded = !$scope.groupStatusObj.isExpanded;
+        };
 
         /**
          * function used to set initlial set of values
@@ -481,6 +498,8 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
             configurePagination();
 
             $scope.refreshPagination(PAGINATION_ID);
+
+            fetchHoldStatusList();
 
         }());
 
