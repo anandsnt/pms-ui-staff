@@ -678,10 +678,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				item = dclone(item, unwantedKeys);
 				customTaxRulesToApi.push(item);
 			});
-
-
-			$scope.prefetchData.custom_tax_rules = customTaxRulesToApi;
-
+			
 			var unwantedKeys = ["charge_code_types", "payment_types", "charge_groups", "link_with", "amount_types", "tax_codes", "post_types", "symbolList"];
 			var postData = dclone($scope.prefetchData, unwantedKeys);
 
@@ -704,6 +701,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
                 return;
             }
             postData.locale = $scope.selectedLanguage.code;
+            postData.custom_tax_rules = customTaxRulesToApi;
 
 			$scope.invokeApi(ADChargeCodesSrv.save, postData, saveSuccessCallback, failureCallback);
 		};
