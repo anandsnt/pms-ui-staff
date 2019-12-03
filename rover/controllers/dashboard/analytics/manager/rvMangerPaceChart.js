@@ -44,9 +44,10 @@ angular.module('sntRover')
 				maxValueInBothDirections = maxValueInBothDirections + 1; // to add some extra spacing
 
 				var maxValueInNegDirection = _.max(cancellationArray);
+				var isNegativeSideVerySmall = maxValueInBothDirections / maxValueInNegDirection > 25;
 
+				maxValueInNegDirection = maxValueInBothDirections / maxValueInNegDirection > 50 ? maxValueInNegDirection * 10 : maxValueInNegDirection;
 				maxValueInNegDirection = maxValueInNegDirection + 1; // to add some extra spacing
-
 				var margin = {
 						top: 20,
 						right: 30,
@@ -63,8 +64,8 @@ angular.module('sntRover')
 					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 				var xScaleDomain = data.map(function(d) {
-						return d.date;
-					});
+					return d.date;
+				});
 				var xScale = d3.scaleBand()
 					.domain(xScaleDomain)
 					.range([margin.left, width - 150])
@@ -154,20 +155,19 @@ angular.module('sntRover')
 						var dateFormat = 'DD MMM';
 
 						// if there are more days, show only some dates to make it less crowded
-						if(chartData.length > 200) {
+						if (chartData.length > 200) {
 							multiple = 30;
 							dateFormat = 'DD MMM  YY';
-						}else if(chartData.length > 100) {
+						} else if (chartData.length > 100) {
 							multiple = 10;
 							dateFormat = 'DD MMM  YY';
-						}else if(chartData.length > 60) {
+						} else if (chartData.length > 60) {
 							multiple = 5;
 						}
 
 						if (checkIfDayIsToday(date)) {
 							return "Today";
-						}
-						else if(multiple && i % multiple !== 0){
+						} else if (multiple && i % multiple !== 0) {
 							return "";
 						}
 
@@ -209,10 +209,12 @@ angular.module('sntRover')
 					});
 
 				// Draw rect on top of the original X axis
+				var axisHeight = isNegativeSideVerySmall ? 2 : 4;
+
 				rvAnalyticsHelperSrv.drawRectLines({
 					svg: svg,
 					xOffset: margin.left,
-					height: 4,
+					height: axisHeight,
 					width: width - 150,
 					yOffset: yScale(0)
 				});
