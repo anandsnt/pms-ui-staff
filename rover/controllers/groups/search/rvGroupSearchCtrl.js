@@ -33,8 +33,7 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
         $scope.isEmpty = util.isEmpty;
         $scope.groupStatusObj = {
             isExpanded: false,
-            list: [],
-            selectedStatus: 'SHOW ALL'
+            list: []
         };
 
         /**

@@ -1,5 +1,5 @@
 <!-- Search form -->
-<form method="get" action="" name="groups-search-form" id="groups-search-form" class="search-form has-dates has-options single-option has-dropdown" role="search" >
+<form method="get" action="" name="groups-search-form" id="groups-search-form" class="search-form has-dates has-options single-option has-dropdown" role="search" ng-class="{'faux-options-open': groupStatusObj.isExpanded}">
 
     <div class="entry search">
         
@@ -32,7 +32,7 @@
         <!-- Add .active when showing the options for this dropdown -->
         <label for="guest-status-input" data-target="#guest-status-options" class="faux-select" ng-click="clickedGroupStatus()" ng-class="{'active': groupStatusObj.isExpanded}">
             <span class="label">Group Status</span>
-            <strong>{{groupStatusObj.selectedStatus}}</strong>
+            <strong>Show All</strong>
         </label>
 
         <!-- Remove .hidden to show the faux options -->
