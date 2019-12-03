@@ -1,7 +1,7 @@
 <span class="message h2">Report Settings</span>
 <div class="scrollable" ng-iscroll="financialSettingsList" ng-iscroll-delay="100">
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-    <div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
+    <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
     <table class="table-settings wrapper">
         <tbody>
             <tr>
@@ -21,13 +21,22 @@
                         <span class="switch-icon"></span>
                     </div>
                 </td>
-            </tr>      
+            </tr>
             <tr ng-show="legalSettings.austrian_reg_card_enabled">
                 <td>First Registration card Number</td>
                 <td>
                     <input type="text" ng-model="legalSettings.first_reg_card_number" placeholder="Enter first registration card number">
                 </td>
-            </tr>   
+            </tr>
+            <tr ng-show="legalSettings.is_vienna_tax_enabled">
+                <td>Fiscal Invoice template</td>
+                <td>
+                    <div class="switch-button" ng-class="{'on' : legalSettings.fiscal_invoice_template_enabled}">
+                        <input name="no-modify" id="no-modify" value="no-modify" ng-model="legalSettings.fiscal_invoice_template_enabled" type="checkbox" checked="">
+                        <span class="switch-icon"></span>
+                    </div>
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>

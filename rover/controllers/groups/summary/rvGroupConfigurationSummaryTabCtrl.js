@@ -596,6 +596,17 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
         };
 
         /**
+         * set the payment date
+         * @param  {Object} date - Date object
+         * @param  {Object} datePickerObj - Date picker object
+         * @return {undefined}
+         */
+        var paymentDateChoosed = function(date, datePickerObj) {
+            $scope.groupConfigData.summary.payment_date = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+            runDigestCycle();
+        };
+
+        /**
          * every logic to disable the from date picker should be here
          * @return {Boolean} [description]
          */
@@ -694,6 +705,12 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                 disabled: shouldDisableReleaseDatePicker(),
                 minDate: tzIndependentDate($rootScope.businessDate),
                 maxDate: $scope.groupConfigData.summary.block_to
+            }, commonDateOptions);
+
+            // Payment date options
+            $scope.paymentDateOptions = _.extend({
+                onSelect: paymentDateChoosed,
+                minDate: tzIndependentDate($rootScope.businessDate)
             }, commonDateOptions);
 
             // summary memento will change we attach date picker to controller
@@ -1053,16 +1070,16 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                 rateId = uniqId.split(':')[0],
                 contractId = uniqId.split(':')[1];
 
+            /**
+             * Call the API only if the group is saved, else allow the group
+             * to be saved with the rate selected.
+             */
+            $scope.groupConfigData.summary.rate = rateId;
+            $scope.groupConfigData.summary.contract_id = contractId;
+
             if (!summaryData.group_id) {
                 return false;
             }
-
-            _.each($scope.groupSummaryData.rateSelectDataObject, function(rate) {
-                if (rate.uniqId === summaryData.uniqId) {
-                    // contractId = rate.contract_id;
-                    $scope.groupConfigData.summary.contract_id = contractId;
-                }
-            });
 
             var params = {
                 group_id: summaryData.group_id,
@@ -1518,14 +1535,17 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                             if (rate.is_contracted) {
                                 rate.uniqId = rate.id + ':' + rate.contract_id;
                                 rate.name = rate.name + ' (' + rate.contract_name + ')';
+                                if (rate.id === $scope.groupConfigData.summary.rate && rate.contract_id === $scope.groupConfigData.summary.contract_id) {
+                                    $scope.groupConfigData.summary.uniqId = rate.uniqId;
+                                }
                             }
                             else {
                                 rate.uniqId = rate.id + ':';
+                                if (rate.id === $scope.groupConfigData.summary.rate) {
+                                    $scope.groupConfigData.summary.uniqId = rate.uniqId;
+                                }
                             }
                             sumData.rateSelectDataObject.push(rate);
-                            if (rate.id === $scope.groupConfigData.summary.rate && rate.contract_id === $scope.groupConfigData.summary.contract_id) {
-                                $scope.groupConfigData.summary.uniqId = rate.uniqId;
-                            }
                         });
                     };
 
@@ -1541,6 +1561,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                     if ($scope.groupConfigData.summary.rate === '-1') {
                         $scope.groupConfigData.summary.uniqId = '-1';
                     }
+                    summaryMemento = angular.copy($scope.groupConfigData.summary);
                 },
                 onFetchRatesFailure = function(errorMessage) {
                     $scope.errorMessage = errorMessage;
