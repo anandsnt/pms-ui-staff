@@ -728,6 +728,9 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         resolve: {
             invoiceSettingsData: function (ADInvoiceSettingsSrv) {
                 return ADInvoiceSettingsSrv.fetchInvoiceSettings();
+            },
+            chargeCodes: function (settingsAndParamsSrv) {
+                return settingsAndParamsSrv.fetchChargeCodes();
             }
         }
     });
