@@ -482,6 +482,7 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
             var clickedItem = $scope.groupStatusObj.list[index];
 
             clickedItem.active = !clickedItem.active;
+            $scope.search();
         };
 
         /**
