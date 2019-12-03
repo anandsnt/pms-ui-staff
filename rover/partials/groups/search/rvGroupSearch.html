@@ -30,7 +30,7 @@
 
     <div class="entry options">
         <!-- Add .active when showing the options for this dropdown -->
-        <label for="guest-status-input" data-target="#guest-status-options" class="faux-select" ng-click="clickedGroupStatus()">
+        <label for="guest-status-input" data-target="#guest-status-options" class="faux-select" ng-click="clickedGroupStatus()" ng-class="{'active': groupStatusObj.isExpanded}">
             <span class="label">Group Status</span>
             <strong>{{groupStatusObj.selectedStatus}}</strong>
         </label>
