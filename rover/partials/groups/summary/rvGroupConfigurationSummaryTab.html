@@ -114,6 +114,10 @@
                 <!-- Class grey is for new group (when this button does nothing), red is for existing group -->
             </div>
             <div class="entry clear">
+                <label for="group-payment-date">Payment Date</label>
+                <input class="datepicker" type="text" ui-date="paymentDateOptions" rv-set-textbox-value listen-this="groupConfigData.summary.payment_date|date:dateFormat"  readonly id="group-payment-date" readonly ng-class="{'not-selected': !groupConfigData.summary.release_date}" />
+            </div>
+            <div class="entry clear">
                 <label for="group-hold-status">
                     {{'HOLD_STATUS' | translate}}
                     <strong>*</strong>
