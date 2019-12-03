@@ -10,7 +10,10 @@ angular.module('sntRover')
 			};
 			$scope.drawPaceChart = function(chartData) {
 
+				$scope.screenData.mainHeading = $filter('translate')("AN_PACE");
+
 				var chartDataMaxArray = [];
+				var cancellationArray = [];
 
 				// find maximum value that will appear in both side of X- axis
 				_.each(chartData, function(data) {
@@ -22,6 +25,7 @@ angular.module('sntRover')
 					}
 					// consider cancellation as -ve
 					if (data.cancellation > 0) {
+						cancellationArray.push(data.cancellation);
 						data.cancellation = -1 * data.cancellation;
 					}
 
@@ -39,6 +43,10 @@ angular.module('sntRover')
 
 				maxValueInBothDirections = maxValueInBothDirections + 1; // to add some extra spacing
 
+				var maxValueInNegDirection = _.max(cancellationArray);
+
+				maxValueInNegDirection = maxValueInNegDirection + 1; // to add some extra spacing
+
 				var margin = {
 						top: 20,
 						right: 30,
@@ -49,20 +57,23 @@ angular.module('sntRover')
 					height = 500 - margin.top - margin.bottom;
 
 				var svg = d3.select("#d3-plot").append("svg")
-					.attr("width", width + margin.left + margin.right)
+					.attr("width", width + margin.left + margin.right + 150)
 					.attr("height", height + margin.top + margin.bottom)
 					.append("g")
 					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-				var xScale = d3.scaleBand()
-					.domain(data.map(function(d) {
+				var xScaleDomain = data.map(function(d) {
 						return d.date;
-					}))
-					.rangeRound([margin.left, width - 350])
+					});
+				var xScale = d3.scaleBand()
+					.domain(xScaleDomain)
+					.range([margin.left, width - 150])
 					.padding(0.5);
 
+				window.xScale = xScale;
+
 				var yScale = d3.scaleLinear()
-					.domain([-1 * maxValueInBothDirections, maxValueInBothDirections])
+					.domain([-1 * maxValueInNegDirection, maxValueInBothDirections])
 					.rangeRound([height - margin.bottom, margin.top]);
 
 				var colors = ["#4185F4", "#6AA84F", "#FF0A00"];
@@ -136,13 +147,31 @@ angular.module('sntRover')
 					});
 
 				var xAxisBottom = d3.axisBottom(xScale)
+					.ticks(5)
 					.tickSizeOuter(0)
-					.tickFormat(function(date) {
+					.tickFormat(function(date, i) {
+						var multiple;
+						var dateFormat = 'DD MMM';
+
+						// if there are more days, show only some dates to make it less crowded
+						if(chartData.length > 200) {
+							multiple = 30;
+							dateFormat = 'DD MMM  YY';
+						}else if(chartData.length > 100) {
+							multiple = 10;
+							dateFormat = 'DD MMM  YY';
+						}else if(chartData.length > 60) {
+							multiple = 5;
+						}
+
 						if (checkIfDayIsToday(date)) {
 							return "Today";
 						}
+						else if(multiple && i % multiple !== 0){
+							return "";
+						}
 
-						return moment(date).format('DD MMM');
+						return moment(date).format(dateFormat);
 					})
 					.tickPadding(20)
 					.tickSizeInner(0);
@@ -150,7 +179,10 @@ angular.module('sntRover')
 				var yAxis = d3.axisLeft(yScale)
 					.tickSizeOuter(0)
 					.tickPadding(10)
-					.tickSizeInner(0);
+					.tickSizeInner(0)
+					.tickFormat(function(count) {
+						return count < 0 ? -1 * count : count;
+					});
 
 				// Original X axis
 				svg.append("g")
@@ -162,7 +194,7 @@ angular.module('sntRover')
 					.call(yAxis);
 				// Extra X axis to show ticks
 				svg.append("g")
-					.attr("transform", "translate(0," + yScale(-1 * maxValueInBothDirections) + ")")
+					.attr("transform", "translate(0," + yScale(-1 * maxValueInNegDirection) + ")")
 					.call(xAxisBottom)
 					.selectAll("text")
 					.style("text-anchor", "end")
@@ -181,7 +213,7 @@ angular.module('sntRover')
 					svg: svg,
 					xOffset: margin.left,
 					height: 4,
-					width: width - 350,
+					width: width - 150,
 					yOffset: yScale(0)
 				});
 				// Draw rect on top of the extra X axis
@@ -189,14 +221,14 @@ angular.module('sntRover')
 					svg: svg,
 					xOffset: margin.left,
 					height: 4,
-					width: width - 350,
-					yOffset: yScale(-1 * maxValueInBothDirections)
+					width: width - 150,
+					yOffset: yScale(-1 * maxValueInNegDirection)
 				});
 				// Draw rect on top of the Y axis
 				rvAnalyticsHelperSrv.drawRectLines({
 					svg: svg,
 					xOffset: margin.left,
-					height: yScale(-1 * maxValueInBothDirections) - yScale(maxValueInBothDirections),
+					height: yScale(-1 * maxValueInNegDirection) - yScale(maxValueInBothDirections),
 					width: 4,
 					yOffset: margin.top
 				});
@@ -206,7 +238,7 @@ angular.module('sntRover')
 					.enter().append("g")
 					.attr("class", "legend")
 					.attr("transform", function(d, i) {
-						return "translate(-300," + i * 30 + ")";
+						return "translate(-100," + i * 30 + ")";
 					});
 
 				legend.append("rect")
@@ -226,6 +258,8 @@ angular.module('sntRover')
 					.text(function(d, i) {
 						return rvAnalyticsHelperSrv.textTruncate(stackKeysTags[i], 35, '...');
 					});
+
+				$scope.screenData.hideChartData = false;
 			};
 		}
 	]);
