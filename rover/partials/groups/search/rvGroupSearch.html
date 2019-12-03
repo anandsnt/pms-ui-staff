@@ -1,5 +1,5 @@
 <!-- Search form -->
-<form method="get" action="" name="groups-search-form" id="groups-search-form" class="search-form has-dates" role="search" >
+<form method="get" action="" name="groups-search-form" id="groups-search-form" class="search-form has-dates has-options two-options" role="search" >
 
     <div class="entry search">
         
@@ -27,6 +27,25 @@
                 delay="1000" 
                 function-to-fire="searchQueryChanged"/>
     </div>
+
+    <div class="entry options">
+        <!-- Add .active when showing the options for this dropdown -->
+        <label for="guest-status-input" data-target="#guest-status-options" class="faux-select">
+            <span class="label">Group Status</span>
+            <strong>{{groupStatusObj.selectedStatus}}</strong>
+        </label>
+
+        <!-- Remove .hidden to show the faux options -->
+        <div id="guest-status-options" class="faux-select-options" ng-show="groupStatusObj.isExpanded">
+            <label class="checkbox inline">
+                <span class="icon-form icon-checkbox"></span>
+                <input name="group-status[]" value="{status}" type="checkbox">
+                {status}
+            </label>
+            ... repeat for each status
+        </div>
+    </div>
+
     <div class="entry dates">
         <div class="entry-data has-datepicker">
             <label for="groups-date-from" translate>FROM</label>

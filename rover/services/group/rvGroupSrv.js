@@ -12,18 +12,11 @@ angular.module('sntRover').service('rvGroupSrv', ['$q', 'rvBaseWebSrvV2',
 		 */
 		this.getGroupList = function(params) {
 			var deferred = $q.defer(),
-
 				url = '/api/groups/search';
 
-			var data = {
-				'q': params.query,
-				'from_date': params.from_date,
-				'to_date': params.to_date,
-				'per_page': params.per_page,
-				'page': params.page
-			};
+			params.q = params.q || params.query;
 
-			rvBaseWebSrvV2.getJSON(url, data).then(
+			rvBaseWebSrvV2.postJSON(url, params).then(
 				function(data) {
 					deferred.resolve(data);
 				},

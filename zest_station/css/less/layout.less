@@ -1100,11 +1100,15 @@
                 font-size: 18px;
                 line-height: 64px;
                 text-transform: uppercase;
-                padding: 0 20px 0 50px;
+                padding: 0 20px 0 20px;
                 margin: 40px 0 40px 20px;
                 height: 64px;
                 max-width: 200px;
                 overflow: hidden;
+
+                &.with-icon {
+                    padding-left: 50px;
+                }
 
                 .icons {
                     position: absolute;
@@ -1117,8 +1121,12 @@
 
             .button {
                 line-height: 1;
-                padding: 10px 10px 10px 55px;
+                padding: 10px 10px 10px 10px;
                 height: 64px;
+
+                &.with-icon {
+                    padding-left: 55px;
+                }
 
                 .icons {
                     left: 10px;
