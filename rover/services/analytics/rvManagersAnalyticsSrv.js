@@ -43,7 +43,8 @@ angular.module('sntRover').service('rvManagersAnalyticsSrv', [
 
             rvBaseWebSrvV2.getJSON(url, params)
                 .then(function(data) {
-                    data = processPaceData(data);
+                    // TODO: delete after testing
+                    // data = processPaceData(data);
                     deferred.resolve(data);
                 }, function(data) {
                     deferred.reject(data);
