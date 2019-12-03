@@ -249,8 +249,8 @@
                             <span class="icons icon-adult"></span>
 
                         </figure>
-                        <input ng-class='{"disabled overlay":!isStandAlone}' name="{{guest.first_name}}" id="{{guest.first_name}}" type="text" placeholder="First Name" value="{{guest.first_name}}" ng-model="guest.first_name" ng-blur="saveAccGuestDetails($event)" />
-                        <input ng-class='{"disabled overlay":!isStandAlone}' name="{{guest.last_name}}" id="{{guest.last_name}}" type="text" placeholder="Last Name" ng-model="guest.last_name" value="{{guest.last_name}}" ng-blur="saveAccGuestDetails($event)" />
+                        <input ng-class='{"disabled overlay":!isStandAlone}' name="{{guest.first_name}}" type="text" placeholder="First Name" value="{{guest.first_name}}" ng-model="guest.first_name" ng-blur="saveAccGuestDetails($event)" />
+                        <input ng-class='{"disabled overlay":!isStandAlone}' name="{{guest.last_name}}" type="text" placeholder="Last Name" ng-model="guest.last_name" value="{{guest.last_name}}" ng-blur="saveAccGuestDetails($event)" />
                         <button class="button with-icon white" 
                             click-touch='showScannedGuestID(false, guest)'
                             ng-show="guest.id"
@@ -281,8 +281,8 @@
                             <span class="icons icon-student" ></span>
 
                         </figure>
-                        <input ng-class='{"disabled overlay":!isStandAlone}' name="{{guest.first_name}}" id="{{guest.first_name}}" type="text" placeholder="First Name" value="{{guest.first_name}}" ng-model="guest.first_name"  />
-                        <input ng-class='{"disabled overlay":!isStandAlone}' name="{{guest.last_name}}" id="{{guest.last_name}}" type="text" placeholder="Last Name" ng-model="guest.last_name" value="{{guest.last_name}}" ng-blur="saveAccGuestDetails()"  />
+                        <input ng-class='{"disabled overlay":!isStandAlone}' name="{{guest.first_name}}" type="text" placeholder="First Name" value="{{guest.first_name}}" ng-model="guest.first_name"  />
+                        <input ng-class='{"disabled overlay":!isStandAlone}' name="{{guest.last_name}}" type="text" placeholder="Last Name" ng-model="guest.last_name" value="{{guest.last_name}}" ng-blur="saveAccGuestDetails()"  />
                         <button class="button with-icon white" click-touch='showScannedGuestID(false, guest)'
                             ng-show="guest.id"
                             ng-class='{ "overlay":!hasGuestIDPermission, 
@@ -312,8 +312,8 @@
                             <span class="icons icon-infant" ></span>
 
                         </figure>
-                        <input ng-class='{"disabled overlay":!isStandAlone}' name="{{guest.first_name}}" id="{{guest.first_name}}" type="text" placeholder="First Name" value="{{guest.first_name}}" ng-model="guest.first_name"  />
-                        <input ng-class='{"disabled overlay":!isStandAlone}' name="{{guest.last_name}}" id="{{guest.last_name}}" type="text" placeholder="Last Name" ng-model="guest.last_name" value="{{guest.last_name}}" ng-blur="saveAccGuestDetails()"  />
+                        <input ng-class='{"disabled overlay":!isStandAlone}' name="{{guest.first_name}}" type="text" placeholder="First Name" value="{{guest.first_name}}" ng-model="guest.first_name"  />
+                        <input ng-class='{"disabled overlay":!isStandAlone}' name="{{guest.last_name}}" type="text" placeholder="Last Name" ng-model="guest.last_name" value="{{guest.last_name}}" ng-blur="saveAccGuestDetails()"  />
                         <button class="button with-icon white" 
                             click-touch='showScannedGuestID(false, guest)'
                             ng-show="guest.id"
