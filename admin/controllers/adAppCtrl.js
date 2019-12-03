@@ -697,31 +697,36 @@ admin.controller('ADAppCtrl', [
          * we will check the lastDropedTime with click event fired time.
          * if it is less than a predefined time, it will not fire click event, otherwise fire
          */
-        $scope.clickedMenuItem = function($event, stateToGo) {
+        $scope.clickedMenuItem = function($event, stateToGo, shouldDisableClick) {
             var currentTime = new Date();
 
-            if (lastDropedTime !== '' && typeof lastDropedTime === 'object') {
-                var diff = currentTime - lastDropedTime;
-
-                if (diff <= 400) {
-                    $event.preventDefault();
-                    $event.stopImmediatePropagation();
-                    $event.stopPropagation();
-                    lastDropedTime = '';
-                    return false;
+            if(shouldDisableClick) {
+                $scope.errorMessage = ['Zest Web is disabled'];
+            } else {
+                $scope.errorMessage[0] = "";
+                if (lastDropedTime !== '' && typeof lastDropedTime === 'object') {
+                    var diff = currentTime - lastDropedTime;
+    
+                    if (diff <= 400) {
+                        $event.preventDefault();
+                        $event.stopImmediatePropagation();
+                        $event.stopPropagation();
+                        lastDropedTime = '';
+                        return false;
+                    } else {
+                        lastDropedTime = '';
+                        updateSelectedMenu(stateToGo);
+                        $state.go(stateToGo);
+                    }
                 } else {
                     lastDropedTime = '';
                     updateSelectedMenu(stateToGo);
                     $state.go(stateToGo);
                 }
-            } else {
-                lastDropedTime = '';
-                updateSelectedMenu(stateToGo);
-                $state.go(stateToGo);
-            }
-            if ($scope.menuOpen) {
-                $scope.menuOpen = !$scope.menuOpen;
-                $scope.showSubMenu = false;
+                if ($scope.menuOpen) {
+                    $scope.menuOpen = !$scope.menuOpen;
+                    $scope.showSubMenu = false;
+                }
             }
         };
 
