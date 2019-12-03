@@ -35,7 +35,7 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
             isExpanded: false,
             list: [],
             selectedStatus: 'SHOW ALL'
-        }
+        };
 
         /**
          * util function to get CSS class against diff. Hold status
@@ -231,11 +231,11 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
             var statusIdList = [];
 
             if ($scope.groupStatusObj.list.length > 0) {
-                _.each($scope.groupStatusObj.list, function( item ){
+                _.each($scope.groupStatusObj.list, function( item ) {
                     if (item.active) {
                         statusIdList.push(item.id);
                     }
-                })
+                });
             }
 
             return statusIdList;
@@ -466,7 +466,7 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
                 params: {
                     is_group: true
                 },
-                successCallBack: successCallBackOfgetHoldStatusList,
+                successCallBack: successCallBackOfgetHoldStatusList
             };
 
             $scope.callAPI(rvGroupSrv.getHoldStatusList, options);
