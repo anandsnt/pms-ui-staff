@@ -37,9 +37,9 @@
 
         <!-- Remove .hidden to show the faux options -->
         <div id="guest-status-options" class="faux-select-options" ng-show="groupStatusObj.isExpanded">
-            <label class="checkbox inline" ng-repeat="item in groupStatusObj.list">
+            <label class="checkbox inline" ng-repeat="item in groupStatusObj.list" ng-click="clickedGroupStatusItem($index)">
                 <span class="icon-form icon-checkbox"></span>
-                <input name="group-status[]" value="{status}" type="checkbox">
+                <input type="checkbox">
                 {{item.name}}
             </label>
         </div>

@@ -226,8 +226,17 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
             $scope.search();
         };
 
+        // Utility method to get selected status list.
         var fetchStatusIdList = function() {
             var statusIdList = [];
+
+            if ($scope.groupStatusObj.list.length > 0) {
+                _.each($scope.groupStatusObj.list, function( item ){
+                    if (item.active) {
+                        statusIdList.push(item.id);
+                    }
+                })
+            }
 
             return statusIdList;
         };
@@ -448,6 +457,7 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
             };
         };
 
+        // Fetch hold status list
         var fetchHoldStatusList = function() {
             var successCallBackOfgetHoldStatusList = function( data ) {
                 $scope.groupStatusObj.list = data.hold_status;
@@ -462,8 +472,16 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
             $scope.callAPI(rvGroupSrv.getHoldStatusList, options);
         };
 
+        // Handle Group status filter expansion toggle.
         $scope.clickedGroupStatus = function() {
             $scope.groupStatusObj.isExpanded = !$scope.groupStatusObj.isExpanded;
+        };
+
+        // Handle click on individual group status item checkbox.
+        $scope.clickedGroupStatusItem = function( index ) {
+            var clickedItem = $scope.groupStatusObj.list[index];
+
+            clickedItem.active = !clickedItem.active;
         };
 
         /**
