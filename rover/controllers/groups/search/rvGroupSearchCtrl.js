@@ -521,6 +521,5 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
 
         }());
 
-
     }
 ]);

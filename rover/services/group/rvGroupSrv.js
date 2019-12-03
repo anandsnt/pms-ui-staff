@@ -30,7 +30,6 @@ angular.module('sntRover').service('rvGroupSrv', ['$q', 'rvBaseWebSrvV2',
 
 		this.searchGroupCard = function(params) {
 			var deferred = $q.defer(),
-
 				url = '/api/groups/group_search';
 
 			var data = {
@@ -169,7 +168,6 @@ angular.module('sntRover').service('rvGroupSrv', ['$q', 'rvBaseWebSrvV2',
 		 */
 		this.getHoldStatusList = function(params) {
 			var deferred = $q.defer(),
-
 				url = '/api/group_hold_statuses';
 
 			rvBaseWebSrvV2.getJSON(url, params).then(
