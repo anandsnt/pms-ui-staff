@@ -114,8 +114,11 @@
 
 					<!-- Invoice -->
 					<div class="invoice">
-						<ng-include ng-if="invoiceActive" src="'/assets/partials/accounts/transactions/rvAccountInvoice.html'"></ng-include>
+						<ng-include ng-if="invoiceActive && !printGroupProfomaActive" src="'/assets/partials/accounts/transactions/rvAccountInvoice.html'"></ng-include>
 					</div>
+
+					<!-- Invoice -->
+					<div id="invoiceDiv" ng-if="printGroupProfomaActive" class="invoice invoice-page-break" ng-include="'/assets/partials/bill/rvPrintGroupProfoma.html'"></div>
 
 					<div class="invoice invoice-receipt">
                         <div id="invoiceDiv" ng-if="printReceiptActive" class="invoice" ng-include="'/assets/partials/bill/rvPrintReceipt.html'"></div>

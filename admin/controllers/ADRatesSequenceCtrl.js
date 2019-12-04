@@ -68,6 +68,10 @@ admin.controller('ADRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$anchor
         $scope.goToCustomRateSequence = function() {
             $state.go('admin.customRatesSequence');
         };
+
+        $scope.goBackToRateAdmin = function() {
+            $state.go('admin.dashboard', {menu: $scope.findMainMenuIndex("Rates")});
+        };
         initializeView();
     }
 ]);

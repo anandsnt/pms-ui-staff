@@ -47,7 +47,7 @@
         <strong >{{printData.translation.departure_date}}:</strong>{{printData.departure_date | date:dateFormat}}<br/>
         <strong >{{printData.translation.room_number}}:</strong>{{printData.room_number}}<br/>
         <strong >{{printData.translation.confirmation_number}}:</strong>{{printData.confirmation_number}}<br/>
-        <strong >{{printData.translation.tax_number}}:</strong>{{printData.tax_number}}
+        <strong ng-if="printData.tax_number">{{printData.translation.tax_number}}:</strong>{{printData.tax_number}}
         <br/>
 
     </div>

@@ -29,7 +29,6 @@ module.exports = function(gulp, $, options) {
                     'login-asset-prod-precompile',
                     'station-login-asset-prod-precompile',
                     'payment-asset-prod-precompile',
-                    'guestweb-v2-asset-prod-precompile'
                 ],
 
         tasksAfterCompilation = [
@@ -38,7 +37,6 @@ module.exports = function(gulp, $, options) {
                     'login-inject-assets-to-templates', 
                     'station-login-inject-assets-to-templates', 
                     'zest-inject-assets-to-templates',
-                    'guestweb-v2-inject-assets-to-templates',
                     'copy-cordova-assets'
                 ],
 
@@ -48,7 +46,6 @@ module.exports = function(gulp, $, options) {
                     'copy-admin-base-html',
                     'copy-zest-base-html',
                     'copy-rover-base-html',
-                    'copy-guestweb-v2-base-html',
                     'compress-images-loselessly'
                 ],
 
@@ -58,7 +55,6 @@ module.exports = function(gulp, $, options) {
                     'build-station-login-dev', 
                     'build-admin-dev', 
                     'build-zest-dev', 
-                    // 'build-guestweb-v2-dev',
                     'build-payment-dev',
                     'copy-cordova-assets'
                 ],
@@ -69,7 +65,6 @@ module.exports = function(gulp, $, options) {
                     'watch-station-login-files', 
                     'watch-admin-files', 
                     'watch-zest-files', 
-                    // 'watch-guestweb-v2-files',
                     'watch-payment-files'
                 ];
 
@@ -90,30 +85,9 @@ module.exports = function(gulp, $, options) {
             developmentTasks.push('inject_gtm_script_rover');
         }
 
-        // if you dont want to work with guest web (zest web),
-        // you can pass --no-gw arg with gulp s. eg:- gulp s --no-gw
-        if ('gw' in argv && !argv.gw) {
-
-            developmentTasks.splice(
-                developmentTasks.indexOf('build-guestweb-dev'), 1);
-            developmentTasks.splice(
-                developmentTasks.indexOf('build-guestweb-v2-dev'), 1);
-
-            copyBaseHtmlToPublicAssets.splice(
-                copyBaseHtmlToPublicAssets.indexOf('copy-guestweb-base-html'),
-                1);
-            copyBaseHtmlToPublicAssets.splice(
-                copyBaseHtmlToPublicAssets.indexOf(
-                    'copy-guestweb-v2-base-html'), 1);
-
-            watchTasks.splice(watchTasks.indexOf('watch-guestweb-files'), 1);
-            watchTasks.splice(watchTasks.indexOf('watch-guestweb-v2-files'), 1);
-        }
-
         // if you dont want to work with zest station,
         // you can pass --no-zs arg with gulp s. eg:- gulp s --no-zs
         if ('zs' in argv && !argv.zs) {
-
             developmentTasks.splice(developmentTasks.indexOf('build-zest-dev'),
                 1);
 

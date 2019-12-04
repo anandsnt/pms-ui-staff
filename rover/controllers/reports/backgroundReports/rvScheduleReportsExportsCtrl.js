@@ -200,9 +200,8 @@ angular.module('sntRover')
                 }
 
                 for (i = 0, j = source.length; i < j; i++) {
-                    title = $scope.reportViewStore.showingAllReport ?
-                        source[i].title.toLowerCase() : source[i].report.description.toLowerCase();
-
+                    title = source[i].title || ( source[i].report && source[i].report.title);
+                    title = title.toLowerCase();
                     source[i].filteredOut = title.indexOf(query) === -1;
                 }
 

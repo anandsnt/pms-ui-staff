@@ -71,7 +71,7 @@
     <ul class="totals">
         <li>
             <div class="data">
-                <span class="label">{{'GROUP_PICKED_UP'|translate}}</span>
+                <span class="label">{{ translations['picked_up'] || ('GROUP_PICKED_UP'|translate ) }}</span>
                 <span class="value">{{totalPickUpCount}}</span>
             </div>
         </li>
@@ -194,15 +194,15 @@
                 <input id="rooming-list-all" ng-disabled="!!groupConfigData.summary.is_cancelled" type="checkbox" ng-click="selectOrUnSelectAllReservation()" />
             </label>
         </li>
-        <li class="room sort" ng-class="getSortClass('room_no')" ng-click="sortBy('room_no')">{{'GROUP_ROOM'|translate}}</li>
-        <li class="name sort" ng-class="getSortClass('lastname')" ng-click="sortBy('lastname')">{{'GROUP_GUEST_NAME'|translate}}</li>
-        <li class="date sort" ng-class="getSortClass('arrival_date')" ng-click="sortBy('arrival_date')">{{'GROUP_ARRIVAL'|translate}}</li>
-        <li class="date sort" ng-class="getSortClass('departure_date')" ng-click="sortBy('departure_date')">{{'GROUP_DEPARTURE'|translate}}</li>
-        <li class="type sort" ng-class="getSortClass('room_type_id')" ng-click="sortBy('room_type_id')">{{'GROUP_ROOM_TYPE'|translate}}</li>
-        <li ng-hide="groupConfigData.summary.hide_rates && isPrintClicked" class="rate sort" ng-class="getSortClass('room_rate_amount')" ng-click="sortBy('room_rate_amount')">{{'GROUP_ROOM RATE'|translate}}</li>
+        <li class="room sort" ng-class="getSortClass('room_no')" ng-click="sortBy('room_no')">{{ translations['room'] || ('GROUP_ROOM'|translate) }}</li>
+        <li class="name sort" ng-class="getSortClass('lastname')" ng-click="sortBy('lastname')">{{ translations['guest_name'] || ('GROUP_GUEST_NAME'|translate) }}</li>
+        <li class="date sort" ng-class="getSortClass('arrival_date')" ng-click="sortBy('arrival_date')">{{ translations['arrival'] || ('GROUP_ARRIVAL'|translate) }}</li>
+        <li class="date sort" ng-class="getSortClass('departure_date')" ng-click="sortBy('departure_date')">{{ translations['departure'] || ('GROUP_DEPARTURE'|translate) }}</li>
+        <li class="type sort" ng-class="getSortClass('room_type_id')" ng-click="sortBy('room_type_id')">{{ translations['room_type'] || ('GROUP_ROOM_TYPE'|translate) }}</li>
+        <li ng-hide="groupConfigData.summary.hide_rates && isPrintClicked" class="rate sort" ng-class="getSortClass('room_rate_amount')" ng-click="sortBy('room_rate_amount')">{{ translations['rate'] || ('GROUP_ROOM RATE'|translate) }}</li>
         <!-- To fix a design issue while print. Not Good -->
         <li ng-show="groupConfigData.summary.hide_rates && isPrintClicked" class="rate sort" ng-class="getSortClass('room_rate_amount')" ng-click="sortBy('room_rate_amount')"> &nbsp;</li>
-        <li class="status sort" ng-class="getSortClass('reservation_status')" ng-click="sortBy('reservation_status')">{{'GROUP_STATUS'|translate}}</li>
+        <li class="status sort" ng-class="getSortClass('reservation_status')" ng-click="sortBy('reservation_status')">{{ translations['status'] || ('GROUP_STATUS'|translate) }}</li>
     </ul>
     
     <rv-pagination page-options="pageOptions" page-data="totalResultCount"></rv-pagination>
@@ -236,14 +236,14 @@
                                 <span ng-bind-html="escapeNull(reservation.accompanying_guest_last_name)|highlight:query:false"></span>, <span ng-bind-html="escapeNull(reservation.accompanying_guest_first_name)|highlight:query:false"></span>
                             </h2>
                         <h2 ng-show="isGuestBlank(reservation)">
-                            <span class="highlight">{{'GROUP_PENDING'|translate}}</span>
+                            <span class="highlight">{{ translations['pending'] || ('GROUP_PENDING'|translate) }}</span>
                         </h2>
                         <span class="room" ng-show="shouldShowAssignedRoom(reservation) ">
-                            {{'GROUP_ROOM'|translate}}
+                            {{ translations['room'] || ('GROUP_ROOM'|translate) }}
                             <span ng-class="getRoomStatusClass(reservation)" ng-bind-html="escapeNull(reservation.room_no)|highlight:query:false"></span>
                         </span>
                         <span class="room unassigned" ng-show="shouldShowUnAssigned(reservation)"> 
-                           {{'GROUP_UNASSIGNED'|translate}}
+                           {{ translations['unassigned'] || ('GROUP_UNASSIGNED'|translate) }}
                         </span> 
                         <span ng-show="shouldShowAssignedRoom(reservation) || shouldShowUnAssigned(reservation)">|</span>
                         <span class="confirmation" ng-bind-html="escapeNull(reservation.confirm_no)|highlight:query:false"></span>
@@ -285,7 +285,7 @@
 
                         <div class="room-info">
                             <strong class="room-type" ng-hide="emailPrintFilters.excludeRoomType && isPrintClicked">{{reservation.room_type_name}}</strong>
-                            <em class="room-occupancy">{{occupancyTextMap[reservation.occupancy]}}</em>
+                            <em class="room-occupancy">{{ translations[lowercase(occupancyTextMap[reservation.occupancy])] || occupancyTextMap[reservation.occupancy] }}</em>
                         </div>
                         <div class="rate" ng-hide="groupConfigData.summary.hide_rates && isPrintClicked">
                             {{reservation.room_rate_amount}}

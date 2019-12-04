@@ -663,14 +663,24 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 
 		$scope.noRoutingToReservation = function() {
 			ngDialog.close();
-			that.reloadStaycard();
+			if (that.useCardRate) {
+				$scope.navigateToRoomAndRates();
+			}
+			else {
+				that.reloadStaycard();
+			}
 		};
 
 		$scope.applyRoutingToReservation = function() {
 			var routingApplySuccess = function(data) {
 				$scope.$emit("hideLoader");
 				ngDialog.close();
-				that.reloadStaycard();
+				if (that.useCardRate) {
+					$scope.navigateToRoomAndRates();
+				}
+				else {
+					that.reloadStaycard();
+				}
 				$scope.$broadcast('paymentTypeUpdated'); // to update bill screen data
 			};
 			var routingApplyFailed = function(errorMessage) {
@@ -689,8 +699,12 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 
 		$scope.okClickedForConflictingRoutes = function() {
 			ngDialog.close();
-			that.reloadStaycard();
-
+			if (that.useCardRate) {
+				$scope.navigateToRoomAndRates();
+			}
+			else {
+				that.reloadStaycard();
+			}
 		};
 
 		this.showConfirmRoutingPopup = function(type, id) {
@@ -747,6 +761,13 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.company.id);
 					return false;
 				}
+				if (((card === 'company' && data.company.routings_count === 0) ||
+					(card === 'travel_agent' && data.travel_agent.routings_count === 0) ||
+					!data.has_conflicting_routes) &&
+					that.useCardRate) {
+					$scope.navigateToRoomAndRates();
+					return false;
+				}
 
 				that.reloadStaycard();
 			};
@@ -766,6 +787,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 
 		$scope.newCardData = {};
 		$scope.replaceCard = function(card, cardData, future, useCardRate) {
+			that.useCardRate = useCardRate;
 			if (card === 'company') {
 				$scope.reservationData.company.id = cardData.id;
 				$scope.reservationData.company.name = cardData.account_name;

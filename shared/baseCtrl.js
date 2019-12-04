@@ -380,4 +380,31 @@ BaseCtrl = function($scope) {
         return parseFloat(num);
     };
 
+    /**
+     * Converts string to lowercase
+     * @param {String} str- input string
+     * @return {String} transformed string
+     */
+    $scope.lowercase = function (str) {
+        str = str || '';
+        return str.toLowerCase(); 
+    };
+
+    /**
+     * Get the length of the object or array
+     * @param {Object | Array} -array or object
+     * @return {Number} length - length of the object or array
+     */
+    $scope.lengthObjArr = function (objOrArr) {
+        var length;
+
+        if (_.isObject(objOrArr)) {
+            length = _.keys(objOrArr).length;
+        } else if (_.isArray(objOrArr)) {
+            length = objOrArr.length;
+        }
+
+        return length;
+    };
+
 };

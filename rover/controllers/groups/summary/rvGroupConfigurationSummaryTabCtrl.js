@@ -1022,9 +1022,13 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
             if (!response.is_changed && !response.is_room_rate_available) {
                 showRateChangeWarningPopup();
                 $scope.groupConfigData.summary.rate = summaryMemento.rate;
+                $scope.groupConfigData.summary.contract_id = summaryMemento.contract_id;
+                $scope.groupConfigData.summary.uniqId = summaryMemento.uniqId;
             }
             else {
                 summaryMemento.rate = $scope.groupConfigData.summary.rate;
+                summaryMemento.contract_id = $scope.groupConfigData.summary.contract_id;
+                summaryMemento.uniqId = $scope.groupConfigData.summary.uniqId;
                 // fetch summary once rate is changed - as per CICO-31812 comments
                 $scope.$emit('FETCH_SUMMARY');
             }
@@ -1035,6 +1039,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
             $scope.errorMessage = errorMessage;
             $scope.$emit('showErrorMessage', errorMessage);
             $scope.groupConfigData.summary.rate = summaryMemento.rate;
+            $scope.groupConfigData.summary.contract_id = summaryMemento.contract_id;
+            $scope.groupConfigData.summary.uniqId = summaryMemento.uniqId;
         };
 
         /**
@@ -1043,14 +1049,16 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
          */
         $scope.onRateChange = function() {
             var summaryData = $scope.groupConfigData.summary,
-                contractId;
-            
-            _.each($scope.groupSummaryData.rateSelectDataObject, function(rate) {
-                if (rate.id === summaryData.rate) {
-                    contractId = rate.contract_id;
-                    $scope.groupConfigData.summary.contract_id = contractId;
-                }
-            });
+                uniqId = summaryData.uniqId,
+                rateId = uniqId.split(':')[0],
+                contractId = uniqId.split(':')[1];
+
+            /**
+             * Call the API only if the group is saved, else allow the group
+             * to be saved with the rate selected.
+             */
+            $scope.groupConfigData.summary.rate = rateId;
+            $scope.groupConfigData.summary.contract_id = contractId;
 
             if (!summaryData.group_id) {
                 return false;
@@ -1058,7 +1066,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
 
             var params = {
                 group_id: summaryData.group_id,
-                rate_id: summaryData.rate,
+                rate_id: rateId,
                 contract_id: contractId
             };
             var options = {
@@ -1498,21 +1506,44 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                     // add custom rate obect
                     sumData.rateSelectDataObject.push({
                         id: '-1',
-                        name: 'Custom Rate'
+                        name: 'Custom Rate',
+                        uniqId: '-1'
                     });
-                    // group rates by contracted and group rates.
-                    _.each(data.results, function(rate) {
-                        if (rate.is_contracted) {
-                            rate.groupName = 'Company/ Travel Agent Contract';
-                        }
-                        else {
-                            rate.groupName = 'Group Rates';
-                        }
-                        if (rate.id === $scope.groupConfigData.summary.rate) {
-                            $scope.groupConfigData.summary.contract_id = rate.contract_id;
-                        }
-                        sumData.rateSelectDataObject.push(rate);
-                    });
+                    /**
+                     * we have the company/travel-agent/group rates in separate arrays
+                     */
+                    var groupRatesBy = function(rateArray, groupName) {
+                        angular.forEach(rateArray, function(rate) {
+                            rate.groupName = groupName;
+                            if (rate.is_contracted) {
+                                rate.uniqId = rate.id + ':' + rate.contract_id;
+                                rate.name = rate.name + ' (' + rate.contract_name + ')';
+                                if (rate.id === $scope.groupConfigData.summary.rate && rate.contract_id === $scope.groupConfigData.summary.contract_id) {
+                                    $scope.groupConfigData.summary.uniqId = rate.uniqId;
+                                }
+                            }
+                            else {
+                                rate.uniqId = rate.id + ':';
+                                if (rate.id === $scope.groupConfigData.summary.rate) {
+                                    $scope.groupConfigData.summary.uniqId = rate.uniqId;
+                                }
+                            }
+                            sumData.rateSelectDataObject.push(rate);
+                        });
+                    };
+
+                    if (data.group_rates.length !== 0) {
+                        groupRatesBy(data.group_rates, 'Group Rates');
+                    }
+                    if (data.company_rates.length !== 0) {
+                        groupRatesBy(data.company_rates, 'Company Contract');
+                    }
+                    if (data.travel_agent_rates.length !== 0) {
+                        groupRatesBy(data.travel_agent_rates, 'Travel Agent Contract');
+                    }
+                    if ($scope.groupConfigData.summary.rate === '-1') {
+                        $scope.groupConfigData.summary.uniqId = '-1';
+                    }
                 },
                 onFetchRatesFailure = function(errorMessage) {
                     $scope.errorMessage = errorMessage;

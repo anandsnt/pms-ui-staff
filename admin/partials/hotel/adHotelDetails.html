@@ -518,6 +518,8 @@
 
                 <ad-toggle-button is-checked="data.use_ows_opi_auth" label="{{'OWS_OPI_AUTH' | translate}}" is-hide="!isAdminSnt || data.hotel_pms_type !=='OWS'"></ad-toggle-button>
 
+                <ad-toggle-button is-checked="data.enable_emv_for_overlay" label="{{'EMV_FOR_OVERLAY' | translate}}" is-hide="!isAdminSnt || data.hotel_pms_type !=='OWS'"></ad-toggle-button>
+
 				<!-- <div class="entry">
 					<label for="hotel_from_address"> LANGUAGE <strong>*</strong></label>
 					<select ng-model="data.hotel_pms_type" name="hotel-pms-type" id="hotel-pms-type" class="placeholder">
@@ -722,7 +724,7 @@
 					</label>
 					<input type="text" ng-model="data.mli_site_code" value="{{data.mli_site_code}}" placeholder="Enter MLI site code">
 				</div>
-				<div class="entry" ng-if="data.payment_gateway === 'MLI' && data.hotel_pms_type == ''">
+				<div class="entry" ng-if="data.payment_gateway === 'MLI'">
 					<label for="mli-emv-enabled">
 						Enable EMV (TransactionLink)
 					</label>
@@ -732,7 +734,7 @@
 					</div>
 				</div>
 				<div class="entry full-width" ng-if="data.payment_gateway === 'MLI'"
-                     ng-show="data.payment_gateway === 'MLI' && data.mli_emv_enabled && data.hotel_pms_type == ''">
+                     ng-show="data.payment_gateway === 'MLI' && data.mli_emv_enabled">
 					<label for="mli-transaction-access-url"> MLI Transaction Access URL </label>
 					<input type="text" ng-model="data.mli_txn_access_url" value="{{data.mli_txn_access_url}}"
 						   placeholder="https://[Public IP for PosLynx]/thinclient/mobile/api.php"
