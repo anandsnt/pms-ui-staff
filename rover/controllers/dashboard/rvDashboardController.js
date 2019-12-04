@@ -437,6 +437,17 @@ sntRover.controller('RVdashboardController',
                         });
                     }, 1000);
                 };
+
+                $scope.$on('ROOM_TYPE_SHORTAGE_CALCULATED', function(e, calculatedRoomTypes) {
+                    $scope.roomTypesForWorkPrioriy = [];
+                    _.each($scope.roomTypes, function(roomType) {
+                        _.each(calculatedRoomTypes, function(calculatedRoomType) {
+                            if (roomType.code === calculatedRoomType.code) {
+                                roomType.shortage = calculatedRoomType.shortage;
+                            }
+                        });
+                    });
+                });
             }
 
         }]);

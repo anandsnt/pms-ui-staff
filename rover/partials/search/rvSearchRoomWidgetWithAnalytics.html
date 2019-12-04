@@ -104,7 +104,8 @@
 		        <label for="room-type">Room Type</label>
 		        <select id="room-type" ng-model="dashboardFilter.selectedRoomType" ng-change="onHkAnlayticsRoomTypeChange()">
 		            <option value="" selected="" translate>SHOW_ALL</option>
-		            <option value="{{::roomType.code}}" ng-repeat="roomType in ::roomTypes track by $index">{{::roomType.name}}</option>
+		            <option value="{{::roomType.code}}" ng-repeat="roomType in ::roomTypes track by $index">{{::roomType.name}} {{ dashboardFilter.selectedAnalyticsMenu === 'HK_WORK_PRIORITY' && roomType.shortage > 0 ?  
+		               '....(-' + roomType.shortage + ' rooms)' : '' }}</option>
 		        </select>
 		    </div>
 		</div>
