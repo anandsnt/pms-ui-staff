@@ -43,7 +43,7 @@ angular.module('sntRover')
 
 				maxValueInBothDirections = maxValueInBothDirections + 1; // to add some extra spacing
 
-				var maxValueInNegDirection = _.max(cancellationArray);
+				var maxValueInNegDirection = cancellationArray.length ? _.max(cancellationArray) : 0;
 				var isNegativeSideVerySmall = maxValueInBothDirections / maxValueInNegDirection > 25;
 
 				maxValueInNegDirection = maxValueInBothDirections / maxValueInNegDirection > 50 ? maxValueInNegDirection * 10 : maxValueInNegDirection;
