@@ -68,6 +68,19 @@
 							<label>Vehicle Registration Number<strong>*</strong></label>
 							<input type="text" placeholder="Enter Vehicle Registration Number" ng-model="saveData.vehicle_registration_number">
 						</div>
+
+						<div class="entry" ng-if="showIdPlaceOfIssue && (guestCardData.contactInfo.id_place_of_issue === '' || guestCardData.contactInfo.id_place_of_issue === null)">
+							<label>Id Place of Issue<strong>*</strong></label>
+							<input type="text" placeholder="Enter Id Place of Issue" ng-model="saveData.id_place_of_issue">
+						</div>
+						<div class="entry" ng-if="showIdCountryOfIssue">
+							<label>ID Country of issue<strong>*</strong></label>
+							<div class="select">
+								<select iscroll-stop-propagation ng-options="country.id as country.value for country  in countries" ng-model="saveData.id_country_of_issue" class="placeholder">
+									<option style="display:none" value="">Select id country of issue</option>
+								</select>
+							</div>
+						</div>
 						<div class="entry" ng-if="showPersonalIdNumber && (guestCardData.contactInfo.personal_id_no === '' || guestCardData.contactInfo.personal_id_no === null)">
 							<label>Personal Id Number<strong>*</strong></label>
 							<input type="text" placeholder="Enter Personal Id No" ng-model="saveData.personal_id_no">

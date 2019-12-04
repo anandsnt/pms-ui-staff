@@ -127,6 +127,12 @@ sntRover.controller('RVValidateEmailPhoneCtrl',
         if ($scope.showVehicleRegistrationNumber) {
             $scope.guestCardData.contactInfo.vehicle_registration_number = $scope.saveData.vehicle_registration_number;
         }
+        if ($scope.showIdPlaceOfIssue) {
+            $scope.guestCardData.contactInfo.id_place_of_issue = $scope.saveData.id_place_of_issue;
+        }
+        if ($scope.showIdCountryOfIssue) {
+            $scope.guestCardData.contactInfo.id_country_of_issue = $scope.saveData.id_country_of_issue;
+        }
         if ($scope.showHomeTown) {
             $scope.guestCardData.contactInfo.home_town = $scope.saveData.home_town;
         }

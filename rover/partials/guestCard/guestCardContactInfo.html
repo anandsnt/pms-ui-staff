@@ -48,6 +48,18 @@
 				<label for="id date issue"> ID Date of issue </label>
 				<input type="text" ng-model="guestCardData.contactInfo.id_issue_date  | date:dateFormat" class="datepicker" ng-click="popupCalendarForGuestContactInfoDate('idDate')" readonly />
 			</div>
+			<div class="entry" ng-class="{'margin': !guestCardData.contactInfo.guestAdminSettings.id_issue_date.is_visible}" ng-if="guestCardData.contactInfo.guestAdminSettings.id_place_of_issue.is_visible">
+				<label for="id place issue"> ID Place of issue </label>
+				<input type="text" ng-model="guestCardData.contactInfo.id_place_of_issue" />
+			</div>
+			<div class="entry" ng-class="{'margin': !guestCardData.contactInfo.guestAdminSettings.id_issue_date.is_visible && !guestCardData.contactInfo.guestAdminSettings.id_place_of_issue.is_visible}" ng-if="guestCardData.contactInfo.guestAdminSettings.id_country_of_issue.is_visible">
+				<label for="id date issue"> ID Country of issue </label>
+				<div class="select">
+					<select iscroll-stop-propagation ng-options="country.id as country.value for country  in countries" ng-model="guestCardData.contactInfo.id_country_of_issue">
+						<option style="display:none" value=""></option>
+					</select>					
+				</div>
+			</div>
 			<div class="entry has-datepicker" ng-class="{'margin': !guestCardData.contactInfo.guestAdminSettings.id_issue_date.is_visible}" ng-if="guestCardData.contactInfo.guestAdminSettings.entry_date.is_visible">
 				<label for="entry date"> Entry Date </label>
 				<input type="text" ng-model="guestCardData.contactInfo.entry_date | date:dateFormat" class="datepicker" ng-click="popupCalendarForGuestContactInfoDate('entryDate')" readonly />
