@@ -23,12 +23,8 @@ angular.module('sntRover')
 					} else {
 						chartDataMaxArray.push(parseInt(data.cancellation));
 					}
-					// consider cancellation as -ve
-					if (data.cancellation > 0) {
-						cancellationArray.push(data.cancellation);
-						data.cancellation = -1 * data.cancellation;
-					}
-
+					data.cancellation = data.cancellation > 0 ? -1 * data.cancellation : data.cancellation;
+					cancellationArray.push(data.cancellation < 0 ? -1 * data.cancellation : data.cancellation);
 				});
 
 				var data = chartData;
