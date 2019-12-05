@@ -116,6 +116,12 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
             }
 		}
 
+		if ($stateParams.fromState === "STAY_CARD") {
+			angular.forEach($scope.reservation.reservation_card.stay_dates, function(detail) {
+				$scope.reservationData.rooms[0].stayDates[detail.date].contractId = detail.contract_id;
+			});
+		}
+
 		// -- REFERENCES
 		var TABS = $scope.reservationData.tabs,
 			ROOMS = $scope.reservationData.rooms,
