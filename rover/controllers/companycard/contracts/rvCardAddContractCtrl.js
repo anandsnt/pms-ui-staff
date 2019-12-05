@@ -49,7 +49,7 @@ angular.module('sntRover').controller('rvCardAddContractsCtrl', ['$scope', 'rvCo
                 accessCode: '',
                 startDate: null,
                 endDate: null,
-                contractedNights: 0,
+                contractedNights: '',
                 contractedRates: [],
                 isActive: true,
                 occupancy: []
