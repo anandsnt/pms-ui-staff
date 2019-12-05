@@ -28,7 +28,8 @@ angular.module('sntRover').controller('rvCardSearchContractedRateCtrl', ['$scope
             },
             fetchRateContractFailureCallback = function(errorMessage) {
                 $scope.$emit('setErrorMessage', errorMessage);
-            };
+            },
+            accountId = !_.isEmpty($scope.contactInformation) ? $scope.contactInformation.id : $stateParams.id;
 
             var options = {
                 successCallBack: fetchRateContractSuccessCallback,
@@ -36,7 +37,7 @@ angular.module('sntRover').controller('rvCardSearchContractedRateCtrl', ['$scope
                 params: {
                     'query': $scope.contractData.rateSearchQuery,
                     'selected_rate_ids': _.pluck($scope.contractData.selectedRateList, 'id'),
-                    'account_id': $scope.contractData.accountId
+                    'account_id': accountId
                 }
             };
 
