@@ -839,7 +839,7 @@ admin.controller('ADAppCtrl', [
 
             $rootScope.isAllowanceEnabled = data.is_allowance_enabled;
 
-            var isZestWebEnabled = data.is_zest_web_enabled || true;
+            var isZestWebEnabled = data.is_zest_web_enabled;
 
             setupLeftMenu();
             var isComponentDisabled = function(component) {
