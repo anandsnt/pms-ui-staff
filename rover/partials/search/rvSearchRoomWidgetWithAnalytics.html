@@ -102,9 +102,16 @@
 		<div class="entry room-types">
 		    <div class="select with-label">
 		        <label for="room-type">Room Type</label>
-		        <select id="room-type" ng-model="dashboardFilter.selectedRoomType" ng-change="onHkAnlayticsRoomTypeChange()">
+		        <select id="room-type" ng-model="dashboardFilter.selectedRoomType" ng-change="onHkAnlayticsRoomTypeChange()"
+		        ng-if="dashboardFilter.selectedAnalyticsMenu !== 'HK_WORK_PRIORITY'">
 		            <option value="" selected="" translate>SHOW_ALL</option>
-		            <option value="{{::roomType.code}}" ng-repeat="roomType in ::roomTypes track by $index">{{::roomType.name}} {{ dashboardFilter.selectedAnalyticsMenu === 'HK_WORK_PRIORITY' && roomType.shortage > 0 ?  
+		            <option value="{{::roomType.code}}" ng-repeat="roomType in ::roomTypes track by $index">{{::roomType.name}}</option>
+		        </select>
+		        <!-- Show shortage in rooms inspected based on arrivals -->
+		        <select id="room-type" ng-model="dashboardFilter.selectedRoomType" ng-change="onHkAnlayticsRoomTypeChange()"
+		        ng-if="dashboardFilter.selectedAnalyticsMenu === 'HK_WORK_PRIORITY'">
+		            <option value="" selected="" translate>SHOW_ALL</option>
+		            <option value="{{roomType.code}}" ng-repeat="roomType in roomTypes | orderBy: '-shortage' ">{{roomType.name}} {{ roomType.shortage > 0 ?  
 		               '....(-' + roomType.shortage + ' rooms)' : '' }}</option>
 		        </select>
 		    </div>
