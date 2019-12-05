@@ -301,9 +301,9 @@
 	                                </div>
 	                            </div>
 	                        </div>
-	                        <div class="tax-amount-action">
+	                        <div class="tax-amount-action" >
 	                            <button type="button" class="icons icon-delete small-icon" ng-click="deleteTaxRule($index)"></button>
-	                            <button type="button" class="icons icon-add large-icon" ng-if="$last" ng-click="addNewTaxRule()"></button>
+	                            <button type="button" class="icons icon-add small-icon" ng-class="{'edit_plus': isEdit}" ng-if="$last" ng-click="addNewTaxRule()"></button>
 	                        </div>
 	                    </div>
 	                    
