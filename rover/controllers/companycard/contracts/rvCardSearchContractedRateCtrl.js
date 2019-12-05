@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('rvCardSearchContractedRateCtrl', ['$scope', 'rvCompanyCardContractsSrv', '$timeout', 'ngDialog',
-	function($scope, rvCompanyCardContractsSrv, $timeout, ngDialog) {
+angular.module('sntRover').controller('rvCardSearchContractedRateCtrl', ['$scope', 'rvCompanyCardContractsSrv', '$timeout', 'ngDialog', '$stateParams',
+	function($scope, rvCompanyCardContractsSrv, $timeout, ngDialog, $stateParams) {
         
         BaseCtrl.call(this, $scope);
         var that = this,
