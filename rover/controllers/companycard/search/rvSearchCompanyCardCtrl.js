@@ -92,7 +92,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		 * function to perform filtering/request data from service in change event of query box
 		 */
 		$scope.queryEntered = _.debounce(function () {
-			if ($scope.textInQueryBox < 3) {
+			if ($scope.textInQueryBox.length < 3) {
 				$scope.results = [];
 				refreshScroller();
 			} else {
