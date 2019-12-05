@@ -12,6 +12,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
     that.selectedRoomType = "";
     that.hotelCheckinTime = null;
     that.hotelCheckoutTime = null;
+    that.roomTypesWithShortageData = [];
 
     /*
      * Function To Fetch Active Reservation for that day
@@ -49,6 +50,33 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
                 deferred.reject(data);
             });
         return deferred.promise;
+    };
+
+    var calculateRoomShortageByRoomType = function(date) {
+        var roomTypes = _.groupBy(that.roomStatuses, 'room_type');
+        var rooTypeConf = [];
+
+        _.each(roomTypes, function(value, key) {
+
+            var inspectedRooms = getCleanAndInspectedRooms(value);
+            var reservations = that.filterReservationsByRoomType(that.activeReservations, key);
+            var arrivals = reservations.filter(function(reservation) {
+                return reservation.arrival_date === date;
+            });
+            var perfomedCount = arrivals.filter(function(reservation) {
+                return reservation.reservation_status === 'CHECKEDIN' ||
+                    reservation.reservation_status === 'CHECKEDOUT';
+            }).length;
+            var remainingCount = arrivals.length - perfomedCount;
+            var shortage = remainingCount > inspectedRooms.length ? remainingCount - inspectedRooms.length : 0;
+
+            that.roomTypesWithShortageData.push({
+                "code": key,
+                "inspected": inspectedRooms.length,
+                "pending_reservations": remainingCount,
+                "shortage": shortage
+            });
+        });
     };
 
     this.initRoomAndReservationApis = function(params) {
@@ -179,7 +207,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         hkOverview.data.push(buildStayOvers(reservations, rooms, date));
         // Pushing vacant data structure
         hkOverview.data.push(buildVacants(reservations, rooms, isOverview, isArrivalsManagement));
-
+        calculateRoomShortageByRoomType(date);
         deferred.resolve(hkOverview);
     };
 
