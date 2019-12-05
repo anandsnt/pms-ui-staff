@@ -39,7 +39,7 @@
                 </div>
                 <div class="entry margin">
                     <label class="disable-element" for="contracted-nights">Contracted nights</label>
-                    <input ng-disabled="contractData.disableFields" name="contracted-nights" id="contracted-nights" class=" contracted-nights" placeholder="Nights per month" ng-model="contractData.editData.total_contracted_nights" ng-click="editContractedNights()" maxlength="8" readonly type="text" />
+                    <input ng-disabled="contractData.disableFields" ng-class="{'overlay': contractData.disableFields}" name="contracted-nights" id="contracted-nights" class=" contracted-nights" placeholder="Nights per month" ng-model="contractData.editData.total_contracted_nights" ng-click="editContractedNights()" maxlength="8" readonly type="text" />
                 </div>
                 <div include-replace ng-include="'/assets/partials/companyCard/contracts/rvCardSearchContractedRate.html'"></div>
             </div>
@@ -49,7 +49,7 @@
                 <!-- hide this if there are no linked contracts -->
                 <div class="linked-contracts">
                     <div class="linked-contract" ng-repeat="account in contractData.editData.account_details">
-                        <div class="contract with-image">
+                        <div class="contract with-image no-arrow">
                             <!-- If Company -->
                             <div class="guest-image icons icon-company" ng-if="account.type === 'COMPANY'"></div>
                             <!-- If Travel Agent -->

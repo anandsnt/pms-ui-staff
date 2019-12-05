@@ -210,6 +210,9 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
   }, {
     "name": "RevPAR",
     "code": "rev_par"
+  }, {
+      "name": "Room Revenue",
+      "code": "revenue"
   }];
 
   $scope.dashboardFilter.chartType = "occupancy";
