@@ -140,7 +140,6 @@ admin.controller('ADRatesAddonDetailsCtrl', [
 
            // fetch charge groups
             $scope.invokeApi(ADChargeGroupsSrv.fetch, {}, function(data){
-                console.log(data);
                 _.each(data.charge_groups, function(chargeGroup){
                     chargeGroup.id = parseInt(chargeGroup.value);
                 });
