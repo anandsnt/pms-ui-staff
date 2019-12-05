@@ -58,7 +58,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
 
         _.each(roomTypes, function(value, key) {
 
-            var inspectedRooms = getCleanAndInspectedRooms(value);
+            var inspectedRooms = getInspectedRooms(value);
             var reservations = that.filterReservationsByRoomType(that.activeReservations, key);
             var arrivals = reservations.filter(function(reservation) {
                 return reservation.arrival_date === date;
