@@ -274,15 +274,20 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 						excluded_rate_ids: addon.excluded_rate_ids
 					});
 				});
-				if (!$scope.reservationData.keepExistingRate) {
+				if (options) {
 					$scope.navigateToRoomAndRates(options);
 				}
-                else {
-                    $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-						"id": typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
-						"confirmationId": $stateParams.confirmationId
-					});
-                }
+				else {
+					if	(!$scope.reservationData.keepExistingRate) {
+						$scope.navigateToRoomAndRates(options);
+					}
+					else {
+						$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+							"id": typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
+							"confirmationId": $stateParams.confirmationId
+						});
+					}
+				}
 			});
 		};
 
