@@ -172,6 +172,9 @@ angular.module('sntRover').service('rvGroupSrv', ['$q', 'rvBaseWebSrvV2',
 
 			rvBaseWebSrvV2.getJSON(url, params).then(
 				function(data) {
+                    _.each(data.data.hold_status, function( item ) {
+						item.active = true;
+					});
 					deferred.resolve(data.data);
 				},
 				function(errorMessage) {
