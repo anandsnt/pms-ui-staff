@@ -23,12 +23,8 @@ angular.module('sntRover')
 					} else {
 						chartDataMaxArray.push(parseInt(data.cancellation));
 					}
-					// consider cancellation as -ve
-					if (data.cancellation > 0) {
-						cancellationArray.push(data.cancellation);
-						data.cancellation = -1 * data.cancellation;
-					}
-
+					data.cancellation = data.cancellation > 0 ? -1 * data.cancellation : data.cancellation;
+					cancellationArray.push(data.cancellation < 0 ? -1 * data.cancellation : data.cancellation);
 				});
 
 				var data = chartData;
@@ -43,7 +39,7 @@ angular.module('sntRover')
 
 				maxValueInBothDirections = maxValueInBothDirections + 1; // to add some extra spacing
 
-				var maxValueInNegDirection = _.max(cancellationArray);
+				var maxValueInNegDirection = cancellationArray.length ? _.max(cancellationArray) : 0;
 				var isNegativeSideVerySmall = maxValueInBothDirections / maxValueInNegDirection > 25;
 
 				maxValueInNegDirection = maxValueInBothDirections / maxValueInNegDirection > 50 ? maxValueInNegDirection * 10 : maxValueInNegDirection;
