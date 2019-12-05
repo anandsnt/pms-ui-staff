@@ -843,13 +843,13 @@ admin.controller('ADAppCtrl', [
 
             setupLeftMenu();
             var tabsToBeGrayed = function(component) {
-
                 return (
                     component.name === 'Check In' || component.name === 'Check Out' ||
                         component.name === 'Direct URL' || component.name === '' || component.name === 'Zest Web Common' ||
                         component.name === 'Room Ready Email' || component.name === 'Zest Web Global Setup'
                 )
             }
+
             _.each($scope.data.menus, function(menu) {
                 _.each(menu.components, function(component) {
                     if (isZestWebEnabled && menu.menu_name === 'Zest' && tabsToBeGrayed(component)) {
