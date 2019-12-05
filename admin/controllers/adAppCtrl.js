@@ -843,6 +843,7 @@ admin.controller('ADAppCtrl', [
 
             setupLeftMenu();
             var tabsToBeGrayed = function(component) {
+
                 return (
                     component.name === 'Check In' || component.name === 'Check Out' ||
                         component.name === 'Direct URL' || component.name === '' || component.name === 'Zest Web Common' ||
@@ -850,7 +851,7 @@ admin.controller('ADAppCtrl', [
                 )
             }
             _.each($scope.data.menus, function(menu) {
-                _.each(menu.components, function(component, index) {
+                _.each(menu.components, function(component) {
                     if (isZestWebEnabled && menu.menu_name === 'Zest' && tabsToBeGrayed(component)) {
                         component.is_gray_tab = true;
                     }
