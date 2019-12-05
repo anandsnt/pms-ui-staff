@@ -123,9 +123,6 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 		$(window).on("resize.doResize", function() {
 			$scope.$apply(function() {
 				$timeout(function() {
-					// Clear existing chart
-					d3.select('#d3-plot').selectAll('svg').remove();
-					clearAllExistingChartElements();
 					// Redraw chart
 					drawChart();
 				}, 0);
@@ -152,7 +149,6 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 
 		$scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER', function(e, filter) {
 			rvAnalyticsSrv.selectedRoomType = filter.room_type;
-			clearAllExistingChartElements();
 			drawChart();
 		});
 

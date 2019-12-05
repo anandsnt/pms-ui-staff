@@ -331,7 +331,7 @@ angular.module('sntRover')
 				attr("cx", x(-1 * yesterDaysOccupany * 0.1 / 25))
 					.attr("cy", y(yesterDaysOccupany * 0.1 / 25))
 					.attr("r", yesterDaysOccupany > 25 ? 8 : 4)
-					.attr("fill", "#89BD55");
+					.attr("fill", "#E63838");
 
 				var leftTopQuadrantOccupany = {
 					"type": "occupany",
@@ -375,7 +375,7 @@ angular.module('sntRover')
 				attr("cx", x(todaysOccupany * 0.1 / 25))
 					.attr("cy", y(todaysOccupany * 0.1 / 25))
 					.attr("r", todaysOccupany > 25 ? 8 : 4)
-					.attr("fill", "#E63838");
+					.attr("fill", "#89BD55");
 
 				var rightTopQuadrantOccupany = {
 					"type": "occupany",
@@ -419,7 +419,7 @@ angular.module('sntRover')
 				attr("cx", x(-1 * mtdOccupany * 0.1 / 25))
 					.attr("cy", y(-1 * mtdOccupany * 0.1 / 25))
 					.attr("r", mtdOccupany > 25 ? 8 : 4)
-					.attr("fill", "#0000FF");
+					.attr("fill", "#F6991B");
 
 				var leftBottomOccupancy = {
 					"type": "occupany",
@@ -462,7 +462,7 @@ angular.module('sntRover')
 				attr("cx", x(ytdOccupany * 0.1 / 25))
 					.attr("cy", y(-1 * ytdOccupany * 0.1 / 25))
 					.attr("r", ytdOccupany > 25 ? 8 : 4)
-					.attr("fill", "#F6991B");
+					.attr("fill", "#497D8E");
 
 				var rightBottomOccupancy = {
 					"type": "occupany",
@@ -476,7 +476,7 @@ angular.module('sntRover')
 				var rightBottomAdr = {
 					"class": "bottomRight",
 					"top": y(-0.7) + "px",
-					"backgroundColor": "#89BD55",
+					"backgroundColor": "#497D8E",
 					"label": "ADR",
 					"value": chartData.ytd.adr,
 					"id": "right-bottom-adr"
@@ -487,7 +487,7 @@ angular.module('sntRover')
 				var rightBottomRevPar = {
 					"class": "bottomRight",
 					"top": y(-0.5) + "px",
-					"backgroundColor": "#89BD55",
+					"backgroundColor": "#497D8E",
 					"label": "REVPAR",
 					"value": chartData.ytd.rev_par,
 					"id": "right-bottom-rev-par"
