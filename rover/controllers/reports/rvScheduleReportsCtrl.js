@@ -686,7 +686,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 $scope.schedule_formats = $scope.selectedEntityDetails.schedule_formats;
                 $scope.scheduleParams.format_id = $scope.selectedEntityDetails.format.id;
             } else {
-                if ($scope.isYearlyTaxReport) {
+                if ($scope.isYearlyTaxReport || $scope.selectedEntityDetails.report.title === reportNames['BUSINESS_ON_THE_BOOKS']) {
                     $scope.scheduleParams.format_id = _.find($scope.scheduleFormat, {value: 'CSV'}).id;
                 } else if ($scope.selectedEntityDetails.report.title !== reportNames['COMPARISION_BY_DATE'] && 
                     $scope.selectedEntityDetails.report.title !== reportNames['DAILY_PRODUCTION_DEMO'] &&
@@ -1036,7 +1036,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'In-House Guests': true,
                 'Comparison': true,
                 'Guest Balance Report': true,
-                'Yearly Tax Report': true
+                'Yearly Tax Report': true,
+                'Business on the Books': true
             };
 
             var forHourly = {

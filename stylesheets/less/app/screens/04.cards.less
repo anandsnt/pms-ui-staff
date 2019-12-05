@@ -1691,6 +1691,8 @@
 
                             .no-content {
                                 padding: 0;
+                                height: auto;
+                                min-height: 130px;
 
                                 .icon-no-content {
                                     &.icon-rates {
@@ -1756,6 +1758,11 @@
                                         background-image: @arrowRight2x; 
                                         background-size: 14px 14px;
                                     }
+
+                                    &.no-arrow {
+                                        background-image: none;
+                                        padding-right: 15px;
+                                    }
                                     
                                     &:not(:last-child) {
                                         margin-bottom: 10px;
@@ -1806,7 +1813,8 @@
                                 position: relative;
                                 .calc-height( 100, 60 );
 
-                                input[disabled]:not(.icons) {
+                                input[disabled]:not(.icons),
+                                input[readonly]:not(.icons) {
                                     color: @black;
                                     -webkit-text-fill-color: @black;
                                 }
@@ -1910,7 +1918,7 @@
                                             .nowrap();
                                         }
 
-                                        .rate-codeÂ {
+                                        .rate-code {
                                             color: @grey3;
                                             font-size: 14px;
                                         }
@@ -1986,7 +1994,7 @@
                                             .nowrap();
                                         }
 
-                                        .rate-codeÂ {
+                                        .rate-code {
                                             color: @grey3;
                                             font-size: 14px;
                                             font-weight: 400;
@@ -4783,4 +4791,25 @@
         padding-right: 2.5em !important;
     }
 
+}
+
+@media screen and (min-width: 1280px) {
+    .cards {
+        .card-content {
+            .card-tab{
+                &.contracts {
+                    .tab-details {
+                        .holder {
+                            &.left {
+                                .calc-width( 100, 460 );
+                            }
+                            &.right {
+                                width: 420px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

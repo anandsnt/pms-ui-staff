@@ -693,7 +693,7 @@ admin.controller('ADAppCtrl', [
         /*
          * function for handling click operation on menu item
          * Here is a special case
-         * After drag operation, click event is firing. Inorder to prevent that
+         * After the drag operation, click event is firing. Inorder to prevent that
          * we will check the lastDropedTime with click event fired time.
          * if it is less than a predefined time, it will not fire click event, otherwise fire
          */
