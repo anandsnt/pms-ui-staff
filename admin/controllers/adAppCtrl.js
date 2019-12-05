@@ -842,7 +842,7 @@ admin.controller('ADAppCtrl', [
             var isZestWebEnabled = data.is_zest_web_enabled || true;
 
             setupLeftMenu();
-            var tabsToBeGrayed = function(component) {
+            var isComponentDisabled = function(component) {
                 return (
                     component.name === 'Check In' || component.name === 'Check Out' ||
                         component.name === 'Direct URL' || component.name === '' || component.name === 'Zest Web Common' ||
@@ -852,8 +852,8 @@ admin.controller('ADAppCtrl', [
 
             _.each($scope.data.menus, function(menu) {
                 _.each(menu.components, function(component) {
-                    if (isZestWebEnabled && menu.menu_name === 'Zest' && tabsToBeGrayed(component)) {
-                        component.is_gray_tab = true;
+                    if (isZestWebEnabled && menu.menu_name === 'Zest' && isComponentDisabled(component)) {
+                        component.is_disabled = true;
                     }
                 });
             });

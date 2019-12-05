@@ -9,7 +9,7 @@
          <div ng-include="'/assets/partials/common/notification_message.html'" class="error-notification-dashboard"></div>
          <ul class="dashboard-items float">
          <!-- ng-hide added For CICO-21697  -->
-            <li ng-repeat="submenu in selectedMenu.components" ng-class = "{'inactive': selectedMenu.components[$index].is_gray_tab}" ng-hide ="(isStandAlone || isEnabledRoomTypeByRoomClass == false ) && submenu.name =='Room classes'"
+            <li ng-repeat="submenu in selectedMenu.components" ng-class = "{'inactive': selectedMenu.components[$index].is_disabled}" ng-hide ="(isStandAlone || isEnabledRoomTypeByRoomClass == false ) && submenu.name =='Room classes'"
             ng-if ="!(!policeExportEnabled && submenu.name == 'Police Export Defaults')">
                <a data-type="load-listing"  
                   class="{{submenu.icon_class || 'icon-admin-menu icon-settings'}}"
@@ -20,12 +20,12 @@
                   jqyoui-draggable="{index: {{$index}}, placeholder:'keep', animate:'true', onStart: 'onDragStart', onStop: 'onDragStop'}" 
 
                   ng-model="selectedMenu.components" 
-                  ng-click="clickedMenuItem($event, submenu.state, selectedMenu.components[$index].is_gray_tab)"
+                  ng-click="clickedMenuItem($event, submenu.state, selectedMenu.components[$index].is_disabled)"
                   ng-class="{'moved': submenu.is_bookmarked}">
                   {{submenu.name}}
                </a>
 
-               <a class="text" data-type="load-listing"  ng-click="clickedMenuItem($event, submenu.state, selectedMenu.components[$index].is_gray_tab); setActiveItem(submenu)">{{submenu.name}}</a>
+               <a class="text" data-type="load-listing"  ng-click="clickedMenuItem($event, submenu.state, selectedMenu.components[$index].is_disabled); setActiveItem(submenu)">{{submenu.name}}</a>
             </li>
          </ul>  
       </section>    
