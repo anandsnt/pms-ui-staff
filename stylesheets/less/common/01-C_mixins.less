@@ -75,6 +75,33 @@
 		}
 	}
 
+	.placeholder-color( @color ) {
+		&::-webkit-input-placeholder {
+			color: @color;
+		    -webkit-text-fill-color: @color;
+		}
+
+		&:-moz-placeholder {
+			color: @color;
+		    -webkit-text-fill-color: @color;
+		}
+
+		&::-moz-placeholder {
+			color: @color;
+		    -webkit-text-fill-color: @color;
+		}
+
+		&:-ms-input-placeholder {  
+		   	color: @color !important;
+			-webkit-text-fill-color: @color !important;
+		}
+
+		&:input-placeholder {
+		   	color: @color;
+			-webkit-text-fill-color: @color;
+		}
+	}
+
 	#flexbox {  
         .display() {
             display: -webkit-box;
