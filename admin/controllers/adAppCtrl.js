@@ -700,10 +700,10 @@ admin.controller('ADAppCtrl', [
         $scope.clickedMenuItem = function($event, stateToGo, shouldDisableClick) {
             var currentTime = new Date();
 
-            if(shouldDisableClick) {
-                $scope.errorMessage = ['Zest Web is disabled'];
+            if (shouldDisableClick) {
+                $scope.errorMessage = ['Your current subscription package does not include this service'];
             } else {
-                $scope.errorMessage[0] = "";
+                $scope.clearErrorMessage();
                 if (lastDropedTime !== '' && typeof lastDropedTime === 'object') {
                     var diff = currentTime - lastDropedTime;
     
@@ -842,20 +842,19 @@ admin.controller('ADAppCtrl', [
             var isZestWebEnabled = data.is_zest_web_enabled || true;
 
             setupLeftMenu();
-            _.each($scope.data.menus, function(menu) {
-                menu.grayOutList = [];
-                
-                _.each(menu.components, function(component, index) {
-                    if(isZestWebEnabled && menu.menu_name === 'Zest' && component.name === 'Check In' || component.name === 'Check Out' ||
+            var tabsToBeGrayed = function(component) {
+                return (
+                    component.name === 'Check In' || component.name === 'Check Out' ||
                         component.name === 'Direct URL' || component.name === '' || component.name === 'Zest Web Common' ||
-                        component.name === 'Room Ready Email' || component.name === 'Zest Web Global Setup') {
-                        
-                        menu.grayOutList[index] = true;
-                    } else {
-                        menu.grayOutList[index] = false;
+                        component.name === 'Room Ready Email' || component.name === 'Zest Web Global Setup'
+                )
+            }
+            _.each($scope.data.menus, function(menu) {
+                _.each(menu.components, function(component, index) {
+                    if (isZestWebEnabled && menu.menu_name === 'Zest' && tabsToBeGrayed(component)) {
+                        component.is_gray_tab = true;
                     }
                 });
-                console.log(menu);
             });
         };
         /*
@@ -962,7 +961,7 @@ admin.controller('ADAppCtrl', [
             *   Method to go back to previous state.
             */
         $scope.goBackToPreviousState = function() {
-
+                $scope.clearErrorMessage();
                 if ($rootScope.previousStateParam) {
                   $state.go($rootScope.previousState, { menu: $rootScope.previousStateParam});
                 }

@@ -76,6 +76,20 @@
             a.text {
                 &:hover { color: @logoPrimary; }
             }
+
+            &.inactive {
+                .box-shadow(none);
+
+                .icon-admin-menu {
+                    .opacity(40);
+                }
+
+                a {
+                    color: @grey3;
+                    pointer-events: none;
+                    cursor: default;
+                }
+            }
         }
 
         > li {
