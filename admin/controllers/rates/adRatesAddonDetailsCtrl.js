@@ -11,7 +11,8 @@ admin.controller('ADRatesAddonDetailsCtrl', [
     'availableLanguages',
     'singleAddon',
     'hotelSettings',
-    function($scope, $state, $stateParams, $rootScope, ADRatesAddonsSrv, $filter, ngDialog, $timeout, activeRates, availableLanguages, singleAddon, hotelSettings) {
+    'ADChargeGroupsSrv',
+    function($scope, $state, $stateParams, $rootScope, ADRatesAddonsSrv, $filter, ngDialog, $timeout, activeRates, availableLanguages, singleAddon, hotelSettings, ADChargeGroupsSrv) {
 
         // extend base controller
         BaseCtrl.call(this, $scope);
@@ -138,13 +139,15 @@ admin.controller('ADRatesAddonDetailsCtrl', [
             };            
 
            // fetch charge groups
-            var cgCallback = function(data) {
-                $scope.chargeGroups = data.results;
-                $scope.invokeApi(ADRatesAddonsSrv.fetchChargeCodes, {}, ccCallback, '');
-                // when ever we are ready to emit 'hideLoader'
-            };
+            $scope.invokeApi(ADChargeGroupsSrv.fetch, {}, function(data){
+                console.log(data);
+                _.each(data.charge_groups, function(chargeGroup){
+                    chargeGroup.id = parseInt(chargeGroup.value);
+                });
 
-            $scope.invokeApi(ADRatesAddonsSrv.fetchChargeGroups, {}, cgCallback, '');    
+                $scope.chargeGroups = data.charge_groups;
+                $scope.invokeApi(ADRatesAddonsSrv.fetchChargeCodes, {}, ccCallback, '');
+            });  
         };
 
         // to add new addon
