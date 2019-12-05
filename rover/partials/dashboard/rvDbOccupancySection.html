@@ -23,7 +23,7 @@
         </li>
 
         <li>
-            {{::(userInfo.business_date|date:fullMonth)}}
+            {{ 'MTD' | translate }}
         	<span class="value" ng-show="escapeNull(statisticsData.occupancy.current_month)!==''">
                 {{ ::(statisticsData.occupancy.current_month | round) }}%
             </span>
