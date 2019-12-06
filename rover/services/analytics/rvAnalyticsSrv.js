@@ -68,7 +68,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
 
     this.calculateShortage = function(rooms, roomType, date) {
 
-        var reservations = that.filterReservationsByRoomType(that.activeReservations, roomType);
+        var reservations = roomType ? that.filterReservationsByRoomType(that.activeReservations, roomType) : that.activeReservations;
         var inspectedRooms = getInspectedRooms(rooms);
         var inspectedVacantRooms = getVacantRooms(reservations, inspectedRooms);
         var pendingArrivals = reservations.filter(function(reservation) {
@@ -235,7 +235,6 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         // Pushing Stayovers data structure
         hkOverview.data.push(buildStayOvers(reservations, rooms, date));
         // Pushing vacant data structure
-        //hkOverview.data.push(buildVacants(reservations, rooms, isOverview, isArrivalsManagement));
         hkOverview.data.push(buildVacants(reservations, rooms, chartType));
         calculateRoomShortageByRoomType(date);
         deferred.resolve(hkOverview);
