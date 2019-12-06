@@ -697,31 +697,36 @@ admin.controller('ADAppCtrl', [
          * we will check the lastDropedTime with click event fired time.
          * if it is less than a predefined time, it will not fire click event, otherwise fire
          */
-        $scope.clickedMenuItem = function($event, stateToGo) {
+        $scope.clickedMenuItem = function($event, stateToGo, shouldDisableClick) {
             var currentTime = new Date();
 
-            if (lastDropedTime !== '' && typeof lastDropedTime === 'object') {
-                var diff = currentTime - lastDropedTime;
-
-                if (diff <= 400) {
-                    $event.preventDefault();
-                    $event.stopImmediatePropagation();
-                    $event.stopPropagation();
-                    lastDropedTime = '';
-                    return false;
+            if (shouldDisableClick) {
+                $scope.errorMessage = ['Your current subscription package does not include this service'];
+            } else {
+                $scope.clearErrorMessage();
+                if (lastDropedTime !== '' && typeof lastDropedTime === 'object') {
+                    var diff = currentTime - lastDropedTime;
+    
+                    if (diff <= 400) {
+                        $event.preventDefault();
+                        $event.stopImmediatePropagation();
+                        $event.stopPropagation();
+                        lastDropedTime = '';
+                        return false;
+                    } else {
+                        lastDropedTime = '';
+                        updateSelectedMenu(stateToGo);
+                        $state.go(stateToGo);
+                    }
                 } else {
                     lastDropedTime = '';
                     updateSelectedMenu(stateToGo);
                     $state.go(stateToGo);
                 }
-            } else {
-                lastDropedTime = '';
-                updateSelectedMenu(stateToGo);
-                $state.go(stateToGo);
-            }
-            if ($scope.menuOpen) {
-                $scope.menuOpen = !$scope.menuOpen;
-                $scope.showSubMenu = false;
+                if ($scope.menuOpen) {
+                    $scope.menuOpen = !$scope.menuOpen;
+                    $scope.showSubMenu = false;
+                }
             }
         };
 
@@ -834,7 +839,24 @@ admin.controller('ADAppCtrl', [
 
             $rootScope.isAllowanceEnabled = data.is_allowance_enabled;
 
+            var isZestWebEnabled = data.is_zest_web_enabled;
+
             setupLeftMenu();
+            var isComponentDisabled = function(component) {
+                return (
+                    component.name === 'Check In' || component.name === 'Check Out' ||
+                        component.name === 'Direct URL' || component.name === '' || component.name === 'Zest Web Common' ||
+                        component.name === 'Room Ready Email' || component.name === 'Zest Web Global Setup'
+                )
+            }
+
+            _.each($scope.data.menus, function(menu) {
+                _.each(menu.components, function(component) {
+                    if (!isZestWebEnabled && menu.menu_name === 'Zest' && isComponentDisabled(component)) {
+                        component.is_disabled = true;
+                    }
+                });
+            });
         };
         /*
          * Function to get the current hotel language
@@ -940,7 +962,7 @@ admin.controller('ADAppCtrl', [
             *   Method to go back to previous state.
             */
         $scope.goBackToPreviousState = function() {
-
+                $scope.clearErrorMessage();
                 if ($rootScope.previousStateParam) {
                   $state.go($rootScope.previousState, { menu: $rootScope.previousStateParam});
                 }

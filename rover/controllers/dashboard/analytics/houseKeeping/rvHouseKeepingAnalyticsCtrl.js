@@ -166,6 +166,7 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 					d3.select('#d3-plot').selectAll('svg').remove();
 					clearAllExistingChartElements();
 					drawChart();
+					$scope.$emit('ROOM_TYPE_SHORTAGE_CALCULATED', rvAnalyticsSrv.roomTypesWithShortageData);
 				}
 			};
 
