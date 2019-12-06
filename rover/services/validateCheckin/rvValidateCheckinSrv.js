@@ -34,7 +34,7 @@ angular.module('sntRover').service('RVValidateCheckinSrv', ['$http',
 			"home_town": data.home_town,
 			"place_of_residence": data.place_of_residence,
 			"country_code": data.country_code,
-			"id_country_of_issue": data.id_country_of_issue,
+			"id_country_id": data.id_country_id,
 			"id_place_of_issue": data.id_place_of_issue,
 			"birthday": $filter('date')(tzIndependentDate(data.birth_day), "MM-dd-yyyy")
 		};

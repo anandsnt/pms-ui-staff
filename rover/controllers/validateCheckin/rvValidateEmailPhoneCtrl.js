@@ -131,7 +131,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl',
             $scope.guestCardData.contactInfo.id_place_of_issue = $scope.saveData.id_place_of_issue;
         }
         if ($scope.showIdCountryOfIssue) {
-            $scope.guestCardData.contactInfo.id_country_of_issue = $scope.saveData.id_country_of_issue;
+            $scope.guestCardData.contactInfo.id_country_id = $scope.saveData.id_country_id;
         }
         if ($scope.showHomeTown) {
             $scope.guestCardData.contactInfo.home_town = $scope.saveData.home_town;
