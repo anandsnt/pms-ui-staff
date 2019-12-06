@@ -139,7 +139,11 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
             },
             templateUrl: '/assets/partials_v2/idScan/zsIDScanMain.html',
             controller: 'zsSntIDScanCtrl'
-        });
+		});
 
+		$stateProvider.state('zest_station.handleUnauthorizedAccess', {
+			url: '/handleUnauth',
+			templateUrl: '/assets/partials_v2/401.html',
+		});
 	}
 ]);

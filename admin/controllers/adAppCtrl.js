@@ -857,6 +857,8 @@ admin.controller('ADAppCtrl', [
                     }
                 });
             });
+
+            $scope.isZestStationEnabled = data.is_zest_station_enabled;
         };
         /*
          * Function to get the current hotel language
