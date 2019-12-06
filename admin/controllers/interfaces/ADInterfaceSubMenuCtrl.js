@@ -28,7 +28,10 @@ admin.controller('ADInterfaceSubMenuCtrl', ['$scope', '$state',
             // This menu is available at settings->hotel & staff. Added here to reuse the submenu controller
             case "admin.idCollection":
                 $scope.sectionTitle = "ID Collection";
-                break;   
+                break;
+            case "admin.posInterfacesGroup":
+                $scope.sectionTitle = "Integrations > POS Interfaces";
+                break;
             default:
                 $scope.sectionTitle = "Integrations > Integrations";
         }
