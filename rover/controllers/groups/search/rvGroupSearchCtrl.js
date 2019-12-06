@@ -31,6 +31,10 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
          * @return {boolean}
          */
         $scope.isEmpty = util.isEmpty;
+        $scope.groupStatusObj = {
+            isExpanded: false,
+            list: []
+        };
 
         /**
          * util function to get CSS class against diff. Hold status
@@ -221,6 +225,21 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
             $scope.search();
         };
 
+        // Utility method to get selected status list.
+        var fetchStatusIdList = function() {
+            var statusIdList = [];
+
+            if ($scope.groupStatusObj.list.length > 0) {
+                _.each($scope.groupStatusObj.list, function( item ) {
+                    if (item.active) {
+                        statusIdList.push(item.id);
+                    }
+                });
+            }
+
+            return statusIdList;
+        };
+
         /**
          * Utility function to form API params for group search
          * @param {Number} pageNo current page no
@@ -232,7 +251,8 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
                 from_date: $scope.fromDateForAPI !== '' ? $filter('date')($scope.fromDateForAPI, $rootScope.dateFormatForAPI) : '',
                 to_date: $scope.toDateForAPI !== '' ? $filter('date')($scope.toDateForAPI, $rootScope.dateFormatForAPI) : '',
                 per_page: $scope.perPage,
-                page: pageNo
+                page: pageNo,
+                status_ids: fetchStatusIdList()
             };
 
             return params;
@@ -436,6 +456,33 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
             };
         };
 
+        // Fetch hold status list
+        var fetchHoldStatusList = function() {
+            var successCallBackOfgetHoldStatusList = function( data ) {
+                $scope.groupStatusObj.list = data.hold_status;
+            },
+            options = {
+                params: {
+                    is_group: true
+                },
+                successCallBack: successCallBackOfgetHoldStatusList
+            };
+
+            $scope.callAPI(rvGroupSrv.getHoldStatusList, options);
+        };
+
+        // Handle Group status filter expansion toggle.
+        $scope.clickedGroupStatus = function() {
+            $scope.groupStatusObj.isExpanded = !$scope.groupStatusObj.isExpanded;
+        };
+
+        // Handle click on individual group status item checkbox.
+        $scope.clickedGroupStatusItem = function( index ) {
+            var clickedItem = $scope.groupStatusObj.list[index];
+
+            clickedItem.active = !clickedItem.active;
+            $scope.search();
+        };
 
         /**
          * function used to set initlial set of values
@@ -470,8 +517,9 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
 
             $scope.refreshPagination(PAGINATION_ID);
 
-        }());
+            fetchHoldStatusList();
 
+        }());
 
     }
 ]);

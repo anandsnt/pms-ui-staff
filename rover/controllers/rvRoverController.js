@@ -68,9 +68,6 @@ sntRover.controller('roverController', [
         });
         $scope.roverFlags = {};
         $scope.hotelDetails = hotelDetails;
-        if (hotelDetails.hide_analytics_menu) {
-            rvMenuSrv.showAnalyticsMenu = false;
-        }
         // set current hotel details
         $scope.currentHotelData = {
             'name': '',
