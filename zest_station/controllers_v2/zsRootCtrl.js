@@ -64,7 +64,7 @@ sntZestStation.controller('zsRootCtrl', [
         });
 
         $scope.isZestStationEnabled = false;
-        if(!$scope.isZestStationEnabled) {
+        if (!$scope.isZestStationEnabled) {
             $state.go('zest_station.handleUnauthorizedAccess');
             return ;
         }

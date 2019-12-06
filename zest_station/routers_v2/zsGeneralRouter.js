@@ -143,7 +143,7 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 
 		$stateProvider.state('zest_station.handleUnauthorizedAccess', {
 			url: '/handleUnauth',
-			templateUrl: '/assets/partials_v2/401.html',
+			templateUrl: '/assets/partials_v2/401.html'
 		});
 	}
 ]);
