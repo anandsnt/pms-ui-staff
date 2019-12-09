@@ -142,6 +142,18 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				}
 				return scrollerObject;
 			},
+			/**
+			 * set dafault active view from hotel settings
+			 */
+			setDefaultViewByHotelSettings = function() {
+				// By default RoomType
+				$scope.stateCheck.activeView = 'ROOM_TYPE';
+				if ($scope.otherData.defaultRateDisplayName === 'Recommended') {
+					$scope.stateCheck.activeView = 'RECOMMENDED';
+				} else if ($scope.otherData.defaultRateDisplayName === 'By Rate') {
+					$scope.stateCheck.activeView = 'RATE';
+				}
+			},
 			shouldRecommend = function () {
 				// This method checks if there are groups or cards attached
 				return $state.params.travel_agent_id ||
@@ -845,18 +857,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				initScrollers();
 				initEventListeners();
 				// --
-			},
-			/**
-			 * set dafault active view from hotel settings
-			 */
-			setDefaultViewByHotelSettings = function() {
-				// By default RoomType
-				$scope.stateCheck.activeView = 'ROOM_TYPE';
-				if ($scope.otherData.defaultRateDisplayName === 'Recommended') {
-					$scope.stateCheck.activeView = 'RECOMMENDED';
-				} else if ($scope.otherData.defaultRateDisplayName === 'By Rate') {
-					$scope.stateCheck.activeView = 'RATE';
-				}
 			},
 			/**
 			 * [findExhaustedRateAddons description]
