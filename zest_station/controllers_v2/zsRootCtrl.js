@@ -63,6 +63,12 @@ sntZestStation.controller('zsRootCtrl', [
             
         });
 
+        // $scope.isZestStationEnabled = false;
+        // if (!$scope.isZestStationEnabled) {
+        //     $state.go('zest_station.handleUnauthorizedAccess');
+        //     return ;
+        // }
+
         $scope.trustAsHtml = function(string) {
             return $sce.trustAsHtml(string);
         };

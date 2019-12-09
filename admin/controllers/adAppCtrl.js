@@ -852,11 +852,13 @@ admin.controller('ADAppCtrl', [
 
             _.each($scope.data.menus, function(menu) {
                 _.each(menu.components, function(component) {
-                    if (isZestWebEnabled && menu.menu_name === 'Zest' && isComponentDisabled(component)) {
+                    if (!isZestWebEnabled && menu.menu_name === 'Zest' && isComponentDisabled(component)) {
                         component.is_disabled = true;
                     }
                 });
             });
+
+            $scope.isZestStationEnabled = data.is_zest_station_enabled;
         };
         /*
          * Function to get the current hotel language
