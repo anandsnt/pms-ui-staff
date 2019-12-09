@@ -199,7 +199,7 @@
 
 			</fieldset>
 
-			<fieldset class="holder full-width" ng-if="isTaxSelected()">
+			<fieldset class="holder full-width" ng-if="isTaxSelected() && prefetchData.tax_rules">
 	            <div class="entry full-width">
 	                <label for="flat-or-percentage">Configure Tax Amounts <strong>*</strong></label>
 	                <div class="tax-amounts">
