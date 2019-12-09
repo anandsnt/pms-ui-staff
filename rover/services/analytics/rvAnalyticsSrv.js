@@ -52,28 +52,59 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         return deferred.promise;
     };
 
+    var getVacantRooms = function(activeReservations, rooms) {
+        var assignedRoomNumbers = activeReservations.filter(function(reservation) {
+            return reservation.reservation_status === 'CHECKEDIN';
+        }).map(function(reservation) {
+            return reservation.arrival_room_number;
+        });
+
+        rooms = rooms.filter(function(room) {
+            return !assignedRoomNumbers.includes(room.room_number);
+        });
+
+        return rooms;
+    };
+
+    this.calculateShortage = function(rooms, roomType, date) {
+
+        var reservations = roomType ? that.filterReservationsByRoomType(that.activeReservations, roomType) : that.activeReservations;
+        var inspectedRooms = getInspectedRooms(rooms);
+        var inspectedVacantRooms = getVacantRooms(reservations, inspectedRooms);
+        var pendingArrivals = reservations.filter(function(reservation) {
+            return reservation.arrival_date === date && reservation.reservation_status === 'RESERVED';
+        }).length;
+        var pendingDepartures = reservations.filter(function(reservation) {
+            return reservation.departure_date === date && reservation.reservation_status === 'CHECKEDIN';
+        }).length;
+        var cleanCount = getCleanRooms(rooms).length;
+        var dirtyCount = getDirtyRooms(rooms).length;
+        var pickupCount = getPickupRooms(rooms).length;
+        var shortage = 0;
+
+        // Shortage is to be collected based on available rooms in a room type those are vacant and pending departures
+        if (pendingArrivals > inspectedVacantRooms.length) {
+            var availableRoomsInRoomType = (cleanCount + dirtyCount + pickupCount) + pendingDepartures;
+
+            if (availableRoomsInRoomType > (pendingArrivals - inspectedVacantRooms.length)) {
+                shortage = pendingArrivals - inspectedVacantRooms.length;
+            } else {
+                shortage = availableRoomsInRoomType
+            }
+        }
+
+        return shortage;
+    };
+
     var calculateRoomShortageByRoomType = function(date) {
         var roomTypes = _.groupBy(that.roomStatuses, 'room_type');
         var rooTypeConf = [];
 
-        _.each(roomTypes, function(value, key) {
-
-            var inspectedRooms = getInspectedRooms(value);
-            var reservations = that.filterReservationsByRoomType(that.activeReservations, key);
-            var arrivals = reservations.filter(function(reservation) {
-                return reservation.arrival_date === date;
-            });
-            var perfomedCount = arrivals.filter(function(reservation) {
-                return reservation.reservation_status === 'CHECKEDIN' ||
-                    reservation.reservation_status === 'CHECKEDOUT';
-            }).length;
-            var remainingCount = arrivals.length - perfomedCount;
-            var shortage = remainingCount > inspectedRooms.length ? remainingCount - inspectedRooms.length : 0;
+        _.each(roomTypes, function(rooms, roomType) {
+            var shortage = that.calculateShortage(rooms, roomType, date);
 
             that.roomTypesWithShortageData.push({
-                "code": key,
-                "inspected": inspectedRooms.length,
-                "pending_reservations": remainingCount,
+                "code": roomType,
                 "shortage": shortage
             });
         });
@@ -193,20 +224,18 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
             label: 'AN_HOUSEKEEPING_OVER_VIEW',
             data: []
         };
-        var isOverview = isArrivalsManagement ? false : true;
-
+        var chartType = isArrivalsManagement ? 'ARRIVAL_MANAGEMENT' : 'OVERVIEW';
         var reservations = that.filteredReservations();
-
         var rooms = that.filterdRoomStatuses();
 
         // Pushing arrivals data structure
-        hkOverview.data.push(buildArrivals(reservations, date, isOverview));
+        hkOverview.data.push(buildArrivals(reservations, date, !isArrivalsManagement));
         // Pushing departure data structure
-        hkOverview.data.push(buildDepartures(reservations, date, isOverview));
+        hkOverview.data.push(buildDepartures(reservations, date, !isArrivalsManagement));
         // Pushing Stayovers data structure
         hkOverview.data.push(buildStayOvers(reservations, rooms, date));
         // Pushing vacant data structure
-        hkOverview.data.push(buildVacants(reservations, rooms, isOverview, isArrivalsManagement));
+        hkOverview.data.push(buildVacants(reservations, rooms, chartType));
         calculateRoomShortageByRoomType(date);
         deferred.resolve(hkOverview);
     };
@@ -228,7 +257,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         // Pushing arrivals data structure
         workPriority.data.push(buildArrivals(reservations, date, false));
         // Pushing vacant data structure
-        workPriority.data.push(buildVacants(reservations, rooms, false));
+        workPriority.data.push(buildVacants(reservations, rooms, 'WORK_PRIORITY', date));
         // Pushing departure data structure
         workPriority.data.push(buildDepartures(reservations, date, false));
         deferred.resolve(workPriority);
@@ -277,22 +306,14 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         return departues;
     };
 
-    var buildVacants = function(activeReservations, roomStatuses, overview, isArrivalsManagement) {
+    var buildVacants = function(activeReservations, roomStatuses, chartType, date) {
         var rooms = roomStatuses;
         var dataType = 'rooms';
         var dataLabel = 'AN_ROOMS';
 
-        var assignedRoomNumbers = activeReservations.filter(function(reservation) {
-            return reservation.reservation_status === 'CHECKEDIN';
-        }).map(function(reservation) {
-            return reservation.arrival_room_number;
-        });
+        rooms = getVacantRooms(activeReservations, rooms);
 
-        rooms = rooms.filter(function(room) {
-            return !assignedRoomNumbers.includes(room.room_number);
-        });
-
-        if (!isArrivalsManagement && !overview) {
+        if (chartType === 'WORK_PRIORITY') {
             dataType = 'vacant';
             dataLabel = 'AN_VACANT';
         }
@@ -310,7 +331,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
             label: dataLabel
         };
 
-        if (overview) {
+        if (chartType === 'OVERVIEW') {
             vacantRoomsData.contents = {
                 left_side: [{
                     type: 'clean',
@@ -352,6 +373,18 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
                     label: 'AN_INSPECTED'
                 }]
             };
+            if (chartType === 'WORK_PRIORITY') {
+                var shortage = that.calculateShortage(rooms, that.selectedRoomType, date);
+
+                if (shortage > 0) {
+                    var pendingInspectedRooms = {
+                        type: "pending_inspected_rooms",
+                        count: shortage
+                    };
+
+                    vacantRoomsData.contents.right_side.push(pendingInspectedRooms);
+                }
+            }
         }
         return vacantRoomsData;
     };
