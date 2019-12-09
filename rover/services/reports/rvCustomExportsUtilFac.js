@@ -555,6 +555,27 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                     selectedFilter.isMultiSelect = true;
                     deferred.resolve(selectedFilter);
                 });
+            },
+
+            /**
+             * Populate groups
+             * @param {Object} selectedFilter selected filter
+             * @param {Array} selectedValues array of selected values
+             * @param {Object} deferred - deferred object
+             * @return {void}
+             */
+            populateGroups = ( selectedFilter, selectedValues, deferred ) => {
+                reportSubSrv.fetchGroups({}).then(function (data) {
+                    selectedFilter.secondLevelData = markAsSelected(angular.copy(data), selectedValues, 'id');
+                    selectedFilter.options = {
+                        hasSearch: true,
+                        selectAll: selectedValues ? data.length === selectedValues.length : true,
+                        key: 'group_name',
+                        value_key: 'id'
+                    };
+                    selectedFilter.isMultiSelect = true;
+                    deferred.resolve(selectedFilter);
+                });
             };
 
         /**
@@ -663,6 +684,9 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                     break;
                 case customExportFilterParamsConst['RESERVATION_TYPE']:
                     populateReservationTypes(selectedFilter, selectedValues, deferred);
+                    break;
+                case customExportFilterParamsConst['GROUP_NAME']:
+                    populateGroups(selectedFilter, selectedValues, deferred);
                     break;
                 default:
 
