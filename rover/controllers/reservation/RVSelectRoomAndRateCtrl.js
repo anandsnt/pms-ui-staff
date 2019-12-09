@@ -144,18 +144,18 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			},
 			shouldRecommend = function () {
 				// This method checks if there are groups or cards attached
-				return $stateParams.travel_agent_id ||
+				return $state.params.travel_agent_id ||
 					$scope.reservationData.travelAgent.id ||
-					$stateParams.company_id ||
+					$state.params.company_id ||
 					$scope.reservationData.company.id ||
-					$stateParams.group_id ||
+					$state.params.group_id ||
 					$scope.reservationData.group.id ||
-					$stateParams.allotment_id ||
+					$state.params.allotment_id ||
 					$scope.reservationData.allotment.id ||
-					$stateParams.promotion_id ||
+					$state.params.promotion_id ||
 					$scope.reservationData.promotionId ||
 					$scope.reservationData.numNights === 0 ||
-					$stateParams.is_member;
+					$state.params.is_member;
 			},
 			isMembershipValid = function() {
 				var membership = $scope.reservationData.guestMemberships,
@@ -813,13 +813,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					$scope.stateCheck.rateSelected.oneDay = isRateSelected().oneDay;
 				}
 
-				// By default RoomType
-				$scope.stateCheck.activeView = 'ROOM_TYPE';
-				if ($scope.otherData.defaultRateDisplayName === 'Recommended') {
-					$scope.stateCheck.activeView = 'RECOMMENDED';
-				} else if ($scope.otherData.defaultRateDisplayName === 'By Rate') {
-					$scope.stateCheck.activeView = 'RATE';
-				}
+				setDefaultViewByHotelSettings();
 				if ($stateParams.travel_agent_id || $stateParams.company_id
 					 || $stateParams.group_id || $stateParams.allotment_id
 					 || $stateParams.is_member || $stateParams.promotion_id) {
@@ -851,6 +845,18 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				initScrollers();
 				initEventListeners();
 				// --
+			},
+			/**
+			 * set dafault active view from hotel settings
+			 */
+			setDefaultViewByHotelSettings = function() {
+				// By default RoomType
+				$scope.stateCheck.activeView = 'ROOM_TYPE';
+				if ($scope.otherData.defaultRateDisplayName === 'Recommended') {
+					$scope.stateCheck.activeView = 'RECOMMENDED';
+				} else if ($scope.otherData.defaultRateDisplayName === 'By Rate') {
+					$scope.stateCheck.activeView = 'RATE';
+				}
 			},
 			/**
 			 * [findExhaustedRateAddons description]
@@ -1115,7 +1121,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					}
 				}
 			}, // reset Page
-			reInitialize = function() {
+			reInitialize = function(tabClicked) {
 				$scope.stateCheck.roomDetails = getCurrentRoomDetails();
 
 				$scope.stateCheck.pagination.roomType.page = 1;
@@ -1123,23 +1129,35 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 				if ($scope.stateCheck.activeView === "RATE" || $scope.stateCheck.activeView === "RECOMMENDED") {
 					$scope.stateCheck.rateFilterText = "";
-					var isReccommendedTabApiRequired = false;
+					var isRateApiRequired = false;
 
 					if ($scope.stateCheck.activeView === "RATE") {
-						isReccommendedTabApiRequired = true;
-					} else if (($scope.stateCheck.activeView === "RECOMMENDED") && shouldRecommend()) {
-						isReccommendedTabApiRequired = true;
+						isRateApiRequired = true;
+					} else if ($scope.stateCheck.activeView === "RECOMMENDED") {
+						if (shouldRecommend()) {
+							isRateApiRequired = true;
+						}
+						else {
+							if (!tabClicked) {
+								setDefaultViewByHotelSettings();
+							}
+						}
 					}
-					if (isReccommendedTabApiRequired) {
+					if (isRateApiRequired) {
 						fetchRatesList(null, null, $scope.stateCheck.pagination.rate.page, function(response) {
 							$scope.stateCheck.baseInfo.maxAvblRates = response.total_count;
 							generateRatesGrid(response.results);
 							$scope.refreshScroll();
 						});
 					} else {
-						generateRatesGrid([]);
+						//  if the activeView has changed under shouldRecommend()
+						if ($scope.stateCheck.activeView === "ROOM_TYPE") {
+							fetchRoomTypesList();
+						}
+						else {
+							generateRatesGrid([]);
+						}
 					}
-
 				} else if ($scope.stateCheck.activeView === "ROOM_TYPE") {
 					fetchRoomTypesList();
 				}
@@ -1306,7 +1324,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		$scope.setActiveView = function(view) {
 			$scope.stateCheck.activeView = view;
 			RVRoomRatesSrv.setRoomAndRateActiveTab(view);
-			reInitialize();
+			reInitialize(true);
 		};
 
 		// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- COMPUTE TAX AND DAY BREAKUP
@@ -2339,8 +2357,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				$scope.reservationData.company.id = cardIds.companyCard;
 				$scope.reservationData.travelAgent.id = cardIds.travelAgent;
 				// CICO-32856
-				$stateParams.travel_agent_id = cardIds.travelAgent;
-				$stateParams.company_id = cardIds.companyCard;
+				$state.params.company_id = cardIds.companyCard;
+				$state.params.travel_agent_id = cardIds.travelAgent;
 				reInitialize();
 				// Call the availability API and rerun the init method
 			});
