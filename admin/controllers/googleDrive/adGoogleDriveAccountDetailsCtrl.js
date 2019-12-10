@@ -70,7 +70,7 @@ admin.controller('ADGoogleDriveAccountDetailsCtrl', [
     // Checks whether the save btn should be disabled or not
     $scope.shouldDisableSave = function () {
         var flag = !$scope.accountDetails.description || !$scope.accountDetails.access_token;
-        console.log(typeof flag);
+        
         return flag;
     };
 
