@@ -9,6 +9,7 @@ admin.controller('ADGoogleDriveAccountDetailsCtrl', [
     BaseCtrl.call(this, $scope);
 
     var ERROR_POPUP_CLOSED_BY_USER = 'popup_closed_by_user';
+    
     /**
      * Navigate back to the previous state
      */
@@ -70,7 +71,7 @@ admin.controller('ADGoogleDriveAccountDetailsCtrl', [
     // Checks whether the save btn should be disabled or not
     $scope.shouldDisableSave = function () {
         var flag = !$scope.accountDetails.description || !$scope.accountDetails.access_token;
-        
+
         return flag;
     };
 
