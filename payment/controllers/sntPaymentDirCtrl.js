@@ -19,7 +19,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 },
                 isEMVEnabled;
             var isInIpadApp = sntapp.browser === 'rv_native' && sntapp.cordovaLoaded;
-            
+
             // ---------------------------------------------------------------------------------------------------------
             $scope.payment = {
                 referenceText: $scope.referenceText,
@@ -44,7 +44,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 selectedPaymentCurrencySymbol: $rootScope.currencySymbol
             };
 
-            $scope.originalAmount = angular.copy($scope.amount);            
+            $scope.originalAmount = angular.copy($scope.amount);
 
             $scope.giftCard = {
                 number: '',
@@ -306,12 +306,12 @@ angular.module('sntPay').controller('sntPaymentController',
                 return payableAmount < 0 || //  NOTE : We can't make a negative payment with a GIFT_CARD
                     $scope.giftCard.availableBalance && parseFloat($scope.giftCard.availableBalance) < payableAmount;
             };
-            
+
             /*
              * Method to check the work station status is active/not
              * If not active disable the payment option and show message in the screen
              */
-            $scope.checkWorkStationMandatoryFields = function () { 
+            $scope.checkWorkStationMandatoryFields = function () {
                 sntPaymentSrv.checkWorkStationMandatoryFields($scope.hotelConfig.workstationId).then(
                     response => {
                         $scope.workStationStatus = response.workstation_active;
@@ -763,7 +763,7 @@ angular.module('sntPay').controller('sntPaymentController',
                                         className: '',
                                         scope: $scope
                                     });
-                                }   
+                                }
 
                             }
                         } else if (data.travel_agent_present) {
@@ -786,7 +786,7 @@ angular.module('sntPay').controller('sntPaymentController',
                                         className: '',
                                         scope: $scope
                                     });
-                                }                                 
+                                }
                             }
                         } else {
                             $scope.errorMessage = [$filter('translate')('ACCOUNT_ID_NIL_MESSAGE_PAYMENT')];
@@ -1042,7 +1042,7 @@ angular.module('sntPay').controller('sntPaymentController',
                     $scope.payment.selectedPaymentCurrencySymbol = $rootScope.currencySymbol;
                     $scope.payment.amount = parseFloat($scope.originalAmount);
                     $scope.feeData.calculatedFee = $scope.originalFee;
-                }                
+                }
 
                 /** CICO-47989
                  * To handle scenarios where the bill might have a payment type associated, but it is no longer available in the list
@@ -1125,7 +1125,7 @@ angular.module('sntPay').controller('sntPaymentController',
                         $scope.feeData.calculatedFee = response.data.converted_fee;
                     },
                     errorMessage => {
-                        
+
                     });
             };
 
@@ -1198,9 +1198,14 @@ angular.module('sntPay').controller('sntPaymentController',
             // if there is reservationID fetch the linked credit card items
             var fetchAttachedCreditCards = function () {
                 if ($scope.reservationId) {
+                    var data = {
+                        "billNumber": $scope.billNumber,
+                        "reservationId": $scope.reservationId
+                    };
+
                     sntActivity.start('FETCH_ATTACHED_CARDS');
 
-                    sntPaymentSrv.getLinkedCardList($scope.reservationId).then(
+                    sntPaymentSrv.getLinkedCardList(data).then(
                         response => {
                             onFetchLinkedCreditCardListSuccess(response);
                             sntActivity.stop('FETCH_ATTACHED_CARDS');
@@ -1462,7 +1467,7 @@ angular.module('sntPay').controller('sntPaymentController',
 
             $scope.onPaymentSuccess = function (response) {
                 $scope.paymentAttempted = !($scope.splitBillEnabled && $scope.numSplits > $scope.completedSplitPayments);
-                
+
                 $scope.isPaymentFailure = false;
                 $scope.payment.authorizationCode = response.authorization_code;
 
@@ -1502,7 +1507,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 var isMLIEMV = ($scope.hotelConfig.paymentGateway === 'MLI' &&
                     $scope.hotelConfig.isEMVEnabled) || ($scope.hotelConfig.paymentGateway === 'CBA_AND_MLI' &&
                     $scope.hotelConfig.isEMVEnabled && $scope.payment.isAddCardAction);
-                    
+
                 var isPendingPayment = !$scope.paymentAttempted || // no payments attempted
                         // attempted payment failed
                         $scope.isPaymentFailure ||

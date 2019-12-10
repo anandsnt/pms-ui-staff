@@ -43,7 +43,7 @@
 			<ad-checkbox is-disabled="editData.value == 'CC'" is-checked="editData.is_rover_only" label="{{ 'ROVER_ONLY' | translate}}" div-class="full-width" change="roverOnlyChanged()"></ad-checkbox>
 
 			<ad-checkbox is-disabled="editData.value == 'CC'" is-checked="editData.is_web_only" label="{{ 'WEB_ONLY' | translate}}" div-class="full-width" change="webOnlyChanged()"></ad-checkbox>
-
+			<ad-checkbox is-disabled="editData.value !== 'CA'" is-checked="editData.has_payment_rounding" label="{{ 'PAYMENT_ROUNDING' | translate}}" div-class="full-width"></ad-checkbox>
 			<div class="entry radio-check " ng-hide="editData.value == 'CC' && !isEditCC" ng-if="isStandAlone">
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class="{'checked': editData.restrict_post}"></span>
@@ -51,6 +51,7 @@
                     <input ng-model = "editData.restrict_post" type="checkbox">
                 </label>
             </div>
+            
 
 		</fieldset>
 
@@ -58,7 +59,7 @@
                     label="Processing Bank" placeholder="Processing Bank" required="no"></ad-textbox>
 
         <ad-textbox ng-if="editData.is_cc && manualCCEnabled" value="editData.bank_commission" name="bank-commission"
-                    label="Bank Commission" placeholder="Bank Commission" required="no"></ad-textbox>
+                    label="Bank Commission (%)" placeholder="Bank Commission (%)" required="no"></ad-textbox>
 
 		<div class='actions float'>
 			<button class='button blank edit-data-inline' id='cancel' type='button' ng-click="clickCancel()" translate>

@@ -60,8 +60,10 @@
                                 <strong class="cell-row">{{item.charge_code}}</strong>
                                 <span class="cell-row grey-text">{{item.charge_desc}}</span>
                             </td>
-                            <td class="align-right" ng-show="item.debit !== '' && item.debit !== null" ng-bind-html="item.debit | sntCurrency:this"></td>
-                            <td class="align-right" ng-show="item.credit !== '' && item.credit !== null" ng-bind-html="item.credit | sntCurrency:this"></td>
+                            <td class="align-right" ng-if="item.debit !== '' && item.debit !== null" ng-bind-html="item.debit | sntCurrency:this"></td>
+                            <td class="align-right" ng-if="item.debit === '' || item.debit === null"> &nbsp;</td>
+                            <td class="align-right" ng-if="item.credit !== '' && item.credit !== null" ng-bind-html="item.credit | sntCurrency:this"></td>
+                            <td class="align-right" ng-if="item.credit === '' || item.credit === null"> &nbsp;</td>
                         </tr>
                         
                         <!-- Pagination -->
@@ -124,8 +126,10 @@
                             <strong class="cell-row">{{item.charge_code}}</strong>
                             <span class="cell-row grey-text">{{item.charge_desc}}</span>
                         </td>
-                        <td class="align-right" ng-show="item.debit !== '' && item.debit !== null" ng-bind-html="item.debit | sntCurrency:this"></td>
-                        <td class="align-right" ng-show="item.credit !== '' && item.credit !== null" ng-bind-html="item.credit | sntCurrency:this">
+                        <td class="align-right" ng-if="item.debit !== '' && item.debit !== null" ng-bind-html="item.debit | sntCurrency:this"></td>
+                        <td class="align-right" ng-if="item.debit === '' || item.debit === null"> &nbsp;</td>
+                        <td class="align-right" ng-if="item.credit !== '' && item.credit !== null" ng-bind-html="item.credit | sntCurrency:this"></td>
+                        <td class="align-right" ng-if="item.credit === '' || item.credit === null"> &nbsp;</td>
                         </td>
                     </tr>
                     
@@ -189,9 +193,10 @@
                             <strong class="cell-row">{{item.charge_code}}</strong>
                             <span class="cell-row grey-text">{{item.charge_desc}}</span>
                         </td>
-                        <td class="align-right" ng-show="item.debit !== '' && item.debit !== null" ng-bind-html="item.debit | sntCurrency:this"></td>
-                        <td class="align-right" ng-show="item.credit !== '' && item.credit !== null" ng-bind-html="item.credit | sntCurrency:this">
-                        </td>
+                         <td class="align-right" ng-if="item.debit !== '' && item.debit !== null" ng-bind-html="item.debit | sntCurrency:this"></td>
+                            <td class="align-right" ng-if="item.debit === '' || item.debit === null"> &nbsp;</td>
+                            <td class="align-right" ng-if="item.credit !== '' && item.credit !== null" ng-bind-html="item.credit | sntCurrency:this"></td>
+                            <td class="align-right" ng-if="item.credit === '' || item.credit === null"> &nbsp;</td>
                     </tr>
                     
                     <!-- Pagination -->

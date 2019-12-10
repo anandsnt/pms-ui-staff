@@ -65,6 +65,7 @@ sntRover.controller('reservationActionsController', [
             && reservationCard.is_reverse_checkout_allowed_for_hotel;
         $scope.shouldShowDemographicsInValidationPopup = false;
         $scope.shouldShowGuestInfoInValidationPopup = false;
+        $scope.hasPermissionToCheckin = rvPermissionSrv.getPermissionValue("CHECK_IN_RESERVATION");
 
         $scope.reverseCheckout = function(reservationId, clickedButton) {
             $state.go("rover.reservation.staycard.billcard", {
@@ -357,10 +358,12 @@ sntRover.controller('reservationActionsController', [
             $scope.showPlaceOfBirth = false;
             $scope.showGender = false;
             $scope.showVehicleRegistrationNumber = false;
+            $scope.showIdPlaceOfIssue = false;
             $scope.showPersonalIdNumber = false;
             $scope.showHomeTown = false;
             $scope.showPlaceOfResidence = false;
             $scope.showVehicleCountryMark = false;
+            $scope.showIdCountryOfIssue = false;
             $scope.showDateOfBirth = false;
 
             $scope.callAPI(RVGuestCardsSrv.fetchGuestDetailsInformation, {
@@ -371,12 +374,15 @@ sntRover.controller('reservationActionsController', [
                     $scope.showNameOfMother = $scope.guestCardData.contactInfo.guestAdminSettings.mother_name.is_mandatory_on_guest_card_creation;
                     $scope.showPlaceOfBirth = $scope.guestCardData.contactInfo.guestAdminSettings.birth_place.is_mandatory_on_guest_card_creation;
                     $scope.showGender = $scope.guestCardData.contactInfo.guestAdminSettings.gender.is_mandatory_on_guest_card_creation;
-                    $scope.showVehicleRegistrationNumber = $scope.guestCardData.contactInfo.guestAdminSettings.registration_number.is_mandatory_on_guest_card_creation;
+                    $scope.showVehicleRegistrationNumber = $scope.guestCardData.contactInfo.guestAdminSettings.id_place_of_issue.is_mandatory_on_guest_card_creation;
+                    $scope.showIdPlaceOfIssue = $scope.guestCardData.contactInfo.guestAdminSettings.registration_number.is_mandatory_on_guest_card_creation;
                     $scope.showPersonalIdNumber = $scope.guestCardData.contactInfo.guestAdminSettings.personal_id_no.is_mandatory_on_guest_card_creation;
                     $scope.showHomeTown = $scope.guestCardData.contactInfo.guestAdminSettings.home_town.is_mandatory_on_guest_card_creation;
                     $scope.showPlaceOfResidence   = $scope.guestCardData.contactInfo.guestAdminSettings.place_of_residence.is_mandatory_on_guest_card_creation;
                     $scope.showVehicleCountryMark = $scope.guestCardData.contactInfo.guestAdminSettings.vehicle_country_mark.is_mandatory_on_guest_card_creation 
                                                     && ($scope.guestCardData.contactInfo.country_code === '' || $scope.guestCardData.contactInfo.country_code === null);
+                    $scope.showIdCountryOfIssue = $scope.guestCardData.contactInfo.guestAdminSettings.id_country_of_issue.is_mandatory_on_guest_card_creation 
+                                                    && ($scope.guestCardData.contactInfo.id_country_of_issue === '' || $scope.guestCardData.contactInfo.id_country_of_issue === null);
                     $scope.showDateOfBirth = $scope.guestCardData.contactInfo.guestAdminSettings.date_of_birth.is_mandatory_on_guest_card_creation
                                             && ($scope.guestCardData.contactInfo.birthday === '' || $scope.guestCardData.contactInfo.birthday === null);
 
@@ -642,7 +648,6 @@ sntRover.controller('reservationActionsController', [
          * Before checking in we check if any deposit is left else noraml checkin
          *
          **************************************************************************/
-
         $scope.goToCheckin = function() {
             if ($scope.isGuestIdRequiredForCheckin()) {
                 $scope.toggleGuests(true);

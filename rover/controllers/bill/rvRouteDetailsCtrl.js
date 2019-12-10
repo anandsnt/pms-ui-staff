@@ -392,7 +392,6 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
      * function to fetch attached payment types from the server
      */
     $scope.fetchAttachedPaymentTypes = function() {
-
         var errorCallback = function(errorMessage) {
             $scope.$parent.$emit('hideLoader');
             $scope.$emit('displayErrorMessage', errorMessage);
@@ -580,6 +579,21 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
         }
         $scope.invokeApi(RVBillinginfoSrv.fetchDefaultAccountRouting, params, successCallback);
     };
+
+    $scope.fetchAttachedPayments = function() {
+
+        var successCallback = function(data) {
+            $scope.attachedPaymentTypes = data.data;
+            $scope.$parent.$emit('hideLoader');
+        };
+        var errorCallback = function(errorMessage) {
+            $scope.$parent.$emit('hideLoader');
+            $scope.$emit('displayErrorMessage', errorMessage);
+        };
+
+        $scope.invokeApi(RVCompanyCardSrv.fetchCompanyPaymentData, $scope.contactInformation.id, successCallback, errorCallback);
+    };
+
     /**
      * function to fetch available billing groups from the server
      */
@@ -592,6 +606,8 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
             }
             $scope.$parent.$emit('hideLoader');
             $scope.fetchDefaultAccountRouting();
+            $scope.fetchAttachedPayments();
+
         };
         var errorCallback = function(errorMessage) {
             $scope.$parent.$emit('hideLoader');
@@ -833,6 +849,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
                 params.entity_type = "ALLOTMENT";
                 $scope.invokeApi(RVBillinginfoSrv.saveAllotmentDefaultAccountRouting, params, defaultRoutingSaveSuccess, errorCallback);
             } else {
+                params.attached_payment_method_id = $scope.selectedEntity.selected_payment;
                 $scope.invokeApi(RVBillinginfoSrv.saveDefaultAccountRouting, params, defaultRoutingSaveSuccess, errorCallback);
             }
         }

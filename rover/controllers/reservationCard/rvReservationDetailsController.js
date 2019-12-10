@@ -55,6 +55,12 @@ sntRover.controller('reservationDetailsController',
 			};
 		};
 
+		var RESPONSE_STATUS_470 = 470;
+
+		$scope.hasOverBookRoomTypePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
+		$scope.hasOverBookHousePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE');
+		$scope.hasBorrowFromHousePermission = rvPermissionSrv.getPermissionValue('GROUP_HOUSE_BORROW');
+
 		$scope.shouldShowTaxExempt = function() {
             return (rvPermissionSrv.getPermissionValue('TAX_EXEMPT') && $scope.taxExemptTypes.length);
         };
@@ -347,7 +353,6 @@ sntRover.controller('reservationDetailsController',
 		var reservationMainData = $scope.$parent.reservationData;
 
 		$scope.reservationParentData = $scope.$parent.reservationData;
-
 		$scope.reservationData = reservationDetails;
 
 		/**
@@ -889,6 +894,10 @@ sntRover.controller('reservationDetailsController',
 				roomTypeId = $scope.reservationData.reservation_card.room_type_id;
 			}
 
+			angular.forEach($scope.reservationData.reservation_card.stay_dates, function(detail) {
+				$scope.$parent.reservationData.rooms[0].stayDates[detail.date].contractId = detail.contract_id;
+			});
+
 			$state.go(roomAndRatesState, {
 				from_date: arrival || reservationMainData.arrivalDate,
 				to_date: departure || reservationMainData.departureDate,
@@ -1133,23 +1142,52 @@ sntRover.controller('reservationDetailsController',
                         // CICO-44842 Show message when trying to overbook a suite reservation
                         $scope.restrictSuiteOverbooking = !response.data.is_room_type_available && response.data.is_suite_reservation;
                         $scope.isSuiteReservation = response.data.is_suite_reservation;
-                        $scope.routingInfo = response.data.routing_info;
-
-						ngDialog.open({
-							template: '/assets/partials/reservation/alerts/editDatesInStayCard.html',
-							className: '',
-							scope: $scope,
-							data: JSON.stringify({
-								is_stay_cost_changed: response.data.is_stay_cost_changed,
-								is_assigned_room_available: response.data.is_room_available,
-								is_rate_available: response.data.is_room_type_available,
-								is_group_reservation: response.data.is_group_reservation,
-								is_outside_group_stay_dates: response.data.outside_group_stay_dates,
-								group_name: response.data.group_name,
-								is_invalid_move: response.data.is_invalid_move,
-								is_house_available: !!response.data.is_house_available
-							})
-						});
+						$scope.routingInfo = response.data.routing_info;
+						
+						// CICO-71977 - Borrow from house for a group reservation
+						if (response.results.status === RESPONSE_STATUS_470 && response.results.is_borrowed_from_house) {
+							var results = response.results;
+						
+							$scope.borrowData = {};
+							if (!results.room_overbooked && !results.house_overbooked) {
+								$scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission;
+								$scope.borrowData.isBorrowFromHouse = true;
+							} else if (results.room_overbooked && !results.house_overbooked) {
+								$scope.borrowData.shouldShowBorrowBtn = $scope.hasOverBookRoomTypePermission && $scope.hasBorrowFromHousePermission;
+								$scope.borrowData.isRoomTypeOverbooked = true;
+							} else if (!results.room_overbooked && results.house_overbooked) {
+								$scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission && $scope.hasOverBookHousePermission;
+								$scope.borrowData.isHouseOverbooked = true;
+							} else if (results.room_overbooked && results.house_overbooked) {
+								$scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission && $scope.hasOverBookRoomTypePermission && $scope.hasOverBookHousePermission;
+								$scope.borrowData.isHouseAndRoomTypeOverbooked = true;
+							}
+		
+							ngDialog.open({
+								template: '/assets/partials/common/group/rvGroupBorrowOverbookPopup.html',
+								className: '',
+								closeByDocument: false,
+								closeByEscape: true,
+								scope: $scope
+							});
+						} else {
+							ngDialog.open({
+								template: '/assets/partials/reservation/alerts/editDatesInStayCard.html',
+								className: '',
+								scope: $scope,
+								data: JSON.stringify({
+									is_stay_cost_changed: response.data.is_stay_cost_changed,
+									is_assigned_room_available: response.data.is_room_available,
+									is_rate_available: response.data.is_room_type_available,
+									is_group_reservation: response.data.is_group_reservation,
+									is_outside_group_stay_dates: response.data.outside_group_stay_dates,
+									group_name: response.data.group_name,
+									is_invalid_move: response.data.is_invalid_move,
+									is_house_available: !!response.data.is_house_available
+								})
+							});
+						}
+						
 					} else {
 						$scope.responseValidation = {};
 						$scope.errorMessage = response.errors;
@@ -1158,7 +1196,6 @@ sntRover.controller('reservationDetailsController',
 					$scope.$emit('hideLoader');
 				},
 				onValidationFaliure = function(error) {
-
 					$scope.$emit('hideLoader');
 				};
 
@@ -1167,6 +1204,17 @@ sntRover.controller('reservationDetailsController',
 				dep_date: $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd'),
 				reservation_id: $scope.reservationData.reservation_card.reservation_id
 			}, onValidationSuccess, onValidationFaliure);
+		};
+
+		// Handles the borrow action
+		$scope.performBorrowFromHouse = function () {
+			RVReservationStateService.setForceOverbookFlagForGroup(true);
+			$scope.clickedOnStayDateChangeConfirmButton();	
+		};
+		// Close the borrow popup
+		$scope.closeBorrowDialog = function () {
+			$scope.borrowData = {};
+			$scope.closeDialog();
 		};
 
 		$scope.moveToRoomRates = function() {
