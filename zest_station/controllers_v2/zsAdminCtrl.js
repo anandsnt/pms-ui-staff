@@ -370,7 +370,7 @@ sntZestStation.controller('zsAdminCtrl', [
             var getParams = function() {
                 // CICO-42233
                 if (!$scope.zestStationData.idle_timer.prompt) {
-                    $scope.zestStationData.idle_timer.prompt = 0;
+                    return;
                 }
                 var params = {
                     'kiosk': {
