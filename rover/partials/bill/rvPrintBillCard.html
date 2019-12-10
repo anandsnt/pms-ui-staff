@@ -216,7 +216,7 @@
     </table>
 </div>
 <div ng-if="!printData.is_deposit_invoice">
-    <strong ng-if="printData.has_enabled_extended_tax_breakdown">Tax Breakdown</strong>
+    <strong ng-if="printData.has_enabled_extended_tax_breakdown">{{printData.translation.tax_breakdown}}</strong>
     <table class="invoice-details extended-tax-table" ng-if="printData.has_enabled_extended_tax_breakdown">
         <thead style="display:table-row-group;">
             <tr>
