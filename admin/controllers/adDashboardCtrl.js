@@ -1,6 +1,6 @@
 admin.controller('ADDashboardCtrl', ['$scope', '$state', '$stateParams', '$rootScope', function($scope, $state, $stateParams, $rootScope) {
     $scope.selectedMenu = $scope.data.menus[$stateParams.menu];
-    if ($scope.selectedMenu.menu_name !== 'Station') {
+    if ($scope.isZestStationEnabled || $scope.selectedMenu.menu_name !== 'Station') {
         $scope.clearErrorMessage();
         $scope.$emit("changedSelectedMenu", $stateParams.menu);
         if (typeof $scope.data !== 'undefined') {
@@ -19,9 +19,7 @@ admin.controller('ADDashboardCtrl', ['$scope', '$state', '$stateParams', '$rootS
                 });
             }
         }
-    } else if (!$scope.isZestStationEnabled) {
+    } else {
         $scope.errorMessage = ['Your current subscription package does not include this service'];
     }
 }]);
-
-
