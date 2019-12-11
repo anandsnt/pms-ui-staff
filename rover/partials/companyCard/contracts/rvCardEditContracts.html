@@ -39,13 +39,13 @@
                 </div>
                 <div class="entry margin">
                     <label class="disable-element" for="contracted-nights">Contracted Nights</label>
-                    <input ng-disabled="contractData.disableFields" name="contracted-nights" id="contracted-nights" class=" contracted-nights" placeholder="Nights Per Month" ng-model="contractData.editData.total_contracted_nights" ng-click="editContractedNights()" maxlength="8" readonly type="text"/>
+                    <input ng-disabled="contractData.disableFields" name="contracted-nights" id="contracted-nights" class=" contracted-nights" placeholder="Set No. of Nights" ng-model="contractData.editData.total_contracted_nights" ng-click="editContractedNights()" maxlength="8" readonly type="text"/>
                 </div>
                 <div include-replace ng-include="'/assets/partials/companyCard/contracts/rvCardSearchContractedRate.html'"></div>
             </div>
 
             <div class="holder right">
-                <strong class="h3">{{ contractData.editData.is_master_contract ? 'Linked From' : 'Linked To'}}</strong>
+                <strong class="h3">{{ contractData.editData.is_master_contract ? 'Linked To' : 'Linked From'}}</strong>
                 <!-- hide this if there are no linked contracts -->
                 <div class="linked-contracts">
                     <div class="linked-contract" ng-repeat="account in contractData.editData.account_details">
@@ -54,7 +54,6 @@
                             <div class="guest-image icons icon-company" ng-if="account.type === 'COMPANY'"></div>
                             <!-- If Travel Agent -->
                             <div class="guest-image icons icon-travel-agent" ng-if="account.type === 'TRAVELAGENT'"></div>
-
                             <h3 class="item-title">{{account.name}}</h3>
                             <div class="item-info">
                                 {{account.address}}
