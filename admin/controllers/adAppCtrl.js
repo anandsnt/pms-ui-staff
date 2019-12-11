@@ -1052,6 +1052,12 @@ admin.controller('ADAppCtrl', [
             sntActivity.stop('STATE_CHANGE' + transition.to().name.toUpperCase());
         });
 
+        $scope.menuHoverIn = function(menuIndex) {
+            if (!$scope.isZestStationEnabled && $scope.data.menus[menuIndex].menu_name === 'Station') {
+                angular.element("#admin-menu-tooltip").tooltip();
+            }
+        };
+
         (function() {
             if (!adminMenuData.menus.length) {
                 var staffURL = '/staff/h/';
