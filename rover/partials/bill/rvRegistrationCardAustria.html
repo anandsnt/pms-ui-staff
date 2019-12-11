@@ -42,11 +42,7 @@
     <tr>
         <td colspan="2">
             Reisedokument & Nummer/Identification Type & Number<br />
-            <strong>{{printRegCardData.guest_details.id_type}}</strong>
-            <strong ng-if="printRegCardData.guest_details.id_number">;{{printRegCardData.guest_details.id_number}}</strong>
-            <strong ng-if="printRegCardData.guest_details.id_issue_date">;{{printRegCardData.guest_details.id_issue_date | date : dateFormat}}</strong>
-            <strong ng-if="printRegCardData.guest_details.id_place_of_issue">;{{printRegCardData.guest_details.id_place_of_issue}}</strong>
-            <strong ng-if="printRegCardData.guest_details.id_country_of_issue">;{{printRegCardData.guest_details.id_country_of_issue}}</strong>
+            <strong>{{printRegCardData.documentDetails}}</strong>
         </td>
         <td>
             Staatsangehörigkeit/Nationality<br />
