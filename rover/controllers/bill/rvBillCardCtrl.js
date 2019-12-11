@@ -2811,7 +2811,26 @@ sntRover.controller('RVbillCardController',
 			$scope.printRegCardData = data;
 			$scope.errorMessage = "";
 			$scope.printRegCardData.rowspanAustrianRegCardChild = data.guest_details.accompanying_children && data.guest_details.accompanying_children.length > 4 ? 3 : 2;
+			if ($scope.isAustrianRegistrationCardEnabled) {
+				var docDetails = "";
 
+				if (data.guest_details.id_type !== "" && data.guest_details.id_type !== null) {
+					docDetails = docDetails + data.guest_details.id_type;
+				}
+				if (data.guest_details.id_number !== "" && data.guest_details.id_number !== null) {
+					docDetails = docDetails + data.guest_details.id_number;
+				}
+				if (data.guest_details.id_issue_date !== "" && data.guest_details.id_issue_date !== null) {
+					docDetails = docDetails + $filter('date')(new tzIndependentDate(data.guest_details.id_issue_date), $rootScope.dateFormat);
+				}
+				if (data.guest_details.id_place_of_issue !== "" && data.guest_details.id_place_of_issue !== null) {
+					docDetails = docDetails + data.guest_details.id_place_of_issue;
+				}
+				if (data.guest_details.id_country_of_issue !== "" && data.guest_details.id_country_of_issue !== null) {
+					docDetails = docDetails + data.guest_details.id_country_of_issue;
+				}
+				$scope.printRegCardData.documentDetails = docDetails;
+			}
 			// CICO-25012 - checking for signature dispaly on Reg'n Card PRINT
 			if ( $scope.reservationBillData.signature_details.is_signed === "true" ) {
 				$scope.printRegCardData.signature_url = $scope.reservationBillData.signature_details.signed_image;
