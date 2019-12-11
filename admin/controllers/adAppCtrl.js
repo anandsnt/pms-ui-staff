@@ -829,7 +829,8 @@ admin.controller('ADAppCtrl', [
                 return (
                     component.name === 'Check In' || component.name === 'Check Out' ||
                         component.name === 'Direct URL' || component.name === '' || component.name === 'Zest Web Common' ||
-                        component.name === 'Room Ready Email' || component.name === 'Zest Web Global Setup'
+                        component.name === 'Room Ready Email' || component.name === 'Zest Web Global Setup' ||
+                        component.name === "Email from Guest" || component.name === "SMS / Short Code"
                 )
             }
 
