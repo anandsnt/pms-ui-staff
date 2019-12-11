@@ -50,7 +50,7 @@ angular.module('sntRover').controller('rvCardSearchContractedRateCtrl', ['$scope
 
         // Handle rate search.
         $scope.searchRate = function() {
-            if ($scope.contractData.rateSearchQuery.length > 1) {
+            if ($scope.contractData.rateSearchQuery.length > 2) {
                 that.fetchRateContract();
             }
         };
