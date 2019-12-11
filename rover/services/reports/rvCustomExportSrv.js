@@ -680,5 +680,22 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
+        /**
+         * Get hotel groups
+         */
+        this.getGroupsList = () => {
+            var deferred = $q.defer(),
+                url = 'api/groups/group_names_list';
+
+            sntBaseWebSrv.getJSON(url).then(function (response) {
+                deferred.resolve(response.groups);
+            }, function (error) {
+                deferred.resolve(error);
+            });
+
+            return deferred.promise;
+        };
+
+
 
     }]);
