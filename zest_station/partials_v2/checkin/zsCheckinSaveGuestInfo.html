@@ -1,0 +1,61 @@
+<section id="main" class="guest-id-verify" role="main">
+     <div id="flex-holder">
+      <div id="textual" class="review-bill scrollable" ng-iscroll="guests-info" style="height: 75%;">
+         <div class="wrapper passport-details">
+            <div id="bill">
+               <h1 translate>
+                  FILL IN YOUR INFO TO PROCEED
+               </h1>
+               <h2 translate>
+                  FIELDS MARKED WITH * ARE MANDATORY
+               </h2>
+               <div class="entry with-label" ng-repeat="field in infoNeeded">
+                     <label>
+                        {{ field.label | translate }} {{ field.mandatory ? '*' :'' }}
+                    </label>
+                    <!-- --{{guestDetails}}--{{field.key}}---{{guestDetails[field.key]}} -->
+                    <!-- text -->
+                    <input type="text" ng-if="field.type === 'text'" ng-model='guestDetails[field.key]' />
+                    <!-- select -->
+                    <select ng-if="field.type === 'select'" name="Country"  ng-model="guestDetails[field.key]" style="width: 40%;color: #000;" ng-options="country  as country for country in field.values">
+                        <option value="">{{'SELECT' | translate}}</option>
+                    </select>
+                    <!-- date -->
+                    <div class="entry input" style="width: 40%;float: right;" ng-if="field.type === 'date'">
+                      <input type="text" ng-model="guestDetails[field.key+'forDisplay']" class="disabled" click-touch="showDatePicker(field.key,field.key+'forDisplay')"/>
+                      <ng-include src="icons.url.date" click-touch="showDatePicker(field.key,field.key+'forDisplay'); resetTime();">
+                    </div>
+                    <!-- bool -->
+                    <select ng-if="field.type === 'boolean'" name="Country"  ng-model="guestDetails[field.key]" style="width: 40%;color: #000;">
+                        <option value="">{{'SELECT' | translate}}</option>
+                        <option value="true">{{'YES' | translate}}</option>
+                        <option value="false">{{'NO' | translate}}</option>
+                    </select>
+               </div>
+
+               <br/><br/>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div id='actions' class="align-center guest-id-actions">
+      <button type="button" class="button" touch-press='saveGuestDetails()' translate>
+      GID_VERIFY_PASSPORT_ACCEPT
+      </button>
+   </div>   
+</section>
+
+<div class="popup" ng-class="{'open': showErrorMessage}">
+    <!-- Remove class "open" to hide popup content -->
+    <div class="popup-content">
+        <h2 class="nocaps">
+            <text data-ng-bind-html="getTagValue('PLEASE_PROVIDE_ALL_REQUIRED_INFO')" editable-text="PLEASE_PROVIDE_ALL_REQUIRED_INFO"></text>
+        </h2>
+        <button type="button" class="button idle-timeout-btn" click-touch='dismissPopup();'>
+            <text data-ng-bind-html="getTagValue('OK')" editable-text="OK"></text>
+        </button>
+    </div>
+</div>
+
+
+<div ng-show="showDatePick" ui-date="dateOptions" ng-model="selectedDate" ui-date-format="mm-dd-yy" id='picker'>

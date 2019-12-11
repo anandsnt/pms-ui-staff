@@ -6,10 +6,14 @@
 		'zsGeneralSrv',
 		'zsCheckinSrv',
 		'zsUtilitySrv',
-		function($scope, $state, zsEventConstants, $stateParams, zsGeneralSrv, zsCheckinSrv, zsUtilitySrv) {
+		'$controller',
+		function($scope, $state, zsEventConstants, $stateParams, zsGeneralSrv, zsCheckinSrv, zsUtilitySrv, $controller) {
 
 
 			BaseCtrl.call(this, $scope);
+			$controller('zsCheckinCommonBaseCtrl', {
+               $scope: $scope
+         });
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 			var scrollOptions = {
@@ -139,7 +143,9 @@
 				if ($scope.inDemoMode()) {
 					afterGuestCheckinCallback();
 				} else {
-					$scope.callAPI(zsCheckinSrv.checkInGuest, options);
+					$scope.$emit('CHECK_IF_REQUIRED_GUEST_DETAILS_ARE_PRESENT', {
+						checkinParams: _.extend({}, checkinParams, stateParams)
+					});
 				}
 			};
 

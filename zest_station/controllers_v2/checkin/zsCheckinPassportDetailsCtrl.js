@@ -13,6 +13,9 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
         $controller('zsCheckinNextPageBaseCtrl', {
             $scope: $scope
         });
+        $controller('zsCheckinCommonBaseCtrl', {
+            $scope: $scope
+        });
         $scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
         $scope.mode = 'PASSPORT_DETAILS';
         $scope.guestDetails = {};
@@ -33,6 +36,29 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
             $scope.mode = 'BYPASS_PASSPORT_DETAILS';
         };
 
+        var nextPageActions = function() {
+            if (true) {
+                var stateParams = JSON.parse($stateParams.params);
+                var bypassReason = zsCheckinSrv.getPassportBypassReason();
+
+                var checkinParams = {
+                    'reservation_id': stateParams.reservation_id,
+                    'workstation_id': $scope.zestStationData.set_workstation_id,
+                    'authorize_credit_card': false,
+                    'do_not_cc_auth': false,
+                    'is_promotions_and_email_set': false,
+                    'is_kiosk': true,
+                    'signature': stateParams.signature,
+                    'passport_bypass_reason': bypassReason
+                };
+                $scope.$emit('CHECK_IF_REQUIRED_GUEST_DETAILS_ARE_PRESENT', {
+                    checkinParams: _.extend({}, checkinParams, stateParams)
+                });
+            } else {
+                $scope.checkinGuest();
+            }
+        };
+
         $scope.passportNumberEntered = function () {
             if ($scope.data.passportNumber === "") {
                 return;
@@ -45,7 +71,7 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
             var options = {
                 params: params,
                 successCallBack: function () {
-                    $scope.checkinGuest();
+                    nextPageActions();
                 }
             };
 
@@ -57,7 +83,7 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
                 return;
             }
             zsCheckinSrv.savePassportBypassReason($scope.data.bypassReason);
-            $scope.checkinGuest();
+            nextPageActions();
         };
 
         $scope.onchangePassportNumber = function () {

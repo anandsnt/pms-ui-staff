@@ -20,6 +20,9 @@
 			$controller('zsCheckinNextPageBaseCtrl', {
 				$scope: $scope
 			});
+			$controller('zsCheckinCommonBaseCtrl', {
+				$scope: $scope
+			});
 
 			var stateParams = JSON.parse($stateParams.params);
 			var SCANING_PENDING = $filter('translate')('GID_SCAN_NOT_STARTED') || 'Pending';
@@ -294,11 +297,28 @@
 			});
 
 			var verfiedStaffId;
+
+			var checkinGuest = function() {
+
+				var checkinParams = {
+					'reservation_id': stateParams.reservation_id,
+					'workstation_id': $scope.zestStationData.set_workstation_id,
+					'authorize_credit_card': false,
+					'do_not_cc_auth': false,
+					'is_promotions_and_email_set': false,
+					'is_kiosk': true,
+					'signature': stateParams.signature
+				};
+				$scope.$emit('CHECK_IF_REQUIRED_GUEST_DETAILS_ARE_PRESENT', {
+					checkinParams: _.extend({}, checkinParams, stateParams)
+				});
+			};
+			
 			var nextPageActions = function() {
 				if (stateParams.mode === 'PICKUP_KEY') {
 					$scope.zestStationData.continuePickupFlow();
 				} else {
-					$scope.checkinGuest(stateParams);
+					checkinGuest();
 				}
 			};
 
