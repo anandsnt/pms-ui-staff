@@ -21,7 +21,7 @@
         </td>
         <td style="max-width: 150pt; width: 30%;">
             Geschlecht/Gender<br />
-            <strong>{{ printRegCardData.guest_details.gender }}</strong>
+            <strong>{{ printRegCardData.guest_details.gender.value }}</strong>
         </td>
     </tr>
 </table>
@@ -42,7 +42,11 @@
     <tr>
         <td colspan="2">
             Reisedokument & Nummer/Identification Type & Number<br />
-            <strong>{{printRegCardData.guest_details.document_details}}</strong>
+            <strong>{{printRegCardData.guest_details.id_type}}</strong>
+            <strong ng-if="printRegCardData.guest_details.id_number">;{{printRegCardData.guest_details.id_number}}</strong>
+            <strong ng-if="printRegCardData.guest_details.id_issue_date">;{{printRegCardData.guest_details.id_issue_date | date : dateFormat}}</strong>
+            <strong ng-if="printRegCardData.guest_details.id_place_of_issue">;{{printRegCardData.guest_details.id_place_of_issue}}</strong>
+            <strong ng-if="printRegCardData.guest_details.id_country_of_issue">;{{printRegCardData.guest_details.id_country_of_issue}}</strong>
         </td>
         <td>
             Staatsangehörigkeit/Nationality<br />
@@ -104,7 +108,7 @@
             <td style="width: 130pt">
                 Vorname, Geburtsjahr
                 <span class="placeholder">First name, date of birth</span><br />
-                <strong>{{printRegCardData.guest_details.accompanying_children[0].first_name}}</strong><span ng-if="printRegCardData.guest_details.accompanying_children[0] && printRegCardData.guest_details.accompanying_children[0].date_of_birth !== '' && printRegCardData.guest_details.accompanying_children[0].date_of_birth !== null">, </span><strong>{{printRegCardData.guest_details.accompanying_children[0].date_of_birth}}</strong>
+                <strong>{{printRegCardData.guest_details.accompanying_children[0].first_name}}<span ng-if="printRegCardData.guest_details.accompanying_children[0] && printRegCardData.guest_details.accompanying_children[0].date_of_birth !== '' && printRegCardData.guest_details.accompanying_children[0].date_of_birth !== null">, </span></strong><strong>{{printRegCardData.guest_details.accompanying_children[0].date_of_birth}}</strong>
             </td>
             <td style="width: 130pt">
                 Vorname, Geburtsjahr
