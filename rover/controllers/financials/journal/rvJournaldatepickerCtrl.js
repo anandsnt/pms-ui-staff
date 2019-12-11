@@ -63,6 +63,10 @@ sntRover.controller('RVJournalDatePickerController', ['$scope', '$rootScope', 'n
                   $scope.data.summaryDate = $scope.date;
                  $scope.broadcastFromRoot('summaryDateChanged');
                 }
+                else if ($scope.clickedOn === 'BALANCE') {
+                  $scope.data.balanceDate = $scope.date;
+                 $scope.broadcastFromRoot('balanceDateChanged');
+                }
                 ngDialog.close();
             }
         };

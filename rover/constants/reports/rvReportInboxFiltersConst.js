@@ -23,6 +23,7 @@ angular.module('reportsModule')
         'to_time': 'To Time',
         'rate_ids': 'Rates',
         'assigned_departments': 'Departments',
+        'selected_language': 'Language',
         'include_guarantee_type': 'Guarantee Types',
         'market_ids': 'Markets',
         'segment_ids': 'Segments',

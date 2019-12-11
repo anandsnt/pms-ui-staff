@@ -11,7 +11,7 @@
             </div>
             <div class="entry margin">
                 <label for="group-code" translate>GROUP_CODE</label>
-                <input id="group-code" ng-model="groupConfigData.summary.group_code" type="text" ng-disabled="groupConfigData.summary.linked_external_interface || isInStaycardScreen()"/>
+                <input id="group-code" ng-model="groupConfigData.summary.group_code" type="text" ng-disabled="groupConfigData.summary.linked_external_interface || isInStaycardScreen() || !isInAddMode()"/>
             </div>
             <div class="entry">
                 <label for="group-firstname" translate>CONTACT_FIRST_NAME</label>
@@ -173,11 +173,11 @@
                 <label for="group-rate" translate>RATE</label>
                 <div class="select">
                     <select id="group-rate" iscroll-stop-propagation
-                            ng-model="groupConfigData.summary.rate"
+                            ng-model="groupConfigData.summary.uniqId"
                             ng-change="onRateChange()"
                             ng-disabled="shouldDisableRateChange()"
                             snt-placeholder="SELECT_RATE"
-                            ng-options="rate.id as rate.name group by rate.groupName for rate in groupSummaryData.rateSelectDataObject">
+                            ng-options="rate.uniqId as rate.name group by rate.groupName for rate in groupSummaryData.rateSelectDataObject">
                     </select>
                 </div>
                 <a ng-click="!groupConfigData.summary.is_cancelled ? (isInAddMode() ? manageAddons() : viewAddons()) : false" class="button with-icon" ng-class="{'brand-colors' : !isInAddMode() && !groupConfigData.summary.is_cancelled, 'grey' : isInAddMode() || !!groupConfigData.summary.is_cancelled}">
@@ -189,6 +189,23 @@
                     <span class="icons icon-addons"></span> Add-Ons
                 </a>
             </div>
+            <!--Hide Rate Toggle Starts -->
+            <div class="entry full-width tax-exempt" ng-if="!isInAddMode()" >
+                <label for="group-hide-rates" translate>HIDE_RATE</label>
+                <div class="switch-button" ng-click="clickedShowRate()" ng-class="{'on': groupConfigData.summary.hide_rates}" >
+
+                    <input type="checkbox" ng-model="groupConfigData.summary.hide_rates" ng-checked="groupConfigData.summary.hide_rates" />
+                    <label class="data-off">
+                        <span class="value">Off</span>
+                        <span class="switch-icon">On</span>
+                    </label>
+                    <label class="data-on">
+                        <span class="switch-icon grey">Off</span>
+                        <span class="value">On</span>
+                    </label>
+                </div>
+            </div>
+            <!--Hide Rate Toggle Ends -->
              <!-- Tax Exempt -->
             <div class="entry full-width tax-exempt" ng-if="shouldShowTaxExempt()" >
                 <label for="group-tax-exempt">Tax Exempt </label>

@@ -25,13 +25,22 @@
                 <fieldset class="holder full-width" ng-show="data.enabled">
                     <ad-form-title full-width="true" form-title="{{'MONSCIERGE_IOS_LABEL' | translate}}"></ad-form-title>
                     <ad-textbox value="data.ios_client_id " label="{{ 'MONSCIERGE_CLIENT_ID' | translate}}"></ad-textbox>
-                    <ad-textbox value="data.ios_client_secret " label="{{ 'MONSCIERGE_CLIENT_SECRET' | translate}}"></ad-textbox>
+                    <ad-textbox 
+                        value="data.ios_client_secret "
+                        label="{{ 'MONSCIERGE_CLIENT_SECRET' | translate}}"
+                        inputtype="password"
+                        click-handler="onPasswordClick(data, 'ios_client_secret')"
+                        ></ad-textbox>
                 </fieldset>
 
                 <fieldset class="holder full-width" ng-show="data.enabled">
                     <ad-form-title full-width="true" form-title="{{'MONSCIERGE_ANDROID_LABEL' | translate}}"></ad-form-title>
                     <ad-textbox value="data.android_client_id " label="{{ 'MONSCIERGE_CLIENT_ID' | translate}}"></ad-textbox>
-                    <ad-textbox value="data.android_client_secret " label="{{ 'MONSCIERGE_CLIENT_SECRET' | translate}}"></ad-textbox>
+                    <ad-textbox value="data.android_client_secret "
+                                label="{{ 'MONSCIERGE_CLIENT_SECRET' | translate}}"
+                                inputtype="password"
+                                click-handler="onPasswordClick(data, 'android_client_secret')"
+                                ></ad-textbox>
                 </fieldset>
 
                 <div class="actions float">

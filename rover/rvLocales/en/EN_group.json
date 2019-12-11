@@ -108,4 +108,5 @@
     "TAX_EXEMPT_REFERENCE": "Tax Exempt Reference (200 chars.)",
     "NATIONALITY": "Nationality",
     "COUNTRY": "Country",
-    "SELECT_RATE": "Select Rate"
+    "SELECT_RATE": "Select Rate",
+    "HIDE_RATE": "Hide Rate"

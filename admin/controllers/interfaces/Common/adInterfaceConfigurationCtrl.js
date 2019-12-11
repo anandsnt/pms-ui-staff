@@ -37,9 +37,12 @@ angular.module('admin').
 
 
             $scope.saveInterfaceConfig = function() {
+                var params = dclone($scope.config);
+
+                $scope.deletePropertyIfRequired(params, 'sftp_password');
                 $scope.callAPI(adInterfacesSrv.updateSettings, {
                     params: {
-                        settings: $scope.config,
+                        settings: params,
                         integration: $scope.interface.toLowerCase()
                     },
                     onSuccess: function() {
@@ -57,6 +60,7 @@ angular.module('admin').
             (function() {
                 // init
                 $scope.config = config;
+                $scope.setDefaultDisplayPassword($scope.config, 'sftp_password');
                 $scope.availableSettings = _.keys(config);
                 $scope.mappingTypes = mappingTypes.data;
                 $scope.interface = interfaceIdentifier.toUpperCase();

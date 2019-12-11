@@ -24,4 +24,6 @@
 "CATEGORY_NAME_PLACEHOLDER": "Select Category Name",
 "CATEGORY_NAME": "Category Name",
 "ENABLE_ORACODE": "Door Pincode Delivery",
-"MEAL_PERIOD": "MEAL PERIOD"
+"MEAL_PERIOD": "MEAL PERIOD",
+"DATA_SWAP": "DATA SWAP",
+"COMTROL_DATA_SWAP_MESSAGE": "Warning! You are about to initiate a data swap. All records from Rover will be synced to Comtrol, which may take time. Are you sure you want to continue?"

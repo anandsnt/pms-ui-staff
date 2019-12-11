@@ -7,6 +7,7 @@ admin.service('adIFCInterfaceMappingSrv', [
 
         var metaLists = {
             'AXBASE3000': ['ROOM_NUMBERS', 'ROOM_TYPES'],
+            'DATAPLUS': ['CHARGE_CODES', 'MARKET_SEGMENTS'],
             'DELPHI': ['CHARGE_CODES', 'GROUP_HOLD_STATUSES', 'MARKET_SEGMENTS', 'SOURCE_CODES'],
             'DERBYSOFT': ['CANCELLATION_POLICIES', 'CANCELLATION_CODES', 'TAX_CHARGE_CODES', 'TAX_CODES'],
             'EXACTONLINE': ['CHARGE_CODES', 'TAX_CHARGE_CODES'],

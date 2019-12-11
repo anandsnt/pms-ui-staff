@@ -11,7 +11,7 @@ admin.controller('ADUserDetailsCtrl',
 
 	BaseCtrl.call(this, $scope);
 
-	$scope.manualIDScanEnabled = $stateParams.manual_id_scan_enabled === 'true';
+	$scope.manualIDScanEnabled = $stateParams.manual_id_scan_enabled === true;
 	// navigate back to user list if no id
 	if (!$stateParams.id && !$stateParams.page === 'add') {
 			$state.go('admin.users');

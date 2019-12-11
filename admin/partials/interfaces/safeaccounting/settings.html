@@ -78,7 +78,8 @@
                         <ad-textbox inputtype="password"
                                     value="config.sftp_password"
                                     label="{{'PASSWORD'| translate}}"
-                                    styleclass="full-width"></ad-textbox>
+                                    styleclass="full-width"
+                                    click-handler="onPasswordClick(config, 'sftp_password')"></ad-textbox>
                         <ad-textbox inputtype="number"
                                     value="config.sftp_port"
                                     placeholder = "22"

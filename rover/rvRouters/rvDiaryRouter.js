@@ -32,7 +32,7 @@ angular
     });
 
     $stateProvider.state('rover.nightlyDiary', {
-        url: '/nightlyDiary/?reservation_id&room_id&start_date&origin',
+        url: '/nightlyDiary/?reservation_id&room_id&start_date&origin&confirm_id',
         templateUrl: '/assets/partials/nightlyDiary/rvNightlyDiary.html',
         controller: 'rvNightlyDiaryMainController',
         resolve: {

@@ -38,7 +38,8 @@
                         <ad-textbox inputtype="password" value="config.access_token"
                                     required="yes"
                                     label="{{'ACCESS_TOKEN'| translate}}"
-                                    styleclass="full-width"></ad-textbox>
+                                    styleclass="full-width"
+                                    click-handler="onPasswordClick(config, 'access_token')"></ad-textbox>
                         <ad-dropdown-name savemodel="config.default_payment_method"
                                           ng-show="true"
                                           valueproperty="charge_code"

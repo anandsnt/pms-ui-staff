@@ -1,5 +1,19 @@
+ <div class="holder" ng-show="data.activeTab === 'SUMMARY'">  
+    <div class="entry search" ng-include="'/assets/partials/financials/journal/rvPrintBoxFilter.html'"></div>    
+    <div class="entry" ng-include="'/assets/partials/financials/journal/rvPrintBoxToggle.html'">
+    </div>
+
+    <div class="entry actions">
+        <button id="print-journal" type="button" class="button blue with-icon only-icon" ng-click="printSummary()">
+            <span class="icons icon-print"></span>
+        </button>
+    </div>        
+</div>
+
+
 <!-- PRINT BOX FOR REVENUE -->
 <div ng-show="data.activeTab === 'REVENUE'" class="holder">
+    <div class="entry search" ng-include="'/assets/partials/financials/journal/rvPrintBoxFilter.html'"></div> 
     <div class="entry">
         <label for="revenue-charge-group" translate>CHARGE_GROUPS</label>
         <div class="select">
@@ -18,26 +32,19 @@
             </select> 
         </div>
     </div>
-    <div class="entry">
-        <div class="switch-button" ng-class="{'on' : data.isRevenueToggleSummaryActive }" ng-click="toggleSummaryOrDeatilsRevenue()">
-            <input name="revenue-print-toggle" id="revenue-print-toggle" value="" type="checkbox" checked />
-            <label class="data-off">
-                <span class="value" translate>SUMMARY</span>
-                <span class="switch-icon" translate>DETAILS</span>
-            </label>
-            <label class="data-on">
-                <span class="switch-icon" translate>SUMMARY</span>
-                <span class="value" translate>DETAILS</span>
-            </label>
-        </div>
+    <div class="entry" ng-include="'/assets/partials/financials/journal/rvPrintBoxToggle.html'">
+
     </div>
-    <div class="actions">
-        <button ng-click="printRevenue()" id="print-revenue" type="button" class="button blue" translate>PRINT</button>
+    <div class="entry actions">
+        <button ng-click="printRevenue()" id="print-revenue" type="button" class="button blue with-icon only-icon" translate>
+            <span class="icons icon-print"></span>
+        </button>
     </div>
 </div>
 
 <!-- PRINT BOX FOR PAYMENTS -->
 <div ng-show="data.activeTab === 'PAYMENTS'" class="holder">
+    <div class="entry search" ng-include="'/assets/partials/financials/journal/rvPrintBoxFilter.html'"></div> 
     <div class="entry">
         <label for="payments-payment-type">{{'PAYMENT_TYPE' | translate}} / {{'CHARGE_CODE' | translate}}</label>
         <div class="select">
@@ -47,21 +54,12 @@
             </select>
         </div>
     </div>
-    <div class="entry">
-        <div class="switch-button" ng-class="{'on' : data.isPaymentToggleSummaryActive }" ng-click="toggleSummaryOrDeatilsPayment()">
-            <input name="payments-print-toggle" id="payments-print-toggle" value="" type="checkbox" checked />
-            <label class="data-off">
-                <span class="value" translate>SUMMARY</span>
-                <span class="switch-icon" translate>DETAILS</span>
-            </label>
-            <label class="data-on">
-                <span class="switch-icon" translate>SUMMARY</span>
-                <span class="value" translate>DETAILS</span>
-            </label>
-        </div>
+    <div class="entry" ng-include="'/assets/partials/financials/journal/rvPrintBoxToggle.html'">
     </div>
-    <div class="actions">
-        <button ng-click="printPayment()" id="print-payments" type="button" class="button blue" translate>PRINT</button>
+    <div class="entry actions">
+        <button ng-click="printPayment()" id="print-payments" type="button" class="button blue with-icon only-icon" translate>
+            <span class="icons icon-print"></span>
+        </button>
     </div>
 </div>
 
@@ -73,11 +71,13 @@
             <select name="cashier-report" id="cashier-report" ng-model="data.reportType" ng-change="cashierFilterChanged()">
                 <option value="" translate>SELECT_REPORT_TYPE</option>
                 <option value="cashier" selected translate>CASHIER_SUMMERY</option>
-                ...
+                
             </select>
         </div>
     </div>
-    <div class="actions">
-        <button ng-click="printCashier()" id="print-cashier" type="button" class="button blue" translate>PRINT</button>
+    <div class="entry actions">
+        <button ng-click="printCashier()" id="print-cashier" type="button" class="button blue with-icon only-icon" translate>
+            <span class="icons icon-print"></span>
+        </button>
     </div>
 </div>

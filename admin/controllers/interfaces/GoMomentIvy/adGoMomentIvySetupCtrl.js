@@ -17,9 +17,12 @@ admin.controller('adGoMomentIvySetupCtrl', ['$scope', 'config', 'adInterfacesSrv
          * @return {undefined}
          */
         $scope.saveSetup = function() {
+            var params = dclone($scope.config);
+
+            $scope.deletePropertyIfRequired(params, 'access_token');
             $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
-                    settings: $scope.config,
+                    settings: params,
                     integration: $scope.interface.toLowerCase()
                 },
                 onSuccess: function() {
@@ -35,5 +38,6 @@ admin.controller('adGoMomentIvySetupCtrl', ['$scope', 'config', 'adInterfacesSrv
          */
         (function() {
             $scope.config = config;
+            $scope.setDefaultDisplayPassword($scope.config, 'access_token');
         })();
     }]);

@@ -74,6 +74,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			$('#upgrades').css({
 				"height": "calc(100% - 230px)"
 			});
+            setLoadingCompleted();
 		};
 
 		$scope.paginationAction = function(disableButtonFlag, isNextPage) {
@@ -425,9 +426,6 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				} else {
 					setPageNumberDetails();
 				}
-
-				$scope.loadingCompleted = true;
-				$scope.showPageNumberDetails = true;
 			};
 
 			$scope.callAPI(zsCheckinSrv.fetchHotelAddonLabels, {
@@ -438,6 +436,11 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				'failureCallBack': generalError
 			});
 		};
+
+		var setLoadingCompleted = function() {
+            $scope.loadingCompleted = true;
+            $scope.showPageNumberDetails = true;
+        };
 
 		var fetchAddons = function() {
 

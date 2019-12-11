@@ -1,6 +1,6 @@
 const { connect } = ReactRedux;
 
-let calculateHourlyRoomsPositionAndDuration = (diaryInitialDayOfDateGrid, hourly_data, numberOfDays) => {
+let calculateHourlyRoomsPositionAndDuration = (diaryInitialDayOfDateGrid, hourly_data, isNightlyPresent, numberOfDays) => {
     let nightDuration = NIGHTLY_DIARY_CONST.RESERVATION_ROW_WIDTH / numberOfDays;
     let diaryInitialDate = tzIndependentDate(diaryInitialDayOfDateGrid);
     let arrivalTime = tzIndependentDate(hourly_data.arrival_date);
@@ -19,13 +19,19 @@ let calculateHourlyRoomsPositionAndDuration = (diaryInitialDayOfDateGrid, hourly
     returnData.style = {};
     returnData.style.width = durationOfHourlydRoom + "px";
     returnData.style.transform = "translateX(" + unHourlyRoomPosition + "px)";
-    returnData.reservationClass = "reservation dayuse " + reservationStatusClass;
+    
+    if (isNightlyPresent) {
+        returnData.reservationClass = "reservation dayuse " + reservationStatusClass + " overlap-0";
+    } 
+    else {
+        returnData.reservationClass = "reservation dayuse " + reservationStatusClass;
+    }
     return returnData;
 };
 
 const mapStateToNightlyDiaryHourlyContainerProps = (state, ownProps) => ({
     hourly_data: calculateHourlyRoomsPositionAndDuration(
-        state.diaryInitialDayOfDateGrid, ownProps.hourlyItem, state.numberOfDays
+        state.diaryInitialDayOfDateGrid, ownProps.hourlyItem, ownProps.isNightlyPresent, state.numberOfDays
     ),
     state
 });

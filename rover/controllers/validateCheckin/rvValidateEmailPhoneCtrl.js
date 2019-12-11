@@ -17,6 +17,8 @@ sntRover.controller('RVValidateEmailPhoneCtrl',
     $scope.saveData.phone = "";
     $scope.saveData.guest_id = "";
     $scope.saveData.user_id = "";
+    $scope.saveData.gender_id = null;
+    $scope.guestCardData.contactInfo.genderTypeList = $scope.guestCardData.contactInfo.gender_list;
 
     $scope.putInQueue = false;
 
@@ -29,9 +31,10 @@ sntRover.controller('RVValidateEmailPhoneCtrl',
     };
 
     $scope.popupCalendar = function() {
+        $scope.calenderFor = 'validate';
         $scope.datePicker = ngDialog.open({
             template: '/assets/partials/guestCard/contactInfoCalendarPopup.html',
-            controller: 'RVContactInfoDatePickerController',
+            controller: 'RVAllContactInfoDatePickerController',
             className: 'single-date-picker',
             scope: $scope
         });
@@ -116,7 +119,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl',
             $scope.guestCardData.contactInfo.birth_place = $scope.saveData.birth_place;
         }
         if ($scope.showGender) {
-            $scope.guestCardData.contactInfo.gender = $scope.saveData.gender;
+            $scope.guestCardData.contactInfo.gender_id = $scope.saveData.gender_id;
         }
         if ($scope.showPersonalIdNumber) {
             $scope.guestCardData.contactInfo.personal_id_no = $scope.saveData.personal_id_no;

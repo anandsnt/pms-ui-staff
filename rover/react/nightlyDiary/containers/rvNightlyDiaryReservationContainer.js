@@ -182,7 +182,7 @@ let findIsReservationFuture = (reservation, currentBusinessDate) => {
  * Adding different logics to the reservations to pass to component
  */
 
-let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDateGrid, numberOfDays, currentBusinessDate, selectedReservationId, newArrivalPosition, newDeparturePosition, selectedRoomId, roomObject) => {
+let convertReservationsListReadyToComponent = (reservation, overlapCount, isHourlyPresent, diaryInitialDayOfDateGrid, numberOfDays, currentBusinessDate, selectedReservationId, newArrivalPosition, newDeparturePosition, selectedRoomId, roomObject) => {
 
     let positionAndDuration = calculateReservationDurationAndPosition(diaryInitialDayOfDateGrid, reservation, numberOfDays);
     let duration = positionAndDuration.durationOfReservation + "px";
@@ -234,16 +234,18 @@ let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDat
             reservation.style.width = newDuration;
             reservation.style.transform = "translateX(" + newArrivalPosition + "px)";
         }
-
     }
 
-    reservation.reservationClass = "reservation " + reservationStatusClass + " " + reservationClass + " " + reservationEditClass;
+    if (isHourlyPresent) {
+        overlapCount ++;
+    }
+    reservation.reservationClass = "reservation " + reservationStatusClass + " " + reservationClass + " " + reservationEditClass + " overlap-" + overlapCount;
     return reservation;
 };
 
 const mapStateToNightlyDiaryReservationContainerProps = (state, ownProps) => ({
     reservation: convertReservationsListReadyToComponent(
-        ownProps.reservation, state.diaryInitialDayOfDateGrid,
+        ownProps.reservation, ownProps.overlapCount, ownProps.isHourlyPresent, state.diaryInitialDayOfDateGrid,
         state.numberOfDays, state.currentBusinessDate, state.selectedReservationId, state.newArrivalPosition, state.newDeparturePosition, state.selectedRoomId, ownProps.room, state),
     selectReservation: state.callBackFromAngular.selectReservation,
     selectedReservationId: state.selectedReservationId,

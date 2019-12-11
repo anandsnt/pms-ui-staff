@@ -186,16 +186,19 @@ angular.module('stayCardModule', [])
                 from_date: '',
                 to_date: '',
                 reservation: 'DAILY',
-                from_screen: ''
+                from_screen: '',
+                rate_id: ''
             },
             resolve: {
                 addonData: function (RVReservationAddonsSrv, $stateParams) {
+
                     var params = {};
 
                     params.from_date = $stateParams.from_date;
                     params.to_date = $stateParams.to_date;
                     params.is_active = true;
                     params.is_not_rate_only = true;
+                    params.rate_id = $stateParams.rate_id;
                     return RVReservationAddonsSrv.fetchAddonData(params);
                 }
             }

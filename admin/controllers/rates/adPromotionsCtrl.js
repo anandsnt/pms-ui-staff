@@ -65,10 +65,10 @@ admin.controller('ADPromotionsCtrl', [
 
 		$scope.toggleActivatePromotions = function() {
 			$scope.invokeApi(ADPromotionsSrv.togglePromotions, {
-				is_use_promotions: !!$scope.state.usePromos
+				is_use_promotions: !$scope.state.usePromos
 			}, function() {
 				$scope.$emit('hideLoader');
-				$rootScope.isPromoActive = !!$scope.state.usePromos;
+				$rootScope.isPromoActive = !$scope.state.usePromos;
 			});
 		};
 

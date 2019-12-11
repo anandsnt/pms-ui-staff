@@ -386,3 +386,7 @@ describe('zsPickupKeyFindReservationCtrl', function() {
 
     });
 });
+// as a workaround for now
+window.trackAnalyticEvent = function (){
+    return;
+};

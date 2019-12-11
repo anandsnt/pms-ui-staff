@@ -37,7 +37,9 @@
         "inject": false,
         "CBAMockOperation": false,
         "sntZestStation": false,
-        "require": false
+        "require": false,
+        "toastr": false,
+        "d3": true
     },
     "installedESLint": true,
     "parserOptions": {

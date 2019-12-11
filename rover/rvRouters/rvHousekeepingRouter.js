@@ -48,7 +48,11 @@ angular.module('housekeepingModule', [])
                     }
                 },
                 employees: function(RVHkRoomStatusSrv, $rootScope, housekeepingAssets) {
-                    return $rootScope.isStandAlone ? RVHkRoomStatusSrv.fetchHKEmps() : [];
+                    var params = {
+                        per_page: 9999
+                    };
+
+                    return $rootScope.isStandAlone ? RVHkRoomStatusSrv.fetchHKEmps(params) : [];
                 },
                 roomTypes: function(RVHkRoomStatusSrv, housekeepingAssets) {
                     return RVHkRoomStatusSrv.fetchRoomTypes();

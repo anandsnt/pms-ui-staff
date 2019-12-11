@@ -103,7 +103,21 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'heritage-hills': 'Heritage Hills Golf Resort',
             'metropolis-resort': 'Metropolis Resort',
             'why-seattle': 'Why Hotel Seattle',
-            'pod-philly': 'POD Philly'
+            'pod-philly': 'POD Philly',
+            'concordia': 'The Concordia',
+            'belvedere': 'Belvedere-on-Hudson',
+            'delavan': 'The Delavan Hotel and Spa',
+            'garden-place': 'Garden Place Hotel',
+            'crowne': 'Crowne Plaza Brussels',
+            'indigo': 'Hotel Indigo Brussels',
+            'caro': 'Caro Short Stay',
+            'schani-wien': 'Hotel Schani Wien',
+            'glencoe': 'Glencoe House',
+            'schani-salon': 'Hotel Schani Salon',
+            'spatz': 'Hotel Spatz',
+            'lenaustrasse': 'Apartment City Lenaustrasse',
+            'why-tysons': 'Why Hotel Tysons Corner',
+            'local-house': 'Local House'
         };
 
         this.isThemeConfigured = function(theme) {
@@ -810,6 +824,12 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
             delete params.id;
             return zsBaseWebSrv.getJSON(url, params);
+        };
+
+        this.fetchAvailableRooms = function(params) {
+            var url = '/api/rooms/retrieve_available_rooms';
+
+            return zsBaseWebSrv2.postJSON(url, params);
         };
     }
 ]);

@@ -326,6 +326,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
                 if (tzIndependentDate(this.date).getTime() >= $scope.checkinDateInCalender.getTime()
                     && tzIndependentDate(this.date).getTime() < $scope.checkoutDateInCalender.getTime()) {
                     $scope.totRate += escapeNull(this.rate) === '' ? 0 : parseInt(this.rate);
+                    $scope.totCurrencySymbol = this.rate_currency;
                 }
 				// if calendar checkout date is same as calendar checking date, total rate is same as that day's checkin rate
                 if (this.date === $scope.stayDetails.details.arrival_date) {
@@ -339,6 +340,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
             $(remainingStayDatesArray).each(function(index) {
                 $scope.totRate += escapeNull(this.rate) === '' ? 0 : parseInt(this.rate);
+                $scope.totCurrencySymbol = this.rate_currency;
             });
 
             if (!$scope.isStayRatesSuppressed) {
@@ -835,7 +837,11 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
                 if (this.is_sr === 'true') {
                     calEvt.title = $filter('translate')('SUPPRESSED_RATES_TEXT');
                 } else {
-                    calEvt.title = $rootScope.currencySymbol + Math.round(this.rate);
+                    if (this.rate_currency !== null) {
+                        calEvt.title = this.rate_currency + Math.round(this.rate);
+                    } else {
+                        calEvt.title = $rootScope.currencySymbol + Math.round(this.rate);
+                    }
                 }
                 calEvt.start = thisDate;
                 calEvt.end = thisDate;
@@ -859,7 +865,11 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
                         if (this.is_sr === 'true') {
                             calEvt.title = $filter('translate')('SUPPRESSED_RATES_TEXT');
                         } else {
-                            calEvt.title = $rootScope.currencySymbol + Math.round(this.rate);
+                            if (this.rate_currency !== null) {
+                                calEvt.title = this.rate_currency + Math.round(this.rate);
+                            } else {
+                                calEvt.title = $rootScope.currencySymbol + Math.round(this.rate);
+                            }                            
                         }
                         calEvt.start = thisDate;
                         calEvt.end = thisDate;

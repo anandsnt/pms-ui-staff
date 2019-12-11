@@ -218,11 +218,39 @@
 			&:active { .gradient (@greenEnd, @greenStart); }
 		}
 
+		&.green-light {
+			.gradient (@greenLightStart, @greenLightEnd);
+
+			&:hover,
+			&:active { .gradient (@greenLightEnd, @greenLightStart); }
+		}
+
+		&.green-dark {
+			.gradient (@greenDarkStart, @greenDarkEnd);
+
+			&:hover,
+			&:active { .gradient (@greenDarkEnd, @greenDarkStart); }
+		}
+
 		&.red { 
 			.gradient (@redStart, @redEnd);
 
 			&:hover,
 			&:active { .gradient (@redEnd, @redStart); }
+		}
+
+		&.red-light { 
+			.gradient (@redLightStart, @redLightEnd);
+
+			&:hover,
+			&:active { .gradient (@redLightEnd, @redLightStart); }
+		}
+
+		&.red-dark { 
+			.gradient (@redDarkStart, @redDarkEnd);
+
+			&:hover,
+			&:active { .gradient (@redDarkEnd, @redDarkStart); }
 		}
 
 		&.orange {
@@ -239,6 +267,13 @@
 			&:active { .gradient (@yellowEnd, @yellowStart); }
 		}
 
+		&.yellow-dark { 
+			.gradient (@yellowDarkStart, @yellowDarkEnd);
+
+			&:hover,
+			&:active { .gradient (@yellowDarkEnd, @yellowDarkStart); }
+		}
+
 		&.soft-red { 
 			.gradient (@softRedStart, @softRedEnd);
 
@@ -251,6 +286,13 @@
 
 			&:hover,
 			&:active { .gradient (@blueEnd, @blueStart); }
+		}
+
+		&.blue-light { 
+			.gradient (@blueLightStart, @blueLightEnd);
+
+			&:hover,
+			&:active { .gradient (@blueLightEnd, @blueLightStart); }
 		}
 
 		&.purple {

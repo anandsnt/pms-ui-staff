@@ -60,6 +60,10 @@
 							<ad-textarea rows="4" div-class="full-width" text-area-class="full-width"
 								value="singleRule.description" name="desc" id="desc" label="Description"
 								placeholder="{{'ENTER_THE_POLICY_DESC'|translate}}" required="yes"></ad-textarea>
+							<ad-textarea rows="4" div-class="full-width" text-area-class="full-width"
+								value="singleRule.description_trl" name="desc" id="desc" label="{{ 'DESCRIPTION_TRANSLATED' | translate}}"
+								placeholder="{{'ENTER_TRANSLATIONS_FOR_DESCRIPTION'|translate}}"
+								hide="!availableLanguagesSet.show_language_field"></ad-textarea>
 						</fieldset>
 					</div>
 					<div id="deposit-schedules" class="float">

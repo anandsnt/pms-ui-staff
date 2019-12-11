@@ -42,7 +42,8 @@ sntRover.controller('RVReceiptPopupController',
             dataToSend = {
                 params: {
                   bill_id: $scope.billId,
-                  transaction_id: $scope.transactionId
+                  transaction_id: $scope.transactionId,
+                  locale: $scope.data.locale
                 },
             successCallBack: printReceiptSuccess
         };
@@ -65,7 +66,8 @@ sntRover.controller('RVReceiptPopupController',
                 params: {
                   bill_id: $scope.billId,
                   transaction_id: $scope.transactionId,
-                  to_address: $scope.data.mailto_address
+                  to_address: $scope.data.mailto_address,
+                  locale: $scope.data.locale
                 },
                 successCallBack: emailReceiptSuccess
             };

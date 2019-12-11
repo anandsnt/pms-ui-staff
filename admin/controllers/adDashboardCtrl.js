@@ -2,6 +2,8 @@ admin.controller('ADDashboardCtrl', ['$scope', '$state', '$stateParams', '$rootS
     $scope.$emit("changedSelectedMenu", $stateParams.menu);
     if (typeof $scope.data !== 'undefined') {
         $scope.selectedMenu = $scope.data.menus[$stateParams.menu];
+        $scope.policeExportEnabled = $scope.data.police_export_enabled;
+
 
         // CICO-36466 Admin Interfaces Menu to be sorted by alphabetical
         // NOTE: Currently only the Interfaces Menu items are sorted!

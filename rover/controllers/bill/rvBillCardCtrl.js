@@ -20,6 +20,8 @@ sntRover.controller('RVbillCardController',
 	'sntActivity',
 	'RVReservationStateService',
 	'$log',
+	'sntAuthorizationSrv',
+	'PAYMENT_CONFIG',
 	function($scope, $rootScope,
 			$state, $stateParams,
 			RVBillCardSrv, reservationBillData,
@@ -31,7 +33,7 @@ sntRover.controller('RVbillCardController',
 			$sce,
 
 			RVKeyPopupSrv, RVPaymentSrv,
-			RVSearchSrv, rvPermissionSrv, jsMappings, $q, sntActivity, RVReservationStateService, $log) {
+			RVSearchSrv, rvPermissionSrv, jsMappings, $q, sntActivity, RVReservationStateService, $log, sntAuthorizationSrv, PAYMENT_CONFIG) {
 
 
 	BaseCtrl.call(this, $scope);
@@ -379,6 +381,15 @@ sntRover.controller('RVbillCardController',
 	$scope.hasPermissionToMoveCharges = function() {
 		return rvPermissionSrv.getPermissionValue ('MOVE_CHARGES');
 	};
+
+	/**
+	* function to check whether the user has permission
+	* to detokenize CC
+	* @return {Boolean}
+	*/
+	$scope.hasPermissionToDetokenizeCC = function() {
+		return rvPermissionSrv.getPermissionValue ('DETOKENIZE');
+	};
 	/**
     * Method to decide whether the signature box should show or not
     * @param {none}
@@ -560,7 +571,8 @@ sntRover.controller('RVbillCardController',
     		template: '/assets/partials/payment/rvInitialPleaseSwipeModal.html',
     		controller: 'RVPleaseSwipeCtrl',
     		className: '',
-    		scope: $scope
+    		scope: $scope,
+            closeByDocument: false
     	});
 	};
 	$scope.setNightsString = function() {
@@ -1072,6 +1084,23 @@ sntRover.controller('RVbillCardController',
 				scope: $scope
 			});
 	};
+
+	$scope.openDetokenizationPopup = function() {
+		var jwt = localStorage.getItem('jwt') || '';
+
+        $scope.detokenizeUrl = PAYMENT_CONFIG[$scope.hotelDetails.payment_gateway].iFrameUrl + '?' + "reservation_id=" + $scope.reservationBillData.reservation_id +
+        	"&token=" +	$scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.token +
+        	"&auth_token=" + jwt + "&hotel_uuid=" + sntAuthorizationSrv.getProperty();
+		ngDialog.open({
+				template: '/assets/partials/payment/rvDetokenizeCC.html',
+				className: '',
+				scope: $scope
+			});
+		$scope.startActivity("iframe");
+		$timeout(function() {
+			$scope.stopActivity("iframe");
+		}, 8000);
+	};
 	 /*
 	  * Show the payment list of guest card for selection
 	  */
@@ -1551,24 +1580,23 @@ sntRover.controller('RVbillCardController',
                };
 
             $scope.successPutInQueueCallBack = function() {
-                    $scope.$emit('hideLoader');
-                    $scope.reservationData.reservation_card.is_reservation_queued = "true";
-                    $scope.$emit('UPDATE_QUEUE_ROOMS_COUNT', 'add');
-                    RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.reservation_id, $scope.reservationData);
+                var useAdvancedQueueFlow = $rootScope.advanced_queue_flow_enabled;
+                var roomKeyDelivery = $scope.reservationBillData.key_settings; // as per CICO-29735
 
-                    var useAdvancedQueFlow = $rootScope.advanced_queue_flow_enabled;
-                    // as per CICO-29735
-                    var keySettings = $scope.reservationData.reservation_card.key_settings;
+                $scope.$emit('hideLoader');
+                $scope.reservationData.reservation_card.is_reservation_queued = "true";
+                $scope.$emit('UPDATE_QUEUE_ROOMS_COUNT', 'add');
+                RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.reservation_id, $scope.reservationData);
 
-                    if (useAdvancedQueFlow && keySettings !== "no_key_delivery") {
-                        setTimeout(function() {
-                            // then prompt for keys
-                            $rootScope.$broadcast('clickedIconKeyFromQueue');// signals rvReservationRoomStatusCtrl to init the keys popup
-                        }, 1250);
-                        $scope.goToStayCardFromAddToQueue();
-                    } else {
-                        $scope.goToStayCardFromAddToQueue();
-                    }
+                if (useAdvancedQueueFlow && roomKeyDelivery !== "no_key_delivery") {
+                    setTimeout(function() {
+                        // signal rvReservationRoomStatusCtrl to init the keys popup
+                        $rootScope.$broadcast('clickedIconKeyFromQueue');
+                    }, 1250);
+                    $scope.goToStayCardFromAddToQueue();
+                } else {
+                    $scope.goToStayCardFromAddToQueue();
+                }
             };
             $scope.failPutInQueueCallBack = function(err) {
                     $scope.$emit('hideLoader');
@@ -2701,9 +2729,11 @@ sntRover.controller('RVbillCardController',
 					$scope.printBillCardActive = true;
 					$scope.$emit('hideLoader');
 
-
 					if ($scope.billFormat.isInformationalInvoice) {
 						successData.invoiceLabel = successData.translation.information_invoice;
+					}
+					else if (successData.is_deposit_invoice) {
+						successData.invoiceLabel = successData.translation.deposit_invoice;
 					}
 					else if (successData.no_of_original_invoices === null && !$scope.reservationBillData.bills[$scope.currentActiveBill].is_void_bill) {
 						successData.invoiceLabel = successData.translation.invoice;
@@ -3346,15 +3376,15 @@ sntRover.controller('RVbillCardController',
 			if (sntapp.cordovaLoaded) {
 				cordova.exec(billCardPrintCompleted,
 					function(error) {
-						billCardPrintCompleted();
+						receiptPrintCompleted();
 					}, 'RVCardPlugin', 'printWebView', []);
 			}
 			else
 			{
 				window.print();
-				// billCardPrintCompleted();
+				receiptPrintCompleted();
 			}
-		}, 700);
+		}, 1000);
 	});
 
 	/*
@@ -3412,7 +3442,8 @@ sntRover.controller('RVbillCardController',
             isAlreadyShownPleaseSwipeForCheckingIn = true;
             $timeout(function () {
                 if (!$scope.reservationBillData.is_disabled_cc_swipe &&
-                    !$scope.reservation.reservation_card.is_pre_checkin) {
+                    // CICO-70341 If using ows_api_auth prompt for card irrespective of is_pre_checkin
+                    (!$scope.reservation.reservation_card.is_pre_checkin || $scope.hotelDetails.use_ows_opi_auth)) {
                     $scope.openPleaseSwipe();
                 }
             }, 200);

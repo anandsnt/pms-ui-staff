@@ -9,7 +9,8 @@
          <div ng-include="'/assets/partials/common/notification_message.html'" class="error-notification-dashboard"></div>
          <ul class="dashboard-items float">
          <!-- ng-hide added For CICO-21697  -->
-            <li ng-repeat="submenu in selectedMenu.components" ng-hide ="(isStandAlone || isEnabledRoomTypeByRoomClass == false ) && submenu.name =='Room classes'">
+            <li ng-repeat="submenu in selectedMenu.components" ng-hide ="(isStandAlone || isEnabledRoomTypeByRoomClass == false ) && submenu.name =='Room classes'"
+            ng-if ="!(!policeExportEnabled && submenu.name == 'Police Export Defaults')">
                <a data-type="load-listing"  
                   class="{{submenu.icon_class || 'icon-admin-menu icon-settings'}}"
 

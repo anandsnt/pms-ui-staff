@@ -135,12 +135,21 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
             };
 
             $scope.guestCardData.contactInfo = contactInfoData.contactInfo;
+            if ($scope.guestCardData.contactInfo.birthday !== null) {
+            	$scope.guestCardData.contactInfo.birthday = moment($scope.guestCardData.contactInfo.birthday).format("YYYY-MM-DD");
+            }
+            if ($scope.guestCardData.contactInfo.id_issue_date !== null) {
+            	$scope.guestCardData.contactInfo.id_issue_date = moment($scope.guestCardData.contactInfo.id_issue_date).format("YYYY-MM-DD");
+            }
+            if ($scope.guestCardData.contactInfo.entry_date !== null) {
+            	$scope.guestCardData.contactInfo.entry_date = moment($scope.guestCardData.contactInfo.entry_date).format("YYYY-MM-DD");
+            }
+            
             $scope.guestCardData.contactInfo.avatar = contactInfoData.avatar;
             $scope.guestCardData.contactInfo.vip = contactInfoData.vip;
             $scope.countriesList = $scope.countries;
             $scope.guestCardData.userId = contactInfoData.userId;
             $scope.guestCardData.guestId = contactInfoData.guestId;
-            $scope.guestCardData.contactInfo.birthday = data.birthday;
             $scope.guestCardData.contactInfo.genderTypeList = data.gender_list;
 
             guestInfo = {
@@ -654,14 +663,24 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 
 		$scope.noRoutingToReservation = function() {
 			ngDialog.close();
-			that.reloadStaycard();
+			if (that.useCardRate) {
+				$scope.navigateToRoomAndRates();
+			}
+			else {
+				that.reloadStaycard();
+			}
 		};
 
 		$scope.applyRoutingToReservation = function() {
 			var routingApplySuccess = function(data) {
 				$scope.$emit("hideLoader");
 				ngDialog.close();
-				that.reloadStaycard();
+				if (that.useCardRate) {
+					$scope.navigateToRoomAndRates();
+				}
+				else {
+					that.reloadStaycard();
+				}
 				$scope.$broadcast('paymentTypeUpdated'); // to update bill screen data
 			};
 			var routingApplyFailed = function(errorMessage) {
@@ -680,8 +699,12 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 
 		$scope.okClickedForConflictingRoutes = function() {
 			ngDialog.close();
-			that.reloadStaycard();
-
+			if (that.useCardRate) {
+				$scope.navigateToRoomAndRates();
+			}
+			else {
+				that.reloadStaycard();
+			}
 		};
 
 		this.showConfirmRoutingPopup = function(type, id) {
@@ -738,6 +761,13 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.company.id);
 					return false;
 				}
+				if (((card === 'company' && data.company.routings_count === 0) ||
+					(card === 'travel_agent' && data.travel_agent.routings_count === 0) ||
+					!data.has_conflicting_routes) &&
+					that.useCardRate) {
+					$scope.navigateToRoomAndRates();
+					return false;
+				}
 
 				that.reloadStaycard();
 			};
@@ -757,6 +787,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 
 		$scope.newCardData = {};
 		$scope.replaceCard = function(card, cardData, future, useCardRate) {
+			that.useCardRate = useCardRate;
 			if (card === 'company') {
 				$scope.reservationData.company.id = cardData.id;
 				$scope.reservationData.company.name = cardData.account_name;
@@ -1243,7 +1274,6 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					id: room.rateId
 				}, success);
 				for (var ms = new tzIndependentDate($scope.reservationData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
-
 					room.stayDates[dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd')] = {
 						guests: {
 							adults: room.numAdults,
@@ -1259,6 +1289,10 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 							is_discount_allowed: 'true'
 						}
 					};
+					if (!!room.contract_id) {
+						room.stayDates[dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd')].contractId = room.contract_id;
+						delete room.contract_id;
+					}
 				}
 			});
 

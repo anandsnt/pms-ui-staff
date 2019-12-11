@@ -124,6 +124,11 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
                     params: JSON.stringify($stateParams)
                 });
             }
+            else if ($scope.zestStationData.enable_passport_entry) {
+                $state.go('zest_station.zsCheckinPassportDetails', {
+                    params: JSON.stringify($stateParams)
+                });
+            }
             else if ($scope.zestStationData.noCheckInsDebugger === 'true') {
                 if (collectPassportEnabled && !$stateParams.passports_scanned) {
                     $stateParams.email = $stateParams.guest_email;
@@ -214,7 +219,15 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
             if ($stateParams.pickup_key_mode) {
                 stateParams.pickup_key_mode = 'manual';
             }
-            if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.hotelSettings.mli_cba_enabled) {
+
+            if (!$scope.zestStationData.is_standalone && $scope.zestStationData.hotelSettings.use_ows_opi_auth) {
+                var toParamsJson = JSON.stringify(stateParams);
+                
+                $state.go('zest_station.checkInCCCollectionUsingOpi', {
+                    params: toParamsJson
+                });
+            }
+            else if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.hotelSettings.mli_cba_enabled) {
                 // In case of CBA + MLI - if CC is already present use that CC for 
                 // further actions. Else collect a new CC using MLI
                 if ($stateParams.payment_method === 'CC') {

@@ -279,7 +279,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         amount_type: addon.amountType.description,
                         post_type: addon.postType.description,
                         charge_full_weeks_only: addon.chargefullweeksonly,
-                        posting_frequency: addon.postType.frequency
+                        posting_frequency: addon.postType.frequency,
+                        rate_currency: addon.rateCurrency
                     });
                     $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
 
@@ -510,6 +511,18 @@ sntRover.controller('RVReservationAddonsCtrl', [
             $scope.existingAddonsLength = 0;
             $scope.setHeadingTitle('Enhance Stay');
 
+            /**
+             * Moving the below 7 lines(incl. single line comments) outside of the else block
+             * as part of CICO-66740 - Addons screen does not display the group addons list
+             *      in the left hand side when navigated via Room diary screen
+             */
+            // by default load Best Sellers addon
+            // Best Sellers in not a real charge code [just hard coding -1 as charge group id to fetch best sell addons]
+            // same will be overrided if with valid charge code id
+            $scope.activeAddonCategoryId = -1;
+            $scope.roomNumber = '';
+            $scope.addonCategories = addonData.addonCategories;
+            $scope.bestSellerEnabled = addonData.bestSellerEnabled;
 
             setBackButton();
 
@@ -546,7 +559,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             amount_type: item.amount_type.value,
                             post_type: item.post_type.value,
                             is_inclusive: item.is_inclusive,
-                            is_rate_addon: item.is_rate_addon
+                            is_rate_addon: item.is_rate_addon,
+                            rate_currency: item.addon_currency
                         };
 
                         $scope.addonsData.existingAddons.push(addonsData);
@@ -562,7 +576,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                                 totalAmount: addonsData.totalAmount,
                                 is_inclusive: addonsData.is_inclusive,
                                 taxes: item.taxes,
-                                is_rate_addon: item.is_rate_addon
+                                is_rate_addon: item.is_rate_addon,
+                                rate_currency: item.addon_currency
                             });
                         }
 
@@ -585,13 +600,6 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         }
                     });
                 }
-                // by default load Best Sellers addon
-                // Best Sellers in not a real charge code [just hard coding -1 as charge group id to fetch best sell addons]
-                // same will be overrided if with valid charge code id
-                $scope.activeAddonCategoryId = -1;
-                $scope.roomNumber = '';
-                $scope.addonCategories = addonData.addonCategories;
-                $scope.bestSellerEnabled = addonData.bestSellerEnabled;
 
                 // first time fetch best seller addons
                 // for fetching best sellers - call method without params ie. no charge group id

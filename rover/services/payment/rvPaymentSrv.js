@@ -1,4 +1,4 @@
-angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', '$rootScope', function($http, $q, RVBaseWebSrv, RVBaseWebSrvV2, $rootScope) {
+angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', '$rootScope', 'sntBaseWebSrv', function($http, $q, RVBaseWebSrv, RVBaseWebSrvV2, $rootScope, sntBaseWebSrv) {
 
 
     var that = this;
@@ -243,6 +243,25 @@ angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv
 			}
 		}, function(data) {
 			clearInterval(refreshIntervalId);
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	/**
+	 * Delete a credit card 
+	 * @param {Object} data contains reservation id and payment method id
+	 * @return {Promise}
+	 */
+	this.deleteCreditCard = function(data) {
+		var deferred = $q.defer(),
+			url = 'api/reservations/' + data.reservation_id + '/delete_credit_card';
+
+		delete data.reservation_id;
+
+		sntBaseWebSrv.postJSON(url, data).then(function (data) {
+			deferred.resolve(data);
+		}, function (data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;

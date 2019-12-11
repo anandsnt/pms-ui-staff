@@ -10,7 +10,8 @@ sntRover
 				report: '=',
 				data: '=',
 				options: '=',
-				affectsFilter: '='
+				affectsFilter: '=',
+				displayStyle: '='
 			},
 			controller: function($scope, $element, $attrs) {
 				BaseCtrl.call(this, $scope);
@@ -163,6 +164,7 @@ sntRover
 					}
 
 					updateSelectedValue();
+
 				};
 
 				init();

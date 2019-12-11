@@ -71,7 +71,8 @@ angular.module('reportsModule', [])
             controller: 'RVScheduleReportsAndExportsCtrl',
             params: {
                 showScheduledReports: false,
-                showScheduledExports: false
+                showScheduledExports: false,
+                showCustomExports: false
             }
         });
 

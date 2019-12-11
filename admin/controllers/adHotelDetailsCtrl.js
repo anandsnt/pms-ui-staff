@@ -29,6 +29,10 @@ admin.controller('ADHotelDetailsCtrl', [
 	var isMPFlagResetConfirmPopupNeeded = false;
                                 
 	$scope.oracleDataCenters = oracleDataCenters;
+
+	// Hard Coding Shiji Token Channel. Can convert into configurable
+	$scope.shijiTokenChannels = [{ code: '1', name: 'Shiji' }, { code: '2', name: 'MerchantLink' }, { code: '3', name: 'Adyen' },
+                                 { code: '4', name: '3C' }, { code: '5', name: 'First Data' }];
 	/*
 	 * Method to get country id 
 	 */

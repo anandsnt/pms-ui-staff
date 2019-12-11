@@ -114,7 +114,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                     params = {
                         is_promotions_and_email_set: $scope.saveData.promotions,
                         reservation_id: $scope.reservationBillData.reservation_id,
-                        restrict_post: $scope.reservationBillData.roomChargeEnabled === '' ? false : !$scope.reservationBillData.roomChargeEnabled
+                        restrict_post: !!$scope.reservationBillData.restrict_post
                     };
 
                 $log.info('completeCheckIn', params);
@@ -243,11 +243,11 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
             };
 
             var proceedWithAuthorizations = function() {
-                if ($rootScope.paymentGateway === 'SHIJI') {
-                    shijiAuthActions();
-                } else {
+                // if ($rootScope.paymentGateway === 'SHIJI') {
+                //     shijiAuthActions();
+                // } else {
                     $timeout(promptForSwipe, 700);
-                }
+                // }
             };
 
             $scope.onClickIncidentalsOnly = function () {

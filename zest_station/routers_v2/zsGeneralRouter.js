@@ -5,7 +5,12 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 		$urlRouterProvider.otherwise('/zest_station/h/');
 
         $stateProvider.state('top', {
-            url: '/zest_station/h/:uuid?state',
+            url: '/zest_station/h/:uuid?state&token',
+            onEnter: ['$stateParams', '$window', function ($stateParams, $window) {
+                if ($stateParams.token) {
+                    $window.localStorage.setItem('jwt', $stateParams.token);
+                }
+            }],
             controller: 'zsTopCtrl'
         });
 

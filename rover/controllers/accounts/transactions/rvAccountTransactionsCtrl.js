@@ -435,7 +435,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		var updateTransactionData = $scope.$on('UPDATE_TRANSACTION_DATA', function(event, data) {
 				
 			$scope.isFromPaymentScreen = data.isFromPaymentSuccess;
-			if ($scope.isFromPaymentScreen && !$scope.transactionsDetails.is_bill_lock_enabled) {
+			if (($scope.isFromPaymentScreen && !$scope.transactionsDetails.is_bill_lock_enabled) || data.selectedPaymentType === 'DB') {
 				$scope.shouldGenerateFolioNumber = true;
 			}
 			getTransactionDetails();
@@ -940,6 +940,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		var accountsPrintCompleted = function() { 
 			$scope.invoiceActive = false;
+			$scope.printGroupProfomaActive = false;
         	$('.nav-bar').removeClass('no-print');
 			$('.cards-header').removeClass('no-print');
 			$('.card-tabs-nav').removeClass('no-print');
@@ -976,6 +977,12 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 						$scope.shouldShowArInvoiceNumber = true;
 						if (dateDifference < 0) {
 							$scope.shouldShowArInvoiceNumber = false;
+						}
+
+
+						if (responseData.is_group && responseData.is_proforma_invoice) {
+							$scope.invoiceActive = false;
+							$scope.printGroupProfomaActive = true;
 						}
 
 						if ($scope.billFormat.isInformationalInvoice) {

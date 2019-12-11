@@ -19,10 +19,14 @@ sntZestStation.controller('zsCheckinGuestAddressCtrl', [
 			};
 		};
 
-		$scope.usePresentAddress = function() {
+		var nextAction = function() {
 			$state.go('zest_station.checkInReservationDetails', {
-				previousState: 'COLLECT_ADRESS'
+				previousState: 'COLLECT_ADDRESS'
 			});
+		};
+
+		$scope.usePresentAddress = function() {
+			nextAction();
 		};
 
 		$scope.useNewAddress = function() {
@@ -42,12 +46,9 @@ sntZestStation.controller('zsCheckinGuestAddressCtrl', [
 			var options = {
 				params: params,
 				successCallBack: function() {
-					$state.go('zest_station.checkInReservationDetails', {
-						previousState: 'COLLECT_ADRESS'
-					});
+					nextAction();
 				}
 			};
-
 			$scope.callAPI(zsCheckinSrv.saveGuestAddress, options);
 		};
 

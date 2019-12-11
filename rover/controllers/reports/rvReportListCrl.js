@@ -62,6 +62,10 @@ sntRover.controller('RVReportListCrl', [
 
                 report[i].filteredOut = false;
 
+                if (!$rootScope.isFolioTaxEnabled && report[i].method === "folio_tax_report") {
+                    report[i].filteredOut = true;
+                }
+
                 // apply icon class based on the report name
                 applyIconClass.init( report[i] );
 

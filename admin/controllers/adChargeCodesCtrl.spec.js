@@ -7,6 +7,10 @@ describe('ADChargeCodesCtrl', function() {
     beforeEach(function() {
         module('admin');
 
+        module('admin', function($provide) {
+            $provide.value('availableLanguages', {});
+        });
+
         inject(function (_$controller_, _$rootScope_, _ADChargeCodesSrv_) {
             $controller = _$controller_;
             $scope = _$rootScope_.$new();

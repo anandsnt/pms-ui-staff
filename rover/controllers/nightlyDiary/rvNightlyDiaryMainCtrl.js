@@ -386,12 +386,12 @@ angular.module('sntRover')
                 };
 
                 /*
-                 *  Handle ASSIGN button click.
-                 *  @param {object} [roomDetails - Current selected room details]
-                 *  @param {object} [reservationDetails - Current selected reservation details]
-                 *  @return {}
+                 *  Method to verify whether occupancy message needed to show.
+                 *  @param {Object} [room details]
+                 *  @param {Object} [reservation details]
+                 *  @return {boolean} [isShowOccupancyMessagePopup flag]
                  */
-                var clickedAssignRoom = (roomDetails, reservationDetails) => {
+                var isShowOccupancyMessagePopup = function (roomDetails, reservationDetails) {
                     var showOccupancyMessage = false;
 
                     if (roomDetails.room_max_occupancy !== null && reservationDetails.reservationOccupancy !== null) {
@@ -399,14 +399,24 @@ angular.module('sntRover')
                             showOccupancyMessage = true;
                             $scope.max_occupancy = roomDetails.room_max_occupancy;
                         }
-                    } else if (roomDetails.room_type_max_occupancy !== null && reservationDetails.reservationOccupancy !== null) {
+                    } 
+                    else if (roomDetails.room_type_max_occupancy !== null && reservationDetails.reservationOccupancy !== null) {
                         if (roomDetails.room_type_max_occupancy < reservationDetails.reservationOccupancy) {
                             showOccupancyMessage = true;
                             $scope.max_occupancy = roomDetails.room_type_max_occupancy;
                         }
                     }
+                    return showOccupancyMessage;
+                };
 
-                    if (showOccupancyMessage) {
+                /*
+                 *  Handle ASSIGN button click.
+                 *  @param {object} [roomDetails - Current selected room details]
+                 *  @param {object} [reservationDetails - Current selected reservation details]
+                 *  @return {}
+                 */
+                var clickedAssignRoom = (roomDetails, reservationDetails) => {
+                    if (isShowOccupancyMessagePopup(roomDetails, reservationDetails)) {
                         ngDialog.openConfirm({
                             template: '/assets/partials/nightlyDiary/rvNightlyDiaryMaxOccupancyPopup.html',
                             className: 'ngdialog-theme-default',
@@ -414,9 +424,12 @@ angular.module('sntRover')
                         }).then(
                             function() {
                                 showDiarySetTimePopup(roomDetails, reservationDetails, 'ASSIGN');
-                            }, function() {
-                            });
-                    } else {
+                            },
+                            function() {
+                            }
+                        );
+                    } 
+                    else {
                         showDiarySetTimePopup(roomDetails, reservationDetails, 'ASSIGN');
                     }
                 };
@@ -435,7 +448,22 @@ angular.module('sntRover')
                  *  @return {}
                  */
                 var clickedMoveRoom = (roomDetails, reservationDetails) => {
-                    showDiarySetTimePopup(roomDetails, reservationDetails, 'MOVE');
+                    if (isShowOccupancyMessagePopup(roomDetails, reservationDetails)) {
+                        ngDialog.openConfirm({
+                            template: '/assets/partials/nightlyDiary/rvNightlyDiaryMaxOccupancyPopup.html',
+                            className: 'ngdialog-theme-default',
+                            scope: $scope
+                        }).then(
+                            function() {
+                                showDiarySetTimePopup(roomDetails, reservationDetails, 'MOVE');
+                            }, 
+                            function() {
+                            }
+                        );
+                    } 
+                    else {
+                        showDiarySetTimePopup(roomDetails, reservationDetails, 'MOVE');
+                    }
                 },
                 showPopupForReservationWithUnassignedRoom = function() {
                     ngDialog.open({

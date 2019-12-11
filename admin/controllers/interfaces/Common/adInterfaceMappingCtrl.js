@@ -22,6 +22,7 @@ admin.controller('adInterfaceMappingCtrl', [
         };
 
         var mappingPartials = {
+            'DATAPLUS': '/assets/partials/interfaces/dataplus/adDataplusMappingDetailView.html',
             'DELPHI': '/assets/partials/interfaces/delphi/mapping.html',
             'DERBYSOFT': '/assets/partials/interfaces/DerbySoft/adDerbySoftMappingDetailView.html',
             'FISKALTRUST': '/assets/partials/interfaces/fiskaltrust/adFiskaltrustMappingDetailView.html',

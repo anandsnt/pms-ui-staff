@@ -34,13 +34,16 @@
 
 			<table id="addons" class="grid" ng-table="tableParams" ng-hide="isAddMode" template-pagination="custom/pager" template-header="custom/header">
 				<tbody>
-					<tr ng-repeat="item in  data track by $index">
+					<tr ng-repeat="item in  data track by $index" ng-class = "{'inactive': isAddOnExpired(item)}">
 						<td header-class="width-30" ng-click="editSingle()" ng-hide="currentClickedAddon === $index" >
-							<a class="edit-data-inline">{{ item.name }}</a>
+							<a class="edit-data-inline">
+								{{ item.name }}
+								<span ng-if="isAddOnExpired(item)" class="tag">Expired</span>
+							</a>
 						</td>
 
 						<td header-class="width-50" ng-hide="currentClickedAddon === $index" >	
-							{{ item.description }}
+							{{ getActiveDate(item) }}
 						</td>
 						<td header-class="width-10" ng-hide="currentClickedAddon === $index || !(showZestWebSettings || showZestStationSettings)">	
 							<a class="{{returnAddonUpseellClass(item)}}">upsell</a>
@@ -81,12 +84,12 @@
 	                </th>
 	                <th class="width-30"  ng-class="{
 	                	'sortable': currentClickedAddon == -1,
-	                    'sort-asc': tableParams.isSortBy('description', 'asc'),
-	                    'sort-desc': tableParams.isSortBy('description', 'desc')
+	                    'sort-asc': tableParams.isSortBy('end_date', 'asc'),
+	                    'sort-desc': tableParams.isSortBy('end_date', 'desc')
 	                  }"
 	                  
-	                    ng-click="sortByDescription()" rowspan="2">
-	                    <div><i class="glyphicon glyphicon-user" ></i> <span translate>DESCRIPTION</span></div>
+	                    ng-click="sortByActiveDate()" rowspan="2">
+	                    <div><i class="glyphicon glyphicon-user" ></i> <span translate>ACTIVE DATES</span></div>
 	                </th>
 					<th class="width-10" ng-if="showZestWebSettings || showZestStationSettings"><span class="" >UPSELL</span></th>                		
 					<th class="width-20" ><span class="addon-header" translate> ACTIVE </span></th>

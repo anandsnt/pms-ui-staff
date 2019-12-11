@@ -24,10 +24,11 @@ sntRover.controller('roverController', [
     '$interval',
     'sntActivity',
     '$transitions',
+    'features',
     function ($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv,
               ngDialog, $translate, hotelDetails, userInfoDetails, $stateParams,
               rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q, $sce,
-              $log, sntAuthorizationSrv, $location, $interval, sntActivity, $transitions) {
+              $log, sntAuthorizationSrv, $location, $interval, sntActivity, $transitions, features) {
 
 
         var observeDeviceInterval;
@@ -84,6 +85,7 @@ sntRover.controller('roverController', [
         });
 
         $scope.isSettingSubMenuActive = false;
+        $rootScope.featureToggles = features;
         // Used to add precison in amounts
         $rootScope.precisonZero = 0;
         $rootScope.precisonTwo = 2;
@@ -153,11 +155,14 @@ sntRover.controller('roverController', [
 
         $rootScope.isLateCheckoutTurnedOn = hotelDetails.late_checkout_settings.is_late_checkout_on;
         $rootScope.businessDate = hotelDetails.business_date;
+        $rootScope.hotelCurrencyId = hotelDetails.currency.id;
         $rootScope.currencySymbol = getCurrencySign(hotelDetails.currency.value);
         $rootScope.isMultiCurrencyEnabled = hotelDetails.is_multi_currency_enabled;
-        $rootScope.invoiceCurrencySymbol = hotelDetails.is_multi_currency_enabled ? getCurrencySign(hotelDetails.selected_invoice_currency.value) : '';
+        $rootScope.invoiceCurrencySymbol = hotelDetails.is_multi_currency_enabled && hotelDetails.invoice_currency !== "" ? getCurrencySign(hotelDetails.invoice_currency.value) : '';
         // CICO-35453 Currency Format
         $rootScope.currencyFormat = hotelDetails.currency_format && hotelDetails.currency_format.value;
+        $rootScope.invoiceCurrencyObject = hotelDetails.invoice_currency;
+        $rootScope.exchangeCurrencyList = hotelDetails.currency_list_for_exchange;
         $rootScope.dateFormat = getDateFormat(hotelDetails.date_format.value);
         $rootScope.jqDateFormat = getJqDateFormat(hotelDetails.date_format.value);
         $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
@@ -166,6 +171,11 @@ sntRover.controller('roverController', [
         $rootScope.advanced_queue_flow_enabled = hotelDetails.advanced_queue_flow_enabled;
         $rootScope.isPmsProductionEnv = hotelDetails.is_pms_prod;
         $rootScope.isWorkStationMandatory = hotelDetails.is_workstation_mandatory;
+        $rootScope.paymentCurrencyList = hotelDetails.currency_list_for_payment;
+        $rootScope.shouldShowPaymentDropDown = false;
+        if ($rootScope.isMultiCurrencyEnabled && $rootScope.paymentCurrencyList.length > 0 ) {
+            $rootScope.shouldShowPaymentDropDown = true;
+        }
         // $rootScope.isRoomDiaryEnabled = hotelDetails.is_room_diary_enabled;
         // CICO-40544 - Now we have to enable menu in all standalone hotels
         // API not removing for now - Because if we need to disable it we can use the same param
@@ -176,6 +186,7 @@ sntRover.controller('roverController', [
 
         $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
         $rootScope.isAnMPHotel = hotelDetails.is_multi_property;
+        $rootScope.isFolioTaxEnabled = hotelDetails.is_folio_tax_report_enabled;
 
          /**
          * CICO-34068
@@ -270,8 +281,10 @@ sntRover.controller('roverController', [
          */
         $scope.userInfo = userInfoDetails;
         $scope.isPmsConfigured = $scope.userInfo.is_pms_configured;
+
         $rootScope.adminRole = $scope.userInfo.user_role;
         $rootScope.isHotelStaff = $scope.userInfo.is_staff;
+        $rootScope.includeManagementInformation = $scope.userInfo.include_management_information;
 
         // self executing check
         $rootScope.isMaintenanceStaff = (function (roles) {
@@ -601,6 +614,9 @@ sntRover.controller('roverController', [
             }
 
             $scope.menuOpen = !$scope.menuOpen;
+            $scope.$broadcast("SIDE_MENU_TOGGLE", {
+                "menuOpen": $scope.menuOpen
+            });
 
             // Bug fix for CICO-15718
             // Found that the issue appears when the keyboard comes over the screen

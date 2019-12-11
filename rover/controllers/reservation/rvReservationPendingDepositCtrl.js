@@ -29,6 +29,7 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 			$scope.paymentType = ($scope.reservationData.reservation_card.payment_method_used) ? $scope.reservationData.reservation_card.payment_method_used : "";
 			$scope.isDepositEditable = !!$scope.depositDetails.deposit_policy.allow_deposit_edit;
 			$scope.depositPolicyName = $scope.depositDetails.deposit_policy.description;
+			$scope.rateCurrency = $scope.depositDetails.rate_currency;
 			$scope.depositAmount = parseFloat($scope.depositDetails.deposit_amount).toFixed(2);
 		}());
 

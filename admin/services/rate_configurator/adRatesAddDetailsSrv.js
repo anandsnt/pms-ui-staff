@@ -158,6 +158,9 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2', 'ADRatesSrv',
                 var url = "/api/hotel_settings";
 
                 ADBaseWebSrvV2.getJSON(url).then(function (data) {
+                    if (!data.is_multi_currency_enabled) {
+                        data.currency_list_for_rate.push(data.currency);
+                    }
                     that.addRatesDetailsData.hotel_settings = data;
                     that.fetchChargeCodes();
                 }, function (data) {

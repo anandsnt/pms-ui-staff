@@ -35,16 +35,19 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
                     // Only Company card is attached.
                     $scope.disableCompanyCardInvoice = true;
                 }
-            } else if (!!$scope.groupConfigData) {
+            }
+            if (!!$scope.groupConfigData) {
                 params.id = $scope.groupConfigData.summary.group_id;
                 params.is_group = true;
                 params.is_type = "Account";
                 handleGenerateToggleWidgetVisibility($scope.groupConfigData.summary);
             } else {
-                params.id = $scope.accountConfigData.summary.posting_account_id;
+                params.id = $scope.accountConfigData ? $scope.accountConfigData.summary.posting_account_id : $scope.clickedInvoiceData.associated_item.item_id;
                 params.is_group = false;
                 params.is_type = "Account";
-                handleGenerateToggleWidgetVisibility($scope.accountConfigData.summary);
+                if ($scope.accountConfigData) {
+                    handleGenerateToggleWidgetVisibility($scope.accountConfigData.summary);
+                }                
             }
 
         }

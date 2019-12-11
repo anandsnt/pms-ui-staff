@@ -1099,6 +1099,8 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
 
                     if (!$scope.groupConfigData.summary.rate) {
                         $scope.groupConfigData.summary.rate = -1;
+                        $scope.groupConfigData.summary.uniqId = '-1';
+                        $scope.groupConfigData.summary.contract_id = null;
                     }
 
                     if ($scope.groupConfigData.summary.tax_exempt_type_id === "" || $scope.groupConfigData.summary === null) {
@@ -1216,6 +1218,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 summaryData.release_date = $filter('date')(summaryData.release_date, $rootScope.dateFormatForAPI);
                 if (!summaryData.rate) {
                     summaryData.rate = -1;
+                    summaryData.contract_id = null;
                 }
 
                 updateGroupSummaryInProgress =  true;
@@ -1306,7 +1309,8 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                                     label: each.account_name,
                                     value: each.id,
                                     address: each.account_address,
-                                    type: each.account_type
+                                    type: each.account_type,
+                                    contract_access_code: each.current_contracts.length > 0 ? each.current_contracts[0].access_code : null
                                 };
                                 list.push(entry);
                             });
@@ -1347,7 +1351,8 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                                     label: each.account_name,
                                     value: each.id,
                                     address: each.account_address,
-                                    type: each.account_type
+                                    type: each.account_type,
+                                    contract_access_code: each.current_contracts.length > 0 ? each.current_contracts[0].access_code : null
                                 };
                                 list.push(entry);
                             });

@@ -97,10 +97,11 @@ BaseCtrl = function($scope) {
             failureCallBackParameters = options['failureCallBackParameters'] ? options['failureCallBackParameters'] : null;
 
         if (showLoader) {
-            $scope.$emit('showLoader');
             // This method has to be implemented in the root controllers
             if ($scope.startActivity) {
                 $scope.startActivity(identifier);
+            } else {
+                $scope.$emit('showLoader');
             }
         }
 
@@ -108,10 +109,11 @@ BaseCtrl = function($scope) {
             // success call back
             function (data) {
                 if (showLoader) {
-                    $scope.$emit('hideLoader');
                     // This method has to be implemented in the root controllers
                     if ($scope.stopActivity) {
                         $scope.stopActivity(identifier);
+                    } else {
+                        $scope.$emit('hideLoader');
                     }
                 }
                 if (successCallBack) {
@@ -370,5 +372,39 @@ BaseCtrl = function($scope) {
     };
 
     $scope.isEmptyArray = isEmptyArray;
+
+    /**
+     * Parse a string to a float number
+     */
+    $scope.toFloat = function ( num ) {
+        return parseFloat(num);
+    };
+
+    /**
+     * Converts string to lowercase
+     * @param {String} str- input string
+     * @return {String} transformed string
+     */
+    $scope.lowercase = function (str) {
+        str = str || '';
+        return str.toLowerCase(); 
+    };
+
+    /**
+     * Get the length of the object or array
+     * @param {Object | Array} -array or object
+     * @return {Number} length - length of the object or array
+     */
+    $scope.lengthObjArr = function (objOrArr) {
+        var length;
+
+        if (_.isObject(objOrArr)) {
+            length = _.keys(objOrArr).length;
+        } else if (_.isArray(objOrArr)) {
+            length = objOrArr.length;
+        }
+
+        return length;
+    };
 
 };

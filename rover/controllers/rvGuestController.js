@@ -207,6 +207,8 @@ angular.module('sntRover').controller('guestCardController', [
                 $scope.eventTimestamp = "";
                 var preventClicking = false;
             }
+            $scope.hasPermissionToCreateTACard = rvPermissionSrv.getPermissionValue('CREATE_TRAVEL_AGENT_CARD');
+            $scope.hasPermissionToCreateCCard = rvPermissionSrv.getPermissionValue('CREATE_COMPANY_CARD');
         };
 
         $scope.$on("swipeAtGuestCard", function() {
@@ -1004,28 +1006,31 @@ angular.module('sntRover').controller('guestCardController', [
                             if (item.current_contracts.length > 0) {
                                 companyData.rateList = item.current_contracts;
                                 companyData.rate = item.current_contracts[0];
-                                companyData.rate.difference = (function() {
-                                    if (parseInt(companyData.rate.based_on.value) < 0) {
-                                        if (companyData.rate.based_on.type === "amount") {
-                                            return $scope.currencySymbol + (parseFloat(companyData.rate.based_on.value) * -1).toFixed(2) + " off ";
-                                        } else {
-                                            return (parseFloat(companyData.rate.based_on.value) * -1) + "%" + " off ";
+                                if (!_.isEmpty(companyData.rate)) {
+                                    companyData.contract_access_code = companyData.rate.access_code;
+                                    companyData.rate.difference = (function() {
+                                        if (parseInt(companyData.rate.based_on && companyData.rate.based_on.value) < 0) {
+                                            if (companyData.rate.based_on.type === "amount") {
+                                                return $scope.currencySymbol + (parseFloat(companyData.rate.based_on.value) * -1).toFixed(2) + " off ";
+                                            } else {
+                                                return (parseFloat(companyData.rate.based_on.value) * -1) + "%" + " off ";
+                                            }
+    
                                         }
-
-                                    }
-                                    return "";
-                                })();
-
-                                companyData.rate.surplus = (function() {
-                                    if (parseInt(companyData.rate.based_on.value) > 0) {
-                                        if (companyData.rate.based_on.type === "amount") {
-                                            return " plus " + $scope.currencySymbol + parseFloat(companyData.rate.based_on.value).toFixed(2);
-                                        } else {
-                                            return " plus " + parseFloat(companyData.rate.based_on.value) + "%";
+                                        return "";
+                                    })();
+    
+                                    companyData.rate.surplus = (function() {
+                                        if (parseInt(companyData.rate.based_on && companyData.rate.based_on.value) > 0) {
+                                            if (companyData.rate.based_on.type === "amount") {
+                                                return " plus " + $scope.currencySymbol + parseFloat(companyData.rate.based_on.value).toFixed(2);
+                                            } else {
+                                                return " plus " + parseFloat(companyData.rate.based_on.value) + "%";
+                                            }
                                         }
-                                    }
-                                    return "";
-                                })();
+                                        return "";
+                                    })();
+                                }
                             }
 
                             companyData.email = item.email;
@@ -1045,7 +1050,8 @@ angular.module('sntRover').controller('guestCardController', [
                     'city': $scope.searchData.companyCard.companyCity,
                     'account_number': $scope.searchData.companyCard.companyCorpId,
                     'from_date': ($scope.viewState.identifier === "CREATION" || $scope.viewState.identifier === "CONFIRM") ? $scope.reservationData.arrivalDate : new Date($scope.reservation.reservation_card.arrival_date).toISOString().slice(0, 10).replace(/-/g, "-"),
-                    'to_date': ($scope.viewState.identifier === "CREATION" || $scope.viewState.identifier === "CONFIRM") ? $scope.reservationData.departureDate : new Date($scope.reservation.reservation_card.departure_date).toISOString().slice(0, 10).replace(/-/g, "-")
+                    'to_date': ($scope.viewState.identifier === "CREATION" || $scope.viewState.identifier === "CONFIRM") ? $scope.reservationData.departureDate : new Date($scope.reservation.reservation_card.departure_date).toISOString().slice(0, 10).replace(/-/g, "-"),
+                    'reservation_id': $scope.viewState.identifier === "STAY_CARD" ? $scope.reservationData.reservationId : null
                 };
 
                 $scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchCompanies);
@@ -1084,29 +1090,33 @@ angular.module('sntRover').controller('guestCardController', [
                                 travelAgentData.address.state = item.address.state;
                             }
                             if (item.current_contracts.length > 0) {
+                                travelAgentData.activeContracts = item.current_contracts;
                                 travelAgentData.rate = item.current_contracts[0];
-                                travelAgentData.rate.difference = (function() {
-                                    if (parseInt(travelAgentData.rate.based_on.value) < 0) {
-                                        if (travelAgentData.rate.based_on.type === "amount") {
-                                            return $scope.currencySymbol + (parseFloat(travelAgentData.rate.based_on.value) * -1).toFixed(2) + " off ";
-                                        } else {
-                                            return (parseFloat(travelAgentData.rate.based_on.value) * -1) + "%" + " off ";
+                                if (!_.isEmpty(travelAgentData.rate)) {
+                                    travelAgentData.contract_access_code = travelAgentData.rate.access_code;
+                                    travelAgentData.rate.difference = (function() {
+                                        if (parseInt(travelAgentData.rate.based_on && travelAgentData.rate.based_on.value) < 0) {
+                                            if (travelAgentData.rate.based_on.type === "amount") {
+                                                return $scope.currencySymbol + (parseFloat(travelAgentData.rate.based_on.value) * -1).toFixed(2) + " off ";
+                                            } else {
+                                                return (parseFloat(travelAgentData.rate.based_on.value) * -1) + "%" + " off ";
+                                            }
+    
                                         }
-
-                                    }
-                                    return "";
-                                })();
-
-                                travelAgentData.rate.surplus = (function() {
-                                    if (parseInt(travelAgentData.rate.based_on.value) > 0) {
-                                        if (travelAgentData.rate.based_on.type === "amount") {
-                                            return " plus " + $scope.currencySymbol + parseFloat(travelAgentData.rate.based_on.value).toFixed(2);
-                                        } else {
-                                            return " plus " + parseFloat(travelAgentData.rate.based_on.value) + "%";
+                                        return "";
+                                    })();
+    
+                                    travelAgentData.rate.surplus = (function() {
+                                        if (parseInt(travelAgentData.rate.based_on && travelAgentData.rate.based_on.value) > 0) {
+                                            if (travelAgentData.rate.based_on.type === "amount") {
+                                                return " plus " + $scope.currencySymbol + parseFloat(travelAgentData.rate.based_on.value).toFixed(2);
+                                            } else {
+                                                return " plus " + parseFloat(travelAgentData.rate.based_on.value) + "%";
+                                            }
                                         }
-                                    }
-                                    return "";
-                                })();
+                                        return "";
+                                    })();
+                                }
                             }
                             travelAgentData.email = item.email;
                             travelAgentData.phone = item.phone;
@@ -1123,7 +1133,8 @@ angular.module('sntRover').controller('guestCardController', [
                     'city': $scope.searchData.travelAgentCard.travelAgentCity,
                     'account_number': $scope.searchData.travelAgentCard.travelAgentIATA,
                     'from_date': ($scope.viewState.identifier === "CREATION" || $scope.viewState.identifier === "CONFIRM") ? $scope.reservationData.arrivalDate : new Date($scope.reservation.reservation_card.arrival_date).toISOString().slice(0, 10).replace(/-/g, "-"),
-                    'to_date': ($scope.viewState.identifier === "CREATION" || $scope.viewState.identifier === "CONFIRM") ? $scope.reservationData.departureDate : new Date($scope.reservation.reservation_card.departure_date).toISOString().slice(0, 10).replace(/-/g, "-")
+                    'to_date': ($scope.viewState.identifier === "CREATION" || $scope.viewState.identifier === "CONFIRM") ? $scope.reservationData.departureDate : new Date($scope.reservation.reservation_card.departure_date).toISOString().slice(0, 10).replace(/-/g, "-"),
+                    'reservation_id': $scope.viewState.identifier === "STAY_CARD" ? $scope.reservationData.reservationId : null
                 };
 
                 $scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchTravelAgents);
@@ -1132,6 +1143,43 @@ angular.module('sntRover').controller('guestCardController', [
                 $scope.travelAgentSearchIntiated = false;
                 $scope.$broadcast('travelAgentSearchStopped');
             }
+        };
+
+        var singleRateName = '';
+
+        /**
+         * Function to get rate name, if one exists on any of the contracts
+         * @return {Boolean}
+         */
+        $scope.getRateName = function() {
+            return singleRateName;
+        };
+
+        /**
+         * Function to check if multiple rates exists on any of the contracts
+         * @param {Object} account the account object
+		 * @return {Number}
+         */
+        $scope.ratesCount = function(account) {
+            var rateCount = 0,
+                activeContracts;
+
+            if (account.account_type === 'TRAVELAGENT') {
+                activeContracts = account.activeContracts;
+            }
+            else if (account.account_type === 'COMPANY') {
+                activeContracts = account.rateList;
+            }
+
+            if (activeContracts && activeContracts.length !== 0) {
+				angular.forEach(activeContracts, function(contract) {
+					if (contract.contract_rates.length !== 0) {
+                        rateCount += contract.contract_rates.length;
+                        singleRateName = contract.contract_rates[0].rate_name;
+					}
+				});
+            }
+            return rateCount;
         };
         $scope.checkFuture = function(cardType, card, useCardRate) {
             // Changing this reservation only will unlink the stay card from the previous company / travel agent card and assign it to the newly selected card.

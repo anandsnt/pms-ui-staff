@@ -95,7 +95,8 @@ sntZestStation.config(['$stateProvider',
                 hours_of_stay: '',
                 isQuickJump: '',
                 quickJumpMode: '',
-                dueBalancePaid: ''
+                dueBalancePaid: '',
+                restrict_post: ''
             },
             controller: 'zsReservationBillDetailsCtrl',
             templateUrl: '/assets/partials_v2/checkout/zsReservationBill.html',
@@ -106,7 +107,6 @@ sntZestStation.config(['$stateProvider',
             description: '',
             icon: 'checkout_search.png'
         });
-
 
         $stateProvider.state('zest_station.payment', {
             url: '/payment',

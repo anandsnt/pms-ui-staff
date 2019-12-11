@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv', '$state', '$stateParams', 'ngDialog', '$filter', '$timeout', '$rootScope', 'rvPermissionSrv', '$interval', '$log',
-	function($scope, RVCompanyCardSrv, $state, $stateParams, ngDialog, $filter, $timeout, $rootScope, rvPermissionSrv, $interval, $log) {
+angular.module('sntRover').controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv', 'rvCompanyCardContractsSrv', '$state', '$stateParams', 'ngDialog', '$filter', '$timeout', '$rootScope', 'rvPermissionSrv', '$interval', '$log',
+	function($scope, RVCompanyCardSrv, rvCompanyCardContractsSrv, $state, $stateParams, ngDialog, $filter, $timeout, $rootScope, rvPermissionSrv, $interval, $log) {
 
 		// Flag for add new card or not
 		$scope.isAddNewCard = ($stateParams.id === "add");
@@ -201,6 +201,9 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			}
 			if (tabToSwitch === 'statistics') {
 				$scope.$broadcast("LOAD_STATISTICS");
+			}
+			if (tabToSwitch === 'wallet') {
+				$scope.$broadcast("wallet");
 			}
 			if (tabToSwitch === 'cc-ar-transactions' && !isArNumberAvailable) {
 			  	console.warn("Save AR Account and Navigate to AR Transactions");
@@ -444,10 +447,12 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 * If contract rate exists then should not allow editing name of CC/TA - CICO-56441
 		 */
 		$scope.isUpdateEnabledForName = function() {
-			var contractedRates = RVCompanyCardSrv.getContractedRates(),
+			var contractedRates = rvCompanyCardContractsSrv.getContractedRates(),
 				isUpdateEnabledForNameInCard = true;
 
-			if (contractedRates.current_contracts.length > 0 || contractedRates.future_contracts.length > 0 || contractedRates.history_contracts.length > 0) {
+			if ((contractedRates.current_contracts && contractedRates.current_contracts.length > 0 ) || 
+				(contractedRates.future_contracts && contractedRates.future_contracts.length > 0 ) || 
+				(contractedRates.history_contracts && contractedRates.history_contracts.length > 0)) {
 				isUpdateEnabledForNameInCard = false;
 			}
 			return isUpdateEnabledForNameInCard;

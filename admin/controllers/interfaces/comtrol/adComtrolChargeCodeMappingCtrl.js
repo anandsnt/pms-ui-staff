@@ -14,7 +14,7 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'adComtrolChargeCo
     // private methods and variables
     var resetNew = function () {
       $scope.state.new = {
-        revenue_center_code: "",
+        revenue_center_id: "",
         category_name: "",
         charge_code_name: "",
         meal_time_period: "",
@@ -64,7 +64,7 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'adComtrolChargeCo
      * NOTE: Mandatory check is done on the templates
      */
     $scope.onSave = function () {
-      var revenue_center_code = $scope.state.new.revenue_center_code,
+      var revenue_center_id = $scope.state.new.revenue_center_id,
         category_name = $scope.state.new.category_name,
         is_default = $scope.state.new.is_default,
         charge_code_name = $scope.state.new.charge_code_name,
@@ -72,7 +72,7 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'adComtrolChargeCo
 
       $scope.callAPI(adComtrolChargeCodeMappingSrv.create, {
         params: {
-          revenue_center_code: revenue_center_code,
+          revenue_center_id: revenue_center_id,
           category_name: category_name,
           charge_code_name: charge_code_name,
           is_default: is_default,

@@ -43,25 +43,29 @@
                                     required="yes"
                                     label="{{'BALANCE_TRANSACTION_ACCOUNT'| translate}}"
                                     styleclass="full-width"></ad-textbox>
-                    </fieldset>
-                    <fieldset class="holder right">
-                      <ad-textbox inputtype="text" value="config.office_number"
-                                  required="yes"
-                                  label="{{'OFFICE'| translate}}"
-                                  styleclass="full-width"></ad-textbox>
-                      <ad-textbox inputtype="number" value="config.client_number"
-                                  required="yes"
-                                  label="{{'CLIENT_NUMBER'| translate}}"
-                                  styleclass="full-width"></ad-textbox>
-                      <ad-dropdown-name savemodel="config.journal_export_option"
-                                        valueproperty="value"
-                                        property="name"
-                                        label-in-drop-down="Select Journal Export Period"
-                                        list="journalExportOptions"
-                                        required="yes"
-                                        label="{{'JOURNAL_EXPORT'| translate}}"
-                                        div-class="full-width">
-                      </ad-dropdown-name>
+                                </fieldset>
+                                <fieldset class="holder right">
+                                    <ad-textbox inputtype="text" value="config.office_number"
+                                    required="yes"
+                                    label="{{'OFFICE'| translate}}"
+                                    styleclass="full-width"></ad-textbox>
+                                    <ad-textbox inputtype="number" value="config.client_number"
+                                    required="yes"
+                                    label="{{'CLIENT_NUMBER'| translate}}"
+                                    styleclass="full-width"></ad-textbox>
+                                    <ad-dropdown-name savemodel="config.journal_export_option"
+                                    valueproperty="value"
+                                    property="name"
+                                    label-in-drop-down="Select Journal Export Period"
+                                    list="journalExportOptions"
+                                    required="yes"
+                                    label="{{'JOURNAL_EXPORT'| translate}}"
+                                    div-class="full-width">
+                                </ad-dropdown-name>
+                                <ad-textbox inputtype="text" value="config.invoice_offset_account"
+                                            required="yes"
+                                            label="{{'INVOICE_OFFSET_ACCOUNT'| translate}}"
+                                            styleclass="full-width"></ad-textbox>
                     </fieldset>
                 </fieldset>
 
@@ -92,7 +96,8 @@
                         <ad-textbox inputtype="password"
                                     value="config.sftp_password"
                                     label="{{'PASSWORD'| translate}}"
-                                    styleclass="full-width"></ad-textbox>
+                                    styleclass="full-width"
+                                    click-handler="onPasswordClick(config, 'sftp_password')"></ad-textbox>
                     </fieldset>
                 </fieldset>
             </fieldset>

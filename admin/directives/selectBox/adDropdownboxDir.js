@@ -5,7 +5,7 @@ admin.directive('adDropdown', function($timeout) {
         replace: 'true',
       	scope: {
             divStyle: '@divStyle',
-	        selboxStyle: '@selboxStyle',
+	          selboxStyle: '@selboxStyle',
             divClass: '@divClass',
             selboxClass: '@selboxClass',
             required: '@required',

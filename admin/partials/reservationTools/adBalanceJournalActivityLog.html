@@ -1,0 +1,52 @@
+<div ng-show="showActivityLog">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>        
+        <table class="activity-log grid datatable" ng-table="tableParams" template-pagination="custom/pager">
+            <col>
+            <col>
+            <col>
+            <col class="details">
+            <thead>
+                <tr>
+                    <th><span>FROM DATE</span></th>
+                    <th><span>TO DATE</span></th>
+                    <th><span>USERNAME</span></th>
+                    <th><span>DATE/TIME</span></th>
+                    <th><span>ACTION TYPE</span></th>
+                    <th><span>DETAILS</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="log in data">
+                    <td>{{log.begin_date}}</td>
+                    <td>{{log.end_date}}</td>
+                    <td>{{log.username}}</td>
+                    <td> {{log.date }}, {{log.time}}</td>
+                    <td>{{log.job_status}}</td>
+                    <td>{{log.error}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <!--Custom pagination footer goes here-->
+		<script type="text/ng-template" id="custom/pager">
+			<div class = "pager">
+				<span ng-show="totalCount>0">Showing {{startCount}} to {{endCount}} of {{totalCount}} items</span>
+				<span ng-show="totalCount==0">Showing 0 items</span>
+				<ul class="ng-cloak">
+	              	<li ng-repeat="page in pages"
+		                ng-class="{'previous': page.type == 'prev', 'next': page.type == 'next'}"
+		                ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+	
+		                <a ng-switch-when="prev" ng-click="params.page(1)" class="page" ng-class="{'disabled': !page.active}">First</a>
+		                <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Previous</a>
+		                <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+		                
+		                <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+		                <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Next</a>
+		                <a ng-switch-when="next" ng-click="params.page(totalPage)" class="page" ng-class="{'disabled': !page.active}">Last</a>
+		          	</li>
+	            </ul>
+	        </div>
+		</script>
+		<!--end-->
+    
+    </div>

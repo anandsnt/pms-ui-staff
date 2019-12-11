@@ -41,8 +41,10 @@ var sntRover = angular.module('sntRover', [
         'snt.transitionManager',
         'sntCurrencyFilter',
         'sntCanvasUtil',
-        'sntFeatureToggles',
-        'snt.utils'
+		'snt.utils',
+		'ui.sortable',
+		'restrictMinVal',
+		'sntPayConfig'
 	]);
 
 sntRover.config([

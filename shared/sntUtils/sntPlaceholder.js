@@ -1,10 +1,4 @@
 /**
- * An aggregate module to have all small utility modules shared across application
- * TODO: move iscrollStopPropagation, ngClassWithoutAnimation, clickTouch etc to under this module.
- */
-angular.module('snt.utils', []);
-
-/**
  *  https://github.com/angular/angular.js/blob/v1.7.x/src/ng/directive/ngOptions.js#L31-L33
  *  https://github.com/angular/angular.js/blob/v1.7.x/src/ng/directive/select.js#L526-L528
  *  https://github.com/angular/angular.js/blob/v1.7.x/src/ng/directive/select.js#L10

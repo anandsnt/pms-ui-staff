@@ -593,6 +593,69 @@ body { overflow: hidden; }
         }
     }
 
+/* Tags                     ===============================*/
+    .tag {
+        font-size: 10px;
+        text-transform: uppercase;
+        text-align: center;
+        padding: 2px 8px;
+        margin-left: 5px;
+        color: @grey3;
+        background: rgba(0,0,0,.1);
+        height: 20px;
+        font-weight: 600;
+        line-height: 10px;
+        vertical-align: middle;
+        margin-bottom: 2px;
+        display: inline-block;
+        line-height: 16px;
+        #border-radius > .rounded();
+
+        &.child {
+            color: @blueStart;
+            background-color:fade(@blueStart, 10);
+        }
+
+        &.base {
+            color:@black;
+        }
+        
+        &.contract {
+            color: @ccard;
+            background-color:fade(@ccard, 10);
+
+            &.allotment{
+                color: @allotmentcard;
+                background-color:fade(@allotmentcard, 10);
+            }
+
+            &.travel-agent{
+                color: @tacard;
+                background-color:fade(@tacard, 10);
+            }
+
+            &.group {
+                color: @groupcard;
+                background-color:fade(@groupcard, 10);
+            }
+        }
+
+        &.group {
+            color: @groupcard;
+            background-color:fade(@groupcard, 10);
+        }
+
+        &.member{
+            color: @tacard;
+            background-color:fade(@tacard, 10);
+        }
+
+        &.promotion {
+            color: @logoPrimary;
+            background-color:fade(@logoPrimary, 10);
+        }
+    }
+
 /* Grid table               ==============================*/
     .sep-heading {
         font-size: 22px;
@@ -965,6 +1028,27 @@ body { overflow: hidden; }
                         text-align: center;
                         padding: 0;
                         font-weight: 600;
+                    }
+                    .button {
+                        &.small {
+                            font-size: 14px;
+                            line-height: 28px;
+                            padding: 0 10px;
+                        }
+                    }
+
+                    &.hidden-button {
+                        .button {
+                            opacity: 0;
+                            margin-left: 5px;
+                            .transition();
+                        }
+
+                        &:hover {
+                            .button {
+                                opacity: 1;
+                            }
+                        }
                     }
                 }
 

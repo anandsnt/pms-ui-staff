@@ -24,8 +24,12 @@
         <fieldset class="holder right">
             <ad-textbox inputtype="text" value="config.authorization_identifier" label="{{'AUTH_ID'| translate}}"
                 styleclass="full-width"></ad-textbox>
-            <ad-textbox inputtype="password" value="config.authorization_key" label="{{'AUTH_KEY'| translate}}"
-                styleclass="full-width"></ad-textbox>
+            <ad-textbox 
+                inputtype="password" 
+                value="config.authorization_key" 
+                label="{{'AUTH_KEY'| translate}}"
+                styleclass="full-width"
+                click-handler="onPasswordClick(config, 'authorization_key')"></ad-textbox>
         </fieldset>
     </fieldset>
 

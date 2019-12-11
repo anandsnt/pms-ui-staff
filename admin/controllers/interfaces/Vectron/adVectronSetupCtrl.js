@@ -2,9 +2,7 @@ admin.controller('ADVectronSetupCtrl', [
     '$scope', 'config', 'adInterfacesSrv', 'adIFCSrv', 'ngDialog',
     function ($scope, config, adInterfacesSrv, adIFCSrv, ngDialog) {
         BaseCtrl.call(this, $scope);
-
         $scope.interface = 'VECTRON';
-
         $scope.state = {
             activeTab: 'SETTING'
 
