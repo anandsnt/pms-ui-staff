@@ -1341,12 +1341,13 @@ angular.module('sntRover').controller('guestCardController', [
             // updating the central reservation data model
             updateReservationGroupData(selectedGroup);
 
+            $scope.closeGuestCard();
             // we are in card adding mode
             switchToNomralCardViewingMode();
 
             // we need to upadte the rate and other associated field, to do that, we are reloading the staycard
             if ($scope.isInStayCardScreen()) {
-                $scope.reloadTheStaycard();
+                $scope.reloadTheStaycard(true);
             }
         };
 
