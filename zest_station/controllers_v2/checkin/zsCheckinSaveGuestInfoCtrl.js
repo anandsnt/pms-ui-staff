@@ -38,6 +38,14 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 				$scope.showErrorMessage = true;
 			} else {
 				var apiParams = angular.copy($scope.guestDetails);
+				console.log(apiParams);
+				// Delete the keys used for displaying date in hotel's date format before saving
+				for (var key in apiParams) {
+					if (key.includes("forDisplay")) {
+						delete apiParams[key];
+					}
+				}
+				console.log(apiParams);
 				var options = {
 					params: apiParams,
 					successCallBack: function() {
@@ -56,10 +64,13 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 		};
 
 		$scope.guestDetails = {};
+
 		_.each($scope.infoNeeded, function(field) {
 			$scope.guestDetails[field.key] = "";
 			if (field.type === "date") {
+				// Create extra variable for date and use to display the date in hotel's format
 				var displayKey = field.key + "forDisplay";
+
 				$scope.guestDetails[displayKey] = ""
 			}
 		});
