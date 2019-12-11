@@ -696,6 +696,4 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
-
-
     }]);
