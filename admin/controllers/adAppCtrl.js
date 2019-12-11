@@ -699,6 +699,7 @@ admin.controller('ADAppCtrl', [
          */
         $scope.clickedMenuItem = function($event, stateToGo, shouldDisableClick) {
             var currentTime = new Date();
+
             if (shouldDisableClick) {
                 $scope.errorMessage = ['Your current subscription package does not include this service'];
             } else {
@@ -1068,7 +1069,7 @@ admin.controller('ADAppCtrl', [
             sntActivity.stop('STATE_CHANGE' + transition.to().name.toUpperCase());
         });
 
-        $scope.menuHoverIn = function(menuIndex){
+        $scope.menuHoverIn = function() {
             $("#tooltip").tooltip();
         };
 
