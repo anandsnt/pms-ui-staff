@@ -1097,7 +1097,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 				var isRoomAvailable = roomsCount !== undefined && roomsCount > 0;
 
-				if ((rateId && !!$scope.reservationData.ratesMeta[rateId].account_id) && numRestrictions > 0 && !isRoomAvailable) {
+				// CICO-71977 - Book button should display in red when there is no availability for the group reservation
+				if (((rateId && !!$scope.reservationData.ratesMeta[rateId].account_id) && numRestrictions > 0 && !isRoomAvailable) || (!!$scope.reservationData.group.id && !isRoomAvailable)) {
 					return 'red';
 				}
 
@@ -1173,11 +1174,19 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				throw new Error("availability cannot be undefined here");
 			}
 
-			if (!!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id) {
+			if (!!$scope.reservationData.allotment.id) {
 				// CICO-26707 Skip house avbl check for group/allotment reservations
 				canOverbookHouse = true;
 				// CICO-24923 TEMPORARY : Dont let overbooking of Groups from Room and Rates
 				if ( availability < roomCount ) {
+					return true;
+				}
+				// CICO-24923 TEMPORARY
+			}
+
+			if (!!$scope.reservationData.group.id) {
+				
+				if ( availability < roomCount && !canOverbookHouse && !canOverbookRoomType) {
 					return true;
 				}
 				// CICO-24923 TEMPORARY

@@ -43,6 +43,11 @@ sntZestStation.controller('zsRootCtrl', [
         // in order to prevent url change or fresh url entering with states
         BaseCtrl.call(this, $scope);
 
+        if (!zsGeneralSrv.isZestStationEnabled) {
+            $state.go('zest_station.handleUnauthorizedAccess');
+            return ;
+        }
+
         $scope.zestImages = configurableImagesData.configurable_images || {};
         // set degfault as ''
         _.each(Object.keys($scope.zestImages), function(key) {

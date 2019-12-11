@@ -455,22 +455,6 @@ admin.controller('ADAppCtrl', [
             return  adMenuSrv.processMenuList(mobileMenu);
         };
 
-        var addAnalyticsMenuConditionally = function(menuList) {
-            if (!hideAnalyticsReportMenu) {
-                var reportIndex = _.findIndex(menuList, {
-                    title: 'MENU_REPORTS'
-                });
-                var analyticsMenu = {
-                    title: "MENU_REPORT_ANALYTICS",
-                    action: "rover.reportAnalytics",
-                    menuIndex: "reportAnalytics"
-                };
-
-                menuList[reportIndex].submenu.push(analyticsMenu);
-            }
-            return menuList;
-        };
-
         /**
          * Set up left side menus based on permission and pms type
          */
@@ -490,7 +474,6 @@ admin.controller('ADAppCtrl', [
                 $scope.menu = getMainMenuForConnectedRover(shouldHideNightlyDiaryMenu);
                 $scope.mobileMenu = getMobileMenuForConnectedRover();
             }
-            $scope.menu = addAnalyticsMenuConditionally($scope.menu);
         };
 
         /**
@@ -857,6 +840,8 @@ admin.controller('ADAppCtrl', [
                     }
                 });
             });
+
+            $scope.isZestStationEnabled = data.is_zest_station_enabled;
         };
         /*
          * Function to get the current hotel language

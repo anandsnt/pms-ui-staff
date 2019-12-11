@@ -9,6 +9,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
     'RVBillCardSrv',
     '$state',
     'ngDialog',
+    'rvPermissionSrv',
     function ($rootScope,
         $scope,
         rvGroupRoomingListSrv,
@@ -18,7 +19,8 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
         rvGroupConfigurationSrv,
         RVBillCardSrv,
         $state,
-        ngDialog) {
+        ngDialog,
+        rvPermissionSrv) {
 
     BaseCtrl.call(this, $scope);
     var parentScope = $scope.$parent;
@@ -32,6 +34,13 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
       occupancy: true,
       roomType: true
     };
+    var RESPONSE_STATUS_470 = 470;
+
+    var currentBorrowDialog;
+    
+    $scope.hasOverBookRoomTypePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
+    $scope.hasOverBookHousePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE');
+    $scope.hasBorrowFromHousePermission = rvPermissionSrv.getPermissionValue('GROUP_HOUSE_BORROW');
 
     var calculateDisableCondition = function(field, value) {
       fieldsEnabled[field] = value;
@@ -214,7 +223,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
     * @return {undefined}
     */
 
-    $scope.updateReservation = function(reservation) {
+    $scope.updateReservation = function(reservation, forcefullyOverbook) {
 
 
             $scope.errorMessage = "";
@@ -226,6 +235,11 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
               room_type_id: parseInt(reservation.room_type_id),
               room_id: parseInt(reservation.room_id)
             });
+
+            if (forcefullyOverbook) {
+                reservation.forcefully_overbook = true;
+  
+            }
             angular.forEach(reservation.accompanying_guests_details, function(guest, index) {
 
                 if (!guest.first_name && !guest.last_name) {
@@ -235,14 +249,58 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
 
             });
 
+            // Reservation update failure
+            var onUpdateReservationFailure = function( error ) {
+                if (error.status === RESPONSE_STATUS_470 && error.results.is_borrowed_from_house) {
+                    var results = error.results;
+                
+                    $scope.borrowData = {};
+                    $scope.borrowData.currentReservation = reservation;
+                    if (!results.room_overbooked && !results.house_overbooked) {
+                        $scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission;
+                        $scope.borrowData.isBorrowFromHouse = true;
+                    } else if (results.room_overbooked && !results.house_overbooked) {
+                        $scope.borrowData.shouldShowBorrowBtn = $scope.hasOverBookRoomTypePermission && $scope.hasBorrowFromHousePermission;
+                        $scope.borrowData.isRoomTypeOverbooked = true;
+                    } else if (!results.room_overbooked && results.house_overbooked) {
+                        $scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission && $scope.hasOverBookHousePermission;
+                        $scope.borrowData.isHouseOverbooked = true;
+                    } else if (results.room_overbooked && results.house_overbooked) {
+                        $scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission && $scope.hasOverBookRoomTypePermission && $scope.hasOverBookHousePermission;
+                        $scope.borrowData.isHouseAndRoomTypeOverbooked = true;
+                    }
+
+                    currentBorrowDialog = ngDialog.open({
+                        template: '/assets/partials/common/group/rvGroupBorrowOverbookPopup.html',
+                        className: '',
+                        closeByDocument: false,
+                        closeByEscape: true,
+                        scope: $scope
+                    });
+                }
+
+            };
+
 
             var options = {
               params: reservation,
-              successCallBack: onUpdateReservationSuccess
+              successCallBack: onUpdateReservationSuccess,
+              failureCallBack: onUpdateReservationFailure
             };
 
             $scope.callAPI(rvGroupConfigurationSrv.updateRoomingListItem, options);
 
+    };
+
+    // Handles the borrow action
+    $scope.performBorrowFromHouse = function () {
+        $scope.updateReservation($scope.borrowData.currentReservation, true);
+    };
+
+    // Closes the current borrow dialog
+    $scope.closeBorrowDialog = function() {
+        $scope.borrowData = {};
+        currentBorrowDialog.close();
     };
 
     var showCheckoutConfirmationPopup = function(data) {
