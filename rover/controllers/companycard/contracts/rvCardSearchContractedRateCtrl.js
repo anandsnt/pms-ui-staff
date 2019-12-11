@@ -53,10 +53,14 @@ angular.module('sntRover').controller('rvCardSearchContractedRateCtrl', ['$scope
             if ($scope.contractData.rateSearchQuery.length > 2) {
                 that.fetchRateContract();
             }
+            else {
+                $scope.contractData.searchResults = [];
+            }
         };
         // Handle clear search.
         $scope.clearQuery = function() {
             $scope.contractData.rateSearchQuery = '';
+            $scope.contractData.searchResults = [];
             $scope.$emit('refreshContractsScroll');
         };
         /* 
