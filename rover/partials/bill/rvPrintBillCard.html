@@ -9,7 +9,6 @@
 <!-- Case 1: Guest Bill -->
 <div class="info-container" ng-if="!printData.is_from_cards">
     <div class="info-left">
-
         <span ng-bind-html="printData.guest_details.address"></span>
         <div class="info-bottom" ng-if="!printData.is_deposit_invoice">
             <strong >{{printData.translation.invoice_date}}: </strong>{{printData.invoice_date | date:dateFormat}}<br/>
