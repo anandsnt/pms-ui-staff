@@ -1471,7 +1471,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 $scope.isPaymentFailure = false;
                 $scope.payment.authorizationCode = response.authorization_code;
 
-                response.amountPaid = response.amount;
+                response.amountPaid = $scope.payment.amount;
                 response.authorizationCode = response.authorization_code;
 
                 response.selectedPaymentType = $scope.selectedPaymentType;
