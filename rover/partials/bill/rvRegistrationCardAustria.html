@@ -92,8 +92,8 @@
                 Spouse or partner
             </td>
             <td colspan="4">Vorname, Geburtsjahr/First name, date of birth<br />
-                <strong ng-if="printRegCardData.guest_details.accompanying_guest_dob !== '' && printRegCardData.guest_details.accompanying_guest_dob !== null">{{printRegCardData.guest_details.accompanying_guest_first_name}}, {{printRegCardData.guest_details.accompanying_guest_dob}}</strong>
-                <strong ng-if="!(printRegCardData.guest_details.accompanying_guest_dob !== '' && printRegCardData.guest_details.accompanying_guest_dob !== null)">{{printRegCardData.guest_details.accompanying_guest_first_name}}</strong>
+                <strong ng-if="printRegCardData.guest_details.accompanying_guest_dob && printRegCardData.guest_details.accompanying_guest_dob !== '' && printRegCardData.guest_details.accompanying_guest_dob !== null">{{printRegCardData.guest_details.accompanying_guest_first_name}}, {{printRegCardData.guest_details.accompanying_guest_dob}}</strong>
+                <strong ng-if="!(printRegCardData.guest_details.accompanying_guest_dob && printRegCardData.guest_details.accompanying_guest_dob !== '' && printRegCardData.guest_details.accompanying_guest_dob !== null)">{{printRegCardData.guest_details.accompanying_guest_first_name}}</strong>
             </td>
         </tr>
 
