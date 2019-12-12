@@ -51,6 +51,7 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
                 'signature': stateParams.signature,
                 'passport_bypass_reason': bypassReason
             };
+            
             $scope.$emit('CHECK_IF_REQUIRED_GUEST_DETAILS_ARE_PRESENT', {
                 checkinParams: _.extend({}, checkinParams, stateParams)
             });

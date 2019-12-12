@@ -13,7 +13,7 @@
 			BaseCtrl.call(this, $scope);
 			$controller('zsCheckinCommonBaseCtrl', {
                $scope: $scope
-         });
+         	});
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 			var scrollOptions = {

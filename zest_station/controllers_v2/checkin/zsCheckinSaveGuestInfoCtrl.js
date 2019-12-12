@@ -25,6 +25,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 
 		$scope.saveGuestDetails = function() {
 			var allRequireFieldsFilled = true;
+
 			$scope.errorMessage = false;
 
 			_.each($scope.infoNeeded, function(info) {
@@ -38,7 +39,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 				$scope.triedToSave = true;
 			} else {
 				var apiParams = angular.copy($scope.guestDetails);
-				console.log(apiParams);
+
 				// Delete the keys used for displaying date in hotel's date format before saving
 				for (var key in apiParams) {
 					if (key.includes("forDisplay")) {
@@ -59,7 +60,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 							checkinParams: checkinParams
 						});
 					},
-					failureCallBack: function (){
+					failureCallBack: function() {
 						$scope.showWarningPopup = true;
 						$scope.errorMessage = true;
 					}
@@ -72,9 +73,9 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 		$scope.dismissPopup = function() {
 			$scope.showWarningPopup = false;
 		};
-		var formatDateBasedOnHotelFormat = function (date) {
-			 return moment(date, 'YYYY-MM-DD')
-					.format($scope.zestStationData.hotelDateFormat);
+		var formatDateBasedOnHotelFormat = function(date) {
+			return moment(date, 'YYYY-MM-DD')
+				.format($scope.zestStationData.hotelDateFormat);
 		};
 		$scope.guestDetails = {};
 
@@ -100,9 +101,10 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 				dateFormat: 'yy-mm-dd',
 				changeYear: true,
 				changeMonth: true,
-				onSelect: function(value) {
+				onSelect: function() {
 					$scope.showDatePick = false;
 					var selectedDate = angular.copy($scope.selectedDate);
+
 					$scope.guestDetails[selectedCalendarModelDisplay] = formatDateBasedOnHotelFormat(selectedDate);
 					$scope.guestDetails[selectedCalendarModel] = selectedDate;
 					$scope.selectedDate = moment().format('YYYY-MM-DD');
@@ -118,7 +120,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 			});
 			$timeout(function() {
 				$scope.refreshScroller('guests-info');
-			}, 100)
+			}, 100);
 		})();
 	}
 ]);
