@@ -659,9 +659,9 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         };
 
         this.savePendingGuestFields = function(params) {
-            var url = '/api/guest_mandatory_schemas/guest_mandatory_fields';
+            var url = '/api/guest_mandatory_schemas/save_guest_mandatory_fields';
 
-            return zsBaseWebSrv.putJSON(url, params);
+            return zsBaseWebSrv.postJSON(url, params);
         };
     }
 ]);

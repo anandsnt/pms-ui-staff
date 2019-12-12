@@ -11,7 +11,7 @@ sntZestStation.controller('zsCheckinCommonBaseCtrl', [
 		var checkinParams;
 		var checkIfEmailIsBlackListedOrValid = function() {
 			// from some states mail is sent as guest_email and some email
-			var email = checkinParams.guest_email ||  checkinParams.email;
+			var email = checkinParams.guest_email ||  checkinParams.email || "";
 
 			return email.length > 0 && !checkinParams.guest_email_blacklisted && zsUtilitySrv.isValidEmail(email);
 		};
@@ -51,9 +51,6 @@ sntZestStation.controller('zsCheckinCommonBaseCtrl', [
 				'is_kiosk': true,
 				'signature': checkinParams.signature
 			};
-			console.log("checkin apiParams \n\n\n");
-			console.log(apiParams);
-			console.log("checkin apiParams \n\n\n");
 			var options = {
 				params: apiParams,
 				successCallBack: afterGuestCheckinCallback,
@@ -74,8 +71,8 @@ sntZestStation.controller('zsCheckinCommonBaseCtrl', [
 			checkinGuest();
 		});
 
-		$scope.$on('CHECK_IF_REQUIRED_GUEST_DETAILS_ARE_PRESENT', function(e, data) {
-			checkinParams = data.checkinParams;
+		$scope.$on('CHECK_IF_REQUIRED_GUEST_DETAILS_ARE_PRESENT', function(e, params) {
+			checkinParams = params.checkinParams;
 			var retrievGuestInfoCallback = function(data) {
 				var missingData = _.filter(data, function(field) {
 					return !field.current_value;
@@ -102,7 +99,7 @@ sntZestStation.controller('zsCheckinCommonBaseCtrl', [
 				},
 				successCallBack: retrievGuestInfoCallback
 			};
-			
+
 			$scope.callAPI(zsCheckinSrv.getGuestMandatoryFields, options);
 		});
 	}

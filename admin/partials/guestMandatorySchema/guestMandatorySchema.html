@@ -56,8 +56,8 @@
       <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
       <div class="form">
          <fieldset class="holder full-width">
-          <ad-textbox value="selectedSchema.title" label="Title" styleclass="full-width" required="yes"></ad-textbox>
-            <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="selectedSchema.schema_json" label = "Schema JSON" placeholder = "{{'DESC_PLACEHOLDER' | translate }}" required="true"></ad-textarea>
+          <ad-textbox value="selectedSchema.title" label="Title" placeholder = "Enter title" styleclass="full-width" required="yes"></ad-textbox>
+            <ad-textarea rows="20" div-class="full-width" text-area-class="full-width" value="selectedSchema.schema_json" label = "Schema JSON" placeholder = "Enter Schema JSON" required="true"></ad-textarea>
          </fieldset>
          <div class="actions float">
             <button type="button" id="cancel" class="button blank add-data-inline" ng-click="changeToListView()" translate>
