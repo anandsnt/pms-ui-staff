@@ -32,7 +32,7 @@
             <strong>{{ printRegCardData.guest_details.first_name }}</strong>
         </td>
         <td style="width: 150pt;">Geburtsdatum/Date of birth<br />
-            <strong>{{ printRegCardData.guest_details.birthday }}</strong>
+            <strong>{{ printRegCardData.guest_details.birthday | date : dateFormat}}</strong>
         </td>
         <td style="max-width: 150pt; width: 30%;">
             Beruf/Profession<br />
@@ -41,7 +41,7 @@
     </tr>
     <tr>
         <td colspan="2">
-            Reisedokument & Nummer/Identification Type & Number<br />
+           Reisedokument & nummber (Art, z. B. Reisepass/ Personalausweis, Nummer, Ausstellungsdatum, ausstellende Behorde, Staat)Identification Type & Number (Doc type, doc number, doc date of issue, doc place of issue, doc country of issue)<br />
             <strong>{{printRegCardData.documentDetails}}</strong>
         </td>
         <td>
@@ -92,7 +92,8 @@
                 Spouse or partner
             </td>
             <td colspan="4">Vorname, Geburtsjahr/First name, date of birth<br />
-                <strong>{{printRegCardData.guest_details.accompanying_guest_first_name}}</strong><span ng-if="printRegCardData.guest_details.accompanying_guest_dob !== '' && printRegCardData.guest_details.accompanying_guest_dob !== null">, </span><strong>{{printRegCardData.guest_details.accompanying_guest_dob}}</strong>
+                <strong ng-if="printRegCardData.guest_details.accompanying_guest_dob && printRegCardData.guest_details.accompanying_guest_dob !== '' && printRegCardData.guest_details.accompanying_guest_dob !== null">{{printRegCardData.guest_details.accompanying_guest_first_name}}, {{printRegCardData.guest_details.accompanying_guest_dob | date : dateFormat}}</strong>
+                <strong ng-if="!(printRegCardData.guest_details.accompanying_guest_dob && printRegCardData.guest_details.accompanying_guest_dob !== '' && printRegCardData.guest_details.accompanying_guest_dob !== null)">{{printRegCardData.guest_details.accompanying_guest_first_name}}</strong>
             </td>
         </tr>
 
@@ -104,12 +105,14 @@
             <td style="width: 130pt">
                 Vorname, Geburtsjahr
                 <span class="placeholder">First name, date of birth</span><br />
-                <strong>{{printRegCardData.guest_details.accompanying_children[0].first_name}}<span ng-if="printRegCardData.guest_details.accompanying_children[0] && printRegCardData.guest_details.accompanying_children[0].date_of_birth !== '' && printRegCardData.guest_details.accompanying_children[0].date_of_birth !== null">, </span></strong><strong>{{printRegCardData.guest_details.accompanying_children[0].date_of_birth}}</strong>
+                <strong ng-if="printRegCardData.guest_details.accompanying_children[0] && printRegCardData.guest_details.accompanying_children[0].date_of_birth !== '' && printRegCardData.guest_details.accompanying_children[0].date_of_birth !== null">{{printRegCardData.guest_details.accompanying_children[0].first_name}}, {{printRegCardData.guest_details.accompanying_children[0].date_of_birth | date : dateFormat}}</strong>
+                <strong ng-if="!(printRegCardData.guest_details.accompanying_children[0] && printRegCardData.guest_details.accompanying_children[0].date_of_birth !== '' && printRegCardData.guest_details.accompanying_children[0].date_of_birth !== null)">{{printRegCardData.guest_details.accompanying_children[0].first_name}}</strong>
             </td>
             <td style="width: 130pt">
                 Vorname, Geburtsjahr
                 <span class="placeholder">First name, date of birth</span><br />
-                <strong>{{printRegCardData.guest_details.accompanying_children[1].first_name}}</strong><span ng-if="printRegCardData.guest_details.accompanying_children[1] && printRegCardData.guest_details.accompanying_children[1].date_of_birth !== '' && printRegCardData.guest_details.accompanying_children[1].date_of_birth !== null">, </span><strong>{{printRegCardData.guest_details.accompanying_children[1].date_of_birth}}</strong>
+                <strong ng-if="printRegCardData.guest_details.accompanying_children[1] && printRegCardData.guest_details.accompanying_children[1].date_of_birth !== '' && printRegCardData.guest_details.accompanying_children[1].date_of_birth !== null">{{printRegCardData.guest_details.accompanying_children[1].first_name}}, {{printRegCardData.guest_details.accompanying_children[1].date_of_birth | date : dateFormat}}</strong>
+                <strong ng-if="!(printRegCardData.guest_details.accompanying_children[1] && printRegCardData.guest_details.accompanying_children[1].date_of_birth !== '' && printRegCardData.guest_details.accompanying_children[1].date_of_birth !== null)">{{printRegCardData.guest_details.accompanying_children[1].first_name}}</strong>
             </td>
             
             <td class="inner-table">
