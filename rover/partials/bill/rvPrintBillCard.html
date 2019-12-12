@@ -9,7 +9,6 @@
 <!-- Case 1: Guest Bill -->
 <div class="info-container" ng-if="!printData.is_from_cards">
     <div class="info-left">
-
         <span ng-bind-html="printData.guest_details.address"></span>
         <div class="info-bottom" ng-if="!printData.is_deposit_invoice">
             <strong >{{printData.translation.invoice_date}}: </strong>{{printData.invoice_date | date:dateFormat}}<br/>
@@ -217,7 +216,7 @@
     </table>
 </div>
 <div ng-if="!printData.is_deposit_invoice">
-    <strong ng-if="printData.has_enabled_extended_tax_breakdown">Tax Breakdown</strong>
+    <strong ng-if="printData.has_enabled_extended_tax_breakdown">{{printData.translation.tax_breakdown}}</strong>
     <table class="invoice-details extended-tax-table" ng-if="printData.has_enabled_extended_tax_breakdown">
         <thead style="display:table-row-group;">
             <tr>
@@ -268,10 +267,10 @@
     </table>
 </div>
 <br><br>
-<strong ng-if="printData.tax_breakdown_for_deposit.details.length>0 && printData.deposit_folio_number" >Paid Deposit Breakdown</strong>
+<strong ng-if="printData.tax_breakdown_for_deposit.details.length>0 && printData.deposit_folio_number" >{{printData.translation.paid_deposit_breakdown}}</strong>
 <br>
 <span ng-if="printData.tax_breakdown_for_deposit.details.length>0 && printData.deposit_folio_number && !printData.is_deposit_invoice">
-    <strong >Deposit Folio Number: </strong>{{printData.deposit_folio_number}}<br/>
+    <strong >{{printData.translation.deposit_folio_number}}: </strong>{{printData.deposit_folio_number}}<br/>
 </span>
 <table class="invoice-details extended-tax-table" ng-if="printData.tax_breakdown_for_deposit.details.length>0 && printData.is_deposit_invoice">
     <thead style="display:table-row-group;">
