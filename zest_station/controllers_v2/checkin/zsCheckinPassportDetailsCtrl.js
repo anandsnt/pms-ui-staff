@@ -37,26 +37,24 @@ sntZestStation.controller('zsCheckinPassportDetailsCtrl', [
         };
 
         var nextPageActions = function() {
-            if (true) {
-                var stateParams = JSON.parse($stateParams.params);
-                var bypassReason = zsCheckinSrv.getPassportBypassReason();
 
-                var checkinParams = {
-                    'reservation_id': stateParams.reservation_id,
-                    'workstation_id': $scope.zestStationData.set_workstation_id,
-                    'authorize_credit_card': false,
-                    'do_not_cc_auth': false,
-                    'is_promotions_and_email_set': false,
-                    'is_kiosk': true,
-                    'signature': stateParams.signature,
-                    'passport_bypass_reason': bypassReason
-                };
-                $scope.$emit('CHECK_IF_REQUIRED_GUEST_DETAILS_ARE_PRESENT', {
-                    checkinParams: _.extend({}, checkinParams, stateParams)
-                });
-            } else {
-                $scope.checkinGuest();
-            }
+            var stateParams = JSON.parse($stateParams.params);
+            var bypassReason = zsCheckinSrv.getPassportBypassReason();
+
+            var checkinParams = {
+                'reservation_id': stateParams.reservation_id,
+                'workstation_id': $scope.zestStationData.set_workstation_id,
+                'authorize_credit_card': false,
+                'do_not_cc_auth': false,
+                'is_promotions_and_email_set': false,
+                'is_kiosk': true,
+                'signature': stateParams.signature,
+                'passport_bypass_reason': bypassReason
+            };
+            $scope.$emit('CHECK_IF_REQUIRED_GUEST_DETAILS_ARE_PRESENT', {
+                checkinParams: _.extend({}, checkinParams, stateParams)
+            });
+
         };
 
         $scope.passportNumberEntered = function () {

@@ -677,6 +677,12 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         url: '/crmInterfaces'
     });
 
+    $stateProvider.state('admin.posInterfacesGroup', {
+        templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
+        controller: 'ADInterfaceSubMenuCtrl',
+        url: '/posInterfaces'
+    });
+
     $stateProvider.state('admin.stationary', {
         templateUrl: '/assets/partials/stationary/adStationary.html',
         controller: 'ADStationaryCtrl',
