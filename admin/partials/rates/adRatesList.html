@@ -62,8 +62,9 @@
 					<tr ng-repeat="rate in $data" ng-class = "{'inactive': !rate.status}"> 
 						<td data-title="'Name'" sortable="'rate'" header-class="width-20" ng-hide="currentClickedElement == $index">
 							<a class="edit-data" ng-click="editRatesClicked(rate.id, $index)" >
-								<strong> {{rate.name}}</strong>
+								<strong>{{rate.name}}</strong>
 							</a>
+							<span class="rate-code">{{rate.code}}</span>
 						</td>
 						<td data-title="'Based on'"  sortable="'based_on'" header-class="width-15" ng-hide="currentClickedElement == $index">
 							<span qtip category='rateType' url='/api/rates.json?based_on_rate_id={{rate.based_on.id}}' title="Rate based on {{rate.based_on.name}}">

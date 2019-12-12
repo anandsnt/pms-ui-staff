@@ -16,6 +16,8 @@ angular.module('sntRover').controller('guestCardSearchController',
         var GUEST_CARD_SCROLL = "guest_card_scroll",
             DEBOUNCE_SEARCH_DELAY = 600, // // Delay the function execution by this much ms
             GUEST_CARD_SEARCH_PAGINATION_ID = "guest_card_search";
+
+        var MIN_SEARCH_TEXT_LENGTH = 3;
         
         // Refresh the guest card search scroller
         var refreshScroller = function() {
@@ -49,9 +51,11 @@ angular.module('sntRover').controller('guestCardSearchController',
          * Filtering/request data from service in change event of query box
          */
         $scope.queryEntered = _.debounce(function() {
-            if ($scope.textInQueryBox === "") {
+            if ($scope.textInQueryBox === "" ) {
                 $scope.results = []; 
                 $scope.$apply();                               
+            } else if ($scope.textInQueryBox.length < MIN_SEARCH_TEXT_LENGTH ) {
+                // The current results should be shown when the length of the search query is less than MIN_SEARCH_TEXT_LENGTH
             } else {
                 displayFilteredResults();
             }

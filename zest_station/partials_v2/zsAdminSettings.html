@@ -135,7 +135,7 @@
                 <div class="entry with-label">
                     <label>Idle Time-Out (seconds)</label>
                     <label class='admin-label-description'>Return to Home Screen after {{zestStationData.idle_timer.max}} seconds of no activity</label>
-                    <input touch-press id="timeout_text" ng-focus="showOnScreenKeyboard('timeout_text')" click-touch="showOnScreenKeyboard('timeout_text')" type="number" min='1' max='9999' ng-model='zestStationData.idle_timer.max' class='admin-input admin-input' />
+                    <input touch-press id="timeout_text" ng-focus="showOnScreenKeyboard('timeout_text')" click-touch="showOnScreenKeyboard('timeout_text')" type="number" min='1' ng-model='zestStationData.idle_timer.max' class='admin-input admin-input' />
                 </div>
                 <div class="entry with-label" ng-hide="!isIpad">
                     <label>Printer</label>
