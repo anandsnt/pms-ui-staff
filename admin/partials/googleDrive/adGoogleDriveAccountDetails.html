@@ -14,13 +14,17 @@
             <form name="item-details" method="post" class="form float">
                 <fieldset class="holder left float">
                     <ad-textbox value="accountDetails.description" name = "description" id = "description" label = "Description" placeholder = "Enter Description" required = "yes" styleclass="full-width" ></ad-textbox>
-                    <ad-textbox value="accountDetails.access_token" name = "accessToken" id = "accessToken" label = "Access Token" placeholder = "Enter access token" required = "yes" styleclass="full-width" ></ad-textbox>
+                    <ad-textbox value="accountDetails.access_token" name = "accessToken" id = "accessToken" label = "Access Token" placeholder = "Enter access token" required = "yes" styleclass="full-width" disabled="true"></ad-textbox>
                 </fieldset>
                 
             <div class="actions float">
                 <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBack()" translate>CANCEL</button>
 
-                <button type="button" id="save" class="button green add-data-inline"  ng-click="saveAccountDetails()" translate>SAVE_CHANGES</button>
+                <button type="button" id="save" class="button add-data-inline"  
+                        ng-click="saveAccountDetails()" 
+                        ng-disabled="shouldDisableSave()" 
+                        ng-class="{'grey': shouldDisableSave(), 'green': !shouldDisableSave() }"
+                        translate >SAVE_CHANGES</button>
 
                 
             </div>
