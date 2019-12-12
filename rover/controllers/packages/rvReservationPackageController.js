@@ -4,12 +4,13 @@ sntRover.controller('RVReservationPackageController',
 				  'RVReservationPackageSrv',
 				  '$state',
 				  '$timeout',
+				  '$filter',
 				  'ngDialog',
 				  'RVReservationStateService',
 				function($scope,
 					$rootScope,
 					RVReservationPackageSrv,
-					$state, $timeout, ngDialog, RVReservationStateService) {
+					$state, $timeout, $filter, ngDialog, RVReservationStateService) {
 
 	var reservationId = $scope.reservationData.reservation_card.reservation_id,
 		shouldReloadState = false;
@@ -56,6 +57,29 @@ sntRover.controller('RVReservationPackageController',
 		 	});
 	};
 
+	$scope.saveAddonPosting = function() {
+
+		var addonPostingSaveSuccess = function(data) {
+			$scope.$emit('hideLoader');
+		};
+
+		angular.forEach($scope.selectedPurchesedAddon.post_instances, function(item, index) {
+                    var postDate = new Date(item.post_date);
+                    var day = $scope.daysOfWeek[postDate.getDay()];
+                    item.active = $scope.selectedPurchesedAddon.selected_post_days[day];
+                });
+
+		var dataToApi = {
+			'addon_id': $scope.selectedPurchesedAddon.id,
+			'reservation_id': $scope.reservationData.reservation_card.reservation_id,
+			'post_instances': $scope.selectedPurchesedAddon.post_instances,
+			'start_date': moment($scope.selectedPurchesedAddon.start_date, $rootScope.dateFormat.toUpperCase()).format('YYYY-MM-DD'),
+			'end_date': moment($scope.selectedPurchesedAddon.end_date, $rootScope.dateFormat.toUpperCase()).format('YYYY-MM-DD')
+		}
+
+		$scope.invokeApi(RVReservationPackageSrv.updateAddonPosting, dataToApi, addonPostingSaveSuccess);
+	}
+
 
 	$scope.removeSelectedAddons = function(addonId, index) {
 
@@ -99,6 +123,78 @@ sntRover.controller('RVReservationPackageController',
 
             return (addonCount * quantity);
         };
+
+    $scope.selectPurchasedAddon = function(addon) {
+            $scope.selectedPurchesedAddon = addon;
+            $scope.selectedPurchesedAddon.selected_post_days = {};
+            $scope.selectedPurchesedAddon.start_date = $filter('date')($scope.selectedPurchesedAddon.start_date, $rootScope.dateFormat);
+            $scope.selectedPurchesedAddon.end_date = $filter('date')($scope.selectedPurchesedAddon.end_date, $rootScope.dateFormat);
+            $scope.togglePostDaysSelectionForAddon(false);
+            angular.forEach($scope.selectedPurchesedAddon.post_instances, function(item, index) {
+                    if (item.active) {
+                    	var postDate = new Date(item.post_date);
+                    	var day = $scope.daysOfWeek[postDate.getDay()];
+                        $scope.selectedPurchesedAddon.selected_post_days[day] = true;
+                    }
+                });
+
+        };
+
+        $scope.shouldShowSelectAllDaysOfWeek = function() {
+            var shouldShowSelectAllDaysOfWeek = false;
+            angular.forEach($scope.daysOfWeek, function(item, index) {
+                    if (!$scope.selectedPurchesedAddon.selected_post_days[item]) {
+                        shouldShowSelectAllDaysOfWeek = true;
+                    }
+                });
+            return shouldShowSelectAllDaysOfWeek;
+        };
+
+        $scope.shouldShowSelectNoDaysOfWeek = function() {
+            var shouldShowSelectNoDaysOfWeek = true;
+            angular.forEach($scope.daysOfWeek, function(item, index) {
+                    if (!$scope.selectedPurchesedAddon.selected_post_days[item]) {
+                        shouldShowSelectNoDaysOfWeek = false;
+                    }
+                });
+            return shouldShowSelectNoDaysOfWeek;
+        };
+
+        $scope.togglePostDaysSelectionForAddon = function(select) {
+            angular.forEach($scope.daysOfWeek, function(item, index) {
+                    $scope.selectedPurchesedAddon.selected_post_days[item] = select;
+                });
+        }
+        $scope.daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+        
+        var datePicker;
+        $scope.clickedOnDatePicker = function(datePickerFor) {
+            $scope.datePickerFor = datePickerFor;
+            datePicker = ngDialog.open({
+                template: '/assets/partials/common/rvDatePicker.html',
+                controller: 'RVAddonDatePickerController',
+                className: '',
+                scope: $scope,
+                closeByDocument: true
+            });
+        };
+
+        $scope.dateSelected = function(dateText) {
+        	if ($scope.datePickerFor == 'start_date') {
+        		$scope.selectedPurchesedAddon.start_date = $filter('date')(dateText, $rootScope.dateFormat);
+            } else {
+                $scope.selectedPurchesedAddon.end_date = $filter('date')(dateText, $rootScope.dateFormat);
+            }
+        };
+
+        $scope.closePopup = function() {
+            ngDialog.close();
+        };
+
+        $scope.closeCalendar = function() {
+            datePicker.close();
+        }
 
 }
 

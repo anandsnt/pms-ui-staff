@@ -9,11 +9,7 @@ sntRover.controller('RVAddonDatePickerController',
             changeMonth: true,
             yearRange: "0:+10",
             onSelect: function(dateText, inst) {
-                if ($scope.datePickerFor == 'start_date') {
-                    $scope.selectedPurchesedAddon.startDate = dateText;
-                } else {
-                    $scope.selectedPurchesedAddon.endDate = dateText;
-                }
+                $scope.dateSelected(dateText);
                 
                 $scope.closeCalendar();
             }
