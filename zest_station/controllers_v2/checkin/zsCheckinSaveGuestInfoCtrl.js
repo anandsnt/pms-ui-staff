@@ -5,37 +5,37 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 	'$timeout',
 	'$stateParams',
 	'$controller',
-	function($scope, zsCheckinSrv, zsGeneralSrv, $timeout, $stateParams, $controller) {
+	'zsEventConstants',
+	function($scope, zsCheckinSrv, zsGeneralSrv, $timeout, $stateParams, $controller, zsEventConstants) {
 
 
 		BaseCtrl.call(this, $scope);
-
 		$controller('zsCheckinCommonBaseCtrl', {
 			$scope: $scope
 		});
 
-		console.log($stateParams);
-
-		$scope.showErrorMessage = false;
-
+		$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
+		$scope.showWarningPopup = false;
+		$scope.triedToSave = false;
+		$scope.errorMessage = true;
 		$scope.infoNeeded = angular.fromJson($stateParams.guestInfo);
 		var checkinParams = angular.fromJson($stateParams.checkinParams);
-
-		$scope.infoNeeded = _.sortBy($scope.infoNeeded, function(field) {
-			return -field.mandatory;
-		});
+		var selectedCalendarModel = "";
+		var selectedCalendarModelDisplay = "";
 
 		$scope.saveGuestDetails = function() {
 			var allRequireFieldsFilled = true;
+			$scope.errorMessage = false;
 
-			_.each($scope.infoNeeded, function(field) {
-				if (field.mandatory && !$scope.guestDetails[field.key]) {
+			_.each($scope.infoNeeded, function(info) {
+				if (info.mandatory && !$scope.guestDetails[info.field]) {
 					allRequireFieldsFilled = false;
 				}
 			});
 
 			if (!allRequireFieldsFilled) {
-				$scope.showErrorMessage = true;
+				$scope.showWarningPopup = true;
+				$scope.triedToSave = true;
 			} else {
 				var apiParams = angular.copy($scope.guestDetails);
 				console.log(apiParams);
@@ -45,6 +45,9 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 						delete apiParams[key];
 					}
 				}
+				apiParams.guest_detail_id = checkinParams.guest_id;
+				apiParams.reservation_id = checkinParams.reservation_id;
+
 				console.log(apiParams);
 				var options = {
 					params: apiParams,
@@ -52,35 +55,39 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 						$scope.$emit('CHECKIN_GUEST', {
 							checkinParams: checkinParams
 						});
+					},
+					failureCallBack: function (){
+						$scope.showWarningPopup = true;
+						$scope.errorMessage = true;
 					}
 				};
 
-				$scope.callAPI(zsCheckinSrv.checkInGuest, options);
+				$scope.callAPI(zsCheckinSrv.savePendingGuestFields, options);
 			}
 		};
 
 		$scope.dismissPopup = function() {
-			$scope.showErrorMessage = false;
+			$scope.showWarningPopup = false;
 		};
-
+		var formatDateBasedOnHotelFormat = function (date) {
+			 return moment(date, 'YYYY-MM-DD')
+					.format($scope.zestStationData.hotelDateFormat);
+		};
 		$scope.guestDetails = {};
 
-		_.each($scope.infoNeeded, function(field) {
-			$scope.guestDetails[field.key] = "";
-			if (field.type === "date") {
+		_.each($scope.infoNeeded, function(info) {
+			$scope.guestDetails[info.field] = info.current_value;
+			if (info.type === "date") {
 				// Create extra variable for date and use to display the date in hotel's format
-				var displayKey = field.key + "forDisplay";
+				var displayKey = info.field + "forDisplay";
 
-				$scope.guestDetails[displayKey] = ""
+				$scope.guestDetails[displayKey] = $scope.guestDetails[info.field] ? formatDateBasedOnHotelFormat($scope.guestDetails[info.field]) : "";
 			}
 		});
 
-		var selectedCalendar = "";
-		var selectedCalendarDisplay = "";
-
 		$scope.showDatePicker = function(calendarModel, calendarDisplayModel) {
-			selectedCalendar = calendarModel;
-			selectedCalendarDisplay = calendarDisplayModel;
+			selectedCalendarModel = calendarModel;
+			selectedCalendarModelDisplay = calendarDisplayModel;
 			$scope.showDatePick = !$scope.showDatePick;
 		};
 
@@ -92,10 +99,9 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 				onSelect: function(value) {
 					$scope.showDatePick = false;
 					var selectedDate = angular.copy($scope.selectedDate);
-					$scope.guestDetails[selectedCalendarDisplay] = moment(selectedDate, 'MM-DD-YYYY')
-						.format($scope.zestStationData.hotelDateFormat);
-					$scope.guestDetails[selectedCalendar] = selectedDate;
-					$scope.selectedDate = moment().format('mm-dd-yy');
+					$scope.guestDetails[selectedCalendarModelDisplay] = formatDateBasedOnHotelFormat(selectedDate);
+					$scope.guestDetails[selectedCalendarModel] = selectedDate;
+					$scope.selectedDate = moment().format('YYYY-MM-DD');
 				}
 			};
 			$scope.setScroller('guests-info', {

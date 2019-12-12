@@ -77,50 +77,8 @@ sntZestStation.controller('zsCheckinCommonBaseCtrl', [
 		$scope.$on('CHECK_IF_REQUIRED_GUEST_DETAILS_ARE_PRESENT', function(e, data) {
 			checkinParams = data.checkinParams;
 			var retrievGuestInfoCallback = function(data) {
-				data = [{
-						"key": "last_name",
-						"label": "ZS_GUEST_LAST_NAME",
-						"mandatory": false,
-						"type": "text", // input field,
-						"value": ""
-					}, {
-						"key": "first_name",
-						"label": "ZS_GUEST_FIRST_NAME",
-						"mandatory": false,
-						"type": "text", // input field,
-						"value": ""
-					},
-
-					{
-						"key": "gender",
-						"label": "ZS_GUEST_GENDER",
-						"mandatory": false,
-						"type": "select", // select box with defined values
-						"values": ["Male", "Female"],
-						"value": ""
-					}, {
-						"key": "vip",
-						"label": "ZS_GUEST_VIP",
-						"mandatory": false,
-						"type": "boolean", // select box with YES/NO,
-						"value": ""
-					}, {
-						"key": "dob",
-						"label": "ZS_GUEST_DOB",
-						"mandatory": true,
-						"type": "date", // date picker,
-						"value": ""
-					}, {
-						"key": "expiry",
-						"label": "ZS_GUEST_EXPIRY",
-						"mandatory": false,
-						"type": "date", // date picker,
-						"value": ""
-					}
-				];
-
 				var missingData = _.filter(data, function(field) {
-					return !field.value;
+					return !field.current_value;
 				});
 
 				var mandatoryFieldsMissing = _.filter(missingData, function(field) {
@@ -131,7 +89,7 @@ sntZestStation.controller('zsCheckinCommonBaseCtrl', [
 					// present new state to collect remainig guest details
 					$state.go('zest_station.zsCheckinSaveGuestInfo', {
 						checkinParams: angular.toJson(checkinParams),
-						guestInfo: angular.toJson(missingData)
+						guestInfo: angular.toJson(data)
 					});
 				} else {
 					checkinGuest();
@@ -139,12 +97,13 @@ sntZestStation.controller('zsCheckinCommonBaseCtrl', [
 			};
 			var options = {
 				params: {
-					guest_id: checkinParams.guest_id
+					guest_detail_id: checkinParams.guest_id,
+					reservation_id: checkinParams.reservation_id
 				},
 				successCallBack: retrievGuestInfoCallback
 			};
-			retrievGuestInfoCallback();
-			//$scope.callAPI(zsCheckinSrv.retrievGuestInfo, options);
+			
+			$scope.callAPI(zsCheckinSrv.getGuestMandatoryFields, options);
 		});
 	}
 ]);

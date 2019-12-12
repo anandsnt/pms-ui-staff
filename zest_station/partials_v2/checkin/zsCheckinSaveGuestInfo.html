@@ -7,26 +7,27 @@
                   FILL IN YOUR INFO TO PROCEED
                </h1>
                <h2 translate>
-                  FIELDS MARKED WITH * ARE MANDATORY
+                  infoS MARKED WITH * ARE MANDATORY
                </h2>
-               <div class="entry with-label" ng-repeat="field in infoNeeded">
+               <div class="entry with-label" ng-repeat="info in infoNeeded">
                      <label>
-                        {{ field.label | translate }} {{ field.mandatory ? '*' :'' }}
+                        {{ info.label | translate }} <span style="color: red;">{{ info.mandatory ? '*' :'' }}</span>
                     </label>
-                    <!-- --{{guestDetails}}--{{field.key}}---{{guestDetails[field.key]}} -->
-                    <!-- text -->
-                    <input type="text" ng-if="field.type === 'text'" ng-model='guestDetails[field.key]' />
+                    <input type="text" ng-if="info.type === 'text'" ng-model='guestDetails[info.field]' ng-class="{'missing-guest-info': triedToSave && info.mandatory && !guestDetails[info.field]}"/>
                     <!-- select -->
-                    <select ng-if="field.type === 'select'" name="Country"  ng-model="guestDetails[field.key]" style="width: 40%;color: #000;" ng-options="country  as country for country in field.values">
+                    <select ng-if="info.type === 'select'" name="Country"  ng-model="guestDetails[info.field]" style="width: 40%;color: #000;" ng-options="item.value  as item.label for item in info.values"
+                      ng-class="{'missing-guest-info': triedToSave && info.mandatory && !guestDetails[info.field]}">
                         <option value="">{{'SELECT' | translate}}</option>
                     </select>
                     <!-- date -->
-                    <div class="entry input" style="width: 40%;float: right;" ng-if="field.type === 'date'">
-                      <input type="text" ng-model="guestDetails[field.key+'forDisplay']" class="disabled" click-touch="showDatePicker(field.key,field.key+'forDisplay')"/>
-                      <ng-include src="icons.url.date" click-touch="showDatePicker(field.key,field.key+'forDisplay'); resetTime();">
+                    <div class="entry input" style="width: 40%;float: right;" ng-if="info.type === 'date'">
+                      <input type="text" ng-model="guestDetails[info.field+'forDisplay']" class="disabled" click-touch="showDatePicker(info.field,info.field+'forDisplay')"
+                      ng-class="{'missing-guest-info': triedToSave && info.mandatory && !guestDetails[info.field]}"/>
+                      <ng-include src="icons.url.date" click-touch="showDatePicker(info.field,info.field+'forDisplay'); resetTime();">
                     </div>
                     <!-- bool -->
-                    <select ng-if="field.type === 'boolean'" name="Country"  ng-model="guestDetails[field.key]" style="width: 40%;color: #000;">
+                    <select ng-if="info.type === 'boolean'" name="Country"  ng-model="guestDetails[info.field]"
+                    ng-class="{'missing-guest-info': triedToSave && info.mandatory && !guestDetails[info.field]}" style="width: 40%;color: #000;">
                         <option value="">{{'SELECT' | translate}}</option>
                         <option value="true">{{'YES' | translate}}</option>
                         <option value="false">{{'NO' | translate}}</option>
@@ -45,11 +46,14 @@
    </div>   
 </section>
 
-<div class="popup" ng-class="{'open': showErrorMessage}">
+<div class="popup" ng-class="{'open': showWarningPopup}">
     <!-- Remove class "open" to hide popup content -->
     <div class="popup-content">
-        <h2 class="nocaps">
-            <text data-ng-bind-html="getTagValue('PLEASE_PROVIDE_ALL_REQUIRED_INFO')" editable-text="PLEASE_PROVIDE_ALL_REQUIRED_INFO"></text>
+        <h2 class="nocaps" ng-if="!errorMessage">
+            {{ 'PLEASE_PROVIDE_ALL_REQUIRED_INFO' | translate }}
+        </h2>
+         <h2 class="nocaps" ng-if="errorMessage">
+            {{ 'GUEST_INFO_ERROR_MSG' | translate }}
         </h2>
         <button type="button" class="button idle-timeout-btn" click-touch='dismissPopup();'>
             <text data-ng-bind-html="getTagValue('OK')" editable-text="OK"></text>
@@ -58,4 +62,4 @@
 </div>
 
 
-<div ng-show="showDatePick" ui-date="dateOptions" ng-model="selectedDate" ui-date-format="mm-dd-yy" id='picker'>
+<div ng-show="showDatePick" ui-date="dateOptions" ng-model="selectedDate" ui-date-format="yy-mm-dd" id='picker'>

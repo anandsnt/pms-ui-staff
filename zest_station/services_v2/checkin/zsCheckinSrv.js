@@ -651,5 +651,17 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.getPassportBypassReason = function () {
             return passportBypassReason;
         };
+
+        this.getGuestMandatoryFields = function(params) {
+            var url = '/api/guest_mandatory_schemas/guest_mandatory_fields';
+
+            return zsBaseWebSrv.getJSON(url, params);
+        };
+
+        this.savePendingGuestFields = function(params) {
+            var url = '/api/guest_mandatory_schemas/guest_mandatory_fields';
+
+            return zsBaseWebSrv.putJSON(url, params);
+        };
     }
 ]);
