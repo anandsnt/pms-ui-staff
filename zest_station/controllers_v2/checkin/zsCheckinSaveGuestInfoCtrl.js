@@ -48,7 +48,10 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 				apiParams.guest_detail_id = checkinParams.guest_id;
 				apiParams.reservation_id = checkinParams.reservation_id;
 
-				console.log(apiParams);
+				if (apiParams["additional_contacts.email"]) {
+					checkinParams.guest_email = apiParams["additional_contacts.email"];
+				}
+
 				var options = {
 					params: apiParams,
 					successCallBack: function() {
@@ -89,13 +92,14 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 			selectedCalendarModel = calendarModel;
 			selectedCalendarModelDisplay = calendarDisplayModel;
 			$scope.showDatePick = !$scope.showDatePick;
+			$scope.selectedDate = $scope.guestDetails[selectedCalendarModel];
 		};
 
 		(function() {
 			$scope.dateOptions = {
 				dateFormat: 'yy-mm-dd',
-				// changeYear: true,
-				// changeMonth: true,
+				changeYear: true,
+				changeMonth: true,
 				onSelect: function(value) {
 					$scope.showDatePick = false;
 					var selectedDate = angular.copy($scope.selectedDate);
