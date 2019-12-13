@@ -805,6 +805,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                             if (!addon.is_rate_addon) {
                                 addonsForRoomType.push({
                                     id: addon.id,
+                                    selected_post_days: addon.selected_post_days,
+                                    start_date: addon.start_date,
+                                    end_date: addon.end_date,
                                     quantity: addon.quantity || 1
                                 });
                             }

@@ -324,9 +324,9 @@ sntRover.controller('RVReservationAddonsCtrl', [
         $scope.selectPurchasedAddon = function(addon) {
             $scope.selectedPurchesedAddon = addon;
             $scope.selectedPurchesedAddon.selected_post_days = {};
-            $scope.selectedPurchesedAddon.startDate = $filter('date')($scope.reservationData.arrivalDate, $rootScope.dateFormat);
-            $scope.selectedPurchesedAddon.endDate = $filter('date')($scope.reservationData.departureDate, $rootScope.dateFormat);
-            $scope.togglePostDaysSelectionForAddon(false);
+            $scope.selectedPurchesedAddon.start_date = $filter('date')($scope.reservationData.arrivalDate, $rootScope.dateFormat);
+            $scope.selectedPurchesedAddon.end_date = $filter('date')($scope.reservationData.departureDate, $rootScope.dateFormat);
+            $scope.togglePostDaysSelectionForAddon(true);
 
         };
 
