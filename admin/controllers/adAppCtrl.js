@@ -829,7 +829,8 @@ admin.controller('ADAppCtrl', [
                 return (
                     component.name === 'Check In' || component.name === 'Check Out' ||
                         component.name === 'Direct URL' || component.name === '' || component.name === 'Zest Web Common' ||
-                        component.name === 'Room Ready Email' || component.name === 'Zest Web Global Setup'
+                        component.name === 'Room Ready Email' || component.name === 'Zest Web Global Setup' ||
+                        component.name === "Email from Guest" || component.name === "SMS / Short Code"
                 )
             }
 
@@ -1051,6 +1052,12 @@ admin.controller('ADAppCtrl', [
         $transitions.onError({}, function (transition) {
             sntActivity.stop('STATE_CHANGE' + transition.to().name.toUpperCase());
         });
+
+        $scope.menuHoverIn = function(menuIndex) {
+            if (!$scope.isZestStationEnabled && $scope.data.menus[menuIndex].menu_name === 'Station') {
+                angular.element("#admin-menu-tooltip").tooltip();
+            }
+        };
 
         (function() {
             if (!adminMenuData.menus.length) {
