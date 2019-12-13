@@ -18,6 +18,7 @@ module.exports = {
 				roverRoot + "services/rvReservationSrv.js",
 				roverRoot + "services/accounts/rvAccountsArTransactionsSrv.js",
 				roverRoot + "services/postCharge/rvPostChargeSrvV2.js",
+				roverRoot + "services/bill/rvBillCardSrv.js",
 				'rover/services/payment/rvPaymentSrv.js',
 				'rover/services/rvContactInfoSrv.js',
 				'rover/services/accounts/rvAccountsTransactionSrv.js',
