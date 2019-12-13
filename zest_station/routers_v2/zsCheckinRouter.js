@@ -657,5 +657,15 @@ sntZestStation.config(['$stateProvider',
                 params: ''
             }
         });
+
+        $stateProvider.state('zest_station.zsCheckinSaveGuestInfo', {
+            url: '/saveGuestInfo',
+            templateUrl: '/assets/partials_v2/checkin/zsCheckinSaveGuestInfo.html',
+            controller: 'zsCheckinSaveGuestInfoCtrl',
+            params: {
+                checkinParams: '',
+                guestInfo: ''
+            }
+        });
     }
 ]);
