@@ -160,7 +160,7 @@ angular.module('sntRover')
                 };
 
                 // Method to update room list data.
-                var fetchRoomListDataAndReservationListData = function (roomId, offset) {
+                var fetchRoomListDataAndReservationListData = function (roomId, offset, reservation, room) {
                     var successCallBackFetchRoomList = function (data) {
                         $scope.diaryData.diaryRoomsList = data.roomList.rooms;
                         $scope.diaryData.reservationsList = data.reservationList;
@@ -175,6 +175,10 @@ angular.module('sntRover')
                         }
                         if (roomId) {
                             $scope.$broadcast('CLOSE_SEARCH_RESULT');
+                        }
+                        // Select reservation
+                        if (reservation.id && room.id) {
+                            selectReservation('', reservation, room);
                         }
                     },
                         postData = {
@@ -1012,6 +1016,23 @@ angular.module('sntRover')
                  * To toggle available and booked.
                  */
                 $scope.addListener('TOGGLE_BOOK_AVAILABLE', callbackForBookedOrAvailableListner);
+
+                if ($stateParams.origin === 'STAYCARD_NIGHTS') {
+                    var reservation = {
+                        arrival_date: $stateParams.start_date,
+                        id: $stateParams.reservation_id,
+                        confirm_id: $stateParams.confirm_id,
+                        room_id: $stateParams.room_id,
+                        no_room_move: false,
+                        status: ''
+                    },
+                    room = {
+                        id: $stateParams.room_id
+                    };
+
+                    $scope.diaryData.fromDate = $stateParams.start_date;
+                    fetchRoomListDataAndReservationListData($stateParams.room_id, null, reservation, room);
+                }
 
                 /**
                  * utility method to pass callbacks from
