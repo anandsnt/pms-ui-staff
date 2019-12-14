@@ -1017,17 +1017,22 @@ angular.module('sntRover')
                  */
                 $scope.addListener('TOGGLE_BOOK_AVAILABLE', callbackForBookedOrAvailableListner);
 
-                if ($stateParams.origin === 'STAYCARD_NIGHTS') {
+                if ($stateParams.action === 'SELECT_RESERVATION') {
                     var reservation = {
                         arrival_date: $stateParams.start_date,
-                        id: $stateParams.reservation_id,
-                        confirm_id: $stateParams.confirm_id,
-                        room_id: $stateParams.room_id,
+                        id: parseInt($stateParams.reservation_id),
+                        confirm_no: $stateParams.confirm_id,
+                        room_id: parseInt($stateParams.room_id),
                         no_room_move: false,
-                        status: ''
+                        status: '',
+                        dept_date: '',
+                        arrival_time: '',
+                        dept_date: '',
+                        dept_time: ''
                     },
                     room = {
-                        id: $stateParams.room_id
+                        id: parseInt($stateParams.room_id),
+                        room_no: $stateParams.room_no
                     };
 
                     $scope.diaryData.fromDate = $stateParams.start_date;
