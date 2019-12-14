@@ -296,7 +296,10 @@ angular.module('sntRover').controller('reservationRoomStatus',
                 reservation_id: $scope.reservationData.reservation_card.reservation_id,
                 confirm_id: $scope.reservationData.reservation_card.confirmation_num,
                 room_id: $scope.reservationData.reservation_card.room_id,
-                origin: 'STAYCARD_NIGHTS'
+                room_no: $scope.reservationData.reservation_card.room_number,
+                room_type_id: $scope.reservationData.reservation_card.room_type_id,
+                origin: 'STAYCARD_ROOM',
+                action: 'SELECT_RESERVATION'
         });
     };
         
