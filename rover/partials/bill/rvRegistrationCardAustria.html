@@ -41,7 +41,7 @@
     </tr>
     <tr>
         <td colspan="2">
-           Reisedokument & nummber (Art, z. B. Reisepass/ Personalausweis, Nummer, Ausstellungsdatum, ausstellende Behorde, Staat)Identification Type & Number (Doc type, doc number, doc date of issue, doc place of issue, doc country of issue)<br />
+           Reisedokument & Nummer (Art, z. B. Reisepass/ Personalausweis, Nummer, Ausstellungsdatum, ausstellende Behorde, Staat)Identification Type & Number (Doc type, doc number, doc date of issue, doc place of issue, doc country of issue)<br />
             <strong>{{printRegCardData.documentDetails}}</strong>
         </td>
         <td>
@@ -131,20 +131,29 @@
             </td> 
         </tr>
         <tr>
-            <td style="width: 130pt">
-                Vorname, Geburtsjahr
-                <span class="placeholder">First name, date of birth</span><br />
-                <strong>{{printRegCardData.guest_details.accompanying_children[2].first_name}}</strong><span ng-if="printRegCardData.guest_details.accompanying_children[2] && printRegCardData.guest_details.accompanying_children[2].date_of_birth !== '' && printRegCardData.guest_details.accompanying_children[2].date_of_birth !== null">, </span> <strong>{{printRegCardData.guest_details.accompanying_children[2].date_of_birth | date : dateFormat }}</strong>
-            </td>
-            <td style="width: 130pt">
-                Vorname, Geburtsjahr
-                <span class="placeholder">First name, date of birth</span><br />
-               <strong> {{printRegCardData.guest_details.accompanying_children[3].first_name}}</strong><span ng-if="printRegCardData.guest_details.accompanying_children[3] && printRegCardData.guest_details.accompanying_children[3].date_of_birth !== '' && printRegCardData.guest_details.accompanying_children[3].date_of_birth !== null">, </span><strong>{{printRegCardData.guest_details.accompanying_children[3].date_of_birth | date : dateFormat }}</strong>
-            </td>            
-            <td>
-                Unterschrift des Meldepflichtigen/Signature<br />
-                <span class="placeholder">{{ printRegCardData.translation.guest_signature }}</span>
-                <strong><img ng-src="{{printRegCardData.signature_url}}" width="50%"/></strong>
+
+            <td colspan="4" class="inner-table border-left-width">
+                <table class="guest-data-enter customized ">
+                    <tbody>
+                    <tr>
+                        <td style="width: 115pt">
+                            Vorname, Geburtsjahr
+                            <span class="placeholder">First name, date of birth</span><br />
+                            <strong>{{printRegCardData.guest_details.accompanying_children[2].first_name}}</strong><span ng-if="printRegCardData.guest_details.accompanying_children[2] && printRegCardData.guest_details.accompanying_children[2].date_of_birth !== '' && printRegCardData.guest_details.accompanying_children[2].date_of_birth !== null">, </span> <strong>{{printRegCardData.guest_details.accompanying_children[2].date_of_birth | date : dateFormat }}</strong>
+                        </td>
+                        <td style="width: 130pt">
+                            Vorname, Geburtsjahr
+                            <span class="placeholder">First name, date of birth</span><br />
+                           <strong> {{printRegCardData.guest_details.accompanying_children[3].first_name}}</strong><span ng-if="printRegCardData.guest_details.accompanying_children[3] && printRegCardData.guest_details.accompanying_children[3].date_of_birth !== '' && printRegCardData.guest_details.accompanying_children[3].date_of_birth !== null">, </span><strong>{{printRegCardData.guest_details.accompanying_children[3].date_of_birth | date : dateFormat }}</strong>
+                        </td>            
+                        <td>
+                            Unterschrift des Meldepflichtigen/Signature<br />
+                            <span class="placeholder">{{ printRegCardData.translation.guest_signature }}</span>
+                            <strong><img ng-src="{{printRegCardData.signature_url}}" width="50%"/></strong>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </td>
         </tr>
         <tr>
