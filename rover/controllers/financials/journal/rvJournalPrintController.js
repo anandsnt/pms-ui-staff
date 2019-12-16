@@ -116,7 +116,7 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
             postData.query = $scope.data.query;
 		}
 
-		if(!$scope.data.activeRevenueTab) {
+		if (!$scope.data.activeRevenueTab) {
 			$scope.data.activeRevenueTab = '';
 		} else {
 			postData.type = $scope.data.activeRevenueTab;
@@ -162,7 +162,7 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
             postData.query = $scope.data.query;
 		}
 
-		if(!$scope.data.activeRevenueTab) {
+		if (!$scope.data.activeRevenueTab) {
 			$scope.data.activeRevenueTab = '';
 		} else {
 			postData.type = $scope.data.activeRevenueTab;
@@ -218,7 +218,7 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
             postData.query = $scope.data.query;
 		}
 
-		if(!$scope.data.activePaymentTab) {
+		if (!$scope.data.activePaymentTab) {
 			$scope.data.activePaymentTab = '';
 		} else {
 			postData.type = $scope.data.activePaymentTab;
