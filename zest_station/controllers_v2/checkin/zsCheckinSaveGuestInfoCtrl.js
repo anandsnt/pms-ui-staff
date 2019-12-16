@@ -101,6 +101,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 				dateFormat: 'yy-mm-dd',
 				changeYear: true,
 				changeMonth: true,
+				yearRange: "-100:+10",
 				onSelect: function() {
 					$scope.showDatePick = false;
 					var selectedDate = angular.copy($scope.selectedDate);
