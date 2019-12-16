@@ -374,8 +374,8 @@ sntRover.controller('reservationActionsController', [
                     $scope.showNameOfMother = $scope.guestCardData.contactInfo.guestAdminSettings.mother_name.is_mandatory_on_guest_card_creation;
                     $scope.showPlaceOfBirth = $scope.guestCardData.contactInfo.guestAdminSettings.birth_place.is_mandatory_on_guest_card_creation;
                     $scope.showGender = $scope.guestCardData.contactInfo.guestAdminSettings.gender.is_mandatory_on_guest_card_creation;
-                    $scope.showVehicleRegistrationNumber = $scope.guestCardData.contactInfo.guestAdminSettings.id_place_of_issue.is_mandatory_on_guest_card_creation;
-                    $scope.showIdPlaceOfIssue = $scope.guestCardData.contactInfo.guestAdminSettings.registration_number.is_mandatory_on_guest_card_creation;
+                    $scope.showVehicleRegistrationNumber = $scope.guestCardData.contactInfo.guestAdminSettings.registration_number.is_mandatory_on_guest_card_creation;
+                    $scope.showIdPlaceOfIssue = $scope.guestCardData.contactInfo.guestAdminSettings.id_place_of_issue.is_mandatory_on_guest_card_creation;
                     $scope.showPersonalIdNumber = $scope.guestCardData.contactInfo.guestAdminSettings.personal_id_no.is_mandatory_on_guest_card_creation;
                     $scope.showHomeTown = $scope.guestCardData.contactInfo.guestAdminSettings.home_town.is_mandatory_on_guest_card_creation;
                     $scope.showPlaceOfResidence   = $scope.guestCardData.contactInfo.guestAdminSettings.place_of_residence.is_mandatory_on_guest_card_creation;
