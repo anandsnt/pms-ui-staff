@@ -1142,4 +1142,10 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.guestMandatorySchemas', {
+      templateUrl: '/assets/partials/guestMandatorySchema/guestMandatorySchema.html',
+      controller: 'ADGuestMandatorySchemaCtrl',
+      url: '/guestMandatorySchema'
+    });
+
 });

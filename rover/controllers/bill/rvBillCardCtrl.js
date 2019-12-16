@@ -2818,16 +2818,16 @@ sntRover.controller('RVbillCardController',
 					docDetails = docDetails + data.guest_details.id_type;
 				}
 				if (data.guest_details.id_number !== "" && data.guest_details.id_number !== null) {
-					docDetails = ";" + docDetails + data.guest_details.id_number;
+					docDetails = docDetails + ";" + data.guest_details.id_number;
 				}
 				if (data.guest_details.id_issue_date !== "" && data.guest_details.id_issue_date !== null) {
-					docDetails = ";" + docDetails + $filter('date')(new tzIndependentDate(data.guest_details.id_issue_date), $rootScope.dateFormat);
+					docDetails = docDetails + ";" + $filter('date')(new tzIndependentDate(data.guest_details.id_issue_date), $rootScope.dateFormat);
 				}
 				if (data.guest_details.id_place_of_issue !== "" && data.guest_details.id_place_of_issue !== null) {
-					docDetails = ";" + docDetails + data.guest_details.id_place_of_issue;
+					docDetails = docDetails + ";" + data.guest_details.id_place_of_issue;
 				}
 				if (data.guest_details.id_country_of_issue !== "" && data.guest_details.id_country_of_issue !== null) {
-					docDetails = ";" + docDetails + data.guest_details.id_country_of_issue;
+					docDetails = docDetails + ";" + data.guest_details.id_country_of_issue;
 				}
 				$scope.printRegCardData.documentDetails = docDetails;
 			}

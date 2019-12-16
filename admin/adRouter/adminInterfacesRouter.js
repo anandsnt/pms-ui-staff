@@ -292,6 +292,9 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         resolve: {
             config: ['adInterfacesSrv', function(adInterfacesSrv) {
                 return adInterfacesSrv.getSettings('vectron');
+            }],
+            chargeCodes: ['ADChargeCodesSrv', function(ADChargeCodesSrv) {
+                return ADChargeCodesSrv.fetch();
             }]
         }
     });
@@ -512,7 +515,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.synxisSetup', {
-        templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
+        templateUrl: '/assets/partials/interfaces/synxis/adSynxisSetup.html',
         controller: 'adCRSCommonCtrl',
         url: '/interfaces/setup',
         params: {
