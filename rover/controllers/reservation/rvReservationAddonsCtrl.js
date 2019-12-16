@@ -89,6 +89,18 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     $scope.computeTotalStayCost();
                 }
             },
+            updateAddonPostOptions = function() {
+                $($scope.reservationData.rooms).each(function(index, room) {
+                    $(room.addons).each(function(i, addon) {
+                        var updatedAddon = _.find($scope.addonsData.existingAddons, {
+                            id: addon.id
+                        });
+                        addon.selected_post_days = updatedAddon.selected_post_days;
+                        addon.start_date = moment(updatedAddon.start_date, $rootScope.dateFormat.toUpperCase()).format('YYYY-MM-DD');
+                        addon.end_date = moment(updatedAddon.end_date, $rootScope.dateFormat.toUpperCase()).format('YYYY-MM-DD');
+                    })
+                });
+            },
             goToSummaryAndConfirm = function() {
                 if ($scope.fromPage === "staycard") {
 
@@ -118,6 +130,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
 
                     $scope.invokeApi(RVReservationSummarySrv.updateReservation, saveData, successCallBack, failureCallBack);
                 } else {
+                    updateAddonPostOptions();
                     var save = function() {
                         if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id || $scope.reservationData.group.id || $scope.reservationData.allotment.id) {
                             /**
