@@ -1040,7 +1040,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 if (isReset) {
                     $scope.payment.selectedPaymentCurrencyId = $rootScope.hotelCurrencyId;
                     $scope.payment.selectedPaymentCurrencySymbol = $rootScope.currencySymbol;
-                    $scope.payment.amount = parseFloat($scope.originalAmount);
+                    $scope.payment.amount = $scope.originalAmount;
                     $scope.feeData.calculatedFee = $scope.originalFee;
                 }
 
