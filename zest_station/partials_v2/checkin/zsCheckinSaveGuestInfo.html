@@ -15,7 +15,7 @@
                     </label>
                     <input type="text" ng-if="info.type === 'text'" ng-model='guestDetails[info.field]' ng-class="{'missing-guest-info': triedToSave && info.mandatory && !guestDetails[info.field]}"/>
                     <!-- select -->
-                    <select ng-if="info.type === 'select'" name="Country"  ng-model="guestDetails[info.field]" style="width: 40%;color: #000;" ng-options="item.value  as item.label for item in info.values"
+                    <select ng-if="info.type === 'select'" name="Country"  ng-model="guestDetails[info.field]" style="width: 40%;color: #000;" ng-options="item.value  as item.label | translate for item in info.values"
                       ng-class="{'missing-guest-info': triedToSave && info.mandatory && !guestDetails[info.field]}">
                         <option value="">{{'SELECT' | translate}}</option>
                     </select>
