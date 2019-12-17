@@ -101,5 +101,11 @@ angular.module('sntRover')
                 $scope.callAPI(RVNightlyDiarySrv.unAssignRoom, options );
             };
 
+            /*
+             * Set time from rvNightlyDiarySetTimePopup.
+             */
+            $scope.addListener('TRIGGER_MOVE_ROOM', function () {
+                $scope.moveRoomButtonClick();
+            });
         }
 ]);

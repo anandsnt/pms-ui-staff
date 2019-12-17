@@ -178,11 +178,15 @@ angular.module('sntRover')
                         }
                         // Handle reservation selection.
                         if (roomId && reservationId) {
-                            var reservationList = _.find($scope.diaryData.reservationsList.rooms, function(item) { return item.id === roomId}),
+                            var reservationList = _.find($scope.diaryData.reservationsList.rooms, function(item) { return item.id === roomId }),
                                 reservation = _.find(reservationList.reservations, function(item) { return item.id === reservationId }),
                                 roomObj = { id: roomId };
 
                             selectReservation('', reservation, roomObj);
+                            // Handle Navigation from N-diary with Move action.
+                            if ($stateParams.action === 'TRIGGER_MOVE_ROOM') {
+                                $scope.$broadcast('TRIGGER_MOVE_ROOM');
+                            }
                         }
                     },
                     postData = {
