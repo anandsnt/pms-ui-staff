@@ -34,7 +34,7 @@
                                     <em>{{ addon.description }}</em>
                                 </div>
                                 <div class="price">
-                                    <span class="value">{{currencySymbol}}{{ addon.price | number : 2}}</span>
+                                   <span class="value" ng-bind-html="addon.price | sntCurrency:this"></span>
                                    <span class="amount-type">{{ addon.amountTypeDesc | uppercase}}</span>
                                    <span class="post-type">{{ addon.postTypeDesc | uppercase}}</span>
                                 </div>
