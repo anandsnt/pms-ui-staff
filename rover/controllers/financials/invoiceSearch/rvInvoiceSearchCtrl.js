@@ -36,7 +36,7 @@ sntRover.controller('RVInvoiceSearchController',
 		};
 
 		$scope.shouldShowAccountInvoices =  function() {
-			return (_.findWhere($scope.filterOptions, {"name": "Reservation Invoices"})).id === $scope.invoiceSearchData.filter_id;
+			return (_.findWhere($scope.filterOptions, {"name": "Account Invoices"})).id === $scope.invoiceSearchData.filter_id;
 		};
 
 		$scope.shouldShowReservationReceipts =  function() {
