@@ -1025,7 +1025,7 @@ angular.module('sntRover')
                  */
                 $scope.addListener('TOGGLE_BOOK_AVAILABLE', callbackForBookedOrAvailableListner);
 
-                if ($stateParams.action === 'SELECT_RESERVATION') {
+                if ($stateParams.action === 'SELECT_RESERVATION' || $stateParams.action === 'TRIGGER_MOVE_ROOM') {
                     var reservationId = parseInt($stateParams.reservation_id),
                         roomId = parseInt($stateParams.room_id);
 
