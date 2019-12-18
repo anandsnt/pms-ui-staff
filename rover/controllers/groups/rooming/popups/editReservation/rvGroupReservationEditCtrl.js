@@ -277,6 +277,8 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
                         closeByEscape: true,
                         scope: $scope
                     });
+                } else {
+                    $scope.errorMessage = error; 
                 }
 
             };
