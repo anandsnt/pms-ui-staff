@@ -823,6 +823,19 @@ angular.module('sntRover')
         });
 	    }.bind($scope.gridProps);
 
+        $scope.moveRoomButtonClick = function() {
+            var reservation     = this.currentResizeItem,
+                reservationId   = reservation.reservation_id,
+                roomId = reservation.room_id;
+            
+            $state.go('rover.nightlyDiary', {
+                start_date: $scope.gridProps.filter.arrival_date,
+                reservation_id: reservationId,
+                room_id: roomId,
+                action: 'TRIGGER_MOVE_ROOM'
+            });
+        }.bind($scope.gridProps);
+
 	    $scope.unassignRoom = function() {
 
 	    	if (this.currentResizeItem.cannot_move_room) {
