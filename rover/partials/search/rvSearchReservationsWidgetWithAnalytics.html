@@ -171,10 +171,17 @@
 		    <div class="entry room-types" ng-if="!dashboardFilter.isManagerDashboard">
 		        <div class="select with-label">
 		            <label for="room-type">Room Type</label>
-		            <select id="room-type" ng-model="dashboardFilter.selectedRoomType" ng-change="onAnlayticsRoomTypeChange()">
+		            <select id="room-type" ng-model="room_type_id" ng-change="onAnlayticsRoomTypeChange()"  ng-if="dashboardFilter.selectedAnalyticsMenu !== 'FO_ARRIVALS'">
 		                <option value="" selected="" translate>SHOW_ALL</option>
-		                <option value="{{::roomType.code}}" ng-repeat="roomType in ::roomTypes track by $index">{{::roomType.name}}</option>
+		                <option value="{{::roomType.id}}" ng-repeat="roomType in ::roomTypes track by $index">{{::roomType.name}}</option>
 		            </select>
+		            <!-- Show shortage in rooms inspected based on arrivals -->
+			        <select id="room-type" ng-model="dashboardFilter.selectedRoomType" ng-change="onAnlayticsRoomTypeChange()"
+			        ng-if="dashboardFilter.selectedAnalyticsMenu === 'FO_ARRIVALS'">
+			            <option value="" selected="" translate>SHOW_ALL</option>
+			            <option value="{{roomType.id}}" ng-repeat="roomType in roomTypes | orderBy: '-overBooking' ">{{roomType.name}} {{ roomType.overBooking > 0 ?  
+			               '....(+' + roomType.overBooking + ' rooms)' : '' }}</option>
+			        </select>
 		        </div>
 		    </div>
 

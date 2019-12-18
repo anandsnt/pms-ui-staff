@@ -442,9 +442,11 @@ sntRover.controller('RVdashboardController',
                     $scope.roomTypesForWorkPrioriy = [];
                     _.each($scope.roomTypes, function(roomType) {
                         roomType.shortage = 0;
+                        roomType.overBooking = 0;
                         _.each(calculatedRoomTypes, function(calculatedRoomType) {
                             if (roomType.code === calculatedRoomType.code) {
                                 roomType.shortage = calculatedRoomType.shortage;
+                                roomType.overBooking = calculatedRoomType.overBooking;
                             }
                         });
                     });

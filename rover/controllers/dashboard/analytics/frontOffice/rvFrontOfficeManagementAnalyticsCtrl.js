@@ -14,7 +14,8 @@ angular.module('sntRover')
                 "Clean": "bar bar-green",
                 "Inspected": "bar bar-green bar-dark",
                 "Dirty": "bar bar-red",
-                "Pickup": "bar bar-orange"
+                "Pickup": "bar bar-orange",
+                "OverBooking": "bar bar-warning"
             };
 
             var colorMappings = {
@@ -29,7 +30,8 @@ angular.module('sntRover')
                 "rooms_clean": rvAnalyticsHelperSrv.gradientMappings['green'],
                 "rooms_inspected": rvAnalyticsHelperSrv.gradientMappings['greenDark'],
                 "rooms_dirty": rvAnalyticsHelperSrv.gradientMappings['red'],
-                "rooms_pickup": rvAnalyticsHelperSrv.gradientMappings['orange']
+                "rooms_pickup": rvAnalyticsHelperSrv.gradientMappings['orange'],
+                "rooms_overbooked_rooms": rvAnalyticsHelperSrv.gradientMappings['warning']
             };
 
             $scope.drawArrivalManagementChart = function(chartDetails) {
@@ -304,12 +306,36 @@ angular.module('sntRover')
                     }]
                 };
 
+                var marginTopForRightSideDeps;
+
+                var vacantRoomsData = _.find(chartDetails.chartData.data, function(chart) {
+                    return chart.type === "rooms";
+                });
+                var overBookedRooms = _.find(vacantRoomsData.contents.right_side, function(chart) {
+                    return chart.type === "overbooked_rooms";
+                });
+
+                if (overBookedRooms) {
+                    var pendingInspected = {
+                        "id": "right-legend-pending-inspected",
+                        "class": cssClassMappings["OverBooking"],
+                        "label": "OverBooking",
+                        "count": overBookedRooms.count,
+                        "item_name": colorMappings.rooms_overbooked_rooms.item_name
+                    };
+
+                    vacantRightLegendData.items.push(pendingInspected);
+                    marginTopForRightSideDeps = yBandwidth - 2 * singleLegendTitleHeightPlusMargin;
+                } else {
+                    marginTopForRightSideDeps = yBandwidth - singleLegendTitleHeightPlusMargin;
+                }
+
                 rvAnalyticsHelperSrv.addLegendItems(cssClassMappings, rightSideLegendDiv, vacantRightLegendData);
 
                 var departuresRightLegendData = {
                     "title": "Departures",
                     "id": "departures-right-title",
-                    "margin_top": yBandwidth - singleLegendTitleHeightPlusMargin,
+                    "margin_top": marginTopForRightSideDeps,
                     "items": [{
                         "id": "right-legend-pending",
                         "class": cssClassMappings["Pending"],
