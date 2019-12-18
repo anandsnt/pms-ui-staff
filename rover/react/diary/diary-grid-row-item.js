@@ -203,14 +203,11 @@ var GridRowItem = React.createClass({
             left = (start_time_ms - x_origin) * px_per_ms + 'px',
             is_balance_present = data.is_balance_present,
             is_room_locked = data.cannot_move_room,
+            isNightlyReservation = (typeof data.is_hourly !== 'undefined' && !data.is_hourly),
             is_vip = data.is_vip,
             show_outstanding_indicator = (data.reservation_status === 'check-in' || data.reservation_status === 'reserved') && is_balance_present,
             row_item_class = 'occupancy-block' + (state.editing ? ' editing' : '') +
                 (show_outstanding_indicator ? ' deposit-required' : '');
-
-        if (typeof data.is_hourly !== 'undefined' && !data.is_hourly) {
-            row_item_class += ' overlay';
-        }
 
         if (state.editing) {
             start_time_ms = state.currentResizeItem[m.start_date];
@@ -252,6 +249,14 @@ var GridRowItem = React.createClass({
             styleForRoomLocked.display = 'none';
             styleForRoomLocked.width = '0px';
         }
+
+        var styleForNightlyIcon = {};
+
+        if (this.props.data.is_hourly) {
+            styleForNightlyIcon.display = 'none';
+            styleForNightlyIcon.width = '0px';
+        }
+
         return React.createElement(GridRowItemDrag, {
                 key: data.key,
                 className: row_item_class,
@@ -270,6 +275,7 @@ var GridRowItem = React.createClass({
                 __onResizeCommand: props.__onResizeCommand,
                 show_outstanding_indicator: show_outstanding_indicator,
                 is_room_locked: is_room_locked,
+                isNightlyReservation: isNightlyReservation,
                 currentDragItem: props.currentResizeItem,
                 style: {
                     left: left,
@@ -285,7 +291,15 @@ var GridRowItem = React.createClass({
                         width: reservation_time_span + 'px'
                     }
                 },
-
+                React.DOM.span({
+                        className: 'name'
+                    },
+                    innerText,
+                    React.DOM.span({
+                        className: isNightlyReservation ? 'reservation-type' : '',
+                        style: styleForNightlyIcon
+                    }, isNightlyReservation ? '(N)': ''),
+                ''),
                 React.DOM.span({
                     className: show_outstanding_indicator ? 'deposit-icon' : '',
                     style: styleForDepositIcon
@@ -294,7 +308,6 @@ var GridRowItem = React.createClass({
                     className: is_room_locked ? 'icons icon-diary-lock' : '',
                     style: styleForRoomLocked
                 }, ''),
-                innerText,
                 React.DOM.span({
                     className: is_vip ? 'vip' : '',
                     style: styleForRoomLocked
