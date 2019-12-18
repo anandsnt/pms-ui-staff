@@ -160,7 +160,7 @@ angular.module('sntRover')
                 };
 
                 // Method to update room list data.
-                var fetchRoomListDataAndReservationListData = function (roomId, offset, reservation, room) {
+                var fetchRoomListDataAndReservationListData = function (roomId, offset, reservationId) {
                     var successCallBackFetchRoomList = function (data) {
                         $scope.diaryData.diaryRoomsList = data.roomList.rooms;
                         $scope.diaryData.reservationsList = data.reservationList;
@@ -176,18 +176,26 @@ angular.module('sntRover')
                         if (roomId) {
                             $scope.$broadcast('CLOSE_SEARCH_RESULT');
                         }
-                        // Select reservation
-                        if (reservation.id && room.id) {
-                            selectReservation('', reservation, room);
+                        // Handle reservation selection.
+                        if (roomId && reservationId) {
+                            var reservationList = _.find($scope.diaryData.reservationsList.rooms, function(item) { return item.id === roomId }),
+                                reservation = _.find(reservationList.reservations, function(item) { return item.id === reservationId }),
+                                roomObj = { id: roomId };
+
+                            selectReservation('', reservation, roomObj);
+                            // Handle Navigation from N-diary with Move action.
+                            if ($stateParams.action === 'TRIGGER_MOVE_ROOM') {
+                                $scope.$broadcast('TRIGGER_MOVE_ROOM');
+                            }
                         }
                     },
-                        postData = {
-                            ...getPaginationParams(offset),
-                            'start_date': $scope.diaryData.fromDate,
-                            'no_of_days': $scope.diaryData.numberOfDays,
-                            'selected_room_type_ids': $scope.diaryData.selectedRoomTypes,
-                            'selected_floor_ids': $scope.diaryData.selectedFloors
-                        };
+                    postData = {
+                        ...getPaginationParams(offset),
+                        'start_date': $scope.diaryData.fromDate,
+                        'no_of_days': $scope.diaryData.numberOfDays,
+                        'selected_room_type_ids': $scope.diaryData.selectedRoomTypes,
+                        'selected_floor_ids': $scope.diaryData.selectedFloors
+                    };
 
                     if ($scope.diaryData.isAssignRoomViewActive || $scope.diaryData.isMoveRoomViewActive) {
                         var roomTypeId = $scope.diaryData.availableSlotsForAssignRooms.roomTypeId;
@@ -810,12 +818,12 @@ angular.module('sntRover')
                  * To update diary data - rooms & reservations according to changed date constraints.
                  * @param {Number} RoomId - selected room id from search filters.
                 */
-                $scope.addListener('UPDATE_RESERVATIONLIST', function (event, roomId) {
+                $scope.addListener('UPDATE_RESERVATIONLIST', function (event, roomId, reservationId) {
                     if (!!roomId) {
                         $scope.$broadcast('RESET_RIGHT_FILTER_BAR');
                     }
                     cancelReservationEditing();
-                    fetchRoomListDataAndReservationListData(roomId);
+                    fetchRoomListDataAndReservationListData(roomId, null, reservationId);
                 });
 
                 $scope.addListener('UPDATE_UNASSIGNED_RESERVATIONLIST', function (event, action) {
@@ -1018,25 +1026,10 @@ angular.module('sntRover')
                 $scope.addListener('TOGGLE_BOOK_AVAILABLE', callbackForBookedOrAvailableListner);
 
                 if ($stateParams.action === 'SELECT_RESERVATION') {
-                    var reservation = {
-                        arrival_date: $stateParams.start_date,
-                        id: parseInt($stateParams.reservation_id),
-                        confirm_no: $stateParams.confirm_id,
-                        room_id: parseInt($stateParams.room_id),
-                        no_room_move: false,
-                        status: '',
-                        dept_date: '',
-                        arrival_time: '',
-                        dept_date: '',
-                        dept_time: ''
-                    },
-                    room = {
-                        id: parseInt($stateParams.room_id),
-                        room_no: $stateParams.room_no
-                    };
+                    var reservationId = parseInt($stateParams.reservation_id),
+                        roomId = parseInt($stateParams.room_id);
 
-                    $scope.diaryData.fromDate = $stateParams.start_date;
-                    fetchRoomListDataAndReservationListData($stateParams.room_id, null, reservation, room);
+                    fetchRoomListDataAndReservationListData(roomId, null, reservationId);
                 }
 
                 /**
