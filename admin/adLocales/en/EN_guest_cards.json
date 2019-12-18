@@ -46,4 +46,6 @@
 "DATE_OF_BIRTH": "Date Of Birth",
 "JOB_TITLE": "Job Title",
 "ID_ISSUE_DATE": "Id issue date",
-"ENTRY_DATE": "Entry date"
+"ENTRY_DATE": "Entry date",
+"PLACE_OF_ISSUE": "Place of Issue",
+"COUNTRY_OF_ISSUE": "Country of Issue"

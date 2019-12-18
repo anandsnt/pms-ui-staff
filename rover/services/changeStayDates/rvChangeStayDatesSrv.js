@@ -60,6 +60,10 @@ angular.module('sntRover').service('RVChangeStayDatesSrv', ['$q', 'rvBaseWebSrvV
             var url = '/staff/change_stay_dates/' + data.reservation_id + '/confirm';
 
             var postData = {"arrival_date": data.arrival_date, "dep_date": data.dep_date, "room_number": data.room_selected, "authorize_credit_card": data.authorize_credit_card, "is_cc_authorize_for_incidentals": data.is_cc_authorize_for_incidentals };
+
+            if (data.forcefully_overbook) {
+                postData.forcefully_overbook = data.forcefully_overbook;  
+            }
             var deferred = $q.defer ();
 
             RVBaseWebSrv.postJSON(url, postData).then(function(data) {

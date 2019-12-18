@@ -117,7 +117,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'spatz': 'Hotel Spatz',
             'lenaustrasse': 'Apartment City Lenaustrasse',
             'why-tysons': 'Why Hotel Tysons Corner',
-            'local-house': 'Local House'
+            'local-house': 'Local House',
+            'travel-24': 'Travel 24'
         };
 
         this.isThemeConfigured = function(theme) {
@@ -125,16 +126,22 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return typeof themeMappings[theme] !== 'undefined';
         };
         this.hotelTheme = '';
+        this.isZestStationEnabled = true;
         this.fetchSettings = function() {
             var deferred = $q.defer(),
                 url = '/api/hotel_settings/kiosk';
 
             zsBaseWebSrv.getJSON(url).then(function(data) {
-                // fetch hotel theme and set variable to this controller,
-                // then resolve the fetch settings
-                that.fetchHotelTheme(data, deferred);
-                // fetch Feature toggles and save in Srv for using in future.
-                that.retrieveFeatureToggles();
+                if (data.status && data.status === 'unauthorized') {
+                    that.isZestStationEnabled = false;
+                    deferred.resolve(data);
+                } else {
+                     // fetch hotel theme and set variable to this controller,
+                    // then resolve the fetch settings
+                    that.fetchHotelTheme(data, deferred);
+                    // fetch Feature toggles and save in Srv for using in future.
+                    that.retrieveFeatureToggles();
+                }
             }, function(data) {
                 deferred.reject(data);
             });

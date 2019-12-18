@@ -69,30 +69,7 @@ angular.module('sntRover')
 
                 // DEBUGING CODE
                 // chartDetails = rvAnalyticsHelperSrv.addRandomNumbersForTesting(chartDetails);
-
-                var arrivalsPendingPlusEarlyCheckin = _.find(chartDetails.chartData.data, function(chart) {
-                    return chart.type === "arrivals";
-                });
-                var arrivalsPendingPlusEarlyCheckinCount = _.reduce(arrivalsPendingPlusEarlyCheckin.contents.right_side, function(memo, item) {
-                    return memo.count + item.count;
-                });
-
-                var vacantRoomsData = _.find(chartDetails.chartData.data, function(chart) {
-                    return chart.type === "vacant";
-                });
-                var InspectedVacantRooms = vacantRoomsData.contents.right_side[0].count;
-
-                // if Inspected rooms are less than sum of Early checkin and remaining arrivals, we need to indicate the 
-                // remaining Inspected rooms that needs to be ready by the time guests arrives
-                if (arrivalsPendingPlusEarlyCheckinCount > InspectedVacantRooms) {
-                    var pendingInspectedRooms = {
-                        type: "pending_inspected_rooms",
-                        count: parseInt(arrivalsPendingPlusEarlyCheckinCount) - parseInt(InspectedVacantRooms)
-                    };
-
-                    vacantRoomsData.contents.right_side.push(pendingInspectedRooms);
-                };
-
+                
                 chartDetails = rvAnalyticsHelperSrv.processBiDirectionalChart(chartDetails);
 
                 var maxValueInBotheDirections = chartDetails.maxValueInOneSide;
@@ -324,12 +301,20 @@ angular.module('sntRover')
 
                 var marginTopForRightSideDeps;
 
-                if (arrivalsPendingPlusEarlyCheckinCount > InspectedVacantRooms) {
+
+                var vacantRoomsData = _.find(chartDetails.chartData.data, function(chart) {
+                    return chart.type === "vacant";
+                });
+                var shortageRooms = _.find(vacantRoomsData.contents.right_side, function(chart) {
+                    return chart.type === "pending_inspected_rooms";
+                });
+
+                if (shortageRooms) {
                     var pendingInspected = {
                         "id": "right-legend-pending-inspected",
                         "class": colorMappings.vacant_pending_inspected_rooms.legend_class,
                         "label": "Short",
-                        "count": parseInt(arrivalsPendingPlusEarlyCheckinCount) - parseInt(InspectedVacantRooms),
+                        "count": shortageRooms.count,
                         "item_name": colorMappings.vacant_pending_inspected_rooms.item_name
                     };
 

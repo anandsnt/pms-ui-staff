@@ -292,6 +292,9 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         resolve: {
             config: ['adInterfacesSrv', function(adInterfacesSrv) {
                 return adInterfacesSrv.getSettings('vectron');
+            }],
+            chargeCodes: ['ADChargeCodesSrv', function(ADChargeCodesSrv) {
+                return ADChargeCodesSrv.fetch();
             }]
         }
     });
@@ -967,6 +970,18 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             config: [
                 'adInterfacesSrv', function (adInterfacesSrv) {
                     return adInterfacesSrv.getSettings('staah');
+                }]
+        }
+    });
+
+    $stateProvider.state('admin.cegid', {
+        templateUrl: '/assets/partials/interfaces/cegid/adCegid.html',
+        controller: 'adCegidController',
+        url: '/cegid',
+        resolve: {
+            config: [
+                'adInterfacesSrv', function (adInterfacesSrv) {
+                    return adInterfacesSrv.getSettings('cegid');
                 }]
         }
     });
