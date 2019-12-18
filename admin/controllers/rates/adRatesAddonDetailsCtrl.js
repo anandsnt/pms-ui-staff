@@ -40,13 +40,7 @@ admin.controller('ADRatesAddonDetailsCtrl', [
             };
 
             $scope.isConnectedToPMS = !$rootScope.isStandAlone;
-
             $scope.allowanceRefundOptions = _.range(0, 110, 10);
-
-            if (!hotelSettings.is_multi_currency_enabled) {
-                hotelSettings.currency_list_for_rate.push(hotelSettings.currency);
-            }
-
             $scope.rateCurrencyList = hotelSettings.currency_list_for_rate;
 
             if ($scope.isAddMode) {
@@ -56,14 +50,12 @@ admin.controller('ADRatesAddonDetailsCtrl', [
             }
 
             $scope.onLocaleChange();
-
         };
 
         $scope.back = function() {
             $state.go ('admin.ratesAddons');
         };
 
-        
         $scope.showChargeFullWeeksOnly = function() {
             if (_.isEmpty($scope.singleAddon)) {
                 return false;
