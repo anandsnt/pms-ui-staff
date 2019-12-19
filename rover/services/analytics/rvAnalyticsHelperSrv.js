@@ -190,7 +190,7 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 
 		bars.append("rect")
 			.attr("class", function (item) {
-				return item.type === "pending_inspected_rooms" ? "bar-warning rect-bars" : "rect-bars";
+				return (item.type === "pending_inspected_rooms"  || item.type === "overbooked_rooms")? "bar-warning rect-bars" : "rect-bars";
 			})
 			.attr("height", yScale.bandwidth())
 			.attr("x", function(item) {
