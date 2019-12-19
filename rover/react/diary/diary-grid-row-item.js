@@ -209,10 +209,10 @@ var GridRowItem = React.createClass({
             row_item_class = 'occupancy-block' + (state.editing ? ' editing' : '') +
                 (show_outstanding_indicator ? ' deposit-required' : '');
 
-        if (typeof data.is_hourly !== 'undefined' && !data.is_hourly) {
+        if (state.editing && typeof data.is_hourly !== 'undefined' && !data.is_hourly) {
             row_item_class += ' overlay';
         }
-        
+
         if (state.editing) {
             start_time_ms = state.currentResizeItem[m.start_date];
             end_time_ms = state.currentResizeItem[m.end_date];
