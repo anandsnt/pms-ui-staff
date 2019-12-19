@@ -179,23 +179,56 @@ angular.module('sntRover')
 				};
 
 				var labelMappings;
+				var hasLastYearData = true;
+				var getElementSuffixesOnChart = function() {
+					// The elements on the chart for labels will have ids in the following format
+					// left-top-rev-par-rect ,  left-top-rev-adr-label1 etc where position is left-top
+
+					var elementsSuffixOnChart = [	"-adr-rect",
+													"-adr-label1",
+													"-adr-label2",
+													"-rev-par-rect",
+													"-rev-par-label1",
+													"-rev-par-label2"
+												];
+
+					if (hasLastYearData) {
+						var lastYearSuffixOnChart = [	"-adr-rect-2",
+														"-adr-labe3",
+														"-adr-label4",
+														"-rev-par-rect-2",
+														"-rev-par-label3",
+														"-rev-par-label4"
+													];
+
+						elementsSuffixOnChart = elementsSuffixOnChart.concat(lastYearSuffixOnChart);
+					}
+
+					return elementsSuffixOnChart;
+				};
+
+				var bindClickEvents = function (position, suffix) {
+					$("#" + position + suffix).click(onClickOnLabel);
+				};
+
+				var unBindClickEventsAndRemove = function (position, suffix) {
+					$("#" + position + suffix).unbind("click");
+					$("#" + position + suffix).remove();
+				};
 
 				var addClickEvents = function(position, isRedraw) {
 					// To make sure the elements are drawn before click event is attached
 					var animationDuration = isRedraw ? 250 : 1050;
+					var elementsSuffixOnChart = getElementSuffixesOnChart();
 
 					$timeout(function() {
-						$("#" + position + "-adr-rect").click(onClickOnLabel);
-						$("#" + position + "-adr-label1").click(onClickOnLabel);
-						$("#" + position + "-adr-label2").click(onClickOnLabel);
-						$("#" + position + "-rev-par-rect").click(onClickOnLabel);
-						$("#" + position + "-rev-par-label1").click(onClickOnLabel);
-						$("#" + position + "-rev-par-label2").click(onClickOnLabel);
+						_.each(elementsSuffixOnChart, function(suffix){
+							bindClickEvents(position, suffix)
+						});
 					}, animationDuration);
 				};
 
-				var onClickOnLabel = function(e) {
-					console.log(e.target.id);
+				var getQuadrantPosition = function (e) {
 					var position;
 
 					if (e.target.id && e.target.id.includes("left-top")) {
@@ -207,29 +240,215 @@ angular.module('sntRover')
 					} else if (e.target.id && e.target.id.includes("right-bottom")) {
 						position = "right-bottom";
 					}
+
+					return position;
+				};
+
+
+				var getOccupanyDetailsElements = function() {
+					var occupancyLabelElements = ['-occupancy-group',
+						'-occupancy-rect',
+						'-occupancy-label-1',
+						'-occupancy-label-2'
+					];
+
+					if (hasLastYearData) {
+						var lastYearOccupancyElements = ['-occupancy-rect-2',
+							'-occupancy-label-3',
+							'-occupancy-label-4'
+						];
+						occupancyLabelElements = occupancyLabelElements.concat(lastYearOccupancyElements);
+					}
+
+					return occupancyLabelElements;
+				};
+
+				var deleteExistingOccupanyLabel = function(position) {
+
+					var occupancyLabelElements = getOccupanyDetailsElements();
+
+					_.each(occupancyLabelElements, function(suffix) {
+						if ($("#" + position + suffix)) {
+							$("#" + position + suffix).remove();
+						}
+					});
+				};
+
+				var onClickOnOccupanyLabels = function (e) {
+					var position = getQuadrantPosition(e);
+
+					deleteExistingOccupanyLabel(position);
+				};
+
+				var addClickEventsForOccupanyLabels = function(position) {
+					var occupancyLabelElements = getOccupanyDetailsElements();
+
+					_.each(occupancyLabelElements, function(suffix) {
+						$("#" + position + suffix).click(onClickOnOccupanyLabels);
+					});
+				};
+
+
+				var onClickOnOccupany = function (e) {
+
+					var position = getQuadrantPosition(e);
+					var occupancy;
+
+					if (position === "left-top") {
+						occupancy = parseFloat(chartData.yesterday.occupancy);
+					} else if (position === "right-top") {
+						occupancy = parseFloat(chartData.today.occupancy);
+					} else if (position === "left-bottom") {
+						occupancy = parseFloat(chartData.mtd.occupancy);
+					} else if (position === "right-bottom") {
+						occupancy = parseFloat(chartData.ytd.occupancy);
+					}
+					occupancy = occupancy > 25 ? occupancy : parseInt(occupancy);
+					deleteExistingOccupanyLabel(position);
+					// var xValue = 0.5 + (parseInt(label.value) - parseInt(roundedInvidual)) * valueOfOne;
+
+					// xValue = isLeftSide ? -1 * xValue : xValue;
+					// var rectYvalue = 0.5 + (parseInt(label.value) - parseInt(roundedInvidual)) * valueOfOne;
+
+					// rectYvalue = isDownSide ? -1 * rectYvalue : rectYvalue;
+
+					// var rectWidth = x(0.3) - x(0);
+					// var xOffset = x(xValue) - rectWidth / 2,
+					// 	yOffset = y(rectYvalue) - (y(0) - y(0.15)) / 2,
+
+					// 	xOffsetText = x(xValue) - rectWidth / 4,
+
+					// 	yOffsetText = y(rectYvalue) - (y(0) - y(0.15)) / 6,
+					// 	yOffsetText2 = y(rectYvalue) + (y(0) - y(0.15)) / 4;
+
+					var rectWidth = x(0.3) - x(0);
+					var xOffset = x(-1 * occupancy * 0.1 / 25);
+					var yOffset = y(occupancy * 0.1 / 25) - ( y(0) - y(0.15));
+					var xOffsetText = xOffset + rectWidth / 4;
+					var yOffsetText = yOffset + (y(0) - y(0.25)) / 4;
+					var yOffsetText2 = yOffsetText + (y(0) - y(0.25)) / 4;
+
+
+					var textLabelGroup = svg.append("g")
+										.attr('id', position + '-occupancy-group');
+					var animationDuration = 200;
+
+					textLabelGroup.append('rect')
+						.attr("class", "rect-bars")
+						.attr('x', function(d, i) {
+							return xOffset; // xOffset + some margin
+						})
+						.style("margin-right", "10px")
+						.attr('y', function(d) {
+							return yOffset;
+						})
+						.transition()
+						.duration(animationDuration)
+						.attr('width', function() {
+							return rectWidth;
+						})
+						.attr('height', function() {
+							return y(0) - y(0.15);
+						})
+						.attr("id", position + "-occupancy-rect")
+						.attr("fill", "white")
+						.attr("stroke-width", "1")
+						.attr("stroke", "#000")
+						.style("cursor", "pointer");
+
+
+					textLabelGroup.append("text")
+						.attr('x', xOffsetText)
+						.attr('y', yOffsetText)
+						.attr("id", position + "-occupancy-label-1")
+						.style("font-size", "15px")
+						.style("fill", "black")
+						.text("ACTUAL")
+						.style("cursor", "pointer");
+
+					textLabelGroup.append("text")
+						.attr('x', xOffsetText)
+						.attr('y', yOffsetText2)
+						.attr("id", position + "-occupancy-label-2")
+						.style("font-size", "15px")
+						.style("fill", "black")
+						.text(occupancy)
+						.style("cursor", "pointer");
+
+					if (hasLastYearData) {
+						var lastYearXoffset = xOffset + rectWidth;
+
+						textLabelGroup.append('rect')
+							.attr("class", "rect-bars")
+							.attr('x', function(d, i) {
+								return lastYearXoffset; // xOffset + some margin
+							})
+							.style("margin-right", "10px")
+							.attr('y', function(d) {
+								return yOffset;
+							})
+							.transition()
+							.duration(animationDuration)
+							.attr('width', function() {
+								return rectWidth;
+							})
+							.attr('height', function() {
+								return y(0) - y(0.15);
+							})
+							.attr("id", position + "-occupancy-rect-2")
+							.attr("fill", "white")
+							.attr("stroke-width", "1")
+							.attr("stroke", "#000")
+							.style("cursor", "pointer");
+
+						var lastYearTextXoffset = lastYearXoffset + rectWidth / 8;
+
+						textLabelGroup.append("text")
+							.attr('x', lastYearTextXoffset)
+							.attr('y', yOffsetText)
+							.attr("id", position + "-occupancy-label-3")
+							.style("font-size", "12px")
+							.style("fill", "black")
+							.text("FROM LAST YEAR")
+							.style("cursor", "pointer");
+
+						textLabelGroup.append("text")
+							.attr('x', lastYearTextXoffset)
+							.attr('y', yOffsetText2)
+							.attr("id", position + "-occupancy-label-4")
+							.style("font-size", "15px")
+							.style("fill", "black")
+							.text("-$300")
+							.style("cursor", "pointer");
+					}
+
+					addClickEventsForOccupanyLabels(position);
+				
+				};
+
+				var addClickEventForOccupany = function(id) {
+					if (hasLastYearData) {
+						$("#" + id).click(onClickOnOccupany);
+					}
+				};
+
+				var onClickOnLabel = function(e) {
+					var position = getQuadrantPosition(e);
 					var labelAttrs = labelMappings[position]
 
 					if (position) {
-						$("#" + position + "-adr-rect").unbind("click");
-						$("#" + position + "-adr-label1").unbind("click");
-						$("#" + position + "-adr-label2").unbind("click");
-						$("#" + position + "-rev-par-rect").unbind("click");
-						$("#" + position + "-rev-par-label1").unbind("click");
-						$("#" + position + "-rev-par-label2").unbind("click");
+						var elementsSuffixOnChart = getElementSuffixesOnChart();
 
-						$("#" + position + "-adr-rect").remove();
-						$("#" + position + "-adr-label1").remove();
-						$("#" + position + "-adr-label2").remove();
-						$("#" + position + "-rev-par-rect").remove();
-						$("#" + position + "-rev-par-label1").remove();
-						$("#" + position + "-rev-par-label2").remove();
+						_.each(elementsSuffixOnChart, function(suffix){
+							unBindClickEventsAndRemove(position, suffix)
+						});
 
 						if (e.target.id.includes("rev-par")) {
-							addLabelToChart(labelAttrs.revPar, labelAttrs.isLeftSide, labelAttrs.isDownSide, true);
-							addLabelToChart(labelAttrs.adr, labelAttrs.isLeftSide, labelAttrs.isDownSide, true);
+							addDualLabelToChart(labelAttrs.revPar, labelAttrs.isLeftSide, labelAttrs.isDownSide, true);
+							addDualLabelToChart(labelAttrs.adr, labelAttrs.isLeftSide, labelAttrs.isDownSide, true);
 						} else {
-							addLabelToChart(labelAttrs.adr, labelAttrs.isLeftSide, labelAttrs.isDownSide, true);
-							addLabelToChart(labelAttrs.revPar, labelAttrs.isLeftSide, labelAttrs.isDownSide, true);
+							addDualLabelToChart(labelAttrs.adr, labelAttrs.isLeftSide, labelAttrs.isDownSide, true);
+							addDualLabelToChart(labelAttrs.revPar, labelAttrs.isLeftSide, labelAttrs.isDownSide, true);
 						}
 
 						addClickEvents(position, true);
@@ -237,7 +456,7 @@ angular.module('sntRover')
 				};
 
 
-				var addLabelToChart = function(label, isLeftSide, isDownSide, isRedraw) {
+				var addDualLabelToChart = function(label, isLeftSide, isDownSide, isRedraw) {
 
 					if (parseFloat(label.value) === 0) {
 						// don't Draw
@@ -317,7 +536,53 @@ angular.module('sntRover')
 						.text($rootScope.currencySymbol + labelText)
 						.style("cursor", "pointer");
 
-				}
+					if (hasLastYearData) {
+						var lastYearXoffset = xOffset + rectWidth;
+
+						textLabelGroup.append('rect')
+							.attr("class", "rect-bars")
+							.attr('x', function(d, i) {
+								return lastYearXoffset; // xOffset + some margin
+							})
+							.style("margin-right", "10px")
+							.attr('y', function(d) {
+								return yOffset;
+							})
+							.transition()
+							.duration(animationDuration)
+							.attr('width', function() {
+								return rectWidth;
+							})
+							.attr('height', function() {
+								return y(0) - y(0.15);
+							})
+							.attr("id", label.id + "-rect-2")
+							.attr("fill", "#EFEFEF")
+							.attr("stroke-width", "1")
+							.attr("stroke", "#000")
+							.style("cursor", "pointer");
+
+						var lastYearTextXoffset = lastYearXoffset + rectWidth / 8;
+
+						textLabelGroup.append("text")
+							.attr('x', lastYearTextXoffset)
+							.attr('y', yOffsetText)
+							.attr("id", label.id + "-label3")
+							.style("font-size", "12px")
+							.style("fill", "black")
+							.text("FROM LAST YEAR")
+							.style("cursor", "pointer");
+
+						textLabelGroup.append("text")
+							.attr('x', lastYearTextXoffset)
+							.attr('y', yOffsetText2)
+							.attr("id", label.id + "-label4")
+							.style("font-size", "15px")
+							.style("fill", "black")
+							.text("-$300")
+							.style("cursor", "pointer");
+					}
+				};
 
 				var lowestValue = maxValueForChart / 5;
 				var oneDivisonConversion = .0001;
@@ -331,7 +596,8 @@ angular.module('sntRover')
 				attr("cx", x(-1 * yesterDaysOccupany * 0.1 / 25))
 					.attr("cy", y(yesterDaysOccupany * 0.1 / 25))
 					.attr("r", yesterDaysOccupany > 25 ? 8 : 4)
-					.attr("fill", "#E63838");
+					.attr("fill", "#E63838")
+					.attr("id", "left-top-occupany");
 
 				var leftTopQuadrantOccupany = {
 					"type": "occupany",
@@ -341,16 +607,18 @@ angular.module('sntRover')
 				};
 
 				addTextToTheChart(leftTopQuadrantOccupany, true, false);
+				addClickEventForOccupany("left-top-occupany");
 
 				var leftTopQuadrantADR = {
 					"top": y(0.6) + "px",
 					"backgroundColor": "#E63838",
 					"label": "ADR",
 					"value": chartData.yesterday.adr,
+					"value_last_year": "-$300",
 					"id": "left-top-adr"
 				};
 
-				addLabelToChart(leftTopQuadrantADR, true, false);
+				addDualLabelToChart(leftTopQuadrantADR, true, false);
 
 				var leftTopQuadrantRevPar = {
 					"backgroundColor": "#E63838",
@@ -359,7 +627,7 @@ angular.module('sntRover')
 					"id": "left-top-rev-par"
 				};
 
-				addLabelToChart(leftTopQuadrantRevPar, true, false);
+				addDualLabelToChart(leftTopQuadrantRevPar, true, false);
 				addClickEvents("left-top", false);
 
 
@@ -375,7 +643,8 @@ angular.module('sntRover')
 				attr("cx", x(todaysOccupany * 0.1 / 25))
 					.attr("cy", y(todaysOccupany * 0.1 / 25))
 					.attr("r", todaysOccupany > 25 ? 8 : 4)
-					.attr("fill", "#89BD55");
+					.attr("fill", "#89BD55")
+					.attr("id", "right-top-occupany");;
 
 				var rightTopQuadrantOccupany = {
 					"type": "occupany",
@@ -385,6 +654,7 @@ angular.module('sntRover')
 				};
 
 				addTextToTheChart(rightTopQuadrantOccupany, false, false);
+				addClickEventForOccupany("right-top-occupany");
 
 				var rightTopQuadrantAdr = {
 					"class": "bottomRight",
@@ -403,8 +673,8 @@ angular.module('sntRover')
 					"id": "right-top-rev-par"
 				};
 
-				addLabelToChart(rightTopQuadrantAdr, false, false);
-				addLabelToChart(rightTopQuadrantRevPar, false, false);
+				addDualLabelToChart(rightTopQuadrantAdr, false, false);
+				addDualLabelToChart(rightTopQuadrantRevPar, false, false);
 				addClickEvents("right-top", false);
 
 				/**  ****************************  Right Top Quadrant ends here ******************************/
@@ -419,7 +689,8 @@ angular.module('sntRover')
 				attr("cx", x(-1 * mtdOccupany * 0.1 / 25))
 					.attr("cy", y(-1 * mtdOccupany * 0.1 / 25))
 					.attr("r", mtdOccupany > 25 ? 8 : 4)
-					.attr("fill", "#F6991B");
+					.attr("fill", "#F6991B")
+					.attr("id", "left-bottom-occupany");;
 
 				var leftBottomOccupancy = {
 					"type": "occupany",
@@ -429,6 +700,7 @@ angular.module('sntRover')
 				};
 
 				addTextToTheChart(leftBottomOccupancy, true, true);
+				addClickEventForOccupany("left-bottom-occupany");
 
 				var leftBottomAdr = {
 					"class": "bottomRight",
@@ -438,7 +710,7 @@ angular.module('sntRover')
 					"value": chartData.mtd.adr,
 					"id": "left-bottom-adr"
 				};
-				addLabelToChart(leftBottomAdr, true, true);
+				addDualLabelToChart(leftBottomAdr, true, true);
 
 				var leftBottomRevPar = {
 					"class": "bottomRight",
@@ -449,7 +721,7 @@ angular.module('sntRover')
 					"id": "left-bottom-rev-par"
 				};
 
-				addLabelToChart(leftBottomRevPar, true, true);
+				addDualLabelToChart(leftBottomRevPar, true, true);
 				addClickEvents("left-bottom", false);
 
 				/**  ****************************  Left Bottom Quadrant ends here ******************************/
@@ -462,7 +734,8 @@ angular.module('sntRover')
 				attr("cx", x(ytdOccupany * 0.1 / 25))
 					.attr("cy", y(-1 * ytdOccupany * 0.1 / 25))
 					.attr("r", ytdOccupany > 25 ? 8 : 4)
-					.attr("fill", "#497D8E");
+					.attr("fill", "#497D8E")
+					.attr("id", "right-bottom-occupany");;
 
 				var rightBottomOccupancy = {
 					"type": "occupany",
@@ -471,7 +744,8 @@ angular.module('sntRover')
 					"yOffset": y(-1 * ytdOccupany * 0.1 / 25)
 				};
 
-				addTextToTheChart(rightBottomOccupancy, false, true)
+				addTextToTheChart(rightBottomOccupancy, false, true);
+				addClickEventForOccupany("right-bottom-occupany");
 
 				var rightBottomAdr = {
 					"class": "bottomRight",
@@ -482,7 +756,7 @@ angular.module('sntRover')
 					"id": "right-bottom-adr"
 				};
 
-				addLabelToChart(rightBottomAdr, false, true);
+				addDualLabelToChart(rightBottomAdr, false, true);
 
 				var rightBottomRevPar = {
 					"class": "bottomRight",
@@ -493,7 +767,7 @@ angular.module('sntRover')
 					"id": "right-bottom-rev-par"
 				};
 
-				addLabelToChart(rightBottomRevPar, false, true);
+				addDualLabelToChart(rightBottomRevPar, false, true);
 				addClickEvents("right-bottom", false);
 
 				/**  ****************************  Right Bottom Quadrant ends here ******************************/
