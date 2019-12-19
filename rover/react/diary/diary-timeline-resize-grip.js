@@ -305,7 +305,6 @@ var TimelineResizeGrip = React.createClass({
 				classes             = "set-times " + label_class,
 				time_txt            = '';
 
-
 			if (currentResizeItem) {
 				var dateDirection = new Date(currentResizeItem[direction]);
 
@@ -334,6 +333,10 @@ var TimelineResizeGrip = React.createClass({
 
 			if (this.props.edit.active) {
 				classes += " editing";
+				// Disable ext-shortening for N-components.
+				if (!this.props.edit.originalItem.is_hourly) {
+					classes += ' disable-element';
+				}
 			}
 
 			return React.DOM.div({
