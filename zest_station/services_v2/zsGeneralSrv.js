@@ -119,7 +119,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'why-tysons': 'Why Hotel Tysons Corner',
             'local-house': 'Local House',
             'travel-24': 'Travel 24',
-            'sage-inn': 'Sage Inn'
+            'sage-inn': 'Sage Inn',
+            'hammetts': 'Hammetts Hotel'
         };
 
         this.isThemeConfigured = function(theme) {
