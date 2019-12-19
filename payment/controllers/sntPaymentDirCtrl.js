@@ -44,8 +44,6 @@ angular.module('sntPay').controller('sntPaymentController',
                 selectedPaymentCurrencySymbol: $rootScope.currencySymbol
             };
 
-            $scope.originalAmount = angular.copy($scope.amount);
-
             $scope.giftCard = {
                 number: '',
                 amountAvailable: false,
@@ -996,6 +994,7 @@ angular.module('sntPay').controller('sntPaymentController',
                     showFee: currFee.showFees,
                     feeChargeCode: currFee.feeChargeCode
                 };
+
                 $scope.originalFee = angular.copy($scope.feeData.calculatedFee);
             }
 
@@ -1028,8 +1027,8 @@ angular.module('sntPay').controller('sntPaymentController',
                 }
             };
 
-            //  Payment type change action
-            $scope.onPaymentInfoChange = function (isReset) {
+            // Payment type change action
+            $scope.onPaymentInfoChange = function(shouldReset) {
                 // NOTE: Fees information is to be calculated only for standalone systems
                 // TODO: See how to handle fee in case of C&P
                 // CICO-44719: No need to show add payment screen
@@ -1037,10 +1036,10 @@ angular.module('sntPay').controller('sntPaymentController',
                     return false;
                 }
 
-                if (isReset) {
+                if (shouldReset) {
                     $scope.payment.selectedPaymentCurrencyId = $rootScope.hotelCurrencyId;
                     $scope.payment.selectedPaymentCurrencySymbol = $rootScope.currencySymbol;
-                    $scope.payment.amount = parseFloat($scope.originalAmount);
+                    $scope.payment.amount = parseFloat(initialPaymentAmount);
                     $scope.feeData.calculatedFee = $scope.originalFee;
                 }
 
@@ -1054,7 +1053,7 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 var selectedPaymentType;
 
-                if (isReset && $scope.payment.isEditable && $scope.selectedPaymentType === 'GIFT_CARD') {
+                if (shouldReset && $scope.payment.isEditable && $scope.selectedPaymentType === 'GIFT_CARD') {
                     $scope.payment.amount = 0;
                 }
 
@@ -1077,7 +1076,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 // If the changed payment type is CC and payment gateway is MLI show CC addition options
                 // If there are attached cards, show them first
                 if (!!selectedPaymentType && selectedPaymentType.name === 'CC') {
-                    if (isReset && $scope.selectedPaymentType === 'CC' && $scope.hotelConfig.paymentGateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline) {
+                    if (shouldReset && $scope.selectedPaymentType === 'CC' && $scope.hotelConfig.paymentGateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline) {
                         changeToCardAddMode();
                     } else if (PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl) {
                         // Add to guestcard feature for C&P
@@ -1113,7 +1112,7 @@ angular.module('sntPay').controller('sntPaymentController',
             $scope.onPaymentCurrencyChange = function() {
                 $scope.payment.selectedPaymentCurrencySymbol = (_.find($scope.paymentCurrencyList, {"id": $scope.payment.selectedPaymentCurrencyId})).symbol;
                 var paramsToApi = {
-                    "amount": parseFloat($scope.originalAmount),
+                    "amount": parseFloat(initialPaymentAmount),
                     "fee": parseFloat($scope.originalFee),
                     "currency_id": parseInt($scope.payment.selectedPaymentCurrencyId),
                     "date": $rootScope.businessDate
@@ -1460,8 +1459,8 @@ angular.module('sntPay').controller('sntPaymentController',
              * @returns {undefined} undefined
              */
             function onAmountChange() {
-                $scope.payment.amount = $scope.amount || 0;
-                initialPaymentAmount = initialPaymentAmount ? initialPaymentAmount : angular.copy($scope.payment.amount);
+                $scope.payment.amount = parseFloat($scope.amount || 0);
+                initialPaymentAmount  = angular.copy($scope.payment.amount);
                 calculateFee();
             }
 
@@ -1626,9 +1625,6 @@ angular.module('sntPay').controller('sntPaymentController',
                     }, 300);
                 }
 
-                /**
-                 *
-                 */
                 if (!$scope.hotelConfig.isStandAlone &&
                     !isCardSelectionDisabled() &&
                     $scope.hotelConfig.paymentGateway !== 'CBA_AND_MLI' &&
@@ -1663,8 +1659,6 @@ angular.module('sntPay').controller('sntPaymentController',
                 if ($scope.selectedPaymentType === 'CC' && $scope.selectedCC && $scope.hotelConfig.paymentGateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline) {
                     $scope.payment.auth_code = $scope.selectedCC.auth_code;
                 }
-
             })();
-
         }
     ]);
