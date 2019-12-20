@@ -13,6 +13,8 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 		// Setting the CI / CO time
 		rvAnalyticsSrv.setHotelCiCoTime($rootScope.hotelDetails);
 		var initialBaseHrefValue = $('base').attr('href');
+		var perfomanceData;
+		var combinedPerfomanceData = {};
 
 		$scope.screenData = {
 			selectedChart: 'PERFOMANCE',
@@ -61,6 +63,7 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 				},
 				successCallBack: function(data) {
 					$('base').attr('href', '#');
+					perfomanceData = data;
 					$scope.screenData.analyticsDataUpdatedTime = moment().format("MM ddd, YYYY hh:mm:ss a");
 					clearAllExistingChartElements();
 					d3.select('#d3-plot').selectAll('svg').remove();
@@ -130,6 +133,8 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			clearAllExistingChartElements();
 			$scope.screenData.mainHeading = "";
 			if ($scope.screenData.selectedChart === 'PERFOMANCE') {
+				$scope.dashboardFilter.showFilters = false;
+				$scope.dashboardFilter.showLastYearData = false;
 				renderPerfomanceChart();
 			} else if ($scope.screenData.selectedChart === 'DISTRIBUTION') {
 				renderDistributionChart();
@@ -224,15 +229,61 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			drawChart();
 		};
 
+		var handleFilterChangeForPerfomanceChart = function() {
+			$('base').attr('href', initialBaseHrefValue);
+
+			var lastYeardate;
+
+			if ($scope.dashboardFilter.lastyearType === "SAME_DATE_LAST_YEAR" || $scope.dashboardFilter.lastyearType === "SAME_DAY_LAST_YEAR") {
+
+				lastYeardate = moment($scope.dashboardFilter.datePicked).subtract(1, 'years').format("YYYY-MM-DD");
+				console.log(lastYeardate)
+			}
+			var options = {
+				params: {
+					date: lastYeardate
+				},
+				successCallBack: function(lastYeardata) {
+					console.log(JSON.stringify(lastYeardata));
+					console.log(JSON.stringify(perfomanceData));
+
+					for (var key in perfomanceData) {
+						for (var key1 in lastYeardata) {
+							if (key === key1) {
+								combinedPerfomanceData[key] = perfomanceData[key];
+								combinedPerfomanceData[key].adr_diff = parseFloat(perfomanceData[key].adr) -
+							 										   parseFloat(lastYeardata[key].adr);
+								combinedPerfomanceData[key].rev_par_diff = parseFloat(perfomanceData[key].rev_par) -
+							 										   parseFloat(lastYeardata[key].rev_par);
+								combinedPerfomanceData[key].occupancy_diff = parseFloat(perfomanceData[key].occupancy) -
+							 										   parseFloat(lastYeardata[key].occupancy);
+							}
+						}
+					}
+
+					$('base').attr('href', '#');
+					clearAllExistingChartElements();
+					d3.select('#d3-plot').selectAll('svg').remove();
+					$scope.drawPerfomceChart(combinedPerfomanceData);
+					addChartHeading()
+				}
+			};
+
+			$scope.callAPI(rvManagersAnalyticsSrv.roomPerformanceKPR, options);
+		};
+
 		$scope.$on('ANALYTICS_FILTER_CHANGED',  function (){
 			console.log($scope.dashboardFilter);
+			if ($scope.screenData.selectedChart === 'PERFOMANCE') {
+				handleFilterChangeForPerfomanceChart();
+			}
 		});
 
 		(function() {
 			$scope.dashboardFilter.selectedAnalyticsMenu = "PERFOMANCE";
 			$scope.dashboardFilter.showFilters = false;
 			$scope.dashboardFilter.showLastYearData = false;
-			$scope.dashboardFilter.lastyearType = 'MIXED';
+			$scope.dashboardFilter.lastyearType = 'SAME_DAY_LAST_YEAR';
 			drawChart();
 		})();
 	}

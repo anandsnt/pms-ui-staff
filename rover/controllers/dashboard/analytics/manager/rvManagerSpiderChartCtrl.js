@@ -179,7 +179,7 @@ angular.module('sntRover')
 				};
 
 				var labelMappings;
-				var hasLastYearData = true;
+				var hasLastYearData = $scope.dashboardFilter.showFilters;
 				var getElementSuffixesOnChart = function() {
 					// The elements on the chart for labels will have ids in the following format
 					// left-top-rev-par-rect ,  left-top-rev-adr-label1 etc where position is left-top
@@ -292,16 +292,21 @@ angular.module('sntRover')
 				var onClickOnOccupany = function (e) {
 
 					var position = getQuadrantPosition(e);
-					var occupancy;
+					var occupancy,
+						occupancy_diff;
 
 					if (position === "left-top") {
 						occupancy = parseFloat(chartData.yesterday.occupancy);
+						occupancy_diff = parseFloat(chartData.yesterday.occupancy_diff);
 					} else if (position === "right-top") {
 						occupancy = parseFloat(chartData.today.occupancy);
+						occupancy_diff = parseFloat(chartData.today.occupancy_diff);
 					} else if (position === "left-bottom") {
 						occupancy = parseFloat(chartData.mtd.occupancy);
+						occupancy_diff = parseFloat(chartData.mtd.occupancy_diff);
 					} else if (position === "right-bottom") {
 						occupancy = parseFloat(chartData.ytd.occupancy);
+						occupancy_diff = parseFloat(chartData.ytd.occupancy_diff);
 					}
 					occupancy = occupancy > 25 ? occupancy : parseInt(occupancy);
 					deleteExistingOccupanyLabel(position);
@@ -412,13 +417,15 @@ angular.module('sntRover')
 							.text("FROM LAST YEAR")
 							.style("cursor", "pointer");
 
+						var occupancyDiff = parseFloat(occupancy_diff).toFixed(2);
+						
 						textLabelGroup.append("text")
 							.attr('x', lastYearTextXoffset)
 							.attr('y', yOffsetText2)
 							.attr("id", position + "-occupancy-label-4")
 							.style("font-size", "15px")
 							.style("fill", "black")
-							.text("-$300")
+							.text(occupancyDiff)
 							.style("cursor", "pointer");
 					}
 
@@ -573,13 +580,15 @@ angular.module('sntRover')
 							.text("FROM LAST YEAR")
 							.style("cursor", "pointer");
 
+						var diffText = parseFloat(label.diff).toFixed(2);
+
 						textLabelGroup.append("text")
 							.attr('x', lastYearTextXoffset)
 							.attr('y', yOffsetText2)
 							.attr("id", label.id + "-label4")
 							.style("font-size", "15px")
 							.style("fill", "black")
-							.text("-$300")
+							.text(diffText)
 							.style("cursor", "pointer");
 					}
 				};
@@ -615,7 +624,8 @@ angular.module('sntRover')
 					"label": "ADR",
 					"value": chartData.yesterday.adr,
 					"value_last_year": "-$300",
-					"id": "left-top-adr"
+					"id": "left-top-adr",
+					"diff": chartData.yesterday.adr_diff
 				};
 
 				addDualLabelToChart(leftTopQuadrantADR, true, false);
@@ -624,7 +634,8 @@ angular.module('sntRover')
 					"backgroundColor": "#E63838",
 					"label": "REVPAR",
 					"value": chartData.yesterday.rev_par,
-					"id": "left-top-rev-par"
+					"id": "left-top-rev-par",
+					"diff": chartData.yesterday.rev_par_diff
 				};
 
 				addDualLabelToChart(leftTopQuadrantRevPar, true, false);
@@ -661,7 +672,8 @@ angular.module('sntRover')
 					"backgroundColor": "#89BD55",
 					"label": "ADR",
 					"value": chartData.today.adr,
-					"id": "right-top-adr"
+					"id": "right-top-adr",
+					"diff": chartData.today.adr_diff
 				};
 
 				var rightTopQuadrantRevPar = {
@@ -670,7 +682,8 @@ angular.module('sntRover')
 					"backgroundColor": "#89BD55",
 					"label": "REVPAR",
 					"value": chartData.today.rev_par,
-					"id": "right-top-rev-par"
+					"id": "right-top-rev-par",
+					"diff": chartData.today.rev_par_diff
 				};
 
 				addDualLabelToChart(rightTopQuadrantAdr, false, false);
@@ -708,7 +721,8 @@ angular.module('sntRover')
 					"backgroundColor": "#F6991B",
 					"label": "ADR",
 					"value": chartData.mtd.adr,
-					"id": "left-bottom-adr"
+					"id": "left-bottom-adr",
+					"diff": chartData.mtd.adr_diff
 				};
 				addDualLabelToChart(leftBottomAdr, true, true);
 
@@ -718,7 +732,8 @@ angular.module('sntRover')
 					"backgroundColor": "#F6991B",
 					"label": "REVPAR",
 					"value": chartData.mtd.rev_par,
-					"id": "left-bottom-rev-par"
+					"id": "left-bottom-rev-par",
+					"diff": chartData.mtd.rev_par_diff
 				};
 
 				addDualLabelToChart(leftBottomRevPar, true, true);
@@ -753,7 +768,8 @@ angular.module('sntRover')
 					"backgroundColor": "#497D8E",
 					"label": "ADR",
 					"value": chartData.ytd.adr,
-					"id": "right-bottom-adr"
+					"id": "right-bottom-adr",
+					"diff": chartData.ytd.adr_diff
 				};
 
 				addDualLabelToChart(rightBottomAdr, false, true);
@@ -764,7 +780,8 @@ angular.module('sntRover')
 					"backgroundColor": "#497D8E",
 					"label": "REVPAR",
 					"value": chartData.ytd.rev_par,
-					"id": "right-bottom-rev-par"
+					"id": "right-bottom-rev-par",
+					"diff": chartData.mtd.rev_par_diff
 				};
 
 				addDualLabelToChart(rightBottomRevPar, false, true);
