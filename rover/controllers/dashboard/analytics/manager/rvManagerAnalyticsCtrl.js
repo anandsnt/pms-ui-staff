@@ -35,6 +35,7 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 
 		var clearAllExistingChartElements = function() {
 			d3.select('#d3-plot').selectAll('svg').remove();
+			d3.select('#d3-plot').selectAll('p').remove();
 			var divElements = d3.select('#d3-plot').selectAll('div');
 			if (divElements) {
 				divElements.remove();
@@ -45,6 +46,11 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			if (document.getElementById("right-side-legend")) {
 				document.getElementById("right-side-legend").innerHTML = "";
 			}
+		};
+
+		var addChartHeading = function() {
+			$( "#d3-plot" ).append( "<p><strong>" + $scope.screenData.mainHeading + "</strong></p>" );
+			$( "#d3-plot" ).append( "<p>Last update:"+ $scope.screenData.analyticsDataUpdatedTime + "</strong></p>");
 		};
 
 		var renderPerfomanceChart = function() {
@@ -59,6 +65,7 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 					clearAllExistingChartElements();
 					d3.select('#d3-plot').selectAll('svg').remove();
 					$scope.drawPerfomceChart(data);
+					addChartHeading()
 				}
 			};
 
@@ -85,6 +92,7 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 					$scope.screenData.analyticsDataUpdatedTime = moment().format("MM ddd, YYYY hh:mm:ss a");
 					clearAllExistingChartElements();
 					$scope.drawDistributionChart(data);
+					addChartHeading();
 				}
 			};
 
@@ -101,13 +109,23 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
                 successCallBack: function(data) {
                     clearAllExistingChartElements();
                     $scope.drawPaceChart(data);
+                    addChartHeading();
                 }
             };
             $scope.callAPI(rvManagersAnalyticsSrv.pace, options);
 			
 		};
 
+		var scrollToTop = function() {
+			var analyticsScroll = $scope.getScroller('analytics_scroller');
+
+			if (analyticsScroll) {
+				analyticsScroll.scrollTo(0, 0, 0);
+			}
+		};
+
 		var drawChart = function() {
+			scrollToTop();
 			$scope.screenData.hideChartData = true;
 			clearAllExistingChartElements();
 			$scope.screenData.mainHeading = "";
@@ -160,9 +178,9 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 
 		});
 
-		$scope.refreshChart = function() {
+		$scope.$on('REFRESH_ANALYTCIS_CHART', function(){
 			drawChart();
-		};
+		});
 		/*
 		 * Reload graph with date picker change
 		 */
@@ -206,8 +224,15 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			drawChart();
 		};
 
+		$scope.$on('ANALYTICS_FILTER_CHANGED',  function (){
+			console.log($scope.dashboardFilter);
+		});
+
 		(function() {
 			$scope.dashboardFilter.selectedAnalyticsMenu = "PERFOMANCE";
+			$scope.dashboardFilter.showFilters = false;
+			$scope.dashboardFilter.showLastYearData = false;
+			$scope.dashboardFilter.lastyearType = 'MIXED';
 			drawChart();
 		})();
 	}

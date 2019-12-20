@@ -1,8 +1,4 @@
-<div class="wrapper" id="wrapper" style="padding-top: 10px;">
-    <h2>
-        {{ screenData.mainHeading }}
-    </h2>
-    <p ng-if="!screenData.hideChartData">Last update: {{ screenData.analyticsDataUpdatedTime }}</p>
+<div class="wrapper" id="wrapper">
     <!-- Chart -->
     <div class="analytics-chart" ng-class="{ 'with-legend-left' : screenData.selectedChart === 'FO_ARRIVALS' }" style="margin-top: 0px;">
         <dl class="chart-legend legend-left" id="left-side-legend" ng-if="screenData.selectedChart === 'FO_ARRIVALS'">
@@ -18,10 +14,10 @@
                     <input id="show-remaining" type="checkbox" ng-model="screenData.showPreviousDayData" ng-change="previousDaySelectionChanged()">
                     Show Day Before
                 </label> -->
-                <button type="button" class="button white refresh-chart" ng-click="refreshChart()">
+               <!--  <button type="button" class="button white refresh-chart" ng-click="refreshChart()">
                     <span class="icons icon-reset"></span>
                     Refresh Chart
-                </button>
+                </button> -->
             </div>
 
             <svg>

@@ -1,0 +1,71 @@
+<!-- Filters -->
+<form method="get" name="dashboard-search-form" id="dashboard-search-form" class="search-form dashboard-analytics has-dates has-room-types" data-search-for="analytics" role="search">
+
+<!-- <div id="dashboard-search-form" class="search-form dashboard-analytics" role="search"> -->
+    <!-- Switch between Analytics and buttons view -->
+    <div class="entry switch ng-scope">
+        <div class="switch-button off" ng-class="{ 'on' : !dashboardFilter.analyticsActive }">
+            <input id="analytics-toggle" value="" type="checkbox" ng-click="toggleAnalyticsView()" checked="">
+            <label class="data-off">
+                <span class="value">SUMMARY</span>
+                <span class="switch-icon">ANALYTICS</span>
+            </label>
+            <label class="data-on">
+                <span class="switch-icon">SUMMARY</span>
+                <span class="value">ANALYTICS</span>
+            </label>
+        </div>
+    </div>
+    <!-- Select what chart to display -->
+    <div class="entry options">
+        <div class="select with-label">
+            <label for="showing">Showing</label>
+            <select id="showing" ng-model="dashboardFilter.selectedAnalyticsMenu" ng-change="changeAnalyticsView(dashboardFilter.selectedAnalyticsMenu)">
+                <option value="PERFOMANCE" selected>Performance</option>
+                <option value="DISTRIBUTION">Distribution</option>
+                <option value="PACE">Pace</option>
+            </select>
+        </div>
+    </div>
+    <!-- Set Date -->
+    <div class="entry dates"  ng-if="dashboardFilter.selectedAnalyticsMenu !== 'DISTRIBUTION'" >
+        <div class="entry-data has-datepicker">
+            <label for="analytics-date">Date</label>
+            <input id="analytics-date" type="text" class="datepicker" ng-model="dashboardFilter.datePicked" ng-click="showAnalyticsDatePicker()" ng-change="onDateChanged()" readonly />
+        </div>
+    </div>
+    <!-- Actions -->
+    <div class="entry actions">
+        <button class="button white with-icon only-icon" ng-class="{'open' : dashboardFilter.showFilters }" ng-click="dashboardFilter.showFilters = !dashboardFilter.showFilters"> <!-- Add class 'open' when clicked 1st time, remove it when clickd 2nd time -->
+            <!-- If filters applied, show their count like this: <span class="count">{X}</span> -->
+            <span class="icons icon-filter"></span>
+            Filter rooms
+        </button>
+        <button type="button" class="button white with-icon only-icon" ng-click="refreshAnalyticsChart()">
+            <span class="icons icon-reset"></span>
+            Refresh
+        </button>
+    </div>
+    <!-- Filters -->
+    <div class="analytics-filters scrollable" ng-class="{'open' : dashboardFilter.showFilters }"> <!-- Toggle class 'open' when L58 clicked -->
+        <div class="wrapper">
+            <!-- Last Year Information -->
+            <div class="entry">
+                <label for="show-last-year" class="checkbox inline" ng-class="{'checked':dashboardFilter.showLastYearData}"> <!-- Add class 'checked' when L71 checked -->
+                    <span class="icon-form icon-checkbox" ng-class="{'checked': dashboardFilter.showLastYearData}"></span> <!-- Add class 'checked' when L71 checked -->
+                    <input id="show-last-year" value="1" type="checkbox" ng-model="dashboardFilter.showLastYearData" ng-change="onAnlayticsFilterChanged();">
+                    Show Last Year Information
+                </label>
+                <!-- Show when L71 is checked -->
+                <div class="select with-label">
+                    <label for="last-year">Type</label>
+                    <select id="last-year" ng-model="dashboardFilter.lastyearType" ng-change="onAnlayticsFilterChanged()">
+                        <option value="SAME_DAY_LAST_YEAR">Same DAY Last Year</option>
+                        <option value="SAME_DATE_LAST_YEAR">Same DATE Last Year</option>
+                        <option value="MIXED" selected>Mixed</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
