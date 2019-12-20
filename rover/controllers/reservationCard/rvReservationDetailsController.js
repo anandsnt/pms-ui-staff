@@ -1486,7 +1486,13 @@ sntRover.controller('reservationDetailsController',
 				sntActivity.stop('FETCH_AUTH_DETAILS');
 				$scope.$emit('hideLoader');
 				$scope.authData.manualCCAuthPermission = hasManualCCAuthPermission();
-				$scope.authData.billData = data.bill_data;
+				$scope.authData.billData = _.sortBy(data.bill_data, function(cc_info) {
+				    if (cc_info.number === 'N/A') {
+				        return 100;
+                    } else {
+                        return parseInt(cc_info.number);
+                    }
+                });
 
 				if( $scope.authData.billData.length > 0 ) {
 					// Show Multiple Credit card auth popup
@@ -1631,6 +1637,12 @@ sntRover.controller('reservationDetailsController',
 		$scope.cancelButtonClick = function() {
 			$scope.showAuthAmountPopUp();
 		};
+
+		$scope.disableAuthorizeButton = function() {
+            return $scope.isShijiOfflineAuthCodeEmpty() || !$scope.authData.manualCCAuthPermission ||
+                parseInt($scope.authData.authAmount) <= 0 || $scope.authData.selectedCardDetails.bill_no === 'N/A' ||
+                isNaN(parseInt($scope.authData.authAmount));
+        };
 
 		// To handle authorize button click on 'auth amount popup' ..
 		$scope.authorize = function() {
