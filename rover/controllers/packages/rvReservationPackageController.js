@@ -69,9 +69,10 @@ sntRover.controller('RVReservationPackageController',
 			}
 			shouldReloadState = true;
 		};
+
 		var failureCallback = function(errorData) {
 			$scope.errorMessage = errorData;
-		}
+		};
 
 		var addonArray = [];
 
