@@ -2001,6 +2001,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             
         };
 
+        $scope.$on('ngDialog.closed', function (e, $dialog) {
+            console.log("ngDialog closed");
+        });
+
     }
 
 ]);
