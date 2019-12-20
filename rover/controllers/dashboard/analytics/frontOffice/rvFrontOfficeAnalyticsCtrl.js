@@ -56,6 +56,7 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 
 				d3.select('#d3-plot').selectAll('svg').remove();
 				$scope.drawArrivalManagementChart(chartDetails);
+				$scope.$emit('ROOM_TYPE_SHORTAGE_CALCULATED', rvAnalyticsSrv.roomTypesWithShortageData);
 			});
 		};
 
