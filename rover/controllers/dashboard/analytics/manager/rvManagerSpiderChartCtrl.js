@@ -143,6 +143,7 @@ angular.module('sntRover')
 						})
 						.attr("class", "")
 						.style("font-size", "10px")
+						.style("fill", "black")
 						.text(label);
 				};
 
@@ -162,6 +163,7 @@ angular.module('sntRover')
 						})
 						.attr("class", "")
 						.style("font-size", "10px")
+						.style("fill", "black")
 						.style("font-weight", "bold")
 						.text(label);
 				};
@@ -356,7 +358,7 @@ angular.module('sntRover')
 							return y(0) - y(0.15);
 						})
 						.attr("id", position + "-occupancy-rect")
-						.attr("fill", "white")
+						.attr("fill", "#FFFFFF")
 						.attr("stroke-width", "1")
 						.attr("stroke", "#000")
 						.style("cursor", "pointer");
@@ -401,7 +403,7 @@ angular.module('sntRover')
 								return y(0) - y(0.15);
 							})
 							.attr("id", position + "-occupancy-rect-2")
-							.attr("fill", "white")
+							.attr("fill", "#F5F5F5")
 							.attr("stroke-width", "1")
 							.attr("stroke", "#000")
 							.style("cursor", "pointer");
@@ -418,13 +420,14 @@ angular.module('sntRover')
 							.style("cursor", "pointer");
 
 						var occupancyDiff = parseFloat(occupancy_diff).toFixed(2);
+						var textColor = occupancyDiff >= 0 ? 'green' : 'red'; 
 						
 						textLabelGroup.append("text")
 							.attr('x', lastYearTextXoffset)
 							.attr('y', yOffsetText2)
 							.attr("id", position + "-occupancy-label-4")
 							.style("font-size", "15px")
-							.style("fill", "black")
+							.style("fill", textColor)
 							.text(occupancyDiff)
 							.style("cursor", "pointer");
 					}
@@ -581,13 +584,16 @@ angular.module('sntRover')
 							.style("cursor", "pointer");
 
 						var diffText = parseFloat(label.diff).toFixed(2);
+						
+						diffText = diffText > 0 ? '+' + diffText : diffText;
+						var textColor = diffText >= 0 ? 'green' : 'red'; 
 
 						textLabelGroup.append("text")
 							.attr('x', lastYearTextXoffset)
 							.attr('y', yOffsetText2)
 							.attr("id", label.id + "-label4")
 							.style("font-size", "15px")
-							.style("fill", "black")
+							.style("fill", textColor)
 							.text(diffText)
 							.style("cursor", "pointer");
 					}
@@ -606,7 +612,8 @@ angular.module('sntRover')
 					.attr("cy", y(yesterDaysOccupany * 0.1 / 25))
 					.attr("r", yesterDaysOccupany > 25 ? 8 : 4)
 					.attr("fill", "#E63838")
-					.attr("id", "left-top-occupany");
+					.attr("id", "left-top-occupany")
+					.style("cursor", "pointer");
 
 				var leftTopQuadrantOccupany = {
 					"type": "occupany",
@@ -655,7 +662,8 @@ angular.module('sntRover')
 					.attr("cy", y(todaysOccupany * 0.1 / 25))
 					.attr("r", todaysOccupany > 25 ? 8 : 4)
 					.attr("fill", "#89BD55")
-					.attr("id", "right-top-occupany");;
+					.attr("id", "right-top-occupany")
+					.style("cursor", "pointer");
 
 				var rightTopQuadrantOccupany = {
 					"type": "occupany",
@@ -703,7 +711,8 @@ angular.module('sntRover')
 					.attr("cy", y(-1 * mtdOccupany * 0.1 / 25))
 					.attr("r", mtdOccupany > 25 ? 8 : 4)
 					.attr("fill", "#F6991B")
-					.attr("id", "left-bottom-occupany");;
+					.attr("id", "left-bottom-occupany")
+					.style("cursor", "pointer");
 
 				var leftBottomOccupancy = {
 					"type": "occupany",
@@ -750,7 +759,8 @@ angular.module('sntRover')
 					.attr("cy", y(-1 * ytdOccupany * 0.1 / 25))
 					.attr("r", ytdOccupany > 25 ? 8 : 4)
 					.attr("fill", "#497D8E")
-					.attr("id", "right-bottom-occupany");;
+					.attr("id", "right-bottom-occupany")
+					.style("cursor", "pointer");
 
 				var rightBottomOccupancy = {
 					"type": "occupany",
