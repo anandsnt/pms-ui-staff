@@ -1489,9 +1489,8 @@ sntRover.controller('reservationDetailsController',
 				$scope.authData.billData = _.sortBy(data.bill_data, function(cc_info) {
 				    if (cc_info.number === 'N/A') {
 				        return 100;
-                    } else {
-                        return parseInt(cc_info.number);
                     }
+				    return parseInt(cc_info.number);
                 });
 
 				if( $scope.authData.billData.length > 0 ) {
