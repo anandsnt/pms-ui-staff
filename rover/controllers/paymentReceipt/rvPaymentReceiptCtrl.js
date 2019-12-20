@@ -70,8 +70,8 @@ sntRover.controller('RVReceiptPopupController',
             $scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
             $scope.status = "alert";
             $scope.showEmailSentStatusPopup();
-        }
-        var emailReceiptSuccess = function (response) {
+        },
+            emailReceiptSuccess = function (response) {
                 $scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
 				$scope.status = "success";
                 $scope.showEmailSentStatusPopup();
