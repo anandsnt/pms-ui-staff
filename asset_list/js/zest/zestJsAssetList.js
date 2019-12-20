@@ -86,7 +86,8 @@ module.exports = {
                     paymentRoot + 'controllers/**/*.js',
                     paymentRoot + 'directives/**/*.js',
                     paymentRoot + 'services/**/*.js',
-                    paymentRoot + 'payAppInit.js'
+                    paymentRoot + 'payAppInit.js',
+                    '!**/*.spec.js'
                 ]
             };
 
