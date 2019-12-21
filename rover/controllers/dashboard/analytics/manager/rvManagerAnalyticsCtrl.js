@@ -5,8 +5,9 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 	'rvFrontOfficeAnalyticsSrv',
 	'rvManagersAnalyticsSrv',
 	'rvAnalyticsSrv',
+	'rvAnalyticsHelperSrv',
 	'$controller',
-	function($scope, $rootScope, $state, $timeout, rvFrontOfficeAnalyticsSrv, rvManagersAnalyticsSrv, rvAnalyticsSrv, $controller) {
+	function($scope, $rootScope, $state, $timeout, rvFrontOfficeAnalyticsSrv, rvManagersAnalyticsSrv, rvAnalyticsSrv, rvAnalyticsHelperSrv, $controller) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -230,15 +231,24 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 		};
 
 		var handleFilterChangeForPerfomanceChart = function() {
+			if (!$scope.dashboardFilter.showLastYearData) {
+				$('base').attr('href', '#');
+				clearAllExistingChartElements();
+				$scope.drawPerfomceChart(perfomanceData);
+				addChartHeading();	
+				return;
+			}
+
 			$('base').attr('href', initialBaseHrefValue);
 
 			var lastYeardate;
 
-			if ($scope.dashboardFilter.lastyearType === "SAME_DATE_LAST_YEAR" || $scope.dashboardFilter.lastyearType === "SAME_DAY_LAST_YEAR") {
-
+			if ($scope.dashboardFilter.lastyearType === "SAME_DATE_LAST_YEAR") {
 				lastYeardate = moment($scope.dashboardFilter.datePicked).subtract(1, 'years').format("YYYY-MM-DD");
-				console.log(lastYeardate)
+			} else if ($scope.dashboardFilter.lastyearType === "SAME_DAY_LAST_YEAR") {
+				lastYeardate = rvAnalyticsHelperSrv.getClosetDayOftheYearInPastYear($scope.dashboardFilter.datePicked);
 			}
+			console.log(lastYeardate);
 			var options = {
 				params: {
 					date: lastYeardate
@@ -250,7 +260,7 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 					for (var key in perfomanceData) {
 						for (var key1 in lastYeardata) {
 							if (key === key1) {
-								combinedPerfomanceData[key] = perfomanceData[key];
+								combinedPerfomanceData[key] = angular.copy(perfomanceData[key]);
 								combinedPerfomanceData[key].adr_diff = parseFloat(perfomanceData[key].adr) -
 							 										   parseFloat(lastYeardata[key].adr);
 								combinedPerfomanceData[key].rev_par_diff = parseFloat(perfomanceData[key].rev_par) -
@@ -265,7 +275,7 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 					clearAllExistingChartElements();
 					d3.select('#d3-plot').selectAll('svg').remove();
 					$scope.drawPerfomceChart(combinedPerfomanceData);
-					addChartHeading()
+					addChartHeading();
 				}
 			};
 
@@ -283,7 +293,7 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			$scope.dashboardFilter.selectedAnalyticsMenu = "PERFOMANCE";
 			$scope.dashboardFilter.showFilters = false;
 			$scope.dashboardFilter.showLastYearData = false;
-			$scope.dashboardFilter.lastyearType = 'SAME_DAY_LAST_YEAR';
+			$scope.dashboardFilter.lastyearType = 'SAME_DATE_LAST_YEAR';
 			drawChart();
 		})();
 	}

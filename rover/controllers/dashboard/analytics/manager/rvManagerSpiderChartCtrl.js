@@ -5,7 +5,7 @@ angular.module('sntRover')
 			$scope.drawPerfomceChart = function(chartData) {
 
 				$scope.screenData.mainHeading = $filter('translate')("AN_ROOM_PERFOMANCE_KPR");
-
+				var hasLastYearData = $scope.dashboardFilter.showLastYearData;
 				// convert data into array
 				var chartDataArray = Object.keys(chartData).map(function(key) {
 					return _.extend({
@@ -181,7 +181,6 @@ angular.module('sntRover')
 				};
 
 				var labelMappings;
-				var hasLastYearData = $scope.dashboardFilter.showFilters;
 				var getElementSuffixesOnChart = function() {
 					// The elements on the chart for labels will have ids in the following format
 					// left-top-rev-par-rect ,  left-top-rev-adr-label1 etc where position is left-top
@@ -295,20 +294,25 @@ angular.module('sntRover')
 
 					var position = getQuadrantPosition(e);
 					var occupancy,
-						occupancy_diff;
+						occupancy_diff,
+						occupancyLabelFill;
 
 					if (position === "left-top") {
 						occupancy = parseFloat(chartData.yesterday.occupancy);
 						occupancy_diff = parseFloat(chartData.yesterday.occupancy_diff);
+						occupancyLabelFill = '#E63838';
 					} else if (position === "right-top") {
 						occupancy = parseFloat(chartData.today.occupancy);
 						occupancy_diff = parseFloat(chartData.today.occupancy_diff);
+						occupancyLabelFill = '#89BD55';
 					} else if (position === "left-bottom") {
 						occupancy = parseFloat(chartData.mtd.occupancy);
 						occupancy_diff = parseFloat(chartData.mtd.occupancy_diff);
+						occupancyLabelFill = '#F6991B';
 					} else if (position === "right-bottom") {
 						occupancy = parseFloat(chartData.ytd.occupancy);
 						occupancy_diff = parseFloat(chartData.ytd.occupancy_diff);
+						occupancyLabelFill = '#497D8E';
 					}
 					occupancy = occupancy > 25 ? occupancy : parseInt(occupancy);
 					deleteExistingOccupanyLabel(position);
@@ -358,7 +362,7 @@ angular.module('sntRover')
 							return y(0) - y(0.15);
 						})
 						.attr("id", position + "-occupancy-rect")
-						.attr("fill", "#FFFFFF")
+						.attr("fill", occupancyLabelFill)
 						.attr("stroke-width", "1")
 						.attr("stroke", "#000")
 						.style("cursor", "pointer");
@@ -369,7 +373,7 @@ angular.module('sntRover')
 						.attr('y', yOffsetText)
 						.attr("id", position + "-occupancy-label-1")
 						.style("font-size", "15px")
-						.style("fill", "black")
+						.style("fill", "#FFFFFF")
 						.text("ACTUAL")
 						.style("cursor", "pointer");
 
@@ -378,7 +382,7 @@ angular.module('sntRover')
 						.attr('y', yOffsetText2)
 						.attr("id", position + "-occupancy-label-2")
 						.style("font-size", "15px")
-						.style("fill", "black")
+						.style("fill", "#FFFFFF")
 						.text(occupancy)
 						.style("cursor", "pointer");
 
@@ -584,7 +588,7 @@ angular.module('sntRover')
 							.style("cursor", "pointer");
 
 						var diffText = parseFloat(label.diff).toFixed(2);
-						
+
 						diffText = diffText > 0 ? '+' + diffText : diffText;
 						var textColor = diffText >= 0 ? 'green' : 'red'; 
 
