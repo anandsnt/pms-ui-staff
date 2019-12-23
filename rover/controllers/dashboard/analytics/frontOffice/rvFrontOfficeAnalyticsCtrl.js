@@ -150,9 +150,9 @@ sntRover.controller('rvFrontOfficeAnalyticsCtrlController', ['$scope',
 			$scope.screenData.selectedChart = "HK_OVERVIEW";
 		});
 
-		$scope.refreshChart = function (){
-			fetchData($scope.dashboardFilter.datePicked, $scope.dashboardFilter.selectedRoomTypeId)
-		};
+		$scope.$on('REFRESH_ANALYTCIS_CHART', function(){
+			fetchData($scope.dashboardFilter.datePicked, $scope.dashboardFilter.selectedRoomTypeId);
+		});
 		/*
 		 * Reload graph with date picker change
 		 */

@@ -52,8 +52,7 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 		};
 
 		var addChartHeading = function() {
-			$( "#d3-plot" ).append( "<p><strong>" + $scope.screenData.mainHeading + "</strong></p>" );
-			$( "#d3-plot" ).append( "<p>Last update:"+ $scope.screenData.analyticsDataUpdatedTime + "</strong></p>");
+			rvAnalyticsHelperSrv.addChartHeading($scope.screenData.mainHeading, $scope.screenData.analyticsDataUpdatedTime);
 		};
 
 		var renderPerfomanceChart = function() {

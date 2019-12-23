@@ -684,4 +684,9 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 
 		return formatedDay;
 	};
+
+	this.addChartHeading = function(title, updatedTime) {
+		$("#d3-plot").append("<p style='margin-top:10px'><strong>" + title + "</strong></p>");
+		$("#d3-plot").append("<p>Last update:" + updatedTime + "</strong></p>");
+	};
 }]);
