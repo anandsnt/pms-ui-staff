@@ -47,25 +47,6 @@
             <input id="analytics-date" type="text" class="datepicker" ng-model="dashboardFilter.toDate" ng-click="showAnalyticsCalendar('toDate')" ng-change="onDateChanged()" readonly />
         </div>
     </div>
-    <div class="entry room-types" ng-if="dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION'">
-        <div class="select with-label">
-            <label for="room-type">CHART TYPE</label>
-            <select id="room-type" ng-model="dashboardFilter.chartType" ng-change="onChartTypeChanged()">
-                <!-- <option value="" selected="" translate>SHOW_ALL</option> -->
-                <option value="{{::filter.code}}" ng-repeat="filter in ::dashboardFilter.chartTypes track by $index">{{::filter.name}}</option>
-            </select>
-        </div>
-    </div>
-    <div class="entry room-types" ng-if="dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION'">
-        <div class="select with-label">
-            <label for="room-type">AGGREGATED BY</label>
-            <select id="room-type" ng-model="dashboardFilter.aggType" ng-change="onAggregationTypeChanged()">
-                <option value="" selected="" translate>None</option>
-                <option value="{{::filter.code}}" ng-repeat="filter in ::dashboardFilter.aggTypes track by $index">{{::filter.name}}</option>
-            </select>
-        </div>
-    </div>
-
     <!-- Actions -->
     <div class="entry actions">
         <button class="button white with-icon only-icon" ng-class="{'open' : dashboardFilter.showFilters }" ng-click="dashboardFilter.showFilters = !dashboardFilter.showFilters"> <!-- Add class 'open' when clicked 1st time, remove it when clickd 2nd time -->
@@ -79,7 +60,7 @@
         </button>
     </div>
     <!-- Filters -->
-    <div class="analytics-filters scrollable" ng-class="{'open' : dashboardFilter.showFilters }"> <!-- Toggle class 'open' when L58 clicked -->
+    <div class="analytics-filters scrollable" ng-class="{'open' : dashboardFilter.selectedAnalyticsMenu === 'PERFOMANCE' && dashboardFilter.showFilters }"> <!-- Toggle class 'open' when L58 clicked -->
         <div class="wrapper">
             <!-- Last Year Information -->
             <div class="entry">
@@ -101,28 +82,46 @@
         </div>
     </div>
 
-    <div id="analyticsFilters" class="analytics-filters scrollable" ng-class="{'open' : dashboardFilter.showFilters }">
+    <!-- Filters -->
+    <div class="analytics-filters scrollable" ng-class="{'open' : dashboardFilter.selectedAnalyticsMenu === 'PACE' && dashboardFilter.showFilters }"> <!-- Toggle class 'open' when L58 clicked -->
+        <div class="wrapper">
+            <!-- Room Type -->
+            <div class="entry" ng-if="false">
+                <div class="select with-label">
+                    <label for="analytics-room-type">Room Type</label>
+                    <select id="room-type" ng-model="room_type_id" ng-change="onRoomTypeChange()">
+                        <option value="" selected="" translate>SHOW_ALL</option>
+                        <option value="{{::roomType.id}}" ng-repeat="roomType in ::roomTypes track by $index">{{::roomType.name}}</option>
+                    </select>
+                </div>
+                <!-- When Room Type is selected, remove it as an option from dropdown above + add a record of it here -->
+                <div class="selected">
+                    <!-- CASE 1 - Regular Room Type -->
+                    <span class="tag">{ Room Type }</span> <!-- Click on this item removes it as filter + enables it in upper dropdown -->
+                    <!-- CASE 2 - If Shortage Medium Alert -->
+                    <span class="tag alert-medium">{Room Type ({X} short)}</span> <!-- Click on this item removes it as filter + enables it in upper dropdown -->
+                    <!-- CASE 3 - If Shortage High Alert -->
+                    <span class="tag alert-high">{Room Type ({X} short)}</span> <!-- Click on this item removes it as filter + enables it in upper dropdown -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="analyticsFilters" class="analytics-filters scrollable" ng-class="{'open' : dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION' && dashboardFilter.showFilters }">
         <div class="wrapper">
             <div class="entry">
                 <div class="select with-label">
                     <label for="analytics-chart">Chart type</label>
-                    <select id="analytics-chart" data-js="analytics">
-                        <option value="1" selected="">Occupancy</option>
-                        <option value="2">Occupied Rooms</option>
-                        <option value="3">ADR</option>
-                        <option value="4">RevPAR</option>
-                        <option value="5">Room Revenue</option>
+                    <select id="room-type" ng-model="dashboardFilter.chartType" ng-change="onChartTypeChanged()">
+                <!-- <option value="" selected="" translate>SHOW_ALL</option> -->
+                        <option value="{{::filter.code}}" ng-repeat="filter in ::dashboardFilter.chartTypes track by $index">{{::filter.name}}</option>
                     </select>
                 </div>
                 <div class="select with-label">
                     <label for="analytics-secondary-chart">Aggregated By</label>
-                    <select id="analytics-secondary-chart" data-js="analytics">
-                        <option value="">None</option>
-                        <option value="1">Room Type</option>
-                        <option value="2" selected="">Market</option>
-                        <option value="3">Source</option>
-                        <option value="4">Segment</option>
-                        <option value="5">Origin</option>
+                      <select id="room-type" ng-model="dashboardFilter.aggType" ng-change="onAggregationTypeChanged()">
+                        <option value="" selected="" translate>None</option>
+                        <option value="{{::filter.code}}" ng-repeat="filter in ::dashboardFilter.aggTypes track by $index">{{::filter.name}}</option>
                     </select>
                 </div>
                 <div id="chart-toggle" class="switch-button on">

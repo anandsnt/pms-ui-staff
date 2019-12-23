@@ -131,6 +131,7 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 		var drawChart = function() {
 			scrollToTop();
 			$scope.screenData.hideChartData = true;
+			$scope.dashboardFilter.showFilters = false;
 			clearAllExistingChartElements();
 			$scope.screenData.mainHeading = "";
 			if ($scope.screenData.selectedChart === 'PERFOMANCE') {
