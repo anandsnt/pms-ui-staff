@@ -127,6 +127,7 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 		};
 
 		var drawChart = function() {
+			$scope.dashboardFilter.showFilters = false;
 			$('base').attr('href', '#');
 			$scope.screenData.hideChartData = true;
 			if ($scope.screenData.selectedChart === 'HK_OVERVIEW') {
