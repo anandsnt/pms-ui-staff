@@ -50,7 +50,7 @@ angular.module('sntRover')
 						bottom: 30,
 						left: 60
 					},
-					width = document.getElementById("analytics-chart").clientWidth,
+					width = document.getElementById("manager-analytics-chart").clientWidth,
 					height = 500 - margin.top - margin.bottom;
 
 				var svg = d3.select("#d3-plot").append("svg")

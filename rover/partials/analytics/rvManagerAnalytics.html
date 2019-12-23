@@ -1,9 +1,9 @@
 <div class="wrapper" id="wrapper">
     <!-- Chart -->
-    <div class="analytics-chart" ng-class="{ 'with-legend-left' : screenData.selectedChart === 'FO_ARRIVALS' }" style="margin-top: 0px;">
-        <dl class="chart-legend legend-left" id="left-side-legend" ng-if="screenData.selectedChart === 'FO_ARRIVALS'">
+    <div class="analytics-chart" ng-class="{ 'with-legend-right' : screenData.selectedChart === 'DISTRIBUTION' }" style="margin-top: 0px;">
+        <dl class="chart-legend legend-left" id="left-side-legend" ng-if="false">
         </dl>
-        <div id="analytics-chart" class="chart-content">
+        <div id="manager-analytics-chart" class="chart-content">
             <div id="d3-plot">
             </div>
             <div class="chart-actions" ng-show="!screenData.hideChartData">
@@ -140,7 +140,7 @@
                 </defs>
             </svg>
         </div>
-        <dl class="chart-legend legend-right" id="right-side-legend" ng-if="false">
+        <dl class="chart-legend legend-right" id="right-side-legend" ng-if="screenData.selectedChart === 'DISTRIBUTION'">
         </dl>
     </div>
 </div>

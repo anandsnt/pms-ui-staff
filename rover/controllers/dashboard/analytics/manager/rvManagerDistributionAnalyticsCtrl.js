@@ -30,7 +30,7 @@ angular.module('sntRover')
 							},
 							parseDate = d3.timeParse("%Y-%m-%d");
 
-						var width = document.getElementById("analytics-chart").clientWidth - margin.left - margin.right,
+						var width = document.getElementById("manager-analytics-chart").clientWidth - margin.left - margin.right,
 							height = 500 - margin.top - margin.bottom;
 
 						var xScale = d3.scaleBand()
@@ -196,28 +196,22 @@ angular.module('sntRover')
 							.attr("font-weight", "bold");
 
 						if (stackKey.length > 1 || $scope.dashboardFilter.aggType) {
-							var legend = svg.selectAll(".legend")
+							var legendParentElement = d3.select("#right-side-legend");
+							var legend = legendParentElement.selectAll(".legend-item")
 								.data(colors)
 								.enter().append("g")
-								.attr("class", "legend")
-								.attr("transform", function(d, i) {
-									return "translate(-300," + i * 30 + ")";
-								});
+								.attr("class", "legend-item")
+							// .attr("transform", function(d, i) {
+							// 	return "translate(-300," + i * 30 + ")";
+							// });
 
-							legend.append("rect")
-								.attr("x", width - 18)
-								.attr("width", 18)
-								.attr("height", 18)
-								.style("fill", function(d, i) {
+							legend.append("span")
+								.attr("class", "bar")
+								.style("background-color", function(d, i) {
 									return colors[i];
 								});
-
-							legend.append("text")
-								.attr("x", width + 5)
-								.attr("y", 9)
-								.attr("dy", ".35em")
-								.style("text-anchor", "start")
-								.style("font-size", "15px")
+							legend.append("span")
+								.attr("class", "bar-label")
 								.text(function(d, i) {
 									return rvAnalyticsHelperSrv.textTruncate(stackKey[i], 35, '...');
 								});

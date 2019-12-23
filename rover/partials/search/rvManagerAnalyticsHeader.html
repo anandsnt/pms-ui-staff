@@ -34,6 +34,38 @@
             <input id="analytics-date" type="text" class="datepicker" ng-model="dashboardFilter.datePicked" ng-click="showAnalyticsDatePicker()" ng-change="onDateChanged()" readonly />
         </div>
     </div>
+
+    <div class="entry dates" ng-if="dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION'">
+        <div class="entry-data has-datepicker">
+            <label for="analytics-date">FROM</label>
+            <input id="analytics-date" type="text" class="datepicker" ng-model="dashboardFilter.fromDate" ng-click="showAnalyticsCalendar('fromDate')" ng-change="onDateChanged()" readonly />
+        </div>
+    </div>
+    <div class="entry dates" ng-if="dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION'">
+        <div class="entry-data has-datepicker">
+            <label for="analytics-date">TO</label>
+            <input id="analytics-date" type="text" class="datepicker" ng-model="dashboardFilter.toDate" ng-click="showAnalyticsCalendar('toDate')" ng-change="onDateChanged()" readonly />
+        </div>
+    </div>
+    <div class="entry room-types" ng-if="dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION'">
+        <div class="select with-label">
+            <label for="room-type">CHART TYPE</label>
+            <select id="room-type" ng-model="dashboardFilter.chartType" ng-change="onChartTypeChanged()">
+                <!-- <option value="" selected="" translate>SHOW_ALL</option> -->
+                <option value="{{::filter.code}}" ng-repeat="filter in ::dashboardFilter.chartTypes track by $index">{{::filter.name}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="entry room-types" ng-if="dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION'">
+        <div class="select with-label">
+            <label for="room-type">AGGREGATED BY</label>
+            <select id="room-type" ng-model="dashboardFilter.aggType" ng-change="onAggregationTypeChanged()">
+                <option value="" selected="" translate>None</option>
+                <option value="{{::filter.code}}" ng-repeat="filter in ::dashboardFilter.aggTypes track by $index">{{::filter.name}}</option>
+            </select>
+        </div>
+    </div>
+
     <!-- Actions -->
     <div class="entry actions">
         <button class="button white with-icon only-icon" ng-class="{'open' : dashboardFilter.showFilters }" ng-click="dashboardFilter.showFilters = !dashboardFilter.showFilters"> <!-- Add class 'open' when clicked 1st time, remove it when clickd 2nd time -->
@@ -68,4 +100,136 @@
             </div>
         </div>
     </div>
+
+    <div id="analyticsFilters" class="analytics-filters scrollable" ng-class="{'open' : dashboardFilter.showFilters }">
+        <div class="wrapper">
+            <div class="entry">
+                <div class="select with-label">
+                    <label for="analytics-chart">Chart type</label>
+                    <select id="analytics-chart" data-js="analytics">
+                        <option value="1" selected="">Occupancy</option>
+                        <option value="2">Occupied Rooms</option>
+                        <option value="3">ADR</option>
+                        <option value="4">RevPAR</option>
+                        <option value="5">Room Revenue</option>
+                    </select>
+                </div>
+                <div class="select with-label">
+                    <label for="analytics-secondary-chart">Aggregated By</label>
+                    <select id="analytics-secondary-chart" data-js="analytics">
+                        <option value="">None</option>
+                        <option value="1">Room Type</option>
+                        <option value="2" selected="">Market</option>
+                        <option value="3">Source</option>
+                        <option value="4">Segment</option>
+                        <option value="5">Origin</option>
+                    </select>
+                </div>
+                <div id="chart-toggle" class="switch-button on">
+                    <input id="distribution-switch" type="checkbox" checked="">
+                    <label class="data-off">
+                        <span class="value">Chart</span>
+                        <span class="switch-icon">Grid</span>
+                    </label>
+                    <label class="data-on">
+                        <span class="switch-icon">Chart</span>
+                        <span class="value">Grid</span>
+                    </label>
+                </div>
+            </div>
+            <div class="entry">
+                <div class="select with-label">
+                    <label for="analytics-room-type">Room Type</label>
+                    <select id="analytics-room-type" class="placeholder" data-js="tags">
+                        <option value="">Select</option>
+                        <option value="room-type-0" data-alert="">Standard Room</option>
+                        <option value="room-type-1" data-alert="">Standard Double</option>
+                        <option value="room-type-2" data-alert="">Deluxe Room</option>
+                        <option value="room-type-3" data-alert="">Deluxe Twin</option>
+                        <option value="room-type-4" data-alert="">Deluxe Pool View</option>
+                        <option value="room-type-5" data-alert="">Junior Suite</option>
+                        <option value="room-type-6" data-alert="">Deluxe Suite</option>
+                        <option value="room-type-7" data-alert="">King Suite</option>
+                        <option value="room-type-8" data-alert="">Superior King</option>
+                    </select>
+                </div>
+                <!--<div class="multi-select with-label">
+    <label for="analytics-room-type" data-target="#analytics-room-type" class="faux-select">
+    <span class="label">Room Type</span>
+    <strong>Showing All</strong>
+    </label>
+    <div id="analytics-room-type" class="faux-select-options hidden">
+    <label class="checkbox inline checked">
+    <span class="icon-form icon-checkbox"></span>
+    <input id="all-room-types" value="all" type="checkbox" checked />
+    All Room Types
+    </label>
+    <label class="checkbox inline "><span class="icon-form icon-checkbox"></span><input data-list="analytics-room-type" value="room-type-0" type="checkbox" data-check   data-text="Standard Room"  />Standard Room</label><label class="checkbox inline "><span class="icon-form icon-checkbox"></span><input data-list="analytics-room-type" value="room-type-1" type="checkbox" data-check   data-text="Standard Double"  />Standard Double</label><label class="checkbox inline "><span class="icon-form icon-checkbox"></span><input data-list="analytics-room-type" value="room-type-2" type="checkbox" data-check   data-text="Deluxe Room"  />Deluxe Room</label><label class="checkbox inline "><span class="icon-form icon-checkbox"></span><input data-list="analytics-room-type" value="room-type-3" type="checkbox" data-check   data-text="Deluxe Twin"  />Deluxe Twin</label><label class="checkbox inline "><span class="icon-form icon-checkbox"></span><input data-list="analytics-room-type" value="room-type-4" type="checkbox" data-check   data-text="Deluxe Pool View"  />Deluxe Pool View</label><label class="checkbox inline "><span class="icon-form icon-checkbox"></span><input data-list="analytics-room-type" value="room-type-5" type="checkbox" data-check   data-text="Junior Suite"  />Junior Suite</label><label class="checkbox inline "><span class="icon-form icon-checkbox"></span><input data-list="analytics-room-type" value="room-type-6" type="checkbox" data-check   data-text="Deluxe Suite"  />Deluxe Suite</label><label class="checkbox inline "><span class="icon-form icon-checkbox"></span><input data-list="analytics-room-type" value="room-type-7" type="checkbox" data-check   data-text="King Suite"  />King Suite</label><label class="checkbox inline "><span class="icon-form icon-checkbox"></span><input data-list="analytics-room-type" value="room-type-8" type="checkbox" data-check   data-text="Superior King"  />Superior King</label>
+    </div>
+    </div>-->
+                <div class="selected" data-list="analytics-room-type"></div>
+            </div>
+            <div class="entry">
+                <div class="select with-label">
+                    <label for="analytics-market">Market</label>
+                    <select id="analytics-market" class="placeholder" data-js="tags">
+                        <option value="" selected="">Select</option>
+                        <option value="1">Market 1</option>
+                        <option value="2">Market 2</option>
+                        <option value="3">Market 3</option>
+                        <option value="4">Market 4</option>
+                        <option value="5">Market 5</option>
+                        <option value="6">Market 6</option>
+                    </select>
+                </div>
+                <div class="selected" data-list="analytics-market"></div>
+            </div>
+            <div class="entry">
+                <div class="select with-label">
+                    <label for="analytics-source">Source</label>
+                    <select id="analytics-source" class="placeholder" data-js="tags">
+                        <option value="" selected="">Select</option>
+                        <option value="1">Source 1</option>
+                        <option value="2">Source 2</option>
+                        <option value="3">Source 3</option>
+                        <option value="4">Source 4</option>
+                        <option value="5">Source 5</option>
+                        <option value="6">Source 6</option>
+                </select>
+            </div>
+            <div class="selected" data-list="analytics-source"></div>
+        </div>
+        <div class="entry">
+            <div class="select with-label">
+                <label for="analytics-segment">Segment</label>
+                <select id="analytics-segment" class="placeholder" data-js="tags">
+                    <option value="" selected="">Select</option>
+                    <option value="1">Segment 1</option>
+                    <option value="2">Segment 2</option>
+                    <option value="3">Segment 3</option>
+                    <option value="4">Segment 4</option>
+                    <option value="5">Segment 5</option>
+                    <option value="6">Segment 6</option>
+                </select>
+            </div>
+            <div class="selected" data-list="analytics-segment"></div>
+        </div>
+        <div class="entry">
+            <div class="select with-label">
+                <label for="analytics-origin">Origin</label>
+                <select id="analytics-origin" class="placeholder" data-js="tags">
+                    <option value="" selected="">Select</option>
+                    <option value="1">Origin 1</option>
+                    <option value="2">Origin 2</option>
+                    <option value="3">Origin 3</option>
+                    <option value="4">Origin 4</option>
+                    <option value="5">Origin 5</option>
+                    <option value="6">Origin 6</option>
+                </select>
+            </div>
+            <div class="selected" data-list="analytics-origin"></div>
+        </div>
+    </div>
+</div>
+
 </form>
