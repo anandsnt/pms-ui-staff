@@ -232,7 +232,42 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			drawChart();
 		};
 
-		var handleFilterChangeForPerfomanceChart = function() {
+		var drawSpiderChart = function() {
+			$('base').attr('href', '#');
+			clearAllExistingChartElements();
+			d3.select('#d3-plot').selectAll('svg').remove();
+			$scope.drawPerfomceChart(combinedPerfomanceData);
+			addChartHeading();
+		};
+		var handleChangesForMixedFilter = function() {
+			var lastYeardate = moment($scope.dashboardFilter.datePicked).subtract(1, 'years').format("YYYY-MM-DD");
+			var options = {
+				params: {
+					date: lastYeardate
+				},
+				successCallBack: function(lastYeardata) {
+					for (var key in perfomanceData) {
+						for (var key1 in lastYeardata) {
+							if (((key === key1) && (key === "mtd")) || ((key === key1) && (key === "ytd"))) {
+
+								combinedPerfomanceData[key] = angular.copy(perfomanceData[key]);
+								combinedPerfomanceData[key].adr_diff = parseFloat(perfomanceData[key].adr) -
+									parseFloat(lastYeardata[key].adr);
+								combinedPerfomanceData[key].rev_par_diff = parseFloat(perfomanceData[key].rev_par) -
+									parseFloat(lastYeardata[key].rev_par);
+								combinedPerfomanceData[key].occupancy_diff = parseFloat(perfomanceData[key].occupancy) -
+									parseFloat(lastYeardata[key].occupancy);
+							}
+						}
+					}
+					drawSpiderChart();
+				}
+			};
+
+			$scope.callAPI(rvManagersAnalyticsSrv.roomPerformanceKPR, options);
+		};
+
+		var handleFilterChangeForPerfomanceChart = function(isMixed) {
 			if (!$scope.dashboardFilter.showLastYearData) {
 				$('base').attr('href', '#');
 				clearAllExistingChartElements();
@@ -247,7 +282,7 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 
 			if ($scope.dashboardFilter.lastyearType === "SAME_DATE_LAST_YEAR") {
 				lastYeardate = moment($scope.dashboardFilter.datePicked).subtract(1, 'years').format("YYYY-MM-DD");
-			} else if ($scope.dashboardFilter.lastyearType === "SAME_DAY_LAST_YEAR") {
+			} else if ($scope.dashboardFilter.lastyearType === "SAME_DAY_LAST_YEAR" || $scope.dashboardFilter.lastyearType === "MIXED") {
 				lastYeardate = rvAnalyticsHelperSrv.getClosetDayOftheYearInPastYear($scope.dashboardFilter.datePicked);
 			}
 			console.log(lastYeardate);
@@ -273,11 +308,12 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 						}
 					}
 
-					$('base').attr('href', '#');
-					clearAllExistingChartElements();
-					d3.select('#d3-plot').selectAll('svg').remove();
-					$scope.drawPerfomceChart(combinedPerfomanceData);
-					addChartHeading();
+					if ($scope.dashboardFilter.lastyearType === "MIXED") {
+						handleChangesForMixedFilter();
+					} else {
+						drawSpiderChart();
+					}
+					
 				}
 			};
 

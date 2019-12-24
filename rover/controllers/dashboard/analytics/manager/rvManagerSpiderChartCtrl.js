@@ -606,6 +606,16 @@ angular.module('sntRover')
 				var lowestValue = maxValueForChart / 5;
 				var oneDivisonConversion = .0001;
 
+				var setColorBasedOnOccupancy = function (occupancy) {
+					if (parseFloat(occupancy) > 75) {
+						return "green";
+					} else if  (parseFloat(occupancy) > 25) {
+						return "orange";
+					} else {
+						return "red";
+					}
+				};
+
 				/**  ****************************  Let Top Quadrant ******************************/
 				var yesterDaysOccupany = parseFloat(chartData.yesterday.occupancy);
 
