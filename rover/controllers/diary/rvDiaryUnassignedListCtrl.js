@@ -12,7 +12,7 @@ angular.module('sntRover')
              * 
              */
             var fetchUdReservationList = function () {
-                var successCallBackFetchList = function(data) {
+                    var successCallBackFetchList = function(data) {
                         $scope.errorMessage = '';
                         $scope.udReservationsData = data;
                     },
@@ -78,6 +78,13 @@ angular.module('sntRover')
                         mm: min_difference,
                         hhs: hour_difference + 'h'
                     };
+                },
+                deselectReservation = function() {
+                    $scope.selectedIndex = null;
+                    $scope.gridProps.unassignedRoomList.isItemSelected = false;
+                    $scope.clearAvailability();
+                    $scope.resetEdit();
+                    $scope.renderGrid();
                 };
 
             BaseCtrl.call(this, $scope);
@@ -107,28 +114,39 @@ angular.module('sntRover')
             };
 
             /**
+             * Listener for deselecting the selected unassigned reservation and reseting the grid
+             */
+            $scope.addListener('DESELECT_UNASSIGNED_RESERVATION', deselectReservation);
+
+            /**
              * Function to handle the unassigned reservation selection
              */
             $scope.clickedUnassignedReservation = function(reservation) {
-                var params = {
-                    arrival_date: reservation.arrival_date,
-                    arrival_time: reservation.arrival_time,
-                    departure_date: reservation.departure_date,
-                    departure_time: reservation.departure_time,
-
-                    reservationId: reservation.reservation_id,
-                    adults: reservation.adults,
-                    children: reservation.children,
-                    infants: reservation.infants,
-                    rate_id: reservation.rate_id,
-                    room_type_id: reservation.room_type_id,
-                    is_hourly: reservation.is_hourly,
-
-                    stay_span: __getTimeDiff(reservation.arrival_date, reservation.arrival_time, reservation.departure_date, reservation.departure_time)
-                };
-
-                $scope.selectedIndex = reservation.reservation_id;
-                $scope.$emit('UNASSIGNED_RESERVATION_SELECTED', params);
+                if ($scope.selectedIndex === reservation.reservation_id) {
+                    deselectReservation();
+                }
+                else {
+                    $scope.selectedIndex = reservation.reservation_id;
+                    $scope.gridProps.unassignedRoomList.isItemSelected = true;
+                    var params = {
+                        arrival_date: reservation.arrival_date,
+                        arrival_time: reservation.arrival_time,
+                        departure_date: reservation.departure_date,
+                        departure_time: reservation.departure_time,
+    
+                        reservationId: reservation.reservation_id,
+                        adults: reservation.adults,
+                        children: reservation.children,
+                        infants: reservation.infants,
+                        rate_id: reservation.rate_id,
+                        room_type_id: reservation.room_type_id,
+                        is_hourly: reservation.is_hourly,
+    
+                        stay_span: __getTimeDiff(reservation.arrival_date, reservation.arrival_time, reservation.departure_date, reservation.departure_time)
+                    };
+    
+                    $scope.$emit('UNASSIGNED_RESERVATION_SELECTED', params, reservation);
+                }
             };
         }
     ]

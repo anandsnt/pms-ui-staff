@@ -69,7 +69,7 @@ angular.module('sntRover')
              * @param {Object} options - callback function params
              * @return {void}
              */
-            $scope.addListener('UNASSIGNED_RESERVATION_SELECTED', function(event, options) {
+            $scope.addListener('UNASSIGNED_RESERVATION_SELECTED', function(event, options, reservation) {
                 var params = getCustomAvailabilityCallingParams(options.arrival_time, options.arrival_date, options.stay_span, options.room_type_id),
                     keepOpen = true,
                     self = $scope.gridProps.unassignedRoomList,
@@ -77,6 +77,8 @@ angular.module('sntRover')
                     apiOptions;
 
                 params.reservation_id = options.reservationId;
+                $scope.hideRoomUnAssignButton = true;
+                $scope.showSaveChangesAfterEditing = false;
                 success = function(data, successParams) {
                     // CICO-24243: Set top filter values to selected reservation attributes
                     if (data.length) {
@@ -86,7 +88,8 @@ angular.module('sntRover')
                         filters.arrival_time = new Date(rawData.arrival).toTimeString().substring(0, 5);
                         filters.room_type = _.findWhere(filters.room_types, { id: rawData.room_type_id });
                     }
-                    self.isItemSelected = true;
+                    $scope.gridProps.edit.originalItem = util.copyReservation(reservation);
+                    $scope.gridProps.currentResizeItem = util.copyReservation(reservation);
                     successCallBackOfAvailabilityFetching(data, successParams, keepOpen);
                 };
                 apiOptions = {
@@ -98,7 +101,6 @@ angular.module('sntRover')
                 $scope.clearAvailability();
                 $scope.resetEdit();
                 $scope.renderGrid();
-
                 $scope.callAPI(rvDiarySrv.Availability, apiOptions);
 
                 self.dragData = options;
@@ -699,50 +701,51 @@ angular.module('sntRover')
                     props = $scope.gridProps,
                     edit = props.edit,
                     selectedTypeCount;
-                $scope.hideRoomUnAssignButton = row_item_data.reservation_status === 'departed'
-                                                || row_item_data.reservation_status === 'inhouse'
-                                                || row_item_data.reservation_status === 'check-out';
+ 
                 $scope.showSaveChangesAfterEditing = false;
                 if (!$scope.isAvailable(undefined, row_item_data)) {
                     switch (command_message) {
-		    		case 'edit':
-			    		if (!edit.active) {
-				    		$scope.initActiveEditMode({
-				    			row_data: row_data,
-				    			row_item_data: row_item_data
-				    		});
-				    		// setting scroll posiions when in edit mode
-				    		var x_n = props.display.x_n instanceof Date ? props.display.x_n : new Date(props.display.x_n);
+                        case 'edit':
+                            if (!edit.active && !props.unassignedRoomList.isItemSelected) {
+                                $scope.initActiveEditMode({
+                                    row_data: row_data,
+                                    row_item_data: row_item_data
+                                });
+                                $scope.hideRoomUnAssignButton = row_item_data.reservation_status === 'departed'
+                                                    || row_item_data.reservation_status === 'inhouse'
+                                                    || row_item_data.reservation_status === 'check-out';
+                                // setting scroll posiions when in edit mode
+                                var x_n = props.display.x_n instanceof Date ? props.display.x_n : new Date(props.display.x_n);
 
-				    		x_n.setHours(0, 0, 0);
-				    		var x_origin = row_item_data.arrival;
-	    					// setting arrival_time as selected one reservation
-	    					var new_arrival_time = new Date (row_item_data.arrival);
+                                x_n.setHours(0, 0, 0);
+                                var x_origin = row_item_data.arrival;
+                                // setting arrival_time as selected one reservation
+                                var new_arrival_time = new Date (row_item_data.arrival);
 
-	    					new_arrival_time = new_arrival_time.toComponents().time.toHourAndMinute(':', 24);
-	    					$scope.gridProps.filter.arrival_time = new_arrival_time;
+                                new_arrival_time = new_arrival_time.toComponents().time.toHourAndMinute(':', 24);
+                                $scope.gridProps.filter.arrival_time = new_arrival_time;
 
-	    					// if guest name is not found, we have to show account name
-				    		if (!row_item_data.reservation_primary_guest_full_name) {
-				    			$scope.gridProps.edit.originalItem.account_name = row_item_data.company_card_name ? row_item_data.company_card_name : row_item_data.travel_agent_name;
-				    		}
-				    		// restricing from choosing the date less than busines date
-				    		var minDate = new tzIndependentDate($rootScope.businessDate);
-
-                            $scope.dateOptions.minDate = minDate;
-
-				    		$scope.gridProps.availability.resize.last_arrival_time = null;
-	    					$scope.gridProps.availability.resize.last_departure_time = null;
-
-				    		$scope.renderGrid();
-                            setTimeout(function() {
-                                if (!$scope.$$phase) {
-                                    $scope.$apply();
+                                // if guest name is not found, we have to show account name
+                                if (!row_item_data.reservation_primary_guest_full_name) {
+                                    $scope.gridProps.edit.originalItem.account_name = row_item_data.company_card_name ? row_item_data.company_card_name : row_item_data.travel_agent_name;
                                 }
-                            }, 100);
-				    	}
-		    		break;
-		    	}
+                                // restricing from choosing the date less than busines date
+                                var minDate = new tzIndependentDate($rootScope.businessDate);
+
+                                $scope.dateOptions.minDate = minDate;
+
+                                $scope.gridProps.availability.resize.last_arrival_time = null;
+                                $scope.gridProps.availability.resize.last_departure_time = null;
+
+                                $scope.renderGrid();
+                                setTimeout(function() {
+                                    if (!$scope.$$phase) {
+                                        $scope.$apply();
+                                    }
+                                }, 100);
+                            }
+                        break;
+		    	    }
                 }
                 else if (!$scope.gridProps.unassignedRoomList.isItemSelected) {
                     copy = util.shallowCopy({}, row_item_data);
@@ -808,7 +811,7 @@ angular.module('sntRover')
             }.bind($scope.gridProps);
 
             $scope.openStayCard = function() {
-                var reservation 	= this.currentResizeItem,
+                var reservation 	= this.unassignedRoomList.isItemSelected ? this.edit.originalItem : this.currentResizeItem,
                     reservationID  	= reservation.reservation_id,
                     confirmationID 	= reservation.confirmation_number;
 
@@ -1336,11 +1339,17 @@ angular.module('sntRover')
 
 
             $scope.editCancel = function() {
-                var props = $scope.gridProps;
+                var props = $scope.gridProps,
+                    roomIndex,
+                    data;
 
-                roomIndex 		= _.indexOf(_.pluck($scope.gridProps.data, 'id'), props.edit.originalRowItem.id);
+                // Don't want to go for the reservationRoomTransfer for an unassigned reservation
+                // there won't be originalRoomItem/room for such reservation
+                if (!_.isEmpty(props.edit.originalRowItem)) {
+                    roomIndex 		= _.indexOf(_.pluck($scope.gridProps.data, 'id'), props.edit.originalRowItem.id);
+                    util.reservationRoomTransfer($scope.gridProps.data, props.edit.originalRowItem, props.currentResizeItemRow, props.currentResizeItem);
+                }
                 data = $scope.gridProps.data;
-                util.reservationRoomTransfer($scope.gridProps.data, props.edit.originalRowItem, props.currentResizeItemRow, props.currentResizeItem);
                 // whether it is in another date with reservation transfer
                 if (rvDiarySrv.isReservationMovingFromOneDateToAnother) {
                     // finding the reservation date to move back
@@ -1364,6 +1373,9 @@ angular.module('sntRover')
                     changeCalendarDate (goBackDate);
                     // resetting the reservation data, that set during transfrer
                     resetTheDataForReservationMoveFromOneDateToAnother ();
+                }
+                if ($scope.gridProps.unassignedRoomList.isItemSelected) {
+                    $scope.$broadcast('DESELECT_UNASSIGNED_RESERVATION');
                 }
                 // reseting to min date
                 $scope.dateOptions.minDate = null;
@@ -1530,10 +1542,10 @@ angular.module('sntRover')
                     account_id = getAccountID (this.currentResizeItem),
                     room_id 	= this.currentResizeItemRow.id,
                     reservation_id = this.currentResizeItem.reservation_id,
-                    arrivalTime = new Date(this.currentResizeItem.arrival).toComponents().time;
+                    arrivalTime = new Date(this.currentResizeItem.arrival).toComponents().time,
+                    depTime 	= new Date(this.currentResizeItem.departure).toComponents().time;
 
                 arrivalTime = arrivalTime.hours + ':' + arrivalTime.minutes + ':' + arrivalTime.seconds;
-                depTime 	= new Date(this.currentResizeItem.departure).toComponents().time;
                 depTime 	= depTime.hours + ':' + depTime.minutes + ':' + depTime.seconds;
                 var params = {
                     room_id: room_id,

@@ -3,7 +3,7 @@
 
 <section id="diary-content" class="content diary-content" role="main">
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-    <form class="diary-header" ng-class="{'editing': gridProps.edit.active === true }">
+    <form class="diary-header" ng-class="{'editing': gridProps.edit.active === true || gridProps.unassignedRoomList.isItemSelected === true }">
 
         <!-- Day or Night Use Diary -->
         <div class="entry switch switch-view" ng-hide="hideToggleMenu()">
@@ -134,8 +134,7 @@
                 <span class="icons icon-reset"></span>
             </button>
         </div>
-
-        <div class="entry edit show-editing" ng-show="gridProps.edit.active">
+        <div class="entry edit show-editing" ng-show="gridProps.edit.active || gridProps.unassignedRoomList.isItemSelected">
             <div class="guest">
                 <figure class="guest-image hidden">
                     <img src="" alt="">
@@ -143,6 +142,9 @@
                 <div class="guest-info">
                      <h2 class="name" ng-show="gridProps.edit.originalItem.reservation_primary_guest_full_name">
                         {{gridProps.edit.originalItem.reservation_primary_guest_full_name}}
+                    </h2>
+                    <h2 class="name" ng-show="!gridProps.edit.originalItem.reservation_primary_guest_full_name && gridProps.edit.originalItem.primary_guest">
+                        {{gridProps.edit.originalItem.primary_guest}}
                     </h2>
                     <h2 class="name" ng-show="!gridProps.edit.originalItem.reservation_primary_guest_full_name">
                         {{gridProps.edit.originalItem.account_name}}
