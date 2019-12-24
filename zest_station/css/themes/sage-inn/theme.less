@@ -1,0 +1,201 @@
+/* StayNTouch Zest Station Styles | Hotel Queen Anne Theme */
+
+/* 1. COLORS
+==========================================================*/
+@brandColor:            #282828;
+    
+@textColor:             @black;
+@backgroundColor:       #f3f3f3;
+
+@actionColor:           @white;
+@actionBackground:      @brandColor;
+
+@inputBackground:       #707070;
+@inputColor:            @white;
+@transparentColor:      rgba(0,0,0,.5);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+
+@fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+
+/* 3. IMAGES
+==========================================================*/
+@background: url("../css/themes/sage-inn/background.png") @backgroundColor no-repeat;
+@backgroundSize: cover;
+
+@headerIconsColor:      @brandColor;
+@headerIconsActive:     @brandColor;
+
+.icons { 
+    &.icon-create-key {
+        fill: @brandColor;
+        stroke: @brandColor;
+    }
+
+    &.icon-no-print { stroke: @white; }
+
+    &.icon-oos {
+        fill: @brandColor;
+    }
+
+    &.icon-arrow-left,
+    &.icon-arrow-right {
+        fill: none;
+        stroke: @white;
+    }
+
+}
+
+/* 4. LAYOUT
+==========================================================*/
+
+#sage-inn {
+    
+    .logo-svg{
+        background-image: url("../css/themes/sage-inn/logo.svg");
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+        height: 99px;
+        width: 189px;
+    }
+
+    #header {
+        height: 145px;
+        background: @white;
+
+        .button {
+            .icons {
+                fill: @black;
+            }
+        }
+    }
+
+    #main {
+        #calc > #height > .remove(100%, 145px);
+        top: 145px;
+
+        &.centered {
+            padding-top: 100px;
+            #content {
+                height: 100%;
+            }
+        }
+    }
+    .entry.input:not(.select) {
+        .icons {
+            fill: @brandColor;
+        }
+    }
+
+    input,
+    select,
+    button {
+        font-size: 1.3em;
+    }
+    
+    #logo {
+        padding-top: 0;
+
+        .logo {
+            width: auto;
+            height: 100px;
+        }
+    }
+
+    #options {
+        
+        .icon-text {
+            color: @white;
+        }
+
+        .icons {
+            fill: @white;
+        }
+
+        li.break {
+            padding-top: 60px;
+
+            &:after,
+            &:before {
+                display: none;
+            }
+        }
+    }
+
+    #guests {
+        .button {
+            color: @white;
+            background-color: #8b8b8b;
+        }
+    } 
+
+    .add-on-list {
+
+        // The second row is getting chunked on lower viewport height
+        @media screen and (max-height:800px) {
+            &.add-on-list-rows {
+                li:nth-child(n+4) {
+                    margin-top: 0;
+                }
+            }
+        }
+    }
+
+    .add-on {
+
+        .input-group {
+            input {
+                color: @brandColor;
+            }
+        }
+
+        #options {
+            li {
+                .option {
+                    &.not-selected {
+                        .icon-text {
+                            color: @brandColor;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    #textual {
+        background: @white;
+         
+
+        &:before,
+        &:after {
+            background: @white;
+        }
+
+    }
+
+    #rate {
+        li {
+            &.sub {
+                color: #a1a1a1;
+            }
+        }
+    }
+
+    #textual,
+    .popup {
+        .icons {
+            fill: @white;
+        }
+    }
+
+    .upgrade-list {
+        &:not(.upgrade-list-v2) {
+            li:not(.selected) .upgrade-content {
+                background: #fff;
+            }
+        }
+    }
+}
