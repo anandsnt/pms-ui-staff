@@ -56,8 +56,7 @@ angular.module('sntRover')
 				var svg = d3.select("#d3-plot").append("svg")
 					.attr("width", width + margin.left + margin.right + 150)
 					.attr("height", height + margin.top + margin.bottom)
-					.append("g")
-					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+					.append("g");
 
 				var xScaleDomain = data.map(function(d) {
 					return d.date;
