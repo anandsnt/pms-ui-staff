@@ -75,6 +75,7 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			$scope.callAPI(rvManagersAnalyticsSrv.roomPerformanceKPR, options);
 		};
 
+		var shallowDecodedParams = "";
 		var renderDistributionChart = function() {
 
 			$('base').attr('href', initialBaseHrefValue);
@@ -82,7 +83,8 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			var params = {
 				start_date: $scope.dashboardFilter.fromDate,
 				end_date: $scope.dashboardFilter.toDate,
-				chart_type: $scope.dashboardFilter.chartType
+				chart_type: $scope.dashboardFilter.chartType,
+				shallowDecodedParams: shallowDecodedParams
 			};
 
 			if ($scope.dashboardFilter.aggType) {
@@ -282,10 +284,13 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			$scope.callAPI(rvManagersAnalyticsSrv.roomPerformanceKPR, options);
 		};
 
-		$scope.$on('ANALYTICS_FILTER_CHANGED',  function (){
+		$scope.$on('ANALYTICS_FILTER_CHANGED',  function (e, data){
 			console.log($scope.dashboardFilter);
 			if ($scope.screenData.selectedChart === 'PERFOMANCE') {
 				handleFilterChangeForPerfomanceChart();
+			} else if ($scope.dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION') {
+				shallowDecodedParams = data;
+				renderDistributionChart();
 			}
 		});
 

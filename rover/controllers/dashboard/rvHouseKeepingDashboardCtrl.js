@@ -119,4 +119,6 @@ sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope'
 
   $scope.$on('REFRESH_ANALTICS_SCROLLER', refreshAnalyticsScroller);
 
+  $scope.dashboardFilter.isHkDashboard = true;
+
 }]);

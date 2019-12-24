@@ -49,7 +49,7 @@
     </div>
     <!-- Actions -->
     <div class="entry actions">
-        <button class="button white with-icon only-icon" ng-class="{'open' : dashboardFilter.showFilters }" ng-click="dashboardFilter.showFilters = !dashboardFilter.showFilters"> <!-- Add class 'open' when clicked 1st time, remove it when clickd 2nd time -->
+        <button class="button white with-icon only-icon" ng-class="{'open' : dashboardFilter.showFilters }" ng-click="toggleFilterView()"> <!-- Add class 'open' when clicked 1st time, remove it when clickd 2nd time -->
             <!-- If filters applied, show their count like this: <span class="count">{X}</span> -->
             <span class="icons icon-filter"></span>
             Filter rooms
@@ -91,7 +91,7 @@
                     <label for="analytics-room-type">Room Type</label>
                     <select id="room-type" ng-model="room_type_id" ng-change="onRoomTypeChange()">
                         <option value="" selected="" translate>SHOW_ALL</option>
-                        <option value="{{::roomType.id}}" ng-repeat="roomType in ::roomTypes track by $index">{{::roomType.name}}</option>
+                        <option value="{{::roomType.id}}" ng-repeat="roomType in ::availableRoomTypes track by $index">{{::roomType.name}}</option>
                     </select>
                 </div>
                 <!-- When Room Type is selected, remove it as an option from dropdown above + add a record of it here -->
@@ -139,17 +139,9 @@
             <div class="entry">
                 <div class="select with-label">
                     <label for="analytics-room-type">Room Type</label>
-                    <select id="analytics-room-type" class="placeholder" data-js="tags">
+                    <select id="analytics-room-type" class="placeholder" ng-model="selectedFilters.roomType" data-js="tags" ng-change="distributionFilterAdded('ROOM_TYPE')">
                         <option value="">Select</option>
-                        <option value="room-type-0" data-alert="">Standard Room</option>
-                        <option value="room-type-1" data-alert="">Standard Double</option>
-                        <option value="room-type-2" data-alert="">Deluxe Room</option>
-                        <option value="room-type-3" data-alert="">Deluxe Twin</option>
-                        <option value="room-type-4" data-alert="">Deluxe Pool View</option>
-                        <option value="room-type-5" data-alert="">Junior Suite</option>
-                        <option value="room-type-6" data-alert="">Deluxe Suite</option>
-                        <option value="room-type-7" data-alert="">King Suite</option>
-                        <option value="room-type-8" data-alert="">Superior King</option>
+                        <option value="{{roomType.code}}" ng-repeat="roomType in availableRoomTypes | orderBy: name">{{roomType.name}}</option>
                     </select>
                 </div>
                 <!--<div class="multi-select with-label">
@@ -166,67 +158,62 @@
     <label class="checkbox inline "><span class="icon-form icon-checkbox"></span><input data-list="analytics-room-type" value="room-type-0" type="checkbox" data-check   data-text="Standard Room"  />Standard Room</label><label class="checkbox inline "><span class="icon-form icon-checkbox"></span><input data-list="analytics-room-type" value="room-type-1" type="checkbox" data-check   data-text="Standard Double"  />Standard Double</label><label class="checkbox inline "><span class="icon-form icon-checkbox"></span><input data-list="analytics-room-type" value="room-type-2" type="checkbox" data-check   data-text="Deluxe Room"  />Deluxe Room</label><label class="checkbox inline "><span class="icon-form icon-checkbox"></span><input data-list="analytics-room-type" value="room-type-3" type="checkbox" data-check   data-text="Deluxe Twin"  />Deluxe Twin</label><label class="checkbox inline "><span class="icon-form icon-checkbox"></span><input data-list="analytics-room-type" value="room-type-4" type="checkbox" data-check   data-text="Deluxe Pool View"  />Deluxe Pool View</label><label class="checkbox inline "><span class="icon-form icon-checkbox"></span><input data-list="analytics-room-type" value="room-type-5" type="checkbox" data-check   data-text="Junior Suite"  />Junior Suite</label><label class="checkbox inline "><span class="icon-form icon-checkbox"></span><input data-list="analytics-room-type" value="room-type-6" type="checkbox" data-check   data-text="Deluxe Suite"  />Deluxe Suite</label><label class="checkbox inline "><span class="icon-form icon-checkbox"></span><input data-list="analytics-room-type" value="room-type-7" type="checkbox" data-check   data-text="King Suite"  />King Suite</label><label class="checkbox inline "><span class="icon-form icon-checkbox"></span><input data-list="analytics-room-type" value="room-type-8" type="checkbox" data-check   data-text="Superior King"  />Superior King</label>
     </div>
     </div>-->
-                <div class="selected" data-list="analytics-room-type"></div>
+                <div class="selected" data-list="analytics-room-type">
+                    <span class="tag" ng-repeat="roomType in selectedFilters.roomTypes" ng-click="distributionFilterRemoved('ROOM_TYPE', roomType.code)">{{roomType.name}}</span>
+                </div>
             </div>
             <div class="entry">
                 <div class="select with-label">
                     <label for="analytics-market">Market</label>
-                    <select id="analytics-market" class="placeholder" data-js="tags">
-                        <option value="" selected="">Select</option>
-                        <option value="1">Market 1</option>
-                        <option value="2">Market 2</option>
-                        <option value="3">Market 3</option>
-                        <option value="4">Market 4</option>
-                        <option value="5">Market 5</option>
-                        <option value="6">Market 6</option>
+                    <select id="analytics-market" class="placeholder" ng-model="selectedFilters.marketCode" data-js="tags" ng-change="distributionFilterAdded('MARKET')">
+                        <option value="">Select</option>
+                        <option value="{{market.value}}" ng-repeat="market in marketData | orderBy: name">{{market.name}}</option>
                     </select>
                 </div>
-                <div class="selected" data-list="analytics-market"></div>
+                <div class="selected" data-list="analytics-market">
+                    <!-- CASE 1 - Regular Room Type -->
+                    <span class="tag" ng-repeat="market in selectedFilters.marketCodes" ng-click="distributionFilterRemoved('MARKET', market.value)">{{market.name}}</span> <!-- Click on this item removes it as filter + enables it in upper dropdown -->
+                    <!-- CASE 2 - If Shortage Medium Alert 
+                    <span class="tag alert-medium">{Room Type ({X} short)}</span> 
+                    <span class="tag alert-high">{Room Type ({X} short)}</span>
+                    ... repeat for every Room Type Selected-->
+                </div>
             </div>
             <div class="entry">
                 <div class="select with-label">
                     <label for="analytics-source">Source</label>
-                    <select id="analytics-source" class="placeholder" data-js="tags">
-                        <option value="" selected="">Select</option>
-                        <option value="1">Source 1</option>
-                        <option value="2">Source 2</option>
-                        <option value="3">Source 3</option>
-                        <option value="4">Source 4</option>
-                        <option value="5">Source 5</option>
-                        <option value="6">Source 6</option>
-                </select>
+                    <select id="analytics-source" class="placeholder" ng-model="selectedFilters.sourceCode" data-js="tags" ng-change="distributionFilterAdded('SOURCE')">
+                        <option value="">Select</option>
+                        <option value="{{source.value}}" ng-repeat="source in sourceData | orderBy: name">{{source.name}}</option>
+                    </select>
             </div>
-            <div class="selected" data-list="analytics-source"></div>
+            <div class="selected" data-list="analytics-source">
+                 <span class="tag" ng-repeat="source in selectedFilters.sourceCodes" ng-click="distributionFilterRemoved('SOURCE', source.value)">{{source.name}}</span>
+            </div>
         </div>
         <div class="entry">
             <div class="select with-label">
                 <label for="analytics-segment">Segment</label>
-                <select id="analytics-segment" class="placeholder" data-js="tags">
-                    <option value="" selected="">Select</option>
-                    <option value="1">Segment 1</option>
-                    <option value="2">Segment 2</option>
-                    <option value="3">Segment 3</option>
-                    <option value="4">Segment 4</option>
-                    <option value="5">Segment 5</option>
-                    <option value="6">Segment 6</option>
-                </select>
+                <select id="analytics-segment" class="placeholder" ng-model="selectedFilters.segmentCode" data-js="tags" ng-change="distributionFilterAdded('SEGMENT')">
+                        <option value="">Select</option>
+                        <option value="{{segment.value}}" ng-repeat="segment in segmentData | orderBy: name">{{segment.name}}</option>
+                    </select>
             </div>
-            <div class="selected" data-list="analytics-segment"></div>
+            <div class="selected" data-list="analytics-segment">
+                 <span class="tag" ng-repeat="segment in selectedFilters.segmentCodes" ng-click="distributionFilterRemoved('SEGMENT', segment.value)">{{segment.name}}</span>
+            </div>
         </div>
         <div class="entry">
             <div class="select with-label">
                 <label for="analytics-origin">Origin</label>
-                <select id="analytics-origin" class="placeholder" data-js="tags">
-                    <option value="" selected="">Select</option>
-                    <option value="1">Origin 1</option>
-                    <option value="2">Origin 2</option>
-                    <option value="3">Origin 3</option>
-                    <option value="4">Origin 4</option>
-                    <option value="5">Origin 5</option>
-                    <option value="6">Origin 6</option>
-                </select>
+                <select id="analytics-origin" class="placeholder" data-js="tags" ng-model="selectedFilters.originCode" ng-change="distributionFilterAdded('ORIGIN')">
+                        <option value="">Select</option>
+                        <option value="{{origin.value}}" ng-repeat="origin in originData | orderBy: name">{{origin.name}}</option>
+                    </select>
             </div>
-            <div class="selected" data-list="analytics-origin"></div>
+            <div class="selected" data-list="analytics-origin">
+                 <span class="tag" ng-repeat="origin in selectedFilters.originCodes" ng-click="distributionFilterRemoved('ORIGIN', origin.value)">{{origin.name}}</span>
+            </div>
         </div>
     </div>
 </div>

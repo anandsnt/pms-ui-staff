@@ -636,4 +636,25 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
             return room.status === 'PICKUP';
         });
     };
+
+    this.fetchMarketCodes = function() {
+        var url = '/api/market_segments';
+     
+        return rvBaseWebSrvV2.getJSON(url);
+    };
+    this.fetchSourceCodes = function() {
+        var url = '/api/sources';
+     
+        return rvBaseWebSrvV2.getJSON(url);
+    };
+    this.fetchSegmantCodes = function() {
+        var url = '/api/segments';
+     
+        return rvBaseWebSrvV2.getJSON(url);
+    };
+    this.fetchOriginCodes = function() {
+        var url = '/api/booking_origins';
+     
+        return rvBaseWebSrvV2.getJSON(url);
+    };
 }]);
