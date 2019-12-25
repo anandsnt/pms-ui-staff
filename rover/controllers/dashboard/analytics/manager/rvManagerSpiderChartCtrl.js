@@ -185,22 +185,22 @@ angular.module('sntRover')
 					// The elements on the chart for labels will have ids in the following format
 					// left-top-rev-par-rect ,  left-top-rev-adr-label1 etc where position is left-top
 
-					var elementsSuffixOnChart = [	"-adr-rect",
-													"-adr-label1",
-													"-adr-label2",
-													"-rev-par-rect",
-													"-rev-par-label1",
-													"-rev-par-label2"
-												];
+					var elementsSuffixOnChart = ["-adr-rect",
+						"-adr-label1",
+						"-adr-label2",
+						"-rev-par-rect",
+						"-rev-par-label1",
+						"-rev-par-label2"
+					];
 
 					if (hasLastYearData) {
-						var lastYearSuffixOnChart = [	"-adr-rect-2",
-														"-adr-labe3",
-														"-adr-label4",
-														"-rev-par-rect-2",
-														"-rev-par-label3",
-														"-rev-par-label4"
-													];
+						var lastYearSuffixOnChart = ["-adr-rect-2",
+							"-adr-labe3",
+							"-adr-label4",
+							"-rev-par-rect-2",
+							"-rev-par-label3",
+							"-rev-par-label4"
+						];
 
 						elementsSuffixOnChart = elementsSuffixOnChart.concat(lastYearSuffixOnChart);
 					}
@@ -208,11 +208,11 @@ angular.module('sntRover')
 					return elementsSuffixOnChart;
 				};
 
-				var bindClickEvents = function (position, suffix) {
+				var bindClickEvents = function(position, suffix) {
 					$("#" + position + suffix).click(onClickOnLabel);
 				};
 
-				var unBindClickEventsAndRemove = function (position, suffix) {
+				var unBindClickEventsAndRemove = function(position, suffix) {
 					$("#" + position + suffix).unbind("click");
 					$("#" + position + suffix).remove();
 				};
@@ -223,13 +223,13 @@ angular.module('sntRover')
 					var elementsSuffixOnChart = getElementSuffixesOnChart();
 
 					$timeout(function() {
-						_.each(elementsSuffixOnChart, function(suffix){
+						_.each(elementsSuffixOnChart, function(suffix) {
 							bindClickEvents(position, suffix)
 						});
 					}, animationDuration);
 				};
 
-				var getQuadrantPosition = function (e) {
+				var getQuadrantPosition = function(e) {
 					var position;
 
 					if (e.target.id && e.target.id.includes("left-top")) {
@@ -275,7 +275,7 @@ angular.module('sntRover')
 					});
 				};
 
-				var onClickOnOccupanyLabels = function (e) {
+				var onClickOnOccupanyLabels = function(e) {
 					var position = getQuadrantPosition(e);
 
 					deleteExistingOccupanyLabel(position);
@@ -290,7 +290,7 @@ angular.module('sntRover')
 				};
 
 
-				var onClickOnOccupany = function (e) {
+				var onClickOnOccupany = function(e) {
 
 					var position = getQuadrantPosition(e);
 					var occupancy,
@@ -334,14 +334,14 @@ angular.module('sntRover')
 
 					var rectWidth = x(0.3) - x(0);
 					var xOffset = x(-1 * occupancy * 0.1 / 25);
-					var yOffset = y(occupancy * 0.1 / 25) - ( y(0) - y(0.15));
+					var yOffset = y(occupancy * 0.1 / 25) - (y(0) - y(0.15));
 					var xOffsetText = xOffset + rectWidth / 4;
 					var yOffsetText = yOffset + (y(0) - y(0.25)) / 4;
 					var yOffsetText2 = yOffsetText + (y(0) - y(0.25)) / 4;
 
 
 					var textLabelGroup = svg.append("g")
-										.attr('id', position + '-occupancy-group');
+						.attr('id', position + '-occupancy-group');
 					var animationDuration = 200;
 
 					textLabelGroup.append('rect')
@@ -424,8 +424,8 @@ angular.module('sntRover')
 							.style("cursor", "pointer");
 
 						var occupancyDiff = parseFloat(occupancy_diff).toFixed(2);
-						var textColor = occupancyDiff >= 0 ? 'green' : 'red'; 
-						
+						var textColor = occupancyDiff >= 0 ? 'green' : 'red';
+
 						textLabelGroup.append("text")
 							.attr('x', lastYearTextXoffset)
 							.attr('y', yOffsetText2)
@@ -437,7 +437,7 @@ angular.module('sntRover')
 					}
 
 					addClickEventsForOccupanyLabels(position);
-				
+
 				};
 
 				var addClickEventForOccupany = function(id) {
@@ -453,7 +453,7 @@ angular.module('sntRover')
 					if (position) {
 						var elementsSuffixOnChart = getElementSuffixesOnChart();
 
-						_.each(elementsSuffixOnChart, function(suffix){
+						_.each(elementsSuffixOnChart, function(suffix) {
 							unBindClickEventsAndRemove(position, suffix)
 						});
 
@@ -590,7 +590,7 @@ angular.module('sntRover')
 						var diffText = parseFloat(label.diff).toFixed(2);
 
 						diffText = diffText > 0 ? '+' + diffText : diffText;
-						var textColor = diffText >= 0 ? 'green' : 'red'; 
+						var textColor = diffText >= 0 ? 'green' : 'red';
 
 						textLabelGroup.append("text")
 							.attr('x', lastYearTextXoffset)
@@ -606,10 +606,10 @@ angular.module('sntRover')
 				var lowestValue = maxValueForChart / 5;
 				var oneDivisonConversion = .0001;
 
-				var setColorBasedOnOccupancy = function (occupancy) {
+				var setColorBasedOnOccupancy = function(occupancy) {
 					if (parseFloat(occupancy) > 75) {
 						return "green";
-					} else if  (parseFloat(occupancy) > 25) {
+					} else if (parseFloat(occupancy) > 25) {
 						return "orange";
 					} else {
 						return "red";

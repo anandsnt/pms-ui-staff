@@ -68,7 +68,7 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 					clearAllExistingChartElements();
 					d3.select('#d3-plot').selectAll('svg').remove();
 					$scope.drawPerfomceChart(data);
-					addChartHeading()
+					addChartHeading();
 				}
 			};
 
@@ -106,19 +106,19 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			// $scope.drawDistributionChart(data);
 		};
 
-		var renderPaceChart = function () {
+		var renderPaceChart = function() {
 			var options = {
-                params: {
-                    date: $scope.dashboardFilter.datePicked
-                },
-                successCallBack: function(data) {
-                    clearAllExistingChartElements();
-                    $scope.drawPaceChart(data);
-                    addChartHeading();
-                }
-            };
-            $scope.callAPI(rvManagersAnalyticsSrv.pace, options);
-			
+				params: {
+					date: $scope.dashboardFilter.datePicked
+				},
+				successCallBack: function(data) {
+					clearAllExistingChartElements();
+					$scope.drawPaceChart(data);
+					addChartHeading();
+				}
+			};
+			$scope.callAPI(rvManagersAnalyticsSrv.pace, options);
+
 		};
 
 		var scrollToTop = function() {
@@ -186,7 +186,7 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 
 		});
 
-		$scope.$on('REFRESH_ANALYTCIS_CHART', function(){
+		$scope.$on('REFRESH_ANALYTCIS_CHART', function() {
 			drawChart();
 		});
 		/*
@@ -240,7 +240,9 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			addChartHeading();
 		};
 		var handleChangesForMixedFilter = function() {
-			var lastYeardate = moment($scope.dashboardFilter.datePicked).subtract(1, 'years').format("YYYY-MM-DD");
+			var lastYeardate = moment($scope.dashboardFilter.datePicked)
+				.subtract(1, 'years')
+				.format("YYYY-MM-DD");
 			var options = {
 				params: {
 					date: lastYeardate
@@ -272,7 +274,7 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 				$('base').attr('href', '#');
 				clearAllExistingChartElements();
 				$scope.drawPerfomceChart(perfomanceData);
-				addChartHeading();	
+				addChartHeading();
 				return;
 			}
 
@@ -281,7 +283,9 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			var lastYeardate;
 
 			if ($scope.dashboardFilter.lastyearType === "SAME_DATE_LAST_YEAR") {
-				lastYeardate = moment($scope.dashboardFilter.datePicked).subtract(1, 'years').format("YYYY-MM-DD");
+				lastYeardate = moment($scope.dashboardFilter.datePicked)
+					.subtract(1, 'years')
+					.format("YYYY-MM-DD");
 			} else if ($scope.dashboardFilter.lastyearType === "SAME_DAY_LAST_YEAR" || $scope.dashboardFilter.lastyearType === "MIXED") {
 				lastYeardate = rvAnalyticsHelperSrv.getClosetDayOftheYearInPastYear($scope.dashboardFilter.datePicked);
 			}
@@ -299,11 +303,11 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 							if (key === key1) {
 								combinedPerfomanceData[key] = angular.copy(perfomanceData[key]);
 								combinedPerfomanceData[key].adr_diff = parseFloat(perfomanceData[key].adr) -
-							 										   parseFloat(lastYeardata[key].adr);
+									parseFloat(lastYeardata[key].adr);
 								combinedPerfomanceData[key].rev_par_diff = parseFloat(perfomanceData[key].rev_par) -
-							 										   parseFloat(lastYeardata[key].rev_par);
+									parseFloat(lastYeardata[key].rev_par);
 								combinedPerfomanceData[key].occupancy_diff = parseFloat(perfomanceData[key].occupancy) -
-							 										   parseFloat(lastYeardata[key].occupancy);
+									parseFloat(lastYeardata[key].occupancy);
 							}
 						}
 					}
@@ -313,14 +317,14 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 					} else {
 						drawSpiderChart();
 					}
-					
+
 				}
 			};
 
 			$scope.callAPI(rvManagersAnalyticsSrv.roomPerformanceKPR, options);
 		};
 
-		$scope.$on('ANALYTICS_FILTER_CHANGED',  function (e, data){
+		$scope.$on('ANALYTICS_FILTER_CHANGED', function(e, data) {
 			console.log($scope.dashboardFilter);
 			if ($scope.screenData.selectedChart === 'PERFOMANCE') {
 				handleFilterChangeForPerfomanceChart();
