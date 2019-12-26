@@ -316,21 +316,6 @@ angular.module('sntRover')
 					}
 					occupancy = occupancy > 25 ? occupancy : parseInt(occupancy);
 					deleteExistingOccupanyLabel(position);
-					// var xValue = 0.5 + (parseInt(label.value) - parseInt(roundedInvidual)) * valueOfOne;
-
-					// xValue = isLeftSide ? -1 * xValue : xValue;
-					// var rectYvalue = 0.5 + (parseInt(label.value) - parseInt(roundedInvidual)) * valueOfOne;
-
-					// rectYvalue = isDownSide ? -1 * rectYvalue : rectYvalue;
-
-					// var rectWidth = x(0.3) - x(0);
-					// var xOffset = x(xValue) - rectWidth / 2,
-					// 	yOffset = y(rectYvalue) - (y(0) - y(0.15)) / 2,
-
-					// 	xOffsetText = x(xValue) - rectWidth / 4,
-
-					// 	yOffsetText = y(rectYvalue) - (y(0) - y(0.15)) / 6,
-					// 	yOffsetText2 = y(rectYvalue) + (y(0) - y(0.15)) / 4;
 
 					var rectWidth = x(0.3) - x(0);
 					var xOffset = x(-1 * occupancy * 0.1 / 25);
