@@ -1,4 +1,4 @@
-sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope', '$state', '$timeout', 'ngDialog', function($scope, $rootScope, $state, $timeout, ngDialog) {
+sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope', '$state', '$timeout', 'ngDialog', 'rvAnalyticsHelperSrv', function($scope, $rootScope, $state, $timeout, ngDialog, rvAnalyticsHelperSrv) {
 	// inheriting some useful things
 	BaseCtrl.call(this, $scope);
     var that = this;
@@ -109,6 +109,7 @@ sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope'
       "room_type": $scope.dashboardFilter.selectedRoomType,
       "date": $scope.dashboardFilter.datePicked
     });
+    roomTypeFilerChanged();
   };
 
   var refreshAnalyticsScroller = function() {
@@ -120,5 +121,45 @@ sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope'
   $scope.$on('REFRESH_ANALTICS_SCROLLER', refreshAnalyticsScroller);
 
   $scope.dashboardFilter.isHkDashboard = true;
+
+  $scope.availableRoomTypes = angular.copy($scope.roomTypes);
+
+  $scope.$on('ROOM_TYPE_SHORTAGE_CALCULATED', function(e, calculatedRoomTypes) {
+    $scope.roomTypesForWorkPrioriy = [];
+    _.each($scope.availableRoomTypes, function(roomType) {
+      roomType.shortage = 0;
+      roomType.overBooking = 0;
+      _.each(calculatedRoomTypes, function(calculatedRoomType) {
+        if (roomType.code === calculatedRoomType.code) {
+          roomType.shortage = calculatedRoomType.shortage;
+          roomType.overBooking = calculatedRoomType.overBooking;
+        }
+      });
+    });
+  });
+
+  var resetChartFilters = function() {
+    $scope.selectedFilters = {
+      "roomType": "",
+      "roomTypes": []
+    };
+  };
+  resetChartFilters();
+
+  $scope.chartFilterRemoved = function(selectedRoomType) {
+      $scope.availableRoomTypes = rvAnalyticsHelperSrv.addToAndSortArray($scope.availableRoomTypes, selectedRoomType);
+      $scope.selectedFilters.roomTypes = _.reject($scope.selectedFilters.roomTypes, selectedRoomType);
+  };
+  var roomTypeFilerChanged = function() {
+    // TODO: later
+    return;
+
+    if ($scope.dashboardFilter.selectedRoomType) {
+      var selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.availableRoomTypes, $scope.dashboardFilter.selectedRoomType);
+
+      $scope.selectedFilters.roomTypes = rvAnalyticsHelperSrv.addToAndSortArray($scope.selectedFilters.roomTypes, selectedItem);
+      $scope.availableRoomTypes = _.reject($scope.availableRoomTypes, selectedItem);
+    }
+  };
 
 }]);
