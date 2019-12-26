@@ -50,14 +50,13 @@ angular.module('sntRover')
 						bottom: 30,
 						left: 60
 					},
-					width = document.getElementById("analytics-chart").clientWidth,
+					width = document.getElementById("manager-analytics-chart").clientWidth,
 					height = 500 - margin.top - margin.bottom;
 
 				var svg = d3.select("#d3-plot").append("svg")
 					.attr("width", width + margin.left + margin.right + 150)
 					.attr("height", height + margin.top + margin.bottom)
-					.append("g")
-					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+					.append("g");
 
 				var xScaleDomain = data.map(function(d) {
 					return d.date;
@@ -231,28 +230,22 @@ angular.module('sntRover')
 					yOffset: margin.top
 				});
 
-				var legend = svg.selectAll(".legend")
+				var legendParentElement = d3.select("#right-side-legend");
+				var legend = legendParentElement.selectAll(".legend")
 					.data(colors)
 					.enter().append("g")
-					.attr("class", "legend")
+					.attr("class", "legend-item")
 					.attr("transform", function(d, i) {
 						return "translate(-100," + i * 30 + ")";
 					});
 
-				legend.append("rect")
-					.attr("x", width - 18)
-					.attr("width", 18)
-					.attr("height", 18)
-					.style("fill", function(d, i) {
-						return colors[i];
-					});
-
-				legend.append("text")
-					.attr("x", width + 5)
-					.attr("y", 9)
-					.attr("dy", ".35em")
-					.style("text-anchor", "start")
-					.style("font-size", "15px")
+				legend.append("span")
+							.attr("class", "bar")
+							.style("background-color", function(d, i) {
+								return colors[i];
+							});
+				legend.append("span")
+					.attr("class", "bar-label")
 					.text(function(d, i) {
 						return rvAnalyticsHelperSrv.textTruncate(stackKeysTags[i], 35, '...');
 					});

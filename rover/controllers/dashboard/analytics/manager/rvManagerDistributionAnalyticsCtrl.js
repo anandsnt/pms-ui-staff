@@ -30,7 +30,7 @@ angular.module('sntRover')
 							},
 							parseDate = d3.timeParse("%Y-%m-%d");
 
-						var width = document.getElementById("analytics-chart").clientWidth - margin.left - margin.right,
+						var width = document.getElementById("manager-analytics-chart").clientWidth - margin.left - margin.right,
 							height = 500 - margin.top - margin.bottom;
 
 						var xScale = d3.scaleBand()
@@ -196,28 +196,22 @@ angular.module('sntRover')
 							.attr("font-weight", "bold");
 
 						if (stackKey.length > 1 || $scope.dashboardFilter.aggType) {
-							var legend = svg.selectAll(".legend")
+							var legendParentElement = d3.select("#right-side-legend");
+							var legend = legendParentElement.selectAll(".legend-item")
 								.data(colors)
 								.enter().append("g")
-								.attr("class", "legend")
-								.attr("transform", function(d, i) {
-									return "translate(-300," + i * 30 + ")";
-								});
+								.attr("class", "legend-item")
+							// .attr("transform", function(d, i) {
+							// 	return "translate(-300," + i * 30 + ")";
+							// });
 
-							legend.append("rect")
-								.attr("x", width - 18)
-								.attr("width", 18)
-								.attr("height", 18)
-								.style("fill", function(d, i) {
+							legend.append("span")
+								.attr("class", "bar")
+								.style("background-color", function(d, i) {
 									return colors[i];
 								});
-
-							legend.append("text")
-								.attr("x", width + 5)
-								.attr("y", 9)
-								.attr("dy", ".35em")
-								.style("text-anchor", "start")
-								.style("font-size", "15px")
+							legend.append("span")
+								.attr("class", "bar-label")
 								.text(function(d, i) {
 									return rvAnalyticsHelperSrv.textTruncate(stackKey[i], 35, '...');
 								});
@@ -240,8 +234,25 @@ angular.module('sntRover')
 				});
 
 				// Predefined colors to avoid similiar colors coming close to each other
-				var colors = ["#ff7f00", "#ff0029", "#377eb8", "#66a61e", "#984ea3", "#00d2d5", "#af8d00", "#7f80cd", "#b3e900", "#c42e60", "#a65628", "#f781bf", "#8dd3c7", "#bebada", "#fb8072", "#80b1d3", "#fdb462", "#fccde5", "#bc80bd", "#ffed6f", "#c4eaff", "#cf8c00", "#1b9e77", "#d95f02", "#e7298a", "#e6ab02", "#a6761d", "#0097ff", "#00d067", "#000000", "#252525", "#525252", "#737373", "#969696", "#bdbdbd", "#f43600", "#4ba93b", "#5779bb", "#927acc", "#97ee3f", "#bf3947", "#9f5b00", "#f48758", "#8caed6", "#f2b94f", "#eff26e", "#e43872", "#d9b100", "#9d7a00", "#698cff", "#d9d9d9"];
+				// var colors = ["#ff7f00", "#ff0029", "#377eb8", "#66a61e", "#984ea3", "#00d2d5", "#af8d00", "#7f80cd", "#b3e900", "#c42e60", "#a65628", "#f781bf", "#8dd3c7", "#bebada", "#fb8072", "#80b1d3", "#fdb462", "#fccde5", "#bc80bd", "#ffed6f", "#c4eaff", "#cf8c00", "#1b9e77", "#d95f02", "#e7298a", "#e6ab02", "#a6761d", "#0097ff", "#00d067", "#000000", "#252525", "#525252", "#737373", "#969696", "#bdbdbd", "#f43600", "#4ba93b", "#5779bb", "#927acc", "#97ee3f", "#bf3947", "#9f5b00", "#f48758", "#8caed6", "#f2b94f", "#eff26e", "#e43872", "#d9b100", "#9d7a00", "#698cff", "#d9d9d9"];
 
+				// TODO: confirm with Stjepan
+				var colors = ['#F76707', '#FCC419', '#74B816', '#2B8A3E', '#12B886', '#1098AD',
+					'#1864AB', '#4263EB', '#5F3DC4', '#9C36B5', '#E64980', '#E03131',
+
+					'#F87A26', '#FCCB36', '#85C133', '#469956', '#30C195', '#2EA5B7',
+					'#3577B5', '#5A77ED', '#7355CB', '#A84FBE', '#E96090', '#E44B4B',
+
+					'#F98D45', '#FDD353', '#97CA50', '#60A76E', '#4DCAA4', '#4CB2C2',
+					'#528BC0', '#718AF0', '#876ED3', '#B568C8', '#EC77A0', '#E86565',
+
+					'#FAA064', '#FDDA6F', '#A8D36D', '#7AB686', '#6BD3B3', '#6ABFCC',
+					'#6F9ECA', '#899EF2', '#9B86DA', '#C181D1', '#EF8DB0', '#EC7E7E',
+
+					'#FBB383', '#FEE28C', '#BADB8B', '#95C59F', '#89DBC3', '#88CCD6',
+					'#8BB2D5', '#A1B1F5', '#AF9EE2', '#CE9BDA', '#F2A4CO', '#EF9898'
+				];
+				
 				// Till 50, use above color. After that use random colors
 				if (colors.length > chartDataKeys.length) {
 					colors = colors.slice(0, chartDataKeys.length);
