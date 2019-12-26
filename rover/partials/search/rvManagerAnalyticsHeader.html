@@ -70,7 +70,7 @@
                     Show Last Year Information
                 </label>
                 <!-- Show when L71 is checked -->
-                <div class="select with-label">
+                <div class="select with-label" ng-if="dashboardFilter.showLastYearData">
                     <label for="last-year">Type</label>
                     <select id="last-year" ng-model="dashboardFilter.lastyearType" ng-change="onAnlayticsFilterChanged()">
                         <option value="SAME_DATE_LAST_YEAR">Same DATE Last Year</option>
