@@ -346,6 +346,7 @@ sntRover.controller('RVmanagerDashboardController',
       "segmentCodes": []
     };
   };
+
   resetChartFilters();
 
   var findFilter = function(dataSet, selectedItem) {
@@ -426,7 +427,7 @@ sntRover.controller('RVmanagerDashboardController',
     return dataSet;
   };
 
-  var reresetChartFilters = function() {
+  var emptyAllChartFilters = function() {
     shallowEncoded = "";
     $scope.dashboardFilter.chartType = "occupancy";
     $scope.dashboardFilter.aggType = "";
@@ -445,8 +446,8 @@ sntRover.controller('RVmanagerDashboardController',
     resetChartFilters();
   };
 
-  $scope.$on('RESET_CHART_FILTERS', function(){
-    reresetChartFilters();
+  $scope.$on('RESET_CHART_FILTERS', function() {
+    emptyAllChartFilters();
   });
 
 }]);

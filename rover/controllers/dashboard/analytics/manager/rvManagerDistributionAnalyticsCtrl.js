@@ -252,6 +252,7 @@ angular.module('sntRover')
 					'#FBB383', '#FEE28C', '#BADB8B', '#95C59F', '#89DBC3', '#88CCD6',
 					'#8BB2D5', '#A1B1F5', '#AF9EE2', '#CE9BDA', '#F2A4CO', '#EF9898'
 				];
+				
 				// Till 50, use above color. After that use random colors
 				if (colors.length > chartDataKeys.length) {
 					colors = colors.slice(0, chartDataKeys.length);

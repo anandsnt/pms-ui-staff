@@ -237,14 +237,11 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			} else if ($scope.dashboardFilter.lastyearType === "SAME_DAY_LAST_YEAR" || $scope.dashboardFilter.lastyearType === "MIXED") {
 				lastYeardate = rvAnalyticsHelperSrv.getClosetDayOftheYearInPastYear($scope.dashboardFilter.datePicked);
 			}
-			console.log(lastYeardate);
 			var options = {
 				params: {
 					date: lastYeardate
 				},
 				successCallBack: function(lastYeardata) {
-					console.log(JSON.stringify(lastYeardata));
-					console.log(JSON.stringify(perfomanceData));
 					calculateDifferenceInPerfomance(lastYeardata, false);
 					if ($scope.dashboardFilter.lastyearType === "MIXED") {
 						handleChangesForMixedFilter();
@@ -259,7 +256,6 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 		};
 
 		$scope.$on('ANALYTICS_FILTER_CHANGED', function(e, data) {
-			console.log($scope.dashboardFilter);
 			if ($scope.screenData.selectedChart === 'PERFOMANCE') {
 				handleFilterChangeForPerfomanceChart();
 			} else if ($scope.dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION') {

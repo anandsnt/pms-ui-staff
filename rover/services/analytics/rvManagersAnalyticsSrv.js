@@ -24,7 +24,7 @@ angular.module('sntRover').service('rvManagersAnalyticsSrv', [
 
             var url = '/redshift/analytics/distributions';
 
-            if (params.shallowDecodedParams){
+            if (params.shallowDecodedParams) {
                 url = url + '?' + params.shallowDecodedParams;
                 delete params.shallowDecodedParams;
             }
@@ -46,7 +46,7 @@ angular.module('sntRover').service('rvManagersAnalyticsSrv', [
 
             var url = '/redshift/analytics/pace';
 
-            if (params.shallowDecodedParams){
+            if (params.shallowDecodedParams) {
                 url = url + '?' + params.shallowDecodedParams;
                 delete params.shallowDecodedParams;
             }
