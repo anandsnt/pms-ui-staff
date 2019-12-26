@@ -405,11 +405,13 @@ angular.module('sntRover')
 							.attr("id", position + "-occupancy-label-3")
 							.style("font-size", "12px")
 							.style("fill", "black")
-							.text("FROM LAST YEAR")
+							.text("LAST YEAR")
 							.style("cursor", "pointer");
 
 						var occupancyDiff = parseFloat(occupancy_diff).toFixed(2);
 						var textColor = occupancyDiff >= 0 ? 'green' : 'red';
+						
+						occupancyDiff = occupancyDiff >= 0 ? '+' + occupancyDiff + '%' : occupancyDiff + '%';
 
 						textLabelGroup.append("text")
 							.attr('x', lastYearTextXoffset)
@@ -573,9 +575,19 @@ angular.module('sntRover')
 							.style("cursor", "pointer");
 
 						var diffText = parseFloat(label.diff).toFixed(2);
+						var textColor;
 
-						diffText = diffText > 0 ? '+' + diffText : diffText;
-						var textColor = diffText >= 0 ? 'green' : 'red';
+						if (parseFloat(diffText) > 0) {
+							diffText = '+' + $rootScope.currencySymbol + diffText;
+							textColor = 'green';
+						} else if (parseFloat(diffText) === 0) {
+							diffText = '+/-' + $rootScope.currencySymbol + 0;
+							textColor = 'grey';
+						} else {
+							diffText = -1 * diffText;
+							diffText = '-' + $rootScope.currencySymbol + diffText;
+							textColor = 'red';
+						}
 
 						textLabelGroup.append("text")
 							.attr('x', lastYearTextXoffset)
