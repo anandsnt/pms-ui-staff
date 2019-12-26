@@ -107,9 +107,18 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 		var renderPaceChart = function() {
 			var options = {
 				params: {
-					date: $scope.dashboardFilter.datePicked
+					date: $scope.dashboardFilter.datePicked,
+					shallowDecodedParams: shallowDecodedParams
 				},
 				successCallBack: function(data) {
+					if (data && data.length === 0) {
+						data = [{
+							new: 0,
+							cancellation: 0,
+							on_the_books: 0,
+							date: $scope.dashboardFilter.datePicked
+						}];
+					}
 					clearAllExistingChartElements();
 					$scope.drawPaceChart(data);
 					addChartHeading();
@@ -256,6 +265,9 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			} else if ($scope.dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION') {
 				shallowDecodedParams = data;
 				renderDistributionChart();
+			} else if ($scope.dashboardFilter.selectedAnalyticsMenu === 'PACE') {
+				shallowDecodedParams = data;
+				renderPaceChart();
 			}
 		});
 
@@ -284,12 +296,12 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			if ($scope.screenData.selectedChart === selectedChart) {
 				return;
 			}
+			$scope.$emit('RESET_CHART_FILTERS');
+			shallowDecodedParams = "";
 			$scope.screenData.selectedChart = selectedChart;
 			$timeout(function() {
 				clearAllExistingChartElements();
 				$scope.dashboardFilter.chartType = "occupancy";
-				$scope.dashboardFilter.aggType = "";
-				$scope.dashboardFilter.datePicked = $rootScope.businessDate;
 				drawChart();
 			}, 0);
 		});

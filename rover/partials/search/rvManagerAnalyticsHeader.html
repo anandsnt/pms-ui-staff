@@ -107,9 +107,9 @@
         </div>
     </div>
 
-    <div id="analyticsFilters" class="analytics-filters scrollable" ng-class="{'open' : dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION' && dashboardFilter.showFilters }">
+    <div id="analyticsFilters" class="analytics-filters scrollable" ng-class="{'open' : (dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION' || dashboardFilter.selectedAnalyticsMenu === 'PACE') && dashboardFilter.showFilters }">
         <div class="wrapper">
-            <div class="entry">
+            <div class="entry" ng-if="dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION'">
                 <div class="select with-label">
                     <label for="analytics-chart">Chart type</label>
                     <select id="room-type" ng-model="dashboardFilter.chartType" ng-change="onChartTypeChanged()">
@@ -124,7 +124,7 @@
                         <option value="{{::filter.code}}" ng-repeat="filter in ::dashboardFilter.aggTypes track by $index">{{::filter.name}}</option>
                     </select>
                 </div>
-                <div id="chart-toggle" class="switch-button on">
+                <div id="chart-toggle" class="switch-button on" ng-if="false">
                     <input id="distribution-switch" type="checkbox" checked="">
                     <label class="data-off">
                         <span class="value">Chart</span>
