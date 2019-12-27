@@ -144,6 +144,7 @@ sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope'
       "roomTypes": []
     };
   };
+  
   resetChartFilters();
 
   $scope.chartFilterRemoved = function(selectedRoomType) {

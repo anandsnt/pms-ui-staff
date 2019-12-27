@@ -317,13 +317,13 @@ angular.module('sntRover')
 						occupancy_diff = parseFloat(chartData.mtd.occupancy_diff);
 						occupancyLabelFill = '#F6991B';
 						xOffset = x(-1 * occupancy * 0.1 / 25);
-						yOffset = y(-1* occupancy * 0.1 / 25) - (y(0) - y(0.15));
+						yOffset = y(-1 * occupancy * 0.1 / 25) - (y(0) - y(0.15));
 					} else if (position === "right-bottom") {
 						occupancy = parseFloat(chartData.ytd.occupancy);
 						occupancy_diff = parseFloat(chartData.ytd.occupancy_diff);
 						occupancyLabelFill = '#497D8E';
 						xOffset = x(occupancy * 0.1 / 25);
-						yOffset = y(-1* occupancy * 0.1 / 25) - (y(0) - y(0.15));
+						yOffset = y(-1 * occupancy * 0.1 / 25) - (y(0) - y(0.15));
 					}
 					occupancy = occupancy > 25 ? occupancy : parseInt(occupancy);
 					deleteExistingOccupanyLabel(position);

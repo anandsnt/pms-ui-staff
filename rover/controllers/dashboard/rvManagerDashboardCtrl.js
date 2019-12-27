@@ -446,9 +446,8 @@ sntRover.controller('RVmanagerDashboardController',
         $scope.selectedFilters.originCodes.length +
         $scope.selectedFilters.roomTypes.length +
         aggTypeFilterCount;
-    } else {
-      return $scope.dashboardFilter.showLastYearData ? 1 : 0;
     }
+    return $scope.dashboardFilter.showLastYearData ? 1 : 0;
   };
 
 }]);
