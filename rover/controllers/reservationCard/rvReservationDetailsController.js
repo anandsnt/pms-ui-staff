@@ -856,14 +856,14 @@ sntRover.controller('reservationDetailsController',
             }
 		};
 
-		var editPromptDialogId;
+		var editRatePromptDialog;
 
 		$scope.showEditReservationPrompt = function() {
 			if ($rootScope.isStandAlone) {
 				if ($scope.reservationData.reservation_card.is_hourly_reservation) {
 					$scope.applyCustomRate();
 				} else {
-					editPromptDialogId = ngDialog.open({
+					editRatePromptDialog = ngDialog.open({
 						template: '/assets/partials/reservation/rvStayCardEditRate.html',
 						className: 'ngdialog-theme-default',
 						scope: $scope,
@@ -881,10 +881,8 @@ sntRover.controller('reservationDetailsController',
 		};
 
 		$scope.applyCustomRate = function() {
-			$scope.closeDialog(editPromptDialogId);
-			$timeout(function() {
-				$scope.editReservationRates($scope.reservationParentData.rooms[0], 0);
-			}, 1000);
+			editRatePromptDialog.close();
+			$scope.editReservationRates($scope.reservationParentData.rooms[0], 0);
 		};
 
 		var navigateToRoomAndRates = function(arrival, departure) {
@@ -961,7 +959,8 @@ sntRover.controller('reservationDetailsController',
 				return false;
 			};
 
-			$scope.closeDialog(editPromptDialogId);
+			editRatePromptDialog.close();
+
 			if ($scope.reservationData.reservation_card.is_hourly_reservation) {
 				return false;
 			} else if ($rootScope.isStandAlone) {
