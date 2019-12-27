@@ -689,4 +689,22 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 		$("#d3-plot").append("<p style='margin-top:10px'><strong>" + title + "</strong></p>");
 		$("#d3-plot").append("<p>Last update:" + updatedTime + "</strong></p>");
 	};
+
+
+	this.findSelectedFilter = function(dataSet, selectedItem) {
+		var selectedFilter = _.find(dataSet, function(item) {
+			return item.value == selectedItem || item.code == selectedItem;
+		});
+
+		return selectedFilter;
+	};
+
+	this.addToAndSortArray = function(array, newItem) {
+		array.push(newItem);
+		array = _.sortBy(array, function(item) {
+			return item.name;
+		});
+		return array;
+	};
+
 }]);

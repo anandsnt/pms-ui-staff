@@ -53,20 +53,23 @@
         <div class="wrapper">
             <!-- Room Type -->
             <!--  -->
-            <div class="entry room-types">
+            <div class="entry">
                 <div class="select with-label">
                     <label for="room-type">Room Type</label>
                     <select id="room-type" ng-model="dashboardFilter.selectedRoomType" ng-change="onHkAnlayticsRoomTypeChange()"
                     ng-if="dashboardFilter.selectedAnalyticsMenu !== 'HK_WORK_PRIORITY'">
                         <option value="" selected="" translate>SHOW_ALL</option>
-                        <option value="{{::roomType.code}}" ng-repeat="roomType in ::roomTypes track by $index">{{::roomType.name}}</option>
+                        <option value="{{roomType.code}}" ng-repeat="roomType in availableRoomTypes track by $index">{{roomType.name}}</option>
                     </select>
                     <select id="room-type" ng-model="dashboardFilter.selectedRoomType" ng-change="onHkAnlayticsRoomTypeChange()"
                     ng-if="dashboardFilter.selectedAnalyticsMenu === 'HK_WORK_PRIORITY'">
                         <option value="" selected="" translate>SHOW_ALL</option>
-                        <option value="{{roomType.code}}" ng-repeat="roomType in roomTypes | orderBy: '-shortage' ">{{roomType.name}} {{ roomType.shortage > 0 ?  
+                        <option value="{{roomType.code}}" ng-repeat="roomType in availableRoomTypes | orderBy: '-shortage' ">{{roomType.name}} {{ roomType.shortage > 0 ?  
                            '....(-' + roomType.shortage + ' rooms)' : '' }}</option>
                     </select>
+                </div>
+                <div class="selected" data-list="analytics-room-type">
+                    <span class="tag" ng-repeat="roomType in selectedFilters.roomTypes" ng-click="chartFilterRemoved(roomType)">{{roomType.name}}</span>
                 </div>
             </div>
         </div>

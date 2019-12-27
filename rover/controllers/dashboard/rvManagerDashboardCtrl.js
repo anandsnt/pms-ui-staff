@@ -10,7 +10,8 @@ sntRover.controller('RVmanagerDashboardController',
   'sourceData',
   'segmentData',
   'originData',
-  function($scope, $rootScope, $state, $vault, RVDashboardSrv, $timeout, ngDialog, marketData, sourceData, segmentData, originData) {
+  'rvAnalyticsHelperSrv',
+  function($scope, $rootScope, $state, $vault, RVDashboardSrv, $timeout, ngDialog, marketData, sourceData, segmentData, originData, rvAnalyticsHelperSrv) {
   // inheriting some useful things
   BaseCtrl.call(this, $scope);
   var that = this;
@@ -349,44 +350,28 @@ sntRover.controller('RVmanagerDashboardController',
 
   resetChartFilters();
 
-  var findFilter = function(dataSet, selectedItem) {
-    var selectedFilter = _.find(dataSet, function(item) {
-      return item.value == selectedItem || item.code == selectedItem;
-    });
-
-    return selectedFilter;
-  };
-
-  var addToAndSortArray = function(array, newItem) {
-    array.push(newItem);
-    array = _.sortBy(array, function(item) {
-      return item.name;
-    });
-    return array;
-  };
-
   $scope.distributionFilterRemoved = function(type, value) {
     var selectedItem;
 
     if (type === 'MARKET' && value) {
-      selectedItem = findFilter($scope.selectedFilters.marketCodes, value);
-      $scope.marketData = addToAndSortArray($scope.marketData, selectedItem);
+      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.selectedFilters.marketCodes, value);
+      $scope.marketData = rvAnalyticsHelperSrv.addToAndSortArray($scope.marketData, selectedItem);
       $scope.selectedFilters.marketCodes = _.reject($scope.selectedFilters.marketCodes, selectedItem);
     } else if (type === 'SOURCE' && value) {
-      selectedItem = findFilter($scope.selectedFilters.sourceCodes, value);
-      $scope.sourceData = addToAndSortArray($scope.sourceData, selectedItem);
+      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.selectedFilters.sourceCodes, value);
+      $scope.sourceData = rvAnalyticsHelperSrv.addToAndSortArray($scope.sourceData, selectedItem);
       $scope.selectedFilters.sourceCodes = _.reject($scope.selectedFilters.sourceCodes, selectedItem);
     } else if (type === 'SEGMENT' && value) {
-      selectedItem = findFilter($scope.selectedFilters.segmentCodes, value);
-      $scope.segmentData = addToAndSortArray($scope.segmentData, selectedItem);
+      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.selectedFilters.segmentCodes, value);
+      $scope.segmentData = rvAnalyticsHelperSrv.addToAndSortArray($scope.segmentData, selectedItem);
       $scope.selectedFilters.segmentCodes = _.reject($scope.selectedFilters.segmentCodes, selectedItem);
     } else if (type === 'ORIGIN' && value) {
-      selectedItem = findFilter($scope.selectedFilters.originCodes, value);
-      $scope.originData = addToAndSortArray($scope.originData, selectedItem);
+      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.selectedFilters.originCodes, value);
+      $scope.originData = rvAnalyticsHelperSrv.addToAndSortArray($scope.originData, selectedItem);
       $scope.selectedFilters.originCodes = _.reject($scope.selectedFilters.originCodes, selectedItem);
     } else if (type === 'ROOM_TYPE' && value) {
-      selectedItem = findFilter($scope.selectedFilters.roomTypes, value);
-      $scope.availableRoomTypes = addToAndSortArray($scope.availableRoomTypes, selectedItem);
+      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.selectedFilters.roomTypes, value);
+      $scope.availableRoomTypes = rvAnalyticsHelperSrv.addToAndSortArray($scope.availableRoomTypes, selectedItem);
       $scope.selectedFilters.roomTypes = _.reject($scope.selectedFilters.roomTypes, selectedItem);
     }
     generateParamsBasenOnFilters();
@@ -396,24 +381,24 @@ sntRover.controller('RVmanagerDashboardController',
     var selectedItem;
 
     if (type === 'MARKET' && $scope.selectedFilters.marketCode) {
-      selectedItem = findFilter($scope.marketData, $scope.selectedFilters.marketCode);
-      $scope.selectedFilters.marketCodes = addToAndSortArray($scope.selectedFilters.marketCodes, selectedItem);
+      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.marketData, $scope.selectedFilters.marketCode);
+      $scope.selectedFilters.marketCodes = rvAnalyticsHelperSrv.addToAndSortArray($scope.selectedFilters.marketCodes, selectedItem);
       $scope.marketData = _.reject($scope.marketData, selectedItem);
     } else if (type === 'SOURCE' && $scope.selectedFilters.sourceCode) {
-      selectedItem = findFilter($scope.sourceData, $scope.selectedFilters.sourceCode);
-      $scope.selectedFilters.sourceCodes = addToAndSortArray($scope.selectedFilters.sourceCodes, selectedItem);
+      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.sourceData, $scope.selectedFilters.sourceCode);
+      $scope.selectedFilters.sourceCodes = rvAnalyticsHelperSrv.addToAndSortArray($scope.selectedFilters.sourceCodes, selectedItem);
       $scope.sourceData = _.reject($scope.sourceData, selectedItem);
     } else if (type === 'SEGMENT' && $scope.selectedFilters.segmentCode) {
-      selectedItem = findFilter($scope.segmentData, $scope.selectedFilters.segmentCode);
-      $scope.selectedFilters.segmentCodes = addToAndSortArray($scope.selectedFilters.segmentCodes, selectedItem);
+      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.segmentData, $scope.selectedFilters.segmentCode);
+      $scope.selectedFilters.segmentCodes = rvAnalyticsHelperSrv.addToAndSortArray($scope.selectedFilters.segmentCodes, selectedItem);
       $scope.segmentData = _.reject($scope.segmentData, selectedItem);
     } else if (type === 'ORIGIN' && $scope.selectedFilters.originCode) {
-      selectedItem = findFilter($scope.originData, $scope.selectedFilters.originCode);
-      $scope.selectedFilters.originCodes = addToAndSortArray($scope.selectedFilters.originCodes, selectedItem);
+      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.originData, $scope.selectedFilters.originCode);
+      $scope.selectedFilters.originCodes = rvAnalyticsHelperSrv.addToAndSortArray($scope.selectedFilters.originCodes, selectedItem);
       $scope.originData = _.reject($scope.originData, selectedItem);
     } else if (type === 'ROOM_TYPE' && $scope.selectedFilters.roomType) {
-      selectedItem = findFilter($scope.availableRoomTypes, $scope.selectedFilters.roomType);
-      $scope.selectedFilters.roomTypes = addToAndSortArray($scope.selectedFilters.roomTypes, selectedItem);
+      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.availableRoomTypes, $scope.selectedFilters.roomType);
+      $scope.selectedFilters.roomTypes = rvAnalyticsHelperSrv.addToAndSortArray($scope.selectedFilters.roomTypes, selectedItem);
       $scope.availableRoomTypes = _.reject($scope.availableRoomTypes, selectedItem);
     }
     generateParamsBasenOnFilters();
@@ -449,5 +434,20 @@ sntRover.controller('RVmanagerDashboardController',
   $scope.$on('RESET_CHART_FILTERS', function() {
     emptyAllChartFilters();
   });
+
+  $scope.getAppliedFilterCount = function() {
+    if ($scope.dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION' ||
+      $scope.dashboardFilter.selectedAnalyticsMenu === 'PACE') {
+      var aggTypeFilterCount = $scope.dashboardFilter.aggType ? 1 : 0;
+
+      return $scope.selectedFilters.marketCodes.length +
+        $scope.selectedFilters.sourceCodes.length +
+        $scope.selectedFilters.segmentCodes.length +
+        $scope.selectedFilters.originCodes.length +
+        $scope.selectedFilters.roomTypes.length +
+        aggTypeFilterCount;
+    }
+    return $scope.dashboardFilter.showLastYearData ? 1 : 0;
+  };
 
 }]);

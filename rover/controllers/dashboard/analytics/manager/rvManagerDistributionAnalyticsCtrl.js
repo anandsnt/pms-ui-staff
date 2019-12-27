@@ -193,7 +193,8 @@ angular.module('sntRover')
 							.attr("dy", "1.2em")
 							.style("text-anchor", "middle")
 							.attr("font-size", "12px")
-							.attr("font-weight", "bold");
+							.attr("font-weight", "bold")
+							.style("fill", "#000");
 
 						if (stackKey.length > 1 || $scope.dashboardFilter.aggType) {
 							var legendParentElement = d3.select("#right-side-legend");

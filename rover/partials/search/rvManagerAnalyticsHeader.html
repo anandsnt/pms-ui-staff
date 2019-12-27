@@ -51,6 +51,7 @@
     <div class="entry actions">
         <button class="button white with-icon only-icon" ng-class="{'open' : dashboardFilter.showFilters }" ng-click="toggleFilterView()"> <!-- Add class 'open' when clicked 1st time, remove it when clickd 2nd time -->
             <!-- If filters applied, show their count like this: <span class="count">{X}</span> -->
+            <span class="count" ng-if=" getAppliedFilterCount() > 0">{{ getAppliedFilterCount() }}</span>
             <span class="icons icon-filter"></span>
             Filter rooms
         </button>
