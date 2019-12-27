@@ -297,29 +297,38 @@ angular.module('sntRover')
 						occupancy_diff,
 						occupancyLabelFill;
 
+					var xOffset,
+						yOffset;
+						
 					if (position === "left-top") {
 						occupancy = parseFloat(chartData.yesterday.occupancy);
 						occupancy_diff = parseFloat(chartData.yesterday.occupancy_diff);
 						occupancyLabelFill = '#E63838';
+						xOffset = x(-1 * occupancy * 0.1 / 25);
+						yOffset = y(occupancy * 0.1 / 25) - (y(0) - y(0.15));
 					} else if (position === "right-top") {
 						occupancy = parseFloat(chartData.today.occupancy);
 						occupancy_diff = parseFloat(chartData.today.occupancy_diff);
 						occupancyLabelFill = '#89BD55';
+						xOffset = x(occupancy * 0.1 / 25);
+						yOffset = y(occupancy * 0.1 / 25) - (y(0) - y(0.15));
 					} else if (position === "left-bottom") {
 						occupancy = parseFloat(chartData.mtd.occupancy);
 						occupancy_diff = parseFloat(chartData.mtd.occupancy_diff);
 						occupancyLabelFill = '#F6991B';
+						xOffset = x(-1 * occupancy * 0.1 / 25);
+						yOffset = y(-1* occupancy * 0.1 / 25) - (y(0) - y(0.15));
 					} else if (position === "right-bottom") {
 						occupancy = parseFloat(chartData.ytd.occupancy);
 						occupancy_diff = parseFloat(chartData.ytd.occupancy_diff);
 						occupancyLabelFill = '#497D8E';
+						xOffset = x(occupancy * 0.1 / 25);
+						yOffset = y(-1* occupancy * 0.1 / 25) - (y(0) - y(0.15));
 					}
 					occupancy = occupancy > 25 ? occupancy : parseInt(occupancy);
 					deleteExistingOccupanyLabel(position);
 
 					var rectWidth = x(0.3) - x(0);
-					var xOffset = x(-1 * occupancy * 0.1 / 25);
-					var yOffset = y(occupancy * 0.1 / 25) - (y(0) - y(0.15));
 					var xOffsetText = xOffset + rectWidth / 4;
 					var yOffsetText = yOffset + (y(0) - y(0.25)) / 4;
 					var yOffsetText2 = yOffsetText + (y(0) - y(0.25)) / 4;

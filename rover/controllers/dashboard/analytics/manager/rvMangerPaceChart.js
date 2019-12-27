@@ -133,7 +133,8 @@ angular.module('sntRover')
 					.attr("dy", "1.2em")
 					.style("text-anchor", "middle")
 					.attr("font-size", "12px")
-					.attr("font-weight", "bold");
+					.attr("font-weight", "bold")
+					.style("fill", "#000");
 
 				var xAxis = d3.axisBottom(xScale)
 					.tickSizeOuter(0)
