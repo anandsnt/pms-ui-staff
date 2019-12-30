@@ -5,7 +5,8 @@ angular.module('sntRover')
         '$rootScope',
         'rvDiarySrv',
         function($scope, $rootScope, rvDiarySrv) {
-            var displayPanel = false;
+            var displayPanel = false,
+                reservationCache = [];
 
             /**
              * Function to fetch the unassigned reservations on loading the controller
@@ -14,7 +15,8 @@ angular.module('sntRover')
             var fetchUdReservationList = function () {
                 var successCallBackFetchList = function(data) {
                         $scope.errorMessage = '';
-                        $scope.udReservationsData = data;
+                        reservationCache = data;
+                        $scope.arrangeReservationList();
                     },
                     postData = {
                         'date': $scope.gridProps.filter.arrival_date
@@ -83,6 +85,7 @@ angular.module('sntRover')
             BaseCtrl.call(this, $scope);
 
             $scope.businessDate = $rootScope.businessDate;
+            $scope.queryString = '';
 
             /**
              * Listener for Initializing the unassigned reservations list
@@ -94,7 +97,8 @@ angular.module('sntRover')
              */
             $scope.addListener('CLOSE_UD_RESERVATION_PANEL', function() {
                 displayPanel = false;
-                $scope.udReservationsData = [];
+                reservationCache = [];
+                $scope.arrangeReservationList();
                 $scope.selectedIndex = null;
             });
 
@@ -129,6 +133,65 @@ angular.module('sntRover')
 
                 $scope.selectedIndex = reservation.reservation_id;
                 $scope.$emit('UNASSIGNED_RESERVATION_SELECTED', params);
+            };
+
+            /**
+             * UI Search reservations
+             */
+            $scope.arrangeReservationList = function() {
+                $scope.currentBookings = [];
+                $scope.futureBookings = [];
+                var displayResults = [];
+
+                if ($scope.queryString && $scope.queryString.length > 0) {
+                    displayResults = reservationCache.filter(function(reservation) {
+                        // check if the querystring is number or string
+                        return (isNaN($scope.queryString) &&
+                            reservation.primary_guest.toUpperCase().includes($scope.queryString.toUpperCase())) ||
+                            (!isNaN($scope.queryString) &&
+                            reservation.confirmation_number.toString().includes($scope.queryString))   
+                    });
+                }
+                else {
+                    displayResults = reservationCache;
+                }
+                angular.forEach(displayResults, function(reservation) {
+                    moment($scope.gridProps.filter.arrival_date).format('YYYY-MM-DD') === reservation.arrival_date ?
+                    $scope.currentBookings.push(reservation) :
+                    $scope.futureBookings.push(reservation);
+                });
+            };
+
+            /**
+             * Check to show reservation list block
+             * @return boolean
+             */
+            $scope.bookingsPresent = function() {
+                return reservationCache.length !== 0;
+            };
+
+            /**
+             * Return next date
+             */
+            $scope.getNextDate = function(forHeader) {
+                var nextDate = moment($scope.gridProps.filter.arrival_date).add(1, 'day');
+                return forHeader ? nextDate.format('DD MMM YYYY') : nextDate.format('YYYY-MM-DD');
+            };
+
+            /**
+             * Return current date
+             */
+            $scope.getActiveDate = function(forHeader) {
+                var activeDate = moment($scope.gridProps.filter.arrival_date);
+                return forHeader ? activeDate.format('DD MMM YYYY') : activeDate.format('YYYY-MM-DD');
+            };
+
+            /**
+             * Clear the serch results and reset the list
+             */
+            $scope.clearList = function() {
+                $scope.queryString = '';
+                $scope.arrangeReservationList();
             };
         }
     ]
