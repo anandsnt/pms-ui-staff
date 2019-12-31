@@ -20,6 +20,9 @@ ng-if="showDashboard && !dashboardFilter.analyticsActive">
 
 	</div>
 </section>
+
+<ng-include src="'/assets/partials/search/rvManagerAnalyticsHeader.html'" ng-if="dashboardFilter.analyticsActive && dashboardFilter.isManagerDashboard"></ng-include>
+
 <section id="dashboard" class="content scrollable analytics" role="main"
          ng-iscroll="analytics_scroller" ng-iscroll-delay="100"
          ng-if="dashboardFilter.analyticsActive">

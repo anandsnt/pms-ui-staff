@@ -7,8 +7,8 @@
     </div>
     <div class="info-container account-info">
         <div class="info-left">
-            <strong>{{printData.guest_details.first_name}} {{printData.guest_details.last_name}}</strong><br>
-            <span ng-bind-html="printData.guest_details.address"></span>
+            <strong>{{printData.card_details.name}}</strong><br>
+            <span ng-bind-html="printData.card_details.address"></span>
 
             <div class="info-bottom">
                 <span ng-if = "printData.invoice_date"><strong>{{printData.translation.invoice_date}}:</strong> {{printData.invoice_date}}</span><br/>
@@ -26,8 +26,7 @@
             <span ng-if = "printData.confirmation_number"><strong>{{printData.translation.confirmation_number}}:</strong> {{printData.confirmation_number}}</span><br/>
             <span ng-if = "printData.tax_number"><strong>{{printData.translation.tax_number}}:</strong> {{printData.tax_number}}</span><br/>
             <span ng-if = "!printData.is_informational_invoice && printData.card_details.ar_number"><strong>{{printData.translation.ar_number}}:</strong> {{printData.card_details.ar_number}}</span><br/><br/>
-            <span>{{printData.card_details.name}}</span><br>
-            <span ng-bind-html="printData.card_details.address"></span>
+            <span ng-bind-html="printData.guest_details.address"></span>
         </div>
 
     </div>

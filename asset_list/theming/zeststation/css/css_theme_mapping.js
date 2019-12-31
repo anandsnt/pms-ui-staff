@@ -101,7 +101,10 @@ module.exports = {
             'spatz': [themeCSSRoot + 'spatz.less'],
             'lenaustrasse': [themeCSSRoot + 'lenaustrasse.less'],
             'why-tysons': [themeCSSRoot + 'why-tysons.less'],
-            'local-house': [themeCSSRoot + 'local-house.less']
+            'local-house': [themeCSSRoot + 'local-house.less'],
+            'travel-24': [themeCSSRoot + 'travel-24.less'],
+            'sage-inn': [themeCSSRoot + 'sage-inn.less'],
+            'hammetts': [themeCSSRoot + 'hammetts.less']
         };
     }
 };

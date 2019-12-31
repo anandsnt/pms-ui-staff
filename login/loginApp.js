@@ -87,8 +87,16 @@ angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window'
 				console.log('ignoring a problem occured while setting item using localStorage');
 			}
 
+			// When user submits a valid username password;
+            // if the password has expired, the user will be asked to reset the password
+            // The reset password state is being used for activation of account as well;
+            // Hence we used is_expired state parameter to distinguish both scenarios
 		 	if (data.token !== '') {
-		 		$state.go('resetpassword', {token: data.token, notifications: data.notifications});
+                $state.go('resetpassword', {
+                    token: data.token,
+                    notifications: data.notifications,
+                    status: 'EXPIRED'
+                });
 		 	}
 		 	else {
 	            $scope.hasLoader = true;
@@ -343,6 +351,7 @@ angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window'
 angular.module('login').controller('resetCtrl', ['$scope', 'resetSrv', 'loginSrv', '$window', '$state', '$stateParams', 'ngDialog', function($scope, resetSrv, loginSrv, $window, $state, $stateParams, ngDialog) {
 	 $scope.data = {};
 	 $scope.data.token = $stateParams.token;
+	 $scope.expired = $stateParams.status === 'EXPIRED';
 
 	 if ($stateParams.notifications.count !== "") {
 	 	$scope.errorMessage = [$stateParams.notifications];
