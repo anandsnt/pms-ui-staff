@@ -125,18 +125,24 @@ sntRover.controller('RVReservationPackageController',
         };
 
     $scope.selectPurchasedAddon = function(addon) {
-            $scope.selectedPurchesedAddon = addon;
-            $scope.selectedPurchesedAddon.selected_post_days = {};
-            $scope.selectedPurchesedAddon.start_date = $filter('date')($scope.selectedPurchesedAddon.start_date, $rootScope.dateFormat);
-            $scope.selectedPurchesedAddon.end_date = $filter('date')($scope.selectedPurchesedAddon.end_date, $rootScope.dateFormat);
-            $scope.togglePostDaysSelectionForAddon(false);
-            angular.forEach($scope.selectedPurchesedAddon.post_instances, function(item, index) {
-                    if (item.active) {
-                    	var postDate = new Date(item.post_date);
-                    	var day = $scope.daysOfWeek[postDate.getDay()];
-                        $scope.selectedPurchesedAddon.selected_post_days[day] = true;
-                    }
-                });
+    		if (addon.post_type === 'Entire Stay') {
+                $scope.selectedPurchesedAddon = addon;
+	            $scope.selectedPurchesedAddon.selected_post_days = {};
+	            $scope.selectedPurchesedAddon.start_date = $filter('date')($scope.selectedPurchesedAddon.start_date, $rootScope.dateFormat);
+	            $scope.selectedPurchesedAddon.end_date = $filter('date')($scope.selectedPurchesedAddon.end_date, $rootScope.dateFormat);
+	            $scope.togglePostDaysSelectionForAddon(false);
+	            angular.forEach($scope.selectedPurchesedAddon.post_instances, function(item, index) {
+	                    if (item.active) {
+	                    	var postDate = new Date(item.post_date);
+	                    	var day = $scope.daysOfWeek[postDate.getDay()];
+	                        $scope.selectedPurchesedAddon.selected_post_days[day] = true;
+	                    }
+	                });
+            } else {
+                $scope.errorMessage = "Custom posting can be configured on for entire stay addons";
+                $scope.selectedPurchesedAddon = "";
+            }
+            
 
         };
 

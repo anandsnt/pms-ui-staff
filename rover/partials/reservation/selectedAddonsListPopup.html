@@ -1,6 +1,7 @@
 <div id="inline-modal-room-1" class="inline-modal modal-show" role="dialog" ng-cloak>
     <div class="modal-content form room-enhancements">
         <button id="modal-close" type="button" class="modal-close" ng-click="closePopup()"><span class="icons icon-close invert"></button>
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div class="content-left">
         <!-- scroller -->
             <div class="scrollable">
@@ -61,7 +62,7 @@
                             - Room 101
                             - StayNTouch Group
                         -->
-                        <strong class="h1">Add Ons for {{property}}</strong>
+                        <strong class="h1">Add Ons for {{currentHotelData.name}}</strong>
                         <span class="h2">Select add on to set dates/days of week</span>
                     </div>
                 </div>
@@ -70,8 +71,8 @@
                         'Type' can be: 'Room' or 'Group'
                     -->
                     <!-- On Stay/Group Card -->
-                    <button type="button" class="button orange">Add More to This {Type}</button>
-                    <button type="button" class="button blank">Close Window</button>
+                    <button type="button" class="button orange" ng-click="closePopup()">Add More to This Room</button>
+                    <button type="button" class="button blank" ng-click="closePopup()">Close Window</button>
 
                     <!-- On Addons screen 
                     <button type="button" class="button blank">Close Window</button>

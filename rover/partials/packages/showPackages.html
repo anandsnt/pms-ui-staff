@@ -66,7 +66,7 @@
                             - Room 101
                             - StayNTouch Group
                         -->
-                        <strong class="h1">Add Ons for {property}</strong>
+                        <strong class="h1">Add Ons for {{currentHotelData.name}}</strong>
                         <span class="h2">Select add on to set dates/days of week</span>
                     </div>
                 </div>
@@ -75,8 +75,8 @@
                         'Type' can be: 'Room' or 'Group'
                     -->
                     <!-- On Stay/Group Card -->
-                    <button type="button" class="button orange">Add More to This {Type}</button>
-                    <button type="button" class="button blank">Close Window</button>
+                    <button type="button" class="button orange" ng-click="goToAddons()">Add More to This Room</button>
+                    <button type="button" class="button blank" ng-click="closeAddOnPopup()">Close Window</button>
 
                     <!-- On Addons screen 
                     <button type="button" class="button blank">Close Window</button>
