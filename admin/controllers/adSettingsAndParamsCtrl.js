@@ -103,15 +103,17 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
      * @param currencyCode code of currency
      */
     $scope.selectedPaymentCurrency = function(id) {
-        if ((_.findWhere($scope.payment_currency_list, {"id": id})).is_selected) {
-            if (_.indexOf($scope.selectedPaymentCurrencies, id) !== -1) {
-                $scope.selectedPaymentCurrencies.splice(_.indexOf($scope.selectedPaymentCurrencies, id), 1);
-                (_.findWhere($scope.payment_currency_list, {"id": id})).is_selected = false;
-            }           
-        } else {
-            $scope.selectedPaymentCurrencies.push(id);
-            (_.findWhere($scope.payment_currency_list, {"id": id})).is_selected = true;            
-        }       
+        $timeout(function() {
+            if ((_.findWhere($scope.payment_currency_list, {"id": id})).is_selected) {
+                if (_.indexOf($scope.selectedPaymentCurrencies, id) !== -1) {
+                    $scope.selectedPaymentCurrencies.splice(_.indexOf($scope.selectedPaymentCurrencies, id), 1);
+                    (_.findWhere($scope.payment_currency_list, {"id": id})).is_selected = false;
+                }           
+            } else {
+                $scope.selectedPaymentCurrencies.push(id);
+                (_.findWhere($scope.payment_currency_list, {"id": id})).is_selected = true;            
+            }
+        }, 1000);      
     };
 
 }]);
