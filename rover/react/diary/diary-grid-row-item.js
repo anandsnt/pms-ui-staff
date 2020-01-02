@@ -178,7 +178,7 @@ var GridRowItem = React.createClass({
         }
 
         return className;
-
+        
     },
 
     render: function() {
@@ -228,7 +228,8 @@ var GridRowItem = React.createClass({
 
             dateForCalculatingLeft.setMinutes(dateForCalculatingLeft.getMinutes() + dateForCalculatingLeft.getDSTDifference());
             left = (dateForCalculatingLeft.getTime() - x_origin) * px_per_ms + 'px';
-        } else if (display_start_time.isOnDST() && !start_date.isOnDST()) {
+        } 
+        else if (display_start_time.isOnDST() && !start_date.isOnDST()) {
             var dateForCalculatingLeft = new Date(start_time_ms);
 
             dateForCalculatingLeft.setMinutes(dateForCalculatingLeft.getMinutes() + dateForCalculatingLeft.getDSTDifference());
@@ -241,22 +242,18 @@ var GridRowItem = React.createClass({
             }
         }
 
-        var styleForDepositIcon = {};
-
+        var styleForDepositIcon = {},
+            styleForRoomLocked = {},
+            styleForNightlyIcon = {};
+        
         if (!show_outstanding_indicator) {
             styleForDepositIcon.display = 'none';
             styleForDepositIcon.width = '0px';
         }
-
-        var styleForRoomLocked = {};
-
         if (!this.props.data.is_hourly) {
             styleForRoomLocked.display = 'none';
             styleForRoomLocked.width = '0px';
         }
-
-        var styleForNightlyIcon = {};
-
         if (this.props.data.is_hourly) {
             styleForNightlyIcon.display = 'none';
             styleForNightlyIcon.width = '0px';
