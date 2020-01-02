@@ -1,4 +1,4 @@
-admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'settingsAndParamsData', 'chargeCodes', function($scope, settingsAndParamsSrv, settingsAndParamsData, chargeCodes) {
+admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'settingsAndParamsData', 'chargeCodes', '$timeout', function($scope, settingsAndParamsSrv, settingsAndParamsData, chargeCodes, $timeout) {
 
     BaseCtrl.call(this, $scope);
     $scope.ccBatchProcessingOptions = [{
@@ -85,15 +85,17 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
      * @param currencyCode code of currency
      */
     $scope.selectedRateCurrency = function(id) {
-        if ((_.findWhere($scope.rate_currency_list, {"id": id})).is_selected) {
-            if (_.indexOf($scope.selectedRateCurrencies, id) !== -1) {
-                $scope.selectedRateCurrencies.splice(_.indexOf($scope.selectedRateCurrencies, id), 1);
-                (_.findWhere($scope.rate_currency_list, {"id": id})).is_selected = false;
-            }           
-        } else {
-            $scope.selectedRateCurrencies.push(id);
-            (_.findWhere($scope.rate_currency_list, {"id": id})).is_selected = true;            
-        }       
+        $timeout(function() {
+            if (!(_.findWhere($scope.rate_currency_list, {"id": id})).is_selected) {
+                if (_.indexOf($scope.selectedRateCurrencies, id) !== -1) {
+                    $scope.selectedRateCurrencies.splice(_.indexOf($scope.selectedRateCurrencies, id), 1);
+                    (_.findWhere($scope.rate_currency_list, {"id": id})).is_selected = false;
+                }           
+            } else {
+                $scope.selectedRateCurrencies.push(id);
+                (_.findWhere($scope.rate_currency_list, {"id": id})).is_selected = true;            
+            } 
+        }, 1000);              
     };
 
     /*
