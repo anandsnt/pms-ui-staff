@@ -208,9 +208,10 @@ var GridRowItem = React.createClass({
             show_outstanding_indicator = (data.reservation_status === 'check-in' || data.reservation_status === 'reserved') && is_balance_present,
             row_item_class = 'occupancy-block' + (state.editing ? ' editing' : '') +
                 (show_outstanding_indicator ? ' deposit-required' : '');
-
+        
+        // CICO-73467 : Disable Click,Drag and other Events for Night Components in Edit Mode.
         if (state.editing && isNightlyReservation) {
-            row_item_class += ' overlay';
+            row_item_class += ' disable-element';
         }
 
         if (state.editing) {
