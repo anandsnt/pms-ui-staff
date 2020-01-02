@@ -822,7 +822,8 @@ angular.module('sntRover')
             isrefresh: true
         });
 	    }.bind($scope.gridProps);
-
+                
+        // CICO-73467 : Handle MOVE ROOM button click for Night Components.
         $scope.moveRoomButtonClick = function() {
             var reservation     = this.currentResizeItem,
                 reservationId   = reservation.reservation_id,
