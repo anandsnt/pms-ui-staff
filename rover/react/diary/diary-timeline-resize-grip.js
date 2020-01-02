@@ -333,7 +333,7 @@ var TimelineResizeGrip = React.createClass({
 
 			if (this.props.edit.active) {
 				classes += " editing";
-				// Disable ext-shortening for N-components.
+				// CICO-73467 : Disable ext-shortening for Night Components in Edit Mode.
 				if (!this.props.edit.originalItem.is_hourly) {
 					classes += ' disable-element';
 				}
