@@ -209,7 +209,7 @@ var GridRowItem = React.createClass({
             row_item_class = 'occupancy-block' + (state.editing ? ' editing' : '') +
                 (show_outstanding_indicator ? ' deposit-required' : '');
 
-        if (state.editing && typeof data.is_hourly !== 'undefined' && !data.is_hourly) {
+        if (state.editing && isNightlyReservation) {
             row_item_class += ' overlay';
         }
 
@@ -302,7 +302,7 @@ var GridRowItem = React.createClass({
                     React.DOM.span({
                         className: isNightlyReservation ? 'reservation-type' : '',
                         style: styleForNightlyIcon
-                    }, isNightlyReservation ? '(N)': ''),
+                    }, isNightlyReservation ? '(N)' : ''),
                 ''),
                 React.DOM.span({
                     className: show_outstanding_indicator ? 'deposit-icon' : '',
