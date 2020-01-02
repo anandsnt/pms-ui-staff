@@ -179,10 +179,10 @@ angular.module('sntRover')
                         // Handle reservation selection.
                         if (roomId && reservationId) {
                             var reservationList = _.find($scope.diaryData.reservationsList.rooms, function(item) { 
-                                return item.id === roomId 
+                                return item.id === roomId;
                             }),
                             reservation = _.find(reservationList.reservations, function(item) { 
-                                return item.id === reservationId 
+                                return item.id === reservationId;
                             }),
                             roomObj = { id: roomId };
 
