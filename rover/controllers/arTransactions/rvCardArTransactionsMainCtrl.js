@@ -1024,10 +1024,6 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					{
 						successData.invoiceLabel = successData.translation.ar_invoice;
 					}
-					else if (parseInt(successData.print_counter) === 1 && parseInt(successData.no_of_original_invoices) === 0 && $scope.roverObj.noReprintReEmailInvoice)
-					{
-						successData.invoiceLabel = successData.translation.ar_invoice;
-					}
 					else if (parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices))
 					{
 						if (successData.is_copy_counter) {

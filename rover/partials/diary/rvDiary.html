@@ -156,6 +156,7 @@
             </div>
             <div class="actions">
                 <button type="button" class="button blank" ng-click="editCancel()">Cancel</button>
+                <button type="button" class="button purple" ng-hide="gridProps.edit.originalItem.is_hourly" ng-click="moveRoomButtonClick()">Move Room</button>
                 <button type="button" class="button red" ng-click="unassignRoom()" ng-hide="hideRoomUnAssignButton">Unassign Room</button>
                 <button type="button" class="button green" ng-click="editSave()" ng-if="showSaveChangesAfterEditing">Save Changes</button>
             </div>
