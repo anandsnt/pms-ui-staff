@@ -63,10 +63,6 @@
                        <span class="value" ng-bind-html="paymentDetails.amount | sntCurrency:this">
                        </span>
                     </li>
-                    <li ng-if="paymentDetails.selectedPaymentType === 'CA' && hasPaymentRounding">
-                       Final invoiced amount is subject to rounding!!
-                    </li>
-                    
                 </ul>
             </div>
             <!-- Split payment -->
