@@ -145,7 +145,7 @@
                             Vorname, Geburtsjahr
                             <span class="placeholder">First name, date of birth</span><br />
                            <strong> {{printRegCardData.guest_details.accompanying_children[3].first_name}}</strong><span ng-if="printRegCardData.guest_details.accompanying_children[3] && printRegCardData.guest_details.accompanying_children[3].date_of_birth !== '' && printRegCardData.guest_details.accompanying_children[3].date_of_birth !== null">, </span><strong>{{printRegCardData.guest_details.accompanying_children[3].date_of_birth | date : dateFormat }}</strong>
-                        </td>            
+                        </td>
                         <td>
                             Unterschrift des Meldepflichtigen/Signature<br />
                             <span class="placeholder">{{ printRegCardData.translation.guest_signature }}</span>

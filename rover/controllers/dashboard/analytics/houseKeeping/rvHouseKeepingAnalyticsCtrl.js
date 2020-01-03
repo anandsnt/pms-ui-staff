@@ -3,9 +3,10 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 	'$state',
 	'$timeout',
 	'rvAnalyticsSrv',
+	'rvAnalyticsHelperSrv',
 	'$controller',
 	'ngDialog',
-	function($scope, $rootScope, $state, $timeout, rvAnalyticsSrv, $controller, ngDialog) {
+	function($scope, $rootScope, $state, $timeout, rvAnalyticsSrv, rvAnalyticsHelperSrv, $controller, ngDialog) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -94,6 +95,7 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 
 				d3.select('#d3-plot').selectAll('svg').remove();
 				$scope.drawHkOverviewChart(chartDetails);
+				addChartHeading();
 			});
 		};
 
@@ -110,6 +112,7 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 
 				d3.select('#d3-plot').selectAll('svg').remove();
 				$scope.drawHkWorkPriorityChart(chartDetails);
+				addChartHeading();
 			});
 		};
 
@@ -119,7 +122,12 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 			document.getElementById("d3-plot").innerHTML = "";
 		};
 
+		var addChartHeading = function() {
+			rvAnalyticsHelperSrv.addChartHeading($scope.screenData.mainHeading, $scope.screenData.analyticsDataUpdatedTime);
+		};
+
 		var drawChart = function() {
+			// $scope.dashboardFilter.showFilters = false;
 			$('base').attr('href', '#');
 			$scope.screenData.hideChartData = true;
 			if ($scope.screenData.selectedChart === 'HK_OVERVIEW') {
@@ -173,9 +181,9 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 			$scope.callAPI(rvAnalyticsSrv.initRoomAndReservationApis, options);
 		};
 
-		$scope.refreshChart = function() {
-			fetchData($scope.dashboardFilter.datePicked, $scope.dashboardFilter.selectedRoomTypeId)
-		};
+		$scope.$on('REFRESH_ANALYTCIS_CHART', function(){
+			fetchData($scope.dashboardFilter.datePicked, $scope.dashboardFilter.selectedRoomTypeId);
+		});
 
 		$scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER', function(e, filter) {
 			rvAnalyticsSrv.selectedRoomType = filter.room_type;
@@ -201,6 +209,7 @@ sntRover.controller('RVHouseKeepingAnalyticsController', ['$scope',
 
 		(function() {
 			fetchData($scope.dashboardFilter.datePicked, $scope.dashboardFilter.selectedRoomTypeId);
+			$scope.dashboardFilter.showFilters = false;
 		})();
 	}
 ]);

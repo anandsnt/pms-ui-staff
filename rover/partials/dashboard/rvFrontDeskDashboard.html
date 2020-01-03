@@ -13,6 +13,7 @@
             <div ng-include="'/assets/partials/dashboard/rvDbUpSellSection.html'"></div>
         </div>
     </section>
+    <ng-include src="'/assets/partials/search/rvFrontDeskAnalyticsHeader.html'" ng-if="dashboardFilter.analyticsActive"></ng-include>
     <!-- ANALYTICS VIEW -->
     <section id="dashboard" class="content scrollable analytics" role = "main"
              ng-iscroll="analytics_scroller" ng-iscroll-delay="100"
