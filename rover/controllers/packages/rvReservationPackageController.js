@@ -125,7 +125,7 @@ sntRover.controller('RVReservationPackageController',
         };
 
     $scope.selectPurchasedAddon = function(addon) {
-    		if (addon.post_type === 'Entire Stay') {
+    		if (addon.post_type.value === 'STAY') {
                 $scope.selectedPurchesedAddon = addon;
 	            $scope.selectedPurchesedAddon.selected_post_days = {};
 	            $scope.selectedPurchesedAddon.start_date = $filter('date')($scope.selectedPurchesedAddon.start_date, $rootScope.dateFormat);
@@ -139,7 +139,7 @@ sntRover.controller('RVReservationPackageController',
 	                    }
 	                });
             } else {
-                $scope.errorMessage = "Custom posting can be configured on for entire stay addons";
+                $scope.errorMessage = ["Custom posting can be configured only for nightly addons"];
                 $scope.selectedPurchesedAddon = "";
             }
             

@@ -355,10 +355,10 @@ sntRover.controller('RVReservationAddonsCtrl', [
         };
 
         $scope.selectPurchasedAddon = function(addon) {
-            if (addon.post_type === 'Entire Stay') {
+            if (addon.post_type === 'Entire Stay' || addon.post_type === 'STAY') {
                 $scope.selectedPurchesedAddon = addon;
             } else {
-                $scope.errorMessage = "Custom posting can be configured on for entire stay addons";
+                $scope.errorMessage = ["Custom posting can be configured only for nightly addons"];
                 $scope.selectedPurchesedAddon = "";
             }            
         };
