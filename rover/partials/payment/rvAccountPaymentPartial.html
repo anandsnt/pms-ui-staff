@@ -84,6 +84,9 @@
                 <i class="currency">{{payment.selectedPaymentCurrencySymbol}}</i>{{payment.amount}}
             </span>
         </li>
+        <li ng-if="payment.selectedPaymentType === 'CA' && hasPaymentRounding">
+           Final invoiced amount is subject to rounding!!
+        </li>
     </ul>
 </div>
 
