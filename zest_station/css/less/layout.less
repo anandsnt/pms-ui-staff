@@ -1472,6 +1472,16 @@
         .ui-datepicker-title {
             font-size: 24px;
             text-align: center;
+
+            // TODO: Revert after stjepans update
+            .ui-datepicker-month,
+            .ui-datepicker-year {
+                height: 40px;
+                font-size: 20px;
+                font-weight: 600;
+                width: 120px;
+                background-color: @brandColor;
+            }
         }
 
         .ui-datepicker-prev,
@@ -3168,3 +3178,7 @@ div.jumper-box-li {
             }
         }
     } 
+
+    .missing-guest-info {
+        border: 2px solid red;
+    }

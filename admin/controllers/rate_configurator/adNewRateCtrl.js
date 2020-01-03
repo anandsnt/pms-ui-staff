@@ -337,6 +337,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.rate_type.name = (data.rate_type !== null) ? data.rate_type.name : '';
             $scope.rateData.addOns = JSON.parse(JSON.stringify(data.addons));
             $scope.rateData.charge_code_id = data.charge_code_id;
+            $scope.rateData.rate_currency_symbol = data.rate_currency_symbol;
             $scope.rateData.currency_code_id = rateDetails.currency_code_id;
             $scope.rateData.fixed_it_id = data.fixed_it_id;
             $scope.rateData.tax_inclusive_or_exclusive = data.tax_inclusive_or_exclusive;

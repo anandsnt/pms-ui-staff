@@ -86,7 +86,7 @@ angular.module('sntRover')
           totalActionsCount['lateCheckout'] = totalActionsCount['lateCheckout'] + timeData.lateCheckout;
         });
 
-        if ($scope.screenData.showPreviousDayData) {
+        if ($scope.dashboardFilter.showPreviousDayData) {
           _.each(chartData.yesterdays_data, function(timeData) {
             totalActionsCount['earlyCheckin'] = totalActionsCount['earlyCheckin'] + timeData.earlyCheckin;
             totalActionsCount['checkin'] = totalActionsCount['checkin'] + timeData.checkin;
@@ -115,7 +115,7 @@ angular.module('sntRover')
 
         var datasets;
 
-        if ($scope.screenData.showPreviousDayData) {
+        if ($scope.dashboardFilter.showPreviousDayData) {
           datasets = [d3.stack().keys(chartKeys)(chartData.yesterdays_data),
             d3.stack().keys(chartKeys)(chartData.todays_data)
           ];
@@ -196,7 +196,7 @@ angular.module('sntRover')
               return "evt.target.setAttribute('fill', 'url(#" + mouseoutColor + " )');";
             })
             .attr('fill-opacity', function(d) {
-              return $scope.screenData.showPreviousDayData && gnum === 0 ? 0.3 : 1;
+              return $scope.dashboardFilter.showPreviousDayData && gnum === 0 ? 0.3 : 1;
             })
             .attr('class', 'group' + gnum)
             .selectAll('rect').data(function(d) {

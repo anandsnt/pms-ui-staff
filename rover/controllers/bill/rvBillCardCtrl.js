@@ -2818,7 +2818,6 @@ sntRover.controller('RVbillCardController',
 					docDetails = docDetails + data.guest_details.id_type;
 				}
 				if (data.guest_details.id_number !== "" && data.guest_details.id_number !== null) {
-
 					docDetails = docDetails + ";" + data.guest_details.id_number;
 				}
 				if (data.guest_details.id_issue_date !== "" && data.guest_details.id_issue_date !== null) {

@@ -81,7 +81,8 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         var dirtyCount = getDirtyRooms(rooms).length;
         var pickupCount = getPickupRooms(rooms).length;
         var shortage = 0;
-
+        var overBooking = 0;
+        
         // Shortage is to be collected based on available rooms in a room type those are vacant and pending departures
         if (pendingArrivals > inspectedVacantRooms.length) {
             var availableRoomsInRoomType = (cleanCount + dirtyCount + pickupCount) + pendingDepartures;
@@ -89,11 +90,15 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
             if (availableRoomsInRoomType > (pendingArrivals - inspectedVacantRooms.length)) {
                 shortage = pendingArrivals - inspectedVacantRooms.length;
             } else {
-                shortage = availableRoomsInRoomType
+                shortage = availableRoomsInRoomType;
+                overBooking = pendingArrivals - (inspectedVacantRooms.length + availableRoomsInRoomType);
             }
         }
 
-        return shortage;
+        return {
+            shortage: shortage,
+            overBooking: overBooking
+        };
     };
 
     var calculateRoomShortageByRoomType = function(date) {
@@ -101,11 +106,12 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         var rooTypeConf = [];
 
         _.each(roomTypes, function(rooms, roomType) {
-            var shortage = that.calculateShortage(rooms, roomType, date);
+            var shortageData = that.calculateShortage(rooms, roomType, date);
 
             that.roomTypesWithShortageData.push({
                 "code": roomType,
-                "shortage": shortage
+                "shortage": shortageData.shortage,
+                "overBooking": shortageData.overBooking
             });
         });
     };
@@ -235,7 +241,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         // Pushing Stayovers data structure
         hkOverview.data.push(buildStayOvers(reservations, rooms, date));
         // Pushing vacant data structure
-        hkOverview.data.push(buildVacants(reservations, rooms, chartType));
+        hkOverview.data.push(buildVacants(reservations, rooms, chartType, date));
         calculateRoomShortageByRoomType(date);
         deferred.resolve(hkOverview);
     };
@@ -373,16 +379,27 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
                     label: 'AN_INSPECTED'
                 }]
             };
-            if (chartType === 'WORK_PRIORITY') {
-                var shortage = that.calculateShortage(rooms, that.selectedRoomType, date);
+            if (chartType === 'WORK_PRIORITY' || chartType === 'ARRIVAL_MANAGEMENT') {
+                var calulatedShortage = that.calculateShortage(rooms, that.selectedRoomType, date);
 
-                if (shortage > 0) {
+                var shortage = calulatedShortage.shortage;
+                var overBooking = calulatedShortage.overBooking;
+
+
+                if (shortage > 0 && chartType === 'WORK_PRIORITY') {
                     var pendingInspectedRooms = {
                         type: "pending_inspected_rooms",
                         count: shortage
                     };
 
                     vacantRoomsData.contents.right_side.push(pendingInspectedRooms);
+                } else if (overBooking > 0 && chartType === 'ARRIVAL_MANAGEMENT'){
+                    var pendingOverBookedRooms = {
+                        type: "overbooked_rooms",
+                        count: overBooking
+                    };
+
+                    vacantRoomsData.contents.right_side.push(pendingOverBookedRooms);
                 }
             }
         }
@@ -618,5 +635,26 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         return rooms.filter(function(room) {
             return room.status === 'PICKUP';
         });
+    };
+
+    this.fetchMarketCodes = function() {
+        var url = '/api/market_segments';
+     
+        return rvBaseWebSrvV2.getJSON(url);
+    };
+    this.fetchSourceCodes = function() {
+        var url = '/api/sources';
+     
+        return rvBaseWebSrvV2.getJSON(url);
+    };
+    this.fetchSegmantCodes = function() {
+        var url = '/api/segments';
+     
+        return rvBaseWebSrvV2.getJSON(url);
+    };
+    this.fetchOriginCodes = function() {
+        var url = '/api/booking_origins';
+     
+        return rvBaseWebSrvV2.getJSON(url);
     };
 }]);
