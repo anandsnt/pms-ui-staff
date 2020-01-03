@@ -1035,6 +1035,12 @@ angular.module('sntRover')
 
                     fetchRoomListDataAndReservationListData(roomId, null, reservationId);
                 }
+                else if ($stateParams.action === 'SELECT_UNASSIGNED_RESERVATION') {
+                    // Logic for select unassigned reservation.
+                    var reservationId = parseInt($stateParams.reservation_id);
+
+                    $scope.$broadcast('SELECT_UNASSIGNED_RESERVATION', reservationId);
+                }
 
                 /**
                  * utility method to pass callbacks from
