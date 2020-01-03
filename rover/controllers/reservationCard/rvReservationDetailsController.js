@@ -856,14 +856,14 @@ sntRover.controller('reservationDetailsController',
             }
 		};
 
-		var editPromptDialogId;
+		var editRatePromptDialog;
 
 		$scope.showEditReservationPrompt = function() {
 			if ($rootScope.isStandAlone) {
 				if ($scope.reservationData.reservation_card.is_hourly_reservation) {
 					$scope.applyCustomRate();
 				} else {
-					editPromptDialogId = ngDialog.open({
+					editRatePromptDialog = ngDialog.open({
 						template: '/assets/partials/reservation/rvStayCardEditRate.html',
 						className: 'ngdialog-theme-default',
 						scope: $scope,
@@ -881,10 +881,8 @@ sntRover.controller('reservationDetailsController',
 		};
 
 		$scope.applyCustomRate = function() {
-			$scope.closeDialog(editPromptDialogId);
-			$timeout(function() {
-				$scope.editReservationRates($scope.reservationParentData.rooms[0], 0);
-			}, 1000);
+			editRatePromptDialog.close();
+			$scope.editReservationRates($scope.reservationParentData.rooms[0], 0);
 		};
 
 		var navigateToRoomAndRates = function(arrival, departure) {
@@ -961,7 +959,8 @@ sntRover.controller('reservationDetailsController',
 				return false;
 			};
 
-			$scope.closeDialog(editPromptDialogId);
+			editRatePromptDialog.close();
+
 			if ($scope.reservationData.reservation_card.is_hourly_reservation) {
 				return false;
 			} else if ($rootScope.isStandAlone) {
@@ -1486,7 +1485,12 @@ sntRover.controller('reservationDetailsController',
 				sntActivity.stop('FETCH_AUTH_DETAILS');
 				$scope.$emit('hideLoader');
 				$scope.authData.manualCCAuthPermission = hasManualCCAuthPermission();
-				$scope.authData.billData = data.bill_data;
+				$scope.authData.billData = _.sortBy(data.bill_data, function(cc_info) {
+				    if (cc_info.number === 'N/A') {
+				        return 100;
+                    }
+				    return parseInt(cc_info.number);
+                });
 
 				if( $scope.authData.billData.length > 0 ) {
 					// Show Multiple Credit card auth popup
@@ -1631,6 +1635,12 @@ sntRover.controller('reservationDetailsController',
 		$scope.cancelButtonClick = function() {
 			$scope.showAuthAmountPopUp();
 		};
+
+		$scope.disableAuthorizeButton = function() {
+            return $scope.isShijiOfflineAuthCodeEmpty() || !$scope.authData.manualCCAuthPermission ||
+                parseInt($scope.authData.authAmount) <= 0 || $scope.authData.selectedCardDetails.bill_no === 'N/A' ||
+                isNaN(parseInt($scope.authData.authAmount));
+        };
 
 		// To handle authorize button click on 'auth amount popup' ..
 		$scope.authorize = function() {
