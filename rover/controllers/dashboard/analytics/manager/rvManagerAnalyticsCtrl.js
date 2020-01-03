@@ -306,6 +306,12 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			$(window).off("resize.doResize");
 		});
 
+		$scope.$on("SIDE_MENU_TOGGLE", function(e, data) {
+			if (data.menuOpen) {
+				$('base').attr('href', "/");
+			}
+		});
+
 		$scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER', function(e, filter) {
 			rvAnalyticsSrv.selectedRoomType = filter.room_type;
 			drawChart();
