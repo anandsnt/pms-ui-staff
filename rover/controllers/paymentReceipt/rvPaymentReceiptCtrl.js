@@ -58,15 +58,15 @@ sntRover.controller('RVReceiptPopupController',
     /*
      * email receipt method
      */
-    $scope.showEmailSentStatusPopup = function(status) {
+    $scope.showEmailSentStatusPopup = function() {
         ngDialog.open({
             template: '/assets/partials/popups/rvEmailSentStatusPopup.html',
             className: '',
-            scope:$scope,
+            scope: $scope
         });
     };
     $scope.emailReceipt = function() {
-        var emailReceiptFailure = function (errorMessage){
+        var emailReceiptFailure = function () {
             $scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
             $scope.status = "alert";
             $scope.showEmailSentStatusPopup();
