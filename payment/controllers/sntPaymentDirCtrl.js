@@ -1053,10 +1053,6 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 var selectedPaymentType;
 
-                if (shouldReset && $scope.payment.isEditable && $scope.selectedPaymentType === 'GIFT_CARD') {
-                    $scope.payment.amount = 0;
-                }
-
                 calculateFee();
                 selectedPaymentType = _.find($scope.paymentTypes, {
                     name: $scope.selectedPaymentType
