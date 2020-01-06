@@ -541,7 +541,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
 
                                     showOverBookingPopup (overbookStatus, proceedOverbook);
                                 },
-                            750);
+                            2000);
                             break;
                         default:
                             $scope.errorMessage = error;
