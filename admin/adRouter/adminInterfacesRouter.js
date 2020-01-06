@@ -295,7 +295,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             }],
             chargeCodes: ['ADChargeCodesSrv', function(ADChargeCodesSrv) {
                 return ADChargeCodesSrv.fetch({'is_no_pagination': true,
-                    'charge_code_type': 'PAYMENT'});
+                    'charge_code_type': 'CHARGE'});
             }]
         }
     });
