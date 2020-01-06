@@ -17,6 +17,12 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 		var perfomanceData;
 		var combinedPerfomanceData = {};
 
+		// Scrollers for distribution grid view
+		var timeLineScrollEndReached = false;
+		var GRID_HEADER_HORIZONTAL_SCROLL = 'grid-header-horizontal-scroll',
+			GRID_VIEW_DUAL_SCROLL ='grid-scroll',
+			GRID_SIDE_MENU_SCROLL ='side-bar-vertical-scroll';
+
 		$scope.screenData = {
 			selectedChart: 'PERFOMANCE',
 			hideChartData: true,
@@ -76,6 +82,8 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 		};
 
 		var shallowDecodedParams = "";
+		var distributionChartData = "";
+
 		var renderDistributionChart = function() {
 
 			$('base').attr('href', initialBaseHrefValue);
@@ -96,8 +104,13 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 					$('base').attr('href', '#');
 					$scope.screenData.analyticsDataUpdatedTime = moment().format("MM ddd, YYYY hh:mm:ss a");
 					clearAllExistingChartElements();
-					$scope.drawDistributionChart(data);
-					addChartHeading();
+					distributionChartData = data;
+					if ($scope.dashboardFilter.gridViewActive) {
+						toggleDistributionChartGridView();
+					} else {
+						$scope.drawDistributionChart(data);
+						addChartHeading();
+					}
 				}
 			};
 
@@ -255,6 +268,151 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			$scope.callAPI(rvManagersAnalyticsSrv.roomPerformanceKPR, options);
 		};
 
+
+		var getScrollerObject = function(key) {
+				var scrollerObject = $scope.$parent.myScroll && $scope.$parent.myScroll[key];
+
+				if (_.isUndefined(scrollerObject)) {
+					scrollerObject = $scope.myScroll[key];
+				}
+				return scrollerObject;
+			};
+
+		var setGridScrollers = function () {
+			var scrollOptions = {
+                    tap: true,
+					preventDefault: false,
+					probeType: 3,
+					mouseWheel: true		
+                };
+
+            var scrollerOptionsForTimeline = _.extend({
+				scrollX: true,
+				scrollY: false,
+				scrollbars: true
+			}, angular.copy(scrollOptions));
+
+			var scrollerOptionsForGrid = _.extend({
+				scrollY: true,
+				scrollX: true,
+				scrollbars: true
+			}, angular.copy(scrollOptions));
+
+			$scope.setScroller(GRID_HEADER_HORIZONTAL_SCROLL, scrollerOptionsForTimeline);
+			$scope.setScroller(GRID_VIEW_DUAL_SCROLL,scrollerOptionsForGrid);
+			$scope.setScroller(GRID_SIDE_MENU_SCROLL, scrollOptions);
+			var runDigestCycle = function() {
+				if (!$scope.$$phase) {
+					$scope.$digest();
+				}
+			};
+
+			$timeout(function() {
+				getScrollerObject (GRID_HEADER_HORIZONTAL_SCROLL)
+					.on('scroll', function() {						
+						var xPos = this.x;
+						var block = getScrollerObject (GRID_VIEW_DUAL_SCROLL);
+
+						block.scrollTo(xPos, block.y);
+
+						// check if edge reached next button
+						if (Math.abs(this.maxScrollX) - Math.abs(this.x) <= 150 ) {
+							if (!timeLineScrollEndReached) {
+									timeLineScrollEndReached = true;
+									runDigestCycle();
+								}
+							} else {
+								if (timeLineScrollEndReached) {
+								 	timeLineScrollEndReached = false;
+									runDigestCycle();
+							}
+						}
+					});				
+				getScrollerObject (GRID_SIDE_MENU_SCROLL)
+					.on('scroll', function() {						
+						var yPos = this.y;
+						var block = getScrollerObject (GRID_VIEW_DUAL_SCROLL);
+
+						block.scrollTo(block.x, yPos);
+					});
+				getScrollerObject (GRID_VIEW_DUAL_SCROLL)
+					.on('scroll', function() {
+						var xPos = this.x;
+						var yPos = this.y;
+
+						getScrollerObject (GRID_HEADER_HORIZONTAL_SCROLL).scrollTo(xPos, 0);
+						getScrollerObject (GRID_SIDE_MENU_SCROLL).scrollTo(0, yPos);
+
+						// check if edge reached and enable next button
+						if (Math.abs(this.maxScrollX) - Math.abs(this.x) <= 150 ) {
+							if (!timeLineScrollEndReached) {
+									timeLineScrollEndReached = true;
+									runDigestCycle();
+								}
+							} else {
+								if (timeLineScrollEndReached) {
+								 	timeLineScrollEndReached = false;
+									runDigestCycle();
+							}
+						}
+					});
+			}, 1000);
+		};
+
+
+		var toggleDistributionChartGridView = function () {
+			if (!$scope.dashboardFilter.gridViewActive) {
+				drawChart();
+				return;
+			}
+			if ($scope.dashboardFilter.gridViewActive && !$scope.dashboardFilter.aggType) {
+				$scope.gridViewHeader = _.find($scope.dashboardFilter.chartTypes, function(chartType){
+					return chartType.code === $scope.dashboardFilter.chartType;
+				}).name;
+			} else if ($scope.dashboardFilter.gridViewActive && $scope.dashboardFilter.aggType) {
+				$scope.gridViewHeader = _.find($scope.dashboardFilter.aggTypes, function(aggType){
+					return aggType.code === $scope.dashboardFilter.aggType;
+				}).name;
+			}
+			
+			$scope.gridLeftSideHeaders = [];
+
+			if (distributionChartData.length > 0) {
+				for (var key in distributionChartData[0]) {
+					if (key !== "date") {
+						$scope.gridLeftSideHeaders.push(key);
+					}
+				}
+			}
+
+			var today = $rootScope.businessDate;
+
+			distributionChartData = _.sortBy(distributionChartData, function(data) {
+				return data.date;
+			});
+
+			_.each(distributionChartData, function(data){
+				// check if the day is a Sunday or Saturday
+				data.isWeekend = moment(data.date, "YYYY-MM-DD").weekday() === 0 ||
+				moment(data.date, "YYYY-MM-DD").weekday() === 6;
+				// Display day in MMM DD format
+				data.dateToDisplay = moment(data.date, "YYYY-MM-DD").format("MMM DD");
+				// weekday in 3 letter format
+				data.weekDay = moment(data.date, "YYYY-MM-DD").format("ddd");
+				// check if day is current day
+				data.isToday = moment(data.date).format('YYYY-MM-DD') === today;
+			});
+
+			$scope.distributionChartData = distributionChartData;
+			$scope.dashboardFilter.showFilters = false;
+			setGridScrollers();
+			$timeout(function() {
+				refreshGridScrollers();
+			}, 1000);
+		};
+
+		$scope.$on('DISTRUBUTION_CHART_CHANGED', toggleDistributionChartGridView);
+
 		$scope.$on('ANALYTICS_FILTER_CHANGED', function(e, data) {
 			if ($scope.screenData.selectedChart === 'PERFOMANCE') {
 				handleFilterChangeForPerfomanceChart();
@@ -337,11 +495,18 @@ sntRover.controller('RVManagerAnalyticsController', ['$scope',
 			$('base').attr('href', initialBaseHrefValue);
 		});
 
+		 var refreshGridScrollers = function() {
+            $scope.refreshScroller(GRID_HEADER_HORIZONTAL_SCROLL);
+            $scope.refreshScroller(GRID_VIEW_DUAL_SCROLL);
+            $scope.refreshScroller(GRID_SIDE_MENU_SCROLL);
+        };
+
 		(function() {
 			$scope.dashboardFilter.selectedAnalyticsMenu = "PERFOMANCE";
 			$scope.dashboardFilter.showFilters = false;
 			$scope.dashboardFilter.showLastYearData = false;
 			$scope.dashboardFilter.lastyearType = 'SAME_DATE_LAST_YEAR';
+			$scope.dashboardFilter.gridViewActive = false;
 			drawChart();
 		})();
 	}

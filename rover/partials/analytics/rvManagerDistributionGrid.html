@@ -1,13 +1,13 @@
 <!-- Dashboard - Grid - replace L168-192 with this when showing grid -->
 <!-- Room Types -->
-<div class="analytics-grid-sidebar" ng-if="!screenData.hideChartData">
+<div class="analytics-grid-sidebar">
     <!-- Timeline -->
     <div class="analytics-grid-timeline">
         <strong class="label">{{ gridViewHeader }}</strong>
     </div>
 
     <!-- Rows -->
-    <div class="analytics-grid-rows scrollable"> <!-- Vertical iScroll here, make it connected to iScroll on L227 so they both move vertically when any of them is scrolled. -->
+    <div class="analytics-grid-rows scrollable" ng-iscroll="side-bar-vertical-scroll" id="div1"> <!-- Vertical iScroll here, make it connected to iScroll on L227 so they both move vertically when any of them is scrolled. -->
         <div class="wrapper">
             <div class="row" ng-if="dashboardFilter.aggType" ng-repeat="item in gridLeftSideHeaders">{{::item}}</div>
             <!-- ... repeat L206 for every Room Type or Market or Source or Segment or Origin -->
@@ -17,7 +17,7 @@
 
 <div class="analytics-grid-content">
     <!-- Timeline -->
-    <div class="analytics-grid-timeline scrollable"> <!-- Horizontal iScroll here, make it connected to iScroll on L227 so they both move horizontally when any of them is scrolled. -->
+    <div class="analytics-grid-timeline scrollable"  ng-iscroll="grid-header-horizontal-scroll"> <!-- Horizontal iScroll here, make it connected to iScroll on L227 so they both move horizontally when any of them is scrolled. -->
         <div class="wrapper">
             <div class="row">
                 <div class="cell day" 
@@ -31,7 +31,7 @@
     </div>
 
     <!-- Grid -->
-    <div class="analytics-grid-rows scrollable"> <!-- dual iScroll here, make it connected to: 1.) iScroll on L204 so they both move vertically when any of them is scrolled, and 2.) iScroll on L214 so they both move horizontally when any of them is scrolled. -->
+    <div class="analytics-grid-rows scrollable" ng-iscroll="grid-scroll" id="div2"> <!-- dual iScroll here, make it connected to: 1.) iScroll on L204 so they both move vertically when any of them is scrolled, and 2.) iScroll on L214 so they both move horizontally when any of them is scrolled. -->
         <div class="wrapper">
             <div class="row" ng-repeat="item in gridLeftSideHeaders">
                 <div class="cell day"
