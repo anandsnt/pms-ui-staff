@@ -1551,8 +1551,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             } else {
                 $scope.groupConfigData.summary.travel_agent = $scope.groupSummaryMemento.travel_agent;
             }
-
-        }
+        };
 
         /**
          * function to initialize things for group config.
