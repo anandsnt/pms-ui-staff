@@ -981,14 +981,14 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		/**
          * We need to refresh the rates once TA card info is changed
          */
-        $scope.$on('TA_CARD_CHANGED', function(event) {
+        $scope.addListener('TA_CARD_CHANGED', function(event) {
             fetchApplicableRates();
 		});
 		
 		/**
          * We need to refresh the rates once company card info is changed
          */
-        $scope.$on('COMPANY_CARD_CHANGED', function(event) {
+        $scope.addListener('COMPANY_CARD_CHANGED', function(event) {
             fetchApplicableRates();
         });
 

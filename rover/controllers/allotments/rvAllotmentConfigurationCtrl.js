@@ -322,27 +322,27 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
 
         };
 
-        var refreshSummaryDataAfterUpdate = false;
-        var onAllotmentUpdateSuccess = function(data) {
-            $scope.allotmentConfigData.summary.commission_details = data.commission_details;
-            // client controllers should get an infromation whether updation was success
-            $scope.$broadcast("UPDATED_ALLOTMENT_INFO", angular.copy($scope.allotmentConfigData.summary));
-            $scope.allotmentSummaryMemento = angular.copy($scope.allotmentConfigData.summary);
+        var refreshSummaryDataAfterUpdate = false,
+            onAllotmentUpdateSuccess = function(data) {
+                $scope.allotmentConfigData.summary.commission_details = data.commission_details;
+                // client controllers should get an infromation whether updation was success
+                $scope.$broadcast("UPDATED_ALLOTMENT_INFO", angular.copy($scope.allotmentConfigData.summary));
+                $scope.allotmentSummaryMemento = angular.copy($scope.allotmentConfigData.summary);
 
-            // If required refresh summary data to ensure data integrity
-            if (refreshSummaryDataAfterUpdate) {
-                fetchSummaryData();
+                // If required refresh summary data to ensure data integrity
+                if (refreshSummaryDataAfterUpdate) {
+                    fetchSummaryData();
+                    refreshSummaryDataAfterUpdate = false;
+                }
+                return true;
+            },
+            onAllotmentUpdateFailure = function(errorMessage) {
+                // client controllers should get an infromation whether updation was a failure
+                $scope.$broadcast("FAILED_TO_UPDATE_ALLOTMENT_INFO", errorMessage);
+                $scope.errorMessage = errorMessage;
                 refreshSummaryDataAfterUpdate = false;
-            }
-            return true;
-        };
-        var onAllotmentUpdateFailure = function(errorMessage) {
-            // client controllers should get an infromation whether updation was a failure
-            $scope.$broadcast("FAILED_TO_UPDATE_ALLOTMENT_INFO", errorMessage);
-            $scope.errorMessage = errorMessage;
-            refreshSummaryDataAfterUpdate = false;
-            return false;
-        };
+                return false;
+            };
 
         /**
          * Update the allotment data
@@ -362,10 +362,17 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                 summaryData.block_from = $filter('date')(summaryData.block_from, $rootScope.dateFormatForAPI);
                 summaryData.block_to = $filter('date')(summaryData.block_to, $rootScope.dateFormatForAPI);
                 summaryData.release_date = $filter('date')(summaryData.release_date, $rootScope.dateFormatForAPI);
-                if (!summaryData.rate) {
-                    summaryData.rate = -1;
-                    summaryData.contract_id = null;
-                }
+                /**
+                 * We'll have to mandate the user to select a rate
+                 * Atleast custom rate should be selected manually
+                 * or show the rate selection box highlighter with yellow border.
+                 * So the code will change to not automatically select the
+                 * Custom rate.
+                 */
+                // if (!summaryData.rate) {
+                //     summaryData.rate = -1;
+                //     summaryData.contract_id = null;
+                // }
                 $scope.callAPI(rvAllotmentConfigurationSrv.updateAllotmentSummary, {
                     successCallBack: onAllotmentUpdateSuccess,
                     failureCallBack: onAllotmentUpdateFailure,
