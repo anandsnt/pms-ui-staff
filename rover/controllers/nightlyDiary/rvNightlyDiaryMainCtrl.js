@@ -1039,7 +1039,10 @@ angular.module('sntRover')
                     // Logic for select unassigned reservation.
                     var reservationId = parseInt($stateParams.reservation_id);
 
-                    $scope.$broadcast('SELECT_UNASSIGNED_RESERVATION', reservationId);
+                    $timeout(function () {
+                        $scope.diaryData.rightFilter = 'UNASSIGNED_RESERVATION';
+                        $scope.$broadcast('SELECT_UNASSIGNED_RESERVATION', reservationId);
+                    }, 1000);
                 }
 
                 /**
