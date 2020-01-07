@@ -315,7 +315,6 @@ describe('RVInvoiceSearchController', function () {
                     var shouldShowArInvoice = $scope.shouldShowARInvoices();
 
                     expect(shouldShowArInvoice).toBe(false);
-
                 });
 
                 it('Navigate to staycard', function() {
@@ -342,10 +341,10 @@ describe('RVInvoiceSearchController', function () {
                 });
 
                 it('get Invoice Button Class', function() {
-                    // spyOn(ngDialog, 'open').and.callThrough();
 
                     $scope.invoiceSearchData.reservationsList = results.data;
                     var buttonClass = $scope.getInvoiceButtonClass(0, 0);
+
                     expect(buttonClass).toBe("blue");
                 });
 
