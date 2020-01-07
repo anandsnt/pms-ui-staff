@@ -16,7 +16,6 @@ describe('RVInvoiceSearchController', function () {
         rvInvoiceSearchController,
         rvAccountsConfigurationSrv,
         RVCompanyCardSrv,
-        $state,
         ngDialog,
         results = jsonResult;    
 
@@ -35,7 +34,6 @@ describe('RVInvoiceSearchController', function () {
                     rvAccountTransactionsSrv = _rvAccountTransactionsSrv_;
                     rvAccountsConfigurationSrv = _rvAccountsConfigurationSrv_;
                     RVCompanyCardSrv = _RVCompanyCardSrv_;
-                    $state = _$state_;
                     ngDialog = _ngDialog_;
                     $scope = _$rootScope_.$new();
                     $scope.resultData = jsonResult;
