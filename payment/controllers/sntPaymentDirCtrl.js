@@ -1039,7 +1039,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 if (shouldReset) {
                     $scope.payment.selectedPaymentCurrencyId = $rootScope.hotelCurrencyId;
                     $scope.payment.selectedPaymentCurrencySymbol = $rootScope.currencySymbol;
-                    $scope.payment.amount = parseFloat(initialPaymentAmount);
+                    $scope.payment.amount = initialPaymentAmount;
                     $scope.feeData.calculatedFee = $scope.originalFee;
                 }
 
@@ -1052,10 +1052,6 @@ angular.module('sntPay').controller('sntPaymentController',
                 }
 
                 var selectedPaymentType;
-
-                if (shouldReset && $scope.payment.isEditable && $scope.selectedPaymentType === 'GIFT_CARD') {
-                    $scope.payment.amount = 0;
-                }
 
                 calculateFee();
                 selectedPaymentType = _.find($scope.paymentTypes, {
@@ -1470,7 +1466,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 $scope.isPaymentFailure = false;
                 $scope.payment.authorizationCode = response.authorization_code;
 
-                response.amountPaid = $scope.payment.amount;
+                response.amountPaid = response.amount;
                 response.authorizationCode = response.authorization_code;
 
                 response.selectedPaymentType = $scope.selectedPaymentType;

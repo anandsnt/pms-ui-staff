@@ -1283,22 +1283,23 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
         var nextStateParameters = '';
 
         this.showConfirmRoutingPopup = function(type, id) {
-
-            ngDialog.open({
-                template: '/assets/partials/reservation/alerts/rvBillingInfoConfirmPopup.html',
-                className: 'ngdialog-theme-default',
-                scope: $scope
-            });
-
+            $timeout(function() {
+                ngDialog.open({
+                    template: '/assets/partials/reservation/alerts/rvBillingInfoConfirmPopup.html',
+                    className: 'ngdialog-theme-default',
+                    scope: $scope
+                });
+            }, 1000);
         };
 
         this.showConflictingRoutingPopup = function(type, id) {
-
-            ngDialog.open({
-                template: '/assets/partials/reservation/alerts/rvBillingInfoConflictingPopup.html',
-                className: 'ngdialog-theme-default',
-                scope: $scope
-            });
+            $timeout(function() {
+                ngDialog.open({
+                    template: '/assets/partials/reservation/alerts/rvBillingInfoConflictingPopup.html',
+                    className: 'ngdialog-theme-default',
+                    scope: $scope
+                });
+            }, 1000);
 
         };
 
