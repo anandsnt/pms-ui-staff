@@ -450,4 +450,8 @@ sntRover.controller('RVmanagerDashboardController',
     return $scope.dashboardFilter.showLastYearData ? 1 : 0;
   };
 
+  $scope.distributionChartChanged = function() {
+    $scope.$broadcast('DISTRUBUTION_CHART_CHANGED');
+  };
+
 }]);
