@@ -294,7 +294,8 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
                 return adInterfacesSrv.getSettings('vectron');
             }],
             chargeCodes: ['ADChargeCodesSrv', function(ADChargeCodesSrv) {
-                return ADChargeCodesSrv.fetch();
+                return ADChargeCodesSrv.fetch({'is_no_pagination': true,
+                    'charge_code_type': 'CHARGE'});
             }]
         }
     });
