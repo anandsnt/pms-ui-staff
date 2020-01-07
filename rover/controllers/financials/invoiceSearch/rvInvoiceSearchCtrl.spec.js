@@ -15,6 +15,8 @@ describe('RVInvoiceSearchController', function () {
         rvInvoiceSearchController,
         rvAccountsConfigurationSrv,
         RVCompanyCardSrv,
+        $state,
+        ngDialog,
         results = jsonResult;    
 
         describe('variable initalizations', function () {
@@ -22,7 +24,7 @@ describe('RVInvoiceSearchController', function () {
             beforeEach(function () {
                 module('sntRover');
 
-                inject(function (_$controller_, _RVInvoiceSearchSrv_, _RVBillCardSrv_, _$q_, _$rootScope_, _rvAccountTransactionsSrv_, _rvAccountsConfigurationSrv_, _RVCompanyCardSrv_) {
+                inject(function (_$controller_, _RVInvoiceSearchSrv_, _RVBillCardSrv_, _$q_, _$rootScope_, _rvAccountTransactionsSrv_, _rvAccountsConfigurationSrv_, _RVCompanyCardSrv_,  _$state_, _ngDialog_) {
                     $controller = _$controller_;
                     RVInvoiceSearchSrv = _RVInvoiceSearchSrv_;
                     RVBillCardSrv = _RVBillCardSrv_;
@@ -31,10 +33,14 @@ describe('RVInvoiceSearchController', function () {
                     rvAccountTransactionsSrv = _rvAccountTransactionsSrv_;
                     rvAccountsConfigurationSrv = _rvAccountsConfigurationSrv_;
                     RVCompanyCardSrv = _RVCompanyCardSrv_;
+                    $state = _$state_;
+                    ngDialog = _ngDialog_;
                     $scope = _$rootScope_.$new();
                 });
 
-                $rootScope.roverObj = {};                
+                $rootScope.roverObj = {};
+                $scope.roverObj = {};
+                $scope.roverObj.noReprintReEmailInvoice = true;              
 
                 rvInvoiceSearchController = $controller('RVInvoiceSearchController', {
                     $scope: $scope,
@@ -227,6 +233,85 @@ describe('RVInvoiceSearchController', function () {
                     expect(RVInvoiceSearchSrv.triggerPaymentReceipt).toHaveBeenCalled();
 
                 });
+
+                it('should show invoices', function() {
+
+                    $scope.filterOptions = filterOptions.filters;
+
+                    $scope.invoiceSearchFlags = {};
+
+                    $scope.invoiceSearchData.filter_id = 1;
+
+                    var shouldShowInvoice = $scope.shouldShowInvoices();
+
+                    expect(shouldShowInvoice).toBe(true);
+
+                });
+
+                it('should show receipts', function() {
+
+                    $scope.filterOptions = filterOptions.filters;
+
+                    $scope.invoiceSearchFlags = {};
+
+                    $scope.invoiceSearchData.filter_id = 3;
+
+                    var shouldShowReceipt = $scope.shouldShowReceipts();
+
+                    expect(shouldShowReceipt).toBe(true);
+
+                });
+
+                it('should show ARinvoice', function() {
+
+                    $scope.filterOptions = filterOptions.filters;
+
+                    $scope.invoiceSearchFlags = {};
+
+                    $scope.invoiceSearchData.filter_id = 3;
+
+                    var shouldShowArInvoice = $scope.shouldShowARInvoices();
+
+                    expect(shouldShowArInvoice).toBe(false);
+
+                });
+
+                it('Navigate to staycard', function() {
+                    spyOn($state, 'go');
+                    spyOn(RVInvoiceSearchSrv, 'searchForInvoice').and.callFake(function () {
+                        var deferred = $q.defer();
+
+                        deferred.resolve(results);
+                        return deferred.promise;
+                    });
+
+                    $scope.invoiceSearchData = {};
+                    $scope.invoiceSearchData.reservationsList = results.data;
+
+                    // $scope.results = results.data;
+                    $scope.clickedItem(0);
+                    expect($state.go).toHaveBeenCalled();
+                });
+
+                it('Open re-trigger popup', function() {
+                    spyOn(ngDialog, 'open').and.callThrough();
+                    $scope.openRetriggerMessagePopup();
+                    expect(ngDialog.open).toHaveBeenCalled();
+                });
+
+                it('get Invoice Button Class', function() {
+                    // spyOn(ngDialog, 'open').and.callThrough();
+
+                    $scope.invoiceSearchData.reservationsList = results.data;
+                    var buttonClass = $scope.getInvoiceButtonClass(0, 0);
+                    expect(buttonClass).toBe("blue");
+                });
+
+                it('clicked Receipt Icon', function() {
+                    spyOn(ngDialog, 'open').and.callThrough();
+                    $scope.clickedReceiptIcon("RESERVATION", 0, 0);
+                    expect(ngDialog.open).toHaveBeenCalled();
+                });            
 
             });
         });    

@@ -13,7 +13,11 @@
             "bills": [{
                 "invoice_no": "GHL2740",
                 "balance": 0.0,
-                "isOpened": false
+                "isOpened": false,
+                "is_active": true,
+                "is_folio_number_exists": true,
+                "is_printed_once": true,
+                "is_emailed_once": true
             }, {
                 "invoice_no": "GHL3165",
                 "balance": 0.0,
