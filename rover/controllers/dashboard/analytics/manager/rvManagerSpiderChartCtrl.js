@@ -28,7 +28,7 @@ angular.module('sntRover')
 
 				var svg = d3.select("#d3-plot")
 					.append("svg")
-					.attr("width", chartWidth)
+					.attr("width", chartWidth + 100) // Add additional width to show last year details
 					.attr("height", chartHeight);
 
 				var x = d3.scaleLinear().

@@ -125,8 +125,8 @@
                         <option value="{{::filter.code}}" ng-repeat="filter in ::dashboardFilter.aggTypes track by $index">{{::filter.name}}</option>
                     </select>
                 </div>
-                <div id="chart-toggle" class="switch-button on" ng-if="false">
-                    <input id="distribution-switch" type="checkbox" checked="">
+                <div id="chart-toggle" class="switch-button ng-hide" ng-class="{'on': !dashboardFilter.gridViewActive}">
+                    <input id="distribution-switch" type="checkbox" checked="" ng-model="dashboardFilter.gridViewActive" ng-change="distributionChartChanged()">
                     <label class="data-off">
                         <span class="value">Chart</span>
                         <span class="switch-icon">Grid</span>
@@ -145,20 +145,6 @@
                         <option value="{{roomType.code}}" ng-repeat="roomType in availableRoomTypes | orderBy: name">{{roomType.name}}</option>
                     </select>
                 </div>
-                <!--<div class="multi-select with-label">
-    <label for="analytics-room-type" data-target="#analytics-room-type" class="faux-select">
-    <span class="label">Room Type</span>
-    <strong>Showing All</strong>
-    </label>
-    <div id="analytics-room-type" class="faux-select-options hidden">
-    <label class="checkbox inline checked">
-    <span class="icon-form icon-checkbox"></span>
-    <input id="all-room-types" value="all" type="checkbox" checked />
-    All Room Types
-    </label>
-    <label class="checkbox inline "><span class="icon-form icon-checkbox"></span><input data-list="analytics-room-type" value="room-type-0" type="checkbox" data-check   data-text="Standard Room"  />Standard Room</label><label class="checkbox inline "><span class="icon-form icon-checkbox"></span><input data-list="analytics-room-type" value="room-type-1" type="checkbox" data-check   data-text="Standard Double"  />Standard Double</label><label class="checkbox inline "><span class="icon-form icon-checkbox"></span><input data-list="analytics-room-type" value="room-type-2" type="checkbox" data-check   data-text="Deluxe Room"  />Deluxe Room</label><label class="checkbox inline "><span class="icon-form icon-checkbox"></span><input data-list="analytics-room-type" value="room-type-3" type="checkbox" data-check   data-text="Deluxe Twin"  />Deluxe Twin</label><label class="checkbox inline "><span class="icon-form icon-checkbox"></span><input data-list="analytics-room-type" value="room-type-4" type="checkbox" data-check   data-text="Deluxe Pool View"  />Deluxe Pool View</label><label class="checkbox inline "><span class="icon-form icon-checkbox"></span><input data-list="analytics-room-type" value="room-type-5" type="checkbox" data-check   data-text="Junior Suite"  />Junior Suite</label><label class="checkbox inline "><span class="icon-form icon-checkbox"></span><input data-list="analytics-room-type" value="room-type-6" type="checkbox" data-check   data-text="Deluxe Suite"  />Deluxe Suite</label><label class="checkbox inline "><span class="icon-form icon-checkbox"></span><input data-list="analytics-room-type" value="room-type-7" type="checkbox" data-check   data-text="King Suite"  />King Suite</label><label class="checkbox inline "><span class="icon-form icon-checkbox"></span><input data-list="analytics-room-type" value="room-type-8" type="checkbox" data-check   data-text="Superior King"  />Superior King</label>
-    </div>
-    </div>-->
                 <div class="selected" data-list="analytics-room-type">
                     <span class="tag" ng-repeat="roomType in selectedFilters.roomTypes" ng-click="distributionFilterRemoved('ROOM_TYPE', roomType.code)">{{roomType.name}}</span>
                 </div>
