@@ -27,7 +27,7 @@
             <span ng-if="printData.po_number"><strong>{{printData.translation.po_number}}: </strong> {{printData.po_number}}<br/></span>  
             <span ng-if="printData.payment_date"><strong>{{printData.translation.payment_date}}: </strong> {{printData.payment_date | date:dateFormat}}<br/></span> 
             <span ng-if="printData.is_print_folio_enabled  &&  printData.folio_number"><strong>{{printData.translation.folio_number}}: </strong> {{printData.folio_number}}<br/></span>
-            <span ng-ig="!printData.is_print_folio_enabled  &&  printData.invoice_number"><strong{}>{{printData.translation.invoice_number}}: </strong>{{printData.invoice_number}}<br/></span>
+            <span ng-if="!printData.is_print_folio_enabled  &&  printData.invoice_number"><strong>{{printData.translation.invoice_number}}: </strong>{{printData.invoice_number}}<br/></span>
         </div>
 
         <div class="info-right" ng-if="printData.card_type === 'COMPANY'">
