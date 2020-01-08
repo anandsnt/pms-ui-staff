@@ -26,11 +26,11 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
             var combinedArray = chart.contents.left_side.concat(chart.contents.right_side);
 
             chart.contents.left_side = _.reject(combinedArray, function(item) {
-                return item.type === "inspected";
+                return item.type === "inspected" || item.type === "overbooked_rooms";
             });
 
             chart.contents.right_side = _.filter(combinedArray, function(item) {
-                return item.type === "inspected";
+                return item.type === "inspected" || item.type === "overbooked_rooms";
             });
         };
 

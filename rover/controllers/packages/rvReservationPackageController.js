@@ -69,6 +69,11 @@ sntRover.controller('RVReservationPackageController',
 			}
 			shouldReloadState = true;
 		};
+
+		var failureCallback = function(errorData) {
+			$scope.errorMessage = errorData;
+		};
+
 		var addonArray = [];
 
 		addonArray.push(addonId);
@@ -80,7 +85,7 @@ sntRover.controller('RVReservationPackageController',
 			"reservationId": reservationId
 		};
 
-		$scope.invokeApi(RVReservationPackageSrv.deleteAddonsFromReservation, dataToApi, successDelete);
+		$scope.invokeApi(RVReservationPackageSrv.deleteAddonsFromReservation, dataToApi, successDelete, failureCallback);
 	};
 
 	// Get addon count

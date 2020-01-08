@@ -88,7 +88,7 @@ var processIntegerPart = function( integerPart, seperatorType ) {
 
 	// Eg : integerPart => [ '1234567' ] and let seperatorType => ','.
 	for ( i = integerPart.length - 1, j = 0 ; i >= 0; i --, j ++ ) {
-		if (j % 3 === 0 && j > 2) {
+		if (j % 3 === 0 && j > 2 && integerPart[i] !== '-') {
 			data = data + getSeperatorType(seperatorType) + integerPart[i];
 		}
 		else {

@@ -80,10 +80,20 @@ admin.controller('adHotelLegalSettingsController',
 
 			$scope.legalSettings = dclone($scope.legalSettings, unwantedKeys);
 
+			var apiParams;
+			
+			if (screen === 'reservations') {
+				apiParams = {
+					"guest_mandatory_schema_id": $scope.legalSettings.guest_mandatory_schema_id
+				}
+			} else {
+				apiParams = $scope.legalSettings;
+			}
+
 			var	options = {
 				params: {
 					'hotel_id': $scope.data.id,
-					'data': $scope.legalSettings
+					'data': apiParams
 				},
 				successCallBack: function(data) {
 					$scope.legalSettings = $scope.legalSettingsCopy;
