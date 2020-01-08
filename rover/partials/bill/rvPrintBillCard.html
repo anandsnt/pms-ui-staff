@@ -38,6 +38,7 @@
             </span>
         </div>
         <div ng-if="printData.is_deposit_invoice && printData.deposit_folio_number">
+            <strong >{{printData.translation.invoice_date}}: </strong>{{printData.invoice_date | date:dateFormat}}<br/>
             <strong><span ng-if = "printData.folio_label">{{printData.folio_label}}:</span><span ng-if = "!printData.folio_label">{{printData.translation.folio_number}}:</span></strong>{{printData.deposit_folio_number}}<br/>
         </div>
     </div>
