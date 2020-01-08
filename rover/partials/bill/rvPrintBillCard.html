@@ -229,7 +229,8 @@
         </thead>
         <tbody>
             <tr ng-repeat="item in printData.extended_tax_breakdown.details">
-                <td class="text-align-left">{{ item.description }}</td>
+                <td class="text-align-left" ng-if="item.description === 'Tax Exempt'">{{ printData.translation.tax_exempt }}</td>
+                <td class="text-align-left" ng-if="item.description !== 'Tax Exempt'">{{ item.description }}</td>
                 <td>{{currencySymbol}}{{ item.gross_amount | number: precisonTwo }}
                     <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol!='' && item.inv_gross_amount !== null">
                         {{invoiceCurrencySymbol}}{{item.inv_gross_amount}}
@@ -284,7 +285,8 @@
     </thead>
     <tbody>
         <tr ng-repeat="item in printData.tax_breakdown_for_deposit.details">
-            <td class="text-align-left">{{ item.description }}</td>
+            <td class="text-align-left" ng-if="item.description === 'Tax Exempt'">{{ printData.translation.tax_exempt }}</td>
+            <td class="text-align-left" ng-if="item.description !== 'Tax Exempt'">{{ item.description }}</td>
             <td>{{currencySymbol}}{{ item.gross_amount | number: precisonTwo }}
                 <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol!='' && item.inv_gross_amount !== null">
                     {{invoiceCurrencySymbol}}{{item.inv_gross_amount}}
