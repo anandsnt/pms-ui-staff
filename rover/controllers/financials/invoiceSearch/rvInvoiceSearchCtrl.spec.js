@@ -3,7 +3,7 @@ describe('RVInvoiceSearchController', function () {
     jasmine.getJSONFixtures().fixturesPath = 'base/unitTestSampleData/';
     var fixtures = loadJSONFixtures('invoiceSearchSampleData.json'),
         jsonResult = fixtures['invoiceSearchSampleData.json'],
-        filterOptions = {"filters":[{"id":1,"name":"Reservation Invoices","value":"RESERVATION_INVOICES"},{"id":2,"name":"AR Invoices","value":"AR_INVOICES"},{"id":3,"name":"Reservation Receipts","value":"RESERVATION_RECEIPTS"},{"id":8,"name":"Account Invoices","value":"ACCOUNT_INVOICES"},{"id":9,"name":"Account Receipts","value":"ACCOUNT_RECEIPTS"}]}; 
+        filterOptions = {"filters": [{"id": 1, "name": "Reservation Invoices", "value": "RESERVATION_INVOICES"}, {"id": 2, "name": "AR Invoices", "value": "AR_INVOICES"}, {"id": 3, "name": "Reservation Receipts", "value": "RESERVATION_RECEIPTS"}, {"id": 8, "name": "Account Invoices", "value": "ACCOUNT_INVOICES"}, {"id": 9, "name": "Account Receipts", "value": "ACCOUNT_RECEIPTS"}]}; 
 
     var $controller,
         $scope,
