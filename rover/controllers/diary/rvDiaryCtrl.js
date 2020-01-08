@@ -1310,8 +1310,7 @@ angular.module('sntRover')
                         }
                     }
                 }
-            };
-
+            }
 
             /*
                 ----------------------------------------------------------------
@@ -1602,7 +1601,7 @@ angular.module('sntRover')
                         hasExtraHour: hasExtraHour,
                         hasLessHour: hasLessHour
                     };
-                };
+                }
                 var filter 		= _.extend({}, this.filter),
                     time_span 	= Time({ hours: this.display.min_hours }),
                     start_date 	= new Date(this.display.x_n);
@@ -1705,7 +1704,7 @@ angular.module('sntRover')
                         mm: mm,
                         hhmm: hhs + ':' + mms
                     };
-                };
+                }
 
                 function processDate(date) {
                     var ad = date.split('-');
@@ -1718,7 +1717,7 @@ angular.module('sntRover')
                         mm: mm,
                         dd: dd
                     };
-                };
+                }
 
                 var processedAt = processTime(arrivalTime),
                     filter = _.extend({}, this.filter),
