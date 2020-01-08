@@ -426,7 +426,8 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
             authorizationCode: data.authorizationCode || data.authorization_code,
             amount: data.amountPaid,
             feePaid: parseFloat(data.feePaid),
-            showFee: data.showFee
+            showFee: data.showFee,
+            selectedPaymentType: data.selectedPaymentType
         };
 
         processeRestOfPaymentOperations();

@@ -6,6 +6,8 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
         
         GuestCardBaseCtrl.call (this, $scope, RVSearchSrv, RVContactInfoSrv, rvPermissionSrv, $rootScope);
 
+        var reservationDetailsState = 'rover.reservation.staycard.reservationcard.reservationdetails';
+
     /**
      * storing to check if data will be updated
      */
@@ -148,7 +150,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
                     $scope.reservationData.guest.address = $scope.guestCardData.contactInfo.address;
 
                     $scope.reservationData.guest.loyaltyNumber = $scope.guestLoyaltyNumber;
-                    if ($scope.reservationData.reservationId) {
+                    if ($state.current.name !== reservationDetailsState && $scope.reservationData.reservationId) {
                         attachGuestToReservation($scope.reservationData.reservationId, $scope.reservationData.guest.id, true);
                     }
                 }
