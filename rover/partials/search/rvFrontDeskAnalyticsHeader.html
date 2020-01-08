@@ -1,0 +1,95 @@
+<form method="get" name="dashboard-search-form" id="dashboard-search-form" class="search-form dashboard-analytics has-dates has-room-types" data-search-for="analytics" role="search">
+    <!-- Switch between Analytics and buttons view -->
+     <div class="entry switch">
+    <div class="switch-button off" ng-class="{ 'on' : !dashboardFilter.analyticsActive }">
+        <input id="analytics-toggle" value="" type="checkbox" ng-click="toggleAnalyticsView()" checked="">
+        <label class="data-off">
+            <span class="value">SUMMARY</span>
+            <span class="switch-icon">ANALYTICS</span>
+        </label>
+        <label class="data-on">
+            <span class="switch-icon">SUMMARY</span>
+            <span class="value">ANALYTICS</span>
+        </label>
+    </div>
+</div>
+
+    <!-- Select what chart to display -->
+    <div class="entry options">
+        <div class="select with-label">
+            <label for="showing">Showing</label>
+            <select id="showing" ng-model="dashboardFilter.selectedAnalyticsMenu" ng-change="changeAnalyticsView(dashboardFilter.selectedAnalyticsMenu)">
+                <option value="FO_ARRIVALS" selected>Arrivals</option>
+                <option value="FO_WORK_LOAD">Workload</option>
+                <option value="FO_ACTIVITY">Activity</option>
+            </select>
+        </div>
+    </div>
+    <!-- Set Date -->
+
+	<div class="entry dates">
+	    <div class="entry-data has-datepicker">
+	        <label for="analytics-date">Date</label>
+	        <input id="analytics-date" type="text" class="datepicker" ng-model="dashboardFilter.datePicked" ng-click="showAnalyticsDatePicker()" ng-change="onDateChanged()" readonly />
+	    </div>
+	</div>
+
+    <!-- Actions -->
+    <div class="entry actions">
+    	<!-- Add class 'active' when clicked 1st time, remove it when clickd 2nd time -->
+      <!--   <button class="button white with-icon only-icon legend"> 
+            <span class="icons icon-legend"></span>
+            Show legend
+        </button> -->
+        <button class="button white with-icon only-icon" ng-class="{'open' : dashboardFilter.showFilters }" ng-click="dashboardFilter.showFilters = !dashboardFilter.showFilters"> <!-- Add class 'open' when clicked 1st time, remove it when clickd 2nd time -->
+            <!-- If filters applied, show their count like this: <span class="count">{X}</span> -->
+            <span class="icons icon-filter"></span>
+            Filter rooms
+        </button>
+        <button type="button" class="button white with-icon only-icon" ng-click="refreshAnalyticsChart()">
+            <span class="icons icon-reset"></span>
+            Refresh
+        </button>
+    </div>
+    <!-- Filters -->
+    <div class="analytics-filters scrollable" ng-class="{'open' : dashboardFilter.showFilters }"> <!-- Toggle class 'open' when L57 clicked -->
+        <div class="wrapper">
+            <!-- Room Type -->
+             <div class="entry">
+		        <div class="select with-label">
+		            <label for="room-type">Room Type</label>
+		            <select id="room-type" ng-model="dashboardFilter.selectedRoomType" ng-change="onAnlayticsRoomTypeChange()"  ng-if="dashboardFilter.selectedAnalyticsMenu !== 'FO_ARRIVALS'">
+		                <option value="" selected="" translate>SHOW_ALL</option>
+		                <option value="{{::roomType.code}}" ng-repeat="roomType in ::roomTypes track by $index">{{::roomType.name}}</option>
+		            </select>
+		            <!-- Show shortage in rooms inspected based on arrivals -->
+			        <select id="room-type" ng-model="dashboardFilter.selectedRoomType" ng-change="onAnlayticsRoomTypeChange()"
+			        ng-if="dashboardFilter.selectedAnalyticsMenu === 'FO_ARRIVALS'">
+			            <option value="" selected="" translate>SHOW_ALL</option>
+			            <option value="{{roomType.code}}" ng-repeat="roomType in roomTypes | orderBy: '-overBooking' ">{{roomType.name}} {{ roomType.overBooking > 0 ?  
+			               '....(+' + roomType.overBooking + ' rooms)' : '' }}</option>
+			        </select>
+		        </div>
+		    </div>
+
+            <!-- Yesterday's Data -->
+            <div class="entry" ng-if="dashboardFilter.selectedAnalyticsMenu === 'FO_ACTIVITY'">
+                <label class="checkbox inline" ng-class="{'checked': dashboardFilter.showPreviousDayData}">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked': dashboardFilter.showPreviousDayData}"></span>
+                    <input id="show-remaining" type="checkbox" ng-model="dashboardFilter.showPreviousDayData" ng-change="onAnlayticsFilterChanged()">
+                    Show yesterday's data
+                </label>
+            </div>
+
+            <!-- Show Remaining -->
+            <div class="entry" ng-if="dashboardFilter.selectedAnalyticsMenu === 'FO_WORK_LOAD'">
+                <label class="checkbox inline"> <!-- Add class 'checked' when L90 checked -->
+                    <span class="icon-form icon-checkbox"></span> <!-- Add class 'checked' when L90 checked -->
+                    <input id="show-remaining" value="{value}" type="checkbox">
+                    Show Remaining Reservations
+                </label>
+            </div>
+        </div>
+    </div>
+
+</form>

@@ -43,6 +43,9 @@ describe('zsCheckinVerifyIdCtrl', function() {
         $controller('zsCheckinVerifyIdCtrl', {
             $scope: $scope
         });
+        $controller('zsCheckinCommonBaseCtrl', {
+            $scope: $scope
+        });
     });
 
     it('On entering guest ID verification, screen mode has to be Wait for Staff', function() {
@@ -159,6 +162,12 @@ describe('zsCheckinVerifyIdCtrl', function() {
                 var deferred = $q.defer();
 
                 deferred.resolve({});
+                return deferred.promise;
+            });
+            spyOn(zsCheckinSrv, 'getGuestMandatoryFields').and.callFake(function() {
+                var deferred = $q.defer();
+
+                deferred.resolve([]);
                 return deferred.promise;
             });
             $scope.selectedReservation = {

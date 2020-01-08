@@ -65,7 +65,7 @@ login.config([
             title: 'Zest Station Login'
         });
         $stateProvider.state('resetpassword', {
-            url: '/reset/:token/:notifications',
+            url: '/reset/:token/:notifications?status',
             templateUrl: '/assets/partials/reset.html',
             controller: 'resetCtrl',
             title: 'Reset Password'

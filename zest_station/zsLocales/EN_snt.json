@@ -861,6 +861,8 @@
     "ENTER_PASSPORT_NUMBER_LABEL": "Enter number",
     "BYPASS_PASSPORT_LABEL": "Bypass",
     "PASPORT_BYPASS_REASON_SELECTOR_LABEL": "Please select the reason of your bypass",
-    "PASSPORT_BYPASS_REASONS": "Reason 1;Reason2"
+    "PASSPORT_BYPASS_REASONS": "Reason 1;Reason2",
+
+    "GUEST_INFO_ERROR_MSG": "Something went wrong!. Please try agin after verifying the date entered"
 
 }
