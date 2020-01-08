@@ -1455,7 +1455,7 @@ angular.module('sntPay').controller('sntPaymentController',
              * @returns {undefined} undefined
              */
             function onAmountChange() {
-                $scope.payment.amount = parseFloat($scope.amount || 0);
+                $scope.payment.amount = $scope.amount || 0;
                 initialPaymentAmount  = angular.copy($scope.payment.amount);
                 calculateFee();
             }
