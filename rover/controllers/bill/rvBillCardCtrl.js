@@ -3190,8 +3190,11 @@ sntRover.controller('RVbillCardController',
 			&& $scope.reservationBillData.bills[$scope.currentActiveBill].is_active 
 			&& ($scope.reservationBillData.reservation_status === 'CHECKING_OUT'
                 || $scope.reservationBillData.reservation_status === 'CHECKEDIN' 
-                || $scope.reservationBillData.reservation_status === 'CHECKEDOUT' 
-                || $scope.reservationBillData.reservation_status === 'NOSHOW')) {
+                || $scope.reservationBillData.reservation_status === 'CHECKEDOUT'
+                || $scope.reservationBillData.reservation_status === 'NOSHOW'
+                || $scope.reservationBillData.reservation_status === 'CANCELED'
+
+            )) {
 			$scope.isInvoiceStepOneActive = true;
 			$scope.isInvoiceStepThreeActive = false;
 			$scope.shouldGenerateFinalInvoice = true;
