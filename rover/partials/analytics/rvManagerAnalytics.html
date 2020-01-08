@@ -1,4 +1,4 @@
-<div class="wrapper" id="wrapper">
+<div class="wrapper" id="wrapper" ng-if="!dashboardFilter.gridViewActive">
     <!-- Chart -->
     <div class="analytics-chart" ng-class="{ 'with-legend-right' : screenData.selectedChart !== 'PERFOMANCE' }">
         <dl class="chart-legend legend-left" id="left-side-legend" ng-if="false">
