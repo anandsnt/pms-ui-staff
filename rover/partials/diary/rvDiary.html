@@ -156,11 +156,12 @@
             </div>
             <div class="actions">
                 <button type="button" class="button blank" ng-click="editCancel()">Cancel</button>
+                <button type="button" class="button purple" ng-click="moveRoomButtonClick()" ng-hide="hideMoveRoomButton">Move Room</button>
                 <button type="button" class="button red" ng-click="unassignRoom()" ng-hide="hideRoomUnAssignButton">Unassign Room</button>
                 <button type="button" class="button green" ng-click="editSave()" ng-if="showSaveChangesAfterEditing">Save Changes</button>
             </div>
         </div>
-
+        
     </form>
 
     <!-- Unassigned List -->

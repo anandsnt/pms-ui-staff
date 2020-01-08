@@ -68,9 +68,6 @@ sntRover.controller('roverController', [
         });
         $scope.roverFlags = {};
         $scope.hotelDetails = hotelDetails;
-        if (hotelDetails.hide_analytics_menu) {
-            rvMenuSrv.showAnalyticsMenu = false;
-        }
         // set current hotel details
         $scope.currentHotelData = {
             'name': '',
@@ -176,6 +173,7 @@ sntRover.controller('roverController', [
         if ($rootScope.isMultiCurrencyEnabled && $rootScope.paymentCurrencyList.length > 0 ) {
             $rootScope.shouldShowPaymentDropDown = true;
         }
+        $rootScope.hasPaymentRounding = hotelDetails.has_payment_rounding;
         // $rootScope.isRoomDiaryEnabled = hotelDetails.is_room_diary_enabled;
         // CICO-40544 - Now we have to enable menu in all standalone hotels
         // API not removing for now - Because if we need to disable it we can use the same param
@@ -916,7 +914,7 @@ sntRover.controller('roverController', [
                 $rootScope.modalClosing = false;
                 window.scrollTo(0, 0);
                 $scope.$apply();
-            }, 700);
+            }, 500);
         };
 
         $scope.closeDialogImmediately = function () {

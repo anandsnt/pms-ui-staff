@@ -106,8 +106,14 @@ angular.module('stayCardModule', [])
                 to_date: '',
                 fromState: '',
                 view: 'DEFAULT',
-                company_id: null,
-                travel_agent_id: null,
+                company_id: {
+                    value: null,
+                    dynamic: true
+                },
+                travel_agent_id: {
+                    value: null,
+                    dynamic: true
+                },
                 group_id: null,
                 borrow_for_groups: '',
                 allotment_id: null,

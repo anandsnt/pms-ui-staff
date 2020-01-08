@@ -80,7 +80,21 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
         $stateProvider.state('rover.dashboard.manager', {
             url: '/manager',
             templateUrl: '/assets/partials/dashboard/rvManagerDashboard.html',
-            controller: 'RVmanagerDashboardController'
+            controller: 'RVmanagerDashboardController',
+            resolve: {
+                marketData: function(rvAnalyticsSrv) {
+                    return rvAnalyticsSrv.fetchMarketCodes();
+                },
+                sourceData: function(rvAnalyticsSrv) {
+                    return rvAnalyticsSrv.fetchSourceCodes();
+                },
+                segmentData: function(rvAnalyticsSrv) {
+                    return rvAnalyticsSrv.fetchSegmantCodes();
+                },
+                originData: function(rvAnalyticsSrv) {
+                    return rvAnalyticsSrv.fetchOriginCodes();
+                }
+            }
         });
         $stateProvider.state('rover.dashboard.frontoffice', {
             url: '/frontoffice',

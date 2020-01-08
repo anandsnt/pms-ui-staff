@@ -152,11 +152,13 @@ sntRover.factory('RVReportParserFac', [
             var i, j;
 
             var getRemarksAry = function(remark) {
-                var ary = remark.split('<br />');
+                if (remark !== "" && remark !== null) {
+                    var ary = remark.split('<br />');
 
-                return _.reject(ary, function(i) {
-                    return i === '' || i === ' ';
-                });
+                    return _.reject(ary, function(i) {
+                        return i === '' || i === ' ';
+                    });
+                }               
             };
 
             var processAry = function(source, type) {

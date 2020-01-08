@@ -7,12 +7,19 @@
 		<div class="notice" ng-show="errorMessage!=''">
 			{{errorMessage[0]}}
 		</div>
-		<div class="entry">
+		<div class="entry" ng-if="::!expired">
 			<div class="entry__label">
 				<label for="temporary-password">Temporary password</label>
 			</div>                    
 			<input id="temporary-password" type="password" placeholder="Enter your temporary password" ng-model="data.current_password">
 		</div>
+        <!--   Input element for expired password flow     -->
+        <div class="entry" ng-if="::expired">
+            <div class="entry__label">
+                <label for="current-password">Current password</label>
+            </div>
+            <input id="current-password" type="password" placeholder="Enter your current password" ng-model="data.current_password">
+        </div>
 		<div class="entry">
 			<div class="entry__label">
 				<label for="new-password">New password</label>

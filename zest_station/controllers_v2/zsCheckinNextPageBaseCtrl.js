@@ -8,7 +8,7 @@ sntZestStation.controller('zsCheckinNextPageBaseCtrl', [
 
 		var stateParams = JSON.parse($stateParams.params);
 		var checkIfEmailIsBlackListedOrValid = function() {
-			var email = stateParams.guest_email ? stateParams.guest_email : stateParams.guest_email;
+			var email = stateParams.guest_email ? stateParams.guest_email : stateParams.email;
 
 			return email && email.length > 0 && !(stateParams.guest_email_blacklisted === 'true') && zsUtilitySrv.isValidEmail(email);
 		};

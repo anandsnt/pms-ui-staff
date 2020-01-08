@@ -222,7 +222,7 @@ angular.module("sntRover").service("RVSearchSrv", [
                 page: self.page
             };
 
-            rvBaseWebSrvV2.getJSON(url, data).then(
+            rvBaseWebSrvV2.postJSON(url, data).then(
                 function(data) {
                     self.data = data.groups;
                     deferred.resolve(self.data);

@@ -1,5 +1,5 @@
 <!-- Search form -->
-<form method="get" action="" name="groups-search-form" id="groups-search-form" class="search-form has-dates" role="search" >
+<form method="get" action="" name="groups-search-form" id="groups-search-form" class="search-form has-dates has-options single-option has-dropdown" role="search" ng-class="{'faux-options-open': groupStatusObj.isExpanded}">
 
     <div class="entry search">
         
@@ -27,6 +27,24 @@
                 delay="1000" 
                 function-to-fire="searchQueryChanged"/>
     </div>
+
+    <div class="entry options">
+        <!-- Add .active when showing the options for this dropdown -->
+        <label for="guest-status-input" data-target="#guest-status-options" class="faux-select" ng-click="clickedGroupStatus()" ng-class="{'active': groupStatusObj.isExpanded}">
+            <span class="label">Group Status</span>
+            <strong>Show All</strong>
+        </label>
+
+        <!-- Remove .hidden to show the faux options -->
+        <div id="guest-status-options" class="faux-select-options" ng-show="groupStatusObj.isExpanded">
+            <label class="checkbox inline" ng-repeat="item in groupStatusObj.list" ng-click="clickedGroupStatusItem($index)">
+                <span class="icon-form icon-checkbox" ng-class="{'checked': item.active}"></span>
+                <input type="checkbox">
+                {{item.name}}
+            </label>
+        </div>
+    </div>
+
     <div class="entry dates">
         <div class="entry-data has-datepicker">
             <label for="groups-date-from" translate>FROM</label>

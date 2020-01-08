@@ -24,6 +24,11 @@ angular.module('sntRover').service('rvManagersAnalyticsSrv', [
 
             var url = '/redshift/analytics/distributions';
 
+            if (params.shallowDecodedParams) {
+                url = url + '?' + params.shallowDecodedParams;
+                delete params.shallowDecodedParams;
+            }
+
             rvBaseWebSrvV2.getJSON(url, params)
                 .then(function(data) {
                     var isAggregated = params.group_by !== undefined;
@@ -41,9 +46,15 @@ angular.module('sntRover').service('rvManagersAnalyticsSrv', [
 
             var url = '/redshift/analytics/pace';
 
+            if (params.shallowDecodedParams) {
+                url = url + '?' + params.shallowDecodedParams;
+                delete params.shallowDecodedParams;
+            }
+
             rvBaseWebSrvV2.getJSON(url, params)
                 .then(function(data) {
-                    data = processPaceData(data);
+                    // TODO: delete after testing
+                    // data = processPaceData(data);
                     deferred.resolve(data);
                 }, function(data) {
                     deferred.reject(data);

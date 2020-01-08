@@ -7,8 +7,8 @@
     </div>
     <div class="info-container account-info">
         <div class="info-left">
-            <strong>{{printData.guest_details.first_name}} {{printData.guest_details.last_name}}</strong><br>
-            <span ng-bind-html="printData.guest_details.address"></span>
+            <strong>{{printData.card_details.name}}</strong><br>
+            <span ng-bind-html="printData.card_details.address"></span>
 
             <div class="info-bottom">
                 <span ng-if = "printData.invoice_date"><strong>{{printData.translation.invoice_date}}:</strong> {{printData.invoice_date}}</span><br/>
@@ -26,8 +26,7 @@
             <span ng-if = "printData.confirmation_number"><strong>{{printData.translation.confirmation_number}}:</strong> {{printData.confirmation_number}}</span><br/>
             <span ng-if = "printData.tax_number"><strong>{{printData.translation.tax_number}}:</strong> {{printData.tax_number}}</span><br/>
             <span ng-if = "!printData.is_informational_invoice && printData.card_details.ar_number"><strong>{{printData.translation.ar_number}}:</strong> {{printData.card_details.ar_number}}</span><br/><br/>
-            <span>{{printData.card_details.name}}</span><br>
-            <span ng-bind-html="printData.card_details.address"></span>
+            <span ng-bind-html="printData.guest_details.address"></span>
         </div>
 
     </div>
@@ -167,7 +166,7 @@
                        
         </table>
     </div>
-    <strong ng-if="printData.ar_has_enabled_extended_tax_breakdown">Tax Breakdown</strong>
+    <strong ng-if="printData.ar_has_enabled_extended_tax_breakdown">{{printData.translation.tax_breakdown}}</strong>
     <table class="invoice-details extended-tax-table" ng-if="printData.ar_has_enabled_extended_tax_breakdown">
         <thead class="invoice-table">
             <tr>
@@ -179,7 +178,8 @@
         </thead>
         <tbody>
             <tr ng-repeat="item in printData.extended_tax_breakdown.details">
-                <td class="text-align-left">{{ item.description }}</td>
+                <td class="text-align-left" ng-if="item.description === 'Tax Exempt'">{{ printData.translation.tax_exempt }}</td>
+                <td class="text-align-left" ng-if="item.description !== 'Tax Exempt'">{{ item.description }}</td>
                 <td>{{currencySymbol}}{{ item.gross_amount | number: precisonTwo }}
                     <div class="converted-currency" ng-if="isMultiCurrencyEnabled && item.inv_gross_amount !== null">
                         {{invoiceCurrencySymbol}}{{item.inv_gross_amount}}
