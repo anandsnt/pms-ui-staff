@@ -551,11 +551,6 @@ angular.module('sntRover')
                             this.data = [];
                             this.open = false;
                             this.dragData = {};
-                            this.isItemSelected = false;
-
-                            $scope.clearAvailability();
-                            $scope.resetEdit();
-                            $scope.renderGrid();
                         }
                     },
                     fetchCount: function() {
@@ -682,9 +677,6 @@ angular.module('sntRover')
                 if ($scope.gridProps.unassignedRoomList.open) {
                     $scope.$broadcast('CLOSE_UD_RESERVATION_PANEL');
                     $scope.gridProps.unassignedRoomList.open = false;
-                    $scope.resetEdit();
-                    $scope.clearAvailability();
-                    $scope.renderGrid();
                 } 
                 else {
                     $scope.gridProps.unassignedRoomList.open = true;

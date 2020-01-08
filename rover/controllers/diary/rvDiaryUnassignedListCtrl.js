@@ -102,7 +102,7 @@ angular.module('sntRover')
             $scope.addListener('CLOSE_UD_RESERVATION_PANEL', function() {
                 displayPanel = false;
                 $scope.udReservationsData = [];
-                $scope.selectedIndex = null;
+                deselectReservation();
             });
 
             /**
