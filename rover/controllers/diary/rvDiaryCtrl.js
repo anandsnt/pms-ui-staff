@@ -710,7 +710,7 @@ angular.module('sntRover')
                                             || row_item_data.reservation_status === 'check-out'
                                             || row_item_data.reservation_status === 'noshow';
             $scope.showSaveChangesAfterEditing = false;
-            $scope.hideMoveRoomButton = edit.originalItem.is_hourly || row_item_data.reservation_status === 'noshow';
+            $scope.hideMoveRoomButton = row_item_data.is_hourly || row_item_data.reservation_status === 'noshow';
 	    	if (!$scope.isAvailable(undefined, row_item_data)) {
 		    	switch (command_message) {
 
