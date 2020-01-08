@@ -633,15 +633,13 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
         var shouldDisableEndDatePicker = function() {
             var sData = $scope.groupConfigData.summary,
                 endDateHasPassed = new tzIndependentDate(sData.block_to) < new tzIndependentDate($rootScope.businessDate),
-                cancelledGroup = sData.is_cancelled,
-                toRightMoveNotAllowed = !sData.is_to_date_right_move_allowed,
+                cancelledGroup = sData.is_cancelled,                
                 inEditMode = !$scope.isInAddMode();
 
             return ($scope.isInStaycardScreen()) || ( inEditMode &&
                     (
                      endDateHasPassed   ||
-                     cancelledGroup     ||
-                     toRightMoveNotAllowed
+                     cancelledGroup
                     )
                    );
         };

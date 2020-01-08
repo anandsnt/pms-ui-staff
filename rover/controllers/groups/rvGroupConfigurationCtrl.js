@@ -162,9 +162,10 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
              */
             var arrDateLeftChangeAllowed = function() {
                 var sumryData                   = $scope.groupConfigData.summary,
-                    roomBlockExist              = (parseInt(sumryData.rooms_total) > 0);
+                    roomBlockExist              = (parseInt(sumryData.rooms_total) > 0),
+                    notAPastGroup               = !sumryData.is_a_past_group;
 
-                return roomBlockExist;
+                return roomBlockExist && notAPastGroup;
             };
 
             /**
@@ -174,10 +175,11 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             var arrDateRightChangeAllowed = function() {
                 var sumryData                   = $scope.groupConfigData.summary,
                     roomBlockExist              = (parseInt(sumryData.rooms_total) > 0),
-                    noInHouseReservationExist   = (parseInt(sumryData.total_checked_in_reservations) === 0);
+                    noInHouseReservationExist   = (parseInt(sumryData.total_checked_in_reservations) === 0),
+                    notAPastGroup               = !sumryData.is_a_past_group;
 
-                return (roomBlockExist &&
-                        noInHouseReservationExist);
+                return (roomBlockExist && 
+                        noInHouseReservationExist && notAPastGroup);
             };
 
             /**
