@@ -96,8 +96,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             id: addon.id
                         });
                         addon.selected_post_days = updatedAddon.selected_post_days;
-                        addon.start_date = moment(updatedAddon.start_date, $rootScope.dateFormat.toUpperCase()).format('YYYY-MM-DD');
-                        addon.end_date = moment(updatedAddon.end_date, $rootScope.dateFormat.toUpperCase()).format('YYYY-MM-DD');
+                        addon.start_date = $filter('date')(tzIndependentDate(updatedAddon.start_date), $rootScope.dateFormatForAPI);
+                        addon.end_date = $filter('date')(tzIndependentDate(updatedAddon.end_date), $rootScope.dateFormatForAPI);
                     })
                 });
             },
@@ -110,6 +110,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             id: $scope.reservationData.rooms[0].roomTypeId,
                             num_rooms: 1,
                             addons: _.filter($scope.addonsData.existingAddons, function(addon) {
+                                addon.start_date = $filter('date')(tzIndependentDate(addon.start_date), $rootScope.dateFormatForAPI);
+                                addon.end_date = $filter('date')(tzIndependentDate(addon.end_date), $rootScope.dateFormatForAPI);
                                 return !addon.is_rate_addon;
                             })
                         }]
