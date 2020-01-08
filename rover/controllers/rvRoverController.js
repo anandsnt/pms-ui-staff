@@ -913,7 +913,7 @@ sntRover.controller('roverController', [
                 $rootScope.modalClosing = false;
                 window.scrollTo(0, 0);
                 $scope.$apply();
-            }, 1200);
+            }, 500);
         };
 
         $scope.closeDialogImmediately = function () {
