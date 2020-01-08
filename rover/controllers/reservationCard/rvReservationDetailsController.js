@@ -1639,7 +1639,7 @@ sntRover.controller('reservationDetailsController',
 
 		$scope.disableAuthorizeButton = function() {
             return $scope.isShijiOfflineAuthCodeEmpty() || !$scope.authData.manualCCAuthPermission ||
-                parseInt($scope.authData.authAmount) <= 0 || $scope.authData.selectedCardDetails.bill_no === 'N/A' ||
+				parseFloat($scope.authData.authAmount) <= 0 || $scope.authData.selectedCardDetails.bill_no === 'N/A' ||
                 isNaN(parseInt($scope.authData.authAmount));
         };
 
