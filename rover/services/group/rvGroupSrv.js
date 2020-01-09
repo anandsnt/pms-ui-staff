@@ -12,18 +12,11 @@ angular.module('sntRover').service('rvGroupSrv', ['$q', 'rvBaseWebSrvV2',
 		 */
 		this.getGroupList = function(params) {
 			var deferred = $q.defer(),
-
 				url = '/api/groups/search';
 
-			var data = {
-				'q': params.query,
-				'from_date': params.from_date,
-				'to_date': params.to_date,
-				'per_page': params.per_page,
-				'page': params.page
-			};
+			params.q = params.q || params.query;
 
-			rvBaseWebSrvV2.getJSON(url, data).then(
+			rvBaseWebSrvV2.postJSON(url, params).then(
 				function(data) {
 					deferred.resolve(data);
 				},
@@ -37,7 +30,6 @@ angular.module('sntRover').service('rvGroupSrv', ['$q', 'rvBaseWebSrvV2',
 
 		this.searchGroupCard = function(params) {
 			var deferred = $q.defer(),
-
 				url = '/api/groups/group_search';
 
 			var data = {
@@ -170,6 +162,28 @@ angular.module('sntRover').service('rvGroupSrv', ['$q', 'rvBaseWebSrvV2',
             return group.is_take_from_inventory === 'true' ? '' : 'tentative';
         };
 
+        /**
+		 * Function to get list of Hold status to display
+		 * @return {Promise} - After resolving it will return the list of Hold status
+		 */
+		this.getHoldStatusList = function(params) {
+			var deferred = $q.defer(),
+				url = '/api/group_hold_statuses';
+
+			rvBaseWebSrvV2.getJSON(url, params).then(
+				function(data) {
+                    _.each(data.data.hold_status, function( item ) {
+						item.active = true;
+					});
+					deferred.resolve(data.data);
+				},
+				function(errorMessage) {
+					deferred.reject(errorMessage);
+				}
+			);
+
+			return deferred.promise;
+		};
 
 	}
 ]);

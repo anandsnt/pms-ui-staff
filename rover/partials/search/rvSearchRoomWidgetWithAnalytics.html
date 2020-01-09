@@ -66,7 +66,8 @@
 	</div>
 
 	<!-- WHEN ANALYTCIS IS ON -->
-
+	<ng-include src="'/assets/partials/search/rvHkAnalyticsHeader.html'" ng-if="dashboardFilter.analyticsActive && dashboardFilter.isHkDashboard"></ng-include>
+<!-- 
 	<div id="dashboard-search-form" class="search-form dashboard-analytics has-room-types" role="search" ng-if="dashboardFilter.analyticsActive">
 	    <div class="entry switch">
 	        <div class="switch-button off" ng-class="{ 'on' : !dashboardFilter.analyticsActive }">
@@ -89,7 +90,7 @@
 	        <div class="faux-select-options hidden">
 	            <label class="checkbox inline checked">
 	                <span class="icon-form icon-checkbox"></span>
-	                <input id="all-room-types" value="all" type="checkbox" checked /> <!-- Checked by default. When checked all other room types need to be unchecked. When any room type is checked this must me unchecked -->
+	                <input id="all-room-types" value="all" type="checkbox" checked />
 	                All Room Types
 	            </label>
 	            <label class="checkbox inline" ng-repeat="roomType in ::roomTypes track by $index" ng-class="{'checked': roomType.is_selected}">
@@ -102,32 +103,25 @@
 		<div class="entry room-types">
 		    <div class="select with-label">
 		        <label for="room-type">Room Type</label>
-		        <select id="room-type" ng-model="dashboardFilter.selectedRoomType" ng-change="onHkAnlayticsRoomTypeChange()">
+		        <select id="room-type" ng-model="dashboardFilter.selectedRoomType" ng-change="onHkAnlayticsRoomTypeChange()"
+		        ng-if="dashboardFilter.selectedAnalyticsMenu !== 'HK_WORK_PRIORITY'">
 		            <option value="" selected="" translate>SHOW_ALL</option>
 		            <option value="{{::roomType.code}}" ng-repeat="roomType in ::roomTypes track by $index">{{::roomType.name}}</option>
 		        </select>
+		        <select id="room-type" ng-model="dashboardFilter.selectedRoomType" ng-change="onHkAnlayticsRoomTypeChange()"
+		        ng-if="dashboardFilter.selectedAnalyticsMenu === 'HK_WORK_PRIORITY'">
+		            <option value="" selected="" translate>SHOW_ALL</option>
+		            <option value="{{roomType.code}}" ng-repeat="roomType in roomTypes | orderBy: '-shortage' ">{{roomType.name}} {{ roomType.shortage > 0 ?  
+		               '....(-' + roomType.shortage + ' rooms)' : '' }}</option>
+		        </select>
 		    </div>
 		</div>
-
-	   <!-- <div class="entry dates">
-	        <div class="entry-data has-datepicker">
-	            <input id="analytics-date" type="text" class="datepicker" 
-	            ng-model="dashboardFilter.datePicked"
-	            ng-click="showCalendar()" ng-change="onDateChanged()" readonly />
-	        </div>
-	    </div> -->
-
-	   <!-- <div class="entry-data has-datepicker">
-			<label for="dashboard-date-from">Date</label>
-			<input name="dashboard-date-from" id="dashboard-date-from" class="hasDatepicker" readonly="" type="text" placeholder="{{fromDate | date : dateFormat }}" value="{{fromDate| date : dateFormat}}"/>
-			<button ng-click="showCalendar('RVReservationSearchFromDatepickerCtrl')" type="button" class="ui-datepicker-trigger"></button>
-		</div> -->
 
 	   <ul class="filters" ng-show="dashboardFilter.analyticsActive">
 	        <li ng-click="changeAnalyticsView('HK_OVERVIEW')" ng-class="{'active' : dashboardFilter.selectedAnalyticsMenu === 'HK_OVERVIEW' }">Overview</li>
 	        <li ng-click="changeAnalyticsView('HK_WORK_PRIORITY')" ng-class="{'active' : dashboardFilter.selectedAnalyticsMenu === 'HK_WORK_PRIORITY'}">Work Priority</li>
     	</ul>
-	</div>
+	</div> -->
 
 
 	<!--  -->

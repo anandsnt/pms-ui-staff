@@ -1719,6 +1719,16 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
         };
 
         $scope.init();
+
+        // Create group reservation, when borrow from house is done
+        $scope.addListener('CREATE_RESERVATION_AFTER_BORROW', function() {
+            $scope.init();
+        });
+
+        // Navigate to room and rates screen, when borrow is declined
+        $scope.addListener('SHOW_ROOM_AND_RATES_AFTER_BORROW_DECLINE', function() {
+            $state.go(roomAndRatesState, $rootScope.setPrevState.param);
+        });
     }
 
 ]);

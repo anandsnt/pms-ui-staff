@@ -55,6 +55,12 @@ sntRover.controller('reservationDetailsController',
 			};
 		};
 
+		var RESPONSE_STATUS_470 = 470;
+
+		$scope.hasOverBookRoomTypePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
+		$scope.hasOverBookHousePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE');
+		$scope.hasBorrowFromHousePermission = rvPermissionSrv.getPermissionValue('GROUP_HOUSE_BORROW');
+
 		$scope.shouldShowTaxExempt = function() {
             return (rvPermissionSrv.getPermissionValue('TAX_EXEMPT') && $scope.taxExemptTypes.length);
         };
@@ -1136,23 +1142,52 @@ sntRover.controller('reservationDetailsController',
                         // CICO-44842 Show message when trying to overbook a suite reservation
                         $scope.restrictSuiteOverbooking = !response.data.is_room_type_available && response.data.is_suite_reservation;
                         $scope.isSuiteReservation = response.data.is_suite_reservation;
-                        $scope.routingInfo = response.data.routing_info;
-
-						ngDialog.open({
-							template: '/assets/partials/reservation/alerts/editDatesInStayCard.html',
-							className: '',
-							scope: $scope,
-							data: JSON.stringify({
-								is_stay_cost_changed: response.data.is_stay_cost_changed,
-								is_assigned_room_available: response.data.is_room_available,
-								is_rate_available: response.data.is_room_type_available,
-								is_group_reservation: response.data.is_group_reservation,
-								is_outside_group_stay_dates: response.data.outside_group_stay_dates,
-								group_name: response.data.group_name,
-								is_invalid_move: response.data.is_invalid_move,
-								is_house_available: !!response.data.is_house_available
-							})
-						});
+						$scope.routingInfo = response.data.routing_info;
+						
+						// CICO-71977 - Borrow from house for a group reservation
+						if (response.results.status === RESPONSE_STATUS_470 && response.results.is_borrowed_from_house) {
+							var results = response.results;
+						
+							$scope.borrowData = {};
+							if (!results.room_overbooked && !results.house_overbooked) {
+								$scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission;
+								$scope.borrowData.isBorrowFromHouse = true;
+							} else if (results.room_overbooked && !results.house_overbooked) {
+								$scope.borrowData.shouldShowBorrowBtn = $scope.hasOverBookRoomTypePermission && $scope.hasBorrowFromHousePermission;
+								$scope.borrowData.isRoomTypeOverbooked = true;
+							} else if (!results.room_overbooked && results.house_overbooked) {
+								$scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission && $scope.hasOverBookHousePermission;
+								$scope.borrowData.isHouseOverbooked = true;
+							} else if (results.room_overbooked && results.house_overbooked) {
+								$scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission && $scope.hasOverBookRoomTypePermission && $scope.hasOverBookHousePermission;
+								$scope.borrowData.isHouseAndRoomTypeOverbooked = true;
+							}
+		
+							ngDialog.open({
+								template: '/assets/partials/common/group/rvGroupBorrowOverbookPopup.html',
+								className: '',
+								closeByDocument: false,
+								closeByEscape: true,
+								scope: $scope
+							});
+						} else {
+							ngDialog.open({
+								template: '/assets/partials/reservation/alerts/editDatesInStayCard.html',
+								className: '',
+								scope: $scope,
+								data: JSON.stringify({
+									is_stay_cost_changed: response.data.is_stay_cost_changed,
+									is_assigned_room_available: response.data.is_room_available,
+									is_rate_available: response.data.is_room_type_available,
+									is_group_reservation: response.data.is_group_reservation,
+									is_outside_group_stay_dates: response.data.outside_group_stay_dates,
+									group_name: response.data.group_name,
+									is_invalid_move: response.data.is_invalid_move,
+									is_house_available: !!response.data.is_house_available
+								})
+							});
+						}
+						
 					} else {
 						$scope.responseValidation = {};
 						$scope.errorMessage = response.errors;
@@ -1161,7 +1196,6 @@ sntRover.controller('reservationDetailsController',
 					$scope.$emit('hideLoader');
 				},
 				onValidationFaliure = function(error) {
-
 					$scope.$emit('hideLoader');
 				};
 
@@ -1170,6 +1204,17 @@ sntRover.controller('reservationDetailsController',
 				dep_date: $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd'),
 				reservation_id: $scope.reservationData.reservation_card.reservation_id
 			}, onValidationSuccess, onValidationFaliure);
+		};
+
+		// Handles the borrow action
+		$scope.performBorrowFromHouse = function () {
+			RVReservationStateService.setForceOverbookFlagForGroup(true);
+			$scope.clickedOnStayDateChangeConfirmButton();	
+		};
+		// Close the borrow popup
+		$scope.closeBorrowDialog = function () {
+			$scope.borrowData = {};
+			$scope.closeDialog();
 		};
 
 		$scope.moveToRoomRates = function() {
@@ -1441,7 +1486,12 @@ sntRover.controller('reservationDetailsController',
 				sntActivity.stop('FETCH_AUTH_DETAILS');
 				$scope.$emit('hideLoader');
 				$scope.authData.manualCCAuthPermission = hasManualCCAuthPermission();
-				$scope.authData.billData = data.bill_data;
+				$scope.authData.billData = _.sortBy(data.bill_data, function(cc_info) {
+				    if (cc_info.number === 'N/A') {
+				        return 100;
+                    }
+				    return parseInt(cc_info.number);
+                });
 
 				if( $scope.authData.billData.length > 0 ) {
 					// Show Multiple Credit card auth popup
@@ -1586,6 +1636,12 @@ sntRover.controller('reservationDetailsController',
 		$scope.cancelButtonClick = function() {
 			$scope.showAuthAmountPopUp();
 		};
+
+		$scope.disableAuthorizeButton = function() {
+            return $scope.isShijiOfflineAuthCodeEmpty() || !$scope.authData.manualCCAuthPermission ||
+				parseFloat($scope.authData.authAmount) <= 0 || $scope.authData.selectedCardDetails.bill_no === 'N/A' ||
+                isNaN(parseInt($scope.authData.authAmount));
+        };
 
 		// To handle authorize button click on 'auth amount popup' ..
 		$scope.authorize = function() {

@@ -20,7 +20,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             'RVContactInfoSrv',
             'RVRoomRatesSrv',
             'rvUtilSrv',
-            function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv, RVReservationStateService, RVReservationDataService, $interval, $log, $q, RVContactInfoSrv, RVRoomRatesSrv, rvUtilSrv) {
+            'rvPermissionSrv',
+            function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv, RVReservationStateService, RVReservationDataService, $interval, $log, $q, RVContactInfoSrv, RVRoomRatesSrv, rvUtilSrv, rvPermissionSrv) {
 
         BaseCtrl.call(this, $scope);
 
@@ -32,6 +33,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
         var that = this;
 
         var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
+
+        var RESPONSE_STATUS_470 = 470;
+
+        $scope.hasOverBookRoomTypePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
+        $scope.hasOverBookHousePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE');
+        $scope.hasBorrowFromHousePermission = rvPermissionSrv.getPermissionValue('GROUP_HOUSE_BORROW');
 
         // setting the main header of the screen
         $scope.heading = "Reservations";
@@ -1099,7 +1106,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             // data.outside_group_stay_dates = RVReservationStateService.getReservationFlag('outsideStaydatesForGroup');
 
             data.borrow_for_groups = RVReservationStateService.getReservationFlag('borrowForGroups');
-
+            // CICO-71977 - while borrowing from house in the case of a group reservation, we have set this flag
+            data.forcefully_overbook = RVReservationStateService.getForceOverbookForGroup();
+            RVReservationStateService.setForceOverbookFlagForGroup(false);
             // to delete ends here
             return data;
         };
@@ -1274,22 +1283,23 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
         var nextStateParameters = '';
 
         this.showConfirmRoutingPopup = function(type, id) {
-
-            ngDialog.open({
-                template: '/assets/partials/reservation/alerts/rvBillingInfoConfirmPopup.html',
-                className: 'ngdialog-theme-default',
-                scope: $scope
-            });
-
+            $timeout(function() {
+                ngDialog.open({
+                    template: '/assets/partials/reservation/alerts/rvBillingInfoConfirmPopup.html',
+                    className: 'ngdialog-theme-default',
+                    scope: $scope
+                });
+            }, 1000);
         };
 
         this.showConflictingRoutingPopup = function(type, id) {
-
-            ngDialog.open({
-                template: '/assets/partials/reservation/alerts/rvBillingInfoConflictingPopup.html',
-                className: 'ngdialog-theme-default',
-                scope: $scope
-            });
+            $timeout(function() {
+                ngDialog.open({
+                    template: '/assets/partials/reservation/alerts/rvBillingInfoConflictingPopup.html',
+                    className: 'ngdialog-theme-default',
+                    scope: $scope
+                });
+            }, 1000);
 
         };
 
@@ -1431,7 +1441,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 var postData = $scope.computeReservationDataforUpdate(true, true);
 
                 var saveSuccess = function(data) {
-
+                    $scope.closeDialog();
                     // Update reservation type
                     $rootScope.$broadcast('UPDATERESERVATIONTYPE', data.reservations[0].reservation_type_id);
                     var totalDeposit = 0;
@@ -1522,9 +1532,51 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 };
 
                 var saveFailure = function(data) {
-                    $scope.errorMessage = data;
-                    $scope.$broadcast('FAILURE_SAVE_RESERVATION', data);
+                    if (data.results && data.results.status === RESPONSE_STATUS_470 && data.results.is_borrowed) {
+                        var results = data.results;
+                
+                        $scope.borrowData = {};
+                        if (!results.room_overbooked && !results.house_overbooked) {
+                            $scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission;
+                            $scope.borrowData.isBorrowFromHouse = true;
+                        } else if (results.room_overbooked && !results.house_overbooked) {
+                            $scope.borrowData.shouldShowBorrowBtn = $scope.hasOverBookRoomTypePermission && $scope.hasBorrowFromHousePermission;
+                            $scope.borrowData.isRoomTypeOverbooked = true;
+                        } else if (!results.room_overbooked && results.house_overbooked) {
+                            $scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission && $scope.hasOverBookHousePermission;
+                            $scope.borrowData.isHouseOverbooked = true;
+                        } else if (results.room_overbooked && results.house_overbooked) {
+                            $scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission && $scope.hasOverBookRoomTypePermission && $scope.hasOverBookHousePermission;
+                            $scope.borrowData.isHouseAndRoomTypeOverbooked = true;
+                        }
+
+                        ngDialog.open({
+                            template: '/assets/partials/common/group/rvGroupBorrowOverbookPopup.html',
+                            className: '',
+                            closeByDocument: false,
+                            closeByEscape: true,
+                            scope: $scope
+                        });
+
+                    } else {
+                        $scope.errorMessage = data;
+                        $scope.$broadcast('FAILURE_SAVE_RESERVATION', data);
+                    }
+                    
                     $scope.$emit('hideLoader');
+                };
+
+                // Handles the borrow action
+                $scope.performBorrowFromHouse = function () {
+                    RVReservationStateService.setForceOverbookFlagForGroup(true);
+                    $scope.$broadcast('CREATE_RESERVATION_AFTER_BORROW');
+                };
+
+                // Closes the current borrow dialog
+                $scope.closeBorrowDialog = function() {
+                    $scope.borrowData = {};
+                    $scope.closeDialog();
+                    $scope.$broadcast('SHOW_ROOM_AND_RATES_AFTER_BORROW_DECLINE');
                 };
 
                 var updateFailure = function(data) {

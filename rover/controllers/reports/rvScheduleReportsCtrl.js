@@ -1019,7 +1019,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Yearly Tax Report': true,
                 'Daily Production': true,
                 'Daily Production by Demographics': true,
-                'Daily Production by Rate': true
+                'Daily Production by Rate': true,
+                'Business on the Books': true
             };
 
             var forWeekly = {
@@ -1028,7 +1029,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'In-House Guests': true,
                 'Comparison': true,
                 'Guest Balance Report': true,
-                'Yearly Tax Report': true
+                'Yearly Tax Report': true,
+                'Business on the Books': true
             };
             var forMonthly = {
                 'Arrival': true,
@@ -1046,7 +1048,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'In-House Guests': true,
                 'Comparison': true,
                 'Guest Balance Report': true,
-                'Yearly Tax Report': true
+                'Yearly Tax Report': true,
+                'Business on the Books': true
             };
 
             if ( forHourly[item.report.title] ) {

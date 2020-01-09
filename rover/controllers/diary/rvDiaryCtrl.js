@@ -108,6 +108,9 @@ angular.module('sntRover')
 		// Flag for showing save changes button after reservation extend or shorten
             $scope.showSaveChangesAfterEditing = false;
 
+        // CICO-73540 : Flag for hiding Move Room Button.
+        $scope.hideMoveRoomButton = false;
+
 		/**
 		 * decide what the behaviour and title of back button on diary
 		 * @param {Object} $r  shorthand ref to $rootScoop
@@ -704,8 +707,10 @@ angular.module('sntRover')
 	    		selectedTypeCount;
             $scope.hideRoomUnAssignButton = row_item_data.reservation_status === 'departed'
                                             || row_item_data.reservation_status === 'inhouse'
-                                            || row_item_data.reservation_status === 'check-out';
+                                            || row_item_data.reservation_status === 'check-out'
+                                            || row_item_data.reservation_status === 'noshow';
             $scope.showSaveChangesAfterEditing = false;
+            $scope.hideMoveRoomButton = row_item_data.is_hourly || row_item_data.reservation_status === 'noshow';
 	    	if (!$scope.isAvailable(undefined, row_item_data)) {
 		    	switch (command_message) {
 
@@ -822,6 +827,20 @@ angular.module('sntRover')
             isrefresh: true
         });
 	    }.bind($scope.gridProps);
+                
+        // CICO-73467 : Handle MOVE ROOM button click for Night Components.
+        $scope.moveRoomButtonClick = function() {
+            var reservation     = this.currentResizeItem,
+                reservationId   = reservation.reservation_id,
+                roomId = reservation.room_id;
+            
+            $state.go('rover.nightlyDiary', {
+                start_date: $scope.gridProps.filter.arrival_date,
+                reservation_id: reservationId,
+                room_id: roomId,
+                action: 'TRIGGER_MOVE_ROOM'
+            });
+        }.bind($scope.gridProps);
 
 	    $scope.unassignRoom = function() {
 
