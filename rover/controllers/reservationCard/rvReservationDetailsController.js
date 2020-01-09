@@ -164,6 +164,17 @@ sntRover.controller('reservationDetailsController',
 					origin: 'STAYCARD'
 				}
 			};
+		} else if ($scope.previousState.name === 'rover.diary') {
+			setNavigationBookMark();
+			$rootScope.setPrevState = {
+				title: 'ROOM DIARY',
+				name: 'rover.diary',
+				param: {
+					id: $rootScope.stayCardStateBookMark.previousStateParams.id,
+					activeTab: "DIARY",
+					origin: 'STAYCARD'
+				}
+			};
 		} else if ($stateParams.isFromDiary && !$rootScope.isReturning()) {
 			setNavigationBookMark();
 			$rootScope.setPrevState = {
