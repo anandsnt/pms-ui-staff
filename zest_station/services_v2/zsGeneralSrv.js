@@ -121,7 +121,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'travel-24': 'Travel 24',
             'sage-inn': 'Sage Inn',
             'hammetts': 'Hammetts Hotel',
-            'lochardil': 'lochardil'
+            'lochardil': 'lochardil',
+            'perle-oban': 'Oban Perle'
         };
 
         this.isThemeConfigured = function(theme) {
