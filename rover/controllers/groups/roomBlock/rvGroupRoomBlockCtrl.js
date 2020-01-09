@@ -224,16 +224,14 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             var sData 					= $scope.groupConfigData.summary,
                 endDateHasPassed 		= new tzIndependentDate(sData.block_to) < new tzIndependentDate($rootScope.businessDate),
                 cancelledGroup 			= sData.is_cancelled,
-                toRightMoveNotAllowed 	= !sData.is_to_date_right_move_allowed,
                 inEditMode 				= !$scope.isInAddMode();
 
             return inEditMode &&
-				   	(
-				   	 endDateHasPassed 	||
-					 cancelledGroup 	||
-					 toRightMoveNotAllowed
-					)
-				   ;
+                (
+                    endDateHasPassed ||
+                    cancelledGroup
+                )
+                ;
         };
 
 		/**
@@ -816,16 +814,14 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             var sData 					= $scope.groupConfigData.summary,
                 endDateHasPassed 		= new tzIndependentDate(sData.block_to) < new tzIndependentDate($rootScope.businessDate),
                 cancelledGroup 			= sData.is_cancelled,
-                toRightMoveNotAllowed 	= !sData.is_to_date_right_move_allowed,
                 inEditMode 				= !$scope.isInAddMode();
 
             return inEditMode &&
-				   	(
-				   	 endDateHasPassed 	||
-					 cancelledGroup 	||
-					 toRightMoveNotAllowed
-					)
-				   ;
+                (
+                    endDateHasPassed ||
+                    cancelledGroup
+                )
+                ;
         };
 
 		/**

@@ -1179,7 +1179,7 @@ sntRover.controller('RVReportDetailsCtrl', [
             } else if (!$rootScope.isBackgroundReportsEnabled) {
                 $_fetchFullReport();
             } else {
-                $scope.printReport(currentReport);
+                $scope.printReport(currentReport, false);
             }
         };
 
@@ -1585,7 +1585,7 @@ sntRover.controller('RVReportDetailsCtrl', [
             var currentReport = reportsSrv.getSelectedReport();
         
             $scope.reportDatesInitialized = false;
-            $scope.printReport(currentReport);
+            $scope.printReport(currentReport, true);
         });
         
         // destroy listners
@@ -1635,7 +1635,7 @@ sntRover.controller('RVReportDetailsCtrl', [
         * @params Object report selected generated report
         * @return void
         */
-        $scope.printReport = (report) => {
+        $scope.printReport = (report, isFromReportInbox) => {
             var reportName = report.name,
                 fromDate;
         
@@ -1678,7 +1678,10 @@ sntRover.controller('RVReportDetailsCtrl', [
                 setChoosenReport($scope.currentReport).then(function () {
                     $_fetchFullReport();
                 });
-                reportsSrv.setPrintClicked(true);
+                if (isFromReportInbox) {
+                    reportsSrv.setPrintClicked(true);
+                }
+                
             }        
         };
         
