@@ -1028,12 +1028,18 @@ angular.module('sntRover')
                  * To toggle available and booked.
                  */
                 $scope.addListener('TOGGLE_BOOK_AVAILABLE', callbackForBookedOrAvailableListner);
+                var reservationId = parseInt($stateParams.reservation_id) || '',
+                    roomId = parseInt($stateParams.room_id) || '';
 
                 if ($stateParams.action === 'SELECT_RESERVATION' || $stateParams.action === 'TRIGGER_MOVE_ROOM') {
-                    var reservationId = parseInt($stateParams.reservation_id),
-                        roomId = parseInt($stateParams.room_id);
-
                     fetchRoomListDataAndReservationListData(roomId, null, reservationId);
+                }
+                else if ($stateParams.action === 'SELECT_UNASSIGNED_RESERVATION') {
+                    // Logic for select unassigned reservation.
+                    $timeout(function () {
+                        $scope.diaryData.rightFilter = 'UNASSIGNED_RESERVATION';
+                        $scope.$broadcast('SELECT_UNASSIGNED_RESERVATION', reservationId);
+                    }, 1000);
                 }
 
                 /**
