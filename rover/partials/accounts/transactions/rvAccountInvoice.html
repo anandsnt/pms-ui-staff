@@ -161,11 +161,23 @@
                     <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol !== '' && charge.description.invoice_currency_fees_amount !== null">
                         {{invoiceCurrencySymbol}}{{charge.description.invoice_currency_fees_amount | number:2}}
                     </div>
+                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && charge.description.rate_converted_amount">
+                        {{charge.description.rate_currency}}{{charge.description.rate_converted_amount | number:2}}
+                    </div>
+                    <div class="converted-currency smaller" ng-if="isMultiCurrencyEnabled && charge.description.rate_coversion_rate && charge.description.rate_converted_amount">
+                        {{charge.description.rate_coversion_rate}}
+                    </div>
                 </td>
                 <td class="align-right">
                     <span ng-show="!!charge.credits">{{currencySymbol}}{{charge.credits | number: 2}}</span>
                     <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol !== '' && charge.invoice_currency_credits !== null">
                         {{invoiceCurrencySymbol}}{{charge.invoice_currency_credits | number:2}}
+                    </div>
+                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && charge.rate_currency_credits">
+                        {{charge.description.rate_currency}}{{charge.rate_currency_credits | number:2}}
+                    </div>
+                    <div class="converted-currency smaller" ng-if="isMultiCurrencyEnabled && charge.description.rate_coversion_rate && charge.rate_currency_credits">
+                        {{charge.description.rate_coversion_rate}}
                     </div>
                 </td>
             </tr>

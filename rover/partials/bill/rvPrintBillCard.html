@@ -194,6 +194,14 @@
                     <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol!='' && item.invoice_currency_amount !== null">
                         {{invoiceCurrencySymbol}}{{item.invoice_currency_amount}}
                     </div>
+
+                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && item.rate_converted_amount">
+                        {{item.rate_currency}}{{item.rate_converted_amount}}
+                    </div>
+
+                    <div class="converted-currency smaller">
+                        {{item.rate_coversion_rate}}
+                    </div>
                 </td>
                 <td class="align-right"></td>
             </tr>
@@ -210,6 +218,13 @@
 
                     <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol!='' && item.invoice_currency_amount !== null">
                         {{invoiceCurrencySymbol}}{{item.invoice_currency_amount}}
+                    </div>
+                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && item.rate_converted_amount">
+                        {{item.rate_currency}}{{item.rate_converted_amount}}
+                    </div>
+
+                    <div class="converted-currency smaller">
+                        {{item.rate_coversion_rate}}
                     </div>
                 </td>
             </tr>
