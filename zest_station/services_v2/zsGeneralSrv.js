@@ -122,7 +122,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'sage-inn': 'Sage Inn',
             'hammetts': 'Hammetts Hotel',
             'lochardil': 'lochardil',
-            'perle-oban': 'Oban Perle'
+            'perle-oban': 'Oban Perle',
+            'why-columbia': 'Why Hotel Columbia Pike'
         };
 
         this.isThemeConfigured = function(theme) {
