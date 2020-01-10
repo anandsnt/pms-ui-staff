@@ -28,7 +28,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		var whetherSummaryDataChanged = function() {
 			var currentSummaryData = $scope.allotmentConfigData.summary;
 
-			for (key in summaryMemento) {
+			for (var key in summaryMemento) {
 				if (!_.isEqual(currentSummaryData[key], summaryMemento[key])) {
 					return true;
 				}
@@ -64,8 +64,10 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				demographicsOpen 		= $scope.allotmentSummaryData.isDemographicsPopupOpen,
 				updateInProgress 		= $scope.isUpdateInProgress;
 
-			if ( incorrectTarget 	  || isInaddMode 	  || summaryDataNotChanged ||
-				 demographicsOpen 	  || updateInProgress ) {
+			if (incorrectTarget 	  || isInaddMode ||
+				summaryDataNotChanged || demographicsOpen ||
+				!!$scope.focusedCompanyCard || !!$scope.focusedTravelAgent ||
+				updateInProgress ) {
 				// No need to call update summary
 				return;
 			}
