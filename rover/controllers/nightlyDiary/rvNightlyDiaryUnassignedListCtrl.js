@@ -164,4 +164,8 @@ angular.module('sntRover')
 
             selectUnassignedListItem(reservationItem);
         });
+
+        $scope.addListener('CANCEL_UNASSIGNED_RESERVATION', function() {
+            unSelectUnassignedListItem();
+        });
 }]);

@@ -28,7 +28,7 @@ angular.module('sntRover')
             $scope.goToStayCard = function(currentSelectedReservation, currentSelectedRoom) {
 
                 var params = RVNightlyDiarySrv.getCache();
-                
+
                 if (currentSelectedRoom && currentSelectedRoom.id) {
                     params.currentSelectedReservationId = currentSelectedReservation.id;
                     params.currentSelectedRoomId = currentSelectedRoom.id;
@@ -110,5 +110,9 @@ angular.module('sntRover')
             $scope.addListener('TRIGGER_MOVE_ROOM', function () {
                 $scope.moveRoomButtonClick();
             });
+
+            $scope.cancelEditUnassignedReservation = function() {
+                $scope.$emit('CANCEL_UNASSIGNED_RESERVATION_MAIN');
+            };
         }
 ]);

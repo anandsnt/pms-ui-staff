@@ -1053,6 +1053,11 @@ angular.module('sntRover')
                     }, 1000);
                 });
 
+                $scope.addListener('CANCEL_UNASSIGNED_RESERVATION_MAIN', function(event) {
+                    console.log('CANCEL_UNASSIGNED_RESERVATION_MAIN');
+                    $scope.$broadcast('CANCEL_UNASSIGNED_RESERVATION');
+                });
+
                 /**
                  * utility method to pass callbacks from
                  * @return {Object} with callbacks
