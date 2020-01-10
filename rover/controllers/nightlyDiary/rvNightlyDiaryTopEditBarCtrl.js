@@ -28,10 +28,13 @@ angular.module('sntRover')
             $scope.goToStayCard = function(currentSelectedReservation, currentSelectedRoom) {
 
                 var params = RVNightlyDiarySrv.getCache();
+                
+                if (currentSelectedRoom && currentSelectedRoom.id) {
+                    params.currentSelectedReservationId = currentSelectedReservation.id;
+                    params.currentSelectedRoomId = currentSelectedRoom.id;
+                    params.currentSelectedReservation = currentSelectedReservation;
+                }
 
-                params.currentSelectedReservationId = currentSelectedReservation.id;
-                params.currentSelectedRoomId = currentSelectedRoom.id;
-                params.currentSelectedReservation = currentSelectedReservation;
                 params.filterList = $scope.diaryData.filterList;
                 params.selectedRoomCount = $scope.diaryData.selectedRoomCount;
                 params.selectedFloorCount = $scope.diaryData.selectedFloorCount;

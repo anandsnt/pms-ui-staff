@@ -59,6 +59,16 @@ angular.module('sntRover')
             }
             else {
                 selectUnassignedListItem(item);
+                var currentSelectedReservation = {
+                    ...item,
+                    id: item.reservation_id,
+                    guest_details: {
+                        full_name: item.last_name + ' ' + item.first_name,
+                        image: ''
+                    }
+                };
+
+                $scope.$emit('CLICKED_UNASSIGNED_RESERVATION', currentSelectedReservation);
             }
         };
 

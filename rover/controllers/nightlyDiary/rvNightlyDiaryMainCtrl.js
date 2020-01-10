@@ -1042,6 +1042,17 @@ angular.module('sntRover')
                     }, 1000);
                 }
 
+                // CICO-67534 : Handle Events from unassigned list.
+                $scope.addListener('CLICKED_UNASSIGNED_RESERVATION', function(event, currentSelectedReservation) {
+                    console.log('CLICKED_UNASSIGNED_RESERVATION');
+                    console.log(currentSelectedReservation);
+                    $timeout(function () {
+                        $scope.diaryData.isEditReservationMode = true;
+                        $scope.currentSelectedReservation = {};
+                        $scope.currentSelectedReservation = currentSelectedReservation;
+                    }, 1000);
+                });
+
                 /**
                  * utility method to pass callbacks from
                  * @return {Object} with callbacks
@@ -1067,7 +1078,10 @@ angular.module('sntRover')
                     $scope.currentSelectedReservationId = params.currentSelectedReservationId;
                     $scope.diaryData.selectedRoomId = params.currentSelectedRoomId;
                     $scope.currentSelectedReservation = params.currentSelectedReservation;
-                    $scope.diaryData.hideUnassignRoomButton = reservation.status === 'CHECKEDIN' || reservation.status === 'CHECKEDOUT' || reservation.status === 'CHECKING_OUT';
+                    $scope.diaryData.hideUnassignRoomButton = true;
+                    if (reservation && reservation.status) {
+                        $scope.diaryData.hideUnassignRoomButton = reservation.status === 'CHECKEDIN' || reservation.status === 'CHECKEDOUT' || reservation.status === 'CHECKING_OUT';
+                    }
                     if ((!!params.selected_floor_ids && params.selected_floor_ids.length > 0) || (!!params.selected_room_type_ids && params.selected_room_type_ids.length > 0)) {
                         $scope.diaryData.isFromStayCard = true;
                         $scope.diaryData.filterList = params.filterList;
