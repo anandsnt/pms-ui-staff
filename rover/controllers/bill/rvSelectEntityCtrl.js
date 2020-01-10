@@ -37,7 +37,10 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
     		return true;
     	}
     };
-
+	$scope.filterArAccounts = function() {
+		var dataDict = {'query': $scope.textInQueryBox.trim(), 'has_ar_number': !$scope.hasArNumber};
+	    $scope.invokeApi(RVCompanyCardSearchSrv.fetch, dataDict, searchSuccessCards);	
+	}
     /**
   	* function to perform filtering/request data from service in change event of query box
   	*/
