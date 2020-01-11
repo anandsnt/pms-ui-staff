@@ -23,7 +23,7 @@ ng-if="showDashboard && !dashboardFilter.analyticsActive">
 
 <ng-include src="'/assets/partials/search/rvManagerAnalyticsHeader.html'" ng-if="dashboardFilter.analyticsActive && dashboardFilter.isManagerDashboard"></ng-include>
 
-<div  ng-if="dashboardFilter.analyticsActive" ng-controller="RVManagerAnalyticsController">
+<div  ng-if="dashboardFilter.analyticsActive" ng-controller="rvAnalyticsMainController">
 	<section id="dashboard" class="content scrollable analytics" role="main"
 	         ng-iscroll="analytics_scroller" ng-iscroll-delay="100"
 	         ng-if="!dashboardFilter.gridViewActive">

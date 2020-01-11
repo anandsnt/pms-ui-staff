@@ -1,6 +1,6 @@
-<div class="wrapper" id="wrapper" ng-if="!dashboardFilter.gridViewActive">
+<div class="wrapper" id="wrapper" ng-show="!dashboardFilter.gridViewActive && screenData.displayMode === 'CHART_DETAILS'">
     <!-- Chart -->
-    <div class="analytics-chart" ng-class="{ 'with-legend-right' : screenData.selectedChart !== 'PERFOMANCE' }">
+    <div class="analytics-chart" ng-class="{ 'with-legend-right' : showRightSideLegends() }">
         <dl class="chart-legend legend-left" id="left-side-legend" ng-if="false">
         </dl>
         <div id="manager-analytics-chart" class="chart-content">
@@ -144,3 +144,13 @@
         </dl>
     </div>
 </div>
+
+<div class="wrapper" id="wrapper" ng-if="!dashboardFilter.gridViewActive && screenData.displayMode === 'GRID'">
+    <ul>
+        <li ng-repeat="chart in availableChartsList" ng-click="onClickOnChartTile(chart.fetchDataEvent)">
+            <p> {{ ::chart.name }}</p>
+            <p> {{ ::chart.department }}</p>
+            <p> {{ ::chart.tileDescription }}</p>
+        </li>
+    </ul>
+<div>

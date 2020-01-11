@@ -2,6 +2,28 @@ angular.module('sntRover')
 	.controller('rvManagerDistributionAnalyticsCtrl', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvManagersAnalyticsSrv', 'rvAnalyticsHelperSrv', '$rootScope',
 		function($scope, sntActivity, $timeout, $filter, rvManagersAnalyticsSrv, rvAnalyticsHelperSrv, $rootScope) {
 
+			var shallowDecodedParams = "";
+			var distributionChartData = {};
+			var initialBaseHrefValue = $('base').attr('href');
+			var isDistributionChartActive = function() {
+				return $scope.dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION';
+			};
+
+			var setPageHeading = function() {
+				var chartTypeSelected = _.find($scope.dashboardFilter.chartTypes, function(chartType) {
+					return chartType.code === $scope.dashboardFilter.chartType;
+				});
+				var aggTypeSelected = _.find($scope.dashboardFilter.aggTypes, function(aggType) {
+					return aggType.code === $scope.dashboardFilter.aggType;
+				});
+
+				if (aggTypeSelected) {
+					$scope.screenData.mainHeading = chartTypeSelected.name + " by " + aggTypeSelected.name;
+				} else {
+					$scope.screenData.mainHeading = chartTypeSelected.name;
+				}
+			};
+
 			var checkIfDayIsToday = function(dateToCompare) {
 				var today = $rootScope.businessDate;
 				var date = moment(dateToCompare).format('YYYY-MM-DD');
@@ -9,7 +31,11 @@ angular.module('sntRover')
 				return today === date;
 			};
 
-			$scope.drawDistributionChart = function(chartData) {
+			/******************************** DRAW CHART STARTS HERE ********************************************/
+
+			var drawDistributionChart = function(chartData) {
+				$scope.dashboardFilter.selectedAnalyticsMenu = 'DISTRIBUTION';
+				console.log(JSON.stringify(chartData));
 
 				chartData = _.sortBy(chartData, function(data) {
 					return data.date;
@@ -253,7 +279,7 @@ angular.module('sntRover')
 					'#FBB383', '#FEE28C', '#BADB8B', '#95C59F', '#89DBC3', '#88CCD6',
 					'#8BB2D5', '#A1B1F5', '#AF9EE2', '#CE9BDA', '#F2A4CO', '#EF9898'
 				];
-				
+
 				// Till 50, use above color. After that use random colors
 				if (colors.length > chartDataKeys.length) {
 					colors = colors.slice(0, chartDataKeys.length);
@@ -271,6 +297,61 @@ angular.module('sntRover')
 				});
 
 				$scope.screenData.hideChartData = false;
+				$scope.dashboardFilter.showFilters = false;
 			};
+
+			/******************************** DRAW CHART ENDS HERE ********************************************/
+
+
+			var fetchDistributionChartData = function() {
+				$scope.screenData.displayMode = 'CHART_DETAILS';
+				$('base').attr('href', initialBaseHrefValue);
+
+				var params = {
+					start_date: $scope.dashboardFilter.fromDate,
+					end_date: $scope.dashboardFilter.toDate,
+					chart_type: $scope.dashboardFilter.chartType,
+					shallowDecodedParams: shallowDecodedParams
+				};
+
+				if ($scope.dashboardFilter.aggType) {
+					params.group_by = $scope.dashboardFilter.aggType;
+				}
+				var options = {
+					params: params,
+					successCallBack: function(data) {
+						$('base').attr('href', '#');
+						$scope.screenData.analyticsDataUpdatedTime = moment().format("MM ddd, YYYY hh:mm:ss a");
+						$scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
+						distributionChartData = data;
+						// if ($scope.dashboardFilter.gridViewActive) {
+						// 	toggleDistributionChartGridView();
+						// } else {
+						drawDistributionChart(data);
+						setPageHeading();
+						rvAnalyticsHelperSrv.addChartHeading($scope.screenData.mainHeading, $scope.screenData.analyticsDataUpdatedTime);
+					}
+				};
+
+				$scope.callAPI(rvManagersAnalyticsSrv.distributions, options);
+			};
+
+			$scope.$on('GET_MANAGER_DISTRIBUTION', fetchDistributionChartData);
+
+			$scope.$on('ANALYTICS_FILTER_CHANGED', function(e, data) {
+				if (!isDistributionChartActive()) {
+					return;
+				}
+				shallowDecodedParams = data;
+				fetchDistributionChartData();
+			});
+
+			$scope.$on('CHART_AGGGREGATION_CHANGED', function(e, data) {
+				if (!isDistributionChartActive()) {
+					return;
+				}
+				setPageHeading();
+				fetchDistributionChartData();
+			});
 		}
 	]);

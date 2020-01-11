@@ -1,10 +1,22 @@
 angular.module('sntRover')
-	.controller('rvManagerSpiderChartCtrl', ['$scope', '$rootScope', 'sntActivity', '$timeout', '$filter', 'rvAnalyticsHelperSrv',
-		function($scope, $rootScope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv) {
+	.controller('rvManagerSpiderChartCtrl', ['$scope', '$rootScope', 'sntActivity', '$timeout', '$filter', 'rvAnalyticsHelperSrv', 'rvAnalyticsSrv', 'rvManagersAnalyticsSrv',
+		function($scope, $rootScope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv, rvAnalyticsSrv, rvManagersAnalyticsSrv) {
 
-			$scope.drawPerfomceChart = function(chartData) {
+			var perfomanceData,
+				combinedPerfomanceData = {};
+			var initialBaseHrefValue = $('base').attr('href');
+			var addChartHeading = function() {
+				rvAnalyticsHelperSrv.addChartHeading($scope.screenData.mainHeading, $scope.screenData.analyticsDataUpdatedTime);
+			};
+			$scope.dashboardFilter.lastyearType = 'SAME_DATE_LAST_YEAR';
 
+			rvAnalyticsSrv.setHotelCiCoTime($rootScope.hotelDetails);
+
+			/******************************** DRAW CHART STARTS HERE ********************************************/
+
+			var drawPerfomceChart = function(chartData) {
 				$scope.screenData.mainHeading = $filter('translate')("AN_ROOM_PERFOMANCE_KPR");
+				$scope.dashboardFilter.selectedAnalyticsMenu = 'PERFOMANCE';
 				var hasLastYearData = $scope.dashboardFilter.showLastYearData;
 				// convert data into array
 				var chartDataArray = Object.keys(chartData).map(function(key) {
@@ -19,10 +31,12 @@ angular.module('sntRover')
 				var maxRevPar = _.max(chartDataArray, function(data) {
 					return parseFloat(data.rev_par);
 				});
+				var isThumbNail = false;
+				var textFontSize = isThumbNail ? "3px" : "15px";
 				// Find max value for all of the four quadrants
 				var maxValueForChart = parseInt(maxAdr.adr) > parseInt(maxRevPar.rev_par) ? maxAdr.adr : maxRevPar.rev_par;
-				var chartWidth = 800;
-				var chartHeight = 800;
+				var chartWidth = isThumbNail ? 300 : 800;
+				var chartHeight = isThumbNail ? 300 : 800;
 				var padding = 50;
 				var leftPadding = 50;
 
@@ -142,7 +156,7 @@ angular.module('sntRover')
 							return isXaxis ? "1em" : ".35em"
 						})
 						.attr("class", "")
-						.style("font-size", "10px")
+						.style("font-size", isThumbNail ? "1px" : "10px")
 						.style("fill", "black")
 						.text(label);
 				};
@@ -162,7 +176,7 @@ angular.module('sntRover')
 							return isDownSide ? "2em" : "-1em";
 						})
 						.attr("class", "")
-						.style("font-size", "10px")
+						.style("font-size", isThumbNail ? "1px" : "10px")
 						.style("fill", "black")
 						.style("font-weight", "bold")
 						.text(label);
@@ -299,7 +313,7 @@ angular.module('sntRover')
 
 					var xOffset,
 						yOffset;
-						
+
 					if (position === "left-top") {
 						occupancy = parseFloat(chartData.yesterday.occupancy);
 						occupancy_diff = parseFloat(chartData.yesterday.occupancy_diff);
@@ -366,7 +380,7 @@ angular.module('sntRover')
 						.attr('x', xOffsetText)
 						.attr('y', yOffsetText)
 						.attr("id", position + "-occupancy-label-1")
-						.style("font-size", "15px")
+						.style("font-size", textFontSize)
 						.style("fill", "#FFFFFF")
 						.text("ACTUAL")
 						.style("cursor", "pointer");
@@ -375,7 +389,7 @@ angular.module('sntRover')
 						.attr('x', xOffsetText)
 						.attr('y', yOffsetText2)
 						.attr("id", position + "-occupancy-label-2")
-						.style("font-size", "15px")
+						.style("font-size", textFontSize)
 						.style("fill", "#FFFFFF")
 						.text(occupancy)
 						.style("cursor", "pointer");
@@ -412,21 +426,21 @@ angular.module('sntRover')
 							.attr('x', lastYearTextXoffset)
 							.attr('y', yOffsetText)
 							.attr("id", position + "-occupancy-label-3")
-							.style("font-size", "12px")
+							.style("font-size", isThumbNail ? "2px" : "12px")
 							.style("fill", "black")
 							.text("LAST YEAR")
 							.style("cursor", "pointer");
 
 						var occupancyDiff = parseFloat(occupancy_diff).toFixed(2);
 						var textColor = occupancyDiff >= 0 ? 'green' : 'red';
-						
+
 						occupancyDiff = occupancyDiff >= 0 ? '+' + occupancyDiff + '%' : occupancyDiff + '%';
 
 						textLabelGroup.append("text")
 							.attr('x', lastYearTextXoffset)
 							.attr('y', yOffsetText2)
 							.attr("id", position + "-occupancy-label-4")
-							.style("font-size", "15px")
+							.style("font-size", textFontSize)
 							.style("fill", textColor)
 							.text(occupancyDiff)
 							.style("cursor", "pointer");
@@ -520,7 +534,7 @@ angular.module('sntRover')
 						.attr('x', xOffsetText)
 						.attr('y', yOffsetText)
 						.attr("id", label.id + "-label1")
-						.style("font-size", "15px")
+						.style("font-size", textFontSize)
 						.style("fill", "white")
 						.text(label.label)
 						.style("cursor", "pointer");
@@ -541,7 +555,7 @@ angular.module('sntRover')
 						.attr('x', xOffsetText)
 						.attr('y', yOffsetText2)
 						.attr("id", label.id + "-label2")
-						.style("font-size", "15px")
+						.style("font-size", textFontSize)
 						.style("fill", "white")
 						.text($rootScope.currencySymbol + labelText)
 						.style("cursor", "pointer");
@@ -578,7 +592,7 @@ angular.module('sntRover')
 							.attr('x', lastYearTextXoffset)
 							.attr('y', yOffsetText)
 							.attr("id", label.id + "-label3")
-							.style("font-size", "12px")
+							.style("font-size", isThumbNail ? "2px" : "12px")
 							.style("fill", "black")
 							.text("FROM LAST YEAR")
 							.style("cursor", "pointer");
@@ -602,7 +616,7 @@ angular.module('sntRover')
 							.attr('x', lastYearTextXoffset)
 							.attr('y', yOffsetText2)
 							.attr("id", label.id + "-label4")
-							.style("font-size", "15px")
+							.style("font-size", textFontSize)
 							.style("fill", textColor)
 							.text(diffText)
 							.style("cursor", "pointer");
@@ -873,7 +887,7 @@ angular.module('sntRover')
 					textLabelGroup.append("text")
 						.attr('x', x(xValue + 0.05))
 						.attr('y', y(textrectYvalue))
-						.style("font-size", "15px")
+						.style("font-size", textFontSize)
 						.style("fill", "white")
 						.text(label.text);
 				};
@@ -902,6 +916,117 @@ angular.module('sntRover')
 
 				$scope.$emit('REFRESH_ANALTICS_SCROLLER');
 				$scope.screenData.hideChartData = false;
+
+				addChartHeading();
 			};
+			/******************************** DRAW CHART ENDS HERE ********************************************/
+
+			var fetchPerfomanceChartData = function() {
+				$('base').attr('href', initialBaseHrefValue);
+
+				var options = {
+					params: {
+						date: $scope.dashboardFilter.datePicked
+					},
+					successCallBack: function(data) {
+						$('base').attr('href', '#');
+						perfomanceData = data;
+						$scope.screenData.analyticsDataUpdatedTime = moment().format("MM ddd, YYYY hh:mm:ss a");
+						$scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
+						drawPerfomceChart(data);
+						$scope.screenData.displayMode = 'CHART_DETAILS';
+					}
+				};
+
+				$scope.callAPI(rvManagersAnalyticsSrv.roomPerformanceKPR, options);
+			};
+			// Fetch perfomance date on clicking on the chart tile
+			$scope.$on('GET_MANAGER_PERFOMANCE', fetchPerfomanceChartData);
+
+
+			var calculateDifferenceInPerfomance = function(lastYeardata, isMixed) {
+				for (var key in perfomanceData) {
+					for (var key1 in lastYeardata) {
+						if (((key === key1) && (key === "mtd" || !isMixed)) ||
+						   ((key === key1) && (key === "ytd" || !isMixed))) {
+
+							combinedPerfomanceData[key] = angular.copy(perfomanceData[key]);
+							combinedPerfomanceData[key].adr_diff = parseFloat(perfomanceData[key].adr) -
+								parseFloat(lastYeardata[key].adr);
+							combinedPerfomanceData[key].rev_par_diff = parseFloat(perfomanceData[key].rev_par) -
+								parseFloat(lastYeardata[key].rev_par);
+							combinedPerfomanceData[key].occupancy_diff = parseFloat(perfomanceData[key].occupancy) -
+								parseFloat(lastYeardata[key].occupancy);
+						}
+					}
+				}
+			};
+
+			var handleChangesForMixedFilter = function() {
+				var lastYeardate = moment($scope.dashboardFilter.datePicked)
+					.subtract(1, 'years')
+					.format("YYYY-MM-DD");
+				var options = {
+					params: {
+						date: lastYeardate
+					},
+					successCallBack: function(lastYeardata) {
+						calculateDifferenceInPerfomance(lastYeardata, true);
+						drawPerfomceChart(combinedPerfomanceData);
+					}
+				};
+
+				$scope.callAPI(rvManagersAnalyticsSrv.roomPerformanceKPR, options);
+			};
+
+			var handleFilterChangeForPerfomanceChart = function() {
+				$scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
+				if (!$scope.dashboardFilter.showLastYearData) {
+					$('base').attr('href', '#');
+					drawPerfomceChart(perfomanceData);
+					addChartHeading();
+					return;
+				}
+
+				$('base').attr('href', initialBaseHrefValue);
+
+				// for SAME_DATE_LAST_YEAR the date will be 1 year before and 
+				// for SAME_DAY_LAST_YEAR the date will be the nearest weekday 1 year before
+				// for MIXED, we will use mixture of the above two,  'Same Day LY' logic for the upper (Today, Yesterday) quadrants and
+				// 'Same Date LY' logic for the lower (MTD, YTD) quadrants
+				var lastYeardate;
+
+				if ($scope.dashboardFilter.lastyearType === "SAME_DATE_LAST_YEAR") {
+					lastYeardate = moment($scope.dashboardFilter.datePicked)
+						.subtract(1, 'years')
+						.format("YYYY-MM-DD");
+				} else if ($scope.dashboardFilter.lastyearType === "SAME_DAY_LAST_YEAR" || $scope.dashboardFilter.lastyearType === "MIXED") {
+					lastYeardate = rvAnalyticsHelperSrv.getClosetDayOftheYearInPastYear($scope.dashboardFilter.datePicked);
+				}
+
+
+				var options = {
+					params: {
+						date: lastYeardate
+					},
+					successCallBack: function(lastYeardata) {
+						calculateDifferenceInPerfomance(lastYeardata, false);
+						if ($scope.dashboardFilter.lastyearType === "MIXED") {
+							handleChangesForMixedFilter();
+						} else {
+							drawPerfomceChart(combinedPerfomanceData);
+						}
+					}
+				};
+
+				$scope.callAPI(rvManagersAnalyticsSrv.roomPerformanceKPR, options);
+			};
+
+			// On filter chage, fetch the perfomance date correspoding to the selected filter
+			$scope.$on('ANALYTICS_FILTER_CHANGED', function(e, data) {
+				if ($scope.dashboardFilter.selectedAnalyticsMenu === 'PERFOMANCE') {
+					handleFilterChangeForPerfomanceChart();
+				}
+			});
 		}
 	]);
