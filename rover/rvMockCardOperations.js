@@ -60,7 +60,7 @@ var MockCardOperation = function () {
                 'RVCardReadTrack2KSN': '950067000000062002AF',
                 'RVCardReadMaskedPAN': '5405220008002226',
                 'RVCardReadCardName': 'Sample Name',
-                'RVCardReadExpDate': '17012',
+                'RVCardReadExpDate': '99012',
                 'RVCardReadCardIIN': '002226',
                 'RVCardReadIsEncrypted': 0
             };
