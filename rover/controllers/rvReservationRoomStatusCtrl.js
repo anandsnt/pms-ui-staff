@@ -32,6 +32,11 @@ angular.module('sntRover').controller('reservationRoomStatus',
 		else if ($rootScope.isStandAlone && reservationStatus !== 'NOSHOW' && reservationStatus !== 'CHECKEDOUT' && reservationStatus !== 'CANCELED') {
 			reservationRoomClass = 'has-arrow hover-hand';
 		}
+
+        if (!rvPermissionSrv.getPermissionValue('MOVE_ROOM') && reservationStatus !== 'CANCELED') {
+            reservationRoomClass += ' overlay';
+        }
+
 		return reservationRoomClass;
 	};
 
