@@ -1,6 +1,6 @@
 angular.module('sntRover')
-    .controller('rvFrontOfficeManagementAnalyticsCtrl', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvAnalyticsHelperSrv',
-        function($scope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv) {
+    .controller('rvFrontOfficeManagementAnalyticsCtrl', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvAnalyticsHelperSrv', 'rvAnalyticsSrv', 'rvFrontOfficeAnalyticsSrv',
+        function($scope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv, rvAnalyticsSrv, rvFrontOfficeAnalyticsSrv ) {
 
             var cssClassMappings = {
                 "Checked In": "bar bar-green bar-light",
@@ -34,9 +34,9 @@ angular.module('sntRover')
                 "rooms_overbooked_rooms": rvAnalyticsHelperSrv.gradientMappings['warning']
             };
 
-            $scope.drawArrivalManagementChart = function(chartDetails) {
+            var drawArrivalManagementChart = function(chartDetails) {
                 $scope.screenData.mainHeading = $filter('translate')(chartDetails.chartData.label);
-                var chartAreaWidth = document.getElementById("analytics-chart").clientWidth;
+                var chartAreaWidth = document.getElementById("manager-analytics-chart").clientWidth;
                 var margin = {
                         top: 50,
                         right: 50,
@@ -357,5 +357,46 @@ angular.module('sntRover')
                 $scope.$emit('REFRESH_ANALTICS_SCROLLER');
                 $scope.screenData.hideChartData = false;
             };
+
+            var onBarChartClick = function() {
+                return;
+            };
+
+            var renderFrontOfficeManagementChart = function() {
+                rvFrontOfficeAnalyticsSrv.fdArrivalsManagement($scope.dashboardFilter.datePicked).then(function(data) {
+                    var chartDetails = {
+                        chartData: data,
+                        onBarChartClick: onBarChartClick
+                    };
+                    $scope.$emit('ROOM_TYPE_SHORTAGE_CALCULATED', rvAnalyticsSrv.roomTypesWithShortageData);
+                    
+                    $timeout(function() {
+                        drawArrivalManagementChart(chartDetails);
+                        rvAnalyticsHelperSrv.addChartHeading($scope.screenData.mainHeading,
+                            $scope.screenData.analyticsDataUpdatedTime);
+                    }, 50);
+                });
+            };
+
+            var getArrivalManagementChartData = function(date) {
+                $scope.screenData.displayMode = 'CHART_DETAILS';
+                $scope.dashboardFilter.selectedAnalyticsMenu = 'FO_ARRIVALS';
+                $('base').attr('href', "/");
+                var params = {
+                    "date": $scope.dashboardFilter.datePicked,
+                    "isFromFrontDesk": true
+                };
+                var options = {
+                    params: params,
+                    successCallBack: function(response) {
+                        $scope.$emit('CHART_API_SUCCESS', response);
+                        renderFrontOfficeManagementChart();
+                    }
+                };
+
+                $scope.callAPI(rvAnalyticsSrv.initRoomAndReservationApis, options);
+            };
+
+            $scope.$on('GET_FO_ARRIVAL_MANAGEMENT', getArrivalManagementChartData);
         }
     ]);

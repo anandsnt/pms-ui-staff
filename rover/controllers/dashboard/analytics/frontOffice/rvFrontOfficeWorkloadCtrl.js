@@ -1,6 +1,6 @@
 angular.module('sntRover')
-	.controller('rvFrontOfficeWorkloadCtrl', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvAnalyticsHelperSrv',
-		function($scope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv) {
+	.controller('rvFrontOfficeWorkloadCtrl', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvAnalyticsHelperSrv', 'rvAnalyticsSrv', 'rvFrontOfficeAnalyticsSrv',
+		function($scope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv, rvAnalyticsSrv, rvFrontOfficeAnalyticsSrv) {
 
 			var colorMappings = {
 				"early_checkin": {
@@ -51,9 +51,9 @@ angular.module('sntRover')
                 "Checkout": "bar bar-red",
             };
 
-			$scope.drawWorkLoadChart = function(chartDetails) {
+			var drawWorkLoadChart = function(chartDetails) {
 				$scope.screenData.mainHeading = $filter('translate')(chartDetails.chartData.label);
-				var chartAreaWidth = document.getElementById("analytics-chart").clientWidth;
+				var chartAreaWidth = document.getElementById("manager-analytics-chart").clientWidth;
 				var margin = {
 						top: 50,
 						right: 20,
@@ -380,5 +380,44 @@ angular.module('sntRover')
 				$scope.$emit('REFRESH_ANALTICS_SCROLLER');
 				$scope.screenData.hideChartData = false;
 			};
+
+			var onBarChartClick = function() {
+                return;
+            };
+
+            var renderfdWorkloadChart = function() {
+                rvFrontOfficeAnalyticsSrv.fdWorkload($scope.dashboardFilter.datePicked).then(function(data) {
+                    var chartDetails = {
+                        chartData: data,
+                        onBarChartClick: onBarChartClick
+                    };
+                     $timeout(function() {
+                        drawWorkLoadChart(chartDetails);
+
+                    	rvAnalyticsHelperSrv.addChartHeading($scope.screenData.mainHeading,
+                                                 $scope.screenData.analyticsDataUpdatedTime);
+                    }, 50);
+                });
+            };
+			var getArrivalManagementChartData = function(date) {
+                $scope.screenData.displayMode = 'CHART_DETAILS';
+                $scope.dashboardFilter.selectedAnalyticsMenu = 'FO_ARRIVALS';
+                $('base').attr('href', "/");
+                var params = {
+                    "date": $scope.dashboardFilter.datePicked,
+                    "isFromFrontDesk": true
+                };
+                var options = {
+                    params: params,
+                    successCallBack: function(response) {
+                        $scope.$emit('CHART_API_SUCCESS', response);
+                        renderfdWorkloadChart();
+                    }
+                };
+
+                $scope.callAPI(rvAnalyticsSrv.initRoomAndReservationApis, options);
+            };
+
+            $scope.$on('GET_FO_WORKLOAD', getArrivalManagementChartData);
 		}
 	]);

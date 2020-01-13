@@ -1,6 +1,6 @@
 angular.module('sntRover')
-    .controller('rvHkWokrPriorityCtrl', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvAnalyticsHelperSrv',
-        function($scope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv) {
+    .controller('rvHkWokrPriorityCtrl', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvAnalyticsHelperSrv', 'rvAnalyticsSrv',
+        function($scope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv, rvAnalyticsSrv) {
 
             var colorMappings = {
                 "arrivals_perfomed": rvAnalyticsHelperSrv.constructColorMappings('arrivals_perfomed', 'greenLight'),
@@ -19,9 +19,10 @@ angular.module('sntRover')
                 "vacant_pending_inspected_rooms": rvAnalyticsHelperSrv.constructColorMappings('pending_inspected_rooms', 'warning')
             };
 
-            $scope.drawHkWorkPriorityChart = function(chartDetails) {
+            var drawHkWorkPriorityChart = function(chartDetails) {
+                console.log(JSON.stringify(chartDetails));
                 $scope.screenData.mainHeading = $filter('translate')(chartDetails.chartData.label);
-                var chartAreaWidth = document.getElementById("analytics-chart").clientWidth;
+                var chartAreaWidth = document.getElementById("manager-analytics-chart").clientWidth;
                 var margin = {
                         top: 50,
                         right: 20,
@@ -356,5 +357,54 @@ angular.module('sntRover')
                 $scope.$emit('REFRESH_ANALTICS_SCROLLER');
                 $scope.screenData.hideChartData = false;
             };
+
+            var onBarChartClick = function(type) {
+                return;
+            };
+
+            var onLegendClick = function(type) {
+                return;
+            };
+
+            var renderHkWorkPriority = function() {
+                $scope.screenData.mainHeading = "";
+                // Calling HK Overview Build Graph
+                rvAnalyticsSrv.hkWorkPriority($scope.dashboardFilter.datePicked).then(function(data) {
+
+                    var chartDetails = {
+                        chartData: data,
+                        onBarChartClick: onBarChartClick,
+                        onLegendClick: onLegendClick
+                    };
+
+                    $timeout(function() {
+                        drawHkWorkPriorityChart(chartDetails);
+                        rvAnalyticsHelperSrv.addChartHeading($scope.screenData.mainHeading,
+                        $scope.screenData.analyticsDataUpdatedTime);
+                    }, 50);
+                });
+            };
+
+            var fetchHKWorkPriorityChartData = function(date, roomTypeId) {
+                $scope.screenData.displayMode = 'CHART_DETAILS';
+                $scope.dashboardFilter.selectedAnalyticsMenu = 'HK_WORK_PRIRORITY';
+                $('base').attr('href', "/");
+                var params = {
+                    "date": $scope.dashboardFilter.datePicked,
+                    "room_type_id": $scope.dashboardFilter.selectedRoomTypeId
+                };
+                var options = {
+                    params: params,
+                    successCallBack: function(response) {
+                        $scope.$emit('CHART_API_SUCCESS', response);
+                        renderHkWorkPriority();
+                        $scope.$emit('ROOM_TYPE_SHORTAGE_CALCULATED', rvAnalyticsSrv.roomTypesWithShortageData);
+                    }
+                };
+
+                $scope.callAPI(rvAnalyticsSrv.initRoomAndReservationApis, options);
+            };
+
+            $scope.$on('GET_HK_WORK_PRIORITY', fetchHKWorkPriorityChartData);
         }
     ]);

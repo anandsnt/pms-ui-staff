@@ -1,7 +1,7 @@
 <div class="wrapper" id="wrapper" ng-show="!dashboardFilter.gridViewActive && screenData.displayMode === 'CHART_DETAILS'">
     <!-- Chart -->
-    <div class="analytics-chart" ng-class="{ 'with-legend-right' : showRightSideLegends() }">
-        <dl class="chart-legend legend-left" id="left-side-legend" ng-if="false">
+    <div class="analytics-chart" ng-class="{ 'with-legend-left' : showLeftSideLegends(), 'with-legend-right' : showRightSideLegends() }">
+        <dl class="chart-legend legend-left" id="left-side-legend" ng-if="showLeftSideLegends()">
         </dl>
         <div id="manager-analytics-chart" class="chart-content">
             <div id="d3-plot">
@@ -140,7 +140,8 @@
                 </defs>
             </svg>
         </div>
-        <dl class="chart-legend legend-right" id="right-side-legend" ng-if="screenData.selectedChart !== 'PERFOMANCE'">
+        <dl class="chart-legend legend-right" id="right-side-legend" ng-if="showRightSideLegends
+        ()">
         </dl>
     </div>
 </div>

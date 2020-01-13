@@ -1,8 +1,8 @@
 angular.module('sntRover')
-  .controller('rvFrontOfficeActivityCtrl', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvAnalyticsHelperSrv',
-    function($scope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv) {
+  .controller('rvFrontOfficeActivityCtrl', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvAnalyticsHelperSrv', 'rvAnalyticsSrv', 'rvFrontOfficeAnalyticsSrv',
+    function($scope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv, rvAnalyticsSrv, rvFrontOfficeAnalyticsSrv) {
 
-      $scope.drawFrontOfficeActivity = function(chartData) {
+      var drawFrontOfficeActivity = function(chartData) {
 
         $scope.screenData.mainHeading = $filter('translate')(chartData.label);
 
@@ -100,7 +100,7 @@ angular.module('sntRover')
         chartData.todays_data.unshift(emptyElement);
         chartData.yesterdays_data.unshift(emptyElement);
 
-        var w = document.getElementById("analytics-chart").clientWidth,
+        var w = document.getElementById("manager-analytics-chart").clientWidth,
           h = 500,
           padding = 40;
 
@@ -295,5 +295,39 @@ angular.module('sntRover')
         $scope.$emit('REFRESH_ANALTICS_SCROLLER');
         $scope.screenData.hideChartData = false;
       };
+
+      var renderFrontOfficeActivity = function() {
+        rvFrontOfficeAnalyticsSrv.fdFoActivity($scope.dashboardFilter.datePicked).then(function(data) {
+          var chartData = data;
+
+          $timeout(function() {
+            drawFrontOfficeActivity(chartData);
+            
+            rvAnalyticsHelperSrv.addChartHeading($scope.screenData.mainHeading,
+              $scope.screenData.analyticsDataUpdatedTime);
+          }, 50);
+        });
+      };
+
+      var getFoActivityChartData = function(date) {
+        $scope.screenData.displayMode = 'CHART_DETAILS';
+        $scope.dashboardFilter.selectedAnalyticsMenu = 'FO_ARRIVALS';
+        $('base').attr('href', "/");
+        var params = {
+          "date": $scope.dashboardFilter.datePicked,
+          "isFromFrontDesk": true
+        };
+        var options = {
+          params: params,
+          successCallBack: function(response) {
+            $scope.$emit('CHART_API_SUCCESS', response);
+            renderFrontOfficeActivity();
+          }
+        };
+
+        $scope.callAPI(rvAnalyticsSrv.initRoomAndReservationApis, options);
+      };
+
+      $scope.$on('GET_FO_ACTIVITY', getFoActivityChartData);
     }
   ]);

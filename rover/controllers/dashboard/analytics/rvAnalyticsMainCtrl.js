@@ -39,6 +39,23 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 			$scope: $scope
 		});
 
+		$controller('rvHKOverviewAnalticsCtrl', {
+			$scope: $scope
+		});
+		$controller('rvHkWokrPriorityCtrl', {
+			$scope: $scope
+		});
+
+		$controller('rvFrontOfficeManagementAnalyticsCtrl', {
+			$scope: $scope
+		});
+		$controller('rvFrontOfficeActivityCtrl', {
+			$scope: $scope
+		});
+		$controller('rvFrontOfficeWorkloadCtrl', {
+			$scope: $scope
+		});
+
 		$scope.availableChartsList = [{
 				name: 'Overview',
 				department: 'HOUSEKEEPING',
@@ -102,12 +119,25 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 			}
 		});
 
+		$scope.$on('CHART_API_SUCCESS', function (ev, response) {
+			$('base').attr('href', '#');
+            $scope.screenData.analyticsDataUpdatedTime = response && response.lastUpatedTime ?
+                                                         response.lastUpatedTime : moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
+            $scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
+		});
+
 		$scope.onClickOnChartTile = function(fetchDataEvent) {
 			$scope.$broadcast(fetchDataEvent);
 		};
 
 		$scope.showRightSideLegends = function () {
-			return false;
+			return $scope.dashboardFilter.selectedAnalyticsMenu !== 'PERFOMANCE';
+		};
+
+		$scope.showLeftSideLegends = function () {
+			return $scope.dashboardFilter.selectedAnalyticsMenu === 'HK_OVERVIEW' ||
+				   $scope.dashboardFilter.selectedAnalyticsMenu === 'HK_WORK_PRIRORITY' ||
+				   $scope.dashboardFilter.selectedAnalyticsMenu === 'FO_ARRIVALS';
 		};
 
 		(function() {
