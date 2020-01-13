@@ -106,6 +106,16 @@
 								</select>
 							</div>
 						</div>
+						<div class="entry full-width" ng-show="is_multi_currency_enabled">
+							<label> Hotel Payment Currency <strong>*</strong> </label>
+							<div class="select">
+								<select 
+										ng-model="payment_currency"
+										ng-options="currency.id as currency.value for currency in currency_list_for_payment">
+										<option value="">Select Invoice Currency</option>
+								</select>
+							</div>
+						</div>
 						<div class="entry full-width actions_margin_top" ng-show="is_multi_currency_enabled">
 							<label> Hotel Rate Currencies <strong>*</strong> </label>
 							<div id="available-charge-codes" class="boxes col2">
