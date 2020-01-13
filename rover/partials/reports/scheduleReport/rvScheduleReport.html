@@ -107,6 +107,19 @@
                     Cards Without Tax ID
                 </label>
             </div>
+            <multi-option-selection ng-show="filters.hasByChargeGroup && filters.hasByChargeGroup.data.length"
+                label="Charge Group(s)"
+                on-update="refreshSecondColumnScroll"
+                data="filters.hasByChargeGroup.data"
+                options="filters.hasByChargeGroup.options"
+                affects-filter="filters.hasByChargeGroup.affectsFilter"
+                filter-holder-obj="filters"></multi-option-selection>
+            <!-- related options -->
+            <multi-option-selection ng-show="filters.hasByChargeCode && filters.hasByChargeCode.data.length"
+                label="Charge Code(s)"
+                on-update="refreshSecondColumnScroll"
+                data="filters.hasByChargeCode.data"
+                options="filters.hasByChargeCode.options"></multi-option-selection>
 
             <div class="entry" ng-show="selectedEntityDetails.sort_fields.length">
                 <label>Sort By</label>
