@@ -29,6 +29,7 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
     $scope.is_multi_currency_enabled = settingsAndParamsData.is_multi_currency_enabled;
     $scope.should_post_during_eod = settingsAndParamsData.should_post_during_eod;
     $scope.currency_list = settingsAndParamsData.currency_list;
+    $scope.currency_list_for_payment = settingsAndParamsData.currency_list_for_payment;
     $scope.rate_currency_list = angular.copy(settingsAndParamsData.currency_list);
     angular.forEach($scope.rate_currency_list, function(item) {
         if (_.indexOf(settingsAndParamsData.rate_currencies, item.id) !== -1) {
@@ -47,6 +48,7 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
     });
     $scope.invoice_currency = settingsAndParamsData.invoice_currency; 
     $scope.invoice_currency = angular.isDefined($scope.invoice_currency) ? $scope.invoice_currency.id : '';
+    $scope.payment_currency = settingsAndParamsData.default_payment_currency;
 
 
     /**
@@ -73,6 +75,7 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
             'auto_charge_deposit': $scope.auto_charge_deposit,
             'is_multi_currency_enabled': $scope.is_multi_currency_enabled,
             'invoice_currency': ($scope.invoice_currency === null) ? '' : parseInt($scope.invoice_currency, 10),
+            'default_payment_currency': ($scope.payment_currency === null) ? '' : parseInt($scope.payment_currency, 10),
             'rate_currencies': $scope.selectedRateCurrencies,
             'payment_currencies': $scope.selectedPaymentCurrencies,
             'should_post_during_eod': $scope.should_post_during_eod
