@@ -4,52 +4,53 @@ angular.module('sntRover')
 
 			var colorMappings = {
 				"early_checkin": {
-                    "legend_class": "bar bar-green bar-dark",
-                    "fill": "greenDark",
-                    "onmouseover_fill": "greenDarkHover",
-                    "onmouseout_fill": "greenDark"
-                },
-                "checkin": {
-                    "legend_class": "bar bar-green bar-light",
-                    "fill": "greenLight",
-                    "onmouseover_fill": "greenLightHover",
-                    "onmouseout_fill": "greenLight"
-                },
-                "vip_checkin": {
-                    "legend_class": "bar bar-yellow",
-                    "fill": "yellow",
-                    "onmouseover_fill": "yellow",
-                    "onmouseout_fill": "yellow"
-                },
-                "vip_checkout": {
-                    "legend_class": "bar bar-yellow bar-dark",
-                    "fill": "yellowDark",
-                    "onmouseover_fill": "yellowDarkHover",
-                    "onmouseout_fill": "yellowDark"
-                },
-                "checkout": {
-                    "legend_class": "bar bar-red",
-                    "fill": "red",
-                    "onmouseover_fill": "redHover",
-                    "onmouseout_fill": "red"
-                },
-                "late_checkout": {
-                    "legend_class": "bar bar-red bar-dark",
-                    "fill": "redDark",
-                    "onmouseover_fill": "redDarkHover",
-                    "onmouseout_fill": "redDark"
-                }
-            };
+					"legend_class": "bar bar-green bar-dark",
+					"fill": "greenDark",
+					"onmouseover_fill": "greenDarkHover",
+					"onmouseout_fill": "greenDark"
+				},
+				"checkin": {
+					"legend_class": "bar bar-green bar-light",
+					"fill": "greenLight",
+					"onmouseover_fill": "greenLightHover",
+					"onmouseout_fill": "greenLight"
+				},
+				"vip_checkin": {
+					"legend_class": "bar bar-yellow",
+					"fill": "yellow",
+					"onmouseover_fill": "yellow",
+					"onmouseout_fill": "yellow"
+				},
+				"vip_checkout": {
+					"legend_class": "bar bar-yellow bar-dark",
+					"fill": "yellowDark",
+					"onmouseover_fill": "yellowDarkHover",
+					"onmouseout_fill": "yellowDark"
+				},
+				"checkout": {
+					"legend_class": "bar bar-red",
+					"fill": "red",
+					"onmouseover_fill": "redHover",
+					"onmouseout_fill": "red"
+				},
+				"late_checkout": {
+					"legend_class": "bar bar-red bar-dark",
+					"fill": "redDark",
+					"onmouseover_fill": "redDarkHover",
+					"onmouseout_fill": "redDark"
+				}
+			};
 
-			var legendColorMappings = {
-                "Early Check in": "bar bar-green bar-dark",
-                "Checkin": "bar bar-green bar-light",
-                "VIP checkin": "bar  bar-yellow",
+			var legendColorMappings = {        
+				"Early Check in": "bar bar-green bar-dark",
+				        "Checkin": "bar bar-green bar-light",
+				        "VIP checkin": "bar  bar-yellow",
 
-                "VIP checkout": "bar bar-yellow bar-dark",
-                "Late checkout": "bar bar-red bar-dark",
-                "Checkout": "bar bar-red",
-            };
+				        "VIP checkout": "bar bar-yellow bar-dark",
+				        "Late checkout": "bar bar-red bar-dark",
+				        "Checkout": "bar bar-red",
+				      
+			};
 
 			var drawWorkLoadChart = function(chartDetails) {
 				$scope.screenData.mainHeading = $filter('translate')(chartDetails.chartData.label);
@@ -170,11 +171,11 @@ angular.module('sntRover')
 					var fontSize;
 
 					if (totalRowsPresent > 20) {
-						fontSize = isBarText ? "0px" :"10px";
+						fontSize = isBarText ? "0px" : "10px";
 					} else if (totalRowsPresent > 15) {
-						fontSize = isBarText ? "8px" :"12px";
+						fontSize = isBarText ? "8px" : "12px";
 					} else {
-						fontSize = isBarText ? "10px" :"13px";
+						fontSize = isBarText ? "10px" : "13px";
 					}
 
 					return fontSize;
@@ -252,7 +253,7 @@ angular.module('sntRover')
 					});
 
 				// TODO: Delete commented code after verifying total count
-				
+
 				// var isSmallBarItem = function(item) {
 				// 	var itemPercantage = item.count * 100 / maxValueInBotheDirections;
 
@@ -324,100 +325,106 @@ angular.module('sntRover')
 						yOffset: 0
 					});
 				}
-				
+
 				var rightSideLegendDiv = d3.select("#right-side-legend");
 				var arrivalsLegendData = {
-                    "title": "Arrivals",
-                    "id": "arrivals-right-title",
-                    "margin_top": 0,
-                    "items": [{
-                        "id": "right-legend-early-checkin",
-                        "class": legendColorMappings["Early Check in"],
-                        "label": "Early Check in",
-                        "count": totalActionsCount.early_checkin
-                    },
-                    {
-                        "id": "right-legend-checkin",
-                        "class": legendColorMappings["Checkin"],
-                        "label": "Checkin",
-                        "count": totalActionsCount.checkin
-                    },{
-                        "id": "right-legend-vip-checkin",
-                        "class": legendColorMappings["VIP checkin"],
-                        "label": "VIP checkin",
-                        "count": totalActionsCount.vip_checkin
-                    }]
-                };
-                var departuresLegendData = {
-                    "title": "Departures",
-                    "id": "departures-right-title",
-                    "margin_top": 10,
-                    "items": [{
-                        "id": "right-legend-vip-checkout",
-                        "class": legendColorMappings["VIP checkout"],
-                        "label": "VIP checkout",
-                        "count": totalActionsCount.vip_checkout
-                    },
-                    {
-                        "id": "right-legend-checkout",
-                        "class": legendColorMappings["Checkout"],
-                        "label": "Checkout",
-                        "count": totalActionsCount.checkout
-                    },
-                    {
-                        "id": "right-legend-late-checkout",
-                        "class": legendColorMappings["Late checkout"],
-                        "label": "Late checkout",
-                        "count": totalActionsCount.late_checkout
-                    }]
-                };
+					"title": "Arrivals",
+					"id": "arrivals-right-title",
+					"margin_top": 0,
+					"items": [{
+						"id": "right-legend-early-checkin",
+						"class": legendColorMappings["Early Check in"],
+						"label": "Early Check in",
+						"count": totalActionsCount.early_checkin
+					}, {
+						"id": "right-legend-checkin",
+						"class": legendColorMappings["Checkin"],
+						"label": "Checkin",
+						"count": totalActionsCount.checkin
+					}, {
+						"id": "right-legend-vip-checkin",
+						"class": legendColorMappings["VIP checkin"],
+						"label": "VIP checkin",
+						"count": totalActionsCount.vip_checkin
+					}]
+				};
+				var departuresLegendData = {
+					"title": "Departures",
+					"id": "departures-right-title",
+					"margin_top": 10,
+					"items": [{
+						"id": "right-legend-vip-checkout",
+						"class": legendColorMappings["VIP checkout"],
+						"label": "VIP checkout",
+						"count": totalActionsCount.vip_checkout
+					}, {
+						"id": "right-legend-checkout",
+						"class": legendColorMappings["Checkout"],
+						"label": "Checkout",
+						"count": totalActionsCount.checkout
+					}, {
+						"id": "right-legend-late-checkout",
+						"class": legendColorMappings["Late checkout"],
+						"label": "Late checkout",
+						"count": totalActionsCount.late_checkout
+					}]
+				};
 
-                rvAnalyticsHelperSrv.addLegendItems(legendColorMappings, rightSideLegendDiv, arrivalsLegendData);
-                rvAnalyticsHelperSrv.addLegendItems(legendColorMappings, rightSideLegendDiv, departuresLegendData);
+				rvAnalyticsHelperSrv.addLegendItems(legendColorMappings, rightSideLegendDiv, arrivalsLegendData);
+				rvAnalyticsHelperSrv.addLegendItems(legendColorMappings, rightSideLegendDiv, departuresLegendData);
 
-                d3.select(".x.axis path").style("stroke", "#D8D8D8");
-				
+				d3.select(".x.axis path").style("stroke", "#D8D8D8");
+
 				$scope.$emit('REFRESH_ANALTICS_SCROLLER');
 				$scope.screenData.hideChartData = false;
 			};
 
 			var onBarChartClick = function() {
-                return;
-            };
-
-            var renderfdWorkloadChart = function() {
-                rvFrontOfficeAnalyticsSrv.fdWorkload($scope.dashboardFilter.datePicked).then(function(data) {
-                    var chartDetails = {
-                        chartData: data,
-                        onBarChartClick: onBarChartClick
-                    };
-                     $timeout(function() {
-                        drawWorkLoadChart(chartDetails);
-
-                    	rvAnalyticsHelperSrv.addChartHeading($scope.screenData.mainHeading,
-                                                 $scope.screenData.analyticsDataUpdatedTime);
-                    }, 50);
-                });
-            };
+				return;
+			};
+			var chartDetails;
+			var drawChartAndAddHeading = function(chartDetails) {
+				$timeout(function() {
+					$scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
+					drawWorkLoadChart(chartDetails);
+					rvAnalyticsHelperSrv.addChartHeading($scope.screenData.mainHeading,
+						$scope.screenData.analyticsDataUpdatedTime);
+				}, 50);
+			};
+			var renderfdWorkloadChart = function() {
+				rvFrontOfficeAnalyticsSrv.fdWorkload($scope.dashboardFilter.datePicked).then(function(data) {
+					chartDetails = {
+						chartData: data,
+						onBarChartClick: onBarChartClick
+					};
+					drawChartAndAddHeading(chartDetails);
+				});
+			};
 			var getArrivalManagementChartData = function(date) {
-                $scope.screenData.displayMode = 'CHART_DETAILS';
-                $scope.dashboardFilter.selectedAnalyticsMenu = 'FO_ARRIVALS';
-                $('base').attr('href', "/");
-                var params = {
-                    "date": $scope.dashboardFilter.datePicked,
-                    "isFromFrontDesk": true
-                };
-                var options = {
-                    params: params,
-                    successCallBack: function(response) {
-                        $scope.$emit('CHART_API_SUCCESS', response);
-                        renderfdWorkloadChart();
-                    }
-                };
+				$scope.screenData.displayMode = 'CHART_DETAILS';
+				$scope.dashboardFilter.selectedAnalyticsMenu = 'FO_WORK_LOAD';
+				$('base').attr('href', "/");
+				var params = {
+					"date": $scope.dashboardFilter.datePicked,
+					"isFromFrontDesk": true
+				};
+				var options = {
+					params: params,
+					successCallBack: function(response) {
+						$scope.$emit('CHART_API_SUCCESS', response);
+						renderfdWorkloadChart();
+					}
+				};
 
-                $scope.callAPI(rvAnalyticsSrv.initRoomAndReservationApis, options);
-            };
+				$scope.callAPI(rvAnalyticsSrv.initRoomAndReservationApis, options);
+			};
 
-            $scope.$on('GET_FO_WORKLOAD', getArrivalManagementChartData);
+			$scope.$on('GET_FO_WORKLOAD', getArrivalManagementChartData);
+
+			$scope.$on('ON_WINDOW_RESIZE', function() {
+				if ($scope.dashboardFilter.selectedAnalyticsMenu === 'FO_WORK_LOAD' && chartDetails) {
+					drawChartAndAddHeading(chartDetails);
+				}
+			});
 		}
 	]);

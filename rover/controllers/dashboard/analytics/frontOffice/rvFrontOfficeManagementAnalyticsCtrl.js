@@ -362,19 +362,24 @@ angular.module('sntRover')
                 return;
             };
 
+            var drawChartAndAddHeading = function() {
+                $timeout(function() {
+                    $scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
+                    drawArrivalManagementChart(chartDetails);
+                    rvAnalyticsHelperSrv.addChartHeading($scope.screenData.mainHeading,
+                        $scope.screenData.analyticsDataUpdatedTime);
+                }, 50);
+            };
+            var chartDetails;
+
             var renderFrontOfficeManagementChart = function() {
                 rvFrontOfficeAnalyticsSrv.fdArrivalsManagement($scope.dashboardFilter.datePicked).then(function(data) {
-                    var chartDetails = {
+                    chartDetails = {
                         chartData: data,
                         onBarChartClick: onBarChartClick
                     };
                     $scope.$emit('ROOM_TYPE_SHORTAGE_CALCULATED', rvAnalyticsSrv.roomTypesWithShortageData);
-                    
-                    $timeout(function() {
-                        drawArrivalManagementChart(chartDetails);
-                        rvAnalyticsHelperSrv.addChartHeading($scope.screenData.mainHeading,
-                            $scope.screenData.analyticsDataUpdatedTime);
-                    }, 50);
+                    drawChartAndAddHeading(chartDetails);
                 });
             };
 
@@ -398,5 +403,11 @@ angular.module('sntRover')
             };
 
             $scope.$on('GET_FO_ARRIVAL_MANAGEMENT', getArrivalManagementChartData);
+
+            $scope.$on('ON_WINDOW_RESIZE', function() {
+                if ($scope.dashboardFilter.selectedAnalyticsMenu === 'FO_ARRIVALS' && chartDetails) {
+                    drawChartAndAddHeading(chartDetails);
+                }
+            });
         }
     ]);

@@ -295,17 +295,19 @@ angular.module('sntRover')
         $scope.$emit('REFRESH_ANALTICS_SCROLLER');
         $scope.screenData.hideChartData = false;
       };
-
+      var chartData;
+      var drawChartAndAddHeading = function(chartData) {
+        $timeout(function() {
+          $scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
+          drawFrontOfficeActivity(chartData);
+          rvAnalyticsHelperSrv.addChartHeading($scope.screenData.mainHeading,
+            $scope.screenData.analyticsDataUpdatedTime);
+        }, 50);
+      };
       var renderFrontOfficeActivity = function() {
         rvFrontOfficeAnalyticsSrv.fdFoActivity($scope.dashboardFilter.datePicked).then(function(data) {
-          var chartData = data;
-
-          $timeout(function() {
-            drawFrontOfficeActivity(chartData);
-            
-            rvAnalyticsHelperSrv.addChartHeading($scope.screenData.mainHeading,
-              $scope.screenData.analyticsDataUpdatedTime);
-          }, 50);
+          chartData = data;
+          drawChartAndAddHeading(chartData);
         });
       };
 
@@ -329,5 +331,11 @@ angular.module('sntRover')
       };
 
       $scope.$on('GET_FO_ACTIVITY', getFoActivityChartData);
+
+      $scope.$on('ON_WINDOW_RESIZE', function() {
+        if ($scope.dashboardFilter.selectedAnalyticsMenu === 'FO_ARRIVALS' && chartData) {
+          drawChartAndAddHeading(chartData);
+        }
+      });
     }
   ]);
