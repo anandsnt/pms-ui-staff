@@ -3,7 +3,7 @@ angular.module('sntRover')
 		function($scope, sntActivity, $timeout, $filter, rvManagersAnalyticsSrv, rvAnalyticsHelperSrv, $rootScope) {
 
 			var shallowDecodedParams = "";
-			var distributionChartData = {};
+			var distributionChartData;
 			var initialBaseHrefValue = $('base').attr('href');
 			var isDistributionChartActive = function() {
 				return $scope.dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION';
@@ -338,20 +338,31 @@ angular.module('sntRover')
 
 			$scope.$on('GET_MANAGER_DISTRIBUTION', fetchDistributionChartData);
 
-			$scope.$on('ANALYTICS_FILTER_CHANGED', function(e, data) {
+			var redrawDistributionChartIfNeeded = function() {
 				if (!isDistributionChartActive()) {
 					return;
 				}
-				shallowDecodedParams = data;
 				fetchDistributionChartData();
+			};
+
+			$scope.$on('ANALYTICS_FILTER_CHANGED', function(e, data) {
+				shallowDecodedParams = data;
+				redrawDistributionChartIfNeeded();
 			});
 
 			$scope.$on('CHART_AGGGREGATION_CHANGED', function(e, data) {
-				if (!isDistributionChartActive()) {
+				setPageHeading();
+				redrawDistributionChartIfNeeded();
+			});
+			$scope.$on('ON_WINDOW_RESIZE', function() {
+				if (!isDistributionChartActive()){
 					return;
 				}
-				setPageHeading();
-				fetchDistributionChartData();
+				else if (distributionChartData) {
+					drawDistributionChart(distributionChartData);
+				} else {
+					redrawDistributionChartIfNeeded();
+				}
 			});
 		}
 	]);

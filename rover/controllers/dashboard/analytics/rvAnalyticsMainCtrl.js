@@ -140,6 +140,21 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 				   $scope.dashboardFilter.selectedAnalyticsMenu === 'FO_ARRIVALS';
 		};
 
+		$(window).on("resize.doResize", function() {
+			$scope.$apply(function() {
+				$timeout(function() {
+					// Clear existing chart
+					$scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
+					$scope.$broadcast('ON_WINDOW_RESIZE');
+				}, 0);
+			});
+		});
+
+		$scope.$on("$destroy", function() {
+			$(window).off("resize.doResize");
+			$('base').attr('href', "/");
+		});
+
 		(function() {
 			$scope.screenData = {
 				displayMode: 'GRID'

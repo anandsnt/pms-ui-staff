@@ -1028,5 +1028,10 @@ angular.module('sntRover')
 					handleFilterChangeForPerfomanceChart();
 				}
 			});
+			$scope.$on('ON_WINDOW_RESIZE', function () {
+				if ($scope.dashboardFilter.selectedAnalyticsMenu === 'PERFOMANCE') {
+					fetchPerfomanceChartData();
+				}
+			});
 		}
 	]);

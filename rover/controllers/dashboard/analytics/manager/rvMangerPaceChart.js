@@ -12,6 +12,7 @@ angular.module('sntRover')
 				return $scope.dashboardFilter.selectedAnalyticsMenu === 'PACE';
 			};
 			var shallowDecodedParams = "";
+			var paceChartData;
 			var drawPaceChart = function(chartData) {
 
 				$scope.screenData.mainHeading = $filter('translate')("AN_PACE");
@@ -279,6 +280,7 @@ angular.module('sntRover')
 						}
 						$scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
 						$scope.screenData.analyticsDataUpdatedTime = moment().format("MM ddd, YYYY hh:mm:ss a");
+						paceChartData = data;
 						drawPaceChart(data);
 
 					}
@@ -287,24 +289,32 @@ angular.module('sntRover')
 
 			};
 
+			var redrawPaceChartIfNeeded = function() {
+				if (!isPaceChartActive()) {
+					return;
+				}
+				fetchPaceChartData();
+			};
+
 			$scope.$on('GET_MANAGER_PACE', function() {
-				shallowDecodedParams = ""
-				fetchPaceChartData();
+				shallowDecodedParams = "";
+				$scope.dashboardFilter.selectedAnalyticsMenu = 'PACE';
+				redrawPaceChartIfNeeded();
 			});
-
 			$scope.$on('ANALYTICS_FILTER_CHANGED', function(e, data) {
-				if (!isPaceChartActive()) {
-					return;
-				}
 				shallowDecodedParams = data;
-				fetchPaceChartData();
+				redrawPaceChartIfNeeded();
 			});
-
-			$scope.$on('CHART_AGGGREGATION_CHANGED', function(e, data) {
-				if (!isPaceChartActive()) {
+			$scope.$on('CHART_AGGGREGATION_CHANGED', redrawPaceChartIfNeeded);
+			$scope.$on('ON_WINDOW_RESIZE', function() {
+				if (!isPaceChartActive()){
 					return;
 				}
-				fetchPaceChartData();
+				else if (paceChartData) {
+					drawPaceChart(paceChartData);
+				} else {
+					redrawPaceChartIfNeeded();
+				}
 			});
 		}
 	]);

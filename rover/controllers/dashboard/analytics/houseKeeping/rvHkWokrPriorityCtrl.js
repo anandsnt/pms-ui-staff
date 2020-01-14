@@ -365,23 +365,27 @@ angular.module('sntRover')
             var onLegendClick = function(type) {
                 return;
             };
-
+            var chartDetails;
+            var drawChartAndAddHeader = function(chartDetails) {
+                $timeout(function() {
+                    $scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
+                    drawHkWorkPriorityChart(chartDetails);
+                    rvAnalyticsHelperSrv.addChartHeading($scope.screenData.mainHeading,
+                        $scope.screenData.analyticsDataUpdatedTime);
+                }, 50);
+            };
             var renderHkWorkPriority = function() {
                 $scope.screenData.mainHeading = "";
                 // Calling HK Overview Build Graph
                 rvAnalyticsSrv.hkWorkPriority($scope.dashboardFilter.datePicked).then(function(data) {
 
-                    var chartDetails = {
+                    chartDetails = {
                         chartData: data,
                         onBarChartClick: onBarChartClick,
                         onLegendClick: onLegendClick
                     };
-
-                    $timeout(function() {
-                        drawHkWorkPriorityChart(chartDetails);
-                        rvAnalyticsHelperSrv.addChartHeading($scope.screenData.mainHeading,
-                        $scope.screenData.analyticsDataUpdatedTime);
-                    }, 50);
+                    drawChartAndAddHeader(chartDetails);
+                    
                 });
             };
 
@@ -406,5 +410,11 @@ angular.module('sntRover')
             };
 
             $scope.$on('GET_HK_WORK_PRIORITY', fetchHKWorkPriorityChartData);
+
+            $scope.$on('ON_WINDOW_RESIZE', function() {
+                if ($scope.dashboardFilter.selectedAnalyticsMenu === 'HK_WORK_PRIRORITY' && chartDetails) {
+                    drawChartAndAddHeader(chartDetails);
+                }
+            });
         }
     ]);

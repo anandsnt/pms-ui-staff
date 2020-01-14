@@ -362,25 +362,30 @@ angular.module('sntRover')
                 return;
             };
 
+            var chartDetails;
+            var drawChartAndAddHeader = function(chartDetails) {
+                $timeout(function() {
+                    $scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
+                    drawHkOverviewChart(chartDetails);
+                    rvAnalyticsHelperSrv.addChartHeading($scope.screenData.mainHeading,
+                        $scope.screenData.analyticsDataUpdatedTime);
+                }, 50);
+            };
             var renderHkOverview = function() {
                 $scope.screenData.mainHeading = "";
                 // Calling HK Overview Build Graph
                 rvAnalyticsSrv.hkOverview($scope.dashboardFilter.datePicked, false).then(function(data) {
-                    var chartDetails = {
+                    chartDetails = {
                         chartData: data,
                         onBarChartClick: onBarChartClick,
                         onLegendClick: onLegendClick
                     };
 
-                    $timeout(function() {
-                        drawHkOverviewChart(chartDetails);
-                        rvAnalyticsHelperSrv.addChartHeading($scope.screenData.mainHeading,
-                                                 $scope.screenData.analyticsDataUpdatedTime);
-                    }, 50);
+                    drawChartAndAddHeader(chartDetails);
                 });
             };
 
-            var fetchHKOverviewChartData = function(date, roomTypeId) {
+            var fetchHKOverviewChartData = function() {
                 $scope.screenData.displayMode = 'CHART_DETAILS';
                 $scope.dashboardFilter.selectedAnalyticsMenu = 'HK_OVERVIEW';
                 $('base').attr('href', "/");
@@ -400,5 +405,10 @@ angular.module('sntRover')
             };
 
             $scope.$on('GET_HK_OVERVIEW', fetchHKOverviewChartData);
+            $scope.$on('ON_WINDOW_RESIZE', function() {
+                if ($scope.dashboardFilter.selectedAnalyticsMenu === 'HK_OVERVIEW' && chartDetails) {
+                    drawChartAndAddHeader(chartDetails);
+                }
+            });
         }
     ]);
