@@ -90,6 +90,10 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
 
             summaryData = _.extend(summaryData, data.allotmentSummary);
 
+            if (summaryData.rate === '-1') {
+                summaryData.uniqId = '-1';
+            }
+
             if (!$scope.isInAddMode()) {
                 summaryData.block_from = new tzIndependentDate(summaryData.block_from);
                 summaryData.block_to = new tzIndependentDate(summaryData.block_to);
@@ -362,17 +366,11 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                 summaryData.block_from = $filter('date')(summaryData.block_from, $rootScope.dateFormatForAPI);
                 summaryData.block_to = $filter('date')(summaryData.block_to, $rootScope.dateFormatForAPI);
                 summaryData.release_date = $filter('date')(summaryData.release_date, $rootScope.dateFormatForAPI);
-                /**
-                 * We'll have to mandate the user to select a rate
-                 * Atleast custom rate should be selected manually
-                 * or show the rate selection box highlighter with yellow border.
-                 * So the code will change to not automatically select the
-                 * Custom rate.
-                 */
-                // if (!summaryData.rate) {
-                //     summaryData.rate = -1;
-                //     summaryData.contract_id = null;
-                // }
+
+                if (!summaryData.rate) {
+                    summaryData.rate = -1;
+                    summaryData.contract_id = null;
+                }
                 $scope.callAPI(rvAllotmentConfigurationSrv.updateAllotmentSummary, {
                     successCallBack: onAllotmentUpdateSuccess,
                     failureCallBack: onAllotmentUpdateFailure,
@@ -570,17 +568,19 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
         $scope.detachCard = function(cardType) {
             if (cardType === 'company')  {
                 $scope.allotmentConfigData.summary.company = {
-                    id: ""
+                    id: '',
+                    name: ''
                 };  
                 $scope.$broadcast("COMPANY_CARD_CHANGED");
 
             } else {
                 $scope.allotmentConfigData.summary.travel_agent = {
-                    id: ""
+                    id: '',
+                    name: ''
                 }; 
                 $scope.$broadcast("TA_CARD_CHANGED");
             }
-            $scope.updateAllotmentSummary();
+            $scope.updateAllotmentSummary(true);
         };
 
         // Cancel the detachment of CC/TA from group
