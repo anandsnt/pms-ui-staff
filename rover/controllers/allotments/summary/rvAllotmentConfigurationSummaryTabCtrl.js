@@ -30,10 +30,10 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 
 			for (var key in summaryMemento) {
 				if (!_.isEqual(currentSummaryData[key], summaryMemento[key])) {
-					return true;
+					return false;
 				}
 			}
-			return false;
+			return true;
 		};
 
 		/**
@@ -60,13 +60,13 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 											 targetElement.id === "cancel-action"
 											)
 										  ),
-				summaryDataNotChanged 	= !whetherSummaryDataChanged(),
 				demographicsOpen 		= $scope.allotmentSummaryData.isDemographicsPopupOpen,
 				updateInProgress 		= $scope.isUpdateInProgress;
 
-			if (incorrectTarget 	  || isInaddMode ||
-				summaryDataNotChanged || demographicsOpen ||
+			if (!$scope.updateAllotmentSummary ||
+				isInaddMode || incorrectTarget ||
 				!!$scope.focusedCompanyCard || !!$scope.focusedTravelAgent ||
+				whetherSummaryDataChanged() || demographicsOpen ||
 				updateInProgress ) {
 				// No need to call update summary
 				return;
@@ -529,12 +529,12 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		$scope.onRateChange = function() {
 			var summaryData = $scope.allotmentConfigData.summary,
 				uniqId = summaryData.uniqId,
-				rateId = uniqId.split(':')[0],
-				contractId = uniqId.split(':')[1];
+				rateId = uniqId && uniqId.split(':')[0],
+				contractId = uniqId && uniqId.split(':')[1];
 
 			$scope.allotmentConfigData.summary.contract_id = contractId;
 			$scope.allotmentConfigData.summary.rate = rateId;
-			if (!summaryData.allotment_id) {
+			if (!summaryData.allotment_id || !uniqId) {
 				return false;
 			}
 

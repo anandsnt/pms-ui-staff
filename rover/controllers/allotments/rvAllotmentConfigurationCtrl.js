@@ -327,8 +327,10 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
         };
 
         var refreshSummaryDataAfterUpdate = false,
+            updateAllotmentSummaryInProgress = false,
             onAllotmentUpdateSuccess = function(data) {
                 $scope.allotmentConfigData.summary.commission_details = data.commission_details;
+                updateAllotmentSummaryInProgress = false;
                 // client controllers should get an infromation whether updation was success
                 $scope.$broadcast("UPDATED_ALLOTMENT_INFO", angular.copy($scope.allotmentConfigData.summary));
                 $scope.allotmentSummaryMemento = angular.copy($scope.allotmentConfigData.summary);
@@ -345,6 +347,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                 $scope.$broadcast("FAILED_TO_UPDATE_ALLOTMENT_INFO", errorMessage);
                 $scope.errorMessage = errorMessage;
                 refreshSummaryDataAfterUpdate = false;
+                updateAllotmentSummaryInProgress = false;
                 return false;
             };
 
@@ -355,7 +358,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
         $scope.updateAllotmentSummary = function(reload) {
             reload = reload || false;
             if (rvPermissionSrv.getPermissionValue('EDIT_ALLOTMENT_SUMMARY')) {
-                if (angular.equals($scope.allotmentSummaryMemento, $scope.allotmentConfigData.summary)) {
+                if (angular.equals($scope.allotmentSummaryMemento, $scope.allotmentConfigData.summary) || updateAllotmentSummaryInProgress) {
                     return false;
                 }
                 if (reload) {
@@ -370,7 +373,9 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                 if (!summaryData.rate) {
                     summaryData.rate = -1;
                     summaryData.contract_id = null;
+                    summaryData.uniqId = '-1';
                 }
+                updateAllotmentSummaryInProgress = true;
                 $scope.callAPI(rvAllotmentConfigurationSrv.updateAllotmentSummary, {
                     successCallBack: onAllotmentUpdateSuccess,
                     failureCallBack: onAllotmentUpdateFailure,
@@ -434,7 +439,10 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             var summaryData = $scope.allotmentConfigData.summary;
 
             if (summaryData.company && summaryData.company.name === "") {
-                summaryData.company = null;
+                summaryData.company = {
+                    id: '',
+                    name: ''
+                };
             }
         };
 
@@ -442,7 +450,10 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             var summaryData = $scope.allotmentConfigData.summary;
 
             if (summaryData.travel_agent && summaryData.travel_agent.name === "") {
-                summaryData.travel_agent = null;
+                summaryData.travel_agent = {
+                    id: '',
+                    name: ''
+                };
             }
         };
 
