@@ -107,7 +107,8 @@ module.exports = {
             'hammetts': [themeCSSRoot + 'hammetts.less'],
             'lochardil': [themeCSSRoot + 'lochardil.less'],
             'perle-oban': [themeCSSRoot + 'perle-oban.less'],
-            'why-columbia': [themeCSSRoot + 'why-columbia.less']
+            'why-columbia': [themeCSSRoot + 'why-columbia.less'],
+            'why-houston': [themeCSSRoot + 'why-houston.less']
         };
     }
 };
