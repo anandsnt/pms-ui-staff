@@ -48,7 +48,8 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
     });
     $scope.invoice_currency = settingsAndParamsData.invoice_currency; 
     $scope.invoice_currency = angular.isDefined($scope.invoice_currency) ? $scope.invoice_currency.id : '';
-    $scope.payment_currency = settingsAndParamsData.default_payment_currency;
+    $scope.default_payment_currency = settingsAndParamsData.default_payment_currency;
+    $scope.default_payment_currency = angular.isDefined($scope.default_payment_currency) ? $scope.default_payment_currency.id : '';
 
 
     /**
@@ -75,7 +76,7 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
             'auto_charge_deposit': $scope.auto_charge_deposit,
             'is_multi_currency_enabled': $scope.is_multi_currency_enabled,
             'invoice_currency': ($scope.invoice_currency === null) ? '' : parseInt($scope.invoice_currency, 10),
-            'default_payment_currency': ($scope.payment_currency === null) ? '' : parseInt($scope.payment_currency, 10),
+            'default_payment_currency': ($scope.default_payment_currency === null) ? '' : parseInt($scope.default_payment_currency, 10),
             'rate_currencies': $scope.selectedRateCurrencies,
             'payment_currencies': $scope.selectedPaymentCurrencies,
             'should_post_during_eod': $scope.should_post_during_eod
