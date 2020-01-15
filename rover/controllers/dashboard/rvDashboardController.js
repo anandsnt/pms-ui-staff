@@ -451,6 +451,14 @@ sntRover.controller('RVdashboardController',
                         });
                     });
                 });
+
+                $scope.refreshAnalyticsChart = function() {
+                    $scope.$broadcast('REFRESH_ANALYTCIS_CHART');
+                };
+
+                $scope.onAnlayticsFilterChanged = function() {
+                    $scope.$broadcast('ANALYTICS_FILTER_CHANGED');
+                };
             }
 
         }]);

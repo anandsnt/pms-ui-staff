@@ -1760,10 +1760,16 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return - None
 		 */
 		var setDatePickers = function() {
-			var summaryData = $scope.allotmentConfigData.summary;
+			var summaryData = $scope.allotmentConfigData.summary,
+				businessDate = new tzIndependentDate($rootScope.businessDate);
 
 			// default start date
-			$scope.timeLineStartDate = new tzIndependentDate($rootScope.businessDate);
+			$scope.timeLineStartDate = new tzIndependentDate(summaryData.block_from);
+
+			if (summaryData.block_from < businessDate) {
+				$scope.timeLineStartDate = businessDate;
+			}
+
 			$scope.timeLineEndDate = new tzIndependentDate(summaryData.block_to);
 
 			// referring data model -> from allotment summary

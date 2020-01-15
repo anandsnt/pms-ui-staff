@@ -20,14 +20,26 @@ ng-if="showDashboard && !dashboardFilter.analyticsActive">
 
 	</div>
 </section>
-<section id="dashboard" class="content scrollable analytics" role="main"
-         ng-iscroll="analytics_scroller" ng-iscroll-delay="100"
-         ng-if="dashboardFilter.analyticsActive">
-        <div class="wrapper">
-            <ng-include src="'/assets/partials/analytics/rvManagerAnalytics.html'" ng-controller="RVManagerAnalyticsController">
-            </ng-include>
-        </div>
- </section>
+
+<ng-include src="'/assets/partials/search/rvManagerAnalyticsHeader.html'" ng-if="dashboardFilter.analyticsActive && dashboardFilter.isManagerDashboard"></ng-include>
+
+<div  ng-if="dashboardFilter.analyticsActive" ng-controller="RVManagerAnalyticsController">
+	<section id="dashboard" class="content scrollable analytics" role="main"
+	         ng-iscroll="analytics_scroller" ng-iscroll-delay="100"
+	         ng-if="!dashboardFilter.gridViewActive">
+	        <div class="wrapper">
+	            <ng-include src="'/assets/partials/analytics/rvManagerAnalytics.html'">
+	            </ng-include>
+	        </div>
+	 </section>
+
+	<section id="dashboard-grid" class="analytics-grid" role="main"
+	         ng-iscroll="analytics_scroller" ng-iscroll-delay="100"
+	         ng-if="dashboardFilter.gridViewActive"
+	         ng-include="'/assets/partials/analytics/rvManagerDistributionGrid.html'">
+	</section>
+</div>
+
 
 <div class="release-notes" ng-if="!!activeNotification && showNotificationForCurrentUser">
 	<div class="release-notes_hide">

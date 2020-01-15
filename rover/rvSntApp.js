@@ -152,4 +152,3 @@ var GlobalApp = function() {
 
 sntapp = new GlobalApp();
 // sntapp.enableCardSwipeDebug();
-

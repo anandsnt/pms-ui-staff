@@ -1,8 +1,4 @@
 <div class="wrapper">
-    <h2>
-        {{ screenData.mainHeading }}
-    </h2>
-    <p ng-if="!screenData.hideChartData">Last update: {{ screenData.analyticsDataUpdatedTime }}</p>
     <!-- Chart -->
     <div class="analytics-chart with-legend-left with-legend-right">
         <dl class="chart-legend legend-left" id="left-side-legend">
@@ -10,10 +6,6 @@
         <div id="analytics-chart" class="chart-content">
             <div id="d3-plot">
             </div>
-            <button type="button" class="button white refresh-chart" ng-if="!screenData.hideChartData" ng-click="refreshChart()">
-                <span class="icons icon-reset"></span>
-                Refresh Chart
-            </button>
             <svg>
                 <defs>
                     <!-- Shadow -->

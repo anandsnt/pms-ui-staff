@@ -305,7 +305,6 @@ var TimelineResizeGrip = React.createClass({
 				classes             = "set-times " + label_class,
 				time_txt            = '';
 
-
 			if (currentResizeItem) {
 				var dateDirection = new Date(currentResizeItem[direction]);
 
@@ -334,6 +333,10 @@ var TimelineResizeGrip = React.createClass({
 
 			if (this.props.edit.active) {
 				classes += " editing";
+				// CICO-73467 : Disable ext-shortening for Night Components in Edit Mode.
+				if (!this.props.edit.originalItem.is_hourly) {
+					classes += ' disable-element';
+				}
 			}
 
 			return React.DOM.div({

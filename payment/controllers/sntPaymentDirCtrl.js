@@ -1053,10 +1053,6 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 var selectedPaymentType;
 
-                if (shouldReset && $scope.payment.isEditable && $scope.selectedPaymentType === 'GIFT_CARD') {
-                    $scope.payment.amount = 0;
-                }
-
                 calculateFee();
                 selectedPaymentType = _.find($scope.paymentTypes, {
                     name: $scope.selectedPaymentType
@@ -1459,7 +1455,7 @@ angular.module('sntPay').controller('sntPaymentController',
              * @returns {undefined} undefined
              */
             function onAmountChange() {
-                $scope.payment.amount = parseFloat($scope.amount || 0);
+                $scope.payment.amount = $scope.amount || 0;
                 initialPaymentAmount  = angular.copy($scope.payment.amount);
                 calculateFee();
             }

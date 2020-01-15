@@ -2773,6 +2773,7 @@ sntRover.controller('RVbillCardController',
 					*/
 					// this will show the popup with full bill
 					$timeout(function() {
+                        $rootScope.$apply();
 
 						if (sntapp.cordovaLoaded) {
 							cordova.exec(billCardPrintCompleted,
@@ -2785,7 +2786,7 @@ sntRover.controller('RVbillCardController',
 							window.print();
 							billCardPrintCompleted();
 						}
-					}, 700);
+					}, 1500);
 			    
 			};
 
@@ -3190,8 +3191,11 @@ sntRover.controller('RVbillCardController',
 			&& $scope.reservationBillData.bills[$scope.currentActiveBill].is_active 
 			&& ($scope.reservationBillData.reservation_status === 'CHECKING_OUT'
                 || $scope.reservationBillData.reservation_status === 'CHECKEDIN' 
-                || $scope.reservationBillData.reservation_status === 'CHECKEDOUT' 
-                || $scope.reservationBillData.reservation_status === 'NOSHOW')) {
+                || $scope.reservationBillData.reservation_status === 'CHECKEDOUT'
+                || $scope.reservationBillData.reservation_status === 'NOSHOW'
+                || $scope.reservationBillData.reservation_status === 'CANCELED'
+
+            )) {
 			$scope.isInvoiceStepOneActive = true;
 			$scope.isInvoiceStepThreeActive = false;
 			$scope.shouldGenerateFinalInvoice = true;

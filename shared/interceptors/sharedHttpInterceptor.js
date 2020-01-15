@@ -196,6 +196,8 @@ angular.module('sharedHttpInterceptor').factory('sharedHttpInterceptor', [
             },
             responseError: function(rejection) {
                 if (rejection.status === 401) { // 401- Unauthorized
+                    // CICO-61147
+                    $window.localStorage.removeItem('jwt');
                     // so lets redirect to login page
                     $window.location.href = '/logout';
                 }

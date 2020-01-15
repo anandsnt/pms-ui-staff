@@ -104,7 +104,12 @@ module.exports = {
             'local-house': [themeCSSRoot + 'local-house.less'],
             'travel-24': [themeCSSRoot + 'travel-24.less'],
             'sage-inn': [themeCSSRoot + 'sage-inn.less'],
-            'hammetts': [themeCSSRoot + 'hammetts.less']
+            'hammetts': [themeCSSRoot + 'hammetts.less'],
+            'lochardil': [themeCSSRoot + 'lochardil.less'],
+            'perle-oban': [themeCSSRoot + 'perle-oban.less'],
+            'why-columbia': [themeCSSRoot + 'why-columbia.less'],
+            'why-houston': [themeCSSRoot + 'why-houston.less'],
+            'victory-house': [themeCSSRoot + 'victory-house.less']
         };
     }
 };

@@ -164,6 +164,17 @@ sntRover.controller('reservationDetailsController',
 					origin: 'STAYCARD'
 				}
 			};
+		} else if ($scope.previousState.name === 'rover.diary') {
+			setNavigationBookMark();
+			$rootScope.setPrevState = {
+				title: 'ROOM DIARY',
+				name: 'rover.diary',
+				param: {
+					id: $rootScope.stayCardStateBookMark.previousStateParams.id,
+					activeTab: "DIARY",
+					origin: 'STAYCARD'
+				}
+			};
 		} else if ($stateParams.isFromDiary && !$rootScope.isReturning()) {
 			setNavigationBookMark();
 			$rootScope.setPrevState = {
@@ -826,13 +837,24 @@ sntRover.controller('reservationDetailsController',
 
 		// Handle Navigation to Nightly Diary
 		var navigateToNightlyDiary = function() {
-            $state.go('rover.nightlyDiary', {
+			var navigationParams = {
                 start_date: $scope.reservationData.reservation_card.arrival_date,
                 reservation_id: $scope.reservationData.reservation_card.reservation_id,
                 confirm_id: $scope.reservationData.reservation_card.confirmation_num,
                 room_id: $scope.reservationData.reservation_card.room_id,
                 origin: 'STAYCARD_NIGHTS'
-            });
+            };
+            
+            if (navigationParams.room_id === '') {
+				// Reservation with Room is not assigned.
+				navigationParams.action = 'SELECT_UNASSIGNED_RESERVATION';
+			}
+			else {
+				// Reservation with Room is assigned already.
+				navigationParams.action = 'SELECT_RESERVATION';
+			}
+
+            $state.go('rover.nightlyDiary', navigationParams);
         };
 
 		$scope.extendNights = function() {
@@ -1639,7 +1661,7 @@ sntRover.controller('reservationDetailsController',
 
 		$scope.disableAuthorizeButton = function() {
             return $scope.isShijiOfflineAuthCodeEmpty() || !$scope.authData.manualCCAuthPermission ||
-                parseInt($scope.authData.authAmount) <= 0 || $scope.authData.selectedCardDetails.bill_no === 'N/A' ||
+				parseFloat($scope.authData.authAmount) <= 0 || $scope.authData.selectedCardDetails.bill_no === 'N/A' ||
                 isNaN(parseInt($scope.authData.authAmount));
         };
 

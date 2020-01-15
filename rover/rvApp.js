@@ -161,7 +161,7 @@ sntRover.run([
 			};
 
 			this.getOriginState = function() {
-				var ret, name, params, title;
+				var ret, name, param, title;
 
 				if (self.fromState) {
 					name  = self.fromState;
@@ -282,8 +282,13 @@ sntRover.run([
 			// so what the hell, put them here
 			var options = $rootScope.setPrevState,
 				name    = !!options.name ? options.name : $_prevStateName,
-				param   = !!options.name && !!options.param ? options.param : (!!$_prevStateParam ? $_prevStateParam : {}),
+				param   = !!options.name && !!options.param ? options.param :
+							(!!$_prevStateParam ? angular.copy($_prevStateParam) : {}),
 				reverse = typeof options.reverse === 'boolean' ? true : false;
+
+			// angular.copy is used above because an error was consoled
+			// that param.useCache can not be updated,
+			// Causing back navigation from D-diary to error out.
 
 			// if currently disabled, return
 			if ( options.disable ) {
@@ -400,6 +405,9 @@ sntRover.run([
 			$_prevStateName  = fromState.name;
 			$_prevStateParam = fromParams;
 
+			if (toState.name === 'rover.diary') {
+				$rootScope.$broadcast('setDiaryBackButton');
+			}
 		});
 
 
