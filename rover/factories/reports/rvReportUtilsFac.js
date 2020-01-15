@@ -2655,6 +2655,7 @@ angular.module('reportsModule')
                 };
 
             };
+
             reportsSubSrv.fetchChargeNAddonGroups().then(function(chargeGroupsArr) {
                 reportsSubSrv.fetchChargeCodes().then(populateChargeGroupsAndChargeCodes.bind(null, chargeGroupsArr));
             });
