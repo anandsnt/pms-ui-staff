@@ -2559,6 +2559,109 @@ angular.module('reportsModule')
                 .then(populateRateTypesAndRates);
         };
 
+        /**
+         * Fill charge groups and charge codes values
+         * @param {Object} filter filter object
+         * @param {Object} filterValues - object holding filter values
+         * @return {void}
+         */
+        factory.fillChargeGroupsAndChargeCodes = function(filter, filterValues) {
+
+            var populateChargeGroupsAndChargeCodes = function (chargeGroupsArr, chargeCodesArr) {
+                var processedCGCC = __adjustChargeGroupsCodes(chargeGroupsArr, chargeCodesArr, 'REMOVE_PAYMENTS', true),
+                    chargeGroupsCopy = angular.copy( processedCGCC.chargeGroups ),
+                    chargeCodesCopy = angular.copy( processedCGCC.chargeCodes ),
+                    selectedChargeGroupIdx,
+                    selectedChargeCodeIdx;
+
+                delete filter.hasByChargeGroup;
+                delete filter.hasByChargeCode;
+
+                if (filterValues && filterValues.charge_group_ids) {
+                    // _.each (filterValues.charge_group_ids, function (id) {
+                    //     selectedChargeGroup = _.findWhere(chargeGroupsCopy, {id: id});
+                    //     selectedChargeGroup.selected = true;
+                    // });
+                    chargeGroupsCopy = _.map(chargeGroupsCopy, function (chargeGroup) {
+                        selectedChargeGroupIdx = _.indexOf(filterValues.charge_group_ids, chargeGroup.id);
+                        chargeGroup.selected = false;
+                        if (selectedChargeGroupIdx > -1) {
+                            chargeGroup.selected = true;
+                        }
+
+                        return chargeGroup;
+                    });
+                }
+
+                filter.hasByChargeGroup = {
+                    data: chargeGroupsCopy,
+                    options: {
+                        selectAll: filterValues && filterValues.charge_group_ids ? filterValues.charge_group_ids.length === chargeGroupsCopy.length : true,
+                        hasSearch: false,
+                        key: 'name'
+                    },
+                    affectsFilter: {
+                        name: 'hasByChargeCode',
+                        process: function(filter, selectedItems) {
+                            _.each(filter.originalData, function (od) {
+                                od.disabled = true;
+                            });
+                            /**/
+                            _.each(filter.originalData, function (od) {
+                                _.each(od.associcated_charge_groups, function (cg) {
+                                    _.each(selectedItems, function (si) {
+                                        if (cg.id === si.id) {
+                                            od.disabled = false;
+                                        }
+                                    });
+                                });
+                            });
+                            /**/
+                            filter.updateData();
+                        }
+                    }
+                };
+
+                if (filterValues && filterValues.charge_code_ids) {
+                    
+                    chargeCodesCopy = _.map(chargeCodesCopy, function (chargeCode) {
+                        selectedChargeCodeIdx = _.indexOf(filterValues.charge_code_ids, chargeCode.id);
+                        chargeCode.selected = false;
+                        if (selectedChargeCodeIdx > -1) {
+                            chargeCode.selected = true;
+                        }
+                        return chargeCode;
+                    });
+                }
+
+                filter.hasByChargeCode = {
+                    data: chargeCodesCopy,
+                    originalData: chargeCodesCopy,
+                    options: {
+                        selectAll: filterValues && filterValues.charge_code_ids ? filterValues.charge_code_ids.length === chargeCodesCopy.length : true,
+                        hasSearch: false,
+                        key: 'name'
+                    },
+                    updateData: function() {
+                        var enabled = [];
+
+                        _.each (this.originalData, function (od) {
+                            if ( ! od.disabled ) {
+                                enabled.push(od);
+                            }
+                        });
+                        this.data = enabled;
+                    }
+                };
+
+            };
+
+            reportsSubSrv.fetchChargeNAddonGroups().then(function(chargeGroupsArr) {
+                reportsSubSrv.fetchChargeCodes().then(populateChargeGroupsAndChargeCodes.bind(null, chargeGroupsArr));
+            });
+            
+        };
+
         return factory;
     }
 ]);

@@ -2773,6 +2773,7 @@ sntRover.controller('RVbillCardController',
 					*/
 					// this will show the popup with full bill
 					$timeout(function() {
+                        $rootScope.$apply();
 
 						if (sntapp.cordovaLoaded) {
 							cordova.exec(billCardPrintCompleted,
@@ -2785,7 +2786,7 @@ sntRover.controller('RVbillCardController',
 							window.print();
 							billCardPrintCompleted();
 						}
-					}, 700);
+					}, 1500);
 			    
 			};
 
