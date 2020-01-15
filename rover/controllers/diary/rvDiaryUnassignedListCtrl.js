@@ -167,16 +167,19 @@ angular.module('sntRover')
                         return (isNaN($scope.queryString) &&
                             reservation.primary_guest.toUpperCase().includes($scope.queryString.toUpperCase())) ||
                             (!isNaN($scope.queryString) &&
-                            reservation.confirmation_number.toString().includes($scope.queryString))   
+                            reservation.confirmation_number.toString().includes($scope.queryString));
                     });
                 }
                 else {
                     displayResults = reservationCache;
                 }
                 angular.forEach(displayResults, function(reservation) {
-                    moment($scope.gridProps.filter.arrival_date).format('YYYY-MM-DD') === reservation.arrival_date ?
-                    $scope.currentBookings.push(reservation) :
-                    $scope.futureBookings.push(reservation);
+                    if (moment($scope.gridProps.filter.arrival_date).format('YYYY-MM-DD') === reservation.arrival_date) {
+                        $scope.currentBookings.push(reservation);
+                    }
+                    else {
+                        $scope.futureBookings.push(reservation);
+                    }
                 });
             };
 
@@ -193,6 +196,7 @@ angular.module('sntRover')
              */
             $scope.getNextDate = function(forHeader) {
                 var nextDate = moment($scope.gridProps.filter.arrival_date).add(1, 'day');
+
                 return forHeader ? nextDate.format('DD MMM YYYY') : nextDate.format('YYYY-MM-DD');
             };
 
@@ -201,6 +205,7 @@ angular.module('sntRover')
              */
             $scope.getActiveDate = function(forHeader) {
                 var activeDate = moment($scope.gridProps.filter.arrival_date);
+
                 return forHeader ? activeDate.format('DD MMM YYYY') : activeDate.format('YYYY-MM-DD');
             };
 
