@@ -106,7 +106,8 @@ module.exports = {
             'sage-inn': [themeCSSRoot + 'sage-inn.less'],
             'hammetts': [themeCSSRoot + 'hammetts.less'],
             'lochardil': [themeCSSRoot + 'lochardil.less'],
-            'perle-oban': [themeCSSRoot + 'perle-oban.less']
+            'perle-oban': [themeCSSRoot + 'perle-oban.less'],
+            'why-houston': [themeCSSRoot + 'why-houston.less']
         };
     }
 };
