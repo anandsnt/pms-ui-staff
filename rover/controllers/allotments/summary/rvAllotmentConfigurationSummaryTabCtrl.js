@@ -29,11 +29,12 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			var currentSummaryData = $scope.allotmentConfigData.summary;
 
 			for (var key in summaryMemento) {
+				// if any of the values are not equal/same, there is change, return true
 				if (!_.isEqual(currentSummaryData[key], summaryMemento[key])) {
-					return false;
+					return true;
 				}
 			}
-			return true;
+			return false;
 		};
 
 		/**
@@ -63,10 +64,9 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				demographicsOpen 		= $scope.allotmentSummaryData.isDemographicsPopupOpen,
 				updateInProgress 		= $scope.isUpdateInProgress;
 
-			if (!$scope.updateAllotmentSummary ||
-				isInaddMode || incorrectTarget ||
+			if (isInaddMode || incorrectTarget ||
 				!!$scope.focusedCompanyCard || !!$scope.focusedTravelAgent ||
-				whetherSummaryDataChanged() || demographicsOpen ||
+				!whetherSummaryDataChanged() || demographicsOpen ||
 				updateInProgress ) {
 				// No need to call update summary
 				return;
