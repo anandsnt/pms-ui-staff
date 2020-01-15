@@ -10,7 +10,8 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
     'zsUtilitySrv',
     'zsPaymentSrv',
     'zsGeneralSrv',
-    function($scope, $rootScope, $state, $stateParams, zsEventConstants, zsCheckinSrv, $timeout, $sce, zsUtilitySrv, zsPaymentSrv, zsGeneralSrv) {
+    '$controller',
+    function($scope, $rootScope, $state, $stateParams, zsEventConstants, zsCheckinSrv, $timeout, $sce, zsUtilitySrv, zsPaymentSrv, zsGeneralSrv, $controller) {
 
 		/** ********************************************************************************************
 		 **		Please note that, not all the stateparams passed to this state will not be used in this state, 
@@ -29,6 +30,10 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 
         BaseCtrl.call(this, $scope);
         var paymentParams = zsPaymentSrv.getPaymentData();
+
+         $controller('zsCheckinCommonBaseCtrl', {
+               $scope: $scope
+         });
 
 		/**
 		 * [checkIfEmailIsBlackListedOrValid description]
@@ -143,9 +148,10 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
                     $stateParams.email = $stateParams.guest_email;
                     $state.go('zest_station.checkInScanPassport', $stateParams);
                 } else {
-                    $scope.callAPI(zsCheckinSrv.checkInGuest, options);
+                    $scope.$emit('CHECK_IF_REQUIRED_GUEST_DETAILS_ARE_PRESENT', {
+                        checkinParams: _.extend({}, checkinParams, $stateParams)
+                    });
                 }
-
             }
         };
 

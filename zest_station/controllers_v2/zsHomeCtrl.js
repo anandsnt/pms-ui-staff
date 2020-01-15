@@ -74,7 +74,7 @@ sntZestStation.controller('zsHomeCtrl', [
         var setToDefaultLanguage = function(checkIfDefaultLanguagIsSet) {
 			// assigning default language
             if ($scope.languages.length) {
-                var defaultLangName = zestStationSettings.zest_lang.default_language,
+                var defaultLangName = zestStationSettings.zest_lang ? zestStationSettings.zest_lang.default_language : null,
                     defaultLanguage = _.findWhere($scope.languages, {
                         name: defaultLangName
                     });
@@ -267,7 +267,9 @@ sntZestStation.controller('zsHomeCtrl', [
             var langShortCode = language.code;
 
             // keep track of lang short code, for editor to save / update tags when needed
-            $scope.languageCodeSelected(langShortCode, language.code);
+            if (zsGeneralSrv.isZestStationEnabled) {
+                $scope.languageCodeSelected(langShortCode, language.code);
+            }
 
             $translate.use(langShortCode);
             $scope.selectedLanguage = language;
@@ -289,7 +291,10 @@ sntZestStation.controller('zsHomeCtrl', [
             zsCheckinSrv.setCurrentReservationIdDetails({});
 			// eject if any key card is inserted
             $scope.$emit('EJECT_KEYCARD');
-			// set this to false always on entering home screen
+            // set this to false always on entering home screen
+            if (!$scope.zestStationData) {
+                $scope.zestStationData = {};
+            }
             $scope.zestStationData.keyCardInserted = false;
             $scope.zestStationData.makeTotalKeys = 0;
             $scope.zestStationData.makingAdditionalKey = false;
@@ -343,7 +348,7 @@ sntZestStation.controller('zsHomeCtrl', [
                 $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS, params);
                 $scope.addReasonToOOSLog('WORKSTATION_OOS');
                 $state.go('zest_station.outOfService');
-            } else {
+            } else if (zsGeneralSrv.isZestStationEnabled) {
                 $scope.setScreenIcon('bed');
             }
             $scope.setScroller('language-list', {

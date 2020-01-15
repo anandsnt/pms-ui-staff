@@ -677,6 +677,12 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         url: '/crmInterfaces'
     });
 
+    $stateProvider.state('admin.posInterfacesGroup', {
+        templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
+        controller: 'ADInterfaceSubMenuCtrl',
+        url: '/posInterfaces'
+    });
+
     $stateProvider.state('admin.stationary', {
         templateUrl: '/assets/partials/stationary/adStationary.html',
         controller: 'ADStationaryCtrl',
@@ -728,6 +734,9 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         resolve: {
             invoiceSettingsData: function (ADInvoiceSettingsSrv) {
                 return ADInvoiceSettingsSrv.fetchInvoiceSettings();
+            },
+            chargeCodes: function (settingsAndParamsSrv) {
+                return settingsAndParamsSrv.fetchChargeCodes();
             }
         }
     });
@@ -1131,6 +1140,12 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
             id: '',
             data: null
         }
+    });
+
+    $stateProvider.state('admin.guestMandatorySchemas', {
+      templateUrl: '/assets/partials/guestMandatorySchema/guestMandatorySchema.html',
+      controller: 'ADGuestMandatorySchemaCtrl',
+      url: '/guestMandatorySchema'
     });
 
 });

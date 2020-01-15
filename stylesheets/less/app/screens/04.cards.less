@@ -1502,7 +1502,7 @@
                                 height: 100%;
 
                                 .wrapper {
-                                    padding: 20px;
+                                    padding: 0 0 20px 0;
                                 }
 
                                 .button {
@@ -1513,7 +1513,7 @@
                                 .contract-list-items-section {
 
                                     h2 {
-                                        padding: 0 40px 0 20px;
+                                        padding: 0 30px 0 10px;
                                         font-size: 16px;
                                         font-weight: 600;
                                         text-transform: uppercase;
@@ -1530,7 +1530,7 @@
                                                 &.black {
                                                     position: absolute;
                                                     top: 12px;
-                                                    right: 18px;
+                                                    right: 9px;
                                                     width: 14px;
                                                     height: 13px;
                                                     background-size: 100px;
@@ -1547,8 +1547,20 @@
                                         li {
                                             height: 50px;
                                             margin: 0;
-                                            padding: 10px 20px;
+                                            padding: 10px 20px 10px 10px;
                                             cursor: pointer;
+                                            position: relative;
+
+                                            .icons {
+                                                &.icon-contracts {
+                                                    position: absolute;
+                                                    right: 7px;
+                                                    top: 0;
+                                                    bottom: 0;
+                                                    margin: auto;
+                                                    .square( 15px );
+                                                }
+                                            }
 
                                             &.active {
                                                 cursor: default;
@@ -1574,7 +1586,12 @@
                                                 font-size: 14px;
                                                 color: @grey3;
                                                 line-height: 1;
-                                                #flexbox > .parent( row, space-between, '', '' );
+                                                #flexbox > .parent( row, '', '', '' );
+
+                                                .icon-single-arrow {
+                                                    .opacity(35);
+                                                    margin: 0 5px;
+                                                }
                                             }
                                         }
                                     }
@@ -1605,176 +1622,12 @@
                                     }
                                 }
 
-                                .account-linked-contracts {
-                                    .box-shadow( 1px 1px 0px rgba( 0, 0, 0, 0.15));
-                                    .contract-list-items-section {
-                                        h2 {
-                                            background: rgba( 255, 255, 255, 0.5 );
-                                            padding: 0 30px 0 10px;
+                                .iScrollVerticalScrollbar {
+                                    top: 5px;
 
-                                            .icons {
-                                                &.icon-double-arrow {
-                                                    &.black {
-                                            
-                                                        right: 9px;
-                                                         
-                                                    }
-                                                }
-                                            }
-                                        }
-
-                                        ul {
-                                            li {
-                                                padding: 10px 25px 10px 10px;
-                                                background: @white;
-                                                border-bottom: 1px solid rgba( 0, 0, 0, 0.15 );
-                                                position: relative;
-
-                                                .icons {
-                                                    &.icon-contracts {
-                                                        position: absolute;
-                                                        right: 7px;
-                                                        top: 0;
-                                                        bottom: 0;
-                                                        margin: auto;
-                                                        .square( 15px );
-                                                    }
-                                                }
-
-                                                .item-info {
-                                                    color: rgba( 0, 0, 0, 0.35 );
-                                                    #flexbox > .parent( row, flex-start, '', '' );
-
-                                                    .icon-single-arrow {
-                                                        .opacity(35);
-                                                        margin: 0 5px;
-                                                    }
-                                                }
-
-                                                &.active {
-                                                    .item-title { color: @white; }
-                                                    .gradient (@logoGradientEnd, @logoGradientStart);
-                                                }
-                                            }
-                                        }
-
-                                        &:last-child {
-                                            ul {
-                                                li {
-                                                    &:last-child {
-                                                        border-bottom: none;
-                                                    }
-                                                }
-                                            }
-                                        }
+                                    .iScrollIndicator {
+                                        background: rgba(0,0,0,0.15);
                                     }
-                                }
-
-                                .contract-link {
-                                    position: relative;
-                                    height: 40px;
-                                    #flexbox > .parent( row, center, center, '' );
-                                    &:not(.without-lines) {
-                                        .size( 60px, 100% );
-
-                                        &:before,
-                                        &:after {
-                                            content: '';
-                                            position: absolute;
-                                            width: 2px;
-                                            height: calc(~"50% - 10px");
-                                            background: rgba( 0, 0, 0, 0.15 );
-                                        }
-
-                                        &:before {
-                                            top: 0;
-                                            left: calc(~"50% - 1px");
-                                        }
-
-                                        &:after {
-                                            bottom: 0;
-                                            left: calc(~"50% - 1px");
-                                        }
-                                    }
-
-                                    &.without-lines {
-                                        background: rgba(255, 255, 255, 0.5);
-                                        padding: 0 30px 0 10px;
-                                        text-align: left;
-                                        justify-content: left;
-                                        .box-shadow(1px 0 1px rgba( 0, 0, 0, 0.15));
-                                    }
-                                    
-                                    span {
-                                        font-size: 14px;
-                                        line-height: 14px;
-                                        text-transform: uppercase;
-                                        font-weight: 600;
-                                    }
-                                }
-
-                                .contract {
-                                    padding: 10px 25px 10px 10px;
-                                    background-color: @white;
-                                    background-position: calc(~"100% - 10px" ) 50%;
-                                    cursor: pointer;
-                                    .box-shadow();
-
-                                    &.with-image {
-                                        position: relative;
-                                        padding-left: 45px;
-                                        min-height: 50px;
-                                        display: flex;
-                                        flex-direction: column;
-                                        justify-content: center;
-                                        
-                                        &:not(:last-child) {
-                                            margin-bottom: 10px;
-                                        }
-
-                                        .guest-image {
-                                            position: absolute;
-                                            top: 10px;
-                                            left: 10px;
-                                            .square(25px);
-
-                                            &.icons {
-                                                background-size: 80px;
-                                            }
-                        
-                                            &.icon-company {
-                                                background-color: @ccard;
-                                                background-position: 8px -2340px;
-                                            }
-                        
-                                            &.icon-travel-agent {
-                                                background-color: @tacard;
-                                                background-position: 5px -2381px;
-                                            }
-                                        }
-                                    }
-
-                                    .item-title {
-                                        color: @black;
-                                        font-size: 16px;
-                                        font-weight: 700;
-                                    }
-
-                                    .item-info {
-                                        font-size: 14px;
-                                        color: @grey3;
-                                        line-height: 1;
-                                        #flexbox > .parent( row, flex-start, '', '' );
-
-                                        .icon-single-arrow {
-                                            .opacity(35);
-                                            margin: 0 5px;
-                                        }
-                                    }
-                                }
-
-                                .iScrollVerticalScrollbar .iScrollIndicator {
-                                    background: rgba(0,0,0,0.15);
                                 }
                             }
 
@@ -1836,13 +1689,136 @@
                                 }
                             }
 
+                            .no-content {
+                                padding: 0;
+                                height: auto;
+                                min-height: 130px;
+
+                                .icon-no-content {
+                                    &.icon-rates {
+                                        .square(60px);
+                                        background-size: 60px;
+                                        background-position: 0 -632px;
+                                        margin-bottom: 20px;
+                                    }
+
+                                    &.icon-cards {
+                                        .square(80px);
+                                        background-size: 80px;
+                                        background-position: 0 -612px;
+                                    }
+                                }
+
+                                .h2 {
+                                    font-size: 16px;
+                                }
+                            }
+
+                            .linked-contracts {
+                                .linked-contract {
+                                    #flexbox > .parent( row wrap, '', '', '' );
+
+                                    &:first-child {
+                                        margin-top: 20px;
+                                    }
+
+                                    .contract {
+                                        .calc-width( 100, 60 );
+                                    }
+
+                                    .remove-contract {
+                                        .square(50px);
+                                        margin-left: 10px;
+                                        background-color: @white;
+                                        background-position: 15px -3745px;
+                                        cursor: pointer;
+                                        .box-shadow();
+                                    }
+                                }
+                            }
+                            .contract {
+                                padding: 10px 25px 10px 10px;
+                                background-color: @white;
+                                background-position: calc(~"100% - 10px" ) 50%;
+                                cursor: pointer;
+                                .box-shadow();
+
+                                &.with-image {
+                                    position: relative;
+                                    padding-left: 45px;
+                                    padding-right: 30px;
+                                    min-height: 50px;
+                                    display: flex;
+                                    flex-direction: column;
+                                    justify-content: center;
+                                    background-image: @arrowRight;
+                                    background-repeat: no-repeat;
+
+                                    @media @highdpi {
+                                        background-image: @arrowRight2x; 
+                                        background-size: 14px 14px;
+                                    }
+
+                                    &.no-arrow {
+                                        background-image: none;
+                                        padding-right: 15px;
+                                    }
+                                    
+                                    &:not(:last-child) {
+                                        margin-bottom: 10px;
+                                    }
+
+                                    .guest-image {
+                                        position: absolute;
+                                        top: 10px;
+                                        left: 10px;
+                                        .square(25px);
+
+                                        &.icons {
+                                            background-size: 80px;
+                                        }
+                    
+                                        &.icon-company {
+                                            background-color: @ccard;
+                                            background-position: 8px -2340px;
+                                        }
+                    
+                                        &.icon-travel-agent {
+                                            background-color: @tacard;
+                                            background-position: 5px -2381px;
+                                        }
+                                    }
+                                }
+
+                                .item-title {
+                                    color: @black;
+                                    font-size: 16px;
+                                    font-weight: 700;
+                                }
+
+                                .item-info {
+                                    font-size: 14px;
+                                    color: @grey3;
+                                    line-height: 1;
+                                    #flexbox > .parent( row, flex-start, '', '' );
+
+                                    .icon-single-arrow {
+                                        .opacity(35);
+                                        margin: 0 5px;
+                                    }
+                                }
+                            }
+
                             .contracts-details-form {
                                 position: relative;
                                 .calc-height( 100, 60 );
 
-                                input[disabled]:not(.icons) {
+                                input[disabled]:not(.icons),
+                                input[readonly]:not(.icons) {
                                     color: @black;
                                     -webkit-text-fill-color: @black;
+
+                                    .placeholder-color(@grey3);
                                 }
 
                                 &.without-footer {
@@ -1881,7 +1857,7 @@
                                     }
 
                                     &.disabled {
-                                        .value { opacity: 0; }
+                                        .opacity(50);
                                         .switch-icon {
                                             .gradient-important(@grey2, @grey3);
                                         }
@@ -1925,6 +1901,16 @@
                                 }
 
                                 .find-rate {
+
+                                    .autocomplete-search {
+                                        .search {
+                                            .transition();
+
+                                            .icons {
+                                                .transition();
+                                            }
+                                        }
+                                    }
 
                                     .card {
                                         #flexbox > .parent( row, space-between, '', '' );
@@ -2038,6 +2024,7 @@
                                         &.disabled {
                                             li {
                                                 color: @black;
+                                                .box-shadow(none);
                                             }
                                         }
                                     }
@@ -3363,6 +3350,7 @@
                                             text-transform: uppercase;
                                             font-size: 14px;
                                             width: 50%;
+                                            #flexbox > .parent( '', '', '', '' );
                                             .pull-left;
                                             span {
                                                 position: static;
@@ -4805,4 +4793,25 @@
         padding-right: 2.5em !important;
     }
 
+}
+
+@media screen and (min-width: 1280px) {
+    .cards {
+        .card-content {
+            .card-tab{
+                &.contracts {
+                    .tab-details {
+                        .holder {
+                            &.left {
+                                .calc-width( 100, 460 );
+                            }
+                            &.right {
+                                width: 420px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

@@ -6,7 +6,8 @@ admin.controller('ADHotelDetailsCtrl', [
 							'$state',
 							'ngDialog',
 							'oracleDataCenters',
-							function($rootScope, $scope, ADHotelDetailsSrv, $stateParams, $state, ngDialog, oracleDataCenters) {
+							'guestMandatorySchemas',
+							function($rootScope, $scope, ADHotelDetailsSrv, $stateParams, $state, ngDialog, oracleDataCenters, guestMandatorySchemas) {
 
 	$scope.isAdminSnt = false;
 	$scope.isEdit = false;
@@ -29,6 +30,7 @@ admin.controller('ADHotelDetailsCtrl', [
 	var isMPFlagResetConfirmPopupNeeded = false;
                                 
 	$scope.oracleDataCenters = oracleDataCenters;
+	$scope.guestMandatorySchemas = guestMandatorySchemas;
 
 	// Hard Coding Shiji Token Channel. Can convert into configurable
 	$scope.shijiTokenChannels = [{ code: '1', name: 'Shiji' }, { code: '2', name: 'MerchantLink' }, { code: '3', name: 'Adyen' },

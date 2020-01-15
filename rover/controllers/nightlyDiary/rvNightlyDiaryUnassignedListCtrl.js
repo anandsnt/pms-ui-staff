@@ -145,4 +145,13 @@ angular.module('sntRover')
         $scope.isShowUnassignedList = function() {
             return (screen.width >= 1600 || $scope.diaryData.rightFilter === 'UNASSIGNED_RESERVATION') ? 'visible' : '';
         };
+        // CICO-73889 : Handle unassigned reservation selection.
+        $scope.addListener('SELECT_UNASSIGNED_RESERVATION', function(event, reservationId) {
+            var unassignedReservationList = $scope.diaryData.unassignedReservationList.reservations,
+                reservationItem = _.find(unassignedReservationList, function(item) { 
+                    return item.reservation_id === reservationId;
+                });
+
+            selectUnassignedListItem(reservationItem);
+        });
 }]);

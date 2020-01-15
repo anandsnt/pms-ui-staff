@@ -137,4 +137,11 @@
 	"HOTEL_EMAIL": "Hotel Email",
 	"BULK_CHECKOUT_SEND_INVOICES": "Bulk check out - send invoices",
 	"LOGO_BG": "Logo background",
-	"TOURIST_TAX": "Tourist Tax"
+	"TOURIST_TAX": "Tourist Tax",
+	"PAYMENT_ROUNDING": "Payment Rounding",
+	"ROUNDING_FACTOR": "Rounding Factor",
+	"SELECT_ROUNDING_FACTOR": "Select Rounding factor",
+	"ROUNDING_OFFSET_CHARGE_CODE": "Rounding offset charge code",
+	"NO_CHARGE_CODE": "No charge code",
+	"SHOW_ROUNDING_OFFSET_CHARGE_CODE_ON_INVOICE": "Show rounding offset charge code on invoice",
+	"PAYMENT_ROUNDING": "Payment Rounding"

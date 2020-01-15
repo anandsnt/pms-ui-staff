@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('rvCardSearchContractedRateCtrl', ['$scope', 'rvCompanyCardContractsSrv', '$timeout', 'ngDialog',
-	function($scope, rvCompanyCardContractsSrv, $timeout, ngDialog) {
+angular.module('sntRover').controller('rvCardSearchContractedRateCtrl', ['$scope', 'rvCompanyCardContractsSrv', '$timeout', 'ngDialog', '$stateParams',
+	function($scope, rvCompanyCardContractsSrv, $timeout, ngDialog, $stateParams) {
         
         BaseCtrl.call(this, $scope);
         var that = this,
@@ -28,14 +28,16 @@ angular.module('sntRover').controller('rvCardSearchContractedRateCtrl', ['$scope
             },
             fetchRateContractFailureCallback = function(errorMessage) {
                 $scope.$emit('setErrorMessage', errorMessage);
-            };
+            },
+            accountId = !_.isEmpty($scope.contactInformation) ? $scope.contactInformation.id : $stateParams.id;
 
             var options = {
                 successCallBack: fetchRateContractSuccessCallback,
                 failureCallBack: fetchRateContractFailureCallback,
                 params: {
                     'query': $scope.contractData.rateSearchQuery,
-                    'selected_rate_ids': _.pluck($scope.contractData.selectedRateList, 'id')
+                    'selected_rate_ids': _.pluck($scope.contractData.selectedRateList, 'id'),
+                    'account_id': accountId
                 }
             };
 
@@ -48,13 +50,17 @@ angular.module('sntRover').controller('rvCardSearchContractedRateCtrl', ['$scope
 
         // Handle rate search.
         $scope.searchRate = function() {
-            if ($scope.contractData.rateSearchQuery.length > 1) {
+            if ($scope.contractData.rateSearchQuery.length > 2) {
                 that.fetchRateContract();
+            }
+            else {
+                $scope.contractData.searchResults = [];
             }
         };
         // Handle clear search.
         $scope.clearQuery = function() {
             $scope.contractData.rateSearchQuery = '';
+            $scope.contractData.searchResults = [];
             $scope.$emit('refreshContractsScroll');
         };
         /* 
@@ -71,14 +77,16 @@ angular.module('sntRover').controller('rvCardSearchContractedRateCtrl', ['$scope
             },
             linkRateFailureCallback = function(errorMessage) {
                 $scope.$emit('setErrorMessage', errorMessage);
-            };
+            },
+            accountId = !_.isEmpty($scope.contactInformation) ? $scope.contactInformation.id : $stateParams.id;
 
             var options = {
                 successCallBack: linkRateSuccessCallback,
                 failureCallBack: linkRateFailureCallback,
                 params: {
                     "id": $scope.contractData.selectedContractId,
-                    "rate_id": clickedItem.id
+                    "rate_id": clickedItem.id,
+                    "account_id": accountId
                 }
             };
 
@@ -122,14 +130,16 @@ angular.module('sntRover').controller('rvCardSearchContractedRateCtrl', ['$scope
             },
             unlinkRateFailureCallback = function( errorMessage ) {
                 showErrorMessagePopup(errorMessage);
-            };
+            },
+            accountId = !_.isEmpty($scope.contactInformation) ? $scope.contactInformation.id : $stateParams.id;
 
             var options = {
                 successCallBack: unlinkRateSuccessCallback,
                 failureCallBack: unlinkRateFailureCallback,
                 params: {
                     "id": $scope.contractData.selectedContractId,
-                    "rate_id": rateId
+                    "rate_id": rateId,
+                    "account_id": accountId
                 }
             };
 

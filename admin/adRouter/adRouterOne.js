@@ -14,7 +14,10 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			resolve: {
 				oracleDataCenters: function() {
 					return {};
-				}
+				},
+				guestMandatorySchemas: function () {
+                	return {};
+            	}
 			}
 		});
 
@@ -36,6 +39,9 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
         resolve: {
             oracleDataCenters: function (ADDataCenterSrv) {
                 return ADDataCenterSrv.fetchDataCenters();
+            },
+            guestMandatorySchemas: function (ADguestMandatorySchemaSrv) {
+                return ADguestMandatorySchemaSrv.fetchSchemas();
             }
         }
     });

@@ -15,6 +15,10 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
         $controller, $timeout, zsCheckinSrv, zsModeConstants, zsGeneralSrv, zsUtilitySrv, $filter, $log) {
 
         BaseCtrl.call(this, $scope);
+
+        $controller('zsCheckinCommonBaseCtrl', {
+               $scope: $scope
+         });
         /** ********************************************************************************************
          **      Please note that, not all the stateparams passed to this state will not be used in this state, 
          **      however we will have to pass this so as to pass again to future states which will use these.
@@ -1169,8 +1173,10 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 $scope.checkinInProgress = true;
                 if ($scope.inDemoMode()) {
                     afterGuestCheckinCallback();
-                } else {
-                    $scope.callAPI(zsCheckinSrv.checkInGuest, options);
+                }else {
+                    $scope.$emit('CHECK_IF_REQUIRED_GUEST_DETAILS_ARE_PRESENT', {
+                        checkinParams: _.extend({}, checkinParams, angular.copy($stateParams))
+                    });
                 }
             };
 

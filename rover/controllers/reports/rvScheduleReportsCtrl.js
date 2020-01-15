@@ -120,11 +120,16 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 return !! $scope.scheduleParams.frequency_id;
             };
 
-            var hasEmailList = function() {
-                return $scope.emailList.length;
+            var hasValidDistribution = function() {
+                var hasEmail = $scope.checkDeliveryType('EMAIL') && $scope.emailList.length,
+                    hasFTP = $scope.checkDeliveryType('SFTP') && !! $scope.scheduleParams.selectedFtpRecipient,
+                    hasDropbox = $scope.checkDeliveryType('DROPBOX') && !! $scope.scheduleParams.selectedCloudAccount,
+                    hasGoogleDrive = $scope.checkDeliveryType('GOOGLE DRIVE') && !! $scope.scheduleParams.selectedCloudAccount;
+
+                return hasEmail || hasFTP || hasDropbox || hasGoogleDrive;
             };
 
-            return hasTimePeriod() && hasFrequency() && hasEmailList();
+            return hasTimePeriod() && hasFrequency() && hasValidDistribution();
         };
 
         var fillValidationErrors = function() {
@@ -136,8 +141,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             if ( ! $scope.scheduleParams.frequency_id ) {
                 $scope.createErrors.push('Repeat frequency in details');
             }
-            if ( ! $scope.emailList.length ) {
-                $scope.createErrors.push('Emails in distribution list');
+            if ( ! $scope.emailList.length && !$scope.scheduleParams.selectedFtpRecipient && 
+                !$scope.scheduleParams.selectedCloudAccount ) {
+                $scope.createErrors.push('Emails/SFTP/Dropbox/Google Drive in distribution list');
             }
         };
 
@@ -184,7 +190,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 report_id: $scope.selectedEntityDetails.report.id,
                 hotel_id: $rootScope.hotelDetails.userHotelsData.current_hotel_id,
                 /**/
-                format_id: $scope.scheduleParams.format_id
+                format_id: $scope.scheduleParams.format_id,
+                delivery_type_id: ''
             };
 
             var filter_values = {
@@ -245,11 +252,25 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 params.ends_on_date = null;
             }
 
-            // fill emails
-            if ( $scope.emailList.length ) {
+            var deliveryType = _.find ($scope.scheduleDeliveryTypes, {
+                value: $scope.scheduleParams.delivery_id
+            });
+
+            if (deliveryType) {
+                params.delivery_type_id = parseInt(deliveryType.id);
+            }
+
+            // fill emails/FTP
+            if ( $scope.checkDeliveryType('EMAIL') && $scope.emailList.length ) {
                 params.emails = $scope.emailList.join(', ');
+            } else if ( $scope.checkDeliveryType('SFTP') && !! $scope.scheduleParams.selectedFtpRecipient ) {
+                params.sftp_server_id = $scope.scheduleParams.selectedFtpRecipient;
+            } else if (($scope.checkDeliveryType('GOOGLE DRIVE') || $scope.checkDeliveryType('DROPBOX')) && 
+                        !!$scope.scheduleParams.selectedCloudAccount ) {
+                params.cloud_drive_id = $scope.scheduleParams.selectedCloudAccount;
             } else {
                 params.emails = '';
+                params.sftp_server_id = '';
             }
 
             // fill sort_field and filters
@@ -279,6 +300,14 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                             params['custom_rate_group_ids'] = selectedCustomRates;
                         }
                     }   
+                } else if (keyName === 'hasByChargeGroup') {
+                    key = reportParams['CHARGE_GROUP_IDS'];
+                    filter_values[key] = _.pluck(_.where(filter.data, {selected: true}), 'id');
+
+                } else if (keyName === 'hasByChargeCode') {
+                    key = reportParams['CHARGE_CODE_IDS'];
+                    filter_values[key] = _.pluck(_.where(filter.data, {selected: true}), 'id');
+
                 } else {
                     _.each(filter.data, function(each) {
                         if ( each.selected ) {
@@ -327,7 +356,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 hotel_id: $rootScope.hotelDetails.userHotelsData.current_hotel_id,
                 /**/
                 format_id: $scope.scheduleParams.format_id,
-                delivery_method_id: $scope.selectedEntityDetails.delivery_type.id
+                delivery_type_id: ''
             };            
 
             var filter_values = {
@@ -391,11 +420,25 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 params.ends_on_date = null;
             }
 
-            // fill emails
-            if ( $scope.emailList.length ) {
+            var deliveryType = _.find ($scope.scheduleDeliveryTypes, {
+                value: $scope.scheduleParams.delivery_id
+            });
+
+            if (deliveryType) {
+                params.delivery_type_id = parseInt(deliveryType.id);
+            }
+
+            // fill emails/FTP
+            if ( $scope.checkDeliveryType('EMAIL') && $scope.emailList.length ) {
                 params.emails = $scope.emailList.join(', ');
+            } else if ( $scope.checkDeliveryType('SFTP') && !! $scope.scheduleParams.selectedFtpRecipient ) {
+                params.sftp_server_id = $scope.scheduleParams.selectedFtpRecipient;
+            } else if (($scope.checkDeliveryType('GOOGLE DRIVE') || $scope.checkDeliveryType('DROPBOX')) && 
+                        !!$scope.scheduleParams.selectedCloudAccount ) {
+                params.cloud_drive_id = $scope.scheduleParams.selectedCloudAccount;
             } else {
                 params.emails = '';
+                params.sftp_server_id = '';
             }
 
             // fill sort_field and filters
@@ -425,6 +468,14 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                             params['custom_rate_group_ids'] = selectedCustomRates;
                         }
                     }   
+                } else if (keyName === 'hasByChargeGroup') {
+                    key = reportParams['CHARGE_GROUP_IDS'];
+                    filter_values[key] = _.pluck(_.where(filter.data, {selected: true}), 'id');
+
+                } else if (keyName === 'hasByChargeCode') {
+                    key = reportParams['CHARGE_CODE_IDS'];
+                    filter_values[key] = _.pluck(_.where(filter.data, {selected: true}), 'id');
+
                 } else {
                     _.each(filter.data, function (each) {
                         if (each.selected) {
@@ -574,6 +625,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     }
                 } else if (filter.value === 'RATE') {
                     reportUtils.fillRateTypesAndRatesForScheduledReports($scope.filters, $scope.selectedEntityDetails.filter_values);
+                } else if (filter.value === 'INCLUDE_CHARGE_GROUP' || filter.value === 'INCLUDE_CHARGE_CODE') {
+                    reportUtils.fillChargeGroupsAndChargeCodes($scope.filters, $scope.selectedEntityDetails.filter_values);
                 }
             });
 
@@ -651,7 +704,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 $scope.schedule_formats = $scope.selectedEntityDetails.schedule_formats;
                 $scope.scheduleParams.format_id = $scope.selectedEntityDetails.format.id;
             } else {
-                if ($scope.isYearlyTaxReport) {
+                if ($scope.isYearlyTaxReport || $scope.selectedEntityDetails.report.title === reportNames['BUSINESS_ON_THE_BOOKS']) {
                     $scope.scheduleParams.format_id = _.find($scope.scheduleFormat, {value: 'CSV'}).id;
                 } else if ($scope.selectedEntityDetails.report.title !== reportNames['COMPARISION_BY_DATE'] && 
                     $scope.selectedEntityDetails.report.title !== reportNames['DAILY_PRODUCTION_DEMO'] &&
@@ -725,13 +778,20 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             }, datePickerCommon);
             $scope.scheduleParams.ends_on_date = reportUtils.processDate(endsOnDate).today;
 
-            // save emails
-            if ( $scope.selectedEntityDetails.emails ) {
-                $scope.emailList = $scope.selectedEntityDetails.emails.split(', ');
-            } else {
-                $scope.emailList = [];
+            $scope.scheduleParams.delivery_id = $scope.selectedEntityDetails.delivery_type ? $scope.selectedEntityDetails.delivery_type.value : null;
+            
+            if ($scope.scheduleParams.delivery_id === 'CLOUD_DRIVE') {
+                $scope.scheduleParams.delivery_id = $scope.selectedEntityDetails.cloud_drive_type;
             }
 
+            if ( $scope.scheduleParams.delivery_id === 'EMAIL' ) {
+                $scope.emailList = $scope.selectedEntityDetails.emails.split(', ');
+            } else if ( $scope.scheduleParams.delivery_id === 'SFTP' ) {
+                $scope.scheduleParams.selectedFtpRecipient = $scope.selectedEntityDetails.sftp_server_id;
+            } else if ( $scope.scheduleParams.delivery_id === 'GOOGLE DRIVE' || $scope.scheduleParams.delivery_id === 'DROPBOX' ) {
+                $scope.scheduleParams.selectedCloudAccount = $scope.selectedEntityDetails.cloud_drive_id;
+            } 
+            
             if ($scope.selectedEntityDetails.filter_values && $scope.isYearlyTaxReport) {
                 $scope.scheduleParams.year = $scope.selectedEntityDetails.filter_values.year;
                 $scope.scheduleParams.with_vat_number = $scope.selectedEntityDetails.filter_values.with_vat_number;
@@ -824,6 +884,11 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                         item.reportIconCls = reportIconCls[item.report.description];
                     }
                 });
+
+                $scope.scheduleDeliveryTypes = payload.scheduleDeliveryTypes;
+                $scope.ftpServerList = payload.ftpServerList;
+                $scope.dropBoxAccountList = payload.dropBoxAccounts;
+                $scope.googleDriveAccountList = payload.googleDriveAccounts;
 
                 $scope.refreshReportSchedulesScroll(reset);
 
@@ -972,7 +1037,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Yearly Tax Report': true,
                 'Daily Production': true,
                 'Daily Production by Demographics': true,
-                'Daily Production by Rate': true
+                'Daily Production by Rate': true,
+                'Business on the Books': true,
+                'Daily Transactions': true
             };
 
             var forWeekly = {
@@ -981,7 +1048,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'In-House Guests': true,
                 'Comparison': true,
                 'Guest Balance Report': true,
-                'Yearly Tax Report': true
+                'Yearly Tax Report': true,
+                'Business on the Books': true,
+                'Daily Transactions': true
             };
             var forMonthly = {
                 'Arrival': true,
@@ -989,7 +1058,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'In-House Guests': true,
                 'Comparison': true,
                 'Guest Balance Report': true,
-                'Yearly Tax Report': true
+                'Yearly Tax Report': true,
+                'Business on the Books': true,
+                'Daily Transactions': true
             };
 
             var forHourly = {
@@ -998,7 +1069,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'In-House Guests': true,
                 'Comparison': true,
                 'Guest Balance Report': true,
-                'Yearly Tax Report': true
+                'Yearly Tax Report': true,
+                'Business on the Books': true                
             };
 
             if ( forHourly[item.report.title] ) {
@@ -1208,7 +1280,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 $scope.scheduleFormat = _.filter($scope.scheduleFormat, function(object) { return object.value !== "XML"; });
             } else if (selectedEntity.report && ( selectedEntity.report.title === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ||
                 selectedEntity.report.title === reportNames['DAILY_PRODUCTION_DEMO'] ||
-                selectedEntity.report.title === reportNames['DAILY_PRODUCTION_RATE'] )) {
+                selectedEntity.report.title === reportNames['DAILY_PRODUCTION_RATE'] || 
+                selectedEntity.report.title === reportNames['DAILY_TRANSACTIONS'] ) ) {
                 $scope.scheduleFormat = _.filter($scope.scheduleFormat, function (object) {
                     return object.value === 'CSV';
                 });
@@ -1217,7 +1290,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             return selectedEntity.report && (selectedEntity.report.title === reportNames['COMPARISION_BY_DATE'] ||
                 selectedEntity.report.title === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ||
                 selectedEntity.report.title === reportNames['DAILY_PRODUCTION_DEMO'] ||
-                selectedEntity.report.title === reportNames['DAILY_PRODUCTION_RATE']);
+                selectedEntity.report.title === reportNames['DAILY_PRODUCTION_RATE'] || 
+                selectedEntity.report.title === reportNames['DAILY_TRANSACTIONS']  );
         };
 
         // Listener for creating new report schedule
@@ -1230,6 +1304,18 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         $scope.addListener('RESET_CURRENT_STAGE', () => {
             $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
         });
+
+        // Change handler for delivery options
+        $scope.onDeliveryOptionChange = () => {
+            // We are just clearing the cloud drive id only because the given id belongs to 
+            // a single cloud drive account and if not cleared it will shows empty <option>
+            // when the cloud account type is changed from the delivery options
+            $scope.scheduleParams.selectedCloudAccount = null;
+        };
+
+        $scope.checkDeliveryType = function (checkFor) {
+            return checkFor === $scope.scheduleParams.delivery_id;
+        };
 
         /**
          * Startup

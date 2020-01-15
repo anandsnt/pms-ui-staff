@@ -24,6 +24,11 @@ angular.module('sntRover').service('rvManagersAnalyticsSrv', [
 
             var url = '/redshift/analytics/distributions';
 
+            if (params.shallowDecodedParams) {
+                url = url + '?' + params.shallowDecodedParams;
+                delete params.shallowDecodedParams;
+            }
+
             rvBaseWebSrvV2.getJSON(url, params)
                 .then(function(data) {
                     var isAggregated = params.group_by !== undefined;
@@ -34,6 +39,44 @@ angular.module('sntRover').service('rvManagersAnalyticsSrv', [
                 });
 
             return deferred.promise;
+        };
+
+        this.pace = function(params) {
+            var deferred = $q.defer();
+
+            var url = '/redshift/analytics/pace';
+
+            if (params.shallowDecodedParams) {
+                url = url + '?' + params.shallowDecodedParams;
+                delete params.shallowDecodedParams;
+            }
+
+            rvBaseWebSrvV2.getJSON(url, params)
+                .then(function(data) {
+                    // TODO: delete after testing
+                    // data = processPaceData(data);
+                    deferred.resolve(data);
+                }, function(data) {
+                    deferred.reject(data);
+                });
+
+            return deferred.promise;
+        };
+
+        var processPaceData = function(data) {
+            // TODO: Till we have zoomable chart, limit data for 1 month
+            if (data.length >= 30) {
+                var lastDay = data[data.length - 1];
+                var oneMonthBefore = moment(lastDay.date)
+                    .subtract(1, 'month')
+                    .format("YYYY-MM-DD");
+
+                data = _.filter(data, function(day) {
+                    return day.date >= oneMonthBefore;
+                });
+            };
+
+            return data;
         };
 
         var formatDistribution = function(distributions, resultType, isAggregated) {

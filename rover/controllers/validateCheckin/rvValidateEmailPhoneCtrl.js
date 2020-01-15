@@ -17,7 +17,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl',
     $scope.saveData.phone = "";
     $scope.saveData.guest_id = "";
     $scope.saveData.user_id = "";
-    $scope.saveData.gender_id = null;
+    $scope.saveData.gender_id = $scope.guestCardData.contactInfo.gender_id;
     $scope.guestCardData.contactInfo.genderTypeList = $scope.guestCardData.contactInfo.gender_list;
 
     $scope.putInQueue = false;
@@ -126,6 +126,12 @@ sntRover.controller('RVValidateEmailPhoneCtrl',
         }
         if ($scope.showVehicleRegistrationNumber) {
             $scope.guestCardData.contactInfo.vehicle_registration_number = $scope.saveData.vehicle_registration_number;
+        }
+        if ($scope.showIdPlaceOfIssue) {
+            $scope.guestCardData.contactInfo.id_place_of_issue = $scope.saveData.id_place_of_issue;
+        }
+        if ($scope.showIdCountryOfIssue) {
+            $scope.guestCardData.contactInfo.id_country_id = $scope.saveData.id_country_id;
         }
         if ($scope.showHomeTown) {
             $scope.guestCardData.contactInfo.home_town = $scope.saveData.home_town;
