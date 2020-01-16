@@ -2767,29 +2767,24 @@ sntRover.controller('RVbillCardController',
 
 					// add the orientation
 					addPrintOrientation();
-
-					/*
-					*	======[ READY TO PRINT ]======
-					*/
-					// this will show the popup with full bill
-					$timeout(function() {
-
-						if (sntapp.cordovaLoaded) {
-							cordova.exec(billCardPrintCompleted,
-								function(error) {
-									billCardPrintCompleted();
-								}, 'RVCardPlugin', 'printWebView', []);
-						}
-						else
-						{
-							window.print();
-                            // Fix for CICO-70281  Ref:
-                            // https://stackoverflow.com/questions/7652981/chrome-window-print-window-close-results-in-print-preview-failed-solution
-                            window.close();
-							billCardPrintCompleted();
-						}
-					}, 700);
-
+                    /*
+                       *	======[ READY TO PRINT ]======
+                       */
+                    $timeout(function() {
+                        /*
+                         *	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+                         */
+                        $window.print();
+                        if (sntapp.cordovaLoaded) {
+                            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+                        }
+                        /*
+                         *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
+                         */
+                        $timeout(function() {
+                            billCardPrintCompleted();
+                        }, 1000);
+                    }, 300);
 			};
 
 			var printDataFailureCallback = function(errorData) {
