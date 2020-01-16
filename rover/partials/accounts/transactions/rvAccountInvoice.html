@@ -3,6 +3,9 @@
     <h1>{{printData.hotel_name}}</h1>
     <span ng-bind-html="printData.hotel_address" ng-if="printData.show_hotel_address"></span>
     <span class="type">{{printData.invoiceLabel}}</span>
+    <span class="type" in-show="printData.qr_code !== '' && printData.qr_code !== null">
+        <br/><img src="{{printData.qr_code}}" alt="" class="qr-code" /> 
+    </span>
 </div>
 
 <div class="info-container account-info">
