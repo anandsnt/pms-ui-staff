@@ -1,6 +1,18 @@
 angular.module('sntRover').controller('rvDeviceStatusCtrl', ['$scope', 'ngDialog', '$log', 'sntActivity', 'rvDeviceStatusSrv', 'rvUtilSrv', '$timeout',
     function ($scope, ngDialog, $log, sntActivity, rvDeviceStatusSrv, rvUtilSrv, $timeout) {
 
+        var ingenico = $scope.connectedDeviceDetails.find(function(device) {
+            return device.device_short_name === 'Ingenico';
+        });
+
+        if (ingenico && ingenico.actions) {
+            ingenico.actions.push({
+                display_name: 'RFID Tag Meta',
+                action_name: 'getCLCardInfo',
+                service_name: 'RVCardPlugin'
+            });
+        }
+
         var actionResponse = {};
         var callBacks = {
             'successCallBack': function (response) {
@@ -97,6 +109,13 @@ angular.module('sntRover').controller('rvDeviceStatusCtrl', ['$scope', 'ngDialog
                     // do nothing
                 }
             });
+        };
+
+        // Humanize the underscore JS
+        $scope.humanize = function(str) {
+            return str.replace(/^[\s_]+|[\s_]+$/g, '')
+                      .replace(/[_\s]+/g, ' ')
+                      .replace(/^[a-z]/, function(m) { return m.toUpperCase(); });
         };
 
         (function () {
