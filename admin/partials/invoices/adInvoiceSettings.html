@@ -57,6 +57,9 @@
 							<ad-checkbox is-checked="invoiceSettings.show_rounding_offset_charge_code_on_invoice" label="{{'SHOW_ROUNDING_OFFSET_CHARGE_CODE_ON_INVOICE' | translate}}" div-class="full-width"></ad-checkbox>
 							</div>
 					</fieldset>
+					<fieldset class="holder left">
+						<ad-toggle-button label="{{'ARCHIVE_GUEST_INVOICE' | translate}}" is-checked="invoiceSettings.archive_guest_invoices"></ad-toggle-button>	
+					</fieldset>
 
 					<div class="actions float">
 						<button type="button" id="cancel" class="button blank" ng-click="goBackToPreviousState()"translate>
