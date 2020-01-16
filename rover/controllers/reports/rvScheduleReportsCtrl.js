@@ -1281,7 +1281,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             } else if (selectedEntity.report && ( selectedEntity.report.title === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ||
                 selectedEntity.report.title === reportNames['DAILY_PRODUCTION_DEMO'] ||
                 selectedEntity.report.title === reportNames['DAILY_PRODUCTION_RATE'] || 
-                selectedEntity.report.title === reportNames['DAILY_TRANSACTIONS'] ) ) {
+                selectedEntity.report.title === reportNames['DAILY_TRANSACTIONS'] || 
+                selectedEntity.report.title === reportNames['GUEST_BALANCE_REPORT'] ) ) {
                 $scope.scheduleFormat = _.filter($scope.scheduleFormat, function (object) {
                     return object.value === 'CSV';
                 });
@@ -1291,7 +1292,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 selectedEntity.report.title === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ||
                 selectedEntity.report.title === reportNames['DAILY_PRODUCTION_DEMO'] ||
                 selectedEntity.report.title === reportNames['DAILY_PRODUCTION_RATE'] || 
-                selectedEntity.report.title === reportNames['DAILY_TRANSACTIONS']  );
+                selectedEntity.report.title === reportNames['DAILY_TRANSACTIONS'] ||
+                selectedEntity.report.title === reportNames['GUEST_BALANCE_REPORT'] );
         };
 
         // Listener for creating new report schedule
