@@ -243,11 +243,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
             };
 
             var proceedWithAuthorizations = function() {
-                // if ($rootScope.paymentGateway === 'SHIJI') {
-                //     shijiAuthActions();
-                // } else {
-                    $timeout(promptForSwipe, 700);
-                // }
+                $timeout(promptForSwipe, 700);
             };
 
             $scope.onClickIncidentalsOnly = function () {
@@ -340,11 +336,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                             // https://stayntouch.atlassian.net/browse/CICO-17287
                             promptForAuthorizationAmount();
                         } else {
-                            if ($rootScope.paymentGateway === 'SHIJI') {
-                                shijiAuthActions();
-                            } else {
-                                promptForSwipe();
-                            }
+                            promptForSwipe();
                         }
                     } else {
                         // if is_cc_authorize_at_checkin enabled is false; then needn't authorize
