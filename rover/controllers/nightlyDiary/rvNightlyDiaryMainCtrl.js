@@ -1080,10 +1080,21 @@ angular.module('sntRover')
                     var params = RVNightlyDiarySrv.getCache(),
                         reservation = params.currentSelectedReservation;
 
-                    $scope.currentSelectedReservationId = params.currentSelectedReservationId;
-                    $scope.diaryData.selectedRoomId = params.currentSelectedRoomId;
-                    $scope.currentSelectedReservation = params.currentSelectedReservation;
-                    $scope.diaryData.hideUnassignRoomButton = true;
+                    if (reservation.type === 'UNASSIGNED_RESERVATION') {
+                        $scope.diaryData.unassignedReservationList = params.unassignedReservationList;
+                        $scope.currentSelectedReservation = params.currentSelectedReservation;
+                        // Logic for select unassigned reservation.
+                        $timeout(function () {
+                            $scope.diaryData.rightFilter = 'UNASSIGNED_RESERVATION';
+                            $scope.$broadcast('SELECT_UNASSIGNED_RESERVATION', params.currentSelectedReservation.reservation_id);
+                        }, 1000);
+                    }
+                    else {
+                        $scope.currentSelectedReservationId = params.currentSelectedReservationId;
+                        $scope.diaryData.selectedRoomId = params.currentSelectedRoomId;
+                        $scope.currentSelectedReservation = params.currentSelectedReservation;
+                        $scope.diaryData.hideUnassignRoomButton = true;
+                    }
                     if (reservation && reservation.status) {
                         $scope.diaryData.hideUnassignRoomButton = reservation.status === 'CHECKEDIN' || reservation.status === 'CHECKEDOUT' || reservation.status === 'CHECKING_OUT';
                     }
