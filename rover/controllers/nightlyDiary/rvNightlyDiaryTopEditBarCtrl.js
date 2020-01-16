@@ -32,7 +32,6 @@ angular.module('sntRover')
                 params.currentSelectedReservationId = currentSelectedReservation.id;
                 params.currentSelectedRoomId = currentSelectedRoom.id;
                 params.currentSelectedReservation = currentSelectedReservation;
-
                 params.filterList = $scope.diaryData.filterList;
                 params.selectedRoomCount = $scope.diaryData.selectedRoomCount;
                 params.selectedFloorCount = $scope.diaryData.selectedFloorCount;
@@ -40,10 +39,7 @@ angular.module('sntRover')
                 params.hideFloorList = $scope.diaryData.hideFloorList;
                 params.selected_floor_ids = $scope.diaryData.selectedFloors;
                 params.selected_room_type_ids = $scope.diaryData.selectedRoomTypes;
-
-                if (currentSelectedReservation.type === 'UNASSIGNED_RESERVATION') {
-                    params.unassignedReservationList = $scope.diaryData.unassignedReservationList;
-                }
+                params.unassignedReservationList = $scope.diaryData.unassignedReservationList;
 
                 RVNightlyDiarySrv.updateCache(params);
 

@@ -1044,8 +1044,6 @@ angular.module('sntRover')
 
                 // CICO-67534 : Handle Events from unassigned list.
                 $scope.addListener('CLICKED_UNASSIGNED_RESERVATION', function(event, currentSelectedReservation) {
-                    console.log('CLICKED_UNASSIGNED_RESERVATION');
-                    console.log(currentSelectedReservation);
                     $timeout(function () {
                         $scope.diaryData.isEditReservationMode = true;
                         $scope.currentSelectedReservation = {};
@@ -1054,7 +1052,6 @@ angular.module('sntRover')
                 });
 
                 $scope.addListener('CANCEL_UNASSIGNED_RESERVATION_MAIN', function(event) {
-                    console.log('CANCEL_UNASSIGNED_RESERVATION_MAIN');
                     $scope.$broadcast('CANCEL_UNASSIGNED_RESERVATION');
                 });
 
@@ -1081,20 +1078,19 @@ angular.module('sntRover')
                         reservation = params.currentSelectedReservation;
 
                     if (reservation.type === 'UNASSIGNED_RESERVATION') {
-                        $scope.diaryData.unassignedReservationList = params.unassignedReservationList;
-                        $scope.currentSelectedReservation = params.currentSelectedReservation;
                         // Logic for select unassigned reservation.
                         $timeout(function () {
                             $scope.diaryData.rightFilter = 'UNASSIGNED_RESERVATION';
-                            $scope.$broadcast('SELECT_UNASSIGNED_RESERVATION', params.currentSelectedReservation.reservation_id);
-                        }, 1000);
+                            $scope.$broadcast('SELECT_UNASSIGNED_RESERVATION', reservation.reservation_id);
+                        }, 500);
                     }
                     else {
                         $scope.currentSelectedReservationId = params.currentSelectedReservationId;
                         $scope.diaryData.selectedRoomId = params.currentSelectedRoomId;
-                        $scope.currentSelectedReservation = params.currentSelectedReservation;
-                        $scope.diaryData.hideUnassignRoomButton = true;
                     }
+                    $scope.diaryData.unassignedReservationList = params.unassignedReservationList;
+                    $scope.currentSelectedReservation = params.currentSelectedReservation;
+                    $scope.diaryData.hideUnassignRoomButton = true;
                     if (reservation && reservation.status) {
                         $scope.diaryData.hideUnassignRoomButton = reservation.status === 'CHECKEDIN' || reservation.status === 'CHECKEDOUT' || reservation.status === 'CHECKING_OUT';
                     }
