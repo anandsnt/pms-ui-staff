@@ -265,18 +265,23 @@ angular.module('sntRover')
                  */
                 var selectReservation = (e, reservation, room) => {
                     if (!$scope.diaryData.isEditReservationMode) {
+                        let roomDetails = _.findWhere($scope.diaryData.diaryRoomsList, { id: room.id });
+
                         $scope.diaryData.showSaveChangeButtonAfterShortenOrExtent.show = false;
                         $scope.diaryData.hideMoveButton = reservation.no_room_move;
                         $scope.diaryData.hideUnassignRoomButton = reservation.status === 'CHECKEDIN' || reservation.status === 'CHECKEDOUT' || reservation.status === 'CHECKING_OUT';
                         $scope.diaryData.isEditReservationMode = true;
-                        $scope.currentSelectedReservation = reservation;
+                        $scope.currentSelectedReservation = {
+                            ...reservation,
+                            room_type_name: roomDetails.room_type_name
+                        }
                         $scope.currentSelectedRoom = room;
                         $scope.diaryData.selectedRoomId = room.id;
                         $scope.extendShortenReservationDetails = {
                             'arrival_date': reservation.arrival_date,
                             'dep_date': reservation.dept_date,
                             'reservation_id': reservation.id,
-                            'room_number': (_.findWhere($scope.diaryData.diaryRoomsList, { id: room.id })).room_no
+                            'room_number': roomDetails.room_no
                         };
 
                         showReservationSelected();
