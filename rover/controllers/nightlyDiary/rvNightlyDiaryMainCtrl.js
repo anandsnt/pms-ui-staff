@@ -274,7 +274,7 @@ angular.module('sntRover')
                         $scope.currentSelectedReservation = {
                             ...reservation,
                             room_type_name: roomDetails.room_type_name
-                        }
+                        };
                         $scope.currentSelectedRoom = room;
                         $scope.diaryData.selectedRoomId = room.id;
                         $scope.extendShortenReservationDetails = {
@@ -1056,7 +1056,7 @@ angular.module('sntRover')
                     }, 1000);
                 });
 
-                $scope.addListener('CANCEL_UNASSIGNED_RESERVATION_MAIN', function(event) {
+                $scope.addListener('CANCEL_UNASSIGNED_RESERVATION_MAIN', function() {
                     $scope.$broadcast('CANCEL_UNASSIGNED_RESERVATION');
                 });
 
