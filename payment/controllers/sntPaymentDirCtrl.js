@@ -1103,11 +1103,13 @@ angular.module('sntPay').controller('sntPaymentController',
                 } else {
                     $scope.payment.showAddToGuestCard = false;
                 }
-                $scope.onPaymentCurrencyChange();
+                $scope.onPaymentCurrencyChange(true);
             };
 
-            $scope.onPaymentCurrencyChange = function() {
-                $scope.payment.selectedPaymentCurrencySymbol = (_.find($scope.paymentCurrencyList, {"id": $scope.payment.selectedPaymentCurrencyId})).symbol;
+            $scope.onPaymentCurrencyChange = function(setCurrencySymbol) {
+                if (!setCurrencySymbol) {
+                    $scope.payment.selectedPaymentCurrencySymbol = (_.find($scope.paymentCurrencyList, {"id": $scope.payment.selectedPaymentCurrencyId})).symbol;
+                }
                 var paramsToApi = {
                     "amount": parseFloat(initialPaymentAmount),
                     "fee": parseFloat($scope.originalFee),
@@ -1659,7 +1661,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 if ($scope.selectedPaymentType === 'CC' && $scope.selectedCC && $scope.hotelConfig.paymentGateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline) {
                     $scope.payment.auth_code = $scope.selectedCC.auth_code;
                 }
-                $scope.onPaymentCurrencyChange();
+                $scope.onPaymentCurrencyChange(true);
             })();
         }
     ]);
