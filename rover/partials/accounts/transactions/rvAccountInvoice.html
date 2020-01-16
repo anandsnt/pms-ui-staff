@@ -112,7 +112,7 @@
                         {{invoiceCurrencySymbol}}{{printData.bill_transactions_info.invoice_currency_total_credits | number:2}}
                     </div>
                 </td>
-            </tr>            
+            </tr>
             <tr>
                 <td colspan="4" >{{printData.translation.net_amount}}</td>
                 <td>{{currencySymbol}}{{printData.bill_transactions_info.net_amount | number:2}}
@@ -161,11 +161,23 @@
                     <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol !== '' && charge.description.invoice_currency_fees_amount !== null">
                         {{invoiceCurrencySymbol}}{{charge.description.invoice_currency_fees_amount | number:2}}
                     </div>
+                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && charge.description.rate_converted_amount">
+                        {{charge.description.rate_currency}}{{charge.description.rate_converted_amount | number:2}}
+                    </div>
+                    <div class="converted-currency smaller" ng-if="isMultiCurrencyEnabled && charge.description.rate_conversion_rate && charge.description.rate_converted_amount">
+                        {{charge.description.rate_conversion_rate}}
+                    </div>
                 </td>
                 <td class="align-right">
                     <span ng-show="!!charge.credits">{{currencySymbol}}{{charge.credits | number: 2}}</span>
                     <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol !== '' && charge.invoice_currency_credits !== null">
                         {{invoiceCurrencySymbol}}{{charge.invoice_currency_credits | number:2}}
+                    </div>
+                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && charge.rate_currency_credits">
+                        {{charge.description.rate_currency}}{{charge.rate_currency_credits | number:2}}
+                    </div>
+                    <div class="converted-currency smaller" ng-if="isMultiCurrencyEnabled && charge.description.rate_conversion_rate && charge.rate_currency_credits">
+                        {{charge.description.rate_conversion_rate}}
                     </div>
                 </td>
             </tr>
@@ -224,7 +236,7 @@
                 </div>
             </td>
         </tr>
-    </tfoot>           
+    </tfoot>
 </table>
 
 <div class="invoice-footer text-center" ng-bind-html="trustAsHtml(printData.ar_invoice_billing_text)">
