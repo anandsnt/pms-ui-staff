@@ -14,7 +14,9 @@ module.exports = {
                     paymentRoot + "services/**/*.js",
                     paymentRoot + "payAppInit.js",
                     // Eliminate all spec files
-                    '!**/*.spec.js'
+                    '!**/*.spec.js',
+                    // Workers will be loaded separately
+                    '!**/workers/**/*.js'
                 ],
                 mli: [paymentRoot + 'payApp.js',
                     paymentRoot + "controllers/**/*.js",
