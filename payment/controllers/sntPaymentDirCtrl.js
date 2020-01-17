@@ -1542,9 +1542,6 @@ angular.module('sntPay').controller('sntPaymentController',
                 $scope.payment.isAddPaymentMode = !!$scope.actionType.match(/^ADD_PAYMENT/);
 
                 $scope.$watch('amount', onAmountChange);
-                $scope.payment.amount = $scope.amount || 0;
-                initialPaymentAmount  = angular.copy($scope.payment.amount);
-
 
                 $scope.$watch('paymentTypes', () => {
                     $scope.payment.creditCardTypes = getCreditCardTypesList();
@@ -1658,7 +1655,6 @@ angular.module('sntPay').controller('sntPaymentController',
                 if ($scope.selectedPaymentType === 'CC' && $scope.selectedCC && $scope.hotelConfig.paymentGateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline) {
                     $scope.payment.auth_code = $scope.selectedCC.auth_code;
                 }
-                $scope.onPaymentCurrencyChange();
             })();
         }
     ]);
