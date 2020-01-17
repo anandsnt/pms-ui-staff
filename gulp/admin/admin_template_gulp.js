@@ -7,7 +7,7 @@ module.exports = function (gulp, $, options) {
 	    ADMIN_TEMPLATES_FILE    = 'admin_templates.js',
 		ADMIN_TEMPLATE_ROOT     = options['ADMIN_TEMPLATE_ROOT'],
 	    ADMIN_HTML_FILE     	= options['ADMIN_HTML_FILE'],
-	    PARTIALS_PATH_LIST 		= ['admin/**/*.html', 'shared/sntUtils/**/*.html'],
+	    PARTIALS_PATH_LIST 		= ['**/*.html'],
 	    runSequence 			= require('run-sequence'),
 	    ADMIN_TEMPLTE_MANFEST_FILE 	= "admin_template_manifest.json",
 		onError  				= options.onError;
@@ -36,7 +36,7 @@ module.exports = function (gulp, $, options) {
 
 	//Be careful: PRODUCTION
 	gulp.task('admin-template-cache-production', function () {
-	  	return gulp.src(PARTIALS_PATH_LIST)
+	  	return gulp.src(PARTIALS_PATH_LIST, {cwd:'admin/'})
 	  		.pipe($.minifyHTML({
 	  			conditionals: true,
     			spare: true,
@@ -58,7 +58,7 @@ module.exports = function (gulp, $, options) {
 	});
 
 	gulp.task('admin-template-cache-dev', function () {
-	  return gulp.src(PARTIALS_PATH_LIST)
+	  return gulp.src(PARTIALS_PATH_LIST, {cwd:'admin/'})
 	        .pipe($.templateCache(ADMIN_TEMPLATES_FILE, {
 	            module: 'admin',
 	            root: URL_APPENDER 

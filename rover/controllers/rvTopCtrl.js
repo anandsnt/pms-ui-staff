@@ -24,8 +24,7 @@ angular.module('sntRover').controller('topController',
 
             var setPropertyAndNavigate = function (uuid) {
                 sntAuthorizationSrv.setProperty(uuid);
-                // Notify the session timeout directive, when the hotel is set
-                $rootScope.$broadcast('SET_HOTEL');
+
                 // Initiate listener after first URL change
                 $transitions.onFinish({}, function (transition) {
                     if (transition.from().name === 'top') {

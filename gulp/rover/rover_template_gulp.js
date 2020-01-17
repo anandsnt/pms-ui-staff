@@ -2,7 +2,7 @@ module.exports = function(gulp, $, options) {
 	
 	var ROVER_TEMPLATE_ROOT     = options['ROVER_TEMPLATE_ROOT'],
 	    ROVER_HTML_FILE     	= options['ROVER_HTML_FILE'],
-	    PARTIALS_PATH_LIST 		= ['rover/**/*.html', 'shared/sntUtils/**/*.html'],
+	    PARTIALS_PATH_LIST 		= ['**/*.html'],
 	    ROVER_TEMPLATES_FILE    = 'rover_templates.js',
 	    MANIFEST_DIR 			=  __dirname + "/manifests/",
 	    ROVER_TEMPLTE_MANFEST_FILE = "rover_template_manifest.json",
@@ -35,7 +35,7 @@ module.exports = function(gulp, $, options) {
 
 	//Be careful: PRODUCTION
 	gulp.task('rover-template-cache-production', function () {
-	  return gulp.src(PARTIALS_PATH_LIST)
+	  return gulp.src(PARTIALS_PATH_LIST, {cwd:'rover/'})
 	  		.pipe($.minifyHTML({
 	  			conditionals: true,
     			spare:true,
@@ -61,7 +61,7 @@ module.exports = function(gulp, $, options) {
 
 	gulp.task('rover-template-cache-dev', function () {
 
-	  return gulp.src(PARTIALS_PATH_LIST)
+	  return gulp.src(PARTIALS_PATH_LIST, {cwd:'rover/'})
 	        .pipe($.templateCache(ROVER_TEMPLATES_FILE, {
 	            module: 'sntRover',
 	            root: URL_APPENDER
