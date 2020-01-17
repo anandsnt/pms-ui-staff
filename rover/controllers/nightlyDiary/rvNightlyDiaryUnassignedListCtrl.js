@@ -16,7 +16,8 @@ angular.module('sntRover')
         $scope.businessDate = $rootScope.businessDate;
 
         var selectUnassignedListItem = function(item) {
-            if ($scope.diaryData.isEditReservationMode) {
+            // If we are in selected reservation mode, going to cancel the selection.
+            if ($scope.diaryData.isEditReservationMode && $scope.currentSelectedReservation.type !== 'UNASSIGNED_RESERVATION') {
                 $scope.$emit('CANCEL_RESERVATION_EDITING');
             }
             $scope.diaryData.isReservationSelected = true;
@@ -59,6 +60,17 @@ angular.module('sntRover')
             }
             else {
                 selectUnassignedListItem(item);
+                var currentSelectedReservation = {
+                    ...item,
+                    id: item.reservation_id,
+                    guest_details: {
+                        full_name: item.last_name + ' ' + item.first_name,
+                        image: ''
+                    },
+                    type: 'UNASSIGNED_RESERVATION'
+                };
+
+                $scope.$emit('CLICKED_UNASSIGNED_RESERVATION', currentSelectedReservation);
             }
         };
 
@@ -153,5 +165,9 @@ angular.module('sntRover')
                 });
 
             selectUnassignedListItem(reservationItem);
+        });
+
+        $scope.addListener('CANCEL_UNASSIGNED_RESERVATION', function() {
+            unSelectUnassignedListItem();
         });
 }]);

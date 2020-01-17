@@ -152,7 +152,7 @@ sntRover.controller('roverController', [
 
         $rootScope.isLateCheckoutTurnedOn = hotelDetails.late_checkout_settings.is_late_checkout_on;
         $rootScope.businessDate = hotelDetails.business_date;
-        $rootScope.hotelCurrencyId = hotelDetails.currency.id;
+        $rootScope.hotelCurrencyId = hotelDetails.default_payment_currency.id;
         $rootScope.currencySymbol = getCurrencySign(hotelDetails.currency.value);
         $rootScope.isMultiCurrencyEnabled = hotelDetails.is_multi_currency_enabled;
         $rootScope.invoiceCurrencySymbol = hotelDetails.is_multi_currency_enabled && hotelDetails.invoice_currency !== "" ? getCurrencySign(hotelDetails.invoice_currency.value) : '';

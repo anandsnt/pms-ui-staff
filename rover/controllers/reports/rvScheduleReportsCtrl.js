@@ -709,7 +709,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 } else if ($scope.selectedEntityDetails.report.title !== reportNames['COMPARISION_BY_DATE'] && 
                     $scope.selectedEntityDetails.report.title !== reportNames['DAILY_PRODUCTION_DEMO'] &&
                     $scope.selectedEntityDetails.report.title !== reportNames['DAILY_PRODUCTION_RATE'] &&
-                    $scope.selectedEntityDetails.report.title !== reportNames['DAILY_PRODUCTION_ROOM_TYPE']) {
+                    $scope.selectedEntityDetails.report.title !== reportNames['DAILY_PRODUCTION_ROOM_TYPE'] &&
+                    $scope.selectedEntityDetails.report.title !== reportNames['GUEST_BALANCE_REPORT']) {
                         var pdfFormat = _.find($scope.scheduleFormat, {value: 'PDF'});
 
                         if (pdfFormat) {
@@ -1285,13 +1286,18 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 $scope.scheduleFormat = _.filter($scope.scheduleFormat, function (object) {
                     return object.value === 'CSV';
                 });
+            } else if (selectedEntity.report && selectedEntity.report.title === reportNames['GUEST_BALANCE_REPORT'] ) {
+                $scope.scheduleFormat = _.filter($scope.scheduleFormat, function (object) {
+                    return object.value === 'CSV' || object.value === 'PDF';
+                });
             }
 
             return selectedEntity.report && (selectedEntity.report.title === reportNames['COMPARISION_BY_DATE'] ||
                 selectedEntity.report.title === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ||
                 selectedEntity.report.title === reportNames['DAILY_PRODUCTION_DEMO'] ||
                 selectedEntity.report.title === reportNames['DAILY_PRODUCTION_RATE'] || 
-                selectedEntity.report.title === reportNames['DAILY_TRANSACTIONS']  );
+                selectedEntity.report.title === reportNames['DAILY_TRANSACTIONS'] ||
+                selectedEntity.report.title === reportNames['GUEST_BALANCE_REPORT'] );
         };
 
         // Listener for creating new report schedule

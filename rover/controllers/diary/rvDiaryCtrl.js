@@ -701,7 +701,7 @@ angular.module('sntRover')
                     selectedTypeCount;
  
                 $scope.showSaveChangesAfterEditing = false;
-                $scope.hideMoveRoomButton = row_item_data.is_hourly || row_item_data.reservation_status === 'noshow';
+                $scope.hideMoveRoomButton = row_item_data.is_hourly || row_item_data.reservation_status === 'no-show';
                 if (!$scope.isAvailable(undefined, row_item_data)) {
                     switch (command_message) {
                         case 'edit':
@@ -713,7 +713,7 @@ angular.module('sntRover')
                                 $scope.hideRoomUnAssignButton = row_item_data.reservation_status === 'departed'
                                                     || row_item_data.reservation_status === 'inhouse'
                                                     || row_item_data.reservation_status === 'check-out'
-                                                    || row_item_data.reservation_status === 'noshow';
+                                                    || row_item_data.reservation_status === 'no-show';
                                 // setting scroll posiions when in edit mode
                                 var x_n = props.display.x_n instanceof Date ? props.display.x_n : new Date(props.display.x_n);
 
