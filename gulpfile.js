@@ -39,3 +39,4 @@ require('./gulp/zest_app_gulp')(gulp, $, options);
 require('./gulp/image_optimization_gulp')(gulp, $, options);
 require('./gulp/payment_app_gulp')(gulp, $, options);
 require('./gulp/gulp_gtm_tasks')(gulp, $, options);
+require('./gulp/gulp_workers')(gulp, $, options);

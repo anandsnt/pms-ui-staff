@@ -19,7 +19,8 @@ module.exports = function(gulp, $, options) {
                 'copy-login-files', 
                 'copy-station-login-files',
                 'copy-zest-files', 
-                'copy-zeststation-files'
+                'copy-zeststation-files',
+                'copy-workers'
             ]);
 
             var compilationTasks = [
@@ -29,6 +30,7 @@ module.exports = function(gulp, $, options) {
                     'login-asset-prod-precompile',
                     'station-login-asset-prod-precompile',
                     'payment-asset-prod-precompile',
+                    'copy-workers'
                 ],
 
         tasksAfterCompilation = [
@@ -37,8 +39,7 @@ module.exports = function(gulp, $, options) {
                     'login-inject-assets-to-templates', 
                     'station-login-inject-assets-to-templates', 
                     'zest-inject-assets-to-templates',
-                    'copy-cordova-assets',
-                    'copy-shared-assets'
+                    'copy-cordova-assets'
                 ],
 
         copyBaseHtmlToPublicAssets = [
@@ -57,8 +58,7 @@ module.exports = function(gulp, $, options) {
                     'build-admin-dev', 
                     'build-zest-dev', 
                     'build-payment-dev',
-                    'copy-cordova-assets',
-                    'copy-shared-assets'
+                    'copy-cordova-assets'
                 ],
 
         watchTasks = [
@@ -67,7 +67,8 @@ module.exports = function(gulp, $, options) {
                     'watch-station-login-files', 
                     'watch-admin-files', 
                     'watch-zest-files', 
-                    'watch-payment-files'
+                    'watch-payment-files',
+                    'watch-workers'
                 ];
 
     var processArgs = function() {

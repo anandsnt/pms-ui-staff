@@ -280,13 +280,4 @@ module.exports = function(gulp, $, options) {
 			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
 	});
 
-	gulp.task('copy-shared-assets', function(){
-		return gulp.src(['shared/sntUtils/sessionTimeoutWorker.js'], {base: '.'})
-			.pipe($.uglify({compress:true, output: {
-				space_colon: false
-			}}))
-			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
-	});
-
-
 }
