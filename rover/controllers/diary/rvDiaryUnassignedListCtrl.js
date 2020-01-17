@@ -5,8 +5,6 @@ angular.module('sntRover')
         '$rootScope',
         'rvDiarySrv',
         function($scope, $rootScope, rvDiarySrv) {
-            var displayPanel = false;
-
             /**
              * Function to fetch the unassigned reservations on loading the controller
              * 
@@ -23,8 +21,6 @@ angular.module('sntRover')
                         params: postData,
                         successCallBack: successCallBackFetchList
                     };
-
-                    displayPanel = true;
     
                     $scope.callAPI(rvDiarySrv.fetchUnassignedRoomList, options);
                 }, __getTimeDiff = function(arrivalDate, arrivalTime, departureDate, departureTime) {
@@ -100,18 +96,9 @@ angular.module('sntRover')
              * Listener for closing the unassigned reservations panel
              */
             $scope.addListener('CLOSE_UD_RESERVATION_PANEL', function() {
-                displayPanel = false;
                 $scope.udReservationsData = [];
                 deselectReservation();
             });
-
-            /**
-             * Function to toggle the visibility of the unassigned panel
-             * @return {boolean}
-             */
-            $scope.showUnassignedListPanel = function() {
-                return displayPanel ? 'visible' : '';
-            };
 
             /**
              * Listener for deselecting the selected unassigned reservation and reseting the grid
