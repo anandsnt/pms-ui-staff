@@ -25,8 +25,6 @@ angular.module('admin').controller('adTopCtrl',
                     }
                     $rootScope.$on('$locationChangeStart', routeChange);
                 }
-                // Notify the session timeout directive, when the hotel is set
-                $rootScope.$broadcast('SET_HOTEL');
 
                 if ($stateParams.state) {
                     var params = ($stateParams.params && angular.fromJson(decodeURI($stateParams.params))) || {};

@@ -62,6 +62,10 @@ admin.service('ADBaseWebSrvV2', ['$http', '$q', '$window', '$rootScope', functio
             } else if (status === 504) {
                 $rootScope.showTimeoutError();
                 return;
+            }
+            else if (status === 401) { // 401- Unauthorized
+                // so lets redirect to login page
+                $window.location.href = '/logout';
             } else {
                 deferred.reject(errors);
             }
