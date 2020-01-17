@@ -1103,7 +1103,6 @@ angular.module('sntPay').controller('sntPaymentController',
                 } else {
                     $scope.payment.showAddToGuestCard = false;
                 }
-                $scope.onPaymentCurrencyChange();
             };
 
             $scope.onPaymentCurrencyChange = function() {

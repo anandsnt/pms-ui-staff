@@ -98,7 +98,7 @@
 							<div class="entry holder" ng-show="is_multi_currency_enabled">
 								<label> Hotel Invoice Currency <strong>*</strong> </label>
 								<div class="select">
-									<select
+									<select 
 											ng-model="invoice_currency"
 											ng-options="currency.id as currency.code for currency in currency_list">
 											<option value="">Select Invoice Currency</option>
@@ -106,9 +106,9 @@
 								</div>
 							</div>
 							<div class="entry holder" ng-show="is_multi_currency_enabled">
-								<label> Hotel Payment Default Currency <strong>*</strong> </label>
+								<label> Hotel Payment Currency <strong>*</strong> </label>
 								<div class="select">
-									<select
+									<select 
 											ng-model="default_payment_currency"
 											ng-options="currency.id as currency.value for currency in currency_list_for_payment">
 											<option value="">Select Invoice Currency</option>
@@ -135,8 +135,8 @@
 								parent-label-class="room-likes" span-class="checkbox-background"
 								on-click="selectedPaymentCurrency(currency.id)"></ad-checkbox>
 							</div>
-						</div>
-
+						</div>					
+           		  
             		</fieldset>
 					<div class="actions">
 						<button type="button" id="cancel" class="button blank" ng-click="goBackToPreviousState()" translate>
