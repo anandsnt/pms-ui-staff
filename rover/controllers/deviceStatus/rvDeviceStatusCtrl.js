@@ -1,18 +1,5 @@
 angular.module('sntRover').controller('rvDeviceStatusCtrl', ['$scope', 'ngDialog', '$log', 'sntActivity', 'rvDeviceStatusSrv', 'rvUtilSrv', '$timeout',
     function ($scope, ngDialog, $log, sntActivity, rvDeviceStatusSrv, rvUtilSrv, $timeout) {
-
-        var ingenico = $scope.connectedDeviceDetails.find(function(device) {
-            return device.device_short_name === 'Ingenico';
-        });
-
-        if (ingenico && ingenico.actions) {
-            ingenico.actions.push({
-                display_name: 'RFID Tag Meta',
-                action_name: 'getCLCardInfo',
-                service_name: 'RVCardPlugin'
-            });
-        }
-
         var actionResponse = {};
         var callBacks = {
             'successCallBack': function (response) {
