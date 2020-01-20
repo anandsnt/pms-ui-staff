@@ -58,10 +58,6 @@ angular.module('sntRover').service('RVBaseWebSrv', ['$http', '$q', '$window', '$
 
                 deferred.reject(['Internal server error occured']);
             }
-            else if (status === 401) { // 401- Unauthorized
-                // so lets redirect to login page
-                $window.location.href = '/logout';
-            }
 
             // set of custom error emssage range http status
             //

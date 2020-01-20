@@ -51,7 +51,7 @@ module.exports = {
                 sharedRoot + 'sntCurrency/sntCurrencyFilter.js',
                 sharedRoot + 'sntCanvasUtil/**/*.js',
                 sharedRoot + 'sntUtils/app.js',
-                sharedRoot + 'sntUtils/**/*.js',
+				sharedRoot + 'sntUtils/**/*.js',
 
 				roverRoot + 'rvRouters/**/*.js',
 				roverRoot + 'rvApp.js',
@@ -105,7 +105,9 @@ module.exports = {
 				paymentRoot + 'payConfig.js',
 
                 // Eliminate all spec files
-                '!**/*.spec.js'
+                '!**/*.spec.js',
+                // Workers will be loaded separately
+                '!**/workers/**/*.js'
 			]
 		};
 
