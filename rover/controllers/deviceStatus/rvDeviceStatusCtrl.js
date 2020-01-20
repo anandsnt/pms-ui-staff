@@ -1,6 +1,5 @@
 angular.module('sntRover').controller('rvDeviceStatusCtrl', ['$scope', 'ngDialog', '$log', 'sntActivity', 'rvDeviceStatusSrv', 'rvUtilSrv', '$timeout',
     function ($scope, ngDialog, $log, sntActivity, rvDeviceStatusSrv, rvUtilSrv, $timeout) {
-
         var actionResponse = {};
         var callBacks = {
             'successCallBack': function (response) {
@@ -97,6 +96,13 @@ angular.module('sntRover').controller('rvDeviceStatusCtrl', ['$scope', 'ngDialog
                     // do nothing
                 }
             });
+        };
+
+        // Humanize the underscore JS
+        $scope.humanize = function (str) {
+            return str.replace(/^[\s_]+|[\s_]+$/g, '')
+                      .replace(/[_\s]+/g, ' ')
+                      .replace(/^[a-z]/, function(m) { return m.toUpperCase(); });
         };
 
         (function () {
