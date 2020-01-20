@@ -5,7 +5,7 @@
     <span class="type" ng-if="!printData.is_proforma_invoice">{{printData.invoiceLabel}}</span>
     <span class="type" ng-if="printData.is_proforma_invoice" >{{printData.translation.proforma_invoice}}</span>
     <span class="type" ng-if="!printData.is_informational_invoice" in-show="printData.qr_code !== '' && printData.qr_code !== null">
-        <br/><img src="{{printData.qr_code}}" alt="" class="qr-code" /> 
+        <br/><img ng-src="{{printData.qr_code}}" alt="" class="qr-code" /> 
     </span>
 </div>
 
