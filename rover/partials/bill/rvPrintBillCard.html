@@ -4,6 +4,9 @@
     <span ng-bind-html="printData.hotel_address" ng-if="printData.show_hotel_address"></span>
     <span class="type" ng-if="!printData.is_proforma_invoice">{{printData.invoiceLabel}}</span>
     <span class="type" ng-if="printData.is_proforma_invoice" >{{printData.translation.proforma_invoice}}</span>
+    <span class="type" ng-if="!printData.is_informational_invoice" in-show="printData.qr_code !== '' && printData.qr_code !== null">
+        <br/><img src="{{printData.qr_code}}" alt="" class="qr-code" /> 
+    </span>
 </div>
 
 <!-- Case 1: Guest Bill -->
@@ -194,6 +197,14 @@
                     <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol!='' && item.invoice_currency_amount !== null">
                         {{invoiceCurrencySymbol}}{{item.invoice_currency_amount}}
                     </div>
+
+                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && item.rate_converted_amount">
+                        {{item.rate_currency}}{{item.rate_converted_amount}}
+                    </div>
+
+                    <div class="converted-currency smaller">
+                        {{item.rate_coversion_rate}}
+                    </div>
                 </td>
                 <td class="align-right"></td>
             </tr>
@@ -210,6 +221,13 @@
 
                     <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol!='' && item.invoice_currency_amount !== null">
                         {{invoiceCurrencySymbol}}{{item.invoice_currency_amount}}
+                    </div>
+                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && item.rate_converted_amount">
+                        {{item.rate_currency}}{{item.rate_converted_amount}}
+                    </div>
+
+                    <div class="converted-currency smaller">
+                        {{item.rate_coversion_rate}}
                     </div>
                 </td>
             </tr>

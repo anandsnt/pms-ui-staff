@@ -67,8 +67,10 @@ sntRover.config([
         // }]);
 
 
-        // adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
+		// adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
 		$httpProvider.interceptors.push('sharedHttpInterceptor');
+		$httpProvider.interceptors.push('sharedSessionTimeoutInterceptor');
+
 
 		$qProvider.errorOnUnhandledRejections(false);
 
@@ -327,7 +329,7 @@ sntRover.run([
 		};
 
 
-		$transitions.onExit({}, function () {
+		$transitions.onFinish({}, function () {
             // this must be reset with every state change
             // invidual controllers can then set it
             // with its own desired values

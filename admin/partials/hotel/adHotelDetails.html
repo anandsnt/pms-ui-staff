@@ -35,24 +35,6 @@
 
 			<ad-textbox value="data.alternate_name" name = "alternate-hotel-name" id = "alternate-hotel-name" label = "Alternate Name" placeholder = "Enter alternate name" required = "no" ></ad-textbox>
 
-			<div class="entry">
-				<label>Color</label>
-				<div class="color-preview">
-					<div class="color-picker" ng-hide="isToggleThemePreviewControl">
-						<ul class="colors">
-							<li ng-repeat="theme in data.theme_list">
-								<input type="radio" name="colorscheme" value="{{theme.value}}" ng-checked="(selectedTheme.value === theme.value)"/>
-								<label ng-click="themeSelected(theme)" class="color {{(theme.value).toLowerCase()}}" for="{{theme.value}}">
-									<span ng-show="theme.is_selected" class="icons icon-revert"></span>
-								</label>
-							</li>
-						</ul>
-					</div>
-					<!-- ** Please do not remove the id="color-palete" , used for click handler ** -->
-					<div id="color-palete" ng-click="toggleThemePreviewControl()" class="color {{(selectedTheme.value).toLowerCase()}}"></div>
-				</div>
-			</div>
-
 			<fieldset class="holder left" ng-show="isAdminSnt">
 				<div class="entry full-width">
 					<label for="hotel-status"> Hotel Status <strong>*</strong> </label>
@@ -77,6 +59,48 @@
 			</fieldset>
 
 		</fieldset>
+
+		<fieldset class="holder full-width">
+			<div class="form-title">
+				<h3>Theme</h3>
+			</div>
+			<!--	CICO-68802		-->
+			<fieldset class="holder left">
+				<div class="entry full-width">
+					<label for="hotel-theme" translate>TEMPLATE_THEME</label>
+					<!--	Show the configured theme in the form; This value would be read-only	-->
+					<input disabled readonly
+						   ng-if="::!isSntAdmin" value="{{ data.theme_name || 'Default' }}">
+					<div class="select" ng-if="::isSntAdmin">
+						<select  ng-model="data.theme_name" id="hotel-theme"
+								 ng-class="{'placeholder': !data.theme_name}"
+								 ng-options="theme for theme in themes">
+							<option value="">Default</option>
+						</select>
+					</div>
+				</div>
+			</fieldset>
+			<fieldset class="holder right">
+				<div class="entry">
+					<label>Color</label>
+					<div class="color-preview">
+						<div class="color-picker" ng-hide="isToggleThemePreviewControl">
+							<ul class="colors">
+								<li ng-repeat="theme in data.theme_list">
+									<input type="radio" name="colorscheme" value="{{theme.value}}" ng-checked="(selectedTheme.value === theme.value)"/>
+									<label ng-click="themeSelected(theme)" class="color {{(theme.value).toLowerCase()}}" for="{{theme.value}}">
+										<span ng-show="theme.is_selected" class="icons icon-revert"></span>
+									</label>
+								</li>
+							</ul>
+						</div>
+						<!-- ** Please do not remove the id="color-palete" , used for click handler ** -->
+						<div id="color-palete" ng-click="toggleThemePreviewControl()" class="color {{(selectedTheme.value).toLowerCase()}}"></div>
+					</div>
+				</div>
+			</fieldset>
+		<fieldset/>
+
 		<fieldset class="holder full-width" >
 			<div class="form-title">
 				<h3><span>Hotel</span> Services </h3>

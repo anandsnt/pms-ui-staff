@@ -138,6 +138,7 @@
 	"BULK_CHECKOUT_SEND_INVOICES": "Bulk check out - send invoices",
 	"LOGO_BG": "Logo background",
 	"TOURIST_TAX": "Tourist Tax",
+	"ARCHIVE_GUEST_INVOICE": "Archive Guest invoices as PDF",
 	"PAYMENT_ROUNDING": "Payment Rounding",
 	"ROUNDING_FACTOR": "Rounding Factor",
 	"SELECT_ROUNDING_FACTOR": "Select Rounding factor",

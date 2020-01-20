@@ -439,10 +439,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             var summaryData = $scope.allotmentConfigData.summary;
 
             if (summaryData.company && summaryData.company.name === "") {
-                summaryData.company = {
-                    id: '',
-                    name: ''
-                };
+                summaryData.company = null;
             }
         };
 
@@ -450,10 +447,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             var summaryData = $scope.allotmentConfigData.summary;
 
             if (summaryData.travel_agent && summaryData.travel_agent.name === "") {
-                summaryData.travel_agent = {
-                    id: '',
-                    name: ''
-                };
+                summaryData.travel_agent = null;
             }
         };
 
@@ -505,6 +499,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                 },
                 change: function() {
                     if (!$scope.isInAddMode() && (!$scope.allotmentConfigData.summary.company || !$scope.allotmentConfigData.summary.company.name)) {
+                        $scope.allotmentConfigData.summary.company = $scope.allotmentSummaryMemento.company;
                         $scope.detachCardFromAllotment('company');
                     }
                     else {
@@ -548,6 +543,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                 },
                 change: function() {
                     if (!$scope.isInAddMode() && (!$scope.allotmentConfigData.summary.travel_agent || !$scope.allotmentConfigData.summary.travel_agent.name)) {
+                        $scope.allotmentConfigData.summary.travel_agent = $scope.allotmentSummaryMemento.travel_agent;
                         $scope.detachCardFromAllotment('travel_agent');
                     }
                     else {

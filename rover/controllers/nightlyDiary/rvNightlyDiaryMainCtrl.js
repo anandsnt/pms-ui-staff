@@ -265,18 +265,23 @@ angular.module('sntRover')
                  */
                 var selectReservation = (e, reservation, room) => {
                     if (!$scope.diaryData.isEditReservationMode) {
+                        let roomDetails = _.findWhere($scope.diaryData.diaryRoomsList, { id: room.id });
+
                         $scope.diaryData.showSaveChangeButtonAfterShortenOrExtent.show = false;
                         $scope.diaryData.hideMoveButton = reservation.no_room_move;
                         $scope.diaryData.hideUnassignRoomButton = reservation.status === 'CHECKEDIN' || reservation.status === 'CHECKEDOUT' || reservation.status === 'CHECKING_OUT';
                         $scope.diaryData.isEditReservationMode = true;
-                        $scope.currentSelectedReservation = reservation;
+                        $scope.currentSelectedReservation = {
+                            ...reservation,
+                            room_type_name: roomDetails.room_type_name
+                        };
                         $scope.currentSelectedRoom = room;
                         $scope.diaryData.selectedRoomId = room.id;
                         $scope.extendShortenReservationDetails = {
                             'arrival_date': reservation.arrival_date,
                             'dep_date': reservation.dept_date,
                             'reservation_id': reservation.id,
-                            'room_number': (_.findWhere($scope.diaryData.diaryRoomsList, { id: room.id })).room_no
+                            'room_number': roomDetails.room_no
                         };
 
                         showReservationSelected();
@@ -1042,6 +1047,19 @@ angular.module('sntRover')
                     }, 1000);
                 }
 
+                // CICO-67534 : Handle Events from unassigned list.
+                $scope.addListener('CLICKED_UNASSIGNED_RESERVATION', function(event, currentSelectedReservation) {
+                    $timeout(function () {
+                        $scope.diaryData.isEditReservationMode = true;
+                        $scope.currentSelectedReservation = {};
+                        $scope.currentSelectedReservation = currentSelectedReservation;
+                    }, 1000);
+                });
+
+                $scope.addListener('CANCEL_UNASSIGNED_RESERVATION_MAIN', function() {
+                    $scope.$broadcast('CANCEL_UNASSIGNED_RESERVATION');
+                });
+
                 /**
                  * utility method to pass callbacks from
                  * @return {Object} with callbacks
@@ -1064,10 +1082,23 @@ angular.module('sntRover')
                     var params = RVNightlyDiarySrv.getCache(),
                         reservation = params.currentSelectedReservation;
 
-                    $scope.currentSelectedReservationId = params.currentSelectedReservationId;
-                    $scope.diaryData.selectedRoomId = params.currentSelectedRoomId;
+                    if (reservation.type === 'UNASSIGNED_RESERVATION') {
+                        // Logic for select unassigned reservation.
+                        $timeout(function () {
+                            $scope.diaryData.rightFilter = 'UNASSIGNED_RESERVATION';
+                            $scope.$broadcast('SELECT_UNASSIGNED_RESERVATION', reservation.reservation_id);
+                        }, 500);
+                    }
+                    else {
+                        $scope.currentSelectedReservationId = params.currentSelectedReservationId;
+                        $scope.diaryData.selectedRoomId = params.currentSelectedRoomId;
+                    }
+                    $scope.diaryData.unassignedReservationList = params.unassignedReservationList;
                     $scope.currentSelectedReservation = params.currentSelectedReservation;
-                    $scope.diaryData.hideUnassignRoomButton = reservation.status === 'CHECKEDIN' || reservation.status === 'CHECKEDOUT' || reservation.status === 'CHECKING_OUT';
+                    $scope.diaryData.hideUnassignRoomButton = true;
+                    if (reservation && reservation.status) {
+                        $scope.diaryData.hideUnassignRoomButton = reservation.status === 'CHECKEDIN' || reservation.status === 'CHECKEDOUT' || reservation.status === 'CHECKING_OUT';
+                    }
                     if ((!!params.selected_floor_ids && params.selected_floor_ids.length > 0) || (!!params.selected_room_type_ids && params.selected_room_type_ids.length > 0)) {
                         $scope.diaryData.isFromStayCard = true;
                         $scope.diaryData.filterList = params.filterList;
