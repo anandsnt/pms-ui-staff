@@ -2766,27 +2766,25 @@ sntRover.controller('RVbillCardController',
 					$("body #loading").html("");// CICO-56119
 
 					// add the orientation
-					addPrintOrientation();
-
-					/*
-					*	======[ READY TO PRINT ]======
-					*/
-					// this will show the popup with full bill
-					$timeout(function() {
-
-						if (sntapp.cordovaLoaded) {
-							cordova.exec(billCardPrintCompleted,
-								function(error) {
-									billCardPrintCompleted();
-								}, 'RVCardPlugin', 'printWebView', []);
-						}
-						else
-						{
-							window.print();
-							billCardPrintCompleted();
-						}
-					}, 700);
-			    
+                    addPrintOrientation();
+                    /*
+                     *	======[ READY TO PRINT ]======
+                     */
+                    $timeout(function() {
+                        /*
+                         *	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+                         */
+                        $window.print();
+                        if (sntapp.cordovaLoaded) {
+                            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+                        }
+                        /*
+                         *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
+                         */
+                        $timeout(function() {
+                            billCardPrintCompleted();
+                        }, 3000);
+                    }, 700);
 			};
 
 			var printDataFailureCallback = function(errorData) {
