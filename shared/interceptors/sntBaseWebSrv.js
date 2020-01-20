@@ -34,9 +34,6 @@ function sntBaseWebSrv($http, $q, $window, $rootScope, $log) {
             } else {
                 $log.error('504 - Not handled!');
             }
-        } else if (status === 401) { // 401- Unauthorized
-            // so lets redirect to login page
-            $window.location.href = '/logout';
         }
 
         // set of custom error emssage range http status

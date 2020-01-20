@@ -47,10 +47,6 @@ angular.module('sntRover').service('BaseWebSrvV2',
                     } else if (status === 501 || status === 502 || status === 503 || status === 504) { // 500- Internal Server Error
                         $window.location.href = '/500';
                     }
-                    else if (status === 401) { // 401- Unauthorized
-                        // so lets redirect to login page
-                        $window.location.href = '/logout';
-                    }
                     // CICO-26779 : Handling 404 - Not found.
                     else if (status === 404) {
                         console.warn("Found 404 Error : " + url);
