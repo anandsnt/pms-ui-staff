@@ -1,6 +1,6 @@
 admin.controller('adTwinfieldSetupMappingCtrl', [
-    '$scope', 'adTwinfieldSetupSrv', 'adInterfacesCommonConfigSrv', 'ngTableParams',
-    function($scope, adTwinfieldSetupSrv, adInterfacesCommonConfigSrv, ngTableParams) {
+    '$scope', 'adTwinfieldSetupSrv', 'ngTableParams',
+    function($scope, adTwinfieldSetupSrv, ngTableParams) {
         BaseCtrl.call(this, $scope);
 
         ADBaseTableCtrl.call(this, $scope, ngTableParams);
@@ -78,7 +78,7 @@ admin.controller('adTwinfieldSetupMappingCtrl', [
                     $scope.currentClickedElement = -1;
                     $scope.totalCount = data.total_count;
                     $scope.totalPage = Math.ceil(data.total_count / $scope.displyCount);
-                    $scope.data = data.results;
+                    $scope.data = data.data;
                     $scope.currentPage = params.page();
                     params.total(data.total_count);
                     $defer.resolve($scope.data);

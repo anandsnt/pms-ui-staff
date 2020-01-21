@@ -1,36 +1,11 @@
 <!-- Content -->
-<section id="main" role="main" click-touch='resetTime()'class="upgrades-section">
-    <div id="content" class='room-details'>
-        <h1 translate>
-            REVIEW_WALKIN_GUEST_STAY_DETAILS
-        </h1>
-        <h2 translate>
-            REVIEW_WALKIN_GUEST_STAY_DETAILS_INSTRUCTIONS
-        </h2>
-        <div id="upgrade" class="tabled-options">
-            <div class="upgrade-picture">
-                <img ng-src="{{ idScanData.selectedRoomType.room_type_image ? idScanData.selectedRoomType.room_type_image : '/assets/images/room_type_image_not_available.png' }}">
-            </div>
-            <!-- Add scroll on it -->
-            <div class="upgrade-info scrollable" ng-iscroll="room-info">
-                <div class="wrapper" ng-bind-html="idScanData.selectedRoomType.description">
-                </div>
-            </div>
-            <div class="upgrade-price">
-                <h2>{{ idScanData.selectedRoomType.roomTypeName }}</h2>
-                <div class="price">
-                    <h3 style="margin: 5px 0px;">{{ zestStationData.isHourlyRateOn ? 'HOURLY_RATE' : 'AVG_DAILY' |translate}}</h3> 
-                    <strong>{{ zestStationData.currencySymbol }}{{ idScanData.selectedRoomType.adr }}</strong>
-                </div>
-            </div>
-        </div>
-        <div id="actions">
-            <button type="button" class="button transparent" touch-press='navToHome(); resetTime()' translate>
-               NAV_CANCEL
-            </button>
-            <button type="button" class="button" touch-press='continueBooking(); resetTime()' translate>
-               CONTINUE
-            </button>
-        </div>
-    </div>
-</section>
+
+<ng-include src="'/assets/partials_v2/walkin/zsWalkinRoomUpsell.html'"  
+   ng-if="zestStationData.kiosk_walkin_flow !== 'traditional'"></ng-include>
+
+<ng-include src="'/assets/partials_v2/walkin/zsWalkinTraditionalRoomSelection.html'"  
+   ng-if="zestStationData.kiosk_walkin_flow === 'traditional'"></ng-include> 
+
+
+
+

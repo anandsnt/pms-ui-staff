@@ -8,7 +8,10 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
     '$timeout',
     '$sce',
     'zsUtilitySrv',
-    function($scope, $rootScope, $state, $stateParams, zsEventConstants, zsCheckinSrv, $timeout, $sce, zsUtilitySrv) {
+    'zsPaymentSrv',
+    'zsGeneralSrv',
+    '$controller',
+    function($scope, $rootScope, $state, $stateParams, zsEventConstants, zsCheckinSrv, $timeout, $sce, zsUtilitySrv, zsPaymentSrv, zsGeneralSrv, $controller) {
 
 		/** ********************************************************************************************
 		 **		Please note that, not all the stateparams passed to this state will not be used in this state, 
@@ -26,28 +29,11 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
         // We will use the logic we added for bypass T&C to handle for now.
 
         BaseCtrl.call(this, $scope);
+        var paymentParams = zsPaymentSrv.getPaymentData();
 
-   //      var init = function() {
-			// // hide back button
-   //          $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
-			// // show close button
-   //          $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
-			// // back button action
-   //          $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-   //              if ($stateParams.is_from_addons === 'true') {
-   //                  $state.go('zest_station.addOnUpsell', {
-   //                      'is_from_room_upsell': $stateParams.is_from_room_upsell
-   //                  });
-   //              } else if ($stateParams.is_from_room_upsell === 'true') {
-   //                  $state.go('zest_station.roomUpsell');
-   //              } else {
-   //                  $state.go('zest_station.checkInReservationDetails', $stateParams);
-   //              }
-   //          });
-			// // starting mode
-   //          $scope.mode = 'TERMS_CONDITIONS';
-   //          $scope.setScreenIcon('bed');
-   //      };
+         $controller('zsCheckinCommonBaseCtrl', {
+               $scope: $scope
+         });
 
 		/**
 		 * [checkIfEmailIsBlackListedOrValid description]
@@ -143,6 +129,11 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
                     params: JSON.stringify($stateParams)
                 });
             }
+            else if ($scope.zestStationData.enable_passport_entry) {
+                $state.go('zest_station.zsCheckinPassportDetails', {
+                    params: JSON.stringify($stateParams)
+                });
+            }
             else if ($scope.zestStationData.noCheckInsDebugger === 'true') {
                 if (collectPassportEnabled && !$stateParams.passports_scanned) {
                     $stateParams.email = $stateParams.guest_email;
@@ -157,9 +148,10 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
                     $stateParams.email = $stateParams.guest_email;
                     $state.go('zest_station.checkInScanPassport', $stateParams);
                 } else {
-                    $scope.callAPI(zsCheckinSrv.checkInGuest, options);
+                    $scope.$emit('CHECK_IF_REQUIRED_GUEST_DETAILS_ARE_PRESENT', {
+                        checkinParams: _.extend({}, checkinParams, $stateParams)
+                    });
                 }
-
             }
         };
 
@@ -233,7 +225,15 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
             if ($stateParams.pickup_key_mode) {
                 stateParams.pickup_key_mode = 'manual';
             }
-            if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.hotelSettings.mli_cba_enabled) {
+
+            if (!$scope.zestStationData.is_standalone && $scope.zestStationData.hotelSettings.use_ows_opi_auth) {
+                var toParamsJson = JSON.stringify(stateParams);
+                
+                $state.go('zest_station.checkInCCCollectionUsingOpi', {
+                    params: toParamsJson
+                });
+            }
+            else if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.hotelSettings.mli_cba_enabled) {
                 // In case of CBA + MLI - if CC is already present use that CC for 
                 // further actions. Else collect a new CC using MLI
                 if ($stateParams.payment_method === 'CC') {
@@ -248,9 +248,39 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
             }
         };
 
-        var nextPageActions = function(byPassCC) {
+        var checkForAllowedAndGuarenteedPaymentTypes = function(byPassCC) {
+            var paymentMethodUsed = paymentParams.payment_method_used ? paymentParams.payment_method_used : '';
+            var isAllowedPaymentMethod = function(paymentType) {
+                var paymentMethodValue = paymentType.value ? paymentType.value : '';
+
+                return ((paymentType.id === paymentParams.payment_method_used ||
+                        paymentMethodValue.toUpperCase() === paymentMethodUsed.toUpperCase()) &&
+                        paymentType.active &&
+                        paymentType.enable_zs_checkin);
+            }
+            var indexInAllowedPaymentTypes = _.findIndex($scope.zestStationData.payment_types, function(paymentType) {
+                return isAllowedPaymentMethod(paymentType);
+            });
+            var indexInGuaranteedPaymentTypes = _.findIndex($scope.zestStationData.payment_types, function(paymentType) {
+                return isAllowedPaymentMethod(paymentType) && paymentType.reservation_type === 'PAYMENT_GUARANTEED';
+            });
+
+            // If the reservation is not walkin and payment type is not allowed, block the reservation from checking in
+            if (!$scope.selectedReservation.isWalkinReservation && paymentMethodUsed && indexInAllowedPaymentTypes === -1) {
+                $state.go('zest_station.paymentMethodNotAllowed');
+            } else if (paymentMethodUsed && indexInAllowedPaymentTypes !== -1 && indexInGuaranteedPaymentTypes !== -1) {
+                checkInGuest();
+            } else {
+                nextPageActions(byPassCC, true);
+            }
+        };
+
+        var nextPageActions = function(byPassCC, skipExcludePaymentType) {
+            if (zsGeneralSrv.featuresToggleList && zsGeneralSrv.featuresToggleList.kiosk_exclude_payment_methods && !skipExcludePaymentType) {
+                checkForAllowedAndGuarenteedPaymentTypes(byPassCC);
+            }
 			// check if depsoit is to be paid
-            if (depositRequired() && !$scope.zestStationData.bypass_kiosk_cc_auth) {
+            else if (depositRequired() && !$scope.zestStationData.bypass_kiosk_cc_auth) {
                 goToDepositScreen();
             } else if (!byPassCC && !$scope.zestStationData.bypass_kiosk_cc_auth) {
                 goToCreditCardAuthScreen();
@@ -302,6 +332,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 
         };
 
+        $scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
         checkIfNeedToSkipCC();
     }
 ]);

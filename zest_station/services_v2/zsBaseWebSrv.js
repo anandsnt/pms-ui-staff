@@ -70,6 +70,7 @@ angular.module('sntZestStation').
                                     'status': 'processing_not_completed',
                                     'location_header': headers('Location')
                                 };
+                                data = response.data;
                             }
 
                             deferred.resolve(data);

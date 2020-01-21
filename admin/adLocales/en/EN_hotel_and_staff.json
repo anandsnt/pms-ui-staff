@@ -17,4 +17,7 @@
 "BANK_ID" : "Bank Institution ID",
 "BANK_ID_PLACEHOLDER" : "Enter Bank Institution ID",
 "BANK_IBAN" : "BANK IBAN information",
-"BANK_IBAN_PLACEHOLDER" : "Enter BANK IBAN information"
+"BANK_IBAN_PLACEHOLDER" : "Enter BANK IBAN information",
+"HOTEL_POLICE_EXPORT_CODE" : "Hotel Police Export Code",
+"HOTEL_POLICE_EXPORT_CODE_PLACEHOLDER" : "Enter Hotel Police Export Code"
+

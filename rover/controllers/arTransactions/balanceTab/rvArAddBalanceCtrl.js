@@ -114,7 +114,7 @@ sntRover.controller('RvArAddBalanceController', ['$scope', '$rootScope', 'ngDial
 			$scope.manualBalanceObj.selectedIndex = index;
 
 			ngDialog.open({
-				template: '/assets/partials/companyCard/rvCompanyCardContractsCalendar.html',
+				template: '/assets/partials/companyCard/contracts/rvCompanyCardContractsCalendar.html',
 				controller: 'RVArAddBalanceDatePickerController',
 				className: '',
 				scope: $scope

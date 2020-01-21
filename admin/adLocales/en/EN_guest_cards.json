@@ -41,4 +41,11 @@
 "PERSONAL_ID_NUMBER": "Personal ID no.",
 "HOME_TOWN": "Home Town",
 "PLACE_OF_RESIDENCE": "Place of residence",
-"VEHICLE_COUNTRY_MARK": "Vehicle country mark"
+"VEHICLE_COUNTRY_MARK": "Vehicle country mark",
+"NATIONALITY": "Nationality",
+"DATE_OF_BIRTH": "Date Of Birth",
+"JOB_TITLE": "Job Title",
+"ID_ISSUE_DATE": "Id issue date",
+"ENTRY_DATE": "Entry date",
+"PLACE_OF_ISSUE": "Place of Issue",
+"COUNTRY_OF_ISSUE": "Country of Issue"

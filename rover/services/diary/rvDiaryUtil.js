@@ -16,7 +16,9 @@ sntRover
     		removeReservation,
     		clearRoomQuery,
     		reservationRoomTransfer,
-    		clearRowClasses,
+			clearRowClasses,
+			registerNotifictions,
+			correctTime,
     		shallowCopy,
     		deepCopy,
     		copyArray,
@@ -211,7 +213,7 @@ sntRover
 			var room,
                 m_status = meta.occupancy.status,
 				reject = function(child) {
-					return angular.lowercase(child[m_status]) === 'available';
+					return child[m_status].toLowerCase() === 'available';
 				};
 
 			for (var i = 0, len = rooms.length; i < len; i++) {

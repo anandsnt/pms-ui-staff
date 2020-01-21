@@ -11,7 +11,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 		BaseCtrl.call(this, $scope);
 
 		$scope.detailIndex = -1;
-
+		var languagesEditedInSession = [];
 		var saveNewLanguagePosition = function(languageName, position) {
 			var languageListForApi = $scope.languageList.map(function(language, index) {
 				return {
@@ -49,6 +49,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 			$scope.languageList = _.sortBy(listHavingValues, 'position').concat(nullList);
 			$scope.detailIndex = -1;
 			$scope.isAddMode = false;
+			languagesEditedInSession = [];
 		};
 
 		/**
@@ -115,7 +116,6 @@ admin.controller('adZestStationLanguageConfigCtrl',
 		// when editing on-screen, need to fetch the language then show on-screen
 		// if a user closes the window, we need to persist the reference in case they
 		// want to continue editing
-		var languagesEditedInSession = [];
 		var continueEditing = function(lang) {
 			if (languagesEditedInSession[lang]) {
 				return true;

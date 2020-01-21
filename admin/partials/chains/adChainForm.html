@@ -59,7 +59,12 @@
 			<fieldset class="holder right float">
 
 				<!--  sftp password-->
-				<ad-textbox inputtype="password" value="editData.sftp_password"   label = "SFTP Password" placeholder = "Enter SFTP Password"  styleclass="full-width"></ad-textbox>
+				<ad-textbox inputtype="password" 
+							value="editData.sftp_password"
+							label = "SFTP Password"
+							placeholder = "Enter SFTP Password"
+							styleclass="full-width"
+							click-handler="onPasswordClick(editData, 'sftp_password')"></ad-textbox>
 
 				<!--  sftp respath-->
 				<ad-textbox value="editData.sftp_respath"   label = "SFTP Respath" placeholder = "Enter SFTP Respath"  styleclass="full-width"></ad-textbox>
@@ -101,7 +106,12 @@
 			</fieldset>
 			<fieldset class="holder right float">
                                 <ad-textbox value="editData.smtp_username"   label = "Username" placeholder = "Enter Username"  styleclass="full-width"></ad-textbox>
-				<ad-textbox value="editData.smtp_password"   label = "Password" placeholder = "Enter Password"  styleclass="full-width" inputtype="password"></ad-textbox>
+				<ad-textbox value="editData.smtp_password"
+							label = "Password"
+							placeholder = "Enter Password"
+							styleclass="full-width"
+							inputtype="password"
+							click-handler="onPasswordClick(editData, 'smtp_password')"></ad-textbox>
 			</fieldset>
 
 
@@ -112,20 +122,30 @@
 					Hotel MLI Settings
 				</h3>
 			</div>
-			<fieldset class="holder right float">
-
-				 <div class="entry full-width">
-					<label for="certificate">CA Certificate </label>
-					<div class="file-upload">
-						<span class="input">{{fileName}}</span>
-						<input type="file" ng-model="editData.ca_certificate" accept="*" app-filereader />
-						<button type="button" class="button brand-colors">
-							 Attach Certificate
-						</button>
-					</div>
-
-				</div>
+			<fieldset class="holder left float padding-3">
+                <div class="entry full-width">
+                    <label for="certificate">SHA1 CA Certificate </label>
+                    <div class="file-upload">
+                        <span class="input">{{fileName}}</span>
+                        <input type="file" ng-model="editData.ca_certificate" accept="*" app-filereader />
+                        <button type="button" class="button brand-colors">
+                            Attach
+                        </button>
+                    </div>
+                </div>
 			</fieldset>
+            <fieldset class="holder right float">
+                <div class="entry full-width">
+                    <label for="certificate">SHA2 CA Certificate </label>
+                    <div class="file-upload">
+                        <span class="input">{{sha2FileName}}</span>
+                        <input type="file" ng-model="editData.sha2_ca_certificate" file-name-key="sha2FileName" accept="*" app-filereader />
+                        <button type="button" class="button brand-colors">
+                            Attach
+                        </button>
+                    </div>
+                </div>
+            </fieldset>
 
 			<div class="form-title">
 				<h3>

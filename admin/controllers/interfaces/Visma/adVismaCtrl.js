@@ -19,7 +19,7 @@ admin.controller('adVismaCtrl', ['$scope', 'config', 'adInterfacesSrv',
          * @return {undefined}
          * @param {name} name name of current active Tab
          */
-        $scope.changeTab = function(name) {
+        $scope.changeTab = function (name) {
             $scope.state.activeTab = name;
         };
 

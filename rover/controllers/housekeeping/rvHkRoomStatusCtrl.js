@@ -232,7 +232,8 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				if (scrollCount === 0) {
 					localStorage.setItem( 'roomListScrollTopPos', $_roomsEl.scrollTop );
 					$state.go("rover.housekeeping.roomDetails", {
-						id: room.id
+						id: room.id,
+						page: $_page
 					});
 				}
 			}, 400);
@@ -1048,8 +1049,12 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 					_setUpWorkTypeEmployees();
 				} else {
 					$scope.invokeApi(RVHkRoomStatusSrv.fetchWorkTypes, {}, function(data) {
-						$scope.workTypes = data;
-						$scope.invokeApi(RVHkRoomStatusSrv.fetchHKEmps, {}, function(data) {
+                        var params = {
+                            per_page: 9999
+                        };
+
+                        $scope.workTypes = data;
+						$scope.invokeApi(RVHkRoomStatusSrv.fetchHKEmps, params, function(data) {
 							$scope.employees = data;
 							_setUpWorkTypeEmployees();
 						});
@@ -1066,7 +1071,9 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			$_updateFilters('page', $_page);
 			$timeout(function() {
 				$scope.$broadcast('updatePagination', 'HK_SEARCH');
+				$scope.$broadcast('updatePageNo', $_page);
 			}, 700);
+			
 		}
 
 
@@ -1158,6 +1165,8 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 		function $_callRoomsApi(page) {
 			var clickedPage = page || 1;
+
+			$_page = clickedPage;
 
 			$_updateFilters('page', clickedPage);
 
@@ -1528,7 +1537,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
               break;
           }
           return (returnString);
-        };
-
+		};
+		
 	}
 	]);

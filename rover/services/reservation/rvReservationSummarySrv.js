@@ -454,11 +454,11 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
             return deferred.promise;
         };
 
-        this.updateDayUseFlag = function(data) {
+        this.retrieveRoomPin = function(params) {
             var deferred = $q.defer(),
-                url = '/api/reservations/' + data.reservationId + '/update_day_use_flag';
+                url = '/staff/reservation/get_room_pin'; 
 
-            rvBaseWebSrvV2.postJSON(url, data).then(function(data) {
+            rvBaseWebSrvV2.getJSON(url, params).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
@@ -466,11 +466,16 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
             return deferred.promise;
         };
 
-        this.retrieveRoomPin = function(params) {
+        /**
+         * Update booker email for a reservation
+         * @param {Object} data contains booker email and reservation id
+         * @return {Promise}
+         */
+        this.updateBookerEmail = function(data) {
             var deferred = $q.defer(),
-                url = '/staff/reservation/get_room_pin'; 
+                url = '/api/reservations/' + data.reservationId + '/update_booker_email';
 
-            rvBaseWebSrvV2.getJSON(url, params).then(function(data) {
+            rvBaseWebSrvV2.putJSON(url, data).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);

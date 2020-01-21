@@ -22,6 +22,9 @@
         <div id="room" ng-show="zestStationData.show_room_number && zestStationData.station_mobile_key_status !== 'third_party'">
             <span class="number">{{room}}</span>
         </div>
+        <div class="room-instructions" ng-show="enabledInFeatureToggle() && zestStationData.show_room_number && zestStationData.station_mobile_key_status !== 'third_party'">
+            <h2>{{roomInstructions}}</h2>
+        </div>
         <div id="keys">
             <h2>
                 <text data-ng-bind-html="getTagValue('HOW_MANY_KEYS')" editable-text="HOW_MANY_KEYS"></text>

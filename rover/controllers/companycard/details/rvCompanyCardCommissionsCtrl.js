@@ -165,7 +165,7 @@ sntRover.controller('companyCardCommissionsCtrl', [
         $scope.popupCalendar = function(clickedOn) {
             $scope.clickedOn = clickedOn;
             ngDialog.open({
-                template: '/assets/partials/companyCard/rvCompanyCardContractsCalendar.html',
+                template: '/assets/partials/companyCard/contracts/rvCompanyCardContractsCalendar.html',
                 controller: 'RVCommissionsDatePickerController',
                 className: '',
                 scope: $scope
@@ -519,7 +519,8 @@ sntRover.controller('companyCardCommissionsCtrl', [
         };
 
         $scope.$on('LOAD_SUBSCRIBED_MPS', function() {
-            if ($scope.contactInformation.is_global_enabled && $rootScope.isAnMPHotel && rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
+            if ($scope.contactInformation.is_global_enabled && $rootScope.isAnMPHotel && rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE') && 
+              $rootScope.hotelDetails.userHotelsData.hotel_list.length > 0 && rvPermissionSrv.getPermissionValue('MULTI_PROPERTY_SWITCH')) {
                 $scope.shouldShowPropertyDropDown = true;
                 fetchMultiProperties();
             } else {

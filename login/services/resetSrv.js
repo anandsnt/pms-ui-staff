@@ -1,5 +1,12 @@
-angular.module('login').service('resetSrv', ['$http', '$q', '$window',
-    function($http, $q, $window) {
+angular.module('login').service('resetSrv', ['$http', '$q', '$window', '$timeout',
+    function($http, $q, $window, $timeout) {
+        // Note: Setting error message here as currently Login app doesn't support localization
+        // TODO: Localize this error Message
+        const _ERRORS = {
+            'activation_period_expired': ['The activation period has expired.' +
+            'Please contact the system administrator to activate your account.']
+        };
+
         /*
          * Reset Password
          * @param object of data
@@ -139,6 +146,15 @@ angular.module('login').service('resetSrv', ['$http', '$q', '$window',
          */
         this.getErrorMessage = function(errorMessage) {
             return this.errorMessage;
+        };
+
+        this.handleRedirectErrors = function (error) {
+            this.errorMessage = _ERRORS[error];
+
+            $timeout(function () {
+                // Remove querystring params
+                $window.history.pushState('', 'Login', '/login');
+            });
         };
 
     }]);

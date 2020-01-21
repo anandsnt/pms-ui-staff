@@ -39,7 +39,9 @@ angular.module('sntPay').controller('sntPaymentController',
                 isManualEntryInsideIFrame: false,
                 workstationId: '',
                 emvTimeout: 120,
-                isConfirmedDBpayment: false
+                isConfirmedDBpayment: false,
+                selectedPaymentCurrencyId: $rootScope.hotelCurrencyId,
+                selectedPaymentCurrencySymbol: $rootScope.currencySymbol
             };
 
             $scope.giftCard = {
@@ -79,7 +81,8 @@ angular.module('sntPay').controller('sntPaymentController',
                         'payment_type': $scope.selectedPaymentType,
                         'amount': $scope.payment.amount.toString().replace(/,/g, ''),
                         'is_split_payment': $scope.splitBillEnabled && $scope.numSplits > 1,
-                        'workstation_id': $scope.hotelConfig.workstationId
+                        'workstation_id': $scope.hotelConfig.workstationId,
+                        'currency_id': $scope.payment.selectedPaymentCurrencyId
                     },
                     'reservation_id': $scope.reservationId,
                     'bill_id': $scope.billId
@@ -117,6 +120,10 @@ angular.module('sntPay').controller('sntPaymentController',
                         ...$scope.selectedCC.params,
                         ...params.postData
                     };
+                }
+
+                if ($scope.hotelConfig.paymentGateway === 'SHIJI') {
+                    params.postData.auth_code = $scope.payment.auth_code;
                 }
 
                 return params;
@@ -298,12 +305,33 @@ angular.module('sntPay').controller('sntPaymentController',
                     $scope.giftCard.availableBalance && parseFloat($scope.giftCard.availableBalance) < payableAmount;
             };
 
+            /*
+             * Method to check the work station status is active/not
+             * If not active disable the payment option and show message in the screen
+             */
+            $scope.checkWorkStationMandatoryFields = function () {
+                sntPaymentSrv.checkWorkStationMandatoryFields($scope.hotelConfig.workstationId).then(
+                    response => {
+                        $scope.workStationStatus = response.workstation_active;
+                        if (!response.workstation_active) {
+                            $scope.errorMessage = ["Workstation needs to be set up in order to proceed with payment"];
+                        }
+                        return $scope.workStationStatus;
+                    },
+                    errorMessage => {
+                        $scope.workStationStatus = true;
+                        return $scope.workStationStatus;
+                    }
+                );
+            };
+
             /**
              * Hide payment method if there is no permission or no payment type
              * @returns {boolean} boolean
              */
+
             $scope.shouldHidePaymentButton = function () {
-                return !$scope.selectedPaymentType || !$scope.hasPermission ||
+                return !$scope.workStationStatus || !$scope.selectedPaymentType || !$scope.hasPermission ||
                     $scope.isGCBalanceShort() ||
                     (!$scope.splitBillEnabled && $scope.paymentAttempted && !$scope.isPaymentFailure);
             };
@@ -518,6 +546,38 @@ angular.module('sntPay').controller('sntPaymentController',
                         sntActivity.stop('ADD_PAYMENT_GUEST_CARD');
                     });
                 } else if ($scope.selectedPaymentType === 'CC'
+                    && $scope.actionType === 'ADD_PAYMENT_CO_TA'
+                    && $scope.payment.tokenizedCardData
+                    && $scope.payment.tokenizedCardData.apiParams) {
+
+                    sntActivity.start('ADD_PAYMENT');
+                    sntPaymentSrv.savePaymentDetails({
+                        ...$scope.payment.tokenizedCardData.apiParams,
+                        workstation_id: $scope.hotelConfig.workstationId,
+                        account_id: $scope.accountId,
+                        is_from_wallet: $scope.isFromWallet
+                    }).then(response => {
+                        var cardDetails = $scope.payment.tokenizedCardData;
+
+                        $scope.$emit('SUCCESS_LINK_PAYMENT', {
+                            response: {
+                                ...response.data,
+                                addToGuestCard: $scope.payment.addToGuestCardSelected
+                            },
+                            selectedPaymentType: $scope.selectedPaymentType,
+                            cardDetails: {
+                                'card_code': cardDetails.cardDisplayData.card_code,
+                                'ending_with': cardDetails.cardDisplayData.ending_with,
+                                'expiry_date': cardDetails.cardDisplayData.expiry_date,
+                                'card_name': cardDetails.apiParams.name_on_card || cardDetails.apiParams.card_name
+                            }
+                        });
+                        sntActivity.stop('ADD_PAYMENT');
+                    }, errorMessage => {
+                        $scope.$emit('ERROR_OCCURED', errorMessage);
+                        sntActivity.stop('ADD_PAYMENT');
+                    });
+                } else if ($scope.selectedPaymentType === 'CC'
                     && /^ADD_PAYMENT_/.test($scope.actionType)
                     && $scope.payment.tokenizedCardData
                     && $scope.payment.tokenizedCardData.apiParams) {
@@ -701,7 +761,7 @@ angular.module('sntPay').controller('sntPaymentController',
                                         className: '',
                                         scope: $scope
                                     });
-                                }   
+                                }
 
                             }
                         } else if (data.travel_agent_present) {
@@ -724,7 +784,7 @@ angular.module('sntPay').controller('sntPaymentController',
                                         className: '',
                                         scope: $scope
                                     });
-                                }                                 
+                                }
                             }
                         } else {
                             $scope.errorMessage = [$filter('translate')('ACCOUNT_ID_NIL_MESSAGE_PAYMENT')];
@@ -775,6 +835,12 @@ angular.module('sntPay').controller('sntPaymentController',
                 cancellConfirmDBpopup();
             });
 
+            let isEMVEnabledForOverlayDeposit = function() {
+                return !$scope.hotelConfig.isStandAlone &&
+                    $rootScope.hotelDetails.enable_emv_for_overlay &&
+                    $scope.actionType === 'DEPOSIT_BALANCE_PAYMENT';
+            };
+
             $scope.submitPayment = function (payLoad) {
                 var errorMessage = ['Please enter a valid amount'],
                     paymentTypeId, // for CC payments, we need payment type id
@@ -789,14 +855,16 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 params = initiateSubmitPaymentParams(payLoad);
 
-                // check if chip and pin is selected in case of six payments
+                // check if chip and pin is selected in case of six payments or SHIJI
                 // the rest of actions will in paySixPayController
                 if ($scope.selectedPaymentType === 'CC' &&
-                    $scope.hotelConfig.paymentGateway === 'sixpayments' && !$scope.payment.isManualEntryInsideIFrame) {
+                    ($scope.hotelConfig.paymentGateway === 'sixpayments' ||
+                     ($scope.hotelConfig.paymentGateway === 'SHIJI' && !$rootScope.hotelDetails.shiji_token_enable_offline) ||
+                     isEMVEnabledForOverlayDeposit()) &&
+                    !$scope.payment.isManualEntryInsideIFrame) {
                     $scope.$broadcast('INITIATE_CHIP_AND_PIN_PAYMENT', params);
                     return;
                 }
-
 
                 // MLI EMV
                 if ($scope.selectedPaymentType === 'CC' && isEMVEnabled
@@ -926,6 +994,8 @@ angular.module('sntPay').controller('sntPaymentController',
                     showFee: currFee.showFees,
                     feeChargeCode: currFee.feeChargeCode
                 };
+
+                $scope.originalFee = angular.copy($scope.feeData.calculatedFee);
             }
 
             /**
@@ -957,13 +1027,20 @@ angular.module('sntPay').controller('sntPaymentController',
                 }
             };
 
-            //  Payment type change action
-            $scope.onPaymentInfoChange = function (isReset) {
+            // Payment type change action
+            $scope.onPaymentInfoChange = function(shouldReset) {
                 // NOTE: Fees information is to be calculated only for standalone systems
                 // TODO: See how to handle fee in case of C&P
                 // CICO-44719: No need to show add payment screen
                 if ($scope.actionType === 'AR_REFUND_PAYMENT') {
                     return false;
+                }
+
+                if (shouldReset) {
+                    $scope.payment.selectedPaymentCurrencyId = $rootScope.hotelCurrencyId;
+                    $scope.payment.selectedPaymentCurrencySymbol = $rootScope.currencySymbol;
+                    $scope.payment.amount = initialPaymentAmount;
+                    $scope.feeData.calculatedFee = $scope.originalFee;
                 }
 
                 /** CICO-47989
@@ -975,10 +1052,6 @@ angular.module('sntPay').controller('sntPaymentController',
                 }
 
                 var selectedPaymentType;
-
-                if (isReset && $scope.payment.isEditable && $scope.selectedPaymentType === 'GIFT_CARD') {
-                    $scope.payment.amount = 0;
-                }
 
                 calculateFee();
                 selectedPaymentType = _.find($scope.paymentTypes, {
@@ -999,7 +1072,9 @@ angular.module('sntPay').controller('sntPaymentController',
                 // If the changed payment type is CC and payment gateway is MLI show CC addition options
                 // If there are attached cards, show them first
                 if (!!selectedPaymentType && selectedPaymentType.name === 'CC') {
-                    if (PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl) {
+                    if (shouldReset && $scope.selectedPaymentType === 'CC' && $scope.hotelConfig.paymentGateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline) {
+                        changeToCardAddMode();
+                    } else if (PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl) {
                         // Add to guestcard feature for C&P
                         //  The payment info may change after adding a payment method; in such a case, should not reset back to C&P mode
                         $scope.selectedCC = $scope.selectedCC || {};
@@ -1019,13 +1094,34 @@ angular.module('sntPay').controller('sntPaymentController',
                         }
                         // Add to guestcard feature for C&P
                         $scope.payment.showAddToGuestCard = !!$scope.reservationId && !$scope.payment.isManualEntryInsideIFrame;
-                    } else if (!isCardSelectionDisabled() && !$scope.showSelectedCard()) {
+                    } else if (!isCardSelectionDisabled() &&
+                               !$scope.showSelectedCard() &&
+                               !isEMVEnabledForOverlayDeposit()) {
                         //  In case no card has been selected yet, move to add card mode
                         changeToCardAddMode();
                     }
                 } else {
                     $scope.payment.showAddToGuestCard = false;
                 }
+            };
+
+            $scope.onPaymentCurrencyChange = function() {
+                $scope.payment.selectedPaymentCurrencySymbol = (_.find($scope.paymentCurrencyList, {"id": $scope.payment.selectedPaymentCurrencyId})).symbol;
+                var paramsToApi = {
+                    "amount": parseFloat(initialPaymentAmount),
+                    "fee": parseFloat($scope.originalFee),
+                    "currency_id": parseInt($scope.payment.selectedPaymentCurrencyId),
+                    "date": $rootScope.businessDate
+                };
+
+                sntPaymentSrv.getConvertedAmount(paramsToApi).then(
+                    response => {
+                        $scope.payment.amount = response.data.converted_amount;
+                        $scope.feeData.calculatedFee = response.data.converted_fee;
+                    },
+                    errorMessage => {
+
+                    });
             };
 
             $scope.onFeeOverride = function () {
@@ -1087,6 +1183,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 $scope.payment.linkedCreditCards = _.where(data.existing_payments, {
                     is_credit_card: true
                 });
+                $scope.payment.shiji_token_enable_offline = data.shiji_token_enable_offline;
 
                 if ($scope.payment.linkedCreditCards.length > 0) {
                     refreshScroller('cardsList');
@@ -1096,9 +1193,38 @@ angular.module('sntPay').controller('sntPaymentController',
             // if there is reservationID fetch the linked credit card items
             var fetchAttachedCreditCards = function () {
                 if ($scope.reservationId) {
+                    var data = {
+                        "billNumber": $scope.billNumber,
+                        "reservationId": $scope.reservationId
+                    };
+
                     sntActivity.start('FETCH_ATTACHED_CARDS');
 
-                    sntPaymentSrv.getLinkedCardList($scope.reservationId).then(
+                    sntPaymentSrv.getLinkedCardList(data).then(
+                        response => {
+                            onFetchLinkedCreditCardListSuccess(response);
+                            sntActivity.stop('FETCH_ATTACHED_CARDS');
+                        },
+                        errorMessage => {
+                            $scope.$emit('PAYMENT_FAILED', errorMessage);
+                            sntActivity.stop('FETCH_ATTACHED_CARDS');
+                        });
+                } else if ($scope.accountId) {
+                    sntActivity.start('FETCH_ATTACHED_CARDS');
+
+                    sntPaymentSrv.getCoTaLinkedCardList($scope.accountId).then(
+                        response => {
+                            onFetchLinkedCreditCardListSuccess(response);
+                            sntActivity.stop('FETCH_ATTACHED_CARDS');
+                        },
+                        errorMessage => {
+                            $scope.$emit('PAYMENT_FAILED', errorMessage);
+                            sntActivity.stop('FETCH_ATTACHED_CARDS');
+                        });
+                } else if ($scope.postingAccountId) {
+                    sntActivity.start('FETCH_ATTACHED_CARDS');
+
+                    sntPaymentSrv.getAccountsLinkedCardList($scope.postingAccountId).then(
                         response => {
                             onFetchLinkedCreditCardListSuccess(response);
                             sntActivity.stop('FETCH_ATTACHED_CARDS');
@@ -1197,7 +1323,9 @@ angular.module('sntPay').controller('sntPaymentController',
                         params,
                         data: {
                             id: null,
-                            credit_card_type: $scope.selectedCC.card_code
+                            credit_card_type: $scope.selectedCC.card_code,
+                            ending_with: $scope.selectedCC.ending_with,
+                            expiry_date: $scope.selectedCC.expiry_date
                         }
                     });
                     // Don't make save payment call for swipes during submit payment
@@ -1233,9 +1361,9 @@ angular.module('sntPay').controller('sntPaymentController',
 
                         $scope.selectedCC.value = response.id;
                         $scope.selectedCard = $scope.selectedCC.value;
-                        $scope.selectedCC.card_code = cardDetails.cardDisplayData.card_code ? cardDetails.cardDisplayData.card_code.toLowerCase() : 'credit-card';
-                        $scope.selectedCC.ending_with = cardDetails.cardDisplayData.ending_with;
-                        $scope.selectedCC.expiry_date = cardDetails.cardDisplayData.expiry_date;
+                        $scope.selectedCC.card_code = response.credit_card_type ? response.credit_card_type.toLowerCase() : 'credit-card';
+                        $scope.selectedCC.ending_with = response.ending_with;
+                        $scope.selectedCC.expiry_date = response.expiry_date;
                         $scope.selectedCC.holder_name = cardDetails.cardDisplayData.name_on_card;
 
                         $scope.payment.screenMode = 'PAYMENT_MODE';
@@ -1328,17 +1456,17 @@ angular.module('sntPay').controller('sntPaymentController',
              */
             function onAmountChange() {
                 $scope.payment.amount = $scope.amount || 0;
-                initialPaymentAmount = initialPaymentAmount ? initialPaymentAmount : angular.copy($scope.payment.amount);
+                initialPaymentAmount  = angular.copy($scope.payment.amount);
                 calculateFee();
             }
 
             $scope.onPaymentSuccess = function (response) {
                 $scope.paymentAttempted = !($scope.splitBillEnabled && $scope.numSplits > $scope.completedSplitPayments);
-                
+
                 $scope.isPaymentFailure = false;
                 $scope.payment.authorizationCode = response.authorization_code;
 
-                response.amountPaid = $scope.payment.amount;
+                response.amountPaid = response.amount;
                 response.authorizationCode = response.authorization_code;
 
                 response.selectedPaymentType = $scope.selectedPaymentType;
@@ -1374,21 +1502,27 @@ angular.module('sntPay').controller('sntPaymentController',
                 var isMLIEMV = ($scope.hotelConfig.paymentGateway === 'MLI' &&
                     $scope.hotelConfig.isEMVEnabled) || ($scope.hotelConfig.paymentGateway === 'CBA_AND_MLI' &&
                     $scope.hotelConfig.isEMVEnabled && $scope.payment.isAddCardAction);
-                    
+
                 var isPendingPayment = !$scope.paymentAttempted || // no payments attempted
                         // attempted payment failed
                         $scope.isPaymentFailure ||
                         // CICO-41498 in the middle of split bill payments
                         ($scope.splitBillEnabled && $scope.numSplits > $scope.completedSplitPayments);
 
-                return (isMLIEMV || $scope.hotelConfig.paymentGateway === 'sixpayments' || $scope.hotelConfig.paymentGateway === 'SHIJI') &&
-                    $scope.selectedPaymentType === 'CC' &&
-                    $scope.payment.screenMode === 'PAYMENT_MODE' &&
-                    isPendingPayment && $scope.actionType !== 'AR_REFUND_PAYMENT';
+                return (isMLIEMV || $scope.hotelConfig.paymentGateway === 'sixpayments' ||
+                        ($scope.hotelConfig.paymentGateway === 'SHIJI' && !$rootScope.hotelDetails.shiji_token_enable_offline) ||
+                        isEMVEnabledForOverlayDeposit()) &&
+                        $scope.selectedPaymentType === 'CC' &&
+                        $scope.payment.screenMode === 'PAYMENT_MODE' &&
+                        isPendingPayment && $scope.actionType !== 'AR_REFUND_PAYMENT';
             };
 
             $scope.getShijiToken = function() {
                 $scope.$broadcast('GET_SHIJI_TOKEN');
+            };
+
+            $scope.getShijiOfflineStatus = function() {
+                return $rootScope.hotelDetails.shiji_token_enable_offline;
             };
 
             /** **************** init ***********************************************/
@@ -1457,7 +1591,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 $scope.$emit('SET_SCROLL_FOR_EXISTING_CARDS');
 
                 // check if card is present, if yes turn on flag
-                if ($scope.hotelConfig.paymentGateway === 'sixpayments') {
+                if ($scope.hotelConfig.paymentGateway === 'sixpayments' || $scope.hotelConfig.paymentGateway === 'SHIJI') {
                     $scope.payment.isManualEntryInsideIFrame = true;
                     // Add to guestcard feature for C&P
                     $scope.payment.showAddToGuestCard = !$scope.payment.isManualEntryInsideIFrame;
@@ -1487,10 +1621,10 @@ angular.module('sntPay').controller('sntPaymentController',
                     }, 300);
                 }
 
-                /**
-                 *
-                 */
-                if (!$scope.hotelConfig.isStandAlone && !isCardSelectionDisabled() && $scope.hotelConfig.paymentGateway !== 'CBA_AND_MLI') {
+                if (!$scope.hotelConfig.isStandAlone &&
+                    !isCardSelectionDisabled() &&
+                    $scope.hotelConfig.paymentGateway !== 'CBA_AND_MLI' &&
+                    !isEMVEnabledForOverlayDeposit()) {
                     changeToCardAddMode();
                 }
 
@@ -1508,12 +1642,19 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 config = $scope.hotelConfig;
 
-                isEMVEnabled = config.paymentGateway === 'sixpayments' ||
+                isEMVEnabled = config.paymentGateway === 'sixpayments' || (config.paymentGateway === 'SHIJI' && !$rootScope.hotelDetails.shiji_token_enable_offline) ||
                     ((config.paymentGateway === 'MLI' || config.paymentGateway === 'CBA_AND_MLI') && config.isEMVEnabled);
 
+                $scope.paymentAttempted = false;
+                $scope.workStationStatus = true;
                 $scope.showSelectedCard();
+                if ($rootScope.isWorkStationMandatory) {
+                    $scope.checkWorkStationMandatoryFields();
+                }
 
+                if ($scope.selectedPaymentType === 'CC' && $scope.selectedCC && $scope.hotelConfig.paymentGateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline) {
+                    $scope.payment.auth_code = $scope.selectedCC.auth_code;
+                }
             })();
-
         }
     ]);

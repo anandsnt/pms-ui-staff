@@ -106,8 +106,14 @@ angular.module('stayCardModule', [])
                 to_date: '',
                 fromState: '',
                 view: 'DEFAULT',
-                company_id: null,
-                travel_agent_id: null,
+                company_id: {
+                    value: null,
+                    dynamic: true
+                },
+                travel_agent_id: {
+                    value: null,
+                    dynamic: true
+                },
                 group_id: null,
                 borrow_for_groups: '',
                 allotment_id: null,
@@ -117,10 +123,13 @@ angular.module('stayCardModule', [])
                 children: '',
                 promotion_id: '',
                 room_type_id: null,
-                roomTypeIdFromNightlyDiary: null,
-                isFromNightlyDiary: false,
                 is_member: '',
-                guestId: ''
+                guestId: '',
+                selectedRoomId: null,
+                selectedRoomNo: null,
+                arrivalTime: null,
+                departureTime: null,
+                numNights: null
             },
             templateUrl: '/assets/partials/reservation/rvSelectRoomAndRate.html',
             controller: 'RVSelectRoomAndRateCtrl',
@@ -183,16 +192,19 @@ angular.module('stayCardModule', [])
                 from_date: '',
                 to_date: '',
                 reservation: 'DAILY',
-                from_screen: ''
+                from_screen: '',
+                rate_id: ''
             },
             resolve: {
                 addonData: function (RVReservationAddonsSrv, $stateParams) {
+
                     var params = {};
 
                     params.from_date = $stateParams.from_date;
                     params.to_date = $stateParams.to_date;
                     params.is_active = true;
                     params.is_not_rate_only = true;
+                    params.rate_id = $stateParams.rate_id;
                     return RVReservationAddonsSrv.fetchAddonData(params);
                 }
             }

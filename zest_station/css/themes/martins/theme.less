@@ -44,6 +44,10 @@
             fill: none;
             stroke: @white;
         }
+
+        &.icon-arrow-down {
+            fill: @white;
+        }
     }
 
     .logo-svg{
@@ -155,6 +159,39 @@
                     .action  {
                         input {
                             color: @textColor;
+                        }
+                    }
+                }
+            }
+        }
+
+        .minibar-item,
+        .minibar-review .review-container {
+            background: @transparentColor;
+            color: @white;
+        }
+        
+        .minibar-items {
+            .minibar-item {
+                .minibar-item { background: transparent;}
+                .minibar-item-qty { color:#ebebeb; }
+                .minibar-item-info {
+                    .minibar-item-meta { color:#ebebeb; }
+                }
+            }
+        }
+    
+        .minibar-review {
+            .review-items {
+                ul.totals {
+                    li {
+                        &:not(.total) {
+                            color:#ebebeb;
+                        }
+    
+                        &:first-child,
+                        &.total {
+                            border-top-color: #ebebeb;
                         }
                     }
                 }

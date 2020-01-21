@@ -41,6 +41,7 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2', 'ADRatesSrv',
 
                 ADBaseWebSrvV2.getJSON(url).then(function (data) {
                     that.addRatesDetailsData.restrictionDetails = data.results;
+                    that.addRatesDetailsData.roundingOptions = data.rate_round_types;
                     that.fetchSelectedRestrictions();
                 }, function (data) {
                     deferred.reject(data);

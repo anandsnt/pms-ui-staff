@@ -6,10 +6,18 @@ admin.service('adIFCInterfaceMappingSrv', [
         var interfaceswithNumericExternalValues = ['HOGIA'];
 
         var metaLists = {
+            'AXBASE3000': ['ROOM_NUMBERS', 'ROOM_TYPES'],
+            'CEGID': ['CHARGE_CODES'],
+            'DATAPLUS': ['CHARGE_CODES', 'MARKET_SEGMENTS'],
             'DELPHI': ['CHARGE_CODES', 'GROUP_HOLD_STATUSES', 'MARKET_SEGMENTS', 'SOURCE_CODES'],
+            'DERBYSOFT': ['CANCELLATION_POLICIES', 'CANCELLATION_CODES', 'TAX_CHARGE_CODES', 'TAX_CODES'],
+            'EXACTONLINE': ['CHARGE_CODES', 'TAX_CHARGE_CODES'],
+            'FISKALTRUST': ['PAYMENT_CODES'],
             'HOGIA': ['CHARGE_CODES'],
+            'IGEL': ['CHARGE_CODES', 'PAYMENT_CODES'],
+            'SAFEACCOUNTING': ['CHARGE_CODES', 'TAX_CHARGE_CODES'],
             'SUNACCOUNTING': ['CHARGE_CODES', 'MARKET_SEGMENTS'],
-            'DERBYSOFT': ['CANCELLATION_POLICIES', 'CANCELLATION_CODES', 'TAX_CHARGE_CODES', 'TAX_CODES']
+            'SIE': ['CHARGE_CODES']
         };
 
         var metaPromises = {
@@ -36,6 +44,15 @@ admin.service('adIFCInterfaceMappingSrv', [
             },
             'TAX_CODES': function() {
                 return ADBaseWebSrvV2.getJSON('/api/hotel_settings/derbysoft/tax_codes.json?per_page=1000');
+            },
+            'PAYMENT_CODES': function() {
+                return ADBaseWebSrvV2.getJSON('/admin/charge_codes/payment_charge_codes.json?per_page=1000');
+            },
+            'ROOM_NUMBERS': function() {
+                return ADBaseWebSrvV2.getJSON('/admin/hotel_rooms.json?page=1&per_page=100&query=&sort_dir=true&sort_field=name');
+            },
+            'ROOM_TYPES': function() {
+                return ADBaseWebSrvV2.getJSON('/ifc/axbase3000/mappings');
             }
         };
 
@@ -82,7 +99,6 @@ admin.service('adIFCInterfaceMappingSrv', [
                 }, function(err) {
                     throw err;
                 });
-
             return deferred.promise;
         };
 

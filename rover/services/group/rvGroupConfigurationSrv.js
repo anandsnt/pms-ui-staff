@@ -15,7 +15,8 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 				"reservation_type_id": "",
 				"market_segment_id": "",
 				"source_id": "",
-				"booking_origin_id": ""
+				"booking_origin_id": "",
+				"segment_id": ""
 			},
 			"travel_agent": null,
 			"company": null,

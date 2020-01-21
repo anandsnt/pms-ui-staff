@@ -68,6 +68,10 @@
         stroke: @white;
     }
 
+    &.icon-arrow-down {
+        fill: @brandColor;
+    }
+
 }
 
 /* 4. LAYOUT
@@ -94,7 +98,28 @@
         top: 115px;
     }
 
-    .entry.input {
+    #actions.languages-list {
+        
+        .selected-language {
+            .button();
+
+            &.with-icon {
+                padding-left: 55px;
+            }
+
+            .icons {
+                left: 10px;
+                width: 32px;
+            }
+        }
+
+        .button.with-icon {
+            background: transparent;
+            color: @textColor;
+        }
+    }
+
+    .entry.input:not(.select) {
         .icons {
             fill: @brandColor;
         }
@@ -122,6 +147,7 @@
 
         li {
             text-transform: none;
+            line-height: 32px;
 
             .button {
                 background: transparent;
@@ -364,5 +390,10 @@
         .popup-content {
             color: @green;
         }
+    }
+
+    .minibar-item,
+    .minibar-review .review-container {
+        color: @textColor;
     }
 }

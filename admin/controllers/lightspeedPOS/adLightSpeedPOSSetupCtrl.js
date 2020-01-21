@@ -44,8 +44,12 @@ angular.module('admin').controller('adLightSpeedPOSSetupCtrl',
             };
 
             $scope.saveLightSpeedPOSSetup = function(cb) {
+                var requestObj = dclone($scope.lightspeed);
+
+                $scope.deletePropertyIfRequired(requestObj, 'password');
+
                 var params = {
-                    lightspeed: _.omit(dclone($scope.lightspeed), 'charge_code_name', 'payment_charge_code_name')
+                    lightspeed: _.omit(requestObj, 'charge_code_name', 'payment_charge_code_name')
                 };
 
                 if (!$scope.lightspeed.enabled) {
@@ -145,5 +149,6 @@ angular.module('admin').controller('adLightSpeedPOSSetupCtrl',
                 };
 
                 $scope.lightspeed = lightSpeedSetupValues;
+                $scope.setDefaultDisplayPassword($scope.lightspeed, 'password');
             }());
         }]);

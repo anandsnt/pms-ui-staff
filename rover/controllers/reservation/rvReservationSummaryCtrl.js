@@ -702,7 +702,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                     $scope.depositData = $scope.reservationData.depositData;
                 }
                 $scope.fetchDemoGraphics();
-            } else {
+            }
+            else {
                 if (!$scope.reservationData.depositData) {
                     $scope.depositData = {};
                     var arrivalRate = $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].rate.id;
@@ -876,7 +877,16 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 $scope.errorMessage = data;
             };
 
+            var arrivalTime = ($scope.reservationData.checkinTime && $scope.reservationData.checkinTime.hh) ? $scope.reservationData.checkinTime.hh + ':' + $scope.reservationData.checkinTime.mm + ' ' + $scope.reservationData.checkinTime.ampm : null,
+                departureTime = ($scope.reservationData.checkoutTime && $scope.reservationData.checkoutTime.hh) ? $scope.reservationData.checkoutTime.hh + ':' + $scope.reservationData.checkoutTime.mm + ' ' + $scope.reservationData.checkoutTime.ampm : null,
+                checkinTime = arrivalTime !== null ? moment(arrivalTime, 'hh:mm A').format('HH:mm') : null,
+                checkoutTime = departureTime !== null ? moment(departureTime, 'hh:mm A').format('HH:mm') : null;
+
             var postData = {
+                arrival_time: checkinTime,
+                departure_time: checkoutTime,
+                arrival_date: $scope.reservationData.arrivalDate,
+                departure_date: $scope.reservationData.departureDate,
                 payment_type: {},
                 guest_detail_id: $scope.reservationData.guest.id // CICO-42714
             };
@@ -1709,6 +1719,16 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
         };
 
         $scope.init();
+
+        // Create group reservation, when borrow from house is done
+        $scope.addListener('CREATE_RESERVATION_AFTER_BORROW', function() {
+            $scope.init();
+        });
+
+        // Navigate to room and rates screen, when borrow is declined
+        $scope.addListener('SHOW_ROOM_AND_RATES_AFTER_BORROW_DECLINE', function() {
+            $state.go(roomAndRatesState, $rootScope.setPrevState.param);
+        });
     }
 
 ]);

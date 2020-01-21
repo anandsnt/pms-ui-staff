@@ -1,48 +1,15 @@
 admin.service('adExactOnlineSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
-
     /**
      * to get the ExactOnLine configraton values
      * @return {undefined}
      */
-    this.fetchExactOnLineConfiguration = function() {
+    this.fetchExactOnLineConfiguration = function () {
         var deferred = $q.defer();
-        var url = 'api/hotel_settings/exactonline';
+        var url = 'ifc/proxy/exactonline/index';
 
-        ADBaseWebSrvV2.getJSON(url).then(function(data) {
+        ADBaseWebSrvV2.getJSON(url).then(function (data) {
             deferred.resolve(data);
-        }, function(data) {
-            deferred.reject(data);
-        });
-        return deferred.promise;
-    };
-
-    /**
-     * to save the ExactOnLine configration values
-     * @return {undefined}
-     */
-    this.saveExactOnLineConfiguration = function(params) {
-        var deferred = $q.defer();
-        var url = 'api/hotel_settings/exactonline';
-
-        ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
-            deferred.resolve(data);
-        }, function(data) {
-            deferred.reject(data);
-        });
-        return deferred.promise;
-    };
-
-    /**
-     * to run Exact Online Export
-     * @return {undefined}
-     */
-    this.runExactOnlineExport = function(params) {
-        var deferred = $q.defer();
-        var url = 'api/hotel_settings/exactonline/run_process';
-
-        ADBaseWebSrvV2.putJSON(url, params).then(function(data) {
-            deferred.resolve(data);
-        }, function(data) {
+        }, function (data) {
             deferred.reject(data);
         });
         return deferred.promise;
@@ -50,14 +17,13 @@ admin.service('adExactOnlineSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', functio
 
     this.fetchBalancingAccounts = function() {
         var deferred = $q.defer();
-        var url = 'api/hotel_settings/exactonline/gl_accounts';
+        var url = 'ifc/proxy/exactonline/gl_accounts';
 
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
         }, function(data) {
             deferred.reject(data);
         });
-
 
         return deferred.promise;
     };
@@ -68,7 +34,7 @@ admin.service('adExactOnlineSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', functio
      */
     this.fetchJournalsList = function() {
         var deferred = $q.defer();
-        var url = 'api/hotel_settings/exactonline/journals';
+        var url = 'ifc/proxy/exactonline/journals';
 
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
@@ -86,7 +52,7 @@ admin.service('adExactOnlineSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', functio
      */
     this.fetchEndpointsList = function() {
         var deferred = $q.defer();
-        var url = '/api/hotel_settings/exactonline/endpoints';
+        var url = '/ifc/proxy/exactonline/endpoints';
 
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);

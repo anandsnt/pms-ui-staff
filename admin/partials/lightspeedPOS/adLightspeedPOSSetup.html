@@ -62,7 +62,8 @@
                                 ng-if="lightspeed.enabled" styleclass="full-width"></ad-textbox>
                     <ad-textbox inputtype="password" value="lightspeed.password"
                                 label="{{'LIGHT_SPEED_POS_PASSWORD'| translate}}" styleclass="full-width"
-                                ng-if="lightspeed.enabled"></ad-textbox>
+                                ng-if="lightspeed.enabled"
+                                click-handler="onPasswordClick(lightspeed, 'password')"></ad-textbox>
                 </fieldset>
                 <fieldset class="holder left">
                     <ad-charge-code-auto-complete ng-model="lightspeed.payment_charge_code_name" only-payments="true"

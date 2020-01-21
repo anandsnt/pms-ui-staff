@@ -67,9 +67,13 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                     clear_text: commonIconsPath + '/clear-text.svg',
                     no_of_nights: commonIconsPath + '/nights.svg',
                     adults: commonIconsPath + '/adults.svg',
-                    children: commonIconsPath + '/children.svg'
+                    children: commonIconsPath + '/children.svg',
+                    down: commonIconsPath + '/down.svg'
                 }
             };
+
+            $scope.icons.url.user_passport = iconsPath + '/user-id.svg';
+            $scope.icons.url.no_user_passport = iconsPath + '/no-user-id.svg';
 
             if ($scope.icons.url.scanpassport.length > 0) {
                 $scope.scanpassport_image_uploaded = true;
@@ -91,6 +95,10 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                     $scope.icons.url.logo = iconsPath + '/logo-print.svg';
                 }
                 $scope.icons.url.logo = iconsPath + '/logo-print.svg';
+
+                if ($scope.zestStationData.theme === 'qbic') {
+                    $scope.icons.url.new_location = iconsPath + '/add-new.svg';
+                }
             }
 
             if ($scope.zestStationData.theme === 'yotel') {
@@ -173,7 +181,24 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                     'huntley',
                     'queen',
                     'belle',
-                    'ihg'
+                    'ihg',
+                    'qbic',
+                    'caro',
+                    'schani-wien',
+                    'glencoe',
+                    'schani-salon',
+                    'spatz',
+                    'lenaustrasse',
+                    'why-tysons',
+                    'local-house',
+                    'travel-24',
+                    'sage-inn',
+                    'hammetts',
+                    'lochardil',
+                    'perle-oban',
+                    'why-columbia',
+                    'why-houston',
+                    'victory-house'
                 ],
                 nonCircleNavIcons = ['public_v2'];// minor adjustment to the back/close icons for some themes (only show the inner x or <)
 

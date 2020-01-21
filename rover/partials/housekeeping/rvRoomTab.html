@@ -1,6 +1,6 @@
 <div ng-controller="RVHKRoomTabCtrl">
 
-    <div class="room-actions has-date">
+    <div class="room-actions has-date" ng-class="{'overlay': !hasPermissionPutRoomOOS }">
         <div class="has-datepicker">
             <label for="room-service-date">Date</label>
             <input name="room-service-date" id="room-service-date" type="text" class="datepicker" ui-date="selectDateOptions" ng-model="updateService.selected_date" ui-date-format readonly>               
@@ -15,7 +15,7 @@
     </div>
 
     <!-- 3.B Room Tab - Room is OOO or OOS -->
-    <div id="room-content" class="room-content row scrollable" ng-iscroll="room-tab-scroll">
+    <div id="room-content" class="room-content row scrollable" ng-iscroll="room-tab-scroll" ng-class="{'overlay': !hasPermissionPutRoomOOS }">
         <div class="wrapper room-service-status">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <!-- 3.A  Room Tab - Room in service -->

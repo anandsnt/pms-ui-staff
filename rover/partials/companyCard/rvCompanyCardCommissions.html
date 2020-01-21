@@ -175,7 +175,7 @@
                             <!-- add class "checked" when L56 checked -->
                             <span class="icon-form icon-checkbox" ng-class="{'checked' : commissionDetail.is_checked}"></span>
                             <!-- add class "checked" when L56 checked -->
-                            <input ng-model="commissionDetail.is_checked" type="checkbox" ng-click="onCheckBoxSelection(commissionDetail)" />
+                            <input ng-model="commissionDetail.is_checked" type="checkbox" ng-change="onCheckBoxSelection(commissionDetail)" />
                         </label>
 
                         <!-- Clicking L40 block should open Stay Card for this reservation -->

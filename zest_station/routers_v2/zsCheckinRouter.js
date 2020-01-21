@@ -617,6 +617,55 @@ sntZestStation.config(['$stateProvider',
             controller: 'zsWalkInCtrl',
             templateUrl: '/assets/partials_v2/walkin/zsWakinReservationMain.html'
         });
-    
+
+        $stateProvider.state('zest_station.checkinRoomNotAvailableNow', {
+            url: '/roomNotAvailableNow',
+            controller: 'zsRoomNotAvailableNowCtrl',
+            params: {
+                guest_id: '',
+                reservation_id: '',
+                guest_email: '',
+                first_name: '',
+                last_name: '',
+                guest_email_blacklisted: ''
+            },
+            templateUrl: '/assets/partials_v2/checkin/zsRoomNotAvailableNow.html'
+        });
+
+        $stateProvider.state('zest_station.paymentMethodNotAllowed', {
+            url: '/',
+            params: {
+                params: ''
+            },
+            templateUrl: '/assets/partials_v2/checkin/zsCheckinPaymentTypeNotAllowed.html'
+        });
+
+        $stateProvider.state('zest_station.checkInCCCollectionUsingOpi', {
+            url: '/checkInCCCollectionUsingOpi',
+            params: {
+                params: ''
+            },
+            templateUrl: '/assets/partials_v2/checkin/zscheckInCCCollectionUsingOpi.html',
+            controller: 'zsCheckInCCCollectionUsingOpiCtrl'
+        });
+
+        $stateProvider.state('zest_station.zsCheckinPassportDetails', {
+            url: '/passportDetails',
+            templateUrl: '/assets/partials_v2/checkin/zsCheckinPassportDetails.html',
+            controller: 'zsCheckinPassportDetailsCtrl',
+            params: {
+                params: ''
+            }
+        });
+
+        $stateProvider.state('zest_station.zsCheckinSaveGuestInfo', {
+            url: '/saveGuestInfo',
+            templateUrl: '/assets/partials_v2/checkin/zsCheckinSaveGuestInfo.html',
+            controller: 'zsCheckinSaveGuestInfoCtrl',
+            params: {
+                checkinParams: '',
+                guestInfo: ''
+            }
+        });
     }
 ]);

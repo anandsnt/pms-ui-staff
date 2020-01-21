@@ -3,15 +3,30 @@ const { connect } = ReactRedux;
 let convertRowReadyToComponent = (roomsList, selectedRoomId, state) => {
 
     roomsList.map((room) => {
-        room.roomClass = (room.id === selectedRoomId) ? 'grid-row highlighted' : 'grid-row';
-        if (state.isBookRoomViewActive) {
-            state.availableSlotsForBookRooms.forEach(function (item) {
-                if (item.room_id === room.id) {
-                    room.availableSlotsForBookRooms = item.available_dates;
-                }
-            });
+
+        if (room.reservations.length !== 0) {
+            /*
+             *  Find Max overlap count
+             *  Max no of overlaps in a row.
+             */
+            room.maxOverlap = _.max(room.reservations, 
+                                function(item) { 
+                                    return item.overlapCount; 
+                                }).overlapCount;
+        }
+        
+        if (room.hourly_reservations.length > 0) {
+            room.maxOverlap ++;
+        }
+
+        if (room.id === selectedRoomId) {
+            room.roomClass = (room.maxOverlap >= 0) ? 'grid-row highlighted overlap-' + room.maxOverlap : 'grid-row highlighted';
+        }
+        else {
+            room.roomClass = (room.maxOverlap >= 0) ? 'grid-row overlap-' + room.maxOverlap : 'grid-row';
         }
     });
+
     return roomsList;
 };
 
@@ -22,6 +37,7 @@ const mapStateToNightlyDiaryReservationsListContainerProps = (state) => ({
     selectedRoomId: state.selectedRoomId,
     showAssignRooms: state.isAssignRoomViewActive,
     showMoveRooms: state.isMoveRoomViewActive,
+    showBookRooms: state.isBookRoomViewActive,
     state: state
 });
 

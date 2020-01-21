@@ -39,7 +39,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		$scope.perPage = 50;
 		$scope.businessDate = $rootScope.businessDate;
-
+		$scope.isFromBillCard = false;
 
 		// Success callback for transaction fetch API.
 		var onBillTransactionFetchSuccess = function(data) {
@@ -140,7 +140,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
   		// only for standalone
 		var setChargeCodesSelectedStatus = function(bool) {
 				var billTabsData = $scope.transactionsDetails.bills,
-				    chargeCodes = billTabsData[$scope.currentActiveBill].transactions;
+					chargeCodes = billTabsData[$scope.currentActiveBill].transactions;
 
 				chargeCodesId = [];
 				_.each(chargeCodes, function(chargeCode) {
@@ -435,7 +435,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		var updateTransactionData = $scope.$on('UPDATE_TRANSACTION_DATA', function(event, data) {
 				
 			$scope.isFromPaymentScreen = data.isFromPaymentSuccess;
-			if ($scope.isFromPaymentScreen && !$scope.transactionsDetails.is_bill_lock_enabled) {
+			if (($scope.isFromPaymentScreen && !$scope.transactionsDetails.is_bill_lock_enabled) || data.selectedPaymentType === 'DB') {
 				$scope.shouldGenerateFolioNumber = true;
 			}
 			getTransactionDetails();
@@ -507,7 +507,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			 */
 			var moveToBillFailureCallback = function(data) {
 				$scope.$emit('hideLoader');
-				$scope.errorMessage = data.errorMessage;
+				$scope.errorMessage = data;
 			};
 			
 			$scope.invokeApi(rvAccountTransactionsSrv.moveToAnotherBill, dataToMove, moveToBillSuccessCallback, moveToBillFailureCallback );
@@ -627,6 +627,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				sntActivity.stop("SHOW_PAYMENT_MODEL");
 				$scope.passData = getPassData();
 				$scope.paymentModalOpened = true;
+				$scope.$emit('TOGGLE_PAYMET_POPUP_STATUS', true);
 				ngDialog.open({
 					template: '/assets/partials/accounts/transactions/rvAccountPaymentModal.html',
 					className: '',
@@ -658,6 +659,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		var modalOpened = $scope.$on('HANDLE_MODAL_OPENED', function(event) {
 			$scope.paymentModalOpened = false;
+			$scope.$emit('TOGGLE_PAYMET_POPUP_STATUS', false);
 		});
 
 		$scope.$on('$destroy', modalOpened);
@@ -939,6 +941,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		};
 
 		var accountsPrintCompleted = function() { 
+			$scope.invoiceActive = false;
+			$scope.printGroupProfomaActive = false;
         	$('.nav-bar').removeClass('no-print');
 			$('.cards-header').removeClass('no-print');
 			$('.card-tabs-nav').removeClass('no-print');
@@ -967,7 +971,21 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 						sntActivity.stop("PRINT_STARTED");
 						var responseData = response.data,
 							copyCount = "",
-							timeDelay = 700;
+							timeDelay = 700,
+							arInvoiceNumberActivatedDate = moment(responseData.print_ar_invoice_number_activated_at, "YYYY-MM-DD"),
+							arTransactionDate = moment(responseData.ar_transaction_date, "YYYY-MM-DD"),
+							dateDifference = arTransactionDate.diff(arInvoiceNumberActivatedDate, 'days');
+
+						$scope.shouldShowArInvoiceNumber = true;
+						if (dateDifference < 0) {
+							$scope.shouldShowArInvoiceNumber = false;
+						}
+
+
+						if (responseData.is_group && responseData.is_proforma_invoice) {
+							$scope.invoiceActive = false;
+							$scope.printGroupProfomaActive = true;
+						}
 
 						if ($scope.billFormat.isInformationalInvoice) {
 							responseData.invoiceLabel = responseData.translation.information_invoice;
@@ -993,7 +1011,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 							copyCount = getCopyCount(responseData);
 							responseData.invoiceLabel = responseData.translation.copy_of_invoice.replace("#count", copyCount);
 						}
-
+						$scope.invoiceActive = true;
 						$scope.printData = responseData;
 						$scope.errorMessage = "";
 
@@ -1461,6 +1479,64 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			};
 
 			$scope.callAPI(RVBillCardSrv.hideBill, dataToSend);
+		};
+		/*
+		 * Receipt print completed
+		 */
+		var receiptPrintCompleted = function() {
+			$scope.printReceiptActive = false;
+		};
+		
+		/*
+		 * Print Receipt from accounts
+		 */
+		$scope.addListener('PRINT_RECEIPT', function(event, receiptPrintData) {
+			$scope.printReceiptActive = true;
+			$scope.receiptPrintData = receiptPrintData;
+			$scope.errorMessage = "";
+
+			$('.nav-bar').addClass('no-print');
+			$('.cards-header').addClass('no-print');
+			$('.card-tabs-nav').addClass('no-print');
+			$("body #loading").html("");
+
+			// this will show the popup with full report
+			$timeout(function() {
+
+				if (sntapp.cordovaLoaded) {
+					cordova.exec(receiptPrintCompleted,
+						function(error) {
+							receiptPrintCompleted();
+						}, 'RVCardPlugin', 'printWebView', []);
+				}
+				else
+				{
+					$timeout(function() {
+						window.print();
+						receiptPrintCompleted();
+					}, 500); 
+				}
+
+			}, 100);
+		});
+
+		/*
+		 * Open receipt print dialog box
+		 * @param feesIndex transaction index id
+		 */
+		$scope.openReceiptDialog = function(feesIndex) {
+			var feesDetails = $scope.transactionsDetails.bills[$scope.currentActiveBill].transactions[feesIndex];
+
+			$scope.transactionId = feesDetails.id ? feesDetails.id : null;
+			$scope.billId = $scope.transactionsDetails.bills[$scope.currentActiveBill].bill_id;
+			$scope.entityType = "PostingAccount";
+
+			ngDialog.open({
+				template: '/assets/partials/popups/rvReceiptPopup.html',
+				controller: 'RVReceiptPopupController',
+				className: '',
+				scope: $scope
+			});
 		};
 	}
 ]);

@@ -129,11 +129,12 @@
                 <label for="allotment-rate" translate>RATE</label>
                 <div class="select">
                     <select id="allotment-rate" iscroll-stop-propagation
-                            ng-model="allotmentConfigData.summary.rate"
+                            ng-model="allotmentConfigData.summary.uniqId"
                             ng-change="onRateChange()"
                             ng-disabled="allotmentConfigData.summary.is_cancelled"
-                            ng-options="rate.id as rate.name group by rate.groupName for rate in allotmentSummaryData.rateSelectDataObject">
-                        <option value="" selected disabled>Select Rate</option>
+                            snt-placeholder="SELECT_RATE"
+                            ng-options="rate.uniqId as rate.name group by rate.groupName for rate in allotmentSummaryData.rateSelectDataObject"
+                            ng-class="{'highlighted': !allotmentConfigData.summary.uniqId}">
                     </select>
                 </div>
                 <a ng-click="!allotmentConfigData.summary.is_cancelled ? (isInAddMode() ? manageAddons() : viewAddons()) : false" class="button with-icon" ng-class="{'brand-colors' : !isInAddMode() && !allotmentConfigData.summary.is_cancelled, 'grey' : isInAddMode() || !!allotmentConfigData.summary.is_cancelled}">

@@ -217,7 +217,8 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
             var options = {
                 params: {
                     'id': $stateParams.reservation_id,
-                    'application': 'KIOSK'
+                    'application': 'KIOSK',
+                    'locale': $translate.use()
                 },
                 successCallBack: fetchPrintViewCompleted,
                 failureCallBack: printFailedActions

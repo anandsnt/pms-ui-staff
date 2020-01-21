@@ -8,7 +8,9 @@ angular.module('reportsModule')
     'RVReportNamesConst',
     'RVReportFiltersConst',
     'RVreportsSubSrv',
-    function($rootScope, $filter, $timeout, $q, reportNames, reportFilters, reportsSubSrv) {
+    'rvUtilSrv',
+    'RVReportParamsConst',
+    function($rootScope, $filter, $timeout, $q, reportNames, reportFilters, reportsSubSrv, rvUtilSrv, reportParams) {
         var factory = {};
 
         var DATE_FILTERS = [
@@ -46,6 +48,31 @@ angular.module('reportsModule')
             'showActionables',
             'show_vat_with_rates'
         ];
+
+        // Extract rate types and rates list
+        var extractRateTypesFromRateTypesAndRateList = function(rateTypesAndRateList) {
+            var rateTypeListIds      = _.pluck(rateTypesAndRateList, "rate_type_id"),
+                rateTypeListIds      = _.unique(rateTypeListIds),
+                rateTypeObject       = {},
+                rateTypeListToReturn = rateTypeListIds.map(function(id) {
+                    rateTypeObject   =  _.findWhere(rateTypesAndRateList, {rate_type_id: id});
+                    if (rateTypeObject) {
+                        rateTypeObject.name = rateTypeObject.rate_type_name;
+                        rateTypeObject = _.pick(rateTypeObject, "name", "rate_type_id", "selected");
+                    }
+                    return rateTypeObject;
+                });
+
+            return rateTypeListToReturn;
+        };
+
+        // Extract rates from rate types
+        var extractRatesFromRateTypesAndRateList = function(rateTypesAndRateList) {
+            return rateTypesAndRateList.map(function(rate) {
+                rate.name = rate.rate_name;
+                return _.omit(rate, "rate_type_name");
+            });
+        };
 
         /**
          * This function canshowActionables return CG & CC with no payment entries or with only payment entries
@@ -407,6 +434,13 @@ angular.module('reportsModule')
                     }
                     );
                     break;
+                case reportNames['FOLIO_TAX_REPORT']:
+                    report['filters'].push({
+                        'value': "INCLUDE_LANGUAGE",
+                        'description': "Include Language"
+                    }
+                    );
+                    break;
 
                 case reportNames['TAX_EXEMPT']:
                     report['filters'].push({
@@ -552,6 +586,10 @@ angular.module('reportsModule')
 
                 if (filter.value === 'RATE') {
                     report['hasRateFilter'] = filter;
+                }
+
+                if (filter.value === 'INCLUDE_DAY_USE') {
+                    report['hasDayUseFilter'] = filter;
                 }
 
                 if (filter.value === 'RATE_CODE') {
@@ -869,6 +907,12 @@ angular.module('reportsModule')
                         .then( fillRoomTypeList );
                 }
 
+                else if ('RATE_TYPE' === filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchRateTypesAndRateList()
+                        .then( fillRateTypesAndRateList );
+                }
+
                 else if ('RESTRICTION' === filter.value && ! filter.filled ) {
                     requested++;
                     reportsSubSrv.fetchRestrictionList()
@@ -920,11 +964,13 @@ angular.module('reportsModule')
                     reportsSubSrv.fetchDepartments()
                         .then( fillDepartments );
                 } else if ( 'INCLUDE_COMPLETION_STATUS' === filter.value && ! filter.filled) {
-                    // requested++;
                     fillCompletionStatus();
                 } else if ( 'INCLUDE_AGING_BALANCE' === filter.value && ! filter.filled) {
-                    // requested++;
                     fillAgingBalance();
+                } else if ( 'INCLUDE_LANGUAGE' === filter.value && ! filter.filled) {
+                    requested++;
+                    reportsSubSrv.fetchLanguages()
+                        .then( fillLanguages );
                 } else if ( 'TAX_EXEMPT_TYPE' === filter.value && ! filter.filled) {
                     requested++;
                     reportsSubSrv.fetchTaxExemptTypes()
@@ -941,6 +987,8 @@ angular.module('reportsModule')
                     requested++;
                     reportsSubSrv.fetchCountries()
                         .then( fillCountries );
+                } else if ('INCLUDE_DAY_USE' === filter.value && !filter.filled) {
+                    setIncludeDayuseFlag();
                 } else {
                     // no op
                 }
@@ -1375,6 +1423,31 @@ angular.module('reportsModule')
                 checkAllCompleted();
             }
 
+            function fillLanguages(data) {
+                var foundFilter,
+                    customData;
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'INCLUDE_LANGUAGE' });
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+
+                        report.hasLanguages = {
+                            data: angular.copy( data ),
+                            options: {
+                                hasSearch: false,
+                                selectAll: true,
+                                key: 'language',
+                                defaultValue: 'Select Language'
+                            }
+                        };
+                    }
+                });
+
+                completed++;
+                checkAllCompleted();
+            }            
+
             function fillRateCodeList (data) {
                 var foundFilter;
 
@@ -1447,8 +1520,20 @@ angular.module('reportsModule')
                     }
                 });
 
-                completed++;
+                completed ++;
                 checkAllCompleted();
+            }
+
+            function setIncludeDayuseFlag() {
+                var foundFilter;
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'INCLUDE_DAY_USE' });
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        report[reportParams['INCLUDE_DAYUSE']] = true;
+                    }
+                });
             }
 
             function fillRestrictionList (data) {
@@ -1585,29 +1670,6 @@ angular.module('reportsModule')
                 completed++;
                 checkAllCompleted();
             }
-
-            var extractRateTypesFromRateTypesAndRateList = function(rateTypesAndRateList) {
-                var rateTypeListIds      = _.pluck(rateTypesAndRateList, "rate_type_id"),
-                    rateTypeListIds      = _.unique(rateTypeListIds),
-                    rateTypeObject       = {},
-                    rateTypeListToReturn = rateTypeListIds.map(function(id) {
-                        rateTypeObject   =  _.findWhere(rateTypesAndRateList, {rate_type_id: id});
-                        if (rateTypeObject) {
-                            rateTypeObject.name = rateTypeObject.rate_type_name;
-                            rateTypeObject = _.pick(rateTypeObject, "name", "rate_type_id", "selected");
-                        }
-                        return rateTypeObject;
-                    });
-
-                return rateTypeListToReturn;
-            };
-
-            var extractRatesFromRateTypesAndRateList = function(rateTypesAndRateList) {
-                return rateTypesAndRateList.map(function(rate) {
-                    rate.name = rate.rate_name;
-                    return _.omit(rate, "rate_type_name");
-                });
-            };
 
             //
             function fillRateTypesAndRateList(data) {
@@ -2450,6 +2512,188 @@ angular.module('reportsModule')
                 factory.markAsSelected(report.hasRestrictionListFilter.data, report.filters[reportParams['ROOM_TYPE_IDS']], 'id');
             }
 
+        };
+
+        // Fill rate types and rates for scheduled reports
+        factory.fillRateTypesAndRatesForScheduledReports = function (filter, filterValues) {
+            var populateRateTypesAndRates = function (data) {
+                var rateTypes = extractRateTypesFromRateTypesAndRateList(data),
+                    rates = extractRatesFromRateTypesAndRateList(data),
+                    selectedRateType,
+                    selectedRate;
+
+                if (filterValues && filterValues.rate_type_ids) {
+                    _.each (filterValues.rate_type_ids, function (id) {
+                        selectedRateType = _.findWhere(rateTypes, {rate_type_id: id});
+                        selectedRateType.selected = true;
+                    });
+                }
+
+                if (filterValues && filterValues.rate_ids) {
+                    _.each (filterValues.rate_ids, function (id) {
+                        selectedRate = _.findWhere(rates, {id: id});
+                        selectedRate.selected = true;
+                    });
+                }
+
+                filter.hasRateTypeFilter = {
+                    data: rateTypes,
+                    options: {
+                        selectAll: filterValues && filterValues.rate_type_ids && filterValues.rate_type_ids.length === 0,
+                        hasSearch: true,
+                        key: 'name'
+                    }
+                };
+
+                filter.hasRateFilter = {
+                    data: rates,
+                    options: {
+                        selectAll: filterValues && filterValues.rate_ids && filterValues.rate_ids.length === 0,
+                        hasSearch: true,
+                        key: 'name'
+                    }
+                };
+            };
+
+            reportsSubSrv.fetchRateTypesAndRateList() // This would include custom rates
+                .then(populateRateTypesAndRates);
+        };
+
+        /**
+         * Fill charge groups and charge codes values
+         * @param {Object} filter filter object
+         * @param {Object} filterValues - object holding filter values
+         * @return {void}
+         */
+        factory.fillChargeGroupsAndChargeCodes = function(filter, filterValues) {
+            // Get the value of selectall checkbox for the charge groups
+            var getChargeGroupSelectAllVal = function (chargeGroups) {
+                    var selectAll = true;
+
+                    if (filterValues && !!filterValues.charge_group_ids) {
+                        selectAll = filterValues.charge_group_ids.length === chargeGroups.length;
+                    } else if (filterValues && !filterValues.charge_group_ids) {
+                        selectAll = false;
+                    }
+                    
+                    return selectAll;
+                },
+                // Get the value of selectall checkbox for the charge codes
+                getChargeCodeSelectAllVal = function (chargeCodes) {
+                    var selectAll = true;
+
+                    if (filterValues && !!filterValues.charge_code_ids) {
+                        selectAll = filterValues.charge_code_ids.length === chargeCodes.length;
+                    } else if (filterValues && !filterValues.charge_code_ids) {
+                        selectAll = false;
+                    }
+                    
+                    return selectAll;
+                };
+
+
+            var populateChargeGroupsAndChargeCodes = function (chargeGroupsArr, chargeCodesArr) {
+                var processedCGCC = __adjustChargeGroupsCodes(chargeGroupsArr, chargeCodesArr, 'REMOVE_PAYMENTS', true),
+                    chargeGroupsCopy = angular.copy( processedCGCC.chargeGroups ),
+                    chargeCodesCopy = angular.copy( processedCGCC.chargeCodes ),
+                    selectedChargeGroupIdx,
+                    selectedChargeCodeIdx;
+
+                delete filter.hasByChargeGroup;
+                delete filter.hasByChargeCode;
+
+                if (filterValues && filterValues.charge_group_ids) {
+                    
+                    chargeGroupsCopy = _.map(chargeGroupsCopy, function (chargeGroup) {
+                        selectedChargeGroupIdx = _.indexOf(filterValues.charge_group_ids, chargeGroup.id);
+                        chargeGroup.selected = false;
+                        if (selectedChargeGroupIdx > -1) {
+                            chargeGroup.selected = true;
+                        }
+
+                        return chargeGroup;
+                    });
+                } else if (filterValues && !filterValues.charge_group_ids) {
+                    chargeGroupsCopy = _.map(chargeGroupsCopy, function(chargeGroup) {
+                        chargeGroup.selected = false;
+
+                        return chargeGroup;
+                    });
+                }
+
+                filter.hasByChargeGroup = {
+                    data: chargeGroupsCopy,
+                    options: {
+                        selectAll: getChargeGroupSelectAllVal(chargeGroupsCopy),
+                        hasSearch: false,
+                        key: 'name'
+                    },
+                    affectsFilter: {
+                        name: 'hasByChargeCode',
+                        process: function(filter, selectedItems) {
+                            _.each(filter.originalData, function (od) {
+                                od.disabled = true;
+                            });
+                            /**/
+                            _.each(filter.originalData, function (od) {
+                                _.each(od.associcated_charge_groups, function (cg) {
+                                    _.each(selectedItems, function (si) {
+                                        if (cg.id === si.id) {
+                                            od.disabled = false;
+                                        }
+                                    });
+                                });
+                            });
+                            /**/
+                            filter.updateData();
+                        }
+                    }
+                };
+
+                if (filterValues && !!filterValues.charge_code_ids) {
+                    
+                    chargeCodesCopy = _.map(chargeCodesCopy, function (chargeCode) {
+                        selectedChargeCodeIdx = _.indexOf(filterValues.charge_code_ids, chargeCode.id);
+                        chargeCode.selected = false;
+                        if (selectedChargeCodeIdx > -1) {
+                            chargeCode.selected = true;
+                        }
+                        return chargeCode;
+                    });
+                } else if (filterValues && !filterValues.charge_code_ids) {
+                    chargeCodesCopy = _.map(chargeCodesCopy, function(chargeCode) {
+                        chargeCode.selected = false;
+
+                        return chargeCode;
+                    });
+                }
+
+                filter.hasByChargeCode = {
+                    data: chargeCodesCopy,
+                    originalData: chargeCodesCopy,
+                    options: {
+                        selectAll: getChargeCodeSelectAllVal(chargeCodesCopy),
+                        hasSearch: false,
+                        key: 'name'
+                    },
+                    updateData: function() {
+                        var enabled = [];
+
+                        _.each (this.originalData, function (od) {
+                            if ( ! od.disabled ) {
+                                enabled.push(od);
+                            }
+                        });
+                        this.data = enabled;
+                    }
+                };
+
+            };
+
+            reportsSubSrv.fetchChargeNAddonGroups().then(function(chargeGroupsArr) {
+                reportsSubSrv.fetchChargeCodes().then(populateChargeGroupsAndChargeCodes.bind(null, chargeGroupsArr));
+            });
+            
         };
 
         return factory;

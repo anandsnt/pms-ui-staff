@@ -16,6 +16,7 @@ sntRover.controller('reservationActionsController', [
     'RVContactInfoSrv',
     'rvUtilSrv',
     'RVBillCardSrv',
+    'RVGuestCardsSrv',
     '$stateParams',
     function($rootScope,
         $scope,
@@ -34,6 +35,7 @@ sntRover.controller('reservationActionsController', [
         RVContactInfoSrv,
         rvUtilSrv,
         RVBillCardSrv,
+        RVGuestCardsSrv,
         $stateParams) {
 
 				BaseCtrl.call(this, $scope);
@@ -63,6 +65,7 @@ sntRover.controller('reservationActionsController', [
             && reservationCard.is_reverse_checkout_allowed_for_hotel;
         $scope.shouldShowDemographicsInValidationPopup = false;
         $scope.shouldShowGuestInfoInValidationPopup = false;
+        $scope.hasPermissionToCheckin = rvPermissionSrv.getPermissionValue("CHECK_IN_RESERVATION");
 
         $scope.reverseCheckout = function(reservationId, clickedButton) {
             $state.go("rover.reservation.staycard.billcard", {
@@ -348,11 +351,53 @@ sntRover.controller('reservationActionsController', [
             });
         };
         $scope.validateEmailPhone = function() {
-            ngDialog.open({
-                    template: '/assets/partials/validateCheckin/rvValidateEmailPhone.html',
-                    controller: 'RVValidateEmailPhoneCtrl',
-                    scope: $scope
-            });
+
+            $scope.showJobTitle = false;
+            $scope.showNameOfFather = false;
+            $scope.showNameOfMother = false;
+            $scope.showPlaceOfBirth = false;
+            $scope.showGender = false;
+            $scope.showVehicleRegistrationNumber = false;
+            $scope.showIdPlaceOfIssue = false;
+            $scope.showPersonalIdNumber = false;
+            $scope.showHomeTown = false;
+            $scope.showPlaceOfResidence = false;
+            $scope.showVehicleCountryMark = false;
+            $scope.showIdCountryOfIssue = false;
+            $scope.showDateOfBirth = false;
+
+            $scope.callAPI(RVGuestCardsSrv.fetchGuestDetailsInformation, {
+                successCallBack: function(data) {
+                    $scope.guestCardData.contactInfo = data;
+                    $scope.showJobTitle = $scope.guestCardData.contactInfo.guestAdminSettings.job_title.is_mandatory_on_guest_card_creation;
+                    $scope.showNameOfFather = $scope.guestCardData.contactInfo.guestAdminSettings.father_name.is_mandatory_on_guest_card_creation;
+                    $scope.showNameOfMother = $scope.guestCardData.contactInfo.guestAdminSettings.mother_name.is_mandatory_on_guest_card_creation;
+                    $scope.showPlaceOfBirth = $scope.guestCardData.contactInfo.guestAdminSettings.birth_place.is_mandatory_on_guest_card_creation;
+                    $scope.showGender = $scope.guestCardData.contactInfo.guestAdminSettings.gender.is_mandatory_on_guest_card_creation;
+                    $scope.showVehicleRegistrationNumber = $scope.guestCardData.contactInfo.guestAdminSettings.registration_number.is_mandatory_on_guest_card_creation;
+                    $scope.showIdPlaceOfIssue = $scope.guestCardData.contactInfo.guestAdminSettings.id_place_of_issue.is_mandatory_on_guest_card_creation;
+                    $scope.showPersonalIdNumber = $scope.guestCardData.contactInfo.guestAdminSettings.personal_id_no.is_mandatory_on_guest_card_creation;
+                    $scope.showHomeTown = $scope.guestCardData.contactInfo.guestAdminSettings.home_town.is_mandatory_on_guest_card_creation;
+                    $scope.showPlaceOfResidence   = $scope.guestCardData.contactInfo.guestAdminSettings.place_of_residence.is_mandatory_on_guest_card_creation;
+                    $scope.showVehicleCountryMark = $scope.guestCardData.contactInfo.guestAdminSettings.vehicle_country_mark.is_mandatory_on_guest_card_creation 
+                                                    && ($scope.guestCardData.contactInfo.country_code === '' || $scope.guestCardData.contactInfo.country_code === null);
+                    $scope.showIdCountryOfIssue = $scope.guestCardData.contactInfo.guestAdminSettings.id_country_of_issue.is_mandatory_on_guest_card_creation 
+                                                    && ($scope.guestCardData.contactInfo.id_country_of_issue === '' || $scope.guestCardData.contactInfo.id_country_of_issue === null);
+                    $scope.showDateOfBirth = $scope.guestCardData.contactInfo.guestAdminSettings.date_of_birth.is_mandatory_on_guest_card_creation
+                                            && ($scope.guestCardData.contactInfo.birthday === '' || $scope.guestCardData.contactInfo.birthday === null);
+
+                    ngDialog.open({
+                        template: '/assets/partials/validateCheckin/rvValidateEmailPhone.html',
+                        controller: 'RVValidateEmailPhoneCtrl',
+                        scope: $scope
+                    });
+                },
+                failureCallBack: function(errorMessage) {
+                    $scope.errorMessage = errorMessage;
+                    $scope.$emit('hideLoader');
+                },
+                params: $scope.guestCardData.userId
+            });         
         };
 
         $scope.promptCardAddition = function() {
@@ -603,13 +648,20 @@ sntRover.controller('reservationActionsController', [
          * Before checking in we check if any deposit is left else noraml checkin
          *
          **************************************************************************/
-
         $scope.goToCheckin = function() {
             if ($scope.isGuestIdRequiredForCheckin()) {
                 $scope.toggleGuests(true);
                 return;
             } else {
-                startCheckin();
+                if ($rootScope.isStandAlone &&
+                    $rootScope.allowCheckInToNotReadyRooms &&
+                    $scope.reservationData.reservation_card.room_number && 
+                    $scope.reservationData.reservation_card.room_status === 'NOTREADY') {
+                        that.openRoomStatusChangePopup('', true);
+                } else {
+                    startCheckin();
+                }
+                
             }			
         };
         $scope.unAvailablePopup = function() {
@@ -723,6 +775,12 @@ sntRover.controller('reservationActionsController', [
             $scope.DailogeState = {};
             $scope.DailogeState.successMessage = '';
             $scope.DailogeState.failureMessage = '';
+            $scope.DailogeState.sendConfirmatonMailTo = '';
+            $scope.DailogeState.bookerEmail = $scope.reservationData.reservation_card.booker_email;
+            $scope.DailogeState.isGuestEmailSelected = false;
+            $scope.DailogeState.isBookerEmailSelected = false;
+            $scope.DailogeState.guestEmail = $scope.guestCardData.contactInfo.email;
+            
             var passData = {
                 "reservationId": $scope.reservationData.reservation_card.reservation_id,
                 "details": {
@@ -766,6 +824,12 @@ sntRover.controller('reservationActionsController', [
             $scope.DailogeState = {};
             $scope.DailogeState.successMessage = '';
             $scope.DailogeState.failureMessage = '';
+            $scope.DailogeState.sendConfirmatonMailTo = '';
+            $scope.DailogeState.bookerEmail = $scope.reservationData.reservation_card.booker_email;
+            $scope.DailogeState.isGuestEmailSelected = false;
+            $scope.DailogeState.isBookerEmailSelected = false;
+            $scope.DailogeState.guestEmail = $scope.guestCardData.contactInfo.email;
+
             var openCancellationPopup = function(data) {
                   
                   $scope.languageData = data;
@@ -1007,6 +1071,13 @@ sntRover.controller('reservationActionsController', [
             return showDepositBalanceButtonWithSR;
         };
 
+        /**
+         * Checks whether there are any emails configured
+         */
+        $scope.hasEmails = function () {
+            return !!$scope.guestCardData.contactInfo.email || !!$scope.reservationData.reservation_card.booker_email;
+        };
+
         // Checking whether email is attached with guest card or not
         $scope.isEmailAttached = function() {
             var isEmailAttachedFlag = false;
@@ -1040,6 +1111,12 @@ sntRover.controller('reservationActionsController', [
             $scope.ngData.enable_confirmation_custom_text = "";
             $scope.ngData.confirmation_custom_title = "";
             $scope.ngData.languageData = {};
+            $scope.ngData.bookerEmail = $scope.reservationData.reservation_card.booker_email;
+            $scope.ngData.isGuestEmailSelected = false;
+            $scope.ngData.isBookerEmailSelected = false;
+            $scope.ngData.successMessage = '';
+            $scope.ngData.failureMessage = '';
+            $scope.ngData.guestEmail = $scope.guestCardData.contactInfo.email;
 
             var openConfirmationPopup = function(data) {
                   
@@ -1090,21 +1167,34 @@ sntRover.controller('reservationActionsController', [
         };
 
         $scope.sendConfirmationEmail = function() {
+            if ($scope.shouldDisableSendConfirmationEmailBtn()) {
+                return;
+            }
 
             var postData = {
-                "type": "confirmation",
-                "emails": $scope.isEmailAttached() ? [$scope.guestCardData.contactInfo.email] : [$scope.ngData.sendConfirmatonMailTo],
-                "enable_confirmation_custom_text": $scope.ngData.enable_confirmation_custom_text,
-                "confirmation_custom_title": $scope.ngData.confirmation_custom_title,
-                "confirmation_custom_text": $scope.ngData.confirmation_custom_text,
-                "locale": $scope.ngData.languageData.selected_language_code
-            };
-            var reservationId = $scope.reservationData.reservation_card.reservation_id;
+                    "type": "confirmation",
+                    "enable_confirmation_custom_text": $scope.ngData.enable_confirmation_custom_text,
+                    "confirmation_custom_title": $scope.ngData.confirmation_custom_title,
+                    "confirmation_custom_text": $scope.ngData.confirmation_custom_text,
+                    "locale": $scope.ngData.languageData.selected_language_code
+                };
 
-            var data = {
-                "postData": postData,
-                "reservationId": reservationId
-            };
+            if ($scope.ngData.isGuestEmailSelected ) {
+                postData.primary_email = $scope.ngData.guestEmail; 
+            }
+            if ($scope.ngData.isBookerEmailSelected) {
+                postData.booker_email = $scope.ngData.bookerEmail; 
+            }
+
+            if (!$scope.hasEmails() && $scope.ngData.sendConfirmatonMailTo) {
+                postData.primary_email = $scope.ngData.sendConfirmatonMailTo; 
+            }
+
+            var reservationId = $scope.reservationData.reservation_card.reservation_id,
+                data = {
+                    "postData": postData,
+                    "reservationId": reservationId
+                };
 
             $scope.invokeApi(RVReservationCardSrv.sendConfirmationEmail, data, succesfullEmailCallback, failureEmailCallback);
         };
@@ -1174,8 +1264,8 @@ sntRover.controller('reservationActionsController', [
 
         var setAllowOverbookflag = function() { // check user permission for overbook_house
             var hasOverBookHousePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE'),
-            hasOverBookRoomTypePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
-
+                hasOverBookRoomTypePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
+                
             $scope.allowOverbook = hasOverBookHousePermission && hasOverBookRoomTypePermission;
         };
 
@@ -1259,7 +1349,7 @@ sntRover.controller('reservationActionsController', [
             }
 
             return (resData.reservation_status === 'CANCELED' || resData.reservation_status === 'NOSHOW') && // ONLY cancelled and noshow reservations  can be reinstated
-                new TZIDate(resData.departure_date) > new TZIDate($rootScope.businessDate) && // can't reinstate if the reservation's dates have passed
+                new TZIDate(resData.departure_date) >= new TZIDate($rootScope.businessDate) && // can't reinstate if the reservation's dates have passed
                 rvPermissionSrv.getPermissionValue('REINSTATE_RESERVATION'); // also check for permissions
         };
 
@@ -1276,11 +1366,27 @@ sntRover.controller('reservationActionsController', [
 
         // Action against email button in staycard.
         $scope.sendReservationCancellation = function(locale) {
+            if ($scope.shouldDisableSendCancellationEmailBtn()) {
+                return;
+            }
+
             var postData = {
-                "type": "cancellation",
-                "locale": locale,
-                "emails": $scope.isEmailAttached() ? [$scope.guestCardData.contactInfo.email] : [$scope.DailogeState.sendConfirmatonMailTo]
-            };
+                    "type": "cancellation",
+                    "locale": locale
+                };
+
+            if ($scope.DailogeState.isGuestEmailSelected ) {
+                postData.primary_email = $scope.DailogeState.guestEmail;
+            }
+
+            if ($scope.DailogeState.isBookerEmailSelected) {
+                postData.booker_email = $scope.DailogeState.bookerEmail;
+            }
+
+            if (!$scope.hasEmails() && $scope.DailogeState.sendConfirmatonMailTo) {
+                postData.primary_email = $scope.DailogeState.sendConfirmatonMailTo;
+            }
+
             var data = {
                 "postData": postData,
                 "reservationId": $scope.reservationData.reservation_card.reservation_id
@@ -1294,6 +1400,11 @@ sntRover.controller('reservationActionsController', [
             $scope.DailogeState.isCancelled = true;
             $scope.DailogeState.failureMessage = '';
             $scope.DailogeState.successMessage = '';
+            $scope.DailogeState.sendConfirmatonMailTo = '';
+            $scope.DailogeState.bookerEmail = $scope.reservationData.reservation_card.booker_email;
+            $scope.DailogeState.isGuestEmailSelected = false;
+            $scope.DailogeState.isBookerEmailSelected = false;
+            $scope.DailogeState.guestEmail = $scope.guestCardData.contactInfo.email;
 
             var passData = {
                 "reservationId": $scope.reservationData.reservation_card.reservation_id,
@@ -1395,11 +1506,12 @@ sntRover.controller('reservationActionsController', [
 							} else {
 								hkStatus = 1;
 							}
-						}
+                        } 
                 
 						var requestData = {
 								room_no: $scope.reservationData.reservation_card.room_number,
-								hkstatus_id: hkStatus
+                                hkstatus_id: hkStatus,
+                                reservation_id: $scope.reservationData.reservation_card.reservation_id
 						};
 
 						var houseKeepingStatusUpdateSuccess = function() {
@@ -1422,7 +1534,7 @@ sntRover.controller('reservationActionsController', [
 				 * Opens room status change popup on the success of reverse check-in
 				 * @return {void}
 				 */
-        that.openRoomStatusChangePopup = function() {
+        that.openRoomStatusChangePopup = function (displayText, shouldShowCloseBtn) {
             $scope.roomStatus = {
                 isReady: false
             };
@@ -1431,17 +1543,21 @@ sntRover.controller('reservationActionsController', [
                 className: '',
                 scope: $scope,
                 closeByDocument: false,
-                closeByEscape: false
+                closeByEscape: false,
+                data: {
+                    displayText: displayText,
+                    shouldShowCloseBtn: shouldShowCloseBtn
+                }
             });
         };
 				
-				/**
-				 * Perform reverse check-in process
-				 * @return {void}
-				 */
+        /**
+         * Perform reverse check-in process
+         * @return {void}
+         */
         $scope.performReverseCheckIn = function() {
             var onSuccess = function() {
-                  that.openRoomStatusChangePopup();
+                  that.openRoomStatusChangePopup('CHECK_IN_REVERSED', false);
                 },
                 onFailure = function(errorMsg) {
                   $scope.errorMessage = errorMsg;
@@ -1456,8 +1572,35 @@ sntRover.controller('reservationActionsController', [
             });
         };
 
+        /**
+         * Close the active popup
+         */
         $scope.closeErrorDialog = function() {
             ngDialog.close();
+        };
+
+        /**
+         * Should disable the send mail btn in email confirmation popup
+         */
+        $scope.shouldDisableSendConfirmationEmailBtn = function () {
+            return (
+                !$scope.ngData.languageData
+                    .selected_language_code ||
+                (!$scope.ngData.isGuestEmailSelected &&
+                    !$scope.ngData.isBookerEmailSelected &&
+                    !$scope.ngData.sendConfirmatonMailTo)
+            );
+        };
+
+        /**
+         * Should disable the send email btn in the cancellation popup
+         * @param {String} locale - locale chosen from the popup
+         */
+        $scope.shouldDisableSendCancellationEmailBtn = function () {
+            return  !$scope.DailogeState.isGuestEmailSelected &&
+                    !$scope.DailogeState.isBookerEmailSelected &&
+                    !$scope.DailogeState.sendConfirmatonMailTo;
+            
         };
     }
 ]);

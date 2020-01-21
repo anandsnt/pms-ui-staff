@@ -1,6 +1,9 @@
 BaseCtrl = function($scope) {
 
-    var _listeners = [];
+    var _listeners = [],
+        root = $scope.$root || {};
+
+    root.__API_REQ_COUNT__ = root.__API_REQ_COUNT__ || 1;
 
     $scope.businessDate = '';
 
@@ -54,24 +57,35 @@ BaseCtrl = function($scope) {
 
     $scope.invokeApi = function (serviceApi, params, successCallback, failureCallback, loaderType) {
         // loaderType options are "BLOCKER", "NONE"
+        var identifier = 'API_REQ_' + ++root.__API_REQ_COUNT__;
 
         if (typeof loaderType === 'undefined') {
             loaderType = 'BLOCKER';
         }
         if (loaderType.toUpperCase() === 'BLOCKER') {
-            $scope.$emit('showLoader');
+            // This method has to be implemented in the root controllers
+            if ($scope.startActivity) {
+                $scope.startActivity(identifier);
+            }
         }
         successCallback = (typeof successCallback === 'undefined') ? $scope.fetchedCompleted : successCallback;
         failureCallback = (typeof failureCallback === 'undefined') ? $scope.fetchedFailed : failureCallback;
 
-        return serviceApi(params).then(successCallback, failureCallback);
+        return serviceApi(params)
+            .then(successCallback, failureCallback)
+            .finally(function () {
+                // This method has to be implemented in the root controllers
+                if ($scope.stopActivity) {
+                    $scope.stopActivity(identifier);
+                }
+            });
 
     };
 
     $scope.callAPI = function (serviceApi, options) {
         options = options || {};
 
-        var identifier = _.uniqueId('API_REQ_'),
+        var identifier = 'API_REQ_' + ++root.__API_REQ_COUNT__,
             params = options['params'] ? options['params'] : null,
             loader = options['loader'] ? options['loader'] : 'BLOCKER',
             showLoader = loader.toUpperCase() === 'BLOCKER',
@@ -83,10 +97,11 @@ BaseCtrl = function($scope) {
             failureCallBackParameters = options['failureCallBackParameters'] ? options['failureCallBackParameters'] : null;
 
         if (showLoader) {
-            $scope.$emit('showLoader');
             // This method has to be implemented in the root controllers
             if ($scope.startActivity) {
                 $scope.startActivity(identifier);
+            } else {
+                $scope.$emit('showLoader');
             }
         }
 
@@ -94,10 +109,11 @@ BaseCtrl = function($scope) {
             // success call back
             function (data) {
                 if (showLoader) {
-                    $scope.$emit('hideLoader');
                     // This method has to be implemented in the root controllers
                     if ($scope.stopActivity) {
                         $scope.stopActivity(identifier);
+                    } else {
+                        $scope.$emit('hideLoader');
                     }
                 }
                 if (successCallBack) {
@@ -332,5 +348,63 @@ BaseCtrl = function($scope) {
     });
 
     $scope.isEmpty = isEmpty;
+
+    // Clear the password when the user clicks the password field
+    $scope.onPasswordClick = function (dataObject, key) {
+        if (dataObject) {
+            dataObject[key] = '';
+        }
+    };
+
+    // Delete the property if required
+    $scope.deletePropertyIfRequired = function (dataObject, property) {
+        if (dataObject[property] === getTemporaryDisplayPassword() ) {
+            delete dataObject[property]; 
+        }
+    };
+
+    // Set default password when fetching the configuration details
+    $scope.setDefaultDisplayPassword = function (dataObject, property, passwordPresentKey) {
+        passwordPresentKey = passwordPresentKey || 'is_password_present';
+        if (dataObject[passwordPresentKey] && !dataObject.hasOwnProperty(property)) {
+            dataObject[property] = getTemporaryDisplayPassword();
+        }
+    };
+
+    $scope.isEmptyArray = isEmptyArray;
+
+    /**
+     * Parse a string to a float number
+     */
+    $scope.toFloat = function ( num ) {
+        return parseFloat(num);
+    };
+
+    /**
+     * Converts string to lowercase
+     * @param {String} str- input string
+     * @return {String} transformed string
+     */
+    $scope.lowercase = function (str) {
+        str = str || '';
+        return str.toLowerCase(); 
+    };
+
+    /**
+     * Get the length of the object or array
+     * @param {Object | Array} -array or object
+     * @return {Number} length - length of the object or array
+     */
+    $scope.lengthObjArr = function (objOrArr) {
+        var length;
+
+        if (_.isObject(objOrArr)) {
+            length = _.keys(objOrArr).length;
+        } else if (_.isArray(objOrArr)) {
+            length = objOrArr.length;
+        }
+
+        return length;
+    };
 
 };

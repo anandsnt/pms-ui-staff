@@ -1,35 +1,46 @@
-admin.controller('ADVectronSetupCtrl', ['$scope', 'config', 'adInterfacesSrv', 'adVectronSetupSrv', 'ngDialog',
-    function($scope, config, adInterfacesSrv, adVectronSetupSrv, ngDialog) {
+admin.controller('ADVectronSetupCtrl', [
+    '$scope', 'config', 'chargeCodes', 'adInterfacesSrv', 'adIFCSrv', 'ngDialog',
+    function ($scope, config, chargeCodes, adInterfacesSrv, adIFCSrv, ngDialog) {
         BaseCtrl.call(this, $scope);
-
         $scope.interface = 'VECTRON';
-
         $scope.state = {
             activeTab: 'SETTING'
 
+        };
+
+        var resetToken = function () {
+            return adIFCSrv.post('authentication', 'reset_token', {
+                integration: $scope.interface.toLowerCase()
+            });
+        };
+
+        var fetchToken = function () {
+            return adIFCSrv.get('authentication', 'token', {
+                integration: $scope.interface.toLowerCase()
+            });
         };
 
         /**
          * when clicked on check box to enable/disable Vectron
          * @return {undefined}
          */
-        $scope.toggleEnabled = function() {
+        $scope.toggleEnabled = function () {
             $scope.config.enabled = !$scope.config.enabled;
         };
 
         /**
-         *
+         * @param {string} name "tab name"
          * @return {undefined}
          */
-        $scope.changeTab = function(name) {
+        $scope.changeTab = function (name) {
             $scope.state.activeTab = name;
         };
 
-        $scope.closeDialog = function() {
+        $scope.closeDialog = function () {
             ngDialog.close();
         };
 
-        $scope.onClickRegenerate = function() {
+        $scope.onClickRegenerate = function () {
             if (!$scope.config.authentication_token) {
                 $scope.generateAuthToken();
             } else {
@@ -41,15 +52,24 @@ admin.controller('ADVectronSetupCtrl', ['$scope', 'config', 'adInterfacesSrv', '
             }
 
         };
+
         /**
-         * Genearete Auth token
+         * Generate Auth token
          * @return {void}
          */
-        $scope.generateAuthToken = function() {
-            $scope.callAPI(adVectronSetupSrv.resetAuthToken, {
-                onSuccess: function(response) {
+        $scope.generateAuthToken = function () {
+            $scope.callAPI(resetToken, {
+                successCallBack: function (response) {
                     $scope.config.authentication_token = response.authentication_token;
                     $scope.closeDialog();
+                }
+            });
+        };
+
+        var loadToken = function () {
+            $scope.callAPI(fetchToken, {
+                successCallBack: function (response) {
+                    $scope.config.authentication_token = response.authentication_token;
                 }
             });
         };
@@ -58,13 +78,13 @@ admin.controller('ADVectronSetupCtrl', ['$scope', 'config', 'adInterfacesSrv', '
          * when we clicked on save button
          * @return {undefined}
          */
-        $scope.saveSetup = function() {
+        $scope.saveSetup = function () {
             $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
                     settings: $scope.config,
                     integration: $scope.interface.toLowerCase()
                 },
-                onSuccess: function() {
+                onSuccess: function () {
                     $scope.errorMessage = '';
                     $scope.successMessage = 'SUCCESS: Settings updated!';
                 }
@@ -75,7 +95,10 @@ admin.controller('ADVectronSetupCtrl', ['$scope', 'config', 'adInterfacesSrv', '
          * Initialization stuffs
          * @return {undefined}
          */
-        (function() {
+        (function () {
+            loadToken();
             $scope.config = config;
+            $scope.chargeCodes = chargeCodes.charge_codes;
         })();
-    }]);
+    }
+]);

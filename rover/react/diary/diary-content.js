@@ -261,8 +261,7 @@ var DiaryContent = React.createClass({
 							iscroll: {
 				  				timeline: undefined,
 				  				rooms: undefined,
-				  				grid: undefined,
-				  				unassignedList: undefined
+				  				grid: undefined
 				  			},
 				  			stats: props.stats,
 				  			data: props.data
@@ -289,11 +288,6 @@ var DiaryContent = React.createClass({
 		return React.DOM.div({
 			className: 'diary-container ' + ((state.viewport.hours === 12) ? 'hours-12' : 'hours-24') + /* (props.currentResizeItem*/ (state.edit.active ? ' editing' : '')
 		},
-		React.createElement( UnassignedRoomPanel, {
-			edit: state.edit,
-			unassignedRoomList: props.unassignedRoomList,
-			iscroll: state.iscroll
-		}),
 		React.createElement( TogglePanel, {
 			__toggleRows: self.__toggleRows
 		}),

@@ -38,7 +38,18 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		if ($stateParams.type === "OPEN_BILL_CHECKOUT" ) {
 			// CICO-24079 - OPEN_BILL_CHECKOUT - Date picker from date should default to Null.
 			$scope.fromDate = "";
-			$scope.$emit("UpdateHeading", 'Checked Out (With Balance)');
+			
+			if ($stateParams.from_page === 'JOURNAL') {
+				$rootScope.setPrevState = {
+					title: 'JOURNAL',
+					name: 'rover.financials.journal',
+					param: {
+						tab: "BALANCE"				
+					}
+				};
+			} else {
+				$scope.$emit("UpdateHeading", 'Checked Out (With Balance)');
+			}
 		}
 		else {
 		// Date picker from date should default to current business date - CICO-8490
@@ -720,6 +731,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 * function to execute on clicking on each result
 		 */
 		$scope.goToReservationDetails = function($event, reservationID, confirmationID) {
+
 			$event.preventDefault();
 			$event.stopImmediatePropagation();
   			$event.stopPropagation();
@@ -731,6 +743,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			RVSearchSrv.toDate = $scope.toDate;
 
             $rootScope.goToReservationCalled = true;
+            $scope.$emit('GUESTCARDVISIBLE', false);
 			$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
 				id: reservationID,
 				confirmationId: confirmationID,
@@ -1222,5 +1235,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			ngDialog.close();
 		};
 
+    	$scope.$on('ANALYTICS_VIEW_ACTIVE', $scope.clearResults);
 	}
 ]);

@@ -12,6 +12,8 @@ admin.controller('adSieCtrl', ['$scope', 'config', 'adInterfacesSrv',
             $scope.config.enabled = !$scope.config.enabled;
         };
 
+        $scope.mappingTypes = ['charge_code', 'charge_code_cost_center'];
+
         /**
          *
          * @return {undefined}
@@ -25,9 +27,12 @@ admin.controller('adSieCtrl', ['$scope', 'config', 'adInterfacesSrv',
          * @return {undefined}
          */
         $scope.saveSetup = function() {
+            var params = dclone($scope.config);
+
+            $scope.deletePropertyIfRequired(params, 'sftp_password');
             $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
-                    settings: $scope.config,
+                    settings: params,
                     integration: $scope.interface.toLowerCase()
                 },
                 onSuccess: function() {
@@ -39,6 +44,7 @@ admin.controller('adSieCtrl', ['$scope', 'config', 'adInterfacesSrv',
 
         (function() {
             $scope.config = config;
+            $scope.setDefaultDisplayPassword($scope.config, 'sftp_password');
         })();
     }
 ]);

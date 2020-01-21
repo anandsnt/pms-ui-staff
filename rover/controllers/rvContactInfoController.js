@@ -1,10 +1,12 @@
-angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$rootScope', 'RVContactInfoSrv', 'ngDialog', 'dateFilter', '$timeout', 'RVSearchSrv', '$stateParams', 'rvPermissionSrv',
-    function($scope, $rootScope, RVContactInfoSrv, ngDialog, dateFilter, $timeout, RVSearchSrv, $stateParams, rvPermissionSrv) {
+angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$rootScope', 'RVContactInfoSrv', 'ngDialog', 'dateFilter', '$timeout', 'RVSearchSrv', '$stateParams', 'rvPermissionSrv', 'RVReservationCardSrv', '$state',
+    function($scope, $rootScope, RVContactInfoSrv, ngDialog, dateFilter, $timeout, RVSearchSrv, $stateParams, rvPermissionSrv, RVReservationCardSrv, $state) {
 
         BaseCtrl.call(this, $scope);
         var initialGuestCardData;
         
         GuestCardBaseCtrl.call (this, $scope, RVSearchSrv, RVContactInfoSrv, rvPermissionSrv, $rootScope);
+
+        var reservationDetailsState = 'rover.reservation.staycard.reservationcard.reservationdetails';
 
     /**
      * storing to check if data will be updated
@@ -37,6 +39,11 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
             $scope.saveGuestCardInfoInProgress = false;
         };
         var saveUserInfoSuccessCallback = function(data) {
+            if (data.mandatory_field_missing_message !== '' 
+                && data.mandatory_field_missing_message !== null) {
+                $scope.errorMessage = data.mandatory_field_missing_message;
+                $scope.$emit('contactInfoError', true);
+            }
           /**
            *  CICO-9169
            *  Guest email id is not checked when user adds Guest details in the Payment page of Create reservation
@@ -67,12 +74,40 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
         var saveUserInfoFailureCallback = function(data) {
             $scope.$emit('hideLoader');
             $scope.errorMessage = data;
+            $scope.$emit('GUESTCARDVISIBLE', true);
             $scope.$emit('contactInfoError', true);
+        };
+
+        /**
+         * Attaches a primary/accompany guest to a reservation
+         * @param {Number} guestId identifier for guest
+         * @param {Boolean} isPrimary should be attaced as a primary/accompany guest
+         * @return {void}
+         */
+        var attachGuestToReservation = function (reservationId, guestId, isPrimary, guestType) {
+            var onGuestLinkedToReservationSuccess = function () {
+                    
+                };                
+
+            $scope.callAPI(RVReservationCardSrv.attachGuestToReservation, {
+                onSuccess: onGuestLinkedToReservationSuccess,
+                params: {
+                    reservation_id: reservationId,
+                    guest_detail_id: guestId,
+                    is_primary: isPrimary,
+                    guest_type: guestType
+                }
+            });
         };
 
     // This method needs a refactor:|
         $scope.saveContactInfo = function(newGuest) {
             var createUserInfoSuccessCallback = function(data) {
+                if (data.mandatory_field_missing_message !== '' 
+                    && data.mandatory_field_missing_message !== null) {
+                    $scope.errorMessage = data.mandatory_field_missing_message;
+                    $scope.$emit('contactInfoError', true);
+                }
                 $scope.$emit('hideLoader');
                 if (typeof $scope.guestCardData.contactInfo.user_id === 'undefined' || $scope.guestCardData.userId === '' || $scope.guestCardData.userId === null || typeof $scope.guestCardData.userId === 'undefined') {
                     if ($scope.viewState.identifier === 'STAY_CARD' || $scope.viewState.identifier === 'CREATION' && $scope.viewState.reservationStatus.confirm) {
@@ -115,22 +150,32 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
                     $scope.reservationData.guest.address = $scope.guestCardData.contactInfo.address;
 
                     $scope.reservationData.guest.loyaltyNumber = $scope.guestLoyaltyNumber;
+                    if ($state.current.name !== reservationDetailsState && $scope.reservationData.reservationId) {
+                        attachGuestToReservation($scope.reservationData.reservationId, $scope.reservationData.guest.id, true);
+                    }
                 }
                 $scope.guestCardData.userId = data.id;
                 if (!$scope.isGuestCardFromMenu) {
                     $scope.showGuestPaymentList($scope.guestCardData.contactInfo);
                 }        
                 $scope.newGuestAdded(data.id);
+                if ($scope.errorMessage === '' && $state.current.name !== 'rover.guest.details') {
+                   $scope.closeGuestCard();
+                } 
 
                 // CICO-51598 - Should allow the guest card to delete immediately after creation
                 $scope.guestCardData.contactInfo.can_guest_details_anonymized = true;
                 $scope.guestCardData.contactInfo.can_guest_card_delete = true;
+
+                if ($stateParams.fromStaycard && !$stateParams.guestId) {
+                    attachGuestToReservation($stateParams.reservationId, data.id, $stateParams.isPrimary, $stateParams.guestType);
+                }
             };
 
       /**
        * change date format for API call
        */
-            presentContactInfo = RVContactInfoSrv.completeContactInfoClone;
+            presentContactInfo = RVContactInfoSrv.completeContactInfoClone ? JSON.parse(JSON.stringify(RVContactInfoSrv.completeContactInfoClone)) : {};
 
             var dataToUpdate = JSON.parse(JSON.stringify($scope.guestCardData.contactInfo));
             var dataUpdated = false;
@@ -140,11 +185,21 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
             } else {
 
                 RVContactInfoSrv.completeContactInfoClone = JSON.parse(JSON.stringify(dataToUpdate));
-        // change date format to be send to API
+                // change date format to be send to API
                 if ($scope.guestCardData.contactInfo.birthday) {
-                    dataToUpdate.birthday = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
+                    dataToUpdate.birthday = moment($scope.guestCardData.contactInfo.birthday).format("MM-DD-YYYY");
                 } else {
                     dataToUpdate.birthday = null;
+                }
+                if ($scope.guestCardData.contactInfo.id_issue_date) {
+                    dataToUpdate.id_issue_date = moment($scope.guestCardData.contactInfo.id_issue_date).format("YYYY-MM-DD");
+                } else {
+                    dataToUpdate.id_issue_date = null;
+                }
+                if ($scope.guestCardData.contactInfo.entry_date) {
+                    dataToUpdate.entry_date = moment($scope.guestCardData.contactInfo.entry_date).format("YYYY-MM-DD");
+                } else {
+                    dataToUpdate.entry_date = null;
                 }
                 var unwantedKeys = ['avatar']; // remove unwanted keys for API
 
@@ -155,9 +210,10 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
                 dataToUpdate.address = {};
             }
 
+            var userId = $scope.guestCardData.userId || $scope.guestCardData.contactInfo.user_id;
             var data = {
                 'data': dataToUpdate,
-                'userId': $scope.guestCardData.contactInfo.user_id
+                'userId': userId
             };
 
       // CICO-49153 - Added the additional check for user_id in the request params to prevent duplicate guest creation
@@ -166,22 +222,21 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
                 if (typeof data.data.is_opted_promotion_email === 'undefined') {
                     data.data.is_opted_promotion_email = false;
                 }
+                if ($stateParams.guestType) {
+                    data.data.guest_type = $stateParams.guestType;
+                }
                 $scope.invokeApi(RVContactInfoSrv.createGuest, data, createUserInfoSuccessCallback, failureOfCreateGuestCard);
             } else if (!dataUpdated) {
                 if (!angular.equals(dataToUpdate, initialGuestCardData)) {     
               // CICO-46709 - Reset the guest card data to reflect the new changes made to contact details
                     initialGuestCardData = dclone(dataToUpdate, ['avatar', 'confirmation_num']);
-                    $scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
+                    if ($scope.isGuestCardVisible || $scope.isFromMenuGuest) {
+                        $scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
+                    }                    
                 }
             }
         };
 
-    /**
-     * watch and update formatted date for display
-     */
-        $scope.$watch('guestCardData.contactInfo.birthday', function() {
-            $scope.birthdayText = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, $rootScope.dateFormat)));
-        });
     /**
      * to handle click actins outside this tab
      */
@@ -217,10 +272,11 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
             $scope.errorMessage = ['Please save the Guest Card first'];
         });
 
-        $scope.popupCalendar = function() {
+        $scope.popupCalendarForGuestContactInfoDate = function(calenderFor) {
+            $scope.calenderFor = calenderFor;
             ngDialog.open({
                 template: '/assets/partials/guestCard/contactInfoCalendarPopup.html',
-                controller: 'RVContactInfoDatePickerController',
+                controller: 'RVAllContactInfoDatePickerController',
                 className: 'single-date-picker',
                 scope: $scope
             });

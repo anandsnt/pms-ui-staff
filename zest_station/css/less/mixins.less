@@ -95,45 +95,45 @@
 			display: inline-flex;
 		}
 
-		.parent(@flexFlow: ~'', @justifyContent: ~'', @alignItems: ~'', @alignContent: ~'') {
+		.parent(@flexFlow, @justifyContent, @alignItems, @alignContent) {
 			.test-args();
 
-			.test-args() when not(@flexFlow = ~'') {
+			.test-args() when not(@flexFlow = '') {
 		       	-webkit-flex-flow: @flexFlow;
 	        	flex-flow: @flexFlow;
 		    }
 
-		    .test-args() when not(@justifyContent = ~'') {
+		    .test-args() when not(@justifyContent = '') {
 		       	-webkit-justify-content: @justifyContent;
 	        	justify-content: @justifyContent;
 		    }
 
-			.test-args() when not(@alignItems = ~'') {
+			.test-args() when not(@alignItems = '') {
 		       	-webkit-align-items: @alignItems;
 	        	align-items: @alignItems;
 		    }
 
-		    .test-args() when not(@alignContent = ~'') {
+		    .test-args() when not(@alignContent = '') {
 		       	-webkit-align-content: @alignContent;
 	        	align-content: @alignContent;
 		    }        
 		}
 
-		.items(@order: undefined, @flex: undefined, @alignSelf: undefined) {
+		.items(@order, @flex, @alignSelf) {
 			.test-args();
 
-			.test-args() when not(@order = undefined) {
+			.test-args() when not(@order = '') {
 		       	-webkit-order: @order;
 				order: @order;
 		    }
 			
-		    .test-args() when not(@flex = undefined) {
+		    .test-args() when not(@flex = '') {
 		       	-webkit-flex: @flex;
 				-ms-flex: @flex;
 				flex: @flex;
 		    }
 
-			.test-args() when not(@alignSelf = undefined) {
+			.test-args() when not(@alignSelf = '') {
 		       	-webkit-align-self: @alignSelf;
 				align-self: @alignSelf;
 		    }			
@@ -156,6 +156,15 @@
 			}
 			.remove(@percentage, @pixels) {
 				height: calc(~"@{percentage} - @{pixels}");
+			}
+		}
+
+		#max-height {
+			.add(@percentage, @pixels) {
+				max-height: calc(~"@{percentage} + @{pixels}");
+			}
+			.remove(@percentage, @pixels) {
+				max-height: calc(~"@{percentage} - @{pixels}");
 			}
 		}
 	}

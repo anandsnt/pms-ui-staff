@@ -167,7 +167,7 @@
 					</fieldset>
 
 					<fieldset class='holder column full-width'>
-						<ad-toggle-button is-checked="upsellData.is_sell_late_checkout_as_addon" label="{{ 'OFFER_LCO_AS_ADDON_AT_CHECKIN' | translate}}"></ad-toggle-button>
+						<ad-toggle-button   is-disabled="upsellData.is_late_checkout_set === 'false'" is-checked="upsellData.is_sell_late_checkout_as_addon" label="{{ 'OFFER_LCO_AS_ADDON_AT_CHECKIN' | translate}}"></ad-toggle-button>
 						<ad-toggle-button is-checked="upsellData.is_allow_additional_late_checkout_offers" label="{{ 'SELL_ADDITIONAL_LCO' | translate}}"></ad-toggle-button>
 
 						<div class="entry half-width" ng-show="upsellData.is_sell_late_checkout_as_addon">

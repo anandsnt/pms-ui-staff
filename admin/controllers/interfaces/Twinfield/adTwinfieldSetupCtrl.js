@@ -1,6 +1,6 @@
 admin.controller('adTwinfieldSetupCtrl', [
-    '$scope', 'twinfieldSetupValues', 'adInterfacesCommonConfigSrv', 'paymentChargeCodes', 'adTwinfieldSetupSrv', '$window',
-    function($scope, twinfieldSetupValues, adInterfacesCommonConfigSrv, paymentChargeCodes, adTwinfieldSetupSrv, $window) {
+    '$scope', 'twinfieldSetupValues', 'adInterfacesSrv', 'paymentChargeCodes', 'adTwinfieldSetupSrv', '$window',
+    function($scope, twinfieldSetupValues, adInterfacesSrv, paymentChargeCodes, adTwinfieldSetupSrv, $window) {
         BaseCtrl.call(this, $scope);
 
         $scope.interface = 'TWINFIELD';
@@ -20,19 +20,11 @@ admin.controller('adTwinfieldSetupCtrl', [
         /**
          *
          * @return {undefined}
+         * @param {name} name of tab that was clicked
          */
-        $scope.toggleMappings = function() {
-            $scope.state.activeTab = $scope.state.activeTab === 'SETUP' ? 'MAPPING' : 'SETUP';
+        $scope.changeTab = function(name) {
+            $scope.state.activeTab = name;
         };
-
-        /**
-         * when the save is success
-         * @return {undefined}
-         */
-        var successCallBackOfSave = function() {
-            $scope.goBackToPreviousState();
-        };
-
 
         /**
          * when we clicked on save button
@@ -41,12 +33,15 @@ admin.controller('adTwinfieldSetupCtrl', [
         $scope.saveSetup = function() {
             $scope.config.credit_card_payment_charge_codes = _.pluck($scope.meta.selected_charge_codes, 'charge_code').
                 join(',');
-            $scope.callAPI(adInterfacesCommonConfigSrv.saveConfiguration, {
+            $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
-                    config: _.omit($scope.config, ['historical_data_sync_items', 'is_authorized']),
-                    interfaceIdentifier: $scope.interface
+                    settings: _.omit($scope.config, ['historical_data_sync_items', 'is_authorized']),
+                    integration: $scope.interface.toLowerCase()
                 },
-                successCallBack: successCallBackOfSave
+                onSuccess: function() {
+                    $scope.errorMessage = '';
+                    $scope.successMessage = 'SUCCESS: Settings updated!';
+                }
             });
         };
 

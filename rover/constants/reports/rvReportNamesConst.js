@@ -52,6 +52,9 @@ angular.module('reportsModule')
     'GROUP_ROOMS_REPORT': 'Group Rooms Report',
     'ADDON_UPSELLS': 'Add On Upsell',
     'YEARLY_TAX': 'Yearly Tax Report',
-    'TAX_EXEMPT': 'Tax Exempt'
+    'TAX_EXEMPT': 'Tax Exempt',
+    'FOLIO_TAX_REPORT': 'Folio Tax Report',
+    'GUESTS_INHOUSE_BY_NATIONALITY': 'Guests In House by Nationality',
+    'BUSINESS_ON_THE_BOOKS': 'Business on the Books'
 });
 

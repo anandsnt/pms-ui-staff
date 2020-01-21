@@ -149,7 +149,7 @@ admin.service('ADInterfaceLogsSrv', ['$http', '$q', 'ADBaseWebSrvV2',
          * @return {deferred.promise|{then, catch, finally}} Promise for a request to fetch the list of interfaces
          */
         service.fetchInterfaces = function() {
-            return ADBaseWebSrvV2.getJSON('/admin/hotel_ext_interfaces');
+            return ADBaseWebSrvV2.getJSON('/ifc/proxy/interfaces/index');
         };
 
         /**

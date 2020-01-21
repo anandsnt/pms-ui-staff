@@ -274,7 +274,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		// CICO-24928
 		$scope.clickedOnNote = function(note) {
 	      $scope.accountSummaryData.editingNote  = note;
-	      $scope.accountSummaryData.newNote = note.description;
+	      $scope.accountSummaryData.newNote = note.description.replace(new RegExp('<br/>', 'g'), '\n');
     	};
     	// CICO-24928
 	    $scope.cancelEditModeAccountNote = function() {
@@ -392,7 +392,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		$scope.successCallBackFetchDepositBalance = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.depositBalanceData = data;
-
+			$scope.$emit('TOGGLE_PAYMET_POPUP_STATUS', true);
 			$scope.passData = {
 				"origin": "GROUP",
 				"details": {

@@ -2,6 +2,19 @@
    <fieldset class="holder left">
       <!-- <ad-form-sub-title title="WALK_IN_RESERVATIONS"></ad-form-sub-title> -->
       <ad-toggle-button is-checked="kioskSettings.kiosk_walk_in_enabled" label="{{'ACTIVE'| translate}}" div-class="full-width" is-disabled="false"></ad-toggle-button>
+       <div id="options" class="entry" ng-show="kioskSettings.kiosk_walk_in_enabled">
+         <label>
+            {{ 'WALKIN_FLOW' | translate}}
+         </label>
+         <label class="radio" ng-class="{'checked': kioskSettings.kiosk_walkin_flow == 'traditional'}">
+            <span class="icon-form icon-radio " ng-class="{checked: kioskSettings.kiosk_walkin_flow == 'traditional'}"></span>
+            <input type="radio" value="traditional" ng-model="kioskSettings.kiosk_walkin_flow"> {{ 'TRADITIONAL' | translate}}
+         </label>
+         <label class="radio" ng-class="{'checked': kioskSettings.kiosk_walkin_flow == 'upsell_oriented'}">
+             <span class="icon-form icon-radio " ng-class="{checked: kioskSettings.kiosk_walkin_flow == 'upsell_oriented'}"></span>
+             <input type="radio" value="upsell_oriented" ng-model="kioskSettings.kiosk_walkin_flow"> {{ 'UPSELL_ORIENTED' | translate}}
+         </label>
+      </div>
    </fieldset>
    <fieldset class="holder right"  ng-show="kioskSettings.kiosk_walk_in_enabled">
       <ad-dropdown-name

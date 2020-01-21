@@ -118,7 +118,9 @@
 
     <button type="button"
             ng-click="submitPayment()"
-            class="button green"
+            class="button" 
+            ng-disabled="shouldHidePaymentButton()" 
+            ng-class="{'green': !shouldHidePaymentButton(),'grey':shouldHidePaymentButton()}"
             ng-hide="shouldHidePaymentButton()">
         Make Payment
     </button>

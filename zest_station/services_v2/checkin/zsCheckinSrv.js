@@ -149,9 +149,12 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.fetchAddonDetails = function(param) {
             var deferred = $q.defer(),
-                url = '/staff/staycards/reservation_addons?reservation_id=' + param.id;
+                url = '/staff/staycards/reservation_addons';
 
-            zsBaseWebSrv.getJSON(url).then(function(data) {
+            zsBaseWebSrv.getJSON(url, {
+                reservation_id: param.id,
+                is_kiosk: param.is_kiosk
+            }).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
@@ -291,7 +294,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var deferred = $q.defer();
             var url = '/api/reservations/' + params.id + '/print_registration_card';
 
-            zsBaseWebSrv.getJSON(url).then(function(data) {
+            zsBaseWebSrv.getJSON(url, {'locale': params.locale}).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
@@ -618,6 +621,47 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var url = '/staff/guest_cards/' + params.guest_id + '.json';
             
             return zsBaseWebSrv.putJSON(url, params);
+        };
+
+        this.getRoomUpsellSettings = function() {
+            var url = '/admin/room_upsells/room_upsell_options.json';
+
+            return zsBaseWebSrv2.getJSON(url);
+        };
+
+        this.preCheckinReservation = function(params) {
+            var url = '/api/reservations/' + params.reservation_id + '/pre_checkin';
+
+            return zsBaseWebSrv2.postJSON(url, params);
+        };
+
+        this.addNotes = function (params) {
+            
+            var url = '/reservation_notes';
+
+            return zsBaseWebSrv2.postJSON(url, params);
+        };
+
+        var passportBypassReason;
+
+        this.savePassportBypassReason = function (bypassReason) {
+            passportBypassReason = bypassReason;
+        };
+ 
+        this.getPassportBypassReason = function () {
+            return passportBypassReason;
+        };
+
+        this.getGuestMandatoryFields = function(params) {
+            var url = '/api/guest_mandatory_schemas/guest_mandatory_fields';
+
+            return zsBaseWebSrv.getJSON(url, params);
+        };
+
+        this.savePendingGuestFields = function(params) {
+            var url = '/api/guest_mandatory_schemas/save_guest_mandatory_fields';
+
+            return zsBaseWebSrv.postJSON(url, params);
         };
     }
 ]);

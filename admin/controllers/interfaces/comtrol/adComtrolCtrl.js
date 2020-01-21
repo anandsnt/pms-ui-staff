@@ -14,6 +14,10 @@ admin.controller('adComtrolCtrl', ['$scope', 'config', 'adInterfacesSrv', 'ngDia
             return adInterfacesSrv.hotelSettings();
         };
 
+        var dataSwap = function() {
+            return adIFCSrv.post('comtrol', 'data_swap', {});
+        };
+
         $scope.interface = 'COMTROL';
 
         $scope.state = {
@@ -22,6 +26,10 @@ admin.controller('adComtrolCtrl', ['$scope', 'config', 'adInterfacesSrv', 'ngDia
 
         $scope.toggleEnabled = function () {
             $scope.config.enabled = !$scope.config.enabled;
+        };
+
+        $scope.toggleMealPeriodMappings = function() {
+            $scope.config.meal_period_mappings_enabled = !$scope.config.meal_period_mappings_enabled;
         };
 
         /**
@@ -37,9 +45,12 @@ admin.controller('adComtrolCtrl', ['$scope', 'config', 'adInterfacesSrv', 'ngDia
          * @return {undefined}
          */
         $scope.saveSetup = function () {
+            var params = dclone($scope.config);
+
+            $scope.deletePropertyIfRequired(params, 'password');
             $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
-                    settings: $scope.config,
+                    settings: params,
                     integration: $scope.interface.toLowerCase()
                 },
                 onSuccess: function () {
@@ -66,6 +77,14 @@ admin.controller('adComtrolCtrl', ['$scope', 'config', 'adInterfacesSrv', 'ngDia
             });
         };
 
+        $scope.onClickDataSwap = function () {
+            ngDialog.open({
+                template: '/assets/partials/interfaces/comtrol/adComtrolDataSwapWarning.html',
+                scope: $scope,
+                closeByDocument: true
+            });
+        };
+
         $scope.closeDialog = function () {
             ngDialog.close();
         };
@@ -74,6 +93,15 @@ admin.controller('adComtrolCtrl', ['$scope', 'config', 'adInterfacesSrv', 'ngDia
             $scope.callAPI(resetToken, {
                 successCallBack: function (response) {
                     $scope.authentication_token = response.authentication_token;
+                    $scope.closeDialog();
+                }
+            });
+        };
+
+        $scope.initiateDataSwap = function () {
+            $scope.callAPI(dataSwap, {
+                successCallBack: function(response) {
+                    $scope.dataSwapInitMessage = response.data;
                     $scope.closeDialog();
                 }
             });
@@ -104,7 +132,11 @@ admin.controller('adComtrolCtrl', ['$scope', 'config', 'adInterfacesSrv', 'ngDia
          */
 
         (function () {
+            if (config.meal_period_mappings_enabled === null) {
+                config.meal_period_mappings_enabled = false;
+            }
             $scope.config = config;
+            $scope.setDefaultDisplayPassword($scope.config, 'password');
             loadOracodeSetting();
             loadToken();
             $scope.languages = [

@@ -1,0 +1,83 @@
+<!-- ADD CARD -->
+<section id="main" class="centered" role="main" click-touch="resetTime()" ng-show="screenMode.paymentAction === 'ADD_CARD'">
+    <div id="content">
+        <h1 translate="TO_COMPLETE_CHECKIN_INSERT_CARD_IN_EMV_DEVICE">
+        </h1>
+        <h2 translate="TO_COMPLETE_CHECKIN_INSERT_CARD_IN_EMV_DEVICE_SUB">
+        </h2>
+        <nav id="options" role="nav">
+            <div class='uploaded-key-image' id="keys" ng-if="zestImages.cc_payment_image.length > 0">
+              <img src="{{ zestImages.cc_payment_image }}">
+            </div>
+            <ul role="menu" ng-if="zestImages.cc_payment_image.length === 0">
+                <li>
+                    <button type="button" class="button option">
+                        <div ng-include="icons.url.creditcard"></div>
+                    </button>
+                    <span translate="INSERT_CARD_INSTRUCTIONS">
+                    </span>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</section>
+
+<!-- CC ERROR -->
+<section id="main" class="centered" role="main" click-touch="resetTime()" ng-show="screenMode.paymentAction === 'CC_ERROR'">
+    <div id="content">
+        <h1 translate="CC_INSERT_ERROR">
+        </h1>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press="startOpiEMVActions()">
+                        <div ng-include="icons.url.creditcard"></div>
+                    </button>
+                    <h1 translate="TRY_AGAIN">
+                    </h1>
+                </li>
+                <li class="break" translate="OR_TEXT">
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press="talkToStaff()">
+                        <div ng-include="icons.url.staff"></div>
+                    </button>
+                    <h1 translate="SPEAK">
+                    </h1>
+                    <h4 translate="SPEAK_SUB">
+                    </h4>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</section>
+
+<!-- TIMEOUT -->
+<section id="main" class="centered" role="main" click-touch="resetTime()" ng-show="screenMode.paymentAction === 'CC_TIMED_OUT'">
+    <div id="content">
+        <h1 translate="CC_INSERT_TIMEOUT">
+        </h1>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press='startOpiEMVActions()'>
+                        <div ng-include="icons.url.creditcard"></div>
+                    </button>
+                    <h1 translate="TRY_AGAIN">
+                    </h1>
+                </li>
+                <li class="break" translate="OR_TEXT">
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press="talkToStaff()">
+                        <div ng-include="icons.url.staff"></div>
+                    </button>
+                    <h1 translate="SPEAK">
+                    </h1>
+                    <h4 translate="SPEAK_SUB">
+                    </h4>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</section>

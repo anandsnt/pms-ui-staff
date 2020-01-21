@@ -6,5 +6,6 @@ angular.module('sntPay', [
     'ng-iscroll',
     'ngDialog',
     'sharedHttpInterceptor',
-    'sntActivityIndicator'
+    'sntActivityIndicator',
+    'snt.utils'
 ]);

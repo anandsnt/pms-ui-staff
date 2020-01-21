@@ -18,7 +18,7 @@ angular.module('housekeepingModule', [])
             templateUrl: '/assets/partials/housekeeping/rvHkRoomStatus.html',
             controller: 'RVHkRoomStatusCtrl',
             resolve: {
-                fetchPayload: function(RVHkRoomStatusSrv, $stateParams, $rootScope, housekeepingAssets) {
+                fetchPayload: function(RVHkRoomStatusSrv, $stateParams, $rootScope, housekeepingAssets, $state) {
                     if (!!$stateParams && !!$stateParams.roomStatus) {
                         var filterStatus = {
                             'INHOUSE_DIRTY': ['dirty', 'stayover'],
@@ -38,16 +38,21 @@ angular.module('housekeepingModule', [])
                         }
 
                         // RESET: since a housekeeping dashboard can disturb these props
-                        RVHkRoomStatusSrv.currentFilters.page  = 1;
+                        RVHkRoomStatusSrv.currentFilters.page  = $stateParams.page;
                         RVHkRoomStatusSrv.currentFilters.query = '';
 
                         return RVHkRoomStatusSrv.fetchPayload({ isStandAlone: $rootScope.isStandAlone });
                     } else {
+                        RVHkRoomStatusSrv.currentFilters.page  = $stateParams.page;
                         return RVHkRoomStatusSrv.fetchPayload({ isStandAlone: $stateParams.isStandAlone || $rootScope.isStandAlone });
                     }
                 },
                 employees: function(RVHkRoomStatusSrv, $rootScope, housekeepingAssets) {
-                    return $rootScope.isStandAlone ? RVHkRoomStatusSrv.fetchHKEmps() : [];
+                    var params = {
+                        per_page: 9999
+                    };
+
+                    return $rootScope.isStandAlone ? RVHkRoomStatusSrv.fetchHKEmps(params) : [];
                 },
                 roomTypes: function(RVHkRoomStatusSrv, housekeepingAssets) {
                     return RVHkRoomStatusSrv.fetchRoomTypes();
@@ -61,6 +66,9 @@ angular.module('housekeepingModule', [])
                 allRoomIDs: function(RVHkRoomStatusSrv, housekeepingAssets) {
                     return RVHkRoomStatusSrv.fetchAllRoomIDs();
                 }
+            },
+            params: {
+                page: 1
             }
         });
 
@@ -72,6 +80,9 @@ angular.module('housekeepingModule', [])
                 roomDetailsData: function(RVHkRoomDetailsSrv, $stateParams, housekeepingAssets) {
                     return RVHkRoomDetailsSrv.fetch($stateParams.id);
                 }
+            },
+            params: {
+                page: 1
             }
         });
         $stateProvider.state('rover.housekeeping.roomDetails.log', {

@@ -12,6 +12,10 @@
         padding: 10px 100px 0 20px;
         .float();
 
+        &.receipts-list-header {
+            padding-right: 50px;
+        }
+
         li {
             position: relative;
             height: 40px;
@@ -24,6 +28,27 @@
             margin: 0;
             padding-right: 20px;
             .pull-left();
+
+            &.expand {
+                width: 40px;
+            }
+
+            &.check {
+                width: 50px;
+                padding: 0;
+
+                label {
+                    margin: 0;
+                    padding: 0;
+                    height: 100%;
+                    width: 100%;
+
+                    .icon-form {
+                        margin: auto;
+                        right: 0;
+                    }
+                }
+            }
 
             &.guest-details {
                 text-align: left;
@@ -39,6 +64,7 @@
             }
         }
 
+        &.ar-invoices,
         &.no-folio {
             li {
                 &.guest-details {
@@ -76,6 +102,31 @@
                         }
                     }
                 }
+            }
+        }
+    }
+
+    .invoice-list-header,
+    .invoice-list-content {
+        .expand-arrow {
+            .square(20px);
+            .icons > .rotate-up();
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            left: 0;
+            right: 0;
+            z-index: 20;
+            background-size: 100px;
+
+            &.black {
+                background-position: 4px -1279px;
+            }
+
+            &:not(.active) {
+                opacity: 0.2;
+                .icons > .rotate-down();
             }
         }
     }

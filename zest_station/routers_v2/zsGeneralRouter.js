@@ -5,7 +5,12 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 		$urlRouterProvider.otherwise('/zest_station/h/');
 
         $stateProvider.state('top', {
-            url: '/zest_station/h/:uuid?state',
+            url: '/zest_station/h/:uuid?state&token',
+            onEnter: ['$stateParams', '$window', function ($stateParams, $window) {
+                if ($stateParams.token) {
+                    $window.localStorage.setItem('jwt', $stateParams.token);
+                }
+            }],
             controller: 'zsTopCtrl'
         });
 
@@ -25,8 +30,8 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 					var languages = languages.languages.length ? languages.languages : [{'name': 'english', 'position': 1}];
 
 					var sortedLanguages = _.sortBy(languages, 'position');
-                    var defaultLanguage = _.filter(sortedLanguages, {
-                            is_default: true
+                    var defaultLanguage = _.find(sortedLanguages, function(language) {
+                            return language.is_default;
 	                    }),
 						defaultLangShortCode = defaultLanguage.code;
 
@@ -34,6 +39,8 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 					sortedLanguages = _.filter(sortedLanguages, function(language) {
 						return language.active;
 					});
+
+					zsGeneralSrv.defaultLangShortCode = defaultLangShortCode;
 
 					return zsGeneralSrv.fetchTranslations(sortedLanguages)
 						.then(function(translationFiles) {
@@ -132,7 +139,11 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
             },
             templateUrl: '/assets/partials_v2/idScan/zsIDScanMain.html',
             controller: 'zsSntIDScanCtrl'
-        });
+		});
 
+		$stateProvider.state('zest_station.handleUnauthorizedAccess', {
+			url: '/handleUnauth',
+			templateUrl: '/assets/partials_v2/401.html'
+		});
 	}
 ]);

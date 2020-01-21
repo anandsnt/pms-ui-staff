@@ -229,7 +229,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             item_54: false,
             item_55: false,
             item_56: false,
-            item_57: false
+            item_57: false,
+            item_58: false
         };
         $scope.toggleFilterItems = function (item) {
             if (!$scope.filterItemsToggle.hasOwnProperty(item)) {
@@ -347,7 +348,15 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 var selectedDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 
                 $scope.toDateOptionsOneYearLimit.minDate = selectedDate;
-                $scope.toDateOptionsOneYearLimit.maxDate = reportUtils.processDate(selectedDate).aYearAfter;                
+                $scope.toDateOptionsOneYearLimit.maxDate = reportUtils.processDate(selectedDate).aYearAfter; 
+                
+                if ($scope.touchedReport.untilDate < selectedDate) {
+                    $scope.touchedReport.untilDate = selectedDate;
+                }
+                if ($scope.touchedReport.untilDate > $scope.toDateOptionsOneYearLimit.maxDate) {
+                    $scope.touchedReport.untilDate = $scope.toDateOptionsOneYearLimit.maxDate;
+                }
+                              
             }
         }, datePickerCommon);
 
@@ -358,6 +367,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
                 $scope.toDateOptionsOneMonthLimit.minDate = selectedDate;
                 $scope.toDateOptionsOneMonthLimit.maxDate = reportUtils.processDate(selectedDate).aMonthAfter;                
+
+                if ($scope.touchedReport.untilDate < selectedDate) {
+                    $scope.touchedReport.untilDate = selectedDate;
+                }
+                if ($scope.touchedReport.untilDate > $scope.toDateOptionsOneMonthLimit.maxDate) {
+                    $scope.touchedReport.untilDate = $scope.toDateOptionsOneMonthLimit.maxDate;
+                }
             }
         }, datePickerCommon);
 
@@ -990,7 +1006,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         function genParams(report, page, perPage, changeAppliedFilter) {
             var params = {
                 'page': page,
-                'per_page': perPage
+                'per_page': perPage,
+                'fiterFromDate': report.usedFilters && report.usedFilters.from_date ? report.usedFilters.from_date : null,
+                'filterToDate': report.usedFilters && report.usedFilters.to_date ? report.usedFilters.to_date : null             
             };
 
             // For Report Inbox, set id as generated id and skip all other params
@@ -1212,6 +1230,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 params[reportParams['RESTRICTION_IDS']] = _.pluck(_.where(report.hasRestrictionListFilter.data, {selected: true}), 'id');
             }
 
+            if (!!report.hasDayUseFilter) {
+                var inclDayUse = report[reportParams['INCLUDE_DAYUSE']];
+
+                $scope.appliedFilter[reportParams['INCLUDE_DAYUSE']] = inclDayUse;
+                params[reportParams['INCLUDE_DAYUSE']] = inclDayUse;
+            }
+
             // for rate code
             if (!!report.hasRateCodeFilter) {
                 if (report.hasRateCodeFilter.options.singleSelect) {
@@ -1288,6 +1313,16 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     if (changeAppliedFilter) {
                         $scope.appliedFilter['toTime'] = angular.copy(report.untilTime);
                     }
+                }
+            }
+
+            // include VAT year
+            if ( report.hasLanguages ) {
+                key         = reportParams['SELECTED_LANGUAGE'];
+                params[key] = report.locale;
+
+                if ( changeAppliedFilter ) {
+                    $scope.appliedFilter['selected_language'] = report.language;
                 }
             }
 
@@ -1370,6 +1405,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     // in case if all users are selected
                     if (changeAppliedFilter && report.empList.data.length === selected.length) {
                         $scope.appliedFilter.users = ['All Users'];
+                        // CICO-70792 - No need to pass the param, when select all is selected
+                        delete params[key]; 
                     }
                 }
             }
@@ -1855,7 +1892,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                         $scope.appliedFilter.assigned_departments = ['All Departments'];
                     }
                 }
-            }
+            }                        
 
             // include travel agents
             if (report.hasOwnProperty('hasTravelAgentsSearch')) {
@@ -1899,6 +1936,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     // in case if all reservation status are selected
                     if (changeAppliedFilter && report['hasIncludeCountry']['data'].length === selected.length) {
                         $scope.appliedFilter.hasIncludeCountry = ['All countries'];
+                        params[key].push('-1'); // For the UNDEFINED entry
                     }
                 }
             }
@@ -2206,11 +2244,12 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         };
 
         // generate reports
-        $scope.genReport = function (changeView, loadPage, resultPerPageOverride) {
+        $scope.genReport = function (changeView, loadPage, resultPerPageOverride, reloadreportNeeded) {
             var chosenReport = reportsSrv.getChoosenReport(),
                 page = loadPage || 1,
                 msg = '';
 
+            $scope.reloadreportNeeded = reloadreportNeeded;
             changeView = 'boolean' === typeof changeView ? changeView : true;
             var params = genParams(chosenReport, page, resultPerPageOverride || $scope.resultsPerPage);
 
@@ -2286,7 +2325,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 if (chosenReport.title === reportNames['TAX_EXEMPT']) {
                     // Response modified to handle the different tax exempt types in each date
                     response = responseForTaxExempt(response);
-                }
+                }               
 
                 $scope.totals = response.totals || [];
                 $scope.headers = response.headers || [];
@@ -2951,6 +2990,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         (function () {
             var transitionParams = $state.transition.params();
 
+            $scope.reloadreportNeeded = false;
+            
             if (transitionParams.report) {
                 $scope.selectedReport = transitionParams.report;
                 $scope.genReport(true, transitionParams.page);

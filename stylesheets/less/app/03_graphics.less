@@ -34,6 +34,8 @@
         &.icon-layers { background-position: 0 -990px; }
         &.icon-alert { background-position: 0 -1035px; }
         &.icon-invoice { background-position: 0 -1095px; }
+        &.icon-contracts { background-position: 0 -1155px; }
+        &.icon-contracts-black { background-position: 0 -1215px; }
 
 		@media only screen and (min-width: 600px) {
 			background-size: 125px;
@@ -59,6 +61,8 @@
             &.icon-layers { background-position: 0 -2040px; }
             &.icon-alert { background-position: 0 -2160px; }
             &.icon-invoice { background-position: 0 -2280px; }
+            &.icon-contracts { background-position: 0 -2400px; }
+            &.icon-contracts-black { background-position: 0 -2520px; }
 		}
 
 		@media @highdpi { background-image: @iconNoContent2x; }
@@ -158,7 +162,8 @@
 			}
 
 			&.icon-popup-alert,
-			&.icon-popup-success {
+			&.icon-popup-success,
+            &.icon-popup-error {
 				.square(50px);
 				.show;
 			}
@@ -168,6 +173,8 @@
 
 				&.white { background-position: 2px -7600px; }
 			}
+
+            &.icon-popup-error { background-position: 2px -12515px; }
 
 		/* Search ***/
 			&.icon-search {
@@ -236,6 +243,7 @@
 				&.icon-revenue { background-position: 50% -5250px; }
 				&.icon-payments { background-position: 50% -5370px; }
 				&.icon-cashier { background-position: 50% -5490px; }
+				&.icon-balance { background-position: 50% -12088px; }
 
 				&.icon-total { background-position: 50% -8070px; }
 				&.icon-prestay { background-position: 50% -8130px; }
@@ -267,13 +275,27 @@
 		/* Search Results ***/
 			&.icon-location {  background-position: 0px -36px; }
 			&.icon-group { background-position: 0 -77px; }
-			&.icon-guest-company { background-position: 0 -758px; }
-			&.icon-guest-travelagent { background-position: 0 -818px; }
+			&.icon-guest-company {
+                background-position: 0 -758px;
+
+                &.colored {
+                    background-position: 0 -13118px;
+                    color: @ccard;
+                }
+            }
+			&.icon-guest-travelagent {
+                background-position: 0 -818px;
+
+                &.colored {
+                    background-position: 0 -13178px;
+                    color: @tacard;
+                }
+            }
 			&.icon-allotment { background-position: 0 -8317px; }
 
 			&.icon-phone { background-position: 3px -4234px; }
 			&.icon-email-grey { background-position: 2px -4293px; }
-			&.icon-contracts { 
+			&.icon-contracts {
 				background-position: 0 -7658px;
 
 				&.active {
@@ -298,8 +320,8 @@
 	            .square(40px);
 			}
 
-            &.icon-queued-red { 
-                background-position: 0 -12874px; 
+            &.icon-queued-red {
+                background-position: 0 -12874px;
                 .hide-text;
                 .size(30px, 25px);
             }
@@ -397,9 +419,9 @@
                 background-position: 0px -9220px;
 
                 &.black {
-                    background-position: 0px -9280px; 
+                    background-position: 0px -9280px;
                 }
-                
+
                 &.red {
                     background-position: 0px -9340px;
                 }
@@ -469,6 +491,10 @@
 				&.failure { background-position: 5px -6630px; }
 			}
 
+            &.icon-eye {
+                background-position: 0 -12934px;
+            }
+
 		/* Housekeeping ***/
 			&.icon-room {
 				background-position: 0 -4350px;
@@ -492,7 +518,7 @@
 			&.icon-diary-oos { background-position: 0 -6158px; }
 			&.icon-diary-lock { background-position: 0 -9100px; }
 
-			&.icon-filter-room { 
+			&.icon-filter-room {
                 background-position: 0px -10300px;
 
                 &.active {
@@ -687,6 +713,17 @@
                 background-position: 0 -10780px;
             }
 
+        /* Contracts */
+            &.icon-single-arrow {
+                background-position: 2px -12998px;
+                .square(13px);
+            }
+
+            &.icon-connect {
+                background-position: 0 -13058px;
+                .size(15px,20px);
+            }
+
 		/* Rotations */
 			&.rotate-down {
 				transform:rotate(-90deg);
@@ -703,6 +740,13 @@
 
         /* Billing ***/
             &.icon-split-charge { background-position: 0px -12340px; }
+
+        /* Analytics ***/
+            &.icon-alert-red { background-position: 0px -13240px; }
+            &.icon-alert-orange { background-position: 0px -13300px; }
+            &.icon-alert-white { background-position: 0px -13360px; }
+            &.icon-legend { background-position: 1px -13419px; }
+            &.icon-legend-white { background-position: 1px -13479px; }
 
 		/* @2x Icons ***/
 		@media @highdpi {
@@ -725,14 +769,16 @@
 		&.toggle-filter {
 			background-image: @arrowDown;
 
-			&.settings-title { background-image: @arrowDownTrans; }
+			&.settings-title,
+            &.contract  { background-image: @arrowDownTrans; }
 		}
 
 		&.toggle.active,
 		&.toggle-filter.active {
 			background-image: @arrowUp;
 
-			&.settings-title { background-image: @arrowUpTrans; }
+			&.settings-title,
+            &.contract  { background-image: @arrowUpTrans; }
 		}
 
 		&.settings-title { background-position: 205px 50%; }
@@ -748,7 +794,8 @@
 				background-image: @arrowDown2x;
 				background-size: 14px 14px;
 
-				&.settings-title { background-image: @arrowDownTrans2x; }
+				&.settings-title,
+                &.contract  { background-image: @arrowDownTrans2x; }
 			}
 
 			&.toggle.active,
@@ -756,7 +803,8 @@
 				background-image: @arrowUp2x;
 				background-size: 14px 14px;
 
-				&.settings-title { background-image: @arrowUpTrans2x; }
+				&.settings-title,
+                &.contract  { background-image: @arrowUpTrans2x; }
 			}
 		}
 	}

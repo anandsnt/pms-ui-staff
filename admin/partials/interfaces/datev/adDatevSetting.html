@@ -52,6 +52,10 @@
                                     required="yes"
                                     label="{{'GUEST_LEDGER_ACCOUNT_NUMBER'| translate}}"
                                     styleclass="full-width"></ad-textbox>
+                      <ad-textbox inputtype="text" value="config.deposit_ledger_account_number"
+                                    required="yes"
+                                    label="{{'DEPOSIT_LEDGER_ACCOUNT_NUMBER'| translate}}"
+                                    styleclass="full-width"></ad-textbox>
                     </fieldset>
                 </fieldset>
 
@@ -82,7 +86,8 @@
                         <ad-textbox inputtype="password"
                                     value="config.sftp_password"
                                     label="{{'PASSWORD'| translate}}"
-                                    styleclass="full-width"></ad-textbox>
+                                    styleclass="full-width"
+                                    click-handler="onPasswordClick(config, 'sftp_password')"></ad-textbox>
                     </fieldset>
                 </fieldset>
             </fieldset>

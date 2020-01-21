@@ -1,8 +1,8 @@
 admin.controller('ADAppCtrl', [
     '$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData', 'businessDate',
-    '$timeout', 'ngDialog', 'sntAuthorizationSrv', '$filter', '$sce', 'adMenuSrv',
+    '$timeout', 'ngDialog', 'sntAuthorizationSrv', '$filter', '$sce', 'adMenuSrv', '$transitions', 'sntActivity', 'sessionTimeoutHandlerSrv',
     function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData, businessDate,
-             $timeout, ngDialog, sntAuthorizationSrv, $filter, $sce, adMenuSrv) {
+             $timeout, ngDialog, sntAuthorizationSrv, $filter, $sce, adMenuSrv, $transitions, sntActivity, sessionTimeoutHandlerSrv) {
 
         // hide the loading text that is been shown when entering Admin
         $( ".loading-container" ).hide();
@@ -135,8 +135,7 @@ admin.controller('ADAppCtrl', [
                             title: 'MENU_CREATE_RESERVATION',
                             action: 'rover.reservation.search',
                             menuIndex: "createReservation",
-                            standAlone: true,
-                            hidden: ($rootScope.isPmsProductionEnv && $rootScope.hotelDiaryConfig.mode === 'FULL')
+                            standAlone: true
                         }, {
                             title: 'MENU_ROOM_DIARY',
                             action: 'rover.diary',
@@ -456,22 +455,6 @@ admin.controller('ADAppCtrl', [
             return  adMenuSrv.processMenuList(mobileMenu);
         };
 
-        var addAnalyticsMenuConditionally = function(menuList) {
-            if (!hideAnalyticsReportMenu) {
-                var reportIndex = _.findIndex(menuList, {
-                    title: 'MENU_REPORTS'
-                });
-                var analyticsMenu = {
-                    title: "MENU_REPORT_ANALYTICS",
-                    action: "rover.reportAnalytics",
-                    menuIndex: "reportAnalytics"
-                };
-
-                menuList[reportIndex].submenu.push(analyticsMenu);
-            }
-            return menuList;
-        };
-
         /**
          * Set up left side menus based on permission and pms type
          */
@@ -491,7 +474,6 @@ admin.controller('ADAppCtrl', [
                 $scope.menu = getMainMenuForConnectedRover(shouldHideNightlyDiaryMenu);
                 $scope.mobileMenu = getMobileMenuForConnectedRover();
             }
-            $scope.menu = addAnalyticsMenuConditionally($scope.menu);
         };
 
         /**
@@ -694,35 +676,40 @@ admin.controller('ADAppCtrl', [
         /*
          * function for handling click operation on menu item
          * Here is a special case
-         * After drag operation, click event is firing. Inorder to prevent that
+         * After the drag operation, click event is firing. Inorder to prevent that
          * we will check the lastDropedTime with click event fired time.
          * if it is less than a predefined time, it will not fire click event, otherwise fire
          */
-        $scope.clickedMenuItem = function($event, stateToGo) {
+        $scope.clickedMenuItem = function($event, stateToGo, shouldDisableClick) {
             var currentTime = new Date();
 
-            if (lastDropedTime !== '' && typeof lastDropedTime === 'object') {
-                var diff = currentTime - lastDropedTime;
-
-                if (diff <= 400) {
-                    $event.preventDefault();
-                    $event.stopImmediatePropagation();
-                    $event.stopPropagation();
-                    lastDropedTime = '';
-                    return false;
+            if (shouldDisableClick) {
+                $scope.errorMessage = ['Your current subscription package does not include this service'];
+            } else {
+                $scope.clearErrorMessage();
+                if (lastDropedTime !== '' && typeof lastDropedTime === 'object') {
+                    var diff = currentTime - lastDropedTime;
+    
+                    if (diff <= 400) {
+                        $event.preventDefault();
+                        $event.stopImmediatePropagation();
+                        $event.stopPropagation();
+                        lastDropedTime = '';
+                        return false;
+                    } else {
+                        lastDropedTime = '';
+                        updateSelectedMenu(stateToGo);
+                        $state.go(stateToGo);
+                    }
                 } else {
                     lastDropedTime = '';
                     updateSelectedMenu(stateToGo);
                     $state.go(stateToGo);
                 }
-            } else {
-                lastDropedTime = '';
-                updateSelectedMenu(stateToGo);
-                $state.go(stateToGo);
-            }
-            if ($scope.menuOpen) {
-                $scope.menuOpen = !$scope.menuOpen;
-                $scope.showSubMenu = false;
+                if ($scope.menuOpen) {
+                    $scope.menuOpen = !$scope.menuOpen;
+                    $scope.showSubMenu = false;
+                }
             }
         };
 
@@ -769,8 +756,10 @@ admin.controller('ADAppCtrl', [
             if (data.pms_type === null) {
                 $scope.isStandAlone = true;
             }
-                        $rootScope.isStandAlone = $scope.isStandAlone;
+            $rootScope.hotelCurrencyObject = data.currency;
+            $rootScope.isStandAlone = $scope.isStandAlone;
             $rootScope.currencySymbol = getCurrencySign(data.currency.value);
+            $rootScope.currencyId = data.currency.id;
             $rootScope.dateFormat = getDateFormat(data.date_format.value);
             $rootScope.jqDateFormat = getJqDateFormat(data.date_format.value);
             $rootScope.hotelDateFormat = data.date_format.value;
@@ -814,6 +803,9 @@ admin.controller('ADAppCtrl', [
             $rootScope.mliEmvEnabled = data.mli_emv_enabled && data.payment_gateway === 'MLI';
 
             $rootScope.mliAndCBAEnabled = data.payment_gateway === 'MLI' && data.mli_cba_enabled;
+
+            $rootScope.manualCCEnabled = data.payment_gateway === 'SHIJI' && data.shiji_token_enable_offline;
+
             hideAnalyticsReportMenu = data.hide_analytics_menu;
 
             /*
@@ -828,7 +820,29 @@ admin.controller('ADAppCtrl', [
                 isDiaryMergeEnabled: data.is_diary_merge_enabled
             };
 
+            $rootScope.isAllowanceEnabled = data.is_allowance_enabled;
+
+            var isZestWebEnabled = data.is_zest_web_enabled;
+
             setupLeftMenu();
+            var isComponentDisabled = function(component) {
+                return (
+                    component.name === 'Check In' || component.name === 'Check Out' ||
+                        component.name === 'Direct URL' || component.name === '' || component.name === 'Zest Web Common' ||
+                        component.name === 'Room Ready Email' || component.name === 'Zest Web Global Setup' ||
+                        component.name === "Email from Guest" || component.name === "SMS / Short Code"
+                )
+            }
+
+            _.each($scope.data.menus, function(menu) {
+                _.each(menu.components, function(component) {
+                    if (!isZestWebEnabled && menu.menu_name === 'Zest' && isComponentDisabled(component)) {
+                        component.is_disabled = true;
+                    }
+                });
+            });
+
+            $scope.isZestStationEnabled = data.is_zest_station_enabled;
         };
         /*
          * Function to get the current hotel language
@@ -919,15 +933,6 @@ admin.controller('ADAppCtrl', [
             return $scope.menuOpen ? true : false;
         };
 
-
-        $scope.$on("showLoader", function() {
-            $scope.hasLoader = true;
-        });
-
-        $scope.$on("hideLoader", function() {
-            $scope.hasLoader = false;
-        });
-
         /*
         *  Handle inline styles inside ng-bind-html directive.
         *  Let   =>  $scope.htmlData = "<p style='font-size:8pt;''>Sample Text</p>";
@@ -943,7 +948,7 @@ admin.controller('ADAppCtrl', [
             *   Method to go back to previous state.
             */
         $scope.goBackToPreviousState = function() {
-
+                $scope.clearErrorMessage();
                 if ($rootScope.previousStateParam) {
                   $state.go($rootScope.previousState, { menu: $rootScope.previousStateParam});
                 }
@@ -1006,6 +1011,10 @@ admin.controller('ADAppCtrl', [
         $scope.logout = function() {
             ADAppSrv.signOut().finally(function() {
                 $timeout(function () {
+                    if (sessionTimeoutHandlerSrv.getWorker()) {
+                        sessionTimeoutHandlerSrv.stopTimer();
+                        $scope.$emit('CLOSE_SESSION_TIMEOUT_POPUP');
+                    }
                     $window.location.href = '/logout';
                 });
             });
@@ -1019,13 +1028,39 @@ admin.controller('ADAppCtrl', [
          * @return {[integer]}              [description]
          */
         $scope.findMainMenuIndex = function(mainMenuName) {
-            var index = _.indexOf($scope.data.menus, _.find($scope.data.menus, function(menu) {
+            var index = _.indexOf($scope.data.menus, _.find($scope.data.menus, function (menu) {
                 return menu.menu_name === mainMenuName;
             }));
-            
+
             // if index is not defined, set it as current selected index
             index = _.isUndefined(index) ? $scope.selectedIndex : index;
             return index;
+        };
+
+        $scope.startActivity = function (activity) {
+            sntActivity.start(activity);
+        };
+
+        $scope.stopActivity = function (activity) {
+            sntActivity.stop(activity);
+        };
+
+        $transitions.onCreate({}, function (transition) {
+            sntActivity.start('STATE_CHANGE' + transition.to().name.toUpperCase());
+        });
+
+        $transitions.onSuccess({}, function (transition) {
+            sntActivity.stop('STATE_CHANGE' + transition.to().name.toUpperCase());
+        });
+
+        $transitions.onError({}, function (transition) {
+            sntActivity.stop('STATE_CHANGE' + transition.to().name.toUpperCase());
+        });
+
+        $scope.menuHoverIn = function(menuIndex) {
+            if (!$scope.isZestStationEnabled && $scope.data.menus[menuIndex].menu_name === 'Station') {
+                angular.element("#admin-menu-tooltip").tooltip();
+            }
         };
 
         (function() {

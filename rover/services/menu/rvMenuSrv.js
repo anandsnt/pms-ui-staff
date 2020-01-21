@@ -70,7 +70,7 @@ angular.module('sntRover').service('rvMenuSrv',
      * @return {Boolean}
      */
     var shouldShowCurrencyExchangeInFinancialsMenu = function() {
-        return RVHotelDetailsSrv.hotelDetails.is_multi_currency_enabled;
+        return RVHotelDetailsSrv.hotelDetails.is_multi_currency_enabled && RVHotelDetailsSrv.hotelDetails.currency_list_for_exchange.length > 0;
     };
     /**
      * Decide whether the QuickText submenu is to be shown
@@ -151,24 +151,6 @@ angular.module('sntRover').service('rvMenuSrv',
 		return menuToReturn;
     };
 
-    this.showAnalyticsMenu =  true;
-
-	var addAnalyticsMenuConditionally = function(menuList) {
-		if (self.showAnalyticsMenu) {
-			var reportIndex = _.findIndex(menuList, {
-				title: 'MENU_REPORTS'
-			});
-			var analyticsMenu = {
-				title: "MENU_REPORT_ANALYTICS",
-				action: "rover.reportAnalytics",
-				menuIndex: "reportAnalytics"
-			};
-			
-			menuList[reportIndex].submenu.push(analyticsMenu);
-		}
-		return menuList;
-	};
-
 	/**
 	* method to get menu for rover
 	* @return {array} - List of Menu
@@ -198,8 +180,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		        }, {
 		            title: "MENU_CREATE_RESERVATION",
 		            action: "rover.reservation.search",
-		            menuIndex: "createReservation",
-		            hidden: ($rootScope.isPmsProductionEnv && $rootScope.hotelDiaryConfig.mode === 'FULL')
+		            menuIndex: "createReservation"
 		        }, {
 		            title: "MENU_ROOM_DIARY",
 		            action: 'rover.diary',
@@ -399,8 +380,6 @@ angular.module('sntRover').service('rvMenuSrv',
             }            
 		];
 
-		menuList = addAnalyticsMenuConditionally(menuList);
-
 		return processMenuList (menuList);
 	};
 
@@ -452,8 +431,6 @@ angular.module('sntRover').service('rvMenuSrv',
 		        }]
             }
 		];
-
-		menu = addAnalyticsMenuConditionally(menu);
 
 		return processMenuList (menu);
 	};

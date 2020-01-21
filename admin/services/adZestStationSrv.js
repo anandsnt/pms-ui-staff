@@ -50,4 +50,10 @@ admin.service('ADZestStationSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
         return ADBaseWebSrvV2.getJSON(url);
     };
 
+     this.excludePaymenTypes = function(params) {
+        var url = '/admin/hotel_payment_types/apply_exclusion';
+
+        return ADBaseWebSrvV2.postJSON(url, params);
+    };
+
 }]);

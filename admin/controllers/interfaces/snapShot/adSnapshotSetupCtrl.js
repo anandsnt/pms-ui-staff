@@ -19,11 +19,15 @@ admin.controller('adsnapshotSetupCtrl', ['$scope', 'adSnapShotSetupSrv', 'ngTabl
 		};
 
 		$scope.saveSettings = function() {
+			var params = dclone($scope.snapshotData);
+
+			$scope.deletePropertyIfRequired(params, 'password');
+
 			var onSaveSettingsSucces = function() {
 					$scope.successMessage = 'Success, Your settings has been saved.';
 				},
 				options = {
-					params: $scope.snapshotData,
+					params: params,
 					successCallBack: onSaveSettingsSucces
 				};
 
@@ -33,6 +37,7 @@ admin.controller('adsnapshotSetupCtrl', ['$scope', 'adSnapShotSetupSrv', 'ngTabl
 		$scope.fetchSettings = function() {
 			var onFetchSettingsSucces = function(data) {
 					$scope.snapshotData = data;
+					$scope.setDefaultDisplayPassword($scope.snapshotData, 'password');
 					// $scope.fetchExportData();
 				},
 				options = {

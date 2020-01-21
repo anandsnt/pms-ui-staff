@@ -2,7 +2,8 @@ const {connect} = ReactRedux;
 
 const mapStateToRateManagerGridLeftFirstRowComponentProps = (state) => {
   return {
-    expandedClass: (!!state.flags&&state.flags.showRateDetail)?'expanded':''
+    expandedClass: (!!state.flags&&state.flags.showRateDetail)?'expanded':'',
+    isHierarchyRestrictionEnabled: state.isHierarchyRestrictionEnabled
   }
 };
 

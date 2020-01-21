@@ -183,4 +183,9 @@
 "COMMON_AREA": "COMMON AREA",
 "AUTO_CHARGE": "Auto Charge",
 "AUTO_CHARGE_DEPOSIT": "Auto Charge Deposit",
-"PASS_LEVEL_NUMBERS": "Pass Level Numbers Seperated By (;)"
+"PASS_LEVEL_NUMBERS": "Pass Level Numbers Seperated By (;)",
+"HOTEL_LANGUAGES": "Languages",
+"USE_LANGUAGES": "USE LANGUAGES",
+"MAKE_DEFAULT": "MAKE DEFAULT",
+"DESCRIPTION_TRANSLATED": "Description (Translation)",
+"ENTER_TRANSLATIONS_FOR_DESCRIPTION": "Enter translation for Description"

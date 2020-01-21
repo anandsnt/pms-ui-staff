@@ -32,9 +32,12 @@ admin.controller('adAvidaCtrl', ['$scope', 'config', 'adInterfacesSrv',
          * @return {undefined}
          */
         $scope.saveSetup = function () {
+            var params = dclone($scope.config);
+
+            $scope.deletePropertyIfRequired(params, 'ftp_password');
             $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
-                    settings: $scope.config,
+                    settings: params,
                     integration: $scope.interface.toLowerCase()
                 },
                 onSuccess: function () {
@@ -50,5 +53,6 @@ admin.controller('adAvidaCtrl', ['$scope', 'config', 'adInterfacesSrv',
          */
         (function () {
             $scope.config = config;
+            $scope.setDefaultDisplayPassword($scope.config, 'ftp_password');
         })();
     }]);

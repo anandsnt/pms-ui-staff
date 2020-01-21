@@ -92,7 +92,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="item in activityLogObj.response.results">
+                    <tr ng-repeat="item in activityLogObj.response.results" ng-if="!isEmptyArray(item.details)">
                         <td class="name">
                             {{item.user_name}}
                             <span class="property">{{item.property}}</span>

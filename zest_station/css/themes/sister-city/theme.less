@@ -54,6 +54,9 @@
         fill: none;
         stroke: @white;
     }
+    &.icon-arrow-down {
+        fill: @white;
+    }
 }
 
 /* 4. LAYOUT
@@ -289,6 +292,13 @@
                 font-size: 31px;
                 line-height: 36px;
             }
+
+            .icon-text {
+                font-size: 31px;
+                line-height: 42px;
+                padding: 30px 0;
+            }
+            
             .option {
                 width: 100px !important;
                 height: 100px !important;
@@ -645,5 +655,52 @@
 
     #skipEmailInputBtn {
         margin-top: 20px !important;
+    }
+
+    .minibar-item,
+    .minibar-review .review-container {
+        background: transparent;
+        color: @textColor;
+    }
+    .minibar-review .review-items .items .iScrollVerticalScrollbar .iScrollIndicator { background: @white; border-radius: 0; }
+    .minibar-items {
+        .iScrollVerticalScrollbar .iScrollIndicator { background: @white; border-radius: 0;}
+        .minibar-item {
+            border-radius: 0;
+
+            .minibar-item-actions { 
+                border-radius: 0; 
+                border: none;
+            }
+            .minibar-item-qty { color: @white; }
+            .minibar-item-info {
+                .minibar-item-meta { color:@white; }
+            }
+
+            &:not(.group) {
+                border-color: @white;
+            }
+
+            &.group {
+                border-bottom: 2px solid @white;
+            }
+        }
+    }
+
+    .minibar-review {
+        .review-items {
+            ul.totals {
+                li {
+                    &:not(.total) {
+                        color:@white;
+                    }
+
+                    &:first-child,
+                    &.total {
+                        border-top-color: @white;
+                    }
+                }
+            }
+        }
     }
 }

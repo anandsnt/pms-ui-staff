@@ -1,4 +1,17 @@
-sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$state', '$vault', 'RVDashboardSrv', '$timeout', function($scope, $rootScope, $state, $vault, RVDashboardSrv, $timeout) {
+sntRover.controller('RVmanagerDashboardController',
+ ['$scope',
+  '$rootScope',
+  '$state',
+  '$vault',
+  'RVDashboardSrv',
+  '$timeout',
+  'ngDialog',
+  'marketData',
+  'sourceData',
+  'segmentData',
+  'originData',
+  'rvAnalyticsHelperSrv',
+  function($scope, $rootScope, $state, $vault, RVDashboardSrv, $timeout, ngDialog, marketData, sourceData, segmentData, originData, rvAnalyticsHelperSrv) {
   // inheriting some useful things
   BaseCtrl.call(this, $scope);
   var that = this;
@@ -9,6 +22,12 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
 
   $scope.isStatisticsOpened = false;
   $scope.setScroller('dashboard_scroller', scrollerOptions);
+  $scope.setScroller('analytics_scroller', {
+    preventDefaultException: {
+      tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/
+    },
+    preventDefault: false
+  });
 
   // changing the header
   $scope.$emit("UpdateHeading", 'DASHBOARD_MANAGER_HEADING');
@@ -182,4 +201,257 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
   }
 
  };
+
+  var refreshAnalyticsScroller = function() {
+    $timeout(function() {
+      $scope.refreshScroller('analytics_scroller');
+    }, 500);
+  };
+
+  $scope.dashboardFilter.isManagerDashboard = true;
+  $scope.$on('REFRESH_ANALTICS_SCROLLER', refreshAnalyticsScroller);
+
+  $scope.dashboardFilter.chartTypes = [{
+    "name": "Occupancy",
+    "code": "occupancy"
+  }, {
+    "name": "Occupied Rooms",
+    "code": "occupied_rooms"
+  }, {
+    "name": "ADR",
+    "code": "adr"
+  }, {
+    "name": "RevPAR",
+    "code": "rev_par"
+  }, {
+      "name": "Room Revenue",
+      "code": "revenue"
+  }];
+
+  $scope.dashboardFilter.chartType = "occupancy";
+
+  $scope.dashboardFilter.aggTypes = [{
+    "name": "Room type",
+    "code": "room_type_id"
+  }, {
+    "name": "Market",
+    "code": "market_id"
+  }, {
+    "name": "Source",
+    "code": "source_id"
+  }, {
+    "name": "Segment",
+    "code": "segment_id"
+  }, {
+    "name": "Origin",
+    "code": "booking_origin_id"
+  }];
+
+
+  $scope.onChartTypeChanged = function() {
+    $scope.$broadcast('CHART_TYPE_CHANGED');
+  };
+
+  $scope.onAggregationTypeChanged = function() {
+    $scope.$broadcast('CHART_AGGGREGATION_CHANGED');
+  };
+
+  $scope.dashboardFilter.toDate = angular.copy($rootScope.businessDate);
+  $scope.dashboardFilter.fromDate = angular.copy(moment($scope.dashboardFilter.toDate).subtract(7, 'days').format('YYYY-MM-DD'));
+
+  var dateOptions = {
+    changeYear: true,
+    changeMonth: true,
+    yearRange: "-5:+5",
+    dateFormat: 'yy-mm-dd',
+    onSelect: function(dateText) {
+      $scope.dashboardFilter.fromDate = dateText;
+      $scope.$broadcast('RELOAD_DATA_WITH_DATE_FILTER', {
+        "from_date": $scope.dashboardFilter.fromDate
+      });
+      ngDialog.close();
+    }
+  };
+
+  var toDateOptions = {
+    changeYear: true,
+    changeMonth: true,
+    yearRange: "-5:+5",
+    dateFormat: 'yy-mm-dd',
+    onSelect: function(dateText, inst) {
+      $scope.dashboardFilter.toDate = dateText;
+      $scope.$broadcast('RELOAD_DATA_WITH_DATE_FILTER', {
+        "to_date": $scope.dashboardFilter.toDate
+      });
+      ngDialog.close();
+    }
+  };
+
+  $scope.showAnalyticsCalendar = function(type) {
+    $scope.dateOptions = (type === 'toDate') ? toDateOptions : dateOptions;
+    $scope.datePicked = (type === 'toDate') ?
+      moment($scope.dashboardFilter.toDate).format('YYYY-MM-DD') :
+      moment($scope.dashboardFilter.fromDate).format('YYYY-MM-DD');
+    $timeout(function() {
+      ngDialog.open({
+        template: '/assets/partials/search/rvDatePickerPopup.html',
+        className: '',
+        scope: $scope
+      });
+    }, 1000);
+  };
+
+  $scope.availableRoomTypes = angular.copy($scope.roomTypes);
+  $scope.marketData = marketData && marketData.markets ? marketData.markets : [];
+  $scope.sourceData = sourceData && sourceData.sources ? sourceData.sources : [];
+  $scope.segmentData = segmentData && segmentData.segments ? segmentData.segments : [];
+  $scope.originData = originData && originData.booking_origins ? originData.booking_origins : [];
+
+  var shallowDecoded,
+    shallowEncoded;
+  var generateParamsBasenOnFilters = function() {
+    var filtersSelected = {
+      "filters": {}
+    };
+
+    filtersSelected.filters.room_type_id = _.pluck($scope.selectedFilters.roomTypes, 'id');
+    filtersSelected.filters.market_id = _.pluck($scope.selectedFilters.marketCodes, 'value');
+    filtersSelected.filters.source_id = _.pluck($scope.selectedFilters.sourceCodes, 'value');
+    filtersSelected.filters.segment_id = _.pluck($scope.selectedFilters.segmentCodes, 'value');
+    filtersSelected.filters.booking_origin_id = _.pluck($scope.selectedFilters.originCodes, 'value');
+    shallowEncoded = $.param(filtersSelected);
+    shallowDecoded = decodeURIComponent(shallowEncoded);
+  };
+
+  $scope.toggleFilterView = function() {
+    $scope.dashboardFilter.showFilters = !$scope.dashboardFilter.showFilters;
+
+    if (($scope.dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION' ||
+        $scope.dashboardFilter.selectedAnalyticsMenu === 'PACE') &&
+      !$scope.dashboardFilter.showFilters) {
+      $scope.$broadcast('ANALYTICS_FILTER_CHANGED', shallowEncoded);
+    }
+  };
+
+  var resetChartFilters = function() {
+    $scope.selectedFilters = {
+      "roomType": "",
+      "marketCode": "",
+      "sourceCode": "",
+      "originCode": "",
+      "segmentCode": "",
+      "roomTypes": [],
+      "marketCodes": [],
+      "sourceCodes": [],
+      "originCodes": [],
+      "segmentCodes": []
+    };
+  };
+
+  resetChartFilters();
+
+  $scope.distributionFilterRemoved = function(type, value) {
+    var selectedItem;
+
+    if (type === 'MARKET' && value) {
+      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.selectedFilters.marketCodes, value);
+      $scope.marketData = rvAnalyticsHelperSrv.addToAndSortArray($scope.marketData, selectedItem);
+      $scope.selectedFilters.marketCodes = _.reject($scope.selectedFilters.marketCodes, selectedItem);
+    } else if (type === 'SOURCE' && value) {
+      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.selectedFilters.sourceCodes, value);
+      $scope.sourceData = rvAnalyticsHelperSrv.addToAndSortArray($scope.sourceData, selectedItem);
+      $scope.selectedFilters.sourceCodes = _.reject($scope.selectedFilters.sourceCodes, selectedItem);
+    } else if (type === 'SEGMENT' && value) {
+      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.selectedFilters.segmentCodes, value);
+      $scope.segmentData = rvAnalyticsHelperSrv.addToAndSortArray($scope.segmentData, selectedItem);
+      $scope.selectedFilters.segmentCodes = _.reject($scope.selectedFilters.segmentCodes, selectedItem);
+    } else if (type === 'ORIGIN' && value) {
+      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.selectedFilters.originCodes, value);
+      $scope.originData = rvAnalyticsHelperSrv.addToAndSortArray($scope.originData, selectedItem);
+      $scope.selectedFilters.originCodes = _.reject($scope.selectedFilters.originCodes, selectedItem);
+    } else if (type === 'ROOM_TYPE' && value) {
+      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.selectedFilters.roomTypes, value);
+      $scope.availableRoomTypes = rvAnalyticsHelperSrv.addToAndSortArray($scope.availableRoomTypes, selectedItem);
+      $scope.selectedFilters.roomTypes = _.reject($scope.selectedFilters.roomTypes, selectedItem);
+    }
+    generateParamsBasenOnFilters();
+  };
+
+  $scope.distributionFilterAdded = function(type) {
+    var selectedItem;
+
+    if (type === 'MARKET' && $scope.selectedFilters.marketCode) {
+      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.marketData, $scope.selectedFilters.marketCode);
+      $scope.selectedFilters.marketCodes = rvAnalyticsHelperSrv.addToAndSortArray($scope.selectedFilters.marketCodes, selectedItem);
+      $scope.marketData = _.reject($scope.marketData, selectedItem);
+    } else if (type === 'SOURCE' && $scope.selectedFilters.sourceCode) {
+      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.sourceData, $scope.selectedFilters.sourceCode);
+      $scope.selectedFilters.sourceCodes = rvAnalyticsHelperSrv.addToAndSortArray($scope.selectedFilters.sourceCodes, selectedItem);
+      $scope.sourceData = _.reject($scope.sourceData, selectedItem);
+    } else if (type === 'SEGMENT' && $scope.selectedFilters.segmentCode) {
+      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.segmentData, $scope.selectedFilters.segmentCode);
+      $scope.selectedFilters.segmentCodes = rvAnalyticsHelperSrv.addToAndSortArray($scope.selectedFilters.segmentCodes, selectedItem);
+      $scope.segmentData = _.reject($scope.segmentData, selectedItem);
+    } else if (type === 'ORIGIN' && $scope.selectedFilters.originCode) {
+      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.originData, $scope.selectedFilters.originCode);
+      $scope.selectedFilters.originCodes = rvAnalyticsHelperSrv.addToAndSortArray($scope.selectedFilters.originCodes, selectedItem);
+      $scope.originData = _.reject($scope.originData, selectedItem);
+    } else if (type === 'ROOM_TYPE' && $scope.selectedFilters.roomType) {
+      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.availableRoomTypes, $scope.selectedFilters.roomType);
+      $scope.selectedFilters.roomTypes = rvAnalyticsHelperSrv.addToAndSortArray($scope.selectedFilters.roomTypes, selectedItem);
+      $scope.availableRoomTypes = _.reject($scope.availableRoomTypes, selectedItem);
+    }
+    generateParamsBasenOnFilters();
+  };
+
+  var joinFiltersAndDataSet = function (dataSet, filterData) {
+    dataSet = dataSet.concat(filterData);
+    dataSet = _.sortBy(dataSet, function(item) {
+      return item.name;
+    });
+    return dataSet;
+  };
+
+  var emptyAllChartFilters = function() {
+    shallowEncoded = "";
+    $scope.dashboardFilter.chartType = "occupancy";
+    $scope.dashboardFilter.aggType = "";
+    $scope.dashboardFilter.datePicked = $rootScope.businessDate;
+
+    $scope.dashboardFilter.chartType = "";
+    $scope.dashboardFilter.aggType = "";
+    $scope.dashboardFilter.toDate = angular.copy($rootScope.businessDate);
+    $scope.dashboardFilter.fromDate = angular.copy(moment($scope.dashboardFilter.toDate).subtract(7, 'days').format('YYYY-MM-DD'));
+
+    $scope.marketData = joinFiltersAndDataSet($scope.marketData, $scope.selectedFilters.marketCodes);
+    $scope.sourceData = joinFiltersAndDataSet($scope.sourceData, $scope.selectedFilters.sourceCodes);
+    $scope.segmentData = joinFiltersAndDataSet($scope.segmentData, $scope.selectedFilters.segmentCodes);
+    $scope.originData = joinFiltersAndDataSet($scope.originData, $scope.selectedFilters.originCodes);
+    $scope.availableRoomTypes = joinFiltersAndDataSet($scope.availableRoomTypes, $scope.selectedFilters.roomTypes);
+    resetChartFilters();
+  };
+
+  $scope.$on('RESET_CHART_FILTERS', function() {
+    emptyAllChartFilters();
+  });
+
+  $scope.getAppliedFilterCount = function() {
+    if ($scope.dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION' ||
+      $scope.dashboardFilter.selectedAnalyticsMenu === 'PACE') {
+      var aggTypeFilterCount = $scope.dashboardFilter.aggType ? 1 : 0;
+
+      return $scope.selectedFilters.marketCodes.length +
+        $scope.selectedFilters.sourceCodes.length +
+        $scope.selectedFilters.segmentCodes.length +
+        $scope.selectedFilters.originCodes.length +
+        $scope.selectedFilters.roomTypes.length +
+        aggTypeFilterCount;
+    }
+    return $scope.dashboardFilter.showLastYearData ? 1 : 0;
+  };
+
+  $scope.distributionChartChanged = function() {
+    $scope.$broadcast('DISTRUBUTION_CHART_CHANGED');
+  };
+
 }]);

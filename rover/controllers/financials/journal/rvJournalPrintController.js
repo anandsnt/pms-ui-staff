@@ -3,7 +3,7 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 
 	/** Code for PRINT BOX drawer common Resize Handler starts here .. **/
 	var resizableMinHeight = 0;
-	var resizableMaxHeight = 90;
+	var resizableMaxHeight = 60;
 
 	$scope.eventTimestamp = '';
 	$scope.data.printBoxHeight = resizableMinHeight;
@@ -109,7 +109,18 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
             "employee_ids": $scope.data.selectedEmployeeList,
             "department_ids": $scope.data.selectedDepartmentList,
             "charge_group_id": $scope.data.selectedChargeGroup
-        };
+		};
+
+		if ($scope.data.query !== "") {
+            postData.filter_id = $scope.data.filterId;
+            postData.query = $scope.data.query;
+		}
+
+		if (!$scope.data.activeRevenueTab) {
+			$scope.data.activeRevenueTab = '';
+		} else {
+			postData.type = ($scope.data.activeRevenueTab).toLowerCase();
+		}
 
 		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, postData, successCallBackFetchRevenueData);
        	var uiValue = _.find($scope.data.activeChargeGroups, function(each) {
@@ -128,7 +139,7 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 			$scope.data.revenueData.charge_groups[0].charge_codes = data.charge_codes;
 			$scope.data.revenueData.charge_groups[0].active = true;
 
-			var chargeCodeList = data.charge_codes;
+			var chargeCodeList = data.group_charge_codes;
 
 			$scope.data.activeChargeCodes = ( chargeCodeList.length > 0 ) ? chargeCodeList : [];
 
@@ -145,6 +156,17 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
         	"employee_ids": $scope.data.selectedEmployeeList,
             "department_ids": $scope.data.selectedDepartmentList
         };
+
+		if ($scope.data.query !== "") {
+            postData.filter_id = $scope.data.filterId;
+            postData.query = $scope.data.query;
+		}
+
+		if (!$scope.data.activeRevenueTab) {
+			$scope.data.activeRevenueTab = '';
+		} else {
+			postData.type = ($scope.data.activeRevenueTab).toLowerCase();
+		}
 
         $scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeCodes, postData, successCallBackFetchRevenueDataChargeCodes);
 
@@ -189,9 +211,20 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
             "to_date": $scope.data.toDate,
             "employee_ids": $scope.data.selectedEmployeeList,
             "department_ids": $scope.data.selectedDepartmentList
-        };
+		};
+		
+		if ($scope.data.query !== "") {
+            postData.filter_id = $scope.data.filterId;
+            postData.query = $scope.data.query;
+		}
 
-		if ($scope.data.selectedPaymentType === "ALL") {
+		if (!$scope.data.activePaymentTab) {
+			$scope.data.activePaymentTab = '';
+		} else {
+			postData.type = ($scope.data.activePaymentTab).toLowerCase();
+		}
+
+		if ($scope.data.selectedPaymentType === "") {
 			postData.charge_code_id = "";
 		}
 		else if ($scope.data.selectedPaymentType === "" || typeof $scope.data.selectedPaymentType === "undefined") {

@@ -35,16 +35,19 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
                     // Only Company card is attached.
                     $scope.disableCompanyCardInvoice = true;
                 }
-            } else if (!!$scope.groupConfigData) {
+            }
+            if (!!$scope.groupConfigData) {
                 params.id = $scope.groupConfigData.summary.group_id;
                 params.is_group = true;
                 params.is_type = "Account";
                 handleGenerateToggleWidgetVisibility($scope.groupConfigData.summary);
             } else {
-                params.id = $scope.accountConfigData.summary.posting_account_id;
+                params.id = $scope.accountConfigData ? $scope.accountConfigData.summary.posting_account_id : $scope.clickedInvoiceData.associated_item.item_id;
                 params.is_group = false;
                 params.is_type = "Account";
-                handleGenerateToggleWidgetVisibility($scope.accountConfigData.summary);
+                if ($scope.accountConfigData) {
+                    handleGenerateToggleWidgetVisibility($scope.accountConfigData.summary);
+                }                
             }
 
         }
@@ -132,6 +135,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
             }
 
             $scope.data = response.data;
+            $scope.setEmailAddress();
         };
 
         $scope.invokeApi(RVBillCardSrv.getBillSettingsInfo, params, onBillSettingsInfoFetchSuccess);
@@ -206,7 +210,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
         var emailRequest = getPrintEmailRequestParams();
 
         emailRequest.bill_layout = $scope.data.default_bill_settings;
-        emailRequest.to_address = $scope.data.to_address;
+        emailRequest.to_address = $scope.data.mailto_address;
         emailRequest.is_informational_invoice = $scope.billFormat.isInformationalInvoice;
         $scope.clickedEmail(emailRequest);
     };
@@ -310,7 +314,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
 
         var emailButtonClass = "blue";
 
-        if (!$scope.data.to_address) {
+        if (!$scope.data.mailto_address) {
             emailButtonClass = "grey";
 
         } else if (!$scope.billFormat.isInformationalInvoice 
@@ -329,7 +333,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
 
         var isEmailButtonDisabled = false;
 
-        if (!$scope.data.to_address) {
+        if (!$scope.data.mailto_address) {
             isEmailButtonDisabled = true;
         } else if (!$scope.billFormat.isInformationalInvoice 
             && (parseInt($scope.reservationBillData.bills[$scope.currentActiveBill].email_counter, 10) >= parseInt($scope.reservationBillData.no_of_original_emails, 10) 
@@ -348,6 +352,17 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
         $timeout(function() {
             $scope.isInvoiceStepThreeActive = true;            
         }, delayScreen);
+    };
+
+    /*
+    *  Set email address to send invoice, according to cards attached.
+    */
+    $scope.setEmailAddress = function() {
+        if ($scope.isCompanyCardInvoice) {
+            $scope.data.mailto_address = $scope.data.company_address ? $scope.data.company_address : $scope.data.to_address;
+        } else {
+            $scope.data.mailto_address = $scope.data.travel_agent_address ? $scope.data.travel_agent_address : $scope.data.to_address;
+        }
     };
 
     /*

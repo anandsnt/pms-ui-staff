@@ -55,6 +55,12 @@ sntRover.controller('reservationDetailsController',
 			};
 		};
 
+		var RESPONSE_STATUS_470 = 470;
+
+		$scope.hasOverBookRoomTypePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
+		$scope.hasOverBookHousePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE');
+		$scope.hasBorrowFromHousePermission = rvPermissionSrv.getPermissionValue('GROUP_HOUSE_BORROW');
+
 		$scope.shouldShowTaxExempt = function() {
             return (rvPermissionSrv.getPermissionValue('TAX_EXEMPT') && $scope.taxExemptTypes.length);
         };
@@ -152,6 +158,17 @@ sntRover.controller('reservationDetailsController',
 			$rootScope.setPrevState = {
 				title: 'ROOM DIARY',
 				name: 'rover.nightlyDiary',
+				param: {
+					id: $rootScope.stayCardStateBookMark.previousStateParams.id,
+					activeTab: "DIARY",
+					origin: 'STAYCARD'
+				}
+			};
+		} else if ($scope.previousState.name === 'rover.diary') {
+			setNavigationBookMark();
+			$rootScope.setPrevState = {
+				title: 'ROOM DIARY',
+				name: 'rover.diary',
 				param: {
 					id: $rootScope.stayCardStateBookMark.previousStateParams.id,
 					activeTab: "DIARY",
@@ -340,7 +357,6 @@ sntRover.controller('reservationDetailsController',
 		BaseCtrl.call(this, $scope);
 
 		$scope.reservationCardSrv = RVReservationCardSrv;
-		$scope.$emit('showLoader');
 		/*
 		 * success call back of fetch reservation details
 		 */
@@ -348,7 +364,6 @@ sntRover.controller('reservationDetailsController',
 		var reservationMainData = $scope.$parent.reservationData;
 
 		$scope.reservationParentData = $scope.$parent.reservationData;
-
 		$scope.reservationData = reservationDetails;
 
 		/**
@@ -469,11 +484,13 @@ sntRover.controller('reservationDetailsController',
 
 		};
 
-		$scope.saveAccGuestDetails = function() {
+		$scope.saveAccGuestDetails = function ($event) {
 			setTimeout(function() {
 				// CICO-60110 - Save the accompany guests only while in staycard. 
 				// The additional check is to prevent the save while navigating to some other states
-				if(document.activeElement.getAttribute("type") != "text" && $state.$current.name === "rover.reservation.staycard.reservationcard.reservationdetails") {
+				if(document.activeElement.getAttribute("type") != "text" && 
+					$state.$current.name === "rover.reservation.staycard.reservationcard.reservationdetails" &&
+					!document.activeElement.className.search(/prevent-api-call/) ) {
 					$scope.$broadcast("UPDATEGUESTDEATAILS", {"isBackToStayCard": false});
 				}
 
@@ -578,7 +595,7 @@ sntRover.controller('reservationDetailsController',
 
 
 		$scope.$on('$viewContentLoaded', function() {
-			$scope.refreshReservationDetailsScroller(3000);
+			$scope.refreshReservationDetailsScroller(500);
 		});
 
 		/**
@@ -818,14 +835,42 @@ sntRover.controller('reservationDetailsController',
 			return (isAllotmentPresent);
 		};
 
+		// Handle Navigation to Nightly Diary
+		var navigateToNightlyDiary = function() {
+			var navigationParams = {
+                start_date: $scope.reservationData.reservation_card.arrival_date,
+                reservation_id: $scope.reservationData.reservation_card.reservation_id,
+                confirm_id: $scope.reservationData.reservation_card.confirmation_num,
+                room_id: $scope.reservationData.reservation_card.room_id,
+                origin: 'STAYCARD_NIGHTS'
+            };
+            
+            if (navigationParams.room_id === '') {
+				// Reservation with Room is not assigned.
+				navigationParams.action = 'SELECT_UNASSIGNED_RESERVATION';
+			}
+			else {
+				// Reservation with Room is assigned already.
+				navigationParams.action = 'SELECT_RESERVATION';
+			}
+
+            $state.go('rover.nightlyDiary', navigationParams);
+        };
+
 		$scope.extendNights = function() {
 			// CICO-17693: should be disabled on the Stay Card for Group reservations, until we have the complete functionality working:
 			if ($scope.shouldDisableExtendNightsButton()) {
 				return false;
 			};
-			if ( $rootScope.hotelDiaryConfig.mode === 'FULL' ) {
+			if ($rootScope.hotelDiaryConfig.mode === 'FULL' && $scope.reservationData.reservation_card.is_hourly_reservation) {
+                // Go to D-Diary
                 $scope.showDiaryScreen();
-            }else {
+            }
+            else if ($rootScope.hotelDiaryConfig.mode === 'FULL' && !$scope.reservationData.reservation_card.is_hourly_reservation) {
+				// Go to N-Diary
+				navigateToNightlyDiary();
+            }
+            else {
                 $state.go("rover.reservation.staycard.changestaydates", {
                     reservationId: reservationMainData.reservationId,
                     confirmNumber: reservationMainData.confirmNum
@@ -870,6 +915,10 @@ sntRover.controller('reservationDetailsController',
 			if ($scope.reservationData.reservation_card.reservation_status === 'CHECKEDIN') {
 				roomTypeId = $scope.reservationData.reservation_card.room_type_id;
 			}
+
+			angular.forEach($scope.reservationData.reservation_card.stay_dates, function(detail) {
+				$scope.$parent.reservationData.rooms[0].stayDates[detail.date].contractId = detail.contract_id;
+			});
 
 			$state.go(roomAndRatesState, {
 				from_date: arrival || reservationMainData.arrivalDate,
@@ -1115,23 +1164,52 @@ sntRover.controller('reservationDetailsController',
                         // CICO-44842 Show message when trying to overbook a suite reservation
                         $scope.restrictSuiteOverbooking = !response.data.is_room_type_available && response.data.is_suite_reservation;
                         $scope.isSuiteReservation = response.data.is_suite_reservation;
-                        $scope.routingInfo = response.data.routing_info;
-
-						ngDialog.open({
-							template: '/assets/partials/reservation/alerts/editDatesInStayCard.html',
-							className: '',
-							scope: $scope,
-							data: JSON.stringify({
-								is_stay_cost_changed: response.data.is_stay_cost_changed,
-								is_assigned_room_available: response.data.is_room_available,
-								is_rate_available: response.data.is_room_type_available,
-								is_group_reservation: response.data.is_group_reservation,
-								is_outside_group_stay_dates: response.data.outside_group_stay_dates,
-								group_name: response.data.group_name,
-								is_invalid_move: response.data.is_invalid_move,
-								is_house_available: !!response.data.is_house_available
-							})
-						});
+						$scope.routingInfo = response.data.routing_info;
+						
+						// CICO-71977 - Borrow from house for a group reservation
+						if (response.results.status === RESPONSE_STATUS_470 && response.results.is_borrowed_from_house) {
+							var results = response.results;
+						
+							$scope.borrowData = {};
+							if (!results.room_overbooked && !results.house_overbooked) {
+								$scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission;
+								$scope.borrowData.isBorrowFromHouse = true;
+							} else if (results.room_overbooked && !results.house_overbooked) {
+								$scope.borrowData.shouldShowBorrowBtn = $scope.hasOverBookRoomTypePermission && $scope.hasBorrowFromHousePermission;
+								$scope.borrowData.isRoomTypeOverbooked = true;
+							} else if (!results.room_overbooked && results.house_overbooked) {
+								$scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission && $scope.hasOverBookHousePermission;
+								$scope.borrowData.isHouseOverbooked = true;
+							} else if (results.room_overbooked && results.house_overbooked) {
+								$scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission && $scope.hasOverBookRoomTypePermission && $scope.hasOverBookHousePermission;
+								$scope.borrowData.isHouseAndRoomTypeOverbooked = true;
+							}
+		
+							ngDialog.open({
+								template: '/assets/partials/common/group/rvGroupBorrowOverbookPopup.html',
+								className: '',
+								closeByDocument: false,
+								closeByEscape: true,
+								scope: $scope
+							});
+						} else {
+							ngDialog.open({
+								template: '/assets/partials/reservation/alerts/editDatesInStayCard.html',
+								className: '',
+								scope: $scope,
+								data: JSON.stringify({
+									is_stay_cost_changed: response.data.is_stay_cost_changed,
+									is_assigned_room_available: response.data.is_room_available,
+									is_rate_available: response.data.is_room_type_available,
+									is_group_reservation: response.data.is_group_reservation,
+									is_outside_group_stay_dates: response.data.outside_group_stay_dates,
+									group_name: response.data.group_name,
+									is_invalid_move: response.data.is_invalid_move,
+									is_house_available: !!response.data.is_house_available
+								})
+							});
+						}
+						
 					} else {
 						$scope.responseValidation = {};
 						$scope.errorMessage = response.errors;
@@ -1140,7 +1218,6 @@ sntRover.controller('reservationDetailsController',
 					$scope.$emit('hideLoader');
 				},
 				onValidationFaliure = function(error) {
-
 					$scope.$emit('hideLoader');
 				};
 
@@ -1149,6 +1226,17 @@ sntRover.controller('reservationDetailsController',
 				dep_date: $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd'),
 				reservation_id: $scope.reservationData.reservation_card.reservation_id
 			}, onValidationSuccess, onValidationFaliure);
+		};
+
+		// Handles the borrow action
+		$scope.performBorrowFromHouse = function () {
+			RVReservationStateService.setForceOverbookFlagForGroup(true);
+			$scope.clickedOnStayDateChangeConfirmButton();	
+		};
+		// Close the borrow popup
+		$scope.closeBorrowDialog = function () {
+			$scope.borrowData = {};
+			$scope.closeDialog();
 		};
 
 		$scope.moveToRoomRates = function() {
@@ -1420,7 +1508,12 @@ sntRover.controller('reservationDetailsController',
 				sntActivity.stop('FETCH_AUTH_DETAILS');
 				$scope.$emit('hideLoader');
 				$scope.authData.manualCCAuthPermission = hasManualCCAuthPermission();
-				$scope.authData.billData = data.bill_data;
+				$scope.authData.billData = _.sortBy(data.bill_data, function(cc_info) {
+				    if (cc_info.number === 'N/A') {
+				        return 100;
+                    }
+				    return parseInt(cc_info.number);
+                });
 
 				if( $scope.authData.billData.length > 0 ) {
 					// Show Multiple Credit card auth popup
@@ -1433,6 +1526,9 @@ sntRover.controller('reservationDetailsController',
 					});
 					// Default to select the first CC as active one.
 					$scope.selectCCforAuth(0);
+					if ($rootScope.hotelDetails.payment_gateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline) {
+						$scope.authData.manualAuthCode = $scope.authData.billData[0].last_authorization.code;
+					}
 					// Handle scroller
 					var scrollerOptions = { preventDefault: false };
 
@@ -1517,10 +1613,14 @@ sntRover.controller('reservationDetailsController',
 			var onAuthorizationSuccess = function(response) {
 				$scope.$emit('hideLoader');
 				authSuccess(response);
-				if ($scope.authData.isManual) {
+				if ($scope.authData.isManual || ($rootScope.hotelDetails.payment_gateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline)) {
 					$scope.authData.isManual = false; // reset 
 					$scope.authData.authAmount = ''; // reset
-					$scope.authData.manualAuthCode = ''; // reset
+					if ($rootScope.hotelDetails.payment_gateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline) {
+						$scope.authData.manualAuthCode = response.auth_code;
+					} else {
+						$scope.authData.manualAuthCode = ''; // reset
+					}
 					ngDialog.close(); // reload popup with new data from the API
 					$scope.showAuthAmountPopUp();
 				}
@@ -1543,11 +1643,11 @@ sntRover.controller('reservationDetailsController',
 
 			var postData = {
 				"payment_method_id": $scope.authData.selectedCardDetails.payment_id,
-				"amount": $scope.authData.authAmount
+				"amount": $scope.authData.authAmount,
+				"auth_code": $scope.authData.manualAuthCode
 			};
 
 			if ($scope.authData.isManual) {
-				postData.auth_code = $scope.authData.manualAuthCode;
 				$scope.invokeApi(RVCCAuthorizationSrv.manualVoiceAuth, postData, onAuthorizationSuccess, onAuthorizationFaliure);
 			} else {
 				$scope.invokeApi(RVCCAuthorizationSrv.manualAuthorization, postData, onAuthorizationSuccess, onAuthorizationFaliure);
@@ -1559,9 +1659,15 @@ sntRover.controller('reservationDetailsController',
 			$scope.showAuthAmountPopUp();
 		};
 
+		$scope.disableAuthorizeButton = function() {
+            return $scope.isShijiOfflineAuthCodeEmpty() || !$scope.authData.manualCCAuthPermission ||
+				parseFloat($scope.authData.authAmount) <= 0 || $scope.authData.selectedCardDetails.bill_no === 'N/A' ||
+                isNaN(parseInt($scope.authData.authAmount));
+        };
+
 		// To handle authorize button click on 'auth amount popup' ..
 		$scope.authorize = function() {
-			if ($scope.authData.isManual) {
+			if ($scope.authData.isManual || ($rootScope.hotelDetails.payment_gateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline)) {
 				manualAuthAPICall(); // No need to show Auth in progress message
 			} else {
 				ngDialog.close(); // Closing the 'auth amount popup' ..
@@ -1582,6 +1688,15 @@ sntRover.controller('reservationDetailsController',
 				}, 100);
 			}
 
+		};
+
+		$scope.isShijiOfflineAuthCodeEmpty = function() {
+			if($rootScope.hotelDetails.payment_gateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline) {
+				if (!$scope.authData.manualAuthCode) {
+					return true
+				}
+			}
+			return false;
 		};
 
     // Handle TRY AGAIN on auth failure popup.

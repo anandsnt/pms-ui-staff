@@ -23,6 +23,7 @@ angular.module('reportsModule')
         'to_time': 'To Time',
         'rate_ids': 'Rates',
         'assigned_departments': 'Departments',
+        'selected_language': 'Language',
         'include_guarantee_type': 'Guarantee Types',
         'market_ids': 'Markets',
         'segment_ids': 'Segments',
@@ -133,5 +134,6 @@ angular.module('reportsModule')
         "DEPOSIT_DUE_FROM_DATE": "Deposit Due From Date",
         "DEPOSIT_DUE_TO_DATE": "Deposit Due To Date",
         "group_code": "Group Code",
-        "country_ids": "Country"
+        "country_ids": "Country",
+        "include_day_use": "Include Day Use"
     });

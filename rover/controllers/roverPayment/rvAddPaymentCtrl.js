@@ -37,6 +37,8 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
                     return 'ADD_PAYMENT_GUEST_CARD';
                 } else if ($scope.paymentData.isFromBillCard || $scope.passData.fromView === "billcard") {
                     return 'ADD_PAYMENT_BILL';
+                } else if ($scope.passData.fromView === "companyTravelAgent") {
+                    return 'ADD_PAYMENT_CO_TA'; 
                 }
                 return 'ADD_PAYMENT_STAY_CARD';
             };
@@ -48,7 +50,6 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
              * @param cardDetails
              */
             var handleBillCardAddPaymentSuccess = function(response, paymentType, cardDetails) {
-
                 var billIndex = $scope.billNumber - 1;
 
                 if (paymentType === "CC") {
@@ -59,7 +60,8 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
                         card_expiry: cardDetails.expiry_date,
                         payment_id: response.id,
                         is_swiped: cardDetails.is_swiped,
-                        auth_color_code: cardDetails.auth_color_code
+                        auth_color_code: cardDetails.auth_color_code,
+                        token: cardDetails.token
                     });
 
                     $scope.paymentData.bills[billIndex].credit_card_details.payment_type = paymentType;
@@ -92,14 +94,18 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
                             "payment_type_id": 1
                         });
                     }
-
                 } else {
                     // For non CC Payments
                     $scope.paymentData.bills[billIndex].credit_card_details.payment_type = paymentType;
                     $scope.paymentData.bills[billIndex].credit_card_details.payment_type_description = response.payment_type;
                 }
 
-                $scope.closeDialog();
+                /*
+                 * CICO-74474: Close the add payment dialog by id to prevent the
+                 * unintentional closing of the credit card authorization dialog
+                 * that follows which can lead to double authorizations.
+                 */
+                $scope.closeDialog($scope.ngDialogId);
             };
 
             /**
@@ -124,6 +130,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 
                 $scope.closeDialog();
             };
+            
 
             /**
              * Handles successful payment addition in the guest card
@@ -169,6 +176,29 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
             };
 
             /**
+             * Handles successful payment addition in the Company Travel Agent
+             * @param response
+             * @param paymentType
+             * @param cardDetails
+             */
+            var handleCompanyAddPaymentSuccess = function(response, paymentType, cardDetails) {
+                // NOTE: For Guest Cards - ONLY CC can be added as a payment
+                $rootScope.$broadcast('ADDEDNEWPAYMENTTOCOTA', {
+                    "card_code": cardDetails.card_code,
+                    "mli_token": cardDetails.ending_with,
+                    "card_expiry": cardDetails.expiry_date,
+                    "card_name": cardDetails.card_name,
+                    "id": response.id,
+                    "isSelected": true,
+                    "is_primary": false,
+                    "payment_type": paymentType || "CC",
+                    "payment_type_id": 1
+                });
+
+                $scope.closeDialog();
+            };
+
+            /**
              * Listener for add payment success
              * Event would be emitted from the directive in the PAYMENT MODULE
              */
@@ -179,6 +209,9 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
                         break;
                     case 'ADD_PAYMENT_GUEST_CARD':
                         handleGuestCardAddPaymentSuccess(params.response, params.selectedPaymentType, params.cardDetails);
+                        break;
+                    case 'ADD_PAYMENT_CO_TA':
+                        handleCompanyAddPaymentSuccess(params.response, params.selectedPaymentType, params.cardDetails);
                         break;
                     default:
                         handleStayCardAddPaymentSuccess(params.response, params.selectedPaymentType, params.cardDetails);

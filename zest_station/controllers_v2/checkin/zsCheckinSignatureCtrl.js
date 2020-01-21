@@ -27,6 +27,10 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
          * 2.TIMED_OUT
          */
 
+         $controller('zsCheckinCommonBaseCtrl', {
+               $scope: $scope
+         });
+
         // CICO-36696 : Method to get canvas data in Base64 Format, includes the line inside canvas.
         var getSignatureBase64Data = function () {
            var canvasElement   = angular.element( document.querySelector('canvas.jSignature'))[0],
@@ -128,10 +132,15 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                     
                 };   
             }
-            var goToPassportScan = function() {
-                var stateparams = $stateParams;
+
+            var getStateParamsWithSignature = function () {
+                var stateparams = angular.copy($stateParams);
                 
                 stateparams.signature = getSignatureBase64Data();
+                return stateparams;
+            };
+            var goToPassportScan = function() {
+                var stateparams = getStateParamsWithSignature();
                 $state.go('zest_station.checkInScanPassport', $stateParams);
             };
 
@@ -139,12 +148,18 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                 $log.log('skipping checkin guest, no-check-ins debugging is ON');
                 if (collectPassportEnabled && !$stateParams.passports_scanned) {
                     goToPassportScan();
-                } else {
+                } 
+                else if ($scope.zestStationData.enable_passport_entry) {
+                    $state.go('zest_station.zsCheckinPassportDetails', {
+                        params: JSON.stringify(getStateParamsWithSignature())
+                    });
+                }
+                else {
                     afterGuestCheckinCallback({ 'status': 'success' });
                 }
                 
             } else {
-                var stateParams = $stateParams;
+                var stateParams = angular.copy($stateParams);
 
                 stateParams.signature = signatureBase64Data;
                 stateParams = JSON.stringify(stateParams);
@@ -160,14 +175,22 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                 }
                 else if (collectPassportEnabled && !$stateParams.passports_scanned) {
                     goToPassportScan();
-                } else {
+                } 
+                else if ($scope.zestStationData.enable_passport_entry) {
+                    $state.go('zest_station.zsCheckinPassportDetails', {
+                        params: JSON.stringify(getStateParamsWithSignature())
+                    });
+                }
+                else {
                     if ($scope.inDemoMode()) {
-                        afterGuestCheckinCallback({ 'status': 'success' });
+                        afterGuestCheckinCallback({
+                            'status': 'success'
+                        });
                     } else {
-                        $scope.callAPI(zsCheckinSrv.checkInGuest, options);
+                        $scope.$emit('CHECK_IF_REQUIRED_GUEST_DETAILS_ARE_PRESENT', {
+                            checkinParams: _.extend({}, checkinParams, JSON.parse(stateParams))
+                        });
                     }
-                    
-
                 }
 
             }

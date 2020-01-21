@@ -16,6 +16,7 @@ sntZestStation.controller('zsHomeCtrl', [
 		 * when we clicked on pickup key from home screen
 		 */
         $scope.clickedOnPickUpKey = function() {
+            $scope.resetTime();
             $scope.trackEvent('PUK', 'user_selected');
             clearInterval($scope.activityTimer);
             if ($scope.zestStationData.kiosk_key_creation_method === 'manual') {
@@ -37,6 +38,7 @@ sntZestStation.controller('zsHomeCtrl', [
 		 * when we clicked on checkin from home screen
 		 */
         $scope.clickedOnCheckinButton = function() {
+            $scope.resetTime();
             $scope.trackEvent('CI', 'user_selected');
 
             clearInterval($scope.activityTimer);
@@ -52,6 +54,7 @@ sntZestStation.controller('zsHomeCtrl', [
 		 * when we clicked on checkout from home screen
 		 */
         $scope.clickedOnCheckoutButton = function() {
+            $scope.resetTime();
             $scope.trackEvent('CO', 'user_selected');
             clearInterval($scope.activityTimer);
             if (!$scope.zestStationData.checkout_keycard_lookup) {
@@ -62,6 +65,7 @@ sntZestStation.controller('zsHomeCtrl', [
         };
 
         $scope.startWalkinReservationFlow = function() {
+            $scope.resetTime();
             $state.go('zest_station.walkInReservation');
         };
 
@@ -70,7 +74,7 @@ sntZestStation.controller('zsHomeCtrl', [
         var setToDefaultLanguage = function(checkIfDefaultLanguagIsSet) {
 			// assigning default language
             if ($scope.languages.length) {
-                var defaultLangName = zestStationSettings.zest_lang.default_language,
+                var defaultLangName = zestStationSettings.zest_lang ? zestStationSettings.zest_lang.default_language : null,
                     defaultLanguage = _.findWhere($scope.languages, {
                         name: defaultLangName
                     });
@@ -234,37 +238,42 @@ sntZestStation.controller('zsHomeCtrl', [
             return selectableLanguages.length > 1;
         };
 
+        var widthForLanguageList = function() {
+            var width = 0;
+
+            angular.forEach($scope.languages, function(language, index) {
+                if (language.active) {
+                    var buttonWidth = 0;
+
+                    if (!language.foreign_label || language.name && language.foreign_label && language.name.length > language.foreign_label.length) {
+                        buttonWidth += language.icon ? (language.name.length * 14 + 15 + 32) : (language.name.length * 15 + 10);
+                    } else {
+                        buttonWidth += language.icon ? (language.foreign_label.length * 13 + 15 + 32) : (language.foreign_label.length * 14 + 10);
+                    }
+                    width += buttonWidth;
+                }
+            });
+            return width + "px;";
+        };
+
+        var resetWidthAndRefreshScroller = function() {
+            $scope.languageListWidth = widthForLanguageList();
+            $scope.refreshScroller('language-list');
+        };
+
         $scope.selectLanguage = function(language) {
-			// Reset idle timer to 0, on language selection, otherwise counter is still going
+            // Reset idle timer to 0, on language selection, otherwise counter is still going
             userInActivityTimeInHomeScreenInSeconds = 0;
             var langShortCode = language.code;
 
-                // keep track of lang short code, for editor to save / update tags when needed
-            $scope.languageCodeSelected(langShortCode, language.code);
+            // keep track of lang short code, for editor to save / update tags when needed
+            if (zsGeneralSrv.isZestStationEnabled) {
+                $scope.languageCodeSelected(langShortCode, language.code);
+            }
 
             $translate.use(langShortCode);
             $scope.selectedLanguage = language;
-        };
-
-        $scope.widthForLanguageList = function() {
-            var width = 0;
-            
-            angular.forEach($scope.languages, function(language) {
-                if (language.active) {
-                    if (language.label.length > language.foreign_label.length) {
-                        width += (language.label.length * 20) + 100;
-                    } else {
-                        width += (language.foreign_label.length * 20) + 100;
-                    }
-                }
-            });
-            return "" + width + "px;";
-        };
-
-        var refreshLanguageScroller = function() {
-            $timeout(function() {
-                $scope.refreshScroller('language-list');
-            }, 500);
+            resetWidthAndRefreshScroller();
         };
 
 		/**
@@ -282,11 +291,28 @@ sntZestStation.controller('zsHomeCtrl', [
             zsCheckinSrv.setCurrentReservationIdDetails({});
 			// eject if any key card is inserted
             $scope.$emit('EJECT_KEYCARD');
-			// set this to false always on entering home screen
+            // set this to false always on entering home screen
+            if (!$scope.zestStationData) {
+                $scope.zestStationData = {};
+            }
             $scope.zestStationData.keyCardInserted = false;
             $scope.zestStationData.makeTotalKeys = 0;
             $scope.zestStationData.makingAdditionalKey = false;
             $scope.zestStationData.waitingForSwipe = false;
+
+            /**
+             * Calculates the number of icons displaying in home page
+             * Used with condition to set class 'large-icons'
+             */
+            $scope.zestStationData.iconCount = [
+                $scope.zestStationData.home_screen && $scope.zestStationData.home_screen.pickup_keys,
+                $scope.zestStationData.home_screen && $scope.zestStationData.home_screen.check_in,
+                $scope.zestStationData.home_screen && $scope.zestStationData.home_screen.check_out,
+                $scope.zestStationData.home_screen && $scope.zestStationData.home_screen.booking_pop_up.enable_pop_up,
+                $scope.zestStationData.showWalkinReservationOption
+            ].filter(function (item) {
+                return item;
+            }).length;
 
 			// list of languages configured for this hotel
             var combinedList = _.partition(languages.languages, {
@@ -322,17 +348,23 @@ sntZestStation.controller('zsHomeCtrl', [
                 $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS, params);
                 $scope.addReasonToOOSLog('WORKSTATION_OOS');
                 $state.go('zest_station.outOfService');
-            } else {
+            } else if (zsGeneralSrv.isZestStationEnabled) {
                 $scope.setScreenIcon('bed');
             }
             $scope.setScroller('language-list', {
                 scrollX: true,
                 scrollY: false,
+                preventDefault: {
+                    tagName: /^(BUTTON)$/
+                },
                 disablePointer: true, // important to disable the pointer events that causes the issues
                 disableTouch: false, // false if you want the slider to be usable with touch devices
                 disableMouse: false // false if you want the slider to be usable with a mouse (desktop)
             });
-            refreshLanguageScroller();
+            $scope.languageListWidth = "0px";
+            $timeout(function() {
+                resetWidthAndRefreshScroller();
+            }, 100);
         })();
 
 

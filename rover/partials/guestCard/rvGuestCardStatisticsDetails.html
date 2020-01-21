@@ -127,8 +127,8 @@
                                     </div>
 
                                     <!-- if daily reservation add .red -->
-                                    <div class="reservation-type red" ng-if="reservation.is_day_use && hotelDiaryConfig.dayUseEnabled">D</div>
-                                    <div class="reservation-type" ng-if="!reservation.is_day_use && hotelDiaryConfig.dayUseEnabled && hotelDiaryConfig.mode === 'FULL'">N</div>
+                                    <div class="reservation-type red" ng-if="reservation.is_day_use">D</div>
+                                    <div class="reservation-type" ng-if="!reservation.is_day_use && hotelDiaryConfig.mode === 'FULL'">N</div>
                                     
                                     <div class="guest-data rate">
                                         <strong><span class="currency">{{currencySymbol}}</span>{{reservation.adr | number: 2}} ADR</strong>

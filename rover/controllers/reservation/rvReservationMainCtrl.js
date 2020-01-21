@@ -19,7 +19,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             '$q',
             'RVContactInfoSrv',
             'RVRoomRatesSrv',
-            function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv, RVReservationStateService, RVReservationDataService, $interval, $log, $q, RVContactInfoSrv, RVRoomRatesSrv) {
+            'rvUtilSrv',
+            'rvPermissionSrv',
+            function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv, RVReservationStateService, RVReservationDataService, $interval, $log, $q, RVContactInfoSrv, RVRoomRatesSrv, rvUtilSrv, rvPermissionSrv) {
 
         BaseCtrl.call(this, $scope);
 
@@ -30,9 +32,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
         $scope.setTitle(title);
         var that = this;
 
-        var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates',
-            isNightlyHotel = !$rootScope.hotelDiaryConfig.hourlyRatesForDayUseEnabled;
+        var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
 
+        var RESPONSE_STATUS_470 = 470;
+
+        $scope.hasOverBookRoomTypePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
+        $scope.hasOverBookHousePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE');
+        $scope.hasBorrowFromHousePermission = rvPermissionSrv.getPermissionValue('GROUP_HOUSE_BORROW');
 
         // setting the main header of the screen
         $scope.heading = "Reservations";
@@ -843,22 +849,25 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     } else {
                         roomTypeId = currentRoom.roomTypeId;
                     }
+                    // In case of the last day, send the first day's occupancy
+                    var rate = (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].rate.id : staydetailInfo.rate.id;
+
                     reservationStayDetails.push({
                         date: date,
-                        // In case of the last day, send the first day's occupancy
-                        rate_id: (function() {
-                            var rate = (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].rate.id : staydetailInfo.rate.id;
-                            // in case of custom rates (rates without IDs send them as null.... the named ids used within the UI controllers are just for tracking and arent saved)
-
-                            return rate && rate.toString().match(/_CUSTOM_/) ? null : rate;
-                        })(),
+                        // in case of custom rates (rates without IDs send them as null.... the named ids used within the UI controllers are just for tracking and arent saved)
+                        rate_id: rate && rate.toString().match(/_CUSTOM_/) ? null : rate,
                         room_type_id: roomTypeId,
                         room_id: $scope.reservationData.inHouse ? staydetailInfo.roomId : currentRoom.room_id,
                         adults_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.adults : parseInt(staydetailInfo.guests.adults),
                         children_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.children : parseInt(staydetailInfo.guests.children),
                         infants_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.infants : parseInt(staydetailInfo.guests.infants),
-                        rate_amount: parseFloat((date === $scope.reservationData.departureDate) ? ((currentRoom.stayDates[$scope.reservationData.arrivalDate] && currentRoom.stayDates[$scope.reservationData.arrivalDate].rateDetails && currentRoom.stayDates[$scope.reservationData.arrivalDate].rateDetails.modified_amount) || 0) : ((staydetailInfo.rateDetails && staydetailInfo.rateDetails.modified_amount) || 0))
+                        rate_amount: parseFloat((date === $scope.reservationData.departureDate) ? ((currentRoom.stayDates[$scope.reservationData.arrivalDate] && currentRoom.stayDates[$scope.reservationData.arrivalDate].rateDetails && currentRoom.stayDates[$scope.reservationData.arrivalDate].rateDetails.modified_amount) || 0) : ((staydetailInfo.rateDetails && staydetailInfo.rateDetails.modified_amount) || 0)),
+                        contract_id: (function() {
+                            var contractId = (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].contractId : staydetailInfo.contractId;
+                            // in case of custom rates (rates without IDs send them as null.... the named ids used within the UI controllers are just for tracking and arent saved)
 
+                            return rate && rate.toString().match(/_CUSTOM_/) ? null : contractId;
+                        })()
                     });
                 });
 
@@ -996,7 +1005,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
         $scope.computeReservationDataforUpdate = function(skipPaymentData, skipConfirmationEmails, roomIndex) {
             var data = {},
                 isInStayCard = ($state.current.name === "rover.reservation.staycard.reservationcard.reservationdetails"),
-                shouldWeIncludeRoomTypeArray = !isInStayCard && !$scope.reservationData.isHourly && typeof roomIndex === 'undefined';
+                shouldWeIncludeRoomTypeArray = !isInStayCard && typeof roomIndex === 'undefined';
 
             data.is_hourly = $scope.reservationData.isHourly;
             data.arrival_date = $scope.reservationData.arrivalDate;
@@ -1085,6 +1094,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 data.room_types = [];
             }
 
+            if ($scope.reservationData.hasOwnProperty('has_reason')) {
+                data.has_reason = $scope.reservationData.has_reason;
+            }
+
             setRoomTypes(data, shouldWeIncludeRoomTypeArray); 
             setRoomInfo(data, roomIndex);  
 
@@ -1093,7 +1106,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             // data.outside_group_stay_dates = RVReservationStateService.getReservationFlag('outsideStaydatesForGroup');
 
             data.borrow_for_groups = RVReservationStateService.getReservationFlag('borrowForGroups');
-
+            // CICO-71977 - while borrowing from house in the case of a group reservation, we have set this flag
+            data.forcefully_overbook = RVReservationStateService.getForceOverbookForGroup();
+            RVReservationStateService.setForceOverbookFlagForGroup(false);
             // to delete ends here
             return data;
         };
@@ -1109,6 +1124,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
         var promptCancel = function(penalty, nights) {
             var openCancelPopup = function(data) {
                 $scope.languageData = data;
+                $scope.DailogeState = {};
+                $scope.DailogeState.isGuestEmailSelected = false;
+                $scope.DailogeState.guestEmail = $scope.guestCardData.contactInfo.email;
+                $scope.DailogeState.sendConfirmatonMailTo = '';
+                
                 var passData = {
                     "reservationId": $scope.reservationData.reservationId,
                     "details": {
@@ -1226,6 +1246,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     $scope.DailogeState = {};
                     $scope.DailogeState.successMessage = '';
                     $scope.DailogeState.failureMessage = '';
+                    $scope.DailogeState.isGuestEmailSelected = false;
+                    $scope.DailogeState.guestEmail = $scope.guestCardData.contactInfo.email;
+                    $scope.DailogeState.sendConfirmatonMailTo = '';
                     ngDialog.open({
                         template: '/assets/partials/reservationCard/rvCancelReservationDeposits.html',
                         controller: 'RVCancelReservationDepositController',
@@ -1260,22 +1283,23 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
         var nextStateParameters = '';
 
         this.showConfirmRoutingPopup = function(type, id) {
-
-            ngDialog.open({
-                template: '/assets/partials/reservation/alerts/rvBillingInfoConfirmPopup.html',
-                className: 'ngdialog-theme-default',
-                scope: $scope
-            });
-
+            $timeout(function() {
+                ngDialog.open({
+                    template: '/assets/partials/reservation/alerts/rvBillingInfoConfirmPopup.html',
+                    className: 'ngdialog-theme-default',
+                    scope: $scope
+                });
+            }, 1000);
         };
 
         this.showConflictingRoutingPopup = function(type, id) {
-
-            ngDialog.open({
-                template: '/assets/partials/reservation/alerts/rvBillingInfoConflictingPopup.html',
-                className: 'ngdialog-theme-default',
-                scope: $scope
-            });
+            $timeout(function() {
+                ngDialog.open({
+                    template: '/assets/partials/reservation/alerts/rvBillingInfoConflictingPopup.html',
+                    className: 'ngdialog-theme-default',
+                    scope: $scope
+                });
+            }, 1000);
 
         };
 
@@ -1417,7 +1441,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 var postData = $scope.computeReservationDataforUpdate(true, true);
 
                 var saveSuccess = function(data) {
-
+                    $scope.closeDialog();
                     // Update reservation type
                     $rootScope.$broadcast('UPDATERESERVATIONTYPE', data.reservations[0].reservation_type_id);
                     var totalDeposit = 0;
@@ -1508,24 +1532,57 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 };
 
                 var saveFailure = function(data) {
-                    $scope.errorMessage = data;
-                    $scope.$broadcast('FAILURE_SAVE_RESERVATION', data);
+                    if (data.results && data.results.status === RESPONSE_STATUS_470 && data.results.is_borrowed) {
+                        var results = data.results;
+                
+                        $scope.borrowData = {};
+                        if (!results.room_overbooked && !results.house_overbooked) {
+                            $scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission;
+                            $scope.borrowData.isBorrowFromHouse = true;
+                        } else if (results.room_overbooked && !results.house_overbooked) {
+                            $scope.borrowData.shouldShowBorrowBtn = $scope.hasOverBookRoomTypePermission && $scope.hasBorrowFromHousePermission;
+                            $scope.borrowData.isRoomTypeOverbooked = true;
+                        } else if (!results.room_overbooked && results.house_overbooked) {
+                            $scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission && $scope.hasOverBookHousePermission;
+                            $scope.borrowData.isHouseOverbooked = true;
+                        } else if (results.room_overbooked && results.house_overbooked) {
+                            $scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission && $scope.hasOverBookRoomTypePermission && $scope.hasOverBookHousePermission;
+                            $scope.borrowData.isHouseAndRoomTypeOverbooked = true;
+                        }
+
+                        ngDialog.open({
+                            template: '/assets/partials/common/group/rvGroupBorrowOverbookPopup.html',
+                            className: '',
+                            closeByDocument: false,
+                            closeByEscape: true,
+                            scope: $scope
+                        });
+
+                    } else {
+                        $scope.errorMessage = data;
+                        $scope.$broadcast('FAILURE_SAVE_RESERVATION', data);
+                    }
+                    
                     $scope.$emit('hideLoader');
+                };
+
+                // Handles the borrow action
+                $scope.performBorrowFromHouse = function () {
+                    RVReservationStateService.setForceOverbookFlagForGroup(true);
+                    $scope.$broadcast('CREATE_RESERVATION_AFTER_BORROW');
+                };
+
+                // Closes the current borrow dialog
+                $scope.closeBorrowDialog = function() {
+                    $scope.borrowData = {};
+                    $scope.closeDialog();
+                    $scope.$broadcast('SHOW_ROOM_AND_RATES_AFTER_BORROW_DECLINE');
                 };
 
                 var updateFailure = function(data) {
                     $scope.errorMessage = data;
                     $scope.$broadcast('FAILURE_UPDATE_RESERVATION', data);
                     $scope.$emit('hideLoader');
-                };
-
-                // Utility method to extract hh, mm, ampm details from a time in 12hr (hh:mm ampm) format
-                var extractHhMmAmPm = function( time ) {
-                    return {
-                        'ampm': time.split(' ')[1],
-                        'hh': time.split(' ')[0].split(':')[0],
-                        'mm': time.split(' ')[0].split(':')[1]
-                    };
                 };
 
                 var updateSuccess = function(data) {
@@ -1630,12 +1687,24 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
                 } else {
                     // CICO-63737 : Set Arrival, dep time while booking.
-                    if (!isNightlyHotel && $scope.reservationData.isFromNightlyDiary) {
-                        postData.arrival_time = $scope.reservationData.tabs[0].checkinTimeObj['24'];
-                        postData.departure_time = $scope.reservationData.tabs[0].checkoutTimeObj['24'];
+                    if ($scope.reservationData.isFromNightlyDiary) {
+                        postData.arrival_time = $scope.reservationData.tabs[0].checkinTime;
+                        postData.departure_time = $scope.reservationData.tabs[0].checkoutTime;
                         
-                        $scope.reservationData.checkinTime = extractHhMmAmPm($scope.reservationData.tabs[0].checkinTimeObj['12']);
-                        $scope.reservationData.checkoutTime = extractHhMmAmPm($scope.reservationData.tabs[0].checkoutTimeObj['12']);
+                        var checkinTimeObj = rvUtilSrv.extractHhMmAmPm($scope.reservationData.tabs[0].checkinTime),
+                            checkoutTimeObj = rvUtilSrv.extractHhMmAmPm($scope.reservationData.tabs[0].checkoutTime);
+
+                        if (checkinTimeObj.hh === '00') {
+                            checkinTimeObj.hh = '12';
+                        }
+                        if (checkoutTimeObj.hh === '00') {
+                            checkoutTimeObj.hh = '12';
+                        }
+
+                        $scope.reservationData.checkinTime = checkinTimeObj;
+                        $scope.reservationData.checkoutTime = checkoutTimeObj;
+                        postData.room_type_id = $scope.reservationData.roomTypeIdFromNightlyDiary;
+                        $log.log(postData);
                     }
                     $scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
                 }
@@ -1914,6 +1983,23 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     CardReaderCtrl.call(this, $scope, $rootScope, $timeout, $interval, $log);
                     $scope.observeForSwipe();
                 }
+
+        /**
+         * Checks whether there are any emails configured
+         */
+        $scope.hasEmails = function () {
+            return !!$scope.guestCardData.contactInfo.email;
+        };
+
+        /**
+         * Should disable the send email btn in the cancellation popup
+         * @param {String} locale - locale chosen from the popup
+         */
+        $scope.shouldDisableSendCancellationEmailBtn = function () {
+            return  !$scope.DailogeState.isGuestEmailSelected &&                
+                    !$scope.DailogeState.sendConfirmatonMailTo;
+            
+        };
 
     }
 

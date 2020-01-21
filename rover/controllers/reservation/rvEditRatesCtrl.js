@@ -5,6 +5,8 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 		
 		BaseCtrl.call (this, $scope);
 
+		var stayDatesOriginal = dclone($scope.ngDialogData.room.stayDates);
+
 		$scope.refreshRateDetails = function() {
             $timeout(function() {
     			$scope.refreshScroller('rateDetails');
@@ -41,10 +43,6 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 		 * will save comment if something entered
 		 */
 		$scope.saveCommentAgainstRateChange = function(callback) {
-			// proceed only if something entered
-			if ($scope.adjustment_reason.trim() === "") {
-				return;
-			}
 			// forming the API params
 			var params = {},
 				onReservationNoteSuccess = function() {
@@ -69,7 +67,12 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 			$scope.errorMessage = '';
 			if (!$scope.otherData.forceAdjustmentReason ||
 				($scope.otherData.forceAdjustmentReason && !!$scope.adjustment_reason && !!$scope.adjustment_reason.trim())) {
-				_.each(room.stayDates, function(stayDate) {
+				 var isRateModified = false;
+
+				_.each(room.stayDates, function(stayDate, idx) {
+					if (stayDatesOriginal[idx] && ( stayDatesOriginal[idx].rateDetails.modified_amount !== stayDate.rateDetails.modified_amount) ) {
+						isRateModified = true;
+					}
 					stayDate.rateDetails.modified_amount = parseFloat(stayDate.rateDetails.modified_amount).toFixed(2);
 					if (isNaN(stayDate.rateDetails.modified_amount)) {
 						stayDate.rateDetails.modified_amount = parseFloat(stayDate.rateDetails.actual_amount).toFixed(2);
@@ -77,6 +80,7 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 				});
 
 				$scope.reservationData.rooms[index] = room;
+				$scope.reservationData.has_reason = !!$scope.adjustment_reason.trim();
 
 				var reservationUpdateCallback = function() {
 					if ($scope.reservationData.isHourly && !$stateParams.id) {
@@ -97,8 +101,15 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 					$scope.closeDialog();
 				};
 
-				// comment box will appear in every box
-				$scope.saveCommentAgainstRateChange(reservationUpdateCallback);
+				if (isRateModified) {
+					if ($scope.adjustment_reason.trim() === "") {
+						reservationUpdateCallback();
+					} else {
+						$scope.saveCommentAgainstRateChange(reservationUpdateCallback);
+					}
+				} else {
+					$scope.closeDialog();
+				}
 				
 			} else {
 				$scope.errorMessage = ['Please enter Adjustment Reason'];

@@ -29,6 +29,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
         var SECOND_COLUMN_SCROLL = 'SECOND_COLUMN_SCROLL';
         var THIRD_COLUMN_SCROLL = 'THIRD_COLUMN_SCROLL';
         var FOURTH_COLUMN_SCROLL = 'FOURTH_COLUMN_SCROLL';
+        const SHOW_ERROR_MSG_EVENT = 'SHOW_ERROR_MSG_EVENT';
+
         var setupScrolls = function() {
             var scrollerOptions = {
                 tap: true,
@@ -124,14 +126,16 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 return !! $scope.scheduleParams.frequency_id;
             };
 
-            var hasEmailFtpList = function() {
-                var hasEmail = $scope.checkDeliveryType('EMAIL') && $scope.emailList.length;
-                var hasFTP = $scope.checkDeliveryType('SFTP') && !! $scope.scheduleParams.selectedFtpRecipient;
+            var hasValidDistribution = function() {
+                var hasEmail = $scope.checkDeliveryType('EMAIL') && $scope.emailList.length,
+                    hasFTP = $scope.checkDeliveryType('SFTP') && !! $scope.scheduleParams.selectedFtpRecipient,
+                    hasDropbox = $scope.checkDeliveryType('DROPBOX') && !! $scope.scheduleParams.selectedCloudAccount,
+                    hasGoogleDrive = $scope.checkDeliveryType('GOOGLE DRIVE') && !! $scope.scheduleParams.selectedCloudAccount;
 
-                return hasEmail || hasFTP;
+                return hasEmail || hasFTP || hasDropbox || hasGoogleDrive;
             };
 
-            return hasTimePeriod() && hasFrequency() && hasEmailFtpList();
+            return hasTimePeriod() && hasFrequency() && hasValidDistribution();
         };
 
         var fillValidationErrors = function() {
@@ -143,9 +147,37 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             if ( ! $scope.scheduleParams.frequency_id ) {
                 $scope.createErrors.push('Repeat frequency in details');
             }
-            if ( ! $scope.emailList.length ) {
-                $scope.createErrors.push('Emails/SFTP in distribution list');
+
+            if ( ! $scope.emailList.length && !$scope.scheduleParams.selectedFtpRecipient && 
+                !$scope.scheduleParams.selectedCloudAccount ) {
+                $scope.createErrors.push('Emails/SFTP/Dropbox/Google Drive in distribution list');
             }
+            
+        };
+
+        /**
+         * Navigate to the schedulable report list
+         */
+        $scope.navigateToSchedulableReportList = function () {
+            ngDialog.close();
+            if ( !! $scope.selectedReport && $scope.selectedReport.active ) {
+                $scope.selectedReport.active = false;
+            }
+            $scope.updateViewCol($scope.viewColsActions.ONE);
+            $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
+
+            fetchReqDatas();
+        };
+
+        var getFileFormatId = function() {
+            var formatId = 1;
+
+            if ($scope.selectedEntityDetails.report.title === 'Police Report Export') {
+                formatId = 3;
+            } else if ($scope.selectedEntityDetails.report.title === 'Spain Barcelona Police Export') {
+                formatId = 4;
+            }
+            return formatId;
         };
 
         var createSchedule = function() {
@@ -153,24 +185,30 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 report_id: $scope.selectedEntityDetails.id,
                 hotel_id: $rootScope.hotelDetails.userHotelsData.current_hotel_id,
                 /**/
-                format_id: ($scope.selectedEntityDetails.report.title === 'Police Report Export') ? 3 : 1,
-                delivery_type_id: $scope.scheduleParams.delivery_id
+                format_id: getFileFormatId(),
+                delivery_type_id: ''
             };
 
-            var success = function() {
+            var success = function( data ) {
                 $scope.errorMessage = '';
                 $scope.$emit( 'hideLoader' );
-                if ( !! $scope.selectedReport && $scope.selectedReport.active ) {
-                    $scope.selectedReport.active = false;
+                if (data.is_export_already_exist) {
+                    ngDialog.open({
+                        template: '/assets/partials/reports/rvDuplicateScheduleWarningPopup.html',
+                        scope: $scope,
+                        closeByEscape: false,
+                        data: {
+                            isUpdate: false
+                        }
+                    });
+                } else {
+                    $scope.navigateToSchedulableReportList();
                 }
-                $scope.updateViewCol($scope.viewColsActions.ONE);
-                $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
-
-                fetchReqDatas();
             };
 
             var failed = function(errors) {
                 $scope.errorMessage = errors;
+                $scope.$emit(SHOW_ERROR_MSG_EVENT, errors);
                 $scope.$emit( 'hideLoader' );
             };
 
@@ -185,8 +223,11 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             if ( $scope.scheduleParams.time_period_id ) {
                 params.time_period_id = $scope.scheduleParams.time_period_id;
             }
-            if ( $scope.scheduleParams.export_date ) {
-                params.export_date = $scope.scheduleParams.export_date;
+            if ( $scope.scheduleParams.from_date ) {
+                params.from_date = $filter('date')($scope.scheduleParams.from_date, $rootScope.dateFormatForAPI);
+            }
+            if ( $scope.scheduleParams.to_date ) {
+                params.to_date = $filter('date')($scope.scheduleParams.to_date, $rootScope.dateFormatForAPI);
             }
 
             // fill 'frequency_id', 'starts_on', 'repeats_every' and 'ends_on_date'
@@ -218,12 +259,27 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 params.ends_on_date = null;
             }
 
+            var deliveryType = _.find ($scope.scheduleDeliveryTypes, {
+                value: $scope.scheduleParams.delivery_id
+            });
+
+            if (deliveryType) {
+                params.delivery_type_id = parseInt(deliveryType.id);
+            }
+
             // fill emails/FTP
             if ( $scope.checkDeliveryType('EMAIL') && $scope.emailList.length ) {
                 params.emails = $scope.emailList.join(', ');
             } else if ( $scope.checkDeliveryType('SFTP') && !! $scope.scheduleParams.selectedFtpRecipient ) {
                 params.sftp_server_id = $scope.scheduleParams.selectedFtpRecipient;
+            } else if (($scope.checkDeliveryType('GOOGLE DRIVE') || $scope.checkDeliveryType('DROPBOX')) && 
+                        !!$scope.scheduleParams.selectedCloudAccount ) {
+                params.cloud_drive_id = $scope.scheduleParams.selectedCloudAccount;
+            } else {
+                params.emails = '';
+                params.sftp_server_id = '';
             }
+            
             // fill sort_field and filters
             if ( $scope.scheduleParams.sort_field ) {
                 filter_values.sort_field = $scope.scheduleParams.sort_field;
@@ -233,40 +289,62 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             $scope.invokeApi( reportsSrv.createSchedule, params, success, failed );
         };
 
+        // Navigates to schedule list
+        $scope.navigateToSchedulesList = (params) => {
+            ngDialog.close();
+            var updatedIndex = _.findIndex($scope.$parent.$parent.schedulesList, { id: params.id });
+
+            if ( !! $scope.selectedSchedule && $scope.selectedSchedule.active ) {
+                $scope.selectedSchedule.active = false;
+            }
+            $scope.updateViewCol($scope.viewColsActions.ONE);
+
+            if ( updatedIndex >= 0 ) {
+                $scope.$parent.$parent.schedulesList[updatedIndex].frequency_id = params.frequency_id;
+                $scope.$parent.$parent.schedulesList[updatedIndex].repeats_every = params.repeats_every;
+                $scope.$parent.$parent.schedulesList[updatedIndex].time = params.time;
+                $scope.$parent.$parent.schedulesList[updatedIndex].starts_on = params.starts_on;
+                $scope.$parent.$parent.schedulesList[updatedIndex].ends_on_after = params.ends_on_after;
+                $scope.$parent.$parent.schedulesList[updatedIndex].ends_on_date = params.ends_on_date;
+
+                $scope.$parent.$parent.schedulesList[updatedIndex].occurance = findOccurance($scope.$parent.$parent.schedulesList[updatedIndex]);
+            }
+            $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
+        };
+
         var saveSchedule = function() {
+
             var params = {
                 id: $scope.selectedEntityDetails.id,
                 report_id: $scope.selectedEntityDetails.report.id,
                 hotel_id: $rootScope.hotelDetails.userHotelsData.current_hotel_id,
                 /**/
-                format_id: ($scope.selectedEntityDetails.report.title === 'Police Report Export') ? 3 : 1,
-                delivery_type_id: $scope.scheduleParams.delivery_id
+                format_id: getFileFormatId(),
+                delivery_type_id: ''
             };
 
-            var success = function() {
-                var updatedIndex = _.findIndex($scope.$parent.$parent.schedulesList, { id: params.id });
-
+            var success = function(data) {
                 $scope.errorMessage = '';
                 $scope.$emit( 'hideLoader' );
-                if ( !! $scope.selectedSchedule && $scope.selectedSchedule.active ) {
-                    $scope.selectedSchedule.active = false;
+                if (data.is_export_already_exist) {
+                    ngDialog.open({
+                        template: '/assets/partials/reports/rvDuplicateScheduleWarningPopup.html',
+                        scope: $scope,
+                        closeByEscape: false,
+                        data: {
+                            isUpdate: true,
+                            params: params
+                        }
+                    });
+                } else {
+                    $scope.navigateToSchedulesList(params);
                 }
-                $scope.updateViewCol($scope.viewColsActions.ONE);
 
-                if ( updatedIndex >= 0 ) {
-                    $scope.$parent.$parent.schedulesList[updatedIndex].frequency_id = params.frequency_id;
-                    $scope.$parent.$parent.schedulesList[updatedIndex].repeats_every = params.repeats_every;
-                    $scope.$parent.$parent.schedulesList[updatedIndex].time = params.time;
-                    $scope.$parent.$parent.schedulesList[updatedIndex].starts_on = params.starts_on;
-                    $scope.$parent.$parent.schedulesList[updatedIndex].ends_on_after = params.ends_on_after;
-                    $scope.$parent.$parent.schedulesList[updatedIndex].ends_on_date = params.ends_on_date;
-
-                    $scope.$parent.$parent.schedulesList[updatedIndex].occurance = findOccurance($scope.$parent.$parent.schedulesList[updatedIndex]);
-                }
             };
 
             var failed = function(errors) {
                 $scope.errorMessage = errors;
+                $scope.$emit(SHOW_ERROR_MSG_EVENT, errors);
                 $scope.$emit( 'hideLoader' );
             };
 
@@ -281,10 +359,13 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             if ( $scope.scheduleParams.time_period_id ) {
                 params.time_period_id = $scope.scheduleParams.time_period_id;
             }
-            if ( $scope.scheduleParams.export_date ) {
-                params.export_date = $filter('date')($scope.scheduleParams.export_date, 'yyyy/MM/dd');
+            if ( $scope.scheduleParams.from_date ) {
+                params.from_date = $filter('date')($scope.scheduleParams.from_date, 'yyyy/MM/dd');
             }
-            
+
+            if ( $scope.scheduleParams.to_date ) {
+                params.to_date = $filter('date')($scope.scheduleParams.to_date, 'yyyy/MM/dd');
+            }
 
             // fill 'frequency_id', 'starts_on', 'repeats_every' and 'ends_on_date'
             params.frequency_id = $scope.scheduleParams.frequency_id;
@@ -315,11 +396,22 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 params.ends_on_date = null;
             }
 
+            var deliveryType = _.find ($scope.scheduleDeliveryTypes, {
+                value: $scope.scheduleParams.delivery_id
+            });
+
+            if (deliveryType) {
+                params.delivery_type_id = parseInt(deliveryType.id);
+            }
+
             // fill emails/FTP
             if ( $scope.checkDeliveryType('EMAIL') && $scope.emailList.length ) {
                 params.emails = $scope.emailList.join(', ');
             } else if ( $scope.checkDeliveryType('SFTP') && !! $scope.scheduleParams.selectedFtpRecipient ) {
                 params.sftp_server_id = $scope.scheduleParams.selectedFtpRecipient;
+            } else if (($scope.checkDeliveryType('GOOGLE DRIVE') || $scope.checkDeliveryType('DROPBOX')) && 
+                        !!$scope.scheduleParams.selectedCloudAccount ) {
+                params.cloud_drive_id = $scope.scheduleParams.selectedCloudAccount;
             } else {
                 params.emails = '';
                 params.sftp_server_id = '';
@@ -498,7 +590,11 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Synxis - Reservations': true,
                 'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
                 'Police Report Export': true,
-                'Switzerland Zurich Police Export': true
+                'Switzerland Zurich Police Export': true,
+                'Spain Barcelona Police Export': true,
+                'Invoice / Folio Export': true,
+                'Nationality Export - France': true,
+                'Criterion Hospitality CC Export': true
             };
 
             var forRunOnceOnly = {
@@ -516,7 +612,11 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Synxis - Reservations': true,
                 'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
                 'Police Report Export': true,
-                'Switzerland Zurich Police Export': true
+                'Switzerland Zurich Police Export': true,
+                'Spain Barcelona Police Export': true,
+                'Austria Nationality Export': true,
+                'Nationality Export - France': true,
+                'Criterion Hospitality CC Export': true
             };
 
             var forWeekly = {
@@ -525,7 +625,9 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Clairvoyix Reservations Export': true,
                 'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
                 'Police Report Export': true,
-                'Switzerland Zurich Police Export': true
+                'Switzerland Zurich Police Export': true,
+                'Spain Barcelona Police Export': true,
+                'Invoice / Folio Export': true
             };
             var forMonthly = {
                 'Future Reservations': true,
@@ -536,7 +638,12 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
                 'Police Report Export': true,
                 'Belgium Nationality Export': true,
-                'Switzerland Zurich Police Export': true
+                'Switzerland Zurich Police Export': true,
+                'Spain Barcelona Police Export': true,
+                'Austria Nationality Export': true,
+                'Invoice / Folio Export': true,
+                'Nationality Export - France': true,
+                'Criterion Hospitality CC Export': true
             };
 
             var forHourly = {
@@ -545,7 +652,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
                 'Police Report Export': true,
                 'Synxis - Reservations': true,
-                'Switzerland Zurich Police Export': true
+                'Switzerland Zurich Police Export': true,
+                'Spain Barcelona Police Export': true
             };
 
             if ( forHourly[item.report.title] ) {
@@ -604,12 +712,14 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 }
             };
 
+            var businessDateMinusOne = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
+                .format($rootScope.momentFormatForAPI);
+
             var startsOn = $scope.selectedEntityDetails.starts_on || $rootScope.businessDate,
                 endsOnDate = $scope.selectedEntityDetails.ends_on_date || $rootScope.businessDate,
-                exportDate = $scope.selectedEntityDetails.export_date || $rootScope.businessDate;
+                exportDate = $scope.selectedEntityDetails.from_date || null,
+                exportToDate = $scope.selectedEntityDetails.to_date || businessDateMinusOne;
 
-            // saved emails/FTP
-            var delieveryType = $scope.selectedEntityDetails.delivery_type ? $scope.selectedEntityDetails.delivery_type.value : '';
 
             var hasAccOrGuest, todayTimePeriod;
 
@@ -632,18 +742,34 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 $scope.scheduleParams.time_period_id = undefined;
             }
 
-            if ( angular.isDefined($scope.selectedEntityDetails.export_date) ) {
-                $scope.scheduleParams.export_date = $scope.selectedEntityDetails.export_date;
+            if ( angular.isDefined($scope.selectedEntityDetails.from_date) ) {
+                $scope.scheduleParams.from_date = $scope.selectedEntityDetails.from_date;
             } else {
-                $scope.scheduleParams.export_date = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days');
+                $scope.scheduleParams.from_date = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days');
 
                 var todayDate = moment().startOf('day'),
-                    daysDiff = moment.duration(todayDate.diff($scope.scheduleParams.export_date)).asDays();
-                
+                    daysDiff = moment.duration(todayDate.diff($scope.scheduleParams.from_date)).asDays();
+
                 if (daysDiff < 7) {
-                    $scope.scheduleParams.export_date = $scope.scheduleParams.export_date.format("L");
+                    $scope.scheduleParams.from_date = $scope.scheduleParams.from_date.format("L");
                 } else {
-                    $scope.scheduleParams.export_date = $scope.scheduleParams.export_date.calendar();
+                    $scope.scheduleParams.from_date = $scope.scheduleParams.from_date.calendar();
+                }
+            }
+
+
+            if ( angular.isDefined($scope.selectedEntityDetails.to_date) ) {
+                $scope.scheduleParams.to_date = $scope.selectedEntityDetails.to_date;
+            } else {
+                $scope.scheduleParams.to_date = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days');
+
+                var todayDate = moment().startOf('day'),
+                    daysDiff = moment.duration(todayDate.diff($scope.scheduleParams.to_date)).asDays();
+
+                if (daysDiff < 7) {
+                    $scope.scheduleParams.to_date = $scope.scheduleParams.to_date.format("L");
+                } else {
+                    $scope.scheduleParams.to_date = $scope.scheduleParams.to_date.calendar();
                 }
             }
 
@@ -673,14 +799,27 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             } else {
                 $scope.scheduleParams.scheduleEndsOn = 'NEVER';
             }
+
+            var businessDateMinusOne = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
+                .format($rootScope.momentFormatForAPI);
+
             /*
              * Export Calender Options
              * max date is business date
              */
-            $scope.exportCalenderOptions = angular.extend({
-                maxDate: tzIndependentDate($rootScope.businessDate)
+            $scope.exportFromCalenderOptions = angular.extend({
+                maxDate: tzIndependentDate(businessDateMinusOne),
+                onSelect: function(value) {
+                    $scope.exportCalenderToOptions.minDate = value;
+                }
             }, datePickerCommon);
-            $scope.scheduleParams.export_date = reportUtils.processDate(exportDate).today;
+            $scope.scheduleParams.from_date = (exportDate === null) ? null : reportUtils.processDate(exportDate).today;
+
+            $scope.exportCalenderToOptions = angular.extend({
+                maxDate: tzIndependentDate(businessDateMinusOne),
+                minDate: tzIndependentDate(exportDate)
+            }, datePickerCommon);
+            $scope.scheduleParams.to_date = reportUtils.processDate(exportToDate).today;
 
             $scope.startsOnOptions = angular.extend({
                 minDate: tzIndependentDate($rootScope.businessDate),
@@ -697,17 +836,19 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             }, datePickerCommon);
             $scope.scheduleParams.ends_on_date = reportUtils.processDate(endsOnDate).today;
 
-
-            if ( delieveryType === 'EMAIL' ) {
-                $scope.scheduleParams.delivery_id = $scope.getDeliveryId('EMAIL');
-                $scope.emailList = $scope.selectedEntityDetails.emails.split(', ');
-            } else if ( delieveryType === 'SFTP' ) {
-                $scope.scheduleParams.delivery_id = $scope.getDeliveryId('SFTP');
-                $scope.scheduleParams.selectedFtpRecipient = $scope.selectedEntityDetails.sftp_server_id;
-            } else {
-               $scope.emailList = [];
-               $scope.scheduleParams.selectedFtpRecipient = '';
+            $scope.scheduleParams.delivery_id = $scope.selectedEntityDetails.delivery_type ? $scope.selectedEntityDetails.delivery_type.value : null;
+            
+            if ($scope.scheduleParams.delivery_id === 'CLOUD_DRIVE') {
+                $scope.scheduleParams.delivery_id = $scope.selectedEntityDetails.cloud_drive_type;
             }
+
+            if ( $scope.scheduleParams.delivery_id === 'EMAIL' ) {
+                $scope.emailList = $scope.selectedEntityDetails.emails.split(', ');
+            } else if ( $scope.scheduleParams.delivery_id === 'SFTP' ) {
+                $scope.scheduleParams.selectedFtpRecipient = $scope.selectedEntityDetails.sftp_server_id;
+            } else if ( $scope.scheduleParams.delivery_id === 'GOOGLE DRIVE' || $scope.scheduleParams.delivery_id === 'DROPBOX' ) {
+                $scope.scheduleParams.selectedCloudAccount = $scope.selectedEntityDetails.cloud_drive_id;
+            } 
 
             $scope.timeSlots = reportUtils.createTimeSlots(TIME_SLOTS);
         };
@@ -720,8 +861,10 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 $scope.originalScheduleTimePeriods = payload.scheduleTimePeriods;
                 $scope.$parent.$parent.schedulesList = [];
                 $scope.$parent.$parent.schedulableReports = [];
-                $scope.scheduleDeliveryTypes = payload.scheduleDeliveryTypes;
                 $scope.ftpServerList = payload.ftpServerList;
+                $scope.dropBoxAccountList = payload.dropBoxAccounts;
+                $scope.googleDriveAccountList = payload.googleDriveAccounts;
+                $scope.scheduleDeliveryTypes = payload.scheduleDeliveryTypes;
 
                 // sort schedule list by report name
                 $scope.$parent.$parent.schedulesList = _.sortBy(
@@ -1093,7 +1236,6 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             var reset = true;
 
             $scope.isAddingNew = true;
-            $scope.addingStage = STAGES.SHOW_PARAMETERS;
 
             $scope.selectedSchedule.active = false;
 
@@ -1101,6 +1243,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             $scope.updateViewCol($scope.viewColsActions.ONE);
 
             $scope.refreshReportSchedulesScroll(reset);
+            $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
 
             $scope.$emit('UPDATE_TITLE_AND_HEADING');
         };
@@ -1164,11 +1307,27 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 $scope.addingStage === STAGES.SHOW_PARAMETERS ||
                 $scope.addingStage === STAGES.SHOW_DETAILS;
         };
+
+        $scope.updateScrollOnUpdate = function () {
+            $timeout( function() {
+                $scope.refreshSecondColumnScroll(true);
+            }, 1000);
+
+        };
         /*
          * Show export calender only for joyrnal export
          */
-        $scope.shouldShowExportCalenderDate = function () {
-            if ($scope.selectedEntityDetails.report.title === 'Journal Export') {
+        $scope.shouldShowExportCalenderFromDate = function () {
+            if ($scope.selectedEntityDetails.report.title === 'Invoice / Folio Export') {
+                var dateFieldObject = _.find($scope.originalScheduleTimePeriods,
+                    function(item) {
+                        return item.value === 'DATE_RANGE'; }
+                    );
+
+                if (dateFieldObject.id === $scope.scheduleParams.time_period_id) {
+                    return true;
+                }
+            } else if ($scope.selectedEntityDetails.report.title === 'Journal Export') {
                 var dateFieldObject = _.find($scope.originalScheduleTimePeriods,
                     function(item) {
                         return item.value === 'DATE'; }
@@ -1181,6 +1340,21 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             return false;
         };
 
+        $scope.shouldShowExportCalenderToDate = function () {
+            if ($scope.selectedEntityDetails.report.title === 'Invoice / Folio Export') {
+                var dateFieldObject = _.find($scope.originalScheduleTimePeriods,
+                    function(item) {
+                        return item.value === 'DATE_RANGE'; }
+                    );
+
+                if (dateFieldObject.id === $scope.scheduleParams.time_period_id) {
+                    return true;
+                }
+            }
+            return false;
+        };
+
+
         $scope.notRunOnce = function () {
             var match = _.find($scope.originalScheduleFrequency, { id: $scope.scheduleParams.frequency_id }) || {};
 
@@ -1188,10 +1362,9 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
         };
 
         $scope.checkDeliveryType = function (checkFor) {
-            var match = _.find($scope.scheduleDeliveryTypes, { id: $scope.scheduleParams.delivery_id }) || {};
-
-            return match.value === checkFor;
+            return checkFor === $scope.scheduleParams.delivery_id;
         };
+
         $scope.getDeliveryId = function (checkFor) {
             var match = _.find($scope.scheduleDeliveryTypes, { value: checkFor }) || {};
 
@@ -1204,6 +1377,18 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
         });
 
         $scope.$on('$destroy', createNewExportScheduleListener);
+
+        $scope.addListener('RESET_CURRENT_STAGE', () => {
+            $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
+        });
+
+        // Change handler for delivery options
+        $scope.onDeliveryOptionChange = () => {
+            // We are just clearing the cloud drive id only because the given id belongs to 
+            // a single cloud drive account and if not cleared it will shows empty <option>
+            // when the cloud account type is changed from the delivery options
+            $scope.scheduleParams.selectedCloudAccount = null;
+        };
 
         /**
          * Start everything

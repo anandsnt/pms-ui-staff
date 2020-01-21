@@ -1,4 +1,6 @@
-angular.module('sntRover').service('RVJournalSrv', ['$http', '$q', 'BaseWebSrvV2', 'RVBaseWebSrv', '$rootScope', function($http, $q, BaseWebSrvV2, RVBaseWebSrv, $rootScope) {
+angular.module('sntRover').service('RVJournalSrv', 
+	['$http', '$q', 'BaseWebSrvV2', 'RVBaseWebSrv', '$rootScope', 'sntBaseWebSrv',
+	function($http, $q, BaseWebSrvV2, RVBaseWebSrv, $rootScope, sntBaseWebSrv) {
 
    	this.filterData = {};
 	this.revenueData = {};
@@ -64,14 +66,31 @@ angular.module('sntRover').service('RVJournalSrv', ['$http', '$q', 'BaseWebSrvV2
     };
 
     /*
+     * Service function to fetch filters
+     * @return {object} departments
+     */
+	that.getFilterData = function () {
+		var deferred = $q.defer(),
+			url = "/api/financial_transactions/journal_filter_options";
+
+		sntBaseWebSrv.getJSON(url).then(function (data) {
+
+			deferred.resolve(data);
+		}, function (data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+    /*
      * Service function to fetch journal summary
      * @return {object} journal summary
      */
     that.fetchSummaryData = function (params) {
     	var deferred = $q.defer(),
-        	url = "api/financial_transactions/daily_balance_details?date=" + params.date;
+        	url = "api/financial_transactions/daily_balance_details";
 
-        BaseWebSrvV2.getJSON(url).then(function (data) {
+        BaseWebSrvV2.getJSON(url, params).then(function (data) {
             deferred.resolve(data);
         }, function (data) {
             deferred.reject(data);
@@ -104,6 +123,22 @@ angular.module('sntRover').service('RVJournalSrv', ['$http', '$q', 'BaseWebSrvV2
         	url = "api/financial_transactions/daily_balance_details";
 
         BaseWebSrvV2.postJSON(url, params).then(function (data) {
+            deferred.resolve(data);
+        }, function (data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
+    /*
+     * Service function to fetch journal summary
+     * @return {object} journal summary
+     */
+    that.fetchBalanceTabDetails = function (params) {
+    	var deferred = $q.defer(),
+        	url = "api/financial_transactions/journal_balance_details";
+
+        BaseWebSrvV2.getJSON(url, params).then(function (data) {
             deferred.resolve(data);
         }, function (data) {
             deferred.reject(data);

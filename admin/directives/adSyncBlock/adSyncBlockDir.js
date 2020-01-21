@@ -5,6 +5,7 @@ admin.directive('adSyncBlock', function () {
                 config: '=',
                 interface: '@',
                 historicalDateRangeDays: '@',
+                defaultDateRange: '=',
                 excludeToday: '=',
                 isExport: '=',
                 historicalDataSyncItems: '=',

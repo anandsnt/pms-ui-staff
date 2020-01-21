@@ -67,11 +67,11 @@ admin.service('ADChargeCodesSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 	/**
     *   A getter method to return add new the charge codes data.
     */
-	this.fetchEditData = function(data) {
+	this.fetchEditData = function(params) {
 		var deferred = $q.defer();
-		var url = '/admin/charge_codes/' + data.editId + '/edit.json';
+		var url = '/admin/charge_codes/' + params.editId + '/edit.json';
 
-		ADBaseWebSrv.getJSON(url).then(function(data) {
+		ADBaseWebSrv.getJSON(url, params).then(function(data) {
             if (!chargeCodeTypes.length) {
                 initializeChargeCodeTypes(data['charge_code_types']);
             }

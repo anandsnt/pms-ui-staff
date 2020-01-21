@@ -3,6 +3,14 @@ admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'adComtrolRoomMappingSrv
 
         ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
+        /*
+         * This methode is to set page count.
+         * @param {number} page count
+         */
+        $scope.displayCountChanged = function(count) {
+            $scope.displyCount = count;
+        };
+
         // private methods and variables
         var resetNew = function() {
                 $scope.state.new = {
@@ -14,7 +22,7 @@ admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'adComtrolRoomMappingSrv
             },
             revertEdit = function() {
                 if ($scope.state.editRef) {
-                    $scope.mappings[$scope.state.selected] = angular.copy($scope.state.editRef);
+                    $scope.data[$scope.state.selected] = angular.copy($scope.state.editRef);
                     $scope.state.editRef = null;
                 }
             },
@@ -192,8 +200,6 @@ admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'adComtrolRoomMappingSrv
                     external_access_level: ''
                 }
             };
-
-            // $scope.mappings = roomMappings.room_mappings;
 
             $scope.loadTable();
         })();

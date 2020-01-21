@@ -60,22 +60,60 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 				cardDetails: {
 					'card_code': paymentResponse.credit_card_type ? paymentResponse.credit_card_type.toLowerCase() : 'credit-card',
 					'ending_with': paymentResponse.ending_with,
-					'expiry_date': paymentResponse.expiry_date || '12/20', // To delete the fallback expiry date once Shiji fixes
-					'card_name': ''
+					'expiry_date': paymentResponse.expiry_date,
+					'card_name': '',
+					'token': paymentResponse.token
 				}
 			});
+		};
+
+		let savePaymentDetails = (apiParams) => {
+			let onSaveFailure = (errorMessage) => {
+				$scope.$emit('PAYMENT_FAILED', errorMessage);
+			};
+
+			sntActivity.start('SAVE_CC_PAYMENT');
+			
+			sntPaymentSrv.savePaymentDetails(apiParams).then(
+				response => {
+					if (response.status === 'success') {
+						onAddCardSuccess(response);
+					} else {
+						onSaveFailure(response.errors);
+					}
+					sntActivity.stop('SAVE_CC_PAYMENT');
+				},
+				errorMessage => {
+					onSaveFailure(errorMessage);
+					sntActivity.stop('SAVE_CC_PAYMENT');
+				});
+		};
+
+		let proceedWithPaymentData = (apiParams) => {
+			let params = {
+				'paymentData': {
+					'apiParams': apiParams,
+					'cardDisplayData': {
+						'name_on_card': $scope.payment.guestFirstName + ' ' + $scope.payment.guestLastName
+					}
+				}
+			};
+
+			$scope.$emit(payEvntConst.CC_TOKEN_GENERATED, params);
 		};
 
 		self.tokenizeBySavingtheCard = (tokenId) => {
 			let isAddCardAction = (/^ADD_PAYMENT_/.test($scope.actionType));
 			let apiParams = {
 				"token": tokenId,
-				"payment_type": "CC",
-				"card_expiry": "2020-12-31"
+				"payment_type": "CC"
 			};
 
 			if (isAddCardAction) {
-				apiParams.reservation_id = $scope.reservationId;
+				if ($scope.reservationId) {
+					// Incase of guestcard, there will be no reservation Id
+					apiParams.reservation_id = $scope.reservationId;
+				}
 				apiParams.add_to_guest_card = $scope.payment.addToGuestCardSelected;
 				apiParams.bill_number = 1;
 				apiParams.user_id = $scope.guestId;
@@ -83,36 +121,10 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 
 			sntActivity.stop('FETCH_SHIJI_TOKEN');
 
-			let onSaveFailure = (errorMessage) => {
-				$scope.$emit('PAYMENT_FAILED', errorMessage);
-			};
-
-			sntActivity.start('SAVE_CC_PAYMENT');
 			if (isAddCardAction) {
-				sntPaymentSrv.savePaymentDetails(apiParams).then(
-					response => {
-						if (response.status === 'success') {
-							onAddCardSuccess(response);
-						} else {
-							onSaveFailure(response.errors);
-						}
-						sntActivity.stop('SAVE_CC_PAYMENT');
-					},
-					errorMessage => {
-						onSaveFailure(errorMessage);
-						sntActivity.stop('SAVE_CC_PAYMENT');
-					});
+				savePaymentDetails(apiParams);
 			} else {
-				let params = {
-					'paymentData': {
-						'apiParams': apiParams,
-						'cardDisplayData': {
-							'name_on_card': $scope.payment.guestFirstName + ' ' + $scope.payment.guestLastName
-						}
-					}
-				};
-
-				$scope.$emit(payEvntConst.CC_TOKEN_GENERATED, params);
+				proceedWithPaymentData(apiParams);
 			}
 		};
 
@@ -121,7 +133,7 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 
 			if (responseData.respCode === "00") {
 				self.tokenizeBySavingtheCard(responseData.tokenId);
-			} else {
+			} else if (responseData.respCode && responseData.respCode !== "00") {
 				sntActivity.stop('FETCH_SHIJI_TOKEN');
 				$log.info('Tokenization Failed: response code =>' + responseData.respCode);
 				let errorMsg = responseData.respText ? [responseData.respText] : [''];
@@ -129,6 +141,119 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 				$scope.$emit('PAYMENT_FAILED', errorMsg);
 			}
 		};
+
+		let tokenize = function(params) {
+			$scope.$emit('SHOW_SIX_PAY_LOADER');
+			sntPaymentSrv.getSixPaymentToken(params).then(
+				response => {
+					/**
+					 * The response here is expected to be of the following format
+					 * {
+					 *  card_type: "VX",
+					 *  ending_with: "0088",
+					 *  expiry_date: "1217"
+					 *  payment_method_id: 35102,
+					 *  token: "123465498745316854",
+					 *  is_swiped: true
+					 * }
+					 *
+					 * NOTE: In case the request params sends add_to_guest_card: true AND guest_id w/o reservation_id
+					 * The API response has guest_payment_method_id instead of payment_method_id
+					 */
+
+					var cardType = response.card_type || '';
+
+					$scope.$emit('SUCCESS_LINK_PAYMENT', {
+						response: {
+							id: response.payment_method_id || response.guest_payment_method_id,
+							guest_payment_method_id: response.guest_payment_method_id,
+							payment_name: 'CC',
+							usedEMV: true,
+							addToGuestCard: $scope.payment.addToGuestCardSelected
+						},
+						selectedPaymentType: $scope.selectedPaymentType || 'CC',
+						cardDetails: {
+							'card_code': cardType.toLowerCase(),
+							'ending_with': response.ending_with,
+							'expiry_date': response.expiry_date,
+							'card_name': '',
+							'is_swiped': response.is_swiped
+						}
+					});
+
+					$scope.$emit('HIDE_SIX_PAY_LOADER');
+				},
+				errorMessage => {
+					$log.info('Tokenization Failed');
+					$scope.$emit('PAYMENT_FAILED', errorMessage);
+					$scope.$emit('HIDE_SIX_PAY_LOADER');
+				}
+			);
+		};
+
+		$scope.$on('INITIATE_CHIP_AND_PIN_TOKENIZATION', function(event, data) {
+			let paymentParams = data;
+
+			paymentParams.is_emv_request = true;
+			paymentParams.emvTimeout = parseInt($scope.hotelConfig.emvTimeout);
+			tokenize(data);
+		});
+
+		let proceedChipAndPinPayment = function(params) {
+			// we need to notify the parent controllers to show loader
+			// as this is an external directive
+
+			$scope.$emit("SHOW_SIX_PAY_LOADER");
+			sntPaymentSrv.submitPaymentForChipAndPin(params).then(
+				response => {
+					console.log("payment success" + $scope.payment.amount);
+					response.amountPaid = $scope.payment.amount;
+					response.authorizationCode = response.authorization_code;
+
+					var cardType = (response.payment_method && response.payment_method.card_type) || "";
+
+					// NOTE: The feePaid key and value would be sent IFF a fee was applied along with the payment
+					if ($scope.feeData) {
+						response.feePaid = $scope.feeData.calculatedFee;
+					}
+
+					$scope.selectedCC = $scope.selectedCC || {};
+
+					if (!!response.payment_method) {
+						$scope.selectedCC.value = response.payment_method.id;
+						$scope.selectedCC.card_code = cardType.toLowerCase();
+						$scope.selectedCC.ending_with = response.payment_method.ending_with;
+						$scope.selectedCC.expiry_date = response.payment_method.expiry_date;
+					}
+
+					response.cc_details = angular.copy($scope.selectedCC);
+
+					if ($scope.payment.showAddToGuestCard) {
+						// check if add to guest card was selected
+						response.add_to_guest_card = $scope.payment.addToGuestCardSelected;
+					}
+					$scope.$emit("HIDE_SIX_PAY_LOADER");
+					$timeout(() => {
+						$scope.onPaymentSuccess(response);
+					}, 700);
+
+				},
+				errorMessage => {
+					console.log("payment failed" + errorMessage);
+					$scope.$emit('PAYMENT_FAILED', errorMessage);
+					$scope.$emit("HIDE_SIX_PAY_LOADER");
+				});
+		};
+
+		$scope.$on('INITIATE_CHIP_AND_PIN_PAYMENT', function(event, data) {
+			var paymentParams = data;
+
+			paymentParams.postData.is_emv_request = true;
+			paymentParams.postData.workstation_id = $scope.hotelConfig.workstationId;
+			paymentParams.emvTimeout = parseInt($scope.hotelConfig.emvTimeout);
+			proceedChipAndPinPayment(data);
+		});
+
 
 		// ----------- init -------------
 		(() => {

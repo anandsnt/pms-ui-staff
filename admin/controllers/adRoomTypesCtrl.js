@@ -1,5 +1,24 @@
-admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTypesSrv', 'ngTableParams', '$filter', '$anchorScroll', '$timeout', '$location', function($scope, $rootScope, $state, ADRoomTypesSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location) {
+admin.controller('ADRoomTypesCtrl', ['$scope',
+                                     '$rootScope', 
+                                     '$state', 
+                                     'ADRoomTypesSrv', 
+                                     'ngTableParams', 
+                                     '$filter', 
+                                     '$anchorScroll', 
+                                     '$timeout', 
+                                     '$location', 
+                                     'availableLanguages', 
+    function($scope, $rootScope, $state, ADRoomTypesSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location, availableLanguages) {
 
+    $scope.availableLanguagesSet = availableLanguages;
+    var defaultLanguage = _.filter(availableLanguages.languages, function(language) {
+        return language.is_default;
+    });
+    var setDefaultLanguage = function() {
+        $scope.selectedLanguage = {
+            code: defaultLanguage.length ? defaultLanguage[0].code : 'en'
+        };
+    };
     var init = function() {
         $scope.errorMessage = '';
         BaseCtrl.call(this, $scope);
@@ -16,6 +35,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
         $scope.listRoomTypes();
         $scope.isAscendingByName = true;
         $scope.isAscendingByCode = true;
+        setDefaultLanguage();
     };
 
    /*
@@ -88,6 +108,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
     $scope.editRoomTypes = function(index, id)	{
         $scope.departmentData = {};
         $scope.currentClickedElement = index;
+        $scope.currentClickedElementId = id;
         $scope.roomTypeData = {};
          var successCallbackRender = function(data) {
              $scope.$emit('hideLoader');
@@ -117,9 +138,21 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
                 }
             });
          };
-         var data = {"id": id };
 
-         $scope.invokeApi(ADRoomTypesSrv.getRoomTypeDetails, data, successCallbackRender);
+        var data = {
+            "id": id,
+            "locale": $scope.selectedLanguage.code
+        };
+
+        $scope.invokeApi(ADRoomTypesSrv.getRoomTypeDetails, data, successCallbackRender);
+    };
+
+    $scope.onLanguageChange = function() {
+        if ($scope.currentClickedElementId) {
+            $scope.editRoomTypes($scope.currentClickedElement, $scope.currentClickedElementId);
+        } else {
+            return;
+        }
     };
 
    /*
@@ -157,6 +190,8 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
         }
         var data = dclone($scope.roomTypeData, unwantedKeys);
 
+        data.locale = $scope.selectedLanguage.code;
+
         var editSuccessCallbackSave = function(data) {
             $scope.$emit('hideLoader');
             $scope.is_image_deleted = false;
@@ -166,6 +201,8 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
                 $scope.orderedData[parseInt($scope.currentClickedElement)].code = $scope.roomTypeData.room_type_code;
             }
             $scope.currentClickedElement = -1;
+             $scope.currentClickedElementId = "";
+            setDefaultLanguage();
         };
         var addSuccessCallbackSave = function(data) {
             $scope.$emit('hideLoader');
@@ -207,6 +244,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
         else {
             $scope.currentClickedElement = -1;
         }
+        setDefaultLanguage();
     };
    /*
     * To import form pms
@@ -248,6 +286,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
     */
     $scope.addNewRoomType = function() {
         $scope.currentClickedElement = -1;
+        $scope.currentClickedElementId = "";
         $scope.isAddMode = $scope.isAddMode ? false : true;
         $scope.fileName = "Choose File....";
         $scope.imageFileName = $scope.fileName;
@@ -426,6 +465,9 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
             }
             $scope.isAscendingByCode = !$scope.isAscendingByCode;
         }
+    };
+    $scope.showListPageItems = function() {
+        return $scope.currentClickedElement === -1 && !$scope.isAddMode;
     };
     // Sort by Name for standalone property
     $scope.sortByNameStandAlone = function() {

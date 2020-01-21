@@ -184,11 +184,14 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	 * @param {index} index of selected payment method
 	 */
 	$scope.editPaymentMethod = function(index) {
-
-			$scope.currentClickedElement = index;
-			$scope.editData = dclone($scope.data.payments[index], ["is_active"]);
-			$scope.editData.isEditCC = false;
-
+	    var clickedPaymentMethod =  $scope.data.payments[index];
+	    // For credit card parent, we don't have to expand the edit form because,
+        // the payment method CC does not have stand it's own
+	    if (clickedPaymentMethod.value !== 'CC') {
+            $scope.currentClickedElement = index;
+            $scope.editData = dclone(clickedPaymentMethod, ["is_active"]);
+            $scope.editData.isEditCC = false;
+        }
 	};
 
 	$scope.editPaymentMethodCC = function(index) {
