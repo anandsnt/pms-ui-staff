@@ -5,6 +5,17 @@
             <span class="h2 message" translate>MESSAGE</span>
         </div>
 
+        <div ng-if="actionDisplayName === 'RFID Tag Meta'">
+            <ul>
+                <li ng-repeat="(rfidPropertyKey, rfidProperty) in ngDialogData" ng-if="rfidPropertyKey !== 'ngDialogId'">
+                    <b>{{ humanize(rfidPropertyKey) }}</b>
+                    <span class="float-right" style="margin-left: 10px">
+                        {{rfidProperty}}
+                    </span>
+                </li>
+            </ul>
+        </div>
+
         <div class="scrollable"
              ng-iscroll="deviceMessage"
              ng-iscroll-delay="100"
@@ -25,7 +36,6 @@
                 CANCEL
             </button>
         </div>
-
     </div>
 
 </div>

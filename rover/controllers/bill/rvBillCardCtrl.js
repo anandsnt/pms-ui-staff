@@ -2785,7 +2785,7 @@ sntRover.controller('RVbillCardController',
                         $timeout(function() {
                             billCardPrintCompleted();
                         }, 3000);
-                    }, 300);
+                    }, 700);
 			};
 
 			var printDataFailureCallback = function(errorData) {
