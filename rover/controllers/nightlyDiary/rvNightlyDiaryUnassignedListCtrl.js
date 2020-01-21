@@ -15,7 +15,7 @@ angular.module('sntRover')
         $scope.diaryData.selectedUnassignedReservation = {};
         $scope.businessDate = $rootScope.businessDate;
         $scope.searchQuery = '';
-        var unassignedListData = [];
+        var initialUnassignedListData = [];
 
         var selectUnassignedListItem = function(item) {
             // If we are in selected reservation mode, going to cancel the selection.
@@ -98,7 +98,7 @@ angular.module('sntRover')
             var successCallBackFetchList = function (data) {
                 $scope.errorMessage = '';
                 $scope.diaryData.unassignedReservationList = data;
-                unassignedListData = data.reservations;
+                initialUnassignedListData = angular.copy(data.reservations);
             },
             postData = {
                 'date': $scope.diaryData.arrivalDate
@@ -176,17 +176,16 @@ angular.module('sntRover')
 
         $scope.searchUnassignedList =  function() {
             console.log($scope.searchQuery);
-            console.log(unassignedListData);
+            console.log(initialUnassignedListData);
             console.log($scope.diaryData.unassignedReservationList.reservations);
-            //first_name
-            //confirm_no
-
+            
             var displayResults = [];
 
             if ($scope.searchQuery && $scope.searchQuery.length > 0) {
-                displayResults = $scope.diaryData.unassignedReservationList.reservations.filter(function(reservation) {
+                displayResults = initialUnassignedListData.filter(function(reservation) {
                     // check if the querystring is number or string
-                    return (
+                    return 
+                        (
                             isNaN($scope.searchQuery) &&
                             reservation.first_name.toUpperCase().includes($scope.searchQuery.toUpperCase()) ||
                             reservation.last_name.toUpperCase().includes($scope.searchQuery.toUpperCase())
@@ -198,11 +197,10 @@ angular.module('sntRover')
                 });
             }
             else {
-                displayResults = unassignedListData;
+                displayResults = initialUnassignedListData;
             }
 
             console.log(displayResults);
-
-
+            $scope.diaryData.unassignedReservationList.reservations = displayResults;
         };
 }]);
