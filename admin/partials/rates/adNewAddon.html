@@ -274,7 +274,7 @@
                                     <label style="margin-top: 10px;">{{'POST_DAY' | translate}}</label>
                                     <div class="select select-col col1-4" ng-if="singleAddon.frequency_type == 'months'" style="margin-left: 10px;">
                                         <select  name="post-type-id" id="post-type-id" ng-model="singleAddon.post_day_of_the_month" ng-options="day as day for day in customPostData.daysOfMonth"></select></div>
-                                    <div class="select select-col col1-3" style="margin-left: 10px;">
+                                    <div class="select select-col col1-3" ng-if="singleAddon.frequency_type == 'weeks'" style="margin-left: 10px;">
                                         <select  name="post-type-id" id="post-type-id" ng-model="singleAddon.post_day_of_the_week" ng-options="day as day for day in customPostData.daysOfWeek"></select></div>
                                 </div>
                             </div>
