@@ -2566,6 +2566,31 @@ angular.module('reportsModule')
          * @return {void}
          */
         factory.fillChargeGroupsAndChargeCodes = function(filter, filterValues) {
+            // Get the value of selectall checkbox for the charge groups
+            var getChargeGroupSelectAllVal = function (chargeGroups) {
+                    var selectAll = true;
+
+                    if (filterValues && !!filterValues.charge_group_ids) {
+                        selectAll = filterValues.charge_group_ids.length === chargeGroups.length;
+                    } else if (filterValues && !filterValues.charge_group_ids) {
+                        selectAll = false;
+                    }
+                    
+                    return selectAll;
+                },
+                // Get the value of selectall checkbox for the charge codes
+                getChargeCodeSelectAllVal = function (chargeCodes) {
+                    var selectAll = true;
+
+                    if (filterValues && !!filterValues.charge_code_ids) {
+                        selectAll = filterValues.charge_code_ids.length === chargeCodes.length;
+                    } else if (filterValues && !filterValues.charge_code_ids) {
+                        selectAll = false;
+                    }
+                    
+                    return selectAll;
+                };
+
 
             var populateChargeGroupsAndChargeCodes = function (chargeGroupsArr, chargeCodesArr) {
                 var processedCGCC = __adjustChargeGroupsCodes(chargeGroupsArr, chargeCodesArr, 'REMOVE_PAYMENTS', true),
@@ -2578,10 +2603,7 @@ angular.module('reportsModule')
                 delete filter.hasByChargeCode;
 
                 if (filterValues && filterValues.charge_group_ids) {
-                    // _.each (filterValues.charge_group_ids, function (id) {
-                    //     selectedChargeGroup = _.findWhere(chargeGroupsCopy, {id: id});
-                    //     selectedChargeGroup.selected = true;
-                    // });
+                    
                     chargeGroupsCopy = _.map(chargeGroupsCopy, function (chargeGroup) {
                         selectedChargeGroupIdx = _.indexOf(filterValues.charge_group_ids, chargeGroup.id);
                         chargeGroup.selected = false;
@@ -2591,12 +2613,18 @@ angular.module('reportsModule')
 
                         return chargeGroup;
                     });
+                } else if (filterValues && !filterValues.charge_group_ids) {
+                    chargeGroupsCopy = _.map(chargeGroupsCopy, function(chargeGroup) {
+                        chargeGroup.selected = false;
+
+                        return chargeGroup;
+                    });
                 }
 
                 filter.hasByChargeGroup = {
                     data: chargeGroupsCopy,
                     options: {
-                        selectAll: filterValues && filterValues.charge_group_ids ? filterValues.charge_group_ids.length === chargeGroupsCopy.length : true,
+                        selectAll: getChargeGroupSelectAllVal(chargeGroupsCopy),
                         hasSearch: false,
                         key: 'name'
                     },
@@ -2622,7 +2650,7 @@ angular.module('reportsModule')
                     }
                 };
 
-                if (filterValues && filterValues.charge_code_ids) {
+                if (filterValues && !!filterValues.charge_code_ids) {
                     
                     chargeCodesCopy = _.map(chargeCodesCopy, function (chargeCode) {
                         selectedChargeCodeIdx = _.indexOf(filterValues.charge_code_ids, chargeCode.id);
@@ -2632,13 +2660,19 @@ angular.module('reportsModule')
                         }
                         return chargeCode;
                     });
+                } else if (filterValues && !filterValues.charge_code_ids) {
+                    chargeCodesCopy = _.map(chargeCodesCopy, function(chargeCode) {
+                        chargeCode.selected = false;
+
+                        return chargeCode;
+                    });
                 }
 
                 filter.hasByChargeCode = {
                     data: chargeCodesCopy,
                     originalData: chargeCodesCopy,
                     options: {
-                        selectAll: filterValues && filterValues.charge_code_ids ? filterValues.charge_code_ids.length === chargeCodesCopy.length : true,
+                        selectAll: getChargeCodeSelectAllVal(chargeCodesCopy),
                         hasSearch: false,
                         key: 'name'
                     },
