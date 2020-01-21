@@ -13,13 +13,30 @@
                 <span class="icons icon-double-arrow black rotate-right"></span>
             </button>
         </div>
+        <div class="entry search">
+            <button class="clear-query"> <!-- Add class 'visible' to show -->
+                <span class="icons icon-clear-search">Clear query</span>
+            </button>
+            <span class="result-count hidden">{X} Matches</span> <!-- Remove class 'hidden' to show -->
+            <input ng-model="searchQuery" ng-change="searchUnassignedList()" class="query" placeholder="Search by Guest Name or Conf. No." type="search" autocomplete="off">
+        </div>
     </div>
     <div class="sidebar-header">
         <h2>Unassigned Reservations</h2>
         <p>Select reservation to assign a room</p>
     </div>
-    <div class="unassigned-list no-actions scrollable scroll-vertical">
-        <div class="wrapper">
+    <div class="unassigned-list no-actions with-date scrollable">
+
+        <!-- CASE 1: List is empty (no results or no unassigned reservations at all) -->
+        <div class="no-content" ng-show="diaryData.unassignedReservationList.reservations.length === 0">
+            <div class="info">
+                <span class="icon-no-content icon-search"></span>
+                <strong class="h1">No reservations found</strong>
+            </div>
+        </div> 
+
+        <!-- CASE 2: Unassigned reservations found / exist (replace L37-L42 with this) -->
+        <div class="wrapper" ng-show="diaryData.unassignedReservationList.reservations.length !== 0">
             <div class="guest {{reservation.statusClass}}" ng-class="{'selected': diaryData.selectedUnassignedReservation.reservation_id === reservation.reservation_id, 'blocked disable-element': reservation.is_hourly }" ng-repeat="reservation in diaryData.unassignedReservationList.reservations" ng-click="clickedUnassignedItem($index)">
                 <div class="data">
                     <strong class="name">{{reservation.last_name}} {{reservation.first_name}}</strong>

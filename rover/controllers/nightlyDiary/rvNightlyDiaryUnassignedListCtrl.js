@@ -14,6 +14,8 @@ angular.module('sntRover')
         BaseCtrl.call(this, $scope);
         $scope.diaryData.selectedUnassignedReservation = {};
         $scope.businessDate = $rootScope.businessDate;
+        $scope.searchQuery = '';
+        var unassignedListData = [];
 
         var selectUnassignedListItem = function(item) {
             // If we are in selected reservation mode, going to cancel the selection.
@@ -96,6 +98,7 @@ angular.module('sntRover')
             var successCallBackFetchList = function (data) {
                 $scope.errorMessage = '';
                 $scope.diaryData.unassignedReservationList = data;
+                unassignedListData = data.reservations;
             },
             postData = {
                 'date': $scope.diaryData.arrivalDate
@@ -170,4 +173,36 @@ angular.module('sntRover')
         $scope.addListener('CANCEL_UNASSIGNED_RESERVATION', function() {
             unSelectUnassignedListItem();
         });
+
+        $scope.searchUnassignedList =  function() {
+            console.log($scope.searchQuery);
+            console.log(unassignedListData);
+            console.log($scope.diaryData.unassignedReservationList.reservations);
+            //first_name
+            //confirm_no
+
+            var displayResults = [];
+
+            if ($scope.searchQuery && $scope.searchQuery.length > 0) {
+                displayResults = $scope.diaryData.unassignedReservationList.reservations.filter(function(reservation) {
+                    // check if the querystring is number or string
+                    return (
+                            isNaN($scope.searchQuery) &&
+                            reservation.first_name.toUpperCase().includes($scope.searchQuery.toUpperCase()) ||
+                            reservation.last_name.toUpperCase().includes($scope.searchQuery.toUpperCase())
+                        ) ||
+                        (
+                            !isNaN($scope.searchQuery) &&
+                            reservation.confirm_no.toString().includes($scope.searchQuery)
+                        );
+                });
+            }
+            else {
+                displayResults = unassignedListData;
+            }
+
+            console.log(displayResults);
+
+
+        };
 }]);
