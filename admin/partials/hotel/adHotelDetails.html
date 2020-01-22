@@ -66,8 +66,21 @@
 			</div>
 			<!--	CICO-68802		-->
 			<fieldset class="holder left">
+                <div class="entry full-width">
+                    <label class="switch-label">
+                        USE DYNAMIC EMAIL TEMPLATES
+                    </label>
+                    <div class="switch-button single"
+                         ng-class="{ on: data.use_common_email_templates , disabled: !isSntAdmin}">
+                        <input type="checkbox"
+                               ng-disabled="!isSntAdmin"
+                               ng-model="data.use_common_email_templates"/>
+                        <span class="switch-icon"></span>
+                    </div>
+
+                </div>
 				<div class="entry full-width">
-					<label for="hotel-theme" translate>TEMPLATE_THEME</label>
+					<label for="hotel-theme" translate>HOTEL_THEME</label>
 					<!--	Show the configured theme in the form; This value would be read-only	-->
 					<input disabled readonly
 						   ng-if="::!isSntAdmin" value="{{ data.theme_name || 'Default' }}">
@@ -99,7 +112,8 @@
 					</div>
 				</div>
 			</fieldset>
-		<fieldset/>
+		</fieldset>
+
 
 		<fieldset class="holder full-width" >
 			<div class="form-title">

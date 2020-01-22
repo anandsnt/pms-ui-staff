@@ -50,7 +50,6 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
              * @param cardDetails
              */
             var handleBillCardAddPaymentSuccess = function(response, paymentType, cardDetails) {
-
                 var billIndex = $scope.billNumber - 1;
 
                 if (paymentType === "CC") {
@@ -95,14 +94,18 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
                             "payment_type_id": 1
                         });
                     }
-
                 } else {
                     // For non CC Payments
                     $scope.paymentData.bills[billIndex].credit_card_details.payment_type = paymentType;
                     $scope.paymentData.bills[billIndex].credit_card_details.payment_type_description = response.payment_type;
                 }
 
-                $scope.closeDialog();
+                /*
+                 * CICO-74474: Close the add payment dialog by id to prevent the
+                 * unintentional closing of the credit card authorization dialog
+                 * that follows which can lead to double authorizations.
+                 */
+                $scope.closeDialog($scope.ngDialogId);
             };
 
             /**
