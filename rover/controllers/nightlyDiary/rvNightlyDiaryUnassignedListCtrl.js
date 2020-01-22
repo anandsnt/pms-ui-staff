@@ -77,7 +77,6 @@ angular.module('sntRover')
         };
 
         $scope.addListener('SUCCESS_ROOM_ASSIGNMENT', function() {
-            $scope.diaryData.isEditReservationMode = false;
             var unassignedReservationList = $scope.diaryData.unassignedReservationList.reservations;
 
             // Update unassigned reservation list...
@@ -92,6 +91,7 @@ angular.module('sntRover')
             $scope.diaryData.selectedUnassignedReservation = {};
 
             $scope.$emit('HIDE_ASSIGN_ROOM_SLOTS');
+            $scope.$emit('CANCEL_UNASSIGNED_RESERVATION_MAIN');
         });
 
         // Method to fetch Unassigned reservations list.
