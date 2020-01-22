@@ -25,7 +25,7 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
                     $window.localStorage.removeItem('jwt');
 
                     if (!sessionTimeoutDialog) {
-                       $scope.loginData.autoLogoutDelay = Math.floor((sessionTimeoutHandlerSrv.getAutoLogoutDelay()/1000/60) << 0);
+                       $scope.loginData.autoLogoutDelay = Math.floor((sessionTimeoutHandlerSrv.getAutoLogoutDelay() / 1000 / 60) << 0);
 
                        sessionTimeoutDialog = ngDialog.open({
                             template: '/assets/partials/rvExtendSessionModal.html',
