@@ -1414,8 +1414,7 @@
         position: relative;
         color: @white;
         background-color: @green;
-        height: 40px;
-        line-height: 1;
+        line-height: 1.1;
         padding: 5px 10px;
         cursor: pointer;
         .box-shadow(1px 1px 1px rgba(0,0,0,.2));
@@ -1438,7 +1437,8 @@
         }
 
         .name,
-        .nights {
+        .nights,
+        strong {
             font-weight: 600;
         }
 
@@ -1476,32 +1476,38 @@
             padding: 0;
             height: auto;
             background-color: transparent;
-            .box-shadow(none);
-            opacity: 0.5;
-            color: @black;
+            color: rgba(0,0,0,.5);
             width: 100%;
+            .box-shadow(none);
+
+            .highlight {
+                font-weight: 600;
+            }
         }
 
         &.check-in,
         &.pre-check-in {
             padding-left: 25px;
+
+            .highlight {
+                color: @white !important;
+                box-shadow: inset 0 -3px 0 @white;
+            }
             
             &:after {
                 content: '';
                 position: absolute;
                 top: 0;
                 left: 0;
-                background: @icons2x 7px -77px no-repeat;
+                background: @icons2x 10px -82px no-repeat;
                 background-size: 90px;
-                .size(100%, 20px);
+                .square(20px);
                 .show();
             }
 
             &.blocked:not(.selected) {
-
                 &:after {
-                    background-position: 8px -453px;
-                    background-size: 100px;
+                    background-position: 10px -414px;
                 }
             }
         }
@@ -1521,6 +1527,11 @@
             .name,
             .nights {
                 color: @black;
+            }
+
+            .highlight {
+                color: @logoPrimary !important;
+                box-shadow: inset 0 -3px 0 @logoPrimary;
             }
         }
 
