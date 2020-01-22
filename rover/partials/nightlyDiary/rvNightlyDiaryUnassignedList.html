@@ -14,10 +14,10 @@
             </button>
         </div>
         <div class="entry search">
-            <button class="clear-query"> <!-- Add class 'visible' to show -->
+            <button class="clear-query" ng-click="clearQuery()" ng-class="{'visible': searchQuery.length > 0}"> <!-- Add class 'visible' to show -->
                 <span class="icons icon-clear-search">Clear query</span>
             </button>
-            <span class="result-count hidden">{X} Matches</span> <!-- Remove class 'hidden' to show -->
+            <span class="result-count" ng-show="searchQuery.length > 0">{{diaryData.unassignedReservationList.reservations.length}} Matches</span> <!-- Remove class 'hidden' to show -->
             <input ng-model="searchQuery" ng-change="searchUnassignedList()" class="query" placeholder="Search by Guest Name or Conf. No." type="search" autocomplete="off">
         </div>
     </div>

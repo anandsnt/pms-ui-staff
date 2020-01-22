@@ -15,7 +15,7 @@ angular.module('sntRover')
         $scope.diaryData.selectedUnassignedReservation = {};
         $scope.businessDate = $rootScope.businessDate;
         $scope.searchQuery = '';
-        var initialUnassignedListData = [];
+        var initialUnassignedListData = angular.copy($scope.diaryData.unassignedReservationList.reservations);
 
         var selectUnassignedListItem = function(item) {
             // If we are in selected reservation mode, going to cancel the selection.
@@ -175,17 +175,14 @@ angular.module('sntRover')
             unSelectUnassignedListItem();
         });
 
+        // CICO-65962 : Handle searchUnassignedList logic.
         $scope.searchUnassignedList =  function() {
-            console.log($scope.searchQuery);
-            console.log(initialUnassignedListData);
-            console.log($scope.diaryData.unassignedReservationList.reservations);
-            
             var displayResults = [];
 
             if ($scope.searchQuery && $scope.searchQuery.length > 0) {
                 displayResults = initialUnassignedListData.filter(function(reservation) {
                     // check if the querystring is number or string
-                    return 
+                    var result = 
                         (
                             isNaN($scope.searchQuery) &&
                             reservation.first_name.toUpperCase().includes($scope.searchQuery.toUpperCase()) ||
@@ -195,13 +192,20 @@ angular.module('sntRover')
                             !isNaN($scope.searchQuery) &&
                             reservation.confirm_no.toString().includes($scope.searchQuery)
                         );
+
+                    return result;
                 });
             }
             else {
                 displayResults = initialUnassignedListData;
             }
 
-            console.log(displayResults);
             $scope.diaryData.unassignedReservationList.reservations = displayResults;
+        };
+
+        // CICO-65962 : Handle Clear Query.
+        $scope.clearQuery = function() {
+            $scope.searchQuery = '';
+            $scope.searchUnassignedList();
         };
 }]);
