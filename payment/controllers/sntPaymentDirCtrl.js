@@ -24,6 +24,7 @@ angular.module('sntPay').controller('sntPaymentController',
             $scope.payment = {
                 referenceText: $scope.referenceText,
                 amount: 0,
+                paymentCurrencyAmount: 0,
                 isRateSuppressed: false,
                 isEditable: false,
                 addToGuestCard: false,
@@ -941,10 +942,11 @@ angular.module('sntPay').controller('sntPaymentController',
             /**
              * @returns {undefined} undefined
              */
-            function calculateFee() {
+            function calculateFee(initialLoad) {
                 var selectedPaymentType,
                     cardTypeInfo,
                     currFee,
+                    currPaymentFee,
                     feeInfo,
                     usingChipAndPin = isEMVEnabled && !$scope.payment.isManualEntryInsideIFrame;
 
@@ -955,6 +957,10 @@ angular.module('sntPay').controller('sntPaymentController',
                         totalOfValueAndFee: '',
                         showFee: false,
                         feeChargeCode: ''
+                    };
+                    $scope.paymentFeeData = {
+                        calculatedPaymentFee: '',
+                        totalOfValueAndPaymentFee: ''
                     };
                     return;
                 }
@@ -996,6 +1002,19 @@ angular.module('sntPay').controller('sntPaymentController',
                 };
 
                 $scope.originalFee = angular.copy($scope.feeData.calculatedFee);
+            
+                // For fee curresponding to default currency payment amount CICO-72207
+
+                if (initialLoad) {
+                    currPaymentFee = sntPaymentSrv.calculateFee($scope.payment.paymentCurrencyAmount, feeInfo);
+                    $scope.paymentFeeData = {
+                        calculatedPaymentFee: currPaymentFee.calculatedPaymentFee,
+                        totalOfValueAndPaymentFee: currPaymentFee.totalOfValueAndPaymentFee
+                    };
+
+                    $scope.originalPaymentFee = angular.copy($scope.paymentFeeData.calculatedPaymentFee);
+                    $scope.feeData.calculatedFee = $scope.paymentFeeData.calculatedPaymentFee;
+                }
             }
 
             /**
@@ -1028,7 +1047,7 @@ angular.module('sntPay').controller('sntPaymentController',
             };
 
             // Payment type change action
-            $scope.onPaymentInfoChange = function(shouldReset) {
+            $scope.onPaymentInfoChange = function(shouldReset, isInitialLoad) {
                 // NOTE: Fees information is to be calculated only for standalone systems
                 // TODO: See how to handle fee in case of C&P
                 // CICO-44719: No need to show add payment screen
@@ -1053,7 +1072,11 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 var selectedPaymentType;
 
-                calculateFee();
+                calculateFee(true);
+
+                if (isInitialLoad) {
+                    $scope.payment.amount = $scope.payment.paymentCurrencyAmount;
+                }
                 selectedPaymentType = _.find($scope.paymentTypes, {
                     name: $scope.selectedPaymentType
                 });
@@ -1072,6 +1095,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 // If the changed payment type is CC and payment gateway is MLI show CC addition options
                 // If there are attached cards, show them first
                 if (!!selectedPaymentType && selectedPaymentType.name === 'CC') {
+                    $scope.payment.amount = initialPaymentAmount;
                     if (shouldReset && $scope.selectedPaymentType === 'CC' && $scope.hotelConfig.paymentGateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline) {
                         changeToCardAddMode();
                     } else if (PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl) {
@@ -1550,6 +1574,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 $scope.$watch('isEditable', setEditableFlag);
 
                 $scope.payment.amount = $scope.amount || 0;
+                $scope.payment.paymentCurrencyAmount = $scope.paymentCurrencyAmount || 0;
                 $scope.payment.isRateSuppressed = $scope.isRateSuppressed || false;
                 $scope.billNumber = $scope.billNumber || 1;
                 $scope.payment.linkedCreditCards = $scope.linkedCreditCards || [];
@@ -1629,7 +1654,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 }
 
                 //  For initial calculation of fee and other details
-                $timeout($scope.onPaymentInfoChange, 1000);
+                $timeout(function() {$scope.onPaymentInfoChange(false, true)},1000);
 
                 setScroller('cardsList', {
                     'click': true,

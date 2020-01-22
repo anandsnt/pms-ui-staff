@@ -133,7 +133,7 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
          *
          * @param amount
          * @param feeInfo
-         * @returns {{calculatedFee: string, minFees: number, defaultAmount: *, totalOfValueAndFee: string}}
+         * @returns {{calculatedFee: string, calculatedPaymentFee: string, minFees: number, defaultAmount: *, totalOfValueAndFee: string, totalOfValueAndPaymentFee: string}}
          */
         service.calculateFee = function(amount, feeInfo) {
             /**
@@ -148,13 +148,17 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
 
             var amountSymbol = "",
                 feeAmount = 0,
+                paymentCurrencyFee = 0,
                 minFees = 0,
                 calculatedFee = "",
-                totalOfValueAndFee = "";
+                calculatedPaymentFee = "",
+                totalOfValueAndFee = "",
+                totalOfValueAndPaymentFee = "";
 
             if (!!feeInfo) {
                 amountSymbol = feeInfo.amount_symbol;
                 feeAmount = feeInfo.amount ? parseFloat(feeInfo.amount) : 0;
+                paymentCurrencyFee = feeInfo.default_payment_currency_fee ? parseFloat(feeInfo.default_payment_currency_fee) : 0;
                 minFees = feeInfo.minimum_amount_for_fees ? parseFloat(feeInfo.minimum_amount_for_fees) : 0;
             } else {
                 console.warn("No fee information for the current selected payment type");
@@ -164,21 +168,28 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
             var defaultAmount = !amount ? 0 : parseFloat(amount);
 
             if (amountSymbol === "percent") {
-                var appliedFee = parseFloat(defaultAmount * (feeAmount / 100));
+                var appliedFee = parseFloat(defaultAmount * (feeAmount / 100)),
+                    appliedPaymentFee = parseFloat(defaultAmount * (paymentCurrencyFee / 100));
 
                 calculatedFee = parseFloat(appliedFee).toFixed(2);
+                calculatedPaymentFee = parseFloat(appliedPaymentFee).toFixed(2);
                 totalOfValueAndFee = parseFloat(appliedFee + defaultAmount).toFixed(2);
+                totalOfValueAndPaymentFee = parseFloat(appliedPaymentFee + defaultAmount).toFixed(2);
             } else {
                 calculatedFee = parseFloat(feeAmount).toFixed(2);
+                calculatedPaymentFee = parseFloat(paymentCurrencyFee).toFixed(2);
                 totalOfValueAndFee = parseFloat(defaultAmount + feeAmount).toFixed(2);
+                totalOfValueAndPaymentFee = parseFloat(defaultAmount + paymentCurrencyFee).toFixed(2);
             }
 
             return {
                 calculatedFee: calculatedFee,
+                calculatedPaymentFee: calculatedPaymentFee,
                 feeChargeCode: feeInfo.charge_code_id,
                 minFees: minFees,
                 defaultAmount: defaultAmount,
                 totalOfValueAndFee: totalOfValueAndFee,
+                totalOfValueAndPaymentFee: totalOfValueAndPaymentFee,
                 showFees: defaultAmount >= minFees && !!defaultAmount && !!feeAmount
             };
         };
