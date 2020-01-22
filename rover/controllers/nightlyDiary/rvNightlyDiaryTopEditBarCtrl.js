@@ -62,12 +62,16 @@ angular.module('sntRover')
                     $scope.diaryData.roomAssignmentFilters.type = 'MOVE_ROOM';
                     $scope.$emit('APPLY_GUEST_PREFERENCE_FILTER_TOP');
                 },
+                failureCallBack = function(errorMessage) {
+                    $scope.$emit('SHOW_ERROR_MESSAGE', errorMessage[0]);
+                },
                 postData = {
                     'reservation_id': $scope.currentSelectedReservation.id
                 },
                 options = {
                     params: postData,
-                    successCallBack: successCallBack
+                    successCallBack: successCallBack,
+                    failureCallBack: failureCallBack
                 };
 
                 $scope.callAPI(RVNightlyDiarySrv.getPreferences, options );
