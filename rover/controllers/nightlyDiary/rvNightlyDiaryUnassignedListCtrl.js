@@ -75,6 +75,7 @@ angular.module('sntRover')
         };
 
         $scope.addListener('SUCCESS_ROOM_ASSIGNMENT', function() {
+            $scope.diaryData.isEditReservationMode = false;
             var unassignedReservationList = $scope.diaryData.unassignedReservationList.reservations;
 
             // Update unassigned reservation list...
