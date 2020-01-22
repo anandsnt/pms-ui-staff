@@ -1359,11 +1359,42 @@
         padding-top: 15px;
     }
 
+    .unassigned-day {
+        line-height: 40px;
+        text-transform: uppercase;
+        font-weight: 600;
+        #flexbox > .parent(row wrap, '', center, '');
+
+        .date {
+            padding-left: 5px;
+            color: @grey3;
+        }
+
+        .count {
+            margin-left: auto;
+            color: @logoPrimary;
+            background: @white;
+            text-align: center;
+            font-size: 12px;
+            line-height: 20px;
+            .square(20px);
+            #border-radius > .rounded(20px);
+        }
+    }
+
     .unassigned-list {
-        .calc-height(100, 200);
+        .calc-height(100, 190);
+
+        &.with-date {
+            .calc-height(100, 240);
+        }
 
         &.no-actions {
-            .calc-height(100, 130);
+            .calc-height(100, 110);
+
+            &.with-date {
+                .calc-height(100, 160);
+            }
         }
 
         .wrapper {
