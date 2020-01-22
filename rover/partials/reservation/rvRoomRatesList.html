@@ -218,10 +218,10 @@
                                             <td ng-if="!rate.isSuppressed && !!day.inclusiveAddonsExist">INCL</td>
                                             <td ng-if="rate.isSuppressed">SR</td>
                                             <!-- taxes -->
-                                            <td ng-if="!rate.isSuppressed">{{day.rateCurrency}}{{day.excl_tax | number: 2}}</td>
+                                            <td ng-if="!rate.isSuppressed">{{day.rateCurrency}}{{day.incl_tax | number: 2}}</td>
                                             <td ng-if="rate.isSuppressed">SR</td>
                                             <!-- excl taxes -->
-                                            <td ng-if="!rate.isSuppressed">{{day.rateCurrency}}{{day.incl_tax | number: 2}}</td>
+                                            <td ng-if="!rate.isSuppressed">{{day.rateCurrency}}{{day.excl_tax | number: 2}}</td>
                                             <td ng-if="rate.isSuppressed">SR</td>
                                             <!-- incl taxes -->
                                             <td ng-if="!rate.isSuppressed">{{day.rateCurrency}}{{day.total | number: 2}}</td>

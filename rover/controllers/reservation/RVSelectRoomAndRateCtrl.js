@@ -603,7 +603,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						if ($rootScope.isAddonOn && areReservationAddonsAvailable && ( $rootScope.hotelDiaryConfig.mode !== 'FULL' || !$scope.stateCheck.isFromNightlyDiary)) {
 							goToAddonsView();
 						} else {
-							$scope.computeTotalStayCost();
+							// $scope.computeTotalStayCost();
 							$state.go('rover.reservation.staycard.mainCard.summaryAndConfirm');
 						}
 					}
@@ -664,7 +664,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					($stateParams.fromState === 'rover.reservation.staycard.reservationcard.reservationdetails' || $stateParams.fromState === 'STAY_CARD')) {
 					saveAndGotoStayCard();
 				} else {
-					$scope.computeTotalStayCost();
+					// $scope.computeTotalStayCost();
 					enhanceStay();
 				}
 			},
@@ -1400,6 +1400,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				secondary.dates = rateDetails.dates;
 				secondary.total = rateDetails.total_room_cost;
 				secondary.stayTaxExcl = rateDetails.excl_stay_tax;
+				secondary.stayTaxIncl = rateDetails.incl_stay_tax;
 				secondary.restrictions = rateDetails.summary;
 				// var datesArray = secondary.dates;
 

@@ -83,11 +83,11 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 				$scope.reservationData.has_reason = !!$scope.adjustment_reason.trim();
 
 				var reservationUpdateCallback = function() {
-					if ($scope.reservationData.isHourly && !$stateParams.id) {
-						$scope.computeHourlyTotalandTaxes();
-					} else {
-						$scope.computeTotalStayCost();
-					}
+					// if ($scope.reservationData.isHourly && !$stateParams.id) {
+					// 	// $scope.computeHourlyTotalandTaxes();
+					// } else {
+					// 	// $scope.computeTotalStayCost();
+					// }
 	
 					if ($stateParams.id) { // IN STAY CARD .. Reload staycard
 						$scope.saveReservation('rover.reservation.staycard.reservationcard.reservationdetails', {

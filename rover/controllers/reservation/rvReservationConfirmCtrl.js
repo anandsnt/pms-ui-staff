@@ -65,6 +65,11 @@ sntRover.controller('RVReservationConfirmCtrl', [
 	    	$scope.refreshScroller('reservationSummary');
 	    };
 
+	    $scope.$on("REFRESH_SCROLL_SUMMARY", function() {
+	    	
+	    	refreshPageScrollers();
+	    });
+
 	    /**
 	     * Fetch the guest languages list and settings
 	     * @return {undefined}

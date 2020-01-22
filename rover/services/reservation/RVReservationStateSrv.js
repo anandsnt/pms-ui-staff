@@ -209,100 +209,100 @@ angular.module('sntRover').service('RVReservationStateService', [
 		 * @return {Object}
 		 */
 		self.calculateTax = function(taxableAmount, taxes, roomIndex, numAdults, numChildren, forAddons) {
-			var taxInclusiveTotal = 0.0, // Per Night Inclusive Charges
-				taxExclusiveTotal = 0.0; // Per Night Exclusive Charges
-			// --The above two are required only for the room and rates section where we do not display the STAY taxes
-			var taxInclusiveStayTotal = 0.0, // Per Stay Inclusive Charges
-				taxExclusiveStayTotal = 0.0; // Per Stay Exlusive Charges
-			var taxDescription = [],
-				taxesLookUp = {},
-				baseAmount = self.computeBaseAmount(taxableAmount, taxes, numAdults, numChildren),
-				previousTaxCalculated = 0;
+			// var taxInclusiveTotal = 0.0, // Per Night Inclusive Charges
+			// 	taxExclusiveTotal = 0.0; // Per Night Exclusive Charges
+			// // --The above two are required only for the room and rates section where we do not display the STAY taxes
+			// var taxInclusiveStayTotal = 0.0, // Per Stay Inclusive Charges
+			// 	taxExclusiveStayTotal = 0.0; // Per Stay Exlusive Charges
+			// var taxDescription = [],
+			// 	taxesLookUp = {},
+			// 	baseAmount = self.computeBaseAmount(taxableAmount, taxes, numAdults, numChildren),
+			// 	previousTaxCalculated = 0;
 
-			_.each(taxes, function(tax) {
-				// for every tax that is associated to the date proceed
-				var isInclusive = tax.is_inclusive,
-					taxData = _.findWhere(self.metaData.taxDetails, { // obtain the tax data from the metaData
-						id: parseInt(tax.charge_code_id, 10)
-					});
+			// _.each(taxes, function(tax) {
+			// 	// for every tax that is associated to the date proceed
+			// 	var isInclusive = tax.is_inclusive,
+			// 		taxData = _.findWhere(self.metaData.taxDetails, { // obtain the tax data from the metaData
+			// 			id: parseInt(tax.charge_code_id, 10)
+			// 		});
 
-				if (!!taxData) {
-					var taxValue = taxData.amount,
-						amountType = taxData.amount_type,
-						multiplier = self.calculateMultiplier(amountType, numAdults, numChildren),
-						taxOn = baseAmount,
-						taxCalculated = 0;
+			// 	if (!!taxData) {
+			// 		var taxValue = taxData.amount,
+			// 			amountType = taxData.amount_type,
+			// 			multiplier = self.calculateMultiplier(amountType, numAdults, numChildren),
+			// 			taxOn = baseAmount,
+			// 			taxCalculated = 0;
 
-					// Vienna Tax calculations are different, It is handled here	
-					if (tax.is_vienna_tax) {
-						var taxOnVienna = taxableAmount;
+			// 		// Vienna Tax calculations are different, It is handled here	
+			// 		if (tax.is_vienna_tax) {
+			// 			var taxOnVienna = taxableAmount;
 
-						if (!!tax.calculation_rules.length) {
-							var grossAmount = taxableAmount - previousTaxCalculated;
+			// 			if (!!tax.calculation_rules.length) {
+			// 				var grossAmount = taxableAmount - previousTaxCalculated;
 
-							taxOnVienna = parseFloat((grossAmount * 100) / (100 + (parseFloat(taxValue) * multiplier)));
-							taxCalculated = multiplier * (grossAmount - taxOnVienna);
-						} else if (taxData.amount_symbol === '%') {
-							taxCalculated = parseFloat(multiplier * (parseFloat(taxValue / 100) * taxOnVienna));
-							previousTaxCalculated = taxCalculated;
-						}
-					} else {
-						if (taxData.amount_sign !== "+") {
-							taxData.amount = parseFloat(taxData.amount * -1.0);
-						}
+			// 				taxOnVienna = parseFloat((grossAmount * 100) / (100 + (parseFloat(taxValue) * multiplier)));
+			// 				taxCalculated = multiplier * (grossAmount - taxOnVienna);
+			// 			} else if (taxData.amount_symbol === '%') {
+			// 				taxCalculated = parseFloat(multiplier * (parseFloat(taxValue / 100) * taxOnVienna));
+			// 				previousTaxCalculated = taxCalculated;
+			// 			}
+			// 		} else {
+			// 			if (taxData.amount_sign !== "+") {
+			// 				taxData.amount = parseFloat(taxData.amount * -1.0);
+			// 			}
 
-						if (!!tax.calculation_rules.length) {
-							_.each(tax.calculation_rules, function(tax) {
-								taxOn = !!taxesLookUp[tax] ? (taxOn + parseFloat(taxesLookUp[tax])) : taxOn;
-							});
-						}
+			// 			if (!!tax.calculation_rules.length) {
+			// 				_.each(tax.calculation_rules, function(tax) {
+			// 					taxOn = !!taxesLookUp[tax] ? (taxOn + parseFloat(taxesLookUp[tax])) : taxOn;
+			// 				});
+			// 			}
 
-						// THE TAX CALCULATION HAPPENS HERE
-						if (taxData.amount_symbol === '%') { // The formula for inclusive tax computation is different from that for exclusive. Kindly NOTE.
-							taxCalculated = parseFloat(multiplier * (parseFloat(taxValue / 100) * taxOn));
-						} else {
-							taxCalculated = parseFloat(multiplier * parseFloat(taxValue)); // In case the tax is not a percentage amount, its plain multiplication with the tax's amount_type
-						}
+			// 			// THE TAX CALCULATION HAPPENS HERE
+			// 			if (taxData.amount_symbol === '%') { // The formula for inclusive tax computation is different from that for exclusive. Kindly NOTE.
+			// 				taxCalculated = parseFloat(multiplier * (parseFloat(taxValue / 100) * taxOn));
+			// 			} else {
+			// 				taxCalculated = parseFloat(multiplier * parseFloat(taxValue)); // In case the tax is not a percentage amount, its plain multiplication with the tax's amount_type
+			// 			}
 
-						taxesLookUp[taxData.id] = parseFloat(taxCalculated);
-					}
-					if (taxData.post_type === 'NIGHT') { // NIGHT tax computations
-						if (isInclusive) {
-							taxInclusiveTotal = parseFloat(taxInclusiveTotal) + parseFloat(taxCalculated);
-						} else {
-							taxExclusiveTotal = parseFloat(taxExclusiveTotal) + parseFloat(taxCalculated);
-						}
-					} else { // STAY tax computations
-						if (isInclusive) {
-							taxInclusiveStayTotal = parseFloat(taxInclusiveStayTotal) + parseFloat(taxCalculated);
-						} else {
-							taxExclusiveStayTotal = parseFloat(taxExclusiveStayTotal) + parseFloat(taxCalculated);
-						}
-					}
+			// 			taxesLookUp[taxData.id] = parseFloat(taxCalculated);
+			// 		}
+			// 		if (taxData.post_type === 'NIGHT') { // NIGHT tax computations
+			// 			if (isInclusive) {
+			// 				taxInclusiveTotal = parseFloat(taxInclusiveTotal) + parseFloat(taxCalculated);
+			// 			} else {
+			// 				taxExclusiveTotal = parseFloat(taxExclusiveTotal) + parseFloat(taxCalculated);
+			// 			}
+			// 		} else { // STAY tax computations
+			// 			if (isInclusive) {
+			// 				taxInclusiveStayTotal = parseFloat(taxInclusiveStayTotal) + parseFloat(taxCalculated);
+			// 			} else {
+			// 				taxExclusiveStayTotal = parseFloat(taxExclusiveStayTotal) + parseFloat(taxCalculated);
+			// 			}
+			// 		}
 
-					taxDescription.push({
-						postType: taxData.post_type,
-						isInclusive: isInclusive,
-						amount: taxCalculated,
-						id: taxData.id,
-						description: taxData.description,
-						roomIndex: roomIndex
-					});
-				}
-			});
-			return {
-				EXCL: {
-					NIGHT: taxExclusiveTotal,
-					STAY: taxExclusiveStayTotal,
-					total: parseFloat(taxExclusiveTotal) + parseFloat(taxExclusiveStayTotal)
-				},
-				INCL: {
-					NIGHT: taxInclusiveTotal,
-					STAY: taxInclusiveStayTotal,
-					total: parseFloat(taxInclusiveTotal) + parseFloat(taxInclusiveStayTotal)
-				},
-				taxDescription: taxDescription
-			};
+			// 		taxDescription.push({
+			// 			postType: taxData.post_type,
+			// 			isInclusive: isInclusive,
+			// 			amount: taxCalculated,
+			// 			id: taxData.id,
+			// 			description: taxData.description,
+			// 			roomIndex: roomIndex
+			// 		});
+			// 	}
+			// });
+			// return {
+			// 	EXCL: {
+			// 		NIGHT: taxExclusiveTotal,
+			// 		STAY: taxExclusiveStayTotal,
+			// 		total: parseFloat(taxExclusiveTotal) + parseFloat(taxExclusiveStayTotal)
+			// 	},
+			// 	INCL: {
+			// 		NIGHT: taxInclusiveTotal,
+			// 		STAY: taxInclusiveStayTotal,
+			// 		total: parseFloat(taxInclusiveTotal) + parseFloat(taxInclusiveStayTotal)
+			// 	},
+			// 	taxDescription: taxDescription
+			// };
 		};
 
 		self.setReservationFlag = function(key, status) {

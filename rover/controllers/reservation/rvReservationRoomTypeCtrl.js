@@ -239,7 +239,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				};
 
 			$scope.reservationData.rateDetails[$scope.activeRoom] = $scope.roomAvailability[$scope.reservationData.tabs[$scope.activeRoom].roomTypeId].ratedetails;
-			$scope.computeTotalStayCost();
+			// $scope.computeTotalStayCost();
 			_.each($scope.reservationData.rooms[0].stayDates, function(staydate, idx) {
 				rates.push(staydate.rate.id);
 			});
@@ -532,7 +532,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 						});
 					}
 				}
-				$scope.computeTotalStayCost();
+				// $scope.computeTotalStayCost();
 				transferState();
 			}
 		};
@@ -639,7 +639,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 							"to_date": $scope.reservationData.departureDate
 						});
 					} else {
-						$scope.computeTotalStayCost();
+						// $scope.computeTotalStayCost();
 						$state.go('rover.reservation.staycard.mainCard.summaryAndConfirm');
 					}
 				}

@@ -83,11 +83,11 @@ sntRover.controller('RVReservationAddonsCtrl', [
                 $scope.addonsData.existingAddons = [];
             },
             computeTotals = function() {
-                if ($scope.reservationData.isHourly) {
-                    $scope.computeHourlyTotalandTaxes();
-                } else {
-                    $scope.computeTotalStayCost();
-                }
+                // if ($scope.reservationData.isHourly) {
+                //     $scope.computeHourlyTotalandTaxes();
+                // } else {
+                //     // $scope.computeTotalStayCost();
+                // }
             },
             goToSummaryAndConfirm = function() {
                 if ($scope.fromPage === "staycard") {
@@ -586,7 +586,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     addonsDataCopy = angular.copy($scope.addonsData.existingAddons);
                     $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
 
-                    $scope.computeTotalStayCost();
+                    // $scope.computeTotalStayCost();
                 };
 
                 if (!RVReservationStateService.getReservationFlag('RATE_CHANGED') && !!$scope.reservationData.reservationId) {

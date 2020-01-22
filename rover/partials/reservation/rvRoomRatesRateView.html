@@ -117,22 +117,22 @@
                         </tr>
                     </tfoot>
                     <tbody>
-                        <tr ng-repeat="day in room.dates">
+                        <tr ng-repeat="(key, day) in room.dates">
                             <td>
-                               {{day.obj | date: fulldayInWeek }}, {{day.obj | date: dateFormat }}
+                             {{key | date: fulldayInWeek }}, {{key | date: dateFormat }}
                             </td>
                             <!-- Room charge -->
-                            <td ng-if="!rate.isSuppressed">{{day.rateCurrency}}{{day.amount | number: 2}}</td>
+                            <td ng-if="!rate.isSuppressed">{{day.rateCurrency}}{{day.rate | number: 2}}</td>
                             <td ng-if="rate.isSuppressed">SR</td>
                             <!-- Add on -->
                             <td ng-if="!rate.isSuppressed && !day.inclusiveAddonsExist">{{day.rateCurrency}}{{day.addon | number: 2}}</td>
                             <td ng-if="!rate.isSuppressed && !!day.inclusiveAddonsExist">INCL</td>
                             <td ng-if="rate.isSuppressed">SR</td>
                             <!-- taxes -->
-                            <td ng-if="!rate.isSuppressed">{{day.rateCurrency}}{{day.tax.incl | number: 2}}</td>
+                            <td ng-if="!rate.isSuppressed">{{day.rateCurrency}}{{day.incl_tax | number: 2}}</td>
                             <td ng-if="rate.isSuppressed">SR</td>
                             <!-- excl taxes -->
-                            <td ng-if="!rate.isSuppressed">{{day.rateCurrency}}{{day.tax.excl | number: 2}}</td>
+                            <td ng-if="!rate.isSuppressed">{{day.rateCurrency}}{{day.excl_tax | number: 2}}</td>
                             <td ng-if="rate.isSuppressed">SR</td>
                             <!-- incl taxes -->
                             <td ng-if="!rate.isSuppressed">{{day.rateCurrency}}{{day.total | number: 2}}</td>
