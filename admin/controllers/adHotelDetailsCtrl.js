@@ -499,7 +499,7 @@ admin.controller('ADHotelDetailsCtrl', [
     };
     // Handle click on MP flag checkbox.
     $scope.clickedMultiPropertyCheckbox = function() {
-    	if ( !$scope.data.is_multi_property && isMPFlagResetConfirmPopupNeeded ) {
+    	if ($scope.data.is_multi_property && isMPFlagResetConfirmPopupNeeded ) {
 			$scope.message = $scope.data.hotel_name + ' will now be de-selected from Multi property';
 			ngDialog.open({
                 template: '/assets/partials/hotel/adHotelMPFlagDeSelectionConfirm.html',
