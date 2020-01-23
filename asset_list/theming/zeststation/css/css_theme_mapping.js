@@ -107,7 +107,8 @@ module.exports = {
             'hammetts': [themeCSSRoot + 'hammetts.less'],
             'lochardil': [themeCSSRoot + 'lochardil.less'],
             'perle-oban': [themeCSSRoot + 'perle-oban.less'],
-            'why-houston': [themeCSSRoot + 'why-houston.less']
+            'why-houston': [themeCSSRoot + 'why-houston.less'],
+            'victory-house': [themeCSSRoot + 'victory-house.less']
         };
     }
 };
