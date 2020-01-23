@@ -105,7 +105,10 @@
 
     <!-- Deposit paid succesfully -->
     <div class="feedback no-top-border" ng-show="paymentAttempted && !isPaymentFailure">
-        <div class="notice success">Deposit paid</div>
+        <div class="notice success">Deposit paid!!<br />
+          <span ng-if="selectedPaymentType === 'CA' && hasPaymentRounding">
+              Final invoiced amount is subject to rounding!!
+          </span></div>
         <ul class="transaction">
             <li ng-show="!!payment.authorizationCode">
                 Your Authorize code is: <span class="auth">{{payment.authorizationCode}}</span>

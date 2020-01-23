@@ -3,6 +3,8 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
     '$rootScope', 'RVPaymentSrv', 'ngDialog', '$filter', '$timeout', 'rvAccountTransactionsSrv', 'rvPermissionSrv', 'RVReservationCardSrv',
     function($scope, $rootScope, RVPaymentSrv, ngDialog, $filter, $timeout, rvAccountTransactionsSrv, rvPermissionSrv, RVReservationCardSrv) {
 
+        BaseCtrl.call(this, $scope);
+        console.log($rootScope.hasPaymentRounding)
         BasePaymentCtrl.call(this, $scope);
         $scope.renderData = {};
         $scope.swipedCardDataToSave = {};
@@ -64,6 +66,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
             $scope.shouldShowMakePaymentButton = true;
             $scope.hasPermissionToMakePayment = hasPermissionToMakePayment();
             $scope.hasPermissionToRefundPayment = hasPermissionToRefundPayment();
+            $scope.hasPaymentRounding = $rootScope.hasPaymentRounding;
         };
 
         init();
