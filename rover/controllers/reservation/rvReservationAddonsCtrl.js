@@ -300,6 +300,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         posting_frequency: addon.postType.frequency,
                         rate_currency: addon.rateCurrency
                     });
+                       
                     $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
 
                     for (i = startIndex; i <= endIndex; i++) {
@@ -319,7 +320,6 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         });
                     }
                 }
-
                 $scope.showEnhancementsPopup();
                 computeTotals();
             },
@@ -348,11 +348,54 @@ sntRover.controller('RVReservationAddonsCtrl', [
 
         $scope.showEnhancementsPopup = function() {
             var selectedAddons = $scope.addonsData.existingAddons;
+            
+            $scope.addonPostingMode = 'reservation';
+
+            $scope.addonPopUpData = {
+				cancelLabel: "+ More",
+                saveLabel : "Book",
+                shouldShowAddMoreButton: false
+            };
+            $scope.reservationData.reservation_card.number_of_adults = $scope.reservationData.number_of_adults;
+            $scope.reservationData.reservation_card.number_of_children = $scope.reservationData.number_of_children;
+            $scope.reservationData.reservation_card.numNights = $scope.reservationData.numNights;
+
+            $scope.packageData = {
+                existing_packages: [],
+                duration_of_stay: $scope.duration_of_stay
+            };
+
+            angular.forEach($scope.addonsData.existingAddons, function(item) {
+                var addonsData = {
+                    id: item.id,
+                    name: item.title,
+                    addon_count: item.quantity,
+                    totalAmount: item.totalAmount,
+                    amount: item.price_per_piece,
+                    amount_type: {
+                        description: item.amount_type,
+                        value: item.amount_type
+                    },
+                    post_type: {
+                        description: item.post_type,
+                        frequency: item.posting_frequency,
+                        value: item.post_type
+                    },
+                    is_inclusive: item.is_inclusive,
+                    is_rate_addon: item.is_rate_addon,
+                    start_date: item.start_date,
+                    end_date: item.end_date,
+                    addon_currency: item.rate_currency,
+                    charge_full_weeks_only: item.charge_full_weeks_only
+                };
+
+                $scope.packageData.existing_packages.push(addonsData);
+            });
+
             if (selectedAddons.length > 0) {
                 ngDialog.open({
-                    template: '/assets/partials/reservation/selectedAddonsListPopup.html',
-                    className: 'ngdialog-theme-default',
-                    closeByDocument: true,
+                    template: '/assets/partials/packages/showPackages.html',
+					controller: 'RVReservationPackageController',
                     scope: $scope
                 });
             }
@@ -590,6 +633,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
 
             // subtract selected addon amount from total stay cost
             $scope.addonsData.existingAddons.splice(index, 1);
+            $scope.packageData.existing_packages.splice(index, 1);
 
             for (roomIndex = startIndex; roomIndex <= endIndex; roomIndex++) {
                 $scope.reservationData.rooms[roomIndex].addons.splice(index, 1);
@@ -648,6 +692,10 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     }
                     var associatedPackages = data.existing_packages || data;
 
+                    $scope.packageData = {
+                        existing_packages: [],
+                        duration_of_stay: $scope.duration_of_stay
+                    };
                     angular.forEach(associatedPackages, function(item) {
                         var addonsData = {
                             id: item.id,
@@ -663,7 +711,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             rate_currency: item.addon_currency,
                             post_instances: item.post_instances,
                             start_date: item.start_date,
-                            end_date: item.end_date
+                            end_date: item.end_date,
+                            posting_frequency: item.post_type.frequency
                         };
 
                         $scope.addonsData.existingAddons.push(addonsData);
@@ -685,6 +734,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         }
 
                     });
+                    $scope.packageData.existing_packages.push(associatedPackages);
 
                     setAddonsCustomPostingData();
 
@@ -714,6 +764,20 @@ sntRover.controller('RVReservationAddonsCtrl', [
                  */
                 fetchAddons('', true);
                 $scope.setScroller("enhanceStays");
+                var proceedBookingListner = $scope.$on('PROCEED_BOOKING', function(event, data) {
+                    if(data.addonPostingMode === 'reservation') {
+                        $scope.proceed();
+                    }
+                });
+
+                var removeSelectedAddonsListner = $rootScope.$on('REMOVE_ADDON', function(event, data) {
+                    if(data.addonPostingMode === 'reservation') {
+                        $scope.removeSelectedAddons(data.index);
+                    }
+                });
+
+                $scope.$on( '$destroy', proceedBookingListner);
+                $scope.$on( '$destroy', removeSelectedAddonsListner);
             }
         };
 
@@ -733,6 +797,10 @@ sntRover.controller('RVReservationAddonsCtrl', [
 
             return (addonCount * quantity);
         };
+
+        $scope.goToAddons = function() {
+            $scope.closePopup();
+        }
 
         // CICO-32856
         $scope.$on('cardChanged', function(event, cardIds) {

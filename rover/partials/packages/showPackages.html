@@ -46,12 +46,12 @@
                                 {{addon.addon_currency}}{{addon.totalAmount}}
                              </span>
                          <!-- add class .hidden to hide it if it can't be removed/deleted-->
-                         <span class="delete" ng-hide="addon.is_rate_addon" ng-click="removeSelectedAddons(addon.id, $index)">
+                         <span class="delete" ng-hide="addon.is_rate_addon" ng-click="removeChosenAddons($index, addon.id)">
                             <span class="icons icon-remove-10"></span>
                          </span>
                     </li>
                 </ul>
-                <div class="actions inline">
+                <div ng-show="addonPopUpData.shouldShowAddMoreButton" class="actions inline">
                     <button class="button blank" ng-click="closeAddOnPopup()">Close</button>
                     <button class="button orange" ng-click="goToAddons()">Add More</button>
                 </div>
@@ -149,8 +149,8 @@
                 </div>
 
                 <div class="actions inline">
-                    <button class="button blank" ng-click="closeAddOnPopup()">Cancel</button>
-                    <button class="button green" ng-click="saveAddonPosting()">Save</button>
+                    <button class="button blank" ng-click="closeAddOnPopup()">{{addonPopUpData.cancelLabel}}</button>
+                    <button class="button green" ng-click="proceedBooking()">{{addonPopUpData.saveLabel}}</button>
                 </div>
             </div>
         </div>
