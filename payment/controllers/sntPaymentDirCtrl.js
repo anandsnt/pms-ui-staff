@@ -992,7 +992,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 }
 
                 currFee = sntPaymentSrv.calculateFee($scope.payment.amount, feeInfo);
-                
+
                 $scope.isDisplayRef = selectedPaymentType && selectedPaymentType.is_display_reference;
 
                 $scope.feeData = {
@@ -1656,7 +1656,7 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 //  For initial calculation of fee and other details
                 $timeout(function() {
-                    $scope.onPaymentInfoChange(false, true)
+                    $scope.onPaymentInfoChange(false, true);
                 }, 1000);
 
                 setScroller('cardsList', {

@@ -19,7 +19,7 @@ angular.module('sntPay').directive('sntPayment', function() {
             guestId: '@',
             billNumber: '=',
             amount: '=', // amount to pay
-            paymentCurrencyAmount: '=', // default payment currency amount
+            paymentCurrencyAmount: '=?', // default payment currency amount
             selectedCC: '=?', // selected CC details
             referenceText: '=?', // selected CC details
             actionType: '@',
