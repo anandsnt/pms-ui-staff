@@ -168,13 +168,12 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
             var defaultAmount = !amount ? 0 : parseFloat(amount);
 
             if (amountSymbol === "percent") {
-                var appliedFee = parseFloat(defaultAmount * (feeAmount / 100)),
-                    appliedPaymentFee = parseFloat(defaultAmount * (paymentCurrencyFee / 100));
+                var appliedFee = parseFloat(defaultAmount * (feeAmount / 100));
 
                 calculatedFee = parseFloat(appliedFee).toFixed(2);
-                calculatedPaymentFee = parseFloat(appliedPaymentFee).toFixed(2);
+                calculatedPaymentFee = calculatedFee;
                 totalOfValueAndFee = parseFloat(appliedFee + defaultAmount).toFixed(2);
-                totalOfValueAndPaymentFee = parseFloat(appliedPaymentFee + defaultAmount).toFixed(2);
+                totalOfValueAndPaymentFee = totalOfValueAndFee;
             } else {
                 calculatedFee = parseFloat(feeAmount).toFixed(2);
                 calculatedPaymentFee = parseFloat(paymentCurrencyFee).toFixed(2);
