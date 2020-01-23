@@ -31,7 +31,8 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
                             template: '/assets/partials/rvExtendSessionModal.html',
                             className: 'ngdialog-theme-default',
                             scope: $scope,
-                            closeByEscape: false
+                            closeByEscape: false,
+                            closeByDocument: false
                         }); 
                     }
                     
