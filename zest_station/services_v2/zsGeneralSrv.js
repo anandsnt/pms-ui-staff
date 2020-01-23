@@ -124,7 +124,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'lochardil': 'lochardil',
             'perle-oban': 'Oban Perle',
             'why-houston': 'Why Hotel Houston',
-            'victory-house': 'Victory House'
+            'victory-house': 'Victory House',
+            'why-columbia': 'Why Hotel Columbia Pike '
 
         };
 
