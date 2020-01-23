@@ -2765,8 +2765,8 @@ sntRover.controller('RVbillCardController',
 					$("header .h2").addClass('text-hide');
 					$("body #loading").html("");// CICO-56119
 
-					// add the orientation
                     // add the orientation
+
                     addPrintOrientation();
                     /*
                      *	======[ READY TO PRINT ]======
@@ -2785,7 +2785,7 @@ sntRover.controller('RVbillCardController',
                         $timeout(function() {
                             billCardPrintCompleted();
                         }, 3000);
-                    }, 300);
+                    }, 700);
 			};
 
 			var printDataFailureCallback = function(errorData) {
