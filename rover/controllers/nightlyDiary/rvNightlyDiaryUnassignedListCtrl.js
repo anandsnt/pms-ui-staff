@@ -100,6 +100,7 @@ angular.module('sntRover')
                 $scope.errorMessage = '';
                 $scope.diaryData.unassignedReservationList = data;
                 initialUnassignedListData = angular.copy(data.reservations);
+                $scope.searchQuery = '';
             },
             postData = {
                 'date': $scope.diaryData.arrivalDate
