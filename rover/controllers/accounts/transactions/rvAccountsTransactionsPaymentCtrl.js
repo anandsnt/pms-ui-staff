@@ -66,7 +66,6 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
             $scope.shouldShowMakePaymentButton = true;
             $scope.hasPermissionToMakePayment = hasPermissionToMakePayment();
             $scope.hasPermissionToRefundPayment = hasPermissionToRefundPayment();
-            $scope.hasPaymentRounding = $rootScope.hasPaymentRounding;
         };
 
         init();
