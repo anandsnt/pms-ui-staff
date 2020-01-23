@@ -35,8 +35,7 @@
 "DEPOSIT_RULES":"Deposit Rules",
 "CANNOT_CLOSE_ACCOUNT":"Unable to close account with outstanding balance.",
 
-
-"TOTAL_FEES": "Total Fees",
+"TOTAL_CHARGES": "Total Charges",
 "TOTAL_BALANCE": "Total Balance",
 "NO_TRANSACTIONS_MESSAGE": "0 Transactions Found",
 "BILL": "Bill",
@@ -44,7 +43,7 @@
 "EXPENSE": "Expense",
 "DETAILS": "Details",
 "CHARGE_TYPE": "Charge Type",
-"FEES": "Fees",
+"CHARGES": "Charges",
 "EMAIL":"Email",
 "BALANCE":"Balance",
 "PAY":"Pay",
@@ -54,5 +53,5 @@
 "DESCRIPTION": "Description",
 "CREDITS": "Credits",
 "EDIT": "Edit",
-"STAY_FEES": "Stay Fees",
+"STAY_CHARGES": "Stay Charges",
 "AS_OF":"As of"
