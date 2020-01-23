@@ -1495,6 +1495,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                                 $scope.reservationData.rooms[key].rateAvg = response.data.stay_dates[key].rate_amount;
                                 $scope.reservationData.rooms[key].rateTotal = response.data.total_rate;
                                 $scope.reservationData.rooms[key].taxInformation = response.data.tax_details;
+                                $scope.reservationData.rooms[key].addons = response.data.addons;
 
 
                                 $scope.reservationData.totalStayCost = totalStayCost;
@@ -1706,6 +1707,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                                     $scope.reservationData.rooms[key].rateAvg = response.data.stay_dates[key].rate_amount;
                                     $scope.reservationData.rooms[key].rateTotal = response.data.total_rate;
                                     $scope.reservationData.rooms[key].taxInformation = response.data.tax_details;
+                                    $scope.reservationData.rooms[key].addons = response.data.addons;
 
 
                                     $scope.reservationData.totalStayCost = totalStayCost;
