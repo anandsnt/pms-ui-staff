@@ -16,7 +16,8 @@ angular.module('sntRover')
         $scope.businessDate = $rootScope.businessDate;
 
         var selectUnassignedListItem = function(item) {
-            if ($scope.diaryData.isEditReservationMode) {
+            // If we are in selected reservation mode, going to cancel the selection.
+            if ($scope.diaryData.isEditReservationMode && $scope.currentSelectedReservation.type !== 'UNASSIGNED_RESERVATION') {
                 $scope.$emit('CANCEL_RESERVATION_EDITING');
             }
             $scope.diaryData.isReservationSelected = true;
@@ -59,6 +60,17 @@ angular.module('sntRover')
             }
             else {
                 selectUnassignedListItem(item);
+                var currentSelectedReservation = {
+                    ...item,
+                    id: item.reservation_id,
+                    guest_details: {
+                        full_name: item.last_name + ' ' + item.first_name,
+                        image: ''
+                    },
+                    type: 'UNASSIGNED_RESERVATION'
+                };
+
+                $scope.$emit('CLICKED_UNASSIGNED_RESERVATION', currentSelectedReservation);
             }
         };
 
@@ -77,6 +89,7 @@ angular.module('sntRover')
             $scope.diaryData.selectedUnassignedReservation = {};
 
             $scope.$emit('HIDE_ASSIGN_ROOM_SLOTS');
+            $scope.$emit('CANCEL_UNASSIGNED_RESERVATION_MAIN');
         });
 
         // Method to fetch Unassigned reservations list.
@@ -145,4 +158,17 @@ angular.module('sntRover')
         $scope.isShowUnassignedList = function() {
             return (screen.width >= 1600 || $scope.diaryData.rightFilter === 'UNASSIGNED_RESERVATION') ? 'visible' : '';
         };
+        // CICO-73889 : Handle unassigned reservation selection.
+        $scope.addListener('SELECT_UNASSIGNED_RESERVATION', function(event, reservationId) {
+            var unassignedReservationList = $scope.diaryData.unassignedReservationList.reservations,
+                reservationItem = _.find(unassignedReservationList, function(item) { 
+                    return item.reservation_id === reservationId;
+                });
+
+            selectUnassignedListItem(reservationItem);
+        });
+
+        $scope.addListener('CANCEL_UNASSIGNED_RESERVATION', function() {
+            unSelectUnassignedListItem();
+        });
 }]);

@@ -1,12 +1,19 @@
 sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$rootScope', '$scope', 'stayDateDetails', 'RVChangeStayDatesSrv', '$filter', 'ngDialog', 'rvPermissionSrv', 'RVReservationBaseSearchSrv', '$timeout', 'RVNightlyDiarySrv',
+    'RVReservationStateService',
     function($state, $stateParams,
              $rootScope, $scope, stayDateDetails,
              RVChangeStayDatesSrv, $filter, ngDialog,
-             rvPermissionSrv, RVReservationBaseSearchSrv, $timeout, RVNightlyDiarySrv) {
+             rvPermissionSrv, RVReservationBaseSearchSrv, $timeout, RVNightlyDiarySrv, RVReservationStateService) {
 		// inheriting some useful things
         BaseCtrl.call(this, $scope);
 
         var RESV_LIMIT = $rootScope.maxStayLength;
+
+        var RESPONSE_STATUS_470 = 470;
+
+        $scope.hasOverBookRoomTypePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
+        $scope.hasOverBookHousePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE');
+        $scope.hasBorrowFromHousePermission = rvPermissionSrv.getPermissionValue('GROUP_HOUSE_BORROW');
 
 		// set a back button on header
         $rootScope.setPrevState = {
@@ -379,13 +386,55 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
         this.successCallbackConfirmUpdates = function(data) {
             $scope.$emit('hideLoader');
+            $scope.closeDialog();
             $scope.goBack();
         };
 
         this.failureCallbackConfirmUpdates = function(errorMessage) {
             $scope.$emit('hideLoader');
-            $scope.errorMessage = errorMessage;
-			// Some error in date extending process - auth popup closing..
+
+            if (errorMessage.httpStatus === RESPONSE_STATUS_470 && errorMessage.results && errorMessage.results.is_borrowed_from_house) {
+                var results = errorMessage.results;
+                
+                $scope.borrowData = {};
+                if (!results.room_overbooked && !results.house_overbooked) {
+                    $scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission;
+                    $scope.borrowData.isBorrowFromHouse = true;
+                } else if (results.room_overbooked && !results.house_overbooked) {
+                    $scope.borrowData.shouldShowBorrowBtn = $scope.hasOverBookRoomTypePermission && $scope.hasBorrowFromHousePermission;
+                    $scope.borrowData.isRoomTypeOverbooked = true;
+                } else if (!results.room_overbooked && results.house_overbooked) {
+                    $scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission && $scope.hasOverBookHousePermission;
+                    $scope.borrowData.isHouseOverbooked = true;
+                } else if (results.room_overbooked && results.house_overbooked) {
+                    $scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission && $scope.hasOverBookRoomTypePermission && $scope.hasOverBookHousePermission;
+                    $scope.borrowData.isHouseAndRoomTypeOverbooked = true;
+                }
+
+                ngDialog.open({
+                    template: '/assets/partials/common/group/rvGroupBorrowOverbookPopup.html',
+                    className: '',
+                    closeByDocument: false,
+                    closeByEscape: true,
+                    scope: $scope
+                });
+            } else {
+                $scope.errorMessage = errorMessage;
+			    // Some error in date extending process - auth popup closing..
+                $scope.closeDialog();
+            }
+            
+        };
+
+        // Handles the borrow action
+        $scope.performBorrowFromHouse = function () {
+            RVReservationStateService.setForceOverbookFlagForGroup(true);
+            $scope.clickedStayRangeChangeConfirmButton();
+        };
+
+        // Closes the current borrow dialog
+        $scope.closeBorrowDialog = function() {
+            $scope.borrowData = {};
             $scope.closeDialog();
         };
 
@@ -442,6 +491,8 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
                 $scope.isFailureScreen = true;
                 $scope.cc_auth_amount = data.cc_auth_amount;
             }
+
+            $scope.closeDialog();
         };
 
 		// Handle confirmUpdates process with Autherization..
@@ -499,6 +550,11 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
             }
 
+            // CICO-71977
+            if (RVReservationStateService.getForceOverbookForGroup()) {
+                postParams.forcefully_overbook = RVReservationStateService.getForceOverbookForGroup();
+                RVReservationStateService.setForceOverbookFlagForGroup(false);
+            }
 
 			// CICO-7306 authorization for CC.
             if ($scope.requireAuthorization && $scope.isStandAlone) {
@@ -515,6 +571,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
                     scope: $scope
                 });
                 postParams.authorize_credit_card = true;
+
                 $scope.invokeApi(RVChangeStayDatesSrv.confirmUpdates, postParams, that.successCallbackCCAuthConfirmUpdates, that.failureCallbackConfirmUpdates);
             } else {
                 postParams.authorize_credit_card = false;

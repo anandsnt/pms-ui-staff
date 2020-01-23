@@ -32,6 +32,31 @@
 					<fieldset class="holder left" ng-class="{'overlay': invoiceSettings.should_not_allow_tourist_tax_toggling }">
 						<ad-toggle-button label="{{'TOURIST_TAX' | translate}}" is-checked="invoiceSettings.enable_tourist_tax_feature"></ad-toggle-button>	
 					</fieldset>
+					<fieldset class="holder right" ng-if="isStandAlone">
+						<ad-toggle-button label="{{'PAYMENT_ROUNDING' | translate}}" is-checked="invoiceSettings.enable_payment_rounding"></ad-toggle-button>
+						<div class="entry full-width" ng-if="invoiceSettings.enable_payment_rounding">
+							<label for="roundingFactor">{{'ROUNDING_FACTOR' | translate}}</label>
+							<div class="select">
+								<select id='selectEncoder' class='placeholder'
+									ng-options="rounding.id as rounding.value for rounding in invoiceSettings.rounding_factors" ng-model="invoiceSettings.selected_rounding_factor_id">
+									<option style="display:none" value="">{{"SELECT_ROUNDING_FACTOR" | translate}}</option>
+								</select>
+							</div>
+							<br>
+							<label for="roundingChargeCode">{{"ROUNDING_OFFSET_CHARGE_CODE" | translate}}</label>
+							<div class="select">
+							<select id='selectEncoder' class='placeholder'
+									ng-options="chargeCode.value as chargeCode.description for chargeCode in invoiceSettings.chargeCodes" ng-model="invoiceSettings.selected_rounding_offset_charge_code_id">
+									<option  value="">{{"NO_CHARGE_CODE" | translate}}</option>
+								</select>
+							</div>
+							<br>
+							<ad-checkbox is-checked="invoiceSettings.show_rounding_offset_charge_code_on_invoice" label="{{'SHOW_ROUNDING_OFFSET_CHARGE_CODE_ON_INVOICE' | translate}}" div-class="full-width"></ad-checkbox>
+							</div>
+					</fieldset>
+					<fieldset class="holder left">
+						<ad-toggle-button label="{{'ARCHIVE_GUEST_INVOICE' | translate}}" is-checked="invoiceSettings.archive_guest_invoices"></ad-toggle-button>	
+					</fieldset>
 
 					<div class="actions float">
 						<button type="button" id="cancel" class="button blank" ng-click="goBackToPreviousState()"translate>

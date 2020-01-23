@@ -190,7 +190,7 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 
 		bars.append("rect")
 			.attr("class", function (item) {
-				return item.type === "pending_inspected_rooms" ? "bar-warning rect-bars" : "rect-bars";
+				return (item.type === "pending_inspected_rooms"  || item.type === "overbooked_rooms")? "bar-warning rect-bars" : "rect-bars";
 			})
 			.attr("height", yScale.bandwidth())
 			.attr("x", function(item) {
@@ -644,4 +644,67 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 
 		return chartData;
 	};
+
+	this.textTruncate = function(str, length, ending) {
+		if (length == null) {
+			length = 100;
+		}
+		if (ending == null) {
+			ending = '...';
+		}
+		if (str.length > length) {
+			return str.substring(0, length - ending.length) + ending;
+		} else {
+			return str;
+		}
+	};
+
+	this.getClosetDayOftheYearInPastYear = function(date) {
+		
+		var thisYearDate = moment(date);
+		var lastYearDateRef = moment(date).subtract(1, 'years');
+		var lastYearDate = moment(date).subtract(1, 'years');
+		var thisYearDay = thisYearDate.day();
+		var lastyearDay = lastYearDate.day();
+		var lastYearClosestDay;
+
+		if (thisYearDay == lastyearDay) {
+			lastYearClosestDay = lastYearDate;
+		} else if (lastyearDay == 0) {
+			lastYearClosestDay = thisYearDay <= 3 ? lastYearDate.add(thisYearDay, 'days') : lastYearDate.subtract(thisYearDay, 'days');
+		} else if (thisYearDay == 0) {
+			lastYearClosestDay = lastyearDay <= 3 ? lastYearDate.subtract(lastyearDay, 'days') : lastYearDate.add(lastyearDay === 6 ? 1 : lastyearDay === 5 ? 2 : 3, 'days');
+		} else if (thisYearDay > lastyearDay) {
+			lastYearClosestDay = lastYearDate.add(thisYearDay - lastyearDay, 'days');
+		} else if (thisYearDay < lastYearClosestDay) {
+			lastYearClosestDay = lastYearDate.subtract(lastyearDay - thisYearDay, 'days');
+		}
+		// day = lastYearClosestDay.day();
+		var formatedDay = lastYearClosestDay.format("YYYY-MM-DD");
+
+		return formatedDay;
+	};
+
+	this.addChartHeading = function(title, updatedTime) {
+		$("#d3-plot").append("<p style='margin-top:10px'><strong>" + title + "</strong></p>");
+		$("#d3-plot").append("<p>Last update:" + updatedTime + "</strong></p>");
+	};
+
+
+	this.findSelectedFilter = function(dataSet, selectedItem) {
+		var selectedFilter = _.find(dataSet, function(item) {
+			return item.value == selectedItem || item.code == selectedItem;
+		});
+
+		return selectedFilter;
+	};
+
+	this.addToAndSortArray = function(array, newItem) {
+		array.push(newItem);
+		array = _.sortBy(array, function(item) {
+			return item.name;
+		});
+		return array;
+	};
+
 }]);

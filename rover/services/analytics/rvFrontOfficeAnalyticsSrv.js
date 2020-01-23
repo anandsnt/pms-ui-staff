@@ -26,11 +26,11 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
             var combinedArray = chart.contents.left_side.concat(chart.contents.right_side);
 
             chart.contents.left_side = _.reject(combinedArray, function(item) {
-                return item.type === "inspected";
+                return item.type === "inspected" || item.type === "overbooked_rooms";
             });
 
             chart.contents.right_side = _.filter(combinedArray, function(item) {
-                return item.type === "inspected";
+                return item.type === "inspected" || item.type === "overbooked_rooms";
             });
         };
 
@@ -298,7 +298,7 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
 
                 if (rvAnalyticsSrv.isVip(reservation)) {
                     hourActivity[dayKey].vipCheckin = hourActivity[dayKey].vipCheckin + 1;
-                } else if (rvAnalyticsSrv.isLateCheckout(reservation)) {
+                } else if (rvAnalyticsSrv.isEarlyCheckin(reservation)) {
                     hourActivity[dayKey].earlyCheckin = hourActivity[dayKey].earlyCheckin + 1;
                 } else {
                     hourActivity[dayKey].checkin = hourActivity[dayKey].checkin + 1;

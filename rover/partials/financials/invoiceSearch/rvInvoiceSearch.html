@@ -34,27 +34,27 @@
     </div>
 
     <!-- Add class 'hidden' when displaying AR Invoices -->
-    <div class="entry options" ng-show="!(shouldShowReceipts() && paymentDataArray.length > 0)"> 
+    <div class="entry options" ng-show="!((shouldShowReservationReceipts() || shouldShowAccountReceipts()) && paymentDataArray.length > 0)"> 
         <!-- Add .hidden if displaying Receipts -->
-        <label class="checkbox" ng-show="shouldShowInvoices()">
+        <label class="checkbox" ng-show="shouldShowReservationInvoices() || shouldShowAccountInvoices()">
             <span class="icon-form icon-checkbox" ng-class="{'checked': invoiceSearchData.no_folio_number_only}"></span>
             <input type="checkbox" ng-model="invoiceSearchData.no_folio_number_only" ng-click="searchInvoice()"/>
             No Folio Number
         </label>
 
-        <label class="checkbox" ng-show="shouldShowReceipts()" ng-click="clickedNoQrCode()">
+        <label class="checkbox" ng-show="shouldShowReservationReceipts() || shouldShowAccountReceipts()">
             <span class="icon-form icon-checkbox" ng-class="{'checked': invoiceSearchData.no_qr_code_only}"></span>
-            <input type="checkbox" ng-model="invoiceSearchData.no_qr_code_only" />
-            No QR code only ={{invoiceSearchData.no_qr_code_only}}
+            <input type="checkbox"  ng-model="invoiceSearchData.no_qr_code_only" ng-click="searchInvoice()"/>
+            No QR code
         </label>
 
     </div>
 </form>
-<span ng-if="shouldShowInvoices()">
+<span ng-if="shouldShowReservationInvoices() || shouldShowAccountInvoices()">
     <div ng-include="'/assets/partials/financials/invoiceSearch/rvInvoiceSearchInvoices.html'" ></div>
 </span>
-
-<span ng-if="shouldShowReceipts()">
+ 
+<span ng-if="shouldShowReservationReceipts() || shouldShowAccountReceipts()">
     <div ng-include="'/assets/partials/financials/invoiceSearch/rvInvoiceSearchReceipts.html'" ></div>
 </span>
 

@@ -512,5 +512,16 @@ angular.module('sntRover').service('RVReservationStateService', [
 
 		};
 
+		// Set the force overbook flag during borrow
+		this.setForceOverbookFlagForGroup = function(value) {
+			this.forceOverbookForGroups = value;
+		};
+
+		// Get the value of the force overbook flag for group borrow
+		this.getForceOverbookForGroup = function () {
+			return this.forceOverbookForGroups;
+		};
+
+
 	}
 ]);

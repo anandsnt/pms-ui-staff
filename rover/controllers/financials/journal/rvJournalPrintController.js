@@ -116,6 +116,12 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
             postData.query = $scope.data.query;
 		}
 
+		if (!$scope.data.activeRevenueTab) {
+			$scope.data.activeRevenueTab = '';
+		} else {
+			postData.type = ($scope.data.activeRevenueTab).toLowerCase();
+		}
+
 		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, postData, successCallBackFetchRevenueData);
        	var uiValue = _.find($scope.data.activeChargeGroups, function(each) {
        		return (each.id).toString() === $scope.data.selectedChargeGroup;
@@ -154,6 +160,12 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 		if ($scope.data.query !== "") {
             postData.filter_id = $scope.data.filterId;
             postData.query = $scope.data.query;
+		}
+
+		if (!$scope.data.activeRevenueTab) {
+			$scope.data.activeRevenueTab = '';
+		} else {
+			postData.type = ($scope.data.activeRevenueTab).toLowerCase();
 		}
 
         $scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeCodes, postData, successCallBackFetchRevenueDataChargeCodes);
@@ -206,7 +218,13 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
             postData.query = $scope.data.query;
 		}
 
-		if ($scope.data.selectedPaymentType === "ALL") {
+		if (!$scope.data.activePaymentTab) {
+			$scope.data.activePaymentTab = '';
+		} else {
+			postData.type = ($scope.data.activePaymentTab).toLowerCase();
+		}
+
+		if ($scope.data.selectedPaymentType === "") {
 			postData.charge_code_id = "";
 		}
 		else if ($scope.data.selectedPaymentType === "" || typeof $scope.data.selectedPaymentType === "undefined") {

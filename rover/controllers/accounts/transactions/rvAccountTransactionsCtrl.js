@@ -39,6 +39,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		$scope.perPage = 50;
 		$scope.businessDate = $rootScope.businessDate;
+
 		$scope.isFromBillCard = false;
 
 		// Success callback for transaction fetch API.
@@ -627,6 +628,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				sntActivity.stop("SHOW_PAYMENT_MODEL");
 				$scope.passData = getPassData();
 				$scope.paymentModalOpened = true;
+				$scope.$emit('TOGGLE_PAYMET_POPUP_STATUS', true);
 				ngDialog.open({
 					template: '/assets/partials/accounts/transactions/rvAccountPaymentModal.html',
 					className: '',
@@ -658,6 +660,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		var modalOpened = $scope.$on('HANDLE_MODAL_OPENED', function(event) {
 			$scope.paymentModalOpened = false;
+			$scope.$emit('TOGGLE_PAYMET_POPUP_STATUS', false);
 		});
 
 		$scope.$on('$destroy', modalOpened);

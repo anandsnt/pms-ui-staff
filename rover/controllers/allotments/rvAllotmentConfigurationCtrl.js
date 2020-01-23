@@ -12,7 +12,8 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
     '$timeout',
     'rvAccountTransactionsSrv',
     'hotelSettings',
-    function($scope, $rootScope, rvAllotmentSrv, $filter, $stateParams, rvAllotmentConfigurationSrv, summaryData, holdStatusList, $state, rvPermissionSrv, $timeout, rvAccountTransactionsSrv, hotelSettings) {
+    'ngDialog',
+    function($scope, $rootScope, rvAllotmentSrv, $filter, $stateParams, rvAllotmentConfigurationSrv, summaryData, holdStatusList, $state, rvPermissionSrv, $timeout, rvAccountTransactionsSrv, hotelSettings, ngDialog) {
 
         BaseCtrl.call(this, $scope);
         $scope.isDisabledDatePicker = ($stateParams.id !== "NEW_ALLOTMENT") ? true :  false;
@@ -88,6 +89,10 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             var summaryData = $scope.allotmentConfigData.summary; // ref for summary
 
             summaryData = _.extend(summaryData, data.allotmentSummary);
+
+            if (summaryData.rate === '-1') {
+                summaryData.uniqId = '-1';
+            }
 
             if (!$scope.isInAddMode()) {
                 summaryData.block_from = new tzIndependentDate(summaryData.block_from);
@@ -300,6 +305,8 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                 if (ifMandatoryValuesEntered()) {
                     if (!$scope.allotmentConfigData.summary.rate) {
                         $scope.allotmentConfigData.summary.rate = -1;
+                        $scope.allotmentConfigData.summary.uniqId = '-1';
+                        $scope.allotmentConfigData.summary.contract_id = null;
                     }
                     var options = {
                         successCallBack: onAllotmentSaveSuccess,
@@ -319,27 +326,30 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
 
         };
 
-        var refreshSummaryDataAfterUpdate = false;
-        var onAllotmentUpdateSuccess = function(data) {
-            $scope.allotmentConfigData.summary.commission_details = data.commission_details;
-            // client controllers should get an infromation whether updation was success
-            $scope.$broadcast("UPDATED_ALLOTMENT_INFO", angular.copy($scope.allotmentConfigData.summary));
-            $scope.allotmentSummaryMemento = angular.copy($scope.allotmentConfigData.summary);
+        var refreshSummaryDataAfterUpdate = false,
+            updateAllotmentSummaryInProgress = false,
+            onAllotmentUpdateSuccess = function(data) {
+                $scope.allotmentConfigData.summary.commission_details = data.commission_details;
+                updateAllotmentSummaryInProgress = false;
+                // client controllers should get an infromation whether updation was success
+                $scope.$broadcast("UPDATED_ALLOTMENT_INFO", angular.copy($scope.allotmentConfigData.summary));
+                $scope.allotmentSummaryMemento = angular.copy($scope.allotmentConfigData.summary);
 
-            // If required refresh summary data to ensure data integrity
-            if (refreshSummaryDataAfterUpdate) {
-                fetchSummaryData();
+                // If required refresh summary data to ensure data integrity
+                if (refreshSummaryDataAfterUpdate) {
+                    fetchSummaryData();
+                    refreshSummaryDataAfterUpdate = false;
+                }
+                return true;
+            },
+            onAllotmentUpdateFailure = function(errorMessage) {
+                // client controllers should get an infromation whether updation was a failure
+                $scope.$broadcast("FAILED_TO_UPDATE_ALLOTMENT_INFO", errorMessage);
+                $scope.errorMessage = errorMessage;
                 refreshSummaryDataAfterUpdate = false;
-            }
-            return true;
-        };
-        var onAllotmentUpdateFailure = function(errorMessage) {
-            // client controllers should get an infromation whether updation was a failure
-            $scope.$broadcast("FAILED_TO_UPDATE_ALLOTMENT_INFO", errorMessage);
-            $scope.errorMessage = errorMessage;
-            refreshSummaryDataAfterUpdate = false;
-            return false;
-        };
+                updateAllotmentSummaryInProgress = false;
+                return false;
+            };
 
         /**
          * Update the allotment data
@@ -348,7 +358,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
         $scope.updateAllotmentSummary = function(reload) {
             reload = reload || false;
             if (rvPermissionSrv.getPermissionValue('EDIT_ALLOTMENT_SUMMARY')) {
-                if (angular.equals($scope.allotmentSummaryMemento, $scope.allotmentConfigData.summary)) {
+                if (angular.equals($scope.allotmentSummaryMemento, $scope.allotmentConfigData.summary) || updateAllotmentSummaryInProgress) {
                     return false;
                 }
                 if (reload) {
@@ -359,9 +369,13 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                 summaryData.block_from = $filter('date')(summaryData.block_from, $rootScope.dateFormatForAPI);
                 summaryData.block_to = $filter('date')(summaryData.block_to, $rootScope.dateFormatForAPI);
                 summaryData.release_date = $filter('date')(summaryData.release_date, $rootScope.dateFormatForAPI);
+
                 if (!summaryData.rate) {
                     summaryData.rate = -1;
+                    summaryData.contract_id = null;
+                    summaryData.uniqId = '-1';
                 }
+                updateAllotmentSummaryInProgress = true;
                 $scope.callAPI(rvAllotmentConfigurationSrv.updateAllotmentSummary, {
                     successCallBack: onAllotmentUpdateSuccess,
                     failureCallBack: onAllotmentUpdateFailure,
@@ -430,6 +444,8 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
         };
 
         $scope.onTravelAgentCardChange = function() {
+            var summaryData = $scope.allotmentConfigData.summary;
+
             if (summaryData.travel_agent && summaryData.travel_agent.name === "") {
                 summaryData.travel_agent = null;
             }
@@ -477,15 +493,17 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                     if (!$scope.isInAddMode()) {
                         $scope.updateAllotmentSummary(true);
                     }
+                    $scope.$broadcast("COMPANY_CARD_CHANGED");
                     runDigestCycle();
                     return false;
                 },
                 change: function() {
                     if (!$scope.isInAddMode() && (!$scope.allotmentConfigData.summary.company || !$scope.allotmentConfigData.summary.company.name)) {
-                        $scope.allotmentConfigData.summary.company = {
-                            id: ""
-                        };
-                        $scope.updateAllotmentSummary();
+                        $scope.allotmentConfigData.summary.company = $scope.allotmentSummaryMemento.company;
+                        $scope.detachCardFromAllotment('company');
+                    }
+                    else {
+                        $scope.$broadcast("COMPANY_CARD_CHANGED");
                     }
                 }
             }, cardsAutoCompleteCommon);
@@ -519,18 +537,66 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                     if (!$scope.isInAddMode()) {
                         $scope.updateAllotmentSummary(true);
                     }
+                    $scope.$broadcast("TA_CARD_CHANGED");
                     runDigestCycle();
                     return false;
                 },
                 change: function() {
                     if (!$scope.isInAddMode() && (!$scope.allotmentConfigData.summary.travel_agent || !$scope.allotmentConfigData.summary.travel_agent.name)) {
-                        $scope.allotmentConfigData.summary.travel_agent = {
-                            id: ""
-                        };
-                        $scope.updateAllotmentSummary();
+                        $scope.allotmentConfigData.summary.travel_agent = $scope.allotmentSummaryMemento.travel_agent;
+                        $scope.detachCardFromAllotment('travel_agent');
+                    }
+                    else {
+                        $scope.$broadcast("TA_CARD_CHANGED");
                     }
                 }
             }, cardsAutoCompleteCommon);
+        };
+
+        /**
+         * Trigger card detach warning popup
+         */
+        $scope.detachCardFromAllotment = function(card) {
+            // warn about billing info
+            var dataForPopup = {
+                cardType: card
+            };
+
+            ngDialog.open({
+                template: '/assets/partials/groups/summary/popups/detachCardWarningPopup.html',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false,
+                data: JSON.stringify(dataForPopup)
+            });
+        };
+
+        // Detaches the cards(TA/CC) from group
+        $scope.detachCard = function(cardType) {
+            if (cardType === 'company')  {
+                $scope.allotmentConfigData.summary.company = {
+                    id: '',
+                    name: ''
+                };  
+                $scope.$broadcast("COMPANY_CARD_CHANGED");
+
+            } else {
+                $scope.allotmentConfigData.summary.travel_agent = {
+                    id: '',
+                    name: ''
+                }; 
+                $scope.$broadcast("TA_CARD_CHANGED");
+            }
+            $scope.updateAllotmentSummary(true);
+        };
+
+        // Cancel the detachment of CC/TA from group
+        $scope.cancelDetachment = function(cardType) {
+            if (cardType === 'company') {
+                $scope.allotmentConfigData.summary.company = angular.copy($scope.allotmentSummaryMemento.company);
+            } else {
+                $scope.allotmentConfigData.summary.travel_agent = angular.copy($scope.allotmentSummaryMemento.travel_agent);
+            }
         };
 
         /**

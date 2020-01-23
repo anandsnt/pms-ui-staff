@@ -31,18 +31,26 @@ sntRover.controller('RVInvoiceSearchController',
 		$scope.invoiceSearchData.filter_id = (_.first($scope.filterOptions)).id;
 		$scope.paymentDataArray = [];
 
-		$scope.shouldShowInvoices =  function() {
-			return (_.findWhere($scope.filterOptions, {"name": "Invoices"})).id === $scope.invoiceSearchData.filter_id;
+		$scope.shouldShowReservationInvoices =  function() {
+			return (_.findWhere($scope.filterOptions, {"name": "Reservation Invoices"})).id === $scope.invoiceSearchData.filter_id;
 		};
 
-		$scope.shouldShowReceipts =  function() {
-			return (_.findWhere($scope.filterOptions, {"name": "Receipts"})).id === $scope.invoiceSearchData.filter_id;
+		$scope.shouldShowAccountInvoices =  function() {
+			return (_.findWhere($scope.filterOptions, {"name": "Account Invoices"})).id === $scope.invoiceSearchData.filter_id;
+		};
+
+		$scope.shouldShowReservationReceipts =  function() {
+			return (_.findWhere($scope.filterOptions, {"name": "Reservation Receipts"})).id === $scope.invoiceSearchData.filter_id;
+		};
+
+		$scope.shouldShowAccountReceipts =  function() {
+			return (_.findWhere($scope.filterOptions, {"name": "Account Receipts"})).id === $scope.invoiceSearchData.filter_id;
 		};
 
 		$scope.shouldShowARInvoices =  function() {
 			return (_.findWhere($scope.filterOptions, {"name": "AR Invoices"})).id === $scope.invoiceSearchData.filter_id;
 		};		
-		$scope.invoiceSearchData.no_qr_code_only = false;
+
 		
 		$scope.setScroller('invoice-list', scrollOptions);
 		/**
@@ -96,30 +104,28 @@ sntRover.controller('RVInvoiceSearchController',
 			refreshScroll();
 		};
 		/*
-		 * Clicked No Qr code only
-		 */
-		$scope.clickedNoQrCode = function() {
-			$timeout(function() {
-				$scope.searchInvoice();
-			}, 700);
-		};
-		/*
 		 * Method to search invoice
 		 * @param page is page number of pagination
 		 */
 		$scope.searchInvoice = (page) => {
 			
-			if ($scope.shouldShowInvoices()) {
-				$scope.searchPlaceHolder = $filter('translate')('SEARCH_PLACE_HOLDER_WITH_FOLIO_NUMBER');
+			if ($scope.shouldShowReservationInvoices()) {
+				$scope.searchPlaceHolder = $filter('translate')('SEARCH_PLACE_HOLDER_WITH_FOLIO_NUMBER_RESERVATION');
 			}
-			if ($scope.shouldShowReceipts()) {
-				$scope.searchPlaceHolder = $filter('translate')('SEARCH_PLACE_HOLDER_WITH_RECEIPTS');
+			if ($scope.shouldShowAccountInvoices()) {
+				$scope.searchPlaceHolder = $filter('translate')('SEARCH_PLACE_HOLDER_WITH_FOLIO_NUMBER_ACCOUNT');
+			}
+			if ($scope.shouldShowReservationReceipts()) {
+				$scope.searchPlaceHolder = $filter('translate')('SEARCH_PLACE_HOLDER_WITH_RECEIPTS_RESERVATION');
+			}
+			if ($scope.shouldShowAccountReceipts()) {
+				$scope.searchPlaceHolder = $filter('translate')('SEARCH_PLACE_HOLDER_WITH_RECEIPTS_ACCOUNTS');
 			}
 			if ($scope.shouldShowARInvoices()) {
 				$scope.searchPlaceHolder = $filter('translate')('SEARCH_PLACE_HOLDER_WITH_AR_INVOICE');
 			}
 
-			if ($scope.shouldShowInvoices()) {
+			if ($scope.shouldShowReservationInvoices() || $scope.shouldShowAccountInvoices()) {
 				$scope.paymentDataArray = [];
 			}
 			$scope.currentActivePage = page || 1;
@@ -153,10 +159,10 @@ sntRover.controller('RVInvoiceSearchController',
 						'to_date': $scope.invoiceSearchData.to_date
 					};
 
-					if ($scope.shouldShowInvoices()) {
+					if ($scope.shouldShowReservationInvoices() || $scope.shouldShowAccountInvoices()) {
 						params.no_folio_number_only = $scope.invoiceSearchData.no_folio_number_only;
 					}
-					if ($scope.shouldShowReceipts()) {
+					if ($scope.shouldShowReservationReceipts() || $scope.shouldShowAccountReceipts()) {
 						params.no_qr_code_only = $scope.invoiceSearchData.no_qr_code_only;
 					}
 

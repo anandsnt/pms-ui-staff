@@ -411,9 +411,9 @@ sntRover.controller('RVdashboardController',
                 };
 
                 $scope.dashboardFilter.datePicked = angular.copy($rootScope.businessDate);
-
                 $scope.datePicked = moment($rootScope.businessDate).format('YYYY-MM-DD');
-                $scope.dateOptions = {
+
+               $scope.dateOptions = {
                     changeYear: true,
                     changeMonth: true,
                     yearRange: "-5:+5",
@@ -422,14 +422,13 @@ sntRover.controller('RVdashboardController',
                     onSelect: function(dateText, inst) {
                         $scope.dashboardFilter.datePicked = dateText;
                         $scope.$broadcast('RELOAD_DATA_WITH_DATE_FILTER', {
-                            "room_type": $scope.dashboardFilter.selectedRoomType,
                             "date": $scope.dashboardFilter.datePicked
                         });
                         ngDialog.close();
                     }
                 };
 
-                $scope.showAnalyticsCalendar = function() {
+                $scope.showAnalyticsDatePicker = function() {
                     $timeout(function() {
                         ngDialog.open({
                             template: '/assets/partials/search/rvDatePickerPopup.html',
@@ -437,6 +436,28 @@ sntRover.controller('RVdashboardController',
                             scope: $scope
                         });
                     }, 1000);
+                };
+
+                $scope.$on('ROOM_TYPE_SHORTAGE_CALCULATED', function(e, calculatedRoomTypes) {
+                    $scope.roomTypesForWorkPrioriy = [];
+                    _.each($scope.roomTypes, function(roomType) {
+                        roomType.shortage = 0;
+                        roomType.overBooking = 0;
+                        _.each(calculatedRoomTypes, function(calculatedRoomType) {
+                            if (roomType.code === calculatedRoomType.code) {
+                                roomType.shortage = calculatedRoomType.shortage;
+                                roomType.overBooking = calculatedRoomType.overBooking;
+                            }
+                        });
+                    });
+                });
+
+                $scope.refreshAnalyticsChart = function() {
+                    $scope.$broadcast('REFRESH_ANALYTCIS_CHART');
+                };
+
+                $scope.onAnlayticsFilterChanged = function() {
+                    $scope.$broadcast('ANALYTICS_FILTER_CHANGED');
                 };
             }
 

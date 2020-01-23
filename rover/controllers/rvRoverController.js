@@ -25,10 +25,11 @@ sntRover.controller('roverController', [
     'sntActivity',
     '$transitions',
     'features',
+    'sessionTimeoutHandlerSrv',
     function ($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv,
               ngDialog, $translate, hotelDetails, userInfoDetails, $stateParams,
               rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q, $sce,
-              $log, sntAuthorizationSrv, $location, $interval, sntActivity, $transitions, features) {
+              $log, sntAuthorizationSrv, $location, $interval, sntActivity, $transitions, features, sessionTimeoutHandlerSrv) {
 
 
         var observeDeviceInterval;
@@ -68,9 +69,6 @@ sntRover.controller('roverController', [
         });
         $scope.roverFlags = {};
         $scope.hotelDetails = hotelDetails;
-        if (hotelDetails.hide_analytics_menu) {
-            rvMenuSrv.showAnalyticsMenu = false;
-        }
         // set current hotel details
         $scope.currentHotelData = {
             'name': '',
@@ -155,7 +153,7 @@ sntRover.controller('roverController', [
 
         $rootScope.isLateCheckoutTurnedOn = hotelDetails.late_checkout_settings.is_late_checkout_on;
         $rootScope.businessDate = hotelDetails.business_date;
-        $rootScope.hotelCurrencyId = hotelDetails.currency.id;
+        $rootScope.hotelCurrencyId = hotelDetails.default_payment_currency.id;
         $rootScope.currencySymbol = getCurrencySign(hotelDetails.currency.value);
         $rootScope.isMultiCurrencyEnabled = hotelDetails.is_multi_currency_enabled;
         $rootScope.invoiceCurrencySymbol = hotelDetails.is_multi_currency_enabled && hotelDetails.invoice_currency !== "" ? getCurrencySign(hotelDetails.invoice_currency.value) : '';
@@ -176,6 +174,7 @@ sntRover.controller('roverController', [
         if ($rootScope.isMultiCurrencyEnabled && $rootScope.paymentCurrencyList.length > 0 ) {
             $rootScope.shouldShowPaymentDropDown = true;
         }
+        $rootScope.hasPaymentRounding = hotelDetails.has_payment_rounding;
         // $rootScope.isRoomDiaryEnabled = hotelDetails.is_room_diary_enabled;
         // CICO-40544 - Now we have to enable menu in all standalone hotels
         // API not removing for now - Because if we need to disable it we can use the same param
@@ -614,6 +613,9 @@ sntRover.controller('roverController', [
             }
 
             $scope.menuOpen = !$scope.menuOpen;
+            $scope.$broadcast("SIDE_MENU_TOGGLE", {
+                "menuOpen": $scope.menuOpen
+            });
 
             // Bug fix for CICO-15718
             // Found that the issue appears when the keyboard comes over the screen
@@ -640,6 +642,10 @@ sntRover.controller('roverController', [
             sntActivity.start('LOGOUT_INVALIDATE_TOKEN');
             RVDashboardSrv.signOut().finally(function() {
                 $timeout(function () {
+                    if (sessionTimeoutHandlerSrv.getWorker()) {
+                        sessionTimeoutHandlerSrv.stopTimer();
+                        $scope.$emit('CLOSE_SESSION_TIMEOUT_POPUP');
+                    }
                     $window.location.href = '/logout';
                 });
             });
@@ -900,25 +906,40 @@ sntRover.controller('roverController', [
 
         $rootScope.modalClosing = false;
 
-        /*
-         * Tp close dialog box
+        /**
+         * Closes the dialog window after a brief delay. 
+         *
+         * @param dialogId id of the specific dialog window to close. If
+         * id is not specified it will close all currently active modals.
          */
-        $scope.closeDialog = function () {
+        $scope.closeDialog = function(dialogId) {
             document.activeElement.blur();
             $scope.$emit('hideLoader');
 
             $rootScope.modalClosing = true;
             setTimeout(function () {
-                ngDialog.close();
+                $scope.closeDialogImmediately(dialogId);
                 $rootScope.modalClosing = false;
                 window.scrollTo(0, 0);
                 $scope.$apply();
-            }, 700);
+            }, 500);
         };
 
-        $scope.closeDialogImmediately = function () {
-            ngDialog.close();
+        /**
+         * Closes the dialog window immediately.
+         *
+         * @param dialogId id of the specific dialog window to close. If
+         * id is not specified it will close all currently active modals.
+         */
+        $scope.closeDialogImmediately = function(dialogId) {
+            if (dialogId) {
+                ngDialog.close(dialogId);
+                return;
+            }
+
+            ngDialog.closeAll();
         };
+
         /*
          * To fix issue with ipad keypad - 7702
          */

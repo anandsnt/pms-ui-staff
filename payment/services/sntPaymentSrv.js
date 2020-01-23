@@ -16,7 +16,7 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
             var urlStart = url.split('?')[0];
             // please note the type of error expecting is array
             // so form error as array if you modifying it
-            
+
 
             if (status === 406) { // 406- Network error
                 deferred.reject(errors);
@@ -26,9 +26,6 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
                 deferred.reject(['Internal server error occured']);
             } else if (status === 501 || status === 502 || status === 503 || status === 504) { // 500- Internal Server Error
                 $window.location.href = '/500';
-            } else if (status === 401) { // 401- Unauthorized
-                // so lets redirect to login page
-                $window.location.href = '/logout';
             }
 
             // set of custom error emssage range http status
@@ -67,10 +64,10 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
             return deferred.promise;
         };
 
-        service.getLinkedCardList = function(reservationId) {
+        service.getLinkedCardList = function(params) {
 
             var deferred = $q.defer(),
-                url = '/staff/staycards/get_credit_cards.json?reservation_id=' + reservationId;
+                url = '/staff/staycards/get_credit_cards.json?reservation_id=' + params.reservationId + '&bill_number=' + params.billNumber;
 
             $http.get(url).then(function(response) {
                 deferred.resolve(response.data.data);
@@ -118,7 +115,7 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
             });
             return deferred.promise;
         };
-        
+
         service.checkWorkStationMandatoryFields = function(workstationId) {
 
             var deferred = $q.defer(),
@@ -587,7 +584,7 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
 
         service.isAddCardAction = function(actoionType) {
             let addCardActionTypes = ['ADD_PAYMENT_GUEST_CARD', 'ADD_PAYMENT_BILL', 'ADD_PAYMENT_STAY_CARD'];
-            
+
             return _.contains(addCardActionTypes, actoionType);
         };
 
@@ -595,9 +592,9 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
             "cardType": "VA",
             "cardNumber": "xxxx-xxxx-xxxx-0135",
             "nameOnCard": "UAT USA/TEST CARD 19",
-            "cardExpiry": "1912",
+            "cardExpiry": "9912",
             "cardExpiryMonth": "12",
-            "cardExpiryYear": "19",
+            "cardExpiryYear": "99",
             "et2": "",
             "ksn": "FFFF987654165420000E",
             "pan": "476173000000**35",

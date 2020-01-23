@@ -502,6 +502,7 @@
 
                 .icon-popup-alert,
                 .icon-popup-success,
+                .icon-popup-error,
                 .icon-cc-authorization { margin: 10px auto; }
 
                 .message { 
@@ -674,6 +675,27 @@
                     .actions {
                         margin-top: 0;
                         text-align: center;
+                        padding-top: 19px;
+                        border-top: 1px solid rgba(0,0,0,.1);
+                    }
+                }
+
+                &.timeout {
+                    .message {
+                        margin-bottom: 10px;
+                    }
+
+                    .description {
+                        font-size: 14px;
+                        font-style: italic;
+                        color: @grey4;
+
+                        &.red {
+                            color: @red;
+                        }
+                    }
+
+                    .actions {
                         padding-top: 19px;
                         border-top: 1px solid rgba(0,0,0,.1);
                     }

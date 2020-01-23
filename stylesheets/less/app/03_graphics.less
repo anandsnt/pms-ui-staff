@@ -162,7 +162,8 @@
 			}
 
 			&.icon-popup-alert,
-			&.icon-popup-success {
+			&.icon-popup-success,
+            &.icon-popup-error {
 				.square(50px);
 				.show;
 			}
@@ -172,6 +173,8 @@
 
 				&.white { background-position: 2px -7600px; }
 			}
+
+            &.icon-popup-error { background-position: 2px -12515px; }
 
 		/* Search ***/
 			&.icon-search {
@@ -272,27 +275,27 @@
 		/* Search Results ***/
 			&.icon-location {  background-position: 0px -36px; }
 			&.icon-group { background-position: 0 -77px; }
-			&.icon-guest-company { 
+			&.icon-guest-company {
                 background-position: 0 -758px;
 
                 &.colored {
                     background-position: 0 -13118px;
                     color: @ccard;
-                } 
+                }
             }
-			&.icon-guest-travelagent { 
+			&.icon-guest-travelagent {
                 background-position: 0 -818px;
 
                 &.colored {
                     background-position: 0 -13178px;
                     color: @tacard;
-                } 
+                }
             }
 			&.icon-allotment { background-position: 0 -8317px; }
 
 			&.icon-phone { background-position: 3px -4234px; }
 			&.icon-email-grey { background-position: 2px -4293px; }
-			&.icon-contracts { 
+			&.icon-contracts {
 				background-position: 0 -7658px;
 
 				&.active {
@@ -317,8 +320,8 @@
 	            .square(40px);
 			}
 
-            &.icon-queued-red { 
-                background-position: 0 -12874px; 
+            &.icon-queued-red {
+                background-position: 0 -12874px;
                 .hide-text;
                 .size(30px, 25px);
             }
@@ -416,9 +419,9 @@
                 background-position: 0px -9220px;
 
                 &.black {
-                    background-position: 0px -9280px; 
+                    background-position: 0px -9280px;
                 }
-                
+
                 &.red {
                     background-position: 0px -9340px;
                 }
@@ -488,7 +491,7 @@
 				&.failure { background-position: 5px -6630px; }
 			}
 
-            &.icon-eye { 
+            &.icon-eye {
                 background-position: 0 -12934px;
             }
 
@@ -515,7 +518,7 @@
 			&.icon-diary-oos { background-position: 0 -6158px; }
 			&.icon-diary-lock { background-position: 0 -9100px; }
 
-			&.icon-filter-room { 
+			&.icon-filter-room {
                 background-position: 0px -10300px;
 
                 &.active {
@@ -737,6 +740,13 @@
 
         /* Billing ***/
             &.icon-split-charge { background-position: 0px -12340px; }
+
+        /* Analytics ***/
+            &.icon-alert-red { background-position: 0px -13240px; }
+            &.icon-alert-orange { background-position: 0px -13300px; }
+            &.icon-alert-white { background-position: 0px -13360px; }
+            &.icon-legend { background-position: 1px -13419px; }
+            &.icon-legend-white { background-position: 1px -13479px; }
 
 		/* @2x Icons ***/
 		@media @highdpi {

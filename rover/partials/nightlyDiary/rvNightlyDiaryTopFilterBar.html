@@ -1,4 +1,6 @@
-<div ng-show="!diaryData.isEditReservationMode" class="diary-nightly-search-form" ng-controller="rvNightlyDiaryTopFilterBarController" ng-class="{'hidden': diaryData.isEditReservationMode}">
+<div class="diary-header-nightly"
+     ng-controller="rvNightlyDiaryTopFilterBarController"
+     ng-class="{'editing': diaryData.isEditReservationMode, 'unassigned': diaryData.isReservationSelected }">
 
     <!-- Toggle Hourly / Nightly -->
     <div class="entry switch switch-view" ng-hide="hideToggleMenu()">
@@ -63,13 +65,15 @@
 
     <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryBookRoomFilter.html'" include-replace></div>
 
+    <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryTopEditBar.html'" include-replace></div>
+
     <!-- Show / Hide Filters -->
     <div class="entry filters" ng-class="{'show-one': diaryData.showBookFilterPanel }">
-        <button type="button" class="button white with-icon only-icon" ng-class="{'active' : diaryData.rightFilter === 'UNASSIGNED_RESERVATION', 'hidden': diaryData.showBookFilterPanel}" ng-click="toggleFilter('UNASSIGNED_RESERVATION')" >
+        <button type="button" class="button white with-icon only-icon" ng-class="{'active' : diaryData.rightFilter === 'UNASSIGNED_RESERVATION', 'hidden': diaryData.showBookFilterPanel, 'show-unassigned': (diaryData.isReservationSelected && !diaryData.isMoveRoomViewActive)}" ng-click="toggleFilter('UNASSIGNED_RESERVATION')" >
             <span class="count">{{diaryData.unassignedReservationList.reservations.length}}</span>
             <span class="icons icon-filter-room" ng-class="{'active': diaryData.rightFilter === 'UNASSIGNED_RESERVATION' }"></span>
         </button>
-        <button type="button" class="button white with-icon only-icon" ng-class="{'active' : diaryData.rightFilter === 'RESERVATION_FILTER' }" ng-click="toggleFilter('RESERVATION_FILTER')">
+        <button type="button" class="button white with-icon only-icon" ng-class="{'active' : diaryData.rightFilter === 'RESERVATION_FILTER', 'show-unassigned': (diaryData.isReservationSelected && !diaryData.isMoveRoomViewActive)}" ng-click="toggleFilter('RESERVATION_FILTER')">
             <span class="count" ng-if="!diaryData.isReservationSelected">{{diaryData.selectedRoomCount + diaryData.selectedFloorCount}}</span>
             <span class="count" ng-if="diaryData.isReservationSelected">{{diaryData.roomAssignmentFilters.count}}</span>
             <span class="icons icon-filter" ng-class="{'active': diaryData.rightFilter === 'RESERVATION_FILTER' }"></span>

@@ -11,7 +11,8 @@ admin.controller('ADRatesAddonDetailsCtrl', [
     'availableLanguages',
     'singleAddon',
     'hotelSettings',
-    function($scope, $state, $stateParams, $rootScope, ADRatesAddonsSrv, $filter, ngDialog, $timeout, activeRates, availableLanguages, singleAddon, hotelSettings) {
+    'ADChargeGroupsSrv',
+    function($scope, $state, $stateParams, $rootScope, ADRatesAddonsSrv, $filter, ngDialog, $timeout, activeRates, availableLanguages, singleAddon, hotelSettings, ADChargeGroupsSrv) {
 
         // extend base controller
         BaseCtrl.call(this, $scope);
@@ -39,13 +40,7 @@ admin.controller('ADRatesAddonDetailsCtrl', [
             };
 
             $scope.isConnectedToPMS = !$rootScope.isStandAlone;
-
             $scope.allowanceRefundOptions = _.range(0, 110, 10);
-
-            if (!hotelSettings.is_multi_currency_enabled) {
-                hotelSettings.currency_list_for_rate.push(hotelSettings.currency);
-            }
-
             $scope.rateCurrencyList = hotelSettings.currency_list_for_rate;
 
             if ($scope.isAddMode) {
@@ -63,14 +58,12 @@ admin.controller('ADRatesAddonDetailsCtrl', [
                 frequency_types: ["days", "weeks", "months"],
                 daysOfMonth: _.range(1,32,1)
             };
-
         };
 
         $scope.back = function() {
             $state.go ('admin.ratesAddons');
         };
 
-        
         $scope.showChargeFullWeeksOnly = function() {
             if (_.isEmpty($scope.singleAddon)) {
                 return false;
@@ -146,13 +139,14 @@ admin.controller('ADRatesAddonDetailsCtrl', [
             };            
 
            // fetch charge groups
-            var cgCallback = function(data) {
-                $scope.chargeGroups = data.results;
-                $scope.invokeApi(ADRatesAddonsSrv.fetchChargeCodes, {}, ccCallback, '');
-                // when ever we are ready to emit 'hideLoader'
-            };
+            $scope.invokeApi(ADChargeGroupsSrv.fetch, {}, function(data){
+                _.each(data.charge_groups, function(chargeGroup){
+                    chargeGroup.id = parseInt(chargeGroup.value);
+                });
 
-            $scope.invokeApi(ADRatesAddonsSrv.fetchChargeGroups, {}, cgCallback, '');    
+                $scope.chargeGroups = data.charge_groups;
+                $scope.invokeApi(ADRatesAddonsSrv.fetchChargeCodes, {}, ccCallback, '');
+            });  
         };
 
         // to add new addon

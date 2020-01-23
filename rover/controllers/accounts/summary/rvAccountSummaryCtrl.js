@@ -392,7 +392,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		$scope.successCallBackFetchDepositBalance = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.depositBalanceData = data;
-
+			$scope.$emit('TOGGLE_PAYMET_POPUP_STATUS', true);
 			$scope.passData = {
 				"origin": "GROUP",
 				"details": {

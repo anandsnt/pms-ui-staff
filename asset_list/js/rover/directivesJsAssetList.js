@@ -40,6 +40,7 @@ module.exports = {
 
                     'rover/directives/convertToNumber/*js',
                     'rover/directives/stringToNumber/*js',
+                    'shared/sntUtils/directives/sntSessionTimeoutDir.js',
 
                     // Eliminate all spec files
                     '!**/*.spec.js'

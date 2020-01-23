@@ -8,6 +8,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
     function($scope, $state, $timeout, zsHotelDetailsSrv, zsGeneralSrv, $log) {
 
         BaseCtrl.call(this, $scope);
+
         var setSvgsToBeLoaded = function(iconsPath, commonIconsPath, useCommonIcons, diffHomeIconsOnly) {
             var iconBasePath = !useCommonIcons ? iconsPath : commonIconsPath;
             
@@ -184,7 +185,21 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                     'qbic',
                     'caro',
                     'schani-wien',
-                    'glencoe'
+                    'glencoe',
+                    'schani-salon',
+                    'spatz',
+                    'lenaustrasse',
+                    'why-tysons',
+                    'local-house',
+                    'travel-24',
+                    'sage-inn',
+                    'hammetts',
+                    'lochardil',
+                    'perle-oban',
+                    'why-columbia',
+                    'why-houston',
+                    'victory-house',
+                    "dimond-center"
                 ],
                 nonCircleNavIcons = ['public_v2'];// minor adjustment to the back/close icons for some themes (only show the inner x or <)
 

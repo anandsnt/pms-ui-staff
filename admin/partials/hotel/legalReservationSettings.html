@@ -1,0 +1,17 @@
+<span class="message h2">RESERVATION SETTINGS</span>
+<table class="table-settings no-border">
+    <tr>
+        <td>Guest Mandatory Schema</td>
+        <td>
+            <div class="select">
+                <select class="placeholder" ng-options="schema.id as schema.title for schema in guestMandatorySchemas" ng-model="legalSettings.guest_mandatory_schema_id">
+                    <option value="">Select</option>
+                </select>
+            </div>
+        </td>
+    </tr>
+</table>
+<div class="actions">
+    <button class="button blank" ng-click="closeDialog()">Cancel</button>
+    <button class="button green" ng-click="saveLegalSettings('reservations')">Save</button>
+</div>

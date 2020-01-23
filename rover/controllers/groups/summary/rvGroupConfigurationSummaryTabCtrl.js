@@ -596,6 +596,17 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
         };
 
         /**
+         * set the payment date
+         * @param  {Object} date - Date object
+         * @param  {Object} datePickerObj - Date picker object
+         * @return {undefined}
+         */
+        var paymentDateChoosed = function(date, datePickerObj) {
+            $scope.groupConfigData.summary.payment_date = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+            runDigestCycle();
+        };
+
+        /**
          * every logic to disable the from date picker should be here
          * @return {Boolean} [description]
          */
@@ -622,15 +633,13 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
         var shouldDisableEndDatePicker = function() {
             var sData = $scope.groupConfigData.summary,
                 endDateHasPassed = new tzIndependentDate(sData.block_to) < new tzIndependentDate($rootScope.businessDate),
-                cancelledGroup = sData.is_cancelled,
-                toRightMoveNotAllowed = !sData.is_to_date_right_move_allowed,
+                cancelledGroup = sData.is_cancelled,                
                 inEditMode = !$scope.isInAddMode();
 
             return ($scope.isInStaycardScreen()) || ( inEditMode &&
                     (
                      endDateHasPassed   ||
-                     cancelledGroup     ||
-                     toRightMoveNotAllowed
+                     cancelledGroup
                     )
                    );
         };
@@ -694,6 +703,12 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                 disabled: shouldDisableReleaseDatePicker(),
                 minDate: tzIndependentDate($rootScope.businessDate),
                 maxDate: $scope.groupConfigData.summary.block_to
+            }, commonDateOptions);
+
+            // Payment date options
+            $scope.paymentDateOptions = _.extend({
+                onSelect: paymentDateChoosed,
+                minDate: tzIndependentDate($rootScope.businessDate)
             }, commonDateOptions);
 
             // summary memento will change we attach date picker to controller
@@ -1053,16 +1068,16 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                 rateId = uniqId.split(':')[0],
                 contractId = uniqId.split(':')[1];
 
+            /**
+             * Call the API only if the group is saved, else allow the group
+             * to be saved with the rate selected.
+             */
+            $scope.groupConfigData.summary.rate = rateId;
+            $scope.groupConfigData.summary.contract_id = contractId;
+
             if (!summaryData.group_id) {
                 return false;
             }
-
-            _.each($scope.groupSummaryData.rateSelectDataObject, function(rate) {
-                if (rate.uniqId === summaryData.uniqId) {
-                    // contractId = rate.contract_id;
-                    $scope.groupConfigData.summary.contract_id = contractId;
-                }
-            });
 
             var params = {
                 group_id: summaryData.group_id,
@@ -1509,42 +1524,42 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                         name: 'Custom Rate',
                         uniqId: '-1'
                     });
-                    // group rates by contracted and group rates.
-                    _.each(data.results, function(rate) {
-                        var setNewRate = function(groupName, contract) {
-                            var newRateObj = {};
-
-                            newRateObj.id = rate.id;
-                            newRateObj.uniqId = contract ? rate.id + ':' + contract.id : rate.id + ':';
-                            newRateObj.groupName = groupName;
-                            newRateObj.name = contract ? rate.name + '(' + contract.name + ')' : rate.name;
-                            newRateObj.contract_id = contract ? contract.id : null;
-                            sumData.rateSelectDataObject.push(newRateObj);
-                            if (newRateObj.id === $scope.groupConfigData.summary.rate && newRateObj.contract_id === $scope.groupConfigData.summary.contract_id) {
-                                $scope.groupConfigData.summary.uniqId = newRateObj.uniqId;
+                    /**
+                     * we have the company/travel-agent/group rates in separate arrays
+                     */
+                    var groupRatesBy = function(rateArray, groupName) {
+                        angular.forEach(rateArray, function(rate) {
+                            rate.groupName = groupName;
+                            if (rate.is_contracted) {
+                                rate.uniqId = rate.id + ':' + rate.contract_id;
+                                rate.name = rate.name + ' (' + rate.contract_name + ')';
+                                if (rate.id === $scope.groupConfigData.summary.rate && rate.contract_id === $scope.groupConfigData.summary.contract_id) {
+                                    $scope.groupConfigData.summary.uniqId = rate.uniqId;
+                                }
                             }
-                        };
-
-                        if ($scope.groupConfigData.summary.rate === '-1') {
-                            $scope.groupConfigData.summary.uniqId = '-1';
-                        }
-
-                        if (!rate.is_contracted) {
-                            setNewRate('Group Rates');
-                        }
-                        else {
-                            if (rate.company_contracts.length !== 0) {
-                                angular.forEach(rate.company_contracts, function(contract) {
-                                    setNewRate('Company Contract', contract);
-                                });
+                            else {
+                                rate.uniqId = rate.id + ':';
+                                if (rate.id === $scope.groupConfigData.summary.rate) {
+                                    $scope.groupConfigData.summary.uniqId = rate.uniqId;
+                                }
                             }
-                            if (rate.travel_agent_contracts.length !== 0) {
-                                angular.forEach(rate.travel_agent_contracts, function(contract) {
-                                    setNewRate('Travel Agent Contract', contract);
-                                });
-                            }
-                        }
-                    });
+                            sumData.rateSelectDataObject.push(rate);
+                        });
+                    };
+
+                    if (data.group_rates.length !== 0) {
+                        groupRatesBy(data.group_rates, 'Group Rates');
+                    }
+                    if (data.company_rates.length !== 0) {
+                        groupRatesBy(data.company_rates, 'Company Contract');
+                    }
+                    if (data.travel_agent_rates.length !== 0) {
+                        groupRatesBy(data.travel_agent_rates, 'Travel Agent Contract');
+                    }
+                    if ($scope.groupConfigData.summary.rate === '-1') {
+                        $scope.groupConfigData.summary.uniqId = '-1';
+                    }
+                    summaryMemento = angular.copy($scope.groupConfigData.summary);
                 },
                 onFetchRatesFailure = function(errorMessage) {
                     $scope.errorMessage = errorMessage;

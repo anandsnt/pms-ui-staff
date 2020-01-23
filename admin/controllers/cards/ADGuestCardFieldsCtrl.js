@@ -105,11 +105,19 @@ function($scope, $state, ADGuestCardSrv) {
 						$scope.guestCardFields.id_issue_date.is_mandatory_on_guest_card_creation = false;
 					}
 					break;
-
-
-
-			}
-	
+				case "id_place_of_issue":
+                    $scope.guestCardFields.id_place_of_issue.is_visible = !$scope.guestCardFields.id_place_of_issue.is_visible;
+                    if (!$scope.guestCardFields.id_place_of_issue.is_visible) {
+						$scope.guestCardFields.id_place_of_issue.is_mandatory_on_guest_card_creation = false;
+					}
+					break;
+				case "id_country_of_issue":
+                    $scope.guestCardFields.id_country_of_issue.is_visible = !$scope.guestCardFields.id_country_of_issue.is_visible;
+                    if (!$scope.guestCardFields.id_country_of_issue.is_visible) {
+						$scope.guestCardFields.id_country_of_issue.is_mandatory_on_guest_card_creation = false;
+					}
+					break;
+				}
 	};
 	/*
 	 * Clicked mandatory 
@@ -160,6 +168,12 @@ function($scope, $state, ADGuestCardSrv) {
                     break;
                 case "id_issue_date":
                     $scope.guestCardFields.id_issue_date.is_mandatory_on_guest_card_creation = !$scope.guestCardFields.id_issue_date.is_mandatory_on_guest_card_creation;
+                    break;
+                case "id_place_of_issue":
+                    $scope.guestCardFields.id_place_of_issue.is_mandatory_on_guest_card_creation = !$scope.guestCardFields.id_place_of_issue.is_mandatory_on_guest_card_creation;
+                    break;
+                case "id_country_of_issue":
+                    $scope.guestCardFields.id_country_of_issue.is_mandatory_on_guest_card_creation = !$scope.guestCardFields.id_country_of_issue.is_mandatory_on_guest_card_creation;
                     break;
 			}
 		}

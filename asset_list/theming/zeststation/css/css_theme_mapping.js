@@ -96,7 +96,21 @@ module.exports = {
             'indigo': [themeCSSRoot + 'indigo.less'],
             'caro': [themeCSSRoot + 'caro.less'],
             'schani-wien': [themeCSSRoot + 'schani-wien.less'],
-            'glencoe': [themeCSSRoot + 'glencoe.less']
+            'glencoe': [themeCSSRoot + 'glencoe.less'],
+            'schani-salon': [themeCSSRoot + 'schani-salon.less'],
+            'spatz': [themeCSSRoot + 'spatz.less'],
+            'lenaustrasse': [themeCSSRoot + 'lenaustrasse.less'],
+            'why-tysons': [themeCSSRoot + 'why-tysons.less'],
+            'local-house': [themeCSSRoot + 'local-house.less'],
+            'travel-24': [themeCSSRoot + 'travel-24.less'],
+            'sage-inn': [themeCSSRoot + 'sage-inn.less'],
+            'hammetts': [themeCSSRoot + 'hammetts.less'],
+            'lochardil': [themeCSSRoot + 'lochardil.less'],
+            'perle-oban': [themeCSSRoot + 'perle-oban.less'],
+            'why-columbia': [themeCSSRoot + 'why-columbia.less'],
+            'why-houston': [themeCSSRoot + 'why-houston.less'],
+            'victory-house': [themeCSSRoot + 'victory-house.less'],
+            'dimond-center': [themeCSSRoot + 'dimond-center.less']
         };
     }
 };
