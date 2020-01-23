@@ -20,9 +20,6 @@ angular.module('sntPay').controller('sntPaymentController',
                 isEMVEnabled;
             var isInIpadApp = sntapp.browser === 'rv_native' && sntapp.cordovaLoaded;
 
-            console.log("==========")
-            console.log($scope.hasPaymentRounding)
-
             // ---------------------------------------------------------------------------------------------------------
             $scope.payment = {
                 referenceText: $scope.referenceText,

@@ -4,7 +4,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
     function($scope, $rootScope, RVPaymentSrv, ngDialog, $filter, $timeout, rvAccountTransactionsSrv, rvPermissionSrv, RVReservationCardSrv) {
 
         BaseCtrl.call(this, $scope);
-        console.log($rootScope.hasPaymentRounding)
+
         BasePaymentCtrl.call(this, $scope);
         $scope.renderData = {};
         $scope.swipedCardDataToSave = {};
