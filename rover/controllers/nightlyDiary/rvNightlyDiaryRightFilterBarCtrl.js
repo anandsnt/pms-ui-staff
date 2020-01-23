@@ -61,7 +61,8 @@ angular.module('sntRover')
 			 */
 			$scope.applyCommonFilter = function() {
 				var selectedRoomTypes = [],
-					selectedFloors = [];
+					selectedFloors = [],
+					selectedRoomFeatures = [];
 
 				/*
 				 * Creating an array of selected room types to apply filter.
@@ -87,8 +88,23 @@ angular.module('sntRover')
 					return selectedFloors;
 				};
 
+				/*
+				 * Creating an array of selected floors to apply filter.
+				 */
+				var getSelectedRoomFeatures = function(roomFeatures) {
+					if (roomFeatures) {
+						roomFeatures.forEach(function(room) {
+							if (room.isSelected) {
+								selectedRoomFeatures.push(room.id);
+							}
+						});
+					}
+					return selectedRoomFeatures;
+				};
+
 				$scope.diaryData.selectedRoomTypes = getSelectedRoomTypes($scope.diaryData.filterList.roomType);
 				$scope.diaryData.selectedFloors = getSelectedFloors($scope.diaryData.filterList.floorList);
+				$scope.diaryData.selectedRoomFeatures = getSelectedRoomFeatures($scope.diaryData.filterList.roomFeatures);
 				$scope.$emit('REFRESH_DIARY_SCREEN');
 			};
 

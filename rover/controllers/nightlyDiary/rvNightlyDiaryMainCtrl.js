@@ -97,6 +97,7 @@ angular.module('sntRover')
                         showUnassignedReservations: false,
                         selectedRoomTypes: [],
                         selectedFloors: [],
+                        selectedRoomFeatures: [],
                         isFromStayCard: false,
                         hideUnassignRoomButton: true,
                         filterList: {},
@@ -198,7 +199,8 @@ angular.module('sntRover')
                         'start_date': $scope.diaryData.fromDate,
                         'no_of_days': $scope.diaryData.numberOfDays,
                         'selected_room_type_ids': $scope.diaryData.selectedRoomTypes,
-                        'selected_floor_ids': $scope.diaryData.selectedFloors
+                        'selected_floor_ids': $scope.diaryData.selectedFloors,
+                        'selected_room_features': $scope.diaryData.selectedRoomFeatures
                     };
 
                     if ($scope.diaryData.isAssignRoomViewActive || $scope.diaryData.isMoveRoomViewActive) {
@@ -1017,7 +1019,8 @@ angular.module('sntRover')
                                 page: $scope.diaryData.paginationData.page,
                                 per_page: $scope.diaryData.paginationData.perPage,
                                 selected_room_type_ids: $scope.diaryData.selectedRoomTypes,
-                                selected_floor_ids: $scope.diaryData.selectedFloors
+                                selected_floor_ids: $scope.diaryData.selectedFloors,
+                                selected_room_features: $scope.diaryData.selectedRoomFeatures
                             },
                             successCallBack: successCallBackFunction
                         };
