@@ -54,13 +54,13 @@
                 ng-class="{'selected': selectedIndex === reservation.reservation_id, 'blocked disable-element': reservation.arrival_date !== getActiveDate()}">
                 <div class="data">
                     <strong class="name"
-                        ng-bind-html="getHighlightedHTML(reservation.primary_guest, queryString)">
+                        ng-bind-html="reservation.primary_guest | highlight:queryString:false">
                     </strong>
                     <!-- If VIP, show: <span class="vip">VIP</span> -->
                     <span class="vip" ng-if="reservation.is_vip">VIP</span>
                     <!-- Uncomment the below line when the story to show Conf. No. comes -->
                     <span class="guest-room">Conf.
-                        <strong ng-bind-html="getHighlightedHTML(reservation.confirmation_number, queryString)"></strong>
+                        <strong ng-bind-html="reservation.confirmation_number | highlight:queryString:false"></strong>
                     </span>
                     <span class="guest-room">{{reservation.room_type_name}}</span>
                 </div>
@@ -97,13 +97,13 @@
                 ng-class="{'selected': selectedIndex === reservation.reservation_id, 'blocked disable-element': reservation.arrival_date !== getActiveDate()}">
                 <div class="data">
                     <strong class="name"
-                        ng-bind-html="getHighlightedHTML(reservation.primary_guest, queryString)">
+                        ng-bind-html="reservation.primary_guest | highlight:queryString:false">
                     </strong>
                     <!-- If VIP, show: <span class="vip">VIP</span> -->
                     <span class="vip" ng-if="reservation.is_vip">VIP</span>
                     <!-- Uncomment the below line when the story to show Conf. No. comes -->
                     <span class="guest-room">Conf. 
-                        <strong ng-bind-html="getHighlightedHTML(reservation.confirmation_number, queryString)"></strong>
+                        <strong ng-bind-html="reservation.confirmation_number | highlight:queryString:false"></strong>
                     </span>
                     <span class="guest-room">{{reservation.room_type_name}}</span>
                 </div>
