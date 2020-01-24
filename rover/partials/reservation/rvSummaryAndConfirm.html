@@ -114,7 +114,7 @@
                     <button type="button" class="button white brand-text" ng-click="setDemographics(false)">Demographics</button>
                 </div>
                 <!-- This here is dynamic content, depending on actual room booked -->
-                <div class="rooms" ng-repeat="room in reservationData.rooms track by $index"
+                <div class="rooms" ng-repeat-start="room in reservationData.rooms track by $index"
                      ng-init="roomIndex = $index ; showAccompanyingGuests = false">
                     <div class="title">
                         <span translate>ROOM</span> {{room.roomNumber}}
@@ -150,11 +150,11 @@
                             </a>
                         </li>
                         <li ng-repeat='addon in room.addons'>
-                            <em>{{addon.title}}</em>
+                            <em>{{addon.description}}</em>
                             <span class="price" ng-hide="addon.is_inclusive">
-                                {{reservationData.rateCurrency}}{{ addon.price | number : 2}}
+                                {{reservationData.rateCurrency}}{{ addon.avg_addon_amount | number : 2}}
                                 <span translate>EACH</span>
-                            <span class="total">{{reservationData.rateCurrency}}{{ addon.effectivePrice | number : 2}}</span>
+                            <span class="total">{{reservationData.rateCurrency}}{{ addon.amount | number : 2}}</span>
                             </span>
                             <!-- CICO-18833 Hide all rate refreneces for inclusive addons (Kees Lek) -->
                             <span class="price" ng-show="addon.is_inclusive">
@@ -218,13 +218,15 @@
                         </div>
                     </form>
                 </div>
-                <ul class="total-stay-cost">
-                    <li ng-repeat="row in reservationData.taxInformation">
+                <ul class="total-stay-cost" ng-repeat-end>
+                    <li ng-repeat="row in room.taxInformation">
                         <span class="label" translate> {{row.description}} </span>
                         <span class="total" ng-if="reservationData.isRoomRateSuppressed">SR</span>
                         <span class="total" ng-if="!reservationData.isRoomRateSuppressed">{{reservationData.rateCurrency}}{{ row.amount | number : 2}}</span>
                     </li>
-
+                    <li></li>
+                </ul>
+                <ul class="total-stay-cost">
                     <li>
                         <span class="label" translate>TOTAL_TAX</span>
                         <label ng-if="!reservationData.isRoomRateSuppressed">{{reservationData.rateCurrency}}{{reservationData.totalTax

@@ -603,7 +603,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						if ($rootScope.isAddonOn && areReservationAddonsAvailable && ( $rootScope.hotelDiaryConfig.mode !== 'FULL' || !$scope.stateCheck.isFromNightlyDiary)) {
 							goToAddonsView();
 						} else {
-							$scope.computeTotalStayCost();
+
 							$state.go('rover.reservation.staycard.mainCard.summaryAndConfirm');
 						}
 					}
@@ -664,7 +664,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					($stateParams.fromState === 'rover.reservation.staycard.reservationcard.reservationdetails' || $stateParams.fromState === 'STAY_CARD')) {
 					saveAndGotoStayCard();
 				} else {
-					$scope.computeTotalStayCost();
+
 					enhanceStay();
 				}
 			},
@@ -1061,7 +1061,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
                     if(tzIndependentDate(date) >= businessDate) {
     					details.rate.id = rateId;
     					var dayInfo = stayDetails[date],
-							calculatedAmount = dayInfo && dayInfo.amount || stayDetails[ARRIVAL_DATE].amount,
+							calculatedAmount = dayInfo && dayInfo.rate || stayDetails[ARRIVAL_DATE].rate,
 							rateCurrency = dayInfo && dayInfo.rateCurrency || stayDetails[ARRIVAL_DATE].rateCurrency;
 
     					calculatedAmount = Number(parseFloat(calculatedAmount).toFixed(2));
@@ -1396,74 +1396,13 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 			$scope.invokeApi(RVSelectRoomRateSrv.getRateDetails, payLoad, function(rateDetails) {
 				$scope.$emit('hideLoader');
-				var datesArray = secondary.dates;
 
-				secondary.total = 0.0;
-                secondary.stayTaxExcl = 0.0;
-				var stayTax = {
-					excl: {}
-				};
-
-				var updateStayTaxes = function(stayTaxDayInfo) {
-                    secondary.stayTaxIncl = 0.0;
-                    _.each(stayTaxDayInfo.incl, function(tax) {
-                        secondary.stayTaxIncl = parseFloat(secondary.stayTaxIncl) + parseFloat(tax);
-                    });
-					_.each(stayTaxDayInfo.excl, function(taxAmount, taxId) {
-						if (stayTax.excl[taxId] === undefined) {
-							stayTax.excl[taxId] = parseFloat(taxAmount);
-						} else {
-							stayTax.excl[taxId] = _.max([stayTax.excl[taxId], parseFloat(taxAmount)]);
-						}
-					});
-				};
-
-				_.each(datesArray, function(dayInfo, date) {
-					dayInfo.amount = rateDetails.amounts[date];
-					dayInfo.rateCurrency = secondary.rateCurrency;
-					var adultsCount = 1,
-						childCount = 0;
-
-					if (!$scope.stateCheck.isFromNightlyDiary) {
-						adultsCount = ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates[date].guests.adults;
-						childCount = ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates[date].guests.children;
-					}
-					var taxesArray = (payLoad.rate_id) ? $scope.reservationData.ratesMeta[payLoad.rate_id].taxes : [],
-					    taxAddonInfo = RVReservationStateService.getAddonAndTaxDetails(
-							date,
-							payLoad.rate_id,
-							adultsCount,
-							childCount,
-							ARRIVAL_DATE,
-							DEPARTURE_DATE,
-							$scope.activeRoom,
-							taxesArray,
-							dayInfo.amount),
-						// CICO-27226 Round day-wise totals
-						dayTotal = Number(parseFloat(dayInfo.amount).toFixed(2)) +
-						Number(parseFloat(taxAddonInfo.addon).toFixed(2)) +
-						Number(parseFloat(taxAddonInfo.tax.excl).toFixed(2));
-
-					_.extend(dayInfo, {
-						addon: taxAddonInfo.addon,
-						inclusiveAddonsExist: taxAddonInfo.inclusiveAddonsExist,
-						tax: taxAddonInfo.tax,
-						total: dayTotal,
-						restrictions: rateDetails.dates[date]
-					});
-					updateStayTaxes(taxAddonInfo.stayTax);
-
-					secondary.total = parseFloat(secondary.total) + parseFloat(dayTotal);
-
-				});
-				var totalStayTaxes = 0.0;
-
-				_.each(stayTax.excl, function(tax) {
-					totalStayTaxes = parseFloat(totalStayTaxes) + parseFloat(tax);
-				});
-				secondary.total = parseFloat(secondary.total) + parseFloat(totalStayTaxes);
-                secondary.stayTaxExcl = totalStayTaxes;
+				secondary.dates = rateDetails.dates;
+				secondary.total = rateDetails.total_room_cost;
+				secondary.stayTaxExcl = rateDetails.excl_stay_tax;
+				secondary.stayTaxIncl = rateDetails.incl_stay_tax;
 				secondary.restrictions = rateDetails.summary;
+				
 				cb && cb();
 				$scope.refreshScroll();
 			});
@@ -1700,7 +1639,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					};
 					$scope.stateCheck.selectedStayDate.contractId = contractId;
 
-					var amount = secondary.dates[activeDate].amount,
+					var amount = secondary.dates[activeDate].rate,
 						rateAmount = Number(parseFloat(amount).toFixed(2));
 
 					$scope.stateCheck.stayDates[$scope.stateCheck.dateModeActiveDate].amount = rateAmount;
