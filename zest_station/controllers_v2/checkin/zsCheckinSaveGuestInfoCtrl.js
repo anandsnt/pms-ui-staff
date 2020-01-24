@@ -28,7 +28,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 
 		var onGuestInfoSave = function() {
 			$scope.selectedGuest.is_missing_any_required_field = false;
-			if ($scope.selectedReservation.guest_details.length == 1) {
+			if ($scope.selectedReservation.guest_details.length === 1) {
 				$scope.$emit('CHECKIN_GUEST', {
 					checkinParams: checkinParams
 				});
@@ -37,7 +37,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 					return guest.is_missing_any_required_field;
 				});
 
-				if (guestsWithMissingInfo.length == 0) {
+				if (guestsWithMissingInfo.length === 0) {
 					$scope.screenData.openedPopupName = 'ALL_REQUIRED_INFO_PRESENT';
 					$scope.screenData.showContinueButton = true;
 				}
@@ -174,7 +174,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 			$scope.screenData.openedPopupName = '';
 			if ($scope.selectedReservation.guest_details.length > 1) {
 				$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
-			};
+			}
 		};
 
 		$scope.byPassQuest = function() {
@@ -185,7 +185,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 
 		$scope.closeQuestionPopup = function() {
 			$scope.screenData.openedPopupName = '';
-			if ($scope.selectedReservation.guest_details.length == 1) {
+			if ($scope.selectedReservation.guest_details.length === 1) {
 				$scope.$emit('CHECKIN_GUEST', {
 					checkinParams: checkinParams
 				});

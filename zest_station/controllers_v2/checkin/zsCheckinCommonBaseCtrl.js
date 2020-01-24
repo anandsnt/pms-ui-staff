@@ -75,45 +75,43 @@ sntZestStation.controller('zsCheckinCommonBaseCtrl', [
 			checkinParams = params.checkinParams;
 			var retrievGuestInfoCallback = function(data) {
 
-			var missingData = [];
+				if (!data.metadata.required_for_all_adults) {
+					data.guests = _.filter(data.guests, function(guest) {
+						return guest.primary;
+					});
+				} else {
+					// Filter out only Adult guest
+					data.guests = _.filter(data.guests, function(guest) {
+						return guest.guest_type === 'ADULT';
+					});
+				}
 
-			if (!data.metadata.required_for_all_adults) {
-				data.guests = _.filter(data.guests, function(guest) {
-					return guest.primary;
-				});
-			} else {
-				// Filter out only Adult guest
-				data.guests = _.filter(data.guests, function(guest) {
-					return guest.guest_type === 'ADULT';
-				});
-			}
 
-			
-			// utils function
-			_.each(data.guests, function(guest) {
-				var mandatoryFields = _.filter(guest.guest_details, function(field) {
-					return field.mandatory;
+				// utils function
+				_.each(data.guests, function(guest) {
+					var mandatoryFields = _.filter(guest.guest_details, function(field) {
+						return field.mandatory;
+					});
+					var missingInfoForGuest = _.filter(mandatoryFields, function(field) {
+						return !field.current_value;
+					});
+
+					guest.is_missing_any_required_field = guest.info_bypassed ? false : missingInfoForGuest.length > 0;
 				});
 
-				var missingInfoForGuest = _.filter(mandatoryFields, function(field) {
-					return !field.current_value;
+				var guestsWithMissingInfo = _.filter(data.guests, function(guest) {
+					return guest.is_missing_any_required_field;
 				});
-				guest.is_missing_any_required_field = guest.info_bypassed ? false : missingInfoForGuest.length > 0;
-			});
 
-			var guestsWithMissingInfo = _.filter(data.guests, function(guest) {
-				return guest.is_missing_any_required_field;
-			});
-			console.log(guestsWithMissingInfo);
-			if (guestsWithMissingInfo.length > 0) {
-				// present new state to collect remainig guest details
-				$state.go('zest_station.zsCheckinSaveGuestInfo', {
-					checkinParams: angular.toJson(checkinParams),
-					guestInfo: angular.toJson(data)
-				});
-			} else {
-				checkinGuest();
-			}
+				if (guestsWithMissingInfo.length > 0) {
+					// present new state to collect remainig guest details
+					$state.go('zest_station.zsCheckinSaveGuestInfo', {
+						checkinParams: angular.toJson(checkinParams),
+						guestInfo: angular.toJson(data)
+					});
+				} else {
+					checkinGuest();
+				}
 			};
 			var options = {
 				params: {
