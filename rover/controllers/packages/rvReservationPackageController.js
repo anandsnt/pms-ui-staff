@@ -22,15 +22,11 @@ sntRover.controller('RVReservationPackageController',
   		});
 	};
 
-	$scope.invokeApi(RVReservationPackageSrv.getReservationPackages, reservationId, successCallBack);
 	$scope.setScroller('resultDetails', {
-			'click': true
-		});
-	setTimeout(function() {
-					$scope.refreshScroller('resultDetails');
+		'click': true
+	});
 
-				},
-				2000);
+	$scope.invokeApi(RVReservationPackageSrv.getReservationPackages, reservationId, successCallBack);
 				
 	$scope.closeAddOnPopup = function() {
 		// to add stjepan's popup showing animation
@@ -64,9 +60,12 @@ sntRover.controller('RVReservationPackageController',
 			$scope.packageData.existing_packages.splice(index, 1);
 			$scope.addonsData.existingAddons.splice(index, 1);
 			$scope.reservationData.reservation_card.package_count = parseInt($scope.reservationData.reservation_card.package_count) - parseInt(1);
+			$scope.refreshScroller('resultDetails');
+
 			if ($scope.reservationData.reservation_card.package_count === 0) {
 				$scope.reservationData.reservation_card.is_package_exist = false;
 			}
+
 			shouldReloadState = true;
 		};
 
