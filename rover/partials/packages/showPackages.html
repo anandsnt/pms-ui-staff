@@ -1,8 +1,8 @@
 <div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-click="clearErrorMessage()" ng-cloak>
     <div class="modal-content room-enhancements">
         <span class="h2 message">Room {{packageData.room_no}} Enhancements</span>
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div class="scrollable" ng-iscroll="resultDetails" ng-iscroll-delay="500">
-            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <ul class="wrapper" >
                 <li ng-repeat="existingPackages in packageData.existing_packages" class="addons-list">
                     <span class="item">{{existingPackages.name}}</span>
