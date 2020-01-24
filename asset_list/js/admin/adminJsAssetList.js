@@ -72,7 +72,9 @@ module.exports = {
 				sharedRoot + 'integrations/*.js',
 				adminRoot + 'constants/**/*.js',
                 // Eliminate all spec files
-                '!**/*.spec.js'
+                '!**/*.spec.js',
+                // Workers will be loaded separately
+                '!**/workers/**/*.js'
 			]
 		};		
 		

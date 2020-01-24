@@ -25,10 +25,11 @@ sntRover.controller('roverController', [
     'sntActivity',
     '$transitions',
     'features',
+    'sessionTimeoutHandlerSrv',
     function ($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv,
               ngDialog, $translate, hotelDetails, userInfoDetails, $stateParams,
               rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q, $sce,
-              $log, sntAuthorizationSrv, $location, $interval, sntActivity, $transitions, features) {
+              $log, sntAuthorizationSrv, $location, $interval, sntActivity, $transitions, features, sessionTimeoutHandlerSrv) {
 
 
         var observeDeviceInterval;
@@ -641,6 +642,10 @@ sntRover.controller('roverController', [
             sntActivity.start('LOGOUT_INVALIDATE_TOKEN');
             RVDashboardSrv.signOut().finally(function() {
                 $timeout(function () {
+                    if (sessionTimeoutHandlerSrv.getWorker()) {
+                        sessionTimeoutHandlerSrv.stopTimer();
+                        $scope.$emit('CLOSE_SESSION_TIMEOUT_POPUP');
+                    }
                     $window.location.href = '/logout';
                 });
             });
@@ -901,25 +906,40 @@ sntRover.controller('roverController', [
 
         $rootScope.modalClosing = false;
 
-        /*
-         * Tp close dialog box
+        /**
+         * Closes the dialog window after a brief delay. 
+         *
+         * @param dialogId id of the specific dialog window to close. If
+         * id is not specified it will close all currently active modals.
          */
-        $scope.closeDialog = function () {
+        $scope.closeDialog = function(dialogId) {
             document.activeElement.blur();
             $scope.$emit('hideLoader');
 
             $rootScope.modalClosing = true;
             setTimeout(function () {
-                ngDialog.close();
+                $scope.closeDialogImmediately(dialogId);
                 $rootScope.modalClosing = false;
                 window.scrollTo(0, 0);
                 $scope.$apply();
             }, 500);
         };
 
-        $scope.closeDialogImmediately = function () {
-            ngDialog.close();
+        /**
+         * Closes the dialog window immediately.
+         *
+         * @param dialogId id of the specific dialog window to close. If
+         * id is not specified it will close all currently active modals.
+         */
+        $scope.closeDialogImmediately = function(dialogId) {
+            if (dialogId) {
+                ngDialog.close(dialogId);
+                return;
+            }
+
+            ngDialog.closeAll();
         };
+
         /*
          * To fix issue with ipad keypad - 7702
          */

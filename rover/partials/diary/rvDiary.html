@@ -157,9 +157,11 @@
         </div>
         <!-- Filters -->
         <div class="entry filters">
-            <button type="button" class="button white with-icon only-icon show-unassigned" ng-click="onUnassignedRoomToggle()">
+            <button type="button" class="button white with-icon only-icon show-unassigned"
+                    ng-click="onUnassignedRoomToggle()"
+                    ng-class="{'active': gridProps.unassignedRoomList.open}">
                 <span class="count">{{gridProps.unassignedRoomList.unassignedCount}}</span>
-                <span class="icons icon-filter-room"></span>
+                <span class="icons icon-filter-room" ng-class="{'active': gridProps.unassignedRoomList.open}"></span>
             </button>
             <button type="button" class="button white with-icon only-icon show-unassigned" ng-click="resetEverything()">
                 <span class="icons icon-reset"></span>

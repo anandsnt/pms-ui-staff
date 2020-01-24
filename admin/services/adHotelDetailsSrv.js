@@ -204,5 +204,20 @@ admin.service('ADHotelDetailsSrv', [
 		});
 		return deferred.promise;
 	};
+
+        this.getThemes = function () {
+            var deferred = $q.defer();
+
+            if (that.themes) {
+                deferred.resolve(that.themes);
+            } else {
+                ADBaseWebSrvV2.getJSON('/api/themes').then(function (data) {
+                    that.themes = data;
+                    deferred.resolve(data);
+                });
+            }
+
+            return deferred.promise;
+        };
 	
 }]);

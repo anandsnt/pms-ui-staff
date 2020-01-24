@@ -1,6 +1,23 @@
 
-<div ng-controller="rvDiaryUnassignedListController" id="room-diary-rooms" class="diary-sidebar diary-unassigned diary-hourly-unassigned" ng-class="showUnassignedListPanel()">
+<div ng-controller="rvDiaryUnassignedListController" id="room-diary-rooms" class="diary-sidebar diary-unassigned diary-hourly-unassigned" ng-class="{'visible': gridProps.unassignedRoomList.open}">
     
+     <!-- Search -->
+     <div class="diary-nightly-search-form">
+        <div class="entry search">
+            <button class="clear-query"
+                ng-class="{'visible': queryString.length > 0}"> <!-- Add class 'visible' to show -->
+                <span class="icons icon-clear-search" ng-click="clearList()">Clear query</span>
+            </button>
+            <span class="result-count"
+                ng-class="{'hidden': queryString.length === 0}"
+                >{{currentBookings.length + futureBookings.length}} Matches
+            </span> <!-- Remove class 'hidden' to show -->
+            <input class="query" placeholder="Search by Guest Name or Conf. No."
+                    type="search" autocomplete="off"
+                    ng-model="queryString" ng-change="arrangeReservationList()">
+        </div>
+    </div>
+
     <!-- Title -->
     <div class="sidebar-header">
         <h2>Unassigned Reservations</h2>
@@ -11,7 +28,7 @@
     <div class="unassigned-list no-actions scrollable scroll-vertical"> <!-- Remove class '.no-actions' when L75 is checked -->
 
         <!-- CASE 1: List is empty for both days (no results or no unassigned reservations at all) -->
-        <div class="no-content" ng-if="udReservationsData.length === 0">
+        <div class="no-content" ng-if="!bookingsPresent()">
             <div class="info">
                 <span class="icon-no-content icon-search"></span>
                 <strong class="h1">No reservations found</strong>
@@ -19,22 +36,32 @@
         </div> 
 
         <!-- CASE 2: Unassigned reservations found / exist in any of days (replace L24-L29 with this) -->
-        <div class="wrapper" ng-if="udReservationsData.length !== 0">
-            <!-- <strong class="unassigned-day">
-                Today <span class="date">{Date, format '14 May 2019'}</span>
-                <span class="count">{No. of unassigned reservations}</span>
-            </strong> -->
+        <div class="wrapper" ng-if="bookingsPresent()">
+            <strong class="unassigned-day">
+                Today <span class="date">{{getActiveDate(true)}}</span>
+                <span class="count">{{currentBookings.length}}</span>
+            </strong>
+            <div class="no-content" ng-if="currentBookings.length === 0">
+                <div class="info">
+                    <span class="icon-no-content icon-search"></span>
+                    <strong class="h1">No reservations found</strong>
+                </div>
+            </div>
             <!-- Add class '.blocked' for Night Use reservations -->
-            <div ng-repeat="reservation in udReservationsData"
+            <div ng-repeat="reservation in currentBookings"
                 class="{{reservation.statusClass}}"
                 ng-click="clickedUnassignedReservation(reservation)"
-                ng-class="{'selected': selectedIndex === reservation.reservation_id, 'blocked disable-element': reservation.arrival_date !== (gridProps.filter.arrival_date | date:'yyyy-MM-dd')}">
+                ng-class="{'selected': selectedIndex === reservation.reservation_id, 'blocked disable-element': reservation.arrival_date !== getActiveDate()}">
                 <div class="data">
-                    <strong class="name">{{reservation.primary_guest}}</strong>
+                    <strong class="name"
+                        ng-bind-html="reservation.primary_guest | highlight:queryString:false">
+                    </strong>
                     <!-- If VIP, show: <span class="vip">VIP</span> -->
                     <span class="vip" ng-if="reservation.is_vip">VIP</span>
                     <!-- Uncomment the below line when the story to show Conf. No. comes -->
-                    <!-- <span class="guest-room">Conf. <strong>{{reservation.confirmation_number}}</strong></span> -->
+                    <span class="guest-room">Conf.
+                        <strong ng-bind-html="reservation.confirmation_number | highlight:queryString:false"></strong>
+                    </span>
                     <span class="guest-room">{{reservation.room_type_name}}</span>
                 </div>
                 <div class="type">{{reservation.is_hourly ? 'D' : 'N'}}</div>
@@ -52,12 +79,43 @@
                 - if available, add class '.selected' and remove '.hide-unnasigned' from '#diary-nightly' in {../grid.html} 
             -->
 
-            <!-- <strong class="unassigned-day">
-                Tomorrow <span class="date">{Date, format '14 May 2019'}</span>
-                <span class="count">{No. of unassigned reservations}</span>
-            </strong> -->
-            
+            <strong class="unassigned-day">
+                Tomorrow <span class="date">{{getNextDate(true)}}</span>
+                <span class="count">{{futureBookings.length}}</span>
+            </strong>
+            <div class="no-content" ng-if="futureBookings.length === 0">
+                <div class="info">
+                    <span class="icon-no-content icon-search"></span>
+                    <strong class="h1">No reservations found</strong>
+                </div>
+            </div>
             <!-- {repeat L38-L58 for tomorrow} -->
+            <!-- Add class '.blocked' for Night Use reservations -->
+            <div ng-repeat="reservation in futureBookings"
+                class="{{reservation.statusClass}}"
+                ng-click="clickedUnassignedReservation(reservation)"
+                ng-class="{'selected': selectedIndex === reservation.reservation_id, 'blocked disable-element': reservation.arrival_date !== getActiveDate()}">
+                <div class="data">
+                    <strong class="name"
+                        ng-bind-html="reservation.primary_guest | highlight:queryString:false">
+                    </strong>
+                    <!-- If VIP, show: <span class="vip">VIP</span> -->
+                    <span class="vip" ng-if="reservation.is_vip">VIP</span>
+                    <!-- Uncomment the below line when the story to show Conf. No. comes -->
+                    <span class="guest-room">Conf. 
+                        <strong ng-bind-html="reservation.confirmation_number | highlight:queryString:false"></strong>
+                    </span>
+                    <span class="guest-room">{{reservation.room_type_name}}</span>
+                </div>
+                <div class="type">{{reservation.is_hourly ? 'D' : 'N'}}</div>
+                <div class="nights" ng-if="reservation.is_hourly">
+                    {{reservation.total_hours}} HOURS
+                    <span>{{reservation.arrival_time}}</span>
+                </div>
+                <div class="nights" ng-if="!reservation.is_hourly">
+                    {{reservation.no_of_nights}} NIGHTS
+                </div>
+            </div>
         </div>
 
     </div>
