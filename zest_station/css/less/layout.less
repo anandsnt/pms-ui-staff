@@ -523,6 +523,78 @@
         }
 
         &.full { width: 100%; }
+
+        &.guest-information {
+            width: 100%;
+            #calc > #max-height > .remove(100%, 240px);
+            #rounded > .bottom();
+            text-transform: uppercase;
+
+            h3 {
+                text-align: left;
+            }
+
+            .wrapper {
+                padding: 0;
+                min-height: 100%;
+            }
+
+            .form {
+                min-height: 100%;
+                align-items: stretch;
+
+                label {
+                    display: block;
+                    margin-bottom: 5px;
+                    font-size: 16px;
+                }
+
+                .entry {
+                    margin-bottom: 15px;
+
+                    .entry {
+                        padding: 0;
+                        margin: 0;
+                        box-shadow: none;
+                        width: 100%;
+                    }
+                }
+
+                .entry-row {
+                    #flexbox > .flex();
+                    #flexbox > .parent(row wrap, space-between, '', '');
+
+                    .entry {
+                        #calc > #width > .remove(50%, 10px);
+
+                        &.full-width,
+                        .entry {
+                            width: 100%;
+                        }
+                    }
+                }
+            }
+
+            .guest-information-left,
+            .guest-information-right {
+                padding: 25px 25px 20px 25px;
+                min-height: 100%;
+            }
+
+            .guest-information-left {
+                width: 55%;
+            }
+
+            .guest-information-right {
+                width: 45%;
+                background: rgba( 0, 0, 0, 0.1 );
+            }
+
+            &:after,
+            &:before {
+               display: none;
+            }
+        }
     }
 
 /* Room Upgrade - Single Room **/
@@ -1472,16 +1544,43 @@
         .ui-datepicker-title {
             font-size: 24px;
             text-align: center;
+            #flexbox > .flex();
+            #flexbox > .parent(row, center, center, '');
+
+            .select {
+                position: relative;
+
+                select {
+                    padding-right: 40px;
+                    background: transparent;
+                }
+
+                &:after {
+                    content: '';
+                    position: absolute;
+                    top: 30px;
+                    right: 10px;
+                    border-left: 6px solid transparent;
+                    border-right: 6px solid transparent;
+                    border-top: 6px solid @white;
+                    .square(0);
+                    .show;
+                }
+
+                &:not(:last-child) {
+                    margin-right: 10px;
+                }
+            }
 
             // TODO: Revert after stjepans update
-            .ui-datepicker-month,
+            /*.ui-datepicker-month,
             .ui-datepicker-year {
                 height: 40px;
                 font-size: 20px;
                 font-weight: 600;
                 width: 120px;
                 background-color: @brandColor;
-            }
+            }*/
         }
 
         .ui-datepicker-prev,

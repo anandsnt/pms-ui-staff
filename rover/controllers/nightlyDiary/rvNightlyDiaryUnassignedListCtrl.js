@@ -89,6 +89,7 @@ angular.module('sntRover')
             $scope.diaryData.selectedUnassignedReservation = {};
 
             $scope.$emit('HIDE_ASSIGN_ROOM_SLOTS');
+            $scope.$emit('CANCEL_UNASSIGNED_RESERVATION_MAIN');
         });
 
         // Method to fetch Unassigned reservations list.

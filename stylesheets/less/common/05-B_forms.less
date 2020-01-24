@@ -44,6 +44,10 @@ textarea {
         color: @red;
         .box-shadow(inset 0 0 1px 1px @red);
     }
+
+    &.highlighted {
+        .box-shadow(inset 0 0 1px 1px @yellowEnd);
+    }
 }
 
 input { 
@@ -122,6 +126,10 @@ select {
     &.error {
         color: @red;
         .box-shadow(inset 0 0 1px 1px @red);
+    }
+
+    &.highlighted {
+        .box-shadow(inset 0 0 1px 1px @yellowEnd);
     }
 }
 

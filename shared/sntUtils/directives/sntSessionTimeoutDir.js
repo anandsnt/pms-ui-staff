@@ -13,15 +13,20 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
         function ($scope, sessionTimeoutHandlerSrv, ngDialog, sntSharedLoginSrv, $rootScope, sntActivity, $timeout, sntAuthorizationSrv, $window) {
             var sessionTimeoutDialog;
 
-            $scope.loginData = {}; 
+            $scope.loginData = {};
+            var ACCOUNT_LOCKED_STR = 'account has been locked';
             
             /**
              * Show session timeout popup
              */
             var showSessionTimeoutPopup = function() {
                     $rootScope.$broadcast('resetLoader');
+                    // Remove the token, when the session times out at the client side rather than when an API call is triggered
+                    $window.localStorage.removeItem('jwt');
 
                     if (!sessionTimeoutDialog) {
+                       $scope.loginData.autoLogoutDelay = Math.floor((sessionTimeoutHandlerSrv.getAutoLogoutDelay() / 1000 / 60) << 0);
+
                        sessionTimeoutDialog = ngDialog.open({
                             template: '/assets/partials/rvExtendSessionModal.html',
                             className: 'ngdialog-theme-default',
@@ -52,15 +57,20 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
                     }
                     sntActivity.stop('API_REQ');
                 }, function (error) {
-                    $scope.hasError = error.status !== 401;
-                    if (error.status === 401) {
-                        $scope.errorMessage = error.errors[0];
-                    } else {
-                        $scope.errorMessage = 'Your account has been locked';
-                    }
+                    $scope.hasError = error.status === 'failure';
+                    $scope.errorMessage = _.isArray(error.errors) ? error.errors[0] : '';
 
                     $scope.loginData.password = '';
                     sntActivity.stop('API_REQ');
+
+                    // This is a work around to identify the account locked scenario.
+                    // Once the api provides the flag for account locked, we can use that to check this particular case
+                    if ($scope.errorMessage && $scope.errorMessage.indexOf(ACCOUNT_LOCKED_STR) > -1) {
+                        $timeout(function () {
+                            $window.location.href = '/logout';
+                        }, 500);
+                        
+                    }
                 });
             };
 
@@ -85,7 +95,7 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
             var fetchLoginDetails = function() {
                 var onLoginFetchSuccess = function (response) {
                     if (response.auto_logout_delay) {
-                        sessionTimeoutHandlerSrv.setAutoLogoutDelay(response.auto_logout_delay * 60 * 1000);
+                        sessionTimeoutHandlerSrv.setAutoLogoutDelay(response.auto_logout_delay * 1000);
                     }
                     sessionTimeoutHandlerSrv.setLoginEmail(response.login);
                 };
