@@ -8,6 +8,12 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 	'zsEventConstants',
 	function($scope, zsCheckinSrv, zsGeneralSrv, $timeout, $stateParams, $controller, zsEventConstants) {
 
+		// Two modes GUEST_DETAILS and GUEST_LIST
+		// Different popups are listed below
+		// WARNING_POPUP --> While saving if any required data is missing or API failed to save
+		// SHOW_QUESTION --> Show bypass collect info question
+		// BYPASS_INFO_CHOOSED --> On choosing to bypass question, show msg to guest that the selected guest info can be skipped
+		// ALL_REQUIRED_INFO_PRESENT --> If all the required guest info is saved or bypassed, show msg to guest and allow them to proceed.
 
 		BaseCtrl.call(this, $scope);
 
@@ -15,7 +21,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 			$scope: $scope
 		});
 
-		var guestInfo =  angular.fromJson($stateParams.guestInfo);
+		var guestInfo = angular.fromJson($stateParams.guestInfo);
 		var checkinParams = angular.fromJson($stateParams.checkinParams);
 		var selectedCalendarModel = "";
 		var selectedCalendarModelDisplay = "";
@@ -32,28 +38,32 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 				});
 
 				if (guestsWithMissingInfo.length == 0) {
-					$scope.showAllInfoSaved = true;
-					$scope.showContinueButton = true;
+					$scope.screenData.openedPopupName = 'ALL_REQUIRED_INFO_PRESENT';
+					$scope.screenData.showContinueButton = true;
 				}
+				$scope.screenMode = 'GUEST_LIST';
+				$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 			}
 		};
 
-		$scope.revisitGuestList = function (){
-			$scope.showAllInfoSaved = false;
+		// ALL_REQUIRED_INFO_PRESENT popup
+
+		$scope.revisitGuestList = function() {
 			$scope.screenMode = 'GUEST_LIST';
+			$scope.screenData.openedPopupName = '';
 		};
 
+		// Continue button action
 		$scope.checkinReservation = function() {
-			$scope.showAllInfoSaved = false;
 			$scope.$emit('CHECKIN_GUEST', {
 				checkinParams: checkinParams
 			});
 		};
 
-		$scope.saveGuestDetails = function() { 
+		$scope.saveGuestDetails = function() {
 			var allRequireFieldsFilled = true;
 
-			$scope.errorMessage = false;
+			$scope.screenData.showErrorMessage = false;
 
 			_.each($scope.selectedGuest.guest_details, function(info) {
 				if (info.mandatory && !$scope.guestDetails[info.field]) {
@@ -62,8 +72,8 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 			});
 
 			if (!allRequireFieldsFilled) {
-				$scope.showWarningPopup = true;
-				$scope.triedToSave = true;
+				$scope.screenData.openedPopupName = 'WARNING_POPUP';
+				$scope.screenData.triedToSave = true;
 			} else {
 				var apiParams = angular.copy($scope.guestDetails);
 
@@ -84,8 +94,8 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 					params: apiParams,
 					successCallBack: onGuestInfoSave,
 					failureCallBack: function() {
-						$scope.showWarningPopup = true;
-						$scope.errorMessage = true;
+						$scope.screenData.openedPopupName = 'WARNING_POPUP';
+						$scope.screenData.showErrorMessage = true;
 					}
 				};
 
@@ -94,7 +104,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 		};
 
 		$scope.dismissPopup = function() {
-			$scope.showWarningPopup = false;
+			$scope.screenData.openedPopupName = '';
 		};
 		var formatDateBasedOnHotelFormat = function(date) {
 			return moment(date, 'YYYY-MM-DD')
@@ -109,7 +119,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 					var displayKey = info.field + "forDisplay";
 
 					$scope.guestDetails[displayKey] = $scope.guestDetails[info.field] ?
-													  formatDateBasedOnHotelFormat($scope.guestDetails[info.field]) : "";
+						formatDateBasedOnHotelFormat($scope.guestDetails[info.field]) : "";
 				}
 			});
 		};
@@ -120,6 +130,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 			$scope.showDatePick = !$scope.showDatePick;
 			$scope.selectedDate = $scope.guestDetails[selectedCalendarModel];
 		};
+
 		$scope.clickOnGuest = function(guest) {
 			$scope.selectedGuest = guest;
 			retrieveGuestInfoForDisplay(guest.guest_details);
@@ -131,17 +142,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 				$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 				refreshScroller();
 			}
-			console.log(guest);
 		};
-
-		var onBackButtonClicked = function () {
-			if ($scope.screenMode === 'GUEST_DETAILS') {
-				$scope.screenMode = 'GUEST_LIST';
-				$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
-			}
-		};
-
-		$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, onBackButtonClicked);
 
 		var refreshScroller = function() {
 			$timeout(function() {
@@ -151,9 +152,8 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 
 		// QUESTION POPUP CODE STARTS HERE
 
-		var showQuestionForGuest = function () {
-			$scope.bypassChoosed = false;
-			$scope.showQuestionPopup = true;
+		var showQuestionForGuest = function() {
+			$scope.screenData.openedPopupName = 'SHOW_QUESTION';
 		};
 
 		var resetMissingInfoFlagIfNeeded = function() {
@@ -167,11 +167,11 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 			$scope.selectedGuest.is_missing_any_required_field = missingInfoForGuest.length > 0;
 		};
 
-		$scope.noByPassChoosed = function () {
+		$scope.noByPassChoosed = function() {
 			resetMissingInfoFlagIfNeeded();
 			$scope.screenMode = 'GUEST_DETAILS';
 			refreshScroller();
-			$scope.showQuestionPopup = false;
+			$scope.screenData.openedPopupName = '';
 			if ($scope.selectedReservation.guest_details.length > 1) {
 				$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 			};
@@ -179,21 +179,29 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 
 		$scope.byPassQuest = function() {
 			// record in activity log. Mark as not required
-			$scope.bypassChoosed = true;
 			$scope.selectedGuest.is_missing_any_required_field = false;
+			$scope.screenData.openedPopupName = 'BYPASS_INFO_CHOOSED';
 		};
 
-		$scope.closeQuestionPopup = function(){
-			$scope.bypassChoosed = false;
-			$scope.showQuestionPopup = false;
+		$scope.closeQuestionPopup = function() {
+			$scope.screenData.openedPopupName = '';
 			if ($scope.selectedReservation.guest_details.length == 1) {
 				$scope.$emit('CHECKIN_GUEST', {
 					checkinParams: checkinParams
 				});
 			} else {
 				onGuestInfoSave();
-			}	
+			}
 		};
+
+		var onBackButtonClicked = function() {
+			if ($scope.screenMode === 'GUEST_DETAILS') {
+				$scope.screenMode = 'GUEST_LIST';
+				$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
+			}
+		};
+
+		$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, onBackButtonClicked);
 
 		// QUESTION POPUP CODE ENDS HERE
 
@@ -238,18 +246,25 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 					if (selectedGuest.id === guest.id) {
 						selectedGuest.guest_details = guest.guest_details;
 						selectedGuest.is_missing_any_required_field = guest.is_missing_any_required_field;
+						selectedGuest.guest_type = guest.guest_type;
 					}
 				});
 			});
 
+			$scope.selectedReservation.guest_details = _.filter($scope.selectedReservation.guest_details, function(guest) {
+				return guest.guest_type === 'ADULT';
+			});
+
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 
-			$scope.showWarningPopup = false;
-			$scope.showQuestionPopup = false;
-			$scope.triedToSave = false;
-			$scope.errorMessage = true;
-			$scope.showAllInfoSaved = false;
-			$scope.showContinueButton = false;
+			$scope.screenData = {
+				showContinueButton: false,
+				openedPopupName: '',
+				triedToSave: false,
+				showErrorMessage: false,
+				showWarningPopup: false
+
+			};
 
 			if ($scope.selectedReservation.guest_details.length > 1) {
 				$scope.screenMode = 'GUEST_LIST';

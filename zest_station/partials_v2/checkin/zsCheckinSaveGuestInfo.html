@@ -1,39 +1,76 @@
+<!-- LIST THE REQUIRED GUESTS -->
+<section id="main" role="main" ng-show="screenMode == 'GUEST_LIST'">
+   <div id="content">
+      <h1 translate="">
+         GUEST_INFO_MISSGING_HEADING
+      </h1>
+      <h2 translate="">
+         GUEST_INFO_MISSGING_SUB_HEADING
+      </h2>
+      <div id="guestsList" ng-iscroll="guests-list" ng-iscroll-delay="100" ng-init="setScroll()">
+         <ul id="selection" class="editable wrapper">
+            <li ng-repeat='guest in selectedReservation.guest_details track by $index' ng-click="clickOnGuest(guest)"
+               ng-class="{'guest-info-missing': guest.is_missing_any_required_field}">
+               <span class="details" ng-if='guest.last_name !== guest.first_name' style="width: 100%;">
+               {{guest.first_name}}&nbsp;{{guest.last_name}}
+               </span>
+               <span class="details" ng-if="guest.last_name === guest.first_name && guest.full_name !== undefined " style="width: 100%;">
+               {{guest.full_name}}    
+               </span>
+               <span class="details" ng-if="guest.last_name === guest.first_name && guest.full_name === undefined " style="width: 100%;">
+               {{guest.first_name}}    
+               </span>
+               </span>
+            </li>
+         </ul>
+      </div>
+      <div id="actions" ng-show="screenData.showContinueButton">
+         <button type="button" class="button prev add-guest-passport">
+            <!-- DUMMY BUTTON -->
+         </button>
+         <button type="button" class="button" click-touch="checkinReservation()" translate>
+          CONTINUE
+         </button>
+      </div>
+   </div>
+</section>
+
+<!-- SHOW GUEST INFO AS A FORM-->
 <section id="main" class="guest-id-verify" role="main" ng-show="screenMode == 'GUEST_DETAILS'">
-     <div id="flex-holder">
+   <div id="flex-holder">
       <div id="textual" class="review-bill scrollable" ng-iscroll="guests-info" style="height: 75%;">
          <div class="wrapper passport-details">
             <div id="bill">
                <h1 translate>
-                  FILL IN YOUR INFO TO PROCEED
+                  FILL_IN_GUEST_INFO
                </h1>
                <h2 translate>
-                  infoS MARKED WITH * ARE MANDATORY
+                  FILL_INFO_INSTRUCTIONS
                </h2>
                <div class="entry with-label" ng-repeat="info in selectedGuest.guest_details">
-                    <label>
-                        {{ info.label | translate }} <span style="color: red;">{{ info.mandatory ? '*' :'' }}</span>
-                    </label>
-                    <input type="text" ng-if="info.type === 'text'" ng-model='guestDetails[info.field]' ng-class="{'missing-guest-info': triedToSave && info.mandatory && !guestDetails[info.field]}"/>
-                    <!-- select -->
-                    <select ng-if="info.type === 'select'" name="Country"  ng-model="guestDetails[info.field]" style="width: 40%;color: #000;" ng-options="item.value  as item.label | translate for item in info.values"
-                      ng-class="{'missing-guest-info': triedToSave && info.mandatory && !guestDetails[info.field]}">
-                        <option value="">{{'SELECT' | translate}}</option>
-                    </select>
-                    <!-- date -->
-                    <div class="entry input" style="width: 40%;float: right;" ng-if="info.type === 'date'">
-                      <input type="text" ng-model="guestDetails[info.field+'forDisplay']" class="disabled" click-touch="showDatePicker(info.field,info.field+'forDisplay')"
-                      ng-class="{'missing-guest-info': triedToSave && info.mandatory && !guestDetails[info.field]}"/>
-                      <ng-include src="icons.url.date" click-touch="showDatePicker(info.field,info.field+'forDisplay'); resetTime();">
-                    </div>
-                    <!-- bool -->
-                    <select ng-if="info.type === 'boolean'" name="Country"  ng-model="guestDetails[info.field]"
-                    ng-class="{'missing-guest-info': triedToSave && info.mandatory && !guestDetails[info.field]}" style="width: 40%;color: #000;">
-                        <option value="">{{'SELECT' | translate}}</option>
-                        <option value="true">{{'YES' | translate}}</option>
-                        <option value="false">{{'NO' | translate}}</option>
-                    </select>
+                  <label>
+                  {{ info.label | translate }} <span style="color: red;">{{ info.mandatory ? '*' :'' }}</span>
+                  </label>
+                  <input type="text" ng-if="info.type === 'text'" ng-model='guestDetails[info.field]' ng-class="{'missing-guest-info': screenData.triedToSave && info.mandatory && !guestDetails[info.field]}"/>
+                  <!-- select -->
+                  <select ng-if="info.type === 'select'" name="Country"  ng-model="guestDetails[info.field]" style="width: 40%;color: #000;" ng-options="item.value  as item.label | translate for item in info.values"
+                     ng-class="{'missing-guest-info': screenData.triedToSave && info.mandatory && !guestDetails[info.field]}">
+                     <option value="">{{'SELECT' | translate}}</option>
+                  </select>
+                  <!-- date -->
+                  <div class="entry input" style="width: 40%;float: right;" ng-if="info.type === 'date'">
+                     <input type="text" ng-model="guestDetails[info.field+'forDisplay']" class="disabled" click-touch="showDatePicker(info.field,info.field+'forDisplay')"
+                        ng-class="{'missing-guest-info': screenData.triedToSave && info.mandatory && !guestDetails[info.field]}"/>
+                     <ng-include src="icons.url.date" click-touch="showDatePicker(info.field,info.field+'forDisplay'); resetTime();">
+                  </div>
+                  <!-- bool -->
+                  <select ng-if="info.type === 'boolean'" name="Country"  ng-model="guestDetails[info.field]"
+                     ng-class="{'missing-guest-info': screenData.triedToSave && info.mandatory && !guestDetails[info.field]}" style="width: 40%;color: #000;">
+                     <option value="">{{'SELECT' | translate}}</option>
+                     <option value="true">{{'YES' | translate}}</option>
+                     <option value="false">{{'NO' | translate}}</option>
+                  </select>
                </div>
-
                <br/><br/>
             </div>
          </div>
@@ -41,100 +78,76 @@
    </div>
    <div id='actions' class="align-center guest-id-actions">
       <button type="button" class="button" touch-press='saveGuestDetails()' translate>
-      GID_VERIFY_PASSPORT_ACCEPT
+      SAVE_GUEST_INFO
       </button>
-   </div>   
+   </div>
 </section>
 
-<section id="main" role="main" ng-show="screenMode == 'GUEST_LIST'">
-    <div id="content">
-        <h1>
-          GUEST INFO MISSING
-        </h1>
-        <h2>
-           PLEASE ENTER ALL THE REQUIRED DETAILS
-        </h2>
-        <div id="guestsList" ng-iscroll="guests-list" ng-iscroll-delay="100" ng-init="setScroll()">
-            <ul id="selection" class="editable wrapper">
-                <li ng-repeat='guest in selectedReservation.guest_details track by $index' ng-click="clickOnGuest(guest)"
-                ng-class="{'missing-guest-info': guest.is_missing_any_required_field}">
-                    <span class="details" ng-if='guest.last_name !== guest.first_name' style="width: 100%;">
-                        {{guest.first_name}}&nbsp;{{guest.last_name}}
-                    </span>
-                    <span class="details" ng-if="guest.last_name === guest.first_name && guest.full_name !== undefined " style="width: 100%;">
-                        {{guest.full_name}}    
-                    </span>
-                    <span class="details" ng-if="guest.last_name === guest.first_name && guest.full_name === undefined " style="width: 100%;">
-                        {{guest.first_name}}    
-                    </span>
-                    </span>
-                </li>
-            </ul>
-        </div>
-        <div id="actions" ng-show="showContinueButton">
-            <button type="button" class="button prev add-guest-passport">
-            <!-- DUMMY BUTTON -->
-           </button>
-           <button type="button" class="button" click-touch="checkinReservation()">
-              CONTINUE
-           </button>
-        </div>
-    </div>
-</section>
-
-<div class="popup" ng-class="{'open': showWarningPopup}">
-    <!-- Remove class "open" to hide popup content -->
-    <div class="popup-content">
-        <h2 class="nocaps" ng-if="!errorMessage">
-            {{ 'PLEASE_PROVIDE_ALL_REQUIRED_INFO' | translate }}
-        </h2>
-         <h2 class="nocaps" ng-if="errorMessage">
-            {{ 'GUEST_INFO_ERROR_MSG' | translate }}
-        </h2>
-        <button type="button" class="button idle-timeout-btn" click-touch='dismissPopup();'>
-            <text data-ng-bind-html="getTagValue('OK')" editable-text="OK"></text>
-        </button>
-    </div>
+<!-- SHOW WARNING IF ANY REQUIRED INFO IS MISSING OR API FAILED TO SAVE -->
+<div class="popup" ng-class="{'open': screenData.openedPopupName === 'WARNING_POPUP'}">
+   <!-- Remove class "open" to hide popup content -->
+   <div class="popup-content">
+      <h2 class="nocaps" ng-if="!screenData.showErrorMessage">
+         {{ 'PLEASE_PROVIDE_ALL_REQUIRED_INFO' | translate }}
+      </h2>
+      <h2 class="nocaps" ng-if="screenData.showErrorMessage">
+         {{ 'GUEST_INFO_ERROR_MSG' | translate }}
+      </h2>
+      <button type="button" class="button idle-timeout-btn" click-touch='dismissPopup();'>
+         <text data-ng-bind-html="getTagValue('OK')" editable-text="OK"></text>
+      </button>
+   </div>
 </div>
 
-
-  <div class="popup" ng-class="{'open': showQuestionPopup}">
-  <!-- Remove class "open" to hide popup content -->
-    <div class="popup-content">
-      <h2 class="nocaps" ng-if="!bypassChoosed">
-      {{ bypassQuest }}
+<!-- SHOW BYPASS INFO QUEST -->
+<div class="popup" ng-class="{'open': screenData.openedPopupName === 'SHOW_QUESTION' }">
+   <!-- Remove class "open" to hide popup content -->
+   <div class="popup-content">
+      <h2 class="nocaps">
+         {{ bypassQuest | translate }}
       </h2>
-      <h2 class="nocaps" ng-if="bypassChoosed">
-      Since you have choosed Austrian, you don't have fill info for the selected guest.
-      </h2>
-
       <div id="message-action">
-        <button type="button" class="button idle-timeout-btn" click-touch='noByPassChoosed();' ng-if="!bypassChoosed">
-        {{ bypassAnswerNo }}
-        </button>
-        <button type="button" class="button idle-timeout-btn" click-touch='byPassQuest();' ng-if="!bypassChoosed">
-        {{ bypassAnswer }}
-        </button>
-        <button type="button" class="button idle-timeout-btn" click-touch='closeQuestionPopup()' ng-if="bypassChoosed">
-        OK
-        </button>
+         <button type="button" class="button idle-timeout-btn" click-touch='noByPassChoosed();'>
+         {{ bypassAnswerNo | translate }}
+         </button>
+         <button type="button" class="button idle-timeout-btn" click-touch='byPassQuest();'>
+         {{ bypassAnswer | translate }}
+         </button>
       </div>
-    </div>
-  </div>
-
-<div class="popup" ng-class="{'open': showAllInfoSaved}">
-    <!-- Remove class "open" to hide popup content -->
-    <div class="popup-content">
-        <h2 class="nocaps">
-            All required info saved.. You can either review or proceed to checkin !!!
-        </h2>
-         <div id="message-action">
-          <button type="button" class="button idle-timeout-btn" click-touch='revisitGuestList();'>
-               ok
-          </button>
-      </div>
-    </div>
+   </div>
 </div>
 
+<!-- SHOW BYPASSED GUEST MSG -->
+<div class="popup" ng-class="{'open': screenData.openedPopupName === 'BYPASS_INFO_CHOOSED'}">
+   <!-- Remove class "open" to hide popup content -->
+   <div class="popup-content">
+      <h2 class="nocaps" translate="">
+         BYPASS_INFO_MSG
+      </h2>
+      <div id="message-action">
+         <button type="button" class="button idle-timeout-btn" click-touch='closeQuestionPopup();' translate>
+          OK
+         </button>
+      </div>
+   </div>
+</div>
+
+<!-- SHOW WHEN ALL REQUIRED INFO ARE SAVED OR GUEST IS ELIGIBLE TO BYPASS -->
+<div class="popup" ng-class="{'open': screenData.openedPopupName === 'ALL_REQUIRED_INFO_PRESENT' }">
+   <!-- Remove class "open" to hide popup content -->
+   <div class="popup-content">
+      <h2 class="nocaps" translate>
+          ALL_REQUIRED_INFO_SAVED_MSG
+      </h2>
+      <div id="message-action">
+         <button type="button" class="button idle-timeout-btn" click-touch='revisitGuestList();' translate>
+          CLOSE
+         </button>
+         <button type="button" class="button idle-timeout-btn" click-touch='checkinReservation();' translate>
+          CONTINUE
+         </button>
+      </div>
+   </div>
+</div>
 
 <div ng-show="showDatePick" ui-date="dateOptions" ng-model="selectedDate" ui-date-format="yy-mm-dd" id='picker'>

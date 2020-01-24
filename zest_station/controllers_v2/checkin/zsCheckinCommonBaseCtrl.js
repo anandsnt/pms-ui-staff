@@ -81,7 +81,13 @@ sntZestStation.controller('zsCheckinCommonBaseCtrl', [
 				data.guests = _.filter(data.guests, function(guest) {
 					return guest.primary;
 				});
+			} else {
+				// Filter out only Adult guest
+				data.guests = _.filter(data.guests, function(guest) {
+					return guest.guest_type === 'ADULT';
+				});
 			}
+
 			
 			// utils function
 			_.each(data.guests, function(guest) {
