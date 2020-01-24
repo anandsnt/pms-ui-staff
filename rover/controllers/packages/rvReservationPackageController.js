@@ -35,12 +35,13 @@ sntRover.controller('RVReservationPackageController',
 			if (shouldReloadState) {
 				$state.reload($state.current.name);
 			}
-			ngDialog.close();
+
+			$scope.closeThisDialog();
 		}, 300);
 	};
 
 	$scope.goToAddons = function() {
-		ngDialog.close();
+		$scope.closeThisDialog();
 		$state.go('rover.reservation.staycard.mainCard.addons',
 		 	{
 		 		'from_date': $scope.reservation.reservation_card.arrival_date,
