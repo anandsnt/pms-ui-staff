@@ -56,7 +56,7 @@ admin.controller('ADRatesAddonDetailsCtrl', [
                 weekends: ["Friday", "Saturday", "Sunday"],
                 daysOfWeek: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
                 frequency_types: ["days", "weeks", "months"],
-                daysOfMonth: _.range(1,32,1)
+                daysOfMonth: _.range(1, 32, 1)
             };
         };
 

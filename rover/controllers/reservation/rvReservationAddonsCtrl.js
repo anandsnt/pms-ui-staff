@@ -95,10 +95,11 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         var updatedAddon = _.find($scope.addonsData.existingAddons, {
                             id: addon.id
                         });
+
                         addon.selected_post_days = updatedAddon.selected_post_days;
                         addon.start_date = $filter('date')(tzIndependentDate(updatedAddon.start_date), $rootScope.dateFormatForAPI);
                         addon.end_date = $filter('date')(tzIndependentDate(updatedAddon.end_date), $rootScope.dateFormatForAPI);
-                    })
+                    });
                 });
             },
             goToSummaryAndConfirm = function() {
@@ -328,11 +329,12 @@ sntRover.controller('RVReservationAddonsCtrl', [
         var setAddonsCustomPostingData = function() {
             angular.forEach($scope.addonsData.existingAddons, function(addon, index) {
                     addon.selected_post_days = {};
-                    if (typeof addon.start_date == 'undefined')
+                    if (typeof addon.start_date === 'undefined') {
                         addon.start_date = $scope.reservationData.arrivalDate;
-                    if (typeof addon.end_date == 'undefined')
+                    }
+                    if (typeof addon.end_date === 'undefined') {
                         addon.end_date = $scope.reservationData.arrivalDate;
-
+                    }
                     addon.start_date = $filter('date')(addon.start_date, $rootScope.dateFormat);
                     addon.end_date = $filter('date')(addon.end_date, $rootScope.dateFormat);
                     $scope.togglePostDaysSelectionForAddon(addon, false);
@@ -340,6 +342,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         if (item.active) {
                             var postDate = new Date(item.post_date);
                             var day = $scope.daysOfWeek[postDate.getDay()];
+
                             addon.selected_post_days[day] = true;
                         }
                     });
@@ -348,6 +351,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
 
         $scope.showEnhancementsPopup = function() {
             var selectedAddons = $scope.addonsData.existingAddons;
+
             if (selectedAddons.length > 0) {
                 ngDialog.open({
                     template: '/assets/partials/reservation/selectedAddonsListPopup.html',
@@ -369,6 +373,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
 
         $scope.shouldShowSelectAllDaysOfWeek = function() {
             var shouldShowSelectAllDaysOfWeek = false;
+
             angular.forEach($scope.daysOfWeek, function(item, index) {
                     if (!$scope.selectedPurchesedAddon.selected_post_days[item]) {
                         shouldShowSelectAllDaysOfWeek = true;
@@ -379,6 +384,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
 
         $scope.shouldShowSelectNoDaysOfWeek = function() {
             var shouldShowSelectNoDaysOfWeek = true;
+
             angular.forEach($scope.daysOfWeek, function(item, index) {
                     if (!$scope.selectedPurchesedAddon.selected_post_days[item]) {
                         shouldShowSelectNoDaysOfWeek = false;
@@ -391,11 +397,12 @@ sntRover.controller('RVReservationAddonsCtrl', [
             angular.forEach($scope.daysOfWeek, function(item, index) {
                     addon.selected_post_days[item] = select;
                 });
-        }
+        };
         $scope.daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
         
         var datePicker;
+
         $scope.clickedOnDatePicker = function(datePickerFor) {
             $scope.datePickerFor = datePickerFor;
             datePicker = ngDialog.open({
@@ -421,7 +428,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
 
         $scope.closeCalendar = function() {
             datePicker.close();
-        }
+        };
 
         $scope.refreshAddonsScroller = function() {
             $timeout(function() {
