@@ -13,14 +13,11 @@
                     <span >
                         <span class="count" >({{getAddonCount(existingPackages.amount_type.value, existingPackages.post_type.value, existingPackages.post_type.frequency,reservationData.reservation_card.number_of_adults, reservationData.reservation_card.number_of_children, packageData.duration_of_stay, existingPackages.charge_full_weeks_only, existingPackages.addon_count)}})</span>
                     </span>
-
-
                     <span class="base" ng-hide="existingPackages.is_rate_addon && existingPackages.is_inclusive">
                         at {{existingPackages.addon_currency}}{{existingPackages.amount | number : 2}} / {{existingPackages.amount_type.description}}
                         <span>
                             {{existingPackages.post_type.description}}
                         </span>
-
                     </span>
 
                     <!-- if addon type is adult /child type multiplification factor will be (addon_count*number of days*(adult_count or child_count)) -->
@@ -42,7 +39,6 @@
                         <span class="price" ng-hide="existingPackages.is_rate_addon && existingPackages.is_inclusive || existingPackages.post_type.value ==='STAY'">{{existingPackages.addon_currency}}{{existingPackages.totalAmount*(reservationData.reservation_card.number_of_children+reservationData.reservation_card.number_of_adults) | number : 2}}</span>
                         <span class="price" ng-hide="existingPackages.is_rate_addon && existingPackages.is_inclusive || existingPackages.post_type.value !=='STAY'">{{existingPackages.addon_currency}}{{existingPackages.totalAmount * packageData.duration_of_stay*(reservationData.reservation_card.number_of_children+reservationData.reservation_card.number_of_adults)| number : 2}}</span>
                     </span>
-
                     <span class="price" ng-show="existingPackages.is_rate_addon && existingPackages.is_inclusive">INCL</span>
                     <button type="button" class="icons icon-trash" ng-hide="existingPackages.is_rate_addon" ng-click="removeSelectedAddons(existingPackages.id, $index)">Remove</button>
                 </li>
@@ -52,18 +48,6 @@
             <!-- On Stay Card -->
             <button type="button" class="button orange" ng-click="goToAddons()">Add More to This Room</button>
             <button type="button" class="button blank" ng-click="closeAddOnPopup()">Close</button>
-
-            <!-- On Addons screen
-            <button type="button" class="button blank">Close</button>
-            -->
-
-            <!-- On Create Res. Enhance Stay screen:
-            <button type="button" class="button white">Add More to This Room</button>
-            <button type="button" class="button green">Go To Payment</button>-->
         </div>
     </div>
-
-
-
-
 </div>
