@@ -65,17 +65,26 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 
 			$scope.screenData.showErrorMessage = false;
 
-			_.each($scope.selectedGuest.guest_details, function(info) {
-				if (info.mandatory && !$scope.guestDetails[info.field]) {
-					allRequireFieldsFilled = false;
-				}
+			_.each($scope.selectedGuest.reservationDetails, function(row) {
+				_.each(row, function(field) {
+					if (field.mandatory && !field[field.field_key]) {
+						allRequireFieldsFilled = false;
+					}
+				});
 			});
 
 			if (!allRequireFieldsFilled) {
 				$scope.screenData.openedPopupName = 'WARNING_POPUP';
 				$scope.screenData.triedToSave = true;
 			} else {
-				var apiParams = angular.copy($scope.guestDetails);
+				var apiParams = {};
+
+				_.each($scope.selectedGuest.reservationDetails, function(row) {
+					_.each(row, function(field) {
+						apiParams[field.field_key] = field[field.field_key]
+					});
+
+				});
 
 				// Delete the keys used for displaying date in hotel's date format before saving
 				for (var key in apiParams) {
@@ -111,17 +120,41 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 				.format($scope.zestStationData.hotelDateFormat);
 		};
 
-		var retrieveGuestInfoForDisplay = function(guestInfo) {
-			_.each(guestInfo, function(info) {
-				$scope.guestDetails[info.field] = info.current_value;
-				if (info.type === "date") {
-					// Create extra variable for date and use to display the date in hotel's format
-					var displayKey = info.field + "forDisplay";
 
-					$scope.guestDetails[displayKey] = $scope.guestDetails[info.field] ?
-						formatDateBasedOnHotelFormat($scope.guestDetails[info.field]) : "";
+		var retrieveGuestInfoForDisplay = function(guestInfo) {
+			var individualRow = [];
+			$scope.selectedGuest.reservationDetails = [];
+
+			_.each(guestInfo, function(info, $index) {
+				var infoData = {
+					field_label: info.label,
+					field_key: info.field,
+					mandatory: info.mandatory,
+					type: info.type,
+					values: info.values
+				};
+
+				infoData[info.field] = info.current_value;
+
+				if (infoData.type === "date") {
+					var displayKey = infoData.field_key + "forDisplay";
+
+					infoData[displayKey] = info.current_value ? formatDateBasedOnHotelFormat(info.current_value) : "";
+				}
+
+				if (guestInfo.length === 1) {
+					$scope.selectedGuest.reservationDetails.push([infoData]);
+				} else {
+					individualRow.push(infoData);
+
+					if (individualRow.length === 2 || $index === guestInfo.length - 1) {
+						$scope.selectedGuest.reservationDetails.push(individualRow);
+						individualRow = [];
+					}
 				}
 			});
+
+			console.log($scope.selectedGuest.reservationDetails);
 		};
 
 		$scope.showDatePicker = function(calendarModel, calendarDisplayModel) {
@@ -139,15 +172,15 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 				showQuestionForGuest();
 			} else {
 				$scope.screenMode = 'GUEST_DETAILS';
-				$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 				refreshScroller();
+				$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 			}
 		};
 
 		var refreshScroller = function() {
 			$timeout(function() {
 				$scope.refreshScroller('guests-info');
-			}, 100);
+			}, 5000);
 		};
 
 		// QUESTION POPUP CODE STARTS HERE
@@ -216,8 +249,21 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 					$scope.showDatePick = false;
 					var selectedDate = angular.copy($scope.selectedDate);
 
-					$scope.guestDetails[selectedCalendarModelDisplay] = formatDateBasedOnHotelFormat(selectedDate);
-					$scope.guestDetails[selectedCalendarModel] = selectedDate;
+					// $scope.guestDetails[selectedCalendarModelDisplay] = formatDateBasedOnHotelFormat(selectedDate);
+					// $scope.guestDetails[selectedCalendarModel] = selectedDate;
+					var selectedCalendarField;
+
+					_.each($scope.selectedGuest.reservationDetails, function(row) {
+						selectedCalendarField = _.find(row, function(field) {
+							return field.field_key === selectedCalendarModel;
+						});
+
+						if (selectedCalendarField) {
+							selectedCalendarField[selectedCalendarModel] = selectedDate;
+							selectedCalendarField[selectedCalendarModelDisplay] = formatDateBasedOnHotelFormat(selectedDate);;
+						}
+
+					});
 					$scope.selectedDate = moment().format('YYYY-MM-DD');
 				}
 			};
