@@ -1198,6 +1198,37 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 params.company_id = $scope.reservationData.company.id;
                 $scope.invokeApi(RVReservationSummarySrv.fetchDefaultRoutingInfo, params, fetchSuccessofDefaultRouting);
             }
+        }; 
+        
+        var updateConfirmationData = function(key, reservation) {
+            var successCallBackOfGetConfirmationData = function(response) {
+
+                totalStayCost = parseFloat(totalStayCost) + parseFloat(response.data.total_stay_cost);
+                totalTax = parseFloat(totalTax) + parseFloat(response.data.total_tax);
+
+                $scope.reservationData.rooms[key].numAdults = response.data.stay_dates[key].adult_count;
+                $scope.reservationData.rooms[key].numChildren = response.data.stay_dates[key].child_count;
+                $scope.reservationData.rooms[key].numInfants = response.data.stay_dates[key].infant_count;
+                $scope.reservationData.rooms[key].rateAvg = response.data.stay_dates[key].rate_amount;
+                $scope.reservationData.rooms[key].rateTotal = response.data.total_rate;
+                $scope.reservationData.rooms[key].taxInformation = response.data.tax_details;
+                $scope.reservationData.rooms[key].addons = response.data.addons;
+
+
+                $scope.reservationData.totalStayCost = totalStayCost;
+                $scope.reservationData.totalTax = totalTax;
+                $scope.$broadcast("REFRESH_SCROLL_SUMMARY");
+            },
+            params = {
+                reservation_id: reservation.id
+            };
+
+            var options = {
+                params: params,
+                successCallBack: successCallBackOfGetConfirmationData
+            };
+
+            $scope.callAPI(RVReservationCardSrv.getConfirmationData, options);
         };
 
         $scope.saveReservation = function(navigateTo, stateParameters, index) {
@@ -1271,7 +1302,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                         $scope.viewState.reservationStatus.number = data.id;
                         $scope.reservationData.is_custom_text_per_reservation = data.is_custom_text_per_reservation;
                     }
-                    
+
                     /*
                      * TO DO:ends here
                      */
@@ -1370,38 +1401,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     $scope.errorMessage = data;
                     $scope.$broadcast('FAILURE_UPDATE_RESERVATION', data);
                     $scope.$emit('hideLoader');
-                };
-
-
-                var updateConfirmationData = function(key, reservation) {
-                    var successCallBackOfGetConfirmationData = function(response) {
-
-                        totalStayCost = parseFloat(totalStayCost) + parseFloat(response.data.total_stay_cost);
-                        totalTax = parseFloat(totalTax) + parseFloat(response.data.total_tax);
-
-                        $scope.reservationData.rooms[key].numAdults = response.data.stay_dates[key].adult_count;
-                        $scope.reservationData.rooms[key].numChildren = response.data.stay_dates[key].child_count;
-                        $scope.reservationData.rooms[key].numInfants = response.data.stay_dates[key].infant_count;
-                        $scope.reservationData.rooms[key].rateAvg = response.data.stay_dates[key].rate_amount;
-                        $scope.reservationData.rooms[key].rateTotal = response.data.total_rate;
-                        $scope.reservationData.rooms[key].taxInformation = response.data.tax_details;
-                        $scope.reservationData.rooms[key].addons = response.data.addons;
-
-
-                        $scope.reservationData.totalStayCost = totalStayCost;
-                        $scope.reservationData.totalTax = totalTax;
-                        $scope.$broadcast("REFRESH_SCROLL_SUMMARY");
-                    },
-                    params = {
-                        reservation_id: reservation.id
-                    };
-
-                    var options = {
-                        params: params,
-                        successCallBack: successCallBackOfGetConfirmationData
-                    };
-
-                    $scope.callAPI(RVReservationCardSrv.getConfirmationData, options);
                 };
 
                 var updateSuccess = function(data) {
