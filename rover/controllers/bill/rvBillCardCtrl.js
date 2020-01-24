@@ -2944,6 +2944,54 @@ sntRover.controller('RVbillCardController',
 			}
 	};
 
+	$scope.sendAutomaticEmails = function(data) {
+		var feesDetails = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].fees_details,
+			transactionId = feesDetails[feesIndex].id;
+
+		var sendSuccessCallback = function(reservationBillDataFetched) {
+			$scope.reservationBillData.bills = reservationBillDataFetched.bills;
+		},
+		params = {
+			"bill_id":$scope.reservationBillData.bills[$scope.currentActiveBill].bill_number,
+			"transaction_id":transactionId,
+			"locale":"en"
+		};
+
+		if (data.email) {
+			params.to_address = data.email;
+		};
+
+		var dataToSend = {
+			params: params,
+			successCallBack: sendSuccessCallback
+		};
+
+		$scope.callAPI(RVBillCarRVPaymentSrvdSrv.sendAutomaticEmails, dataToSend);
+	};
+
+	$scope.$on("AUTO_TRIGGER_EMAIL_AFTER_PAYMENT", function(e, data){
+		$scope.sendAutomaticEmails(data);
+	});
+
+	$scope.openEnterEmailPopup = function() {
+		ngDialog.open({
+			template: '/assets/partials/bill/rvValidateEmailOnPayment.html',
+			controller: 'RVValidateEmailOnPaymentCtrl',
+			className: '',
+			closeByDocument: false,
+			scope: $scope
+		});
+	};
+
+	$scope.autoTriggerPaymentReceiptActions = function() {
+		var isEmailExists = true;
+
+		if (isEmailExists) {
+			$scope.sendAutomaticEmails();
+		} else {
+			$scope.openEnterEmailPopup();
+		}
+	}
 
 	 $scope.$on('BILL_PAYMENT_SUCCESS', function(event, data) {
 	 	$scope.signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
@@ -2960,7 +3008,7 @@ sntRover.controller('RVbillCardController',
 		$scope.getBillData($scope.currentActiveBill);
 		$scope.$broadcast('FETCH_REMAINING_AUTH');
 
-		
+		$scope.autoTriggerPaymentReceiptActions();		
 	});
 
 	// To update paymentModalOpened scope - To work normal swipe in case if payment screen opened and closed - CICO-8617
