@@ -9,9 +9,9 @@ $scope.setUpData = function() {
         minDate: tzIndependentDate($rootScope.businessDate),
         onSelect: function(dateText, inst) {
         	if ($scope.whichDate === "from") {
-        		$scope.prefetchData.custom_tax_rules[$scope.currentTaxIndex].from_date = $filter('date')(tzIndependentDate($scope.from_date), 'yyyy-MM-dd');
+        		$scope.prefetchData.custom_tax_rules[$scope.currentTaxIndex].from_date = $filter('date')(tzIndependentDate($scope.from_date), $rootScope.dateFormat);
         	} else {
-        		$scope.prefetchData.custom_tax_rules[$scope.currentTaxIndex].to_date = $filter('date')(tzIndependentDate($scope.from_date), 'yyyy-MM-dd');
+        		$scope.prefetchData.custom_tax_rules[$scope.currentTaxIndex].to_date = $filter('date')(tzIndependentDate($scope.from_date), $rootScope.dateFormat);
         	}
             
             ngDialog.close();
