@@ -46,7 +46,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
             $scope.newPaymentInfo = {};
             $scope.renderData.billNumberSelected = '';
             $scope.renderData.defaultPaymentAmount = '';
-		    $scope.renderData.defaultPaymentCurrencyAmount = '';
+            $scope.renderData.defaultPaymentCurrencyAmount = '';
             $scope.defaultRefundAmount = 0;
             // We are passing $scope from bill to this modal
             $scope.currentActiveBillNumber = parseInt($scope.currentActiveBill) + parseInt(1);
