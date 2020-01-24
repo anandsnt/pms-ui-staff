@@ -1,0 +1,78 @@
+<!-- <div id="dashboard-search-form" class="search-form dashboard-analytics" role="search"> -->
+<form method="get" name="dashboard-search-form" id="dashboard-search-form" class="search-form dashboard-analytics has-dates has-room-types">
+    <!-- Switch between Analytics and buttons view -->
+    <div class="entry switch">
+        <div class="switch-button off" ng-class="{ 'on' : !dashboardFilter.analyticsActive }">
+            <input id="analytics-toggle" value="" type="checkbox" ng-click="toggleAnalyticsView()" checked="">
+            <label class="data-off">
+                <span class="value">SUMMARY</span>
+                <span class="switch-icon">ANALYTICS</span>
+            </label>
+            <label class="data-on">
+                <span class="switch-icon">SUMMARY</span>
+                <span class="value">ANALYTICS</span>
+            </label>
+        </div>
+    </div>
+    <!-- Select what chart to display -->
+    <div class="entry options">
+        <div class="select with-label">
+            <label for="showing">Showing</label>
+            <select id="showing" ng-model="dashboardFilter.selectedAnalyticsMenu" ng-change="changeAnalyticsView(dashboardFilter.selectedAnalyticsMenu)">
+                <option value="HK_OVERVIEW">Overivew</option>
+                <option value="HK_WORK_PRIORITY">Work Priority</option>
+            </select>
+        </div>
+    </div>
+    <!-- Set Date -->
+   <!--  <div class="entry dates">
+        <div class="entry-data has-datepicker">
+            <label for="analytics-date">Date</label>
+            <input id="analytics-date" type="text" class="datepicker" value="{Date}" readonly />
+        </div>
+    </div> -->
+    <!-- Actions -->
+    <div class="entry actions">
+        <!-- Add class 'active' when clicked 1st time, remove it when clickd 2nd time -->
+       <!--  <button class="button white with-icon only-icon legend"> 
+            <span class="icons icon-legend"></span>
+            Show legend
+        </button> -->
+        <button class="button white with-icon only-icon" ng-class="{'open' : dashboardFilter.showFilters }" ng-click="dashboardFilter.showFilters = !dashboardFilter.showFilters"> <!-- Add class 'open' when clicked 1st time, remove it when clickd 2nd time -->
+            <!-- If filters applied, show their count like this: <span class="count">{X}</span> -->
+            <span class="icons icon-filter"></span>
+            Filter rooms
+        </button>
+        <button type="button" class="button white with-icon only-icon" ng-click="refreshAnalyticsChart()">
+            <span class="icons icon-reset"></span>
+            Refresh
+        </button>
+    </div>
+    <!-- Filters -->
+    <div class="analytics-filters scrollable" ng-class="{'open' : dashboardFilter.showFilters }"> <!-- Toggle class 'open' when L56 clicked -->
+        <div class="wrapper">
+            <!-- Room Type -->
+            <!--  -->
+            <div class="entry">
+                <div class="select with-label">
+                    <label for="room-type">Room Type</label>
+                    <select id="room-type" ng-model="dashboardFilter.selectedRoomType" ng-change="onHkAnlayticsRoomTypeChange()"
+                    ng-if="dashboardFilter.selectedAnalyticsMenu !== 'HK_WORK_PRIORITY'">
+                        <option value="" selected="" translate>SHOW_ALL</option>
+                        <option value="{{roomType.code}}" ng-repeat="roomType in availableRoomTypes track by $index">{{roomType.name}}</option>
+                    </select>
+                    <select id="room-type" ng-model="dashboardFilter.selectedRoomType" ng-change="onHkAnlayticsRoomTypeChange()"
+                    ng-if="dashboardFilter.selectedAnalyticsMenu === 'HK_WORK_PRIORITY'">
+                        <option value="" selected="" translate>SHOW_ALL</option>
+                        <option value="{{roomType.code}}" ng-repeat="roomType in availableRoomTypes | orderBy: '-shortage' ">{{roomType.name}} {{ roomType.shortage > 0 ?  
+                           '....(-' + roomType.shortage + ' rooms)' : '' }}</option>
+                    </select>
+                </div>
+                <div class="selected" data-list="analytics-room-type">
+                    <span class="tag" ng-repeat="roomType in selectedFilters.roomTypes" ng-click="chartFilterRemoved(roomType)">{{roomType.name}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</form>

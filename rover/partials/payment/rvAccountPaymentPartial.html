@@ -67,7 +67,11 @@
 
 <!-- Success feedback -->
 <div class="feedback" ng-show="paymentAttempted && !isPaymentFailure">
-    <div class="notice success">Amount paid!</div>
+    <div class="notice success">Amount paid!<br />
+          <span ng-if="selectedPaymentType === 'CA' && hasPaymentRounding">
+              Final invoiced amount is subject to rounding!!
+          </span>
+    </div>
     <ul class="transaction">
         <li ng-show="!!payment.authorizationCode">
             Your Authorize code is: <span class="auth">{{payment.authorizationCode}}</span>

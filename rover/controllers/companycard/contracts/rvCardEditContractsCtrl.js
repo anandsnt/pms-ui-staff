@@ -157,5 +157,52 @@ angular.module('sntRover').controller('rvCardEditContractsCtrl', ['$scope', 'rvC
                 });
             }            
         };
+
+        // Handle unlink Contract
+        $scope.unlinkContractsCofirmed = function() {
+            $scope.closeDialog();
+            var unLinkContractSuccessCallback = function() {
+                $scope.$emit('fetchContractsList', 'UNLINK');
+            },
+            unLinkContractFailureCallback = function(errorMessage) {
+                $scope.$emit('setErrorMessage', errorMessage);
+            };
+
+            var options = {
+                successCallBack: unLinkContractSuccessCallback,
+                failureCallBack: unLinkContractFailureCallback,
+                params: {
+                    "id": $scope.contractData.selectedContractId,
+                    "account_id": $scope.contractData.accountId
+                }
+            };
+
+            if ($scope.contractData.editData.is_master_contract) {
+                options.params.from_account_id = $scope.contractData.accountId;
+                options.params.account_id = $scope.contractData.unlinkAccountId;
+            }
+
+            $scope.callAPI(rvCompanyCardContractsSrv.unLinkContract, options);
+        };
+
+        // Handle unlink Contract click to show confirm popup.
+        $scope.clickedUnlinkContracts = function( index ) {
+            var clickedItem = $scope.contractData.editData.account_details[index];
+            
+            if ($scope.contractData.editData.is_master_contract) {
+                $scope.cardName = clickedItem.name;
+                $scope.contractData.unlinkAccountId = clickedItem.id;
+            }
+            else {
+                $scope.cardName = $scope.contactInformation.account_details.account_name;
+            }
+            
+            ngDialog.open({
+                template: '/assets/partials/companyCard/contracts/rvConfirmUnlinkContract.html',
+                className: '',
+                closeByDocument: false,
+                scope: $scope
+            });
+        };
     }
 ]);

@@ -14,9 +14,12 @@ angular.module('sntRover')
         BaseCtrl.call(this, $scope);
         $scope.diaryData.selectedUnassignedReservation = {};
         $scope.businessDate = $rootScope.businessDate;
+        $scope.searchQuery = '';
+        var initialUnassignedListData = angular.copy($scope.diaryData.unassignedReservationList.reservations);
 
         var selectUnassignedListItem = function(item) {
-            if ($scope.diaryData.isEditReservationMode) {
+            // If we are in selected reservation mode, going to cancel the selection.
+            if ($scope.diaryData.isEditReservationMode && $scope.currentSelectedReservation.type !== 'UNASSIGNED_RESERVATION') {
                 $scope.$emit('CANCEL_RESERVATION_EDITING');
             }
             $scope.diaryData.isReservationSelected = true;
@@ -59,6 +62,17 @@ angular.module('sntRover')
             }
             else {
                 selectUnassignedListItem(item);
+                var currentSelectedReservation = {
+                    ...item,
+                    id: item.reservation_id,
+                    guest_details: {
+                        full_name: item.last_name + ' ' + item.first_name,
+                        image: ''
+                    },
+                    type: 'UNASSIGNED_RESERVATION'
+                };
+
+                $scope.$emit('CLICKED_UNASSIGNED_RESERVATION', currentSelectedReservation);
             }
         };
 
@@ -77,6 +91,7 @@ angular.module('sntRover')
             $scope.diaryData.selectedUnassignedReservation = {};
 
             $scope.$emit('HIDE_ASSIGN_ROOM_SLOTS');
+            $scope.$emit('CANCEL_UNASSIGNED_RESERVATION_MAIN');
         });
 
         // Method to fetch Unassigned reservations list.
@@ -84,6 +99,8 @@ angular.module('sntRover')
             var successCallBackFetchList = function (data) {
                 $scope.errorMessage = '';
                 $scope.diaryData.unassignedReservationList = data;
+                initialUnassignedListData = angular.copy(data.reservations);
+                $scope.searchQuery = '';
             },
             postData = {
                 'date': $scope.diaryData.arrivalDate
@@ -144,5 +161,52 @@ angular.module('sntRover')
         // Show/Hide unassigned list based on screen width and filter type
         $scope.isShowUnassignedList = function() {
             return (screen.width >= 1600 || $scope.diaryData.rightFilter === 'UNASSIGNED_RESERVATION') ? 'visible' : '';
+        };
+        // CICO-73889 : Handle unassigned reservation selection.
+        $scope.addListener('SELECT_UNASSIGNED_RESERVATION', function(event, reservationId) {
+            var unassignedReservationList = $scope.diaryData.unassignedReservationList.reservations,
+                reservationItem = _.find(unassignedReservationList, function(item) { 
+                    return item.reservation_id === reservationId;
+                });
+
+            selectUnassignedListItem(reservationItem);
+        });
+
+        $scope.addListener('CANCEL_UNASSIGNED_RESERVATION', function() {
+            unSelectUnassignedListItem();
+        });
+
+        // CICO-65962 : Handle searchUnassignedList logic.
+        $scope.searchUnassignedList =  function() {
+            var displayResults = [];
+
+            if ($scope.searchQuery && $scope.searchQuery.length > 0) {
+                displayResults = initialUnassignedListData.filter(function(reservation) {
+                    // check if the querystring is number or string
+                    var result = 
+                        (
+                            isNaN($scope.searchQuery) &&
+                            reservation.first_name.toUpperCase().includes($scope.searchQuery.toUpperCase()) ||
+                            reservation.last_name.toUpperCase().includes($scope.searchQuery.toUpperCase())
+                        ) ||
+                        (
+                            !isNaN($scope.searchQuery) &&
+                            reservation.confirm_no.toString().includes($scope.searchQuery)
+                        );
+
+                    return result;
+                });
+            }
+            else {
+                displayResults = initialUnassignedListData;
+            }
+
+            $scope.diaryData.unassignedReservationList.reservations = displayResults;
+        };
+
+        // CICO-65962 : Handle Clear Query.
+        $scope.clearQuery = function() {
+            $scope.searchQuery = '';
+            $scope.searchUnassignedList();
         };
 }]);

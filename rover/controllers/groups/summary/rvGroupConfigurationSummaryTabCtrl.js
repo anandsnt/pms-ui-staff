@@ -596,6 +596,17 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
         };
 
         /**
+         * set the payment date
+         * @param  {Object} date - Date object
+         * @param  {Object} datePickerObj - Date picker object
+         * @return {undefined}
+         */
+        var paymentDateChoosed = function(date, datePickerObj) {
+            $scope.groupConfigData.summary.payment_date = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+            runDigestCycle();
+        };
+
+        /**
          * every logic to disable the from date picker should be here
          * @return {Boolean} [description]
          */
@@ -622,15 +633,13 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
         var shouldDisableEndDatePicker = function() {
             var sData = $scope.groupConfigData.summary,
                 endDateHasPassed = new tzIndependentDate(sData.block_to) < new tzIndependentDate($rootScope.businessDate),
-                cancelledGroup = sData.is_cancelled,
-                toRightMoveNotAllowed = !sData.is_to_date_right_move_allowed,
+                cancelledGroup = sData.is_cancelled,                
                 inEditMode = !$scope.isInAddMode();
 
             return ($scope.isInStaycardScreen()) || ( inEditMode &&
                     (
                      endDateHasPassed   ||
-                     cancelledGroup     ||
-                     toRightMoveNotAllowed
+                     cancelledGroup
                     )
                    );
         };
@@ -694,6 +703,12 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                 disabled: shouldDisableReleaseDatePicker(),
                 minDate: tzIndependentDate($rootScope.businessDate),
                 maxDate: $scope.groupConfigData.summary.block_to
+            }, commonDateOptions);
+
+            // Payment date options
+            $scope.paymentDateOptions = _.extend({
+                onSelect: paymentDateChoosed,
+                minDate: tzIndependentDate($rootScope.businessDate)
             }, commonDateOptions);
 
             // summary memento will change we attach date picker to controller
@@ -1544,6 +1559,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                     if ($scope.groupConfigData.summary.rate === '-1') {
                         $scope.groupConfigData.summary.uniqId = '-1';
                     }
+                    summaryMemento = angular.copy($scope.groupConfigData.summary);
                 },
                 onFetchRatesFailure = function(errorMessage) {
                     $scope.errorMessage = errorMessage;

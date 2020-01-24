@@ -32,6 +32,11 @@ angular.module('sntRover').controller('reservationRoomStatus',
 		else if ($rootScope.isStandAlone && reservationStatus !== 'NOSHOW' && reservationStatus !== 'CHECKEDOUT' && reservationStatus !== 'CANCELED') {
 			reservationRoomClass = 'has-arrow hover-hand';
 		}
+
+        if (!rvPermissionSrv.getPermissionValue('MOVE_ROOM') && reservationStatus !== 'CANCELED') {
+            reservationRoomClass += ' overlay';
+        }
+
 		return reservationRoomClass;
 	};
 
@@ -288,10 +293,32 @@ angular.module('sntRover').controller('reservationRoomStatus',
             is_nightly_reservation: !$scope.reservationData.reservation_card.is_hourly_reservation
 		});
 	};
+    
+    // Handle Navigation to Nightly Diary
+	var navigateToNightlyDiary = function() {
+        var navigationParams = {
+            start_date: $scope.reservationData.reservation_card.arrival_date,
+            reservation_id: $scope.reservationData.reservation_card.reservation_id,
+            confirm_id: $scope.reservationData.reservation_card.confirmation_num,
+            room_id: $scope.reservationData.reservation_card.room_id,
+            origin: 'STAYCARD_ROOM'
+        };
+
+        if (navigationParams.room_id === '') {
+            // Reservation with Room is not assigned.
+            navigationParams.action = 'SELECT_UNASSIGNED_RESERVATION';
+        }
+        else {
+            // Reservation with Room is assigned already.
+            navigationParams.action = 'SELECT_RESERVATION';
+        }
+
+        $state.go('rover.nightlyDiary', navigationParams);
+    };
+        
 	/**
 	* function to trigger room assignment.
 	*/
-
 	$scope.goToroomAssignment = function() {
 
 		// CICO-13907 Do not allow to go to room assignment screen if the resevation  any of its shred reservation is checked in.
@@ -301,12 +328,16 @@ angular.module('sntRover').controller('reservationRoomStatus',
 		// check if roomupgrade is available
 		var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
         var isUpgradeAvaiable = $scope.reservationData.reservation_card.is_upsell_available === "true" && (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN'),
-            cannotMoveState   =  $scope.reservationData.reservation_card.cannot_move_room && $scope.reservationData.reservation_card.room_number !== "";
+            cannotMoveState   =  $scope.reservationData.reservation_card.cannot_move_room && $scope.reservationData.reservation_card.room_number !== "",
+            isHourlyComponent = $scope.reservationData.reservation_card.is_hourly_reservation;
 
-		if ($rootScope.hotelDiaryConfig.mode === 'FULL' || $scope.reservationData.reservation_card.is_hourly_reservation) {
+		if (($rootScope.hotelDiaryConfig.mode === 'FULL' && isHourlyComponent) || isHourlyComponent) {
 			gotToDiaryInEditMode();
-		} else if ($scope.isFutureReservation($scope.reservationData.reservation_card.reservation_status)) {
-
+		}
+        else if ($rootScope.hotelDiaryConfig.mode === 'FULL' && !isHourlyComponent) {
+            navigateToNightlyDiary();
+        }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+        else if ($scope.isFutureReservation($scope.reservationData.reservation_card.reservation_status)) {
 			$state.go("rover.reservation.staycard.roomassignment", {
                 reservation_id: $scope.reservationData.reservation_card.reservation_id,
                 room_type: $scope.reservationData.reservation_card.room_type_code,
@@ -315,7 +346,8 @@ angular.module('sntRover').controller('reservationRoomStatus',
                 cannot_move_room: cannotMoveState,
                 roomTypeId: $scope.reservationData.reservation_card.room_type_id
             });
-		} else if ($scope.reservationData.reservation_card.reservation_status === "CHECKEDIN" && $rootScope.isStandAlone) { // As part of CICO-27631 added Check for overlay hotels
+		} 
+        else if ($scope.reservationData.reservation_card.reservation_status === "CHECKEDIN" && $rootScope.isStandAlone) { // As part of CICO-27631 added Check for overlay hotels
 			$state.go("rover.reservation.staycard.roomassignment", {
                 reservation_id: $scope.reservationData.reservation_card.reservation_id,
                 room_type: $scope.reservationData.reservation_card.room_type_code,

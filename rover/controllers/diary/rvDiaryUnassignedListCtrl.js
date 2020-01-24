@@ -5,16 +5,17 @@ angular.module('sntRover')
         '$rootScope',
         'rvDiarySrv',
         function($scope, $rootScope, rvDiarySrv) {
-            var displayPanel = false;
+            var reservationCache = [];
 
             /**
              * Function to fetch the unassigned reservations on loading the controller
              * 
              */
             var fetchUdReservationList = function () {
-                var successCallBackFetchList = function(data) {
+                    var successCallBackFetchList = function(data) {
                         $scope.errorMessage = '';
-                        $scope.udReservationsData = data;
+                        reservationCache = data;
+                        $scope.arrangeReservationList();
                     },
                     postData = {
                         'date': $scope.gridProps.filter.arrival_date
@@ -23,8 +24,6 @@ angular.module('sntRover')
                         params: postData,
                         successCallBack: successCallBackFetchList
                     };
-
-                    displayPanel = true;
     
                     $scope.callAPI(rvDiarySrv.fetchUnassignedRoomList, options);
                 }, __getTimeDiff = function(arrivalDate, arrivalTime, departureDate, departureTime) {
@@ -78,11 +77,19 @@ angular.module('sntRover')
                         mm: min_difference,
                         hhs: hour_difference + 'h'
                     };
+                },
+                deselectReservation = function() {
+                    $scope.selectedIndex = null;
+                    $scope.gridProps.unassignedRoomList.isItemSelected = false;
+                    $scope.clearAvailability();
+                    $scope.resetEdit();
+                    $scope.renderGrid();
                 };
 
             BaseCtrl.call(this, $scope);
 
             $scope.businessDate = $rootScope.businessDate;
+            $scope.queryString = '';
 
             /**
              * Listener for Initializing the unassigned reservations list
@@ -93,42 +100,109 @@ angular.module('sntRover')
              * Listener for closing the unassigned reservations panel
              */
             $scope.addListener('CLOSE_UD_RESERVATION_PANEL', function() {
-                displayPanel = false;
-                $scope.udReservationsData = [];
-                $scope.selectedIndex = null;
+                reservationCache = [];
+                $scope.arrangeReservationList();
+                deselectReservation();
             });
 
             /**
-             * Function to toggle the visibility of the unassigned panel
-             * @return {boolean}
+             * Listener for deselecting the selected unassigned reservation and reseting the grid
              */
-            $scope.showUnassignedListPanel = function() {
-                return displayPanel ? 'visible' : '';
-            };
+            $scope.addListener('DESELECT_UNASSIGNED_RESERVATION', deselectReservation);
 
             /**
              * Function to handle the unassigned reservation selection
              */
             $scope.clickedUnassignedReservation = function(reservation) {
-                var params = {
-                    arrival_date: reservation.arrival_date,
-                    arrival_time: reservation.arrival_time,
-                    departure_date: reservation.departure_date,
-                    departure_time: reservation.departure_time,
+                if ($scope.selectedIndex === reservation.reservation_id) {
+                    deselectReservation();
+                }
+                else {
+                    $scope.selectedIndex = reservation.reservation_id;
+                    $scope.gridProps.unassignedRoomList.isItemSelected = true;
+                    var params = {
+                        arrival_date: reservation.arrival_date,
+                        arrival_time: reservation.arrival_time,
+                        departure_date: reservation.departure_date,
+                        departure_time: reservation.departure_time,
+    
+                        reservationId: reservation.reservation_id,
+                        adults: reservation.adults,
+                        children: reservation.children,
+                        infants: reservation.infants,
+                        rate_id: reservation.rate_id,
+                        room_type_id: reservation.room_type_id,
+                        is_hourly: reservation.is_hourly,
+    
+                        stay_span: __getTimeDiff(reservation.arrival_date, reservation.arrival_time, reservation.departure_date, reservation.departure_time)
+                    };
+    
+                    $scope.$emit('UNASSIGNED_RESERVATION_SELECTED', params, reservation);
+                }
+            };
 
-                    reservationId: reservation.reservation_id,
-                    adults: reservation.adults,
-                    children: reservation.children,
-                    infants: reservation.infants,
-                    rate_id: reservation.rate_id,
-                    room_type_id: reservation.room_type_id,
-                    is_hourly: reservation.is_hourly,
+            /**
+             * UI Search reservations
+             */
+            $scope.arrangeReservationList = function() {
+                $scope.currentBookings = [];
+                $scope.futureBookings = [];
+                var displayResults = [];
 
-                    stay_span: __getTimeDiff(reservation.arrival_date, reservation.arrival_time, reservation.departure_date, reservation.departure_time)
-                };
+                if ($scope.queryString && $scope.queryString.length > 0) {
+                    displayResults = reservationCache.filter(function(reservation) {
+                        // check if the querystring is number or string
+                        return (isNaN($scope.queryString) &&
+                            reservation.primary_guest.toUpperCase().includes($scope.queryString.toUpperCase())) ||
+                            (!isNaN($scope.queryString) &&
+                            reservation.confirmation_number.toString().includes($scope.queryString));
+                    });
+                }
+                else {
+                    displayResults = reservationCache;
+                }
+                angular.forEach(displayResults, function(reservation) {
+                    if (moment($scope.gridProps.filter.arrival_date).format('YYYY-MM-DD') === reservation.arrival_date) {
+                        $scope.currentBookings.push(reservation);
+                    }
+                    else {
+                        $scope.futureBookings.push(reservation);
+                    }
+                });
+            };
 
-                $scope.selectedIndex = reservation.reservation_id;
-                $scope.$emit('UNASSIGNED_RESERVATION_SELECTED', params);
+            /**
+             * Check to show reservation list block
+             * @return boolean
+             */
+            $scope.bookingsPresent = function() {
+                return reservationCache.length !== 0;
+            };
+
+            /**
+             * Return next date
+             */
+            $scope.getNextDate = function(forHeader) {
+                var nextDate = moment($scope.gridProps.filter.arrival_date).add(1, 'day');
+
+                return forHeader ? nextDate.format('DD MMM YYYY') : nextDate.format('YYYY-MM-DD');
+            };
+
+            /**
+             * Return current date
+             */
+            $scope.getActiveDate = function(forHeader) {
+                var activeDate = moment($scope.gridProps.filter.arrival_date);
+
+                return forHeader ? activeDate.format('DD MMM YYYY') : activeDate.format('YYYY-MM-DD');
+            };
+
+            /**
+             * Clear the serch results and reset the list
+             */
+            $scope.clearList = function() {
+                $scope.queryString = '';
+                $scope.arrangeReservationList();
             };
         }
     ]

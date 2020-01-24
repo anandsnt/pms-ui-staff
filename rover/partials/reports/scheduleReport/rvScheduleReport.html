@@ -107,6 +107,19 @@
                     Cards Without Tax ID
                 </label>
             </div>
+            <multi-option-selection ng-show="filters.hasByChargeGroup && filters.hasByChargeGroup.data.length"
+                label="Charge Group(s)"
+                on-update="refreshSecondColumnScroll"
+                data="filters.hasByChargeGroup.data"
+                options="filters.hasByChargeGroup.options"
+                affects-filter="filters.hasByChargeGroup.affectsFilter"
+                filter-holder-obj="filters"></multi-option-selection>
+            <!-- related options -->
+            <multi-option-selection ng-show="filters.hasByChargeCode && filters.hasByChargeCode.data.length"
+                label="Charge Code(s)"
+                on-update="refreshSecondColumnScroll"
+                data="filters.hasByChargeCode.data"
+                options="filters.hasByChargeCode.options"></multi-option-selection>
 
             <div class="entry" ng-show="selectedEntityDetails.sort_fields.length">
                 <label>Sort By</label>
@@ -262,7 +275,20 @@
     <div class="scrollable" ng-iscroll="FOURTH_COLUMN_SCROLL"> <!-- Add vertical scroller here -->
         <div class="wrapper">
             <h3>Distribution List<span>{{ selectedEntityDetails.report.title }}</span></h3>
-            <div class="entry search">
+            <div class="entry">
+                <label for="delivery_method">Delivery method</label>
+                <div class="select">
+                    <select id="delivery_method" 
+                            ng-model="scheduleParams.delivery_id" 
+                            ng-options="dist.value as dist.description for dist in scheduleDeliveryTypes"
+                            ng-change="onDeliveryOptionChange()"
+                            iscroll-stop-propagation>
+                        <option value="">Delivery method</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="entry search" ng-show="checkDeliveryType('EMAIL')">
                 <label for="distribution-list-add-user">Add Recipient</label>
                 <button class="clear-query">
                     <span class="icons icon-clear-search">Clear query</span>
@@ -270,7 +296,7 @@
                 <input class="icons icon-search" auto-complete auto-options="userAutoCompleteSimple" type="search" placeholder="Search by User Name" value="" autocomplete="off" insert-email="true">
             </div>
             <!-- Display search results like this -->
-            <ul class="col-list">
+            <ul class="col-list" ng-show="checkDeliveryType('EMAIL')">
                 <li ng-repeat="email in emailList track by $index">
                     {{ email }}
                     <button type="button" class="button only-icon icons icon-remove-10" ng-click="removeEmail($index)">
@@ -278,6 +304,47 @@
                     </button>
                 </li>
             </ul>
+
+            <div class="entry search" ng-show="checkDeliveryType('SFTP') && ftpServerList.length">
+                <label for="ftp-recipient">SFTP Recipient</label>
+                <div class="select">
+                    <select id="ftp-recipient" ng-model="scheduleParams.selectedFtpRecipient" ng-options="ftp.id as ftp.description for ftp in ftpServerList" iscroll-stop-propagation>
+                        <option value="">SFTP Recipient</option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry search" ng-show="checkDeliveryType('FTP') && !ftpServerList.length">
+                <label for="ftp-recipient">No SFTP configured</label>
+            </div>
+            <!-- DELIVER 3: Drive/Dropbox etc. -->
+            <div class="entry join" ng-show="checkDeliveryType('GOOGLE DRIVE') && googleDriveAccountList.length">
+                <label for="export-folder">Google Drive Folder</label>
+                <div class="select">
+                    <select id="export-folder"
+                            ng-options="googleDrive.id as googleDrive.description for googleDrive in googleDriveAccountList"
+                            ng-model="scheduleParams.selectedCloudAccount"
+                            iscroll-stop-propagation>
+                        <option value="">Select Google Drive Folder</option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry join" ng-show="checkDeliveryType('GOOGLE DRIVE') && !googleDriveAccountList.length">
+                <label for="export-folder">No Google Drive Accounts configured</label>
+            </div>
+            <div class="entry join" ng-show="checkDeliveryType('DROPBOX') && dropBoxAccountList.length">
+                <label for="export-folder">Dropbox</label>
+                <div class="select">
+                    <select id="export-folder"
+                            ng-options="dropbox.id as dropbox.description for dropbox in dropBoxAccountList"
+                            ng-model="scheduleParams.selectedCloudAccount"
+                            iscroll-stop-propagation>
+                        <option value="">Select Dropbox</option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry join" ng-show="checkDeliveryType('DROPBOX') && !dropBoxAccountList.length">
+                <label for="export-folder">No Dropbox accounts configured</label>
+            </div>
         </div>
     </div>
 

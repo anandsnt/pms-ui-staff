@@ -6,7 +6,8 @@ admin.controller('ADHotelDetailsCtrl', [
 							'$state',
 							'ngDialog',
 							'oracleDataCenters',
-							function($rootScope, $scope, ADHotelDetailsSrv, $stateParams, $state, ngDialog, oracleDataCenters) {
+							'guestMandatorySchemas',
+							function($rootScope, $scope, ADHotelDetailsSrv, $stateParams, $state, ngDialog, oracleDataCenters, guestMandatorySchemas) {
 
 	$scope.isAdminSnt = false;
 	$scope.isEdit = false;
@@ -29,6 +30,7 @@ admin.controller('ADHotelDetailsCtrl', [
 	var isMPFlagResetConfirmPopupNeeded = false;
                                 
 	$scope.oracleDataCenters = oracleDataCenters;
+	$scope.guestMandatorySchemas = guestMandatorySchemas;
 
 	// Hard Coding Shiji Token Channel. Can convert into configurable
 	$scope.shijiTokenChannels = [{ code: '1', name: 'Shiji' }, { code: '2', name: 'MerchantLink' }, { code: '3', name: 'Adyen' },
@@ -497,7 +499,7 @@ admin.controller('ADHotelDetailsCtrl', [
     };
     // Handle click on MP flag checkbox.
     $scope.clickedMultiPropertyCheckbox = function() {
-    	if ( !$scope.data.is_multi_property && isMPFlagResetConfirmPopupNeeded ) {
+    	if ($scope.data.is_multi_property && isMPFlagResetConfirmPopupNeeded ) {
 			$scope.message = $scope.data.hotel_name + ' will now be de-selected from Multi property';
 			ngDialog.open({
                 template: '/assets/partials/hotel/adHotelMPFlagDeSelectionConfirm.html',
@@ -549,4 +551,14 @@ admin.controller('ADHotelDetailsCtrl', [
             controller: 'adHotelLegalSettingsController'
         });
     };
+
+    (function () {
+        if ($rootScope.isSntAdmin) {
+            $scope.callAPI(ADHotelDetailsSrv.getThemes, {
+                successCallBack: function (response) {
+                    $scope.themes = response.themes;
+                }
+            });
+        }
+    })();
 }]);

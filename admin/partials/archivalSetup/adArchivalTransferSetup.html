@@ -44,7 +44,16 @@
                 <div class="form-title">
                     <h3><span>Registerd Archives</span> </h3>
                 </div>
-                <ad-checkbox is-checked="config.guest_id_archive_enabled" label="Scanned Ids" div-class="full-width"></ad-checkbox>
+                <div class="left">
+                    <ad-checkbox is-checked="config.guest_id_archive_enabled" label="Scanned Ids" div-class=""></ad-checkbox>
+                </div>
+                <div class="right" ng-if="config.show_registration_cards_archive">
+                    <ad-checkbox is-checked="config.registration_cards_archive_enabled" label="Registration Cards" div-class=""></ad-checkbox>
+                </div>
+                <div class="left" ng-if="config.show_guest_invoices_archive" ng-class="{'right': !config.show_guest_invoices_archive}">
+                    <ad-checkbox is-checked="config.guest_invoices_archive_enabled" label="Guest Invoices" div-class=""></ad-checkbox>
+                </div>
+                
             </fieldset>
             <div class="actions float" ng-show="MODE == 'CONFIGURED'" >
                 <button type="button" class="button blank" ng-click="goBackToPreviousState()">Cancel</button>

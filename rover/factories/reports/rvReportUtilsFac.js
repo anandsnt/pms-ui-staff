@@ -2559,6 +2559,143 @@ angular.module('reportsModule')
                 .then(populateRateTypesAndRates);
         };
 
+        /**
+         * Fill charge groups and charge codes values
+         * @param {Object} filter filter object
+         * @param {Object} filterValues - object holding filter values
+         * @return {void}
+         */
+        factory.fillChargeGroupsAndChargeCodes = function(filter, filterValues) {
+            // Get the value of selectall checkbox for the charge groups
+            var getChargeGroupSelectAllVal = function (chargeGroups) {
+                    var selectAll = true;
+
+                    if (filterValues && !!filterValues.charge_group_ids) {
+                        selectAll = filterValues.charge_group_ids.length === chargeGroups.length;
+                    } else if (filterValues && !filterValues.charge_group_ids) {
+                        selectAll = false;
+                    }
+                    
+                    return selectAll;
+                },
+                // Get the value of selectall checkbox for the charge codes
+                getChargeCodeSelectAllVal = function (chargeCodes) {
+                    var selectAll = true;
+
+                    if (filterValues && !!filterValues.charge_code_ids) {
+                        selectAll = filterValues.charge_code_ids.length === chargeCodes.length;
+                    } else if (filterValues && !filterValues.charge_code_ids) {
+                        selectAll = false;
+                    }
+                    
+                    return selectAll;
+                };
+
+
+            var populateChargeGroupsAndChargeCodes = function (chargeGroupsArr, chargeCodesArr) {
+                var processedCGCC = __adjustChargeGroupsCodes(chargeGroupsArr, chargeCodesArr, 'REMOVE_PAYMENTS', true),
+                    chargeGroupsCopy = angular.copy( processedCGCC.chargeGroups ),
+                    chargeCodesCopy = angular.copy( processedCGCC.chargeCodes ),
+                    selectedChargeGroupIdx,
+                    selectedChargeCodeIdx;
+
+                delete filter.hasByChargeGroup;
+                delete filter.hasByChargeCode;
+
+                if (filterValues && filterValues.charge_group_ids) {
+                    
+                    chargeGroupsCopy = _.map(chargeGroupsCopy, function (chargeGroup) {
+                        selectedChargeGroupIdx = _.indexOf(filterValues.charge_group_ids, chargeGroup.id);
+                        chargeGroup.selected = false;
+                        if (selectedChargeGroupIdx > -1) {
+                            chargeGroup.selected = true;
+                        }
+
+                        return chargeGroup;
+                    });
+                } else if (filterValues && !filterValues.charge_group_ids) {
+                    chargeGroupsCopy = _.map(chargeGroupsCopy, function(chargeGroup) {
+                        chargeGroup.selected = false;
+
+                        return chargeGroup;
+                    });
+                }
+
+                filter.hasByChargeGroup = {
+                    data: chargeGroupsCopy,
+                    options: {
+                        selectAll: getChargeGroupSelectAllVal(chargeGroupsCopy),
+                        hasSearch: false,
+                        key: 'name'
+                    },
+                    affectsFilter: {
+                        name: 'hasByChargeCode',
+                        process: function(filter, selectedItems) {
+                            _.each(filter.originalData, function (od) {
+                                od.disabled = true;
+                            });
+                            /**/
+                            _.each(filter.originalData, function (od) {
+                                _.each(od.associcated_charge_groups, function (cg) {
+                                    _.each(selectedItems, function (si) {
+                                        if (cg.id === si.id) {
+                                            od.disabled = false;
+                                        }
+                                    });
+                                });
+                            });
+                            /**/
+                            filter.updateData();
+                        }
+                    }
+                };
+
+                if (filterValues && !!filterValues.charge_code_ids) {
+                    
+                    chargeCodesCopy = _.map(chargeCodesCopy, function (chargeCode) {
+                        selectedChargeCodeIdx = _.indexOf(filterValues.charge_code_ids, chargeCode.id);
+                        chargeCode.selected = false;
+                        if (selectedChargeCodeIdx > -1) {
+                            chargeCode.selected = true;
+                        }
+                        return chargeCode;
+                    });
+                } else if (filterValues && !filterValues.charge_code_ids) {
+                    chargeCodesCopy = _.map(chargeCodesCopy, function(chargeCode) {
+                        chargeCode.selected = false;
+
+                        return chargeCode;
+                    });
+                }
+
+                filter.hasByChargeCode = {
+                    data: chargeCodesCopy,
+                    originalData: chargeCodesCopy,
+                    options: {
+                        selectAll: getChargeCodeSelectAllVal(chargeCodesCopy),
+                        hasSearch: false,
+                        key: 'name'
+                    },
+                    updateData: function() {
+                        var enabled = [];
+
+                        _.each (this.originalData, function (od) {
+                            if ( ! od.disabled ) {
+                                enabled.push(od);
+                            }
+                        });
+                        this.data = enabled;
+                    }
+                };
+
+            };
+
+            reportsSubSrv.fetchChargeNAddonGroups().then(function(chargeGroupsArr) {
+                reportsSubSrv.fetchChargeCodes().then(populateChargeGroupsAndChargeCodes.bind(null, chargeGroupsArr));
+            });
+            
+        };
+
         return factory;
     }
 ]);

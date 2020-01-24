@@ -28,7 +28,8 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		var whetherSummaryDataChanged = function() {
 			var currentSummaryData = $scope.allotmentConfigData.summary;
 
-			for (key in summaryMemento) {
+			for (var key in summaryMemento) {
+				// if any of the values are not equal/same, there is change, return true
 				if (!_.isEqual(currentSummaryData[key], summaryMemento[key])) {
 					return true;
 				}
@@ -60,12 +61,13 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 											 targetElement.id === "cancel-action"
 											)
 										  ),
-				summaryDataNotChanged 	= !whetherSummaryDataChanged(),
 				demographicsOpen 		= $scope.allotmentSummaryData.isDemographicsPopupOpen,
 				updateInProgress 		= $scope.isUpdateInProgress;
 
-			if ( incorrectTarget 	  || isInaddMode 	  || summaryDataNotChanged ||
-				 demographicsOpen 	  || updateInProgress ) {
+			if (isInaddMode || incorrectTarget ||
+				!!$scope.focusedCompanyCard || !!$scope.focusedTravelAgent ||
+				!whetherSummaryDataChanged() || demographicsOpen ||
+				updateInProgress ) {
 				// No need to call update summary
 				return;
 			}
@@ -498,8 +500,12 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			if (!data.is_changed && !data.is_room_rate_available) {
 				showChangeDateNotPossiblePopup();
 				$scope.allotmentConfigData.summary.rate = summaryMemento.rate;
+				$scope.allotmentConfigData.summary.contract_id = summaryMemento.contract_id;
+				$scope.allotmentConfigData.summary.uniqId = summaryMemento.uniqId;
 			} else {
 			  summaryMemento.rate = $scope.allotmentConfigData.summary.rate;
+			  summaryMemento.contract_id = $scope.allotmentConfigData.summary.contract_id;
+			  summaryMemento.uniqId = $scope.allotmentConfigData.summary.uniqId;
 			}
 		};
 
@@ -512,6 +518,8 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = errorMessage;
 			$scope.allotmentConfigData.summary.rate = summaryMemento.rate;
+			$scope.allotmentConfigData.summary.contract_id = summaryMemento.contract_id;
+			$scope.allotmentConfigData.summary.uniqId = summaryMemento.uniqId;
 		};
 
 		/**
@@ -519,15 +527,21 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 * @return {undefined}
 		 */
 		$scope.onRateChange = function() {
-			var summaryData = $scope.allotmentConfigData.summary;
+			var summaryData = $scope.allotmentConfigData.summary,
+				uniqId = summaryData.uniqId,
+				rateId = uniqId && uniqId.split(':')[0],
+				contractId = uniqId && uniqId.split(':')[1];
 
-			if (!summaryData.allotment_id) {
+			$scope.allotmentConfigData.summary.contract_id = contractId;
+			$scope.allotmentConfigData.summary.rate = rateId;
+			if (!summaryData.allotment_id || !uniqId) {
 				return false;
 			}
 
 			var params = {
 				allotment_id: summaryData.allotment_id,
-				rate_id: summaryData.rate
+				rate_id: rateId,
+				contract_id: contractId
 			};
 
 			var options = {
@@ -899,19 +913,45 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 	        // add custom rate obect
 	        sumData.rateSelectDataObject.push({
 	            id: '-1',
-	            name: 'Custom Rate'
-	        });
-	        // group rates by contracted and group rates.
-	        _.each(data.results, function(rate) {
-	            if (rate.is_contracted) {
-	                rate.groupName = 'Company/ Travel Agent Contract';
-	            }
-	            else {
-	                rate.groupName = 'Group Rates';
-	            }
-	            sumData.rateSelectDataObject.push(rate);
+				name: 'Custom Rate',
+				uniqId: '-1'
 			});
+			/**
+			 * we have the company/travel-agent/group rates in separate arrays
+			 */
+			var groupRatesBy = function(rateArray, groupName) {
+				angular.forEach(rateArray, function(rate) {
+					rate.groupName = groupName;
+					if (rate.is_contracted) {
+						rate.uniqId = rate.id + ':' + rate.contract_id;
+						rate.name = rate.name + ' (' + rate.contract_name + ')';
+						if (rate.id === $scope.allotmentConfigData.summary.rate && rate.contract_id === $scope.allotmentConfigData.summary.contract_id) {
+							$scope.allotmentConfigData.summary.uniqId = rate.uniqId;
+						}
+					}
+					else {
+						rate.uniqId = rate.id + ':';
+						if (rate.id === $scope.allotmentConfigData.summary.rate) {
+							$scope.allotmentConfigData.summary.uniqId = rate.uniqId;
+						}
+					}
+					sumData.rateSelectDataObject.push(rate);
+				});
+			};
 
+			if (data.group_rates.length !== 0) {
+				groupRatesBy(data.group_rates, 'Group Rates');
+			}
+			if (data.company_rates.length !== 0) {
+				groupRatesBy(data.company_rates, 'Company Contract');
+			}
+			if (data.travel_agent_rates.length !== 0) {
+				groupRatesBy(data.travel_agent_rates, 'Travel Agent Contract');
+			}
+			if ($scope.allotmentConfigData.summary.rate === '-1') {
+				$scope.allotmentConfigData.summary.uniqId = '-1';
+			}
+			summaryMemento = angular.copy($scope.allotmentConfigData.summary);
 		};
 		var onFetchRatesFailure = function(errorMessage) {
 			$scope.errorMessage = errorMessage;
@@ -939,6 +979,20 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				return false;
 			}
 		};
+
+		/**
+         * We need to refresh the rates once TA card info is changed
+         */
+        $scope.addListener('TA_CARD_CHANGED', function(event) {
+            fetchApplicableRates();
+		});
+		
+		/**
+         * We need to refresh the rates once company card info is changed
+         */
+        $scope.addListener('COMPANY_CARD_CHANGED', function(event) {
+            fetchApplicableRates();
+        });
 
 		/**
 		 * when a tab switch is there, parant controller will propogate an event

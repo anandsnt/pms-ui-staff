@@ -42,7 +42,6 @@ sntRover.controller('RVInvoiceSearchController',
 		$scope.shouldShowARInvoices =  function() {
 			return (_.findWhere($scope.filterOptions, {"name": "AR Invoices"})).id === $scope.invoiceSearchData.filter_id;
 		};		
-
 		
 		$scope.setScroller('invoice-list', scrollOptions);
 		/**
@@ -145,10 +144,10 @@ sntRover.controller('RVInvoiceSearchController',
 						'to_date': $scope.invoiceSearchData.to_date
 					};
 
-					if ($scope.shouldShowInvoices) {
+					if ($scope.shouldShowInvoices()) {
 						params.no_folio_number_only = $scope.invoiceSearchData.no_folio_number_only;
 					}
-					if ($scope.shouldShowReceipts) {
+					if ($scope.shouldShowReceipts()) {
 						params.no_qr_code_only = $scope.invoiceSearchData.no_qr_code_only;
 					}
 
