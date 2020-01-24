@@ -2957,7 +2957,7 @@ sntRover.controller('RVbillCardController',
 			"locale":"en"
 		};
 
-		if (data.email) {
+		if (data && data.email) {
 			params.to_address = data.email;
 		};
 
