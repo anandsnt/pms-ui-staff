@@ -41,7 +41,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 					$scope.screenData.openedPopupName = 'ALL_REQUIRED_INFO_PRESENT';
 					$scope.screenData.showContinueButton = true;
 				}
-				$scope.screenMode = 'GUEST_LIST';
+				$scope.screenData.screenMode = 'GUEST_LIST';
 				$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 			}
 		};
@@ -49,7 +49,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 		// ALL_REQUIRED_INFO_PRESENT popup
 
 		$scope.revisitGuestList = function() {
-			$scope.screenMode = 'GUEST_LIST';
+			$scope.screenData.screenMode = 'GUEST_LIST';
 			$scope.screenData.openedPopupName = '';
 		};
 
@@ -83,7 +83,12 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 					_.each(row, function(field) {
 						apiParams[field.field_key] = field[field.field_key]
 					});
+				});
 
+				_.each($scope.selectedGuest.contactDetails, function(row) {
+					_.each(row, function(field) {
+						apiParams[field.field_key] = field[field.field_key]
+					});
 				});
 
 				// Delete the keys used for displaying date in hotel's date format before saving
@@ -120,12 +125,33 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 				.format($scope.zestStationData.hotelDateFormat);
 		};
 
+		var contactDetailsKeys = [
+			'additional_contacts.email',
+			'additional_contacts.phone',
+			'additional_contacts.mobile'
+		];
 
 		var retrieveGuestInfoForDisplay = function(guestInfo) {
-			var individualRow = [];
+			
 			$scope.selectedGuest.reservationDetails = [];
+			$scope.selectedGuest.contactDetails = [];
 
-			_.each(guestInfo, function(info, $index) {
+			// guestInfo = _.filter(guestInfo, function(info){
+			// 	return contactDetailsKeys.indexOf(info.field) !== -1;
+			// });
+
+			var guestInfoWithoutContactDetails = _.filter(guestInfo, function(info){
+				return contactDetailsKeys.indexOf(info.field) === -1;
+			});
+
+			var guestInfoWithContactDetails = _.filter(guestInfo, function(info){
+				return contactDetailsKeys.indexOf(info.field) !== -1;
+			});
+			var individualRow = {
+				'reservationDetails': [],
+				'contactDetails': []
+			};
+			var groupData = function(info, $index, array, rowKey, fullArray) {
 				var infoData = {
 					field_label: info.label,
 					field_key: info.field,
@@ -143,16 +169,27 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 				}
 
 				if (guestInfo.length === 1) {
-					$scope.selectedGuest.reservationDetails.push([infoData]);
+					array.push([infoData]);
 				} else {
-					individualRow.push(infoData);
+					individualRow[rowKey].push(infoData);
 
-					if (individualRow.length === 2 || $index === guestInfo.length - 1) {
-						$scope.selectedGuest.reservationDetails.push(individualRow);
-						individualRow = [];
+					if (individualRow[rowKey].length === 2 || $index === fullArray.length - 1) {
+						array.push(individualRow[rowKey]);
+						individualRow[rowKey] = [];
 					}
 				}
+			};
+
+			_.each(guestInfoWithoutContactDetails, function(info, $index) {
+				groupData(info, $index, $scope.selectedGuest.reservationDetails, 'reservationDetails' , guestInfoWithoutContactDetails);
 			});
+
+			_.each(guestInfoWithContactDetails, function(info, $index) {
+				groupData(info, $index, $scope.selectedGuest.contactDetails, 'contactDetails' , guestInfoWithContactDetails);
+			});
+
+			$scope.contactInfoMissigStyle = guestInfoWithContactDetails.length > 0 ? {} : {"width":"95%"};
+			$scope.reservationInfoMissigStyle = guestInfoWithoutContactDetails.length > 0 ? {} : {"width":"95%"};
 
 			console.log($scope.selectedGuest.reservationDetails);
 		};
@@ -171,8 +208,13 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 			if (guestInfo.metadata.enable_bypass) {
 				showQuestionForGuest();
 			} else {
-				$scope.screenMode = 'GUEST_DETAILS';
+				$scope.screenData.screenMode = 'GUEST_DETAILS';
 				refreshScroller();
+				var scroller = $scope.getScroller('guests-info');
+
+	            $timeout(function() {
+	                scroller.scrollTo(0, 0, 300);
+	            }, 0);
 				$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 			}
 		};
@@ -180,7 +222,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 		var refreshScroller = function() {
 			$timeout(function() {
 				$scope.refreshScroller('guests-info');
-			}, 5000);
+			}, 100);
 		};
 
 		// QUESTION POPUP CODE STARTS HERE
@@ -202,7 +244,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 
 		$scope.noByPassChoosed = function() {
 			resetMissingInfoFlagIfNeeded();
-			$scope.screenMode = 'GUEST_DETAILS';
+			$scope.screenData.screenMode = 'GUEST_DETAILS';
 			refreshScroller();
 			$scope.screenData.openedPopupName = '';
 			if ($scope.selectedReservation.guest_details.length > 1) {
@@ -228,8 +270,8 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 		};
 
 		var onBackButtonClicked = function() {
-			if ($scope.screenMode === 'GUEST_DETAILS') {
-				$scope.screenMode = 'GUEST_LIST';
+			if ($scope.screenData.screenMode === 'GUEST_DETAILS') {
+				$scope.screenData.screenMode = 'GUEST_LIST';
 				$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 			}
 		};
@@ -313,14 +355,14 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 			};
 
 			if ($scope.selectedReservation.guest_details.length > 1) {
-				$scope.screenMode = 'GUEST_LIST';
+				$scope.screenData.screenMode = 'GUEST_LIST';
 			} else {
-				retrieveGuestInfoForDisplay(guestInfo.guests[0].guest_details);
 				$scope.selectedGuest = guestInfo.guests[0];
+				retrieveGuestInfoForDisplay(guestInfo.guests[0].guest_details);
 				if (guestInfo.metadata.enable_bypass) {
 					showQuestionForGuest();
 				} else {
-					$scope.screenMode = 'GUEST_DETAILS';
+					$scope.screenData.screenMode = 'GUEST_DETAILS';
 					refreshScroller();
 				}
 			}

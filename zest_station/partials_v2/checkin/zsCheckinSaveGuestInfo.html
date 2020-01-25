@@ -1,5 +1,5 @@
 <!-- LIST THE REQUIRED GUESTS -->
-<section id="main" role="main" ng-show="screenMode == 'GUEST_LIST'">
+<section id="main" role="main" ng-show="screenData.screenMode == 'GUEST_LIST'">
    <div id="content">
       <h1 translate="">
          GUEST_INFO_MISSGING_HEADING
@@ -36,15 +36,15 @@
 </section>
 
 <!-- SHOW GUEST INFO AS A FORM-->
-<section id="main" role="main" ng-show="screenMode == 'GUEST_DETAILS'">
+<section id="main" role="main" ng-show="screenData.screenMode == 'GUEST_DETAILS'">
    <div id="content">
        <h1>Fill your info to proceed</h1>
        <h2>Fields marked with * are mandatory</h2>
         
-       <div id="textual" class="guest-information" ng-iscroll="guests-info">
+       <div id="textual" class="guest-information scrollable" ng-iscroll="guests-info">
            <div class="wrapper">
                <form method="post" class="form">
-                   <div class="guest-information-left">
+                   <div class="guest-information-left" ng-style="contactInfoMissigStyle" ng-if="selectedGuest.reservationDetails.length > 0">
                        <h3>Reservation Details</h3> 
                        <!-- SELECT -->
                        <!-- TEXT -->
@@ -96,17 +96,54 @@
 
                        
                    </div>
-                   <!-- <div class="guest-information-right">
+                   <div class="guest-information-right" ng-style="reservationInfoMissigStyle" ng-if="selectedGuest.contactDetails.length > 0">
                        <h3>Contact Details</h3>
-                       <div class="entry-row" ng-repeat="row in selectedGuest.reservationDetails">
+                       <div class="entry-row" ng-repeat="row in selectedGuest.contactDetails">
                            <div class="entry" ng-repeat="field in row">
-                               <label for="family-name">
+                               <label>
                                    {{ field.field_label | translate }}<span class="required" ng-show="field.mandatory">*</span>
                                </label>
-                               <input type="text" id="family-name" ng-model="field[field.field_key]"/>
+                               <!-- text -->
+                               <input type="text" 
+                                      ng-model="field[field.field_key]" 
+                                      ng-if="field.type === 'text'"
+                                      ng-class="{'missing-guest-info': screenData.triedToSave && field.mandatory && !field[field.field_key]}"/>
+                               <!-- Number -->
+                               <input type="number"
+                                      ng-if="field.type === 'number'"
+                                      ng-model="field[field.field_key]" 
+                                      ng-if="field.type === 'text'"
+                                      ng-class="{'missing-guest-info': screenData.triedToSave && field.mandatory && !field[field.field_key]}" />
+                               <!-- select -->
+                               <div class="entry select" ng-if="field.type === 'select'">
+                                    <select 
+                                    ng-model="field[field.field_key]" 
+                                    class="placeholder" 
+                                    ng-options="item.value  as item.label | translate for item in field.values"
+                                    ng-class="{'missing-guest-info': screenData.triedToSave && field.mandatory && !field[field.field_key]}">
+                                       <option value="">{{'SELECT' | translate}}</option>
+                                    </select>
+                               </div>
+                               <!-- DATE -->
+                               <div class="entry input" ng-if="field.type === 'date'">
+                                  <input type="text" ng-model="field[field.field_key+'forDisplay']" class="disabled" click-touch="showDatePicker(field.field_key,field.field_key+'forDisplay')"
+                                    ng-class="{'missing-guest-info': screenData.triedToSave && field.mandatory && !field[field.field_key]}" readonly/>
+                                    <ng-include src="icons.url.date" click-touch="showDatePicker(field.field_key,field.field_key+'forDisplay')"></ng-include>
+                               </div>
+                               <!-- BOOL -->
+                               <div class="entry select" ng-if="field.type === 'boolean'">
+                                    <select 
+                                    ng-model="field[field.field_key]" 
+                                    class="placeholder" 
+                                    ng-class="{'missing-guest-info': screenData.triedToSave && field.mandatory && !field[field.field_key]}">
+                                       <option value="">{{'SELECT' | translate}}</option>
+                                       <option value="true">{{'YES' | translate}}</option>
+                                       <option value="false">{{'NO' | translate}}</option>
+                                    </select>
+                               </div>
                            </div>
                        </div>
-                   </div> -->
+                   </div>
                </form>
            </div>
        </div> 
@@ -117,52 +154,6 @@
                GID_VERIFY_PASSPORT_ACCEPT
             </button>
        </div>
-   </div>
-</section>
-
-
-
-<section id="main" class="guest-id-verify" role="main" ng-show="screenMode == 'GUEST_DETAILS1'">
-   <div id="flex-holder">
-      <div id="textual" class="review-bill scrollable" ng-iscroll="guests-info" style="height: 75%;">
-         <div class="wrapper passport-details">
-            <div id="bill">
-               <h1 translate>
-                  FILL_IN_GUEST_INFO
-               </h1>
-               <h2 translate>
-                  FILL_INFO_INSTRUCTIONS
-               </h2>
-               <div class="entry with-label" ng-repeat="info in selectedGuest.guest_details">
-                  <label>
-                  {{ info.label | translate }} <span style="color: red;">{{ info.mandatory ? '*' :'' }}</span>
-                  </label>
-                  <input type="text" ng-if="info.type === 'text'" ng-model='guestDetails[info.field]' ng-class="{'missing-guest-info': screenData.screenData.triedToSave && info.mandatory && !guestDetails[info.field]}"/>
-                  <select ng-if="info.type === 'select'" name="Country"  ng-model="guestDetails[info.field]" style="width: 40%;color: #000;" ng-options="item.value  as item.label | translate for item in info.values"
-                     ng-class="{'missing-guest-info': screenData.screenData.triedToSave && info.mandatory && !guestDetails[info.field]}">
-                     <option value="">{{'SELECT' | translate}}</option>
-                  </select>
-                  <div class="entry input" style="width: 40%;float: right;" ng-if="info.type === 'date'">
-                     <input type="text" ng-model="guestDetails[info.field+'forDisplay']" class="disabled" click-touch="showDatePicker(info.field,info.field+'forDisplay')"
-                        ng-class="{'missing-guest-info': screenData.screenData.triedToSave && info.mandatory && !guestDetails[info.field]}"/>
-                     <ng-include src="icons.url.date" click-touch="showDatePicker(info.field,info.field+'forDisplay'); resetTime();">
-                  </div>
-                  <select ng-if="info.type === 'boolean'" name="Country"  ng-model="guestDetails[info.field]"
-                     ng-class="{'missing-guest-info': screenData.screenData.triedToSave && info.mandatory && !guestDetails[info.field]}" style="width: 40%;color: #000;">
-                     <option value="">{{'SELECT' | translate}}</option>
-                     <option value="true">{{'YES' | translate}}</option>
-                     <option value="false">{{'NO' | translate}}</option>
-                  </select>
-               </div>
-               <br/><br/>
-            </div>
-         </div>
-      </div>
-   </div>
-   <div id='actions' class="align-center guest-id-actions">
-      <button type="button" class="button" touch-press='saveGuestDetails()' translate>
-      SAVE_GUEST_INFO
-      </button>
    </div>
 </section>
 
