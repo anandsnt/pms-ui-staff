@@ -415,7 +415,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
         };
 
         $scope.dateSelected = function(dateText) {
-            if ($scope.datePickerFor == 'start_date') {
+            if ($scope.datePickerFor === 'start_date') {
                 $scope.selectedPurchesedAddon.start_date = $filter('date')(dateText, $rootScope.dateFormat);
             } else {
                 $scope.selectedPurchesedAddon.end_date = $filter('date')(dateText, $rootScope.dateFormat);

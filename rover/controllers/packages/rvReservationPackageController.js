@@ -59,7 +59,7 @@ sntRover.controller('RVReservationPackageController',
 
 	$scope.saveAddonPosting = function() {
 
-		var addonPostingSaveSuccess = function(data) {
+		var addonPostingSaveSuccess = function() {
 			$scope.$emit('hideLoader');
 		};
 

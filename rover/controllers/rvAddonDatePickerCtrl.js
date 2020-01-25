@@ -1,6 +1,6 @@
 sntRover.controller('RVAddonDatePickerController', 
     ['$scope', '$rootScope', 'ngDialog', 'dateFilter', 
-    function($scope, $rootScope, ngDialog, dateFilter) {
+    function($scope, $rootScope, ngDialog) {
 
     $scope.setUpData = function() {
         $scope.data = {};
@@ -10,7 +10,7 @@ sntRover.controller('RVAddonDatePickerController',
             changeYear: true,
             changeMonth: true,
             yearRange: "0:+10",
-            onSelect: function(dateText, inst) {
+            onSelect: function(dateText) {
                 $scope.dateSelected(dateText);
                 
                 $scope.closeCalendar();
