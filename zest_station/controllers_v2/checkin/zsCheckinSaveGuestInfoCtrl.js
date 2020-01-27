@@ -144,7 +144,13 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 		var contactDetailsKeys = [
 			'additional_contacts.email',
 			'additional_contacts.phone',
-			'additional_contacts.mobile'
+			'additional_contacts.mobile',
+			'addresses.street1',
+			'addresses.street2',
+			'addresses.city',
+			'addresses.state',
+			'addresses.postal_code',
+			'addresses.country_id'
 		];
 
 		var retrieveGuestInfoForDisplay = function(guestInfo) {
@@ -167,6 +173,8 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 				'reservationDetails': [],
 				'contactDetails': []
 			};
+
+			// Since the design is with two fields in a row, we need to group them before repeating
 			var groupData = function(info, $index, array, rowKey, fullArray) {
 				var infoData = {
 					field_label: info.label,
@@ -183,12 +191,12 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 
 					infoData[displayKey] = info.current_value ? formatDateBasedOnHotelFormat(info.current_value) : "";
 				}
-
-				if (guestInfo.length === 1) {
+				// If only one field is present, just show as one
+				if (fullArray.length === 1) {
 					array.push([infoData]);
 				} else {
 					individualRow[rowKey].push(infoData);
-
+					// group two fields as one till the last item in the array
 					if (individualRow[rowKey].length === 2 || $index === fullArray.length - 1) {
 						array.push(individualRow[rowKey]);
 						individualRow[rowKey] = [];
@@ -222,6 +230,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 				showQuestionForGuest();
 			} else {
 				$scope.screenData.screenMode = 'GUEST_DETAILS';
+				// refresh scroller and scroll to top
 				refreshScroller();
 				var scroller = $scope.getScroller('guests-info');
 
@@ -282,6 +291,8 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 			}
 		};
 
+		// QUESTION POPUP CODE ENDS HERE
+
 		var onBackButtonClicked = function() {
 			if ($scope.screenData.screenMode === 'GUEST_DETAILS') {
 				$scope.screenData.screenMode = 'GUEST_LIST';
@@ -291,10 +302,9 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 
 		$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, onBackButtonClicked);
 
-		// QUESTION POPUP CODE ENDS HERE
-
 		var findTheDatePicker = function() {
 			var selectedCalendarField;
+			
 			_.each($scope.selectedGuest.reservationDetails, function(row) {
 				var calendarModel = _.find(row, function(field) {
 					return field.field_key === selectedCalendarModel;
