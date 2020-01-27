@@ -2946,15 +2946,13 @@ sntRover.controller('RVbillCardController',
 	};
 
 	$scope.sendAutomaticEmails = function(data) {
-		var feesDetails = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].fees_details,
-			transactionId = feesDetails[feesIndex].id;
 
-		var sendSuccessCallback = function(reservationBillDataFetched) {
-			$scope.reservationBillData.bills = reservationBillDataFetched.bills;
+		var sendSuccessCallback = function() {
+			$scope.closeDialog();
 		},
 		params = {
-			"bill_id":$scope.reservationBillData.bills[$scope.currentActiveBill].bill_number,
-			"transaction_id":transactionId,
+			"bill_id": $scope.currentPaymentBillId,
+			"transaction_id": $scope.currentPaymentTransactionId,
 			"locale":"en"
 		};
 
@@ -2997,7 +2995,7 @@ sntRover.controller('RVbillCardController',
 
 		var dataToSend = {
 			params: {
-				"bill_id": $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id
+				"bill_id": $scope.currentPaymentBillId
 			},
 			successCallBack: successCallbackEmailPresence
 		};
@@ -3020,6 +3018,9 @@ sntRover.controller('RVbillCardController',
 
 		$scope.getBillData($scope.currentActiveBill);
 		$scope.$broadcast('FETCH_REMAINING_AUTH');
+
+		$scope.currentPaymentBillId = data.bill_id;
+		$scope.currentPaymentTransactionId = data.transaction_id;
 
 		$scope.autoTriggerPaymentReceiptActions();		
 	});
