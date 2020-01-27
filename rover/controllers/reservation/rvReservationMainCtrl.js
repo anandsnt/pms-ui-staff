@@ -1209,7 +1209,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 totalStayCost = parseFloat(totalStayCost) + parseFloat(response.data.total_stay_cost);
                 totalTax = parseFloat(totalTax) + parseFloat(response.data.total_tax);
 
-                $scope.reservationData.rooms[key] = {
+                var targetObject = {
                         "numAdults": response.data.stay_dates[key].adult_count,
                         "numChildren": response.data.stay_dates[key].child_count,
                         "numInfants": response.data.stay_dates[key].infant_count,
@@ -1218,6 +1218,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                         "taxInformation": response.data.tax_details,
                         "addons": response.data.addons
                     };
+
+                $scope.reservationData.rooms[key] = Object.assign($scope.reservationData.rooms[key], targetObject)
 
                 $scope.reservationData.totalStayCost = totalStayCost;
                 $scope.reservationData.totalTax = totalTax;
