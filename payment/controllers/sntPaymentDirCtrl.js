@@ -1015,6 +1015,7 @@ angular.module('sntPay').controller('sntPaymentController',
 
                     $scope.originalPaymentFee = angular.copy($scope.paymentFeeData.calculatedPaymentFee);
                     $scope.feeData.calculatedFee = $scope.paymentFeeData.calculatedPaymentFee;
+                    $scope.feeData.totalOfValueAndFee = $scope.paymentFeeData.totalOfValueAndPaymentFee;
                 }
             }
 
@@ -1143,6 +1144,7 @@ angular.module('sntPay').controller('sntPaymentController',
                     response => {
                         $scope.payment.amount = response.data.converted_amount;
                         $scope.feeData.calculatedFee = response.data.converted_fee;
+                        $scope.feeData.totalOfValueAndFee = parseFloat($scope.payment.amount) + parseFloat($scope.feeData.calculatedFee);
                     },
                     errorMessage => {
 
