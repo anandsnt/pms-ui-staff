@@ -302,7 +302,7 @@ admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$st
     * Function triggered on selecting any one hotel
     * or 'All-hotels' option from the
     * Hotels Multi-select filter
-    * CICO-41385
+    * CICO-41385subscriptionData.hotels
     * @params{object} hotel object
     */
     $scope.hotelFilterChange = function(hotel) {
@@ -360,7 +360,6 @@ admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$st
 
         $scope.invokeApi(ADUserSrv.fetchMPHotelDetails, params, successFetchMPHotelDetails );
     };
-
     // Reload table data upon closing the subscription popup.
     $scope.$on('ngDialog.closing', function () {
         $scope.reloadTable();
