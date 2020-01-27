@@ -1,7 +1,6 @@
 sntRover.controller('RVReservationPackageController',
 				 ['$scope',
 				  '$rootScope',
-				  'RVReservationPackageSrv',
 				  '$state',
 				  '$timeout',
 				  '$filter',
@@ -9,7 +8,6 @@ sntRover.controller('RVReservationPackageController',
 				  'RVReservationStateService',
 				function($scope,
 					$rootScope,
-					RVReservationPackageSrv,
 					$state, $timeout, $filter, ngDialog, RVReservationStateService) {
 
 		var shouldReloadState = false;
@@ -50,6 +48,7 @@ sntRover.controller('RVReservationPackageController',
 		};
 
 		$scope.selectPurchasedAddon = function(addon) {
+			$scope.errorMessage = [];
 			if (addon.post_type.value === 'STAY') {
 				$scope.selectedPurchesedAddon = addon;
 				$scope.selectedPurchesedAddon.selected_post_days = {};
@@ -132,21 +131,21 @@ sntRover.controller('RVReservationPackageController',
 		$scope.goToAddons = function() {
 			$scope.closePopup();
 			$rootScope.$broadcast('NAVIGATE_TO_ADDONS', {
-				addonPostingMode: $scope.addonPostingMode
+				addonPostingMode: $scope.addonPopUpData.addonPostingMode
 			});
 		};
 
-		$scope.removeChosenAddons = function(index, addonId) {
+		$scope.removeChosenAddons = function(index, addon) {
 			$rootScope.$broadcast('REMOVE_ADDON', {
-				addonPostingMode: $scope.addonPostingMode,
+				addonPostingMode: $scope.addonPopUpData.addonPostingMode,
 				index: index,
-				addonId: addonId
+				addon: addon
 			})
-		}
+		};
 		
 		$scope.proceedBooking = function() {
 			$scope.$emit('PROCEED_BOOKING', {
-				addonPostingMode: $scope.addonPostingMode,
+				addonPostingMode: $scope.addonPopUpData.addonPostingMode,
 				selectedPurchesedAddon: $scope.selectedPurchesedAddon
 			});
 		};

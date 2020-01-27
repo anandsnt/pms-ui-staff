@@ -349,20 +349,18 @@ sntRover.controller('RVReservationAddonsCtrl', [
         $scope.showEnhancementsPopup = function() {
             var selectedAddons = $scope.addonsData.existingAddons;
             
-            $scope.addonPostingMode = 'reservation';
-
             $scope.addonPopUpData = {
+                addonPostingMode: 'reservation',
 				cancelLabel: "+ More",
                 saveLabel : "Book",
-                shouldShowAddMoreButton: false
+                shouldShowAddMoreButton: false,
+                number_of_adults: $scope.reservationData.number_of_adults,
+                number_of_children: $scope.reservationData.number_of_children,
+                duration_of_stay: $scope.duration_of_stay
             };
-            $scope.reservationData.reservation_card.number_of_adults = $scope.reservationData.number_of_adults;
-            $scope.reservationData.reservation_card.number_of_children = $scope.reservationData.number_of_children;
-            $scope.reservationData.reservation_card.numNights = $scope.reservationData.numNights;
 
             $scope.packageData = {
-                existing_packages: [],
-                duration_of_stay: $scope.duration_of_stay
+                existing_packages: []
             };
 
             angular.forEach($scope.addonsData.existingAddons, function(item) {
@@ -693,8 +691,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     var associatedPackages = data.existing_packages || data;
 
                     $scope.packageData = {
-                        existing_packages: [],
-                        duration_of_stay: $scope.duration_of_stay
+                        existing_packages: []
                     };
                     angular.forEach(associatedPackages, function(item) {
                         var addonsData = {
