@@ -21,6 +21,7 @@ sntRover.controller('RVbillCardController',
 	'RVReservationStateService',
 	'$log',
 	'sntAuthorizationSrv',
+	'RVAutomaticEmailSrv',
 	'PAYMENT_CONFIG',
 	function($scope, $rootScope,
 			$state, $stateParams,
@@ -33,7 +34,7 @@ sntRover.controller('RVbillCardController',
 			$sce,
 
 			RVKeyPopupSrv, RVPaymentSrv,
-			RVSearchSrv, rvPermissionSrv, jsMappings, $q, sntActivity, RVReservationStateService, $log, sntAuthorizationSrv, PAYMENT_CONFIG) {
+			RVSearchSrv, rvPermissionSrv, jsMappings, $q, sntActivity, RVReservationStateService, $log, sntAuthorizationSrv, RVAutomaticEmailSrv, PAYMENT_CONFIG) {
 
 
 	BaseCtrl.call(this, $scope);
@@ -2966,7 +2967,7 @@ sntRover.controller('RVbillCardController',
 			successCallBack: sendSuccessCallback
 		};
 
-		$scope.callAPI(RVBillCarRVPaymentSrvdSrv.sendAutomaticEmails, dataToSend);
+		$scope.callAPI(RVAutomaticEmailSrv.sendAutomaticEmails, dataToSend);
 	};
 
 	$scope.$on("AUTO_TRIGGER_EMAIL_AFTER_PAYMENT", function(e, data){
@@ -2984,13 +2985,25 @@ sntRover.controller('RVbillCardController',
 	};
 
 	$scope.autoTriggerPaymentReceiptActions = function() {
-		var isEmailExists = true;
 
-		if (isEmailExists) {
-			$scope.sendAutomaticEmails();
-		} else {
-			$scope.openEnterEmailPopup();
-		}
+		var	successCallbackEmailPresence = function(response) {
+				if (response.email_present) {
+					$scope.sendAutomaticEmails();
+				} else {
+					$scope.openEnterEmailPopup();
+				}
+			};
+
+
+		var dataToSend = {
+			params: {
+				"bill_id": $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id
+			},
+			successCallBack: successCallbackEmailPresence
+		};
+
+		$scope.callAPI(RVAutomaticEmailSrv.verifyEmailPresence, dataToSend);
+		
 	}
 
 	 $scope.$on('BILL_PAYMENT_SUCCESS', function(event, data) {
