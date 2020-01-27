@@ -1487,6 +1487,10 @@ angular.module('sntPay').controller('sntPaymentController',
                 calculateFee();
             }
 
+            function onPaymentAmountChange() {
+                $scope.payment.paymentCurrencyAmount = $scope.paymentCurrencyAmount || 0;
+            }
+
             $scope.onPaymentSuccess = function (response) {
                 $scope.paymentAttempted = !($scope.splitBillEnabled && $scope.numSplits > $scope.completedSplitPayments);
 
@@ -1569,6 +1573,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 $scope.payment.isAddPaymentMode = !!$scope.actionType.match(/^ADD_PAYMENT/);
 
                 $scope.$watch('amount', onAmountChange);
+                $scope.$watch('paymentCurrencyAmount', onPaymentAmountChange);
 
                 $scope.$watch('paymentTypes', () => {
                     $scope.payment.creditCardTypes = getCreditCardTypesList();
