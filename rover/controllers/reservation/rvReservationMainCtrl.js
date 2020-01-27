@@ -1201,19 +1201,25 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
         }; 
         
         var updateConfirmationData = function(key, reservation) {
+            var totalStayCost = 0,
+                totalTax = 0;
+                
             var successCallBackOfGetConfirmationData = function(response) {
 
                 totalStayCost = parseFloat(totalStayCost) + parseFloat(response.data.total_stay_cost);
                 totalTax = parseFloat(totalTax) + parseFloat(response.data.total_tax);
 
-                $scope.reservationData.rooms[key].numAdults = response.data.stay_dates[key].adult_count;
-                $scope.reservationData.rooms[key].numChildren = response.data.stay_dates[key].child_count;
-                $scope.reservationData.rooms[key].numInfants = response.data.stay_dates[key].infant_count;
-                $scope.reservationData.rooms[key].rateAvg = response.data.stay_dates[key].rate_amount;
-                $scope.reservationData.rooms[key].rateTotal = response.data.total_rate;
-                $scope.reservationData.rooms[key].taxInformation = response.data.tax_details;
-                $scope.reservationData.rooms[key].addons = response.data.addons;
+                var targetObject = {
+                        "numAdults": response.data.stay_dates[key].adult_count,
+                        "numChildren": response.data.stay_dates[key].child_count,
+                        "numInfants": response.data.stay_dates[key].infant_count,
+                        "rateAvg": response.data.stay_dates[key].rate_amount,
+                        "rateTotal": response.data.total_rate,
+                        "taxInformation": response.data.tax_details,
+                        "addons": response.data.addons
+                    };
 
+                $scope.reservationData.rooms[key] = Object.assign($scope.reservationData.rooms[key], targetObject)
 
                 $scope.reservationData.totalStayCost = totalStayCost;
                 $scope.reservationData.totalTax = totalTax;
@@ -1256,9 +1262,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     $scope.closeDialog();
                     // Update reservation type
                     $rootScope.$broadcast('UPDATERESERVATIONTYPE', data.reservations[0].reservation_type_id);
-                    var totalDeposit = 0,
-                        totalStayCost = 0,
-                        totalTax = 0;
+                    var totalDeposit = 0;
                     // calculate sum of each reservation deposits
 
                     $scope.reservationsListArray = data;
