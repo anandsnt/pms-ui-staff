@@ -201,7 +201,7 @@ angular.module('sntRover')
                         'no_of_days': $scope.diaryData.numberOfDays,
                         'selected_room_type_ids': $scope.diaryData.selectedRoomTypes,
                         'selected_floor_ids': $scope.diaryData.selectedFloors,
-                        'selected_room_features': $scope.diaryData.selectedRoomFeatures
+                        'selected_room_feature_ids': $scope.diaryData.selectedRoomFeatures
                     };
 
                     if ($scope.diaryData.isAssignRoomViewActive || $scope.diaryData.isMoveRoomViewActive) {
@@ -1021,7 +1021,7 @@ angular.module('sntRover')
                                 per_page: $scope.diaryData.paginationData.perPage,
                                 selected_room_type_ids: $scope.diaryData.selectedRoomTypes,
                                 selected_floor_ids: $scope.diaryData.selectedFloors,
-                                selected_room_features: $scope.diaryData.selectedRoomFeatures
+                                selected_room_feature_ids: $scope.diaryData.selectedRoomFeatures
                             },
                             successCallBack: successCallBackFunction
                         };
