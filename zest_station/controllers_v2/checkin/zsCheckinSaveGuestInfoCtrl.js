@@ -97,13 +97,13 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 
 				_.each($scope.selectedGuest.reservationDetails, function(row) {
 					_.each(row, function(field) {
-						apiParams[field.field_key] = field[field.field_key]
+						apiParams[field.field_key] = field[field.field_key];
 					});
 				});
 
 				_.each($scope.selectedGuest.contactDetails, function(row) {
 					_.each(row, function(field) {
-						apiParams[field.field_key] = field[field.field_key]
+						apiParams[field.field_key] = field[field.field_key];
 					});
 				});
 
@@ -219,7 +219,6 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 				"width": "100%"
 			};
 
-			console.log($scope.selectedGuest.reservationDetails);
 		};
 
 		$scope.clickOnGuest = function(guest) {
@@ -304,7 +303,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 
 		var findTheDatePicker = function() {
 			var selectedCalendarField;
-			
+
 			_.each($scope.selectedGuest.reservationDetails, function(row) {
 				var calendarModel = _.find(row, function(field) {
 					return field.field_key === selectedCalendarModel;
@@ -343,7 +342,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 
 					if (selectedCalendarField) {
 						selectedCalendarField[selectedCalendarModel] = selectedDate;
-						selectedCalendarField[selectedCalendarModelDisplay] = formatDateBasedOnHotelFormat(selectedDate);;
+						selectedCalendarField[selectedCalendarModelDisplay] = formatDateBasedOnHotelFormat(selectedDate);
 					}
 					$scope.selectedDate = moment().format('YYYY-MM-DD');
 				}
