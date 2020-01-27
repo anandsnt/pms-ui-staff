@@ -114,7 +114,8 @@ angular.module('sntRover')
                             departureTimeList: [],
                             nights: 1,
                             hotelCheckinTime: datesList.hotelCheckinTime,
-                            hotelCheckoutTime: datesList.hotelCheckoutTime
+                            hotelCheckoutTime: datesList.hotelCheckoutTime,
+                            roomFeatures: []
                         },
                         availableSlotsForBookRooms: [],
                         isAssignRoomViewActive: false,
