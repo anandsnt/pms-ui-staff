@@ -1959,14 +1959,6 @@ sntRover.controller('reservationDetailsController',
 			$scope.$emit('hideLoader');
 		};
 
-		$scope.daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
-		angular.forEach($scope.selectedPurchesedAddon.post_instances, function(item, index) {
-                    var postDate = new Date(item.post_date);
-                    var day = $scope.daysOfWeek[postDate.getDay()];
-                    item.active = $scope.selectedPurchesedAddon.selected_post_days[day];
-                });
-
 		var dataToApi = {
 			'addon_id': $scope.selectedPurchesedAddon.id,
 			'reservation_id': $scope.reservationData.reservation_card.reservation_id,
