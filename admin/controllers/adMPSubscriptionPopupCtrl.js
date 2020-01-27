@@ -98,7 +98,8 @@ admin.controller('adMPSubscriptionPopupCtrl', ['$scope', 'ADUserSrv', 'ngDialog'
         var successCallback = function() {
                 updateSubscriptionData();
             }, params = {
-                'hotel_id': hotelId
+                'hotel_id': hotelId,
+                'user_id': $scope.subscriptionData.user_id
             }, options = {
                 params: params,
                 onSuccess: successCallback
