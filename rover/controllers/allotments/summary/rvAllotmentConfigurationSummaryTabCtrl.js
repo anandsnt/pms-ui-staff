@@ -90,6 +90,48 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			$scope.isUpdateInProgress = false;
 		});
 
+		var navigateToAddonsListner = $rootScope.$on('NAVIGATE_TO_ADDONS', function(event, data) {
+			if(data.addonPostingMode === 'allotments') {
+				$scope.manageAddons();
+			}
+		});
+
+		var proceedAddonBookingListner = $scope.$on('PROCEED_BOOKING', function(event, data) {
+            if(data.addonPostingMode === 'allotments') {
+            	$scope.selectedPurchesedAddon = data.selectedPurchesedAddon;
+                updateAddonPosting();
+            }
+        });
+
+        var removeSelectedAddonsListner = $rootScope.$on('REMOVE_ADDON', function(event, data) {
+            if(data.addonPostingMode === 'allotments') {
+                $scope.removeAddon($scope.packageData.existing_packages[data.index]);
+            }
+        });
+
+        $scope.$on( '$destroy', proceedAddonBookingListner);
+        $scope.$on( '$destroy', removeSelectedAddonsListner);
+        $scope.$on( '$destroy', navigateToAddonsListner);
+
+        var updateAddonPosting = function() {
+
+        	var params = {
+				"id": $scope.allotmentConfigData.summary.allotment_id,
+				'addon_id': $scope.selectedPurchesedAddon.id,
+				'post_instances': $scope.selectedPurchesedAddon.post_instances,
+				'start_date': $filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.start_date), $rootScope.dateFormatForAPI),
+				'end_date': $filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.end_date), $rootScope.dateFormatForAPI)
+			};
+        	var options = {
+				successCallBack: function() {
+					$scope.$emit('hideLoader');
+				},
+				params: params
+			};
+
+			$scope.callAPI(rvAllotmentConfigurationSrv.updateAddonPosting, options);
+        };
+
 		/**
 		 * when from date choosed, this function will fire
 		 * @param  {Object} date
@@ -697,9 +739,28 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 * @return undefined
 		 */
 		$scope.openAddonsPopup = function() {
+
+			$scope.addonPostingMode = 'allotments';
+
+            $scope.addonPopUpData = {
+				cancelLabel: "Cancel",
+                saveLabel : "Save",
+                shouldShowAddMoreButton: true,
+                number_of_adults: 1,
+                number_of_children: 1,
+                numNights: 1
+            };
+
+            $scope.packageData = {
+                duration_of_stay: $scope.duration_of_stay
+            };
+
+            $scope.packageData.existing_packages = $scope.allotmentConfigData.selectedAddons;
+
 			ngDialog.open({
-				template: '/assets/partials/allotments/summary/allotmentAddonsPopup.html',
+				template: '/assets/partials/packages/showPackages.html',
 				className: '',
+				controller: 'RVReservationPackageController',
 				scope: $scope,
 				closeByDocument: false,
 				closeByEscape: false

@@ -120,8 +120,26 @@ sntRover.controller('rvAllotmentConfigurationAddonsCtrl', [
 		 * @return undefined
 		 */
 		$scope.openAddonsPopup = function() {
+			$scope.addonPostingMode = 'allotments';
+
+            $scope.addonPopUpData = {
+				cancelLabel: "Cancel",
+                saveLabel : "Save",
+                shouldShowAddMoreButton: false,
+                number_of_adults: 1,
+                number_of_children: 1,
+                numNights: 1
+            };
+
+            $scope.packageData = {
+                duration_of_stay: $scope.duration_of_stay
+            };
+
+            $scope.packageData.existing_packages = $scope.allotmentConfigData.selectedAddons;
+
 			ngDialog.open({
-				template: '/assets/partials/allotments/summary/allotmentAddonsPopup.html',
+				template: '/assets/partials/packages/showPackages.html',
+				controller: 'RVReservationPackageController',
 				className: '',
 				scope: $scope,
 				closeByDocument: false,
@@ -176,5 +194,20 @@ sntRover.controller('rvAllotmentConfigurationAddonsCtrl', [
 
 			$scope.callAPI(rvAllotmentConfigurationSrv.removeAllotmentEnhancement, options);
 		};
+
+		var proceedBookingListner = $scope.$on('PROCEED_BOOKING', function(event, data) {
+                    if(data.addonPostingMode === 'allotments') {
+                        $scope.proceed();
+                    }
+                });
+
+                var removeSelectedAddonsListner = $rootScope.$on('REMOVE_ADDON', function(event, data) {
+                    if(data.addonPostingMode === 'allotments') {
+                        $scope.removeAddon($scope.packageData.existing_packages[data.index]);
+                    }
+                });
+
+                $scope.$on( '$destroy', proceedBookingListner);
+                $scope.$on( '$destroy', removeSelectedAddonsListner);
 	}
 ]);

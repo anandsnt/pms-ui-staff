@@ -144,10 +144,26 @@ sntRover.controller('RVReservationPackageController',
 		};
 		
 		$scope.proceedBooking = function() {
+			setPostingData();
 			$scope.$emit('PROCEED_BOOKING', {
 				addonPostingMode: $scope.addonPopUpData.addonPostingMode,
 				selectedPurchesedAddon: $scope.selectedPurchesedAddon
 			});
+			$scope.closePopup();
+		};
+
+		var setPostingData = function() {
+			angular.forEach($scope.packageData.existing_packages, function(existing_package, package_index) {
+				existing_package.start_date = $filter('date')(tzIndependentDate(existing_package.start_date), $rootScope.dateFormatForAPI);
+				existing_package.end_date = $filter('date')(tzIndependentDate(existing_package.end_date), $rootScope.dateFormatForAPI)
+
+                angular.forEach(existing_package.post_instances, function(item, index) {
+	                var postDate = new Date(item.post_date);
+	                var day = $scope.daysOfWeek[postDate.getDay()];
+	                item.active = $scope.selectedPurchesedAddon.selected_post_days[day];
+	            });
+            });
+			
 		};
 	}
 ]);
