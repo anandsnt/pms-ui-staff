@@ -257,8 +257,15 @@ angular.module('sntRover')
 
 			// Clear Room Features
 			var fetchIdFromRoomFeaturesList = function() {
-				var roomFeatures = $scope.diaryData.roomAssignmentFilters.room_features,
+				var roomFeatures = [],
 					roomFeatureIds = [];
+                
+                if ($scope.diaryData.showBookFilterPanel) {
+                    roomFeatures = $scope.diaryData.bookRoomViewFilter.roomFeatures;
+                }
+                else {
+                    roomFeatures = $scope.diaryData.roomAssignmentFilters.room_features;
+                }
 
 				_.each(roomFeatures, function(feature) {
 					_.each(feature.items, function(item) {
@@ -268,15 +275,27 @@ angular.module('sntRover')
 					});
 				});
 
-				$scope.diaryData.roomAssignmentFilters.roomFeatureIds = roomFeatureIds;
 				$scope.diaryData.roomAssignmentFilters.count = roomFeatureIds.length;
+                if ($scope.diaryData.showBookFilterPanel) {
+                    $scope.diaryData.selectedRoomFeatures = roomFeatureIds;
+                }
+                else {
+                    $scope.diaryData.roomAssignmentFilters.roomFeatureIds = roomFeatureIds;
+                }
 			};
 
 			/**
 			 * function to handle the filter selection
 			 */
 			$scope.setSelectionForFeature = function(group, feature) {
-				var roomFeatures = $scope.diaryData.roomAssignmentFilters.room_features;
+				var roomFeatures = [];
+                
+                if ($scope.diaryData.showBookFilterPanel) {
+                    roomFeatures = $scope.diaryData.bookRoomViewFilter.roomFeatures;
+                }
+                else {
+                    roomFeatures = $scope.diaryData.roomAssignmentFilters.room_features;
+                }
 
 				if (!roomFeatures[group].multiple_allowed) {
 					for (var i = 0; i < roomFeatures[group].items.length; i++) {
