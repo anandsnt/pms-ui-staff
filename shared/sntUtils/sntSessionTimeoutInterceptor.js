@@ -119,6 +119,20 @@ angular.module('snt.utils').service('sntSharedLoginSrv', [
 
             return deferred.promise;
         };
+
+        /**
+         * Refresh the JWT token with a new one
+         */
+        service.refreshToken = function () {
+            var deferred = $q.defer(),
+                url = '/login/validate';
+            
+            sntBaseWebSrv.getJSON(url).then(function (response) {
+                deferred.resolve(response);
+            });
+
+            return deferred.promise;
+        };
     
 }]);
 

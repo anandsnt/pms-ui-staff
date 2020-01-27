@@ -1,5 +1,7 @@
 var self = this,
-    timer;
+    timer,
+    refreshTokenTimer,
+    refreshTokenDelay;
 
 this.addEventListener('message',  function(event) {
     var data = event.data;
@@ -9,11 +11,25 @@ this.addEventListener('message',  function(event) {
             if (timer) {
                 clearTimeout(timer);
             }
+
+            if (refreshTokenTimer) {
+                clearTimeout(refreshTokenTimer); 
+            }
             
-            timer = setTimeout(function () {
+            timer = setTimeout (function () {
                 self.postMessage({cmd: 'SHOW_TIMEOUT_POPUP' });
             }, data.interval);
+
+            if (!refreshTokenDelay) {
+                refreshTokenDelay =  data.interval - 30000;
+            }
+
+            refreshTokenTimer = setTimeout (function () {
+                self.postMessage({cmd: 'RFRESH_TOKEN' });
+            }, refreshTokenDelay);
+
             break;
+
         case 'SHOW_TIMEOUT_POPUP':
             if (timer) {
                 clearTimeout(timer);

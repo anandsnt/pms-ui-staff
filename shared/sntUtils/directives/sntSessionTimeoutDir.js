@@ -15,6 +15,11 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
 
             $scope.loginData = {};
             var ACCOUNT_LOCKED_STR = 'account has been locked';
+
+            var idleTimeSecondsCounter = 0,
+                tokenExpiryTimeSecs,
+                validateTokenTimer;
+
             
             /**
              * Show session timeout popup
@@ -97,6 +102,7 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
                 var onLoginFetchSuccess = function (response) {
                     if (response.auto_logout_delay) {
                         sessionTimeoutHandlerSrv.setAutoLogoutDelay(response.auto_logout_delay * 1000);
+                        tokenExpiryTimeSecs = response.auto_logout_delay - 30;
                     }
                     sessionTimeoutHandlerSrv.setLoginEmail(response.login);
                 };
@@ -117,7 +123,54 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
                 fetchLoginDetails();
             });
 
+            /**
+             * Refresh the token when its about to expire
+             */
+            var refreshToken = function () {
+                sntSharedLoginSrv.refreshToken().then(function() {
+
+                });
+            };
+
+            /**
+             * Check and validate the token expiry based on browser idle time
+             */
+            var checkAndValidateToken = function () {
+                
+                if (idleTimeSecondsCounter < tokenExpiryTimeSecs) {
+                    refreshToken();
+                } else {
+                    validateTokenTimer = setInterval(checkAndValidateToken, 1000);
+                }
+
+            };
+
+            /**
+             * Set up the event listeners to track the various browser events to identify browser inactivity 
+             */
+            var setUpEventListeners = function () {
+                var checkIdleTime = function () {
+                    idleTimeSecondsCounter++;
+                };
+
+                document.onclick = function() {
+                    idleTimeSecondsCounter = 0;
+                };
+                
+                document.onmousemove = function() {
+                    idleTimeSecondsCounter = 0;
+                };
+                
+                document.onkeypress = function() {
+                    idleTimeSecondsCounter = 0;
+                };
+
+                setInterval(checkIdleTime, 1000);
+
+            };
+
             var init = function () {
+                setUpEventListeners();
 
                 if (!sessionTimeoutHandlerSrv.getWorker()) {
                     sessionTimeoutHandlerSrv.initWorker();
@@ -126,9 +179,15 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
                             var data = event.data;
         
                             switch (data.cmd) {
-                                case 'SHOW_TIMEOUT_POPUP': 
+                                case 'SHOW_TIMEOUT_POPUP':
+                                    if (validateTokenTimer) {
+                                        clearInterval(validateTokenTimer); 
+                                    }
                                     showSessionTimeoutPopup();
                                     break;
+                                
+                                case 'RFRESH_TOKEN':
+                                    checkAndValidateToken();
                                 default:
         
                             }
