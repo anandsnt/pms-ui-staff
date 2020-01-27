@@ -15,13 +15,16 @@ admin.controller('adMPSubscriptionPopupCtrl', ['$scope', 'ADUserSrv', 'ngDialog'
             var successFetchMPHotelDetails = function(data) {
                     $scope.subscriptionData = data;
                     extractHomeHotel();
-                    $scope.$emit('hideLoader');
                 },
                 params = {
                     'user_id': $scope.subscriptionData.user_id
+                },
+                options = {
+                    params: params,
+                    onSuccess: successFetchMPHotelDetails
                 };
 
-            $scope.invokeApi(ADUserSrv.fetchMPHotelDetails, params, successFetchMPHotelDetails );
+            $scope.callAPI(ADUserSrv.fetchMPHotelDetails, options );
         },
         extractHomeHotel = function() {
             // Intialising home hotel
