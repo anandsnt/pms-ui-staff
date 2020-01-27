@@ -40,7 +40,7 @@
             <!--- :START - FILTERS While clicking BOOK -->
 
                 <!-- Room Features -->
-                <div class="entry join radio-check" ng-show="diaryData.showBookFilterPanel" ng-repeat="feature in diaryData.roomAssignmentFilters.room_features">
+                <div class="entry join radio-check" ng-show="diaryData.showBookFilterPanel" ng-repeat="feature in diaryData.bookRoomViewFilter.roomFeatures">
                     <strong class="label">{{feature.group_name}}</strong>
                     <label class="checkbox" ng-repeat="item in feature.items" ng-class="{'checked': item.selected}">
                         <span class="icon-form icon-checkbox" ng-class="{'checked': item.selected}"></span>
