@@ -302,7 +302,7 @@ admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$st
     * Function triggered on selecting any one hotel
     * or 'All-hotels' option from the
     * Hotels Multi-select filter
-    * CICO-41385subscriptionData.hotels
+    * CICO-41385
     * @params{object} hotel object
     */
     $scope.hotelFilterChange = function(hotel) {
