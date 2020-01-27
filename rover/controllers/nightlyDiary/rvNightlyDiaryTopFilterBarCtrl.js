@@ -8,6 +8,7 @@ angular.module('sntRover')
         'ngDialog',
         'rvUtilSrv',
         'rvPermissionSrv',
+        'RVNightlyDiarySrv',
         function(
             $scope,
             $rootScope,
@@ -16,7 +17,8 @@ angular.module('sntRover')
             $filter,
             ngDialog,
             rvUtilSrv,
-            rvPermissionSrv
+            rvPermissionSrv,
+            RVNightlyDiarySrv
         ) {
 
         BaseCtrl.call(this, $scope);
@@ -108,6 +110,17 @@ angular.module('sntRover')
             bookRoomViewFilter.departureTime = bookRoomViewFilter.hotelCheckoutTime;
 
             $scope.diaryData.rightFilter = 'RESERVATION_FILTER';
+            
+            // CICO-68587 Guest Preferences -Room Features
+            var successCallBack = function(responce) {
+                bookRoomViewFilter.roomFeatures = responce.data.room_features;
+            },
+            options = {
+                params: {},
+                successCallBack: successCallBack
+            };
+            
+            $scope.callAPI(RVNightlyDiarySrv.getPreferences, options );
         };
 
         /* 
