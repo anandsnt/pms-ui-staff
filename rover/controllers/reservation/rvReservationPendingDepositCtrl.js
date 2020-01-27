@@ -1,10 +1,12 @@
 sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$scope', '$stateParams', '$timeout',
-	'RVReservationCardSrv', '$state', '$filter', 'ngDialog', 'rvPermissionSrv',
+	'RVReservationCardSrv', '$state', '$filter', 'ngDialog', 'rvPermissionSrv', 'RVAutomaticEmailSrv', 
 	function($rootScope, $scope, $stateParams, $timeout,
-		RVReservationCardSrv, $state, $filter, ngDialog, rvPermissionSrv) {
+		RVReservationCardSrv, $state, $filter, ngDialog, rvPermissionSrv, RVAutomaticEmailSrv) {
 
 		BaseCtrl.call(this, $scope);
 
+		SharedMethodsBaseCtrl.call (this, $scope, RVAutomaticEmailSrv, ngDialog);
+		
 		var init = (function() {
 
 			$scope.$emit("UPDATE_STAY_CARD_DEPOSIT_FLAG", true);
@@ -140,6 +142,10 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 				};
 
 				$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
+			}
+
+			if ($rootScope.autoEmailPayReceipt) {
+				$scope.autoTriggerPaymentReceiptActions();
 			}
 		});
 

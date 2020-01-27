@@ -170,6 +170,7 @@ sntRover.controller('roverController', [
         $rootScope.isPmsProductionEnv = hotelDetails.is_pms_prod;
         $rootScope.isWorkStationMandatory = hotelDetails.is_workstation_mandatory;
         $rootScope.paymentCurrencyList = hotelDetails.currency_list_for_payment;
+        $rootScope.autoEmailPayReceipt =  hotelDetails.auto_email_pay_receipt;
         $rootScope.shouldShowPaymentDropDown = false;
         if ($rootScope.isMultiCurrencyEnabled && $rootScope.paymentCurrencyList.length > 0 ) {
             $rootScope.shouldShowPaymentDropDown = true;

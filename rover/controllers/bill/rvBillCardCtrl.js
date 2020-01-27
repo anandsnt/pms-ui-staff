@@ -38,6 +38,8 @@ sntRover.controller('RVbillCardController',
 
 
 	BaseCtrl.call(this, $scope);
+
+	SharedMethodsBaseCtrl.call (this, $scope, RVAutomaticEmailSrv, ngDialog);
 	var that = this;
 
 
@@ -2945,66 +2947,14 @@ sntRover.controller('RVbillCardController',
 			}
 	};
 
-	$scope.sendAutomaticEmails = function(data) {
-
-		var sendSuccessCallback = function() {
-			$scope.closeDialog();
-		},
-		params = {
-			"bill_id": $scope.currentPaymentBillId,
-			"transaction_id": $scope.currentPaymentTransactionId,
-			"locale":"en"
-		};
-
-		if (data && data.email) {
-			params.to_address = data.email;
-		};
-
-		var dataToSend = {
-			params: params,
-			successCallBack: sendSuccessCallback
-		};
-
-		$scope.callAPI(RVAutomaticEmailSrv.sendAutomaticEmails, dataToSend);
-	};
+	
 
 	$scope.$on("AUTO_TRIGGER_EMAIL_AFTER_PAYMENT", function(e, data){
 		$scope.sendAutomaticEmails(data);
 	});
 
-	$scope.openEnterEmailPopup = function() {
-		ngDialog.open({
-			template: '/assets/partials/bill/rvValidateEmailOnPayment.html',
-			controller: 'RVValidateEmailOnPaymentCtrl',
-			className: '',
-			closeByDocument: false,
-			scope: $scope
-		});
-	};
 
-	$scope.autoTriggerPaymentReceiptActions = function() {
-
-		var	successCallbackEmailPresence = function(response) {
-				if (response.email_present) {
-					$scope.sendAutomaticEmails();
-				} else {
-					$scope.openEnterEmailPopup();
-				}
-			};
-
-
-		var dataToSend = {
-			params: {
-				"bill_id": $scope.currentPaymentBillId
-			},
-			successCallBack: successCallbackEmailPresence
-		};
-
-		$scope.callAPI(RVAutomaticEmailSrv.verifyEmailPresence, dataToSend);
-		
-	}
-
-	 $scope.$on('BILL_PAYMENT_SUCCESS', function(event, data) {
+	$scope.$on('BILL_PAYMENT_SUCCESS', function(event, data) {
 	 	$scope.signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
 		$scope.isRefreshOnBackToStaycard = true;
 		if ($scope.isViaReviewProcess) {
@@ -3021,8 +2971,10 @@ sntRover.controller('RVbillCardController',
 
 		$scope.currentPaymentBillId = data.bill_id;
 		$scope.currentPaymentTransactionId = data.transaction_id;
-
-		$scope.autoTriggerPaymentReceiptActions();		
+		if ($rootScope.autoEmailPayReceipt) {
+			$scope.autoTriggerPaymentReceiptActions();
+		}
+				
 	});
 
 	// To update paymentModalOpened scope - To work normal swipe in case if payment screen opened and closed - CICO-8617

@@ -72,6 +72,7 @@ module.exports = {
 
 				controllerRoot + 'rvTopCtrl.js',
 				controllerRoot + 'rvRoverController.js',
+				controllerRoot + 'sharedMethodsCtrl.js',
 				controllerRoot + 'dashboard/**/*.js',
 				controllerRoot + 'availability/rvAvailabilityButtonCtrl.js',
 				controllerRoot + 'search/**/*.js',
