@@ -128,7 +128,7 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
              */
             var refreshToken = function () {
                 sntSharedLoginSrv.refreshToken().then(function() {
-
+                    idleTimeSecondsCounter = 0;
                 });
             };
 
@@ -137,8 +137,14 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
              */
             var checkAndValidateToken = function () {
                 
-                if (idleTimeSecondsCounter < tokenExpiryTimeSecs) {
+                if (validateTokenTimer) {
+                    clearInterval(validateTokenTimer);
+                }
+
+                console.log("idleTimeSecondsCounter : " + idleTimeSecondsCounter + ", tokenExpiryTimeSecs: " + tokenExpiryTimeSecs);
+                if (idleTimeSecondsCounter < tokenExpiryTimeSecs) {                    
                     refreshToken();
+                                       
                 } else {
                     validateTokenTimer = setInterval(checkAndValidateToken, 1000);
                 }
@@ -150,6 +156,7 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
              */
             var setUpEventListeners = function () {
                 var checkIdleTime = function () {
+                    console.log("idleTimeSecondsCounter : " + idleTimeSecondsCounter);
                     idleTimeSecondsCounter++;
                 };
 
@@ -157,9 +164,9 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
                     idleTimeSecondsCounter = 0;
                 };
                 
-                document.onmousemove = function() {
-                    idleTimeSecondsCounter = 0;
-                };
+                // document.onmousemove = function() {
+                //     idleTimeSecondsCounter = 0;
+                // };
                 
                 document.onkeypress = function() {
                     idleTimeSecondsCounter = 0;
@@ -188,6 +195,12 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
                                 
                                 case 'RFRESH_TOKEN':
                                     checkAndValidateToken();
+                                    break;
+
+                                case 'RESET_IDLE_TIME':
+                                    idleTimeSecondsCounter = 0;
+                                    break;
+
                                 default:
         
                             }

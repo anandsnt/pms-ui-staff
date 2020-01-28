@@ -23,10 +23,13 @@ this.addEventListener('message',  function(event) {
             if (!refreshTokenDelay) {
                 refreshTokenDelay =  data.interval - 30000;
             }
+            this.console.log("Worker : " + refreshTokenDelay);
 
             refreshTokenTimer = setTimeout (function () {
                 self.postMessage({cmd: 'RFRESH_TOKEN' });
             }, refreshTokenDelay);
+
+            self.postMessage({cmd: 'RESET_IDLE_TIME' });
 
             break;
 
