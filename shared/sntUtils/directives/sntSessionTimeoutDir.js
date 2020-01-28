@@ -16,8 +16,8 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
             $scope.loginData = {};
             var ACCOUNT_LOCKED_STR = 'account has been locked';
 
-            var idleTimeSecondsCounter = 0,
-                tokenExpiryTimeSecs,
+            var secondsSinceLastActivity = 0,
+                maxInactivity,
                 validateTokenTimer;
 
             
@@ -102,7 +102,7 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
                 var onLoginFetchSuccess = function (response) {
                     if (response.auto_logout_delay) {
                         sessionTimeoutHandlerSrv.setAutoLogoutDelay(response.auto_logout_delay * 1000);
-                        tokenExpiryTimeSecs = response.auto_logout_delay - 30;
+                        maxInactivity = response.auto_logout_delay - 30;
                     }
                     sessionTimeoutHandlerSrv.setLoginEmail(response.login);
                 };
@@ -128,7 +128,7 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
              */
             var refreshToken = function () {
                 sntSharedLoginSrv.refreshToken().then(function() {
-                    idleTimeSecondsCounter = 0;
+                    secondsSinceLastActivity = 0;
                 });
             };
 
@@ -141,8 +141,7 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
                     clearInterval(validateTokenTimer);
                 }
 
-                console.log("idleTimeSecondsCounter : " + idleTimeSecondsCounter + ", tokenExpiryTimeSecs: " + tokenExpiryTimeSecs);
-                if (idleTimeSecondsCounter < tokenExpiryTimeSecs) {                    
+                if (secondsSinceLastActivity < maxInactivity - 10) {                    
                     refreshToken();
                                        
                 } else {
@@ -156,21 +155,24 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
              */
             var setUpEventListeners = function () {
                 var checkIdleTime = function () {
-                    console.log("idleTimeSecondsCounter : " + idleTimeSecondsCounter);
-                    idleTimeSecondsCounter++;
+                    secondsSinceLastActivity++;
                 };
 
-                document.onclick = function() {
-                    idleTimeSecondsCounter = 0;
+                // Array of DOM events which should be interpreted as user activity
+                var activityEvents = [
+                    'mousedown', 'keydown',
+                    'scroll', 'click', 'keypress'
+                ];
+
+                // This will be called when user is active
+                var activity = function() {
+                    secondsSinceLastActivity = 0;
                 };
-                
-                // document.onmousemove = function() {
-                //     idleTimeSecondsCounter = 0;
-                // };
-                
-                document.onkeypress = function() {
-                    idleTimeSecondsCounter = 0;
-                };
+
+                // Register the events to the document
+                activityEvents.forEach(function(eventName) {
+                    document.addEventListener(eventName, activity, true);
+                });
 
                 setInterval(checkIdleTime, 1000);
 
@@ -198,7 +200,7 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
                                     break;
 
                                 case 'RESET_IDLE_TIME':
-                                    idleTimeSecondsCounter = 0;
+                                    secondsSinceLastActivity = 0;
                                     break;
 
                                 default:
