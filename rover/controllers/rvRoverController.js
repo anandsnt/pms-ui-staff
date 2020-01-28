@@ -25,11 +25,10 @@ sntRover.controller('roverController', [
     'sntActivity',
     '$transitions',
     'features',
-    'sessionTimeoutHandlerSrv',
     function ($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv,
               ngDialog, $translate, hotelDetails, userInfoDetails, $stateParams,
               rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q, $sce,
-              $log, sntAuthorizationSrv, $location, $interval, sntActivity, $transitions, features, sessionTimeoutHandlerSrv) {
+              $log, sntAuthorizationSrv, $location, $interval, sntActivity, $transitions, features) {
 
 
         var observeDeviceInterval;
@@ -642,10 +641,6 @@ sntRover.controller('roverController', [
             sntActivity.start('LOGOUT_INVALIDATE_TOKEN');
             RVDashboardSrv.signOut().finally(function() {
                 $timeout(function () {
-                    if (sessionTimeoutHandlerSrv.getWorker()) {
-                        sessionTimeoutHandlerSrv.stopTimer();
-                        $scope.$emit('CLOSE_SESSION_TIMEOUT_POPUP');
-                    }
                     $window.location.href = '/logout';
                 });
             });
