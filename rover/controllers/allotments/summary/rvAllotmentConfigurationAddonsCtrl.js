@@ -195,9 +195,29 @@ sntRover.controller('rvAllotmentConfigurationAddonsCtrl', [
 			$scope.callAPI(rvAllotmentConfigurationSrv.removeAllotmentEnhancement, options);
 		};
 
+		var updateAddonPosting = function() {
+
+        	var params = {
+				"id": $scope.allotmentConfigData.summary.allotment_id,
+				'addon_id': $scope.selectedPurchesedAddon.id,
+				'post_instances': $scope.selectedPurchesedAddon.post_instances,
+				'start_date': $filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.start_date), $rootScope.dateFormatForAPI),
+				'end_date': $filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.end_date), $rootScope.dateFormatForAPI)
+			};
+        	var options = {
+				successCallBack: function() {
+					$scope.$emit('hideLoader');
+				},
+				params: params
+			};
+
+			$scope.callAPI(rvAllotmentConfigurationSrv.updateAddonPosting, options);
+        };
+
 		var proceedBookingListner = $scope.$on('PROCEED_BOOKING', function(event, data) {
                     if(data.addonPostingMode === 'allotments') {
-                        $scope.proceed();
+                        $scope.selectedPurchesedAddon = data.selectedPurchesedAddon;
+                		updateAddonPosting();
                     }
                 });
 
