@@ -1092,11 +1092,14 @@ sntRover.controller('reservationDetailsController',
 		};
 
 		$scope.handleAddonsOnReservation = function(isPackageExist) {
-			$scope.addonPostingMode = 'staycard';
 			$scope.addonPopUpData = {
+				addonPostingMode: 'staycard',
 				cancelLabel: "Cancel",
 				saveLabel : "Save",
-				shouldShowAddMoreButton: true
+				shouldShowAddMoreButton: true,
+				number_of_adults: $scope.reservationData.reservation_card.number_of_adults,
+				number_of_children: $scope.reservationData.reservation_card.number_of_children,
+				duration_of_stay: $scope.packageData.duration_of_stay
 			};
 			if (isPackageExist) {
 				ngDialog.open({
@@ -2012,7 +2015,7 @@ sntRover.controller('reservationDetailsController',
 
 	var removeSelectedAddonsListner = $rootScope.$on('REMOVE_ADDON', function(event, data) {
 		if(data.addonPostingMode === 'staycard') {
-			$scope.removeSelectedAddons(data.index, data.addonId);
+			$scope.removeSelectedAddons(data.index, data.addon.id);
 		}
 	});
 
