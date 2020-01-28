@@ -92,7 +92,7 @@ angular.module('sntRover')
 				};
 
 				/*
-				 * Creating an array of selected floors to apply filter.
+				 * Creating an array of selected room features to apply filter.
 				 */
 				var getSelectedRoomFeatures = function(roomFeatures) {
 					var selectedRoomFeatures = [];
