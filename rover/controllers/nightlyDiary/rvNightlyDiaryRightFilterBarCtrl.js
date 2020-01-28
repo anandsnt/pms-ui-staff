@@ -19,12 +19,13 @@ angular.module('sntRover')
 			var initiate = function() {
 				if (_.isEmpty($scope.diaryData.filterList)) {
 					var successCallBackFetchRoomTypeAndFloorList = function(data) {
-
 						$scope.$emit('hideLoader');
 						$scope.diaryData.selectedRoomCount = 0;
 						$scope.diaryData.selectedFloorCount = 0;
+						$scope.diaryData.selectedRoomFeaturesCount = 0;
 						$scope.diaryData.filterList.roomType = data.rooms;
 						$scope.diaryData.filterList.floorList = data.floors;
+						$scope.diaryData.filterList.roomFeatures = data.roomFeatures;
 					};
 
 					$scope.invokeApi(RVNightlyDiaryRightFilterBarSrv.fetchRoomTypeAndFloorList, {}, successCallBackFetchRoomTypeAndFloorList);
@@ -93,7 +94,7 @@ angular.module('sntRover')
 				var getSelectedRoomFeatures = function(roomFeatures) {
 					var selectedRoomFeatures = [];
 
-					if (roomFeatures && $scope.diaryData.showBookFilterPanel) {
+					if (roomFeatures && !$scope.diaryData.isReservationSelected) {
 						roomFeatures.forEach(function(group) {
 							group.items.forEach(function(item) {
 								if (item.selected) {
@@ -108,7 +109,7 @@ angular.module('sntRover')
 				$scope.diaryData.selectedRoomTypes = getSelectedRoomTypes($scope.diaryData.filterList.roomType);
 				$scope.diaryData.selectedFloors = getSelectedFloors($scope.diaryData.filterList.floorList);
 				// Add Preference Filters on BOOK View.
-                $scope.diaryData.selectedRoomFeatures = getSelectedRoomFeatures($scope.diaryData.bookRoomViewFilter.roomFeatures);
+                $scope.diaryData.selectedRoomFeatures = getSelectedRoomFeatures($scope.diaryData.filterList.roomFeatures);
 				$scope.$emit('REFRESH_DIARY_SCREEN');
 			};
 
@@ -118,7 +119,8 @@ angular.module('sntRover')
 			 */
 			var resetCommonFilters = function() {
 				var roomTypes = $scope.diaryData.filterList.roomType,
-					floorList = $scope.diaryData.filterList.floorList;
+					floorList = $scope.diaryData.filterList.floorList,
+					roomFeatures = $scope.diaryData.filterList.roomFeatures;
 
 				if (roomTypes && roomTypes.length > 0) {
 					roomTypes.forEach(function(roomtype) {
@@ -132,10 +134,19 @@ angular.module('sntRover')
 					});
 				}
 
+				if (roomFeatures && roomFeatures.length > 0) {
+					roomFeatures.forEach(function(group) {
+						group.items.forEach(function(item) {
+							item.selected = false;
+						});
+					});
+				}
+
 				$scope.diaryData.selectedRoomTypes = [];
 				$scope.diaryData.selectedFloors = [];
 				$scope.diaryData.selectedFloorCount = 0;
 				$scope.diaryData.selectedRoomCount = 0;
+				$scope.diaryData.selectedRoomFeaturesCount = 0;
 			};
 
 			$scope.addListener('RESET_RIGHT_FILTER_BAR', function() {
@@ -264,11 +275,11 @@ angular.module('sntRover')
 				var roomFeatures = [],
 					roomFeatureIds = [];
                 
-                if ($scope.diaryData.showBookFilterPanel) {
-                    roomFeatures = $scope.diaryData.bookRoomViewFilter.roomFeatures;
+                if ($scope.diaryData.isReservationSelected) {
+                    roomFeatures = $scope.diaryData.roomAssignmentFilters.room_features;
                 }
                 else {
-                    roomFeatures = $scope.diaryData.roomAssignmentFilters.room_features;
+                    roomFeatures = $scope.diaryData.filterList.roomFeatures;
                 }
 
 				_.each(roomFeatures, function(feature) {
@@ -278,13 +289,14 @@ angular.module('sntRover')
 						}
 					});
 				});
-
-				$scope.diaryData.roomAssignmentFilters.count = roomFeatureIds.length;
-                if ($scope.diaryData.showBookFilterPanel) {
-                    $scope.diaryData.selectedRoomFeatures = roomFeatureIds;
+				
+                if ($scope.diaryData.isReservationSelected) {
+                	$scope.diaryData.roomAssignmentFilters.count = roomFeatureIds.length;
+                    $scope.diaryData.roomAssignmentFilters.roomFeatureIds = roomFeatureIds;
                 }
                 else {
-                    $scope.diaryData.roomAssignmentFilters.roomFeatureIds = roomFeatureIds;
+                	$scope.diaryData.selectedRoomFeatures = roomFeatureIds;
+                	$scope.diaryData.selectedRoomFeaturesCount = roomFeatureIds.length;
                 }
 			};
 
@@ -294,11 +306,11 @@ angular.module('sntRover')
 			$scope.setSelectionForFeature = function(group, feature) {
 				var roomFeatures = [];
                 
-                if ($scope.diaryData.showBookFilterPanel) {
-                    roomFeatures = $scope.diaryData.bookRoomViewFilter.roomFeatures;
+                if ($scope.diaryData.isReservationSelected) {
+                    roomFeatures = $scope.diaryData.roomAssignmentFilters.room_features;
                 }
                 else {
-                    roomFeatures = $scope.diaryData.roomAssignmentFilters.room_features;
+                	roomFeatures = $scope.diaryData.filterList.roomFeatures;
                 }
 
 				if (!roomFeatures[group].multiple_allowed) {

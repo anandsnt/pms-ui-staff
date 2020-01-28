@@ -35,12 +35,9 @@
                         </label>
                     </div>
                 </div>
-            <!--- :END   - NORMAL FILTERS without selecting a Reservation -->
-
-            <!--- :START - FILTERS While clicking BOOK -->
 
                 <!-- Room Features -->
-                <div class="entry join radio-check" ng-show="diaryData.showBookFilterPanel" ng-repeat="feature in diaryData.bookRoomViewFilter.roomFeatures">
+                <div class="entry join radio-check" ng-hide="diaryData.isReservationSelected" ng-repeat="feature in diaryData.filterList.roomFeatures">
                     <strong class="label">{{feature.group_name}}</strong>
                     <label class="checkbox" ng-repeat="item in feature.items" ng-class="{'checked': item.selected}">
                         <span class="icon-form icon-checkbox" ng-class="{'checked': item.selected}"></span>
@@ -49,7 +46,7 @@
                     </label>
                 </div>
 
-            <!--- :END   - FILTERS While clicking BOOK -->
+            <!--- :END   - NORMAL FILTERS without selecting a Reservation -->
 
             <!--- :START - FILTERS while selecting a Reservation -->
 
