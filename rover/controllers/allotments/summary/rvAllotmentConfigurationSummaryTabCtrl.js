@@ -119,8 +119,8 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				"id": $scope.allotmentConfigData.summary.allotment_id,
 				'addon_id': $scope.selectedPurchesedAddon.id,
 				'post_instances': $scope.selectedPurchesedAddon.post_instances,
-				'start_date': $filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.start_date), $rootScope.dateFormatForAPI),
-				'end_date': $filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.end_date), $rootScope.dateFormatForAPI)
+				'start_date': $scope.selectedPurchesedAddon.start_date,
+				'end_date': $scope.selectedPurchesedAddon.end_date
 			};
         	var options = {
 				successCallBack: function() {
@@ -740,15 +740,14 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 */
 		$scope.openAddonsPopup = function() {
 
-			$scope.addonPostingMode = 'allotments';
-
             $scope.addonPopUpData = {
 				cancelLabel: "Cancel",
                 saveLabel : "Save",
                 shouldShowAddMoreButton: true,
                 number_of_adults: 1,
                 number_of_children: 1,
-                numNights: 1
+                numNights: 1,
+                addonPostingMode: 'allotments'
             };
 
             $scope.packageData = {

@@ -1791,20 +1791,12 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                 $scope.$emit('hideLoader');
             };
     
-            $scope.daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    
-            angular.forEach($scope.selectedPurchesedAddon.post_instances, function(item, index) {
-                        var postDate = new Date(item.post_date);
-                        var day = $scope.daysOfWeek[postDate.getDay()];
-                        item.active = $scope.selectedPurchesedAddon.selected_post_days[day];
-                    });
-    
             var dataToApi = {
                 'group_id': $scope.groupConfigData.summary.group_id,
                 'addon_id': $scope.selectedPurchesedAddon.id,
                 'post_instances': $scope.selectedPurchesedAddon.post_instances,
-                'start_date': $filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.start_date), $rootScope.dateFormatForAPI),
-                'end_date': $filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.end_date), $rootScope.dateFormatForAPI)
+                'start_date': $scope.selectedPurchesedAddon.start_date,
+                'end_date': $scope.selectedPurchesedAddon.end_date
             }
     
             $scope.invokeApi(rvGroupConfigurationSrv.updateAddonPosting, dataToApi, addonPostingSaveSuccess);
