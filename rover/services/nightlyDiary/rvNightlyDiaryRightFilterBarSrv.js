@@ -53,7 +53,7 @@ angular.module('sntRover').service('RVNightlyDiaryRightFilterBarSrv',
             return deferred.promise;
         };
 
-        service.fetchRoomTypeAndFloorList = function(params) {
+        service.fetchFilterList = function(params) {
             var deferred = $q.defer(),
                 promises = [],
                 response = {};

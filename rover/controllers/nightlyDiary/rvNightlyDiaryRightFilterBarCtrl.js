@@ -19,16 +19,19 @@ angular.module('sntRover')
 			var initiate = function() {
 				if (_.isEmpty($scope.diaryData.filterList)) {
 					var successCallBackFetchRoomTypeAndFloorList = function(data) {
-						$scope.$emit('hideLoader');
 						$scope.diaryData.selectedRoomCount = 0;
 						$scope.diaryData.selectedFloorCount = 0;
 						$scope.diaryData.selectedRoomFeaturesCount = 0;
 						$scope.diaryData.filterList.roomType = data.rooms;
 						$scope.diaryData.filterList.floorList = data.floors;
 						$scope.diaryData.filterList.roomFeatures = data.roomFeatures;
+					},
+					options = {
+						params: {},
+						successCallBack: successCallBackFetchRoomTypeAndFloorList
 					};
 
-					$scope.invokeApi(RVNightlyDiaryRightFilterBarSrv.fetchRoomTypeAndFloorList, {}, successCallBackFetchRoomTypeAndFloorList);
+					$scope.callAPI(RVNightlyDiaryRightFilterBarSrv.fetchFilterList, options);
 				}
 			};
 
