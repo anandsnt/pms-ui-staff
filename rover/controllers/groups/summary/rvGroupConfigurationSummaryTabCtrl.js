@@ -1065,8 +1065,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
         $scope.onRateChange = function() {
             var summaryData = $scope.groupConfigData.summary,
                 uniqId = summaryData.uniqId,
-                rateId = uniqId.split(':')[0],
-                contractId = uniqId.split(':')[1];
+                rateId = uniqId && uniqId.split(':')[0],
+                contractId = uniqId && uniqId.split(':')[1];
 
             /**
              * Call the API only if the group is saved, else allow the group
@@ -1075,7 +1075,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
             $scope.groupConfigData.summary.rate = rateId;
             $scope.groupConfigData.summary.contract_id = contractId;
 
-            if (!summaryData.group_id) {
+            if (!summaryData.group_id || !uniqId) {
                 return false;
             }
 
