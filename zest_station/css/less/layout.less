@@ -1547,40 +1547,18 @@
             #flexbox > .flex();
             #flexbox > .parent(row, center, center, '');
 
-            .select {
-                position: relative;
-
-                select {
-                    padding-right: 40px;
-                    background: transparent;
-                }
-
-                &:after {
-                    content: '';
-                    position: absolute;
-                    top: 30px;
-                    right: 10px;
-                    border-left: 6px solid transparent;
-                    border-right: 6px solid transparent;
-                    border-top: 6px solid @white;
-                    .square(0);
-                    .show;
-                }
-
-                &:not(:last-child) {
-                    margin-right: 10px;
-                }
+            select.ui-datepicker-month,
+            select.ui-datepicker-year {
+                background: @selectArrow @inputBackground no-repeat 95% center;
+                background-size: 15px;
+                width: 130px;
+                height: 50px;
+                color: @inputColor;
+                margin-top: 5px;
+                margin-right: 10px;
+                border-radius: 3px;
+            
             }
-
-            // TODO: Revert after stjepans update
-            /*.ui-datepicker-month,
-            .ui-datepicker-year {
-                height: 40px;
-                font-size: 20px;
-                font-weight: 600;
-                width: 120px;
-                background-color: @brandColor;
-            }*/
         }
 
         .ui-datepicker-prev,
