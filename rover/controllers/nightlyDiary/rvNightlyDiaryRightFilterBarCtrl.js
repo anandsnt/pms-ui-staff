@@ -108,7 +108,6 @@ angular.module('sntRover')
 
 				$scope.diaryData.selectedRoomTypes = getSelectedRoomTypes($scope.diaryData.filterList.roomType);
 				$scope.diaryData.selectedFloors = getSelectedFloors($scope.diaryData.filterList.floorList);
-				// Add Preference Filters on BOOK View.
                 $scope.diaryData.selectedRoomFeatures = getSelectedRoomFeatures($scope.diaryData.filterList.roomFeatures);
 				$scope.$emit('REFRESH_DIARY_SCREEN');
 			};
