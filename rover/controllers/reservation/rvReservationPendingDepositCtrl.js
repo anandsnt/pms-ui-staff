@@ -31,6 +31,7 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 			$scope.depositPolicyName = $scope.depositDetails.deposit_policy.description;
 			$scope.rateCurrency = $scope.depositDetails.rate_currency;
 			$scope.depositAmount = parseFloat($scope.depositDetails.deposit_amount).toFixed(2);
+			$scope.depositPaymentAmount = parseFloat($scope.depositDetails.deposit_payment_amount).toFixed(2);
 		}());
 
 
