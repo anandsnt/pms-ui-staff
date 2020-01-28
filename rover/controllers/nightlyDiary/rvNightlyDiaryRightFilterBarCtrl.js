@@ -61,8 +61,7 @@ angular.module('sntRover')
 			 */
 			$scope.applyCommonFilter = function() {
 				var selectedRoomTypes = [],
-					selectedFloors = [],
-					selectedRoomFeatures = [];
+					selectedFloors = [];
 
 				/*
 				 * Creating an array of selected room types to apply filter.
@@ -92,11 +91,15 @@ angular.module('sntRover')
 				 * Creating an array of selected floors to apply filter.
 				 */
 				var getSelectedRoomFeatures = function(roomFeatures) {
-					if (roomFeatures) {
-						roomFeatures.forEach(function(room) {
-							if (room.isSelected) {
-								selectedRoomFeatures.push(room.id);
-							}
+					var selectedRoomFeatures = [];
+
+					if (roomFeatures && $scope.diaryData.showBookFilterPanel) {
+						roomFeatures.forEach(function(group) {
+							group.items.forEach(function(item) {
+								if (item.selected) {
+									selectedRoomFeatures.push(item.id);
+								}
+							});
 						});
 					}
 					return selectedRoomFeatures;
@@ -104,7 +107,8 @@ angular.module('sntRover')
 
 				$scope.diaryData.selectedRoomTypes = getSelectedRoomTypes($scope.diaryData.filterList.roomType);
 				$scope.diaryData.selectedFloors = getSelectedFloors($scope.diaryData.filterList.floorList);
-				$scope.diaryData.selectedRoomFeatures = getSelectedRoomFeatures($scope.diaryData.filterList.roomFeatures);
+				// Add Preference Filters on BOOK View.
+                $scope.diaryData.selectedRoomFeatures = getSelectedRoomFeatures($scope.diaryData.bookRoomViewFilter.roomFeatures);
 				$scope.$emit('REFRESH_DIARY_SCREEN');
 			};
 

@@ -87,7 +87,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             paramsToApi.per_page = data.per_page;
             paramsToApi.selected_room_type_ids = data.selected_room_type_ids;
             paramsToApi.selected_floor_ids = data.selected_floor_ids;
-            paramsToApi.selected_room_features = data.selected_room_features;
+            paramsToApi.selected_room_feature_ids = data.selected_room_feature_ids;
 
             sntBaseWebSrv.postJSON(url, paramsToApi).then(function(response) {
                 deferred.resolve(response);
