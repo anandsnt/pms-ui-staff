@@ -2945,14 +2945,11 @@ sntRover.controller('RVbillCardController',
 				$scope.isViaReviewProcess = false;
 				callBlackBoxAPI();
 			}
-	};
-
-	
+	};	
 
 	$scope.$on("AUTO_TRIGGER_EMAIL_AFTER_PAYMENT", function(e, data){
 		$scope.sendAutomaticEmails(data);
 	});
-
 
 	$scope.$on('BILL_PAYMENT_SUCCESS', function(event, data) {
 	 	$scope.signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
