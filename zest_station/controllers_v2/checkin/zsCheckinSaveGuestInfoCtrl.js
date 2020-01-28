@@ -224,6 +224,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 		$scope.clickOnGuest = function(guest) {
 			$scope.selectedGuest = guest;
 			retrieveGuestInfoForDisplay(guest.guest_details);
+			$scope.screenData.triedToSave = false;
 
 			if (guestInfo.metadata.enable_bypass) {
 				showQuestionForGuest();
