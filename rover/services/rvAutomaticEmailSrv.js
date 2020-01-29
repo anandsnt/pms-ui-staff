@@ -4,7 +4,7 @@ angular.module('sntRover').service('RVAutomaticEmailSrv',
 
 	var that = this;
 
-	this.verifyEmailPresence = function(params) {
+	that.verifyEmailPresence = function(params) {
 		var deferred = $q.defer(),
 			url = '/api/bills/' + params.bill_id + '/verify_email_presence';
 
@@ -18,7 +18,7 @@ angular.module('sntRover').service('RVAutomaticEmailSrv',
 		return deferred.promise;
 	};
 
-	this.sendAutomaticEmails = function(params) {
+	that.sendAutomaticEmails = function(params) {
 		var deferred = $q.defer(),
 			url = '/api/bills/' + params.bill_id + '/auto_trigger_receipt';
 

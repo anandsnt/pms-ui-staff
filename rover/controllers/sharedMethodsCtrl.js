@@ -19,12 +19,12 @@ window.SharedMethodsBaseCtrl = function ($scope, RVAutomaticEmailSrv, ngDialog) 
         params = {
             "bill_id": $scope.currentPaymentBillId,
             "transaction_id": $scope.currentPaymentTransactionId,
-            "locale":"en"
+            "locale": "en"
         };
 
         if (data) {
             params.to_address = data;
-        };
+        }
 
         var dataToSend = {
             params: params,
@@ -71,6 +71,6 @@ window.SharedMethodsBaseCtrl = function ($scope, RVAutomaticEmailSrv, ngDialog) 
 
         $scope.callAPI(RVAutomaticEmailSrv.verifyEmailPresence, dataToSend);
         
-    }
+    };
 
 };

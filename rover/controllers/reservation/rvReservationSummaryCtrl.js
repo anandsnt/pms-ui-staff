@@ -1640,7 +1640,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             $scope.$emit('hideLoader');            
         });
 
-        $scope.$on("AUTO_TRIGGER_EMAIL_AFTER_PAYMENT", function(e, data){
+        $scope.$on("AUTO_TRIGGER_EMAIL_AFTER_PAYMENT", function(e, data) {
             $scope.sendAutomaticEmails(data);
         });
 
