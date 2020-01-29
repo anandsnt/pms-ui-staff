@@ -146,6 +146,7 @@ angular.module('sntRover')
 
 				$scope.diaryData.selectedRoomTypes = [];
 				$scope.diaryData.selectedFloors = [];
+				$scope.diaryData.selectedRoomFeatures = [];
 				$scope.diaryData.selectedFloorCount = 0;
 				$scope.diaryData.selectedRoomCount = 0;
 				$scope.diaryData.selectedRoomFeaturesCount = 0;
