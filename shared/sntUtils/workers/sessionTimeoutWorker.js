@@ -1,7 +1,5 @@
 var self = this,
-    timer,
-    refreshTokenTimer,
-    refreshTokenDelay;
+    timer;    
 
 this.addEventListener('message',  function(event) {
     var data = event.data;
@@ -11,25 +9,10 @@ this.addEventListener('message',  function(event) {
             if (timer) {
                 clearTimeout(timer);
             }
-
-            if (refreshTokenTimer) {
-                clearTimeout(refreshTokenTimer); 
-            }
             
             timer = setTimeout (function () {
                 self.postMessage({cmd: 'SHOW_TIMEOUT_POPUP' });
-            }, data.interval);
-
-            if (!refreshTokenDelay) {
-                refreshTokenDelay =  data.interval - 30000;
-            }
-
-            refreshTokenTimer = setTimeout (function () {
-                self.postMessage({cmd: 'RFRESH_TOKEN' });
-            }, refreshTokenDelay);
-
-            
-            self.postMessage({cmd: 'RESET_IDLE_TIME' });
+            }, data.interval - 15000);
 
             break;
 
@@ -37,7 +20,10 @@ this.addEventListener('message',  function(event) {
             if (timer) {
                 clearTimeout(timer);
             }
-            self.postMessage({cmd: 'SHOW_TIMEOUT_POPUP' });
+            self.postMessage({
+                cmd: 'SHOW_TIMEOUT_POPUP', 
+                isApiTokenExpired: data.isApiTokenExpired 
+            });
             break;
 
         case 'STOP_TIMER': 

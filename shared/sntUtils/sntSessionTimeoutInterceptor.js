@@ -27,10 +27,11 @@ angular.module('snt.utils').service('sessionTimeoutHandlerSrv', [
             ); 
         };
     
-        service.showSessionTimeoutPopup = function() {
+        service.showSessionTimeoutPopup = function(isApiTokenExpired) {
             worker.postMessage(
                 {
-                    cmd: 'SHOW_TIMEOUT_POPUP'
+                    cmd: 'SHOW_TIMEOUT_POPUP',
+                    isApiTokenExpired: isApiTokenExpired
                 }
             );
             
@@ -163,7 +164,7 @@ angular.module('snt.utils').factory('sharedSessionTimeoutInterceptor', [
                         currentState.current.name !== '' && 
                         rejection.config.url !== '/logout' ) { 
                     $window.localStorage.removeItem('jwt');
-                    sessionTimeoutHandlerSrv.showSessionTimeoutPopup();
+                    sessionTimeoutHandlerSrv.showSessionTimeoutPopup(true);
                     rejection.handledCodes.push(401);
                 }
                 

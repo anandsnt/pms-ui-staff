@@ -16,10 +16,6 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
             $scope.loginData = {};
             var ACCOUNT_LOCKED_STR = 'account has been locked';
 
-            var secondsSinceLastActivity = 0,
-                maxInactivity,
-                validateTokenTimer;
-
             
             /**
              * Show session timeout popup
@@ -102,9 +98,11 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
                 var onLoginFetchSuccess = function (response) {
                     if (response.auto_logout_delay) {
                         sessionTimeoutHandlerSrv.setAutoLogoutDelay(response.auto_logout_delay * 1000);
-                        maxInactivity = response.auto_logout_delay - 30;
                     }
                     sessionTimeoutHandlerSrv.setLoginEmail(response.login);
+
+                    setUpEventListeners();
+
                 };
 
                 if (!sessionTimeoutHandlerSrv.getAutoLogoutDelay()) {
@@ -128,58 +126,49 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
              */
             var refreshToken = function () {
                 sntSharedLoginSrv.refreshToken().then(function() {
-                    secondsSinceLastActivity = 0;
                 });
             };
 
             /**
              * Check and validate the token expiry based on browser idle time
              */
-            var checkAndValidateToken = function () {
-                
-                if (validateTokenTimer) {
-                    clearInterval(validateTokenTimer);
-                }
+            var checkAndValidateToken = function (isAPItokenExpired) {
+                var autoLogoutDelaySecs = Math.floor(sessionTimeoutHandlerSrv.getAutoLogoutDelay() / 1000);
 
-                if (secondsSinceLastActivity < maxInactivity - 10) {                    
-                    refreshToken();
-                                       
+                // We have added 30s here because the timer will be set after 30s when its idle as configured
+                // 15 secs have been deducted as the the check will be done 15s prior to token expiry
+                if ( (getIdleTimeSecs() + 30 ) > (autoLogoutDelaySecs - 15) || isAPItokenExpired) {
+                    showSessionTimeoutPopup();
                 } else {
-                    validateTokenTimer = setInterval(checkAndValidateToken, 1000);
+                    refreshToken();
                 }
 
+            };
+
+            // Get the idle time in seconds
+            var getIdleTimeSecs = function () {
+                var idlTimeSecs = Math.floor($(document).idleTimer("getElapsedTime") / 1000);
+
+                return idlTimeSecs;
             };
 
             /**
              * Set up the event listeners to track the various browser events to identify browser inactivity 
              */
             var setUpEventListeners = function () {
-                var checkIdleTime = function () {
-                    secondsSinceLastActivity++;
-                };
 
-                // Array of DOM events which should be interpreted as user activity
-                var activityEvents = [
-                    'mousedown', 'keydown',
-                    'scroll', 'click', 'keypress'
-                ];
-
-                // This will be called when user is active
-                var activity = function() {
-                    secondsSinceLastActivity = 0;
-                };
-
-                // Register the events to the document
-                activityEvents.forEach(function(eventName) {
-                    document.addEventListener(eventName, activity, true);
+                $(document).idleTimer( {
+                    timeout: 30000
                 });
 
-                setInterval(checkIdleTime, 1000);
+                // This will be invoked when the user is idle for 30s
+                $(document).on( "idle.idleTimer", function() {
+                    refreshToken();
+                });
 
             };
 
             var init = function () {
-                setUpEventListeners();
 
                 if (!sessionTimeoutHandlerSrv.getWorker()) {
                     sessionTimeoutHandlerSrv.initWorker();
@@ -189,18 +178,7 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
         
                             switch (data.cmd) {
                                 case 'SHOW_TIMEOUT_POPUP':
-                                    if (validateTokenTimer) {
-                                        clearInterval(validateTokenTimer); 
-                                    }
-                                    showSessionTimeoutPopup();
-                                    break;
-                                
-                                case 'RFRESH_TOKEN':
-                                    checkAndValidateToken();
-                                    break;
-
-                                case 'RESET_IDLE_TIME':
-                                    secondsSinceLastActivity = 0;
+                                    checkAndValidateToken(data.isApiTokenExpired);
                                     break;
 
                                 default:
