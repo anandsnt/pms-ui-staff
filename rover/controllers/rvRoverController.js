@@ -25,11 +25,10 @@ sntRover.controller('roverController', [
     'sntActivity',
     '$transitions',
     'features',
-    'sessionTimeoutHandlerSrv',
     function ($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv,
               ngDialog, $translate, hotelDetails, userInfoDetails, $stateParams,
               rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q, $sce,
-              $log, sntAuthorizationSrv, $location, $interval, sntActivity, $transitions, features, sessionTimeoutHandlerSrv) {
+              $log, sntAuthorizationSrv, $location, $interval, sntActivity, $transitions, features) {
 
 
         var observeDeviceInterval;
@@ -153,7 +152,7 @@ sntRover.controller('roverController', [
 
         $rootScope.isLateCheckoutTurnedOn = hotelDetails.late_checkout_settings.is_late_checkout_on;
         $rootScope.businessDate = hotelDetails.business_date;
-        $rootScope.hotelCurrencyId = hotelDetails.currency.id;
+        $rootScope.hotelCurrencyId = hotelDetails.default_payment_currency.id;
         $rootScope.currencySymbol = getCurrencySign(hotelDetails.currency.value);
         $rootScope.isMultiCurrencyEnabled = hotelDetails.is_multi_currency_enabled;
         $rootScope.invoiceCurrencySymbol = hotelDetails.is_multi_currency_enabled && hotelDetails.invoice_currency !== "" ? getCurrencySign(hotelDetails.invoice_currency.value) : '';
@@ -642,10 +641,6 @@ sntRover.controller('roverController', [
             sntActivity.start('LOGOUT_INVALIDATE_TOKEN');
             RVDashboardSrv.signOut().finally(function() {
                 $timeout(function () {
-                    if (sessionTimeoutHandlerSrv.getWorker()) {
-                        sessionTimeoutHandlerSrv.stopTimer();
-                        $scope.$emit('CLOSE_SESSION_TIMEOUT_POPUP');
-                    }
                     $window.location.href = '/logout';
                 });
             });

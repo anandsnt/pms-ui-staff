@@ -58,12 +58,14 @@ sntRover.controller('RVReservationDepositController',
 
 		$scope.reservationData = {};
 		$scope.reservationData.depositAmount = "";
+		$scope.reservationData.depositPaymentAmount = "";
 		$scope.depositPolicyName = "";
 		$scope.reservationData.referanceText = "";
 		$scope.isDepositEditable = !!$scope.depositDetails.deposit_policy.allow_deposit_edit;
 		$scope.rateCurrency = $scope.depositDetails.deposit_policy.rate_currency;
 		$scope.depositPolicyName = $scope.depositDetails.deposit_policy.description;
 		$scope.reservationData.depositAmount = parseFloat($scope.depositDetails.deposit_amount).toFixed(2);
+		$scope.reservationData.depositPaymentAmount = parseFloat($scope.depositDetails.deposit_payment_amount).toFixed(2);
 
 		$scope.closeDialog = function() {
 			$scope.$emit("UPDATE_STAY_CARD_DEPOSIT_FLAG", false);
