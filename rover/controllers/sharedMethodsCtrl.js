@@ -55,7 +55,7 @@ window.SharedMethodsBaseCtrl = function ($scope, RVAutomaticEmailSrv, ngDialog) 
 
         var successCallbackEmailPresence = function(response) {
                 if (response.email_present) {
-                    $scope.sendAutomaticEmails(response);
+                    $scope.sendAutomaticEmails();
                 } else {
                     $scope.openEnterEmailPopup();
                 }
