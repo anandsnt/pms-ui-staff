@@ -805,6 +805,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 
 		var onRemoveAddonSuccess = function(data) {
 			$scope.allotmentConfigData.selectedAddons = data;
+			$scope.packageData.existing_packages = $scope.allotmentConfigData.selectedAddons;
 			$scope.computeAddonsCount();
 		};
 
