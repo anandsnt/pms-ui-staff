@@ -25,7 +25,7 @@ angular.module('admin').controller('adIdLookupCtrl', ['$scope', '$rootScope', 'A
                   page: params.page()
               }),
               successCallBack: function(response) {
-                  console.log(response);
+                  $scope.errorMessage = '';
                   $timeout(function() {
                       $scope.totalCount = response.total_count;
                       $scope.totalPage = Math.ceil(response.total_count / $scope.displyCount);
@@ -34,6 +34,18 @@ angular.module('admin').controller('adIdLookupCtrl', ['$scope', '$rootScope', 'A
                       params.total(response.total_count);
                       $defer.resolve($scope.data);
                   }, 500);
+              },
+              failureCallBack: function(errors) {
+                  $scope.errorMessage = errors;
+              }
+          });
+      };
+
+      $scope.export = function() {
+          $scope.callAPI(ADIdLookupSrv.export, {
+              params: $scope.filter,
+              successCallBack: function(response) {
+                  $scope.errorMessage = '';
               },
               failureCallBack: function(errors) {
                   $scope.errorMessage = errors;
