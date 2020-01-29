@@ -123,7 +123,7 @@ sntRover.controller('rvAllotmentConfigurationAddonsCtrl', [
 
             $scope.addonPopUpData = {
 				cancelLabel: "Cancel",
-                saveLabel : "Save",
+                saveLabel: "Save",
                 shouldShowAddMoreButton: false,
                 number_of_adults: 1,
                 number_of_children: 1,
@@ -197,15 +197,15 @@ sntRover.controller('rvAllotmentConfigurationAddonsCtrl', [
 		};
 
 		var updateAddonPosting = function() {
-
-        	var params = {
+			var params = {
 				"id": $scope.allotmentConfigData.summary.allotment_id,
 				'addon_id': $scope.selectedPurchesedAddon.id,
 				'post_instances': $scope.selectedPurchesedAddon.post_instances,
 				'start_date': $scope.selectedPurchesedAddon.start_date,
 				'end_date': $scope.selectedPurchesedAddon.end_date
 			};
-        	var options = {
+
+			var options = {
 				successCallBack: function() {
 					$scope.$emit('hideLoader');
 				},
@@ -213,22 +213,22 @@ sntRover.controller('rvAllotmentConfigurationAddonsCtrl', [
 			};
 
 			$scope.callAPI(rvAllotmentConfigurationSrv.updateAddonPosting, options);
-        };
+		};
 
 		var proceedBookingListner = $scope.$on('PROCEED_BOOKING', function(event, data) {
-                    if(data.addonPostingMode === 'allotments') {
-                        $scope.selectedPurchesedAddon = data.selectedPurchesedAddon;
-                		updateAddonPosting();
-                    }
-                });
+			if (data.addonPostingMode === 'allotments') {
+				$scope.selectedPurchesedAddon = data.selectedPurchesedAddon;
+				updateAddonPosting();
+			}
+		});
 
-                var removeSelectedAddonsListner = $rootScope.$on('REMOVE_ADDON', function(event, data) {
-                    if(data.addonPostingMode === 'allotments') {
-                        $scope.removeAddon($scope.packageData.existing_packages[data.index]);
-                    }
-                });
+		var removeSelectedAddonsListner = $rootScope.$on('REMOVE_ADDON', function(event, data) {
+			if (data.addonPostingMode === 'allotments') {
+				$scope.removeAddon($scope.packageData.existing_packages[data.index]);
+			}
+		});
 
-                $scope.$on( '$destroy', proceedBookingListner);
-                $scope.$on( '$destroy', removeSelectedAddonsListner);
+		$scope.$on( '$destroy', proceedBookingListner);
+		$scope.$on( '$destroy', removeSelectedAddonsListner);
 	}
 ]);

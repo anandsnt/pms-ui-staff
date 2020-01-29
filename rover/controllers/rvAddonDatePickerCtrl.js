@@ -1,6 +1,6 @@
 sntRover.controller('RVAddonDatePickerController', 
-    ['$scope', '$rootScope', 'ngDialog', 'dateFilter', 
-    function($scope, $rootScope, ngDialog, dateFilter) {
+    ['$scope', '$rootScope', 'dateFilter',
+    function($scope, $rootScope, dateFilter) {
 
     $scope.setUpData = function() {
         $scope.data = {};

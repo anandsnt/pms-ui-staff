@@ -91,20 +91,20 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		});
 
 		var navigateToAddonsListner = $rootScope.$on('NAVIGATE_TO_ADDONS', function(event, data) {
-			if(data.addonPostingMode === 'allotments') {
+			if (data.addonPostingMode === 'allotments') {
 				$scope.manageAddons();
 			}
 		});
 
 		var proceedAddonBookingListner = $scope.$on('PROCEED_BOOKING', function(event, data) {
-            if(data.addonPostingMode === 'allotments') {
+            if (data.addonPostingMode === 'allotments') {
             	$scope.selectedPurchesedAddon = data.selectedPurchesedAddon;
                 updateAddonPosting();
             }
         });
 
         var removeSelectedAddonsListner = $rootScope.$on('REMOVE_ADDON', function(event, data) {
-            if(data.addonPostingMode === 'allotments') {
+            if (data.addonPostingMode === 'allotments') {
                 $scope.removeAddon($scope.packageData.existing_packages[data.index]);
             }
         });
@@ -742,7 +742,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 
             $scope.addonPopUpData = {
 				cancelLabel: "Cancel",
-                saveLabel : "Save",
+                saveLabel: "Save",
                 shouldShowAddMoreButton: true,
                 number_of_adults: 1,
                 number_of_children: 1,
