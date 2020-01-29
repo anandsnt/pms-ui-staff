@@ -10,56 +10,37 @@
             <div class="interface-entry select">
                 <label for="entities">Entity</label>
                 <select id="entities" ng-class="entities"
-                        ng-model="filter.integration" data-action="interface">
+                        ng-model="filter.entity" data-action="interface">
                     <option value="" selected>Select Entity</option>
-                    <option ng-repeat="entity in entities" value="{{entity}}">{{entity}}</option>
+                    <option ng-repeat="entity in entities" value="{{entity.value}}">{{entity.name}}</option>
                 </select>
             </div>
-
             <div class="interface-entry search">
                 <span class="icons icon-search"></span>
                 <input id="interface-query" class="query" placeholder="Search by ID or Code"
-                       ng-model="filter.keyword"
+                       ng-model="filter.query"
                        autocomplete="off" type="search"/>
                 <button type="button" ng-click="reloadTable()" class="button green">Search</button>
+            </div>
+            <div class="interface-entry">
+                <button type="button" ng-click="export()" class="button purple">Export</button>
             </div>
         </div>
 
         <table id="interface-messages" ng-table="tableParams" template-pagination="custom/pager"
-               class="grid interfaces-grid" ng-show="$data.length">
-            <tbody ng-repeat="message in $data" ng-init="isExpanded = false;">
-            <tr ng-click="isExpanded = !isExpanded">
-                <td data-title="'ID'" header-class="cell-300">
-                    {{message.transaction_id}}
-                </td>
-                <td data-title="'Interface'" header-class="cell-180">
-                    {{message.meta_data.integration_name}}
-                </td>
-                <td data-title="'Text'">
-                    <pre class="interface-message"><xmp>{{message.request || message.response}}</xmp></pre>
-                </td>
-                <td data-title="'Created'" header-class="cell-160">
-                    {{message.sent_at | date: dateFormat : hotelTimeZoneAbbr}}&nbsp;{{message.sent_at | date: 'hh:mm a'
-                    : hotelTimeZoneAbbr }}
-                </td>
-            </tr>
-            <tr class="interface-message-details" ng-show="isExpanded">
-                <td colspan="4" ng-if="message.request" snt-highlight-syntax>
-                    <strong>Request</strong>
-                    <pre class="interface-message auto-links: false; brush: {{(message.meta_data.type | lowercase) === 'json' ? 'js' : (message.meta_data.type | lowercase)}}">
-                        {{message.request}}
-                    </pre>
-                    <strong>Response</strong>
-                    <pre class="interface-message brush: js; auto-links: false">
-                        {{message.response}}
-                    </pre>
-                    <!-- If it's a large message, show download button -->
-                    <button type="button" class="button blue"
-                            ng-click="download(message.id, filter.integration, !!message.request, !!message.response)">
-                        Download Entire Message
-                    </button>
-                </td>
-            </tr>
+               class="grid" ng-show="$data.length">
+            <tbody ng-repeat="message in $data">
+                <tr>
+                    <td data-title="'ID'" header-class="cell-90">
+                        {{message.id}}
+                    </td>
+                    <td data-title="'Code'" header-class="cell-160">
+                        {{message.code}}
+                    </td>
+                    <td data-title="'Description'" header-class="cell-180">
+                        {{message.description}}
+                    </td>
+                </tr>
             </tbody>
         </table>
 
