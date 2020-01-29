@@ -717,6 +717,15 @@ admin.controller('ADAppCtrl', [
             $scope.selectedIndex = menu;
             $scope.selectedMenu = $scope.data.menus[$scope.selectedIndex];
         });
+
+        $scope.isComponentDisabled = function(component) {
+            return (
+                component.name === 'Check In' || component.name === 'Check Out' ||
+                    component.name === 'Direct URL' || component.name === '' || component.name === 'Zest Web Common' ||
+                    component.name === 'Room Ready Email' || component.name === 'Zest Web Global Setup' ||
+                    component.name === "Email from Guest" || component.name === "SMS / Short Code"
+            )
+        }
         /*
          * Success callback of get language
          * @param {object} response
@@ -821,25 +830,20 @@ admin.controller('ADAppCtrl', [
             };
 
             $rootScope.isAllowanceEnabled = data.is_allowance_enabled;
-
-            var isZestWebEnabled = data.is_zest_web_enabled;
-
+            $scope.isZestWebEnabled = data.is_zest_web_enabled;
             setupLeftMenu();
-            var isComponentDisabled = function(component) {
-                return (
-                    component.name === 'Check In' || component.name === 'Check Out' ||
-                        component.name === 'Direct URL' || component.name === '' || component.name === 'Zest Web Common' ||
-                        component.name === 'Room Ready Email' || component.name === 'Zest Web Global Setup' ||
-                        component.name === "Email from Guest" || component.name === "SMS / Short Code"
-                )
-            }
 
             _.each($scope.data.menus, function(menu) {
                 _.each(menu.components, function(component) {
-                    if (!isZestWebEnabled && menu.menu_name === 'Zest' && isComponentDisabled(component)) {
+                    if (!$scope.isZestWebEnabled && menu.menu_name === 'Zest' && $scope.isComponentDisabled(component)) {
                         component.is_disabled = true;
                     }
                 });
+            });
+            _.each($scope.bookMarks, function(component) {
+                if (!$scope.isZestWebEnabled && component.menu_name === 'Zest' && $scope.isComponentDisabled(component)) {
+                    component.is_disabled = true;
+                }
             });
 
             $scope.isZestStationEnabled = data.is_zest_station_enabled;
