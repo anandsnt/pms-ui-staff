@@ -73,6 +73,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 		$scope.isBulkCheckoutSelected = !!$stateParams.isBulkCheckoutSelected;
 		$scope.isDueoutShowing = $stateParams.type === 'DUEOUT';
+		$scope.isCheckoutWithBalance = $stateParams.type === 'OPEN_BILL_CHECKOUT';
 		
 		$scope.allowOpenBalanceCheckout = !!$stateParams.isAllowOpenBalanceCheckoutSelected;
 		$scope.bulkCheckoutReservationsCount = 0;

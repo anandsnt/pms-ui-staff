@@ -1,5 +1,5 @@
 <div ng-controller = "rvReservationSearchWidgetController" >
-		<form method="get" action="" name="reservations-search-form" id="reservations-search-form" class="search-form has-dates has-room-types enable-adding" role="search"  outside-click-handler ng-class="{'has-bulk-checkout': isDueoutShowing }"><!--TODO: verify enable-adding -->
+		<form method="get" action="" name="reservations-search-form" id="reservations-search-form" class="search-form has-dates has-room-types enable-adding" role="search"  outside-click-handler ng-class="{'has-bulk-checkout': isDueoutShowing, 'with-refresh': isCheckoutWithBalance }"><!--TODO: verify enable-adding -->
 			 <!-- When showing departures -->
 			<div class="entry switch" ng-if="isDueoutShowing">
 				<!-- remove .on when showing Bulk Checkout -->
@@ -15,6 +15,11 @@
 					</label>
 				</div>
 			</div>
+
+			<button type="button" class=" button white with-icon only-icon refresh" ng-if="isCheckoutWithBalance">
+				<span class="icons icon-reset"></span>
+				Refresh
+			</button>
 			
 			<!-- remove .hidden when showing bulk checkout -->
 			<div class="entry open-balance" ng-if="isDueoutShowing" ng-class="{'hidden': !isBulkCheckoutSelected}">
