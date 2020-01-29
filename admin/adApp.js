@@ -44,7 +44,6 @@ admin.config([
 
         $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
         $httpProvider.interceptors.push('sharedHttpInterceptor');
-        $httpProvider.interceptors.push('sharedSessionTimeoutInterceptor');
 
         $locationProvider.html5Mode(true);
         $qProvider.errorOnUnhandledRejections(false);

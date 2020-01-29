@@ -2765,6 +2765,8 @@ sntRover.controller('RVbillCardController',
 					$("header .h2").addClass('text-hide');
 					$("body #loading").html("");// CICO-56119
 
+                    // add the orientation
+
                     addPrintOrientation();
                     /*
                      *	======[ READY TO PRINT ]======
