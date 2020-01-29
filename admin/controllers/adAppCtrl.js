@@ -1,8 +1,8 @@
 admin.controller('ADAppCtrl', [
     '$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData', 'businessDate',
-    '$timeout', 'ngDialog', 'sntAuthorizationSrv', '$filter', '$sce', 'adMenuSrv', '$transitions', 'sntActivity', 'sessionTimeoutHandlerSrv',
+    '$timeout', 'ngDialog', 'sntAuthorizationSrv', '$filter', '$sce', 'adMenuSrv', '$transitions', 'sntActivity',
     function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData, businessDate,
-             $timeout, ngDialog, sntAuthorizationSrv, $filter, $sce, adMenuSrv, $transitions, sntActivity, sessionTimeoutHandlerSrv) {
+             $timeout, ngDialog, sntAuthorizationSrv, $filter, $sce, adMenuSrv, $transitions, sntActivity) {
 
         // hide the loading text that is been shown when entering Admin
         $( ".loading-container" ).hide();
@@ -1011,10 +1011,6 @@ admin.controller('ADAppCtrl', [
         $scope.logout = function() {
             ADAppSrv.signOut().finally(function() {
                 $timeout(function () {
-                    if (sessionTimeoutHandlerSrv.getWorker()) {
-                        sessionTimeoutHandlerSrv.stopTimer();
-                        $scope.$emit('CLOSE_SESSION_TIMEOUT_POPUP');
-                    }
                     $window.location.href = '/logout';
                 });
             });
