@@ -770,6 +770,10 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 
             $scope.packageData.existing_packages = $scope.allotmentConfigData.selectedAddons;
 
+            _.each($scope.packageData.existing_packages, function(item) {
+                item.totalAmount = item.amount * item.addon_count;
+            });
+
 			ngDialog.open({
 				template: '/assets/partials/packages/showPackages.html',
 				className: '',
