@@ -1868,19 +1868,19 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
             });
 
             var navigateToAddonsListner = $rootScope.$on('NAVIGATE_TO_ADDONS', function(event, data) {
-                if(data.addonPostingMode === 'group') {
+                if (data.addonPostingMode === 'group') {
                     $scope.manageAddons();
                 }
             });
         
             var removeSelectedAddonsListner = $rootScope.$on('REMOVE_ADDON', function(event, data) {
-                if(data.addonPostingMode === 'group') {
+                if (data.addonPostingMode === 'group') {
                     $scope.removeAddon(data.addon);
                 }
             });
         
             var proceedBookingListner = $scope.$on('PROCEED_BOOKING', function(event, data) {
-                if(data.addonPostingMode === 'group') {
+                if (data.addonPostingMode === 'group') {
                     $scope.selectedPurchesedAddon = data.selectedPurchesedAddon;
                     $scope.saveAddonsPosting();
                 }

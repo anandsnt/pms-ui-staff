@@ -1126,7 +1126,7 @@ sntRover.controller('reservationDetailsController',
 			$scope.addonPopUpData = {
 				addonPostingMode: 'staycard',
 				cancelLabel: "Cancel",
-				saveLabel : "Save",
+				saveLabel: "Save",
 				shouldShowAddMoreButton: true,
 				number_of_adults: $scope.reservationData.reservation_card.number_of_adults,
 				number_of_children: $scope.reservationData.reservation_card.number_of_children,

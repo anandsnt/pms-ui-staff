@@ -121,7 +121,7 @@ angular.module('sntRover').controller('rvGroupConfigurationAddonsCtrl', [
 			$scope.addonPopUpData = {
 				addonPostingMode: 'create_group',
 				cancelLabel: "+ More",
-                saveLabel : "Book",
+                saveLabel: "Book",
                 shouldShowAddMoreButton: false,
                 number_of_adults: 1,
 				number_of_children: 1,
@@ -188,7 +188,7 @@ angular.module('sntRover').controller('rvGroupConfigurationAddonsCtrl', [
 
 		$scope.saveAddonsPosting = function() {
 
-            var addonPostingSaveSuccess = function(data) {
+            var addonPostingSaveSuccess = function() {
                 $scope.$emit('hideLoader');
             };
     
@@ -204,18 +204,18 @@ angular.module('sntRover').controller('rvGroupConfigurationAddonsCtrl', [
         };
 	
 		var removeSelectedAddonsListner = $rootScope.$on('REMOVE_ADDON', function(event, data) {
-			if(data.addonPostingMode === 'create_group') {
+			if (data.addonPostingMode === 'create_group') {
 				$scope.removeAddon(data.addon);
 			}
 		});
 	
 		var proceedBookingListner = $scope.$on('PROCEED_BOOKING', function(event, data) {
-		    if(data.addonPostingMode === 'create_group') {
-		        $scope.selectedPurchesedAddon = data.selectedPurchesedAddon;
-		        $scope.saveAddonsPosting();
-		    }
+			if (data.addonPostingMode === 'create_group') {
+				$scope.selectedPurchesedAddon = data.selectedPurchesedAddon;
+				$scope.saveAddonsPosting();
+			}
 		});
-	
+
 		$scope.$on( '$destroy', proceedBookingListner);
 		$scope.$on( '$destroy', removeSelectedAddonsListner);
 	}

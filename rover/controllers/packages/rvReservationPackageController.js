@@ -17,7 +17,7 @@ sntRover.controller('RVReservationPackageController',
 		});
 		setTimeout(function() {
 			$scope.refreshScroller('resultDetails');
-		},2000);
+		}, 2000);
 					
 		$scope.closeAddOnPopup = function() {
 			// to add stjepan's popup showing animation
@@ -57,8 +57,9 @@ sntRover.controller('RVReservationPackageController',
 				$scope.togglePostDaysSelectionForAddon(false);
 				angular.forEach($scope.selectedPurchesedAddon.post_instances, function(item, index) {
 						if (item.active) {
-							var postDate = new Date(item.post_date);
-							var day = $scope.daysOfWeek[postDate.getDay()];
+							var postDate = new Date(item.post_date),
+							day = $scope.daysOfWeek[postDate.getDay()];
+
 							$scope.selectedPurchesedAddon.selected_post_days[day] = true;
 						}
 					});
@@ -72,6 +73,7 @@ sntRover.controller('RVReservationPackageController',
 
 		$scope.shouldShowSelectAllDaysOfWeek = function() {
 			var shouldShowSelectAllDaysOfWeek = false;
+
 			angular.forEach($scope.daysOfWeek, function(item, index) {
 					if (!$scope.selectedPurchesedAddon.selected_post_days[item]) {
 						shouldShowSelectAllDaysOfWeek = true;
@@ -93,9 +95,9 @@ sntRover.controller('RVReservationPackageController',
 
 		$scope.togglePostDaysSelectionForAddon = function(select) {
 			angular.forEach($scope.daysOfWeek, function(item, index) {
-					$scope.selectedPurchesedAddon.selected_post_days[item] = select;
-				});
-		}
+				$scope.selectedPurchesedAddon.selected_post_days[item] = select;
+			});
+		};
 		$scope.daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 		
@@ -113,7 +115,7 @@ sntRover.controller('RVReservationPackageController',
 		};
 
 		$scope.dateSelected = function(dateText) {
-			if ($scope.datePickerFor == 'start_date') {
+			if ($scope.datePickerFor === 'start_date') {
 				$scope.selectedPurchesedAddon.start_date = $filter('date')(dateText, $rootScope.dateFormat);
 			} else {
 				$scope.selectedPurchesedAddon.end_date = $filter('date')(dateText, $rootScope.dateFormat);
@@ -140,7 +142,7 @@ sntRover.controller('RVReservationPackageController',
 				addonPostingMode: $scope.addonPopUpData.addonPostingMode,
 				index: index,
 				addon: addon
-			})
+			});
 		};
 		
 		$scope.proceedBooking = function() {
@@ -153,14 +155,15 @@ sntRover.controller('RVReservationPackageController',
 		};
 
 		var setPostingData = function() {
-			angular.forEach($scope.packageData.existing_packages, function(existing_package, package_index) {
+			angular.forEach($scope.packageData.existing_packages, function(existing_package) {
 				existing_package.start_date = $filter('date')(tzIndependentDate(existing_package.start_date), $rootScope.dateFormatForAPI);
-				existing_package.end_date = $filter('date')(tzIndependentDate(existing_package.end_date), $rootScope.dateFormatForAPI)
+				existing_package.end_date = $filter('date')(tzIndependentDate(existing_package.end_date), $rootScope.dateFormatForAPI);
 
                 angular.forEach(existing_package.post_instances, function(item, index) {
-	                var postDate = new Date(item.post_date);
-	                var day = $scope.daysOfWeek[postDate.getDay()];
-	                item.active = $scope.selectedPurchesedAddon.selected_post_days[day];
+	                var postDate = new Date(item.post_date),
+	                	day = $scope.daysOfWeek[postDate.getDay()];
+
+						item.active = $scope.selectedPurchesedAddon.selected_post_days[day];
 	            });
             });
 			
