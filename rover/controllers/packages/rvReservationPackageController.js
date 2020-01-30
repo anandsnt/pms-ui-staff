@@ -99,7 +99,6 @@ sntRover.controller('RVReservationPackageController',
 			});
 		};
 		$scope.daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
 		
 		var datePicker;
 		

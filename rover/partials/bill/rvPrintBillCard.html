@@ -191,6 +191,9 @@
                 <td class="description">
                     <strong>{{item.item_description}}</strong>
                     <span>{{item.description}}</span>
+                    <div class="converted-currency smaller">
+                        {{item.rate_coversion_rate}}
+                    </div>
                     <span class="reference" ng-show="item.reference_text != ''">{{item.reference_text}}</span>
                 </td>
                 <td class="align-right">{{currencySymbol}}{{item.amount | number: precisonTwo}}
@@ -200,10 +203,6 @@
 
                     <div class="converted-currency" ng-if="isMultiCurrencyEnabled && item.rate_converted_amount">
                         {{item.rate_currency}}{{item.rate_converted_amount}}
-                    </div>
-
-                    <div class="converted-currency smaller">
-                        {{item.rate_coversion_rate}}
                     </div>
                 </td>
                 <td class="align-right"></td>
@@ -214,6 +213,9 @@
                 <td class="description">
                     <strong>{{item.item_description}}</strong>
                     <span>{{item.description}}</span>
+                    <div class="converted-currency smaller">
+                        {{item.rate_coversion_rate}}
+                    </div>
                     <span class="reference" ng-show="item.reference_text != ''">{{item.reference_text}}</span>
                 </td>
                 <td class="align-right"></td>
@@ -224,10 +226,6 @@
                     </div>
                     <div class="converted-currency" ng-if="isMultiCurrencyEnabled && item.rate_converted_amount">
                         {{item.rate_currency}}{{item.rate_converted_amount}}
-                    </div>
-
-                    <div class="converted-currency smaller">
-                        {{item.rate_coversion_rate}}
                     </div>
                 </td>
             </tr>
