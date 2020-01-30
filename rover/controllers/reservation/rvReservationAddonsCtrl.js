@@ -438,7 +438,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
             angular.forEach($scope.daysOfWeek, function(item, index) {
                     addon.selected_post_days[item] = select;
                 });
-        }
+        };
         $scope.daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
         var datePicker;
 

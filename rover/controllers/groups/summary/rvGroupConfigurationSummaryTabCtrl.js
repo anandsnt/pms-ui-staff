@@ -1297,7 +1297,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
             $scope.addonPopUpData = {
                 addonPostingMode: 'group',
 				cancelLabel: "Cancel",
-                saveLabel : "Save",
+                saveLabel: "Save",
                 shouldShowAddMoreButton: true,
                 number_of_adults: 1,
 				number_of_children: 1,
@@ -1812,7 +1812,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                 'post_instances': $scope.selectedPurchesedAddon.post_instances,
                 'start_date': $scope.selectedPurchesedAddon.start_date,
                 'end_date': $scope.selectedPurchesedAddon.end_date
-            }
+            };
     
             $scope.invokeApi(rvGroupConfigurationSrv.updateAddonPosting, dataToApi, addonPostingSaveSuccess);
         };
