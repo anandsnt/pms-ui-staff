@@ -25,11 +25,10 @@ sntRover.controller('roverController', [
     'sntActivity',
     '$transitions',
     'features',
-    'sessionTimeoutHandlerSrv',
     function ($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv,
               ngDialog, $translate, hotelDetails, userInfoDetails, $stateParams,
               rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q, $sce,
-              $log, sntAuthorizationSrv, $location, $interval, sntActivity, $transitions, features, sessionTimeoutHandlerSrv) {
+              $log, sntAuthorizationSrv, $location, $interval, sntActivity, $transitions, features) {
 
 
         var observeDeviceInterval;
@@ -170,6 +169,7 @@ sntRover.controller('roverController', [
         $rootScope.isPmsProductionEnv = hotelDetails.is_pms_prod;
         $rootScope.isWorkStationMandatory = hotelDetails.is_workstation_mandatory;
         $rootScope.paymentCurrencyList = hotelDetails.currency_list_for_payment;
+        $rootScope.autoEmailPayReceipt =  hotelDetails.auto_email_pay_receipt;
         $rootScope.shouldShowPaymentDropDown = false;
         if ($rootScope.isMultiCurrencyEnabled && $rootScope.paymentCurrencyList.length > 0 ) {
             $rootScope.shouldShowPaymentDropDown = true;
@@ -642,10 +642,6 @@ sntRover.controller('roverController', [
             sntActivity.start('LOGOUT_INVALIDATE_TOKEN');
             RVDashboardSrv.signOut().finally(function() {
                 $timeout(function () {
-                    if (sessionTimeoutHandlerSrv.getWorker()) {
-                        sessionTimeoutHandlerSrv.stopTimer();
-                        $scope.$emit('CLOSE_SESSION_TIMEOUT_POPUP');
-                    }
                     $window.location.href = '/logout';
                 });
             });
