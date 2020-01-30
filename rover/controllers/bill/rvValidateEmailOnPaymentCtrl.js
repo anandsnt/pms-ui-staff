@@ -14,7 +14,7 @@ sntRover.controller('RVValidateEmailOnPaymentCtrl', ['$scope', '$state', 'ngDial
 			return false;
 		}
 
-		$scope.$emit("AUTO_TRIGGER_EMAIL_AFTER_PAYMENT");
+		$scope.$emit("AUTO_TRIGGER_EMAIL_AFTER_PAYMENT", $scope.saveData.email);
 	};
 	
 
