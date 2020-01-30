@@ -198,7 +198,7 @@ angular.module('sntRover').controller('rvGroupConfigurationAddonsCtrl', [
                 'post_instances': $scope.selectedPurchesedAddon.post_instances,
                 'start_date': $scope.selectedPurchesedAddon.start_date,
                 'end_date': $scope.selectedPurchesedAddon.end_date
-            }
+            };
     
             $scope.invokeApi(rvGroupConfigurationSrv.updateAddonPosting, dataToApi, addonPostingSaveSuccess);
         };
