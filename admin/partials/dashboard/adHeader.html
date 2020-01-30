@@ -26,7 +26,7 @@
 
 
    <nav data-place="quickmenu" id="quick-menu"
-         ng-class="{'has-items': bookMarks.length>0, 'dragging': isDragging==true}"
+         ng-class="{'has-items': bookMarks.length>0, 'dragging': isDragging==true, }"
          role="navigation" data-drop="true"
 
          ng-model='bookMarks'
@@ -35,7 +35,8 @@
          data-jqyoui-options="{accept: '.icon-admin-menu'}"
          style="overflow: visible !important;min-width:65%;">
 
-   	<a class="icon-admin-menu in-quick-menu {{bookmark.icon_class}}"
+      <a class="icon-admin-menu in-quick-menu {{bookmark.icon_class}}"
+         ng-class = "{'inactive': bookmark.is_disabled}"
          style="display: block; width: {{bookmark.name.length*10+80}}px;"
 
          ng-repeat="bookmark in bookMarks"
@@ -45,7 +46,7 @@
          jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:'true', onStart: 'onDragStart', onStop: 'onDragStop'}"
 
          ng-model="bookMarks"
-         ng-hide="!bookmark.name" touch-press="clickedMenuItem($event, bookmark.state)">
+         ng-hide="!bookmark.name" touch-press="clickedMenuItem($event, bookmark.state, bookmark.is_disabled)">
 
 		    {{bookmark.name}}
 
