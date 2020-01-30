@@ -313,7 +313,7 @@ angular.module('sntRover')
                     roomFeatures = $scope.diaryData.roomAssignmentFilters.room_features;
                 }
                 else {
-                	roomFeatures = $scope.diaryData.filterList.roomFeatures;
+                    roomFeatures = $scope.diaryData.filterList.roomFeatures;
                 }
 
 				if (!roomFeatures[group].multiple_allowed) {
