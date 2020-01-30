@@ -294,12 +294,12 @@ angular.module('sntRover')
 				});
 				
                 if ($scope.diaryData.isReservationSelected) {
-                	$scope.diaryData.roomAssignmentFilters.count = roomFeatureIds.length;
+                    $scope.diaryData.roomAssignmentFilters.count = roomFeatureIds.length;
                     $scope.diaryData.roomAssignmentFilters.roomFeatureIds = roomFeatureIds;
                 }
                 else {
-                	$scope.diaryData.selectedRoomFeatures = roomFeatureIds;
-                	$scope.diaryData.selectedRoomFeaturesCount = roomFeatureIds.length;
+                    $scope.diaryData.selectedRoomFeatures = roomFeatureIds;
+                    $scope.diaryData.selectedRoomFeaturesCount = roomFeatureIds.length;
                 }
 			};
 
