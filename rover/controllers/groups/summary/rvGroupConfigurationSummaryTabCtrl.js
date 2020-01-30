@@ -1298,7 +1298,6 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                 addonPostingMode: 'group',
 				cancelLabel: "Cancel",
                 saveLabel: "Save",
-                shouldShowAddMoreButton: true,
                 number_of_adults: 1,
 				number_of_children: 1,
 				duration_of_stay: 1

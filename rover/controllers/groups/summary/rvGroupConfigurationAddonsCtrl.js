@@ -122,7 +122,6 @@ angular.module('sntRover').controller('rvGroupConfigurationAddonsCtrl', [
 				addonPostingMode: 'create_group',
 				cancelLabel: "+ More",
                 saveLabel: "Book",
-                shouldShowAddMoreButton: false,
                 number_of_adults: 1,
 				number_of_children: 1,
 				duration_of_stay: 1

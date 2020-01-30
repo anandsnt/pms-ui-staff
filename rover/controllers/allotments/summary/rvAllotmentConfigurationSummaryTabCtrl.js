@@ -757,7 +757,6 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
             $scope.addonPopUpData = {
 				cancelLabel: "Cancel",
                 saveLabel: "Save",
-                shouldShowAddMoreButton: true,
                 number_of_adults: 1,
                 number_of_children: 1,
                 numNights: 1,
