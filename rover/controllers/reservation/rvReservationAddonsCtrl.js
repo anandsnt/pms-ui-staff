@@ -357,7 +357,6 @@ sntRover.controller('RVReservationAddonsCtrl', [
                 addonPostingMode: 'reservation',
 				cancelLabel: "+ More",
                 saveLabel: "Book",
-                shouldShowAddMoreButton: false,
                 number_of_adults: $scope.reservationData.number_of_adults,
                 number_of_children: $scope.reservationData.number_of_children,
                 duration_of_stay: $scope.duration_of_stay
