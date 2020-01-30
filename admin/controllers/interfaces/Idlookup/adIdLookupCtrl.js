@@ -39,7 +39,7 @@ angular.module('admin').controller('adIdLookupCtrl', ['$scope', '$rootScope', 'A
                       $scope.currentPage = params.page();
                       params.total(response.total_count);
                       $defer.resolve($scope.data);
-                  }, 500);
+                  }, 100);
               },
               failureCallBack: function(errors) {
                   $scope.errorMessage = errors;
