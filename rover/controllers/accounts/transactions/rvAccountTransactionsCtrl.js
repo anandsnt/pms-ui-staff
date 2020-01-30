@@ -453,7 +453,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 			$scope.currentPaymentBillId = data.bill_id;
 			$scope.currentPaymentTransactionId = data.transaction_id;
-			if ($scope.isFromGroups && ($rootScope.autoEmailPayReceipt || $rootScope.autoEmailDepositInvoice)) {
+			if ($scope.isFromGroups && $rootScope.autoEmailPayReceipt) {
 				$scope.autoTriggerPaymentReceiptActions();
 			}
 			
