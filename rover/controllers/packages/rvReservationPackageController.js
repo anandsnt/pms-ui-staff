@@ -55,7 +55,7 @@ sntRover.controller('RVReservationPackageController',
 				$scope.selectedPurchesedAddon.start_date = $filter('date')($scope.selectedPurchesedAddon.start_date, $rootScope.dateFormat);
 				$scope.selectedPurchesedAddon.end_date = $filter('date')($scope.selectedPurchesedAddon.end_date, $rootScope.dateFormat);
 				$scope.togglePostDaysSelectionForAddon(false);
-				angular.forEach($scope.selectedPurchesedAddon.post_instances, function(item, index) {
+				angular.forEach($scope.selectedPurchesedAddon.post_instances, function(item) {
 						if (item.active) {
 							var postDate = new Date(item.post_date),
 							day = $scope.daysOfWeek[postDate.getDay()];
@@ -74,7 +74,7 @@ sntRover.controller('RVReservationPackageController',
 		$scope.shouldShowSelectAllDaysOfWeek = function() {
 			var shouldShowSelectAllDaysOfWeek = false;
 
-			angular.forEach($scope.daysOfWeek, function(item, index) {
+			angular.forEach($scope.daysOfWeek, function(item) {
 					if (!$scope.selectedPurchesedAddon.selected_post_days[item]) {
 						shouldShowSelectAllDaysOfWeek = true;
 					}
@@ -85,7 +85,7 @@ sntRover.controller('RVReservationPackageController',
 		$scope.shouldShowSelectNoDaysOfWeek = function() {
 			var shouldShowSelectNoDaysOfWeek = true;
 			
-			angular.forEach($scope.daysOfWeek, function(item, index) {
+			angular.forEach($scope.daysOfWeek, function(item) {
 					if (!$scope.selectedPurchesedAddon.selected_post_days[item]) {
 						shouldShowSelectNoDaysOfWeek = false;
 					}
@@ -94,7 +94,7 @@ sntRover.controller('RVReservationPackageController',
 		};
 
 		$scope.togglePostDaysSelectionForAddon = function(select) {
-			angular.forEach($scope.daysOfWeek, function(item, index) {
+			angular.forEach($scope.daysOfWeek, function(item) {
 				$scope.selectedPurchesedAddon.selected_post_days[item] = select;
 			});
 		};
@@ -158,7 +158,7 @@ sntRover.controller('RVReservationPackageController',
 				existing_package.start_date = $filter('date')(tzIndependentDate(existing_package.start_date), $rootScope.dateFormatForAPI);
 				existing_package.end_date = $filter('date')(tzIndependentDate(existing_package.end_date), $rootScope.dateFormatForAPI);
 
-                angular.forEach(existing_package.post_instances, function(item, index) {
+                angular.forEach(existing_package.post_instances, function(item) {
 	                var postDate = new Date(item.post_date),
 	                	day = $scope.daysOfWeek[postDate.getDay()];
 
