@@ -21,7 +21,7 @@ admin.service('ADIdLookupSrv', ['$http', '$q', 'ADBaseWebSrvV2',
 
             $http({
                 method: 'POST',
-                url: '/admin/id_lookup/export.csv?entity='+ params.entity
+                url: '/admin/id_lookup/export.csv?entity=' + params.entity
             }).then(function(response) {
 
                 var data = response.data,
