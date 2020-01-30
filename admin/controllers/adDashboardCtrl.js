@@ -1,5 +1,8 @@
 admin.controller('ADDashboardCtrl', ['$scope', '$state', '$stateParams', '$rootScope', function($scope, $state, $stateParams, $rootScope) {
     $scope.selectedMenu = $scope.data.menus[$stateParams.menu];
+    if($stateParams.errorMsg) {
+        $scope.errorMessage = $stateParams.errorMsg;
+    }
     if ($scope.isZestStationEnabled || $scope.selectedMenu.menu_name !== 'Station') {
         $scope.clearErrorMessage();
         $scope.$emit("changedSelectedMenu", $stateParams.menu);
