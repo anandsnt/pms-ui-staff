@@ -3,6 +3,7 @@ admin.service('ADIdLookupSrv', ['$http', '$q', 'ADBaseWebSrvV2',
 
         var service = this;
 
+        // Search API call.
 		service.search = function(params) {
             var deferred = $q.defer();
 
@@ -14,6 +15,7 @@ admin.service('ADIdLookupSrv', ['$http', '$q', 'ADBaseWebSrvV2',
             return deferred.promise;
         };
 
+        // Export as CSV API call
         service.exportCSV = function(params) {
             var deferred = $q.defer();
 

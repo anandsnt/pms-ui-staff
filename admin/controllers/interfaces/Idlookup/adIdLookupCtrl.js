@@ -17,6 +17,12 @@ angular.module('admin').controller('adIdLookupCtrl', ['$scope', '$rootScope', 'A
         query: ''
       };
 
+      /*
+       *  Search/filter action.
+       *  @param {Object}
+       *  @param {Object} Search params.
+       *  @return {undefined}
+       */
       $scope.search = function($defer, params) {
           $scope.errorMessage = '';
 
@@ -41,6 +47,9 @@ angular.module('admin').controller('adIdLookupCtrl', ['$scope', '$rootScope', 'A
           });
       };
 
+      /*
+       *  Export the data as CSV.
+       */
       $scope.exportCSV = function() {
           $scope.callAPI(ADIdLookupSrv.exportCSV, {
               params: $scope.filter,
