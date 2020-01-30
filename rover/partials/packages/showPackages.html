@@ -1,9 +1,11 @@
 <div role="dialog" id="modal" class="modal-show inline-modal" ng-class="{'modal-show': !modalClosing}" ng-click="clearErrorMessage()" ng-cloak>
-    <div class="modal-content form room-enhancements">
+    <div class="modal-content form room-enhancements" ng-class="{'customization-disabled': !featureToggles.addons_custom_posting}">
 
         <button id="modal-close" type="button" class="modal-close" ng-click="closePopup()"><span class="icons icon-close invert"></button>
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div class="content-left">
+
+            <h2 class="message h2" ng-if="!featureToggles.addons_custom_posting">Room Enhancements</h2>
         <!-- scroller -->
             <div class="scrollable">
                 <ul class="wrapper">
@@ -51,13 +53,13 @@
                          </span>
                     </li>
                 </ul>
-                <div ng-show="addonPopUpData.shouldShowAddMoreButton" class="actions inline">
+                <div ng-show="addonPopUpData.shouldShowAddMoreButton" class="actions">
                     <button class="button blank" ng-click="closeAddOnPopup()">Close</button>
                     <button class="button orange" ng-click="goToAddons()">Add More</button>
                 </div>
             </div>
         </div>
-        <div class="content-right">
+        <div class="content-right" ng-class="{'hidden': !featureToggles.addons_custom_posting}">
             <!-- Initial screen -->
             <!-- Add .hidden if clicked on an enhancement that can be changed -->
             <div class="content-initial" ng-hide="selectedPurchesedAddon">
