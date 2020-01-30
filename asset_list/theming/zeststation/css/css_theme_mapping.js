@@ -110,7 +110,8 @@ module.exports = {
             'why-columbia': [themeCSSRoot + 'why-columbia.less'],
             'why-houston': [themeCSSRoot + 'why-houston.less'],
             'victory-house': [themeCSSRoot + 'victory-house.less'],
-            'dimond-center': [themeCSSRoot + 'dimond-center.less']
+            'dimond-center': [themeCSSRoot + 'dimond-center.less'],
+            'zedwell': [themeCSSRoot + 'zedwell.less']
         };
     }
 };
