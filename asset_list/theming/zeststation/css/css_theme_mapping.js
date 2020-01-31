@@ -109,7 +109,9 @@ module.exports = {
             'perle-oban': [themeCSSRoot + 'perle-oban.less'],
             'why-columbia': [themeCSSRoot + 'why-columbia.less'],
             'why-houston': [themeCSSRoot + 'why-houston.less'],
-            'victory-house': [themeCSSRoot + 'victory-house.less']
+            'victory-house': [themeCSSRoot + 'victory-house.less'],
+            'zedwell': [themeCSSRoot + 'zedwell.less']
+            'dimond-center': [themeCSSRoot + 'dimond-center.less']
         };
     }
 };
