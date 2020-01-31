@@ -2127,16 +2127,17 @@ angular.module('reportsModule')
             // for guest balance report in the following order
             if ( report['title'] === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT'] ) {
                 var chargeCode = angular.copy( _.find(report['sort_fields'], { 'value': 'CHARGE_CODE' }) ),
-                    date  = angular.copy( _.find(report['sort_fields'], { 'value': 'DATE' }) );
+                    date  = angular.copy( _.find(report['sort_fields'], { 'value': 'DATE' }) ),
+                    user = angular.copy( _.find(report['sort_fields'], { 'value': 'USER' }) );
 
                 report['sort_fields'][0] = null;
                 report['sort_fields'][1] = chargeCode;
                 report['sort_fields'][2] = null;
                 report['sort_fields'][3] = null;
                 report['sort_fields'][4] = null;
-                report['sort_fields'][5] = date;
+                report['sort_fields'][5] = user;
                 report['sort_fields'][6] = null;
-                report['sort_fields'][7] = null;
+                report['sort_fields'][7] = date;
                 report['sort_fields'][8] = null;
                 report['sort_fields'][9] = null;
             }
