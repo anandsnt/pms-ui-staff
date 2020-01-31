@@ -80,11 +80,13 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
              * Implements the logout functionality
              */
             $scope.logout = function () {
+                sntActivity.start('API_REQ');
                 sntSharedLoginSrv.logout().finally(function() {
                     $timeout(function () {
                         if (sessionTimeoutHandlerSrv.getWorker()) {
                             sessionTimeoutHandlerSrv.stopTimer();
                         }
+                        sntActivity.stop('API_REQ');
                         $window.location.href = '/logout';
                     });
                 });
@@ -133,23 +135,17 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
              * Check and validate the token expiry based on browser idle time
              */
             var checkAndValidateToken = function (isAPItokenExpired) {
-                var autoLogoutDelaySecs = Math.floor(sessionTimeoutHandlerSrv.getAutoLogoutDelay() / 1000);
-
+                var autoLogoutDelaySecs = Math.floor(sessionTimeoutHandlerSrv.getAutoLogoutDelay() / 1000),
+                    idleTimeByStorageKey = Math.floor(parseInt(localStorage.getItem('sntIdleTimer'), 10) / 1000);
+                
                 // We have added 30s here because the timer will be set after 30s when its idle as configured
                 // 15 secs have been deducted as the the check will be done 15s prior to token expiry
-                if ( (getIdleTimeSecs() + 30 ) > (autoLogoutDelaySecs - 15) || isAPItokenExpired) {
+                if ( (idleTimeByStorageKey + 30 ) > (autoLogoutDelaySecs - 15) || isAPItokenExpired) {
                     showSessionTimeoutPopup();
                 } else {
                     refreshToken();
                 }
 
-            };
-
-            // Get the idle time in seconds
-            var getIdleTimeSecs = function () {
-                var idlTimeSecs = Math.floor($(document).idleTimer("getElapsedTime") / 1000);
-
-                return idlTimeSecs;
             };
 
             /**
@@ -158,7 +154,8 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
             var setUpEventListeners = function () {
 
                 $(document).idleTimer( {
-                    timeout: 30000
+                    timeout: 30000,
+                    timerSyncId: 'sntIdleTimer'
                 });
 
                 // This will be invoked when the user is idle for 30s
