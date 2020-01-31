@@ -465,7 +465,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					}
 
 					var isGroupRate = ($scope.stateCheck.activeView == 'RECOMMENDED' && $scope.reservationData.group.id) ? !!$scope.reservationData.group.id : false;
-					var isCorporate = ($scope.stateCheck.activeView == 'RECOMMENDED' && $scope.reservationData.ratesMeta[roomType.rate_id].account_id) ? !!$scope.reservationData.ratesMeta[roomType.rate_id].account_id : false;
 					var isSuppressed = ($scope.stateCheck.activeView == 'RECOMMENDED' && $scope.reservationData.ratesMeta[roomType.rate_id].is_suppress_rate_on) ? !!$scope.reservationData.ratesMeta[roomType.rate_id].is_suppress_rate_on : false;
 					var isMember = ($scope.stateCheck.activeView == 'RECOMMENDED' && $scope.reservationData.member.isSelected && $scope.reservationData.ratesMeta[roomType.rate_id].is_member) ? !!$scope.reservationData.member.isSelected && $scope.reservationData.ratesMeta[roomType.rate_id].is_member : false;
 					var isPromotion = ($scope.stateCheck.activeView == 'RECOMMENDED' && !proccesedRestrictions.isPromoInvalid &&
@@ -506,7 +505,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							buttonClass: getBookButtonStyle(restrictionsLength, roomType.rate_id, roomType.availability),
 							showDays: false,
 							totalAmount: 0.0,
-							isCorporate: isCorporate,
 							isGroupRate: isGroupRate,
 							isSuppressed: isSuppressed,
 							isMember: isMember,
@@ -1104,7 +1102,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				var isRoomAvailable = roomsCount !== undefined && roomsCount > 0;
 
 				// CICO-71977 - Book button should display in red when there is no availability for the group reservation
-				if (((rateId && !!$scope.reservationData.ratesMeta[rateId].account_id) && numRestrictions > 0 && !isRoomAvailable) || (!!$scope.reservationData.group.id && !isRoomAvailable)) {
+				if ((rateId && numRestrictions > 0 && !isRoomAvailable) || (!!$scope.reservationData.group.id && !isRoomAvailable)) {
 					return 'red';
 				}
 
