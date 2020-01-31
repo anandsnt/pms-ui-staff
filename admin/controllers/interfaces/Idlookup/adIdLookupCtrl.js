@@ -53,7 +53,9 @@ angular.module('admin').controller('adIdLookupCtrl', ['$scope', '$rootScope', 'A
        */
       $scope.exportCSV = function() {
           $scope.callAPI(ADIdLookupSrv.exportCSV, {
-              params: $scope.filter,
+              params: {
+                  'entity': $scope.filter.entity
+              },
               successCallBack: function() {
                   $scope.errorMessage = '';
               },
