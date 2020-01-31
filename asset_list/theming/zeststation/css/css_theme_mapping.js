@@ -111,6 +111,7 @@ module.exports = {
             'why-houston': [themeCSSRoot + 'why-houston.less'],
             'victory-house': [themeCSSRoot + 'victory-house.less'],
             'zedwell': [themeCSSRoot + 'zedwell.less']
+            'dimond-center': [themeCSSRoot + 'dimond-center.less']
         };
     }
 };
