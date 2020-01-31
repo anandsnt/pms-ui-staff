@@ -910,6 +910,7 @@ angular.module('sntRover').controller('guestCardController', [
                 $scope.guestSearchIntiated = false;
                 $scope.searchedGuests = [];
                 $scope.$apply();
+                resetObject(previousSearchData, '');
                 $scope.$broadcast('guestSearchStopped');
             }
         };

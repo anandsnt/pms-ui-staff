@@ -360,7 +360,6 @@ admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$st
 
         $scope.invokeApi(ADUserSrv.fetchMPHotelDetails, params, successFetchMPHotelDetails );
     };
-
     // Reload table data upon closing the subscription popup.
     $scope.$on('ngDialog.closing', function () {
         $scope.reloadTable();
