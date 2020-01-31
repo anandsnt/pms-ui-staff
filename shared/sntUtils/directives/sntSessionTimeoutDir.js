@@ -131,20 +131,26 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
                 });
             };
 
+            // Get the idle time in seconds
+            var getIdleTimeSecs = function () {
+                var idlTimeSecs = 0;
+
+                if ($( document ).idleTimer("isIdle")) {
+                    idlTimeSecs = Math.floor($(document).idleTimer("getElapsedTime") / 1000);
+                }
+                
+                return idlTimeSecs;
+            };
+
             /**
              * Check and validate the token expiry based on browser idle time
              */
             var checkAndValidateToken = function (isAPItokenExpired) {
-                var autoLogoutDelaySecs = Math.floor(sessionTimeoutHandlerSrv.getAutoLogoutDelay() / 1000),
-                    lastActiveTime = parseInt($window.localStorage.getItem('sntIdleTimer'), 10);
-
-                var currentTime = new Date().getTime(),
-                    idleTime = Math.floor((currentTime - lastActiveTime) / 1000);
-
-                
+                var autoLogoutDelaySecs = Math.floor(sessionTimeoutHandlerSrv.getAutoLogoutDelay() / 1000);
+                                
                 // We have added 30s here because the timer will be set after 30s when its idle as configured
                 // 15 secs have been deducted as the the check will be done 15s prior to token expiry
-                if ( (idleTime + 30 ) > (autoLogoutDelaySecs - 15) || isAPItokenExpired) {
+                if ( (getIdleTimeSecs() + 30 ) > (autoLogoutDelaySecs - 15) || isAPItokenExpired) {
                     showSessionTimeoutPopup();
                 } else {
                     refreshToken();
