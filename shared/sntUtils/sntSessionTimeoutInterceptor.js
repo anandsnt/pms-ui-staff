@@ -27,10 +27,11 @@ angular.module('snt.utils').service('sessionTimeoutHandlerSrv', [
             ); 
         };
     
-        service.showSessionTimeoutPopup = function() {
+        service.showSessionTimeoutPopup = function(isApiTokenExpired) {
             worker.postMessage(
                 {
-                    cmd: 'SHOW_TIMEOUT_POPUP'
+                    cmd: 'SHOW_TIMEOUT_POPUP',
+                    isApiTokenExpired: isApiTokenExpired
                 }
             );
             
@@ -119,6 +120,20 @@ angular.module('snt.utils').service('sntSharedLoginSrv', [
 
             return deferred.promise;
         };
+
+        /**
+         * Refresh the JWT token with a new one
+         */
+        service.refreshToken = function () {
+            var deferred = $q.defer(),
+                url = '/login/validate';
+            
+            sntBaseWebSrv.getJSON(url).then(function (response) {
+                deferred.resolve(response);
+            });
+
+            return deferred.promise;
+        };
     
 }]);
 
@@ -149,7 +164,7 @@ angular.module('snt.utils').factory('sharedSessionTimeoutInterceptor', [
                         currentState.current.name !== '' && 
                         rejection.config.url !== '/logout' ) { 
                     $window.localStorage.removeItem('jwt');
-                    sessionTimeoutHandlerSrv.showSessionTimeoutPopup();
+                    sessionTimeoutHandlerSrv.showSessionTimeoutPopup(true);
                     rejection.handledCodes.push(401);
                 }
                 

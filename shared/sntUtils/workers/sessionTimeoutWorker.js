@@ -1,5 +1,5 @@
 var self = this,
-    timer;
+    timer;    
 
 this.addEventListener('message',  function(event) {
     var data = event.data;
@@ -10,15 +10,20 @@ this.addEventListener('message',  function(event) {
                 clearTimeout(timer);
             }
             
-            timer = setTimeout(function () {
+            timer = setTimeout (function () {
                 self.postMessage({cmd: 'SHOW_TIMEOUT_POPUP' });
-            }, data.interval);
+            }, data.interval - 15000);
+
             break;
+
         case 'SHOW_TIMEOUT_POPUP':
             if (timer) {
                 clearTimeout(timer);
             }
-            self.postMessage({cmd: 'SHOW_TIMEOUT_POPUP' });
+            self.postMessage({
+                cmd: 'SHOW_TIMEOUT_POPUP', 
+                isApiTokenExpired: data.isApiTokenExpired 
+            });
             break;
 
         case 'STOP_TIMER': 
