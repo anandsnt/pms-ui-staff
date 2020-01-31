@@ -125,7 +125,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'perle-oban': 'Oban Perle',
             'why-columbia': 'Why Hotel Columbia Pike',
             'why-houston': 'Why Hotel Houston',
-            'victory-house': 'Victory House'
+            'victory-house': 'Victory House',
+            'zedwell': 'Zedwell Trocadero'
         };
 
         this.isThemeConfigured = function(theme) {
