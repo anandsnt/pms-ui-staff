@@ -271,8 +271,9 @@ function sntBaseWebSrv($http, $q, $window, $rootScope, $log) {
      * @param {object} params payload
      * @returns {promise} promise
      */
-    this.exportFile = function (url, params) {
-        return this.callWebServiceForFileDownload('POST', url, params);
+    this.download = function (url, params, method) {
+        method = method || 'POST';
+        return this.callWebServiceForFileDownload(method, url, params);
     };
 
 }
