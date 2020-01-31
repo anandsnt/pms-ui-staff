@@ -28,7 +28,8 @@ angular.module('admin').controller('adIdLookupCtrl', ['$scope', '$rootScope', 'A
 
           $scope.callAPI(ADIdLookupSrv.search, {
               params: _.extend($scope.filter, {
-                  page: params.page()
+                  page: params.page(),
+                  per_page: $scope.displyCount
               }),
               successCallBack: function(response) {
                   $scope.errorMessage = '';
@@ -52,7 +53,9 @@ angular.module('admin').controller('adIdLookupCtrl', ['$scope', '$rootScope', 'A
        */
       $scope.exportCSV = function() {
           $scope.callAPI(ADIdLookupSrv.exportCSV, {
-              params: $scope.filter,
+              params: {
+                  'entity': $scope.filter.entity
+              },
               successCallBack: function() {
                   $scope.errorMessage = '';
               },
@@ -61,15 +64,21 @@ angular.module('admin').controller('adIdLookupCtrl', ['$scope', '$rootScope', 'A
               }
           });
       };
+      // Change Entity
+      $scope.changedEntity = function() {
+          $scope.filter.query = '';
+          $scope.reloadTable();
+      };
 
       (function() {
           BaseCtrl.call(this, $scope);
           ADBaseTableCtrl.call(this, $scope, ngTableParams);
+          $scope.displyCount = 50;
 
           $scope.tableParams = new ngTableParams(
               {
                   page: 1,
-                  count: $scope.displyCount || 25,
+                  count: $scope.displyCount,
                   sorting: {
                       rate: 'asc'
                   }
