@@ -6,7 +6,8 @@ sntRover.controller('RVCurrencyExchangeModalController',
         'rvUtilSrv',
         'ngDialog',
         'RVMultiCurrencyExchangeSrv',
-        function($scope, $rootScope, $filter, $timeout, util, ngDialog, RVMultiCurrencyExchangeSrv) {
+        'rvPermissionSrv',
+        function($scope, $rootScope, $filter, $timeout, util, ngDialog, RVMultiCurrencyExchangeSrv, rvPermissionSrv) {
 
 
             BaseCtrl.call(this, $scope);
@@ -120,7 +121,7 @@ sntRover.controller('RVCurrencyExchangeModalController',
                             day: startDate.format('dddd'),
                             date: $filter('date')(tzIndependentDate(startDateString), $rootScope.dateFormatForAPI),
                             conversion_rate: angular.isUndefined(currentItemData) ? null : currentItemData.conversion_rate,
-                            isDisabled: isDateDisabled(startDateString)
+                            isDisabled: isDateDisabled(startDateString) || !$scope.hasPermissionToMCExchangeRate
                         };
                         startDate = startDate.add(1, 'days');
                         startDateString = moment(startDate).format("YYYY-MM-DD");
@@ -134,6 +135,10 @@ sntRover.controller('RVCurrencyExchangeModalController',
                 $scope.selected_rate_currency_symbol  = (_.find($rootScope.exchangeCurrencyList, {"id": $scope.selected_rate_currency})).symbol;
                 $scope.isInvoiceCurrency = ( $rootScope.invoiceCurrencyObject !== "" ) ? $scope.selected_rate_currency === (_.find($rootScope.exchangeCurrencyList, {"id": $rootScope.invoiceCurrencyObject.id})).id : false;
                 fetchExhangeRates();
+            };
+
+            $scope.hasPermissionToMCExchangeRate = function() {
+                return rvPermissionSrv.getPermissionValue('EDIT_MULTI_CURRENCY_EXCHANGE_RATES');
             };
             /*
              * Save Exchange Rates
@@ -188,7 +193,7 @@ sntRover.controller('RVCurrencyExchangeModalController',
             var init = function() {
 
                 $scope.start_date = $filter('date')(tzIndependentDate($rootScope.businessDate), $rootScope.dateFormatForAPI);
-
+                $scope.hasPermissionToMCExchangeRate = $scope.hasPermissionToMCExchangeRate();
                 endDate = moment(tzIndependentDate($rootScope.businessDate)).add(noOfDays, 'days');                                                          
                 todayDate = moment().startOf('day');
                 daysDiff = moment.duration(todayDate.diff(endDate)).asDays();
@@ -199,6 +204,7 @@ sntRover.controller('RVCurrencyExchangeModalController',
                     $scope.end_date = $filter('date')(tzIndependentDate(moment($rootScope.businessDate).add(noOfDays, 'days')
                 .calendar()), $rootScope.dateFormatForAPI);
                 }
+                
                 setStartDateOptions();
                 setEndDateOptions();
                 fetchExhangeRates();

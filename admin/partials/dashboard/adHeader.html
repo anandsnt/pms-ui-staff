@@ -46,7 +46,7 @@
          jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:'true', onStart: 'onDragStart', onStop: 'onDragStop'}"
 
          ng-model="bookMarks"
-         ng-hide="!bookmark.name" touch-press="clickedMenuItem($event, bookmark.state, bookmark.is_disabled)">
+         ng-hide="!bookmark.name" touch-press="clickedMenuItem($event, bookmark.state, bookmark.is_disabled, bookmark.menu_name)">
 
 		    {{bookmark.name}}
 

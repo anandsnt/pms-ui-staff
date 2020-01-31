@@ -18,7 +18,6 @@ angular.module('sntRover').service('RVReservationStateService', [
 			lastPostedRate: null
 		};
 
-
 		/**
 		 * Method to get the addons associated with a Rate
 		 * @param  {Array or a String} rateId [description]
@@ -41,7 +40,6 @@ angular.module('sntRover').service('RVReservationStateService', [
 			}
 
 		};
-
 
 		self.updateRateAddonsMeta = function(addonInfo) {
 			if (addonInfo.length === 0) {
@@ -98,7 +96,6 @@ angular.module('sntRover').service('RVReservationStateService', [
 			};
 		};
 
-
 		/**
 		 * Method to calculate the applicable amount the particular selected addon
 		 * @param  {string} amountType      -
@@ -147,17 +144,17 @@ angular.module('sntRover').service('RVReservationStateService', [
 			return multiplier;
 		};
 
-		self.getApplicableAddonsCount = function(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly) {
+		self.getApplicableAddonsCount = function(amountType, postType, postingRhythm, numAdults, numChildren, numNights, chargeFullWeeksOnly) {
 			var getTotalPostedAddons = function(postType, baseCount) {
-				if (postingRythm === 0) {
+				if (postingRhythm === 0) {
 					return baseCount;
-				} else if (postingRythm === 1) {
+				} else if (postingRhythm === 1) {
                     return baseCount * numNights;
                 } else {
 					if (typeof chargeFullWeeksOnly !== "undefined" && !!chargeFullWeeksOnly) {
-						return baseCount * parseInt((numNights / postingRythm), 10);
+						return baseCount * parseInt((numNights / postingRhythm), 10);
 					} else {
-						return baseCount * (parseInt((numNights / postingRythm), 10) + 1);
+						return baseCount * (parseInt((numNights / postingRhythm), 10) + 1);
 					}
 
 				}
@@ -312,7 +309,6 @@ angular.module('sntRover').service('RVReservationStateService', [
 			return self.reservationFlags[key];
 		};
 
-
 		self.shouldPostAddon = function(frequency, present, arrival, departure, chargeFullLengthOnly) {
 			if (frequency === 0 && present === arrival) {
 				return true;
@@ -441,7 +437,6 @@ angular.module('sntRover').service('RVReservationStateService', [
 				});
 			};
 
-
 			// ADDON
 
 			if (associatedAddons && associatedAddons.length > 0) {
@@ -482,7 +477,6 @@ angular.module('sntRover').service('RVReservationStateService', [
 				rateOnRoomAddonAdjusted = 0.0;
 			}
 
-
 			// calculate tax for the current day
 			if (taxes && taxes.length > 0) { // Need to calculate taxes IFF there are taxes associated with the rate
 				var taxApplied = self.calculateTax(rateOnRoomAddonAdjusted, taxes, activeRoom, numAdults, numChildren, false);
@@ -520,7 +514,5 @@ angular.module('sntRover').service('RVReservationStateService', [
 		this.getForceOverbookForGroup = function () {
 			return this.forceOverbookForGroups;
 		};
-
-
 	}
 ]);

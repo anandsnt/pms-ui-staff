@@ -3,7 +3,10 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
         $stateProvider.state('admin.dashboard', {
 			url: '/dashboard/:menu',
 			templateUrl: '/assets/partials/dashboard/adDashboard.html',
-			controller: 'ADDashboardCtrl'
+			controller: 'ADDashboardCtrl',
+			params: {
+				errorMsg: []
+			}
 
 		});
 
