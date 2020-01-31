@@ -319,6 +319,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 		};
 
 		$scope.showDatePicker = function(calendarModel, calendarDisplayModel) {
+
 			selectedCalendarModel = calendarModel;
 			selectedCalendarModelDisplay = calendarDisplayModel;
 			$scope.showDatePick = !$scope.showDatePick;
@@ -327,6 +328,12 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 			if (selectedCalendarField) {
 				$scope.selectedDate = selectedCalendarField[selectedCalendarModel];
 			}
+
+			$timeout(function() {
+				// Add a wrapper class to the select box for style adjustments
+				$('.ui-datepicker-month').wrapAll("<div class='select'></div>");
+				$('.ui-datepicker-year').wrapAll("<div class='select'></div>");
+			}, 100);
 		};
 
 		(function() {
