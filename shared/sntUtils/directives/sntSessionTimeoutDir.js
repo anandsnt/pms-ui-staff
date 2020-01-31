@@ -140,6 +140,7 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
 
                 var currentTime = new Date().getTime(),
                     idleTime = Math.floor((currentTime - lastActiveTime) / 1000);
+                    
                 
                 // We have added 30s here because the timer will be set after 30s when its idle as configured
                 // 15 secs have been deducted as the the check will be done 15s prior to token expiry
