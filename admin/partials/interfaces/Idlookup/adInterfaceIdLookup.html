@@ -10,7 +10,7 @@
             <div class="interface-entry select">
                 <label for="entities">Entity</label>
                 <select id="entities" ng-class="entities"
-                        ng-model="filter.entity" data-action="interface">
+                        ng-model="filter.entity" data-action="interface" ng-change="changedEntity()">
                     <option value="" selected>Select Entity</option>
                     <option ng-repeat="entity in entities" value="{{entity.value}}">{{entity.name}}</option>
                 </select>
