@@ -145,25 +145,21 @@ function sntBaseWebSrv($http, $q, $window, $rootScope, $log) {
 
     /**
      *   A http requester method for calling webservice
-     *   @param {function} httpMethod function of the method to call like $http.get, $http.put..
+     *   @param {function} method function of the method to call like $http.get, $http.put..
      *   @param {string} url webservice url
-     *   @param {Object} params data for webservice
+     *   @param {Object} data data for webservice
      *   @return {promise} promise
      */
-    this.callWebServiceForFileDownload = function (httpMethod, url, params) {
-        var deferred = $q.defer(),
-            httpDict = {};
+    this.callWebServiceForFileDownload = function (method, url, data) {
+        var deferred = $q.defer();
 
-        if (typeof params === 'undefined') {
-            params = '';
-        }
-
-        httpDict.url = url;
-        httpDict.method = httpMethod;
-        httpDict.data = params;
-
-        $http(httpDict).then(function (response) {
-
+        $http({
+            url: url,
+            method: method,
+            data: data || '',
+            transformResponse: false
+        }).then(function (response) {
+            
             var data = response.data,
                 headers = response.headers,
                 hiddenAnchor = angular.element('<a/>'),
