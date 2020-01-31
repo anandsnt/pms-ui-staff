@@ -11,6 +11,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 		$scope.newPaymentInfo.addToGuestCard = false;
 		$scope.renderData.billNumberSelected = '';
 		$scope.renderData.defaultPaymentAmount = '';
+		$scope.renderData.defaultPaymentCurrencyAmount = '';
 		$scope.copyOfdefaultPaymentAmount = '';
 		$scope.defaultRefundAmount = 0;
 		// We are passing $scope from bill to this modal
@@ -189,8 +190,10 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 		}
 
 		var parsedAmount = parseFloat(defaultAmount).toFixed(2);
+		var defaultPaymentCurrencyAmount = currentBillTotalFees[0].default_payment_amount;
 
 		$scope.renderData.defaultPaymentAmount = parsedAmount;
+		$scope.renderData.defaultPaymentCurrencyAmount = defaultPaymentCurrencyAmount;
 		$scope.copyOfdefaultPaymentAmount = parsedAmount;
 		$scope.splitePaymentDetail["totalAmount"] = parsedAmount;
 		$scope.defaultRefundAmount = (-1) * parseFloat($scope.renderData.defaultPaymentAmount);

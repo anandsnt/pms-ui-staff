@@ -41,6 +41,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 	$scope.shouldCardAvailable     = false;
 	$scope.depositBalanceMakePaymentData = {};
 	$scope.depositBalanceMakePaymentData.amount = parseFloat($scope.depositBalanceData.current_balance).toFixed(2);
+	$scope.depositBalanceMakePaymentData.payment_amount = parseFloat($scope.depositBalanceData.current_payment_balance).toFixed(2);
 	$scope.refundAmount = 0;
 
 	if ($scope.depositBalanceMakePaymentData.amount < 0) {
