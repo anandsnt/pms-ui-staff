@@ -1731,6 +1731,13 @@ body { overflow: hidden; }
 		.search-form {
 			display: block;
 
+			/** With Refresh Button **/
+	        &.with-refresh {
+	            .search {
+	                .calc-width(100, 60);
+	            }
+	        }
+
 			/* Enable adding ***/
 			&.enable-adding {
 				.entry { .calc-width(100, 120); }
@@ -1739,6 +1746,13 @@ body { overflow: hidden; }
 					margin-left: 10px;
 					.show;
 				}
+
+				/** With Refresh Button **/
+	            &.with-refresh {
+	                .search {
+	                    .calc-width(100, 170);
+	                }
+	            }
 			}
 
 			/* Dropdowns ***/
@@ -1889,6 +1903,13 @@ body { overflow: hidden; }
 		            }
 		        }
 
+		        /** With Refresh Button **/
+	            &.with-refresh {
+	                .search {
+	                    .calc-width(100, 570);
+	                }
+	            }
+
 		        &.enable-adding {
 		            .entry {
 		                &.search { .calc-width(100, 620); }
@@ -1901,6 +1922,13 @@ body { overflow: hidden; }
 		                    .entry-data { width: 130px; }
 		                }
 		            }
+
+		            /** With Refresh Button **/
+	                &.with-refresh {
+	                    .search {
+	                        .calc-width(100, 680);
+	                    }
+	                }
 		        }
 
 		        &.has-bulk-checkout {
@@ -2018,10 +2046,36 @@ body { overflow: hidden; }
 	                    }
 	                }
 
+	                &.with-refresh {
+	                    .entry {
+	                        &.switch {
+	                            padding-right: 10px;
+	                            margin-right: 10px;
+	                            .box-shadow(inset -1px 0 0 rgba(0, 0, 0, 0.1));
+	                        }
+
+	                        &.search {
+	                            .calc-width(100, 650);
+	                        }
+
+	                        &.notice-checkout {
+	                            .calc-width(100, 540);
+	                        }
+	                    }
+	                }
+
 	                &.enable-adding {
 	                    .entry {
 	                        &.search {
 	                            .calc-width(100, 700);
+	                        }
+	                    }
+
+	                    &.with-refresh {
+	                        .entry {
+	                            &.search {
+	                                .calc-width(100, 760);
+	                            }
 	                        }
 	                    }
 	                }
