@@ -1125,7 +1125,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * @return {[type]}	  [description]
 		 */
 		var successFetchOfAllReqdForTransactionDetails = function(data) {
-			// $scope.$emit('hideLoader');
+			$scope.isFromGroups = (typeof $scope.groupConfigData !== "undefined" && $scope.groupConfigData.activeTab === "TRANSACTIONS");
 		};
 
 		/*
@@ -1164,7 +1164,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * @return {[type]}	  [description]
 		 */
 		var failedToFetchOfAllReqdForTransactionDetails = function(data) {
-			$scope.$emit('hideLoader');
+			$scope.$emit('hideLoader');			
 		};
 
 		/**

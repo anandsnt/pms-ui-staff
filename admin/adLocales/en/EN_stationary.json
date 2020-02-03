@@ -67,6 +67,8 @@
 	"GUEST_BILL_EMAIL_BODY" : "Guest Bill Email Body",
 	"CARDS_BILL_EMAIL_BODY" : "Company / TA Bill Email Body",
 	"EMAIL_BODY_TEXT_PLACEHOLDER" : "Enter Email Body",
+	"DEPOSIT_INVOICE_EMAIL_SUBJECT": "Deposit Invoice Email Subject",
+	"DEPOSIT_INVOICE_EMAIL_BODY": "Deposit Invoice Email Body",
 
 	"ENTER_SUBJECT": "Enter Subject",
 	"CANCELLATION_EMAIL_BODY": "Cancellation Email Body",
