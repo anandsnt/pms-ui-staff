@@ -34,7 +34,7 @@ sntRover.controller('RVReservationPackageController',
 		$scope.getAddonCount = function(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly, quantity, postInstances) {
 			var addonCount = 0;
 
-			if (postInstances) {
+			if (postInstances !== 'undefined' && postInstances.length !== 0) {
 				angular.forEach(post_instances, function(item) {
 					if (item.active) {
 						addonCount++;
