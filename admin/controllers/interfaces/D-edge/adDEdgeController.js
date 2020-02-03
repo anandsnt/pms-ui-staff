@@ -10,7 +10,7 @@ admin.controller('adDEdgeController', ['$scope', 'config', 'adInterfacesSrv',
         ];
 
         $scope.state = {
-            activeTab: 'SETTING',
+            activeTab: 'SETTING'
         };
 
         $scope.mappingTypes = ['booking_origins'];

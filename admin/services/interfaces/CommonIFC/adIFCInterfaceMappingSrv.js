@@ -56,7 +56,6 @@ admin.service('adIFCInterfaceMappingSrv', [
                 return ADBaseWebSrvV2.getJSON('/ifc/axbase3000/mappings');
             },
             'BOOKING_ORIGINS': function() {
-                console.log("fetching booking origins...")
                 return ADBaseWebSrvV2.getJSON('api/booking_origins');
             }
         };
