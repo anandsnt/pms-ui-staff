@@ -1907,6 +1907,7 @@ angular.module('reportsModule')
 
         // to reorder the sort by to match the report details column positon
         factory.reOrderSortBy = function ( report ) {
+            var user;
 
             // for (arrival, departure) report the sort by items must be
             // ordered in a specific way as per the design
@@ -2067,7 +2068,8 @@ angular.module('reportsModule')
             // for rate adjustment report in the following order
             if ( report['title'] === reportNames['RATE_ADJUSTMENTS_REPORT'] ) {
                 var date      = angular.copy( report['sort_fields'][1] ),
-                    guestUser = angular.copy( report['sort_fields'][0] ),
+                    guestUser = angular.copy( report['sort_fields'][0] );
+
                     user      = angular.copy( report['sort_fields'][2] );
 
                 report['sort_fields'][0] = guestUser;
@@ -2135,15 +2137,17 @@ angular.module('reportsModule')
             if ( report['title'] === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT'] ) {
                 var chargeCode = angular.copy( _.find(report['sort_fields'], { 'value': 'CHARGE_CODE' }) ),
                     date  = angular.copy( _.find(report['sort_fields'], { 'value': 'DATE' }) );
+                    
+                    user = angular.copy( _.find(report['sort_fields'], { 'value': 'USER' }) );
 
                 report['sort_fields'][0] = null;
                 report['sort_fields'][1] = chargeCode;
                 report['sort_fields'][2] = null;
                 report['sort_fields'][3] = null;
                 report['sort_fields'][4] = null;
-                report['sort_fields'][5] = date;
+                report['sort_fields'][5] = user;
                 report['sort_fields'][6] = null;
-                report['sort_fields'][7] = null;
+                report['sort_fields'][7] = date;
                 report['sort_fields'][8] = null;
                 report['sort_fields'][9] = null;
             }

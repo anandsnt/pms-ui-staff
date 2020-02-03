@@ -361,7 +361,7 @@ sntRover.controller('RVDepositBalanceCtrl', [
             $scope.currentPaymentBillId = data.bill_id;
             $scope.currentPaymentTransactionId = data.transaction_id;
 
-            if ($rootScope.autoEmailPayReceipt) {
+            if ($rootScope.autoEmailPayReceipt || $rootScope.autoEmailDepositInvoice) {
                 $scope.autoTriggerPaymentReceiptActions();
             }     
 
