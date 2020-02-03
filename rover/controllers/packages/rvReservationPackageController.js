@@ -31,20 +31,14 @@ sntRover.controller('RVReservationPackageController',
 		};
 
 		// Get addon count
-		$scope.getAddonCount = function(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly, quantity) {
-			if (!postingRythm) {
-				if (postType === 'WEEK') {
-					postingRythm = 7;
-				} else if (postType === 'STAY') {
-					postingRythm = 1;
-				} else if (postType === 'NIGHT') {
-					postingRythm = 0;
+		$scope.getAddonCount = function(addon) {
+			var addonCount = 0;
+			angular.forEach(addon.post_instances, function(addon) {
+				if (addon.active) {
+					addonCount++;
 				}
-			}
-			amountType = amountType.toUpperCase();
-			var addonCount = RVReservationStateService.getApplicableAddonsCount(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly);
-
-			return (addonCount * quantity);
+			});
+			return addonCount;
 		};
 
 		$scope.selectPurchasedAddon = function(addon) {
