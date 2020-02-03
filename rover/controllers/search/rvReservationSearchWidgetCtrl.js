@@ -73,6 +73,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 		$scope.isBulkCheckoutSelected = !!$stateParams.isBulkCheckoutSelected;
 		$scope.isDueoutShowing = $stateParams.type === 'DUEOUT';
+		$scope.isCheckoutWithBalance = $stateParams.type === 'OPEN_BILL_CHECKOUT';
 		
 		$scope.allowOpenBalanceCheckout = !!$stateParams.isAllowOpenBalanceCheckoutSelected;
 		$scope.bulkCheckoutReservationsCount = 0;
@@ -1235,6 +1236,20 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			ngDialog.close();
 		};
 
-    	$scope.$on('ANALYTICS_VIEW_ACTIVE', $scope.clearResults);
+		$scope.$on('ANALYTICS_VIEW_ACTIVE', $scope.clearResults);
+		
+		/**
+		 * Refresh the reservation listing with open balance
+		 */
+		$scope.refreshReservationsWithOpenBalance = function () {
+			var reservationsFetchSuccess = function () {
+					$scope.fetchSearchResults();
+				};
+
+			$scope.callAPI(RVSearchSrv.refreshReservationsWithOpenBalance, {
+				onSuccess: reservationsFetchSuccess				
+			});
+
+		};
 	}
 ]);

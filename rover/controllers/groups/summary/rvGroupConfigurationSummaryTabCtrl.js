@@ -1602,6 +1602,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
          * we will use this to fetch summary data
          */
         $scope.$on('GROUP_TAB_SWITCHED', function(event, activeTab) {
+            
             if (activeTab !== 'SUMMARY') {
                 return;
             }
