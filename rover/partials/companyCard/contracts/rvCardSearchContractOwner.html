@@ -1,0 +1,42 @@
+<div class="entry relative" ng-controller="rvCardSearchContractOwnerCtrl">
+    <label for="contract-owner">Contract Owner</label>
+    <!-- Remove .placeholder if we are showing the owner -->
+    <div class="multi-select select placeholder" ng-click="clickedOwner()">
+        Find an Owner
+    </div>
+    <div class="multi-select-options" ng-show="contractData.expandOwner">
+        <div class="select-all">
+            <!-- Show if we have an owner. On click remove the owner (reset to default) -->
+            <label>
+               No Owner
+            </label>
+            
+            <!-- Add .checked when checked -->
+            <label class="checkbox inline">
+                <!-- add .checked when checked -->
+                <span class="icon-form icon-checkbox"></span>
+                <!-- Add checked when checked -->
+                <input value="all" type="checkbox">
+                Inactive
+            </label>
+        </div>
+        <div class="search">
+            <!-- Add .visible when we have something typed in-->
+            <button class="clear-query">
+                <span class="icons icon-clear-search">Clear query</span>
+            </button>
+            <button type="submit" name="submit" class="icons icon-search">Search</button>
+            <input name="contract-owner-search" class="query" placeholder="Search by Name" autocomplete="off" type="search">
+        </div>
+        <!-- Add a scroller here -->
+        <div class="scrollable">
+            <div class="wrapper">
+                <!-- Add .inactive if the user is inactive-->
+                <label>
+                    {Owner}
+                </label>
+                ... repeat for each
+            </div>
+        </div>
+    </div>
+</div>
