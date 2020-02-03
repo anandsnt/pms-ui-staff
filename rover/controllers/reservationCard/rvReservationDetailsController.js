@@ -2040,6 +2040,7 @@ sntRover.controller('reservationDetailsController',
 
 		var addonPostingSaveSuccess = function(data) {
 			$scope.$emit('hideLoader');
+			fetchAddonsDetails();
 		};
 
 		var dataToApi = {
