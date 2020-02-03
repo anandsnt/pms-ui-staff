@@ -152,4 +152,8 @@
 "GL_CODE_AR_LEDGER_OFFSET": "GL Code for AR Ledger Offset",
 "CEGID_HEADER": "CEGID",
 "charge_code_analytic_code": "Charge Code - Analytic Code",
-"RATE_TYPE_AMOUNT_TAX": "Rate Type Amount to use on Reservation Import"
+"RATE_TYPE_AMOUNT_TAX": "Rate Type Amount to use on Reservation Import",
+"D_EDGE_HEADER": "D-Edge",
+"DEFAULT_RATE_CODE": "Default Rate Code",
+"DEFAULT_ORIGIN": "Default Origin",
+"DEFAULT_PAYMENT_CODE", "Default Payment Code"
