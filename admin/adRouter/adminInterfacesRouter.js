@@ -987,4 +987,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.idLookupSetup', {
+        templateUrl: '/assets/partials/interfaces/Idlookup/adInterfaceIdLookup.html',
+        controller: 'adIdLookupCtrl',
+        url: '/idLookup'
+    });
+
 });
