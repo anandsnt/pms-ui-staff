@@ -986,4 +986,15 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.d-edge', {
+        templateUrl: '/assets/partials/interfaces/d-edge/adDEdge.html',
+        controller: 'adDEdgeController',
+        url: '/d-edge',
+        resolve: {
+            config: [
+                'adInterfacesSrv', function (adInterfacesSrv) {
+                    return adInterfacesSrv.getSettings('dedge');
+                }]
+        }
+    });
 });
