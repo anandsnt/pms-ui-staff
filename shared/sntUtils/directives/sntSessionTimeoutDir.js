@@ -163,13 +163,13 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
              */
             var setUpEventListeners = function () {
 
-                $(document).idleTimer( {
+                $(document).idleTimer({
                     timeout: 30000,
                     timerSyncId: 'sntIdleTimer'
                 });
 
                 // This will be invoked when the user is idle for 30s
-                $(document).on( "idle.idleTimer", function() {
+                $(document).on( 'idle.idleTimer', function() {
                     refreshToken();
                 });
 
