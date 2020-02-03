@@ -46,7 +46,8 @@ angular.module('reportsModule')
             'hasMinRoomNights',
             'hasMinRevenue',
             'showActionables',
-            'show_vat_with_rates'
+            'show_vat_with_rates',
+            'show_upsell_only'
         ];
 
         // Extract rate types and rates list
@@ -742,6 +743,10 @@ angular.module('reportsModule')
 
                 }
 
+                if (filter.value === 'SHOW_UPSELL_ONLY') {
+                    report['hasShowUpsellOnly'] = filter;
+                }
+
 
                 // fill up DS for options combo box
                 if ( __optionFilterNames[filter.value] ) {
@@ -989,6 +994,8 @@ angular.module('reportsModule')
                         .then( fillCountries );
                 } else if ('INCLUDE_DAY_USE' === filter.value && !filter.filled) {
                     setIncludeDayuseFlag();
+                } else if ('SHOW_UPSELL_ONLY' === filter.value) {
+                    reportItem[reportParams['SHOW_UPSELL_ONLY']] = true;
                 } else {
                     // no op
                 }
