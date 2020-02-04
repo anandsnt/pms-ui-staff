@@ -1271,8 +1271,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     angular.forEach(data.reservations, function(reservation, key) {
 
                         totalDeposit = parseFloat(totalDeposit) + parseFloat(reservation.deposit_amount);
+
                         updateConfirmationData(key, reservation);
-                        totalPaymentDeposit = parseFloat(totalDeposit) + parseFloat(reservation.deposit_payment_amount);
+                        totalPaymentDeposit = parseFloat(totalPaymentDeposit) + parseFloat(reservation.deposit_payment_amount);
                     });
 
                     $scope.reservationData.depositAmount = parseFloat(totalDeposit).toFixed(2);

@@ -22,6 +22,7 @@ admin.controller('ADStationaryCtrl',
 	$scope.is_registration_active = false;
 	$scope.is_invoices_active = false;
 	$scope.is_payment_receipt_active = false;
+	$scope.is_deposit_invoice_active = false;
 	$scope.is_account_receivables_active = false;
 
 	$scope.is_ar_invoice_active = false;
