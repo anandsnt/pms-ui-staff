@@ -523,6 +523,88 @@
         }
 
         &.full { width: 100%; }
+
+        &.guest-information {
+            width: 100%;
+            margin: 0 auto;
+            text-transform: uppercase;
+            #rounded > .bottom();
+
+            h3 {
+                text-align: left;
+                font-weight: 600;
+                font-size: 24px;
+            }
+
+            .wrapper {
+                padding: 0;
+                min-height: 100%;
+            }
+
+            .form {
+                min-height: 100%;
+                align-items: stretch;
+
+                label {
+                    display: block;
+                    margin-bottom: 5px;
+                    font-size: 16px;
+                }
+
+                .entry {
+                    margin-bottom: 15px;
+
+                    .entry {
+                        padding: 0;
+                        margin: 0;
+                        box-shadow: none;
+                        width: 100%;
+                    }
+                }
+
+                .entry-row {
+                    #flexbox > .flex();
+                    #flexbox > .parent(row wrap, space-between, '', '');
+
+                    .entry {
+                        #calc > #width > .remove(50%, 10px);
+
+                        &.full-width,
+                        .entry {
+                            width: 100%;
+                        }
+                    }
+                }
+            }
+
+            .guest-information-left,
+            .guest-information-right {
+                padding: 25px 25px 20px 25px;
+                min-height: 100%;
+            }
+
+            .guest-information-left {
+                width: 55%;
+            }
+
+            .guest-information-right {
+                width: 45%;
+                background: rgba( 0, 0, 0, 0.1 );
+            }
+
+            &.one-column {
+                max-width: 750px;
+                width: 90%;
+                .guest-information-left {
+                    width: 100%;
+                }
+            }
+
+            &:after,
+            &:before {
+               display: none;
+            }
+        }
     }
 
 /* Room Upgrade - Single Room **/
@@ -1210,6 +1292,11 @@
                 #rounded > .round();
                 #flexbox > .flex();
                 #flexbox > .parent(row wrap, center, flex-start, '');
+
+                &.missing-details {
+                    color: @red !important;
+                    border: 2px dashed rgba( 0, 0, 0, .2);
+                }
             }
 
             .name {
@@ -1266,6 +1353,22 @@
                     .details {
                         color: @black;
                         background-color: @white; 
+                    }
+                }
+            }
+
+            &.with-buttons {
+                li {
+                    .details {
+                        width: 100%;
+                    }
+
+                    .button:not(.option) {
+                        width: auto;
+                        min-width: 200px;
+                        padding: 0 10px;
+                        flex-shrink: 0;
+                        margin-left: 10px;
                     }
                 }
             }
@@ -1472,15 +1575,37 @@
         .ui-datepicker-title {
             font-size: 24px;
             text-align: center;
+            #flexbox > .flex();
+            #flexbox > .parent(row, center, center, '');
 
-            // TODO: Revert after stjepans update
-            .ui-datepicker-month,
-            .ui-datepicker-year {
-                height: 40px;
-                font-size: 20px;
-                font-weight: 600;
-                width: 120px;
-                background-color: @brandColor;
+            select.ui-datepicker-month,
+            select.ui-datepicker-year {
+                .button();
+                background: transparent !important;
+                color: inherit !important;
+                margin: 5px;
+                height: 50px;
+                line-height: 50px;
+                width: auto;
+                text-align: center;
+            }
+
+            .select {
+                position: relative;
+
+                &:after {
+                    content: '';
+                    position: absolute;
+                    top: 0px;
+                    bottom: 0;
+                    margin: auto;
+                    right: 10px;
+                    border-left: 6px solid transparent;
+                    border-right: 6px solid transparent;
+                    border-top: 6px solid;
+                    .square(0);
+                    .show;
+                }
             }
         }
 
@@ -1495,6 +1620,40 @@
             &.ui-datepicker-prev { left: 10px; }
             &.ui-datepicker-next { right: 10px; }
             &.ui-state-disabled { .hide; }
+
+            .ui-icon {
+                position: relative;
+                &:after {
+                    position: absolute;
+                    content: '';
+                    top: 0px;
+                    bottom: 0;
+                    margin: auto;
+                    border-left: 6px solid transparent;
+                    border-right: 6px solid transparent;
+                    border-top: 6px solid transparent;
+                    border-bottom: 6px solid transparent;
+                    .square(0);
+                    .show;
+                }
+            }
+        }
+        .ui-datepicker-next {
+            .ui-icon {
+                &:after {
+                    right: -20px;
+                    border-left-color: inherit;
+                }
+            }
+        }
+        .ui-datepicker-prev {
+            text-align: right;
+            .ui-icon {
+                &:after {
+                    left: -20px;
+                    border-right-color: inherit;
+                }
+            }
         }
     }
 
@@ -1749,6 +1908,20 @@
             &.form {
                 width: 640px;
                 padding-bottom: 180px;  
+
+                &.wide {
+                    width: 750px;
+                    padding-right: 40px;
+                    padding-left: 40px;
+                }
+            }
+
+            #textual {
+                &.guest-information {
+                    background: none !important;
+                    width: 100%;
+                    max-width: 100%;
+                }
             }
         }
 
