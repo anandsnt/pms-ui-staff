@@ -308,6 +308,22 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     key = reportParams['CHARGE_CODE_IDS'];
                     filter_values[key] = _.pluck(_.where(filter.data, {selected: true}), 'id');
 
+                } else if (keyName === 'hasDepartments') {
+                    key = reportParams['ASSIGNED_DEPARTMENTS'];
+                    filter_values[key] =  _.pluck(_.where(filter.data, {selected: true}), 'id');
+
+                } else if (keyName === 'hasCompletionStatus') {
+                    key = reportParams['COMPLETION_STATUS'];
+                    filter_values[key] =  _.pluck(_.where(filter.data, {selected: true}), 'id');
+
+                } else if (keyName === 'hasShowActionables') {
+                    key = reportParams['SHOW_ACTIONABLES'];
+                    if ($scope.filters.showActionables === 'BOTH') {
+                        filter_values[key] = ['GUEST', 'GROUP'];
+                    } else {
+                        filter_values[key] = [$scope.filters.showActionables];
+                    }
+
                 } else {
                     _.each(filter.data, function(each) {
                         if ( each.selected ) {
@@ -476,6 +492,22 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     key = reportParams['CHARGE_CODE_IDS'];
                     filter_values[key] = _.pluck(_.where(filter.data, {selected: true}), 'id');
 
+                } else if (keyName === 'hasDepartments') {
+                    key = reportParams['ASSIGNED_DEPARTMENTS'];
+                    filter_values[key] =  _.pluck(_.where(filter.data, {selected: true}), 'id');
+
+                } else if (keyName === 'hasCompletionStatus') {
+                    key = reportParams['COMPLETION_STATUS'];
+                    filter_values[key] =  _.pluck(_.where(filter.data, {selected: true}), 'id');
+
+                } else if (keyName === 'hasShowActionables') {
+                    key = reportParams['SHOW_ACTIONABLES'];
+                    if ($scope.filters.showActionables === 'BOTH') {
+                        filter_values[key] = ['GUEST', 'GROUP'];
+                    } else {
+                        filter_values[key] = [$scope.filters.showActionables];
+                    }
+
                 } else {
                     _.each(filter.data, function (each) {
                         if (each.selected) {
@@ -627,6 +659,13 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     reportUtils.fillRateTypesAndRatesForScheduledReports($scope.filters, $scope.selectedEntityDetails.filter_values);
                 } else if (filter.value === 'INCLUDE_CHARGE_GROUP' || filter.value === 'INCLUDE_CHARGE_CODE') {
                     reportUtils.fillChargeGroupsAndChargeCodes($scope.filters, $scope.selectedEntityDetails.filter_values);
+                } else if (filter.value === 'COMPLETION_STATUS') {
+                    reportUtils.fillCompletionStatus($scope.filters);
+                } else if (filter.value === 'DEPARTMENT_ASSIGNED') {
+                    reportUtils.fillDepartments($scope.filters, $scope.selectedEntityDetails.filter_values);
+                } else if (filter.value === 'ACTIONS_BY') {
+                    reportUtils.fillActionsBy($scope.filters);
+                    $scope.filters.showActionables = 'BOTH';
                 }
             });
 
@@ -668,7 +707,24 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     if (angular.isDefined(optionFilter)) {
                         optionFilter.selected = true;
                     }
-                }
+                } else if (key === reportParams['SHOW_ACTIONABLES']) {
+                    if (value.length === 2) {
+                        $scope.filters.showActionables = 'BOTH';
+                    } else {
+                        $scope.filters.showActionables = value[0];
+                    }
+                } else if (key === reportParams['COMPLETION_STATUS']) {
+                    $scope.filters['hasCompletionStatus']['data'] = $scope.filters['hasCompletionStatus']['data'].map(status => {
+                        status.selected = false;
+
+                        if (value.indexOf(status.id) > -1) {
+                            status.selected = true;
+                        }
+                        return status;
+                    });
+                    $scope.filters['hasCompletionStatus']['options']['selectAll'] = $scope.filters['hasCompletionStatus']['data'].length === value.length;
+
+                } 
             });
 
             runDigestCycle();
@@ -1040,7 +1096,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Daily Production by Demographics': true,
                 'Daily Production by Rate': true,
                 'Business on the Books': true,
-                'Daily Transactions': true
+                'Daily Transactions': true,
+                'Action Manager': true
             };
 
             var forWeekly = {
@@ -1051,7 +1108,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Guest Balance Report': true,
                 'Yearly Tax Report': true,
                 'Business on the Books': true,
-                'Daily Transactions': true
+                'Daily Transactions': true,
+                'Action Manager': true
             };
             var forMonthly = {
                 'Arrival': true,
@@ -1061,7 +1119,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Guest Balance Report': true,
                 'Yearly Tax Report': true,
                 'Business on the Books': true,
-                'Daily Transactions': true
+                'Daily Transactions': true,
+                'Action Manager': true
+                
             };
 
             var forHourly = {

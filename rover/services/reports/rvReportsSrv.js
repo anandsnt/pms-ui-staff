@@ -236,7 +236,15 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'LAST_OCTOBER',
                 'LAST_NOVEMBER',
                 'LAST_DECEMBER'                
-             ]
+             ],
+             'Action Manager': [
+                'YESTERDAY',
+                'TODAY',
+                'TOMORROW',
+                'LAST_SEVEN_DAYS',
+                'NEXT_SEVEN_DAYS'             
+             ],
+
         };
 
         var cacheKey = 'REPORT_PAYLOAD_CACHE';
