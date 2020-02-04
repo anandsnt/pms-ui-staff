@@ -7,23 +7,38 @@
       <h2 translate="">
          GUEST_INFO_MISSGING_SUB_HEADING
       </h2>
-      <div id="guestsList" ng-iscroll="guests-list" ng-iscroll-delay="100" ng-init="setScroll()">
-         <ul id="selection" class="editable wrapper">
-            <li ng-repeat='guest in selectedReservation.guest_details track by $index' ng-click="clickOnGuest(guest)"
-               ng-class="{'guest-info-missing': guest.is_missing_any_required_field}">
-               <span class="details" ng-if='guest.last_name !== guest.first_name' style="width: 100%;">
+      <ul id="selection" class="editable with-buttons">
+          <li ng-repeat='guest in selectedReservation.guest_details track by $index'>
+
+              <!-- If we have missing details, add .missing-details -->
+              <!-- if we skipped detials, don't add .missing-details -->
+               <span class="details" ng-if='guest.last_name !== guest.first_name'
+               ng-class="{'missing-details': guest.is_missing_any_required_field}">
                {{guest.first_name}}&nbsp;{{guest.last_name}}
                </span>
-               <span class="details" ng-if="guest.last_name === guest.first_name && guest.full_name !== undefined " style="width: 100%;">
+               <span class="details" ng-if="guest.last_name === guest.first_name && guest.full_name !== undefined "
+               ng-class="{'missing-details': guest.is_missing_any_required_field}">
                {{guest.full_name}}    
                </span>
-               <span class="details" ng-if="guest.last_name === guest.first_name && guest.full_name === undefined " style="width: 100%;">
+               <span class="details" ng-if="guest.last_name === guest.first_name && guest.full_name === undefined "
+               ng-class="{'missing-details': guest.is_missing_any_required_field}">
                {{guest.first_name}}    
                </span>
-               </span>
-            </li>
-         </ul>
-      </div>
+
+              <!-- If we can skip details --
+              <button type="button" class="buttoo">Skip Details</button>
+              -->
+
+              <!-- If we have details and can view them -->
+              <button type="button" class="button transparent" ng-click="clickOnGuest(guest)" ng-if="!guest.is_missing_any_required_field" translate>
+                VIEW_GUEST_DETAILS
+              </button>
+
+              <!-- If we don't have details -->
+              <button type="button" class="button" ng-if="guest.is_missing_any_required_field" ng-click="clickOnGuest(guest)" translate>ADD_GUEST_DETAILS
+              </button>
+          </li>
+      </ul>
       <div id="actions" ng-show="screenData.showContinueButton">
          <button type="button" class="button prev add-guest-passport">
             <!-- DUMMY BUTTON -->
@@ -38,14 +53,17 @@
 <!-- SHOW GUEST INFO AS A FORM-->
 <section id="main" role="main" ng-show="screenData.screenMode == 'GUEST_DETAILS'">
    <div id="content">
-       <h1>Fill your info to proceed</h1>
-       <h2>Fields marked with * are mandatory</h2>
+       <h1 translate>FILL_IN_GUEST_INFO</h1>
+       <h2 translate>FILL_INFO_INSTRUCTIONS
+          <!-- If we can skip details -->
+          <!-- <br/><strong class="brand-color">You can skip this step for austrian citizens</strong> -->
+       </h2>
         
-       <div id="textual" class="guest-information scrollable" ng-iscroll="guests-info">
+       <div id="textual" class="guest-information one-column scrollable" ng-iscroll="guests-info" style="height: 60%; overflow: hidden;">
            <div class="wrapper">
                <form method="post" class="form">
-                   <div class="guest-information-left" ng-style="contactInfoMissigStyle" ng-if="selectedGuest.reservationDetails.length > 0">
-                       <h3>Reservation Details</h3> 
+                   <div class="guest-information-left" ng-if="selectedGuest.reservationDetails.length > 0">
+                       <!-- <h3>Reservation Details</h3>  -->
                        <!-- SELECT -->
                        <!-- TEXT -->
                        <div class="entry-row" ng-repeat="row in selectedGuest.reservationDetails">
@@ -93,8 +111,6 @@
                                </div>
                            </div>
                        </div>
-
-                       
                    </div>
                    <div class="guest-information-right" ng-style="reservationInfoMissigStyle" ng-if="selectedGuest.contactDetails.length > 0">
                        <h3>Contact Details</h3>
@@ -151,7 +167,7 @@
              
            <!-- <button type="button" class="button transparent">Cancel</button>   -->
            <button type="button" class="button" touch-press='saveGuestDetails()' translate>
-               GID_VERIFY_PASSPORT_ACCEPT
+               SAVE_GUEST_INFO
             </button>
        </div>
    </div>
