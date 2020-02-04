@@ -1,8 +1,11 @@
-sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout', 'ngDialog', 'RVPaymentSrv', 'RVReservationCardSrv', 'RVGuestCardSrv', 'rvPermissionSrv', 'RVReservationGuestSrv', '$q', 'paymentMethods', 'RVReservationPackageSrv',
-    function($rootScope, jsMappings, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout, ngDialog, RVPaymentSrv, RVReservationCardSrv, RVGuestCardSrv, rvPermissionSrv, RVReservationGuestSrv, $q, paymentMethods, RVReservationPackageSrv) {
+sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout', 'ngDialog', 'RVPaymentSrv', 'RVReservationCardSrv', 'RVGuestCardSrv', 'rvPermissionSrv', 'RVReservationGuestSrv', '$q', 'paymentMethods', 'RVReservationPackageSrv', 'RVAutomaticEmailSrv',
+    function($rootScope, jsMappings, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout, ngDialog, RVPaymentSrv, RVReservationCardSrv, RVGuestCardSrv, rvPermissionSrv, RVReservationGuestSrv, $q, paymentMethods, RVReservationPackageSrv, RVAutomaticEmailSrv) {
 
 
         BaseCtrl.call(this, $scope);
+
+        SharedMethodsBaseCtrl.call (this, $scope, RVAutomaticEmailSrv, ngDialog);
+
         $scope.isSubmitButtonEnabled = false;
 
         if ($scope.reservationData.reservationId !== '') {
@@ -1620,13 +1623,25 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             }
             $scope.depositData.attempted = true;
             $scope.depositData.depositSuccess = true;
+
+            $scope.currentPaymentBillId = data.bill_id;
+            $scope.currentPaymentTransactionId = data.transaction_id;
+
+            if ($rootScope.autoEmailPayReceipt || $rootScope.autoEmailDepositInvoice) {
+                $scope.autoTriggerPaymentReceiptActions();
+            }
+
             $scope.depositData.authorizationCode = data.authorization_code;
             $scope.reservationData.selectedPaymentId = data.payment_method.id;
 
             $scope.reservationData.depositData = angular.copy($scope.depositData);
             runDigestCycle();
             // On continue on create reservation - add to guest card - to fix undefined issue on tokendetails - commenting the if else block below for CICO-14199
-            $scope.$emit('hideLoader');
+            $scope.$emit('hideLoader');            
+        });
+
+        $scope.$on("AUTO_TRIGGER_EMAIL_AFTER_PAYMENT", function(e, data) {
+            $scope.sendAutomaticEmails(data);
         });
 
         $scope.$on("PAYMENT_FAILED", function(e, errorMessage) {

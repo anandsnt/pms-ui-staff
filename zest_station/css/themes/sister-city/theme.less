@@ -370,6 +370,11 @@
                 color: @white;
                 border-radius: 0px;
                 border: 2px solid @white;
+
+                &.missing-details {
+                    border: 2px dashed @white;
+                    color: fade( @white, 50 ) !important;
+                }
             } 
         } 
     }

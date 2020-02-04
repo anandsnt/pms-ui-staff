@@ -1444,16 +1444,19 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     $scope.closeDialog();
                     // Update reservation type
                     $rootScope.$broadcast('UPDATERESERVATIONTYPE', data.reservations[0].reservation_type_id);
-                    var totalDeposit = 0;
+                    var totalDeposit = 0,
+                        totalPaymentDeposit = 0;
                     // calculate sum of each reservation deposits
 
                     $scope.reservationsListArray = data;
                     angular.forEach(data.reservations, function(reservation, key) {
 
                         totalDeposit = parseFloat(totalDeposit) + parseFloat(reservation.deposit_amount);
+                        totalPaymentDeposit = parseFloat(totalPaymentDeposit) + parseFloat(reservation.deposit_payment_amount);
                     });
 
                     $scope.reservationData.depositAmount = parseFloat(totalDeposit).toFixed(2);
+                    $scope.reservationData.depositPaymentAmount = parseFloat(totalPaymentDeposit).toFixed(2);
                     $scope.reservationData.depositEditable = (data.allow_deposit_edit !== null && data.allow_deposit_edit) ? true : false;
                     $scope.reservationData.isValidDeposit = parseInt($scope.reservationData.depositAmount) > 0;
 

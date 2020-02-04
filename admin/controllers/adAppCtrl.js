@@ -680,11 +680,14 @@ admin.controller('ADAppCtrl', [
          * we will check the lastDropedTime with click event fired time.
          * if it is less than a predefined time, it will not fire click event, otherwise fire
          */
-        $scope.clickedMenuItem = function($event, stateToGo, shouldDisableClick) {
+        $scope.clickedMenuItem = function($event, stateToGo, shouldDisableClick, menuName) {
             var currentTime = new Date();
 
             if (shouldDisableClick) {
-                $scope.errorMessage = ['Your current subscription package does not include this service'];
+                $state.go('admin.dashboard', {
+                    menu: $scope.findMainMenuIndex(menuName),
+                    errorMsg: ['Your current subscription package does not include this service']
+                });
             } else {
                 $scope.clearErrorMessage();
                 if (lastDropedTime !== '' && typeof lastDropedTime === 'object') {
@@ -717,6 +720,15 @@ admin.controller('ADAppCtrl', [
             $scope.selectedIndex = menu;
             $scope.selectedMenu = $scope.data.menus[$scope.selectedIndex];
         });
+
+        $scope.isComponentDisabled = function(component) {
+            return (
+                component.name === 'Check In' || component.name === 'Check Out' ||
+                    component.name === 'Direct URL' || component.name === '' || component.name === 'Zest Web Common' ||
+                    component.name === 'Room Ready Email' || component.name === 'Zest Web Global Setup' ||
+                    component.name === "Email from Guest" || component.name === "SMS / Short Code"
+            )
+        }
         /*
          * Success callback of get language
          * @param {object} response
@@ -821,25 +833,20 @@ admin.controller('ADAppCtrl', [
             };
 
             $rootScope.isAllowanceEnabled = data.is_allowance_enabled;
-
-            var isZestWebEnabled = data.is_zest_web_enabled;
-
+            $scope.isZestWebEnabled = data.is_zest_web_enabled;
             setupLeftMenu();
-            var isComponentDisabled = function(component) {
-                return (
-                    component.name === 'Check In' || component.name === 'Check Out' ||
-                        component.name === 'Direct URL' || component.name === '' || component.name === 'Zest Web Common' ||
-                        component.name === 'Room Ready Email' || component.name === 'Zest Web Global Setup' ||
-                        component.name === "Email from Guest" || component.name === "SMS / Short Code"
-                )
-            }
 
             _.each($scope.data.menus, function(menu) {
                 _.each(menu.components, function(component) {
-                    if (!isZestWebEnabled && menu.menu_name === 'Zest' && isComponentDisabled(component)) {
+                    if (!$scope.isZestWebEnabled && menu.menu_name === 'Zest' && $scope.isComponentDisabled(component)) {
                         component.is_disabled = true;
                     }
                 });
+            });
+            _.each($scope.bookMarks, function(component) {
+                if (!$scope.isZestWebEnabled && component.menu_name === 'Zest' && $scope.isComponentDisabled(component)) {
+                    component.is_disabled = true;
+                }
             });
 
             $scope.isZestStationEnabled = data.is_zest_station_enabled;
@@ -948,19 +955,23 @@ admin.controller('ADAppCtrl', [
             *   Method to go back to previous state.
             */
         $scope.goBackToPreviousState = function() {
-                $scope.clearErrorMessage();
-                if ($rootScope.previousStateParam) {
-                  $state.go($rootScope.previousState, { menu: $rootScope.previousStateParam});
-                }
-                else if ($rootScope.previousState) {
-                  $state.go($rootScope.previousState);
-                }
-                else
-                {
-                  $state.go('admin.dashboard', {menu: 0});
-                }
-
-            };
+            $scope.clearErrorMessage();
+            if ($rootScope.previousStateParam) {
+                $state.go($rootScope.previousState, {
+                    menu: $rootScope.previousStateParam,
+                    errorMsg: []
+                });
+            }
+            else if ($rootScope.previousState) {
+                $state.go($rootScope.previousState);
+            }
+            else {
+                $state.go('admin.dashboard', {
+                    menu: 0,
+                    errorMsg: []
+                });
+            }
+        };
 
 
         $rootScope.$on('ngDialog.opened', function(e, $dialog) {

@@ -70,8 +70,7 @@ sntRover.config([
 		// adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
 		$httpProvider.interceptors.push('sharedHttpInterceptor');
 		$httpProvider.interceptors.push('sharedSessionTimeoutInterceptor');
-
-
+		
 		$qProvider.errorOnUnhandledRejections(false);
 
 	    ngDialogProvider.setDefaults({
