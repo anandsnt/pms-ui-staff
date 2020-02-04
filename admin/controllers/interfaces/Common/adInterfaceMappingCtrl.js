@@ -6,6 +6,7 @@ admin.controller('adInterfaceMappingCtrl', [
         ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
         var mappingText = {
+            'booking_origins': 'Booking Origins',
             'cancellation_code': 'Cancellation Codes',
             'charge_code_analytic_code': 'Charge Code - Analytic Code',
             'charge_code': 'Charge Code - General Ledger',
@@ -25,6 +26,7 @@ admin.controller('adInterfaceMappingCtrl', [
         var mappingPartials = {
             'CEGID': '/assets/partials/interfaces/cegid/adCegidMapping.html',
             'DATAPLUS': '/assets/partials/interfaces/dataplus/adDataplusMappingDetailView.html',
+            'DEDGE': '/assets/partials/interfaces/d-edge/adDEdgeMappingDetailView.html',
             'DELPHI': '/assets/partials/interfaces/delphi/mapping.html',
             'DERBYSOFT': '/assets/partials/interfaces/DerbySoft/adDerbySoftMappingDetailView.html',
             'FISKALTRUST': '/assets/partials/interfaces/fiskaltrust/adFiskaltrustMappingDetailView.html',

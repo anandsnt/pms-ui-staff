@@ -86,7 +86,6 @@ function sntBaseWebSrv($http, $q, $window, $rootScope, $log) {
         return deferred.promise;
     };
 
-
     /**
      *   A http requester method for calling webservice
      *   @param {function} httpMethod function of the method to call like $http.get, $http.put..
@@ -134,6 +133,64 @@ function sntBaseWebSrv($http, $q, $window, $rootScope, $log) {
             } else {
                 deferred.resolve(data);
             }
+        }, function (response) {
+            var errors = response.errors,
+                status = response.status;
+
+            webserviceErrorActions(url, deferred, errors, status);
+        });
+
+        return deferred.promise;
+    };
+
+    /**
+     *   A http requester method for calling webservice
+     *   @param {function} method function of the method to call like $http.get, $http.put..
+     *   @param {string} url webservice url
+     *   @param {Object} data data for webservice
+     *   @return {promise} promise
+     */
+    this.callWebServiceForFileDownload = function (method, url, data) {
+        var deferred = $q.defer();
+
+        $http({
+            url: url,
+            method: method,
+            data: data || '',
+            transformResponse: false
+        }).then(function (response) {
+            
+            var data = response.data,
+                headers = response.headers,
+                hiddenAnchor = angular.element('<a/>'),
+                blob = new Blob([data]);
+
+            hiddenAnchor.attr({
+                href: window.URL.createObjectURL(blob),
+                target: '_blank',
+                download: headers()['content-disposition'].match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/)[1].replace(/['"]+/g, '')
+            });
+
+            // The below solution is from 
+            // http://stackoverflow.com/questions/24673612/element-click-does-not-work-in-firefox-and-ie-but-works-in-chrome
+            if (document.createEvent) {
+                var ev = document.createEvent("MouseEvent");
+
+                ev.initMouseEvent(
+                    "click",
+                    true /* bubble */, true /* cancelable */,
+                    window, null,
+                    0, 0, 0, 0, /* coordinates */
+                    false, false, false, false, /* modifier keys */
+                    0 /* left*/, null
+                );
+                hiddenAnchor[0].dispatchEvent(ev);
+            }
+            else {
+                hiddenAnchor[0].fireEvent("onclick");
+            }
+            deferred.resolve(true);
+            
         }, function (response) {
             var errors = response.errors,
                 status = response.status;
@@ -202,6 +259,17 @@ function sntBaseWebSrv($http, $q, $window, $rootScope, $log) {
      */
     this.deleteJSON = function (url, params) {
         return this.callWebService('DELETE', url, params);
+    };
+
+    /**
+     * exportFile
+     * @param {string} url endpoint
+     * @param {object} params payload
+     * @returns {promise} promise
+     */
+    this.download = function (url, params, method) {
+        method = method || 'POST';
+        return this.callWebServiceForFileDownload(method, url, params);
     };
 
 }
