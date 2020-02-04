@@ -29,7 +29,7 @@
                </span>
 
               <!-- If we can skip details -- -->
-              <button type="button" class="button" ng-if="bypassQuest" ng-class="{'transparent' : !guest.is_missing_any_required_field}" click-touch="byPassGuestInfo(guest)" translate>SKIP_GUEST_DETAILS</button>
+              <button type="button" class="button" ng-if="bypassQuest && !guest.is_all_info_present" ng-class="{'transparent' : !guest.is_missing_any_required_field}" click-touch="byPassGuestInfo(guest)" translate>SKIP_GUEST_DETAILS</button>
              
               <button type="button" class="button" ng-class="{'transparent' : !guest.is_missing_any_required_field}" click-touch="clickOnGuest(guest)"
               > 

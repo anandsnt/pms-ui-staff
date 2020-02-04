@@ -296,6 +296,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 					if (selectedGuest.id === guest.id) {
 						selectedGuest.guest_details = guest.guest_details;
 						selectedGuest.is_missing_any_required_field = guest.is_missing_any_required_field;
+						selectedGuest.is_all_info_present = !selectedGuest.is_missing_any_required_field;
 						selectedGuest.guest_type = guest.guest_type;
 					}
 				});
