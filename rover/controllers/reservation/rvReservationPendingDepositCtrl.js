@@ -5,7 +5,7 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 
 		BaseCtrl.call(this, $scope);
 
-		SharedMethodsBaseCtrl.call (this, $scope, RVAutomaticEmailSrv, ngDialog);
+		SharedMethodsBaseCtrl.call (this, $scope, $rootScope, RVAutomaticEmailSrv, ngDialog);
 
 		var init = (function() {
 
