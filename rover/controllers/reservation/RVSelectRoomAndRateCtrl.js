@@ -1204,8 +1204,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 			if (!!$scope.reservationData.group.id) {
 				
-				if ( availability < roomCount && !canOverbookHouse && !canOverbookRoomType) {
-					return true;
+				if ( availability >= roomCount ) {
+					return false;
 				}
 				// CICO-24923 TEMPORARY
 			}

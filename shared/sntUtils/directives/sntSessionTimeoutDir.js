@@ -131,16 +131,26 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
                 });
             };
 
+            // Get the idle time in seconds
+            var getIdleTimeSecs = function () {
+                var idlTimeSecs = 0;
+
+                if ($( document ).idleTimer("isIdle")) {
+                    idlTimeSecs = Math.floor($(document).idleTimer("getElapsedTime") / 1000);
+                }
+                
+                return idlTimeSecs;
+            };
+
             /**
              * Check and validate the token expiry based on browser idle time
              */
             var checkAndValidateToken = function (isAPItokenExpired) {
-                var autoLogoutDelaySecs = Math.floor(sessionTimeoutHandlerSrv.getAutoLogoutDelay() / 1000),
-                    idleTimeByStorageKey = Math.floor(parseInt(localStorage.getItem('sntIdleTimer'), 10) / 1000);
-                
+                var autoLogoutDelaySecs = Math.floor(sessionTimeoutHandlerSrv.getAutoLogoutDelay() / 1000);
+                                
                 // We have added 30s here because the timer will be set after 30s when its idle as configured
                 // 15 secs have been deducted as the the check will be done 15s prior to token expiry
-                if ( (idleTimeByStorageKey + 30 ) > (autoLogoutDelaySecs - 15) || isAPItokenExpired) {
+                if ( (getIdleTimeSecs() + 30 ) > (autoLogoutDelaySecs - 15) || isAPItokenExpired) {
                     showSessionTimeoutPopup();
                 } else {
                     refreshToken();
@@ -153,13 +163,13 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
              */
             var setUpEventListeners = function () {
 
-                $(document).idleTimer( {
+                $(document).idleTimer({
                     timeout: 30000,
                     timerSyncId: 'sntIdleTimer'
                 });
 
                 // This will be invoked when the user is idle for 30s
-                $(document).on( "idle.idleTimer", function() {
+                $(document).on( 'idle.idleTimer', function() {
                     refreshToken();
                 });
 
