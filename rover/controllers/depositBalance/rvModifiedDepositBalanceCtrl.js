@@ -22,7 +22,7 @@ sntRover.controller('RVDepositBalanceCtrl', [
 
         BaseCtrl.call(this, $scope);
 
-        SharedMethodsBaseCtrl.call (this, $scope, RVAutomaticEmailSrv, ngDialog);
+        SharedMethodsBaseCtrl.call (this, $scope, $rootScope, RVAutomaticEmailSrv, ngDialog);
 
         // NOTE: For connected hotels, the deposit policy is not available inside this controller.
         // CICO-34705 in case no deposit policy is set; then the API will not provide the deposit_policy key

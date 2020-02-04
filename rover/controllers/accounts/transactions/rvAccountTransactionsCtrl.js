@@ -38,7 +38,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		BaseCtrl.call(this, $scope);
 
-		SharedMethodsBaseCtrl.call (this, $scope, RVAutomaticEmailSrv, ngDialog);
+		SharedMethodsBaseCtrl.call (this, $scope, $rootScope, RVAutomaticEmailSrv, ngDialog);
 		var that = this;
 
 		$scope.perPage = 50;
