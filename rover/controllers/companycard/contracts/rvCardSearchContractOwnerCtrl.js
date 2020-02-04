@@ -6,38 +6,39 @@ angular.module('sntRover').controller('rvCardSearchContractOwnerCtrl', ['$scope'
             SCROLL_DELAY = 500;
 
         that.initialise = function() {
-            $scope.contractData.expandOwner = false;
-            $scope.contractData.searchResults = [];
-            $scope.setScroller('searchResultsList');
+            $scope.contractData.contractOwner.expand = false;
+            $scope.contractData.contractOwner.results = [];
+            $scope.contractData.contractOwner.selectedOwner = {};
+            $scope.setScroller('searchResultsOwnerList');
         };
 
         // Handle refresh scroll
         that.refreshSearchList = function() {
             $timeout(function() {
-                $scope.refreshScroller('searchResultsList');
+                $scope.refreshScroller('searchResultsOwnerList');
             }, SCROLL_DELAY);
         };
 
         /* 
          *  Handle API call to fetch contract rates.
          */
-        that.fetchRateContract = function() {
-            var fetchRateContractSuccessCallback = function(data) {
-                $scope.contractData.searchResults = data.contract_rates;
+        that.fetchOwners = function() {
+            var fetchOwnersSuccessCallback = function(data) {
+                $scope.contractData.contractOwner.results = data.contract_rates;
                 $scope.$emit('refreshContractsScroll');
                 that.refreshSearchList();
             },
-            fetchRateContractFailureCallback = function(errorMessage) {
+            fetchOwnersFailureCallback = function(errorMessage) {
                 $scope.$emit('setErrorMessage', errorMessage);
             },
             accountId = !_.isEmpty($scope.contactInformation) ? $scope.contactInformation.id : $stateParams.id;
 
             var options = {
-                successCallBack: fetchRateContractSuccessCallback,
-                failureCallBack: fetchRateContractFailureCallback,
+                successCallBack: fetchOwnersSuccessCallback,
+                failureCallBack: fetchOwnersFailureCallback,
                 params: {
-                    'query': $scope.contractData.rateSearchQuery,
-                    'selected_rate_ids': _.pluck($scope.contractData.selectedRateList, 'id'),
+                    'query': $scope.contractData.contractOwner.query,
+                    'is_inactive': $scope.contractData.contractOwner.isInactive,
                     'account_id': accountId
                 }
             };
@@ -46,85 +47,50 @@ angular.module('sntRover').controller('rvCardSearchContractOwnerCtrl', ['$scope'
                 options.params.contract_id = $scope.contractData.selectedContractId;
             }
 
-            $scope.callAPI(rvCompanyCardContractsSrv.fetchRateContract, options);
+            $scope.callAPI(rvCompanyCardContractsSrv.fetchOwners, options);
         };
 
         // Handle rate search.
-        $scope.searchRate = function() {
-            if ($scope.contractData.rateSearchQuery.length > 2) {
-                that.fetchRateContract();
+        $scope.searchOwner = function() {
+            if ($scope.contractData.contractOwner.query.length > 2) {
+                that.fetchOwners();
             }
             else {
-                $scope.contractData.searchResults = [];
+                $scope.contractData.contractOwner.results = [];
             }
         };
         // Handle clear search.
         $scope.clearQuery = function() {
-            $scope.contractData.rateSearchQuery = '';
-            $scope.contractData.searchResults = [];
+            $scope.contractData.contractOwner.query = '';
+            $scope.contractData.contractOwner.results = [];
             $scope.$emit('refreshContractsScroll');
         };
         /* 
          *  Handle click on each item in the result list
-         *  @params {Number} [index of the searchResults]
+         *  @params {Number} [index of the results]
          */
         $scope.clickedOnResult = function( index ) {
-            var clickedItem = $scope.contractData.searchResults[index],
-            linkRateSuccessCallback = function() {
-                $scope.contractData.selectedRateList.push(clickedItem);
-                $scope.$emit('refreshContractsScroll');
-                $scope.contractData.searchResults = [];
-                $scope.contractData.rateSearchQuery = '';
-            },
-            linkRateFailureCallback = function(errorMessage) {
-                $scope.$emit('setErrorMessage', errorMessage);
-            },
-            accountId = !_.isEmpty($scope.contactInformation) ? $scope.contactInformation.id : $stateParams.id;
-
-            var options = {
-                successCallBack: linkRateSuccessCallback,
-                failureCallBack: linkRateFailureCallback,
-                params: {
-                    "id": $scope.contractData.selectedContractId,
-                    "rate_id": clickedItem.id,
-                    "account_id": accountId
-                }
-            };
-
-            $scope.callAPI(rvCompanyCardContractsSrv.linkRate, options);
-        };
-
-        // Unlink a Rate after confirmation popup.
-        $scope.confirmRemoveRate = function( rateId ) {
-            
-            var unlinkRateSuccessCallback = function() {
-                var removeIndex = $scope.contractData.selectedRateList.map(function(item) { 
-                                    return item.id; 
-                                }).indexOf(rateId);
-
-                $scope.contractData.selectedRateList.splice(removeIndex, 1);
-                $scope.$emit('refreshContractsScroll');
-            },
-            unlinkRateFailureCallback = function( errorMessage ) {
-                showErrorMessagePopup(errorMessage);
-            },
-            accountId = !_.isEmpty($scope.contactInformation) ? $scope.contactInformation.id : $stateParams.id;
-
-            var options = {
-                successCallBack: unlinkRateSuccessCallback,
-                failureCallBack: unlinkRateFailureCallback,
-                params: {
-                    "id": $scope.contractData.selectedContractId,
-                    "rate_id": rateId,
-                    "account_id": accountId
-                }
-            };
-
-            $scope.callAPI(rvCompanyCardContractsSrv.unlinkRate, options);
+            if (index === 'NO_OWNER') {
+                $scope.contractData.contractOwner.selectedOwner = {};
+            }
+            else {
+                $scope.contractData.contractOwner.selectedOwner = $scope.contractData.contractOwner.results[index];
+            }
+            $scope.clearQuery();
+            $scope.contractData.contractOwner.expand = false;
         };
 
         $scope.clickedOwner = function() {
-            $scope.contractData.expandOwner = !$scope.contractData.expandOwner;
+            $scope.contractData.contractOwner.expand = !$scope.contractData.contractOwner.expand;
+            if ($scope.contractData.contractOwner.expand) {
+                $scope.clearQuery();
+                $scope.contractData.contractOwner.isInactive = false;
+            }
+            $scope.$emit('refreshContractsScroll');
+        };
+
+        $scope.clickedInactive = function() {
+            $scope.contractData.contractOwner.isInactive = !$scope.contractData.contractOwner.isInactive;
         };
 
         that.initialise();
