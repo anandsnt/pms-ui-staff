@@ -11,13 +11,6 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 		/* ************************************************
 
 		Two modes GUEST_DETAILS and GUEST_LIST
-
-		Different popups are listed below
-
-		WARNING_POPUP --> While saving if any required data is missing or API failed to save
-		SHOW_QUESTION --> Show bypass collect info question
-		BYPASS_INFO_CHOOSED --> On choosing to bypass question, show msg to guest that the selected guest info can be skipped
-		ALL_REQUIRED_INFO_PRESENT --> If all the required guest info is saved or bypassed, show msg to guest and allow them to proceed.
 		
 		*********************************************** */
 
@@ -33,7 +26,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 		var selectedCalendarModelDisplay = "";
 
 		var onGuestInfoSave = function() {
-			$scope.selectedGuest.is_missing_any_required_field = false;
+			
 			// If there is only one guest, checkin the reservation and proceed
 			if ($scope.selectedReservation.guest_details.length === 1) {
 				$scope.$emit('CHECKIN_GUEST', {
@@ -46,7 +39,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 
 				// If all the info needed are saved or bypassed, show the message to the guest
 				if (guestsWithMissingInfo.length === 0) {
-					$scope.screenData.openedPopupName = 'ALL_REQUIRED_INFO_PRESENT';
+					// $scope.screenData.openedPopupName = 'ALL_REQUIRED_INFO_PRESENT';
 					$scope.screenData.showContinueButton = true;
 				}
 				$scope.screenData.screenMode = 'GUEST_LIST';
@@ -81,13 +74,6 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 					}
 				});
 			});
-			_.each($scope.selectedGuest.contactDetails, function(row) {
-				_.each(row, function(field) {
-					if (field.mandatory && !field[field.field_key]) {
-						allRequireFieldsFilled = false;
-					}
-				});
-			});
 
 			if (!allRequireFieldsFilled) {
 				$scope.screenData.openedPopupName = 'WARNING_POPUP';
@@ -96,12 +82,6 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 				var apiParams = {};
 
 				_.each($scope.selectedGuest.reservationDetails, function(row) {
-					_.each(row, function(field) {
-						apiParams[field.field_key] = field[field.field_key];
-					});
-				});
-
-				_.each($scope.selectedGuest.contactDetails, function(row) {
 					_.each(row, function(field) {
 						apiParams[field.field_key] = field[field.field_key];
 					});
@@ -122,7 +102,10 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 
 				var options = {
 					params: apiParams,
-					successCallBack: onGuestInfoSave,
+					successCallBack: function () {
+						$scope.selectedGuest.is_missing_any_required_field = false;
+						onGuestInfoSave();
+					},
 					failureCallBack: function() {
 						$scope.screenData.openedPopupName = 'WARNING_POPUP';
 						$scope.screenData.showErrorMessage = true;
@@ -141,37 +124,12 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 				.format($scope.zestStationData.hotelDateFormat);
 		};
 
-		var contactDetailsKeys = [
-			'additional_contacts.email',
-			'additional_contacts.phone',
-			'additional_contacts.mobile',
-			'addresses.street1',
-			'addresses.street2',
-			'addresses.city',
-			'addresses.state',
-			'addresses.postal_code',
-			'addresses.country_id'
-		];
-
 		var retrieveGuestInfoForDisplay = function(guestInfo) {
 
 			$scope.selectedGuest.reservationDetails = [];
-			$scope.selectedGuest.contactDetails = [];
 
-			// guestInfo = _.filter(guestInfo, function(info){
-			// 	return contactDetailsKeys.indexOf(info.field) !== -1;
-			// });
-
-			var guestInfoWithoutContactDetails = _.filter(guestInfo, function(info) {
-				return contactDetailsKeys.indexOf(info.field) === -1;
-			});
-
-			var guestInfoWithContactDetails = _.filter(guestInfo, function(info) {
-				return contactDetailsKeys.indexOf(info.field) !== -1;
-			});
 			var individualRow = {
-				'reservationDetails': [],
-				'contactDetails': []
+				'reservationDetails': []
 			};
 
 			// Since the design is with two fields in a row, we need to group them before repeating
@@ -204,20 +162,9 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 				}
 			};
 
-			_.each(guestInfoWithoutContactDetails, function(info, $index) {
-				groupData(info, $index, $scope.selectedGuest.reservationDetails, 'reservationDetails', guestInfoWithoutContactDetails);
+			_.each(guestInfo, function(info, $index) {
+				groupData(info, $index, $scope.selectedGuest.reservationDetails, 'reservationDetails', guestInfo);
 			});
-
-			_.each(guestInfoWithContactDetails, function(info, $index) {
-				groupData(info, $index, $scope.selectedGuest.contactDetails, 'contactDetails', guestInfoWithContactDetails);
-			});
-
-			$scope.contactInfoMissigStyle = guestInfoWithContactDetails.length > 0 ? {} : {
-				"width": "100%"
-			};
-			$scope.reservationInfoMissigStyle = guestInfoWithoutContactDetails.length > 0 ? {} : {
-				"width": "100%"
-			};
 
 		};
 
@@ -226,9 +173,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 			retrieveGuestInfoForDisplay(guest.guest_details);
 			$scope.screenData.triedToSave = false;
 
-			if (guestInfo.metadata.enable_bypass) {
-				showQuestionForGuest();
-			} else {
+
 				$scope.screenData.screenMode = 'GUEST_DETAILS';
 				// refresh scroller and scroll to top
 				refreshScroller();
@@ -238,19 +183,13 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 					scroller.scrollTo(0, 0, 300);
 				}, 0);
 				$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
-			}
+			
 		};
 
 		var refreshScroller = function() {
 			$timeout(function() {
 				$scope.refreshScroller('guests-info');
 			}, 100);
-		};
-
-		// QUESTION POPUP CODE STARTS HERE
-
-		var showQuestionForGuest = function() {
-			$scope.screenData.openedPopupName = 'SHOW_QUESTION';
 		};
 
 		var resetMissingInfoFlagIfNeeded = function() {
@@ -264,34 +203,11 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 			$scope.selectedGuest.is_missing_any_required_field = missingInfoForGuest.length > 0;
 		};
 
-		$scope.noByPassChoosed = function() {
-			resetMissingInfoFlagIfNeeded();
-			$scope.screenData.screenMode = 'GUEST_DETAILS';
-			refreshScroller();
-			$scope.screenData.openedPopupName = '';
-			if ($scope.selectedReservation.guest_details.length > 1) {
-				$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
-			}
-		};
-
-		$scope.byPassQuest = function() {
+		$scope.byPassGuestInfo = function(guest) {
 			// record in activity log. Mark as not required
-			$scope.selectedGuest.is_missing_any_required_field = false;
-			$scope.screenData.openedPopupName = 'BYPASS_INFO_CHOOSED';
+			guest.is_missing_any_required_field = false;
+			onGuestInfoSave();
 		};
-
-		$scope.closeQuestionPopup = function() {
-			$scope.screenData.openedPopupName = '';
-			if ($scope.selectedReservation.guest_details.length === 1) {
-				$scope.$emit('CHECKIN_GUEST', {
-					checkinParams: checkinParams
-				});
-			} else {
-				onGuestInfoSave();
-			}
-		};
-
-		// QUESTION POPUP CODE ENDS HERE
 
 		var onBackButtonClicked = function() {
 			if ($scope.screenData.screenMode === 'GUEST_DETAILS') {
@@ -414,12 +330,8 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 				// If there is only one guest, show the bypass question if set or the guest info details
 				$scope.selectedGuest = guestInfo.guests[0];
 				retrieveGuestInfoForDisplay(guestInfo.guests[0].guest_details);
-				if (guestInfo.metadata.enable_bypass) {
-					showQuestionForGuest();
-				} else {
-					$scope.screenData.screenMode = 'GUEST_DETAILS';
-					refreshScroller();
-				}
+				$scope.screenData.screenMode = 'GUEST_DETAILS';
+				refreshScroller();
 			}
 		})();
 	}

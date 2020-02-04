@@ -869,11 +869,9 @@
     "SAVE_GUEST_INFO": "Save",
     "GUEST_INFO_MISSGING_HEADING": "Guest Info missing",
     "GUEST_INFO_MISSGING_SUB_HEADING": "Please enter all the required details",
-    "BYPASS_INFO_MSG": "Since you have choosed Austrian, you don't have to fill info for the selected guest.",
-    "ALL_REQUIRED_INFO_SAVED_MSG": "All required info saved!!..Now you can proceed to checkin.",
     "CLOSE": "CLOSE",
     "VIEW_GUEST_DETAILS": "View Details",
-    "ADD_GUEST_DETAILS": "Add Details"
-
-
+    "ADD_GUEST_DETAILS": "Add Details",
+    "SKIP_GUEST_DETAILS": "Skip Details",
+    "BYPASS_GUEST_INFO_MSG": "You can skip this step for Austrian citizens"
 }

@@ -7,6 +7,9 @@
       <h2 translate="">
          GUEST_INFO_MISSGING_SUB_HEADING
       </h2>
+      <h2 ng-if="bypassQuest">
+        <strong class="brand-color" translate="">BYPASS_GUEST_INFO_MSG</strong>
+      </h2>
       <ul id="selection" class="editable with-buttons">
           <li ng-repeat='guest in selectedReservation.guest_details track by $index'>
 
@@ -25,17 +28,12 @@
                {{guest.first_name}}    
                </span>
 
-              <!-- If we can skip details --
-              <button type="button" class="buttoo">Skip Details</button>
-              -->
-
-              <!-- If we have details and can view them -->
-              <button type="button" class="button transparent" ng-click="clickOnGuest(guest)" ng-if="!guest.is_missing_any_required_field" translate>
-                VIEW_GUEST_DETAILS
-              </button>
-
-              <!-- If we don't have details -->
-              <button type="button" class="button" ng-if="guest.is_missing_any_required_field" ng-click="clickOnGuest(guest)" translate>ADD_GUEST_DETAILS
+              <!-- If we can skip details -- -->
+              <button type="button" class="button" ng-if="bypassQuest" ng-class="{'transparent' : !guest.is_missing_any_required_field}" click-touch="byPassGuestInfo(guest)" translate>SKIP_GUEST_DETAILS</button>
+             
+              <button type="button" class="button" ng-class="{'transparent' : !guest.is_missing_any_required_field}" click-touch="clickOnGuest(guest)"
+              > 
+                 {{ (guest.is_missing_any_required_field ? 'ADD_GUEST_DETAILS' : 'VIEW_GUEST_DETAILS' ) |  translate }}
               </button>
           </li>
       </ul>
@@ -55,8 +53,9 @@
    <div id="content">
        <h1 translate>FILL_IN_GUEST_INFO</h1>
        <h2 translate>FILL_INFO_INSTRUCTIONS
-          <!-- If we can skip details -->
-          <!-- <br/><strong class="brand-color">You can skip this step for austrian citizens</strong> -->
+       </h2>
+       <h2 ng-if="bypassQuest">
+        <strong class="brand-color" translate="">BYPASS_GUEST_INFO_MSG</strong>
        </h2>
         
        <div id="textual" class="guest-information one-column scrollable" ng-iscroll="guests-info" style="height: 60%; overflow: hidden;">
@@ -83,7 +82,9 @@
                                       ng-if="field.type === 'text'"
                                       ng-class="{'with-error': screenData.triedToSave && field.mandatory && !field[field.field_key]}" />
                                <!-- select -->
+
                                <div class="entry select" ng-if="field.type === 'select'">
+                                <!-- {{field}} -->
                                     <select 
                                     ng-model="field[field.field_key]" 
                                     class="placeholder" 
@@ -163,9 +164,11 @@
                </form>
            </div>
        </div> 
-       <div id="actions" class="align-right">
-             
-           <!-- <button type="button" class="button transparent">Cancel</button>   -->
+       <div id="actions" ng-class="{'align-right' : !bypassQuest }">
+            
+            <!-- If we can skip details show this -- -->   
+            <button type="button" class="button" touch-press='byPassGuestInfo(selectedGuest)' ng-if="bypassQuest" translate>SKIP_GUEST_DETAILS</button>  
+                    
            <button type="button" class="button" touch-press='saveGuestDetails()' translate>
                SAVE_GUEST_INFO
             </button>
@@ -186,57 +189,6 @@
       <button type="button" class="button idle-timeout-btn" click-touch='dismissPopup();'>
          <text data-ng-bind-html="getTagValue('OK')" editable-text="OK"></text>
       </button>
-   </div>
-</div>
-
-<!-- SHOW BYPASS INFO QUEST -->
-<div class="popup" ng-class="{'open': screenData.openedPopupName === 'SHOW_QUESTION' }">
-   <!-- Remove class "open" to hide popup content -->
-   <div class="popup-content">
-      <h2 class="nocaps">
-         {{ bypassQuest | translate }}
-      </h2>
-      <div id="message-action">
-         <button type="button" class="button idle-timeout-btn" click-touch='noByPassChoosed();'>
-         {{ bypassAnswerNo | translate }}
-         </button>
-         <button type="button" class="button idle-timeout-btn" click-touch='byPassQuest();'>
-         {{ bypassAnswer | translate }}
-         </button>
-      </div>
-   </div>
-</div>
-
-<!-- SHOW BYPASSED GUEST MSG -->
-<div class="popup" ng-class="{'open': screenData.openedPopupName === 'BYPASS_INFO_CHOOSED'}">
-   <!-- Remove class "open" to hide popup content -->
-   <div class="popup-content">
-      <h2 class="nocaps" translate="">
-         BYPASS_INFO_MSG
-      </h2>
-      <div id="message-action">
-         <button type="button" class="button idle-timeout-btn" click-touch='closeQuestionPopup();' translate>
-          OK
-         </button>
-      </div>
-   </div>
-</div>
-
-<!-- SHOW WHEN ALL REQUIRED INFO ARE SAVED OR GUEST IS ELIGIBLE TO BYPASS -->
-<div class="popup" ng-class="{'open': screenData.openedPopupName === 'ALL_REQUIRED_INFO_PRESENT' }">
-   <!-- Remove class "open" to hide popup content -->
-   <div class="popup-content">
-      <h2 class="nocaps" translate>
-          ALL_REQUIRED_INFO_SAVED_MSG
-      </h2>
-      <div id="message-action">
-         <button type="button" class="button idle-timeout-btn" click-touch='revisitGuestList();' translate>
-          CLOSE
-         </button>
-         <button type="button" class="button idle-timeout-btn" click-touch='checkinReservation();' translate>
-          CONTINUE
-         </button>
-      </div>
    </div>
 </div>
 
