@@ -1,8 +1,8 @@
 admin.controller('ADAppCtrl', [
     '$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData', 'businessDate',
-    '$timeout', 'ngDialog', 'sntAuthorizationSrv', '$filter', '$sce', 'adMenuSrv', '$transitions', 'sntActivity',
+    '$timeout', 'ngDialog', 'sntAuthorizationSrv', '$filter', '$sce', 'adMenuSrv', '$transitions', 'sntActivity', 'sessionTimeoutHandlerSrv',
     function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData, businessDate,
-             $timeout, ngDialog, sntAuthorizationSrv, $filter, $sce, adMenuSrv, $transitions, sntActivity) {
+             $timeout, ngDialog, sntAuthorizationSrv, $filter, $sce, adMenuSrv, $transitions, sntActivity, sessionTimeoutHandlerSrv) {
 
         // hide the loading text that is been shown when entering Admin
         $( ".loading-container" ).hide();
@@ -844,7 +844,7 @@ admin.controller('ADAppCtrl', [
                 });
             });
             _.each($scope.bookMarks, function(component) {
-                if (!$scope.isZestWebEnabled && (component.menu_name === 'Zest' || component.menu_name === 'Station') && $scope.isComponentDisabled(component)) {
+                if (!$scope.isZestWebEnabled && component.menu_name === 'Zest' && $scope.isComponentDisabled(component)) {
                     component.is_disabled = true;
                 }
             });
@@ -1022,6 +1022,10 @@ admin.controller('ADAppCtrl', [
         $scope.logout = function() {
             ADAppSrv.signOut().finally(function() {
                 $timeout(function () {
+                    if (sessionTimeoutHandlerSrv.getWorker()) {
+                        sessionTimeoutHandlerSrv.stopTimer();
+                        $scope.$emit('CLOSE_SESSION_TIMEOUT_POPUP');
+                    }
                     $window.location.href = '/logout';
                 });
             });
