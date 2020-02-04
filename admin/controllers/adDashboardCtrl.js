@@ -4,7 +4,7 @@ admin.controller('ADDashboardCtrl', ['$scope', '$state', '$stateParams', '$rootS
         $scope.errorMessage = $stateParams.errorMsg;
     }
     if ($scope.isZestStationEnabled || $scope.selectedMenu.menu_name !== 'Station') {
-        if($scope.selectedMenu.menu_name !== 'Zest' && !$scope.isZestWebEnabled) {
+        if ($scope.selectedMenu.menu_name !== 'Zest' && !$scope.isZestWebEnabled) {
             $scope.errorMessage = [];
         }
         $scope.$emit("changedSelectedMenu", $stateParams.menu);
