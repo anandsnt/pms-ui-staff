@@ -165,4 +165,18 @@ angular.module('sntRover').service('rvCompanyCardContractsSrv', ['$q', 'sntBaseW
         return deferred.promise;
     };
 
+    this.fetchOwners = function(params) {
+        var url = '/api/rates/contract_rates',
+            deferred = $q.defer();
+
+        sntBaseWebSrv.getJSON(url, params)
+            .then(function(data) {
+                deferred.resolve(data);
+            },
+            function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+        return deferred.promise;
+    };
+
 }]);
