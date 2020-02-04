@@ -2,11 +2,20 @@ admin.controller('ADchargeCodeDatepickerCtrl', ['$scope', 'ngDialog', '$rootScop
 
 // if no date is selected .Make bussiness date as default CICO-8703
 
-$scope.setUpData = function() {
+var minDate = "";
+
+if ($scope.whichDate === "from") {
+    minDate = tzIndependentDate($rootScope.businessDate);
+} else {
+    minDate = $scope.prefetchData.custom_tax_rules[$scope.currentTaxIndex].from_date;
+}
+
+$scope.setUpData = function(minDate) {
     $scope.dateOptions = {
         changeYear: true,
         changeMonth: true,
-        minDate: tzIndependentDate($rootScope.businessDate),
+        minDate: tzIndependentDate(minDate),
+
         onSelect: function(dateText, inst) {
         	if ($scope.whichDate === "from") {
         		$scope.prefetchData.custom_tax_rules[$scope.currentTaxIndex].from_date = $filter('date')(tzIndependentDate($scope.from_date), $rootScope.dateFormat);
@@ -18,6 +27,6 @@ $scope.setUpData = function() {
         }
     };
 };
-$scope.setUpData();
+$scope.setUpData(minDate);
 
 }]);

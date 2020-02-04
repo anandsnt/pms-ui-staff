@@ -254,7 +254,8 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		 * Delete Tax rule
 		 */
 		$scope.deleteTaxRule = function(indexToBeDeleted) {
-			$scope.prefetchData.custom_tax_rules = $scope.prefetchData.custom_tax_rules.splice(indexToBeDeleted);
+			$scope.prefetchData.custom_tax_rules.splice(indexToBeDeleted, 1);
+			$scope.prefetchData.custom_tax_rules
 		};
 		/*
 		 * Delete Date Range parameter
