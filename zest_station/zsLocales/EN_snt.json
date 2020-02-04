@@ -872,6 +872,5 @@
     "CLOSE": "CLOSE",
     "VIEW_GUEST_DETAILS": "View Details",
     "ADD_GUEST_DETAILS": "Add Details",
-    "SKIP_GUEST_DETAILS": "Skip Details",
-    "BYPASS_GUEST_INFO_MSG": "You can skip this step for Austrian citizens"
+    "SKIP_GUEST_DETAILS": "Skip Details"
 }

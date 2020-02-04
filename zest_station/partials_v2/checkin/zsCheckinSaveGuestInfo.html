@@ -8,7 +8,7 @@
          GUEST_INFO_MISSGING_SUB_HEADING
       </h2>
       <h2 ng-if="bypassQuest">
-        <strong class="brand-color" translate="">BYPASS_GUEST_INFO_MSG</strong>
+        <strong class="brand-color">{{ bypassQuest | translate }}</strong>
       </h2>
       <ul id="selection" class="editable with-buttons">
           <li ng-repeat='guest in selectedReservation.guest_details track by $index'>
@@ -55,7 +55,7 @@
        <h2 translate>FILL_INFO_INSTRUCTIONS
        </h2>
        <h2 ng-if="bypassQuest">
-        <strong class="brand-color" translate="">BYPASS_GUEST_INFO_MSG</strong>
+        <strong class="brand-color">{{ bypassQuest | translate }}</strong>
        </h2>
         
        <div id="textual" class="guest-information one-column scrollable" ng-iscroll="guests-info" style="height: 60%; overflow: hidden;">
