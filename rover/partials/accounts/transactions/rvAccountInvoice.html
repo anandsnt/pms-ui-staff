@@ -157,6 +157,9 @@
                 <td class="description">
                     <strong>{{charge.description.item_description}}</strong>
                     <span>{{charge.description.fees_desc}}</span>
+                    <div class="converted-currency smaller" ng-if="isMultiCurrencyEnabled && charge.description.rate_conversion_rate && ( charge.rate_currency_credits || charge.description.rate_converted_amount)">
+                        {{charge.description.rate_conversion_rate}}
+                    </div>
                     <span class="reference">{{charge.reference_text}}</span>
                 </td>
                 <td class="align-right">
@@ -167,9 +170,6 @@
                     <div class="converted-currency" ng-if="isMultiCurrencyEnabled && charge.description.rate_converted_amount">
                         {{charge.description.rate_currency}}{{charge.description.rate_converted_amount | number:2}}
                     </div>
-                    <div class="converted-currency smaller" ng-if="isMultiCurrencyEnabled && charge.description.rate_conversion_rate && charge.description.rate_converted_amount">
-                        {{charge.description.rate_conversion_rate}}
-                    </div>
                 </td>
                 <td class="align-right">
                     <span ng-show="!!charge.credits">{{currencySymbol}}{{charge.credits | number: 2}}</span>
@@ -178,9 +178,6 @@
                     </div>
                     <div class="converted-currency" ng-if="isMultiCurrencyEnabled && charge.rate_currency_credits">
                         {{charge.description.rate_currency}}{{charge.rate_currency_credits | number:2}}
-                    </div>
-                    <div class="converted-currency smaller" ng-if="isMultiCurrencyEnabled && charge.description.rate_conversion_rate && charge.rate_currency_credits">
-                        {{charge.description.rate_conversion_rate}}
                     </div>
                 </td>
             </tr>
