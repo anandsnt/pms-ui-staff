@@ -35,7 +35,7 @@ sntRover.controller('RVReservationPackageController',
 			var addonCount = 0;
 
 			if (postInstances !== 'undefined' || postInstances.length !== 0) {
-				angular.forEach(post_instances, function(item) {
+				angular.forEach(postInstances, function(item) {
 					if (item.active) {
 						addonCount++;
 					}
