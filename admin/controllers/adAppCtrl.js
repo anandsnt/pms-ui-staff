@@ -844,7 +844,7 @@ admin.controller('ADAppCtrl', [
                 });
             });
             _.each($scope.bookMarks, function(component) {
-                if (!$scope.isZestWebEnabled && (component.menu_name === 'Zest' || component.menu_name === 'Station') && $scope.isComponentDisabled(component)) {
+                if (!$scope.isZestWebEnabled && component.menu_name === 'Zest' && $scope.isComponentDisabled(component)) {
                     component.is_disabled = true;
                 }
             });
