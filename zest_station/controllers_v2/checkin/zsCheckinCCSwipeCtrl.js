@@ -218,8 +218,6 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         };
 
         var sendPaymentReceipt = function () {
-            var paymentParams = zsPaymentSrv.getPaymentData();
-
             var apiParams = {
                 transaction_id: transactionId,
                 bill_id: billId,
@@ -236,7 +234,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             $scope.callAPI(zsPaymentSrv.sendPaymentReceipt, options);
         };
 
-        $scope.$on('EMAIL_UPDATION_SUCCESS', function(){
+        $scope.$on('EMAIL_UPDATION_SUCCESS', function() {
             sendPaymentReceipt();
         });
 
@@ -254,7 +252,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                     $scope.mode = 'EMAIL_ENTRY_MODE';
                 }
             } else {
-                goToNextState()
+                goToNextState();
             }
         };
 

@@ -34,15 +34,13 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
             $scope.callAPI(zsPaymentSrv.sendPaymentReceipt, options);
         };
 
-        $scope.$on('EMAIL_UPDATION_SUCCESS', function(){
+        $scope.$on('EMAIL_UPDATION_SUCCESS', function() {
             zsStateHelperSrv.setPreviousStateParams($scope.reservationData);
             sendPaymentReceipt();
         });
-
         $scope.goToNextScreen = function() {
             var sendPaymentReceiptOn =  $scope.zestStationData.hotelSettings.auto_email_pay_receipt;
             var emailPresent = $scope.reservationData.email;
-            var paymentParams = zsPaymentSrv.getPaymentData();
 
             if (sendPaymentReceiptOn && emailPresent) {
                 sendPaymentReceipt();
