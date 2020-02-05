@@ -1,5 +1,5 @@
-angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$scope', '$log', 'zsPaymentSrv', '$stateParams', 'zsStateHelperSrv', '$state', '$timeout', '$controller', 'zsEventConstants',
-    function($scope, $log, zsPaymentSrv, $stateParams, zsStateHelperSrv, $state, $timeout, $controller, zsEventConstants) {
+angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$scope', '$log', 'zsPaymentSrv', '$stateParams', 'zsStateHelperSrv', '$state', '$timeout', '$controller', 'zsEventConstants', '$translate',
+    function($scope, $log, zsPaymentSrv, $stateParams, zsStateHelperSrv, $state, $timeout, $controller, zsEventConstants, $translate) {
 
 
         $controller('zsPaymentCtrl', {
@@ -17,14 +17,21 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
 
         var sendPaymentReceipt = function () {
             var paymentParams = zsPaymentSrv.getPaymentData();
+
             var apiParams = {
                 transaction_id: paymentParams.transaction_id,
                 bill_id: paymentParams.bill_id,
-                email: $scope.reservationData.email
+                email: $scope.reservationData.email,
+                locale: $translate.use()
             };
-            console.log(apiParams);
 
-            goToNextState();
+            var options = {
+                params: apiParams,
+                successCallBack: goToNextState,
+                failureCallBack: goToNextState
+            };
+
+            $scope.callAPI(zsPaymentSrv.sendPaymentReceipt, options);
         };
 
         $scope.$on('EMAIL_UPDATION_SUCCESS', function(){
@@ -33,13 +40,13 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
         });
 
         $scope.goToNextScreen = function() {
-            var paymentReceipt = false;
+            var sendPaymentReceiptOn =  $scope.zestStationData.hotelSettings.auto_email_pay_receipt;
             var emailPresent = $scope.reservationData.email;
             var paymentParams = zsPaymentSrv.getPaymentData();
 
-            if (paymentReceipt && emailPresent) {
+            if (sendPaymentReceiptOn && emailPresent) {
                 sendPaymentReceipt();
-            } else if (paymentReceipt && !emailPresent) {
+            } else if (sendPaymentReceiptOn && !emailPresent) {
                 $scope.screenMode.value = 'ENTER_EMAIL';
                 // mode inside the directive
                 $scope.mode = 'EMAIL_ENTRY_MODE';

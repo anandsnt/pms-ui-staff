@@ -10,7 +10,8 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
     'zsGeneralSrv',
     'zsPaymentSrv',
     '$log',
-    function($scope, $stateParams, $state, zsEventConstants, $controller, $timeout, zsCheckinSrv, zsModeConstants, zsGeneralSrv, zsPaymentSrv, $log) {
+    '$translate',
+    function($scope, $stateParams, $state, zsEventConstants, $controller, $timeout, zsCheckinSrv, zsModeConstants, zsGeneralSrv, zsPaymentSrv, $log, $translate) {
         BaseCtrl.call(this, $scope);
         /** ********************************************************************************************
          **      Please note that, not all the stateparams passed to this state will not be used in this state, 
@@ -30,6 +31,9 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
          *  -> switch from invoke to callAPI
          *  
          */
+
+        var transactionId,
+            billId;
         
         $scope.$on('CLICKED_ON_CANCEL_BUTTON', function () {
             $scope.$emit('CANCEL_EMV_ACTIONS');
@@ -193,8 +197,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             }
         };
 
-
-        var goToCardSign = function() {
+        var goToNextState = function() {
             $log.log('show signature');
             var params = {
                 'reservation_id': $stateParams.reservation_id,
@@ -205,13 +208,54 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 'first_name': $stateParams.first_name,
                 'room_status': $stateParams.room_status,
                 'deposit_amount': $stateParams.deposit_amount, // dont think we need this here
-                'email': $stateParams.guest_email,
+                'email': $scope.reservationData.email,
                 'guest_email_blacklisted': $stateParams.guest_email_blacklisted
 
             };
 
             $log.warn('params: ', params);
             $state.go('zest_station.checkInSignature', params);
+        };
+
+        var sendPaymentReceipt = function () {
+            var paymentParams = zsPaymentSrv.getPaymentData();
+
+            var apiParams = {
+                transaction_id: transactionId,
+                bill_id: billId,
+                email: $scope.reservationData.email,
+                locale: $translate.use()
+            };
+
+            var options = {
+                params: apiParams,
+                successCallBack: goToNextState,
+                failureCallBack: goToNextState
+            };
+
+            $scope.callAPI(zsPaymentSrv.sendPaymentReceipt, options);
+        };
+
+        $scope.$on('EMAIL_UPDATION_SUCCESS', function(){
+            sendPaymentReceipt();
+        });
+
+
+        var goToCardSign = function() {
+            var sendPaymentReceiptSettings = $scope.zestStationData.hotelSettings.auto_email_deposit_invoice;
+
+            if (transactionId && billId && sendPaymentReceiptSettings) {
+                if ($scope.reservationData.email) {
+                   sendPaymentReceipt();
+                } else {
+                    $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
+                    $scope.screenMode = 'ENTER_EMAIL';
+                    // mode inside the directive
+                    $scope.mode = 'EMAIL_ENTRY_MODE';
+                }
+            } else {
+                goToNextState()
+            }
         };
 
         var goToSwipeError = function() {
@@ -580,6 +624,9 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             $scope.payingDeposit = false;
             $scope.paidDeposit = true;
 
+            transactionId = response.transaction_id;
+            billId = response.bill_id;
+
             // typically after making a payment, we need to check for the remaining balance due,
             // since the guest has made a payment, the authorization amount will be less,
             // so we fetch the remaining authorization for checkin
@@ -669,7 +716,11 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         var init = function() {
 
             $scope.setScreenIcon('card');
-
+            $scope.reservationData = {
+                email: $stateParams.guest_email,
+                guest_detail_id: $stateParams.guest_id
+            };
+            $scope.screenMode = 'PAYMENT_MODE';
             $log.warn('$stateParams: ', $stateParams);
             if ($stateParams.deposit_amount) {// for debugging detect the deposit/swipe amount
                 $scope.zestStationData.pending_deposit_amount = $stateParams.deposit_amount;
