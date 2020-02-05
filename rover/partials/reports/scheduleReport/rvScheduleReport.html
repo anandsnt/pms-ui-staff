@@ -121,6 +121,18 @@
                 data="filters.hasByChargeCode.data"
                 options="filters.hasByChargeCode.options"></multi-option-selection>
 
+            <multi-option-selection ng-show="filters.hasUsers && filters.hasUsers.data.length"
+                label="{{ filters.hasUsers.title }}"
+                on-update="refreshSecondColumnScroll"
+                data="filters.hasUsers.data"
+                options="filters.hasUsers.options"></multi-option-selection>
+
+            <multi-option-selection ng-show="filters.hasChargeTypes && filters.hasChargeTypes.data.length"
+                label="Charge Types(s)"
+                on-update="refreshSecondColumnScroll"
+                data="filters.hasChargeTypes.data"
+                options="filters.hasChargeTypes.options"></multi-option-selection>
+
             <div class="entry" ng-show="selectedEntityDetails.sort_fields.length">
                 <label>Sort By</label>
                 <div class="select">

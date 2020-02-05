@@ -170,7 +170,10 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
 
                 // This will be invoked when the user is idle for 30s
                 $(document).on( 'idle.idleTimer', function() {
-                    refreshToken();
+                    // This should be called only if the dialog is not already shown
+                    if (!sessionTimeoutDialog) {
+                        refreshToken();
+                    }
                 });
 
             };

@@ -72,6 +72,14 @@ angular.module('snt.utils').component('sntNotify', {
                 }
             };
 
+            ctrl.$doCheck = function() {
+                if (ctrl.showToasts) {
+                    if (this.message.length !== 0 ) {
+                        sntNotifySrv.show(this.message, ctrl.type);
+                        ctrl.clearErrorMessage();
+                    }
+                }
+            };
         };
     }]
 });

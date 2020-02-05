@@ -556,7 +556,10 @@ admin.controller('ADHotelDetailsCtrl', [
         if ($rootScope.isSntAdmin) {
             $scope.callAPI(ADHotelDetailsSrv.getThemes, {
                 successCallBack: function (response) {
-                    $scope.themes = response.themes;
+                    $scope.themes = response.themes.sort().map(theme => ({
+                        'name': theme,
+                        'value': theme.replace('guestweb_', '').replace(/_/g, ' ')
+                    }));
                 }
             });
         }
