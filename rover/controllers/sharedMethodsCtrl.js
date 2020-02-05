@@ -5,7 +5,7 @@
  * @param {object} RVSearchSrv Search Service
  * @return {void}
  */
-window.SharedMethodsBaseCtrl = function ($scope, RVAutomaticEmailSrv, ngDialog) {
+window.SharedMethodsBaseCtrl = function ($scope, $rootScope, RVAutomaticEmailSrv, ngDialog) {
 
     /*
      * Send emails after payment
@@ -19,7 +19,7 @@ window.SharedMethodsBaseCtrl = function ($scope, RVAutomaticEmailSrv, ngDialog) 
         params = {
             "bill_id": $scope.currentPaymentBillId,
             "transaction_id": $scope.currentPaymentTransactionId,
-            "locale": "en"
+            "locale": $rootScope.hotelDefaultLanguageCode
         };
 
         if (data) {
