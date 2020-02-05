@@ -15,6 +15,7 @@ sntZestStation.controller('zsEmailCollectionDirCtrl', ['$scope', 'zsUtilitySrv',
                     'email': $scope.email
                 },
                 successCallBack: function(data) {
+                    $scope.$emit('hideLoader');
                     // onSuccess, 
                     if (!data.black_listed_email) {
                         afterBlackListValidation();
@@ -27,6 +28,7 @@ sntZestStation.controller('zsEmailCollectionDirCtrl', ['$scope', 'zsUtilitySrv',
                 failureCallBack: onValidationAPIFailure
             };
 
+            $scope.$emit('showLoader');
             $scope.callAPI(zsGeneralSrv.emailIsBlackListed, blacklistCheckOptions);
         };
 
@@ -36,10 +38,12 @@ sntZestStation.controller('zsEmailCollectionDirCtrl', ['$scope', 'zsUtilitySrv',
 
         var updateGuestEmail = function() {
             var updateComplete = function() {
+                $scope.$emit('hideLoader');
                 $scope.$emit('EMAIL_UPDATION_SUCCESS');
             };
 
             var updateGuestEmailFailed = function(response) {
+                $scope.$emit('hideLoader');
                 $log.warn('updateGuestEmailFailed: ', response); // if this fails would help give clues as to why
                 $scope.$emit('EMAIL_UPDATION_FAILED');
             };
@@ -53,13 +57,14 @@ sntZestStation.controller('zsEmailCollectionDirCtrl', ['$scope', 'zsUtilitySrv',
                     successCallBack: updateComplete,
                     failureCallBack: updateGuestEmailFailed
                 };
-
+                $scope.$emit('showLoader');
                 $scope.callAPI(zsGeneralSrv.updateGuestEmail, options);
             };
             var onBlackListedEmailFound = function() {
                 setInvalidEmailMode();
             };
             var onValidationAPIFailure = function() {
+                $scope.$emit('hideLoader');
                 updateGuestEmailFailed();
             };
 
