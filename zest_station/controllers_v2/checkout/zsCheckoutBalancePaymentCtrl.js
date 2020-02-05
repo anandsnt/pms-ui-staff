@@ -9,10 +9,45 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
         // uncomment for debugging
         // $scope.isIpad = true;
 
-        $scope.goToNextScreen = function() {
+        var goToNextState = function () {
             $state.go('zest_station.checkoutReservationBill', angular.extend(zsStateHelperSrv.getPreviousStateParams(), {
                 dueBalancePaid: true
             }));
+        };
+
+        var sendPaymentReceipt = function () {
+            var paymentParams = zsPaymentSrv.getPaymentData();
+            var apiParams = {
+                transaction_id: paymentParams.transaction_id,
+                bill_id: paymentParams.bill_id,
+                email: $scope.reservationData.email
+            };
+            console.log(apiParams);
+
+            goToNextState();
+        };
+
+        $scope.$on('EMAIL_UPDATION_SUCCESS', function(){
+            zsStateHelperSrv.setPreviousStateParams($scope.reservationData);
+            sendPaymentReceipt();
+        });
+
+        $scope.goToNextScreen = function() {
+            var paymentReceipt = false;
+            var emailPresent = $scope.reservationData.email;
+            var paymentParams = zsPaymentSrv.getPaymentData();
+
+            if (paymentReceipt && emailPresent) {
+                sendPaymentReceipt();
+            } else if (paymentReceipt && !emailPresent) {
+                $scope.screenMode.value = 'ENTER_EMAIL';
+                // mode inside the directive
+                $scope.mode = 'EMAIL_ENTRY_MODE';
+            }
+            else {
+                goToNextState();
+            }
+            
         };
 
         $scope.reTryCardSwipe = function() {
@@ -40,6 +75,7 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
             $scope.cardDetails = paymentParams.payment_details;
             $scope.reservation_id = paymentParams.reservation_id;
             $scope.isCBAPayment = $scope.zestStationData.paymentGateway === 'CBA' || ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.hotelSettings.mli_cba_enabled);
+            $scope.reservationData = zsStateHelperSrv.getPreviousStateParams();
 
             if ($scope.isCBAPayment && $scope.isIpad) {
                 $scope.$emit("FETCH_PAYMENT_TYPES", {
