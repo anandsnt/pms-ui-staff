@@ -222,17 +222,6 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 			}, 100);
 		};
 
-		var resetMissingInfoFlagIfNeeded = function() {
-			var mandatoryFields = _.filter($scope.selectedGuest.guest_details, function(field) {
-				return field.mandatory;
-			});
-
-			var missingInfoForGuest = _.filter(mandatoryFields, function(field) {
-				return !field.current_value;
-			});
-			$scope.selectedGuest.is_missing_any_required_field = missingInfoForGuest.length > 0;
-		};
-
 		$scope.byPassGuestInfo = function(guest) {
 			// record in activity log. Mark as not required
 			guest.is_missing_any_required_field = false;
