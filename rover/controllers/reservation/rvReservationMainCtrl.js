@@ -84,6 +84,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
         $scope.initreverseCheckoutDetails();
 
         $scope.initReservationData = function() {
+            $scope.currentSelectedRateCurrencyId = "";
             RVReservationStateService.bookMark.lastPostedRate = null;
             $scope.hideSidebar = false;
             $scope.addonsData.existingAddons = [];

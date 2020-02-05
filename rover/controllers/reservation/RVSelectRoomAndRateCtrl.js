@@ -293,6 +293,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					}
 				}
 
+				payLoad.rate_currency_id = $scope.currentSelectedRateCurrencyId;
+
 
 				// }
 
@@ -359,6 +361,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				if ($scope.stateCheck.activeView === "ROOM_TYPE") {
 					payLoad.order = "ROOM_LEVEL";
 				}
+
+				payLoad.rate_currency_id = $scope.currentSelectedRateCurrencyId;
 
 				$scope.invokeApi(RVRoomRatesSrv.fetchRoomTypeADRs, payLoad, function(response) {
 					if (append) {
@@ -498,6 +502,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							id: roomType.rate_id,
 							name: $scope.reservationData.ratesMeta[roomType.rate_id].name,
 							rateCurrency: roomType.rate_currency,
+							rateCurrencyId: roomType.rate_currency_id,
 							adr: roomType.adr,
 							dates: angular.copy(datesInitial),
 							bestAvailableRateRestrictions: roomType.restrictions,
@@ -559,6 +564,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							name: (rate.id) ? $scope.reservationData.ratesMeta[rate.id].name : "Custom Rate for " + $scope.reservationData.group.name,
 							id: rate.id,
 							rateCurrency: rate.rate_currency,
+							rateCurrencyId: rate.rate_currency_id,
 							defaultRoomTypeId: rate.room_type_id,
 							defaultRoomTypeAvailability: rate.availability,
 							defaultADR: rate.adr,
@@ -1565,6 +1571,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			}
 
 			$scope.reservationData.rateCurrency = rateInfo.rateCurrency;
+			$scope.currentSelectedRateCurrencyId = rateInfo.rateCurrencyId;
 
 			// CICO-44842 - Plugging in the max occupancy check while booking from room & rates screen
 			$scope.checkOccupancyLimit(null, null, null, roomId);
