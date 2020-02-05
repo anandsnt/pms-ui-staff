@@ -242,8 +242,8 @@ sntRover.controller('RVJournalController',
         $scope.data.filterData.employees[selectedIndex].checked = !$scope.data.filterData.employees[selectedIndex].checked;
         getSelectButtonStatus();
 
-        if (isAllDepartmentsUnchecked()) {
-            $scope.selectAllDepartment();
+        if (isAllEmployeesUnchecked()) {
+            $scope.selectAllEmployees();
         }
         else {
             $scope.data.filterData.checkedAllEmployees = false;
