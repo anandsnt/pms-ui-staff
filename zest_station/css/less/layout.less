@@ -1274,6 +1274,34 @@
         }
     }
 
+    .scrollable-selection {
+        position: relative;
+        overflow: hidden;
+
+        .wrapper {
+            padding: 0px 10px 0px;
+            -webkit-transform: translateZ(0);
+            -ms-transform: translateZ(0);
+            transform: translateZ(0);
+        }
+
+        .iScrollVerticalScrollbar {
+            position: absolute;
+            width: 5px;
+            top: 0px;
+            right: 0px;
+            bottom: 0px;
+            z-index: 99;
+
+            .iScrollIndicator {
+                position: absolute;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.15);
+                #rounded > .round();
+            }
+        }
+    }
+
     #selection {
         #flexbox > .flex();
         #flexbox > .parent(row wrap, center, flex-start, '');
