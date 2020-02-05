@@ -25,6 +25,28 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 		var selectedCalendarModel = "";
 		var selectedCalendarModelDisplay = "";
 
+		var calculateScrollableViewHeight = function(h1Id, h2Id, h3Id) {
+			var contentHeight = $('#content').outerHeight();
+			var h1Height = $('#' + h1Id).outerHeight(true),
+				h2Height = $('#' + h2Id).outerHeight(true),
+				h3Height = $('#' + h3Id).outerHeight(true),
+				scrollableViewHeight = parseFloat(contentHeight - (h1Height + h2Height + h3Height + 120) + 8);
+
+			return scrollableViewHeight;
+		};
+
+		var calculateHeightOfListAndRefreshScroller = function() {
+			$scope.listDivHeight = '0px';
+			$timeout(function() {
+				var scrollableViewHeight = calculateScrollableViewHeight('list-main-heading',
+																		'list-sub-heading',
+																		'list-sub-text');
+				
+				$scope.listDivHeight = scrollableViewHeight + 'px';
+				$scope.refreshScroller('guests-list');
+			}, 100);
+		};
+
 		var onGuestInfoSave = function() {
 			
 			// If there is only one guest, checkin the reservation and proceed
@@ -43,6 +65,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 					$scope.screenData.showContinueButton = true;
 				}
 				$scope.screenData.screenMode = 'GUEST_LIST';
+				calculateHeightOfListAndRefreshScroller();
 				$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 			}
 		};
@@ -51,6 +74,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 
 		$scope.revisitGuestList = function() {
 			$scope.screenData.screenMode = 'GUEST_LIST';
+			calculateHeightOfListAndRefreshScroller();
 			$scope.screenData.openedPopupName = '';
 		};
 
@@ -187,7 +211,13 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 		};
 
 		var refreshScroller = function() {
+			$scope.textualHeight = '0px';
 			$timeout(function() {
+				var scrollableViewHeight = calculateScrollableViewHeight('main-heading',
+																		'sub-heading',
+																		'sub-text');
+
+				$scope.textualHeight = scrollableViewHeight + 'px';
 				$scope.refreshScroller('guests-info');
 			}, 100);
 		};
@@ -211,6 +241,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 
 		var onBackButtonClicked = function() {
 			if ($scope.screenData.screenMode === 'GUEST_DETAILS') {
+				calculateHeightOfListAndRefreshScroller();
 				$scope.screenData.screenMode = 'GUEST_LIST';
 				$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 			}
@@ -281,6 +312,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 					tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/
 				}
 			});
+			$scope.setScroller('guests-list');
 
 			$scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
 
@@ -327,6 +359,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 			// If the guest count greater than one, show the guests in a list
 			if ($scope.selectedReservation.guest_details.length > 1) {
 				$scope.screenData.screenMode = 'GUEST_LIST';
+				calculateHeightOfListAndRefreshScroller();
 			} else {
 				// If there is only one guest, show the bypass question if set or the guest info details
 				$scope.selectedGuest = guestInfo.guests[0];
