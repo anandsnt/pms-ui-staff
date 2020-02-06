@@ -39,7 +39,7 @@ sntRover.controller('RVbillCardController',
 
 	BaseCtrl.call(this, $scope);
 
-	SharedMethodsBaseCtrl.call (this, $scope, RVAutomaticEmailSrv, ngDialog);
+	SharedMethodsBaseCtrl.call (this, $scope, $rootScope, RVAutomaticEmailSrv, ngDialog);
 	var that = this;
 
 
@@ -2968,7 +2968,8 @@ sntRover.controller('RVbillCardController',
 
 		$scope.currentPaymentBillId = data.bill_id;
 		$scope.currentPaymentTransactionId = data.transaction_id;
-		if ($rootScope.autoEmailPayReceipt || $rootScope.autoEmailDepositInvoice) {
+		$scope.isDepositPayment = data.is_deposit_payment;
+		if ($rootScope.autoEmailPayReceipt || ($rootScope.autoEmailDepositInvoice && $scope.isDepositPayment)) {
 			$scope.autoTriggerPaymentReceiptActions();
 		}
 				

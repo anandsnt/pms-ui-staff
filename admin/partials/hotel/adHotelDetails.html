@@ -87,7 +87,7 @@
 					<div class="select" ng-if="::isSntAdmin">
 						<select  ng-model="data.theme_name" id="hotel-theme"
 								 ng-class="{'placeholder': !data.theme_name}"
-								 ng-options="theme for theme in themes">
+								 ng-options="theme.name as theme.value for theme in themes">
 							<option value="">Default</option>
 						</select>
 					</div>
