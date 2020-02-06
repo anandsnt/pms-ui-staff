@@ -84,7 +84,7 @@ angular.module('sntRover').service('rvCompanyCardContractsSrv', ['$q', 'sntBaseW
     };
 
     this.fetchOwners = function(params) {
-        return sntBaseWebSrv.getJSON('/api/rates/contract_rates', params);
+        return sntBaseWebSrv.getJSON('/api/contracts/search_contract_owners', params);
     };
 
 }]);
