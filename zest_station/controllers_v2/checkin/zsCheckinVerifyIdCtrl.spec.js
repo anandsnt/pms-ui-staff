@@ -167,7 +167,11 @@ describe('zsCheckinVerifyIdCtrl', function() {
             spyOn(zsCheckinSrv, 'getGuestMandatoryFields').and.callFake(function() {
                 var deferred = $q.defer();
 
-                deferred.resolve([]);
+                deferred.resolve({
+                    metadata: {
+                        required_for_all_adults: false
+                    }
+                });
                 return deferred.promise;
             });
             $scope.selectedReservation = {

@@ -19,6 +19,35 @@ li {
     }
 }
 
+
+input,
+textarea,
+select {
+    &.with-error {
+        background: fade(@red, 50);
+
+        &::-webkit-input-placeholder {
+            font-style: italic;
+            color: darken( @red, 15 );
+        }
+    
+        &::-moz-placeholder {
+            font-style: italic;
+            color: darken( @red, 15 );
+        }
+    
+        &:-ms-input-placeholder {
+            font-style: italic;
+            color: darken( @red, 15 );
+        }
+    
+        &:-moz-placeholder {
+            font-style: italic;
+            color: darken( @red, 15 );
+        }
+    }
+}
+
 input,
 textarea {
     color: @inputColor;
@@ -42,6 +71,11 @@ select {
     padding: 0 20px;
     cursor: pointer;
     .size(64px, 100%);
+
+    &.with-error {
+        font-style: italic;
+        color: darken( @red, 15 );
+    }
 }
 
 input,
@@ -151,6 +185,10 @@ select {
 }
 
 .entry {
+    .required {
+        color: darken( @red, 15 );
+    }
+
     &.select {
         position: relative;
         width: 100%;

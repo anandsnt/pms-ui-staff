@@ -85,6 +85,8 @@ sntZestStation.controller('zsEmailCollectionDirCtrl', ['$scope', 'zsUtilitySrv',
         (function() {
             $scope.email = $scope.email || '';
             $scope.onFocus('email-entry');
+            $scope.heading = $scope.heading || 'TYPE_EMAIL_IN';
+            $scope.subHeading = $scope.subHeading || 'TYPE_EMAIL_IN_SUB';
         }());
 
     }
