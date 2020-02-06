@@ -6,8 +6,6 @@
 				{{data.length}}
 				) </span>
 			<a class="action add" ng-click="addNewClicked()" translate>ADD_NEW</a>
-		</header>
-		<section class="content-scroll">
 			<section ng-show="state.mode !== 'ADD'">
 				<div class="controls-holder filters">
 					<div class="table-search three-column">
@@ -17,6 +15,8 @@
 					</div>
 				</div>
 			</section>
+		</header>
+		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
 			<div id="add-new" ng-show="currentClickedElement == 'new'" ng-include="'/assets/partials/extApiKeyGenerator/adExtApiKeyGeneratorAdd.html'"></div>
