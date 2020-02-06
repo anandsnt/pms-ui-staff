@@ -1900,6 +1900,44 @@
                                     }
                                 }
 
+                                .find-contract-owner {
+                                    .autocomplete-search {
+                                        .search {
+                                            .transition();
+
+                                            .icons {
+                                                .transition();
+                                            }
+                                        }
+                                    }
+
+                                    .card {
+                                        label {
+                                            #flexbox > .parent( row wrap, '', center, '' );
+                                            white-space: normal;
+                                            min-height: 30px;
+                                            line-height: 1.5em;
+                                            width: 100%;
+                                            margin: 0;
+
+                                            .icon-form {
+                                                top: 5px;
+                                            }
+
+                                            color: @black;
+                                            text-transform: uppercase;
+                                        }
+
+                                        
+
+                                        &.inactive {
+                                            label {
+                                                color: @grey3;
+                                            }
+                                        }
+                                    }
+                                }
+
                                 .find-rate {
 
                                     .autocomplete-search {
@@ -2034,47 +2072,7 @@
                                     position: relative;
                                 }
 
-                                .multi-select {
-                                    background: @white;
-
-                                    &:after {
-                                        background-color: @white;
-                                    }
-                                }
-
-                                .multi-select-options {
-                                    background: @white;
-                                    position: absolute;
-                                    top: 65px;
-                                    left: 0;
-                                    width: 100%;
-
-                                    .select-all {
-                                        label {
-                                            width: 100%;
-                                        }
-                                    }
-
-                                    label:not(.checkbox):not(.radio) {
-                                        padding: 10px;
-                                        &:not(:last-child) {
-                                            border-bottom: 1px solid rgba( 0, 0, 0, 0.15 );
-                                        }
-                                    }
-
-                                    .scrollable {
-                                        max-height: 100px;
-                                        position: relative;
-
-                                        .iScrollVerticalScrollbar .iScrollIndicator {
-                                            background: rgba( 0, 0, 0, 0.15 );
-                                        }
-
-                                        .inactive {
-                                            color: @grey3;
-                                        }
-                                    }
-                                }
+                                
                             }
                         }
 
