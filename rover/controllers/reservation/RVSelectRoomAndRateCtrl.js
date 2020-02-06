@@ -292,8 +292,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						payLoad['rate_id'] = forRate;
 					}
 				}
-
-				payLoad.rate_currency_id = $scope.currentSelectedRateCurrencyId;
+				if ($scope.stateCheck.stayDatesMode && $scope.reservationData.numNights > 1 && $scope.reservationData.currentSelectedRateCurrencyId !== "") {
+					payLoad.rate_currency_id = $scope.reservationData.currentSelectedRateCurrencyId;
+				}			
 
 
 				// }
@@ -362,7 +363,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					payLoad.order = "ROOM_LEVEL";
 				}
 
-				payLoad.rate_currency_id = $scope.currentSelectedRateCurrencyId;
+				if ($scope.stateCheck.stayDatesMode && $scope.reservationData.numNights > 1 && $scope.reservationData.currentSelectedRateCurrencyId !== "") {
+					payLoad.rate_currency_id = $scope.reservationData.currentSelectedRateCurrencyId;
+				}
 
 				$scope.invokeApi(RVRoomRatesSrv.fetchRoomTypeADRs, payLoad, function(response) {
 					if (append) {
@@ -444,6 +447,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					payLoad.is_zero_night = $scope.reservationData.numNights === 0;
 				}
 				payLoad.is_promotion_selected = ($scope.reservationData.promotionId) ? true : false;
+				if ($scope.stateCheck.stayDatesMode && $scope.reservationData.numNights > 1 && $scope.reservationData.currentSelectedRateCurrencyId !== "") {
+					payLoad.rate_currency_id = $scope.reservationData.currentSelectedRateCurrencyId;
+				}
 				$scope.callAPI(RVRoomRatesSrv.fetchRateADRs, {
 					params: payLoad,
 					successCallBack: cb
@@ -1258,6 +1264,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 		// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- STAY DATES MODE
 		$scope.toggleStayDaysMode = function() {
+			$scope.reservationData.currentSelectedRateCurrencyId = "";
 			$scope.stateCheck.stayDatesMode = !$scope.stateCheck.stayDatesMode;
 
 			// see if the done button has to be enabled
@@ -1571,7 +1578,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			}
 
 			$scope.reservationData.rateCurrency = rateInfo.rateCurrency;
-			$scope.currentSelectedRateCurrencyId = rateInfo.rateCurrencyId;
+			if ($scope.stateCheck.stayDatesMode && $scope.reservationData.numNights > 1) {
+				$scope.reservationData.currentSelectedRateCurrencyId = rateInfo.rateCurrencyId;
+			}			
 
 			// CICO-44842 - Plugging in the max occupancy check while booking from room & rates screen
 			$scope.checkOccupancyLimit(null, null, null, roomId);
