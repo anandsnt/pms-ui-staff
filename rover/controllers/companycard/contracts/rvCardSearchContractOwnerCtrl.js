@@ -24,7 +24,7 @@ angular.module('sntRover').controller('rvCardSearchContractOwnerCtrl', ['$scope'
          */
         that.fetchOwners = function() {
             var fetchOwnersSuccessCallback = function(data) {
-                $scope.contractData.contractOwner.results = data.contract_rates;
+                $scope.contractData.contractOwner.results = data;
                 $scope.$emit('refreshContractsScroll');
                 that.refreshSearchList();
             },
@@ -38,14 +38,9 @@ angular.module('sntRover').controller('rvCardSearchContractOwnerCtrl', ['$scope'
                 failureCallBack: fetchOwnersFailureCallback,
                 params: {
                     'query': $scope.contractData.contractOwner.query,
-                    'is_inactive': $scope.contractData.contractOwner.isInactive,
-                    'account_id': accountId
+                    'is_inactive': $scope.contractData.contractOwner.isInactive
                 }
             };
-
-            if ($scope.contractData.mode === 'EDIT') {
-                options.params.contract_id = $scope.contractData.selectedContractId;
-            }
 
             $scope.callAPI(rvCompanyCardContractsSrv.fetchOwners, options);
         };
