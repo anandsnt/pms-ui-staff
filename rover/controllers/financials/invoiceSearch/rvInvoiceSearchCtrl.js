@@ -107,8 +107,9 @@ sntRover.controller('RVInvoiceSearchController',
 		 * @param page is page number of pagination
 		 */
 		$scope.searchInvoice = (page) => {
-			
-			if ($scope.shouldShowReservationInvoices()) {
+
+			$timeout(function() {
+				if ($scope.shouldShowReservationInvoices()) {
 				$scope.searchPlaceHolder = $filter('translate')('SEARCH_PLACE_HOLDER_WITH_FOLIO_NUMBER_RESERVATION');
 			}
 			if ($scope.shouldShowAccountInvoices()) {
@@ -146,7 +147,7 @@ sntRover.controller('RVInvoiceSearchController',
 						}
 						$timeout (function() {
 							$scope.$broadcast('updatePagination', 'INVOICE_SEARCH');
-						}, 800);	
+						}, 800);
 						refreshScroll();
 					},
 					params = {
@@ -177,6 +178,8 @@ sntRover.controller('RVInvoiceSearchController',
 				$scope.invoiceSearchFlags.isQueryEntered = false;
 				$scope.invoiceSearchFlags.showFindInvoice = true;
 			}
+
+			}, 800);
 		};
 
 		/*
@@ -638,6 +641,7 @@ sntRover.controller('RVInvoiceSearchController',
 			$scope.invoiceSearchFlags.isQueryEntered = false;
 			$scope.invoiceSearchFlags.isClickedReservation = true;
 			$scope.invoiceSearchData.no_folio_number_only = false;
+			$scope.invoiceSearchData.no_qr_code_only = false;
 			$scope.totalResultCount = 0;
 			$scope.printData = {};
 			$scope.invoiceSearchPagination = {
