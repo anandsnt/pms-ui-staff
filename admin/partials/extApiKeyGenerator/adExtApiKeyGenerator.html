@@ -1,5 +1,5 @@
-<section  class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
-	<div  class="inline-edit">
+<section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
+	<div class="inline-edit">
 		<header class="content-title float">
 			<h2 translate> EXT API Keys List </h2>
 			<span class="count"> (
@@ -8,51 +8,50 @@
 			<a class="action add" ng-click="addNewClicked()" translate>ADD_NEW</a>
 		</header>
 		<section class="content-scroll">
-      <section ng-show="state.mode !== 'ADD'">
-          <div class="controls-holder filters">
-              <div class="table-search three-column">
-                  <span class="search-text">Search</span>
-                  <span class="icons icon-search" name="submit" type="submit" />
-                  <input autocomplete="off" type="text" ad-delay-textbox
-                      ng-model="searchTerm" delay="1000" function-to-fire="searchEntered" />
-              </div>
-          </div>
-      </section>
+			<section ng-show="state.mode !== 'ADD'">
+				<div class="controls-holder filters">
+					<div class="table-search three-column">
+						<span class="search-text">Search</span>
+						<span class="icons icon-search" name="submit" type="submit"></span>
+						<input autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000" function-to-fire="searchEntered"></input>
+					</div>
+				</div>
+			</section>
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
 			<div id="add-new" ng-show="currentClickedElement == 'new'" ng-include="'/assets/partials/extApiKeyGenerator/adExtApiKeyGeneratorAdd.html'"></div>
 
-      <table class="grid" id="api-keys" ng-table="tableParams" template-pagination="custom/pager">
+			<table class="grid" id="api-keys" ng-table="tableParams" template-pagination="custom/pager">
 				<tbody>
 					<tr ng-repeat="apikey in $data">
-						<td data-title="'Token Email'" class="token_email"  header-class="id token_email" >
+						<td data-title="'Token Email'" class="token_email" header-class="id token_email">
 							<span> {{apikey.token_email}}</span>
 						</td>
-            <td data-title="'Hotel Chain'" header-class="name chain_name" >
-              <span>
-                {{apikey.chain_name}}
-              </span>
+						<td data-title="'Hotel Chain'" header-class="name chain_name">
+							<span>
+								{{apikey.chain_name}}
+							</span>
 						</td>
-            <td data-title="'Api Key'" header-class="name api_key" >
-              <span>
-                {{apikey.api_token}}
-              </span>
+						<td data-title="'Api Key'" header-class="name api_key">
+							<span>
+								{{apikey.api_token}}
+							</span>
 						</td>
-            <td data-title="'User'" header-class="name user" >
-              <span>
-                {{apikey.user}}
-              </span>
+						<td data-title="'User'" header-class="name user">
+							<span>
+								{{apikey.user}}
+							</span>
 						</td>
-            <td data-title="'Expiry Date'" header-class="name expiry_date" >
-              <span>
-                {{apikey.expiry_date}}
-              </span>
+						<td data-title="'Expiry Date'" header-class="name expiry_date">
+							<span>
+								{{apikey.expiry_date}}
+							</span>
 						</td>
-          </tr>
-        </tbody>
-       </table>
+					</tr>
+				</tbody>
+			</table>
 		</section>
-    <!--Custom pagination footer goes here-->
+		<!--Custom pagination footer goes here-->
 		<script type="text/ng-template" id="custom/pager">
 			<div class = "pager">
 				<span ng-show="totalCount>0">Showing {{startCount}} to {{endCount}} of {{totalCount}} items</span>
