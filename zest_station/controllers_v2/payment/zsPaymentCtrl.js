@@ -218,7 +218,14 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             $scope.screenMode.paymentInProgress = true;
             $scope.callAPI(zsPaymentSrv.submitDeposit, {
                 params: params,
-                'successCallBack': function() {
+                'successCallBack': function(response) {
+                      // assign the transaction_id and bill_id to srv
+                    var paymentData = zsPaymentSrv.getPaymentData();
+
+                    paymentData.transaction_id = response.transaction_id;
+                    paymentData.bill_id = response.bill_id;
+                    zsPaymentSrv.setPaymentData(paymentData);
+                    
                     $scope.$emit('hideLoader');
                     $scope.screenMode.value = 'PAYMENT_SUCCESS';
                     $scope.screenMode.paymentSuccess = true;

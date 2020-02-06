@@ -38,7 +38,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		BaseCtrl.call(this, $scope);
 
-		SharedMethodsBaseCtrl.call (this, $scope, RVAutomaticEmailSrv, ngDialog);
+		SharedMethodsBaseCtrl.call (this, $scope, $rootScope, RVAutomaticEmailSrv, ngDialog);
 		var that = this;
 
 		$scope.perPage = 50;
@@ -453,7 +453,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 			$scope.currentPaymentBillId = data.bill_id;
 			$scope.currentPaymentTransactionId = data.transaction_id;
-			if ($scope.isFromGroups && $rootScope.autoEmailPayReceipt) {
+			if ($scope.isFromGroups && $rootScope.autoEmailPayReceipt && $scope.isFromPaymentScreen) {
 				$scope.autoTriggerPaymentReceiptActions();
 			}
 			
