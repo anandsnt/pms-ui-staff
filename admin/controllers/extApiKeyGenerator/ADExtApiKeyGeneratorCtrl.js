@@ -77,6 +77,7 @@ admin.controller('ADExtApiKeyGeneratorCtrl', ['$scope',
          */
         $scope.onSave = function() {
             var chain_id = $scope.state.new.chain_id;
+
             $scope.state.mode = "ADD";
             $scope.callAPI(ADExtApiKeyGeneratorSrv.create, {
                 params: {
