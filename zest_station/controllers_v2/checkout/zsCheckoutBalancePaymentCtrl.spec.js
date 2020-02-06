@@ -23,7 +23,11 @@ describe('zsCheckoutBalancePaymentCtrl', function() {
         });
 
         angular.extend($scope, {
-            zestStationData: {},
+            zestStationData: {
+                hotelSettings: {
+                    auto_email_pay_receipt: false
+                }
+            },
             screenMode: {
                 paymentAction: 'PAY_AMOUNT'
             },
