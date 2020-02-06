@@ -785,6 +785,8 @@ admin.controller('ADAppCtrl', [
             $rootScope.emvTimeout = data.emv_timeout || 120; // default timeout is 120s
             $rootScope.wsCCSwipeUrl = data.cc_swipe_listening_url;
             $rootScope.wsCCSwipePort = data.cc_swipe_listening_port;
+            $rootScope.isPaymentReceiptsEnabled = data.is_payment_receipts_enabled;
+            $rootScope.isAdvancePaymentEnabled = data.advance_payment_enabled;
             
             // CICO-51146
             $rootScope.isBackgroundReportsEnabled = data.background_report;
@@ -844,7 +846,7 @@ admin.controller('ADAppCtrl', [
                 });
             });
             _.each($scope.bookMarks, function(component) {
-                if (!$scope.isZestWebEnabled && (component.menu_name === 'Zest' || component.menu_name === 'Station') && $scope.isComponentDisabled(component)) {
+                if ((!$scope.isZestWebEnabled && component.menu_name === 'Zest' && $scope.isComponentDisabled(component)) || component.menu_name === 'Station') {
                     component.is_disabled = true;
                 }
             });

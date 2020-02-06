@@ -30,8 +30,7 @@ angular.module('sntRover').controller('rvCardSearchContractOwnerCtrl', ['$scope'
             },
             fetchOwnersFailureCallback = function(errorMessage) {
                 $scope.$emit('setErrorMessage', errorMessage);
-            },
-            accountId = !_.isEmpty($scope.contactInformation) ? $scope.contactInformation.id : $stateParams.id;
+            };
 
             var options = {
                 successCallBack: fetchOwnersSuccessCallback,

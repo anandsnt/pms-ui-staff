@@ -1003,7 +1003,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 };
 
                 $scope.originalFee = angular.copy($scope.feeData.calculatedFee);
-            
+
                 // For fee curresponding to default currency payment amount CICO-72207
 
                 if (initialLoad) {
@@ -1076,9 +1076,6 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 calculateFee(true);
 
-                if (isInitialLoad) {
-                    $scope.payment.amount = $scope.payment.paymentCurrencyAmount;
-                }
                 selectedPaymentType = _.find($scope.paymentTypes, {
                     name: $scope.selectedPaymentType
                 });
@@ -1092,6 +1089,11 @@ angular.module('sntPay').controller('sntPaymentController',
                     calculateFee();
                 } else {
                     $scope.payment.isEditable = $scope.isEditable === undefined || Boolean($scope.isEditable);
+                }
+
+
+                if (isInitialLoad) {
+                    $scope.payment.amount = $scope.payment.paymentCurrencyAmount;
                 }
 
                 // If the changed payment type is CC and payment gateway is MLI show CC addition options

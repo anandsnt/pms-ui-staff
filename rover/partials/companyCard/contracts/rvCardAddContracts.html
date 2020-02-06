@@ -2,7 +2,7 @@
     <!-- If we don't show the bottom form, add .without-footer -->
     <!-- If we don't show the search for some reason, add .without-header -->
     <div class="contracts-details-form scrollable" ng-iscroll="cardNewContractsScroll">
-        <div class="wrapper float">
+        <div class="wrapper float" ng-class="{'height-fix-owner-field': contractData.contractOwner.expand}">
             <div class="holder left">
                 <strong class="h3">Contract Details</strong>
                 <div class="entry full-width">
@@ -45,6 +45,7 @@
                      <!-- add readonly if it's read only -->
                     <input name="contracted-nights" id="contracted-nights" class="contracted-nights" placeholder="Set No. of Nights" ng-model="addData.contractedNights" maxlength="8" readonly type="text" ng-click="contractedNights()"/>
                 </div>
+                <div include-replace ng-include="'/assets/partials/companyCard/contracts/rvCardSearchContractOwner.html'"></div>
             </div>
             <div class="holder right">
             </div>
