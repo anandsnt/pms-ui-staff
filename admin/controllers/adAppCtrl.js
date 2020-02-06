@@ -837,6 +837,7 @@ admin.controller('ADAppCtrl', [
 
             $rootScope.isAllowanceEnabled = data.is_allowance_enabled;
             $scope.isZestWebEnabled = data.is_zest_web_enabled;
+            $scope.isZestStationEnabled = data.is_zest_station_enabled;
             setupLeftMenu();
 
             _.each($scope.data.menus, function(menu) {
@@ -846,7 +847,12 @@ admin.controller('ADAppCtrl', [
                     }
                 });
             });
-            $scope.isZestStationEnabled = data.is_zest_station_enabled;
+            _.each($scope.bookMarks, function(component) {
+                if ((!$scope.isZestWebEnabled && component.menu_name === 'Zest' && isComponentDisabled(component)) ||
+                    (!$scope.isZestStationEnabled && component.menu_name === 'Station')) {
+                    component.is_disabled = true;
+                }
+            });
         };
         /*
          * Function to get the current hotel language
@@ -907,11 +913,6 @@ admin.controller('ADAppCtrl', [
         $scope.data = adminMenuData;
         $scope.selectedMenu = $scope.data.menus[$scope.selectedIndex];
         $scope.bookMarks = $scope.data.bookmarks;
-        _.each($scope.bookMarks, function(component) {
-            if ((!$scope.isZestWebEnabled && component.menu_name === 'Zest' && isComponentDisabled(component)) || component.menu_name === 'Station') {
-                component.is_disabled = true;
-            }
-        });
         $scope.isChainAdminMenuPresent = _.where(adminMenuData.menus, {menu_name: "Chain"});
 
         $scope.bookmarkIdList = [];
