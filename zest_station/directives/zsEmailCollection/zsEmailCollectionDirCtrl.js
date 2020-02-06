@@ -15,12 +15,12 @@ sntZestStation.controller('zsEmailCollectionDirCtrl', ['$scope', 'zsUtilitySrv',
                     'email': $scope.email
                 },
                 successCallBack: function(data) {
-                    $scope.$emit('hideLoader');
                     // onSuccess, 
                     if (!data.black_listed_email) {
                         afterBlackListValidation();
 
                     } else {
+                        $scope.$emit('hideLoader');
                         $log.warn('email is black listed, request different email address');
                         onBlackListedEmailFound();
                     }
