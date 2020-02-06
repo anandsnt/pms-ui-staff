@@ -455,6 +455,15 @@ admin.controller('ADAppCtrl', [
             return  adMenuSrv.processMenuList(mobileMenu);
         };
 
+        var isComponentDisabled = function(component) {
+            return (
+                component.name === 'Check In' || component.name === 'Check Out' ||
+                    component.name === 'Direct URL' || component.name === '' || component.name === 'Zest Web Common' ||
+                    component.name === 'Room Ready Email' || component.name === 'Zest Web Global Setup' ||
+                    component.name === "Email from Guest" || component.name === "SMS / Short Code"
+            )
+        };
+
         /**
          * Set up left side menus based on permission and pms type
          */
@@ -721,14 +730,6 @@ admin.controller('ADAppCtrl', [
             $scope.selectedMenu = $scope.data.menus[$scope.selectedIndex];
         });
 
-        $scope.isComponentDisabled = function(component) {
-            return (
-                component.name === 'Check In' || component.name === 'Check Out' ||
-                    component.name === 'Direct URL' || component.name === '' || component.name === 'Zest Web Common' ||
-                    component.name === 'Room Ready Email' || component.name === 'Zest Web Global Setup' ||
-                    component.name === "Email from Guest" || component.name === "SMS / Short Code"
-            )
-        }
         /*
          * Success callback of get language
          * @param {object} response
@@ -840,17 +841,11 @@ admin.controller('ADAppCtrl', [
 
             _.each($scope.data.menus, function(menu) {
                 _.each(menu.components, function(component) {
-                    if (!$scope.isZestWebEnabled && menu.menu_name === 'Zest' && $scope.isComponentDisabled(component)) {
+                    if (!$scope.isZestWebEnabled && menu.menu_name === 'Zest' && isComponentDisabled(component)) {
                         component.is_disabled = true;
                     }
                 });
             });
-            _.each($scope.bookMarks, function(component) {
-                if ((!$scope.isZestWebEnabled && component.menu_name === 'Zest' && $scope.isComponentDisabled(component)) || component.menu_name === 'Station') {
-                    component.is_disabled = true;
-                }
-            });
-
             $scope.isZestStationEnabled = data.is_zest_station_enabled;
         };
         /*
@@ -912,6 +907,11 @@ admin.controller('ADAppCtrl', [
         $scope.data = adminMenuData;
         $scope.selectedMenu = $scope.data.menus[$scope.selectedIndex];
         $scope.bookMarks = $scope.data.bookmarks;
+        _.each($scope.bookMarks, function(component) {
+            if ((!$scope.isZestWebEnabled && component.menu_name === 'Zest' && isComponentDisabled(component)) || component.menu_name === 'Station') {
+                component.is_disabled = true;
+            }
+        });
         $scope.isChainAdminMenuPresent = _.where(adminMenuData.menus, {menu_name: "Chain"});
 
         $scope.bookmarkIdList = [];
