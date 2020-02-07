@@ -151,5 +151,21 @@
         </div>
     </section>
 
+    <section id="main" role="main" class="centered" ng-show="screenMode.value === 'ENTER_EMAIL'">
+        <zs-email-collection 
+            mode="mode" 
+            guest-id="reservationData.guest_detail_id" 
+            icon="icons.url.keyboard" 
+            email="reservationData.email" 
+            show-keyboard="showOnScreenKeyboard('email-entry')" 
+            on-focus="focusInputField" 
+            on-blur="callBlurEventForIpad()" 
+            class='email-entry-div'
+            heading='ENTER_YOUR_EMAIL'
+            sub-heading='ENTER_YOUR_EMAIL_SUB_HEADING'
+            style="width: 100%">
+        </zs-email-collection>
+    </section>
+
 
 </div>

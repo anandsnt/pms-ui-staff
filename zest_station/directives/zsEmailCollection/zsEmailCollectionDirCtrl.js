@@ -20,6 +20,7 @@ sntZestStation.controller('zsEmailCollectionDirCtrl', ['$scope', 'zsUtilitySrv',
                         afterBlackListValidation();
 
                     } else {
+                        $scope.$emit('hideLoader');
                         $log.warn('email is black listed, request different email address');
                         onBlackListedEmailFound();
                     }
@@ -27,6 +28,7 @@ sntZestStation.controller('zsEmailCollectionDirCtrl', ['$scope', 'zsUtilitySrv',
                 failureCallBack: onValidationAPIFailure
             };
 
+            $scope.$emit('showLoader');
             $scope.callAPI(zsGeneralSrv.emailIsBlackListed, blacklistCheckOptions);
         };
 
@@ -36,10 +38,12 @@ sntZestStation.controller('zsEmailCollectionDirCtrl', ['$scope', 'zsUtilitySrv',
 
         var updateGuestEmail = function() {
             var updateComplete = function() {
+                $scope.$emit('hideLoader');
                 $scope.$emit('EMAIL_UPDATION_SUCCESS');
             };
 
             var updateGuestEmailFailed = function(response) {
+                $scope.$emit('hideLoader');
                 $log.warn('updateGuestEmailFailed: ', response); // if this fails would help give clues as to why
                 $scope.$emit('EMAIL_UPDATION_FAILED');
             };
@@ -53,13 +57,14 @@ sntZestStation.controller('zsEmailCollectionDirCtrl', ['$scope', 'zsUtilitySrv',
                     successCallBack: updateComplete,
                     failureCallBack: updateGuestEmailFailed
                 };
-
+                $scope.$emit('showLoader');
                 $scope.callAPI(zsGeneralSrv.updateGuestEmail, options);
             };
             var onBlackListedEmailFound = function() {
                 setInvalidEmailMode();
             };
             var onValidationAPIFailure = function() {
+                $scope.$emit('hideLoader');
                 updateGuestEmailFailed();
             };
 
@@ -85,6 +90,8 @@ sntZestStation.controller('zsEmailCollectionDirCtrl', ['$scope', 'zsUtilitySrv',
         (function() {
             $scope.email = $scope.email || '';
             $scope.onFocus('email-entry');
+            $scope.heading = $scope.heading || 'TYPE_EMAIL_IN';
+            $scope.subHeading = $scope.subHeading || 'TYPE_EMAIL_IN_SUB';
         }());
 
     }

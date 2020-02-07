@@ -94,12 +94,13 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
                     }
                 });
 
-
                 $scope.$on('$destroy', listeners['SELECTION_CHANGED']);
             };
 
         $scope.onClickAdd = function () {
+            $scope.errorMessage = null;
             $scope.state.selected = null;
+
             if ($scope.meta) {
                 resetNewWebhook();
                 $scope.state.mode = 'ADD';
@@ -113,10 +114,13 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
         };
 
         $scope.onCancelAdd = function () {
+            $scope.errorMessage = null;
             $scope.state.mode = '';
         };
 
         $scope.onSave = function () {
+            $scope.errorMessage = null;
+
             if ($scope.state.new.canEditEvents) {
                 $scope.state.new.subscriptions = _.map(_.filter($scope.state.new.availableEvents, {
                     selected: true
@@ -128,13 +132,12 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
             $scope.callAPI(ADWebhookSrv.save, {
                 params: $scope.state.new,
                 successCallBack: function (response) {
-                    if (response.status) {
-                        $scope.webHooks.push(response.data.webhook);
-                        $scope.totalCount++;
-                        $scope.state.mode = '';
-                    } else {
-                        $scope.errorMessage = ['FAILURE'];
-                    }
+                    $scope.webHooks.push(response.data.webhook);
+                    $scope.totalCount++;
+                    $scope.state.mode = '';
+                },
+                failureCallBack: function(response) {
+                    $scope.errorMessage = response.errors;
                 }
             });
         };
@@ -167,12 +170,15 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
         };
 
         $scope.onCancelEdit = function () {
+            $scope.errorMessage = null;
             $scope.state.mode = '';
             revertEdit();
             $scope.state.selected = null;
         };
 
         $scope.onUpdate = function (webHook) {
+            $scope.errorMessage = null;
+
             if (webHook.canEditEvents) {
                 webHook.subscriptions = _.map(_.filter(webHook.availableEvents, {
                     selected: true
@@ -186,6 +192,9 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
                 successCallBack: function () {
                     $scope.state.mode = '';
                     $scope.state.selected = null;
+                },
+                failureCallBack: function(response) {
+                    $scope.errorMessage = response.errors;
                 }
             });
         };
@@ -216,13 +225,18 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
         };
 
         $scope.testURLConnectivity = function(webHook) {
+            $scope.errorMessage = null;
             webHook.testMessage = {};
+
             $scope.callAPI(ADWebhookSrv.testURLConnectivity, {
                 params: {
                     url: webHook.url
                 },
                 successCallBack: function(response) {
                     webHook.testMessage = response;
+                },
+                failureCallBack: function(response) {
+                    $scope.errorMessage = response.errors;
                 }
             });
         };
@@ -238,7 +252,6 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
             };
 
             initListeners();
-
         })();
     }
 ]);
