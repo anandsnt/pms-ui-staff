@@ -39,7 +39,7 @@
         <div class="wrapper" ng-show="diaryData.unassignedReservationList.reservations.length !== 0">
             <div class="guest {{reservation.statusClass}}" ng-class="{'selected': diaryData.selectedUnassignedReservation.reservation_id === reservation.reservation_id, 'blocked disable-element': reservation.is_hourly }" ng-repeat="reservation in diaryData.unassignedReservationList.reservations" ng-click="clickedUnassignedItem($index)">
                 <div class="data">
-                    <strong class="name" ng-bind-html="(reservation.last_name + ' ' + eservation.first_name )| highlight:searchQuery:false"></strong>
+                    <strong class="name" ng-bind-html="(reservation.last_name + ' ' + reservation.first_name )| highlight:searchQuery:false"></strong>
                     <strong class="name" ng-if="escapeNull(reservation.last_name) == '' && escapeNull(reservation.first_name) == '' " translate>PENDING</strong>
                     <span ng-if="reservation.is_vip" class="vip">VIP</span>
                     <span class="guest-room">Conf. <strong ng-bind-html="reservation.confirm_no | highlight:searchQuery:false"></strong></span>
