@@ -304,10 +304,10 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
             }
         };
 
-		// For addon that has reference show the popup to add reference
+        // For addon that has reference show the popup to add reference
 		var processAddonSelection = function(selectedAddon) {
 		    // Show for reference is checked in admin
-		    if (selectedAddon.ask_for_reference) {
+            if (selectedAddon.ask_for_reference) {
                 $scope.displayReferencePopup();
                 // Close main quantity popup
                 $scope.closePopup();
