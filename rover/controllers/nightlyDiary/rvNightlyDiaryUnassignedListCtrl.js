@@ -89,6 +89,7 @@ angular.module('sntRover')
             $scope.diaryData.unassignedReservationList.reservations = [];
             $scope.diaryData.unassignedReservationList.reservations = unassignedReservationList;
             $scope.diaryData.selectedUnassignedReservation = {};
+            initialUnassignedListData = angular.copy(unassignedReservationList);
 
             $scope.$emit('HIDE_ASSIGN_ROOM_SLOTS');
             $scope.$emit('CANCEL_UNASSIGNED_RESERVATION_MAIN');
