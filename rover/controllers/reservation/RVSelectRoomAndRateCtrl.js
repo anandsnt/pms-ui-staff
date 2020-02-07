@@ -65,8 +65,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		// --
 		$scope.restrictionColorClass = RVSelectRoomRateSrv.restrictionColorClass;
 		$scope.restrictionsMapping = ratesMeta['restrictions'];
+		
 
-        // mapping unhandled data set while coming directly from nightly diary
+		// mapping unhandled data set while coming directly from nightly diary
 		if ($scope.stateCheck.isFromNightlyDiary) {
 			$scope.reservationData.isFromNightlyDiary = true;
 			$scope.reservationData.arrivalDate = $stateParams.from_date;
@@ -801,6 +802,11 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 				$scope.stateCheck.roomDetails = getCurrentRoomDetails();
 
+				if (RVReservationDataService.isVaryingRates(ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates, ARRIVAL_DATE, DEPARTURE_DATE, $scope.reservationData.numNights) || RVReservationDataService.isVaryingOccupancy(ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates, ARRIVAL_DATE, DEPARTURE_DATE, $scope.reservationData.numNights)) {
+					if ($stateParams.fromState === "rover.reservation.staycard.reservationcard.reservationdetails") {
+						$scope.reservationData.currentSelectedRateCurrencyId = 	$stateParams.selectedCurrencyId;
+					}
+				}
 				// --
 				if (!$scope.stateCheck.dateModeActiveDate) {
 					var stayDates = ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates;
@@ -856,7 +862,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					$scope.stateCheck.promotionValidity = evaluatePromotion();
 				}
 
-				setBackButton();
+				setBackButton();				
 
 				if ($scope.stateCheck.activeView === 'ROOM_TYPE') {
 					$scope.stateCheck.baseInfo.roomTypes = rates.results;
@@ -1264,8 +1270,12 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 		// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- STAY DATES MODE
 		$scope.toggleStayDaysMode = function() {
-			$scope.reservationData.currentSelectedRateCurrencyId = "";
+			
 			$scope.stateCheck.stayDatesMode = !$scope.stateCheck.stayDatesMode;
+
+			if (!$scope.stateCheck.stayDatesMode) {
+				$scope.reservationData.currentSelectedRateCurrencyId = "";
+			}
 
 			// see if the done button has to be enabled
 			if ($scope.stateCheck.stayDatesMode) {
