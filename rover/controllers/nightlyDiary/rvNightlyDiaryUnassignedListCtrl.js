@@ -66,7 +66,7 @@ angular.module('sntRover')
                     ...item,
                     id: item.reservation_id,
                     guest_details: {
-                        full_name: item.last_name + ' ' + item.first_name,
+                        full_name: item.fullName,
                         image: ''
                     },
                     type: 'UNASSIGNED_RESERVATION'
@@ -187,8 +187,7 @@ angular.module('sntRover')
                     var result = 
                         (
                             isNaN($scope.searchQuery) &&
-                            reservation.first_name.toUpperCase().includes($scope.searchQuery.toUpperCase()) ||
-                            reservation.last_name.toUpperCase().includes($scope.searchQuery.toUpperCase())
+                            reservation.fullName.toUpperCase().includes($scope.searchQuery.toUpperCase())
                         ) ||
                         (
                             !isNaN($scope.searchQuery) &&
