@@ -1,3 +1,32 @@
+<!-- Parking Addon Popup -->
+<div class="popup" ng-class="{'open': showReferencePopup && showAddReference}">
+    <div class="popup-content form">
+        <h2>{{ selectedAddonCount > 1 ? 'ADDON_REFERNCE_MULTI_TITLE' : 'ADDON_REFERNCE_TITLE' }}</h2>
+        <div class="entry">
+            <label for="licence-plate" translate>ADDON_REFERNCE_LABEL</label>
+            <input type="text" ng-model="selectedAddonReference" ng-class="{'missing-guest-info': highlightReferenceField}">
+        </div>
+        <div class="actions">
+            <button type="button" class="button transparent" click-touch="skipAddReference()" translate>SKIP_BTN</button>
+            <button type="button" class="button" click-touch="addReference(selectedAddon)" translate>ADD_ADDON</button>
+        </div>
+    </div>
+</div>
+
+<div class="popup" ng-class="{'open': showReferencePopup && !showAddReference}">
+    <div class="popup-content message">
+        <h2 class="nocaps" translate>ADDON_NO_REFERENCE</h2>
+        <div id="message-content">
+            <h3 translate>ADDON_NO_REFERENCE_MESSAGE</h3>
+        </div>
+        <div id="message-action">
+            <button type="button" class="button" click-touch="displayReferencePopup()" translate>ADD_ADDON</button>
+            <button type="button" class="button" click-touch="closeReferencePopup()" translate>CLOSE</button>
+        </div>
+    </div>
+</div>
+<!-- END -->
+
 <!-- Add .open to show the popup -->
 <div class="popup" ng-class="{'open':showAddonPopup && !selectedAddon.isLco}">
    <div class="popup-content add-on">
