@@ -32,7 +32,7 @@ module.exports = function(config) {
             '../shared/lib/js/moment.min.js',
             '../shared/lib/js/sortable.js',
             '../shared/lib/js/angular-multi-select.js',
-            '../shared/lib/js/iscroll.js',
+            '../shared/lib/js/iscroll-probe.5.2.js',
             '../shared/lib/js/ng-iscroll.js',
             '../shared/lib/js/Utils.js',
             '../shared/lib/js/ng-table.js',
