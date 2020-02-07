@@ -576,6 +576,7 @@ admin.controller('ADAppCtrl', [
         var updateBookmarkStatus = function() {
             for (var i = 0; i < $scope.data.menus.length; i++) {
                 for (var j = 0; j < $scope.data.menus[i].components.length; j++) {
+                    $scope.data.menus[i].components[j].menu_name = $scope.data.menus[i].menu_name;
                     if ($scope.bookmarkIdList.indexOf($scope.data.menus[i].components[j].id) === -1) {
                         $scope.data.menus[i].components[j].is_bookmarked = false;
                     } else {

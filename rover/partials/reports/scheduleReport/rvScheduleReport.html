@@ -120,6 +120,24 @@
                 on-update="refreshSecondColumnScroll"
                 data="filters.hasByChargeCode.data"
                 options="filters.hasByChargeCode.options"></multi-option-selection>
+            
+            <multi-option-selection ng-show="filters.hasCompletionStatus && filters.hasCompletionStatus.data.length"
+                label="Completion Status"
+                on-update="refreshSecondColumnScroll"
+                data="filters.hasCompletionStatus.data"
+                options="filters.hasCompletionStatus.options"></multi-option-selection>
+            <multi-option-selection ng-show="filters.hasDepartments && filters.hasDepartments.data.length"
+                label="Department Assigned"
+                on-update="refreshSecondColumnScroll"
+                data="filters.hasDepartments.data"
+                options="filters.hasDepartments.options"></multi-option-selection>
+            <div class="entry date-range" ng-show="filters.hasShowActionables">
+                <label>Show</label>
+                <div class="select">
+                    <select name="show-actionables" ng-model="filters.showActionables" ng-options="action.value as action.name for action in filters.hasShowActionables.data">
+                    </select>
+                </div>
+            </div>
 
             <multi-option-selection ng-show="filters.hasUsers && filters.hasUsers.data.length"
                 label="{{ filters.hasUsers.title }}"
