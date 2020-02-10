@@ -49,7 +49,9 @@ sntRover.controller('RVReservationPackageController',
 
 		$scope.selectPurchasedAddon = function(addon) {
 			$scope.errorMessage = [];
-			if (addon.post_type.value === 'STAY') {
+			if (!$rootScope.featureToggles.addons_custom_posting) {
+				return;
+			} else if (addon.post_type.value === 'STAY') {
 				$scope.selectedPurchesedAddon = addon;
 				$scope.selectedPurchesedAddon.selected_post_days = {};
 				$scope.selectedPurchesedAddon.start_date = $filter('date')($scope.selectedPurchesedAddon.start_date, $rootScope.dateFormat);
