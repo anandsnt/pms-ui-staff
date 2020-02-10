@@ -14,7 +14,7 @@ admin.controller('adDEdgeController', ['$scope', 'config', 'adInterfacesSrv',
         };
 
         $scope.mappingTypes = ['booking_origins'];
-        $scope.historicalDataSyncItems = ['Rates', 'Inventory', 'Restrictions'];
+        $scope.realTimeDataSyncItems = ['Rates', 'Inventory', 'Restrictions'];
 
         $scope.toggleEnabled = function () {
             $scope.config.enabled = !$scope.config.enabled;

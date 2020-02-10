@@ -36,7 +36,7 @@ module.exports = {
                 '!**/*.spec.js'
 			],
 			nonMinifiedFiles: [
-				jsLibRoot + 'iscroll.js',
+				jsLibRoot + 'iscroll-probe.5.2.js',
 				jsLibRoot + 'ng-iscroll.js',
 				jsLibRoot + 'Utils.js',
 				jsLibRoot + 'date.js',

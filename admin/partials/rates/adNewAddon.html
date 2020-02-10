@@ -91,9 +91,10 @@
                         <ad-toggle-button div-class="entry" ng-if="singleAddon.is_reservation_only" label="{{'NOTIFY_STAFF_ON_GUEST_PURCHASE' | translate}}" is-checked="singleAddon.notify_staff_on_purchase"></ad-toggle-button>
 
                         <ad-toggle-button is-disabled="true" is-hide="!isConnectedToPMS" div-class="float_left" label="{{'SELL_SEPARATE' | translate}}" is-checked="singleAddon.is_sell_separate"></ad-toggle-button>
-                        <ad-toggle-button is-hide="!isConnectedToPMS || !singleAddon.is_sell_separate" div-class="float_left" label="{{'NOTIFY_STAFF_ON_GUEST_PURCHASE' | translate}}" is-checked="singleAddon.notify_staff_on_purchase"></ad-toggle-button>            
+                        <ad-toggle-button is-hide="!isConnectedToPMS || !singleAddon.is_sell_separate" div-class="float_left" label="{{'NOTIFY_STAFF_ON_GUEST_PURCHASE' | translate}}" is-checked="singleAddon.notify_staff_on_purchase"></ad-toggle-button>
 
-                        
+                        <ad-toggle-button is-hide="isConnectedToPMS" div-class="float_right" label="{{'ASK_REFERENCE_ON_GUEST_PURCHASE' | translate}}"
+                                          is-checked="singleAddon.ask_for_reference"></ad-toggle-button>
 
                         <div ng-if="::isConnectedToPMS" class="entry full-width price-suffix-container">
 

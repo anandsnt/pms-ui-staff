@@ -36,7 +36,7 @@ module.exports = {
 			nonMinifiedFiles: [
 				jsLibRoot + 'sortable.js',				
 				jsLibRoot + 'angular-multi-select.js',
-				jsLibRoot + 'iscroll.js', 
+				jsLibRoot + 'iscroll-probe.5.2.js', 
 				jsLibRoot + 'ng-iscroll.js', 
 				jsLibRoot + 'Utils.js',
 				jsLibRoot + 'ng-table.js',

@@ -29,7 +29,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 			var contentHeight = $('#content').outerHeight();
 			var h1Height = $('#' + h1Id).outerHeight(true),
 				h2Height = $('#' + h2Id).outerHeight(true),
-				h3Height = $('#' + h3Id).outerHeight(true),
+				h3Height = $scope.bypassQuest ? $('#' + h3Id).outerHeight(true) : 0,
 				scrollableViewHeight = parseFloat(contentHeight - (h1Height + h2Height + h3Height + 120) + 8);
 
 			return scrollableViewHeight;
