@@ -2725,6 +2725,127 @@ angular.module('reportsModule')
             
         };
 
+        /**
+         * Fill completion status options
+         * @param {Object} filter - holding filter details
+         * @return {void}
+         */
+        factory.fillCompletionStatus = function (filter) {
+            var completionStatusList = [
+                {
+                    id: 'UNASSIGNED',
+                    status: 'UNASSIGNED',
+                    selected: true
+                },
+                {   
+                    id: 'ASSIGNED',
+                    status: 'ASSIGNED', 
+                    selected: true
+                },
+                {
+                    id: 'COMPLETED',
+                    status: 'COMPLETED',
+                    selected: true
+                }
+            ];
+
+            filter.hasCompletionStatus = {
+                data: completionStatusList,
+                options: {
+                    hasSearch: false,
+                    selectAll: true,
+                    key: 'status',
+                    defaultValue: 'Select Status'
+                }
+            };
+        
+        };
+
+         /**
+         * Fill departments
+         * @param {Object} filter - holding filter details
+         * @return {void}
+         */
+        factory.fillDepartments = function (filter, filterValues) {
+            var getSelectAllVal = (departments) => {
+                var selectAll =  true;
+
+                if (filterValues && filterValues.assigned_departments) {
+                    selectAll = departments.length === filterValues.assigned_departments;
+                }
+
+                return selectAll;
+            };
+
+            reportsSubSrv.fetchDepartments().then(function (data) {
+                _.each(data, function (departmentData) {
+                    departmentData.id = departmentData.value;
+                });
+
+                var departmentCopy = angular.copy(data);
+
+                if (filterValues && filterValues.assigned_departments) {
+                    departmentCopy = departmentCopy.map(department => {
+                        department.selected = false;
+    
+                        if (filterValues.assigned_departments.indexOf(department.id) > -1) {
+                            department.selected = true;
+                        }
+                        return department;
+                    }); 
+                }
+
+                filter.hasDepartments = {
+                    data: departmentCopy,
+                    options: {
+                        hasSearch: false,
+                        selectAll: getSelectAllVal(departmentCopy),
+                        key: 'name',
+                        defaultValue: 'Select Department'
+                    }
+                };
+
+            });
+        };
+
+        /**
+         * Fill actionables options
+         * @param {Object} filter - holding filter details
+         * @return {void}
+         */
+        factory.fillActionsBy = function (filter) {
+            var customData = [
+                {
+                    value: 'GUEST',
+                    name: 'Guests'
+                }
+            ];
+
+            if (!$rootScope.isHourlyRateOn) {
+                customData.push(
+                    {
+                        value: 'GROUP',
+                        name: 'Groups'
+                    }
+                );
+                customData.push(
+                    {   
+                        value: 'BOTH', 
+                        name: 'Both'
+                    }
+                );
+             }
+                
+            filter['hasShowActionables'] = {
+                data: customData,
+                options: {
+                    key: 'name'
+                }
+            };
+
+
+        };
+
         return factory;
     }
 ]);

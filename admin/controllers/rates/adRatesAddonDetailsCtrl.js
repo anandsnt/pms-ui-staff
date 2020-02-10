@@ -344,6 +344,7 @@ admin.controller('ADRatesAddonDetailsCtrl', [
                 is_display_suffix: $scope.singleAddon.is_display_suffix,
                 suffix_label: $scope.singleAddon.suffix_label,
                 notify_staff_on_purchase: $scope.singleAddon.notify_staff_on_purchase,
+                ask_for_reference: $scope.singleAddon.ask_for_reference,
                 permissible_charge_code_ids: $scope.singleAddon.permissible_charge_code_ids,
                 overage_charge_code_id: $scope.singleAddon.overage_charge_code_id,
                 spillage_charge_code_id: $scope.singleAddon.spillage_charge_code_id,
