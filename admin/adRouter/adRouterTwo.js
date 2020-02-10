@@ -270,7 +270,7 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         templateUrl: '/assets/partials/taxExempt/adTaxExemptDetails.html',
         controller: 'ADTaxExemptDetailsCtrl',
         url: '/taxExempts/:taxExemptId'
-    });    
+    });
 
     $stateProvider.state('admin.paymentMethods', {
         templateUrl: '/assets/partials/paymentMethods/adPaymentMethods.html',
@@ -854,7 +854,7 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
             }
         }
     });
-    
+
     // =================================================================================================
 
     $stateProvider.state('admin.emailTemplatesSettingsGroup', {
@@ -962,7 +962,7 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
     });
 
     // =================================================================================================
-    
+
     $stateProvider.state('admin.propertyGroups', {
         templateUrl: '/assets/partials/chainAdmins/adPropertyGroups.html',
         controller: 'ADPropertyGroupsCtrl',
@@ -1120,7 +1120,7 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
             }
         }
     });
-    
+
     $stateProvider.state('admin.policeExportDefaults', {
         templateUrl: '/assets/partials/policeExportDefaults/adPoliceExportDefaults.html',
         controller: 'ADPoliceExportDefaultsCtrl',
@@ -1148,4 +1148,9 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
       url: '/guestMandatorySchema'
     });
 
+    $stateProvider.state('admin.extApiKeyGenerator', {
+      templateUrl: '/assets/partials/extApiKeyGenerator/adExtApiKeyGenerator.html',
+      controller: 'ADExtApiKeyGeneratorCtrl',
+      url: '/extApiKeyGenerator'
+    });
 });

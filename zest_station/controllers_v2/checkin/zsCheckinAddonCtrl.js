@@ -11,6 +11,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		
 		var lcoAddonList = [];
 
+        $scope.showAddReference = true;
 		$scope.selectedLcoAddonId = '';
 		$scope.selectedAddon = {};
 		$scope.pageData = zsGeneralSrv.retrievePaginationStartingData();
@@ -128,7 +129,8 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		var addAddonToReservation = function(addon, isLco) {
 			var params = {
 				id: $scope.selectedReservation.id,
-				addon_id: addon.addon_id
+				addon_id: addon.addon_id,
+                reference_text: $scope.selectedAddonReference
 			};
 
 			if ($scope.isAddonFlatOrRoomType(addon)) {
@@ -249,7 +251,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 						$scope.showAddonPopup = false;
 					}
 				} else {
-					addAddonToReservation(selectedAddon);
+                    processAddonSelection(selectedAddon);
 				}
 			}
 		};
@@ -268,9 +270,51 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				$scope.selectedLcoAddonId = _.isUndefined(selectLcoAddon) ? '' : selectLcoAddon.addon_id;
 			}
 		};
+		// Quantity popuup
 		$scope.closePopup = function() {
+            $scope.showAddReference = true;
 			$scope.showAddonPopup = false;
 		};
+
+		// Clicked skip reference
+		$scope.skipAddReference = function() {
+            $scope.showAddReference = false;
+        };
+
+		$scope.displayReferencePopup = function() {
+            // Showing the form
+            $scope.showReferencePopup = true;
+            $scope.showAddReference = true;
+            $scope.highlightReferenceField = false;
+        };
+
+		// Clicked close button
+		$scope.closeReferencePopup = function() {
+            $scope.showReferencePopup = false;
+            $scope.selectedAddonReference = '';
+        };
+
+		$scope.addReference = function(selectedAddon) {
+            if (!$scope.selectedAddonReference) {
+                $scope.highlightReferenceField = true;
+            } else {
+                $scope.highlightReferenceField = false;
+                addAddonToReservation(selectedAddon);
+                $scope.closeReferencePopup();
+            }
+        };
+
+        // For addon that has reference show the popup to add reference
+		var processAddonSelection = function(selectedAddon) {
+		    // Show for reference is checked in admin
+            if (selectedAddon.ask_for_reference) {
+                $scope.displayReferencePopup();
+                // Close main quantity popup
+                $scope.closePopup();
+            } else {
+                addAddonToReservation(selectedAddon);
+            }
+        };
 
 		var fetchLateCheckoutSettings = function() {
 			var fetchLateCheckoutSettingsSuccess = function(response) {

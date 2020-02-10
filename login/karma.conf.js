@@ -17,7 +17,7 @@ module.exports = function(config) {
             '../shared/directives/documentTouchMovePrevent/*.js',
             '../shared/directives/clickTouch/*.js',
             '../shared/lib/js/angular-sanitize.min.js',
-            '../shared/lib/js/iscroll.js',
+            '../shared/lib/js/iscroll-probe.5.2.js',
             '../shared/lib/js/ng-iscroll.js',
             '../shared/lib/js/ngDialog.min.js',
             '../shared/lib/js/SyntaxHighlighter/shCore.js',

@@ -334,5 +334,11 @@ sntZestStation.service('zsPaymentSrv', ['$http', '$q', 'zsBaseWebSrv', '$rootSco
             return zsBaseWebSrv2.getJSON(url);
         };
 
+        this.sendPaymentReceipt = function (params) {
+            var url = '/api/bills/' + params.bill_id + '/auto_trigger_receipt';
+
+             return zsBaseWebSrv2.postJSON(url, params);
+        };
+
     }
 ]);
