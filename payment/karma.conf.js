@@ -13,7 +13,7 @@ module.exports = function(config) {
             '../shared/lib/js/angular.min.js',
             '../shared/lib/js/angular-ui-router.min.js',
             '../shared/lib/js/angular-mocks.js',
-            '../shared/lib/js/iscroll.js',
+            '../shared/lib/js/iscroll-probe.5.2.js',
             '../shared/lib/js/ng-iscroll.js',
             '../shared/lib/js/ngDialog.min.js',
             '../shared/lib/js/oclazyload/ocLazyLoad.min.js',

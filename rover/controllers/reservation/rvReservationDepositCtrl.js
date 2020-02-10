@@ -6,7 +6,7 @@ sntRover.controller('RVReservationDepositController',
 
 		BaseCtrl.call(this, $scope);
 
-		SharedMethodsBaseCtrl.call (this, $scope, RVAutomaticEmailSrv, ngDialog);
+		SharedMethodsBaseCtrl.call (this, $scope, $rootScope, RVAutomaticEmailSrv, ngDialog);
 		// adding a flag to be set after some timeout to remove flickering action in iPad
 		$scope.pageloadingOver = false;
 		$timeout(function() {

@@ -129,7 +129,8 @@ angular.module('stayCardModule', [])
                 selectedRoomNo: null,
                 arrivalTime: null,
                 departureTime: null,
-                numNights: null
+                numNights: null,
+                selectedCurrencyId: ''
             },
             templateUrl: '/assets/partials/reservation/rvSelectRoomAndRate.html',
             controller: 'RVSelectRoomAndRateCtrl',
@@ -163,6 +164,8 @@ angular.module('stayCardModule', [])
                         params.room_type_id = $stateParams.room_type_id;
                     if ($stateParams.is_member)
                         params.is_member = $stateParams.is_member;
+                    if ($stateParams.selectedCurrencyId)
+                        params.rate_currency_id = $stateParams.selectedCurrencyId;
 
                     var activeTab = RVReservationBaseSearchSrv.getRoomRatesDefaultView();
 

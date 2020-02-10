@@ -2,10 +2,10 @@
     <!-- email entry emailMode -->
     <div id="content" class="input-field-contents email-entry" style="margin: 0 auto;" ng-show="mode === 'EMAIL_ENTRY_MODE'">
         <h1>
-        <text editable-text="TYPE_EMAIL_IN"> {{'TYPE_EMAIL_IN' |translate}}</text>
+            {{ heading |translate }}
         </h1>
         <h3>
-        <text editable-text="TYPE_EMAIL_IN_SUB"> {{'TYPE_EMAIL_IN_SUB' |translate}}</text>
+            {{ subHeading |translate }}
         </h3>
         <form method="post" class="form">
             <div class="entry input">
