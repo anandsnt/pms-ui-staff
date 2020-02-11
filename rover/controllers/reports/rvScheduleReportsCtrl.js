@@ -560,7 +560,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             NAME: 'NAME',
             ROOM: 'ROOM',
             BALANCE: 'BALANCE',
-            ROOM_NO: 'ROOM_NO'
+            ROOM_NO: 'ROOM_NO',
+            DEPARTMENT: 'DEPARTMENT',
+            CHARGE_CODE: 'CHARGE_CODE',
+            USER: 'USER'
         };
 
         var reportIconCls = {
@@ -1426,7 +1429,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 selectedEntity.report.title === reportNames['DAILY_PRODUCTION_DEMO'] ||
                 selectedEntity.report.title === reportNames['DAILY_PRODUCTION_RATE'] || 
                 selectedEntity.report.title === reportNames['DAILY_TRANSACTIONS'] || 
-                selectedEntity.report.title === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT'] )
+                selectedEntity.report.title === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT'] || 
+                selectedEntity.report.title === reportNames['ACTIONS_MANAGER'] )
                  ) {
                 $scope.scheduleFormat = _.filter($scope.scheduleFormat, function (object) {
                     return object.value === 'CSV';
@@ -1443,7 +1447,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 selectedEntity.report.title === reportNames['DAILY_PRODUCTION_RATE'] || 
                 selectedEntity.report.title === reportNames['DAILY_TRANSACTIONS'] ||
                 selectedEntity.report.title === reportNames['GUEST_BALANCE_REPORT'] || 
-                selectedEntity.report.title === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']);
+                selectedEntity.report.title === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT'] || 
+                selectedEntity.report.title === reportNames['ACTIONS_MANAGER'] );
         };
 
         // Listener for creating new report schedule
