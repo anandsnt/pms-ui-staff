@@ -74,7 +74,9 @@ sntRover.controller('RVReservationPackageController',
 		};
 
 		$scope.showCustomPosting = function() {
-			return $rootScope.featureToggles.addons_custom_posting && ['allotments', 'groups'].indexOf($scope.addonPopUpData.addonPostingMode) === -1;
+			// excludedModulesForCustomisation = ['allotments', 'create_group', 'group'];
+			// return $rootScope.featureToggles.addons_custom_posting && excludedModulesForCustomisation.indexOf($scope.addonPopUpData.addonPostingMode) === -1;
+			return $rootScope.featureToggles.addons_custom_posting;
 		};
 
 		$scope.shouldShowSelectAllDaysOfWeek = function() {
