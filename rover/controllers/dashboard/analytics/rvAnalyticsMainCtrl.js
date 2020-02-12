@@ -1,9 +1,11 @@
 sntRover.controller('rvAnalyticsMainController', ['$scope',
 	'$rootScope',
 	'$state',
+	'rvAnalyticsSrv',
 	'$controller',
 	'$timeout',
-	function($scope, $rootScope, $state,$controller, $timeout) {
+	'$filter',
+	function($scope, $rootScope, $state, rvAnalyticsSrv, $controller, $timeout, $filter) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -126,8 +128,27 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
             $scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
 		});
 
+		$scope.updateAndBack = function(){
+			$rootScope.setPrevState = {
+				hide: true
+			};
+			$scope.dashboardFilter.displayMode = 'DASHBOARD_LIST';
+			$scope.dashboardFilter.showFilters = false;
+		};
+
 		$scope.onClickOnChartTile = function(fetchDataEvent) {
+			// reset filters
+			$scope.selectedFilters.roomTypes = [];
+			$scope.dashboardFilter.selectedRoomType = '';
+			rvAnalyticsSrv.selectedRoomType = '';
+			$scope.dashboardFilter.showPreviousDayData = false;
+
 			$scope.$broadcast(fetchDataEvent);
+			$rootScope.setPrevState = {
+				title: $filter('translate')('ANALYTICS'),
+				callback: 'updateAndBack',
+				scope: $scope
+			};
 		};
 
 		$scope.showRightSideLegends = function () {
@@ -153,11 +174,16 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 		$scope.$on("$destroy", function() {
 			$(window).off("resize.doResize");
 			$('base').attr('href', "/");
+			$rootScope.setPrevState = {
+				hide: true,
+				title: '',
+			};
 		});
 
 		(function() {
+			$scope.dashboardFilter.displayMode = 'DASHBOARD_LIST';
 			$scope.screenData = {
-				displayMode: 'GRID'
+				displayMode: 'DASHBOARD_LIST'
 			};
 		})();
 	}

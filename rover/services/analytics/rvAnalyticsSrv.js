@@ -280,6 +280,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         workPriority.data.push(buildVacants(reservations, rooms, 'WORK_PRIORITY', date));
         // Pushing departure data structure
         workPriority.data.push(buildDepartures(reservations, date, false));
+        calculateRoomShortageByRoomType(date);
         deferred.resolve(workPriority);
     };
 

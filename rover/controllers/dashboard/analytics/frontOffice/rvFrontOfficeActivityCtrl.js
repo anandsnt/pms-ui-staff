@@ -312,8 +312,8 @@ angular.module('sntRover')
       };
 
       var getFoActivityChartData = function(date) {
-        $scope.screenData.displayMode = 'CHART_DETAILS';
-        $scope.dashboardFilter.selectedAnalyticsMenu = 'FO_ARRIVALS';
+        $scope.dashboardFilter.displayMode = 'CHART_DETAILS';
+        $scope.dashboardFilter.selectedAnalyticsMenu = 'FO_ACTIVITY';
         $('base').attr('href', "/");
         var params = {
           "date": $scope.dashboardFilter.datePicked,
@@ -332,8 +332,26 @@ angular.module('sntRover')
 
       $scope.$on('GET_FO_ACTIVITY', getFoActivityChartData);
 
+
+      $scope.$on('SHOW_YESTERDAYS_DATA_TOGGLE', function() {
+        renderFrontOfficeActivity();
+      });
+
+      $scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER', function(e, filter) {
+        if ($scope.dashboardFilter.selectedAnalyticsMenu === 'FO_ACTIVITY') {
+          rvAnalyticsSrv.selectedRoomType = filter.room_type;
+          renderFrontOfficeActivity();
+        }
+      });
+
+      $scope.$on('RELOAD_DATA_WITH_DATE_FILTER', function() { 
+        if ($scope.dashboardFilter.selectedAnalyticsMenu === 'FO_ACTIVITY') {
+          renderFrontOfficeActivity();
+        }
+      });
+
       $scope.$on('ON_WINDOW_RESIZE', function() {
-        if ($scope.dashboardFilter.selectedAnalyticsMenu === 'FO_ARRIVALS' && chartData) {
+        if ($scope.dashboardFilter.selectedAnalyticsMenu === 'FO_ACTIVITY' && chartData) {
           drawChartAndAddHeading(chartData);
         }
       });

@@ -263,7 +263,7 @@ angular.module('sntRover')
 			};
 
 			var fetchPaceChartData = function() {
-				$scope.screenData.displayMode = 'CHART_DETAILS';
+				$scope.dashboardFilter.displayMode = 'CHART_DETAILS';
 				var options = {
 					params: {
 						date: $scope.dashboardFilter.datePicked,
@@ -305,6 +305,8 @@ angular.module('sntRover')
 				shallowDecodedParams = data;
 				redrawPaceChartIfNeeded();
 			});
+
+			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER', redrawPaceChartIfNeeded);
 			$scope.$on('CHART_AGGGREGATION_CHANGED', redrawPaceChartIfNeeded);
 			$scope.$on('ON_WINDOW_RESIZE', function() {
 				if (!isPaceChartActive()){

@@ -401,7 +401,7 @@ angular.module('sntRover')
 				});
 			};
 			var getArrivalManagementChartData = function(date) {
-				$scope.screenData.displayMode = 'CHART_DETAILS';
+				$scope.dashboardFilter.displayMode = 'CHART_DETAILS';
 				$scope.dashboardFilter.selectedAnalyticsMenu = 'FO_WORK_LOAD';
 				$('base').attr('href', "/");
 				var params = {
@@ -420,6 +420,19 @@ angular.module('sntRover')
 			};
 
 			$scope.$on('GET_FO_WORKLOAD', getArrivalManagementChartData);
+
+			$scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER', function(e, filter) {
+				if ($scope.dashboardFilter.selectedAnalyticsMenu === 'FO_WORK_LOAD') {
+					rvAnalyticsSrv.selectedRoomType = filter.room_type; 
+					renderfdWorkloadChart();
+				}
+    		});
+
+    		$scope.$on('RELOAD_DATA_WITH_DATE_FILTER', function() {
+                if ($scope.dashboardFilter.selectedAnalyticsMenu === 'FO_WORK_LOAD') {
+                    renderfdWorkloadChart();
+                }
+            });
 
 			$scope.$on('ON_WINDOW_RESIZE', function() {
 				if ($scope.dashboardFilter.selectedAnalyticsMenu === 'FO_WORK_LOAD' && chartDetails) {

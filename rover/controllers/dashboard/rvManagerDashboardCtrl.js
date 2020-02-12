@@ -454,4 +454,41 @@ sntRover.controller('RVmanagerDashboardController',
     $scope.$broadcast('DISTRUBUTION_CHART_CHANGED');
   };
 
+  // house keeping
+
+  $scope.onHkAnlayticsRoomTypeChange = function() {
+    $scope.$broadcast('HK_ROOM_TYPE_FILTER_CHANGED', {
+      "room_type": $scope.dashboardFilter.selectedRoomType,
+      "date": $scope.dashboardFilter.datePicked
+    });
+  };
+
+  $scope.availableRoomTypes = angular.copy($scope.roomTypes);
+
+  $scope.$on('ROOM_TYPE_SHORTAGE_CALCULATED', function(e, calculatedRoomTypes) {
+    $scope.roomTypesForWorkPrioriy = [];
+    _.each($scope.availableRoomTypes, function(roomType) {
+      roomType.shortage = 0;
+      roomType.overBooking = 0;
+      _.each(calculatedRoomTypes, function(calculatedRoomType) {
+        if (roomType.code === calculatedRoomType.code) {
+          roomType.shortage = calculatedRoomType.shortage;
+          roomType.overBooking = calculatedRoomType.overBooking;
+        }
+      });
+    });
+  });
+
+  // front desk
+
+  $scope.onFoAnlayticsRoomTypeChange = function() {
+    $scope.$broadcast('RELOAD_DATA_WITH_SELECTED_FILTER', {
+      "room_type": $scope.dashboardFilter.selectedRoomType,
+      "date": $scope.dashboardFilter.datePicked
+    });
+  };
+
+  $scope.showYesterdaysDataToggled = function(){
+    $scope.$broadcast('SHOW_YESTERDAYS_DATA_TOGGLE')
+  };
 }]);

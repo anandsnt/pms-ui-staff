@@ -403,13 +403,6 @@ sntRover.controller('RVdashboardController',
                     $scope.dashboardFilter.selectedAnalyticsMenu = selectedChart;
                 });
 
-                $scope.onAnlayticsRoomTypeChange = function() {
-                    $scope.$broadcast('RELOAD_DATA_WITH_SELECTED_FILTER', {
-                        "room_type": $scope.dashboardFilter.selectedRoomType,
-                        "date": $scope.dashboardFilter.datePicked
-                    });
-                };
-
                 $scope.dashboardFilter.datePicked = angular.copy($rootScope.businessDate);
                 $scope.datePicked = moment($rootScope.businessDate).format('YYYY-MM-DD');
 

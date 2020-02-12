@@ -1,4 +1,4 @@
-<div class="wrapper" id="wrapper" ng-show="!dashboardFilter.gridViewActive && screenData.displayMode === 'CHART_DETAILS'">
+<div class="wrapper" id="wrapper" ng-show="!dashboardFilter.gridViewActive && dashboardFilter.displayMode === 'CHART_DETAILS'">
     <!-- Chart -->
     <div class="analytics-chart" ng-class="{ 'with-legend-left' : showLeftSideLegends(), 'with-legend-right' : showRightSideLegends() }">
         <dl class="chart-legend legend-left" id="left-side-legend" ng-if="showLeftSideLegends()">
@@ -145,13 +145,19 @@
         </dl>
     </div>
 </div>
+<section id="dashboard" ng-if="dashboardFilter.displayMode === 'DASHBOARD_LIST'" class="content scrollable analytics analytics-summary" role="main"> 
+    <div class="wrapper">
 
-<div class="wrapper" id="wrapper" ng-if="!dashboardFilter.gridViewActive && screenData.displayMode === 'GRID'">
-    <ul>
-        <li ng-repeat="chart in availableChartsList" ng-click="onClickOnChartTile(chart.fetchDataEvent)">
-            <p> {{ ::chart.name }}</p>
-            <p> {{ ::chart.department }}</p>
-            <p> {{ ::chart.tileDescription }}</p>
-        </li>
-    </ul>
-<div>
+        <div class="dashboard-analytics-list">
+                
+            <!-- On click, opens the analtics -->
+            <a  class="analytics-card" ng-repeat="chart in availableChartsList"  ng-click="onClickOnChartTile(chart.fetchDataEvent)">
+                <div class="analytics-card-content">
+                    <h2> {{ ::chart.name | translate }}</h2>
+                    <span class="analytics-card-type">{{ ::chart.department | translate }}</span>
+                    <p class="analytics-card-description">{{ ::chart.tileDescription | translate }}</p>
+                </div>
+            </a>
+         </div>
+    </div>
+</section>

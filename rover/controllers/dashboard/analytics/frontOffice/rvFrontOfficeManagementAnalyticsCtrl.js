@@ -384,7 +384,7 @@ angular.module('sntRover')
             };
 
             var getArrivalManagementChartData = function(date) {
-                $scope.screenData.displayMode = 'CHART_DETAILS';
+                $scope.dashboardFilter.displayMode = 'CHART_DETAILS';
                 $scope.dashboardFilter.selectedAnalyticsMenu = 'FO_ARRIVALS';
                 $('base').attr('href', "/");
                 var params = {
@@ -403,6 +403,19 @@ angular.module('sntRover')
             };
 
             $scope.$on('GET_FO_ARRIVAL_MANAGEMENT', getArrivalManagementChartData);
+
+            $scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER', function(e, filter) {
+                if ($scope.dashboardFilter.selectedAnalyticsMenu === 'FO_ARRIVALS') {
+                    rvAnalyticsSrv.selectedRoomType = filter.room_type;
+                    renderFrontOfficeManagementChart();
+                }
+            });
+
+            $scope.$on('RELOAD_DATA_WITH_DATE_FILTER', function() {
+                if ($scope.dashboardFilter.selectedAnalyticsMenu === 'FO_ARRIVALS') {
+                    renderFrontOfficeManagementChart();
+                }
+            });
 
             $scope.$on('ON_WINDOW_RESIZE', function() {
                 if ($scope.dashboardFilter.selectedAnalyticsMenu === 'FO_ARRIVALS' && chartDetails) {

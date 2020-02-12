@@ -390,7 +390,7 @@ angular.module('sntRover')
             };
 
             var fetchHKWorkPriorityChartData = function(date, roomTypeId) {
-                $scope.screenData.displayMode = 'CHART_DETAILS';
+                $scope.dashboardFilter.displayMode = 'CHART_DETAILS';
                 $scope.dashboardFilter.selectedAnalyticsMenu = 'HK_WORK_PRIRORITY';
                 $('base').attr('href', "/");
                 var params = {
@@ -410,6 +410,20 @@ angular.module('sntRover')
             };
 
             $scope.$on('GET_HK_WORK_PRIORITY', fetchHKWorkPriorityChartData);
+
+
+            $scope.$on('HK_ROOM_TYPE_FILTER_CHANGED', function(e, filter) {
+                if ($scope.dashboardFilter.selectedAnalyticsMenu === 'HK_WORK_PRIRORITY') {
+                    rvAnalyticsSrv.selectedRoomType = filter.room_type;
+                    renderHkWorkPriority();
+                }
+            });
+
+             $scope.$on('RELOAD_DATA_WITH_DATE_FILTER', function() {
+                 if ($scope.dashboardFilter.selectedAnalyticsMenu === 'HK_WORK_PRIRORITY') {
+                    renderHkWorkPriority();
+                }
+            });
 
             $scope.$on('ON_WINDOW_RESIZE', function() {
                 if ($scope.dashboardFilter.selectedAnalyticsMenu === 'HK_WORK_PRIRORITY' && chartDetails) {

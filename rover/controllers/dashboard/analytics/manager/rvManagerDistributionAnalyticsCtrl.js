@@ -304,7 +304,7 @@ angular.module('sntRover')
 
 
 			var fetchDistributionChartData = function() {
-				$scope.screenData.displayMode = 'CHART_DETAILS';
+				$scope.dashboardFilter.displayMode = 'CHART_DETAILS';
 				$('base').attr('href', initialBaseHrefValue);
 
 				var params = {
@@ -354,6 +354,13 @@ angular.module('sntRover')
 				setPageHeading();
 				redrawDistributionChartIfNeeded();
 			});
+
+			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER', function() {
+                if ($scope.dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION') {
+                    fetchDistributionChartData();
+                }
+            });
+            
 			$scope.$on('ON_WINDOW_RESIZE', function() {
 				if (!isDistributionChartActive()){
 					return;
