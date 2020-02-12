@@ -997,12 +997,10 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			var getCopyCount = function(successData) {
 					var copyCount = "";
 
-					if (successData.is_copy_counter) {
-						if (successData.no_of_original_invoices === 0) {
-							copyCount = parseInt(successData.print_counter) - 1;
-						} else {
-							copyCount = parseInt(successData.print_counter) - parseInt(successData.no_of_original_invoices);
-						}
+					if (successData.is_copy_counter && successData.no_of_original_invoices === 0) {
+						copyCount = parseInt(successData.print_counter) - 1;
+					} else if (successData.is_copy_counter && successData.no_of_original_invoices > 0) {
+						copyCount = parseInt(successData.print_counter) - parseInt(successData.no_of_original_invoices);
 					}
 					return copyCount;
 				},
