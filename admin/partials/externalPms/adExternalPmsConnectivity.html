@@ -28,6 +28,7 @@
 
 					<ad-dropdown label-in-drop-down="Select Default Charge Code" list="externalPmsConnectivityData.pms_default_charge_code_list" selected-id='externalPmsConnectivityData.pms_default_charge_code' selbox-class="placeholder" div-class="full-width" label="POST ZERO CHARGE ON BILL IF NO ENTRIES" name = "pms-default-charge-code" id = "pms-default-charge-code"></ad-dropdown>
 
+                    <ad-toggle-button is-checked="externalPmsConnectivityData.use_o2g_channel_for_add_payment" label="Use O2G Channel For Add Payment Request"></ad-toggle-button>
 				</fieldset>
 				<div class="actions float">
 					<button type="button" class="button blank add-data-inline" ng-click="goBackToPreviousState()">
