@@ -38,7 +38,7 @@ module.exports = {
 
                 ],
                 nonMinifiedFiles: [
-                    jsLibRoot + 'iscroll-probe.5.2.js',
+                    jsLibRoot + 'iscroll.js',
                     jsLibRoot + 'ng-iscroll.js',
                     jsLibRoot + 'Utils.js',
                     jsLibRoot + 'jquery.select-to-autocomplete.js',
