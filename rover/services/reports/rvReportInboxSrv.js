@@ -969,8 +969,9 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
          */
         this.fillShowUpsellsOnly = (value, key, formatedFilter) => { 
             if (value) {
-                formatedFilter[reportInboxFilterLabelConst[key]] = value;
-            } 
+                formatedFilter[reportInboxFilterLabelConst[key]] = 'Yes';
+            }
+            
         };
         
         /**
