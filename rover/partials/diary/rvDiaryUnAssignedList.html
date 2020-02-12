@@ -41,12 +41,6 @@
                 Today <span class="date">{{getActiveDate(true)}}</span>
                 <span class="count">{{currentBookings.length}}</span>
             </strong>
-            <div class="no-content" ng-if="currentBookings.length === 0">
-                <div class="info">
-                    <span class="icon-no-content icon-search"></span>
-                    <strong class="h1">No reservations found</strong>
-                </div>
-            </div>
             <!-- Add class '.blocked' for Night Use reservations -->
             <div ng-repeat="reservation in currentBookings"
                 class="{{reservation.statusClass}}"
@@ -83,12 +77,6 @@
                 Tomorrow <span class="date">{{getNextDate(true)}}</span>
                 <span class="count">{{futureBookings.length}}</span>
             </strong>
-            <div class="no-content" ng-if="futureBookings.length === 0">
-                <div class="info">
-                    <span class="icon-no-content icon-search"></span>
-                    <strong class="h1">No reservations found</strong>
-                </div>
-            </div>
             <!-- {repeat L38-L58 for tomorrow} -->
             <!-- Add class '.blocked' for Night Use reservations -->
             <div ng-repeat="reservation in futureBookings"

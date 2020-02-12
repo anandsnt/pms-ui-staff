@@ -66,7 +66,7 @@ angular.module('sntRover')
                     ...item,
                     id: item.reservation_id,
                     guest_details: {
-                        full_name: item.last_name + ' ' + item.first_name,
+                        full_name: item.fullName,
                         image: ''
                     },
                     type: 'UNASSIGNED_RESERVATION'
@@ -89,6 +89,7 @@ angular.module('sntRover')
             $scope.diaryData.unassignedReservationList.reservations = [];
             $scope.diaryData.unassignedReservationList.reservations = unassignedReservationList;
             $scope.diaryData.selectedUnassignedReservation = {};
+            initialUnassignedListData = angular.copy(unassignedReservationList);
 
             $scope.$emit('HIDE_ASSIGN_ROOM_SLOTS');
             $scope.$emit('CANCEL_UNASSIGNED_RESERVATION_MAIN');
@@ -186,8 +187,7 @@ angular.module('sntRover')
                     var result = 
                         (
                             isNaN($scope.searchQuery) &&
-                            reservation.first_name.toUpperCase().includes($scope.searchQuery.toUpperCase()) ||
-                            reservation.last_name.toUpperCase().includes($scope.searchQuery.toUpperCase())
+                            reservation.fullName.toUpperCase().includes($scope.searchQuery.toUpperCase())
                         ) ||
                         (
                             !isNaN($scope.searchQuery) &&
@@ -196,12 +196,12 @@ angular.module('sntRover')
 
                     return result;
                 });
+                
+                $scope.diaryData.unassignedReservationList.reservations = displayResults;
             }
             else {
-                displayResults = initialUnassignedListData;
+                fetchUnassignedReservationList();
             }
-
-            $scope.diaryData.unassignedReservationList.reservations = displayResults;
         };
 
         // CICO-65962 : Handle Clear Query.

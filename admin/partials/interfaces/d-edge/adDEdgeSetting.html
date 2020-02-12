@@ -21,24 +21,28 @@
                 <ad-textbox inputtype="text"
                             value="config.endpoint"
                             label="{{'ENDPOINT'| translate}}"
-                            styleclass="full-width">
+                            styleclass="full-width"
+                            required="yes">
                 </ad-textbox>
                 <ad-textbox inputtype="text"
                             value="config.hotel_id"
                             label="{{'HOTEL_ID'| translate}}"
-                            styleclass="full-width">
+                            styleclass="full-width"
+                            required="yes">
                 </ad-textbox>
             </fieldset>
             <fieldset class="holder right">
                 <ad-textbox inputtype="text"
                             value="config.username"
                             label="{{'USERNAME'| translate}}"
-                            styleclass="full-width">
+                            styleclass="full-width"
+                            required="yes">
                 </ad-textbox>
                 <ad-textbox inputtype="password"
                             value="config.password"
                             label="{{'PASSWORD'| translate}}"
                             styleclass="full-width"
+                            required="yes"
                             click-handler="onPasswordClick(config, 'password')">
                 </ad-textbox>
             </fieldset>

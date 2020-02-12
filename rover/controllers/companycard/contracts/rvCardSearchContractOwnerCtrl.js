@@ -37,10 +37,14 @@ angular.module('sntRover').controller('rvCardSearchContractOwnerCtrl', ['$scope'
                 failureCallBack: fetchOwnersFailureCallback,
                 params: {
                     'query': $scope.contractData.contractOwner.query,
-                    'is_inactive': $scope.contractData.contractOwner.isInactive
+                    'is_inactive': $scope.contractData.contractOwner.isInactive,
+                    'account_id': accountId
                 }
             };
-
+            
+            if ($scope.contractData.mode === 'EDIT') {
+                options.params.id = $scope.contractData.selectedContractId;
+            }
             $scope.callAPI(rvCompanyCardContractsSrv.fetchOwners, options);
         };
 

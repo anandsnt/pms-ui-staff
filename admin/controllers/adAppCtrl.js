@@ -455,6 +455,15 @@ admin.controller('ADAppCtrl', [
             return  adMenuSrv.processMenuList(mobileMenu);
         };
 
+        var isComponentDisabled = function(component) {
+            return (
+                component.name === 'Check In' || component.name === 'Check Out' ||
+                    component.name === 'Direct URL' || component.name === '' || component.name === 'Zest Web Common' ||
+                    component.name === 'Room Ready Email' || component.name === 'Zest Web Global Setup' ||
+                    component.name === "Email from Guest" || component.name === "SMS / Short Code"
+            )
+        };
+
         /**
          * Set up left side menus based on permission and pms type
          */
@@ -567,6 +576,7 @@ admin.controller('ADAppCtrl', [
         var updateBookmarkStatus = function() {
             for (var i = 0; i < $scope.data.menus.length; i++) {
                 for (var j = 0; j < $scope.data.menus[i].components.length; j++) {
+                    $scope.data.menus[i].components[j].menu_name = $scope.data.menus[i].menu_name;
                     if ($scope.bookmarkIdList.indexOf($scope.data.menus[i].components[j].id) === -1) {
                         $scope.data.menus[i].components[j].is_bookmarked = false;
                     } else {
@@ -721,14 +731,6 @@ admin.controller('ADAppCtrl', [
             $scope.selectedMenu = $scope.data.menus[$scope.selectedIndex];
         });
 
-        $scope.isComponentDisabled = function(component) {
-            return (
-                component.name === 'Check In' || component.name === 'Check Out' ||
-                    component.name === 'Direct URL' || component.name === '' || component.name === 'Zest Web Common' ||
-                    component.name === 'Room Ready Email' || component.name === 'Zest Web Global Setup' ||
-                    component.name === "Email from Guest" || component.name === "SMS / Short Code"
-            )
-        }
         /*
          * Success callback of get language
          * @param {object} response
@@ -836,22 +838,22 @@ admin.controller('ADAppCtrl', [
 
             $rootScope.isAllowanceEnabled = data.is_allowance_enabled;
             $scope.isZestWebEnabled = data.is_zest_web_enabled;
+            $scope.isZestStationEnabled = data.is_zest_station_enabled;
             setupLeftMenu();
 
             _.each($scope.data.menus, function(menu) {
                 _.each(menu.components, function(component) {
-                    if (!$scope.isZestWebEnabled && menu.menu_name === 'Zest' && $scope.isComponentDisabled(component)) {
+                    if (!$scope.isZestWebEnabled && menu.menu_name === 'Zest' && isComponentDisabled(component)) {
                         component.is_disabled = true;
                     }
                 });
             });
             _.each($scope.bookMarks, function(component) {
-                if ((!$scope.isZestWebEnabled && component.menu_name === 'Zest' && $scope.isComponentDisabled(component)) || component.menu_name === 'Station') {
+                if ((!$scope.isZestWebEnabled && component.menu_name === 'Zest' && isComponentDisabled(component)) ||
+                    (!$scope.isZestStationEnabled && component.menu_name === 'Station')) {
                     component.is_disabled = true;
                 }
             });
-
-            $scope.isZestStationEnabled = data.is_zest_station_enabled;
         };
         /*
          * Function to get the current hotel language
