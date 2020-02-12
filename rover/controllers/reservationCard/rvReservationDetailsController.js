@@ -1127,6 +1127,7 @@ sntRover.controller('reservationDetailsController',
 				addonPostingMode: 'staycard',
 				cancelLabel: "Cancel",
 				saveLabel: "Save",
+				shouldShowAddMoreButton: true,
 				number_of_adults: $scope.reservationData.reservation_card.number_of_adults,
 				number_of_children: $scope.reservationData.reservation_card.number_of_children,
 				duration_of_stay: $scope.packageData.duration_of_stay
