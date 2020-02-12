@@ -179,11 +179,10 @@ angular.module('sntRover')
 
         // CICO-65962 : Handle searchUnassignedList logic.
         $scope.searchUnassignedList =  function() {
-            var displayResults = [],
-                unassignedReservationList = angular.copy(initialUnassignedListData);
+            var displayResults = [];
 
             if ($scope.searchQuery && $scope.searchQuery.length > 0) {
-                displayResults = unassignedReservationList.filter(function(reservation) {
+                displayResults = initialUnassignedListData.filter(function(reservation) {
                     // check if the querystring is number or string
                     var result = 
                         (
@@ -197,12 +196,12 @@ angular.module('sntRover')
 
                     return result;
                 });
+                
+                $scope.diaryData.unassignedReservationList.reservations = displayResults;
             }
             else {
-                displayResults = initialUnassignedListData;
+                fetchUnassignedReservationList();
             }
-
-            $scope.diaryData.unassignedReservationList.reservations = displayResults;
         };
 
         // CICO-65962 : Handle Clear Query.
