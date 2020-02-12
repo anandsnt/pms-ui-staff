@@ -998,7 +998,11 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					var copyCount = "";
 
 					if (successData.is_copy_counter) {
-						copyCount = parseInt(successData.print_counter) - parseInt(successData.no_of_original_invoices);
+						if (successData.no_of_original_invoices === 0) {
+							copyCount = parseInt(successData.print_counter) - 1;
+						} else {
+							copyCount = parseInt(successData.print_counter) - parseInt(successData.no_of_original_invoices);
+						}
 					}
 					return copyCount;
 				},
@@ -1025,11 +1029,11 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					{
 						successData.invoiceLabel = successData.translation.ar_invoice;
 					}
-					else if (parseInt(successData.print_counter) === 1 && parseInt(successData.no_of_original_invoices) === 0 && $scope.roverObj.noReprintReEmailInvoice)
+					else if (parseInt(successData.print_counter) === 1 && parseInt(successData.no_of_original_invoices) === 0)
 					{
 						successData.invoiceLabel = successData.translation.ar_invoice;
 					}
-					else if (parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices))
+					else if ((parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices)) && !$scope.roverObj.noReprintReEmailInvoice)
 					{
 						if (successData.is_copy_counter) {
             				copyCount = getCopyCount(successData);
