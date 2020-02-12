@@ -385,10 +385,6 @@ sntRover.controller('RVReservationAddonsCtrl', [
             ngDialog.close();
         };
 
-        $scope.closeCalendar = function() {
-            datePicker.close();
-        };
-
         $scope.refreshAddonsScroller = function() {
             $timeout(function() {
                 if ($scope.$parent.myScroll['enhanceStays']) {
