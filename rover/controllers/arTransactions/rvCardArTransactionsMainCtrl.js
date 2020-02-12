@@ -142,6 +142,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			}
 
 			$scope.arDataObj.unpaidAmount = data.unpaid_amount;
+			$scope.arDataObj.unpaidPaymentAmount = data.unpaid_payment_amount;
 			$scope.arDataObj.paidAmount = data.paid_amount;
 			$scope.arDataObj.allocatedCredit = data.allocated_credit;
 			$scope.arDataObj.unallocatedCredit = data.unallocated_credit;

@@ -21,6 +21,7 @@ sntRover.controller('RVbillCardController',
 	'RVReservationStateService',
 	'$log',
 	'sntAuthorizationSrv',
+	'RVAutomaticEmailSrv',
 	'PAYMENT_CONFIG',
 	function($scope, $rootScope,
 			$state, $stateParams,
@@ -33,10 +34,12 @@ sntRover.controller('RVbillCardController',
 			$sce,
 
 			RVKeyPopupSrv, RVPaymentSrv,
-			RVSearchSrv, rvPermissionSrv, jsMappings, $q, sntActivity, RVReservationStateService, $log, sntAuthorizationSrv, PAYMENT_CONFIG) {
+			RVSearchSrv, rvPermissionSrv, jsMappings, $q, sntActivity, RVReservationStateService, $log, sntAuthorizationSrv, RVAutomaticEmailSrv, PAYMENT_CONFIG) {
 
 
 	BaseCtrl.call(this, $scope);
+
+	SharedMethodsBaseCtrl.call (this, $scope, $rootScope, RVAutomaticEmailSrv, ngDialog);
 	var that = this;
 
 
@@ -2942,10 +2945,13 @@ sntRover.controller('RVbillCardController',
 				$scope.isViaReviewProcess = false;
 				callBlackBoxAPI();
 			}
-	};
+	};	
 
+	$scope.$on("AUTO_TRIGGER_EMAIL_AFTER_PAYMENT", function(e, data) {
+		$scope.sendAutomaticEmails(data);
+	});
 
-	 $scope.$on('BILL_PAYMENT_SUCCESS', function(event, data) {
+	$scope.$on('BILL_PAYMENT_SUCCESS', function(event, data) {
 	 	$scope.signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
 		$scope.isRefreshOnBackToStaycard = true;
 		if ($scope.isViaReviewProcess) {
@@ -2959,6 +2965,14 @@ sntRover.controller('RVbillCardController',
 
 		$scope.getBillData($scope.currentActiveBill);
 		$scope.$broadcast('FETCH_REMAINING_AUTH');
+
+		$scope.currentPaymentBillId = data.bill_id;
+		$scope.currentPaymentTransactionId = data.transaction_id;
+		$scope.isDepositPayment = data.is_deposit_payment;
+		if ($rootScope.autoEmailPayReceipt || ($rootScope.autoEmailDepositInvoice && $scope.isDepositPayment)) {
+			$scope.autoTriggerPaymentReceiptActions();
+		}
+				
 	});
 
 	// To update paymentModalOpened scope - To work normal swipe in case if payment screen opened and closed - CICO-8617

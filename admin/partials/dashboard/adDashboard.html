@@ -25,7 +25,7 @@
                   {{submenu.name}}
                </a>
 
-               <a class="text" data-type="load-listing"  ng-click="clickedMenuItem($event, submenu.state, selectedMenu.components[$index].is_disabled); setActiveItem(submenu)">{{submenu.name}}</a>
+               <a class="text" data-type="load-listing"  ng-click="clickedMenuItem($event, submenu.state, selectedMenu.components[$index].is_disabled, selectedMenu.menu_name); setActiveItem(submenu)">{{submenu.name}}</a>
             </li>
          </ul>  
       </section>    

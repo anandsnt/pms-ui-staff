@@ -15,13 +15,14 @@ sntRover.controller('RVJournalController',
 	$scope.data.revenueData = {};
     $scope.data.paymentData = {};
 	$scope.data.filterData = journalResponse;
-	$scope.data.filterData.checkedAllDepartments = true;
+    $scope.data.filterData.checkedAllDepartments = true;
+    $scope.data.filterData.checkedAllEmployees = true;
     $scope.data.filterData.isSelectButtonActive = false;
     $scope.data.filterData.perPage = 50;    // For pagination
     $scope.data.selectedChargeGroup = '';
     $scope.data.selectedChargeCode  = '';
     $scope.data.selectedPaymentType = '';
-    $scope.data.filterTitle = "All Departments";
+    $scope.data.filterTitle = "All Departments and All Employees";
     $scope.data.isExpandedViewSummary = false;
     $scope.data.isExpandedViewRevenue = false;
     $scope.data.isExpandedViewPayment = false;
@@ -128,7 +129,7 @@ sntRover.controller('RVJournalController',
 
             if (!$scope.data.isExpandedViewRevenue) {
                 $scope.searchJournal();
-            } else {
+            } else {$scope.data.filterData.
                 $scope.$broadcast("EXPAND_REVENUE_SCREEN");
             }           
         } 
@@ -195,13 +196,31 @@ sntRover.controller('RVJournalController',
     	$scope.data.filterData.checkedAllDepartments = true;
         $scope.data.selectedDepartmentName = [];
         $scope.data.selectedDepartmentName.push('ALL');
+        clearAllDeptSelection();
+        $scope.data.selectedDepartmentList = [];
+        getSelectButtonStatus();
+
+        if (($scope.data.selectedDepartmentList.length === 0) && ($scope.data.selectedEmployeeList.length === 0)) {
+            $scope.data.filterTitle = "All Departments and All Employees";
+        } else if (($scope.data.selectedDepartmentList.length === 0) && ($scope.data.selectedEmployeeList.length !== 0)) {
+            $scope.data.filterTitle = "Multiple";
+        }
+    };
+
+    // On selecting 'All Employees' radio button.
+    $scope.selectAllEmployees = function() {
+    	$scope.data.filterData.checkedAllEmployees = true;
         $scope.data.selectedEmployeesName = [];
+        $scope.data.selectedEmployeeList = [];
         $scope.data.selectedEmployeesName.push('ALL');
-    	clearAllDeptSelection();
         clearAllEmployeeSelection();
         getSelectButtonStatus();
 
-        $scope.data.filterTitle = "All Departments";
+        if (($scope.data.selectedDepartmentList.length === 0) && ($scope.data.selectedEmployeeList.length === 0)) {
+            $scope.data.filterTitle = "All Departments and All Employees";
+        } else if (($scope.data.selectedDepartmentList.length !== 0) && ($scope.data.selectedEmployeeList.length === 0)) {
+            $scope.data.filterTitle = "Multiple";
+        }
     };
 
     // Clicking each checkbox on Departments
@@ -222,6 +241,13 @@ sntRover.controller('RVJournalController',
     $scope.clickedEmployees = function(selectedIndex) {
         $scope.data.filterData.employees[selectedIndex].checked = !$scope.data.filterData.employees[selectedIndex].checked;
         getSelectButtonStatus();
+
+        if (isAllEmployeesUnchecked()) {
+            $scope.selectAllEmployees();
+        }
+        else {
+            $scope.data.filterData.checkedAllEmployees = false;
+        }
     };
 
     // To setup Lists of selected ids of employees and departments.
@@ -255,7 +281,7 @@ sntRover.controller('RVJournalController',
             $scope.data.filterTitle = "Multiple";
         }
         else if ( ($scope.data.selectedDepartmentList.length === 0) && ($scope.data.selectedEmployeeList.length === 0) ) {
-            $scope.data.filterTitle = "All Departments";
+            $scope.data.filterTitle = "All Departments and All Employees";
             $scope.data.selectedDepartmentName = [];
             $scope.data.selectedDepartmentName.push('ALL');
         }

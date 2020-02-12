@@ -28,7 +28,8 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		var whetherSummaryDataChanged = function() {
 			var currentSummaryData = $scope.allotmentConfigData.summary;
 
-			for (key in summaryMemento) {
+			for (var key in summaryMemento) {
+				// if any of the values are not equal/same, there is change, return true
 				if (!_.isEqual(currentSummaryData[key], summaryMemento[key])) {
 					return true;
 				}
@@ -60,12 +61,13 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 											 targetElement.id === "cancel-action"
 											)
 										  ),
-				summaryDataNotChanged 	= !whetherSummaryDataChanged(),
 				demographicsOpen 		= $scope.allotmentSummaryData.isDemographicsPopupOpen,
 				updateInProgress 		= $scope.isUpdateInProgress;
 
-			if ( incorrectTarget 	  || isInaddMode 	  || summaryDataNotChanged ||
-				 demographicsOpen 	  || updateInProgress ) {
+			if (isInaddMode || incorrectTarget ||
+				!!$scope.focusedCompanyCard || !!$scope.focusedTravelAgent ||
+				!whetherSummaryDataChanged() || demographicsOpen ||
+				updateInProgress ) {
 				// No need to call update summary
 				return;
 			}
@@ -89,6 +91,48 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			summaryMemento = angular.copy($scope.allotmentConfigData.summary);
 			$scope.isUpdateInProgress = false;
 		});
+
+		var navigateToAddonsListner = $rootScope.$on('NAVIGATE_TO_ADDONS', function(event, data) {
+			if (data.addonPostingMode === 'allotments') {
+				$scope.manageAddons();
+			}
+		});
+
+		var proceedAddonBookingListner = $scope.$on('PROCEED_BOOKING', function(event, data) {
+            if (data.addonPostingMode === 'allotments') {
+            	$scope.selectedPurchesedAddon = data.selectedPurchesedAddon;
+                updateAddonPosting();
+            }
+        });
+
+        var removeSelectedAddonsListner = $rootScope.$on('REMOVE_ADDON', function(event, data) {
+            if (data.addonPostingMode === 'allotments') {
+                $scope.removeAddon($scope.packageData.existing_packages[data.index]);
+            }
+        });
+
+        $scope.$on( '$destroy', proceedAddonBookingListner);
+        $scope.$on( '$destroy', removeSelectedAddonsListner);
+        $scope.$on( '$destroy', navigateToAddonsListner);
+
+        var updateAddonPosting = function() {
+
+        	var params = {
+				"id": $scope.allotmentConfigData.summary.allotment_id,
+				'addon_id': $scope.selectedPurchesedAddon.id,
+				'post_instances': $scope.selectedPurchesedAddon.post_instances,
+				'start_date': $scope.selectedPurchesedAddon.start_date,
+				'end_date': $scope.selectedPurchesedAddon.end_date
+			};
+        	var options = {
+				successCallBack: function() {
+					$scope.$emit('hideLoader');
+				},
+				params: params
+			};
+
+			$scope.callAPI(rvAllotmentConfigurationSrv.updateAddonPosting, options);
+        };
 
 		/**
 		 * when from date choosed, this function will fire
@@ -527,12 +571,12 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		$scope.onRateChange = function() {
 			var summaryData = $scope.allotmentConfigData.summary,
 				uniqId = summaryData.uniqId,
-				rateId = uniqId.split(':')[0],
-				contractId = uniqId.split(':')[1];
+				rateId = uniqId && uniqId.split(':')[0],
+				contractId = uniqId && uniqId.split(':')[1];
 
 			$scope.allotmentConfigData.summary.contract_id = contractId;
 			$scope.allotmentConfigData.summary.rate = rateId;
-			if (!summaryData.allotment_id) {
+			if (!summaryData.allotment_id || !uniqId) {
 				return false;
 			}
 
@@ -709,9 +753,30 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 * @return undefined
 		 */
 		$scope.openAddonsPopup = function() {
+
+            $scope.addonPopUpData = {
+				cancelLabel: "Cancel",
+                saveLabel: "Save",
+                number_of_adults: 1,
+                number_of_children: 1,
+                numNights: 1,
+                addonPostingMode: 'allotments'
+            };
+
+            $scope.packageData = {
+                duration_of_stay: $scope.duration_of_stay
+            };
+
+            $scope.packageData.existing_packages = $scope.allotmentConfigData.selectedAddons;
+
+            _.each($scope.packageData.existing_packages, function(item) {
+                item.totalAmount = item.amount * item.addon_count;
+            });
+
 			ngDialog.open({
-				template: '/assets/partials/allotments/summary/allotmentAddonsPopup.html',
+				template: '/assets/partials/packages/showPackages.html',
 				className: '',
+				controller: 'RVReservationPackageController',
 				scope: $scope,
 				closeByDocument: false,
 				closeByEscape: false
@@ -757,6 +822,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 
 		var onRemoveAddonSuccess = function(data) {
 			$scope.allotmentConfigData.selectedAddons = data;
+			$scope.packageData.existing_packages = $scope.allotmentConfigData.selectedAddons;
 			$scope.computeAddonsCount();
 		};
 
@@ -981,14 +1047,14 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		/**
          * We need to refresh the rates once TA card info is changed
          */
-        $scope.$on('TA_CARD_CHANGED', function(event) {
+        $scope.addListener('TA_CARD_CHANGED', function(event) {
             fetchApplicableRates();
 		});
 		
 		/**
          * We need to refresh the rates once company card info is changed
          */
-        $scope.$on('COMPANY_CARD_CHANGED', function(event) {
+        $scope.addListener('COMPANY_CARD_CHANGED', function(event) {
             fetchApplicableRates();
         });
 

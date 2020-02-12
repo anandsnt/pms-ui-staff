@@ -10,7 +10,9 @@ sntZestStation.directive('zsEmailCollection', function() {
 			isSkipable: '=isSkipable',
 			showKeyboard: '=',
 			onFocus: '=',
-			onBlur: '&'
+			onBlur: '&',
+			heading: '@',
+			subHeading: '@'
 		},
 		templateUrl: '/assets/directives/zsEmailCollection/zsEmailCollectionDir.html',
 		controller: 'zsEmailCollectionDirCtrl'

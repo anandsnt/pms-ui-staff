@@ -181,7 +181,8 @@
                             ng-change="onRateChange()"
                             ng-disabled="shouldDisableRateChange()"
                             snt-placeholder="SELECT_RATE"
-                            ng-options="rate.uniqId as rate.name group by rate.groupName for rate in groupSummaryData.rateSelectDataObject">
+                            ng-options="rate.uniqId as rate.name group by rate.groupName for rate in groupSummaryData.rateSelectDataObject"
+                            ng-class="{'highlighted': !groupConfigData.summary.uniqId}">
                     </select>
                 </div>
                 <a ng-click="!groupConfigData.summary.is_cancelled ? (isInAddMode() ? manageAddons() : viewAddons()) : false" class="button with-icon" ng-class="{'brand-colors' : !isInAddMode() && !groupConfigData.summary.is_cancelled, 'grey' : isInAddMode() || !!groupConfigData.summary.is_cancelled}">
