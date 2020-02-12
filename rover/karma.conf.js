@@ -22,7 +22,7 @@ module.exports = function(config) {
             '../shared/lib/js/oclazyload/ocLazyLoad.min.js',
             '../shared/lib/js/ui-utils.min.js',
             '../shared/lib/js/underscore.min.js',
-            '../shared/lib/js/iscroll.js',
+            '../shared/lib/js/iscroll-probe.5.2.js',
             '../shared/lib/js/ng-iscroll.js',
             '../shared/lib/js/ngDialog.min.js',
             '../shared/lib/js/fastclick/fastclick.min.js',

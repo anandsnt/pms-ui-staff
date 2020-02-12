@@ -5,7 +5,7 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 
 		BaseCtrl.call(this, $scope);
 
-		SharedMethodsBaseCtrl.call (this, $scope, RVAutomaticEmailSrv, ngDialog);
+		SharedMethodsBaseCtrl.call (this, $scope, $rootScope, RVAutomaticEmailSrv, ngDialog);
 
 		var init = (function() {
 
@@ -151,8 +151,9 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 
 			$scope.currentPaymentBillId = data.bill_id;
 			$scope.currentPaymentTransactionId = data.transaction_id;
+			$scope.isDepositPayment = data.is_deposit_payment;
 
-			if ($rootScope.autoEmailPayReceipt || $rootScope.autoEmailDepositInvoice) {
+			if ($rootScope.autoEmailPayReceipt || ($rootScope.autoEmailDepositInvoice && $scope.isDepositPayment)) {
 				$scope.autoTriggerPaymentReceiptActions();
 			}
 		});

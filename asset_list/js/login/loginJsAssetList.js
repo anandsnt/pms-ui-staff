@@ -18,7 +18,7 @@ module.exports = {
                     sharedRoot + 'baseCtrl.js',
                     sharedRoot + 'interceptors/**/*.js',
 
-                    jsLibRoot + 'iscroll.js',
+                    jsLibRoot + 'iscroll-probe.5.2.js',
                     jsLibRoot + 'ng-iscroll.js',
                     jsLibRoot + 'Utils.js',
                     loginRoot + 'loginApp.js',
