@@ -742,8 +742,28 @@ var isEmptyArray = function (arr) {
     return arr.length === 0;
 };
 
+/**
+ * Remove the passed keys from the object
+ * @param {Object} obj object from which the keys needs to be removed
+ * @param {Array} keys arr of keys
+ * @return {void}
+ */
 var removeKeysFromObj = function (obj, keys) {
     for (var i = 0; i < keys.length; i++) {
         delete obj[keys[i]];
+    }
+};
+
+/**
+ * Replace the object properties value with the replace value
+ * @param {Object} obj the object whose property value needs to be changed
+ * @param {Object|String|number|Null|Undefined} replaceVal can be any value
+ * @return {void}
+ */
+var resetObject = function(obj, replaceVal) {
+    for (key in obj) {
+        if(obj.hasOwnProperty(key)) {
+            obj[key] = replaceVal;
+        }
     }
 };

@@ -181,7 +181,8 @@
                             ng-change="onRateChange()"
                             ng-disabled="shouldDisableRateChange()"
                             snt-placeholder="SELECT_RATE"
-                            ng-options="rate.uniqId as rate.name group by rate.groupName for rate in groupSummaryData.rateSelectDataObject">
+                            ng-options="rate.uniqId as rate.name group by rate.groupName for rate in groupSummaryData.rateSelectDataObject"
+                            ng-class="{'highlighted': !groupConfigData.summary.uniqId}">
                     </select>
                 </div>
                 <a ng-click="!groupConfigData.summary.is_cancelled ? (isInAddMode() ? manageAddons() : viewAddons()) : false" class="button with-icon" ng-class="{'brand-colors' : !isInAddMode() && !groupConfigData.summary.is_cancelled, 'grey' : isInAddMode() || !!groupConfigData.summary.is_cancelled}">
@@ -233,7 +234,23 @@
                 </div>
                 <textarea rows="4" ng-show="groupConfigData.summary.is_tax_exempt" ng-model="groupConfigData.summary.tax_exempt_ref_text" placeholder="{{'TAX_EXEMPT_REFERENCE' | translate}}" maxlength="200"></textarea>
             </div>
+            <!--Bypass CC Guarantee Toggle Starts -->
+            <label for="group-hide-rates">BYPASS CC GUARANTEE</label>
+            <div class="entry full-width tax-exempt" ng-if="!isInAddMode()" >
+                <div class="switch-button" ng-class="{'on': groupConfigData.summary.bypass_cc_guarantee}" >
 
+                    <input type="checkbox" ng-model="groupConfigData.summary.bypass_cc_guarantee" ng-checked="groupConfigData.summary.bypass_cc_guarantee" />
+                    <label class="data-off">
+                        <span class="value">Off</span>
+                        <span class="switch-icon">On</span>
+                    </label>
+                    <label class="data-on">
+                        <span class="switch-icon grey">Off</span>
+                        <span class="value">On</span>
+                    </label>
+                </div>
+            </div>
+            <!--Bypass CC Guarantee Toggle Ends -->
             <!-- Notes -->
             <strong class="h3 margin">Notes</strong>
             <div class="entry full-width no-label with-notes">

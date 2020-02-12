@@ -43,7 +43,11 @@
                     <input name="revenue-departments" id="revenue-departments" value="all-departments" type="radio" checked />
                     {{'ALL_DEPARTMENTS' | translate}}
                 </label>
-                <strong class="h5" translate>EMPLOYEES</strong>
+                <label class="radio inline" ng-click="selectAllEmployees()">
+                    <span class="icon-form icon-radio" ng-class="{'checked':data.filterData.checkedAllEmployees}"></span>
+                    <input name="employees" value="all-employees" type="radio" checked />
+                    {{'EMPLOYEES' | translate}}
+                </label>
             </div>
             <div id="faux-revenue-departments" class="holder scrollable" ng-iscroll='department-content' ng-iscroll-delay='1000' style="height:75%;">
                 <div class="wrapper">

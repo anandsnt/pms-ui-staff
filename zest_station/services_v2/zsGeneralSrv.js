@@ -21,114 +21,118 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         */
 
         var themeMappings = {
-            'zoku': 'zoku',
-            'yotel': 'yotel',
-            'avenue': 'avenue',
-            'public': 'public ny',
-            'public_v2': 'public ny v2',
-            'duke': 'Little duke',
-            'sohotel': 'sohotel',
-            'epik': 'Hotel epik',
-            'conscious': 'Conscious vondelpark',
-            'fontainebleau': 'fontainebleau',
-            'freehand': 'freehand',
-            'de-jonker': 'Hotel de jonker',
-            'chalet-view': 'Chalet view',
-            'row-nyc': 'row',
-            'circle-inn-fairfield': 'Circle fairfield',
-            'cachet-boutique': 'Cachet Boutique',
-            'hi-ho': 'Hotel hiho',
-            'first': 'First Hotel Breiseth',
-            'viceroy-chicago': 'Viceroy Chicago',
-            'amrath': 'Amrath apart hotel',
-            'jupiter': 'Jupiter hotel',
-            'huntley': 'Huntley',
-            'queen': 'Queen Anne',
-            'belle': 'Van belle',
-            'freehand-ny': 'Freehand nyc',
-            'freehand-miami': 'Freehand miami',
-            'georgetown': 'Georgetown inn',
-            'nomo': 'Nomo soho',
-            'merrill': 'The Merrill Hotel And Conference Center',
-            'martins': 'Martins Hotel',
-            'arc': 'Arc The Hotel',
-            'alessandra': 'Hotel Alessandra',
-            'story': 'Story Hotels',
-            'pod': 'Pod DC',
-            'ihg': 'IHG',
-            'surf-sand': 'Surf And Sand Hotel',
-            'bunk': 'Bunk Hotels',
-            'rydges': 'Rydges Sydney Airport',
-            'freehand-la': 'Freehand Los Angels',
-            'east-london': 'The East London Hotel',
-            'farmers-daughter': 'Farmers Daughter',
-            'park-james': 'Park James Hotel',
-            'annapolis': 'Hotel Annapolis',
-            'origin': 'Origins Red Rocks',
-            'kinney': 'The Kinney Slo',
-            'hubert': 'Hotel Hubert',
-            'de-blend': '2L De Blend',
-            'anthony': 'The Anthony',
-            'stewart': 'Stewart Aparthotel',
-            'university-inn': 'University Inn',
-            'cedar-court': 'Cedar Court Hotels',
-            'sister-city': 'Sister City Hotel NY',
-            'twa': 'TWA Hotel',
-            'carrollton-inn': 'Carrollton Inn',
-            'match': 'Hotel the Match',
-            'liason': 'Liason DC',
-            'clarion-collection': 'Clarion Collection',
-            'la-copa': 'La Copa Inn',
-            'ruby': 'Ruby Hospitality',
-            'qbic': 'Qbic Hotels',
-            'merrion-row': 'Merrion Row Hotel And Public House',
-            'freehand-chicago': 'Freehand Chicago',
-            'why': 'Why Hotel',
-            'village': 'Village Hotels',
-            'gallivant': 'Gallivant NY',
-            'hotel-e': 'Hotel E',
-            'kelley': 'Kelley House',
-            'stare-miastro': 'Aparthotel Stare Miasto',
-            'upstairs-by-mamas': 'Upstairs by Mamas',
-            'juliani': 'Hotel Juliani',
-            'mooons': 'Mooons',
-            'marmalade': 'Marmalade Hotel',
-            'bosville': 'Bosville Hotel',
-            'kinsley': 'Hotel Kinsley',
-            'zurzacheroff': 'Hotel Zurzacherhof',
-            'asbury': 'The Asbury',
-            'manchebo': 'Manchebo Beach Resort',
-            'seacrest': 'Seacrest Hotel V2',
-            'cole': 'The Cole Hotel',
-            'heritage-hills': 'Heritage Hills Golf Resort',
-            'metropolis-resort': 'Metropolis Resort',
-            'why-seattle': 'Why Hotel Seattle',
-            'pod-philly': 'POD Philly',
-            'concordia': 'The Concordia',
-            'belvedere': 'Belvedere-on-Hudson',
-            'delavan': 'The Delavan Hotel and Spa',
-            'garden-place': 'Garden Place Hotel',
-            'crowne': 'Crowne Plaza Brussels',
-            'indigo': 'Hotel Indigo Brussels',
-            'caro': 'Caro Short Stay',
-            'schani-wien': 'Hotel Schani Wien',
-            'glencoe': 'Glencoe House',
-            'schani-salon': 'Hotel Schani Salon',
-            'spatz': 'Hotel Spatz',
-            'lenaustrasse': 'Apartment City Lenaustrasse',
-            'why-tysons': 'Why Hotel Tysons Corner',
-            'local-house': 'Local House',
-            'travel-24': 'Travel 24',
-            'sage-inn': 'Sage Inn',
-            'hammetts': 'Hammetts Hotel',
-            'lochardil': 'lochardil',
-            'perle-oban': 'Oban Perle',
-            'why-columbia': 'Why Hotel Columbia Pike',
-            'why-houston': 'Why Hotel Houston',
-            'victory-house': 'Victory House',
-            'zedwell': 'Zedwell Trocadero',
-            'dimond-center': 'Dimond Center Hotel'
+            'guestweb_zoku': 'zoku',
+            'guestweb_yotel': 'yotel',
+            'guestweb_avenue': 'avenue',
+            'guestweb_public_ny': 'public',
+            'guestweb_public_ny_v2': 'public_v2',
+            'guestweb_little_duke': 'duke',
+            "guestweb_sohotel": "sohotel",
+            "guestweb_hotel_epik": "epik",
+            "guestweb_consciousVondelpark": "conscious",
+            "guestweb_fontainebleau": "fontainebleau",
+            "guestweb_fontainebleau_v2": "fontainebleau",
+            "guestweb_freehand": "freehand",
+            "guestweb_hotel_de_jonker": "de-jonker",
+            "guestweb_chalet_view": "chalet-view",
+            "guestweb_row": "row-nyc",
+            "guestweb_circle_fairfield": "circle-inn-fairfield",
+            "guestweb_cachet_boutique": "cachet-boutique",
+            "guestweb_hotel_hiho": "hi-ho",
+            "guestweb_first_hotel_breiseth": "first",
+            "guestweb_viceroy_chicago": "viceroy-chicago",
+            "guestweb_amrath_apart_hotel": "amrath",
+            "guestweb_jupiter_hotel": "jupiter",
+            "guestweb_huntley": "huntley",
+            "guestweb_queen_anne": "queen",
+            "guestweb_van_belle": "belle",
+            "guestweb_freehand_nyc": "freehand-ny",
+            "guestweb_freehand_miami": "freehand-miami",
+            "guestweb_georgetown_inn": "georgetown",
+            "guestweb_nomo_soho": "nomo",
+            "guestweb_the_merrill_hotel_and_conference_center": "merrill",
+            "guestweb_martins_hotel": "martins",
+            "guestweb_arc_the_hotel": "arc",
+            "guestweb_hotel_alessandra": "alessandra",
+            "guestweb_story_hotels": "story",
+            "guestweb_pod_dc": "pod",
+            "guestweb_ihg": "ihg",
+            "guestweb_surf_and_sand_hotel": "surf-sand",
+            "guestweb_bunk_hotels": "bunk",
+            "guestweb_rydges_sydney_airport": "rydges",
+            "guestweb_freehand_los_angels": "freehand-la",
+            "guestweb_the_east_london_hotel": "east-london",
+            "guestweb_farmers_daughter": "farmers-daughter",
+            "guestweb_park_james_hotel": "park-james",
+            "guestweb_hotel_annapolis": "annapolis",
+            "guestweb_origins_red_rocks": "origin",
+            "guestweb_the_kinney_slo": "kinney",
+            "guestweb_hotel_hubert": "hubert",
+            "guestweb_2l_de_blend": "de-blend",
+            "guestweb_the_anthony": "anthony",
+            "guestweb_stewart_aparthotel": "stewart",
+            "guestweb_university_inn": "university-inn",
+            "guestweb_cedar_court_hotels": "cedar-court",
+            "guestweb_sister_city_hotel_ny": "sister-city",
+            "guestweb_twa_hotel": "twa",
+            "guestweb_carrollton_inn": "carrollton-inn",
+            "guestweb_hotel_the_match": "match",
+            "guestweb_liason_dc": "liason",
+            "guestweb_clarion_collection": "clarion-collection",
+            "guestweb_la_copa_inn": "la-copa",
+            "guestweb_ruby_hospitality": "ruby",
+            "guestweb_qbic_hotels": "qbic",
+            "guestweb_merrion_row_hotel_and_public_house": "merrion-row",
+            "guestweb_freehand_chicago": "freehand-chicago",
+            "guestweb_why_hotel": "why",
+            "guestweb_village_hotels": "village",
+            "guestweb_gallivant_ny": "gallivant",
+            "guestweb_hotel_e": "hotel-e",
+            "guestweb_kelley_house": "kelley",
+            "guestweb_aparthotel_stare_miasto": "stare-miastro",
+            "guestweb_upstairs_by_mamas": "upstairs-by-mamas",
+            "guestweb_hotel_juliani": "juliani",
+            "guestweb_mooons": "mooons",
+            "guestweb_marmalade_hotel": "marmalade",
+            "guestweb_bosville_hotel": "bosville",
+            "guestweb_hotel_kinsley": "kinsley",
+            "guestweb_hotel_zurzacherhof": "zurzacheroff",
+            "guestweb_the_asbury": "asbury",
+            "guestweb_manchebo_beach_resort": "manchebo",
+            "guestweb_seacrest_hotel_v2": "seacrest",
+            "guestweb_the_cole_hotel": "cole",
+            "guestweb_heritage_hills_golf_resort": "heritage-hills",
+            "guestweb_metropolis_resort": "metropolis-resort",
+            "guestweb_why_hotel_seattle": "why-seattle",
+            "guestweb_pod_philly": "pod-philly",
+            "guestweb_the_concordia": "concordia",
+            "guestweb_belvedere_on_hudson": "belvedere",
+            "guestweb_the_delavan_hotel_and_spa": "delavan",
+            "guestweb_garden_place_hotel": "garden-place",
+            "guestweb_crowne_plaza_brussels": "crowne",
+            "guestweb_hotel_indigo_brussels": "indigo",
+            "guestweb_caro_short_stay": "caro",
+            "guestweb_hotel_schani_wien": "schani-wien",
+            "guestweb_glencoe_house": "glencoe",
+            "guestweb_hotel_schani_salon": "schani-salon",
+            "guestweb_hotel_spatz": "spatz",
+            "guestweb_apartment_city_lenaustrasse": "lenaustrasse",
+            "guestweb_why_hotel_tysons_corner": "why-tysons",
+            "guestweb_local_house": "local-house",
+            "guestweb_travel_24": "travel-24",
+            "guestweb_sage_inn": "sage-inn",
+            "guestweb_hammetts_hotel": "hammetts",
+            "guestweb_lochardil": "lochardil",
+            "guestweb_oban_perle": "perle-oban",
+            "guestweb_why_hotel_columbia_pike": "why-columbia",
+            "guestweb_why_hotel_houston": "why-houston",
+            "guestweb_victory_house": "victory-house",
+            "guestweb_dimond_center_hotel": "dimond-center",
+            "guestweb_zedwell_trocadero": "zedwell",
+            "guestweb_hotel_brooklyn": "brooklyn",
+            "guestweb_krowoderska_apartments": "krowoderska"
         };
+
 
         this.isThemeConfigured = function(theme) {
             // if theme is configured with stylesheets, use it, otherwise default to SNT Theme
@@ -158,48 +162,11 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         };
 
         this.fetchHotelTheme = function(resolveData, deferred) {
-            var url = '/api/email_templates/list.json?hotel_id=' + resolveData.hotel_id,
-                theme = '';
+            var url = '/api/themes/hotel_theme';
 
+            // This is a part of synchronous API calls - hence the resolveData param;
             zsBaseWebSrv.getJSON(url).then(function(response) {
-                if (response && response.existing_email_templates && response.themes) {
-                    var hotelTheme = _.findWhere(response.themes, {
-                        id: response.existing_email_template_theme
-                    });
-
-                    // if theme isn't set, choose Stayntouch theme and proceed
-                    if (!hotelTheme) {
-                        hotelTheme = _.findWhere(response.themes, {
-                            name: 'Stayntouch'
-                        });
-                    }
-
-                    if (hotelTheme && hotelTheme.name) {
-                        theme = hotelTheme.name.toLowerCase();
-                    } else {
-                        deferred.reject();
-                    }
-                }
-                // currently hotel is using fontainebleau, hotel will switch that to fontainebleau v2
-                // ( this cant be added to themeMappings,as it will add duplicate key, we can remove old
-                // fontainebleau, once we have upgraded)
-                if (theme === 'fontainebleau v2') {
-                    theme = 'fontainebleau';
-                } else {
-                    // the hotel theme name has to be mapped to the zeststation resource files
-                    // corresponding to those themes.
-                    theme = _.findKey(themeMappings, function(themeMapping) {
-                        return themeMapping.toLowerCase() === theme;
-                    });
-                }
-
-
-                if (!that.isThemeConfigured(theme)) {
-                    theme = 'snt';
-                }
-
-                that.hotelTheme = theme;
-                // resolves this.fetchSetting()
+                that.hotelTheme = themeMappings[response['theme']] || 'snt';
                 deferred.resolve(resolveData);
             }, function(data) {
                 deferred.reject(data);

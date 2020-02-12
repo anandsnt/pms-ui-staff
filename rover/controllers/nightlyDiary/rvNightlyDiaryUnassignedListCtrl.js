@@ -14,6 +14,8 @@ angular.module('sntRover')
         BaseCtrl.call(this, $scope);
         $scope.diaryData.selectedUnassignedReservation = {};
         $scope.businessDate = $rootScope.businessDate;
+        $scope.searchQuery = '';
+        var initialUnassignedListData = angular.copy($scope.diaryData.unassignedReservationList.reservations);
 
         var selectUnassignedListItem = function(item) {
             // If we are in selected reservation mode, going to cancel the selection.
@@ -64,7 +66,7 @@ angular.module('sntRover')
                     ...item,
                     id: item.reservation_id,
                     guest_details: {
-                        full_name: item.last_name + ' ' + item.first_name,
+                        full_name: item.fullName,
                         image: ''
                     },
                     type: 'UNASSIGNED_RESERVATION'
@@ -87,6 +89,7 @@ angular.module('sntRover')
             $scope.diaryData.unassignedReservationList.reservations = [];
             $scope.diaryData.unassignedReservationList.reservations = unassignedReservationList;
             $scope.diaryData.selectedUnassignedReservation = {};
+            initialUnassignedListData = angular.copy(unassignedReservationList);
 
             $scope.$emit('HIDE_ASSIGN_ROOM_SLOTS');
             $scope.$emit('CANCEL_UNASSIGNED_RESERVATION_MAIN');
@@ -97,6 +100,8 @@ angular.module('sntRover')
             var successCallBackFetchList = function (data) {
                 $scope.errorMessage = '';
                 $scope.diaryData.unassignedReservationList = data;
+                initialUnassignedListData = angular.copy(data.reservations);
+                $scope.searchQuery = '';
             },
             postData = {
                 'date': $scope.diaryData.arrivalDate
@@ -171,4 +176,37 @@ angular.module('sntRover')
         $scope.addListener('CANCEL_UNASSIGNED_RESERVATION', function() {
             unSelectUnassignedListItem();
         });
+
+        // CICO-65962 : Handle searchUnassignedList logic.
+        $scope.searchUnassignedList =  function() {
+            var displayResults = [];
+
+            if ($scope.searchQuery && $scope.searchQuery.length > 0) {
+                displayResults = initialUnassignedListData.filter(function(reservation) {
+                    // check if the querystring is number or string
+                    var result = 
+                        (
+                            isNaN($scope.searchQuery) &&
+                            reservation.fullName.toUpperCase().includes($scope.searchQuery.toUpperCase())
+                        ) ||
+                        (
+                            !isNaN($scope.searchQuery) &&
+                            reservation.confirm_no.toString().includes($scope.searchQuery)
+                        );
+
+                    return result;
+                });
+                
+                $scope.diaryData.unassignedReservationList.reservations = displayResults;
+            }
+            else {
+                fetchUnassignedReservationList();
+            }
+        };
+
+        // CICO-65962 : Handle Clear Query.
+        $scope.clearQuery = function() {
+            $scope.searchQuery = '';
+            $scope.searchUnassignedList();
+        };
 }]);

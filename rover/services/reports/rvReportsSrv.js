@@ -1,6 +1,6 @@
 angular.module('sntRover').service('RVreportsSrv', [
     '$q',
-    'rvBaseWebSrvV2',
+    'sntBaseWebSrv',
     'RVreportsSubSrv',
     '$vault',
     '$http',
@@ -8,7 +8,7 @@ angular.module('sntRover').service('RVreportsSrv', [
     'RVReportUtilsFac',
     'RVReportSetupDates',
     'RVCustomExportSrv',
-    function($q, rvBaseWebSrvV2, subSrv, $vault, $http, applyFlags, reportUtils, setupDates, customExportSrv) {
+    function($q, sntBaseWebSrv, subSrv, $vault, $http, applyFlags, reportUtils, setupDates, customExportSrv) {
         var service       = {},
             choosenReport = {},
             selectedReport = {},
@@ -236,6 +236,19 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'LAST_OCTOBER',
                 'LAST_NOVEMBER',
                 'LAST_DECEMBER'                
+             ],
+             'Action Manager': [
+                'YESTERDAY',
+                'TODAY',
+                'TOMORROW',
+                'LAST_SEVEN_DAYS',
+                'NEXT_SEVEN_DAYS'             
+             ],
+             'Financial Transactions - Adjustment Report': [
+                'YESTERDAY',
+                'TODAY',
+                'LAST_SEVEN_DAYS',
+                'LAST_MONTH'                             
              ]
         };
 
@@ -291,29 +304,7 @@ angular.module('sntRover').service('RVreportsSrv', [
         };
 
         service.exportCSV = function(params) {
-            var deferred = $q.defer();
-
-            $http({
-                method: 'POST',
-                url: params.url,
-                data: params.payload
-            }).then(function(response) {
-                var data = response.data,
-                    headers = response.headers;
-
-                 var hiddenAnchor = angular.element('<a/>'),
-                     blob = new Blob([data]);
-
-                 hiddenAnchor.attr({
-                     href: window.URL.createObjectURL(blob),
-                     target: '_blank',
-                     download: headers()['content-disposition'].match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/)[1].replace(/['"]+/g, '')
-                 })[0].click();
-                 deferred.resolve(true);
-            },function(response) {
-                deferred.reject(response.data);
-            });
-            return deferred.promise;
+            return sntBaseWebSrv.download(params.url, params.payload);
         };
 
         /**
@@ -465,7 +456,7 @@ angular.module('sntRover').service('RVreportsSrv', [
                 deferred.reject( error );
             };
 
-            rvBaseWebSrvV2
+            sntBaseWebSrv
                 .getJSON( url )
                 .then( success, failed );
 
@@ -484,7 +475,7 @@ angular.module('sntRover').service('RVreportsSrv', [
                 deferred.reject( error );
             };
 
-            rvBaseWebSrvV2
+            sntBaseWebSrv
                 .putJSON( url, params )
                 .then( success, failed );
 
@@ -503,7 +494,7 @@ angular.module('sntRover').service('RVreportsSrv', [
                 deferred.reject( error );
             };
 
-            rvBaseWebSrvV2
+            sntBaseWebSrv
                 .postJSON( url, params )
                 .then( success, failed );
 
@@ -522,7 +513,7 @@ angular.module('sntRover').service('RVreportsSrv', [
                 deferred.reject( error );
             };
 
-            rvBaseWebSrvV2
+            sntBaseWebSrv
                 .deleteJSON( url )
                 .then( success, failed );
 
@@ -541,7 +532,7 @@ angular.module('sntRover').service('RVreportsSrv', [
                 deferred.reject( error );
             };
 
-            rvBaseWebSrvV2
+            sntBaseWebSrv
                 .getJSON( url )
                 .then( success, failed );
 

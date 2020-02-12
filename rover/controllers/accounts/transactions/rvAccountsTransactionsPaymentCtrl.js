@@ -3,6 +3,8 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
     '$rootScope', 'RVPaymentSrv', 'ngDialog', '$filter', '$timeout', 'rvAccountTransactionsSrv', 'rvPermissionSrv', 'RVReservationCardSrv',
     function($scope, $rootScope, RVPaymentSrv, ngDialog, $filter, $timeout, rvAccountTransactionsSrv, rvPermissionSrv, RVReservationCardSrv) {
 
+        BaseCtrl.call(this, $scope);
+
         BasePaymentCtrl.call(this, $scope);
         $scope.renderData = {};
         $scope.swipedCardDataToSave = {};
@@ -44,6 +46,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
             $scope.newPaymentInfo = {};
             $scope.renderData.billNumberSelected = '';
             $scope.renderData.defaultPaymentAmount = '';
+            $scope.renderData.defaultPaymentCurrencyAmount = '';
             $scope.defaultRefundAmount = 0;
             // We are passing $scope from bill to this modal
             $scope.currentActiveBillNumber = parseInt($scope.currentActiveBill) + parseInt(1);
@@ -101,7 +104,13 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
             var defaultAmount = $scope.billsArray[$scope.currentActiveBill].balance_amount ?
                 $scope.billsArray[$scope.currentActiveBill].balance_amount : zeroAmount;
 
+                
+			var defaultPaymentCurrencyAmount = $scope.billsArray[$scope.currentActiveBill].default_payment_amount ?
+            $scope.billsArray[$scope.currentActiveBill].default_payment_amount : zeroAmount;
+
             $scope.renderData.defaultPaymentAmount = parseFloat(defaultAmount).toFixed(2);
+            $scope.renderData.defaultPaymentCurrencyAmount = defaultPaymentCurrencyAmount;
+
             $scope.defaultRefundAmount = (-1) * parseFloat($scope.renderData.defaultPaymentAmount);
             if ($scope.renderData.defaultPaymentAmount < 0) {
                 $scope.defaultRefundAmount = (-1) * parseFloat($scope.renderData.defaultPaymentAmount);
