@@ -496,7 +496,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             var room = successcallbackParams.room,
                 index = successcallbackParams.index,
                 reason = data.reason;
-
+                
             openRateAdjustmentPopup(room, index, reason);
         };
 

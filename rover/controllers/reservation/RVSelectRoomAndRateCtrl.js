@@ -1080,13 +1080,13 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
     					details.rate.id = rateId;
     					var dayInfo = stayDetails[date],
 							calculatedAmount = dayInfo && dayInfo.rate || stayDetails[ARRIVAL_DATE].rate,
-							rateCurrency = dayInfo && dayInfo.rateCurrency || stayDetails[ARRIVAL_DATE].rateCurrency;
+							rateCurrency = dayInfo && dayInfo.rate_currency || stayDetails[ARRIVAL_DATE].rate_currency;
 
     					calculatedAmount = Number(parseFloat(calculatedAmount).toFixed(2));
     					details.rateDetails = {
     						actual_amount: calculatedAmount,
     						modified_amount: calculatedAmount,
-    						rateCurrency: rateCurrency
+    						rate_currency: rateCurrency
     					};
 
 						if (rateId) {
@@ -1419,6 +1419,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 			$scope.invokeApi(RVSelectRoomRateSrv.getRateDetails, payLoad, function(rateDetails) {
 				$scope.$emit('hideLoader');
+				angular.forEach(rateDetails.dates, function(item) {
+					item.rate_currency = secondary.rateCurrency;
+				});
 
 				secondary.dates = rateDetails.dates;
 				secondary.total = rateDetails.total_room_cost;
@@ -1677,7 +1680,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						currentRoom.stayDates[activeDate].rateDetails = {
 							actual_amount: rateAmount,
 							modified_amount: rateAmount,
-							rateCurrency: rateInfo.rateCurrency,
+							rate_currency: rateInfo.rateCurrency,
 							is_discount_allowed: $scope.reservationData.ratesMeta[rateId].is_discount_allowed_on === null ? 'false' : $scope
 								.reservationData.ratesMeta[rateId].is_discount_allowed_on.toString(), // API returns true / false as a string ... Hence true in a string to maintain consistency
 							is_suppressed: $scope.reservationData.ratesMeta[rateId].is_suppress_rate_on === null ? 'false' : $scope.reservationData
