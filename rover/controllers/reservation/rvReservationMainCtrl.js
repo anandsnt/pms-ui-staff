@@ -496,14 +496,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             var room = successcallbackParams.room,
                 index = successcallbackParams.index,
                 reason = data.reason;
-
-            angular.forEach(room.stayDates, function(item, index) {
-               
-                // angular.forEach(item.rateDetails, function(rateDetailsItem, index) {
-                  // item.rateDetails.rateCurrency = item.rateDetails.rate_currency;
-                // });
-            });
-
+                
             openRateAdjustmentPopup(room, index, reason);
         };
 
