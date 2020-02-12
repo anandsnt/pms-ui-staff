@@ -1,8 +1,8 @@
 admin.controller('ADAppCtrl', [
     '$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData', 'businessDate',
-    '$timeout', 'ngDialog', 'sntAuthorizationSrv', '$filter', '$sce', 'adMenuSrv', '$transitions', 'sntActivity',
+    '$timeout', 'ngDialog', 'sntAuthorizationSrv', '$filter', '$sce', 'adMenuSrv', '$transitions', 'sntActivity', 'sessionTimeoutHandlerSrv',
     function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData, businessDate,
-             $timeout, ngDialog, sntAuthorizationSrv, $filter, $sce, adMenuSrv, $transitions, sntActivity) {
+             $timeout, ngDialog, sntAuthorizationSrv, $filter, $sce, adMenuSrv, $transitions, sntActivity, sessionTimeoutHandlerSrv) {
 
         // hide the loading text that is been shown when entering Admin
         $( ".loading-container" ).hide();
@@ -455,6 +455,15 @@ admin.controller('ADAppCtrl', [
             return  adMenuSrv.processMenuList(mobileMenu);
         };
 
+        var isComponentDisabled = function(component) {
+            return (
+                component.name === 'Check In' || component.name === 'Check Out' ||
+                    component.name === 'Direct URL' || component.name === '' || component.name === 'Zest Web Common' ||
+                    component.name === 'Room Ready Email' || component.name === 'Zest Web Global Setup' ||
+                    component.name === "Email from Guest" || component.name === "SMS / Short Code"
+            )
+        };
+
         /**
          * Set up left side menus based on permission and pms type
          */
@@ -567,6 +576,7 @@ admin.controller('ADAppCtrl', [
         var updateBookmarkStatus = function() {
             for (var i = 0; i < $scope.data.menus.length; i++) {
                 for (var j = 0; j < $scope.data.menus[i].components.length; j++) {
+                    $scope.data.menus[i].components[j].menu_name = $scope.data.menus[i].menu_name;
                     if ($scope.bookmarkIdList.indexOf($scope.data.menus[i].components[j].id) === -1) {
                         $scope.data.menus[i].components[j].is_bookmarked = false;
                     } else {
@@ -680,11 +690,14 @@ admin.controller('ADAppCtrl', [
          * we will check the lastDropedTime with click event fired time.
          * if it is less than a predefined time, it will not fire click event, otherwise fire
          */
-        $scope.clickedMenuItem = function($event, stateToGo, shouldDisableClick) {
+        $scope.clickedMenuItem = function($event, stateToGo, shouldDisableClick, menuName) {
             var currentTime = new Date();
 
             if (shouldDisableClick) {
-                $scope.errorMessage = ['Your current subscription package does not include this service'];
+                $state.go('admin.dashboard', {
+                    menu: $scope.findMainMenuIndex(menuName),
+                    errorMsg: ['Your current subscription package does not include this service']
+                });
             } else {
                 $scope.clearErrorMessage();
                 if (lastDropedTime !== '' && typeof lastDropedTime === 'object') {
@@ -717,6 +730,7 @@ admin.controller('ADAppCtrl', [
             $scope.selectedIndex = menu;
             $scope.selectedMenu = $scope.data.menus[$scope.selectedIndex];
         });
+
         /*
          * Success callback of get language
          * @param {object} response
@@ -773,6 +787,8 @@ admin.controller('ADAppCtrl', [
             $rootScope.emvTimeout = data.emv_timeout || 120; // default timeout is 120s
             $rootScope.wsCCSwipeUrl = data.cc_swipe_listening_url;
             $rootScope.wsCCSwipePort = data.cc_swipe_listening_port;
+            $rootScope.isPaymentReceiptsEnabled = data.is_payment_receipts_enabled;
+            $rootScope.isAdvancePaymentEnabled = data.advance_payment_enabled;
             
             // CICO-51146
             $rootScope.isBackgroundReportsEnabled = data.background_report;
@@ -821,28 +837,23 @@ admin.controller('ADAppCtrl', [
             };
 
             $rootScope.isAllowanceEnabled = data.is_allowance_enabled;
-
-            var isZestWebEnabled = data.is_zest_web_enabled;
-
+            $scope.isZestWebEnabled = data.is_zest_web_enabled;
+            $scope.isZestStationEnabled = data.is_zest_station_enabled;
             setupLeftMenu();
-            var isComponentDisabled = function(component) {
-                return (
-                    component.name === 'Check In' || component.name === 'Check Out' ||
-                        component.name === 'Direct URL' || component.name === '' || component.name === 'Zest Web Common' ||
-                        component.name === 'Room Ready Email' || component.name === 'Zest Web Global Setup' ||
-                        component.name === "Email from Guest" || component.name === "SMS / Short Code"
-                )
-            }
 
             _.each($scope.data.menus, function(menu) {
                 _.each(menu.components, function(component) {
-                    if (!isZestWebEnabled && menu.menu_name === 'Zest' && isComponentDisabled(component)) {
+                    if (!$scope.isZestWebEnabled && menu.menu_name === 'Zest' && isComponentDisabled(component)) {
                         component.is_disabled = true;
                     }
                 });
             });
-
-            $scope.isZestStationEnabled = data.is_zest_station_enabled;
+            _.each($scope.bookMarks, function(component) {
+                if ((!$scope.isZestWebEnabled && component.menu_name === 'Zest' && isComponentDisabled(component)) ||
+                    (!$scope.isZestStationEnabled && component.menu_name === 'Station')) {
+                    component.is_disabled = true;
+                }
+            });
         };
         /*
          * Function to get the current hotel language
@@ -948,19 +959,23 @@ admin.controller('ADAppCtrl', [
             *   Method to go back to previous state.
             */
         $scope.goBackToPreviousState = function() {
-                $scope.clearErrorMessage();
-                if ($rootScope.previousStateParam) {
-                  $state.go($rootScope.previousState, { menu: $rootScope.previousStateParam});
-                }
-                else if ($rootScope.previousState) {
-                  $state.go($rootScope.previousState);
-                }
-                else
-                {
-                  $state.go('admin.dashboard', {menu: 0});
-                }
-
-            };
+            $scope.clearErrorMessage();
+            if ($rootScope.previousStateParam) {
+                $state.go($rootScope.previousState, {
+                    menu: $rootScope.previousStateParam,
+                    errorMsg: []
+                });
+            }
+            else if ($rootScope.previousState) {
+                $state.go($rootScope.previousState);
+            }
+            else {
+                $state.go('admin.dashboard', {
+                    menu: 0,
+                    errorMsg: []
+                });
+            }
+        };
 
 
         $rootScope.$on('ngDialog.opened', function(e, $dialog) {
@@ -1011,6 +1026,10 @@ admin.controller('ADAppCtrl', [
         $scope.logout = function() {
             ADAppSrv.signOut().finally(function() {
                 $timeout(function () {
+                    if (sessionTimeoutHandlerSrv.getWorker()) {
+                        sessionTimeoutHandlerSrv.stopTimer();
+                        $scope.$emit('CLOSE_SESSION_TIMEOUT_POPUP');
+                    }
                     $window.location.href = '/logout';
                 });
             });

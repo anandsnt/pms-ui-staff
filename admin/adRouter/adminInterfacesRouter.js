@@ -294,7 +294,8 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
                 return adInterfacesSrv.getSettings('vectron');
             }],
             chargeCodes: ['ADChargeCodesSrv', function(ADChargeCodesSrv) {
-                return ADChargeCodesSrv.fetch();
+                return ADChargeCodesSrv.fetch({'is_no_pagination': true,
+                    'charge_code_type': 'CHARGE'});
             }]
         }
     });
@@ -986,4 +987,21 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.idLookupSetup', {
+        templateUrl: '/assets/partials/interfaces/Idlookup/adInterfaceIdLookup.html',
+        controller: 'adIdLookupCtrl',
+        url: '/idLookup'
+    });
+
+    $stateProvider.state('admin.d-edge', {
+        templateUrl: '/assets/partials/interfaces/d-edge/adDEdge.html',
+        controller: 'adDEdgeController',
+        url: '/d-edge',
+        resolve: {
+            config: [
+                'adInterfacesSrv', function (adInterfacesSrv) {
+                    return adInterfacesSrv.getSettings('dedge');
+                }]
+        }
+    });
 });

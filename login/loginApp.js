@@ -225,9 +225,14 @@ angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window'
 	var loadURLCounter = 0;
 
 	$scope.showDebugOptions = function() {
+		if (!$scope.isIPad) {
+			return;
+		}
 		$scope.data.domainURL = "https://";
 		loadURLCounter++;
-		if (loadURLCounter >= 5) {
+		if (loadURLCounter === 5) {
+			loadURLCounter = 0;
+			ngDialog.close();
 			ngDialog.open({
 				template: '/assets/partials/debugingOptions.html',
 				scope: $scope

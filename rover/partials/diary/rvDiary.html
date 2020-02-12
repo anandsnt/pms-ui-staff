@@ -3,7 +3,9 @@
 
 <section id="diary-content" class="content diary-content" role="main">
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-    <form class="diary-header" ng-class="{'editing': gridProps.edit.active === true }">
+    <form class="diary-header"
+            ng-class="{'editing': gridProps.edit.active === true || gridProps.unassignedRoomList.isItemSelected === true,
+                    'unassigned': gridProps.unassignedRoomList.isItemSelected === true}">
 
         <!-- Day or Night Use Diary -->
         <div class="entry switch switch-view" ng-hide="hideToggleMenu()">
@@ -123,19 +125,7 @@
                 </select>
             </div>
         </div>
-
-        <!-- Filters -->
-        <div class="entry filters">
-            <button type="button" class="button white with-icon only-icon" ng-click="onUnassignedRoomToggle()">
-                <span class="count">{{gridProps.unassignedRoomList.unassignedCount}}</span>
-                <span class="icons icon-filter-room"></span>
-            </button>
-            <button type="button" class="button white with-icon only-icon" ng-click="resetEverything()">
-                <span class="icons icon-reset"></span>
-            </button>
-        </div>
-
-        <div class="entry edit show-editing" ng-show="gridProps.edit.active">
+        <div class="entry edit show-editing" ng-show="gridProps.edit.active || gridProps.unassignedRoomList.isItemSelected">
             <div class="guest">
                 <figure class="guest-image hidden">
                     <img src="" alt="">
@@ -144,6 +134,9 @@
                      <h2 class="name" ng-show="gridProps.edit.originalItem.reservation_primary_guest_full_name">
                         {{gridProps.edit.originalItem.reservation_primary_guest_full_name}}
                     </h2>
+                    <h2 class="name" ng-show="!gridProps.edit.originalItem.reservation_primary_guest_full_name && gridProps.edit.originalItem.primary_guest">
+                        {{gridProps.edit.originalItem.primary_guest}}
+                    </h2>
                     <h2 class="name" ng-show="!gridProps.edit.originalItem.reservation_primary_guest_full_name">
                         {{gridProps.edit.originalItem.account_name}}
                     </h2>
@@ -151,16 +144,29 @@
                         <span class="currency">{currency}</span>{Rate}
                         {Room Type}
                     </span>
+                    <span class="room" ng-show="gridProps.edit.originalItem.room_type_name">{{gridProps.edit.originalItem.room_type_name}}</span>
                 </div>
                 <button type="button" class="button orange" ng-click="openStayCard()">StayCard</button>
             </div>
             <div class="actions">
-                <button type="button" class="button blank" ng-click="editCancel()">Cancel</button>
+                <button type="button" class="button blank show-unassigned" ng-click="editCancel()">Cancel</button>
+                <button type="button" class="button purple" ng-click="moveRoomButtonClick()" ng-hide="hideMoveRoomButton">Move Room</button>
                 <button type="button" class="button red" ng-click="unassignRoom()" ng-hide="hideRoomUnAssignButton">Unassign Room</button>
                 <button type="button" class="button green" ng-click="editSave()" ng-if="showSaveChangesAfterEditing">Save Changes</button>
             </div>
         </div>
-
+        <!-- Filters -->
+        <div class="entry filters">
+            <button type="button" class="button white with-icon only-icon show-unassigned"
+                    ng-click="onUnassignedRoomToggle()"
+                    ng-class="{'active': gridProps.unassignedRoomList.open}">
+                <span class="count">{{gridProps.unassignedRoomList.unassignedCount}}</span>
+                <span class="icons icon-filter-room" ng-class="{'active': gridProps.unassignedRoomList.open}"></span>
+            </button>
+            <button type="button" class="button white with-icon only-icon show-unassigned" ng-click="resetEverything()">
+                <span class="icons icon-reset"></span>
+            </button>
+        </div>
     </form>
 
     <!-- Unassigned List -->

@@ -1,7 +1,12 @@
 admin.controller('ADDashboardCtrl', ['$scope', '$state', '$stateParams', '$rootScope', function($scope, $state, $stateParams, $rootScope) {
     $scope.selectedMenu = $scope.data.menus[$stateParams.menu];
+    if ($stateParams.errorMsg) {
+        $scope.errorMessage = $stateParams.errorMsg;
+    }
     if ($scope.isZestStationEnabled || $scope.selectedMenu.menu_name !== 'Station') {
-        $scope.clearErrorMessage();
+        if ($scope.selectedMenu.menu_name !== 'Zest' && !$scope.isZestWebEnabled) {
+            $scope.errorMessage = [];
+        }
         $scope.$emit("changedSelectedMenu", $stateParams.menu);
         if (typeof $scope.data !== 'undefined') {
             $scope.policeExportEnabled = $scope.data.police_export_enabled;

@@ -71,7 +71,7 @@ sntRover.controller('reservationDetailsController',
 		$scope.defaultTaxExemptTypeId = '';
 		if (typeof defaultTaxExemptObject !== "undefined") {
 			$scope.defaultTaxExemptTypeId = defaultTaxExemptObject.id;
-		} 
+		}
 		
 		// CICO-29343 - Set the flag to false initially and checking the View SR permission
 		$scope.hasSRViewPermission = rvPermissionSrv.getPermissionValue('VIEW_SUPPRESSED_RATE');
@@ -158,6 +158,17 @@ sntRover.controller('reservationDetailsController',
 			$rootScope.setPrevState = {
 				title: 'ROOM DIARY',
 				name: 'rover.nightlyDiary',
+				param: {
+					id: $rootScope.stayCardStateBookMark.previousStateParams.id,
+					activeTab: "DIARY",
+					origin: 'STAYCARD'
+				}
+			};
+		} else if ($scope.previousState.name === 'rover.diary') {
+			setNavigationBookMark();
+			$rootScope.setPrevState = {
+				title: 'ROOM DIARY',
+				name: 'rover.diary',
 				param: {
 					id: $rootScope.stayCardStateBookMark.previousStateParams.id,
 					activeTab: "DIARY",
@@ -310,6 +321,19 @@ sntRover.controller('reservationDetailsController',
 
 		};
 
+		var fetchAddonsDetails = function() {
+			var reservationId = $scope.reservationData.reservation_card.reservation_id;
+		
+			var initAddonsDatasuccessCallBack = function(data) {
+				$scope.$emit('hideLoader');
+				$scope.packageData = data;
+				angular.forEach($scope.packageData.existing_packages, function(item, index) {
+				item.totalAmount = (item.addon_count) * (item.amount);
+				});
+			};
+			$scope.invokeApi(RVReservationPackageSrv.getReservationPackages, reservationId, initAddonsDatasuccessCallBack);
+		};
+
 		// CICO-16013, moved from rvReservationGuestCtrl.js to de-duplicate api calls
 
 		$scope.activeWakeUp = false;
@@ -453,6 +477,7 @@ sntRover.controller('reservationDetailsController',
 
 		// $scope.shouldShowGuestDetails = false;
 		fetchGuestIDs();
+		fetchAddonsDetails();
 		$scope.toggleGuests = function(isFromCheckin) {
 
 			$scope.isFromCheckin = isFromCheckin;
@@ -826,13 +851,24 @@ sntRover.controller('reservationDetailsController',
 
 		// Handle Navigation to Nightly Diary
 		var navigateToNightlyDiary = function() {
-            $state.go('rover.nightlyDiary', {
+			var navigationParams = {
                 start_date: $scope.reservationData.reservation_card.arrival_date,
                 reservation_id: $scope.reservationData.reservation_card.reservation_id,
                 confirm_id: $scope.reservationData.reservation_card.confirmation_num,
                 room_id: $scope.reservationData.reservation_card.room_id,
                 origin: 'STAYCARD_NIGHTS'
-            });
+            };
+            
+            if (navigationParams.room_id === '') {
+				// Reservation with Room is not assigned.
+				navigationParams.action = 'SELECT_UNASSIGNED_RESERVATION';
+			}
+			else {
+				// Reservation with Room is assigned already.
+				navigationParams.action = 'SELECT_RESERVATION';
+			}
+
+            $state.go('rover.nightlyDiary', navigationParams);
         };
 
 		$scope.extendNights = function() {
@@ -856,14 +892,14 @@ sntRover.controller('reservationDetailsController',
             }
 		};
 
-		var editRatePromptDialog;
+		var editPromptDialogId;
 
 		$scope.showEditReservationPrompt = function() {
 			if ($rootScope.isStandAlone) {
 				if ($scope.reservationData.reservation_card.is_hourly_reservation) {
 					$scope.applyCustomRate();
 				} else {
-					editRatePromptDialog = ngDialog.open({
+					editPromptDialogId = ngDialog.open({
 						template: '/assets/partials/reservation/rvStayCardEditRate.html',
 						className: 'ngdialog-theme-default',
 						scope: $scope,
@@ -881,8 +917,10 @@ sntRover.controller('reservationDetailsController',
 		};
 
 		$scope.applyCustomRate = function() {
-			editRatePromptDialog.close();
-			$scope.editReservationRates($scope.reservationParentData.rooms[0], 0);
+			$scope.closeDialog(editPromptDialogId);
+			$timeout(function() {
+				$scope.editReservationRates($scope.reservationParentData.rooms[0], 0);
+			}, 1000);
 		};
 
 		var navigateToRoomAndRates = function(arrival, departure) {
@@ -959,8 +997,7 @@ sntRover.controller('reservationDetailsController',
 				return false;
 			};
 
-			editRatePromptDialog.close();
-
+			$scope.closeDialog(editPromptDialogId);
 			if ($scope.reservationData.reservation_card.is_hourly_reservation) {
 				return false;
 			} else if ($rootScope.isStandAlone) {
@@ -1086,6 +1123,15 @@ sntRover.controller('reservationDetailsController',
 		};
 
 		$scope.handleAddonsOnReservation = function(isPackageExist) {
+			$scope.addonPopUpData = {
+				addonPostingMode: 'staycard',
+				cancelLabel: "Cancel",
+				saveLabel: "Save",
+				shouldShowAddMoreButton: true,
+				number_of_adults: $scope.reservationData.reservation_card.number_of_adults,
+				number_of_children: $scope.reservationData.reservation_card.number_of_children,
+				duration_of_stay: $scope.packageData.duration_of_stay
+			};
 			if (isPackageExist) {
 				ngDialog.open({
 					template: '/assets/partials/packages/showPackages.html',
@@ -1638,7 +1684,7 @@ sntRover.controller('reservationDetailsController',
 
 		$scope.disableAuthorizeButton = function() {
             return $scope.isShijiOfflineAuthCodeEmpty() || !$scope.authData.manualCCAuthPermission ||
-                parseInt($scope.authData.authAmount) <= 0 || $scope.authData.selectedCardDetails.bill_no === 'N/A' ||
+				parseFloat($scope.authData.authAmount) <= 0 || $scope.authData.selectedCardDetails.bill_no === 'N/A' ||
                 isNaN(parseInt($scope.authData.authAmount));
         };
 
@@ -1979,10 +2025,91 @@ sntRover.controller('reservationDetailsController',
 
 	};
 
+	$scope.navigateToAddons = function() {
+		ngDialog.close();
+		$state.go('rover.reservation.staycard.mainCard.addons',
+			{
+				'from_date': $scope.reservation.reservation_card.arrival_date,
+				'to_date': $scope.reservation.reservation_card.departure_date,
+				'is_active': true,
+				'is_not_rate_only': true,
+				'from_screen': 'staycard'
+			});
+	};
+
+	$scope.saveAddonPosting = function() {
+
+		var addonPostingSaveSuccess = function(data) {
+			$scope.$emit('hideLoader');
+			fetchAddonsDetails();
+		};
+
+		var dataToApi = {
+			'addon_id': $scope.selectedPurchesedAddon.id,
+			'reservation_id': $scope.reservationData.reservation_card.reservation_id,
+			'post_instances': $scope.selectedPurchesedAddon.post_instances,
+			'start_date': $filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.start_date), $rootScope.dateFormatForAPI),
+			'end_date': $filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.end_date), $rootScope.dateFormatForAPI)
+		}
+
+		$scope.invokeApi(RVReservationPackageSrv.updateAddonPosting, dataToApi, addonPostingSaveSuccess);
+	};
+
+	$scope.removeSelectedAddons = function(index, addonId) {
+
+		var reservationId = $scope.reservationData.reservation_card.reservation_id;
+
+		var successDelete = function() {
+			$scope.$emit('hideLoader');
+			$scope.packageData.existing_packages.splice(index, 1);
+			$scope.addonsData.existingAddons.splice(index, 1);
+			$scope.reservationData.reservation_card.package_count = parseInt($scope.reservationData.reservation_card.package_count) - parseInt(1);
+			if ($scope.reservationData.reservation_card.package_count === 0) {
+				$scope.reservationData.reservation_card.is_package_exist = false;
+			}
+			shouldReloadState = true;
+		};
+		var addonArray = [];
+
+		addonArray.push(addonId);
+		var dataToApi = {
+			"postData": {
+				"addons": addonArray
+			},
+
+			"reservationId": reservationId
+		};
+
+		$scope.invokeApi(RVReservationPackageSrv.deleteAddonsFromReservation, dataToApi, successDelete);
+	};
+
 	$scope.$on('PRIMARY_GUEST_ID_CHANGED', function(event, data) {
 		if (data && data.faceImage) {
 			$scope.guestData.primary_guest_details.image = data.faceImage;
 		}
 	});
+
+	var navigateToAddonsListner = $rootScope.$on('NAVIGATE_TO_ADDONS', function(event, data) {
+		if(data.addonPostingMode === 'staycard') {
+			$scope.navigateToAddons();
+		}
+	});
+
+	var removeSelectedAddonsListner = $rootScope.$on('REMOVE_ADDON', function(event, data) {
+		if(data.addonPostingMode === 'staycard') {
+			$scope.removeSelectedAddons(data.index, data.addon.id);
+		}
+	});
+
+	var proceedBookingListner = $scope.$on('PROCEED_BOOKING', function(event, data) {
+		if(data.addonPostingMode === 'staycard') {
+			$scope.selectedPurchesedAddon = data.selectedPurchesedAddon;
+			$scope.saveAddonPosting();
+		}
+	});
+
+	$scope.$on( '$destroy', proceedBookingListner);
+	$scope.$on( '$destroy', removeSelectedAddonsListner);
+	$scope.$on( '$destroy', navigateToAddonsListner);
 
 }]);

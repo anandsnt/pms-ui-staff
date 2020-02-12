@@ -911,6 +911,17 @@
                 options="chosenReport.hasIncludeCountry.options"></multi-option-selection>
         </div>
 
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasShowUpsellOnly" ng-class="{'active': filterItemsToggle.item_59}" ng-click="toggleFilterItems('item_59')">
+            <span class="title">SHOW UPSELLS ONLY</span>
+        </a>
+        <div class="report-col settings-content" ng-show="chosenReport.hasShowUpsellOnly" ng-class="{ 'hidden': !filterItemsToggle.item_59 }">            
+             <label class="checkbox inline" ng-class="{'checked':chosenReport.show_upsell_only}">
+                <span class="icon-form icon-checkbox" ng-class="{'checked':chosenReport.show_upsell_only}"></span>
+                <input type="checkbox" checked="checked" ng-model="chosenReport.show_upsell_only">
+                SHOW UPSELLS ONLY
+            </label>
+        </div> 
+
 
     </div>
 

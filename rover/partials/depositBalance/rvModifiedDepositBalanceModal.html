@@ -129,6 +129,7 @@
 							selected-payment-type="depositBalanceMakePaymentData.payment_type"
 							selected-c-c="depositDetails.attached_card"
 							amount='depositBalanceMakePaymentData.amount'
+							payment-currency-amount='depositBalanceMakePaymentData.payment_amount'
 							action-type="DEPOSIT_BALANCE_PAYMENT"
 							deposit-policy-name="{{depositPolicyName}}"
 							workstation-id = "{{workstation_id}}"
@@ -137,7 +138,8 @@
 							has-permission='hasPermissionToMakePayment()'
 							form-template-url='/assets/partials/payment/rvDepositBalancePartial.html'
 							first-name="{{passData.details.firstName}}" 
-							payment-currency-list="paymentCurrencyList" 
+							payment-currency-list="paymentCurrencyList"
+							has-payment-rounding = "hasPaymentRounding"
 							last-name="{{passData.details.lastName}}">
 					</snt-payment>
                 </div>
