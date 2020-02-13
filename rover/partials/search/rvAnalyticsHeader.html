@@ -53,6 +53,7 @@
             Refresh
         </button>
     </div>
+    
 
     <!-- Filters PERFOMANCE-->
     <div class="analytics-filters scrollable" ng-class="{'open' : dashboardFilter.selectedAnalyticsMenu === 'PERFOMANCE' && dashboardFilter.showFilters }"> <!-- Toggle class 'open' when L58 clicked -->
@@ -200,6 +201,8 @@
     </div>
     </div>
 
+
+
     <!-- Filters HK_OVERVIEW  & HK_WORK_PRIORITY--> 
     <div class="analytics-filters scrollable"
     ng-class="{'open' : (dashboardFilter.selectedAnalyticsMenu === 'HK_OVERVIEW' || dashboardFilter.selectedAnalyticsMenu === 'HK_WORK_PRIRORITY') && dashboardFilter.showFilters }"> <!-- Toggle class 'open' when L56 clicked -->
@@ -209,12 +212,12 @@
             <div class="entry">
                 <div class="select with-label">
                     <label for="room-type">Room Type</label>
-                    <select id="room-type" ng-model="dashboardFilter.selectedRoomType" ng-change="onHkAnlayticsRoomTypeChange()"
+                    <select id="room-type" ng-model="dashboardFilter.selectedRoomType" ng-change="onAnlayticsRoomTypeChange()"
                     ng-if="dashboardFilter.selectedAnalyticsMenu !== 'HK_WORK_PRIRORITY'">
                         <option value="" selected="" translate>SHOW_ALL</option>
                         <option value="{{roomType.code}}" ng-repeat="roomType in availableRoomTypes track by $index">{{roomType.name}}</option>
                     </select>
-                    <select id="room-type" ng-model="dashboardFilter.selectedRoomType" ng-change="onHkAnlayticsRoomTypeChange()"
+                    <select id="room-type" ng-model="dashboardFilter.selectedRoomType" ng-change="onAnlayticsRoomTypeChange()"
                     ng-if="dashboardFilter.selectedAnalyticsMenu === 'HK_WORK_PRIRORITY'">
                         <option value="" selected="" translate>SHOW_ALL</option>
                         <option value="{{roomType.code}}" ng-repeat="roomType in availableRoomTypes | orderBy: '-shortage' ">{{roomType.name}} {{ roomType.shortage > 0 ?  
@@ -228,19 +231,21 @@
         </div>
     </div>
 
-     <!-- Filters -->
+
+
+     <!-- Filters FO-->
     <div class="analytics-filters scrollable" ng-class="{'open' : (dashboardFilter.selectedAnalyticsMenu === 'FO_ARRIVALS' || dashboardFilter.selectedAnalyticsMenu === 'FO_ACTIVITY' || dashboardFilter.selectedAnalyticsMenu === 'FO_WORK_LOAD') && dashboardFilter.showFilters }"> <!-- Toggle class 'open' when L57 clicked -->
         <div class="wrapper">
             <!-- Room Type -->
              <div class="entry">
                 <div class="select with-label">
                     <label for="room-type">Room Type</label>
-                    <select id="room-type" ng-model="dashboardFilter.selectedRoomType" ng-change="onFoAnlayticsRoomTypeChange()"  ng-if="dashboardFilter.selectedAnalyticsMenu !== 'FO_ARRIVALS'">
+                    <select id="room-type" ng-model="dashboardFilter.selectedRoomType" ng-change="onAnlayticsRoomTypeChange()"  ng-if="dashboardFilter.selectedAnalyticsMenu !== 'FO_ARRIVALS'">
                         <option value="" selected="" translate>SHOW_ALL</option>
                         <option value="{{::roomType.code}}" ng-repeat="roomType in ::roomTypes track by $index">{{::roomType.name}}</option>
                     </select>
                     <!-- Show shortage in rooms inspected based on arrivals -->
-                    <select id="room-type" ng-model="dashboardFilter.selectedRoomType" ng-change="onFoAnlayticsRoomTypeChange()"
+                    <select id="room-type" ng-model="dashboardFilter.selectedRoomType" ng-change="onAnlayticsRoomTypeChange()"
                     ng-if="dashboardFilter.selectedAnalyticsMenu === 'FO_ARRIVALS'">
                         <option value="" selected="" translate>SHOW_ALL</option>
                         <option value="{{roomType.code}}" ng-repeat="roomType in roomTypes | orderBy: '-overBooking' ">{{roomType.name}} {{ roomType.overBooking > 0 ?  
