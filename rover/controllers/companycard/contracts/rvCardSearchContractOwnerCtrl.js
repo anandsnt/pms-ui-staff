@@ -7,14 +7,6 @@ angular.module('sntRover').controller('rvCardSearchContractOwnerCtrl', ['$scope'
 
         that.initialise = function() {
             $scope.contractData.contractOwner.results = [];
-            $scope.setScroller('searchResultsOwnerList');
-        };
-
-        // Handle refresh scroll
-        that.refreshSearchList = function() {
-            $timeout(function() {
-                $scope.refreshScroller('searchResultsOwnerList');
-            }, SCROLL_DELAY);
         };
 
         /* 
@@ -23,8 +15,6 @@ angular.module('sntRover').controller('rvCardSearchContractOwnerCtrl', ['$scope'
         that.fetchOwners = function() {
             var fetchOwnersSuccessCallback = function(data) {
                 $scope.contractData.contractOwner.results = data;
-                $scope.$emit('refreshContractsScroll');
-                that.refreshSearchList();
             },
             fetchOwnersFailureCallback = function(errorMessage) {
                 $scope.$emit('setErrorMessage', errorMessage);
@@ -48,6 +38,19 @@ angular.module('sntRover').controller('rvCardSearchContractOwnerCtrl', ['$scope'
         // Handle click on inactive checkbox.
         $scope.clickedInactive = function() {
             $scope.contractData.contractOwner.isInactive = !$scope.contractData.contractOwner.isInactive;
+        };
+
+        /* 
+         *  Handle click on each item in the result list
+         *  @params {Number} [index of the results]
+         */
+        $scope.clickedOnResult = function( item ) {
+            if (typeof item === 'undefined') {
+                $scope.contractData.contractOwner.selectedOwner = {};
+            }
+            else {
+                $scope.contractData.contractOwner.selectedOwner = item;
+            }
         };
 
         that.initialise();
