@@ -132,7 +132,7 @@
                                     <span class="icon-form icon-checkbox" ng-class="{'checked': selectedPurchesedAddon.selected_post_days[day]}"></span>
                                     <!-- add checked="checked" if checked -->
                                     <input  ng-model="selectedPurchesedAddon.selected_post_days[day]" type="checkbox"/>
-                                    {{day}}
+                                    {{day | limitTo : 3}}
                                 </label>
                             </li>
                          
