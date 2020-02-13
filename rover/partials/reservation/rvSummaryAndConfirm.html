@@ -256,6 +256,7 @@
                             selected-payment-type="reservationData.paymentType.type.value"
                             selected-c-c="summaryState.selectedCardDetails"
                             amount='reservationData.depositAmount'
+                            payment-currency-amount='reservationData.depositPaymentAmount'
                             action-type="DEPOSIT_PAYMENT_RES_SUMMARY"
                             is-editable='reservationData.depositEditable'
                             is-rate-suppressed='isReservationRateSuppressed'
@@ -265,6 +266,7 @@
                             last-name="{{guestCardData.contactInfo.last_name}}"
                             only-payment-selection="reservationData.isValidDeposit"
                             payment-currency-list="paymentCurrencyList" 
+                            has-payment-rounding = "hasPaymentRounding" 
                             reservation-ids="reservationData.reservationIds">
                     </snt-payment>
                     <div class="actions" ng-hide="showCCPage">

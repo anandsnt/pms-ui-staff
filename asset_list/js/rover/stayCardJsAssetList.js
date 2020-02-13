@@ -16,6 +16,7 @@ module.exports = {
                     controllerRoot + "rvGuestController.js",
                     // controllerRoot + "rvContactInfoDatePickerCtrl.js",
                     controllerRoot + "rvAllContactInfoDatePickerCtrl.js",
+                    controllerRoot + "rvAddonDatePickerCtrl.js",
                     controllerRoot + "rvAddLoyaltyProgramController.js",
                     controllerRoot + "rvGuestCardLoyaltyCtrl.js",
                     controllerRoot + "rvReservationRoomStatusCtrl.js",

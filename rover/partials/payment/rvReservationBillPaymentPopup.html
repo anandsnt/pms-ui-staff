@@ -45,7 +45,11 @@
             <div class="feedback no-top-border"
                  style="margin-top: 0; padding-top: 0;"
                  ng-show="paymentDetails.paymentSuccess && (!splitBillEnabled || paymentDetails.authorizationCode)">
-                <div class="notice success" ng-if="!splitBillEnabled">Amount paid!</div>
+                <div class="notice success" ng-if="!splitBillEnabled">Amount paid! <br />
+                    <span ng-if="paymentDetails.selectedPaymentType === 'CA' && hasPaymentRounding">
+                        Final invoiced amount is subject to rounding!!
+                    </span>
+                </div>
                 <ul class="transaction" style="width: 80%;">
                     <li ng-show="!!paymentDetails.authorizationCode">
                         Your Authorize code is: <span class="auth">{{paymentDetails.authorizationCode}}</span>
@@ -63,6 +67,7 @@
                        <span class="value" ng-bind-html="paymentDetails.amount | sntCurrency:this">
                        </span>
                     </li>
+                    
                 </ul>
             </div>
             <!-- Split payment -->
@@ -109,6 +114,7 @@
                     selected-payment-type="defaultPaymentTypeOfBill"
                     selected-c-c="reservationBillData.bills[currentActiveBill || 0].selectedCC"
                     amount='renderData.defaultPaymentAmount'
+                    payment-currency-amount='renderData.defaultPaymentCurrencyAmount'
                     action-type="PAYMENT_RESERVATION_BILL"
                     deposit-policy-name="{{depositPolicyName}}"
                     is-editable='isDepositEditable'

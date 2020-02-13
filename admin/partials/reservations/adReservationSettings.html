@@ -233,6 +233,10 @@
 					</div>
 					<ad-toggle-button label="Sell Limits" is-checked="reservationSettingsData.is_sell_limit_enabled" ></ad-toggle-button>
 					<ad-toggle-button label="Allow check-in to not ready rooms" is-checked="reservationSettingsData.allow_checkin_to_not_ready_rooms" ></ad-toggle-button>
+					<ad-toggle-button label="Store registration card at Check out" is-checked="reservationSettingsData.store_reg_card_at_checkout" ></ad-toggle-button>
+					<div class="entry full-width">
+						<ad-toggle-button label="Archive Registration cards as PDF" is-checked="reservationSettingsData.archive_reg_cards" ></ad-toggle-button>
+					</div>
 
 				</fieldset>
 				<fieldset class="holder right  margin-bottom-20-important" ng-if="isStandAlone">

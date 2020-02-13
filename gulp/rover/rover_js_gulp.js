@@ -280,5 +280,4 @@ module.exports = function(gulp, $, options) {
 			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
 	});
 
-
 }

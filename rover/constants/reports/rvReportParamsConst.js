@@ -122,5 +122,6 @@ angular.module('reportsModule')
         "SHOW_VAT_WITH_RATES": "show_vat_with_rates",
         "COUNTRY": "country_ids",
         "INCLUDE_LONG_STAYS": "include_long_stays",
-        "INCLUDE_DAYUSE": "include_day_use"
+        "INCLUDE_DAYUSE": "include_day_use",
+        "SHOW_UPSELL_ONLY": 'show_upsell_only'
     });

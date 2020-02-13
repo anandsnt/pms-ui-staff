@@ -8,14 +8,10 @@ sntRover.controller('reservationPaymentController',
 	// To add class based on number of buttons present.
 	$scope.getHasButtonClass = function() {
 
-		var status = $scope.reservationData.reservation_card.reservation_status,
-		    isCC = $scope.reservationData.reservation_card.has_any_credit_card_attached_bill,
+		var isCC = $scope.reservationData.reservation_card.has_any_credit_card_attached_bill,
 		    hasButtonClass = "has-button";
 
-		if (status === 'NOSHOW' || status === 'CHECKEDOUT' || status === 'CANCELED') {
-			hasButtonClass = "";
-		}
-		else if (isCC && $scope.showCCAuthButton()) {
+		if (isCC && $scope.showCCAuthButton()) {
 			hasButtonClass = "has-buttons";
 		}
 		return hasButtonClass;

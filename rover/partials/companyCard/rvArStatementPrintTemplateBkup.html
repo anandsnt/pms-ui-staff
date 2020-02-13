@@ -112,9 +112,8 @@
             </thead>
             <tbody>
                 <tr ng-repeat="item in printData.extended_tax_breakdown.details">
-                    <td>
-                        {{item.description}}
-                    </td>
+                    <td ng-if="item.description === 'Tax Exempt'">{{ printData.translation.tax_exempt }}</td>
+                    <td ng-if="item.description !== 'Tax Exempt'">{{ item.description }}</td>
                     <td>
                         {{currencySymbol}}{{item.gross_amount | number: precisonTwo}}
                     </td>

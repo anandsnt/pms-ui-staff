@@ -442,13 +442,23 @@ sntRover.controller('RVdashboardController',
                     $scope.roomTypesForWorkPrioriy = [];
                     _.each($scope.roomTypes, function(roomType) {
                         roomType.shortage = 0;
+                        roomType.overBooking = 0;
                         _.each(calculatedRoomTypes, function(calculatedRoomType) {
                             if (roomType.code === calculatedRoomType.code) {
                                 roomType.shortage = calculatedRoomType.shortage;
+                                roomType.overBooking = calculatedRoomType.overBooking;
                             }
                         });
                     });
                 });
+
+                $scope.refreshAnalyticsChart = function() {
+                    $scope.$broadcast('REFRESH_ANALYTCIS_CHART');
+                };
+
+                $scope.onAnlayticsFilterChanged = function() {
+                    $scope.$broadcast('ANALYTICS_FILTER_CHANGED');
+                };
             }
 
         }]);

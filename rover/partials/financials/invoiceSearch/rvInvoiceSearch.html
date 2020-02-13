@@ -7,14 +7,14 @@
     </div>
 
     <!-- Remove .hidden when Receipts are checked to create QR code -->
-    <div class="entry invoice-qr-code" ng-show="shouldShowReceipts() && paymentDataArray.length > 0">
+    <div class="entry invoice-qr-code" ng-show="(shouldShowReservationReceipts() || shouldShowAccountReceipts()) && paymentDataArray.length > 0">
         <button type="button" class="button green" ng-click="reTriggerPaymentReceipt()">Create QR Code for Selected</button>
 
         <!-- On click uncheck all checked receipts -->
         <button type="button" class="button blank" ng-click="clickedCancelOfRetrigger()">Cancel</button>
     </div>
 
-     <div class="entry search" ng-show="!(shouldShowReceipts() && paymentDataArray.length > 0)">
+     <div class="entry search" ng-show="!((shouldShowReservationReceipts() || shouldShowAccountReceipts()) && paymentDataArray.length > 0)">
         <button class="clear-query" ng-class="{'visible': invoiceSearchFlags.isQueryEntered}" ng-click="clearQuery()"><span class="icons icon-clear-search">Clear query</span></button><!-- add class .visible when keywords are entered -->
         <button class="icons icon-search">Search</button>
         <input name="commisions-query" class="query" placeholder="{{searchPlaceHolder}}" type="search" ng-model="invoiceSearchData.query" rv-delay-textbox="" delay="1000" function-to-fire="searchInvoice">
@@ -34,15 +34,15 @@
     </div>
 
     <!-- Add class 'hidden' when displaying AR Invoices -->
-    <div class="entry options" ng-show="!(shouldShowReceipts() && paymentDataArray.length > 0)"> 
+    <div class="entry options" ng-show="!((shouldShowReservationReceipts() || shouldShowAccountReceipts()) && paymentDataArray.length > 0)"> 
         <!-- Add .hidden if displaying Receipts -->
-        <label class="checkbox" ng-show="shouldShowInvoices()">
+        <label class="checkbox" ng-show="shouldShowReservationInvoices() || shouldShowAccountInvoices()">
             <span class="icon-form icon-checkbox" ng-class="{'checked': invoiceSearchData.no_folio_number_only}"></span>
             <input type="checkbox" ng-model="invoiceSearchData.no_folio_number_only" ng-click="searchInvoice()"/>
             No Folio Number
         </label>
 
-        <label class="checkbox" ng-show="shouldShowReceipts()">
+        <label class="checkbox" ng-show="shouldShowReservationReceipts() || shouldShowAccountReceipts()">
             <span class="icon-form icon-checkbox" ng-class="{'checked': invoiceSearchData.no_qr_code_only}"></span>
             <input type="checkbox"  ng-model="invoiceSearchData.no_qr_code_only" ng-click="searchInvoice()"/>
             No QR code
@@ -50,11 +50,11 @@
 
     </div>
 </form>
-<span ng-if="shouldShowInvoices()">
+<span ng-if="shouldShowReservationInvoices() || shouldShowAccountInvoices()">
     <div ng-include="'/assets/partials/financials/invoiceSearch/rvInvoiceSearchInvoices.html'" ></div>
 </span>
-
-<span ng-if="shouldShowReceipts()">
+ 
+<span ng-if="shouldShowReservationReceipts() || shouldShowAccountReceipts()">
     <div ng-include="'/assets/partials/financials/invoiceSearch/rvInvoiceSearchReceipts.html'" ></div>
 </span>
 

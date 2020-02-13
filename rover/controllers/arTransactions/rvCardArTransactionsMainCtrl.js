@@ -142,6 +142,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			}
 
 			$scope.arDataObj.unpaidAmount = data.unpaid_amount;
+			$scope.arDataObj.unpaidPaymentAmount = data.unpaid_payment_amount;
 			$scope.arDataObj.paidAmount = data.paid_amount;
 			$scope.arDataObj.allocatedCredit = data.allocated_credit;
 			$scope.arDataObj.unallocatedCredit = data.unallocated_credit;
@@ -996,7 +997,9 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			var getCopyCount = function(successData) {
 					var copyCount = "";
 
-					if (successData.is_copy_counter) {
+					if (successData.is_copy_counter && successData.no_of_original_invoices === 0) {
+						copyCount = parseInt(successData.print_counter) - 1;
+					} else if (successData.is_copy_counter && successData.no_of_original_invoices > 0) {
 						copyCount = parseInt(successData.print_counter) - parseInt(successData.no_of_original_invoices);
 					}
 					return copyCount;
@@ -1024,7 +1027,11 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					{
 						successData.invoiceLabel = successData.translation.ar_invoice;
 					}
-					else if (parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices))
+					else if (parseInt(successData.print_counter) === 1 && parseInt(successData.no_of_original_invoices) === 0)
+					{
+						successData.invoiceLabel = successData.translation.ar_invoice;
+					}
+					else if ((parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices)) && !$scope.roverObj.noReprintReEmailInvoice)
 					{
 						if (successData.is_copy_counter) {
             				copyCount = getCopyCount(successData);
