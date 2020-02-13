@@ -402,20 +402,17 @@ angular.module('sntRover')
                 $scope.callAPI(rvAnalyticsSrv.initRoomAndReservationApis, options);
             };
 
+            // Initial fetch
             $scope.$on('GET_FO_ARRIVAL_MANAGEMENT', getArrivalManagementChartData);
 
-            $scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER', function(e, filter) {
-                if ($scope.dashboardFilter.selectedAnalyticsMenu === 'FO_ARRIVALS') {
-                    rvAnalyticsSrv.selectedRoomType = filter.room_type;
-                    renderFrontOfficeManagementChart();
-                }
-            });
-
-            $scope.$on('RELOAD_DATA_WITH_DATE_FILTER', function() {
-                if ($scope.dashboardFilter.selectedAnalyticsMenu === 'FO_ARRIVALS') {
-                    renderFrontOfficeManagementChart();
-                }
-            });
+            // On filter changes
+            var reloadChartWithFilters = function() {
+              if ($scope.dashboardFilter.selectedAnalyticsMenu === 'FO_ARRIVALS') {
+                  renderFrontOfficeManagementChart();
+              }
+            };
+            $scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER', reloadChartWithFilters);
+            $scope.$on('RELOAD_DATA_WITH_DATE_FILTER', reloadChartWithFilters);
 
             $scope.$on('ON_WINDOW_RESIZE', function() {
                 if ($scope.dashboardFilter.selectedAnalyticsMenu === 'FO_ARRIVALS' && chartDetails) {

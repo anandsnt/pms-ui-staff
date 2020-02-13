@@ -330,25 +330,21 @@ angular.module('sntRover')
         $scope.callAPI(rvAnalyticsSrv.initRoomAndReservationApis, options);
       };
 
+      // Initial fetch
       $scope.$on('GET_FO_ACTIVITY', getFoActivityChartData);
 
-
+      // Show yesterdays data toggle
       $scope.$on('SHOW_YESTERDAYS_DATA_TOGGLE', function() {
         renderFrontOfficeActivity();
       });
-
-      $scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER', function(e, filter) {
-        if ($scope.dashboardFilter.selectedAnalyticsMenu === 'FO_ACTIVITY') {
-          rvAnalyticsSrv.selectedRoomType = filter.room_type;
-          renderFrontOfficeActivity();
-        }
-      });
-
-      $scope.$on('RELOAD_DATA_WITH_DATE_FILTER', function() { 
-        if ($scope.dashboardFilter.selectedAnalyticsMenu === 'FO_ACTIVITY') {
-          renderFrontOfficeActivity();
-        }
-      });
+      // On filter changes
+      var reloadChartWithFilters = function() {
+          if ($scope.dashboardFilter.selectedAnalyticsMenu === 'FO_ACTIVITY') {
+              renderFrontOfficeActivity();
+          }
+      };
+      $scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER',reloadChartWithFilters);
+      $scope.$on('RELOAD_DATA_WITH_DATE_FILTER', reloadChartWithFilters);
 
       $scope.$on('ON_WINDOW_RESIZE', function() {
         if ($scope.dashboardFilter.selectedAnalyticsMenu === 'FO_ACTIVITY' && chartData) {

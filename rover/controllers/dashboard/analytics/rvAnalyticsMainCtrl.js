@@ -16,49 +16,21 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 			'hkOverview'
 		];
 
-		// if (includeHKCharts) {
-		// 	$controller('RVHouseKeepingAnalyticsController', {
-		// 		$scope: $scope
-		// 	});
-		// }
-		// if (includeFOCharts) {
-		// 	$controller('rvFrontOfficeAnalyticsCtrlController', {
-		// 		$scope: $scope
-		// 	});
-		// }
-		// if (incluseManagerCharts) {
-		// 	$controller('RVManagerAnalyticsController', {
-		// 		$scope: $scope
-		// 	});
-		// }
-		$controller('rvManagerSpiderChartCtrl', {
-			$scope: $scope
-		});
-		$controller('rvManagerDistributionAnalyticsCtrl', {
-			$scope: $scope
-		});
-		$controller('rvMangerPaceChart', {
-			$scope: $scope
-		});
+		var includeHKCharts = $scope.dashboardFilter.isHkDashboard || $scope.dashboardFilter.isManagerDashboard;
+		var includeFOCharts = $scope.dashboardFilter.isFrontDeskDashboard || $scope.dashboardFilter.isManagerDashboard;
+		var incluseManagerCharts = $scope.dashboardFilter.isManagerDashboard;
 
-		$controller('rvHKOverviewAnalticsCtrl', {
-			$scope: $scope
-		});
-		$controller('rvHkWokrPriorityCtrl', {
-			$scope: $scope
-		});
+		$scope.availableChartsList = [];
 
-		$controller('rvFrontOfficeManagementAnalyticsCtrl', {
-			$scope: $scope
-		});
-		$controller('rvFrontOfficeActivityCtrl', {
-			$scope: $scope
-		});
-		$controller('rvFrontOfficeWorkloadCtrl', {
-			$scope: $scope
-		});
+		if (includeHKCharts) {
+			$controller('rvHKOverviewAnalticsCtrl', {
+				$scope: $scope
+			});
+			$controller('rvHkWokrPriorityCtrl', {
+				$scope: $scope
+			});
 
-		$scope.availableChartsList = [{
+			var houseKeepingCharts = [{
 				name: 'Overview',
 				department: 'HOUSEKEEPING',
 				fetchDataEvent: 'GET_HK_OVERVIEW',
@@ -68,9 +40,23 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 				department: 'HOUSEKEEPING',
 				fetchDataEvent: 'GET_HK_WORK_PRIORITY',
 				tileDescription: 'HK_WORKLOAD_DESC'
-			},
+			}];
 
-			{
+			$scope.availableChartsList = $scope.availableChartsList.concat(houseKeepingCharts);
+		}
+		
+		if (includeFOCharts) {
+			$controller('rvFrontOfficeManagementAnalyticsCtrl', {
+				$scope: $scope
+			});
+			$controller('rvFrontOfficeActivityCtrl', {
+				$scope: $scope
+			});
+			$controller('rvFrontOfficeWorkloadCtrl', {
+				$scope: $scope
+			});
+
+			var foCharts = [{
 				name: 'Arrivals',
 				department: 'FRONT OFFICE',
 				fetchDataEvent: 'GET_FO_ARRIVAL_MANAGEMENT',
@@ -85,9 +71,24 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 				department: 'FRONT OFFICE',
 				fetchDataEvent: 'GET_FO_WORKLOAD',
 				tileDescription: 'FO_WORKLOAD_DESC'
-			},
+			}];
 
-			{
+			$scope.availableChartsList = $scope.availableChartsList.concat(foCharts);
+		}
+		
+
+		if (incluseManagerCharts) {
+			$controller('rvManagerSpiderChartCtrl', {
+				$scope: $scope
+			});
+			$controller('rvManagerDistributionAnalyticsCtrl', {
+				$scope: $scope
+			});
+			$controller('rvMangerPaceChart', {
+				$scope: $scope
+			});
+
+			var managerCharts = [{
 				name: 'Room Perfomance',
 				department: 'GENERAL',
 				fetchDataEvent: 'GET_MANAGER_PERFOMANCE',
@@ -102,8 +103,10 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 				department: 'GENERAL',
 				fetchDataEvent: 'GET_MANAGER_PACE',
 				tileDescription: 'MANAGER_PACE_DESC'
-			}
-		];
+			}];
+			
+			$scope.availableChartsList = $scope.availableChartsList.concat(managerCharts);
+		}
 
 		$scope.$on("CLEAR_ALL_CHART_ELEMENTS", function() {
 			d3.select('#d3-plot').selectAll('svg').remove();

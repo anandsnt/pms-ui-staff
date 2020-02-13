@@ -403,22 +403,19 @@ angular.module('sntRover')
 
                 $scope.callAPI(rvAnalyticsSrv.initRoomAndReservationApis, options);
             };
-
+            // Initial fetch
             $scope.$on('GET_HK_OVERVIEW', fetchHKOverviewChartData);
 
-            $scope.$on('HK_ROOM_TYPE_FILTER_CHANGED', function(e, filter) {
+            // On filter changes
+            var reloadChartWithFilters = function() {
                 if ($scope.dashboardFilter.selectedAnalyticsMenu === 'HK_OVERVIEW') {
-                    rvAnalyticsSrv.selectedRoomType = filter.room_type;
                     renderHkOverview();
                 }
-            });
+            };
+            $scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER',reloadChartWithFilters);
+            $scope.$on('RELOAD_DATA_WITH_DATE_FILTER', reloadChartWithFilters);
 
-            $scope.$on('RELOAD_DATA_WITH_DATE_FILTER', function() {
-                 if ($scope.dashboardFilter.selectedAnalyticsMenu === 'HK_OVERVIEW') {
-                    renderHkOverview();
-                }
-            });
-
+            // On window resize
             $scope.$on('ON_WINDOW_RESIZE', function() {
                 if ($scope.dashboardFilter.selectedAnalyticsMenu === 'HK_OVERVIEW' && chartDetails) {
                     drawChartAndAddHeader(chartDetails);
