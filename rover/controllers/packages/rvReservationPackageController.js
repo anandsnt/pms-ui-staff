@@ -53,6 +53,9 @@ sntRover.controller('RVReservationPackageController',
 			$scope.errorMessage = [];
 			if (!$rootScope.featureToggles.addons_custom_posting) {
 				return;
+			} else if (addon.is_rate_addon) {
+				$scope.errorMessage = ["Custom posting cannot be configured for rate addons"];
+				$scope.selectedPurchesedAddon = "";
 			} else if (addon.post_type.value === 'STAY') {
 				$scope.selectedPurchesedAddon = addon;
 				$scope.selectedPurchesedAddon.selected_post_days = {};
@@ -70,7 +73,6 @@ sntRover.controller('RVReservationPackageController',
 			} else {
 				$scope.errorMessage = ["Custom posting can be configured only for nightly addons"];
 			}
-			
 
 		};
 
