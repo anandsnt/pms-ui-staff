@@ -19,19 +19,13 @@ describe('rvCardSearchContractOwnerCtrl', function() {
                 mode: 'EDIT',
                 accountId: '123',
                 contractOwner: {
-                    expand: false,
                     results: [],
                     isInactive: false
+                },
+                selectedOwner: {
+                    name: 'test',
+                    id: 1
                 }
-            },
-            setScroller: function setScroller() {
-                return true;
-            },
-            refreshScroller: function refreshScroller() {
-                return true;
-            },
-            closeDialog: function() {
-                return true;
             }
         });
 
