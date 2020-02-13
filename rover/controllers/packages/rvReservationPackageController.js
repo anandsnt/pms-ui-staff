@@ -51,8 +51,8 @@ sntRover.controller('RVReservationPackageController',
 			$scope.errorMessage = [];
 			if (!$rootScope.featureToggles.addons_custom_posting) {
 				return;
-			} else if (addon.is_rate_addon && addon.is_inclusive) {
-				$scope.errorMessage = ["Custom posting cannot be configured for rate inclusive addons"];
+			} else if (addon.is_rate_addon) {
+				$scope.errorMessage = ["Custom posting cannot be configured for rate addons"];
 				$scope.selectedPurchesedAddon = "";
 			} else if (addon.post_type.value === 'STAY') {
 				$scope.selectedPurchesedAddon = addon;
