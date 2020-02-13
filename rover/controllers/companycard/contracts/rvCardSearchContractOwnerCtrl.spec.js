@@ -21,11 +21,6 @@ describe('rvCardSearchContractOwnerCtrl', function() {
                 contractOwner: {
                     expand: false,
                     results: [],
-                    selectedOwner: {
-                        name: 'test',
-                        id: 1
-                    },
-                    query: '',
                     isInactive: false
                 }
             },
@@ -47,7 +42,6 @@ describe('rvCardSearchContractOwnerCtrl', function() {
 
     it('Check fetch owner API call', function() {
         that.initialise();
-        $scope.contractData.contractOwner.query = 'test';
         $scope.contractData.contractOwner.isInactive = true;
         spyOn(rvCompanyCardContractsSrv, "fetchOwners").and.callFake(function() {
             var deferred = $q.defer();
@@ -57,20 +51,6 @@ describe('rvCardSearchContractOwnerCtrl', function() {
         });
         that.fetchOwners();
         expect(rvCompanyCardContractsSrv.fetchOwners).toHaveBeenCalled();
-    });
-
-    it('Check clear query', function() {
-        that.initialise();
-        $scope.contractData.contractOwner.query = 'test';
-        $scope.clearQuery();
-        expect($scope.contractData.contractOwner.query).toEqual('');
-    });
-
-    it('Check clickedOnResult', function() {
-        that.initialise();
-        $scope.contractData.contractOwner.expand = true;
-        $scope.clickedOnResult();
-        expect($scope.contractData.contractOwner.expand).toEqual(false);
     });
 
     it('Check clickedInactive', function() {

@@ -6,9 +6,7 @@ angular.module('sntRover').controller('rvCardSearchContractOwnerCtrl', ['$scope'
             SCROLL_DELAY = 500;
 
         that.initialise = function() {
-            $scope.contractData.contractOwner.expand = false;
             $scope.contractData.contractOwner.results = [];
-            $scope.contractData.contractOwner.selectedOwner = {};
             $scope.setScroller('searchResultsOwnerList');
         };
 
@@ -37,8 +35,6 @@ angular.module('sntRover').controller('rvCardSearchContractOwnerCtrl', ['$scope'
                 successCallBack: fetchOwnersSuccessCallback,
                 failureCallBack: fetchOwnersFailureCallback,
                 params: {
-                    'query': $scope.contractData.contractOwner.query,
-                    'is_inactive': $scope.contractData.contractOwner.isInactive,
                     'account_id': accountId
                 }
             };
@@ -48,50 +44,13 @@ angular.module('sntRover').controller('rvCardSearchContractOwnerCtrl', ['$scope'
             }
             $scope.callAPI(rvCompanyCardContractsSrv.fetchOwners, options);
         };
-
-        // Handle rate search.
-        $scope.searchOwner = function() {
-            if ($scope.contractData.contractOwner.query.length > 2) {
-                that.fetchOwners();
-            }
-            else {
-                $scope.contractData.contractOwner.results = [];
-            }
-        };
-        // Handle clear search.
-        $scope.clearQuery = function() {
-            $scope.contractData.contractOwner.query = '';
-            $scope.contractData.contractOwner.results = [];
-            $scope.$emit('refreshContractsScroll');
-        };
-        /* 
-         *  Handle click on each item in the result list
-         *  @params {Number} [index of the results]
-         */
-        $scope.clickedOnResult = function( index ) {
-            if (index === 'NO_OWNER') {
-                $scope.contractData.contractOwner.selectedOwner = {};
-            }
-            else {
-                $scope.contractData.contractOwner.selectedOwner = $scope.contractData.contractOwner.results[index];
-            }
-            $scope.clearQuery();
-            $scope.contractData.contractOwner.expand = false;
-        };
-        // Handle click on owner dropdown.
-        $scope.clickedOwner = function() {
-            $scope.contractData.contractOwner.expand = !$scope.contractData.contractOwner.expand;
-            if ($scope.contractData.contractOwner.expand) {
-                $scope.clearQuery();
-                $scope.contractData.contractOwner.isInactive = false;
-            }
-            $scope.$emit('refreshContractsScroll');
-        };
+        
         // Handle click on inactive checkbox.
         $scope.clickedInactive = function() {
             $scope.contractData.contractOwner.isInactive = !$scope.contractData.contractOwner.isInactive;
         };
 
         that.initialise();
+        that.fetchOwners();
     }
 ]);

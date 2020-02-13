@@ -27,10 +27,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 					results: []
 				},
 				contractOwner: {
-					expand: false,
-					query: '',
 					results: [],
-					selectedOwner: {},
 					isInactive: false
 				}
 			};

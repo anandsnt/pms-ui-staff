@@ -1,4 +1,4 @@
-<div class="entry relative" ng-controller="rvCardSearchContractOwnerCtrl">
+<div class="entry relative" >
     <label for="contract-owner">Contract Owner</label>
     <!-- Remove .placeholder if we are showing the owner -->
     <div class="multi-select select placeholder" ng-click="clickedOwner()">
@@ -37,5 +37,30 @@
                 </label>
             </div>
         </div>
+    </div>
+</div>
+
+<div class="entry full-width" ng-controller="rvCardSearchContractOwnerCtrl">
+    <label for="contract-owner">Contract Owner</label>
+    <div class="contract-grid">
+        <div class="select">
+            <select id="contract-owners-active">
+                <option value="">No contract owner</option>
+                <optgroup label="Acive Users">
+                    <option value="{value}">{Sales Executive First & Last Name}</option>
+                    ... repeat for every Active Sales Executive user
+                </optgroup>
+                <!-- If L63 is checked, show this:
+                <optgroup label="Inactive Users">
+                    <option value="{value}">{Sales Executive First & Last Name}</option>
+                    ... repeat for every Inactive Sales Executive user
+                </optgroup>-->
+            </select>
+        </div>
+        <label class="checkbox inline"> <!-- Add class 'checked' when L63 is checked -->
+            <span class="icon-form icon-checkbox"></span> <!-- Add class 'checked' when L63 is checked -->
+            <input type="checkbox">
+            Include Inactive Users
+        </label>
     </div>
 </div>
