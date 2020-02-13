@@ -183,6 +183,12 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 			};
 		});
 
+		$scope.$on("SIDE_MENU_TOGGLE", function(e, data) {
+			if (data.menuOpen) {
+				$('base').attr('href', "/");
+			}
+		});
+
 		(function() {
 			$scope.dashboardFilter.displayMode = 'DASHBOARD_LIST';
 			$scope.screenData = {
