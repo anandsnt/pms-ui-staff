@@ -267,9 +267,7 @@ sntRover.controller('RVmanagerDashboardController',
     dateFormat: 'yy-mm-dd',
     onSelect: function(dateText) {
       $scope.dashboardFilter.fromDate = dateText;
-      $scope.$broadcast('RELOAD_DATA_WITH_DATE_FILTER', {
-        "from_date": $scope.dashboardFilter.fromDate
-      });
+      $scope.$broadcast('RELOAD_DATA_WITH_DATE_FILTER_' + $scope.dashboardFilter.selectedAnalyticsMenu);
       ngDialog.close();
     }
   };
@@ -281,9 +279,7 @@ sntRover.controller('RVmanagerDashboardController',
     dateFormat: 'yy-mm-dd',
     onSelect: function(dateText, inst) {
       $scope.dashboardFilter.toDate = dateText;
-      $scope.$broadcast('RELOAD_DATA_WITH_DATE_FILTER', {
-        "to_date": $scope.dashboardFilter.toDate
-      });
+      $scope.$broadcast('RELOAD_DATA_WITH_DATE_FILTER_' + $scope.dashboardFilter.selectedAnalyticsMenu);
       ngDialog.close();
     }
   };
@@ -474,7 +470,7 @@ sntRover.controller('RVmanagerDashboardController',
 
   $scope.onAnlayticsRoomTypeChange = function() {
     rvAnalyticsSrv.selectedRoomType = $scope.dashboardFilter.selectedRoomType;
-    $scope.$broadcast('RELOAD_DATA_WITH_SELECTED_FILTER');
+    $scope.$broadcast('RELOAD_DATA_WITH_SELECTED_FILTER_' + $scope.dashboardFilter.selectedAnalyticsMenu);
   };
 
   $scope.showYesterdaysDataToggled = function(){

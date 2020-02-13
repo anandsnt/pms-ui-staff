@@ -639,7 +639,7 @@ angular.module('sntRover')
 				/**  ****************************  Let Top Quadrant ******************************/
 				var yesterDaysOccupany = parseFloat(chartData.yesterday.occupancy);
 
-				yesterDaysOccupany = yesterDaysOccupany > 25 ? yesterDaysOccupany : parseInt(yesterDaysOccupany);
+				yesterDaysOccupany = yesterDaysOccupany > 25 ? yesterDaysOccupany : yesterDaysOccupany.toFixed(1);
 
 				svg.append("circle").
 				attr("cx", x(-1 * yesterDaysOccupany * 0.1 / 25))
@@ -690,7 +690,7 @@ angular.module('sntRover')
 
 				var todaysOccupany = parseFloat(chartData.today.occupancy);
 
-				todaysOccupany = todaysOccupany > 25 ? todaysOccupany : parseInt(todaysOccupany);
+				todaysOccupany = todaysOccupany > 25 ? todaysOccupany :todaysOccupany.toFixed(1);
 				svg.append("circle").
 				attr("cx", x(todaysOccupany * 0.1 / 25))
 					.attr("cy", y(todaysOccupany * 0.1 / 25))
@@ -738,7 +738,7 @@ angular.module('sntRover')
 
 				var mtdOccupany = parseFloat(chartData.mtd.occupancy);
 
-				mtdOccupany = mtdOccupany > 25 ? mtdOccupany : parseInt(mtdOccupany);
+				mtdOccupany = mtdOccupany > 25 ? mtdOccupany : mtdOccupany.toFixed(1);
 
 				svg.append("circle").
 				attr("cx", x(-1 * mtdOccupany * 0.1 / 25))
@@ -787,7 +787,7 @@ angular.module('sntRover')
 				/**  ****************************  Right Bottom Quadrant ******************************/
 				var ytdOccupany = parseFloat(chartData.ytd.occupancy);
 
-				ytdOccupany = ytdOccupany > 25 ? ytdOccupany : parseInt(ytdOccupany);
+				ytdOccupany = ytdOccupany > 25 ? ytdOccupany : ytdOccupany.toFixed(1);
 				svg.append("circle").
 				attr("cx", x(ytdOccupany * 0.1 / 25))
 					.attr("cy", y(-1 * ytdOccupany * 0.1 / 25))
@@ -1034,11 +1034,8 @@ angular.module('sntRover')
 				fetchPerfomanceChartData();
 			});
 
-			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER', function() {
-                if ($scope.dashboardFilter.selectedAnalyticsMenu === 'PERFOMANCE') {
-                    fetchPerfomanceChartData();
-                }
-            });
+			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER_PERFOMANCE',fetchPerfomanceChartData);
+			
 			$scope.$on('ON_WINDOW_RESIZE', function () {
 				if ($scope.dashboardFilter.selectedAnalyticsMenu === 'PERFOMANCE') {
 					fetchPerfomanceChartData();

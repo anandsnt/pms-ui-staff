@@ -306,7 +306,7 @@ angular.module('sntRover')
 				redrawPaceChartIfNeeded();
 			});
 
-			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER', redrawPaceChartIfNeeded);
+			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER_PACE', redrawPaceChartIfNeeded);
 			$scope.$on('CHART_AGGGREGATION_CHANGED', redrawPaceChartIfNeeded);
 			$scope.$on('REFRESH_ANALYTCIS_CHART_PACE', function() {
 				$scope.$emit('RESET_CHART_FILTERS');

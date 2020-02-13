@@ -355,11 +355,8 @@ angular.module('sntRover')
 				redrawDistributionChartIfNeeded();
 			});
 
-			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER', function() {
-                if ($scope.dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION') {
-                    fetchDistributionChartData();
-                }
-            });
+			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER_DISTRIBUTION', fetchDistributionChartData);
+			
             $scope.$on('REFRESH_ANALYTCIS_CHART_DISTRIBUTION', function() {
 				$scope.$emit('RESET_CHART_FILTERS');
 				fetchDistributionChartData()

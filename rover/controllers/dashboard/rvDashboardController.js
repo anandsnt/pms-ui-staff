@@ -414,9 +414,7 @@ sntRover.controller('RVdashboardController',
                     maxDate: moment($rootScope.businessDate).add(3, 'days').format('YYYY-MM-DD'),
                     onSelect: function(dateText, inst) {
                         $scope.dashboardFilter.datePicked = dateText;
-                        $scope.$broadcast('RELOAD_DATA_WITH_DATE_FILTER', {
-                            "date": $scope.dashboardFilter.datePicked
-                        });
+                        $scope.$broadcast('RELOAD_DATA_WITH_DATE_FILTER_' + $scope.dashboardFilter.selectedAnalyticsMenu);
                         ngDialog.close();
                     }
                 };
