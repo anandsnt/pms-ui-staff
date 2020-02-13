@@ -445,8 +445,9 @@ sntRover.controller('RVdashboardController',
                     });
                 });
 
-                $scope.refreshAnalyticsChart = function() {
-                    $scope.$broadcast('REFRESH_ANALYTCIS_CHART');
+                $scope.refreshAnalyticsChart = function(selectedChart) {
+                    $scope.$broadcast('REFRESH_ANALYTCIS_CHART_'+ selectedChart);
+                    $scope.dashboardFilter.showFilters = false;
                 };
 
                 $scope.onAnlayticsFilterChanged = function() {

@@ -308,6 +308,10 @@ angular.module('sntRover')
 
 			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER', redrawPaceChartIfNeeded);
 			$scope.$on('CHART_AGGGREGATION_CHANGED', redrawPaceChartIfNeeded);
+			$scope.$on('REFRESH_ANALYTCIS_CHART_PACE', function() {
+				$scope.$emit('RESET_CHART_FILTERS');
+				fetchPaceChartData()
+			});
 			$scope.$on('ON_WINDOW_RESIZE', function() {
 				if (!isPaceChartActive()){
 					return;

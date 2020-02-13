@@ -429,6 +429,7 @@ angular.module('sntRover')
 
 			$scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER', reloadChartWithFilters);
 			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER', reloadChartWithFilters);
+			$scope.$on('REFRESH_ANALYTCIS_CHART_FO_WORK_LOAD', getArrivalManagementChartData);
 
 			$scope.$on('ON_WINDOW_RESIZE', function() {
 				if ($scope.dashboardFilter.selectedAnalyticsMenu === 'FO_WORK_LOAD' && chartDetails) {

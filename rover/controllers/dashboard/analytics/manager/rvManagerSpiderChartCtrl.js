@@ -1028,6 +1028,11 @@ angular.module('sntRover')
 					handleFilterChangeForPerfomanceChart();
 				}
 			});
+			$scope.$on('REFRESH_ANALYTCIS_CHART_PERFOMANCE', function() {
+				$scope.dashboardFilter.showLastYearData = false;
+				$scope.dashboardFilter.lastyearType = "SAME_DATE_LAST_YEAR";
+				fetchPerfomanceChartData();
+			});
 
 			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER', function() {
                 if ($scope.dashboardFilter.selectedAnalyticsMenu === 'PERFOMANCE') {

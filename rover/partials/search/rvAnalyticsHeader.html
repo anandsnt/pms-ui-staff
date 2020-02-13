@@ -48,7 +48,7 @@
             <span class="icons icon-filter"></span>
             Filter rooms
         </button>
-        <button type="button" class="button white with-icon only-icon" ng-click="refreshAnalyticsChart()" ng-if="dashboardFilter.displayMode === 'CHART_DETAILS'">
+        <button type="button" class="button white with-icon only-icon" ng-click="refreshAnalyticsChart(dashboardFilter.selectedAnalyticsMenu)" ng-if="dashboardFilter.displayMode === 'CHART_DETAILS'">
             <span class="icons icon-reset"></span>
             Refresh
         </button>

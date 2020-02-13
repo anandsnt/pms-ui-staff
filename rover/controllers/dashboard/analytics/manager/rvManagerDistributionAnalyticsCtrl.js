@@ -360,6 +360,10 @@ angular.module('sntRover')
                     fetchDistributionChartData();
                 }
             });
+            $scope.$on('REFRESH_ANALYTCIS_CHART_DISTRIBUTION', function() {
+				$scope.$emit('RESET_CHART_FILTERS');
+				fetchDistributionChartData()
+			});
             
 			$scope.$on('ON_WINDOW_RESIZE', function() {
 				if (!isDistributionChartActive()){

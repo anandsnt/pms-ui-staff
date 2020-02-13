@@ -1,6 +1,6 @@
 sntRover.controller('RVfrontDeskDashboardController',
-    ['$scope', '$rootScope', 'RVDashboardSrv', '$timeout', 'ngDialog',
-        function($scope, $rootScope, RVDashboardSrv, $timeout, ngDialog) {
+    ['$scope', '$rootScope', 'RVDashboardSrv', '$timeout', 'ngDialog', 'rvAnalyticsSrv',
+        function($scope, $rootScope, RVDashboardSrv, $timeout, ngDialog, rvAnalyticsSrv) {
 	// inheriting some useful things
 	BaseCtrl.call(this, $scope);
     var that = this;
@@ -88,4 +88,16 @@ sntRover.controller('RVfrontDeskDashboardController',
 
     $scope.dashboardFilter.isFrontDeskDashboard = true
     $scope.$on('REFRESH_ANALTICS_SCROLLER', refreshAnalyticsScroller);
+    $scope.selectedFilters = {
+      "roomType": "",
+      "roomTypes": []
+    };
+    $scope.onAnlayticsRoomTypeChange = function() {
+      rvAnalyticsSrv.selectedRoomType = $scope.dashboardFilter.selectedRoomType;
+      $scope.$broadcast('RELOAD_DATA_WITH_SELECTED_FILTER');
+    };
+
+    $scope.toggleFilterView = function() {
+      $scope.dashboardFilter.showFilters = !$scope.dashboardFilter.showFilters;
+    };
 }]);

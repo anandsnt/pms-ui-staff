@@ -418,9 +418,6 @@ sntRover.controller('RVmanagerDashboardController',
     $scope.dashboardFilter.chartType = "occupancy";
     $scope.dashboardFilter.aggType = "";
     $scope.dashboardFilter.datePicked = $rootScope.businessDate;
-
-    $scope.dashboardFilter.chartType = "";
-    $scope.dashboardFilter.aggType = "";
     $scope.dashboardFilter.toDate = angular.copy($rootScope.businessDate);
     $scope.dashboardFilter.fromDate = angular.copy(moment($scope.dashboardFilter.toDate).subtract(7, 'days').format('YYYY-MM-DD'));
 

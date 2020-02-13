@@ -118,12 +118,12 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
 
     var lastUpdatedTimeForReservationApis;
     
-    this.initRoomAndReservationApis = function(params, loadNewData) {
+    this.initRoomAndReservationApis = function(params) {
 
         var deferred = $q.defer();
         var isFromFrontDesk = params.isFromFrontDesk;
 
-        if ((!loadNewData && that.activeReservations && that.roomStatuses) &&
+        if ((!params.loadNewData && that.activeReservations && that.roomStatuses) &&
             (!isFromFrontDesk || that.yesterdaysReservations)) {
             deferred.resolve({
                 lastUpatedTime: lastUpdatedTimeForReservationApis

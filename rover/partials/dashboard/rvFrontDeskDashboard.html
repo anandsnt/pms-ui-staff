@@ -1,10 +1,9 @@
 <!-- IF ANALYTICS FEATURE TOGGLE IS ON  -->
-<div ng-if="analyticsDashboardEnabled">
+<div ng-if="analyticsDashboardEnabled" ng-controller="RVfrontDeskDashboardController">
     <div ng-include="'/assets/partials/search/rvFrontDeskDashboardSearchReservationsWithAnalytics.html'"></div>
     <!-- SUMMARY VIEW -->
     <section id="dashboard" class="content scrollable" role = "main"
              ng-iscroll='dashboard_scroller' ng-iscroll-delay="100"
-             ng-controller="RVfrontDeskDashboardController"
              ng-if="!dashboardFilter.analyticsActive">
         <div class="wrapper">
             <div ng-include="'/assets/partials/dashboard/rvDbGreetingMessageSection.html'"></div>
@@ -13,14 +12,13 @@
             <div ng-include="'/assets/partials/dashboard/rvDbUpSellSection.html'"></div>
         </div>
     </section>
-    <ng-include src="'/assets/partials/search/rvFrontDeskAnalyticsHeader.html'" ng-if="dashboardFilter.analyticsActive"></ng-include>
+    <ng-include src="'/assets/partials/search/rvAnalyticsHeader.html'" ng-if="dashboardFilter.analyticsActive"></ng-include>
     <!-- ANALYTICS VIEW -->
     <section id="dashboard" class="content scrollable analytics" role = "main"
              ng-iscroll="analytics_scroller" ng-iscroll-delay="100"
-             ng-controller="RVfrontDeskDashboardController"
              ng-if="dashboardFilter.analyticsActive">
         <div class="wrapper">
-            <div ng-include="'/assets/partials/analytics/rvFrontDeskAnalytics.html'" ng-controller="rvFrontOfficeAnalyticsCtrlController"></div>
+            <div ng-include="'/assets/partials/analytics/rvAnalyticsMain.html'" ng-controller="rvAnalyticsMainController"></div>
         </div>
     </section>
 </div>
