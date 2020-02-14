@@ -100,7 +100,7 @@ angular.module('sntRover')
         chartData.todays_data.unshift(emptyElement);
         chartData.yesterdays_data.unshift(emptyElement);
 
-        var w = document.getElementById("manager-analytics-chart").clientWidth,
+        var w = document.getElementById("dashboard-analytics-chart").clientWidth,
           h = 500,
           padding = 40;
 

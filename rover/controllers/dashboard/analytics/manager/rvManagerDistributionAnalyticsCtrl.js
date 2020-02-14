@@ -54,7 +54,7 @@ angular.module('sntRover')
 							},
 							parseDate = d3.timeParse("%Y-%m-%d");
 
-						var width = document.getElementById("manager-analytics-chart").clientWidth - margin.left - margin.right,
+						var width = document.getElementById("dashboard-analytics-chart").clientWidth - margin.left - margin.right,
 							height = 500 - margin.top - margin.bottom;
 
 						var xScale = d3.scaleBand()
@@ -322,10 +322,11 @@ angular.module('sntRover')
 						$scope.screenData.analyticsDataUpdatedTime = moment().format("MM ddd, YYYY hh:mm:ss a");
 						$scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
 						distributionChartData = data;
-						// if ($scope.dashboardFilter.gridViewActive) {
-						// 	toggleDistributionChartGridView();
-						// } else {
-						drawDistributionChart(data);
+						if ($scope.dashboardFilter.gridViewActive) {
+							toggleDistributionChartGridView();
+						} else {
+							drawDistributionChart(data);
+						}
 						setPageHeading();
 						rvAnalyticsHelperSrv.addChartHeading($scope.screenData.mainHeading, $scope.screenData.analyticsDataUpdatedTime);
 					}
@@ -369,5 +370,163 @@ angular.module('sntRover')
 					redrawDistributionChartIfNeeded();
 				}
 			});
+
+			/** *************************** GRID ******************************/
+
+			// Scrollers for distribution grid view
+			var timeLineScrollEndReached = false;
+			var GRID_HEADER_HORIZONTAL_SCROLL = 'grid-header-horizontal-scroll',
+				GRID_VIEW_DUAL_SCROLL = 'grid-scroll',
+				GRID_SIDE_MENU_SCROLL = 'side-bar-vertical-scroll';
+
+			var getScrollerObject = function(key) {
+				var scrollerObject = $scope.$parent.myScroll && $scope.$parent.myScroll[key];
+
+				if (_.isUndefined(scrollerObject)) {
+					scrollerObject = $scope.myScroll[key];
+				}
+				return scrollerObject;
+			};
+
+			var setGridScrollers = function() {
+				var scrollOptions = {
+					tap: true,
+					preventDefault: false,
+					probeType: 3,
+					mouseWheel: true
+				};
+
+				var scrollerOptionsForTimeline = _.extend({
+					scrollX: true,
+					scrollY: false,
+					scrollbars: true
+				}, angular.copy(scrollOptions));
+
+				var scrollerOptionsForGrid = _.extend({
+					scrollY: true,
+					scrollX: true,
+					scrollbars: true
+				}, angular.copy(scrollOptions));
+
+				$scope.setScroller(GRID_HEADER_HORIZONTAL_SCROLL, scrollerOptionsForTimeline);
+				$scope.setScroller(GRID_VIEW_DUAL_SCROLL, scrollerOptionsForGrid);
+				$scope.setScroller(GRID_SIDE_MENU_SCROLL, scrollOptions);
+
+				var runDigestCycle = function() {
+					if (!$scope.$$phase) {
+						$scope.$digest();
+					}
+				};
+
+				$timeout(function() {
+					getScrollerObject(GRID_HEADER_HORIZONTAL_SCROLL)
+						.on('scroll', function() {
+							var xPos = this.x;
+							var block = getScrollerObject(GRID_VIEW_DUAL_SCROLL);
+
+							block.scrollTo(xPos, block.y);
+
+							// check if edge reached next button
+							if (Math.abs(this.maxScrollX) - Math.abs(this.x) <= 150) {
+								if (!timeLineScrollEndReached) {
+									timeLineScrollEndReached = true;
+									runDigestCycle();
+								}
+							} else {
+								if (timeLineScrollEndReached) {
+									timeLineScrollEndReached = false;
+									runDigestCycle();
+								}
+							}
+						});
+					getScrollerObject(GRID_SIDE_MENU_SCROLL)
+						.on('scroll', function() {
+							var yPos = this.y;
+							var block = getScrollerObject(GRID_VIEW_DUAL_SCROLL);
+
+							block.scrollTo(block.x, yPos);
+						});
+					getScrollerObject(GRID_VIEW_DUAL_SCROLL)
+						.on('scroll', function() {
+							var xPos = this.x;
+							var yPos = this.y;
+
+							getScrollerObject(GRID_HEADER_HORIZONTAL_SCROLL).scrollTo(xPos, 0);
+							getScrollerObject(GRID_SIDE_MENU_SCROLL).scrollTo(0, yPos);
+
+							// check if edge reached and enable next button
+							if (Math.abs(this.maxScrollX) - Math.abs(this.x) <= 150) {
+								if (!timeLineScrollEndReached) {
+									timeLineScrollEndReached = true;
+									runDigestCycle();
+								}
+							} else {
+								if (timeLineScrollEndReached) {
+									timeLineScrollEndReached = false;
+									runDigestCycle();
+								}
+							}
+						});
+				}, 1000);
+			};
+			var refreshGridScrollers = function() {
+				$scope.refreshScroller(GRID_HEADER_HORIZONTAL_SCROLL);
+				$scope.refreshScroller(GRID_VIEW_DUAL_SCROLL);
+				$scope.refreshScroller(GRID_SIDE_MENU_SCROLL);
+			};
+			var toggleDistributionChartGridView = function() {
+				if (!$scope.dashboardFilter.gridViewActive) {
+					$timeout(function() {
+						redrawDistributionChartIfNeeded();
+					}, 1000);
+					return;
+				}
+				if ($scope.dashboardFilter.gridViewActive && !$scope.dashboardFilter.aggType) {
+					$scope.gridViewHeader = _.find($scope.dashboardFilter.chartTypes, function(chartType) {
+						return chartType.code === $scope.dashboardFilter.chartType;
+					}).name;
+				} else if ($scope.dashboardFilter.gridViewActive && $scope.dashboardFilter.aggType) {
+					$scope.gridViewHeader = _.find($scope.dashboardFilter.aggTypes, function(aggType) {
+						return aggType.code === $scope.dashboardFilter.aggType;
+					}).name;
+				}
+
+				$scope.gridLeftSideHeaders = [];
+
+				_.each(distributionChartData, function(chartData) {
+					for (var key in chartData) {
+						if (key !== "date" && _.indexOf($scope.gridLeftSideHeaders, key) === -1) {
+							$scope.gridLeftSideHeaders.push(key);
+						}
+					}
+				});
+
+				var today = $rootScope.businessDate;
+
+				distributionChartData = _.sortBy(distributionChartData, function(data) {
+					return data.date;
+				});
+
+				_.each(distributionChartData, function(data) {
+					// check if the day is a Sunday or Saturday
+					data.isWeekend = moment(data.date, "YYYY-MM-DD").weekday() === 0 ||
+						moment(data.date, "YYYY-MM-DD").weekday() === 6;
+					// Display day in MMM DD format
+					data.dateToDisplay = moment(data.date, "YYYY-MM-DD").format("MMM DD");
+					// weekday in 3 letter format
+					data.weekDay = moment(data.date, "YYYY-MM-DD").format("ddd");
+					// check if day is current day
+					data.isToday = moment(data.date).format('YYYY-MM-DD') === today;
+				});
+
+				$scope.distributionChartData = distributionChartData;
+				$scope.dashboardFilter.showFilters = false;
+				setGridScrollers();
+				$timeout(function() {
+					refreshGridScrollers();
+				}, 1000);
+			};
+
+			$scope.$on('DISTRUBUTION_CHART_CHANGED', toggleDistributionChartGridView);
 		}
 	]);

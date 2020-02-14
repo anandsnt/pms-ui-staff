@@ -150,6 +150,7 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 		};
 
 		$scope.onClickOnChartTile = function(fetchDataEvent) {
+			$scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
 			// reset filters
 			$scope.selectedFilters.roomTypes = [];
 			$scope.dashboardFilter.selectedRoomType = '';
@@ -189,7 +190,7 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 			$('base').attr('href', "/");
 			$rootScope.setPrevState = {
 				hide: true,
-				title: '',
+				title: ''
 			};
 		});
 
@@ -205,6 +206,7 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 				displayMode: 'DASHBOARD_LIST'
 			};
 			$scope.dashboardFilter.showRemainingReservations = false;
+			$scope.dashboardFilter.gridViewActive = false;
 		})();
 	}
 ]);

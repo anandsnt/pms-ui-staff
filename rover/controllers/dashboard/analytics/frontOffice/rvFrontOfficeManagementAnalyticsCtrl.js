@@ -36,7 +36,7 @@ angular.module('sntRover')
 
             var drawArrivalManagementChart = function(chartDetails) {
                 $scope.screenData.mainHeading = $filter('translate')(chartDetails.chartData.label);
-                var chartAreaWidth = document.getElementById("manager-analytics-chart").clientWidth;
+                var chartAreaWidth = document.getElementById("dashboard-analytics-chart").clientWidth;
                 var margin = {
                         top: 50,
                         right: 50,
