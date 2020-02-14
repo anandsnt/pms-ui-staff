@@ -42,7 +42,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 emvTimeout: 120,
                 isConfirmedDBpayment: false,
                 selectedPaymentCurrencyId: $rootScope.hotelCurrencyId,
-                selectedPaymentCurrencySymbol: $rootScope.currencySymbol
+                selectedPaymentCurrencySymbol: $rootScope.paymentCurrencySymbol
             };
 
             $scope.giftCard = {
@@ -1006,7 +1006,7 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 // For fee curresponding to default currency payment amount CICO-72207
 
-                if (initialLoad) {
+                if (initialLoad && $scope.payment.paymentCurrencyAmount) {
                     currPaymentFee = sntPaymentSrv.calculateFee($scope.payment.paymentCurrencyAmount, feeInfo);
                     $scope.paymentFeeData = {
                         calculatedPaymentFee: currPaymentFee.calculatedPaymentFee,
@@ -1092,7 +1092,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 }
 
 
-                if (isInitialLoad) {
+                if (isInitialLoad && $scope.payment.paymentCurrencyAmount) {
                     $scope.payment.amount = $scope.payment.paymentCurrencyAmount;
                 }
 

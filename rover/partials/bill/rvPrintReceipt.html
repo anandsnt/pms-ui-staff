@@ -4,7 +4,7 @@
     <span ng-bind-html="receiptPrintData.hotel_address"></span>
     <span class="type">{{receiptPrintData.receipt_translations.payment_receipt}}</span>
     <!-- If showing QR code, place it here:-->
-    <span class="type" ng-show="receiptPrintData.qr_code !== '' && receiptPrintData.qr_code !== null">
+    <span class="type" ng-if="receiptPrintData.qr_code !== '' && receiptPrintData.qr_code !== null">
         <br/><img src="{{receiptPrintData.qr_code}}" alt="" class="qr-code" /> 
     </span>
 </div>

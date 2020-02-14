@@ -1,53 +1,154 @@
 <div id="inline-modal-room-1" class="inline-modal modal-show" role="dialog" ng-cloak>
-    <div class="modal-content room-enhancements">
-        <span class="h2 message">Room {{roomNumber}} Enhancements</span>
-        <!-- Initial markup -->
-        <!-- Markup as you add items -->
-        <div class="scrollable" ng-iscroll="resultDetails" ng-iscroll-delay="500">
-        <ul id="room-1-enhancements" class=" wrapper enhancements-added">
-            <li ng-repeat="addon in addonsData.existingAddons" class="addons-list">
-                <span class="item">{{ addon.title }}</span>
+    <div class="modal-content form room-enhancements">
+        <button id="modal-close" type="button" class="modal-close" ng-click="closePopup()"><span class="icons icon-close invert"></button>
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div class="content-left">
+        <!-- scroller -->
+            <div class="scrollable">
+                <ul class="wrapper">
 
-                <!-- if addon type is adult /child type multiplification factor will be (addon_count*number of days*(adult_count or child_count)) -->
-                <!-- if addon type is person multiplification factor will be (addon_count*number of days*(adult_count+child_count))-->
-
-                <span>
-                    <span class="count"> ({{getAddonCount(addon.amount_type, addon.post_type, addon.posting_frequency,reservationData.number_of_adults, reservationData.number_of_children, duration_of_stay, addon.charge_full_weeks_only, addon.quantity)}})</span>
-                </span>
-
-                <span class="base" ng-hide="addon.is_rate_addon && addon.is_inclusive">at <span class="currency">{{addon.rate_currency}}</span>{{addon.price_per_piece | number : 2}} / {{addon.amount_type}} <span>{{addon.post_type}}</span></span>
-
-                <!-- if addon type is adult /child type multiplification factor will be (addon_count*number of days*(adult_count or child_count)) -->
-                <!-- if addon type is person multiplification factor will be (addon_count*number of days*(adult_count+child_count))-->
-
-                 <span ng-if="addon.amount_type ==='Adult'">
-                        <span class="price" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type ==='Entire Stay'"><span class="currency">{{addon.rate_currency}}</span>{{addon.totalAmount * reservationData.number_of_adults| number : 2}}</span>
-                        <span class="price" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type !=='Entire Stay'"><span class="currency">{{addon.rate_currency}}</span>{{addon.totalAmount * duration_of_stay * reservationData.number_of_adults| number : 2}}</span>
-                    </span>
-                     <span ng-if="addon.amount_type ==='Child'">
-                        <span class="price" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type ==='Entire Stay'"><span class="currency">{{addon.rate_currency}}</span>{{addon.totalAmount*reservationData.number_of_children | number : 2}}</span>
-                        <span class="price" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type !=='Entire Stay'"><span class="currency">{{addon.rate_currency}}</span>{{addon.totalAmount * duration_of_stay*reservationData.number_of_children| number : 2}}</span>
-                    </span>
-                    <span ng-if="addon.amount_type ==='Flat'">
-                        <span class="price" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type ==='Entire Stay'"><span class="currency">{{addon.rate_currency}}</span>{{addon.totalAmount | number : 2}}</span>
-                        <span class="price" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type !=='Entire Stay'"><span class="currency">{{addon.rate_currency}}</span>{{addon.totalAmount * duration_of_stay| number : 2}}</span>
-                    </span>
-                    <span ng-if="addon.amount_type ==='Person'">
-                        <span class="price" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type ==='Entire Stay'"><span class="currency">{{addon.rate_currency}}</span>{{addon.totalAmount*(reservationData.number_of_children+reservationData.number_of_adults) | number : 2}}</span>
-                        <span class="price" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type !=='Entire Stay'"><span class="currency">{{addon.rate_currency}}</span>{{addon.totalAmount * duration_of_stay*(reservationData.number_of_children+reservationData.number_of_adults)| number : 2}}</span>
-                    </span>
-
-                <span class="price" ng-show="addon.is_rate_addon && addon.is_inclusive">INCL</span>
-                <button type="button" ng-hide="addon.is_rate_addon" class="icons icon-trash" ng-click="removeSelectedAddons($index)" translate>REMOVE</button>
-            </li>
-        </ul>
+                    <!-- Add .disabled if cant be selected such as add-on with 'INCL' value or add-on for the first night -->
+                    <!-- Add .item-active if selected -->
+                    <li class="block-item" ng-repeat="addon in addonsData.existingAddons" ng-click="selectPurchasedAddon(addon)" ng-class="{'disabled': addon.post_type !=='Entire Stay', 'item-active': addon.id === selectedPurchesedAddon.id}">
+                         <div class="data">
+                            <h3 class="enhancement-name">
+                                
+                                {{ addon.title }}
+                                <small>({{getAddonCount(addon.amount_type, addon.post_type, addon.posting_frequency,reservationData.number_of_adults, reservationData.number_of_children, duration_of_stay, addon.charge_full_weeks_only, addon.quantity)}})</small>
+                            </h3>
+                            <!-- Show this if there is a description -->
+                            <!-- <span class="enhancement-desc">
+                                {{ addon.description }}
+                            </span> -->
+                            <span class="enhancement-name" ng-hide="addon.is_rate_addon && addon.is_inclusive">
+                                at {{addon.rate_currency}}{{addon.price_per_piece | number : 2}} / {{addon.amount_type}} {{addon.post_type}}
+                             </span>
+                             <span class="enhancement-name" ng-show="addon.is_rate_addon && addon.is_inclusive">INCL</span>
+                             <span ng-if="addon.amount_type ==='Adult'">
+                                <span class="enhancement-name" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type ==='Entire Stay'"><span class="currency">{{addon.rate_currency}}</span>{{addon.totalAmount * reservationData.number_of_adults| number : 2}}</span>
+                                <span class="enhancement-name" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type !=='Entire Stay'"><span class="currency">{{addon.rate_currency}}</span>{{addon.totalAmount * duration_of_stay * reservationData.number_of_adults| number : 2}}</span>
+                            </span>
+                             <span ng-if="addon.amount_type ==='Child'">
+                                <span class="enhancement-name" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type ==='Entire Stay'"><span class="currency">{{addon.rate_currency}}</span>{{addon.totalAmount*reservationData.number_of_children | number : 2}}</span>
+                                <span class="enhancement-name" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type !=='Entire Stay'"><span class="currency">{{addon.rate_currency}}</span>{{addon.totalAmount * duration_of_stay*reservationData.number_of_children| number : 2}}</span>
+                            </span>
+                            <span ng-if="addon.amount_type ==='Flat'">
+                                <span class="enhancement-name" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type ==='Entire Stay'"><span class="currency">{{addon.rate_currency}}</span>{{addon.totalAmount | number : 2}}</span>
+                                <span class="enhancement-name" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type !=='Entire Stay'"><span class="currency">{{addon.rate_currency}}</span>{{addon.totalAmount * duration_of_stay| number : 2}}</span>
+                            </span>
+                            <span ng-if="addon.amount_type ==='Person'">
+                                <span class="enhancement-name" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type ==='Entire Stay'"><span class="currency">{{addon.rate_currency}}</span>{{addon.totalAmount*(reservationData.number_of_children+reservationData.number_of_adults) | number : 2}}</span>
+                                <span class="enhancement-name" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type !=='Entire Stay'"><span class="currency">{{addon.rate_currency}}</span>{{addon.totalAmount * duration_of_stay*(reservationData.number_of_children+reservationData.number_of_adults)| number : 2}}</span>
+                            </span>
+                         </div>
+                         <span class="price" ng-hide="addon.is_rate_addon && addon.is_inclusive">
+                                {{addon.addon_currency}}{{addon.totalAmount}}
+                             </span>
+                         <!-- add class .hidden to hide it if it can't be removed/deleted-->
+                         <span class="delete" ng-hide="addon.is_rate_addon" ng-click="removeSelectedAddons($index)">
+                            <span class="icons icon-remove-10"></span>
+                         </span>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div class="actions" ng-hide="fromPage=='staycard'">
-            <button type="button" ng-click="closePopup()" class="button white modal-hide" translate>ADD_MORE_TO_THIS_ROOM</button>
-            <button class="button green has-arrow skip" ng-click="proceed()" translate>BOOK</button>
-        </div>
-        <div class="actions" ng-show="fromPage=='staycard'">
-            <button class="button blank" ng-click="closeDialog()" translate>CLOSE</button>
+
+        <div class="content-right">
+            <!-- Initial screen -->
+            <!-- Add .hidden if clicked on an enhancement that can be changed -->
+            <div class="content-initial" ng-hide="selectedPurchesedAddon">
+               <div class="no-content">
+                     <div class="info">
+                        <span class="icon-no-content icon-layers"></span>
+                        
+                        <!-- 'object' can be such as:
+                            - Room 101
+                            - StayNTouch Group
+                        -->
+                        <strong class="h1">Add Ons for {{currentHotelData.name}}</strong>
+                        <span class="h2">Select add on to set dates/days of week</span>
+                    </div>
+                </div>
+                <div class="actions">
+                    <!-- 
+                        'Type' can be: 'Room' or 'Group'
+                    -->
+                    <!-- On Stay/Group Card -->
+                    <button type="button" class="button orange" ng-click="closePopup()">Add More to This Room</button>
+                    <button type="button" class="button blank" ng-click="closePopup()">Close Window</button>
+
+                    <!-- On Addons screen 
+                    <button type="button" class="button blank">Close Window</button>
+                    -->
+
+                    <!-- On Create Res. Enhance Stay screen:
+                    <button type="button" class="button white">Add More to This {Type}</button>
+                    <button type="button" class="button green">Go To Payment</button>--> 
+                    
+                </div>
+            </div>
+
+            <!-- Remove .hidden if clicked on an enhancement that can be changed -->
+            <!-- Add .hidden if clicked again on the same enhancement to show initial screen -->
+            <div class="content-dates" ng-show="selectedPurchesedAddon">
+                <span class="h2 message">{{selectedPurchesedAddon.title}}</span>
+                <span class="text">{{selectedPurchesedAddon.description}}</span>
+                <div class="content-entries">
+                    <!-- Hide if only Date-To needs to be shown -->
+                    <div class="entry margin">
+                        <label>From</label>
+                        <div class="has-datepicker" ng-click="clickedOnDatePicker('start_date')">
+                            <input placeholder="Select Date" class="hasDatepicker" readonly="yes" type="text"  ng-model="selectedPurchesedAddon.start_date" />
+                            <button type="button" class="ui-datepicker-trigger">...</button>
+                        </div>
+                    </div>
+
+                    <div class="entry">
+                        <label>To</label>
+                        <div class="has-datepicker" ng-click="clickedOnDatePicker('end_date')">
+                            <input placeholder="Select Date"  class="hasDatepicker" readonly="yes" type="text"  ng-model="selectedPurchesedAddon.end_date" />
+                            <button type="button" class="ui-datepicker-trigger">...</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hide if only Date-To needs to be shown -->
+                <div class="content-entries">
+                    
+                    <div class="entry full-width">
+                        <label>For Every</label>
+                        <ul class="entry-days float">
+
+                        
+                            <li ng-repeat="day in daysOfWeek">
+                                <label class="checkbox" >
+                                    <!-- add .checked if checked -->
+                                    <span class="icon-form icon-checkbox" ng-class="{'checked': selectedPurchesedAddon.selected_post_days[day]}"></span>
+                                    <!-- add checked="checked" if checked -->
+                                    <input  ng-model="selectedPurchesedAddon.selected_post_days[day]" type="checkbox"/>
+                                    {{day}}
+                                </label>
+                            </li>
+                         
+                            <li>
+                                <button ng-show="shouldShowSelectAllDaysOfWeek()" ng-click="togglePostDaysSelectionForAddon(true)">
+                                    <!-- 'ButtonText': 
+                                        - 'Select All' - if some is not checked
+                                        - 'Select None' - if all are checked-->
+                                    Select All
+                                </button>
+                                <button ng-show="shouldShowSelectNoDaysOfWeek()" ng-click="togglePostDaysSelectionForAddon(false)">
+                                    Select None
+                                </button>
+                            </li>
+                    </div>
+                </div>
+
+                <div class="actions inline">
+                    <button class="button blank" ng-click="closePopup()">+ More</button>
+                    <button class="button green" ng-click="proceed()">Book</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
