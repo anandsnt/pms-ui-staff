@@ -66,12 +66,18 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 				department: 'FRONT OFFICE',
 				fetchDataEvent: 'GET_FO_ACTIVITY',
 				tileDescription: 'FO_ACTIVITY_DESC'
-			}, {
-				name: 'Workload',
-				department: 'FRONT OFFICE',
-				fetchDataEvent: 'GET_FO_WORKLOAD',
-				tileDescription: 'FO_WORKLOAD_DESC'
 			}];
+
+			if ($rootScope.includeManagementInformation) {
+				var WorkloadChart = {
+					name: 'Workload',
+					department: 'FRONT OFFICE',
+					fetchDataEvent: 'GET_FO_WORKLOAD',
+					tileDescription: 'FO_WORKLOAD_DESC'
+				};
+
+				foCharts.push(WorkloadChart);
+			}
 
 			$scope.availableChartsList = $scope.availableChartsList.concat(foCharts);
 		}
