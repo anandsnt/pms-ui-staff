@@ -99,13 +99,22 @@ angular.module('sntRover')
 					.append("g")
 					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+				
+
+				if ($scope.dashboardFilter.showRemainingReservations) {
+					// sort right side items in ascending order
+					chartDetails.chartData.data = _.sortBy(chartDetails.chartData.data, function(item, index) {
+						return item.type === 'REMAINING' ? 0 : 1;
+					});
+				} else {
+					chartDetails.chartData.data = _.reject(chartDetails.chartData.data, function(item) {
+						return item.type === 'REMAINING';
+					});
+				}
+
 				// DEBUGING CODE
 				// chartDetails = rvAnalyticsHelperSrv.addRandomNumbersForTesting(chartDetails);
-
-				// sort right side items in ascending order
-				chartDetails.chartData.data = _.sortBy(chartDetails.chartData.data, function(item, index) {
-					return item.type === 'REMAINING' ? 0 : 1;
-				});
+				
 				var totalActionsCount = {
 					early_checkin: 0,
 					vip_checkin: 0,
@@ -297,17 +306,19 @@ angular.module('sntRover')
 						width: xScale(maxValueInBotheDirections) + xScale(100)
 					};
 
-					var yPositionOfRemainingTopLine = remainingTypeYoffset - yScale.bandwidth() / 2;
-					// first line 
-					rvAnalyticsHelperSrv.drawRectLines(_.extend(rectCommonAttrs, {
-						yOffset: yPositionOfRemainingTopLine
-					}));
+					if ($scope.dashboardFilter.showRemainingReservations) {
+						var yPositionOfRemainingTopLine = remainingTypeYoffset - yScale.bandwidth() / 2;
+						// first line 
+						rvAnalyticsHelperSrv.drawRectLines(_.extend(rectCommonAttrs, {
+							yOffset: yPositionOfRemainingTopLine
+						}));
 
-					var yPositionOfRemainingBottomLine = yPositionOfRemainingTopLine + 2 * yScale.bandwidth();
+						var yPositionOfRemainingBottomLine = yPositionOfRemainingTopLine + 2 * yScale.bandwidth();
 
-					rvAnalyticsHelperSrv.drawRectLines(_.extend(rectCommonAttrs, {
-						yOffset: yPositionOfRemainingBottomLine
-					}));
+						rvAnalyticsHelperSrv.drawRectLines(_.extend(rectCommonAttrs, {
+							yOffset: yPositionOfRemainingBottomLine
+						}));
+					}
 
 					rvAnalyticsHelperSrv.drawRectLines({
 						svg: svg,
@@ -423,6 +434,10 @@ angular.module('sntRover')
 			$scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER_FO_WORK_LOAD', renderfdWorkloadChart);
 			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER_FO_WORK_LOAD', renderfdWorkloadChart);
 			$scope.$on('REFRESH_ANALYTCIS_CHART_FO_WORK_LOAD', getArrivalManagementChartData);
+			$scope.$on('SHOW_REMAINING_RESERVATIONS_TOGGLE', function () {
+				$scope.dashboardFilter.showFilters = false;
+				renderfdWorkloadChart();
+			});
 
 			$scope.$on('ON_WINDOW_RESIZE', function() {
 				if ($scope.dashboardFilter.selectedAnalyticsMenu === 'FO_WORK_LOAD' && chartDetails) {

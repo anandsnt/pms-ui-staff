@@ -270,9 +270,9 @@
 
             <!-- Show Remaining -->
             <div class="entry" ng-if="dashboardFilter.selectedAnalyticsMenu === 'FO_WORK_LOAD'">
-                <label class="checkbox inline"> <!-- Add class 'checked' when L90 checked -->
-                    <span class="icon-form icon-checkbox"></span> <!-- Add class 'checked' when L90 checked -->
-                    <input id="show-remaining" value="{value}" type="checkbox">
+                <label class="checkbox inline" ng-class="{'checked': dashboardFilter.showRemainingReservations}"> <!-- Add class 'checked' when L90 checked -->
+                    <span class="icon-form icon-checkbox" ng-class="{'checked': dashboardFilter.showRemainingReservations}"></span> <!-- Add class 'checked' when L90 checked -->
+                    <input id="show-remaining" ng-model="dashboardFilter.showRemainingReservations" type="checkbox" ng-change="showRemainingReservationsToggled()">
                     Show Remaining Reservations
                 </label>
             </div>

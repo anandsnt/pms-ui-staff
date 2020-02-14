@@ -100,4 +100,7 @@ sntRover.controller('RVfrontDeskDashboardController',
     $scope.toggleFilterView = function() {
       $scope.dashboardFilter.showFilters = !$scope.dashboardFilter.showFilters;
     };
+    $scope.showRemainingReservationsToggled = function () {
+      $scope.$broadcast('SHOW_REMAINING_RESERVATIONS_TOGGLE');
+    };
 }]);

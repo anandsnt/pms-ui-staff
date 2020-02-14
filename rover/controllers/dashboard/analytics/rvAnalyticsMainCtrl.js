@@ -200,6 +200,7 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 			$scope.screenData = {
 				displayMode: 'DASHBOARD_LIST'
 			};
+			$scope.dashboardFilter.showRemainingReservations = false;
 		})();
 	}
 ]);
