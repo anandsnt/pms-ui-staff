@@ -2,7 +2,7 @@
     <!-- If we don't show the bottom form, add .without-footer -->
     <!-- If we don't show the search for some reason, add .without-header -->
     <div class="contracts-details-form scrollable" ng-class="{'without-footer': (contractData.isPastContract || !contractData.editData.is_master_contract)}" ng-iscroll="editContractScroller">
-        <div class="wrapper float">
+        <div class="wrapper float" ng-class="{'height-fix-owner-field': contractData.contractOwner.expand}">
             <div class="holder left">
                 <strong class="h3">Contract Details</strong>
                 <div class="entry full-width">

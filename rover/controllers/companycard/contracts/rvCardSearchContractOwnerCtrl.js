@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('rvCardSearchContractOwnerCtrl', ['$scope', 'rvCompanyCardContractsSrv', '$timeout',
-	function($scope, rvCompanyCardContractsSrv, $timeout) {
+angular.module('sntRover').controller('rvCardSearchContractOwnerCtrl', ['$scope', 'rvCompanyCardContractsSrv', '$timeout', '$stateParams',
+	function($scope, rvCompanyCardContractsSrv, $timeout, $stateParams) {
         
         BaseCtrl.call(this, $scope);
         var that = this,
@@ -78,7 +78,7 @@ angular.module('sntRover').controller('rvCardSearchContractOwnerCtrl', ['$scope'
             $scope.clearQuery();
             $scope.contractData.contractOwner.expand = false;
         };
-
+        // Handle click on owner dropdown.
         $scope.clickedOwner = function() {
             $scope.contractData.contractOwner.expand = !$scope.contractData.contractOwner.expand;
             if ($scope.contractData.contractOwner.expand) {
@@ -87,7 +87,7 @@ angular.module('sntRover').controller('rvCardSearchContractOwnerCtrl', ['$scope'
             }
             $scope.$emit('refreshContractsScroll');
         };
-
+        // Handle click on inactive checkbox.
         $scope.clickedInactive = function() {
             $scope.contractData.contractOwner.isInactive = !$scope.contractData.contractOwner.isInactive;
         };

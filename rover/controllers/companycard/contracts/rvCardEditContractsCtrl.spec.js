@@ -25,6 +25,15 @@ describe('rvCardEditContractsCtrl', function() {
                     end_date: '',
                     total_contracted_nights: '',
                     is_active: ''
+                },
+                contractOwner: {
+                    expand: false,
+                    results: [],
+                    selectedOwner: {
+                        name: 'test',
+                        id: 1
+                    },
+                    query: ''
                 }
             }
         });

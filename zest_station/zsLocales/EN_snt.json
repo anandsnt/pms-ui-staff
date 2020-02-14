@@ -534,6 +534,10 @@
    "ADDON_REMOVAL_ERROR_HEADER": "Something went wrong!",
    "ADDON_ADD_ERROR_MESSAGE": "Unable To add this to your reservation",
    "ADDON_REMOVAL_ERROR_MESSAGE": "Unable To remove this from your reservation",
+   "ADDON_REFERENCE_TITLE": "Please provide your licence plate number",
+   "ADDON_REFERENCE_MULTI_TITLE": "Please provide your licence plate numbers separated by ','",
+   "ADDON_REFERENCE_LABEL": "Licence plate",
+   "CLOSE": "Close",
 
    "GID_SCAN_HEADER": "Scan Passport",
    "GID_SCAN_PASSPORT_SUCCESS":"Success",
