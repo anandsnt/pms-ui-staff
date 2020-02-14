@@ -9,6 +9,7 @@
 "ADD_NEW":"Add New",
 "MANDATORY_FIELDS_MESSAGE1":"Fields marked with",
 "MANDATORY_FIELDS_MESSAGE2":"are mandatory!",
+"GENERATE":"Generate",
 
 "MENU_DASHBOARD" : "Dashboard",
 "MENU_SEARCH" : "Search",
@@ -47,7 +48,7 @@
 "MENU_REPORTS":"Reports",
 "MENU_GROUPS": "Groups",
 "MENU_CREATE_GROUP": "New Group",
-"MENU_MANAGE_GROUP": "Manage Groups",   
+"MENU_MANAGE_GROUP": "Manage Groups",
 "ICARE_SERVICES": "iCare Services",
 "OK":"Ok",
 "DELETE":"Delete",
