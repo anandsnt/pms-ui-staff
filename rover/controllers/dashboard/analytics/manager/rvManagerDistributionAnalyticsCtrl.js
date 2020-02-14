@@ -31,12 +31,10 @@ angular.module('sntRover')
 				return today === date;
 			};
 
-			/******************************** DRAW CHART STARTS HERE ********************************************/
+			/** ****************************** DRAW CHART STARTS HERE ********************************************/
 
 			var drawDistributionChart = function(chartData) {
 				$scope.dashboardFilter.selectedAnalyticsMenu = 'DISTRIBUTION';
-				console.log(JSON.stringify(chartData));
-
 				chartData = _.sortBy(chartData, function(data) {
 					return data.date;
 				});
@@ -300,7 +298,7 @@ angular.module('sntRover')
 				$scope.dashboardFilter.showFilters = false;
 			};
 
-			/******************************** DRAW CHART ENDS HERE ********************************************/
+			/** ****************************** DRAW CHART ENDS HERE ********************************************/
 
 
 			var fetchDistributionChartData = function() {
@@ -350,23 +348,22 @@ angular.module('sntRover')
 				redrawDistributionChartIfNeeded();
 			});
 
-			$scope.$on('CHART_AGGGREGATION_CHANGED', function(e, data) {
+			$scope.$on('CHART_AGGGREGATION_CHANGED', function() {
 				setPageHeading();
 				redrawDistributionChartIfNeeded();
 			});
 
 			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER_DISTRIBUTION', fetchDistributionChartData);
-			
-            $scope.$on('REFRESH_ANALYTCIS_CHART_DISTRIBUTION', function() {
+
+			$scope.$on('REFRESH_ANALYTCIS_CHART_DISTRIBUTION', function() {
 				$scope.$emit('RESET_CHART_FILTERS');
 				fetchDistributionChartData()
 			});
-            
+
 			$scope.$on('ON_WINDOW_RESIZE', function() {
-				if (!isDistributionChartActive()){
+				if (!isDistributionChartActive()) {
 					return;
-				}
-				else if (distributionChartData) {
+				} else if (distributionChartData) {
 					drawDistributionChart(distributionChartData);
 				} else {
 					redrawDistributionChartIfNeeded();

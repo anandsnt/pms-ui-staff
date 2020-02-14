@@ -109,7 +109,6 @@ sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope'
       "room_type": $scope.dashboardFilter.selectedRoomType,
       "date": $scope.dashboardFilter.datePicked
     });
-    roomTypeFilerChanged();
   };
 
   var refreshAnalyticsScroller = function() {

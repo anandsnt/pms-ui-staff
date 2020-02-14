@@ -44,7 +44,7 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 
 			$scope.availableChartsList = $scope.availableChartsList.concat(houseKeepingCharts);
 		}
-		
+
 		if (includeFOCharts) {
 			$controller('rvFrontOfficeManagementAnalyticsCtrl', {
 				$scope: $scope
@@ -81,7 +81,7 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 
 			$scope.availableChartsList = $scope.availableChartsList.concat(foCharts);
 		}
-		
+
 
 		if (incluseManagerCharts) {
 			$controller('rvManagerSpiderChartCtrl', {
@@ -110,13 +110,17 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 				fetchDataEvent: 'GET_MANAGER_PACE',
 				tileDescription: 'MANAGER_PACE_DESC'
 			}];
-			
+
 			$scope.availableChartsList = $scope.availableChartsList.concat(managerCharts);
 		}
 
 		$scope.$on("CLEAR_ALL_CHART_ELEMENTS", function() {
-			d3.select('#d3-plot').selectAll('svg').remove();
-			d3.select('#d3-plot').selectAll('p').remove();
+			d3.select('#d3-plot')
+				.selectAll('svg')
+				.remove();
+			d3.select('#d3-plot')
+				.selectAll('p')
+				.remove();
 			var divElements = d3.select('#d3-plot').selectAll('div');
 
 			if (divElements) {
@@ -130,14 +134,14 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 			}
 		});
 
-		$scope.$on('CHART_API_SUCCESS', function (ev, response) {
+		$scope.$on('CHART_API_SUCCESS', function(ev, response) {
 			$('base').attr('href', '#');
-            $scope.screenData.analyticsDataUpdatedTime = response && response.lastUpatedTime ?
-                                                         response.lastUpatedTime : moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
-            $scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
+			$scope.screenData.analyticsDataUpdatedTime = response && response.lastUpatedTime ?
+				response.lastUpatedTime : moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
+			$scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
 		});
 
-		$scope.updateAndBack = function(){
+		$scope.updateAndBack = function() {
 			$rootScope.setPrevState = {
 				hide: true
 			};
@@ -160,14 +164,14 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 			};
 		};
 
-		$scope.showRightSideLegends = function () {
+		$scope.showRightSideLegends = function() {
 			return $scope.dashboardFilter.selectedAnalyticsMenu !== 'PERFOMANCE';
 		};
 
-		$scope.showLeftSideLegends = function () {
+		$scope.showLeftSideLegends = function() {
 			return $scope.dashboardFilter.selectedAnalyticsMenu === 'HK_OVERVIEW' ||
-				   $scope.dashboardFilter.selectedAnalyticsMenu === 'HK_WORK_PRIRORITY' ||
-				   $scope.dashboardFilter.selectedAnalyticsMenu === 'FO_ARRIVALS';
+				$scope.dashboardFilter.selectedAnalyticsMenu === 'HK_WORK_PRIRORITY' ||
+				$scope.dashboardFilter.selectedAnalyticsMenu === 'FO_ARRIVALS';
 		};
 
 		$(window).on("resize.doResize", function() {

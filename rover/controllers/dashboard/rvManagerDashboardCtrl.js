@@ -473,7 +473,7 @@ sntRover.controller('RVmanagerDashboardController',
     $scope.$broadcast('RELOAD_DATA_WITH_SELECTED_FILTER_' + $scope.dashboardFilter.selectedAnalyticsMenu);
   };
 
-  $scope.showYesterdaysDataToggled = function(){
+  $scope.showYesterdaysDataToggled = function() {
     $scope.$broadcast('SHOW_YESTERDAYS_DATA_TOGGLE');
   };
 }]);

@@ -411,7 +411,7 @@ angular.module('sntRover')
 					drawChartAndAddHeading(chartDetails);
 				});
 			};
-			var getArrivalManagementChartData = function(date) {
+			var getArrivalManagementChartData = function() {
 				$scope.dashboardFilter.displayMode = 'CHART_DETAILS';
 				$scope.dashboardFilter.selectedAnalyticsMenu = 'FO_WORK_LOAD';
 				$('base').attr('href', "/");

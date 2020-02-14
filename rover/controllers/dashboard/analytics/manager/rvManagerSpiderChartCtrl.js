@@ -12,7 +12,7 @@ angular.module('sntRover')
 
 			rvAnalyticsSrv.setHotelCiCoTime($rootScope.hotelDetails);
 
-			/******************************** DRAW CHART STARTS HERE ********************************************/
+			/** ****************************** DRAW CHART STARTS HERE ********************************************/
 
 			var drawPerfomceChart = function(chartData) {
 				$scope.screenData.mainHeading = $filter('translate')("AN_ROOM_PERFOMANCE_KPR");
@@ -690,7 +690,7 @@ angular.module('sntRover')
 
 				var todaysOccupany = parseFloat(chartData.today.occupancy);
 
-				todaysOccupany = todaysOccupany > 25 ? todaysOccupany :todaysOccupany.toFixed(1);
+				todaysOccupany = todaysOccupany > 25 ? todaysOccupany : todaysOccupany.toFixed(1);
 				svg.append("circle").
 				attr("cx", x(todaysOccupany * 0.1 / 25))
 					.attr("cy", y(todaysOccupany * 0.1 / 25))
@@ -919,7 +919,7 @@ angular.module('sntRover')
 
 				addChartHeading();
 			};
-			/******************************** DRAW CHART ENDS HERE ********************************************/
+			/** ****************************** DRAW CHART ENDS HERE ********************************************/
 
 			var fetchPerfomanceChartData = function() {
 				$('base').attr('href', initialBaseHrefValue);
@@ -948,7 +948,7 @@ angular.module('sntRover')
 				for (var key in perfomanceData) {
 					for (var key1 in lastYeardata) {
 						if (((key === key1) && (key === "mtd" || !isMixed)) ||
-						   ((key === key1) && (key === "ytd" || !isMixed))) {
+							((key === key1) && (key === "ytd" || !isMixed))) {
 
 							combinedPerfomanceData[key] = angular.copy(perfomanceData[key]);
 							combinedPerfomanceData[key].adr_diff = parseFloat(perfomanceData[key].adr) -
@@ -1034,9 +1034,9 @@ angular.module('sntRover')
 				fetchPerfomanceChartData();
 			});
 
-			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER_PERFOMANCE',fetchPerfomanceChartData);
-			
-			$scope.$on('ON_WINDOW_RESIZE', function () {
+			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER_PERFOMANCE', fetchPerfomanceChartData);
+
+			$scope.$on('ON_WINDOW_RESIZE', function() {
 				if ($scope.dashboardFilter.selectedAnalyticsMenu === 'PERFOMANCE') {
 					fetchPerfomanceChartData();
 				}

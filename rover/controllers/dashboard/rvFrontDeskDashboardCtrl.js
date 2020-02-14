@@ -86,7 +86,7 @@ sntRover.controller('RVfrontDeskDashboardController',
       }, 500);
     };
 
-    $scope.dashboardFilter.isFrontDeskDashboard = true
+    $scope.dashboardFilter.isFrontDeskDashboard = true;
     $scope.$on('REFRESH_ANALTICS_SCROLLER', refreshAnalyticsScroller);
     $scope.selectedFilters = {
       "roomType": "",

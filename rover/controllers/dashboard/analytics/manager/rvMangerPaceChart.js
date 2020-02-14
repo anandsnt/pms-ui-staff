@@ -259,7 +259,7 @@ angular.module('sntRover')
 
 				$scope.screenData.hideChartData = false;
 				rvAnalyticsHelperSrv.addChartHeading($scope.screenData.mainHeading,
-							$scope.screenData.analyticsDataUpdatedTime);
+					$scope.screenData.analyticsDataUpdatedTime);
 			};
 
 			var fetchPaceChartData = function() {
@@ -310,13 +310,12 @@ angular.module('sntRover')
 			$scope.$on('CHART_AGGGREGATION_CHANGED', redrawPaceChartIfNeeded);
 			$scope.$on('REFRESH_ANALYTCIS_CHART_PACE', function() {
 				$scope.$emit('RESET_CHART_FILTERS');
-				fetchPaceChartData()
+				fetchPaceChartData();
 			});
 			$scope.$on('ON_WINDOW_RESIZE', function() {
-				if (!isPaceChartActive()){
+				if (!isPaceChartActive()) {
 					return;
-				}
-				else if (paceChartData) {
+				} else if (paceChartData) {
 					drawPaceChart(paceChartData);
 				} else {
 					redrawPaceChartIfNeeded();

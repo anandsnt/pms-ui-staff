@@ -338,7 +338,7 @@ angular.module('sntRover')
         renderFrontOfficeActivity();
       });
       // On filter changes
-      $scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER_FO_ACTIVITY',renderFrontOfficeActivity);
+      $scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER_FO_ACTIVITY', renderFrontOfficeActivity);
       $scope.$on('RELOAD_DATA_WITH_DATE_FILTER_FO_ACTIVITY', renderFrontOfficeActivity);
       $scope.$on('REFRESH_ANALYTCIS_CHART_FO_ACTIVITY', getFoActivityChartData);
 

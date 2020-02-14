@@ -20,7 +20,6 @@ angular.module('sntRover')
             };
 
             var drawHkWorkPriorityChart = function(chartDetails) {
-                console.log(JSON.stringify(chartDetails));
                 $scope.screenData.mainHeading = $filter('translate')(chartDetails.chartData.label);
                 var chartAreaWidth = document.getElementById("manager-analytics-chart").clientWidth;
                 var margin = {
@@ -415,7 +414,7 @@ angular.module('sntRover')
 
             // On filter changes
             $scope.$on('RELOAD_DATA_WITH_DATE_FILTER_HK_WORK_PRIRORITY', renderHkWorkPriority);
-            $scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER_HK_WORK_PRIRORITY',renderHkWorkPriority);
+            $scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER_HK_WORK_PRIRORITY', renderHkWorkPriority);
             $scope.$on('REFRESH_ANALYTCIS_CHART_HK_WORK_PRIRORITY', function() {
                 fetchHKWorkPriorityChartData({}, true);
             });
