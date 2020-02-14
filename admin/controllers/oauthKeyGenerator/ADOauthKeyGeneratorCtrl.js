@@ -1,6 +1,5 @@
-admin.controller('ADOauthKeyGeneratorCtrl', ['$scope',
-    'ADOauthKeyGeneratorSrv', '$anchorScroll', '$timeout', '$location',
-    function($scope, ADOauthKeyGeneratorSrv, $anchorScroll, $timeout, $location) {
+admin.controller('ADOauthKeyGeneratorCtrl', ['$scope', 'ADOauthKeyGeneratorSrv',
+    function($scope, ADOauthKeyGeneratorSrv) {
 
         /**
          * Method to generate a new Api Key
