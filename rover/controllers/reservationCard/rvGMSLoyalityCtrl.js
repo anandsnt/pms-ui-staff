@@ -1,5 +1,5 @@
-sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter', 'RVLoyaltyProgramSrv', 'ngDialog', '$sce', '$timeout', 'sntActivity', '$state',
-    function($scope, $rootScope, $filter, RVLoyaltyProgramSrv, ngDialog, $sce, $timeout, sntActivity, $state) {
+sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter', 'RVLoyaltyProgramSrv', 'ngDialog', '$sce', '$timeout', 'sntActivity',
+    function($scope, $rootScope, $filter, RVLoyaltyProgramSrv, ngDialog, $sce, $timeout, sntActivity) {
         BaseCtrl.call(this, $scope);
         var credentials = {},
             content = {},
@@ -84,12 +84,11 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
                     user_membership = {},
                     successCallbackaddLoyaltyProgram = function(response) {
                         // Created new user membership
-                        if (response.data.id) {
-                            user_membership.id = response.data.id;
+                        if (response.id) {
+                            user_membership.id = response.id;
                             $rootScope.$broadcast('loyaltyProgramAdded', user_membership, 'fromReservationCard');
                             $rootScope.$broadcast('updateEmailFromGMS', message.details.email);
                             $scope.closeGMSDialog();
-                            $state.reload($state.current.name);
                         }
                         if (response.status === 'failure') {
                             $scope.errorMessage = response.errors;
