@@ -5,14 +5,11 @@ angular.module('sntRover').controller('rvCardSearchContractOwnerCtrl', ['$scope'
         var that = this,
             SCROLL_DELAY = 500;
 
-        that.initialise = function() {
-            $scope.contractData.contractOwner.results = [];
-        };
-
         /* 
          *  Handle API call to fetch contract rates.
          */
         that.fetchOwners = function() {
+            $scope.contractData.contractOwner.results = [];
             var fetchOwnersSuccessCallback = function(data) {
                 $scope.contractData.contractOwner.results = data;
             },
@@ -53,7 +50,6 @@ angular.module('sntRover').controller('rvCardSearchContractOwnerCtrl', ['$scope'
             }
         };
 
-        that.initialise();
         that.fetchOwners();
     }
 ]);

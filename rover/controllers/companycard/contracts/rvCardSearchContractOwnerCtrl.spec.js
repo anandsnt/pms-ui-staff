@@ -35,7 +35,6 @@ describe('rvCardSearchContractOwnerCtrl', function() {
     });
 
     it('Check fetch owner API call', function() {
-        that.initialise();
         $scope.contractData.contractOwner.isInactive = true;
         spyOn(rvCompanyCardContractsSrv, "fetchOwners").and.callFake(function() {
             var deferred = $q.defer();
@@ -48,7 +47,6 @@ describe('rvCardSearchContractOwnerCtrl', function() {
     });
 
     it('Check clickedInactive', function() {
-        that.initialise();
         $scope.contractData.contractOwner.isInactive = false;
         $scope.clickedInactive();
         expect($scope.contractData.contractOwner.isInactive).toEqual(true);
