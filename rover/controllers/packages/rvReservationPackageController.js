@@ -189,20 +189,22 @@ sntRover.controller('RVReservationPackageController',
 				end_date = tzIndependentDate($filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.end_date), 'yyyy-MM-dd' )),
 				noOfDays, startDayIndex;
 
-			$scope.daysOfWeekCopy = [];
 			noOfDays = (moment(end_date) - moment(start_date)) / 86400000;
-			startDayIndex = start_date.getDay();
-			for (var index = 0; index <= noOfDays; index++) {
+			if (noOfDays <= 6) {
+				$scope.daysOfWeekCopy = [];
+				startDayIndex = start_date.getDay();
+				for (var index = 0; index <= noOfDays; index++) {
 
-				if (startDayIndex < 7) {
-					$scope.daysOfWeekCopy.push($scope.daysOfWeek[startDayIndex]);
-					startDayIndex++;
-				} else {
-					$scope.daysOfWeekCopy.push($scope.daysOfWeek[startDayIndex - 7]);
-					startDayIndex++;
+					if (startDayIndex < 7) {
+						$scope.daysOfWeekCopy.push($scope.daysOfWeek[startDayIndex]);
+						startDayIndex++;
+					} else {
+						$scope.daysOfWeekCopy.push($scope.daysOfWeek[startDayIndex - 7]);
+						startDayIndex++;
+					}
 				}
+				angular.copy($scope.daysOfWeekCopy, $scope.daysOfWeek);
 			}
-			angular.copy($scope.daysOfWeekCopy, $scope.daysOfWeek);
 		};
 	}
 ]);
