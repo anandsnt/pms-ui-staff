@@ -413,7 +413,9 @@ angular.module('sntRover')
             $scope.$on('GET_HK_WORK_PRIORITY', fetchHKWorkPriorityChartData);
 
             // On filter changes
-            $scope.$on('RELOAD_DATA_WITH_DATE_FILTER_HK_WORK_PRIRORITY', renderHkWorkPriority);
+            $scope.$on('RELOAD_DATA_WITH_DATE_FILTER_HK_WORK_PRIRORITY', function() {
+                fetchHKWorkPriorityChartData({}, true)
+            });
             $scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER_HK_WORK_PRIRORITY', renderHkWorkPriority);
             $scope.$on('REFRESH_ANALYTCIS_CHART_HK_WORK_PRIRORITY', function() {
                 fetchHKWorkPriorityChartData({}, true);

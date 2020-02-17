@@ -289,6 +289,8 @@ sntRover.controller('RVmanagerDashboardController',
     $scope.datePicked = (type === 'toDate') ?
       moment($scope.dashboardFilter.toDate).format('YYYY-MM-DD') :
       moment($scope.dashboardFilter.fromDate).format('YYYY-MM-DD');
+    $scope.datePicked = (type === 'toDate') ? $scope.dashboardFilter.toDate : $scope.dashboardFilter.fromDate;
+
     $timeout(function() {
       ngDialog.open({
         template: '/assets/partials/search/rvDatePickerPopup.html',

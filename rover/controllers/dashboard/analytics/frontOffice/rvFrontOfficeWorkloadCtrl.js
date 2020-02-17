@@ -417,7 +417,8 @@ angular.module('sntRover')
 				$('base').attr('href', "/");
 				var params = {
 					"date": $scope.dashboardFilter.datePicked,
-					"isFromFrontDesk": true
+					"isFromFrontDesk": true,
+					"loadNewData": true
 				};
 				var options = {
 					params: params,
@@ -432,7 +433,7 @@ angular.module('sntRover')
 
 			$scope.$on('GET_FO_WORKLOAD', getArrivalManagementChartData);
 			$scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER_FO_WORK_LOAD', renderfdWorkloadChart);
-			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER_FO_WORK_LOAD', renderfdWorkloadChart);
+			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER_FO_WORK_LOAD', getArrivalManagementChartData);
 			$scope.$on('REFRESH_ANALYTCIS_CHART_FO_WORK_LOAD', getArrivalManagementChartData);
 			$scope.$on('SHOW_REMAINING_RESERVATIONS_TOGGLE', function () {
 				$scope.dashboardFilter.showFilters = false;

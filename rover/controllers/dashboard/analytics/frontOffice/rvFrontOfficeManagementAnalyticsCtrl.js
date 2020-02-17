@@ -406,7 +406,9 @@ angular.module('sntRover')
             // Initial fetch
             $scope.$on('GET_FO_ARRIVAL_MANAGEMENT', getArrivalManagementChartData);
             $scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER_FO_ARRIVALS', renderFrontOfficeManagementChart);
-            $scope.$on('RELOAD_DATA_WITH_DATE_FILTER_FO_ARRIVALS', renderFrontOfficeManagementChart);
+            $scope.$on('RELOAD_DATA_WITH_DATE_FILTER_FO_ARRIVALS', function() {
+                getArrivalManagementChartData({}, true);
+            });
             $scope.$on('REFRESH_ANALYTCIS_CHART_FO_ARRIVALS', function() {
                 getArrivalManagementChartData({}, true);
             });

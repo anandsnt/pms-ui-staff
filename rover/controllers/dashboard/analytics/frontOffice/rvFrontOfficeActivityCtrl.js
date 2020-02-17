@@ -317,7 +317,8 @@ angular.module('sntRover')
         $('base').attr('href', "/");
         var params = {
           "date": $scope.dashboardFilter.datePicked,
-          "isFromFrontDesk": true
+          "isFromFrontDesk": true,
+          "loadNewData": true
         };
         var options = {
           params: params,
@@ -339,7 +340,7 @@ angular.module('sntRover')
       });
       // On filter changes
       $scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER_FO_ACTIVITY', renderFrontOfficeActivity);
-      $scope.$on('RELOAD_DATA_WITH_DATE_FILTER_FO_ACTIVITY', renderFrontOfficeActivity);
+      $scope.$on('RELOAD_DATA_WITH_DATE_FILTER_FO_ACTIVITY', getFoActivityChartData);
       $scope.$on('REFRESH_ANALYTCIS_CHART_FO_ACTIVITY', getFoActivityChartData);
 
       $scope.$on('ON_WINDOW_RESIZE', function() {
