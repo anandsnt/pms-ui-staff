@@ -29,7 +29,9 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 				contractOwner: {
 					results: [],
 					isInactive: false,
-					selectedOwner: {}
+					selectedOwner: {
+						id: null
+					}
 				}
 			};
 		},
@@ -111,7 +113,13 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 			$scope.contractData.isPastContract = data.end_date < $rootScope.businessDate;
 			$scope.$broadcast('addDataReset');
 			$scope.$broadcast('refreshEditScroller');
-			$scope.contractData.contractOwner.selectedOwner.id = data.selected_contract_owner;
+			if (data.selected_contract_owner !== null) {
+				$scope.contractData.contractOwner.selectedOwner.id = data.selected_contract_owner.id;
+				$scope.contractData.contractOwner.isInactive = data.selected_contract_owner.is_active;
+			}
+			else {
+				$scope.contractData.contractOwner.selectedOwner.id = null;
+			}
 		},
 		/**
 		 * Failure callback for contracts detail fetch
