@@ -23,6 +23,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         var themeMappings = {
             'guestweb_zoku': 'zoku',
             'guestweb_yotel': 'yotel',
+            'yotel_with_confirmation': 'yotel',
             'guestweb_avenue': 'avenue',
             'guestweb_public_ny': 'public',
             'guestweb_public_ny_v2': 'public_v2',
