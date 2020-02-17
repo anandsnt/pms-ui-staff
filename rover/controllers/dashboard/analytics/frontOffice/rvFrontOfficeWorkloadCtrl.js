@@ -88,7 +88,7 @@ angular.module('sntRover')
 					.tickSizeOuter(0)
 					.tickPadding(10)
 					.tickFormat(function(d) {
-						return d.toUpperCase();
+						return (d == 'REMAINING' && !$scope.dashboardFilter.showRemainingReservations) ? '' : d.toUpperCase();
 					});
 
 				var svgHeight = height + margin.top + margin.bottom;
@@ -99,18 +99,10 @@ angular.module('sntRover')
 					.append("g")
 					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-				
-
-				if ($scope.dashboardFilter.showRemainingReservations) {
-					// sort right side items in ascending order
-					chartDetails.chartData.data = _.sortBy(chartDetails.chartData.data, function(item, index) {
-						return item.type === 'REMAINING' ? 0 : 1;
-					});
-				} else {
-					chartDetails.chartData.data = _.reject(chartDetails.chartData.data, function(item) {
-						return item.type === 'REMAINING';
-					});
-				}
+				// sort right side items in ascending order
+				chartDetails.chartData.data = _.sortBy(chartDetails.chartData.data, function(item, index) {
+					return item.type === 'REMAINING' ? 0 : 1;
+				});
 
 				// DEBUGING CODE
 				// chartDetails = rvAnalyticsHelperSrv.addRandomNumbersForTesting(chartDetails);
@@ -205,8 +197,17 @@ angular.module('sntRover')
 					});
 
 				var remainingTypeYoffset;
+
+				var workloadData = angular.copy(chartDetails.chartData.data);
+
+				if (!$scope.dashboardFilter.showRemainingReservations) {
+					workloadData = _.reject(chartDetails.chartData.data, function(item) {
+						return item.type === 'REMAINING';
+					});
+				}
+
 				var vakken = svg.selectAll(".type")
-					.data(chartDetails.chartData.data)
+					.data(workloadData)
 					.enter()
 					.append("g")
 					.attr("class", "bar")

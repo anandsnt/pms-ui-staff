@@ -39,7 +39,7 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 				name: 'Priority',
 				department: 'HOUSEKEEPING',
 				fetchDataEvent: 'GET_HK_WORK_PRIORITY',
-				tileDescription: 'HK_WORKLOAD_DESC'
+				tileDescription: 'HK_PRIORITY_DESC'
 			}];
 
 			$scope.availableChartsList = $scope.availableChartsList.concat(houseKeepingCharts);

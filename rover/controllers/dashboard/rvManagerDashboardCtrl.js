@@ -478,4 +478,7 @@ sntRover.controller('RVmanagerDashboardController',
   $scope.showYesterdaysDataToggled = function() {
     $scope.$broadcast('SHOW_YESTERDAYS_DATA_TOGGLE');
   };
+  $scope.showRemainingReservationsToggled = function() {
+    $scope.$broadcast('SHOW_REMAINING_RESERVATIONS_TOGGLE');
+  };
 }]);
