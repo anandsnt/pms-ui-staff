@@ -148,11 +148,17 @@ sntRover.controller('RVReservationPackageController',
 		};
 
 		$scope.removeChosenAddons = function(index, addon) {
+			$scope.selectedPurchesedAddon = "";
+			
 			$rootScope.$broadcast('REMOVE_ADDON', {
 				addonPostingMode: $scope.addonPopUpData.addonPostingMode,
 				index: index,
 				addon: addon
 			});
+			if ($scope.packageData.existing_packages.length === 1) {
+				$scope.closePopup();
+			}
+
 		};
 		
 		$scope.proceedBooking = function() {
