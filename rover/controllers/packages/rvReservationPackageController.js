@@ -58,12 +58,17 @@ sntRover.controller('RVReservationPackageController',
 				$scope.selectedPurchesedAddon = "";
 			} else if (addon.post_type.value === 'STAY') {
 				$scope.selectedPurchesedAddon = addon;
+
 				if (typeof $scope.selectedPurchesedAddon.selected_post_days === 'undefined') {
 					$scope.selectedPurchesedAddon.selected_post_days = {};
 					$scope.togglePostDaysSelectionForAddon(false);
-				}				
-				$scope.selectedPurchesedAddon.start_date = $filter('date')($scope.selectedPurchesedAddon.start_date, $rootScope.dateFormat);
-				$scope.selectedPurchesedAddon.end_date = $filter('date')($scope.selectedPurchesedAddon.end_date, $rootScope.dateFormat);
+				}
+				updateDaysOfWeek();
+				var startDate = $filter('date')($scope.selectedPurchesedAddon.start_date, $rootScope.dateFormat),
+					endDate = $filter('date')($scope.selectedPurchesedAddon.end_date, $rootScope.dateFormat);
+
+				$scope.selectedPurchesedAddon.start_date = startDate;
+				$scope.selectedPurchesedAddon.end_date = endDate;
 				angular.forEach($scope.selectedPurchesedAddon.post_instances, function(item) {
 						if (item.active) {
 							var postDate = new Date(item.post_date),
@@ -111,7 +116,6 @@ sntRover.controller('RVReservationPackageController',
 				$scope.selectedPurchesedAddon.selected_post_days[item] = select;
 			});
 		};
-		$scope.daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 		
 		var datePicker;
 		
@@ -132,6 +136,7 @@ sntRover.controller('RVReservationPackageController',
 			} else {
 				$scope.selectedPurchesedAddon.end_date = $filter('date')(dateText, $rootScope.dateFormat);
 			}
+			updateDaysOfWeek();
 		};
 
 		$scope.closePopup = function() {
@@ -150,11 +155,17 @@ sntRover.controller('RVReservationPackageController',
 		};
 
 		$scope.removeChosenAddons = function(index, addon) {
+			$scope.selectedPurchesedAddon = "";
+			
 			$rootScope.$broadcast('REMOVE_ADDON', {
 				addonPostingMode: $scope.addonPopUpData.addonPostingMode,
 				index: index,
 				addon: addon
 			});
+			if ($scope.packageData.existing_packages.length === 1) {
+				$scope.closePopup();
+			}
+
 		};
 		
 		$scope.proceedBooking = function() {
@@ -179,6 +190,28 @@ sntRover.controller('RVReservationPackageController',
 	            });
             });
 			
+		};
+
+		var updateDaysOfWeek = function() {
+			$scope.daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+				var start_date = tzIndependentDate($filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.start_date), 'yyyy-MM-dd' )),
+				end_date = tzIndependentDate($filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.end_date), 'yyyy-MM-dd' )),
+				noOfDays, startDayIndex;
+
+			$scope.daysOfWeekCopy = [];
+			noOfDays = (moment(end_date) - moment(start_date)) / 86400000;
+			startDayIndex = start_date.getDay();
+			for (var index = 0; index <= noOfDays; index++) {
+
+				if (startDayIndex < 7) {
+					$scope.daysOfWeekCopy.push($scope.daysOfWeek[startDayIndex]);
+					startDayIndex++;
+				} else {
+					$scope.daysOfWeekCopy.push($scope.daysOfWeek[startDayIndex - 7]);
+					startDayIndex++;
+				}
+			}
+			angular.copy($scope.daysOfWeekCopy, $scope.daysOfWeek);
 		};
 	}
 ]);

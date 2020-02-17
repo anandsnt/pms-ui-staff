@@ -1577,7 +1577,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                     if ($scope.groupConfigData.summary.rate === '-1') {
                         $scope.groupConfigData.summary.uniqId = '-1';
                     }
-                    summaryMemento = angular.copy($scope.groupConfigData.summary);
+                    summaryMemento.uniqId = $scope.groupConfigData.summary.uniqId;
                 },
                 onFetchRatesFailure = function(errorMessage) {
                     $scope.errorMessage = errorMessage;
