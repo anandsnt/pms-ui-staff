@@ -2,8 +2,7 @@ angular.module('sntRover').controller('rvCardSearchContractOwnerCtrl', ['$scope'
 	function($scope, rvCompanyCardContractsSrv, $timeout, $stateParams) {
         
         BaseCtrl.call(this, $scope);
-        var that = this,
-            SCROLL_DELAY = 500;
+        var that = this;
 
         /* 
          *  Handle API call to fetch contract rates.
