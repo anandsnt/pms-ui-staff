@@ -1056,8 +1056,6 @@ angular.module('sntPay').controller('sntPaymentController',
                 if ($scope.actionType === 'AR_REFUND_PAYMENT') {
                     return false;
                 }
-                console.log("------------------")
-console.log(shouldReset);
 
                 if (shouldReset) {
                     $scope.payment.selectedPaymentCurrencyId = $rootScope.hotelCurrencyId;
