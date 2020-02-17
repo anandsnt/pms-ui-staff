@@ -2,14 +2,14 @@
     <label for="contract-owner">Contract Owner</label>
     <div class="contract-grid">
         <div class="select">
-            <select id="contract-owners-active">
-                <option ng-click="clickedOnResult()">No contract owner</option>
-                <optgroup label="Acive Users">
-                    <option ng-click="clickedOnResult(item)" ng-repeat="item in contractData.contractOwner.results" ng-class="{'hidden': !item.is_active}">{{item.name}}</option>
+            <select id="contract-owners-active" ng-model="contractData.contractOwner.selectedOwner.id">
+                <option ng-click="clickedOnResult()" value="" ng-selected="contractData.contractOwner.selectedOwner.id === null">No contract owner</option>
+                <optgroup label="Active Users">
+                    <option ng-click="clickedOnResult(item)" ng-repeat="item in contractData.contractOwner.results" ng-value="item.id" ng-selected="contractData.contractOwner.selectedOwner.id === item.id" ng-class="{'hidden': !item.is_active}">{{item.name}}</option>
                 </optgroup>
                 <!-- If L63 is checked, show this: -->
                 <optgroup label="Inactive Users" ng-show="contractData.contractOwner.isInactive">
-                    <option ng-click="clickedOnResult(item)" ng-repeat="item in contractData.contractOwner.results" ng-class="{'hidden': item.is_active}">{{item.name}}</option>
+                    <option ng-click="clickedOnResult(item)" ng-repeat="item in contractData.contractOwner.results" ng-value="item.id" ng-selected="contractData.contractOwner.selectedOwner.id === item.id" ng-class="{'hidden': item.is_active}">{{item.name}}</option>
                 </optgroup>
             </select>
         </div>
