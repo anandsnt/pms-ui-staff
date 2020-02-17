@@ -1,7 +1,7 @@
 <!-- Parking Addon Popup -->
 <div class="popup" ng-class="{'open': showReferencePopup && showAddReference}">
     <div class="popup-content form">
-        <h2>{{ selectedAddonCount > 1 ? 'ADDON_REFERENCE_MULTI_TITLE' : 'ADDON_REFERENCE_TITLE' }}</h2>
+        <h2 translate>{{ selectedAddonCount > 1 ? 'ADDON_REFERENCE_MULTI_TITLE' : 'ADDON_REFERENCE_TITLE' }}</h2>
         <div class="entry">
             <label for="licence-plate" translate>ADDON_REFERENCE_LABEL</label>
             <input type="text" ng-model="selectedAddonReference" ng-class="{'missing-guest-info': highlightReferenceField}">

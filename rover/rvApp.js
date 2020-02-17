@@ -328,11 +328,15 @@ sntRover.run([
 		};
 
 
-		$transitions.onFinish({}, function () {
+		$transitions.onFinish({}, function (transition) {
             // this must be reset with every state change
             // invidual controllers can then set it
-            // with its own desired values
-            $rootScope.setPrevState = {};
+			// with its own desired values
+			// While paginating through the report records, we don't have an option to 
+			// set prev state again in the controller , so excluding that case
+			if ( !(transition.from('name').name === 'rover.reports.show' && transition.to('name').name === 'rover.reports.show')) {
+				$rootScope.setPrevState = {};
+			}
         });
 
 		/**

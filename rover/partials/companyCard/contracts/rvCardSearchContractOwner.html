@@ -1,41 +1,22 @@
-<div class="entry relative" ng-controller="rvCardSearchContractOwnerCtrl">
+<div class="entry full-width" ng-controller="rvCardSearchContractOwnerCtrl">
     <label for="contract-owner">Contract Owner</label>
-    <!-- Remove .placeholder if we are showing the owner -->
-    <div class="multi-select select placeholder" ng-click="clickedOwner()">
-        {{contractData.contractOwner.selectedOwner.name || 'Find an Owner'}} 
-    </div>
-    <div class="multi-select-options" ng-show="contractData.contractOwner.expand">
-        <div class="select-all">
-            <!-- Show if we have an owner. On click remove the owner (reset to default) -->
-            <label ng-click="clickedOnResult('NO_OWNER')">
-               No Owner
-            </label>
-            
-            <!-- Add .checked when checked -->
-            <label class="checkbox inline" ng-click="clickedInactive()">
-                <!-- add .checked when checked -->
-                <span class="icon-form icon-checkbox" ng-class="{'checked': contractData.contractOwner.isInactive}"></span>
-                <!-- Add checked when checked -->
-                <input value="all" type="checkbox" ng-class="{'checked': contractData.contractOwner.isInactive}">
-                Inactive
-            </label>
+    <div class="contract-grid">
+        <div class="select">
+            <select id="contract-owners-active">
+                <option ng-click="clickedOnResult()">No contract owner</option>
+                <optgroup label="Acive Users">
+                    <option ng-click="clickedOnResult(item)" ng-repeat="item in contractData.contractOwner.results" ng-class="{'hidden': !item.is_active}">{{item.name}}</option>
+                </optgroup>
+                <!-- If L63 is checked, show this: -->
+                <optgroup label="Inactive Users" ng-show="contractData.contractOwner.isInactive">
+                    <option ng-click="clickedOnResult(item)" ng-repeat="item in contractData.contractOwner.results" ng-class="{'hidden': item.is_active}">{{item.name}}</option>
+                </optgroup>
+            </select>
         </div>
-        <div class="search">
-            <!-- Add .visible when we have something typed in-->
-            <button class="clear-query" ng-click="clearQuery()" ng-class="{'visible': contractData.contractOwner.query !== ''}">
-                <span class="icons icon-clear-search">Clear query</span>
-            </button>
-            <button type="submit" name="submit" class="icons icon-search">Search</button>
-            <input ng-model="contractData.contractOwner.query" ng-change="searchOwner()" name="contract-owner-search" class="query" placeholder="Search by Name" autocomplete="off" type="search">
-        </div>
-        <!-- Add a scroller here -->
-        <div class="scrollable" ng-iscroll='searchResultsOwnerList' ng-iscroll-delay='1000'>
-            <div class="wrapper">
-                <!-- Add .inactive if the user is inactive-->
-                <label ng-repeat="item in contractData.contractOwner.results" ng-class="{'inactive': item.is_inactive}" ng-click="clickedOnResult($index)">
-                    {{item.name}}
-                </label>
-            </div>
-        </div>
+        <label class="checkbox inline" ng-click="clickedInactive()" ng-class="{'checked': contractData.contractOwner.isInactive}"> <!-- Add class 'checked' when L63 is checked -->
+            <span class="icon-form icon-checkbox" ng-class="{'checked': contractData.contractOwner.isInactive}"></span> <!-- Add class 'checked' when L63 is checked -->
+            <input type="checkbox">
+            Include Inactive Users
+        </label>
     </div>
 </div>

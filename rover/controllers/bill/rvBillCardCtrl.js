@@ -643,19 +643,19 @@ sntRover.controller('RVbillCardController',
 
 		var getBillDataSuccess = function(data) {
 
-			$scope.reservationBillData.bills[billIndex] = data;
+				$scope.reservationBillData.bills[billIndex] = data;
 
-			setBillValue(billIndex);
-			$scope.setActiveBill(billIndex);
-			$scope.setupReviewStatusArray();
-			if (isDuringCheckoutPayment) {
-				$scope.moveToNextBillAfterSuccessPaymentDuringCheckout();
-			}
-			if (callGenerateFolioNumberApiAfterLoadingCurrentBill) {
-				that.callGenerateFolioNumberApi();
-			}
+				setBillValue(billIndex);
+				$scope.setActiveBill(billIndex);
+				$scope.setupReviewStatusArray();
+				if (isDuringCheckoutPayment) {
+					$scope.moveToNextBillAfterSuccessPaymentDuringCheckout();
+				}
+				if (callGenerateFolioNumberApiAfterLoadingCurrentBill) {
+					that.callGenerateFolioNumberApi();
+				}
 
-			$scope.refreshScroller('bill-tab-scroller');
+				$scope.refreshScroller('bill-tab-scroller');
 			},
 			dataToSend = {
 				params: reservationBillData.bills[billIndex].bill_id,
@@ -801,11 +801,13 @@ sntRover.controller('RVbillCardController',
 		var moveToBillSuccessCallback = function(response) {
 			$scope.$emit('hideLoader');
 			$scope.movedIndex = parseInt(newBillValue) - 1;
-			$scope.reservationBillData.bills[parseInt(response.data[0].to_bill_number) - 1] = {
-				bill_id: response.data[0].to_bill_id,
-				bill_number: response.data[0].to_bill_number,
-				total_amount: response.data[0].bill_amount
-			};
+			if (parseInt(response.data[0].to_bill_number) === parseInt(newBillValue)) {
+				$scope.reservationBillData.bills[parseInt(response.data[0].to_bill_number) - 1] = {
+					bill_id: response.data[0].to_bill_id,
+					bill_number: response.data[0].to_bill_number,
+					total_amount: response.data[0].bill_amount
+				};
+			}			
 
 			var reservationStatus = $scope.reservationBillData.reservation_status;
 
