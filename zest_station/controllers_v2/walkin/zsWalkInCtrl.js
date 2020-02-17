@@ -495,6 +495,7 @@ sntZestStation.controller('zsWalkInCtrl', [
                                                        $scope.zestStationData.connectedCameras,
                                                        $scope.zestStationData.featuresSupportedInIosApp);
 
+            idCaptureConfig.useAilaDevice = true;
             $scope.setConfigurations(idCaptureConfig);
             // Fetch bussiness date to set as arrival date
             fetchHotelBussinessDate();

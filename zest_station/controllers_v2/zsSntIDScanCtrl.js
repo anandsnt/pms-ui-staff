@@ -496,6 +496,19 @@
 				$scope.idScanData.selectedGuest.faceImage = response;
 			});
 
+			$scope.$on('ID_FRONT_IMAGE_CAPTURED', function() {
+				if ($scope.deviceConfig.useAilaDevice) {
+					$scope.confirmFrontImage();
+				}
+			});
+
+
+			$scope.$on('ID_BACK_IMAGE_CAPTURED', function() {
+				if ($scope.deviceConfig.useAilaDevice) {
+					$scope.confirmImages();
+				}
+			});
+
 			$scope.detachGuest = function(guest_id) {
 				$scope.detachingGuest = _.find($scope.selectedReservation.guest_details, function(guest) {
 					return guest.id === guest_id;
@@ -567,7 +580,8 @@
 				$scope.setScroller('passport-validate');
 				$scope.setScroller('confirm-images');
 				var idCaptureConfig = processCameraConfigs($scope.zestStationData.iOSCameraEnabled, $scope.zestStationData.connectedCameras, $scope.zestStationData.featuresSupportedInIosApp);
-            
+				
+				idCaptureConfig.useAilaDevice = true;
            		$scope.setConfigurations(idCaptureConfig);
 			}());
 		}
