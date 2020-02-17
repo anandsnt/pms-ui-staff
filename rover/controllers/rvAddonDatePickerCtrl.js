@@ -1,6 +1,6 @@
 sntRover.controller('RVAddonDatePickerController', 
-    ['$scope', '$rootScope', '$filter',
-    function($scope, $rootScope, $filter) {
+    ['$scope', '$rootScope',
+    function($scope, $rootScope) {
 
     $scope.setUpData = function() {
         var startDate = tzIndependentDate($scope.reservation.reservation_card.arrival_date),

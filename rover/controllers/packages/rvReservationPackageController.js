@@ -192,9 +192,9 @@ sntRover.controller('RVReservationPackageController',
 			$scope.daysOfWeekCopy = [];
 			noOfDays = (moment(end_date) - moment(start_date)) / 86400000;
 			startDayIndex = start_date.getDay();
-			for(var index = 0; index <= noOfDays; index++) {
-				
-				if(startDayIndex < 7) {
+			for (var index = 0; index <= noOfDays; index++) {
+
+				if (startDayIndex < 7) {
 					$scope.daysOfWeekCopy.push($scope.daysOfWeek[startDayIndex]);
 					startDayIndex++;
 				} else {
