@@ -1056,6 +1056,8 @@ angular.module('sntPay').controller('sntPaymentController',
                 if ($scope.actionType === 'AR_REFUND_PAYMENT') {
                     return false;
                 }
+                console.log("------------------")
+console.log(shouldReset);
 
                 if (shouldReset) {
                     $scope.payment.selectedPaymentCurrencyId = $rootScope.hotelCurrencyId;
@@ -1099,7 +1101,10 @@ angular.module('sntPay').controller('sntPaymentController',
                 // If the changed payment type is CC and payment gateway is MLI show CC addition options
                 // If there are attached cards, show them first
                 if (!!selectedPaymentType && selectedPaymentType.name === 'CC') {
-                    $scope.payment.amount = initialPaymentAmount;
+                    if (shouldReset) {
+                        $scope.payment.amount = initialPaymentAmount;
+                    }
+
                     if (shouldReset && $scope.selectedPaymentType === 'CC' && $scope.hotelConfig.paymentGateway === 'SHIJI' && $rootScope.hotelDetails.shiji_token_enable_offline) {
                         changeToCardAddMode();
                     } else if (PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl) {
@@ -1192,6 +1197,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 // this need to be set to true only if new card is added
                 $scope.payment.showAddToGuestCard = false;
                 $scope.payment.screenMode = 'PAYMENT_MODE';
+                $scope.payment.amount = initialPaymentAmount;
 
                 //  In case user decides to change card after adding a new one; or selecting one from the list
                 //  Reset the card details
@@ -1422,6 +1428,7 @@ angular.module('sntPay').controller('sntPaymentController',
             $scope.$on(payEvntConst.CC_TOKEN_GENERATED, function (event, data) {
                 var paymentData = data.paymentData;
 
+                $scope.payment.amount = initialPaymentAmount;
                 $scope.errorMessage = '';
 
                 if (/^ADD_PAYMENT_/.test($scope.actionType) || !!paymentData.apiParams.mli_token) {
