@@ -58,10 +58,12 @@ sntRover.controller('RVReservationPackageController',
 				$scope.selectedPurchesedAddon = "";
 			} else if (addon.post_type.value === 'STAY') {
 				$scope.selectedPurchesedAddon = addon;
-				$scope.selectedPurchesedAddon.selected_post_days = {};
+				if (typeof $scope.selectedPurchesedAddon.selected_post_days === 'undefined') {
+					$scope.selectedPurchesedAddon.selected_post_days = {};
+					$scope.togglePostDaysSelectionForAddon(false);
+				}				
 				$scope.selectedPurchesedAddon.start_date = $filter('date')($scope.selectedPurchesedAddon.start_date, $rootScope.dateFormat);
 				$scope.selectedPurchesedAddon.end_date = $filter('date')($scope.selectedPurchesedAddon.end_date, $rootScope.dateFormat);
-				$scope.togglePostDaysSelectionForAddon(false);
 				angular.forEach($scope.selectedPurchesedAddon.post_instances, function(item) {
 						if (item.active) {
 							var postDate = new Date(item.post_date),
