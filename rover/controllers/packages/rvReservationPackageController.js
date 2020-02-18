@@ -68,17 +68,17 @@ sntRover.controller('RVReservationPackageController',
 					$scope.addonPostingDate = {
 						startDate: tzIndependentDate($scope.reservation.reservation_card.arrival_date),
 						endDate: tzIndependentDate($scope.reservation.reservation_card.departure_date)
-					}
+					};
 				} else if (addonPostingMode === 'allotments') {
 					$scope.addonPostingDate = {
 						startDate: tzIndependentDate($scope.allotmentConfigData.summary.block_from),
 						end_date: tzIndependentDate($scope.allotmentConfigData.summary.block_to)
-					}
+					};
 				} else {
 					$scope.addonPostingDate = {
 						startDate: tzIndependentDate($scope.groupConfigData.summary.block_from),
 						endDate: tzIndependentDate($scope.groupConfigData.summary.block_to)
-					}
+					};
 				}
 				$scope.selectedPurchesedAddon.start_date = $scope.addonPostingDate.startDate;
 				$scope.selectedPurchesedAddon.end_date = $scope.addonPostingDate.endDate;
