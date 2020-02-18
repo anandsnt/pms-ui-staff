@@ -23,18 +23,15 @@ sntRover.controller('RVmanagerDashboardController',
 
   $scope.isStatisticsOpened = false;
   $scope.setScroller('dashboard_scroller', scrollerOptions);
-  $scope.setScroller('analytics_scroller', {
-    preventDefaultException: {
-      tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/
-    },
-    preventDefault: false
-  });
-  $scope.setScroller('analytics_details_scroller', {
-    preventDefaultException: {
-      tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/
-    },
-    preventDefault: false
-  });
+  var analyticsScrollerOptions = {
+      preventDefaultException: {
+        tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/
+      },
+      preventDefault: false
+    };
+    
+  $scope.setScroller('analytics_scroller', analyticsScrollerOptions);
+  $scope.setScroller('analytics_details_scroller', analyticsScrollerOptions);
 
   // changing the header
   $scope.$emit("UpdateHeading", 'DASHBOARD_MANAGER_HEADING');

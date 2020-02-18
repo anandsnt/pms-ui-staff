@@ -7,6 +7,12 @@ sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope'
 
   	$scope.setScroller('dashboard_scroller', scrollerOptions);
     $scope.setScroller('analytics_scroller', scrollerOptions);
+    $scope.setScroller('analytics_details_scroller', {
+      preventDefaultException: {
+        tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/
+      },
+      preventDefault: false
+    });
 
 
   	$scope.showDashboard = true; // variable used to hide/show dabshboard
@@ -92,6 +98,7 @@ sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope'
    // scroller is not appearing after coming back from other screens
     setTimeout(function() {
       $scope.refreshScroller('dashboard_scroller');
+      $scope.refreshScroller('analytics_details_scroller');
     }, 500);
 
 

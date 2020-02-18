@@ -166,6 +166,12 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 				callback: 'updateAndBack',
 				scope: $scope
 			};
+
+			var scroller = $scope.getScroller('analytics_details_scroller');
+
+			$timeout(function() {
+				scroller.scrollTo(0, 0, 300);
+			}, 0);
 		};
 
 		$scope.showRightSideLegends = function() {
