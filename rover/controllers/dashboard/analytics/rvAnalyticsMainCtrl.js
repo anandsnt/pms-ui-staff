@@ -147,10 +147,13 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 			};
 			$scope.dashboardFilter.displayMode = 'DASHBOARD_LIST';
 			$scope.dashboardFilter.showFilters = false;
+			$scope.dashboardFilter.selectedAnalyticsMenu = '';
+			$scope.$emit('REFRESH_ANALTICS_SCROLLER');
 		};
 
 		$scope.onClickOnChartTile = function(fetchDataEvent) {
 			$scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
+			$scope.dashboardFilter.displayMode = 'CHART_DETAILS';
 			// reset filters
 			$scope.selectedFilters.roomTypes = [];
 			$scope.dashboardFilter.selectedRoomType = '';

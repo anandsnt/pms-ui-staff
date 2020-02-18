@@ -13,12 +13,19 @@
         </div>
     </section>
     <ng-include src="'/assets/partials/search/rvAnalyticsHeader.html'" ng-if="dashboardFilter.analyticsActive"></ng-include>
+<div  ng-if="dashboardFilter.analyticsActive" ng-controller="rvAnalyticsMainController">
     <!-- ANALYTICS VIEW -->
-    <section id="dashboard" class="content scrollable analytics" role = "main"
+    <section id="dashboard" class="content scrollable analytics analytics-summary"
+             role="main"
              ng-iscroll="analytics_scroller" ng-iscroll-delay="100"
-             ng-if="dashboardFilter.analyticsActive">
-            <div ng-include="'/assets/partials/analytics/rvAnalyticsMain.html'" ng-controller="rvAnalyticsMainController"></div>
-    </section>
+             ng-if="dashboardFilter.displayMode === 'DASHBOARD_LIST' && !dashboardFilter.gridViewActive" ng-include="'/assets/partials/analytics/rvAnalyticsMain.html'">
+     </section>
+
+    <section id="dashboard" class="content scrollable analytics"
+             role="main"
+             ng-iscroll="analytics_details_scroller" ng-iscroll-delay="100"
+             ng-if="dashboardFilter.displayMode === 'CHART_DETAILS' && !dashboardFilter.gridViewActive" ng-include="'/assets/partials/analytics/rvAnalyticsMain.html'">
+     </section>
 </div>
 
 <!-- IF ANALYTICS FEATURE TOGGLE IS OFF AND CODE TO BE DELETED AFTER SOME RELEASES  -->

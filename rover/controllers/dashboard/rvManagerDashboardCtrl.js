@@ -29,6 +29,12 @@ sntRover.controller('RVmanagerDashboardController',
     },
     preventDefault: false
   });
+  $scope.setScroller('analytics_details_scroller', {
+    preventDefaultException: {
+      tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/
+    },
+    preventDefault: false
+  });
 
   // changing the header
   $scope.$emit("UpdateHeading", 'DASHBOARD_MANAGER_HEADING');
@@ -206,6 +212,7 @@ sntRover.controller('RVmanagerDashboardController',
   var refreshAnalyticsScroller = function() {
     $timeout(function() {
       $scope.refreshScroller('analytics_scroller');
+      $scope.refreshScroller('analytics_details_scroller');
     }, 500);
   };
 
