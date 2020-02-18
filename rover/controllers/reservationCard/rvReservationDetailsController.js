@@ -2049,7 +2049,8 @@ sntRover.controller('reservationDetailsController',
 			'reservation_id': $scope.reservationData.reservation_card.reservation_id,
 			'post_instances': $scope.selectedPurchesedAddon.post_instances,
 			'start_date': $filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.start_date), $rootScope.dateFormatForAPI),
-			'end_date': $filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.end_date), $rootScope.dateFormatForAPI)
+			'end_date': $filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.end_date), $rootScope.dateFormatForAPI),
+			'selected_post_days': $scope.selectedPurchesedAddon.selected_post_days
 		}
 
 		$scope.invokeApi(RVReservationPackageSrv.updateAddonPosting, dataToApi, addonPostingSaveSuccess);
