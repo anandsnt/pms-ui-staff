@@ -80,8 +80,12 @@ sntRover.controller('RVReservationPackageController',
 						endDate: tzIndependentDate($scope.groupConfigData.summary.block_to)
 					};
 				}
-				$scope.selectedPurchesedAddon.start_date = $scope.addonPostingDate.startDate;
-				$scope.selectedPurchesedAddon.end_date = $scope.addonPostingDate.endDate;
+				if (!$scope.selectedPurchesedAddon.start_date) {
+					$scope.selectedPurchesedAddon.start_date = $scope.addonPostingDate.startDate;
+				}
+				if (!$scope.selectedPurchesedAddon.end_date) {
+					$scope.selectedPurchesedAddon.end_date = $scope.addonPostingDate.endDate;
+				}
 				updateDaysOfWeek();
 				var startDate = $filter('date')($scope.selectedPurchesedAddon.start_date, $rootScope.dateFormat),
 					endDate = $filter('date')($scope.selectedPurchesedAddon.end_date, $rootScope.dateFormat);
