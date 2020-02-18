@@ -27,12 +27,11 @@ angular.module('admin').controller('adArchivalTransferSetupCtrl', ['$scope', '$r
                 $scope.connctedDetails.isConnected = true;
             },
             init = function() {
-                var googleApiUrl = "https://apis.google.com/js/client.js";
                 $scope.config = config.data;
                 $scope.connctedDetails = {};
                 updateMode();
                 updateConnectedDetails();
-                sntLoadScriptSrv.loadScript(googleApiUrl).then(function() {
+                sntLoadScriptSrv.loadScript(sntLoadScriptSrv.getGAPIUrl()).then(function() {
                     GAPI.call(this, $scope);
                 });
             };

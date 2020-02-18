@@ -27,7 +27,6 @@ module.exports = {
 				jsLibRoot + 'SyntaxHighlighter/shBrushJScript.js',
 				jsLibRoot + 'treeview/ivh-treeview.min.js',
 				jsLibRoot + 'moment.min.js',
-				jsLibRoot + 'gapi.min.js',
 				jsLibRoot + 'toastr/toastr.min.js',
 				jsLibRoot + 'idle-timer.min.js',
                 // Eliminate all spec files
