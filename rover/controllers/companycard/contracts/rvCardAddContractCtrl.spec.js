@@ -17,7 +17,12 @@ describe('rvCardAddContractsCtrl', function() {
         });
         angular.extend($scope, {
             contractData: {
-                mode: 'ADD'
+                mode: 'ADD',
+                contractOwner: {
+                    selectedOwner: {
+                        name: 'test',
+                        id: '123'
+                }
             }
         });
     });
