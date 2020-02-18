@@ -1,6 +1,6 @@
 <div class="entry full-width" ng-controller="rvCardSearchContractOwnerCtrl">
     <label for="contract-owner">Contract Owner</label>
-    <div class="contract-grid">
+    <div class="contract-grid" ng-class="{'disable-element': contractData.disableFields}">
         <div class="select">
             <select id="contract-owners-active" ng-model="contractData.contractOwner.selectedOwner.id">
                 <option ng-click="clickedOnResult()" value="" ng-selected="contractData.contractOwner.selectedOwner.id === null">No contract owner</option>
