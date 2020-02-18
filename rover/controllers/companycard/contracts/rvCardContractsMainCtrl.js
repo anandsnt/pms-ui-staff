@@ -119,6 +119,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 			}
 			else {
 				$scope.contractData.contractOwner.selectedOwner.id = null;
+                $scope.contractData.contractOwner.isInactive = false;
 			}
 		},
 		/**
