@@ -207,6 +207,7 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 			};
 			$scope.dashboardFilter.showRemainingReservations = false;
 			$scope.dashboardFilter.gridViewActive = false;
+			$scope.$emit('REFRESH_ANALTICS_SCROLLER');
 		})();
 	}
 ]);

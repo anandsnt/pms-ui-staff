@@ -24,13 +24,12 @@ ng-if="showDashboard && !dashboardFilter.analyticsActive">
 <ng-include src="'/assets/partials/search/rvAnalyticsHeader.html'" ng-if="dashboardFilter.analyticsActive && dashboardFilter.isManagerDashboard"></ng-include>
 
 <div  ng-if="dashboardFilter.analyticsActive" ng-controller="rvAnalyticsMainController">
-	<section id="dashboard" class="content scrollable analytics" role="main"
+	<section id="dashboard" class="content scrollable analytics"
+			 ng-class="{ 'analytics-summary' : dashboardFilter.displayMode === 'DASHBOARD_LIST' }" role="main"
 	         ng-iscroll="analytics_scroller" ng-iscroll-delay="100"
 	         ng-if="!dashboardFilter.gridViewActive">
-	        <div class="wrapper">
-	            <ng-include src="'/assets/partials/analytics/rvAnalyticsMain.html'">
-	            </ng-include>
-	        </div>
+            <ng-include src="'/assets/partials/analytics/rvAnalyticsMain.html'">
+            </ng-include>
 	 </section>
 
 	<section id="dashboard-grid" class="analytics-grid" role="main"
