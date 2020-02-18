@@ -47,6 +47,8 @@ sntRover.controller('RVReservationPackageController',
 			return (addonCount * quantity);
 		};
 
+		$scope.selectedPurchesedAddon = "";
+		
 		$scope.selectPurchasedAddon = function(addon) {
 			$scope.errorMessage = [];
 			if (!$rootScope.featureToggles.addons_custom_posting) {
@@ -56,15 +58,17 @@ sntRover.controller('RVReservationPackageController',
 				$scope.selectedPurchesedAddon = "";
 			} else if (addon.post_type.value === 'STAY') {
 				$scope.selectedPurchesedAddon = addon;
-				$scope.selectedPurchesedAddon.selected_post_days = {};
+
+				if (typeof $scope.selectedPurchesedAddon.selected_post_days === 'undefined') {
+					$scope.selectedPurchesedAddon.selected_post_days = {};
+					$scope.togglePostDaysSelectionForAddon(false);
+				}
 				updateDaysOfWeek();
 				var startDate = $filter('date')($scope.selectedPurchesedAddon.start_date, $rootScope.dateFormat),
 					endDate = $filter('date')($scope.selectedPurchesedAddon.end_date, $rootScope.dateFormat);
 
 				$scope.selectedPurchesedAddon.start_date = startDate;
 				$scope.selectedPurchesedAddon.end_date = endDate;
-
-				$scope.togglePostDaysSelectionForAddon(false);
 				angular.forEach($scope.selectedPurchesedAddon.post_instances, function(item) {
 						if (item.active) {
 							var postDate = new Date(item.post_date),
@@ -75,7 +79,6 @@ sntRover.controller('RVReservationPackageController',
 					});
 			} else {
 				$scope.errorMessage = ["Custom posting can be configured only for nightly addons"];
-				$scope.selectedPurchesedAddon = "";
 			}
 
 		};
@@ -152,11 +155,17 @@ sntRover.controller('RVReservationPackageController',
 		};
 
 		$scope.removeChosenAddons = function(index, addon) {
+			$scope.selectedPurchesedAddon = "";
+			
 			$rootScope.$broadcast('REMOVE_ADDON', {
 				addonPostingMode: $scope.addonPopUpData.addonPostingMode,
 				index: index,
 				addon: addon
 			});
+			if ($scope.packageData.existing_packages.length === 1) {
+				$scope.closePopup();
+			}
+
 		};
 		
 		$scope.proceedBooking = function() {

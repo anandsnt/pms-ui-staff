@@ -1127,6 +1127,7 @@ sntRover.controller('reservationDetailsController',
 				addonPostingMode: 'staycard',
 				cancelLabel: "Cancel",
 				saveLabel: "Save",
+				shouldShowAddMoreButton: true,
 				number_of_adults: $scope.reservationData.reservation_card.number_of_adults,
 				number_of_children: $scope.reservationData.reservation_card.number_of_children,
 				duration_of_stay: $scope.packageData.duration_of_stay
@@ -2048,7 +2049,8 @@ sntRover.controller('reservationDetailsController',
 			'reservation_id': $scope.reservationData.reservation_card.reservation_id,
 			'post_instances': $scope.selectedPurchesedAddon.post_instances,
 			'start_date': $filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.start_date), $rootScope.dateFormatForAPI),
-			'end_date': $filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.end_date), $rootScope.dateFormatForAPI)
+			'end_date': $filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.end_date), $rootScope.dateFormatForAPI),
+			'selected_post_days': $scope.selectedPurchesedAddon.selected_post_days
 		}
 
 		$scope.invokeApi(RVReservationPackageSrv.updateAddonPosting, dataToApi, addonPostingSaveSuccess);
