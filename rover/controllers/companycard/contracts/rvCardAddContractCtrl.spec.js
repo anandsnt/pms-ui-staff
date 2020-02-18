@@ -22,6 +22,7 @@ describe('rvCardAddContractsCtrl', function() {
                     selectedOwner: {
                         name: 'test',
                         id: '123'
+                    }
                 }
             }
         });
