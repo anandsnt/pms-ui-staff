@@ -3,9 +3,6 @@ sntRover.controller('RVAddonDatePickerController',
     function($scope, $rootScope) {
 
     $scope.setUpData = function() {
-        var startDate = tzIndependentDate($scope.reservation.reservation_card.arrival_date),
-            endDate = tzIndependentDate($scope.reservation.reservation_card.departure_date);
-
         $scope.data = {};
         $scope.data.selectedDate = $scope.datePickerFor === 'start_date' ? $scope.selectedPurchesedAddon.start_date : $scope.selectedPurchesedAddon.end_date;
         $scope.dateOptions = {
@@ -13,8 +10,8 @@ sntRover.controller('RVAddonDatePickerController',
             changeYear: true,
             changeMonth: true,
             yearRange: "0:+10",
-            minDate: startDate,
-            maxDate: endDate,
+            minDate: $scope.datePickerFor === 'start_date' ? $scope.addonPostingDate.startDate : $scope.selectedPurchesedAddon.start_date,
+            maxDate: $scope.datePickerFor === 'start_date' ? $scope.selectedPurchesedAddon.end_date : $scope.addonPostingDate.endDate,
             onSelect: function(dateText) {
                 $scope.dateSelected(dateText);
                 
