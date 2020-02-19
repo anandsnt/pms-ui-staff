@@ -61,6 +61,7 @@ angular.module('sntRover').controller('rvCardContractListCtrl', ['$timeout', '$s
         $scope.newContract = function() {
             $scope.contractData.mode = 'ADD';
             $scope.contractData.disableFields = false;
+            $scope.contractData.contractOwner.selectedOwner.id = null;
             clearRateSearchBox();
             clearContractLinkSearchBox();
             $scope.$emit('refreshContractsScroll');
