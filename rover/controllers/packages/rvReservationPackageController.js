@@ -97,7 +97,7 @@ sntRover.controller('RVReservationPackageController',
 							var postDate = new Date(item.post_date),
 							daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
 							day;
-							
+
 							day = daysOfWeek[postDate.getDay()];
 
 							$scope.selectedPurchesedAddon.selected_post_days[day] = true;
@@ -230,12 +230,10 @@ sntRover.controller('RVReservationPackageController',
 			noOfDays = (moment(end_date) - moment(start_date)) / 86400000;
 			if (!$scope.selectedPurchesedAddon.is_allowance) {
 				noOfDays--;
+			} else if ($scope.selectedPurchesedAddon.is_consume_next_day) {
+				startDayIndex++;
 			} else {
-				if ($scope.selectedPurchesedAddon.is_consume_next_day) {
-					startDayIndex++;
-				} else {
-					noOfDays--;
-				}
+				noOfDays--;
 			}
 			if (noOfDays <= 6) {
 				$scope.daysOfWeekCopy = [];
