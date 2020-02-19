@@ -122,7 +122,8 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				'addon_id': $scope.selectedPurchesedAddon.id,
 				'post_instances': $scope.selectedPurchesedAddon.post_instances,
 				'start_date': $scope.selectedPurchesedAddon.start_date,
-				'end_date': $scope.selectedPurchesedAddon.end_date
+				'end_date': $scope.selectedPurchesedAddon.end_date,
+				'selected_post_days': $scope.selectedPurchesedAddon.selected_post_days
 			};
         	var options = {
 				successCallBack: function() {
@@ -1015,7 +1016,8 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			if ($scope.allotmentConfigData.summary.rate === '-1') {
 				$scope.allotmentConfigData.summary.uniqId = '-1';
 			}
-			summaryMemento = angular.copy($scope.allotmentConfigData.summary);
+			summaryMemento.uniqId = $scope.allotmentConfigData.summary.uniqId;
+			
 		};
 		var onFetchRatesFailure = function(errorMessage) {
 			$scope.errorMessage = errorMessage;

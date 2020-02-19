@@ -2,7 +2,8 @@ angular.module('snt.utils')
     .service('sntLoadScriptSrv', ['$q', '$timeout',
         function ($q, $timeout) {
             var service = this,
-                loadedScripts = {};
+                loadedScripts = {},
+                GAPI_URL = 'https://apis.google.com/js/api.js';
 
             service.loadScript = function (url) {
                 var deferred = $q.defer();
@@ -24,4 +25,10 @@ angular.module('snt.utils')
                 
                 return deferred.promise;
             };
+
+            // Get google javascript api url
+            service.getGAPIUrl = function () {
+                return GAPI_URL;
+            };
+
         }]);

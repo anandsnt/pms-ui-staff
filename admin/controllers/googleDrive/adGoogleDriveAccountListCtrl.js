@@ -4,11 +4,13 @@ admin.controller('ADGoogleDriveAccountListCtrl', [
     'ADThirdPartyStorageSrv',
     '$state',
     'storageConfig',
+    'sntLoadScriptSrv',
     function($scope,
          ngTableParams,
          ADThirdPartyStorageSrv,
          $state,
-         storageConfig ) {
+         storageConfig,
+         sntLoadScriptSrv ) {
    
     BaseCtrl.call(this, $scope);
     ADBaseTableCtrl.call(this, $scope, ngTableParams);
@@ -100,7 +102,10 @@ admin.controller('ADGoogleDriveAccountListCtrl', [
         $scope.config = storageConfig.data;
         
         // Loads the google api client library
-        GAPI.call(this, $scope);
+        sntLoadScriptSrv.loadScript(sntLoadScriptSrv.getGAPIUrl()).then(function() {
+            GAPI.call(this, $scope);
+        });
+        
 
     };
 

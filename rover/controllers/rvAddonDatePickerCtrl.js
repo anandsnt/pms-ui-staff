@@ -10,6 +10,8 @@ sntRover.controller('RVAddonDatePickerController',
             changeYear: true,
             changeMonth: true,
             yearRange: "0:+10",
+            minDate: $scope.datePickerFor === 'start_date' ? $scope.addonPostingDate.startDate : $scope.selectedPurchesedAddon.start_date,
+            maxDate: $scope.datePickerFor === 'start_date' ? $scope.selectedPurchesedAddon.end_date : $scope.addonPostingDate.endDate,
             onSelect: function(dateText) {
                 $scope.dateSelected(dateText);
                 

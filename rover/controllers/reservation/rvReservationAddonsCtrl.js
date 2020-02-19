@@ -96,15 +96,21 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             id: addon.id
                         });
 
-                        addon.selected_post_days = updatedAddon.selected_post_days;
-                        addon.start_date = $filter('date')(tzIndependentDate(updatedAddon.start_date), $rootScope.dateFormatForAPI);
-                        addon.end_date = $filter('date')(tzIndependentDate(updatedAddon.end_date), $rootScope.dateFormatForAPI);
+                        if (updatedAddon) {
+                            addon.selected_post_days = updatedAddon.selected_post_days;
+                            addon.start_date = $filter('date')(tzIndependentDate(updatedAddon.start_date), $rootScope.dateFormatForAPI);
+                            addon.end_date = $filter('date')(tzIndependentDate(updatedAddon.end_date), $rootScope.dateFormatForAPI);
+                        }
                     });
                 });
             },
             goToSummaryAndConfirm = function() {
+                if ($scope.packageData === undefined) {
+                    $scope.packageData = {
+                        existing_packages: []
+                    };
+                }
                 if ($scope.fromPage === "staycard") {
-
                     var saveData = {
                         reservationId: $scope.reservationData.reservationId,
                         room_types: [{
