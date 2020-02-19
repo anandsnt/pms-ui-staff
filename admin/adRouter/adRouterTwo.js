@@ -1153,4 +1153,11 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
       controller: 'ADExtApiKeyGeneratorCtrl',
       url: '/extApiKeyGenerator'
     });
+
+    $stateProvider.state('admin.oauthKeyGenerator', {
+        templateUrl: '/assets/partials/oauthKeyGenerator/adOauthKeyGenerator.html',
+        controller: 'ADOauthKeyGeneratorCtrl',
+        url: '/oauthKeyGenerator'
+    });
+
 });

@@ -176,6 +176,11 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
                     }
                 });
 
+                $window.document.addEventListener('wheel', function() {
+                    $(document).idleTimer('reset');
+                }, true);
+                
+
             };
 
             var init = function () {
