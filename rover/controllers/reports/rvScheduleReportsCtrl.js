@@ -109,7 +109,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             var hasTimePeriod = function() {
                 var has = false;
 
-                if ( $scope.isYearlyTaxReport || $scope.isGuestBalanceReport || angular.isDefined($scope.scheduleParams.time_period_id) ) {
+                if ( $scope.isYearlyTaxReport || $scope.isGuestBalanceReport || $scope.isCreditCheckReport ||angular.isDefined($scope.scheduleParams.time_period_id) ) {
                     has = true;
                 }
 
@@ -597,6 +597,13 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         // rvReportUtilsFac.js in future
         var setupFilters = function() {
             $scope.filters = {};
+            $scope.selectedEntityDetails.isCreditCheckReport = false;
+            $scope.selectedEntityDetails.hideTimePeriod = false;
+            if($scope.selectedEntityDetails.report.title === "Credit Check Report"){
+                $scope.selectedEntityDetails.hideTimePeriod = true;
+                $scope.scheduleParams.sort_field = "ROOM_NO"
+                //console.log($scope.scheduleFrequency)
+            }
 
             $scope.filters.hasGeneralOptions = {
                 data: [],
@@ -617,10 +624,49 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 }
             };
 
+            $scope.selectedEntityDetails.hasShow = {
+                data: [],
+                options: {
+                    selectAll: false,
+                    hasSearch: false,
+                    key: 'description',
+                    allValue: 'Both',
+                    defaultValue: 'Select options'
+                }
+            };
+            
+            var __showFilterNames = {
+                'SHOW_COMPANY': true,
+                'SHOW_TRAVEL_AGENT': true,
+    
+                // for CREDIT_CHECK_REPORT
+                'INCLUDE_DUE_OUT': true,
+                'INCLUDE_INHOUSE': true,
+                'RESTRICTED_POST_ONLY': true,
+                'EXCEEDED_ONLY': true,
+    
+                // for room ooo oos report
+                OOO: true,
+                OOS: true
+            };
+
+            var entity = $scope.selectedEntityDetails;
+
+            var __pushShowData = function(entity, filter) {
+                entity['hasShow']['data'].push({
+                    paramKey: filter.value.toLowerCase(),
+                    description: filter.description,
+                    selected: filter.value === 'EXCEEDED_ONLY' ? false : true
+                });
+            };
+
             _.each($scope.selectedEntityDetails.filters, function(filter) {
                 var selected = false,
                     mustSend = false;
 
+                if (__showFilterNames[filter.value] && entity.title !== reportNames['IN_HOUSE_GUEST']) {
+                     __pushShowData(entity, filter);
+                }
 
                 if (filter.value === 'ACCOUNT' || filter.value === 'GUEST') {
                     selected = true;
@@ -1182,7 +1228,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Business on the Books': true,
                 'Daily Transactions': true,
                 'Action Manager': true,
-                'Financial Transactions - Adjustment Report': true
+                'Financial Transactions - Adjustment Report': true,
+                'Credit Check Report':true
             };
 
             var forWeekly = {
@@ -1195,7 +1242,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Business on the Books': true,
                 'Daily Transactions': true,
                 'Action Manager': true,
-                'Financial Transactions - Adjustment Report': true
+                'Financial Transactions - Adjustment Report': true,
+                'Credit Check Report':true
             };
             var forMonthly = {
                 'Arrival': true,
@@ -1207,7 +1255,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Business on the Books': true,
                 'Daily Transactions': true,
                 'Action Manager': true,
-                'Financial Transactions - Adjustment Report': true
+                'Financial Transactions - Adjustment Report': true,
+                'Credit Check Report':true
             };
 
             var forHourly = {
@@ -1217,7 +1266,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Comparison': true,
                 'Guest Balance Report': true,
                 'Yearly Tax Report': true,
-                'Business on the Books': true                
+                'Business on the Books': true,
+                'Credit Check Report':true              
             };
 
             if ( forHourly[item.report.title] ) {
@@ -1245,8 +1295,12 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         $scope.pickReport = function(item, index) {
             $scope.selectedEntityDetails = $scope.$parent.$parent.schedulableReports[index];
             $scope.isGuestBalanceReport = false;
-
+            $scope.isCreditCheckReport = false;
             $scope.isYearlyTaxReport = false;
+
+            if($scope.selectedEntityDetails.report.title === "Credit Check Report"){
+            $scope.isCreditCheckReport = true;
+            }
 
 
             if ( !! $scope.selectedReport && $scope.selectedReport.active ) {
