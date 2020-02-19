@@ -74,6 +74,7 @@
     "AND_COMPLETE_CHECKOUT" : "and Complete checkout",
 
     "PLEASE_ASK_THE_GUEST_FOR_EMAIL" : "Please ask the guest to provide email before checkout",
+    "PLEASE_ASK_THE_GUEST_FOR_EMAIL_ON_PAYMENT": "Please provide email",
 	"EMAIL" : "E-mail",
 	"SUBMIT_AND_GOTO_CHECKOUT" : "Submit and go to check out",
 	"IGNORE_AND_GOTO_CHECKOUT" : "Ignore and proceed with checkout",

@@ -28,7 +28,8 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		var whetherSummaryDataChanged = function() {
 			var currentSummaryData = $scope.allotmentConfigData.summary;
 
-			for (key in summaryMemento) {
+			for (var key in summaryMemento) {
+				// if any of the values are not equal/same, there is change, return true
 				if (!_.isEqual(currentSummaryData[key], summaryMemento[key])) {
 					return true;
 				}
@@ -60,12 +61,13 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 											 targetElement.id === "cancel-action"
 											)
 										  ),
-				summaryDataNotChanged 	= !whetherSummaryDataChanged(),
 				demographicsOpen 		= $scope.allotmentSummaryData.isDemographicsPopupOpen,
 				updateInProgress 		= $scope.isUpdateInProgress;
 
-			if ( incorrectTarget 	  || isInaddMode 	  || summaryDataNotChanged ||
-				 demographicsOpen 	  || updateInProgress ) {
+			if (isInaddMode || incorrectTarget ||
+				!!$scope.focusedCompanyCard || !!$scope.focusedTravelAgent ||
+				!whetherSummaryDataChanged() || demographicsOpen ||
+				updateInProgress ) {
 				// No need to call update summary
 				return;
 			}
@@ -527,12 +529,12 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		$scope.onRateChange = function() {
 			var summaryData = $scope.allotmentConfigData.summary,
 				uniqId = summaryData.uniqId,
-				rateId = uniqId.split(':')[0],
-				contractId = uniqId.split(':')[1];
+				rateId = uniqId && uniqId.split(':')[0],
+				contractId = uniqId && uniqId.split(':')[1];
 
 			$scope.allotmentConfigData.summary.contract_id = contractId;
 			$scope.allotmentConfigData.summary.rate = rateId;
-			if (!summaryData.allotment_id) {
+			if (!summaryData.allotment_id || !uniqId) {
 				return false;
 			}
 
@@ -981,14 +983,14 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		/**
          * We need to refresh the rates once TA card info is changed
          */
-        $scope.$on('TA_CARD_CHANGED', function(event) {
+        $scope.addListener('TA_CARD_CHANGED', function(event) {
             fetchApplicableRates();
 		});
 		
 		/**
          * We need to refresh the rates once company card info is changed
          */
-        $scope.$on('COMPANY_CARD_CHANGED', function(event) {
+        $scope.addListener('COMPANY_CARD_CHANGED', function(event) {
             fetchApplicableRates();
         });
 
