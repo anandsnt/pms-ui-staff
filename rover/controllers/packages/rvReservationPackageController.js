@@ -97,6 +97,7 @@ sntRover.controller('RVReservationPackageController',
 							var postDate = new Date(item.post_date),
 							daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
 							day;
+							
 							day = daysOfWeek[postDate.getDay()];
 
 							$scope.selectedPurchesedAddon.selected_post_days[day] = true;
