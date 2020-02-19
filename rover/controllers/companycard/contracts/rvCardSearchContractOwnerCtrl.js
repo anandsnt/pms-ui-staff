@@ -25,9 +25,6 @@ angular.module('sntRover').controller('rvCardSearchContractOwnerCtrl', ['$scope'
                 }
             };
             
-            if ($scope.contractData.mode === 'EDIT') {
-                options.params.id = $scope.contractData.selectedContractId;
-            }
             $scope.callAPI(rvCompanyCardContractsSrv.fetchOwners, options);
         };
         
@@ -48,7 +45,10 @@ angular.module('sntRover').controller('rvCardSearchContractOwnerCtrl', ['$scope'
                 $scope.contractData.contractOwner.selectedOwner = item;
             }
         };
-
-        that.fetchOwners();
+        
+        // Fetch owner details for ADD mode.
+        if ($scope.contractData.mode === 'ADD') {
+            that.fetchOwners();
+        }
     }
 ]);
