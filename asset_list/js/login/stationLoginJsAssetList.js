@@ -24,7 +24,7 @@ module.exports = {
                 loginRoot + 'loginRouter.js',
 				loginRoot + "**/*.js",
 
-				jsLibRoot + 'iscroll-probe.5.2.js',
+				jsLibRoot + 'iscroll.js',
 				jsLibRoot + 'ng-iscroll.js',
 				'!'+loginRoot+'stationLoginJsAssetList.js',
                 // these files used for zest station chromeapp 

@@ -292,6 +292,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		$scope.closeReferencePopup = function() {
             $scope.showReferencePopup = false;
             $scope.selectedAddonReference = '';
+            $scope.selectedAddonCount = 0;
         };
 
 		$scope.addReference = function(selectedAddon) {

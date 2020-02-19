@@ -50,6 +50,14 @@ admin.controller('ADRatesAddonDetailsCtrl', [
             }
 
             $scope.onLocaleChange();
+
+            $scope.customPostData = {
+                weekdays: ["Monday", "Tuesday", "Wednesday", "Thursday"],
+                weekends: ["Friday", "Saturday", "Sunday"],
+                daysOfWeek: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                frequency_types: ["days", "weeks", "months"],
+                daysOfMonth: _.range(1, 32, 1)
+            };
         };
 
         $scope.back = function() {
@@ -61,7 +69,7 @@ admin.controller('ADRatesAddonDetailsCtrl', [
                 return false;
             }
             //For post type =  weekly
-            if (!$scope.isConnectedToPMS && ($scope.singleAddon.post_type_id === 3) && ($scope.singleAddon.is_reservation_only === true)) {
+            if (!$scope.isConnectedToPMS && ($scope.singleAddon.post_type === 'WEEKLY') && ($scope.singleAddon.is_reservation_only === true)) {
                 return true;
             } 
             return false;
@@ -163,7 +171,7 @@ admin.controller('ADRatesAddonDetailsCtrl', [
 
             // CICO-23575 - Disable all posting types apart from First Night for Hourly.
             if ($rootScope.isHourlyRatesEnabled) {
-                $scope.singleAddon.post_type_id = 2;
+                $scope.singleAddon.post_type = 'NIGHT';
             }
 
             // today should be business date, currently not avaliable
@@ -236,7 +244,7 @@ admin.controller('ADRatesAddonDetailsCtrl', [
             $scope.initialImage = $scope.singleAddon.addon_image;
             // CICO-23575 - Disable all posting types apart from First Night for Hourly.
             if ($rootScope.isHourlyRatesEnabled) {
-                $scope.singleAddon.post_type_id = 2;
+                $scope.singleAddon.post_type = 'NIGHT';
             }
             manipulateChargeCodeForChargeGroups();
 
@@ -330,13 +338,13 @@ admin.controller('ADRatesAddonDetailsCtrl', [
                 is_reservation_only: $scope.singleAddon.is_reservation_only,
                 inventory_count: parseInt($scope.singleAddon.inventory_count),
                 name: $scope.singleAddon.name,
-                post_type_id: $scope.singleAddon.post_type_id,
+                post_type: $scope.singleAddon.post_type,
                 rate_code_only: $scope.singleAddon.rate_code_only,
                 manual_posting: $scope.singleAddon.manual_posting,
                 is_common_area: $scope.singleAddon.is_common_area,
                 pass_level_no: $scope.singleAddon.pass_level_no,
                 forecast_for_next_day: $scope.singleAddon.forecast_for_next_day,
-                charge_full_weeks_only: (($scope.singleAddon.post_type_id === 3) && $scope.singleAddon.is_reservation_only && $scope.singleAddon.charge_full_weeks_only),
+                charge_full_weeks_only: (($scope.singleAddon.post_type === 'WEEKLY') && $scope.singleAddon.is_reservation_only && $scope.singleAddon.charge_full_weeks_only),
                 allow_rate_exclusions: $scope.singleAddon.allow_rate_exclusions,
                 excluded_rate_ids: _.pluck($scope.singleAddon.excludedRates, 'id'),
                 addon_image: $scope.singleAddon.addon_image,
@@ -351,7 +359,11 @@ admin.controller('ADRatesAddonDetailsCtrl', [
                 is_allowance: $scope.singleAddon.is_allowance,
                 addon_value: $scope.singleAddon.addon_value,
                 spillage_refund_percentage: $scope.singleAddon.spillage_refund_percentage,
-                ref_currency_code_id: $scope.singleAddon.ref_currency_code_id
+                ref_currency_code_id: $scope.singleAddon.ref_currency_code_id,
+                post_day_of_the_week: $scope.singleAddon.post_day_of_the_week,
+                post_day_of_the_month: $scope.singleAddon.post_day_of_the_month,
+                frequency: $scope.singleAddon.frequency,
+                frequency_type: $scope.singleAddon.frequency_type
             };
 
             if ($scope.isDefaulLanguageSelected()) {

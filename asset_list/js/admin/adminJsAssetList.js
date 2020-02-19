@@ -27,7 +27,6 @@ module.exports = {
 				jsLibRoot + 'SyntaxHighlighter/shBrushJScript.js',
 				jsLibRoot + 'treeview/ivh-treeview.min.js',
 				jsLibRoot + 'moment.min.js',
-				jsLibRoot + 'gapi.min.js',
 				jsLibRoot + 'toastr/toastr.min.js',
 				jsLibRoot + 'idle-timer.min.js',
                 // Eliminate all spec files
@@ -36,7 +35,7 @@ module.exports = {
 			nonMinifiedFiles: [
 				jsLibRoot + 'sortable.js',				
 				jsLibRoot + 'angular-multi-select.js',
-				jsLibRoot + 'iscroll-probe.5.2.js', 
+				jsLibRoot + 'iscroll.js', 
 				jsLibRoot + 'ng-iscroll.js', 
 				jsLibRoot + 'Utils.js',
 				jsLibRoot + 'ng-table.js',
