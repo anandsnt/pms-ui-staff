@@ -1040,7 +1040,7 @@ angular.module('sntPay').controller('sntPaymentController',
                         $scope.errorMessage = errorMessage;
                         sntActivity.stop('FETCH_GIFT_CARD_BALANCE');
                     });
-                    scope.payment.amount 
+                    
                 } else {
                     // hides the field and reset the amount stored
                     $scope.giftCard.amountAvailable = false;
