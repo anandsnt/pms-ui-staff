@@ -1891,7 +1891,6 @@ sntZestStation.controller('zsRootCtrl', [
                     }, 'RVDevicePlugin', 'featureList', ['should_show_details']);
 
                 cordova.exec(function(response) {
-                    alert(response);
                         $scope.zestStationData.usingAilaDevice = response;
                     },
                     function() {
