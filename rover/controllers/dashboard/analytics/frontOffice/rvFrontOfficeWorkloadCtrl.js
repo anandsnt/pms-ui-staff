@@ -88,7 +88,7 @@ angular.module('sntRover')
 					.tickSizeOuter(0)
 					.tickPadding(10)
 					.tickFormat(function(d) {
-						return (d == 'REMAINING' && !$scope.dashboardFilter.showRemainingReservations) ? '' : d.toUpperCase();
+						return (d === 'REMAINING' && !$scope.dashboardFilter.showRemainingReservations) ? '' : d.toUpperCase();
 					});
 
 				var svgHeight = height + margin.top + margin.bottom;

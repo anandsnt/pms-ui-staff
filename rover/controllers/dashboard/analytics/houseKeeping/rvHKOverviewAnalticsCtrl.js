@@ -410,13 +410,12 @@ angular.module('sntRover')
 
             // On filter changes
             $scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER_HK_OVERVIEW', renderHkOverview);
-            $scope.$on('RELOAD_DATA_WITH_DATE_FILTER_HK_OVERVIEW', function(){
-                fetchHKOverviewChartData({}, true)
+            $scope.$on('RELOAD_DATA_WITH_DATE_FILTER_HK_OVERVIEW', function() {
+                fetchHKOverviewChartData({}, true);
             });
             $scope.$on('REFRESH_ANALYTCIS_CHART_HK_OVERVIEW', function() {
                 fetchHKOverviewChartData({}, true);
             });
-
             // On window resize
             $scope.$on('ON_WINDOW_RESIZE', function() {
                 if ($scope.dashboardFilter.selectedAnalyticsMenu === 'HK_OVERVIEW' && chartDetails) {
