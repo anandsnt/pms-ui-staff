@@ -42,7 +42,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 emvTimeout: 120,
                 isConfirmedDBpayment: false,
                 selectedPaymentCurrencyId: $rootScope.hotelCurrencyId,
-                selectedPaymentCurrencySymbol: $rootScope.paymentCurrencySymbol
+                selectedPaymentCurrencySymbol: ($scope.selectedPaymentType === 'CC') ? $rootScope.currencySymbol : $rootScope.paymentCurrencySymbol
             };
 
             $scope.giftCard = {
@@ -1059,7 +1059,7 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 if (shouldReset) {
                     $scope.payment.selectedPaymentCurrencyId = $rootScope.hotelCurrencyId;
-                    $scope.payment.selectedPaymentCurrencySymbol = $rootScope.currencySymbol;
+                    $scope.payment.selectedPaymentCurrencySymbol = ($scope.selectedPaymentType === 'CC') ? $rootScope.currencySymbol : $rootScope.paymentCurrencySymbol;
                     $scope.payment.amount = initialPaymentAmount;
                     $scope.feeData.calculatedFee = $scope.originalFee;
                 }
