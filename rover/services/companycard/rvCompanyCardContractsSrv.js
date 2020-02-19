@@ -1,7 +1,7 @@
 angular.module('sntRover').service('rvCompanyCardContractsSrv', ['$q', 'sntBaseWebSrv', function($q, sntBaseWebSrv) {
 
     this.fetchRateContract = function(params) {
-        return sntBaseWebSrv.getJSON('/api/rates/contract_rates');
+        return sntBaseWebSrv.getJSON('/api/rates/contract_rates', params);
     };
 
     this.deleteContract = function(data) {
