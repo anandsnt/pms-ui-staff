@@ -1878,6 +1878,7 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.connectedDeviceDetails = {};
             $scope.zestStationData.iOSCameraEnabled = false;
             $scope.zestStationData.featuresSupportedInIosApp = [];
+            $scope.zestStationData.usingAilaDevice = false;
 
             if (typeof cordova !== "undefined") {
                 cordova.exec(function(response) {
@@ -1888,6 +1889,14 @@ sntZestStation.controller('zsRootCtrl', [
                     function() {
                         // do nothing
                     }, 'RVDevicePlugin', 'featureList', ['should_show_details']);
+
+                cordova.exec(function(response) {
+                    alert(response);
+                        $scope.zestStationData.usingAilaDevice = response;
+                    },
+                    function() {
+                        // do nothing
+                    }, 'RoverCDVPlugin', 'hasAilaScanHardware', ['']);
             }
             
             if ($scope.isIpad && typeof cordova !== typeof undefined) {

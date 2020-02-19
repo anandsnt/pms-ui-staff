@@ -118,7 +118,7 @@ sntZestStation.controller('zsCheckinfindReservationFromIdCtrl', [
                                                        $scope.zestStationData.connectedCameras,
                                                        $scope.zestStationData.featuresSupportedInIosApp);
 
-            idCaptureConfig.useAilaDevice = true;
+            idCaptureConfig.useAilaDevice = $scope.zestStationData.usingAilaDevice;
             $scope.setConfigurations(idCaptureConfig);
         })();
     }
