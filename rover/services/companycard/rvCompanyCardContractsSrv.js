@@ -84,7 +84,30 @@ angular.module('sntRover').service('rvCompanyCardContractsSrv', ['$q', 'sntBaseW
     };
 
     this.fetchOwners = function(params) {
+        params.id = params.contract_id;
         return sntBaseWebSrv.getJSON('/api/contracts/contract_owners', params);
+    };
+
+    var that = this;
+
+    this.fetchDetailsWithOwnersList = function(params) {
+        var promises = [],
+            response = {},
+            deferred = $q.defer();
+
+        promises.push(that.fetchOwners(params).then((data) => {
+            response.ownersList = data.data;
+        }));
+
+        promises.push(that.fetchContractsDetails(params).then((data) => {
+            response.contractDetails = data;
+        }));
+
+        $q.all(promises).then(() => {
+            deferred.resolve(response);
+        });
+
+        return deferred.promise;
     };
 
 }]);

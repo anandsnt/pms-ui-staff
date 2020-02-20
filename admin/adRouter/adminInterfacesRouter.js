@@ -148,7 +148,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.travelClickSetup', {
-        templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
+        templateUrl: '/assets/partials/interfaces/travelclick/adTravelClickSetup.html',
         controller: 'adCRSCommonCtrl',
         url: '/interfaces/setup',
         params: {

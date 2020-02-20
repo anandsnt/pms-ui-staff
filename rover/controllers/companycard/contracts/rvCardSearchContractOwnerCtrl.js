@@ -10,7 +10,7 @@ angular.module('sntRover').controller('rvCardSearchContractOwnerCtrl', ['$scope'
         that.fetchOwners = function() {
             $scope.contractData.contractOwner.results = [];
             var fetchOwnersSuccessCallback = function(data) {
-                $scope.contractData.contractOwner.results = data;
+                $scope.contractData.contractOwner.results = data.data;
             },
             fetchOwnersFailureCallback = function(errorMessage) {
                 $scope.$emit('setErrorMessage', errorMessage);
@@ -25,9 +25,6 @@ angular.module('sntRover').controller('rvCardSearchContractOwnerCtrl', ['$scope'
                 }
             };
             
-            if ($scope.contractData.mode === 'EDIT') {
-                options.params.id = $scope.contractData.selectedContractId;
-            }
             $scope.callAPI(rvCompanyCardContractsSrv.fetchOwners, options);
         };
         
@@ -49,6 +46,20 @@ angular.module('sntRover').controller('rvCardSearchContractOwnerCtrl', ['$scope'
             }
         };
 
-        that.fetchOwners();
+        $scope.checkNoContract = function() {
+            var isNoContractOwner = false,
+                selectedOwner = $scope.contractData.contractOwner.selectedOwner;
+
+            if ($scope.contractData.contractOwner.results.length === 0 || selectedOwner.id === null || selectedOwner.id === '') {
+                isNoContractOwner = true;
+            }
+
+            return isNoContractOwner;
+        };
+        
+        // Fetch owner details for ADD mode.
+        if ($scope.contractData.mode === 'ADD') {
+            that.fetchOwners();
+        }
     }
 ]);
