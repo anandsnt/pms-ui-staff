@@ -1307,9 +1307,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			}
 			$scope.stateCheck.dateModeActiveDate = selectedDate;
 			$scope.stateCheck.selectedStayDate = ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates[selectedDate];
-			var index = Object.keys(ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates).indexOf(selectedDate);
+			var stayDateIndex = Object.keys(ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates).indexOf(selectedDate);
 
-			if (index > 0) {
+			if (stayDateIndex > 0) {
 				if ($scope.stateCheck.stayDatesMode && ($scope.reservationData.rateCurrencyId !== null && $scope.reservationData.rateCurrencyId !== '')) {
 					$scope.reservationData.currentSelectedRateCurrencyId = $scope.reservationData.rateCurrencyId;
 				}
