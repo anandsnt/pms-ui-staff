@@ -50,7 +50,7 @@ angular.module('sntRover').controller('rvCardSearchContractOwnerCtrl', ['$scope'
             var isNoContractOwner = false,
                 selectedOwner = $scope.contractData.contractOwner.selectedOwner;
 
-            if (contractData.contractOwner.results.length === 0 || selectedOwner.id === null || selectedOwner.id === '') {
+            if ($scope.contractData.contractOwner.results.length === 0 || selectedOwner.id === null || selectedOwner.id === '') {
                 isNoContractOwner = true;
             }
 
