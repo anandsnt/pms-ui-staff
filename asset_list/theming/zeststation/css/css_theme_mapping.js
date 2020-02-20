@@ -113,7 +113,8 @@ module.exports = {
             'zedwell': [themeCSSRoot + 'zedwell.less'],
             'dimond-center': [themeCSSRoot + 'dimond-center.less'],
             'brooklyn': [themeCSSRoot + 'brooklyn.less'],
-            'krowoderska': [themeCSSRoot + 'krowoderska.less']
+            'krowoderska': [themeCSSRoot + 'krowoderska.less'],
+            'bayou': [themeCSSRoot + 'bayou.less'],
         };
     }
 };
