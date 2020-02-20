@@ -111,7 +111,7 @@ module.exports = {
 			},
 			'rover.companycarddetails': {
 				filename: roverJsListRoot + 'companyCardDetailsJsAssetList.js',
-				babelify: false
+				babelify: true
 			},
 			'rover.reservation.staycard.activitylog': {
 				filename: roverJsListRoot + 'activityLogJsAssetList.js',

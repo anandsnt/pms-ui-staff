@@ -209,21 +209,6 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2', 'ADRatesSrv',
             return deferred.promise;
         };
         /*
-         * Service function to validate end date
-         * @return {object} status
-         */
-        this.validateEndDate = function (params) {
-            var deferred = $q.defer();
-            var url = "/api/rates/validate_end_date";
-
-            ADBaseWebSrvV2.postJSON(url, params).then(function (data) {
-                deferred.resolve(data);
-            }, function (data) {
-                deferred.reject(data);
-            });
-            return deferred.promise;
-        };
-        /*
          * Service function to update new rate
          * @params {object} rates details
          */

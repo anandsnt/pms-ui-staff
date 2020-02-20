@@ -117,7 +117,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 
 			$timeout(function() {
 				if (data.contractDetails.selected_contract_owner !== null) {
-					$scope.contractData.contractOwner.selectedOwner.id = data.contractDetails.selected_contract_owner.id;
+					$scope.contractData.contractOwner.selectedOwner.id = (data.contractDetails.selected_contract_owner.id).toString();
 					$scope.contractData.contractOwner.isInactive = !data.contractDetails.selected_contract_owner.is_active;
 				}
 				else {
