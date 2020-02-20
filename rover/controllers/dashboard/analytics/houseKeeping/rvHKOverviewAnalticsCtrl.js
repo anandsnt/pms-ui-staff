@@ -1,7 +1,7 @@
 angular.module('sntRover')
-    .controller('rvHKOverviewAnalticsCtrl', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvAnalyticsHelperSrv',
-        function($scope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv) {
-
+    .controller('rvHKOverviewAnalticsCtrl', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvAnalyticsHelperSrv', 'rvAnalyticsSrv',
+        function($scope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv, rvAnalyticsSrv) {
+            var initialBaseHrefValue = $('base').attr('href');
             var colorMappings = {
                 "arrivals_perfomed": rvAnalyticsHelperSrv.constructColorMappings('arrivals_perfomed', 'greenLight'),
                 "arrivals_remaining": rvAnalyticsHelperSrv.constructColorMappings('arrivals_remaining', 'green'),
@@ -18,10 +18,10 @@ angular.module('sntRover')
                 "rooms_pickup": rvAnalyticsHelperSrv.constructColorMappings('rooms_pickup', 'orange')
             };
 
-            $scope.drawHkOverviewChart = function(chartDetails) {
+            var drawHkOverviewChart = function(chartDetails) {
 
                 $scope.screenData.mainHeading = $filter('translate')(chartDetails.chartData.label);
-                var chartAreaWidth = document.getElementById("analytics-chart").clientWidth;
+                var chartAreaWidth = document.getElementById("dashboard-analytics-chart").clientWidth;
                 var margin = {
                         top: 50,
                         right: 50,
@@ -353,5 +353,74 @@ angular.module('sntRover')
                 $scope.$emit('REFRESH_ANALTICS_SCROLLER');
                 $scope.screenData.hideChartData = false;
             };
+
+            var onBarChartClick = function(type) {
+                return;
+            };
+
+            var onLegendClick = function(type) {
+                return;
+            };
+
+            var chartDetails;
+            var drawChartAndAddHeader = function(chartDetails) {
+                $timeout(function() {
+                    $scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
+                    drawHkOverviewChart(chartDetails);
+                    rvAnalyticsHelperSrv.addChartHeading($scope.screenData.mainHeading,
+                        $scope.screenData.analyticsDataUpdatedTime);
+                }, 50);
+            };
+            var renderHkOverview = function() {
+                $scope.screenData.mainHeading = "";
+                // Calling HK Overview Build Graph
+                rvAnalyticsSrv.hkOverview($scope.dashboardFilter.datePicked, false).then(function(data) {
+                    chartDetails = {
+                        chartData: data,
+                        onBarChartClick: onBarChartClick,
+                        onLegendClick: onLegendClick
+                    };
+
+                    drawChartAndAddHeader(chartDetails);
+                });
+            };
+
+            var fetchHKOverviewChartData = function(evt, loadNewData) {
+                $scope.dashboardFilter.displayMode = 'CHART_DETAILS';
+                $scope.dashboardFilter.selectedAnalyticsMenu = 'HK_OVERVIEW';
+                $('base').attr('href', "/");
+                var params = {
+                    "date": $scope.dashboardFilter.datePicked,
+                    "room_type_id": $scope.dashboardFilter.selectedRoomTypeId,
+                    "loadNewData": loadNewData
+                };
+                var options = {
+                    params: params,
+                    successCallBack: function(response) {
+                        $scope.$emit('CHART_API_SUCCESS', response);
+                        renderHkOverview();
+                    }
+                };
+
+                $scope.callAPI(rvAnalyticsSrv.initRoomAndReservationApis, options);
+            };
+
+            // Initial fetch
+            $scope.$on('GET_HK_OVERVIEW', fetchHKOverviewChartData);
+
+            // On filter changes
+            $scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER_HK_OVERVIEW', renderHkOverview);
+            $scope.$on('RELOAD_DATA_WITH_DATE_FILTER_HK_OVERVIEW', function() {
+                fetchHKOverviewChartData({}, true);
+            });
+            $scope.$on('REFRESH_ANALYTCIS_CHART_HK_OVERVIEW', function() {
+                fetchHKOverviewChartData({}, true);
+            });
+            // On window resize
+            $scope.$on('ON_WINDOW_RESIZE', function() {
+                if ($scope.dashboardFilter.selectedAnalyticsMenu === 'HK_OVERVIEW' && chartDetails) {
+                    drawChartAndAddHeader(chartDetails);
+                }
+            });
         }
     ]);
