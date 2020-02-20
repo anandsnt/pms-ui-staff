@@ -659,7 +659,7 @@ angular.module('sntRover')
 
 				var leftTopQuadrantRevPar = {
 					"backgroundColor": "#E63838",
-					"label": "RevPAR",
+					"label": "REVPAR",
 					"value": chartData.yesterday.rev_par,
 					"id": "left-top-rev-par",
 					"diff": chartData.yesterday.rev_par_diff
@@ -708,7 +708,7 @@ angular.module('sntRover')
 					"class": "bottomRight",
 					"top": y(0.5) + "px",
 					"backgroundColor": "#89BD55",
-					"label": "RevPAR",
+					"label": "REVPAR",
 					"value": chartData.today.rev_par,
 					"id": "right-top-rev-par",
 					"diff": chartData.today.rev_par_diff
@@ -759,7 +759,7 @@ angular.module('sntRover')
 					"class": "bottomRight",
 					"top": y(-0.5) + "px",
 					"backgroundColor": "#F6991B",
-					"label": "RevPAR",
+					"label": "REVPAR",
 					"value": chartData.mtd.rev_par,
 					"id": "left-bottom-rev-par",
 					"diff": chartData.mtd.rev_par_diff
@@ -808,7 +808,7 @@ angular.module('sntRover')
 					"class": "bottomRight",
 					"top": y(-0.5) + "px",
 					"backgroundColor": "#497D8E",
-					"label": "RevPAR",
+					"label": "REVPAR",
 					"value": chartData.ytd.rev_par,
 					"id": "right-bottom-rev-par",
 					"diff": chartData.mtd.rev_par_diff
