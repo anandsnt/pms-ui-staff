@@ -20,6 +20,12 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         var FOURTH_COLUMN_SCROLL = 'FOURTH_COLUMN_SCROLL';
         const SHOW_ERROR_MSG_EVENT = 'SHOW_ERROR_MSG_EVENT';
 
+        var showFilterNames = [
+            'INCLUDE_DUE_OUT',
+            'INCLUDE_INHOUSE', 
+            'EXCEEDED_ONLY'
+        ];
+
         var setupScrolls = function() {
             var scrollerOptions = {
                 tap: true,
@@ -109,7 +115,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             var hasTimePeriod = function() {
                 var has = false;
 
-                if ( $scope.isYearlyTaxReport || $scope.isGuestBalanceReport || $scope.isCreditCheckReport ||angular.isDefined($scope.scheduleParams.time_period_id) ) {
+                if ( $scope.isYearlyTaxReport || $scope.isGuestBalanceReport || $scope.isCreditCheckReport || angular.isDefined($scope.scheduleParams.time_period_id) ) {
                     has = true;
                 }
 
@@ -597,12 +603,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         // rvReportUtilsFac.js in future
         var setupFilters = function() {
             $scope.filters = {};
-            $scope.selectedEntityDetails.isCreditCheckReport = false;
-            $scope.selectedEntityDetails.hideTimePeriod = false;
-            if($scope.selectedEntityDetails.report.title === "Credit Check Report"){
-                $scope.selectedEntityDetails.hideTimePeriod = true;
-                $scope.scheduleParams.sort_field = "ROOM_NO"
-                //console.log($scope.scheduleFrequency)
+
+            if ($scope.selectedEntityDetails.report.title === reportNames['CREDIT_CHECK_REPORT'] ) {
+                $scope.scheduleParams.sort_field = 'ROOM_NO';
             }
 
             $scope.filters.hasGeneralOptions = {
@@ -624,7 +627,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 }
             };
 
-            $scope.selectedEntityDetails.hasShow = {
+            $scope.filters.hasShow = {
                 data: [],
                 options: {
                     selectAll: false,
@@ -634,39 +637,18 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     defaultValue: 'Select options'
                 }
             };
-            
-            var __showFilterNames = {
-                'SHOW_COMPANY': true,
-                'SHOW_TRAVEL_AGENT': true,
-    
-                // for CREDIT_CHECK_REPORT
-                'INCLUDE_DUE_OUT': true,
-                'INCLUDE_INHOUSE': true,
-                'RESTRICTED_POST_ONLY': true,
-                'EXCEEDED_ONLY': true,
-    
-                // for room ooo oos report
-                OOO: true,
-                OOS: true
-            };
 
-            var entity = $scope.selectedEntityDetails;
-
-            var __pushShowData = function(entity, filter) {
-                entity['hasShow']['data'].push({
+            var pushShowData = function(filter) {
+                $scope.filters['hasShow']['data'].push({
                     paramKey: filter.value.toLowerCase(),
                     description: filter.description,
-                    selected: filter.value === 'EXCEEDED_ONLY' ? false : true
+                    selected: filter.value !== 'EXCEEDED_ONLY'
                 });
             };
 
             _.each($scope.selectedEntityDetails.filters, function(filter) {
                 var selected = false,
                     mustSend = false;
-
-                if (__showFilterNames[filter.value] && entity.title !== reportNames['IN_HOUSE_GUEST']) {
-                     __pushShowData(entity, filter);
-                }
 
                 if (filter.value === 'ACCOUNT' || filter.value === 'GUEST') {
                     selected = true;
@@ -679,7 +661,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 }
 
                 selected = false;
-                if ( matchGeneralOptions[filter.value] ) {
+                // For credit check report, include due out comes under show
+                if ( matchGeneralOptions[filter.value] && !$scope.isCreditCheckReport) {
 
                     if ( $scope.selectedEntityDetails.report.description === 'Arriving Guests' && filter.value === 'DUE_IN_ARRIVALS' ) {
                         selected = true;
@@ -753,6 +736,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                         description: filter.description,
                         selected: true
                     });
+                } else if (showFilterNames.indexOf(filter.value) > -1 && 
+                            $scope.selectedEntityDetails.report.title !== reportNames['IN_HOUSE_GUEST']) {
+                    pushShowData(filter);
                 }
             });
 
@@ -785,6 +771,11 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 $scope.filters.hasDisplay.options.selectAll = false;
                 _.map($scope.filters.hasDisplay.data, function (displayOption) {
                     displayOption.selected = false;
+                });
+
+                $scope.filters.hasShow.options.selectAll = false;
+                _.map($scope.filters.hasShow.data, function (showOption) {
+                    showOption.selected = false;
                 });
             }
 
@@ -849,9 +840,16 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     $scope.filters.hasUsers['data'] = selectedEmps;
                     $scope.filters.hasUsers['options']['selectAll'] = selectedEmps.length === value.length;
                     
-                }
+                } else if (showFilterNames.indexOf(upperCaseKey) > -1) {
+                    var currentFilter = _.find($scope.filters.hasShow.data, { paramKey: key });
 
-                if (upperCaseKey === 'SHOW_ADJUSTMENTS' || upperCaseKey === 'SHOW_DELETED_CHARGES') {
+                    if (currentFilter) {
+                        currentFilter.selected = true;
+                    }
+
+                    $scope.filters.hasShow['options']['selectAll'] = ($scope.filters.hasShow['data'].filter(item => item.selected).length === $scope.filters.hasShow['data'].length);
+
+                } else if (upperCaseKey === 'SHOW_ADJUSTMENTS' || upperCaseKey === 'SHOW_DELETED_CHARGES') {
                     applySelectedChargeTypes(key);
                 }
 
@@ -915,7 +913,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             if ( angular.isDefined(hasAccOrGuest) ) {
                 $scope.scheduleParams.time_period_id = _.find($scope.originalScheduleTimePeriods, { value: "ALL" }).id;
                 $scope.isGuestBalanceReport = true;
-            } else if ($scope.isYearlyTaxReport) {
+            } else if ($scope.isYearlyTaxReport || $scope.isCreditCheckReport ) {
                 $scope.scheduleParams.time_period_id = _.find($scope.originalScheduleTimePeriods, { value: "ALL" }).id;
             } else if ( angular.isDefined($scope.selectedEntityDetails.time_period_id) ) {
                 $scope.scheduleParams.time_period_id = $scope.selectedEntityDetails.time_period_id;
@@ -1154,6 +1152,11 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 $scope.selectedEntityDetails = data;
                 $scope.isGuestBalanceReport = false;
                 $scope.isYearlyTaxReport = false;
+                $scope.isCreditCheckReport = false;
+
+                if ($scope.selectedEntityDetails.report.title === reportNames['CREDIT_CHECK_REPORT']) {
+                    $scope.isCreditCheckReport = true;
+                }
 
                 if ( !! $scope.selectedSchedule && $scope.selectedSchedule.active ) {
                     $scope.selectedSchedule.active = false;
@@ -1298,8 +1301,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.isCreditCheckReport = false;
             $scope.isYearlyTaxReport = false;
 
-            if($scope.selectedEntityDetails.report.title === "Credit Check Report"){
-            $scope.isCreditCheckReport = true;
+            if ($scope.selectedEntityDetails.report.title === reportNames['CREDIT_CHECK_REPORT']) {
+                $scope.isCreditCheckReport = true;
             }
 
 

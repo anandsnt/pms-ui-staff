@@ -50,13 +50,13 @@
         <div class="wrapper">
             <h3>Schedule Parameters<span>{{ selectedEntityDetails.report.title }}</span></h3>
             <multi-option-selection 
-                ng-show="selectedEntityDetails.hasShow && selectedEntityDetails.hasShow.data.length"
+                ng-show="filters.hasShow && filters.hasShow.data.length"
                 label="Show"
-                on-update="refreshFilterScroll"
-                data="selectedEntityDetails.hasShow.data"
-                options="selectedEntityDetails.hasShow.options">
+                on-update="refreshSecondColumnScroll"
+                data="filters.hasShow.data"
+                options="filters.hasShow.options">
             </multi-option-selection>
-            <div class="entry" ng-hide="isGuestBalanceReport || isYearlyTaxReport || selectedEntityDetails.hideTimePeriod">
+            <div class="entry" ng-hide="isGuestBalanceReport || isYearlyTaxReport || isCreditCheckReport">
                 <label for="time-period">Time Period</label>
                 <div class="select">
                     <select ng-model="scheduleParams.time_period_id"
