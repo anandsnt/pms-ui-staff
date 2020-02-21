@@ -1270,7 +1270,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		$scope.toggleStayDaysMode = function() {
 			
 			$scope.stateCheck.stayDatesMode = !$scope.stateCheck.stayDatesMode;
-
+			
 			if (!$scope.stateCheck.stayDatesMode) {
 				$scope.reservationData.currentSelectedRateCurrencyId = "";
 			}
@@ -1307,6 +1307,13 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			}
 			$scope.stateCheck.dateModeActiveDate = selectedDate;
 			$scope.stateCheck.selectedStayDate = ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates[selectedDate];
+			var stayDateIndex = Object.keys(ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates).indexOf(selectedDate);
+
+			if (stayDateIndex > 0) {
+				if ($scope.stateCheck.stayDatesMode && ($scope.reservationData.rateCurrencyId !== null && $scope.reservationData.rateCurrencyId !== '')) {
+					$scope.reservationData.currentSelectedRateCurrencyId = $scope.reservationData.rateCurrencyId;
+				}
+			}
 			reInitialize();
 		};
 
@@ -1589,6 +1596,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			}
 
 			$scope.reservationData.rateCurrency = rateInfo.rateCurrency;
+			$scope.reservationData.rateCurrencyId = rateInfo.rateCurrencyId;
 			if ($scope.stateCheck.stayDatesMode && $scope.reservationData.numNights > 1) {
 				$scope.reservationData.currentSelectedRateCurrencyId = rateInfo.rateCurrencyId;
 			}			
