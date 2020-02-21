@@ -1,0 +1,22 @@
+<div class="entry full-width" ng-controller="rvCardSearchContractOwnerCtrl">
+    <label for="contract-owner">Contract Owner</label>
+    <div class="contract-grid" ng-class="{'disable-element': contractData.disableFields}">
+        <div class="select">
+            <select id="contract-owners-active" ng-model="contractData.contractOwner.selectedOwner.id">
+                <option ng-click="clickedOnResult()" value="" ng-selected="contractData.contractOwner.selectedOwner.id === null">No contract owner</option>
+                <optgroup label="Active Users">
+                    <option ng-click="clickedOnResult(item)" ng-repeat="item in contractData.contractOwner.results" value="{{item.id}}" ng-selected="contractData.contractOwner.selectedOwner.id === item.id" ng-if="item.is_active">{{item.name}}</option>
+                </optgroup>
+                <!-- If L63 is checked, show this: -->
+                <optgroup label="Inactive Users" ng-show="contractData.contractOwner.isInactive">
+                    <option ng-click="clickedOnResult(item)" ng-repeat="item in contractData.contractOwner.results" value="{{item.id}}" ng-selected="contractData.contractOwner.selectedOwner.id === item.id" ng-if="!item.is_active">{{item.name}}</option>
+                </optgroup>
+            </select>
+        </div>
+        <label class="checkbox inline" ng-click="clickedInactive()" ng-class="{'checked': contractData.contractOwner.isInactive}"> <!-- Add class 'checked' when L63 is checked -->
+            <span class="icon-form icon-checkbox" ng-class="{'checked': contractData.contractOwner.isInactive}"></span> <!-- Add class 'checked' when L63 is checked -->
+            <input type="checkbox">
+            Include Inactive Users
+        </label>
+    </div>
+</div>

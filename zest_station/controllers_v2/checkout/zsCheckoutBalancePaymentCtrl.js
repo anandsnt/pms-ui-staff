@@ -1,5 +1,5 @@
-angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$scope', '$log', 'zsPaymentSrv', '$stateParams', 'zsStateHelperSrv', '$state', '$timeout', '$controller', 'zsEventConstants',
-    function($scope, $log, zsPaymentSrv, $stateParams, zsStateHelperSrv, $state, $timeout, $controller, zsEventConstants) {
+angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$scope', '$log', 'zsPaymentSrv', '$stateParams', 'zsStateHelperSrv', '$state', '$timeout', '$controller', 'zsEventConstants', '$translate',
+    function($scope, $log, zsPaymentSrv, $stateParams, zsStateHelperSrv, $state, $timeout, $controller, zsEventConstants, $translate) {
 
 
         $controller('zsPaymentCtrl', {
@@ -9,10 +9,50 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
         // uncomment for debugging
         // $scope.isIpad = true;
 
-        $scope.goToNextScreen = function() {
+        var goToNextState = function () {
             $state.go('zest_station.checkoutReservationBill', angular.extend(zsStateHelperSrv.getPreviousStateParams(), {
                 dueBalancePaid: true
             }));
+        };
+
+        var sendPaymentReceipt = function () {
+            var paymentParams = zsPaymentSrv.getPaymentData();
+
+            var apiParams = {
+                transaction_id: paymentParams.transaction_id,
+                bill_id: paymentParams.bill_id,
+                email: $scope.reservationData.email,
+                locale: $translate.use()
+            };
+
+            var options = {
+                params: apiParams,
+                successCallBack: goToNextState,
+                failureCallBack: goToNextState
+            };
+
+            $scope.callAPI(zsPaymentSrv.sendPaymentReceipt, options);
+        };
+
+        $scope.$on('EMAIL_UPDATION_SUCCESS', function() {
+            zsStateHelperSrv.setPreviousStateParams($scope.reservationData);
+            sendPaymentReceipt();
+        });
+        $scope.goToNextScreen = function() {
+            var sendPaymentReceiptOn =  $scope.zestStationData.hotelSettings.auto_email_pay_receipt;
+            var emailPresent = $scope.reservationData.email;
+
+            if (sendPaymentReceiptOn && emailPresent) {
+                sendPaymentReceipt();
+            } else if (sendPaymentReceiptOn && !emailPresent) {
+                $scope.screenMode.value = 'ENTER_EMAIL';
+                // mode inside the directive
+                $scope.mode = 'EMAIL_ENTRY_MODE';
+            }
+            else {
+                goToNextState();
+            }
+            
         };
 
         $scope.reTryCardSwipe = function() {
@@ -40,6 +80,7 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
             $scope.cardDetails = paymentParams.payment_details;
             $scope.reservation_id = paymentParams.reservation_id;
             $scope.isCBAPayment = $scope.zestStationData.paymentGateway === 'CBA' || ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.hotelSettings.mli_cba_enabled);
+            $scope.reservationData = zsStateHelperSrv.getPreviousStateParams();
 
             if ($scope.isCBAPayment && $scope.isIpad) {
                 $scope.$emit("FETCH_PAYMENT_TYPES", {

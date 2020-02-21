@@ -236,6 +236,19 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'LAST_OCTOBER',
                 'LAST_NOVEMBER',
                 'LAST_DECEMBER'                
+             ],
+             'Action Manager': [
+                'YESTERDAY',
+                'TODAY',
+                'TOMORROW',
+                'LAST_SEVEN_DAYS',
+                'NEXT_SEVEN_DAYS'             
+             ],
+             'Financial Transactions - Adjustment Report': [
+                'YESTERDAY',
+                'TODAY',
+                'LAST_SEVEN_DAYS',
+                'LAST_MONTH'                             
              ]
         };
 

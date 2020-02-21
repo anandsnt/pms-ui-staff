@@ -4,7 +4,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
         BaseCtrl.call(this, $scope);
 
-        SharedMethodsBaseCtrl.call (this, $scope, RVAutomaticEmailSrv, ngDialog);
+        SharedMethodsBaseCtrl.call (this, $scope, $rootScope, RVAutomaticEmailSrv, ngDialog);
 
         $scope.isSubmitButtonEnabled = false;
 
@@ -1629,13 +1629,15 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
             $scope.currentPaymentBillId = data.bill_id;
             $scope.currentPaymentTransactionId = data.transaction_id;
+            $scope.isDepositPayment = data.is_deposit_payment;
 
-            if ($rootScope.autoEmailPayReceipt || $rootScope.autoEmailDepositInvoice) {
+            if ($rootScope.autoEmailPayReceipt || ($rootScope.autoEmailDepositInvoice && $scope.isDepositPayment)) {
                 $scope.autoTriggerPaymentReceiptActions();
             }
 
             $scope.depositData.authorizationCode = data.authorization_code;
             $scope.reservationData.selectedPaymentId = data.payment_method.id;
+            $scope.isDepositPayment = data.is_deposit_payment;
 
             $scope.reservationData.depositData = angular.copy($scope.depositData);
             runDigestCycle();

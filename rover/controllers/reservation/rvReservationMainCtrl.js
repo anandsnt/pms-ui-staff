@@ -84,6 +84,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
         $scope.initreverseCheckoutDetails();
 
         $scope.initReservationData = function() {
+            
             RVReservationStateService.bookMark.lastPostedRate = null;
             $scope.hideSidebar = false;
             $scope.addonsData.existingAddons = [];
@@ -495,7 +496,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             var room = successcallbackParams.room,
                 index = successcallbackParams.index,
                 reason = data.reason;
-
+                
             openRateAdjustmentPopup(room, index, reason);
         };
 
@@ -593,6 +594,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                             if (!addon.is_rate_addon) {
                                 addonsForRoomType.push({
                                     id: addon.id,
+                                    selected_post_days: addon.selected_post_days,
+                                    start_date: addon.start_date,
+                                    end_date: addon.end_date,
                                     quantity: addon.quantity || 1
                                 });
                             }
@@ -1272,7 +1276,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
                         totalDeposit = parseFloat(totalDeposit) + parseFloat(reservation.deposit_amount);
                         updateConfirmationData(key, reservation);
-                        totalPaymentDeposit = parseFloat(totalDeposit) + parseFloat(reservation.deposit_payment_amount);
+                        totalPaymentDeposit = parseFloat(totalPaymentDeposit) + parseFloat(reservation.deposit_payment_amount);
                     });
 
                     $scope.reservationData.depositAmount = parseFloat(totalDeposit).toFixed(2);

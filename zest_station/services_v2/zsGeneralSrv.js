@@ -23,6 +23,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         var themeMappings = {
             'guestweb_zoku': 'zoku',
             'guestweb_yotel': 'yotel',
+            'yotel_with_confirmation': 'yotel',
             'guestweb_avenue': 'avenue',
             'guestweb_public_ny': 'public',
             'guestweb_public_ny_v2': 'public_v2',
@@ -128,7 +129,9 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             "guestweb_why_hotel_houston": "why-houston",
             "guestweb_victory_house": "victory-house",
             "guestweb_dimond_center_hotel": "dimond-center",
-            "guestweb_zedwell_trocadero": "zedwell"
+            "guestweb_zedwell_trocadero": "zedwell",
+            "guestweb_hotel_brooklyn": "brooklyn",
+            "guestweb_krowoderska_apartments": "krowoderska"
         };
 
 

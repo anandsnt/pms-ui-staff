@@ -230,7 +230,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             item_55: false,
             item_56: false,
             item_57: false,
-            item_58: false
+            item_58: false,
+            item_59: false
         };
         $scope.toggleFilterItems = function (item) {
             if (!$scope.filterItemsToggle.hasOwnProperty(item)) {
@@ -2174,6 +2175,17 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                         }
                     }
                 }
+            }
+
+            if (report.hasShowUpsellOnly) {
+                key = reportParams['SHOW_UPSELL_ONLY'];
+
+                params[key] = report.show_upsell_only;
+
+                if ( changeAppliedFilter ) {
+                    $scope.appliedFilter['show_upsell_only'] = report.show_upsell_only;
+                }
+                
             }
 
             // CICO-35959 - show room revenue by default

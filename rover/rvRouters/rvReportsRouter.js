@@ -53,9 +53,9 @@ angular.module('reportsModule', [])
                         generated_date: $state.transition.params().date,
                         per_page: RVReportsInboxSrv.PER_PAGE,
                         user_id: $rootScope.userId,
-                        page: $state.transition.params().page
+                        page: $state.transition.from('name').name === 'rover.reports.dashboard' ? 1 : $state.transition.params().page
                     };
-                    
+
                     return RVReportsInboxSrv.fetchReportInbox(params);
                 }
             },

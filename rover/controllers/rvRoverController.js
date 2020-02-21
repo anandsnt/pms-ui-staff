@@ -154,6 +154,7 @@ sntRover.controller('roverController', [
         $rootScope.isLateCheckoutTurnedOn = hotelDetails.late_checkout_settings.is_late_checkout_on;
         $rootScope.businessDate = hotelDetails.business_date;
         $rootScope.hotelCurrencyId = hotelDetails.default_payment_currency.id;
+        $rootScope.paymentCurrencySymbol = hotelDetails.default_payment_currency.symbol;
         $rootScope.currencySymbol = getCurrencySign(hotelDetails.currency.value);
         $rootScope.isMultiCurrencyEnabled = hotelDetails.is_multi_currency_enabled;
         $rootScope.invoiceCurrencySymbol = hotelDetails.is_multi_currency_enabled && hotelDetails.invoice_currency !== "" ? getCurrencySign(hotelDetails.invoice_currency.value) : '';
@@ -172,6 +173,7 @@ sntRover.controller('roverController', [
         $rootScope.paymentCurrencyList = hotelDetails.currency_list_for_payment;
         $rootScope.autoEmailPayReceipt =  hotelDetails.auto_email_pay_receipt;
         $rootScope.autoEmailDepositInvoice =  hotelDetails.auto_email_deposit_invoice;
+        $rootScope.hotelDefaultLanguageCode =  hotelDetails.hotel_default_language_code;
         $rootScope.shouldShowPaymentDropDown = false;
         if ($rootScope.isMultiCurrencyEnabled && $rootScope.paymentCurrencyList.length > 0 ) {
             $rootScope.shouldShowPaymentDropDown = true;

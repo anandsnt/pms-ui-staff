@@ -254,7 +254,8 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		 * Delete Tax rule
 		 */
 		$scope.deleteTaxRule = function(indexToBeDeleted) {
-			$scope.prefetchData.custom_tax_rules = $scope.prefetchData.custom_tax_rules.splice(indexToBeDeleted);
+			$scope.prefetchData.custom_tax_rules.splice(indexToBeDeleted, 1);
+			$scope.prefetchData.custom_tax_rules
 		};
 		/*
 		 * Delete Date Range parameter
@@ -378,6 +379,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 
 				$scope.prefetchData.selected_charge_group = allowanceChargeGroup.value;
 			} else if (selectedType === '12') {
+				$scope.prefetchData.allow_manual_posting = false;
 				$scope.warningMessage = 'The recommended naming convention for Deposit Charge codes is DEP001, DEP002, DEP003, etc.';
 			} else {
 				$scope.warningMessage = '';

@@ -1,4 +1,4 @@
-<section id="main" class="centered" role="main" click-touch='resetTime()'>
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-if="screenMode === 'PAYMENT_MODE'">
     <div id="content">
         <!-- normal flow, no deposit required, just swiping for reservation -->
         <h1 ng-show='zestStationData.waitingForSwipe && !authAfterDeposit && !payingDeposit'>
@@ -100,3 +100,20 @@
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
 </section>
+
+
+ <section id="main" role="main" class="centered" ng-show="screenMode === 'ENTER_EMAIL'">
+        <zs-email-collection 
+            mode="mode" 
+            guest-id="reservationData.guest_detail_id" 
+            icon="icons.url.keyboard" 
+            email="reservationData.email" 
+            show-keyboard="showOnScreenKeyboard('email-entry')" 
+            on-focus="focusInputField" 
+            on-blur="callBlurEventForIpad()" 
+            class='email-entry-div'
+            heading='ENTER_YOUR_EMAIL'
+            sub-heading='ENTER_YOUR_EMAIL_SUB_HEADING'
+            style="width: 100%">
+        </zs-email-collection>
+    </section>
