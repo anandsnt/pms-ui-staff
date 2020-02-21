@@ -131,7 +131,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             "guestweb_dimond_center_hotel": "dimond-center",
             "guestweb_zedwell_trocadero": "zedwell",
             "guestweb_hotel_brooklyn": "brooklyn",
-            "guestweb_krowoderska_apartments": "krowoderska"
+            "guestweb_krowoderska_apartments": "krowoderska",
+            "guestweb_bayou_residences": "bayou"
         };
 
 

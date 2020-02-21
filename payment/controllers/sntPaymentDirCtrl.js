@@ -42,7 +42,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 emvTimeout: 120,
                 isConfirmedDBpayment: false,
                 selectedPaymentCurrencyId: $rootScope.hotelCurrencyId,
-                selectedPaymentCurrencySymbol: $rootScope.paymentCurrencySymbol
+                selectedPaymentCurrencySymbol: ($scope.selectedPaymentType === 'CC') ? $rootScope.currencySymbol : $rootScope.paymentCurrencySymbol
             };
 
             $scope.giftCard = {
@@ -1040,7 +1040,7 @@ angular.module('sntPay').controller('sntPaymentController',
                         $scope.errorMessage = errorMessage;
                         sntActivity.stop('FETCH_GIFT_CARD_BALANCE');
                     });
-
+                    
                 } else {
                     // hides the field and reset the amount stored
                     $scope.giftCard.amountAvailable = false;
@@ -1099,7 +1099,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 // If the changed payment type is CC and payment gateway is MLI show CC addition options
                 // If there are attached cards, show them first
                 if (!!selectedPaymentType && selectedPaymentType.name === 'CC') {
-                    if (shouldReset) {
+                    if (shouldReset || isInitialLoad) {
                         $scope.payment.amount = initialPaymentAmount;
                     }
 
