@@ -403,13 +403,6 @@ sntRover.controller('RVdashboardController',
                     $scope.dashboardFilter.selectedAnalyticsMenu = selectedChart;
                 });
 
-                $scope.onAnlayticsRoomTypeChange = function() {
-                    $scope.$broadcast('RELOAD_DATA_WITH_SELECTED_FILTER', {
-                        "room_type": $scope.dashboardFilter.selectedRoomType,
-                        "date": $scope.dashboardFilter.datePicked
-                    });
-                };
-
                 $scope.dashboardFilter.datePicked = angular.copy($rootScope.businessDate);
                 $scope.datePicked = moment($rootScope.businessDate).format('YYYY-MM-DD');
 
@@ -420,10 +413,9 @@ sntRover.controller('RVdashboardController',
                     dateFormat: 'yy-mm-dd',
                     maxDate: moment($rootScope.businessDate).add(3, 'days').format('YYYY-MM-DD'),
                     onSelect: function(dateText, inst) {
+                        $scope.datePicked = dateText;
                         $scope.dashboardFilter.datePicked = dateText;
-                        $scope.$broadcast('RELOAD_DATA_WITH_DATE_FILTER', {
-                            "date": $scope.dashboardFilter.datePicked
-                        });
+                        $scope.$broadcast('RELOAD_DATA_WITH_DATE_FILTER_' + $scope.dashboardFilter.selectedAnalyticsMenu);
                         ngDialog.close();
                     }
                 };
@@ -452,8 +444,9 @@ sntRover.controller('RVdashboardController',
                     });
                 });
 
-                $scope.refreshAnalyticsChart = function() {
-                    $scope.$broadcast('REFRESH_ANALYTCIS_CHART');
+                $scope.refreshAnalyticsChart = function(selectedChart) {
+                    $scope.$broadcast('REFRESH_ANALYTCIS_CHART_' + selectedChart);
+                    $scope.dashboardFilter.showFilters = false;
                 };
 
                 $scope.onAnlayticsFilterChanged = function() {
