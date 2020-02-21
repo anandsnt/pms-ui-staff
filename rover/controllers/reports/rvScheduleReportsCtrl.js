@@ -1232,7 +1232,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Daily Transactions': true,
                 'Action Manager': true,
                 'Financial Transactions - Adjustment Report': true,
-                'Credit Check Report':true
+                'Credit Check Report': true
             };
 
             var forWeekly = {
@@ -1246,7 +1246,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Daily Transactions': true,
                 'Action Manager': true,
                 'Financial Transactions - Adjustment Report': true,
-                'Credit Check Report':true
+                'Credit Check Report': true
             };
             var forMonthly = {
                 'Arrival': true,
@@ -1259,7 +1259,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Daily Transactions': true,
                 'Action Manager': true,
                 'Financial Transactions - Adjustment Report': true,
-                'Credit Check Report':true
+                'Credit Check Report': true
             };
 
             var forHourly = {
@@ -1270,7 +1270,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Guest Balance Report': true,
                 'Yearly Tax Report': true,
                 'Business on the Books': true,
-                'Credit Check Report':true              
+                'Credit Check Report': true              
             };
 
             if ( forHourly[item.report.title] ) {
@@ -1487,7 +1487,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 selectedEntity.report.title === reportNames['DAILY_PRODUCTION_RATE'] || 
                 selectedEntity.report.title === reportNames['DAILY_TRANSACTIONS'] || 
                 selectedEntity.report.title === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT'] || 
-                selectedEntity.report.title === reportNames['ACTIONS_MANAGER'] )
+                selectedEntity.report.title === reportNames['ACTIONS_MANAGER'] ||
+                selectedEntity.report.title === reportNames['CREDIT_CHECK_REPORT'] )
                  ) {
                 $scope.scheduleFormat = _.filter($scope.scheduleFormat, function (object) {
                     return object.value === 'CSV';
@@ -1505,7 +1506,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 selectedEntity.report.title === reportNames['DAILY_TRANSACTIONS'] ||
                 selectedEntity.report.title === reportNames['GUEST_BALANCE_REPORT'] || 
                 selectedEntity.report.title === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT'] || 
-                selectedEntity.report.title === reportNames['ACTIONS_MANAGER'] );
+                selectedEntity.report.title === reportNames['ACTIONS_MANAGER'] ||
+                selectedEntity.report.title === reportNames['CREDIT_CHECK_REPORT'] );
         };
 
         // Listener for creating new report schedule
