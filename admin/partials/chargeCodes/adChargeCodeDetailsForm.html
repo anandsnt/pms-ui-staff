@@ -223,11 +223,11 @@
 	                                <div class="condition date-range" ng-if="!item.shouldHideDateRange">
 	                                    <label for="date-range-from">Date From</label>
 	                                    <div class="has-datepicker">
-	                                        <input class="datepicker" ng-click = "showDatePickerChargeCode($index, 'from')" id="date-range-from" ng-model="item.from_date" value="{{item.from_date}}" />
+	                                        <input class="datepicker" ng-click = "showDatePickerChargeCode($index, 'from')" id="date-range-from" ng-model="item.from_date | date:dateFormat" value="{{item.from_date}}" />
 	                                    </div>
 	                                    <label for="date-range-to">To</label>
 	                                    <div class="has-datepicker">
-	                                        <input class="datepicker" ng-click = "showDatePickerChargeCode($index, 'to')" ng-model="item.to_date" id="date-range-to" value="{{item.to_date}}" />
+	                                        <input class="datepicker" ng-click = "showDatePickerChargeCode($index, 'to')" ng-model="item.to_date | date:dateFormat" id="date-range-to" value="{{item.to_date}}" />
 	                                    </div>
 	                                    <button type="button" class="button white" ng-click="deleteDateRange($index)">
 	                                        <span class="icons icon-delete large-icon" ></span>

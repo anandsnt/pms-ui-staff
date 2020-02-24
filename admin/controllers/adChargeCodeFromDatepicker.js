@@ -18,9 +18,9 @@ $scope.setUpData = function(minDate) {
 
         onSelect: function(dateText, inst) {
         	if ($scope.whichDate === "from") {
-        		$scope.prefetchData.custom_tax_rules[$scope.currentTaxIndex].from_date = $filter('date')(tzIndependentDate($scope.from_date), $rootScope.dateFormat);
+        		$scope.prefetchData.custom_tax_rules[$scope.currentTaxIndex].from_date = moment(dateText, "MM/DD/YYYY").format("YYYY-MM-DD");
         	} else {
-        		$scope.prefetchData.custom_tax_rules[$scope.currentTaxIndex].to_date = $filter('date')(tzIndependentDate($scope.from_date), $rootScope.dateFormat);
+        		$scope.prefetchData.custom_tax_rules[$scope.currentTaxIndex].to_date = moment(dateText, "MM/DD/YYYY").format("YYYY-MM-DD");
         	}
             
             ngDialog.close();
