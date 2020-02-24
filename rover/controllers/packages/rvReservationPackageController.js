@@ -97,7 +97,7 @@ sntRover.controller('RVReservationPackageController',
 
 				$scope.selectedPurchesedAddon.start_date = startDate;
 				$scope.selectedPurchesedAddon.end_date = endDate;
-				$scope.selectedPurchesedAddon.nameCharLimit = (selectedPurchesedAddon.name.length > 23) ? 20 : 23;
+				$scope.selectedPurchesedAddon.nameCharLimit = ($scope.selectedPurchesedAddon.name.length > 23) ? 20 : 23;
 				angular.forEach($scope.selectedPurchesedAddon.post_instances, function(item) {
 						if (item.active) {
 							var postDate = new Date(item.post_date),
