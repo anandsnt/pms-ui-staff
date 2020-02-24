@@ -272,6 +272,7 @@ sntRover.controller('RVbillCardController',
 
 	$scope.isPrintRegistrationCard = false;
 	$scope.isAustrianRegistrationCardEnabled = $scope.reservationBillData.austrian_registration_card_enabled;
+	$scope.isArabicRegistrationCardEnabled = $scope.reservationBillData.arabic_registration_card_enabled;
 
 	// To send track details on checkin button
 	var swipedTrackDataForCheckin = {};
