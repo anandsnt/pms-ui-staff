@@ -3,7 +3,7 @@
     <div class="contract-grid">
         <div class="select" ng-class="{'disable-element': contractData.disableFields}">
             <select id="contract-owners-active" ng-model="contractData.contractOwner.selectedOwner.id">
-                <option ng-if="contractData.disableFields" value="" selected>{{contractData.contractOwner.selectedOwner.full_name}}</option>
+                <option ng-if="contractData.disableFields" value="" selected>{{contractData.contractOwner.selectedOwner.fullName}}</option>
                 <option ng-if="!contractData.disableFields" ng-click="clickedOnResult()" value="" ng-selected="checkNoContract()">No contract owner</option>
                 <optgroup label="Active Users">
                     <option ng-click="clickedOnResult(item)" ng-repeat="item in contractData.contractOwner.results" value="{{item.id}}" ng-selected="contractData.contractOwner.selectedOwner.id === item.id" ng-if="item.is_active">{{item.name}}</option>
