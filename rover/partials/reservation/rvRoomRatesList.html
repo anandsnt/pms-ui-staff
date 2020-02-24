@@ -111,8 +111,13 @@
 
                         </div>
                         <div class="book-rate" ng-if="room.isCollapsed">
-                            <h4 ng-hide="borrowForGroups || room.defaultRate.isCorporate" translate>RESV_BEST_RATE</h4>
-                            <h4 ng-show="!borrowForGroups && room.defaultRate.isCorporate" translate>RESV_COR_RATE</h4>
+                            <h4 ng-hide="borrowForGroups" translate>RESV_BEST_RATE</h4>
+                            <!-- The bellow line is commented out as part of CICO-73583-removal of account_id from rates table.
+                                Contracts have been separated out from the rates and
+                                We'll be showing the rates linked to any contract on CC/TA, and the labels,
+                                only in the recommended tab and no other tabs will have any reference to the contract or account.
+                            -->
+                            <!-- <h4 ng-show="!borrowForGroups && room.defaultRate.isCorporate" translate>RESV_COR_RATE</h4> -->
                             <div class="price" ng-if="!borrowForGroups && !room.defaultRate.isSuppressed">
                                 {{room.rateCurrency}}{{room.defaultRate.adr | number: 2}}
                                 <span translate>RESV_AVG_NIGHT</span>
@@ -144,7 +149,6 @@
                                 <h3 ng-class="{'restricted': rate.numRestrictions > 0}">
                                     {{rate.name}}
                                 </h3>
-                                    <span class="corporate" ng-if="rate.isCorporate" translate>CORPORATE_LABEL</span>
                                     <span class="corporate" ng-if="rate.isPromotion">PROMOTION</span>
                                     <span class="corporate" ng-if="rate.isMember">MEMBER</span>
                                     <span class="corporate" ng-if="rate.isGroupRate">GROUP</span>

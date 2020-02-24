@@ -5,7 +5,7 @@
 	<ul class="totals">
 		<li>
 			<div class="data">
-				<span class="label" translate>TOTAL_FEES</span>
+				<span class="label" translate>TOTAL_CHARGES</span>
 				<span class="value"><span class="currency">{{currencySymbol}}</span>{{transactionsDetails.total_fees | number: precisonTwo}}</span>
 			</div>
 		</li>
@@ -130,7 +130,7 @@
 						<!-- Fees & Balance Overview -->
 						<ul class="group-overview">
 							<li>
-								<span class="title" translate>FEES</span>
+								<span class="title" translate>CHARGES</span>
 								<span class="value"><span class="currency">{{currencySymbol}}</span>{{billData.total_amount | number: precisonTwo}}</span>
 							</li>
 							<li class="break">
@@ -173,7 +173,7 @@
 										<th translate>DATE</th>
 										<th translate>CHARGE_CODE</th>
 										<th translate>DESCRIPTION</th>
-										<th translate>FEES</th>
+										<th translate>CHARGES</th>
 										<th translate>CREDITS</th>
 										<th class="form" ng-show="showMoveCharges">{{'BILL' |translate}} #</th>
 										<th class="action" translate>EDIT</th>
@@ -192,11 +192,12 @@
 										</td>
 									</tr>
 									<tr class="active edit">
-										<td colspan="3" class="total-label">       <button type="button" class="button with-icon only-icon blue inline" click-touch="showFormatBillPopup(billData.bill_number, billData.is_active)">
-											<span class="icons icon-invoice"></span>
-											{{'INVOICE' |translate}}
+										<td colspan="3" class="total-label">
+											<button type="button" class="button with-icon only-icon blue inline" click-touch="showFormatBillPopup(billData.bill_number, billData.is_active)">
+												<span class="icons icon-invoice"></span>
+												{{'INVOICE' |translate}}
 											</button>
-											{{'STAY_FEES' |translate}} ({{'AS_OF' |translate}}  {{ businessDate | date:dateFormat }}):
+											{{'CHARGES' |translate}} ({{'AS_OF' |translate}}  {{ businessDate | date:dateFormat }}):
 										</td>
 										<td colspan="3" class="total-value">
 											 <strong><span class="currency">{{currencySymbol}}</span>{{billData.total_amount | number: precisonTwo}}</strong>

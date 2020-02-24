@@ -46,7 +46,8 @@ angular.module('reportsModule')
             'hasMinRoomNights',
             'hasMinRevenue',
             'showActionables',
-            'show_vat_with_rates'
+            'show_vat_with_rates',
+            'show_upsell_only'
         ];
 
         // Extract rate types and rates list
@@ -742,6 +743,10 @@ angular.module('reportsModule')
 
                 }
 
+                if (filter.value === 'SHOW_UPSELL_ONLY') {
+                    report['hasShowUpsellOnly'] = filter;
+                }
+
 
                 // fill up DS for options combo box
                 if ( __optionFilterNames[filter.value] ) {
@@ -989,6 +994,8 @@ angular.module('reportsModule')
                         .then( fillCountries );
                 } else if ('INCLUDE_DAY_USE' === filter.value && !filter.filled) {
                     setIncludeDayuseFlag();
+                } else if ('SHOW_UPSELL_ONLY' === filter.value) {
+                    reportItem[reportParams['SHOW_UPSELL_ONLY']] = true;
                 } else {
                     // no op
                 }
@@ -1900,6 +1907,7 @@ angular.module('reportsModule')
 
         // to reorder the sort by to match the report details column positon
         factory.reOrderSortBy = function ( report ) {
+            var user;
 
             // for (arrival, departure) report the sort by items must be
             // ordered in a specific way as per the design
@@ -2060,7 +2068,8 @@ angular.module('reportsModule')
             // for rate adjustment report in the following order
             if ( report['title'] === reportNames['RATE_ADJUSTMENTS_REPORT'] ) {
                 var date      = angular.copy( report['sort_fields'][1] ),
-                    guestUser = angular.copy( report['sort_fields'][0] ),
+                    guestUser = angular.copy( report['sort_fields'][0] );
+
                     user      = angular.copy( report['sort_fields'][2] );
 
                 report['sort_fields'][0] = guestUser;
@@ -2128,15 +2137,17 @@ angular.module('reportsModule')
             if ( report['title'] === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT'] ) {
                 var chargeCode = angular.copy( _.find(report['sort_fields'], { 'value': 'CHARGE_CODE' }) ),
                     date  = angular.copy( _.find(report['sort_fields'], { 'value': 'DATE' }) );
+                    
+                    user = angular.copy( _.find(report['sort_fields'], { 'value': 'USER' }) );
 
                 report['sort_fields'][0] = null;
                 report['sort_fields'][1] = chargeCode;
                 report['sort_fields'][2] = null;
                 report['sort_fields'][3] = null;
                 report['sort_fields'][4] = null;
-                report['sort_fields'][5] = date;
+                report['sort_fields'][5] = user;
                 report['sort_fields'][6] = null;
-                report['sort_fields'][7] = null;
+                report['sort_fields'][7] = date;
                 report['sort_fields'][8] = null;
                 report['sort_fields'][9] = null;
             }
@@ -2563,12 +2574,38 @@ angular.module('reportsModule')
          * Fill charge groups and charge codes values
          * @param {Object} filter filter object
          * @param {Object} filterValues - object holding filter values
+         * @param {String} reportName - name of the report
          * @return {void}
          */
-        factory.fillChargeGroupsAndChargeCodes = function(filter, filterValues) {
+        factory.fillChargeGroupsAndChargeCodes = function(filter, filterValues, reportName) {
+            // Get the value of selectall checkbox for the charge groups
+            var getChargeGroupSelectAllVal = function (chargeGroups) {
+                    var selectAll = true;
 
-            var populateChargeGroupsAndChargeCodes = function (chargeGroupsArr, chargeCodesArr) {
-                var processedCGCC = __adjustChargeGroupsCodes(chargeGroupsArr, chargeCodesArr, 'REMOVE_PAYMENTS', true),
+                    if (filterValues && !!filterValues.charge_group_ids) {
+                        selectAll = filterValues.charge_group_ids.length === chargeGroups.length;
+                    } else if (filterValues && !filterValues.charge_group_ids) {
+                        selectAll = false;
+                    }
+                    
+                    return selectAll;
+                },
+                // Get the value of selectall checkbox for the charge codes
+                getChargeCodeSelectAllVal = function (chargeCodes) {
+                    var selectAll = true;
+
+                    if (filterValues && !!filterValues.charge_code_ids) {
+                        selectAll = filterValues.charge_code_ids.length === chargeCodes.length;
+                    } else if (filterValues && !filterValues.charge_code_ids) {
+                        selectAll = false;
+                    }
+                    
+                    return selectAll;
+                };
+
+            // Populate charge groups and charge codes
+            var populateChargeGroupsAndChargeCodes = function (chargeGroupsArr, excludeChargeGroup, shouldPopulateChargeGroups, shouldPopulateChargeCodes, chargeCodesArr) {
+                var processedCGCC = __adjustChargeGroupsCodes(chargeGroupsArr, chargeCodesArr, excludeChargeGroup, true),
                     chargeGroupsCopy = angular.copy( processedCGCC.chargeGroups ),
                     chargeCodesCopy = angular.copy( processedCGCC.chargeCodes ),
                     selectedChargeGroupIdx,
@@ -2577,89 +2614,236 @@ angular.module('reportsModule')
                 delete filter.hasByChargeGroup;
                 delete filter.hasByChargeCode;
 
-                if (filterValues && filterValues.charge_group_ids) {
-                    // _.each (filterValues.charge_group_ids, function (id) {
-                    //     selectedChargeGroup = _.findWhere(chargeGroupsCopy, {id: id});
-                    //     selectedChargeGroup.selected = true;
-                    // });
-                    chargeGroupsCopy = _.map(chargeGroupsCopy, function (chargeGroup) {
-                        selectedChargeGroupIdx = _.indexOf(filterValues.charge_group_ids, chargeGroup.id);
-                        chargeGroup.selected = false;
-                        if (selectedChargeGroupIdx > -1) {
-                            chargeGroup.selected = true;
-                        }
-
-                        return chargeGroup;
-                    });
-                }
-
-                filter.hasByChargeGroup = {
-                    data: chargeGroupsCopy,
-                    options: {
-                        selectAll: filterValues && filterValues.charge_group_ids ? filterValues.charge_group_ids.length === chargeGroupsCopy.length : true,
-                        hasSearch: false,
-                        key: 'name'
-                    },
-                    affectsFilter: {
-                        name: 'hasByChargeCode',
-                        process: function(filter, selectedItems) {
-                            _.each(filter.originalData, function (od) {
-                                od.disabled = true;
-                            });
-                            /**/
-                            _.each(filter.originalData, function (od) {
-                                _.each(od.associcated_charge_groups, function (cg) {
-                                    _.each(selectedItems, function (si) {
-                                        if (cg.id === si.id) {
-                                            od.disabled = false;
-                                        }
+                if (shouldPopulateChargeGroups) {
+                    if (filterValues && filterValues.charge_group_ids) {
+                    
+                        chargeGroupsCopy = _.map(chargeGroupsCopy, function (chargeGroup) {
+                            selectedChargeGroupIdx = _.indexOf(filterValues.charge_group_ids, chargeGroup.id);
+                            chargeGroup.selected = false;
+                            if (selectedChargeGroupIdx > -1) {
+                                chargeGroup.selected = true;
+                            }
+    
+                            return chargeGroup;
+                        });
+                    } else if (filterValues && !filterValues.charge_group_ids) {
+                        chargeGroupsCopy = _.map(chargeGroupsCopy, function(chargeGroup) {
+                            chargeGroup.selected = false;
+    
+                            return chargeGroup;
+                        });
+                    }
+    
+                    filter.hasByChargeGroup = {
+                        data: chargeGroupsCopy,
+                        options: {
+                            selectAll: getChargeGroupSelectAllVal(chargeGroupsCopy),
+                            hasSearch: false,
+                            key: 'name'
+                        },
+                        affectsFilter: {
+                            name: 'hasByChargeCode',
+                            process: function(filter, selectedItems) {
+                                _.each(filter.originalData, function (od) {
+                                    od.disabled = true;
+                                });
+                                /**/
+                                _.each(filter.originalData, function (od) {
+                                    _.each(od.associcated_charge_groups, function (cg) {
+                                        _.each(selectedItems, function (si) {
+                                            if (cg.id === si.id) {
+                                                od.disabled = false;
+                                            }
+                                        });
                                     });
                                 });
-                            });
-                            /**/
-                            filter.updateData();
+                                /**/
+                                filter.updateData();
+                            }
                         }
-                    }
-                };
-
-                if (filterValues && filterValues.charge_code_ids) {
-                    
-                    chargeCodesCopy = _.map(chargeCodesCopy, function (chargeCode) {
-                        selectedChargeCodeIdx = _.indexOf(filterValues.charge_code_ids, chargeCode.id);
-                        chargeCode.selected = false;
-                        if (selectedChargeCodeIdx > -1) {
-                            chargeCode.selected = true;
-                        }
-                        return chargeCode;
-                    });
+                    };
                 }
 
-                filter.hasByChargeCode = {
-                    data: chargeCodesCopy,
-                    originalData: chargeCodesCopy,
-                    options: {
-                        selectAll: filterValues && filterValues.charge_code_ids ? filterValues.charge_code_ids.length === chargeCodesCopy.length : true,
-                        hasSearch: false,
-                        key: 'name'
-                    },
-                    updateData: function() {
-                        var enabled = [];
-
-                        _.each (this.originalData, function (od) {
-                            if ( ! od.disabled ) {
-                                enabled.push(od);
+                if (shouldPopulateChargeCodes) {
+                    if (filterValues && !!filterValues.charge_code_ids) {
+                    
+                        chargeCodesCopy = _.map(chargeCodesCopy, function (chargeCode) {
+                            selectedChargeCodeIdx = _.indexOf(filterValues.charge_code_ids, chargeCode.id);
+                            chargeCode.selected = false;
+                            if (selectedChargeCodeIdx > -1) {
+                                chargeCode.selected = true;
                             }
+                            return chargeCode;
                         });
-                        this.data = enabled;
+                    } else if (filterValues && !filterValues.charge_code_ids) {
+                        chargeCodesCopy = _.map(chargeCodesCopy, function(chargeCode) {
+                            chargeCode.selected = false;
+    
+                            return chargeCode;
+                        });
                     }
-                };
+    
+                    filter.hasByChargeCode = {
+                        data: chargeCodesCopy,
+                        originalData: chargeCodesCopy,
+                        options: {
+                            selectAll: getChargeCodeSelectAllVal(chargeCodesCopy),
+                            hasSearch: false,
+                            key: 'name'
+                        },
+                        updateData: function() {
+                            var enabled = [];
+    
+                            _.each (this.originalData, function (od) {
+                                if ( ! od.disabled ) {
+                                    enabled.push(od);
+                                }
+                            });
+                            this.data = enabled;
+                        }
+                    };
+                }
 
             };
 
+            var excludeChargeGroup = 'NONE',
+                shouldPopulateChargeGroups = true,
+                shouldPopulateChargeCodes = true;
+
+            if (reportName === reportNames['DAILY_TRANSACTIONS']) {
+                excludeChargeGroup = 'REMOVE_PAYMENTS';
+            }
+
+            if (reportName === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']) {
+                shouldPopulateChargeGroups = false;
+                shouldPopulateChargeCodes = true; 
+            }
+
             reportsSubSrv.fetchChargeNAddonGroups().then(function(chargeGroupsArr) {
-                reportsSubSrv.fetchChargeCodes().then(populateChargeGroupsAndChargeCodes.bind(null, chargeGroupsArr));
+                reportsSubSrv.fetchChargeCodes().then(populateChargeGroupsAndChargeCodes.bind(null, chargeGroupsArr, excludeChargeGroup, shouldPopulateChargeGroups, shouldPopulateChargeCodes));
             });
             
+        };
+
+        /**
+         * Fill completion status options
+         * @param {Object} filter - holding filter details
+         * @return {void}
+         */
+        factory.fillCompletionStatus = function (filter) {
+            var completionStatusList = [
+                {
+                    id: 'UNASSIGNED',
+                    status: 'UNASSIGNED',
+                    selected: true
+                },
+                {   
+                    id: 'ASSIGNED',
+                    status: 'ASSIGNED', 
+                    selected: true
+                },
+                {
+                    id: 'COMPLETED',
+                    status: 'COMPLETED',
+                    selected: true
+                }
+            ];
+
+            filter.hasCompletionStatus = {
+                data: completionStatusList,
+                options: {
+                    hasSearch: false,
+                    selectAll: true,
+                    key: 'status',
+                    defaultValue: 'Select Status'
+                }
+            };
+        
+        };
+
+         /**
+         * Fill departments
+         * @param {Object} filter - holding filter details
+         * @return {void}
+         */
+        factory.fillDepartments = function (filter, filterValues) {
+            var getSelectAllVal = (departments) => {
+                var selectAll =  true;
+
+                if (filterValues && filterValues.assigned_departments) {
+                    selectAll = departments.length === filterValues.assigned_departments;
+                }
+
+                return selectAll;
+            };
+
+            reportsSubSrv.fetchDepartments().then(function (data) {
+                _.each(data, function (departmentData) {
+                    departmentData.id = departmentData.value;
+                });
+
+                var departmentCopy = angular.copy(data);
+
+                if (filterValues && filterValues.assigned_departments) {
+                    departmentCopy = departmentCopy.map(department => {
+                        department.selected = false;
+    
+                        if (filterValues.assigned_departments.indexOf(department.id) > -1) {
+                            department.selected = true;
+                        }
+                        return department;
+                    }); 
+                }
+
+                filter.hasDepartments = {
+                    data: departmentCopy,
+                    options: {
+                        hasSearch: false,
+                        selectAll: getSelectAllVal(departmentCopy),
+                        key: 'name',
+                        defaultValue: 'Select Department'
+                    }
+                };
+
+            });
+        };
+
+        /**
+         * Fill actionables options
+         * @param {Object} filter - holding filter details
+         * @return {void}
+         */
+        factory.fillActionsBy = function (filter) {
+            var customData = [
+                {
+                    value: 'GUEST',
+                    name: 'Guests'
+                }
+            ];
+
+            if (!$rootScope.isHourlyRateOn) {
+                customData.push(
+                    {
+                        value: 'GROUP',
+                        name: 'Groups'
+                    }
+                );
+                customData.push(
+                    {   
+                        value: 'BOTH', 
+                        name: 'Both'
+                    }
+                );
+             }
+                
+            filter['hasShowActionables'] = {
+                data: customData,
+                options: {
+                    key: 'name'
+                }
+            };
+
+
         };
 
         return factory;

@@ -57,7 +57,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
 
             // STEP B PROMPT FOR SWIPE
             var promptForSwipe = function () {
-                if ($scope.checkInState.isEMVEnabled && !$scope.authorizationInfo.is_cc_authorize_at_checkin_enabled) {
+                if ($scope.checkInState.hasActiveEMV && !$scope.authorizationInfo.is_cc_authorize_at_checkin_enabled) {
                     completeCheckin();
                 } else if (!$scope.reservationBillData.is_disabled_cc_swipe) {
                     // prompting for swipe can be disabled from admin > reservations > reservation settings
@@ -152,7 +152,6 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                 hasCardOnFile: $scope.billHasCreditCard(),
                 isAuthInfoFetchComplete: false,
                 isAuthorizationInProgress: false,
-                isEMVEnabled: $rootScope.hotelPaymentConfig.isEMVEnabled,
                 requireSignature: $scope.signatureNeeded(),
                 requireTerms: $scope.termsConditionsNeeded(),
                 isListeningSwipe: false,
@@ -244,11 +243,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
             };
 
             var proceedWithAuthorizations = function() {
-                // if ($rootScope.paymentGateway === 'SHIJI') {
-                //     shijiAuthActions();
-                // } else {
-                    $timeout(promptForSwipe, 700);
-                // }
+                $timeout(promptForSwipe, 700);
             };
 
             $scope.onClickIncidentalsOnly = function () {
@@ -341,11 +336,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                             // https://stayntouch.atlassian.net/browse/CICO-17287
                             promptForAuthorizationAmount();
                         } else {
-                            if ($rootScope.paymentGateway === 'SHIJI') {
-                                shijiAuthActions();
-                            } else {
-                                promptForSwipe();
-                            }
+                            promptForSwipe();
                         }
                     } else {
                         // if is_cc_authorize_at_checkin enabled is false; then needn't authorize

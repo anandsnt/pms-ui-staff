@@ -959,6 +959,20 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                 }
             })); 
         };
+
+        /**
+         * Fill show upsells only
+         * @param {Boolean} value 
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
+        this.fillShowUpsellsOnly = (value, key, formatedFilter) => { 
+            if (value) {
+                formatedFilter[reportInboxFilterLabelConst[key]] = 'Yes';
+            }
+            
+        };
         
         /**
          * Process filters for the given generated report
@@ -1173,6 +1187,9 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                         break;
                     case reportParamsConst['COUNTRY']:
                         self.fillSelectedCountries(value, key, promises, processedFilter);
+                        break;
+                    case reportParamsConst['SHOW_UPSELL_ONLY']:
+                        self.fillShowUpsellsOnly(value, key, processedFilter);
                         break;
                 }
             });

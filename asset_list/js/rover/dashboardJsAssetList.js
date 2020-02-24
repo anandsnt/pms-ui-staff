@@ -30,7 +30,8 @@ module.exports = {
 				jsLibRoot + 'moment.min.js',
                 jsLibRoot + 'toastr/toastr.min.js',
                 jsLibRoot + 'd3/d3.v5.min.js',
-                jsLibRoot + 'd3/d3-scale.v3.min.js',
+				jsLibRoot + 'd3/d3-scale.v3.min.js',
+				jsLibRoot + 'idle-timer.min.js',
                 // Eliminate all spec files
                 '!**/*.spec.js'
 			],
@@ -51,7 +52,7 @@ module.exports = {
                 sharedRoot + 'sntCurrency/sntCurrencyFilter.js',
                 sharedRoot + 'sntCanvasUtil/**/*.js',
                 sharedRoot + 'sntUtils/app.js',
-                sharedRoot + 'sntUtils/**/*.js',
+				sharedRoot + 'sntUtils/**/*.js',
 
 				roverRoot + 'rvRouters/**/*.js',
 				roverRoot + 'rvApp.js',
@@ -72,6 +73,8 @@ module.exports = {
 
 				controllerRoot + 'rvTopCtrl.js',
 				controllerRoot + 'rvRoverController.js',
+				controllerRoot + 'sharedMethodsCtrl.js',
+				controllerRoot + 'bill/rvValidateEmailOnPaymentCtrl.js',
 				controllerRoot + 'dashboard/**/*.js',
 				controllerRoot + 'availability/rvAvailabilityButtonCtrl.js',
 				controllerRoot + 'search/**/*.js',
@@ -96,6 +99,7 @@ module.exports = {
 				serviceRoot + 'workstation/workstationSrv.js',
 				serviceRoot + 'housekeeping/rvHkRoomStatusSrv.js',
 				serviceRoot + 'deviceStatus/rvDeviceStatusSrv.js',
+				serviceRoot + 'rvAutomaticEmailSrv.js',
                 serviceRoot + 'analytics/**/*.js',
 
 				directiveRoot + 'Outside Click handler/outsideClickDirective.js',
@@ -105,7 +109,9 @@ module.exports = {
 				paymentRoot + 'payConfig.js',
 
                 // Eliminate all spec files
-                '!**/*.spec.js'
+                '!**/*.spec.js',
+                // Workers will be loaded separately
+                '!**/workers/**/*.js'
 			]
 		};
 

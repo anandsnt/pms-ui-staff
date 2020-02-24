@@ -11,6 +11,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 	'RVReservationCardSrv',
 	'RVBillCardSrv',
 	'rvPermissionSrv',
+	'RVAutomaticEmailSrv',
 	'$timeout',
 	'$window',
 	'$q',
@@ -28,6 +29,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		RVReservationCardSrv,
 		RVBillCardSrv,
 		rvPermissionSrv,
+		RVAutomaticEmailSrv,
 		$timeout,
 		$window,
 		$q,
@@ -35,10 +37,13 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		sntActivity) {
 
 		BaseCtrl.call(this, $scope);
+
+		SharedMethodsBaseCtrl.call (this, $scope, $rootScope, RVAutomaticEmailSrv, ngDialog);
 		var that = this;
 
 		$scope.perPage = 50;
 		$scope.businessDate = $rootScope.businessDate;
+
 		$scope.isFromBillCard = false;
 
 		// Success callback for transaction fetch API.
@@ -423,9 +428,15 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.callAPI(rvAccountTransactionsSrv.fetchTransactionDetails, options);
 		};
 
-		$scope.UPDATE_TRANSACTION_DATA = function() {
-			getTransactionDetails();
-		};
+
+		$scope.$on("AUTO_TRIGGER_EMAIL_AFTER_PAYMENT", function(e, data) {
+			$scope.sendAutomaticEmails(data);
+		});
+
+
+		// $scope.UPDATE_TRANSACTION_DATA = function() {
+		// 	getTransactionDetails();
+		// };
 
 		/*
 		 *  Bill data need to be updated after success action of
@@ -439,6 +450,13 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				$scope.shouldGenerateFolioNumber = true;
 			}
 			getTransactionDetails();
+
+			$scope.currentPaymentBillId = data.bill_id;
+			$scope.currentPaymentTransactionId = data.transaction_id;
+			if ($scope.isFromGroups && $rootScope.autoEmailPayReceipt && $scope.isFromPaymentScreen) {
+				$scope.autoTriggerPaymentReceiptActions();
+			}
+			
 		});
 
 		// To destroy listener
@@ -1107,7 +1125,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * @return {[type]}	  [description]
 		 */
 		var successFetchOfAllReqdForTransactionDetails = function(data) {
-			// $scope.$emit('hideLoader');
+			$scope.isFromGroups = (typeof $scope.groupConfigData !== "undefined" && $scope.groupConfigData.activeTab === "TRANSACTIONS");
 		};
 
 		/*
@@ -1146,7 +1164,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * @return {[type]}	  [description]
 		 */
 		var failedToFetchOfAllReqdForTransactionDetails = function(data) {
-			$scope.$emit('hideLoader');
+			$scope.$emit('hideLoader');			
 		};
 
 		/**

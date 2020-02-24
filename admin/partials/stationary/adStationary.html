@@ -63,7 +63,23 @@
                     <h3>Accounts Receivables</h3>
                 </div>
                 <div class="stationery-group" ng-include="'/assets/partials/stationary/adStationeryAccountReceivables.html'"></div>
-            </fieldset>   
+            </fieldset>
+
+            <!-- Payment Receipt -->
+            <fieldset class="stationery-block" ng-if="isPaymentReceiptsEnabled" ng-class = "{'active': is_payment_receipt_active}">
+                 <div class="form-title has-toggle" ng-click = "is_payment_receipt_active = !is_payment_receipt_active"> <!-- Clicking this toggles class 'active' on L50 -->
+                    <h3>Payment Receipt</h3>
+                </div>
+                <div class="stationery-group" ng-include="'/assets/partials/stationary/adPaymentReceipts.html'"></div>
+            </fieldset>
+
+            <!-- Payment Receipt -->
+            <fieldset class="stationery-block" ng-if="isAdvancePaymentEnabled" ng-class = "{'active': is_deposit_invoice_active}">
+                 <div class="form-title has-toggle" ng-click = "is_deposit_invoice_active = !is_deposit_invoice_active"> <!-- Clicking this toggles class 'active' on L50 -->
+                    <h3>Deposit Invoice</h3>
+                </div>
+                <div class="stationery-group" ng-include="'/assets/partials/stationary/adDepositInvoice.html'"></div>
+            </fieldset>
             
             <!-- Actions -->
             <div class="actions fixed">

@@ -4262,6 +4262,10 @@
                 .size(40px, auto);
                 -webkit-filter: grayscale(100%);
                 filter: grayscale(100%);
+
+                &.qr-code {
+                    .size(140px, auto);
+                }
             }
 
             &.envelope {
@@ -4278,6 +4282,12 @@
                     font-size:18pt;
                     font-weight: 600;
                     line-height: 40px;
+                }
+
+                .qr-code {
+                    position: absolute;
+                    top: 35x;
+                    right: -10px;
                 }
             }
         }

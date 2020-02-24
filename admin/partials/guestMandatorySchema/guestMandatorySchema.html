@@ -1,72 +1,93 @@
 <!-- LIST VIEW -->
-<section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click='clearErrorMessage()' ng-show="screenMode === 'SCHEMA_LIST'">
-   <div>
-      <header class="content-title float">
-         <h2>Guest mandatory Schema</h2>
-         <a ng-click="goBackToPreviousState()" class="action back ng-scope" translate="">Configuration</a>
-         <a class="action add" ng-click="addNewSchema()">Add new schema</a>
-      </header>
-      <section class="content-scroll">
-         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
-         <!--ng-table component -->
-         <div class="wrapper">
-            <table id="brands" class="grid " ng-table="tableParams" template-pagination="">
-               <thead>
-                  <tr>
-                     <th width="50%" rowspan="2">
-                        <div>
-                           <i class="glyphicon glyphicon-user"></i> 
-                           <span>TITLE</span>
-                        </div>
-                     </th>
-                     <th width="20%" rowspan="2">
-                        <div>
-                           <span>Delete</span>
-                        </div>
-                     </th>
-                  </tr>
-               </thead>
-               <tbody>
-                  <tr ng-repeat="schema in schemaList"  style="cursor: pointer;">
-                     <td ng-click="editSchema(schema)">
-                        {{ schema.title }}
-                     </td>
-                     <td>
-                        <span class="icons delete_small cursor_pointer" ng-click="deleteSchema(schema)">&nbsp;</span>
-                     </td>
-                  </tr>
-               </tbody>
-            </table>
-         </div>
-      </section>
-      <!--end -->
-   </div>
+<section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click='clearErrorMessage()'
+         ng-show="screenMode === 'SCHEMA_LIST'">
+    <div>
+        <header class="content-title float">
+            <h2>Guest mandatory Schema</h2>
+            <a ng-click="goBackToPreviousState()" class="action back ng-scope" translate="">Configuration</a>
+            <a class="action add" ng-click="addNewSchema()">Add new schema</a>
+        </header>
+        <section class="content-scroll">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+            <!--ng-table component -->
+            <div class="wrapper">
+                <table id="brands" class="grid " ng-table="tableParams" template-pagination="">
+                    <thead>
+                    <tr>
+                        <th width="50%" rowspan="2">
+                            <div>
+                                <i class="glyphicon glyphicon-user"></i>
+                                <span>TITLE</span>
+                            </div>
+                        </th>
+                        <th width="20%" rowspan="2">
+                            <div>
+                                <span>Delete</span>
+                            </div>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="schema in schemaList" style="cursor: pointer;">
+                        <td ng-click="editSchema(schema)">
+                            {{ schema.title }}
+                        </td>
+                        <td>
+                            <span class="icons delete_small cursor_pointer"
+                                  ng-click="deleteSchema(schema)">&nbsp;</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <!--end -->
+    </div>
 </section>
 
 <!-- DETAILED VIEW -->
-<section class="content current" ng-show="screenMode === 'ADD_SCHEMA' || screenMode === 'EDIT_SCHEMA'" ng-click='clearErrorMessage()'>
-   <header class="content-title float">
-      <h2 ng-show="screenMode === 'ADD_SCHEMA'">Add New Schema</h2>
-      <h2 ng-hide="screenMode === 'ADD_SCHEMA'">Edit Schema</h2>
-      <a ng-click="changeToListView()" class="action back ng-scope" translate="">Guest mandatory Schema</a>
-   </header>
-   <section class="content-scroll">
-      <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-      <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
-      <div class="form">
-         <fieldset class="holder full-width">
-          <ad-textbox value="selectedSchema.title" label="Title" placeholder = "Enter title" styleclass="full-width" required="yes"></ad-textbox>
-            <ad-textarea rows="20" div-class="full-width" text-area-class="full-width" value="selectedSchema.schema_json" label = "Schema JSON" placeholder = "Enter Schema JSON" required="true"></ad-textarea>
-         </fieldset>
-         <div class="actions float">
-            <button type="button" id="cancel" class="button blank add-data-inline" ng-click="changeToListView()" translate>
-            CANCEL
-            </button>
-            <button type="button" like-type="common" id="update" class="button green" ng-click="saveChanges()" translate>
-            {{ screenMode === 'ADD_SCHEMA' ? 'ADD' :  'SAVE CHANGES' }}
-            </button>
-         </div>
-      </div>
-   </section>
+<section class="content current" ng-show="screenMode === 'ADD_SCHEMA' || screenMode === 'EDIT_SCHEMA'"
+         ng-click='clearErrorMessage()'>
+    <header class="content-title float">
+        <h2 ng-show="screenMode === 'ADD_SCHEMA'">Add New Schema</h2>
+        <h2 ng-hide="screenMode === 'ADD_SCHEMA'">Edit Schema</h2>
+        <a ng-click="changeToListView()" class="action back ng-scope" translate="">Guest mandatory Schema</a>
+    </header>
+    <section class="content-scroll">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+        <div class="form">
+            <fieldset class="holder left">
+                <ad-textbox value="selectedSchema.title" label="Title" placeholder="Enter title"
+                            styleclass="full-width" required="yes"></ad-textbox>
+
+                <ad-checkbox label="Required For All Adult Guests"
+                             is-checked="selectedSchema.required_for_all_adults"></ad-checkbox>
+            </fieldset>
+            <fieldset class="holder right">
+                <ad-toggle-button is-checked="selectedSchema.enable_bypass"
+                                  label="Enable Bypass"></ad-toggle-button>
+                <ad-textarea rows="5" div-class="full-width" text-area-class="full-width"
+                             value="selectedSchema.bypass_schema_json" label="Bypass Schema JSON"
+                             ng-if="selectedSchema.enable_bypass">
+                </ad-textarea>
+            </fieldset>
+            <fieldset class="holder full-width">
+                <ad-textarea rows="20" div-class="full-width" text-area-class="full-width"
+                             value="selectedSchema.schema_json" label="Schema JSON" placeholder="Enter Schema JSON"
+                             required="true"></ad-textarea>
+            </fieldset>
+            <div class="actions float">
+                <button type="button" id="cancel" class="button blank add-data-inline" ng-click="changeToListView()"
+                        translate>
+                    CANCEL
+                </button>
+                <button type="button" like-type="common" id="update" class="button green" ng-click="saveChanges()"
+                        translate>
+                    {{ screenMode === 'ADD_SCHEMA' ? 'ADD' : 'SAVE CHANGES' }}
+                </button>
+            </div>
+        </div>
+    </section>
 </section>
