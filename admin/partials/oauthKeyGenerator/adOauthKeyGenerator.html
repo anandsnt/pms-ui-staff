@@ -1,0 +1,39 @@
+<section class="content current admin-scrollfix" div-touch-move-stop-propogate style="display: block;" ng-click="clearErrorMessage()">
+	<div>
+		<header class="content-title float">
+			<h2>RoverConnect OAuth Key Generator</h2>
+			<a id="go_back" data-type="load-details" class="action back" ng-click="goBackToPreviousState()" translate> BACK</a>
+		</header>
+		<section class="content-scroll">
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+			<form style="overflow-y:auto;" name="rover-connect-key-generator" method="post" class="form float">
+				<fieldset class="holder column">
+					<div></div>
+					<ad-textbox value="data.app_name" name ="item-name" label = "Application Name" placeholder="Enter application name" required="yes"></ad-textbox>
+
+          <ad-dropdown-name label-in-drop-down="Select Hotel Chain"
+    												savemodel="state.new.chain_id"
+    												valueproperty="value"
+    												label-properties="['name']"
+    												required="yes"
+    												list="state.chains"
+    												label="Hotel Chain"
+    												class="full-width">
+    			</ad-dropdown-name>
+
+          <ad-textbox inputtype="text" value="data.delivery_emails"
+                      label="Delivery Email(s)"
+                      styleclass="full-width"
+                      required="yes"
+                      placeholder="Multiple email addresses can be separated by ;">
+          </ad-textbox>
+	    	</fieldset>
+				<div class="actions float">
+					<button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>CANCEL</button>
+					<button type="button" class="button green" ng-click="onSave()" translate>GENERATE</button>
+				</div>
+			</form>
+		</section>
+	</div>
+</section>
