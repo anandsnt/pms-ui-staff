@@ -64,10 +64,15 @@ sntRover.controller('RVReservationPackageController',
 					$scope.selectedPurchesedAddon.selected_post_days = {};
 					$scope.togglePostDaysSelectionForAddon(false);
 				}
-				if (addonPostingMode === 'staycard' || addonPostingMode === 'reservation') {
+				if (addonPostingMode === 'staycard') {
 					$scope.addonPostingDate = {
-						startDate: tzIndependentDate($scope.reservation.reservation_card.arrival_date),
-						endDate: tzIndependentDate($scope.reservation.reservation_card.departure_date)
+						startDate: tzIndependentDate($scope.reservationData.reservation_card.arrival_date),
+						endDate: tzIndependentDate($scope.reservationData.reservation_card.departure_date)
+					};
+				} else if (addonPostingMode === 'reservation') {
+					$scope.addonPostingDate = {
+						startDate: tzIndependentDate($scope.reservationData.arrivalDate),
+						endDate: tzIndependentDate($scope.reservationData.departureDate)
 					};
 				} else if (addonPostingMode === 'allotments') {
 					$scope.addonPostingDate = {
@@ -92,6 +97,7 @@ sntRover.controller('RVReservationPackageController',
 
 				$scope.selectedPurchesedAddon.start_date = startDate;
 				$scope.selectedPurchesedAddon.end_date = endDate;
+				$scope.selectedPurchesedAddon.nameCharLimit = ($scope.selectedPurchesedAddon.name.length > 23) ? 20 : 23;
 				angular.forEach($scope.selectedPurchesedAddon.post_instances, function(item) {
 						if (item.active) {
 							var postDate = new Date(item.post_date),
