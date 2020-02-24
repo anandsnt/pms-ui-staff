@@ -39,6 +39,7 @@ angular.module('sntRover')
                 params.hideFloorList = $scope.diaryData.hideFloorList;
                 params.selected_floor_ids = $scope.diaryData.selectedFloors;
                 params.selected_room_type_ids = $scope.diaryData.selectedRoomTypes;
+                params.unassignedReservationList = $scope.diaryData.unassignedReservationList;
 
                 RVNightlyDiarySrv.updateCache(params);
 
@@ -101,5 +102,15 @@ angular.module('sntRover')
                 $scope.callAPI(RVNightlyDiarySrv.unAssignRoom, options );
             };
 
+            /*
+             * Set time from rvNightlyDiarySetTimePopup.
+             */
+            $scope.addListener('TRIGGER_MOVE_ROOM', function () {
+                $scope.moveRoomButtonClick();
+            });
+
+            $scope.cancelEditUnassignedReservation = function() {
+                $scope.$emit('CANCEL_UNASSIGNED_RESERVATION_MAIN');
+            };
         }
 ]);

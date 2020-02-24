@@ -163,12 +163,9 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             var arrDateLeftChangeAllowed = function() {
                 var sumryData                   = $scope.groupConfigData.summary,
                     roomBlockExist              = (parseInt(sumryData.rooms_total) > 0),
-                    notAPastGroup               = !sumryData.is_a_past_group,
-                    fromDateleftMovedAllowed    = sumryData.is_from_date_left_move_allowed;
+                    notAPastGroup               = !sumryData.is_a_past_group;
 
-                return (roomBlockExist &&
-                        notAPastGroup &&
-                        fromDateleftMovedAllowed);
+                return roomBlockExist && notAPastGroup;
             };
 
             /**
@@ -179,13 +176,10 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 var sumryData                   = $scope.groupConfigData.summary,
                     roomBlockExist              = (parseInt(sumryData.rooms_total) > 0),
                     noInHouseReservationExist   = (parseInt(sumryData.total_checked_in_reservations) === 0),
-                    notAPastGroup               = !sumryData.is_a_past_group,
-                    fromDateRightMovedAllowed   = sumryData.is_from_date_right_move_allowed;
+                    notAPastGroup               = !sumryData.is_a_past_group;
 
-                return (roomBlockExist &&
-                        noInHouseReservationExist &&
-                        notAPastGroup &&
-                        fromDateRightMovedAllowed);
+                return (roomBlockExist && 
+                        noInHouseReservationExist && notAPastGroup);
             };
 
             /**
@@ -270,11 +264,9 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
              */
             var depDateLeftChangeAllowed = function() {
                 var sumryData                   = $scope.groupConfigData.summary,
-                    roomBlockExist              = (parseInt(sumryData.rooms_total) > 0),
-                    noInHouseReservationExist   = (parseInt(sumryData.total_checked_in_reservations) === 0);
+                    roomBlockExist              = (parseInt(sumryData.rooms_total) > 0);
 
-                return (roomBlockExist &&
-                        sumryData.is_to_date_left_move_allowed);
+                return roomBlockExist;
             };
 
             /**
@@ -283,11 +275,9 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
              */
             var depDateRightChangeAllowed = function() {
                 var sumryData                   = $scope.groupConfigData.summary,
-                    roomBlockExist              = (parseInt(sumryData.rooms_total) > 0),
-                    noInHouseReservationExist   = (parseInt(sumryData.total_checked_in_reservations) === 0);
+                    roomBlockExist              = (parseInt(sumryData.rooms_total) > 0);                    
 
-                return (roomBlockExist &&
-                        sumryData.is_to_date_right_move_allowed);
+                return roomBlockExist;
             };
 
             /**
@@ -541,7 +531,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
 
                                     showOverBookingPopup (overbookStatus, proceedOverbook);
                                 },
-                            750);
+                            2000);
                             break;
                         default:
                             $scope.errorMessage = error;

@@ -193,7 +193,12 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                     'local-house',
                     'travel-24',
                     'sage-inn',
-                    'hammetts'
+                    'hammetts',
+                    'lochardil',
+                    'perle-oban',
+                    'why-columbia',
+                    'why-houston',
+                    'victory-house'
                 ],
                 nonCircleNavIcons = ['public_v2'];// minor adjustment to the back/close icons for some themes (only show the inner x or <)
 

@@ -300,6 +300,14 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                             params['custom_rate_group_ids'] = selectedCustomRates;
                         }
                     }   
+                } else if (keyName === 'hasByChargeGroup') {
+                    key = reportParams['CHARGE_GROUP_IDS'];
+                    filter_values[key] = _.pluck(_.where(filter.data, {selected: true}), 'id');
+
+                } else if (keyName === 'hasByChargeCode') {
+                    key = reportParams['CHARGE_CODE_IDS'];
+                    filter_values[key] = _.pluck(_.where(filter.data, {selected: true}), 'id');
+
                 } else {
                     _.each(filter.data, function(each) {
                         if ( each.selected ) {
@@ -460,6 +468,14 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                             params['custom_rate_group_ids'] = selectedCustomRates;
                         }
                     }   
+                } else if (keyName === 'hasByChargeGroup') {
+                    key = reportParams['CHARGE_GROUP_IDS'];
+                    filter_values[key] = _.pluck(_.where(filter.data, {selected: true}), 'id');
+
+                } else if (keyName === 'hasByChargeCode') {
+                    key = reportParams['CHARGE_CODE_IDS'];
+                    filter_values[key] = _.pluck(_.where(filter.data, {selected: true}), 'id');
+
                 } else {
                     _.each(filter.data, function (each) {
                         if (each.selected) {
@@ -609,6 +625,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     }
                 } else if (filter.value === 'RATE') {
                     reportUtils.fillRateTypesAndRatesForScheduledReports($scope.filters, $scope.selectedEntityDetails.filter_values);
+                } else if (filter.value === 'INCLUDE_CHARGE_GROUP' || filter.value === 'INCLUDE_CHARGE_CODE') {
+                    reportUtils.fillChargeGroupsAndChargeCodes($scope.filters, $scope.selectedEntityDetails.filter_values);
                 }
             });
 
@@ -1020,7 +1038,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Daily Production': true,
                 'Daily Production by Demographics': true,
                 'Daily Production by Rate': true,
-                'Business on the Books': true
+                'Business on the Books': true,
+                'Daily Transactions': true
             };
 
             var forWeekly = {
@@ -1030,7 +1049,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Comparison': true,
                 'Guest Balance Report': true,
                 'Yearly Tax Report': true,
-                'Business on the Books': true
+                'Business on the Books': true,
+                'Daily Transactions': true
             };
             var forMonthly = {
                 'Arrival': true,
@@ -1039,7 +1059,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Comparison': true,
                 'Guest Balance Report': true,
                 'Yearly Tax Report': true,
-                'Business on the Books': true
+                'Business on the Books': true,
+                'Daily Transactions': true
             };
 
             var forHourly = {
@@ -1049,7 +1070,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Comparison': true,
                 'Guest Balance Report': true,
                 'Yearly Tax Report': true,
-                'Business on the Books': true
+                'Business on the Books': true                
             };
 
             if ( forHourly[item.report.title] ) {
@@ -1259,7 +1280,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 $scope.scheduleFormat = _.filter($scope.scheduleFormat, function(object) { return object.value !== "XML"; });
             } else if (selectedEntity.report && ( selectedEntity.report.title === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ||
                 selectedEntity.report.title === reportNames['DAILY_PRODUCTION_DEMO'] ||
-                selectedEntity.report.title === reportNames['DAILY_PRODUCTION_RATE'] )) {
+                selectedEntity.report.title === reportNames['DAILY_PRODUCTION_RATE'] || 
+                selectedEntity.report.title === reportNames['DAILY_TRANSACTIONS'] || 
+                selectedEntity.report.title === reportNames['GUEST_BALANCE_REPORT'] ) ) {
                 $scope.scheduleFormat = _.filter($scope.scheduleFormat, function (object) {
                     return object.value === 'CSV';
                 });
@@ -1268,7 +1291,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             return selectedEntity.report && (selectedEntity.report.title === reportNames['COMPARISION_BY_DATE'] ||
                 selectedEntity.report.title === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ||
                 selectedEntity.report.title === reportNames['DAILY_PRODUCTION_DEMO'] ||
-                selectedEntity.report.title === reportNames['DAILY_PRODUCTION_RATE']);
+                selectedEntity.report.title === reportNames['DAILY_PRODUCTION_RATE'] || 
+                selectedEntity.report.title === reportNames['DAILY_TRANSACTIONS'] ||
+                selectedEntity.report.title === reportNames['GUEST_BALANCE_REPORT'] );
         };
 
         // Listener for creating new report schedule

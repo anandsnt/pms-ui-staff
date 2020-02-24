@@ -4,7 +4,8 @@ sntRover.controller('RVReceiptPopupController',
     'RVBillCardSrv', 
     'RVContactInfoSrv',
     'ngDialog',     
-    function($scope, $rootScope, RVBillCardSrv, RVContactInfoSrv, ngDialog) {
+    '$filter',
+    function($scope, $rootScope, RVBillCardSrv, RVContactInfoSrv, ngDialog, $filter) {
 
     BaseCtrl.call(this, $scope);
     /*
@@ -57,10 +58,23 @@ sntRover.controller('RVReceiptPopupController',
     /*
      * email receipt method
      */
+    $scope.showEmailSentStatusPopup = function() {
+        ngDialog.open({
+            template: '/assets/partials/popups/rvEmailSentStatusPopup.html',
+            className: '',
+            scope: $scope
+        });
+    };
     $scope.emailReceipt = function() {
-        var emailReceiptSuccess = function (response) {
-                $scope.successMessage = ["Email send succesfully!"];
-                $scope.closeDialog();
+        var emailReceiptFailure = function () {
+            $scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
+            $scope.status = "alert";
+            $scope.showEmailSentStatusPopup();
+        },
+            emailReceiptSuccess = function (response) {
+                $scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
+				$scope.status = "success";
+                $scope.showEmailSentStatusPopup();
             },
             dataToSend = {
                 params: {
@@ -69,7 +83,8 @@ sntRover.controller('RVReceiptPopupController',
                   to_address: $scope.data.mailto_address,
                   locale: $scope.data.locale
                 },
-                successCallBack: emailReceiptSuccess
+                successCallBack: emailReceiptSuccess,
+                failureCallBack: emailReceiptFailure
             };
 
         $scope.callAPI(RVBillCardSrv.emailReceiptData, dataToSend);

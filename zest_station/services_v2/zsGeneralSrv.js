@@ -120,7 +120,12 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'local-house': 'Local House',
             'travel-24': 'Travel 24',
             'sage-inn': 'Sage Inn',
-            'hammetts': 'Hammetts Hotel'
+            'hammetts': 'Hammetts Hotel',
+            'lochardil': 'lochardil',
+            'perle-oban': 'Oban Perle',
+            'why-columbia': 'Why Hotel Columbia Pike',
+            'why-houston': 'Why Hotel Houston',
+            'victory-house': 'Victory House'
         };
 
         this.isThemeConfigured = function(theme) {
