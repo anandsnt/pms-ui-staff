@@ -80,13 +80,13 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
                 $scope.hideCompanyCardInvoiceToggle = true;
             }
             else if (!isEmpty(card.company.name) && isEmpty(card.travel_agent.name)) {
-                // Only TA card is attached.
+                // Only Company card is attached.
                 $scope.isCompanyCardInvoice = true;
                 $scope.disableCompanyCardInvoice = true;
             }
             else {
                 $scope.isCompanyCardInvoice = false;
-                // Only Company card is attached.
+                // Only TA card is attached.
                 $scope.disableCompanyCardInvoice = true;
             }
 
@@ -376,6 +376,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
 
     $scope.changeCompanyCardInvoiceToggle = function() {
         $scope.isCompanyCardInvoice = !$scope.isCompanyCardInvoice;
+        $scope.setEmailAddress();
     };
     $scope.$on('$destroy', updateWindow);
 
