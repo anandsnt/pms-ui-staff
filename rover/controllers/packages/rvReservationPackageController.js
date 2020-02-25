@@ -77,7 +77,7 @@ sntRover.controller('RVReservationPackageController',
 				} else if (addonPostingMode === 'allotments') {
 					$scope.addonPostingDate = {
 						startDate: tzIndependentDate($scope.allotmentConfigData.summary.block_from),
-						end_date: tzIndependentDate($scope.allotmentConfigData.summary.block_to)
+						endDate: tzIndependentDate($scope.allotmentConfigData.summary.block_to)
 					};
 				} else {
 					$scope.addonPostingDate = {

@@ -53,6 +53,10 @@ angular.module('sntRover').controller('guestCardController', [
         BaseCtrl.call(this, $scope);
         GuestCardBaseCtrl.call (this, $scope, RVSearchSrv, RVContactInfoSrv, rvPermissionSrv, $rootScope);
 
+        $scope.hasOverBookRoomTypePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
+		$scope.hasOverBookHousePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE');
+		$scope.hasBorrowFromHousePermission = rvPermissionSrv.getPermissionValue('GROUP_HOUSE_BORROW');
+
         // Initialize reservation
         var initReservation = function() {
             var fromVault = $vault.get('searchReservationData'),
@@ -1296,15 +1300,61 @@ angular.module('sntRover').controller('guestCardController', [
             });
         };
 
+        /**
+         * 
+         * @param {Object} object holding various flags
+         * @param {Object} selectedGroup selected group
+         * @return {void}
+         */
+        var showBorrowFromHousePopup = function (results, selectedGroup) {
+
+            $scope.performBorrowFromHouse = function () {
+                $scope.closeBorrowDialog();
+                attachGroupToThisReservation(selectedGroup, true);
+            };
+						
+            $scope.borrowData = {};
+            if (!results.room_overbooked && !results.house_overbooked) {
+                $scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission;
+                $scope.borrowData.isBorrowFromHouse = true;
+            } else if (results.room_overbooked && !results.house_overbooked) {
+                $scope.borrowData.shouldShowBorrowBtn = $scope.hasOverBookRoomTypePermission && $scope.hasBorrowFromHousePermission;
+                $scope.borrowData.isRoomTypeOverbooked = true;
+            } else if (!results.room_overbooked && results.house_overbooked) {
+                $scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission && $scope.hasOverBookHousePermission;
+                $scope.borrowData.isHouseOverbooked = true;
+            } else if (results.room_overbooked && results.house_overbooked) {
+                $scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission && $scope.hasOverBookRoomTypePermission && $scope.hasOverBookHousePermission;
+                $scope.borrowData.isHouseAndRoomTypeOverbooked = true;
+            }
+
+            ngDialog.open({
+                template: '/assets/partials/common/group/rvGroupBorrowOverbookPopup.html',
+                className: '',
+                closeByDocument: false,
+                closeByEscape: true,
+                scope: $scope
+            });
+        };
+
+        
+		// Close the borrow popup
+		$scope.closeBorrowDialog = function () {
+			$scope.borrowData = {};
+			$scope.closeDialog();
+		};
+
 
         /**
          * when we failed in attaching a group
          */
-        var failureCallBackOfAttachGroupToReservation = function(error) {
+        var failureCallBackOfAttachGroupToReservation = function(error, failureCallbackParams) {
             if (error.hasOwnProperty('httpStatus')) {
 
                 // 470 is reserved for other room type is available
-                if (error.httpStatus === 470) {
+                if (error.httpStatus === 470 && error.is_borrowed_from_house) {
+                    showBorrowFromHousePopup(error, failureCallbackParams.selectedGroup);
+                } else if (error.httpStatus === 470 && !error.is_borrowed_from_house) {
                     showGroupOtherRoomTypeAvailablePopup();
                 }
 
@@ -1357,11 +1407,12 @@ angular.module('sntRover').controller('guestCardController', [
          * @param  {Object} selectedGroup
          * @return undefined
          */
-        var attachGroupToThisReservation = function(selectedGroup) {
+        var attachGroupToThisReservation = function(selectedGroup, forcefullyOverbook) {
             // calling the API
             var params = {
                 reservation_id: $scope.reservationData.reservationId,
-                group_id: selectedGroup.id
+                group_id: selectedGroup.id,
+                forcefully_overbook: forcefullyOverbook
             };
 
             var options = {
@@ -1369,6 +1420,9 @@ angular.module('sntRover').controller('guestCardController', [
                 successCallBack: successCallBackOfAttachGroupToReservation,
                 failureCallBack: failureCallBackOfAttachGroupToReservation,
                 successCallBackParameters: {
+                    selectedGroup: selectedGroup
+                },
+                failureCallBackParameters: {
                     selectedGroup: selectedGroup
                 }
             };
