@@ -129,9 +129,14 @@ admin.controller('ADRatesAddonsCtrl', [
             if (!item.begin_date && !item.end_date) {
                 dateStr = 'N/A';
             } else {
-                dateStr = (item.begin_date ? item.begin_date : 'N/A') + ' to ' + (item.end_date ? item.end_date : 'N/A');
+                dateStr = (item.begin_date ? formatDate(item.begin_date) : 'N/A') + ' to ' + (item.end_date ? formatDate(item.end_date) : 'N/A');
             }
             return dateStr;
+        };
+
+        // Format date based on hotel's date format
+        var formatDate = function(date) {
+            return $filter('date')(date, $rootScope.dateFormat)
         };
 
         $scope.isAddOnExpired = function(item) {
