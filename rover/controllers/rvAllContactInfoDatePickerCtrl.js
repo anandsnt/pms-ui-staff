@@ -16,6 +16,9 @@ sntRover.controller('RVAllContactInfoDatePickerController',
                 if ($scope.calenderFor === 'entryDate') {
                     $scope.guestCardData.contactInfo.entry_date = dateText;
                 }
+                if ($scope.calenderFor === 'idExpirationDate') {
+                    $scope.guestCardData.contactInfo.id_expiration_date = dateText;
+                }
                 if ($scope.calenderFor === 'birthday') {
                     $scope.guestCardData.contactInfo.birthday = dateText;
                 }

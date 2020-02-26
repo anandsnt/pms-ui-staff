@@ -29,7 +29,7 @@
                     <tr class="details">
                         <td>
                             <span class="pull-left">Permanent Home Address <br />
-                                <strong>{{printRegCardData.arrival_date}} </span>
+                                <strong ng-bind-html="printRegCardData.guest_details.address"></strong></span>
                             <span class="pull-right align-right">عنوان الاقامة الدائم</span>
                         </td>
                         <td>
@@ -46,7 +46,7 @@
                         </td>
                         <td>
                             <span class="pull-left">Rate <br />
-                                <strong>{{printRegCardData.country}} </span>
+                                <strong>{{printRegCardData.rate_name}} </span>
                             <span class="pull-right align-right">معدل</span>
                         </td>
                     </tr>
@@ -65,12 +65,12 @@
                     <tr class="details">
                         <td>
                             <span class="pull-left">Nationality <br />
-                                <strong>{{printRegCardData.guest_details.nationality}} </span>
+                                <strong>{{printRegCardData.guest_details.nationality_name}} </span>
                             <span class="pull-right align-right">جنسية</span>
                         </td>
                         <td>
                             <span class="pull-left">No. of Rooms <br />
-                                <strong>{{printRegCardData.room_number}} </span>
+                                <strong>{{printRegCardData.no_of_rooms}} </span>
                             <span class="pull-right align-right">عدد من الشقق.</span>
                         </td>
                     </tr>
@@ -82,7 +82,7 @@
                         </td>
                         <td>
                             <span class="pull-left">No. of People <br />
-                                <strong>{{printRegCardData.room_number}} </span>
+                                <strong>{{printRegCardData.no_of_guests}} </span>
                             <span class="pull-right align-right">عدد الناس</span>
                         </td>
                     </tr>
@@ -94,7 +94,7 @@
                         </td>
                         <td>
                             <span class="pull-left">Company Name <br />
-                                <strong>{{printRegCardData.guest_details.passport_expiry}} </span>
+                                <strong>{{printRegCardData.company_name}} </span>
                             <span class="pull-right align-right">اسم الشركة</span>
                         </td>
                     </tr>
@@ -215,7 +215,8 @@
 <table class="guest-data-enter fixed">
     <tr>
         <td>
-            <span class="pull-left">Checked in by</span>
+            <span class="pull-left">Checked in by <br />
+                <strong>{{printRegCardData.checked_in_by}} </span>
             <span class="pull-right align-right">تم الفحص بواسطة</span>
         </td>
         <td>
