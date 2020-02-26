@@ -166,7 +166,7 @@
         <li class="dashboard-analytics" ng-repeat="chart in availableChartsList"  ng-click="onClickOnChartTile(chart.fetchDataEvent)">
             <div class="faux-anchor"> <!-- On click, opens the analtics -->
                 <div class="title">
-                    <h2 class="dashboard-hello">{{ ::chart.name | translate }}</h2>
+                    <h2>{{ ::chart.name | translate }}</h2>
                     <em class="description">{{ ::chart.tileDescription | translate }}</em>
                 </div>
                 <span class="category">{{ ::chart.department | translate }}</span>                
