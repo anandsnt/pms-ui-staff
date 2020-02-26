@@ -136,7 +136,7 @@ admin.controller('ADRatesAddonsCtrl', [
 
         // Format date based on hotel's date format
         var formatDate = function(date) {
-            return $filter('date')(date, $rootScope.dateFormat)
+            return $filter('date')(date, $rootScope.dateFormat);
         };
 
         $scope.isAddOnExpired = function(item) {
