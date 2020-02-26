@@ -117,7 +117,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
 
                     $scope.invokeApi(RVReservationSummarySrv.updateReservation, saveData, successCallBack, failureCallBack);
                 } else {
-                    updateAddonPostOptions();
+                    // updateAddonPostOptions();
                     var save = function() {
                         if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id || $scope.reservationData.group.id || $scope.reservationData.allotment.id) {
                             /**
