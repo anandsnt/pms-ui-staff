@@ -22,7 +22,7 @@
                         </td>
                         <td>
                             <span class="pull-left">Arrival Date <br />
-                                <strong>{{printRegCardData.arrival_date}} </span>
+                                <strong>{{printRegCardData.arrival_date | date : dateFormat}} </span>
                             <span class="pull-right align-right">تاريخ الوصول</span>
                         </td>
                     </tr>
@@ -34,7 +34,7 @@
                         </td>
                         <td>
                             <span class="pull-left">Departure Date <br />
-                                <strong>{{printRegCardData.dep_date}} </span>
+                                <strong>{{printRegCardData.dep_date | date : dateFormat}} </span>
                             <span class="pull-right align-right">تاريخ المغادرة</span>
                         </td>
                     </tr>
@@ -89,7 +89,7 @@
                     <tr class="details">
                         <td>
                             <span class="pull-left">Exp. Date <br />
-                                <strong>{{printRegCardData.guest_details.passport_expiry}} </span>
+                                <strong>{{printRegCardData.guest_details.id_expiration_date | date : dateFormat}} </span>
                             <span class="pull-right align-right">إكسب. تاريخ</span>
                         </td>
                         <td>
