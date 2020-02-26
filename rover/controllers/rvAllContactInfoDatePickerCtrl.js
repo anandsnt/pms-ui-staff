@@ -36,7 +36,12 @@ sntRover.controller('RVAllContactInfoDatePickerController',
                 yearRange: "-100:+10",
                 onSelect: function(dateText, inst) {
                     dateText = moment(dateText, "MM/DD/YYYY").format("YYYY-MM-DD");
-                    $scope.guestCardData.contactInfo.id_issue_date = dateText; 
+                    $scope.guestCardData.contactInfo.id_expiration_date = dateText;
+                    if ($scope.datePicker) {
+                        ngDialog.close($scope.datePicker.id);
+                    } else {
+                        ngDialog.close();
+                    }
                 }
             };
         }
