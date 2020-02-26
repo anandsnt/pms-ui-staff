@@ -365,6 +365,7 @@ sntRover.controller('reservationActionsController', [
             $scope.showVehicleCountryMark = false;
             $scope.showIdCountryOfIssue = false;
             $scope.showDateOfBirth = false;
+            $scope.showIdExpDate = false;
 
             $scope.callAPI(RVGuestCardsSrv.fetchGuestDetailsInformation, {
                 successCallBack: function(data) {
@@ -385,6 +386,8 @@ sntRover.controller('reservationActionsController', [
                                                     && ($scope.guestCardData.contactInfo.id_country_of_issue === '' || $scope.guestCardData.contactInfo.id_country_of_issue === null);
                     $scope.showDateOfBirth = $scope.guestCardData.contactInfo.guestAdminSettings.date_of_birth.is_mandatory_on_guest_card_creation
                                             && ($scope.guestCardData.contactInfo.birthday === '' || $scope.guestCardData.contactInfo.birthday === null);
+                    $scope.showIdExpDate = $scope.guestCardData.contactInfo.guestAdminSettings.id_expiration_date.is_mandatory_on_guest_card_creation
+                                            && ($scope.guestCardData.contactInfo.id_expiration_date === '' || $scope.guestCardData.contactInfo.id_expiration_date === null);
 
                     ngDialog.open({
                         template: '/assets/partials/validateCheckin/rvValidateEmailPhone.html',
