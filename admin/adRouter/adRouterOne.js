@@ -149,12 +149,6 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			url: '/brands'
 		});
 
-		$stateProvider.state('admin.templateconfiguration', {
-			templateUrl: '/assets/partials/templateConfiguration/adListHotel.html',
-			controller: 'ADTemplateConfigurationCtrl',
-			url: '/templateconfiguration'
-		});
-
 		$stateProvider.state('admin.smsconfiguration', {
 			templateUrl: '/assets/partials/smsConfiguration/adConfigSms.html',
 			controller: 'ADSMSConfigurationCtrl',

@@ -1,4 +1,4 @@
-<div class="entry full-width" ng-controller="rvCardSearchContractOwnerCtrl">
+<div class="entry full-width" ng-controller="rvCardSearchContractOwnerCtrl" ng-hide="contractData.isPastContract">
     <label for="contract-owner">Contract Owner</label>
     <div class="contract-grid" ng-class="{'disable-element': contractData.disableFields}">
         <div class="select">
@@ -13,7 +13,7 @@
                 </optgroup>
             </select>
         </div>
-        <label class="checkbox inline" ng-click="clickedInactive()" ng-class="{'checked': contractData.contractOwner.isInactive}"> <!-- Add class 'checked' when L63 is checked -->
+        <label class="checkbox inline" ng-click="clickedInactive()" ng-class="{'checked': contractData.contractOwner.isInactive}" ng-hide="contractData.disableFields"> <!-- Add class 'checked' when L63 is checked -->
             <span class="icon-form icon-checkbox" ng-class="{'checked': contractData.contractOwner.isInactive}"></span> <!-- Add class 'checked' when L63 is checked -->
             <input type="checkbox">
             Include Inactive Users

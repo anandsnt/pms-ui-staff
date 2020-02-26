@@ -771,7 +771,7 @@ sntRover.controller('reservationActionsController', [
             $scope.invokeApi(RVReservationCardSrv.modifyRoomQueueStatus, data, $scope.successRemoveFromQueueCallBack);
         };
 
-        var promptCancel = function(penalty, nights, isPercent) {
+        var promptCancel = function(penalty, nights, isPercent, paymentCurrencyCancellationCharge) {
             $scope.DailogeState = {};
             $scope.DailogeState.successMessage = '';
             $scope.DailogeState.failureMessage = '';
@@ -803,6 +803,7 @@ sntRover.controller('reservationActionsController', [
                         state: 'CONFIRM',
                         cards: false,
                         penalty: penalty,
+                        paymentCurrencyCancellationCharge: paymentCurrencyCancellationCharge,
                         penaltyText: (function() {
                             if (nights) {
                                 return penalty + (penalty > 1 ? " nights" : " night");
@@ -820,7 +821,7 @@ sntRover.controller('reservationActionsController', [
         };
 
 
-        var showCancelReservationWithDepositPopup = function(deposit, isOutOfCancellationPeriod, penalty) {
+        var showCancelReservationWithDepositPopup = function(deposit, isOutOfCancellationPeriod, penalty, paymentCurrencyPenalty) {
             $scope.DailogeState = {};
             $scope.DailogeState.successMessage = '';
             $scope.DailogeState.failureMessage = '';
@@ -829,6 +830,7 @@ sntRover.controller('reservationActionsController', [
             $scope.DailogeState.isGuestEmailSelected = false;
             $scope.DailogeState.isBookerEmailSelected = false;
             $scope.DailogeState.guestEmail = $scope.guestCardData.contactInfo.email;
+            $scope.DailogeState.paymentCurrencyPenalty = paymentCurrencyPenalty;
 
             var openCancellationPopup = function(data) {
                   
@@ -864,9 +866,10 @@ sntRover.controller('reservationActionsController', [
          * reinstating a cancelled reservation CICO-1403 and CICO-6056(Sprint20 >>> to be implemented in the next sprint)
          */
 
-        var cancellationCharge = 0;
-        var nights = false;
-        var depositAmount = 0;
+        var cancellationCharge = 0,
+            paymentCurrencyCancellationCharge = 0,            
+            nights = false, 
+            depositAmount = 0;
 
         $scope.toggleCancellation = function() {
 
@@ -893,17 +896,18 @@ sntRover.controller('reservationActionsController', [
                         } else {
                             cancellationCharge = parseFloat(data.results.calculated_penalty_amount);
                         }
+                        paymentCurrencyCancellationCharge = parseFloat(data.results.default_payment_currency_calculated_penalty_amount);
 
                         if (parseInt(depositAmount, 10) > 0) {
-                            showCancelReservationWithDepositPopup(depositAmount, isOutOfCancellationPeriod, cancellationCharge);
+                            showCancelReservationWithDepositPopup(depositAmount, isOutOfCancellationPeriod, cancellationCharge, paymentCurrencyCancellationCharge);
                         } else {
-                            promptCancel(cancellationCharge, nights, (data.results.penalty_type === 'percent'));
+                            promptCancel(cancellationCharge, nights, (data.results.penalty_type === 'percent'), paymentCurrencyCancellationCharge);
                         }
                     } else {
                         if (parseInt(depositAmount, 10) > 0) {
-                            showCancelReservationWithDepositPopup(depositAmount, isOutOfCancellationPeriod, '');
+                            showCancelReservationWithDepositPopup(depositAmount, isOutOfCancellationPeriod, '', '');
                         } else {
-                            promptCancel('', nights, (data.results.penalty_type === 'percent'));
+                            promptCancel('', nights, (data.results.penalty_type === 'percent'), paymentCurrencyCancellationCharge);
                         }
                     }
 
