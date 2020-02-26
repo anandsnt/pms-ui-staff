@@ -16,9 +16,6 @@ sntRover.controller('RVAllContactInfoDatePickerController',
                 if ($scope.calenderFor === 'entryDate') {
                     $scope.guestCardData.contactInfo.entry_date = dateText;
                 }
-                if ($scope.calenderFor === 'idExpirationDate') {
-                    $scope.guestCardData.contactInfo.id_expiration_date = dateText;
-                }
                 if ($scope.calenderFor === 'birthday') {
                     $scope.guestCardData.contactInfo.birthday = dateText;
                 }
@@ -32,6 +29,17 @@ sntRover.controller('RVAllContactInfoDatePickerController',
                 }
             }
         };
+        if ($scope.calenderFor === 'idExpirationDate') {
+            $scope.dateOptions = {
+                changeYear: true,
+                changeMonth: true,
+                yearRange: "-100:+10",
+                onSelect: function(dateText, inst) {
+                    dateText = moment(dateText, "MM/DD/YYYY").format("YYYY-MM-DD");
+                    $scope.guestCardData.contactInfo.id_issue_date = dateText; 
+                }
+            };
+        }
     };
     $scope.setUpData();
 }]);
