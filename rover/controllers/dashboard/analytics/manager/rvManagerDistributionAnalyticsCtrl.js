@@ -92,6 +92,12 @@ angular.module('sntRover')
 								if (item.hasOwnProperty(key) && key !== "date") {
 									item[key] = item[key] > 0 ? item[key] : 0;
 								}
+								// For the agg types not defined for the dict, use 0
+								_.each(stackKey, function(stack) {
+									if (!item.hasOwnProperty(stack)) {
+										item[stack] = 0;
+									}
+								});
 							}
 						});
 
