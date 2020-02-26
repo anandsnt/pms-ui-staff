@@ -10,7 +10,7 @@ angular.module('sntRover').controller('rvCardSearchContractOwnerCtrl', ['$scope'
         that.fetchOwners = function() {
             $scope.contractData.contractOwner.results = [];
             var fetchOwnersSuccessCallback = function(data) {
-                $scope.contractData.contractOwner.results = data;
+                $scope.contractData.contractOwner.results = data.data;
             },
             fetchOwnersFailureCallback = function(errorMessage) {
                 $scope.$emit('setErrorMessage', errorMessage);

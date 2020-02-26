@@ -96,7 +96,7 @@ angular.module('sntRover').service('rvCompanyCardContractsSrv', ['$q', 'sntBaseW
             deferred = $q.defer();
 
         promises.push(that.fetchOwners(params).then((data) => {
-            response.ownersList = data;
+            response.ownersList = data.data;
         }));
 
         promises.push(that.fetchContractsDetails(params).then((data) => {
