@@ -50,7 +50,7 @@
                     </ul> -->
                 </div>
                  <div class="actions" ng-class="{'hidden':!eodLogDetail.isOpened }" ng-if="eodLogDetail.status=='FAILED'">
-                    <button class="button green" ng-click="restartFailedProcess(eodLogDetail)" ng-class="{ 'overlay' : eodLogDetail.name=='Post Room & Tax' }" >Re-run</button>
+                    <button class="button green" ng-click="restartFailedProcess(eodLogDetail)" ng-class="{ 'hidden' : eodLogDetail.name=='Post Room & Tax' }" >Re-run</button>
                 </div>
             </div>
         </div>
