@@ -82,6 +82,23 @@ sntRover.controller('RVReservationAddonsCtrl', [
                 $scope.is_rate_addons_fetch = false;
                 $scope.addonsData.existingAddons = [];
             },
+            updateAddonPostOptions = function() {
+                $($scope.reservationData.rooms).each(function(index, room) {
+                    $(room.addons).each(function(i, addon) {
+                        var updatedAddon = _.find($scope.packageData.existing_packages, {
+                            id: addon.id
+                        });
+
+
+
+                        if (updatedAddon) {
+                            addon.selected_post_days = updatedAddon.selected_post_days;
+                            addon.start_date = $filter('date')(tzIndependentDate(updatedAddon.start_date), $rootScope.dateFormatForAPI);
+                            addon.end_date = $filter('date')(tzIndependentDate(updatedAddon.end_date), $rootScope.dateFormatForAPI);
+                        }
+                    });
+                });
+            },
             goToSummaryAndConfirm = function() {
                 if ($scope.packageData === undefined) {
                     $scope.packageData = {
