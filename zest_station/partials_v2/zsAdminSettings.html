@@ -110,6 +110,12 @@
                     <input readonly="" class="read-only" type='text' value="{{zestStationData.connectedDeviceDetails.device_short_name}}">
                 </div>
 
+                <div class="entry with-label" ng-show="isIpad && zestStationData.is_snt_id_scan_enabled && idCaptureFeature">
+                    <label>AILA Status</label>
+                    <input readonly="" class="read-only visible" value="{{ zestStationData.usingAilaDevice ? 'CONNECTED' : 'NOT CONNECTED' }}" ng-class='{"green-text":zestStationData.usingAilaDevice,"red-text":!zestStationData.usingAilaDevice}'>
+                    <div class='refresh-svg' touch-press='fetchAilaStatus()' ng-class='{"station-mini-loading":zestStationData.connectedDeviceDetails.device_connection_state == "refreshing..."}'></div>
+                </div>
+
                 <div id="handler-connected-status" class="entry with-label" ng-show="isIpad">
                     <label>Device Status</label>
                     <!--label class='admin-label-description'></label-->
