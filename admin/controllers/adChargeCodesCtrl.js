@@ -276,14 +276,14 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		 */
 		$scope.deleteNightsRange = function(indexToBeDeleted) {
 			$scope.prefetchData.custom_tax_rules[indexToBeDeleted].shouldHideNightRange = true;
-			$scope.prefetchData.custom_tax_rules[indexToBeDeleted].remainingCustomTaxParameter.push(customTaxParameter[2]);
+			$scope.prefetchData.custom_tax_rules[indexToBeDeleted].remainingCustomTaxParameter.push(customTaxParameter[1]);
 		};
 		/*
 		 * Delete Room Types parameter
 		 */
 		$scope.deleteRoomTypes = function(indexToBeDeleted) {
 			$scope.prefetchData.custom_tax_rules[indexToBeDeleted].shouldHideRoomType = true;
-			$scope.prefetchData.custom_tax_rules[indexToBeDeleted].remainingCustomTaxParameter.push(customTaxParameter[3]);
+			$scope.prefetchData.custom_tax_rules[indexToBeDeleted].remainingCustomTaxParameter.push(customTaxParameter[2]);
 		};
 
 		/*
@@ -367,7 +367,6 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			 */
 			if (selectedType === '1') {
 				$scope.prefetchData.selected_amount_sign = '+';
-				$scope.prefetchData.selected_amount_symbol = 'amount';
 				$scope.warningMessage = 'The recommended naming convention for Deposit VAT Charge codes is DEP001, DEP002, DEP003, etc.';
 			} else if ($scope.isAllowanceType(selectedType)) {
 				if (_.isUndefined($scope.chargeCodes)) {
