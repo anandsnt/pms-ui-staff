@@ -31,6 +31,9 @@ angular.module('sntRover').controller('rvCardSearchContractOwnerCtrl', ['$scope'
         // Handle click on inactive checkbox.
         $scope.clickedInactive = function() {
             $scope.contractData.contractOwner.isInactive = !$scope.contractData.contractOwner.isInactive;
+            if (!$scope.contractData.contractOwner.isInactive && !$scope.contractData.contractOwner.selectedOwner.is_active) {
+                $scope.contractData.contractOwner.selectedOwner.id = null;
+            }
         };
 
         /* 
