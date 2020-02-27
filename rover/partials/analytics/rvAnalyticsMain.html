@@ -145,7 +145,7 @@
         </dl>
     </div>
 </div>
-<section id="dashboard" ng-if="dashboardFilter.displayMode === 'DASHBOARD_LIST'" class="content scrollable analytics analytics-summary" role="main"> 
+<!-- <section id="dashboard" ng-if="dashboardFilter.displayMode === 'DASHBOARD_LIST'" class="content scrollable analytics analytics-summary" role="main"> 
     <div class="wrapper">
 
         <div class="dashboard-analytics-list">
@@ -158,18 +158,19 @@
             </a>
          </div>
     </div>
-</section>
+</section> -->
 
-<!-- <div class="wrapper" ng-if="dashboardFilter.displayMode === 'DASHBOARD_LIST'">
+<div ng-show="dashboardFilter.displayMode === 'DASHBOARD_LIST'" class="wrapper">
+
     <ul class="search-results">
-        <li class="card analytics-card" ng-repeat="chart in availableChartsList"  ng-click="onClickOnChartTile(chart.fetchDataEvent)">
-            <a href="" class="analytics-card">
-               <div class="data">
-                    <span class="type">{{ ::chart.department | translate }}</span>
+        <li class="dashboard-analytics" ng-repeat="chart in availableChartsList"  ng-click="onClickOnChartTile(chart.fetchDataEvent)">
+            <div class="faux-anchor"> <!-- On click, opens the analtics -->
+                <div class="title">
                     <h2>{{ ::chart.name | translate }}</h2>
-                    <p class="information">{{ ::chart.tileDescription | translate }}</p>
-               </div>
-            </a>
-        </li>
+                    <em class="description">{{ ::chart.tileDescription | translate }}</em>
+                </div>
+                <span class="category">{{ ::chart.department | translate }}</span>                
+            </div>
+        </li>              
     </ul>
-</div> -->
+</div>

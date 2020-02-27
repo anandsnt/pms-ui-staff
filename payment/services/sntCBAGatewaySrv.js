@@ -3,7 +3,7 @@ angular.module('sntPay').service('sntCBAGatewaySrv', ['$q', '$http', '$log', '$t
         var service = this,
             isCheckLastTransactionInProgress = false,
             cordovaAPI = new CardOperation(),
-            // This has to be consistent with Setting.cba_payment_card_types in  lib/seeds/production/product_config.rb
+            // This has to be consistent with Setting.cba_payment_card_types in  db/seeds/production/product_config.rb
             cardMap = {
                 AX: 'AX',
                 DC: 'DC',
