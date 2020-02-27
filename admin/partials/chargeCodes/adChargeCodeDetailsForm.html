@@ -199,7 +199,7 @@
 
 			</fieldset>
 
-			<fieldset class="holder full-width" ng-if="isTaxSelected() && prefetchData.tax_rules">
+			<fieldset class="holder full-width" ng-if="(isTaxSelected() || isTouristTaxSelected()) && prefetchData.tax_rules">
 	            <div class="entry full-width">
 	                <label for="flat-or-percentage">Configure Tax Amounts <strong>*</strong></label>
 	                <div class="tax-amounts">
@@ -302,7 +302,7 @@
 	                            </div>
 	                        </div>
 	                        <div class="tax-amount-action" >
-	                            <button type="button" class="icons icon-delete small-icon" ng-click="deleteTaxRule($index)"></button>
+	                            <button type="button" class="icons icon-delete small-icon" ng-if="!$first" ng-click="deleteTaxRule($index)"></button>
 	                            <button type="button" class="icons icon-add small-icon" ng-class="{'edit_plus': isEdit}" ng-if="$last" ng-click="addNewTaxRule()"></button>
 	                        </div>
 	                    </div>
