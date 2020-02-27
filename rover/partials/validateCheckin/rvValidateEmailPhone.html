@@ -73,6 +73,10 @@
 							<label>Id Place of Issue<strong>*</strong></label>
 							<input type="text" placeholder="Enter Id Place of Issue" ng-model="saveData.id_place_of_issue">
 						</div>
+						<div class="entry" ng-if="showIdExpDate">
+							<label>ID Date of Expiry<strong>*</strong></label>
+							<input type="text" ng-model="saveData.id_expiration_date | date:dateFormat" name="guest-birthday" maxlength="8" id="guest-birthday" class="datepicker" ng-click="popupCalendar('idExpirationDateValidate')" readonly />
+						</div>
 						<div class="entry" ng-if="showIdCountryOfIssue">
 							<label>ID Country of issue<strong>*</strong></label>
 							<div class="select">
@@ -103,7 +107,7 @@
 						</div>
 						<div class="entry" ng-if="showDateOfBirth">
 							<label>Date Of Birth<strong>*</strong></label>
-							<input type="text" ng-model="saveData.birth_day | date:dateFormat" name="guest-birthday" maxlength="8" id="guest-birthday" class="datepicker" ng-click="popupCalendar()" readonly />
+							<input type="text" ng-model="saveData.birth_day | date:dateFormat" name="guest-birthday" maxlength="8" id="guest-birthday" class="datepicker" ng-click="popupCalendar('validate')" readonly />
 						</div>
 			        </div>
 			    </fieldset>

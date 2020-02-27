@@ -1,0 +1,172 @@
+<table class="fixed">
+    <tr>
+        <td>
+            <strong>Guest Registration Card</strong>
+        </td>
+        <td class="align-right">
+            <strong>بطاقة تسجيل ضيف</strong>
+        </td>
+    </tr>
+</table>
+<table class="guest-data-enter fixed">
+    <tr>
+        <td class="inner-table ">
+            <table class="guest-data-enter fixed">
+                <tbody>
+                    <tr class="details">
+                        <td>
+                            <span class="pull-left">Name <br />
+                                <strong>{{printRegCardData.guest_details.first_name}} {{printRegCardData.guest_details.last_name}}</strong>
+                            </span>
+                            <span class="pull-right align-right">اسم</span>
+                        </td>
+                        <td>
+                            <span class="pull-left">Arrival Date <br />
+                                <strong>{{printRegCardData.arrival_date | date : dateFormat}}</strong> </span>
+                            <span class="pull-right align-right">تاريخ الوصول</span>
+                        </td>
+                    </tr>
+                    <tr class="details">
+                        <td>
+                            <span class="pull-left">Permanent Home Address <br />
+                                <strong ng-bind-html="printRegCardData.guest_details.address"></strong></span>
+                            <span class="pull-right align-right">عنوان الاقامة الدائم</span>
+                        </td>
+                        <td>
+                            <span class="pull-left">Departure Date <br />
+                                <strong>{{printRegCardData.dep_date | date : dateFormat}}</strong> </span>
+                            <span class="pull-right align-right">تاريخ المغادرة</span>
+                        </td>
+                    </tr>
+                    <tr class="details">
+                        <td>
+                            <span class="pull-left">Country <br />
+                                <strong>{{printRegCardData.country}} </strong></span>
+                            <span class="pull-right align-right">بلد</span>
+                        </td>
+                        <td>
+                            <span class="pull-left">Rate <br />
+                                <strong>{{printRegCardData.rate_name}}</strong> </span>
+                            <span class="pull-right align-right">معدل</span>
+                        </td>
+                    </tr>
+                    <tr class="details">
+                        <td>
+                            <span class="pull-left">City <br />
+                                <strong>{{printRegCardData.city}}</strong> </span>
+                            <span class="pull-right align-right">مدينة</span>
+                        </td>
+                        <td>
+                            <span class="pull-left">Room No. <br />
+                                <strong>{{printRegCardData.room_number}}</strong> </span>
+                            <span class="pull-right align-right">رقم الشقة</span>
+                        </td>
+                    </tr>
+                    <tr class="details">
+                        <td>
+                            <span class="pull-left">Nationality <br />
+                                <strong>{{printRegCardData.guest_details.nationality_name}}</strong> </span>
+                            <span class="pull-right align-right">جنسية</span>
+                        </td>
+                        <td>
+                            <span class="pull-left">No. of Rooms <br />
+                                <strong>{{printRegCardData.no_of_rooms}}</strong> </span>
+                            <span class="pull-right align-right">عدد من الشقق.</span>
+                        </td>
+                    </tr>
+                    <tr class="details">
+                        <td>
+                            <span class="pull-left">Passport No. <br />
+                                <strong>{{printRegCardData.guest_details.passport_number}}</strong> </span>
+                            <span class="pull-right align-right">جنسية</span>
+                        </td>
+                        <td>
+                            <span class="pull-left">No. of People <br />
+                                <strong>{{printRegCardData.no_of_guests}} </strong></span>
+                            <span class="pull-right align-right">عدد الناس</span>
+                        </td>
+                    </tr>
+                    <tr class="details">
+                        <td>
+                            <span class="pull-left">Exp. Date <br />
+                                <strong>{{printRegCardData.guest_details.id_expiration_date | date : dateFormat}} </strong></span>
+                            <span class="pull-right align-right">إكسب. تاريخ</span>
+                        </td>
+                        <td>
+                            <span class="pull-left">Company Name <br />
+                                <strong>{{printRegCardData.company_name}}</strong> </span>
+                            <span class="pull-right align-right">اسم الشركة</span>
+                        </td>
+                    </tr>
+                    <tr class="details">
+                        <td>
+                            <span class="pull-left">Telephone No. <br />
+                                <strong>{{printRegCardData.guest_details.phone}}</strong> </span>
+                            <span class="pull-right align-right">الهاتف لا.</span>
+                        </td>
+                        <td>
+                            <span class="pull-left">Email <br />
+                                <strong>{{printRegCardData.guest_details.email}}</strong> </span>
+                            <span class="pull-right align-right">البريد الإلكتروني</span>
+                        </td>
+                    </tr>
+                    
+                    <tr class="details">
+                        <td colspan="2">
+                            <span class="pull-left">Purpose of Stay</span>
+                            <span class="pull-right align-right">زيارة الغرض</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<table class="guest-data-enter fixed">
+    <tr>
+        <td>
+            <span class="pull-left">Payment Method <br />
+                <strong>{{printRegCardData.payment_type}}</strong> </span>
+            <span class="pull-right align-right">اسم</span>
+        </td>
+        <td>
+            <span class="pull-left">Amount (Dhs) <br />
+                <strong>{{printRegCardData.amount_paid}}</strong> </span>
+            <span class="pull-right align-right">اسم</span>
+        </td>
+    </tr>
+</table>
+<div class="registration-card-text-columns columns-2">
+    <div class="column">
+        <ul ng-bind-html="printRegCardData.terms_conditions">
+        </ul>
+    </div>
+    <div class="column align-right">
+        <ul ng-bind-html="printRegCardData.arabic_terms_conditions">
+        </ul>
+    </div>
+</div>
+
+<table class="guest-data-enter fixed">
+    <tr>
+        <td>
+            <span class="pull-left">Checked in by <br />
+                <strong>{{printRegCardData.checked_in_by}}</strong> </span>
+            <span class="pull-right align-right">تم الفحص بواسطة</span>
+        </td>
+        <td>
+            <span class="pull-left">Checked by</span>
+            <span class="pull-right align-right">فحص بواسطة</span>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <span class="pull-left">Guest Signature
+                <br />
+                <strong ng-if="printRegCardData.signature_url"><img ng-src="{{printRegCardData.signature_url}}" width="50%"/></strong>
+            </span>
+            <span class="pull-right align-right">توقيع الضيف</span>
+        </td>
+    </tr>
+</table>

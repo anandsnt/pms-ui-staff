@@ -144,6 +144,9 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
             if ($scope.guestCardData.contactInfo.entry_date !== null) {
             	$scope.guestCardData.contactInfo.entry_date = moment($scope.guestCardData.contactInfo.entry_date).format("YYYY-MM-DD");
             }
+            if ($scope.guestCardData.contactInfo.id_expiration_date !== null) {
+            	$scope.guestCardData.contactInfo.id_expiration_date = moment($scope.guestCardData.contactInfo.id_expiration_date).format("YYYY-MM-DD");
+            }
             
             $scope.guestCardData.contactInfo.avatar = contactInfoData.avatar;
             $scope.guestCardData.contactInfo.vip = contactInfoData.vip;

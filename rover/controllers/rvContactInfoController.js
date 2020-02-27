@@ -201,6 +201,11 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
                 } else {
                     dataToUpdate.entry_date = null;
                 }
+                if ($scope.guestCardData.contactInfo.id_expiration_date) {
+                    dataToUpdate.id_expiration_date = moment($scope.guestCardData.contactInfo.id_expiration_date).format("YYYY-MM-DD");
+                } else {
+                    dataToUpdate.id_expiration_date = null;
+                }
                 var unwantedKeys = ['avatar']; // remove unwanted keys for API
 
                 dataToUpdate = dclone(dataToUpdate, unwantedKeys);
