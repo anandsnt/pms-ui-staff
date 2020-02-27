@@ -112,7 +112,9 @@ module.exports = {
             'victory-house': [themeCSSRoot + 'victory-house.less'],
             'zedwell': [themeCSSRoot + 'zedwell.less'],
             'dimond-center': [themeCSSRoot + 'dimond-center.less'],
-            'brooklyn': [themeCSSRoot + 'brooklyn.less']
+            'brooklyn': [themeCSSRoot + 'brooklyn.less'],
+            'krowoderska': [themeCSSRoot + 'krowoderska.less'],
+            'bayou': [themeCSSRoot + 'bayou.less'],
         };
     }
 };

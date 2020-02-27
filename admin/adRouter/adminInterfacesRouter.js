@@ -493,7 +493,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.sitemindersSetup', {
-        templateUrl: '/assets/partials/interfaces/siteminder/adSiteminderSetup.html',
+        templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
         controller: 'adCRSCommonCtrl',
         url: '/interfaces/setup',
         params: {
@@ -516,7 +516,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.synxisSetup', {
-        templateUrl: '/assets/partials/interfaces/synxis/adSynxisSetup.html',
+        templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
         controller: 'adCRSCommonCtrl',
         url: '/interfaces/setup',
         params: {

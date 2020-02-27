@@ -201,7 +201,9 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                     'victory-house',
                     'zedwell',
                     'dimond-center',
-                    'brooklyn'
+                    'brooklyn',
+                    'krowoderska',
+                    'bayou'
                 ],
                 nonCircleNavIcons = ['public_v2'];// minor adjustment to the back/close icons for some themes (only show the inner x or <)
 
