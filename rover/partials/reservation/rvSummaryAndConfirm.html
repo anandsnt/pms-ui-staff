@@ -226,19 +226,19 @@
                     </li>
                     <li></li>
                 </ul>
-                <ul class="total-stay-cost">
+                <ul class="total-stay-cost total-stay-cost-data">
                     <li>
                         <span class="label" translate>TOTAL_TAX</span>
-                        <label ng-if="!reservationData.isRoomRateSuppressed">{{reservationData.rateCurrency}}{{reservationData.totalTax
-                            | number : 2}}</label>
-                        <label ng-if="reservationData.isRoomRateSuppressed">SR</label>
+                        <span class="total" ng-if="!reservationData.isRoomRateSuppressed">{{reservationData.rateCurrency}}{{reservationData.totalTax
+                            | number : 2}}</span>
+                        <span class="total" ng-if="reservationData.isRoomRateSuppressed">SR</span>
                     </li>
                     <li>
                         <span class="label" translate>TOTAL_STAY_COST</span>
-                        <label ng-if="!reservationData.isRoomRateSuppressed"><strong>{{reservationData.rateCurrency}}{{reservationData.totalStayCost
+                        <span class="total" ng-if="!reservationData.isRoomRateSuppressed"><strong>{{reservationData.rateCurrency}}{{reservationData.totalStayCost
                             | number : 2}}</strong>
-                        </label>
-                        <label ng-if="reservationData.isRoomRateSuppressed">SR</label>
+                        </span>
+                        <span class="total" ng-if="reservationData.isRoomRateSuppressed">SR</span>
                     </li>
                 </ul>
             </div>
