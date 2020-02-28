@@ -51,6 +51,7 @@ sntRover.controller('RVReservationPackageController',
 		
 		$scope.selectPurchasedAddon = function(addon) {
 			$scope.errorMessage = [];
+			$scope.daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 			if (!$rootScope.featureToggles.addons_custom_posting) {
 				return;
 			} else if (addon.is_rate_addon) {
@@ -60,10 +61,6 @@ sntRover.controller('RVReservationPackageController',
 				var addonPostingMode = $scope.addonPopUpData.addonPostingMode;
 
 				$scope.selectedPurchesedAddon = addon;
-				if (typeof $scope.selectedPurchesedAddon.selected_post_days === 'undefined') {
-					$scope.selectedPurchesedAddon.selected_post_days = {};
-					$scope.togglePostDaysSelectionForAddon(false);
-				}
 				if (addonPostingMode === 'staycard') {
 					$scope.addonPostingDate = {
 						startDate: tzIndependentDate($scope.reservationData.reservation_card.arrival_date),
@@ -92,6 +89,10 @@ sntRover.controller('RVReservationPackageController',
 					$scope.selectedPurchesedAddon.end_date = $scope.addonPostingDate.endDate;
 				}
 				updateDaysOfWeek();
+				if (typeof $scope.selectedPurchesedAddon.selected_post_days === 'undefined') {
+					$scope.selectedPurchesedAddon.selected_post_days = {};
+					$scope.togglePostDaysSelectionForAddon(true);
+				}
 				var startDate = $filter('date')($scope.selectedPurchesedAddon.start_date, $rootScope.dateFormat),
 					endDate = $filter('date')($scope.selectedPurchesedAddon.end_date, $rootScope.dateFormat);
 
@@ -228,7 +229,6 @@ sntRover.controller('RVReservationPackageController',
 		};
 
 		var updateDaysOfWeek = function() {
-			$scope.daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 				var start_date = tzIndependentDate($filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.start_date), 'yyyy-MM-dd' )),
 				end_date = tzIndependentDate($filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.end_date), 'yyyy-MM-dd' )),
 				noOfDays, startDayIndex;
