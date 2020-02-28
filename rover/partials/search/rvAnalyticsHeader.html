@@ -1,5 +1,5 @@
 <!-- Filters -->
-<form method="get" name="dashboard-search-form" id="dashboard-search-form" class="search-form dashboard-analytics has-dates has-room-types" data-search-for="analytics" role="search">
+<form method="get" name="dashboard-search-form" id="dashboard-search-form" class="search-form dashboard-analytics has-dates has-room-types" data-search-for="analytics" role="search" ng-cloak>
 
 <!-- <div id="dashboard-search-form" class="search-form dashboard-analytics" role="search"> -->
     <!-- Switch between Analytics and buttons view -->
@@ -18,7 +18,7 @@
     </div>
 
     <!-- Set Date -->
-    <div class="entry dates"  ng-if="dashboardFilter.selectedAnalyticsMenu !== 'DISTRIBUTION' && 
+    <div class="entry dates"  ng-if="dashboardFilter.selectedAnalyticsMenu && dashboardFilter.selectedAnalyticsMenu !== 'DISTRIBUTION' && 
     dashboardFilter.displayMode === 'CHART_DETAILS'" >
         <div class="entry-data has-datepicker">
             <label for="analytics-date">Date</label>
@@ -26,14 +26,14 @@
         </div>
     </div>
 
-    <div class="entry dates" ng-if="dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION' && 
+    <div class="entry dates" ng-if="dashboardFilter.selectedAnalyticsMenu && dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION' && 
     dashboardFilter.displayMode === 'CHART_DETAILS'">
         <div class="entry-data has-datepicker">
             <label for="analytics-date">FROM</label>
             <input type="text" class="datepicker" ng-model="dashboardFilter.fromDate" ng-click="showAnalyticsCalendar('fromDate')" ng-change="onDateChanged()" readonly />
         </div>
     </div>
-    <div class="entry dates" ng-if="dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION' && 
+    <div class="entry dates" ng-if="dashboardFilter.selectedAnalyticsMenu && dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION' && 
     dashboardFilter.displayMode === 'CHART_DETAILS'">
         <div class="entry-data has-datepicker">
             <label for="analytics-date">TO</label>
