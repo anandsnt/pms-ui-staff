@@ -1,4 +1,4 @@
-<div class="entry full-width" ng-controller="rvCardSearchContractOwnerCtrl" ng-hide="contractData.isPastContract">
+<div class="entry full-width" ng-controller="rvCardSearchContractOwnerCtrl" ng-hide="contractData.mode === 'EDIT' && contractData.isPastContract">
     <label for="contract-owner">Contract Owner</label>
     <div class="contract-grid" ng-class="{'disable-element': contractData.disableFields}">
         <div class="select">
