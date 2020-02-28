@@ -2113,6 +2113,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							name: $scope.reservationData.ratesMeta[rate.id].name,
 							adr: rate.adr,
 							rateCurrency: rate.rate_currency,
+							rateCurrencyId: rate.rate_currency_id,
 							dates: angular.copy(datesInitial),
 							totalAmount: 0.0,
 							restriction: rate.restrictions,
