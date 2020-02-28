@@ -107,7 +107,7 @@ sntRover.controller('RVReservationPackageController',
 
 							day = daysOfWeek[postDate.getDay()];
 
-							$scope.selectedPurchesedAddon.selected_post_days[day] = true;
+							$scope.selectedPurchesedAddon.selected_post_days[day] = item.active;
 						}
 					});
 			} else {
@@ -229,7 +229,9 @@ sntRover.controller('RVReservationPackageController',
 		};
 
 		var updateDaysOfWeek = function() {
-				var start_date = tzIndependentDate($filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.start_date), 'yyyy-MM-dd' )),
+
+			$scope.daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+			var start_date = tzIndependentDate($filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.start_date), 'yyyy-MM-dd' )),
 				end_date = tzIndependentDate($filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.end_date), 'yyyy-MM-dd' )),
 				noOfDays, startDayIndex;
 
