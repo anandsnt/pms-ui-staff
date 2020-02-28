@@ -349,6 +349,7 @@ sntRover.controller('RVmanagerDashboardController',
       "originCodes": [],
       "segmentCodes": []
     };
+    $scope.dashboardFilter.selectedFilters = $scope.selectedFilters;
   };
 
   resetChartFilters();

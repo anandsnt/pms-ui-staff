@@ -458,11 +458,11 @@ sntRover.controller('RVdashboardController',
                         $scope.dashboardFilter.selectedAnalyticsMenu === 'PACE') {
                         var aggTypeFilterCount = $scope.dashboardFilter.aggType ? 1 : 0;
 
-                        return $scope.selectedFilters.marketCodes.length +
-                            $scope.selectedFilters.sourceCodes.length +
-                            $scope.selectedFilters.segmentCodes.length +
-                            $scope.selectedFilters.originCodes.length +
-                            $scope.selectedFilters.roomTypes.length +
+                        return $scope.dashboardFilter.selectedFilters.marketCodes.length +
+                            $scope.dashboardFilter.selectedFilters.sourceCodes.length +
+                            $scope.dashboardFilter.selectedFilters.segmentCodes.length +
+                            $scope.dashboardFilter.selectedFilters.originCodes.length +
+                            $scope.dashboardFilter.selectedFilters.roomTypes.length +
                             aggTypeFilterCount;
 
                     } else if ($scope.dashboardFilter.selectedAnalyticsMenu === 'PERFOMANCE') {
