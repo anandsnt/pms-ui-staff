@@ -276,9 +276,9 @@ sntRover.controller('RVbillCardController',
 	$scope.isPrintRegistrationCard = false;
 
 	$scope.isRegistrationCardEnabledFor = {
-		austria :  $scope.reservationBillData.austrian_registration_card_enabled,
+		austria:  $scope.reservationBillData.austrian_registration_card_enabled,
 		arabia: $scope.reservationBillData.arabic_registration_card_enabled
-		}
+		};
 
 	// To send track details on checkin button
 	var swipedTrackDataForCheckin = {};
