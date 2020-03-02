@@ -610,6 +610,11 @@ sntZestStation.controller('zsAdminCtrl', [
                     localStorage.setItem('useAutoDetection', $scope.useIdAutoCapture === "YES" ? "YES" : "NO");
                 };
             }
+
+            // Fetch AILA device status on reaching the admin screen
+            if ($scope.isIpad && $scope.zestStationData.is_snt_id_scan_enabled && $scope.idCaptureFeature) {
+                $scope.fetchAilaStatus();
+            }
         }());
     }
 ]);
