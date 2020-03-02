@@ -9,7 +9,7 @@
 "HK_OVERVIEW_DESC": "Snapshot of room status for the day. Primarily used to understand where the house is in terms of needed vs. available rooms.",
 "HK_PRIORITY_DESC": "Allows for a clear understanding of status that  can then be used to  easily shift resources  to address any areas of concern in real time.",
 "FO_ARRIVAL_MANAGEMENT_DESC": "Overview of arrivals and departures displayed by status and current state.",
-"FO_ACTIVITY_DESC": "Represents the arrivals /departures cadence aver the course of the day. Visualized by the type( early, late ,VIP).",
+"FO_ACTIVITY_DESC": "Represents the arrivals /departures cadence over the course of the day. Visualized by the type( early, late ,VIP).",
 "FO_WORKLOAD_DESC": "Displays arrivals/departures workload at both house lever summary as well as by individual staff members. Can be filtered by room type.",
 "MANAGER_PERFOMANCE_DESC": "Provides comprehensive overview of ADR , RevPAR  and occupancy displayed for multiple timeframes",
 "MANAGER_DISTRIBUTION_DESC": "Customizable display of distribution data by chart type and a combination of filter elements(room type, market, source  etc)",
