@@ -3,7 +3,7 @@
 
         <button id="modal-close" type="button" class="modal-close" ng-click="closePopup()"><span class="icons icon-close invert"></button>
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-        <div class="content-left">
+        <div class="content-left" ng-iscroll='resultDetails' ng-iscroll-delay='50'>
 
             <h2 class="message h2" ng-if="!showCustomPosting()">Room Enhancements</h2>
         <!-- scroller -->
