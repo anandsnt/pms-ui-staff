@@ -325,7 +325,7 @@ angular.module('sntRover')
 					params: params,
 					successCallBack: function(data) {
 						$('base').attr('href', '#');
-						$scope.screenData.analyticsDataUpdatedTime = moment().format("MM ddd, YYYY hh:mm:ss a");
+						$scope.screenData.analyticsDataUpdatedTime = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
 						$scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
 						distributionChartData = data;
 						if ($scope.dashboardFilter.gridViewActive) {

@@ -383,8 +383,8 @@ angular.module('sntRover')
                         onBarChartClick: onBarChartClick,
                         onLegendClick: onLegendClick
                     };
+                    $scope.dashboardFilter.showFilters = false;
                     drawChartAndAddHeader(chartDetails);
-                    
                 });
             };
 

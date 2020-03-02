@@ -349,6 +349,7 @@ sntRover.controller('RVmanagerDashboardController',
       "originCodes": [],
       "segmentCodes": []
     };
+    $scope.dashboardFilter.selectedFilters = $scope.selectedFilters;
   };
 
   resetChartFilters();
@@ -428,27 +429,14 @@ sntRover.controller('RVmanagerDashboardController',
     $scope.segmentData = joinFiltersAndDataSet($scope.segmentData, $scope.selectedFilters.segmentCodes);
     $scope.originData = joinFiltersAndDataSet($scope.originData, $scope.selectedFilters.originCodes);
     $scope.availableRoomTypes = joinFiltersAndDataSet($scope.availableRoomTypes, $scope.selectedFilters.roomTypes);
+    $scope.dashboardFilter.showLastYearData = false;
+    $scope.dashboardFilter.lastyearType = "SAME_DATE_LAST_YEAR";
     resetChartFilters();
   };
 
   $scope.$on('RESET_CHART_FILTERS', function() {
     emptyAllChartFilters();
   });
-
-  $scope.getAppliedFilterCount = function() {
-    if ($scope.dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION' ||
-      $scope.dashboardFilter.selectedAnalyticsMenu === 'PACE') {
-      var aggTypeFilterCount = $scope.dashboardFilter.aggType ? 1 : 0;
-
-      return $scope.selectedFilters.marketCodes.length +
-        $scope.selectedFilters.sourceCodes.length +
-        $scope.selectedFilters.segmentCodes.length +
-        $scope.selectedFilters.originCodes.length +
-        $scope.selectedFilters.roomTypes.length +
-        aggTypeFilterCount;
-    }
-    return $scope.dashboardFilter.showLastYearData ? 1 : 0;
-  };
 
   $scope.distributionChartChanged = function() {
     $scope.$broadcast('DISTRUBUTION_CHART_CHANGED');

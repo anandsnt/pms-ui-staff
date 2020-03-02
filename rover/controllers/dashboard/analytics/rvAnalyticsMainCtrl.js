@@ -145,10 +145,11 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 			$rootScope.setPrevState = {
 				hide: true
 			};
-			$scope.dashboardFilter.displayMode = 'DASHBOARD_LIST';
 			$scope.dashboardFilter.showFilters = false;
 			$scope.dashboardFilter.selectedAnalyticsMenu = '';
 			$scope.$emit('REFRESH_ANALTICS_SCROLLER');
+			$scope.$emit('RESET_CHART_FILTERS');
+			$scope.dashboardFilter.displayMode = 'DASHBOARD_LIST';
 		};
 
 		$scope.onClickOnChartTile = function(fetchDataEvent) {

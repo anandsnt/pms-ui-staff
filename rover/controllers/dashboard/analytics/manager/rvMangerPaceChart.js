@@ -279,10 +279,9 @@ angular.module('sntRover')
 							}];
 						}
 						$scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
-						$scope.screenData.analyticsDataUpdatedTime = moment().format("MM ddd, YYYY hh:mm:ss a");
+						$scope.screenData.analyticsDataUpdatedTime = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
 						paceChartData = data;
 						drawPaceChart(data);
-
 					}
 				};
 				$scope.callAPI(rvManagersAnalyticsSrv.pace, options);
