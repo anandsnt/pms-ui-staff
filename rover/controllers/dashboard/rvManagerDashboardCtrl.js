@@ -423,6 +423,7 @@ sntRover.controller('RVmanagerDashboardController',
     $scope.dashboardFilter.datePicked = $rootScope.businessDate;
     $scope.dashboardFilter.toDate = angular.copy($rootScope.businessDate);
     $scope.dashboardFilter.fromDate = angular.copy(moment($scope.dashboardFilter.toDate).subtract(7, 'days').format('YYYY-MM-DD'));
+    $scope.dashboardFilter.showRemainingReservations = false;
 
     $scope.marketData = joinFiltersAndDataSet($scope.marketData, $scope.selectedFilters.marketCodes);
     $scope.sourceData = joinFiltersAndDataSet($scope.sourceData, $scope.selectedFilters.sourceCodes);
