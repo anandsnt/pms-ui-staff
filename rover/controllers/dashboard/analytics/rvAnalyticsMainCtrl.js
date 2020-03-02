@@ -171,7 +171,9 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 			var scroller = $scope.getScroller('analytics_details_scroller');
 
 			$timeout(function() {
-				scroller.scrollTo(0, 0, 300);
+				if (scroller) {
+					scroller.scrollTo(0, 0, 300);
+				}
 			}, 0);
 		};
 
