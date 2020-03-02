@@ -107,4 +107,8 @@ sntRover.controller('RVfrontDeskDashboardController',
     $scope.showRemainingReservationsToggled = function () {
       $scope.$broadcast('SHOW_REMAINING_RESERVATIONS_TOGGLE');
     };
+    
+    $scope.showYesterdaysDataToggled = function() {
+      $scope.$broadcast('SHOW_YESTERDAYS_DATA_TOGGLE');
+    };
 }]);
