@@ -3,12 +3,12 @@
 
         <button id="modal-close" type="button" class="modal-close" ng-click="closePopup()"><span class="icons icon-close invert"></button>
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-        <div class="content-left" ng-iscroll='resultDetails' ng-iscroll-delay='50'>
+        <div class="content-left">
 
             <h2 class="message h2" ng-if="!showCustomPosting()">Room Enhancements</h2>
         <!-- scroller -->
             <div class="scrollable">
-                <ul class="wrapper">
+                <ul class="wrapper" ng-iscroll='resultDetails' ng-iscroll-delay='50'>
 
                     <!-- Add .disabled if cant be selected such as add-on with 'INCL' value or add-on for the first night -->
                     <!-- Add .item-active if selected -->
