@@ -1296,6 +1296,8 @@ sntRover.controller('RVReportDetailsCtrl', [
                 $(this).remove();
 
                 var onPrintCompletion = function() {
+                    // CICO-65855 - Introduced this to prevent the user from doing other activities before the state is restored
+                    sntActivity.start('POST_PRINT_STATE_RESTORE');
                     // in background we need to keep the report with its original state
                     $timeout(function () {
                         // remove the orientation
@@ -1318,7 +1320,7 @@ sntRover.controller('RVReportDetailsCtrl', [
                         if ('function' == typeof $scope.printOptions.afterPrint) {
                             $scope.printOptions.afterPrint();
                         }
-                        
+                        sntActivity.stop('POST_PRINT_STATE_RESTORE');
                         if (reportsSrv.getPrintClickedState()) {
                             $scope.$emit('UPDATE_REPORT_HEADING', { heading: $filter('translate')('MENU_REPORTS_INBOX')});
                             reportsSrv.setPrintClicked(false);
