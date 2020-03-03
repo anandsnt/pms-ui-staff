@@ -341,7 +341,10 @@ angular.module('sntRover')
 				$scope.callAPI(rvManagersAnalyticsSrv.distributions, options);
 			};
 
-			$scope.$on('GET_MANAGER_DISTRIBUTION', fetchDistributionChartData);
+			$scope.$on('GET_MANAGER_DISTRIBUTION', function() {
+				shallowDecodedParams = "";
+				fetchDistributionChartData();
+			});
 
 			var redrawDistributionChartIfNeeded = function() {
 				if (!isDistributionChartActive()) {

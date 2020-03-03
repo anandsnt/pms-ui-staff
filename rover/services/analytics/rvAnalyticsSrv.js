@@ -6,8 +6,8 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
     var that = this;
 
     // Variables for API returned data
-    that.activeReservations = null;
-    that.yesterdaysReservations = null;
+    that.activeReservations = [];
+    that.yesterdaysReservations = [];
     that.roomStatuses = null;
     that.selectedRoomType = "";
     that.hotelCheckinTime = null;
@@ -138,7 +138,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
             if (isFromFrontDesk) {
                 var yesterday = moment(params.date).subtract(1, 'days')
                     .format('YYYY-MM-DD');
-                    
+
                 promises.push(that.fetchActiveReservation({
                     date: yesterday
                 }).then(function(data) {
