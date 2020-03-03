@@ -129,26 +129,24 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
                 lastUpatedTime: lastUpdatedTimeForReservationApis
             });
         } else {
+            var promises = [];
+
+            promises.push(that.fetchActiveReservation(params).then(function(data) {
+                that.activeReservations = data;
+            }));
 
             if (isFromFrontDesk) {
                 var yesterday = moment(params.date).subtract(1, 'days')
                     .format('YYYY-MM-DD');
-                that.fetchActiveReservation({
+                    
+                promises.push(that.fetchActiveReservation({
                     date: yesterday
-                }).then(function(yesterdaysReservations) {
-                    that.yesterdaysReservations = yesterdaysReservations
-                });
-
+                }).then(function(data) {
+                    that.yesterdaysReservations = data;
+                }));
             }
-
-            var promises = [];
-
-            promises.push(that.fetchActiveReservation(params).then(function(data) {
-                 that.activeReservations = data;
-            }));
-
             promises.push(that.fetchRoomStatus(params).then(function(data) {
-               that.roomStatuses = data;
+                that.roomStatuses = data;
             }));
 
             $q.all(promises).then(function() {
