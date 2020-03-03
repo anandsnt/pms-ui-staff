@@ -129,22 +129,6 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
                 lastUpatedTime: lastUpdatedTimeForReservationApis
             });
         } else {
-            var completedResCall = false;
-            var completedRoomsCall = false;
-
-            that.fetchActiveReservation(params).then(function(data) {
-                that.activeReservations = data;
-
-                // From House keeping
-                completedResCall = true;
-
-                if (completedRoomsCall) {
-                    calledHKApis = true;
-                    lastUpdatedTimeForReservationApis = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
-                    deferred.resolve();
-                }
-
-            });
 
             if (isFromFrontDesk) {
                 var yesterday = moment(params.date).subtract(1, 'days')
@@ -157,15 +141,18 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
 
             }
 
-            that.fetchRoomStatus(params).then(function(data) {
-                that.roomStatuses = data;
+            var promises = [];
 
-                completedRoomsCall = true;
-                if (completedResCall) {
-                    calledHKApis = true;
-                    lastUpdatedTimeForReservationApis = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
-                    deferred.resolve();
-                }
+            promises.push(that.fetchActiveReservation(params).then(function(data) {
+                 that.activeReservations = data;
+            }));
+
+            promises.push(that.fetchRoomStatus(params).then(function(data) {
+               that.roomStatuses = data;
+            }));
+
+            $q.all(promises).then(function() {
+                deferred.resolve();
             });
         }
 
