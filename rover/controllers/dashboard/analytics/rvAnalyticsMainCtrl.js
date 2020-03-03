@@ -154,6 +154,7 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 
 		$scope.onClickOnChartTile = function(fetchDataEvent) {
 			$scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
+			$scope.$emit('RESET_CHART_FILTERS');
 			$scope.dashboardFilter.displayMode = 'CHART_DETAILS';
 			// reset filters
 			$scope.selectedFilters.roomTypes = [];
