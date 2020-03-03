@@ -100,7 +100,7 @@ sntRover.controller('RVReservationPackageController',
 				$scope.selectedPurchesedAddon.end_date = endDate;
 				$scope.selectedPurchesedAddon.nameCharLimit = ($scope.selectedPurchesedAddon.name.length > 23) ? 20 : 23;
 				angular.forEach($scope.selectedPurchesedAddon.post_instances, function(item) {
-						if (item.active) {
+						if (!item.active) {
 							var postDate = new Date(item.post_date),
 							daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
 							day;
