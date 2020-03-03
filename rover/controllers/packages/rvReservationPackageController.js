@@ -112,6 +112,7 @@ sntRover.controller('RVReservationPackageController',
 					});
 			} else {
 				$scope.errorMessage = ["Custom posting can be configured only for nightly addons"];
+				$scope.selectedPurchesedAddon = "";
 			}
 
 		};

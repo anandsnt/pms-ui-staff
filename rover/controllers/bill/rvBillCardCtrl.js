@@ -274,8 +274,11 @@ sntRover.controller('RVbillCardController',
 
 
 	$scope.isPrintRegistrationCard = false;
-	$scope.isAustrianRegistrationCardEnabled = $scope.reservationBillData.austrian_registration_card_enabled;
-	$scope.isArabicRegistrationCardEnabled = $scope.reservationBillData.arabic_registration_card_enabled;
+
+	$scope.isRegistrationCardEnabledFor = {
+		austria:  $scope.reservationBillData.austrian_registration_card_enabled,
+		arabia: $scope.reservationBillData.arabic_registration_card_enabled
+		};
 
 	// To send track details on checkin button
 	var swipedTrackDataForCheckin = {};
@@ -2816,7 +2819,7 @@ sntRover.controller('RVbillCardController',
 			$scope.printRegCardData = data;
 			$scope.errorMessage = "";
 			$scope.printRegCardData.rowspanAustrianRegCardChild = data.guest_details.accompanying_children && data.guest_details.accompanying_children.length > 4 ? 3 : 2;
-			if ($scope.isAustrianRegistrationCardEnabled) {
+			if ($scope.isRegistrationCardEnabledFor.austria) {
 				var docDetails = "";
 
 				if (data.guest_details.id_type !== "" && data.guest_details.id_type !== null) {

@@ -7,7 +7,7 @@
 
             <h2 class="message h2" ng-if="!showCustomPosting()">Room Enhancements</h2>
         <!-- scroller -->
-            <div class="scrollable">
+            <div class="scrollable"  ng-iscroll='resultDetails' ng-iscroll-delay='50'>
                 <ul class="wrapper">
 
                     <!-- Add .disabled if cant be selected such as add-on with 'INCL' value or add-on for the first night -->
@@ -48,15 +48,15 @@
                                 {{addon.addon_currency}}{{addon.totalAmount}}
                              </span>
                          <!-- add class .hidden to hide it if it can't be removed/deleted-->
-                         <span class="delete" ng-hide="addon.is_rate_addon" ng-click="removeChosenAddons($index, addon)">
+                         <span class="delete" ng-hide="addon.is_inclusive" ng-click="removeChosenAddons($index, addon)">
                             <span class="icons icon-remove-10"></span>
                          </span>
                     </li>
                 </ul>
-                <div ng-show="addonPopUpData.shouldShowAddMoreButton || !showCustomPosting()" ng-hide="selectedPurchesedAddon === '' && showCustomPosting()" class="actions inline">
-                    <button class="button blank" ng-click="closeAddOnPopup()">Close</button>
-                    <button class="button orange" ng-click="goToAddons()">Add More</button>
-                </div>
+            </div>
+            <div ng-show="addonPopUpData.shouldShowAddMoreButton || !showCustomPosting()" ng-hide="selectedPurchesedAddon === '' && showCustomPosting()" class="actions inline">
+                <button class="button blank" ng-click="closeAddOnPopup()">Close</button>
+                <button class="button orange" ng-click="goToAddons()">Add More</button>
             </div>
         </div>
         <div class="content-right" ng-class="{'hidden': !showCustomPosting()}">
