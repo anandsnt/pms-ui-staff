@@ -51,7 +51,8 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		 * @return {Boolean} [description]
 		 */
 		var whetherSummaryDataChanged = function () {
-			var currentSummaryData = $scope.accountConfigData.summary;
+			var currentSummaryData = $scope.accountConfigData.summary,
+				key;
 
 			for (key in summaryMemento) {
 				if (!angular.equals(currentSummaryData[key], summaryMemento[key])) {
@@ -288,6 +289,9 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		};
 
 		$scope.onAccountTypeModification = function() {
+			if ($scope.accountConfigData.summary.posting_account_type === "GROUP") {
+				$scope.accountConfigData.summary.posting = false;
+			}			
 			// Call only if the account is already saved
 			if (!!$scope.accountConfigData.summary.posting_account_id) {
 				$scope.updateAccountSummary();
