@@ -418,12 +418,15 @@ sntRover.controller('RVmanagerDashboardController',
 
   var emptyAllChartFilters = function() {
     shallowEncoded = "";
+    $scope.dashboardFilter.selectedRoomType = "";
+    rvAnalyticsSrv.selectedRoomType = "";
     $scope.dashboardFilter.chartType = "occupancy";
     $scope.dashboardFilter.aggType = "";
     $scope.dashboardFilter.datePicked = $rootScope.businessDate;
     $scope.dashboardFilter.toDate = angular.copy($rootScope.businessDate);
     $scope.dashboardFilter.fromDate = angular.copy(moment($scope.dashboardFilter.toDate).subtract(7, 'days').format('YYYY-MM-DD'));
     $scope.dashboardFilter.showRemainingReservations = false;
+    $scope.dashboardFilter.showPreviousDayData = false;
 
     $scope.marketData = joinFiltersAndDataSet($scope.marketData, $scope.selectedFilters.marketCodes);
     $scope.sourceData = joinFiltersAndDataSet($scope.sourceData, $scope.selectedFilters.sourceCodes);
