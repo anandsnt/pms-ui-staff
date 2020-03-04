@@ -115,8 +115,7 @@
     </div>
 </div>
 </br>
-<div class="invoice-header text-center">
-    {{printData.custom_text_header}}
+<div class="invoice-header text-center" ng-bind-html="trustAsHtml(printData.custom_text_header)">
 </div>
 
 <div class="invoice-body">
