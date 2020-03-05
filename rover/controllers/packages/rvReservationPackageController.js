@@ -240,13 +240,7 @@ sntRover.controller('RVReservationPackageController',
 				noOfDays, startDayIndex;
 
 			noOfDays = (moment(end_date) - moment(start_date)) / 86400000;
-			if (!$scope.selectedPurchesedAddon.is_allowance) {
-				noOfDays--;
-			} else if ($scope.selectedPurchesedAddon.is_consume_next_day) {
-				startDayIndex++;
-			} else {
-				noOfDays--;
-			}
+			noOfDays--;
 			if (noOfDays <= 6) {
 				$scope.daysOfWeekCopy = [];
 				startDayIndex = start_date.getDay();
@@ -261,6 +255,9 @@ sntRover.controller('RVReservationPackageController',
 					}
 				}
 				angular.copy($scope.daysOfWeekCopy, $scope.daysOfWeek);
+			}
+			if ($scope.selectedPurchesedAddon.is_allowance && $scope.selectedPurchesedAddon.is_consume_next_day) {
+				startDayIndex++;
 			}
 		};
 	}
