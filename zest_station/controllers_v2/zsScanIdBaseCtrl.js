@@ -10,6 +10,7 @@ sntZestStation.controller('zsScanIdBaseCtrl', [
     function($scope, $stateParams, $state, $controller, zsEventConstants, zsCheckinSrv, $timeout, sntIDCollectionSrv) {
 
         BaseCtrl.call(this, $scope);
+
         if (!sntIDCollectionSrv.isInDevEnv && $scope.zestStationData.hotelSettings.id_collection) {
             sntIDCollectionSrv.setAcuantCredentialsForProduction($scope.zestStationData.hotelSettings.id_collection.acuant_credentials);
         }
@@ -73,6 +74,7 @@ sntZestStation.controller('zsScanIdBaseCtrl', [
                 $scope.screenData.scanMode = 'ANALYSING_ID_DATA_FAILED';
             } else if ($scope.idScanData.verificationMethod === 'FR') {
                 $scope.idScanData.selectedGuest.scannedDetails = data;
+                $scope.idScanData.selectedGuest.originalScannedDetails = angular.copy(data);
                 setDataToCheckinSrv(data);
                 if ($scope.idScanData.screenType === 'WALKIN_RESERVATION') {
                     $scope.$emit('SHOW_ID_RESULTS');
@@ -81,6 +83,7 @@ sntZestStation.controller('zsScanIdBaseCtrl', [
                 }
             } else {
                 $scope.idScanData.selectedGuest.scannedDetails = data;
+                $scope.idScanData.selectedGuest.originalScannedDetails = angular.copy(data);
                 setDataToCheckinSrv(data);
                 proceedWithScanedDetails();
             }
@@ -138,6 +141,18 @@ sntZestStation.controller('zsScanIdBaseCtrl', [
         $scope.$on('IMAGE_ANALYSIS_STARTED', function() {
             $scope.resetTime();
             $scope.screenData.scanMode = 'ANALYSING_ID_DATA';
+        });
+
+        $scope.$on('ID_FRONT_IMAGE_CAPTURED', function() {
+            if ($scope.deviceConfig.useAilaDevice) {
+                $scope.confirmFrontImage();
+            }
+        });
+
+        $scope.$on('ID_BACK_IMAGE_CAPTURED', function() {
+            if ($scope.deviceConfig.useAilaDevice) {
+                $scope.confirmImages();
+            }
         });
 
         (function() {})();

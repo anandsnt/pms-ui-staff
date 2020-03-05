@@ -434,9 +434,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		});
 
 
-		// $scope.UPDATE_TRANSACTION_DATA = function() {
-		// 	getTransactionDetails();
-		// };
+		$scope.UPDATE_TRANSACTION_DATA = function() {
+			getTransactionDetails();
+		};
 
 		/*
 		 *  Bill data need to be updated after success action of

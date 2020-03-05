@@ -99,6 +99,12 @@ function($scope, $state, ADGuestCardSrv) {
 						$scope.guestCardFields.entry_date.is_mandatory_on_guest_card_creation = false;
 					}
 					break;
+				case "id_expiration_date":
+                    $scope.guestCardFields.id_expiration_date.is_visible = !$scope.guestCardFields.id_expiration_date.is_visible;
+                    if (!$scope.guestCardFields.id_expiration_date.is_visible) {
+						$scope.guestCardFields.id_expiration_date.is_mandatory_on_guest_card_creation = false;
+					}
+					break;
 				case "id_issue_date":
                     $scope.guestCardFields.id_issue_date.is_visible = !$scope.guestCardFields.id_issue_date.is_visible;
                     if (!$scope.guestCardFields.id_issue_date.is_visible) {
@@ -165,6 +171,9 @@ function($scope, $state, ADGuestCardSrv) {
 					break;
                 case "entry_date":
                     $scope.guestCardFields.entry_date.is_mandatory_on_guest_card_creation = !$scope.guestCardFields.entry_date.is_mandatory_on_guest_card_creation;
+                    break;
+                case "id_expiration_date":
+                    $scope.guestCardFields.id_expiration_date.is_mandatory_on_guest_card_creation = !$scope.guestCardFields.id_expiration_date.is_mandatory_on_guest_card_creation;
                     break;
                 case "id_issue_date":
                     $scope.guestCardFields.id_issue_date.is_mandatory_on_guest_card_creation = !$scope.guestCardFields.id_issue_date.is_mandatory_on_guest_card_creation;

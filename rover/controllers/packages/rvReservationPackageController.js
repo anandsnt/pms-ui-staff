@@ -22,6 +22,9 @@ sntRover.controller('RVReservationPackageController',
 		$scope.closeAddOnPopup = function() {
 			// to add stjepan's popup showing animation
 			$rootScope.modalOpened = false;
+			$scope.$emit('CLOSE_ADDON_POPUP', {
+				addonPostingMode: $scope.addonPopUpData.addonPostingMode
+			});
 			$timeout(function() {
 				if (shouldReloadState) {
 					$state.reload($state.current.name);
@@ -51,6 +54,7 @@ sntRover.controller('RVReservationPackageController',
 		
 		$scope.selectPurchasedAddon = function(addon) {
 			$scope.errorMessage = [];
+			$scope.daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 			if (!$rootScope.featureToggles.addons_custom_posting) {
 				return;
 			} else if (addon.is_rate_addon) {
@@ -60,10 +64,6 @@ sntRover.controller('RVReservationPackageController',
 				var addonPostingMode = $scope.addonPopUpData.addonPostingMode;
 
 				$scope.selectedPurchesedAddon = addon;
-				if (typeof $scope.selectedPurchesedAddon.selected_post_days === 'undefined') {
-					$scope.selectedPurchesedAddon.selected_post_days = {};
-					$scope.togglePostDaysSelectionForAddon(false);
-				}
 				if (addonPostingMode === 'staycard') {
 					$scope.addonPostingDate = {
 						startDate: tzIndependentDate($scope.reservationData.reservation_card.arrival_date),
@@ -92,6 +92,10 @@ sntRover.controller('RVReservationPackageController',
 					$scope.selectedPurchesedAddon.end_date = $scope.addonPostingDate.endDate;
 				}
 				updateDaysOfWeek();
+				if (typeof $scope.selectedPurchesedAddon.selected_post_days === 'undefined') {
+					$scope.selectedPurchesedAddon.selected_post_days = {};
+					$scope.togglePostDaysSelectionForAddon(true);
+				}
 				var startDate = $filter('date')($scope.selectedPurchesedAddon.start_date, $rootScope.dateFormat),
 					endDate = $filter('date')($scope.selectedPurchesedAddon.end_date, $rootScope.dateFormat);
 
@@ -99,18 +103,19 @@ sntRover.controller('RVReservationPackageController',
 				$scope.selectedPurchesedAddon.end_date = endDate;
 				$scope.selectedPurchesedAddon.nameCharLimit = ($scope.selectedPurchesedAddon.name.length > 23) ? 20 : 23;
 				angular.forEach($scope.selectedPurchesedAddon.post_instances, function(item) {
-						if (item.active) {
+						if (!item.active) {
 							var postDate = new Date(item.post_date),
 							daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
 							day;
 
 							day = daysOfWeek[postDate.getDay()];
 
-							$scope.selectedPurchesedAddon.selected_post_days[day] = true;
+							$scope.selectedPurchesedAddon.selected_post_days[day] = item.active;
 						}
 					});
 			} else {
 				$scope.errorMessage = ["Custom posting can be configured only for nightly addons"];
+				$scope.selectedPurchesedAddon = "";
 			}
 
 		};
@@ -228,22 +233,20 @@ sntRover.controller('RVReservationPackageController',
 		};
 
 		var updateDaysOfWeek = function() {
+
 			$scope.daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-				var start_date = tzIndependentDate($filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.start_date), 'yyyy-MM-dd' )),
+			var start_date = tzIndependentDate($filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.start_date), 'yyyy-MM-dd' )),
 				end_date = tzIndependentDate($filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.end_date), 'yyyy-MM-dd' )),
 				noOfDays, startDayIndex;
 
 			noOfDays = (moment(end_date) - moment(start_date)) / 86400000;
-			if (!$scope.selectedPurchesedAddon.is_allowance) {
-				noOfDays--;
-			} else if ($scope.selectedPurchesedAddon.is_consume_next_day) {
-				startDayIndex++;
-			} else {
-				noOfDays--;
-			}
+			noOfDays--;
 			if (noOfDays <= 6) {
 				$scope.daysOfWeekCopy = [];
 				startDayIndex = start_date.getDay();
+				if ($scope.selectedPurchesedAddon.is_allowance && $scope.selectedPurchesedAddon.is_consume_next_day) {
+					startDayIndex++;
+				}
 				for (var index = 0; index <= noOfDays; index++) {
 
 					if (startDayIndex < 7) {

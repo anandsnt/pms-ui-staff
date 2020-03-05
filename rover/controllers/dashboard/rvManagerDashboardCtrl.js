@@ -349,6 +349,7 @@ sntRover.controller('RVmanagerDashboardController',
       "originCodes": [],
       "segmentCodes": []
     };
+    $scope.dashboardFilter.selectedFilters = $scope.selectedFilters;
   };
 
   resetChartFilters();
@@ -417,38 +418,29 @@ sntRover.controller('RVmanagerDashboardController',
 
   var emptyAllChartFilters = function() {
     shallowEncoded = "";
+    $scope.dashboardFilter.selectedRoomType = "";
+    rvAnalyticsSrv.selectedRoomType = "";
     $scope.dashboardFilter.chartType = "occupancy";
     $scope.dashboardFilter.aggType = "";
     $scope.dashboardFilter.datePicked = $rootScope.businessDate;
     $scope.dashboardFilter.toDate = angular.copy($rootScope.businessDate);
     $scope.dashboardFilter.fromDate = angular.copy(moment($scope.dashboardFilter.toDate).subtract(7, 'days').format('YYYY-MM-DD'));
+    $scope.dashboardFilter.showRemainingReservations = false;
+    $scope.dashboardFilter.showPreviousDayData = false;
 
     $scope.marketData = joinFiltersAndDataSet($scope.marketData, $scope.selectedFilters.marketCodes);
     $scope.sourceData = joinFiltersAndDataSet($scope.sourceData, $scope.selectedFilters.sourceCodes);
     $scope.segmentData = joinFiltersAndDataSet($scope.segmentData, $scope.selectedFilters.segmentCodes);
     $scope.originData = joinFiltersAndDataSet($scope.originData, $scope.selectedFilters.originCodes);
     $scope.availableRoomTypes = joinFiltersAndDataSet($scope.availableRoomTypes, $scope.selectedFilters.roomTypes);
+    $scope.dashboardFilter.showLastYearData = false;
+    $scope.dashboardFilter.lastyearType = "SAME_DATE_LAST_YEAR";
     resetChartFilters();
   };
 
   $scope.$on('RESET_CHART_FILTERS', function() {
     emptyAllChartFilters();
   });
-
-  $scope.getAppliedFilterCount = function() {
-    if ($scope.dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION' ||
-      $scope.dashboardFilter.selectedAnalyticsMenu === 'PACE') {
-      var aggTypeFilterCount = $scope.dashboardFilter.aggType ? 1 : 0;
-
-      return $scope.selectedFilters.marketCodes.length +
-        $scope.selectedFilters.sourceCodes.length +
-        $scope.selectedFilters.segmentCodes.length +
-        $scope.selectedFilters.originCodes.length +
-        $scope.selectedFilters.roomTypes.length +
-        aggTypeFilterCount;
-    }
-    return $scope.dashboardFilter.showLastYearData ? 1 : 0;
-  };
 
   $scope.distributionChartChanged = function() {
     $scope.$broadcast('DISTRUBUTION_CHART_CHANGED');

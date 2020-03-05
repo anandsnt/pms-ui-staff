@@ -606,10 +606,24 @@
                         }
 
                         .switch-button {
+                            min-width: 120px;
+                            height: 40px;
+
+                            .switch-icon,
+                            .value {
+                                padding: 0 10px;
+                            }
+
+                            input[type="checkbox"] {
+                                line-height: 40px;
+                                height: 40px;
+                            }
 
                             .data-off,
                             .data-on {
                                 left: auto;
+                                line-height: 30px;
+                                height: 30px;
 
                                 &.data-off {
                                     right: -100%;
@@ -636,10 +650,16 @@
                                 .data-off { right: 0; }
                                 .data-on { right: 100%; }
                             }
+
+                            &.full-width {
+                                max-width: 180px;
+                            }
                         }
 
                         .button {
                             position: relative;
+                            font-size: 14px;
+                            padding: 0 10px;
                             height: 40px;
 
                             .count {
@@ -691,6 +711,15 @@
 
                                 &:hover,
                                 &:active { .box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.15)"); }
+                            }
+                        }
+
+                        .checkbox {
+                            font-size: 14px;
+                            text-transform: uppercase;
+                            
+                            &:not(.inline) {
+                                padding-right: 10px;
                             }
                         }
 
@@ -1828,7 +1857,6 @@
                                 > .wrapper { padding: 20px; }
 
                                 .switch-button {
-                                    max-width: 175px;
 
                                     .data-on {
                                         right: 100%;

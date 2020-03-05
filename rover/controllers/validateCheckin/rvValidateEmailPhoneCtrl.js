@@ -30,8 +30,8 @@ sntRover.controller('RVValidateEmailPhoneCtrl',
             }, 1500);
     };
 
-    $scope.popupCalendar = function() {
-        $scope.calenderFor = 'validate';
+    $scope.popupCalendar = function(calenderFor) {
+        $scope.calenderFor = calenderFor;
         $scope.datePicker = ngDialog.open({
             template: '/assets/partials/guestCard/contactInfoCalendarPopup.html',
             controller: 'RVAllContactInfoDatePickerController',
@@ -144,6 +144,9 @@ sntRover.controller('RVValidateEmailPhoneCtrl',
         }
         if ($scope.showDateOfBirth) {
             $scope.guestCardData.contactInfo.birth_day = $scope.saveData.birth_day;
+        }
+        if ($scope.showIdExpDate) {
+            $scope.guestCardData.contactInfo.id_expiration_date = $scope.saveData.id_expiration_date;
         }
 		$scope.$emit('hideLoader');
 		ngDialog.close();

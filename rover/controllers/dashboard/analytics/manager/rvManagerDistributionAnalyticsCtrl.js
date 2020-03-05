@@ -92,6 +92,12 @@ angular.module('sntRover')
 								if (item.hasOwnProperty(key) && key !== "date") {
 									item[key] = item[key] > 0 ? item[key] : 0;
 								}
+								// For the agg types not defined for the dict, use 0
+								_.each(stackKey, function(stack) {
+									if (!item.hasOwnProperty(stack)) {
+										item[stack] = 0;
+									}
+								});
 							}
 						});
 
@@ -319,7 +325,7 @@ angular.module('sntRover')
 					params: params,
 					successCallBack: function(data) {
 						$('base').attr('href', '#');
-						$scope.screenData.analyticsDataUpdatedTime = moment().format("MM ddd, YYYY hh:mm:ss a");
+						$scope.screenData.analyticsDataUpdatedTime = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
 						$scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
 						distributionChartData = data;
 						if ($scope.dashboardFilter.gridViewActive) {
@@ -335,7 +341,10 @@ angular.module('sntRover')
 				$scope.callAPI(rvManagersAnalyticsSrv.distributions, options);
 			};
 
-			$scope.$on('GET_MANAGER_DISTRIBUTION', fetchDistributionChartData);
+			$scope.$on('GET_MANAGER_DISTRIBUTION', function() {
+				shallowDecodedParams = "";
+				fetchDistributionChartData();
+			});
 
 			var redrawDistributionChartIfNeeded = function() {
 				if (!isDistributionChartActive()) {
@@ -349,6 +358,11 @@ angular.module('sntRover')
 				redrawDistributionChartIfNeeded();
 			});
 
+			$scope.$on('CHART_TYPE_CHANGED', function(e, data) {
+				setPageHeading();
+				redrawDistributionChartIfNeeded();
+			});
+
 			$scope.$on('CHART_AGGGREGATION_CHANGED', function() {
 				setPageHeading();
 				redrawDistributionChartIfNeeded();
@@ -357,6 +371,7 @@ angular.module('sntRover')
 			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER_DISTRIBUTION', fetchDistributionChartData);
 
 			$scope.$on('REFRESH_ANALYTCIS_CHART_DISTRIBUTION', function() {
+				shallowDecodedParams = "";
 				$scope.$emit('RESET_CHART_FILTERS');
 				fetchDistributionChartData()
 			});

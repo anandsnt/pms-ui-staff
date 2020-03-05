@@ -931,7 +931,7 @@ angular.module('sntRover')
 					successCallBack: function(data) {
 						$('base').attr('href', '#');
 						perfomanceData = data;
-						$scope.screenData.analyticsDataUpdatedTime = moment().format("MM ddd, YYYY hh:mm:ss a");
+						$scope.screenData.analyticsDataUpdatedTime = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
 						$scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
 						drawPerfomceChart(data);
 						$scope.dashboardFilter.displayMode = 'CHART_DETAILS';

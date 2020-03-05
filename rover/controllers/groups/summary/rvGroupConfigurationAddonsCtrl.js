@@ -216,7 +216,14 @@ angular.module('sntRover').controller('rvGroupConfigurationAddonsCtrl', [
 			}
 		});
 
+		$scope.addListener('CLOSE_ADDON_POPUP', function (event, data) {
+			if (data.addonPostingMode === 'create_group') {
+				$scope.reloadPage();
+			}
+		});
+
 		$scope.$on( '$destroy', proceedBookingListner);
 		$scope.$on( '$destroy', removeSelectedAddonsListner);
+
 	}
 ]);
