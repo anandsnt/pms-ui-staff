@@ -358,6 +358,11 @@ angular.module('sntRover')
 				redrawDistributionChartIfNeeded();
 			});
 
+			$scope.$on('CHART_TYPE_CHANGED', function(e, data) {
+				setPageHeading();
+				redrawDistributionChartIfNeeded();
+			});
+
 			$scope.$on('CHART_AGGGREGATION_CHANGED', function() {
 				setPageHeading();
 				redrawDistributionChartIfNeeded();
