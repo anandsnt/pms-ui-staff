@@ -449,6 +449,7 @@ sntRover.controller('RVdashboardController',
                 });
 
                 $scope.refreshAnalyticsChart = function(selectedChart) {
+                    $scope.$broadcast('RESET_CHART_FILTERS');
                     $scope.$broadcast('REFRESH_ANALYTCIS_CHART_' + selectedChart);
                     $scope.dashboardFilter.showFilters = false;
                 };

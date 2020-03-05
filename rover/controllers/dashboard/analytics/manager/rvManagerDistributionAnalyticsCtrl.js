@@ -341,7 +341,10 @@ angular.module('sntRover')
 				$scope.callAPI(rvManagersAnalyticsSrv.distributions, options);
 			};
 
-			$scope.$on('GET_MANAGER_DISTRIBUTION', fetchDistributionChartData);
+			$scope.$on('GET_MANAGER_DISTRIBUTION', function() {
+				shallowDecodedParams = "";
+				fetchDistributionChartData();
+			});
 
 			var redrawDistributionChartIfNeeded = function() {
 				if (!isDistributionChartActive()) {
@@ -363,6 +366,7 @@ angular.module('sntRover')
 			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER_DISTRIBUTION', fetchDistributionChartData);
 
 			$scope.$on('REFRESH_ANALYTCIS_CHART_DISTRIBUTION', function() {
+				shallowDecodedParams = "";
 				$scope.$emit('RESET_CHART_FILTERS');
 				fetchDistributionChartData()
 			});
