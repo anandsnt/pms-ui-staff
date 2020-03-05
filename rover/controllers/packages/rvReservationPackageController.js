@@ -22,7 +22,7 @@ sntRover.controller('RVReservationPackageController',
 		$scope.closeAddOnPopup = function() {
 			// to add stjepan's popup showing animation
 			$rootScope.modalOpened = false;
-			$rootScope.$broadcast('CLOSE_ADDON_POPUP', {
+			$scope.$emit('CLOSE_ADDON_POPUP', {
 				addonPostingMode: $scope.addonPopUpData.addonPostingMode
 			});
 			$timeout(function() {
