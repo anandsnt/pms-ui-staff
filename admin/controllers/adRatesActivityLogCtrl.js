@@ -42,22 +42,17 @@ admin.controller('ADRatesActivityLogCtrl', ['$scope', '$rootScope', '$state', '$
             $scope.toggleActivityLog = function() {
                 if ($scope.detailsMenu !== 'adRateActivityLog') {
                     $scope.detailsMenu = 'adRateActivityLog';
+                    $scope.tableParams = new ngTableParams({
+                        page: 1,  // show first page
+                        count: $scope.displyCount, // count per page
+                        sorting: {
+                            name: 'asc' // initial sorting
+                        }
+                    }, {
+                        total: 0, // length of data
+                        getData: $scope.getRateLog
+                    });
 
-                    // $scope.loadTable = function() {
-        $scope.tableParams = new ngTableParams({
-            page: 1,  // show first page
-            count: $scope.displyCount, // count per page
-            sorting: {
-                name: 'asc' // initial sorting
-            }
-        }, {
-            total: 0, // length of data
-            getData: $scope.getRateLog
-        });
-    // };
-
-
-                    // $scope.getRateLog();
                 } else {
                     $scope.detailsMenu = '';
                     $scope.toggleActivityLogFilterON = false;
