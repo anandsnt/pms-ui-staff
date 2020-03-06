@@ -108,7 +108,7 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
      */
     $scope.selectedPaymentCurrency = function(id) {
         $timeout(function() {
-            if (!(_.findWhere($scope.payment_currency_list, {"id": id})).is_selected) {
+            if ((_.findWhere($scope.payment_currency_list, {"id": id})).is_selected) {
                 if (_.indexOf($scope.selectedPaymentCurrencies, id) !== -1) {
                     $scope.selectedPaymentCurrencies.splice(_.indexOf($scope.selectedPaymentCurrencies, id), 1);
                     (_.findWhere($scope.payment_currency_list, {"id": id})).is_selected = false;

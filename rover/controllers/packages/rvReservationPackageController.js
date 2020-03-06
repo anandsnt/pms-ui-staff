@@ -22,6 +22,9 @@ sntRover.controller('RVReservationPackageController',
 		$scope.closeAddOnPopup = function() {
 			// to add stjepan's popup showing animation
 			$rootScope.modalOpened = false;
+			$scope.$emit('CLOSE_ADDON_POPUP', {
+				addonPostingMode: $scope.addonPopUpData.addonPostingMode
+			});
 			$timeout(function() {
 				if (shouldReloadState) {
 					$state.reload($state.current.name);
@@ -237,16 +240,13 @@ sntRover.controller('RVReservationPackageController',
 				noOfDays, startDayIndex;
 
 			noOfDays = (moment(end_date) - moment(start_date)) / 86400000;
-			if (!$scope.selectedPurchesedAddon.is_allowance) {
-				noOfDays--;
-			} else if ($scope.selectedPurchesedAddon.is_consume_next_day) {
-				startDayIndex++;
-			} else {
-				noOfDays--;
-			}
+			noOfDays--;
 			if (noOfDays <= 6) {
 				$scope.daysOfWeekCopy = [];
 				startDayIndex = start_date.getDay();
+				if ($scope.selectedPurchesedAddon.is_allowance && $scope.selectedPurchesedAddon.is_consume_next_day) {
+					startDayIndex++;
+				}
 				for (var index = 0; index <= noOfDays; index++) {
 
 					if (startDayIndex < 7) {
