@@ -1,7 +1,7 @@
 sntRover.controller('RVSelectRoomAndRateCtrl', [
 	'$rootScope', '$scope', 'areReservationAddonsAvailable', '$stateParams', 'rates', 'ratesMeta', '$timeout', '$state', 'RVReservationBaseSearchSrv', 'RVReservationStateService', 'RVReservationDataService', 'house', 'RVSelectRoomRateSrv', 'rvPermissionSrv', 'ngDialog', '$filter', 'RVRoomRatesSrv', 'rvGroupConfigurationSrv', 'rvAllotmentConfigurationSrv', 'dateFilter',
 	function($rootScope, $scope, areReservationAddonsAvailable, $stateParams, rates, ratesMeta, $timeout, $state, RVReservationBaseSearchSrv, RVReservationStateService, RVReservationDataService, house, RVSelectRoomRateSrv, rvPermissionSrv, ngDialog, $filter, RVRoomRatesSrv, rvGroupConfigurationSrv, rvAllotmentConfigurationSrv, dateFilter) {
-
+		BaseCtrl.call(this, $scope);
 		$scope.borrowForGroups = $stateParams.borrow_for_groups === 'true' ? true : false;
 
 		$scope.stateCheck = {
@@ -659,7 +659,13 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			navigateOut = function() {
 				if ($scope.viewState.identifier !== 'REINSTATE' &&
 					($stateParams.fromState === 'rover.reservation.staycard.reservationcard.reservationdetails' || $stateParams.fromState === 'STAY_CARD')) {
-					saveAndGotoStayCard();
+				
+					if ($stateParams.isGroupDetachmentRequested) {
+						$rootScope.$broadcast('DETACH_GROUP_FROM_RESERVATION');
+					} else {
+						saveAndGotoStayCard();
+					}
+					
 				} else {
 					$scope.computeTotalStayCost();
 					enhanceStay();
@@ -1086,7 +1092,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					param: {
 						confirmationId: $scope.reservationData.confirmNum,
 						id: $scope.reservationData.reservationId,
-						isrefresh: true
+						isrefresh: true,
+						isGroupDetachmentRequested: $stateParams.isGroupDetachmentRequested
 					}
 				};
 
@@ -2414,7 +2421,13 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		// CICO-47056
 		$scope.clearErrorMessage = function () {
            $scope.errorMessage = [];
- 		};
+		 };
+		
+		 // CICO-65967
+		$scope.addListener('UPDATE_RATE_POST_GROUP_DETACH', function () {
+        	saveAndGotoStayCard();
+        });
+		 
 
 
 	}

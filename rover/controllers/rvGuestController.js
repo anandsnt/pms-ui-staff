@@ -681,7 +681,13 @@ angular.module('sntRover').controller('guestCardController', [
                     $scope.closeGuestCard();
                 } else {
                     // Handle group removal in stay-card
-                    detachGroupFromThisReservation();
+                    $scope.closeGuestCard();
+                    resetReservationGroupData();
+                    var options = {
+                        isGroupDetachmentRequested: true
+                    };
+
+                    $scope.navigateToRoomAndRates(options);
                 }
             },
             removeAllotmentCard = function() {
@@ -1475,8 +1481,8 @@ angular.module('sntRover').controller('guestCardController', [
             switchToAddCardViewMode();
 
             $scope.$broadcast("groupCardDetached");
-
-            $scope.navigateToRoomAndRates();
+            $rootScope.$broadcast('UPDATE_RATE_POST_GROUP_DETACH');
+            
         };
 
         /**
@@ -2206,6 +2212,9 @@ angular.module('sntRover').controller('guestCardController', [
 
         $scope.$on('$destroy', guestCardSetListener);
 
-
+        // CICO-65967
+        $scope.addListener('DETACH_GROUP_FROM_RESERVATION', function () {
+            detachGroupFromThisReservation();
+        }); 
     }
 ]);

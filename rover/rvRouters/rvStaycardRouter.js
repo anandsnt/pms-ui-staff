@@ -129,7 +129,8 @@ angular.module('stayCardModule', [])
                 selectedRoomNo: null,
                 arrivalTime: null,
                 departureTime: null,
-                numNights: null
+                numNights: null,
+                isGroupDetachmentRequested: null
             },
             templateUrl: '/assets/partials/reservation/rvSelectRoomAndRate.html',
             controller: 'RVSelectRoomAndRateCtrl',
@@ -254,7 +255,8 @@ angular.module('stayCardModule', [])
                 isFromGuestStatistics: null,
                 isFromCardStatistics: null,
                 isBulkCheckoutSelected: false,
-                isAllowOpenBalanceCheckoutSelected: false
+                isAllowOpenBalanceCheckoutSelected: false,
+                isGroupDetachmentRequested: null
             },
             resolve: {
                 reservationListData: function (RVReservationCardSrv, $stateParams) {

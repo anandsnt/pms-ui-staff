@@ -2113,4 +2113,9 @@ sntRover.controller('reservationDetailsController',
 	$scope.$on( '$destroy', removeSelectedAddonsListner);
 	$scope.$on( '$destroy', navigateToAddonsListner);
 
+	// CICO-65967
+	if ($stateParams.isGroupDetachmentRequested) {
+		$scope.searchData.groupCard.name = '';
+	}
+	
 }]);
