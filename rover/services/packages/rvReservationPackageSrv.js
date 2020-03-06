@@ -75,6 +75,8 @@ angular.module('sntRover').service('RVReservationPackageSrv', ['$http', '$q', 'r
 		}
 		addonItem.chargefullweeksonly = item.charge_full_weeks_only;
 		addonItem.is_rate_addon = item.is_rate_addon;
+		addonItem.is_allowance = item.is_allowance;
+		addonItem.is_consume_next_day = item.is_consume_next_day;
 		return addonItem;
 	};
 
