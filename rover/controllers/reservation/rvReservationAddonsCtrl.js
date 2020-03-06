@@ -307,7 +307,9 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         posting_frequency: addon.postType.frequency,
                         rate_currency: addon.rateCurrency,
                         start_date: tzIndependentDate($scope.reservationData.arrivalDate),
-                        end_date: tzIndependentDate($scope.reservationData.departureDate)
+                        end_date: tzIndependentDate($scope.reservationData.departureDate),
+                        is_allowance: addon.is_allowance,
+                        is_consume_next_day: addon.is_consume_next_day
                     });
                        
                     $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
