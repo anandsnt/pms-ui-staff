@@ -485,7 +485,8 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 		 */
 		$scope.navigateToRoomAndRates = function(options) {
 			var resData = $scope.reservationData,
-				disableBackToStaycard = (options && options.disableBackToStaycard);
+				disableBackToStaycard = (options && options.disableBackToStaycard),
+				isGroupDetachmentRequested = (options && options.isGroupDetachmentRequested);
 
 			$state.go(roomAndRatesState, {
 				from_date: resData.arrivalDate,
@@ -506,7 +507,8 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				view: "ROOM_RATE",
 				room_type_id: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].roomTypeId,
 				adults: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numAdults,
-				children: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numChildren
+				children: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numChildren,
+				isGroupDetachmentRequested: isGroupDetachmentRequested
 			});
 		};
 
