@@ -5,7 +5,7 @@ admin.controller('ADRatesActivityLogCtrl', ['$scope', '$rootScope', '$state', '$
 
         $scope.init = function() {
             $scope.showActivityLog = false;
-            // $scope.data = {};
+
             $scope.fromDate = $rootScope.businessDate;
             $scope.toDate = $rootScope.businessDate;
             $scope.user_id = 0;
