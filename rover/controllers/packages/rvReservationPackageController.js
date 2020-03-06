@@ -33,11 +33,11 @@ sntRover.controller('RVReservationPackageController',
 		// Get addon count
 		$scope.getAddonCount = function(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly, quantity) {
 			if (!postingRythm) {
-				if (postType === 'WEEK') {
+				if (postType === 'WEEK' || postType === 'Every Week' || postType === 'WEEKLY') {
 					postingRythm = 7;
-				} else if (postType === 'STAY') {
+				} else if (postType === 'STAY' || postType === 'Entire Stay') {
 					postingRythm = 1;
-				} else if (postType === 'NIGHT') {
+				} else if (postType === 'NIGHT' || postType === 'First Night') {
 					postingRythm = 0;
 				}
 			}
