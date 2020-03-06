@@ -40,7 +40,7 @@ sntRover.controller('RVReservationPackageController',
 					postingRythm = 7;
 				} else if (postType === 'STAY' || postType === 'Entire Stay') {
 					postingRythm = 1;
-				} else if (postType === 'NIGHT' || postType === 'First Night' || postType === 'LAST_NIGHT' || postType === 'CUSTOM') {
+				} else if (postType === 'NIGHT' || postType === 'First Night' || postType === 'LAST_NIGHT' || postType === 'CUSTOM' || postType === 'POST ON LAST NIGHT') {
 					postingRythm = 0;
 				}
 			}
