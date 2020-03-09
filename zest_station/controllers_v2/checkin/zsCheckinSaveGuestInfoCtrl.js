@@ -47,8 +47,25 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 			}, 100);
 		};
 
+		var updateGuestInfo = function() {
+			// TODO: clean the below code later
+			_.each(guestInfo.guests, function(guest) {
+				if (guest.id === $scope.selectedGuest.id) {
+					_.each(guest.guest_details, function(guest_detail) {
+						_.each($scope.selectedGuest.reservationDetails, function(fieldRow) {
+							_.each(fieldRow, function(resDetails) {
+								if (guest_detail.field === resDetails.field_key) {
+									guest_detail.current_value = resDetails[resDetails.field_key];
+								}
+							});
+						});
+					});
+				}
+			});
+		};
+
 		var onGuestInfoSave = function() {
-			
+			updateGuestInfo();
 			// If there is only one guest, checkin the reservation and proceed
 			if ($scope.selectedReservation.guest_details.length === 1) {
 				$scope.$emit('CHECKIN_GUEST', {
@@ -85,16 +102,13 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 			});
 		};
 
-		var recordSkipingOffVehicleRegNumber = function() {
+		var recordSkipingOffVehicleRegNumber = function(actionDetails) {
 
 			var params = {
 				"id": checkinParams.reservation_id,
 				"application": 'KIOSK',
-				"action_type": 'ID_ANALYZING',
-				"details": [{
-					"key": 'Skipped for the guest',
-					"new_value": $scope.selectedGuest.first_name + ' ' + $scope.selectedGuest.last_name
-				}]
+				"action_type": 'GUEST_SCHEMA',
+				"details": actionDetails
 			};
 
 			var options = {
@@ -109,7 +123,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 		};
 
 		$scope.saveGuestDetails = function(skipVehicleRegNumber) {
-			
+
 			$scope.screenData.openedPopupName = '';
 			var allRequireFieldsFilled = true;
 			var vehicleRegNumberNeedtoBeEntered = false;
@@ -127,14 +141,41 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 
 			_.each($scope.selectedGuest.reservationDetails, function(row) {
 				_.each(row, function(field) {
-					if (field.field_category === 'parking' && !field[field.field_key]) {
-						vehicleRegNumberNeedtoBeEntered = skipVehicleRegNumber ? false : true;
+					if (field.field_category === 'parking') {
+						vehicleRegNumberNeedtoBeEntered = (skipVehicleRegNumber || field[field.field_key]) ? false : true;
+						if (!skipVehicleRegNumber && allRequireFieldsFilled && field.old_value !== field[field.field_key]) {
+							var actionDetails;
+
+							if (!field.old_value) {
+								actionDetails = [{
+									"key": 'Vehicle registraion number added for the guest',
+									"new_value": $scope.selectedGuest.first_name + ' ' + $scope.selectedGuest.last_name
+								}];
+							} else {
+								actionDetails = [{
+									"key": 'Vehicle registraion number updated for the guest',
+									"new_value": $scope.selectedGuest.first_name + ' ' + $scope.selectedGuest.last_name
+								}, {
+									"key": "from",
+									"new_value": field.old_value
+								}, {
+									"key": "to",
+									"new_value": field[field.field_key]
+								}];
+							}
+							recordSkipingOffVehicleRegNumber(actionDetails);
+						}
 					}
 				});
 			});
 
 			if (skipVehicleRegNumber) {
-				recordSkipingOffVehicleRegNumber();
+				var actionDetails = [{
+					"key": 'Vehicle registraion number skipped for the guest',
+					"new_value": $scope.selectedGuest.first_name + ' ' + $scope.selectedGuest.last_name
+				}];
+
+				recordSkipingOffVehicleRegNumber(actionDetails);
 			}
 			
 			if (!allRequireFieldsFilled) {
@@ -211,6 +252,10 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 				};
 
 				infoData[info.field] = info.current_value;
+
+				if (infoData.field_category === 'parking') {
+					infoData.old_value = angular.copy(info.current_value);
+				}
 
 				if (infoData.type === "date") {
 					var displayKey = infoData.field_key + "forDisplay";
