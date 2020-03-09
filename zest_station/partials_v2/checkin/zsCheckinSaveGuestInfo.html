@@ -196,4 +196,23 @@
    </div>
 </div>
 
+<!-- SHOW WARNING IF ANY REQUIRED INFO IS MISSING OR API FAILED TO SAVE -->
+<div class="popup" ng-class="{'open': screenData.openedPopupName === 'PARKING_ADDON_WARNING_POPUP'}">
+   <!-- Remove class "open" to hide popup content -->
+   <div class="popup-content">
+      <h2 class="nocaps" translate>
+         PARKING_ADDON_SKIP_MSG
+      </h2>
+      <div class="action">
+         <button type="button" class="button transparent" click-touch="screenData.openedPopupName = ''" translate>
+         ADD_NOW
+         </button>
+         <!-- When viewing already selected room, replace L70 with:-->
+         <button type="button" class="button transparent text-red" click-touch="saveGuestDetails(true)" translate>
+         ADD_LATER
+         </button>
+      </div>
+   </div>
+</div>
+
 <div ng-show="showDatePick" ui-date="dateOptions" ng-model="selectedDate" ui-date-format="yy-mm-dd" id='picker'>

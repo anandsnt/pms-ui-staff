@@ -85,8 +85,34 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 			});
 		};
 
-		$scope.saveGuestDetails = function() {
+		var recordSkipingOffVehicleRegNumber = function() {
+
+			var params = {
+				"id": checkinParams.reservation_id,
+				"application": 'KIOSK',
+				"action_type": 'ID_ANALYZING',
+				"details": [{
+					"key": 'Skipped for the guest',
+					"new_value": $scope.selectedGuest.first_name + ' ' + $scope.selectedGuest.last_name
+				}]
+			};
+
+			var options = {
+				params: params,
+				loader: 'none',
+				failureCallBack: function() {
+					// do nothing
+				}
+			};
+
+			$scope.callAPI(zsGeneralSrv.recordReservationActions, options);
+		};
+
+		$scope.saveGuestDetails = function(skipVehicleRegNumber) {
+			
+			$scope.screenData.openedPopupName = '';
 			var allRequireFieldsFilled = true;
+			var vehicleRegNumberNeedtoBeEntered = false;
 
 			$scope.screenData.showErrorMessage = false;
 
@@ -99,10 +125,27 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 				});
 			});
 
+			_.each($scope.selectedGuest.reservationDetails, function(row) {
+				_.each(row, function(field) {
+					if (field.field_category === 'parking' && !field[field.field_key]) {
+						vehicleRegNumberNeedtoBeEntered = skipVehicleRegNumber ? false : true;
+					}
+				});
+			});
+
+			if (skipVehicleRegNumber) {
+				recordSkipingOffVehicleRegNumber();
+			}
+			
 			if (!allRequireFieldsFilled) {
 				$scope.screenData.openedPopupName = 'WARNING_POPUP';
 				$scope.screenData.triedToSave = true;
-			} else {
+			} 
+			else if (vehicleRegNumberNeedtoBeEntered) {
+				$scope.screenData.openedPopupName = 'PARKING_ADDON_WARNING_POPUP';
+				$scope.screenData.triedToSave = true;
+			}
+			else {
 				var apiParams = {};
 
 				_.each($scope.selectedGuest.reservationDetails, function(row) {
@@ -163,7 +206,8 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 					field_key: info.field,
 					mandatory: info.mandatory,
 					type: info.type,
-					values: info.values
+					values: info.values,
+					field_category: info.field_category
 				};
 
 				infoData[info.field] = info.current_value;
@@ -351,7 +395,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 				calculateHeightOfListAndRefreshScroller();
 			} else {
 				// If there is only one guest, show the bypass question if set or the guest info details
-				$scope.selectedGuest = guestInfo.guests[0];
+				$scope.selectedGuest = $scope.selectedReservation.guest_details[0];
 				retrieveGuestInfoForDisplay(guestInfo.guests[0].guest_details);
 				$scope.screenData.screenMode = 'GUEST_DETAILS';
 				refreshScroller();

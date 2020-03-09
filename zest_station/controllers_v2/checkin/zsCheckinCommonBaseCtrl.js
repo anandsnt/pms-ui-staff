@@ -86,7 +86,6 @@ sntZestStation.controller('zsCheckinCommonBaseCtrl', [
 					});
 				}
 
-
 				// utils function
 				_.each(data.guests, function(guest) {
 					var mandatoryFields = _.filter(guest.guest_details, function(field) {
@@ -96,7 +95,11 @@ sntZestStation.controller('zsCheckinCommonBaseCtrl', [
 						return !field.current_value;
 					});
 
-					guest.is_missing_any_required_field = guest.info_bypassed ? false : missingInfoForGuest.length > 0;
+					var missingVehicleRegNumbers = _.filter(guest.guest_details, function(field) {
+						return field.field_category === 'parking' && !field.current_value;
+					});
+
+					guest.is_missing_any_required_field = guest.info_bypassed ? false : missingInfoForGuest.length > 0 || missingVehicleRegNumbers.length > 0;
 				});
 
 				var guestsWithMissingInfo = _.filter(data.guests, function(guest) {
