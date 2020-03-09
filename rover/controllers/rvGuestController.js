@@ -1335,7 +1335,7 @@ angular.module('sntRover').controller('guestCardController', [
             }
 
             ngDialog.open({
-                template: '/assets/partials/common/group/rvGroupBorrowOverbookPopup.html',
+                template: '/assets/partials/common/group/rvGroupBorrowPopup.html',
                 className: '',
                 closeByDocument: false,
                 closeByEscape: true,
