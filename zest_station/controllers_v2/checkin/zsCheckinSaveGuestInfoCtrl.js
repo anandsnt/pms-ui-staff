@@ -148,19 +148,20 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 
 							if (!field.old_value) {
 								actionDetails = [{
-									"key": 'Vehicle registraion number added for the guest',
-									"new_value": $scope.selectedGuest.first_name + ' ' + $scope.selectedGuest.last_name
+									'key': 'Guest info added for the guest',
+									'new_value': $scope.selectedGuest.first_name + ' ' + $scope.selectedGuest.last_name
+								}, {
+									'key': 'Vehicle registraion number',
+									'new_value': field[field.field_key]
 								}];
 							} else {
 								actionDetails = [{
-									"key": 'Vehicle registraion number updated for the guest',
-									"new_value": $scope.selectedGuest.first_name + ' ' + $scope.selectedGuest.last_name
+									'key': 'Guest info updated for the guest',
+									'new_value': $scope.selectedGuest.first_name + ' ' + $scope.selectedGuest.last_name
 								}, {
-									"key": "from",
-									"new_value": field.old_value
-								}, {
-									"key": "to",
-									"new_value": field[field.field_key]
+									'key': 'Vehicle registraion number',
+									'old_value': field.old_value,
+									'new_value': field[field.field_key]
 								}];
 							}
 							recordSkipingOffVehicleRegNumber(actionDetails);

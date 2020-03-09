@@ -96,7 +96,7 @@ sntZestStation.controller('zsCheckinCommonBaseCtrl', [
 					});
 
 					var missingVehicleRegNumbers = _.filter(guest.guest_details, function(field) {
-						return field.field_category === 'parking' && !field.current_value;
+						return field.field_category === 'parking';
 					});
 
 					guest.is_missing_any_required_field = guest.info_bypassed ? false : missingInfoForGuest.length > 0 || missingVehicleRegNumbers.length > 0;
