@@ -22,6 +22,9 @@ sntRover.controller('RVReservationPackageController',
 		$scope.closeAddOnPopup = function() {
 			// to add stjepan's popup showing animation
 			$rootScope.modalOpened = false;
+			$scope.$emit('CLOSE_ADDON_POPUP', {
+				addonPostingMode: $scope.addonPopUpData.addonPostingMode
+			});
 			$timeout(function() {
 				if (shouldReloadState) {
 					$state.reload($state.current.name);
@@ -33,11 +36,12 @@ sntRover.controller('RVReservationPackageController',
 		// Get addon count
 		$scope.getAddonCount = function(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly, quantity) {
 			if (!postingRythm) {
-				if (postType === 'WEEK') {
+				postType = postType.toUpperCase();
+				if (postType === 'WEEK' || postType === 'EVERY WEEK' || postType === 'WEEKLY' || postType === 'WEEKDAY' || postType === 'WEEKEND') {
 					postingRythm = 7;
-				} else if (postType === 'STAY') {
+				} else if (postType === 'STAY' || postType === 'ENTIRE STAY') {
 					postingRythm = 1;
-				} else if (postType === 'NIGHT') {
+				} else if (postType === 'NIGHT' || postType === 'First Night' || postType === 'LAST_NIGHT' || postType === 'CUSTOM' || postType === 'POST ON LAST NIGHT') {
 					postingRythm = 0;
 				}
 			}
@@ -100,7 +104,7 @@ sntRover.controller('RVReservationPackageController',
 				$scope.selectedPurchesedAddon.end_date = endDate;
 				$scope.selectedPurchesedAddon.nameCharLimit = ($scope.selectedPurchesedAddon.name.length > 23) ? 20 : 23;
 				angular.forEach($scope.selectedPurchesedAddon.post_instances, function(item) {
-						if (item.active) {
+						if (!item.active) {
 							var postDate = new Date(item.post_date),
 							daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
 							day;
@@ -112,6 +116,7 @@ sntRover.controller('RVReservationPackageController',
 					});
 			} else {
 				$scope.errorMessage = ["Custom posting can be configured only for nightly addons"];
+				$scope.selectedPurchesedAddon = "";
 			}
 
 		};
@@ -236,16 +241,13 @@ sntRover.controller('RVReservationPackageController',
 				noOfDays, startDayIndex;
 
 			noOfDays = (moment(end_date) - moment(start_date)) / 86400000;
-			if (!$scope.selectedPurchesedAddon.is_allowance) {
-				noOfDays--;
-			} else if ($scope.selectedPurchesedAddon.is_consume_next_day) {
-				startDayIndex++;
-			} else {
-				noOfDays--;
-			}
+			noOfDays--;
 			if (noOfDays <= 6) {
 				$scope.daysOfWeekCopy = [];
 				startDayIndex = start_date.getDay();
+				if ($scope.selectedPurchesedAddon.is_allowance && $scope.selectedPurchesedAddon.is_consume_next_day) {
+					startDayIndex++;
+				}
 				for (var index = 0; index <= noOfDays; index++) {
 
 					if (startDayIndex < 7) {

@@ -6,8 +6,8 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
     var that = this;
 
     // Variables for API returned data
-    that.activeReservations = null;
-    that.yesterdaysReservations = null;
+    that.activeReservations = [];
+    that.yesterdaysReservations = [];
     that.roomStatuses = null;
     that.selectedRoomType = "";
     that.hotelCheckinTime = null;
@@ -129,43 +129,28 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
                 lastUpatedTime: lastUpdatedTimeForReservationApis
             });
         } else {
-            var completedResCall = false;
-            var completedRoomsCall = false;
+            var promises = [];
 
-            that.fetchActiveReservation(params).then(function(data) {
+            promises.push(that.fetchActiveReservation(params).then(function(data) {
                 that.activeReservations = data;
-
-                // From House keeping
-                completedResCall = true;
-
-                if (completedRoomsCall) {
-                    calledHKApis = true;
-                    lastUpdatedTimeForReservationApis = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
-                    deferred.resolve();
-                }
-
-            });
+            }));
 
             if (isFromFrontDesk) {
                 var yesterday = moment(params.date).subtract(1, 'days')
                     .format('YYYY-MM-DD');
-                that.fetchActiveReservation({
+
+                promises.push(that.fetchActiveReservation({
                     date: yesterday
-                }).then(function(yesterdaysReservations) {
-                    that.yesterdaysReservations = yesterdaysReservations
-                });
-
+                }).then(function(data) {
+                    that.yesterdaysReservations = data;
+                }));
             }
-
-            that.fetchRoomStatus(params).then(function(data) {
+            promises.push(that.fetchRoomStatus(params).then(function(data) {
                 that.roomStatuses = data;
+            }));
 
-                completedRoomsCall = true;
-                if (completedResCall) {
-                    calledHKApis = true;
-                    lastUpdatedTimeForReservationApis = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
-                    deferred.resolve();
-                }
+            $q.all(promises).then(function() {
+                deferred.resolve();
             });
         }
 

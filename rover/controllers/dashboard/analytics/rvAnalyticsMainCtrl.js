@@ -154,6 +154,7 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 
 		$scope.onClickOnChartTile = function(fetchDataEvent) {
 			$scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
+			$scope.$emit('RESET_CHART_FILTERS');
 			$scope.dashboardFilter.displayMode = 'CHART_DETAILS';
 			// reset filters
 			$scope.selectedFilters.roomTypes = [];
@@ -171,7 +172,9 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 			var scroller = $scope.getScroller('analytics_details_scroller');
 
 			$timeout(function() {
-				scroller.scrollTo(0, 0, 300);
+				if (scroller) {
+					scroller.scrollTo(0, 0, 300);
+				}
 			}, 0);
 		};
 

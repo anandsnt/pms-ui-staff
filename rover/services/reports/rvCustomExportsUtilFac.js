@@ -45,7 +45,7 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
         };
 
         const GENERAL_FILTERS = [
-            { label: 'Is not null', value: 'is not null'}
+            { label: 'Has values', value: 'is not null'}
         ];
 
         /**

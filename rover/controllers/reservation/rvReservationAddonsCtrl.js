@@ -305,7 +305,11 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         post_type: addon.postType.value,
                         charge_full_weeks_only: addon.chargefullweeksonly,
                         posting_frequency: addon.postType.frequency,
-                        rate_currency: addon.rateCurrency
+                        rate_currency: addon.rateCurrency,
+                        start_date: tzIndependentDate($scope.reservationData.arrivalDate),
+                        end_date: tzIndependentDate($scope.reservationData.departureDate),
+                        is_allowance: addon.is_allowance,
+                        is_consume_next_day: addon.is_consume_next_day
                     });
                        
                     $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
@@ -372,7 +376,9 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     addon_currency: item.rate_currency,
                     charge_full_weeks_only: item.charge_full_weeks_only,
                     post_instances: item.post_instances,
-                    quantity: item.quantity
+                    quantity: item.quantity,
+                    is_allowance: item.is_allowance,
+                    is_consume_next_day: item.is_consume_next_day
                 };
 
                 $scope.packageData.existing_packages.push(addonsData);
@@ -701,23 +707,6 @@ sntRover.controller('RVReservationAddonsCtrl', [
                 $scope.$on( '$destroy', proceedBookingListner);
                 $scope.$on( '$destroy', removeSelectedAddonsListner);
             }
-        };
-
-        // Get addon count
-        $scope.getAddonCount = function(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly, quantity) {
-            if (!postingRythm) {
-                if (postType === 'Every Week' || postType === 'WEEKLY') {
-                    postingRythm = 7;
-                } else if (postType === 'Entire Stay' || postType === 'STAY') {
-                    postingRythm = 1;
-                } else if (postType === 'First Night' || postType === 'NIGHT') {
-                    postingRythm = 0;
-                }
-            }
-            amountType = amountType.toUpperCase();
-            var addonCount = RVReservationStateService.getApplicableAddonsCount(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly);
-
-            return (addonCount * quantity);
         };
 
         $scope.goToAddons = function() {

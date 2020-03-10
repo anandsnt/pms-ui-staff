@@ -407,6 +407,10 @@ sntRover.controller('RVdashboardController',
                 $scope.dashboardFilter.datePicked = angular.copy($rootScope.businessDate);
                 $scope.datePicked = moment($rootScope.businessDate).format('YYYY-MM-DD');
 
+                $scope.$on('RESET_CHART_FILTERS', function() {
+                    $scope.datePicked = moment($rootScope.businessDate).format('YYYY-MM-DD');
+                });
+                
                $scope.dateOptions = {
                     changeYear: true,
                     changeMonth: true,
@@ -445,6 +449,7 @@ sntRover.controller('RVdashboardController',
                 });
 
                 $scope.refreshAnalyticsChart = function(selectedChart) {
+                    $scope.$broadcast('RESET_CHART_FILTERS');
                     $scope.$broadcast('REFRESH_ANALYTCIS_CHART_' + selectedChart);
                     $scope.dashboardFilter.showFilters = false;
                 };

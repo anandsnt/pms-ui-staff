@@ -19,10 +19,10 @@
                     </select>
                 </div>
             </div>
-            <div class="entry full-width">
+            <div class="entry full-width" ng-class="{'overlay': accountConfigData.summary.posting_account_type === 'GROUP'}">
                 <label for="account-posting">Open new bill after EOD</label>
-                <div class="switch-button" ng-class="{'on': accountConfigData.summary.should_open_new_bill_after_eod}"> <!-- Add class 'on' when checked -->
-                    <input id="account-posting" type="checkbox" ng-model="accountConfigData.summary.should_open_new_bill_after_eod">
+                <div class="switch-button" ng-class="{'on': accountConfigData.summary.posting}"> <!-- Add class 'on' when checked -->
+                    <input id="account-posting" type="checkbox" ng-model="accountConfigData.summary.posting">
                     <label class="data-off">
                         <span class="value">Off</span>
                         <span class="switch-icon">On</span>
