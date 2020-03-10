@@ -5,7 +5,7 @@
     </div>
     <div class="filters-list scrollable scroll-vertical">
         <div class="wrapper">
-
+            
             <!--- :START - NORMAL FILTERS without selecting a Reservation -->
                 <!-- Room Type -->
                 <div class="entry" ng-hide="diaryData.isReservationSelected">
@@ -35,6 +35,17 @@
                         </label>
                     </div>
                 </div>
+
+                <!-- Room Features -->
+                <div class="entry join radio-check" ng-hide="diaryData.isReservationSelected" ng-repeat="feature in diaryData.filterList.roomFeatures">
+                    <strong class="label">{{feature.group_name}}</strong>
+                    <label class="checkbox" ng-repeat="item in feature.items" ng-class="{'checked': item.selected}">
+                        <span class="icon-form icon-checkbox" ng-class="{'checked': item.selected}"></span>
+                        <input type="checkbox" ng-click="setSelectionForFeature($parent.$index, $index)">
+                        {{item.name}}
+                    </label>
+                </div>
+
             <!--- :END   - NORMAL FILTERS without selecting a Reservation -->
 
             <!--- :START - FILTERS while selecting a Reservation -->
