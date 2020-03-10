@@ -65,7 +65,6 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 		};
 
 		var onGuestInfoSave = function() {
-			updateGuestInfo();
 			// If there is only one guest, checkin the reservation and proceed
 			if ($scope.selectedReservation.guest_details.length === 1) {
 				$scope.$emit('CHECKIN_GUEST', {
@@ -214,6 +213,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 					successCallBack: function () {
 						$scope.selectedGuest.is_missing_any_required_field = false;
 						onGuestInfoSave();
+						updateGuestInfo();
 					},
 					failureCallBack: function() {
 						$scope.screenData.openedPopupName = 'WARNING_POPUP';
