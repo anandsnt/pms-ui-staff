@@ -1,0 +1,10 @@
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
+    <div class="modal-content alert">
+        <span class="icons icon-popup-alert"></span>
+
+        <span class="message h2">There is no availability in the group allocation for the selected dates. Borrow from house?</span>
+        
+        <button type="button" class="button green modal-close" ng-click="performBorrowFromHouse()" ng-disabled="!hasBorrowFromHousePermission" ng-class="{'overlay': !hasBorrowFromHousePermission}">Borrow</button>
+        <button type="button" class="button blank" ng-click="closeBorrowPopup()">Cancel</button>
+    </div>
+</div>

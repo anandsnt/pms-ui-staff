@@ -218,6 +218,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			$scope.isAddTax = false;
 			$scope.isAdd = false;
 			$scope.disableAddTax = false;
+			$scope.viennaTaxCounter = 0;
 			$scope.editId = value;
 			$scope.currentClickedElement = index;
 			var data = {
@@ -234,6 +235,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				$scope.prefetchData.selected_fees_code = $scope.prefetchData.selected_fees_code || '';
 				$scope.prefetchData.linked_deposit_charge_code_id = $scope.prefetchData.linked_deposit_charge_code_id || '';
 				$scope.addIDForPaymentTypes();
+				
                 $scope.stateAttributes.selectedPaymentType = getPaymentTypeCompositeID({
                     value: $scope.prefetchData.selected_payment_type,
                     is_cc_type: $scope.prefetchData.is_cc_type
@@ -280,6 +282,19 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				if ($scope.prefetchData.selected_charge_code_type) {
 					fetchChargeCodesForAllowance();
 				}
+				$timeout(function() {
+					var taxCount = $scope.prefetchData.linked_charge_codes.length,
+						i = taxCount;
+
+					while (i--) {
+						if ($scope.prefetchData.linked_charge_codes[i].is_vienna_tax) {
+							$scope.viennaTaxCounter += 1;
+							if ($scope.viennaTaxCounter === 2) {
+								$scope.disableAddTax = true;
+							}
+						}
+					}
+				}, 700);
 			};
 
 			$scope.invokeApi(ADChargeCodesSrv.fetchEditData, data, editSuccessCallback);

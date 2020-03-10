@@ -26,29 +26,13 @@
                             <span class="enhancement-desc" ng-hide="addon.is_rate_addon && addon.is_inclusive">
                                 at {{addon.addon_currency}}{{addon.amount | number : 2}} / {{addon.amount_type.description}} {{addon.post_type.description}}
                              </span>
-                             <span class="enhancement-desc" ng-show="addon.is_rate_addon && addon.is_inclusive">INCL</span>
-                             <span ng-if="addon.amount_type.value ==='ADULT'">
-                                <span class="enhancement-desc" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type.value ==='STAY'"><span class="currency">{{addon.addon_currency}}</span>{{addon.totalAmount * addonPopUpData.number_of_adults| number : 2}}</span>
-                                <span class="enhancement-desc" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type.value !=='STAY'"><span class="currency">{{addon.addon_currency}}</span>{{addon.totalAmount * packageData.duration_of_stay * addonPopUpData.number_of_adults| number : 2}}</span>
-                            </span>
-                             <span ng-if="addon.amount_type.value ==='CHILD'">
-                                <span class="enhancement-desc" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type.value ==='STAY'"><span class="currency">{{addon.addon_currency}}</span>{{addon.totalAmount*addonPopUpData.number_of_children | number : 2}}</span>
-                                <span class="enhancement-desc" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type.value !=='STAY'"><span class="currency">{{addon.addon_currency}}</span>{{addon.totalAmount * packageData.duration_of_stay*addonPopUpData.number_of_children| number : 2}}</span>
-                            </span>
-                            <span ng-if="addon.amount_type.value ==='FLAT'">
-                                <span class="enhancement-desc" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type.value ==='STAY'"><span class="currency">{{addon.addon_currency}}</span>{{addon.totalAmount | number : 2}}</span>
-                                <span class="enhancement-desc" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type.value !=='STAY'"><span class="currency">{{addon.addon_currency}}</span>{{addon.totalAmount * packageData.duration_of_stay| number : 2}}</span>
-                            </span>
-                            <span ng-if="addon.amount_type.value ==='PERSON'">
-                                <span class="enhancement-desc" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type.value ==='STAY'"><span class="currency">{{addon.addon_currency}}</span>{{addon.totalAmount*(addonPopUpData.number_of_children+addonPopUpData.number_of_adults) | number : 2}}</span>
-                                <span class="enhancement-desc" ng-hide="addon.is_rate_addon && addon.is_inclusive || addon.post_type.value !=='STAY'"><span class="currency">{{addon.addon_currency}}</span>{{addon.totalAmount * packageData.duration_of_stay*(addonPopUpData.number_of_children+addonPopUpData.number_of_adults)| number : 2}}</span>
-                            </span>
+                             <span class="enhancement-desc" ng-show="addon.is_inclusive">INCL</span>
                          </div>
                          <span class="price" ng-hide="addon.is_rate_addon && addon.is_inclusive">
                                 {{addon.addon_currency}}{{addon.totalAmount}}
                              </span>
                          <!-- add class .hidden to hide it if it can't be removed/deleted-->
-                         <span class="delete" ng-hide="addon.is_inclusive" ng-click="removeChosenAddons($index, addon)">
+                         <span class="delete" ng-if="!addon.is_rate_addon" ng-click="removeChosenAddons($index, addon)">
                             <span class="icons icon-remove-10"></span>
                          </span>
                     </li>
