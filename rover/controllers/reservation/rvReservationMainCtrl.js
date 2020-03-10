@@ -1542,17 +1542,19 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                         var results = data.results;
                 
                         $scope.borrowData = {};
+
                         if (!results.room_overbooked && !results.house_overbooked) {
-                            $scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission;
                             $scope.borrowData.isBorrowFromHouse = true;
-                        } else if (results.room_overbooked && !results.house_overbooked) {
-                            $scope.borrowData.shouldShowBorrowBtn = $scope.hasOverBookRoomTypePermission && $scope.hasBorrowFromHousePermission;
+                        }
+                         
+                        if (results.room_overbooked && !results.house_overbooked) {
+                            $scope.borrowData.shouldShowOverBookBtn = $scope.hasOverBookRoomTypePermission;
                             $scope.borrowData.isRoomTypeOverbooked = true;
                         } else if (!results.room_overbooked && results.house_overbooked) {
-                            $scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission && $scope.hasOverBookHousePermission;
+                            $scope.borrowData.shouldShowOverBookBtn = $scope.hasOverBookHousePermission;
                             $scope.borrowData.isHouseOverbooked = true;
                         } else if (results.room_overbooked && results.house_overbooked) {
-                            $scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission && $scope.hasOverBookRoomTypePermission && $scope.hasOverBookHousePermission;
+                            $scope.borrowData.shouldShowOverBookBtn = $scope.hasOverBookRoomTypePermission && $scope.hasOverBookHousePermission;
                             $scope.borrowData.isHouseAndRoomTypeOverbooked = true;
                         }
 
@@ -1572,17 +1574,46 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     $scope.$emit('hideLoader');
                 };
 
+                // Close borrow popup
+                $scope.closeBorrowPopup = function (shouldClearData) {
+                    if (shouldClearData) {
+                        $scope.borrowData = {};
+                    }
+                    ngDialog.close();
+                    $scope.$broadcast('SHOW_ROOM_AND_RATES_AFTER_BORROW_DECLINE');
+                };
+
                 // Handles the borrow action
                 $scope.performBorrowFromHouse = function () {
-                    RVReservationStateService.setForceOverbookFlagForGroup(true);
-                    $scope.$broadcast('CREATE_RESERVATION_AFTER_BORROW');
+                    if ($scope.borrowData.isBorrowFromHouse) {
+                        RVReservationStateService.setForceOverbookFlagForGroup(true);
+                        $scope.$broadcast('CREATE_RESERVATION_AFTER_BORROW');
+                        ngDialog.close();
+                    } else {
+                        ngDialog.close();
+                        ngDialog.open({
+                            template: '/assets/partials/common/group/rvGroupOverbookPopup.html',
+                            className: '',
+                            closeByDocument: false,
+                            closeByEscape: true,
+                            scope: $scope
+                        });
+                    }
+                    
                 };
 
                 // Closes the current borrow dialog
-                $scope.closeBorrowDialog = function() {
+                $scope.closeOverbookPopup = function() {
                     $scope.borrowData = {};
-                    $scope.closeDialog();
+                    ngDialog.close();
                     $scope.$broadcast('SHOW_ROOM_AND_RATES_AFTER_BORROW_DECLINE');
+                };
+
+                // Perform overbook
+                $scope.performOverBook = function () {
+                    RVReservationStateService.setForceOverbookFlagForGroup(true);
+                    $scope.$broadcast('CREATE_RESERVATION_AFTER_BORROW');
+                    ngDialog.close();
                 };
 
                 var updateFailure = function(data) {
