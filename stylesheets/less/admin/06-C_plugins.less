@@ -591,7 +591,13 @@
                     &.red { color: @red; }
                 }
 
-                .notice { margin-top: -20px; }
+                .notice {
+                    margin-top: -20px;
+
+                    strong {
+                        font-weight: 600;
+                    }
+                }
 
                 .entry {
                     input[type="text"] {
@@ -632,6 +638,27 @@
                     .actions {
                         padding-top: 19px;
                         border-top: 1px solid rgba(0,0,0,.1);
+                    }
+                }
+
+                &.confirmation {
+                    width: 420px;
+
+                    strong {
+                        font-weight: 600;
+                    }
+
+                    .message {
+                        margin-bottom: 10px;
+                    }
+
+                    .text {
+                        &.green { color: @green; }
+                        &.red { color: @red; }
+                    }
+
+                    .notice {
+                        margin: 0 0 10px 0;
                     }
                 }
             }
