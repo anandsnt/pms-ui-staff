@@ -32,7 +32,7 @@
                                 {{addon.addon_currency}}{{addon.totalAmount}}
                              </span>
                          <!-- add class .hidden to hide it if it can't be removed/deleted-->
-                         <span class="delete" ng-hide="addon.is_inclusive" ng-click="removeChosenAddons($index, addon)">
+                         <span class="delete" ng-if="!addon.is_inclusive" ng-click="removeChosenAddons($index, addon)">
                             <span class="icons icon-remove-10"></span>
                          </span>
                     </li>
