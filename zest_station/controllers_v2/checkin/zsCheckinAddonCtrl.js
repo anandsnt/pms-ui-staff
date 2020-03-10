@@ -251,7 +251,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 						$scope.showAddonPopup = false;
 					}
 				} else {
-                    processAddonSelection(selectedAddon);
+                    addAddonToReservation(selectedAddon);
 				}
 			}
 		};
@@ -272,50 +272,8 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		};
 		// Quantity popuup
 		$scope.closePopup = function() {
-            $scope.showAddReference = true;
 			$scope.showAddonPopup = false;
 		};
-
-		// Clicked skip reference
-		$scope.skipAddReference = function() {
-            $scope.showAddReference = false;
-        };
-
-		$scope.displayReferencePopup = function() {
-            // Showing the form
-            $scope.showReferencePopup = true;
-            $scope.showAddReference = true;
-            $scope.highlightReferenceField = false;
-        };
-
-		// Clicked close button
-		$scope.closeReferencePopup = function() {
-            $scope.showReferencePopup = false;
-            $scope.selectedAddonReference = '';
-            $scope.selectedAddonCount = 0;
-        };
-
-		$scope.addReference = function(selectedAddon) {
-            if (!$scope.selectedAddonReference) {
-                $scope.highlightReferenceField = true;
-            } else {
-                $scope.highlightReferenceField = false;
-                addAddonToReservation(selectedAddon);
-                $scope.closeReferencePopup();
-            }
-        };
-
-        // For addon that has reference show the popup to add reference
-		var processAddonSelection = function(selectedAddon) {
-		    // Show for reference is checked in admin
-            if (selectedAddon.ask_for_reference) {
-                $scope.displayReferencePopup();
-                // Close main quantity popup
-                $scope.closePopup();
-            } else {
-                addAddonToReservation(selectedAddon);
-            }
-        };
 
 		var fetchLateCheckoutSettings = function() {
 			var fetchLateCheckoutSettingsSuccess = function(response) {
