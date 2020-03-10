@@ -365,6 +365,7 @@ sntRover.controller('reservationActionsController', [
             $scope.showVehicleCountryMark = false;
             $scope.showIdCountryOfIssue = false;
             $scope.showDateOfBirth = false;
+            $scope.showIdExpDate = false;
 
             $scope.callAPI(RVGuestCardsSrv.fetchGuestDetailsInformation, {
                 successCallBack: function(data) {
@@ -385,6 +386,8 @@ sntRover.controller('reservationActionsController', [
                                                     && ($scope.guestCardData.contactInfo.id_country_of_issue === '' || $scope.guestCardData.contactInfo.id_country_of_issue === null);
                     $scope.showDateOfBirth = $scope.guestCardData.contactInfo.guestAdminSettings.date_of_birth.is_mandatory_on_guest_card_creation
                                             && ($scope.guestCardData.contactInfo.birthday === '' || $scope.guestCardData.contactInfo.birthday === null);
+                    $scope.showIdExpDate = $scope.guestCardData.contactInfo.guestAdminSettings.id_expiration_date.is_mandatory_on_guest_card_creation
+                                            && ($scope.guestCardData.contactInfo.id_expiration_date === '' || $scope.guestCardData.contactInfo.id_expiration_date === null);
 
                     ngDialog.open({
                         template: '/assets/partials/validateCheckin/rvValidateEmailPhone.html',
@@ -771,7 +774,7 @@ sntRover.controller('reservationActionsController', [
             $scope.invokeApi(RVReservationCardSrv.modifyRoomQueueStatus, data, $scope.successRemoveFromQueueCallBack);
         };
 
-        var promptCancel = function(penalty, nights, isPercent) {
+        var promptCancel = function(penalty, nights, isPercent, paymentCurrencyCancellationCharge) {
             $scope.DailogeState = {};
             $scope.DailogeState.successMessage = '';
             $scope.DailogeState.failureMessage = '';
@@ -803,6 +806,7 @@ sntRover.controller('reservationActionsController', [
                         state: 'CONFIRM',
                         cards: false,
                         penalty: penalty,
+                        paymentCurrencyCancellationCharge: paymentCurrencyCancellationCharge,
                         penaltyText: (function() {
                             if (nights) {
                                 return penalty + (penalty > 1 ? " nights" : " night");
@@ -820,7 +824,7 @@ sntRover.controller('reservationActionsController', [
         };
 
 
-        var showCancelReservationWithDepositPopup = function(deposit, isOutOfCancellationPeriod, penalty) {
+        var showCancelReservationWithDepositPopup = function(deposit, isOutOfCancellationPeriod, penalty, paymentCurrencyPenalty) {
             $scope.DailogeState = {};
             $scope.DailogeState.successMessage = '';
             $scope.DailogeState.failureMessage = '';
@@ -829,6 +833,7 @@ sntRover.controller('reservationActionsController', [
             $scope.DailogeState.isGuestEmailSelected = false;
             $scope.DailogeState.isBookerEmailSelected = false;
             $scope.DailogeState.guestEmail = $scope.guestCardData.contactInfo.email;
+            $scope.DailogeState.paymentCurrencyPenalty = paymentCurrencyPenalty;
 
             var openCancellationPopup = function(data) {
                   
@@ -864,9 +869,10 @@ sntRover.controller('reservationActionsController', [
          * reinstating a cancelled reservation CICO-1403 and CICO-6056(Sprint20 >>> to be implemented in the next sprint)
          */
 
-        var cancellationCharge = 0;
-        var nights = false;
-        var depositAmount = 0;
+        var cancellationCharge = 0,
+            paymentCurrencyCancellationCharge = 0,            
+            nights = false, 
+            depositAmount = 0;
 
         $scope.toggleCancellation = function() {
 
@@ -893,17 +899,18 @@ sntRover.controller('reservationActionsController', [
                         } else {
                             cancellationCharge = parseFloat(data.results.calculated_penalty_amount);
                         }
+                        paymentCurrencyCancellationCharge = parseFloat(data.results.default_payment_currency_calculated_penalty_amount);
 
                         if (parseInt(depositAmount, 10) > 0) {
-                            showCancelReservationWithDepositPopup(depositAmount, isOutOfCancellationPeriod, cancellationCharge);
+                            showCancelReservationWithDepositPopup(depositAmount, isOutOfCancellationPeriod, cancellationCharge, paymentCurrencyCancellationCharge);
                         } else {
-                            promptCancel(cancellationCharge, nights, (data.results.penalty_type === 'percent'));
+                            promptCancel(cancellationCharge, nights, (data.results.penalty_type === 'percent'), paymentCurrencyCancellationCharge);
                         }
                     } else {
                         if (parseInt(depositAmount, 10) > 0) {
-                            showCancelReservationWithDepositPopup(depositAmount, isOutOfCancellationPeriod, '');
+                            showCancelReservationWithDepositPopup(depositAmount, isOutOfCancellationPeriod, '', '');
                         } else {
-                            promptCancel('', nights, (data.results.penalty_type === 'percent'));
+                            promptCancel('', nights, (data.results.penalty_type === 'percent'), paymentCurrencyCancellationCharge);
                         }
                     }
 

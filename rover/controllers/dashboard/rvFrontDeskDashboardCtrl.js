@@ -1,6 +1,6 @@
 sntRover.controller('RVfrontDeskDashboardController',
-    ['$scope', '$rootScope', 'RVDashboardSrv', '$timeout', 'ngDialog',
-        function($scope, $rootScope, RVDashboardSrv, $timeout, ngDialog) {
+    ['$scope', '$rootScope', 'RVDashboardSrv', '$timeout', 'ngDialog', 'rvAnalyticsSrv',
+        function($scope, $rootScope, RVDashboardSrv, $timeout, ngDialog, rvAnalyticsSrv) {
 	// inheriting some useful things
 	BaseCtrl.call(this, $scope);
     var that = this;
@@ -19,12 +19,15 @@ sntRover.controller('RVfrontDeskDashboardController',
 	var scrollerOptions = {click: true, preventDefault: false};
 
   	$scope.setScroller('dashboard_scroller', scrollerOptions);
-    $scope.setScroller('analytics_scroller', {
+    var analyticsScrollerOptions = {
       preventDefaultException: {
         tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/
       },
       preventDefault: false
-    });
+    };
+
+    $scope.setScroller('analytics_scroller', analyticsScrollerOptions);
+    $scope.setScroller('analytics_details_scroller', analyticsScrollerOptions);
 
   	$scope.showDashboard = true; // variable used to hide/show dabshboard
     // changing the header
@@ -83,8 +86,37 @@ sntRover.controller('RVfrontDeskDashboardController',
     var refreshAnalyticsScroller = function() {
       $timeout(function() {
         $scope.refreshScroller('analytics_scroller');
+        $scope.refreshScroller('analytics_details_scroller');
       }, 500);
     };
 
+    $scope.dashboardFilter.isFrontDeskDashboard = true;
     $scope.$on('REFRESH_ANALTICS_SCROLLER', refreshAnalyticsScroller);
+    $scope.selectedFilters = {
+      "roomType": "",
+      "roomTypes": []
+    };
+    $scope.onAnlayticsRoomTypeChange = function() {
+      rvAnalyticsSrv.selectedRoomType = $scope.dashboardFilter.selectedRoomType;
+      $scope.$broadcast('RELOAD_DATA_WITH_SELECTED_FILTER_' + $scope.dashboardFilter.selectedAnalyticsMenu);
+    };
+
+    $scope.toggleFilterView = function() {
+      $scope.dashboardFilter.showFilters = !$scope.dashboardFilter.showFilters;
+    };
+    $scope.showRemainingReservationsToggled = function () {
+      $scope.$broadcast('SHOW_REMAINING_RESERVATIONS_TOGGLE');
+    };
+    
+    $scope.showYesterdaysDataToggled = function() {
+      $scope.$broadcast('SHOW_YESTERDAYS_DATA_TOGGLE');
+    };
+
+    $scope.$on('RESET_CHART_FILTERS', function() {
+      $scope.dashboardFilter.datePicked = $rootScope.businessDate;
+      $scope.dashboardFilter.showRemainingReservations = false;
+      $scope.dashboardFilter.selectedRoomType = "";
+      rvAnalyticsSrv.selectedRoomType = "";
+      $scope.dashboardFilter.showPreviousDayData = false;
+    });
 }]);

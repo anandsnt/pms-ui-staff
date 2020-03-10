@@ -15,6 +15,7 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
 
             $scope.loginData = {};
             var ACCOUNT_LOCKED_STR = 'account has been locked';
+
             
             /**
              * Show session timeout popup
@@ -31,7 +32,8 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
                             template: '/assets/partials/rvExtendSessionModal.html',
                             className: 'ngdialog-theme-default',
                             scope: $scope,
-                            closeByEscape: false
+                            closeByEscape: false,
+                            closeByDocument: false
                         }); 
                     }
                     
@@ -78,11 +80,13 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
              * Implements the logout functionality
              */
             $scope.logout = function () {
+                sntActivity.start('API_REQ');
                 sntSharedLoginSrv.logout().finally(function() {
                     $timeout(function () {
                         if (sessionTimeoutHandlerSrv.getWorker()) {
                             sessionTimeoutHandlerSrv.stopTimer();
                         }
+                        sntActivity.stop('API_REQ');
                         $window.location.href = '/logout';
                     });
                 });
@@ -98,6 +102,9 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
                         sessionTimeoutHandlerSrv.setAutoLogoutDelay(response.auto_logout_delay * 1000);
                     }
                     sessionTimeoutHandlerSrv.setLoginEmail(response.login);
+
+                    setUpEventListeners();
+
                 };
 
                 if (!sessionTimeoutHandlerSrv.getAutoLogoutDelay()) {
@@ -116,6 +123,66 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
                 fetchLoginDetails();
             });
 
+            /**
+             * Refresh the token when its about to expire
+             */
+            var refreshToken = function () {
+                sntSharedLoginSrv.refreshToken().then(function() {
+                });
+            };
+
+            // Get the idle time in seconds
+            var getIdleTimeSecs = function () {
+                var idlTimeSecs = 0;
+
+                if ($( document ).idleTimer("isIdle")) {
+                    idlTimeSecs = Math.floor($(document).idleTimer("getElapsedTime") / 1000);
+                }
+                
+                return idlTimeSecs;
+            };
+
+            /**
+             * Check and validate the token expiry based on browser idle time
+             */
+            var checkAndValidateToken = function (isAPItokenExpired) {
+                var autoLogoutDelaySecs = Math.floor(sessionTimeoutHandlerSrv.getAutoLogoutDelay() / 1000);
+                                
+                // We have added 30s here because the timer will be set after 30s when its idle as configured
+                // 15 secs have been deducted as the the check will be done 15s prior to token expiry
+                if ( (getIdleTimeSecs() + 30 ) > (autoLogoutDelaySecs - 15) || isAPItokenExpired) {
+                    showSessionTimeoutPopup();
+                } else {
+                    refreshToken();
+                }
+
+            };
+
+            /**
+             * Set up the event listeners to track the various browser events to identify browser inactivity 
+             */
+            var setUpEventListeners = function () {
+
+                $(document).idleTimer({
+                    timeout: 30000,
+                    timerSyncId: 'sntIdleTimer'
+                });
+
+                // This will be invoked when the user is idle for 30s
+                $(document).on( 'idle.idleTimer', function() {
+                    // This should be called only if the dialog is not already shown
+                    if (!sessionTimeoutDialog) {
+                        refreshToken();
+                    }
+                });
+
+                $window.document.addEventListener('wheel', function() {
+                    $(document).idleTimer('reset');
+                }, true);
+                
+
+            };
+
             var init = function () {
 
                 if (!sessionTimeoutHandlerSrv.getWorker()) {
@@ -125,9 +192,10 @@ angular.module('snt.utils').directive('sntSessionTimeout', function () {
                             var data = event.data;
         
                             switch (data.cmd) {
-                                case 'SHOW_TIMEOUT_POPUP': 
-                                    showSessionTimeoutPopup();
+                                case 'SHOW_TIMEOUT_POPUP':
+                                    checkAndValidateToken(data.isApiTokenExpired);
                                     break;
+
                                 default:
         
                             }

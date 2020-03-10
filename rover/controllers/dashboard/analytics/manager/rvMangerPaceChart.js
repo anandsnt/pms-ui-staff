@@ -8,9 +8,15 @@ angular.module('sntRover')
 
 				return today === date;
 			};
-			$scope.drawPaceChart = function(chartData) {
+			var isPaceChartActive = function() {
+				return $scope.dashboardFilter.selectedAnalyticsMenu === 'PACE';
+			};
+			var shallowDecodedParams = "";
+			var paceChartData;
+			var drawPaceChart = function(chartData) {
 
 				$scope.screenData.mainHeading = $filter('translate')("AN_PACE");
+				$scope.dashboardFilter.selectedAnalyticsMenu = 'PACE';
 
 				var chartDataMaxArray = [];
 				var cancellationArray = [];
@@ -50,7 +56,7 @@ angular.module('sntRover')
 						bottom: 30,
 						left: 60
 					},
-					width = document.getElementById("manager-analytics-chart").clientWidth,
+					width = document.getElementById("dashboard-analytics-chart").clientWidth,
 					height = 500 - margin.top - margin.bottom;
 
 				var svg = d3.select("#d3-plot").append("svg")
@@ -241,10 +247,10 @@ angular.module('sntRover')
 					});
 
 				legend.append("span")
-							.attr("class", "bar")
-							.style("background-color", function(d, i) {
-								return colors[i];
-							});
+					.attr("class", "bar")
+					.style("background-color", function(d, i) {
+						return colors[i];
+					});
 				legend.append("span")
 					.attr("class", "bar-label")
 					.text(function(d, i) {
@@ -252,6 +258,68 @@ angular.module('sntRover')
 					});
 
 				$scope.screenData.hideChartData = false;
+				rvAnalyticsHelperSrv.addChartHeading($scope.screenData.mainHeading,
+					$scope.screenData.analyticsDataUpdatedTime);
 			};
+
+			var fetchPaceChartData = function() {
+				$scope.dashboardFilter.displayMode = 'CHART_DETAILS';
+				var options = {
+					params: {
+						date: $scope.dashboardFilter.datePicked,
+						shallowDecodedParams: shallowDecodedParams
+					},
+					successCallBack: function(data) {
+						if (data && data.length === 0) {
+							data = [{
+								new: 0,
+								cancellation: 0,
+								on_the_books: 0,
+								date: $scope.dashboardFilter.datePicked
+							}];
+						}
+						$scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
+						$scope.screenData.analyticsDataUpdatedTime = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
+						paceChartData = data;
+						drawPaceChart(data);
+					}
+				};
+				$scope.callAPI(rvManagersAnalyticsSrv.pace, options);
+
+			};
+
+			var redrawPaceChartIfNeeded = function() {
+				if (!isPaceChartActive()) {
+					return;
+				}
+				fetchPaceChartData();
+			};
+
+			$scope.$on('GET_MANAGER_PACE', function() {
+				shallowDecodedParams = "";
+				$scope.dashboardFilter.selectedAnalyticsMenu = 'PACE';
+				redrawPaceChartIfNeeded();
+			});
+			$scope.$on('ANALYTICS_FILTER_CHANGED', function(e, data) {
+				shallowDecodedParams = data;
+				redrawPaceChartIfNeeded();
+			});
+
+			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER_PACE', redrawPaceChartIfNeeded);
+			$scope.$on('CHART_AGGGREGATION_CHANGED', redrawPaceChartIfNeeded);
+			$scope.$on('REFRESH_ANALYTCIS_CHART_PACE', function() {
+				shallowDecodedParams = "";
+				$scope.$emit('RESET_CHART_FILTERS');
+				fetchPaceChartData();
+			});
+			$scope.$on('ON_WINDOW_RESIZE', function() {
+				if (!isPaceChartActive()) {
+					return;
+				} else if (paceChartData) {
+					drawPaceChart(paceChartData);
+				} else {
+					redrawPaceChartIfNeeded();
+				}
+			});
 		}
 	]);

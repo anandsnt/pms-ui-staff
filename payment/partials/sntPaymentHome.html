@@ -4,12 +4,12 @@
     <label for="payment-type" translate>PAYMENT_TYPE</label>
     <div class="select" >
         <select ng-disabled="actionType === 'AR_REFUND_PAYMENT'" ng-options="paymentData.name as paymentData.description for paymentData in paymentTypes"
-                ng-model="selectedPaymentType" ng-change="onPaymentInfoChange(true)" snt-placeholder="SELECT_PAYMENT_TYPE">
+                ng-model="selectedPaymentType" ng-change="onPaymentInfoChange(true, true)" snt-placeholder="SELECT_PAYMENT_TYPE">
         </select>
     </div>
 </div>
 <!-- six pay options -->
-<div class="entry" ng-show="showEmvModeSelection()">
+<div class="entry full-width" ng-show="showEmvModeSelection()">
     <label for="card-source">Card Input</label>
     <div class="switch-button" ng-class="{'on': !payment.isManualEntryInsideIFrame}">
         <input name="card-source"

@@ -7,7 +7,7 @@
 
         <div class="entry full-width">
             <label for="password">Enter you password to continue</label>
-            <input id="password" type="password" placeholder="Enter your password" ng-model="loginData.password" ng-class="{'error': hasError && !loginData.password}">
+            <input id="password" type="password" placeholder="Enter your password" ng-model="loginData.password" ng-class="{'error': hasError && !loginData.password}" tabindex="1">
             <!-- Add class 'error' if user provides wrong password. As soon as they start typing in the password again, remove it. -->
             <!-- If user provides wrong password, show this (remove it as soon as users start typing in the password again: -->
             <span class="description red" ng-if="errorMessage && !loginData.password">{{errorMessage}}</span>
@@ -18,9 +18,10 @@
                     class="button"
                     ng-click="continueSession()"
                     ng-class="{'grey': !loginData.password, 'green': loginData.password}"
-                    ng-disabled="!loginData.password">Continue
+                    ng-disabled="!loginData.password"
+                    tabindex="2">Continue
                 session</button>
-            <button type="button" class="button red" ng-click="logout()">Log out</button>
+            <button type="button" class="button red" ng-click="logout()" tabindex="3">Log out</button>
         </div>
     </div>
 </div> 

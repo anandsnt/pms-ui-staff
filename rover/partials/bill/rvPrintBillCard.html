@@ -4,7 +4,7 @@
     <span ng-bind-html="printData.hotel_address" ng-if="printData.show_hotel_address"></span>
     <span class="type" ng-if="!printData.is_proforma_invoice">{{printData.invoiceLabel}}</span>
     <span class="type" ng-if="printData.is_proforma_invoice" >{{printData.translation.proforma_invoice}}</span>
-    <span class="type" ng-if="printData.is_deposit_invoice || !printData.is_informational_invoice" ng-show="printData.qr_code !== '' && printData.qr_code !== null">
+    <span class="type" ng-if="(printData.is_deposit_invoice || !printData.is_informational_invoice) && printData.qr_code !== '' && printData.qr_code !== null">
         <br/><img ng-src="{{printData.qr_code}}" alt="" class="qr-code" /> 
     </span>
 </div>
@@ -115,8 +115,7 @@
     </div>
 </div>
 </br>
-<div class="invoice-header text-center">
-    {{printData.custom_text_header}}
+<div class="invoice-header text-center" ng-bind-html="trustAsHtml(printData.custom_text_header)">
 </div>
 
 <div class="invoice-body">
@@ -191,6 +190,9 @@
                 <td class="description">
                     <strong>{{item.item_description}}</strong>
                     <span>{{item.description}}</span>
+                    <div class="converted-currency smaller">
+                        {{item.rate_coversion_rate}}
+                    </div>
                     <span class="reference" ng-show="item.reference_text != ''">{{item.reference_text}}</span>
                 </td>
                 <td class="align-right">{{currencySymbol}}{{item.amount | number: precisonTwo}}
@@ -200,10 +202,6 @@
 
                     <div class="converted-currency" ng-if="isMultiCurrencyEnabled && item.rate_converted_amount">
                         {{item.rate_currency}}{{item.rate_converted_amount}}
-                    </div>
-
-                    <div class="converted-currency smaller">
-                        {{item.rate_coversion_rate}}
                     </div>
                 </td>
                 <td class="align-right"></td>
@@ -214,6 +212,9 @@
                 <td class="description">
                     <strong>{{item.item_description}}</strong>
                     <span>{{item.description}}</span>
+                    <div class="converted-currency smaller">
+                        {{item.rate_coversion_rate}}
+                    </div>
                     <span class="reference" ng-show="item.reference_text != ''">{{item.reference_text}}</span>
                 </td>
                 <td class="align-right"></td>
@@ -224,10 +225,6 @@
                     </div>
                     <div class="converted-currency" ng-if="isMultiCurrencyEnabled && item.rate_converted_amount">
                         {{item.rate_currency}}{{item.rate_converted_amount}}
-                    </div>
-
-                    <div class="converted-currency smaller">
-                        {{item.rate_coversion_rate}}
                     </div>
                 </td>
             </tr>

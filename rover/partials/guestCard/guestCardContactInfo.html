@@ -60,6 +60,12 @@
 					</select>					
 				</div>
 			</div>
+
+			<div class="entry has-datepicker" ng-class="{'margin': !(!guestCardData.contactInfo.guestAdminSettings.id_issue_date.is_visible && guestCardData.contactInfo.guestAdminSettings.id_place_of_issue.is_visible) || (guestCardData.contactInfo.guestAdminSettings.id_issue_date.is_visible && !guestCardData.contactInfo.guestAdminSettings.id_place_of_issue.is_visible)}" ng-if="guestCardData.contactInfo.guestAdminSettings.id_expiration_date.is_visible">
+				<label for="entry date"> ID Date of Expiry <strong ng-if="guestCardData.contactInfo.guestAdminSettings.id_expiration_date.is_mandatory_on_guest_card_creation">*</strong></label>
+				<input type="text" ng-model="guestCardData.contactInfo.id_expiration_date | date:dateFormat" class="datepicker" ng-click="popupCalendarForGuestContactInfoDate('idExpirationDate')" readonly />
+			</div>
+
 			<div class="entry has-datepicker" ng-class="{'margin': (!guestCardData.contactInfo.guestAdminSettings.id_issue_date.is_visible && guestCardData.contactInfo.guestAdminSettings.id_place_of_issue.is_visible) || (guestCardData.contactInfo.guestAdminSettings.id_issue_date.is_visible && !guestCardData.contactInfo.guestAdminSettings.id_place_of_issue.is_visible)}" ng-if="guestCardData.contactInfo.guestAdminSettings.entry_date.is_visible">
 				<label for="entry date"> Entry Date </label>
 				<input type="text" ng-model="guestCardData.contactInfo.entry_date | date:dateFormat" class="datepicker" ng-click="popupCalendarForGuestContactInfoDate('entryDate')" readonly />

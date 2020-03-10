@@ -384,9 +384,10 @@ sntRover.controller('RVdashboardController',
                 $scope.dashboardFilter.analyticsActive = false;
 
                 $scope.toggleAnalyticsView = function() {
+                    $scope.dashboardFilter.showFilters = false;
+                    $scope.$broadcast('RESET_CHART_FILTERS');
                     if ($scope.dashboardFilter.analyticsActive) {
                         $scope.dashboardFilter.analyticsActive = false;
-                        $scope.$broadcast('RESET_ANALYTICS_FILTERS');
                         $scope.$broadcast("showDashboardArea", true);
                     } else {
                         $scope.$broadcast('ANALYTICS_VIEW_ACTIVE');
@@ -403,27 +404,22 @@ sntRover.controller('RVdashboardController',
                     $scope.dashboardFilter.selectedAnalyticsMenu = selectedChart;
                 });
 
-                $scope.onAnlayticsRoomTypeChange = function() {
-                    $scope.$broadcast('RELOAD_DATA_WITH_SELECTED_FILTER', {
-                        "room_type": $scope.dashboardFilter.selectedRoomType,
-                        "date": $scope.dashboardFilter.datePicked
-                    });
-                };
-
                 $scope.dashboardFilter.datePicked = angular.copy($rootScope.businessDate);
                 $scope.datePicked = moment($rootScope.businessDate).format('YYYY-MM-DD');
 
+                $scope.$on('RESET_CHART_FILTERS', function() {
+                    $scope.datePicked = moment($rootScope.businessDate).format('YYYY-MM-DD');
+                });
+                
                $scope.dateOptions = {
                     changeYear: true,
                     changeMonth: true,
                     yearRange: "-5:+5",
                     dateFormat: 'yy-mm-dd',
-                    maxDate: moment($rootScope.businessDate).add(3, 'days').format('YYYY-MM-DD'),
                     onSelect: function(dateText, inst) {
+                        $scope.datePicked = dateText;
                         $scope.dashboardFilter.datePicked = dateText;
-                        $scope.$broadcast('RELOAD_DATA_WITH_DATE_FILTER', {
-                            "date": $scope.dashboardFilter.datePicked
-                        });
+                        $scope.$broadcast('RELOAD_DATA_WITH_DATE_FILTER_' + $scope.dashboardFilter.selectedAnalyticsMenu);
                         ngDialog.close();
                     }
                 };
@@ -452,12 +448,45 @@ sntRover.controller('RVdashboardController',
                     });
                 });
 
-                $scope.refreshAnalyticsChart = function() {
-                    $scope.$broadcast('REFRESH_ANALYTCIS_CHART');
+                $scope.refreshAnalyticsChart = function(selectedChart) {
+                    $scope.$broadcast('RESET_CHART_FILTERS');
+                    $scope.$broadcast('REFRESH_ANALYTCIS_CHART_' + selectedChart);
+                    $scope.dashboardFilter.showFilters = false;
                 };
 
                 $scope.onAnlayticsFilterChanged = function() {
                     $scope.$broadcast('ANALYTICS_FILTER_CHANGED');
+                };
+
+                $scope.getAppliedFilterCount = function() {
+                    if ($scope.dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION' ||
+                        $scope.dashboardFilter.selectedAnalyticsMenu === 'PACE') {
+                        var aggTypeFilterCount = $scope.dashboardFilter.aggType ? 1 : 0;
+
+                        return $scope.dashboardFilter.selectedFilters.marketCodes.length +
+                            $scope.dashboardFilter.selectedFilters.sourceCodes.length +
+                            $scope.dashboardFilter.selectedFilters.segmentCodes.length +
+                            $scope.dashboardFilter.selectedFilters.originCodes.length +
+                            $scope.dashboardFilter.selectedFilters.roomTypes.length +
+                            aggTypeFilterCount;
+
+                    } else if ($scope.dashboardFilter.selectedAnalyticsMenu === 'PERFOMANCE') {
+                        return $scope.dashboardFilter.showLastYearData ? 1 : 0;
+                    } else if ($scope.dashboardFilter.selectedAnalyticsMenu === 'HK_OVERVIEW' ||
+                        $scope.dashboardFilter.selectedAnalyticsMenu === 'HK_WORK_PRIRORITY' ||
+                        $scope.dashboardFilter.selectedAnalyticsMenu === 'FO_ARRIVALS') {
+                        return $scope.dashboardFilter.selectedRoomType ? 1 : 0;
+                    } else if ($scope.dashboardFilter.selectedAnalyticsMenu === 'FO_ACTIVITY') {
+                        var filterCount = 0;
+
+                        filterCount = $scope.dashboardFilter.selectedRoomType ? 1 : 0;
+                        return filterCount + ($scope.dashboardFilter.showPreviousDayData ? 1 : 0);
+                    } else if ($scope.dashboardFilter.selectedAnalyticsMenu === 'FO_WORK_LOAD') {
+                        var filterCount = 0;
+
+                        filterCount = $scope.dashboardFilter.selectedRoomType ? 1 : 0;
+                        return filterCount + ($scope.dashboardFilter.showRemainingReservations ? 1 : 0);
+                    }
                 };
             }
 

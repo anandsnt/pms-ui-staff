@@ -19,6 +19,7 @@ angular.module('sntPay').directive('sntPayment', function() {
             guestId: '@',
             billNumber: '=',
             amount: '=', // amount to pay
+            paymentCurrencyAmount: '=?', // default payment currency amount
             selectedCC: '=?', // selected CC details
             referenceText: '=?', // selected CC details
             actionType: '@',
@@ -37,7 +38,8 @@ angular.module('sntPay').directive('sntPayment', function() {
             fetchLinkedCards: "=?",
             hideOverlayGiftcard: "=?",
             reservationIds: "=?",
-            onlyPaymentSelection: "=?"
+            onlyPaymentSelection: "=?",
+            hasPaymentRounding: "=?"
         },
         link: function(scope, element, attrs) {
             console.log("--From Payment Module Init--");

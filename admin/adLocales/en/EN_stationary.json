@@ -57,6 +57,8 @@
 	"PRINT_CONFIRMATION_LETTER": "Print Confirmation Letter",
 	"SEND_CONFIRMATION_LETTER": "Send Confirmation Letter",
 	"CUSTOM_TEXT_PER_RESERVATION" : "Custom Text per Reservation",
+	"PAYMENT_RECEIPT_EMAIL_SUBJECT": "Payment Receipt Email Subject",
+	"PAYMENT_RECEIPT_EMAIL_BODY": "Payment Receipt Email Body",
 
 	"CANCELLATION_EMAIL_SUBJECT": "Cancellation Email Subject",
 	"CONFIRMATION_EMAIL_SUBJECT": "Confirmation Email Subject",
@@ -65,6 +67,8 @@
 	"GUEST_BILL_EMAIL_BODY" : "Guest Bill Email Body",
 	"CARDS_BILL_EMAIL_BODY" : "Company / TA Bill Email Body",
 	"EMAIL_BODY_TEXT_PLACEHOLDER" : "Enter Email Body",
+	"DEPOSIT_INVOICE_EMAIL_SUBJECT": "Deposit Invoice Email Subject",
+	"DEPOSIT_INVOICE_EMAIL_BODY": "Deposit Invoice Email Body",
 
 	"ENTER_SUBJECT": "Enter Subject",
 	"CANCELLATION_EMAIL_BODY": "Cancellation Email Body",

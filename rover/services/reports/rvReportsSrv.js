@@ -1,6 +1,6 @@
 angular.module('sntRover').service('RVreportsSrv', [
     '$q',
-    'rvBaseWebSrvV2',
+    'sntBaseWebSrv',
     'RVreportsSubSrv',
     '$vault',
     '$http',
@@ -8,7 +8,7 @@ angular.module('sntRover').service('RVreportsSrv', [
     'RVReportUtilsFac',
     'RVReportSetupDates',
     'RVCustomExportSrv',
-    function($q, rvBaseWebSrvV2, subSrv, $vault, $http, applyFlags, reportUtils, setupDates, customExportSrv) {
+    function($q, sntBaseWebSrv, subSrv, $vault, $http, applyFlags, reportUtils, setupDates, customExportSrv) {
         var service       = {},
             choosenReport = {},
             selectedReport = {},
@@ -236,6 +236,19 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'LAST_OCTOBER',
                 'LAST_NOVEMBER',
                 'LAST_DECEMBER'                
+             ],
+             'Action Manager': [
+                'YESTERDAY',
+                'TODAY',
+                'TOMORROW',
+                'LAST_SEVEN_DAYS',
+                'NEXT_SEVEN_DAYS'             
+             ],
+             'Financial Transactions - Adjustment Report': [
+                'YESTERDAY',
+                'TODAY',
+                'LAST_SEVEN_DAYS',
+                'LAST_MONTH'                             
              ]
         };
 
@@ -291,29 +304,7 @@ angular.module('sntRover').service('RVreportsSrv', [
         };
 
         service.exportCSV = function(params) {
-            var deferred = $q.defer();
-
-            $http({
-                method: 'POST',
-                url: params.url,
-                data: params.payload
-            }).then(function(response) {
-                var data = response.data,
-                    headers = response.headers;
-
-                 var hiddenAnchor = angular.element('<a/>'),
-                     blob = new Blob([data]);
-
-                 hiddenAnchor.attr({
-                     href: window.URL.createObjectURL(blob),
-                     target: '_blank',
-                     download: headers()['content-disposition'].match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/)[1].replace(/['"]+/g, '')
-                 })[0].click();
-                 deferred.resolve(true);
-            },function(response) {
-                deferred.reject(response.data);
-            });
-            return deferred.promise;
+            return sntBaseWebSrv.download(params.url, params.payload);
         };
 
         /**
@@ -326,69 +317,34 @@ angular.module('sntRover').service('RVreportsSrv', [
          * @private
          */
         function fetchAdditionalAPIs (deferred, data) {
-            var payload   = {},
-                hasFilter = checkUserFilters( data );
-
-            var shallWeResolve = function() {
-                var payloadCount = _.keys( payload ).length;
-
-                if ( payloadCount === 3 ) {
-
-                    // save it to $vault
-                    service.payloadCache = angular.copy( payload );
-                    $vault.set( cacheKey, JSON.stringify(service.payloadCache) );
-
-                    deferred.resolve( payload );
-                }
-            };
+            var payload = {},
+                promises = [];
 
             var success = function(key, data) {
                 payload[key] = angular.copy( data );
-                shallWeResolve();
             };
 
-            var failed = function(key, emptyData, data) {
+            var failed = function(key, emptyData) {
                 payload[key] = emptyData;
-                shallWeResolve();
             };
 
             // add report list data to payload
             payload.reportsResponse = angular.copy( data );
 
-            // fetch code settings & add to payload
-            subSrv.fetchCodeSettings()
-                .then( success.bind(null, 'codeSettings'), failed.bind(null, 'codeSettings', {}) );
+            promises.push(subSrv.fetchCodeSettings()
+            .then( success.bind(null, 'codeSettings'), failed.bind(null, 'codeSettings', {}) ));
 
-            // fetch active users & add to payload
-            if ( hasFilter['ACTIVE_USERS'] ) {
-                subSrv.fetchActiveUsers()
-                    .then( success.bind(null, 'activeUserList'), failed.bind(null, 'activeUserList', []) );
-            }
-        }
+            promises.push(subSrv.fetchActiveUsers()
+            .then( success.bind(null, 'activeUserList'), failed.bind(null, 'activeUserList', []) ));
 
-        /**
-         * parse report list data to determine the additional apis to load
-         * @param  {Object} data report list data
-         * @return {Object}      key value pairs with 'true' value
-         * @private
-         */
-        function checkUserFilters (data) {
-            var loadUsersFor = {
-                'Arrival': true,
-                'Login and out Activity': true,
-                'Rate Adjustment Report': true,
-                'Financial Transactions - Adjustment Report': true
-            };
-
-            var hasFilter = {};
-
-            _.each(data.results, function(eachResult) {
-                if ( ! hasFilter.hasOwnProperty('ACTIVE_USERS') && loadUsersFor[eachResult.title] ) {
-                    hasFilter['ACTIVE_USERS'] = true;
-                }
+            $q.all(promises).then(function() {
+                service.payloadCache = angular.copy( payload );
+                $vault.set( cacheKey, JSON.stringify(service.payloadCache) );
+                deferred.resolve(payload);
+            }, function () {
+                deferred.resolve(payload);
             });
-
-            return hasFilter;
+            
         }
 
         function schedulePayloadGenerator (type) {
@@ -465,7 +421,7 @@ angular.module('sntRover').service('RVreportsSrv', [
                 deferred.reject( error );
             };
 
-            rvBaseWebSrvV2
+            sntBaseWebSrv
                 .getJSON( url )
                 .then( success, failed );
 
@@ -484,7 +440,7 @@ angular.module('sntRover').service('RVreportsSrv', [
                 deferred.reject( error );
             };
 
-            rvBaseWebSrvV2
+            sntBaseWebSrv
                 .putJSON( url, params )
                 .then( success, failed );
 
@@ -503,7 +459,7 @@ angular.module('sntRover').service('RVreportsSrv', [
                 deferred.reject( error );
             };
 
-            rvBaseWebSrvV2
+            sntBaseWebSrv
                 .postJSON( url, params )
                 .then( success, failed );
 
@@ -522,7 +478,7 @@ angular.module('sntRover').service('RVreportsSrv', [
                 deferred.reject( error );
             };
 
-            rvBaseWebSrvV2
+            sntBaseWebSrv
                 .deleteJSON( url )
                 .then( success, failed );
 
@@ -541,7 +497,7 @@ angular.module('sntRover').service('RVreportsSrv', [
                 deferred.reject( error );
             };
 
-            rvBaseWebSrvV2
+            sntBaseWebSrv
                 .getJSON( url )
                 .then( success, failed );
 

@@ -249,6 +249,12 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$state', '$rootScope', 'ADR
             return isBasedOnRateChanged;
         };
 
+        /**
+         * $scope.saveRateDetails function is completely removed as it only contained
+         * the end date validation call apart from startSave.
+         * Replaced saveRateDetails with startSave in the HTML.
+         * CICO-73583
+         */
         $scope.startSave = function() {
             var amount = parseFloat($scope.rateData.based_on.value_sign + $scope.rateData.based_on.value_abs);
             var addOns = setUpAddOnData();
@@ -380,54 +386,6 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$state', '$rootScope', 'ADR
                 };
 
                 $scope.invokeApi(ADRatesAddDetailsSrv.updateNewRate, updatedData, saveSuccessCallback, saveFailureCallback);
-            }
-        };
-
-
-        $scope.endDateValidationPopup = function() {
-            ngDialog.open({
-                template: '/assets/partials/rates/adRatesEndDateValidationPopup.html',
-                controller: 'adRatesEndDateValidationPopupController',
-                className: 'ngdialog-theme-default single-calendar-modal',
-                scope: $scope,
-                closeByDocument: true
-            });
-        };
-
-        /*
-         * Save Rate Details
-         */
-
-        $scope.saveRateDetails = function() {
-            var validateEndDateSuccessCallback = function(data) {
-
-                $scope.$emit('hideLoader');
-                if (data.status) {
-                    $scope.startSave();
-                }
-                else {
-                    $scope.endDateValidationPopup();
-                }
-            };
-
-            var validateEndDateFailureCallback = function(data) {
-                $scope.$emit('hideLoader');
-
-            };
-
-            if ($scope.rateData.end_date) {
-                if ($scope.rateData.id) {
-                    var data = {
-                        "id": $scope.rateData.id,
-                        "end_date": $scope.rateData.end_date
-                    };
-
-                    $scope.invokeApi(ADRatesAddDetailsSrv.validateEndDate, data, validateEndDateSuccessCallback, validateEndDateFailureCallback);
-                } else {
-                    $scope.startSave();
-                }
-            } else {
-                $scope.startSave();
             }
         };
 

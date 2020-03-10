@@ -2,6 +2,28 @@ angular.module('sntRover')
 	.controller('rvManagerDistributionAnalyticsCtrl', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvManagersAnalyticsSrv', 'rvAnalyticsHelperSrv', '$rootScope',
 		function($scope, sntActivity, $timeout, $filter, rvManagersAnalyticsSrv, rvAnalyticsHelperSrv, $rootScope) {
 
+			var shallowDecodedParams = "";
+			var distributionChartData;
+			var initialBaseHrefValue = $('base').attr('href');
+			var isDistributionChartActive = function() {
+				return $scope.dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION';
+			};
+
+			var setPageHeading = function() {
+				var chartTypeSelected = _.find($scope.dashboardFilter.chartTypes, function(chartType) {
+					return chartType.code === $scope.dashboardFilter.chartType;
+				});
+				var aggTypeSelected = _.find($scope.dashboardFilter.aggTypes, function(aggType) {
+					return aggType.code === $scope.dashboardFilter.aggType;
+				});
+
+				if (aggTypeSelected) {
+					$scope.screenData.mainHeading = chartTypeSelected.name + " by " + aggTypeSelected.name;
+				} else {
+					$scope.screenData.mainHeading = chartTypeSelected.name;
+				}
+			};
+
 			var checkIfDayIsToday = function(dateToCompare) {
 				var today = $rootScope.businessDate;
 				var date = moment(dateToCompare).format('YYYY-MM-DD');
@@ -9,8 +31,10 @@ angular.module('sntRover')
 				return today === date;
 			};
 
-			$scope.drawDistributionChart = function(chartData) {
+			/** ****************************** DRAW CHART STARTS HERE ********************************************/
 
+			var drawDistributionChart = function(chartData) {
+				$scope.dashboardFilter.selectedAnalyticsMenu = 'DISTRIBUTION';
 				chartData = _.sortBy(chartData, function(data) {
 					return data.date;
 				});
@@ -30,7 +54,7 @@ angular.module('sntRover')
 							},
 							parseDate = d3.timeParse("%Y-%m-%d");
 
-						var width = document.getElementById("manager-analytics-chart").clientWidth - margin.left - margin.right,
+						var width = document.getElementById("dashboard-analytics-chart").clientWidth - margin.left - margin.right,
 							height = 500 - margin.top - margin.bottom;
 
 						var xScale = d3.scaleBand()
@@ -68,6 +92,12 @@ angular.module('sntRover')
 								if (item.hasOwnProperty(key) && key !== "date") {
 									item[key] = item[key] > 0 ? item[key] : 0;
 								}
+								// For the agg types not defined for the dict, use 0
+								_.each(stackKey, function(stack) {
+									if (!item.hasOwnProperty(stack)) {
+										item[stack] = 0;
+									}
+								});
 							}
 						});
 
@@ -253,7 +283,7 @@ angular.module('sntRover')
 					'#FBB383', '#FEE28C', '#BADB8B', '#95C59F', '#89DBC3', '#88CCD6',
 					'#8BB2D5', '#A1B1F5', '#AF9EE2', '#CE9BDA', '#F2A4CO', '#EF9898'
 				];
-				
+
 				// Till 50, use above color. After that use random colors
 				if (colors.length > chartDataKeys.length) {
 					colors = colors.slice(0, chartDataKeys.length);
@@ -271,6 +301,247 @@ angular.module('sntRover')
 				});
 
 				$scope.screenData.hideChartData = false;
+				$scope.dashboardFilter.showFilters = false;
 			};
+
+			/** ****************************** DRAW CHART ENDS HERE ********************************************/
+
+
+			var fetchDistributionChartData = function() {
+				$scope.dashboardFilter.displayMode = 'CHART_DETAILS';
+				$('base').attr('href', initialBaseHrefValue);
+
+				var params = {
+					start_date: $scope.dashboardFilter.fromDate,
+					end_date: $scope.dashboardFilter.toDate,
+					chart_type: $scope.dashboardFilter.chartType,
+					shallowDecodedParams: shallowDecodedParams
+				};
+
+				if ($scope.dashboardFilter.aggType) {
+					params.group_by = $scope.dashboardFilter.aggType;
+				}
+				var options = {
+					params: params,
+					successCallBack: function(data) {
+						$('base').attr('href', '#');
+						$scope.screenData.analyticsDataUpdatedTime = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
+						$scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
+						distributionChartData = data;
+						if ($scope.dashboardFilter.gridViewActive) {
+							toggleDistributionChartGridView();
+						} else {
+							drawDistributionChart(data);
+						}
+						setPageHeading();
+						rvAnalyticsHelperSrv.addChartHeading($scope.screenData.mainHeading, $scope.screenData.analyticsDataUpdatedTime);
+					}
+				};
+
+				$scope.callAPI(rvManagersAnalyticsSrv.distributions, options);
+			};
+
+			$scope.$on('GET_MANAGER_DISTRIBUTION', function() {
+				shallowDecodedParams = "";
+				fetchDistributionChartData();
+			});
+
+			var redrawDistributionChartIfNeeded = function() {
+				if (!isDistributionChartActive()) {
+					return;
+				}
+				fetchDistributionChartData();
+			};
+
+			$scope.$on('ANALYTICS_FILTER_CHANGED', function(e, data) {
+				shallowDecodedParams = data;
+				redrawDistributionChartIfNeeded();
+			});
+
+			$scope.$on('CHART_TYPE_CHANGED', function(e, data) {
+				setPageHeading();
+				redrawDistributionChartIfNeeded();
+			});
+
+			$scope.$on('CHART_AGGGREGATION_CHANGED', function() {
+				setPageHeading();
+				redrawDistributionChartIfNeeded();
+			});
+
+			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER_DISTRIBUTION', fetchDistributionChartData);
+
+			$scope.$on('REFRESH_ANALYTCIS_CHART_DISTRIBUTION', function() {
+				shallowDecodedParams = "";
+				$scope.$emit('RESET_CHART_FILTERS');
+				fetchDistributionChartData()
+			});
+
+			$scope.$on('ON_WINDOW_RESIZE', function() {
+				if (!isDistributionChartActive()) {
+					return;
+				} else if (distributionChartData) {
+					drawDistributionChart(distributionChartData);
+				} else {
+					redrawDistributionChartIfNeeded();
+				}
+			});
+
+			/** *************************** GRID ******************************/
+
+			// Scrollers for distribution grid view
+			var timeLineScrollEndReached = false;
+			var GRID_HEADER_HORIZONTAL_SCROLL = 'grid-header-horizontal-scroll',
+				GRID_VIEW_DUAL_SCROLL = 'grid-scroll',
+				GRID_SIDE_MENU_SCROLL = 'side-bar-vertical-scroll';
+
+			var getScrollerObject = function(key) {
+				var scrollerObject = $scope.$parent.myScroll && $scope.$parent.myScroll[key];
+
+				if (_.isUndefined(scrollerObject)) {
+					scrollerObject = $scope.myScroll[key];
+				}
+				return scrollerObject;
+			};
+
+			var setGridScrollers = function() {
+				var scrollOptions = {
+					tap: true,
+					preventDefault: false,
+					probeType: 3,
+					mouseWheel: true
+				};
+
+				var scrollerOptionsForTimeline = _.extend({
+					scrollX: true,
+					scrollY: false,
+					scrollbars: true
+				}, angular.copy(scrollOptions));
+
+				var scrollerOptionsForGrid = _.extend({
+					scrollY: true,
+					scrollX: true,
+					scrollbars: true
+				}, angular.copy(scrollOptions));
+
+				$scope.setScroller(GRID_HEADER_HORIZONTAL_SCROLL, scrollerOptionsForTimeline);
+				$scope.setScroller(GRID_VIEW_DUAL_SCROLL, scrollerOptionsForGrid);
+				$scope.setScroller(GRID_SIDE_MENU_SCROLL, scrollOptions);
+
+				var runDigestCycle = function() {
+					if (!$scope.$$phase) {
+						$scope.$digest();
+					}
+				};
+
+				$timeout(function() {
+					getScrollerObject(GRID_HEADER_HORIZONTAL_SCROLL)
+						.on('scroll', function() {
+							var xPos = this.x;
+							var block = getScrollerObject(GRID_VIEW_DUAL_SCROLL);
+
+							block.scrollTo(xPos, block.y);
+
+							// check if edge reached next button
+							if (Math.abs(this.maxScrollX) - Math.abs(this.x) <= 150) {
+								if (!timeLineScrollEndReached) {
+									timeLineScrollEndReached = true;
+									runDigestCycle();
+								}
+							} else {
+								if (timeLineScrollEndReached) {
+									timeLineScrollEndReached = false;
+									runDigestCycle();
+								}
+							}
+						});
+					getScrollerObject(GRID_SIDE_MENU_SCROLL)
+						.on('scroll', function() {
+							var yPos = this.y;
+							var block = getScrollerObject(GRID_VIEW_DUAL_SCROLL);
+
+							block.scrollTo(block.x, yPos);
+						});
+					getScrollerObject(GRID_VIEW_DUAL_SCROLL)
+						.on('scroll', function() {
+							var xPos = this.x;
+							var yPos = this.y;
+
+							getScrollerObject(GRID_HEADER_HORIZONTAL_SCROLL).scrollTo(xPos, 0);
+							getScrollerObject(GRID_SIDE_MENU_SCROLL).scrollTo(0, yPos);
+
+							// check if edge reached and enable next button
+							if (Math.abs(this.maxScrollX) - Math.abs(this.x) <= 150) {
+								if (!timeLineScrollEndReached) {
+									timeLineScrollEndReached = true;
+									runDigestCycle();
+								}
+							} else {
+								if (timeLineScrollEndReached) {
+									timeLineScrollEndReached = false;
+									runDigestCycle();
+								}
+							}
+						});
+				}, 1000);
+			};
+			var refreshGridScrollers = function() {
+				$scope.refreshScroller(GRID_HEADER_HORIZONTAL_SCROLL);
+				$scope.refreshScroller(GRID_VIEW_DUAL_SCROLL);
+				$scope.refreshScroller(GRID_SIDE_MENU_SCROLL);
+			};
+			var toggleDistributionChartGridView = function() {
+				if (!$scope.dashboardFilter.gridViewActive) {
+					$timeout(function() {
+						redrawDistributionChartIfNeeded();
+					}, 1000);
+					return;
+				}
+				if ($scope.dashboardFilter.gridViewActive && !$scope.dashboardFilter.aggType) {
+					$scope.gridViewHeader = _.find($scope.dashboardFilter.chartTypes, function(chartType) {
+						return chartType.code === $scope.dashboardFilter.chartType;
+					}).name;
+				} else if ($scope.dashboardFilter.gridViewActive && $scope.dashboardFilter.aggType) {
+					$scope.gridViewHeader = _.find($scope.dashboardFilter.aggTypes, function(aggType) {
+						return aggType.code === $scope.dashboardFilter.aggType;
+					}).name;
+				}
+
+				$scope.gridLeftSideHeaders = [];
+
+				_.each(distributionChartData, function(chartData) {
+					for (var key in chartData) {
+						if (key !== "date" && _.indexOf($scope.gridLeftSideHeaders, key) === -1) {
+							$scope.gridLeftSideHeaders.push(key);
+						}
+					}
+				});
+
+				var today = $rootScope.businessDate;
+
+				distributionChartData = _.sortBy(distributionChartData, function(data) {
+					return data.date;
+				});
+
+				_.each(distributionChartData, function(data) {
+					// check if the day is a Sunday or Saturday
+					data.isWeekend = moment(data.date, "YYYY-MM-DD").weekday() === 0 ||
+						moment(data.date, "YYYY-MM-DD").weekday() === 6;
+					// Display day in MMM DD format
+					data.dateToDisplay = moment(data.date, "YYYY-MM-DD").format("MMM DD");
+					// weekday in 3 letter format
+					data.weekDay = moment(data.date, "YYYY-MM-DD").format("ddd");
+					// check if day is current day
+					data.isToday = moment(data.date).format('YYYY-MM-DD') === today;
+				});
+
+				$scope.distributionChartData = distributionChartData;
+				$scope.dashboardFilter.showFilters = false;
+				setGridScrollers();
+				$timeout(function() {
+					refreshGridScrollers();
+				}, 1000);
+			};
+
+			$scope.$on('DISTRUBUTION_CHART_CHANGED', toggleDistributionChartGridView);
 		}
 	]);

@@ -1,4 +1,4 @@
-sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope', '$state', '$timeout', 'ngDialog', 'rvAnalyticsHelperSrv', function($scope, $rootScope, $state, $timeout, ngDialog, rvAnalyticsHelperSrv) {
+sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope', '$state', '$timeout', 'ngDialog', 'rvAnalyticsHelperSrv','rvAnalyticsSrv', function($scope, $rootScope, $state, $timeout, ngDialog, rvAnalyticsHelperSrv, rvAnalyticsSrv) {
 	// inheriting some useful things
 	BaseCtrl.call(this, $scope);
     var that = this;
@@ -7,6 +7,12 @@ sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope'
 
   	$scope.setScroller('dashboard_scroller', scrollerOptions);
     $scope.setScroller('analytics_scroller', scrollerOptions);
+    $scope.setScroller('analytics_details_scroller', {
+      preventDefaultException: {
+        tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/
+      },
+      preventDefault: false
+    });
 
 
   	$scope.showDashboard = true; // variable used to hide/show dabshboard
@@ -92,6 +98,7 @@ sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope'
    // scroller is not appearing after coming back from other screens
     setTimeout(function() {
       $scope.refreshScroller('dashboard_scroller');
+      $scope.refreshScroller('analytics_details_scroller');
     }, 500);
 
 
@@ -109,7 +116,6 @@ sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope'
       "room_type": $scope.dashboardFilter.selectedRoomType,
       "date": $scope.dashboardFilter.datePicked
     });
-    roomTypeFilerChanged();
   };
 
   var refreshAnalyticsScroller = function() {
@@ -121,6 +127,11 @@ sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope'
   $scope.$on('REFRESH_ANALTICS_SCROLLER', refreshAnalyticsScroller);
 
   $scope.dashboardFilter.isHkDashboard = true;
+
+  $scope.selectedFilters = {
+    "roomType": "",
+    "roomTypes": []
+  };
 
   $scope.availableRoomTypes = angular.copy($scope.roomTypes);
 
@@ -138,29 +149,18 @@ sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope'
     });
   });
 
-  var resetChartFilters = function() {
-    $scope.selectedFilters = {
-      "roomType": "",
-      "roomTypes": []
-    };
+  $scope.onAnlayticsRoomTypeChange = function() {
+    rvAnalyticsSrv.selectedRoomType = $scope.dashboardFilter.selectedRoomType;
+    $scope.$broadcast('RELOAD_DATA_WITH_SELECTED_FILTER_' + $scope.dashboardFilter.selectedAnalyticsMenu);
   };
-  
-  resetChartFilters();
 
-  $scope.chartFilterRemoved = function(selectedRoomType) {
-      $scope.availableRoomTypes = rvAnalyticsHelperSrv.addToAndSortArray($scope.availableRoomTypes, selectedRoomType);
-      $scope.selectedFilters.roomTypes = _.reject($scope.selectedFilters.roomTypes, selectedRoomType);
+  $scope.toggleFilterView = function() {
+    $scope.dashboardFilter.showFilters = !$scope.dashboardFilter.showFilters;
   };
-  var roomTypeFilerChanged = function() {
-    // TODO: later
-    return;
 
-    if ($scope.dashboardFilter.selectedRoomType) {
-      var selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.availableRoomTypes, $scope.dashboardFilter.selectedRoomType);
-
-      $scope.selectedFilters.roomTypes = rvAnalyticsHelperSrv.addToAndSortArray($scope.selectedFilters.roomTypes, selectedItem);
-      $scope.availableRoomTypes = _.reject($scope.availableRoomTypes, selectedItem);
-    }
-  };
+  $scope.$on('RESET_CHART_FILTERS', function() {
+    $scope.dashboardFilter.selectedRoomType = "";
+    rvAnalyticsSrv.selectedRoomType = "";
+  });
 
 }]);

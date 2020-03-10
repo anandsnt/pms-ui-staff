@@ -87,7 +87,7 @@
 					<div class="select" ng-if="::isSntAdmin">
 						<select  ng-model="data.theme_name" id="hotel-theme"
 								 ng-class="{'placeholder': !data.theme_name}"
-								 ng-options="theme for theme in themes">
+								 ng-options="theme.name as theme.value for theme in themes">
 							<option value="">Default</option>
 						</select>
 					</div>
@@ -353,7 +353,7 @@
 				<div class="entry">
 					<label for="hotel-currency"> Hotel Currency <strong>*</strong> </label>
 					<div class="select">
-						<select convert-to-number ng-model="data.default_currency" name="hotel-currency" id="hotel-currency" class="placeholder">
+						<select convert-to-number ng-model="data.default_currency" name="hotel-currency" id="hotel-currency" class="placeholder" ng-disabled="!!data.default_currency">
 							<option value=""> Hotel Currency </option>
 							<option ng-model="currency.id" ng-repeat="currency in data.currency_list" ng-selected="currency.id==data.default_currency" value="{{currency.id}}">{{currency.code}}</option>
 						</select>

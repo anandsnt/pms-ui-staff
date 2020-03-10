@@ -36,6 +36,8 @@
                     selected-payment-type="cancellationData.paymentType"
                     selected-c-c="depositDetails.attached_card"
                     amount='ngDialogData.penalty'
+                    payment-currency-amount='ngDialogData.paymentCurrencyCancellationCharge' 
+                    payment-currency-list="paymentCurrencyList" 
                     action-type="CANCEL_RESERVATION_STAYCARD"
                     deposit-policy-name="{{depositPolicyName}}"
                     is-editable='isDepositEditable'

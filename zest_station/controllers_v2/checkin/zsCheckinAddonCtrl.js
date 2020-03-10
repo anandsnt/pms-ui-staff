@@ -11,6 +11,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		
 		var lcoAddonList = [];
 
+        $scope.showAddReference = true;
 		$scope.selectedLcoAddonId = '';
 		$scope.selectedAddon = {};
 		$scope.pageData = zsGeneralSrv.retrievePaginationStartingData();
@@ -128,7 +129,8 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		var addAddonToReservation = function(addon, isLco) {
 			var params = {
 				id: $scope.selectedReservation.id,
-				addon_id: addon.addon_id
+				addon_id: addon.addon_id,
+                reference_text: $scope.selectedAddonReference
 			};
 
 			if ($scope.isAddonFlatOrRoomType(addon)) {
@@ -249,7 +251,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 						$scope.showAddonPopup = false;
 					}
 				} else {
-					addAddonToReservation(selectedAddon);
+                    addAddonToReservation(selectedAddon);
 				}
 			}
 		};
@@ -268,6 +270,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				$scope.selectedLcoAddonId = _.isUndefined(selectLcoAddon) ? '' : selectLcoAddon.addon_id;
 			}
 		};
+		// Quantity popuup
 		$scope.closePopup = function() {
 			$scope.showAddonPopup = false;
 		};

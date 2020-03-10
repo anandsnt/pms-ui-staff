@@ -110,7 +110,12 @@ module.exports = {
             'why-columbia': [themeCSSRoot + 'why-columbia.less'],
             'why-houston': [themeCSSRoot + 'why-houston.less'],
             'victory-house': [themeCSSRoot + 'victory-house.less'],
-            'dimond-center': [themeCSSRoot + 'dimond-center.less']
+            'zedwell': [themeCSSRoot + 'zedwell.less'],
+            'dimond-center': [themeCSSRoot + 'dimond-center.less'],
+            'brooklyn': [themeCSSRoot + 'brooklyn.less'],
+            'krowoderska': [themeCSSRoot + 'krowoderska.less'],
+            'bayou': [themeCSSRoot + 'bayou.less'],
+            'moment': [themeCSSRoot + 'moment.less']
         };
     }
 };

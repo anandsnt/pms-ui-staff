@@ -124,6 +124,11 @@ admin.controller('adHotelLegalSettingsController',
 		$scope.modifyRegistrationCardSequence = function () {
 			if (!$scope.legalSettings.austrian_reg_card_enabled) {
 				$scope.legalSettings.reg_card_number_sequence_enabled = false;
+			} 
+			if (!$scope.legalSettings.austrian_reg_card_enabled) {
+				$scope.legalSettings.arabic_reg_card_enabled = false;
+			} else if (!$scope.legalSettings.arabic_reg_card_enabled) {
+				$scope.legalSettings.austrian_reg_card_enabled = false;
 			}
 		};
 		/*

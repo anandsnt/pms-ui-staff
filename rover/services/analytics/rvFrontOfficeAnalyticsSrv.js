@@ -289,11 +289,7 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
         // Build the checkin activity for todays and yesterdays arrivals
         var buildCheckinActivity = function(arrivals, foActivity, isToday) {
             arrivals.forEach(function(reservation) {
-                var dayKey = 'yesterday';
-
-                if (isToday) {
-                    dayKey = 'today';
-                }
+                var dayKey = isToday ? 'today' : 'yesterday';
                 var hourActivity = foActivity.data[moment(reservation.eta_hz).format('h A')];
 
                 if (rvAnalyticsSrv.isVip(reservation)) {
@@ -330,10 +326,10 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
 
         // Init the data for the structure
         var initFoActivityDataStructure = function(foActivity) {
-            var date = new Date();
-
             // Construct the 6 AM to 5 AM
             for (var hour = 6; hour <= 29; hour++) {
+                var date = new Date();
+                
                 foActivity.data[moment(date.setHours(hour)).format('h A')] = {
                     today: $.extend({}, userInitData),
                     yesterday: $.extend({}, userInitData)
