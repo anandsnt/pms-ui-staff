@@ -11,7 +11,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 
         var setSvgsToBeLoaded = function(iconsPath, commonIconsPath, useCommonIcons, diffHomeIconsOnly) {
             var iconBasePath = !useCommonIcons ? iconsPath : commonIconsPath;
-            
+
             $scope.activeScreenIcon = 'bed';
             if ($scope.zestStationData.key_create_file_uploaded.indexOf('/logo.png') !== -1) {
                 $scope.zestStationData.key_create_file_uploaded = '';
@@ -112,8 +112,8 @@ sntZestStation.controller('zsThemeActionsCtrl', [
         };
 
         $scope.$on('changeIconsBasedOnHotelSetting', function() {
-            if ($scope.zestStationData.theme === 'snt' && $scope.zestStationData.ccReader === 'local') { 
-                // if we are reading locally, we'll show the ICMP icons for our SNT 
+            if ($scope.zestStationData.theme === 'snt' && $scope.zestStationData.ccReader === 'local') {
+                // if we are reading locally, we'll show the ICMP icons for our SNT
                 $scope.icons.url.creditcard_icmp = $scope.iconsPath + '/demo_swiper.svg';
                 $scope.icons.url.createkey_icmp = $scope.iconsPath + '/demo_keyencoder.svg';
                 $log.warn('using demo icons for create key and credit card reading');
@@ -128,7 +128,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                 $scope.icons.url.createkey_icmp = $scope.iconsPath + '/encode_image.svg';
                 $scope.icons.url.creditcard_icmp = $scope.iconsPath + '/demo_swiper.svg';
                 $scope.icmp = true;
-            } 
+            }
             else if ($scope.zestStationData.theme === 'ihg' && $scope.zestStationData.ccReader === 'local') {
                 // TO DO LATER: clean above code to avoid duplicate code after this HF
                 $scope.icons.url.creditcard_icmp = $scope.iconsPath + '/demo_swiper.svg';
@@ -146,12 +146,12 @@ sntZestStation.controller('zsThemeActionsCtrl', [
         $scope.setScreenIcon = function(name) {
             if ($scope.zestStationData.theme !== 'yotel') {
                 return;
-            } 
+            }
             $scope.activeScreenIcon = name;
             if ($scope.icons && $scope.icons.url) {
                 $scope.icons.url.active_screen_icon = $scope.iconsPath + '/screen-' + $scope.activeScreenIcon + '.svg';
             }
-            
+
         };
         /**
          * get paths for theme based Icon files
@@ -203,7 +203,8 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                     'dimond-center',
                     'brooklyn',
                     'krowoderska',
-                    'bayou'
+                    'bayou',
+                    'moment'
                 ],
                 nonCircleNavIcons = ['public_v2'];// minor adjustment to the back/close icons for some themes (only show the inner x or <)
 
@@ -254,7 +255,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 
         /*
             :: themesWithLicensedFonts ::
-            key = hotel theme, 
+            key = hotel theme,
             value = specific URL to the licensed font (should only request in production)
             --***-- for testing, please use placeholder URLs
          */
@@ -265,7 +266,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
             'duke': 'duke.font.placeholder.css'
             // 'duke': 'https://use.typekit.net/wyk4xkn.js' // SNT typekit account
             // 'duke': 'https://use.typekit.net/hay8wrs.js' // Mike's typekit account (for dev/testing)
-            // 
+            //
             // TODO: PASS the typekit URL from Hotel/SNT Admin and use here as currentHotelTypekitURL
             /* typekit example implement via html/script
 
@@ -300,7 +301,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                 if (theme === 'yotel') {
                     applyStylesForYotelStarTac();
                 } else {
-                    applyStarTacStyles();   
+                    applyStarTacStyles();
                 }
             } else if ($scope.zestStationData.zest_printer_option === 'RECEIPT' && theme === 'yotel') {
                 applyStylesForYotelReceipt();
@@ -336,7 +337,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                 // debugging - inProd() needs to be TRUE for loading licensed font
                 if ((hotelHasLicensedFont(theme) && $scope.inProd()) || isASpecialCase(theme)) {
                     // we load fonts using two different services
-                    // one provides the css as a .css and the other as a .js 
+                    // one provides the css as a .css and the other as a .js
 
                     $log.log('[ ' + theme + ' ] theme using licensed font**');
                     url = getHotelLicensedFont(theme);
@@ -405,18 +406,18 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 
 
         /** ******************************************************************************
-         *  
+         *
          ********************************************************************************/
 
         $scope.$on('TOGGLE_LANGUAGE_TAGS', function(evtObj, onOff) {
-             // enables user (via conosle or developer tools) to show tags on-screen instead of the 
+             // enables user (via conosle or developer tools) to show tags on-screen instead of the
              // translated text
             var tags = $('text'), // grab all <text> selectors, which should only be used for locales
                 el, tag, currentText, old, elInnerHtml;
 
             // for each field with tag, on current screen, replace
             // the current text with the tag text, keep ref to the current text
-            // 
+            //
             for (var i = 0; i < tags.length; i++) {
 
                 el = $(tags[i]);
@@ -432,17 +433,17 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                         if (elInnerHtml) {
                             if (elInnerHtml.indexOf('&lt;') !== -1 || elInnerHtml.indexOf('<br>') !== -1) {
                                 currentText = elInnerHtml;
-                            }   
+                            }
                         }
                     }
                 }
 
                 if (currentText === tag || onOff === 'off') {
-                    // if showing the tag, switch back to text, 
+                    // if showing the tag, switch back to text,
                     // just swap the old-text with current value in json file
                     if (old || currentText === tag) {
                         el[0].innerHTML = old;
-                        $scope.saveLanguageEditorChanges(tag, old, true);    
+                        $scope.saveLanguageEditorChanges(tag, old, true);
                     }
 
                 } else {
@@ -457,7 +458,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
             }
             $scope.runDigestCycle();
         });
-        
+
         (function() {// initializeMe
             setHotelBasedTheme(zsGeneralSrv.hotelTheme);
         }());
