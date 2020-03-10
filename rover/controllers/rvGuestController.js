@@ -1314,42 +1314,69 @@ angular.module('sntRover').controller('guestCardController', [
          */
         var showBorrowFromHousePopup = function (results, selectedGroup) {
 
+            // Close borrow popup
+            $scope.closeBorrowPopup = function (shouldClearData) {
+                if (shouldClearData) {
+                    $scope.borrowData = {};
+                }
+                ngDialog.close();
+            };
+
+            // Handles the borrow action
             $scope.performBorrowFromHouse = function () {
-                $scope.closeBorrowDialog();
+                if ($scope.borrowData.isBorrowFromHouse) {
+                    attachGroupToThisReservation(selectedGroup, true);
+                    $scope.closeBorrowPopup(true);
+                } else {
+                    $scope.closeBorrowPopup();
+                    ngDialog.open({
+                        template: '/assets/partials/common/group/rvGroupOverbookPopup.html',
+                        className: '',
+                        closeByDocument: false,
+                        closeByEscape: true,
+                        scope: $scope
+                    });
+                }
+                
+            };
+
+            // Closes the current borrow dialog
+            $scope.closeOverbookPopup = function() {
+                $scope.borrowData = {};
+                ngDialog.close();
+            };
+
+            // Perform overbook
+            $scope.performOverBook = function () {
                 attachGroupToThisReservation(selectedGroup, true);
+                $scope.closeOverbookPopup();
             };
 						
             $scope.borrowData = {};
+
             if (!results.room_overbooked && !results.house_overbooked) {
-                $scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission;
                 $scope.borrowData.isBorrowFromHouse = true;
-            } else if (results.room_overbooked && !results.house_overbooked) {
-                $scope.borrowData.shouldShowBorrowBtn = $scope.hasOverBookRoomTypePermission && $scope.hasBorrowFromHousePermission;
+            }
+             
+            if (results.room_overbooked && !results.house_overbooked) {
+                $scope.borrowData.shouldShowOverBookBtn = $scope.hasOverBookRoomTypePermission;
                 $scope.borrowData.isRoomTypeOverbooked = true;
             } else if (!results.room_overbooked && results.house_overbooked) {
-                $scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission && $scope.hasOverBookHousePermission;
+                $scope.borrowData.shouldShowOverBookBtn = $scope.hasOverBookHousePermission;
                 $scope.borrowData.isHouseOverbooked = true;
             } else if (results.room_overbooked && results.house_overbooked) {
-                $scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission && $scope.hasOverBookRoomTypePermission && $scope.hasOverBookHousePermission;
+                $scope.borrowData.shouldShowOverBookBtn = $scope.hasOverBookRoomTypePermission && $scope.hasOverBookHousePermission;
                 $scope.borrowData.isHouseAndRoomTypeOverbooked = true;
             }
 
             ngDialog.open({
-                template: '/assets/partials/common/group/rvGroupBorrowOverbookPopup.html',
+                template: '/assets/partials/common/group/rvGroupBorrowPopup.html',
                 className: '',
                 closeByDocument: false,
                 closeByEscape: true,
                 scope: $scope
             });
         };
-
-        
-		// Close the borrow popup
-		$scope.closeBorrowDialog = function () {
-			$scope.borrowData = {};
-			$scope.closeDialog();
-		};
-
 
         /**
          * when we failed in attaching a group
