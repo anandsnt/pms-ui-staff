@@ -26,7 +26,7 @@
                             <span class="enhancement-desc" ng-hide="addon.is_rate_addon && addon.is_inclusive">
                                 at {{addon.addon_currency}}{{addon.amount | number : 2}} / {{addon.amount_type.description}} {{addon.post_type.description}}
                              </span>
-                             <span class="enhancement-desc" ng-show="addon.is_rate_addon && addon.is_inclusive">INCL</span>
+                             <span class="enhancement-desc" ng-show="addon.is_inclusive">INCL</span>
                          </div>
                          <span class="price" ng-hide="addon.is_rate_addon && addon.is_inclusive">
                                 {{addon.addon_currency}}{{addon.totalAmount}}
