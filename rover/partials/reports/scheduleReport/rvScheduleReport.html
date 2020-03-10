@@ -114,6 +114,11 @@
                     Cards Without Tax ID
                 </label>
             </div>
+            <multi-option-selection ng-show="isYearlyTaxReport"
+                label="Country"
+                on-update="refreshFilterScroll"
+                data="filters.hasIncludeCountry.data"
+                options="filters.hasIncludeCountry.options"></multi-option-selection>
             <multi-option-selection ng-show="filters.hasByChargeGroup && filters.hasByChargeGroup.data.length"
                 label="Charge Group(s)"
                 on-update="refreshSecondColumnScroll"
