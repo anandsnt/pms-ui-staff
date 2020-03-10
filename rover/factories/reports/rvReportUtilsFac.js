@@ -2809,6 +2809,53 @@ angular.module('reportsModule')
         };
 
         /**
+        * Fill country
+        * @param {Object} filter - holding filter details
+        * @return {void}
+        */
+        factory.fillCountries = function (filter, filterValues) {
+            var getSelectAllVal = (countries) => {
+                var selectAll =  true;
+
+                if (filterValues && filterValues.country_ids) {
+                    selectAll = countries.length === filterValues.country_ids;
+                }
+
+                return selectAll;
+            };
+
+            reportsSubSrv.fetchCountries().then(function (data) {
+                _.each(data, function (countryData) {
+                    countryData.id = countryData.value;
+                });
+
+                var countryCopy = angular.copy(data);
+
+                if (filterValues && filterValues.country_ids) {
+                    countryCopy = countryCopy.map(country => {
+                        country.selected = false;
+
+                        if (filterValues.country_ids.indexOf(country.id) > -1) {
+                            country.selected = true;
+                        }
+                        return country;
+                    }); 
+                }
+
+                filter.hasIncludeCountry = {
+                    data: countryCopy,
+                    options: {
+                        selectAll: false,
+                        hasSearch: true,
+                        key: 'value',
+                        defaultValue: 'Select Country'
+                    }
+                };
+
+            });
+        };
+
+        /**
          * Fill actionables options
          * @param {Object} filter - holding filter details
          * @return {void}
