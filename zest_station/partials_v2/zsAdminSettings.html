@@ -55,7 +55,7 @@
     <div id="content" class="input-field-contents admin-field-contents">
         <div id="textual" class="tabled-options" style="max-height: 559px;" ng-iscroll="admin-screen" ng-iscroll-delay="100" ng-init="setScroll()">
             <div class="wrapper">
-                <div id="handler-connected-status" class="entry with-label" ng-show='inChromeApp'>
+                <div id="handler-connected-status" class="entry with-label" ng-show='inChromeApp && !isIpad'>
                     <label>Zest Station Handler</label>
                     <!--label class='admin-label-description'></label-->
                     <input readonly="" class="read-only visible" ng-model="zestStationData.stationHandlerConnectedStatus" ng-class='{"green-text":zestStationData.stationHandlerConnectedStatus == "Connected","red-text":zestStationData.stationHandlerConnectedStatus == "Not-Connected"}'>
@@ -105,16 +105,17 @@
                     <input readonly="" class="read-only" type='text' value='{{reason.reason}}'>
                 </div>
 
-                <div class="entry with-label" ng-show="isIpad">
-                    <label>Connected Device Name</label>
-                    <input readonly="" class="read-only" type='text' value="{{zestStationData.connectedDeviceDetails.device_short_name}}">
-                </div>
-
                 <div id="handler-connected-status" class="entry with-label" ng-show="isIpad">
-                    <label>Device Status</label>
+                    <label>{{zestStationData.connectedDeviceDetails.device_short_name}}  Device Status</label>
                     <!--label class='admin-label-description'></label-->
                     <input readonly="" class="read-only visible" ng-model="zestStationData.connectedDeviceDetails.device_connection_state" ng-class='{"green-text":zestStationData.connectedDeviceDetails.device_connection_state == "Connected","red-text":zestStationData.connectedDeviceDetails.device_connection_state !== "Connected", "black-text" : zestStationData.connectedDeviceDetails.device_connection_state === "N/A"}'>
                     <div class='refresh-svg' touch-press='fetchDeviceStatus()' ng-class='{"station-mini-loading":zestStationData.connectedDeviceDetails.device_connection_state == "refreshing..."}'></div>
+                </div>
+
+                <div class="entry with-label" ng-show="isIpad && zestStationData.is_snt_id_scan_enabled && idCaptureFeature">
+                    <label>AILA Status</label>
+                    <input readonly="" class="read-only visible" value="{{ zestStationData.usingAilaDevice ? 'CONNECTED' : 'NOT CONNECTED' }}" ng-class='{"green-text":zestStationData.usingAilaDevice,"red-text":!zestStationData.usingAilaDevice}'>
+                    <div class='refresh-svg' touch-press='fetchAilaStatus()'></div>
                 </div>
 
                 <div class="entry with-label">

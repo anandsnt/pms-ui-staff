@@ -61,7 +61,7 @@ sntZestStation.controller('zsCheckinCommonBaseCtrl', [
 					$scope.checkinInProgress = false;
 				}
 			};
-
+			
 			$scope.callAPI(zsCheckinSrv.checkInGuest, options);
 		};
 
@@ -74,15 +74,39 @@ sntZestStation.controller('zsCheckinCommonBaseCtrl', [
 		$scope.$on('CHECK_IF_REQUIRED_GUEST_DETAILS_ARE_PRESENT', function(e, params) {
 			checkinParams = params.checkinParams;
 			var retrievGuestInfoCallback = function(data) {
-				var missingData = _.filter(data, function(field) {
-					return !field.current_value;
+
+				if (!data.metadata.required_for_all_adults) {
+					data.guests = _.filter(data.guests, function(guest) {
+						return guest.primary;
+					});
+				} else {
+					// Filter out only Adult guest
+					data.guests = _.filter(data.guests, function(guest) {
+						return guest.guest_type === 'ADULT';
+					});
+				}
+
+				// utils function
+				_.each(data.guests, function(guest) {
+					var mandatoryFields = _.filter(guest.guest_details, function(field) {
+						return field.mandatory;
+					});
+					var missingInfoForGuest = _.filter(mandatoryFields, function(field) {
+						return !field.current_value;
+					});
+
+					var missingVehicleRegNumbers = _.filter(guest.guest_details, function(field) {
+						return field.field_category === 'parking';
+					});
+
+					guest.is_missing_any_required_field = guest.info_bypassed ? false : missingInfoForGuest.length > 0 || missingVehicleRegNumbers.length > 0;
 				});
 
-				var mandatoryFieldsMissing = _.filter(missingData, function(field) {
-					return field.mandatory;
+				var guestsWithMissingInfo = _.filter(data.guests, function(guest) {
+					return guest.is_missing_any_required_field;
 				});
 
-				if (mandatoryFieldsMissing.length > 0) {
+				if (guestsWithMissingInfo.length > 0) {
 					// present new state to collect remainig guest details
 					$state.go('zest_station.zsCheckinSaveGuestInfo', {
 						checkinParams: angular.toJson(checkinParams),

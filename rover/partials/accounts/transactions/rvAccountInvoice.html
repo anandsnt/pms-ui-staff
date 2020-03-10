@@ -3,7 +3,7 @@
     <h1>{{printData.hotel_name}}</h1>
     <span ng-bind-html="printData.hotel_address" ng-if="printData.show_hotel_address"></span>
     <span class="type">{{printData.invoiceLabel}}</span>
-    <span class="type" ng-if="printData.is_deposit_invoice || !printData.is_informational_invoice" ng-show="printData.qr_code !== '' && printData.qr_code !== null">
+    <span class="type" ng-if="( printData.is_deposit_invoice || !printData.is_informational_invoice ) && printData.qr_code !== '' && printData.qr_code !== null">
         <br/><img ng-src="{{printData.qr_code}}" alt="" class="qr-code" /> 
     </span>
 </div>
@@ -83,8 +83,8 @@
     </div>
 </div>
 
-<div class="invoice-header">
-    {{printData.custom_text_header}}
+<div class="invoice-header" ng-bind-html="trustAsHtml(printData.custom_text_header)">
+   
 </div>
 
 <div class="invoice-body">
@@ -157,6 +157,9 @@
                 <td class="description">
                     <strong>{{charge.description.item_description}}</strong>
                     <span>{{charge.description.fees_desc}}</span>
+                    <div class="converted-currency smaller" ng-if="isMultiCurrencyEnabled && charge.description.rate_conversion_rate && ( charge.rate_currency_credits || charge.description.rate_converted_amount)">
+                        {{charge.description.rate_conversion_rate}}
+                    </div>
                     <span class="reference">{{charge.reference_text}}</span>
                 </td>
                 <td class="align-right">
@@ -167,9 +170,6 @@
                     <div class="converted-currency" ng-if="isMultiCurrencyEnabled && charge.description.rate_converted_amount">
                         {{charge.description.rate_currency}}{{charge.description.rate_converted_amount | number:2}}
                     </div>
-                    <div class="converted-currency smaller" ng-if="isMultiCurrencyEnabled && charge.description.rate_conversion_rate && charge.description.rate_converted_amount">
-                        {{charge.description.rate_conversion_rate}}
-                    </div>
                 </td>
                 <td class="align-right">
                     <span ng-show="!!charge.credits">{{currencySymbol}}{{charge.credits | number: 2}}</span>
@@ -178,9 +178,6 @@
                     </div>
                     <div class="converted-currency" ng-if="isMultiCurrencyEnabled && charge.rate_currency_credits">
                         {{charge.description.rate_currency}}{{charge.rate_currency_credits | number:2}}
-                    </div>
-                    <div class="converted-currency smaller" ng-if="isMultiCurrencyEnabled && charge.description.rate_conversion_rate && charge.rate_currency_credits">
-                        {{charge.description.rate_conversion_rate}}
                     </div>
                 </td>
             </tr>

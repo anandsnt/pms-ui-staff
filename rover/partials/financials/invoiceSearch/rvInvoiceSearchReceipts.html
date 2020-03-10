@@ -1,3 +1,6 @@
+
+<rv-pagination ng-show="totalResultCount > invoiceSearchPagination.perPage" page-options="invoiceSearchPagination" page-data="totalResultCount"></rv-pagination>
+
 <section id="find-invoices" class="content" role="main" ng-hide="invoiceSearchFlags.showFindInvoice">
     <ul class="invoice-list-header receipts-list-header">
         <li class="expand">
@@ -183,6 +186,6 @@
     <div class="info">
         <span class="icon-no-content icon-cards"></span>
         <strong class="h1">Find Receipt</strong>
-    <span class="h2">Search by <strong >Receipt/Invoice or Folio No</strong>, <strong > Guest name / </strong> <strong > Account name</strong>or <strong>Balance Amount</strong></span>
+        <span class="h2">Search by <strong >Receipt/Invoice or Folio No</strong>, <strong ng-if="shouldShowReservationReceipts()"> Guest name</strong> <strong ng-if="shouldShowAccountReceipts()"> Account name</strong>or <strong>Balance Amount</strong></span>
     </div>
 </div>

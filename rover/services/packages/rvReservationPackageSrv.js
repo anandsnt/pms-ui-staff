@@ -29,6 +29,19 @@ angular.module('sntRover').service('RVReservationPackageSrv', ['$http', '$q', 'r
 		return deferred.promise;
 	};
 
+	this.updateAddonPosting = function(dataToApi) {
+		var deferred = $q.defer();
+
+		var url = '/staff/staycards/update_addon_posting';
+
+		RVBaseWebSrvV2.postJSON(url, dataToApi).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
 	this.parseAddonItem = function(item, forAssociated) {
 		var addonItem = {};
 
@@ -62,6 +75,8 @@ angular.module('sntRover').service('RVReservationPackageSrv', ['$http', '$q', 'r
 		}
 		addonItem.chargefullweeksonly = item.charge_full_weeks_only;
 		addonItem.is_rate_addon = item.is_rate_addon;
+		addonItem.is_allowance = item.is_allowance;
+		addonItem.is_consume_next_day = item.is_consume_next_day;
 		return addonItem;
 	};
 

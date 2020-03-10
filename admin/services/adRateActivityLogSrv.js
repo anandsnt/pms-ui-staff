@@ -1,12 +1,12 @@
 admin.service('ADRateActivityLogSrv', ['$http', '$q', 'ADBaseWebSrvV2',
 function($http, $q, ADBaseWebSrvV2) {
-	this.fetchRateLog = function(rateId) {
+	this.fetchRateLog = function(params) {
             var deferred = $q.defer();
             // per page and current page need to be defined
-            var url = "api/actions?actionable_type=Rate&actionable_id=" + rateId.id + "&page=1&per_page=50";
+            var url = "api/actions";
 
-            ADBaseWebSrvV2.getJSON(url).then(function(data) {
-                    deferred.resolve(data.results);
+            ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
+                    deferred.resolve(data);
             }, function(data) {
                     deferred.reject(data);
             });

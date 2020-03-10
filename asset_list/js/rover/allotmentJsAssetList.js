@@ -16,6 +16,9 @@ module.exports = {
 				roverRoot + "services/rvReservationSrv.js",
 				roverRoot + "services/rvCompanyCardSrv.js",
 				roverRoot + "services/reservation/rvReservationBaseSearchSrv.js",
+				roverRoot + "controllers/packages/rvReservationPackageController.js",
+				roverRoot + "controllers/rvAddonDatePickerCtrl.js",
+				roverRoot + "services/reservation/RVReservationStateSrv.js",
 
                 // Eliminate all spec files
                 '!**/*.spec.js'

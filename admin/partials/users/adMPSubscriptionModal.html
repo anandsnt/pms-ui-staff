@@ -2,6 +2,14 @@
 	<div class="modal-content chain-hotels">
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<span class="message h3">{{subscriptionData.full_name}} subscriptions</span>
+        <div class="home-hotel">
+            <label for="home-hotel">Home Hotel</label>
+            <div class="select">
+                <select name="home-hotel" id="home-hotel" ng-model="hotelId" ng-change="updateDefaultHotel(hotelId)">
+                    <option ng-repeat="hotel in subscriptionData.hotels" value="{{hotel.hotel_id}}">{{hotel.hotel_name}}</option>
+                </select>
+            </div>
+        </div>
 		<div class="hotels-list">
 			<table id="chain-users" class="grid">
 				<thead>

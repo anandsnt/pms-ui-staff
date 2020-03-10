@@ -539,6 +539,18 @@ sntZestStation.controller('zsAdminCtrl', [
         $scope.selectedCamera = localStorage.getItem('ID_SCAN_CAMERA_ID');
         $scope.selectedFRCamera = localStorage.getItem('FR_CAMERA_ID');
 
+        $scope.fetchAilaStatus = function() {
+            if (typeof cordova !== "undefined") {
+
+                cordova.exec(function(response) {
+                        $scope.zestStationData.usingAilaDevice = response;
+                    },
+                    function() {
+                        // do nothing
+                    }, 'RoverCDVPlugin', 'hasAilaScanHardware', ['']);
+            }
+        };
+
         // initialize
         (function() {
             var localDebugging = false, // change this if testing locally, be sure to make false if going up to dev/release/prod
@@ -597,6 +609,11 @@ sntZestStation.controller('zsAdminCtrl', [
                 $scope.autoIdDetectionChanged = function() {
                     localStorage.setItem('useAutoDetection', $scope.useIdAutoCapture === "YES" ? "YES" : "NO");
                 };
+            }
+
+            // Fetch AILA device status on reaching the admin screen
+            if ($scope.isIpad && $scope.zestStationData.is_snt_id_scan_enabled && $scope.idCaptureFeature) {
+                $scope.fetchAilaStatus();
             }
         }());
     }

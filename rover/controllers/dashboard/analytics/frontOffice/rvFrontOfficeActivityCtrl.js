@@ -1,8 +1,8 @@
 angular.module('sntRover')
-  .controller('rvFrontOfficeActivityCtrl', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvAnalyticsHelperSrv',
-    function($scope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv) {
+  .controller('rvFrontOfficeActivityCtrl', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvAnalyticsHelperSrv', 'rvAnalyticsSrv', 'rvFrontOfficeAnalyticsSrv',
+    function($scope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv, rvAnalyticsSrv, rvFrontOfficeAnalyticsSrv) {
 
-      $scope.drawFrontOfficeActivity = function(chartData) {
+      var drawFrontOfficeActivity = function(chartData) {
 
         $scope.screenData.mainHeading = $filter('translate')(chartData.label);
 
@@ -100,7 +100,7 @@ angular.module('sntRover')
         chartData.todays_data.unshift(emptyElement);
         chartData.yesterdays_data.unshift(emptyElement);
 
-        var w = document.getElementById("analytics-chart").clientWidth,
+        var w = document.getElementById("dashboard-analytics-chart").clientWidth * 3/4,
           h = 500,
           padding = 40;
 
@@ -295,5 +295,58 @@ angular.module('sntRover')
         $scope.$emit('REFRESH_ANALTICS_SCROLLER');
         $scope.screenData.hideChartData = false;
       };
+      var chartData;
+      var drawChartAndAddHeading = function(chartData) {
+        $timeout(function() {
+          $scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
+          drawFrontOfficeActivity(chartData);
+          rvAnalyticsHelperSrv.addChartHeading($scope.screenData.mainHeading,
+            $scope.screenData.analyticsDataUpdatedTime);
+        }, 50);
+      };
+      var renderFrontOfficeActivity = function() {
+        rvFrontOfficeAnalyticsSrv.fdFoActivity($scope.dashboardFilter.datePicked).then(function(data) {
+          chartData = data;
+          drawChartAndAddHeading(chartData);
+        });
+      };
+
+      var getFoActivityChartData = function(date) {
+        $scope.dashboardFilter.displayMode = 'CHART_DETAILS';
+        $scope.dashboardFilter.selectedAnalyticsMenu = 'FO_ACTIVITY';
+        $('base').attr('href', "/");
+        var params = {
+          "date": $scope.dashboardFilter.datePicked,
+          "isFromFrontDesk": true,
+          "loadNewData": true
+        };
+        var options = {
+          params: params,
+          successCallBack: function(response) {
+            $scope.$emit('CHART_API_SUCCESS', response);
+            renderFrontOfficeActivity();
+          }
+        };
+
+        $scope.callAPI(rvAnalyticsSrv.initRoomAndReservationApis, options);
+      };
+
+      // Initial fetch
+      $scope.$on('GET_FO_ACTIVITY', getFoActivityChartData);
+
+      // Show yesterdays data toggle
+      $scope.$on('SHOW_YESTERDAYS_DATA_TOGGLE', function() {
+        renderFrontOfficeActivity();
+      });
+      // On filter changes
+      $scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER_FO_ACTIVITY', renderFrontOfficeActivity);
+      $scope.$on('RELOAD_DATA_WITH_DATE_FILTER_FO_ACTIVITY', getFoActivityChartData);
+      $scope.$on('REFRESH_ANALYTCIS_CHART_FO_ACTIVITY', getFoActivityChartData);
+
+      $scope.$on('ON_WINDOW_RESIZE', function() {
+        if ($scope.dashboardFilter.selectedAnalyticsMenu === 'FO_ACTIVITY' && chartData) {
+          drawChartAndAddHeading(chartData);
+        }
+      });
     }
   ]);

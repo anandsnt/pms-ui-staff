@@ -21,6 +21,7 @@ sntRover.controller('RVbillCardController',
 	'RVReservationStateService',
 	'$log',
 	'sntAuthorizationSrv',
+	'RVAutomaticEmailSrv',
 	'PAYMENT_CONFIG',
 	function($scope, $rootScope,
 			$state, $stateParams,
@@ -33,10 +34,12 @@ sntRover.controller('RVbillCardController',
 			$sce,
 
 			RVKeyPopupSrv, RVPaymentSrv,
-			RVSearchSrv, rvPermissionSrv, jsMappings, $q, sntActivity, RVReservationStateService, $log, sntAuthorizationSrv, PAYMENT_CONFIG) {
+			RVSearchSrv, rvPermissionSrv, jsMappings, $q, sntActivity, RVReservationStateService, $log, sntAuthorizationSrv, RVAutomaticEmailSrv, PAYMENT_CONFIG) {
 
 
 	BaseCtrl.call(this, $scope);
+
+	SharedMethodsBaseCtrl.call (this, $scope, $rootScope, RVAutomaticEmailSrv, ngDialog);
 	var that = this;
 
 
@@ -271,7 +274,11 @@ sntRover.controller('RVbillCardController',
 
 
 	$scope.isPrintRegistrationCard = false;
-	$scope.isAustrianRegistrationCardEnabled = $scope.reservationBillData.austrian_registration_card_enabled;
+
+	$scope.isRegistrationCardEnabledFor = {
+		austria:  $scope.reservationBillData.austrian_registration_card_enabled,
+		arabia: $scope.reservationBillData.arabic_registration_card_enabled
+		};
 
 	// To send track details on checkin button
 	var swipedTrackDataForCheckin = {};
@@ -640,19 +647,19 @@ sntRover.controller('RVbillCardController',
 
 		var getBillDataSuccess = function(data) {
 
-			$scope.reservationBillData.bills[billIndex] = data;
+				$scope.reservationBillData.bills[billIndex] = data;
 
-			setBillValue(billIndex);
-			$scope.setActiveBill(billIndex);
-			$scope.setupReviewStatusArray();
-			if (isDuringCheckoutPayment) {
-				$scope.moveToNextBillAfterSuccessPaymentDuringCheckout();
-			}
-			if (callGenerateFolioNumberApiAfterLoadingCurrentBill) {
-				that.callGenerateFolioNumberApi();
-			}
+				setBillValue(billIndex);
+				$scope.setActiveBill(billIndex);
+				$scope.setupReviewStatusArray();
+				if (isDuringCheckoutPayment) {
+					$scope.moveToNextBillAfterSuccessPaymentDuringCheckout();
+				}
+				if (callGenerateFolioNumberApiAfterLoadingCurrentBill) {
+					that.callGenerateFolioNumberApi();
+				}
 
-			$scope.refreshScroller('bill-tab-scroller');
+				$scope.refreshScroller('bill-tab-scroller');
 			},
 			dataToSend = {
 				params: reservationBillData.bills[billIndex].bill_id,
@@ -798,11 +805,13 @@ sntRover.controller('RVbillCardController',
 		var moveToBillSuccessCallback = function(response) {
 			$scope.$emit('hideLoader');
 			$scope.movedIndex = parseInt(newBillValue) - 1;
-			$scope.reservationBillData.bills[parseInt(response.data[0].to_bill_number) - 1] = {
-				bill_id: response.data[0].to_bill_id,
-				bill_number: response.data[0].to_bill_number,
-				total_amount: response.data[0].bill_amount
-			};
+			if (parseInt(response.data[0].to_bill_number) === parseInt(newBillValue)) {
+				$scope.reservationBillData.bills[parseInt(response.data[0].to_bill_number) - 1] = {
+					bill_id: response.data[0].to_bill_id,
+					bill_number: response.data[0].to_bill_number,
+					total_amount: response.data[0].bill_amount
+				};
+			}			
 
 			var reservationStatus = $scope.reservationBillData.reservation_status;
 
@@ -2765,8 +2774,8 @@ sntRover.controller('RVbillCardController',
 					$("header .h2").addClass('text-hide');
 					$("body #loading").html("");// CICO-56119
 
-					// add the orientation
                     // add the orientation
+
                     addPrintOrientation();
                     /*
                      *	======[ READY TO PRINT ]======
@@ -2810,7 +2819,7 @@ sntRover.controller('RVbillCardController',
 			$scope.printRegCardData = data;
 			$scope.errorMessage = "";
 			$scope.printRegCardData.rowspanAustrianRegCardChild = data.guest_details.accompanying_children && data.guest_details.accompanying_children.length > 4 ? 3 : 2;
-			if ($scope.isAustrianRegistrationCardEnabled) {
+			if ($scope.isRegistrationCardEnabledFor.austria) {
 				var docDetails = "";
 
 				if (data.guest_details.id_type !== "" && data.guest_details.id_type !== null) {
@@ -2942,10 +2951,13 @@ sntRover.controller('RVbillCardController',
 				$scope.isViaReviewProcess = false;
 				callBlackBoxAPI();
 			}
-	};
+	};	
 
+	$scope.$on("AUTO_TRIGGER_EMAIL_AFTER_PAYMENT", function(e, data) {
+		$scope.sendAutomaticEmails(data);
+	});
 
-	 $scope.$on('BILL_PAYMENT_SUCCESS', function(event, data) {
+	$scope.$on('BILL_PAYMENT_SUCCESS', function(event, data) {
 	 	$scope.signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
 		$scope.isRefreshOnBackToStaycard = true;
 		if ($scope.isViaReviewProcess) {
@@ -2959,6 +2971,14 @@ sntRover.controller('RVbillCardController',
 
 		$scope.getBillData($scope.currentActiveBill);
 		$scope.$broadcast('FETCH_REMAINING_AUTH');
+
+		$scope.currentPaymentBillId = data.bill_id;
+		$scope.currentPaymentTransactionId = data.transaction_id;
+		$scope.isDepositPayment = data.is_deposit_payment;
+		if ($rootScope.autoEmailPayReceipt || ($rootScope.autoEmailDepositInvoice && $scope.isDepositPayment)) {
+			$scope.autoTriggerPaymentReceiptActions();
+		}
+				
 	});
 
 	// To update paymentModalOpened scope - To work normal swipe in case if payment screen opened and closed - CICO-8617

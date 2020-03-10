@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionSrv', '$rootScope', '$scope', 'rvCompanyCardContractsSrv', '$stateParams',
-	function(rvPermissionSrv, $rootScope, $scope, rvCompanyCardContractsSrv, $stateParams) {
+angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionSrv', '$rootScope', '$scope', 'rvCompanyCardContractsSrv', '$stateParams', '$timeout',
+	function(rvPermissionSrv, $rootScope, $scope, rvCompanyCardContractsSrv, $stateParams, $timeout) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -25,6 +25,13 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 				linkContractsSearch: {
 					query: '',
 					results: []
+				},
+				contractOwner: {
+					results: [],
+					isInactive: false,
+					selectedOwner: {
+						id: null
+					}
 				}
 			};
 		},
@@ -99,13 +106,29 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 		 * @param {Object} data - API response of detail fetch
 		 */
 		fetchContractDetailsSuccessCallback = function(data) {
+			$scope.contractData.contractOwner.results = data.ownersList;
 			setErrorMessage([]);
-			$scope.contractData.editData = data;
-			$scope.contractData.selectedRateList = data.contract_rates;
-			$scope.contractData.disableFields = (data.end_date < $rootScope.businessDate) || !data.is_master_contract;
-			$scope.contractData.isPastContract = data.end_date < $rootScope.businessDate;
+			$scope.contractData.editData = data.contractDetails;
+			$scope.contractData.selectedRateList = data.contractDetails.contract_rates;
+			$scope.contractData.disableFields = (data.contractDetails.end_date < $rootScope.businessDate) || !data.contractDetails.is_master_contract;
+			$scope.contractData.isPastContract = data.contractDetails.end_date < $rootScope.businessDate;
 			$scope.$broadcast('addDataReset');
 			$scope.$broadcast('refreshEditScroller');
+
+			$timeout(function() {
+				if (data.contractDetails.selected_contract_owner !== null) {
+					var owner = data.contractDetails.selected_contract_owner;
+
+					$scope.contractData.contractOwner.selectedOwner.id = (owner.id).toString();
+					$scope.contractData.contractOwner.selectedOwner.name = owner.name ? owner.name : 'No contract owner';
+					$scope.contractData.contractOwner.isInactive = !owner.is_active;
+				}
+				else {
+					$scope.contractData.contractOwner.selectedOwner.id = null;
+					$scope.contractData.contractOwner.selectedOwner.name = 'No contract owner';
+					$scope.contractData.contractOwner.isInactive = false;
+				}
+			}, 100);
 		},
 		/**
 		 * Failure callback for contracts detail fetch
@@ -132,7 +155,7 @@ angular.module('sntRover').controller('rvCardContractsMainCtrl', ['rvPermissionS
 				}
 			};
 
-			$scope.callAPI(rvCompanyCardContractsSrv.fetchContractsDetails, options);
+			$scope.callAPI(rvCompanyCardContractsSrv.fetchDetailsWithOwnersList, options);
 		};
 		/*
 		 * Failure callback for contracts fetch API

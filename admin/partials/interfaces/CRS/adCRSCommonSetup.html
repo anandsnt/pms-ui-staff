@@ -115,6 +115,15 @@
                               label="{{'DEFAULT_BOOKING_ORIGIN'| translate}}"
                               div-class="full-width">
             </ad-dropdown-name>
+            <ad-dropdown-name ng-if="availableSettings.indexOf('rate_type_amount') > -1"
+                              savemodel="config.rate_type_amount"
+                              valueproperty="value"
+                              property="description"
+                              list="config.rate_type_amounts"
+                              required="yes"
+                              label="{{'RATE_TYPE_AMOUNT_TAX'| translate}}"
+                              div-class="full-width">
+            </ad-dropdown-name>
         </fieldset>
         <fieldset class="holder right">
             <ad-dropdown-name ng-if="availableSettings.indexOf('payment_type_id') > -1"

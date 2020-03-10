@@ -1,41 +1,19 @@
 angular.module('sntRover').service('rvCompanyCardContractsSrv', ['$q', 'sntBaseWebSrv', function($q, sntBaseWebSrv) {
 
     this.fetchRateContract = function(params) {
-        var url = '/api/rates/contract_rates',
-            deferred = $q.defer();
-
-        sntBaseWebSrv.getJSON(url, params)
-            .then(function(data) {
-                deferred.resolve(data);
-            },
-            function(errorMessage) {
-                deferred.reject(errorMessage);
-            });
-        return deferred.promise;
+        return sntBaseWebSrv.getJSON('/api/rates/contract_rates', params);
     };
 
     this.deleteContract = function(data) {
-        var deferred = $q.defer(),
-            url = '/api/accounts/' + data.account_id + '/contracts/' + data.contract_id;
+        var url = '/api/accounts/' + data.account_id + '/contracts/' + data.contract_id;
 
-        sntBaseWebSrv.deleteJSON(url).then(function(data) {
-            deferred.resolve(data);
-        }, function(data) {
-            deferred.reject(data);
-        });
-        return deferred.promise;
+        return sntBaseWebSrv.deleteJSON(url);
     };
 
     this.fetchContractsDetails = function(data) {
-        var deferred = $q.defer(),
-            url = '/api/accounts/' + data.account_id + '/contracts/' + data.contract_id;
+        var url = '/api/accounts/' + data.account_id + '/contracts/' + data.contract_id;
 
-        sntBaseWebSrv.getJSON(url).then(function(data) {
-            deferred.resolve(data);
-        }, function(data) {
-            deferred.reject(data);
-        });
-        return deferred.promise;
+        return sntBaseWebSrv.getJSON(url);
     };
 
     var contractRates = [];
@@ -63,15 +41,9 @@ angular.module('sntRover').service('rvCompanyCardContractsSrv', ['$q', 'sntBaseW
      * @return {promise|{then, catch, finally}|*|e} Promise
      */
     this.addNewContract = function(data) {
-        var deferred = $q.defer(),
-            url = '/api/accounts/' + data.account_id + '/contracts';
+        var url = '/api/accounts/' + data.account_id + '/contracts';
 
-        sntBaseWebSrv.postJSON(url, data.postData).then(function(data) {
-            deferred.resolve(data);
-        }, function(data) {
-            deferred.reject(data);
-        });
-        return deferred.promise;
+        return sntBaseWebSrv.postJSON(url, data.postData);
     };
 
     /**
@@ -80,88 +52,61 @@ angular.module('sntRover').service('rvCompanyCardContractsSrv', ['$q', 'sntBaseW
      * @return {promise|{then, catch, finally}|*|e} Promise
      */
     this.updateContract = function(data) {
-        var deferred = $q.defer(),
-            url = '/api/accounts/' + data.account_id + '/contracts/' + data.contract_id;
+        var url = '/api/accounts/' + data.account_id + '/contracts/' + data.contract_id;
 
-        sntBaseWebSrv.putJSON(url, data.postData).then(function(data) {
-            deferred.resolve(data);
-        }, function(data) {
-            deferred.reject(data);
-        });
-        return deferred.promise;
+        return sntBaseWebSrv.putJSON(url, data.postData);
     };
 
     this.updateNight = function(data) {
-        var deferred = $q.defer(),
-            url = '/api/accounts/' + data.account_id + '/contracts/' + data.contract_id + '/contract_nights';
+        var url = '/api/accounts/' + data.account_id + '/contracts/' + data.contract_id + '/contract_nights';
 
-        sntBaseWebSrv.postJSON(url, data.postData).then(function(data) {
-            deferred.resolve(data);
-        }, function(data) {
-            deferred.reject(data);
-        });
-        return deferred.promise;
+        return sntBaseWebSrv.postJSON(url, data.postData);
     };
 
     this.fetchContractsForLinking = function(params) {
-        var url = '/api/contracts/search_contracts',
-            deferred = $q.defer();
-
-        sntBaseWebSrv.getJSON(url, params)
-            .then(function(data) {
-                deferred.resolve(data);
-            },
-            function(errorMessage) {
-                deferred.reject(errorMessage);
-            });
-        return deferred.promise;
+        return sntBaseWebSrv.getJSON('/api/contracts/search_contracts', params);
     };
 
     this.linkContract = function(params) {
-        var deferred = $q.defer(),
-            url = '/api/contracts/link_contract';
-
-        sntBaseWebSrv.postJSON(url, params).then(function(data) {
-            deferred.resolve(data);
-        }, function(data) {
-            deferred.reject(data);
-        });
-        return deferred.promise;
+        return sntBaseWebSrv.postJSON('/api/contracts/link_contract', params);
     };
 
     this.unLinkContract = function(params) {
-        var deferred = $q.defer(),
-            url = '/api/contracts/unlink_contract';
-
-        sntBaseWebSrv.postJSON(url, params).then(function(data) {
-            deferred.resolve(data);
-        }, function(data) {
-            deferred.reject(data);
-        });
-        return deferred.promise;
+        return sntBaseWebSrv.postJSON('/api/contracts/unlink_contract', params);
     };
 
     this.linkRate = function(params) {
-        var deferred = $q.defer(),
-            url = '/api/contracts/link_rate';
-
-        sntBaseWebSrv.postJSON(url, params).then(function(data) {
-            deferred.resolve(data);
-        }, function(data) {
-            deferred.reject(data);
-        });
-        return deferred.promise;
+        return sntBaseWebSrv.postJSON('/api/contracts/link_rate', params);
     };
 
     this.unlinkRate = function(params) {
-        var deferred = $q.defer(),
-            url = '/api/contracts/unlink_rate';
+        return sntBaseWebSrv.postJSON('/api/contracts/unlink_rate', params);
+    };
 
-        sntBaseWebSrv.postJSON(url, params).then(function(data) {
-            deferred.resolve(data);
-        }, function(data) {
-            deferred.reject(data);
+    this.fetchOwners = function(params) {
+        params.id = params.contract_id;
+        return sntBaseWebSrv.getJSON('/api/contracts/contract_owners', params);
+    };
+
+    var that = this;
+
+    this.fetchDetailsWithOwnersList = function(params) {
+        var promises = [],
+            response = {},
+            deferred = $q.defer();
+
+        promises.push(that.fetchOwners(params).then((data) => {
+            response.ownersList = data.data;
+        }));
+
+        promises.push(that.fetchContractsDetails(params).then((data) => {
+            response.contractDetails = data;
+        }));
+
+        $q.all(promises).then(() => {
+            deferred.resolve(response);
         });
+
         return deferred.promise;
     };
 

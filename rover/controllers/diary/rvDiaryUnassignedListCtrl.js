@@ -101,7 +101,7 @@ angular.module('sntRover')
              */
             $scope.addListener('CLOSE_UD_RESERVATION_PANEL', function() {
                 reservationCache = [];
-                $scope.arrangeReservationList();
+                $scope.clearList();
                 deselectReservation();
             });
 

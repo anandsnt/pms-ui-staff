@@ -207,6 +207,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             sntBaseWebSrv.getJSON(url, params).then(function(data) {
                 angular.forEach(data.reservations, function(item) {
                     item.statusClass = item.arrival_date === businessDate ? 'check-in' : 'no-status';
+                    item.fullName = item.last_name + ' ' + item.first_name;
                 });
                 deferred.resolve(data);
             }, function(error) {

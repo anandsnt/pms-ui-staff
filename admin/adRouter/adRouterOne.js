@@ -3,7 +3,10 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
         $stateProvider.state('admin.dashboard', {
 			url: '/dashboard/:menu',
 			templateUrl: '/assets/partials/dashboard/adDashboard.html',
-			controller: 'ADDashboardCtrl'
+			controller: 'ADDashboardCtrl',
+			params: {
+				errorMsg: []
+			}
 
 		});
 
@@ -144,12 +147,6 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			templateUrl: '/assets/partials/brands/adBrandList.html',
 			controller: 'ADBrandCtrl',
 			url: '/brands'
-		});
-
-		$stateProvider.state('admin.templateconfiguration', {
-			templateUrl: '/assets/partials/templateConfiguration/adListHotel.html',
-			controller: 'ADTemplateConfigurationCtrl',
-			url: '/templateconfiguration'
 		});
 
 		$stateProvider.state('admin.smsconfiguration', {

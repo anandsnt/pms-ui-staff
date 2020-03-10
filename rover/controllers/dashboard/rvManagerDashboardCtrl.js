@@ -11,7 +11,8 @@ sntRover.controller('RVmanagerDashboardController',
   'segmentData',
   'originData',
   'rvAnalyticsHelperSrv',
-  function($scope, $rootScope, $state, $vault, RVDashboardSrv, $timeout, ngDialog, marketData, sourceData, segmentData, originData, rvAnalyticsHelperSrv) {
+  'rvAnalyticsSrv',
+  function($scope, $rootScope, $state, $vault, RVDashboardSrv, $timeout, ngDialog, marketData, sourceData, segmentData, originData, rvAnalyticsHelperSrv, rvAnalyticsSrv) {
   // inheriting some useful things
   BaseCtrl.call(this, $scope);
   var that = this;
@@ -22,12 +23,15 @@ sntRover.controller('RVmanagerDashboardController',
 
   $scope.isStatisticsOpened = false;
   $scope.setScroller('dashboard_scroller', scrollerOptions);
-  $scope.setScroller('analytics_scroller', {
-    preventDefaultException: {
-      tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/
-    },
-    preventDefault: false
-  });
+  var analyticsScrollerOptions = {
+      preventDefaultException: {
+        tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/
+      },
+      preventDefault: false
+    };
+    
+  $scope.setScroller('analytics_scroller', analyticsScrollerOptions);
+  $scope.setScroller('analytics_details_scroller', analyticsScrollerOptions);
 
   // changing the header
   $scope.$emit("UpdateHeading", 'DASHBOARD_MANAGER_HEADING');
@@ -205,6 +209,7 @@ sntRover.controller('RVmanagerDashboardController',
   var refreshAnalyticsScroller = function() {
     $timeout(function() {
       $scope.refreshScroller('analytics_scroller');
+      $scope.refreshScroller('analytics_details_scroller');
     }, 500);
   };
 
@@ -266,9 +271,7 @@ sntRover.controller('RVmanagerDashboardController',
     dateFormat: 'yy-mm-dd',
     onSelect: function(dateText) {
       $scope.dashboardFilter.fromDate = dateText;
-      $scope.$broadcast('RELOAD_DATA_WITH_DATE_FILTER', {
-        "from_date": $scope.dashboardFilter.fromDate
-      });
+      $scope.$broadcast('RELOAD_DATA_WITH_DATE_FILTER_' + $scope.dashboardFilter.selectedAnalyticsMenu);
       ngDialog.close();
     }
   };
@@ -280,9 +283,7 @@ sntRover.controller('RVmanagerDashboardController',
     dateFormat: 'yy-mm-dd',
     onSelect: function(dateText, inst) {
       $scope.dashboardFilter.toDate = dateText;
-      $scope.$broadcast('RELOAD_DATA_WITH_DATE_FILTER', {
-        "to_date": $scope.dashboardFilter.toDate
-      });
+      $scope.$broadcast('RELOAD_DATA_WITH_DATE_FILTER_' + $scope.dashboardFilter.selectedAnalyticsMenu);
       ngDialog.close();
     }
   };
@@ -292,6 +293,8 @@ sntRover.controller('RVmanagerDashboardController',
     $scope.datePicked = (type === 'toDate') ?
       moment($scope.dashboardFilter.toDate).format('YYYY-MM-DD') :
       moment($scope.dashboardFilter.fromDate).format('YYYY-MM-DD');
+    $scope.datePicked = (type === 'toDate') ? $scope.dashboardFilter.toDate : $scope.dashboardFilter.fromDate;
+
     $timeout(function() {
       ngDialog.open({
         template: '/assets/partials/search/rvDatePickerPopup.html',
@@ -346,6 +349,7 @@ sntRover.controller('RVmanagerDashboardController',
       "originCodes": [],
       "segmentCodes": []
     };
+    $scope.dashboardFilter.selectedFilters = $scope.selectedFilters;
   };
 
   resetChartFilters();
@@ -414,20 +418,23 @@ sntRover.controller('RVmanagerDashboardController',
 
   var emptyAllChartFilters = function() {
     shallowEncoded = "";
+    $scope.dashboardFilter.selectedRoomType = "";
+    rvAnalyticsSrv.selectedRoomType = "";
     $scope.dashboardFilter.chartType = "occupancy";
     $scope.dashboardFilter.aggType = "";
     $scope.dashboardFilter.datePicked = $rootScope.businessDate;
-
-    $scope.dashboardFilter.chartType = "";
-    $scope.dashboardFilter.aggType = "";
     $scope.dashboardFilter.toDate = angular.copy($rootScope.businessDate);
     $scope.dashboardFilter.fromDate = angular.copy(moment($scope.dashboardFilter.toDate).subtract(7, 'days').format('YYYY-MM-DD'));
+    $scope.dashboardFilter.showRemainingReservations = false;
+    $scope.dashboardFilter.showPreviousDayData = false;
 
     $scope.marketData = joinFiltersAndDataSet($scope.marketData, $scope.selectedFilters.marketCodes);
     $scope.sourceData = joinFiltersAndDataSet($scope.sourceData, $scope.selectedFilters.sourceCodes);
     $scope.segmentData = joinFiltersAndDataSet($scope.segmentData, $scope.selectedFilters.segmentCodes);
     $scope.originData = joinFiltersAndDataSet($scope.originData, $scope.selectedFilters.originCodes);
     $scope.availableRoomTypes = joinFiltersAndDataSet($scope.availableRoomTypes, $scope.selectedFilters.roomTypes);
+    $scope.dashboardFilter.showLastYearData = false;
+    $scope.dashboardFilter.lastyearType = "SAME_DATE_LAST_YEAR";
     resetChartFilters();
   };
 
@@ -435,23 +442,39 @@ sntRover.controller('RVmanagerDashboardController',
     emptyAllChartFilters();
   });
 
-  $scope.getAppliedFilterCount = function() {
-    if ($scope.dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION' ||
-      $scope.dashboardFilter.selectedAnalyticsMenu === 'PACE') {
-      var aggTypeFilterCount = $scope.dashboardFilter.aggType ? 1 : 0;
-
-      return $scope.selectedFilters.marketCodes.length +
-        $scope.selectedFilters.sourceCodes.length +
-        $scope.selectedFilters.segmentCodes.length +
-        $scope.selectedFilters.originCodes.length +
-        $scope.selectedFilters.roomTypes.length +
-        aggTypeFilterCount;
-    }
-    return $scope.dashboardFilter.showLastYearData ? 1 : 0;
-  };
-
   $scope.distributionChartChanged = function() {
     $scope.$broadcast('DISTRUBUTION_CHART_CHANGED');
   };
 
+  // house keeping
+
+  $scope.availableRoomTypes = angular.copy($scope.roomTypes);
+
+  $scope.$on('ROOM_TYPE_SHORTAGE_CALCULATED', function(e, calculatedRoomTypes) {
+    $scope.roomTypesForWorkPrioriy = [];
+    _.each($scope.availableRoomTypes, function(roomType) {
+      roomType.shortage = 0;
+      roomType.overBooking = 0;
+      _.each(calculatedRoomTypes, function(calculatedRoomType) {
+        if (roomType.code === calculatedRoomType.code) {
+          roomType.shortage = calculatedRoomType.shortage;
+          roomType.overBooking = calculatedRoomType.overBooking;
+        }
+      });
+    });
+  });
+
+  // front desk
+
+  $scope.onAnlayticsRoomTypeChange = function() {
+    rvAnalyticsSrv.selectedRoomType = $scope.dashboardFilter.selectedRoomType;
+    $scope.$broadcast('RELOAD_DATA_WITH_SELECTED_FILTER_' + $scope.dashboardFilter.selectedAnalyticsMenu);
+  };
+
+  $scope.showYesterdaysDataToggled = function() {
+    $scope.$broadcast('SHOW_YESTERDAYS_DATA_TOGGLE');
+  };
+  $scope.showRemainingReservationsToggled = function() {
+    $scope.$broadcast('SHOW_REMAINING_RESERVATIONS_TOGGLE');
+  };
 }]);

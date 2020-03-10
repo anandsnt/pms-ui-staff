@@ -1,59 +1,60 @@
 angular.module('sntRover')
-	.controller('rvFrontOfficeWorkloadCtrl', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvAnalyticsHelperSrv',
-		function($scope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv) {
+	.controller('rvFrontOfficeWorkloadCtrl', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvAnalyticsHelperSrv', 'rvAnalyticsSrv', 'rvFrontOfficeAnalyticsSrv',
+		function($scope, sntActivity, $timeout, $filter, rvAnalyticsHelperSrv, rvAnalyticsSrv, rvFrontOfficeAnalyticsSrv) {
 
 			var colorMappings = {
 				"early_checkin": {
-                    "legend_class": "bar bar-green bar-dark",
-                    "fill": "greenDark",
-                    "onmouseover_fill": "greenDarkHover",
-                    "onmouseout_fill": "greenDark"
-                },
-                "checkin": {
-                    "legend_class": "bar bar-green bar-light",
-                    "fill": "greenLight",
-                    "onmouseover_fill": "greenLightHover",
-                    "onmouseout_fill": "greenLight"
-                },
-                "vip_checkin": {
-                    "legend_class": "bar bar-yellow",
-                    "fill": "yellow",
-                    "onmouseover_fill": "yellow",
-                    "onmouseout_fill": "yellow"
-                },
-                "vip_checkout": {
-                    "legend_class": "bar bar-yellow bar-dark",
-                    "fill": "yellowDark",
-                    "onmouseover_fill": "yellowDarkHover",
-                    "onmouseout_fill": "yellowDark"
-                },
-                "checkout": {
-                    "legend_class": "bar bar-red",
-                    "fill": "red",
-                    "onmouseover_fill": "redHover",
-                    "onmouseout_fill": "red"
-                },
-                "late_checkout": {
-                    "legend_class": "bar bar-red bar-dark",
-                    "fill": "redDark",
-                    "onmouseover_fill": "redDarkHover",
-                    "onmouseout_fill": "redDark"
-                }
-            };
+					"legend_class": "bar bar-green bar-dark",
+					"fill": "greenDark",
+					"onmouseover_fill": "greenDarkHover",
+					"onmouseout_fill": "greenDark"
+				},
+				"checkin": {
+					"legend_class": "bar bar-green bar-light",
+					"fill": "greenLight",
+					"onmouseover_fill": "greenLightHover",
+					"onmouseout_fill": "greenLight"
+				},
+				"vip_checkin": {
+					"legend_class": "bar bar-yellow",
+					"fill": "yellow",
+					"onmouseover_fill": "yellow",
+					"onmouseout_fill": "yellow"
+				},
+				"vip_checkout": {
+					"legend_class": "bar bar-yellow bar-dark",
+					"fill": "yellowDark",
+					"onmouseover_fill": "yellowDarkHover",
+					"onmouseout_fill": "yellowDark"
+				},
+				"checkout": {
+					"legend_class": "bar bar-red",
+					"fill": "red",
+					"onmouseover_fill": "redHover",
+					"onmouseout_fill": "red"
+				},
+				"late_checkout": {
+					"legend_class": "bar bar-red bar-dark",
+					"fill": "redDark",
+					"onmouseover_fill": "redDarkHover",
+					"onmouseout_fill": "redDark"
+				}
+			};
 
-			var legendColorMappings = {
-                "Early Check in": "bar bar-green bar-dark",
-                "Checkin": "bar bar-green bar-light",
-                "VIP checkin": "bar  bar-yellow",
+			var legendColorMappings = {        
+				"Early Check in": "bar bar-green bar-dark",
+				        "Checkin": "bar bar-green bar-light",
+				        "VIP checkin": "bar  bar-yellow",
 
-                "VIP checkout": "bar bar-yellow bar-dark",
-                "Late checkout": "bar bar-red bar-dark",
-                "Checkout": "bar bar-red",
-            };
+				        "VIP checkout": "bar bar-yellow bar-dark",
+				        "Late checkout": "bar bar-red bar-dark",
+				        "Checkout": "bar bar-red",
+				      
+			};
 
-			$scope.drawWorkLoadChart = function(chartDetails) {
+			var drawWorkLoadChart = function(chartDetails) {
 				$scope.screenData.mainHeading = $filter('translate')(chartDetails.chartData.label);
-				var chartAreaWidth = document.getElementById("analytics-chart").clientWidth;
+				var chartAreaWidth = document.getElementById("dashboard-analytics-chart").clientWidth;
 				var margin = {
 						top: 50,
 						right: 20,
@@ -87,7 +88,7 @@ angular.module('sntRover')
 					.tickSizeOuter(0)
 					.tickPadding(10)
 					.tickFormat(function(d) {
-						return d.toUpperCase();
+						return (d === 'REMAINING' && !$scope.dashboardFilter.showRemainingReservations) ? '' : d.toUpperCase();
 					});
 
 				var svgHeight = height + margin.top + margin.bottom;
@@ -98,13 +99,14 @@ angular.module('sntRover')
 					.append("g")
 					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-				// DEBUGING CODE
-				// chartDetails = rvAnalyticsHelperSrv.addRandomNumbersForTesting(chartDetails);
-
 				// sort right side items in ascending order
 				chartDetails.chartData.data = _.sortBy(chartDetails.chartData.data, function(item, index) {
 					return item.type === 'REMAINING' ? 0 : 1;
 				});
+
+				// DEBUGING CODE
+				// chartDetails = rvAnalyticsHelperSrv.addRandomNumbersForTesting(chartDetails);
+				
 				var totalActionsCount = {
 					early_checkin: 0,
 					vip_checkin: 0,
@@ -170,11 +172,11 @@ angular.module('sntRover')
 					var fontSize;
 
 					if (totalRowsPresent > 20) {
-						fontSize = isBarText ? "0px" :"10px";
+						fontSize = isBarText ? "0px" : "10px";
 					} else if (totalRowsPresent > 15) {
-						fontSize = isBarText ? "8px" :"12px";
+						fontSize = isBarText ? "8px" : "12px";
 					} else {
-						fontSize = isBarText ? "10px" :"13px";
+						fontSize = isBarText ? "10px" : "13px";
 					}
 
 					return fontSize;
@@ -195,8 +197,17 @@ angular.module('sntRover')
 					});
 
 				var remainingTypeYoffset;
+
+				var workloadData = angular.copy(chartDetails.chartData.data);
+
+				if (!$scope.dashboardFilter.showRemainingReservations) {
+					workloadData = _.reject(chartDetails.chartData.data, function(item) {
+						return item.type === 'REMAINING';
+					});
+				}
+
 				var vakken = svg.selectAll(".type")
-					.data(chartDetails.chartData.data)
+					.data(workloadData)
 					.enter()
 					.append("g")
 					.attr("class", "bar")
@@ -252,7 +263,7 @@ angular.module('sntRover')
 					});
 
 				// TODO: Delete commented code after verifying total count
-				
+
 				// var isSmallBarItem = function(item) {
 				// 	var itemPercantage = item.count * 100 / maxValueInBotheDirections;
 
@@ -296,17 +307,19 @@ angular.module('sntRover')
 						width: xScale(maxValueInBotheDirections) + xScale(100)
 					};
 
-					var yPositionOfRemainingTopLine = remainingTypeYoffset - yScale.bandwidth() / 2;
-					// first line 
-					rvAnalyticsHelperSrv.drawRectLines(_.extend(rectCommonAttrs, {
-						yOffset: yPositionOfRemainingTopLine
-					}));
+					if ($scope.dashboardFilter.showRemainingReservations) {
+						var yPositionOfRemainingTopLine = remainingTypeYoffset - yScale.bandwidth() / 2;
+						// first line 
+						rvAnalyticsHelperSrv.drawRectLines(_.extend(rectCommonAttrs, {
+							yOffset: yPositionOfRemainingTopLine
+						}));
 
-					var yPositionOfRemainingBottomLine = yPositionOfRemainingTopLine + 2 * yScale.bandwidth();
+						var yPositionOfRemainingBottomLine = yPositionOfRemainingTopLine + 2 * yScale.bandwidth();
 
-					rvAnalyticsHelperSrv.drawRectLines(_.extend(rectCommonAttrs, {
-						yOffset: yPositionOfRemainingBottomLine
-					}));
+						rvAnalyticsHelperSrv.drawRectLines(_.extend(rectCommonAttrs, {
+							yOffset: yPositionOfRemainingBottomLine
+						}));
+					}
 
 					rvAnalyticsHelperSrv.drawRectLines({
 						svg: svg,
@@ -324,61 +337,114 @@ angular.module('sntRover')
 						yOffset: 0
 					});
 				}
-				
+
 				var rightSideLegendDiv = d3.select("#right-side-legend");
 				var arrivalsLegendData = {
-                    "title": "Arrivals",
-                    "id": "arrivals-right-title",
-                    "margin_top": 0,
-                    "items": [{
-                        "id": "right-legend-early-checkin",
-                        "class": legendColorMappings["Early Check in"],
-                        "label": "Early Check in",
-                        "count": totalActionsCount.early_checkin
-                    },
-                    {
-                        "id": "right-legend-checkin",
-                        "class": legendColorMappings["Checkin"],
-                        "label": "Checkin",
-                        "count": totalActionsCount.checkin
-                    },{
-                        "id": "right-legend-vip-checkin",
-                        "class": legendColorMappings["VIP checkin"],
-                        "label": "VIP checkin",
-                        "count": totalActionsCount.vip_checkin
-                    }]
-                };
-                var departuresLegendData = {
-                    "title": "Departures",
-                    "id": "departures-right-title",
-                    "margin_top": 10,
-                    "items": [{
-                        "id": "right-legend-vip-checkout",
-                        "class": legendColorMappings["VIP checkout"],
-                        "label": "VIP checkout",
-                        "count": totalActionsCount.vip_checkout
-                    },
-                    {
-                        "id": "right-legend-checkout",
-                        "class": legendColorMappings["Checkout"],
-                        "label": "Checkout",
-                        "count": totalActionsCount.checkout
-                    },
-                    {
-                        "id": "right-legend-late-checkout",
-                        "class": legendColorMappings["Late checkout"],
-                        "label": "Late checkout",
-                        "count": totalActionsCount.late_checkout
-                    }]
-                };
+					"title": "Arrivals",
+					"id": "arrivals-right-title",
+					"margin_top": 0,
+					"items": [{
+						"id": "right-legend-early-checkin",
+						"class": legendColorMappings["Early Check in"],
+						"label": "Early Check in",
+						"count": totalActionsCount.early_checkin
+					}, {
+						"id": "right-legend-checkin",
+						"class": legendColorMappings["Checkin"],
+						"label": "Checkin",
+						"count": totalActionsCount.checkin
+					}, {
+						"id": "right-legend-vip-checkin",
+						"class": legendColorMappings["VIP checkin"],
+						"label": "VIP checkin",
+						"count": totalActionsCount.vip_checkin
+					}]
+				};
+				var departuresLegendData = {
+					"title": "Departures",
+					"id": "departures-right-title",
+					"margin_top": 10,
+					"items": [{
+						"id": "right-legend-vip-checkout",
+						"class": legendColorMappings["VIP checkout"],
+						"label": "VIP checkout",
+						"count": totalActionsCount.vip_checkout
+					}, {
+						"id": "right-legend-checkout",
+						"class": legendColorMappings["Checkout"],
+						"label": "Checkout",
+						"count": totalActionsCount.checkout
+					}, {
+						"id": "right-legend-late-checkout",
+						"class": legendColorMappings["Late checkout"],
+						"label": "Late checkout",
+						"count": totalActionsCount.late_checkout
+					}]
+				};
 
-                rvAnalyticsHelperSrv.addLegendItems(legendColorMappings, rightSideLegendDiv, arrivalsLegendData);
-                rvAnalyticsHelperSrv.addLegendItems(legendColorMappings, rightSideLegendDiv, departuresLegendData);
+				rvAnalyticsHelperSrv.addLegendItems(legendColorMappings, rightSideLegendDiv, arrivalsLegendData);
+				rvAnalyticsHelperSrv.addLegendItems(legendColorMappings, rightSideLegendDiv, departuresLegendData);
 
-                d3.select(".x.axis path").style("stroke", "#D8D8D8");
-				
+				d3.select(".x.axis path").style("stroke", "#D8D8D8");
+
 				$scope.$emit('REFRESH_ANALTICS_SCROLLER');
 				$scope.screenData.hideChartData = false;
 			};
+
+			var onBarChartClick = function() {
+				return;
+			};
+			var chartDetails;
+			var drawChartAndAddHeading = function(chartDetails) {
+				$timeout(function() {
+					$scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
+					drawWorkLoadChart(chartDetails);
+					rvAnalyticsHelperSrv.addChartHeading($scope.screenData.mainHeading,
+						$scope.screenData.analyticsDataUpdatedTime);
+				}, 50);
+			};
+			var renderfdWorkloadChart = function() {
+				rvFrontOfficeAnalyticsSrv.fdWorkload($scope.dashboardFilter.datePicked).then(function(data) {
+					chartDetails = {
+						chartData: data,
+						onBarChartClick: onBarChartClick
+					};
+					drawChartAndAddHeading(chartDetails);
+				});
+			};
+			var getArrivalManagementChartData = function() {
+				$scope.dashboardFilter.displayMode = 'CHART_DETAILS';
+				$scope.dashboardFilter.selectedAnalyticsMenu = 'FO_WORK_LOAD';
+				$('base').attr('href', "/");
+				var params = {
+					"date": $scope.dashboardFilter.datePicked,
+					"isFromFrontDesk": true,
+					"loadNewData": true
+				};
+				var options = {
+					params: params,
+					successCallBack: function(response) {
+						$scope.$emit('CHART_API_SUCCESS', response);
+						renderfdWorkloadChart();
+					}
+				};
+
+				$scope.callAPI(rvAnalyticsSrv.initRoomAndReservationApis, options);
+			};
+
+			$scope.$on('GET_FO_WORKLOAD', getArrivalManagementChartData);
+			$scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER_FO_WORK_LOAD', renderfdWorkloadChart);
+			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER_FO_WORK_LOAD', getArrivalManagementChartData);
+			$scope.$on('REFRESH_ANALYTCIS_CHART_FO_WORK_LOAD', getArrivalManagementChartData);
+			$scope.$on('SHOW_REMAINING_RESERVATIONS_TOGGLE', function () {
+				$scope.dashboardFilter.showFilters = false;
+				renderfdWorkloadChart();
+			});
+
+			$scope.$on('ON_WINDOW_RESIZE', function() {
+				if ($scope.dashboardFilter.selectedAnalyticsMenu === 'FO_WORK_LOAD' && chartDetails) {
+					drawChartAndAddHeading(chartDetails);
+				}
+			});
 		}
 	]);
