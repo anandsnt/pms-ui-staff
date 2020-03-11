@@ -17,6 +17,11 @@ describe('rvCardContractListCtrl', function() {
                 linkContractsSearch: {
                     query: '',
                     results: []
+                },
+                contractOwner: {
+                    selectedOwner: {
+                        id: null
+                    }
                 }
             }
         });

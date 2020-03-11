@@ -3,7 +3,7 @@
 
     .wrapper {  padding: 20px; }
 
-    h2 {
+    .dashboard-hello {
         text-align: center;
         font-size: 32px;
         line-height: 1;
@@ -165,6 +165,15 @@
 
 /* Analytics ***/
 #dashboard.analytics {
+
+    .search-results {
+        width: 100%;
+
+        p {
+            text-align: left;
+            height: auto;
+        }
+    }
 
     p {
         text-align: center;
@@ -581,7 +590,6 @@
             }
         }
     }
-
 }
 
 #dashboard-grid {
@@ -760,11 +768,11 @@
             #pixel-to-percent > .side-padding(80, 2048);
             padding-top: 40px;
             padding-bottom: 20px;
+        }
 
-            > h2 {
-                font-size: 48px;
-                margin: 0 0 40px;
-            }
+        .dashboard-hello {
+            font-size: 48px;
+            margin: 0 0 40px;
         }
 
         .dashboard-block {
@@ -934,6 +942,12 @@
                 }
             }
 
+            &.analytics-summary {
+                .wrapper {
+                    padding: 0;
+                    #flexbox > .parent(row wrap, center, flex-start, '');
+                }
+            }
         }
     }
 }

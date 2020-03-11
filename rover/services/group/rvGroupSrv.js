@@ -69,6 +69,10 @@ angular.module('sntRover').service('rvGroupSrv', ['$q', 'rvBaseWebSrvV2',
 					'group_id': params.group_id
 				};
 
+			if (params.forcefully_overbook) {
+				data.forcefully_overbook = params.forcefully_overbook;
+			}
+
 			rvBaseWebSrvV2.postJSON(url, data).then(
 				function(data) {
 					deferred.resolve(data);

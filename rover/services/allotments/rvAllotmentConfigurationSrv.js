@@ -387,6 +387,21 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 
 		};
 
+		this.updateAddonPosting = function(data) {
+			var deferred = $q.defer(),
+				url = '/api/allotments/' + data.id + '/update_addon_posting';
+
+			rvBaseWebSrvV2.postJSON(url, data)
+				.then(function(data) {
+					deferred.resolve(data);
+				}, function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+
+		};
+
 
 		this.getAllotmentEnhancements = function(data) {
 			var deferred = $q.defer(),

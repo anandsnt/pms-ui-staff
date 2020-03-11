@@ -4118,6 +4118,45 @@
                     }
                 }
             }
+
+            /* Dashboar Analytics */
+            &.dashboard-analytics {
+
+                .faux-anchor {
+                    display: grid;
+                    grid-template-columns: 1fr 120px;
+                    grid-column-gap: 20px;
+                    padding-right: 40px;
+                    background-position: calc(~'100% - 15px') 50%;
+                    background-image: @arrowRight2x;
+                    background-repeat: no-repeat; 
+                    background-size: 14px 14px;
+
+                    &:before,
+                    &:after {
+                        .hide();
+                    }
+                }
+
+                h2 {
+                    font-size: 21px;
+                    line-height: 20px;
+                    font-weight: 700;
+                }
+
+                .description {
+                    font-size: 15px;
+                    line-height: 1;
+                    color: @grey3;
+                }
+
+                .category {
+                    font-size: 14px;
+                    color: @grey3;
+                    text-transform: uppercase;
+                    #flexbox > .parent(column wrap, center, '', flex-end);
+                }
+            }
         }
     }
 }

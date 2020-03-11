@@ -4,7 +4,8 @@ admin.controller('ADGoogleDriveAccountDetailsCtrl', [
     '$state',
     '$stateParams',
     '$timeout',
-    function($scope, ADThirdPartyStorageSrv, $state, $stateParams, $timeout) {
+    'sntLoadScriptSrv',
+    function($scope, ADThirdPartyStorageSrv, $state, $stateParams, $timeout, sntLoadScriptSrv) {
     
     BaseCtrl.call(this, $scope);
 
@@ -63,8 +64,11 @@ admin.controller('ADGoogleDriveAccountDetailsCtrl', [
                 $scope.$apply();
             });
         } else {
-            GAPI.call(this, $scope);
-            $scope.errorMessage = ["Google client failed to load...please try again"];
+            sntLoadScriptSrv.loadScript(sntLoadScriptSrv.getGAPIUrl()).then(function() {
+                GAPI.call(this, $scope);
+                startAuth();
+            });
+            
         }
     };
 

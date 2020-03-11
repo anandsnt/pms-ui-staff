@@ -6,8 +6,8 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
     var that = this;
 
     // Variables for API returned data
-    that.activeReservations = null;
-    that.yesterdaysReservations = null;
+    that.activeReservations = [];
+    that.yesterdaysReservations = [];
     that.roomStatuses = null;
     that.selectedRoomType = "";
     that.hotelCheckinTime = null;
@@ -116,45 +116,44 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         });
     };
 
+    var lastUpdatedTimeForReservationApis;
+    
     this.initRoomAndReservationApis = function(params) {
 
         var deferred = $q.defer();
-        var completedResCall = false;
-        var completedRoomsCall = false;
-
         var isFromFrontDesk = params.isFromFrontDesk;
 
-        that.fetchActiveReservation(params).then(function (data) {
-            that.activeReservations = data;
-
-            // From House keeping
-            completedResCall = true;
-
-            if (completedRoomsCall) {
-                calledHKApis = true;
-                deferred.resolve();
-            }
-
-        });
-
-        if (isFromFrontDesk) {
-            var yesterday = moment(params.date).subtract(1, 'days')
-                                .format('YYYY-MM-DD');
-            that.fetchActiveReservation({ date: yesterday }).then(function (yesterdaysReservations) {
-               that.yesterdaysReservations = yesterdaysReservations
+        if ((!params.loadNewData && that.activeReservations && that.roomStatuses) &&
+            (!isFromFrontDesk || that.yesterdaysReservations)) {
+            deferred.resolve({
+                lastUpatedTime: lastUpdatedTimeForReservationApis
             });
+        } else {
+            var promises = [];
 
+            promises.push(that.fetchActiveReservation(params).then(function(data) {
+                that.activeReservations = data;
+            }));
+
+            if (isFromFrontDesk) {
+                var yesterday = moment(params.date).subtract(1, 'days')
+                    .format('YYYY-MM-DD');
+
+                promises.push(that.fetchActiveReservation({
+                    date: yesterday
+                }).then(function(data) {
+                    that.yesterdaysReservations = data;
+                }));
+            }
+            promises.push(that.fetchRoomStatus(params).then(function(data) {
+                that.roomStatuses = data;
+            }));
+
+            $q.all(promises).then(function() {
+                deferred.resolve();
+            });
         }
 
-        that.fetchRoomStatus(params).then(function (data) {
-            that.roomStatuses = data;
-
-            completedRoomsCall = true;
-            if (completedResCall) {
-                calledHKApis = true;
-                deferred.resolve();
-            }
-        });
         return deferred.promise;
 
     };
@@ -266,6 +265,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         workPriority.data.push(buildVacants(reservations, rooms, 'WORK_PRIORITY', date));
         // Pushing departure data structure
         workPriority.data.push(buildDepartures(reservations, date, false));
+        calculateRoomShortageByRoomType(date);
         deferred.resolve(workPriority);
     };
 

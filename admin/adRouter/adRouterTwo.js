@@ -1159,4 +1159,5 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         controller: 'ADOauthKeyGeneratorCtrl',
         url: '/oauthKeyGenerator'
     });
+
 });

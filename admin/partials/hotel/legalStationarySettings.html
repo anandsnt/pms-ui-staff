@@ -28,6 +28,15 @@
                     <input type="text" ng-model="legalSettings.first_reg_card_number" placeholder="Enter first registration card number">
                 </td>
             </tr>
+            <tr>
+                <td>Arabic Registration Card</td>
+                <td>
+                    <div class="switch-button" ng-click="modifyRegistrationCardSequence()" ng-class="{'on' : legalSettings.arabic_reg_card_enabled}">
+                        <input name="no-modify" id="no-modify" value="no-modify" ng-model="legalSettings.arabic_reg_card_enabled" type="checkbox" checked="">
+                        <span class="switch-icon"></span>
+                    </div>
+                </td>
+            </tr>
             <tr ng-show="legalSettings.is_vienna_tax_enabled">
                 <td>Fiscal Invoice template</td>
                 <td>

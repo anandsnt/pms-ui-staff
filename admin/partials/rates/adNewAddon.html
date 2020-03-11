@@ -217,7 +217,7 @@
                         <div class="entry float full-width">
                             <div class="entry">
                                 <label for="amount-type-id">
-                                    {{'AMOUNT_TYPE' | translate}}
+                                    {{'OCCUPANCY_TYPE' | translate}}
                                     <strong>*</strong>
                                 </label>
                                 <div ng-class="{ select : !isConnectedToPMS }">
@@ -230,7 +230,53 @@
                                     <strong>*</strong>
                                 </label>
                                 <div ng-class="{ select : !isConnectedToPMS }">
-                                    <select ng-disabled="isConnectedToPMS" name="post-type-id" id="post-type-id" ng-model="singleAddon.post_type_id" ng-options="type.id as type.description for type in postTypes"></select>
+                                    <select ng-disabled="isConnectedToPMS" name="post-type-id" id="post-type-id" ng-model="singleAddon.post_type" ng-options="type.value as type.description for type in postTypes"></select>
+                                </div>
+                            </div>
+
+                            <div class="entry" ng-if = "singleAddon.post_type == 'WEEKDAY'">
+                                <label for="amount-type-id">
+                                    {{'POST_DAY' | translate}}
+                                    <strong>*</strong>
+                                </label>
+                                <div ng-class="{ select : !isConnectedToPMS }">
+                                    <select ng-disabled="isConnectedToPMS" name="post-type-id" id="post-type-id" ng-model="singleAddon.post_day_of_the_week" ng-options="day as day for day in customPostData.weekdays"></select>
+                                </div>
+                            </div>
+
+                            <div class="entry" ng-if = "singleAddon.post_type == 'WEEKEND'">
+                                <label for="amount-type-id">
+                                    {{'POST_DAY' | translate}}
+                                    <strong>*</strong>
+                                </label>
+                                <div ng-class="{ select : !isConnectedToPMS }">
+                                    <select ng-disabled="isConnectedToPMS" name="post-type-id" id="post-type-id" ng-model="singleAddon.post_day_of_the_week" ng-options="day as day for day in customPostData.weekends"></select>
+                                </div>
+                            </div>
+
+                            <div class="entry" ng-show="singleAddon.post_type == 'CUSTOM'">
+                                <div class="input-group">
+                                    <span class="symbol">Every</span>
+                                    <input type="number" style="margin-left: 10px;" class="small-input ng-pristine ng-valid ng-empty ng-touched" ng-model="singleAddon.frequency">
+                                    <div class="select select-col col1-3" style="margin-left: 10px;">
+                                        <select  name="post-type-id" id="post-type-id" ng-model="singleAddon.frequency_type" ng-options="frequency_type as frequency_type for frequency_type in customPostData.frequency_types"></select></div>
+                                </div>
+                            </div>
+
+                            <div class="entry" ng-if = "(singleAddon.frequency_type == 'weeks' || singleAddon.frequency_type == 'months') && singleAddon.post_type == 'CUSTOM'">
+                                <!-- <label for="amount-type-id">
+                                    {{'POST_DAY' | translate}}
+                                    <strong>*</strong>
+                                </label>
+                                <div class="select select-col col1-2">
+                                    <select ng-disabled="isConnectedToPMS" name="post-type-id" id="post-type-id" ng-model="singleAddon.post_day_of_the_week" ng-options="day as day for day in customPostData.daysOfWeek"></select>
+                                </div> -->
+                                <div class="input-group">
+                                    <label style="margin-top: 10px;">{{'POST_DAY' | translate}}</label>
+                                    <div class="select select-col col1-4" ng-if="singleAddon.frequency_type == 'months'" style="margin-left: 10px;">
+                                        <select  name="post-type-id" id="post-type-id" ng-model="singleAddon.post_day_of_the_month" ng-options="day as day for day in customPostData.daysOfMonth"></select></div>
+                                    <div class="select select-col col1-3" ng-if="singleAddon.frequency_type == 'weeks'" style="margin-left: 10px;">
+                                        <select  name="post-type-id" id="post-type-id" ng-model="singleAddon.post_day_of_the_week" ng-options="day as day for day in customPostData.daysOfWeek"></select></div>
                                 </div>
                             </div>
                         </div>
@@ -282,7 +328,7 @@
                                     <em class="rate_roomtype_text">Available Rates</em>
                                 </label>
                                 <ul class="boxes sortable ui-sortable short-list" data-type="source" ng-model="singleAddon.availableRates" data-drop="true" style="overflow-y: scroll !important;" jqyoui-droppable="{multiple:true}" data-jqyoui-options="{accept:'.assigned-room-types'}">
-                                    <li ng-repeat="rate in singleAddon.availableRates" data-drag="true" ng-model="singleAddon.availableRates" jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}" class="non-assigned-room-types li-draggable" ng-click="toggleAvailableRate($index)" ng-class='{selected: state.selectedAvailableRate === $index, overlay : rate.is_contract_rate}'>
+                                    <li ng-repeat="rate in singleAddon.availableRates" data-drag="true" ng-model="singleAddon.availableRates" jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}" class="non-assigned-room-types li-draggable" ng-click="toggleAvailableRate($index)" ng-class='{selected: state.selectedAvailableRate === $index}'>
                                         <span class="icons icon-handle"></span>
                                         <span class="icons icon-handle"></span> {{rate.name}}
                                     </li>
@@ -310,7 +356,7 @@
                                 <label class="center_align">
                                     <span class="assigned_room_text">Excluded from Rates</span></label>
                                 <ul class="boxes sortable ui-sortable short-list" data-type="target" data-drop="true" ng-model="singleAddon.excludedRates" jqyoui-droppable="{multiple:true}" data-jqyoui-options="{accept:'.non-assigned-room-types'}">
-                                    <li ng-repeat="rate in singleAddon.excludedRates" ng-model="singleAddon.excludedRates" ng-click="toggleExcludedRate($index)" ng-class='{selected: state.selectedAssignedRate === $index, overlay : rate.is_contract_rate}' class="assigned-room-types li-draggable" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}" data-drag="true" jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }">
+                                    <li ng-repeat="rate in singleAddon.excludedRates" ng-model="singleAddon.excludedRates" ng-click="toggleExcludedRate($index)" ng-class='{selected: state.selectedAssignedRate === $index}' class="assigned-room-types li-draggable" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}" data-drag="true" jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }">
                                         <span class="icons icon-handle"></span>
                                         <span class="icons icon-handle"></span> {{rate.name}}
                                     </li>
