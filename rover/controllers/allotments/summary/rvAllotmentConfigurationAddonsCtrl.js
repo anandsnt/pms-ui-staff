@@ -211,12 +211,19 @@ sntRover.controller('rvAllotmentConfigurationAddonsCtrl', [
 			var options = {
 				successCallBack: function() {
 					$scope.$emit('hideLoader');
+					$scope.reloadPage();
 				},
 				params: params
 			};
 
 			$scope.callAPI(rvAllotmentConfigurationSrv.updateAddonPosting, options);
 		};
+
+		$scope.addListener('CLOSE_ADDON_POPUP', function (event, data) {
+			if (data.addonPostingMode === 'allotments') {
+				$scope.reloadPage();
+			}
+		});
 
 		var proceedBookingListner = $scope.$on('PROCEED_BOOKING', function(event, data) {
 			if (data.addonPostingMode === 'allotments') {
