@@ -320,8 +320,8 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 
 			$scope.guestIdData.front_image_data = frontSideImage;
 			$scope.guestIdData.back_image_data = backSideImage;
-			$scope.guestIdData.last_name = data.first_name;
-			$scope.guestIdData.first_name = data.last_name;
+			$scope.guestIdData.last_name = data.last_name;
+			$scope.guestIdData.first_name = data.first_name;
 			$scope.guestIdData.document_number = data.document_number;
 			$scope.guestIdData.document_type = data.document_type && data.document_type.toUpperCase() === 'PASSPORT' ? 'PASSPORT' : 'ID_CARD';
 			$scope.guestIdData.expiry_date_for_display = $scope.guestIdData.expiration_date ? dateInHotelsFormat($scope.guestIdData.expiration_date) : '';

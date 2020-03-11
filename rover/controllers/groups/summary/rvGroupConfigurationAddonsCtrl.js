@@ -225,5 +225,6 @@ angular.module('sntRover').controller('rvGroupConfigurationAddonsCtrl', [
 
 		$scope.$on( '$destroy', proceedBookingListner);
 		$scope.$on( '$destroy', removeSelectedAddonsListner);
+
 	}
 ]);
