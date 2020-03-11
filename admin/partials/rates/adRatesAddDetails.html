@@ -168,10 +168,10 @@
         <button type="button" ng-click="cancelMenu()" class="button blank add-data-inline">
             Cancel
         </button>
-        <button type="button" ng-hide="rateData.id > 0" ng-click="saveRateDetails()" ng-disabled="!isFormValid()" class="button" ng-class="{ 'brand-colors' : isFormValid()}">
+        <button type="button" ng-hide="rateData.id > 0" ng-click="startSave()" ng-disabled="!isFormValid()" class="button" ng-class="{ 'brand-colors' : isFormValid()}">
             Step 2 - Select Room Types
         </button>
-        <button type="button" ng-show="rateData.id > 0" ng-click="saveRateDetails()" ng-disabled="!isFormValid()" class="button" ng-class="{ 'green' : (rateData.id > 0 && isFormValid())}">
+        <button type="button" ng-show="rateData.id > 0" ng-click="startSave()" ng-disabled="!isFormValid()" class="button" ng-class="{ 'green' : (rateData.id > 0 && isFormValid())}">
             Save
         </button>
     </div>
