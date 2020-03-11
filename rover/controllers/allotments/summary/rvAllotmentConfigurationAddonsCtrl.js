@@ -231,6 +231,12 @@ sntRover.controller('rvAllotmentConfigurationAddonsCtrl', [
 			}
 		});
 
+		$scope.addListener('CLOSE_ADDON_POPUP', function (event, data) {
+			if (data.addonPostingMode === 'allotments') {
+				$scope.reloadPage();
+			}
+		});
+
 		$scope.$on( '$destroy', proceedBookingListner);
 		$scope.$on( '$destroy', removeSelectedAddonsListner);
 	}
