@@ -76,24 +76,24 @@ admin.controller('adHotelLegalSettingsController',
 								'no_of_original_invoices', 'is_swiss_police_report_enabled', 'is_police_report_enabled', 'is_belgium_export_enabled',
 								'next_ar_invoice_number', 'advance_payment_enabled', 'print_ar_invoice_number_activated_at', 'austrian_reg_card_enabled',
 								'reg_card_number_sequence_enabled', 'is_folio_tax_report_enabled', 'first_reg_card_number', 'is_spain_barcelona_police_report_enabled'];
+			} else if (screen === 'reservations') {
+				unwantedKeys = ['is_print_ar_invoice_number_enabled', 'ar_invoice_number_prefix', 'first_ar_invoice_number',
+								'is_bill_lock_enabled', 'is_print_folio_enabled', 'no_modify_invoice', 'no_reprint_reemail_invoice', 'folio_no_prefix', 
+								'first_folio_number', 'folio_label', 'is_copy_counter', 'is_print_invoice_enabled', 'is_void_bill_enabled', 'no_of_original_emails', 
+								'no_of_original_invoices', 'is_swiss_police_report_enabled', 'is_police_report_enabled', 'is_belgium_export_enabled',
+								'next_ar_invoice_number', 'advance_payment_enabled', 'print_ar_invoice_number_activated_at', 'austrian_reg_card_enabled',
+								'reg_card_number_sequence_enabled', 'is_folio_tax_report_enabled', 'first_reg_card_number', 'is_spain_barcelona_police_report_enabled', 'is_vienna_tax_enabled', 
+								'ar_invoice_label', 'ar_folio_number_prefix', 'is_print_ar_folio_number_enabled', 'print_ar_folio_number_activated_at', 
+								'ar_first_folio_number', 'is_austria_export_enabled', 'is_criterion_hospitality_cc_export_enabled', 'is_french_export_enabled', 'fiscal_invoice_template_enabled',
+								'arabic_reg_card_enabled', 'isInitialLoad'];
 			}
 
 			$scope.legalSettings = dclone($scope.legalSettings, unwantedKeys);
 
-			var apiParams;
-			
-			if (screen === 'reservations') {
-				apiParams = {
-					"guest_mandatory_schema_id": $scope.legalSettings.guest_mandatory_schema_id
-				}
-			} else {
-				apiParams = $scope.legalSettings;
-			}
-
 			var	options = {
 				params: {
 					'hotel_id': $scope.data.id,
-					'data': apiParams
+					'data': $scope.legalSettings
 				},
 				successCallBack: function(data) {
 					$scope.legalSettings = $scope.legalSettingsCopy;
