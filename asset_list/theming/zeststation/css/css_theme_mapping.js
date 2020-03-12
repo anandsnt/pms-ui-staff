@@ -116,7 +116,8 @@ module.exports = {
             'krowoderska': [themeCSSRoot + 'krowoderska.less'],
             'bayou': [themeCSSRoot + 'bayou.less'],
             'moment': [themeCSSRoot + 'moment.less'],
-            'halifax': [themeCSSRoot + 'halifax.less']
+            'halifax': [themeCSSRoot + 'halifax.less'],
+            'bellevue': [themeCSSRoot + 'bellevue.less']
         };
     }
 };
