@@ -133,7 +133,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             "guestweb_hotel_brooklyn": "brooklyn",
             "guestweb_krowoderska_apartments": "krowoderska",
             "guestweb_bayou_residences": "bayou",
-            "guestweb_moment_hotels": "moment"
+            "guestweb_moment_hotels": "moment",
+            "guestweb_hotel_bellvue": "bellevue"
         };
 
 
