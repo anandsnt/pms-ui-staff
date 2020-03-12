@@ -500,8 +500,8 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$state', '$rootScope', 'ADR
                 $scope.disableDayUseToggle = false;
                 $scope.rateData.basedOnRateUnselected = true;
             }
-            if (!_.isEmpty($scope.rateOgBasedOn)) {
-                $scope.showBasedOnchangeWarning = $scope.rateOgBasedOn.id !== $scope.rateData.based_on.id;
+            if (!_.isEmpty($scope.originalBasedOnRate)) {
+                $scope.showBasedOnchangeWarning = $scope.originalBasedOnRate.id !== $scope.rateData.based_on.id;
             }
         };
 
