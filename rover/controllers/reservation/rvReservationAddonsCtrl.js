@@ -309,7 +309,9 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         start_date: tzIndependentDate($scope.reservationData.arrivalDate),
                         end_date: tzIndependentDate($scope.reservationData.departureDate),
                         is_allowance: addon.is_allowance,
-                        is_consume_next_day: addon.is_consume_next_day
+                        is_consume_next_day: addon.is_consume_next_day,
+                        is_inclusive: addon.is_inclusive,
+                        is_rate_addon: addon.is_rate_addon
                     });
                        
                     $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;

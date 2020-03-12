@@ -11,7 +11,7 @@
             <h3><span>Rate</span> Details </h3>
             <em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
         </div>
-        <fieldset class="holder left" ng-class="{'overlay' : rateData.is_global_contract}">
+        <fieldset class="holder left">
             <div></div>
             <div class="entry full-width">
                 <ad-textbox inputtype="text" value="rateData.name" label = "Name" placeholder = "Enter Rate Name" required="yes"></ad-textbox>
@@ -139,7 +139,7 @@
             </div>
 
         </fieldset>
-        <fieldset class="holder right" ng-class="{'overlay' : rateData.is_global_contract}">
+        <fieldset class="holder right">
             <ad-textarea rows="2" div-class="full-width" text-area-class="full-width rate_description" value="rateData.description" label="Description " placeholder="Enter Rate Description" required="true"></ad-textarea>
             <ad-textarea rows="2" div-class="full-width" text-area-class="full-width rate_description" value="rateData.rate_desc_trl" label="Description (Translation)" placeholder="Enter Translation for Rate Description"
             hide="!availableLanguagesSet.show_language_field"></ad-textarea>
@@ -157,7 +157,7 @@
             </div>
         </fieldset>
         <!-- CICO-18040 PROMOTION FREE FORM ENTRY TO BE HIDDEN -->
-        <fieldset class="holder left" ng-show="hidePromotionFreeFormEntry" ng-class="{'overlay' : rateData.is_global_contract}">
+        <fieldset class="holder left" ng-show="hidePromotionFreeFormEntry">
             <ad-textbox inputtype="text" value="rateData.promotion_code" label="Promotions Code" placeholder="Enter Promotional Code" required="no"></ad-textbox>
         </fieldset>
         <div ng-include="'/assets/partials/rates/adRateAdditionalDetails.html'"></div>
@@ -168,10 +168,10 @@
         <button type="button" ng-click="cancelMenu()" class="button blank add-data-inline">
             Cancel
         </button>
-        <button type="button" ng-hide="rateData.id > 0" ng-click="startSave()" ng-disabled="!isFormValid()" class="button" ng-class="{ 'brand-colors' : isFormValid(), 'overlay' : rateData.is_global_contract}">
+        <button type="button" ng-hide="rateData.id > 0" ng-click="startSave()" ng-disabled="!isFormValid()" class="button" ng-class="{ 'brand-colors' : isFormValid()}">
             Step 2 - Select Room Types
         </button>
-        <button type="button" ng-show="rateData.id > 0" ng-click="startSave()" ng-disabled="!isFormValid()" class="button" ng-class="{ 'green' : (rateData.id > 0 && isFormValid()), 'overlay' : rateData.is_global_contract}">
+        <button type="button" ng-show="rateData.id > 0" ng-click="startSave()" ng-disabled="!isFormValid()" class="button" ng-class="{ 'green' : (rateData.id > 0 && isFormValid())}">
             Save
         </button>
     </div>

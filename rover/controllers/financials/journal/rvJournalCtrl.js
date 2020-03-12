@@ -129,7 +129,7 @@ sntRover.controller('RVJournalController',
 
             if (!$scope.data.isExpandedViewRevenue) {
                 $scope.searchJournal();
-            } else {$scope.data.filterData.
+            } else {
                 $scope.$broadcast("EXPAND_REVENUE_SCREEN");
             }           
         } 
