@@ -2,7 +2,6 @@
     <div class="modal-content form room-enhancements" ng-class="{'customization-disabled': !showCustomPosting()}">
 
         <button id="modal-close" type="button" class="modal-close" ng-click="closePopup()"><span class="icons icon-close invert"></button>
-        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div class="content-left">
 
             <h2 class="message h2" ng-if="!showCustomPosting()">Room Enhancements</h2>
@@ -44,6 +43,7 @@
             </div>
         </div>
         <div class="content-right" ng-class="{'hidden': !showCustomPosting()}">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <!-- Initial screen -->
             <!-- Add .hidden if clicked on an enhancement that can be changed -->
             <div class="content-initial" ng-hide="selectedPurchesedAddon">
