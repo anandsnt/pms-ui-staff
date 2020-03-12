@@ -759,7 +759,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				cancelLabel: "Cancel",
                 saveLabel: "Save",
                 number_of_adults: 1,
-                number_of_children: 1,
+                number_of_children: 0,
                 duration_of_stay: 1,
                 addonPostingMode: 'allotments'
             };
