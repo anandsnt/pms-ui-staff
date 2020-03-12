@@ -96,6 +96,10 @@
 	"ACTIVATE_FOLIO_NUMBER": "Activate Folio Number",
 	"SHOW_PERFORMA_INVOICE":"Pro Forma Invoice",
 
+	"FORCE_ADJST_REASON":"Force Adjustment Reason",
+	"ADJUSTMENT_REASONS":"Adjustment Reasons",
+	"ADD_REASON":"Add Reason",
+
 	"SELECT LANGUAGE": "Select Language",
 	"GROUP_CONFIRMATION": "Group Confirmation",
 	"HOLD_STATUS": "Hold Status",

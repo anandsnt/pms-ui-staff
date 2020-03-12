@@ -1,0 +1,31 @@
+
+<section id="replacing-div-first" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
+    <div data-view="UpsellLateCheckoutView">
+        <section>
+            <header class="content-title float">
+                <h2>Force Adjustment Reason</h2>
+                <a id="go_back" data-type="load-details" class="action back" ng-click="goBackToPreviousState()"translate>BACK</a>
+            </header>
+            
+            <section class="content-scroll">
+                <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+                <form  class="form float" >
+                    <fieldset class="holder full-width">
+                        <ad-toggle-button label="{{'FORCE_ADJST_REASON' | translate}}" is-checked="invoiceSettings.has_enabled_extended_tax_breakdown"></ad-toggle-button>
+                    </fieldset>
+                    <fieldset class="holder full-width">
+                        <div class="select-col col1-3 ">
+                    		<ad-textbox inputtype="text" value="reservationSettingsData.agent_commission_value" label="{{'ADJUSTMENT_REASONS' | translate}}" placeholder="" ></ad-textbox>
+                        </div>
+                        <div class="select-col col1-3">
+                            <a class="icons icon-delete large-icon delete_item pull-right" ng-click="deleteTaxFromCaluculationPolicy($index)"></a>
+                        </div>
+                    </fieldset>
+                    <button type="button" class="button green left" ng-click="addReason()"translate>
+                        ADD_REASON
+                    </button>
+                </form>
+            </section>
+        </section>
+    </div>
+</section>
