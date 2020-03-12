@@ -12,7 +12,7 @@
 
                     <!-- Add .disabled if cant be selected such as add-on with 'INCL' value or add-on for the first night -->
                     <!-- Add .item-active if selected -->
-                    <li class="block-item" ng-repeat="addon in packageData.existing_packages" ng-click="selectPurchasedAddon(addon)" ng-class="{'disabled': addon.post_type.value !=='STAY', 'item-active': addon.name === selectedPurchesedAddon.name}">
+                    <li class="block-item" ng-repeat="addon in packageData.existing_packages" ng-click="selectPurchasedAddon(addon)" ng-class="{'item-active': addon.name === selectedPurchesedAddon.name}">
                          <div class="data">
                             <h3 class="enhancement-name">
                                 

@@ -1194,27 +1194,30 @@ sntRover.controller('reservationDetailsController',
 							var results = response.results;
 						
 							$scope.borrowData = {};
+
 							if (!results.room_overbooked && !results.house_overbooked) {
-								$scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission;
-								$scope.borrowData.isBorrowFromHouse = true;
-							} else if (results.room_overbooked && !results.house_overbooked) {
-								$scope.borrowData.shouldShowBorrowBtn = $scope.hasOverBookRoomTypePermission && $scope.hasBorrowFromHousePermission;
+                    			$scope.borrowData.isBorrowFromHouse = true;
+                			}
+                 
+							if (results.room_overbooked && !results.house_overbooked) {
+								$scope.borrowData.shouldShowOverBookBtn = $scope.hasOverBookRoomTypePermission;
 								$scope.borrowData.isRoomTypeOverbooked = true;
 							} else if (!results.room_overbooked && results.house_overbooked) {
-								$scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission && $scope.hasOverBookHousePermission;
+								$scope.borrowData.shouldShowOverBookBtn = $scope.hasOverBookHousePermission;
 								$scope.borrowData.isHouseOverbooked = true;
 							} else if (results.room_overbooked && results.house_overbooked) {
-								$scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission && $scope.hasOverBookRoomTypePermission && $scope.hasOverBookHousePermission;
+								$scope.borrowData.shouldShowOverBookBtn = $scope.hasOverBookRoomTypePermission && $scope.hasOverBookHousePermission;
 								$scope.borrowData.isHouseAndRoomTypeOverbooked = true;
 							}
 		
 							ngDialog.open({
-								template: '/assets/partials/common/group/rvGroupBorrowOverbookPopup.html',
+								template: '/assets/partials/common/group/rvGroupBorrowPopup.html',
 								className: '',
 								closeByDocument: false,
 								closeByEscape: true,
 								scope: $scope
 							});
+							
 						} else {
 							ngDialog.open({
 								template: '/assets/partials/reservation/alerts/editDatesInStayCard.html',
@@ -1251,15 +1254,44 @@ sntRover.controller('reservationDetailsController',
 			}, onValidationSuccess, onValidationFaliure);
 		};
 
-		// Handles the borrow action
-		$scope.performBorrowFromHouse = function () {
-			RVReservationStateService.setForceOverbookFlagForGroup(true);
-			$scope.clickedOnStayDateChangeConfirmButton();	
+		// Close borrow popup
+        $scope.closeBorrowPopup = function (shouldClearData) {
+            if (shouldClearData) {
+                $scope.borrowData = {};
+            }
+            ngDialog.close();
 		};
-		// Close the borrow popup
-		$scope.closeBorrowDialog = function () {
-			$scope.borrowData = {};
-			$scope.closeDialog();
+		
+		 // Handles the borrow action
+		 $scope.performBorrowFromHouse = function () {
+            if ($scope.borrowData.isBorrowFromHouse) {
+                RVReservationStateService.setForceOverbookFlagForGroup(true);
+				$scope.clickedOnStayDateChangeConfirmButton();
+                $scope.closeBorrowPopup(true);
+            } else {
+                $scope.closeBorrowPopup();
+                ngDialog.open({
+                    template: '/assets/partials/common/group/rvGroupOverbookPopup.html',
+                    className: '',
+                    closeByDocument: false,
+                    closeByEscape: true,
+                    scope: $scope
+                });
+            }
+            
+        };
+
+        // Closes the current borrow dialog
+        $scope.closeOverbookPopup = function() {
+            $scope.borrowData = {};
+            ngDialog.close();
+        };
+
+        // Perform overbook
+        $scope.performOverBook = function () {
+            RVReservationStateService.setForceOverbookFlagForGroup(true);
+			$scope.clickedOnStayDateChangeConfirmButton();
+            $scope.closeOverbookPopup();
 		};
 
 		$scope.moveToRoomRates = function() {
