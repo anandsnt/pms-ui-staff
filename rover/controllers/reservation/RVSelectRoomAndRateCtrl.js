@@ -258,7 +258,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					include_expired_promotions: !!$scope.reservationData.promotionId && $scope.stateCheck.showClosedRates,
 					per_page: $scope.stateCheck.pagination.rate.roomsList.perPage,
 					page: page,
-					is_member: ($scope.stateCheck.activeView == 'RECOMMENDED') ? !!$scope.reservationData.member.isSelected || $stateParams.is_member : ""
+					is_member: ($scope.stateCheck.activeView == 'RECOMMENDED') ? !!$scope.reservationData.member.isSelected || $stateParams.is_member : "",
+					is_zero_night: ($scope.stateCheck.activeView == 'RECOMMENDED' && $scope.reservationData.numNights === 0)
 				};
 
 				if ($scope.stateCheck.stayDatesMode) {
