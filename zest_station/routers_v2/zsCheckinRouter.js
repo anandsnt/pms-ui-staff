@@ -664,7 +664,10 @@ sntZestStation.config(['$stateProvider',
             controller: 'zsCheckinSaveGuestInfoCtrl',
             params: {
                 checkinParams: '',
-                guestInfo: ''
+                guestInfo: '',
+                flowType: '',
+                reservation_id: '',
+                prevStateParams: ''
             }
         });
     }
