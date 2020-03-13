@@ -224,5 +224,37 @@ sntZestStation.service('zsCheckoutSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseW
 
             return deferred.promise;
         };
+
+        this.fetchCompanyTADetails = function (params) {
+            var deferred = $q.defer();
+            var url = '/staff/items/post_items_to_bill?application=KIOSK';
+
+            // zsBaseWebSrv.postJSON(url, params)
+            //     .then(function (data) {
+
+                var data = {
+                    "guest": {
+                        "name": "Resheil",
+                        "address": "8129 Bethesda hill <br>Bethesda"
+                    },
+                    "company_card": {
+                        "name": "SNT",
+                        "address": "8129 woodmont <br>Bethesda"
+                    },
+                    "ta_card": {
+                        
+                            "name": "SNT1",
+                            "address": "8129 woodmont <br>Silver Spring"
+                        
+                    }
+                };
+                    deferred.resolve(data);
+                //}
+                // }, function (data) {
+                //     deferred.reject(data);
+                // });
+
+            return deferred.promise;
+        };
     }
 ]);

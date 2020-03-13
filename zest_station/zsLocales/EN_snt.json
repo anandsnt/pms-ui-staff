@@ -876,5 +876,6 @@
     "PARKING_ADDON_SKIP_HEADING": "Vehicle registation number missing",
     "PARKING_ADDON_SKIP_MSG": "Since you have a parking add-on attached to your reservation, we will need your vehicle registation number. You can either add now or add later with the help of a front desk staff",
     "ADD_NOW": "Add now",
-    "ADD_LATER": "Add later"
+    "ADD_LATER": "Add later",
+    "BILLING_ADDRESS": "Billing Address"
 }
