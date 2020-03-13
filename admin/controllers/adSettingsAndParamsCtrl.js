@@ -67,8 +67,6 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
         var saveDetailsFailureCallback = function(errorMessage) {
             $scope.errorMessage = errorMessage;
             $scope.$emit('hideLoader');
-            $scope.goBackToPreviousState();
-            
         };
         
         var selectedChargeCode = typeof $scope.selected_charge_code === 'undefined' ? '' : $scope.selected_charge_code;
