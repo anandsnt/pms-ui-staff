@@ -63,6 +63,14 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
             $scope.goBackToPreviousState();
             
         };
+
+        var saveDetailsFailureCallback = function(errorMessage) {
+            $scope.errorMessage = errorMessage;
+            $scope.$emit('hideLoader');
+            $scope.goBackToPreviousState();
+            
+        };
+        
         var selectedChargeCode = typeof $scope.selected_charge_code === 'undefined' ? '' : $scope.selected_charge_code;
         var groupChargeCode = typeof $scope.selected_group_charge_code === 'undefined' ? '' : $scope.selected_group_charge_code;
         var dataToSend = {
@@ -82,7 +90,7 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
             'should_post_during_eod': $scope.should_post_during_eod
         };
 
-        $scope.invokeApi(settingsAndParamsSrv.saveSettingsAndParamsSrv, dataToSend, saveDetailsSuccessCallback);
+        $scope.invokeApi(settingsAndParamsSrv.saveSettingsAndParamsSrv, dataToSend, saveDetailsSuccessCallback, saveDetailsFailureCallback);
     };
     /*
      * Selected currency 
