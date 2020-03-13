@@ -98,9 +98,51 @@
         </nav>
     </div>
 </section>
+
+<section id="main" role="main" ng-show="mode === 'BILLING_ADDRESS_MODE'">
+        <div id="content">
+            <h1>Email Bill</h1>
+            <h2>Who should we address the bill to?</h2>
+            <nav id="options" role="nav">
+                <ul role="menu">
+                    <!-- {{printData}} -->
+                    <li>
+                        <button type="button" class="button option" touch-press="emailAddressSelected('guest')">
+                            <div ng-include="icons.url.adults"></div>
+                        </button>
+                         {{ addressInfo.guest.name}}
+                        <span ng-bind-html="addressInfo.guest.address">
+                        </span>
+                    </li>
+                    <li class="break" ng-if="addressInfo.ta_card.name">
+                        <span>Or</span>
+                    </li>
+                    <li ng-if="addressInfo.ta_card.name">
+                        <button type="button" class="button option" touch-press="emailAddressSelected('ta')">
+                            <div ng-include="icons.url.company"></div>
+                        </button>
+                        {{ addressInfo.ta_card.name}}
+                        <span ng-bind-html="addressInfo.ta_card.address">
+                        </span>
+                    </li>
+                    <li class="break" ng-if="addressInfo.company_card.name">
+                        <span>Or</span>
+                    </li>
+                    <li ng-if="addressInfo.company_card.name">
+                        <button type="button" class="button option" touch-press="emailAddressSelected('company')">
+                            <div ng-include="icons.url.company"></div>
+                        </button>
+                        {{ addressInfo.company_card.name}}
+                        <span ng-bind-html="addressInfo.company_card.address">
+                        </span>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+</section>
 <!-- print option for overlay , for stand alone the print happens from bill screen -->
 <div ng-controller="zsPrintBillCtrl" ng-if="!zestStationData.is_standalone">
-    <section id="main" role="main" class="centered" ng-show="mode === 'PRINT_MODE'">
+    <section id="main" role="main" class="centered" ng-show="mode === 'PRINT_MODE' && !showAddressOptions">
         <div id="content">
             <h1>
                 <text data-ng-bind-html="getTagValue('END_THANKS')" editable-text="END_THANKS"></text>
@@ -131,6 +173,47 @@
                 </ul>
             </nav>
         </div>
+    </section>
+    <section id="main" role="main" ng-show="mode === 'PRINT_MODE' && showAddressOptions">
+            <div id="content">
+                <h1>Print Bill</h1>
+                <h2>Who should we address the bill to?</h2>
+                <nav id="options" role="nav">
+                    <ul role="menu">
+                        <!-- {{printData}} -->
+                        <li>
+                            <button type="button" class="button option" touch-press="addressSelected('guest')">
+                                <div ng-include="icons.url.adults"></div>
+                            </button>
+                             {{ printData.guest_info.name}}
+                            <span ng-bind-html="printData.guest_info.address">
+                            </span>
+                        </li>
+                        <li class="break" ng-if="printData.ta_card_details.name">
+                            <span>Or</span>
+                        </li>
+                        <li ng-if="printData.ta_card_details.name">
+                            <button type="button" class="button option" touch-press="addressSelected('ta')">
+                                <div ng-include="icons.url.company"></div>
+                            </button>
+                            {{ printData.ta_card_details.name}}
+                            <span ng-bind-html="printData.ta_card_details.address">
+                            </span>
+                        </li>
+                        <li class="break" ng-if="printData.company_card_details.name">
+                            <span>Or</span>
+                        </li>
+                        <li ng-if="printData.company_card_details.name">
+                            <button type="button" class="button option" touch-press="addressSelected('company')">
+                                <div ng-include="icons.url.company"></div>
+                            </button>
+                            {{ printData.company_card_details.name}}
+                            <span ng-bind-html="printData.company_card_details.address">
+                            </span>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
     </section>
     <!-- print starts here -->
     <div ng-include="'/assets/partials_v2/checkout/zsGenericBillPrint.html'" ng-if="zestStationData.theme !== 'yotel'">
