@@ -489,7 +489,9 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$state', '$rootScope', 'ADR
             if ($scope.rateData.based_on.id) {
                 var fullRateList = $scope.rateTypesDetails.based_on.results;
                 
-                $scope.selectedBasedOnRate = _.find(fullRateList, function(item) { return item.id === $scope.rateData.based_on.id; });
+                $scope.selectedBasedOnRate = _.find(fullRateList, function(item) {
+                    return item.id === $scope.rateData.based_on.id;
+                });
                 $scope.rateData.is_day_use = $scope.selectedBasedOnRate.is_day_use;
                 $scope.disableDayUseToggle = true;
                 $scope.rateData.basedOnRateUnselected = false;
