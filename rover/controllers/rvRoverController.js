@@ -175,6 +175,7 @@ sntRover.controller('roverController', [
         $rootScope.autoEmailDepositInvoice =  hotelDetails.auto_email_deposit_invoice;
         $rootScope.hotelDefaultLanguageCode =  hotelDetails.hotel_default_language_code;
         $rootScope.shouldShowPaymentDropDown = false;
+        $rootScope.disableReverseCheckin = hotelDetails.disable_reverse_checkin;
         if ($rootScope.isMultiCurrencyEnabled && $rootScope.paymentCurrencyList.length > 0 ) {
             $rootScope.shouldShowPaymentDropDown = true;
         }

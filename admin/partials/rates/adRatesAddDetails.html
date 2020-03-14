@@ -93,10 +93,10 @@
                             </label>
                         </div>
                     </div>
-                    <div class="full-width">
+                    <div class="entry float entry-no-bottom full-width">
                         <div class="entry margin" ng-class="{'overlay': shouldDisableBasedOnAndCopy()}">
                             <div class="select white">
-                                <select class="placeholder" ng-model="rateData.based_on.id" ng-change="basedOnRateChanged()" ng-options="basedOnrateType.id as basedOnrateType.name for basedOnrateType in rateTypesDetails.based_on.results">
+                                <select ng-model="rateData.based_on.id" ng-change="basedOnRateChanged()" ng-options="basedOnrateType.id as basedOnrateType.name for basedOnrateType in rateTypesDetails.based_on.results">
                                     <option value="">Select Rate</option>
                                 </select>
                             </div>
@@ -119,9 +119,16 @@
                             </div>
                         </div>
                     </div>
-                    <label ng-show="showRoundingOptions()">Rounding</label>
+                    <div class="notice disclaimer" ng-show="showBasedOnchangeWarning">
+                        <span class="icons icon-action-notice"></span>
+                        <p class="title">You are about to change the parent rate from "{{originalBasedOnRate.name}}" to "{{selectedBasedOnRate.name}}".</p>
+                        <hr>
+                        <p>All rate details <strong>will be recreated</strong> based on "{{selectedBasedOnRate.name}}" rate.</p>                                                
+                        <p class="color-red">All restriction <strong>will be removed</strong> from "{{rateData.name}}".</p>
+                    </div>
                     <div class="full-width" ng-show="showRoundingOptions()">
                         <div class="entry margin">
+                            <label ng-show="showRoundingOptions()">Rounding</label>
                             <div class="select white">
                                 <select class="placeholder" ng-model="rateData.round_type_id" ng-options="option.id as option.description for option in rateTypesDetails.roundingOptions">
                                     <option value="">Select</option>
@@ -168,10 +175,10 @@
         <button type="button" ng-click="cancelMenu()" class="button blank add-data-inline">
             Cancel
         </button>
-        <button type="button" ng-hide="rateData.id > 0" ng-click="saveRateDetails()" ng-disabled="!isFormValid()" class="button" ng-class="{ 'brand-colors' : isFormValid()}">
+        <button type="button" ng-hide="rateData.id > 0" ng-click="startSave()" ng-disabled="!isFormValid()" class="button" ng-class="{ 'brand-colors' : isFormValid()}">
             Step 2 - Select Room Types
         </button>
-        <button type="button" ng-show="rateData.id > 0" ng-click="saveRateDetails()" ng-disabled="!isFormValid()" class="button" ng-class="{ 'green' : (rateData.id > 0 && isFormValid())}">
+        <button type="button" ng-show="rateData.id > 0" ng-click="startSave()" ng-disabled="!isFormValid()" class="button" ng-class="{ 'green' : (rateData.id > 0 && isFormValid())}">
             Save
         </button>
     </div>

@@ -915,6 +915,28 @@ body { overflow: hidden; }
             }
         }
 
+        .disclaimer {
+
+            strong,
+            em {
+                font-size: inherit;
+                color: inherit;
+            }
+
+            .title {
+                font-weight: 600;
+            }
+
+            .color-red {
+                color: desaturate(@red, 15);
+            }
+
+            &:before,
+            &:after {
+                .hide();
+            }
+        }
+
         &.unsubscription-list {
             tr {
                 th {

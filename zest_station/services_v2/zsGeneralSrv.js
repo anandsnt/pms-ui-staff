@@ -133,7 +133,9 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             "guestweb_hotel_brooklyn": "brooklyn",
             "guestweb_krowoderska_apartments": "krowoderska",
             "guestweb_bayou_residences": "bayou",
-            "guestweb_moment_hotels": "moment"
+            "guestweb_moment_hotels": "moment",
+            "guestweb_sheffield_halifax_hall": "halifax",
+            "guestweb_hotel_bellvue": "bellevue"
         };
 
 
@@ -775,7 +777,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.getRoomTypes = function(params) {
             var url = '/api/room_types.json';
-            
+
             return zsBaseWebSrv.getJSON(url, params);
         };
 
@@ -787,12 +789,12 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.createReservation = function(params) {
             var url = '/api/reservations';
-            
+
             return zsBaseWebSrv.postJSON(url, params);
         };
 
         this.featuresToggleList = {};
-        this.retrieveFeatureToggles = function() {            
+        this.retrieveFeatureToggles = function() {
              var deferred = $q.defer(),
                 url = '/api/features/list';
 
