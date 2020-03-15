@@ -5,12 +5,29 @@ admin.controller('ADForceAdjustmentReason', [
     '$stateParams',
     '$state',
     'ngDialog',
-    'defaultSettings',
-    function($rootScope, $scope, adForceAdjustmentReasonSrv, $stateParams, $state, ngDialog, defaultSettings) {
+    'adjustmentReasonsData',
+    function($rootScope, $scope, adForceAdjustmentReasonSrv, $stateParams, $state, ngDialog, adjustmentReasonsData) {
 
-        $scope.title = "Police Export Defaults";  
-        $scope.countries = angular.copy(defaultSettings);
-        $scope.nationalities = angular.copy(defaultSettings);
+        $scope.adjustmentReasonsData = angular.copy(adjustmentReasonsData);
+        $scope.isForceAdjustmentOn = true;
+        $scope.forceAdjustmentReasons = [
+            { reason: "John Hammond", Country: "United States" },
+            { reason: "Mudassar Khan", Country: "India" },
+            { reason: "Suzanne Mathews", Country: "France" },
+            { reason: "Robert Schidner", Country: "Russia" }
+            ];
+
+        $scope.addReason = function () {
+            var reasonArray = {};
+            reasonArray.reason = $scope.reason;
+            $scope.forceAdjustmentReasons.push(reasonArray);
+            $scope.reason = "";
+        };
+
+        $scope.removeReason = function (index) {
+            var name = $scope.forceAdjustmentReasons[index].reason;
+            $scope.forceAdjustmentReasons.splice(index, 1);
+        }
 
         $scope.clickedSave = function() {
             var successCallbackSave = function(data) {
@@ -23,8 +40,8 @@ admin.controller('ADForceAdjustmentReason', [
                 $scope.$emit('hideLoader');
             },
             postData = {
-				'police_export_default_country_id': $scope.countries.police_export_default_country_id,
-				'police_export_default_nationality_id': $scope.nationalities.police_export_default_nationality_id }
+				'is_force_adjustment_on': $scope.isForceAdjustmentOn,
+				'reasons_array': $scope.forceAdjustmentReasons }
             // option object
             options = {
                 params: postData,

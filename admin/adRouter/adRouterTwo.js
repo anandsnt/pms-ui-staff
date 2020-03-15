@@ -1137,7 +1137,7 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         controller: 'ADForceAdjustmentReason',
         url: '/forceAdjustmentReason',
         resolve: {
-            defaultSettings: function (adForceAdjustmentReasonSrv) {
+            adjustmentReasonsData: function (adForceAdjustmentReasonSrv) {
                 return adForceAdjustmentReasonSrv.fetchCountry();
             }
         }
