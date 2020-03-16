@@ -42,6 +42,7 @@ sntRover.controller('RVReservationPackageController',
 				numChildren = $scope.addonPopUpData.number_of_children,
 				numNights = $scope.addonPopUpData.duration_of_stay,
 				chargeFullWeeksOnly = addon.charge_full_weeks_only;
+				
 			if (!postingRythm) {				
 				if (postType === 'WEEK' || postType === 'EVERY WEEK' || postType === 'WEEKLY' || postType === 'WEEKDAY' || postType === 'WEEKEND') {
 					postingRythm = 7;
