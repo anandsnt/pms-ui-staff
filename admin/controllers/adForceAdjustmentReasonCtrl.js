@@ -8,24 +8,58 @@ admin.controller('ADForceAdjustmentReason', [
     'adjustmentReasonsData',
     function($rootScope, $scope, adForceAdjustmentReasonSrv, $stateParams, $state, ngDialog, adjustmentReasonsData) {
 
+        $scope.adjustmentReasons = [];
         $scope.adjustmentReasonsData = angular.copy(adjustmentReasonsData);
-        $scope.isForceAdjustmentOn = true;
-        $scope.forceAdjustmentReasons = [
-            { reason: "John Hammond", Country: "United States" },
-            { reason: "Mudassar Khan", Country: "India" },
-            { reason: "Suzanne Mathews", Country: "France" },
-            { reason: "Robert Schidner", Country: "Russia" }
-            ];
+        $scope.isForceAdjustmentOn = $scope.adjustmentReasonsData.force_adjustment_reason_enabled;
+        $scope.forceAdjustmentReasons = $scope.adjustmentReasonsData.force_adjustment_reasons;
 
         $scope.addReason = function () {
             var reasonArray = {};
-            reasonArray.reason = $scope.reason;
+            reasonArray.value = $scope.description;
+            $scope.adjustmentReasons.push(reasonArray.value);
             $scope.forceAdjustmentReasons.push(reasonArray);
-            $scope.reason = "";
+            $scope.description = "";
         };
 
+        $scope.forceAdjToggle = function (index) {
+            var successCallbackSave = function(data) {
+                $scope.data = data;
+                $scope.$emit('hideLoader');
+            },
+            // Failure callback
+            failureCallbackSave = function(errorMessage) {
+                $scope.errorMessage = errorMessage;
+                $scope.$emit('hideLoader');
+            },
+            postData = {
+				'force_adjustment_reason_enabled': $scope.isForceAdjustmentOn }
+            // option object
+            options = {
+                params: postData,
+                successCallBack: successCallbackSave,
+                failureCallBack: failureCallbackSave
+            };
+            $scope.callAPI(adForceAdjustmentReasonSrv.toggleAction, options);
+        }
+
         $scope.removeReason = function (index) {
-            var name = $scope.forceAdjustmentReasons[index].reason;
+            var successCallbackSave = function(data) {
+                $scope.data = data;
+                $scope.$emit('hideLoader');
+                },
+                // Failure callback
+                failureCallbackSave = function(errorMessage) {
+                    $scope.errorMessage = errorMessage;
+                    $scope.$emit('hideLoader');
+                },
+                options = {
+                    params: {
+                        'id': $scope.forceAdjustmentReasons[index].id
+                    },
+                    successCallBack: successCallbackSave,
+                    failureCallBack: failureCallbackSave
+                };
+            $scope.callAPI(adForceAdjustmentReasonSrv.removeReasons, options);
             $scope.forceAdjustmentReasons.splice(index, 1);
         }
 
@@ -40,16 +74,15 @@ admin.controller('ADForceAdjustmentReason', [
                 $scope.$emit('hideLoader');
             },
             postData = {
-				'is_force_adjustment_on': $scope.isForceAdjustmentOn,
-				'reasons_array': $scope.forceAdjustmentReasons }
+				'adjustment_reasons': $scope.adjustmentReasons }
             // option object
             options = {
                 params: postData,
                 successCallBack: successCallbackSave,
                 failureCallBack: failureCallbackSave
             };
-    
-            $scope.callAPI(adForceAdjustmentReasonSrv.saveDefaults, options);
+            console.log($scope.forceAdjustmentReasons);
+            $scope.callAPI(adForceAdjustmentReasonSrv.saveReasons, options);
         }
 
     }]);

@@ -1,8 +1,8 @@
 admin.service('adForceAdjustmentReasonSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2) {
 
-	this.fetchCountry = function() {
+	this.fetchReasons = function() {
 		var deferred = $q.defer();
-		var url = '/admin/stats_and_reports/police_export_default_settings';
+		var url = '/admin/force_adjustment_reasons';
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
@@ -12,11 +12,35 @@ admin.service('adForceAdjustmentReasonSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADB
 		return deferred.promise;
     };
 
-    this.saveDefaults = function(data) {
+    this.saveReasons = function(data) {
 		var deferred = $q.defer();
-		var url = '/admin/stats_and_reports/save_police_export_default_settings';
+		var url = '/admin/force_adjustment_reasons';
 
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
+		    deferred.resolve(data);
+		}, function(data) {
+		    deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+    this.toggleAction = function(data) {
+		var deferred = $q.defer();
+		var url = '/admin/force_adjustment_reasons/force_adjustment_reason_enabled';
+
+		ADBaseWebSrv.postJSON(url, data).then(function(data) {
+		    deferred.resolve(data);
+		}, function(data) {
+		    deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+	
+    this.removeReasons = function(data) {
+		var deferred = $q.defer();
+		var url = '/admin/force_adjustment_reasons/' + data.id;;
+
+		ADBaseWebSrv.deleteJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
 		    deferred.reject(data);
