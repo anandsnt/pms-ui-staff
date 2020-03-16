@@ -16,7 +16,6 @@ admin.controller('ADForceAdjustmentReason', [
         $scope.addReason = function () {
             var reasonArray = {};
             reasonArray.value = $scope.description;
-            $scope.adjustmentReasons.push(reasonArray.value);
             $scope.forceAdjustmentReasons.push(reasonArray);
             $scope.description = "";
         };
@@ -64,6 +63,12 @@ admin.controller('ADForceAdjustmentReason', [
         }
 
         $scope.clickedSave = function() {
+            angular.forEach($scope.forceAdjustmentReasons, function(item, index) {
+                $scope.adjustmentReasons.push(item.value);
+            });
+            if ($scope.description) {
+                $scope.adjustmentReasons.push($scope.description);
+            }
             var successCallbackSave = function(data) {
                 $scope.data = data;
                 $scope.$emit('hideLoader');
