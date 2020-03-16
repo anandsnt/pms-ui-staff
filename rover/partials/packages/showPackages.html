@@ -37,7 +37,7 @@
                     </li>
                 </ul>
             </div>
-            <div ng-show="addonPopUpData.shouldShowAddMoreButton || !showCustomPosting()" ng-hide="selectedPurchesedAddon === '' && showCustomPosting()" class="actions inline">
+            <div ng-show="addonPopUpData.shouldShowAddMoreButton || !showCustomPosting()" ng-hide="selectedPurchesedAddon === '' || showCustomPosting()" class="actions inline">
                 <button class="button blank" ng-click="closeAddOnPopup()">Close</button>
                 <button class="button orange" ng-click="goToAddons()">Add More</button>
             </div>
