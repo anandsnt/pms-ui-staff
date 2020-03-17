@@ -3,6 +3,7 @@ sntRover.controller('rvBillCardPopupCtrl',
 
 	BaseCtrl.call(this, $scope);
 	$scope.newAmount = '';
+	$scope.warningMessage = "";
 
 	var refreshListWithData = function() {
 		$timeout(function() {
@@ -89,6 +90,12 @@ sntRover.controller('rvBillCardPopupCtrl',
 	 * @param {number} chargeCode updated charge code id
 	 * @returns {undefined}
 	 */
+
+	$scope.selectedAdjReason = function(reasonId) {
+		$scope.warningMessage = "";
+		$scope.adjustmentReason = reasonId;
+	}
+
 	$scope.editCharge = function() {
 		var params = {
 			id: $scope.selectedTransaction.id,
@@ -100,8 +107,12 @@ sntRover.controller('rvBillCardPopupCtrl',
 				show_ref_on_invoice: $scope.show_ref_on_invoice
 			}
 		};
-
-		$scope.invokeApi(RVBillCardSrv.transactionEdit, params, transactionEditSuccessCallback, failureCallBack);
+		
+		if (!$scope.adjustmentReason) {
+			$scope.warningMessage = 'Please fill adjustment reason';
+		} else {
+			$scope.invokeApi(RVBillCardSrv.transactionEdit, params, transactionEditSuccessCallback, failureCallBack);
+		}
 	};
 
 	/*
