@@ -42,6 +42,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         chosenTab = '',
         isHierarchyRestrictionEnabled = Toggles.isEnabled('hierarchical_restrictions');
 
+    $scope.hierarchyRestrictions = {
+        houseEnabled: Toggles.isEnabled('hierarchical_house_restrictions'),
+        roomTypeEnabled: Toggles.isEnabled('hierarchical_room_type_restrictions'),
+        roomEnabled: Toggles.isEnabled('hierarchical_room_restrictions')
+    };
+
     /**
      * for pagination purpose
      * @type {Integer}
