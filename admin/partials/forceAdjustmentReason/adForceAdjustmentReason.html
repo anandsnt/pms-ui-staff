@@ -9,6 +9,11 @@
             
             <section class="content-scroll">
                 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+                <div class="entry full-width" style="margin-bottom:15px;" ng-show='warningMessage.length'>
+					<section ng-if="warningMessage.length" ng-switch="" on="warningMessage.length" class="notice error-message">                  
+					<span class="close-btn" ng-click="clearWarningMessage()"></span>
+					<span class="ng-binding ng-scope">{{warningMessage}}</span></section>
+				</div>
                 <form  class="form float" >
                     <fieldset class="holder full-width">
                         <ad-toggle-button label="{{'FORCE_ADJST_REASON' | translate}}" is-checked="isForceAdjustmentOn" ng-click="forceAdjToggle()"></ad-toggle-button>
@@ -26,7 +31,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="repeater-field-container">
+                            <div class="repeater-field-container" ng-show="showAddReasonButton">
                                 <div class="repeater-field">
                                     <div class="repeater-input">
                                         <input type="text" placeholder="Enter Reason" ng-model="description">
@@ -38,15 +43,15 @@
                             </div>
                             <button type="button" ng-click="addReason()" class="button blue">Add Reason</button>
                         </div>
-                        <div class="actions float">
-                            <button type="button" id="cancel" class="button blank" ng-click="goBackToPreviousState()"translate>
-                                CANCEL
-                            </button>
-                            <button type="button" id="save" class="button green" ng-click="clickedSave()"translate>
-                                SAVE_CHANGES
-                            </button>
-                        </div>
                     </fieldset>
+                    <div class="actions float">
+                        <button type="button" id="cancel" class="button blank" ng-click="goBackToPreviousState()"translate>
+                            CANCEL
+                        </button>
+                        <button type="button" id="save" class="button green" ng-click="clickedSave()"translate>
+                            SAVE_CHANGES
+                        </button>
+                    </div>
                     
                 </form>
             </section>

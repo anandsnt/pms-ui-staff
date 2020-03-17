@@ -16,7 +16,7 @@ admin.service('adForceAdjustmentReasonSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADB
 		var deferred = $q.defer();
 		var url = '/admin/force_adjustment_reasons';
 
-		ADBaseWebSrv.postJSON(url, data).then(function(data) {
+		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
 		    deferred.reject(data);
@@ -26,7 +26,7 @@ admin.service('adForceAdjustmentReasonSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADB
 
     this.toggleAction = function(data) {
 		var deferred = $q.defer();
-		var url = '/admin/force_adjustment_reasons/force_adjustment_reason_enabled';
+		var url = '/admin/force_adjustment_reasons/force_adjustment_reason_setting';
 
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
@@ -38,9 +38,9 @@ admin.service('adForceAdjustmentReasonSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADB
 	
     this.removeReasons = function(data) {
 		var deferred = $q.defer();
-		var url = '/admin/force_adjustment_reasons/' + data.id;;
+		var url = '/admin/force_adjustment_reasons/' + data.id;
 
-		ADBaseWebSrv.deleteJSON(url).then(function(data) {
+		ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
 		    deferred.reject(data);
