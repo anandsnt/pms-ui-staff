@@ -38,7 +38,7 @@
                 </div>
             </div>
             <!-- Adjustment reason -->
-            <div class="entry full-width" ng-if="!showAdjustmentReason && adjustmentReasonOptions.length === 0">
+            <div class="entry full-width" ng-if="!showAdjustmentReason || adjustmentReasonOptions.length === 0">
                 <textarea placeholder="Adjustment reason" ng-model="adjustmentReason" rows="2"></textarea>
             </div>
 
