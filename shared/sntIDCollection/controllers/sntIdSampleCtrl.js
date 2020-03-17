@@ -53,7 +53,8 @@ angular.module('sntIDCollection').controller('sntIdSampleCtrl', function($scope,
 	} else {
 		$scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
 		var config = {
-			useAutoDetection: true
+			useAutoDetection: true,
+			useThirdPartyScan: true
 		};
 		
 		$scope.setConfigurations(config);

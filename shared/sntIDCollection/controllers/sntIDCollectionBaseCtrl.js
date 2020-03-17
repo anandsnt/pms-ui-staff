@@ -27,7 +27,8 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		useAutoDetection: false,
 		idCapturePluginName: '',
 		idCaptureActionName: '',
-		useAilaDevice: false
+		useAilaDevice: false,
+		useThirdPartyScan: false
 	};
 
 	var stopVideoStream = function() {
@@ -66,6 +67,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			}
 			if (response.image) {
 				var base64String = sntIDCollectionUtilsSrv.base64ArrayBuffer(response.image);
+				console.log(base64String);
 
 				$scope.$emit('IMAGE_UPDATED', {
 					isFrontSide: $scope.screenData.imageSide === 0,
@@ -334,8 +336,33 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		}, pluginName, actionName, [jsonstring]);
 	};
 
+	var thirdPatrtyScanFinalActions = function(response, hasBackSide) {
+		$scope.screenData.idDetails = response.doc;
+		$scope.screenData.scanMode = screenModes.final_id_results;
+		$('#' + 'id-front-side').attr('src', response.doc.front_side_image);
+		if (hasBackSide) {
+			$('#' + 'id-back-side').attr('src', response.doc.back_side_image);
+		}
+	};
+	var iteration = 0;
+
+	var scanFrontSideUsingThirdParty = function (scaningBackside) {
+		var response = sntIDCollectionSrv.scanUsingThirdPartyApi(iteration);
+		
+
+		if (!response.should_scan_more || scaningBackside) {
+			thirdPatrtyScanFinalActions(response, scaningBackside);
+		} else {
+			$scope.screenData.scanMode = 'UPLOAD_BACK_IMAGE';
+		}
+	};
+
 	$scope.captureFrontImage = function() {
-		if (typeof cordova !== "undefined" && $scope.deviceConfig.useAutoDetection) {
+		if ($scope.deviceConfig.useThirdPartyScan) {
+			iteration++;
+			scanFrontSideUsingThirdParty();
+		}
+		else if (typeof cordova !== "undefined" && $scope.deviceConfig.useAutoDetection) {
 			autoDetectIDAndProcessData();
 		} else {
 			$timeout(function() {
@@ -345,7 +372,10 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 	};
 
 	$scope.captureBackImage = function() {
-		if (typeof cordova !== "undefined" && $scope.deviceConfig.useAutoDetection) {
+		if ($scope.deviceConfig.useThirdPartyScan) {
+			scanFrontSideUsingThirdParty(true);
+		}
+		else if (typeof cordova !== "undefined" && $scope.deviceConfig.useAutoDetection) {
 			autoDetectIDAndProcessData();
 		} else {
 			$timeout(function() {
