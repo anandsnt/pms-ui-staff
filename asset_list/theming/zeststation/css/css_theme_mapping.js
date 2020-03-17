@@ -117,7 +117,8 @@ module.exports = {
             'bayou': [themeCSSRoot + 'bayou.less'],
             'moment': [themeCSSRoot + 'moment.less'],
             'halifax': [themeCSSRoot + 'halifax.less'],
-            'bellevue': [themeCSSRoot + 'bellevue.less']
+            'bellevue': [themeCSSRoot + 'bellevue.less'],
+            'jonas': [themeCSSRoot + 'jonas.less']
         };
     }
 };

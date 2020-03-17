@@ -135,7 +135,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             "guestweb_bayou_residences": "bayou",
             "guestweb_moment_hotels": "moment",
             "guestweb_sheffield_halifax_hall": "halifax",
-            "guestweb_hotel_bellvue": "bellevue"
+            "guestweb_hotel_bellvue": "bellevue",
+            "guestweb_sheffield_jonas_hotel": "jonas"
         };
 
 
