@@ -770,4 +770,4 @@ var resetObject = function(obj, replaceVal) {
 };
 var getDateDifferenceInDays = function (initialDate,finalDate) {
     return Math.ceil((finalDate-initialDate)/(1000 * 60 * 60 * 24));
-}
+};
