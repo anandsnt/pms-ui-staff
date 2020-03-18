@@ -276,6 +276,13 @@ sntRover.controller('RVPostChargeControllerV2',
 
 				// since we are unselecting
 				lastInput = null;
+
+				// to select the adjustment reason
+				if (!item.adjustmentReason && item['total_price'] < 0) {
+					$scope.showReason = true;
+				} else {
+					$scope.showReason = false;
+				}
 			};
 
 			// actions to be taken for numberpad number press
