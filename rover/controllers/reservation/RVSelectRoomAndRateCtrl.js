@@ -1593,7 +1593,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				rateInfo = rate;
 			}
 
-			$scope.reservationData.rateCurrency = rateInfo.rateCurrency;
+			$scope.reservationData.rateCurrency = selectedCurrency;
 			$scope.reservationData.rateCurrencyId = rateInfo.rateCurrencyId;
 			if ($scope.stateCheck.stayDatesMode && $scope.reservationData.numNights > 1) {
 				$scope.reservationData.currentSelectedRateCurrencyId = rateInfo.rateCurrencyId;
