@@ -130,7 +130,7 @@
 </div>
 
 <!-- Third column - details -->
-<div ng-show="!shouldHideDetailsCol()"
+<div ng-show="!shouldHideDetailsCol()"  ng-if="selectedEntityDetails.report.title !== 'GOBD Export'"
     class="report-col">
     <div class="scrollable" ng-iscroll="THIRD_COLUMN_SCROLL"> <!-- Add vertical scroller here + add class "buttons-2" if it's an existing schedule -->
         <div class="wrapper">
