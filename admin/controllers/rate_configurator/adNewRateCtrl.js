@@ -58,6 +58,9 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 },
                 "currency_code_id": rateDetails.currency_code_id
             };
+            if (rateDetails.based_on && rateDetails.based_on.id) {
+                $scope.originalBasedOnRate = rateDetails.based_on;
+            }
             // intialize rateData dictionary - END
             $scope.originOfBookings = [];
             $scope.allAddOns = [];

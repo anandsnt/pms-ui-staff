@@ -165,7 +165,7 @@ angular.module('sntRover').service('RVReservationStateService', [
 				return getTotalPostedAddons(postType, numAdults);
 			} else if (amountType === 'CHILD') {
 				return getTotalPostedAddons(postType, numChildren);
-			} else if (amountType === 'FLAT') {
+			} else if (amountType === 'FLAT' || amountType === 'ROOM') {
 				return getTotalPostedAddons(postType, 1);
 			}
 		};

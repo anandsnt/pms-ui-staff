@@ -482,7 +482,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     headCount = getTotalPostedAddons(addon.postType, $scope.reservationData.number_of_adults);
                 } else if (addon.amountType.value === 'CHILD') {
                     headCount = getTotalPostedAddons(addon.postType, $scope.reservationData.number_of_children);
-                } else if (addon.amountType.value === 'FLAT') {
+                } else if (addon.amountType.value === 'FLAT' || addon.amountType.value === 'ROOM') {
                     headCount = getTotalPostedAddons(addon.postType, 1);
                 }
 
