@@ -178,10 +178,10 @@
                                     SR
                                     <span translate>RESV_AVG_NIGHT</span>
                                 </div>
-                                <button ng-show="stateCheck.selectedStayDate.rate.id == rate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id) && !borrowForGroups" class="button white blue-text" ng-click="handleNoEdit($event,room.id,rate.id, null, null, null, room.rateCurrency)">
+                                <button ng-show="stateCheck.selectedStayDate.rate.id == rate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id) && !borrowForGroups" class="button white blue-text" ng-click="handleNoEdit($event,room.id,rate.id, null, null, null, rate.rateCurrency)">
                                     CURRENT RATE
                                 </button>
-                                <button class="button {{rate.buttonClass}}" ng-hide="rate.isSuiteUnavailable || (!borrow && (stateCheck.selectedStayDate.rate.id == rate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id))) || restrictIfOverbook(room.id,rate.id,room.availability)" ng-click="handleBooking(room.id,rate.id, $event, null, null, null, room.rateCurrency)" translate>RESV_BOOK
+                                <button class="button {{rate.buttonClass}}" ng-hide="rate.isSuiteUnavailable || (!borrow && (stateCheck.selectedStayDate.rate.id == rate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id))) || restrictIfOverbook(room.id,rate.id,room.availability)" ng-click="handleBooking(room.id,rate.id, $event, null, null, null, rate.rateCurrency)" translate>RESV_BOOK
                                 </button>
                             </a>
                             <div class="rate-details" ng-if="rate.showDays">
