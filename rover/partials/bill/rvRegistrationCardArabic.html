@@ -15,15 +15,14 @@
                 <tbody>
                     <tr class="details">
                         <td>
-                            <span class="pull-left">Name <br />
-                                <strong>{{printRegCardData.guest_details.first_name}} {{printRegCardData.guest_details.last_name}}</strong>
-                            </span>
+                            <span class="pull-left">Name</span>
                             <span class="pull-right align-right">اسم</span>
+                            <strong>{{printRegCardData.guest_details.first_name}} {{printRegCardData.guest_details.last_name}}</strong>
                         </td>
                         <td>
-                            <span class="pull-left">Arrival Date <br />
-                                <strong>{{printRegCardData.arrival_date | date : dateFormat}}</strong> </span>
+                            <span class="pull-left">Arrival Date </span>
                             <span class="pull-right align-right">تاريخ الوصول</span>
+                            <strong>{{printRegCardData.arrival_date | date : dateFormat}}</strong> 
                         </td>
                     </tr>
                     <tr class="details">
