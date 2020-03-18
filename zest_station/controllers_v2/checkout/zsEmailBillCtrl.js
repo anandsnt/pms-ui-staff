@@ -140,14 +140,15 @@ sntZestStation.controller('zsEmailBillCtrl', [
 
         var fetcCompanyTADetails = function() {
             var successCallBack = function(response) {
-
-                if (response &&
-                    (response.company_card && response.company_card.name)) {
-                    $scope.addressInfo = response;
-                    $scope.mode = 'BILLING_ADDRESS_MODE';
-                } else {
+                $scope.addressInfo = response;
+                // TODO: Address selection for email
+                // if (response &&
+                //     (response.company_card && response.company_card.name)) {
+                //     $scope.addressInfo = response;
+                //     $scope.mode = 'BILLING_ADDRESS_MODE';
+                // } else {
                     sendEmail('guest');
-                }
+                // }
             };
 
             var data = {
@@ -162,10 +163,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
 
         $scope.sendEmail = function() {
 			// future story, add black-list check here
-
-            // TODO: Address selection for email
-            //fetcCompanyTADetails();
-            sendEmail('guest');
+            fetcCompanyTADetails();
         };
 
         /**

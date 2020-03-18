@@ -207,17 +207,16 @@ sntZestStation.controller('zsPrintBillCtrl', [
         };
 
         var fetcCompanyTADetails = function() {
-                var successCallBack = function(response) {
-
-                    if (response &&
-                        (response.company_card && response.company_card.name)) {
-                        $scope.showAddressOptions = true;
-                        $scope.printData.guest_info = response.guest;
-                        $scope.printData.company_card_details = response.company_card;
-                    } else {
-                        executePrint('guest');
-                    }
-                };
+            var successCallBack = function(response) {
+                $scope.printData.guest_info = response.guest;
+                $scope.printData.company_card_details = response.company_card;
+                if (response &&
+                    (response.company_card && response.company_card.name)) {
+                    $scope.showAddressOptions = true;
+                } else {
+                    executePrint('guest');
+                }
+            };
 
             var data = {
                 'reservation_id': $scope.reservation_id
@@ -228,7 +227,6 @@ sntZestStation.controller('zsPrintBillCtrl', [
             };
             $scope.callAPI(zsCheckoutSrv.fetchCompanyTADetails, options);
         };
-
 
         var fetchBillData = function() {
             var data = {
