@@ -12,11 +12,19 @@ sntRover.controller('RVPostChargeControllerV2',
 
 			$scope.selectedChargeItem = null;
 			$scope.selectedChargeItemHash = {};
+
+			// fetch adjustment reason
+			$scope.callAPI(RVBillCardSrv.fetchAdjustmentReasons, {
+				successCallBack: function(response) {
+					$scope.adjustmentReasonOptions = response.force_adjustment_reasons;
+					$scope.showAdjustmentReason = response.force_adjustment_reason_enabled;
+				}
+			});
+
 			$scope.disablePostChargeButton = false;
 			$scope.showReason = false;
 			$scope.warningMessage = "";
 			
-
 			var scrollerOptions = { preventDefault: false };
 
 			$scope.setScroller ('items_list', scrollerOptions);
