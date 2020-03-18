@@ -13,6 +13,8 @@ sntRover.controller('RVPostChargeControllerV2',
 			$scope.selectedChargeItem = null;
 			$scope.selectedChargeItemHash = {};
 			$scope.disablePostChargeButton = false;
+			$scope.showReason = false;
+			$scope.warningMessage = "";
 			
 
 			var scrollerOptions = { preventDefault: false };
@@ -179,7 +181,8 @@ sntRover.controller('RVPostChargeControllerV2',
 			*	3. update the net total price
 			*/
 			$scope.addItem = function( clickedItem ) {
-
+				$scope.showReason = false;
+				$scope.warningMessage = "";
 				$scope.calToggle = ( clickedItem.type === "ITEM" ) ? 'QTY' : 'PR';
 
 				if (typeof $scope.selectedChargeItemHash[ clickedItem.id ] === 'undefined') {
@@ -202,8 +205,8 @@ sntRover.controller('RVPostChargeControllerV2',
 				calNetTotalPrice();
 				$scope.refreshScroller('items_summary');
 				/*
-				 * TO solve CICO-10251
-				 */
+				* TO solve CICO-10251
+				*/
 				angular.forEach(angular.element("#numpad-numbers button"), function(value, key) {
 					new FastClick(value);
 				});
@@ -373,6 +376,7 @@ sntRover.controller('RVPostChargeControllerV2',
 			$scope.calBtnAction = function(input) {
 
 				lastInput = input;
+				$scope.warningMessage = "";
 
 				// toggle 'QTY' and 'PR' as required and exit
 				if ( input === 'QTY' || input === 'PR' ) {
@@ -385,8 +389,14 @@ sntRover.controller('RVPostChargeControllerV2',
 					// change
 					if ( $scope.selectedChargeItem.total_price < 0 ) {
 						$scope.selectedChargeItem.total_price = Math.abs( $scope.selectedChargeItem.total_price );
+						if ($scope.showAdjustmentReason) {
+							$scope.showReason = false;
+						}
 					} else {
 						$scope.selectedChargeItem.total_price = -Math.abs( $scope.selectedChargeItem.total_price );
+						if ($scope.showAdjustmentReason) {
+							$scope.showReason = true;
+						}
 					}
 
 					// update net total price
@@ -446,12 +456,17 @@ sntRover.controller('RVPostChargeControllerV2',
 				}
 			};
 
+			$scope.selectedAdjReason = function(reasonId) {
+				$scope.warningMessage = "";
+				$scope.disablePostChargeButton = false;
+				$scope.adjustmentReason = reasonId;
+			};		
+
+			$scope.clearWarningMessage = function () {
+				$scope.warningMessage = '';
+			};	
 
 			$scope.postCharges = function() {
-
-				// CICO-23196 => to disable Multiple Postings/API requests from UI.
-				// We are disabling the POST CHARGE button on the click itself.
-				$scope.disablePostChargeButton = true;
 
 				var failureCallback = function(errorMessage) {
 					$scope.$emit('hideLoader');
@@ -472,9 +487,20 @@ sntRover.controller('RVPostChargeControllerV2',
 					each['amount']   = $scope.selectedChargeItemHash[i]['total_price'];
 					each['quantity'] = $scope.selectedChargeItemHash[i]['count'];
 					each['reference_text'] = $scope.selectedChargeItemHash[i].reference_text;
+					each['adjustment_reason'] = $scope.selectedChargeItemHash[i].adjustmentReason;
 					each['show_ref_on_invoice'] = $scope.selectedChargeItemHash[i].show_ref_on_invoice;
 					items.push( each );
+					if (!each['adjustment_reason'] && each['amount'] < 0) {
+						$scope.warningMessage = 'Please fill adjustment reason';
+						$scope.showReason = true;
+						$scope.disablePostChargeButton = true;
+						return;
+					}
 				}
+
+				// CICO-23196 => to disable Multiple Postings/API requests from UI.
+				// We are disabling the POST CHARGE button on the click itself.
+				$scope.disablePostChargeButton = true;
 
 				var data = {
 					fetch_total_balance: $scope.fetchTotalBal,

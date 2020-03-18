@@ -96,6 +96,10 @@ sntRover.controller('rvBillCardPopupCtrl',
 		$scope.adjustmentReason = reasonId;
 	}
 
+	$scope.clearWarningMessage = function () {
+		$scope.warningMessage = '';
+	};
+
 	$scope.editCharge = function() {
 		var params = {
 			id: $scope.selectedTransaction.id,
