@@ -93,11 +93,11 @@ sntZestStation.service('zsCheckoutSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseW
             var deferred = $q.defer(),
                 url = '/guest_web/home/checkout_guest.json';
 
-            // zsBaseWebSrv2.postJSON(url, params).then(function(data) {
+            zsBaseWebSrv2.postJSON(url, params).then(function(data) {
                 deferred.resolve({});
-            // }, function(data) {
-            //     deferred.reject(data);
-            // });
+            }, function(data) {
+                deferred.reject(data);
+            });
             return deferred.promise;
         };
 

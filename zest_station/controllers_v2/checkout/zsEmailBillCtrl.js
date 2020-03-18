@@ -134,7 +134,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
             $scope.callAPI(zsCheckoutSrv.sendBill, options);
         };
 
-        $scope.emailAddressSelected = function (billingAddresstype){
+        $scope.emailAddressSelected = function(billingAddresstype) {
             sendEmail(billingAddresstype);
         };
 
@@ -158,6 +158,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
                 params: data,
                 successCallBack: successCallBack
             };
+            
             $scope.callAPI(zsCheckoutSrv.fetchCompanyTADetails, options);
         };
 

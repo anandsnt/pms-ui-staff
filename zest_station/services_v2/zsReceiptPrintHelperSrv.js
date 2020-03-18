@@ -148,7 +148,7 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
 
             //  --------------------------------- COMPANY CARD --------------------------- //
 
-            if (printData.addressType ==='company' && printData.company_card_details && printData.company_card_details.name) {
+            if (printData.addressType === 'company' && printData.company_card_details && printData.company_card_details.name) {
                 if (printData.company_card_details.address) {
                     printData.company_card_details.address = printData.company_card_details.address.split("<br>").join("\n");
                     printData.company_card_details.address = printData.company_card_details.address.split("<br/>").join("\n");
@@ -164,7 +164,7 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
 
             //  --------------------------------- TA CARD --------------------------- //
 
-            if (printData.addressType ==='ta' && printData.ta_card_details && printData.ta_card_details.name) {
+            if (printData.addressType === 'ta' && printData.ta_card_details && printData.ta_card_details.name) {
                 if (printData.ta_card_details.address) {
                     printData.ta_card_details.address = printData.ta_card_details.address.split("<br>").join("\n");
                     printData.ta_card_details.address = printData.ta_card_details.address.split("<br/>").join("\n");
