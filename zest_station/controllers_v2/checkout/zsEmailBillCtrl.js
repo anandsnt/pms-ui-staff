@@ -142,8 +142,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
             var successCallBack = function(response) {
 
                 if (response &&
-                    ((response.company_card && response.company_card.name) ||
-                        (response.ta_card && response.ta_card.name))) {
+                    (response.company_card && response.company_card.name)) {
                     $scope.addressInfo = response;
                     $scope.mode = 'BILLING_ADDRESS_MODE';
                 } else {
@@ -163,7 +162,10 @@ sntZestStation.controller('zsEmailBillCtrl', [
 
         $scope.sendEmail = function() {
 			// future story, add black-list check here
-            fetcCompanyTADetails();
+
+            // TODO: Address selection for email
+            //fetcCompanyTADetails();
+            sendEmail('guest');
         };
 
         /**

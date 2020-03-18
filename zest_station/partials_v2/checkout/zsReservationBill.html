@@ -140,8 +140,8 @@
     <!-- show options -->
     <section id="main" role="main" ng-show="printOpted && showAddressOptions">
             <div id="content">
-                <h1>Print Bill</h1>
-                <h2>Who should we address the bill to?</h2>
+                <h1 translate>PRINT_GUEST_INVOICE</h1>
+                <h2 translate>BILL_ADDRESSED_TO_TEXT</h2>
                 <nav id="options" role="nav">
                     <ul role="menu">
                         <!-- {{printData}} -->
@@ -151,17 +151,6 @@
                             </button>
                              {{ printData.guest_info.name}}
                             <span ng-bind-html="printData.guest_info.address">
-                            </span>
-                        </li>
-                        <li class="break" ng-if="printData.ta_card_details.name">
-                            <span>Or</span>
-                        </li>
-                        <li ng-if="printData.ta_card_details.name">
-                            <button type="button" class="button option" touch-press="addressSelected('ta')">
-                                <div ng-include="icons.url.company"></div>
-                            </button>
-                            {{ printData.ta_card_details.name}}
-                            <span ng-bind-html="printData.ta_card_details.address">
                             </span>
                         </li>
                         <li class="break" ng-if="printData.company_card_details.name">

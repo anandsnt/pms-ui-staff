@@ -207,23 +207,20 @@ sntZestStation.controller('zsPrintBillCtrl', [
         };
 
         var fetcCompanyTADetails = function() {
-            var successCallBack = function(response) {
+                var successCallBack = function(response) {
 
-                if (response &&
-                    ((response.company_card && response.company_card.name) ||
-                        (response.ta_card && response.ta_card.name))) {
-                    $scope.showAddressOptions = true;
-                    $scope.printData.guest_info = response.guest; 
-                    $scope.printData.company_card_details = response.company_card;
-                    $scope.printData.ta_card_details = response.ta_card;
-                } else {
-                   executePrint('guest');
-                }
-            };
+                    if (response &&
+                        (response.company_card && response.company_card.name)) {
+                        $scope.showAddressOptions = true;
+                        $scope.printData.guest_info = response.guest;
+                        $scope.printData.company_card_details = response.company_card;
+                    } else {
+                        executePrint('guest');
+                    }
+                };
 
             var data = {
-                'reservation_id': $scope.reservation_id,
-                'bill_number': 1
+                'reservation_id': $scope.reservation_id
             };
             var options = {
                 params: data,

@@ -93,11 +93,11 @@ sntZestStation.service('zsCheckoutSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseW
             var deferred = $q.defer(),
                 url = '/guest_web/home/checkout_guest.json';
 
-            zsBaseWebSrv2.postJSON(url, params).then(function(data) {
-                deferred.resolve(data);
-            }, function(data) {
-                deferred.reject(data);
-            });
+            // zsBaseWebSrv2.postJSON(url, params).then(function(data) {
+                deferred.resolve({});
+            // }, function(data) {
+            //     deferred.reject(data);
+            // });
             return deferred.promise;
         };
 
@@ -211,7 +211,7 @@ sntZestStation.service('zsCheckoutSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseW
 		* @param {object} data
 		* @return {object} defer promise
 		*/
-        this.postCharges = function (params) {
+        this.postCharges =  function (params) {
             var deferred = $q.defer();
             var url = '/staff/items/post_items_to_bill?application=KIOSK';
 
@@ -227,32 +227,14 @@ sntZestStation.service('zsCheckoutSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseW
 
         this.fetchCompanyTADetails = function (params) {
             var deferred = $q.defer();
-            var url = '/staff/items/post_items_to_bill?application=KIOSK';
+            var url = '/zest_station/fetch_account_details';
 
-            // zsBaseWebSrv.postJSON(url, params)
-            //     .then(function (data) {
-
-                var data = {
-                    "guest": {
-                        "name": "Resheil",
-                        "address": "8129 Bethesda hill <br>Bethesda"
-                    },
-                    "company_card": {
-                        "name": "SNT",
-                        "address": "8129 woodmont <br>Bethesda"
-                    },
-                    "ta_card": {
-                        
-                            "name": "SNT1",
-                            "address": "8129 woodmont <br>Silver Spring"
-                        
-                    }
-                };
+            zsBaseWebSrv.getJSON(url, params)
+                .then(function (data) {
                     deferred.resolve(data);
-                //}
-                // }, function (data) {
-                //     deferred.reject(data);
-                // });
+                }, function (data) {
+                    deferred.reject(data);
+                });
 
             return deferred.promise;
         };

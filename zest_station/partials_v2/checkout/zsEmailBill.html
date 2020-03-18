@@ -101,8 +101,8 @@
 
 <section id="main" role="main" ng-show="mode === 'BILLING_ADDRESS_MODE'">
         <div id="content">
-            <h1>Email Bill</h1>
-            <h2>Who should we address the bill to?</h2>
+            <h1 translate>EMAIL_GUEST_INVOICE</h1>
+            <h2 translate>BILL_ADDRESSED_TO_TEXT</h2>
             <nav id="options" role="nav">
                 <ul role="menu">
                     <!-- {{printData}} -->
@@ -114,7 +114,7 @@
                         <span ng-bind-html="addressInfo.guest.address">
                         </span>
                     </li>
-                    <li class="break" ng-if="addressInfo.ta_card.name">
+                    <!-- <li class="break" ng-if="addressInfo.ta_card.name">
                         <span>Or</span>
                     </li>
                     <li ng-if="addressInfo.ta_card.name">
@@ -124,7 +124,7 @@
                         {{ addressInfo.ta_card.name}}
                         <span ng-bind-html="addressInfo.ta_card.address">
                         </span>
-                    </li>
+                    </li> -->
                     <li class="break" ng-if="addressInfo.company_card.name">
                         <span>Or</span>
                     </li>
@@ -176,8 +176,8 @@
     </section>
     <section id="main" role="main" ng-show="mode === 'PRINT_MODE' && showAddressOptions">
             <div id="content">
-                <h1>Print Bill</h1>
-                <h2>Who should we address the bill to?</h2>
+                <h1 translate>PRINT_GUEST_INVOICE</h1>
+                <h2 translate>BILL_ADDRESSED_TO_TEXT</h2>
                 <nav id="options" role="nav">
                     <ul role="menu">
                         <!-- {{printData}} -->
@@ -189,7 +189,7 @@
                             <span ng-bind-html="printData.guest_info.address">
                             </span>
                         </li>
-                        <li class="break" ng-if="printData.ta_card_details.name">
+                       <!--  <li class="break" ng-if="printData.ta_card_details.name">
                             <span>Or</span>
                         </li>
                         <li ng-if="printData.ta_card_details.name">
@@ -199,7 +199,7 @@
                             {{ printData.ta_card_details.name}}
                             <span ng-bind-html="printData.ta_card_details.address">
                             </span>
-                        </li>
+                        </li> -->
                         <li class="break" ng-if="printData.company_card_details.name">
                             <span>Or</span>
                         </li>
