@@ -1560,7 +1560,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		};
 
 		/* This method is shared between the RATE and ROOM TYPE views */
-		$scope.handleBooking = function(roomId, rateId, event, flags, afterFetch, contractId) {
+		$scope.handleBooking = function(roomId, rateId, event, flags, afterFetch, contractId, selectedCurrency) {
 
 			if (!!event) {
 				event.stopPropagation();
@@ -1576,7 +1576,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				secondary = _.find(roomType.ratesArray, {
 					id: rateId
 				});
-				secondary.rateCurrency = roomType.rateCurrency;
+				secondary.rateCurrency = selectedCurrency;
 				roomInfo = roomType;
 				rateInfo = secondary;							
 			} else if ($scope.stateCheck.activeView === 'RATE' || $scope.stateCheck.activeView === 'RECOMMENDED') {
@@ -1588,7 +1588,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				secondary = _.find(rate.rooms, {
 					id: roomId
 				});
-				secondary.rateCurrency = rate.rateCurrency;
+				secondary.rateCurrency = selectedCurrency;
 				roomInfo = secondary;
 				rateInfo = rate;
 			}
@@ -1606,7 +1606,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			if (!afterFetch) {
 				fetchTaxRateAddonMeta(rateId, function() {
 					computeDetails(secondary, function() {
-						$scope.handleBooking(roomId, rateId, event, flags, true, contractId);
+						$scope.handleBooking(roomId, rateId, event, flags, true, contractId, selectedCurrency);
 					});
 				});
 			} else {
@@ -1956,45 +1956,11 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		var processRestrictions = function( hasMultipleRestrictions, rateId) {
 
 			var restrictionCount = 0,
-				// isHouseFull = $scope.stateCheck.stayDatesMode ? ($scope.stateCheck.house[$scope.stateCheck.dateModeActiveDate] < 1) : ($scope.getLeastHouseAvailability() < 1),
-				// isGroupReservation = !!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id,
-				isPromoInvalid = $scope.reservationData.code && $scope.reservationData.code.id && !_.reduce($scope.stateCheck.promotionValidity, function(a, b) {
+					isPromoInvalid = $scope.reservationData.code && $scope.reservationData.code.id && !_.reduce($scope.stateCheck.promotionValidity, function(a, b) {
 					return a && b;
-				});
-
-			// if (hasMultipleRestrictions) {
-			// 	restrictionCount = 2;
-			// } else if (firstRestriction !== null) {
-			// 	restrictionCount = 1;
-			// }
-
-			// if (!isGroupReservation && isHouseFull && (!firstRestriction || firstRestriction.restriction_type_id != 99)) {
-			// 	restrictionCount = restrictionCount ? restrictionCount + 1 : 1;
-			// 	if (restrictionCount === 1) {
-			// 		firstRestriction = {
-			// 			restriction_type_id: 99,
-			// 			days: null
-			// 		};
-			// 	}
-			// }
-
-			// if (isPromoInvalid &&
-			// 	(!firstRestriction || firstRestriction.restriction_type_id != 98)) {
-			// 	if (_.indexOf($scope.reservationData.ratesMeta[rateId].linked_promotion_ids, $scope.reservationData.code
-			// 		.id) > -1) {
-			// 		restrictionCount = restrictionCount ? restrictionCount + 1 : 1;
-			// 		if (restrictionCount === 1) {
-			// 			firstRestriction = {
-			// 				restriction_type_id: 98,
-			// 				days: null
-			// 			};
-			// 		}
-			// 	}
-			// }
+				});			
 
 			return {
-			//	firstRestriction: firstRestriction,
-				// restrictionCount: restrictionCount,
 				isPromoInvalid: isPromoInvalid
 			};
 		};

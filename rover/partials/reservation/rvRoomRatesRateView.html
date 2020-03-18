@@ -30,7 +30,7 @@
                     (stateCheck.selectedStayDate.roomType.id == rate.defaultRoomTypeId ||
                         reservationData.rooms[activeRoom].roomTypeId == rate.defaultRoomTypeId )) ||
                             restrictIfOverbook(rate.defaultRoomTypeId,rate.id,rate.defaultRoomTypeAvailability)"
-                ng-click="handleBooking(rate.defaultRoomTypeId,rate.id,$event)" translate>
+                ng-click="handleBooking(rate.defaultRoomTypeId,rate.id,$event, null, null, null, room.rateCurrency)" translate>
                 RESV_BOOK
             </button>
         </div>
