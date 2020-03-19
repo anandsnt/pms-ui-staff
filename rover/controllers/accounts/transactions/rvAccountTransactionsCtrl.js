@@ -847,12 +847,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			} else if (action === "split") {
 				$scope.openSplitChargePopup();
 			} else if (action === "edit") {
-				$scope.callAPI(RVBillCardSrv.fetchAdjustmentReasons, {
-					successCallBack: function(response) {
-						$scope.adjustmentReasonOptions = response.force_adjustment_reasons;
-						$scope.showAdjustmentReason = response.force_adjustment_reason_enabled;
-					}
-				});
 				$scope.openEditChargePopup();
 			}
 		};
