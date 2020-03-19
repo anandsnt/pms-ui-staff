@@ -34,9 +34,16 @@ sntRover.controller('RVReservationPackageController',
 		};
 
 		// Get addon count
-		$scope.getAddonCount = function(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly, quantity) {
-			if (!postingRythm) {
-				postType = postType.toUpperCase();
+		$scope.getAddonCount = function(addon) {
+			var postingRythm = addon.post_type.frequency,
+				postType = addon.post_type.value.toUpperCase(),
+				amountType = addon.amount_type.value.toUpperCase(),
+				numAdults = $scope.addonPopUpData.number_of_adults,
+				numChildren = $scope.addonPopUpData.number_of_children,
+				numNights = $scope.addonPopUpData.duration_of_stay,
+				chargeFullWeeksOnly = addon.charge_full_weeks_only;
+				
+			if (!postingRythm) {				
 				if (postType === 'WEEK' || postType === 'EVERY WEEK' || postType === 'WEEKLY' || postType === 'WEEKDAY' || postType === 'WEEKEND') {
 					postingRythm = 7;
 				} else if (postType === 'STAY' || postType === 'ENTIRE STAY') {
@@ -45,16 +52,23 @@ sntRover.controller('RVReservationPackageController',
 					postingRythm = 0;
 				}
 			}
-			amountType = amountType.toUpperCase();
+			if ($scope.showCustomPosting()) {
+				numNights = _.filter(addon.post_instances, {active: true}).length;
+			}
 			var addonCount = RVReservationStateService.getApplicableAddonsCount(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly);
 
-			return (addonCount * quantity);
+			return (addonCount * addon.addon_count);
+		};
+
+		$scope.getAddonTotal = function(addon) {
+			return $scope.getAddonCount(addon) * addon.amount;
 		};
 
 		$scope.selectedPurchesedAddon = "";
 		
 		$scope.selectPurchasedAddon = function(addon) {
 			$scope.errorMessage = [];
+			$scope.previousPostDays = {};
 			$scope.daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 			if (!$rootScope.featureToggles.addons_custom_posting) {
 				return;
@@ -114,6 +128,7 @@ sntRover.controller('RVReservationPackageController',
 							$scope.selectedPurchesedAddon.selected_post_days[day] = item.active;
 						}
 					});
+				angular.copy($scope.selectedPurchesedAddon.selected_post_days, $scope.previousPostDays);
 			} else {
 				$scope.errorMessage = ["Custom posting can be configured only for nightly addons"];
 				$scope.selectedPurchesedAddon = "";
@@ -122,8 +137,6 @@ sntRover.controller('RVReservationPackageController',
 		};
 
 		$scope.showCustomPosting = function() {
-			// excludedModulesForCustomisation = ['allotments', 'create_group', 'group'];
-			// return $rootScope.featureToggles.addons_custom_posting && excludedModulesForCustomisation.indexOf($scope.addonPopUpData.addonPostingMode) === -1;
 			return $rootScope.featureToggles.addons_custom_posting;
 		};
 
@@ -216,6 +229,10 @@ sntRover.controller('RVReservationPackageController',
 				selectedPurchesedAddon: $scope.selectedPurchesedAddon
 			});
 			$scope.closePopup();
+		};
+
+		$scope.resetPostDays = function() {
+			angular.copy($scope.previousPostDays, $scope.selectedPurchesedAddon.selected_post_days);
 		};
 
 		var setPostingData = function() {

@@ -1099,7 +1099,9 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                     if ($scope.groupConfigData.summary.tax_exempt_type_id === "" || $scope.groupConfigData.summary === null) {
                         $scope.groupConfigData.summary.is_tax_exempt = false;
                     }
-
+                    
+                    $scope.groupConfigData.summary.shoulder_from_date = $scope.setShoulderDatesInAPIFormat($scope.groupConfigData.summary.block_from, (-1) * $scope.groupConfigData.summary.shoulder_from);
+                    $scope.groupConfigData.summary.shoulder_to_date = $scope.setShoulderDatesInAPIFormat($scope.groupConfigData.summary.block_to, $scope.groupConfigData.summary.shoulder_to);
                     $scope.callAPI(rvGroupConfigurationSrv.saveGroupSummary, {
                         successCallBack: onGroupSaveSuccess,
                         failureCallBack: onGroupSaveFailure,
@@ -1174,8 +1176,10 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                     return false;
                 }
                 var onGroupUpdateSuccess = function(data) {
-                        $scope.groupConfigData.summary.commission_details = data.commission_details;
+                        $scope.groupConfigData.summary.commission_details = data.commission_details;                       
                         updateGroupSummaryInProgress =  false;
+                        $scope.groupConfigData.summary.shoulder_from_date = $scope.setShoulderDatesInAPIFormat($scope.groupConfigData.summary.block_from, (-1) * $scope.groupConfigData.summary.shoulder_from);
+                        $scope.groupConfigData.summary.shoulder_to_date   = $scope.setShoulderDatesInAPIFormat($scope.groupConfigData.summary.block_to, $scope.groupConfigData.summary.shoulder_to);
                         // client controllers should get an infromation whether updation was success
                         $scope.$broadcast("UPDATED_GROUP_INFO", angular.copy($scope.groupConfigData.summary));
                         $scope.groupSummaryMemento = angular.copy($scope.groupConfigData.summary);
@@ -1212,6 +1216,8 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 summaryData.block_from = $filter('date')(summaryData.block_from, $rootScope.dateFormatForAPI);
                 summaryData.block_to = $filter('date')(summaryData.block_to, $rootScope.dateFormatForAPI);
                 summaryData.release_date = $filter('date')(summaryData.release_date, $rootScope.dateFormatForAPI);
+                summaryData.shoulder_from_date = $scope.setShoulderDatesInAPIFormat(summaryData.block_from, (-1) * summaryData.shoulder_from);
+                summaryData.shoulder_to_date = $scope.setShoulderDatesInAPIFormat(summaryData.block_to, summaryData.shoulder_to); // Multiplied by 1 to convert summaryData.shoulder_to integer
                 if (!summaryData.rate) {
                     summaryData.rate = -1;
                     summaryData.contract_id = null;
@@ -1231,6 +1237,17 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             }
         };
 
+        // Set up shoulder dates
+        $scope.setShoulderDatesInAPIFormat = function (baseDate, days) {
+            if (typeof (days) === "string") {
+                days = parseInt(days);             // If days is passed as a string, convert it into a number
+            }
+            var baseDateObj = new tzIndependentDate(baseDate),
+                shoulderDate = baseDateObj.addDays(days);
+
+            return ($filter('date')(shoulderDate, $rootScope.dateFormatForAPI));
+        }
+        
         /**
          * Code to duplicate group
          * Future functionality
