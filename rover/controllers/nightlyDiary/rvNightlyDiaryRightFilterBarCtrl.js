@@ -342,7 +342,6 @@ angular.module('sntRover')
              *  Guest preference filter message
              */
             $scope.addListener('APPLY_GUEST_PREFERENCE_FILTER', function () {
-                fetchIdFromRoomFeaturesList();
 				retrieveAvailableRooms();
             });
 

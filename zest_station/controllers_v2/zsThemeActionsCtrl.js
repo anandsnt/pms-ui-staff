@@ -206,7 +206,9 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                     'bayou',
                     'moment',
                     'halifax',
-                    'bellevue'
+                    'bellevue',
+                    'jonas',
+                    'westminster'
                 ],
                 nonCircleNavIcons = ['public_v2'];// minor adjustment to the back/close icons for some themes (only show the inner x or <)
 

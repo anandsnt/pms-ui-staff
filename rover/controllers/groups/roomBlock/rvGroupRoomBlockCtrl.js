@@ -448,8 +448,10 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 */
         $scope.copySingleValueToOtherBlocks = function(cellData, rowData) {
             _.each(rowData.dates, function(element) {
-                element.single = cellData.single;
-                element.single_pickup = cellData.single_pickup;
+                if (!element.is_shoulder_date) {
+                    element.single = cellData.single;
+                    element.single_pickup = cellData.single_pickup;
+                }
             });
 
             var data = {
@@ -558,10 +560,11 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
         $scope.shouldShowLoadNextSetButton = function() {
-            var nextStart = new tzIndependentDate($scope.timeLineStartDate);
+            var nextStart = new tzIndependentDate($scope.timeLineStartDate),
+                endDate = $scope.groupConfigData.summary.shoulder_to_date || $scope.groupConfigData.summary.block_to;
 
             nextStart.setDate(nextStart.getDate() + 14);
-            var hasNextSet = nextStart < $scope.groupConfigData.summary.block_to;
+            var hasNextSet = nextStart < new tzIndependentDate(endDate);
 
             return timeLineScrollEndReached && hasNextSet;
         };
@@ -576,12 +579,12 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
         $scope.fetchCurrentSetOfRoomBlockData = function() {
 			// for pagination in group room block CICO-20097
-            var groupStartDate = $scope.groupConfigData.summary.block_from,
-                groupEndDate = $scope.groupConfigData.summary.block_to;
-
+            var shoulderStartDate = new tzIndependentDate($scope.groupConfigData.summary.shoulder_from_date),
+                shoulderEndDate = new tzIndependentDate($scope.groupConfigData.summary.shoulder_to_date);
+            
 			// check lower  bound
-            if (groupStartDate > $scope.timeLineStartDate) {
-                $scope.timeLineStartDate = new tzIndependentDate(groupStartDate);
+            if (shoulderStartDate > $scope.timeLineStartDate) {
+                $scope.timeLineStartDate = new tzIndependentDate(shoulderStartDate);
             }
 
 			// 14 days are shown by default.
@@ -589,11 +592,11 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             $scope.timeLineEndDate.setDate($scope.timeLineStartDate.getDate() + 14);
 
 			// check upper bound
-            if ($scope.timeLineStartDate > groupEndDate) {
-                $scope.timeLineStartDate = new tzIndependentDate(groupEndDate);
+            if ($scope.timeLineStartDate > shoulderEndDate) {
+                $scope.timeLineStartDate = new tzIndependentDate(shoulderEndDate);
             }
-            if ($scope.timeLineEndDate > groupEndDate) {
-                $scope.timeLineEndDate = new tzIndependentDate(groupEndDate);
+            if ($scope.timeLineEndDate > shoulderEndDate) {
+                $scope.timeLineEndDate = new tzIndependentDate(shoulderEndDate);
             }
 
             var options = {
@@ -688,10 +691,12 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			// arrival right date change
             else if (newBlockFrom > oldBlockFrom && chActions.arrDateRightChangeAllowed()) {
 				// check move validity
-                if (new tzIndependentDate(refData.first_dep_date) < newBlockFrom)
-    {triggerLaterArrivalDateChangeInvalidError();}
-                else
-					{triggerLaterArrivalDateChange();}
+                if (new tzIndependentDate(refData.first_dep_date) < newBlockFrom) {
+                    triggerLaterArrivalDateChangeInvalidError();
+                }
+                else {
+                    triggerLaterArrivalDateChange();
+                }
             }
 
 			// let the date update if it is future group as well is in edit mode
@@ -734,6 +739,9 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
         var onEndDatePicked = function(date, datePickerObj) {
             $scope.endDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
             $scope.groupConfigData.summary.block_to = $scope.endDate;
+            var shoulderEndDate = $scope.endDate.addDays(parseInt($scope.groupConfigData.summary.shoulder_to));
+
+            $scope.groupConfigData.summary.shoulder_to_date = $filter('date')(shoulderEndDate, $rootScope.dateFormatForAPI);
 
 			// referring data source
             var refData 	= $scope.groupConfigData.summary,
@@ -824,6 +832,38 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
                 ;
         };
 
+        // Get timeline min date
+        var getTimeLineMinDate = function () {
+                var shoulderStartDate = new tzIndependentDate($scope.groupConfigData.summary.shoulder_from_date),
+                    minDate;
+
+                if (shoulderStartDate) {
+                    minDate = shoulderStartDate;
+                }
+
+                if (!minDate) {
+                    minDate = new tzIndependentDate($rootScope.businessDate);
+                }
+
+                return minDate;
+            
+            },
+            // Get time line max date
+            getTimeLineMaxDate = function () {
+                var shoulderEndDate = new tzIndependentDate($scope.groupConfigData.summary.shoulder_to_date),
+                    maxDate;
+
+                if (shoulderEndDate) {
+                    maxDate = new tzIndependentDate(shoulderEndDate - 86400000);
+                }
+
+                if (!maxDate) {
+                    maxDate = new tzIndependentDate($scope.endDate - 86400000);
+                }
+
+                return maxDate;
+            };
+
 		/**
 		 * function used to set date picker
 		 * will create date picker options & initial values
@@ -885,8 +925,8 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
 			// date picker options - Goto Date
             $scope.timeLineStartDateOptions = _.extend({
-                minDate: $scope.startDate !== '' ? new tzIndependentDate($scope.startDate) : new tzIndependentDate($rootScope.businessDate),
-                maxDate: maxEndDate,
+                minDate: getTimeLineMinDate(),
+                maxDate: getTimeLineMaxDate(),
                 onSelect: $scope.onTimeLineStartDatePicked
             }, commonDateOptions);
 
@@ -1397,6 +1437,12 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             $scope.hasBlockDataUpdated = true;
         };
 
+        // Update time line dates
+        var updateTimeLineDates = function () {
+            $scope.timeLineStartDateOptions.minDate = getTimeLineMinDate();
+            $scope.timeLineStartDateOptions.maxDate = getTimeLineMaxDate();
+        };
+
 		/**
 		 * Success callback of room block details API
 		 */
@@ -1435,6 +1481,9 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             $scope.copy_selected_room_types_and_bookings = util.deepCopy(data.results);
 
             $scope.getTotalBookedRooms();
+
+            // Need to update the timeline date options if shoulder dates have changed
+            updateTimeLineDates();
 			// we changed data, so
             refreshScroller();
         };
@@ -1491,7 +1540,8 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
         $scope.clickedOnMassUpdateSaveButton = function (ngDialogData, isOverbooking) {
 
             var value 		  = ngDialogData.value,
-                timeLineStart = $scope.timeLineStartDate,
+                groupStart    = $scope.groupConfigData.summary.block_from,
+                timeLineStart = ($scope.timeLineStartDate < groupStart) ? groupStart : $scope.timeLineStartDate,
                 endDate 	  = $scope.massUpdateEndDate;
 
             var roomTypeData  	 = $scope.selectedRoomType,
@@ -1908,6 +1958,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             $scope.startDateOptions.maxDate = $scope.groupConfigData.summary.block_to;
         };
 
+
 		/**
 		 * Initialize scope variables
 		 * @return {undefined}
@@ -2250,6 +2301,31 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
                                    !$scope.shouldShowQuadrupleEntryRow(roomTypeRate) && $scope.shouldShowTripleEntryRow(roomTypeRate);                                  
 
             return showQuadrupleBtn;
+        };
+
+        // Should show copy btn
+        $scope.shouldShowCopyButton = function (date, index) {
+            var dateObject;
+            
+            switch (typeof date) {
+                case 'string': 
+                    dateObject = new tzIndependentDate(date); 
+                    break;
+                case 'object': 
+                    dateObject = new tzIndependentDate(date.date);
+                    break;
+                default:
+            }
+            
+            if (dateObject.getTime() === $scope.groupConfigData.summary.block_from.getTime()) {
+                return true;
+            }
+
+            if (!index && !date.is_shoulder_date) {
+                return true;
+            }
+
+            return false;
         };
 
 

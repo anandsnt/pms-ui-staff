@@ -110,6 +110,7 @@
     "COUNTRY": "Country",
     "SELECT_RATE": "Select Rate",
     "HIDE_RATE": "Hide Rate",
+    "SHOULDER": "Shoulder",
     "GROUP_OVERBOOK_ROOM_TYPE": "There is no availability for the room type. Overbook Roomtype?",
     "GROUP_OVERBOOK_HOUSE": "There is no availability in house. Overbook house?",
     "GROUP_OVERBOOK_ROOM_TYPE_AND_HOUSE": "There is no availability in room type and house. Overbook Roomtype and house?"
