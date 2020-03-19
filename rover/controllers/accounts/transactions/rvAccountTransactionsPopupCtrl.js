@@ -93,7 +93,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 	$scope.selectedAdjReason = function(reasonId) {
 		$scope.warningMessage = "";
 		$scope.adjustmentReason = reasonId;
-	}
+	};
 
 	$scope.clearWarningMessage = function () {
 		$scope.warningMessage = '';
