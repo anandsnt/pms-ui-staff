@@ -123,11 +123,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             };
 
             var hasFrequency = function() {
-                if ($scope.selectedEntityDetails.report.title !== 'GOBD Export'){
-                    return !! $scope.scheduleParams.frequency_id;
-                } else {
-                    return true;
-                }
+                return !! $scope.scheduleParams.frequency_id;
             };
 
             var hasValidDistribution = function() {
@@ -148,7 +144,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             if ( ! $scope.isGuestBalanceReport && ! $scope.scheduleParams.time_period_id ) {
                 $scope.createErrors.push('Time period in parameters');
             }
-            if ( ! $scope.scheduleParams.frequency_id  && $scope.selectedEntityDetails.report.title !== 'GOBD Export') {
+            if ( ! $scope.scheduleParams.frequency_id ) {
                 $scope.createErrors.push('Repeat frequency in details');
             }
 
@@ -1310,15 +1306,9 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             var verReset = true;
 
             if ( $scope.addingStage === STAGES.SHOW_PARAMETERS ) {
-                if ($scope.selectedEntityDetails.report.title === 'GOBD Export') {
-                    $scope.addingStage = STAGES.SHOW_DISTRIBUTION;
-                    $scope.updateViewCol($scope.viewColsActions.FOUR, noReset);
-                    $scope.refreshFourthColumnScroll(verReset);
-                } else {
-                    $scope.addingStage = STAGES.SHOW_DETAILS;
-                    $scope.updateViewCol($scope.viewColsActions.THREE, noReset);
-                    $scope.refreshThirdColumnScroll(verReset);
-                }
+                $scope.addingStage = STAGES.SHOW_DETAILS;
+                $scope.updateViewCol($scope.viewColsActions.THREE, noReset);
+                $scope.refreshThirdColumnScroll(verReset);
             } else if ( $scope.addingStage === STAGES.SHOW_DETAILS ) {
                 $scope.addingStage = STAGES.SHOW_DISTRIBUTION;
                 $scope.updateViewCol($scope.viewColsActions.FOUR, noReset);
