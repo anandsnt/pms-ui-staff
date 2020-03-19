@@ -286,7 +286,7 @@ sntRover.controller('RVPostChargeControllerV2',
 				lastInput = null;
 
 				// to select the adjustment reason
-				if (!item.adjustmentReason && item['total_price'] < 0) {
+				if (!item.adjustmentReason && item['total_price'] < 0 && $scope.showAdjustmentReason) {
 					$scope.showReason = true;
 				} else {
 					$scope.showReason = false;
@@ -505,7 +505,7 @@ sntRover.controller('RVPostChargeControllerV2',
 					each['adjustment_reason'] = $scope.selectedChargeItemHash[i].adjustmentReason;
 					each['show_ref_on_invoice'] = $scope.selectedChargeItemHash[i].show_ref_on_invoice;
 					items.push( each );
-					if (!each['adjustment_reason'] && each['amount'] < 0) {
+					if (!each['adjustment_reason'] && each['amount'] < 0 && $scope.showAdjustmentReason) {
 						$scope.warningMessage = 'Please fill adjustment reason';
 						$scope.showReason = true;
 						$scope.disablePostChargeButton = true;
