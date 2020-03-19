@@ -120,7 +120,7 @@ angular.module('sntRover').controller('rvGroupConfigurationAddonsCtrl', [
 		$scope.openAddonsPopup = function() {
 			$scope.addonPopUpData = {
 				addonPostingMode: 'create_group',
-				cancelLabel: "+ More",
+				cancelLabel: "Cancel",
                 saveLabel: "Save",
                 number_of_adults: 1,
 				number_of_children: 0,

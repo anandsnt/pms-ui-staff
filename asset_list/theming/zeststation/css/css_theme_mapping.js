@@ -118,7 +118,8 @@ module.exports = {
             'moment': [themeCSSRoot + 'moment.less'],
             'halifax': [themeCSSRoot + 'halifax.less'],
             'bellevue': [themeCSSRoot + 'bellevue.less'],
-            'jonas': [themeCSSRoot + 'jonas.less']
+            'jonas': [themeCSSRoot + 'jonas.less'],
+            'westminster': [themeCSSRoot + 'westminster.less']
         };
     }
 };
