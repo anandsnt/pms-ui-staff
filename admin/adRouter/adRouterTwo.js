@@ -1132,17 +1132,6 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         }
     });
 
-    $stateProvider.state('admin.forceAdjustmentReasons', {
-        templateUrl: '/assets/partials/forceAdjustmentReason/adForceAdjustmentReason.html',
-        controller: 'ADForceAdjustmentReason',
-        url: '/forceAdjustmentReason',
-        resolve: {
-            adjustmentReasonsData: function (adForceAdjustmentReasonSrv) {
-                return adForceAdjustmentReasonSrv.fetchReasons();
-            }
-        }
-    });
-
     $stateProvider.state('admin.googledriveAccounts.details', {
         templateUrl: '/assets/partials/googleDrive/adGoogleDriveAccountDetails.html',
         controller: 'ADGoogleDriveAccountDetailsCtrl',
