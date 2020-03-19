@@ -249,6 +249,24 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'TODAY',
                 'LAST_SEVEN_DAYS',
                 'LAST_MONTH'                             
+             ],
+             'Forecast' :[
+                'LAST_SEVEN_DAYS',
+                'NEXT_SEVEN_DAYS',
+                'NEXT_MONTH',
+                'LAST_MONTH',
+                'LAST_JANUARY',
+                'LAST_FEBRUARY',
+                'LAST_MARCH',
+                'LAST_APRIL',
+                'LAST_MAY',
+                'LAST_JUNE',
+                'LAST_JULY',
+                'LAST_AUGUST',
+                'LAST_SEPTEMBER',
+                'LAST_OCTOBER',
+                'LAST_NOVEMBER',
+                'LAST_DECEMBER'
              ]
         };
 

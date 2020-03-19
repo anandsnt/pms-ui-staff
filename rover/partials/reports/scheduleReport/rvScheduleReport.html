@@ -173,6 +173,31 @@
                     </select>
                 </div>
             </div>
+
+            <div class="entry search" ng-show="hasIncludeCompanyTaGroup(selectedEntityDetails)">
+                <label>Company/TA/Group</label>
+                <input class="icons icon-search" auto-complete auto-options="compTaGrpAutoCompleteOnList" data-card-type="" type="text" placeholder="Search by Company/TA/Group" value="" autocomplete="off"  ng-model="selectedEntityDetails.uiChosenIncludeCompanyTaGroup" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnuiChosenReport(selectedEntityDetails)" ng-change="removeCompTaGrpId(selectedEntityDetails, 'uiChosenIncludeCompanyTaGroup', 'chosenIncludeCompanyTaGroup')">
+                <input type="text" class="hidden" >
+            </div>
+
+            <multi-option-selection ng-show="isForecastReport"
+                label="Market(s)"
+                on-update="refreshSecondColumnScroll"
+                data="filters.hasMarketsList.data"
+                options="filters.hasMarketsList.options"></multi-option-selection>
+
+            <multi-option-selection ng-show="isForecastReport"
+                label="Source(s)"
+                on-update="refreshSecondColumnScroll"
+                data="filters.hasSourcesList.data"
+                options="filters.hasSourcesList.options"></multi-option-selection>
+
+            <multi-option-selection ng-show="isForecastReport"
+                label="Origin(s)"
+                on-update="refreshSecondColumnScroll"
+                data="filters.hasOriginsList.data"
+                options="filters.hasOriginsList.options"></multi-option-selection>
+
             <div class="entry" ng-show="shouldShowFileFormat(selectedEntityDetails)">
                 <label for="file-format">File Format</label>
                 <div class="select">

@@ -2809,6 +2809,138 @@ angular.module('reportsModule')
         };
 
         /**
+         * Fill markets
+         * @param {Object} report - has the selected report details
+         * @return {void}
+         */
+        factory.fillMarkets = function (filter,filterValues) { 
+            var getSelectAllVal = (markets) => {
+             var selectAll =  false;
+
+                if (filterValues && filterValues.market_ids) {
+                    selectAll = markets.length === filterValues.market_ids;
+                }
+
+                return selectAll;
+            };
+
+            reportsSubSrv.fetchMarkets().then(function (data) {
+                _.each(data, function (marketData) {
+                    marketData.id = marketData.value;
+                })
+                var marketCopy = angular.copy(data);
+
+                if (filterValues && filterValues.market_ids) {
+                    marketCopy = marketCopy.map(market => {
+                        market.selected = false;
+
+                        if (filterValues.market_ids.indexOf(market.id) > -1) {
+                            market.selected = true;
+                        }
+                        return market;
+                    }); 
+                }
+
+                filter.hasMarketsList = {
+                    data: marketCopy,
+                    options: {
+                        selectAll: getSelectAllVal(marketCopy),
+                        hasSearch: false,
+                        key: 'name'
+                    }
+                };
+            });
+        }
+
+        /**
+         * Fill origin
+         * @param {Object} filter - holding filter details
+         * @return {void} 
+         */
+        factory.fillBookingOrigins = function (filter,filterValues) {
+            var getSelectAllVal = (bookingOrigin) => {
+                var selectAll =  false;
+
+                if (filterValues && filterValues.booking_origin_ids) {
+                    selectAll = bookingOrigin.length === filterValues.booking_origin_ids;
+                }
+
+                return selectAll;
+            };
+
+            reportsSubSrv.fetchBookingOrigins().then(function (data) {
+                _.each(data, function (originData) {
+                    originData.id = originData.value;
+                })
+                var originCopy = angular.copy(data);
+
+                if (filterValues && filterValues.booking_origin_ids) {
+                    originCopy = originCopy.map(bookingOrigin => {
+                        bookingOrigin.selected = false;
+
+                        if (filterValues.booking_origin_ids.indexOf(bookingOrigin.id) > -1) {
+                            bookingOrigin.selected = true;
+                        }
+                        return bookingOrigin;
+                    }); 
+                }
+
+                filter.hasOriginsList = {
+                    data: originCopy,
+                    options: {
+                        selectAll: getSelectAllVal(originCopy),
+                        hasSearch: false,
+                        key: 'name'
+                    }
+                };
+            });
+        }
+
+        /**
+         * Fill sources
+         * @param {Object} filter - holding filter details
+         * @return {void} 
+         */
+        factory.fillSources = function (filter,filterValues) {
+            var getSelectAllVal = (sources) => {
+                var selectAll =  false;
+
+                if (filterValues && filterValues.source_ids) {
+                    selectAll = sources.length === filterValues.source_ids;
+                }
+
+                return selectAll;
+            };
+
+            reportsSubSrv.fetchSources().then(function (data) {
+                _.each(data, function (sourceData) {
+                    sourceData.id = sourceData.value;
+                })
+                var sourceCopy = angular.copy(data);
+
+                if (filterValues && filterValues.source_ids) {
+                    sourceCopy = sourceCopy.map(source => {
+                        source.selected = false;
+
+                        if (filterValues.source_ids.indexOf(source.id) > -1) {
+                            source.selected = true;
+                        }
+                        return source;
+                    }); 
+                }
+
+                filter.hasSourcesList = {
+                    data: sourceCopy,
+                    options: {
+                        selectAll: getSelectAllVal(sourceCopy),
+                        hasSearch: false,
+                        key: 'name'
+                    }
+                };
+            });
+        }
+
+        /**
         * Fill country
         * @param {Object} filter - holding filter details
         * @return {void}
