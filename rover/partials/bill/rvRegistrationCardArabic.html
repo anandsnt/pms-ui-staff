@@ -29,7 +29,7 @@
                         <td>
                             <span class="pull-left">Permanent Home Address </span>
                             <span class="pull-right align-right">عنوان الاقامة الدائم</span>
-                            <strong ng-bind-html="printRegCardData.guest_details.address"></strong>
+                            <strong class="value" ng-bind-html="printRegCardData.guest_details.address"></strong>
                         </td>
                         <td>
                             <span class="pull-left">Departure Date </span>
@@ -164,7 +164,7 @@
         <td colspan="2">
             <span class="pull-left">Guest Signature</span>
             <span class="pull-right align-right">توقيع الضيف</span>
-            <strong ng-if="printRegCardData.signature_url"><img ng-src="{{printRegCardData.signature_url}}" width="50%"/></strong>
+            <strong class="value" ng-if="printRegCardData.signature_url"><img ng-src="{{printRegCardData.signature_url}}" width="50%"/></strong>
         </td>
     </tr>
 </table>
