@@ -141,14 +141,13 @@ sntZestStation.controller('zsEmailBillCtrl', [
         var fetcCompanyTADetails = function() {
             var successCallBack = function(response) {
                 $scope.addressInfo = response;
-                // TODO: Address selection for email
-                // if (response &&
-                //     (response.company_card && response.company_card.name)) {
-                //     $scope.addressInfo = response;
-                //     $scope.mode = 'BILLING_ADDRESS_MODE';
-                // } else {
+             
+                if (response &&
+                    (response.company_card && response.company_card.name)) {
+                    $scope.mode = 'BILLING_ADDRESS_MODE';
+                } else {
                     sendEmail('guest');
-                // }
+                }
             };
 
             var data = {
