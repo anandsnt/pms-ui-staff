@@ -225,6 +225,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
                 params: data,
                 successCallBack: successCallBack
             };
+            
             $scope.callAPI(zsCheckoutSrv.fetchCompanyTADetails, options);
         };
 
