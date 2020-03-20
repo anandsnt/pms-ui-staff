@@ -133,7 +133,7 @@
                             <div ng-include="icons.url.company"></div>
                         </button>
                         {{ addressInfo.company_card.name}}
-                        <span ng-bind-html="addressInfo.company_card.address">
+                        <span ng-bind-html="::addressInfo.company_card.address">
                         </span>
                     </li>
                 </ul>
@@ -208,7 +208,7 @@
                                 <div ng-include="icons.url.company"></div>
                             </button>
                             {{ printData.company_card_details.name}}
-                            <span ng-bind-html="printData.company_card_details.address">
+                            <span ng-bind-html="::printData.company_card_details.address">
                             </span>
                         </li>
                     </ul>
