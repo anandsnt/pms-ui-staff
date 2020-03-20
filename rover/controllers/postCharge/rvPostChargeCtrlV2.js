@@ -394,7 +394,7 @@ sntRover.controller('RVPostChargeControllerV2',
 				} else {
 					return false;
 				}
-			}
+			};
 
 
 			// actions to be taken for numberpad button press
