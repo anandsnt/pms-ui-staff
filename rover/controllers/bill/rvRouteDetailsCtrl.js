@@ -796,7 +796,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
 
         $scope.saveSuccessCallback = function(data) {
             $scope.$parent.$emit('hideLoader');
-            if ($scope.reservationBillData) {
+            if ($scope.reservationBillData && data.bill_number) {
                 $scope.reservationBillData.bills[data.bill_number - 1] = {
                     bill_id: data.id,
                     bill_number: data.bill_number,
@@ -804,7 +804,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
                 };
             }
 
-            if (data.tax_exempt_warning.length > 0) {
+            if (data.tax_exempt_warning!== null && data.tax_exempt_warning.length > 0) {
                 var message = [];
 
                     message.push(data.tax_exempt_warning);
