@@ -108,8 +108,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
             }
         };
 
-        $scope.sendEmail = function() {
-			// future story, add black-list check here
+        var sendEmail = function(bill_address_type) {
 
             var sendBillSuccess = function() {
                 $scope.emailSent = true;
@@ -121,7 +120,8 @@ sntZestStation.controller('zsEmailBillCtrl', [
             };
             var params = {
                 reservation_id: $stateParams.reservation_id,
-                bill_number: '1'
+                bill_number: '1',
+                bill_address_type: bill_address_type
             };
             var options = {
                 params: params,
@@ -132,6 +132,39 @@ sntZestStation.controller('zsEmailBillCtrl', [
             $scope.callBlurEventForIpad();
 
             $scope.callAPI(zsCheckoutSrv.sendBill, options);
+        };
+
+        $scope.emailAddressSelected = function(billingAddresstype) {
+            sendEmail(billingAddresstype);
+        };
+
+        var fetcCompanyTADetails = function() {
+            var successCallBack = function(response) {
+                $scope.addressInfo = response;
+                // TODO: Address selection for email
+                // if (response &&
+                //     (response.company_card && response.company_card.name)) {
+                //     $scope.addressInfo = response;
+                //     $scope.mode = 'BILLING_ADDRESS_MODE';
+                // } else {
+                    sendEmail('guest');
+                // }
+            };
+
+            var data = {
+                'reservation_id': $stateParams.reservation_id,
+            };
+            var options = {
+                params: data,
+                successCallBack: successCallBack
+            };
+            
+            $scope.callAPI(zsCheckoutSrv.fetchCompanyTADetails, options);
+        };
+
+        $scope.sendEmail = function() {
+			// future story, add black-list check here
+            fetcCompanyTADetails();
         };
 
         /**
