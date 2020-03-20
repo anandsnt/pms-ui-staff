@@ -119,7 +119,8 @@ module.exports = {
             'halifax': [themeCSSRoot + 'halifax.less'],
             'bellevue': [themeCSSRoot + 'bellevue.less'],
             'jonas': [themeCSSRoot + 'jonas.less'],
-            'westminster': [themeCSSRoot + 'westminster.less']
+            'westminster': [themeCSSRoot + 'westminster.less'],
+            'hermitage': [themeCSSRoot + 'hermitage.less']
         };
     }
 };

@@ -211,11 +211,25 @@ sntZestStation.service('zsCheckoutSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseW
 		* @param {object} data
 		* @return {object} defer promise
 		*/
-        this.postCharges = function (params) {
+        this.postCharges =  function (params) {
             var deferred = $q.defer();
             var url = '/staff/items/post_items_to_bill?application=KIOSK';
 
             zsBaseWebSrv.postJSON(url, params)
+                .then(function (data) {
+                    deferred.resolve(data);
+                }, function (data) {
+                    deferred.reject(data);
+                });
+
+            return deferred.promise;
+        };
+
+        this.fetchCompanyTADetails = function (params) {
+            var deferred = $q.defer();
+            var url = '/zest_station/fetch_account_details';
+
+            zsBaseWebSrv.getJSON(url, params)
                 .then(function (data) {
                     deferred.resolve(data);
                 }, function (data) {
