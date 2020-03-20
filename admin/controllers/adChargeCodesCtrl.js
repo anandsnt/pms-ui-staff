@@ -145,6 +145,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			}
 			return returnValue;
 		};
+
 		/*
 		 * To show date picker
 		 * @param index is index
@@ -200,7 +201,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			customTaxRuleObject.allRoomTypes = $scope.roomTypes;
 			$scope.prefetchData.custom_tax_rules.push(dclone(customTaxRuleObject));
 			$scope.$digest();
-		}
+		};
 
 		/*
 		 * To setup custom tax rules and add different data to work the same
@@ -250,12 +251,12 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			});
 			return customTaxRules;
 		};
+
 		/*
 		 * Delete Tax rule
 		 */
 		$scope.deleteTaxRule = function(indexToBeDeleted) {
 			$scope.prefetchData.custom_tax_rules.splice(indexToBeDeleted, 1);
-			$scope.prefetchData.custom_tax_rules
 		};
 		/*
 		 * Delete Date Range parameter
@@ -465,7 +466,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 					item.allRoomTypes = angular.copy($scope.roomTypes);
 
 					item.allRoomTypes.map(function(room) {
-						if(_.indexOf(item.room_types, parseInt(room.id)) !== -1) {
+						if (_.indexOf(item.room_types, parseInt(room.id)) !== -1) {
 							room.ticked = true;
 						}
 					});
@@ -650,9 +651,9 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 
 			currentCustomTaxRules = angular.copy($scope.prefetchData.custom_tax_rules); // Used if the API fails need to show the same in UI
 
-			angular.forEach($scope.prefetchData.custom_tax_rules, function(item, index) {
+			angular.forEach($scope.prefetchData.custom_tax_rules, function(item) {
 				item.room_types = [];
-				angular.forEach(item.allRoomTypes, function(roomItem, roomIndex) {
+				angular.forEach(item.allRoomTypes, function(roomItem) {
 					if (roomItem.ticked) {
 						item.room_types.push(parseInt(roomItem.id));
 					}
