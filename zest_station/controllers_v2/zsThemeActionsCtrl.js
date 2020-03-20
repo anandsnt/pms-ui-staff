@@ -68,7 +68,8 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                     no_of_nights: commonIconsPath + '/nights.svg',
                     adults: commonIconsPath + '/adults.svg',
                     children: commonIconsPath + '/children.svg',
-                    down: commonIconsPath + '/down.svg'
+                    down: commonIconsPath + '/down.svg',
+                    company: commonIconsPath + '/company.svg'
                 }
             };
 
@@ -208,7 +209,8 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                     'halifax',
                     'bellevue',
                     'jonas',
-                    'westminster'
+                    'westminster',
+                    'hermitage'
                 ],
                 nonCircleNavIcons = ['public_v2'];// minor adjustment to the back/close icons for some themes (only show the inner x or <)
 

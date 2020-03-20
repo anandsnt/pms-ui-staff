@@ -105,7 +105,7 @@
 
 <!-- print option for stand alone-->
 <div ng-controller="zsPrintBillCtrl" ng-if="zestStationData.is_standalone || !showPostChargeScreen">
-    <section id="main" role="main" class="centered" ng-show="printOpted">
+    <section id="main" role="main" class="centered" ng-show="printOpted && !showAddressOptions">
         <div id="content">
             <h1>
                 <text data-ng-bind-html="getTagValue('END_THANKS')" editable-text="END_THANKS"></text>
@@ -136,6 +136,37 @@
                 </ul>
             </nav>
         </div>
+    </section>
+    <!-- show options -->
+    <section id="main" role="main" ng-show="printOpted && showAddressOptions">
+            <div id="content">
+                <h1 translate>PRINT_GUEST_INVOICE</h1>
+                <h2 translate>BILL_ADDRESSED_TO_TEXT</h2>
+                <nav id="options" role="nav">
+                    <ul role="menu">
+                        <!-- {{printData}} -->
+                        <li>
+                            <button type="button" class="button option" touch-press="addressSelected('guest')">
+                                <div ng-include="icons.url.adults"></div>
+                            </button>
+                             {{ printData.guest_info.name}}
+                            <span ng-bind-html="printData.guest_info.address">
+                            </span>
+                        </li>
+                        <li class="break" ng-if="printData.company_card_details.name">
+                            <span>Or</span>
+                        </li>
+                        <li ng-if="printData.company_card_details.name">
+                            <button type="button" class="button option" touch-press="addressSelected('company')">
+                                <div ng-include="icons.url.company"></div>
+                            </button>
+                            {{ printData.company_card_details.name}}
+                            <span ng-bind-html="printData.company_card_details.address">
+                            </span>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
     </section>
     <!-- print starts here -->
     <div ng-include="'/assets/partials_v2/checkout/zsGenericBillPrint.html'" ng-if="zestStationData.theme !== 'yotel'">
