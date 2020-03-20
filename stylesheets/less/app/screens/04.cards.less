@@ -767,8 +767,6 @@
                         }
 
                         &.stay-dates {
-                            .float;
-
                             .entry-data {
                                 margin-right: 10px;
                                 #pixel-to-percent > .width(260, 904);
@@ -783,10 +781,50 @@
 
                             &.no-actions {
                                 .entry-data {
-                                    .calc-width(50, 5);
+                                    #pixel-to-percent > .width(432, 904);
+                                    #pixel-to-percent > .right-margin(40, 904);
 
                                     &:last-child { margin-right: 0; }
                                 }
+                            }
+
+                            &:not(.shoulder-dates) {
+                                .float;
+                            }
+                        }
+
+                        &.shoulder-dates {
+                            display: grid;
+                            grid-template-columns: 1fr 1fr 140px;
+                            grid-column-gap: 20px;
+
+                            .entry-data {
+                                float: none;
+                                margin: 0;
+                                width: 100%;
+                                .float;
+
+                                input {
+                                    .pull-left;
+                                    .calc-width(100, 60);
+                                }
+
+                                .select {
+                                    width: 50px;
+                                    .pull-left;
+
+                                    &:not(:last-child) {
+                                        margin-right: 10px;
+                                    }
+                                    &:last-child {
+                                        margin-left: 10px;
+                                    }
+                                }
+                            }
+
+                            .button {
+                                padding: 0 10px;
+                                .nowrap();
                             }
                         }
 
@@ -2198,7 +2236,7 @@
 
                         .entry {
                             margin-right: 20px;
-                            width: 100px;
+                            width: 90px;
 
                             label { margin: 0; }
 
@@ -2208,12 +2246,12 @@
                                 &:after { .hide; }
                             }
 
-                            &.status,
-                            &.date { width: 160px; }
+                            &.status { width: 160px; }
+                            &.date { width: 120px; }
 
                             &.date-range {
                                 margin-right: 0;
-                                .calc-width(100, 760);
+                                .calc-width(100, 660);
                                 .float;
 
                                 .has-datepicker {
@@ -2241,7 +2279,7 @@
                             }
 
                             &.move-group {
-                                width: 140px;
+                                width: 120px;
                                 margin-right: 20px;
                                 .pull-left;
 
@@ -2279,6 +2317,8 @@
                             text-transform: uppercase;
                             z-index: 9920;
                             background: @background;
+                            box-shadow: -1px -3px 3px rgba(0,0,0,.15);
+                            z-index: 9950;
                             .size(100%, 80px);
 
                             .has-arrow {
@@ -2372,15 +2412,15 @@
                             z-index: 9910;
                             height: 180px;
                             .float;
-                            .calc-width(180, 180);
+                            .calc-width(100, 180);
 
                             > .wrapper { padding: 0; }
 
                             li {
                                 text-align: center;
                                 text-transform: uppercase;
-                                margin: 0 10px 0 0;
-                                padding: 20px 10px 10px 0;
+                                margin: 0;
+                                padding: 20px 10px 10px;
                                 .size(180px, 180px);
                                 .box-shadow(2px 0 0 rgba(0,0,0,.3));
                                 .pull-left;
@@ -2418,7 +2458,6 @@
                                     padding: 5px 0;
 
                                     .line {
-                                        padding-left: 10px;
                                         margin: 0;
                                         overflow: hidden;
                                         .flex(center);
@@ -2464,15 +2503,17 @@
                                     }
                                 }
 
-                                &:first-child {
+                                &.with-button {
                                     padding-right: 40px;
-                                    margin-left: 10px;
                                     width: 220px;
                                 }
 
                                 &:last-child {
-                                    margin-right: 0;
                                     .box-shadow(none);
+                                }
+
+                                &.shoulder-date {
+                                    background-color: fade(@red, 10);
                                 }
                             }
 
@@ -2484,7 +2525,9 @@
                                         .cell { .calc-width(33.33333, 6.66666); }
                                     }
 
-                                    &:first-child { width: 310px; }
+                                    &.with-button {
+                                        width: 310px;
+                                    }
                                 }
                             }
 
@@ -2615,7 +2658,7 @@
                             &.release-range {
                                 .row {
                                     &.open {
-                                        .line-toggle { margin-bottom: 30px; }
+                                        .line-toggle { margin-bottom: 80px; }
                                     }
                                 }
                             }
@@ -2632,6 +2675,7 @@
                                 bottom: 10px;
                                 left: 10px;
                                 right: 10px;
+                                z-index: 9940;
                             }
 
                             .row {
@@ -2640,7 +2684,6 @@
                                 .column {
                                     position: relative;
                                     width: 180px;
-                                    margin-right: 10px;
                                     padding: 5px 0;
                                     .box-shadow(2px 0 0 rgba(0,0,0,.3));
                                     .pull-left;
@@ -2684,8 +2727,13 @@
                                         .size(10px, 100%);
                                     }
 
-                                    &:first-child {
-                                        margin-left: 10px;
+                                    &:last-child {
+                                        .box-shadow(none);
+
+                                        &:after { .hide; }
+                                    }
+
+                                    &.with-button {
                                         width: 220px;
 
                                         .line {
@@ -2703,12 +2751,8 @@
                                         }
                                     }
 
-                                    &:last-child {
-                                        padding-right: 0;
-                                        margin-right: 0;
-                                        .box-shadow(none);
-
-                                        &:after { .hide; }
+                                    &.shoulder-date {
+                                        background-color: fade(@red, 10);
                                     }
                                 }
 
@@ -2729,9 +2773,9 @@
                         .room-block-timeline,
                         .room-block-grid {
                             &.paginated {
-                                .wrapper {
-                                    padding-right: 100px;
-                                    .float;
+                                .wrapper { 
+                                    padding-right: 80px; 
+                                    .float; 
                                 }
                             }
                         }

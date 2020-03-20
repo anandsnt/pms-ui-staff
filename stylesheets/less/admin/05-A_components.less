@@ -1966,6 +1966,45 @@
             grid-row-gap: 20px;
         }
     } 
+
+/* Repeater Fields */
+    .repeater-field-container {
+        .repeater-field {
+            margin-bottom: 10px;
+            #flexbox > .parent( '', '', '', '' );
+
+            .repeater-input {
+                .calc-width( 100, 50 );
+            }
+
+            .repeater-action {
+                width: 40px;
+                margin-left: 10px;
+
+                button {
+                    background-color: @grey1;
+                    .box-shadow();
+
+                    &.icons {
+                        &.icon-delete {
+                            &.large-icon { 
+                                .square( 40px );
+                                background-position: 12px -638px;
+                            }
+                        }
+
+                        &.icon-add {
+                            &.large-icon { 
+                                .square( 40px );
+                                background-position: 15px -336px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 /* 6. IE
 ==========================================================*/
 /* 7. RESPONSIVE

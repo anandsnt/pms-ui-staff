@@ -249,7 +249,20 @@ angular.module('sntRover').service('RVBillCardSrv',
         });
 
         return deferred.promise;
-    };
+	};
+
+    this.fetchAdjustmentReasons = function() {
+        var deferred = $q.defer(),
+			url = '/admin/force_adjustment_reasons';
+			
+        BaseWebSrvV2.getJSON(url).then(function(data) {
+            deferred.resolve(data);
+        }, function(data) {
+            deferred.reject(data);
+        });
+
+        return deferred.promise;
+	};
 
 	this.sendEmail = function(data) {
 		var deferred = $q.defer();

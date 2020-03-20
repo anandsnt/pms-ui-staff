@@ -324,7 +324,6 @@ angular.module('sntRover')
 					}
 				}
 				roomFeatures[group].items[feature].selected = !roomFeatures[group].items[feature].selected;
-				fetchIdFromRoomFeaturesList();
 			};
 
 			// CICO-65277: Claer All Guest preferences corresponding to a seletced Reservation.
