@@ -2822,7 +2822,7 @@ angular.module('reportsModule')
                         }
                     };
                 });
-            }
+            };
 
             /**
              * Fill origin
@@ -2879,7 +2879,7 @@ angular.module('reportsModule')
                         }
                     };
                 });
-            }
+            };
 
             /**
              * Fill sources
@@ -2936,7 +2936,7 @@ angular.module('reportsModule')
                         }
                     };
                 });
-            }
+            };
 
             /**
              * Fill country

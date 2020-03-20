@@ -250,7 +250,7 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'LAST_SEVEN_DAYS',
                 'LAST_MONTH'                             
              ],
-             'Forecast' :[
+             'Forecast': [
                 'LAST_SEVEN_DAYS',
                 'NEXT_SEVEN_DAYS',
                 'NEXT_MONTH',
