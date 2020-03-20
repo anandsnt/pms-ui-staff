@@ -112,7 +112,7 @@ sntRover.controller('rvBillCardPopupCtrl',
 			}
 		};
 		
-		if (!$scope.adjustmentReason) {
+		if (!$scope.adjustmentReason && $scope.showAdjustmentReason) {
 			$scope.warningMessage = 'Please fill adjustment reason';
 		} else {
 			$scope.invokeApi(RVBillCardSrv.transactionEdit, params, transactionEditSuccessCallback, failureCallBack);

@@ -104,31 +104,31 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 	 */
 	
 	$scope.editCharge = function() {
-		if (!$scope.adjustmentReason) {
+		if (!$scope.adjustmentReason && $scope.showAdjustmentReason) {
 			$scope.warningMessage = 'Please fill adjustment reason';
-		} else {
-			$scope.$emit('showLoader');
-			var editData =
-			{
-				"updatedDate":
-							{
-								"new_amount": $scope.newAmount,
-								"charge_code_id": $scope.selectedChargeCode.id,
-								"adjustment_reason": $scope.adjustmentReason,
-								"reference_text": $scope.reference_text,
-								"show_ref_on_invoice": $scope.show_ref_on_invoice
-							},
-						"id": $scope.selectedTransaction.id
-			};
-
-			var options = {
-				params: editData,
-				loader: 'NONE',
-				successCallBack: hideLoaderAndClosePopup
-			};
-			
-			$scope.callAPI (rvAccountTransactionsSrv.transactionEdit, options);
+			return;
 		}
+		$scope.$emit('showLoader');
+		var editData =
+		{
+			"updatedDate":
+						{
+							"new_amount": $scope.newAmount,
+							"charge_code_id": $scope.selectedChargeCode.id,
+							"adjustment_reason": $scope.adjustmentReason,
+							"reference_text": $scope.reference_text,
+							"show_ref_on_invoice": $scope.show_ref_on_invoice
+						},
+					"id": $scope.selectedTransaction.id
+		};
+
+		var options = {
+			params: editData,
+			loader: 'NONE',
+			successCallBack: hideLoaderAndClosePopup
+		};
+		
+		$scope.callAPI (rvAccountTransactionsSrv.transactionEdit, options);
 	};
 
 	/*
