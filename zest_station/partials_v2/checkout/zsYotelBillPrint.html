@@ -46,7 +46,7 @@
 
     <div class="caption bill-caption" ng-if="printData.addressType ==='ta' && printData.ta_card_details && printData.ta_card_details.name">
         <p>{{ ::printData.ta_card_details.name}}</p>
-        <p ng-bind-html="printData.ta_card_details.address"></p>
+        <p ng-bind-html="::printData.ta_card_details.address"></p>
         <br/><br/>
     </div>
 

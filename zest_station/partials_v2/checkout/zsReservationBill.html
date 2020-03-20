@@ -150,7 +150,7 @@
                                 <div ng-include="icons.url.adults"></div>
                             </button>
                              {{ printData.guest_info.name}}
-                            <span ng-bind-html="printData.guest_info.address">
+                            <span ng-bind-html="::printData.guest_info.address">
                             </span>
                         </li>
                         <li class="break" ng-if="printData.company_card_details.name">
@@ -161,7 +161,7 @@
                                 <div ng-include="icons.url.company"></div>
                             </button>
                             {{ printData.company_card_details.name}}
-                            <span ng-bind-html="printData.company_card_details.address">
+                            <span ng-bind-html="::printData.company_card_details.address">
                             </span>
                         </li>
                     </ul>
