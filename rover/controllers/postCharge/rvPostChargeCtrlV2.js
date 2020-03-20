@@ -380,16 +380,21 @@ sntRover.controller('RVPostChargeControllerV2',
 
 				// update net total price
 				calNetTotalPrice();
-				if ( $scope.selectedChargeItem.total_price < 0 && $scope.showAdjustmentReason) {
-					$scope.showReason = true;
-				} else {
-					$scope.showReason = false;
-				}
+				
+				$scope.showReason = $scope.showAdjstmentDropdown();
 
 				// for numbers save current input to lastInput only
 				// after processing the current input
 				lastInput = input;
 			};
+
+			$scope.showAdjstmentDropdown = function(input) {
+				if ( $scope.selectedChargeItem.total_price < 0 && $scope.showAdjustmentReason) {
+					return true;
+				} else {
+					return false;
+				}
+			}
 
 
 			// actions to be taken for numberpad button press
@@ -397,12 +402,7 @@ sntRover.controller('RVPostChargeControllerV2',
 
 				lastInput = input;
 				$scope.warningMessage = "";
-
-				if ( $scope.selectedChargeItem.total_price < 0 && $scope.showAdjustmentReason) {
-					$scope.showReason = true;
-				} else {
-					$scope.showReason = false;
-				}
+				$scope.showReason = $scope.showAdjstmentDropdown();
 
 				// toggle 'QTY' and 'PR' as required and exit
 				if ( input === 'QTY' || input === 'PR' ) {
@@ -477,7 +477,7 @@ sntRover.controller('RVPostChargeControllerV2',
 						// update net total price
 						calNetTotalPrice();
 					}
-
+					$scope.showReason = $scope.showAdjstmentDropdown();
 					return;
 				}
 			};
