@@ -380,6 +380,11 @@ sntRover.controller('RVPostChargeControllerV2',
 
 				// update net total price
 				calNetTotalPrice();
+				if ( $scope.selectedChargeItem.total_price < 0 && $scope.showAdjustmentReason) {
+					$scope.showReason = true;
+				} else {
+					$scope.showReason = false;
+				}
 
 				// for numbers save current input to lastInput only
 				// after processing the current input
@@ -392,6 +397,12 @@ sntRover.controller('RVPostChargeControllerV2',
 
 				lastInput = input;
 				$scope.warningMessage = "";
+
+				if ( $scope.selectedChargeItem.total_price < 0 && $scope.showAdjustmentReason) {
+					$scope.showReason = true;
+				} else {
+					$scope.showReason = false;
+				}
 
 				// toggle 'QTY' and 'PR' as required and exit
 				if ( input === 'QTY' || input === 'PR' ) {
