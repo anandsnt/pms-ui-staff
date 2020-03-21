@@ -2503,7 +2503,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
         var initialState = {
             mode: RM_RX_CONST.NOT_CONFIGURED_MODE,
-            isHierarchyRestrictionEnabled: isHierarchyRestrictionEnabled
+            isHierarchyHouseRestrictionEnabled: isHierarchyRestrictionEnabled
         };
 
         const store = configureStore(initialState);
