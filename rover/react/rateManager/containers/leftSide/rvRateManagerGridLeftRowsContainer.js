@@ -34,14 +34,15 @@ let convertRatesDataForLeftListing = (rates, mode) => {
 };
 
 let convertRateTypesDataForLeftListing = (rateTypes, mode, isHierarchyRateTypeRestrictionEnabled) => {
-	var rateTypesToReturn = [];
-	var showIndicator = (mode == RM_RX_CONST.RATE_TYPE_VIEW_MODE);
+	var rateTypesToReturn = [],
+		showIndicator = (mode == RM_RX_CONST.RATE_TYPE_VIEW_MODE),
+		disableNavigation = (mode == RM_RX_CONST.RATE_TYPE_VIEW_MODE) && isHierarchyRateTypeRestrictionEnabled;
 
 	rateTypes.map((rateType, index) => {
 		rateTypesToReturn.push({
 			id: rateType.id,
 			name: rateType.name,
-			trClassName: ('cell rate ' + (((index + 1) === rateTypes.length) ? 'last' : '')) + (isHierarchyRateTypeRestrictionEnabled ? ' disable-element' : ''),
+			trClassName: ('cell rate ' + (((index + 1) === rateTypes.length) ? 'last' : '')) + (disableNavigation ? ' disable-element' : ''),
 			tdClassName: '',
 			leftSpanClassName: 'name ' + (rateType.based_on_rate_id && !rateType.is_copied ? 'gray' : 'base-rate')+((rateType.is_company_card||rateType.is_travel_agent)?' contracted-rate':' contracted-rate contracted-rate-missing-info'),
 			showIconBeforeText: !rateType.based_on_rate_id,
@@ -51,7 +52,7 @@ let convertRateTypesDataForLeftListing = (rateTypes, mode, isHierarchyRateTypeRe
 			showRightSpan: true,
 			contractLabel: rateType.is_travel_agent?'ta':(rateType.is_company_card?'c':''),
 			contractClass: rateType.is_travel_agent?'travel-agent':'',
-			rightSpanClassName: isHierarchyRateTypeRestrictionEnabled ? '' : 'icons icon-double-arrow rotate-right',
+			rightSpanClassName: disableNavigation ? '' : 'icons icon-double-arrow rotate-right',
 			showIndicator :showIndicator
 		})
 	});
