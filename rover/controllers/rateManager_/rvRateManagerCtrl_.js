@@ -2498,7 +2498,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
         var initialState = {
             mode: RM_RX_CONST.NOT_CONFIGURED_MODE,
-            isHierarchyHouseRestrictionEnabled: $scope.hierarchyRestrictions.houseEnabled
+            isHierarchyHouseRestrictionEnabled: $scope.hierarchyRestrictions.houseEnabled,
+            isHierarchyRoomTypeRestrictionEnabled: $scope.hierarchyRestrictions.roomTypeEnabled,
+            isHierarchyRateTypeRestrictionEnabled: $scope.hierarchyRestrictions.rateTypeEnabled
         };
 
         const store = configureStore(initialState);
