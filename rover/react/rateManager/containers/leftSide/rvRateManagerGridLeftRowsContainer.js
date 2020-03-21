@@ -41,7 +41,7 @@ let convertRateTypesDataForLeftListing = (rateTypes, mode, isHierarchyRateTypeRe
 		rateTypesToReturn.push({
 			id: rateType.id,
 			name: rateType.name,
-			trClassName: ('cell rate ' + (((index + 1) === rateTypes.length) ? 'last' : '')) + (isHierarchyRateTypeRestrictionEnabled ? 'disable-element' : ''),
+			trClassName: ('cell rate ' + (((index + 1) === rateTypes.length) ? 'last' : '')) + (isHierarchyRateTypeRestrictionEnabled ? ' disable-element' : ''),
 			tdClassName: '',
 			leftSpanClassName: 'name ' + (rateType.based_on_rate_id && !rateType.is_copied ? 'gray' : 'base-rate')+((rateType.is_company_card||rateType.is_travel_agent)?' contracted-rate':' contracted-rate contracted-rate-missing-info'),
 			showIconBeforeText: !rateType.based_on_rate_id,
