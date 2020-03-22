@@ -35,8 +35,8 @@ let convertRatesDataForLeftListing = (rates, mode) => {
 
 let convertRateTypesDataForLeftListing = (rateTypes, mode, isHierarchyRateTypeRestrictionEnabled) => {
 	var rateTypesToReturn = [],
-		showIndicator = (mode == RM_RX_CONST.RATE_TYPE_VIEW_MODE),
-		disableNavigation = (mode == RM_RX_CONST.RATE_TYPE_VIEW_MODE) && isHierarchyRateTypeRestrictionEnabled;
+		showIndicator = (mode === RM_RX_CONST.RATE_TYPE_VIEW_MODE),
+		disableNavigation = (mode === RM_RX_CONST.RATE_TYPE_VIEW_MODE) && isHierarchyRateTypeRestrictionEnabled;
 
 	rateTypes.map((rateType, index) => {
 		rateTypesToReturn.push({
