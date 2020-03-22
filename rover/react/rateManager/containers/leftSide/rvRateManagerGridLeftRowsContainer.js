@@ -71,7 +71,7 @@ let convertRoomTypesDataForLeftListing = (roomTypes) => {
 	roomTypes.map((roomType, index) => {
 		roomTypesToReturn.push({
 			...roomType,
-			trClassName: ('cell rate ' + (((index + 1) === roomTypes.length) ? 'last' : '')),
+			trClassName: ('cell rate ' + (((index + 1) === roomTypes.length) ? 'last' : '')) + ' disable-element',
 			tdClassName: '',
 			leftSpanClassName: 'name ',
 			showIconBeforeText: false,
