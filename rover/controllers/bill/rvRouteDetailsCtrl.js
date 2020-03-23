@@ -176,7 +176,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
         }
 
         $scope.billNumberOnAddCC = $scope.selectedEntity.is_new ? $scope.newBillNumber : 
-                                            $scope.selectedEntity.to_bill;
+                                            $scope.selectedEntity.bill_no;
 
         $scope.isAddPayment = true;
         $scope.showCreditCardDropDown = true;
