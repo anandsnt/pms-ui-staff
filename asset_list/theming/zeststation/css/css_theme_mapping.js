@@ -115,7 +115,12 @@ module.exports = {
             'brooklyn': [themeCSSRoot + 'brooklyn.less'],
             'krowoderska': [themeCSSRoot + 'krowoderska.less'],
             'bayou': [themeCSSRoot + 'bayou.less'],
-            'moment': [themeCSSRoot + 'moment.less']
+            'moment': [themeCSSRoot + 'moment.less'],
+            'halifax': [themeCSSRoot + 'halifax.less'],
+            'bellevue': [themeCSSRoot + 'bellevue.less'],
+            'jonas': [themeCSSRoot + 'jonas.less'],
+            'westminster': [themeCSSRoot + 'westminster.less'],
+            'hermitage': [themeCSSRoot + 'hermitage.less']
         };
     }
 };

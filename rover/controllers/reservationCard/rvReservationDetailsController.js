@@ -400,11 +400,14 @@ sntRover.controller('reservationDetailsController',
 
 		// CICO-49191 - Get the min date for showing in the arrival/departure calendar for group reservation
 		var getMinDateForGroupReservation = function () {
-			var minDate = $rootScope.businessDate > $scope.reservationData.reservation_card.group_block_from ? 
-                          $rootScope.businessDate : $scope.reservationData.reservation_card.group_block_from;
+				var businessDate = tzIndependentDate($rootScope.businessDate),
+					groupShoulderStartDate = tzIndependentDate($scope.reservationData.reservation_card.group_shoulder_block_from);
 
-			return $filter('date')(minDate, $rootScope.dateFormat);
-		};
+				var minDate = businessDate > groupShoulderStartDate ? 
+							businessDate : groupShoulderStartDate;
+
+				return $filter('date')(minDate, $rootScope.dateFormat);
+			};
 
 		// for groups this date picker must not allow user to pick
 		// a date that is after the group end date.
@@ -412,7 +415,7 @@ sntRover.controller('reservationDetailsController',
 		if ( !! $scope.reservationData.reservation_card.group_id ) {
 			datePickerCommon = angular.extend(datePickerCommon, {
 				minDate: getMinDateForGroupReservation(),
-				maxDate: $filter('date')($scope.reservationData.reservation_card.group_block_to, $rootScope.dateFormat)
+				maxDate: $filter('date')($scope.reservationData.reservation_card.group_shoulder_block_to, $rootScope.dateFormat)
 			});
 
 		}
@@ -421,11 +424,11 @@ sntRover.controller('reservationDetailsController',
 		$scope.departureDateOptions = angular.copy(datePickerCommon);	
 
 	    // CICO-46933
-		$scope.departureDateOptions.maxDate = !!$scope.reservationData.reservation_card.group_id ? $filter('date')($scope.reservationData.reservation_card.group_block_to, $rootScope.dateFormat) : $scope.getReservationMaxDepartureDate($scope.editStore.arrival);
+		$scope.departureDateOptions.maxDate = !!$scope.reservationData.reservation_card.group_id ? $filter('date')($scope.reservationData.reservation_card.group_shoulder_block_to, $rootScope.dateFormat) : $scope.getReservationMaxDepartureDate($scope.editStore.arrival);
 		
 		// CICO-46933
 		$scope.arrivalDateChanged = function () {			
-            $scope.departureDateOptions.maxDate = !!$scope.reservationData.reservation_card.group_id ? $filter('date')($scope.reservationData.reservation_card.group_block_to, $rootScope.dateFormat) : $scope.getReservationMaxDepartureDate($scope.editStore.arrival);
+            $scope.departureDateOptions.maxDate = !!$scope.reservationData.reservation_card.group_id ? $filter('date')($scope.reservationData.reservation_card.group_shoulder_block_to, $rootScope.dateFormat) : $scope.getReservationMaxDepartureDate($scope.editStore.arrival);
             $scope.editStore.departure = tzIndependentDate($scope.editStore.departure) <= $scope.getReservationMaxDepartureDate($scope.editStore.arrival) ? 
                                         $scope.editStore.departure : $scope.getReservationMaxDepartureDate($scope.editStore.arrival)
 
@@ -2101,8 +2104,11 @@ sntRover.controller('reservationDetailsController',
 				$scope.reservationData.reservation_card.is_package_exist = false;
 			}
 			shouldReloadState = true;
-		};
-		var addonArray = [];
+		},
+		failureCallBack = function(errorMessage) {
+			$scope.errorMessage = errorMessage;
+		},
+		addonArray = [];
 
 		addonArray.push(addonId);
 		var dataToApi = {
@@ -2113,7 +2119,7 @@ sntRover.controller('reservationDetailsController',
 			"reservationId": reservationId
 		};
 
-		$scope.invokeApi(RVReservationPackageSrv.deleteAddonsFromReservation, dataToApi, successDelete);
+		$scope.invokeApi(RVReservationPackageSrv.deleteAddonsFromReservation, dataToApi, successDelete, failureCallBack);
 	};
 
 	$scope.$on('PRIMARY_GUEST_ID_CHANGED', function(event, data) {

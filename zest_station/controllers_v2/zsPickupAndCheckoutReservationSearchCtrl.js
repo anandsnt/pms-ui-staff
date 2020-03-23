@@ -21,6 +21,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
          **/
 
         BaseCtrl.call(this, $scope);
+        $scope.zestStationData.skipGuestMandatorySchemaCheck = false;
 
         var debugWithReservation = function() {
             // use this to quickly go through last name + room number and debug keys faster

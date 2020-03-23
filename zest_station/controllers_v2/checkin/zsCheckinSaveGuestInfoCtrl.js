@@ -6,7 +6,8 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 	'$stateParams',
 	'$controller',
 	'zsEventConstants',
-	function($scope, zsCheckinSrv, zsGeneralSrv, $timeout, $stateParams, $controller, zsEventConstants) {
+	'$state',
+	function($scope, zsCheckinSrv, zsGeneralSrv, $timeout, $stateParams, $controller, zsEventConstants, $state) {
 
 		/* ************************************************
 
@@ -21,7 +22,15 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 		});
 
 		var guestInfo = angular.fromJson($stateParams.guestInfo);
-		var checkinParams = angular.fromJson($stateParams.checkinParams);
+		var checkinParams = {};
+		var pickupKeystateParams;
+
+		if ($stateParams.flowType !== 'PICKUP_KEY') {
+			checkinParams = angular.fromJson($stateParams.checkinParams);
+		} else {
+			checkinParams.reservation_id = $stateParams.reservation_id;
+			pickupKeystateParams = JSON.parse($stateParams.prevStateParams);
+		}
 		var selectedCalendarModel = "";
 		var selectedCalendarModelDisplay = "";
 
@@ -64,12 +73,21 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 			});
 		};
 
-		var onGuestInfoSave = function() {
-			// If there is only one guest, checkin the reservation and proceed
-			if ($scope.selectedReservation.guest_details.length === 1) {
+		var nextPageActions = function() {
+			if ($stateParams.flowType !== 'PICKUP_KEY') {
 				$scope.$emit('CHECKIN_GUEST', {
 					checkinParams: checkinParams
 				});
+			} else {
+				$scope.zestStationData.skipGuestMandatorySchemaCheck = true;
+				$state.go('zest_station.pickUpKeyDispense', pickupKeystateParams);
+			}
+		};
+
+		var onGuestInfoSave = function() {
+			// If there is only one guest, checkin the reservation and proceed
+			if ($scope.selectedReservation.guest_details.length === 1) {
+				nextPageActions();
 			} else {
 				var guestsWithMissingInfo = _.filter($scope.selectedReservation.guest_details, function(guest) {
 					return guest.is_missing_any_required_field;
@@ -96,9 +114,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 
 		// Continue button action
 		$scope.checkinReservation = function() {
-			$scope.$emit('CHECKIN_GUEST', {
-				checkinParams: checkinParams
-			});
+			nextPageActions();
 		};
 
 		var recordSkipingOffVehicleRegNumber = function(actionDetails) {
