@@ -616,7 +616,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Spain Barcelona Police Export': true,
                 'Austria Nationality Export': true,
                 'Nationality Export - France': true,
-                'Criterion Hospitality CC Export': true
+                'Criterion Hospitality CC Export': true,
+                'GOBD Export': true
             };
 
             var forWeekly = {
@@ -802,23 +803,46 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             var businessDateMinusOne = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
                 .format($rootScope.momentFormatForAPI);
-
+            
+            var businessDateMinusNinety = moment(tzIndependentDate($rootScope.businessDate)).subtract(90, 'days')
+                .format($rootScope.momentFormatForAPI);
             /*
              * Export Calender Options
              * max date is business date
              */
-            $scope.exportFromCalenderOptions = angular.extend({
-                maxDate: tzIndependentDate(businessDateMinusOne),
-                onSelect: function(value) {
-                    $scope.exportCalenderToOptions.minDate = value;
-                }
-            }, datePickerCommon);
+            if ($scope.selectedEntityDetails.report.title === 'GOBD Export') {
+                $scope.exportFromCalenderOptions = angular.extend({
+                    maxDate: tzIndependentDate(businessDateMinusOne),
+                    minDate: tzIndependentDate(businessDateMinusNinety),
+                    onSelect: function(value) {
+                        $scope.exportCalenderToOptions.minDate = value;
+                    }
+                }, datePickerCommon);
+            } else {
+                $scope.exportFromCalenderOptions = angular.extend({
+                    maxDate: tzIndependentDate(businessDateMinusOne),
+                    onSelect: function(value) {
+                        $scope.exportCalenderToOptions.minDate = value;
+                    }
+                }, datePickerCommon);
+            }
+            
             $scope.scheduleParams.from_date = (exportDate === null) ? null : reportUtils.processDate(exportDate).today;
 
-            $scope.exportCalenderToOptions = angular.extend({
-                maxDate: tzIndependentDate(businessDateMinusOne),
-                minDate: tzIndependentDate(exportDate)
-            }, datePickerCommon);
+            if ($scope.selectedEntityDetails.report.title === 'GOBD Export') {
+                if (exportDate === null) {
+                    exportDate = businessDateMinusNinety;
+                }
+                $scope.exportCalenderToOptions = angular.extend({
+                    maxDate: tzIndependentDate(businessDateMinusOne),
+                    minDate: tzIndependentDate(exportDate)
+                }, datePickerCommon);
+            } else {
+                $scope.exportCalenderToOptions = angular.extend({
+                    maxDate: tzIndependentDate(businessDateMinusOne),
+                    minDate: tzIndependentDate(exportDate)
+                }, datePickerCommon);
+            }
             $scope.scheduleParams.to_date = reportUtils.processDate(exportToDate).today;
 
             $scope.startsOnOptions = angular.extend({
@@ -1336,12 +1360,30 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 if (dateFieldObject.id === $scope.scheduleParams.time_period_id) {
                     return true;
                 }
+            } else if ($scope.selectedEntityDetails.report.title === 'GOBD Export') {
+                var dateFieldObject = _.find($scope.originalScheduleTimePeriods,
+                    function(item) {
+                        return item.value === 'DATE_RANGE'; }
+                    );
+
+                if (dateFieldObject.id === $scope.scheduleParams.time_period_id) {
+                    return true;
+                }
             }
             return false;
         };
 
         $scope.shouldShowExportCalenderToDate = function () {
             if ($scope.selectedEntityDetails.report.title === 'Invoice / Folio Export') {
+                var dateFieldObject = _.find($scope.originalScheduleTimePeriods,
+                    function(item) {
+                        return item.value === 'DATE_RANGE'; }
+                    );
+
+                if (dateFieldObject.id === $scope.scheduleParams.time_period_id) {
+                    return true;
+                }
+            } else if ($scope.selectedEntityDetails.report.title === 'GOBD Export') {
                 var dateFieldObject = _.find($scope.originalScheduleTimePeriods,
                     function(item) {
                         return item.value === 'DATE_RANGE'; }

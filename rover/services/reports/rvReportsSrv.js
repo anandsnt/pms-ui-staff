@@ -102,6 +102,9 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'TODAY',
                 'DATE_RANGE'
             ],
+            'GOBD Export': [
+                'DATE_RANGE'
+            ],
             'Clairvoyix Stays Export': [
                 'YESTERDAY',
                 'ALL'
