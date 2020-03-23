@@ -39,7 +39,7 @@
             </div>
             <!-- Adjustment reason -->
             <div class="entry full-width" ng-if="!showAdjustmentReason || adjustmentReasonOptions.length === 0">
-                <textarea placeholder="Adjustment reason" ng-model="adjustmentReason" rows="2"></textarea>
+                <textarea placeholder="Adjustment reason" ng-model="adjustmentData.adjustmentReason" rows="2"></textarea>
             </div>
 
             <div class="entry full-width" style="margin-bottom:15px;" ng-show='warningMessage.length'>
@@ -49,7 +49,7 @@
             </div>
             
             <div class="select" ng-if="showAdjustmentReason && adjustmentReasonOptions.length !== 0">
-                <select iscroll-stop-propagation ng-required ="true" id="company-country" name="company-country" ng-change="selectedAdjReason(adjustmentReason)" ng-model="adjustmentReason">
+                <select iscroll-stop-propagation ng-required ="true" id="company-country" name="company-country" ng-change="selectedAdjReason()" ng-model="adjustmentData.adjustmentReason">
                     <option value="" class="placeholder" translate>Select Adjustment Reason</option>
                     <option ng-repeat="reason in adjustmentReasonOptions" value="{{reason.id}}">
                        {{reason.value}}
