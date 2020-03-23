@@ -1142,7 +1142,12 @@ sntRover.controller('RVbillCardController',
 
 	$scope.openPostCharge = function(activeBillNo) {
 
-
+		$scope.callAPI(RVBillCardSrv.fetchAdjustmentReasons, {
+			successCallBack: function(response) {
+				$scope.adjustmentReasonOptions = response.force_adjustment_reasons;
+				$scope.showAdjustmentReason = response.force_adjustment_reason_enabled;
+			}
+		});
 		// Show a loading message until promises are not resolved
         $scope.$emit('showLoader');
 
@@ -2616,6 +2621,13 @@ sntRover.controller('RVbillCardController',
 		} else if (action === "split") {
 		    $scope.openSplitChargePopup();
         } else if (action === "edit") {
+			$scope.callAPI(RVBillCardSrv.fetchAdjustmentReasons, {
+				successCallBack: function(response) {
+					$scope.adjustmentReasonOptions = response.force_adjustment_reasons;
+					$scope.showAdjustmentReason = response.force_adjustment_reason_enabled;
+				}
+			});
+
             if ($scope.availableChargeCodes.length) {
                 $scope.openEditChargePopup();
             } else {

@@ -685,6 +685,7 @@ var replaceValueWithinObject = function (obj, findStr, replaceObj ) {
 
 // Check whether the object has got all key values as empty
 var isObjectAllValuesEmpty = function (obj) {
+    if (!obj) return obj;
     var emptyKeys = [];
 
     _.each ( obj, function (value, key) {
@@ -766,4 +767,7 @@ var resetObject = function(obj, replaceVal) {
             obj[key] = replaceVal;
         }
     }
+};
+var getDateDifferenceInDays = function (initialDate,finalDate) {
+    return Math.ceil((finalDate-initialDate)/(1000 * 60 * 60 * 24));
 };

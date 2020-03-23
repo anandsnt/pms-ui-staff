@@ -58,6 +58,9 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 },
                 "currency_code_id": rateDetails.currency_code_id
             };
+            if (rateDetails.based_on && rateDetails.based_on.id) {
+                $scope.originalBasedOnRate = rateDetails.based_on;
+            }
             // intialize rateData dictionary - END
             $scope.originOfBookings = [];
             $scope.allAddOns = [];
@@ -341,7 +344,6 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.currency_code_id = rateDetails.currency_code_id;
             $scope.rateData.fixed_it_id = data.fixed_it_id;
             $scope.rateData.tax_inclusive_or_exclusive = data.tax_inclusive_or_exclusive;
-            $scope.rateData.is_global_contract = data.is_global_contract;
             $scope.rateData.round_type_id = data.round_type_id;
             $scope.rateData.min_threshold_percent = data.min_threshold_percent;
             $scope.rateData.rate_name_trl = data.rate_name_trl;

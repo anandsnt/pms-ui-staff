@@ -38,9 +38,24 @@
                 </div>
             </div>
             <!-- Adjustment reason -->
-            <div class="entry full-width">
+            <div class="entry full-width" ng-if="!showAdjustmentReason || adjustmentReasonOptions.length === 0">
                 <textarea placeholder="Adjustment reason" ng-model="adjustmentReason" rows="2"></textarea>
             </div>
+
+            <div class="entry full-width" style="margin-bottom:15px;" ng-show='warningMessage.length'>
+                <section ng-if="warningMessage.length" ng-switch="" on="warningMessage.length" class="error error-message">                  
+                <span class="close-btn" ng-click="clearWarningMessage()"></span>
+                <span class="ng-binding ng-scope">{{warningMessage}}</span></section>
+            </div>
+            
+            <div class="select" ng-if="showAdjustmentReason && adjustmentReasonOptions.length !== 0">
+                <select iscroll-stop-propagation ng-required ="true" id="company-country" name="company-country" ng-change="selectedAdjReason(adjustmentReason)" ng-model="adjustmentReason">
+                    <option value="" class="placeholder" translate>Select Adjustment Reason</option>
+                    <option ng-repeat="reason in adjustmentReasonOptions" value="{{reason.id}}">
+                       {{reason.value}}
+                    </option>
+                 </select>
+             </div>
             <!-- Reference  -->
             <div class="entry full-width break">
                 <label for="reference">Reference</label>

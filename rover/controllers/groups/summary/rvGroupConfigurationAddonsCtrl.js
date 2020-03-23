@@ -120,10 +120,10 @@ angular.module('sntRover').controller('rvGroupConfigurationAddonsCtrl', [
 		$scope.openAddonsPopup = function() {
 			$scope.addonPopUpData = {
 				addonPostingMode: 'create_group',
-				cancelLabel: "+ More",
-                saveLabel: "Book",
+				cancelLabel: "Cancel",
+                saveLabel: "Save",
                 number_of_adults: 1,
-				number_of_children: 1,
+				number_of_children: 0,
 				duration_of_stay: 1
             };
             $scope.packageData = {
@@ -189,6 +189,7 @@ angular.module('sntRover').controller('rvGroupConfigurationAddonsCtrl', [
 
             var addonPostingSaveSuccess = function() {
                 $scope.$emit('hideLoader');
+                $scope.reloadPage();
             };
     
             var dataToApi = {
@@ -224,5 +225,6 @@ angular.module('sntRover').controller('rvGroupConfigurationAddonsCtrl', [
 
 		$scope.$on( '$destroy', proceedBookingListner);
 		$scope.$on( '$destroy', removeSelectedAddonsListner);
+
 	}
 ]);

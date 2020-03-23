@@ -63,6 +63,12 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
             $scope.goBackToPreviousState();
             
         };
+
+        var saveDetailsFailureCallback = function(errorMessage) {
+            $scope.errorMessage = errorMessage;
+            $scope.$emit('hideLoader');
+        };
+        
         var selectedChargeCode = typeof $scope.selected_charge_code === 'undefined' ? '' : $scope.selected_charge_code;
         var groupChargeCode = typeof $scope.selected_group_charge_code === 'undefined' ? '' : $scope.selected_group_charge_code;
         var dataToSend = {
@@ -77,12 +83,12 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
             'is_multi_currency_enabled': $scope.is_multi_currency_enabled,
             'invoice_currency': ($scope.invoice_currency === null) ? '' : parseInt($scope.invoice_currency, 10),
             'default_payment_currency': ($scope.default_payment_currency === null) ? '' : parseInt($scope.default_payment_currency, 10),
-            'rate_currencies': $scope.selectedRateCurrencies,
-            'payment_currencies': $scope.selectedPaymentCurrencies,
+            'rate_currencies': _.uniq($scope.selectedRateCurrencies),
+            'payment_currencies': _.uniq($scope.selectedPaymentCurrencies),
             'should_post_during_eod': $scope.should_post_during_eod
         };
 
-        $scope.invokeApi(settingsAndParamsSrv.saveSettingsAndParamsSrv, dataToSend, saveDetailsSuccessCallback);
+        $scope.invokeApi(settingsAndParamsSrv.saveSettingsAndParamsSrv, dataToSend, saveDetailsSuccessCallback, saveDetailsFailureCallback);
     };
     /*
      * Selected currency 
@@ -108,7 +114,7 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
      */
     $scope.selectedPaymentCurrency = function(id) {
         $timeout(function() {
-            if ((_.findWhere($scope.payment_currency_list, {"id": id})).is_selected) {
+            if (!(_.findWhere($scope.payment_currency_list, {"id": id})).is_selected) {
                 if (_.indexOf($scope.selectedPaymentCurrencies, id) !== -1) {
                     $scope.selectedPaymentCurrencies.splice(_.indexOf($scope.selectedPaymentCurrencies, id), 1);
                     (_.findWhere($scope.payment_currency_list, {"id": id})).is_selected = false;

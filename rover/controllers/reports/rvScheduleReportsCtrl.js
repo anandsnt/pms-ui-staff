@@ -318,6 +318,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     key = reportParams['ASSIGNED_DEPARTMENTS'];
                     filter_values[key] =  _.pluck(_.where(filter.data, {selected: true}), 'id');
 
+                } else if (keyName === 'hasIncludeCountry') {
+                    key = reportParams['COUNTRY'];
+                    filter_values[key] =  _.pluck(_.where(filter.data, {selected: true}), 'id');
+
                 } else if (keyName === 'hasCompletionStatus') {
                     key = reportParams['COMPLETION_STATUS'];
                     filter_values[key] =  _.pluck(_.where(filter.data, {selected: true}), 'id');
@@ -505,6 +509,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
                 } else if (keyName === 'hasDepartments') {
                     key = reportParams['ASSIGNED_DEPARTMENTS'];
+                    filter_values[key] =  _.pluck(_.where(filter.data, {selected: true}), 'id');
+
+                } else if (keyName === 'hasIncludeCountry') {
+                    key = reportParams['COUNTRY'];
                     filter_values[key] =  _.pluck(_.where(filter.data, {selected: true}), 'id');
 
                 } else if (keyName === 'hasCompletionStatus') {
@@ -703,6 +711,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     reportUtils.fillCompletionStatus($scope.filters);
                 } else if (filter.value === 'DEPARTMENT_ASSIGNED') {
                     reportUtils.fillDepartments($scope.filters, $scope.selectedEntityDetails.filter_values);
+                } else if (filter.value === 'COUNTRY') {
+                    reportUtils.fillCountries($scope.filters, $scope.selectedEntityDetails.filter_values);
                 } else if (filter.value === 'ACTIONS_BY') {
                     reportUtils.fillActionsBy($scope.filters);
                     $scope.filters.showActionables = 'BOTH';

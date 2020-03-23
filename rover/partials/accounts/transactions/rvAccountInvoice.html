@@ -83,8 +83,8 @@
     </div>
 </div>
 
-<div class="invoice-header">
-    {{printData.custom_text_header}}
+<div class="invoice-header" ng-bind-html="trustAsHtml(printData.custom_text_header)">
+   
 </div>
 
 <div class="invoice-body">

@@ -125,7 +125,7 @@ sntRover.controller('rvAllotmentConfigurationAddonsCtrl', [
 				cancelLabel: "Cancel",
                 saveLabel: "Save",
                 number_of_adults: 1,
-                number_of_children: 1,
+                number_of_children: 0,
                 duration_of_stay: 1,
                 addonPostingMode: 'allotments'
             };
@@ -211,12 +211,19 @@ sntRover.controller('rvAllotmentConfigurationAddonsCtrl', [
 			var options = {
 				successCallBack: function() {
 					$scope.$emit('hideLoader');
+					$scope.reloadPage();
 				},
 				params: params
 			};
 
 			$scope.callAPI(rvAllotmentConfigurationSrv.updateAddonPosting, options);
 		};
+
+		$scope.addListener('CLOSE_ADDON_POPUP', function (event, data) {
+			if (data.addonPostingMode === 'allotments') {
+				$scope.reloadPage();
+			}
+		});
 
 		var proceedBookingListner = $scope.$on('PROCEED_BOOKING', function(event, data) {
 			if (data.addonPostingMode === 'allotments') {
@@ -228,6 +235,12 @@ sntRover.controller('rvAllotmentConfigurationAddonsCtrl', [
 		var removeSelectedAddonsListner = $rootScope.$on('REMOVE_ADDON', function(event, data) {
 			if (data.addonPostingMode === 'allotments') {
 				$scope.removeAddon($scope.packageData.existing_packages[data.index]);
+			}
+		});
+
+		$scope.addListener('CLOSE_ADDON_POPUP', function (event, data) {
+			if (data.addonPostingMode === 'allotments') {
+				$scope.reloadPage();
 			}
 		});
 

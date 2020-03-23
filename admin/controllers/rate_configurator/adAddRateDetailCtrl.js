@@ -12,6 +12,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$state', '$rootScope', 'ADR
             $scope.detailsMenu = '';
             $scope.isStandAlone = $rootScope.isStandAlone;
             $scope.disableDayUseToggle = false;
+            $scope.showBasedOnchangeWarning = false;
         };
         $scope.getSubtask = function(task) {
             var subtask = [];
@@ -321,7 +322,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$state', '$rootScope', 'ADR
                 $scope.detailsMenu = "";
                 $('#activityLogArea').scope().detailsMenu = '';
                 $scope.$emit('hideLoader');
-                
+
                 if ($scope.rateData.based_on && $scope.rateData.based_on.is_copied == true) {
                     $scope.$emit("activateSetTab");
                 } 
@@ -486,10 +487,12 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$state', '$rootScope', 'ADR
         // Handle based on rate change
         $scope.basedOnRateChanged = function() {
             if ($scope.rateData.based_on.id) {
-                var fullRateList = $scope.rateTypesDetails.based_on.results,
-                    selectedRate = _.find(fullRateList, function(item) { return item.id === $scope.rateData.based_on.id; });
-
-                $scope.rateData.is_day_use = selectedRate.is_day_use;
+                var fullRateList = $scope.rateTypesDetails.based_on.results;
+                
+                $scope.selectedBasedOnRate = _.find(fullRateList, function(item) {
+                    return item.id === $scope.rateData.based_on.id;
+                });
+                $scope.rateData.is_day_use = $scope.selectedBasedOnRate.is_day_use;
                 $scope.disableDayUseToggle = true;
                 $scope.rateData.basedOnRateUnselected = false;
             }
@@ -498,6 +501,9 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$state', '$rootScope', 'ADR
                 // not selecting any rate.
                 $scope.disableDayUseToggle = false;
                 $scope.rateData.basedOnRateUnselected = true;
+            }
+            if (!_.isEmpty($scope.originalBasedOnRate)) {
+                $scope.showBasedOnchangeWarning = $scope.originalBasedOnRate.id !== $scope.rateData.based_on.id;
             }
         };
 
