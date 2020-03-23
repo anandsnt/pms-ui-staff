@@ -199,7 +199,9 @@ angular.module('sntRover')
                             updateDiaryView();
                         }
                         if (data.roomList.rooms.length === 0 ) {
-                            showWarningMessagePopup('No available rooms found for selected criteria');
+                            $timeout(function () {
+                                showWarningMessagePopup('No available rooms found for selected criteria');
+                            }, 100);
                         }
                         if (roomId) {
                             $scope.$broadcast('CLOSE_SEARCH_RESULT');
