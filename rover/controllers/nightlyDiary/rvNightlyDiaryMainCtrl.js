@@ -191,6 +191,11 @@ angular.module('sntRover')
                         $scope.diaryData.reservationsList = data.reservationList;
                         handlePaginationData(data);
                         $scope.diaryData.datesGridData = data.dateList.dates;
+                        if (data.roomList.rooms.length === 0 ) {
+                            $timeout(function () {
+                                showWarningMessagePopup('No available rooms found for selected criteria');
+                            }, 500);
+                        }
                         $scope.$broadcast('FETCH_COMPLETED_DATE_LIST_DATA');
                         if ($scope.diaryData.isBookRoomViewActive) {
                             callbackForBookedOrAvailableListner();
@@ -198,11 +203,7 @@ angular.module('sntRover')
                         else {
                             updateDiaryView();
                         }
-                        if (data.roomList.rooms.length === 0 ) {
-                            $timeout(function () {
-                                showWarningMessagePopup('No available rooms found for selected criteria');
-                            }, 500);
-                        }
+                        
                         if (roomId) {
                             $scope.$broadcast('CLOSE_SEARCH_RESULT');
                         }
