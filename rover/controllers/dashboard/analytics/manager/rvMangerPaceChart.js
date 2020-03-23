@@ -1,7 +1,10 @@
 angular.module('sntRover')
-	.controller('rvMangerPaceChart', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvManagersAnalyticsSrv', 'rvAnalyticsHelperSrv', '$rootScope',
-		function($scope, sntActivity, $timeout, $filter, rvManagersAnalyticsSrv, rvAnalyticsHelperSrv, $rootScope) {
+	.controller('rvMangerPaceChart', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvManagersAnalyticsSrv', 'rvAnalyticsHelperSrv', '$rootScope', '$controller',
+		function($scope, sntActivity, $timeout, $filter, rvManagersAnalyticsSrv, rvAnalyticsHelperSrv, $rootScope, $controller) {
 
+			$controller('rvManagerPaceChartWithZoomCtrl', {
+				$scope: $scope
+			});
 			var checkIfDayIsToday = function(dateToCompare) {
 				var today = $rootScope.businessDate;
 				var date = moment(dateToCompare).format('YYYY-MM-DD');
@@ -17,6 +20,11 @@ angular.module('sntRover')
 
 				$scope.screenData.mainHeading = $filter('translate')("AN_PACE");
 				$scope.dashboardFilter.selectedAnalyticsMenu = 'PACE';
+
+				if (chartData.length > 3) {
+					$scope.drawPaceChartWithZoom(chartData);
+					return;
+				};
 
 				var chartDataMaxArray = [];
 				var cancellationArray = [];
@@ -58,7 +66,7 @@ angular.module('sntRover')
 					},
 					width = document.getElementById("dashboard-analytics-chart").clientWidth,
 					height = 500 - margin.top - margin.bottom;
-
+					
 				var svg = d3.select("#d3-plot").append("svg")
 					.attr("width", width + margin.left + margin.right + 150)
 					.attr("height", height + margin.top + margin.bottom)
