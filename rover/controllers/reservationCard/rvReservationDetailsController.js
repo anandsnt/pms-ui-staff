@@ -2104,8 +2104,11 @@ sntRover.controller('reservationDetailsController',
 				$scope.reservationData.reservation_card.is_package_exist = false;
 			}
 			shouldReloadState = true;
-		};
-		var addonArray = [];
+		},
+		failureCallBack = function(errorMessage) {
+			$scope.errorMessage = errorMessage;
+		},
+		addonArray = [];
 
 		addonArray.push(addonId);
 		var dataToApi = {
@@ -2116,7 +2119,7 @@ sntRover.controller('reservationDetailsController',
 			"reservationId": reservationId
 		};
 
-		$scope.invokeApi(RVReservationPackageSrv.deleteAddonsFromReservation, dataToApi, successDelete);
+		$scope.invokeApi(RVReservationPackageSrv.deleteAddonsFromReservation, dataToApi, successDelete, failureCallBack);
 	};
 
 	$scope.$on('PRIMARY_GUEST_ID_CHANGED', function(event, data) {

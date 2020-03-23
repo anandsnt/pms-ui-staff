@@ -932,7 +932,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
 			// date picker options - mass update end Date
             $scope.massUpdateEndDateOptions = _.extend({
-                minDate: $scope.timeLineStartDate,
+                minDate: refData.block_from !== '' ? new tzIndependentDate(refData.block_from) : new tzIndependentDate($rootScope.businessDate),
                 maxDate: maxEndDate,
                 onSelect: $scope.onMassUpdateEndDatePicked
             }, commonDateOptions);

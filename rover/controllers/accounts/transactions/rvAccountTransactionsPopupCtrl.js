@@ -4,6 +4,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 
 	BaseCtrl.call(this, $scope);
 	$scope.warningMessage = "";
+	$scope.adjustmentData = {};
 
 	var reloadBillScreen =  function() {
 		$timeout(function() {
@@ -90,9 +91,8 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 
 	};
 
-	$scope.selectedAdjReason = function(reasonId) {
+	$scope.selectedAdjReason = function() {
 		$scope.warningMessage = "";
-		$scope.adjustmentReason = reasonId;
 	};
 
 	$scope.clearWarningMessage = function () {
@@ -104,7 +104,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 	 */
 	
 	$scope.editCharge = function() {
-		if (!$scope.adjustmentReason && $scope.showAdjustmentReason) {
+		if (!$scope.adjustmentData.adjustmentReason && $scope.showAdjustmentReason) {
 			$scope.warningMessage = 'Please fill adjustment reason';
 			return;
 		}
@@ -115,7 +115,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 						{
 							"new_amount": $scope.newAmount,
 							"charge_code_id": $scope.selectedChargeCode.id,
-							"adjustment_reason": $scope.adjustmentReason,
+							"adjustment_reason": $scope.adjustmentData.adjustmentReason,
 							"reference_text": $scope.reference_text,
 							"show_ref_on_invoice": $scope.show_ref_on_invoice
 						},
