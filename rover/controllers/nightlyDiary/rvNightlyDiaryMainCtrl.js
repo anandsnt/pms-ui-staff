@@ -201,7 +201,7 @@ angular.module('sntRover')
                         if (data.roomList.rooms.length === 0 ) {
                             $timeout(function () {
                                 showWarningMessagePopup('No available rooms found for selected criteria');
-                            }, 100);
+                            }, 500);
                         }
                         if (roomId) {
                             $scope.$broadcast('CLOSE_SEARCH_RESULT');
