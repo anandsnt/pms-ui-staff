@@ -804,7 +804,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
                 };
             }
 
-            if (data.tax_exempt_warning!== null && data.tax_exempt_warning.length > 0) {
+            if (data.tax_exempt_warning !== null && data.tax_exempt_warning.length > 0) {
                 var message = [];
 
                     message.push(data.tax_exempt_warning);
