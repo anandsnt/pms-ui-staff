@@ -65,13 +65,12 @@
                 <label for="schedule-start" ng-if="selectedEntityDetails.report.title === 'Journal Export'">
                    Date
                 </label>
-                <label for="schedule-start" ng-if="selectedEntityDetails.report.title === 'Invoice / Folio Export'">
+                <label for="schedule-start" ng-if="selectedEntityDetails.report.title === 'Invoice / Folio Export' || selectedEntityDetails.report.title === 'GOBD Export'">
                    From Date
                 </label>
                 <div class="has-datepicker">
                     <button class="clear-query"><span class="icons icon-clear-search">Clear query</span></button>
                     <input type="text" class="datepicker" ui-date="exportFromCalenderOptions" ng-model="scheduleParams.from_date" placeholder="MM-DD-YYYY" readonly>
-
                 </div>
             </div>
 
@@ -82,7 +81,6 @@
                 <div class="has-datepicker">
                     <button class="clear-query"><span class="icons icon-clear-search">Clear query</span></button>
                     <input type="text" class="datepicker" ui-date="exportCalenderToOptions" ng-model="scheduleParams.to_date" placeholder="MM-DD-YYYY" readonly>
-
                 </div>
             </div>
 
