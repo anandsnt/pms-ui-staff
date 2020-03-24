@@ -47,7 +47,10 @@ angular.module('sntRover')
 				var xAxisBottom = d3.axisBottom()
 					.scale(x);
 				var yAxis = d3.axisLeft()
-					.scale(y);
+					.scale(y)
+					.tickPadding(20)
+					.tickSizeOuter(0)
+					.tickSizeInner(-width);
 				var xAxisOverview = d3.axisBottom()
 					.scale(xOverview);
 
@@ -125,7 +128,11 @@ angular.module('sntRover')
 					item.cancellation = item.cancellation === 0 ? 0 : -1 * item.cancellation;
 				});
 				var sampleData = data;
-				var sampleData = rvAnalyticsHelperSrv.samplePaceData()
+				var sampleData = rvAnalyticsHelperSrv.samplePaceData();
+
+				_.each(sampleData, function(item) {
+					item.cancellation = item.cancellation === 0 ? 0 : -1 * item.cancellation;
+				});
 
 				var data = [];
 				_.each(sampleData, function(d) {
@@ -164,7 +171,7 @@ angular.module('sntRover')
 					.call(xAxis);
 
 				main.append("g")
-					.attr("class", "y axis")
+					.attr("class", "y axis grid-chart")
 					.call(yAxis);
 				overview.append("g")
 					.attr("class", "x axis")
