@@ -205,21 +205,25 @@ sntRover.controller('RVReservationPackageController',
 			});
 		};
 
-		$scope.removeChosenAddons = function(index, addon) {
-			
-			setTimeout(function() {
+		$scope.removeChosenAddons = function($event, index, addon) {
+			$event.stopPropagation();
+			if (addon.is_allowance && addon.is_consumed_allowance) {
 				$scope.selectedPurchesedAddon = "";
-			}, 1000);
-			
-			$rootScope.$broadcast('REMOVE_ADDON', {
-				addonPostingMode: $scope.addonPopUpData.addonPostingMode,
-				index: index,
-				addon: addon
-			});
+				$scope.errorMessage = ["Cannot remove consumed allowance from staycard"];
+			} else {
+				setTimeout(function() {
+					$scope.selectedPurchesedAddon = "";
+				}, 1000);
+
+				$rootScope.$broadcast('REMOVE_ADDON', {
+					addonPostingMode: $scope.addonPopUpData.addonPostingMode,
+					index: index,
+					addon: addon
+				});
+			}
 			if ($scope.packageData.existing_packages.length === 1) {
 				$scope.closePopup();
 			}
-
 		};
 		
 		$scope.proceedBooking = function() {
@@ -232,8 +236,8 @@ sntRover.controller('RVReservationPackageController',
 		};
 
 		$scope.setDeafultDisplay = function() {
+			angular.copy($scope.previousPostDays, $scope.selectedPurchesedAddon.clickedMenuItem);
 			$scope.selectedPurchesedAddon = "";
-			angular.copy($scope.previousPostDays, $scope.selectedPurchesedAddon.selected_post_days);
 		};
 
 		var setPostingData = function() {
