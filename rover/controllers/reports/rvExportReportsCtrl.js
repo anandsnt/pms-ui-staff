@@ -804,28 +804,32 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             var businessDateMinusOne = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
                 .format($rootScope.momentFormatForAPI);
             
-            var businessDateMinusNinety = moment(tzIndependentDate($rootScope.businessDate)).subtract(90, 'days')
+            var todayDate = moment().startOf('day');
+
+            var businessDateMinusNinety = moment(tzIndependentDate(todayDate)).subtract(90, 'days')
                 .format($rootScope.momentFormatForAPI);
             /*
              * Export Calender Options
              * max date is business date
              */
-            if ($scope.selectedEntityDetails.report.title === 'GOBD Export') {
+            if ($scope.selectedEntityDetails.report.title !== 'GOBD Export') {
                 $scope.exportFromCalenderOptions = angular.extend({
                     maxDate: tzIndependentDate(businessDateMinusOne),
-                    minDate: tzIndependentDate(businessDateMinusNinety),
+                    minDate: tzIndependentDate(null),
                     onSelect: function(value) {
                         $scope.exportCalenderToOptions.minDate = value;
                     }
                 }, datePickerCommon);
             } else {
                 $scope.exportFromCalenderOptions = angular.extend({
-                    maxDate: tzIndependentDate(businessDateMinusOne),
+                    maxDate: tzIndependentDate(todayDate),
+                    minDate: tzIndependentDate(businessDateMinusNinety),
                     onSelect: function(value) {
                         $scope.exportCalenderToOptions.minDate = value;
                     }
                 }, datePickerCommon);
             }
+             
             
             $scope.scheduleParams.from_date = (exportDate === null) ? null : reportUtils.processDate(exportDate).today;
 
@@ -834,7 +838,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                     exportDate = businessDateMinusNinety;
                 }
                 $scope.exportCalenderToOptions = angular.extend({
-                    maxDate: tzIndependentDate(businessDateMinusOne),
+                    maxDate: tzIndependentDate(todayDate),
                     minDate: tzIndependentDate(exportDate)
                 }, datePickerCommon);
             } else {
