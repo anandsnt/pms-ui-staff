@@ -236,7 +236,7 @@ sntRover.controller('RVReservationPackageController',
 		};
 
 		$scope.setDeafultDisplay = function() {
-			angular.copy($scope.previousPostDays, $scope.selectedPurchesedAddon.clickedMenuItem);
+			angular.copy($scope.previousPostDays, $scope.selectedPurchesedAddon.selected_post_days);
 			$scope.selectedPurchesedAddon = "";
 		};
 
