@@ -39,8 +39,9 @@ angular.module('sntRover')
 
 				// rendering for the x and y axes
 				var xAxis = d3.axisBottom()
-					.scale(x).tickFormat(function() {
-						return ""
+					.scale(x)
+					.tickFormat(function() {
+						return "";
 					})
 					.tickSizeOuter(0)
 					.tickSizeInner(0);
@@ -78,6 +79,7 @@ angular.module('sntRover')
 
 					// adding calculated data to each count in preparation for stacking
 					var y0 = 0; // keeps track of where the "previous" value "ended"
+					
 					value.counts = ["on_the_books", "new", "cancellation"].map(function(name) {
 						return {
 							date: d.date,
@@ -88,15 +90,16 @@ angular.module('sntRover')
 						};
 					});
 
-					var onBooks = _.find(value.counts, function(count) {
-						return count.name === 'on_the_books';
-					});
+					// var onBooks = _.find(value.counts, function(count) {
+					// 	return count.name === 'on_the_books';
+					// });
 					var newBookings = _.find(value.counts, function(count) {
 						return count.name === 'new';
 					});
 					var cancellations = _.find(value.counts, function(count) {
 						return count.name === 'cancellation';
 					});
+
 					value.total = newBookings.y1;
 					value.cancellation = -1 * cancellations.y0;
 					return value;
@@ -104,14 +107,16 @@ angular.module('sntRover')
 
 				// zooming/panning behaviour for overview chart
 				function brushed() {
-					if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") return; // ignore brush-by-zoom
+					if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") {
+						return; // ignore brush-by-zoom
+					}
 					var s = d3.event.selection || xOverview.range();
+
 					x.domain(s.map(xOverview.invert, xOverview));
 					main.selectAll(".bar.stack")
 						.attr("transform", function(d) {
-							//console.log(d.date);
 							return "translate(" + x(d.date) + ",0)";
-						})
+						});
 					// redraw the x axis of the main chart
 					main.select(".x.axis").call(xAxis);
 					main.select(".x.axis").call(xAxisBottom);
@@ -179,7 +184,8 @@ angular.module('sntRover')
 					// a group for each stack of bars, positioned in the correct x position
 					.selectAll(".bar.stack")
 					.data(data)
-					.enter().append("g")
+					.enter()
+					.append("g")
 					.attr("class", "bar stack")
 					.attr("transform", function(d) {
 						return "translate(" + x(d.date) + ",0)";
@@ -189,7 +195,8 @@ angular.module('sntRover')
 					.data(function(d) {
 						return d.counts;
 					})
-					.enter().append("rect")
+					.enter()
+					.append("rect")
 					.attr("class", "bar")
 					.attr("width", 6)
 					.attr("y", function(d) {
@@ -202,18 +209,16 @@ angular.module('sntRover')
 					.style("cursor", "pointer")
 					.style("fill", function(d) {
 						return colour(d.name);
-					}).on("mouseover", function() {
+					})
+					.on("mouseover", function() {
 						tooltip.style("display", "block");
 					})
 					.on("mouseout", function() {
 						tooltip.style("display", "none");
 					})
-					.on("mousemove", function(d) {
-						var xPosition = d3.mouse(this)[0] - 15;
-						var yPosition = d3.mouse(this)[1] - 25;
-
+					.on("mousemove", function() {
 						tooltip.select(".date-label").text(moment(d.date, 'YYYY-MM-DD').format('MMM Do, YYYY'));
-						tooltip.select(".item-value").text(d.name.replace(/_/g, " ").toUpperCase()+": "+ (d.y1 - d.y0))
+						tooltip.select(".item-value").text(d.name.replace(/_/g, " ").toUpperCase() + ": " + (d.y1 - d.y0));
 					});
 				// Prep the tooltip bits, initial display is hidden
 				var tooltip = svg.append("g")
@@ -251,7 +256,8 @@ angular.module('sntRover')
 					.attr("class", "bars")
 					.selectAll(".bar")
 					.data(data)
-					.enter().append("rect")
+					.enter()
+					.append("rect")
 					.attr("class", "bar")
 					.attr("x", function(d) {
 						return xOverview(d.date) - 3;
@@ -285,7 +291,8 @@ angular.module('sntRover')
 				var legendParentElement = d3.select("#right-side-legend");
 				var legend = legendParentElement.selectAll(".legend")
 					.data(colors)
-					.enter().append("g")
+					.enter()
+					.append("g")
 					.attr("class", "legend-item")
 					.attr("transform", function(d, i) {
 						return "translate(-100," + i * 30 + ")";
