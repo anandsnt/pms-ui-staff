@@ -1214,15 +1214,15 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 totalTax = parseFloat(totalTax) + parseFloat(response.data.total_tax);
 
                 var targetObject = {
-                        "numAdults": response.data.stay_dates[key].adult_count,
-                        "numChildren": response.data.stay_dates[key].child_count,
-                        "numInfants": response.data.stay_dates[key].infant_count,
-                        "rateAvg": response.data.stay_dates[key].rate_amount,
+                        "numAdults": response.data.stay_dates[0].adult_count,
+                        "numChildren": response.data.stay_dates[0].child_count,
+                        "numInfants": response.data.stay_dates[0].infant_count,
+                        "rateAvg": response.data.stay_dates[0].rate_amount,
                         "rateTotal": response.data.total_rate,
                         "taxInformation": response.data.tax_details,
                         "addons": response.data.addons
                     };
-
+console.log("--------------"+ key)
                 $scope.reservationData.rooms[key] = Object.assign($scope.reservationData.rooms[key], targetObject)
 
                 $scope.reservationData.totalStayCost = totalStayCost;
@@ -1271,12 +1271,14 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     // calculate sum of each reservation deposits
 
                     $scope.reservationsListArray = data;
+                    var keyIndex = 0;
 
-                    angular.forEach(data.reservations, function(reservation, key) {
+                    angular.forEach(data.reservations, function(reservation) {
 
                         totalDeposit = parseFloat(totalDeposit) + parseFloat(reservation.deposit_amount);
-                        updateConfirmationData(key, reservation);
+                        updateConfirmationData(keyIndex, reservation);
                         totalPaymentDeposit = parseFloat(totalPaymentDeposit) + parseFloat(reservation.deposit_payment_amount);
+                        keyIndex++;
                     });
 
                     $scope.reservationData.depositAmount = parseFloat(totalDeposit).toFixed(2);
@@ -1430,6 +1432,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                      */
 
                     if ($scope.reservationsListArray) {
+                        var keyIndex = 0;
+
                         angular.forEach($scope.reservationsListArray.reservations, function(reservation, key) {
                             if ((!index && !_.isNumber(index)) || key === index) {
                                 reservation.deposit_amount = data.deposit_amount;
@@ -1438,8 +1442,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                                 totalDepositOnRateUpdate = parseFloat(totalDepositOnRateUpdate) + parseFloat(reservation.deposit_amount);
                             }
 
-                            updateConfirmationData(key, reservation);                           
-
+                            updateConfirmationData(keyIndex, reservation);  
+                            keyIndex++;
                         });
                     } else {
                         totalDepositOnRateUpdate = parseFloat(data.deposit_amount);
