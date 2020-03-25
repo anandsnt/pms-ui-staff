@@ -2,7 +2,7 @@ angular.module('sntRover')
 	.controller('rvManagerPaceChartWithZoomCtrl', ['$scope', 'rvAnalyticsHelperSrv',
 		function($scope, rvAnalyticsHelperSrv) {
 
-			$scope.drawPaceChartWithZoom = function(data) {
+			$scope.drawPaceChartWithZoom = function(chartData) {
 
 				// sizing information, including margins so there is space for labels, etc
 				var margin = {
@@ -11,7 +11,7 @@ angular.module('sntRover')
 						bottom: 100,
 						left: 40
 					},
-					width = document.getElementById("dashboard-analytics-chart").clientWidth,
+					width = 800,
 					height = 600 - margin.top - margin.bottom,
 					marginOverview = {
 						top: 530,
@@ -52,13 +52,14 @@ angular.module('sntRover')
 					.tickSizeOuter(0)
 					.tickSizeInner(-width);
 				var xAxisOverview = d3.axisBottom()
-					.scale(xOverview);
+					.scale(xOverview)
+					.tickPadding(10);
 
 				// something for us to render the chart into
 				var svg = d3.select("#d3-plot")
 					.append("svg") // the overall space
-					.attr("width", width + margin.left + margin.right + 20)
-					.attr("height", height + margin.top + margin.bottom);
+					.attr("width", width + margin.left + margin.right)
+					.attr("height", height + margin.top + margin.bottom + 20);
 				var main = svg.append("g")
 					.attr("class", "main")
 					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -115,6 +116,7 @@ angular.module('sntRover')
 					main.select(".x.axis").call(xAxis);
 					main.select(".x.axis").call(xAxisBottom);
 				};
+
 				// brush tool to let us zoom and pan using the overview chart
 				var brush = d3.brushX()
 					.extent([
@@ -124,24 +126,17 @@ angular.module('sntRover')
 					.on("brush", brushed);
 
 				// process data
-				_.each(data, function(item) {
+				_.each(chartData, function(item) {
 					item.cancellation = item.cancellation === 0 ? 0 : -1 * item.cancellation;
 				});
-				var sampleData = data;
-				var sampleData = rvAnalyticsHelperSrv.samplePaceData();
-
-				_.each(sampleData, function(item) {
-					item.cancellation = item.cancellation === 0 ? 0 : -1 * item.cancellation;
-				});
-
 				var data = [];
-				_.each(sampleData, function(d) {
+
+				_.each(chartData, function(d) {
 					data.push(parse(d));
 				});
 
 				// data ranges for the x and y axes
 				x.domain(d3.extent(data, function(d) {
-					//console.log(d);
 					return d.date;
 				}));
 
@@ -216,8 +211,9 @@ angular.module('sntRover')
 					.on("mousemove", function(d) {
 						var xPosition = d3.mouse(this)[0] - 15;
 						var yPosition = d3.mouse(this)[1] - 25;
-					
-						tooltip.select("text").text(d.date+"\n"+d.name.replace(/_/g, " ").toUpperCase()+": "+ (d.y1 - d.y0))
+
+						tooltip.select(".date-label").text(moment(d.date, 'YYYY-MM-DD').format('MMM Do, YYYY'));
+						tooltip.select(".item-value").text(d.name.replace(/_/g, " ").toUpperCase()+": "+ (d.y1 - d.y0))
 					});
 				// Prep the tooltip bits, initial display is hidden
 				var tooltip = svg.append("g")
@@ -232,13 +228,24 @@ angular.module('sntRover')
 					.attr("transform", "translate(" + width / 2 + "," + 0 + ")");;
 
 				tooltip.append("text")
-					.attr("x", 15)
-					.attr("dy", "1.2em")
+					.attr('class', 'date-label')
+					.attr("x", 14)
+					.attr("dy", "1em")
 					.style("text-anchor", "middle")
 					.style("fill", "black")
-					.attr("font-size", "15px")
+					.attr("font-size", "12px")
 					.attr("font-weight", "bold")
-					.attr("transform", "translate(" + width / 2 + "," + 0 + ")");;
+					.attr("transform", "translate(" + width / 2 + "," + 0 + ")");
+
+				tooltip.append("text")
+					.attr('class', 'item-value')
+					.attr("x", 14)
+					.attr("dy", "1.8em")
+					.style("text-anchor", "middle")
+					.style("fill", "black")
+					.attr("font-size", "14px")
+					.attr("font-weight", "bold")
+					.attr("transform", "translate(" + width / 2 + "," + 0 + ")");
 
 				overview.append("g")
 					.attr("class", "bars")
