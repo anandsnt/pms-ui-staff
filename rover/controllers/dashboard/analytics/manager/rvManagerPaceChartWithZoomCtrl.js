@@ -103,7 +103,7 @@ angular.module('sntRover')
 					value.total = newBookings.y1;
 					value.cancellation = -1 * cancellations.y0;
 					return value;
-				};
+				}
 
 				// zooming/panning behaviour for overview chart
 				function brushed() {
@@ -120,7 +120,7 @@ angular.module('sntRover')
 					// redraw the x axis of the main chart
 					main.select(".x.axis").call(xAxis);
 					main.select(".x.axis").call(xAxisBottom);
-				};
+				}
 
 				// brush tool to let us zoom and pan using the overview chart
 				var brush = d3.brushX()
@@ -150,7 +150,7 @@ angular.module('sntRover')
 				});
 				var minYValue = d3.max(data, function(d) {
 					return d.cancellation;
-				})
+				});
 
 				y.domain([-1 * minYValue, maxYValue]);
 
@@ -216,7 +216,7 @@ angular.module('sntRover')
 					.on("mouseout", function() {
 						tooltip.style("display", "none");
 					})
-					.on("mousemove", function() {
+					.on("mousemove", function(d) {
 						tooltip.select(".date-label").text(moment(d.date, 'YYYY-MM-DD').format('MMM Do, YYYY'));
 						tooltip.select(".item-value").text(d.name.replace(/_/g, " ").toUpperCase() + ": " + (d.y1 - d.y0));
 					});
@@ -230,7 +230,7 @@ angular.module('sntRover')
 					.attr("height", 50)
 					.attr("fill", "none")
 					.style("opacity", 0.5)
-					.attr("transform", "translate(" + width / 2 + "," + 0 + ")");;
+					.attr("transform", "translate(" + width / 2 + "," + 0 + ")");
 
 				tooltip.append("text")
 					.attr('class', 'date-label')
@@ -312,6 +312,6 @@ angular.module('sntRover')
 				$scope.screenData.hideChartData = false;
 				rvAnalyticsHelperSrv.addChartHeading($scope.screenData.mainHeading,
 					$scope.screenData.analyticsDataUpdatedTime);
-			}
+			};
 		}
 	]);

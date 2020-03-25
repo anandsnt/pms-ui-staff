@@ -24,7 +24,7 @@ angular.module('sntRover')
 				if (chartData.length > 60) {
 					$scope.drawPaceChartWithZoom(chartData);
 					return;
-				};
+				}
 
 				var chartDataMaxArray = [];
 				var cancellationArray = [];
