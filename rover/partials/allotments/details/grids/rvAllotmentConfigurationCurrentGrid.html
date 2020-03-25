@@ -147,7 +147,7 @@
                         ng-model="dateData.single_pickup"
                         class="cell" disabled />
                     <!-- we will show this quick arrow only in first column -->
-                    <button ng-if="shouldShowCopyButton(dateData)"
+                    <button ng-if="!$index"
                         ng-click="copySingleHeldValueToOtherBlocks(dateData, roomType)"
                         type="button"
                         class="admin-icons icon-mover-right">
@@ -174,7 +174,7 @@
                         class="cell" disabled />
 
                     <!-- we will show this quick arrow only in first column -->
-                    <button ng-if="shouldShowCopyButton(dateData)"
+                    <button ng-if="!$index"
                         ng-click="copyDoubleHeldValueToOtherBlocks(dateData, roomType)"
                         type="button"
                         class="admin-icons icon-mover-right">
@@ -200,7 +200,7 @@
                         class="cell" disabled />
 
                     <!-- we will show this quick arrow only in first column -->
-                    <button ng-if="shouldShowCopyButton(dateData)"
+                    <button ng-if="!$index"
                         ng-click="copyTripleHeldValueToOtherBlocks(dateData, roomType)"
                         type="button"
                         class="admin-icons icon-mover-right">
@@ -226,7 +226,7 @@
                         ng-model="dateData.quadruple_pickup"
                         class="cell" disabled />
                     <!-- we will show this quick arrow only in first column -->
-                    <button ng-if="shouldShowCopyButton(dateData)"
+                    <button ng-if="!$index"
                         ng-click="copyQuadrupleHeldValueToOtherBlocks(dateData, roomType)"
                         type="button"
                         class="admin-icons icon-mover-right">

@@ -617,13 +617,15 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                 noOfInhouseIsNotZero = (sData.total_checked_in_reservations > 0),
                 cancelledGroup = sData.is_cancelled,
                 is_A_PastGroup = sData.is_a_past_group,
-                inEditMode = !$scope.isInAddMode();
+                inEditMode = !$scope.isInAddMode(),
+                hasCheckedoutReservations = sData.total_checked_out_reservations_count > 0;
 
             return ($scope.isInStaycardScreen()) || ( inEditMode &&
                     (
                       noOfInhouseIsNotZero  ||
                       cancelledGroup        ||
-                      is_A_PastGroup
+                      is_A_PastGroup ||
+                      hasCheckedoutReservations
                     )
                    );
         };
