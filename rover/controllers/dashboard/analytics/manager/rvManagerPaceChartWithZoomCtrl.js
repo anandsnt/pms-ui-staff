@@ -127,7 +127,7 @@ angular.module('sntRover')
 
 				// process data
 				_.each(chartData, function(item) {
-					item.cancellation = item.cancellation === 0 ? 0 : -1 * item.cancellation;
+					item.cancellation = item.cancellation <= 0 ? item.cancellation : -1 * item.cancellation;
 				});
 				var data = [];
 
