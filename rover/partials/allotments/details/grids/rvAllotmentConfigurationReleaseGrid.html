@@ -102,7 +102,7 @@
     ng-show="shouldShowRoomsRates()">
 
     <ul class="wrapper" style="width: {{getWidthForReleaseViewTimeLine()}}">
-        <li ng-repeat="occupancy in allotmentConfigData.roomblock.selected_room_types_and_occupanies" ng-class="{'with-button': shouldShowCopyButton(occupancy.date)}">
+        <li ng-repeat="occupancy in allotmentConfigData.roomblock.selected_room_types_and_occupanies" ng-class="{'with-button': !$index}">
             <div class="inner">
                 <span>{{ ::formatDateForUI(occupancy.date, fulldayInWeek) }}</span>
                 <strong>{{ ::formatDateForUI(occupancy.date, monthAndDate) }}</strong>
@@ -130,7 +130,7 @@
         <div class="row" ngrepeatend ng-repeat="roomType in allotmentConfigData.roomblock.selected_room_types_and_bookings">
             <!-- REPEAT COLUMN FOR ALL DAYS IN THE BLOCK -->
             <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
-            <div class="column" ng-repeat="dateData in roomType.dates" ng-class="{'with-button': shouldShowCopyButton(dateData.date)}">
+            <div class="column" ng-repeat="dateData in roomType.dates" ng-class="{'with-button': !$index}">
                 <!-- Room Type -->
                 <div class="line">
                     <input type="number"
