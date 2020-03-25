@@ -31,7 +31,7 @@
                                 {{addon.addon_currency}}{{getAddonTotal(addon)}}
                              </span>
                          <!-- add class .hidden to hide it if it can't be removed/deleted-->
-                         <span class="delete" ng-hide="addon.is_rate_addon || addon.is_inclusive" ng-click="removeChosenAddons($index, addon)">
+                         <span class="delete" ng-hide="addon.is_rate_addon || addon.is_inclusive" ng-click="removeChosenAddons($event, $index, addon)">
                             <span class="icons icon-remove-10"></span>
                          </span>
                     </li>
@@ -82,7 +82,9 @@
             <!-- Add .hidden if clicked again on the same enhancement to show initial screen -->
             <div class="content-dates" ng-show="selectedPurchesedAddon">
                 <span class="h2 message" ng-if="selectedPurchesedAddon.name">{{selectedPurchesedAddon.name | limitTo: selectedPurchesedAddon.nameCharLimit}}{{selectedPurchesedAddon.name.length > 23 ? '...': ''}}</span>
-                <span class="text" ng-if="selectedPurchesedAddon.description">{{selectedPurchesedAddon.description | limitTo: 70}}{{selectedPurchesedAddon.description.length >= 70 ? '...': ''}}</span>
+                <!-- <span class="text" ng-if="selectedPurchesedAddon.description">{{selectedPurchesedAddon.description | limitTo: 70}}{{selectedPurchesedAddon.description.length >= 70 ? '...': ''}}</span> -->
+                <span class="text" ng-if="selectedPurchesedAddon.amount && selectedPurchesedAddon.amount_type && selectedPurchesedAddon.post_type">at {{selectedPurchesedAddon.addon_currency}}{{selectedPurchesedAddon.amount | number : 2}} / {{selectedPurchesedAddon.amount_type.description}} {{selectedPurchesedAddon.post_type.description}}</span>
+                
                 <div class="content-entries">
                     <!-- Hide if only Date-To needs to be shown -->
                     <div class="entry margin">

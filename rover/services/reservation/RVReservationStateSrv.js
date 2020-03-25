@@ -319,6 +319,18 @@ angular.module('sntRover').service('RVReservationStateService', [
 			return (dayIndex % frequency === 0) && (!chargeFullLengthOnly || (chargeFullLengthOnly && (remainingDays >= frequency)));
 		};
 
+		self.isPostDaySelected = function(postDate, postDays) {
+			if (!postDays) {
+				return true;
+			}
+			var daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+				stayDate = new tzIndependentDate(postDate),
+				stayDay;
+
+			stayDay = stayDate.getDay();
+			return (postDays[daysOfWeek[stayDay]]);
+		};
+
 		self.applyDiscount = function(amount, discount, numNights) {
 			if (numNights === 0) {
 				numNights = 1;
