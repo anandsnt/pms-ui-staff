@@ -83,7 +83,7 @@
             <div class="content-dates" ng-show="selectedPurchesedAddon">
                 <span class="h2 message" ng-if="selectedPurchesedAddon.name">{{selectedPurchesedAddon.name | limitTo: selectedPurchesedAddon.nameCharLimit}}{{selectedPurchesedAddon.name.length > 23 ? '...': ''}}</span>
                 <!-- <span class="text" ng-if="selectedPurchesedAddon.description">{{selectedPurchesedAddon.description | limitTo: 70}}{{selectedPurchesedAddon.description.length >= 70 ? '...': ''}}</span> -->
-                <span class="text" ng-if="selectedPurchesedAddon.amount">{{at {{selectedPurchesedAddon.addon_currency}}{{selectedPurchesedAddon.amount | number : 2}} / {{selectedPurchesedAddon.amount_type.description}} {{selectedPurchesedAddon.post_type.description}}}}</span>
+                <span class="text" ng-if="selectedPurchesedAddon.amount && selectedPurchesedAddon.amount_type && selectedPurchesedAddon.post_type">at {{selectedPurchesedAddon.addon_currency}}{{selectedPurchesedAddon.amount | number : 2}} / {{selectedPurchesedAddon.amount_type.description}} {{selectedPurchesedAddon.post_type.description}}</span>
                 
                 <div class="content-entries">
                     <!-- Hide if only Date-To needs to be shown -->
