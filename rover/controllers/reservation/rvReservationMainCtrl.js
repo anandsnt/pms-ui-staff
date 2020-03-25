@@ -1222,7 +1222,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                         "taxInformation": response.data.tax_details,
                         "addons": response.data.addons
                     };
-console.log("--------------"+ key)
+
                 $scope.reservationData.rooms[key] = Object.assign($scope.reservationData.rooms[key], targetObject)
 
                 $scope.reservationData.totalStayCost = totalStayCost;
