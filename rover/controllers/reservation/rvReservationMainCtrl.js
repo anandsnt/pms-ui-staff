@@ -1210,7 +1210,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 
             var successCallBackOfGetConfirmationData = function(response) {
 
-                totalStayCost = parseFloat(totalStayCost) + parseFloat(response.data.total_stay_cost);
+                totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(totalStayCost) + parseFloat(response.data.total_stay_cost);
                 totalTax = parseFloat(totalTax) + parseFloat(response.data.total_tax);
 
                 var targetObject = {
