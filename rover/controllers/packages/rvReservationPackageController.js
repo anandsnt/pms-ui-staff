@@ -212,7 +212,9 @@ sntRover.controller('RVReservationPackageController',
 			if ($scope.packageData.existing_packages.length !== 1 && addon.is_allowance && addon.is_consumed_allowance) {
 				$scope.errorMessage = ["Cannot remove consumed allowance from staycard"];
 			} else {
-				$scope.closePopup();
+				if ($scope.packageData.existing_packages.length === 1) {
+					$scope.closePopup();
+				}
 				$rootScope.$broadcast('REMOVE_ADDON', {
 					addonPostingMode: $scope.addonPopUpData.addonPostingMode,
 					index: index,
