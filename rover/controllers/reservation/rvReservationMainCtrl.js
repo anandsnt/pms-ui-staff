@@ -433,9 +433,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                                         postType = addon.post_type || addon.postType,
                                         amountType = addon.amount_type || addon.amountType,
                                         chargefullweeksonly = addon.chargefullweeksonly,
-                                        shouldPostAddon = RVReservationStateService.shouldPostAddon(postType.frequency, date, roomMetaData.arrival, roomMetaData.departure, chargefullweeksonly);
+                                        shouldPostAddon = RVReservationStateService.shouldPostAddon(postType.frequency, date, roomMetaData.arrival, roomMetaData.departure, chargefullweeksonly),
+                                        isPostDaySelected = RVReservationStateService.isPostDaySelected(date, addon.selected_post_days);
 
-                                    if (shouldPostAddon) {
+                                    if (shouldPostAddon && isPostDaySelected) {
                                         finalRate = parseFloat(RVReservationStateService.getAddonAmount(amountType.value, baseRate, adultsOnTheDay, childrenOnTheDay));
                                         finalRateRounded = Number(finalRate.toFixed(2));
                                         if (!!_.findWhere(todaysMetaData.associatedAddons, {
