@@ -1693,7 +1693,14 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * when failed to update data
 		 */
         $scope.$on('FAILED_TO_UPDATE_GROUP_INFO', function(event, errorMessage) {
+            var isShoulderFromChanged = parseInt($scope.groupConfigData.summary.shoulder_from) !== parseInt(summaryMemento.shoulder_from),
+                isShoulderToChanged = parseInt($scope.groupConfigData.summary.shoulder_to) !== parseInt(summaryMemento.shoulder_to);
+
             $scope.$parent.errorMessage = errorMessage;
+
+            if ($scope.groupConfigData.activeTab === 'ROOM_BLOCK' && ( isShoulderFromChanged || isShoulderToChanged)) {
+                $scope.fetchCurrentSetOfRoomBlockData();
+            }
         });
 
 		/**
