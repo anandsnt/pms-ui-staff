@@ -135,7 +135,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 }
             };
             var emailSendingFailed = function() {
-                if (printYetToDone) {
+                if (printYetToDoneAfterEMail) {
                     $scope.stateParamsForNextState.email_failed = 'true';
                     $scope.printOpted = true; // print mode
                 } else {

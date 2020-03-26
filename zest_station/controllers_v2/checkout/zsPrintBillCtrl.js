@@ -204,14 +204,14 @@ sntZestStation.controller('zsPrintBillCtrl', [
 
         var sendEmailAlongWithPrint = false;
 
-        $scope.$on('EMAIL_TO_BE_SEND_WITH_PRINT', function(ev, data){
+        $scope.$on('EMAIL_TO_BE_SEND_WITH_PRINT', function(ev, data) {
             sendEmailAlongWithPrint = data.sendEmail;
         });
 
         $scope.addressSelected = function(addressType) {
             executePrint(addressType);
             if (sendEmailAlongWithPrint) {
-                $scope.emailInvoice(addressType)
+                $scope.emailInvoice(addressType);
             }
         };
 
