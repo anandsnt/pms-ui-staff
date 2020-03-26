@@ -37,9 +37,8 @@
                     </li>
                 </ul>
             </div>
-            <div ng-show="!showCustomPosting()" class="actions inline">
-                <button class="button blank" ng-click="closeAddOnPopup()">Close</button>
-                <button class="button orange" ng-click="goToAddons()">Add More</button>
+            <div ng-show="!showCustomPosting()" class="actions">
+                <button type="button" class="button blank" ng-click="closeAddOnPopup()">Close Window</button>
             </div>
         </div>
         <div class="content-right" ng-class="{'hidden': !showCustomPosting()}">
