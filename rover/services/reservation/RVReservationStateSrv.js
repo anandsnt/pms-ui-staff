@@ -66,7 +66,6 @@ angular.module('sntRover').service('RVReservationStateService', [
 				id: rateIdentifier,
 				name: rateName,
 				description: rateDescription,
-				is_rate_shown_on_guest_bill: false,
 				is_suppress_rate_on: false,
 				is_discount_allowed_on: true,
 				rate_type: {
@@ -166,7 +165,7 @@ angular.module('sntRover').service('RVReservationStateService', [
 				return getTotalPostedAddons(postType, numAdults);
 			} else if (amountType === 'CHILD') {
 				return getTotalPostedAddons(postType, numChildren);
-			} else if (amountType === 'FLAT') {
+			} else if (amountType === 'FLAT' || amountType === 'ROOM') {
 				return getTotalPostedAddons(postType, 1);
 			}
 		};
@@ -211,6 +210,18 @@ angular.module('sntRover').service('RVReservationStateService', [
 				remainingDays = parseInt((new tzIndependentDate(departure) - new tzIndependentDate(present)) / msPerDay, 0);
 
 			return (dayIndex % frequency === 0) && (!chargeFullLengthOnly || (chargeFullLengthOnly && (remainingDays >= frequency)));
+		};
+
+		self.isPostDaySelected = function(postDate, postDays) {
+			if (!postDays) {
+				return true;
+			}
+			var daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+				stayDate = new tzIndependentDate(postDate),
+				stayDay;
+
+			stayDay = stayDate.getDay();
+			return (postDays[daysOfWeek[stayDay]]);
 		};
 
 		self.applyDiscount = function(amount, discount, numNights) {

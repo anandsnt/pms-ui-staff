@@ -114,8 +114,11 @@ sntZestStation.controller('zsCheckinfindReservationFromIdCtrl', [
             };
             $scope.setScroller('confirm-images');
 
-            var idCaptureConfig = processCameraConfigs($scope.zestStationData.iOSCameraEnabled, $scope.zestStationData.connectedCameras, $scope.zestStationData.featuresSupportedInIosApp);
+            var idCaptureConfig = processCameraConfigs($scope.zestStationData.iOSCameraEnabled,
+                                                       $scope.zestStationData.connectedCameras,
+                                                       $scope.zestStationData.featuresSupportedInIosApp);
 
+            idCaptureConfig.useAilaDevice = $scope.zestStationData.usingAilaDevice;
             $scope.setConfigurations(idCaptureConfig);
         })();
     }

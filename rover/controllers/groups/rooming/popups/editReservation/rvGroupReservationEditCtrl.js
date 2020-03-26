@@ -36,7 +36,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
     };
     var RESPONSE_STATUS_470 = 470;
 
-    var currentBorrowDialog;
+    var borrowPopup, overbookPopup;
     
     $scope.hasOverBookRoomTypePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
     $scope.hasOverBookHousePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE');
@@ -44,7 +44,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
 
     var calculateDisableCondition = function(field, value) {
       fieldsEnabled[field] = value;
-      for (key in fieldsEnabled) {
+      for (var key in fieldsEnabled) {
         if (key !== field) {
           fieldsEnabled[key] = !value;
         }
@@ -225,7 +225,6 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
 
     $scope.updateReservation = function(reservation, forcefullyOverbook) {
 
-
             $scope.errorMessage = "";
 
             _.extend(reservation, {
@@ -252,31 +251,35 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
             // Reservation update failure
             var onUpdateReservationFailure = function( error ) {
                 if (error.status === RESPONSE_STATUS_470 && error.results.is_borrowed_from_house) {
+                    
                     var results = error.results;
                 
                     $scope.borrowData = {};
                     $scope.borrowData.currentReservation = reservation;
+
                     if (!results.room_overbooked && !results.house_overbooked) {
-                        $scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission;
                         $scope.borrowData.isBorrowFromHouse = true;
-                    } else if (results.room_overbooked && !results.house_overbooked) {
-                        $scope.borrowData.shouldShowBorrowBtn = $scope.hasOverBookRoomTypePermission && $scope.hasBorrowFromHousePermission;
+                    }
+                     
+                    if (results.room_overbooked && !results.house_overbooked) {
+                        $scope.borrowData.shouldShowOverBookBtn = $scope.hasOverBookRoomTypePermission;
                         $scope.borrowData.isRoomTypeOverbooked = true;
                     } else if (!results.room_overbooked && results.house_overbooked) {
-                        $scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission && $scope.hasOverBookHousePermission;
+                        $scope.borrowData.shouldShowOverBookBtn = $scope.hasOverBookHousePermission;
                         $scope.borrowData.isHouseOverbooked = true;
                     } else if (results.room_overbooked && results.house_overbooked) {
-                        $scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission && $scope.hasOverBookRoomTypePermission && $scope.hasOverBookHousePermission;
+                        $scope.borrowData.shouldShowOverBookBtn = $scope.hasOverBookRoomTypePermission && $scope.hasOverBookHousePermission;
                         $scope.borrowData.isHouseAndRoomTypeOverbooked = true;
                     }
 
-                    currentBorrowDialog = ngDialog.open({
-                        template: '/assets/partials/common/group/rvGroupBorrowOverbookPopup.html',
+                    borrowPopup = ngDialog.open({
+                        template: '/assets/partials/common/group/rvGroupBorrowPopup.html',
                         className: '',
                         closeByDocument: false,
                         closeByEscape: true,
                         scope: $scope
                     });
+
                 } else {
                     $scope.errorMessage = error; 
                 }
@@ -296,13 +299,41 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
 
     // Handles the borrow action
     $scope.performBorrowFromHouse = function () {
-        $scope.updateReservation($scope.borrowData.currentReservation, true);
+
+        if ($scope.borrowData.isBorrowFromHouse) {
+            $scope.updateReservation($scope.borrowData.currentReservation, true);
+            $scope.closeBorrowPopup(true);
+        } else {
+            $scope.closeBorrowPopup();
+            overbookPopup = ngDialog.open({
+                template: '/assets/partials/common/group/rvGroupOverbookPopup.html',
+                className: '',
+                closeByDocument: false,
+                closeByEscape: true,
+                scope: $scope
+            });
+        }
+        
+    };
+
+    // Close borrow popup
+    $scope.closeBorrowPopup = function (shouldClearData) {
+        if (shouldClearData) {
+            $scope.borrowData = {};
+        }
+        borrowPopup.close();
     };
 
     // Closes the current borrow dialog
-    $scope.closeBorrowDialog = function() {
+    $scope.closeOverbookPopup = function() {
         $scope.borrowData = {};
-        currentBorrowDialog.close();
+        overbookPopup.close();
+    };
+
+    // Perform over book
+    $scope.performOverBook = function () {
+        $scope.updateReservation($scope.borrowData.currentReservation, true);
+        $scope.closeOverbookPopup();
     };
 
     var showCheckoutConfirmationPopup = function(data) {
@@ -540,10 +571,12 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
 
     // CICO-49191 Get the min date that can be chosen for a group reservation
     var getReservationMinDate = function (groupInfo) {
-      var minDate = groupInfo.block_from > $rootScope.businessDate ? 
-                    groupInfo.block_from : $rootScope.businessDate;
+        var shoulderStartDate = tzIndependentDate(groupInfo.shoulder_from_date),
+            businessDate = tzIndependentDate($rootScope.businessDate),
+            minDate = shoulderStartDate > businessDate ?
+                shoulderStartDate : businessDate;
 
-      return new tzIndependentDate(minDate);
+        return minDate;
     };
 
     /**
@@ -559,7 +592,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
             dateFormat: $rootScope.jqDateFormat,
             numberOfMonths: 1,
             minDate: getReservationMinDate(refData),
-            maxDate: new tzIndependentDate(refData.block_to),
+            maxDate: new tzIndependentDate(refData.shoulder_to_date),
             beforeShow: function(input, inst) {
                 $('#ui-datepicker-div').addClass('reservation hide-arrow');
                 $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');

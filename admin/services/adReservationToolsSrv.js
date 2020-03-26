@@ -66,7 +66,9 @@ admin.service('ADReservationToolsSrv', [
          */
         this.checkJobStatus = function(params) {
             var deferred = $q.defer(),
-                url      = '/admin/daily_balance_recalculations/' + params.id;
+                url      = params.id === 3 ?
+                            '/admin/daily_balance_recalculations/' + params.id :
+                            'api/schedule_jobs/' + params.id + '/status';
 
             ADBaseWebSrvV2.getJSON(url)
                 .then(function(data) {

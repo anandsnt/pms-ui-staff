@@ -296,8 +296,9 @@
 						<div class="total-stay-fees" ng-include="'/assets/partials/bill/rvTotalStayFees.html'" ></div>
 
 						<!-- Registration card -->
-						<div id="regDiv" ng-if="printRegistrationCardActive && !isAustrianRegistrationCardEnabled" class="registration-card" ng-include="'/assets/partials/bill/rvRegistrationCard.html'"></div>
-						<div id="regDiv" ng-if="printRegistrationCardActive && isAustrianRegistrationCardEnabled" class="registration-card" ng-include="'/assets/partials/bill/rvRegistrationCardAustria.html'"></div>
+						<div id="regDiv" ng-if="printRegistrationCardActive && !isRegistrationCardEnabledFor.austria && !isRegistrationCardEnabledFor.arabia" class="registration-card" ng-include="'/assets/partials/bill/rvRegistrationCard.html'"></div>
+						<div id="regDiv" ng-if="printRegistrationCardActive && isRegistrationCardEnabledFor.austria" class="registration-card" ng-include="'/assets/partials/bill/rvRegistrationCardAustria.html'"></div>
+						<div id="regDiv" ng-if="printRegistrationCardActive && isRegistrationCardEnabledFor.arabia" class="registration-card registration-card-3" ng-include="'/assets/partials/bill/rvRegistrationCardArabic.html'"></div>
 					</div>
 
 

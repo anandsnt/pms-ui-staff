@@ -132,7 +132,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
 
                     $scope.invokeApi(RVReservationSummarySrv.updateReservation, saveData, successCallBack, failureCallBack);
                 } else {
-                    // updateAddonPostOptions();
+                    updateAddonPostOptions();
                     var save = function() {
                         if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id || $scope.reservationData.group.id || $scope.reservationData.allotment.id) {
                             /**
@@ -298,7 +298,13 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         post_type: addon.postType.value,
                         charge_full_weeks_only: addon.chargefullweeksonly,
                         posting_frequency: addon.postType.frequency,
-                        rate_currency: addon.rateCurrency
+                        rate_currency: addon.rateCurrency,
+                        start_date: tzIndependentDate($scope.reservationData.arrivalDate),
+                        end_date: tzIndependentDate($scope.reservationData.departureDate),
+                        is_allowance: addon.is_allowance,
+                        is_consume_next_day: addon.is_consume_next_day,
+                        is_inclusive: addon.is_inclusive,
+                        is_rate_addon: addon.is_rate_addon
                     });
                        
                     $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
@@ -330,7 +336,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
             
             $scope.addonPopUpData = {
                 addonPostingMode: 'reservation',
-				cancelLabel: "+ More",
+				cancelLabel: "Cancel",
                 saveLabel: "Book",
                 shouldShowAddMoreButton: false,
                 number_of_adults: $scope.reservationData.number_of_adults,
@@ -365,7 +371,9 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     addon_currency: item.rate_currency,
                     charge_full_weeks_only: item.charge_full_weeks_only,
                     post_instances: item.post_instances,
-                    quantity: item.quantity
+                    quantity: item.quantity,
+                    is_allowance: item.is_allowance,
+                    is_consume_next_day: item.is_consume_next_day
                 };
 
                 $scope.packageData.existing_packages.push(addonsData);
@@ -467,7 +475,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     headCount = getTotalPostedAddons(addon.postType, $scope.reservationData.number_of_adults);
                 } else if (addon.amountType.value === 'CHILD') {
                     headCount = getTotalPostedAddons(addon.postType, $scope.reservationData.number_of_children);
-                } else if (addon.amountType.value === 'FLAT') {
+                } else if (addon.amountType.value === 'FLAT' || addon.amountType.value === 'ROOM') {
                     headCount = getTotalPostedAddons(addon.postType, 1);
                 }
 
@@ -693,23 +701,6 @@ sntRover.controller('RVReservationAddonsCtrl', [
                 $scope.$on( '$destroy', proceedBookingListner);
                 $scope.$on( '$destroy', removeSelectedAddonsListner);
             }
-        };
-
-        // Get addon count
-        $scope.getAddonCount = function(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly, quantity) {
-            if (!postingRythm) {
-                if (postType === 'Every Week' || postType === 'WEEKLY') {
-                    postingRythm = 7;
-                } else if (postType === 'Entire Stay' || postType === 'STAY') {
-                    postingRythm = 1;
-                } else if (postType === 'First Night' || postType === 'NIGHT') {
-                    postingRythm = 0;
-                }
-            }
-            amountType = amountType.toUpperCase();
-            var addonCount = RVReservationStateService.getApplicableAddonsCount(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly);
-
-            return (addonCount * quantity);
         };
 
         $scope.goToAddons = function() {

@@ -4523,8 +4523,16 @@
     .registration-card {
         margin: 1cm 2cm 0;
 
-        &.registration-card-2 {
+        &.registration-card-2,
+        &.registration-card-3 {
             margin: 0.5cm;
+        }
+
+        &.registration-card-3 {
+            .value {
+                display: block;
+                clear: both;
+            }
         }
 
         table {
@@ -4544,6 +4552,18 @@
                     padding-bottom: 10pt;
                 }
             }
+
+            &.fixed {
+                table-layout: fixed;
+            }
+        }
+
+        .align-right {
+            text-align: right;
+        }
+
+        .float-left {
+            .pull-left
         }
 
         .hotel-guest-info {
@@ -4624,6 +4644,13 @@
                 height: 50pt;
                 font-weight: normal;
                 text-transform: none;
+
+                span {
+                    display: block;
+                    font-weight: 400;
+                    font-size: 11pt;
+                    margin-top: 5pt;
+                }
             }
 
             .details {
@@ -4751,6 +4778,38 @@
                     }
                 }
             }
+
+            &:not(.customized) {
+                td {
+                    &.inner-table {
+                        padding: 0;
+
+                        td {
+                            border-top: none;
+                            border-left: none;
+                            border-bottom: 2pt solid #ebebeb;
+                            border-right: 2pt solid #ebebeb;
+                            height: 50pt;
+
+                            span {
+                                &.pull-left,
+                                &.pull-right {
+                                    margin: 0;
+                                }
+                            }
+
+                            &:last-child {
+                                border-right: none;
+                            }
+                        }
+
+                        table {
+                            margin: 0;
+                            height: 100%;
+                        }
+                    }
+                }
+            }
         }
 
         .terms-signature {
@@ -4768,6 +4827,21 @@
                 border-top: 1pt solid #000;
                 display: block;
                 width: 50%;
+            }
+        }
+
+        .registration-card-text-columns {
+            #flexbox > .parent(row nowrap, '', '', '');
+            page-break-inside: avoid;
+
+            .column {
+                width: 100%;
+            }
+
+            &.columns-2 {
+                .column {
+                    width: 50%;
+                }
             }
         }
     }

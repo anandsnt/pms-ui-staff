@@ -19,15 +19,19 @@ angular.module('sntRover')
 			var initiate = function() {
 				if (_.isEmpty($scope.diaryData.filterList)) {
 					var successCallBackFetchRoomTypeAndFloorList = function(data) {
-
-						$scope.$emit('hideLoader');
 						$scope.diaryData.selectedRoomCount = 0;
 						$scope.diaryData.selectedFloorCount = 0;
+						$scope.diaryData.selectedRoomFeaturesCount = 0;
 						$scope.diaryData.filterList.roomType = data.rooms;
 						$scope.diaryData.filterList.floorList = data.floors;
+						$scope.diaryData.filterList.roomFeatures = data.roomFeatures;
+					},
+					options = {
+						params: {},
+						successCallBack: successCallBackFetchRoomTypeAndFloorList
 					};
 
-					$scope.invokeApi(RVNightlyDiaryRightFilterBarSrv.fetchRoomTypeAndFloorList, {}, successCallBackFetchRoomTypeAndFloorList);
+					$scope.callAPI(RVNightlyDiaryRightFilterBarSrv.fetchFilterList, options);
 				}
 			};
 
@@ -87,8 +91,27 @@ angular.module('sntRover')
 					return selectedFloors;
 				};
 
+				/*
+				 * Creating an array of selected room features to apply filter.
+				 */
+				var getSelectedRoomFeatures = function(roomFeatures) {
+					var selectedRoomFeatures = [];
+
+					if (roomFeatures && !$scope.diaryData.isReservationSelected) {
+						roomFeatures.forEach(function(group) {
+							group.items.forEach(function(item) {
+								if (item.selected) {
+									selectedRoomFeatures.push(item.id);
+								}
+							});
+						});
+					}
+					return selectedRoomFeatures;
+				};
+
 				$scope.diaryData.selectedRoomTypes = getSelectedRoomTypes($scope.diaryData.filterList.roomType);
 				$scope.diaryData.selectedFloors = getSelectedFloors($scope.diaryData.filterList.floorList);
+                $scope.diaryData.selectedRoomFeatures = getSelectedRoomFeatures($scope.diaryData.filterList.roomFeatures);
 				$scope.$emit('REFRESH_DIARY_SCREEN');
 			};
 
@@ -98,7 +121,8 @@ angular.module('sntRover')
 			 */
 			var resetCommonFilters = function() {
 				var roomTypes = $scope.diaryData.filterList.roomType,
-					floorList = $scope.diaryData.filterList.floorList;
+					floorList = $scope.diaryData.filterList.floorList,
+					roomFeatures = $scope.diaryData.filterList.roomFeatures;
 
 				if (roomTypes && roomTypes.length > 0) {
 					roomTypes.forEach(function(roomtype) {
@@ -112,10 +136,20 @@ angular.module('sntRover')
 					});
 				}
 
+				if (roomFeatures && roomFeatures.length > 0) {
+					roomFeatures.forEach(function(group) {
+						group.items.forEach(function(item) {
+							item.selected = false;
+						});
+					});
+				}
+
 				$scope.diaryData.selectedRoomTypes = [];
 				$scope.diaryData.selectedFloors = [];
+				$scope.diaryData.selectedRoomFeatures = [];
 				$scope.diaryData.selectedFloorCount = 0;
 				$scope.diaryData.selectedRoomCount = 0;
+				$scope.diaryData.selectedRoomFeaturesCount = 0;
 			};
 
 			$scope.addListener('RESET_RIGHT_FILTER_BAR', function() {
@@ -241,8 +275,15 @@ angular.module('sntRover')
 
 			// Clear Room Features
 			var fetchIdFromRoomFeaturesList = function() {
-				var roomFeatures = $scope.diaryData.roomAssignmentFilters.room_features,
+				var roomFeatures = [],
 					roomFeatureIds = [];
+                
+                if ($scope.diaryData.isReservationSelected) {
+                    roomFeatures = $scope.diaryData.roomAssignmentFilters.room_features;
+                }
+                else {
+                    roomFeatures = $scope.diaryData.filterList.roomFeatures;
+                }
 
 				_.each(roomFeatures, function(feature) {
 					_.each(feature.items, function(item) {
@@ -251,16 +292,29 @@ angular.module('sntRover')
 						}
 					});
 				});
-
-				$scope.diaryData.roomAssignmentFilters.roomFeatureIds = roomFeatureIds;
-				$scope.diaryData.roomAssignmentFilters.count = roomFeatureIds.length;
+				
+                if ($scope.diaryData.isReservationSelected) {
+                    $scope.diaryData.roomAssignmentFilters.count = roomFeatureIds.length;
+                    $scope.diaryData.roomAssignmentFilters.roomFeatureIds = roomFeatureIds;
+                }
+                else {
+                    $scope.diaryData.selectedRoomFeatures = roomFeatureIds;
+                    $scope.diaryData.selectedRoomFeaturesCount = roomFeatureIds.length;
+                }
 			};
 
 			/**
 			 * function to handle the filter selection
 			 */
 			$scope.setSelectionForFeature = function(group, feature) {
-				var roomFeatures = $scope.diaryData.roomAssignmentFilters.room_features;
+				var roomFeatures = [];
+                
+                if ($scope.diaryData.isReservationSelected) {
+                    roomFeatures = $scope.diaryData.roomAssignmentFilters.room_features;
+                }
+                else {
+                    roomFeatures = $scope.diaryData.filterList.roomFeatures;
+                }
 
 				if (!roomFeatures[group].multiple_allowed) {
 					for (var i = 0; i < roomFeatures[group].items.length; i++) {
@@ -270,7 +324,6 @@ angular.module('sntRover')
 					}
 				}
 				roomFeatures[group].items[feature].selected = !roomFeatures[group].items[feature].selected;
-				fetchIdFromRoomFeaturesList();
 			};
 
 			// CICO-65277: Claer All Guest preferences corresponding to a seletced Reservation.

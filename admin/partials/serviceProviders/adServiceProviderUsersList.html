@@ -10,15 +10,26 @@
                 <div class="entry pull-left">
                     <label class="checkbox" ng-class="{'checked': includeInactiveUsers}">
                         <span class="icon-form icon-checkbox" ng-class="{'checked': includeInactiveUsers}"></span>
-                        <input ng-class="{'checked': includeInactiveUsers}" type="checkbox" ng-click="clickedShowInactiveUsers()" name="inactive" value="1" ng-model="includeInactiveUsers" />
+                        <input ng-class="{'checked': includeInactiveUsers}" type="checkbox" ng-change="clickedShowInactiveUsers()" name="inactive" value="1" ng-model="includeInactiveUsers" />
                         Include inactive users
                     </label>
                 </div>
             </div>
             <a ui-sref="admin.sntserviceproviderdetails({action:'edit',id:serviceProviderId})" class="action back">Back to {{serviceProviderName}}</a>
-        </header>    
-        <section>
+        </header>
+        <section class="content-scroll">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <span class="count-show">Show</span>
+            <div class="select table-count rates-table-count">
+                <select ng-model="displyCount" ng-options="opt for opt in displayCountList"></select>
+            </div>
+            <span class="count-entries">entries</span>
+            <div class="entry table-search">
+                <span class="search-text">Search</span>
+                <span class="icons icon-search" name="submit" type="submit"></span>
+                <input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000"
+                       function-to-fire="searchEntered"/>
+            </div>
             <table class="grid datatable" id="users_list_table" ng-table="tableParams"
             template-pagination="custom/pager">    
                 <tbody>

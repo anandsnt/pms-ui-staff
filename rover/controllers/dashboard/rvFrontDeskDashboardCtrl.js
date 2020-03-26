@@ -98,7 +98,7 @@ sntRover.controller('RVfrontDeskDashboardController',
     };
     $scope.onAnlayticsRoomTypeChange = function() {
       rvAnalyticsSrv.selectedRoomType = $scope.dashboardFilter.selectedRoomType;
-      $scope.$broadcast('RELOAD_DATA_WITH_SELECTED_FILTER');
+      $scope.$broadcast('RELOAD_DATA_WITH_SELECTED_FILTER_' + $scope.dashboardFilter.selectedAnalyticsMenu);
     };
 
     $scope.toggleFilterView = function() {
@@ -107,4 +107,16 @@ sntRover.controller('RVfrontDeskDashboardController',
     $scope.showRemainingReservationsToggled = function () {
       $scope.$broadcast('SHOW_REMAINING_RESERVATIONS_TOGGLE');
     };
+    
+    $scope.showYesterdaysDataToggled = function() {
+      $scope.$broadcast('SHOW_YESTERDAYS_DATA_TOGGLE');
+    };
+
+    $scope.$on('RESET_CHART_FILTERS', function() {
+      $scope.dashboardFilter.datePicked = $rootScope.businessDate;
+      $scope.dashboardFilter.showRemainingReservations = false;
+      $scope.dashboardFilter.selectedRoomType = "";
+      rvAnalyticsSrv.selectedRoomType = "";
+      $scope.dashboardFilter.showPreviousDayData = false;
+    });
 }]);

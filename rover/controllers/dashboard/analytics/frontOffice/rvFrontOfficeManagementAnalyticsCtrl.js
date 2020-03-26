@@ -379,6 +379,7 @@ angular.module('sntRover')
                         onBarChartClick: onBarChartClick
                     };
                     $scope.$emit('ROOM_TYPE_SHORTAGE_CALCULATED', rvAnalyticsSrv.roomTypesWithShortageData);
+                    $scope.dashboardFilter.showFilters = false;
                     drawChartAndAddHeading(chartDetails);
                 });
             };

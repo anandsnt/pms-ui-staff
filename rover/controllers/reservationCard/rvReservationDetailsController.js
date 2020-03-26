@@ -400,11 +400,14 @@ sntRover.controller('reservationDetailsController',
 
 		// CICO-49191 - Get the min date for showing in the arrival/departure calendar for group reservation
 		var getMinDateForGroupReservation = function () {
-			var minDate = $rootScope.businessDate > $scope.reservationData.reservation_card.group_block_from ? 
-                          $rootScope.businessDate : $scope.reservationData.reservation_card.group_block_from;
+				var businessDate = tzIndependentDate($rootScope.businessDate),
+					groupShoulderStartDate = tzIndependentDate($scope.reservationData.reservation_card.group_shoulder_block_from);
 
-			return $filter('date')(minDate, $rootScope.dateFormat);
-		};
+				var minDate = businessDate > groupShoulderStartDate ? 
+							businessDate : groupShoulderStartDate;
+
+				return $filter('date')(minDate, $rootScope.dateFormat);
+			};
 
 		// for groups this date picker must not allow user to pick
 		// a date that is after the group end date.
@@ -412,7 +415,7 @@ sntRover.controller('reservationDetailsController',
 		if ( !! $scope.reservationData.reservation_card.group_id ) {
 			datePickerCommon = angular.extend(datePickerCommon, {
 				minDate: getMinDateForGroupReservation(),
-				maxDate: $filter('date')($scope.reservationData.reservation_card.group_block_to, $rootScope.dateFormat)
+				maxDate: $filter('date')($scope.reservationData.reservation_card.group_shoulder_block_to, $rootScope.dateFormat)
 			});
 
 		}
@@ -421,11 +424,11 @@ sntRover.controller('reservationDetailsController',
 		$scope.departureDateOptions = angular.copy(datePickerCommon);	
 
 	    // CICO-46933
-		$scope.departureDateOptions.maxDate = !!$scope.reservationData.reservation_card.group_id ? $filter('date')($scope.reservationData.reservation_card.group_block_to, $rootScope.dateFormat) : $scope.getReservationMaxDepartureDate($scope.editStore.arrival);
+		$scope.departureDateOptions.maxDate = !!$scope.reservationData.reservation_card.group_id ? $filter('date')($scope.reservationData.reservation_card.group_shoulder_block_to, $rootScope.dateFormat) : $scope.getReservationMaxDepartureDate($scope.editStore.arrival);
 		
 		// CICO-46933
 		$scope.arrivalDateChanged = function () {			
-            $scope.departureDateOptions.maxDate = !!$scope.reservationData.reservation_card.group_id ? $filter('date')($scope.reservationData.reservation_card.group_block_to, $rootScope.dateFormat) : $scope.getReservationMaxDepartureDate($scope.editStore.arrival);
+            $scope.departureDateOptions.maxDate = !!$scope.reservationData.reservation_card.group_id ? $filter('date')($scope.reservationData.reservation_card.group_shoulder_block_to, $rootScope.dateFormat) : $scope.getReservationMaxDepartureDate($scope.editStore.arrival);
             $scope.editStore.departure = tzIndependentDate($scope.editStore.departure) <= $scope.getReservationMaxDepartureDate($scope.editStore.arrival) ? 
                                         $scope.editStore.departure : $scope.getReservationMaxDepartureDate($scope.editStore.arrival)
 
@@ -1195,27 +1198,30 @@ sntRover.controller('reservationDetailsController',
 							var results = response.results;
 						
 							$scope.borrowData = {};
+
 							if (!results.room_overbooked && !results.house_overbooked) {
-								$scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission;
-								$scope.borrowData.isBorrowFromHouse = true;
-							} else if (results.room_overbooked && !results.house_overbooked) {
-								$scope.borrowData.shouldShowBorrowBtn = $scope.hasOverBookRoomTypePermission && $scope.hasBorrowFromHousePermission;
+                    			$scope.borrowData.isBorrowFromHouse = true;
+                			}
+                 
+							if (results.room_overbooked && !results.house_overbooked) {
+								$scope.borrowData.shouldShowOverBookBtn = $scope.hasOverBookRoomTypePermission;
 								$scope.borrowData.isRoomTypeOverbooked = true;
 							} else if (!results.room_overbooked && results.house_overbooked) {
-								$scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission && $scope.hasOverBookHousePermission;
+								$scope.borrowData.shouldShowOverBookBtn = $scope.hasOverBookHousePermission;
 								$scope.borrowData.isHouseOverbooked = true;
 							} else if (results.room_overbooked && results.house_overbooked) {
-								$scope.borrowData.shouldShowBorrowBtn = $scope.hasBorrowFromHousePermission && $scope.hasOverBookRoomTypePermission && $scope.hasOverBookHousePermission;
+								$scope.borrowData.shouldShowOverBookBtn = $scope.hasOverBookRoomTypePermission && $scope.hasOverBookHousePermission;
 								$scope.borrowData.isHouseAndRoomTypeOverbooked = true;
 							}
 		
 							ngDialog.open({
-								template: '/assets/partials/common/group/rvGroupBorrowOverbookPopup.html',
+								template: '/assets/partials/common/group/rvGroupBorrowPopup.html',
 								className: '',
 								closeByDocument: false,
 								closeByEscape: true,
 								scope: $scope
 							});
+							
 						} else {
 							ngDialog.open({
 								template: '/assets/partials/reservation/alerts/editDatesInStayCard.html',
@@ -1252,15 +1258,44 @@ sntRover.controller('reservationDetailsController',
 			}, onValidationSuccess, onValidationFaliure);
 		};
 
-		// Handles the borrow action
-		$scope.performBorrowFromHouse = function () {
-			RVReservationStateService.setForceOverbookFlagForGroup(true);
-			$scope.clickedOnStayDateChangeConfirmButton();	
+		// Close borrow popup
+        $scope.closeBorrowPopup = function (shouldClearData) {
+            if (shouldClearData) {
+                $scope.borrowData = {};
+            }
+            ngDialog.close();
 		};
-		// Close the borrow popup
-		$scope.closeBorrowDialog = function () {
-			$scope.borrowData = {};
-			$scope.closeDialog();
+		
+		 // Handles the borrow action
+		 $scope.performBorrowFromHouse = function () {
+            if ($scope.borrowData.isBorrowFromHouse) {
+                RVReservationStateService.setForceOverbookFlagForGroup(true);
+				$scope.clickedOnStayDateChangeConfirmButton();
+                $scope.closeBorrowPopup(true);
+            } else {
+                $scope.closeBorrowPopup();
+                ngDialog.open({
+                    template: '/assets/partials/common/group/rvGroupOverbookPopup.html',
+                    className: '',
+                    closeByDocument: false,
+                    closeByEscape: true,
+                    scope: $scope
+                });
+            }
+            
+        };
+
+        // Closes the current borrow dialog
+        $scope.closeOverbookPopup = function() {
+            $scope.borrowData = {};
+            ngDialog.close();
+        };
+
+        // Perform overbook
+        $scope.performOverBook = function () {
+            RVReservationStateService.setForceOverbookFlagForGroup(true);
+			$scope.clickedOnStayDateChangeConfirmButton();
+            $scope.closeOverbookPopup();
 		};
 
 		$scope.moveToRoomRates = function() {
@@ -2070,8 +2105,11 @@ sntRover.controller('reservationDetailsController',
 				$scope.reservationData.reservation_card.is_package_exist = false;
 			}
 			shouldReloadState = true;
-		};
-		var addonArray = [];
+		},
+		failureCallBack = function(errorMessage) {
+			$scope.errorMessage = errorMessage;
+		},
+		addonArray = [];
 
 		addonArray.push(addonId);
 		var dataToApi = {
@@ -2082,7 +2120,7 @@ sntRover.controller('reservationDetailsController',
 			"reservationId": reservationId
 		};
 
-		$scope.invokeApi(RVReservationPackageSrv.deleteAddonsFromReservation, dataToApi, successDelete);
+		$scope.invokeApi(RVReservationPackageSrv.deleteAddonsFromReservation, dataToApi, successDelete, failureCallBack);
 	};
 
 	$scope.$on('PRIMARY_GUEST_ID_CHANGED', function(event, data) {
@@ -2114,4 +2152,9 @@ sntRover.controller('reservationDetailsController',
 	$scope.$on( '$destroy', removeSelectedAddonsListner);
 	$scope.$on( '$destroy', navigateToAddonsListner);
 
+	// CICO-65967
+	if ($stateParams.isGroupDetachmentRequested) {
+		$scope.searchData.groupCard.name = '';
+	}
+	
 }]);

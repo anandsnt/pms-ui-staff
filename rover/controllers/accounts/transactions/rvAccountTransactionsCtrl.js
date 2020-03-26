@@ -434,9 +434,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		});
 
 
-		// $scope.UPDATE_TRANSACTION_DATA = function() {
-		// 	getTransactionDetails();
-		// };
+		$scope.UPDATE_TRANSACTION_DATA = function() {
+			getTransactionDetails();
+		};
 
 		/*
 		 *  Bill data need to be updated after success action of
@@ -569,6 +569,13 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.currentActiveBill = billIndex;
 			loadDefaultBillDateData();
 		};
+
+		$scope.callAPI(RVBillCardSrv.fetchAdjustmentReasons, {
+			successCallBack: function(response) {
+				$scope.adjustmentReasonOptions = response.force_adjustment_reasons;
+				$scope.showAdjustmentReason = response.force_adjustment_reason_enabled;
+			}
+		});
 
 		$scope.openPostCharge = function( activeBillNo ) {
 			// Show a loading message until promises are not resolved

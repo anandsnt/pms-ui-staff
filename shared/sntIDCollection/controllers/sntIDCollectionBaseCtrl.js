@@ -26,7 +26,8 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		useExtCamForFR: false,
 		useAutoDetection: false,
 		idCapturePluginName: '',
-		idCaptureActionName: ''
+		idCaptureActionName: '',
+		useAilaDevice: false
 	};
 
 	var stopVideoStream = function() {
@@ -58,8 +59,10 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			
 			if (!$scope.screenData.needBackSideScan || $scope.screenData.imageSide === 1) {
 				$scope.screenData.scanMode = screenModes.confirm_id_images;
+				$scope.$emit('ID_BACK_IMAGE_CAPTURED');
 			} else {
 				$scope.screenData.scanMode = screenModes.confirm_front_image;
+				$scope.$emit('ID_FRONT_IMAGE_CAPTURED');
 			}
 			if (response.image) {
 				var base64String = sntIDCollectionUtilsSrv.base64ArrayBuffer(response.image);
@@ -272,7 +275,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 
 		var cameraParams = {
 			'CAPTURE_TIMER': 3,
-			'PREVIEW_TIMER': 3,
+			'PREVIEW_TIMER': $scope.deviceConfig.useAilaDevice ? 0 : 3,
 			'CAMERA_TYPE': 'back_camera',
 			'CAMERA_MESSAGES': {
 				'DETECTING_FACE': 'WAITING FOR AN ID TO SCAN, PLEASE SHOW YOUR ID TO THE IPAD BACK CAMERA',

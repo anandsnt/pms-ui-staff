@@ -102,6 +102,18 @@
         </div>
     </div>
 
+    <div class="guest-info table">
+        <div class="row">
+            <strong>
+                {{ 'BILLING_ADDRESS' | translate }}
+            </strong>
+            <span ng-bind-html="printData.billingInfo.name"></span>
+            <br>
+            <span ng-bind-html="::printData.billingInfo.address"></span>
+        </div>
+        <br/><br/>
+    </div>
+
     <div class="invoice-header"> <!-- Don't ouput if header is not defined -->
         {{printData.custom_text_header}}
     </div>
@@ -116,10 +128,12 @@
         
         <div class="invoice-details table">
             <div class="caption">
-                {{printData.hotel_name}}
-                <span>{{printData.street}}&nbsp;&#9830;&nbsp;{{printData.city}},&nbsp;{{printData.state}}&nbsp; {{printData.zipcode}}&nbsp;&#9830;&nbsp;{{printData.country}}
+               {{printData.hotel_name}}
+               <span ng-bind-html="printData.hotel_address"></span>
                <br>
-               {{ printData.phone }}&nbsp;&#9830;&nbsp;{{ printData.email }}</span>
+               <span>{{ printData.phone }}</span>
+               <br>
+               <span>{{ printData.email }}</span>
             </div>
 
             <!-- Headings -->

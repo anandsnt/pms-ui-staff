@@ -6,7 +6,8 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 	'$stateParams',
 	'$controller',
 	'zsEventConstants',
-	function($scope, zsCheckinSrv, zsGeneralSrv, $timeout, $stateParams, $controller, zsEventConstants) {
+	'$state',
+	function($scope, zsCheckinSrv, zsGeneralSrv, $timeout, $stateParams, $controller, zsEventConstants, $state) {
 
 		/* ************************************************
 
@@ -21,7 +22,15 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 		});
 
 		var guestInfo = angular.fromJson($stateParams.guestInfo);
-		var checkinParams = angular.fromJson($stateParams.checkinParams);
+		var checkinParams = {};
+		var pickupKeystateParams;
+
+		if ($stateParams.flowType !== 'PICKUP_KEY') {
+			checkinParams = angular.fromJson($stateParams.checkinParams);
+		} else {
+			checkinParams.reservation_id = $stateParams.reservation_id;
+			pickupKeystateParams = JSON.parse($stateParams.prevStateParams);
+		}
 		var selectedCalendarModel = "";
 		var selectedCalendarModelDisplay = "";
 
@@ -47,13 +56,38 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 			}, 100);
 		};
 
-		var onGuestInfoSave = function() {
-			
-			// If there is only one guest, checkin the reservation and proceed
-			if ($scope.selectedReservation.guest_details.length === 1) {
+		var updateGuestInfo = function() {
+			// TODO: clean the below code later
+			_.each(guestInfo.guests, function(guest) {
+				if (guest.id === $scope.selectedGuest.id) {
+					_.each(guest.guest_details, function(guest_detail) {
+						_.each($scope.selectedGuest.reservationDetails, function(fieldRow) {
+							_.each(fieldRow, function(resDetails) {
+								if (guest_detail.field === resDetails.field_key) {
+									guest_detail.current_value = resDetails[resDetails.field_key];
+								}
+							});
+						});
+					});
+				}
+			});
+		};
+
+		var nextPageActions = function() {
+			if ($stateParams.flowType !== 'PICKUP_KEY') {
 				$scope.$emit('CHECKIN_GUEST', {
 					checkinParams: checkinParams
 				});
+			} else {
+				$scope.zestStationData.skipGuestMandatorySchemaCheck = true;
+				$state.go('zest_station.pickUpKeyDispense', pickupKeystateParams);
+			}
+		};
+
+		var onGuestInfoSave = function() {
+			// If there is only one guest, checkin the reservation and proceed
+			if ($scope.selectedReservation.guest_details.length === 1) {
+				nextPageActions();
 			} else {
 				var guestsWithMissingInfo = _.filter($scope.selectedReservation.guest_details, function(guest) {
 					return guest.is_missing_any_required_field;
@@ -80,13 +114,34 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 
 		// Continue button action
 		$scope.checkinReservation = function() {
-			$scope.$emit('CHECKIN_GUEST', {
-				checkinParams: checkinParams
-			});
+			nextPageActions();
 		};
 
-		$scope.saveGuestDetails = function() {
+		var recordSkipingOffVehicleRegNumber = function(actionDetails) {
+
+			var params = {
+				"id": checkinParams.reservation_id,
+				"application": 'KIOSK',
+				"action_type": 'GUEST_SCHEMA',
+				"details": actionDetails
+			};
+
+			var options = {
+				params: params,
+				loader: 'none',
+				failureCallBack: function() {
+					// do nothing
+				}
+			};
+
+			$scope.callAPI(zsGeneralSrv.recordReservationActions, options);
+		};
+
+		$scope.saveGuestDetails = function(skipVehicleRegNumber) {
+
+			$scope.screenData.openedPopupName = '';
 			var allRequireFieldsFilled = true;
+			var vehicleRegNumberNeedtoBeEntered = false;
 
 			$scope.screenData.showErrorMessage = false;
 
@@ -99,10 +154,55 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 				});
 			});
 
+			_.each($scope.selectedGuest.reservationDetails, function(row) {
+				_.each(row, function(field) {
+					if (field.field_category === 'parking') {
+						vehicleRegNumberNeedtoBeEntered = (skipVehicleRegNumber || field[field.field_key]) ? false : true;
+						if (!skipVehicleRegNumber && allRequireFieldsFilled && field.old_value !== field[field.field_key]) {
+							var actionDetails;
+
+							if (!field.old_value) {
+								actionDetails = [{
+									'key': 'Guest info added for the guest',
+									'new_value': $scope.selectedGuest.first_name + ' ' + $scope.selectedGuest.last_name
+								}, {
+									'key': 'Vehicle registraion number',
+									'new_value': field[field.field_key]
+								}];
+							} else {
+								actionDetails = [{
+									'key': 'Guest info updated for the guest',
+									'new_value': $scope.selectedGuest.first_name + ' ' + $scope.selectedGuest.last_name
+								}, {
+									'key': 'Vehicle registraion number',
+									'old_value': field.old_value,
+									'new_value': field[field.field_key]
+								}];
+							}
+							recordSkipingOffVehicleRegNumber(actionDetails);
+						}
+					}
+				});
+			});
+
+			if (skipVehicleRegNumber) {
+				var actionDetails = [{
+					"key": 'Vehicle registraion number skipped for the guest',
+					"new_value": $scope.selectedGuest.first_name + ' ' + $scope.selectedGuest.last_name
+				}];
+
+				recordSkipingOffVehicleRegNumber(actionDetails);
+			}
+			
 			if (!allRequireFieldsFilled) {
 				$scope.screenData.openedPopupName = 'WARNING_POPUP';
 				$scope.screenData.triedToSave = true;
-			} else {
+			} 
+			else if (vehicleRegNumberNeedtoBeEntered) {
+				$scope.screenData.openedPopupName = 'PARKING_ADDON_WARNING_POPUP';
+				$scope.screenData.triedToSave = true;
+			}
+			else {
 				var apiParams = {};
 
 				_.each($scope.selectedGuest.reservationDetails, function(row) {
@@ -129,6 +229,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 					successCallBack: function () {
 						$scope.selectedGuest.is_missing_any_required_field = false;
 						onGuestInfoSave();
+						updateGuestInfo();
 					},
 					failureCallBack: function() {
 						$scope.screenData.openedPopupName = 'WARNING_POPUP';
@@ -163,10 +264,15 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 					field_key: info.field,
 					mandatory: info.mandatory,
 					type: info.type,
-					values: info.values
+					values: info.values,
+					field_category: info.field_category
 				};
 
 				infoData[info.field] = info.current_value;
+
+				if (infoData.field_category === 'parking') {
+					infoData.old_value = angular.copy(info.current_value);
+				}
 
 				if (infoData.type === "date") {
 					var displayKey = infoData.field_key + "forDisplay";
@@ -351,7 +457,7 @@ sntZestStation.controller('zsCheckinSaveGuestInfoCtrl', [
 				calculateHeightOfListAndRefreshScroller();
 			} else {
 				// If there is only one guest, show the bypass question if set or the guest info details
-				$scope.selectedGuest = guestInfo.guests[0];
+				$scope.selectedGuest = $scope.selectedReservation.guest_details[0];
 				retrieveGuestInfoForDisplay(guestInfo.guests[0].guest_details);
 				$scope.screenData.screenMode = 'GUEST_DETAILS';
 				refreshScroller();

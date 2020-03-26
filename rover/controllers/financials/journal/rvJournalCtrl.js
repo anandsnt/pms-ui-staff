@@ -129,7 +129,7 @@ sntRover.controller('RVJournalController',
 
             if (!$scope.data.isExpandedViewRevenue) {
                 $scope.searchJournal();
-            } else {$scope.data.filterData.
+            } else {
                 $scope.$broadcast("EXPAND_REVENUE_SCREEN");
             }           
         } 
@@ -205,6 +205,13 @@ sntRover.controller('RVJournalController',
         } else if (($scope.data.selectedDepartmentList.length === 0) && ($scope.data.selectedEmployeeList.length !== 0)) {
             $scope.data.filterTitle = "Multiple";
         }
+
+        if ($scope.data.activeTab === "PAYMENTS") {
+            $scope.$broadcast("PAYMENTSSEARCH");
+        }
+        if ($scope.data.activeTab === "REVENUE") {            
+            $scope.$broadcast("REVENUESEARCH");
+        }
     };
 
     // On selecting 'All Employees' radio button.
@@ -220,6 +227,13 @@ sntRover.controller('RVJournalController',
             $scope.data.filterTitle = "All Departments and All Employees";
         } else if (($scope.data.selectedDepartmentList.length !== 0) && ($scope.data.selectedEmployeeList.length === 0)) {
             $scope.data.filterTitle = "Multiple";
+        }
+
+        if ($scope.data.activeTab === "PAYMENTS") {
+            $scope.$broadcast("PAYMENTSSEARCH");
+        }
+        if ($scope.data.activeTab === "REVENUE") {            
+            $scope.$broadcast("REVENUESEARCH");
         }
     };
 
@@ -293,6 +307,13 @@ sntRover.controller('RVJournalController',
             $scope.data.selectedEmployeesName = [];
             $scope.data.selectedEmployeesName.push('ALL');
         }
+        
+        if ($scope.data.activeTab === "PAYMENTS") {
+            $scope.$broadcast("PAYMENTSSEARCH");
+        }
+        if ($scope.data.activeTab === "REVENUE") {            
+            $scope.$broadcast("REVENUESEARCH");
+        }        
     };
 
     // On selecting select button.
@@ -394,6 +415,8 @@ sntRover.controller('RVJournalController',
             $scope.$broadcast("CLOSEPRINTBOX");
         }
         $scope.data.isActiveRevenueFilter = false;
+        clearAllDeptSelection(); 
+        clearAllEmployeeSelection();
     };
 
     // Utility method use to check data being blank or undefined.

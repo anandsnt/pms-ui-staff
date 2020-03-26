@@ -1,49 +1,71 @@
 admin.controller('ADRatesActivityLogCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADRateActivityLogSrv', 'ngTableParams', '$filter',
     function($scope, $rootScope, $state, $stateParams, ADRateActivityLogSrv, ngTableParams, $filter) {
 	BaseCtrl.call(this, $scope);
-
+    ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
         $scope.init = function() {
-        $scope.showActivityLog = false;
-        $scope.activityLogData = {};
-        $scope.fromDate = $rootScope.businessDate;
-        $scope.toDate = $rootScope.businessDate;
-        $scope.user_id = 0;
-        $scope.getRateLog = function() {
-            $scope.showActivityLog = true;
-            $scope.$emit('showLoader');
-            var rateId = $stateParams.rateId;
-            var callback = function(response) {
-                $scope.activityLogData = response;
-                $scope.$emit('hideLoader');
-            };
+            $scope.showActivityLog = false;
 
-            $scope.invokeApi(ADRateActivityLogSrv.fetchRateLog, {'id': rateId}, callback);
-        };
-        $scope.toggleActivityLogFilterON = false;
-        $scope.toggleActivityLogFilter = function() {
-            $scope.toggleActivityLogFilterON = !$scope.toggleActivityLogFilterON;
-            if ($scope.toggleActivityLogFilterON) {
-                initializeAutoCompletion();
-            }
-        };
-        $scope.toggleActivityLog = function() {
-            if ($scope.detailsMenu !== 'adRateActivityLog') {
-                $scope.detailsMenu = 'adRateActivityLog';
-                $scope.getRateLog();
-            } else {
-                $scope.detailsMenu = '';
-                $scope.toggleActivityLogFilterON = false;
-            }
-        };
-        $scope.isOldValue = function(value) {
-            if (value === "" || typeof value === "undefined" || value === null) {
-                return false;
-            }
-            else {
-                return true;
-            }
-        };
+            $scope.fromDate = $rootScope.businessDate;
+            $scope.toDate = $rootScope.businessDate;
+            $scope.user_id = 0;
+            $scope.getRateLog = function($defer, params) {
+                var getParams = $scope.calculateGetParams(params),
+                    rateId = $stateParams.rateId;
+
+                $scope.showActivityLog = true;
+                $scope.$emit('showLoader');
+
+                var callback = function(response) {
+
+                    $scope.$emit('hideLoader');
+                    $scope.totalCount = response.total_count;
+                    $scope.totalPage = Math.ceil(response.total_count / $scope.displyCount);
+                    $scope.data = response.results;
+                    $scope.currentPage = params.page();
+                    params.total(response.total_count);
+                    $defer.resolve($scope.data);
+                };
+
+                getParams.actionable_type = "Rate";
+                getParams.actionable_id = rateId;
+
+                $scope.invokeApi(ADRateActivityLogSrv.fetchRateLog, getParams, callback);
+            };
+            $scope.toggleActivityLogFilterON = false;
+            $scope.toggleActivityLogFilter = function() {
+                $scope.toggleActivityLogFilterON = !$scope.toggleActivityLogFilterON;
+                if ($scope.toggleActivityLogFilterON) {
+                    initializeAutoCompletion();
+                }
+            };
+            $scope.toggleActivityLog = function() {
+                if ($scope.detailsMenu !== 'adRateActivityLog') {
+                    $scope.detailsMenu = 'adRateActivityLog';
+                    $scope.tableParams = new ngTableParams({
+                        page: 1,  // show first page
+                        count: $scope.displyCount, // count per page
+                        sorting: {
+                            name: 'asc' // initial sorting
+                        }
+                    }, {
+                        total: 0, // length of data
+                        getData: $scope.getRateLog
+                    });
+
+                } else {
+                    $scope.detailsMenu = '';
+                    $scope.toggleActivityLogFilterON = false;
+                }
+            };
+            $scope.isOldValue = function(value) {
+                if (value === "" || typeof value === "undefined" || value === null) {
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            };
 
 
     var setDatePickerOptions = function() {

@@ -22,6 +22,9 @@ sntRover.controller('RVReservationPackageController',
 		$scope.closeAddOnPopup = function() {
 			// to add stjepan's popup showing animation
 			$rootScope.modalOpened = false;
+			$scope.$emit('CLOSE_ADDON_POPUP', {
+				addonPostingMode: $scope.addonPopUpData.addonPostingMode
+			});
 			$timeout(function() {
 				if (shouldReloadState) {
 					$state.reload($state.current.name);
@@ -31,26 +34,42 @@ sntRover.controller('RVReservationPackageController',
 		};
 
 		// Get addon count
-		$scope.getAddonCount = function(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly, quantity) {
-			if (!postingRythm) {
-				if (postType === 'WEEK') {
+		$scope.getAddonCount = function(addon) {
+			var postingRythm = addon.post_type.frequency,
+				postType = addon.post_type.value.toUpperCase(),
+				amountType = addon.amount_type.value.toUpperCase(),
+				numAdults = $scope.addonPopUpData.number_of_adults,
+				numChildren = $scope.addonPopUpData.number_of_children,
+				numNights = $scope.addonPopUpData.duration_of_stay,
+				chargeFullWeeksOnly = addon.charge_full_weeks_only;
+				
+			if (!postingRythm) {				
+				if (postType === 'WEEK' || postType === 'EVERY WEEK' || postType === 'WEEKLY' || postType === 'WEEKDAY' || postType === 'WEEKEND') {
 					postingRythm = 7;
-				} else if (postType === 'STAY') {
+				} else if (postType === 'STAY' || postType === 'ENTIRE STAY') {
 					postingRythm = 1;
-				} else if (postType === 'NIGHT') {
+				} else if (postType === 'NIGHT' || postType === 'First Night' || postType === 'LAST_NIGHT' || postType === 'CUSTOM' || postType === 'POST ON LAST NIGHT') {
 					postingRythm = 0;
 				}
 			}
-			amountType = amountType.toUpperCase();
+			if ($scope.showCustomPosting() && typeof addon.post_instances !== 'undefined' && addon.post_instances.length > 0) {
+				numNights = _.filter(addon.post_instances, {active: true}).length;
+			}
 			var addonCount = RVReservationStateService.getApplicableAddonsCount(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly);
 
-			return (addonCount * quantity);
+			return (addonCount * addon.addon_count);
+		};
+
+		$scope.getAddonTotal = function(addon) {
+			return $scope.getAddonCount(addon) * addon.amount;
 		};
 
 		$scope.selectedPurchesedAddon = "";
 		
 		$scope.selectPurchasedAddon = function(addon) {
 			$scope.errorMessage = [];
+			$scope.previousPostDays = {};
+			$scope.daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 			if (!$rootScope.featureToggles.addons_custom_posting) {
 				return;
 			} else if (addon.is_rate_addon) {
@@ -60,10 +79,6 @@ sntRover.controller('RVReservationPackageController',
 				var addonPostingMode = $scope.addonPopUpData.addonPostingMode;
 
 				$scope.selectedPurchesedAddon = addon;
-				if (typeof $scope.selectedPurchesedAddon.selected_post_days === 'undefined') {
-					$scope.selectedPurchesedAddon.selected_post_days = {};
-					$scope.togglePostDaysSelectionForAddon(false);
-				}
 				if (addonPostingMode === 'staycard') {
 					$scope.addonPostingDate = {
 						startDate: tzIndependentDate($scope.reservationData.reservation_card.arrival_date),
@@ -92,6 +107,10 @@ sntRover.controller('RVReservationPackageController',
 					$scope.selectedPurchesedAddon.end_date = $scope.addonPostingDate.endDate;
 				}
 				updateDaysOfWeek();
+				if (typeof $scope.selectedPurchesedAddon.selected_post_days === 'undefined') {
+					$scope.selectedPurchesedAddon.selected_post_days = {};
+					$scope.togglePostDaysSelectionForAddon(true);
+				}
 				var startDate = $filter('date')($scope.selectedPurchesedAddon.start_date, $rootScope.dateFormat),
 					endDate = $filter('date')($scope.selectedPurchesedAddon.end_date, $rootScope.dateFormat);
 
@@ -99,25 +118,25 @@ sntRover.controller('RVReservationPackageController',
 				$scope.selectedPurchesedAddon.end_date = endDate;
 				$scope.selectedPurchesedAddon.nameCharLimit = ($scope.selectedPurchesedAddon.name.length > 23) ? 20 : 23;
 				angular.forEach($scope.selectedPurchesedAddon.post_instances, function(item) {
-						if (item.active) {
+						if (!item.active) {
 							var postDate = new Date(item.post_date),
 							daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
 							day;
 
 							day = daysOfWeek[postDate.getDay()];
 
-							$scope.selectedPurchesedAddon.selected_post_days[day] = true;
+							$scope.selectedPurchesedAddon.selected_post_days[day] = item.active;
 						}
 					});
+				angular.copy($scope.selectedPurchesedAddon.selected_post_days, $scope.previousPostDays);
 			} else {
 				$scope.errorMessage = ["Custom posting can be configured only for nightly addons"];
+				$scope.selectedPurchesedAddon = "";
 			}
 
 		};
 
 		$scope.showCustomPosting = function() {
-			// excludedModulesForCustomisation = ['allotments', 'create_group', 'group'];
-			// return $rootScope.featureToggles.addons_custom_posting && excludedModulesForCustomisation.indexOf($scope.addonPopUpData.addonPostingMode) === -1;
 			return $rootScope.featureToggles.addons_custom_posting;
 		};
 
@@ -186,21 +205,22 @@ sntRover.controller('RVReservationPackageController',
 			});
 		};
 
-		$scope.removeChosenAddons = function(index, addon) {
-			
-			setTimeout(function() {
-				$scope.selectedPurchesedAddon = "";
-			}, 1000);
-			
-			$rootScope.$broadcast('REMOVE_ADDON', {
-				addonPostingMode: $scope.addonPopUpData.addonPostingMode,
-				index: index,
-				addon: addon
-			});
-			if ($scope.packageData.existing_packages.length === 1) {
-				$scope.closePopup();
-			}
+		$scope.removeChosenAddons = function($event, index, addon) {
+			$event.stopPropagation();
+			$scope.selectedPurchesedAddon = "";
 
+			if ($scope.packageData.existing_packages.length !== 1 && addon.is_allowance && addon.is_consumed_allowance) {
+				$scope.errorMessage = ["Cannot remove consumed allowance from staycard"];
+			} else {
+				if ($scope.packageData.existing_packages.length === 1) {
+					$scope.closePopup();
+				}
+				$rootScope.$broadcast('REMOVE_ADDON', {
+					addonPostingMode: $scope.addonPopUpData.addonPostingMode,
+					index: index,
+					addon: addon
+				});
+			}
 		};
 		
 		$scope.proceedBooking = function() {
@@ -210,6 +230,11 @@ sntRover.controller('RVReservationPackageController',
 				selectedPurchesedAddon: $scope.selectedPurchesedAddon
 			});
 			$scope.closePopup();
+		};
+
+		$scope.setDeafultDisplay = function() {
+			angular.copy($scope.previousPostDays, $scope.selectedPurchesedAddon.selected_post_days);
+			$scope.selectedPurchesedAddon = "";
 		};
 
 		var setPostingData = function() {
@@ -228,22 +253,20 @@ sntRover.controller('RVReservationPackageController',
 		};
 
 		var updateDaysOfWeek = function() {
+
 			$scope.daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-				var start_date = tzIndependentDate($filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.start_date), 'yyyy-MM-dd' )),
+			var start_date = tzIndependentDate($filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.start_date), 'yyyy-MM-dd' )),
 				end_date = tzIndependentDate($filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.end_date), 'yyyy-MM-dd' )),
 				noOfDays, startDayIndex;
 
 			noOfDays = (moment(end_date) - moment(start_date)) / 86400000;
-			if (!$scope.selectedPurchesedAddon.is_allowance) {
-				noOfDays--;
-			} else if ($scope.selectedPurchesedAddon.is_consume_next_day) {
-				startDayIndex++;
-			} else {
-				noOfDays--;
-			}
+			noOfDays--;
 			if (noOfDays <= 6) {
 				$scope.daysOfWeekCopy = [];
 				startDayIndex = start_date.getDay();
+				if ($scope.selectedPurchesedAddon.is_allowance && $scope.selectedPurchesedAddon.is_consume_next_day) {
+					startDayIndex++;
+				}
 				for (var index = 0; index <= noOfDays; index++) {
 
 					if (startDayIndex < 7) {
