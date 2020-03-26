@@ -39,8 +39,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         cachedRoomTypeList = [],
         cachedRateTypeList = [],
         cachedRateAndRestrictionResponseData = [],
-        chosenTab = '',
-        isHierarchyRestrictionEnabled = Toggles.isEnabled('hierarchical_restrictions');
+        chosenTab = '';
         
     // Scope object that handles various hierarchy Restrictions feature toggle values.
     $scope.hierarchyRestrictions = {
@@ -90,8 +89,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @param  {Oject} data
      */
     var showRateRestrictionPopup = (data) => {
-        data.isHierarchyRestrictionEnabled = isHierarchyRestrictionEnabled;
-        data.hierarchyRestrictionType = $scope.hierarchyRestrictionType;
+        data.isHierarchyHouseRestrictionEnabled = $scope.hierarchyRestrictions.houseEnabled;
         ngDialog.open({
             template: '/assets/partials/rateManager_/popup/rvRateManagerRateRestrictionPopup.html',
             scope: $scope,
@@ -545,12 +543,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
     // Util method to get restriction value
     var isHierarchyRestrictionNeeded = function() {
-        return $scope.isHierarchyRestrictionEnabled && $scope.hierarchyRestrictionType !== 'COMMON';
+        return $scope.hierarchyRestrictions.houseEnabled;
     },
     getRestrictionLevelParam = function() {
         var value = null;
 
-        if ($scope.hierarchyRestrictionType === 'HOUSE') {
+        if ($scope.hierarchyRestrictions.houseEnabled) {
             value = "Hotel";
         }
         return value;
@@ -933,7 +931,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     };
 
     const changedHeirarchyRestriction = ( type ) => {
-        $scope.hierarchyRestrictionType = type;
         $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
     };
 
@@ -1112,7 +1109,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 }]
             };
 
-            if ($scope.isHierarchyRestrictionEnabled) {
+            if ($scope.hierarchyRestrictions.houseEnabled) {
                 paramsForClosingRestriction.restriction_level = 'Hotel';
             }
 
@@ -1144,7 +1141,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 }]
             };
 
-            if ($scope.isHierarchyRestrictionEnabled) {
+            if ($scope.hierarchyRestrictions.houseEnabled) {
                 paramsForOpeningRestriction.restriction_level = 'Hotel';
             }
 
@@ -2494,8 +2491,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             $scope.selectedAddress = [];
             $scope.fromDate = null;
             $scope.toDate = null;
-            $scope.isHierarchyRestrictionEnabled = isHierarchyRestrictionEnabled;
-            $scope.hierarchyRestrictionType = 'HOUSE';
 
             // mode
             $scope.viewingScreen = RM_RX_CONST.GRID_VIEW;
@@ -2503,7 +2498,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
         var initialState = {
             mode: RM_RX_CONST.NOT_CONFIGURED_MODE,
-            isHierarchyRestrictionEnabled: isHierarchyRestrictionEnabled
+            isHierarchyHouseRestrictionEnabled: $scope.hierarchyRestrictions.houseEnabled,
+            isHierarchyRoomTypeRestrictionEnabled: $scope.hierarchyRestrictions.roomTypeEnabled,
+            isHierarchyRateTypeRestrictionEnabled: $scope.hierarchyRestrictions.rateTypeEnabled
         };
 
         const store = configureStore(initialState);

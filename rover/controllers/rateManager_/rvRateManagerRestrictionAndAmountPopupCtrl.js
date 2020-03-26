@@ -504,7 +504,7 @@ angular.module('sntRover')
             let restriction = '';
 
             // ROOMTYPE and RATETYPE restriction levels to be accommodated in coming stories
-            if ($scope.hierarchyRestrictionType === 'HOUSE') {
+            if ($scope.hierarchyRestrictions.houseEnabled) {
                 restriction = 'Hotel';
             }
             return restriction;
@@ -515,7 +515,7 @@ angular.module('sntRover')
          * @return {boolean}
          */
         const isHierarchyRestrictionNeeded = () => {
-            return $scope.isHierarchyRestrictionEnabled && $scope.hierarchyRestrictionType !== 'COMMON';
+            return $scope.hierarchyRestrictions.houseEnabled;
         }
 
         /**
@@ -1167,7 +1167,7 @@ angular.module('sntRover')
                     break;
 
                 case $scope.modeConstants.RM_SINGLE_RATE_MULTIPLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE:
-                    if ($scope.ngDialogData.isHierarchyRestrictionEnabled && $scope.ngDialogData.hierarchyRestrictionType === 'HOUSE') {
+                    if ($scope.ngDialogData.isHierarchyRestrictionEnabled) {
                         initializeMultipleRateRestrictionMode();
                     }
                     else {

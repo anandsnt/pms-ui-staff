@@ -1,5 +1,5 @@
-angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2',
-    function($q, BaseWebSrvV2) {
+angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2', 'Toggles',
+    function($q, BaseWebSrvV2, Toggles) {
 
         /**
          * A. MULTIPLE RATES
@@ -29,6 +29,13 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
         var service = this;
 
         this.activeRates = null;
+
+        // Scope object that handles various hierarchy Restrictions feature toggle values.
+        var hierarchyRestrictions = {
+            houseEnabled: Toggles.isEnabled('hierarchical_house_restrictions'),
+            roomTypeEnabled: Toggles.isEnabled('hierarchical_room_type_restrictions'),
+            rateTypeEnabled: Toggles.isEnabled('hierarchical_rate_type_restrictions')
+        };
 
         service.fetchMultipleRateInfo = function(params) {
             params = _.omit(params, 'restriction_level');
