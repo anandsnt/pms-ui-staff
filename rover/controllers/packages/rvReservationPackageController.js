@@ -89,7 +89,7 @@ sntRover.controller('RVReservationPackageController',
 						startDate: tzIndependentDate($scope.reservationData.arrivalDate),
 						endDate: tzIndependentDate($scope.reservationData.departureDate)
 					};
-				} else if (addonPostingMode === 'allotments') {
+				} else if (addonPostingMode === 'allotments' || addonPostingMode === 'create_allotment') {
 					$scope.addonPostingDate = {
 						startDate: tzIndependentDate($scope.allotmentConfigData.summary.block_from),
 						endDate: tzIndependentDate($scope.allotmentConfigData.summary.block_to)
@@ -236,6 +236,12 @@ sntRover.controller('RVReservationPackageController',
 			angular.copy($scope.previousPostDays, $scope.selectedPurchesedAddon.selected_post_days);
 			$scope.selectedPurchesedAddon = "";
 		};
+
+		$scope.shouldShowAddMoreButton = function() {
+			var addonPostingMode = $scope.addonPopUpData.addonPostingMode;
+
+			return (addonPostingMode === 'staycard' || addonPostingMode === 'group' || addonPostingMode === 'allotments');
+		}
 
 		var setPostingData = function() {
 			angular.forEach($scope.packageData.existing_packages, function(existing_package) {
