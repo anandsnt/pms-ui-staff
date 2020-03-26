@@ -650,6 +650,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
 
                         $scope.addonsData.existingAddons.push(addonsData);
 
+                        $scope.packageData.existing_packages.push(addonsData);
+
                         for (roomIndex = startIndex; roomIndex <= endIndex; roomIndex++) {
                             $scope.reservationData.rooms[roomIndex].addons.push({
                                 quantity: addonsData.quantity,
@@ -667,7 +669,6 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         }
 
                     });
-                    $scope.packageData.existing_packages.push(associatedPackages);
 
                     addonsDataCopy = angular.copy($scope.addonsData.existingAddons);
                     $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
