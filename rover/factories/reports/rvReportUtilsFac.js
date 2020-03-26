@@ -894,7 +894,7 @@ angular.module('reportsModule')
 
                         // fetch charge groups
                         var reportParams = {
-                            is_addon_forecast: (reportItem.title === "Add-On Forecast") ? true : false
+                            for_addon_forecast_report: (reportItem.title === "Add-On Forecast") ? true : false
                         };
 
                         requested++;
