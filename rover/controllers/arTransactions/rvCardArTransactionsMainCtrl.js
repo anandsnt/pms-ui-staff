@@ -666,7 +666,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 		// Handle Ar Statement button actions.
 		$scope.clickedArStatementButton = function() {
-
+			$scope.filterData.statementEmailAddress = $scope.contactInformation.address_details.email_address
 			var dataFetchSuccess = function(data) {
 				$scope.statementEmailAddress = !!data.to_address ? data.to_address : '';
 				fetchGuestLanguages();
