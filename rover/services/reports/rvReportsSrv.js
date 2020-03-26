@@ -269,7 +269,9 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'LAST_SEPTEMBER',
                 'LAST_OCTOBER',
                 'LAST_NOVEMBER',
-                'LAST_DECEMBER'
+                'LAST_DECEMBER',
+                'LAST_THIRTY_DAYS',
+                'NEXT_THIRTY_DAYS'
              ]
         };
 

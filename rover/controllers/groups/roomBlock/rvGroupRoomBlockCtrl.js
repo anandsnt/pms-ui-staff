@@ -1660,7 +1660,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             if (activeTab !== 'ROOM_BLOCK') {
                 return;
             }
-            $scope.$emit('FETCH_SUMMARY');
+            
             callInitialAPIs();
 
 			// end date picker will be in disabled in move mode
@@ -1679,9 +1679,12 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * API, we will get this event, we are using this to fetch new room block deails
 		 */
         $scope.$on('UPDATED_GROUP_INFO', function(event) {
+            var isShoulderFromChanged = parseInt($scope.groupConfigData.summary.shoulder_from) !== parseInt(summaryMemento.shoulder_from),
+                isShoulderToChanged = parseInt($scope.groupConfigData.summary.shoulder_to) !== parseInt(summaryMemento.shoulder_to);
+
             summaryMemento = _.extend({}, $scope.groupConfigData.summary);
 			// to prevent from initial API calling and only exectutes when group from_date, to_date,status updaet success
-            if ($scope.hasBlockDataUpdated) {
+            if ($scope.hasBlockDataUpdated || isShoulderFromChanged || isShoulderToChanged) {
                 $scope.fetchCurrentSetOfRoomBlockData();
             }
         });
