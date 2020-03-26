@@ -269,12 +269,13 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
-        service.fetchChargeNAddonGroups = function() {
+        service.fetchChargeNAddonGroups = function(reportParams) {
             return callApi({
                 name: 'chargeNAddonGroups',
                 method: 'getJSON',
                 url: 'api/charge_groups',
-                resKey: 'results'
+                resKey: 'results',
+                params: reportParams
             });
         };
 
