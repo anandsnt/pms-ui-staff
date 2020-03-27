@@ -62,21 +62,22 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
 
             for (key in input) {
 
-                value = input[key];
-                obj = {
-                    days: null,
-                    is_on_rate: false,
-                    restriction_type_id: restrictionCodeMapping[key][0]
-                };
+                value = input[key],
+                obj = {};
 
-                if (typeof(value) === "boolean") {
-                    obj.status = value ? 'on' : 'off';
+                if (typeof(value) === "boolean" && value) {
+                    obj.status = 'on';
+                    obj.restriction_type_id = restrictionCodeMapping[key][0];
+                    obj.is_on_rate = false;
+                    obj.days = null;
+                    output.push(obj);
                 }
-                if (typeof(value) === "number") {
+                else if (typeof(value) === "number") {
+                    obj.restriction_type_id = restrictionCodeMapping[key][0];
                     obj.days = value;
+                    obj.is_on_rate = false;
+                    output.push(obj);
                 }
-
-                output.push(obj);
             }
 
             return output;
@@ -204,14 +205,10 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                     .then((data) => {
                         // CICO-76813 : New API for hierarchyRestrictions
                         if (hierarchyRestrictions.houseEnabled) {
-                            console.log(data.results);
                             _.each(data.results, function( item ) {
                                 item.restrictions = processRestrictions(item.restrictions);
                             });
-                            console.log('After processRestrictions :');
-                            console.log(data.results);
                         }
-                        
                         response.commonRestrictions = data.results;
                     })
                 );
@@ -256,6 +253,12 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
 
                 promises.push(service.fetchCommonRestrictions(paramsForCommonRestrictions)
                     .then((data) => {
+                        // CICO-76813 : New API for hierarchyRestrictions
+                        if (hierarchyRestrictions.houseEnabled) {
+                            _.each(data.results, function( item ) {
+                                item.restrictions = processRestrictions(item.restrictions);
+                            });
+                        }
                         response.commonRestrictions = data.results;
                     })
                 );
@@ -291,6 +294,12 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
 
                 promises.push(service.fetchCommonRestrictions(paramsForCommonRestrictions)
                     .then((data) => {
+                        // CICO-76813 : New API for hierarchyRestrictions
+                        if (hierarchyRestrictions.houseEnabled) {
+                            _.each(data.results, function( item ) {
+                                item.restrictions = processRestrictions(item.restrictions);
+                            });
+                        }
                         response.commonRestrictions = data.results;
                     })
                 );
@@ -665,6 +674,12 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
 
                 promises.push(service.fetchCommonRestrictions(paramsForCommonRestrictions)
                     .then((data) => {
+                        // CICO-76813 : New API for hierarchyRestrictions
+                        if (hierarchyRestrictions.houseEnabled) {
+                            _.each(data.results, function( item ) {
+                                item.restrictions = processRestrictions(item.restrictions);
+                            });
+                        }
                         response.commonRestrictions = data.results;
                     })
                 );
