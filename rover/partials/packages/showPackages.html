@@ -86,7 +86,7 @@
                 <!-- <span class="text" ng-if="selectedPurchesedAddon.description">{{selectedPurchesedAddon.description | limitTo: 70}}{{selectedPurchesedAddon.description.length >= 70 ? '...': ''}}</span> -->
                 <span class="text" ng-if="selectedPurchesedAddon.amount && selectedPurchesedAddon.amount_type && selectedPurchesedAddon.post_type">at {{selectedPurchesedAddon.addon_currency}}{{selectedPurchesedAddon.amount | number : 2}} / {{selectedPurchesedAddon.amount_type.description}} {{selectedPurchesedAddon.post_type.description}}</span>
 
-                <span class="text" ng-if="selectedPurchesedAddon.post_day_of_the_week && selectedPurchesedAddon.post_type.value !== CUSTOM && selectedPurchesedAddon.post_type.value !== NIGHT && selectedPurchesedAddon.post_type.value !== LAST_NIGHT"> Posts on every {{selectedPurchesedAddon.post_day_of_the_week}} </span>
+                <span class="text" ng-if="selectedPurchesedAddon.post_day_of_the_week && selectedPurchesedAddon.post_type.value !== CUSTOM && selectedPurchesedAddon.post_type.value !== NIGHT && selectedPurchesedAddon.post_type.value !== LAST_NIGHT"> Post day - {{selectedPurchesedAddon.post_day_of_the_week}} </span>
                 
                 <div class="content-entries" ng-class="{'hidden': selectedPurchesedAddon.post_type.value !== 'STAY'}">
                     <!-- Hide if only Date-To needs to be shown -->
@@ -141,7 +141,7 @@
 
                 <div class="actions inline">
                     <button class="button blank" ng-click="setDeafultDisplay()">{{addonPopUpData.cancelLabel}}</button>
-                    <button class="button green" ng-click="proceedBooking()">{{addonPopUpData.saveLabel}}</button>
+                    <button class="button green" ng-disabled="selectedPurchesedAddon.post_type.value !== 'STAY' && addonPopUpData.shouldShowAddMoreButton" ng-class="{'green': selectedPurchesedAddon.post_type.value === 'STAY' && !addonPopUpData.shouldShowAddMoreButton, 'grey': selectedPurchesedAddon.post_type.value !== 'STAY' && addonPopUpData.shouldShowAddMoreButton}" ng-click="proceedBooking()">{{addonPopUpData.saveLabel}}</button>
                 </div>
             </div>
         </div>
