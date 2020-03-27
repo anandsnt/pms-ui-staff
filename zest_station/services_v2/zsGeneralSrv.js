@@ -424,7 +424,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.updateGuestEmail = function(params) {
             var deferred = $q.defer(),
-                url = '/staff/guest_cards/' + params.guest_id;
+                url = '/api/guest_details/' + params.guest_id;
 
             zsBaseWebSrv.putJSON(url, params).then(function(data) {
                 deferred.resolve(data);
