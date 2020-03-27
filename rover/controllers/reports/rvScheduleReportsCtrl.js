@@ -22,7 +22,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
         var showFilterNames = [
             'INCLUDE_DUE_OUT',
-            'INCLUDE_INHOUSE', 
+            'INCLUDE_INHOUSE',
             'EXCEEDED_ONLY'
         ];
 
@@ -42,7 +42,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
             $scope.refreshScroller(name);
             /**/
-            if ( !! reset && $scope.myScroll.hasOwnProperty(name) ) {
+            if (!!reset && $scope.myScroll.hasOwnProperty(name)) {
                 $scope.myScroll[name].scrollTo(0, 0, DURATION);
             }
         };
@@ -67,42 +67,42 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 MONTHLY: 'MONTHLY'
             };
 
-            if ( frequency ) {
+            if (frequency) {
                 description = frequency.description;
                 value = frequency.value;
             }
 
-            if ( item.repeats_every === 0 ) {
+            if (item.repeats_every === 0) {
                 occurance += description.toLowerCase();
             } else {
                 occurance += 'after every ' + item.repeats_every + ' ';
 
-                if ( value === FREQ_VALUES.DAILY ) {
+                if (value === FREQ_VALUES.DAILY) {
                     occurance += item.repeats_every === 1 ? 'day' : 'days';
-                } else if ( value === FREQ_VALUES.HOURLY ) {
+                } else if (value === FREQ_VALUES.HOURLY) {
                     occurance += item.repeats_every === 1 ? 'hour' : 'hours';
-                } else if ( value === FREQ_VALUES.WEEKLY ) {
+                } else if (value === FREQ_VALUES.WEEKLY) {
                     occurance += item.repeats_every === 1 ? 'week' : 'weeks';
-                } else if ( value === FREQ_VALUES.MONTHLY ) {
+                } else if (value === FREQ_VALUES.MONTHLY) {
                     occurance += item.repeats_every === 1 ? 'month' : 'months';
-                } else if ( value === FREQ_VALUES.MONTHLY ) {
+                } else if (value === FREQ_VALUES.MONTHLY) {
                     occurance += item.repeats_every === 1 ? 'month' : 'months';
                 }
             }
 
-            if ( item.time ) {
+            if (item.time) {
                 occurance += ' at ' + item.time + '. ';
             } else {
                 occurance += '. ';
             }
 
-            if ( item.starts_on ) {
+            if (item.starts_on) {
                 occurance += 'Started on ' + $filter('date')(item.starts_on, $rootScope.dateFormat) + '. ';
             }
 
-            if ( item.ends_on_after ) {
+            if (item.ends_on_after) {
                 occurance += 'Ends after ' + item.ends_on_after + ' times.';
-            } else if ( item.ends_on_date ) {
+            } else if (item.ends_on_date) {
                 occurance += 'Ends on ' + $filter('date')(item.ends_on_date, $rootScope.dateFormat) + '.';
             } else {
                 occurance += 'Runs forever.';
@@ -115,7 +115,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             var hasTimePeriod = function() {
                 var has = false;
 
-                if ( $scope.isYearlyTaxReport || $scope.isGuestBalanceReport || $scope.isCreditCheckReport || angular.isDefined($scope.scheduleParams.time_period_id) ) {
+                if ($scope.isYearlyTaxReport || $scope.isGuestBalanceReport || $scope.isCreditCheckReport || angular.isDefined($scope.scheduleParams.time_period_id)) {
                     has = true;
                 }
 
@@ -123,14 +123,14 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             };
 
             var hasFrequency = function() {
-                return !! $scope.scheduleParams.frequency_id;
+                return !!$scope.scheduleParams.frequency_id;
             };
 
             var hasValidDistribution = function() {
                 var hasEmail = $scope.checkDeliveryType('EMAIL') && $scope.emailList.length,
-                    hasFTP = $scope.checkDeliveryType('SFTP') && !! $scope.scheduleParams.selectedFtpRecipient,
-                    hasDropbox = $scope.checkDeliveryType('DROPBOX') && !! $scope.scheduleParams.selectedCloudAccount,
-                    hasGoogleDrive = $scope.checkDeliveryType('GOOGLE DRIVE') && !! $scope.scheduleParams.selectedCloudAccount;
+                    hasFTP = $scope.checkDeliveryType('SFTP') && !!$scope.scheduleParams.selectedFtpRecipient,
+                    hasDropbox = $scope.checkDeliveryType('DROPBOX') && !!$scope.scheduleParams.selectedCloudAccount,
+                    hasGoogleDrive = $scope.checkDeliveryType('GOOGLE DRIVE') && !!$scope.scheduleParams.selectedCloudAccount;
 
                 return hasEmail || hasFTP || hasDropbox || hasGoogleDrive;
             };
@@ -141,48 +141,48 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         var fillValidationErrors = function() {
             $scope.createErrors = [];
 
-            if ( !$scope.isYearlyTaxReport && ! $scope.isGuestBalanceReport && ! $scope.scheduleParams.time_period_id ) {
+            if (!$scope.isYearlyTaxReport && !$scope.isGuestBalanceReport && !$scope.scheduleParams.time_period_id) {
                 $scope.createErrors.push('Time period in parameters');
             }
-            if ( ! $scope.scheduleParams.frequency_id ) {
+            if (!$scope.scheduleParams.frequency_id) {
                 $scope.createErrors.push('Repeat frequency in details');
             }
-            if ( ! $scope.emailList.length && !$scope.scheduleParams.selectedFtpRecipient && 
-                !$scope.scheduleParams.selectedCloudAccount ) {
+            if (!$scope.emailList.length && !$scope.scheduleParams.selectedFtpRecipient &&
+                !$scope.scheduleParams.selectedCloudAccount) {
                 $scope.createErrors.push('Emails/SFTP/Dropbox/Google Drive in distribution list');
             }
         };
 
         // Get rates list
-        var getRateListToShow = function (item) {
+        var getRateListToShow = function(item) {
             // if selected some room types
             var listedRateTypes = item.hasRateTypeFilter.data,
-                selectedRateTypes = _.where(listedRateTypes, {selected: true}),
+                selectedRateTypes = _.where(listedRateTypes, { selected: true }),
                 selectedRateTypesIds = _.pluck(selectedRateTypes, 'rate_type_id');
 
-            return _.filter(item.hasRateFilter.data, function (rate) {
+            return _.filter(item.hasRateFilter.data, function(rate) {
                 return (selectedRateTypesIds.indexOf(rate.rate_type_id) > -1);
             });
         };
 
         // Get rate types
-        var getSelectedRateTypes = function (item) {
-            return _.pluck(_.where(item.hasRateTypeFilter.data, {selected: true}), 'rate_type_id');
+        var getSelectedRateTypes = function(item) {
+            return _.pluck(_.where(item.hasRateTypeFilter.data, { selected: true }), 'rate_type_id');
         };
 
         // Set exclude_tax to true for Daily Production Reports
         var isDailyProdReport = function() {
-            return ($scope.selectedEntityDetails.report.title === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] || 
-                $scope.selectedEntityDetails.report.title === reportNames['DAILY_PRODUCTION_DEMO'] || 
+            return ($scope.selectedEntityDetails.report.title === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ||
+                $scope.selectedEntityDetails.report.title === reportNames['DAILY_PRODUCTION_DEMO'] ||
                 $scope.selectedEntityDetails.report.title === reportNames['DAILY_PRODUCTION_RATE']);
         };
 
         /**
          * Navigate to the schedulable report list
          */
-        $scope.navigateToSchedulableReportList = function () {
+        $scope.navigateToSchedulableReportList = function() {
             ngDialog.close();
-            if ( !! $scope.selectedReport && $scope.selectedReport.active ) {
+            if (!!$scope.selectedReport && $scope.selectedReport.active) {
                 $scope.selectedReport.active = false;
             }
             $scope.updateViewCol($scope.viewColsActions.ONE);
@@ -209,7 +209,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
             var success = function(data) {
                 $scope.errorMessage = '';
-                $scope.$emit( 'hideLoader' );
+                $scope.$emit('hideLoader');
                 if (data.is_export_already_exist) {
                     ngDialog.open({
                         template: '/assets/partials/reports/rvDuplicateScheduleWarningPopup.html',
@@ -218,7 +218,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                         data: {
                             isUpdate: false
                         }
-                    }); 
+                    });
                 } else {
                     $scope.navigateToSchedulableReportList();
                 }
@@ -227,38 +227,38 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             var failed = function(errors) {
                 $scope.errorMessage = errors;
                 $scope.$emit(SHOW_ERROR_MSG_EVENT, errors);
-                $scope.$emit( 'hideLoader' );
+                $scope.$emit('hideLoader');
             };
 
             // fill 'time' and 'time_period_id'
-            if ( $scope.scheduleParams.time ) {
+            if ($scope.scheduleParams.time) {
                 params.time = $scope.scheduleParams.time;
             }
-            if ( $scope.scheduleParams.time_period_id ) {
+            if ($scope.scheduleParams.time_period_id) {
                 params.time_period_id = $scope.scheduleParams.time_period_id;
             }
 
             // fill 'frequency_id', 'starts_on', 'repeats_every' and 'ends_on_date'
             params.frequency_id = $scope.scheduleParams.frequency_id;
             /**/
-            if ( $scope.scheduleParams.starts_on ) {
+            if ($scope.scheduleParams.starts_on) {
                 params.starts_on = $filter('date')($scope.scheduleParams.starts_on, 'yyyy/MM/dd');
             }
-            if ( $scope.scheduleParams.repeats_every ) {
+            if ($scope.scheduleParams.repeats_every) {
                 params.repeats_every = $scope.scheduleParams.repeats_every;
             } else {
                 params.repeats_every = 0;
             }
-            if ( $scope.scheduleParams.scheduleEndsOn === 'NUMBER' ) {
+            if ($scope.scheduleParams.scheduleEndsOn === 'NUMBER') {
                 params.ends_on_after = $scope.scheduleParams.ends_on_after;
-            } else if ( $scope.scheduleParams.scheduleEndsOn === 'DATE' ) {
+            } else if ($scope.scheduleParams.scheduleEndsOn === 'DATE') {
                 params.ends_on_date = $filter('date')($scope.scheduleParams.ends_on_date, 'yyyy/MM/dd');
             } else {
                 params.ends_on_after = null;
                 params.ends_on_date = null;
             }
 
-            var deliveryType = _.find ($scope.scheduleDeliveryTypes, {
+            var deliveryType = _.find($scope.scheduleDeliveryTypes, {
                 value: $scope.scheduleParams.delivery_id
             });
 
@@ -267,12 +267,12 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             }
 
             // fill emails/FTP
-            if ( $scope.checkDeliveryType('EMAIL') && $scope.emailList.length ) {
+            if ($scope.checkDeliveryType('EMAIL') && $scope.emailList.length) {
                 params.emails = $scope.emailList.join(', ');
-            } else if ( $scope.checkDeliveryType('SFTP') && !! $scope.scheduleParams.selectedFtpRecipient ) {
+            } else if ($scope.checkDeliveryType('SFTP') && !!$scope.scheduleParams.selectedFtpRecipient) {
                 params.sftp_server_id = $scope.scheduleParams.selectedFtpRecipient;
-            } else if (($scope.checkDeliveryType('GOOGLE DRIVE') || $scope.checkDeliveryType('DROPBOX')) && 
-                        !!$scope.scheduleParams.selectedCloudAccount ) {
+            } else if (($scope.checkDeliveryType('GOOGLE DRIVE') || $scope.checkDeliveryType('DROPBOX')) &&
+                !!$scope.scheduleParams.selectedCloudAccount) {
                 params.cloud_drive_id = $scope.scheduleParams.selectedCloudAccount;
             } else {
                 params.emails = '';
@@ -280,7 +280,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             }
 
             // fill sort_field and filters
-            if ( $scope.scheduleParams.sort_field ) {
+            if ($scope.scheduleParams.sort_field) {
                 filter_values.sort_field = $scope.scheduleParams.sort_field;
             }
             if ($scope.isYearlyTaxReport) {
@@ -289,11 +289,11 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 filter_values.without_vat_number = $scope.scheduleParams.without_vat_number;
             }
             _.each($scope.filters, function(filter, keyName) {
-                if (keyName === 'hasRateTypeFilter' ) {
+                if (keyName === 'hasRateTypeFilter') {
                     filter_values[reportParams['RATE_TYPE_IDS']] = getSelectedRateTypes($scope.filters);
-                } else if (keyName === 'hasRateFilter' ) {
+                } else if (keyName === 'hasRateFilter') {
                     key = reportParams['RATE_IDS'];
-                    filter_values[key] = _.pluck(_.where(getRateListToShow($scope.filters), {selected: true}), 'id');
+                    filter_values[key] = _.pluck(_.where(getRateListToShow($scope.filters), { selected: true }), 'id');
                     // For the daily production rates; we are to send an array with group or allotment ids
                     if (reportNames['DAILY_PRODUCTION_RATE'] === $scope.selectedEntityDetails.report.title) {
                         var selectedCustomRates = _.pluck(_.where(getRateListToShow($scope.filters), {
@@ -305,26 +305,26 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                             params[key] = _.without(params[key], null); // remove null entries in the rate_ids array (null entries would be there if custom rates were selected)
                             params['custom_rate_group_ids'] = selectedCustomRates;
                         }
-                    }   
+                    }
                 } else if (keyName === 'hasByChargeGroup') {
                     key = reportParams['CHARGE_GROUP_IDS'];
-                    filter_values[key] = _.pluck(_.where(filter.data, {selected: true}), 'id');
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
 
                 } else if (keyName === 'hasByChargeCode') {
                     key = reportParams['CHARGE_CODE_IDS'];
-                    filter_values[key] = _.pluck(_.where(filter.data, {selected: true}), 'id');
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
 
                 } else if (keyName === 'hasDepartments') {
                     key = reportParams['ASSIGNED_DEPARTMENTS'];
-                    filter_values[key] =  _.pluck(_.where(filter.data, {selected: true}), 'id');
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
 
                 } else if (keyName === 'hasIncludeCountry') {
                     key = reportParams['COUNTRY'];
-                    filter_values[key] =  _.pluck(_.where(filter.data, {selected: true}), 'id');
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
 
                 } else if (keyName === 'hasCompletionStatus') {
                     key = reportParams['COMPLETION_STATUS'];
-                    filter_values[key] =  _.pluck(_.where(filter.data, {selected: true}), 'id');
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
 
                 } else if (keyName === 'hasShowActionables') {
                     key = reportParams['SHOW_ACTIONABLES'];
@@ -333,20 +333,36 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     } else {
                         filter_values[key] = [$scope.filters.showActionables];
                     }
-               
+
                 } else if (keyName === 'hasUsers') {
                     key = reportParams['USER_IDS'];
-                    filter_values[key] = _.pluck(_.where(filter.data, {selected: true}), 'id');
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
 
-                } 
-                else {
+                } else if (keyName === 'hasMarketsList') {
+                    key = reportParams['MARKET_IDS'];
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
+
+                } else if (keyName === 'hasOriginsList') {
+                    key = reportParams['BOOKING_ORIGIN_IDS'];
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
+
+                } else if (keyName === 'hasSourcesList') {
+                    key = reportParams['SOURCE_IDS'];
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
+
+                } else if (keyName === 'hasIncludeCompanyTaGroup' && $scope.selectedEntityDetails.chosenIncludeCompanyTaGroup) {
+                    key = filter.value.toLowerCase();
+                    filter_values[key] = $scope.selectedEntityDetails.chosenIncludeCompanyTaGroup;
+                    filter_values[reportParams['ENTITY_TYPE']] = $scope.selectedEntityDetails.chosenIncludeCompanyTaGroupType;
+                    filter_values[reportParams['ENTITY_NAME']] = $scope.selectedEntityDetails.uiChosenIncludeCompanyTaGroup;
+                } else {
                     _.each(filter.data, function(each) {
-                        if ( each.selected ) {
+                        if (each.selected) {
                             filter_values[each.paramKey] = true;
                         }
-                    }); 
+                    });
                 }
-                
+
             });
             params.filter_values = filter_values;
 
@@ -354,7 +370,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 params.filter_values.exclude_tax = true;
             }
 
-            $scope.invokeApi( reportsSrv.createSchedule, params, success, failed );
+            $scope.invokeApi(reportsSrv.createSchedule, params, success, failed);
         };
 
         // Navigate to schedules list
@@ -362,13 +378,13 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             ngDialog.close();
             var updatedIndex = _.findIndex($scope.$parent.$parent.schedulesList, { id: params.id });
 
-            if ( !! $scope.selectedSchedule && $scope.selectedSchedule.active ) {
+            if (!!$scope.selectedSchedule && $scope.selectedSchedule.active) {
                 $scope.selectedSchedule.active = false;
             }
             $scope.updateViewCol($scope.viewColsActions.ONE);
             $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
 
-            if ( updatedIndex >= 0 ) {
+            if (updatedIndex >= 0) {
                 $scope.$parent.$parent.schedulesList[updatedIndex].frequency_id = params.frequency_id;
                 $scope.$parent.$parent.schedulesList[updatedIndex].repeats_every = params.repeats_every;
                 $scope.$parent.$parent.schedulesList[updatedIndex].time = params.time;
@@ -388,7 +404,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 /**/
                 format_id: $scope.scheduleParams.format_id,
                 delivery_type_id: ''
-            };            
+            };
 
             var filter_values = {
                 page: 1,
@@ -399,7 +415,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
             var success = function(data) {
                 $scope.errorMessage = '';
-                $scope.$emit( 'hideLoader' );
+                $scope.$emit('hideLoader');
                 if (data.is_export_already_exist) {
                     ngDialog.open({
                         template: '/assets/partials/reports/rvDuplicateScheduleWarningPopup.html',
@@ -409,24 +425,24 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                             isUpdate: true,
                             params: params
                         }
-                    }); 
+                    });
                 } else {
                     $scope.navigateToSchedulesList(params);
                 }
-                
+
             };
 
             var failed = function(errors) {
                 $scope.errorMessage = errors;
                 $scope.$emit(SHOW_ERROR_MSG_EVENT, errors);
-                $scope.$emit( 'hideLoader' );
+                $scope.$emit('hideLoader');
             };
 
             // fill 'time' and 'time_period_id'
-            if ( $scope.scheduleParams.time ) {
+            if ($scope.scheduleParams.time) {
                 params.time = $scope.scheduleParams.time;
             }
-            if ( $scope.scheduleParams.time_period_id ) {
+            if ($scope.scheduleParams.time_period_id) {
                 params.time_period_id = $scope.scheduleParams.time_period_id;
             }
             params.format_id = parseInt($scope.scheduleParams.format_id);
@@ -434,24 +450,24 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             // fill 'frequency_id', 'starts_on', 'repeats_every' and 'ends_on_date'
             params.frequency_id = $scope.scheduleParams.frequency_id;
             /**/
-            if ( $scope.scheduleParams.starts_on ) {
+            if ($scope.scheduleParams.starts_on) {
                 params.starts_on = $filter('date')($scope.scheduleParams.starts_on, 'yyyy/MM/dd');
             }
-            if ( $scope.scheduleParams.repeats_every ) {
+            if ($scope.scheduleParams.repeats_every) {
                 params.repeats_every = $scope.scheduleParams.repeats_every;
             } else {
                 params.repeats_every = 0;
             }
-            if ( $scope.scheduleParams.scheduleEndsOn === 'NUMBER' ) {
+            if ($scope.scheduleParams.scheduleEndsOn === 'NUMBER') {
                 params.ends_on_after = $scope.scheduleParams.ends_on_after;
-            } else if ( $scope.scheduleParams.scheduleEndsOn === 'DATE' ) {
+            } else if ($scope.scheduleParams.scheduleEndsOn === 'DATE') {
                 params.ends_on_date = $filter('date')($scope.scheduleParams.ends_on_date, 'yyyy/MM/dd');
             } else {
                 params.ends_on_after = null;
                 params.ends_on_date = null;
             }
 
-            var deliveryType = _.find ($scope.scheduleDeliveryTypes, {
+            var deliveryType = _.find($scope.scheduleDeliveryTypes, {
                 value: $scope.scheduleParams.delivery_id
             });
 
@@ -460,12 +476,12 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             }
 
             // fill emails/FTP
-            if ( $scope.checkDeliveryType('EMAIL') && $scope.emailList.length ) {
+            if ($scope.checkDeliveryType('EMAIL') && $scope.emailList.length) {
                 params.emails = $scope.emailList.join(', ');
-            } else if ( $scope.checkDeliveryType('SFTP') && !! $scope.scheduleParams.selectedFtpRecipient ) {
+            } else if ($scope.checkDeliveryType('SFTP') && !!$scope.scheduleParams.selectedFtpRecipient) {
                 params.sftp_server_id = $scope.scheduleParams.selectedFtpRecipient;
-            } else if (($scope.checkDeliveryType('GOOGLE DRIVE') || $scope.checkDeliveryType('DROPBOX')) && 
-                        !!$scope.scheduleParams.selectedCloudAccount ) {
+            } else if (($scope.checkDeliveryType('GOOGLE DRIVE') || $scope.checkDeliveryType('DROPBOX')) &&
+                !!$scope.scheduleParams.selectedCloudAccount) {
                 params.cloud_drive_id = $scope.scheduleParams.selectedCloudAccount;
             } else {
                 params.emails = '';
@@ -473,7 +489,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             }
 
             // fill sort_field and filters
-            if ( $scope.scheduleParams.sort_field ) {
+            if ($scope.scheduleParams.sort_field) {
                 filter_values.sort_field = $scope.scheduleParams.sort_field;
             }
             if ($scope.isYearlyTaxReport) {
@@ -482,11 +498,11 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 filter_values.without_vat_number = $scope.scheduleParams.without_vat_number;
             }
             _.each($scope.filters, function(filter, keyName) {
-                if (keyName === 'hasRateTypeFilter' ) {
+                if (keyName === 'hasRateTypeFilter') {
                     filter_values[reportParams['RATE_TYPE_IDS']] = getSelectedRateTypes($scope.filters);
-                } else if (keyName === 'hasRateFilter' ) {
+                } else if (keyName === 'hasRateFilter') {
                     key = reportParams['RATE_IDS'];
-                    filter_values[key] = _.pluck(_.where(getRateListToShow($scope.filters), {selected: true}), 'id');
+                    filter_values[key] = _.pluck(_.where(getRateListToShow($scope.filters), { selected: true }), 'id');
                     // For the daily production rates; we are to send an array with group or allotment ids
                     if (reportNames['DAILY_PRODUCTION_RATE'] === $scope.selectedEntityDetails.report.title) {
                         var selectedCustomRates = _.pluck(_.where(getRateListToShow($scope.filters), {
@@ -498,26 +514,41 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                             params[key] = _.without(params[key], null); // remove null entries in the rate_ids array (null entries would be there if custom rates were selected)
                             params['custom_rate_group_ids'] = selectedCustomRates;
                         }
-                    }   
+                    }
                 } else if (keyName === 'hasByChargeGroup') {
                     key = reportParams['CHARGE_GROUP_IDS'];
-                    filter_values[key] = _.pluck(_.where(filter.data, {selected: true}), 'id');
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
 
                 } else if (keyName === 'hasByChargeCode') {
                     key = reportParams['CHARGE_CODE_IDS'];
-                    filter_values[key] = _.pluck(_.where(filter.data, {selected: true}), 'id');
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
 
                 } else if (keyName === 'hasDepartments') {
                     key = reportParams['ASSIGNED_DEPARTMENTS'];
-                    filter_values[key] =  _.pluck(_.where(filter.data, {selected: true}), 'id');
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
 
                 } else if (keyName === 'hasIncludeCountry') {
                     key = reportParams['COUNTRY'];
-                    filter_values[key] =  _.pluck(_.where(filter.data, {selected: true}), 'id');
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
+
+                } else if (keyName === 'hasMarketsList') {
+                    key = reportParams['MARKET_IDS'];
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
+                } else if (keyName === 'hasOriginsList') {
+                    key = reportParams['BOOKING_ORIGIN_IDS'];
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
+
+                } else if (keyName === 'hasSourcesList') {
+                    key = reportParams['SOURCE_IDS'];
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
+
+                } else if (keyName === 'hasSegmentsList') {
+                    key = reportParams['SEGMENT_IDS'];
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
 
                 } else if (keyName === 'hasCompletionStatus') {
                     key = reportParams['COMPLETION_STATUS'];
-                    filter_values[key] =  _.pluck(_.where(filter.data, {selected: true}), 'id');
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
 
                 } else if (keyName === 'hasShowActionables') {
                     key = reportParams['SHOW_ACTIONABLES'];
@@ -529,17 +560,21 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
                 } else if (keyName === 'hasUsers') {
                     key = reportParams['USER_IDS'];
-                    filter_values[key] = _.pluck(_.where(filter.data, {selected: true}), 'id');
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
 
-                } 
-                else {
-                    _.each(filter.data, function (each) {
+                } else if (keyName === 'hasIncludeCompanyTaGroup' && $scope.selectedEntityDetails.chosenIncludeCompanyTaGroup) {
+                    key = filter.value.toLowerCase();
+                    filter_values[key] = $scope.selectedEntityDetails.chosenIncludeCompanyTaGroup;
+                    filter_values[reportParams['ENTITY_TYPE']] = $scope.selectedEntityDetails.chosenIncludeCompanyTaGroupType;
+                    filter_values[reportParams['ENTITY_NAME']] = $scope.selectedEntityDetails.uiChosenIncludeCompanyTaGroup;
+                } else {
+                    _.each(filter.data, function(each) {
                         if (each.selected) {
                             filter_values[each.paramKey] = true;
                         }
-                    });  
+                    });
                 }
-                
+
             });
             params.filter_values = filter_values;
 
@@ -547,7 +582,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 params.filter_values.exclude_tax = true;
             }
 
-            $scope.invokeApi( reportsSrv.updateSchedule, params, success, failed );
+            $scope.invokeApi(reportsSrv.updateSchedule, params, success, failed);
         };
 
         var matchGeneralOptions = {
@@ -566,7 +601,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             RESTRICTED_POST_ONLY: 'RESTRICTED_POST_ONLY',
             INCLUDE_TAX: 'INCLUDE_TAX',
             INCLUDE_LEDGER_DATA: 'INCLUDE_LEDGER_DATA',
-            NO_NATIONALITY: 'NO_NATIONALITY'
+            NO_NATIONALITY: 'NO_NATIONALITY',
+            EXCLUDE_NON_GTD: 'EXCLUDE_NON_GTD'
         };
 
         var matchSortFields = {
@@ -597,7 +633,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         };
 
         // Process Display filters
-        var processDisplayFilters = function (filter) {
+        var processDisplayFilters = function(filter) {
 
             $scope.filters.hasDisplay.data.push({
                 paramKey: filter.value.toLowerCase(),
@@ -612,7 +648,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         var setupFilters = function() {
             $scope.filters = {};
 
-            if ($scope.selectedEntityDetails.report.title === reportNames['CREDIT_CHECK_REPORT'] ) {
+            if ($scope.selectedEntityDetails.report.title === reportNames['CREDIT_CHECK_REPORT']) {
                 $scope.scheduleParams.sort_field = 'ROOM_NO';
             }
 
@@ -670,21 +706,20 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
                 selected = false;
                 // For credit check report, include due out comes under show
-                if ( matchGeneralOptions[filter.value] && !$scope.isCreditCheckReport) {
-
-                    if ( $scope.selectedEntityDetails.report.description === 'Arriving Guests' && filter.value === 'DUE_IN_ARRIVALS' ) {
+                if (matchGeneralOptions[filter.value] && !$scope.isCreditCheckReport) {
+                    if ($scope.selectedEntityDetails.report.description === 'Arriving Guests' && filter.value === 'DUE_IN_ARRIVALS') {
                         selected = true;
                     }
 
-                    if ( $scope.selectedEntityDetails.report.description === 'Departing Guests' && filter.value === 'DUE_OUT_DEPARTURES' ) {
+                    if ($scope.selectedEntityDetails.report.description === 'Departing Guests' && filter.value === 'DUE_OUT_DEPARTURES') {
                         selected = true;
                     }
 
-                    if ( $scope.selectedEntityDetails.report.description === 'All In-House Guests' && filter.value === 'INCLUDE_DUE_OUT' ) {
+                    if ($scope.selectedEntityDetails.report.description === 'All In-House Guests' && filter.value === 'INCLUDE_DUE_OUT') {
                         selected = true;
                     }
 
-                    if ( $scope.selectedEntityDetails.report.description === 'Restricted Post only' && filter.value === 'RESTRICTED_POST_ONLY' ) {
+                    if ($scope.selectedEntityDetails.report.description === 'Restricted Post only' && filter.value === 'RESTRICTED_POST_ONLY') {
                         selected = false;
                     }
 
@@ -695,7 +730,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                         mustSend: mustSend
                     });
 
-                    if ( $scope.selectedEntityDetails.report.description === 'Arriving Guests' || $scope.selectedEntityDetails.report.description === 'Departing Guests' ) {
+                    if ($scope.selectedEntityDetails.report.description === 'Arriving Guests' || $scope.selectedEntityDetails.report.description === 'Departing Guests') {
                         $scope.filters.hasGeneralOptions.options.noSelectAll = true;
                     }
                 } else if (displayFilterNames[filter.value]) {
@@ -718,10 +753,16 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     $scope.filters.showActionables = 'BOTH';
                 } else if (filter.value === 'INCLUDE_CHARGE_GROUP' || filter.value === 'INCLUDE_CHARGE_CODE' || filter.value === 'SHOW_CHARGE_CODES') {
                     reportUtils.fillChargeGroupsAndChargeCodes($scope.filters, $scope.selectedEntityDetails.filter_values, $scope.selectedEntityDetails.report.title);
+                } else if (filter.value === 'CHOOSE_MARKET') {
+                    reportUtils.fillMarkets($scope.filters, $scope.selectedEntityDetails.filter_values);
+                } else if (filter.value === 'CHOOSE_SOURCE') {
+                    reportUtils.fillSources($scope.filters, $scope.selectedEntityDetails.filter_values);
+                } else if (filter.value === 'CHOOSE_BOOKING_ORIGIN') {
+                    reportUtils.fillBookingOrigins($scope.filters, $scope.selectedEntityDetails.filter_values);
                 } else if (filter.value === 'SHOW_EMPLOYEES') {
                     $scope.filters.hasUsers = {
                         title: 'Employees',
-                        data: angular.copy( $scope.$parent.activeUserList ),
+                        data: angular.copy($scope.$parent.activeUserList),
                         options: {
                             selectAll: true,
                             hasSearch: true,
@@ -729,8 +770,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                             altKey: 'email'
                         }
                     };
-                    
-                } else if (filter.value === 'SHOW_DELETED_CHARGES' || filter.value === 'SHOW_ADJUSTMENTS' ) {
+
+                } else if (filter.value === 'SHOW_DELETED_CHARGES' || filter.value === 'SHOW_ADJUSTMENTS') {
                     if (!$scope.filters.hasChargeTypes) {
                         $scope.filters.hasChargeTypes = {
                             data: [],
@@ -746,16 +787,18 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                         description: filter.description,
                         selected: true
                     });
-                } else if (showFilterNames.indexOf(filter.value) > -1 && 
-                            $scope.selectedEntityDetails.report.title !== reportNames['IN_HOUSE_GUEST']) {
+                } else if (showFilterNames.indexOf(filter.value) > -1 &&
+                    $scope.selectedEntityDetails.report.title !== reportNames['IN_HOUSE_GUEST']) {
                     pushShowData(filter);
+                } else if (filter.value === 'GROUP_COMPANY_TA_CARD') {
+                    $scope.filters['hasIncludeCompanyTaGroup'] = filter;
                 }
             });
 
             var reportTimePeriods = reportsSrv.getScheduleReportTimePeriods($scope.selectedEntityDetails.report.title);
 
             $scope.scheduleTimePeriods = [];
-            _.each(reportTimePeriods, function (timePeriod) {
+            _.each(reportTimePeriods, function(timePeriod) {
                 $scope.scheduleTimePeriods.push(_.find($scope.originalScheduleTimePeriods, { value: timePeriod }));
             });
 
@@ -768,23 +811,23 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
          * @return {void}
          */
         var applySelectedChargeTypes = (key) => {
-            var selectedChargeType = _.find($scope.filters.hasChargeTypes['data'], {paramKey: key});
+            var selectedChargeType = _.find($scope.filters.hasChargeTypes['data'], { paramKey: key });
 
             selectedChargeType.selected = true;
 
             $scope.filters.hasChargeTypes['options']['selectAll'] = ($scope.filters.hasChargeTypes['data'].filter(item => item.selected).length === 2);
         };
-        
 
-        var applySavedFilters = function (isNewSchedule) {
+
+        var applySavedFilters = function(isNewSchedule) {
             if (!isNewSchedule) {
                 $scope.filters.hasDisplay.options.selectAll = false;
-                _.map($scope.filters.hasDisplay.data, function (displayOption) {
+                _.map($scope.filters.hasDisplay.data, function(displayOption) {
                     displayOption.selected = false;
                 });
 
                 $scope.filters.hasShow.options.selectAll = false;
-                _.map($scope.filters.hasShow.data, function (showOption) {
+                _.map($scope.filters.hasShow.data, function(showOption) {
                     showOption.selected = false;
                 });
             }
@@ -795,25 +838,25 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     return chargeType;
                 });
             }
-            
+
 
             _.each($scope.selectedEntityDetails.filter_values, function(value, key) {
                 var optionFilter, upperCaseKey;
 
                 upperCaseKey = key.toUpperCase();
-                if ( matchGeneralOptions[upperCaseKey] && !! value ) {
+                if (matchGeneralOptions[upperCaseKey] && !!value) {
                     optionFilter = _.find($scope.filters.hasGeneralOptions.data, { paramKey: key });
-                    if ( angular.isDefined(optionFilter) ) {
+                    if (angular.isDefined(optionFilter)) {
                         optionFilter.selected = true;
                     }
                 }
 
-                if ( matchSortFields[value] ) {
+                if (matchSortFields[value]) {
                     $scope.scheduleParams.sort_field = value;
                 }
 
                 if (displayFilterNames[upperCaseKey] && !!value) {
-                    optionFilter = _.find($scope.filters.hasDisplay.data, { paramKey: key }); 
+                    optionFilter = _.find($scope.filters.hasDisplay.data, { paramKey: key });
                     if (angular.isDefined(optionFilter)) {
                         optionFilter.selected = true;
                     }
@@ -844,12 +887,12 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                         if (value.indexOf(emp.id) > -1) {
                             emp.selected = true;
                         }
-                           
+
                         selectedEmps.push(emp);
                     });
                     $scope.filters.hasUsers['data'] = selectedEmps;
                     $scope.filters.hasUsers['options']['selectAll'] = selectedEmps.length === value.length;
-                    
+
                 } else if (showFilterNames.indexOf(upperCaseKey) > -1) {
                     var currentFilter = _.find($scope.filters.hasShow.data, { paramKey: key });
 
@@ -861,6 +904,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
                 } else if (upperCaseKey === 'SHOW_ADJUSTMENTS' || upperCaseKey === 'SHOW_DELETED_CHARGES') {
                     applySelectedChargeTypes(key);
+                } else if (key === reportParams['GROUP_COMPANY_TA_CARD']) {
+                    $scope.selectedEntityDetails.uiChosenIncludeCompanyTaGroup = value;
+                    $scope.selectedEntityDetails.chosenIncludeCompanyTaGroupType = $scope.selectedEntityDetails.filter_values[reportParams['ENTITY_TYPE']];
+                    $scope.selectedEntityDetails.uiChosenIncludeCompanyTaGroup = $scope.selectedEntityDetails.filter_values[reportParams['ENTITY_NAME']];
                 }
 
             });
@@ -893,24 +940,25 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.scheduleParams = {};
 
             $scope.isYearlyTaxReport = ($scope.selectedEntityDetails.report.title === reportNames['YEARLY_TAX']);
+            $scope.isForecastReport = ($scope.selectedEntityDetails.report.title === reportNames['FORECAST_BY_DATE']);
 
             if (angular.isDefined($scope.selectedEntityDetails.schedule_formats)) {
                 $scope.schedule_formats = $scope.selectedEntityDetails.schedule_formats;
                 $scope.scheduleParams.format_id = $scope.selectedEntityDetails.format.id;
             } else {
                 if ($scope.isYearlyTaxReport || $scope.selectedEntityDetails.report.title === reportNames['BUSINESS_ON_THE_BOOKS']) {
-                    $scope.scheduleParams.format_id = _.find($scope.scheduleFormat, {value: 'CSV'}).id;
-                } else if ($scope.selectedEntityDetails.report.title !== reportNames['COMPARISION_BY_DATE'] && 
+                    $scope.scheduleParams.format_id = _.find($scope.scheduleFormat, { value: 'CSV' }).id;
+                } else if ($scope.selectedEntityDetails.report.title !== reportNames['COMPARISION_BY_DATE'] &&
                     $scope.selectedEntityDetails.report.title !== reportNames['DAILY_PRODUCTION_DEMO'] &&
                     $scope.selectedEntityDetails.report.title !== reportNames['DAILY_PRODUCTION_RATE'] &&
                     $scope.selectedEntityDetails.report.title !== reportNames['DAILY_PRODUCTION_ROOM_TYPE'] &&
                     $scope.selectedEntityDetails.report.title !== reportNames['GUEST_BALANCE_REPORT']) {
-                        var pdfFormat = _.find($scope.scheduleFormat, {value: 'PDF'});
+                    var pdfFormat = _.find($scope.scheduleFormat, { value: 'PDF' });
 
-                        if (pdfFormat) {
-                            $scope.scheduleParams.format_id = pdfFormat.id;
-                        }
-                   
+                    if (pdfFormat) {
+                        $scope.scheduleParams.format_id = pdfFormat.id;
+                    }
+
                 }
             }
             if ($scope.isYearlyTaxReport) {
@@ -918,40 +966,40 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             }
             hasAccOrGuest = _.find(report.filters, function(filter) {
                 return filter.value === 'ACCOUNT' || filter.value === 'GUEST';
-            });            
-           
-            if ( angular.isDefined(hasAccOrGuest) ) {
+            });
+
+            if (angular.isDefined(hasAccOrGuest)) {
                 $scope.scheduleParams.time_period_id = _.find($scope.originalScheduleTimePeriods, { value: "ALL" }).id;
                 $scope.isGuestBalanceReport = true;
-            } else if ($scope.isYearlyTaxReport || $scope.isCreditCheckReport ) {
+            } else if ($scope.isYearlyTaxReport || $scope.isCreditCheckReport) {
                 $scope.scheduleParams.time_period_id = _.find($scope.originalScheduleTimePeriods, { value: "ALL" }).id;
-            } else if ( angular.isDefined($scope.selectedEntityDetails.time_period_id) ) {
+            } else if (angular.isDefined($scope.selectedEntityDetails.time_period_id)) {
                 $scope.scheduleParams.time_period_id = $scope.selectedEntityDetails.time_period_id;
             } else {
                 $scope.scheduleParams.time_period_id = undefined;
             }
 
-            if ( angular.isDefined($scope.selectedEntityDetails.time) ) {
+            if (angular.isDefined($scope.selectedEntityDetails.time)) {
                 $scope.scheduleParams.time = $scope.selectedEntityDetails.time;
             } else {
                 $scope.scheduleParams.time = undefined;
             }
 
-            if ( angular.isDefined($scope.selectedEntityDetails.frequency_id) ) {
+            if (angular.isDefined($scope.selectedEntityDetails.frequency_id)) {
                 $scope.scheduleParams.frequency_id = $scope.selectedEntityDetails.frequency_id;
             } else {
                 $scope.scheduleParams.frequency_id = undefined;
             }
 
-            if ( angular.isDefined($scope.selectedEntityDetails.repeats_every) ) {
+            if (angular.isDefined($scope.selectedEntityDetails.repeats_every)) {
                 $scope.scheduleParams.repeats_every = $scope.selectedEntityDetails.repeats_every;
             } else {
                 $scope.scheduleParams.repeats_every = undefined;
             }
 
-            if ( $scope.selectedEntityDetails.ends_on_date !== null && $scope.selectedEntityDetails.ends_on_after === null ) {
+            if ($scope.selectedEntityDetails.ends_on_date !== null && $scope.selectedEntityDetails.ends_on_after === null) {
                 $scope.scheduleParams.scheduleEndsOn = 'DATE';
-            } else if ( $scope.selectedEntityDetails.ends_on_date === null && $scope.selectedEntityDetails.ends_on_after !== null ) {
+            } else if ($scope.selectedEntityDetails.ends_on_date === null && $scope.selectedEntityDetails.ends_on_after !== null) {
                 $scope.scheduleParams.ends_on_after = $scope.selectedEntityDetails.ends_on_after;
                 $scope.scheduleParams.scheduleEndsOn = 'NUMBER';
             } else {
@@ -974,19 +1022,19 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.scheduleParams.ends_on_date = reportUtils.processDate(endsOnDate).today;
 
             $scope.scheduleParams.delivery_id = $scope.selectedEntityDetails.delivery_type ? $scope.selectedEntityDetails.delivery_type.value : null;
-            
+
             if ($scope.scheduleParams.delivery_id === 'CLOUD_DRIVE') {
                 $scope.scheduleParams.delivery_id = $scope.selectedEntityDetails.cloud_drive_type;
             }
 
-            if ( $scope.scheduleParams.delivery_id === 'EMAIL' ) {
+            if ($scope.scheduleParams.delivery_id === 'EMAIL') {
                 $scope.emailList = $scope.selectedEntityDetails.emails.split(', ');
-            } else if ( $scope.scheduleParams.delivery_id === 'SFTP' ) {
+            } else if ($scope.scheduleParams.delivery_id === 'SFTP') {
                 $scope.scheduleParams.selectedFtpRecipient = $scope.selectedEntityDetails.sftp_server_id;
-            } else if ( $scope.scheduleParams.delivery_id === 'GOOGLE DRIVE' || $scope.scheduleParams.delivery_id === 'DROPBOX' ) {
+            } else if ($scope.scheduleParams.delivery_id === 'GOOGLE DRIVE' || $scope.scheduleParams.delivery_id === 'DROPBOX') {
                 $scope.scheduleParams.selectedCloudAccount = $scope.selectedEntityDetails.cloud_drive_id;
-            } 
-            
+            }
+
             if ($scope.selectedEntityDetails.filter_values && $scope.isYearlyTaxReport) {
                 $scope.scheduleParams.year = $scope.selectedEntityDetails.filter_values.year;
                 $scope.scheduleParams.with_vat_number = $scope.selectedEntityDetails.filter_values.with_vat_number;
@@ -1002,16 +1050,16 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
                 var getValue = function(value) {
                     switch (value) {
-                    case 'DAILY':
-                        return 'Day';
-                    case 'HOURLY':
-                        return 'Hour';
-                    case 'WEEKLY':
-                        return 'Week';
-                    case 'MONTHLY':
-                        return 'Month';
-                    default:
-                        return 'Per';
+                        case 'DAILY':
+                            return 'Day';
+                        case 'HOURLY':
+                            return 'Hour';
+                        case 'WEEKLY':
+                            return 'Week';
+                        case 'MONTHLY':
+                            return 'Month';
+                        default:
+                            return 'Per';
                     }
                 };
 
@@ -1023,11 +1071,11 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
                 // sort schedule list by report name
                 $scope.$parent.$parent.schedulesList = _.sortBy(
-                        payload.schedulesList,
-                        function(item) {
-                            return item.report.title;
-                        }
-                    );
+                    payload.schedulesList,
+                    function(item) {
+                        return item.report.title;
+                    }
+                );
 
                 // add filtered out and occurance
                 _.each($scope.$parent.$parent.schedulesList, function(item) {
@@ -1040,7 +1088,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 _.each(payload.schedulableReports, function(id) {
                     found = _.find($scope.$parent.$parent.reportList, { 'id': id });
 
-                    if ( angular.isDefined(found) ) {
+                    if (angular.isDefined(found)) {
                         applyIconClass.init(found);
                         $scope.$parent.$parent.schedulableReports.push({
                             id: found.id,
@@ -1075,7 +1123,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 });
 
                 _.each($scope.$parent.$parent.schedulesList, function(item) {
-                    if ( angular.isDefined(reportIconCls[item.report.description]) ) {
+                    if (angular.isDefined(reportIconCls[item.report.description])) {
                         item.reportIconCls = reportIconCls[item.report.description];
                     }
                 });
@@ -1087,16 +1135,16 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
                 $scope.refreshReportSchedulesScroll(reset);
 
-                $scope.$emit( 'hideLoader' );
+                $scope.$emit('hideLoader');
             };
 
             var failed = function(errors) {
                 $scope.errors = errors;
                 // refreshScrolls();
-                $scope.$emit( 'hideLoader' );
+                $scope.$emit('hideLoader');
             };
 
-            $scope.invokeApi( reportsSrv.reportSchedulesPayload, {}, success, failed );
+            $scope.invokeApi(reportsSrv.reportSchedulesPayload, {}, success, failed);
         };
 
         var STAGES = {
@@ -1139,8 +1187,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     return email === ui.item.value;
                 });
 
-                if ( ! alreadyPresent ) {
-                    $scope.emailList.push( ui.item.value );
+                if (!alreadyPresent) {
+                    $scope.emailList.push(ui.item.value);
                 }
                 this.value = '';
 
@@ -1160,15 +1208,17 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         $scope.pickSchedule = function(item, index) {
             var success = function(data) {
                 $scope.selectedEntityDetails = data;
+                $scope.touchedReport = $scope.selectedEntityDetails;
                 $scope.isGuestBalanceReport = false;
                 $scope.isYearlyTaxReport = false;
                 $scope.isCreditCheckReport = false;
+                $scope.isForecastReport = false;
 
                 if ($scope.selectedEntityDetails.report.title === reportNames['CREDIT_CHECK_REPORT']) {
                     $scope.isCreditCheckReport = true;
                 }
 
-                if ( !! $scope.selectedSchedule && $scope.selectedSchedule.active ) {
+                if (!!$scope.selectedSchedule && $scope.selectedSchedule.active) {
                     $scope.selectedSchedule.active = false;
                 }
                 $scope.selectedSchedule = $scope.$parent.$parent.schedulesList[index];
@@ -1186,22 +1236,22 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
                 $scope.refreshAllOtherColumnScrolls();
 
-                $scope.$emit( 'hideLoader' );
+                $scope.$emit('hideLoader');
             };
 
             var failed = function(errors) {
                 $scope.errors = errors;
-                $scope.$emit( 'hideLoader' );
+                $scope.$emit('hideLoader');
             };
 
             var params = {
                 id: item.id
             };
 
-            $scope.invokeApi( reportsSrv.fetchOneSchedule, params, success, failed );
+            $scope.invokeApi(reportsSrv.fetchOneSchedule, params, success, failed);
         };
 
-        $scope.check = function () {
+        $scope.check = function() {
             ngDialog.open({
                 template: '/assets/partials/reports/scheduleReport/rvConfirmDiscard.html',
                 scope: $scope
@@ -1213,7 +1263,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
          * @param {Object} item report object
          * @return { void }
          */
-        var filterScheduleFrequency = function (item) {
+        var filterScheduleFrequency = function(item) {
             var dailyOnly = _.find($scope.originalScheduleFrequency, { value: 'DAILY' });
 
             var dailyTypeOnly = _.find($scope.originalScheduleFreqType, { originalValue: 'DAILY' }),
@@ -1242,7 +1292,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Daily Transactions': true,
                 'Action Manager': true,
                 'Financial Transactions - Adjustment Report': true,
-                'Credit Check Report': true
+                'Credit Check Report': true,
+                'Forecast': true
             };
 
             var forWeekly = {
@@ -1256,7 +1307,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Daily Transactions': true,
                 'Action Manager': true,
                 'Financial Transactions - Adjustment Report': true,
-                'Credit Check Report': true
+                'Credit Check Report': true,
+                'Forecast': true
             };
             var forMonthly = {
                 'Arrival': true,
@@ -1269,7 +1321,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Daily Transactions': true,
                 'Action Manager': true,
                 'Financial Transactions - Adjustment Report': true,
-                'Credit Check Report': true
+                'Credit Check Report': true,
+                'Forecast': true
             };
 
             var forHourly = {
@@ -1280,43 +1333,46 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Guest Balance Report': true,
                 'Yearly Tax Report': true,
                 'Business on the Books': true,
-                'Credit Check Report': true              
+                'Credit Check Report': true,
+                'Forecast': true
             };
 
-            if ( forHourly[item.report.title] ) {
+            if (forHourly[item.report.title]) {
                 $scope.scheduleFrequency.push(hourlyOnly);
                 $scope.scheduleFreqType.push(hourlyTypeOnly);
             }
 
-            if ( forDaily[item.report.title] ) {
+            if (forDaily[item.report.title]) {
                 $scope.scheduleFrequency.push(dailyOnly);
                 $scope.scheduleFreqType.push(dailyTypeOnly);
             }
 
-            if ( forWeekly[item.report.title] ) {
+            if (forWeekly[item.report.title]) {
                 $scope.scheduleFrequency.push(weeklyOnly);
                 $scope.scheduleFreqType.push(weeklyTypeOnly);
             }
 
-            if ( forMonthly[item.report.title] ) {
+            if (forMonthly[item.report.title]) {
                 $scope.scheduleFrequency.push(monthlyOnly);
                 $scope.scheduleFreqType.push(monthlyTypeOnly);
             }
-            
+
         };
 
         $scope.pickReport = function(item, index) {
             $scope.selectedEntityDetails = $scope.$parent.$parent.schedulableReports[index];
+            $scope.touchedReport = $scope.selectedEntityDetails;
             $scope.isGuestBalanceReport = false;
             $scope.isCreditCheckReport = false;
             $scope.isYearlyTaxReport = false;
+            $scope.isForecastReport = false;
 
             if ($scope.selectedEntityDetails.report.title === reportNames['CREDIT_CHECK_REPORT']) {
                 $scope.isCreditCheckReport = true;
             }
 
 
-            if ( !! $scope.selectedReport && $scope.selectedReport.active ) {
+            if (!!$scope.selectedReport && $scope.selectedReport.active) {
                 $scope.selectedReport.active = false;
             }
             $scope.selectedReport = $scope.$parent.$parent.schedulableReports[index];
@@ -1342,7 +1398,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         };
 
         $scope.checkCanCreateSchedule = function() {
-            if ( validateSchedule() ) {
+            if (validateSchedule()) {
                 createSchedule();
             } else {
                 fillValidationErrors();
@@ -1354,7 +1410,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         };
 
         $scope.checkCanSaveSchedule = function() {
-            if ( validateSchedule() ) {
+            if (validateSchedule()) {
                 saveSchedule();
             } else {
                 fillValidationErrors();
@@ -1375,8 +1431,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         $scope.deleteSchedule = function() {
             var success = function() {
                 $scope.errorMessage = '';
-                $scope.$emit( 'hideLoader' );
-                if ( !! $scope.selectedReport && $scope.selectedReport.active ) {
+                $scope.$emit('hideLoader');
+                if (!!$scope.selectedReport && $scope.selectedReport.active) {
                     $scope.selectedReport.active = false;
                 }
                 $scope.updateViewCol($scope.viewColsActions.ONE);
@@ -1387,11 +1443,11 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
             var failed = function(errors) {
                 $scope.errorMessage = errors;
-                $scope.$emit( 'hideLoader' );
+                $scope.$emit('hideLoader');
             };
 
             $scope.closeDialog();
-            $scope.invokeApi( reportsSrv.deleteSchedule, { id: $scope.selectedEntityDetails.id }, success, failed );
+            $scope.invokeApi(reportsSrv.deleteSchedule, { id: $scope.selectedEntityDetails.id }, success, failed);
         };
 
         $scope.refreshReportSchedulesScroll = function(reset) {
@@ -1431,7 +1487,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         };
 
         $scope.checkCanCancel = function() {
-            if ( !! $scope.selectedReport && $scope.selectedReport.active ) {
+            if (!!$scope.selectedReport && $scope.selectedReport.active) {
                 ngDialog.open({
                     template: '/assets/partials/reports/scheduleReport/rvConfirmDiscard.html',
                     scope: $scope
@@ -1461,11 +1517,11 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             var noReset = true;
             var verReset = true;
 
-            if ( $scope.addingStage === STAGES.SHOW_PARAMETERS ) {
+            if ($scope.addingStage === STAGES.SHOW_PARAMETERS) {
                 $scope.addingStage = STAGES.SHOW_DETAILS;
                 $scope.updateViewCol($scope.viewColsActions.THREE, noReset);
                 $scope.refreshThirdColumnScroll(verReset);
-            } else if ( $scope.addingStage === STAGES.SHOW_DETAILS ) {
+            } else if ($scope.addingStage === STAGES.SHOW_DETAILS) {
                 $scope.addingStage = STAGES.SHOW_DISTRIBUTION;
                 $scope.updateViewCol($scope.viewColsActions.FOUR, noReset);
                 $scope.refreshFourthColumnScroll(verReset);
@@ -1489,22 +1545,22 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         };
 
         // Checks whether file format dropdown should be shown or not
-        $scope.shouldShowFileFormat = function (selectedEntity) {
+        $scope.shouldShowFileFormat = function(selectedEntity) {
             if (selectedEntity.report && selectedEntity.report.title === reportNames['COMPARISION_BY_DATE']) {
                 $scope.scheduleFormat = _.filter($scope.scheduleFormat, function(object) { return object.value !== "XML"; });
-            } else if (selectedEntity.report && ( selectedEntity.report.title === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ||
-                selectedEntity.report.title === reportNames['DAILY_PRODUCTION_DEMO'] ||
-                selectedEntity.report.title === reportNames['DAILY_PRODUCTION_RATE'] || 
-                selectedEntity.report.title === reportNames['DAILY_TRANSACTIONS'] || 
-                selectedEntity.report.title === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT'] || 
-                selectedEntity.report.title === reportNames['ACTIONS_MANAGER'] ||
-                selectedEntity.report.title === reportNames['CREDIT_CHECK_REPORT'] )
-                 ) {
-                $scope.scheduleFormat = _.filter($scope.scheduleFormat, function (object) {
+            } else if (selectedEntity.report && (selectedEntity.report.title === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ||
+                    selectedEntity.report.title === reportNames['DAILY_PRODUCTION_DEMO'] ||
+                    selectedEntity.report.title === reportNames['DAILY_PRODUCTION_RATE'] ||
+                    selectedEntity.report.title === reportNames['DAILY_TRANSACTIONS'] ||
+                    selectedEntity.report.title === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT'] ||
+                    selectedEntity.report.title === reportNames['ACTIONS_MANAGER'] ||
+                    selectedEntity.report.title === reportNames['CREDIT_CHECK_REPORT'] ||
+                    selectedEntity.report.title === reportNames['FORECAST_BY_DATE'])) {
+                $scope.scheduleFormat = _.filter($scope.scheduleFormat, function(object) {
                     return object.value === 'CSV';
                 });
-            } else if (selectedEntity.report && selectedEntity.report.title === reportNames['GUEST_BALANCE_REPORT'] ) {
-                $scope.scheduleFormat = _.filter($scope.scheduleFormat, function (object) {
+            } else if (selectedEntity.report && selectedEntity.report.title === reportNames['GUEST_BALANCE_REPORT']) {
+                $scope.scheduleFormat = _.filter($scope.scheduleFormat, function(object) {
                     return object.value === 'CSV' || object.value === 'PDF';
                 });
             }
@@ -1512,12 +1568,13 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             return selectedEntity.report && (selectedEntity.report.title === reportNames['COMPARISION_BY_DATE'] ||
                 selectedEntity.report.title === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ||
                 selectedEntity.report.title === reportNames['DAILY_PRODUCTION_DEMO'] ||
-                selectedEntity.report.title === reportNames['DAILY_PRODUCTION_RATE'] || 
+                selectedEntity.report.title === reportNames['DAILY_PRODUCTION_RATE'] ||
                 selectedEntity.report.title === reportNames['DAILY_TRANSACTIONS'] ||
-                selectedEntity.report.title === reportNames['GUEST_BALANCE_REPORT'] || 
-                selectedEntity.report.title === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT'] || 
+                selectedEntity.report.title === reportNames['GUEST_BALANCE_REPORT'] ||
+                selectedEntity.report.title === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT'] ||
                 selectedEntity.report.title === reportNames['ACTIONS_MANAGER'] ||
-                selectedEntity.report.title === reportNames['CREDIT_CHECK_REPORT'] );
+                selectedEntity.report.title === reportNames['CREDIT_CHECK_REPORT'] ||
+                selectedEntity.report.title === reportNames['FORECAST_BY_DATE']);
         };
 
         // Listener for creating new report schedule
@@ -1525,8 +1582,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.scheduleReport();
         });
 
-        $scope.$on('$destroy', createNewReportScheduleListener);   
-        
+        $scope.$on('$destroy', createNewReportScheduleListener);
+
         $scope.addListener('RESET_CURRENT_STAGE', () => {
             $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
         });
@@ -1539,15 +1596,22 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.scheduleParams.selectedCloudAccount = null;
         };
 
-        $scope.checkDeliveryType = function (checkFor) {
+        $scope.checkDeliveryType = function(checkFor) {
             return checkFor === $scope.scheduleParams.delivery_id;
         };
+
+        // $scope.hasIncludeCompanyTaGroup = function(selectedEntity) {
+        //     if (selectedEntity.report && selectedEntity.report.title === reportNames['FORECAST_BY_DATE']) {
+        //         return true;
+        //     }
+        //     return false;
+        // }
 
         /**
          * Startup
          * @return {Object} undefined
          */
-        function init () {
+        function init() {
             $scope.isAddingNew = false;
             $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
 
@@ -1560,18 +1624,18 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.scheduleTimePeriods = [];
             $scope.scheduleFrequency = [];
             $scope.scheduleFormat = [];
-            $scope.scheduleYearList = Array.from( {length: 10}, 
-                        function (v, i) {
-                           return {
-                                "value": moment().add(-1 * i, 'y')
-                                        .format('YYYY')
-                                };
-                        });
+            $scope.scheduleYearList = Array.from({ length: 10 },
+                function(v, i) {
+                    return {
+                        "value": moment().add(-1 * i, 'y')
+                            .format('YYYY')
+                    };
+                });
 
             $scope.scheduleFreqType = [];
             $scope.emailList = [];
 
-            $scope.scheduleParams = {};            
+            $scope.scheduleParams = {};
 
             setupScrolls();
 

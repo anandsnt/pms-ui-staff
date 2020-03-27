@@ -20,7 +20,7 @@
                   jqyoui-draggable="{index: {{$index}}, placeholder:'keep', animate:'true', onStart: 'onDragStart', onStop: 'onDragStop'}" 
 
                   ng-model="selectedMenu.components" 
-                  ng-click="clickedMenuItem($event, submenu.state, selectedMenu.components[$index].is_disabled)"
+                  ng-click="clickedMenuItem($event, submenu.state, selectedMenu.components[$index].is_disabled, selectedMenu.menu_name)"
                   ng-class="{'moved': submenu.is_bookmarked}">
                   {{submenu.name}}
                </a>

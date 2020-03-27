@@ -1,0 +1,215 @@
+/* StayNTouch Zest Station Styles | Arc Theme */
+
+/* 1. COLORS
+==========================================================*/
+@brandColor:            #b74334;
+    
+@textColor:             @black;
+@backgroundColor:       @white;
+
+@actionColor:           @white;
+@actionBackground:      @brandColor;
+
+@inputBackground:       #707070;
+@inputColor:            @white;
+@transparentColor:      rgba(0,0,0,.5);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+
+@fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+
+/* 3. IMAGES
+==========================================================*/
+@background: @white;
+@backgroundSize: '';
+
+@headerIconsColor:      @black;
+@headerIconsActive:     @black;
+
+.icons { 
+    &.icon-create-key {
+        fill: @brandColor;
+        stroke: @brandColor;
+    }
+
+    &.icon-no-print { stroke: @white; }
+
+    &.icon-oos {
+        fill: @brandColor;
+    }
+
+    &.icon-arrow-left,
+    &.icon-arrow-right {
+        fill: none;
+        stroke: @white;
+    }
+    
+    &.icon-arrow-down {
+        fill: @brandColor;
+    }
+
+    &.icon-user-id {
+        .cls-1 {
+            stroke: @white;
+        }
+    }
+}
+
+// PMS Zest Station logo
+    .logo-svg{
+        background-image: url("../css/themes/westminster/logo.svg");
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 280px;
+        height: 90px;
+        background-position: center;
+    }
+
+/* 4. LAYOUT
+==========================================================*/
+
+#westminster {
+
+    #header {
+        height: 145px;
+    }
+
+    #main {
+        #calc > #height > .remove(100%, 145px);
+        top: 145px;
+
+        &.centered {
+            padding-top: 100px;
+            #content {
+                height: 100%;
+            }
+        }
+    }
+
+    input,
+    select,
+    /* Popup fixes start */
+    textarea
+    /* Popup fixes end */  {
+        background: @inputBackground;
+        color: @inputColor;
+    }
+    
+    #logo {
+        padding-top: 0;
+
+        .logo {
+            width: auto;
+            height: 90px;
+        }
+    }
+
+    #options {
+        
+        .icon-text {
+            color: @white;
+        }
+
+        .icons {
+            fill: @white;
+        }
+
+        li.break {
+            padding-top: 60px;
+
+            &:after,
+            &:before {
+                display: none;
+            }
+        }
+    }
+
+    #selection {
+        li {
+            .details {
+                background-color: fade(@brandColor, 5);
+            }
+        }
+    }
+
+    #guests {
+        .button {
+            color: @white;
+            background-color: #000;
+        }
+    } 
+
+    #upgrade {
+        .upgrade-price {
+            background-color: #ebebeb;
+        }
+    }
+
+    .upgrade-list {
+        li {
+            &:not(.selected) {
+                border-color: #efefef;
+
+                .upgrade-content {
+                    background-color: #efefef;
+                }
+            }
+        }
+    }
+
+    .add-on-list {
+        li {
+
+            &:not(.selected){
+                border-color: #efefef;
+
+                .add-on-content {
+                    background: #efefef;
+                }
+            }
+            
+        }
+    }
+
+    .add-on {
+
+        .input-group {
+            input {
+                color: @black;
+            }
+        }
+    }
+
+    #textual {
+        background: #efefef;
+         
+
+        &:before,
+        &:after {
+            background: #efefef;
+        }
+
+    }
+
+    #rate {
+        li {
+            &.sub {
+                color: #a1a1a1;
+            }
+        }
+    }
+
+    #textual,
+    .popup {
+        .icons {
+            fill: @white;
+        }
+    }
+
+    .minibar-item,
+    .minibar-review .review-container {
+        background: #efefef;
+    }
+}

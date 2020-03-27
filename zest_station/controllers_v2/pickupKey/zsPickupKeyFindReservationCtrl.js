@@ -30,6 +30,7 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 			};
 			$scope.creditCardNumber = '';
 			$scope.reservationData = {};
+			$scope.zestStationData.skipGuestMandatorySchemaCheck = false;
 			$scope.hideAddCardOption = $scope.zestStationData.paymentGateway === 'MLI' &&
 					$scope.zestStationData.hotelSettings.mli_cba_enabled ||
 				$scope.zestStationData.paymentGateway === 'CBA';

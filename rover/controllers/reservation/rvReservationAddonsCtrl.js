@@ -82,13 +82,6 @@ sntRover.controller('RVReservationAddonsCtrl', [
                 $scope.is_rate_addons_fetch = false;
                 $scope.addonsData.existingAddons = [];
             },
-            computeTotals = function() {
-                if ($scope.reservationData.isHourly) {
-                    $scope.computeHourlyTotalandTaxes();
-                } else {
-                    $scope.computeTotalStayCost();
-                }
-            },
             updateAddonPostOptions = function() {
                 $($scope.reservationData.rooms).each(function(index, room) {
                     $(room.addons).each(function(i, addon) {
@@ -246,7 +239,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                                     }
                                 }
                             });
-                            computeTotals();
+                            
                         }
                         $scope.is_rate_addons_fetch = true;
                     }
@@ -334,7 +327,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     }
                 }
                 $scope.showEnhancementsPopup();
-                computeTotals();
+               
             },
             addonsDataCopy = [];
 
@@ -343,7 +336,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
             
             $scope.addonPopUpData = {
                 addonPostingMode: 'reservation',
-				cancelLabel: "+ More",
+				cancelLabel: "Cancel",
                 saveLabel: "Book",
                 shouldShowAddMoreButton: false,
                 number_of_adults: $scope.reservationData.number_of_adults,
@@ -576,7 +569,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
             if ($scope.addonsData.existingAddons.length === 0) {
                 $scope.closePopup();
             }
-            computeTotals();
+            
         };
 
         var initController = function() {
@@ -649,6 +642,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
 
                         $scope.addonsData.existingAddons.push(addonsData);
 
+                        $scope.packageData.existing_packages.push(addonsData);
+
                         for (roomIndex = startIndex; roomIndex <= endIndex; roomIndex++) {
                             $scope.reservationData.rooms[roomIndex].addons.push({
                                 quantity: addonsData.quantity,
@@ -666,12 +661,10 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         }
 
                     });
-                    $scope.packageData.existing_packages.push(associatedPackages);
 
                     addonsDataCopy = angular.copy($scope.addonsData.existingAddons);
                     $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
 
-                    $scope.computeTotalStayCost();
                 };
 
                 if (!RVReservationStateService.getReservationFlag('RATE_CHANGED') && !!$scope.reservationData.reservationId) {

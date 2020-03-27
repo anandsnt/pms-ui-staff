@@ -52,7 +52,8 @@ sntZestStation.controller('zsEmailCollectionDirCtrl', ['$scope', 'zsUtilitySrv',
                 var options = {
                     params: {
                         'guest_id': $scope.guestId,
-                        'email': $scope.email
+                        'email': $scope.email,
+                        'is_kiosk': true
                     },
                     successCallBack: updateComplete,
                     failureCallBack: updateGuestEmailFailed
