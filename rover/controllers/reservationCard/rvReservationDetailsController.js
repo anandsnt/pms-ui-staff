@@ -54,7 +54,7 @@ sntRover.controller('reservationDetailsController',
 				previousStateParams: $scope.previousStateParams
 			};
 		};
-
+		
 		var RESPONSE_STATUS_470 = 470;
 
 		$scope.hasOverBookRoomTypePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
@@ -138,7 +138,8 @@ sntRover.controller('reservationDetailsController',
 					activeTab: "RESERVATIONS"
 				}
 			};
-		} else if ($stateParams.isFromCards) {
+		} else if ($stateParams.isFromCards || $rootScope.stayCardStateBookMark.previousState === "rover.companycarddetails") {
+
 			setNavigationBookMark();
 			$rootScope.setPrevState = {
 				title: 'AR Transactions',
