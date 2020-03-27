@@ -37,6 +37,51 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             rateTypeEnabled: Toggles.isEnabled('hierarchical_rate_type_restrictions')
         };
 
+        // Mapping of restriction type and code.
+        var restrictionCodeMapping = {
+                "closed": [1, 'CLOSED'],
+                "closed_arrival": [2, 'CLOSED_ARRIVAL'],
+                "closed_departure": [3, 'CLOSED_DEPARTURE'],
+                "min_stay_through": [4, 'MIN_STAY_LENGTH'],
+                "min_length_of_stay": [5, 'MAX_STAY_LENGTH'],
+                "max_length_of_stay": [6, 'MIN_STAY_THROUGH'],
+                "min_advanced_booking": [7, 'MIN_ADV_BOOKING'],
+                "max_advanced_booking": [8, 'MAX_ADV_BOOKING']
+        };
+
+        /*
+         *  Method to process new restrcion data structure to convert into old structure.
+         *  @param [Object] [input value as key value pair]
+         *  @return [Array] [output - converted values into array structure]
+         */
+        var processRestrictions = function( input ) {
+            var output = [],
+                key = '',
+                value = '', 
+                obj = {};
+
+            for (key in input) {
+
+                value = input[key];
+                obj = {
+                    days: null,
+                    is_on_rate: false,
+                    restriction_type_id: restrictionCodeMapping[key][0]
+                };
+
+                if (typeof(value) === "boolean") {
+                    obj.status = value ? 'on' : 'off';
+                }
+                if (typeof(value) === "number") {
+                    obj.days = value;
+                }
+
+                output.push(obj);
+            }
+
+            return output;
+        };
+
         service.fetchMultipleRateInfo = function(params) {
             params = _.omit(params, 'restriction_level');
             var url = '/api/daily_rates';
