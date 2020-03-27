@@ -39,14 +39,14 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
 
         // Mapping of restriction type and code.
         var restrictionCodeMapping = {
-                "closed": [1, 'CLOSED'],
-                "closed_arrival": [2, 'CLOSED_ARRIVAL'],
-                "closed_departure": [3, 'CLOSED_DEPARTURE'],
-                "min_stay_through": [4, 'MIN_STAY_LENGTH'],
-                "min_length_of_stay": [5, 'MAX_STAY_LENGTH'],
-                "max_length_of_stay": [6, 'MIN_STAY_THROUGH'],
-                "min_advanced_booking": [7, 'MIN_ADV_BOOKING'],
-                "max_advanced_booking": [8, 'MAX_ADV_BOOKING']
+            "closed": [1, 'CLOSED'],
+            "closed_arrival": [2, 'CLOSED_ARRIVAL'],
+            "closed_departure": [3, 'CLOSED_DEPARTURE'],
+            "min_stay_through": [4, 'MIN_STAY_LENGTH'],
+            "min_length_of_stay": [5, 'MAX_STAY_LENGTH'],
+            "max_length_of_stay": [6, 'MIN_STAY_THROUGH'],
+            "min_advanced_booking": [7, 'MIN_ADV_BOOKING'],
+            "max_advanced_booking": [8, 'MAX_ADV_BOOKING']
         };
 
         /*
@@ -170,9 +170,13 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             return this.postJSON(url, params);
         };
 
-
         service.fetchCommonRestrictions = (params) => {
             var url = '/api/daily_rates/all_restrictions';
+
+            // CICO-76813 : New API for hierarchyRestrictions
+            if (hierarchyRestrictions.houseEnabled) {
+                url = '/api/restrictions/house';
+            }
 
             return this.getJSON(url, params);
         };
@@ -198,6 +202,16 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
 
                 promises.push(service.fetchCommonRestrictions(commonRestrictionsParams)
                     .then((data) => {
+                        // CICO-76813 : New API for hierarchyRestrictions
+                        if (hierarchyRestrictions.houseEnabled) {
+                            console.log(data.results);
+                            _.each(data.results, function( item ) {
+                                item.restrictions = processRestrictions(item.restrictions);
+                            });
+                            console.log('After processRestrictions :');
+                            console.log(data.results);
+                        }
+                        
                         response.commonRestrictions = data.results;
                     })
                 );
@@ -638,7 +652,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             if (params.fetchCommonRestrictions) {
 
                 let paramsForCommonRestrictions = {
-                    ..._.pick(params, 'from_date', 'to_date', 'name_card_ids[]', 'varied_inclusive', 'restriction_level')
+                    ..._.pick(params, 'from_date', 'to_date', 'name_card_ids[]', 'varied_inclusive')
                 };
 
                 if (params["rate_type_ids[]"]) {
