@@ -1055,7 +1055,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			$scope.otherData.hourlyTaxInfo = data.tax_information;
 			RVReservationStateService.metaData.taxDetails = angular.copy(data.tax_codes);
 			$scope.reservationData.totalTax = 0;
-			$scope.computeHourlyTotalandTaxes();
+			
 			if (saveReservation) {
 				if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
 					$scope.$emit('PROMPTCARD');

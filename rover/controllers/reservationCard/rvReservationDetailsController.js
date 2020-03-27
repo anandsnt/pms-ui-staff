@@ -949,7 +949,8 @@ sntRover.controller('reservationDetailsController',
 				room_type_id: roomTypeId,
                 adults: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numAdults,
                 children: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numChildren,
-                is_member: $scope.guestData.primary_guest_details.is_member
+                is_member: $scope.guestData.primary_guest_details.is_member,
+                selectedCurrencyId: $scope.reservationData.reservation_card.rate_currency_id
 			});
 		}
 

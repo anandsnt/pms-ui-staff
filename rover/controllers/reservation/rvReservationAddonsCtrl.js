@@ -82,13 +82,6 @@ sntRover.controller('RVReservationAddonsCtrl', [
                 $scope.is_rate_addons_fetch = false;
                 $scope.addonsData.existingAddons = [];
             },
-            computeTotals = function() {
-                if ($scope.reservationData.isHourly) {
-                    $scope.computeHourlyTotalandTaxes();
-                } else {
-                    $scope.computeTotalStayCost();
-                }
-            },
             updateAddonPostOptions = function() {
                 $($scope.reservationData.rooms).each(function(index, room) {
                     $(room.addons).each(function(i, addon) {
@@ -140,7 +133,6 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     $scope.invokeApi(RVReservationSummarySrv.updateReservation, saveData, successCallBack, failureCallBack);
                 } else {
                     updateAddonPostOptions();
-                    $scope.computeTotalStayCost();
                     var save = function() {
                         if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id || $scope.reservationData.group.id || $scope.reservationData.allotment.id) {
                             /**
@@ -247,7 +239,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                                     }
                                 }
                             });
-                            computeTotals();
+                            
                         }
                         $scope.is_rate_addons_fetch = true;
                     }
@@ -335,7 +327,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     }
                 }
                 $scope.showEnhancementsPopup();
-                computeTotals();
+               
             },
             addonsDataCopy = [];
 
@@ -577,7 +569,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
             if ($scope.addonsData.existingAddons.length === 0) {
                 $scope.closePopup();
             }
-            computeTotals();
+            
         };
 
         var initController = function() {
@@ -673,7 +665,6 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     addonsDataCopy = angular.copy($scope.addonsData.existingAddons);
                     $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
 
-                    $scope.computeTotalStayCost();
                 };
 
                 if (!RVReservationStateService.getReservationFlag('RATE_CHANGED') && !!$scope.reservationData.reservationId) {

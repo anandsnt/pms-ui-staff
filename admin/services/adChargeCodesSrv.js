@@ -137,5 +137,19 @@ admin.service('ADChargeCodesSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 		return deferred.promise;
 	};
 
+   /**
+    *  To fetch custom tax parameters
+    */
+	this.fetchCustomTaxParameter = function() {
+		var deferred = $q.defer();
+		var url = '/api/charge_codes/custom_tax_parameters';
+
+		ADBaseWebSrvV2.getJSON(url).then(function(data) {
+		    deferred.resolve(data);
+		}, function(data) {
+		    deferred.reject(data);
+		});
+		return deferred.promise;
+	};
 
 }]);

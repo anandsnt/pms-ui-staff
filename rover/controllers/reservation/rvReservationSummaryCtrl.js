@@ -1608,6 +1608,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             }
         };
 
+        $scope.addListener('REFRESH_SCROLL_SUMMARY', function() {
+            $scope.refreshScroller('reservationSummary');
+        });
 
         $scope.$on("PAY_LATER", function(e, data) {
             $scope.reservationData.paymentType.ccDetails = data.cardDetails;
