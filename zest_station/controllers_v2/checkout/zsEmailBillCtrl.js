@@ -59,7 +59,8 @@ sntZestStation.controller('zsEmailBillCtrl', [
             var afterBlackListValidation = function() {
                 var params = {
                     'guest_detail_id': $stateParams.guest_detail_id,
-                    'email': $scope.email
+                    'email': $scope.email,
+                    'is_kiosk': true
                 };
                 var emailSaveSuccess = function() {
                     $scope.mode = 'EMAIL_BILL_GUEST_OPTIONS';
