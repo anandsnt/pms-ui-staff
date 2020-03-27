@@ -241,7 +241,7 @@ sntRover.controller('RVReservationPackageController',
 			var addonPostingMode = $scope.addonPopUpData.addonPostingMode;
 
 			return (addonPostingMode === 'staycard' || addonPostingMode === 'group' || addonPostingMode === 'allotments');
-		}
+		};
 
 		var setPostingData = function() {
 			angular.forEach($scope.packageData.existing_packages, function(existing_package) {
