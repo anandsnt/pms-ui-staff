@@ -11,7 +11,7 @@ angular.module('sntRover')
 						bottom: 100,
 						left: 40
 					},
-					width = 800,
+					width = window.innerWidth * 2/3,
 					height = 600 - margin.top - margin.bottom,
 					marginOverview = {
 						top: 530,
@@ -116,6 +116,10 @@ angular.module('sntRover')
 					main.selectAll(".bar.stack")
 						.attr("transform", function(d) {
 							return "translate(" + x(d.date) + ",0)";
+						})
+						.attr("style", function(d) {
+							// hide bars transformed to left of axis
+							return x(d.date) < 0 ? "display: none" : "";
 						});
 					// redraw the x axis of the main chart
 					main.select(".x.axis").call(xAxis);
@@ -276,6 +280,7 @@ angular.module('sntRover')
 				overview.append("g")
 					.attr("class", "x brush")
 					.call(brush)
+					.call(brush.move, x.range())
 					.on("click", brushed)
 					.selectAll("rect")
 					// -6 is magic number to offset positions for styling/interaction to feel right
