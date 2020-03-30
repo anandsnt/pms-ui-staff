@@ -1477,7 +1477,8 @@ sntRover.controller('reservationDetailsController',
 						rateDetails: {
 							actual_amount: newDateDetails.rate_amount,
 							modified_amount: newDateDetails.rate_amount
-						}
+						},
+						roomTypeId: newDateDetails.room_type_id
 					};
 
 				}
