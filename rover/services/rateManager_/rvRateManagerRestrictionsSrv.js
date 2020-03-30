@@ -12,14 +12,14 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['$q', 'BaseW
 
         // Mapping of restriction type and code.
         var restrictionCodeMapping = {
-            "closed": [1, 'CLOSED'],
-            "closed_arrival": [2, 'CLOSED_ARRIVAL'],
-            "closed_departure": [3, 'CLOSED_DEPARTURE'],
-            "min_stay_through": [4, 'MIN_STAY_LENGTH'],
-            "min_length_of_stay": [5, 'MAX_STAY_LENGTH'],
-            "max_length_of_stay": [6, 'MIN_STAY_THROUGH'],
-            "min_advanced_booking": [7, 'MIN_ADV_BOOKING'],
-            "max_advanced_booking": [8, 'MAX_ADV_BOOKING']
+            'closed': [1, 'CLOSED'],
+            'closed_arrival': [2, 'CLOSED_ARRIVAL'],
+            'closed_departure': [3, 'CLOSED_DEPARTURE'],
+            'min_length_of_stay': [4, 'MIN_STAY_LENGTH'],
+            'max_length_of_stay': [5, 'MAX_STAY_LENGTH'],
+            'min_stay_through': [6, 'MIN_STAY_THROUGH'],
+            'min_advanced_booking': [7, 'MIN_ADV_BOOKING'],
+            'max_advanced_booking': [8, 'MAX_ADV_BOOKING']
         };
 
         /*
@@ -99,6 +99,60 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['$q', 'BaseW
                 url = '/api/restrictions/house';
             }
             return url;
+        };
+
+        // Handle POST api, for individual cell click & popup in House Level ( Frozen Panel).
+        service.getURLforApplyAllRestrictions = function(params) {
+        	var url = '/api/daily_rates';
+
+            // CICO-76813 : New API for hierarchyRestrictions
+            if (service.hierarchyRestrictions.houseEnabled && params.restriction_level === 'Hotel') {
+                url = '/api/restrictions/house';
+            }
+            return url;
+        };
+
+        // Mapping of restriction type and code.
+        var restrictionCodeReverseMapping = {
+            1: ['closed', 'boolean'],
+            2: ['closed_arrival', 'boolean'],
+            3: ['closed_departure', 'boolean'],
+            4: ['min_length_of_stay', 'number'],
+            5: ['max_length_of_stay', 'number'],
+            6: ['min_stay_through', 'number'],
+            7: ['min_advanced_booking', 'number'],
+            8: ['max_advanced_booking', 'number']
+        };
+
+		service.reverseProcessRestrictions = function( restrcionsList ) {
+			var restrictionsObj = {};
+
+			_.each(restrcionsList, function( item ) {
+				if (restrictionCodeReverseMapping[item.restriction_type_id][1] === 'boolean') {
+					restrictionsObj[restrictionCodeReverseMapping[item.restriction_type_id][0]] = item.action === 'add';
+				}
+				else if (restrictionCodeReverseMapping[item.restriction_type_id][1] === 'number') {
+					restrictionsObj[restrictionCodeReverseMapping[item.restriction_type_id][0]] = item.days;
+				}
+			});
+
+			return restrictionsObj;
+		};
+
+        // Handle POST api, for individual cell click & popup in House Level ( Frozen Panel).
+        service.processParamsforApplyAllRestrictions = function(params) {
+        	console.log(params);
+            if (service.hierarchyRestrictions.houseEnabled && params.restriction_level === 'Hotel') {
+                params = {
+                	from_date: params.details[0].from_date,
+                	to_date: params.details[0].to_date,
+                	restrictions: service.reverseProcessRestrictions(params.details[0].restrictions),
+                	weekdays: []
+                }
+            }
+
+            console.log(params);
+            return params;
         };
 
     }

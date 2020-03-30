@@ -89,7 +89,8 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
         };
 
         service.applyAllRestrictions = (params) => {
-            var url = '/api/daily_rates';
+            var url = rvRateManagerRestrictionsSrv.getURLforApplyAllRestrictions(params),
+                params = rvRateManagerRestrictionsSrv.processParamsforApplyAllRestrictions(params);
 
             return this.postJSON(url, params);
         };
@@ -113,7 +114,8 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
         };
 
         service.updateSingleRateRestrictionData = (params) => {
-            var url = '/api/daily_rates/';
+            var url = rvRateManagerRestrictionsSrv.getURLforApplyAllRestrictions(params),
+                params = rvRateManagerRestrictionsSrv.processParamsforApplyAllRestrictions(params);
 
             return this.postJSON(url, params);
         };
