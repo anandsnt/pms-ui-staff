@@ -1851,11 +1851,9 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.id_scan_enabled = $scope.zestStationData.kiosk_scan_enabled &&
                 ($scope.zestStationData.kiosk_scan_mode === 'id_scan' ||
                     $scope.zestStationData.kiosk_scan_mode === 'id_scan_with_staff_verification' ||
-                    $scope.zestStationData.kiosk_scan_mode === 'id_scan_with_facial_verification');
+                    $scope.zestStationData.kiosk_scan_mode === 'id_scan_with_facial_verification' ||
+                    $scope.zestStationData.kiosk_scan_mode === 'third_party');
 
-            // TODO: DELETE AFTER ADMIN IS DONE
-            $scope.zestStationData.kiosk_scan_mode = 'third_party';
-            $scope.zestStationData.third_party_scan_url = 'wss://localhost.stayntouch.com:4647/CCSwipeService';
             $scope.zestStationData.thirdPartyScanEnabled = $scope.zestStationData.kiosk_scan_enabled &&
                                                            $scope.zestStationData.kiosk_scan_mode === 'third_party';
 
