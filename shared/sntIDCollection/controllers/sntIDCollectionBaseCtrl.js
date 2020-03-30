@@ -52,10 +52,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 
 	/** ******* THIRD PARTY SCAN ACTIONS STARTS HERE ********************/ 
 
-	var WebSocketObj,
-		frontSideResults;
-	var iteration = 0;
-
+	var frontSideResults;
 	var thirdPatrtyScanFinalActions = function(data) {
 		$timeout(function() {
 			// Process response
@@ -69,71 +66,62 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			if (response.back_side_image) {
 				$('#' + 'id-back-side').attr('src', response.back_side_image);
 			}
-		}, 0);
+		}, 2000);
 	};
 
-	var scanFrontSideUsingThirdParty = function() {
-		$timeout(function() {
-			if (WebSocketObj && WebSocketObj.readyState === 1) {
-				WebSocketObj.send("{\"Command\" : \"cmd_scan_with_3rd_party_scanner\"}");
+	var scanIdUsingThirdParty = function() {
+			if (sntIDCollectionSrv.WebSocketObj && sntIDCollectionSrv.WebSocketObj.readyState === 1) {
+				$scope.$emit('IMAGE_ANALYSIS_STARTED');
+				sntIDCollectionSrv.WebSocketObj.send("{\"Command\" : \"cmd_scan_with_3rd_party_scanner\"}");
 			} else {
 				if ($scope.screenData.imageSide === 0) {
 					$scope.screenData.scanMode = screenModes.upload_front_image_failed;
 				} else {
 					$scope.screenData.scanMode = screenModes.upload_back_image_failed;
 				}
-				
-				handleThirdPartyScanActions();
+				createWebSocketConnection();
 			}
-		}, 0);
 	};
 
 	var WebSocketActions = function(evt) {
 		var response = JSON.parse(evt.data);
-		// TODO : REMOVE CODE BELOWAFTER TESTING
-		iteration++;
-		response.should_scan_more = (iteration % 2 == 0);
-		// TODO : REMOVE CODE ABOVE AFTER TESTING
-		if (response.should_scan_more && $scope.screenData.imageSide === 0) {
+		// if ResponseCode is not 0, the scan was failure
+		if (response.ResponseCode !== 0) {
+			$timeout(function() {
+				$scope.screenData.scanMode = $scope.screenData.imageSide === 0 ? 
+											 screenModes.upload_front_image_failed :
+											 screenModes.upload_back_image_failed;
+			}, 0);
+			return;
+		}
 
+		if (response.should_scan_more && $scope.screenData.imageSide === 0) {
 			$scope.screenData.scanMode = 'UPLOAD_BACK_IMAGE';
 			frontSideResults = response.doc;
 			$scope.screenData.imageSide = 1;
-
-		} else {
-			if ($scope.screenData.imageSide === 1) {
-				response.doc = Object.assign({}, frontSideResults, response.doc);
-			}
-			thirdPatrtyScanFinalActions(response);
+		} else if ($scope.screenData.imageSide === 1) {
+			// join front side and back side details
+			response.doc = Object.assign({}, frontSideResults, response.doc);
 		}
+		thirdPatrtyScanFinalActions(response);
 	};
 
-	var handleThirdPartyScanActions = function () {
-		if (WebSocketObj && WebSocketObj.readyState === 1) {
-			WebSocketObj.close();
+	var createWebSocketConnection = function () {
+		if (sntIDCollectionSrv.WebSocketObj && sntIDCollectionSrv.WebSocketObj.readyState === 1) {
+			sntIDCollectionSrv.WebSocketObj.close();
 		}
-		var WebSocketUrl = $scope.deviceConfig.thirdPatrtyConnectionUrl || "wss://localhost.stayntouch.com:4647/CCSwipeService";
 		
-		WebSocketObj = new WebSocket(WebSocketUrl);
-			//Triggers when websocket connection is established.
-			WebSocketObj.onopen = function() {
-			};
-			// Triggers when there is a message from websocket server.
-			WebSocketObj.onmessage = function(evt) {
-				$timeout(function() {
-					WebSocketActions(evt);
-				}, 0);
-			};
-			// Triggers when the server is down.
-			WebSocketObj.onclose = function() {
-			};
+		sntIDCollectionSrv.WebSocketObj = new WebSocket($scope.deviceConfig.thirdPatrtyConnectionUrl);
+		sntIDCollectionSrv.WebSocketObj.onmessage = function(evt) {
+			WebSocketActions(evt);
+		};
 	};
 	/** ******* THIRD PARTY SCAN ACTIONS ENDS HERE ********************/ 
 
 	$scope.setConfigurations = function(config) {
 		$scope.deviceConfig = config;
 		if (config.useThirdPartyScan) {
-			handleThirdPartyScanActions();
+			createWebSocketConnection();
 		}
 	};
 
@@ -151,7 +139,6 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			}
 			if (response.image) {
 				var base64String = sntIDCollectionUtilsSrv.base64ArrayBuffer(response.image);
-				console.log(base64String);
 
 				$scope.$emit('IMAGE_UPDATED', {
 					isFrontSide: $scope.screenData.imageSide === 0,
@@ -422,7 +409,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 
 	$scope.captureFrontImage = function() {
 		if ($scope.deviceConfig.useThirdPartyScan) {
-			scanFrontSideUsingThirdParty();
+			scanIdUsingThirdParty();
 		}
 		else if (typeof cordova !== "undefined" && $scope.deviceConfig.useAutoDetection) {
 			autoDetectIDAndProcessData();
@@ -435,7 +422,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 
 	$scope.captureBackImage = function() {
 		if ($scope.deviceConfig.useThirdPartyScan) {
-			scanFrontSideUsingThirdParty();
+			scanIdUsingThirdParty();
 		}
 		else if (typeof cordova !== "undefined" && $scope.deviceConfig.useAutoDetection) {
 			autoDetectIDAndProcessData();

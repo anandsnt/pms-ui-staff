@@ -202,8 +202,8 @@
 				}
 
 				for (var key in apiParams) {
-					if(!apiParams[key]) {
-						delete apiParams[key]
+					if (!apiParams[key]) {
+						delete apiParams[key];
 					}
 				}
 				$scope.callAPI(zsCheckinSrv.savePassport, {
@@ -286,7 +286,7 @@
 					$scope.idScanData.selectedGuest.scannedDetails = data;
 					if ($scope.zestStationData.thirdPartyScanEnabled) {
 						$scope.idScanData.selectedGuest.front_image_data = data.front_side_image;
-						$scope.idScanData.selectedGuest.back_image_data = data.back_side_image
+						$scope.idScanData.selectedGuest.back_image_data = data.back_side_image;
 					}
 					
 					refreshIDdetailsScroller();

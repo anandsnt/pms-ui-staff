@@ -93,7 +93,7 @@ sntZestStation.controller('zsCheckinfindReservationFromIdCtrl', [
                 failureCallBack: reservationSearchFailed
             };
 
-            if($scope.idScanData.selectedGuest.scannedDetails.last_name) {
+            if ($scope.idScanData.selectedGuest.scannedDetails.last_name) {
                 $scope.callAPI(zsCheckinSrv.fetchReservations, options);
             } else {
                 reservationSearchFailed();

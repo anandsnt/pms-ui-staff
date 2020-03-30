@@ -516,5 +516,6 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 		return (iteration % 2 === 0) ? IdResponse: passPortresponse  ;
 	};
 
+	this.WebSocketObj;
 
 });
