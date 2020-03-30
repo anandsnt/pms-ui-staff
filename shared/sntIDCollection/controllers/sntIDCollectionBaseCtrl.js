@@ -86,7 +86,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 	var WebSocketActions = function(evt) {
 		var response = JSON.parse(evt.data);
 		// if ResponseCode is not 0, the scan was failure
-		if (response.ResponseCode !== 0) {
+		if (response.ResponseCode && response.ResponseCode.toLowerCase() !== 0) {
 			$timeout(function() {
 				$scope.screenData.scanMode = $scope.screenData.imageSide === 0 ? 
 											 screenModes.upload_front_image_failed :
