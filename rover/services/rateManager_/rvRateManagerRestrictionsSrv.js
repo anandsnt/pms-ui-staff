@@ -139,19 +139,37 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['$q', 'BaseW
 			return restrictionsObj;
 		};
 
+		var weekDaysMapping = {
+			'sun': [0],
+			'mon': [1],
+			'tue': [2],
+			'wed': [3],
+			'thu': [4],
+			'fri': [5],
+			'sat': [6]
+		};
+
+		service.processWeekDays = function( weekdays ) {
+			var weekdaysList = [];
+
+			for ( day in weekdays ) {
+				weekdaysList.push(weekDaysMapping[day][0]);
+			}
+
+			return weekdaysList;
+		};
+
         // Handle POST api, for individual cell click & popup in House Level ( Frozen Panel).
-        service.processParamsforApplyAllRestrictions = function(params) {
-        	console.log(params);
+        service.processParamsforApplyAllRestrictions = function( params ) {
             if (service.hierarchyRestrictions.houseEnabled && params.restriction_level === 'Hotel') {
                 params = {
                 	from_date: params.details[0].from_date,
-                	to_date: params.details[0].to_date,
+                	to_date: !!params.details[1] ? params.details[1].to_date : params.details[0].to_date,
                 	restrictions: service.reverseProcessRestrictions(params.details[0].restrictions),
-                	weekdays: []
+                	weekdays: !!params.details[1] ? service.processWeekDays(params.details[1].weekdays) : []
                 }
             }
 
-            console.log(params);
             return params;
         };
 
