@@ -282,7 +282,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
          * @return {Object} Promise
          */
         this.fetchAllRestrictionsWithStatus = (params) => {
-            var url = '/api/daily_rates/all_restriction_statuses';
+            var url = rvRateManagerRestrictionsSrv.getURLforAllRestrictionsWithStatus( params );
 
             return this.getJSON(url, params);
         };
@@ -316,7 +316,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             promises.push(
                 this.fetchAllRestrictionsWithStatus(paramsForCommonRestrictions)
                     .then((data) => {
-                        response.restrictionsWithStatus = data.results;
+                        response.restrictionsWithStatus = rvRateManagerRestrictionsSrv.processCommonRestrictionsCell(data.results, paramsForCommonRestrictions);
                     })
             );
 
@@ -367,7 +367,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             promises.push(
                 this.fetchAllRestrictionsWithStatus(commonRestrictionsParams)
                     .then(data => {
-                        response.restrictionsWithStatus = data.results;
+                        response.restrictionsWithStatus = rvRateManagerRestrictionsSrv.processCommonRestrictionsCell(data.results, commonRestrictionsParams);
                     })
             );
 
@@ -556,7 +556,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             promises.push(
                 service.fetchAllRestrictionsWithStatus(paramsForCommonRestrictions)
                     .then((data) => {
-                        response.restrictionsWithStatus = data.results;
+                        response.restrictionsWithStatus = rvRateManagerRestrictionsSrv.processCommonRestrictionsCell(data.results, paramsForCommonRestrictions);
                     })
             );
 
