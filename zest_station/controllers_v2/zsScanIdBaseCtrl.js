@@ -67,26 +67,28 @@ sntZestStation.controller('zsScanIdBaseCtrl', [
         });
 
         $scope.$on('FINAL_RESULTS', function(evt, data) {
-            $scope.resetTime();
-            if (data.expirationStatus === 'Expired') {
-                $scope.screenData.scanMode = 'ID_DATA_EXPIRED';
-            } else if (!data.document_number) {
-                $scope.screenData.scanMode = 'ANALYSING_ID_DATA_FAILED';
-            } else if ($scope.idScanData.verificationMethod === 'FR') {
-                $scope.idScanData.selectedGuest.scannedDetails = data;
-                $scope.idScanData.selectedGuest.originalScannedDetails = angular.copy(data);
-                setDataToCheckinSrv(data);
-                if ($scope.idScanData.screenType === 'WALKIN_RESERVATION') {
-                    $scope.$emit('SHOW_ID_RESULTS');
+            $timeout(function() {
+                $scope.resetTime();
+                if (data.expirationStatus === 'Expired') {
+                    $scope.screenData.scanMode = 'ID_DATA_EXPIRED';
+                } else if (!data.document_number) {
+                    $scope.screenData.scanMode = 'ANALYSING_ID_DATA_FAILED';
+                } else if ($scope.idScanData.verificationMethod === 'FR') {
+                    $scope.idScanData.selectedGuest.scannedDetails = data;
+                    $scope.idScanData.selectedGuest.originalScannedDetails = angular.copy(data);
+                    setDataToCheckinSrv(data);
+                    if ($scope.idScanData.screenType === 'WALKIN_RESERVATION') {
+                        $scope.$emit('SHOW_ID_RESULTS');
+                    } else {
+                        facialRecogntionActions();
+                    }
                 } else {
-                    facialRecogntionActions();
+                    $scope.idScanData.selectedGuest.scannedDetails = data;
+                    $scope.idScanData.selectedGuest.originalScannedDetails = angular.copy(data);
+                    setDataToCheckinSrv(data);
+                    proceedWithScanedDetails();
                 }
-            } else {
-                $scope.idScanData.selectedGuest.scannedDetails = data;
-                $scope.idScanData.selectedGuest.originalScannedDetails = angular.copy(data);
-                setDataToCheckinSrv(data);
-                proceedWithScanedDetails();
-            }
+            }, 0);
         });
 
         var resetSscannedData = function() {

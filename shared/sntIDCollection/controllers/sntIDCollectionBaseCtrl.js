@@ -28,7 +28,8 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		idCapturePluginName: '',
 		idCaptureActionName: '',
 		useAilaDevice: false,
-		useThirdPartyScan: false
+		useThirdPartyScan: false,
+		thirdPatrtyConnectionUrl: ''
 	};
 
 	var stopVideoStream = function() {
@@ -49,8 +50,91 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		};
 	};
 
+	/** ******* THIRD PARTY SCAN ACTIONS STARTS HERE ********************/ 
+
+	var WebSocketObj,
+		frontSideResults;
+	var iteration = 0;
+
+	var thirdPatrtyScanFinalActions = function(data) {
+		$timeout(function() {
+			// Process response
+			var response = sntIDCollectionUtilsSrv.formatResultsFromThirdParty(data.doc);
+
+			$scope.screenData.idDetails = response;
+			$scope.$emit('FINAL_RESULTS', response);
+
+			$scope.screenData.scanMode = screenModes.final_id_results;
+			$('#' + 'id-front-side').attr('src', response.front_side_image);
+			if (response.back_side_image) {
+				$('#' + 'id-back-side').attr('src', response.back_side_image);
+			}
+		}, 0);
+	};
+
+	var scanFrontSideUsingThirdParty = function() {
+		$timeout(function() {
+			if (WebSocketObj && WebSocketObj.readyState === 1) {
+				WebSocketObj.send("{\"Command\" : \"cmd_scan_with_3rd_party_scanner\"}");
+			} else {
+				if ($scope.screenData.imageSide === 0) {
+					$scope.screenData.scanMode = screenModes.upload_front_image_failed;
+				} else {
+					$scope.screenData.scanMode = screenModes.upload_back_image_failed;
+				}
+				
+				handleThirdPartyScanActions();
+			}
+		}, 0);
+	};
+
+	var WebSocketActions = function(evt) {
+		var response = JSON.parse(evt.data);
+		// TODO : REMOVE CODE BELOWAFTER TESTING
+		iteration++;
+		response.should_scan_more = (iteration % 2 == 0);
+		// TODO : REMOVE CODE ABOVE AFTER TESTING
+		if (response.should_scan_more && $scope.screenData.imageSide === 0) {
+
+			$scope.screenData.scanMode = 'UPLOAD_BACK_IMAGE';
+			frontSideResults = response.doc;
+			$scope.screenData.imageSide = 1;
+
+		} else {
+			if ($scope.screenData.imageSide === 1) {
+				response.doc = Object.assign({}, frontSideResults, response.doc);
+			}
+			thirdPatrtyScanFinalActions(response);
+		}
+	};
+
+	var handleThirdPartyScanActions = function () {
+		if (WebSocketObj && WebSocketObj.readyState === 1) {
+			WebSocketObj.close();
+		}
+		var WebSocketUrl = $scope.deviceConfig.thirdPatrtyConnectionUrl || "wss://localhost.stayntouch.com:4647/CCSwipeService";
+		
+		WebSocketObj = new WebSocket(WebSocketUrl);
+			//Triggers when websocket connection is established.
+			WebSocketObj.onopen = function() {
+			};
+			// Triggers when there is a message from websocket server.
+			WebSocketObj.onmessage = function(evt) {
+				$timeout(function() {
+					WebSocketActions(evt);
+				}, 0);
+			};
+			// Triggers when the server is down.
+			WebSocketObj.onclose = function() {
+			};
+	};
+	/** ******* THIRD PARTY SCAN ACTIONS ENDS HERE ********************/ 
+
 	$scope.setConfigurations = function(config) {
 		$scope.deviceConfig = config;
+		if (config.useThirdPartyScan) {
+			handleThirdPartyScanActions();
+		}
 	};
 
 	var getImageDetails = function() {
@@ -336,30 +420,8 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		}, pluginName, actionName, [jsonstring]);
 	};
 
-	var thirdPatrtyScanFinalActions = function(response, hasBackSide) {
-		$scope.screenData.idDetails = response.doc;
-		$scope.screenData.scanMode = screenModes.final_id_results;
-		$('#' + 'id-front-side').attr('src', response.doc.front_side_image);
-		if (hasBackSide) {
-			$('#' + 'id-back-side').attr('src', response.doc.back_side_image);
-		}
-	};
-	var iteration = 0;
-
-	var scanFrontSideUsingThirdParty = function (scaningBackside) {
-		var response = sntIDCollectionSrv.scanUsingThirdPartyApi(iteration);
-		
-
-		if (!response.should_scan_more || scaningBackside) {
-			thirdPatrtyScanFinalActions(response, scaningBackside);
-		} else {
-			$scope.screenData.scanMode = 'UPLOAD_BACK_IMAGE';
-		}
-	};
-
 	$scope.captureFrontImage = function() {
 		if ($scope.deviceConfig.useThirdPartyScan) {
-			iteration++;
 			scanFrontSideUsingThirdParty();
 		}
 		else if (typeof cordova !== "undefined" && $scope.deviceConfig.useAutoDetection) {
@@ -373,7 +435,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 
 	$scope.captureBackImage = function() {
 		if ($scope.deviceConfig.useThirdPartyScan) {
-			scanFrontSideUsingThirdParty(true);
+			scanFrontSideUsingThirdParty();
 		}
 		else if (typeof cordova !== "undefined" && $scope.deviceConfig.useAutoDetection) {
 			autoDetectIDAndProcessData();
