@@ -1,5 +1,5 @@
-angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['$q', 'BaseWebSrvV2', 'Toggles',
-    function($q, BaseWebSrvV2, Toggles) {
+angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles',
+    function(Toggles) {
     	
     	var service = this;
 
@@ -132,7 +132,7 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['$q', 'BaseW
 					restrictionsObj[restrictionCodeReverseMapping[item.restriction_type_id][0]] = item.action === 'add';
 				}
 				else if (restrictionCodeReverseMapping[item.restriction_type_id][1] === 'number') {
-					restrictionsObj[restrictionCodeReverseMapping[item.restriction_type_id][0]] = item.days;
+					restrictionsObj[restrictionCodeReverseMapping[item.restriction_type_id][0]] = parseInt(item.days);
 				}
 			});
 
@@ -150,7 +150,8 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['$q', 'BaseW
 		};
 
 		service.processWeekDays = function( weekdays ) {
-			var weekdaysList = [];
+			var weekdaysList = [],
+				day = '';
 
 			for ( day in weekdays ) {
 				weekdaysList.push(weekDaysMapping[day][0]);
