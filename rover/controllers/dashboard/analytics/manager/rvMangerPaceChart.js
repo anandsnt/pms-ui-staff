@@ -20,9 +20,11 @@ angular.module('sntRover')
 
 				$scope.screenData.mainHeading = $filter('translate')("AN_PACE");
 				$scope.dashboardFilter.selectedAnalyticsMenu = 'PACE';
+				$scope.screenData.isZoomedChart = false;
 
 				if (chartData.length > 60) {
 					$scope.drawPaceChartWithZoom(chartData);
+					$scope.screenData.isZoomedChart = true;
 					return;
 				}
 
