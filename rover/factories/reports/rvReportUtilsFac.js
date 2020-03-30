@@ -2959,10 +2959,6 @@ angular.module('reportsModule')
                 };
 
                 reportsSubSrv.fetchCountries().then(function (data) {
-                    _.each(data, function (countryData) {
-                        countryData.id = countryData.value;
-                    });
-
                     var countryCopy = angular.copy(data);
 
                     if (filterValues && filterValues.country_ids) {
