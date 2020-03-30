@@ -1,5 +1,5 @@
-angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2', 'Toggles',
-    function($q, BaseWebSrvV2, Toggles) {
+angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2', 'rvRateManagerRestrictionsSrv',
+    function($q, BaseWebSrvV2, rvRateManagerRestrictionsSrv) {
 
         /**
          * A. MULTIPLE RATES
@@ -29,59 +29,6 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
         var service = this;
 
         this.activeRates = null;
-
-        // Scope object that handles various hierarchy Restrictions feature toggle values.
-        var hierarchyRestrictions = {
-            houseEnabled: Toggles.isEnabled('hierarchical_house_restrictions'),
-            roomTypeEnabled: Toggles.isEnabled('hierarchical_room_type_restrictions'),
-            rateTypeEnabled: Toggles.isEnabled('hierarchical_rate_type_restrictions')
-        };
-
-        // Mapping of restriction type and code.
-        var restrictionCodeMapping = {
-            "closed": [1, 'CLOSED'],
-            "closed_arrival": [2, 'CLOSED_ARRIVAL'],
-            "closed_departure": [3, 'CLOSED_DEPARTURE'],
-            "min_stay_through": [4, 'MIN_STAY_LENGTH'],
-            "min_length_of_stay": [5, 'MAX_STAY_LENGTH'],
-            "max_length_of_stay": [6, 'MIN_STAY_THROUGH'],
-            "min_advanced_booking": [7, 'MIN_ADV_BOOKING'],
-            "max_advanced_booking": [8, 'MAX_ADV_BOOKING']
-        };
-
-        /*
-         *  Method to process new restrcion data structure to convert into old structure.
-         *  @param [Object] [input value as key value pair]
-         *  @return [Array] [output - converted values into array structure]
-         */
-        var processRestrictions = function( input ) {
-            var output = [],
-                key = '',
-                value = '', 
-                obj = {};
-
-            for (key in input) {
-
-                value = input[key],
-                obj = {};
-
-                if (typeof(value) === "boolean" && value) {
-                    obj.status = 'on';
-                    obj.restriction_type_id = restrictionCodeMapping[key][0];
-                    obj.is_on_rate = false;
-                    obj.days = null;
-                    output.push(obj);
-                }
-                else if (typeof(value) === "number") {
-                    obj.restriction_type_id = restrictionCodeMapping[key][0];
-                    obj.days = value;
-                    obj.is_on_rate = false;
-                    output.push(obj);
-                }
-            }
-
-            return output;
-        };
 
         service.fetchMultipleRateInfo = function(params) {
             params = _.omit(params, 'restriction_level');
@@ -172,12 +119,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
         };
 
         service.fetchCommonRestrictions = (params) => {
-            var url = '/api/daily_rates/all_restrictions';
-
-            // CICO-76813 : New API for hierarchyRestrictions
-            if (hierarchyRestrictions.houseEnabled) {
-                url = '/api/restrictions/house';
-            }
+            var url = rvRateManagerRestrictionsSrv.getURLforCommonRestrictions();
 
             return this.getJSON(url, params);
         };
@@ -203,13 +145,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
 
                 promises.push(service.fetchCommonRestrictions(commonRestrictionsParams)
                     .then((data) => {
-                        // CICO-76813 : New API for hierarchyRestrictions
-                        if (hierarchyRestrictions.houseEnabled) {
-                            _.each(data.results, function( item ) {
-                                item.restrictions = processRestrictions(item.restrictions);
-                            });
-                        }
-                        response.commonRestrictions = data.results;
+                        response.commonRestrictions = rvRateManagerRestrictionsSrv.processCommonRestrictions(data.results);
                     })
                 );
             }
@@ -253,13 +189,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
 
                 promises.push(service.fetchCommonRestrictions(paramsForCommonRestrictions)
                     .then((data) => {
-                        // CICO-76813 : New API for hierarchyRestrictions
-                        if (hierarchyRestrictions.houseEnabled) {
-                            _.each(data.results, function( item ) {
-                                item.restrictions = processRestrictions(item.restrictions);
-                            });
-                        }
-                        response.commonRestrictions = data.results;
+                        response.commonRestrictions = rvRateManagerRestrictionsSrv.processCommonRestrictions(data.results);
                     })
                 );
             }
@@ -294,13 +224,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
 
                 promises.push(service.fetchCommonRestrictions(paramsForCommonRestrictions)
                     .then((data) => {
-                        // CICO-76813 : New API for hierarchyRestrictions
-                        if (hierarchyRestrictions.houseEnabled) {
-                            _.each(data.results, function( item ) {
-                                item.restrictions = processRestrictions(item.restrictions);
-                            });
-                        }
-                        response.commonRestrictions = data.results;
+                        response.commonRestrictions = rvRateManagerRestrictionsSrv.processCommonRestrictions(data.results);
                     })
                 );
             }
@@ -674,13 +598,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
 
                 promises.push(service.fetchCommonRestrictions(paramsForCommonRestrictions)
                     .then((data) => {
-                        // CICO-76813 : New API for hierarchyRestrictions
-                        if (hierarchyRestrictions.houseEnabled) {
-                            _.each(data.results, function( item ) {
-                                item.restrictions = processRestrictions(item.restrictions);
-                            });
-                        }
-                        response.commonRestrictions = data.results;
+                        response.commonRestrictions = rvRateManagerRestrictionsSrv.processCommonRestrictions(data.results);
                     })
                 );
             }
