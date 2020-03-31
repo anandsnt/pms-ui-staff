@@ -304,7 +304,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         is_allowance: addon.is_allowance,
                         is_consume_next_day: addon.is_consume_next_day,
                         is_inclusive: addon.is_inclusive,
-                        is_rate_addon: addon.is_rate_addon
+                        is_rate_addon: addon.is_rate_addon,
+                        post_day_of_the_week: addon.post_day_of_the_week
                     });
                        
                     $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
@@ -373,7 +374,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     post_instances: item.post_instances,
                     quantity: item.quantity,
                     is_allowance: item.is_allowance,
-                    is_consume_next_day: item.is_consume_next_day
+                    is_consume_next_day: item.is_consume_next_day,
+                    post_day_of_the_week: item.post_day_of_the_week
                 };
 
                 $scope.packageData.existing_packages.push(addonsData);
@@ -637,7 +639,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             post_instances: item.post_instances,
                             start_date: item.start_date,
                             end_date: item.end_date,
-                            posting_frequency: item.post_type.frequency
+                            posting_frequency: item.post_type.frequency,
+                            post_day_of_the_week: item.post_day_of_the_week
                         };
 
                         $scope.addonsData.existingAddons.push(addonsData);

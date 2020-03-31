@@ -130,8 +130,8 @@ sntRover.controller('RVReservationPackageController',
 					});
 				angular.copy($scope.selectedPurchesedAddon.selected_post_days, $scope.previousPostDays);
 			} else {
-				$scope.errorMessage = ["Custom posting can be configured only for nightly addons"];
-				$scope.selectedPurchesedAddon = "";
+				// $scope.errorMessage = ["Custom posting can be configured only for nightly addons"];
+				$scope.selectedPurchesedAddon = addon;
 			}
 
 		};
