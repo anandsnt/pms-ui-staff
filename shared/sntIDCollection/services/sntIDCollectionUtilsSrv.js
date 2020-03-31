@@ -454,4 +454,6 @@ angular.module('sntIDCollection').service('sntIDCollectionUtilsSrv', function ($
 		
 		return idDetails;
 	};
+
+	this.thirdPartyScannerTimeout = 30;
 });

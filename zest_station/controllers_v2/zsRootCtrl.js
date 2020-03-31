@@ -1756,6 +1756,7 @@ sntZestStation.controller('zsRootCtrl', [
             $('body').css('display', 'none'); // this will hide contents until svg logos are loaded
 			// call Zest station settings API
             $scope.zestStationData = zestStationSettings;
+            sntIDCollectionUtilsSrv.thirdPartyScannerTimeout = zestStationSettings.third_party_scanner_timeout;
             $controller('zsThemeActionsCtrl', {
                 $scope: $scope
             });

@@ -72,7 +72,13 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 	var scanIdUsingThirdParty = function() {
 			if (sntIDCollectionSrv.WebSocketObj && sntIDCollectionSrv.WebSocketObj.readyState === 1) {
 				$scope.$emit('IMAGE_ANALYSIS_STARTED');
-				sntIDCollectionSrv.WebSocketObj.send("{\"Command\" : \"cmd_scan_with_3rd_party_scanner\"}");
+				
+				var json = {
+                    'Command': 'cmd_scan_with_3rd_party_scanner',
+                    'timeout': sntIDCollectionUtilsSrv.thirdPartyScannerTimeout
+                };
+                
+				sntIDCollectionSrv.WebSocketObj.send(JSON.stringify(json));
 			} else {
 				if ($scope.screenData.imageSide === 0) {
 					$scope.screenData.scanMode = screenModes.upload_front_image_failed;
