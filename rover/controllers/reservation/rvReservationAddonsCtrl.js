@@ -689,7 +689,17 @@ sntRover.controller('RVReservationAddonsCtrl', [
                  * CICO-16792 Sending a second parameter to the fetchAddons method to identify the initial call to the method
                  */
                 fetchAddons('', true);
-                $scope.setScroller("enhanceStays");
+                var scrollerOptions = {
+                    click: true,
+                    preventDefault: false,
+                    showScrollbar: true
+                };
+
+                $scope.setScroller("enhanceStays", scrollerOptions);
+                $timeout(function() {
+                    $scope.refreshAddonsScroller();
+                }, 2000);
+
                 var proceedBookingListner = $scope.$on('PROCEED_BOOKING', function(event, data) {
                     if (data.addonPostingMode === 'reservation') {
                         $scope.proceed();
