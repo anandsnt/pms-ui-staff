@@ -72,7 +72,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
      * @return none
      */
     var handleGenerateToggleWidgetVisibility = function (card) {
-        if (!isEmpty(card.company)) {
+        if (!isEmpty(card.company) && !isEmpty(card.travel_agent)) {
             if ( !isEmpty(card.company.name) && !isEmpty(card.travel_agent.name)) {
                 // Both cards are attached.
             }
