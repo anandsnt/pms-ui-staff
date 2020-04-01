@@ -390,6 +390,9 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
             return '';
         };
 
+        $scope.blacklistToggleClicked = function() {
+        };
+
         init();
     }
 ]);

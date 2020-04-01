@@ -432,6 +432,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 				$scope.$emit('hideLoader');
 				$scope.$parent.guestData = data;
 				$scope.guestData = data;
+				$scope.guestCardData.contactInfo.is_blacklisted = data.primary_guest_details.is_blacklisted;
 				
 				// CICO-51935
 				if ($scope.guestCardData && $scope.guestCardData.contactInfo) {

@@ -130,6 +130,21 @@
 				</div>
 				<rv-textbox value="guestCardData.contactInfo.phone" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.phone, 'margin')}}" label="Phone"></rv-textbox>
 				<rv-textbox value="guestCardData.contactInfo.mobile" label="Mobile" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.mobile, '')}}"></rv-textbox>
+				<div class="entry blacklisted">
+					<label for="guest-blacklist">Blacklist</label>
+					<div class="switch-button" ng-class="{'on':guestCardData.contactInfo.is_blacklisted}"> <!-- Add class 'on' when guest is blacklisted / L187 is checked -->
+						<input id="guest-blacklist" type="checkbox" ng-model="guestCardData.contactInfo.is_blacklisted" ng-click="blacklistToggleClicked()" /> <!-- Add attr 'checked' when when guest is blacklisted -->
+						<label class="data-off">
+							<span class="value">Off</span>
+							<span class="switch-icon red">On</span>
+						</label>
+						<label class="data-on">
+							<span class="switch-icon grey">Off</span>
+							<span class="value">On</span>
+						</label>
+					</div>
+					<input id="guest-blacklist-reason" type="text" ng-class="{'hidden':!guestCardData.contactInfo.is_blacklisted}" placeholder="Blacklist reason" ng-model="guestCardData.contactInfo.blacklist_reason"> <!-- Remove class 'hidden' when guest is blacklisted / L187 is checked -->
+				</div>			
 		</div> 	
 	</div> 		
  </form>
