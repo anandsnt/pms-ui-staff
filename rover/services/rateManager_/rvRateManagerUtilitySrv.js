@@ -54,13 +54,14 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
                 obj = {};
 
                 if (typeof(value) === "boolean" && value) {
-                    obj.status = 'on';
+                    obj.status = 'ON';
                     obj.restriction_type_id = service.restrictionKeyToCodeMapping[key][0];
                     obj.is_on_rate = false;
                     obj.days = null;
                     output.push(obj);
                 }
                 else if (typeof(value) === "number") {
+                    obj.status = 'ON';
                     obj.restriction_type_id = service.restrictionKeyToCodeMapping[key][0];
                     obj.days = value;
                     obj.is_on_rate = false;

@@ -545,11 +545,11 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     var isHierarchyRestrictionNeeded = function() {
         return $scope.hierarchyRestrictions.houseEnabled;
     },
-    getRestrictionLevelParam = function() {
+    getRestrictionType = function() {
         var value = null;
 
         if ($scope.hierarchyRestrictions.houseEnabled) {
-            value = "Hotel";
+            value = 'HOUSE';
         }
         return value;
     };
@@ -576,7 +576,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         }
 
         if (isHierarchyRestrictionNeeded()) {
-            params.restriction_level = getRestrictionLevelParam();
+            params.restrictionType = getRestrictionType();
         }
 
         var options = {
@@ -607,7 +607,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         };
 
         if (isHierarchyRestrictionNeeded()) {
-            params.restriction_level = getRestrictionLevelParam();
+            params.restrictionType = getRestrictionType();
         }
 
         var options = {
@@ -646,7 +646,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             params['rate_type_ids[]'] = rateTypeIDs;
         }
         if (isHierarchyRestrictionNeeded()) {
-            params.restriction_level = getRestrictionLevelParam();
+            params.restrictionType = getRestrictionType();
         }
 
         var options = {
@@ -794,7 +794,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         };
 
         if (isHierarchyRestrictionNeeded()) {
-            params.restriction_level = getRestrictionLevelParam();
+            params.restrictionType = getRestrictionType();
         }
 
         var options = {
@@ -1526,7 +1526,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             params['per_page'] = paginationRatePerPage;
 
             if (isHierarchyRestrictionNeeded()) {
-                params.restriction_level = getRestrictionLevelParam();
+                params.restrictionType = getRestrictionType();
             }
 
             var options = {
@@ -1591,7 +1591,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             };
 
             if (isHierarchyRestrictionNeeded()) {
-                params.restriction_level = getRestrictionLevelParam();
+                params.restrictionType = getRestrictionType();
             }
             var options = {
                 params,
@@ -1773,7 +1773,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             };
 
             if (isHierarchyRestrictionNeeded()) {
-                params.restriction_level = getRestrictionLevelParam();
+                params.restrictionType = getRestrictionType();
             }
             var options = {
                 params,
@@ -1951,7 +1951,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             };
 
             if (isHierarchyRestrictionNeeded()) {
-                params.restriction_level = getRestrictionLevelParam();
+                params.restrictionType = getRestrictionType();
             }
             var options = {
                 params,
@@ -2077,7 +2077,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             };
 
             if (isHierarchyRestrictionNeeded()) {
-                params.restriction_level = getRestrictionLevelParam();
+                params.restrictionType = getRestrictionType();
             }
             var options = {
                 params: params,
@@ -2298,7 +2298,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             };
 
             if (isHierarchyRestrictionNeeded()) {
-                params.restriction_level = getRestrictionLevelParam();
+                params.restrictionType = getRestrictionType();
             }
 
             var options = {
