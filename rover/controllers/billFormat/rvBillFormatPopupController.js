@@ -72,6 +72,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
      * @return none
      */
     var handleGenerateToggleWidgetVisibility = function (card) {
+        if (!isEmpty(card.company)) {
             if ( !isEmpty(card.company.name) && !isEmpty(card.travel_agent.name)) {
                 // Both cards are attached.
             }
@@ -88,8 +89,8 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
                 $scope.isCompanyCardInvoice = false;
                 // Only TA card is attached.
                 $scope.disableCompanyCardInvoice = true;
+                }
             }
-
         },
         isEmpty = function( str ) {
             return (!str || 0 === str.length);
