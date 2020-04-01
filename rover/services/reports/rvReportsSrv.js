@@ -184,6 +184,10 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'LAST_OCTOBER',
                 'LAST_NOVEMBER',
                 'LAST_DECEMBER'
+            ],
+            'Guest Details by Arrival Date': [
+                'YESTERDAY',
+                'DATE'                
             ]
         };
 

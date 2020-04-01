@@ -62,7 +62,7 @@
             </div>
 
             <div class="entry" ng-show="shouldShowExportCalenderFromDate()">
-                <label for="schedule-start" ng-if="selectedEntityDetails.report.title === 'Journal Export'">
+                <label for="schedule-start" ng-if="selectedEntityDetails.report.title === 'Journal Export' || selectedEntityDetails.report.title === 'Guest Details by Arrival Date'">
                    Date
                 </label>
                 <label for="schedule-start" ng-if="selectedEntityDetails.report.title === 'Invoice / Folio Export' || selectedEntityDetails.report.title === 'GOBD Export'">
