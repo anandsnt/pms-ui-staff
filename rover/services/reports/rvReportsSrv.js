@@ -228,6 +228,10 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'NEXT_THIRTY_DAYS',
                 'NEXT_MONTH',
                 'DATE_RANGE'
+            ],
+            'Guest Details by Arrival Date': [
+                'YESTERDAY',
+                'DATE'
             ]
         };
 

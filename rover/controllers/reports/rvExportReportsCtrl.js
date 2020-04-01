@@ -451,7 +451,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             ROOM_NO: 'ROOM_NO',
             CONFIRMATION_NUMBER: 'CONFIRMATION_NUMBER',
             CHECKOUT_DATE: 'CHECKOUT_DATE',
-            TRAVEL_AGENT: 'TRAVEL_AGENT'
+            TRAVEL_AGENT: 'TRAVEL_AGENT',
+            LAST_NAME: 'LAST_NAME'
         };
 
         var reportIconCls = {
@@ -596,7 +597,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Nationality Export - France': true,
                 'Criterion Hospitality CC Export': true,
                 'Cancellations by Arrival Date': true,
-                'Cancellations by Cancel Date': true
+                'Cancellations by Cancel Date': true,
+                'Guest Details by Arrival Date':true
             };
 
             var forRunOnceOnly = {
@@ -1380,7 +1382,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 if (dateFieldObject.id === $scope.scheduleParams.time_period_id) {
                     return true;
                 }
-            } else if ($scope.selectedEntityDetails.report.title === 'Journal Export') {
+            } else if ($scope.selectedEntityDetails.report.title === 'Journal Export' || $scope.selectedEntityDetails.report.title === 'Guest Details by Arrival Date') {
                 var dateFieldObject = _.find($scope.originalScheduleTimePeriods,
                     function(item) {
                         return item.value === 'DATE'; }
