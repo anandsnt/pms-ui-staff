@@ -25,7 +25,6 @@ module.exports = function(gulp, $, options) {
 
             var compilationTasks = [
                     'rover-asset-prod-precompile',  
-                    'admin-asset-prod-precompile',
                     'zest-asset-prod-precompile',
                     'login-asset-prod-precompile',
                     'station-login-asset-prod-precompile',
@@ -35,7 +34,6 @@ module.exports = function(gulp, $, options) {
 
         tasksAfterCompilation = [
                     'rover-inject-assets-to-templates',
-                    'admin-inject-assets-to-templates',
                     'login-inject-assets-to-templates', 
                     'station-login-inject-assets-to-templates', 
                     'zest-inject-assets-to-templates',
@@ -45,7 +43,6 @@ module.exports = function(gulp, $, options) {
         copyBaseHtmlToPublicAssets = [
                     'copy-login-base-html',
                     'copy-station-login-base-html',
-                    'copy-admin-base-html',
                     'copy-zest-base-html',
                     'copy-rover-base-html',
                     'compress-images-loselessly'
@@ -55,7 +52,6 @@ module.exports = function(gulp, $, options) {
                     'build-rover-dev', 
                     'build-login-dev', 
                     'build-station-login-dev', 
-                    'build-admin-dev', 
                     'build-zest-dev', 
                     'build-payment-dev',
                     'copy-cordova-assets'
@@ -64,8 +60,7 @@ module.exports = function(gulp, $, options) {
         watchTasks = [
                     'watch-rover-files', 
                     'watch-login-files',
-                    'watch-station-login-files', 
-                    'watch-admin-files', 
+                    'watch-station-login-files',  
                     'watch-zest-files', 
                     'watch-payment-files',
                     'watch-workers'

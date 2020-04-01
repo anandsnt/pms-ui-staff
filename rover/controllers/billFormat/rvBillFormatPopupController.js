@@ -72,14 +72,14 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
      * @return none
      */
     var handleGenerateToggleWidgetVisibility = function (card) {
-            if ( !isEmpty(card.company.name) && !isEmpty(card.travel_agent.name)) {
+            if ( !isEmpty(card.company) && !isEmpty(card.travel_agent)) {
                 // Both cards are attached.
             }
-            else if (isEmpty(card.company.name) && isEmpty(card.travel_agent.name)) {
+            else if (isEmpty(card.company) && isEmpty(card.travel_agent)) {
                 // Both cards are not attached.
                 $scope.hideCompanyCardInvoiceToggle = true;
             }
-            else if (!isEmpty(card.company.name) && isEmpty(card.travel_agent.name)) {
+            else if (!isEmpty(card.company) && isEmpty(card.travel_agent)) {
                 // Only Company card is attached.
                 $scope.isCompanyCardInvoice = true;
                 $scope.disableCompanyCardInvoice = true;
