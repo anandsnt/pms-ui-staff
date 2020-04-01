@@ -1,18 +1,19 @@
 admin.controller('ADServiceProviderUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$stateParams', 'ADServiceProviderSrv', 'ngTableParams', '$filter', function($scope, $rootScope, $q, $state, $stateParams, ADServiceProviderSrv, ngTableParams, $filter) {
-    BaseCtrl.call(this, $scope);
+
     ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
     var init = function() {
-        $scope.errorMessage = ' ';
+        $scope.errorMessage = '';
         $scope.serviceProviderId = $stateParams.id;
         $scope.serviceProviderName = $stateParams.name;
         $scope.includeInactiveUsers = false;
         loadTable();
     };
+
     /**
     * To fetch the list of users
     */
-    var fetchTableData = function($defer, params) {
+    $scope.fetchTableData = function($defer, params) {
         var getParams = $scope.calculateGetParams(params);
 
         getParams.service_provider_id = $scope.serviceProviderId;
@@ -24,40 +25,45 @@ admin.controller('ADServiceProviderUserListCtrl', ['$scope', '$rootScope', '$q',
                 $scope.errorMessage = data.errors;
             }
             $scope.currentClickedElement = -1;
-            $scope.displyCount = 5;
+            $scope.displyCount = 50;
             $scope.totalCount = data.total_count;
             $scope.totalPage = Math.ceil(data.total_count / $scope.displyCount);
             $scope.data = data.users;
             $scope.currentPage = params.page();
             params.total(data.total_count);
             $defer.resolve($scope.data);
-            $scope.$emit('hideLoader');
         };
 
-        $scope.invokeApi(ADServiceProviderSrv.fetch, getParams, successCallbackFetch);
+        $scope.callAPI(ADServiceProviderSrv.fetch, {
+            params: getParams,
+            onSuccess: successCallbackFetch
+        });
     };
-	/**
+
+    /**
     * To table data structuring
     */
-    var loadTable = function() {
-        $scope.tableParams = new ngTableParams({
-            page: 1,  // show first page
-            count: $scope.displyCount, // count per page
-            sorting: {
-                name: 'asc' // initial sorting
+    var loadTable = function () {
+        $scope.tableParams = new ngTableParams(
+            {
+                page: 1,  // show first page
+                count: $scope.displyCount, // count per page
+                sorting: {
+                    name: 'asc' // initial sorting
+                }
+            }, {
+                total: 0, // length of data
+                getData: $scope.fetchTableData
             }
-        }, {
-            total: 0, // length of data
-            getData: fetchTableData
-        }
-		);
+        );
     };
 	
    /**
     * To Activate/Inactivate user
-    * @param {string} user id
-    * @param {string} current status of the user
-    * @param {num} current index
+    * @param {string} userId user id
+    * @param {string} currentStatus current status of the user
+    * @param {num} index current index
+    * @returns {undefined}
     */
     $scope.activateInactivate = function(userId, currentStatus, index) {
         var nextStatus = currentStatus === 'true' ? 'inactivate' : 'activate';
@@ -65,12 +71,14 @@ admin.controller('ADServiceProviderUserListCtrl', ['$scope', '$rootScope', '$q',
             'activity': nextStatus,
             'id': userId
         };
-        var successCallbackActivateInactivate = function(data) {
+        var successCallbackActivateInactivate = function() {
             $scope.data[index].is_active = currentStatus === 'true' ? 'false' : 'true';
-            $scope.$emit('hideLoader');
         };
 
-        $scope.invokeApi(ADServiceProviderSrv.activateInactivate, data, successCallbackActivateInactivate);
+        $scope.callAPI(ADServiceProviderSrv.activateInactivate, {
+            params: data,
+            onSuccess: successCallbackActivateInactivate
+        });
     };
 
     $scope.reloadTable = function() {
@@ -79,14 +87,19 @@ admin.controller('ADServiceProviderUserListCtrl', ['$scope', '$rootScope', '$q',
     };
     /**
      * Handle checkbox click event
-     * @param none
+     * @returns {undefined}
      */
     $scope.clickedShowInactiveUsers = function() {
         $scope.reloadTable();
     };
+
 	/**
     *Initiating
-    */	
-    init();
+    */
+
+    (function () {
+        init();
+    })();
+
 	
 }]);

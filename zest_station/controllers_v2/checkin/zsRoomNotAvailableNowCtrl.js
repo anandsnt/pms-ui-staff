@@ -98,7 +98,8 @@ sntZestStation.controller('zsRoomNotAvailableNowCtrl', [
 				params: {
 					guest_id: $stateParams.guest_id,
 					email: $scope.screenData.email,
-					application: 'KIOSK'
+					application: 'KIOSK',
+					'is_kiosk': true
 				},
 				successCallBack: precheckinReseravation
 			};

@@ -97,6 +97,7 @@ angular.module('sntRover')
                         showUnassignedReservations: false,
                         selectedRoomTypes: [],
                         selectedFloors: [],
+                        selectedRoomFeatures: [],
                         isFromStayCard: false,
                         hideUnassignRoomButton: true,
                         filterList: {},
@@ -158,6 +159,30 @@ angular.module('sntRover')
                     $scope.diaryData.paginationData.totalCount = data.roomList.total_count;
                     $scope.diaryData.paginationData.page = data.roomList.page_number;
                 };
+                    
+                var showErrorMessagePopup = function( errorMessage ) {
+                    ngDialog.open({
+                        template: '/assets/partials/nightlyDiary/rvNightlyDiaryErrorMessage.html',
+                        scope: $scope,
+                        className: '',
+                        closeByDocument: false,
+                        closeByEscape: false,
+                        data: {
+                            errorMessage: errorMessage
+                        }
+                    });
+                },
+                showWarningMessagePopup = function ( warningMessage ) {
+                    ngDialog.open({
+                        template: '/assets/partials/nightlyDiary/rvNightlyDiaryNoAvailableRooms.html',
+                        className: '',
+                        scope: $scope,
+                        data: {
+                            warningMessage: warningMessage,
+                            isRefresh: false
+                        }
+                    });
+                };
 
                 // Method to update room list data.
                 var fetchRoomListDataAndReservationListData = function (roomId, offset, reservationId) {
@@ -166,6 +191,11 @@ angular.module('sntRover')
                         $scope.diaryData.reservationsList = data.reservationList;
                         handlePaginationData(data);
                         $scope.diaryData.datesGridData = data.dateList.dates;
+                        if (data.roomList.rooms.length === 0 ) {
+                            $timeout(function () {
+                                showWarningMessagePopup('No available rooms found for selected criteria');
+                            }, 500);
+                        }
                         $scope.$broadcast('FETCH_COMPLETED_DATE_LIST_DATA');
                         if ($scope.diaryData.isBookRoomViewActive) {
                             callbackForBookedOrAvailableListner();
@@ -173,6 +203,7 @@ angular.module('sntRover')
                         else {
                             updateDiaryView();
                         }
+                        
                         if (roomId) {
                             $scope.$broadcast('CLOSE_SEARCH_RESULT');
                         }
@@ -198,7 +229,8 @@ angular.module('sntRover')
                         'start_date': $scope.diaryData.fromDate,
                         'no_of_days': $scope.diaryData.numberOfDays,
                         'selected_room_type_ids': $scope.diaryData.selectedRoomTypes,
-                        'selected_floor_ids': $scope.diaryData.selectedFloors
+                        'selected_floor_ids': $scope.diaryData.selectedFloors,
+                        'selected_room_feature_ids': $scope.diaryData.selectedRoomFeatures
                     };
 
                     if ($scope.diaryData.isAssignRoomViewActive || $scope.diaryData.isMoveRoomViewActive) {
@@ -928,30 +960,6 @@ angular.module('sntRover')
                     ngDialog.close();
                 };
 
-                var showErrorMessagePopup = function( errorMessage ) {
-                    ngDialog.open({
-                        template: '/assets/partials/nightlyDiary/rvNightlyDiaryErrorMessage.html',
-                        scope: $scope,
-                        className: '',
-                        closeByDocument: false,
-                        closeByEscape: false,
-                        data: {
-                            errorMessage: errorMessage
-                        }
-                    });
-                },
-                showWarningMessagePopup = function ( warningMessage ) {
-                    ngDialog.open({
-                        template: '/assets/partials/nightlyDiary/rvNightlyDiaryNoAvailableRooms.html',
-                        className: '',
-                        scope: $scope,
-                        data: {
-                            warningMessage: warningMessage,
-                            isRefresh: false
-                        }
-                    });
-                };
-
                 /*  
                  *  Handle error messages
                  */
@@ -1017,7 +1025,8 @@ angular.module('sntRover')
                                 page: $scope.diaryData.paginationData.page,
                                 per_page: $scope.diaryData.paginationData.perPage,
                                 selected_room_type_ids: $scope.diaryData.selectedRoomTypes,
-                                selected_floor_ids: $scope.diaryData.selectedFloors
+                                selected_floor_ids: $scope.diaryData.selectedFloors,
+                                selected_room_feature_ids: $scope.diaryData.selectedRoomFeatures
                             },
                             successCallBack: successCallBackFunction
                         };
