@@ -90,7 +90,7 @@
 							</span>
 						</td>
 						<td data-title="'Status'" sortable="'status'" ng-class = "{'green': rate.status}" header-class="width-15" ng-hide="currentClickedElement == $index">
-							<div class="entry" ng-class="{'overlay' : rate.is_global_contract}" ng-click="toggleActive(rate.id,rate.status,rate.is_activation_allowed)">
+							<div class="entry" ng-click="toggleActive(rate.id,rate.status,rate.is_activation_allowed)">
 								<div class="switch-button single" ng-class="{'on': rate.status}">
 									<input type="checkbox"  ng-checked="rate.status">
 									<span class="switch-icon"></span>

@@ -130,6 +130,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
             $scope.fromDateOptions.maxDate = '';
 
             $scope.changeDatesActions.clickedOnMoveButton ();
+            $scope.isShoulderDateDisabled = true;
 
         };
 
@@ -406,6 +407,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
          * @return undefined
          */
         $scope.$on('UPDATED_GROUP_INFO', function(event) {
+            populateShoulderDates();
             // data has changed
             summaryMemento = angular.copy($scope.groupConfigData.summary);
             $scope.isUpdateInProgress = false;
@@ -615,13 +617,15 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                 noOfInhouseIsNotZero = (sData.total_checked_in_reservations > 0),
                 cancelledGroup = sData.is_cancelled,
                 is_A_PastGroup = sData.is_a_past_group,
-                inEditMode = !$scope.isInAddMode();
+                inEditMode = !$scope.isInAddMode(),
+                hasCheckedoutReservations = sData.total_checked_out_reservations_count > 0;
 
             return ($scope.isInStaycardScreen()) || ( inEditMode &&
                     (
                       noOfInhouseIsNotZero  ||
                       cancelledGroup        ||
-                      is_A_PastGroup
+                      is_A_PastGroup ||
+                      hasCheckedoutReservations
                     )
                    );
         };
@@ -1299,7 +1303,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
 				cancelLabel: "Cancel",
                 saveLabel: "Save",
                 number_of_adults: 1,
-				number_of_children: 1,
+				number_of_children: 0,
 				duration_of_stay: 1
             };
             $scope.packageData = {
@@ -1833,6 +1837,39 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
         });
 
         /**
+         * Invoked to populate shoulder_from and shoulder_to keys which are used to contain value of shoulder date dropdown
+         * Invoked on init
+         * CICO-74643 
+         */
+        var populateShoulderDates = function () {
+            $scope.groupConfigData.summary.shoulder_from = '0';
+            $scope.groupConfigData.summary.shoulder_to = '0';
+
+            var groupStartDate = new tzIndependentDate($scope.groupConfigData.summary.block_from),
+                groupEndDate = new tzIndependentDate($scope.groupConfigData.summary.block_to),
+                shoulderStartDate,
+                shoulderEndDate;
+
+            if ($scope.groupConfigData.summary.shoulder_from_date) {
+                shoulderStartDate = new tzIndependentDate($scope.groupConfigData.summary.shoulder_from_date);
+            } else {
+                shoulderStartDate = groupStartDate;
+                $scope.groupConfigData.summary.shoulder_from_date = shoulderStartDate;
+            }
+
+            $scope.groupConfigData.summary.shoulder_from = getDateDifferenceInDays (shoulderStartDate, groupStartDate) + '';
+
+            if ($scope.groupConfigData.summary.shoulder_to_date) {
+                shoulderEndDate = new tzIndependentDate($scope.groupConfigData.summary.shoulder_to_date);
+            } else {
+                shoulderEndDate = groupEndDate;
+                $scope.groupConfigData.summary.shoulder_to_date = shoulderEndDate;
+            }
+
+            $scope.groupConfigData.summary.shoulder_to = getDateDifferenceInDays(groupEndDate, shoulderEndDate) + '';
+        };
+
+        /**
          * Function used to initialize summary view
          * @return undefined
          */
@@ -1846,6 +1883,15 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                 tap: true,
                 preventDefault: false
             });
+
+            // set up shoulder dates CICO-74643
+            $scope.isShoulderDateDisabled = false;
+            $scope.groupConfigData.summary.shoulder_from = '0';
+            $scope.groupConfigData.summary.shoulder_to = '0';
+
+            if (!$scope.isInAddMode()) {
+                populateShoulderDates();
+            }
 
             // we have a list of scope varibales which we wanted to initialize
             initializeVariables();
@@ -1897,6 +1943,16 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
             setDatePickerOptions();
 
             $scope.computeSegment();
+
         }());
+        
+        $scope.onShoulderDateChange = function(fromOrToFlag) {
+            if (fromOrToFlag === "from") {
+                $scope.groupConfigData.summary.shoulder_from_date = $scope.setShoulderDatesInAPIFormat($scope.groupConfigData.summary.block_from, (-1) * $scope.groupConfigData.summary.shoulder_from);
+            }
+            if (fromOrToFlag === "to") {
+                $scope.groupConfigData.summary.shoulder_to_date = $scope.setShoulderDatesInAPIFormat($scope.groupConfigData.summary.block_to, $scope.groupConfigData.summary.shoulder_to);
+            }
+        };
     }
 ]);

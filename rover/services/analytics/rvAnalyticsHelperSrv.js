@@ -676,7 +676,7 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 			lastYearClosestDay = lastyearDay <= 3 ? lastYearDate.subtract(lastyearDay, 'days') : lastYearDate.add(lastyearDay === 6 ? 1 : lastyearDay === 5 ? 2 : 3, 'days');
 		} else if (thisYearDay > lastyearDay) {
 			lastYearClosestDay = lastYearDate.add(thisYearDay - lastyearDay, 'days');
-		} else if (thisYearDay < lastYearClosestDay) {
+		} else if (thisYearDay < lastyearDay) {
 			lastYearClosestDay = lastYearDate.subtract(lastyearDay - thisYearDay, 'days');
 		}
 		// day = lastYearClosestDay.day();

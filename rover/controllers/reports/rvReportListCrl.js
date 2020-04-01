@@ -174,7 +174,7 @@ sntRover.controller('RVReportListCrl', [
                 e.preventDefault();
                 e.stopPropagation();
             }
-
+        
             var callback = function() {
                 // deselect all reports
                 _.map($scope.$parent.reportList,

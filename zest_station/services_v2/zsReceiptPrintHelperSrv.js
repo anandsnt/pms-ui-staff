@@ -114,33 +114,69 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
             addLinetoReceiptArray(receiptPrinterParams.receipt, "3");
             fullString = fullString + "\n\n";
 
+            fullString = fullString + $filter('translate')('BILLING_ADDRESS') + ": ";
+            fullString = fullString + "\n";
             //  --------------------------------- GUEST ADDRESS --------------------------- //
-            var streetName;
-            
-            if (printData.guest_details.street && printData.guest_details.street2) {
-                streetName = printData.guest_details.street + " " + printData.guest_details.street2;
-            } else if (printData.guest_details.street && !printData.guest_details.street2) {
-                streetName = printData.guest_details.street;
-            } else if (!printData.guest_details.street && printData.guest_details.street2) {
-                streetName = printData.guest_details.street2;
-            } else {
-                streetName = null;
+            if (printData.addressType === 'guest') {
+                var streetName;
+
+                if (printData.guest_details.street && printData.guest_details.street2) {
+                    streetName = printData.guest_details.street + " " + printData.guest_details.street2;
+                } else if (printData.guest_details.street && !printData.guest_details.street2) {
+                    streetName = printData.guest_details.street;
+                } else if (!printData.guest_details.street && printData.guest_details.street2) {
+                    streetName = printData.guest_details.street2;
+                } else {
+                    streetName = null;
+                }
+
+                var postalCode = printData.guest_details.postal_code ? $filter('translate')('POSTAL_OR_ZIP_CODE') + ' ' + printData.guest_details.postal_code : null;
+
+                var guestAddress = returnValidString(printData.guest_details.first_name) + " " + returnValidString(printData.guest_details.last_name) + "\n" +
+                    returnValidString(streetName, true) +
+                    returnValidString(printData.guest_details.city, true) +
+                    returnValidString(printData.guest_details.state, true) +
+                    returnValidString(postalCode, true) +
+                    returnValidString(printData.guest_details.country_name);
+
+                addTextToReceiptArray(receiptPrinterParams.receipt, guestAddress);
+
+                fullString = fullString + guestAddress;
+                addLinetoReceiptArray(receiptPrinterParams.receipt, "2");
+                fullString = fullString + "\n\n";
             }
 
-            var postalCode = printData.guest_details.postal_code ? $filter('translate')('POSTAL_OR_ZIP_CODE') + ' ' + printData.guest_details.postal_code : null;
+            //  --------------------------------- COMPANY CARD --------------------------- //
 
-            var guestAddress = returnValidString(printData.guest_details.first_name) + " " + returnValidString(printData.guest_details.last_name) + "\n" +
-                returnValidString(streetName, true) +
-                returnValidString(printData.guest_details.city, true) +
-                returnValidString(printData.guest_details.state, true) +
-                returnValidString(postalCode, true) +
-                returnValidString(printData.guest_details.country_name);
+            if (printData.addressType === 'company' && printData.company_card_details && printData.company_card_details.name) {
+                if (printData.company_card_details.address) {
+                    printData.company_card_details.address = printData.company_card_details.address.split("<br>").join("\n");
+                    printData.company_card_details.address = printData.company_card_details.address.split("<br/>").join("\n");
+                }
+                var companyCardDetails = printData.company_card_details.name + "\n" +
+                    printData.company_card_details.address;
 
-            addTextToReceiptArray(receiptPrinterParams.receipt, guestAddress);
+                addTextToReceiptArray(receiptPrinterParams.receipt, companyCardDetails);
+                fullString = fullString + companyCardDetails;
+                addLinetoReceiptArray(receiptPrinterParams.receipt, "2");
+                fullString = fullString + "\n\n";
+            }
 
-            fullString = fullString + guestAddress;
-            addLinetoReceiptArray(receiptPrinterParams.receipt, "2");
-            fullString = fullString + "\n\n";
+            //  --------------------------------- TA CARD --------------------------- //
+
+            if (printData.addressType === 'ta' && printData.ta_card_details && printData.ta_card_details.name) {
+                if (printData.ta_card_details.address) {
+                    printData.ta_card_details.address = printData.ta_card_details.address.split("<br>").join("\n");
+                    printData.ta_card_details.address = printData.ta_card_details.address.split("<br/>").join("\n");
+                }
+                var taCardDetails = printData.ta_card_details.name + "\n" +
+                    printData.ta_card_details.address;
+
+                addTextToReceiptArray(receiptPrinterParams.receipt, taCardDetails);
+                fullString = fullString + taCardDetails;
+                addLinetoReceiptArray(receiptPrinterParams.receipt, "2");
+                fullString = fullString + "\n\n";
+            }
 
             //  --------------------------------- ROOM INFO --------------------------- //
 

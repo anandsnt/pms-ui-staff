@@ -21,6 +21,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
          * */
 
         BaseCtrl.call(this, $scope);
+        var email = !_.isNull($stateParams.email) ? $stateParams.email : '';
 
         /**
          * [clickedOnCloseButton description]
@@ -103,57 +104,101 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             $scope.callAPI(zsCheckoutSrv.fetchBillDetails, options);
         };
 
+        var printoptedAfterEmail,
+            printYetToDoneAfterEMail,
+            emailToBeSendAlongWithPrint;
 
-        var sendEmail = function (printopted, printYetToDone) {
+        var nextActionsFromEmail = function(emailToBeSendAlongWithPrint) {
+            $scope.$broadcast('EMAIL_TO_BE_SEND_WITH_PRINT', {
+                'sendEmail': emailToBeSendAlongWithPrint
+            });
+            if (printYetToDoneAfterEMail) {
+                $scope.printOpted = true;
+            } else {
+                $state.go('zest_station.reservationCheckedOut', {
+                    'printopted': printoptedAfterEmail
+                });
+            }
+        };
 
-            var emailSendingSuccess = function () {
-                if (printYetToDone) {
+        $scope.emailInvoice = function(addressType) {
+            var emailSendingSuccess = function() {
+                if (printYetToDoneAfterEMail) {
                     $scope.stateParamsForNextState.email_sent = 'true';
+                    $scope.emailBillingOptions = false;
                     $scope.printOpted = true; // print mode
                 } else {
                     $state.go('zest_station.reservationCheckedOut', {
-                        'printopted': printopted,
+                        'printopted': printYetToDoneAfterEMail ? "true" : "false",
                         'email_sent': 'true'
                     });
                 }
             };
-            var emailSendingFailed = function () {
-                if (printYetToDone) {
+            var emailSendingFailed = function() {
+                if (printYetToDoneAfterEMail) {
                     $scope.stateParamsForNextState.email_failed = 'true';
                     $scope.printOpted = true; // print mode
                 } else {
                     $state.go('zest_station.reservationCheckedOut', {
-                        'printopted': printopted,
+                        'printopted': printoptedAfterEmail,
                         'email_failed': 'true'
                     });
                 }
             };
             var params = {
                 reservation_id: $stateParams.reservation_id,
-                bill_number: '1'
+                bill_number: '1',
+                bill_address_type: addressType
             };
             var options = {
                 params: params,
                 successCallBack: emailSendingSuccess,
                 failureCallBack: emailSendingFailed
             };
-            // check if email is valid
-            // if invalid dont send mail
 
-            if (zsUtilitySrv.isValidEmail($stateParams.email)) {
-                $scope.callAPI(zsCheckoutSrv.sendBill, options);
-            } else {
-                if (printYetToDone) {
-                    $scope.printOpted = true;
-                } else {
-                    $state.go('zest_station.reservationCheckedOut', {
-                        'printopted': printopted
-                    });
-                }
-            }
-
+            $scope.callAPI(zsCheckoutSrv.sendBill, options);
         };
 
+        var fetcCompanyTADetails = function() {
+            var successCallBack = function(response) {
+                $scope.emailData = {};
+                $scope.emailData.guest_info = response.guest;
+                $scope.emailData.company_card_details = response.company_card;
+                if (response &&
+                    (response.company_card && response.company_card.name)) {
+                    $scope.emailBillingOptions = true;
+                } else {
+                    $scope.emailInvoice('guest');
+                }
+            };
+
+            var data = {
+                'reservation_id': $scope.reservation_id
+            };
+            var options = {
+                params: data,
+                successCallBack: successCallBack
+            };
+
+            $scope.callAPI(zsCheckoutSrv.fetchCompanyTADetails, options);
+        };
+
+
+        var sendEmail = function(printopted, printYetToDone, emailToBeSendAlongWithPrint) {
+
+            printoptedAfterEmail = printopted;
+            printYetToDoneAfterEMail = printYetToDone;
+            emailToBeSendAlongWithPrint = emailToBeSendAlongWithPrint;
+
+            if (emailToBeSendAlongWithPrint && zsUtilitySrv.isValidEmail($stateParams.email || "")) {
+                $scope.emailBillingOptions = false;
+                nextActionsFromEmail(emailToBeSendAlongWithPrint);
+            } else if (zsUtilitySrv.isValidEmail($stateParams.email || "")) {
+                fetcCompanyTADetails();
+            } else {
+                nextActionsFromEmail();
+            }
+        };
         var setPlaceholderData = function (data) {
             // for demo | quick-jumping
             $scope.first_name = data.first_name;
@@ -209,7 +254,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                     if (!guest_bill.email) {
                         // send mail and then print
                         printYetToDone = true;
-                        sendEmail(printopted, printYetToDone);
+                        sendEmail(printopted, printYetToDone, true);
                     } else {
                         // print first and then email
                         $scope.printOpted = true;
@@ -471,14 +516,13 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 $scope.last_name = $stateParams.last_name;
                 $scope.days_of_stay = $stateParams.days_of_stay;
                 $scope.hours_of_stay = $stateParams.hours_of_stay;
-                $stateParams.email = !_.isNull($stateParams.email) ? $stateParams.email : '';
                 $scope.restrict_post = $stateParams.restrict_post;
 
                 // storing state varibales to be used in print view also
                 $scope.stateParamsForNextState = {
                     'from': $stateParams.from,
                     'reservation_id': $stateParams.reservation_id,
-                    'email': $stateParams.email,
+                    'email': email,
                     'guest_detail_id': $stateParams.guest_detail_id,
                     'has_cc': $stateParams.has_cc,
                     'first_name': $stateParams.first_name,

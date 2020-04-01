@@ -66,7 +66,6 @@ angular.module('sntRover').service('RVReservationStateService', [
 				id: rateIdentifier,
 				name: rateName,
 				description: rateDescription,
-				is_rate_shown_on_guest_bill: false,
 				is_suppress_rate_on: false,
 				is_discount_allowed_on: true,
 				rate_type: {
@@ -166,7 +165,7 @@ angular.module('sntRover').service('RVReservationStateService', [
 				return getTotalPostedAddons(postType, numAdults);
 			} else if (amountType === 'CHILD') {
 				return getTotalPostedAddons(postType, numChildren);
-			} else if (amountType === 'FLAT') {
+			} else if (amountType === 'FLAT' || amountType === 'ROOM') {
 				return getTotalPostedAddons(postType, 1);
 			}
 		};

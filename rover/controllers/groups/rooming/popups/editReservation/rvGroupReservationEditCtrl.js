@@ -571,10 +571,12 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
 
     // CICO-49191 Get the min date that can be chosen for a group reservation
     var getReservationMinDate = function (groupInfo) {
-      var minDate = groupInfo.block_from > $rootScope.businessDate ? 
-                    groupInfo.block_from : $rootScope.businessDate;
+        var shoulderStartDate = tzIndependentDate(groupInfo.shoulder_from_date),
+            businessDate = tzIndependentDate($rootScope.businessDate),
+            minDate = shoulderStartDate > businessDate ?
+                shoulderStartDate : businessDate;
 
-      return new tzIndependentDate(minDate);
+        return minDate;
     };
 
     /**
@@ -590,7 +592,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
             dateFormat: $rootScope.jqDateFormat,
             numberOfMonths: 1,
             minDate: getReservationMinDate(refData),
-            maxDate: new tzIndependentDate(refData.block_to),
+            maxDate: new tzIndependentDate(refData.shoulder_to_date),
             beforeShow: function(input, inst) {
                 $('#ui-datepicker-div').addClass('reservation hide-arrow');
                 $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
