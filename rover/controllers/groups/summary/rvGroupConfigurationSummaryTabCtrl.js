@@ -581,6 +581,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                 $scope.groupConfigData.summary.release_date = refData.block_from;
             }
             $scope.releaseDateOptions.maxDate = newBlockTo;
+            $scope.fromDateOptions.maxDate = newBlockTo;
             runDigestCycle();
         };
 
