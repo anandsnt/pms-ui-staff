@@ -130,8 +130,8 @@ sntRover.controller('RVReservationPackageController',
 					});
 				angular.copy($scope.selectedPurchesedAddon.selected_post_days, $scope.previousPostDays);
 			} else {
-				$scope.errorMessage = ["Custom posting can be configured only for nightly addons"];
-				$scope.selectedPurchesedAddon = "";
+				// $scope.errorMessage = ["Custom posting can be configured only for nightly addons"];
+				$scope.selectedPurchesedAddon = addon;
 			}
 
 		};
@@ -209,7 +209,7 @@ sntRover.controller('RVReservationPackageController',
 			$event.stopPropagation();
 			$scope.selectedPurchesedAddon = "";
 
-			if ($scope.packageData.existing_packages.length !== 1 && addon.is_allowance && addon.is_consumed_allowance) {
+			if (addon.is_allowance && addon.is_consumed_allowance) {
 				$scope.errorMessage = ["Cannot remove consumed allowance from staycard"];
 			} else {
 				if ($scope.packageData.existing_packages.length === 1) {

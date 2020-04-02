@@ -20,7 +20,6 @@ module.exports = function(config) {
             '../shared/lib/js/iscroll.js',
             '../shared/lib/js/ng-iscroll.js',
             '../shared/lib/js/ngDialog.min.js',
-            '../shared/lib/js/SyntaxHighlighter/shCore.js',
             '../shared/lib/js/Utils.js',
             '../shared/interceptors/**/*.js',
             './loginApp.js',
