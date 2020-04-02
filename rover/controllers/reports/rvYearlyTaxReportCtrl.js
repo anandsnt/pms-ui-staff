@@ -123,19 +123,6 @@ angular.module('sntRover')
         });
 
         /*
-        * Result with vat id collapsed or not
-        */  
-        $scope.setResultWithVatCollapsedOrNot = function () {
-            $scope.results.with_vat_id.isCollapsed = !$scope.results.with_vat_id.isCollapsed;
-        };
-        /*
-         * Result without vat id collapsed or not
-         */
-        $scope.setResultWithOutVatCollapsedOrNot = function () {
-            $scope.results.without_vat_id.isCollapsed = !$scope.results.without_vat_id.isCollapsed;
-        };
-
-        /*
          * Function to build data
          * @vatType - vat type (with or without vat)
          * @accountTypeId - account type (company / travel agent)
@@ -162,19 +149,7 @@ angular.module('sntRover')
 
             $scope.refreshScroll();
         };
-        /*
-         * Function to set up the click action
-         * @vatType - vat type (with or without vat)
-         * @accountTypeId - account type (company / travel agent)
-         * @data - revenue data
-         */
-        $scope.clickedGetRevenueAndTax = function(vatType, accountTypeId, isCollapsed, isPrint) {
-            sntActivity.start("PROMISE_INITIATED");
-            $scope.isPrintClicked = false;
-            that.arrayToPromise = [];
-            $scope.buildPromiseArray(vatType, accountTypeId, isCollapsed, isPrint);
-            $scope.getRevenueAndTax(that.arrayToPromise);
-        };
+
 
         /*
          * Function to get revenue data

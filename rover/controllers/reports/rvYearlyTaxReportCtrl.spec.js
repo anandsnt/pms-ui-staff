@@ -82,25 +82,6 @@ describe('RVYearlyTaxReportDetailsController', function () {
                 });
 
             }); 
-             // ============================================
-            it('call buildData method if isCollapsed is true', function () {       
-
-                var isCollapsed = true,
-                    vatType = 'WITH_VAT_ID',
-                    accountTypeId = 2,
-                    isPrint = false;
-
-                spyOn($scope, 'buildPromiseArray');
-
-                $scope.chosenReport = {};
-
-                $scope.chosenReport.year = 2017;
-
-                $scope.clickedGetRevenueAndTax(vatType, accountTypeId, isCollapsed, isPrint);
-
-                expect($scope.buildPromiseArray).toHaveBeenCalledWith(vatType, accountTypeId, isCollapsed, isPrint);
-               
-            }); 
             // ============================================
             it('fetch account revenue Data if isCollapsed is false', function () {       
                 
@@ -135,28 +116,6 @@ describe('RVYearlyTaxReportDetailsController', function () {
             }); 
             // =============================================
 
-            it('toggle the isCollapsed flag', function () {
-                $scope.results = {};
-                $scope.results.without_vat_id = {};
-                $scope.results.without_vat_id.isCollapsed = true;
-
-                $scope.setResultWithOutVatCollapsedOrNot();
-
-                expect($scope.results.without_vat_id.isCollapsed).toBe(false);
-
-            });
-            // ==========================
-            it('toggle the isCollapsed flag', function () {
-                $scope.results = {};
-                $scope.results.with_vat_id = {};
-                $scope.results.with_vat_id.isCollapsed = true;
-
-                $scope.setResultWithVatCollapsedOrNot();
-
-                expect($scope.results.with_vat_id.isCollapsed).toBe(false);
-
-            });
-            // ============================
             it('print method invoke with the required Data', function() {                
 
                 var arrayToPromiseSample = [{

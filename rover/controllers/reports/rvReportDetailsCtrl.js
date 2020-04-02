@@ -1564,13 +1564,6 @@ sntRover.controller('RVReportDetailsCtrl', [
             return !!reportPaginationIds[$scope.chosenReport.title];
         };
 
-        /*
-        * Result with vat id collapsed or not
-        */
-        $scope.setResultWithVatCollapsedOrNot = function () {
-            $scope.results.with_vat_id.isCollapsed = !$scope.results.with_vat_id.isCollapsed;
-        };
-
         $scope.fetchFullYearlyTaxReport = function() {
             $scope.$broadcast("FETCH_FULL_YEARLY_TAX_REPORT");
         };
