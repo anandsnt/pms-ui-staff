@@ -595,7 +595,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Invoice / Folio Export': true,
                 'Nationality Export - France': true,
                 'Criterion Hospitality CC Export': true,
-                'Cancellations by Arrival Date': true
+                'Cancellations by Arrival Date': true,
+                'Cancellations by Cancel Date': true
             };
 
             var forRunOnceOnly = {
@@ -619,7 +620,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Nationality Export - France': true,
                 'Criterion Hospitality CC Export': true,
                 'GOBD Export': true,
-                'Cancellations by Arrival Date': true
+                'Cancellations by Arrival Date': true,
+                'Cancellations by Cancel Date': true
             };
 
             var forWeekly = {
@@ -631,7 +633,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Switzerland Zurich Police Export': true,
                 'Spain Barcelona Police Export': true,
                 'Invoice / Folio Export': true,
-                'Cancellations by Arrival Date': true
+                'Cancellations by Arrival Date': true,
+                'Cancellations by Cancel Date': true
             };
             var forMonthly = {
                 'Future Reservations': true,
@@ -648,7 +651,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Invoice / Folio Export': true,
                 'Nationality Export - France': true,
                 'Criterion Hospitality CC Export': true,
-                'Cancellations by Arrival Date': true
+                'Cancellations by Arrival Date': true,
+                'Cancellations by Cancel Date': true
             };
 
             var forHourly = {
@@ -659,7 +663,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Synxis - Reservations': true,
                 'Switzerland Zurich Police Export': true,
                 'Spain Barcelona Police Export': true,
-                'Cancellations by Arrival Date': true
+                'Cancellations by Arrival Date': true,
+                'Cancellations by Cancel Date': true
             };
 
             if ( forHourly[item.report.title] ) {
@@ -817,7 +822,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
              * Export Calender Options
              * max date is business date
              */
-            if ($scope.selectedEntityDetails.report.title === 'Cancellations by Arrival Date') {
+            if ($scope.selectedEntityDetails.report.title === 'Cancellations by Arrival Date' || 
+                    $scope.selectedEntityDetails.report.title === 'Cancellations by Cancel Date' ) {
                 $scope.exportFromCalenderOptions = angular.extend({
                     maxDate: null,
                     minDate: null,
@@ -854,7 +860,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                     maxDate: tzIndependentDate(todayDate),
                     minDate: tzIndependentDate(exportDate)
                 }, datePickerCommon);
-            } else if ($scope.selectedEntityDetails.report.title === 'Cancellations by Arrival Date') {
+            } else if ($scope.selectedEntityDetails.report.title === 'Cancellations by Arrival Date' || 
+                        $scope.selectedEntityDetails.report.title === 'Cancellations by Cancel Date') {
                 $scope.exportCalenderToOptions = angular.extend({
                     maxDate: null,
                     minDate: null
@@ -1383,7 +1390,9 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                     return true;
                 }
             } else if ($scope.selectedEntityDetails.report.title === 'GOBD Export' || 
-                        $scope.selectedEntityDetails.report.title === 'Cancellations by Arrival Date' ) {
+                        $scope.selectedEntityDetails.report.title === 'Cancellations by Arrival Date' || 
+                        $scope.selectedEntityDetails.report.title === 'Cancellations by Cancel Date' ) {
+                            
                 var dateFieldObject = _.find($scope.originalScheduleTimePeriods,
                     function(item) {
                         return item.value === 'DATE_RANGE'; }
@@ -1407,7 +1416,9 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                     return true;
                 }
             } else if ($scope.selectedEntityDetails.report.title === 'GOBD Export' || 
-                        $scope.selectedEntityDetails.report.title === 'Cancellations by Arrival Date') {
+                        $scope.selectedEntityDetails.report.title === 'Cancellations by Arrival Date' || 
+                        $scope.selectedEntityDetails.report.title === 'Cancellations by Cancel Date') {
+
                 var dateFieldObject = _.find($scope.originalScheduleTimePeriods,
                     function(item) {
                         return item.value === 'DATE_RANGE'; }
