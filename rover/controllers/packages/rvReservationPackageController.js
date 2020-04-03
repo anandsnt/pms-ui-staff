@@ -151,7 +151,7 @@ sntRover.controller('RVReservationPackageController',
 		var ordinal_suffix_of = function (i) {
 		    var j = i % 10,
 		        k = i % 100;
-		        
+
 		    if (j === 1 && k !== 11) {
 		        return i + "st";
 		    }
@@ -166,6 +166,7 @@ sntRover.controller('RVReservationPackageController',
 
 		$scope.getCustomPostingInfo = function() {
 			var posting_info = "";
+			
 			if (typeof $scope.selectedPurchesedAddon.frequency_type === 'undefined' || typeof $scope.selectedPurchesedAddon.frequency === 'undefined') {
 				posting_info = "Posts daily";
 			} else if ($scope.selectedPurchesedAddon.frequency_type === "days") {
