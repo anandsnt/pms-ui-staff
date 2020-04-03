@@ -88,7 +88,7 @@ angular.module('sntRover')
                 $scope.buildPromiseArray("WITHOUT_VAT_ID", $scope.results.without_vat_id.accounts[0].account_type_id, false, true);
                 $scope.buildPromiseArray("WITHOUT_VAT_ID", $scope.results.without_vat_id.accounts[1].account_type_id, false, true);
             }
-            $scope.getRevenueAndTax(that.arrayToPromise);
+            
         };
         /*
          * Handle the required API calls and update the DOM before doing print
@@ -120,87 +120,7 @@ angular.module('sntRover')
          */
         listeners['clickedCancelPrint'] = $scope.$on("YEARLY_TAX_PRINT_COMPLETED", function() {
             $scope.handlePrintCancel();
-        });
-
-        /*
-         * Function to build data
-         * @vatType - vat type (with or without vat)
-         * @accountTypeId - account type (company / travel agent)
-         * @data - revenue data
-         */
-        $scope.buildData = function(vatType, accountTypeId, data, isPrint) {
-
-            that.resultArrayToBeModified = (vatType === 'WITH_VAT_ID') ? $scope.results.with_vat_id.accounts : $scope.results.without_vat_id.accounts;
-                
-            _.each(that.resultArrayToBeModified, function(item) {
-
-                if (item.account_type_id === accountTypeId) {
-                    if (data) {                         
-                        item.revenueData = data.data;
-                    }     
-                    if (isPrint) {
-                        item.isCollapsed = true;
-                    } else {
-                        item.isCollapsed = !item.isCollapsed;
-                    }        
-                    
-                }
-            });
-
-            $scope.refreshScroll();
-        };
-
-
-        /*
-         * Function to get revenue data
-         * @arrayToPromise
-         */
-        $scope.getRevenueAndTax = function(arrayToPromise) {  
-
-            var successCallBackOfGetRevenueAndTax = function (data) {
-
-                    $scope.buildData(data.accountVatType, data.accountTypeId, data, data.isPrint);
-                };
-
-                promises = [];
-
-                angular.forEach(arrayToPromise, function(item) {
-
-                    var postParamsToApi = {
-                            "year": $scope.chosenReport.year,
-                            "with_vat_id": (item.accountVatType === 'WITH_VAT_ID'),
-                            "account_type_id": item.accountTypeId,
-                            "country_ids": $scope.appliedFilter.country_ids
-                        },
-                        paramsToService = {
-                            "postParamsToApi": postParamsToApi,
-                            "accountVatType": item.accountVatType,
-                            "isPrint": item.isPrint,
-                            "accountTypeId": item.accountTypeId
-                        };
-
-                    if (!item.isCollapsed) {  
-                        promises.push(RVreportsSubSrv.getRevenueAndTax(paramsToService).then(successCallBackOfGetRevenueAndTax));
-                    } else {
-                        $scope.buildData(item.accountVatType, item.accountTypeId);
-                    }   
-            });
-            /*
-             * Success callback of all promised
-             */
-            var successCallBackOfAllPromises = function() {
-                sntActivity.stop("PROMISE_INITIATED");
-                if ($scope.isPrintClicked) {
-                     $timeout(function() {
-                        $scope.$emit("PRINT_SELECTED_REPORT");
-                    }, 700);
-                }
-            };
-
-            $q.all(promises)
-                .then(successCallBackOfAllPromises);
-          
-        };
+        });               
 
         angular.forEach(listeners, function(listener) {
             $scope.$on('$destroy', listener);

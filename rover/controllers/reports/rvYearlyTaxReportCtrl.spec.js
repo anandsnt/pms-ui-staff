@@ -82,78 +82,8 @@ describe('RVYearlyTaxReportDetailsController', function () {
                 });
 
             }); 
-            // ============================================
-            it('fetch account revenue Data if isCollapsed is false', function () {       
-                
-                var promiseData = [{
-                    "accountTypeId": 2,
-                    "accountVatType": "WITH_VAT_ID",
-                    "isCollapsed": false,
-                    "isPrint": false,
-                    "country_ids": [2, 12]
-                }];
-
-                spyOn(RVreportsSubSrv, 'getRevenueAndTax').and.callFake(function () {
-                    var deferred = $q.defer();
-
-                    deferred.resolve(revenueData);
-                    return deferred.promise;
-                });
-
-                $scope.chosenReport = {};
-
-                $scope.chosenReport.year = 2017;
-
-                $scope.results = results;
-
-                $scope.getRevenueAndTax(promiseData);
-
-                 // Promise won't be resolved till $apply runs....
-                $rootScope.$apply();
-
-                expect($scope.results.with_vat_id.accounts[1].revenueData[0].ar_number).toBe(revenueData.data[0].ar_number);
-               
-            }); 
-            // =============================================
-
-            it('print method invoke with the required Data', function() {                
-
-                var arrayToPromiseSample = [{
-                    "accountVatType": "WITH_VAT_ID",
-                    "accountTypeId": 1,
-                    "isCollapsed": false,
-                    "isPrint": true
-                }, {
-                    "accountVatType": "WITH_VAT_ID",
-                    "accountTypeId": 2,
-                    "isCollapsed": false,
-                    "isPrint": true
-                }, {
-                    "accountVatType": "WITHOUT_VAT_ID",
-                    "accountTypeId": 1,
-                    "isCollapsed": false,
-                    "isPrint": true
-                }, {
-                    "accountVatType": "WITHOUT_VAT_ID",
-                    "accountTypeId": 2,
-                    "isCollapsed": false,
-                    "isPrint": true
-                }];
-
-                $scope.chosenReport = {
-                    "with_vat_number": true,
-                    "without_vat_number": true
-                };
-
-                spyOn($scope, 'getRevenueAndTax');
-
-                $scope.results = results;
-
-                $scope.handlePrint();
-
-                expect($scope.getRevenueAndTax).toHaveBeenCalledWith(arrayToPromiseSample);
-
-            });
+           
+            
             // ============================
             it("buildPromiseArray method should build correct data", function() {
 
