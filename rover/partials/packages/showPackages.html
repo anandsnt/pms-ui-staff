@@ -88,7 +88,7 @@
 
                 <span class="text" ng-if="selectedPurchesedAddon.post_day_of_the_week && selectedPurchesedAddon.post_type.value !== CUSTOM && selectedPurchesedAddon.post_type.value !== NIGHT && selectedPurchesedAddon.post_type.value !== LAST_NIGHT"> Post day - {{selectedPurchesedAddon.post_day_of_the_week}} </span>
 
-                <span class="text" ng-if="selectedPurchesedAddon.post_type.value === CUSTOM"> {{ getCustomPostingInfo() }}</span>
+                <span class="text" ng-if="selectedPurchesedAddon.post_type.value === 'CUSTOM'"> {{ getCustomPostingInfo() }}</span>
                 
                 <div class="content-entries" ng-class="{'hidden': selectedPurchesedAddon.post_type.value !== 'STAY'}">
                     <!-- Hide if only Date-To needs to be shown -->
