@@ -52,8 +52,11 @@ sntRover.controller('RVReservationPackageController',
 					postingRythm = 0;
 				}
 			}
-			if ($scope.showCustomPosting() && typeof addon.post_instances !== 'undefined' && addon.post_instances.length > 0) {
-				numNights = _.filter(addon.post_instances, {active: true}).length;
+			if ($scope.showCustomPosting() && typeof addon.post_instances !== 'undefined') {
+				numNights = _.filter(addon.post_instances, {active: true}).length;				
+			}
+			if (numNights === 0) {
+				return 0;
 			}
 			var addonCount = RVReservationStateService.getApplicableAddonsCount(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly);
 
