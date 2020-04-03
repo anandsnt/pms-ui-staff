@@ -617,21 +617,7 @@ sntRover.controller('RVReportDetailsCtrl', [
                 });
             }
 
-
-            if ($scope.chosenReport.title === reportNames['YEARLY_TAX']) {
-                if (results.with_vat_id) {
-                    results.with_vat_id.isCollapsed = false;
-                    results.with_vat_id.accounts = setVatReportCollapseData(results.with_vat_id.accounts);
-                }
-
-                if (results.without_vat_id) {
-                    results.without_vat_id.isCollapsed = false;
-                    results.without_vat_id.accounts = setVatReportCollapseData(results.without_vat_id.accounts);
-                }
-            }
-
-
-            // new more detailed reports
+           // new more detailed reports
             $scope.parsedApiFor = $scope.chosenReport.title;
 
             // send the recived data to the API parser module
@@ -704,7 +690,6 @@ sntRover.controller('RVReportDetailsCtrl', [
             // if there are any results
             $scope.hasNoResults = _.isEmpty($scope.$parent.results);
             $scope.showPrintOption = true;
-            $scope.showPrintOptionForYearlyTax = false; // CICO-51364 - Used only for yearly vat report
 
             // a very different parent template / row template / content template for certain reports
             // otherwise they all will share the same template
@@ -836,6 +821,7 @@ sntRover.controller('RVReportDetailsCtrl', [
                     break;
 
                 case reportNames['COMPLIMENTARY_ROOM_REPORT']:
+
                     $scope.hasReportTotals = true;
                     $scope.showReportHeader = true;
                     $scope.detailsTemplateUrl = '/assets/partials/reports/complimentaryRoomReport/rvComplimentaryRoomReport.html';
@@ -850,8 +836,6 @@ sntRover.controller('RVReportDetailsCtrl', [
                 case reportNames['YEARLY_TAX']:
                     $scope.hasReportTotals = true;
                     $scope.showReportHeader = true;
-                    $scope.showPrintOption = false;
-                    $scope.showPrintOptionForYearlyTax = true;
                     $scope.detailsTemplateUrl = '/assets/partials/reports/yearlyVat/yearlyVatReportDetails.html';
                     break;
 
@@ -1593,12 +1577,8 @@ sntRover.controller('RVReportDetailsCtrl', [
                 if ('function' == typeof $scope.printOptions.showModal) {
                     $scope.printOptions.showModal();
                 } else {
-                    if (reportsSrv.getChoosenReport().title === reportNames['YEARLY_TAX']) {
-                        $scope.$broadcast("FETCH_FULL_YEARLY_TAX_REPORT");
-                    } else {
-                        printReport();
-                    }                
-            } 
+                    printReport();        
+                } 
             }, 2000);
         };
 
