@@ -123,11 +123,11 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
             if (params.details.length > 0) {
                 newPostApiParams = {
                     from_date: params.details[0].from_date,
-                    to_date: !!params.details[1] ? params.details[1].to_date : params.details[0].to_date,
+                    to_date: params.details[1] ? params.details[1].to_date : params.details[0].to_date,
                     restrictions: service.convertRestrictionsToNewApiFormat(params.details[0].restrictions)
                 };
 
-                if (!!params.details[1] && params.details[1].weekdays.length > 0) {
+                if (params.details[1] && params.details[1].weekdays.length > 0) {
                     newPostApiParams.weekdays = service.convertWeekDaysToNewApiFormat(params.details[1].weekdays);
                 }
             }
