@@ -136,6 +136,44 @@ sntRover.controller('RVReservationPackageController',
 
 		};
 
+		var ordinal_suffix_of = function (i) {
+		    var j = i % 10,
+		        k = i % 100;
+		    if (j == 1 && k != 11) {
+		        return i + "st";
+		    }
+		    if (j == 2 && k != 12) {
+		        return i + "nd";
+		    }
+		    if (j == 3 && k != 13) {
+		        return i + "rd";
+		    }
+		    return i + "th";
+		}
+
+		$scope.getCustomPostingInfo = function() {
+			if (typeof $scope.selectedPurchesedAddon.frequency_type === 'undefined' || typeof $scope.selectedPurchesedAddon.frequency === 'undefined') {
+				return "Posts daily";
+			} else if ($scope.selectedPurchesedAddon.frequency_type === "days") {
+				if ($scope.selectedPurchesedAddon.frequency === 1) {
+					return "Posts daily";
+				}
+				return "Posts on every " + $scope.selectedPurchesedAddon.frequency + " days.";
+			} else if ($scope.selectedPurchesedAddon.frequency_type === "weeks") {
+				if ($scope.selectedPurchesedAddon.frequency === 1) {
+					return "Posts weekly, on " + $scope.selectedPurchesedAddon.post_day_of_the_week;
+				}
+				return "Posts every " + $scope.selectedPurchesedAddon.frequency + " weeks, on " +  $scope.selectedPurchesedAddon.post_day_of_the_week;
+			} else if ($scope.selectedPurchesedAddon.frequency_type === "months") {
+				if ($scope.selectedPurchesedAddon.frequency === 1) {
+					return "Posts every month, on" + ordinal_suffix_of($scope.selectedPurchesedAddon.post_day_of_the_month);
+				}
+				return "Posts every " + $scope.selectedPurchesedAddon.frequency + " months, on " +  ordinal_suffix_of($scope.selectedPurchesedAddon.post_day_of_the_month);
+			} else {
+				return "Posts daily";
+			}
+		};
+
 		$scope.showCustomPosting = function() {
 			return $rootScope.featureToggles.addons_custom_posting;
 		};

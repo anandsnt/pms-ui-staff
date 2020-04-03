@@ -305,7 +305,10 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         is_consume_next_day: addon.is_consume_next_day,
                         is_inclusive: addon.is_inclusive,
                         is_rate_addon: addon.is_rate_addon,
-                        post_day_of_the_week: addon.post_day_of_the_week
+                        post_day_of_the_week: addon.post_day_of_the_week,
+                        post_day_of_the_month: addon.post_day_of_the_month,
+                        frequency_type: addon.frequency_type,
+                        frequency: addon.frequency_type
                     });
                        
                     $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
@@ -375,7 +378,10 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     quantity: item.quantity,
                     is_allowance: item.is_allowance,
                     is_consume_next_day: item.is_consume_next_day,
-                    post_day_of_the_week: item.post_day_of_the_week
+                    post_day_of_the_week: item.post_day_of_the_week,
+                    post_day_of_the_month: item.post_day_of_the_month,
+                    frequency_type: item.frequency_type,
+                    frequency: item.frequency_type
                 };
 
                 $scope.packageData.existing_packages.push(addonsData);
@@ -640,7 +646,10 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             start_date: item.start_date,
                             end_date: item.end_date,
                             posting_frequency: item.post_type.frequency,
-                            post_day_of_the_week: item.post_day_of_the_week
+                            post_day_of_the_week: item.post_day_of_the_week,
+                            post_day_of_the_month: item.post_day_of_the_month,
+                            frequency_type: item.frequency_type,
+                            frequency: item.frequency_type
                         };
 
                         $scope.addonsData.existingAddons.push(addonsData);

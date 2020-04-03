@@ -78,6 +78,10 @@ angular.module('sntRover').service('RVReservationPackageSrv', ['$http', '$q', 'r
 		addonItem.is_allowance = item.is_allowance;
 		addonItem.is_consume_next_day = item.is_consume_next_day;
 		addonItem.post_day_of_the_week = item.post_day_of_the_week;
+		addonItem.post_day_of_the_month = item.post_day_of_the_month;
+		addonItem.frequency_type = item.frequency_type;
+		addonItem.frequency = item.frequency;
+
 		return addonItem;
 	};
 
