@@ -509,12 +509,21 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
         service.fetchSchedules = function(exportOnly) {
-            var url = exportOnly ? 'admin/export_schedules.json?export_only=true' : 'admin/export_schedules.json';
+            var url = 'admin/export_schedules.json',
+                params = {
+                    page: 1,
+                    per_page: 9999
+                };
+
+            if (exportOnly) {
+                params.export_only = true;
+            }
 
             return callApi({
                 method: 'getJSON',
                 url: url,
-                resKey: 'results'
+                resKey: 'results',
+                params: params
             });
         };
         service.fetchOneSchedule = function(params) {
