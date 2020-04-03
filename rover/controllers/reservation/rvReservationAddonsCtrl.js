@@ -294,8 +294,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         title: addon.title,
                         totalAmount: addonQty * (addon.price),
                         price_per_piece: addon.price,
-                        amount_type: addon.amountType.value,
-                        post_type: addon.postType.value,
+                        amount_type: addon.amountType,
+                        post_type: addon.postType,
                         charge_full_weeks_only: addon.chargefullweeksonly,
                         posting_frequency: addon.postType.frequency,
                         rate_currency: addon.rateCurrency,
@@ -359,15 +359,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     addon_count: item.quantity,
                     totalAmount: item.totalAmount,
                     amount: item.price_per_piece,
-                    amount_type: {
-                        description: item.amount_type,
-                        value: item.amount_type
-                    },
-                    post_type: {
-                        description: item.post_type,
-                        frequency: item.posting_frequency,
-                        value: item.post_type
-                    },
+                    amount_type: item.amount_type,
+                    post_type: item.post_type,
                     is_inclusive: item.is_inclusive,
                     is_rate_addon: item.is_rate_addon,
                     start_date: item.start_date,

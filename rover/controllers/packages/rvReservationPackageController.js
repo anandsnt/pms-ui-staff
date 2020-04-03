@@ -185,7 +185,7 @@ sntRover.controller('RVReservationPackageController',
 				
 			} else if ($scope.selectedPurchesedAddon.frequency_type === "months") {
 				if ($scope.selectedPurchesedAddon.frequency === 1) {
-					posting_info = "Posts every month, on" + ordinal_suffix_of($scope.selectedPurchesedAddon.post_day_of_the_month);
+					posting_info = "Posts every month, on " + ordinal_suffix_of($scope.selectedPurchesedAddon.post_day_of_the_month);
 				} else {
 					posting_info = "Posts every " + $scope.selectedPurchesedAddon.frequency + " months, on " +  ordinal_suffix_of($scope.selectedPurchesedAddon.post_day_of_the_month);
 				}

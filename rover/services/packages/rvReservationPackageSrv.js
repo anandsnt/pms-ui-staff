@@ -92,8 +92,8 @@ angular.module('sntRover').service('RVReservationPackageSrv', ['$http', '$q', 'r
 			title: addon.name,
 			totalAmount: addon.amount, // Rate associated Addons have quantity ONE
 			price_per_piece: addon.amount,
-			amount_type: addon.amount_type.description,
-			post_type: addon.post_type.value,
+			amount_type: addon.amount_type,
+			post_type: addon.post_type,
 			is_inclusive: !!addon.is_inclusive,
 			is_rate_addon: true,
 			rate_currency: addon.rate_currency
