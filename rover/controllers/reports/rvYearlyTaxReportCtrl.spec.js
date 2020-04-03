@@ -100,14 +100,5 @@ describe('RVYearlyTaxReportDetailsController', function () {
 
                 expect(yearlyTaxReportDetailsCtrl.arrayToPromise[0].accountVatType).toBe(arrayToPromiseToBe[0].accountVatType);
             });
-
-            // ============================
-            it("buildData method should build correct data", function() {
-                
-                $scope.results = results;
-                $scope.buildData("WITH_VAT_ID", 2, revenueData, true);
-                expect(yearlyTaxReportDetailsCtrl.resultArrayToBeModified[1].revenueData[0].ar_number).toBe(revenueData.data[0].ar_number);
-            });
-
         });    
 });
