@@ -55,6 +55,9 @@ sntRover.controller('RVReservationPackageController',
 			if ($scope.showCustomPosting() && typeof addon.post_instances !== 'undefined') {
 				numNights = _.filter(addon.post_instances, {active: true}).length;				
 			}
+			if (numNights == 0) {
+				return 0;
+			}
 			var addonCount = RVReservationStateService.getApplicableAddonsCount(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly);
 
 			return (addonCount * addon.addon_count);
