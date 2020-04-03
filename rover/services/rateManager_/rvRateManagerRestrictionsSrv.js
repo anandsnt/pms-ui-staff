@@ -11,9 +11,10 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
         };
 
         // Handle GET api while loading RM with various filters in House Level ( Frozen Panel).
-        service.processCommonRestrictions = function( restrcionsList, params) {
+        // Handle GET api, for individual cell click & popup in House Level ( Frozen Panel).
+        service.formatRestrictionsData = function( restrcionsList, params) {
 			// CICO-76813 : New API for hierarchyRestrictions
-            if (service.hierarchyRestrictions.houseEnabled) {
+            if (service.hierarchyRestrictions.houseEnabled && params.restrictionType === 'HOUSE') {
                 _.each(restrcionsList, function( item ) {
                     item.restrictions = rvRateManagerUtilitySrv.generateOldGetApiResponseFormat(item.restrictions);
                 });
@@ -31,18 +32,6 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
                 url = '/api/restrictions/house';
             }
             return url;
-        };
-
-        // Handle GET api, for individual cell click & popup in House Level ( Frozen Panel).
-        service.processCommonRestrictionsCell = function( restrcionsList, params ) {
-			// CICO-76813 : New API for hierarchyRestrictions
-            if (service.hierarchyRestrictions.houseEnabled && params.restrictionType === 'HOUSE') {
-                _.each(restrcionsList, function( item ) {
-                    item.restrictions = rvRateManagerUtilitySrv.generateOldGetApiResponseFormat(item.restrictions);
-                });
-            }
-
-            return restrcionsList;
         };
 
 		// Handle GET api, for individual cell click & popup in House Level ( Frozen Panel).
