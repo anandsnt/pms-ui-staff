@@ -72,6 +72,11 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
             return output;
         };
 
+        /*
+         *  Method to Restructure restriction data, Array to Object format.
+         *  @param {Array}  [restrcionsList]
+         *  @return {Object} [restrictionsObj]
+         */
 		service.convertRestrictionsToNewApiFormat = function( restrcionsList ) {
 			var restrictionsObj = {};
 
@@ -87,6 +92,11 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
 			return restrictionsObj;
 		};
 
+        /*
+         *  Method to convert current weekday Object format into new Array format.
+         *  @param {Objects} : Eg: { 'sun':true, 'thu': true }
+         *  @return {Array}  : Eg: [0, 4]
+         */
 		service.convertWeekDaysToNewApiFormat = function( weekdays ) {
 			var weekdaysList = [],
 				day = '';
@@ -98,6 +108,11 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
 			return weekdaysList;
 		};
 
+        /*
+         *  Method to convert current POST param to new format.
+         *  @param {Object} [old post params]
+         *  @return {Object} [new post params]
+         */
         service.generateNewPostApiParams = function( params ) {
             var newPostApiParams = {
                 from_date: params.details[0].from_date,
