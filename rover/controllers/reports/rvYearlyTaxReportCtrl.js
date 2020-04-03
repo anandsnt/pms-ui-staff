@@ -19,8 +19,7 @@ angular.module('sntRover')
 
         BaseCtrl.call(this, $scope);
 
-        var promises = [],
-            listeners = [],
+        var listeners = [],
             that = this;
         
         that.arrayToPromise = [];
