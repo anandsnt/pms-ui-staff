@@ -120,8 +120,8 @@ module.exports = {
             'bellevue': [themeCSSRoot + 'bellevue.less'],
             'jonas': [themeCSSRoot + 'jonas.less'],
             'westminster': [themeCSSRoot + 'westminster.less'],
-            'hermitage': [themeCSSRoot + 'hermitage.less'],
-            'coyote': [themeCSSRoot + 'coyote.less']
+            'coyote': [themeCSSRoot + 'coyote.less'],
+            'hermitage': [themeCSSRoot + 'hermitage.less']
         };
     }
 };
