@@ -152,6 +152,19 @@
                </label>
             </div>
          </div>
+         <div class="entry" ng-if = "dashboardFilter.selectedAnalyticsMenu === 'PACE'">
+            <div id="chart-toggle" class="switch-button" ng-class="{'on': !dashboardFilter.LineChartActive}">
+               <input id="distribution-switch" type="checkbox" checked="" ng-model="dashboardFilter.LineChartActive" ng-change="paceChartChanged()">
+               <label class="data-off">
+               <span class="value">Chart</span>
+               <span class="switch-icon">Line</span>
+               </label>
+               <label class="data-on">
+               <span class="switch-icon">Chart</span>
+               <span class="value">Line</span>
+               </label>
+            </div>
+         </div>
          <div class="entry">
             <div class="select with-label">
                <label for="analytics-room-type">Room Type</label>

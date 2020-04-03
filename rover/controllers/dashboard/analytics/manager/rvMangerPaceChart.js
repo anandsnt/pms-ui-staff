@@ -5,6 +5,9 @@ angular.module('sntRover')
 			$controller('rvManagerPaceChartWithZoomCtrl', {
 				$scope: $scope
 			});
+			$controller('rvManagerPaceLineChartCtrl', {
+				$scope: $scope
+			});
 			var checkIfDayIsToday = function(dateToCompare) {
 				var today = $rootScope.businessDate;
 				var date = moment(dateToCompare).format('YYYY-MM-DD');
@@ -22,7 +25,11 @@ angular.module('sntRover')
 				$scope.dashboardFilter.selectedAnalyticsMenu = 'PACE';
 				$scope.screenData.isZoomedChart = false;
 
-				if (chartData.length > 60) {
+				if ($scope.dashboardFilter.LineChartActive) {
+					$scope.drawPaceLineChart(chartData);
+					return;
+				}
+				else if (chartData.length > 60) {
 					$scope.drawPaceChartWithZoom(chartData);
 					$scope.screenData.isZoomedChart = true;
 					return;
@@ -335,5 +342,8 @@ angular.module('sntRover')
 					redrawPaceChartIfNeeded();
 				}
 			});
+
+			$scope.$on('PACE_CHART_CHANGED', redrawPaceChartIfNeeded);
+
 		}
 	]);

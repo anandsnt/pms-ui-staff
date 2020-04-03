@@ -435,6 +435,9 @@ sntRover.controller('RVmanagerDashboardController',
     $scope.availableRoomTypes = joinFiltersAndDataSet($scope.availableRoomTypes, $scope.selectedFilters.roomTypes);
     $scope.dashboardFilter.showLastYearData = false;
     $scope.dashboardFilter.lastyearType = "SAME_DATE_LAST_YEAR";
+
+    $scope.dashboardFilter.gridViewActive = false;
+    $scope.dashboardFilter.LineChartActive = false;
     resetChartFilters();
   };
 
@@ -444,6 +447,10 @@ sntRover.controller('RVmanagerDashboardController',
 
   $scope.distributionChartChanged = function() {
     $scope.$broadcast('DISTRUBUTION_CHART_CHANGED');
+  };
+
+  $scope.paceChartChanged = function() {
+    $scope.$broadcast('PACE_CHART_CHANGED');
   };
 
   // house keeping
