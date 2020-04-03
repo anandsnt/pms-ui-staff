@@ -308,7 +308,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         post_day_of_the_week: addon.post_day_of_the_week,
                         post_day_of_the_month: addon.post_day_of_the_month,
                         frequency_type: addon.frequency_type,
-                        frequency: addon.frequency_type
+                        frequency: addon.frequency
                     });
                        
                     $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
@@ -381,7 +381,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     post_day_of_the_week: item.post_day_of_the_week,
                     post_day_of_the_month: item.post_day_of_the_month,
                     frequency_type: item.frequency_type,
-                    frequency: item.frequency_type
+                    frequency: item.frequency
                 };
 
                 $scope.packageData.existing_packages.push(addonsData);
@@ -649,7 +649,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             post_day_of_the_week: item.post_day_of_the_week,
                             post_day_of_the_month: item.post_day_of_the_month,
                             frequency_type: item.frequency_type,
-                            frequency: item.frequency_type
+                            frequency: item.frequency
                         };
 
                         $scope.addonsData.existingAddons.push(addonsData);
