@@ -33,6 +33,14 @@ sntRover.controller('RVReservationPackageController',
 			}, 300);
 		};
 
+		$scope.shouldHideCount = function(addon) {
+			var postType = addon.post_type.value.toUpperCase();
+			if ((postType === 'WEEKDAY' || postType === 'WEEKEND' || postType === 'CUSTOM') && typeof addon.post_instances === 'undefined' && $scope.showCustomPosting()) {
+				return true;
+			}
+			return false;
+		};
+
 		// Get addon count
 		$scope.getAddonCount = function(addon) {
 			var postingRythm = addon.post_type.frequency,

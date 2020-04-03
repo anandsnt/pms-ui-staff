@@ -16,7 +16,7 @@
                             <h3 class="enhancement-name">
                                 
                                 {{ addon.name }}
-                                <small>({{getAddonCount(addon)}})</small>
+                                <small ng-hide="shouldHideCount(addon)">({{getAddonCount(addon)}})</small>
                             </h3>
                             <!-- Show this if there is a description -->
                             <!-- <span class="enhancement-desc">
