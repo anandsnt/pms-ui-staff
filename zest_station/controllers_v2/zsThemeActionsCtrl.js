@@ -210,8 +210,9 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                     'bellevue',
                     'jonas',
                     'westminster',
+                    'coyote',
                     'hermitage',
-                    'coyote'
+                    'sage-inn-v2'
                 ],
                 nonCircleNavIcons = ['public_v2'];// minor adjustment to the back/close icons for some themes (only show the inner x or <)
 

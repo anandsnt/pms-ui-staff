@@ -509,12 +509,21 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
         service.fetchSchedules = function(exportOnly) {
-            var url = exportOnly ? 'admin/export_schedules.json?export_only=true' : 'admin/export_schedules.json';
+            var url = 'admin/export_schedules.json',
+                params = {
+                    page: 1,
+                    per_page: 9999
+                };
+
+            if (exportOnly) {
+                params.export_only = true;
+            }
 
             return callApi({
                 method: 'getJSON',
                 url: url,
-                resKey: 'results'
+                resKey: 'results',
+                params: params
             });
         };
         service.fetchOneSchedule = function(params) {
@@ -732,24 +741,6 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 method: 'getJSON',
                 url: '/api/rate_types.json?sort_field=is_active&sort_dir=false&per_page=1000&page=1'
             });
-        };
-
-        // Method to get the revenue and tax of accounts
-        // @data - params to API
-        service.getRevenueAndTax = function(data) {
-            var deferred = $q.defer(),
-                url = '/api/accounts/revenue_and_tax';
-
-            rvBaseWebSrvV2.postJSON(url, data.postParamsToApi).then(function(revenueData) {
-                revenueData.accountVatType = data.accountVatType;
-                revenueData.isPrint = data.isPrint;
-                revenueData.accountTypeId = data.accountTypeId;
-                deferred.resolve(revenueData);
-            }, function(data) {
-                deferred.reject(data);
-            });
-
-            return deferred.promise;
         };
 
         /**
