@@ -166,24 +166,30 @@ sntRover.controller('RVReservationPackageController',
 
 		$scope.getCustomPostingInfo = function() {
 			var posting_info = "";
-			
+
 			if (typeof $scope.selectedPurchesedAddon.frequency_type === 'undefined' || typeof $scope.selectedPurchesedAddon.frequency === 'undefined') {
 				posting_info = "Posts daily";
 			} else if ($scope.selectedPurchesedAddon.frequency_type === "days") {
 				if ($scope.selectedPurchesedAddon.frequency === 1) {
 					posting_info = "Posts daily";
+				} else {
+					posting_info = "Posts on every " + $scope.selectedPurchesedAddon.frequency + " days.";
 				}
-				posting_info = "Posts on every " + $scope.selectedPurchesedAddon.frequency + " days.";
+				
 			} else if ($scope.selectedPurchesedAddon.frequency_type === "weeks") {
 				if ($scope.selectedPurchesedAddon.frequency === 1) {
 					posting_info = "Posts weekly, on " + $scope.selectedPurchesedAddon.post_day_of_the_week;
+				} else {
+					posting_info = "Posts every " + $scope.selectedPurchesedAddon.frequency + " weeks, on " +  $scope.selectedPurchesedAddon.post_day_of_the_week;
 				}
-				posting_info = "Posts every " + $scope.selectedPurchesedAddon.frequency + " weeks, on " +  $scope.selectedPurchesedAddon.post_day_of_the_week;
+				
 			} else if ($scope.selectedPurchesedAddon.frequency_type === "months") {
 				if ($scope.selectedPurchesedAddon.frequency === 1) {
 					posting_info = "Posts every month, on" + ordinal_suffix_of($scope.selectedPurchesedAddon.post_day_of_the_month);
+				} else {
+					posting_info = "Posts every " + $scope.selectedPurchesedAddon.frequency + " months, on " +  ordinal_suffix_of($scope.selectedPurchesedAddon.post_day_of_the_month);
 				}
-				posting_info = "Posts every " + $scope.selectedPurchesedAddon.frequency + " months, on " +  ordinal_suffix_of($scope.selectedPurchesedAddon.post_day_of_the_month);
+				
 			} else {
 				posting_info = "Posts daily";
 			}
