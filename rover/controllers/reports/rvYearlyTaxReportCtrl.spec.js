@@ -3,7 +3,7 @@ describe('RVYearlyTaxReportDetailsController', function () {
     var $controller,
         $scope,
         yearlyTaxReportDetailsCtrl,
-        $rootScope        
+        $rootScope;       
 
         describe('variable initalizations', function () {
 
