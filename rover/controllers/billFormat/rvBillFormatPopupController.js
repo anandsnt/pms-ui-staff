@@ -173,7 +173,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
 
         if ($scope.reservationBillData && $scope.reservationBillData.reservation_id) {
             params.reservation_id = $scope.reservationBillData.reservation_id;
-            params.type = $scope.isCompanyInvoice ? 'GUEST' : 'COMPANY';
+            params.bill_address_type = $scope.isCompanyInvoice ? 'guest' : 'company';
         } else {
             if (!!$scope.groupConfigData) {
                 params.group_id = $scope.groupConfigData.summary.group_id;
