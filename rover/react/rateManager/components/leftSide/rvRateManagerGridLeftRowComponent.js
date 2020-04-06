@@ -12,8 +12,6 @@ const RateManagerGridLeftRowComponent = ({
 	address,
 	showRightSpan,
 	rightSpanClassName,
-	contractLabel,
-	contractClass,
 	accountName,
 	showIndicator
 }) => (
@@ -22,13 +20,8 @@ const RateManagerGridLeftRowComponent = ({
 			<a title={name}>
 			<span className={leftSpanClassName}>
 				{  (textInIconArea == 'B' && showIndicator)?(<span className="base-rate-indicator">B</span>):''}
-				{ (contractLabel !=='' && showIndicator)? (<span className={'contracted-rate-indicator ' + contractClass}>
-	                {contractLabel}
-				</span>):''}
  			{leftSpanText}
-			</span>                                
-			<span className={'contracted-rate-contract '+ contractClass}>{accountName}</span>
-			<span className={'contracted-rate-address '+ contractClass}>{address}</span>
+			</span>
 			<span className={rightSpanClassName}></span>
             </a>
 		</td>

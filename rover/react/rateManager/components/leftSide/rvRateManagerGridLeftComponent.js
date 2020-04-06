@@ -1,5 +1,5 @@
-const RateManagerGridLeftSideComponent = ({expandedClass, isHierarchyHouseRestrictionEnabled}) => ( 
-	<div className={'pinnedLeft '+ expandedClass}>
+const RateManagerGridLeftSideComponent = ({isHierarchyHouseRestrictionEnabled}) => ( 
+	<div className='pinnedLeft'>
 		<RateManagerGridLeftSideHeadButtonContainer/>
 		 <div className='pinnedLeft-select'>
 		 	{ 	isHierarchyHouseRestrictionEnabled &&
