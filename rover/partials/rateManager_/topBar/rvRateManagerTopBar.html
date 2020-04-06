@@ -83,15 +83,6 @@
          
     </ul>
     <ul class="actions">
-        <!-- show only when viewing rates-->
-        <li ng-show="isRateView">
-            <!-- Add .expanded on .pinnedLeft when checked-->
-            <label class="checkbox" for="rate-toggle">
-                <span class="icon-form icon-checkbox" ng-class="{checked : showContractDetailsChecked}"></span>
-                <input type="checkbox" id="rate-toggle" value="1" ng-click="clickedOnShowContractDetails($event)">
-                Show Contract Details
-             </label>  
-        </li>
         <li ng-hide="isRateTypeView">
             <button class="button rm-buttonOpenClose green" ng-click="openAll()">
                 Open All
