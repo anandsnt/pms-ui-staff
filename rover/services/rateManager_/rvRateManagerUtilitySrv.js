@@ -72,6 +72,11 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
             return output;
         };
 
+        /*
+         *  Method to Restructure restriction data, Array to Object format.
+         *  @param {Array}  [restrcionsList]
+         *  @return {Object} [restrictionsObj]
+         */
 		service.convertRestrictionsToNewApiFormat = function( restrcionsList ) {
 			var restrictionsObj = {};
 
@@ -87,6 +92,11 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
 			return restrictionsObj;
 		};
 
+        /*
+         *  Method to convert current weekday Object format into new Array format.
+         *  @param {Objects} : Eg: { 'sun':true, 'thu': true }
+         *  @return {Array}  : Eg: [0, 4]
+         */
 		service.convertWeekDaysToNewApiFormat = function( weekdays ) {
 			var weekdaysList = [],
 				day = '';
@@ -98,17 +108,29 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
 			return weekdaysList;
 		};
 
+        /*
+         *  Method to convert current POST param to new format.
+         *  @param {Object} [old post params]
+         *  @return {Object} [new post params]
+         */
         service.generateNewPostApiParams = function( params ) {
             var newPostApiParams = {
-                from_date: params.details[0].from_date,
-                to_date: !!params.details[1] ? params.details[1].to_date : params.details[0].to_date,
-                restrictions: service.convertRestrictionsToNewApiFormat(params.details[0].restrictions)
+                from_date: '',
+                to_date: '',
+                restrictions: {}
             };
 
-            if (!!params.details[1] && params.details[1].weekdays.length > 0) {
-                newPostApiParams.weekdays = service.convertWeekDaysToNewApiFormat(params.details[1].weekdays);
-            }
+            if (params.details.length > 0) {
+                newPostApiParams = {
+                    from_date: params.details[0].from_date,
+                    to_date: params.details[1] ? params.details[1].to_date : params.details[0].to_date,
+                    restrictions: service.convertRestrictionsToNewApiFormat(params.details[0].restrictions)
+                };
 
+                if (params.details[1] && params.details[1].weekdays.length > 0) {
+                    newPostApiParams.weekdays = service.convertWeekDaysToNewApiFormat(params.details[1].weekdays);
+                }
+            }
             return newPostApiParams;
         };
 
