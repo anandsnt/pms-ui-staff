@@ -812,7 +812,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         var allRatesShowingData;
 
         lastSelectedFilterValues[activeFilterIndex].fromLeftFilter = false;
-        $scope.showContractDetailsChecked = false;
         if (chosenTab === 'RATES') {
             $scope.isRateView = true;
             $scope.isRateTypeView = false;
@@ -856,8 +855,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
             fetchRateTypeAndRestrictions(lastSelectedFilterValues[activeFilterIndex]);
 
-            $scope.showContractDetailsChecked = false;
-
             $scope.showBackButton = false;
 
             // scroll focus
@@ -898,22 +895,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                    _.omit(lastSelectedFilterValues[activeFilterIndex].allRate, 'scrollTo');
             }
         }
-    };
-
-    /*
-     * on clicking the checkbox for show-contract-details in topbar.
-     */
-    $scope.clickedOnShowContractDetails = function(e) {
-        $scope.showContractDetailsChecked = !$scope.showContractDetailsChecked;
-        var dispatchData = {
-            type: RM_RX_CONST.RATE_VIEW_WITH_ADDRESS,
-            flags: {
-                showRateDetail: $scope.showContractDetailsChecked
-            }
-        };
-
-        e.preventDefault();
-        store.dispatch(dispatchData);
     };
 
     /*
@@ -2473,7 +2454,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
          */
         var initializeDataModel = () => {
             // for top bar
-            $scope.showContractDetailsChecked = false;
             $scope.showTopBar = false;
             $scope.showBackButton = false;
             $scope.selectedCardNames = [];
