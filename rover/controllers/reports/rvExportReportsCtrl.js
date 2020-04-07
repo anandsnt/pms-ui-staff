@@ -451,7 +451,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             ROOM_NO: 'ROOM_NO',
             CONFIRMATION_NUMBER: 'CONFIRMATION_NUMBER',
             CHECKOUT_DATE: 'CHECKOUT_DATE',
-            TRAVEL_AGENT: 'TRAVEL_AGENT'
+            TRAVEL_AGENT: 'TRAVEL_AGENT',
+            LAST_NAME: 'LAST_NAME'
         };
 
         var reportIconCls = {
@@ -595,6 +596,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Invoice / Folio Export': true,
                 'Nationality Export - France': true,
                 'Criterion Hospitality CC Export': true,
+                'Guest Details by Arrival Date': true,
                 'Cancellations by Arrival Date': true,
                 'Cancellations by Cancel Date': true
             };
@@ -616,7 +618,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Police Report Export': true,
                 'Switzerland Zurich Police Export': true,
                 'Spain Barcelona Police Export': true,
-                'Austria Nationality Export': true,
+                'Austria Residence Country Export': true,
                 'Nationality Export - France': true,
                 'Criterion Hospitality CC Export': true,
                 'GOBD Export': true,
@@ -823,7 +825,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
              * max date is business date
              */
             if ($scope.selectedEntityDetails.report.title === 'Cancellations by Arrival Date' || 
-                    $scope.selectedEntityDetails.report.title === 'Cancellations by Cancel Date' ) {
+                    $scope.selectedEntityDetails.report.title === 'Cancellations by Cancel Date' ||
+                    $scope.selectedEntityDetails.report.title === 'Guest Details by Arrival Date' ) {
                 $scope.exportFromCalenderOptions = angular.extend({
                     maxDate: null,
                     minDate: null,
@@ -1380,7 +1383,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 if (dateFieldObject.id === $scope.scheduleParams.time_period_id) {
                     return true;
                 }
-            } else if ($scope.selectedEntityDetails.report.title === 'Journal Export') {
+            } else if ($scope.selectedEntityDetails.report.title === 'Journal Export' || $scope.selectedEntityDetails.report.title === 'Guest Details by Arrival Date') {
                 var dateFieldObject = _.find($scope.originalScheduleTimePeriods,
                     function(item) {
                         return item.value === 'DATE'; }
