@@ -121,7 +121,8 @@ module.exports = {
             'jonas': [themeCSSRoot + 'jonas.less'],
             'westminster': [themeCSSRoot + 'westminster.less'],
             'coyote': [themeCSSRoot + 'coyote.less'],
-            'hermitage': [themeCSSRoot + 'hermitage.less']
+            'hermitage': [themeCSSRoot + 'hermitage.less'],
+            'sage-inn-v2': [themeCSSRoot + 'sage-inn-v2.less']
         };
     }
 };
