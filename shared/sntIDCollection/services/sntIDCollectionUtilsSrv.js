@@ -449,7 +449,7 @@ angular.module('sntIDCollection').service('sntIDCollectionUtilsSrv', function ($
 		idDetails.full_name = idDetails.full_name || '';
 		idDetails.expiration_date = moment(idDetails.expiration_date).isValid() ? idDetails.expiration_date : "";
 		idDetails.issue_date = moment(idDetails.issue_date).isValid() ? idDetails.issue_date : "";
-		idDetails.birth_date = moment(idDetails.birth_date).isValid() ? idDetails.birth_date : "";
+		idDetails.date_of_birth = moment(idDetails.birth_date).isValid() ? idDetails.birth_date : "";
 		idDetails.document_type = idDetails.document_class_name || 'ID';
 		
 		return idDetails;
