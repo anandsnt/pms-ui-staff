@@ -506,13 +506,14 @@ angular.module('sntRover')
 				var selectedChart = _.find($scope.dashboardFilter.chartTypes, function(chartType) {
 					return chartType.code === $scope.dashboardFilter.chartType;
 				}).name;
-				
+
 				if ($scope.dashboardFilter.gridViewActive && !$scope.dashboardFilter.aggType) {
 					$scope.gridViewHeader = selectedChart;
 				} else if ($scope.dashboardFilter.gridViewActive && $scope.dashboardFilter.aggType) {
 					var aggType = _.find($scope.dashboardFilter.aggTypes, function(aggType) {
 						return aggType.code === $scope.dashboardFilter.aggType;
 					}).name;
+					
 					$scope.gridViewHeader = selectedChart + ' - ' + aggType;
 				}
 
