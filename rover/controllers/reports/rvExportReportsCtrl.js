@@ -618,7 +618,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Police Report Export': true,
                 'Switzerland Zurich Police Export': true,
                 'Spain Barcelona Police Export': true,
-                'Austria Nationality Export': true,
+                'Austria Residence Country Export': true,
                 'Nationality Export - France': true,
                 'Criterion Hospitality CC Export': true,
                 'GOBD Export': true,
