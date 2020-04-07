@@ -97,12 +97,12 @@
 </div>
 
 <!-- Room block days -->
-<div class="room-block-timeline release-range paginated scrollable"
+<div ng-class="{'room-block-timeline release-range scrollable': true,'paginated': shouldShowLoadNextSetButton()}"
     ng-iscroll="room_rates_timeline_scroller"
     ng-show="shouldShowRoomsRates()">
 
-    <ul class="wrapper" style="width:{{getWidthForReleaseViewTimeLine()}};">
-        <li ng-repeat="occupancy in allotmentConfigData.roomblock.selected_room_types_and_occupanies">
+    <ul class="wrapper" style="width: {{getWidthForReleaseViewTimeLine()}}">
+        <li ng-repeat="occupancy in allotmentConfigData.roomblock.selected_room_types_and_occupanies" ng-class="{'with-button': !$index}">
             <div class="inner">
                 <span>{{ ::formatDateForUI(occupancy.date, fulldayInWeek) }}</span>
                 <strong>{{ ::formatDateForUI(occupancy.date, monthAndDate) }}</strong>
@@ -123,14 +123,14 @@
 </div>
 
 <!-- Room block grid -->
-<div class="room-block-grid release-range paginated scrollable" ng-iscroll="room_rates_grid_scroller"
+<div ng-class="{'room-block-grid release-range scrollable': true,'paginated': shouldShowLoadNextSetButton()}" ng-iscroll="room_rates_grid_scroller"
     ng-show="shouldShowRoomsRates()">
-    <div class="wrapper" style="width:{{getWidthForReleaseViewTimeLine()}};">
+    <div class="wrapper" style="width: {{ getWidthForReleaseViewTimeLine() }}">
         <!-- REPEAT ROW FOR ALL ROOM TYPES SELECTED -->
         <div class="row" ngrepeatend ng-repeat="roomType in allotmentConfigData.roomblock.selected_room_types_and_bookings">
             <!-- REPEAT COLUMN FOR ALL DAYS IN THE BLOCK -->
             <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
-            <div class="column" ng-repeat="dateData in roomType.dates">
+            <div class="column" ng-repeat="dateData in roomType.dates" ng-class="{'with-button': !$index}">
                 <!-- Room Type -->
                 <div class="line">
                     <input type="number"

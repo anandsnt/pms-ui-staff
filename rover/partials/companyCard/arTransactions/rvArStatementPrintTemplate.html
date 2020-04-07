@@ -20,9 +20,7 @@
         </div>
     </div>
 
-    <div class="statement-header-text" ng-if="printData.custom_text_header" >
-        <p ng-bind-html="trustAsHtml(printData.custom_text_header)"></p>
-    </div>
+    <div class="invoice-header text-center " ng-if="printData.custom_text_header"  ng-bind-html="trustAsHtml(printData.custom_text_header)"></div>
 
     <div class="invoice-body" ng-if="!printData.is_summary">
         <table class="invoice-details">
@@ -283,7 +281,5 @@
     <div class="currency" ng-if="printData.from_date && printData.to_date">
         <p>{{printData.from_date | date:dateFormat}} - {{printData.to_date | date:dateFormat}}</p>
     </div>
-    <div class="invoice-footer" ng-if="printData.custom_text_footer">
-        <p ng-bind-html="trustAsHtml(printData.custom_text_footer)"></p>
-    </div>
+    <div class="invoice-header text-center" ng-if="printData.custom_text_footer" ng-bind-html="trustAsHtml(printData.custom_text_footer)"></div>
 </div>

@@ -167,7 +167,8 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
                 code: '',
                 company: '',
                 travelAgent: ''
-            }
+            },
+            currentSelectedRateCurrencyId: ''
         };
     };
 

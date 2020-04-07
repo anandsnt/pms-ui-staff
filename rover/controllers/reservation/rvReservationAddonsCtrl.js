@@ -82,13 +82,6 @@ sntRover.controller('RVReservationAddonsCtrl', [
                 $scope.is_rate_addons_fetch = false;
                 $scope.addonsData.existingAddons = [];
             },
-            computeTotals = function() {
-                if ($scope.reservationData.isHourly) {
-                    $scope.computeHourlyTotalandTaxes();
-                } else {
-                    $scope.computeTotalStayCost();
-                }
-            },
             updateAddonPostOptions = function() {
                 $($scope.reservationData.rooms).each(function(index, room) {
                     $(room.addons).each(function(i, addon) {
@@ -246,7 +239,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                                     }
                                 }
                             });
-                            computeTotals();
+                            
                         }
                         $scope.is_rate_addons_fetch = true;
                     }
@@ -301,8 +294,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         title: addon.title,
                         totalAmount: addonQty * (addon.price),
                         price_per_piece: addon.price,
-                        amount_type: addon.amountType.value,
-                        post_type: addon.postType.value,
+                        amount_type: addon.amountType,
+                        post_type: addon.postType,
                         charge_full_weeks_only: addon.chargefullweeksonly,
                         posting_frequency: addon.postType.frequency,
                         rate_currency: addon.rateCurrency,
@@ -311,7 +304,11 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         is_allowance: addon.is_allowance,
                         is_consume_next_day: addon.is_consume_next_day,
                         is_inclusive: addon.is_inclusive,
-                        is_rate_addon: addon.is_rate_addon
+                        is_rate_addon: addon.is_rate_addon,
+                        post_day_of_the_week: addon.post_day_of_the_week,
+                        post_day_of_the_month: addon.post_day_of_the_month,
+                        frequency_type: addon.frequency_type,
+                        frequency: addon.frequency
                     });
                        
                     $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
@@ -334,7 +331,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     }
                 }
                 $scope.showEnhancementsPopup();
-                computeTotals();
+               
             },
             addonsDataCopy = [];
 
@@ -343,7 +340,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
             
             $scope.addonPopUpData = {
                 addonPostingMode: 'reservation',
-				cancelLabel: "+ More",
+				cancelLabel: "Cancel",
                 saveLabel: "Book",
                 shouldShowAddMoreButton: false,
                 number_of_adults: $scope.reservationData.number_of_adults,
@@ -362,15 +359,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     addon_count: item.quantity,
                     totalAmount: item.totalAmount,
                     amount: item.price_per_piece,
-                    amount_type: {
-                        description: item.amount_type,
-                        value: item.amount_type
-                    },
-                    post_type: {
-                        description: item.post_type,
-                        frequency: item.posting_frequency,
-                        value: item.post_type
-                    },
+                    amount_type: item.amount_type,
+                    post_type: item.post_type,
                     is_inclusive: item.is_inclusive,
                     is_rate_addon: item.is_rate_addon,
                     start_date: item.start_date,
@@ -380,7 +370,11 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     post_instances: item.post_instances,
                     quantity: item.quantity,
                     is_allowance: item.is_allowance,
-                    is_consume_next_day: item.is_consume_next_day
+                    is_consume_next_day: item.is_consume_next_day,
+                    post_day_of_the_week: item.post_day_of_the_week,
+                    post_day_of_the_month: item.post_day_of_the_month,
+                    frequency_type: item.frequency_type,
+                    frequency: item.frequency
                 };
 
                 $scope.packageData.existing_packages.push(addonsData);
@@ -576,7 +570,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
             if ($scope.addonsData.existingAddons.length === 0) {
                 $scope.closePopup();
             }
-            computeTotals();
+            
         };
 
         var initController = function() {
@@ -636,18 +630,24 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             description: item.description,
                             totalAmount: item.addon_count * parseFloat(item.amount),
                             price_per_piece: item.amount,
-                            amount_type: item.amount_type.value,
-                            post_type: item.post_type.value,
+                            amount_type: item.amount_type,
+                            post_type: item.post_type,
                             is_inclusive: item.is_inclusive,
                             is_rate_addon: item.is_rate_addon,
                             rate_currency: item.addon_currency,
                             post_instances: item.post_instances,
                             start_date: item.start_date,
                             end_date: item.end_date,
-                            posting_frequency: item.post_type.frequency
+                            posting_frequency: item.post_type.frequency,
+                            post_day_of_the_week: item.post_day_of_the_week,
+                            post_day_of_the_month: item.post_day_of_the_month,
+                            frequency_type: item.frequency_type,
+                            frequency: item.frequency
                         };
 
                         $scope.addonsData.existingAddons.push(addonsData);
+
+                        $scope.packageData.existing_packages.push(addonsData);
 
                         for (roomIndex = startIndex; roomIndex <= endIndex; roomIndex++) {
                             $scope.reservationData.rooms[roomIndex].addons.push({
@@ -666,12 +666,10 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         }
 
                     });
-                    $scope.packageData.existing_packages.push(associatedPackages);
 
                     addonsDataCopy = angular.copy($scope.addonsData.existingAddons);
                     $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
 
-                    $scope.computeTotalStayCost();
                 };
 
                 if (!RVReservationStateService.getReservationFlag('RATE_CHANGED') && !!$scope.reservationData.reservationId) {
@@ -693,7 +691,17 @@ sntRover.controller('RVReservationAddonsCtrl', [
                  * CICO-16792 Sending a second parameter to the fetchAddons method to identify the initial call to the method
                  */
                 fetchAddons('', true);
-                $scope.setScroller("enhanceStays");
+                var scrollerOptions = {
+                    click: true,
+                    preventDefault: false,
+                    showScrollbar: true
+                };
+
+                $scope.setScroller("enhanceStays", scrollerOptions);
+                $timeout(function() {
+                    $scope.refreshAddonsScroller();
+                }, 2000);
+
                 var proceedBookingListner = $scope.$on('PROCEED_BOOKING', function(event, data) {
                     if (data.addonPostingMode === 'reservation') {
                         $scope.proceed();

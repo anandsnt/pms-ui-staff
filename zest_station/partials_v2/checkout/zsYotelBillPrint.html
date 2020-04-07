@@ -25,7 +25,7 @@
         <br>
     </div>
     <!-- guest detials -->
-    <div class="caption bill-caption">
+   <!--  <div class="caption bill-caption" ng-if="printData.addressType ==='guest'">
         <p>{{printData.guest_details.first_name}}&nbsp;{{printData.guest_details.last_name}}</p>
         <p>{{printData.street}}</p>
         <p>{{printData.guest_details.city}}</p>
@@ -34,7 +34,22 @@
         <p>{{printData.guest_details.country}}</p>
         <br>
         <br>
+    </div> -->
+    <div class="caption bill-caption">
+        <span> {{ 'BILLING_ADDRESS' | translate }} :</span>
+        <br/>
+        <span>{{ printData.billingInfo.name}}</span>
+        <br>
+        <span ng-bind-html="printData.billingInfo.address"></span>
+        <br/><br/>
     </div>
+
+    <div class="caption bill-caption" ng-if="printData.addressType ==='ta' && printData.ta_card_details && printData.ta_card_details.name">
+        <p>{{ ::printData.ta_card_details.name}}</p>
+        <p ng-bind-html="::printData.ta_card_details.address"></p>
+        <br/><br/>
+    </div>
+
     <!-- room detials -->
     <div class="caption bill-room-details">
         <div>

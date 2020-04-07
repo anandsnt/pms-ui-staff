@@ -29,7 +29,7 @@ const RateManagerGridLeftRowComponent = ({
 			</span>                                
 			<span className={'contracted-rate-contract '+ contractClass}>{accountName}</span>
 			<span className={'contracted-rate-address '+ contractClass}>{address}</span>
-			<span className="icons icon-double-arrow rotate-right"></span>
+			<span className={rightSpanClassName}></span>
             </a>
 		</td>
 	</tr>

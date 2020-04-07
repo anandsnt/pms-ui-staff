@@ -6,7 +6,7 @@
 
             <h2 class="message h2" ng-if="!showCustomPosting()">Room Enhancements</h2>
         <!-- scroller -->
-            <div class="scrollable" ng-iscroll='resultDetails' ng-iscroll-delay='50'>
+            <div class="scrollable" ng-class="{'with-two-actions': shouldShowAddMoreButton()}" ng-iscroll='resultDetails' ng-iscroll-delay='50'>
                 <ul class="wrapper">
 
                     <!-- Add .disabled if cant be selected such as add-on with 'INCL' value or add-on for the first night -->
@@ -16,7 +16,7 @@
                             <h3 class="enhancement-name">
                                 
                                 {{ addon.name }}
-                                <small>({{getAddonCount(addon.amount_type.value, addon.post_type.value, addon.post_type.frequency, addonPopUpData.number_of_adults, addonPopUpData.number_of_children, addonPopUpData.duration_of_stay, addon.charge_full_weeks_only, addon.addon_count)}})</small>
+                                <small ng-hide="shouldHideCount(addon)">({{getAddonCount(addon)}})</small>
                             </h3>
                             <!-- Show this if there is a description -->
                             <!-- <span class="enhancement-desc">
@@ -28,18 +28,18 @@
                              <span class="enhancement-desc" ng-show="addon.is_inclusive">INCL</span>
                          </div>
                          <span class="price" ng-hide="addon.is_rate_addon && addon.is_inclusive">
-                                {{addon.addon_currency}}{{addon.totalAmount}}
+                                {{addon.addon_currency}}{{getAddonTotal(addon)}}
                              </span>
                          <!-- add class .hidden to hide it if it can't be removed/deleted-->
-                         <span class="delete" ng-hide="addon.is_rate_addon || addon.is_inclusive" ng-click="removeChosenAddons($index, addon)">
+                         <span class="delete" ng-hide="addon.is_rate_addon || addon.is_inclusive" ng-click="removeChosenAddons($event, $index, addon)">
                             <span class="icons icon-remove-10"></span>
                          </span>
                     </li>
                 </ul>
             </div>
-            <div ng-hide="!addonPopUpData.shouldShowAddMoreButton || selectedPurchesedAddon === '' || showCustomPosting()" class="actions inline">
-                <button class="button blank" ng-click="closeAddOnPopup()">Close</button>
-                <button class="button orange" ng-click="goToAddons()">Add More</button>
+            <div ng-show="!showCustomPosting()" class="actions">
+                <button ng-if="shouldShowAddMoreButton()" type="button" class="button orange" ng-click="goToAddons()">Add More to This Room</button>
+                <button type="button" class="button blank" ng-click="closeAddOnPopup()">Close Window</button>
             </div>
         </div>
         <div class="content-right" ng-class="{'hidden': !showCustomPosting()}">
@@ -82,8 +82,15 @@
             <!-- Add .hidden if clicked again on the same enhancement to show initial screen -->
             <div class="content-dates" ng-show="selectedPurchesedAddon">
                 <span class="h2 message" ng-if="selectedPurchesedAddon.name">{{selectedPurchesedAddon.name | limitTo: selectedPurchesedAddon.nameCharLimit}}{{selectedPurchesedAddon.name.length > 23 ? '...': ''}}</span>
-                <span class="text" ng-if="selectedPurchesedAddon.description">{{selectedPurchesedAddon.description | limitTo: 70}}{{selectedPurchesedAddon.description.length >= 70 ? '...': ''}}</span>
-                <div class="content-entries">
+
+                <!-- <span class="text" ng-if="selectedPurchesedAddon.description">{{selectedPurchesedAddon.description | limitTo: 70}}{{selectedPurchesedAddon.description.length >= 70 ? '...': ''}}</span> -->
+                <span class="text" ng-if="selectedPurchesedAddon.amount && selectedPurchesedAddon.amount_type && selectedPurchesedAddon.post_type">at {{selectedPurchesedAddon.addon_currency}}{{selectedPurchesedAddon.amount | number : 2}} / {{selectedPurchesedAddon.amount_type.description}} {{selectedPurchesedAddon.post_type.description}}</span>
+
+                <span class="text" ng-if="selectedPurchesedAddon.post_day_of_the_week && selectedPurchesedAddon.post_type.value !== 'CUSTOM' && selectedPurchesedAddon.post_type.value !== 'NIGHT' && selectedPurchesedAddon.post_type.value !== 'LAST_NIGHT'"> Post day - {{selectedPurchesedAddon.post_day_of_the_week}} </span>
+
+                <span class="text" ng-if="selectedPurchesedAddon.post_type.value === 'CUSTOM'"> {{ getCustomPostingInfo() }}</span>
+                
+                <div class="content-entries" ng-class="{'hidden': selectedPurchesedAddon.post_type.value !== 'STAY'}">
                     <!-- Hide if only Date-To needs to be shown -->
                     <div class="entry margin">
                         <label>From</label>
@@ -105,7 +112,7 @@
                 <!-- Hide if only Date-To needs to be shown -->
                 <div class="content-entries">
                     
-                    <div class="entry full-width">
+                    <div class="entry full-width" ng-class="{'hidden': selectedPurchesedAddon.post_type.value !== 'STAY'}">
                         <label>For Every</label>
                         <ul class="entry-days float">
 
@@ -135,8 +142,8 @@
                 </div>
 
                 <div class="actions inline">
-                    <button class="button blank" ng-click="closeAddOnPopup()">{{addonPopUpData.cancelLabel}}</button>
-                    <button class="button green" ng-click="proceedBooking()">{{addonPopUpData.saveLabel}}</button>
+                    <button class="button blank" ng-click="setDeafultDisplay()">{{addonPopUpData.cancelLabel}}</button>
+                    <button class="button green" ng-disabled="selectedPurchesedAddon.post_type.value !== 'STAY'" ng-class="{'green': selectedPurchesedAddon.post_type.value === 'STAY', 'grey': selectedPurchesedAddon.post_type.value !== 'STAY'}" ng-click="proceedBooking()">{{addonPopUpData.saveLabel}}</button>
                 </div>
             </div>
         </div>

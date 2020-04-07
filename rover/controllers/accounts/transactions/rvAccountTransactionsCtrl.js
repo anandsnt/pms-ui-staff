@@ -570,6 +570,13 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			loadDefaultBillDateData();
 		};
 
+		$scope.callAPI(RVBillCardSrv.fetchAdjustmentReasons, {
+			successCallBack: function(response) {
+				$scope.adjustmentReasonOptions = response.force_adjustment_reasons;
+				$scope.showAdjustmentReason = response.force_adjustment_reason_enabled;
+			}
+		});
+
 		$scope.openPostCharge = function( activeBillNo ) {
 			// Show a loading message until promises are not resolved
 			sntActivity.start("OPEN_POST_CHARGE");

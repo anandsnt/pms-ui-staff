@@ -65,15 +65,16 @@ angular.module('sntRover').service('RVBillCardSrv',
 			RVBaseWebSrv.postJSON(url, params).then(function(data) {
 				// Manually creating charge details list & credit deatils list.
 				data.charge_details_list = [];
-				data.credit_details_list = [];
 				angular.forEach(data.fee_details, function(fees, index1) {
-					angular.forEach(fees.charge_details, function(charge, index2) {
+					angular.forEach(fees.charge_details, function(charge) {
 						charge.date = fees.date;
+						charge.isCredit = false;
 						data.charge_details_list.push(charge);
 					});
-					angular.forEach(fees.credit_details, function(credit, index3) {
+					angular.forEach(fees.credit_details, function(credit) {
 						credit.date = fees.date;
-						data.credit_details_list.push(credit);
+						credit.isCredit = true;
+						data.charge_details_list.push(credit);
 					});
 				});
 		   	 	deferred.resolve(data);
@@ -249,7 +250,20 @@ angular.module('sntRover').service('RVBillCardSrv',
         });
 
         return deferred.promise;
-    };
+	};
+
+    this.fetchAdjustmentReasons = function() {
+        var deferred = $q.defer(),
+			url = '/admin/force_adjustment_reasons';
+			
+        BaseWebSrvV2.getJSON(url).then(function(data) {
+            deferred.resolve(data);
+        }, function(data) {
+            deferred.reject(data);
+        });
+
+        return deferred.promise;
+	};
 
 	this.sendEmail = function(data) {
 		var deferred = $q.defer();
