@@ -11,7 +11,8 @@
 		'$filter',
 		'$timeout',
 		'sntIDCollectionSrv',
-		function($scope, $state, zsEventConstants, $stateParams, zsGeneralSrv, zsCheckinSrv, zsUtilitySrv, $controller, $filter, $timeout, sntIDCollectionSrv) {
+		'sntIDCollectionUtilsSrv',
+		function($scope, $state, zsEventConstants, $stateParams, zsGeneralSrv, zsCheckinSrv, zsUtilitySrv, $controller, $filter, $timeout, sntIDCollectionSrv, sntIDCollectionUtilsSrv) {
 
 			BaseCtrl.call(this, $scope);
 			$controller('sntIDCollectionBaseCtrl', {
@@ -596,6 +597,7 @@
 				idCaptureConfig.useThirdPartyScan = $scope.zestStationData.thirdPartyScanEnabled;
             	idCaptureConfig.thirdPatrtyConnectionUrl = $scope.zestStationData.third_party_scan_url;
            		$scope.setConfigurations(idCaptureConfig);
+           		sntIDCollectionUtilsSrv.workstation_id = $scope.zestStationData.set_workstation_id;
 			}());
 		}
 	]);

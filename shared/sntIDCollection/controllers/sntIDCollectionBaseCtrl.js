@@ -56,12 +56,15 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 	var thirdPatrtyScanFinalActions = function(data) {
 		$timeout(function() {
 			// Process response
-			var response = sntIDCollectionUtilsSrv.formatResultsFromThirdParty(data.doc);
-
-			$scope.screenData.idDetails = response;
-			$scope.$emit('FINAL_RESULTS', response);
+			var response = sntIDCollectionUtilsSrv.formatResultsFromThirdParty(data.doc);		
 
 			$scope.screenData.scanMode = screenModes.final_id_results;
+			if ($scope.screenData.imageSide === 0) {
+				response.back_side_image = "";
+			}
+			$scope.$emit('FINAL_RESULTS', response);
+
+			$scope.screenData.idDetails = response;
 			$('#' + 'id-front-side').attr('src', response.front_side_image);
 			if (response.back_side_image) {
 				$('#' + 'id-back-side').attr('src', response.back_side_image);
@@ -74,8 +77,9 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 				$scope.$emit('IMAGE_ANALYSIS_STARTED');
 				
 				var json = {
-                    'Command': 'cmd_scan_with_3rd_party_scanner',
-                    'timeout': sntIDCollectionUtilsSrv.thirdPartyScannerTimeout
+                    'command': 'cmd_scan_with_3rd_party_scanner',
+                    'timeout': sntIDCollectionUtilsSrv.thirdPartyScannerTimeout,
+                    'workstation_id': sntIDCollectionUtilsSrv.workstation_id
                 };
                 
 				sntIDCollectionSrv.WebSocketObj.send(JSON.stringify(json));
@@ -445,7 +449,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		$('#'+ domIDMappings.back_image_preview).attr('src', '');
 		$scope.screenData.scanMode = screenModes.upload_front_image;
 		$scope.$emit('CLEAR_PREVIOUS_DATA');
-		if ($scope.deviceConfig.useExtCamera) {
+		if ($scope.deviceConfig.useExtCamera && !$scope.deviceConfig.useThirdPartyScan) {
 			$scope.$emit('FRONT_SIDE_SCANNING_STARTED');
 		}
 	};
