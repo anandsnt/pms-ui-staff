@@ -10,13 +10,28 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
             rateTypeEnabled: Toggles.isEnabled('hierarchical_rate_type_restrictions')
         };
 
+        service.shouldWeConsiderHierarchyRestrictionsForUrlsAndParams = function(params) {
+            return (service.hierarchyRestrictions.roomTypeEnabled && params.restrictionType === 'ROOM_TYPE') ||
+                    (service.hierarchyRestrictions.rateTypeEnabled && params.restrictionType === 'RATE_TYPE');
+        };
+
+        service.processRateTypeRestrictionResponse = function(response) {
+            _.each(response, function(item) {
+                _.each(item.rate_types, function(rateType) {
+                    rateType.restrictions = rvRateManagerUtilitySrv.generateOldGetApiResponseFormat(rateType.restrictions, false);
+                });
+            });
+
+            return response;
+        };
+
         // Handle GET api while loading RM with various filters in House Level ( Frozen Panel).
         // Handle GET api, for individual cell click & popup in House Level ( Frozen Panel).
-        service.formatRestrictionsData = function( restrcionsList, params) {
+        service.formatRestrictionsData = function(restrcionsList, params) {
 			// CICO-76813 : New API for hierarchyRestrictions
             if (service.hierarchyRestrictions.houseEnabled && params.restrictionType === 'HOUSE') {
                 _.each(restrcionsList, function( item ) {
-                    item.restrictions = rvRateManagerUtilitySrv.generateOldGetApiResponseFormat(item.restrictions);
+                    item.restrictions = rvRateManagerUtilitySrv.generateOldGetApiResponseFormat(item.restrictions, true);
                 });
             }
 
@@ -31,6 +46,13 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
             if (service.hierarchyRestrictions.houseEnabled) {
                 url = '/api/restrictions/house';
             }
+            return url;
+        };
+
+        // CICO-76337 rateType restrictions API
+        service.rateTypeRestrictionsUrl = function(params) {
+            var url = params.hierarchialRateTypeRestrictionRequired ? '/api/restrictions/rate_types' : '/api/daily_rates/rate_types';
+
             return url;
         };
 
@@ -60,6 +82,9 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
         service.processParamsforApplyAllRestrictions = function( params ) {
             if (service.hierarchyRestrictions.houseEnabled && params.restrictionType === 'HOUSE') {
 				params = rvRateManagerUtilitySrv.generateNewPostApiParams(params);
+            }
+            if (service.shouldWeConsiderHierarchyRestrictionsForUrlsAndParams(params)) {
+                params = rvRateManagerUtilitySrv.generateNewPostApiParams(params);
             }
             return params;
         };

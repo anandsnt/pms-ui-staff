@@ -648,6 +648,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         if (isHierarchyRestrictionNeeded()) {
             params.restrictionType = getRestrictionType();
         }
+        if ($scope.hierarchyRestrictions.rateTypeEnabled && $scope.chosenTab === 'RATE_TYPES') {
+            params.hierarchialRateTypeRestrictionRequired = true;
+        }
 
         var options = {
             params: params,

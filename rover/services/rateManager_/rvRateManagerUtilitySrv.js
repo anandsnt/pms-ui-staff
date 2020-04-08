@@ -43,7 +43,7 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
          *  @param [Object] [input value as key value pair]
          *  @return [Array] [output - converted values into array structure]
          */
-        service.generateOldGetApiResponseFormat = function( input ) {
+        service.generateOldGetApiResponseFormat = function( input, needRestrictionStatus ) {
             var output = [],
                 key = '',
                 value = '', 
@@ -53,18 +53,18 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
                 value = input[key],
                 obj = {};
 
-                if (typeof(value) === "boolean" && value) {
-                    obj.status = 'ON';
+                if (value) {
+                    if (needRestrictionStatus) {
+                        obj.status = 'ON';
+                    }
                     obj.restriction_type_id = service.restrictionKeyToCodeMapping[key][0];
                     obj.is_on_rate = false;
-                    obj.days = null;
-                    output.push(obj);
-                }
-                else if (typeof(value) === "number") {
-                    obj.status = 'ON';
-                    obj.restriction_type_id = service.restrictionKeyToCodeMapping[key][0];
-                    obj.days = value;
-                    obj.is_on_rate = false;
+                    if (typeof(value) === "boolean" && value) {
+                        obj.days = null;
+                    }
+                    else if (typeof(value) === "number") {
+                        obj.days = value;
+                    }
                     output.push(obj);
                 }
             }
@@ -129,6 +129,10 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
 
                 if (params.details[1] && params.details[1].weekdays.length > 0) {
                     newPostApiParams.weekdays = service.convertWeekDaysToNewApiFormat(params.details[1].weekdays);
+                }
+
+                if (!!params.rate_type_ids) {
+                    newPostApiParams.rate_type_ids = params.rate_type_ids;
                 }
             }
             return newPostApiParams;
