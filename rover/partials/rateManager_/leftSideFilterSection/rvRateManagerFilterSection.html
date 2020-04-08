@@ -77,15 +77,6 @@
 						</div>
 					</div>
 
-					<!-- Filter Contracted Rates, add .hidden if filter 'Rates' is not active -->
-					<div class="entry entry-company-card" ng-class="{'hidden': chosenTab !== 'RATES'}">
-						<label for="company-card" class="search-text">
-						Filter Contracted Rates
-						</label>
-						<span type="submit" name="submit" class="icons icon-search1"></span>
-						<input type="text" id="company-card" placeholder="Enter search criteria" autocomplete="off" ng-model="cardSearchText"  rv-cc-ta-auto-complete select-handler="cardSelected">
-					</div>
-
 					<!-- Remove .hidden to when 'Rate Types' filter is active
 					Otherwise add .hidden
 					-->
@@ -118,25 +109,6 @@
 
 						<!-- Show if more than 1 -->
 						<button ng-show="selectedRates.length > 2" ng-click="deleteAllSelectedRates()" class="button blank deleteall">Clear Selection</button>
-					</div>
-
-					<!-- Contracted Rates
-					Show when a Contracted Rate is selected
-					Hide if a Rate is selected after this
-					Hide if filter 'Rates' is not active
-					-->
-					<div class="selected-data" ng-class="{'hidden': chosenTab !== 'RATES'}">
-						<strong ng-show="selectedCards.length > 0" >Contracts Selected</strong>
-
-						<div class="rates-box" ng-class="{'dark': card.account_type === 'COMPANY', 'purple': card.account_type === 'TRAVELAGENT'}" ng-repeat="card in selectedCards">
-							<span class="rate-data">{{card.account_name}}</span>
-							<span class="rate-data location">{{card.account_address}}</span>
-							<span ng-click="deleteSelectedCard(card.id)" class="icons delete_small"> &nbsp;</span>
-							<br clear="all">
-						</div>
-
-						<!-- Show if more than 1 -->
-						<button ng-show="selectedCards.length > 2" ng-click="deleteAllSelectedCards()" class="button blank deleteall">Clear Selection</button>
 					</div>
 
 					<!-- Rate Types
