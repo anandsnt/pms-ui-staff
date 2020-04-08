@@ -195,7 +195,7 @@
                     </div>
                     <span class="reference" ng-show="item.reference_text != ''">{{item.reference_text}}</span>
                 </td>
-                <td class="align-right">{{currencySymbol}}{{item.amount | number: precisonTwo}}
+                <td ng-if="!item.isCredit" class="align-right">{{currencySymbol}}{{item.amount | number: precisonTwo}}
                     <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol!='' && item.invoice_currency_amount !== null">
                         {{invoiceCurrencySymbol}}{{item.invoice_currency_amount}}
                     </div>
@@ -204,21 +204,9 @@
                         {{item.rate_currency}}{{item.rate_converted_amount}}
                     </div>
                 </td>
-                <td class="align-right"></td>
-            </tr>
-
-            <tr ng-repeat="item in printData.credit_details_list">
-                <td>{{item.date | date:dateFormat}}</td>
-                <td class="description">
-                    <strong>{{item.item_description}}</strong>
-                    <span>{{item.description}}</span>
-                    <div class="converted-currency smaller">
-                        {{item.rate_coversion_rate}}
-                    </div>
-                    <span class="reference" ng-show="item.reference_text != ''">{{item.reference_text}}</span>
-                </td>
-                <td class="align-right"></td>
-                <td class="align-right">{{currencySymbol}}{{item.amount | number: precisonTwo}}
+                <td ng-if="!item.isCredit" class="align-right"></td>
+                <td class="align-right" ng-if="item.isCredit"></td>
+                <td ng-if="item.isCredit" class="align-right">{{currencySymbol}}{{item.amount | number: precisonTwo}}
 
                     <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol!='' && item.invoice_currency_amount !== null">
                         {{invoiceCurrencySymbol}}{{item.invoice_currency_amount}}
@@ -228,6 +216,7 @@
                     </div>
                 </td>
             </tr>
+
         </tbody>
     </table>
 </div>
