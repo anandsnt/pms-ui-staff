@@ -54,7 +54,7 @@ sntRover.controller('reservationDetailsController',
 				previousStateParams: $scope.previousStateParams
 			};
 		};
-
+		
 		var RESPONSE_STATUS_470 = 470;
 
 		$scope.hasOverBookRoomTypePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
@@ -138,7 +138,8 @@ sntRover.controller('reservationDetailsController',
 					activeTab: "RESERVATIONS"
 				}
 			};
-		} else if ($stateParams.isFromCards) {
+		} else if ($stateParams.isFromCards || $rootScope.stayCardStateBookMark.previousState === "rover.companycarddetails") {
+
 			setNavigationBookMark();
 			$rootScope.setPrevState = {
 				title: 'AR Transactions',
@@ -949,7 +950,8 @@ sntRover.controller('reservationDetailsController',
 				room_type_id: roomTypeId,
                 adults: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numAdults,
                 children: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numChildren,
-                is_member: $scope.guestData.primary_guest_details.is_member
+                is_member: $scope.guestData.primary_guest_details.is_member,
+                selectedCurrencyId: $scope.reservationData.reservation_card.rate_currency_id
 			});
 		}
 
@@ -1475,7 +1477,8 @@ sntRover.controller('reservationDetailsController',
 						rateDetails: {
 							actual_amount: newDateDetails.rate_amount,
 							modified_amount: newDateDetails.rate_amount
-						}
+						},
+						roomTypeId: newDateDetails.room_type_id
 					};
 
 				}
@@ -1595,6 +1598,7 @@ sntRover.controller('reservationDetailsController',
 				}
 				else{
 					console.warn("There should be atleast one credit card needed");
+					$scope.closeDialog();
 				}
 			};
 
@@ -2104,8 +2108,11 @@ sntRover.controller('reservationDetailsController',
 				$scope.reservationData.reservation_card.is_package_exist = false;
 			}
 			shouldReloadState = true;
-		};
-		var addonArray = [];
+		},
+		failureCallBack = function(errorMessage) {
+			$scope.errorMessage = errorMessage;
+		},
+		addonArray = [];
 
 		addonArray.push(addonId);
 		var dataToApi = {
@@ -2116,7 +2123,7 @@ sntRover.controller('reservationDetailsController',
 			"reservationId": reservationId
 		};
 
-		$scope.invokeApi(RVReservationPackageSrv.deleteAddonsFromReservation, dataToApi, successDelete);
+		$scope.invokeApi(RVReservationPackageSrv.deleteAddonsFromReservation, dataToApi, successDelete, failureCallBack);
 	};
 
 	$scope.$on('PRIMARY_GUEST_ID_CHANGED', function(event, data) {

@@ -66,9 +66,10 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                     loyalty: iconBasePath + '/loyalty.svg',
                     clear_text: commonIconsPath + '/clear-text.svg',
                     no_of_nights: commonIconsPath + '/nights.svg',
-                    adults: commonIconsPath + '/adults.svg',
+                    adults: $scope.zestStationData.theme === 'yotel' ? iconBasePath + '/adults.svg' : commonIconsPath + '/adults.svg',
                     children: commonIconsPath + '/children.svg',
-                    down: commonIconsPath + '/down.svg'
+                    down: commonIconsPath + '/down.svg',
+                    company: $scope.zestStationData.theme === 'yotel' ? iconBasePath + '/company.svg' :  commonIconsPath + '/company.svg'
                 }
             };
 
@@ -208,7 +209,11 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                     'halifax',
                     'bellevue',
                     'jonas',
-                    'westminster'
+                    'westminster',
+                    'coyote',
+                    'hermitage',
+                    'sage-inn-v2',
+                    'lake-house'
                 ],
                 nonCircleNavIcons = ['public_v2'];// minor adjustment to the back/close icons for some themes (only show the inner x or <)
 

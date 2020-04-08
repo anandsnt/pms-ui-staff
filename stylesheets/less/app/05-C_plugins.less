@@ -1759,6 +1759,22 @@
                             padding-top: 10px;
                             margin-top: 10px;
                             border-top: 1px solid rgba(0,0,0,.1);
+
+                            .button {
+
+                                &.blank {
+                                    display: inline-block;
+                                    width: auto;
+                                }
+
+                                &:last-child:not(:first-child) {
+                                    margin-top: 10px;
+                                }
+                            }
+
+                            &:not(.bottom):not(:last-child) {
+                                padding-bottom: 10px;
+                            }
                         }
 
                         #print-keys {
@@ -3297,6 +3313,10 @@
                         .scrollable {
                             margin: 0;
                             .calc-max-height( 100, 115 );
+
+                            &.with-two-actions {
+                                .calc-max-height( 100, 175 );
+                            }
 
                             .iScrollVerticalScrollbar {
                                 top: 0;
@@ -7103,7 +7123,7 @@
                         height:650px;
                 }
                 
-                .notice {
+                &:not(.error) {
                     color:#9a8410;
                 }
 

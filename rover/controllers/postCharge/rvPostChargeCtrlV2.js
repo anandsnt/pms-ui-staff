@@ -380,10 +380,20 @@ sntRover.controller('RVPostChargeControllerV2',
 
 				// update net total price
 				calNetTotalPrice();
+				
+				$scope.showReason = $scope.showAdjstmentDropdown();
 
 				// for numbers save current input to lastInput only
 				// after processing the current input
 				lastInput = input;
+			};
+
+			$scope.showAdjstmentDropdown = function(input) {
+				if ( $scope.selectedChargeItem.total_price < 0 && $scope.showAdjustmentReason) {
+					return true;
+				} else {
+					return false;
+				}
 			};
 
 
@@ -392,6 +402,7 @@ sntRover.controller('RVPostChargeControllerV2',
 
 				lastInput = input;
 				$scope.warningMessage = "";
+				$scope.showReason = $scope.showAdjstmentDropdown();
 
 				// toggle 'QTY' and 'PR' as required and exit
 				if ( input === 'QTY' || input === 'PR' ) {
@@ -466,7 +477,7 @@ sntRover.controller('RVPostChargeControllerV2',
 						// update net total price
 						calNetTotalPrice();
 					}
-
+					$scope.showReason = $scope.showAdjstmentDropdown();
 					return;
 				}
 			};

@@ -31,47 +31,7 @@ sntRover.service('RVSelectRoomRateSrv', ['$q', 'rvBaseWebSrvV2', 'dateFilter',
                     amounts = {},
                     summary = [];
 
-                _.each(data.results, function(result, index) {
-                    // ---------------------------------------------Add HOUSE_FULL to the restrictions array
-                    // CICO-24923 Not needed in case of group bookings
-                    if (self.houseAvailability && !self.isGroupReservation && (index === 0 || index < data.results.length - 1)) {
-                        if (self.houseAvailability[result.date] < 1) {
-                            result.restrictions.push({
-                                restriction_type_id: 99,
-                                days: null
-                            });
-                        }
-                    }
-
-                    // --------------------------------------------- INVALID PROMO
-                    if (self.promotionValidity !== null && (index === 0 || index < data.results.length - 1)) {
-                        if (!self.promotionValidity[result.date]) {
-                            result.restrictions.push({
-                                restriction_type_id: 98,
-                                days: null
-                            });
-                        }
-                    }
-
-                    restrictions[result.date] = result.restrictions;
-
-                    amounts[result.date] = result.amount;
-
-                    _.each(result.restrictions, function(restriction) {
-                        if (!_.findWhere(summary, {
-                            restriction_type_id: restriction.restriction_type_id,
-                            days: restriction.days
-                        })) {
-                            summary.push(restriction);
-                        }
-                    });
-                });
-
-                deferred.resolve({
-                    summary: summary,
-                    dates: restrictions,
-                    amounts: amounts
-                });
+                    deferred.resolve(data);
 
             }, function(data) {
                 deferred.reject(data);

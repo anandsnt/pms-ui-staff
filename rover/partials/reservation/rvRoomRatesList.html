@@ -77,7 +77,7 @@
             <ul class="rooms-and-rates wrapper" ng-if="stateCheck.activeView == 'ROOM_TYPE'">
 
                 <li ng-repeat="room in display.roomFirstGrid track by $index">
-                    <a class="has-arrow toggle" ng-class="{active: !room.isCollapsed, disabled: borrowForGroups}" ng-click="showRatesList(room)">
+                    <a class="has-arrow toggle active"  ng-click="showRatesList(room)" ng-class="{active: !room.isCollapsed, disabled: borrowForGroups}">
                         <div class="data">
                             <h2>{{room.name}}</h2>
                             <!-- <span class="recommended" ng-show="!borrowForGroups && display.roomFirstGrid.length > 0 && $index > 0 && (room.defaultRate.adr - display.roomFirstGrid[0].defaultRate.adr) > 0">
@@ -110,7 +110,7 @@
                             </span>
 
                         </div>
-                        <div class="book-rate" ng-if="room.isCollapsed">
+                        <div class="book-rate  book-rate-display" ng-if="room.isCollapsed">
                             <h4 ng-hide="borrowForGroups" translate>RESV_BEST_RATE</h4>
                             <!-- The bellow line is commented out as part of CICO-73583-removal of account_id from rates table.
                                 Contracts have been separated out from the rates and
@@ -131,11 +131,11 @@
                                     CURRENT RATE
                                 </button>
                                 <!-- making sure that this button always hidden when borrow -->
-                                <button class="button {{room.defaultRate.buttonClass}}" ng-hide="room.isSuiteUnavailable || borrowForGroups || (stateCheck.selectedStayDate.rate.id == room.defaultRate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id )) || restrictIfOverbook(room.id,room.defaultRate.id,room.availability)" ng-click="handleBooking(room.id,room.defaultRate.id,$event)" translate>
+                                <button class="button {{room.defaultRate.buttonClass}}" ng-hide="room.isSuiteUnavailable || borrowForGroups || (stateCheck.selectedStayDate.rate.id == room.defaultRate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id )) || restrictIfOverbook(room.id,room.defaultRate.id,room.availability)" ng-click="handleBooking(room.id,room.defaultRate.id,$event, null, null, null, room.rateCurrency)" translate>
                                     RESV_BOOK
                                 </button>
                                 <!-- making sure that this button always show when borrow -->
-                                <button class="button {{room.defaultRate.buttonClass}}" ng-show="borrowForGroups && !restrictIfOverbook(room.id,room.defaultRate.id,room.availability)" ng-click="handleBooking(room.id,room.defaultRate.id,$event)" translate>
+                                <button class="button {{room.defaultRate.buttonClass}}" ng-show="borrowForGroups && !restrictIfOverbook(room.id,room.defaultRate.id,room.availability)" ng-click="handleBooking(room.id,room.defaultRate.id,$event, null, null, null, room.rateCurrency)" translate>
                                     RESV_BOOK
                                 </button>
                             <!-- </div> -->
@@ -178,10 +178,10 @@
                                     SR
                                     <span translate>RESV_AVG_NIGHT</span>
                                 </div>
-                                <button ng-show="stateCheck.selectedStayDate.rate.id == rate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id) && !borrowForGroups" class="button white blue-text" ng-click="handleNoEdit($event,room.id,rate.id)">
+                                <button ng-show="stateCheck.selectedStayDate.rate.id == rate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id) && !borrowForGroups" class="button white blue-text" ng-click="handleNoEdit($event,room.id,rate.id, null, null, null, rate.rateCurrency)">
                                     CURRENT RATE
                                 </button>
-                                <button class="button {{rate.buttonClass}}" ng-hide="rate.isSuiteUnavailable || (!borrow && (stateCheck.selectedStayDate.rate.id == rate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id))) || restrictIfOverbook(room.id,rate.id,room.availability)" ng-click="handleBooking(room.id,rate.id, $event)" translate>RESV_BOOK
+                                <button class="button {{rate.buttonClass}}" ng-hide="rate.isSuiteUnavailable || (!borrow && (stateCheck.selectedStayDate.rate.id == rate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id))) || restrictIfOverbook(room.id,rate.id,room.availability)" ng-click="handleBooking(room.id,rate.id, $event, null, null, null, rate.rateCurrency)" translate>RESV_BOOK
                                 </button>
                             </a>
                             <div class="rate-details" ng-if="rate.showDays">
@@ -210,22 +210,22 @@
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        <tr ng-repeat="day in rate.dates">
+                                        <tr ng-repeat="(key, day) in rate.dates">
                                             <td>
-                                             {{day.obj | date: fulldayInWeek }}, {{day.obj | date: dateFormat }}
+                                             {{key | date: fulldayInWeek }}, {{key | date: dateFormat }}
                                             </td>
                                             <!-- Room charge -->
-                                            <td ng-if="!rate.isSuppressed">{{day.rateCurrency}}{{day.amount | number: 2}}</td>
+                                            <td ng-if="!rate.isSuppressed">{{day.rateCurrency}}{{day.rate | number: 2}}</td>
                                             <td ng-if="rate.isSuppressed">SR</td>
                                             <!-- Add on -->
                                             <td ng-if="!rate.isSuppressed && !day.inclusiveAddonsExist">{{day.rateCurrency}}{{day.addon | number: 2}}</td>
                                             <td ng-if="!rate.isSuppressed && !!day.inclusiveAddonsExist">INCL</td>
                                             <td ng-if="rate.isSuppressed">SR</td>
                                             <!-- taxes -->
-                                            <td ng-if="!rate.isSuppressed">{{day.rateCurrency}}{{day.tax.incl | number: 2}}</td>
+                                            <td ng-if="!rate.isSuppressed">{{day.rateCurrency}}{{day.incl_tax | number: 2}}</td>
                                             <td ng-if="rate.isSuppressed">SR</td>
                                             <!-- excl taxes -->
-                                            <td ng-if="!rate.isSuppressed">{{day.rateCurrency}}{{day.tax.excl | number: 2}}</td>
+                                            <td ng-if="!rate.isSuppressed">{{day.rateCurrency}}{{day.excl_tax | number: 2}}</td>
                                             <td ng-if="rate.isSuppressed">SR</td>
                                             <!-- incl taxes -->
                                             <td ng-if="!rate.isSuppressed">{{day.rateCurrency}}{{day.total | number: 2}}</td>
