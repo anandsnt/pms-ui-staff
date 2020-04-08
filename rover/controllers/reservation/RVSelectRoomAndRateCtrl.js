@@ -1473,6 +1473,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- BOOKING
 
 		$scope.handleNoEdit = function(event, roomId, rateId) {
+			$scope.reservationData.totalStayCost = 0;
 			event.stopPropagation();
 			ROOMS[$scope.stateCheck.roomDetails.firstIndex].rateName = $scope.reservationData.ratesMeta[rateId].name;
 			$scope.reservationData.rateDetails[$scope.activeRoom] = angular.copy(ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates);
@@ -1571,7 +1572,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 		/* This method is shared between the RATE and ROOM TYPE views */
 		$scope.handleBooking = function(roomId, rateId, event, flags, afterFetch, contractId, selectedCurrency) {
-
+			$scope.reservationData.totalStayCost = 0;
 			if (!!event) {
 				event.stopPropagation();
 			}
