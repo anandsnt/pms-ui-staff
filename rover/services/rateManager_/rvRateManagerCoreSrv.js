@@ -476,7 +476,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
 
             // varied and common restrictions
             var commonRestrictionsParams = {
-                ..._.pick(params, 'from_date', 'to_date'),
+                ..._.pick(params, 'from_date', 'to_date', 'restrictionType'),
                 'rate_ids[]': [params.rate_id]
             };
 
@@ -486,7 +486,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             promises.push(
                 this.fetchAllRestrictionsWithStatus(commonRestrictionsParams)
                     .then((data) => {
-                        response.restrictionsWithStatus = data.results;
+                        response.restrictionsWithStatus = rvRateManagerRestrictionsSrv.formatRestrictionsData(data.results, params);
                     })
             );
 
