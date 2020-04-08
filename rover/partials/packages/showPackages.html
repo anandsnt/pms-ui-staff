@@ -23,12 +23,12 @@
                                 {{ addon.description }}
                             </span> -->
                             <span class="enhancement-desc" ng-hide="addon.is_rate_addon && addon.is_inclusive">
-                                at {{addon.addon_currency}}{{addon.amount | number : 2}} / {{addon.amount_type.description}} {{addon.post_type.description}}
+                                at <span class="currency">{{addon.addon_currency}}</span>{{addon.amount | number : 2}} / {{addon.amount_type.description}} {{addon.post_type.description}}
                              </span>
                              <span class="enhancement-desc" ng-show="addon.is_inclusive">INCL</span>
                          </div>
                          <span class="price" ng-hide="addon.is_rate_addon && addon.is_inclusive">
-                                {{addon.addon_currency}}{{getAddonTotal(addon)}}
+                            <span class="currency">{{addon.addon_currency}}</span>{{getAddonTotal(addon)}}
                              </span>
                          <!-- add class .hidden to hide it if it can't be removed/deleted-->
                          <span class="delete" ng-hide="addon.is_rate_addon || addon.is_inclusive" ng-click="removeChosenAddons($event, $index, addon)">
