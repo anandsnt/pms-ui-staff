@@ -250,7 +250,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
          * @return {Object} Promise
          */
         this.getJSON = (url, params, keyFromResult) => {
-            params = _.omit(params, 'restrictionType');
+            params = _.omit(params, 'restrictionType', 'hierarchialRateTypeRestrictionRequired');
             var deferred = $q.defer();
 
             BaseWebSrvV2.getJSON(url, params).then(function(data) {
@@ -361,7 +361,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             );
 
             // common restriction params
-            var commonRestrictionsParams = _.pick(params, 'from_date', 'to_date', 'restrictionType');
+            var commonRestrictionsParams = _.pick(params, 'from_date', 'to_date', 'restrictionType', 'hierarchialRateTypeRestrictionRequired');
 
             if (params.rate_type_id) {
                 commonRestrictionsParams['rate_type_ids[]'] = [params.rate_type_id];
@@ -370,7 +370,9 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             promises.push(
                 this.fetchAllRestrictionsWithStatus(commonRestrictionsParams)
                     .then(data => {
-                        response.restrictionsWithStatus = rvRateManagerRestrictionsSrv.formatRestrictionsData(data.results, params);
+                        response.restrictionsWithStatus = params.hierarchialRateTypeRestrictionRequired ?
+                        rvRateManagerRestrictionsSrv.processRateTypeRestrictionResponse(data.results) :
+                        rvRateManagerRestrictionsSrv.formatRestrictionsData(data.results, params);
                     })
             );
 

@@ -43,7 +43,7 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
          *  @param [Object] [input value as key value pair]
          *  @return [Array] [output - converted values into array structure]
          */
-        service.generateOldGetApiResponseFormat = function( input, needRestrictionStatus ) {
+        service.generateOldGetApiResponseFormat = function( input ) {
             var output = [],
                 key = '',
                 value = '', 
@@ -54,12 +54,10 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
                 obj = {};
 
                 if (value) {
-                    if (needRestrictionStatus) {
-                        obj.status = 'ON';
-                    }
+                    obj.status = 'ON';
                     obj.restriction_type_id = service.restrictionKeyToCodeMapping[key][0];
                     obj.is_on_rate = false;
-                    if (typeof(value) === "boolean" && value) {
+                    if (typeof(value) === "boolean") {
                         obj.days = null;
                     }
                     else if (typeof(value) === "number") {

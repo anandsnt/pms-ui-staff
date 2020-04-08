@@ -18,7 +18,7 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
         service.processRateTypeRestrictionResponse = function(response) {
             _.each(response, function(item) {
                 _.each(item.rate_types, function(rateType) {
-                    rateType.restrictions = rvRateManagerUtilitySrv.generateOldGetApiResponseFormat(rateType.restrictions, false);
+                    rateType.restrictions = rvRateManagerUtilitySrv.generateOldGetApiResponseFormat(rateType.restrictions);
                 });
             });
 
@@ -31,7 +31,7 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
 			// CICO-76813 : New API for hierarchyRestrictions
             if (service.hierarchyRestrictions.houseEnabled && params.restrictionType === 'HOUSE') {
                 _.each(restrcionsList, function( item ) {
-                    item.restrictions = rvRateManagerUtilitySrv.generateOldGetApiResponseFormat(item.restrictions, true);
+                    item.restrictions = rvRateManagerUtilitySrv.generateOldGetApiResponseFormat(item.restrictions);
                 });
             }
 
@@ -63,6 +63,8 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
             // CICO-76813 : New API for hierarchyRestrictions
             if (service.hierarchyRestrictions.houseEnabled && params.restrictionType === 'HOUSE') {
                 url = '/api/restrictions/house';
+            } else if (params.hierarchialRateTypeRestrictionRequired) {
+                url = '/api/restrictions/rate_types';
             }
             return url;
         };
@@ -74,6 +76,8 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
             // CICO-76813 : New API for hierarchyRestrictions
             if (service.hierarchyRestrictions.houseEnabled && params.restrictionType === 'HOUSE') {
                 url = '/api/restrictions/house';
+            } else if (params.hierarchialRateTypeRestrictionRequired) {
+                url = '/api/restrictions/rate_types'
             }
             return url;
         };
@@ -83,7 +87,7 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
             if (service.hierarchyRestrictions.houseEnabled && params.restrictionType === 'HOUSE') {
 				params = rvRateManagerUtilitySrv.generateNewPostApiParams(params);
             }
-            if (service.shouldWeConsiderHierarchyRestrictionsForUrlsAndParams(params)) {
+            if (params.hierarchialRateTypeRestrictionRequired) {
                 params = rvRateManagerUtilitySrv.generateNewPostApiParams(params);
             }
             return params;

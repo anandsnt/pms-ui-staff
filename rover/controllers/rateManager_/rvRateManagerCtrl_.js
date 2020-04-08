@@ -90,6 +90,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      */
     var showRateRestrictionPopup = (data) => {
         data.isHierarchyHouseRestrictionEnabled = $scope.hierarchyRestrictions.houseEnabled;
+        considerHierarchyRestrictions(data);
         ngDialog.open({
             template: '/assets/partials/rateManager_/popup/rvRateManagerRateRestrictionPopup.html',
             scope: $scope,
@@ -623,6 +624,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $scope.callAPI(rvRateManagerCoreSrv.fetchRateTypes, options);
     };
 
+    var considerHierarchyRestrictions = function(params) {
+        if ($scope.hierarchyRestrictions.rateTypeEnabled && $scope.chosenTab === 'RATE_TYPES') {
+            params.hierarchialRateTypeRestrictionRequired = true;
+        }
+    };
+
     /*
      * to fetch the rate type & it's restrictions
      * @param  {Object} filterValues
@@ -648,9 +655,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         if (isHierarchyRestrictionNeeded()) {
             params.restrictionType = getRestrictionType();
         }
-        if ($scope.hierarchyRestrictions.rateTypeEnabled && $scope.chosenTab === 'RATE_TYPES') {
-            params.hierarchialRateTypeRestrictionRequired = true;
-        }
+        considerHierarchyRestrictions(params);
 
         var options = {
             params: params,
@@ -1645,7 +1650,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             var restrictionData = response.roomTypeAndRestrictions,
                 // roomTypes = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList,
                 rates = !cachedRateList.length ? response.rates : cachedRateList,
-                variedAndCommonRestrictions = response.restrictionsWithStatus[0].restrictions,
+                variedAndCommonRestrictions = response.restrictionsWithStatus[0].restrictions || response.restrictionsWithStatus[0].rate_types[0].restrictions,
                 rateAndRestrictions = response.rateAndRestrictions[0]
                     .rates.map(rate =>
                         ({
@@ -1746,6 +1751,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fetchRoomTypes: !cachedRoomTypeList.length,
                 fetchRates: !cachedRateList.length
             };
+
+            considerHierarchyRestrictions(params);
+
+            if (params.hierarchialRateTypeRestrictionRequired) {
+                _.omit(params, 'fetchRoomTypes');
+            }
 
             var options = {
                 params,
