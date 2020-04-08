@@ -7103,8 +7103,18 @@
                         height:650px;
                 }
                 
-                .notice {
-                    color:#9a8410;
+                &:not(.rate-manager-hierarchy) {
+                    .notice {
+                        &:not(.error) {
+                            color:#9a8410;
+                        }
+
+                        &.third-party {
+                            color:@purpleEnd;
+                            background-color:  lighten(@purpleStart, 10%);
+                            border-color: @purpleEnd;
+                        }
+                    }
                 }
 
                 .modal-container {
@@ -8067,7 +8077,7 @@
                     }
 
                     .content-middle,
-                    .content-rightÂ {
+                    .content-right {
                         h2 {
                             font-weight: 600;
                             text-transform: uppercase;
