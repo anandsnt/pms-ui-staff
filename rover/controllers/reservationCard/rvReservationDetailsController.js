@@ -1598,6 +1598,7 @@ sntRover.controller('reservationDetailsController',
 				}
 				else{
 					console.warn("There should be atleast one credit card needed");
+					$scope.closeDialog();
 				}
 			};
 
