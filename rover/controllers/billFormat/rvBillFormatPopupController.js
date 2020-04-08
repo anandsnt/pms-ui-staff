@@ -102,16 +102,16 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
     var handleCompanyGuestToggleVisibility = function (reservation) {
         if ($scope.data.show_invoice_type_toggle) {
             // Company card is attached.
+            $scope.isCompanyInvoice = true;
+            $scope.hideCompanyOrGuestInvoiceToggle = false;
             if (!$scope.isSettledBill) {
-                $scope.disableCompanyGuestToggle = true;
                 if ($scope.data.bill_address_type === "company") {
                     $scope.isCompanyInvoice = false;
                 } else if ($scope.data.bill_address_type === "guest") {
                     $scope.isCompanyInvoice = true;
                 }
+                $scope.disableCompanyGuestToggle = true;
             }
-            $scope.isCompanyInvoice = true;
-            $scope.hideCompanyOrGuestInvoiceToggle = false;
         }
         else {
             $scope.hideCompanyOrGuestInvoiceToggle = true;
