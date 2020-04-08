@@ -435,7 +435,7 @@ angular.module('sntRover').service('RVBillCardSrv',
 		var deferred = $q.defer(),
 			url = '/api/bills/' + params.bill_id + '/final_invoice_settlement';
 
-		BaseWebSrvV2.postJSON(url).then(function(data) {
+		BaseWebSrvV2.postJSON(url, params).then(function(data) {
 
 			deferred.resolve(data);
 		}, function(data) {
