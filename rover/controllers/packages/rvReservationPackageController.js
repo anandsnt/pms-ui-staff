@@ -36,7 +36,8 @@ sntRover.controller('RVReservationPackageController',
 		$scope.shouldHideCount = function(addon) {
 			var postType = addon.post_type.value.toUpperCase();
 
-			if ((postType === 'WEEKDAY' || postType === 'WEEKEND' || postType === 'CUSTOM') && typeof addon.post_instances === 'undefined' && $scope.showCustomPosting()) {
+			if ((postType === 'WEEKDAY' || postType === 'WEEKEND' || postType === 'CUSTOM') && typeof addon.post_instances === 'undefined' 
+				&& $scope.showCustomPosting() && $scope.addonPopUpData.addonPostingMode === 'reservation') {
 				return true;
 			}
 			return false;

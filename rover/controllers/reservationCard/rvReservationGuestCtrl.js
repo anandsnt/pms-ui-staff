@@ -450,7 +450,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 				$scope.reservationParentData.rooms[0].accompanying_guest_details = data.accompanying_guests_details;
 				$scope.errorMessage = '';
 
-				if ($scope.reservationParentData.group.id) {
+                if ($scope.reservationParentData.group.id || $scope.reservationParentData.allotment.id) {
 					if ($scope.otherData.maxAdults > 4) {
 						$scope.maxAdultsForReservation = 4;
 					} else {
