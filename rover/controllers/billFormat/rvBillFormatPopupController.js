@@ -99,7 +99,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
         };
 
 
-    var handleCompanyGuestToggleVisibility = function (reservation) {
+    var handleCompanyGuestToggleVisibility = function () {
         if ($scope.data.show_invoice_type_toggle) {
             // Company card is attached.
             $scope.isCompanyInvoice = true;
@@ -117,10 +117,6 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
             $scope.hideCompanyOrGuestInvoiceToggle = true;
             $scope.isCompanyInvoice = false;
         }
-
-    },
-    isEmpty = function( str ) {
-        return (!str || 0 === str.length);
     };
 
     var successCallBackForLanguagesFetch = function(data) {
@@ -165,7 +161,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
             $scope.data = response.data;
             $scope.setEmailAddress();
             if ($scope.reservationBillData && $scope.reservationBillData.reservation_id) {
-                handleCompanyGuestToggleVisibility($scope.reservationData);
+                handleCompanyGuestToggleVisibility();
             }
         };
 
