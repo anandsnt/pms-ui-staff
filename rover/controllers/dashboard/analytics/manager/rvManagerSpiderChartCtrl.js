@@ -869,8 +869,8 @@ angular.module('sntRover')
 				var addMainLabelsOnGraph = function(label) {
 
 					var xValue = label.isLeftSide ? -0.3 : 0;
-					var rectYvalue = label.isDownSide ? -0.9 : 1;
-					var textrectYvalue = label.isDownSide ? -0.95 : 0.95;
+					var rectYvalue = label.isDownSide ? -1.05 : 1.15;
+					var textrectYvalue = label.isDownSide ? -1.1 : 1.1;
 
 					var textLabelGroup = svg.append("g");
 
