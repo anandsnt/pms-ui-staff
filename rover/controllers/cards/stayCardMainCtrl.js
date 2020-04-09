@@ -130,7 +130,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
                 'userId': $scope.reservationDetails.guestCard.id || $scope.reservationData.guest.id,
                 'avatar': $scope.guestCardData.cardHeaderImage,
                 'guestId': $scope.reservationDetails.guestCard.id || $scope.reservationData.guest.id,
-				'vip': data.vip,
+				'vip': data.vip
             };
             $scope.guestCardData.contactInfo = contactInfoData.contactInfo;
             if ($scope.guestCardData.contactInfo.birthday !== null) {
