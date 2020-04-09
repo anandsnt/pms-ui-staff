@@ -825,7 +825,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
              * max date is business date
              */
             if ($scope.selectedEntityDetails.report.title === 'Cancellations by Arrival Date' || 
-                    $scope.selectedEntityDetails.report.title === 'Cancellations by Cancel Date' ) {
+                    $scope.selectedEntityDetails.report.title === 'Cancellations by Cancel Date' || 
+                    $scope.selectedEntityDetails.report.title === 'Guest Details by Arrival Date' ) {
                 $scope.exportFromCalenderOptions = angular.extend({
                     maxDate: null,
                     minDate: null,
