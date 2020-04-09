@@ -121,7 +121,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			sntIDCollectionSrv.WebSocketObj.close();
 		}
 		
-		sntIDCollectionSrv.WebSocketObj = new WebSocket($scope.deviceConfig.thirdPatrtyConnectionUrl);
+		sntIDCollectionSrv.WebSocketObj = new WebSocket($scope.deviceConfig.thirdPatrtyConnectionUrl + '?workstation_id=' + sntIDCollectionUtilsSrv.workstation_id);
 		sntIDCollectionSrv.WebSocketObj.onmessage = function(evt) {
 			WebSocketActions(evt);
 		};
