@@ -736,9 +736,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 rateType.restrictionList.push(dateRateTypeSet.restrictions);
                 if (dateRateTypeSet.amount === null) {
                     rateType.amountList.push(null);
-                } else {
+                } else if(dateRateTypeSet.hasOwnProperty('amount')) {
                     rateType.amountList.push(dateRateTypeSet.rate_currency + "" + dateRateTypeSet.amount);
-                }                
+                }
             });
 
             return _.omit(rateType, 'restrictions');
