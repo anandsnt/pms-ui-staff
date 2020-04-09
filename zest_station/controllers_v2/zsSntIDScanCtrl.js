@@ -11,7 +11,8 @@
 		'$filter',
 		'$timeout',
 		'sntIDCollectionSrv',
-		function($scope, $state, zsEventConstants, $stateParams, zsGeneralSrv, zsCheckinSrv, zsUtilitySrv, $controller, $filter, $timeout, sntIDCollectionSrv) {
+		'sntIDCollectionUtilsSrv',
+		function($scope, $state, zsEventConstants, $stateParams, zsGeneralSrv, zsCheckinSrv, zsUtilitySrv, $controller, $filter, $timeout, sntIDCollectionSrv, sntIDCollectionUtilsSrv) {
 
 			BaseCtrl.call(this, $scope);
 			$controller('sntIDCollectionBaseCtrl', {
@@ -200,6 +201,12 @@
 				    $scope.idScanData.selectedGuest.faceImage) {
 					saveFaceImage();
 				}
+
+				for (var key in apiParams) {
+					if (!apiParams[key]) {
+						delete apiParams[key];
+					}
+				}
 				$scope.callAPI(zsCheckinSrv.savePassport, {
 					params: apiParams,
 					successCallBack: accpetIdSuccess
@@ -278,6 +285,11 @@
 				} 
 				else {
 					$scope.idScanData.selectedGuest.scannedDetails = data;
+					if ($scope.zestStationData.thirdPartyScanEnabled) {
+						$scope.idScanData.selectedGuest.front_image_data = data.front_side_image;
+						$scope.idScanData.selectedGuest.back_image_data = data.back_side_image;
+					}
+					
 					refreshIDdetailsScroller();
 				}
 			});
@@ -582,7 +594,10 @@
 				var idCaptureConfig = processCameraConfigs($scope.zestStationData.iOSCameraEnabled, $scope.zestStationData.connectedCameras, $scope.zestStationData.featuresSupportedInIosApp);
 				
 				idCaptureConfig.useAilaDevice = $scope.zestStationData.usingAilaDevice;
+				idCaptureConfig.useThirdPartyScan = $scope.zestStationData.thirdPartyScanEnabled;
+            	idCaptureConfig.thirdPatrtyConnectionUrl = $scope.zestStationData.third_party_scan_url;
            		$scope.setConfigurations(idCaptureConfig);
+           		sntIDCollectionUtilsSrv.workstation_id = $scope.zestStationData.set_workstation_id;
 			}());
 		}
 	]);

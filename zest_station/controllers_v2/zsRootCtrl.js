@@ -1756,6 +1756,7 @@ sntZestStation.controller('zsRootCtrl', [
             $('body').css('display', 'none'); // this will hide contents until svg logos are loaded
 			// call Zest station settings API
             $scope.zestStationData = zestStationSettings;
+            sntIDCollectionUtilsSrv.thirdPartyScannerTimeout = zestStationSettings.third_party_scanner_timeout;
             $controller('zsThemeActionsCtrl', {
                 $scope: $scope
             });
@@ -1851,7 +1852,11 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.id_scan_enabled = $scope.zestStationData.kiosk_scan_enabled &&
                 ($scope.zestStationData.kiosk_scan_mode === 'id_scan' ||
                     $scope.zestStationData.kiosk_scan_mode === 'id_scan_with_staff_verification' ||
-                    $scope.zestStationData.kiosk_scan_mode === 'id_scan_with_facial_verification');
+                    $scope.zestStationData.kiosk_scan_mode === 'id_scan_with_facial_verification' ||
+                    $scope.zestStationData.kiosk_scan_mode === 'third_party');
+
+            $scope.zestStationData.thirdPartyScanEnabled = $scope.zestStationData.kiosk_scan_enabled &&
+                                                           $scope.zestStationData.kiosk_scan_mode === 'third_party';
 
             if ($scope.isIpad &&
                 $scope.zestStationData.kiosk_walk_in_enabled &&
