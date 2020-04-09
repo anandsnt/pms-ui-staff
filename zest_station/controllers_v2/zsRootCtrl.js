@@ -1334,6 +1334,7 @@ sntZestStation.controller('zsRootCtrl', [
 				// set work station id and status
                 $scope.zestStationData.workstationName = station.name;
                 $scope.zestStationData.set_workstation_id = $scope.getStationIdFromName(station.name).id;
+                sntIDCollectionUtilsSrv.workstation_id = $scope.zestStationData.set_workstation_id;
                 $rootScope.workstation_id = $scope.zestStationData.set_workstation_id;
                 $scope.zestStationData.key_encoder_id = $scope.getStationIdFromName(station.name).key_encoder_id;
                 var previousWorkStationStatus = angular.copy($scope.zestStationData.workstationStatus);
