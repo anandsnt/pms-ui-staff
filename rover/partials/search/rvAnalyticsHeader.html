@@ -150,7 +150,7 @@
          <div class="entry">
             <div class="select with-label">
                <label for="analytics-room-type">Room Type</label>
-               <select id="analytics-room-type" class="placeholder" ng-model="selectedFilters.roomType" data-js="tags" ng-change="distributionFilterAdded('ROOM_TYPE')">
+               <select id="analytics-room-type" class="placeholder" ng-model="selectedFilters.roomType" data-js="tags" ng-change="distributionFilterAdded('ROOM_TYPE', selectedFilters.roomType)">
                   <option value="">Select</option>
                   <option value="{{roomType.code}}" ng-repeat="roomType in availableRoomTypes | orderBy: name">{{roomType.name}}</option>
                </select>
@@ -162,7 +162,7 @@
          <div class="entry">
             <div class="select with-label">
                <label for="analytics-market">Market</label>
-               <select id="analytics-market" class="placeholder" ng-model="selectedFilters.marketCode" data-js="tags" ng-change="distributionFilterAdded('MARKET')">
+               <select id="analytics-market" class="placeholder" ng-model="selectedFilters.marketCode" data-js="tags" ng-change="distributionFilterAdded('MARKET', selectedFilters.marketCode)">
                   <option value="">Select</option>
                   <option value="{{market.value}}" ng-repeat="market in marketData | orderBy: name">{{market.name}}</option>
                </select>
@@ -179,7 +179,7 @@
          <div class="entry">
             <div class="select with-label">
                <label for="analytics-source">Source</label>
-               <select id="analytics-source" class="placeholder" ng-model="selectedFilters.sourceCode" data-js="tags" ng-change="distributionFilterAdded('SOURCE')">
+               <select id="analytics-source" class="placeholder" ng-model="selectedFilters.sourceCode" data-js="tags" ng-change="distributionFilterAdded('SOURCE', selectedFilters.sourceCode)">
                   <option value="">Select</option>
                   <option value="{{source.value}}" ng-repeat="source in sourceData | orderBy: name">{{source.name}}</option>
                </select>
@@ -191,7 +191,7 @@
          <div class="entry">
             <div class="select with-label">
                <label for="analytics-segment">Segment</label>
-               <select id="analytics-segment" class="placeholder" ng-model="selectedFilters.segmentCode" data-js="tags" ng-change="distributionFilterAdded('SEGMENT')">
+               <select id="analytics-segment" class="placeholder" ng-model="selectedFilters.segmentCode" data-js="tags" ng-change="distributionFilterAdded('SEGMENT', selectedFilters.segmentCode)">
                   <option value="">Select</option>
                   <option value="{{segment.value}}" ng-repeat="segment in segmentData | orderBy: name">{{segment.name}}</option>
                </select>
@@ -203,7 +203,7 @@
          <div class="entry">
             <div class="select with-label">
                <label for="analytics-origin">Origin</label>
-               <select id="analytics-origin" class="placeholder" data-js="tags" ng-model="selectedFilters.originCode" ng-change="distributionFilterAdded('ORIGIN')">
+               <select id="analytics-origin" class="placeholder" data-js="tags" ng-model="selectedFilters.originCode" ng-change="distributionFilterAdded('ORIGIN', selectedFilters.originCode)">
                   <option value="">Select</option>
                   <option value="{{origin.value}}" ng-repeat="origin in originData | orderBy: name">{{origin.name}}</option>
                </select>

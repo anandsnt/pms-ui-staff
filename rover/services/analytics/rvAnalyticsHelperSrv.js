@@ -693,7 +693,9 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 
 	this.findSelectedFilter = function(dataSet, selectedItem) {
 		var selectedFilter = _.find(dataSet, function(item) {
-			return item.value == selectedItem || item.code == selectedItem;
+			return item.value == selectedItem ||
+				   item.code == selectedItem  ||
+				   item.id === selectedItem;
 		});
 
 		return selectedFilter;

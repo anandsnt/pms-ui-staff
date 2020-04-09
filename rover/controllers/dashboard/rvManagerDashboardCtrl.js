@@ -381,27 +381,30 @@ sntRover.controller('RVmanagerDashboardController',
     generateParamsBasenOnFilters();
   };
 
-  $scope.distributionFilterAdded = function(type) {
+  $scope.distributionFilterAdded = function(type, value) {
     var selectedItem;
 
-    if (type === 'MARKET' && $scope.selectedFilters.marketCode) {
-      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.marketData, $scope.selectedFilters.marketCode);
+    if (!value) {
+      return
+    }
+    else if (type === 'MARKET') {
+      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.marketData, value);
       $scope.selectedFilters.marketCodes = rvAnalyticsHelperSrv.addToAndSortArray($scope.selectedFilters.marketCodes, selectedItem);
       $scope.marketData = _.reject($scope.marketData, selectedItem);
-    } else if (type === 'SOURCE' && $scope.selectedFilters.sourceCode) {
-      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.sourceData, $scope.selectedFilters.sourceCode);
+    } else if (type === 'SOURCE') {
+      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.sourceData, value);
       $scope.selectedFilters.sourceCodes = rvAnalyticsHelperSrv.addToAndSortArray($scope.selectedFilters.sourceCodes, selectedItem);
       $scope.sourceData = _.reject($scope.sourceData, selectedItem);
-    } else if (type === 'SEGMENT' && $scope.selectedFilters.segmentCode) {
-      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.segmentData, $scope.selectedFilters.segmentCode);
+    } else if (type === 'SEGMENT') {
+      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.segmentData, value);
       $scope.selectedFilters.segmentCodes = rvAnalyticsHelperSrv.addToAndSortArray($scope.selectedFilters.segmentCodes, selectedItem);
       $scope.segmentData = _.reject($scope.segmentData, selectedItem);
-    } else if (type === 'ORIGIN' && $scope.selectedFilters.originCode) {
-      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.originData, $scope.selectedFilters.originCode);
+    } else if (type === 'ORIGIN') {
+      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.originData, value);
       $scope.selectedFilters.originCodes = rvAnalyticsHelperSrv.addToAndSortArray($scope.selectedFilters.originCodes, selectedItem);
       $scope.originData = _.reject($scope.originData, selectedItem);
-    } else if (type === 'ROOM_TYPE' && $scope.selectedFilters.roomType) {
-      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.availableRoomTypes, $scope.selectedFilters.roomType);
+    } else if (type === 'ROOM_TYPE') {
+      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.availableRoomTypes, value);
       $scope.selectedFilters.roomTypes = rvAnalyticsHelperSrv.addToAndSortArray($scope.selectedFilters.roomTypes, selectedItem);
       $scope.availableRoomTypes = _.reject($scope.availableRoomTypes, selectedItem);
     }
@@ -477,4 +480,46 @@ sntRover.controller('RVmanagerDashboardController',
   $scope.showRemainingReservationsToggled = function() {
     $scope.$broadcast('SHOW_REMAINING_RESERVATIONS_TOGGLE');
   };
+  /** ************************* FILTER CODE STARTS HERE ***********************************/
+  // filters%5Broom_type_id%5D%5B%5D=237&
+  // filters%5Bmarket_id%5D%5B%5D=446&
+  // filters%5Bsource_id%5D%5B%5D=394&
+  // filters%5Bsegment_id%5D%5B%5D=95&
+  // filters%5Bbooking_origin_id%5D%5B%5D=325&
+  // chart_type=occupancy&end_date=2020-02-02&
+  // group_by=market_id&start_date=2020-01-26&workstation_id=248
+
+  var selectedFilter = {
+    room_type_ids: [235],
+    market_ids: [444],
+    source_ids: [],
+    segment_ids: [],
+    booking_origin_ids: [],
+    group_by: 'market_id'
+  };
+
+  var applySelectedFilter = function (evt, filter) {
+
+    _.each(selectedFilter.room_type_ids, function(room_id){
+      $scope.distributionFilterAdded('ROOM_TYPE',room_id);
+    });
+    _.each(selectedFilter.market_ids, function(market_id){
+      $scope.distributionFilterAdded('MARKET',market_id);
+    }); 
+    _.each(selectedFilter.source_ids, function(source_id){
+      $scope.distributionFilterAdded('SOURCE',source_id);
+    }); 
+    _.each(selectedFilter.segment_ids, function(segment_id){
+      $scope.distributionFilterAdded('SEGMENT',segment_id);
+    }); 
+    _.each(selectedFilter.booking_origin_ids, function(booking_origin_id){
+      $scope.distributionFilterAdded('ORIGIN',booking_origin_id);
+    }); 
+    $scope.dashboardFilter.aggType = selectedFilter.group_by;
+
+    $scope.$broadcast('ANALYTICS_FILTER_CHANGED', shallowEncoded);
+  };
+
+  $scope.$on('APPY_MANAGER_FILTER', applySelectedFilter);
+  /** ************************* FILTER CODE END HERE ***********************************/
 }]);
