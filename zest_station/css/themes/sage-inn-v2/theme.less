@@ -1,0 +1,245 @@
+/* StayNTouch Zest Station Styles | Sage Inn V2 Theme */
+
+/* 1. COLORS
+==========================================================*/
+@brandColor:            #a7be9b;
+ 
+    
+@textColor:             @white;
+@backgroundColor:       #434343;
+
+@actionColor:           @white;
+@actionBackground:      @brandColor;
+
+@inputBackground:       #707070;
+@inputColor:            @textColor;
+@transparentColor:      rgba(0,0,0,.35);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+@fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+/* 3. IMAGES
+==========================================================*/
+@background:            @backgroundColor;
+@backgroundSize:        cover;
+
+@headerIconsColor:      @white;
+@headerIconsActive:     @brandColor;
+
+.icons { 
+    &.icon-create-key {
+        fill: @white;
+        stroke: @white;
+    }
+
+    &.icon-no-print { stroke: @white; }
+
+    &.icon-oos {
+        fill: @brandColor
+    }
+
+    &.icon-arrow-left,
+    &.icon-arrow-right {
+        fill: none;
+        stroke: @white;
+    }
+    
+    &.icon-arrow-down {
+        fill: @brandColor;
+    }
+
+    &.icon-user-id {
+        .cls-1 {
+            stroke: @white;
+        }
+    }
+}
+
+.logo-svg{
+    background-image: url("../css/themes/sage-inn-v2/logo.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    height: 125px;
+    width: 145px;
+}
+
+/* 4. LAYOUT
+==========================================================*/
+
+#sage-inn-v2 {
+
+    #header {
+        height: 145px;
+    }
+
+    #main {
+        #calc > #height > .remove(100%, 145px);
+        top: 145px;
+
+        &.centered {
+            padding-top: 100px;
+            #content {
+                height: 100%;
+            }
+        }
+    }
+
+    #actions {
+        &.pull-right {
+            p {
+                strong {
+                    font-size: 18px;
+                    font-weight: 400; 
+                }
+                color: @textColor;
+            }
+        }
+    }
+
+     
+     
+    #logo {
+        .logo {
+            .size(125px, auto);
+        }
+     }
+
+     .scrollable-selection,
+     #guestsList {
+        .iScrollVerticalScrollbar .iScrollIndicator {
+            background-color: fade(@white, 30);
+        }
+     }
+
+     #options {
+        .icons {
+            fill: @white;
+        }
+    }
+
+    #selection {
+        li {
+            .details {
+                background-color: #f0f0f0;
+                color: @black;
+            }
+        }
+    }
+
+    #textual {
+        background-color: #f0f0f0;
+        #rate {
+            li {
+                &.sub{
+
+                    color: #a1a1a1;
+                }
+
+                &.total {
+
+                    color: @black;
+                }
+            }
+        }
+
+        &:after,
+        &:before {
+            background-color: #f0f0f0;
+        }
+    }
+
+    #guests {
+        .button {
+            background-color: @backgroundColor;
+            color: @white;
+        }
+    }
+
+    .add-on {
+        &:not(.selected) {
+            background-color: #f0f0f0;
+            border-color: #f0f0f0;
+            
+            .price { 
+                strong {
+                    color: darken( @brandColor, 20 );
+                }
+            }
+        }
+        #options {
+            li {
+                
+                .option {
+                    &:not(.not-selected) {
+                        color: @white;
+                    }
+
+                    &.not-selected {
+                        color: @black;
+                    }
+                }
+
+                .amount {
+                    color: darken( @brandColor, 20 );
+                }
+            }
+        }
+    }
+
+    .upgrade-list { 
+        li {
+            &:not(.selected) {
+                .upgrade-content {
+                    background-color: #f0f0f0;
+                    color: @black;
+                }
+            }
+
+            &.selected {
+                .button {
+                    color: @black;
+                }
+            }
+        }
+    }
+
+    .minibar-items {
+        .minibar-item {
+            background-color: #f0f0f0;
+
+            .minibar-item-qty {
+                color: darken( @brandColor, 20 );
+            }
+        }
+
+    }
+    /* Popup fixes start */
+    .popup {
+        
+        #message-action .button {
+            color: darken( @brandColor, 20 ); 
+        }
+
+        .button {
+            &.transparent {
+                background: rgba( 0, 0, 0, 0.1 );
+            }
+
+            .icons {
+                fill: @white;
+            }
+        }
+    }
+    /* Popup fixes end */
+
+    .add-on-list,
+    .add-on { 
+        .button {
+            &.transparent {
+                background-color: fade(@black, 10);
+            }
+        }
+    }
+}
