@@ -571,7 +571,7 @@ angular.module('sntRover')
 
 						hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvData);
 						hiddenElement.target = '_blank';
-						hiddenElement.download = 'distribution_' + $rootScope.UUID + '.csv';
+						hiddenElement.download = 'distribution__' + params.chart_type + '__' + params.start_date + '__to__' + params.end_date + '.csv';
 						hiddenElement.click();
 					},
 					failureCallBack: function() {
