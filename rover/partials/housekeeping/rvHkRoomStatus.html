@@ -191,7 +191,7 @@
                 </div>
 
                 <!-- Show only if room is occupied -->
-                <figure class="guest-image" ng-if="!room.is_queued && room.is_occupied">
+                <figure class="guest-image" ng-if="!room.is_queued && room.is_occupied" ng-class="{'blacklisted':room.is_blacklisted}">
                     <span ng-if="room.is_vip" class="vip" translate>VIP</span>
                     <span class="stay-count" ng-if="room.guest_stay_count > 0 && isStandAlone">{{::room.guest_stay_count}}</span>
                     <img ng-src="{{::room.avatar_src}}" alt="" />

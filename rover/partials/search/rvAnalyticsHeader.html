@@ -140,7 +140,7 @@
                   <option value="{{::filter.code}}" ng-repeat="filter in ::dashboardFilter.aggTypes track by $index">{{::filter.name}}</option>
                </select>
             </div>
-            <div id="chart-toggle" class="switch-button ng-hide" ng-class="{'on': !dashboardFilter.gridViewActive}">
+            <div id="chart-toggle" class="switch-button" ng-class="{'on': !dashboardFilter.gridViewActive}">
                <input id="distribution-switch" type="checkbox" checked="" ng-model="dashboardFilter.gridViewActive" ng-change="distributionChartChanged()">
                <label class="data-off">
                <span class="value">Chart</span>

@@ -1,5 +1,5 @@
-angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2', 'Toggles',
-    function($q, BaseWebSrvV2, Toggles) {
+angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2', 'rvRateManagerRestrictionsSrv',
+    function($q, BaseWebSrvV2, rvRateManagerRestrictionsSrv) {
 
         /**
          * A. MULTIPLE RATES
@@ -30,74 +30,20 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
 
         this.activeRates = null;
 
-        // Scope object that handles various hierarchy Restrictions feature toggle values.
-        var hierarchyRestrictions = {
-            houseEnabled: Toggles.isEnabled('hierarchical_house_restrictions'),
-            roomTypeEnabled: Toggles.isEnabled('hierarchical_room_type_restrictions'),
-            rateTypeEnabled: Toggles.isEnabled('hierarchical_rate_type_restrictions')
-        };
-
-        // Mapping of restriction type and code.
-        var restrictionCodeMapping = {
-                "closed": [1, 'CLOSED'],
-                "closed_arrival": [2, 'CLOSED_ARRIVAL'],
-                "closed_departure": [3, 'CLOSED_DEPARTURE'],
-                "min_stay_through": [4, 'MIN_STAY_LENGTH'],
-                "min_length_of_stay": [5, 'MAX_STAY_LENGTH'],
-                "max_length_of_stay": [6, 'MIN_STAY_THROUGH'],
-                "min_advanced_booking": [7, 'MIN_ADV_BOOKING'],
-                "max_advanced_booking": [8, 'MAX_ADV_BOOKING']
-        };
-
-        /*
-         *  Method to process new restrcion data structure to convert into old structure.
-         *  @param [Object] [input value as key value pair]
-         *  @return [Array] [output - converted values into array structure]
-         */
-        var processRestrictions = function( input ) {
-            var output = [],
-                key = '',
-                value = '', 
-                obj = {};
-
-            for (key in input) {
-
-                value = input[key];
-                obj = {
-                    days: null,
-                    is_on_rate: false,
-                    restriction_type_id: restrictionCodeMapping[key][0]
-                };
-
-                if (typeof(value) === "boolean") {
-                    obj.status = value ? 'on' : 'off';
-                }
-                if (typeof(value) === "number") {
-                    obj.days = value;
-                }
-
-                output.push(obj);
-            }
-
-            return output;
-        };
-
         service.fetchMultipleRateInfo = function(params) {
-            params = _.omit(params, 'restriction_level');
             var url = '/api/daily_rates';
 
             return this.getJSON(url, params);
         };
 
         service.fetchAllRoomTypesInfo = function(params) {
-            params = _.omit(params, 'restriction_level');
             var url = '/api/daily_rates/room_restrictions';
 
             return this.getJSON(url, params);
         };
 
         service.fetchAllRateTypesInfo = function(params) {
-            params = _.omit(params, 'restriction_level');
+            params = _.omit(params, 'restrictionType');
             var deferred = $q.defer(),
                 url = '/api/daily_rates/rate_types';
 
@@ -122,7 +68,6 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
         };
 
         service.fetchSingleRateTypeInfo = function(params) {
-            params = _.omit(params, 'restriction_level');
             var url = '/api/daily_rates/rate_restrictions';
 
             return this.getJSON(url, params);
@@ -141,8 +86,9 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
         };
 
         service.applyAllRestrictions = (params) => {
-            var url = '/api/daily_rates';
-
+            var url = rvRateManagerRestrictionsSrv.getURLforApplyAllRestrictions(params);
+            
+            params = rvRateManagerRestrictionsSrv.processParamsforApplyAllRestrictions(params);
             return this.postJSON(url, params);
         };
 
@@ -165,14 +111,14 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
         };
 
         service.updateSingleRateRestrictionData = (params) => {
-            var url = '/api/daily_rates/';
+            var url = rvRateManagerRestrictionsSrv.getURLforApplyAllRestrictions(params);
 
+            params = rvRateManagerRestrictionsSrv.processParamsforApplyAllRestrictions(params);
             return this.postJSON(url, params);
         };
 
-
         service.fetchCommonRestrictions = (params) => {
-            var url = '/api/daily_rates/all_restrictions';
+            var url = rvRateManagerRestrictionsSrv.getURLforCommonRestrictions();
 
             return this.getJSON(url, params);
         };
@@ -192,13 +138,13 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
 
             if (params.fetchCommonRestrictions) {
                 let commonRestrictionsParams = {
-                    ..._.pick(params, 'from_date', 'to_date', 'varied_inclusive', 'restriction_level'),
+                    ..._.pick(params, 'from_date', 'to_date', 'varied_inclusive'),
                     'rate_ids[]': [params.rate_id]
                 };
 
                 promises.push(service.fetchCommonRestrictions(commonRestrictionsParams)
                     .then((data) => {
-                        response.commonRestrictions = data.results;
+                        response.commonRestrictions = rvRateManagerRestrictionsSrv.formatRestrictionsData(data.results, params);
                     })
                 );
             }
@@ -234,7 +180,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             }));
 
             if (params.fetchCommonRestrictions) {
-                let paramsForCommonRestrictions = _.pick(params, 'from_date', 'to_date', 'varied_inclusive', 'restriction_level');
+                let paramsForCommonRestrictions = _.pick(params, 'from_date', 'to_date', 'varied_inclusive');
 
                 if (params.room_type_id) {
                     paramsForCommonRestrictions['room_type_ids[]'] = [params.room_type_id];
@@ -242,7 +188,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
 
                 promises.push(service.fetchCommonRestrictions(paramsForCommonRestrictions)
                     .then((data) => {
-                        response.commonRestrictions = data.results;
+                        response.commonRestrictions = rvRateManagerRestrictionsSrv.formatRestrictionsData(data.results, params);
                     })
                 );
             }
@@ -273,11 +219,11 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             }));
 
             if (params.fetchCommonRestrictions) {
-                let paramsForCommonRestrictions = _.pick(params, 'from_date', 'to_date', 'varied_inclusive', 'restriction_level');
+                let paramsForCommonRestrictions = _.pick(params, 'from_date', 'to_date', 'varied_inclusive');
 
                 promises.push(service.fetchCommonRestrictions(paramsForCommonRestrictions)
                     .then((data) => {
-                        response.commonRestrictions = data.results;
+                        response.commonRestrictions = rvRateManagerRestrictionsSrv.formatRestrictionsData(data.results, params);
                     })
                 );
             }
@@ -301,6 +247,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
          * @return {Object} Promise
          */
         this.getJSON = (url, params, keyFromResult) => {
+            params = _.omit(params, 'restrictionType');
             var deferred = $q.defer();
 
             BaseWebSrvV2.getJSON(url, params).then(function(data) {
@@ -335,7 +282,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
          * @return {Object} Promise
          */
         this.fetchAllRestrictionsWithStatus = (params) => {
-            var url = '/api/daily_rates/all_restriction_statuses';
+            var url = rvRateManagerRestrictionsSrv.getURLforAllRestrictionsWithStatus( params );
 
             return this.getJSON(url, params);
         };
@@ -361,7 +308,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             );
 
             // different restriction
-            var paramsForCommonRestrictions = _.pick(params, 'from_date', 'to_date', 'restriction_level');
+            var paramsForCommonRestrictions = _.pick(params, 'from_date', 'to_date', 'restrictionType');
 
             if (params.room_type_id) {
                 paramsForCommonRestrictions['room_type_ids[]'] = [params.room_type_id];
@@ -369,7 +316,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             promises.push(
                 this.fetchAllRestrictionsWithStatus(paramsForCommonRestrictions)
                     .then((data) => {
-                        response.restrictionsWithStatus = data.results;
+                        response.restrictionsWithStatus = rvRateManagerRestrictionsSrv.formatRestrictionsData(data.results, params);
                     })
             );
 
@@ -411,7 +358,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             );
 
             // common restriction params
-            var commonRestrictionsParams = _.pick(params, 'from_date', 'to_date', 'restriction_level');
+            var commonRestrictionsParams = _.pick(params, 'from_date', 'to_date', 'restrictionType');
 
             if (params.rate_type_id) {
                 commonRestrictionsParams['rate_type_ids[]'] = [params.rate_type_id];
@@ -420,7 +367,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             promises.push(
                 this.fetchAllRestrictionsWithStatus(commonRestrictionsParams)
                     .then(data => {
-                        response.restrictionsWithStatus = data.results;
+                        response.restrictionsWithStatus = rvRateManagerRestrictionsSrv.formatRestrictionsData(data.results, params);
                     })
             );
 
@@ -471,7 +418,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
 
             // common restriction params
             var commonRestrictionsParams = {
-                ..._.pick(params, 'from_date', 'to_date', 'restriction_level'),
+                ..._.pick(params, 'from_date', 'to_date'),
                 'rate_ids[]': [params.rate_id]
             };
 
@@ -529,7 +476,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
 
             // varied and common restrictions
             var commonRestrictionsParams = {
-                ..._.pick(params, 'from_date', 'to_date', 'restriction_level'),
+                ..._.pick(params, 'from_date', 'to_date', 'restrictionType'),
                 'rate_ids[]': [params.rate_id]
             };
 
@@ -539,7 +486,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             promises.push(
                 this.fetchAllRestrictionsWithStatus(commonRestrictionsParams)
                     .then((data) => {
-                        response.restrictionsWithStatus = data.results;
+                        response.restrictionsWithStatus = rvRateManagerRestrictionsSrv.formatRestrictionsData(data.results, params);
                     })
             );
 
@@ -599,7 +546,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                 'name_card_ids[]',
                 'varied_inclusive',
                 'rate_type_ids[]',
-                'restriction_level'
+                'restrictionType'
             );
 
             if (params['considerRateIDsInAllRestrictionStatusFetch']) {
@@ -609,7 +556,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             promises.push(
                 service.fetchAllRestrictionsWithStatus(paramsForCommonRestrictions)
                     .then((data) => {
-                        response.restrictionsWithStatus = data.results;
+                        response.restrictionsWithStatus = rvRateManagerRestrictionsSrv.formatRestrictionsData(data.results, params);
                     })
             );
 
@@ -638,7 +585,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             if (params.fetchCommonRestrictions) {
 
                 let paramsForCommonRestrictions = {
-                    ..._.pick(params, 'from_date', 'to_date', 'name_card_ids[]', 'varied_inclusive', 'restriction_level')
+                    ..._.pick(params, 'from_date', 'to_date', 'name_card_ids[]', 'varied_inclusive')
                 };
 
                 if (params["rate_type_ids[]"]) {
@@ -651,7 +598,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
 
                 promises.push(service.fetchCommonRestrictions(paramsForCommonRestrictions)
                     .then((data) => {
-                        response.commonRestrictions = data.results;
+                        response.commonRestrictions = rvRateManagerRestrictionsSrv.formatRestrictionsData(data.results, params);
                     })
                 );
             }
