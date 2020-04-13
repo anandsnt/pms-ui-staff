@@ -379,7 +379,7 @@ angular.module('sntRover')
 			$scope.$on('ON_WINDOW_RESIZE', function() {
 				if (!isDistributionChartActive()) {
 					return;
-				} else if (distributionChartData) {
+				} else if (distributionChartData && !$scope.dashboardFilter.gridViewActive) {
 					drawDistributionChart(distributionChartData);
 				} else {
 					redrawDistributionChartIfNeeded();
@@ -488,6 +488,13 @@ angular.module('sntRover')
 				$scope.refreshScroller(GRID_HEADER_HORIZONTAL_SCROLL);
 				$scope.refreshScroller(GRID_VIEW_DUAL_SCROLL);
 				$scope.refreshScroller(GRID_SIDE_MENU_SCROLL);
+
+				var horizontalScroll = $scope.getScroller(GRID_HEADER_HORIZONTAL_SCROLL);
+				var verticalScroll = $scope.getScroller(GRID_VIEW_DUAL_SCROLL);
+
+				horizontalScroll.scrollTo(0, 0, 0);
+				verticalScroll.scrollTo(0, 0, 0);
+				
 			};
 			var toggleDistributionChartGridView = function() {
 				if (!$scope.dashboardFilter.gridViewActive) {
@@ -496,14 +503,18 @@ angular.module('sntRover')
 					}, 1000);
 					return;
 				}
+				var selectedChart = _.find($scope.dashboardFilter.chartTypes, function(chartType) {
+					return chartType.code === $scope.dashboardFilter.chartType;
+				}).name;
+
 				if ($scope.dashboardFilter.gridViewActive && !$scope.dashboardFilter.aggType) {
-					$scope.gridViewHeader = _.find($scope.dashboardFilter.chartTypes, function(chartType) {
-						return chartType.code === $scope.dashboardFilter.chartType;
-					}).name;
+					$scope.gridViewHeader = selectedChart;
 				} else if ($scope.dashboardFilter.gridViewActive && $scope.dashboardFilter.aggType) {
-					$scope.gridViewHeader = _.find($scope.dashboardFilter.aggTypes, function(aggType) {
+					var aggType = _.find($scope.dashboardFilter.aggTypes, function(aggType) {
 						return aggType.code === $scope.dashboardFilter.aggType;
 					}).name;
+					
+					$scope.gridViewHeader = selectedChart + ' - ' + aggType;
 				}
 
 				$scope.gridLeftSideHeaders = [];

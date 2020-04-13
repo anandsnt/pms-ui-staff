@@ -5,7 +5,7 @@
         <strong class="h2 message">Choose Invoice Type</strong>
 
         <button type="button" id="inform-invoice" class="button blue" ng-click="clickedInformationalButton()"> <!-- Opens format-bill.html -->
-             Informational Invoice
+             Information Invoice
         </button>
 
         <button type="button" id="final-invoice" class="button orange" ng-show="!is_from_ar" ng-click="clickedFinalInvoiceButton()"> <!-- Opens final-bill.html -->
@@ -80,6 +80,22 @@
                 </select>
             </div>
         </div>
+
+        <div class="entry full-width" ng-hide="hideCompanyOrGuestInvoiceToggle">
+            <label>Generate Invoice for</label>
+            <div class="switch-button" ng-class="{'on': isCompanyInvoice, 'overlay': disableCompanyGuestToggle }">
+                <input type="checkbox" ng-model="isCompanyInvoice" ng-change="changeCompanyorGuestInvoiceToggle()" />
+                <label class="data-off">
+                    <span class="value">Guest</span>
+                    <span class="switch-icon">Company</span>
+                </label>
+                <label class="data-on">
+                    <span class="switch-icon">Guest</span>
+                    <span class="value">Company</span>
+                </label>
+            </div>
+        </div>
+
         <div class="entry full-width" ng-if="!shouldGenerateFinalInvoice">
             <label class="checkbox inline" ng-class="{checked: billFormat.isInformationalInvoice, disabled: billFormat.isInformationalInvoiceDisabled }">
                 <span class="icon-form icon-checkbox" ng-class="{checked: billFormat.isInformationalInvoice, disabled: billFormat.isInformationalInvoiceDisabled}">
