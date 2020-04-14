@@ -1089,6 +1089,28 @@
             }
         }
     }
+
+    /* Handle to toggle the Hierarchy rows */
+    .calendar-rate-table-handle {
+        position: absolute;
+        background-color: @gcard;
+        background-image: @icons;
+        background-repeat: no-repeat, repeat;
+        background-position: 5px -3807px, 0 0;
+        top: 95px;
+        cursor: ns-resize;
+        content: '';
+        z-index: 200;
+        left: 50%;
+        .size(50px, 25px);
+        #border-radius > .right(5px);
+        .rotate(90deg);
+
+        @media @highdpi {
+            background-image: @icons2x;
+            background-size: 120px, 40px;
+        }
+    }
     
     /* Right Side - Calendar Grid ***/
     .calendar-rate-table {
@@ -1411,28 +1433,6 @@
             .calc-height(100, 160);
 
             .transition(top, .2s, cubic-bezier(.10, .10, .25, .90));
-
-            .handle {
-                position: absolute;
-                background-color: @gcard;
-                background-image: @icons;
-                background-repeat: no-repeat, repeat;
-                background-position: 5px -3807px, 0 0;
-                top: -15px;
-                cursor: ns-resize;
-                content: '';
-                z-index: 10;
-                left: calc(~'50% - 105px'); // pinnedLeft width
-                .size(50px, 25px);
-                #border-radius > .right(5px);
-                .rotate(90deg);
-                
-
-                @media @highdpi {
-                    background-image: @icons2x;
-                    background-size: 120px, 40px;
-                }
-            }
 
             &.opened {
                 &.calendar-rate-table-hierarchy-2 {
