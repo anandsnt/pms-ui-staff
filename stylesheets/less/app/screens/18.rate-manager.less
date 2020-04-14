@@ -1105,10 +1105,29 @@
         .size(50px, 25px);
         #border-radius > .right(5px);
         .rotate(90deg);
+        .transition(top, .2s, cubic-bezier(.10, .10, .25, .90));
 
         @media @highdpi {
             background-image: @icons2x;
             background-size: 120px, 40px;
+        }
+
+        &.opened {
+            &.calendar-rate-table-hierarchy-2 {
+                top: 145px; 
+            }
+
+            &.calendar-rate-table-hierarchy-3 {
+                top: 195px; 
+            }
+
+            &.calendar-rate-table-hierarchy-4 {
+                top: 245px; 
+            }
+
+            &.calendar-rate-table-hierarchy-5 {
+                top: 295px; 
+            }
         }
     }
     
