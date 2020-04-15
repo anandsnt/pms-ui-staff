@@ -10,6 +10,7 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
             rateTypeEnabled: Toggles.isEnabled('hierarchical_rate_type_restrictions')
         };
 
+        // CICO-76337 - for rateType only
         service.processRateTypeRestrictionResponse = function(response) {
             _.each(response, function(item) {
                 _.each(item.rate_types, function(rateType) {
@@ -20,6 +21,7 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
             return response;
         };
 
+        // CICO-76339 - for roomtype only
         service.processRoomTypeRestrictionResponse = function(response) {
             _.each(response, function(item) {
                 _.each(item.room_types, function(roomType) {
@@ -64,7 +66,7 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
         // CICO-76339 roomType restriction API
         service.roomTypeRestrictionUrl = function(params) {
             return params.hierarchialRoomTypeRestrictionRequired ? '/api/restrictions/room_types' : '/api/daily_rates/room_restrictions';
-        }
+        };
 
 		// Handle GET api, for individual cell click & popup in House Level ( Frozen Panel).
         service.getURLforAllRestrictionsWithStatus = function(params) {
