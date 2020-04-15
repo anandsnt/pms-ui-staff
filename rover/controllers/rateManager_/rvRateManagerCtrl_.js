@@ -45,7 +45,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     $scope.hierarchyRestrictions = {
         houseEnabled: Toggles.isEnabled('hierarchical_house_restrictions'),
         roomTypeEnabled: Toggles.isEnabled('hierarchical_room_type_restrictions'),
-        rateTypeEnabled: Toggles.isEnabled('hierarchical_rate_type_restrictions')
+        rateTypeEnabled: Toggles.isEnabled('hierarchical_rate_type_restrictions'),
+        rateEnabled: Toggles.isEnabled('hierarchical_rate_restrictions')
     };
 
     /**
@@ -2454,7 +2455,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             mode: RM_RX_CONST.NOT_CONFIGURED_MODE,
             isHierarchyHouseRestrictionEnabled: $scope.hierarchyRestrictions.houseEnabled,
             isHierarchyRoomTypeRestrictionEnabled: $scope.hierarchyRestrictions.roomTypeEnabled,
-            isHierarchyRateTypeRestrictionEnabled: $scope.hierarchyRestrictions.rateTypeEnabled
+            isHierarchyRateTypeRestrictionEnabled: $scope.hierarchyRestrictions.rateTypeEnabled,
+            isHierarchyRateRestrictionEnabled: $scope.hierarchyRestrictions.rateEnabled
         };
 
         const store = configureStore(initialState);

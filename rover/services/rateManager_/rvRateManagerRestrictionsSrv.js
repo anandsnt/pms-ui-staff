@@ -7,7 +7,8 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
         service.hierarchyRestrictions = {
             houseEnabled: Toggles.isEnabled('hierarchical_house_restrictions'),
             roomTypeEnabled: Toggles.isEnabled('hierarchical_room_type_restrictions'),
-            rateTypeEnabled: Toggles.isEnabled('hierarchical_rate_type_restrictions')
+            rateTypeEnabled: Toggles.isEnabled('hierarchical_rate_type_restrictions'),
+            rateEnabled: Toggles.isEnabled('hierarchical_rate_restrictions')
         };
 
         // CICO-76337 - for rateType only
