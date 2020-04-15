@@ -83,7 +83,7 @@
 
         <div class="entry full-width" ng-hide="hideCompanyOrGuestInvoiceToggle">
             <label>Generate Invoice for</label>
-            <div class="switch-button" ng-class="{'on': isCompanyInvoice, 'overlay': disableCompanyGuestToggle }">
+            <div class="switch-button" ng-class="{'on': !isCompanyInvoice, 'overlay': disableCompanyGuestToggle }">
                 <input type="checkbox" ng-model="isCompanyInvoice" ng-change="changeCompanyorGuestInvoiceToggle()" />
                 <label class="data-off">
                     <span class="value">Guest</span>
