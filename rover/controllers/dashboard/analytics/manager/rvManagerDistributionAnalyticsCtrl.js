@@ -578,6 +578,7 @@ angular.module('sntRover')
 						$('base').attr('href', '#')
 					}
 				};
+                
 				$('base').attr('href', initialBaseHrefValue);
 				$scope.callAPI(rvManagersAnalyticsSrv.exportAsCsv, options);
 			});
