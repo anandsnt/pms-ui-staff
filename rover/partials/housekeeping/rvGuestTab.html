@@ -36,7 +36,7 @@
         <label ng-show="roomDetails.is_late_checkout == 'true'">LATE CHECKOUT / </label>{{ roomDetails.current_room_reservation_status }}.
         <span class="red">Departing <label ng-show="!!roomDetails.departure.time && !roomDetails.departure.date">at {{ roomDetails.departure.time }}.</label><label ng-show="!!roomDetails.departure.time && !!roomDetails.departure.date">at {{ roomDetails.departure.time }}</label><label ng-show="!!roomDetails.departure.date">&nbsp;on {{ roomDetails.departure.date | date : dateFormat }}.<label></span>
       </strong>
-      <figure ng-class="{'blacklisted':roomDetails.is_blacklisted,'guest-image':true}" >
+      <figure ng-class="{'blacklisted':roomDetails.is_blacklisted === 'true','guest-image':true}" >
         <img src="{{ roomDetails.avatar_src }}" alt="">
         <span class="stay-count" ng-if="roomDetails.guest_stay_count > 0 && isStandAlone">{{::roomDetails.guest_stay_count}}</span>
         <span ng-if="roomDetails.is_vip == 'true'" class="vip">VIP</span>
