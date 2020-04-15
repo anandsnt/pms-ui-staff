@@ -436,11 +436,12 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             INCLUDE_ACTIONS: 'INCLUDE_ACTIONS',
             SHOW_GUESTS: 'SHOW_GUESTS',
             VIP_ONLY: 'VIP_ONLY',
+            HAS_VEHICLE_REG_NO: 'HAS_VEHICLE_REG_NO',
             // this filter for few reports could also be listed
             // under SHOW and not OPTIONS
             INCLUDE_DUE_OUT: 'INCLUDE_DUE_OUT',
             RESTRICTED_POST_ONLY: 'RESTRICTED_POST_ONLY',
-            INCLUDE_TAX: 'INCLUDE_TAX'
+            INCLUDE_TAX: 'INCLUDE_TAX',
         };
 
         var matchSortFields = {
@@ -479,6 +480,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             };
 
             _.each($scope.selectedEntityDetails.filters, function(filter) {
+                console.log(filter);
                 var selected = false,
                     mustSend = false,
                     filteredTimePeriods;
@@ -495,7 +497,6 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
                 selected = false;
                 if ( matchGeneralOptions[filter.value] ) {
-
                     if ( $scope.selectedEntityDetails.report.description === 'Arriving Guests' && filter.value === 'DUE_IN_ARRIVALS' ) {
                         selected = true;
                     }
