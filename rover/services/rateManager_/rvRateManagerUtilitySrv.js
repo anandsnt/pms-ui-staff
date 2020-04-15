@@ -132,6 +132,10 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
                 if (!!params.rate_type_ids) {
                     newPostApiParams.rate_type_ids = params.rate_type_ids;
                 }
+
+                if (!!params.room_type_id) {
+                    newPostApiParams.room_type_ids = [params.room_type_id];
+                }
             }
             return newPostApiParams;
         };
