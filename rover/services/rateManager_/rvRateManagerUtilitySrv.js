@@ -129,11 +129,11 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
                     newPostApiParams.weekdays = service.convertWeekDaysToNewApiFormat(params.details[1].weekdays);
                 }
 
-                if (!!params.rate_type_ids) {
+                if (params.rate_type_ids) {
                     newPostApiParams.rate_type_ids = params.rate_type_ids;
                 }
 
-                if (!!params.room_type_id) {
+                if (params.room_type_id) {
                     newPostApiParams.room_type_ids = [params.room_type_id];
                 }
             }

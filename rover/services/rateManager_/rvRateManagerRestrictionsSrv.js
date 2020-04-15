@@ -76,7 +76,7 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
             } else if (params.hierarchialRateTypeRestrictionRequired) {
                 url = '/api/restrictions/rate_types';
             } else if (params.hierarchialRoomTypeRestrictionRequired) {
-                url = '/api/restrictions/room_types'
+                url = '/api/restrictions/room_types';
             }
             return url;
         };
@@ -89,9 +89,9 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
             if (service.hierarchyRestrictions.houseEnabled && params.restrictionType === 'HOUSE') {
                 url = '/api/restrictions/house';
             } else if (params.hierarchialRateTypeRestrictionRequired) {
-                url = '/api/restrictions/rate_types'
+                url = '/api/restrictions/rate_types';
             } else if (params.hierarchialRoomTypeRestrictionRequired) {
-                url = '/api/restrictions/room_types'
+                url = '/api/restrictions/room_types';
             }
             return url;
         };
