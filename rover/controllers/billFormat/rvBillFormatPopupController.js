@@ -6,7 +6,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
 
     BaseCtrl.call(this, $scope);
     $scope.isCompanyCardInvoice = true;
-    $scope.isCompanyInvoice = true;
+    $scope.isCompanyInvoice = false;
     $scope.disableCompanyCardInvoice = false;
     $scope.disableCompanyGuestToggle = false;
     $scope.hideCompanyCardInvoiceToggle = true;  
@@ -102,13 +102,13 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
     var handleCompanyGuestToggleVisibility = function () {
         if ($scope.data.show_invoice_type_toggle) {
             // Company card is attached.
-            $scope.isCompanyInvoice = true;
+            $scope.isCompanyInvoice = false;
             $scope.hideCompanyOrGuestInvoiceToggle = false;
             if (!$scope.isSettledBill) {
                 if ($scope.data.bill_address_type === "company") {
-                    $scope.isCompanyInvoice = false;
-                } else if ($scope.data.bill_address_type === "guest") {
                     $scope.isCompanyInvoice = true;
+                } else if ($scope.data.bill_address_type === "guest") {
+                    $scope.isCompanyInvoice = false;
                 }
                 $scope.disableCompanyGuestToggle = true;
             }
@@ -176,7 +176,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
 
         if ($scope.reservationBillData && $scope.reservationBillData.reservation_id) {
             params.reservation_id = $scope.reservationBillData.reservation_id;
-            params.bill_address_type = $scope.isCompanyInvoice ? 'guest' : 'company';
+            params.bill_address_type = $scope.isCompanyInvoice ? 'company' : 'guest';
         } else {
             if (!!$scope.groupConfigData) {
                 params.group_id = $scope.groupConfigData.summary.group_id;
