@@ -17,7 +17,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
     $scope.billFormat.isInformationalInvoiceDisabled = $scope.isSettledBill 
                                                 && $scope.reservationBillData.is_bill_lock_enabled;
 
-    if ($scope.reservationBillData.reservation_status === 'CHECKEDIN' && !$scope.reservationBillData.is_bill_lock_enabled) {
+    if ($scope.reservationBillData && $scope.reservationBillData.reservation_status === 'CHECKEDIN' && !$scope.reservationBillData.is_bill_lock_enabled) {
         $scope.billFormat.isInformationalInvoiceDisabled = true;
         $scope.billFormat.isInformationalInvoice = true;
     }
