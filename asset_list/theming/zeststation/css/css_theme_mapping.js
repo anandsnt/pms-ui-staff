@@ -123,7 +123,8 @@ module.exports = {
             'coyote': [themeCSSRoot + 'coyote.less'],
             'hermitage': [themeCSSRoot + 'hermitage.less'],
             'sage-inn-v2': [themeCSSRoot + 'sage-inn-v2.less'],
-            'lake-house': [themeCSSRoot + 'lake-house.less']
+            'lake-house': [themeCSSRoot + 'lake-house.less'],
+            'first-v2': [themeCSSRoot + 'first-v2.less']
         };
     }
 };
