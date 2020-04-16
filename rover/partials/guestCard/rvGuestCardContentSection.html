@@ -60,7 +60,7 @@
                 <ul id="search-guests-results" class="search-results">
                     <li class="reservation identify-guest" ng-repeat="guest in guests">
                         <a ng-click="selectGuest(guest, $event)">
-                            <figure class="guest-image">
+                            <figure class="guest-image" ng-class="{'blacklisted':guest.is_blacklisted}">
                                 <img ng-src="{{ guest.image }}" alt="" />
                                 <span ng-show="guest.vip" class="vip">VIP</span>
                             </figure>

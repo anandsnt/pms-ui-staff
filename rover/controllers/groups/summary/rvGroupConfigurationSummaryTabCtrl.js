@@ -1843,14 +1843,18 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
          * CICO-74643
          */
         var populateShoulderDates = function () {
+            // Using startOf('day') method to reset any time offsets that may be applied to the date objects
+            // tzIndependent date applies time offset for daylight, passing a date object to the method keeps adding offsets
             var summary = $scope.groupConfigData.summary,
-                shoulderFrom = moment(summary.shoulder_from_date || summary.block_from),
-                shoulderTo = moment(summary.shoulder_to_date || summary.block_to);
+                shoulderFrom = moment(summary.shoulder_from_date || summary.block_from).startOf('day'),
+                shoulderTo = moment(summary.shoulder_to_date || summary.block_to).startOf('day'),
+                blockFrom = moment(summary.block_from).startOf('day'),
+                blockTo = moment(summary.block_to).startOf('day');
 
             // Handle null entries for shoulder_from_date (groups created before introduction of shoulder days)
             // https://momentjs.com/docs/#/parsing/string/
-            summary.shoulder_from = '' + moment(summary.block_from).diff(shoulderFrom, 'days');
-            summary.shoulder_to = '' + shoulderTo.diff(moment(summary.block_to), 'days');
+            summary.shoulder_from = '' + blockFrom.diff(shoulderFrom, 'days');
+            summary.shoulder_to = '' + shoulderTo.diff(blockTo, 'days');
             // API returned values as JS Dates for future consumption
             summary.shoulder_from_date = shoulderFrom.toDate();
             summary.shoulder_to_date = shoulderTo.toDate();
