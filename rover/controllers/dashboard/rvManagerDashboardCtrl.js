@@ -521,5 +521,12 @@ sntRover.controller('RVmanagerDashboardController',
   };
 
   $scope.$on('APPY_MANAGER_FILTER', applySelectedFilter);
+
+  // In browser console call 
+  
+
+  document.addEventListener('APPLY_DS_FIL', () => {
+      $scope.$emit('APPY_MANAGER_FILTER');
+  });
   /** ************************* FILTER CODE END HERE ***********************************/
 }]);
