@@ -2,9 +2,9 @@
 
 /* 1. COLORS
 ==========================================================*/
-@brandColor:            #1d1d1b;
+@brandColor:            #8ec853;
     
-@textColor:             @brandColor;
+@textColor:             @black;
 @backgroundColor:       @white;
 
 @actionColor:           @white;
@@ -52,24 +52,26 @@
 
 }
 
-.logo-svg {
-    background-image: url("../css/themes/first-v2/logo.svg");
-    background-repeat: no-repeat;
-    background-size: contain;
-    width: 303px;
-    height: 60px;
-    background-position: center;
-    margin-top: 40px;
-}
+// PMS Zest Station logo
+    .logo-svg{
+        background-image: url("../css/themes/waldhotel-davos/logo.svg");
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 354px;
+        height: 60px;
+        background-position: center;
+        padding: 0;
+        margin: 0;
+    }
 
 /* 4. LAYOUT
 ==========================================================*/
 
-#first-v2 {
+#waldhotel-davos {
 
     #header {
-        height: 125px;
-        background: #1d1d1b;
+        height: 145px;
+        background: #b8b8b8;
 
         .button {
             .icons {
@@ -79,8 +81,8 @@
     }
 
     #main {
-        #calc > #height > .remove(100%, 125px);
-        top: 125px;
+        #calc > #height > .remove(100%, 145px);
+        top: 145px;
 
         &.centered {
             padding-top: 100px;
@@ -89,7 +91,6 @@
             }
         }
     }
-    
     .entry.input:not(.select) {
         .icons {
             fill: @brandColor;
@@ -98,7 +99,6 @@
     
     #logo {
         padding-top: 0;
-        margin-top: 40px;
 
         .logo {
             width: auto;
@@ -129,12 +129,11 @@
     #selection {
         li {
             .details {
-                background-color: fade(@brandColor, 5);
-            }
+                background-color: fade( @black, 10 );
+                color: @black;
 
-            &:active {
-                .details {
-                    background-color: @brandColor;
+                &.missing-details {
+                    background-color: fade( @black, 10 );
                 }
             }
         }
@@ -143,7 +142,7 @@
     #guests {
         .button {
             color: @white;
-            background-color: #8b8b8b;
+            background-color: black;
         }
     } 
 
@@ -181,14 +180,6 @@
         }
     }
 
-    .add-on {
-
-        .input-group {
-            input {
-                color: @brandColor;
-            }
-        }
-    }
 
     #textual {
         background: #ececec;
