@@ -100,7 +100,12 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
 
         // Handle POST api, for individual cell click & popup in House Level ( Frozen Panel).
         service.processParamsforApplyAllRestrictions = function( params ) {
-            params = rvRateManagerUtilitySrv.generateNewPostApiParams(params);
+            if (
+                params.hierarchialRoomTypeRestrictionRequired || params.hierarchialRateTypeRestrictionRequired ||
+                service.hierarchyRestrictions.houseEnabled && params.restrictionType === 'HOUSE'
+            ) {
+                params = rvRateManagerUtilitySrv.generateNewPostApiParams(params);
+            }
             return params;
         };
 
