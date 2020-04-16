@@ -885,7 +885,7 @@ angular.module('sntRover').controller('guestCardController', [
                         guestData.lastName = item.last_name;
                         guestData.image = item.image_url;
                         guestData.vip = item.vip;
-                        guestData.is_blacklisted = item.is_blacklisted;
+                        guestData.is_flagged = item.is_flagged;
                         if (item.address !== null) {
                             guestData.address = {};
                             guestData.address.city = item.address.city;
