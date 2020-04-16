@@ -85,7 +85,7 @@
 	        <ul id="dashboard-search-results" class="search-results" > <!-- since parent id & class must have roles in displaying the bottom results, we are seperating these -->
 				<li class="find-reservation" ng-repeat="row in results" ng-show="row.is_row_visible" ngrepeatend ngrepeatstarted ng-class="{'show-balance': isBulkCheckoutSelected && isDueoutShowing}">
 					<a ng-class="getReservationClass(row.reservation_status)" ng-click="goToReservationDetails($event,row.id, row.confirmation)"> <!-- add class "accompany" if it's a accompanying guest -->
-                    <figure class="guest-image" ng-class="{'accompany': row.images.length >1, 'blacklisted': row.is_blacklisted}" ng-show="row.images.length!=0 "><!-- add class "accompany" if it's a accompanying guest -->
+                    <figure class="guest-image" ng-class="{'accompany': row.images.length >1, 'blacklisted': row.is_flagged}" ng-show="row.images.length!=0 "><!-- add class "accompany" if it's a accompanying guest -->
                        <img ng-repeat="image in row.images" ng-src="{{image.guest_image}}">
                         <!-- if it's accompanying guest, show this as well:
                         <img src="{accompanying-guest-image-or-avatar}" alt="" />-->
