@@ -582,6 +582,10 @@ angular.module('sntRover')
 
             params.details = [];
 
+            if (dialogData.hierarchialRateTypeRestrictionRequired) {
+                params.hierarchialRateTypeRestrictionRequired = true;
+            }
+
             formDayRestrictionParamsForAPI(params);
 
             formRestrictionParamDetailForWeekDaysForAPI(params);
@@ -613,6 +617,10 @@ angular.module('sntRover')
             }
 
             params.details = [];
+
+            if (dialogData.hierarchialRoomTypeRestrictionRequired) {
+                params.hierarchialRoomTypeRestrictionRequired = true;
+            }
 
             formDayRestrictionParamsForAPI(params);
 

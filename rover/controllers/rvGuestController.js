@@ -879,12 +879,13 @@ angular.module('sntRover').controller('guestCardController', [
                 if (data.results.length > 0) {
                     angular.forEach(data.results, function(item) {
                         var guestData = {};
-
+                        
                         guestData.id = item.id;
                         guestData.firstName = item.first_name;
                         guestData.lastName = item.last_name;
                         guestData.image = item.image_url;
                         guestData.vip = item.vip;
+                        guestData.is_flagged = item.is_flagged;
                         if (item.address !== null) {
                             guestData.address = {};
                             guestData.address.city = item.address.city;
@@ -2096,7 +2097,7 @@ angular.module('sntRover').controller('guestCardController', [
 
             $scope.guestCardData.contactInfo = contactInfoData.contactInfo;
             $scope.guestCardData.contactInfo.avatar = contactInfoData.avatar;
-            $scope.guestCardData.contactInfo.vip = contactInfoData.vip;
+            $scope.guestCardData.contactInfo.vip = contactInfoData.vip;  
             $scope.countriesList = contactInfoData.countries;
             $scope.guestCardData.userId = contactInfoData.userId;
             $scope.guestCardData.guestId = contactInfoData.guestId;

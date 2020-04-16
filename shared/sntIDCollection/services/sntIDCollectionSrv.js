@@ -438,5 +438,6 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 		return deferred.promise;
 	};
 
+	this.WebSocketObj;
 
 });

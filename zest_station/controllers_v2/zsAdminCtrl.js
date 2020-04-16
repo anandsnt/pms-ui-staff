@@ -1,7 +1,7 @@
 sntZestStation.controller('zsAdminCtrl', [
     '$scope',
-    '$state', 'zsEventConstants', 'zsGeneralSrv', 'zsLoginSrv', '$window', '$rootScope', '$timeout', 'zsReceiptPrintHelperSrv', '$log',
-    function($scope, $state, zsEventConstants, zsGeneralSrv, zsLoginSrv, $window, $rootScope, $timeout, zsReceiptPrintHelperSrv, $log) {
+    '$state', 'zsEventConstants', 'zsGeneralSrv', 'zsLoginSrv', '$window', '$rootScope', '$timeout', 'zsReceiptPrintHelperSrv', '$log', 'sntIDCollectionUtilsSrv',
+    function($scope, $state, zsEventConstants, zsGeneralSrv, zsLoginSrv, $window, $rootScope, $timeout, zsReceiptPrintHelperSrv, $log, sntIDCollectionUtilsSrv) {
 
         BaseCtrl.call(this, $scope);
         var  isLightTurnedOn = false; // initially consider the HUE light status to be turned OFF.
@@ -300,6 +300,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 restartTimers();
                 $scope.setEditorModeCls();
                 $scope.zestStationData.set_workstation_id = station.id;
+                sntIDCollectionUtilsSrv.workstation_id = $scope.zestStationData.set_workstation_id;
                 $rootScope.workstation_id = $scope.zestStationData.set_workstation_id;
                 $scope.zestStationData.key_encoder_id = station.key_encoder_id;
                 $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS, {

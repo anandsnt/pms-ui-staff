@@ -480,6 +480,9 @@ sntRover.controller('RVmanagerDashboardController',
   $scope.showRemainingReservationsToggled = function() {
     $scope.$broadcast('SHOW_REMAINING_RESERVATIONS_TOGGLE');
   };
+  $scope.exportAsCSV = function() {
+    $scope.$broadcast('EXPORT_AS_CSV', shallowEncoded);
+  };
   /** ************************* FILTER CODE STARTS HERE ***********************************/
   // filters%5Broom_type_id%5D%5B%5D=237&
   // filters%5Bmarket_id%5D%5B%5D=446&
@@ -520,10 +523,29 @@ sntRover.controller('RVmanagerDashboardController',
     $scope.$broadcast('ANALYTICS_FILTER_CHANGED', shallowEncoded);
   };
 
+  var fetchSavedFilters = function(evt, chart_type) {
+    $('base').attr('href', "/");
+    var params = {
+      "chart_type": chart_type
+    };
+    var options = {
+      params: params,
+      successCallBack: function(response) {
+        $('base').attr('href', "#");
+        console.log(response);
+      }
+    };
+
+    $scope.callAPI(rvAnalyticsSrv.fetchAnalyticsFilters, options);
+  };
+
+  $scope.$on('FETCH_SAVED_FILTERS', fetchSavedFilters);
+
+
   $scope.$on('APPY_MANAGER_FILTER', applySelectedFilter);
 
   // In browser console call 
-  
+  //document.dispatchEvent(new Event('APPLY_DS_FIL')) 
 
   document.addEventListener('APPLY_DS_FIL', () => {
       $scope.$emit('APPY_MANAGER_FILTER');

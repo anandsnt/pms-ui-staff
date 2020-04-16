@@ -1,6 +1,6 @@
 <div id="guest-card-header" class="card-header" ng-class="UICardClass('guest-card')" ng-controller="RVGuestCardCtrl" ng-click="guestCardClicked()">
     <section ng-if="!searchMode">
-        <figure class="guest-image" ng-click="switchCard('guest-card')">
+        <figure class="guest-image" ng-click="switchCard('guest-card')" ng-class="{'blacklisted':guestCardData.contactInfo.is_flagged}">
             <img ng-src="{{guestCardData.contactInfo.avatar}}" />            
             <span class="stay-count" ng-if="guestCardData.contactInfo.stayCount > 0 && isStandAlone">{{::guestCardData.contactInfo.stayCount}}</span>
             <span class="vip" ng-show="guestCardData.contactInfo.vip">VIP</span>

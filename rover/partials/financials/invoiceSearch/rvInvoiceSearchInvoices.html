@@ -11,6 +11,7 @@
     </ul>
     <div class="invoice-list-content scrollable" ng-iscroll="invoice-list"> <!-- Hook iScroll here -->
         <div class="wrapper">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <ul class="search-results">
                 <li class="invoice-item" ng-repeat="invoiceReservationData in invoiceSearchData.reservationsList.results">
                     <div class="bill has-arrow next-view" >

@@ -49,7 +49,8 @@ const mapStateToRateManagerGridRightSideHeaderContainerProps = (state) => {
         headerDataList: convertDateDataForHeader(state.dates, state.businessDate),
         summary: utilMethods.convertDataForRestrictionListing(state.summary, state.restrictionTypes),
         dateList: utilMethods.convertDateListForRestrictionView(state.dates, state.businessDate),
-        dates: state.dates
+        dates: state.dates,
+        hideTopHeader: false
     };
 
     switch(state.mode) {
@@ -59,6 +60,7 @@ const mapStateToRateManagerGridRightSideHeaderContainerProps = (state) => {
 
         case RM_RX_CONST.ROOM_TYPE_VIEW_MODE:
             propsToReturn.clickedOnRoomTypeViewCell = state.callBacksFromAngular.clickedOnRoomTypeViewCell;
+            propsToReturn.hideTopHeader = !state.isHierarchyHouseRestrictionEnabled && state.isHierarchyRoomTypeRestrictionEnabled;
             break;
 
         case RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE:
@@ -66,6 +68,7 @@ const mapStateToRateManagerGridRightSideHeaderContainerProps = (state) => {
             break;
 
         case RM_RX_CONST.RATE_TYPE_VIEW_MODE:
+            propsToReturn.hideTopHeader = !state.isHierarchyHouseRestrictionEnabled && state.isHierarchyRateTypeRestrictionEnabled;
             propsToReturn.clickedOnRateTypeViewCell = state.callBacksFromAngular.clickedOnRateTypeViewCell;
             break;
 
