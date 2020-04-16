@@ -311,11 +311,11 @@ sntRover.controller('RVmanagerDashboardController',
   $scope.originData = originData && originData.booking_origins ? originData.booking_origins : [];
 
   var shallowDecoded,
-    shallowEncoded;
-  var generateParamsBasenOnFilters = function() {
-    var filtersSelected = {
+    shallowEncoded,
+    filtersSelected = {
       "filters": {}
     };
+  var generateParamsBasenOnFilters = function() {
 
     filtersSelected.filters.room_type_id = _.pluck($scope.selectedFilters.roomTypes, 'id');
     filtersSelected.filters.market_id = _.pluck($scope.selectedFilters.marketCodes, 'value');
@@ -483,39 +483,24 @@ sntRover.controller('RVmanagerDashboardController',
   $scope.exportAsCSV = function() {
     $scope.$broadcast('EXPORT_AS_CSV', shallowEncoded);
   };
+
   /** ************************* FILTER CODE STARTS HERE ***********************************/
-  // filters%5Broom_type_id%5D%5B%5D=237&
-  // filters%5Bmarket_id%5D%5B%5D=446&
-  // filters%5Bsource_id%5D%5B%5D=394&
-  // filters%5Bsegment_id%5D%5B%5D=95&
-  // filters%5Bbooking_origin_id%5D%5B%5D=325&
-  // chart_type=occupancy&end_date=2020-02-02&
-  // group_by=market_id&start_date=2020-01-26&workstation_id=248
 
-  var selectedFilter = {
-    room_type_ids: [235],
-    market_ids: [444],
-    source_ids: [],
-    segment_ids: [],
-    booking_origin_ids: [],
-    group_by: 'market_id'
-  };
+  var applySelectedFilter = function (selectedFilter) {
 
-  var applySelectedFilter = function (evt, filter) {
-
-    _.each(selectedFilter.room_type_ids, function(room_id){
+    _.each(selectedFilter.room_type_id, function(room_id){
       $scope.distributionFilterAdded('ROOM_TYPE',room_id);
     });
-    _.each(selectedFilter.market_ids, function(market_id){
+    _.each(selectedFilter.market_id, function(market_id){
       $scope.distributionFilterAdded('MARKET',market_id);
     }); 
-    _.each(selectedFilter.source_ids, function(source_id){
+    _.each(selectedFilter.source_id, function(source_id){
       $scope.distributionFilterAdded('SOURCE',source_id);
     }); 
-    _.each(selectedFilter.segment_ids, function(segment_id){
+    _.each(selectedFilter.segment_id, function(segment_id){
       $scope.distributionFilterAdded('SEGMENT',segment_id);
     }); 
-    _.each(selectedFilter.booking_origin_ids, function(booking_origin_id){
+    _.each(selectedFilter.booking_origin_id, function(booking_origin_id){
       $scope.distributionFilterAdded('ORIGIN',booking_origin_id);
     }); 
     $scope.dashboardFilter.aggType = selectedFilter.group_by;
@@ -523,32 +508,65 @@ sntRover.controller('RVmanagerDashboardController',
     $scope.$broadcast('ANALYTICS_FILTER_CHANGED', shallowEncoded);
   };
 
+
+  var applyFirstFilter = function () {
+    applySelectedFilter(JSON.parse($scope.savedFilters[0].filter_json).filters);
+  };
+
+  // After APIs are called set base href to # for the SVG gradients to work
+  var setHrefForChart = function () {
+    $('base').attr('href', "#");
+  };
+
+  // Fetch saved filters for the chart type
   var fetchSavedFilters = function(evt, chart_type) {
-    $('base').attr('href', "/");
     var params = {
       "chart_type": chart_type
     };
     var options = {
       params: params,
       successCallBack: function(response) {
-        $('base').attr('href', "#");
-        console.log(response);
-      }
+        setHrefForChart();
+        $scope.savedFilters = response;
+      },
+      failureCallBack: setHrefForChart
     };
 
+    $('base').attr('href', "/");
     $scope.callAPI(rvAnalyticsSrv.fetchAnalyticsFilters, options);
   };
 
   $scope.$on('FETCH_SAVED_FILTERS', fetchSavedFilters);
 
+  var saveAnalyticsFilter = function () {
+
+    if ($scope.dashboardFilter.aggType) {
+      filtersSelected.filters.group_by = $scope.dashboardFilter.aggType
+    }
+    
+    var params = {
+      "name": "Filter 4",
+      "filter_json": JSON.stringify(filtersSelected),
+      "chart_type":"distribution"
+    };
+    var options = {
+      params: params,
+      successCallBack: setHrefForChart,
+      failureCallBack: setHrefForChart
+    };
+
+    $('base').attr('href', "/");
+    $scope.callAPI(rvAnalyticsSrv.saveAnalyticsFilter, options);
+  };
+
+  /************* DEBUG CODE *****************/
 
   $scope.$on('APPY_MANAGER_FILTER', applySelectedFilter);
 
   // In browser console call 
   //document.dispatchEvent(new Event('APPLY_DS_FIL')) 
 
-  document.addEventListener('APPLY_DS_FIL', () => {
-      $scope.$emit('APPY_MANAGER_FILTER');
-  });
+  document.addEventListener('APPLY_DS_FIL',applyFirstFilter); 
+  document.addEventListener('SAVE_DS_FILTRE', saveAnalyticsFilter);
   /** ************************* FILTER CODE END HERE ***********************************/
 }]);

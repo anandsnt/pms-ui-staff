@@ -308,6 +308,7 @@ angular.module('sntRover')
 
 
 			var fetchDistributionChartData = function() {
+				$scope.$emit('FETCH_SAVED_FILTERS', 'distribution');
 				$scope.dashboardFilter.displayMode = 'CHART_DETAILS';
 				$('base').attr('href', initialBaseHrefValue);
 
