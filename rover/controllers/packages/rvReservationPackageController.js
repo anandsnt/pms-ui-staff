@@ -87,6 +87,9 @@ sntRover.controller('RVReservationPackageController',
 		};
 
 		$scope.getAddonTotal = function(addon) {
+			if ($scope.shouldHideCount(addon)) {
+				return addon.amount;
+			}
 			return $scope.getAddonCount(addon) * addon.amount;
 		};
 
