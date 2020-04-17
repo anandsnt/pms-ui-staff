@@ -19,14 +19,14 @@ angular.module('sntRover')
 			};
 			var shallowDecodedParams = "";
 			var paceChartData;
-			var drawPaceChart = function(chartData) {
+			var drawPaceChart = function(chartData, shallowDecodedParams) {
 
 				$scope.screenData.mainHeading = $filter('translate')("AN_PACE");
 				$scope.dashboardFilter.selectedAnalyticsMenu = 'PACE';
 				$scope.screenData.isZoomedChart = false;
 
 				if ($scope.dashboardFilter.LineChartActive) {
-					$scope.drawPaceLineChart(chartData);
+					$scope.startDrawingPaceLineChart(chartData, shallowDecodedParams);
 					return;
 				}
 				else if (chartData.length > 60) {
@@ -298,7 +298,7 @@ angular.module('sntRover')
 						$scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
 						$scope.screenData.analyticsDataUpdatedTime = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
 						paceChartData = data;
-						drawPaceChart(data);
+						drawPaceChart(data, shallowDecodedParams);
 					}
 				};
 				$scope.callAPI(rvManagersAnalyticsSrv.pace, options);

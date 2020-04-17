@@ -165,6 +165,16 @@
                </label>
             </div>
          </div>
+         <div class="entry"  
+            ng-if="dashboardFilter.selectedAnalyticsMenu === 'PACE' && dashboardFilter.LineChartActive" >
+            <div class="entry-data has-datepicker">
+               <label for="analytics-date">Date</label>
+               <input type="text" class="datepicker" ng-model="dashboardFilter.linceChartDateToCompare" ng-click="showDateComparisonCalendar()" readonly />
+            </div>
+            <div class="selected" data-list="analytics-room-type">
+               <span class="tag" ng-repeat="date in dashboardFilter.datesToCompare | orderBy: orderByDate" ng-click="removeDateToCompare(date)">{{date}}</span>
+            </div>
+         </div>
          <div class="entry">
             <div class="select with-label">
                <label for="analytics-room-type">Room Type</label>

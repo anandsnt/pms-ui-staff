@@ -438,6 +438,7 @@ sntRover.controller('RVmanagerDashboardController',
 
     $scope.dashboardFilter.gridViewActive = false;
     $scope.dashboardFilter.LineChartActive = false;
+    $scope.dashboardFilter.datesToCompare = [];
     resetChartFilters();
   };
 
@@ -487,4 +488,42 @@ sntRover.controller('RVmanagerDashboardController',
   $scope.exportAsCSV = function() {
     $scope.$broadcast('EXPORT_AS_CSV', shallowEncoded);
   };
+
+  /***************** LINE CHART STARTS HERE ***************************/
+
+  $scope.dashboardFilter.datesToCompare = [];
+
+  $scope.showDateComparisonCalendar = function() {
+    $scope.dateOptions = {
+      changeYear: true,
+      changeMonth: true,
+      yearRange: "-5:+5",
+      dateFormat: 'yy-mm-dd',
+      onSelect: function(dateText) {
+        // reject if the date was already selected or it's the picked date in header
+        if (!$scope.dashboardFilter.datesToCompare.includes(dateText) &&
+          $scope.dashboardFilter.datePicked !== dateText) {
+          $scope.dashboardFilter.datesToCompare.push(dateText);
+        }
+        ngDialog.close();
+      }
+    };
+
+    $timeout(function() {
+      ngDialog.open({
+        template: '/assets/partials/search/rvDatePickerPopup.html',
+        className: '',
+        scope: $scope
+      });
+    }, 1000);
+  };
+
+  $scope.removeDateToCompare = function(selectedDate) {
+    $scope.dashboardFilter.datesToCompare = _.reject($scope.dashboardFilter.datesToCompare, function(date) {
+      return date === selectedDate;
+    });
+  };
+
+  /***************** LINE CHART ENDS HERE ***************************/
+
 }]);
