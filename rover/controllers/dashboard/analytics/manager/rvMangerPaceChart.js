@@ -311,6 +311,10 @@ angular.module('sntRover')
 				redrawPaceChartIfNeeded();
 			});
 			$scope.$on('ANALYTICS_FILTER_CHANGED', function(e, data) {
+				// if filters has not changed, don't reload
+				if (data === shallowDecodedParams) {
+					return;
+				}
 				shallowDecodedParams = data;
 				redrawPaceChartIfNeeded();
 			});
