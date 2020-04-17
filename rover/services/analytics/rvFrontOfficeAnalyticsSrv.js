@@ -290,7 +290,7 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
         var buildCheckinActivity = function(arrivals, foActivity, isToday) {
             arrivals.forEach(function(reservation) {
                 var dayKey = isToday ? 'today' : 'yesterday';
-                var hourActivity = foActivity.data[moment(reservation.eta_hz).format('h A')];
+                var hourActivity = foActivity.data[moment(reservation.eta_hz, 'h').format('h A')];
 
                 if (rvAnalyticsSrv.isVip(reservation)) {
                     hourActivity[dayKey].vipCheckin = hourActivity[dayKey].vipCheckin + 1;
@@ -311,7 +311,7 @@ angular.module('sntRover').service('rvFrontOfficeAnalyticsSrv', [
                 if (isToday) {
                     dayKey = 'today';
                 }
-                var hourActivity = foActivity.data[moment(reservation.etd_hz).format('h A')];
+                var hourActivity = foActivity.data[moment(reservation.etd_hz, 'h').format('h A')];
 
                 if (rvAnalyticsSrv.isVip(reservation)) {
                     hourActivity[dayKey].vipCheckout = hourActivity[dayKey].vipCheckout + 1;
