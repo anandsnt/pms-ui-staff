@@ -12,13 +12,19 @@
 <div class="info-container account-info">
     <div class="info-left">
         <span ng-if="isFromBillCard">
-            {{receiptPrintData.guest_details.first_name}} {{receiptPrintData.guest_details.last_name}}<br/>
-            <span class="type" ng-bind-html="receiptPrintData.guest_details.address"></span>
-            <br/>
-            {{receiptPrintData.guest_details.city}}<span ng-if="receiptPrintData.guest_details.city !== '' && receiptPrintData.guest_details.city!== null">, </span>
-            {{receiptPrintData.guest_details.state}}<span ng-if="receiptPrintData.guest_details.state !== '' && receiptPrintData.guest_details.state!== null">, </span>
-            {{receiptPrintData.guest_details.postal_code}}<br/>
-            {{receiptPrintData.guest_details.country_name}}
+            <span ng-if="!receiptPrintData.is_db_payment">
+                {{receiptPrintData.guest_details.first_name}} {{receiptPrintData.guest_details.last_name}}<br/>
+                <span class="type" ng-bind-html="receiptPrintData.guest_details.address"></span>
+                <br/>
+                {{receiptPrintData.guest_details.city}}<span ng-if="receiptPrintData.guest_details.city !== '' && receiptPrintData.guest_details.city!== null">, </span>
+                {{receiptPrintData.guest_details.state}}<span ng-if="receiptPrintData.guest_details.state !== '' && receiptPrintData.guest_details.state!== null">, </span>
+                {{receiptPrintData.guest_details.postal_code}}<br/>
+                {{receiptPrintData.guest_details.country_name}}
+            </span>
+            <span ng-if="!receiptPrintData.is_db_payment">
+                {{receiptPrintData.card_details.name}}<br/>
+                {{receiptPrintData.card_details.address}}
+            </span>
         </span>
         <span ng-if="!isFromBillCard">
             <strong>{{receiptPrintData.receipt_translations.account_name}}:</strong> {{receiptPrintData.account_name}} <br />
