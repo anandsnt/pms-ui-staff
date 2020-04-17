@@ -441,7 +441,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             // under SHOW and not OPTIONS
             INCLUDE_DUE_OUT: 'INCLUDE_DUE_OUT',
             RESTRICTED_POST_ONLY: 'RESTRICTED_POST_ONLY',
-            INCLUDE_TAX: 'INCLUDE_TAX',
+            INCLUDE_TAX: 'INCLUDE_TAX'
         };
 
         var matchSortFields = {
@@ -480,7 +480,6 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             };
 
             _.each($scope.selectedEntityDetails.filters, function(filter) {
-                console.log(filter);
                 var selected = false,
                     mustSend = false,
                     filteredTimePeriods;

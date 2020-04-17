@@ -603,8 +603,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             INCLUDE_TAX: 'INCLUDE_TAX',
             INCLUDE_LEDGER_DATA: 'INCLUDE_LEDGER_DATA',
             NO_NATIONALITY: 'NO_NATIONALITY',
-            EXCLUDE_NON_GTD: 'EXCLUDE_NON_GTD',
-            HAS_VEHICLE_REG_NO: 'HAS_VEHICLE_REG_NO'
+            EXCLUDE_NON_GTD: 'EXCLUDE_NON_GTD'
         };
 
         var matchSortFields = {
