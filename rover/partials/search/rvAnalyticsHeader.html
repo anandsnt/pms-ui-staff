@@ -54,6 +54,11 @@
    </div>
    <!-- Actions -->
    <div class="entry actions">
+      <button id="analytics-download" type="button" class="button with-icon only-icon purple open-modal" ng-if="dashboardFilter.selectedAnalyticsMenu &&
+      dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION' &&
+      dashboardFilter.gridViewActive" ng-click="exportAsCSV()">
+         <span class="icons icon-save"></span>
+      </button>
       <button class="button white with-icon only-icon" ng-class="{'open' : dashboardFilter.showFilters }" ng-click="toggleFilterView()">
          <!-- Add class 'open' when clicked 1st time, remove it when clickd 2nd time -->
          <!-- If filters applied, show their count like this: <span class="count">{X}</span> -->
@@ -135,7 +140,7 @@
                   <option value="{{::filter.code}}" ng-repeat="filter in ::dashboardFilter.aggTypes track by $index">{{::filter.name}}</option>
                </select>
             </div>
-            <div id="chart-toggle" class="switch-button ng-hide" ng-class="{'on': !dashboardFilter.gridViewActive}">
+            <div id="chart-toggle" class="switch-button" ng-class="{'on': !dashboardFilter.gridViewActive}">
                <input id="distribution-switch" type="checkbox" checked="" ng-model="dashboardFilter.gridViewActive" ng-change="distributionChartChanged()">
                <label class="data-off">
                <span class="value">Chart</span>

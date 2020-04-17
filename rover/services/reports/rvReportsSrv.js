@@ -136,7 +136,7 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'LAST_NOVEMBER',
                 'LAST_DECEMBER'
              ],
-             'Austria Nationality Export': [
+             'Austria Residence Country Export': [
                 'LAST_MONTH',
                 'LAST_JANUARY',
                 'LAST_FEBRUARY',

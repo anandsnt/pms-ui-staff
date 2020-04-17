@@ -43,6 +43,19 @@ sntRover.controller('RVReservationPackageController',
 			return false;
 		};
 
+		var getApplicableAddonsCount = function(amountType, numAdults, numChildren, numNights) {
+			
+			if (amountType === 'PERSON') {
+				return (numAdults + numChildren) * numNights;
+			} else if (amountType === 'ADULT') {
+				return numAdults * numNights;
+			} else if (amountType === 'CHILD') {
+				return numChildren * numNights;
+			} else if (amountType === 'FLAT' || amountType === 'ROOM') {
+				return numNights;
+			}
+		};
+
 		// Get addon count
 		$scope.getAddonCount = function(addon) {
 			var postingRythm = addon.post_type.frequency,
@@ -51,29 +64,32 @@ sntRover.controller('RVReservationPackageController',
 				numAdults = $scope.addonPopUpData.number_of_adults,
 				numChildren = $scope.addonPopUpData.number_of_children,
 				numNights = $scope.addonPopUpData.duration_of_stay,
+				addonCount = 0,
 				chargeFullWeeksOnly = addon.charge_full_weeks_only;
 				
-			if (!postingRythm) {				
-				if (postType === 'WEEK' || postType === 'EVERY WEEK' || postType === 'WEEKLY' || postType === 'WEEKDAY' || postType === 'WEEKEND') {
-					postingRythm = 7;
-				} else if (postType === 'STAY' || postType === 'ENTIRE STAY') {
-					postingRythm = 1;
-				} else if (postType === 'NIGHT' || postType === 'First Night' || postType === 'LAST_NIGHT' || postType === 'CUSTOM' || postType === 'POST ON LAST NIGHT') {
-					postingRythm = 0;
-				}
-			}
 			if ($scope.showCustomPosting() && typeof addon.post_instances !== 'undefined') {
-				numNights = _.filter(addon.post_instances, {active: true}).length;				
+				numNights = _.filter(addon.post_instances, {active: true}).length;		
+				addonCount = getApplicableAddonsCount(amountType, numAdults, numChildren, numNights);		
+			} else {
+				if (!postingRythm) {				
+					if (postType === 'WEEK' || postType === 'EVERY WEEK' || postType === 'WEEKLY' || postType === 'WEEKDAY' || postType === 'WEEKEND') {
+						postingRythm = 7;
+					} else if (postType === 'STAY' || postType === 'ENTIRE STAY') {
+						postingRythm = 1;
+					} else if (postType === 'NIGHT' || postType === 'First Night' || postType === 'LAST_NIGHT' || postType === 'CUSTOM' || postType === 'POST ON LAST NIGHT') {
+						postingRythm = 0;
+					}
+				}
+				addonCount = RVReservationStateService.getApplicableAddonsCount(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly);
 			}
-			if (numNights === 0) {
-				return 0;
-			}
-			var addonCount = RVReservationStateService.getApplicableAddonsCount(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly);
 
 			return (addonCount * addon.addon_count);
 		};
 
 		$scope.getAddonTotal = function(addon) {
+			if ($scope.shouldHideCount(addon)) {
+				return addon.amount;
+			}
 			return $scope.getAddonCount(addon) * addon.amount;
 		};
 
