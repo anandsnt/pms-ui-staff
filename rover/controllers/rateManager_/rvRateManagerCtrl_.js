@@ -628,8 +628,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     var considerHierarchyRestrictions = function(params) {
         if ($scope.hierarchyRestrictions.rateTypeEnabled && $scope.chosenTab === 'RATE_TYPES') {
             params.hierarchialRateTypeRestrictionRequired = true;
-        } else if ($scope.hierarchyRestrictions.roomTypeEnabled && $scope.chosenTab === 'ROOM_TYPES') {
+        }
+        else if ($scope.hierarchyRestrictions.roomTypeEnabled && $scope.chosenTab === 'ROOM_TYPES') {
             params.hierarchialRoomTypeRestrictionRequired = true;
+        }
+        else if ($scope.hierarchyRestrictions.rateEnabled && $scope.chosenTab === 'RATES') {
+            params.hierarchialRateRestrictionRequired = true;
         }
     };
 
