@@ -668,12 +668,12 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         return rvBaseWebSrvV2.postJSON(url, params);
     };
     this.updateAnalyticsFilter = function(params) {
-        var url = '/api/analytics_filters';
+        var url = '/api/analytics_filters/' + params.id;
 
         return rvBaseWebSrvV2.putJSON(url, params);
     };
     this.deleteAnalyticsFilter = function(params) {
-        var url = '/api/analytics_filters';
+        var url = '/api/analytics_filters/' + params.id;
 
         return rvBaseWebSrvV2.deleteJSON(url, params);
     };

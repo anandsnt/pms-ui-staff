@@ -329,11 +329,11 @@ sntRover.controller('RVmanagerDashboardController',
   $scope.toggleFilterView = function() {
     $scope.dashboardFilter.showFilters = !$scope.dashboardFilter.showFilters;
 
-    if (($scope.dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION' ||
-        $scope.dashboardFilter.selectedAnalyticsMenu === 'PACE') &&
-      !$scope.dashboardFilter.showFilters) {
-      $scope.$broadcast('ANALYTICS_FILTER_CHANGED', shallowEncoded);
-    }
+    // if (($scope.dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION' ||
+    //     $scope.dashboardFilter.selectedAnalyticsMenu === 'PACE') &&
+    //   !$scope.dashboardFilter.showFilters) {
+    //   $scope.$broadcast('ANALYTICS_FILTER_CHANGED', shallowEncoded);
+    // }
   };
 
   var resetChartFilters = function() {
@@ -354,62 +354,79 @@ sntRover.controller('RVmanagerDashboardController',
 
   resetChartFilters();
 
-  $scope.distributionFilterRemoved = function(type, value) {
-    var selectedItem;
+  /* ********************** FILTER REMOVAL ACTION STARTS HERE ********************/
+  var filterRemovalActions = function(mainList, filterList, value) {
+    var selectedItem = rvAnalyticsHelperSrv.findSelectedFilter(filterList, value);
 
-    if (type === 'MARKET' && value) {
-      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.selectedFilters.marketCodes, value);
-      $scope.marketData = rvAnalyticsHelperSrv.addToAndSortArray($scope.marketData, selectedItem);
-      $scope.selectedFilters.marketCodes = _.reject($scope.selectedFilters.marketCodes, selectedItem);
-    } else if (type === 'SOURCE' && value) {
-      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.selectedFilters.sourceCodes, value);
-      $scope.sourceData = rvAnalyticsHelperSrv.addToAndSortArray($scope.sourceData, selectedItem);
-      $scope.selectedFilters.sourceCodes = _.reject($scope.selectedFilters.sourceCodes, selectedItem);
-    } else if (type === 'SEGMENT' && value) {
-      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.selectedFilters.segmentCodes, value);
-      $scope.segmentData = rvAnalyticsHelperSrv.addToAndSortArray($scope.segmentData, selectedItem);
-      $scope.selectedFilters.segmentCodes = _.reject($scope.selectedFilters.segmentCodes, selectedItem);
-    } else if (type === 'ORIGIN' && value) {
-      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.selectedFilters.originCodes, value);
-      $scope.originData = rvAnalyticsHelperSrv.addToAndSortArray($scope.originData, selectedItem);
-      $scope.selectedFilters.originCodes = _.reject($scope.selectedFilters.originCodes, selectedItem);
-    } else if (type === 'ROOM_TYPE' && value) {
-      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.selectedFilters.roomTypes, value);
-      $scope.availableRoomTypes = rvAnalyticsHelperSrv.addToAndSortArray($scope.availableRoomTypes, selectedItem);
-      $scope.selectedFilters.roomTypes = _.reject($scope.selectedFilters.roomTypes, selectedItem);
+    mainList = rvAnalyticsHelperSrv.addToAndSortArray(mainList, selectedItem);
+    filterList = _.reject(filterList, selectedItem);
+    return filterList;
+  };
+
+  $scope.distributionFilterRemoved = function(type, value) {
+    if (type === 'MARKET') {
+      $scope.selectedFilters.marketCodes = filterRemovalActions($scope.marketData,
+        $scope.selectedFilters.marketCodes,
+        value);
+    } else if (type === 'SOURCE') {
+      $scope.selectedFilters.sourceCodes = filterRemovalActions($scope.sourceData,
+        $scope.selectedFilters.sourceCodes,
+        value);
+    } else if (type === 'SEGMENT') {
+      $scope.selectedFilters.segmentCodes = filterRemovalActions($scope.segmentData,
+        $scope.selectedFilters.segmentCodes,
+        value);
+    } else if (type === 'ORIGIN') {
+      $scope.selectedFilters.originCodes = filterRemovalActions($scope.originData,
+        $scope.selectedFilters.originCodes,
+        value);
+    } else if (type === 'ROOM_TYPE') {
+      $scope.selectedFilters.roomTypes = filterRemovalActions($scope.availableRoomTypes,
+        $scope.selectedFilters.roomTypes,
+        value);
     }
     generateParamsBasenOnFilters();
+  };
+  /* ********************** FILTER REMOVAL ACTION ENDS HERE ********************/
+
+  /* ********************** FILTER ADDITION ACTION STARTS HERE ********************/
+
+  var newFilterAdditionActions = function(mainList, filterList, value) {
+    var selectedItem = rvAnalyticsHelperSrv.findSelectedFilter(mainList, value);
+
+    filterList = rvAnalyticsHelperSrv.addToAndSortArray(filterList, selectedItem);
+    mainList = _.reject(mainList, selectedItem);
+    return mainList;
   };
 
   $scope.distributionFilterAdded = function(type, value) {
-    var selectedItem;
-
     if (!value) {
       return
-    }
-    else if (type === 'MARKET') {
-      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.marketData, value);
-      $scope.selectedFilters.marketCodes = rvAnalyticsHelperSrv.addToAndSortArray($scope.selectedFilters.marketCodes, selectedItem);
-      $scope.marketData = _.reject($scope.marketData, selectedItem);
+    } else if (type === 'MARKET') {
+      $scope.marketData = newFilterAdditionActions($scope.marketData,
+        $scope.selectedFilters.marketCodes,
+        value);
     } else if (type === 'SOURCE') {
-      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.sourceData, value);
-      $scope.selectedFilters.sourceCodes = rvAnalyticsHelperSrv.addToAndSortArray($scope.selectedFilters.sourceCodes, selectedItem);
-      $scope.sourceData = _.reject($scope.sourceData, selectedItem);
+      $scope.sourceData = newFilterAdditionActions($scope.sourceData,
+        $scope.selectedFilters.sourceCodes,
+        value);
     } else if (type === 'SEGMENT') {
-      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.segmentData, value);
-      $scope.selectedFilters.segmentCodes = rvAnalyticsHelperSrv.addToAndSortArray($scope.selectedFilters.segmentCodes, selectedItem);
-      $scope.segmentData = _.reject($scope.segmentData, selectedItem);
+      $scope.segmentData = newFilterAdditionActions($scope.segmentData,
+        $scope.selectedFilters.segmentCodes,
+        value);
     } else if (type === 'ORIGIN') {
-      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.originData, value);
-      $scope.selectedFilters.originCodes = rvAnalyticsHelperSrv.addToAndSortArray($scope.selectedFilters.originCodes, selectedItem);
-      $scope.originData = _.reject($scope.originData, selectedItem);
+      $scope.originData = newFilterAdditionActions($scope.originData,
+        $scope.selectedFilters.originCodes,
+        value);
     } else if (type === 'ROOM_TYPE') {
-      selectedItem = rvAnalyticsHelperSrv.findSelectedFilter($scope.availableRoomTypes, value);
-      $scope.selectedFilters.roomTypes = rvAnalyticsHelperSrv.addToAndSortArray($scope.selectedFilters.roomTypes, selectedItem);
-      $scope.availableRoomTypes = _.reject($scope.availableRoomTypes, selectedItem);
+      $scope.availableRoomTypes = newFilterAdditionActions($scope.availableRoomTypes,
+        $scope.selectedFilters.roomTypes,
+        value);
     }
     generateParamsBasenOnFilters();
   };
+
+  /* ********************** FILTER ADDITION ACTION ENDS HERE ********************/
 
   var joinFiltersAndDataSet = function (dataSet, filterData) {
     dataSet = dataSet.concat(filterData);
@@ -438,6 +455,8 @@ sntRover.controller('RVmanagerDashboardController',
     $scope.availableRoomTypes = joinFiltersAndDataSet($scope.availableRoomTypes, $scope.selectedFilters.roomTypes);
     $scope.dashboardFilter.showLastYearData = false;
     $scope.dashboardFilter.lastyearType = "SAME_DATE_LAST_YEAR";
+    $scope.dashboardFilter.selectedAnalyticsFilter = {};
+    $scope.dashboardFilter.showFilterName = false;
     resetChartFilters();
   };
 
@@ -484,44 +503,45 @@ sntRover.controller('RVmanagerDashboardController',
     $scope.$broadcast('EXPORT_AS_CSV', shallowEncoded);
   };
 
-  /** ************************* FILTER CODE STARTS HERE ***********************************/
+  /** ************************* SAVED FILTERS CODE STARTS HERE ***********************************/
 
-  var applySelectedFilter = function (selectedFilter) {
+  var populateSelectedFilter = function(selectedFilter) {
 
-    _.each(selectedFilter.room_type_id, function(room_id){
-      $scope.distributionFilterAdded('ROOM_TYPE',room_id);
+    var selectedFilters = [{
+      type: 'ROOM_TYPE',
+      filter: selectedFilter.room_type_id
+    }, {
+      type: 'MARKET',
+      filter: selectedFilter.market_id
+    }, {
+      type: 'SOURCE',
+      filter: selectedFilter.source_id
+    }, {
+      type: 'SEGMENT',
+      filter: selectedFilter.segment_id
+    }, {
+      type: 'ORIGIN',
+      filter: selectedFilter.booking_origin_id
+    }, ];
+
+    _.each(selectedFilters, function(filterSet) {
+      _.each(filterSet.filter, function(filter) {
+        $scope.distributionFilterAdded(filterSet.type, filter);
+      });
     });
-    _.each(selectedFilter.market_id, function(market_id){
-      $scope.distributionFilterAdded('MARKET',market_id);
-    }); 
-    _.each(selectedFilter.source_id, function(source_id){
-      $scope.distributionFilterAdded('SOURCE',source_id);
-    }); 
-    _.each(selectedFilter.segment_id, function(segment_id){
-      $scope.distributionFilterAdded('SEGMENT',segment_id);
-    }); 
-    _.each(selectedFilter.booking_origin_id, function(booking_origin_id){
-      $scope.distributionFilterAdded('ORIGIN',booking_origin_id);
-    }); 
+
     $scope.dashboardFilter.aggType = selectedFilter.group_by;
-
-    $scope.$broadcast('ANALYTICS_FILTER_CHANGED', shallowEncoded);
-  };
-
-
-  var applyFirstFilter = function () {
-    applySelectedFilter(JSON.parse($scope.savedFilters[0].filter_json).filters);
   };
 
   // After APIs are called set base href to # for the SVG gradients to work
-  var setHrefForChart = function () {
-    $('base').attr('href', "#");
+  var setHrefForChart = function() {
+    $('base').attr('href', '#');
   };
 
   // Fetch saved filters for the chart type
-  var fetchSavedFilters = function(evt, chart_type) {
+  var fetchSavedAnalyticsFilters = function() {
     var params = {
-      "chart_type": chart_type
+      chart_type: $scope.dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION' ? 'distribution' : 'pace'
     };
     var options = {
       params: params,
@@ -532,41 +552,79 @@ sntRover.controller('RVmanagerDashboardController',
       failureCallBack: setHrefForChart
     };
 
-    $('base').attr('href', "/");
+    $('base').attr('href', '/');
     $scope.callAPI(rvAnalyticsSrv.fetchAnalyticsFilters, options);
   };
 
-  $scope.$on('FETCH_SAVED_FILTERS', fetchSavedFilters);
+  $scope.$on('FETCH_SAVED_ANALYTICS_FILTERS', fetchSavedAnalyticsFilters);
 
-  var saveAnalyticsFilter = function () {
+  $scope.saveSelectedFilter = function() {
 
     if ($scope.dashboardFilter.aggType) {
       filtersSelected.filters.group_by = $scope.dashboardFilter.aggType
     }
-    
+
     var params = {
-      "name": "Filter 4",
-      "filter_json": JSON.stringify(filtersSelected),
-      "chart_type":"distribution"
+      name: $scope.dashboardFilter.selectedAnalyticsFilter.name,
+      filter_json: JSON.stringify(filtersSelected),
+      chart_type: $scope.dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION' ? 'distribution' : 'pace'
     };
     var options = {
       params: params,
-      successCallBack: setHrefForChart,
+      successCallBack: function() {
+        $scope.dashboardFilter.showFilterName = false;
+        setHrefForChart();
+        fetchSavedAnalyticsFilters();
+      },
       failureCallBack: setHrefForChart
     };
 
-    $('base').attr('href', "/");
-    $scope.callAPI(rvAnalyticsSrv.saveAnalyticsFilter, options);
+    $('base').attr('href', '/');
+    if ($scope.dashboardFilter.selectedAnalyticsFilter.id) {
+      options.params.id = $scope.dashboardFilter.selectedAnalyticsFilter.id;
+      $scope.callAPI(rvAnalyticsSrv.updateAnalyticsFilter, options);
+    } else {
+      $scope.callAPI(rvAnalyticsSrv.saveAnalyticsFilter, options);
+    }
   };
 
-  /************* DEBUG CODE *****************/
+  $scope.setSelectedFilter = function(selectedFilter) {
+    emptyAllChartFilters();
+    $scope.dashboardFilter.selectedAnalyticsFilter = selectedFilter;
+    populateSelectedFilter(JSON.parse(selectedFilter.filter_json).filters);
+    $scope.dashboardFilter.showFilterName = true;
+  };
 
-  $scope.$on('APPY_MANAGER_FILTER', applySelectedFilter);
+  $scope.deleteSelectedFilter = function(selectedFilter) {
 
-  // In browser console call 
-  //document.dispatchEvent(new Event('APPLY_DS_FIL')) 
+    var params = {
+      id: selectedFilter.id
+    };
+    var options = {
+      params: params,
+      successCallBack: function() {
+        setHrefForChart();
+        fetchSavedAnalyticsFilters();
+      },
+      failureCallBack: setHrefForChart
+    };
 
-  document.addEventListener('APPLY_DS_FIL',applyFirstFilter); 
-  document.addEventListener('SAVE_DS_FILTRE', saveAnalyticsFilter);
-  /** ************************* FILTER CODE END HERE ***********************************/
+    $('base').attr('href', '/');
+    $scope.callAPI(rvAnalyticsSrv.deleteAnalyticsFilter, options);
+  };
+
+  $scope.applySelectedFilter = function() {
+    $scope.$broadcast('ANALYTICS_FILTER_CHANGED', shallowEncoded);
+  };
+
+  $scope.addNewFilter = function() {
+    $scope.dashboardFilter.selectedAnalyticsFilter = {
+      name: '',
+      filter_json: JSON.stringify(filtersSelected)
+    };
+    populateSelectedFilter(filtersSelected);
+    $scope.dashboardFilter.showFilterName = true;
+  };
+  /** ************************* SAVED FILTERS CODE ENDS HERE ***********************************/
+
 }]);
