@@ -31,8 +31,9 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
         this.activeRates = null;
 
         service.fetchMultipleRateInfo = function(params) {
-            var url = '/api/daily_rates';
+            var url = rvRateManagerRestrictionsSrv.rateRestrictionUrl(params);
 
+            params = _.omit(params, 'restrictionType', 'hierarchialRateRestrictionRequired');
             return this.getJSON(url, params);
         };
 
@@ -291,7 +292,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
         this.fetchAllRestrictionsWithStatus = (params) => {
             var url = rvRateManagerRestrictionsSrv.getURLforAllRestrictionsWithStatus( params );
 
-            params = _.omit(params, 'restrictionType', 'hierarchialRoomTypeRestrictionRequired', 'hierarchialRateTypeRestrictionRequired');
+            params = _.omit(params, 'restrictionType', 'hierarchialRoomTypeRestrictionRequired', 'hierarchialRateTypeRestrictionRequired', 'hierarchialRateRestrictionRequired');
 
             return this.getJSON(url, params);
         };
