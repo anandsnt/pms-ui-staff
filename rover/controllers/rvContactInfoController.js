@@ -319,6 +319,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
             var unwantedKeys = ['avatar', 'confirmation_num']; // remove unwanted keys for API
 
             initialGuestCardData = dclone($scope.guestCardData.contactInfo, unwantedKeys);
+            $scope.hasPermissionToFlagGuest = rvPermissionSrv.getPermissionValue('FLAG_GUEST');
             
         };
 
@@ -389,6 +390,18 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
 
             return '';
         };
+
+        /**
+         * Toggle the blacklist flag upon click
+         */
+        $scope.onBlackListToggle = function() {
+            $scope.guestCardData.contactInfo.is_flagged = !$scope.guestCardData.contactInfo.is_flagged;
+
+            if (!$scope.guestCardData.contactInfo.is_flagged) {
+                $scope.guestCardData.contactInfo.flagged_reason = '';
+            }
+        };
+        
 
         init();
     }

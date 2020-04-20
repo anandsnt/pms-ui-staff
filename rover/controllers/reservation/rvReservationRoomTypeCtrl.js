@@ -719,7 +719,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 		};
 
 		$scope.handleBooking = function(roomId, rateId, event, flags) {
-
+			$scope.reservationData.totalStayCost = 0;
 			$scope.stateCheck.preferredType = parseInt($scope.stateCheck.preferredType, 10) || "";
 
 			if (!!event) {
