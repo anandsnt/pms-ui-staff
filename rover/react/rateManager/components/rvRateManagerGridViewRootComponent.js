@@ -163,7 +163,8 @@ const RateManagerGridViewRootComponent = createClass ({
 		return (
 			<div className={this.props.wrapperClass}>
 				<RateManagerGridLeftSideContainer/>
-				<RateManagerGridRightSideHeaderContainer/>
+				<RateManagerGridRightSideHierarchyHeaderContainer/>
+				{/* <RateManagerGridRightSideHeaderContainer/> */}
 				<RateManagerGridRightSideBottomComponent/>
 				<RateManagerBottomRestrictionListContainer/>
 			</div>
