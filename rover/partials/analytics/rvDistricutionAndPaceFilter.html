@@ -11,12 +11,12 @@
 				<ul>
 					<!-- Add .active when showing filters for this set -->
 					<li ng-repeat="filter in savedFilters"
-						ng-class="{'active': filter.name === dashboardFilter.selectedAnalyticsFilter.name }">
-						<span class="filter-name"
-							  ng-click="setSelectedFilter(filter)">{{::filter.name}}</span>
+						ng-class="{'active': filter.name === dashboardFilter.selectedAnalyticsFilter.name }"
+						ng-click="setSelectedFilter(filter)">
+						<span class="filter-name">{{::filter.name}}</span>
 						<!-- Show delete button if the filter is saved before so it can be deleted-->
 						<button type="button" class="button with-icon only-icon"
-								ng-click="deleteSelectedFilter(filter)"
+								ng-click="deleteSelectedFilter($event, filter)"
 								ng-if="filter.name !== dashboardFilter.selectedAnalyticsFilter.name">
 						<span class="icons icon-remove-40"></span>
 						</button>
@@ -33,7 +33,7 @@
 		</div>
 	</div>
 	<!-- Filter options -->
-	<div class="analytics-filters-options scrollable" ng-iscroll='analytics-filter-options-scroll'>
+	<div class="analytics-filters-options scrollable" ng-iscroll='analytics-filter-options-scroll' style="margin-left: 245px">
 		<div class="wrapper">
 			<div class="entry" ng-if="dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION'">
 				<div class="select with-label">
@@ -121,8 +121,8 @@
 						<span class="tag alert-medium">{Room Type ({X} short)}</span>
 						<span class="tag alert-high">{Room Type ({X} short)}</span>
 						... repeat for every Room Type Selected-->
-					</div>
 				</div>
+			</div>
 				<div class="entry">
 					<div class="select with-label">
 						<label for="analytics-source">Source</label>
@@ -184,35 +184,40 @@
 				</div>
 			</div>
 		</div>
-		<!--  Filter actions -->
-		<div class="analytics-filters-actions">
-			<div class="analytics-filters-name">
-				<div class="entry with-label">
-					<label for="analytics-filters-name" translate>
-						AN_FILTER_NAME
-					</label>
-					<input type="text" id="analytics-filters-name"
-					placeholder="Name your filter set before saving"
-					ng-model="dashboardFilter.selectedAnalyticsFilter.name"
-					ng-if="dashboardFilter.showFilterName"/>
-				</div>
-				<button
-				ng-click="saveSelectedFilter(dashboardFilter.selectedAnalyticsFilter)"
-				class="button orange"
-				ng-if="dashboardFilter.showFilterName"
-				translate>
-					AN_SAVE_FILTER
-				</button>
+	
+	<!--  Filter actions -->
+	<div class="analytics-filters-actions" style="margin-left: 245px">
+		<div class="analytics-filters-name" ng-if="dashboardFilter.showFilterName">
+			<div class="entry with-label">
+				<label for="analytics-filters-name" translate>
+					AN_FILTER_NAME
+				</label>
+				<input type="text" id="analytics-filters-name"
+				placeholder="Name your filter set before saving"
+				ng-model="dashboardFilter.selectedAnalyticsFilter.name"
+				/>
 			</div>
-			<button class="button blank" 
-				ng-click="clearAllFilters()"
-				translate>
-				AN_CLEAR_ALL
-			</button>
-			<button class="button green"
-				ng-click="applySelectedFilter(dashboardFilter.selectedAnalyticsFilter)"
-				translate>
-				AN_APPLY_FILTER
+			<button
+			ng-click="saveSelectedFilter(dashboardFilter.selectedAnalyticsFilter)"
+			class="button"
+			ng-class="{ 'orange' : dashboardFilter.selectedAnalyticsFilter.name, 
+						'grey' : !dashboardFilter.selectedAnalyticsFilter.name }"
+			ng-disabled="!dashboardFilter.selectedAnalyticsFilter.name" 
+			>
+				{{ dashboardFilter.selectedAnalyticsFilter.id ? 'AN_UPDATE_FILTER' : 'AN_SAVE_FILTER' | translate}} 
 			</button>
 		</div>
+		<button class="button blank" 
+			ng-click="clearAllFilters()"
+			ng-if="getAppliedFilterCount() > 0"
+			translate>
+			AN_CLEAR_ALL
+		</button>
+		<button class="button green"
+			ng-click="applySelectedFilter(dashboardFilter.selectedAnalyticsFilter)"
+			ng-if="getAppliedFilterCount() > 0"
+			translate>
+			AN_APPLY_FILTER
+		</button>
+	</div>
 	</div>

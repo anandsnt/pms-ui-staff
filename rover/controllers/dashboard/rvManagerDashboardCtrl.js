@@ -324,6 +324,7 @@ sntRover.controller('RVmanagerDashboardController',
     filtersSelected.filters.booking_origin_id = _.pluck($scope.selectedFilters.originCodes, 'value');
     shallowEncoded = $.param(filtersSelected);
     shallowDecoded = decodeURIComponent(shallowEncoded);
+    $scope.refreshScroller('analytics-filter-options-scroll');
   };
 
   $scope.toggleFilterView = function() {
@@ -333,6 +334,7 @@ sntRover.controller('RVmanagerDashboardController',
         $scope.dashboardFilter.selectedAnalyticsMenu === 'PACE') &&
       $scope.dashboardFilter.showFilters) {
       $scope.refreshScroller('analytics-filter-scroll');
+      $scope.refreshScroller('analytics-filter-options-scroll');
     }
   };
 
@@ -401,7 +403,7 @@ sntRover.controller('RVmanagerDashboardController',
 
   $scope.distributionFilterAdded = function(type, value) {
     if (!value) {
-      return
+      return;
     } else if (type === 'MARKET') {
       $scope.marketData = newFilterAdditionActions($scope.marketData,
         $scope.selectedFilters.marketCodes,
@@ -522,7 +524,7 @@ sntRover.controller('RVmanagerDashboardController',
     }, {
       type: 'ORIGIN',
       filter: selectedFilter.booking_origin_id
-    }, ];
+    }];
 
     _.each(selectedFilters, function(filterSet) {
       _.each(filterSet.filter, function(filter) {
@@ -539,7 +541,7 @@ sntRover.controller('RVmanagerDashboardController',
   };
 
   $scope.setScroller('analytics-filter-scroll');
-  //$scope.setScroller('analytics-filter-options-scroll');
+  $scope.setScroller('analytics-filter-options-scroll');
 
   // Fetch saved filters for the chart type
   var fetchSavedAnalyticsFilters = function() {
@@ -565,7 +567,7 @@ sntRover.controller('RVmanagerDashboardController',
   $scope.saveSelectedFilter = function() {
 
     if ($scope.dashboardFilter.aggType) {
-      filtersSelected.filters.group_by = $scope.dashboardFilter.aggType
+      filtersSelected.filters.group_by = $scope.dashboardFilter.aggType;
     }
 
     var params = {
@@ -600,8 +602,8 @@ sntRover.controller('RVmanagerDashboardController',
     $scope.dashboardFilter.showFilterName = true;
   };
 
-  $scope.deleteSelectedFilter = function(selectedFilter) {
-
+  $scope.deleteSelectedFilter = function($event, selectedFilter) {
+    $event.stopPropagation();
     var params = {
       id: selectedFilter.id
     };

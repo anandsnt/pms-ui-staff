@@ -22,5 +22,6 @@
 "AN_ADD_FILTER": "+ Add Filter Set",
 "AN_FILTER_NAME": "Name",
 "AN_SAVE_FILTER": "Save Filter",
+"AN_UPDATE_FILTER": "Update Filter",
 "AN_CLEAR_ALL": "clear All",
 "AN_APPLY_FILTER": "Apply Filters"
