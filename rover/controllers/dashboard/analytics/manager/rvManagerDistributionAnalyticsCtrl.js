@@ -554,5 +554,33 @@ angular.module('sntRover')
 			};
 
 			$scope.$on('DISTRUBUTION_CHART_CHANGED', toggleDistributionChartGridView);
+
+			$scope.$on('EXPORT_AS_CSV', function(e, shallowDecodedParams) {
+				var params = {
+					start_date: $scope.dashboardFilter.fromDate,
+					end_date: $scope.dashboardFilter.toDate,
+					chart_type: $scope.dashboardFilter.chartType,
+					shallowDecodedParams: shallowDecodedParams
+				};
+
+				var options = {
+					params: params,
+					successCallBack: function(csvData) {
+						$('base').attr('href', '#');
+						var hiddenElement = document.createElement('a');
+
+						hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvData);
+						hiddenElement.target = '_blank';
+						hiddenElement.download = 'distribution__' + params.chart_type + '__' + params.start_date + '__to__' + params.end_date + '.csv';
+						hiddenElement.click();
+					},
+					failureCallBack: function() {
+						$('base').attr('href', '#')
+					}
+				};
+                
+				$('base').attr('href', initialBaseHrefValue);
+				$scope.callAPI(rvManagersAnalyticsSrv.exportAsCsv, options);
+			});
 		}
 	]);

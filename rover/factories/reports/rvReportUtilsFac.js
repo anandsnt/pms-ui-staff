@@ -230,7 +230,8 @@ angular.module('reportsModule')
                 'INCLUDE_ADDONS': true,
                 'INCLUDE_ADDON_REVENUE': true,
                 'INCLUDE_ACTIONS': true,
-                'INCLUDE_LEDGER_DATA': true
+                'INCLUDE_LEDGER_DATA': true,
+                'HAS_VEHICLE_REG_NO': true
             };
 
             var __excludeFilterNames = {

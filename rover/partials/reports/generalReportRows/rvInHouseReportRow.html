@@ -41,6 +41,10 @@
 	<!-- guest data - name, company, travel agent & group name -->
 	<td ng-if="each.isGuestData" class="secondary guest-names">
 		<span ng-repeat="name in each.guestNames">{{ name }}</span>
+		<div class="secondary-block" ng-if="each.vehicle_registration_number" >
+			<strong>Vehicle Reg. No.</strong>
+			{{each.vehicle_registration_number}}
+		</div>
 	</td>
 	<td ng-if="each.isGuestData" class="secondary guest-info" colspan="2">
 		<span ng-if="each.company_name" class="icons icon-guest-company">{{ each.company_name }}</span>

@@ -7,12 +7,35 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
         service.hierarchyRestrictions = {
             houseEnabled: Toggles.isEnabled('hierarchical_house_restrictions'),
             roomTypeEnabled: Toggles.isEnabled('hierarchical_room_type_restrictions'),
-            rateTypeEnabled: Toggles.isEnabled('hierarchical_rate_type_restrictions')
+            rateTypeEnabled: Toggles.isEnabled('hierarchical_rate_type_restrictions'),
+            rateEnabled: Toggles.isEnabled('hierarchical_rate_restrictions')
+        };
+
+        // CICO-76337 - for rateType only
+        service.processRateTypeRestrictionResponse = function(response) {
+            _.each(response, function(item) {
+                _.each(item.rate_types, function(rateType) {
+                    rateType.restrictions = rvRateManagerUtilitySrv.generateOldGetApiResponseFormat(rateType.restrictions);
+                });
+            });
+
+            return response;
+        };
+
+        // CICO-76339 - for roomtype only
+        service.processRoomTypeRestrictionResponse = function(response) {
+            _.each(response, function(item) {
+                _.each(item.room_types, function(roomType) {
+                    roomType.restrictions = rvRateManagerUtilitySrv.generateOldGetApiResponseFormat(roomType.restrictions);
+                });
+            });
+
+            return response;
         };
 
         // Handle GET api while loading RM with various filters in House Level ( Frozen Panel).
         // Handle GET api, for individual cell click & popup in House Level ( Frozen Panel).
-        service.formatRestrictionsData = function( restrcionsList, params) {
+        service.formatRestrictionsData = function(restrcionsList, params) {
 			// CICO-76813 : New API for hierarchyRestrictions
             if (service.hierarchyRestrictions.houseEnabled && params.restrictionType === 'HOUSE') {
                 _.each(restrcionsList, function( item ) {
@@ -34,6 +57,18 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
             return url;
         };
 
+        // CICO-76337 rateType restrictions API
+        service.rateTypeRestrictionsUrl = function(params) {
+            var url = params.hierarchialRateTypeRestrictionRequired ? '/api/restrictions/rate_types' : '/api/daily_rates/rate_types';
+
+            return url;
+        };
+
+        // CICO-76339 roomType restriction API
+        service.roomTypeRestrictionUrl = function(params) {
+            return params.hierarchialRoomTypeRestrictionRequired ? '/api/restrictions/room_types' : '/api/daily_rates/room_restrictions';
+        };
+
 		// Handle GET api, for individual cell click & popup in House Level ( Frozen Panel).
         service.getURLforAllRestrictionsWithStatus = function(params) {
 			var url = '/api/daily_rates/all_restriction_statuses';
@@ -41,6 +76,10 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
             // CICO-76813 : New API for hierarchyRestrictions
             if (service.hierarchyRestrictions.houseEnabled && params.restrictionType === 'HOUSE') {
                 url = '/api/restrictions/house';
+            } else if (params.hierarchialRateTypeRestrictionRequired) {
+                url = '/api/restrictions/rate_types';
+            } else if (params.hierarchialRoomTypeRestrictionRequired) {
+                url = '/api/restrictions/room_types';
             }
             return url;
         };
@@ -52,14 +91,22 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
             // CICO-76813 : New API for hierarchyRestrictions
             if (service.hierarchyRestrictions.houseEnabled && params.restrictionType === 'HOUSE') {
                 url = '/api/restrictions/house';
+            } else if (params.hierarchialRateTypeRestrictionRequired) {
+                url = '/api/restrictions/rate_types';
+            } else if (params.hierarchialRoomTypeRestrictionRequired) {
+                url = '/api/restrictions/room_types';
             }
             return url;
         };
 
         // Handle POST api, for individual cell click & popup in House Level ( Frozen Panel).
         service.processParamsforApplyAllRestrictions = function( params ) {
-            if (service.hierarchyRestrictions.houseEnabled && params.restrictionType === 'HOUSE') {
-				params = rvRateManagerUtilitySrv.generateNewPostApiParams(params);
+            if (
+                (service.hierarchyRestrictions.houseEnabled && params.restrictionType === 'HOUSE') ||
+                params.hierarchialRoomTypeRestrictionRequired ||
+                params.hierarchialRateTypeRestrictionRequired
+            ) {
+                params = rvRateManagerUtilitySrv.generateNewPostApiParams(params);
             }
             return params;
         };
