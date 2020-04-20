@@ -329,11 +329,11 @@ sntRover.controller('RVmanagerDashboardController',
   $scope.toggleFilterView = function() {
     $scope.dashboardFilter.showFilters = !$scope.dashboardFilter.showFilters;
 
-    // if (($scope.dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION' ||
-    //     $scope.dashboardFilter.selectedAnalyticsMenu === 'PACE') &&
-    //   !$scope.dashboardFilter.showFilters) {
-    //   $scope.$broadcast('ANALYTICS_FILTER_CHANGED', shallowEncoded);
-    // }
+    if (($scope.dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION' ||
+        $scope.dashboardFilter.selectedAnalyticsMenu === 'PACE') &&
+      $scope.dashboardFilter.showFilters) {
+      $scope.refreshScroller('analytics-filter-scroll');
+    }
   };
 
   var resetChartFilters = function() {
@@ -538,6 +538,9 @@ sntRover.controller('RVmanagerDashboardController',
     $('base').attr('href', '#');
   };
 
+  $scope.setScroller('analytics-filter-scroll');
+  //$scope.setScroller('analytics-filter-options-scroll');
+
   // Fetch saved filters for the chart type
   var fetchSavedAnalyticsFilters = function() {
     var params = {
@@ -548,6 +551,7 @@ sntRover.controller('RVmanagerDashboardController',
       successCallBack: function(response) {
         setHrefForChart();
         $scope.savedFilters = response;
+        $scope.refreshScroller('analytics-filter-scroll');
       },
       failureCallBack: setHrefForChart
     };
@@ -575,6 +579,7 @@ sntRover.controller('RVmanagerDashboardController',
         $scope.dashboardFilter.showFilterName = false;
         setHrefForChart();
         fetchSavedAnalyticsFilters();
+        $scope.refreshScroller('analytics-filter-scroll');
       },
       failureCallBack: setHrefForChart
     };
@@ -605,6 +610,7 @@ sntRover.controller('RVmanagerDashboardController',
       successCallBack: function() {
         setHrefForChart();
         fetchSavedAnalyticsFilters();
+        $scope.refreshScroller('analytics-filter-scroll');
       },
       failureCallBack: setHrefForChart
     };
@@ -624,6 +630,10 @@ sntRover.controller('RVmanagerDashboardController',
     };
     populateSelectedFilter(filtersSelected);
     $scope.dashboardFilter.showFilterName = true;
+  };
+
+  $scope.clearAllFilters = function () {
+    emptyAllChartFilters();
   };
   /** ************************* SAVED FILTERS CODE ENDS HERE ***********************************/
 
