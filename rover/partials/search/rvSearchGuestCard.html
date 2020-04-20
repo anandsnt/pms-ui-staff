@@ -40,7 +40,7 @@
                             <input type="checkbox" ng-change="onCardSelection(guest)" ng-model="guest.selected" ng-disabled="viewState.hasInitiatedMergeVerification">
                         </label>
                         <a ng-click="navigateToDetails(guest.id)">
-                            <figure ng-class="{'guest-image':true, 'blacklisted':guest.is_blacklisted}">
+                            <figure ng-class="{'guest-image':true, 'blacklisted':guest.is_flagged}">
                                 <img src="{{guest.image_url}}" alt="" />
                                 <span class="stay-count" ng-if="guest.stay_count > 0 && isStandAlone">{{::guest.stay_count}}</span>
                                 <span class="vip" ng-if="guest.vip">VIP</span>
