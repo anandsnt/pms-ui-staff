@@ -34,7 +34,7 @@ angular.module('sntRover')
 			/** ****************************** DRAW CHART STARTS HERE ********************************************/
 
 			var drawDistributionChart = function(chartData) {
-				$scope.dashboardFilter.selectedAnalyticsMenu = 'DISTRIBUTION';
+				$scope.dashboardFilter.showFilters = false;
 				chartData = _.sortBy(chartData, function(data) {
 					return data.date;
 				});
@@ -308,6 +308,8 @@ angular.module('sntRover')
 
 
 			var fetchDistributionChartData = function() {
+				$scope.dashboardFilter.selectedAnalyticsMenu = 'DISTRIBUTION';
+				$scope.$emit('FETCH_SAVED_ANALYTICS_FILTERS');
 				$scope.dashboardFilter.displayMode = 'CHART_DETAILS';
 				$('base').attr('href', initialBaseHrefValue);
 
@@ -364,8 +366,8 @@ angular.module('sntRover')
 			});
 
 			$scope.$on('CHART_AGGGREGATION_CHANGED', function() {
-				setPageHeading();
-				redrawDistributionChartIfNeeded();
+				// setPageHeading();
+				// redrawDistributionChartIfNeeded();
 			});
 
 			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER_DISTRIBUTION', fetchDistributionChartData);

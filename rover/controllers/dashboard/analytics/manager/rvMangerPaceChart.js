@@ -19,10 +19,10 @@ angular.module('sntRover')
 			};
 			var shallowDecodedParams = "";
 			var paceChartData;
-			var drawPaceChart = function(chartData, shallowDecodedParams) {
 
+			var drawPaceChart = function(chartData, shallowDecodedParams) {
+				$scope.dashboardFilter.showFilters = false;
 				$scope.screenData.mainHeading = $filter('translate')("AN_PACE");
-				$scope.dashboardFilter.selectedAnalyticsMenu = 'PACE';
 				$scope.screenData.isZoomedChart = false;
 
 				if ($scope.dashboardFilter.LineChartActive) {
@@ -281,6 +281,8 @@ angular.module('sntRover')
 
 			var fetchPaceChartData = function() {
 				$scope.dashboardFilter.displayMode = 'CHART_DETAILS';
+				$scope.dashboardFilter.selectedAnalyticsMenu = 'PACE';
+				$scope.$emit('FETCH_SAVED_ANALYTICS_FILTERS');
 				var options = {
 					params: {
 						date: $scope.dashboardFilter.datePicked,

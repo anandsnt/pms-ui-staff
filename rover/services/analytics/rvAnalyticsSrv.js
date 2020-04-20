@@ -25,7 +25,7 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
 
         rvBaseWebSrvV2.getJSON(url, params)
             .then(function(data) {
-
+                
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
@@ -656,5 +656,25 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
         var url = '/api/booking_origins';
      
         return rvBaseWebSrvV2.getJSON(url);
+    };
+    this.fetchAnalyticsFilters = function(params) {
+        var url = '/api/analytics_filters';
+
+        return rvBaseWebSrvV2.getJSON(url, params);
+    };
+    this.saveAnalyticsFilter = function(params) {
+        var url = '/api/analytics_filters';
+
+        return rvBaseWebSrvV2.postJSON(url, params);
+    };
+    this.updateAnalyticsFilter = function(params) {
+        var url = '/api/analytics_filters/' + params.id;
+
+        return rvBaseWebSrvV2.putJSON(url, params);
+    };
+    this.deleteAnalyticsFilter = function(params) {
+        var url = '/api/analytics_filters/' + params.id;
+
+        return rvBaseWebSrvV2.deleteJSON(url, params);
     };
 }]);
