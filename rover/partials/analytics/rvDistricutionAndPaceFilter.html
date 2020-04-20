@@ -200,9 +200,9 @@
 			<button
 			ng-click="saveSelectedFilter(dashboardFilter.selectedAnalyticsFilter)"
 			class="button"
-			ng-class="{ 'orange' : dashboardFilter.selectedAnalyticsFilter.name, 
-						'grey' : !dashboardFilter.selectedAnalyticsFilter.name }"
-			ng-disabled="!dashboardFilter.selectedAnalyticsFilter.name" 
+			ng-class="{ 'orange' : dashboardFilter.selectedAnalyticsFilter.name && getAppliedFilterCount() > 0, 
+						'grey' : !dashboardFilter.selectedAnalyticsFilter.name || getAppliedFilterCount() === 0 }"
+			ng-disabled="!dashboardFilter.selectedAnalyticsFilter.name || getAppliedFilterCount() === 0" 
 			>
 				{{ dashboardFilter.selectedAnalyticsFilter.id ? 'AN_UPDATE_FILTER' : 'AN_SAVE_FILTER' | translate}} 
 			</button>
