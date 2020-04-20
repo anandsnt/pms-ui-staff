@@ -17,8 +17,8 @@
 						<!-- Show delete button if the filter is saved before so it can be deleted-->
 						<button type="button" class="button with-icon only-icon"
 								ng-click="deleteSelectedFilter($event, filter)"
-								ng-if="filter.name !== dashboardFilter.selectedAnalyticsFilter.name">
-						<span class="icons icon-remove-40"></span>
+								ng-style="{'display':  filter.name !== dashboardFilter.selectedAnalyticsFilter.name ? 'block': 'none'}">
+								<span class="icons icon-remove-40"></span>
 						</button>
 					</li>
 					<li class="add-new">
