@@ -7,35 +7,50 @@
     </div>
     <div class="info-container account-info">
         <div class="info-left">
-            <strong>{{printData.card_details.name}}</strong><br>
-            <span ng-bind-html="printData.card_details.address"></span>
+            
 
             <div class="info-bottom">
-                <span ng-if = "printData.invoice_date"><strong>{{printData.translation.invoice_date}}:</strong> {{printData.invoice_date}}</span><br/>
-                <span ng-if = "!printData.is_informational_invoice && (!printData.is_print_ar_invoice_number_enabled || printData.is_manual_balance) && printData.invoice_number"><strong>{{printData.translation.invoice_number}}:</strong> {{printData.invoice_number}}</span><br/>
+                <strong>{{printData.card_details.name}}</strong>
+                <br ng-if="printData.card_details.address"/>
+                <span ng-bind-html="printData.card_details.address"></span>
+                <br ng-if = "printData.invoice_date"/>
+                <span ng-if = "printData.invoice_date"><strong>{{printData.translation.invoice_date}}:</strong> {{printData.invoice_date}}</span>                
+                <br ng-if = "!printData.is_informational_invoice && (!printData.is_print_ar_invoice_number_enabled || printData.is_manual_balance) && printData.invoice_number" />
+                <span ng-if = "!printData.is_informational_invoice && (!printData.is_print_ar_invoice_number_enabled || printData.is_manual_balance) && printData.invoice_number"><strong>{{printData.translation.invoice_number}}:</strong> {{printData.invoice_number}}</span>
+                <br ng-if = "!printData.is_informational_invoice && !printData.is_print_ar_invoice_number_enabled && printData.folio_number && printData.is_print_folio_enabled"/>
                 <span ng-if = "!printData.is_informational_invoice && !printData.is_print_ar_invoice_number_enabled && printData.folio_number && printData.is_print_folio_enabled">
-                    <strong><span ng-if = "printData.folio_label">{{printData.folio_label}}:</span><span ng-if = "!printData.folio_label">{{printData.translation.folio_number}}:</span></strong> {{printData.folio_number}}</span><br/>
-                <span ng-if = "!printData.is_informational_invoice && printData.is_print_ar_invoice_number_enabled && printData.ar_invoice_number"><strong>{{printData.translation.ar_invoice_number}}:</strong> {{printData.ar_invoice_number}}</span><br/>
+                    <strong><span ng-if = "printData.folio_label">{{printData.folio_label}}:</span><span ng-if = "!printData.folio_label">{{printData.translation.folio_number}}:</span></strong> {{printData.folio_number}}</span>
+                <br ng-if = "!printData.is_informational_invoice && printData.is_print_ar_invoice_number_enabled && printData.ar_invoice_number"/>
+                <span ng-if = "!printData.is_informational_invoice && printData.is_print_ar_invoice_number_enabled && printData.ar_invoice_number"><strong>{{printData.translation.ar_invoice_number}}:</strong> {{printData.ar_invoice_number}}</span>
+                <br ng-if = "!printData.is_informational_invoice && printData.is_print_ar_folio_number_enabled && printData.ar_folio_number"/>
                 <span ng-if = "!printData.is_informational_invoice && printData.is_print_ar_folio_number_enabled && printData.ar_folio_number"><strong>AR Folio Number:</strong> {{printData.ar_folio_number}}</span>
             </div>
         </div>
         <div class="info-right">
-            <span ng-if = "printData.arrival_date"><strong>{{printData.translation.arrival_date}}:</strong> {{printData.arrival_date}}</span><br/>
-            <span ng-if = "printData.departure_date"><strong>{{printData.translation.departure_date}}:</strong> {{printData.departure_date}}</span><br/>
-            <span ng-if = "printData.room_number"><strong>{{printData.translation.room_number}}:</strong> {{printData.room_number}}</span><br/>
-            <span ng-if = "printData.confirmation_number"><strong>{{printData.translation.confirmation_number}}:</strong> {{printData.confirmation_number}}</span><br/>
-            <span ng-if = "printData.tax_number"><strong>{{printData.translation.tax_number}}:</strong> {{printData.tax_number}}</span><br/>
-            <span ng-if = "!printData.is_informational_invoice && printData.card_details.ar_number"><strong>{{printData.translation.ar_number}}:</strong> {{printData.card_details.ar_number}}</span><br/><br/>
+            <br />
+            <span ng-if = "printData.arrival_date"><strong>{{printData.translation.arrival_date}}:</strong> {{printData.arrival_date}}</span>
+            <br ng-if = "printData.departure_date"/>
+            <span ng-if = "printData.departure_date"><strong>{{printData.translation.departure_date}}:</strong> {{printData.departure_date}}</span>
+            <br ng-if = "printData.room_number"/>
+            <span ng-if = "printData.room_number"><strong>{{printData.translation.room_number}}:</strong> {{printData.room_number}}</span>
+            <br ng-if = "printData.confirmation_number"/>
+            <span ng-if = "printData.confirmation_number"><strong>{{printData.translation.confirmation_number}}:</strong> {{printData.confirmation_number}}</span>
+            <br ng-if = "printData.tax_number"/>
+            <span ng-if = "printData.tax_number"><strong>{{printData.translation.tax_number}}:</strong> {{printData.tax_number}}</span>
+            <br ng-if = "!printData.is_informational_invoice && printData.card_details.ar_number"/>
+            <span ng-if = "!printData.is_informational_invoice && printData.card_details.ar_number"><strong>{{printData.translation.ar_number}}:</strong> {{printData.card_details.ar_number}}</span>
+            <br ng-if="printData.guest_details.address"/>
             <span ng-bind-html="printData.guest_details.address"></span>
         </div>
 
     </div>
 
-    <div class="invoice-header">
+    <div class="invoice-header" ng-if="printData.custom_text_header">
         <!-- {header-text} -->
     </div>
-
+    
     <div class="invoice-body">
+        <br /><br /><br />
         <table class="invoice-details">
             <thead class="invoice-table">
                 <tr>
