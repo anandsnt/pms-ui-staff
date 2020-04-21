@@ -9483,6 +9483,71 @@
                 }
 
             }
+
+            /* Checkout Print Option **/
+            &.checkout-print {
+                width: 385px;
+                padding: 40px 50px 30px 50px;
+
+                .icons {
+                    &.icon-popup-success {
+                        .size( 40px, 45px );
+                        margin: 0 auto;
+                    }
+                }
+
+                .h2,
+                .text {
+                    text-transform: none;
+                }
+
+                .h2 {
+                    margin-bottom: 10px;
+                }
+
+                .text {
+                    padding-bottom: 40px;
+                }
+
+                .entry {
+                    width: 100%;
+                    float: none;
+                    margin: 0;
+
+                    .switch-button {
+                        width: 100%;
+                        height: 40px;
+
+                        .data-off,
+                        .data-on {
+                            height: 30px;
+                            line-height: 30px;
+                        }
+
+                        .data-off {
+                            .switch-icon {
+                                .gradient(@redStart, @redEnd);
+                            }
+                        }
+
+                        .data-on {
+                            .switch-icon {
+                                .gradient(@greenStart, @greenEnd);
+                            }
+                        }
+                    }
+                }
+
+                .actions {
+                    margin-top: 40px;
+
+                    .button {
+                        &:not(:last-child) {
+                            margin-bottom: 10px;
+                        }
+                    }
+                }
+            }
         } // end of modals
     }
 
