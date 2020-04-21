@@ -1,5 +1,6 @@
 <div id="analyticsFilters" class="analytics-filters with-filter-sets"
 	ng-class="{'open': dashboardFilter.showFilters }"
+	ng-if="dashboardFilter.showFilters"
 	>
 	<!-- Filter set -->
 	<div class="analytics-filters-sets">
@@ -33,7 +34,7 @@
 		</div>
 	</div>
 	<!-- Filter options -->
-	<div class="analytics-filters-options scrollable" ng-iscroll='analytics-filter-options-scroll' style="margin-left: 245px">
+	<div class="analytics-filters-options scrollable" ng-iscroll='analytics-filter-options-scroll'>
 		<div class="wrapper">
 			<div class="entry" ng-if="dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION'">
 				<div class="select with-label">
@@ -186,7 +187,7 @@
 		</div>
 	
 	<!--  Filter actions -->
-	<div class="analytics-filters-actions" style="margin-left: 245px">
+	<div class="analytics-filters-actions">
 		<div class="analytics-filters-name" ng-if="dashboardFilter.showFilterName">
 			<div class="entry with-label">
 				<label for="analytics-filters-name" translate>
