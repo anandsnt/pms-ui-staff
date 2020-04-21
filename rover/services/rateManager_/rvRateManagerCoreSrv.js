@@ -439,7 +439,10 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             promises.push(
                 this.fetchAllRestrictionsWithStatus(commonRestrictionsParams)
                     .then(data => {
-                        response.restrictionsWithStatus = data.results;
+                        // TODO
+                        response.restrictionsWithStatus = params.hierarchialRateRestrictionRequired ?
+                        rvRateManagerRestrictionsSrv.processRateRestrictionResponse(data.results) :
+                        data.results;
                     })
             );
 

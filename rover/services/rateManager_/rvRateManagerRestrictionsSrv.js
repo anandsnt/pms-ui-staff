@@ -15,7 +15,7 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
         service.processRateRestrictionResponse = function(response) {
             _.each(response, function( item ) {
                 _.each(item.rates, function( rate ) {
-                    rate.restrictions = rvRateManagerUtilitySrv.generateOldGetApiResponseFormat(rate.restrictions);
+                    rate.restrictions = rvRateManagerUtilitySrv.generateOldGetApiResponseFormat(rate.restrictions, rate.locked_restrictions);
                 });
             });
 
@@ -94,10 +94,15 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
             // CICO-76813 : New API for hierarchyRestrictions
             if (service.hierarchyRestrictions.houseEnabled && params.restrictionType === 'HOUSE') {
                 url = '/api/restrictions/house';
-            } else if (params.hierarchialRateTypeRestrictionRequired) {
+            }
+            else if (params.hierarchialRateTypeRestrictionRequired) {
                 url = '/api/restrictions/rate_types';
-            } else if (params.hierarchialRoomTypeRestrictionRequired) {
+            }
+            else if (params.hierarchialRoomTypeRestrictionRequired) {
                 url = '/api/restrictions/room_types';
+            }
+            else if (params.hierarchialRateRestrictionRequired) {
+                url = '/api/restrictions/rates';
             }
             return url;
         };
@@ -109,10 +114,15 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
             // CICO-76813 : New API for hierarchyRestrictions
             if (service.hierarchyRestrictions.houseEnabled && params.restrictionType === 'HOUSE') {
                 url = '/api/restrictions/house';
-            } else if (params.hierarchialRateTypeRestrictionRequired) {
+            }
+            else if (params.hierarchialRateTypeRestrictionRequired) {
                 url = '/api/restrictions/rate_types';
-            } else if (params.hierarchialRoomTypeRestrictionRequired) {
+            }
+            else if (params.hierarchialRoomTypeRestrictionRequired) {
                 url = '/api/restrictions/room_types';
+            }
+            else if (params.hierarchialRateRestrictionRequired) {
+                url = '/api/restrictions/rates';
             }
             return url;
         };
