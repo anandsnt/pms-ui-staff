@@ -15,7 +15,7 @@
    </div>
 </form>
 <!-- CHART DETAILS -->
-<form method="get" name="dashboard-search-form" id="dashboard-search-form" class="search-form dashboard-analytics has-dates has-room-types" data-search-for="analytics" role="search" ng-cloak ng-if="dashboardFilter.displayMode === 'CHART_DETAILS'">
+<div id="dashboard-search-form" class="search-form dashboard-analytics has-dates has-room-types" ng-cloak ng-if="dashboardFilter.displayMode === 'CHART_DETAILS'">
    <div class="entry switch">
       <div class="switch-button off" ng-class="{ 'on' : !dashboardFilter.analyticsActive }">
          <input id="analytics-toggle" value="" type="checkbox" ng-click="toggleAnalyticsView()" checked="">
@@ -197,4 +197,4 @@
          </div>
       </div>
    </div>
-</form>
+</div>
