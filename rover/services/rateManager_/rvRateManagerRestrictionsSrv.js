@@ -11,6 +11,17 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
             rateEnabled: Toggles.isEnabled('hierarchical_rate_restrictions')
         };
 
+        // CICO-77044 - for rate only
+        service.processRateRestrictionResponse = function(response) {
+            _.each(response, function( item ) {
+                _.each(item.rates, function( rate ) {
+                    rate.restrictions = rvRateManagerUtilitySrv.generateOldGetApiResponseFormat(rate.restrictions);
+                });
+            });
+
+            return response;
+        };
+
         // CICO-76337 - for rateType only
         service.processRateTypeRestrictionResponse = function(response) {
             _.each(response, function(item) {
@@ -54,6 +65,13 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
             if (service.hierarchyRestrictions.houseEnabled) {
                 url = '/api/restrictions/house';
             }
+            return url;
+        };
+
+        // CICO-76337 rateType restrictions API
+        service.rateRestrictionsUrl = function (params) {
+            var url = params.hierarchialRateRestrictionRequired ? '/api/restrictions/rates' : '/api/daily_rates';
+
             return url;
         };
 

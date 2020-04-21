@@ -1461,6 +1461,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fetchCommonRestrictions
             };
 
+            considerHierarchyRestrictions(params);
+
             if (filterValues.selectedRateTypes.length) {
                 params['rate_type_ids[]'] = _.pluck(filterValues.selectedRateTypes, 'id');
             }

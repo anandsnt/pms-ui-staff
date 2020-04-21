@@ -31,7 +31,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
         this.activeRates = null;
 
         service.fetchMultipleRateInfo = function(params) {
-            var url = rvRateManagerRestrictionsSrv.rateRestrictionUrl(params);
+            var url = rvRateManagerRestrictionsSrv.rateRestrictionsUrl(params);
 
             params = _.omit(params, 'restrictionType', 'hierarchialRateRestrictionRequired');
             return this.getJSON(url, params);
@@ -592,8 +592,10 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                 response = {};
 
             promises.push(service.fetchMultipleRateInfo(_.omit(params, 'fetchRates', 'fetchCommonRestrictions', 'considerRateIDsInCommonRestriction')).then((data) => {
-                response.dailyRateAndRestrictions = data.results;
-                response.totalCount = data.total_count;
+                response.dailyRateAndRestrictions = params.hierarchialRateRestrictionRequired ?
+                                                    rvRateManagerRestrictionsSrv.processRateRestrictionResponse(data.results) :
+                                                    data.results;
+                response.totalCount = data.total_count || data.results[0].rates.length;
             }));
 
             if (params.fetchCommonRestrictions) {
