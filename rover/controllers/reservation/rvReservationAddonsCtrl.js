@@ -333,6 +333,21 @@ sntRover.controller('RVReservationAddonsCtrl', [
                 $scope.showEnhancementsPopup();
                
             },
+            applyAddon = function(addon, addonQty) {
+                var successCallBackApplyAddons = function() {
+                    fetchReservationAddons(true);
+                }, 
+                failureCallBack = function(errorMessage) {
+                    $scope.$emit('hideLoader');
+                    $scope.errorMessage = errorMessage;
+                };
+                $scope.invokeApi(RVReservationPackageSrv.applyAddon, {
+                    'id': $scope.reservationData.reservationId === undefined ? '' : $scope.reservationData.reservationId,
+                    'addon_id': addon.id,
+                    'quantity': addonQty,
+                    'application': 'ROVER'
+                }, successCallBackApplyAddons, failureCallBack);
+            },
             addonsDataCopy = [];
 
         $scope.showEnhancementsPopup = function() {
@@ -448,7 +463,11 @@ sntRover.controller('RVReservationAddonsCtrl', [
         $scope.selectAddon = function(addon, addonQty, overBook) {
             $scope.closePopup();
             if (!$rootScope.isItemInventoryOn || overBook) {
-                insertAddon(addon, addonQty);
+                if ($stateParams.from_screen === "staycard") {
+                    applyAddon(addon, addonQty)
+                } else {
+                    insertAddon(addon, addonQty);
+                }
             } else {
                 /*
                  *  the following is for the calculation to check if the inventory limit is exeeded
@@ -510,7 +529,11 @@ sntRover.controller('RVReservationAddonsCtrl', [
                      */
 
                     if (remainingCount >= 0 || availableAddonCount === null) {
-                        insertAddon(addon, addonQty);
+                        if ($stateParams.from_screen === "staycard") {
+                            applyAddon(addon, addonQty)
+                        } else {
+                            insertAddon(addon, addonQty);
+                        }
                     } else {
                         $scope.addon = addon;
                         $scope.addonQty = addonQty;
@@ -580,6 +603,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
             $scope.duration_of_stay = $scope.reservationData.numNights || 1;
             $scope.existingAddonsLength = 0;
             $scope.setHeadingTitle('Enhance Stay');
+            $scope.$parent.hideSidebar = true;
 
             /**
              * Moving the below 7 lines(incl. single line comments) outside of the else block
@@ -600,7 +624,57 @@ sntRover.controller('RVReservationAddonsCtrl', [
                 initFromHourly();
             } else {
                 $scope.roomDetails = getCurrentRoomDetails();
-                var successCallBack = function(data) {
+                
+
+                if (!RVReservationStateService.getReservationFlag('RATE_CHANGED') && !!$scope.reservationData.reservationId) {
+                    fetchReservationAddons();
+                } else if (!!$scope.reservationData.group.id) {
+                    $scope.is_rate_addons_fetch = true;
+                    $scope.callAPI(rvGroupConfigurationSrv.getGroupEnhancements, {
+                        successCallBack: successCallBack,
+                        params: {
+                            "id": $scope.reservationData.group.id
+                        }
+                    });
+                }
+
+                // first time fetch best seller addons
+                // for fetching best sellers - call method without params ie. no charge group id
+                // Best Sellers in not a real charge code [just hard coded charge group to fetch best sell addons]
+                /**
+                 * CICO-16792 Sending a second parameter to the fetchAddons method to identify the initial call to the method
+                 */
+                fetchAddons('', true);
+                var scrollerOptions = {
+                    click: true,
+                    preventDefault: false,
+                    showScrollbar: true
+                };
+
+                $scope.setScroller("enhanceStays", scrollerOptions);
+                $timeout(function() {
+                    $scope.refreshAddonsScroller();
+                }, 2000);
+
+                var proceedBookingListner = $scope.$on('PROCEED_BOOKING', function(event, data) {
+                    if (data.addonPostingMode === 'reservation') {
+                        $scope.proceed();
+                    }
+                });
+
+                var removeSelectedAddonsListner = $rootScope.$on('REMOVE_ADDON', function(event, data) {
+                    if (data.addonPostingMode === 'reservation') {
+                        $scope.removeSelectedAddons(data.index);
+                    }
+                });
+
+                $scope.$on( '$destroy', proceedBookingListner);
+                $scope.$on( '$destroy', removeSelectedAddonsListner);
+            }
+        };
+
+        var fetchReservationAddons = function(showAddonPopup) {
+            var successCallBack = function(data) {
                     var roomIndex,
                         startIndex = $scope.roomDetails.firstIndex,
                         endIndex = $scope.roomDetails.lastIndex;
@@ -669,55 +743,13 @@ sntRover.controller('RVReservationAddonsCtrl', [
 
                     addonsDataCopy = angular.copy($scope.addonsData.existingAddons);
                     $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
-
-                };
-
-                if (!RVReservationStateService.getReservationFlag('RATE_CHANGED') && !!$scope.reservationData.reservationId) {
-                    $scope.invokeApi(RVReservationPackageSrv.getReservationPackages, $scope.reservationData.reservationId, successCallBack);
-                } else if (!!$scope.reservationData.group.id) {
-                    $scope.is_rate_addons_fetch = true;
-                    $scope.callAPI(rvGroupConfigurationSrv.getGroupEnhancements, {
-                        successCallBack: successCallBack,
-                        params: {
-                            "id": $scope.reservationData.group.id
-                        }
-                    });
-                }
-
-                // first time fetch best seller addons
-                // for fetching best sellers - call method without params ie. no charge group id
-                // Best Sellers in not a real charge code [just hard coded charge group to fetch best sell addons]
-                /**
-                 * CICO-16792 Sending a second parameter to the fetchAddons method to identify the initial call to the method
-                 */
-                fetchAddons('', true);
-                var scrollerOptions = {
-                    click: true,
-                    preventDefault: false,
-                    showScrollbar: true
-                };
-
-                $scope.setScroller("enhanceStays", scrollerOptions);
-                $timeout(function() {
-                    $scope.refreshAddonsScroller();
-                }, 2000);
-
-                var proceedBookingListner = $scope.$on('PROCEED_BOOKING', function(event, data) {
-                    if (data.addonPostingMode === 'reservation') {
-                        $scope.proceed();
+                    if (showAddonPopup) {
+                        $scope.showEnhancementsPopup();
                     }
-                });
 
-                var removeSelectedAddonsListner = $rootScope.$on('REMOVE_ADDON', function(event, data) {
-                    if (data.addonPostingMode === 'reservation') {
-                        $scope.removeSelectedAddons(data.index);
-                    }
-                });
-
-                $scope.$on( '$destroy', proceedBookingListner);
-                $scope.$on( '$destroy', removeSelectedAddonsListner);
-            }
-        };
+            };
+            $scope.invokeApi(RVReservationPackageSrv.getReservationPackages, $scope.reservationData.reservationId, successCallBack);
+        }
 
         $scope.goToAddons = function() {
             $scope.closePopup();
