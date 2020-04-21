@@ -9,10 +9,8 @@ const RateManagerGridLeftRowComponent = ({
 	iconClassBeforeText,
 	textInIconArea,
 	leftSpanText,
-	address,
 	showRightSpan,
 	rightSpanClassName,
-	accountName,
 	showIndicator
 }) => (
 	<tr className={trClassName} onTouchEnd={(e) => onClick(e, index) } onClick={(e) => onClick(e, index) }>
