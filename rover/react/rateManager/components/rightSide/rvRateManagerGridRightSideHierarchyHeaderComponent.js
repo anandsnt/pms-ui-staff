@@ -19,7 +19,7 @@ const RateManagerGridRightSideHierarchyHeaderComponent = createClass({
 	},
 	render() {
 		return (
-			<div className='calendar-rate-table calendar-rate-table-days scrollable'>
+			<div className={'calendar-rate-table calendar-rate-table-days scrollable ' + this.props.hierarchyRestrictionClass}>
 				<div className='wrapper'>
 					<table className='rate-calendar'>
 						<thead>

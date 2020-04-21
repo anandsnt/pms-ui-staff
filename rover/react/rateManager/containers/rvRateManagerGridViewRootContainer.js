@@ -20,7 +20,8 @@ const mapStateToRateManagerGridViewRootComponentProps = (state) => {
         mode                : state.mode,
         refreshScrollers    : (state.action === RM_RX_CONST.REFRESH_SCROLLERS),
         scrollTo            : state.scrollTo,
-        paginationStateData : state.paginationState
+        paginationStateData : state.paginationState,
+        hierarchyRestrictionClass: state.hierarchyRestrictionClass
     };
 };
 

@@ -165,7 +165,8 @@ const RateManagerGridViewRootComponent = createClass ({
 				<RateManagerGridLeftSideContainer/>
 				<RateManagerGridRightSideHierarchyHeaderContainer/>
 				{/* <RateManagerGridRightSideHeaderContainer/> */}
-				<RateManagerGridRightSideBottomComponent/>
+				<RateManagerGridRightSideBottomComponent
+				hierarchyRestrictionClass={this.props.hierarchyRestrictionClass}/>
 				<RateManagerBottomRestrictionListContainer/>
 			</div>
 		);		
