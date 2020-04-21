@@ -20,12 +20,8 @@ let convertRatesDataForLeftListing = (rates, mode) => {
 			iconClassBeforeText: !rate.based_on_rate_id ? 'base-rate-indicator': '',
 			textInIconArea: !rate.based_on_rate_id ? 'B' : '',
 			leftSpanText: rate.name,
-			address: rate.address,
 			showRightSpan: true,
-			contractLabel: rate.is_travel_agent?'ta':(rate.is_company_card?'c':''),
-			contractClass: rate.is_travel_agent?'travel-agent':'',
 			rightSpanClassName: 'icons icon-double-arrow rotate-right',
-			accountName: rate.account_name,
 			showIndicator: showIndicator
 		})
 	});
@@ -50,8 +46,6 @@ let convertRateTypesDataForLeftListing = (rateTypes, mode, isHierarchyRateTypeRe
 			textInIconArea: !rateType.based_on_rate_id ? 'B' : '',
 			leftSpanText: rateType.name,
 			showRightSpan: true,
-			contractLabel: rateType.is_travel_agent?'ta':(rateType.is_company_card?'c':''),
-			contractClass: rateType.is_travel_agent?'travel-agent':'',
 			rightSpanClassName: disableNavigation ? '' : 'icons icon-double-arrow rotate-right',
 			showIndicator :showIndicator
 		})
