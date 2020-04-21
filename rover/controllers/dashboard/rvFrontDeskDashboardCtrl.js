@@ -96,20 +96,31 @@ sntRover.controller('RVfrontDeskDashboardController',
       "roomType": "",
       "roomTypes": []
     };
+
     $scope.toggleFilterView = function() {
       $scope.dashboardFilter.showFilters = !$scope.dashboardFilter.showFilters;
       var selectedAnalyticsMenu = $scope.dashboardFilter.selectedAnalyticsMenu;
 
       // reset filters if was not applied
-      if (selectedAnalyticsMenu === 'FO_ARRIVALS' &&
-        rvAnalyticsSrv.selectedRoomType !== $scope.dashboardFilter.selectedRoomType) {
+      if (rvAnalyticsSrv.selectedRoomType !== $scope.dashboardFilter.selectedRoomType) {
         $scope.dashboardFilter.selectedRoomType = rvAnalyticsSrv.selectedRoomType;
+      }
+      if (selectedAnalyticsMenu === 'FO_ACTIVITY') {
+        $scope.dashboardFilter.showPreviousDayData = rvAnalyticsSrv.foChartFilterSet.showPreviousDayData;
+      }
+
+      if (selectedAnalyticsMenu === 'FO_WORK_LOAD') {
+        $scope.dashboardFilter.showRemainingReservations = rvAnalyticsSrv.foChartFilterSet.showRemainingReservations;
       }
     };
     
     $scope.applyFoFilters = function () {
       $scope.dashboardFilter.showFilters = false;
+
       rvAnalyticsSrv.selectedRoomType = $scope.dashboardFilter.selectedRoomType;
+      rvAnalyticsSrv.foChartFilterSet.showRemainingReservations = $scope.dashboardFilter.showRemainingReservations;
+      rvAnalyticsSrv.foChartFilterSet.showPreviousDayData = $scope.dashboardFilter.showPreviousDayData;
+
       $scope.$broadcast('RELOAD_DATA_WITH_SELECTED_FILTER_' + $scope.dashboardFilter.selectedAnalyticsMenu);
     };
 

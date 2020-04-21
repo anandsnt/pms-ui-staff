@@ -1026,6 +1026,8 @@ angular.module('sntRover')
 			$scope.$on('ANALYTICS_FILTER_CHANGED', function(e, data) {
 				if ($scope.dashboardFilter.selectedAnalyticsMenu === 'PERFOMANCE') {
 					$scope.dashboardFilter.showFilters = false;
+					rvAnalyticsSrv.managerChartFilterSet.showLastYearData = $scope.dashboardFilter.showLastYearData;
+      				rvAnalyticsSrv.managerChartFilterSet.lastyearType = $scope.dashboardFilter.lastyearType;
 					handleFilterChangeForPerfomanceChart();
 				}
 			});

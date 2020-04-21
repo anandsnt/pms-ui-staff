@@ -471,7 +471,7 @@ sntRover.controller('RVdashboardController',
                             aggTypeFilterCount;
 
                     } else if ($scope.dashboardFilter.selectedAnalyticsMenu === 'PERFOMANCE') {
-                        return $scope.dashboardFilter.showLastYearData ? 1 : 0;
+                        return $scope.dashboardFilter.showLastYearData ? 2 : 0;
                     } else if ($scope.dashboardFilter.selectedAnalyticsMenu === 'HK_OVERVIEW' ||
                         $scope.dashboardFilter.selectedAnalyticsMenu === 'HK_WORK_PRIRORITY' ||
                         $scope.dashboardFilter.selectedAnalyticsMenu === 'FO_ARRIVALS') {
