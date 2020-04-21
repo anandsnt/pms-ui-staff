@@ -491,16 +491,17 @@ sntRover.controller('RVmanagerDashboardController',
   // front desk
 
   $scope.onAnlayticsRoomTypeChange = function() {
+    $scope.dashboardFilter.showFilters = false;
     rvAnalyticsSrv.selectedRoomType = $scope.dashboardFilter.selectedRoomType;
     $scope.$broadcast('RELOAD_DATA_WITH_SELECTED_FILTER_' + $scope.dashboardFilter.selectedAnalyticsMenu);
   };
 
-  $scope.showYesterdaysDataToggled = function() {
-    $scope.$broadcast('SHOW_YESTERDAYS_DATA_TOGGLE');
+  $scope.applyFoFilters = function () {
+    $scope.dashboardFilter.showFilters = false;
+    rvAnalyticsSrv.selectedRoomType = $scope.dashboardFilter.selectedRoomType;
+    $scope.$broadcast('RELOAD_DATA_WITH_SELECTED_FILTER_' + $scope.dashboardFilter.selectedAnalyticsMenu);
   };
-  $scope.showRemainingReservationsToggled = function() {
-    $scope.$broadcast('SHOW_REMAINING_RESERVATIONS_TOGGLE');
-  };
+
   $scope.exportAsCSV = function() {
     $scope.$broadcast('EXPORT_AS_CSV', shallowEncoded);
   };

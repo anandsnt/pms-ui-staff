@@ -1025,6 +1025,7 @@ angular.module('sntRover')
 			// On filter chage, fetch the perfomance date correspoding to the selected filter
 			$scope.$on('ANALYTICS_FILTER_CHANGED', function(e, data) {
 				if ($scope.dashboardFilter.selectedAnalyticsMenu === 'PERFOMANCE') {
+					$scope.dashboardFilter.showFilters = false;
 					handleFilterChangeForPerfomanceChart();
 				}
 			});
