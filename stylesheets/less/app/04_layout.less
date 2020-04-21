@@ -2708,19 +2708,19 @@ body { overflow: hidden; }
 
                         &.with-label {
     
-                        input {
-                            padding: 10px 10px 0 10px;
-                        }
-    
-                        label {
-                            position: absolute;
-                            top: 0;
-                            left: 10px;
-                            font-size: 12px;
-                            text-transform: uppercase;
-                            color: @grey3;
-                        }
-                    }
+	                        input {
+	                            padding: 10px 10px 0 10px;
+	                        }
+	    
+	                        label {
+	                            position: absolute;
+	                            top: 0;
+	                            left: 10px;
+	                            font-size: 12px;
+	                            text-transform: uppercase;
+	                            color: @grey3;
+	                        }
+	                    }
                     }
 
                     input,
@@ -2731,6 +2731,21 @@ body { overflow: hidden; }
                     .faux-select-options {
                         background-color: @grey1;
                     }
+
+                    .has-datepicker {
+	                    label { margin: 0; }
+
+	                    input {
+	                        width: 160px;
+	                        height: 40px;
+	                    }
+
+	                    .ui-datepicker-trigger {
+	                        background: none;
+	                        top: 0;
+	                        width: 160px;
+	                    }
+	                }
 
                     .select,
                     .multi-select {
@@ -3000,16 +3015,15 @@ body { overflow: hidden; }
 	                    }
 	                }
 
-	                &.with-filter-sets {
+	            	&.with-filter-sets {
 	                    padding-left: 240px;
 
 	                    .analytics-filters-options {
 	                        min-height: 200px;
 	                    }
-	                }
+	            	}
 
                     &.open {
-                        padding: 10px;
                         height: auto;
                         max-height: 80vh;
                         z-index: 9999;

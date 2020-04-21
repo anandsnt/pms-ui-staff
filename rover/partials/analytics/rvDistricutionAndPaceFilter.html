@@ -1,5 +1,6 @@
 <div id="analyticsFilters" class="analytics-filters with-filter-sets"
 	ng-class="{'open': dashboardFilter.showFilters }"
+	ng-if="dashboardFilter.showFilters"
 	>
 	<!-- Filter set -->
 	<div class="analytics-filters-sets">
@@ -17,8 +18,8 @@
 						<!-- Show delete button if the filter is saved before so it can be deleted-->
 						<button type="button" class="button with-icon only-icon"
 								ng-click="deleteSelectedFilter($event, filter)"
-								ng-if="filter.name !== dashboardFilter.selectedAnalyticsFilter.name">
-						<span class="icons icon-remove-40"></span>
+								ng-style="{'display':  filter.name !== dashboardFilter.selectedAnalyticsFilter.name ? 'block': 'none'}">
+								<span class="icons icon-remove-40"></span>
 						</button>
 					</li>
 					<li class="add-new">
@@ -33,7 +34,7 @@
 		</div>
 	</div>
 	<!-- Filter options -->
-	<div class="analytics-filters-options scrollable" ng-iscroll='analytics-filter-options-scroll' style="margin-left: 245px">
+	<div class="analytics-filters-options scrollable" ng-iscroll='analytics-filter-options-scroll'>
 		<div class="wrapper">
 			<div class="entry" ng-if="dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION'">
 				<div class="select with-label">
@@ -209,7 +210,7 @@
 		</div>
 	
 	<!--  Filter actions -->
-	<div class="analytics-filters-actions" style="margin-left: 245px">
+	<div class="analytics-filters-actions">
 		<div class="analytics-filters-name" ng-if="dashboardFilter.showFilterName">
 			<div class="entry with-label">
 				<label for="analytics-filters-name" translate>
