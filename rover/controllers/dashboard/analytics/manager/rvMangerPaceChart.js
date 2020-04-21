@@ -25,7 +25,7 @@ angular.module('sntRover')
 				$scope.screenData.mainHeading = $filter('translate')("AN_PACE");
 				$scope.screenData.isZoomedChart = false;
 
-				if ($scope.dashboardFilter.LineChartActive) {
+				if ($scope.dashboardFilter.lineChartActive) {
 					$scope.startDrawingPaceLineChart(chartData, shallowDecodedParams);
 					return;
 				}

@@ -37,7 +37,9 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
             },
             aggType: "",
             gridViewActive: "",
-            selectedSavedFilter: ""
+            selectedSavedFilter: "",
+            lineChartActive: false,
+            datesToCompare: []
         };
     };
     /*

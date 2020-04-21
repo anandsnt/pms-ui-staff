@@ -349,13 +349,19 @@ sntRover.controller('RVmanagerDashboardController',
       emptyAllChartFilters();
       
       populateSelectedFilter(rvAnalyticsSrv.managerChartFilterSet.filtersSelected.filters);
-      $scope.dashboardFilter.chartType = rvAnalyticsSrv.managerChartFilterSet.chartType;
-      $scope.dashboardFilter.aggType = rvAnalyticsSrv.managerChartFilterSet.aggType;
-      $scope.dashboardFilter.gridViewToggle = angular.copy(rvAnalyticsSrv.managerChartFilterSet.gridViewActive);
       $scope.dashboardFilter.selectedAnalyticsFilter = angular.copy(rvAnalyticsSrv.managerChartFilterSet.selectedSavedFilter);
 
       if ($scope.dashboardFilter.selectedAnalyticsFilter && $scope.dashboardFilter.selectedAnalyticsFilter.name) {
         $scope.dashboardFilter.showFilterName = true;
+      }
+
+      if ($scope.dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION') {
+        $scope.dashboardFilter.chartType = rvAnalyticsSrv.managerChartFilterSet.chartType;
+        $scope.dashboardFilter.aggType = rvAnalyticsSrv.managerChartFilterSet.aggType;
+        $scope.dashboardFilter.gridViewToggle = angular.copy(rvAnalyticsSrv.managerChartFilterSet.gridViewActive);
+      } else {
+        $scope.dashboardFilter.lineChartActive = angular.copy(rvAnalyticsSrv.managerChartFilterSet.lineChartActive);
+        $scope.dashboardFilter.datesToCompare = angular.copy(rvAnalyticsSrv.managerChartFilterSet.datesToCompare);
       }
 
       $scope.refreshScroller('analytics-filter-scroll');
@@ -483,7 +489,7 @@ sntRover.controller('RVmanagerDashboardController',
     $scope.dashboardFilter.showLastYearData = false;
     $scope.dashboardFilter.lastyearType = "SAME_DATE_LAST_YEAR";
     $scope.dashboardFilter.gridViewActive = false;
-    $scope.dashboardFilter.LineChartActive = false;
+    $scope.dashboardFilter.lineChartActive = false;
     $scope.dashboardFilter.datesToCompare = [];
     $scope.dashboardFilter.selectedAnalyticsFilter = {};
     $scope.dashboardFilter.showFilterName = false;
@@ -607,9 +613,14 @@ sntRover.controller('RVmanagerDashboardController',
       });
     });
 
-    $scope.dashboardFilter.aggType = selectedFilter.group_by;
-    $scope.dashboardFilter.chartType = selectedFilter.chart_type ? selectedFilter.chart_type : $scope.dashboardFilter.chartType;
-    $scope.dashboardFilter.gridViewToggle = selectedFilter.grid_view_toggle ? selectedFilter.grid_view_toggle : $scope.dashboardFilter.gridViewToggle;
+    if ($scope.dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION') {
+      $scope.dashboardFilter.aggType = selectedFilter.group_by;
+      $scope.dashboardFilter.chartType = selectedFilter.chart_type ? selectedFilter.chart_type : $scope.dashboardFilter.chartType;
+      $scope.dashboardFilter.gridViewToggle = selectedFilter.grid_view_toggle ? selectedFilter.grid_view_toggle : $scope.dashboardFilter.gridViewToggle;
+    } else {
+       $scope.dashboardFilter.lineChartActive = selectedFilter.line_chart_active ? selectedFilter.line_chart_active : $scope.dashboardFilter.lineChartActive; 
+       $scope.dashboardFilter.datesToCompare = selectedFilter.dates_to_compare ? selectedFilter.dates_to_compare : $scope.dashboardFilter.datesToCompare;
+    }
     
   };
 
@@ -644,11 +655,14 @@ sntRover.controller('RVmanagerDashboardController',
 
   $scope.saveSelectedFilter = function() {
 
-    if ($scope.dashboardFilter.aggType) {
+    if ($scope.dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION') {
       filtersSelected.filters.group_by = $scope.dashboardFilter.aggType;
+      filtersSelected.filters.chart_type = $scope.dashboardFilter.chartType;
+      filtersSelected.filters.grid_view_toggle = $scope.dashboardFilter.gridViewToggle;
+    } else {
+      filtersSelected.filters.line_chart_active = $scope.dashboardFilter.lineChartActive;
+      filtersSelected.filters.dates_to_compare = $scope.dashboardFilter.datesToCompare;
     }
-    filtersSelected.filters.chart_type = $scope.dashboardFilter.chartType;
-    filtersSelected.filters.grid_view_toggle = $scope.dashboardFilter.gridViewToggle;
 
     var params = {
       name: $scope.dashboardFilter.selectedAnalyticsFilter.name,
@@ -672,7 +686,7 @@ sntRover.controller('RVmanagerDashboardController',
         } else if ($scope.dashboardFilter.selectedAnalyticsFilter.id) {
             $scope.dashboardFilter.showFilterName = true;
         }
-
+        fetchSavedAnalyticsFilters();
       },
       failureCallBack: setHrefForChart
     };
@@ -719,10 +733,16 @@ sntRover.controller('RVmanagerDashboardController',
     $scope.$broadcast('ANALYTICS_FILTER_CHANGED', shallowEncoded);
 
     rvAnalyticsSrv.managerChartFilterSet.filtersSelected = angular.copy(filtersSelected);
-    rvAnalyticsSrv.managerChartFilterSet.aggType  = $scope.dashboardFilter.aggType;
-    rvAnalyticsSrv.managerChartFilterSet.gridViewActive = $scope.dashboardFilter.gridViewActive;
-    rvAnalyticsSrv.managerChartFilterSet.chartType = $scope.dashboardFilter.chartType;
     rvAnalyticsSrv.managerChartFilterSet.selectedSavedFilter = angular.copy($scope.dashboardFilter.selectedAnalyticsFilter);
+
+    if ($scope.dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION') {
+      rvAnalyticsSrv.managerChartFilterSet.aggType = $scope.dashboardFilter.aggType;
+      rvAnalyticsSrv.managerChartFilterSet.gridViewActive = $scope.dashboardFilter.gridViewActive;
+      rvAnalyticsSrv.managerChartFilterSet.chartType = $scope.dashboardFilter.chartType;
+    } else {
+      rvAnalyticsSrv.managerChartFilterSet.lineChartActive = angular.copy($scope.dashboardFilter.lineChartActive);
+      rvAnalyticsSrv.managerChartFilterSet.datesToCompare = angular.copy($scope.dashboardFilter.datesToCompare);
+    }
   };
 
   $scope.addNewFilter = function() {
