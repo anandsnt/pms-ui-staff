@@ -329,9 +329,17 @@ sntRover.controller('RVmanagerDashboardController',
 
   $scope.toggleFilterView = function() {
     $scope.dashboardFilter.showFilters = !$scope.dashboardFilter.showFilters;
+    var selectedAnalyticsMenu = $scope.dashboardFilter.selectedAnalyticsMenu;
 
-    if (($scope.dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION' ||
-        $scope.dashboardFilter.selectedAnalyticsMenu === 'PACE') &&
+    // reset filters if was not applied
+    if ((selectedAnalyticsMenu === 'HK_OVERVIEW' ||
+      selectedAnalyticsMenu === 'HK_WORK_PRIRORITY' ||
+      selectedAnalyticsMenu === 'FO_ACTIVITY') && rvAnalyticsSrv.selectedRoomType !== $scope.dashboardFilter.selectedRoomType) {
+        $scope.dashboardFilter.selectedRoomType = rvAnalyticsSrv.selectedRoomType;
+    }
+
+    if ((selectedAnalyticsMenu === 'DISTRIBUTION' ||
+        selectedAnalyticsMenu === 'PACE') &&
       $scope.dashboardFilter.showFilters) {
       $scope.refreshScroller('analytics-filter-scroll');
       $scope.refreshScroller('analytics-filter-options-scroll');
