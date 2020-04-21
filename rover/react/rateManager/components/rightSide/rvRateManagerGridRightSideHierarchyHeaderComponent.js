@@ -38,43 +38,23 @@ const RateManagerGridRightSideHierarchyHeaderComponent = createClass({
 								)}
 							</tr>
 						</thead>
-                        {/* <tbody>
-                            {this.props.summary.map((summaryData, rowIndex) =>
-                                <tr key={'key-' + rowIndex} className={((rowIndex + 1) === (this.props.summary.length) ? 'last' : '')}>
-                                    { summaryData.restrictionList.map((eachDayRestrictions, colIndex) =>
-                                        <td onClick={(e) => this.props.onTdClick(e, rowIndex, colIndex)} key={'key-' + colIndex} className='cell'>
-                                            <div className={'cell-container ' + (this.props.dateList[colIndex].isWeekEnd ? 'weekend_day': '')}>
-                                                <div className={'cell-content ' + (this.props.dateList[colIndex].isPastDate ? 'isHistory-cell-content': '')}>
-                                                    {eachDayRestrictions.map((restriction, restrictionIndex) =>
-                                                        <RateManagerRestrictionIconComponent
-                                                            key={'key-' + restrictionIndex}
-                                                            className={'' + restriction.className}
-                                                            text={restriction.days}/>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </td>
-                                    )}
-                                </tr>
-                            )}
-                        </tbody> */}
 						<tbody>
-                            {
-                                this.props.showHouse &&
-                                <RateManagerHierarchyHouseHeaderContainer/>
-                            }
-                            {/* {
-                                this.props.showRoomType &&
-                                <RateManagerHierarchyRoomTypeHeaderContainer/>
-                            }
-                            {
-                                this.props.showRateType &&
-                                <RateManagerHierarchyRateTypeHeaderContainer/>
-                            }
-                            {
-                                this.props.showRate &&
-                                <RateManagerHierarchyRateHeaderContainer/>
-                            } */}
+							{
+								this.props.showHouse &&
+								<RateManagerHierarchyHouseHeaderContainer/>
+							}
+							{/* {
+								this.props.showRoomType &&
+								<RateManagerHierarchyRoomTypeHeaderContainer/>
+							} */}
+							{/* {
+								this.props.showRateType &&
+								<RateManagerHierarchyRateTypeHeaderContainer/>
+							}
+							{
+								this.props.showRate &&
+								<RateManagerHierarchyRateHeaderContainer/>
+							} */}
 						</tbody>
 					</table>
 				</div>
