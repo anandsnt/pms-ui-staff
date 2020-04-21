@@ -41,8 +41,7 @@
 					<label for="analytics-chart" translate>
 						AN_CHART_TYPE
 					</label>
-					<select ng-model="dashboardFilter.chartType"
-						ng-change="onChartTypeChanged()">
+					<select ng-model="dashboardFilter.chartType">
 						<!-- <option value="" selected="" translate>SHOW_ALL</option> -->
 						<option value="{{::filter.code}}"
 							ng-repeat="filter in ::dashboardFilter.chartTypes track by $index">
@@ -63,10 +62,9 @@
 						</option>
 					</select>
 				</div>
-				<div id="chart-toggle" class="switch-button" ng-class="{'on': !dashboardFilter.gridViewActive}">
+				<div id="chart-toggle" class="switch-button" ng-class="{'on': !dashboardFilter.gridViewToggle}">
 					<input id="distribution-switch" type="checkbox" checked=""
-					ng-model="dashboardFilter.gridViewActive"
-					ng-change="distributionChartChanged()">
+					ng-model="dashboardFilter.gridViewToggle">
 					<label class="data-off">
 						<span class="value" translate>AN_CHART</span>
 						<span class="switch-icon" translate>AN_GRID</span>
