@@ -3,7 +3,8 @@ angular.module('sntRover')
 		function($scope, rvAnalyticsHelperSrv, rvManagersAnalyticsSrv) {
 
 			var dataForDateInfo = [],
-				numberOfDateInfoFetched = 0;
+				numberOfDateInfoFetched = 0,
+				datesToCompare = [];
 
 			var fetchPaceChartData = function(selectedData, shallowDecodedParams) {
 				var options = {
@@ -28,7 +29,7 @@ angular.module('sntRover')
 						});
 						numberOfDateInfoFetched++;
 						// if numberOfDateInfoFetched reached the dates to compare array length +  1 which the selected date ($scope.dashboardFilter.datePicked)
-						if (($scope.dashboardFilter.datesToCompare.length + 1) === numberOfDateInfoFetched) {
+						if ((datesToCompare.length + 1) === numberOfDateInfoFetched) {
 							drawPaceLineChart();
 						}
 					}
@@ -47,10 +48,18 @@ angular.module('sntRover')
 				numberOfDateInfoFetched++;
 				// If more dates are selected to compare, fetch data corresponding to all those dates
 				// and upon fetching all data, draw the chart
-				if ($scope.dashboardFilter.datesToCompare.length > 0) {
-					_.each($scope.dashboardFilter.datesToCompare, function(dateToCompare) {
+				datesToCompare = $scope.dashboardFilter.datesToCompare;
+
+				if (datesToCompare.length > 0) {
+					if (datesToCompare.includes($scope.dashboardFilter.datePicked)) {
+						datesToCompare = _.reject(datesToCompare, function(date){
+							return date === $scope.dashboardFilter.datePicked;
+						})
+					}
+					console.log(datesToCompare);
+					_.each(datesToCompare, function(dateToCompare) {
 						fetchPaceChartData(dateToCompare, shallowDecodedParams);
-					})
+					});
 				} else {
 					drawPaceLineChart();
 				}

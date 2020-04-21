@@ -78,28 +78,28 @@
 				</div>
 			</div>
 			<div class="entry" ng-if = "dashboardFilter.selectedAnalyticsMenu === 'PACE'">
-	            <div id="chart-toggle" class="switch-button" ng-class="{'on': !dashboardFilter.LineChartActive}">
-	               <input id="distribution-switch" type="checkbox" checked="" ng-model="dashboardFilter.LineChartActive" ng-change="paceChartChanged()">
-	               <label class="data-off">
-	               <span class="value">Chart</span>
-	               <span class="switch-icon">Line</span>
-	               </label>
-	               <label class="data-on">
-	               <span class="switch-icon">Chart</span>
-	               <span class="value">Line</span>
-	               </label>
-	            </div>
-	         </div>
-	         <div class="entry"  
-	            ng-if="dashboardFilter.selectedAnalyticsMenu === 'PACE' && dashboardFilter.LineChartActive" >
-	            <div class="entry-data has-datepicker">
-	               <label for="analytics-date">Date</label>
-	               <input type="text" class="datepicker" ng-model="dashboardFilter.linceChartDateToCompare" ng-click="showDateComparisonCalendar()" readonly />
-	            </div>
-	            <div class="selected" data-list="analytics-room-type">
-	               <span class="tag" ng-repeat="date in dashboardFilter.datesToCompare | orderBy: orderByDate" ng-click="removeDateToCompare(date)">{{date}}</span>
-	            </div>
-	         </div>
+				<div id="chart-toggle" class="switch-button" ng-class="{'on': !dashboardFilter.LineChartActive}">
+					<input id="distribution-switch" type="checkbox" checked="" ng-model="dashboardFilter.LineChartActive">
+					<label class="data-off">
+						<span class="value">Chart</span>
+						<span class="switch-icon">Line</span>
+					</label>
+					<label class="data-on">
+						<span class="switch-icon">Chart</span>
+						<span class="value">Line</span>
+					</label>
+				</div>
+			</div>
+			<div class="entry has-datepicker with-label"
+				ng-if="dashboardFilter.selectedAnalyticsMenu === 'PACE' && dashboardFilter.LineChartActive">
+				<label for="analytics-dates">Date</label>
+				<input type="text" class="datepicker" ng-model="dashboardFilter.linceChartDateToCompare" ng-click="showDateComparisonCalendar()" readonly />
+				
+				<!-- When Date is selected, remove it as an option from dropdown above + add a record of it here -->
+				<div class="selected" data-list="analytics-room-type">
+					<span class="tag" ng-repeat="date in dashboardFilter.datesToCompare | orderBy: orderByDate" ng-click="removeDateToCompare(date)">{{date}}</span>
+				</div>
+			</div>
 			<div class="entry">
 				<div class="select with-label">
 					<label for="analytics-room-type">Room Type</label>

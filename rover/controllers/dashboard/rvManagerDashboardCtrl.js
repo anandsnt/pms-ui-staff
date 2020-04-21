@@ -524,8 +524,7 @@ sntRover.controller('RVmanagerDashboardController',
       dateFormat: 'yy-mm-dd',
       onSelect: function(dateText) {
         // reject if the date was already selected or it's the picked date in header
-        if (!$scope.dashboardFilter.datesToCompare.includes(dateText) &&
-          $scope.dashboardFilter.datePicked !== dateText) {
+        if (!$scope.dashboardFilter.datesToCompare.includes(dateText)) {
           $scope.dashboardFilter.datesToCompare.push(dateText);
         }
         ngDialog.close();
