@@ -170,6 +170,7 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 			};
 
 			var scroller = $scope.getScroller('analytics_details_scroller');
+			rvAnalyticsSrv.resetChartFilterSet();
 
 			$timeout(function() {
 				if (scroller) {
@@ -220,7 +221,7 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 			};
 			$scope.dashboardFilter.showRemainingReservations = false;
 			$scope.dashboardFilter.gridViewActive = false;
-			$scope.dashboardFilter.LineChartActive = false;
+			$scope.dashboardFilter.lineChartActive = false;
 			$scope.$emit('REFRESH_ANALTICS_SCROLLER');
 		})();
 	}

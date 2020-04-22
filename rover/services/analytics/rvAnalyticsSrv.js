@@ -14,6 +14,34 @@ angular.module('sntRover').service('rvAnalyticsSrv', ['$q', 'rvBaseWebSrvV2', fu
     that.hotelCheckoutTime = null;
     that.roomTypesWithShortageData = [];
 
+    this.foChartFilterSet =  {};
+    this.managerChartFilterSet = {};
+    this.resetChartFilterSet = function () {
+        that.selectedRoomType = "";
+        that.foChartFilterSet = {
+            showRemainingReservations: false,
+            showPreviousDayData: false
+        };
+        that.managerChartFilterSet = {
+            chartType: "occupancy",
+            showLastYearData: false,
+            lastyearType: 'SAME_DATE_LAST_YEAR',
+            filtersSelected: {
+                filters: {
+                    room_type_id: [],
+                    market_id: [],
+                    source_id: [],
+                    booking_origin_id: [],
+                    segment_id: []
+                }
+            },
+            aggType: "",
+            gridViewActive: "",
+            selectedSavedFilter: "",
+            lineChartActive: false,
+            datesToCompare: []
+        };
+    };
     /*
      * Function To Fetch Active Reservation for that day
      */

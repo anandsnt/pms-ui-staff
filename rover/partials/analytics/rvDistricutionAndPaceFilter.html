@@ -41,8 +41,7 @@
 					<label for="analytics-chart" translate>
 						AN_CHART_TYPE
 					</label>
-					<select ng-model="dashboardFilter.chartType"
-						ng-change="onChartTypeChanged()">
+					<select ng-model="dashboardFilter.chartType">
 						<!-- <option value="" selected="" translate>SHOW_ALL</option> -->
 						<option value="{{::filter.code}}"
 							ng-repeat="filter in ::dashboardFilter.chartTypes track by $index">
@@ -63,10 +62,9 @@
 						</option>
 					</select>
 				</div>
-				<div id="chart-toggle" class="switch-button" ng-class="{'on': !dashboardFilter.gridViewActive}">
+				<div id="chart-toggle" class="switch-button" ng-class="{'on': !dashboardFilter.gridViewToggle}">
 					<input id="distribution-switch" type="checkbox" checked=""
-					ng-model="dashboardFilter.gridViewActive"
-					ng-change="distributionChartChanged()">
+					ng-model="dashboardFilter.gridViewToggle">
 					<label class="data-off">
 						<span class="value" translate>AN_CHART</span>
 						<span class="switch-icon" translate>AN_GRID</span>
@@ -78,8 +76,8 @@
 				</div>
 			</div>
 			<div class="entry" ng-if = "dashboardFilter.selectedAnalyticsMenu === 'PACE'">
-				<div id="chart-toggle" class="switch-button" ng-class="{'on': !dashboardFilter.LineChartActive}">
-					<input id="distribution-switch" type="checkbox" checked="" ng-model="dashboardFilter.LineChartActive">
+				<div id="chart-toggle" class="switch-button" ng-class="{'on': !dashboardFilter.lineChartActive}">
+					<input id="distribution-switch" type="checkbox" checked="" ng-model="dashboardFilter.lineChartActive">
 					<label class="data-off">
 						<span class="value">Chart</span>
 						<span class="switch-icon">Line</span>
@@ -91,7 +89,7 @@
 				</div>
 			</div>
 			<div class="entry has-datepicker with-label"
-				ng-if="dashboardFilter.selectedAnalyticsMenu === 'PACE' && dashboardFilter.LineChartActive">
+				ng-if="dashboardFilter.selectedAnalyticsMenu === 'PACE' && dashboardFilter.lineChartActive">
 				<label for="analytics-dates">Date</label>
 				<input type="text" class="datepicker" ng-model="dashboardFilter.linceChartDateToCompare" ng-click="showDateComparisonCalendar()" readonly />
 				
@@ -224,9 +222,9 @@
 			<button
 			ng-click="saveSelectedFilter(dashboardFilter.selectedAnalyticsFilter)"
 			class="button"
-			ng-class="{ 'orange' : dashboardFilter.selectedAnalyticsFilter.name && getAppliedFilterCount() > 0, 
-						'grey' : !dashboardFilter.selectedAnalyticsFilter.name || getAppliedFilterCount() === 0 }"
-			ng-disabled="!dashboardFilter.selectedAnalyticsFilter.name || getAppliedFilterCount() === 0" 
+			ng-class="{ 'orange' : dashboardFilter.selectedAnalyticsFilter.name, 
+						'grey' : !dashboardFilter.selectedAnalyticsFilter.name }"
+			ng-disabled="!dashboardFilter.selectedAnalyticsFilter.name" 
 			>
 				{{ dashboardFilter.selectedAnalyticsFilter.id ? 'AN_UPDATE_FILTER' : 'AN_SAVE_FILTER' | translate}} 
 			</button>

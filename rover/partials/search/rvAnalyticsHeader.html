@@ -81,13 +81,13 @@
                <label for="show-last-year" class="checkbox inline" ng-class="{'checked':dashboardFilter.showLastYearData}">
                   <!-- Add class 'checked' when L71 checked -->
                   <span class="icon-form icon-checkbox" ng-class="{'checked': dashboardFilter.showLastYearData}"></span> <!-- Add class 'checked' when L71 checked -->
-                  <input id="show-last-year" value="1" type="checkbox" ng-model="dashboardFilter.showLastYearData" ng-change="onAnlayticsFilterChanged();">
+                  <input id="show-last-year" value="1" type="checkbox" ng-model="dashboardFilter.showLastYearData">
                   Show Last Year Information
                </label>
                <!-- Show when L71 is checked -->
                <div class="select with-label" ng-if="dashboardFilter.showLastYearData">
                   <label for="last-year">Type</label>
-                  <select id="last-year" ng-model="dashboardFilter.lastyearType" ng-change="onAnlayticsFilterChanged()">
+                  <select id="last-year" ng-model="dashboardFilter.lastyearType">
                      <option value="SAME_DATE_LAST_YEAR">Same DATE Last Year</option>
                      <option value="SAME_DAY_LAST_YEAR">Same DAY Last Year</option>
                      <option value="MIXED" selected>Mixed</option>
@@ -95,6 +95,14 @@
                </div>
             </div>
          </div>
+      </div>
+      <div class="analytics-filters-actions">
+         <button class="button blank" ng-click="clearAllFilters()" translate>
+            AN_CLEAR_ALL
+         </button>
+         <button class="button green" ng-click="onAnlayticsFilterChanged()" translate>
+            AN_APPLY_FILTER
+         </button>
       </div>
    </div>
    <!-- Filters PACE-->
@@ -138,12 +146,12 @@
             <div class="entry">
                <div class="select with-label">
                   <label for="room-type">Room Type</label>
-                  <select ng-model="dashboardFilter.selectedRoomType" ng-change="onAnlayticsRoomTypeChange()"
+                  <select ng-model="dashboardFilter.selectedRoomType"
                      ng-if="dashboardFilter.selectedAnalyticsMenu !== 'HK_WORK_PRIRORITY'">
                      <option value="" selected="" translate>SHOW_ALL</option>
                      <option value="{{roomType.code}}" ng-repeat="roomType in availableRoomTypes track by $index">{{roomType.name}}</option>
                   </select>
-                  <select ng-model="dashboardFilter.selectedRoomType" ng-change="onAnlayticsRoomTypeChange()"
+                  <select ng-model="dashboardFilter.selectedRoomType"
                      ng-if="dashboardFilter.selectedAnalyticsMenu === 'HK_WORK_PRIRORITY'">
                      <option value="" selected="" translate>SHOW_ALL</option>
                      <option value="{{roomType.code}}" ng-repeat="roomType in availableRoomTypes | orderBy: '-shortage' ">{{roomType.name}} {{ roomType.shortage > 0 ?  
@@ -157,6 +165,14 @@
             </div>
          </div>
       </div>
+      <div class="analytics-filters-actions">
+         <button class="button blank" ng-click="clearAllFilters()" translate>
+            AN_CLEAR_ALL
+         </button>
+         <button class="button green" ng-click="onAnlayticsRoomTypeChange()" translate>
+            AN_APPLY_FILTER
+         </button>
+      </div>
    </div>
    <!-- Filters FO-->
    <div class="analytics-filters scrollable" 
@@ -169,12 +185,12 @@
             <div class="entry">
                <div class="select with-label">
                   <label for="room-type">Room Type</label>
-                  <select ng-model="dashboardFilter.selectedRoomType" ng-change="onAnlayticsRoomTypeChange()"  ng-if="dashboardFilter.selectedAnalyticsMenu !== 'FO_ARRIVALS'">
+                  <select ng-model="dashboardFilter.selectedRoomType" ng-if="dashboardFilter.selectedAnalyticsMenu !== 'FO_ARRIVALS'">
                      <option value="" selected="" translate>SHOW_ALL</option>
                      <option value="{{::roomType.code}}" ng-repeat="roomType in ::roomTypes track by $index">{{::roomType.name}}</option>
                   </select>
                   <!-- Show shortage in rooms inspected based on arrivals -->
-                  <select ng-model="dashboardFilter.selectedRoomType" ng-change="onAnlayticsRoomTypeChange()"
+                  <select ng-model="dashboardFilter.selectedRoomType"
                      ng-if="dashboardFilter.selectedAnalyticsMenu === 'FO_ARRIVALS'">
                      <option value="" selected="" translate>SHOW_ALL</option>
                      <option value="{{roomType.code}}" ng-repeat="roomType in roomTypes | orderBy: '-overBooking' ">{{roomType.name}} {{ roomType.overBooking > 0 ?  
@@ -187,7 +203,7 @@
             <div class="entry" ng-if="dashboardFilter.selectedAnalyticsMenu === 'FO_ACTIVITY'">
                <label class="checkbox inline" ng-class="{'checked': dashboardFilter.showPreviousDayData}">
                <span class="icon-form icon-checkbox" ng-class="{'checked': dashboardFilter.showPreviousDayData}"></span>
-               <input id="show-remaining" type="checkbox" ng-model="dashboardFilter.showPreviousDayData" ng-change="showYesterdaysDataToggled()">
+               <input id="show-remaining" type="checkbox" ng-model="dashboardFilter.showPreviousDayData">
                Show yesterday's data
                </label>
             </div>
@@ -201,6 +217,14 @@
                </label>
             </div>
          </div>
+      </div>
+      <div class="analytics-filters-actions">
+         <button class="button blank" ng-click="clearAllFilters()" translate>
+            AN_CLEAR_ALL
+         </button>
+         <button class="button green" ng-click="applyFoFilters()" translate>
+            AN_APPLY_FILTER
+         </button>
       </div>
    </div>
 </div>
