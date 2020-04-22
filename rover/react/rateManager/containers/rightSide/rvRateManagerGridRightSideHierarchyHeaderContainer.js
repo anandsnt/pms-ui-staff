@@ -48,7 +48,8 @@ const mapStateToRateManagerGridRightSideHierarchyHeaderContainerProps = (state) 
         showRoomType: state.isHierarchyRoomTypeRestrictionEnabled,
         showRateType: state.isHierarchyRateTypeRestrictionEnabled,
         showRate: state.isHierarchyRateRestrictionEnabled,
-        hierarchyRestrictionClass: state.hierarchyRestrictionClass
+        hierarchyRestrictionClass: state.hierarchyRestrictionClass,
+        frozenPanelClass: state.frozenPanelClass
     };
 
     return propsToReturn;

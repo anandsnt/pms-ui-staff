@@ -946,6 +946,13 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
     };
 
+    const handlePanelToggle = (e) => {
+        store.dispatch({
+            type: RM_RX_CONST.HIERARCHY_FROZEN_PANEL_TOGGLED,
+            frozenPanelClosed: !!e
+        });
+    };
+
     /**
      * utility method to pass callbacks from
      * @return {Object} with callbacks
@@ -966,7 +973,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 clickedOnRateTypeViewCell,
                 goToPrevPage,
                 goToNextPage,
-                changedHeirarchyRestriction
+                changedHeirarchyRestriction,
+                handlePanelToggle
             };
         };
 
@@ -2469,7 +2477,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             isHierarchyRoomTypeRestrictionEnabled: $scope.hierarchyRestrictions.roomTypeEnabled,
             isHierarchyRateTypeRestrictionEnabled: $scope.hierarchyRestrictions.rateTypeEnabled,
             isHierarchyRateRestrictionEnabled: $scope.hierarchyRestrictions.rateEnabled,
-            hierarchyRestrictionClass: (activerHierarchyRestrictions() > 1) ? 'calendar-rate-table-hierarchy-' + activerHierarchyRestrictions() : ''
+            hierarchyRestrictionClass: (activerHierarchyRestrictions() > 1) ? 'calendar-rate-table-hierarchy-' + activerHierarchyRestrictions() : '',
+            frozenPanelClosed: true
         };
 
         const store = configureStore(initialState);

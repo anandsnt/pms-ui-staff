@@ -21,7 +21,9 @@ const mapStateToRateManagerGridViewRootComponentProps = (state) => {
         refreshScrollers    : (state.action === RM_RX_CONST.REFRESH_SCROLLERS),
         scrollTo            : state.scrollTo,
         paginationStateData : state.paginationState,
-        hierarchyRestrictionClass: state.hierarchyRestrictionClass
+        hierarchyRestrictionClass: state.hierarchyRestrictionClass,
+        toggleFunction: state.callBacksFromAngular && state.callBacksFromAngular.handlePanelToggle,
+        frozenPanelClass: state.frozenPanelClass
     };
 };
 
@@ -38,9 +40,16 @@ const mapDispatchToRateManagerGridViewRootComponentProps = (stateProps, dispatch
         wrapperClass += ' load-bottom';
     }
 
+    if (stateProps.toggleFunction) {
+        var handleToggler = () => {
+            stateProps.toggleFunction(stateProps.frozenPanelClass);
+        };
+    }
+
     return {
     	...stateProps,
-        wrapperClass 
+        wrapperClass,
+        handleToggler 
     };    
 };
 
