@@ -365,11 +365,6 @@ angular.module('sntRover')
 				redrawDistributionChartIfNeeded();
 			});
 
-			$scope.$on('CHART_AGGGREGATION_CHANGED', function() {
-				// setPageHeading();
-				// redrawDistributionChartIfNeeded();
-			});
-
 			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER_DISTRIBUTION', fetchDistributionChartData);
 
 			$scope.$on('REFRESH_ANALYTCIS_CHART_DISTRIBUTION', function() {
