@@ -685,7 +685,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
 
             var dataToApi = {
                 'addon_id': selectedPurchesedAddon.id,
-                'reservation_id': $scope.reservationData.reservation_card.reservation_id,
+                'reservation_id': $scope.reservationData.reservationId,
                 'post_instances': selectedPurchesedAddon.post_instances,
                 'start_date': $filter('date')(tzIndependentDate(selectedPurchesedAddon.start_date), $rootScope.dateFormatForAPI),
                 'end_date': $filter('date')(tzIndependentDate(selectedPurchesedAddon.end_date), $rootScope.dateFormatForAPI),
