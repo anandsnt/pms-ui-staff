@@ -26,6 +26,8 @@
         </div>
         <div class="info-right">
             <br />
+            <span ng-if = "printData.account_name"><strong>{{printData.translation.account_name}}:</strong> {{printData.account_name}}</span>
+            <br ng-if = "printData.arrival_date"/>
             <span ng-if = "printData.arrival_date"><strong>{{printData.translation.arrival_date}}:</strong> {{printData.arrival_date}}</span>
             <br ng-if = "printData.departure_date"/>
             <span ng-if = "printData.departure_date"><strong>{{printData.translation.departure_date}}:</strong> {{printData.departure_date}}</span>
