@@ -34,6 +34,7 @@ angular.module('sntRover')
 						}
 					}
 				};
+
 				$scope.callAPI(rvManagersAnalyticsSrv.pace, options);
 			};
 
@@ -52,11 +53,10 @@ angular.module('sntRover')
 
 				if (datesToCompare.length > 0) {
 					if (datesToCompare.includes($scope.dashboardFilter.datePicked)) {
-						datesToCompare = _.reject(datesToCompare, function(date){
+						datesToCompare = _.reject(datesToCompare, function(date) {
 							return date === $scope.dashboardFilter.datePicked;
-						})
+						});
 					}
-					console.log(datesToCompare);
 					_.each(datesToCompare, function(dateToCompare) {
 						fetchPaceChartData(dateToCompare, shallowDecodedParams);
 					});

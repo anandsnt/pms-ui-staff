@@ -322,7 +322,8 @@ sntRover.controller('RVmanagerDashboardController',
     $scope.dashboardFilter.showFilters = !$scope.dashboardFilter.showFilters;
     var selectedAnalyticsMenu = $scope.dashboardFilter.selectedAnalyticsMenu;
 
-    // reset filters if was not applied
+    // if toggle button is clicked, only previously applied filters are to be applied to avoid confusions on 
+    // what was applied before. This can vary from chart to chart
     if ((selectedAnalyticsMenu === 'HK_OVERVIEW' ||
       selectedAnalyticsMenu === 'HK_WORK_PRIRORITY' ||
       selectedAnalyticsMenu === 'FO_ARRIVALS' ||
@@ -369,7 +370,7 @@ sntRover.controller('RVmanagerDashboardController',
     }
   };
 
-  var resetChartFilters = function() {
+  var resetMangerChartFilters = function() {
     $scope.selectedFilters = {
       "roomType": "",
       "marketCode": "",
@@ -385,7 +386,7 @@ sntRover.controller('RVmanagerDashboardController',
     $scope.dashboardFilter.selectedFilters = $scope.selectedFilters;
   };
 
-  resetChartFilters();
+  resetMangerChartFilters();
 
   /* ********************** FILTER REMOVAL ACTION STARTS HERE ********************/
   var filterRemovalActions = function(mainList, filterList, value) {
@@ -495,23 +496,18 @@ sntRover.controller('RVmanagerDashboardController',
     $scope.dashboardFilter.showFilterName = false;
     $scope.dashboardFilter.gridViewActive = false;
     $scope.dashboardFilter.gridViewToggle = false;
-    resetChartFilters();
+    resetMangerChartFilters();
   };
 
   $scope.$on('RESET_CHART_FILTERS', function() {
     emptyAllChartFilters();
   });
 
-  // $scope.distributionChartChanged = function() {
-  //   $scope.$broadcast('DISTRUBUTION_CHART_CHANGED');
-  // };
-
-  $scope.paceChartChanged = function() {
-    $scope.$broadcast('PACE_CHART_CHANGED');
+  $scope.exportAsCSV = function() {
+    $scope.$broadcast('EXPORT_AS_CSV', shallowEncoded);
   };
 
-  // house keeping
-
+  /** ********************** HK chart  headers **********************************/
   $scope.availableRoomTypes = angular.copy($scope.roomTypes);
 
   $scope.$on('ROOM_TYPE_SHORTAGE_CALCULATED', function(e, calculatedRoomTypes) {
@@ -528,7 +524,7 @@ sntRover.controller('RVmanagerDashboardController',
     });
   });
 
-  // front desk
+  /** ********************** FO chart headers **********************************/
 
   $scope.onAnlayticsRoomTypeChange = function() {
     $scope.dashboardFilter.showFilters = false;
@@ -546,11 +542,7 @@ sntRover.controller('RVmanagerDashboardController',
     $scope.$broadcast('RELOAD_DATA_WITH_SELECTED_FILTER_' + $scope.dashboardFilter.selectedAnalyticsMenu);
   };
 
-  $scope.exportAsCSV = function() {
-    $scope.$broadcast('EXPORT_AS_CSV', shallowEncoded);
-  };
-
-  /***************** LINE CHART STARTS HERE ***************************/
+  /** *************** LINE CHART STARTS HERE ***************************/
 
   $scope.dashboardFilter.datesToCompare = [];
 
@@ -561,7 +553,7 @@ sntRover.controller('RVmanagerDashboardController',
       yearRange: "-5:+5",
       dateFormat: 'yy-mm-dd',
       onSelect: function(dateText) {
-        // reject if the date was already selected or it's the picked date in header
+        // reject if the date was already selected
         if (!$scope.dashboardFilter.datesToCompare.includes(dateText)) {
           $scope.dashboardFilter.datesToCompare.push(dateText);
         }
@@ -584,7 +576,7 @@ sntRover.controller('RVmanagerDashboardController',
     });
   };
 
-  /***************** LINE CHART ENDS HERE ***************************/
+  /** *************** LINE CHART ENDS HERE ***************************/
 
   /** ************************* SAVED FILTERS CODE STARTS HERE ***********************************/
 
@@ -653,6 +645,7 @@ sntRover.controller('RVmanagerDashboardController',
 
   $scope.$on('FETCH_SAVED_ANALYTICS_FILTERS', fetchSavedAnalyticsFilters);
 
+  // Save currently active selections as a filter
   $scope.saveSelectedFilter = function() {
 
     if ($scope.dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION') {
@@ -682,7 +675,7 @@ sntRover.controller('RVmanagerDashboardController',
         if (selectedFilter.id &&
             selectedFilter.id === rvAnalyticsSrv.managerChartFilterSet.selectedSavedFilter.id &&
             selectedFilter.filter_json !== rvAnalyticsSrv.managerChartFilterSet.selectedSavedFilter.filter_json) {
-            $scope.applySelectedFilter()
+            $scope.applySelectedFilter();
         } else if ($scope.dashboardFilter.selectedAnalyticsFilter.id) {
             $scope.dashboardFilter.showFilterName = true;
         }
@@ -726,6 +719,7 @@ sntRover.controller('RVmanagerDashboardController',
     $scope.callAPI(rvAnalyticsSrv.deleteAnalyticsFilter, options);
   };
 
+  // Store the applied filersin Srv layer for using when user toggles filter button afterwards without applying new filters
   $scope.applySelectedFilter = function() {
 
     $scope.dashboardFilter.showFilters = false;
