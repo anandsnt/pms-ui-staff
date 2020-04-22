@@ -2076,7 +2076,7 @@ sntRover.controller('reservationDetailsController',
 			});
 	};
 
-	$scope.saveAddonPosting = function() {
+	var saveAddonPosting = function(selectedPurchesedAddon) {
 
 		var addonPostingSaveSuccess = function(data) {
 			$scope.$emit('hideLoader');
@@ -2084,12 +2084,12 @@ sntRover.controller('reservationDetailsController',
 		};
 
 		var dataToApi = {
-			'addon_id': $scope.selectedPurchesedAddon.id,
+			'addon_id': selectedPurchesedAddon.id,
 			'reservation_id': $scope.reservationData.reservation_card.reservation_id,
-			'post_instances': $scope.selectedPurchesedAddon.post_instances,
-			'start_date': $filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.start_date), $rootScope.dateFormatForAPI),
-			'end_date': $filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.end_date), $rootScope.dateFormatForAPI),
-			'selected_post_days': $scope.selectedPurchesedAddon.selected_post_days
+			'post_instances': selectedPurchesedAddon.post_instances,
+			'start_date': $filter('date')(tzIndependentDate(selectedPurchesedAddon.start_date), $rootScope.dateFormatForAPI),
+			'end_date': $filter('date')(tzIndependentDate(selectedPurchesedAddon.end_date), $rootScope.dateFormatForAPI),
+			'selected_post_days': selectedPurchesedAddon.selected_post_days
 		}
 
 		$scope.invokeApi(RVReservationPackageSrv.updateAddonPosting, dataToApi, addonPostingSaveSuccess);
@@ -2146,8 +2146,7 @@ sntRover.controller('reservationDetailsController',
 
 	var proceedBookingListner = $scope.$on('PROCEED_BOOKING', function(event, data) {
 		if(data.addonPostingMode === 'staycard') {
-			$scope.selectedPurchesedAddon = data.selectedPurchesedAddon;
-			$scope.saveAddonPosting();
+			saveAddonPosting(data.selectedPurchesedAddon);
 		}
 	});
 
