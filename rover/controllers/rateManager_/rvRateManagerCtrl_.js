@@ -2451,15 +2451,17 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             $scope.viewingScreen = RM_RX_CONST.GRID_VIEW;
         };
 
-        var activerHierarchyRestrictions = (
-            $scope.hierarchyRestrictions.houseEnabled && 1
-          ) + (
-            $scope.hierarchyRestrictions.roomTypeEnabled && 1
-          ) + (
-            $scope.hierarchyRestrictions.rateTypeEnabled && 1
-          ) + (
-            $scope.hierarchyRestrictions.rateEnabled && 1
-          );
+        var activerHierarchyRestrictions = () => {
+            return ((
+                $scope.hierarchyRestrictions.houseEnabled && 1
+            ) + (
+                $scope.hierarchyRestrictions.roomTypeEnabled && 1
+            ) + (
+                $scope.hierarchyRestrictions.rateTypeEnabled && 1
+            ) + (
+                $scope.hierarchyRestrictions.rateEnabled && 1
+            ));
+        };
 
         var initialState = {
             mode: RM_RX_CONST.NOT_CONFIGURED_MODE,
@@ -2467,7 +2469,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             isHierarchyRoomTypeRestrictionEnabled: $scope.hierarchyRestrictions.roomTypeEnabled,
             isHierarchyRateTypeRestrictionEnabled: $scope.hierarchyRestrictions.rateTypeEnabled,
             isHierarchyRateRestrictionEnabled: $scope.hierarchyRestrictions.rateEnabled,
-            hierarchyRestrictionClass: (activerHierarchyRestrictions > 1) ? 'opened calendar-rate-table-hierarchy-' + activerHierarchyRestrictions : ''
+            hierarchyRestrictionClass: (activerHierarchyRestrictions() > 1) ? 'calendar-rate-table-hierarchy-' + activerHierarchyRestrictions() : ''
         };
 
         const store = configureStore(initialState);
