@@ -1271,13 +1271,47 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             $scope.groupConfigData.summary.release_date = '';
         };
 
+        /**
+         * if comapny card id is null, we will not show
+         * @return {Boolean} [description]
+         */
+        $scope.shouldShowCompanyCardNavigationButton = function() {
+            return ( !$scope.isInAddMode() && (null !== $scope.groupConfigData.summary.company && undefined !== $scope.groupConfigData.summary.company && !!$scope.groupConfigData.summary.company.id) );
+        };
+
+        /**
+         * if travel agent id is null, we will not show
+         * @return {Boolean} [description]
+         */
+        $scope.shouldShowTravelAgentNavigationButton = function() {
+            return ( !$scope.isInAddMode() && (null !== $scope.groupConfigData.summary.travel_agent && undefined !== $scope.groupConfigData.summary.travel_agent && !!$scope.groupConfigData.summary.travel_agent.id) );
+        };
+
+        $scope.goToTACard = function() {
+            $state.go('rover.companycarddetails', {
+                id: summaryData.groupSummary.travel_agent.id,
+                type: 'TRAVELAGENT'
+            });
+        };
+
+        $scope.goToCompanyCard = function() {
+            $state.go('rover.companycarddetails', {
+                id: summaryData.groupSummary.company.id,
+                type: 'COMPANY'
+            });
+        };
+
         $scope.onCompanyCardChange = function() {
+            var summaryData = $scope.groupConfigData.summary;
+
             if ($scope.groupConfigData.summary.company && $scope.groupConfigData.summary.company.name === "") {
                 $scope.groupConfigData.summary.company = null;
             }
         };
 
         $scope.onTravelAgentCardChange = function() {
+            var summaryData = $scope.groupConfigData.summary;
+
             if ($scope.groupConfigData.summary.travel_agent && $scope.groupConfigData.summary.travel_agent.name === "") {
                 $scope.groupConfigData.summary.travel_agent = null;
             }

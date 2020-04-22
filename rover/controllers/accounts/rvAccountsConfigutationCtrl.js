@@ -370,6 +370,35 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 		});
 
 		/**
+         * if comapny card id is null, we will not show
+         * @return {Boolean} [description]
+         */
+		$scope.shouldShowCompanyCardNavigationButton = function() {
+            return ( !$scope.isInAddMode() && (null !== $scope.accountConfigData.summary.company && undefined !== $scope.accountConfigData.summary.company && !!$scope.accountConfigData.summary.company.id) );
+		};
+		
+		/**
+         * if TA card id is null, we will not show
+         * @return {Boolean} [description]
+         */
+		$scope.shouldShowTravelAgentNavigationButton = function() {
+            return ( !$scope.isInAddMode() && (null !== $scope.accountConfigData.summary.travel_agent && undefined !== $scope.accountConfigData.summary.travel_agent && !!$scope.accountConfigData.summary.travel_agent.id) );
+        };
+
+        $scope.goToTACard = function() {
+            $state.go('rover.companycarddetails', {
+                id:  $scope.accountConfigData.summary.travel_agent.id,
+                type: 'TRAVELAGENT'
+            });
+        };
+
+        $scope.goToCompanyCard = function() {
+            $state.go('rover.companycarddetails', {
+                id:  $scope.accountConfigData.summary.company.id,
+                type: 'COMPANY'
+            });
+        };
+		/**
 		 * function to initialize things for group config.
 		 * @return - None
 		 */

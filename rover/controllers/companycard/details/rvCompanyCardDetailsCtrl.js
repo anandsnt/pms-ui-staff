@@ -61,7 +61,13 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 	        if ($rootScope.previousState.controller === "rvAllotmentConfigurationCtrl")
 	        {
 	            $scope.searchBackButtonCaption = $filter('translate')('ALLOTMENTS');
-	        }
+			}
+			else if ($rootScope.previousState.controller === "rvGroupConfigurationCtrl"){
+				$scope.searchBackButtonCaption = $filter('translate')('GROUPS');
+			}
+			else if ($rootScope.previousState.controller === "rvAccountsConfigurationCtrl"){
+				$scope.searchBackButtonCaption = $filter('translate')('ACCOUNTS');
+			}
 	        else if ($stateParams.origin === 'AR_OVERVIEW') {
 	        	$scope.searchBackButtonCaption = $filter('translate')('MENU_ACCOUNTS_RECEIVABLES');
 	        }
