@@ -344,7 +344,10 @@ sntZestStation.controller('zsAdminCtrl', [
                     'is_out_of_order': station.is_out_of_order,
                     'out_of_order_msg': station.out_of_order_msg,
                     'emv_terminal_id': station.emv_terminal_id,
-                    'id': station.id
+                    'id': station.id,
+                    // while updating a work station data, we need to supress passing of workstation id (zsBaseWebSrv) of previously selected workstation
+                    // new workstation id will be set only after this API is success
+                    'exclude_kiosk_workstation_id': true
                 };
             }
 
