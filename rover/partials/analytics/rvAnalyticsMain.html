@@ -3,7 +3,7 @@
     <div class="analytics-chart" ng-class="{ 'with-legend-left' : showLeftSideLegends(), 'with-legend-right' : showRightSideLegends() }">
         <dl class="chart-legend legend-left" id="left-side-legend" ng-if="showLeftSideLegends()">
         </dl>
-        <div id="dashboard-analytics-chart" class="chart-content">
+        <div id="dashboard-analytics-chart" class="chart-content" ng-class="{'pace-chart-style': dashboardFilter.selectedAnalyticsMenu === 'PACE' && screenData.isZoomedChart }">
             <div id="d3-plot">
             </div>
             <div class="chart-actions" ng-show="!screenData.hideChartData">

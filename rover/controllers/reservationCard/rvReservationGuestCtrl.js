@@ -432,6 +432,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 				$scope.$emit('hideLoader');
 				$scope.$parent.guestData = data;
 				$scope.guestData = data;
+				$scope.guestCardData.contactInfo.is_flagged = data.primary_guest_details.is_flagged;
 				
 				// CICO-51935
 				if ($scope.guestCardData && $scope.guestCardData.contactInfo) {
@@ -450,7 +451,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 				$scope.reservationParentData.rooms[0].accompanying_guest_details = data.accompanying_guests_details;
 				$scope.errorMessage = '';
 
-				if ($scope.reservationParentData.group.id) {
+                if ($scope.reservationParentData.group.id || $scope.reservationParentData.allotment.id) {
 					if ($scope.otherData.maxAdults > 4) {
 						$scope.maxAdultsForReservation = 4;
 					} else {

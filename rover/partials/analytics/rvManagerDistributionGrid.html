@@ -9,7 +9,9 @@
     <!-- Rows -->
     <div class="analytics-grid-rows scrollable" ng-iscroll="side-bar-vertical-scroll" id="div1"> <!-- Vertical iScroll here, make it connected to iScroll on L227 so they both move vertically when any of them is scrolled. -->
         <div class="wrapper">
-            <div class="row" ng-if="dashboardFilter.aggType" ng-repeat="item in gridLeftSideHeaders">{{::item}}</div>
+            <div class="row" ng-if="dashboardFilter.aggType" ng-repeat="item in gridLeftSideHeaders">
+                {{ (item && item.length > 45) ?  (item.substring(0, 45 - 3) + "...") : item }}
+            </div>
             <!-- ... repeat L206 for every Room Type or Market or Source or Segment or Origin -->
         </div>
     </div>

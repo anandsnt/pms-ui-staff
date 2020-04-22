@@ -54,7 +54,7 @@ window.SharedMethodsBaseCtrl = function ($scope, $rootScope, RVAutomaticEmailSrv
     $scope.autoTriggerPaymentReceiptActions = function() {
 
         var successCallbackEmailPresence = function(response) {
-                if (response.email_present) {
+                if (response.data.email_present) {
                     $scope.sendAutomaticEmails();
                 } else {
                     $scope.openEnterEmailPopup();
