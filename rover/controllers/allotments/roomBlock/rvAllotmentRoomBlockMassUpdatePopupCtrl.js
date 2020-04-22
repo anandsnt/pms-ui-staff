@@ -60,7 +60,7 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 			var roomBlockData = $scope.allotmentConfigData.roomblock,
 				isReleaseDays = $scope.ngDialogData.isReleaseDays || false,
 				value 		  = $scope.ngDialogData.value,
-				timeLineStart = $scope.timeLineStartDate,
+				timeLineStart = $scope.massUpdateStartDate,
 				endDate 	  = $scope.massUpdateEndDate;
 
 			// If we are updating release days the logic defers.
@@ -203,6 +203,7 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 			BaseCtrl.call(this, $scope);
 			setDatePickers();
 
+			$scope.massUpdateStartDate = $scope.timeLineStartDate;
 			$scope.showSaveButton = true;
 			$scope.overBookingMessage = '';
 		};
