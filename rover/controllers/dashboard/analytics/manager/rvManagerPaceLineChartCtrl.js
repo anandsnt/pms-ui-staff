@@ -132,7 +132,7 @@ angular.module('sntRover')
 								cancellation: 0,
 								on_the_books: 0
 							};
-							
+
 							_.each(chartDatum, function (chartData) {
 								if (xDate === chartData.date) {
 									meanChartValue.new += chartData.new;
@@ -216,7 +216,7 @@ angular.module('sntRover')
 							.selectAll("text")
 							.style("text-anchor", "end")
 							.attr("dx", "-.8em")
-							.attr("dy", data.length > 20 ? "-.7em" : "-.15em")
+							.attr("dy", xAxisDates.length > 20 ? "-.7em" : "-.15em")
 							.attr("transform", "rotate(-65)")
 							.attr("fill", function (date) {
 								return checkIfDayIsToday(date) ? "#FFAB18" : "#000";
