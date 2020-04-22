@@ -43,18 +43,18 @@ const RateManagerGridRightSideHierarchyHeaderComponent = createClass({
 								this.props.showHouse &&
 								<RateManagerHierarchyHouseHeaderContainer/>
 							}
-							{/* {
+							{
 								this.props.showRoomType &&
 								<RateManagerHierarchyRoomTypeHeaderContainer/>
-							} */}
-							{/* {
+							}
+							{
 								this.props.showRateType &&
 								<RateManagerHierarchyRateTypeHeaderContainer/>
 							}
 							{
 								this.props.showRate &&
 								<RateManagerHierarchyRateHeaderContainer/>
-							} */}
+							}
 						</tbody>
 					</table>
 				</div>
