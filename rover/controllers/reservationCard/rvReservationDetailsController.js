@@ -2076,7 +2076,7 @@ sntRover.controller('reservationDetailsController',
 			});
 	};
 
-	$scope.saveAddonPosting = function() {
+	var saveAddonPosting = function() {
 
 		var addonPostingSaveSuccess = function(data) {
 			$scope.$emit('hideLoader');
@@ -2147,7 +2147,7 @@ sntRover.controller('reservationDetailsController',
 	var proceedBookingListner = $scope.$on('PROCEED_BOOKING', function(event, data) {
 		if(data.addonPostingMode === 'staycard') {
 			$scope.selectedPurchesedAddon = data.selectedPurchesedAddon;
-			$scope.saveAddonPosting();
+			saveAddonPosting();
 		}
 	});
 
