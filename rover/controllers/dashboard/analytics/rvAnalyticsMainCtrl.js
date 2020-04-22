@@ -170,6 +170,7 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 			};
 
 			var scroller = $scope.getScroller('analytics_details_scroller');
+			
 			rvAnalyticsSrv.resetChartFilterSet();
 
 			$timeout(function() {

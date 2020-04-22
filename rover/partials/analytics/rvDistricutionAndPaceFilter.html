@@ -1,6 +1,6 @@
 <div id="analyticsFilters" class="analytics-filters with-filter-sets"
 	ng-class="{'open': dashboardFilter.showFilters }"
-	ng-if="dashboardFilter.showFilters"
+	ng-style="{'display':  dashboardFilter.showFilters ? 'block': 'none'}"
 	>
 	<!-- Filter set -->
 	<div class="analytics-filters-sets">
