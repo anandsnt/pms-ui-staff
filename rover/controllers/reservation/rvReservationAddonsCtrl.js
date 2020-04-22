@@ -632,7 +632,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                 } else if (!!$scope.reservationData.group.id) {
                     $scope.is_rate_addons_fetch = true;
                     $scope.callAPI(rvGroupConfigurationSrv.getGroupEnhancements, {
-                        successCallBack: successCallBackAssociatedAddons,
+                        successCallBack: setUpAssociatedAddons,
                         params: {
                             "id": $scope.reservationData.group.id
                         }
@@ -695,7 +695,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
             $scope.invokeApi(RVReservationPackageSrv.updateAddonPosting, dataToApi, addonPostingSaveSuccess);
         };
 
-        var successCallBackAssociatedAddons = function(data) {
+        var setUpAssociatedAddons = function(data) {
                 var roomIndex,
                     startIndex = $scope.roomDetails.firstIndex,
                     endIndex = $scope.roomDetails.lastIndex;
@@ -764,13 +764,17 @@ sntRover.controller('RVReservationAddonsCtrl', [
 
                 addonsDataCopy = angular.copy($scope.addonsData.existingAddons);
                 $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
-                if (showAddonPopup) {
-                    $scope.showEnhancementsPopup();
-                }
 
         };
 
         var fetchReservationAddons = function(showAddonPopup) {
+            var successCallBackAssociatedAddons = function(data) {
+                setUpAssociatedAddons(data);
+                if (showAddonPopup) {
+                    $scope.showEnhancementsPopup();
+                }
+            };
+
             $scope.invokeApi(RVReservationPackageSrv.getReservationPackages, $scope.reservationData.reservationId, successCallBackAssociatedAddons);
         }
 
