@@ -53,11 +53,11 @@ angular.module('sntRover')
 
 				if (datesToCompare.length > 0) {
 					if (datesToCompare.includes($scope.dashboardFilter.datePicked)) {
-						datesToCompare = _.reject(datesToCompare, function(date) {
+						datesToCompare = _.reject(datesToCompare, function (date) {
 							return date === $scope.dashboardFilter.datePicked;
 						});
 					}
-					_.each(datesToCompare, function(dateToCompare) {
+					_.each(datesToCompare, function (dateToCompare) {
 						fetchPaceChartData(dateToCompare, shallowDecodedParams);
 					});
 				} else {
@@ -94,9 +94,10 @@ angular.module('sntRover')
 								top: 20,
 								right: 20,
 								bottom: 100,
-								left: 50
+								left: 70
 							},
 							parseDate = d3.timeParse("%Y-%m-%d"),
+							formatDecimal = d3.format(".0f"),
 							xAxisDates = [],
 							yAxisValues = [],
 							chartDatum = [],
@@ -109,15 +110,15 @@ angular.module('sntRover')
 
 						_.each(dataForDateInfo, function (dataObject) {
 							_.each(dataObject.chartData, function (chartData) {
-							chartDatum.push(chartData);
+								chartDatum.push(chartData);
 								xAxisDates.push(chartData.date);
 								yAxisValues.push(chartData.new + chartData.on_the_books);
 							});
 						});
 
 						// remove duplicate dates and values
-						xAxisDates = [...new Set(xAxisDates)];
-						yAxisValues = [...new Set(yAxisValues)];
+						xAxisDates = _.uniq(xAxisDates);
+						yAxisValues = _.uniq(yAxisValues);
 
 						// calculate the mean chart data
 						var meanChartData = {
@@ -147,12 +148,12 @@ angular.module('sntRover')
 						});
 						dataForDateInfo.push(meanChartData);
 
-						_.each(meanChartData.chartData, function(chartData) {
+						_.each(meanChartData.chartData, function (chartData) {
 							yAxisValues.push(chartData.new + chartData.on_the_books);
 						});
 
-						xAxisDates = [...new Set(xAxisDates)];
-						yAxisValues = [...new Set(yAxisValues)];
+						xAxisDates = _.uniq(xAxisDates);
+						yAxisValues = _.uniq(yAxisValues);
 
 						xAxisDates = _.sortBy(xAxisDates, function (date) {
 							return date;
@@ -162,12 +163,8 @@ angular.module('sntRover')
 						});
 
 						// max and min values for domain
-						var maxValue = _.max(yAxisValues),
-							minValue = _.min(yAxisValues),
-							yValueRange = d3.range(minValue, maxValue);
-
-						// for adding extra spacing
-						maxValue += yValueRange[1] - yValueRange[0];
+						var maxValue = _.max(yAxisValues) + 1,
+							minValue = formatDecimal(_.min(yAxisValues));
 
 						var width = document.getElementById("dashboard-analytics-chart").clientWidth - margin.left - margin.right,
 							height = 500 - margin.top - margin.bottom;
@@ -183,6 +180,11 @@ angular.module('sntRover')
 						var yScale = d3.scaleLinear()
 							.range([height, 0])
 							.domain([minValue, maxValue]);
+
+						var drawGridLines = function () {
+							return d3.axisLeft(yScale)
+								.ticks(10)
+						}
 
 						// define X axis
 						var xAxis = d3.axisBottom(xScale)
@@ -207,6 +209,14 @@ angular.module('sntRover')
 							.attr("height", height + margin.top + margin.bottom)
 							.append("g")
 							.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+						// draw grid lines
+						svg.append("g")
+							.attr("class", "grid")
+							.call(drawGridLines()
+								.tickSize(-width + 350)
+								.tickFormat("")
+								.tickSizeOuter(0));
 
 						// X axis
 						svg.append("g")
@@ -247,20 +257,8 @@ angular.module('sntRover')
 							width: 4,
 							yOffset: 0
 						});
-
-						// draw horizontal marker lines
-						_.each(yValueRange, function (range, index) {
-							rvAnalyticsHelperSrv.drawRectLines({
-								svg: svg,
-								xOffset: 0,
-								height: 1,
-								width: width - ((stackKey.length > 1 || $scope.dashboardFilter.aggType) ? 350 : 0),
-								yOffset: height * (1 - (index + 1) / (yValueRange.length + 1))
-							});
-						});
-
 						// draw line graphs with tooltip
-						dataForDateInfo.forEach(dataObject => {
+						_.each(dataForDateInfo, function (dataObject) {
 							svg.append("path")
 								.datum(dataObject.chartData)
 								.attr("fill", "none")
@@ -279,8 +277,7 @@ angular.module('sntRover')
 									tooltip.style("display", "none");
 								})
 								.on("mousemove", function (d) {
-									var formatDecimal = d3.format(".0f"),
-										xPosition = d3.mouse(this)[0] - 15,
+									var xPosition = d3.mouse(this)[0] - 15,
 										yPosition = d3.mouse(this)[1] - 25,
 										xRange = yScale.invert(d3.mouse(this)[1]);
 
