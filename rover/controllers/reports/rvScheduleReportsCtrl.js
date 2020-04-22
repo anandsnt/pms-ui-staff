@@ -602,7 +602,11 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             INCLUDE_TAX: 'INCLUDE_TAX',
             INCLUDE_LEDGER_DATA: 'INCLUDE_LEDGER_DATA',
             NO_NATIONALITY: 'NO_NATIONALITY',
-            EXCLUDE_NON_GTD: 'EXCLUDE_NON_GTD'
+            EXCLUDE_NON_GTD: 'EXCLUDE_NON_GTD',
+            INCLUDE_NEW: 'INCLUDE_NEW',
+            INCLUDE_BOTH: 'INCLUDE_BOTH',
+            SHOW_RATE_ADJUSTMENTS_ONLY: 'SHOW_RATE_ADJUSTMENTS_ONLY',
+            INCLUDE_CANCELLED: 'INCLUDE_CANCELLED'
         };
 
         var matchSortFields = {
@@ -640,6 +644,17 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 description: filter.description,
                 selected: true
             });
+        };
+
+        // Populate the time period data for each of the time period name
+        var populateTimePeriodsData = (selectedTimePeriods) => {
+            var timePeriodsData = [];
+
+            _.each(selectedTimePeriods, function(timePeriod) {
+                timePeriodsData.push(_.find($scope.originalScheduleTimePeriods, { value: timePeriod }));
+            });
+
+            return timePeriodsData;
         };
 
         // this is a temporary setup
@@ -690,6 +705,12 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 });
             };
 
+            if ($scope.selectedEntityDetails.report.title === reportNames['RESERVATIONS_BY_USER']) {
+                $scope.selectedEntityDetails.filters.push({
+                    value: 'SHOW_EMPLOYEES'
+                });
+            }
+
             _.each($scope.selectedEntityDetails.filters, function(filter) {
                 var selected = false,
                     mustSend = false;
@@ -723,6 +744,15 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                         selected = false;
                     }
 
+                    if ($scope.selectedEntityDetails.report.title === reportNames['RESERVATIONS_BY_USER'] && filter.value === 'INCLUDE_NEW') {
+                        selected = true;
+                    }
+
+                    if ($scope.selectedEntityDetails.report.title === reportNames['RESERVATIONS_BY_USER'] && filter.value === 'SHOW_RATE_ADJUSTMENTS_ONLY') {
+                        $scope.filters.hasGeneralOptions.options.selectiveSingleSelectKey = filter.value.toLowerCase();
+                        $scope.filters.hasGeneralOptions.options.noSelectAll = true;
+                    }
+
                     $scope.filters.hasGeneralOptions.data.push({
                         paramKey: filter.value.toLowerCase(),
                         description: filter.description,
@@ -754,14 +784,14 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 } else if (filter.value === 'INCLUDE_CHARGE_GROUP' || filter.value === 'INCLUDE_CHARGE_CODE' || filter.value === 'SHOW_CHARGE_CODES') {
                     reportUtils.fillChargeGroupsAndChargeCodes($scope.filters, $scope.selectedEntityDetails.filter_values, $scope.selectedEntityDetails.report.title);
                 } else if (filter.value === 'CHOOSE_MARKET') {
-                    reportUtils.fillMarkets($scope.filters, $scope.selectedEntityDetails.filter_values);
+                    reportUtils.fillMarkets($scope.filters, $scope.selectedEntityDetails.filter_values, $scope.selectedEntityDetails.report.title);
                 } else if (filter.value === 'CHOOSE_SOURCE') {
-                    reportUtils.fillSources($scope.filters, $scope.selectedEntityDetails.filter_values);
+                    reportUtils.fillSources($scope.filters, $scope.selectedEntityDetails.filter_values, $scope.selectedEntityDetails.report.title);
                 } else if (filter.value === 'CHOOSE_BOOKING_ORIGIN') {
-                    reportUtils.fillBookingOrigins($scope.filters, $scope.selectedEntityDetails.filter_values);
+                    reportUtils.fillBookingOrigins($scope.filters, $scope.selectedEntityDetails.filter_values, $scope.selectedEntityDetails.report.title);
                 } else if (filter.value === 'SHOW_EMPLOYEES') {
                     $scope.filters.hasUsers = {
-                        title: 'Employees',
+                        title: $scope.selectedEntityDetails.report.title === reportNames['RESERVATIONS_BY_USER'] ? 'Users' : 'Employees',
                         data: angular.copy($scope.$parent.activeUserList),
                         options: {
                             selectAll: true,
@@ -792,15 +822,26 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     pushShowData(filter);
                 } else if (filter.value === 'GROUP_COMPANY_TA_CARD') {
                     $scope.filters['hasIncludeCompanyTaGroup'] = filter;
+                } else if (filter.value === 'RATE_CODE') {
+                    reportUtils.fillRateCodes($scope.filters, $scope.selectedEntityDetails.filter_values, $scope.selectedEntityDetails.report.title);
+                } else if ( filter.value === 'ROOM_TYPE') {
+                    reportUtils.fillRoomTypes($scope.filters, $scope.selectedEntityDetails.filter_values, $scope.selectedEntityDetails.report.title);
+                } else if ( filter.value === 'CHOOSE_SEGMENT') {
+                    reportUtils.fillSegments($scope.filters, $scope.selectedEntityDetails.filter_values, $scope.selectedEntityDetails.report.title);
+                } else if ( filter.value === 'INCLUDE_GUARANTEE_TYPE') {
+                    reportUtils.fillGuaranteeTypes($scope.filters, $scope.selectedEntityDetails.filter_values, $scope.selectedEntityDetails.report.title);
+                } else if (($scope.selectedEntityDetails.report.title === reportNames['RESERVATIONS_BY_USER']) && filter.value === 'CREATE_DATE_RANGE') {
+                    $scope.creationDateTimePeriods = reportsSrv.getScheduleReportTimePeriods($scope.selectedEntityDetails.report.title + ':' + filter.value);
+                    $scope.creationDateTimePeriods = populateTimePeriodsData($scope.creationDateTimePeriods);
+                } else if (($scope.selectedEntityDetails.report.title === reportNames['RESERVATIONS_BY_USER']) && filter.value === 'ARRIVAL_DATE_RANGE') {
+                    $scope.arrivalDateTimePeriods = reportsSrv.getScheduleReportTimePeriods($scope.selectedEntityDetails.report.title + ':' + filter.value);
+                    $scope.arrivalDateTimePeriods = populateTimePeriodsData($scope.arrivalDateTimePeriods);
                 }
             });
 
             var reportTimePeriods = reportsSrv.getScheduleReportTimePeriods($scope.selectedEntityDetails.report.title);
 
-            $scope.scheduleTimePeriods = [];
-            _.each(reportTimePeriods, function(timePeriod) {
-                $scope.scheduleTimePeriods.push(_.find($scope.originalScheduleTimePeriods, { value: timePeriod }));
-            });
+            $scope.scheduleTimePeriods = populateTimePeriodsData(reportTimePeriods);
 
             runDigestCycle();
         };
@@ -941,6 +982,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
             $scope.isYearlyTaxReport = ($scope.selectedEntityDetails.report.title === reportNames['YEARLY_TAX']);
             $scope.isForecastReport = ($scope.selectedEntityDetails.report.title === reportNames['FORECAST_BY_DATE']);
+            $scope.isReservationsByUserReport = ($scope.selectedEntityDetails.report.title === reportNames['RESERVATIONS_BY_USER']);
 
             if (angular.isDefined($scope.selectedEntityDetails.schedule_formats)) {
                 $scope.schedule_formats = $scope.selectedEntityDetails.schedule_formats;
@@ -1094,6 +1136,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                             id: found.id,
                             filters: found.filters,
                             sort_fields: found.sort_fields,
+                            group_fields: found.group_fields,
                             report: {
                                 id: found.id,
                                 description: found.description,
@@ -1636,7 +1679,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.emailList = [];
 
             $scope.scheduleParams = {};
-
+            $scope.creationDateTimePeriods = [];
+            $scope.arrivalDateTimePeriods = [];
             setupScrolls();
 
             fetch_reportSchedules_frequency_timePeriod_scheduableReports();

@@ -41,10 +41,26 @@
             <h3>Schedule Parameters<span>{{ selectedEntityDetails.report.title }}</span></h3>
             <multi-option-selection ng-show="filters.hasShow && filters.hasShow.data.length" label="Show" on-update="refreshSecondColumnScroll" data="filters.hasShow.data" options="filters.hasShow.options">
             </multi-option-selection>
-            <div class="entry" ng-hide="isGuestBalanceReport || isYearlyTaxReport || isCreditCheckReport">
+            <div class="entry" ng-hide="isGuestBalanceReport || isYearlyTaxReport || isCreditCheckReport || isReservationsByUserReport">
                 <label for="time-period">Time Period</label>
                 <div class="select">
                     <select ng-model="scheduleParams.time_period_id" ng-options="timePeriod.id as timePeriod.description for timePeriod in scheduleTimePeriods" ng-disabled="isGuestBalanceReport" iscroll-stop-propagation>
+                        <option value="">Time period</option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry" ng-show="creationDateTimePeriods.length > 0">
+                <label for="time-period">Creation Date</label>
+                <div class="select">
+                    <select ng-model="scheduleParams.create_date_range" ng-options="timePeriod.id as timePeriod.description for timePeriod in creationDateTimePeriods" iscroll-stop-propagation>
+                        <option value="">Time period</option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry" ng-show="arrivalDateTimePeriods.length > 0">
+                <label for="time-period">Arrival Date</label>
+                <div class="select">
+                    <select ng-model="scheduleParams.arrival_date_range" ng-options="timePeriod.id as timePeriod.description for timePeriod in creationDateTimePeriods" iscroll-stop-propagation>
                         <option value="">Time period</option>
                     </select>
                 </div>
@@ -96,6 +112,23 @@
 
             <multi-option-selection ng-show="filters.hasChargeTypes && filters.hasChargeTypes.data.length" label="Charge Types(s)" on-update="refreshSecondColumnScroll" data="filters.hasChargeTypes.data" options="filters.hasChargeTypes.options"></multi-option-selection>
 
+            <div class="entry search" ng-show="filters.hasIncludeCompanyTaGroup">
+                <label>Company/TA/Group</label>
+                <input class="icons icon-search" auto-complete auto-options="compTaGrpAutoCompleteOnList" data-card-type="" type="text" placeholder="Search by Company/TA/Group" value="" autocomplete="off" ng-model="selectedEntityDetails.uiChosenIncludeCompanyTaGroup"
+                    report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnuiChosenReport(selectedEntityDetails)" ng-change="removeCompTaGrpId(selectedEntityDetails, 'uiChosenIncludeCompanyTaGroup', 'chosenIncludeCompanyTaGroup')">
+                <input type="text" class="hidden" ng-model="uiChosenReport.chosenIncludeCompanyTaGroup">
+            </div>
+
+            <multi-option-selection ng-show="filters.hasMarketsList" label="Market(s)" on-update="refreshSecondColumnScroll" data="filters.hasMarketsList.data" options="filters.hasMarketsList.options"></multi-option-selection>
+
+            <multi-option-selection ng-show="filters.hasSourcesList" label="Source(s)" on-update="refreshSecondColumnScroll" data="filters.hasSourcesList.data" options="filters.hasSourcesList.options"></multi-option-selection>
+
+            <multi-option-selection ng-show="filters.hasOriginsList" label="Origin(s)" on-update="refreshSecondColumnScroll" data="filters.hasOriginsList.data" options="filters.hasOriginsList.options"></multi-option-selection>
+            
+            <multi-option-selection ng-show="filters.hasRateCodeList" label="Rate" on-update="refreshSecondColumnScroll" data="filters.hasRateCodeList.data" options="filters.hasRateCodeList.options"></multi-option-selection>
+            <multi-option-selection ng-show="filters.hasRoomTypeList" label="Room Types" on-update="refreshSecondColumnScroll" data="filters.hasRoomTypeList.data" options="filters.hasRoomTypeList.options"></multi-option-selection>
+            <multi-option-selection ng-show="filters.hasSegmentList" label="Segment(s)" on-update="refreshSecondColumnScroll" data="filters.hasSegmentList.data" options="filters.hasSegmentList.options"></multi-option-selection>
+            <multi-option-selection ng-show="filters.hasGuaranteeTypeList" label="Guarantee Type(s)" on-update="refreshSecondColumnScroll" data="filters.hasGuaranteeTypeList.data" options="filters.hasGuaranteeTypeList.options"></multi-option-selection>
             <div class="entry" ng-show="selectedEntityDetails.sort_fields.length">
                 <label>Sort By</label>
                 <div class="select">
@@ -104,19 +137,14 @@
                     </select>
                 </div>
             </div>
-
-            <div class="entry search" ng-show="filters.hasIncludeCompanyTaGroup">
-                <label>Company/TA/Group</label>
-                <input class="icons icon-search" auto-complete auto-options="compTaGrpAutoCompleteOnList" data-card-type="" type="text" placeholder="Search by Company/TA/Group" value="" autocomplete="off" ng-model="selectedEntityDetails.uiChosenIncludeCompanyTaGroup"
-                    report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnuiChosenReport(selectedEntityDetails)" ng-change="removeCompTaGrpId(selectedEntityDetails, 'uiChosenIncludeCompanyTaGroup', 'chosenIncludeCompanyTaGroup')">
-                <input type="text" class="hidden" ng-model="uiChosenReport.chosenIncludeCompanyTaGroup">
+            <div class="entry" ng-show="selectedEntityDetails.group_fields.length">
+                <label>Group By</label>
+                <div class="select">
+                    <select ng-model="scheduleParams.groupBy" ng-options="groupBy.value as groupBy.description for groupBy in selectedEntityDetails.group_fields"  iscroll-stop-propagation>
+                        <option value="">Group By</option>
+                    </select>
+                 </div>
             </div>
-
-            <multi-option-selection ng-show="isForecastReport" label="Market(s)" on-update="refreshSecondColumnScroll" data="filters.hasMarketsList.data" options="filters.hasMarketsList.options"></multi-option-selection>
-
-            <multi-option-selection ng-show="isForecastReport" label="Source(s)" on-update="refreshSecondColumnScroll" data="filters.hasSourcesList.data" options="filters.hasSourcesList.options"></multi-option-selection>
-
-            <multi-option-selection ng-show="isForecastReport" label="Origin(s)" on-update="refreshSecondColumnScroll" data="filters.hasOriginsList.data" options="filters.hasOriginsList.options"></multi-option-selection>
 
             <div class="entry" ng-show="shouldShowFileFormat(selectedEntityDetails)">
                 <label for="file-format">File Format</label>
