@@ -357,7 +357,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
             $scope.addonPopUpData = {
                 addonPostingMode: 'reservation',
 				cancelLabel: "Cancel",
-                saveLabel: $scope.fromPage == 'staycard' ? "Save" : "Book",
+                saveLabel: $scope.fromPage === 'staycard' ? "Save" : "Book",
                 shouldShowAddMoreButton: false,
                 number_of_adults: $scope.reservationData.number_of_adults,
                 number_of_children: $scope.reservationData.number_of_children,
@@ -518,7 +518,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     }
                 });
 
-                var allallBackInventoryCheck = function(response) {
+                var successCallBackInventoryCheck = function(response) {
                     $scope.$emit('hideLoader');
                     var availableAddonCount = response.available_count;
                     // Adjust avbl count with the deleted ones now
@@ -678,7 +678,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
 
         var saveAddonPosting = function(selectedPurchesedAddon) {
 
-            var addonPostingSaveSuccess = function(data) {
+            var addonPostingSaveSuccess = function() {
                 $scope.$emit('hideLoader');
                 fetchReservationAddons(true);
             };
@@ -690,7 +690,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                 'start_date': $filter('date')(tzIndependentDate(selectedPurchesedAddon.start_date), $rootScope.dateFormatForAPI),
                 'end_date': $filter('date')(tzIndependentDate(selectedPurchesedAddon.end_date), $rootScope.dateFormatForAPI),
                 'selected_post_days': selectedPurchesedAddon.selected_post_days
-            }
+            };
 
             $scope.invokeApi(RVReservationPackageSrv.updateAddonPosting, dataToApi, addonPostingSaveSuccess);
         };
@@ -776,7 +776,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
             };
 
             $scope.invokeApi(RVReservationPackageSrv.getReservationPackages, $scope.reservationData.reservationId, successCallBackAssociatedAddons);
-        }
+        };
 
         $scope.goToAddons = function() {
             $scope.closePopup();
