@@ -97,23 +97,29 @@ angular.module('sntRover')
 								left: 70
 							},
 							parseDate = d3.timeParse("%Y-%m-%d"),
-							formatDecimal = d3.format(".0f"),
+							formatDecimal = d3.format(".1f"),
 							xAxisDates = [],
 							yAxisValues = [],
 							chartDatum = [],
 							colorMap = {};
 
 						stackKey.push("Mean");
-						_.each(stackKey, function (date, index) {
-							colorMap[date] = colors[index];
-						});
-
+						// extract date and values, remove -ve values coming for some reason
 						_.each(dataForDateInfo, function (dataObject) {
 							_.each(dataObject.chartData, function (chartData) {
+								for (var key in chartData) {
+									// check if the property/key is defined in the object itself, not in parent
+									if (chartData.hasOwnProperty(key) && key !== "date") {
+										chartData[key] = chartData[key] > 0 ? chartData[key] : 0;
+									}
+								}
 								chartDatum.push(chartData);
 								xAxisDates.push(chartData.date);
 								yAxisValues.push(chartData.new + chartData.on_the_books);
 							});
+						});
+						_.each(stackKey, function (date, index) {
+							colorMap[date] = colors[index];
 						});
 
 						// remove duplicate dates and values
@@ -164,7 +170,7 @@ angular.module('sntRover')
 
 						// max and min values for domain
 						var maxValue = _.max(yAxisValues) + 1,
-							minValue = formatDecimal(_.min(yAxisValues));
+							minValue = _.min(yAxisValues) | 0;
 
 						var width = document.getElementById("dashboard-analytics-chart").clientWidth - margin.left - margin.right,
 							height = 500 - margin.top - margin.bottom;
@@ -257,7 +263,7 @@ angular.module('sntRover')
 							width: 4,
 							yOffset: 0
 						});
-						// draw line graphs with tooltip
+						// draw line graphs
 						_.each(dataForDateInfo, function (dataObject) {
 							svg.append("path")
 								.datum(dataObject.chartData)
@@ -269,6 +275,16 @@ angular.module('sntRover')
 									.x(function (d) { return xScale(parseDate(d.date)); })
 									.y(function (d) { return yScale(d.new + d.on_the_books); })
 								)
+						});
+						// implement tooltip over small circles
+						_.each(dataForDateInfo, function (dataObject) {
+							svg.selectAll("dot")
+								.data(dataObject.chartData)
+								.enter().append("circle")
+								.attr("r", 2)
+								.attr("cx", function (d) { xScale(parseDate(d.date)); })
+								.attr("cy", function (d) { return yScale(d.new + d.on_the_books); })
+								.attr("fill", "#000")
 								.style("cursor", "pointer")
 								.on("mouseover", function () {
 									tooltip.style("display", null);
