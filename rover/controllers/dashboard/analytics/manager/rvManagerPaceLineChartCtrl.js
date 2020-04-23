@@ -103,7 +103,6 @@ angular.module('sntRover')
 							chartDatum = [],
 							colorMap = {};
 
-						stackKey.push("Mean");
 						// extract date and values, remove -ve values coming for some reason
 						_.each(dataForDateInfo, function (dataObject) {
 							_.each(dataObject.chartData, function (chartData) {
@@ -118,44 +117,53 @@ angular.module('sntRover')
 								yAxisValues.push(chartData.new + chartData.on_the_books);
 							});
 						});
-						_.each(stackKey, function (date, index) {
-							colorMap[date] = colors[index];
-						});
 
 						// remove duplicate dates and values
 						xAxisDates = _.uniq(xAxisDates);
 						yAxisValues = _.uniq(yAxisValues);
 
 						// calculate the mean chart data
-						var meanChartData = {
-							date: "Mean",
-							chartData: []
-						};
-
-						_.each(xAxisDates, function (xDate) {
-							var meanChartValue = {
-								date: xDate,
-								new: 0,
-								cancellation: 0,
-								on_the_books: 0
+						if (stackKey.length > 1) {
+							var meanChartData = {
+								date: "Mean",
+								chartData: []
 							};
 
-							_.each(chartDatum, function (chartData) {
-								if (xDate === chartData.date) {
-									meanChartValue.new += chartData.new;
-									meanChartValue.cancellation += chartData.cancellation;
-									meanChartValue.on_the_books += chartData.on_the_books;
-								}
-							});
-							meanChartValue.new /= (stackKey.length - 1);
-							meanChartValue.cancellation /= (stackKey.length - 1);
-							meanChartValue.on_the_books /= (stackKey.length - 1);
-							meanChartData.chartData.push(meanChartValue);
-						});
-						dataForDateInfo.push(meanChartData);
+							if (stackKey.length > 1) {
+								stackKey.push("Mean");
+							}
+							_.each(xAxisDates, function (xDate) {
+								var meanChartValue = {
+									date: xDate,
+									new: 0,
+									cancellation: 0,
+									on_the_books: 0
+								};
 
-						_.each(meanChartData.chartData, function (chartData) {
-							yAxisValues.push(chartData.new + chartData.on_the_books);
+								_.each(chartDatum, function (chartData) {
+									if (xDate === chartData.date) {
+										meanChartValue.new += chartData.new;
+										meanChartValue.cancellation += chartData.cancellation;
+										meanChartValue.on_the_books += chartData.on_the_books;
+									}
+								});
+								meanChartValue.new /= (stackKey.length - 1);
+								meanChartValue.cancellation /= (stackKey.length - 1);
+								meanChartValue.on_the_books /= (stackKey.length - 1);
+								meanChartData.chartData.push(meanChartValue);
+							});
+							dataForDateInfo.push(meanChartData);
+
+							_.each(meanChartData.chartData, function (chartData) {
+								yAxisValues.push(chartData.new + chartData.on_the_books);
+							});
+
+						} else {
+							// no longer need color for mean
+							colors.pop();
+						}
+						_.each(stackKey, function (date, index) {
+							colorMap[date] = colors[index];
 						});
 
 						xAxisDates = _.uniq(xAxisDates);
