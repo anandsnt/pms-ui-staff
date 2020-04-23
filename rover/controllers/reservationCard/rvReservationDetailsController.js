@@ -2114,7 +2114,7 @@ sntRover.controller('reservationDetailsController',
 		$scope.invokeApi(RVReservationPackageSrv.updateAddonPosting, dataToApi, addonPostingSaveSuccess);
 	};
 
-	$scope.removeSelectedAddons = function(index, addonId) {
+	var removeSelectedAddons = function(index, addonId) {
 
 		var reservationId = $scope.reservationData.reservation_card.reservation_id;
 
@@ -2159,7 +2159,7 @@ sntRover.controller('reservationDetailsController',
 
 	var removeSelectedAddonsListner = $rootScope.$on('REMOVE_ADDON', function(event, data) {
 		if(data.addonPostingMode === 'staycard') {
-			$scope.removeSelectedAddons(data.index, data.addon.id);
+			removeSelectedAddons(data.index, data.addon.id);
 		}
 	});
 
