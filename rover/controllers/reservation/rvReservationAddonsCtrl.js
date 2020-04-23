@@ -593,7 +593,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
             };
 
             $scope.invokeApi(RVReservationPackageSrv.deleteAddonsFromReservation, dataToApi, successDelete, failureCallBack);
-        }
+        };
 
         var removeSelectedAddons = function(index) {
             var roomIndex,
