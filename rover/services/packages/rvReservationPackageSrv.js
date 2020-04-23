@@ -16,6 +16,19 @@ angular.module('sntRover').service('RVReservationPackageSrv', ['$http', '$q', 'r
 		return deferred.promise;
 	};
 
+	this.applyAddon = function(params) {
+        var deferred = $q.defer();
+
+        var url =  '/api/reservations/update_package';
+
+        RVBaseWebSrvV2.postJSON(url, params).then(function(data) {
+            deferred.resolve(data);
+        }, function(errorMessage) {
+            deferred.reject(errorMessage);
+        });
+        return deferred.promise;
+    };
+
 	this.deleteAddonsFromReservation = function(dataToApi) {
 		var deferred = $q.defer();
 

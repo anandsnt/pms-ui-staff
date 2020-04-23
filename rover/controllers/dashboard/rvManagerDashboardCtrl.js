@@ -488,6 +488,7 @@ sntRover.controller('RVmanagerDashboardController',
     $scope.originData = joinFiltersAndDataSet($scope.originData, $scope.selectedFilters.originCodes);
     $scope.availableRoomTypes = joinFiltersAndDataSet($scope.availableRoomTypes, $scope.selectedFilters.roomTypes);
     $scope.dashboardFilter.showLastYearData = false;
+    $scope.dashboardFilter.gridViewActive = false;
     $scope.dashboardFilter.lastyearType = "SAME_DATE_LAST_YEAR";
     $scope.dashboardFilter.gridViewActive = false;
     $scope.dashboardFilter.lineChartActive = false;
