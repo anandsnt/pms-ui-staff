@@ -557,7 +557,8 @@ angular.module('sntRover')
 					start_date: $scope.dashboardFilter.fromDate,
 					end_date: $scope.dashboardFilter.toDate,
 					chart_type: $scope.dashboardFilter.chartType,
-					shallowDecodedParams: shallowDecodedParams
+					shallowDecodedParams: shallowDecodedParams,
+					group_by: $scope.dashboardFilter.aggType
 				};
 
 				var options = {
