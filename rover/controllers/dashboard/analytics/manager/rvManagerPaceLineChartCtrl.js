@@ -209,7 +209,7 @@ angular.module('sntRover')
 							height = 500 - margin.top - margin.bottom;
 
 						var xScale = d3.scaleBand()
-							.range([0, width])
+							.range([0, width - 80])
 							.padding(0.5);
 
 						xScale.domain(xAxisDates.map(function (date) {
@@ -253,7 +253,7 @@ angular.module('sntRover')
 						svg.append("g")
 							.attr("class", "grid")
 							.call(drawGridLines()
-								.tickSize(-width + 350)
+								.tickSize(-width)
 								.tickFormat("")
 								.tickSizeOuter(0));
 
