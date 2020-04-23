@@ -141,7 +141,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             "guestweb_coyote_south": "coyote",
             "guestweb_seehotel_hermitage": "hermitage",
             "guestweb_sage_inn_v2": "sage-inn-v2",
-            "guestweb_the_lake_house_on_canandaigua": "lake-house"
+            "guestweb_the_lake_house_on_canandaigua": "lake-house",
+            "guestweb_first_hotels_v2": "first-v2"
         };
 
 
