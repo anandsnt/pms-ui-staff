@@ -572,7 +572,30 @@ sntRover.controller('RVReservationAddonsCtrl', [
 
         };
 
-        $scope.removeSelectedAddons = function(index) {
+        var deleteReservationAddon = function(addonId) {
+            var reservationId = $scope.reservationData.reservationId;
+
+            var successDelete = function() {
+                fetchReservationAddons(true);
+            },
+            failureCallBack = function(errorMessage) {
+                $scope.errorMessage = errorMessage;
+            },
+            addonArray = [];
+
+            addonArray.push(addonId);
+            var dataToApi = {
+                "postData": {
+                    "addons": addonArray
+                },
+
+                "reservationId": reservationId
+            };
+
+            $scope.invokeApi(RVReservationPackageSrv.deleteAddonsFromReservation, dataToApi, successDelete, failureCallBack);
+        };
+
+        var removeSelectedAddons = function(index) {
             var roomIndex,
                 startIndex = $scope.roomDetails.firstIndex,
                 endIndex = $scope.roomDetails.lastIndex;
@@ -666,8 +689,10 @@ sntRover.controller('RVReservationAddonsCtrl', [
                  });
 
                 var removeSelectedAddonsListner = $rootScope.$on('REMOVE_ADDON', function(event, data) {
-                    if (data.addonPostingMode === 'reservation') {
-                        $scope.removeSelectedAddons(data.index);
+                    if (data.addonPostingMode === 'reservation' && $scope.fromPage === 'staycard') {
+                        deleteReservationAddon(data.addon.id);
+                    } else if (data.addonPostingMode === 'reservation') {
+                        removeSelectedAddons(data.index);
                     }
                 });
 
