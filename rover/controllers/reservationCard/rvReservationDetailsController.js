@@ -1954,6 +1954,25 @@ sntRover.controller('reservationDetailsController',
 		$scope.$broadcast('PROCEED_CHECKIN');
 	};
 
+	/*
+     * Clicked skip ID scan and thus record actions in activity logs and proceed checkin
+     */
+    $scope.continueToCheckinAfterSkipIdScan = function() {
+        var dataToApi = {
+            id: $scope.reservationData.reservation_card.reservation_id,
+            action_type: 'ID_DETAILS',
+            details: [
+                {
+                    key: 'Skipped ID Scan',
+                    new_value: true
+                }
+            ]
+        }
+        $scope.invokeApi(RVReservationCardSrv.createActivityLog, dataToApi, function(data){
+            $scope.$broadcast('PROCEED_CHECKIN');
+        });
+    };
+
 	$scope.showScannedGuestID = function(isPrimaryGuest, guestData) {
 
 		$scope.$emit('hideLoader');

@@ -401,6 +401,18 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 			return deferred.promise;
 		};
 
+        this.createActivityLog = function(params) {
+            var deferred = $q.defer();
+
+            rvBaseWebSrvV2.postJSON('/api/reservation_actions', params)
+                .then(function(data) {
+                    deferred.resolve(data);
+                }.bind(this), function(data) {
+                    deferred.reject(data);
+                });
+
+            return deferred.promise;
+        };
 
 	}
 ]);
