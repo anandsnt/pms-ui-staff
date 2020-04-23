@@ -14,6 +14,15 @@ const shouldShowGridViewRootContainer = (state) => {
 	return (listOfModesNotShowing.indexOf(state.mode) === -1);
 };
 
+const hierarchyRestrictionsActive = (state) => {
+    return (
+        state.isHierarchyHouseRestrictionEnabled ||
+        state.isHierarchyRoomTypeRestrictionEnabled ||
+        state.isHierarchyRateTypeRestrictionEnabled ||
+        state.isHierarchyRateRestrictionEnabled
+    );
+};
+
 const mapStateToRateManagerGridViewRootComponentProps = (state) => {
 	return {
         shouldShow          : shouldShowGridViewRootContainer(state),
@@ -22,6 +31,7 @@ const mapStateToRateManagerGridViewRootComponentProps = (state) => {
         scrollTo            : state.scrollTo,
         paginationStateData : state.paginationState,
         hierarchyRestrictionClass: state.hierarchyRestrictionClass,
+        showHierarchyHeader: hierarchyRestrictionsActive(state),
         toggleFunction: state.callBacksFromAngular && state.callBacksFromAngular.handlePanelToggle,
         frozenPanelClass: state.frozenPanelClass
     };

@@ -7,9 +7,6 @@ const RateManagerGridLeftSideComponent = ({expandedClass, hideTopHeader, hierarc
 		}
 		{	(hierarchyCount === 0) &&
 			<div className='pinnedLeft-select'>
-				{/* { 	isHierarchyHouseRestrictionEnabled &&
-					<RateManagerHierarchyRestrictionsContainer/>
-				} */}
 				{ 	!hideTopHeader &&
 					<RateManagerGridLeftFirstRowContainer/>
 				}

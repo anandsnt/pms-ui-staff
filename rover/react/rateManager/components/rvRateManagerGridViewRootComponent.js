@@ -163,9 +163,15 @@ const RateManagerGridViewRootComponent = createClass ({
 		return (
 			<div className={this.props.wrapperClass}>
 				<RateManagerGridLeftSideContainer/>
-				<RateManagerGridRightSideHierarchyHeaderContainer/>
-				{/* <RateManagerGridRightSideHeaderContainer/> */}
-				<div onClick={() => this.props.handleToggler()} className={'calendar-rate-table-handle ' + this.props.frozenPanelClass + this.props.hierarchyRestrictionClass}></div>
+				{	!this.props.showHierarchyHeader &&
+					<RateManagerGridRightSideHeaderContainer/>
+				}
+				{	this.props.showHierarchyHeader &&
+					<RateManagerGridRightSideHierarchyHeaderContainer/>
+				}
+				{	this.props.showHierarchyHeader && (this.props.hierarchyRestrictionClass !== '') &&
+					<div onClick={() => this.props.handleToggler()} className={'calendar-rate-table-handle ' + this.props.frozenPanelClass + this.props.hierarchyRestrictionClass}></div>
+				}
 				<RateManagerGridRightSideBottomComponent
 				hierarchyRestrictionClass={this.props.frozenPanelClass + this.props.hierarchyRestrictionClass}/>
 				<RateManagerBottomRestrictionListContainer/>
