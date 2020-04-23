@@ -195,6 +195,12 @@ angular.module('sntRover')
 							return value;
 						});
 
+						_.each(dataForDateInfo, function (dataObject) {
+							dataObject.chartData = _.sortBy(dataObject.chartData, function (chartData) {
+								return chartData.date;
+							});
+						});
+
 						// max and min values for domain
 						var maxValue = _.max(yAxisValues) + 1,
 							minValue = _.min(yAxisValues) | 0;
@@ -298,7 +304,7 @@ angular.module('sntRover')
 								.attr("stroke", function (d) { return colorMap[dataObject.date]; })
 								.attr("stroke-width", 3)
 								.attr("d", d3.line()
-									.curve(d3.curveCardinal)
+									.curve(d3.curveLinear)
 									.x(function (d) { return xScale(parseDate(d.date)); })
 									.y(function (d) { return yScale(d.new + d.on_the_books); })
 								)
@@ -311,7 +317,9 @@ angular.module('sntRover')
 								.attr("r", 2)
 								.attr("cx", function (d) { return xScale(parseDate(d.date)); })
 								.attr("cy", function (d) { return yScale(d.new + d.on_the_books); })
-								.attr("fill", "#000")
+								.attr("fill", function () {
+									return colorMap[dataObject.date];
+								})
 								.style("cursor", "pointer")
 								.on("mouseover", function () {
 									tooltip.style("display", null);
