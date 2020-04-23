@@ -572,7 +572,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
 
         };
 
-        var deleteReservationAddon = function() {
+        var deleteReservationAddon = function(addonId) {
             var reservationId = $scope.reservationData.reservationId;
 
             var successDelete = function() {
@@ -690,7 +690,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
 
                 var removeSelectedAddonsListner = $rootScope.$on('REMOVE_ADDON', function(event, data) {
                     if (data.addonPostingMode === 'reservation' && $scope.fromPage === 'staycard') {
-                        deleteReservationAddon(data.index, data.addon.id);
+                        deleteReservationAddon(data.addon.id);
                     } else if (data.addonPostingMode === 'reservation') {
                         removeSelectedAddons(data.index);
                     }
