@@ -1968,7 +1968,7 @@ sntRover.controller('reservationDetailsController',
                 }
             ]
         }
-        $scope.invokeApi(RVReservationCardSrv.createActivityLog, dataToApi, function(data){
+        $scope.invokeApi(RVReservationCardSrv.createActivityLog, dataToApi, function(data) {
             $scope.$broadcast('PROCEED_CHECKIN');
         });
     };

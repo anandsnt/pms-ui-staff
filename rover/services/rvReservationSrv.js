@@ -407,7 +407,7 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
             rvBaseWebSrvV2.postJSON('/api/reservation_actions', params)
                 .then(function(data) {
                     deferred.resolve(data);
-                }.bind(this), function(data) {
+                }, function(data) {
                     deferred.reject(data);
                 });
 
