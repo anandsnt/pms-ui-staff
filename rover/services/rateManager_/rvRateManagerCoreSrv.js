@@ -331,7 +331,6 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                     })
             );
 
-
             if (params.fetchRoomTypes) {
                 promises.push(
                     this.fetchRoomTypes()
@@ -383,7 +382,6 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                         rvRateManagerRestrictionsSrv.formatRestrictionsData(data.results, params);
                     })
             );
-
 
             if (params.fetchRoomTypes) {
                 promises.push(

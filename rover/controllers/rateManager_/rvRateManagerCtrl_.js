@@ -743,7 +743,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 rateType.restrictionList.push(dateRateTypeSet.restrictions);
                 if (dateRateTypeSet.amount === null) {
                     rateType.amountList.push(null);
-                } else if(dateRateTypeSet.hasOwnProperty('amount')) {
+                }
+                else if (dateRateTypeSet.hasOwnProperty('amount')) {
                     rateType.amountList.push(dateRateTypeSet.rate_currency + "" + dateRateTypeSet.amount);
                 }
             });
@@ -1083,12 +1084,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                     rate.restrictionList.push(dateRateSet.restrictions);
                     if (dateRateSet.amount === null) {
                         rate.amountList.push(null);
-                    } else if (dateRateSet.hasOwnProperty('amount')) {
+                    }
+                    else if (dateRateSet.hasOwnProperty('amount')) {
                         rate.amountList.push(dateRateSet.rate_currency + "" + dateRateSet.amount);
                     }
-                    
-                }
-                );
+                });
+                
                 return _.omit(rate, 'restrictions');
             });
 
@@ -1331,7 +1332,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                     roomType.restrictionList.push(dateRoomTypeSet.restrictions);
                     if (dateRoomTypeSet.amount === null) {
                         roomType.amountList.push(null);
-                    } else if (dateRoomTypeSet.hasOwnProperty('amount')) {
+                    }
+                    else if (dateRoomTypeSet.hasOwnProperty('amount')) {
                         roomType.amountList.push(dateRoomTypeSet.rate_currency + "" + dateRoomTypeSet.amount);
                     }                    
                 });
