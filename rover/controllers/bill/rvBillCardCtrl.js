@@ -2696,10 +2696,6 @@ sntRover.controller('RVbillCardController',
 				successCallBack: settleInvoiceSuccess
 			};
 	
-		if (data.bill_address_type) {
-			options.params.bill_address_type = data.bill_address_type;
-		}
-
 		$scope.callAPI(RVBillCardSrv.settleFinalInvoice, options);
 	};
 
