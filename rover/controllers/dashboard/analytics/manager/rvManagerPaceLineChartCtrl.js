@@ -209,7 +209,7 @@ angular.module('sntRover')
 							height = 500 - margin.top - margin.bottom;
 
 						var xScale = d3.scaleBand()
-							.range([0, width - ((stackKey.length > 1 || $scope.dashboardFilter.aggType) ? 350 : 0)])
+							.range([0, width])
 							.padding(0.5);
 
 						xScale.domain(xAxisDates.map(function (date) {
@@ -285,7 +285,7 @@ angular.module('sntRover')
 							svg: svg,
 							xOffset: 0,
 							height: 4,
-							width: width - ((stackKey.length > 1 || $scope.dashboardFilter.aggType) ? 350 : 0),
+							width: width,
 							yOffset: height
 						});
 						// draw rect on top of Y axis
