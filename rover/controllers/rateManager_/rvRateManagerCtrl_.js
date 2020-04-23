@@ -1083,7 +1083,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                     rate.restrictionList.push(dateRateSet.restrictions);
                     if (dateRateSet.amount === null) {
                         rate.amountList.push(null);
-                    } else {
+                    } else if (dateRateSet.hasOwnProperty('amount')) {
                         rate.amountList.push(dateRateSet.rate_currency + "" + dateRateSet.amount);
                     }
                     
@@ -1676,6 +1676,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fetchRoomTypes: !cachedRoomTypeList.length,
                 fetchRates: !cachedRateList.length
             };
+
+            considerHierarchyRestrictions(params);
 
             var options = {
                 params,

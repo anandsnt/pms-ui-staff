@@ -25,7 +25,6 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
          *          2. to_date
          *          3. order_id
          */
-
         var service = this;
 
         this.activeRates = null;
@@ -432,7 +431,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
 
             // common restriction params
             var commonRestrictionsParams = {
-                ..._.pick(params, 'from_date', 'to_date'),
+                ..._.pick(params, 'from_date', 'to_date', 'hierarchialRateRestrictionRequired'),
                 'rate_ids[]': [params.rate_id]
             };
 
