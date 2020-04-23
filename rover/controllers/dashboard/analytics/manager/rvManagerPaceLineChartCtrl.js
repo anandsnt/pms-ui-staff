@@ -117,7 +117,26 @@ angular.module('sntRover')
 								yAxisValues.push(chartData.new + chartData.on_the_books);
 							});
 						});
-
+						_.each(xAxisDates, function (date) {
+							_.each(dataForDateInfo, function (dataObject) {
+								var isDatePresent = false;
+								_.each(dataObject.chartData, function (chartData) {
+									if (date === chartData.date) {
+										isDatePresent = true;
+										return;
+									}
+								});
+								if (!isDatePresent) {
+									yAxisValues.push(0);
+									dataObject.chartData.push({
+										new: 0,
+										cancellation: 0,
+										on_the_books: 0,
+										date: date
+									});
+								}
+							});
+						});
 						// remove duplicate dates and values
 						xAxisDates = _.uniq(xAxisDates);
 						yAxisValues = _.uniq(yAxisValues);
