@@ -132,7 +132,8 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
             if (
                 (service.hierarchyRestrictions.houseEnabled && params.restrictionType === 'HOUSE') ||
                 params.hierarchialRoomTypeRestrictionRequired ||
-                params.hierarchialRateTypeRestrictionRequired
+                params.hierarchialRateTypeRestrictionRequired ||
+                params.hierarchialRateRestrictionRequired
             ) {
                 params = rvRateManagerUtilitySrv.generateNewPostApiParams(params);
             }
