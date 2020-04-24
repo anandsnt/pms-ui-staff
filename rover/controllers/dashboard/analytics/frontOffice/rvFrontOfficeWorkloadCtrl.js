@@ -436,10 +436,6 @@ angular.module('sntRover')
 			$scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER_FO_WORK_LOAD', renderfdWorkloadChart);
 			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER_FO_WORK_LOAD', getArrivalManagementChartData);
 			$scope.$on('REFRESH_ANALYTCIS_CHART_FO_WORK_LOAD', getArrivalManagementChartData);
-			$scope.$on('SHOW_REMAINING_RESERVATIONS_TOGGLE', function () {
-				$scope.dashboardFilter.showFilters = false;
-				renderfdWorkloadChart();
-			});
 
 			$scope.$on('ON_WINDOW_RESIZE', function() {
 				if ($scope.dashboardFilter.selectedAnalyticsMenu === 'FO_WORK_LOAD' && chartDetails) {

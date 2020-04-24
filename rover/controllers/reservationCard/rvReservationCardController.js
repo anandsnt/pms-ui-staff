@@ -1,5 +1,6 @@
-sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVReservationCardSrv', 'RVGuestCardSrv', '$filter', '$state', '$stateParams',
-	function($rootScope, $scope, RVReservationCardSrv, RVGuestCardSrv, $filter, $state, $stateParams) {
+sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVReservationCardSrv', 'RVGuestCardSrv', 'rvPermissionSrv',
+    '$filter', '$state', '$stateParams',
+	function($rootScope, $scope, RVReservationCardSrv, RVGuestCardSrv, rvPermissionSrv, $filter, $state, $stateParams) {
 		BaseCtrl.call(this, $scope);
 		$scope.timeline = "";
 		$scope.reservationList = [];
@@ -25,8 +26,10 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 			$scope.shouldShowGuestDetails = data.shouldShowGuestDetails;
 		});
 
+        // To enable skip id scan button
+        $scope.hasPermissionToSkipIdScan = rvPermissionSrv.getPermissionValue('ID_SCAN_BYPASS');
 
-		/*
+        /*
 		 * to get state params from resrvation details controller
 		 */
 		$scope.$on('passReservationParams', function(event, data) {

@@ -334,10 +334,6 @@ angular.module('sntRover')
       // Initial fetch
       $scope.$on('GET_FO_ACTIVITY', getFoActivityChartData);
 
-      // Show yesterdays data toggle
-      $scope.$on('SHOW_YESTERDAYS_DATA_TOGGLE', function() {
-        renderFrontOfficeActivity();
-      });
       // On filter changes
       $scope.$on('RELOAD_DATA_WITH_SELECTED_FILTER_FO_ACTIVITY', renderFrontOfficeActivity);
       $scope.$on('RELOAD_DATA_WITH_DATE_FILTER_FO_ACTIVITY', getFoActivityChartData);

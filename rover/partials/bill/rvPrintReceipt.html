@@ -23,8 +23,8 @@
             </span>
             <span ng-if="!receiptPrintData.is_db_payment">
                 {{receiptPrintData.card_details.name}}<br/>
-                {{receiptPrintData.card_details.address}}
             </span>
+            <span ng-bind-html="receiptPrintData.card_details.address" ng-if="receiptPrintData.card_details.address"></span>
         </span>
         <span ng-if="!isFromBillCard">
             <strong>{{receiptPrintData.receipt_translations.account_name}}:</strong> {{receiptPrintData.account_name}} <br />
