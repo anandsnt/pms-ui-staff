@@ -1047,8 +1047,8 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                     case reportParamsConst['INCLUDE_NEW']:  
                     case reportParamsConst['SHOW_RATE_ADJUSTMENTS_ONLY']: 
                     case reportParamsConst['NO_NATIONALITY']:       
-                   //   case reportParamsConst['EXCLUDE_TAX']:   
-                    case reportParamsConst['DUE_OUT_DEPARTURES']: 
+                    case reportParamsConst['DUE_OUT_DEPARTURES']:
+                    case reportParamsConst['HAS_VEHICLE_REG_NO']:
                         self.processOptions(value, key, processedFilter);
                         break;
                     case reportParamsConst['SHOW_DELETED_CHARGES']:

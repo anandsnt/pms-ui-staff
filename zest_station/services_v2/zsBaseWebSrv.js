@@ -51,7 +51,7 @@ angular.module('sntZestStation').
                         httpDict.params = params;
                     } else if (httpMethod === 'POST' || httpMethod === 'PUT') {
                         httpDict.data = params;
-                        if (angular.isDefined($rootScope.workstation_id)) {
+                        if (angular.isDefined($rootScope.workstation_id) && !params.exclude_kiosk_workstation_id) {
                             httpDict.data.workstation_id = $rootScope.workstation_id;
                         }
                     }
