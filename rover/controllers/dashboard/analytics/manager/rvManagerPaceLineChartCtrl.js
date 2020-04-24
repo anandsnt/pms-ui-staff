@@ -210,7 +210,7 @@ angular.module('sntRover')
 
 						var xScale = d3.scaleTime()
 							.domain([parseDate(d3.min(xAxisDates)), parseDate(d3.max(xAxisDates))])
-							.range([20, width - 80])
+							.range([20, width - 150])
 
 						var yScale = d3.scaleLinear()
 							.range([height, 0])
@@ -223,6 +223,7 @@ angular.module('sntRover')
 
 						// define X axis
 						var xAxis = d3.axisBottom(xScale)
+							.ticks(5)
 							.tickFormat(function (date) {
 								if (checkIfDayIsToday(date)) {
 									return "Today";
@@ -244,6 +245,20 @@ angular.module('sntRover')
 							.attr("height", height + margin.top + margin.bottom)
 							.append("g")
 							.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+						var drawSingleLine = function (cordinateData, keyDate, shouldInsertId) {
+							svg.append("path")
+								.datum(cordinateData)
+								.attr("fill", "none")
+								.attr("stroke", function () { return colorMap[keyDate]; })
+								.attr("stroke-width", 3)
+								.attr("d", d3.line()
+									.curve(d3.curveLinear)
+									.x(function (d) { return xScale(parseDate(d.date)); })
+									.y(function (d) { return yScale(d.new + d.on_the_books); })
+								)
+								.attr("id", shouldInsertId ? "line-" + keyDate : "")
+						}
 
 						// draw grid lines
 						svg.append("g")
@@ -292,19 +307,12 @@ angular.module('sntRover')
 							width: 4,
 							yOffset: 0
 						});
+
 						// draw line graphs
 						_.each(dataForDateInfo, function (dataObject) {
-							svg.append("path")
-								.datum(dataObject.chartData)
-								.attr("fill", "none")
-								.attr("stroke", function (d) { return colorMap[dataObject.date]; })
-								.attr("stroke-width", 3)
-								.attr("d", d3.line()
-									.curve(d3.curveLinear)
-									.x(function (d) { return xScale(parseDate(d.date)); })
-									.y(function (d) { return yScale(d.new + d.on_the_books); })
-								)
+							drawSingleLine(dataObject.chartData, dataObject.date);
 						});
+
 						// implement tooltip over small circles
 						_.each(dataForDateInfo, function (dataObject) {
 							svg.selectAll("dot")
@@ -363,21 +371,10 @@ angular.module('sntRover')
 							.attr("transform", function (d, i) {
 								return "translate(-100," + i * 30 + ")";
 							}).on("mouseover", function (d, i) {
-								console.log(dataForDateInfo[i].chartData);
-								svg.append("path")
-									.datum(dataForDateInfo[i].chartData)
-									.attr("fill", "none")
-									.attr("stroke", function () { return colorMap[dataForDateInfo[i].date]; })
-									.attr("stroke-width", 3)
-									.attr("d", d3.line()
-										.curve(d3.curveLinear)
-										.x(function (data) { return xScale(parseDate(data.date)); })
-										.y(function (data) { return yScale(data.new + data.on_the_books); })
-									)
-									.attr("id", "line-" + i)
+								drawSingleLine(dataForDateInfo[i].chartData, dataForDateInfo[i].date, true);
 							})
 							.on("mouseout", function (d, i) {
-								d3.select("#line-" + i).remove();
+								d3.select("#line-" + dataForDateInfo[i].date).remove();
 							});
 
 						legend.append("span")
