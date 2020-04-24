@@ -208,13 +208,9 @@ angular.module('sntRover')
 						var width = document.getElementById("dashboard-analytics-chart").clientWidth - margin.left - margin.right,
 							height = 500 - margin.top - margin.bottom;
 
-						var xScale = d3.scaleBand()
-							.range([0, width - 80])
-							.padding(0.5);
-
-						xScale.domain(xAxisDates.map(function (date) {
-							return parseDate(date);
-						}));
+						var xScale = d3.scaleTime()
+							.domain([parseDate(d3.min(xAxisDates)), parseDate(d3.max(xAxisDates))])
+							.range([20, width - 80])
 
 						var yScale = d3.scaleLinear()
 							.range([height, 0])
@@ -314,7 +310,7 @@ angular.module('sntRover')
 							svg.selectAll("dot")
 								.data(dataObject.chartData)
 								.enter().append("circle")
-								.attr("r", 2)
+								.attr("r", 3.5)
 								.attr("cx", function (d) { return xScale(parseDate(d.date)); })
 								.attr("cy", function (d) { return yScale(d.new + d.on_the_books); })
 								.attr("fill", function () {
@@ -366,6 +362,22 @@ angular.module('sntRover')
 							.attr("class", "legend-item")
 							.attr("transform", function (d, i) {
 								return "translate(-100," + i * 30 + ")";
+							}).on("mouseover", function (d, i) {
+								console.log(dataForDateInfo[i].chartData);
+								svg.append("path")
+									.datum(dataForDateInfo[i].chartData)
+									.attr("fill", "none")
+									.attr("stroke", function () { return colorMap[dataForDateInfo[i].date]; })
+									.attr("stroke-width", 3)
+									.attr("d", d3.line()
+										.curve(d3.curveLinear)
+										.x(function (data) { return xScale(parseDate(data.date)); })
+										.y(function (data) { return yScale(data.new + data.on_the_books); })
+									)
+									.attr("id", "line-" + i)
+							})
+							.on("mouseout", function (d, i) {
+								d3.select("#line-" + i).remove();
 							});
 
 						legend.append("span")
