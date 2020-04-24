@@ -195,6 +195,12 @@ angular.module('sntRover')
 							return value;
 						});
 
+						_.each(dataForDateInfo, function (dataObject) {
+							dataObject.chartData = _.sortBy(dataObject.chartData, function (chartData) {
+								return chartData.date;
+							});
+						});
+
 						// max and min values for domain
 						var maxValue = _.max(yAxisValues) + 1,
 							minValue = _.min(yAxisValues) | 0;
@@ -202,13 +208,9 @@ angular.module('sntRover')
 						var width = document.getElementById("dashboard-analytics-chart").clientWidth - margin.left - margin.right,
 							height = 500 - margin.top - margin.bottom;
 
-						var xScale = d3.scaleBand()
-							.range([0, width - ((stackKey.length > 1 || $scope.dashboardFilter.aggType) ? 350 : 0)])
-							.padding(0.5);
-
-						xScale.domain(xAxisDates.map(function (date) {
-							return parseDate(date);
-						}));
+						var xScale = d3.scaleTime()
+							.domain([parseDate(d3.min(xAxisDates)), parseDate(d3.max(xAxisDates))])
+							.range([20, width - 150])
 
 						var yScale = d3.scaleLinear()
 							.range([height, 0])
@@ -221,6 +223,7 @@ angular.module('sntRover')
 
 						// define X axis
 						var xAxis = d3.axisBottom(xScale)
+							.ticks(5)
 							.tickFormat(function (date) {
 								if (checkIfDayIsToday(date)) {
 									return "Today";
@@ -243,11 +246,25 @@ angular.module('sntRover')
 							.append("g")
 							.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+						var drawSingleLine = function (cordinateData, keyDate, shouldInsertId) {
+							svg.append("path")
+								.datum(cordinateData)
+								.attr("fill", "none")
+								.attr("stroke", function () { return colorMap[keyDate]; })
+								.attr("stroke-width", 3)
+								.attr("d", d3.line()
+									.curve(d3.curveLinear)
+									.x(function (d) { return xScale(parseDate(d.date)); })
+									.y(function (d) { return yScale(d.new + d.on_the_books); })
+								)
+								.attr("id", shouldInsertId ? "line-" + keyDate : "")
+						}
+
 						// draw grid lines
 						svg.append("g")
 							.attr("class", "grid")
 							.call(drawGridLines()
-								.tickSize(-width + 350)
+								.tickSize(-width)
 								.tickFormat("")
 								.tickSizeOuter(0));
 
@@ -279,7 +296,7 @@ angular.module('sntRover')
 							svg: svg,
 							xOffset: 0,
 							height: 4,
-							width: width - ((stackKey.length > 1 || $scope.dashboardFilter.aggType) ? 350 : 0),
+							width: width,
 							yOffset: height
 						});
 						// draw rect on top of Y axis
@@ -290,28 +307,23 @@ angular.module('sntRover')
 							width: 4,
 							yOffset: 0
 						});
+
 						// draw line graphs
 						_.each(dataForDateInfo, function (dataObject) {
-							svg.append("path")
-								.datum(dataObject.chartData)
-								.attr("fill", "none")
-								.attr("stroke", function (d) { return colorMap[dataObject.date]; })
-								.attr("stroke-width", 3)
-								.attr("d", d3.line()
-									.curve(d3.curveCardinal)
-									.x(function (d) { return xScale(parseDate(d.date)); })
-									.y(function (d) { return yScale(d.new + d.on_the_books); })
-								)
+							drawSingleLine(dataObject.chartData, dataObject.date);
 						});
+
 						// implement tooltip over small circles
 						_.each(dataForDateInfo, function (dataObject) {
 							svg.selectAll("dot")
 								.data(dataObject.chartData)
 								.enter().append("circle")
-								.attr("r", 2)
+								.attr("r", 3.5)
 								.attr("cx", function (d) { return xScale(parseDate(d.date)); })
 								.attr("cy", function (d) { return yScale(d.new + d.on_the_books); })
-								.attr("fill", "#000")
+								.attr("fill", function () {
+									return colorMap[dataObject.date];
+								})
 								.style("cursor", "pointer")
 								.on("mouseover", function () {
 									tooltip.style("display", null);
@@ -358,6 +370,11 @@ angular.module('sntRover')
 							.attr("class", "legend-item")
 							.attr("transform", function (d, i) {
 								return "translate(-100," + i * 30 + ")";
+							}).on("mouseover", function (d, i) {
+								drawSingleLine(dataForDateInfo[i].chartData, dataForDateInfo[i].date, true);
+							})
+							.on("mouseout", function (d, i) {
+								d3.select("#line-" + dataForDateInfo[i].date).remove();
 							});
 
 						legend.append("span")
