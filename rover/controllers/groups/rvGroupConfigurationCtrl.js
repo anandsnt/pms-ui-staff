@@ -1272,21 +1272,22 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
         };
 
         /**
-         * if comapny card id is null, we will not show
-         * @return {Boolean} [description]
+         * Show the company card navigation only when its attached to the group
+         * @return {Boolean} should show or not
          */
         $scope.shouldShowCompanyCardNavigationButton = function() {
-            return ( !$scope.isInAddMode() && (null !== $scope.groupConfigData.summary.company && undefined !== $scope.groupConfigData.summary.company && !!$scope.groupConfigData.summary.company.id) );
+            return ( !$scope.isInAddMode() && $scope.groupConfigData.summary.company && !!$scope.groupConfigData.summary.company.id);
         };
 
         /**
-         * if travel agent id is null, we will not show
-         * @return {Boolean} [description]
+         * Show the travel agent navigation icon, when its attached to the group
+         * @return {Boolean} should show or not
          */
         $scope.shouldShowTravelAgentNavigationButton = function() {
-            return ( !$scope.isInAddMode() && (null !== $scope.groupConfigData.summary.travel_agent && undefined !== $scope.groupConfigData.summary.travel_agent && !!$scope.groupConfigData.summary.travel_agent.id) );
+            return (!$scope.isInAddMode() && $scope.groupConfigData.summary.travel_agent && !!$scope.groupConfigData.summary.travel_agent.id);
         };
 
+        // Navigate to TA card screen
         $scope.goToTACard = function() {
             $state.go('rover.companycarddetails', {
                 id: summaryData.groupSummary.travel_agent.id,
@@ -1294,6 +1295,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             });
         };
 
+        // Navigate to CC screen
         $scope.goToCompanyCard = function() {
             $state.go('rover.companycarddetails', {
                 id: summaryData.groupSummary.company.id,

@@ -370,31 +370,33 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 		});
 
 		/**
-         * if comapny card id is null, we will not show
-         * @return {Boolean} [description]
+         * Show company card navigation icon only if cc is attached to group
+         * @return {Boolean} should show or not
          */
 		$scope.shouldShowCompanyCardNavigationButton = function() {
-            return ( !$scope.isInAddMode() && (null !== $scope.accountConfigData.summary.company && undefined !== $scope.accountConfigData.summary.company && !!$scope.accountConfigData.summary.company.id) );
+            return (!$scope.isInAddMode() && $scope.accountConfigData.summary.company && !!$scope.accountConfigData.summary.company.id);
 		};
 		
 		/**
-         * if TA card id is null, we will not show
-         * @return {Boolean} [description]
+         * Show show the ta navigation icon only if ta is attached to group
+         * @return {Boolean} should show or not
          */
 		$scope.shouldShowTravelAgentNavigationButton = function() {
-            return ( !$scope.isInAddMode() && (null !== $scope.accountConfigData.summary.travel_agent && undefined !== $scope.accountConfigData.summary.travel_agent && !!$scope.accountConfigData.summary.travel_agent.id) );
+            return (!$scope.isInAddMode() && $scope.accountConfigData.summary.travel_agent && !!$scope.accountConfigData.summary.travel_agent.id);
         };
 
+		// Navigate to ta card screen
         $scope.goToTACard = function() {
             $state.go('rover.companycarddetails', {
-                id:  $scope.accountConfigData.summary.travel_agent.id,
+                id: $scope.accountConfigData.summary.travel_agent.id,
                 type: 'TRAVELAGENT'
             });
         };
 
+		// Navigate to cc screen
         $scope.goToCompanyCard = function() {
             $state.go('rover.companycarddetails', {
-                id:  $scope.accountConfigData.summary.company.id,
+                id: $scope.accountConfigData.summary.company.id,
                 type: 'COMPANY'
             });
         };
