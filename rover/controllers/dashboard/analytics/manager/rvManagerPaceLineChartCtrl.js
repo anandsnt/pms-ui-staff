@@ -261,7 +261,7 @@ angular.module('sntRover')
 							svg.selectAll("dot")
 								.data(cordinateData)
 								.enter().append("circle")
-								.attr("r", 3.5)
+								.attr("r", 5)
 								.attr("cx", function (d) { return xScale(parseDate(d.date)); })
 								.attr("cy", function (d) { return yScale(d.new + d.on_the_books); })
 								.attr("fill", function () {
@@ -276,10 +276,14 @@ angular.module('sntRover')
 								})
 								.on("mousemove", function (d) {
 									var xPosition = d3.mouse(this)[0] - 15,
-										yPosition = d3.mouse(this)[1] - 25;
+										yPosition = d3.mouse(this)[1] - 25,
+										dateText = moment(d.date, 'YYYY-MM-DD').format('MMM Do');
 
 									tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
-									tooltip.select("text").text(d.new + d.on_the_books + " , " + keyDate);
+									tooltip.select(".item-qty")
+											.text(dateText + " - " + parseInt(d.new + d.on_the_books));
+									tooltip.select(".date-label")
+											.text(keyDate);
 								});
 						}
 
@@ -343,12 +347,23 @@ angular.module('sntRover')
 
 						tooltip.append("rect")
 							.attr("width", 100)
-							.attr("height", 20)
+							.attr("height", 30)
 							.attr("fill", "white")
 							.style("opacity", 0.5);
 
 						tooltip.append("text")
-							.attr("x", 15)
+							.attr('class', 'date-label')
+							.attr("x", 14)
+							.attr("dx", "2.8em")
+							.attr("dy", "0em")
+							.style("text-anchor", "middle")
+							.style("fill", "black")
+							.attr("font-size", "12px")
+							.attr("font-weight", "bold");
+
+						tooltip.append("text")
+							.attr('class', 'item-qty')
+							.attr("x", 12)
 							.attr("dx", "2.8em")
 							.attr("dy", "1.2em")
 							.style("text-anchor", "middle")
