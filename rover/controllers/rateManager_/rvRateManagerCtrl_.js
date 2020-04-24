@@ -92,6 +92,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     var showRateRestrictionPopup = (data) => {
         data.isHierarchyHouseRestrictionEnabled = $scope.hierarchyRestrictions.houseEnabled;
         considerHierarchyRestrictions(data);
+        if ($scope.hierarchyRestrictions.rateEnabled) {
+            params.hierarchialRateRestrictionRequired = true;
+        }
         ngDialog.open({
             template: '/assets/partials/rateManager_/popup/rvRateManagerRateRestrictionPopup.html',
             scope: $scope,
@@ -579,6 +582,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
         if (isHierarchyRestrictionNeeded()) {
             params.restrictionType = getRestrictionType();
+        }
+        if ($scope.hierarchyRestrictions.rateEnabled) {
+            params.hierarchialRateRestrictionRequired = true;
         }
 
         var options = {
@@ -1433,7 +1439,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 }
             });
 
-
             var params = {
                 from_date: formatDateForAPI(filterValues.fromDate),
                 to_date: formatDateForAPI(filterValues.toDate),
@@ -1444,7 +1449,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fetchCommonRestrictions
             };
 
-            considerHierarchyRestrictions(params);
+            if ($scope.hierarchyRestrictions.rateEnabled) {
+                params.hierarchialRateRestrictionRequired = true;
+            }
 
             if (filterValues.selectedRateTypes.length) {
                 params['rate_type_ids[]'] = _.pluck(filterValues.selectedRateTypes, 'id');
@@ -1660,7 +1667,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fetchRates: !cachedRateList.length
             };
 
-            considerHierarchyRestrictions(params);
+            if ($scope.hierarchyRestrictions.rateEnabled) {
+                params.hierarchialRateRestrictionRequired = true;
+            }
 
             var options = {
                 params,
