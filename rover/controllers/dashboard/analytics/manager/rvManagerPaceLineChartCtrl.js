@@ -97,7 +97,6 @@ angular.module('sntRover')
 								left: 70
 							},
 							parseDate = d3.timeParse("%Y-%m-%d"),
-							formatDecimal = d3.format(".1f"),
 							xAxisDates = [],
 							yAxisValues = [],
 							chartDatum = [],
@@ -246,7 +245,8 @@ angular.module('sntRover')
 							.append("g")
 							.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-						var drawSingleLine = function (cordinateData, keyDate, shouldInsertId) {
+						// draw line with tooltip over circles
+						var drawSingleLine = function (cordinateData, keyDate) {
 							svg.append("path")
 								.datum(cordinateData)
 								.attr("fill", "none")
@@ -257,7 +257,30 @@ angular.module('sntRover')
 									.x(function (d) { return xScale(parseDate(d.date)); })
 									.y(function (d) { return yScale(d.new + d.on_the_books); })
 								)
-								.attr("id", shouldInsertId ? "line-" + keyDate : "")
+
+							svg.selectAll("dot")
+								.data(cordinateData)
+								.enter().append("circle")
+								.attr("r", 3.5)
+								.attr("cx", function (d) { return xScale(parseDate(d.date)); })
+								.attr("cy", function (d) { return yScale(d.new + d.on_the_books); })
+								.attr("fill", function () {
+									return colorMap[keyDate];
+								})
+								.style("cursor", "pointer")
+								.on("mouseover", function () {
+									tooltip.style("display", null);
+								})
+								.on("mouseout", function () {
+									tooltip.style("display", "none");
+								})
+								.on("mousemove", function (d) {
+									var xPosition = d3.mouse(this)[0] - 15,
+										yPosition = d3.mouse(this)[1] - 25;
+
+									tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
+									tooltip.select("text").text(d.new + d.on_the_books + " , " + keyDate);
+								});
 						}
 
 						// draw grid lines
@@ -313,34 +336,6 @@ angular.module('sntRover')
 							drawSingleLine(dataObject.chartData, dataObject.date);
 						});
 
-						// implement tooltip over small circles
-						_.each(dataForDateInfo, function (dataObject) {
-							svg.selectAll("dot")
-								.data(dataObject.chartData)
-								.enter().append("circle")
-								.attr("r", 3.5)
-								.attr("cx", function (d) { return xScale(parseDate(d.date)); })
-								.attr("cy", function (d) { return yScale(d.new + d.on_the_books); })
-								.attr("fill", function () {
-									return colorMap[dataObject.date];
-								})
-								.style("cursor", "pointer")
-								.on("mouseover", function () {
-									tooltip.style("display", null);
-								})
-								.on("mouseout", function () {
-									tooltip.style("display", "none");
-								})
-								.on("mousemove", function (d) {
-									var xPosition = d3.mouse(this)[0] - 15,
-										yPosition = d3.mouse(this)[1] - 25,
-										xRange = yScale.invert(d3.mouse(this)[1]);
-
-									tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
-									tooltip.select("text").text(formatDecimal(xRange) + " , " + dataObject.date);
-								});
-						});
-
 						// tooltip
 						var tooltip = svg.append("g")
 							.attr("class", "tooltip")
@@ -370,12 +365,9 @@ angular.module('sntRover')
 							.attr("class", "legend-item")
 							.attr("transform", function (d, i) {
 								return "translate(-100," + i * 30 + ")";
-							}).on("mouseover", function (d, i) {
-								drawSingleLine(dataForDateInfo[i].chartData, dataForDateInfo[i].date, true);
+							}).on("click", function (d, i) {
+								drawSingleLine(dataForDateInfo[i].chartData, dataForDateInfo[i].date);
 							})
-							.on("mouseout", function (d, i) {
-								d3.select("#line-" + dataForDateInfo[i].date).remove();
-							});
 
 						legend.append("span")
 							.attr("class", "bar")
