@@ -668,6 +668,21 @@ sntRover.controller('RVbillCardController',
 
 		$scope.callAPI(RVBillCardSrv.fetchBillData, dataToSend);
 	};
+
+	$scope.setBillAddressType = function() {
+		$timeout(function() {
+			var dataToSend = {
+				params: {
+					"parmasToApi": {
+						"bill_address_type": $scope.reservationBillData.bill_address_type
+					},
+					"bill_id": $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id
+				}
+			};
+
+			$scope.callAPI(RVBillCardSrv.setBillAddressType, dataToSend);
+		}, 1000)
+	};
 	/*
 	 * Set clicked bill active and show corresponding days/packages/addons calender
 	 * @param {int} index of bill
