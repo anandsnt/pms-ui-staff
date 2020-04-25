@@ -92,9 +92,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     var showRateRestrictionPopup = (data) => {
         data.isHierarchyHouseRestrictionEnabled = $scope.hierarchyRestrictions.houseEnabled;
         considerHierarchyRestrictions(data);
-        if ($scope.hierarchyRestrictions.rateEnabled) {
-            params.hierarchialRateRestrictionRequired = true;
-        }
         ngDialog.open({
             template: '/assets/partials/rateManager_/popup/rvRateManagerRateRestrictionPopup.html',
             scope: $scope,
@@ -583,9 +580,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         if (isHierarchyRestrictionNeeded()) {
             params.restrictionType = getRestrictionType();
         }
-        if ($scope.hierarchyRestrictions.rateEnabled) {
-            params.hierarchialRateRestrictionRequired = true;
-        }
+        considerHierarchyRestrictions(params);
 
         var options = {
             params: params,
@@ -638,7 +633,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         else if ($scope.hierarchyRestrictions.roomTypeEnabled && $scope.chosenTab === 'ROOM_TYPES') {
             params.hierarchialRoomTypeRestrictionRequired = true;
         }
-        else if ($scope.hierarchyRestrictions.rateEnabled && $scope.chosenTab === 'RATES') {
+        else if ($scope.hierarchyRestrictions.rateEnabled && ($scope.chosenTab === 'RATES' || $scope.chosenTab === 'RATE_TYPES')) {
             params.hierarchialRateRestrictionRequired = true;
         }
     };
@@ -1449,9 +1444,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fetchCommonRestrictions
             };
 
-            if ($scope.hierarchyRestrictions.rateEnabled) {
-                params.hierarchialRateRestrictionRequired = true;
-            }
+            considerHierarchyRestrictions(params);
 
             if (filterValues.selectedRateTypes.length) {
                 params['rate_type_ids[]'] = _.pluck(filterValues.selectedRateTypes, 'id');
@@ -1667,9 +1660,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fetchRates: !cachedRateList.length
             };
 
-            if ($scope.hierarchyRestrictions.rateEnabled) {
-                params.hierarchialRateRestrictionRequired = true;
-            }
+            considerHierarchyRestrictions(params);
 
             var options = {
                 params,

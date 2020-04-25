@@ -418,7 +418,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                 response = {};
 
             // single rate info.
-            var paramsForSingleRate = _.omit(params, 'fetchRoomTypes', 'fetchRates');
+            var paramsForSingleRate = _.omit(params, 'fetchRoomTypes', 'fetchRates', 'hierarchialRateRestrictionRequired');
 
             promises.push(
                 this.fetchSingleRateInfo(paramsForSingleRate)
@@ -436,13 +436,20 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             promises.push(
                 this.fetchAllRestrictionsWithStatus(commonRestrictionsParams)
                     .then(data => {
-                        // TODO
-                        response.restrictionsWithStatus = params.hierarchialRateRestrictionRequired ?
-                        rvRateManagerRestrictionsSrv.processRateRestrictionResponse(data.results) :
-                        data.results;
+                        
+                        if (params.hierarchialRateRestrictionRequired) {
+                            var processedData = rvRateManagerRestrictionsSrv.processRateRestrictionResponse(data.results);
+                                
+                            response.restrictionsWithStatus = [{
+                                date: data.results[0].date,
+                                restrictions: processedData[0].rates[0].restrictions
+                            }];
+                        }
+                        else {
+                            response.restrictionsWithStatus = data.results;
+                        }
                     })
             );
-
 
             if (params.fetchRoomTypes) {
                 promises.push(
