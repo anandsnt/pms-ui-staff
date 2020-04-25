@@ -36,6 +36,13 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             return this.getJSON(url, params);
         };
 
+        service.fetchRateWithAmount = function(params) {
+            var url = '';
+
+            params = _.omit(params, 'restrictionType', 'hierarchialRateRestrictionRequired');
+            return this.getJSON(url, params);
+        };
+
         service.fetchAllRoomTypesInfo = function(params) {
             var url = rvRateManagerRestrictionsSrv.roomTypeRestrictionUrl(params);
 
@@ -598,10 +605,26 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                 totalCount = 0,
                 response = {};
 
-            promises.push(service.fetchMultipleRateInfo(_.omit(params, 'fetchRates', 'fetchCommonRestrictions', 'considerRateIDsInCommonRestriction')).then((data) => {
-                response.dailyRateAndRestrictions = params.hierarchialRateRestrictionRequired ?
-                                                    rvRateManagerRestrictionsSrv.processRateRestrictionResponse(data.results) :
-                                                    data.results;
+            // CICO-77791
+            let paramsForRateAPI = _.omit(params, 'fetchRates', 'fetchCommonRestrictions', 'considerRateIDsInCommonRestriction');
+
+            if (params.hierarchialRateRestrictionRequired) {
+                promises.push(service.fetchRateWithAmount(paramsForRateAPI).then((data) => {
+                    response.rateAmountList = data.results;
+                }));
+            }
+
+            promises.push(service.fetchMultipleRateInfo(paramsForRateAPI).then((data) => {
+                if (params.hierarchialRateRestrictionRequired) {
+                    console.log(data.results);
+                    data.results = rvRateManagerRestrictionsSrv.concatRateWithAmount(response.rateAmountList, data.results);
+                    console.log(data.results);
+                    response.dailyRateAndRestrictions =  rvRateManagerRestrictionsSrv.processRateRestrictionResponse(data.results);
+                }
+                else {
+                    response.dailyRateAndRestrictions = data.results;
+                }
+
                 response.totalCount = data.total_count || data.results[0].rates.length;
             }));
 

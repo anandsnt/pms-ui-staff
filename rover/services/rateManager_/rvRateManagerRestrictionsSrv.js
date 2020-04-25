@@ -22,6 +22,25 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
             return response;
         };
 
+        service.concatRateWithAmount = function(rateAmountList, rateRestrictionsList) {
+            for ( let i = 0; i < rateAmountList.length; i++ ) {
+                let rates1 = rateAmountList[i].rates;
+                let rates2 = rateRestrictionsList[i].rates;
+                let merged = [];
+
+                for(let j = 0; j < rates1.length; i ++) {
+                    merged.push({
+                       ...rates1[i], 
+                       ...rates2[i]
+                    });
+                }
+
+                rateRestrictionsList[i].rates = merged;
+            }
+
+            return rateRestrictionsList;
+        };
+
         // CICO-76337 - for rateType only
         service.processRateTypeRestrictionResponse = function(response) {
             _.each(response, function(item) {
