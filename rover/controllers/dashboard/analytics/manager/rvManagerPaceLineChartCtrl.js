@@ -1,6 +1,6 @@
 angular.module('sntRover')
-	.controller('rvManagerPaceLineChartCtrl', ['$scope', 'rvAnalyticsHelperSrv', 'rvManagersAnalyticsSrv', '$rootScope',
-		function ($scope, rvAnalyticsHelperSrv, rvManagersAnalyticsSrv, $rootScope) {
+	.controller('rvManagerPaceLineChartCtrl', ['$scope', 'rvAnalyticsHelperSrv', 'rvManagersAnalyticsSrv', '$rootScope', '$log',
+		function ($scope, rvAnalyticsHelperSrv, rvManagersAnalyticsSrv, $rootScope, $log) {
 
 			var dataForDateInfo = [],
 				numberOfDateInfoFetched = 0,
@@ -73,13 +73,11 @@ angular.module('sntRover')
 			};
 
 			var drawPaceLineChart = function () {
-				// draw line chart using the array dataForDateInfo
-				console.log("[dataForDateInfo].........");
-				console.log(dataForDateInfo);
-				// TODO:  delete the test code in below line
-				dataForDateInfo = rvAnalyticsHelperSrv.samplePaceCompareDates;
-				console.log(dataForDateInfo);
+				// draw line chart using the array dataForDateInfo				
+				// dataForDateInfo = rvAnalyticsHelperSrv.samplePaceCompareDates;
+				$log.info("[dataForDateInfo]........." + dataForDateInfo);
 				$scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
+
 				// iterate through array dataForDateInfo to draw line charts
 				// Also draw avg line chart which comprises of all the selected data (only if dataForDateInfo.length > 0)
 				// Show selected dates as legends on rights ride (only if dataForDateInfo.length > 0)
@@ -88,7 +86,6 @@ angular.module('sntRover')
 					draw: function (configData) {
 						var domElement = configData.element,
 							stackKey = configData.key,
-							data = configData.data,
 							colors = configData.colors,
 							margin = {
 								top: 20,
@@ -96,7 +93,6 @@ angular.module('sntRover')
 								bottom: 100,
 								left: 70
 							},
-							parseDate = d3.timeParse("%Y-%m-%d"),
 							xAxisDates = [],
 							yAxisValues = [],
 							chartDatum = [],
@@ -207,9 +203,13 @@ angular.module('sntRover')
 						var width = document.getElementById("dashboard-analytics-chart").clientWidth - margin.left - margin.right,
 							height = 500 - margin.top - margin.bottom;
 
-						var xScale = d3.scaleTime()
-							.domain([parseDate(d3.min(xAxisDates)), parseDate(d3.max(xAxisDates))])
-							.range([20, width - 150])
+						var xScaleDomain = xAxisDates.map(function (d) {
+							return d;
+						});
+						var xScale = d3.scaleBand()
+							.domain(xScaleDomain)
+							.range([0, width - 100])
+							.padding(0.5);
 
 						var yScale = d3.scaleLinear()
 							.range([height, 0])
@@ -223,14 +223,32 @@ angular.module('sntRover')
 						// define X axis
 						var xAxis = d3.axisBottom(xScale)
 							.ticks(5)
-							.tickFormat(function (date) {
+							.tickSizeOuter(0)
+							.tickFormat(function (date, i) {
+								var multiple;
+								var dateFormat = 'DD MMM';
+
+								// if there are more days, show only some dates to make it less crowded
+								if (xAxisDates.length > 200) {
+									multiple = 30;
+									dateFormat = 'DD MMM  YY';
+								} else if (xAxisDates.length > 100) {
+									multiple = 10;
+									dateFormat = 'DD MMM  YY';
+								} else if (xAxisDates.length > 60) {
+									multiple = 5;
+								}
+
 								if (checkIfDayIsToday(date)) {
 									return "Today";
+								} else if (multiple && i % multiple !== 0) {
+									return "";
 								}
-								return moment(date).format('DD MMM');
+
+								return moment(date).format(dateFormat);
 							})
-							.tickSizeOuter(0)
-							.tickPadding(15);
+							.tickPadding(20)
+							.tickSizeInner(0);
 
 						// define Y axis
 						var yAxis = d3.axisLeft(yScale)
@@ -254,15 +272,15 @@ angular.module('sntRover')
 								.attr("stroke-width", 3)
 								.attr("d", d3.line()
 									.curve(d3.curveLinear)
-									.x(function (d) { return xScale(parseDate(d.date)); })
+									.x(function (d) { return xScale(d.date); })
 									.y(function (d) { return yScale(d.new + d.on_the_books); })
 								)
 
 							svg.selectAll("dot")
 								.data(cordinateData)
 								.enter().append("circle")
-								.attr("r", 5)
-								.attr("cx", function (d) { return xScale(parseDate(d.date)); })
+								.attr("r", 3.5)
+								.attr("cx", function (d) { return xScale(d.date); })
 								.attr("cy", function (d) { return yScale(d.new + d.on_the_books); })
 								.attr("fill", function () {
 									return colorMap[keyDate];
@@ -276,14 +294,14 @@ angular.module('sntRover')
 								})
 								.on("mousemove", function (d) {
 									var xPosition = d3.mouse(this)[0] - 15,
-										yPosition = d3.mouse(this)[1] - 25,
+										yPosition = d3.mouse(this)[1] - 45,
 										dateText = moment(d.date, 'YYYY-MM-DD').format('MMM Do');
 
 									tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
 									tooltip.select(".item-qty")
-											.text(dateText + " - " + parseInt(d.new + d.on_the_books));
+										.text(dateText + " - " + parseInt(d.new + d.on_the_books));
 									tooltip.select(".date-label")
-											.text(keyDate);
+										.text(keyDate);
 								});
 						}
 
@@ -297,7 +315,6 @@ angular.module('sntRover')
 
 						// X axis
 						svg.append("g")
-							.attr("class", "axis axis--x")
 							.attr("transform", "translate(0," + height + ")")
 							.call(xAxis)
 							.selectAll("text")
@@ -346,16 +363,16 @@ angular.module('sntRover')
 							.style("display", "none");
 
 						tooltip.append("rect")
-							.attr("width", 100)
-							.attr("height", 30)
+							.attr("width", 80)
+							.attr("height", 40)
 							.attr("fill", "white")
 							.style("opacity", 0.5);
 
 						tooltip.append("text")
 							.attr('class', 'date-label')
 							.attr("x", 14)
-							.attr("dx", "2.8em")
-							.attr("dy", "0em")
+							.attr("dx", "2.4em")
+							.attr("dy", "1.4em")
 							.style("text-anchor", "middle")
 							.style("fill", "black")
 							.attr("font-size", "12px")
@@ -364,8 +381,8 @@ angular.module('sntRover')
 						tooltip.append("text")
 							.attr('class', 'item-qty')
 							.attr("x", 12)
-							.attr("dx", "2.8em")
-							.attr("dy", "1.2em")
+							.attr("dx", "2.4em")
+							.attr("dy", "2.6em")
 							.style("text-anchor", "middle")
 							.attr("font-size", "12px")
 							.attr("font-weight", "bold")
@@ -435,7 +452,6 @@ angular.module('sntRover')
 				}
 
 				initPaceLineChart.draw({
-					data: dataForDateInfo,
 					key: chartDataKeys,
 					colors: colors,
 					element: 'd3-plot'
