@@ -953,6 +953,18 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         });
     };
 
+    const clickedOnHierarchyRoomTypeCell = ({roomTypeIDs, date}) => {
+        console.log('roomType hierarchy');
+    };
+
+    const clickedOnHierarchyRateTypeCell = ({rateTupeIDs, date}) => {
+        console.log('rateType hierarchy');
+    };
+
+    const clickedOnHierarchyRateCell = ({rateIDs, date}) => {
+        console.log('rate hierarchy')
+    }
+
     /**
      * utility method to pass callbacks from
      * @return {Object} with callbacks
@@ -974,7 +986,10 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 goToPrevPage,
                 goToNextPage,
                 changedHeirarchyRestriction,
-                handlePanelToggle
+                handlePanelToggle,
+                clickedOnHierarchyRoomTypeCell,
+                clickedOnHierarchyRateTypeCell,
+                clickedOnHierarchyRateCell
             };
         };
 

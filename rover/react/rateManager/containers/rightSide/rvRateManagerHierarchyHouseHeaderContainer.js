@@ -40,7 +40,7 @@ const mapDispatchForRateManagerHierarchyHouseHeaderContainerProps = (stateProps,
 
     switch(stateProps.mode) {
         case RM_RX_CONST.RATE_VIEW_MODE:
-            onTdClick = (e, rowIndex, colIndex) => {
+            onTdClick = (e, colIndex) => {
                 var date = stateProps.dates[colIndex],
                     rateIDs = [];
 
@@ -51,7 +51,7 @@ const mapDispatchForRateManagerHierarchyHouseHeaderContainerProps = (stateProps,
             };
             break;
         case RM_RX_CONST.ROOM_TYPE_VIEW_MODE:
-            onTdClick = (e, rowIndex, colIndex) => {
+            onTdClick = (e, colIndex) => {
                 var date = stateProps.dates[colIndex],
                     roomTypeIDs = [];
 
@@ -62,7 +62,7 @@ const mapDispatchForRateManagerHierarchyHouseHeaderContainerProps = (stateProps,
             };
             break;
         case RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE:
-            onTdClick = (e, rowIndex, colIndex) => {
+            onTdClick = (e, colIndex) => {
                 var date = stateProps.dates[colIndex],
                     roomTypeIDs = [];
 
@@ -74,7 +74,7 @@ const mapDispatchForRateManagerHierarchyHouseHeaderContainerProps = (stateProps,
             break;
 
         case RM_RX_CONST.RATE_TYPE_VIEW_MODE:
-            onTdClick = (e, rowIndex, colIndex) => {
+            onTdClick = (e, colIndex) => {
                 var date = stateProps.dates[colIndex],
                     rateTypeIDs = [];
 
