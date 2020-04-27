@@ -1954,6 +1954,25 @@ sntRover.controller('reservationDetailsController',
 		$scope.$broadcast('PROCEED_CHECKIN');
 	};
 
+	/*
+     * Clicked skip ID scan and thus record actions in activity logs and proceed checkin
+     */
+    $scope.continueToCheckinAfterSkipIdScan = function() {
+        var dataToApi = {
+            id: $scope.reservationData.reservation_card.reservation_id,
+            action_type: 'ID_DETAILS',
+            details: [
+                {
+                    key: 'Skipped ID Scan',
+                    new_value: true
+                }
+            ]
+        }
+        $scope.invokeApi(RVReservationCardSrv.createActivityLog, dataToApi, function(data) {
+            $scope.$broadcast('PROCEED_CHECKIN');
+        });
+    };
+
 	$scope.showScannedGuestID = function(isPrimaryGuest, guestData) {
 
 		$scope.$emit('hideLoader');
@@ -2095,7 +2114,7 @@ sntRover.controller('reservationDetailsController',
 		$scope.invokeApi(RVReservationPackageSrv.updateAddonPosting, dataToApi, addonPostingSaveSuccess);
 	};
 
-	$scope.removeSelectedAddons = function(index, addonId) {
+	var removeSelectedAddons = function(index, addonId) {
 
 		var reservationId = $scope.reservationData.reservation_card.reservation_id;
 
@@ -2140,7 +2159,7 @@ sntRover.controller('reservationDetailsController',
 
 	var removeSelectedAddonsListner = $rootScope.$on('REMOVE_ADDON', function(event, data) {
 		if(data.addonPostingMode === 'staycard') {
-			$scope.removeSelectedAddons(data.index, data.addon.id);
+			removeSelectedAddons(data.index, data.addon.id);
 		}
 	});
 
