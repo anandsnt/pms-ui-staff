@@ -216,7 +216,7 @@ angular.module('sntRover')
 						var yScale = d3.scaleLinear()
 							.range([height, 0])
 							.domain([minValue, maxValue]
-						);
+							);
 
 						var drawGridLines = function () {
 							return d3.axisLeft(yScale)
@@ -402,8 +402,8 @@ angular.module('sntRover')
 							.attr("class", "legend-item")
 							.attr("transform", function (d, i) {
 								return "translate(-100," + i * 30 + ")";
-
-							}).on("click", function (d, i) {
+							})
+							.on("click", function (d, i) {
 								drawSingleLine(dataForDateInfo[i].chartData, dataForDateInfo[i].date);
 							});
 
