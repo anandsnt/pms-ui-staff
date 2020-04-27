@@ -38,7 +38,22 @@ const rvRateManagerRightSideContainerUtils = function() {
 	 * @param  {array} restrictionTypes
 	 * @return {array}
 	 */
-	self.convertDataForRestrictionListing = (listingData, restrictionTypes) => {
+	self.convertDataForRestrictionListing = (listingData, restrictionTypes, forPanel) => {
+		// this code block is for dummy purpose only. Can remove this once we get real data
+		if (forPanel) {
+			if (listingData.length > 0) {
+				listingData = [{
+					restrictionList: listingData
+				}];
+			} else if (listingData.length === 0) {
+				listingData = [{
+					restrictionList: [
+						[], [], [], [], [], [],
+						[], [], [], [], []
+					]
+				}];
+			}
+		}
 
 		// adding the css class and all stuff for restriction types
 		restrictionTypes = restrictionTypes.map((restrictionType) => ({

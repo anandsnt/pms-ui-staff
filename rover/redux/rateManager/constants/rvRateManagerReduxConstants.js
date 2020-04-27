@@ -24,6 +24,7 @@ const RM_RX_CONST = {
 	CLOSE_ALL : 'RM_Close_All_Button_Clicked',
 
 	TOGGLE_EXPAND_COLLAPSE_ROW 	: 'RM_Toggle_Expand_collapse_row',
+	HIERARCHY_FROZEN_PANEL_TOGGLED: 'RM_Toggle_Hierarchy_Frozen_Panel',
 	
 	ACT_SHOW_ACTIVITY_INDICATOR : 'RM_Act_Show_Activity_Indicator',
 	ACTIVATE_LOADER 			: 'RM_Show_Loader',

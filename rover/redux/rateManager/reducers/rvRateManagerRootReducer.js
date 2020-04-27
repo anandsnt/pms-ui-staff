@@ -16,7 +16,9 @@ const rateManagerRootReducer = (state, action) => (
 		isHierarchyHouseRestrictionEnabled: state.isHierarchyHouseRestrictionEnabled,
 		isHierarchyRoomTypeRestrictionEnabled: state.isHierarchyRoomTypeRestrictionEnabled,
 		isHierarchyRateTypeRestrictionEnabled: state.isHierarchyRateTypeRestrictionEnabled,
-		isHierarchyRateRestrictionEnabled: state.isHierarchyRateRestrictionEnabled
+		isHierarchyRateRestrictionEnabled: state.isHierarchyRateRestrictionEnabled,
+		hierarchyRestrictionClass: state.hierarchyRestrictionClass,
+		frozenPanelClass: rateManagerPanelClassReducer(state, action)
 	}
 );
 
