@@ -60,7 +60,7 @@
             <div class="entry" ng-show="arrivalDateTimePeriods.length > 0">
                 <label for="time-period">Arrival Date</label>
                 <div class="select">
-                    <select ng-model="scheduleParams.arrival_date_range" ng-options="timePeriod.id as timePeriod.description for timePeriod in creationDateTimePeriods" iscroll-stop-propagation>
+                    <select ng-model="scheduleParams.arrival_date_range" ng-options="timePeriod.id as timePeriod.description for timePeriod in arrivalDateTimePeriods" iscroll-stop-propagation>
                         <option value="">Time period</option>
                     </select>
                 </div>
