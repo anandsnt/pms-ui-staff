@@ -115,6 +115,7 @@ angular.module('sntRover')
 						_.each(xAxisDates, function (date) {
 							_.each(dataForDateInfo, function (dataObject) {
 								var isDatePresent = false;
+
 								_.each(dataObject.chartData, function (chartData) {
 									if (date === chartData.date) {
 										isDatePresent = true;
@@ -206,6 +207,7 @@ angular.module('sntRover')
 						var xScaleDomain = xAxisDates.map(function (d) {
 							return d;
 						});
+
 						var xScale = d3.scaleBand()
 							.domain(xScaleDomain)
 							.range([0, width - 100])
@@ -213,12 +215,13 @@ angular.module('sntRover')
 
 						var yScale = d3.scaleLinear()
 							.range([height, 0])
-							.domain([minValue, maxValue]);
+							.domain([minValue, maxValue]
+						);
 
 						var drawGridLines = function () {
 							return d3.axisLeft(yScale)
-								.ticks(10)
-						}
+								.ticks(10);
+						};
 
 						// define X axis
 						var xAxis = d3.axisBottom(xScale)
@@ -274,11 +277,12 @@ angular.module('sntRover')
 									.curve(d3.curveLinear)
 									.x(function (d) { return xScale(d.date); })
 									.y(function (d) { return yScale(d.new + d.on_the_books); })
-								)
+								);
 
 							svg.selectAll("dot")
 								.data(cordinateData)
-								.enter().append("circle")
+								.enter()
+								.append("circle")
 								.attr("r", 3.5)
 								.attr("cx", function (d) { return xScale(d.date); })
 								.attr("cy", function (d) { return yScale(d.new + d.on_the_books); })
@@ -303,7 +307,7 @@ angular.module('sntRover')
 									tooltip.select(".date-label")
 										.text(keyDate);
 								});
-						}
+						};
 
 						// draw grid lines
 						svg.append("g")
@@ -393,13 +397,15 @@ angular.module('sntRover')
 
 						var legend = legendParentElement.selectAll(".legend")
 							.data(colors)
-							.enter().append("g")
+							.enter()
+							.append("g")
 							.attr("class", "legend-item")
 							.attr("transform", function (d, i) {
 								return "translate(-100," + i * 30 + ")";
+
 							}).on("click", function (d, i) {
 								drawSingleLine(dataForDateInfo[i].chartData, dataForDateInfo[i].date);
-							})
+							});
 
 						legend.append("span")
 							.attr("class", "bar")
@@ -413,7 +419,7 @@ angular.module('sntRover')
 							});
 
 					}
-				}
+				};
 
 				// The keys for the chart are dynamic and need to found out on fly and used for chart and in legends
 				var chartDataKeys = [];
