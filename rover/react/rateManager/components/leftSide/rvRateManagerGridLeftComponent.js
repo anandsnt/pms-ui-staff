@@ -1,8 +1,8 @@
-const RateManagerGridLeftSideComponent = ({hideTopHeader, hierarchyCount, hierarchyClass, panelToggleClass}) => ( 
+const RateManagerGridLeftSideComponent = ({hierarchyCount, hierarchyClass, panelToggleClass}) => ( 
 	<div className={'pinnedLeft ' + panelToggleClass + hierarchyClass}>
 		<RateManagerGridLeftSideHeadButtonContainer/>
 		{
-			(hierarchyCount !== 0) && !hideTopHeader &&
+			(hierarchyCount !== 0) &&
 			<RateManagerGridLeftHierarchyHeaderContainer/>
 		}
 		{	(hierarchyCount === 0) &&
