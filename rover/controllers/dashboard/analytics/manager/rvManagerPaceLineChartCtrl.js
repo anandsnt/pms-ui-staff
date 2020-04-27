@@ -88,9 +88,9 @@ angular.module('sntRover')
 							chartLines = configData.key,
 							colors = configData.colors,
 							margin = {
-								top: 20,
-								right: 20,
-								bottom: 100,
+								top: 30,
+								right: 30,
+								bottom: 80,
 								left: 70
 							},
 							xAxisDates = [],
@@ -410,7 +410,7 @@ angular.module('sntRover')
 						legend.append("span")
 							.attr("class", "bar")
 							.style("background-color", function (d, i) {
-								return colors[i];
+								return colorMap[dataForDateInfo[i].date];
 							});
 						legend.append("span")
 							.attr("class", "bar-label")
