@@ -1271,13 +1271,49 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             $scope.groupConfigData.summary.release_date = '';
         };
 
+        /**
+         * Show the company card navigation only when its attached to the group
+         * @return {Boolean} should show or not
+         */
+        $scope.shouldShowCompanyCardNavigationButton = function() {
+            return ( !$scope.isInAddMode() && $scope.groupConfigData.summary.company && !!$scope.groupConfigData.summary.company.id);
+        };
+
+        /**
+         * Show the travel agent navigation icon, when its attached to the group
+         * @return {Boolean} should show or not
+         */
+        $scope.shouldShowTravelAgentNavigationButton = function() {
+            return (!$scope.isInAddMode() && $scope.groupConfigData.summary.travel_agent && !!$scope.groupConfigData.summary.travel_agent.id);
+        };
+
+        // Navigate to TA card screen
+        $scope.goToTACard = function() {
+            $state.go('rover.companycarddetails', {
+                id: summaryData.groupSummary.travel_agent.id,
+                type: 'TRAVELAGENT'
+            });
+        };
+
+        // Navigate to CC screen
+        $scope.goToCompanyCard = function() {
+            $state.go('rover.companycarddetails', {
+                id: summaryData.groupSummary.company.id,
+                type: 'COMPANY'
+            });
+        };
+
         $scope.onCompanyCardChange = function() {
+            var summaryData = $scope.groupConfigData.summary;
+
             if ($scope.groupConfigData.summary.company && $scope.groupConfigData.summary.company.name === "") {
                 $scope.groupConfigData.summary.company = null;
             }
         };
 
         $scope.onTravelAgentCardChange = function() {
+            var summaryData = $scope.groupConfigData.summary;
+
             if ($scope.groupConfigData.summary.travel_agent && $scope.groupConfigData.summary.travel_agent.name === "") {
                 $scope.groupConfigData.summary.travel_agent = null;
             }

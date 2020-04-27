@@ -462,16 +462,20 @@ sntRover.controller('RVdashboardController',
                     if ($scope.dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION' ||
                         $scope.dashboardFilter.selectedAnalyticsMenu === 'PACE') {
                         var aggTypeFilterCount = $scope.dashboardFilter.aggType ? 1 : 0;
-
+                        var datesToCompareCount =  ($scope.dashboardFilter.selectedAnalyticsMenu === 'PACE' && 
+                                                    $scope.dashboardFilter.lineChartActive) ?
+                                                    $scope.dashboardFilter.datesToCompare.length : 0;
+                        
                         return $scope.dashboardFilter.selectedFilters.marketCodes.length +
                             $scope.dashboardFilter.selectedFilters.sourceCodes.length +
                             $scope.dashboardFilter.selectedFilters.segmentCodes.length +
                             $scope.dashboardFilter.selectedFilters.originCodes.length +
                             $scope.dashboardFilter.selectedFilters.roomTypes.length +
-                            aggTypeFilterCount;
+                            aggTypeFilterCount +
+                            datesToCompareCount;
 
                     } else if ($scope.dashboardFilter.selectedAnalyticsMenu === 'PERFOMANCE') {
-                        return $scope.dashboardFilter.showLastYearData ? 1 : 0;
+                        return $scope.dashboardFilter.showLastYearData ? 2 : 0;
                     } else if ($scope.dashboardFilter.selectedAnalyticsMenu === 'HK_OVERVIEW' ||
                         $scope.dashboardFilter.selectedAnalyticsMenu === 'HK_WORK_PRIRORITY' ||
                         $scope.dashboardFilter.selectedAnalyticsMenu === 'FO_ARRIVALS') {

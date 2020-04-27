@@ -4,7 +4,7 @@
         <!-- Header -->
         <header class="cards-header">
             <div id="group-card-header" class="card-header" ng-class="{'no-print' : addNoPrintClass}">
-                <form>
+                <form class="dual-actions">
                     <div class="holder">
                         <div class="entry">
                             <input id="group-name" placeholder="Group Name" ng-model="groupConfigData.summary.group_name" type="text" class="masked-input h1" data-size="{{groupConfigData.summary.group_name.length}}" auto-grow-field/>
@@ -19,9 +19,17 @@
                         <!-- Search only travel agents -->
                     </div>
                 </form>
-                <div class="card-actions" ng-hide="isInAddMode()">
+                <div class="card-actions dual-actions" ng-hide="isInAddMode()">
                     <!--  HIDE BUTTON FOR NOW TILL DUPLICATE FUNCTIONALITY IS COMPLETE-->
                     <button type="button" class="button blue hidden" ng-click="duplicateGroup()">Duplicate</button>
+                    <!-- Company card -->
+                    <button type="button" class="button company" ng-click="goToCompanyCard()" ng-show="shouldShowCompanyCardNavigationButton()">
+                        <span class="icons icon-company"></span>
+                    </button>
+                    <!-- TA card -->
+                    <button type="button" class="button travel-agent" ng-click="goToTACard()" ng-show="shouldShowTravelAgentNavigationButton()">
+                        <span class="icons icon-travel-agent"></span>
+                    </button>                
                 </div>
                 <div class="card-actions" ng-show="isInAddMode()">
                     <button type="button" class="button green" ng-click="createGroup()">Save Group</button>
