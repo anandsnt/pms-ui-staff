@@ -55,7 +55,7 @@ const mapStateToRateManagerGridRightSideHierarchyHeaderContainerProps = (state) 
     return propsToReturn;
 };
 
-const mapDispatchToRateManagerGridRightSideHierarchyHeaderContainerProps = (stateProps,dispatch) => {
+const mapDispatchToRateManagerGridRightSideHierarchyHeaderContainerProps = (stateProps, dispatch) => {
     return {
         ...stateProps,
         refreshScrollers: () => {
@@ -66,8 +66,8 @@ const mapDispatchToRateManagerGridRightSideHierarchyHeaderContainerProps = (stat
     };
 };
 
-const RateManagerGridRightSideHierarchyHeaderContainer =
-        connect(mapStateToRateManagerGridRightSideHierarchyHeaderContainerProps,
-        null,
-        mapDispatchToRateManagerGridRightSideHierarchyHeaderContainerProps)
-    (RateManagerGridRightSideHierarchyHeaderComponent);
+const RateManagerGridRightSideHierarchyHeaderContainer = connect(
+    mapStateToRateManagerGridRightSideHierarchyHeaderContainerProps,
+    null,
+    mapDispatchToRateManagerGridRightSideHierarchyHeaderContainerProps
+)(RateManagerGridRightSideHierarchyHeaderComponent);

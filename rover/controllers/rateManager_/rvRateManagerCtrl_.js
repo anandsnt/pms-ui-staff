@@ -786,15 +786,15 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             houseRestrictionSummary: dates.map((date) => {
                 return _.findWhere(commonRestrictions, {date: date}).restrictions;
             }),
-            roomTypeRestrictionSummary: panelRestrictions && dates.map((date) => {
+            roomTypeRestrictionSummary: (panelRestrictions && dates.map((date) => {
                 return _.findWhere(panelRestrictions.roomTypeRestrictions, {date: date}).restrictions;
-            }) || [],
-            rateTypeRestrictionSummary: panelRestrictions && dates.map((date) => {
+            })) || [],
+            rateTypeRestrictionSummary: (panelRestrictions && dates.map((date) => {
                 return _.findWhere(panelRestrictions.rateTypeRestrictions, {date: date}).restrictions;
-            }) || [],
-            rateRestrictionSummary: panelRestrictions && dates.map((date) => {
+            })) || [],
+            rateRestrictionSummary: (panelRestrictions && dates.map((date) => {
                 return _.findWhere(panelRestrictions.rateRestrictions, {date: date}).restrictions;
-            }) || []
+            })) || []
         }];
 
         return restrictionSummary;

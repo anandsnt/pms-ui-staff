@@ -1,5 +1,5 @@
-const { createClass } = React
-const { findDOMNode } = ReactDOM
+const { createClass } = React;
+const { findDOMNode } = ReactDOM;
 
 const RateManagerGridRightSideHierarchyHeaderComponent = createClass({
 	componentDidMount() {

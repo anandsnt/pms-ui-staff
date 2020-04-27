@@ -10,7 +10,7 @@ const mapStateForRateManagerHierarchyHouseHeaderContainerProps = (state) => {
         dates: state.dates
     };
 
-    switch(state.mode) {
+    switch (state.mode) {
         case RM_RX_CONST.RATE_VIEW_MODE:
             propsToReturn.clickedOnRateCellOnRateView = state.callBacksFromAngular.clickedOnRateViewCell;
             break;
@@ -34,11 +34,11 @@ const mapStateForRateManagerHierarchyHouseHeaderContainerProps = (state) => {
     return propsToReturn;
 };
 
-const mapDispatchForRateManagerHierarchyHouseHeaderContainerProps = (stateProps,dispatch) => {
+const mapDispatchForRateManagerHierarchyHouseHeaderContainerProps = (stateProps, dispatch) => {
 
     var onTdClick = () => {};
 
-    switch(stateProps.mode) {
+    switch (stateProps.mode) {
         case RM_RX_CONST.RATE_VIEW_MODE:
             onTdClick = (e, colIndex) => {
                 var date = stateProps.dates[colIndex],
@@ -87,7 +87,7 @@ const mapDispatchForRateManagerHierarchyHouseHeaderContainerProps = (stateProps,
 
         default:
             break;
-    };
+    }
 
     return {
         onTdClick,

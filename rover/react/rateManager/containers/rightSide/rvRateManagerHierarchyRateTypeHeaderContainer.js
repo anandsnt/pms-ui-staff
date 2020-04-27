@@ -14,7 +14,7 @@ const mapStateForRateManagerHierarchyRateTypeHeaderContainerProps = (state) => {
     return propsToReturn;
 };
 
-const mapDispatchForRateManagerHierarchyRateTypeHeaderContainerProps = (stateProps,dispatch) => {
+const mapDispatchForRateManagerHierarchyRateTypeHeaderContainerProps = (stateProps, dispatch) => {
 
     var onTdClick = (e, colIndex) => {
         var date = stateProps.dates[colIndex],
