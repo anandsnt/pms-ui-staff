@@ -85,7 +85,7 @@ angular.module('sntRover')
 				var initPaceLineChart = {
 					draw: function (configData) {
 						var domElement = configData.element,
-							stackKey = configData.key,
+							chartLines = configData.key,
 							colors = configData.colors,
 							margin = {
 								top: 20,
@@ -138,14 +138,14 @@ angular.module('sntRover')
 						yAxisValues = _.uniq(yAxisValues);
 
 						// calculate the mean chart data
-						if (stackKey.length > 1) {
+						if (chartLines.length > 1) {
 							var meanChartData = {
 								date: "Mean",
 								chartData: []
 							};
 
-							if (stackKey.length > 1) {
-								stackKey.push("Mean");
+							if (chartLines.length > 1) {
+								chartLines.push("Mean");
 							}
 							_.each(xAxisDates, function (xDate) {
 								var meanChartValue = {
@@ -162,9 +162,9 @@ angular.module('sntRover')
 										meanChartValue.on_the_books += chartData.on_the_books;
 									}
 								});
-								meanChartValue.new /= (stackKey.length - 1);
-								meanChartValue.cancellation /= (stackKey.length - 1);
-								meanChartValue.on_the_books /= (stackKey.length - 1);
+								meanChartValue.new /= (chartLines.length - 1);
+								meanChartValue.cancellation /= (chartLines.length - 1);
+								meanChartValue.on_the_books /= (chartLines.length - 1);
 								meanChartData.chartData.push(meanChartValue);
 							});
 							dataForDateInfo.push(meanChartData);
@@ -177,7 +177,7 @@ angular.module('sntRover')
 							// no longer need color for mean
 							colors.pop();
 						}
-						_.each(stackKey, function (date, index) {
+						_.each(chartLines, function (date, index) {
 							colorMap[date] = colors[index];
 						});
 
@@ -415,7 +415,7 @@ angular.module('sntRover')
 						legend.append("span")
 							.attr("class", "bar-label")
 							.text(function (d, i) {
-								return rvAnalyticsHelperSrv.textTruncate(stackKey[i], 35, '...');
+								return rvAnalyticsHelperSrv.textTruncate(chartLines[i], 35, '...');
 							});
 
 					}
