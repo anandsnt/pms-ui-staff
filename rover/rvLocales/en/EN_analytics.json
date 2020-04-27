@@ -13,4 +13,15 @@
 "FO_WORKLOAD_DESC": "Displays arrivals/departures workload at both house lever summary as well as by individual staff members. Can be filtered by room type.",
 "MANAGER_PERFOMANCE_DESC": "Provides comprehensive overview of ADR , RevPAR  and occupancy displayed for multiple timeframes",
 "MANAGER_DISTRIBUTION_DESC": "Customizable display of distribution data by chart type and a combination of filter elements(room type, market, source  etc)",
-"MANAGER_PACE_DESC": "Shows how the books build over the course of the date range selected. Data is segmented into one the books, new and cancelled bookings."
+"MANAGER_PACE_DESC": "Shows how the books build over the course of the date range selected. Data is segmented into one the books, new and cancelled bookings.",
+"AN_CHART_TYPE": "Chart type",
+"AN_AGG_BY": "Aggregated By",
+"AN_CHART": "Chart",
+"AN_GRID": "Grid",
+"AN_FILTER_SETS": "Filter Sets",
+"AN_ADD_FILTER": "+ Add Filter Set",
+"AN_FILTER_NAME": "Name",
+"AN_SAVE_FILTER": "Save Filter",
+"AN_UPDATE_FILTER": "Update Filter",
+"AN_CLEAR_ALL": "clear All",
+"AN_APPLY_FILTER": "Apply Filters"
