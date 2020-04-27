@@ -24,7 +24,6 @@ const mapStateToRateManagerGridLeftFirstRowComponentProps = (state) => {
   );
 
   return {
-    expandedClass: (!!state.flags&&state.flags.showRateDetail)?'expanded':'',
     hideTopHeader: hideTopHeader,
     hierarchyCount: hierarchyCount,
     hierarchyClass: state.hierarchyRestrictionClass,
