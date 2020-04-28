@@ -34,7 +34,7 @@ angular.module('sntRover')
 			/** ****************************** DRAW CHART STARTS HERE ********************************************/
 
 			var drawDistributionChart = function(chartData) {
-				$scope.dashboardFilter.selectedAnalyticsMenu = 'DISTRIBUTION';
+				$scope.dashboardFilter.showFilters = false;
 				chartData = _.sortBy(chartData, function(data) {
 					return data.date;
 				});
@@ -308,6 +308,8 @@ angular.module('sntRover')
 
 
 			var fetchDistributionChartData = function() {
+				$scope.dashboardFilter.selectedAnalyticsMenu = 'DISTRIBUTION';
+				$scope.$emit('FETCH_SAVED_ANALYTICS_FILTERS');
 				$scope.dashboardFilter.displayMode = 'CHART_DETAILS';
 				$('base').attr('href', initialBaseHrefValue);
 
@@ -359,11 +361,6 @@ angular.module('sntRover')
 			});
 
 			$scope.$on('CHART_TYPE_CHANGED', function(e, data) {
-				setPageHeading();
-				redrawDistributionChartIfNeeded();
-			});
-
-			$scope.$on('CHART_AGGGREGATION_CHANGED', function() {
 				setPageHeading();
 				redrawDistributionChartIfNeeded();
 			});
@@ -526,6 +523,10 @@ angular.module('sntRover')
 						}
 					}
 				});
+				//  sort keys by alphabetically
+				$scope.gridLeftSideHeaders = _.sortBy($scope.gridLeftSideHeaders, function(sideHeader) {
+					return sideHeader
+				});
 
 				var today = $rootScope.businessDate;
 
@@ -560,7 +561,8 @@ angular.module('sntRover')
 					start_date: $scope.dashboardFilter.fromDate,
 					end_date: $scope.dashboardFilter.toDate,
 					chart_type: $scope.dashboardFilter.chartType,
-					shallowDecodedParams: shallowDecodedParams
+					shallowDecodedParams: shallowDecodedParams,
+					group_by: $scope.dashboardFilter.aggType
 				};
 
 				var options = {
