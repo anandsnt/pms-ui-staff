@@ -115,7 +115,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             var hasTimePeriod = function() {
                 var has = false;
 
-                if ($scope.isYearlyTaxReport || $scope.isGuestBalanceReport || $scope.isCreditCheckReport || angular.isDefined($scope.scheduleParams.time_period_id)) {
+                if ($scope.isYearlyTaxReport || $scope.isGuestBalanceReport || 
+                    $scope.isCreditCheckReport || $scope.isRoomStatusReport || 
+                    angular.isDefined($scope.scheduleParams.time_period_id)) {
                     has = true;
                 }
 
@@ -377,6 +379,26 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     key = reportParams['SOURCE_IDS'];
                     filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
 
+                } else if (keyName === 'hasReservationStatus') {
+                    key = reportParams['RESERVATION_STATUS'];
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
+
+                } else if (keyName === 'hasFloorList') {
+                    key = reportParams['FLOOR'];
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
+
+                } else if (keyName === 'hasIncludeWorkTypes') {
+                    key = reportParams['WORK_TYPE'];
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
+
+                } else if (keyName === 'hasFrontOfficeStatus') {
+                    key = reportParams['FRONT_OFFICE_STATUS'];
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
+
+                } else if (keyName === 'hasHouseKeepingStatus') {
+                    key = reportParams['HOUSEKEEPING_STATUS'];
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');                    
+                    
                 } else if (keyName === 'hasIncludeCompanyTaGroup' && $scope.selectedEntityDetails.chosenIncludeCompanyTaGroup) {
                     key = filter.value.toLowerCase();
                     filter_values[key] = $scope.selectedEntityDetails.chosenIncludeCompanyTaGroup;
@@ -601,6 +623,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 } else if (keyName === 'hasMarketsList') {
                     key = reportParams['MARKET_IDS'];
                     filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
+
                 } else if (keyName === 'hasOriginsList') {
                     key = reportParams['BOOKING_ORIGIN_IDS'];
                     filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
@@ -615,6 +638,26 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
                 } else if (keyName === 'hasCompletionStatus') {
                     key = reportParams['COMPLETION_STATUS'];
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
+
+                } else if (keyName === 'hasReservationStatus') {
+                    key = reportParams['RESERVATION_STATUS'];
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
+
+                } else if (keyName === 'hasFloorList') {
+                    key = reportParams['FLOOR'];
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
+
+                } else if (keyName === 'hasIncludeWorkTypes') {
+                    key = reportParams['WORK_TYPE'];
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
+
+                } else if (keyName === 'hasFrontOfficeStatus') {
+                    key = reportParams['FRONT_OFFICE_STATUS'];
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
+
+                } else if (keyName === 'hasHouseKeepingStatus') {
+                    key = reportParams['HOUSEKEEPING_STATUS'];
                     filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
 
                 } else if (keyName === 'hasShowActionables') {
@@ -884,7 +927,17 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     reportUtils.fillSources($scope.filters, $scope.selectedEntityDetails.filter_values, $scope.selectedEntityDetails.report.title);
                 } else if (filter.value === 'CHOOSE_BOOKING_ORIGIN') {
                     reportUtils.fillBookingOrigins($scope.filters, $scope.selectedEntityDetails.filter_values, $scope.selectedEntityDetails.report.title);
-                } else if (filter.value === 'SHOW_EMPLOYEES') {
+                } else if (filter.value === 'RESERVATION_STATUS') {
+                    reportUtils.fillReservationStatus($scope.filters, $scope.selectedEntityDetails.filter_values);
+                } else if (filter.value === 'FLOOR') {
+                    reportUtils.fillFloors($scope.filters, $scope.selectedEntityDetails.filter_values);
+                } else if (filter.value === 'WORK_TYPE') {
+                    reportUtils.fillWorkTypes($scope.filters, $scope.selectedEntityDetails.filter_values);
+                } else if (filter.value === 'FRONT_OFFICE_STATUS') {
+                    reportUtils.fillFrontOfficeStatus($scope.filters, $scope.selectedEntityDetails.filter_values);
+                } else if (filter.value === 'HOUSEKEEPING_STATUS') {
+                    reportUtils.fillHouseKeepingStatus($scope.filters, $scope.selectedEntityDetails.filter_values);
+                } else if (filter.value === 'SHOW_EMPLOYEES' || filter.value === 'EMPLOYEE') {
                     $scope.filters.hasUsers = {
                         title: $scope.selectedEntityDetails.report.title === reportNames['RESERVATIONS_BY_USER'] ? 'Users' : 'Employees',
                         data: angular.copy($scope.$parent.activeUserList),
@@ -1090,7 +1143,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.isYearlyTaxReport = ($scope.selectedEntityDetails.report.title === reportNames['YEARLY_TAX']);
             $scope.isForecastReport = ($scope.selectedEntityDetails.report.title === reportNames['FORECAST_BY_DATE']);
             $scope.isReservationsByUserReport = ($scope.selectedEntityDetails.report.title === reportNames['RESERVATIONS_BY_USER']);
-
+            $scope.isRoomStatusReport = $scope.selectedEntityDetails.report.title === reportNames['ROOM_STATUS_REPORT'];
+            
             if (angular.isDefined($scope.selectedEntityDetails.schedule_formats)) {
                 $scope.schedule_formats = $scope.selectedEntityDetails.schedule_formats;
                 $scope.scheduleParams.format_id = $scope.selectedEntityDetails.format.id;
@@ -1120,7 +1174,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             if (angular.isDefined(hasAccOrGuest)) {
                 $scope.scheduleParams.time_period_id = _.find($scope.originalScheduleTimePeriods, { value: "ALL" }).id;
                 $scope.isGuestBalanceReport = true;
-            } else if ($scope.isYearlyTaxReport || $scope.isCreditCheckReport) {
+            } else if ($scope.isYearlyTaxReport || $scope.isCreditCheckReport || $scope.isRoomStatusReport) {
                 $scope.scheduleParams.time_period_id = _.find($scope.originalScheduleTimePeriods, { value: "ALL" }).id;
             } else if (angular.isDefined($scope.selectedEntityDetails.time_period_id)) {
                 $scope.scheduleParams.time_period_id = $scope.selectedEntityDetails.time_period_id;
@@ -1444,7 +1498,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Financial Transactions - Adjustment Report': true,
                 'Credit Check Report': true,
                 'Forecast': true,
-                'Reservations By User': true
+                'Reservations By User': true,
+                'Room Status Report': true
             };
 
             var forWeekly = {
@@ -1460,7 +1515,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Financial Transactions - Adjustment Report': true,
                 'Credit Check Report': true,
                 'Forecast': true,
-                'Reservations By User': true
+                'Reservations By User': true,
+                'Room Status Report': true
             };
             var forMonthly = {
                 'Arrival': true,
@@ -1475,7 +1531,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Financial Transactions - Adjustment Report': true,
                 'Credit Check Report': true,
                 'Forecast': true,
-                'Reservations By User': true
+                'Reservations By User': true,
+                'Room Status Report': true
             };
 
             var forHourly = {
@@ -1488,7 +1545,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Business on the Books': true,
                 'Credit Check Report': true,
                 'Forecast': true,
-                'Reservations By User': true
+                'Reservations By User': true,
+                'Room Status Report': true
             };
 
             if (forHourly[item.report.title]) {
@@ -1523,7 +1581,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
             if ($scope.selectedEntityDetails.report.title === reportNames['CREDIT_CHECK_REPORT']) {
                 $scope.isCreditCheckReport = true;
-            }
+            } 
+            
             
             if (!!$scope.selectedReport && $scope.selectedReport.active) {
                 $scope.selectedReport.active = false;
@@ -1709,7 +1768,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     selectedEntity.report.title === reportNames['ACTIONS_MANAGER'] ||
                     selectedEntity.report.title === reportNames['CREDIT_CHECK_REPORT'] ||
                     selectedEntity.report.title === reportNames['FORECAST_BY_DATE'] || 
-                    selectedEntity.report.title === reportNames['RESERVATIONS_BY_USER'])) {
+                    selectedEntity.report.title === reportNames['RESERVATIONS_BY_USER'] ||
+                    selectedEntity.report.title === reportNames['ROOM_STATUS_REPORT'])) {
+
                 $scope.scheduleFormat = _.filter($scope.scheduleFormat, function(object) {
                     return object.value === 'CSV';
                 });
@@ -1729,7 +1790,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 selectedEntity.report.title === reportNames['ACTIONS_MANAGER'] ||
                 selectedEntity.report.title === reportNames['CREDIT_CHECK_REPORT'] ||
                 selectedEntity.report.title === reportNames['FORECAST_BY_DATE'] || 
-                selectedEntity.report.title === reportNames['RESERVATIONS_BY_USER']);
+                selectedEntity.report.title === reportNames['RESERVATIONS_BY_USER'] ||
+                selectedEntity.report.title === reportNames['ROOM_STATUS_REPORT']);
+
         };
 
         // Listener for creating new report schedule
