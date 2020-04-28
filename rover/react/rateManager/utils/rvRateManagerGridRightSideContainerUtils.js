@@ -73,5 +73,5 @@ const rvRateManagerRightSideContainerUtils = function() {
 	return {
 		convertDateListForRestrictionView: self.convertDateListForRestrictionView,
 		convertDataForRestrictionListing: self.convertDataForRestrictionListing
-	}
-}
+	};
+};
