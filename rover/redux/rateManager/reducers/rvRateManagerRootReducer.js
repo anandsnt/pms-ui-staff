@@ -13,7 +13,12 @@ const rateManagerRootReducer = (state, action) => (
 		callBacksFromAngular: rateManagerCallbacksFromAngularReducer(state.callBacksFromAngular, action),
 		scrollTo: rateManagerScrollToReducer(state.scrollTo, action),
 		paginationState: rateManagerPaginationStateDataReducer(state.paginationState, action),
-		isHierarchyRestrictionEnabled: state.isHierarchyRestrictionEnabled
+		isHierarchyHouseRestrictionEnabled: state.isHierarchyHouseRestrictionEnabled,
+		isHierarchyRoomTypeRestrictionEnabled: state.isHierarchyRoomTypeRestrictionEnabled,
+		isHierarchyRateTypeRestrictionEnabled: state.isHierarchyRateTypeRestrictionEnabled,
+		isHierarchyRateRestrictionEnabled: state.isHierarchyRateRestrictionEnabled,
+		hierarchyRestrictionClass: state.hierarchyRestrictionClass,
+		frozenPanelClass: rateManagerPanelClassReducer(state, action)
 	}
 );
 

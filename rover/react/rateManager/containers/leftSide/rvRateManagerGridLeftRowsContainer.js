@@ -20,12 +20,8 @@ let convertRatesDataForLeftListing = (rates, mode) => {
 			iconClassBeforeText: !rate.based_on_rate_id ? 'base-rate-indicator': '',
 			textInIconArea: !rate.based_on_rate_id ? 'B' : '',
 			leftSpanText: rate.name,
-			address: rate.address,
 			showRightSpan: true,
-			contractLabel: rate.is_travel_agent?'ta':(rate.is_company_card?'c':''),
-			contractClass: rate.is_travel_agent?'travel-agent':'',
 			rightSpanClassName: 'icons icon-double-arrow rotate-right',
-			accountName: rate.account_name,
 			showIndicator: showIndicator
 		})
 	});
@@ -33,27 +29,24 @@ let convertRatesDataForLeftListing = (rates, mode) => {
 	return ratesToReturn;
 };
 
-let convertRateTypesDataForLeftListing = (rateTypes, mode) => {
-	var rateTypesToReturn = [];
-	var showIndicator = (mode == RM_RX_CONST.RATE_TYPE_VIEW_MODE);
+let convertRateTypesDataForLeftListing = (rateTypes, mode, isHierarchyRateTypeRestrictionEnabled) => {
+	var rateTypesToReturn = [],
+		showIndicator = (mode === RM_RX_CONST.RATE_TYPE_VIEW_MODE),
+		disableNavigation = (mode === RM_RX_CONST.RATE_TYPE_VIEW_MODE) && isHierarchyRateTypeRestrictionEnabled;
 
 	rateTypes.map((rateType, index) => {
 		rateTypesToReturn.push({
 			id: rateType.id,
 			name: rateType.name,
-			trClassName: ('cell rate ' + (((index + 1) === rateTypes.length) ? 'last' : '')),
+			trClassName: ('cell rate ' + (((index + 1) === rateTypes.length) ? 'last' : '')) + (disableNavigation ? ' disable-element' : ''),
 			tdClassName: '',
 			leftSpanClassName: 'name ' + (rateType.based_on_rate_id && !rateType.is_copied ? 'gray' : 'base-rate')+((rateType.is_company_card||rateType.is_travel_agent)?' contracted-rate':' contracted-rate contracted-rate-missing-info'),
 			showIconBeforeText: !rateType.based_on_rate_id,
 			iconClassBeforeText: !rateType.based_on_rate_id ? 'base-rate-indicator': '',
 			textInIconArea: !rateType.based_on_rate_id ? 'B' : '',
 			leftSpanText: rateType.name,
-			// address: rate.address,
 			showRightSpan: true,
-			contractLabel: rateType.is_travel_agent?'ta':(rateType.is_company_card?'c':''),
-			contractClass: rateType.is_travel_agent?'travel-agent':'',
-			rightSpanClassName: 'icons icon-double-arrow rotate-right',
-			// accountName: rate.account_name,
+			rightSpanClassName: disableNavigation ? '' : 'icons icon-double-arrow rotate-right',
 			showIndicator :showIndicator
 		})
 	});
@@ -72,7 +65,7 @@ let convertRoomTypesDataForLeftListing = (roomTypes) => {
 	roomTypes.map((roomType, index) => {
 		roomTypesToReturn.push({
 			...roomType,
-			trClassName: ('cell rate ' + (((index + 1) === roomTypes.length) ? 'last' : '')),
+			trClassName: ('cell rate ' + (((index + 1) === roomTypes.length) ? 'last' : '')) + ' disable-element',
 			tdClassName: '',
 			leftSpanClassName: 'name ',
 			showIconBeforeText: false,
@@ -127,7 +120,7 @@ const mapStateToRateManagerGridLeftRowsContainerProps = (state) => {
 	}
 	else if(state.mode === RM_RX_CONST.RATE_TYPE_VIEW_MODE) {
 		return {
-			leftListingData: convertRateTypesDataForLeftListing(state.list),
+			leftListingData: convertRateTypesDataForLeftListing(state.list, state.mode, state.isHierarchyRateTypeRestrictionEnabled),
 			mode: state.mode,
 			fromDate: state.dates[0],
 			toDate: state.dates[state.dates.length-1],

@@ -110,5 +110,17 @@ angular.module('sntRover').service('rvManagersAnalyticsSrv', [
             return formatedData;
         };
 
+        this.exportAsCsv = function(params) {
+
+            var url = '/redshift/analytics/distributions.csv';
+
+            if (params.shallowDecodedParams) {
+                url = url + '?' + params.shallowDecodedParams;
+                delete params.shallowDecodedParams;
+            }
+
+            return rvBaseWebSrvV2.getJSON(url, params);
+        };
+
     }
 ]);

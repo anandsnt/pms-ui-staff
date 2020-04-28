@@ -1,5 +1,5 @@
 <!-- The bill display section -->
-<section id="main" role="main" class="centered" ng-if="!printOpted &&  !showPostChargeScreen" click-touch='resetTime()'>
+<section id="main" role="main" class="centered" ng-if="!printOpted &&  !showPostChargeScreen && !emailBillingOptions" click-touch='resetTime()'>
     <div id="content">
         <h1 ng-show="isReservationDetailsFetched">
             <text data-ng-bind-html="getTagValue('BILL_REVIEW')" editable-text="BILL_REVIEW"></text>
@@ -162,6 +162,36 @@
                             </button>
                             {{ printData.company_card_details.name}}
                             <span ng-bind-html="::printData.company_card_details.address">
+                            </span>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+    </section>
+    <section id="main" role="main" ng-show="emailBillingOptions">
+            <div id="content">
+                <h1 translate>EMAIL_GUEST_INVOICE</h1>
+                <h2 translate>BILL_ADDRESSED_TO_TEXT</h2>
+                <nav id="options" role="nav">
+                    <ul role="menu">
+                        <!-- {{printData}} -->
+                        <li>
+                            <button type="button" class="button option" touch-press="emailInvoice('guest')">
+                                <div ng-include="icons.url.adults"></div>
+                            </button>
+                             {{ emailData.guest_info.name}}
+                            <span ng-bind-html="::emailData.guest_info.address">
+                            </span>
+                        </li>
+                        <li class="break" ng-if="emailData.company_card_details.name">
+                            <span>Or</span>
+                        </li>
+                        <li ng-if="emailData.company_card_details.name">
+                            <button type="button" class="button option" touch-press="emailInvoice('company')">
+                                <div ng-include="icons.url.company"></div>
+                            </button>
+                            {{ emailData.company_card_details.name}}
+                            <span ng-bind-html="::emailData.company_card_details.address">
                             </span>
                         </li>
                     </ul>

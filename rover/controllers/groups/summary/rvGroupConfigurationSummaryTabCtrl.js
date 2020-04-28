@@ -581,6 +581,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                 $scope.groupConfigData.summary.release_date = refData.block_from;
             }
             $scope.releaseDateOptions.maxDate = newBlockTo;
+            $scope.fromDateOptions.maxDate = newBlockTo;
             runDigestCycle();
         };
 
@@ -617,13 +618,15 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
                 noOfInhouseIsNotZero = (sData.total_checked_in_reservations > 0),
                 cancelledGroup = sData.is_cancelled,
                 is_A_PastGroup = sData.is_a_past_group,
-                inEditMode = !$scope.isInAddMode();
+                inEditMode = !$scope.isInAddMode(),
+                hasCheckedoutReservations = sData.total_checked_out_reservations_count > 0;
 
             return ($scope.isInStaycardScreen()) || ( inEditMode &&
                     (
                       noOfInhouseIsNotZero  ||
                       cancelledGroup        ||
-                      is_A_PastGroup
+                      is_A_PastGroup ||
+                      hasCheckedoutReservations
                     )
                    );
         };
@@ -1837,34 +1840,24 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
         /**
          * Invoked to populate shoulder_from and shoulder_to keys which are used to contain value of shoulder date dropdown
          * Invoked on init
-         * CICO-74643 
+         * CICO-74643
          */
         var populateShoulderDates = function () {
-            $scope.groupConfigData.summary.shoulder_from = '0';
-            $scope.groupConfigData.summary.shoulder_to = '0';
+            // Using startOf('day') method to reset any time offsets that may be applied to the date objects
+            // tzIndependent date applies time offset for daylight, passing a date object to the method keeps adding offsets
+            var summary = $scope.groupConfigData.summary,
+                shoulderFrom = moment(summary.shoulder_from_date || summary.block_from).startOf('day'),
+                shoulderTo = moment(summary.shoulder_to_date || summary.block_to).startOf('day'),
+                blockFrom = moment(summary.block_from).startOf('day'),
+                blockTo = moment(summary.block_to).startOf('day');
 
-            var groupStartDate = new tzIndependentDate($scope.groupConfigData.summary.block_from),
-                groupEndDate = new tzIndependentDate($scope.groupConfigData.summary.block_to),
-                shoulderStartDate,
-                shoulderEndDate;
-
-            if ($scope.groupConfigData.summary.shoulder_from_date) {
-                shoulderStartDate = new tzIndependentDate($scope.groupConfigData.summary.shoulder_from_date);
-            } else {
-                shoulderStartDate = groupStartDate;
-                $scope.groupConfigData.summary.shoulder_from_date = shoulderStartDate;
-            }
-
-            $scope.groupConfigData.summary.shoulder_from = getDateDifferenceInDays (shoulderStartDate, groupStartDate) + '';
-
-            if ($scope.groupConfigData.summary.shoulder_to_date) {
-                shoulderEndDate = new tzIndependentDate($scope.groupConfigData.summary.shoulder_to_date);
-            } else {
-                shoulderEndDate = groupEndDate;
-                $scope.groupConfigData.summary.shoulder_to_date = shoulderEndDate;
-            }
-
-            $scope.groupConfigData.summary.shoulder_to = getDateDifferenceInDays(groupEndDate, shoulderEndDate) + '';
+            // Handle null entries for shoulder_from_date (groups created before introduction of shoulder days)
+            // https://momentjs.com/docs/#/parsing/string/
+            summary.shoulder_from = '' + blockFrom.diff(shoulderFrom, 'days');
+            summary.shoulder_to = '' + shoulderTo.diff(blockTo, 'days');
+            // API returned values as JS Dates for future consumption
+            summary.shoulder_from_date = shoulderFrom.toDate();
+            summary.shoulder_to_date = shoulderTo.toDate();
         };
 
         /**

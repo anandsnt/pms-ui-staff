@@ -73,9 +73,7 @@
 									<img ng-repeat="image in cardAttached.images"
 									ng-src="{{image.guest_image}}"
 
-									ng-class="{'first-image':(cardAttached.images.length >1 && image.is_primary==true),
-
-									'second-image':(cardAttached.images.length >1 && image.is_primary==false)}">
+									ng-class="{'second-image':(cardAttached.images.length >1 && image.is_primary==false)}">
 
 									<span class="vip" ng-show="cardAttached.vip==true" translate>VIP</span>
 								</figure>

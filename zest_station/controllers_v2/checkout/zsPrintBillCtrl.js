@@ -202,8 +202,17 @@ sntZestStation.controller('zsPrintBillCtrl', [
             handleBillPrint();
         };
 
+        var sendEmailAlongWithPrint = false;
+
+        $scope.$on('EMAIL_TO_BE_SEND_WITH_PRINT', function(ev, data) {
+            sendEmailAlongWithPrint = data.sendEmail;
+        });
+
         $scope.addressSelected = function(addressType) {
             executePrint(addressType);
+            if (sendEmailAlongWithPrint) {
+                $scope.emailInvoice(addressType);
+            }
         };
 
         var fetcCompanyTADetails = function() {

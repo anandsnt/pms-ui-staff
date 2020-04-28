@@ -1,7 +1,13 @@
 angular.module('sntRover')
-	.controller('rvMangerPaceChart', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvManagersAnalyticsSrv', 'rvAnalyticsHelperSrv', '$rootScope',
-		function($scope, sntActivity, $timeout, $filter, rvManagersAnalyticsSrv, rvAnalyticsHelperSrv, $rootScope) {
+	.controller('rvMangerPaceChart', ['$scope', 'sntActivity', '$timeout', '$filter', 'rvManagersAnalyticsSrv', 'rvAnalyticsHelperSrv', '$rootScope', '$controller',
+		function($scope, sntActivity, $timeout, $filter, rvManagersAnalyticsSrv, rvAnalyticsHelperSrv, $rootScope, $controller) {
 
+			$controller('rvManagerPaceChartWithZoomCtrl', {
+				$scope: $scope
+			});
+			$controller('rvManagerPaceLineChartCtrl', {
+				$scope: $scope
+			});
 			var checkIfDayIsToday = function(dateToCompare) {
 				var today = $rootScope.businessDate;
 				var date = moment(dateToCompare).format('YYYY-MM-DD');
@@ -13,10 +19,21 @@ angular.module('sntRover')
 			};
 			var shallowDecodedParams = "";
 			var paceChartData;
-			var drawPaceChart = function(chartData) {
 
+			var drawPaceChart = function(chartData, shallowDecodedParams) {
+				$scope.dashboardFilter.showFilters = false;
 				$scope.screenData.mainHeading = $filter('translate')("AN_PACE");
-				$scope.dashboardFilter.selectedAnalyticsMenu = 'PACE';
+				$scope.screenData.isZoomedChart = false;
+
+				if ($scope.dashboardFilter.lineChartActive) {
+					$scope.startDrawingPaceLineChart(chartData, shallowDecodedParams);
+					return;
+				}
+				else if (chartData.length > 60) {
+					$scope.drawPaceChartWithZoom(chartData);
+					$scope.screenData.isZoomedChart = true;
+					return;
+				}
 
 				var chartDataMaxArray = [];
 				var cancellationArray = [];
@@ -58,7 +75,7 @@ angular.module('sntRover')
 					},
 					width = document.getElementById("dashboard-analytics-chart").clientWidth,
 					height = 500 - margin.top - margin.bottom;
-
+					
 				var svg = d3.select("#d3-plot").append("svg")
 					.attr("width", width + margin.left + margin.right + 150)
 					.attr("height", height + margin.top + margin.bottom)
@@ -264,6 +281,8 @@ angular.module('sntRover')
 
 			var fetchPaceChartData = function() {
 				$scope.dashboardFilter.displayMode = 'CHART_DETAILS';
+				$scope.dashboardFilter.selectedAnalyticsMenu = 'PACE';
+				$scope.$emit('FETCH_SAVED_ANALYTICS_FILTERS');
 				var options = {
 					params: {
 						date: $scope.dashboardFilter.datePicked,
@@ -281,7 +300,7 @@ angular.module('sntRover')
 						$scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
 						$scope.screenData.analyticsDataUpdatedTime = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
 						paceChartData = data;
-						drawPaceChart(data);
+						drawPaceChart(data, shallowDecodedParams);
 					}
 				};
 				$scope.callAPI(rvManagersAnalyticsSrv.pace, options);
@@ -321,5 +340,8 @@ angular.module('sntRover')
 					redrawPaceChartIfNeeded();
 				}
 			});
+
+			$scope.$on('PACE_CHART_CHANGED', redrawPaceChartIfNeeded);
+
 		}
 	]);

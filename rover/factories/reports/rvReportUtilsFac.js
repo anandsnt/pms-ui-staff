@@ -230,7 +230,8 @@ angular.module('reportsModule')
                 'INCLUDE_ADDONS': true,
                 'INCLUDE_ADDON_REVENUE': true,
                 'INCLUDE_ACTIONS': true,
-                'INCLUDE_LEDGER_DATA': true
+                'INCLUDE_LEDGER_DATA': true,
+                'HAS_VEHICLE_REG_NO': true
             };
 
             var __excludeFilterNames = {
@@ -893,8 +894,12 @@ angular.module('reportsModule')
                     } else if (('INCLUDE_CHARGE_GROUP' === filter.value && !filter.filled) || ('INCLUDE_CHARGE_CODE' === filter.value && !filter.filled) || ('ADDON_GROUPS' === filter.value && !filter.filled) || ('SHOW_CHARGE_CODES' === filter.value && !filter.filled)) {
 
                         // fetch charge groups
+                        var reportParams = {
+                            for_addon_forecast_report: (reportItem.title === "Add-On Forecast") ? true : false
+                        };
+
                         requested++;
-                        reportsSubSrv.fetchChargeNAddonGroups()
+                        reportsSubSrv.fetchChargeNAddonGroups(reportParams)
                             .then(function (chargeNAddonGroups) {
 
                                 // then fetch charge code
@@ -2955,10 +2960,6 @@ angular.module('reportsModule')
                 };
 
                 reportsSubSrv.fetchCountries().then(function (data) {
-                    _.each(data, function (countryData) {
-                        countryData.id = countryData.value;
-                    });
-
                     var countryCopy = angular.copy(data);
 
                     if (filterValues && filterValues.country_ids) {

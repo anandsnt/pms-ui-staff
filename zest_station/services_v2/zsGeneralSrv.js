@@ -138,7 +138,13 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             "guestweb_hotel_bellvue": "bellevue",
             "guestweb_sheffield_jonas_hotel": "jonas",
             "guestweb_westminster_hotel": "westminster",
-            "guestweb_seehotel_hermitage": "hermitage"
+            "guestweb_coyote_south": "coyote",
+            "guestweb_seehotel_hermitage": "hermitage",
+            "guestweb_sage_inn_v2": "sage-inn-v2",
+            "guestweb_the_lake_house_on_canandaigua": "lake-house",
+            "guestweb_first_hotels_v2": "first-v2",
+            "guestweb_waldhotel_davos": "waldhotel-davos",
+            "guestweb_autocamp": "autocamp"
         };
 
 
@@ -423,7 +429,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.updateGuestEmail = function(params) {
             var deferred = $q.defer(),
-                url = '/staff/guest_cards/' + params.guest_id;
+                url = '/api/guest_details/' + params.guest_id;
 
             zsBaseWebSrv.putJSON(url, params).then(function(data) {
                 deferred.resolve(data);

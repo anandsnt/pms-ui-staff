@@ -389,6 +389,30 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 			return deferred.promise;
 		};
 
+		this.getConfirmationData = function(params) {
+			var deferred = $q.defer(),
+				url = '/api/reservations/' + params.reservation_id + '/confirmation_data';
+
+			rvBaseWebSrvV2.getJSON(url).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		};
+
+        this.createActivityLog = function(params) {
+            var deferred = $q.defer();
+
+            rvBaseWebSrvV2.postJSON('/api/reservation_actions', params)
+                .then(function(data) {
+                    deferred.resolve(data);
+                }, function(data) {
+                    deferred.reject(data);
+                });
+
+            return deferred.promise;
+        };
 
 	}
 ]);

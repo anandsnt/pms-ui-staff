@@ -442,4 +442,18 @@ angular.module('sntIDCollection').service('sntIDCollectionUtilsSrv', function ($
 			navigator.userAgent.match(/BlackBerry/i) ||
 			navigator.userAgent.match(/Windows Phone/i));
 	};
+
+	this.formatResultsFromThirdParty = function (idDetails) {
+		idDetails.first_name = idDetails.first_name || idDetails.given_name;
+		idDetails.last_name = idDetails.last_name || idDetails.surname;
+		idDetails.full_name = idDetails.full_name || '';
+		idDetails.expiration_date = moment(idDetails.expiration_date).isValid() ? idDetails.expiration_date : "";
+		idDetails.issue_date = moment(idDetails.issue_date).isValid() ? idDetails.issue_date : "";
+		idDetails.date_of_birth = moment(idDetails.birth_date).isValid() ? idDetails.birth_date : "";
+		idDetails.document_type = idDetails.document_class_name || 'ID';
+		
+		return idDetails;
+	};
+
+	this.thirdPartyScannerTimeout = 30;
 });

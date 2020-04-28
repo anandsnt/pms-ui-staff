@@ -157,7 +157,7 @@
                                 ng-model="dateData.single_pickup"
                                 class="cell" disabled />
                             <!-- we will show this quick arrow only in first column -->
-                            <button ng-if="shouldShowCopyButton(dateData)"
+                            <button ng-if="!$index"
                                 ng-click="copySingleContractValueToOtherBlocks(dateData, roomType)"
                                 type="button"
                                 class="admin-icons icon-mover-right">
@@ -188,7 +188,7 @@
                                 class="cell" disabled />
 
                             <!-- we will show this quick arrow only in first column -->
-                            <button ng-if="shouldShowCopyButton(dateData)"
+                            <button ng-if="!$index"
                                 ng-click="copyDoubleContractValueToOtherBlocks(dateData, roomType)"
                                 type="button"
                                 class="admin-icons icon-mover-right">
@@ -219,7 +219,7 @@
                                 class="cell" disabled />
 
                             <!-- we will show this quick arrow only in first column -->
-                            <button ng-if="shouldShowCopyButton(dateData)"
+                            <button ng-if="!$index"
                                 ng-click="copyTripleContractValueToOtherBlocks(dateData, roomType)"
                                 type="button"
                                 class="admin-icons icon-mover-right">
@@ -248,7 +248,7 @@
                                 ng-model="dateData.quadruple_pickup"
                                 class="cell" disabled />
                             <!-- we will show this quick arrow only in first column -->
-                            <button ng-if="shouldShowCopyButton(dateData)"
+                            <button ng-if="!$index"
                                 ng-click="copyQuadrupleContractValueToOtherBlocks(dateData, roomType)"
                                 type="button"
                                 class="admin-icons icon-mover-right">

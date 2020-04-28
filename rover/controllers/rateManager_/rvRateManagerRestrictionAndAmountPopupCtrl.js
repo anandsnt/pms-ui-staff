@@ -500,12 +500,12 @@ angular.module('sntRover')
          * Function to set the restriction level if the heirarchy restriction feature is turned on
          * @return {String}
          */
-        const getHierarchyRestrictionLevel = () => {
+        const getHierarchyRestrictionType = () => {
             let restriction = '';
 
             // ROOMTYPE and RATETYPE restriction levels to be accommodated in coming stories
-            if ($scope.hierarchyRestrictionType === 'HOUSE') {
-                restriction = 'Hotel';
+            if ($scope.hierarchyRestrictions.houseEnabled) {
+                restriction = 'HOUSE';
             }
             return restriction;
         }
@@ -515,7 +515,7 @@ angular.module('sntRover')
          * @return {boolean}
          */
         const isHierarchyRestrictionNeeded = () => {
-            return $scope.isHierarchyRestrictionEnabled && $scope.hierarchyRestrictionType !== 'COMMON';
+            return $scope.hierarchyRestrictions.houseEnabled;
         }
 
         /**
@@ -540,7 +540,7 @@ angular.module('sntRover')
                     params.rate_ids = rate_ids;
                 }
                 if (isHierarchyRestrictionNeeded()) {
-                    params.restriction_level = getHierarchyRestrictionLevel();
+                    params.restrictionType = getHierarchyRestrictionType();
                 }
             }
 
@@ -576,11 +576,15 @@ angular.module('sntRover')
 
             if (mode === $scope.modeConstants.RM_MULTIPLE_RATE_TYPE_RESTRICTION_MODE) {
                 if (isHierarchyRestrictionNeeded()) {
-                    params.restriction_level = getHierarchyRestrictionLevel();
+                    params.restrictionType = getHierarchyRestrictionType();
                 }
             }
 
             params.details = [];
+
+            if (dialogData.hierarchialRateTypeRestrictionRequired) {
+                params.hierarchialRateTypeRestrictionRequired = true;
+            }
 
             formDayRestrictionParamsForAPI(params);
 
@@ -608,11 +612,15 @@ angular.module('sntRover')
             }
             else if (mode === $scope.modeConstants.RM_MULTIPLE_ROOMTYPE_RESTRICTION_MODE) {
                 if (isHierarchyRestrictionNeeded()) {
-                    params.restriction_level = getHierarchyRestrictionLevel();
+                    params.restrictionType = getHierarchyRestrictionType();
                 }
             }
 
             params.details = [];
+
+            if (dialogData.hierarchialRoomTypeRestrictionRequired) {
+                params.hierarchialRoomTypeRestrictionRequired = true;
+            }
 
             formDayRestrictionParamsForAPI(params);
 
@@ -641,7 +649,7 @@ angular.module('sntRover')
             }
             else if (mode === $scope.modeConstants.RM_SINGLE_RATE_MULTIPLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE) {
                 if (isHierarchyRestrictionNeeded()) {
-                    params.restriction_level = getHierarchyRestrictionLevel();
+                    params.restrictionType = getHierarchyRestrictionType();
                 }
             }
 
@@ -1167,7 +1175,7 @@ angular.module('sntRover')
                     break;
 
                 case $scope.modeConstants.RM_SINGLE_RATE_MULTIPLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE:
-                    if ($scope.ngDialogData.isHierarchyRestrictionEnabled && $scope.ngDialogData.hierarchyRestrictionType === 'HOUSE') {
+                    if ($scope.ngDialogData.isHierarchyRestrictionEnabled) {
                         initializeMultipleRateRestrictionMode();
                     }
                     else {
