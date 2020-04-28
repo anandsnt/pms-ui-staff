@@ -471,6 +471,15 @@ sntRover.controller('RVmanagerDashboardController',
   };
 
   var emptyAllChartFilters = function() {
+    filtersSelected = {
+      filters: {
+        room_type_id: [],
+        market_id: [],
+        source_id: [],
+        booking_origin_id: [],
+        segment_id: []
+      }
+    };
     shallowEncoded = "";
     $scope.dashboardFilter.selectedRoomType = "";
     rvAnalyticsSrv.selectedRoomType = "";
@@ -501,6 +510,7 @@ sntRover.controller('RVmanagerDashboardController',
   };
 
   $scope.$on('RESET_CHART_FILTERS', function() {
+    rvAnalyticsSrv.resetChartFilterSet();
     emptyAllChartFilters();
   });
 

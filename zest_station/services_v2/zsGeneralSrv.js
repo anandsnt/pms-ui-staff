@@ -144,7 +144,9 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             "guestweb_the_lake_house_on_canandaigua": "lake-house",
             "guestweb_first_hotels_v2": "first-v2",
             "guestweb_waldhotel_davos": "waldhotel-davos",
-            "guestweb_autocamp": "autocamp"
+            "guestweb_autocamp": "autocamp",
+            "guestweb_margaritaville_lake_resort": "margaritaville",
+            "guestweb_hotel_171": "hotel-171"
         };
 
 
