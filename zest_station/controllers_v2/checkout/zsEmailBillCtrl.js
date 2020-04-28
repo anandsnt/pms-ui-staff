@@ -2,11 +2,12 @@ sntZestStation.controller('zsEmailBillCtrl', [
     '$scope',
     '$stateParams',
     '$state',
+    '$translate',
     'zsEventConstants',
     'zsUtilitySrv',
     'zsCheckoutSrv',
     'zsGeneralSrv',
-    function($scope, $stateParams, $state, zsEventConstants, zsUtilitySrv, zsCheckoutSrv, zsGeneralSrv) {
+    function($scope, $stateParams, $state, $translate, zsEventConstants, zsUtilitySrv, zsCheckoutSrv, zsGeneralSrv) {
 
 		/** *********************************************************************************************
 		 **		Expected state params -----> printopted, reservation_id, email and guest_detail_id			  
@@ -122,7 +123,8 @@ sntZestStation.controller('zsEmailBillCtrl', [
             var params = {
                 reservation_id: $stateParams.reservation_id,
                 bill_number: '1',
-                bill_address_type: bill_address_type
+                bill_address_type: bill_address_type,
+                locale: $translate.use()
             };
             var options = {
                 params: params,
