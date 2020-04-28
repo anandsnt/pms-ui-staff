@@ -494,7 +494,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             }
 
             if ($scope.scheduleParams.arrival_date_range) {
-                params.arrival_date_range = $scope.scheduleParams.arrival_date_range;
+                filter_values.arrival_date_range = $scope.scheduleParams.arrival_date_range;
             }
 
             params.format_id = parseInt($scope.scheduleParams.format_id);
@@ -1048,11 +1048,11 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     $scope.selectedEntityDetails.uiChosenIncludeCompanyTaGroup = value;
                     $scope.selectedEntityDetails.chosenIncludeCompanyTaGroupType = $scope.selectedEntityDetails.filter_values[reportParams['ENTITY_TYPE']];
                     $scope.selectedEntityDetails.uiChosenIncludeCompanyTaGroup = $scope.selectedEntityDetails.filter_values[reportParams['ENTITY_NAME']];
-                }
-
-                if (groupByFields[key.toUpperCase()]) {
+                } else if (groupByFields[key.toUpperCase()]) {
                     $scope.scheduleParams.groupBy = groupByFields[key.toUpperCase()];
-                }
+                } else if (upperCaseKey === 'CREATE_DATE_RANGE' || upperCaseKey === 'ARRIVAL_DATE_RANGE') {
+                    $scope.scheduleParams[key] = value;
+                } 
 
             });
 
@@ -1081,6 +1081,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             var startsOn = $scope.selectedEntityDetails.starts_on || $rootScope.businessDate;
             var endsOnDate = $scope.selectedEntityDetails.ends_on_date || $rootScope.businessDate;
 
+            $scope.creationDateTimePeriods = [];
+            $scope.arrivalDateTimePeriods = [];
+            
             $scope.scheduleParams = {};
 
             $scope.isYearlyTaxReport = ($scope.selectedEntityDetails.report.title === reportNames['YEARLY_TAX']);
@@ -1520,9 +1523,6 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             if ($scope.selectedEntityDetails.report.title === reportNames['CREDIT_CHECK_REPORT']) {
                 $scope.isCreditCheckReport = true;
             }
-
-            $scope.creationDateTimePeriods = [];
-            $scope.arrivalDateTimePeriods = [];
             
             if (!!$scope.selectedReport && $scope.selectedReport.active) {
                 $scope.selectedReport.active = false;
