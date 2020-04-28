@@ -37,7 +37,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
         };
 
         service.fetchRateWithAmount = function(params) {
-            var url = '';
+            var url = '/api/daily_rates/rates_amount_by_date';
 
             params = _.omit(params, 'restrictionType', 'hierarchialRateRestrictionRequired');
             return this.getJSON(url, params);
