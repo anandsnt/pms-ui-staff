@@ -398,7 +398,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     key = reportParams['RATE_IDS'];
                     filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
 
-                }else {
+                } else {
                     _.each(filter.data, function(each) {
                         if (each.selected) {
                             filter_values[each.paramKey] = true;
