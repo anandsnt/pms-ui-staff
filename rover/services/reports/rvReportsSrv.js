@@ -328,6 +328,45 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'CURRENT_MONTH_PLUS_ONE',
                 'CURRENT_MONTH_PLUS_TWO',
                 'CURRENT_MONTH_PLUS_THREE'
+             ],
+             'Reservations By User:CREATE_DATE_RANGE': [
+                'YESTERDAY',
+                'LAST_SEVEN_DAYS',
+                'LAST_THIRTY_DAYS',
+                'LAST_MONTH',
+                'LAST_JANUARY',
+                'LAST_FEBRUARY',
+                'LAST_MARCH',
+                'LAST_APRIL',
+                'LAST_MAY',
+                'LAST_JUNE',
+                'LAST_JULY',
+                'LAST_AUGUST',
+                'LAST_SEPTEMBER',
+                'LAST_OCTOBER',
+                'LAST_NOVEMBER',
+                'LAST_DECEMBER'
+             ],
+             'Reservations By User:ARRIVAL_DATE_RANGE': [
+                'YESTERDAY',
+                'LAST_SEVEN_DAYS',
+                'LAST_THIRTY_DAYS',
+                'LAST_MONTH',
+                'LAST_JANUARY',
+                'LAST_FEBRUARY',
+                'LAST_MARCH',
+                'LAST_APRIL',
+                'LAST_MAY',
+                'LAST_JUNE',
+                'LAST_JULY',
+                'LAST_AUGUST',
+                'LAST_SEPTEMBER',
+                'LAST_OCTOBER',
+                'LAST_NOVEMBER',
+                'LAST_DECEMBER',
+                'NEXT_SEVEN_DAYS',
+                'NEXT_THIRTY_DAYS',
+                'NEXT_MONTH'
              ]
         };
 
