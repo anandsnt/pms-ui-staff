@@ -340,6 +340,8 @@
         <!-- Show this if we have missing mandatory guest IDs -->
         <div class="bottom-actions"  ng-show="isFromCheckin">
             <button class="button blank" click-touch="toggleGuests()">Cancel</button>
+
+            <button class="button green" click-touch="continueToCheckinAfterSkipIdScan()" ng-if="hasPermissionToSkipIdScan && isGuestIdRequiredForCheckin()">Skip</button>
             <!-- Replace .grey with .green if we have all mandatory Guest IDs and can proceed to check in -->
             <button class="button " ng-disabled="isGuestIdRequiredForCheckin()" click-touch="continueToCheckinAfterIdScan()" ng-class="{'grey': isGuestIdRequiredForCheckin(), 'green': !isGuestIdRequiredForCheckin()}" translate>CONTINUE_TO_CHECKIN_BUTTON</button>
         </div>

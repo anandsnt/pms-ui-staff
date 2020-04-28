@@ -52,7 +52,7 @@
                             {{addon.name}}
                             <!-- hide the addon qty and addon amount till the calculations are done in API -->
                            <!--  ({{addon.addon_count}}) -->
-                            <span ng-show='{{!addon.is_inclusive}} && false'>{{zestStationData.currencySymbol}}{{addon.amount | number :2}}</span>
+                            <span ng-show='{{!addon.is_inclusive}}'>{{zestStationData.currencySymbol}}{{addon.total_amount | number :2}}</span>
                             <span ng-show='{{addon.is_inclusive}}'>
                                 <text data-ng-bind-html="getTagValue('INCLUDED')" editable-text="INCLUDED"></text>
                             </span>

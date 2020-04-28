@@ -24,7 +24,7 @@
                     <!-- add class "accompany" if it's a accompanying guest -->
                     <figure class="guest-image" ng-class="{'accompany': row.images.length >1}" ng-show="row.images.length!=0 ">
                         <!-- add class "accompany" if it's a accompanying guest -->
-                        <img ng-repeat="image in row.images" ng-src="{{image.guest_image}}" ng-class="{'first-image':(row.images.length >1 && image.is_primary==true)}">
+                        <img ng-repeat="image in row.images" ng-src="{{image.guest_image}}">
                         <!-- if it's accompanying guest, show this as well:
                         <img src="{accompanying-guest-image-or-avatar}" alt="" />-->
                         <span class="stay-count" ng-if="row.stay_count > 0 && isStandAlone">{{::row.stay_count}}</span>

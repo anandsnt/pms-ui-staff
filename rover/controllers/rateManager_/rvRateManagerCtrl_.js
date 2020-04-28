@@ -45,7 +45,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     $scope.hierarchyRestrictions = {
         houseEnabled: Toggles.isEnabled('hierarchical_house_restrictions'),
         roomTypeEnabled: Toggles.isEnabled('hierarchical_room_type_restrictions'),
-        rateTypeEnabled: Toggles.isEnabled('hierarchical_rate_type_restrictions')
+        rateTypeEnabled: Toggles.isEnabled('hierarchical_rate_type_restrictions'),
+        rateEnabled: Toggles.isEnabled('hierarchical_rate_restrictions')
     };
 
     /**
@@ -690,7 +691,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      */
     var processRateTypesAndRestrictionForAllRateType = (response) => {
         var rateTypeRestrictions = response.rateTypeAndRestrictions,
-                commonRestrictions = response.commonRestrictions;
+                commonRestrictions = response.commonRestrictions,
+                panelRestrictions = response.panelRestrictions;
 
         // rateTypeList is now cached, we will not fetch that again
         cachedRateTypeList = !cachedRateTypeList.length ? response.rateTypes : cachedRateTypeList;
@@ -700,7 +702,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
         showAndFormDataForTopBar(dates);
 
-        var renderableData = formRenderingDataModelForAllRateTypes(dates, rateTypeRestrictions, commonRestrictions, cachedRateTypeList);
+        var renderableData = formRenderingDataModelForAllRateTypes(dates, rateTypeRestrictions, commonRestrictions, cachedRateTypeList, panelRestrictions);
 
         var rateTypeWithRestrictions = renderableData.rateTypeWithRestrictions;
 
@@ -720,7 +722,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @param  {array} rateTypeRestrictions
      * @return {array}
      */
-    var formRenderingDataModelForAllRateTypes = (dates, rateTypeRestrictions, commonRestrictions, rateTypes) => {
+    var formRenderingDataModelForAllRateTypes = (dates, rateTypeRestrictions, commonRestrictions, rateTypes, panelRestrictions) => {
         var dateRateTypeSet = null,
             rateTypeRestrictionWithDateAsKey = _.object(dates, rateTypeRestrictions),
             rateTypeIDs = _.pluck(rateTypes, 'id'),
@@ -747,19 +749,55 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         });
 
         /**
-         * Summary information holds the first row - this is rendered in the header of the grid
-         * @type {Array}
+         * Summary information holds the first row/frozen panel - this is rendered in the header of the grid
+         * @type {Array/object}
          */
-        var restrictionSummary = [{
-            restrictionList: dates.map((date) => {
-                return _.findWhere(commonRestrictions, { date: date }).restrictions;
-            })
+        var restrictionSummary = isHierarchyActive() ? gatherRestrictionSummary(dates, commonRestrictions, panelRestrictions) :
+            [{
+                restrictionList: dates.map((date) => {
+                    return _.findWhere(commonRestrictions, { date: date }).restrictions;
+                })
         }];
 
         return {
             rateTypeWithRestrictions : rateTypeWithRestrictions,
             restrictionSummary: restrictionSummary
         };
+    };
+    
+    var isHierarchyActive = () => {
+        return (
+            $scope.hierarchyRestrictions.houseEnabled ||
+            $scope.hierarchyRestrictions.roomTypeEnabled ||
+            $scope.hierarchyRestrictions.rateTypeEnabled ||
+            $scope.hierarchyRestrictions.rateEnabled
+        );
+    };
+
+    /**
+     * simple function to reduce the code repetition for frozen panel restrictionSummary
+     * @param {array} dates 
+     * @param {object} commonRestrictions 
+     * @param {object} panelRestrictions
+     * @returns {Object} 
+     */
+    var gatherRestrictionSummary = (dates, commonRestrictions, panelRestrictions) => {
+        var restrictionSummary = [{
+            houseRestrictionSummary: dates.map((date) => {
+                return _.findWhere(commonRestrictions, {date: date}).restrictions;
+            }),
+            roomTypeRestrictionSummary: (panelRestrictions && dates.map((date) => {
+                return _.findWhere(panelRestrictions.roomTypeRestrictions, {date: date}).restrictions;
+            })) || [],
+            rateTypeRestrictionSummary: (panelRestrictions && dates.map((date) => {
+                return _.findWhere(panelRestrictions.rateTypeRestrictions, {date: date}).restrictions;
+            })) || [],
+            rateRestrictionSummary: (panelRestrictions && dates.map((date) => {
+                return _.findWhere(panelRestrictions.rateRestrictions, {date: date}).restrictions;
+            })) || []
+        }];
+
+        return restrictionSummary;
     };
 
     /*
@@ -823,7 +861,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         var allRatesShowingData;
 
         lastSelectedFilterValues[activeFilterIndex].fromLeftFilter = false;
-        $scope.showContractDetailsChecked = false;
         if (chosenTab === 'RATES') {
             $scope.isRateView = true;
             $scope.isRateTypeView = false;
@@ -866,8 +903,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             showingData.splice(showingData.length - 1, 1);
 
             fetchRateTypeAndRestrictions(lastSelectedFilterValues[activeFilterIndex]);
-
-            $scope.showContractDetailsChecked = false;
 
             $scope.showBackButton = false;
 
@@ -912,22 +947,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     };
 
     /*
-     * on clicking the checkbox for show-contract-details in topbar.
-     */
-    $scope.clickedOnShowContractDetails = function(e) {
-        $scope.showContractDetailsChecked = !$scope.showContractDetailsChecked;
-        var dispatchData = {
-            type: RM_RX_CONST.RATE_VIEW_WITH_ADDRESS,
-            flags: {
-                showRateDetail: $scope.showContractDetailsChecked
-            }
-        };
-
-        e.preventDefault();
-        store.dispatch(dispatchData);
-    };
-
-    /*
      * [description]
      * @param  {[type]} options.roomTypeIDs [description]
      * @param  {[type]} options.date        [description]
@@ -943,6 +962,29 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
     const changedHeirarchyRestriction = ( type ) => {
         $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
+    };
+
+    const handlePanelToggle = (e) => {
+        store.dispatch({
+            type: RM_RX_CONST.HIERARCHY_FROZEN_PANEL_TOGGLED,
+            frozenPanelClosed: !!e
+        });
+    };
+
+    const clickedOnHierarchyRoomTypeCell = ({roomTypeIDs, date}) => {
+        console.log('roomType hierarchy');
+    };
+
+    const clickedOnHierarchyRateTypeCell = ({rateTupeIDs, date}) => {
+        console.log('rateType hierarchy');
+    };
+
+    const clickedOnHierarchyRateCell = ({rateIDs, date}) => {
+        console.log('rate hierarchy');
+    };
+
+    const clickedOnHierarchyHouseCell = ({rateIDs, date}) => {
+        console.log('house hierarchy');
     };
 
     /**
@@ -965,7 +1007,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 clickedOnRateTypeViewCell,
                 goToPrevPage,
                 goToNextPage,
-                changedHeirarchyRestriction
+                changedHeirarchyRestriction,
+                handlePanelToggle,
+                clickedOnHierarchyRoomTypeCell,
+                clickedOnHierarchyRateTypeCell,
+                clickedOnHierarchyRateCell,
+                clickedOnHierarchyHouseCell
             };
         };
 
@@ -996,7 +1043,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      */
     var processForAllRates = (response) => {
         var rateRestrictions = [...response.dailyRateAndRestrictions],
-            commonRestrictions = response.commonRestrictions;
+            commonRestrictions = response.commonRestrictions,
+            panelRestrictions = response.panelRestrictions;
 
         // rateList now cached, we will not fetch that again
         cachedRateList = !cachedRateList.length ? response.rates : cachedRateList;
@@ -1006,7 +1054,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
         showAndFormDataForTopBar(dates);
 
-        var renderableData = formRenderingDataModelForAllRates(dates, rateRestrictions, commonRestrictions, cachedRateList);
+        var renderableData = formRenderingDataModelForAllRates(dates, rateRestrictions, commonRestrictions, cachedRateList, panelRestrictions);
 
         var ratesWithRestrictions = renderableData.ratesWithRestrictions;
 
@@ -1061,7 +1109,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
          * @param  {array} rates
          * @return {array}
          */
-        const formRenderingDataModelForAllRates = (dates, rateRestrictions, commonRestrictions, rates) => {
+        const formRenderingDataModelForAllRates = (dates, rateRestrictions, commonRestrictions, rates, panelRestrictions) => {
             var dateRateSet = null,
                 rateRestrictionWithDateAsKey = _.object(dates, rateRestrictions),
                 rateIDs = _.pluck(rates, 'id'),
@@ -1087,14 +1135,15 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 return _.omit(rate, 'restrictions');
             });
 
-            /*
-             * Summary information holds the first row - this is rendered in the header of the grid
-             * @type {Array}
+            /**
+             * Summary information holds the first row/frozen panel - this is rendered in the header of the grid
+             * @type {Array/object}
              */
-            var restrictionSummary = [{
-                restrictionList: dates.map((date) => {
-                    return _.findWhere(commonRestrictions, { date: date }).restrictions;
-                })
+            var restrictionSummary = isHierarchyActive() ? gatherRestrictionSummary(dates, commonRestrictions, panelRestrictions) :
+                [{
+                    restrictionList: dates.map((date) => {
+                        return _.findWhere(commonRestrictions, { date: date }).restrictions;
+                    })
             }];
 
             return {
@@ -1308,7 +1357,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
          * @param  {array} room types
          * @return {array}
          */
-        var formRenderingDataModelForAllRoomTypes = (dates, roomTypeRestrictions, commonRestrictions, roomTypes) => {
+        var formRenderingDataModelForAllRoomTypes = (dates, roomTypeRestrictions, commonRestrictions, roomTypes, panelRestrictions) => {
             var dateRoomTypeSet = null,
                 roomTypeRestrictionWithDateAsKey = _.object(dates, roomTypeRestrictions),
                 roomTypeIDs = _.pluck(roomTypes, 'id'),
@@ -1335,13 +1384,14 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             });
 
             /**
-             * Summary information holds the first row - this is rendered in the header of the grid
-             * @type {Array}
+             * Summary information holds the first row/frozen panel - this is rendered in the header of the grid
+             * @type {Array/object}
              */
-            var restrictionSummary = [{
-                restrictionList: dates.map((date) => {
-                    return _.findWhere(commonRestrictions, { date: date }).restrictions;
-                })
+            var restrictionSummary = isHierarchyActive() ? gatherRestrictionSummary(dates, commonRestrictions, panelRestrictions) :
+                [{
+                    restrictionList: dates.map((date) => {
+                        return _.findWhere(commonRestrictions, { date: date }).restrictions;
+                    })
             }];
 
             return {
@@ -1377,7 +1427,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
          */
         var processRoomTypesAndRestrictionForAllRoomType = (response) => {
             var roomTypeRestrictions = response.roomTypeAndRestrictions,
-                commonRestrictions = response.commonRestrictions;
+                commonRestrictions = response.commonRestrictions,
+                panelRestrictions = response.panelRestrictions;
 
             // roomTypeList is now cached, we will not fetch that again
             cachedRoomTypeList = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList;
@@ -1387,7 +1438,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
             showAndFormDataForTopBar(dates);
 
-            var renderableData = formRenderingDataModelForAllRoomTypes(dates, roomTypeRestrictions, commonRestrictions, cachedRoomTypeList);
+            var renderableData = formRenderingDataModelForAllRoomTypes(dates, roomTypeRestrictions, commonRestrictions, cachedRoomTypeList, panelRestrictions);
 
             var roomTypeWithRestrictions = renderableData.roomTypeWithRestrictions;
 
@@ -2054,7 +2105,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
          * @return {array}
          */
         var formRenderingDataModelForSingleRateDetailsAndRestrictions =
-            (dates, roomTypeAmountAndRestrictions, commonRestrictions, roomTypes) => {
+            (dates, roomTypeAmountAndRestrictions, commonRestrictions, roomTypes, panelRestrictions) => {
 
             var dateRoomTypeSet = null,
                 roomTypeRestrictionWithDateAsKey = _.object(dates, roomTypeAmountAndRestrictions),
@@ -2092,11 +2143,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                  * Summary information holds the first row - this is rendered in the header of the grid
                  * @type {Array}
                  */
-                var restrictionSummary = [{
-                    rateDetails: [],
-                    restrictionList: dates.map((date) => {
-                        return _.findWhere(commonRestrictions, {date: date}).restrictions;
-                    })
+                var restrictionSummary = isHierarchyActive() ? gatherRestrictionSummary(dates, commonRestrictions, panelRestrictions) :
+                    [{
+                        rateDetails: [],
+                        restrictionList: dates.map((date) => {
+                            return _.findWhere(commonRestrictions, {date: date}).restrictions;
+                        })
                 }];
 
                 return {
@@ -2129,7 +2181,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
          */
         var onFetchSingleRateDetailsAndRestrictions = (response) => {
             var roomTypeAmountAndRestrictions = response.roomTypeAndRestrictions,
-                commonRestrictions = response.commonRestrictions;
+                commonRestrictions = response.commonRestrictions,
+                panelRestrictions = response.panelRestrictions;
 
             // roomTypeList is now cached, we will not fetch that again
             cachedRoomTypeList = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList;
@@ -2150,7 +2203,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
             // grid view data model
             var renderableData = formRenderingDataModelForSingleRateDetailsAndRestrictions
-                (dates, roomTypeAmountAndRestrictions, commonRestrictions, cachedRoomTypeList);
+                (dates, roomTypeAmountAndRestrictions, commonRestrictions, cachedRoomTypeList, panelRestrictions);
 
             var roomTypeWithAmountAndRestrictions = renderableData.roomTypeWithRestrictions;
 
@@ -2435,7 +2488,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
          */
         var initializeDataModel = () => {
             // for top bar
-            $scope.showContractDetailsChecked = false;
             $scope.showTopBar = false;
             $scope.showBackButton = false;
             $scope.selectedCardNames = [];
@@ -2450,11 +2502,26 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             $scope.viewingScreen = RM_RX_CONST.GRID_VIEW;
         };
 
+        var activerHierarchyRestrictions = () => {
+            return ((
+                $scope.hierarchyRestrictions.houseEnabled && 1
+            ) + (
+                $scope.hierarchyRestrictions.roomTypeEnabled && 1
+            ) + (
+                $scope.hierarchyRestrictions.rateTypeEnabled && 1
+            ) + (
+                $scope.hierarchyRestrictions.rateEnabled && 1
+            ));
+        };
+
         var initialState = {
             mode: RM_RX_CONST.NOT_CONFIGURED_MODE,
             isHierarchyHouseRestrictionEnabled: $scope.hierarchyRestrictions.houseEnabled,
             isHierarchyRoomTypeRestrictionEnabled: $scope.hierarchyRestrictions.roomTypeEnabled,
-            isHierarchyRateTypeRestrictionEnabled: $scope.hierarchyRestrictions.rateTypeEnabled
+            isHierarchyRateTypeRestrictionEnabled: $scope.hierarchyRestrictions.rateTypeEnabled,
+            isHierarchyRateRestrictionEnabled: $scope.hierarchyRestrictions.rateEnabled,
+            hierarchyRestrictionClass: (activerHierarchyRestrictions() > 1) ? 'calendar-rate-table-hierarchy-' + activerHierarchyRestrictions() : '',
+            frozenPanelClosed: true
         };
 
         const store = configureStore(initialState);

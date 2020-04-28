@@ -7,7 +7,18 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
         service.hierarchyRestrictions = {
             houseEnabled: Toggles.isEnabled('hierarchical_house_restrictions'),
             roomTypeEnabled: Toggles.isEnabled('hierarchical_room_type_restrictions'),
-            rateTypeEnabled: Toggles.isEnabled('hierarchical_rate_type_restrictions')
+            rateTypeEnabled: Toggles.isEnabled('hierarchical_rate_type_restrictions'),
+            rateEnabled: Toggles.isEnabled('hierarchical_rate_restrictions')
+        };
+
+        // check if any of the hierarchy restrictions are enabled
+        service.activeHierarchyRestrictions = function() {
+            return {
+                house: service.hierarchyRestrictions.houseEnabled,
+                rate_types: service.hierarchyRestrictions.rateTypeEnabled,
+                room_types: service.hierarchyRestrictions.roomTypeEnabled,
+                rates: service.hierarchyRestrictions.rateEnabled
+            };
         };
 
         // CICO-76337 - for rateType only
@@ -36,7 +47,10 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
         // Handle GET api, for individual cell click & popup in House Level ( Frozen Panel).
         service.formatRestrictionsData = function(restrcionsList, params) {
 			// CICO-76813 : New API for hierarchyRestrictions
-            if (service.hierarchyRestrictions.houseEnabled && params.restrictionType === 'HOUSE') {
+            if (
+                (service.hierarchyRestrictions.houseEnabled && params.restrictionType === 'HOUSE') ||
+                params.forPanel
+            ) {
                 _.each(restrcionsList, function( item ) {
                     item.restrictions = rvRateManagerUtilitySrv.generateOldGetApiResponseFormat(item.restrictions);
                 });
@@ -100,7 +114,13 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
 
         // Handle POST api, for individual cell click & popup in House Level ( Frozen Panel).
         service.processParamsforApplyAllRestrictions = function( params ) {
-            params = rvRateManagerUtilitySrv.generateNewPostApiParams(params);
+            if (
+                (service.hierarchyRestrictions.houseEnabled && params.restrictionType === 'HOUSE') ||
+                params.hierarchialRoomTypeRestrictionRequired ||
+                params.hierarchialRateTypeRestrictionRequired
+            ) {
+                params = rvRateManagerUtilitySrv.generateNewPostApiParams(params);
+            }
             return params;
         };
 

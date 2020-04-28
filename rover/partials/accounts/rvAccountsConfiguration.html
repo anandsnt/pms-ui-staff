@@ -4,7 +4,7 @@
         <!-- Header -->
         <header class="cards-header">
             <div id="group-card-header" class="card-header">
-                <form>
+                <form class="dual-actions">
                     <div class="holder">
                         <div class="entry">
                             <input 
@@ -23,9 +23,17 @@
                         <span class="masked-input icons icon-gc-group">{{accountConfigData.summary.group.name}}</span>
                     </div>
                 </form>
-                <div class="card-actions" ng-hide="isInAddMode()">
+                <div class="card-actions dual-actions" ng-hide="isInAddMode()">
                     <!--  HIDE BUTTON FOR NOW TILL DUPLICATE FUNCTIONALITY IS COMPLETE-->
                     <button type="button" class="button blue hidden" ng-click="duplicateGroup()" translate>DUPLICATE</button>
+                    <!-- Company card -->
+                    <button type="button" class="button company" ng-click="goToCompanyCard()" ng-show="shouldShowCompanyCardNavigationButton()">
+                        <span class="icons icon-company"></span>
+                    </button>
+                    <!-- TA card -->
+                    <button type="button" class="button travel-agent"ng-click="goToTACard()" ng-show="shouldShowTravelAgentNavigationButton()">
+                        <span class="icons icon-travel-agent"></span>
+                    </button>  
                 </div>                
                 <div class="card-actions" ng-show="isInAddMode()">
                     <button type="button" class="button green" ng-click="saveNewAccount()" translate>SAVE_ACCOUNT</button>

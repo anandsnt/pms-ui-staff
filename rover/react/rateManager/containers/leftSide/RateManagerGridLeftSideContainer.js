@@ -13,10 +13,21 @@ const mapStateToRateManagerGridLeftFirstRowComponentProps = (state) => {
     )
   );
 
+  let hierarchyCount = (
+    state.isHierarchyHouseRestrictionEnabled && 1
+  ) + (
+    state.isHierarchyRoomTypeRestrictionEnabled && 1
+  ) + (
+    state.isHierarchyRateTypeRestrictionEnabled && 1
+  ) + (
+    state.isHierarchyRateRestrictionEnabled && 1
+  );
+
   return {
-    expandedClass: (!!state.flags&&state.flags.showRateDetail)?'expanded':'',
-    isHierarchyHouseRestrictionEnabled: state.isHierarchyHouseRestrictionEnabled,
-    hideTopHeader: hideTopHeader
+    hideTopHeader: hideTopHeader,
+    hierarchyCount: hierarchyCount,
+    hierarchyClass: state.hierarchyRestrictionClass,
+    panelToggleClass: state.frozenPanelClass
   }
 };
 
