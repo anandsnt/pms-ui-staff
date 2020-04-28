@@ -5,7 +5,7 @@ const mapStateForRateManagerHierarchyRoomTypeHeaderContainerProps = (state) => {
     // for every mode (all rate view, room type, single rate view), this is same
     var propsToReturn =  {
         mode: state.mode,
-        restrictionSummary: rvRMUtils.convertDataForRestrictionListing(state.summary[0].roomTypeRestrictionSummary, state.restrictionTypes, true),
+        restrictionSummary: rvRMUtils.convertDataForRestrictionListing(state.summary[0].roomTypeRestrictionSummary, state.restrictionTypes),
         dateList: rvRMUtils.convertDateListForRestrictionView(state.dates, state.businessDate),
         dates: state.dates,
         cellClicked: state.callBacksFromAngular.clickedOnHierarchyRoomTypeCell

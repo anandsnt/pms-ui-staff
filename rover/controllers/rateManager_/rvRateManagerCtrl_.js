@@ -752,7 +752,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
          * Summary information holds the first row/frozen panel - this is rendered in the header of the grid
          * @type {Array/object}
          */
-        var restrictionSummary = isHierarchyActive() ? gatherRestrictionSummary(dates, commonRestrictions, panelRestrictions) :
+        var restrictionSummary = isHierarchyActive() ? gatherPanelRestrictionSummary(dates, commonRestrictions, panelRestrictions) :
             [{
                 restrictionList: dates.map((date) => {
                     return _.findWhere(commonRestrictions, { date: date }).restrictions;
@@ -781,7 +781,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @param {object} panelRestrictions
      * @returns {Object} 
      */
-    var gatherRestrictionSummary = (dates, commonRestrictions, panelRestrictions) => {
+    var gatherPanelRestrictionSummary = (dates, commonRestrictions, panelRestrictions) => {
         var restrictionSummary = [{
             houseRestrictionSummary: createRestrictionList(dates, commonRestrictions),
             roomTypeRestrictionSummary: createRestrictionList(dates, (panelRestrictions && panelRestrictions.roomTypeRestrictions)),
@@ -798,20 +798,20 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @param {Object} restrictionList
      * @returns {array}
      */
-    var createRestrictionList = (dates, restrictionList) => {
+    var createRestrictionList = (dates, restrictionsList) => {
         var dummyArray;
 
-        if (!restrictionList) {
+        if (!restrictionsList) {
             dummyArray = dates.map((date) => {
                 return [];
             });
         }
         else {
             dummyArray = dates.map((date) => {
-                return _.findWhere(restrictionList, {date: date}).restrictions;
+                return _.findWhere(restrictionsList, {date: date}).restrictions;
             });
         }
-        return dummyArray;
+        return [{restrictionList: dummyArray}];
     };
 
     /*
@@ -1153,7 +1153,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
              * Summary information holds the first row/frozen panel - this is rendered in the header of the grid
              * @type {Array/object}
              */
-            var restrictionSummary = isHierarchyActive() ? gatherRestrictionSummary(dates, commonRestrictions, panelRestrictions) :
+            var restrictionSummary = isHierarchyActive() ? gatherPanelRestrictionSummary(dates, commonRestrictions, panelRestrictions) :
                 [{
                     restrictionList: dates.map((date) => {
                         return _.findWhere(commonRestrictions, { date: date }).restrictions;
@@ -1401,7 +1401,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
              * Summary information holds the first row/frozen panel - this is rendered in the header of the grid
              * @type {Array/object}
              */
-            var restrictionSummary = isHierarchyActive() ? gatherRestrictionSummary(dates, commonRestrictions, panelRestrictions) :
+            var restrictionSummary = isHierarchyActive() ? gatherPanelRestrictionSummary(dates, commonRestrictions, panelRestrictions) :
                 [{
                     restrictionList: dates.map((date) => {
                         return _.findWhere(commonRestrictions, { date: date }).restrictions;
@@ -2157,7 +2157,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                  * Summary information holds the first row - this is rendered in the header of the grid
                  * @type {Array}
                  */
-                var restrictionSummary = isHierarchyActive() ? gatherRestrictionSummary(dates, commonRestrictions, panelRestrictions) :
+                var restrictionSummary = isHierarchyActive() ? gatherPanelRestrictionSummary(dates, commonRestrictions, panelRestrictions) :
                     [{
                         rateDetails: [],
                         restrictionList: dates.map((date) => {
