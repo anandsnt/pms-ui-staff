@@ -631,6 +631,8 @@
                                     .switch-icon {
                                         margin: 0 5px 0 0;
                                         .gradient(@greenStart, @greenEnd);
+
+                                        &.red { .gradient(@redStart, @redEnd); }
                                     }
                                 }
 
@@ -996,6 +998,38 @@
                             textarea {
                                 grid-row: 3;
                                 grid-column: span 2;
+                            }
+                        }
+
+                        &.blacklisted {
+                            width: 100%;
+                            display: grid;
+                            grid-template-columns: 120px calc(~'100% - 130px');
+                            grid-column-gap: 10px;
+
+                            label {
+                                grid-row: 1;
+                            }
+
+                            .switch-button {
+                                grid-row: 2;
+                                height: 40px;
+
+                                input[type="checkbox"] {
+                                    line-height: 40px;
+                                    height: 40px;
+                                }
+
+                                .data-off,
+                                .data-on {
+                                    line-height: 30px;
+                                    height: 30px;
+                                }
+                            }
+
+                            input {
+                                grid-column: 2;
+                                grid-row: 2;
                             }
                         }
                     }

@@ -12,9 +12,12 @@
 	                <div class="notice" ng-class="{'hidden': headerNoticeOnRight.trim() === ''}">
 	                    {{headerNoticeOnRight}}
 	                </div>
+	                <!-- Error Message -->
+	                <div class="notice error" ng-show="errorMessage && errorMessage.length > 0">
+	                    {{errorMessage[0]}}
+	                </div>
             	</div>
 	        </div>
-	        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	        <div class="modal-body">
 	        	<div class="content-left">
                     <span
