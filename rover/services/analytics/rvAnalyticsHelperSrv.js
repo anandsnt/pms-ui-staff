@@ -708,58 +708,5 @@ angular.module('sntRover').service('rvAnalyticsHelperSrv', ['$q', function($q) {
 		});
 		return array;
 	};
-	// TODO: delete after  testing SAMPLE DATA 
-	this.samplePaceCompareDates = [{
-			"date": "2020-02-02",
-			"chartData": [{
-				"new": 10,
-				"cancellation": 0,
-				"on_the_books": 0,
-				"date": "2020-01-30"
-			}, {
-				"new": 0,
-				"cancellation": 0,
-				"on_the_books": 5,
-				"date": "2020-01-31"
-			}, {
-				"new": 0,
-				"cancellation": 8,
-				"on_the_books": 5,
-				"date": "2020-02-01"
-			}, {
-				"new": 0,
-				"cancellation": 0,
-				"on_the_books": 5,
-				"date": "2020-02-02"
-			}]
-		}, {
-			"date": "2020-02-03",
-			"chartData": [{
-				"new": 10,
-				"cancellation": 0,
-				"on_the_books": 0,
-				"date": "2020-01-30"
-			}, {
-				"new": 0,
-				"cancellation": 0,
-				"on_the_books": 5,
-				"date": "2020-01-31"
-			}, {
-				"new": 0,
-				"cancellation": 8,
-				"on_the_books": 5,
-				"date": "2020-02-01"
-			}, {
-				"new": 3,
-				"cancellation": -1,
-				"on_the_books": 5,
-				"date": "2020-02-02"
-			}, {
-				"new": 0,
-				"cancellation": 0,
-				"on_the_books": 7,
-				"date": "2020-02-03"
-			}]
-		}]
 
 }]);

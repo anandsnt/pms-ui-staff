@@ -215,6 +215,10 @@ sntRover.controller('rvAnalyticsMainController', ['$scope',
 			}
 		});
 
+		$scope.$on('RESET_CHART_FILTERS', function () {
+			rvAnalyticsSrv.resetChartFilterSet();
+		});
+
 		(function() {
 			$scope.dashboardFilter.displayMode = 'DASHBOARD_LIST';
 			$scope.screenData = {

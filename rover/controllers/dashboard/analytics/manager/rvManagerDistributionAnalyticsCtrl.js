@@ -523,6 +523,10 @@ angular.module('sntRover')
 						}
 					}
 				});
+				//  sort keys by alphabetically
+				$scope.gridLeftSideHeaders = _.sortBy($scope.gridLeftSideHeaders, function(sideHeader) {
+					return sideHeader
+				});
 
 				var today = $rootScope.businessDate;
 
