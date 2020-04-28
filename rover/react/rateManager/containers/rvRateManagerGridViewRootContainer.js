@@ -14,13 +14,26 @@ const shouldShowGridViewRootContainer = (state) => {
 	return (listOfModesNotShowing.indexOf(state.mode) === -1);
 };
 
+const hierarchyRestrictionsActive = (state) => {
+    return (
+        state.isHierarchyHouseRestrictionEnabled ||
+        state.isHierarchyRoomTypeRestrictionEnabled ||
+        state.isHierarchyRateTypeRestrictionEnabled ||
+        state.isHierarchyRateRestrictionEnabled
+    );
+};
+
 const mapStateToRateManagerGridViewRootComponentProps = (state) => {
 	return {
         shouldShow          : shouldShowGridViewRootContainer(state),
         mode                : state.mode,
         refreshScrollers    : (state.action === RM_RX_CONST.REFRESH_SCROLLERS),
         scrollTo            : state.scrollTo,
-        paginationStateData : state.paginationState
+        paginationStateData : state.paginationState,
+        hierarchyRestrictionClass: state.hierarchyRestrictionClass,
+        showHierarchyHeader: hierarchyRestrictionsActive(state),
+        toggleFunction: state.callBacksFromAngular && state.callBacksFromAngular.handlePanelToggle,
+        frozenPanelClass: state.frozenPanelClass
     };
 };
 
@@ -37,9 +50,16 @@ const mapDispatchToRateManagerGridViewRootComponentProps = (stateProps, dispatch
         wrapperClass += ' load-bottom';
     }
 
+    if (stateProps.toggleFunction) {
+        var handleToggler = () => {
+            stateProps.toggleFunction(stateProps.frozenPanelClass);
+        };
+    }
+
     return {
     	...stateProps,
-        wrapperClass 
+        wrapperClass,
+        handleToggler 
     };    
 };
 

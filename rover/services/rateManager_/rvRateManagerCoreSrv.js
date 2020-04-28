@@ -159,6 +159,9 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                 );
             }
 
+            // uncomment the following code when working on displaying data for rate/rateType/roomType frozen panel
+            // fetchPanelRestritctions(promises, response);
+
             if (params.fetchRoomTypes) {
                 promises.push(service.fetchRoomTypes().then((data) => {
                     response.roomTypes = data;
@@ -204,6 +207,8 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                     })
                 );
             }
+            // uncomment the following code when working on displaying data for rateType frozen panel
+            // fetchPanelRestritctions(promises, response);
 
             if (params.fetchRoomTypes) {
                 promises.push(service.fetchRoomTypes().then((data) => {
@@ -241,6 +246,8 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                     })
                 );
             }
+            // uncomment the following code when working on displaying data for rateType frozen panel
+            // fetchPanelRestritctions(promises, response);
 
             if (params.fetchRateTypes) {
                 promises.push(service.fetchRateTypeList().then((data) => {
@@ -252,6 +259,29 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                 deferred.resolve(response);
             });
             return deferred.promise;
+        };
+
+        var fetchPanelRestritctions = (promises, response) => {
+            // Adding as part of CICO-77002, laying out base. House panel restrictions to be added in later story
+            // as it is currently taken as common restriction which has use in many other places.
+            var activeHierarchies = rvRateManagerRestrictionsSrv.activeHierarchyRestrictions();
+
+            // each of the following functions are to be defined as part of future stories where the panel restrictions will be handled
+            if (activeHierarchies.rate_types) {
+                promises.push(service.fetchRateTypePanelRestrictions().then((data) => {
+                    response.panelRestrictions.rateTypeRestrictions = rvRateManagerRestrictionsSrv.formatRestrictionsData(data.results, {forPanel: true});
+                }));
+            }
+            if (activeHierarchies.room_types) {
+                promises.push(service.fetchRoomTypePanelRestrictions().then((data) => {
+                    response.panelRestrictions.roomTypeRestrictions = rvRateManagerRestrictionsSrv.formatRestrictionsData(data.results, {forPanel: true});
+                }));
+            }
+            if (activeHierarchies.rates) {
+                promises.push(service.fetchRatePanelRestrictions().then((data) => {
+                    response.panelRestrictions.rateRestrictions = rvRateManagerRestrictionsSrv.formatRestrictionsData(data.results, {forPanel: true});
+                }));
+            }
         };
 
         /**
@@ -648,6 +678,9 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                     })
                 );
             }
+
+            // uncomment the following code when working on displaying data for rate/rateType/roomType frozen panel
+            // fetchPanelRestritctions(promises, response);
 
             if (params.fetchRates) {
                 promises.push(service.fetchRates().then((data) => {
