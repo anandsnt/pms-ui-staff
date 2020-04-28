@@ -22,6 +22,12 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
             return response;
         };
 
+        /*
+         *  Concat two lists for restrictions list values and rate amount.
+         *  @param {Array}  [ rateAmountList - API response with amount and currency values ]
+         *  @param {Array}  [ rate restrictions list ]
+         *  @return {Array} [ Merged list ]
+         */
         service.concatRateWithAmount = function(rateAmountList, rateRestrictionsList) {
             if (rateAmountList.length > 0) {
                 for ( let i = 0; i < rateAmountList.length; i++ ) {

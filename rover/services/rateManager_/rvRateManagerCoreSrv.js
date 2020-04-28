@@ -646,9 +646,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
 
             promises.push(service.fetchMultipleRateInfo(paramsForRateAPI).then((data) => {
                 if (params.hierarchialRateRestrictionRequired) {
-                    console.log(data.results);
                     data.results = rvRateManagerRestrictionsSrv.concatRateWithAmount(response.rateAmountList, data.results);
-                    console.log(data.results);
                     response.dailyRateAndRestrictions =  rvRateManagerRestrictionsSrv.processRateRestrictionResponse(data.results);
                 }
                 else {
