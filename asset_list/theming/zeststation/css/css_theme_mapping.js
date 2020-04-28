@@ -127,7 +127,8 @@ module.exports = {
             'first-v2': [themeCSSRoot + 'first-v2.less'],
             'waldhotel-davos': [themeCSSRoot + 'waldhotel-davos.less'],
             'autocamp': [themeCSSRoot + 'autocamp.less'],
-            'margaritaville': [themeCSSRoot + 'margaritaville.less']
+            'margaritaville': [themeCSSRoot + 'margaritaville.less'],
+            'hotel-171': [themeCSSRoot + 'hotel-171.less']
         };
     }
 };
