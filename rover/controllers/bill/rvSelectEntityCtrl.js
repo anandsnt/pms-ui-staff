@@ -54,7 +54,8 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
 		var dataDict = {
 			'page': $scope.paginationAccData.page,
 			'per_page': $scope.paginationAccData.perPage,
-			'query': $scope.textInQueryBox.trim(), 
+			'query': $scope.textInQueryBox.trim(),
+			'is_from_bill_routing': true,
 			'has_ar_number': !$scope.hasArNumber};
 
 	    $scope.invokeApi(RVCompanyCardSearchSrv.fetch, dataDict, searchSuccessCards);	
@@ -107,7 +108,8 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
 		var dataDict = {
 			'page': $scope.paginationAccData.page,
 			'per_page': $scope.paginationAccData.perPage,
-			'query': $scope.textInQueryBox.trim(), 
+			'query': $scope.textInQueryBox.trim(),
+			'is_from_bill_routing': true,
 			'has_ar_number': $scope.hasArNumber};
 
 	    $scope.invokeApi(RVCompanyCardSearchSrv.fetch, dataDict, searchSuccessCards);	      
