@@ -146,7 +146,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             "guestweb_waldhotel_davos": "waldhotel-davos",
             "guestweb_autocamp": "autocamp",
             "guestweb_margaritaville_lake_resort": "margaritaville",
-            "guestweb_hotel_171": "hotel-171"
+            "guestweb_hotel_171": "hotel-171",
+            "guestweb_beachside_resort_and_suites": "beachside"
         };
 
 
