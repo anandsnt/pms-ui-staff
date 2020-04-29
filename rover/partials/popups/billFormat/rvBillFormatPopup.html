@@ -81,21 +81,6 @@
             </div>
         </div>
 
-        <div class="entry full-width" ng-hide="hideCompanyOrGuestInvoiceToggle">
-            <label>Generate Invoice for</label>
-            <div class="switch-button" ng-class="{'on': !isCompanyInvoice, 'overlay': disableCompanyGuestToggle }">
-                <input type="checkbox" ng-model="isCompanyInvoice" ng-change="changeCompanyorGuestInvoiceToggle()" />
-                <label class="data-off">
-                    <span class="value">Guest</span>
-                    <span class="switch-icon">Company</span>
-                </label>
-                <label class="data-on">
-                    <span class="switch-icon">Guest</span>
-                    <span class="value">Company</span>
-                </label>
-            </div>
-        </div>
-
         <div class="entry full-width" ng-if="!shouldGenerateFinalInvoice">
             <label class="checkbox inline" ng-class="{checked: billFormat.isInformationalInvoice, disabled: billFormat.isInformationalInvoiceDisabled }">
                 <span class="icon-form icon-checkbox" ng-class="{checked: billFormat.isInformationalInvoice, disabled: billFormat.isInformationalInvoiceDisabled}">
