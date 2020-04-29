@@ -6,13 +6,25 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
   	$scope.results.accounts = [];
 	$scope.results.posting_accounts  = [];
 	$scope.results.reservations = [];
+	$scope.showPagination = false;
 
   	var scrollerOptions = {click: true, preventDefault: false};
 
     $scope.setScroller('cards_search_scroller', scrollerOptions);
     $scope.setScroller('res_search_scroller', scrollerOptions);
     $scope.refreshScroller('cards_search_scroller');
-    $scope.refreshScroller('res_search_scroller');
+	$scope.refreshScroller('res_search_scroller');
+	$scope.paginationData = {
+		'page': 1,
+		'perPage': 5,
+		'totalCount': 0
+		};
+	$scope.paginationAccData = {
+		'page': 1,
+		'perPage': 5,
+		'totalCount': 0
+		};
+	
 
     var scrollerOptions = { preventDefault: false};
 
@@ -39,7 +51,11 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
 	};
 	
 	$scope.filterArAccounts = function() {
-		var dataDict = {'query': $scope.textInQueryBox.trim(), 'has_ar_number': !$scope.hasArNumber};
+		var dataDict = {
+			'page': $scope.paginationAccData.page,
+			'per_page': $scope.paginationAccData.perPage,
+			'query': $scope.textInQueryBox.trim(), 
+			'has_ar_number': !$scope.hasArNumber};
 
 	    $scope.invokeApi(RVCompanyCardSearchSrv.fetch, dataDict, searchSuccessCards);	
 	};
@@ -63,7 +79,9 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
   	* function to clear the entity search text
   	*/
 	$scope.clearResults = function() {
-	  	$scope.textInQueryBox = "";
+		$scope.textInQueryBox = "";
+		$scope.showPagination = false;
+		$scope.isReservationActive = true;
 	  	$scope.refreshScroller('entities');
 	};
   	var searchSuccessCards = function(data) {
@@ -72,6 +90,9 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
 		$scope.results.accounts = data.accounts;
 		$scope.results.posting_accounts = [];
 		$scope.results.posting_accounts = data.posting_accounts;
+		$scope.paginationAccData.totalCount = data.total_count;
+		$scope.$broadcast('updatePagination', 'ACC_PAGINATION');
+		$scope.showPagination = $scope.isShowPagination();
         setTimeout(function() {
             $scope.refreshScroller('cards_search_scroller');
         }, 750);
@@ -80,8 +101,13 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
   	* function to perform filering on results.
   	* if not fouund in the data, it will request for webservice
   	*/
-  	var displayFilteredResultsCards = function() {
-		var dataDict = {'query': $scope.textInQueryBox.trim(), 'has_ar_number': $scope.hasArNumber};
+  	var displayFilteredResultsCards = function( pageNo ) {
+		$scope.paginationAccData.page = pageNo || 1;
+		var dataDict = {
+			'page': $scope.paginationAccData.page,
+			'per_page': $scope.paginationAccData.perPage,
+			'query': $scope.textInQueryBox.trim(), 
+			'has_ar_number': $scope.hasArNumber};
 
 	    $scope.invokeApi(RVCompanyCardSearchSrv.fetch, dataDict, searchSuccessCards);	      
   	};
@@ -108,7 +134,11 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
 	var searchSuccessReservations = function(data) {
         $scope.$emit('hideLoader');
         $scope.results.reservations = [];
-		$scope.results.reservations = data;
+		$scope.results.reservations = data.results;
+		$scope.paginationData.totalCount = data.total_count;
+		$scope.results.total_result = data.total_count;
+		$scope.showPagination = $scope.isShowPagination();
+		$scope.$broadcast('updatePagination', 'RES_PAGINATION');
 		if ($scope.billingEntity !== "TRAVEL_AGENT_DEFAULT_BILLING" &&
                 $scope.billingEntity !== "COMPANY_CARD_DEFAULT_BILLING" &&
                 $scope.billingEntity !== "GROUP_DEFAULT_BILLING" &&
@@ -136,21 +166,56 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
 	    fetchSearchResults();	    
 	};
 
-	var fetchSearchResults = function() {
-		var dataDict = {'query': $scope.textInQueryBox.trim()};
+	var fetchSearchResults = function( pageNo ) {
+		$scope.paginationData.page = pageNo || 1;
+		var dataDict = {
+			'page': $scope.paginationData.page,
+			'per_page': $scope.paginationData.perPage,
+			'is_from_bill_routing': true,
+			'query': $scope.textInQueryBox.trim()
+		};
 		
 		dataDict.is_from_bill_routing = true;
 
 		if ($rootScope.isSingleDigitSearch && !isNaN($scope.textInQueryBox) && $scope.textInQueryBox.length < 3) {
 			dataDict.room_search = true;
 		}
-		$scope.invokeApi(RVSearchSrv.fetch, dataDict, searchSuccessReservations, failureCallBackofDataFetch);
+		$scope.invokeApi(RVSearchSrv.fetchReservationForBillingInfo, dataDict, searchSuccessReservations, failureCallBackofDataFetch);
 	};
 
 	// Toggle between Reservations , Cards
 	$scope.toggleClicked = function(flag) {
 		$scope.isReservationActive = flag;
 		($scope.isReservationActive) ? displayFilteredResultsReservations() : displayFilteredResultsCards();
+	};
+
+	// Setting pagination object for reaservation
+    $scope.reservationPaginationObj = {
+        id: 'RES_PAGINATION',
+        api: fetchSearchResults,
+        perPage: $scope.paginationData.perPage
+	};
+	
+	// Setting pagination object for accounts
+    $scope.accountsPaginationObj = {
+        id: 'ACC_PAGINATION',
+        api: displayFilteredResultsCards,
+        perPage: $scope.paginationAccData.perPage
+	};
+
+	/* 	Is show pagination tab
+	 *	@return { boolean } 
+	 */
+	$scope.isShowPagination = function() {
+		$scope.showPagination = false;
+		var searchResult = $scope.results;
+		var totalCount = $scope.results.total_result;
+		if ($scope.isReservationActive ) {
+				return searchResult.reservations && $scope.textInQueryBox && searchResult.reservations.length < totalCount && searchResult.reservations.length > 0;
+			} else  {
+				var totalCards = searchResult.accounts.length + searchResult.posting_accounts.length;
+				return (searchResult.accounts || searchResult.posting_accounts) && $scope.textInQueryBox && totalCards < totalCount &&  totalCards > 0;
+			}
 	};
 
 }]);
