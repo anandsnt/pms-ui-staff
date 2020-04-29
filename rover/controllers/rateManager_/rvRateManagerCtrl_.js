@@ -752,7 +752,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
          * Summary information holds the first row/frozen panel - this is rendered in the header of the grid
          * @type {Array/object}
          */
-        var restrictionSummary = isHierarchyActive() ? gatherRestrictionSummary(dates, commonRestrictions, panelRestrictions) :
+        var restrictionSummary = isHierarchyActive() ? gatherPanelRestrictionSummary(dates, commonRestrictions, panelRestrictions) :
             [{
                 restrictionList: dates.map((date) => {
                     return _.findWhere(commonRestrictions, { date: date }).restrictions;
@@ -781,23 +781,37 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @param {object} panelRestrictions
      * @returns {Object} 
      */
-    var gatherRestrictionSummary = (dates, commonRestrictions, panelRestrictions) => {
+    var gatherPanelRestrictionSummary = (dates, commonRestrictions, panelRestrictions) => {
         var restrictionSummary = [{
-            houseRestrictionSummary: dates.map((date) => {
-                return _.findWhere(commonRestrictions, {date: date}).restrictions;
-            }),
-            roomTypeRestrictionSummary: (panelRestrictions && dates.map((date) => {
-                return _.findWhere(panelRestrictions.roomTypeRestrictions, {date: date}).restrictions;
-            })) || [],
-            rateTypeRestrictionSummary: (panelRestrictions && dates.map((date) => {
-                return _.findWhere(panelRestrictions.rateTypeRestrictions, {date: date}).restrictions;
-            })) || [],
-            rateRestrictionSummary: (panelRestrictions && dates.map((date) => {
-                return _.findWhere(panelRestrictions.rateRestrictions, {date: date}).restrictions;
-            })) || []
+            houseRestrictionSummary: createRestrictionList(dates, commonRestrictions),
+            roomTypeRestrictionSummary: createRestrictionList(dates, (panelRestrictions && panelRestrictions.roomTypeRestrictions)),
+            rateTypeRestrictionSummary: createRestrictionList(dates, (panelRestrictions && panelRestrictions.rateTypeRestrictions)),
+            rateRestrictionSummary: createRestrictionList(dates, (panelRestrictions && panelRestrictions.rateRestrictions))
         }];
 
         return restrictionSummary;
+    };
+
+    /**
+     * restriction list generator
+     * @param {Array} dates
+     * @param {Object} restrictionList
+     * @returns {array}
+     */
+    var createRestrictionList = (dates, restrictionsList) => {
+        var dummyArray;
+
+        if (!restrictionsList) {
+            dummyArray = dates.map((date) => {
+                return [];
+            });
+        }
+        else {
+            dummyArray = dates.map((date) => {
+                return _.findWhere(restrictionsList, {date: date}).restrictions;
+            });
+        }
+        return [{restrictionList: dummyArray}];
     };
 
     /*
@@ -1139,7 +1153,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
              * Summary information holds the first row/frozen panel - this is rendered in the header of the grid
              * @type {Array/object}
              */
-            var restrictionSummary = isHierarchyActive() ? gatherRestrictionSummary(dates, commonRestrictions, panelRestrictions) :
+            var restrictionSummary = isHierarchyActive() ? gatherPanelRestrictionSummary(dates, commonRestrictions, panelRestrictions) :
                 [{
                     restrictionList: dates.map((date) => {
                         return _.findWhere(commonRestrictions, { date: date }).restrictions;
@@ -1387,7 +1401,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
              * Summary information holds the first row/frozen panel - this is rendered in the header of the grid
              * @type {Array/object}
              */
-            var restrictionSummary = isHierarchyActive() ? gatherRestrictionSummary(dates, commonRestrictions, panelRestrictions) :
+            var restrictionSummary = isHierarchyActive() ? gatherPanelRestrictionSummary(dates, commonRestrictions, panelRestrictions) :
                 [{
                     restrictionList: dates.map((date) => {
                         return _.findWhere(commonRestrictions, { date: date }).restrictions;
@@ -2143,7 +2157,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                  * Summary information holds the first row - this is rendered in the header of the grid
                  * @type {Array}
                  */
-                var restrictionSummary = isHierarchyActive() ? gatherRestrictionSummary(dates, commonRestrictions, panelRestrictions) :
+                var restrictionSummary = isHierarchyActive() ? gatherPanelRestrictionSummary(dates, commonRestrictions, panelRestrictions) :
                     [{
                         rateDetails: [],
                         restrictionList: dates.map((date) => {
