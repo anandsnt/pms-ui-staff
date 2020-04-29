@@ -16,12 +16,12 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
 	$scope.refreshScroller('res_search_scroller');
 	$scope.paginationData = {
 		'page': 1,
-		'perPage': 5,
+		'perPage': 10,
 		'totalCount': 0
 		};
 	$scope.paginationAccData = {
 		'page': 1,
-		'perPage': 5,
+		'perPage': 10,
 		'totalCount': 0
 		};
 	
@@ -90,9 +90,10 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
 		$scope.results.accounts = data.accounts;
 		$scope.results.posting_accounts = [];
 		$scope.results.posting_accounts = data.posting_accounts;
+		$scope.results.total_result = data.total_count;
 		$scope.paginationAccData.totalCount = data.total_count;
-		$scope.$broadcast('updatePagination', 'ACC_PAGINATION');
 		$scope.showPagination = $scope.isShowPagination();
+		$scope.$broadcast('updatePagination', 'ACC_PAGINATION');
         setTimeout(function() {
             $scope.refreshScroller('cards_search_scroller');
         }, 750);
