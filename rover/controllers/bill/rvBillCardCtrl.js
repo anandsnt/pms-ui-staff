@@ -3404,6 +3404,15 @@ sntRover.controller('RVbillCardController',
 		!$scope.reservationBillData.bills[$scope.currentActiveBill].is_void_bill &&
 		!isDbpaymentExistsForThisBill;
 	};
+	$scope.$on("CARD_REMOVED", function() {
+		$scope.reservationBillData.bills[0].show_invoice_type_toggle = false;
+	});
+
+	$scope.$on("COMPANY_ADDED", function() {
+		$scope.reservationBillData.bills[0].show_invoice_type_toggle = true;
+		
+	});
+	
 	/*
 	 * Open void bill popup
 	 */
