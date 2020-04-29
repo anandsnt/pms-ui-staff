@@ -187,7 +187,7 @@ angular.module('sntRover').service('RVreportsSrv', [
             ],
             'Guest Details by Arrival Date': [
                 'YESTERDAY',
-                'DATE' 
+                'DATE'
             ],
             'Cancellations by Arrival Date': [
                 'YESTERDAY',
@@ -269,7 +269,11 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'LAST_DECEMBER',
                 'NEXT_MONTH' ,
                 'LAST_SEVEN_DAYS',
-                'NEXT_SEVEN_DAYS'
+                'NEXT_SEVEN_DAYS',
+                'CURRENT_MONTH',
+                'CURRENT_MONTH_PLUS_ONE',
+                'CURRENT_MONTH_PLUS_TWO',
+                'CURRENT_MONTH_PLUS_THREE'
              ],
              'Daily Transactions': [
                 'YESTERDAY',
@@ -286,20 +290,20 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'LAST_SEPTEMBER',
                 'LAST_OCTOBER',
                 'LAST_NOVEMBER',
-                'LAST_DECEMBER'                
+                'LAST_DECEMBER'
              ],
              'Action Manager': [
                 'YESTERDAY',
                 'TODAY',
                 'TOMORROW',
                 'LAST_SEVEN_DAYS',
-                'NEXT_SEVEN_DAYS'             
+                'NEXT_SEVEN_DAYS'
              ],
              'Financial Transactions - Adjustment Report': [
                 'YESTERDAY',
                 'TODAY',
                 'LAST_SEVEN_DAYS',
-                'LAST_MONTH'                             
+                'LAST_MONTH'
              ],
              'Forecast': [
                 'LAST_SEVEN_DAYS',
@@ -319,7 +323,50 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'LAST_NOVEMBER',
                 'LAST_DECEMBER',
                 'LAST_THIRTY_DAYS',
-                'NEXT_THIRTY_DAYS'
+                'NEXT_THIRTY_DAYS',
+                'CURRENT_MONTH',
+                'CURRENT_MONTH_PLUS_ONE',
+                'CURRENT_MONTH_PLUS_TWO',
+                'CURRENT_MONTH_PLUS_THREE'
+             ],
+             'Reservations By User:CREATE_DATE_RANGE': [
+                'YESTERDAY',
+                'LAST_SEVEN_DAYS',
+                'LAST_THIRTY_DAYS',
+                'LAST_MONTH',
+                'LAST_JANUARY',
+                'LAST_FEBRUARY',
+                'LAST_MARCH',
+                'LAST_APRIL',
+                'LAST_MAY',
+                'LAST_JUNE',
+                'LAST_JULY',
+                'LAST_AUGUST',
+                'LAST_SEPTEMBER',
+                'LAST_OCTOBER',
+                'LAST_NOVEMBER',
+                'LAST_DECEMBER'
+             ],
+             'Reservations By User:ARRIVAL_DATE_RANGE': [
+                'YESTERDAY',
+                'LAST_SEVEN_DAYS',
+                'LAST_THIRTY_DAYS',
+                'LAST_MONTH',
+                'LAST_JANUARY',
+                'LAST_FEBRUARY',
+                'LAST_MARCH',
+                'LAST_APRIL',
+                'LAST_MAY',
+                'LAST_JUNE',
+                'LAST_JULY',
+                'LAST_AUGUST',
+                'LAST_SEPTEMBER',
+                'LAST_OCTOBER',
+                'LAST_NOVEMBER',
+                'LAST_DECEMBER',
+                'NEXT_SEVEN_DAYS',
+                'NEXT_THIRTY_DAYS',
+                'NEXT_MONTH'
              ]
         };
 
@@ -415,7 +462,7 @@ angular.module('sntRover').service('RVreportsSrv', [
             }, function () {
                 deferred.resolve(payload);
             });
-            
+
         }
 
         function schedulePayloadGenerator (type) {
@@ -462,7 +509,7 @@ angular.module('sntRover').service('RVreportsSrv', [
 
             subSrv.fetchFtpServers()
                 .then( success.bind(null, 'ftpServerList'), failed.bind(null, 'ftpServerList', []) );
-            
+
             customExportSrv.getCloudDrives('DROP_BOX')
                 .then( success.bind(null, 'dropBoxAccounts'), failed.bind(null, 'ftpServerList', []) );
 
@@ -633,19 +680,19 @@ angular.module('sntRover').service('RVreportsSrv', [
             reportUtils.processGroupBy( report );
 
         };
-        
+
         service.setSelectedReport = function (item) {
             selectedReport = item;
         };
-        
+
         service.getSelectedReport = function () {
             return selectedReport;
         };
-        
+
         service.saveCofigurationData = function (data) {
             config = data;
         };
-        
+
         service.getCofigurationData = function () {
             return config;
         };
