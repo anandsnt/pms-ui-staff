@@ -670,12 +670,12 @@ sntRover.controller('RVbillCardController',
 	};
 
 	$scope.setBillAddressType = function() {
-		$scope.reservationBillData.bill_address_type = $scope.reservationBillData.bill_address_type === 'COMPANY' ? 'GUEST' : 'COMPANY'
+		$scope.reservationBillData.bills[0].bill_address_type = $scope.reservationBillData.bills[0].bill_address_type === 'COMPANY' ? 'GUEST' : 'COMPANY'
 		$timeout(function() {
 			var dataToSend = {
 				params: {
 					"parmasToApi": {
-						"bill_address_type": $scope.reservationBillData.bill_address_type
+						"bill_address_type": $scope.reservationBillData.bills[0].bill_address_type
 					},
 					"bill_id": $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id
 				}
