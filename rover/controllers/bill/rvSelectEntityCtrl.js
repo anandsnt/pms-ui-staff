@@ -1,4 +1,4 @@
-sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'RVBillinginfoSrv', 'ngDialog', 'RVCompanyCardSearchSrv', 'RVSearchSrv', function($scope, $rootScope, $filter, RVBillinginfoSrv, ngDialog, RVCompanyCardSearchSrv, RVSearchSrv) {
+sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'RVBillinginfoSrv', 'ngDialog', 'RVCompanyCardSearchSrv', 'RVSearchSrv', '$timeout', function($scope, $rootScope, $filter, RVBillinginfoSrv, ngDialog, RVCompanyCardSearchSrv, RVSearchSrv, $timeout,) {
 	BaseCtrl.call(this, $scope);
 
 	$scope.textInQueryBox = "";
@@ -91,10 +91,12 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
 		$scope.results.accounts = data.accounts;
 		$scope.results.posting_accounts = [];
 		$scope.results.posting_accounts = data.posting_accounts;
-		$scope.results.total_result = data.total_count;
+		$scope.totalCards = angular.copy(data.total_count);
 		$scope.paginationAccData.totalCount = data.total_count;
 		$scope.showPagination = $scope.isShowPagination();
-		$scope.$broadcast('updatePagination', 'ACC_PAGINATION');
+		$timeout(function() {
+			$scope.$broadcast('updatePagination', 'ACC_PAGINATION');
+        }, 100);    
         setTimeout(function() {
             $scope.refreshScroller('cards_search_scroller');
         }, 750);
@@ -139,9 +141,8 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
         $scope.results.reservations = [];
 		$scope.results.reservations = data.results;
 		$scope.paginationData.totalCount = data.total_count;
-		$scope.results.total_result = data.total_count;
+		$scope.totalReservation = data.total_count;
 		$scope.showPagination = $scope.isShowPagination();
-		$scope.$broadcast('updatePagination', 'RES_PAGINATION');
 		if ($scope.billingEntity !== "TRAVEL_AGENT_DEFAULT_BILLING" &&
                 $scope.billingEntity !== "COMPANY_CARD_DEFAULT_BILLING" &&
                 $scope.billingEntity !== "GROUP_DEFAULT_BILLING" &&
@@ -149,6 +150,9 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
 
 				$scope.excludeActivereservationFromsSearch();
 		}
+		$timeout(function() {
+			$scope.$broadcast('updatePagination', 'RES_PAGINATION');
+        }, 100); 
         setTimeout(function() {
             $scope.refreshScroller('res_search_scroller');
         }, 750);
@@ -212,12 +216,11 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
 	$scope.isShowPagination = function() {
 		$scope.showPagination = false;
 		var searchResult = $scope.results;
-		var totalCount = $scope.results.total_result;
 		if ($scope.isReservationActive ) {
-				return searchResult.reservations && $scope.textInQueryBox && searchResult.reservations.length < totalCount && searchResult.reservations.length > 0;
+				return searchResult.reservations && $scope.textInQueryBox && searchResult.reservations.length < $scope.totalReservation && searchResult.reservations.length > 0;
 			} else  {
-				var totalCards = searchResult.accounts.length + searchResult.posting_accounts.length;
-				return (searchResult.accounts || searchResult.posting_accounts) && $scope.textInQueryBox && totalCards < totalCount &&  totalCards > 0;
+				var totalCardsLength = searchResult.accounts.length + searchResult.posting_accounts.length;
+				return (searchResult.accounts || searchResult.posting_accounts) && $scope.textInQueryBox && totalCardsLength < $scope.totalCards &&  totalCardsLength > 0;
 			}
 	};
 
