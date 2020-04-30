@@ -167,12 +167,10 @@ sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope'
     rvAnalyticsSrv.selectedRoomType = "";
   };
 
-  $scope.$on('RESET_CHART_FILTERS', function() {
-    resetHKFilters();
-  });
+  $scope.$on('RESET_CHART_FILTERS', resetHKFilters);
 
   $scope.clearAllFilters = function () {
-    resetHKFilters();
+    $scope.dashboardFilter.selectedRoomType = "";
   };
 
 }]);
