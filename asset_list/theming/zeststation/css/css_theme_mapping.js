@@ -130,7 +130,8 @@ module.exports = {
             'margaritaville': [themeCSSRoot + 'margaritaville.less'],
             'hotel-171': [themeCSSRoot + 'hotel-171.less'],
             'beachside': [themeCSSRoot + 'beachside.less'],
-            'under-canvas': [themeCSSRoot + 'under-canvas.less']
+            'under-canvas': [themeCSSRoot + 'under-canvas.less'],
+            'botanic-sanctuary': [themeCSSRoot + 'botanic-sanctuary.less']
         };
     }
 };
