@@ -86,7 +86,8 @@ angular.module('sntRover')
                         // CICO-75894
                         formValid = (
                             $scope.selectedRestriction.type === 'number' &&
-                            $scope.selectedRestriction.value
+                            $scope.selectedRestriction.value &&
+                            $scope.selectedRestriction.value > 0
                         ) || $scope.selectedRestriction.type === "boolean";
                     }
                     return formValid;
@@ -95,13 +96,13 @@ angular.module('sntRover')
                 $scope.setHouseHierarchyRestriction = () => {
                     var restrictions = {};
 
-                    restrictions[$scope.selectedRestriction.key] = $scope.selectedRestriction.type === 'number' ? $scope.selectedRestriction.value : true;
+                    restrictions[$scope.selectedRestriction.key] = $scope.selectedRestriction.type === 'number' ? Math.round($scope.selectedRestriction.value) : true;
                     var params = {
                         from_date: $scope.ngDialogData.date,
                         to_date: $scope.ngDialogData.date,
                         restrictions 
-                    }, houseRestrictionSuccessCallback = (response) => {            
-                        $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS, dataFromPopupToParent);
+                    }, houseRestrictionSuccessCallback = (response) => {
+                        $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
                         $scope.closeDialog();
                     }, options = {
                         params: params,
