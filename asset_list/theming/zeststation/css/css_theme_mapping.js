@@ -129,7 +129,8 @@ module.exports = {
             'autocamp': [themeCSSRoot + 'autocamp.less'],
             'margaritaville': [themeCSSRoot + 'margaritaville.less'],
             'hotel-171': [themeCSSRoot + 'hotel-171.less'],
-            'beachside': [themeCSSRoot + 'beachside.less']
+            'beachside': [themeCSSRoot + 'beachside.less'],
+            'under-canvas': [themeCSSRoot + 'under-canvas.less']
         };
     }
 };
