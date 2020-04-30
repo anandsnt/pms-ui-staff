@@ -125,7 +125,10 @@ module.exports = {
             'sage-inn-v2': [themeCSSRoot + 'sage-inn-v2.less'],
             'lake-house': [themeCSSRoot + 'lake-house.less'],
             'first-v2': [themeCSSRoot + 'first-v2.less'],
-            'waldhotel-davos': [themeCSSRoot + 'waldhotel-davos.less']
+            'waldhotel-davos': [themeCSSRoot + 'waldhotel-davos.less'],
+            'margaritaville': [themeCSSRoot + 'margaritaville.less'],
+            'beachside': [themeCSSRoot + 'beachside.less'],
+            'hotel-171': [themeCSSRoot + 'hotel-171.less']
         };
     }
 };
