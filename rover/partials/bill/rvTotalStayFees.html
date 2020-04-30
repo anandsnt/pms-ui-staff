@@ -37,8 +37,8 @@
         {{ 'DONT_PRINT_RATE' | translate }}
 	</label>
 	<!-- Show only during checkout and only for bill #1 -->
-	<label class="checkbox inline" ng-click="setBillAddressType()"  ng-show="currentActiveBill === 0 && billData.show_invoice_type_toggle" ng-class="{'overlay' : !billData.is_active, 'checked': billData.bill_address_type === 'COMPANY'}"> <!-- Add class "checked" if checked -->
-		<span class="icon-form icon-checkbox" ng-class="{ 'checked': billData.bill_address_type === 'COMPANY' }"></span> <!-- Add class "checked" if checked -->
+	<label class="checkbox inline" ng-click="setBillAddressType()"  ng-show="currentActiveBill === 0 && billData.show_invoice_type_toggle" ng-class="{'overlay' : !billData.is_active }"> <!-- Add class "checked" if checked -->
+		<span class="icon-form icon-checkbox" ng-class="{ 'checked':billData.bill_address_type === 'COMPANY' }"></span> <!-- Add class "checked" if checked -->
 		<input type="checkbox" >
 		Use Company Address
 	</label>
