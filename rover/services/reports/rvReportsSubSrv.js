@@ -797,6 +797,60 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             return deferred.promise;
         };        
 
+        /**
+         * Fetch work types 
+         * @return {Promise}
+         */
+        service.fetchWorkTypes = () => {
+            var deferred = $q.defer(),
+                url = 'api/work_types';
+
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                deferred.resolve(data.results);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+
+        };
+
+        /**
+         * Fetch Front Office Status
+         * @return {Promise}
+         */
+        service.fetchFrontOfficeStatus = () => {
+            var deferred = $q.defer(),
+                url = 'api/reference_values?type=front_office_status';
+
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+            
+        };
+
+        /**
+         * Fetch Housekeeping Status
+         * @return {Promise}
+         */
+        service.fetchHouseKeepingStatus = () => {
+            var deferred = $q.defer(),
+                url = 'api/reference_values?type=housekeeping_status';
+
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+
+        };
+
         return service;
     }
 ]);

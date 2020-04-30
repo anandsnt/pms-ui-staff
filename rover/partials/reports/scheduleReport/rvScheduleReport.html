@@ -41,7 +41,7 @@
             <h3>Schedule Parameters<span>{{ selectedEntityDetails.report.title }}</span></h3>
             <multi-option-selection ng-show="filters.hasShow && filters.hasShow.data.length" label="Show" on-update="refreshSecondColumnScroll" data="filters.hasShow.data" options="filters.hasShow.options">
             </multi-option-selection>
-            <div class="entry" ng-hide="isGuestBalanceReport || isYearlyTaxReport || isCreditCheckReport || isReservationsByUserReport">
+            <div class="entry" ng-hide="isGuestBalanceReport || isYearlyTaxReport || isCreditCheckReport || isReservationsByUserReport || isRoomStatusReport">
                 <label for="time-period">Time Period</label>
                 <div class="select">
                     <select ng-model="scheduleParams.time_period_id" ng-options="timePeriod.id as timePeriod.description for timePeriod in scheduleTimePeriods" ng-disabled="isGuestBalanceReport" iscroll-stop-propagation>
@@ -128,7 +128,15 @@
             <multi-option-selection ng-show="filters.hasGuaranteeTypeList" label="Guarantee Type(s)" on-update="refreshSecondColumnScroll" data="filters.hasGuaranteeTypeList.data" options="filters.hasGuaranteeTypeList.options"></multi-option-selection>
             <multi-option-selection ng-show="filters.hasRateCodeList" label="Rate" on-update="refreshSecondColumnScroll" data="filters.hasRateCodeList.data" options="filters.hasRateCodeList.options"></multi-option-selection>
             <multi-option-selection ng-show="filters.hasRoomTypeList" label="Room Types" on-update="refreshSecondColumnScroll" data="filters.hasRoomTypeList.data" options="filters.hasRoomTypeList.options"></multi-option-selection>
-            
+            <multi-option-selection ng-show="filters.hasReservationStatus" label="Reservation Status" on-update="refreshSecondColumnScroll" data="filters.hasReservationStatus.data" options="filters.hasReservationStatus.options"></multi-option-selection>
+
+            <multi-option-selection ng-show="filters.hasFloorList" label="Floor(s)" on-update="refreshSecondColumnScroll" data="filters.hasFloorList.data" options="filters.hasFloorList.options"></multi-option-selection>
+
+            <multi-option-selection ng-show="filters.hasIncludeWorkTypes" label="Work type(s)" on-update="refreshSecondColumnScroll" data="filters.hasIncludeWorkTypes.data" options="filters.hasIncludeWorkTypes.options"></multi-option-selection>
+
+            <multi-option-selection ng-show="filters.hasFrontOfficeStatus" label="Front Office Status" on-update="refreshSecondColumnScroll" data="filters.hasFrontOfficeStatus.data" options="filters.hasFrontOfficeStatus.options"></multi-option-selection>
+
+            <multi-option-selection ng-show="filters.hasHouseKeepingStatus" label="Housekeeping Status" on-update="refreshSecondColumnScroll" data="filters.hasHouseKeepingStatus.data" options="filters.hasHouseKeepingStatus.options"></multi-option-selection>
             <div class="entry" ng-show="selectedEntityDetails.sort_fields.length">
                 <label>Sort By</label>
                 <div class="select">
@@ -145,7 +153,7 @@
                     </select>
                  </div>
             </div>
-
+            
             <div class="entry" ng-show="shouldShowFileFormat(selectedEntityDetails)">
                 <label for="file-format">File Format</label>
                 <div class="select">

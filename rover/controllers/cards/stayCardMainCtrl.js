@@ -812,6 +812,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			var onReplaceSuccess = function(data) {
 					$scope.cardRemoved(card);
 					$scope.cardReplaced(card, cardData);
+					
 
 					// CICO-21205
 					// Fix for Replace card was called even if lastCardSlot.cardType was an empty string
@@ -821,6 +822,10 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					if (card === 'travel_agent') {
 						$scope.$broadcast('travelagentcardreplaced', data.data);
 					}
+
+					if (card === 'company') {
+						$scope.$broadcast("COMPANY_ADDED");
+					}					
 					$scope.viewState.lastCardSlot = "";
 					$scope.$emit('hideLoader');
 					$scope.newCardData = cardData;

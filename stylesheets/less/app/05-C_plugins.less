@@ -4446,20 +4446,39 @@
                             .iScrollIndicator { background: rgba(0,0,0,.1); }
                         }
 
-                        &.search { 
-                            .calc-height(100, 190);
+                        &.search {
+                            .calc-height(100, 180);
 
                             &.entities-list-cards {
+                                top: 160px;
                                 .calc-height(100, 220);
                             }
                         }
 
                     }
 
+                    .numbers-pagination {
+                        .pages {
+                            width: 100%;
+                        }
+
+                        button {
+                            line-height: 35px;
+                            width: 35px;
+                            height: 35px;
+                            font-size: 16px;
+                        }
+
+                        .delimeter {
+                            height: 35px;
+                            width: 15px;
+                        }
+                    }
+
                     .search-filter {
                         &.checkbox {
                             position: absolute;
-                            bottom: 60px;
+                            top: 115px;
                             left: 20px;
                             margin: 0;
                         }
@@ -10170,6 +10189,71 @@
                     margin-top: 30px;
                 }
 
+            }
+
+            /* Checkout Print Option **/
+            &.checkout-print {
+                width: 385px;
+                padding: 40px 50px 30px 50px;
+
+                .icons {
+                    &.icon-popup-success {
+                        .size( 40px, 45px );
+                        margin: 0 auto;
+                    }
+                }
+
+                .h2,
+                .text {
+                    text-transform: none;
+                }
+
+                .h2 {
+                    margin-bottom: 10px;
+                }
+
+                .text {
+                    padding-bottom: 40px;
+                }
+
+                .entry {
+                    width: 100%;
+                    float: none;
+                    margin: 0;
+
+                    .switch-button {
+                        width: 100%;
+                        height: 40px;
+
+                        .data-off,
+                        .data-on {
+                            height: 30px;
+                            line-height: 30px;
+                        }
+
+                        .data-off {
+                            .switch-icon {
+                                .gradient(@redStart, @redEnd);
+                            }
+                        }
+
+                        .data-on {
+                            .switch-icon {
+                                .gradient(@greenStart, @greenEnd);
+                            }
+                        }
+                    }
+                }
+
+                .actions {
+                    margin-top: 40px;
+
+                    .button {
+                        &:not(:last-child) {
+                            margin-bottom: 10px;
+                        }
+                    }
+                }
             }
         } // end of modals
     }

@@ -124,11 +124,19 @@ sntRover.controller('RVfrontDeskDashboardController',
       $scope.$broadcast('RELOAD_DATA_WITH_SELECTED_FILTER_' + $scope.dashboardFilter.selectedAnalyticsMenu);
     };
 
-    $scope.$on('RESET_CHART_FILTERS', function() {
+    var resetFoFilters = function() {
       $scope.dashboardFilter.datePicked = $rootScope.businessDate;
       $scope.dashboardFilter.showRemainingReservations = false;
       $scope.dashboardFilter.selectedRoomType = "";
-      rvAnalyticsSrv.selectedRoomType = "";
       $scope.dashboardFilter.showPreviousDayData = false;
+    };
+
+    $scope.$on('RESET_CHART_FILTERS', function() {
+      resetFoFilters();
+      rvAnalyticsSrv.selectedRoomType = "";
     });
+
+    $scope.clearAllFilters = function() {
+      resetFoFilters();
+    };
 }]);

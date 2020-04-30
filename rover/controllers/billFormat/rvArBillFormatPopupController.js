@@ -7,8 +7,7 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
     BaseCtrl.call(this, $scope);
     $scope.isCompanyCardInvoice = true;
     $scope.disableCompanyCardInvoice = false;
-    $scope.hideCompanyCardInvoiceToggle = true;  
-    $scope.hideCompanyOrGuestInvoiceToggle = true;    
+    $scope.hideCompanyCardInvoiceToggle = true;        
     $scope.billFormat.isInformationalInvoice = !$scope.shouldGenerateFinalInvoice;
     $scope.billFormat.isInformationalInvoiceDisabled = !$scope.disableInformationCheckBox;
     /*
