@@ -7,7 +7,9 @@ angular.module('sntRover').service('rvRateManagerHierarchyRestrictionsSrv', ['$q
             rateTypeUrl = '/api/restrictions/rate_types',
             rateUrl = '';
 
-        service.fetchHouseRestrictions = (params) => {};
+        service.fetchHouseRestrictions = (params) => {
+            return this.getJSON(houseUrl, params)
+        };
         service.fetchRoomTypeRestrictions = (params) => {};
         service.fetchRateTypeRestrictions = (params) => {};
         service.fetchRateRestrictions = (params) => {};
@@ -26,7 +28,6 @@ angular.module('sntRover').service('rvRateManagerHierarchyRestrictionsSrv', ['$q
          * @return {Object} Promise
          */
         this.getJSON = (url, params, keyFromResult) => {
-            params = _.omit(params, 'restrictionType', 'hierarchialRateTypeRestrictionRequired');
             var deferred = $q.defer();
 
             BaseWebSrvV2.getJSON(url, params).then(function(data) {

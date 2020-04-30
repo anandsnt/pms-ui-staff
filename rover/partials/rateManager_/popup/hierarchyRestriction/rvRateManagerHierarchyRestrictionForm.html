@@ -1,7 +1,7 @@
 <!-- Remove hidden to show the form -->
 <div class="scrollable">
     <div class="wrapper">
-        <h2>{{newHierarchyRestriction ? 'Set' : 'Edit'}} Restriction</h2>
+        <h2>{{(popUpView === 'NEW') ? 'Set' : (popUpView === 'EDIT') ? 'Edit' : ''}} Restriction</h2>
         <div class="entry-group">
             <div class="entry margin restriction">
                 <label>Restriction</label>

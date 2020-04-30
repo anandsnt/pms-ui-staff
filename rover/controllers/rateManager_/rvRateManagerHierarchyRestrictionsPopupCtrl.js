@@ -2,20 +2,13 @@ angular.module('sntRover')
     .controller('rvRateManagerHierarchyRestrictionsPopupCtrl', [
         '$scope',
         '$rootScope',
-        'rvRateManagerPopUpConstants',
-        'rvUtilSrv',
-        '$filter',
-        'rvRateManagerCoreSrv',
         'rvRateManagerEventConstants',
         'ngDialog',
         'rvRateManagerUtilitySrv',
         'rvRateManagerHierarchyRestrictionsSrv',
-        function($scope,
+        function(
+            $scope,
             $rootScope,
-            rvRateManagerPopUpConstants,
-            util,
-            $filter,
-            rvRateManagerCoreSrv,
             rvRateManagerEventConstants,
             ngDialog,
             hierarchyUtils,
@@ -30,27 +23,20 @@ angular.module('sntRover')
                         date: '',
                         hierarchyType: ''
                     };
+                    // The below variable can have one of four values: EMPTY/LIST/NEW/EDIT
+                    $scope.popUpView = '';
                     $scope.selectedRestriction = {};
                     $scope.restrictionStylePack = hierarchyUtils.restrictionColorAndIconMapping;
-                    $scope.restrictionFormTitle = '';
-                    $scope.showInitialScreen = true;
-                    // Can remove the below line when working on the view and edit parts of house restrictions
-                    // This is only for CICO-75894, which does not list the existing restrictions
-                    $scope.noActiveHierarchyRestrictionsForDate = true;
-                    // -----
                 }, initialiseFirstScreen = () => {
                     // as part of CICO-75894 we are always showing the first screen as empty.
                     // the below code must be changed when the story to view restrictions is taken up.
                     // There may be code, but for now, the following one line will do
-                    $scope.showInitialScreen = true;
-                    $scope.noActiveHierarchyRestrictionsForDate = true;
-                    $scope.newHierarchyRestriction = false;
+                    $scope.popUpView = 'EMPTY';
                 };
 
                 $scope.initiateNewRestrictionForm = () => {
                     // trigger Restriction setting window
-                    $scope.showInitialScreen = false;
-                    $scope.newHierarchyRestriction = true;
+                    $scope.popUpView = 'NEW';
                     $scope.showRestrictionSelection = false;
                 };
 
@@ -136,6 +122,7 @@ angular.module('sntRover')
 
                 var initController = () => {
                     initializeScopeVariables();
+                    initialiseFirstScreen();
 
                     switch ($scope.ngDialogData.hierarchyLevel) {
                         case 'House':

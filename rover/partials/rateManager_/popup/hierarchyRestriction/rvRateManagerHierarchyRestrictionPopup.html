@@ -4,7 +4,7 @@
         - restriction-view - When editing or setting a restriction
         - showing-dates - When showing Dates (right content)
     -->
-    <div class="rate-manager-modal rate-manager-hierarchy modal-content" ng-class="{'restriction-view': !showInitialScreen}">
+    <div class="rate-manager-modal rate-manager-hierarchy modal-content" ng-class="{'restriction-view': popUpView === 'NEW' || popUpView === 'EDIT'}">
         <button class="modal-close dark-title" id="modal-close" type="button"><span class="icons icon-close" ng-click="closeDialog()"></span></button>
             
         <div class="modal-container">
@@ -17,12 +17,12 @@
                     <em ng-class="{'yellow': header.hierarchyType === 'House'}">{{header.hierarchyType}} restrictions</em>
                 </div>
                 <div class="modal-header-right">
-                    <button type="button" class="button green" ng-class="{'hidden': !showInitialScreen}" ng-click="initiateNewRestrictionForm()">Set Restriction</button>
+                    <button type="button" class="button green" ng-class="{'hidden': popUpView === 'NEW' || popUpView === 'EDIT'}" ng-click="initiateNewRestrictionForm()">Set Restriction</button>
                 </div>
             </div>                
             <div class="modal-body">
                 <!-- selection list on the left for edit screen -->
-                <div class="restrictions-list" ng-class="{'hidden': showInitialScreen || newHierarchyRestriction}">
+                <div class="restrictions-list" ng-class="{'hidden': popUpView !== 'EDIT'}">
                     <div class="scrollable">
                         <div class="wrapper">
                             <ul>
@@ -44,13 +44,13 @@
                 </div>
                 <div class="restriction-content">
                     <div class="content-middle">
-                        <span ng-if="noActiveHierarchyRestrictionsForDate && showInitialScreen"
+                        <span ng-if="popUpView === 'EMPTY'"
                         rv-include-template="/assets/partials/rateManager_/popup/hierarchyRestriction/rvRateManagerHierarchyRestrictionsEmpty.html">
                         </span>
-                        <span ng-if="!noActiveHierarchyRestrictionsForDate && showInitialScreen"
+                        <span ng-if="popUpView === 'LIST'"
                         rv-include-template="/assets/partials/rateManager_/popup/hierarchyRestriction/rvRateManagerHierarchyRestrictionsTable.html">
                         </span>
-                        <span ng-if="!showInitialScreen"
+                        <span ng-if="popUpView === 'NEW' || popUpView === 'EDIT'"
                         rv-include-template="/assets/partials/rateManager_/popup/hierarchyRestriction/rvRateManagerHierarchyRestrictionForm.html">
                         </span>
                     </div>
@@ -94,19 +94,18 @@
                     </div>
                     <div class="footer">
                         <!-- Add .with-remove-button when we also have the remove button (example: on edit screens)-->
-                        <div class="actions" ng-class="{'with-remove-button': editRestriction}">
+                        <div class="actions" ng-class="{'with-remove-button': popUpView === 'EDIT'}">
 
                             <!-- On initial screen -->
-                            <button class="button blank" type="button" ng-click="closeDialog()" ng-class="{'hidden': !showInitialScreen}">
+                            <button class="button blank" type="button" ng-click="closeDialog()" ng-class="{'hidden': popUpView === 'NEW' || popUpView === 'EDIT'}">
                                 Close window
                             </button>
-
                             <!-- On set restriction screen without dates -- -->
-                            <button class="button blank" ng-class="{'hidden': showInitialScreen}" type="button" ng-click="backToInitialScreen()">
+                            <button class="button blank" ng-class="{'hidden': (popUpView !== 'NEW' && popUpView !== 'EDIT')}" type="button" ng-click="backToInitialScreen()">
                                 Cancel
                             </button>
                             <!-- -- remove .grey and add .green if we can set the restriction -- -->
-                            <button class="button" ng-class="{'hidden': !newHierarchyRestriction, 'grey': !validateForm(), 'green': validateForm()}" type="button" ng-click="setHouseHierarchyRestriction()">
+                            <button class="button" ng-class="{'hidden': (popUpView !== 'NEW' && popUpView !== 'EDIT'), 'grey': !validateForm(), 'green': validateForm()}" type="button" ng-click="setHouseHierarchyRestriction()">
                                 Set
                             </button>
                         

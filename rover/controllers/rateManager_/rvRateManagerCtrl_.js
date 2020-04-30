@@ -1013,32 +1013,13 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         };
 
         callHierarchyRestrictionPopup(data);
-        // replace with the below code for showing the existing house restrictions in the popup
-        // var params = {
-        //     from_date: formatDateForAPI(date),
-        //     to_date: formatDateForAPI(date)
-        // },
-        // houseRestrictionSuccessCallback = (response) => {
-        //     var restrictionData = response.results[0],
-        //     data = _.extend(restrictionData, {
-        //         hierarchyLevel: 'House'
-        //     });
-
-        //     callHierarchyRestrictionPopup(data);
-        // },
-        // options = {
-        //     params: params,
-        //     onSuccess: houseRestrictionSuccessCallback
-        // };
-
-        // $scope.callAPI(rvRateManagerCoreSrv.fetchHouseRestrictions, options);
     };
 
     const callHierarchyRestrictionPopup = (data) => {
         ngDialog.open({
             template: '/assets/partials/rateManager_/popup/hierarchyRestriction/rvRateManagerHierarchyRestrictionPopup.html',
             scope: $scope,
-            className: 'ngdialog-theme-default',
+            className: '',
             data: data,
             controller: 'rvRateManagerHierarchyRestrictionsPopupCtrl'
         });
