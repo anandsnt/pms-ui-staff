@@ -360,6 +360,7 @@ sntRover.controller('RVmanagerDashboardController',
         $scope.dashboardFilter.chartType = rvAnalyticsSrv.managerChartFilterSet.chartType;
         $scope.dashboardFilter.aggType = rvAnalyticsSrv.managerChartFilterSet.aggType;
         $scope.dashboardFilter.gridViewToggle = angular.copy(rvAnalyticsSrv.managerChartFilterSet.gridViewActive);
+        $scope.dashboardFilter.gridViewActive = angular.copy(rvAnalyticsSrv.managerChartFilterSet.gridViewActive);
       } else {
         $scope.dashboardFilter.lineChartActive = angular.copy(rvAnalyticsSrv.managerChartFilterSet.lineChartActive);
         $scope.dashboardFilter.datesToCompare = angular.copy(rvAnalyticsSrv.managerChartFilterSet.datesToCompare);
