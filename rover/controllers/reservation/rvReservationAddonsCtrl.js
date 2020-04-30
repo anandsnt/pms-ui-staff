@@ -576,9 +576,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
             var reservationId = $scope.reservationData.reservationId;
 
             var successDelete = function() {
-                // $scope.closePopup();
-                removeSelectedAddons(index)
-                // fetchReservationAddons(true);
+                removeSelectedAddons(index);
             },
             failureCallBack = function(errorMessage) {
                 $scope.errorMessage = errorMessage;
