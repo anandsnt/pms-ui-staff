@@ -508,7 +508,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 params.time = $scope.scheduleParams.time;
             }
             if ($scope.scheduleParams.time_period_id) {
-                filter_values.time_period_id = $scope.scheduleParams.time_period_id;
+                params.time_period_id = $scope.scheduleParams.time_period_id;
             }
 
             if ($scope.scheduleParams.create_date_range) {
