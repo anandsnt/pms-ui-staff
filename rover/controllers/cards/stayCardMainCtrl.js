@@ -824,7 +824,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					}
 
 					if (card === 'company') {
-						$scope.$broadcast("COMPANY_ADDED")
+						$scope.$broadcast("COMPANY_ADDED");
 					}					
 					$scope.viewState.lastCardSlot = "";
 					$scope.$emit('hideLoader');

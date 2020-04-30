@@ -670,7 +670,7 @@ sntRover.controller('RVbillCardController',
 	};
 
 	$scope.setBillAddressType = function() {
-		$scope.reservationBillData.bills[0].bill_address_type = $scope.reservationBillData.bills[0].bill_address_type === 'COMPANY' ? 'GUEST' : 'COMPANY'
+		$scope.reservationBillData.bills[0].bill_address_type = $scope.reservationBillData.bills[0].bill_address_type === 'COMPANY' ? 'GUEST' : 'COMPANY';
 		$timeout(function() {
 			var dataToSend = {
 				params: {
@@ -682,7 +682,7 @@ sntRover.controller('RVbillCardController',
 			};
 
 			$scope.callAPI(RVBillCardSrv.setBillAddressType, dataToSend);
-		}, 800)
+		}, 800);
 	};
 	/*
 	 * Set clicked bill active and show corresponding days/packages/addons calender
