@@ -572,11 +572,13 @@ sntRover.controller('RVReservationAddonsCtrl', [
 
         };
 
-        var deleteReservationAddon = function(addonId) {
+        var deleteReservationAddon = function(addonId, index) {
             var reservationId = $scope.reservationData.reservationId;
 
             var successDelete = function() {
-                fetchReservationAddons(true);
+                // $scope.closePopup();
+                removeSelectedAddons(index)
+                // fetchReservationAddons(true);
             },
             failureCallBack = function(errorMessage) {
                 $scope.errorMessage = errorMessage;
@@ -690,7 +692,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
 
                 var removeSelectedAddonsListner = $rootScope.$on('REMOVE_ADDON', function(event, data) {
                     if (data.addonPostingMode === 'reservation' && $scope.fromPage === 'staycard') {
-                        deleteReservationAddon(data.addon.id);
+                        deleteReservationAddon(data.addon.id, data.index);
                     } else if (data.addonPostingMode === 'reservation') {
                         removeSelectedAddons(data.index);
                     }
