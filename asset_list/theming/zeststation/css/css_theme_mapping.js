@@ -128,7 +128,8 @@ module.exports = {
             'waldhotel-davos': [themeCSSRoot + 'waldhotel-davos.less'],
             'autocamp': [themeCSSRoot + 'autocamp.less'],
             'margaritaville': [themeCSSRoot + 'margaritaville.less'],
-            'hotel-171': [themeCSSRoot + 'hotel-171.less']
+            'hotel-171': [themeCSSRoot + 'hotel-171.less'],
+            'beachside': [themeCSSRoot + 'beachside.less']
         };
     }
 };
