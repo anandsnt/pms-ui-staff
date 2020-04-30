@@ -8,49 +8,65 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
                 title: 'CLOSED',
                 iconClass: 'icon-cross',
                 bgClass: 'bg-red',
-                key: 'closed'
+                key: 'closed',
+                type: 'boolean',
+                value: null
             },
             {
                 title: 'CLOSED TO ARRIVAL',
                 iconClass: 'icon-block',
                 bgClass: 'bg-red',
-                key: 'closed_arrival'
+                key: 'closed_arrival',
+                type: 'boolean',
+                value: null
             },
             {
                 title: 'CLOSED TO DEPARTURE',
                 iconClass: '',
                 bgClass: 'bg-red',
-                key: 'closed_departure'
+                key: 'closed_departure',
+                type: 'boolean',
+                value: null
             },
             {
                 title: 'MIN LENGTH OF STAY',
                 iconClass: '',
                 bgClass: 'bg-blue',
-                key: 'min_length_of_stay'
+                key: 'min_length_of_stay',
+                type: 'number',
+                value: null
             },
             {
                 title: 'MAX LENGTH OF STAY',
                 iconClass: '',
                 bgClass: 'bg-blue-dark',
-                key: 'max_length_of_stay'
+                key: 'max_length_of_stay',
+                type: 'number',
+                value: null
             },
             {
                 title: 'MIN STAY THROUGH',
                 iconClass: '',
                 bgClass: 'bg-violet',
-                key: 'min_stay_through'
+                key: 'min_stay_through',
+                type: 'number',
+                value: null
             },
             {
                 title: 'MIN ADVANCE BOOKING',
                 iconClass: '',
                 bgClass: 'bg-green',
-                key: 'min_advanced_booking'
+                key: 'min_advanced_booking',
+                type: 'number',
+                value: null
             },
             {
                 title: 'MAX ADVANCE BOOKING',
                 iconClass: '',
                 bgClass: 'bg-orange',
-                key: 'max_advanced_booking'
+                key: 'max_advanced_booking',
+                type: 'number',
+                value: null
             }
         ];
 

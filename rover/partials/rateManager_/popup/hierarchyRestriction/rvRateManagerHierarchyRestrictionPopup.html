@@ -17,7 +17,7 @@
                     <em ng-class="{'yellow': header.hierarchyType === 'House'}">{{header.hierarchyType}} restrictions</em>
                 </div>
                 <div class="modal-header-right">
-                    <button type="button" class="button green" ng-class="{'hidden': !showInitialScreen}" ng-click="setRestrcition()">Set Restriction</button>
+                    <button type="button" class="button green" ng-class="{'hidden': !showInitialScreen}" ng-click="initiateNewRestrictionForm()">Set Restriction</button>
                 </div>
             </div>                
             <div class="modal-body">
@@ -102,11 +102,11 @@
                             </button>
 
                             <!-- On set restriction screen without dates -- -->
-                            <button class="button blank" ng-class="{'hidden': showInitialScreen}" type="button" ng-click="closeDialog()">
+                            <button class="button blank" ng-class="{'hidden': showInitialScreen}" type="button" ng-click="backToInitialScreen()">
                                 Cancel
                             </button>
                             <!-- -- remove .grey and add .green if we can set the restriction -- -->
-                            <button class="button grey" ng-class="{'hidden': !newHierarchyRestriction, 'green': selectedRestriction}" type="button" ng-click="setHierarchyRestriction()">
+                            <button class="button" ng-class="{'hidden': !newHierarchyRestriction, 'grey': !validateForm(), 'green': validateForm()}" type="button" ng-click="setHouseHierarchyRestriction()">
                                 Set
                             </button>
                         

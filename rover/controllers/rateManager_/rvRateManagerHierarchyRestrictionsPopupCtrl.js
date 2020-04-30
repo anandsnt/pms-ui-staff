@@ -9,6 +9,7 @@ angular.module('sntRover')
         'rvRateManagerEventConstants',
         'ngDialog',
         'rvRateManagerUtilitySrv',
+        'rvRateManagerHierarchyRestrictionsSrv',
         function($scope,
             $rootScope,
             rvRateManagerPopUpConstants,
@@ -17,7 +18,8 @@ angular.module('sntRover')
             rvRateManagerCoreSrv,
             rvRateManagerEventConstants,
             ngDialog,
-            hierarchyUtils) {
+            hierarchyUtils,
+            hierarchySrv) {
                 BaseCtrl.call(this, $scope);
 
                 /**
@@ -28,46 +30,91 @@ angular.module('sntRover')
                         date: '',
                         hierarchyType: ''
                     };
-                    $scope.selectedRestrictions = [];
-                    $scope.showInitialScreen = true;
+                    $scope.selectedRestriction = {};
                     $scope.restrictionStylePack = hierarchyUtils.restrictionColorAndIconMapping;
                     $scope.restrictionFormTitle = '';
+                    $scope.showInitialScreen = true;
+                    // Can remove the below line when working on the view and edit parts of house restrictions
+                    // This is only for CICO-75894, which does not list the existing restrictions
+                    $scope.noActiveHierarchyRestrictionsForDate = true;
+                    // -----
+                }, initialiseFirstScreen = () => {
+                    // as part of CICO-75894 we are always showing the first screen as empty.
+                    // the below code must be changed when the story to view restrictions is taken up.
+                    // There may be code, but for now, the following one line will do
+                    $scope.showInitialScreen = true;
+                    $scope.noActiveHierarchyRestrictionsForDate = true;
+                    $scope.newHierarchyRestriction = false;
                 };
 
-                $scope.setRestrcition = () => {
+                $scope.initiateNewRestrictionForm = () => {
                     // trigger Restriction setting window
                     $scope.showInitialScreen = false;
                     $scope.newHierarchyRestriction = true;
+                    $scope.showRestrictionSelection = false;
                 };
 
                 var setHouseRestrictionDataForPopup = () => {
                     $scope.header.hierarchyType = $scope.ngDialogData.hierarchyLevel;
                     $scope.header.date = moment($scope.ngDialogData.date).format('dddd, MMMM DD');
-                    checkForActiveRestrictions($scope.ngDialogData);
                 };
 
-                var checkForActiveRestrictions = (data) => {
-                    $scope.selectedRestrictions = hierarchyUtils.generateOldGetApiResponseFormat(data.restrictions);
-
-                    if ($scope.selectedRestrictions.length !== 0) {
-                        $scope.noActiveHierarchyRestrictionsForDate = false;
-                    } else {
-                        $scope.noActiveHierarchyRestrictionsForDate = true;
-                    }
-                    populateResctrictionStylePack(data.restrictions);
+                $scope.showPlaceholder = () => {
+                    return _.isEmpty($scope.selectedRestriction);
                 };
 
-                var populateResctrictionStylePack = (restrictions) => {
-                    $scope.restrictionStylePack.forEach(restriction => {
-                        restriction.value = restrictions[restriction.key];
-                    });
+                $scope.showNights = () => {
+                   return !$scope.showPlaceholder() && $scope.selectedRestriction.type === 'number';
+                };
+
+                $scope.toggleRestrictionSelection = () => {
+                    $scope.showRestrictionSelection = !$scope.showRestrictionSelection;
                 };
 
                 $scope.restrictionSelected = (restriction) => {
-                    console.log(restriction);
-                    $scope.selectedRestrictions.push(restriction);
+                    $scope.selectedRestriction = restriction;
+                    $scope.toggleRestrictionSelection();
                 };
 
+                $scope.validateForm = () => {
+                    var formValid;
+
+                    if ($scope.showPlaceholder()) {
+                        formValid = false;
+                    }
+                    else {
+                        // CICO-75894
+                        formValid = (
+                            $scope.selectedRestriction.type === 'number' &&
+                            $scope.selectedRestriction.value
+                        ) || $scope.selectedRestriction.type === "boolean";
+                    }
+                    return formValid;
+                };
+
+                $scope.setHouseHierarchyRestriction = () => {
+                    var restrictions = {};
+
+                    restrictions[$scope.selectedRestriction.key] = $scope.selectedRestriction.type === 'number' ? $scope.selectedRestriction.value : true;
+                    var params = {
+                        from_date: $scope.ngDialogData.date,
+                        to_date: $scope.ngDialogData.date,
+                        restrictions 
+                    }, houseRestrictionSuccessCallback = (response) => {            
+                        $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS, dataFromPopupToParent);
+                        $scope.closeDialog();
+                    }, options = {
+                        params: params,
+                        onSuccess: houseRestrictionSuccessCallback
+                    };
+
+                    $scope.callAPI(hierarchySrv.saveHouseRestrictions, options);
+                };
+
+                $scope.backToInitialScreen = () => {
+                    $scope.selectedRestriction = {};
+                    initialiseFirstScreen();
+                };
                 /*
                 * To close dialog box
                 */
