@@ -18,7 +18,7 @@ angular.module('sntRover')
                 /**
                  * Function for initializing of dialogue variables
                  */
-                var initializeScopeVariables = () => {;
+                var initializeScopeVariables = () => {
                     $scope.header = {
                         date: '',
                         hierarchyType: ''
@@ -87,7 +87,7 @@ angular.module('sntRover')
                         from_date: $scope.ngDialogData.date,
                         to_date: $scope.ngDialogData.date,
                         restrictions 
-                    }, houseRestrictionSuccessCallback = (response) => {
+                    }, houseRestrictionSuccessCallback = () => {
                         $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
                         $scope.closeDialog();
                     }, options = {
@@ -106,8 +106,6 @@ angular.module('sntRover')
                 * To close dialog box
                 */
                 $scope.closeDialog = function() {
-                    document.activeElement.blur();
-                    $scope.$emit('hideLoader');
         
                     $rootScope.modalClosing = true;
                     setTimeout(function() {

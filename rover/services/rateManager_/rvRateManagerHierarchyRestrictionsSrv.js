@@ -1,25 +1,22 @@
-angular.module('sntRover').service('rvRateManagerHierarchyRestrictionsSrv', ['$q', 'BaseWebSrvV2', 'rvRateManagerRestrictionsSrv',
-    function($q, BaseWebSrvV2, rvRateManagerRestrictionsSrv) {
+angular.module('sntRover').service('rvRateManagerHierarchyRestrictionsSrv', ['$q', 'BaseWebSrvV2',
+    function($q, BaseWebSrvV2) {
         // Exclusive service for hierarchy restrictions
         var service = this,
-            houseUrl = '/api/restrictions/house',
-            roomTypeUrl = '/api/restrictions/room_types',
-            rateTypeUrl = '/api/restrictions/rate_types',
-            rateUrl = '';
+            houseUrl = '/api/restrictions/house';
 
         service.fetchHouseRestrictions = (params) => {
             return this.getJSON(houseUrl, params)
         };
-        service.fetchRoomTypeRestrictions = (params) => {};
-        service.fetchRateTypeRestrictions = (params) => {};
-        service.fetchRateRestrictions = (params) => {};
+        service.fetchRoomTypeRestrictions = () => {};
+        service.fetchRateTypeRestrictions = () => {};
+        service.fetchRateRestrictions = () => {};
 
         service.saveHouseRestrictions = (params) => {
             return this.postJSON(houseUrl, params);
         };
-        service.saveRoomTypeRestrictions = (params) => {};
-        service.saveRateTypeRestrictions = (params) => {};
-        service.saveRateRestrictions = (params) => {};
+        service.saveRoomTypeRestrictions = () => {};
+        service.saveRateTypeRestrictions = () => {};
+        service.saveRateRestrictions = () => {};
 
         /**
          * utility method as getJSON is repeating all the time
