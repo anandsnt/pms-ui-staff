@@ -5,7 +5,7 @@ angular.module('sntRover').service('rvRateManagerHierarchyRestrictionsSrv', ['$q
             houseUrl = '/api/restrictions/house';
 
         service.fetchHouseRestrictions = (params) => {
-            return this.getJSON(houseUrl, params)
+            return this.getJSON(houseUrl, params);
         };
         service.fetchRoomTypeRestrictions = () => {};
         service.fetchRateTypeRestrictions = () => {};
