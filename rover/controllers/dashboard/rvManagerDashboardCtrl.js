@@ -483,7 +483,6 @@ sntRover.controller('RVmanagerDashboardController',
     };
     shallowEncoded = "";
     $scope.dashboardFilter.selectedRoomType = "";
-    rvAnalyticsSrv.selectedRoomType = "";
     $scope.dashboardFilter.chartType = "occupancy";
     $scope.dashboardFilter.aggType = "";
     $scope.dashboardFilter.datePicked = $rootScope.businessDate;
@@ -762,7 +761,6 @@ sntRover.controller('RVmanagerDashboardController',
 
   $scope.clearAllFilters = function () {
     emptyAllChartFilters();
-    rvAnalyticsSrv.resetChartFilterSet();
   };
   /** ************************* SAVED FILTERS CODE ENDS HERE ***********************************/
 

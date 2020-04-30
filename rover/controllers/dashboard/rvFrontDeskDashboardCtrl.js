@@ -128,12 +128,12 @@ sntRover.controller('RVfrontDeskDashboardController',
       $scope.dashboardFilter.datePicked = $rootScope.businessDate;
       $scope.dashboardFilter.showRemainingReservations = false;
       $scope.dashboardFilter.selectedRoomType = "";
-      rvAnalyticsSrv.selectedRoomType = "";
       $scope.dashboardFilter.showPreviousDayData = false;
     };
 
     $scope.$on('RESET_CHART_FILTERS', function() {
       resetFoFilters();
+      rvAnalyticsSrv.selectedRoomType = "";
     });
 
     $scope.clearAllFilters = function() {
