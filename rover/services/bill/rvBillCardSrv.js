@@ -112,6 +112,20 @@ angular.module('sntRover').service('RVBillCardSrv',
 		return deferred.promise;
 	};
 
+	this.setBillAddressType = function(params) {
+		var deferred = $q.defer();
+		var url = '/api/bills/' + params.bill_id + '/save_address_type';
+
+			BaseWebSrvV2.postJSON(url, params.parmasToApi).then(function(data) {
+
+			   	 deferred.resolve(data);
+			}, function(data) {
+			    deferred.reject(data);
+			});
+
+		return deferred.promise;
+	};
+
 	this.completeCheckin = function(data) {
 		var deferred = $q.defer();
 		var url = '/staff/checkin';
@@ -435,7 +449,7 @@ angular.module('sntRover').service('RVBillCardSrv',
 		var deferred = $q.defer(),
 			url = '/api/bills/' + params.bill_id + '/final_invoice_settlement';
 
-		BaseWebSrvV2.postJSON(url, params).then(function(data) {
+		BaseWebSrvV2.postJSON(url).then(function(data) {
 
 			deferred.resolve(data);
 		}, function(data) {
