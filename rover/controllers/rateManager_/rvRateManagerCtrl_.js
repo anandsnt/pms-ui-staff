@@ -986,21 +986,18 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     };
 
     const clickedOnHierarchyRoomTypeCell = ({roomTypeIDs, date}) => {
-        console.log('roomType hierarchy');
         var data = {
             date: date
         };
     };
 
     const clickedOnHierarchyRateTypeCell = ({rateTupeIDs, date}) => {
-        console.log('rateType hierarchy');
         var data = {
             date: date
         };
     };
 
     const clickedOnHierarchyRateCell = ({rateIDs, date}) => {
-        console.log('rate hierarchy');
         var data = {
             date: date
         };
