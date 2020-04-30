@@ -126,6 +126,12 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             return this.getJSON(url, params);
         };
 
+        service.fetchHouseRestrictions = (params) => {
+            var url = '/api/restrictions/house';
+
+            return this.getJSON(url, params);
+        };
+
         service.fetchSingleRateDetailsAndRoomTypes = (params) => {
             var promises = [],
                 roomTypes = [],

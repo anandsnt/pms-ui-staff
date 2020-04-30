@@ -1,0 +1,125 @@
+<!-- Remove hidden to show the form -->
+<div class="scrollable">
+    <div class="wrapper">
+        <h2>{{newHierarchyRestriction ? 'Set' : 'Edit'}} Restriction</h2>
+        <div class="entry-group">
+            <div class="entry margin restriction">
+                <label>Restriction</label>
+
+                <!-- When setting a restriction -->
+                <!-- remove .placeholder when a restriction is choosen -->
+                <div class="faux-select" ng-class="{'placeholder': selectedRestrictions.length === 0}" ng-init="showRestrictionSelection = false" ng-click="showRestrictionSelection = !showRestrictionSelection">
+                    <div class="restriction-option">
+                        <span class="restriction-icon"></span>    
+                        <span class="restriction-title">Select a Restriction</span>
+                    </div>
+                </div>
+                <!-- remove .hidden when clicking on .faux-select -->
+                <div class="faux-select-options" ng-class="{'hidden': !showRestrictionSelection}">
+                    <div ng-repeat="restriction in restrictionStylePack" class="restriction-option" ng-click="restrictionSelected(restriction)">
+                        <!-- 'restriction-value' => number of days if a restriction has any, if not it is empty -->
+                        <span class="{{'restriction-icon ' + restriction.bgClass + ' ' + restriction.iconClass}}">
+                            {{restriction.value}}
+                        </span>  
+                        <span class="restriction-title">{{restriction.title}}</span>
+                    </div>
+                    <!-- ... repeat for each restriction -->
+                </div>
+
+                <!-- When editing a restriction, we show an already selected restriction--
+                <div class="faux-select disabled" disabled>
+                    <div class="restriction-option">
+                        -- Restriction BG classes:
+                            bg-red,
+                            bg-green,
+                            bg-blue,
+                            bg-violet
+                            Some Icons do not need a restriction-bg-class because they are grey
+                         -->
+                         <!-- Restriction Icons:
+                            icon-cross 
+                            icon-block
+                            Some Icons do not need a restriction-icon becuase they are blank or have values
+                        --
+                        -- 'restriction-value' => number of days if a restriction has any, if not it is empty --
+                        <span class="restriction-icon {restriction-bg-class} {restriction-icon}">
+                            {restriction--value}
+                        </span>  
+                        <span class="restriction-title">{restriction title}</span>
+                    </div>
+                </div>
+                -->
+            </div>
+
+            <!-- Show the nights input only for restrictions that have that -->
+            <div class="entry short">
+                <label>Nights</label>
+                <input type="number" />
+            </div>
+        </div>
+        <div class="entry-group hidden">
+            <div class="entry margin">
+                <label>Schedule</label>
+                <!-- If checked, we then add .showing-dates on the .modal-content to show the dates -->
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox"></span>
+                    <input type="checkbox" value="1"/>
+                    Repeat on Dates
+                </label> 
+            </div>
+        </div>
+        <div class="entry-group hidden">
+            <div class="entry full-width">
+                <label>Set on {Rate|Room} Type(s)</label>
+                <!-- Classes that can be added:
+                    - .selected - when we have selected rate/room types
+                    - .searching - when we are searching for new rates
+                -->
+                <div class="entry full-width autocomplete-search">
+                    <!-- add .hidden when apply to all is checked -->
+                    <div class="search">
+                        <button type="submit" name="submit" class="icons icon-search">Search</button>
+                        <input name="autocomplete-search" class="query" placeholder="Search by {Rate|Room} Name or Code" autocomplete="off" type="search">
+                    </div>
+                    <!-- Remove .hidden when apply to all is checked -->
+                    <div class="apply-on-all hidden">
+                        <div class="notice">
+                            Applies to All {Rate|Room} Types!
+                        </div>
+                    </div>
+
+                    <label class="checkbox autocomplete-checkbox">
+                        <span class="icon-form icon-checkbox"></span>
+                        <input type="checkbox" value="1"/>
+                        On All
+                    </label>
+
+                    <!-- This holds the results from the search -->
+                    <div class="scrollable">
+                        <div class="wrapper">
+                            <div class="card">
+                                <!-- Wrap letters with .highlight that are matched with the search term -->
+                                <span class="rate-name">Day Use</span>
+                            </div>
+                            <!-- ... repeat for each result -->
+                        </div>
+                    </div>
+                    <!-- This holds the selected results -->
+                    <div class="scrollable autocomplete-search-selected">
+                        <div class="card">
+                            <span class="rate-name"><strong>Day Use</strong></span>
+                            <!-- 
+                                on click, it will remove the card
+                                if the last one is removed, remove the class .selected from the autocomplete-search
+                            -->
+                            <button type="button" class="button remove-card">
+                                <span class="icons icon-remove-10"></span>
+                            </button>
+                        </div>
+                        <!-- ... repeat for each selected result -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

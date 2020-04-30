@@ -987,18 +987,55 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
     const clickedOnHierarchyRoomTypeCell = ({roomTypeIDs, date}) => {
         console.log('roomType hierarchy');
+        var data = {
+            date: date
+        }
     };
 
     const clickedOnHierarchyRateTypeCell = ({rateTupeIDs, date}) => {
         console.log('rateType hierarchy');
+        var data = {
+            date: date
+        }
     };
 
     const clickedOnHierarchyRateCell = ({rateIDs, date}) => {
         console.log('rate hierarchy');
+        var data = {
+            date: date
+        }
     };
 
     const clickedOnHierarchyHouseCell = ({rateIDs, date}) => {
         console.log('house hierarchy');
+        var params = {
+            from_date: formatDateForAPI(date),
+            to_date: formatDateForAPI(date)
+        },
+        houseRestrictionSuccessCallback = (response) => {
+            var restrictionData = response.results[0],
+            data = _.extend(restrictionData, {
+                hierarchyLevel: 'House'
+            });
+
+            callHierarchyRestrictionPopup(data);
+        },
+        options = {
+            params: params,
+            onSuccess: houseRestrictionSuccessCallback
+        };
+
+        $scope.callAPI(rvRateManagerCoreSrv.fetchHouseRestrictions, options);
+    };
+
+    const callHierarchyRestrictionPopup = (data) => {
+        ngDialog.open({
+            template: '/assets/partials/rateManager_/popup/hierarchyRestriction/rvRateManagerHierarchyRestrictionPopup.html',
+            scope: $scope,
+            className: 'ngdialog-theme-default',
+            data: data,
+            controller: 'rvRateManagerHierarchyRestrictionsPopupCtrl'
+        });
     };
 
     /**

@@ -1,7 +1,58 @@
 angular.module('sntRover').service('rvRateManagerUtilitySrv', [
     function() {
 
-		var service = this;
+        var service = this;
+        
+        service.restrictionColorAndIconMapping = [
+            {
+                title: 'CLOSED',
+                iconClass: 'icon-cross',
+                bgClass: 'bg-red',
+                key: 'closed'
+            },
+            {
+                title: 'CLOSED TO ARRIVAL',
+                iconClass: 'icon-block',
+                bgClass: 'bg-red',
+                key: 'closed_arrival'
+            },
+            {
+                title: 'CLOSED TO DEPARTURE',
+                iconClass: '',
+                bgClass: 'bg-red',
+                key: 'closed_departure'
+            },
+            {
+                title: 'MIN LENGTH OF STAY',
+                iconClass: '',
+                bgClass: 'bg-blue',
+                key: 'min_length_of_stay'
+            },
+            {
+                title: 'MAX LENGTH OF STAY',
+                iconClass: '',
+                bgClass: 'bg-blue-dark',
+                key: 'max_length_of_stay'
+            },
+            {
+                title: 'MIN STAY THROUGH',
+                iconClass: '',
+                bgClass: 'bg-violet',
+                key: 'min_stay_through'
+            },
+            {
+                title: 'MIN ADVANCE BOOKING',
+                iconClass: '',
+                bgClass: 'bg-green',
+                key: 'min_advanced_booking'
+            },
+            {
+                title: 'MAX ADVANCE BOOKING',
+                iconClass: '',
+                bgClass: 'bg-orange',
+                key: 'max_advanced_booking'
+            }
+        ];
 
         // Mapping of restriction key to code/id.
         service.restrictionKeyToCodeMapping = {
