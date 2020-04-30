@@ -1,4 +1,4 @@
-sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'RVBillinginfoSrv', 'ngDialog', 'RVCompanyCardSearchSrv', 'RVSearchSrv', '$timeout', function($scope, $rootScope, $filter, RVBillinginfoSrv, ngDialog, RVCompanyCardSearchSrv, RVSearchSrv, $timeout,) {
+sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'RVBillinginfoSrv', 'ngDialog', 'RVCompanyCardSearchSrv', 'RVSearchSrv', '$timeout', function($scope, $rootScope, $filter, RVBillinginfoSrv, ngDialog, RVCompanyCardSearchSrv, RVSearchSrv, $timeout) {
 	BaseCtrl.call(this, $scope);
 
 	$scope.textInQueryBox = "";
