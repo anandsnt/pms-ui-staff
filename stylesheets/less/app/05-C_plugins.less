@@ -4446,20 +4446,39 @@
                             .iScrollIndicator { background: rgba(0,0,0,.1); }
                         }
 
-                        &.search { 
-                            .calc-height(100, 190);
+                        &.search {
+                            .calc-height(100, 180);
 
                             &.entities-list-cards {
+                                top: 160px;
                                 .calc-height(100, 220);
                             }
                         }
 
                     }
 
+                    .numbers-pagination {
+                        .pages {
+                            width: 100%;
+                        }
+
+                        button {
+                            line-height: 35px;
+                            width: 35px;
+                            height: 35px;
+                            font-size: 16px;
+                        }
+
+                        .delimeter {
+                            height: 35px;
+                            width: 15px;
+                        }
+                    }
+
                     .search-filter {
                         &.checkbox {
                             position: absolute;
-                            bottom: 60px;
+                            top: 115px;
                             left: 20px;
                             margin: 0;
                         }

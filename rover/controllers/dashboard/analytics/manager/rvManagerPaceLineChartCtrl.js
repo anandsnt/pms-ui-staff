@@ -74,8 +74,7 @@ angular.module('sntRover')
 
 			var drawPaceLineChart = function () {
 				// draw line chart using the array dataForDateInfo				
-				// dataForDateInfo = rvAnalyticsHelperSrv.samplePaceCompareDates;
-				$log.info("[dataForDateInfo]........." + dataForDateInfo);
+				$log.info("[dataForDateInfo]........." + JSON.stringify(dataForDateInfo));
 				$scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
 
 				// iterate through array dataForDateInfo to draw line charts
@@ -299,11 +298,13 @@ angular.module('sntRover')
 								.on("mousemove", function (d) {
 									var xPosition = d3.mouse(this)[0] - 15,
 										yPosition = d3.mouse(this)[1] - 45,
-										dateText = moment(d.date, 'YYYY-MM-DD').format('MMM Do');
+										dateText = moment(d.date, 'YYYY-MM-DD').format('MMM Do'),
+										activeCount = keyDate === 'Mean' ? parseFloat(d.new + d.on_the_books).toFixed(2) :
+										parseInt(d.new + d.on_the_books);
 
 									tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
 									tooltip.select(".item-qty")
-										.text(dateText + " - " + parseInt(d.new + d.on_the_books));
+										.text(dateText + " - " + activeCount);
 									tooltip.select(".date-label")
 										.text(keyDate);
 								});

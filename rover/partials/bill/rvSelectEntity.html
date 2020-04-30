@@ -114,10 +114,21 @@
 				ACCOUNTS_AND_CARDS
 			</li>
 		</ul>
-		<div id="entities" class="entities-list scrollable" ng-show="textInQueryBox!='' && !isReservationActive" ng-iscroll='cards_search_scroller' ng-iscroll-delay="100" style="height:57%;bottom: 0px; left:0px; width: 100%;overflow:hidden;">
+		
+		<div ng-if="!isReservationActive">
+			<label class="checkbox inline search-filter" ng-class="{'checked': hasArNumber}">
+					<!-- add .checked when checked -->
+					<span class="icon-form icon-checkbox" ng-class="{'checked': hasArNumber}"></span>
+					<!-- add checked="checked" when checked. -->
+					<input type="checkbox" ng-click="filterArAccounts()" ng-model="hasArNumber">
+					AR Accounts Only
+			</label>
+		</div>
+		
+		<div id="entities" class="entities-list search scrollable entities-list-cards" ng-show="textInQueryBox!='' && !isReservationActive" ng-iscroll='cards_search_scroller' ng-iscroll-delay="100" style="height:57%;bottom: 0px; left:0px; width: 100%;overflow:hidden;">
 			<ul class="wrapper">
 
-				<div class="entity" ng-repeat="row in results.accounts"  ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}" ng-show="row.is_row_visible==true" ng-hide="results.accounts.length == 0" ng-click="selectEntity($index,'ACCOUNT')">
+				<li class="entity company" ng-repeat="row in results.accounts"  ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}" ng-show="row.is_row_visible==true" ng-hide="results.accounts.length == 0" ng-click="selectEntity($index,'ACCOUNT')">
           <!-- image -->
           <figure class="guest-image" ng-if="escapeNull(row.company_logo)!=''">
             <img ng-src="{{row.company_logo}}" alt="">
@@ -134,12 +145,12 @@
           </div>
           <!-- icon -->
           <span class="status" ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}"></span>
-        </div>
+        </li>
 
-        <div class="entity" ng-repeat="row in results.posting_accounts" ng-show="row.is_row_visible==true" ng-hide="results.posting_accounts.length == 0" ng-click="selectEntity($index, row.account_type )">
+        <li class="entity company" ng-repeat="row in results.posting_accounts" ng-show="row.is_row_visible==true" ng-hide="results.posting_accounts.length == 0" ng-click="selectEntity($index, row.account_type )">
          	<div class="group-info">A</div>
             <h2 ng-bind-html="row.account_name | highlight:textInQueryBox:false"></h2>
-        </div>
+				</li>
 
 			</ul>
 			<!-- No results / no content when searched query not found-->
@@ -151,9 +162,9 @@
 			</div>
 		</div>
 
-		<div id="entities" class="entities-list scrollable" ng-show="textInQueryBox!='' && isReservationActive" ng-iscroll='res_search_scroller' ng-iscroll-delay="100" style="height:57%;bottom: 0px; left:0px; width: 100%;overflow:hidden;">
+		<div id="entities" class="entities-list scrollable entities-list-cards" ng-show="textInQueryBox!='' && isReservationActive" ng-iscroll='res_search_scroller' ng-iscroll-delay="100" style="height:57%;bottom: 0px; left:0px; width: 100%;overflow:hidden;">
 			<ul class="wrapper">
-				<div class="entity" ng-repeat="row in results.reservations" ng-show="row.is_row_visible==true" ng-hide="results.reservations.length == 0 || row.images.length >1" ng-class="{'guest':row.images.length <= 1,'accompany':row.images.length >1}" ng-click="selectEntity($index,'RESERVATIONS')">
+				<li class="entity guest" ng-repeat="row in results.reservations" ng-show="row.is_row_visible==true" ng-hide="results.reservations.length == 0 || row.images.length >1" ng-class="{'guest':row.images.length <= 1,'accompany':row.images.length >1}" ng-click="selectEntity($index,'RESERVATIONS')">
 
 					<!-- image -->
 					<figure class="guest-image" ng-show="row.images.length!=0 " ng-class="{'accompany': row.images.length >1}">
@@ -171,7 +182,7 @@
 
 					<span class="guest-status small-icon {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout)}}" ></span>
 
-				</div>
+				</li>
 			</ul>
 			<!-- No results / no content when searched query not found-->
         	<div class="no-content" ng-show="results.reservations.length==0 && textInQueryBox!='' && isReservationActive">
@@ -182,18 +193,14 @@
 			</div>
 
 		</div>
-    <label class="checkbox inline search-filter" ng-class="{'checked': hasArNumber}" ng-show="!isReservationActive">
-        <!-- add .checked when checked -->
-        <span class="icon-form icon-checkbox" ng-class="{'checked': hasArNumber}"></span>
-        <!-- add checked="checked" when checked. -->
-        <input type="checkbox" ng-click="filterArAccounts()" ng-model="hasArNumber">
-        AR Accounts Only
-    </label>
-		<button ng-show="textInQueryBox!=''" type="button" id="cancel-entity-search" class="button blank" ng-click="clearResults()" translate>CANCEL_SEARCH</button>
+    <!-- Search pagination -->
+		<rv-pagination ng-if="isReservationActive && showPagination" page-options="reservationPaginationObj" page-data="totalReservation"></rv-pagination>
+		
+		<rv-pagination ng-if="!isReservationActive && showPagination" page-options="accountsPaginationObj" page-data="totalCards"></rv-pagination>
+	</div>
 
-  </div>
+	 </fieldset>
 
-   </fieldset>
    <fieldset class="content-right">
       <div class="no-content" >
          <div class="info">
