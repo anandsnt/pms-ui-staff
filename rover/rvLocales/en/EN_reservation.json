@@ -171,4 +171,5 @@
 
     "PRINT_LETTER": "Print Letter",
     "SEND_EMAIL": "Send Email",
-    "CLOSE_WINDOW": "Close Window"
+    "CLOSE_WINDOW": "Close Window",
+    "SKIP_ID_SCAN": "Skip"
