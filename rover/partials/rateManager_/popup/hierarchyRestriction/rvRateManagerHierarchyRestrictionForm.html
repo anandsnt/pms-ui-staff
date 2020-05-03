@@ -65,8 +65,8 @@
             <div class="entry margin">
                 <label>Schedule</label>
                 <!-- If checked, we then add .showing-dates on the .modal-content to show the dates -->
-                <label class="checkbox" ng-class="{'checked: restrictionObj.isRepeatOnDates'}" ng-click="clickedOnRepeatOnDates()">
-                    <span class="icon-form icon-checkbox" ng-class="{'checked: restrictionObj.isRepeatOnDates'}"></span>
+                <label class="checkbox" ng-class="{'checked': restrictionObj.isRepeatOnDates}" ng-click="clickedOnRepeatOnDates()">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked': restrictionObj.isRepeatOnDates}"></span>
                     <input type="checkbox" ng-checked="restrictionObj.isRepeatOnDates"/>
                     Repeat on Dates
                 </label> 

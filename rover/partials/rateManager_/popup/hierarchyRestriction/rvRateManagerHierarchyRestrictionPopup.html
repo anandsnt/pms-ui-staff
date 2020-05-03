@@ -74,7 +74,7 @@
                             </button>
                             <!-- -- remove .grey and add .green if we can set the restriction -- -->
                             <button class="button" ng-class="{'hidden': (popUpView !== 'NEW' && popUpView !== 'EDIT'), 'grey': !validateForm(), 'green': validateForm()}" type="button" ng-click="setHouseHierarchyRestriction()">
-                                Set
+                                {{getSetButtonLabel()}}
                             </button>
                         
 

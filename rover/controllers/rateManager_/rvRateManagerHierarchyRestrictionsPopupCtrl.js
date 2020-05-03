@@ -27,12 +27,8 @@ angular.module('sntRover')
                     $scope.popUpView = '';
                     $scope.selectedRestriction = {};
                     $scope.restrictionStylePack = hierarchyUtils.restrictionColorAndIconMapping;
-                    $scope.restrictionObj = {
-                        isRepeatOnDates: false,
-                        daysList: hierarchyUtils.repeatOnDatesList,
-                        untilDate: ''
-                    };
-                }, initialiseFirstScreen = () => {
+                },
+                initialiseFirstScreen = () => {
                     // as part of CICO-75894 we are always showing the first screen as empty.
                     // the below code must be changed when the story to view restrictions is taken up.
                     // There may be code, but for now, the following one line will do
@@ -43,6 +39,12 @@ angular.module('sntRover')
                     // trigger Restriction setting window
                     $scope.popUpView = 'NEW';
                     $scope.showRestrictionSelection = false;
+                    $scope.restrictionObj = {
+                        isRepeatOnDates: false,
+                        daysList: hierarchyUtils.repeatOnDatesList,
+                        cellDate: $scope.ngDialogData.date,
+                        untilDate: ''
+                    };
                 };
 
                 var setHouseRestrictionDataForPopup = () => {
@@ -70,7 +72,7 @@ angular.module('sntRover')
                 $scope.validateForm = () => {
                     var formValid;
 
-                    if ($scope.showPlaceholder()) {
+                    if ($scope.showPlaceholder() || ($scope.restrictionObj.isRepeatOnDates && $scope.restrictionObj.untilDate === '')) {
                         formValid = false;
                     }
                     else {
@@ -82,6 +84,19 @@ angular.module('sntRover')
                         ) || $scope.selectedRestriction.type === "boolean";
                     }
                     return formValid;
+                };
+
+                // Utility method to pick up selected week days for API.
+                let getSelectedWeekDays = function() {
+                    let weekDays = [];
+
+                    _.each($scope.restrictionObj.daysList, function( day ) {
+                        if (day.isChecked) {
+                            weekDays.push(day.value);
+                        }
+                    });
+
+                    return weekDays;
                 };
 
                 $scope.setHouseHierarchyRestriction = () => {
@@ -99,6 +114,15 @@ angular.module('sntRover')
                         params: params,
                         onSuccess: houseRestrictionSuccessCallback
                     };
+                
+                    if ($scope.restrictionObj.isRepeatOnDates) {
+                        let selectedWeekDays = getSelectedWeekDays();
+
+                        if (selectedWeekDays.length > 0) {
+                            options.params.weekdays = selectedWeekDays;
+                        }
+                        options.params.to_date = $scope.restrictionObj.untilDate;
+                    }
 
                     $scope.callAPI(hierarchySrv.saveHouseRestrictions, options);
                 };
@@ -123,54 +147,20 @@ angular.module('sntRover')
                     }, 700);
                 };
 
+                // Handle click on Repeat on dates checkbox.
                 $scope.clickedOnRepeatOnDates = function() {
                     $scope.restrictionObj.isRepeatOnDates = !$scope.restrictionObj.isRepeatOnDates;
                 };
 
-                $scope.checkedEachDay = function( index ) {
-                    $scope.restrictionObj.daysList[index] = !$scope.restrictionObj.daysList[index];
-                };
+                // Set the label name for SET or SET Dates button.
+                $scope.getSetButtonLabel = function() {
+                    let label = 'Set';
 
-                let checkAllDaysChecked = function() {
-                    let isAllDaysChecked = true;
-                    _.each($scope.restrictionObj.daysList, function( day ){
-                        if (!day.isChecked) {
-                            isAllDaysChecked = false;
-                            return isAllDaysChecked;
-                        }
-                    });
-
-                    return isAllDaysChecked;
-                };
-
-                let checkNoDaysChecked = function() {
-                    let isNoDaysChecked = true;
-                    _.each($scope.restrictionObj.daysList, function( day ){
-                        if (day.isChecked) {
-                            isNoDaysChecked = false;
-                            return isNoDaysChecked;
-                        }
-                    });
-
-                    return isNoDaysChecked;
-                };
-
-                $scope.generateButtonText = function() {
-                    let text = 'Select All';
-
-                    if (checkAllDaysChecked()) {
-                        text = 'Clear All';
+                    if ($scope.restrictionObj.isRepeatOnDates) {
+                        label = 'Set on date(s)';
                     }
-                    return text;
-                };
 
-                $scope.getButtonClass = function() {
-                    let className = 'brand-text';
-
-                    if (checkAllDaysChecked()) {
-                        className = 'red-text';
-                    }
-                    return className;
+                    return label;
                 };
 
                 var initController = () => {
