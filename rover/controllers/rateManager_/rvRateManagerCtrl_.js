@@ -97,7 +97,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             scope: $scope,
             className: 'ngdialog-theme-default',
             data: data,
-            controller: 'rvRateManagerRestrictionAndAmountPopupCtrl'
+            controller: 'rvRateManagerRestrictionAndAmountPopupCtrl',
+            closeByDocument: false,
+            closeByEscape: false
         });
     };
 
@@ -1018,7 +1020,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             scope: $scope,
             className: '',
             data: data,
-            controller: 'rvRateManagerHierarchyRestrictionsPopupCtrl'
+            controller: 'rvRateManagerHierarchyRestrictionsPopupCtrl',
+            closeByDocument: false,
+            closeByEscape: false
         });
     };
 

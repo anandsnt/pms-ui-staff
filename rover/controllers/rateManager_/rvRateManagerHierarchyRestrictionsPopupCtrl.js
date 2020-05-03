@@ -67,6 +67,7 @@ angular.module('sntRover')
                 $scope.restrictionSelected = (restriction) => {
                     $scope.selectedRestriction = restriction;
                     $scope.toggleRestrictionSelection();
+                    $scope.$emit('SCROLL_REFRESH_REPEAT_ON_DATES');
                 };
 
                 // Check repeat on dates fields are valid.
@@ -155,7 +156,7 @@ angular.module('sntRover')
                 // Handle click on Repeat on dates checkbox.
                 $scope.clickedOnRepeatOnDates = function() {
                     $scope.restrictionObj.isRepeatOnDates = !$scope.restrictionObj.isRepeatOnDates;
-                    $scope.$emit('CLICKED_REPEAT_ON_DATES');
+                    $scope.$emit('SCROLL_REFRESH_REPEAT_ON_DATES');
                 };
 
                 // Set the label name for SET or SET Dates button.

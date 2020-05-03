@@ -1,10 +1,15 @@
 angular.module('sntRover')
     .controller('rvRateManagerHierarchyRestrictionsRepeatOnDatesCtrl', [
-        '$scope', 'ngDialog',
-        function($scope, ngDialog) {
+        '$scope', 'ngDialog', '$timeout',
+        function($scope, ngDialog, $timeout) {
             BaseCtrl.call(this, $scope);
 
             $scope.setScroller('repeatOnDatesScroller');
+            let refreshScroller = function() {
+                $timeout(function() {
+                    $scope.refreshScroller('repeatOnDatesScroller');
+                }, 500);
+            };
 
             $scope.checkedEachDay = function( index ) {
                 $scope.restrictionObj.daysList[index].isChecked = !$scope.restrictionObj.daysList[index].isChecked;
@@ -70,8 +75,8 @@ angular.module('sntRover')
                 ngDialog.close(datePickerDialog.id);
             });
 
-            $scope.addListener('CLICKED_REPEAT_ON_DATES', function() {
-                $scope.refreshScroller('repeatOnDatesScroller');
+            $scope.addListener('SCROLL_REFRESH_REPEAT_ON_DATES', function() {
+                refreshScroller();
             });
             /* 
              *  Show date calendar popup for set Until Date.

@@ -1,8 +1,9 @@
 sntRover.controller('rvRMHierarchyRestrictionsDatePickerCtrl', ['$scope', function($scope) {
 
-	var minDateSelected = moment(tzIndependentDate($scope.restrictionObj.cellDate)).add(1, 'days'),
-		maxDateSelected = moment(tzIndependentDate($scope.restrictionObj.cellDate)).add(1, 'years');
+	var minDateSelected = moment($scope.restrictionObj.cellDate).add(1, 'days'),
+		maxDateSelected = moment($scope.restrictionObj.cellDate).add(1, 'years');
 
+	$scope.date = tzIndependentDate($scope.restrictionObj.cellDate);
 	$scope.setUpData = function() {
 		$scope.dateOptions = {
 			changeYear: true,
