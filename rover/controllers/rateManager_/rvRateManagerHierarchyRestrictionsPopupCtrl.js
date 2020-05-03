@@ -27,6 +27,11 @@ angular.module('sntRover')
                     $scope.popUpView = '';
                     $scope.selectedRestriction = {};
                     $scope.restrictionStylePack = hierarchyUtils.restrictionColorAndIconMapping;
+                    $scope.restrictionObj = {
+                        isRepeatOnDates: false,
+                        daysList: hierarchyUtils.repeatOnDatesList,
+                        untilDate: ''
+                    };
                 }, initialiseFirstScreen = () => {
                     // as part of CICO-75894 we are always showing the first screen as empty.
                     // the below code must be changed when the story to view restrictions is taken up.
@@ -116,6 +121,56 @@ angular.module('sntRover')
                     document.getElementsByClassName("pinnedLeft-list")[0].scrollTop = 0;
                     $scope.$apply();
                     }, 700);
+                };
+
+                $scope.clickedOnRepeatOnDates = function() {
+                    $scope.restrictionObj.isRepeatOnDates = !$scope.restrictionObj.isRepeatOnDates;
+                };
+
+                $scope.checkedEachDay = function( index ) {
+                    $scope.restrictionObj.daysList[index] = !$scope.restrictionObj.daysList[index];
+                };
+
+                let checkAllDaysChecked = function() {
+                    let isAllDaysChecked = true;
+                    _.each($scope.restrictionObj.daysList, function( day ){
+                        if (!day.isChecked) {
+                            isAllDaysChecked = false;
+                            return isAllDaysChecked;
+                        }
+                    });
+
+                    return isAllDaysChecked;
+                };
+
+                let checkNoDaysChecked = function() {
+                    let isNoDaysChecked = true;
+                    _.each($scope.restrictionObj.daysList, function( day ){
+                        if (day.isChecked) {
+                            isNoDaysChecked = false;
+                            return isNoDaysChecked;
+                        }
+                    });
+
+                    return isNoDaysChecked;
+                };
+
+                $scope.generateButtonText = function() {
+                    let text = 'Select All';
+
+                    if (checkAllDaysChecked()) {
+                        text = 'Clear All';
+                    }
+                    return text;
+                };
+
+                $scope.getButtonClass = function() {
+                    let className = 'brand-text';
+
+                    if (checkAllDaysChecked()) {
+                        className = 'red-text';
+                    }
+                    return className;
                 };
 
                 var initController = () => {

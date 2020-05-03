@@ -61,13 +61,13 @@
                 <input type="number" ng-model="selectedRestriction.value"/>
             </div>
         </div>
-        <div class="entry-group hidden">
+        <div class="entry-group">
             <div class="entry margin">
                 <label>Schedule</label>
                 <!-- If checked, we then add .showing-dates on the .modal-content to show the dates -->
-                <label class="checkbox">
-                    <span class="icon-form icon-checkbox"></span>
-                    <input type="checkbox" value="1"/>
+                <label class="checkbox" ng-class="{'checked: restrictionObj.isRepeatOnDates'}" ng-click="clickedOnRepeatOnDates()">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked: restrictionObj.isRepeatOnDates'}"></span>
+                    <input type="checkbox" ng-checked="restrictionObj.isRepeatOnDates"/>
                     Repeat on Dates
                 </label> 
             </div>

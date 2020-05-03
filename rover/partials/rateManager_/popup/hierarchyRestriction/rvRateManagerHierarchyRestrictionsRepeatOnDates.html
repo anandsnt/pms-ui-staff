@@ -1,0 +1,35 @@
+<div class="scrollable">
+    <div class="wrapper">
+        <h2>Repeat on Dates</h2>
+        <div class="notice">
+            Overrides All <strong>min. length of stay</strong> set on these rate types and dates
+        </div>
+
+        <h4>For every</h4>
+        <div class="list_week_days">
+            <!-- Add class .checked when checked-->
+            <label ng-repeat="day in restrictionObj.daysList" class="checkbox" ng-class="{'checked: day.isChecked'}" ng-click="checkedEachDay($index)">
+                <!-- Add class .checked when checked-->
+                <span class="icon-form icon-checkbox" ng-class="{'checked: day.isChecked'}"></span>
+                <!-- add attribute 'checked="checked"' when checked-->
+                <input value="restrictions" type="checkbox" ng-checked="day.isChecked"/>
+                {{day.name}}
+            </label>
+            <!-- ... repeat for each day in the week -->
+            
+            <!-- 'ButtonText':
+                - 'Select All' - when some day is not selected, 'text-class': brand-text
+                - 'Clear All' - when all days are selected, 'text-class': red-text
+            -->
+            <button class="button white" ng-class="getButtonClass()">
+                {{generateButtonText()}}
+            </button>
+        </div>
+
+        <h4>Until</h4>
+        <div class="has-datepicker">
+            <input id="rmDateRange" placeholder="Select Date Range" readonly="" maxlength="8" class="hasDatepicker" name="">
+            <button type="button" class="ui-datepicker-trigger">...</button>
+        </div>
+    </div>
+</div>
