@@ -69,10 +69,15 @@ angular.module('sntRover')
                     $scope.toggleRestrictionSelection();
                 };
 
+                // Check repeat on dates fields are valid.
+                let isRepeatOnDatesValid = () => {
+                    return ($scope.restrictionObj && $scope.restrictionObj.isRepeatOnDates && $scope.restrictionObj.untilDate === '');
+                };
+
                 $scope.validateForm = () => {
                     var formValid;
 
-                    if ($scope.showPlaceholder() || ($scope.restrictionObj.isRepeatOnDates && $scope.restrictionObj.untilDate === '')) {
+                    if ($scope.showPlaceholder() || isRepeatOnDatesValid()) {
                         formValid = false;
                     }
                     else {
@@ -150,6 +155,7 @@ angular.module('sntRover')
                 // Handle click on Repeat on dates checkbox.
                 $scope.clickedOnRepeatOnDates = function() {
                     $scope.restrictionObj.isRepeatOnDates = !$scope.restrictionObj.isRepeatOnDates;
+                    $scope.$emit('CLICKED_REPEAT_ON_DATES');
                 };
 
                 // Set the label name for SET or SET Dates button.

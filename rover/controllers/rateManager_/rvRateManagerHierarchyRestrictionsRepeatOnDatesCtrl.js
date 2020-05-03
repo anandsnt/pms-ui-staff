@@ -4,12 +4,7 @@ angular.module('sntRover')
         function($scope, ngDialog) {
             BaseCtrl.call(this, $scope);
 
-            $scope.serScroller('repeatOnDatesScroller');
-            $scope.refreshScroller('repeatOnDatesScroller');
-
-            $scope.clickedOnRepeatOnDates = function() {
-                $scope.restrictionObj.isRepeatOnDates = !$scope.restrictionObj.isRepeatOnDates;
-            };
+            $scope.setScroller('repeatOnDatesScroller');
 
             $scope.checkedEachDay = function( index ) {
                 $scope.restrictionObj.daysList[index].isChecked = !$scope.restrictionObj.daysList[index].isChecked;
@@ -17,7 +12,7 @@ angular.module('sntRover')
 
             let checkAllDaysChecked = function() {
                 let isAllDaysChecked = true;
-                
+
                 _.each($scope.restrictionObj.daysList, function( day ) {
                     if (!day.isChecked) {
                         isAllDaysChecked = false;
@@ -75,6 +70,9 @@ angular.module('sntRover')
                 ngDialog.close(datePickerDialog.id);
             });
 
+            $scope.addListener('CLICKED_REPEAT_ON_DATES', function() {
+                $scope.refreshScroller('repeatOnDatesScroller');
+            });
             /* 
              *  Show date calendar popup for set Until Date.
              */
