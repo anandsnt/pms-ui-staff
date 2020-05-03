@@ -78,6 +78,14 @@ angular.module('sntRover')
             $scope.addListener('SCROLL_REFRESH_REPEAT_ON_DATES', function() {
                 refreshScroller();
             });
+
+            $scope.addListener('CLICKED_REPEAT_ON_DATES', function() {
+                if ($scope.restrictionObj.isRepeatOnDates) {
+                    refreshScroller();
+                    setAllDaysUnChecked();
+                    $scope.restrictionObj.untilDate = '';
+                }
+            });
             /* 
              *  Show date calendar popup for set Until Date.
              */
