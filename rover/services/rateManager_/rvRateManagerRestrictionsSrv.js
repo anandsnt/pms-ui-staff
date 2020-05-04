@@ -33,17 +33,15 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
                 var i = 0, j = 0;
                 
                 for (i = 0; i < rateAmountList.length; i ++ ) {
-                    let merged = [];
+                    let newList = [];
 
                     for (j = 0; j < rateAmountList[i].rates.length; j ++) {
-                        let arr1 = rateAmountList[i].rates[j];
-                        let arr2 = rateRestrictionsList[i].rates[j];
-                        let concat = arr1.concat(arr2);
-
-                        merged.push({ concat });
+                        let merged = Object.assign(rateAmountList[i].rates[j], rateRestrictionsList[i].rates[j]);
+                        
+                        newList.push(merged);
                     }
 
-                    rateRestrictionsList[i].rates = merged;
+                    rateRestrictionsList[i].rates = newList;
                 }
             }
 
