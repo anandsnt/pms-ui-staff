@@ -53,6 +53,12 @@ angular.module('sntRover')
 
 				if (datesToCompare.length > 0) {
 					if (datesToCompare.includes($scope.dashboardFilter.datePicked)) {
+						// If only picked filetr date is current selected date, we don't have to fetch  again
+						// Draw with already fetched data 
+						if (datesToCompare.length === 1) {
+							drawPaceLineChart();
+							return;
+						}
 						datesToCompare = _.reject(datesToCompare, function (date) {
 							return date === $scope.dashboardFilter.datePicked;
 						});
