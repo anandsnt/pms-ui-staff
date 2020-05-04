@@ -30,10 +30,12 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
          */
         service.concatRateWithAmount = function(rateAmountList, rateRestrictionsList) {
             if (rateAmountList.length > 0) {
-                for ( let i = 0; i < rateAmountList.length; i++ ) {
+                var i = 0, j = 0;
+                
+                for (i = 0; i < rateAmountList.length; i ++ ) {
                     let merged = [];
 
-                    for (let j = 0; j < rateAmountList[i].rates.length; j ++) {
+                    for (j = 0; j < rateAmountList[i].rates.length; j ++) {
                         merged.push({
                            ...rateAmountList[i].rates[j],
                            ...rateRestrictionsList[i].rates[j]
