@@ -892,7 +892,10 @@
                         flex-shrink: 0;
                         max-width: 50%;
                         font-size: 30px;
-                        padding-right: 10px;
+                        
+                        &:not(:empty) {
+                            padding-right: 10px;
+                        }
 
                         &.no-number {
                             color: @grey2;
@@ -925,8 +928,11 @@
                         font-size: 30px;
                         font-weight: 300;
                         max-width: 50%;
-                        padding-right: 10px;
                         .nowrap();
+
+                        &:not(:empty) {
+                            padding-right: 10px;
+                        }
                     }
 
                     .rate {
