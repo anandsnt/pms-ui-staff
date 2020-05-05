@@ -3467,7 +3467,7 @@ angular.module('reportsModule')
                     }
 
                     _.each(data, function (guaranteeTypeData) {
-                        guaranteeTypeData.id = guaranteeTypeData.value;
+                        guaranteeTypeData.id = guaranteeTypeData.name;
                     });
 
                     var guaranteeTypesCopy = angular.copy(data);
