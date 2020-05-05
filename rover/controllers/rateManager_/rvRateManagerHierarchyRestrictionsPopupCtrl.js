@@ -21,7 +21,8 @@ angular.module('sntRover')
                 var initializeScopeVariables = () => {
                     $scope.header = {
                         date: '',
-                        hierarchyType: ''
+                        hierarchyType: '',
+                        disableNewRestriction: false
                     };
                     // The below variable can have one of four values: EMPTY/LIST/NEW/EDIT
                     $scope.popUpView = '';
@@ -43,6 +44,7 @@ angular.module('sntRover')
                 var setHouseRestrictionDataForPopup = () => {
                     $scope.header.hierarchyType = $scope.ngDialogData.hierarchyLevel;
                     $scope.header.date = moment($scope.ngDialogData.date).format('dddd, MMMM DD');
+                    $scope.header.disableNewRestriction = $rootScope.businessDate > $scope.ngDialogData.date;
                 };
 
                 $scope.showPlaceholder = () => {
@@ -58,6 +60,9 @@ angular.module('sntRover')
                 };
 
                 $scope.restrictionSelected = (restriction) => {
+                    if (!_.isEmpty($scope.selectedRestriction)) {
+                        $scope.selectedRestriction.value = null;
+                    }
                     $scope.selectedRestriction = restriction;
                     $scope.toggleRestrictionSelection();
                 };
@@ -70,11 +75,16 @@ angular.module('sntRover')
                     }
                     else {
                         // CICO-75894
-                        formValid = (
-                            $scope.selectedRestriction.type === 'number' &&
-                            $scope.selectedRestriction.value &&
-                            $scope.selectedRestriction.value > 0
-                        ) || $scope.selectedRestriction.type === "boolean";
+                        if ($scope.selectedRestriction.type === "boolean") {
+                            formValid = true;
+                        }
+                        else if ($scope.selectedRestriction.type === 'number') {
+                            // Allow zero and positive values
+                            formValid = /^[1-9]\d*$/.test($scope.selectedRestriction.value);
+                        }
+                        else {
+                            formValid = false;
+                        }
                     }
                     return formValid;
                 };
