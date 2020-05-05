@@ -795,6 +795,15 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             return timePeriodsData;
         };
 
+        // Process sort fields if any
+        var processSortFields = () => {
+            if ($scope.selectedEntityDetails.report.title === reportNames['RESERVATIONS_BY_USER']) {
+                $scope.selectedEntityDetails.sort_fields = _.reject($scope.selectedEntityDetails.sort_fields, (sortField) => {
+                    return sortField.value === 'TYPE';
+                });
+            }
+        };
+
         // this is a temporary setup
         // may have to share logic with
         // rvReportUtilsFac.js in future
@@ -994,8 +1003,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             if ($scope.selectedEntityDetails.group_fields && $scope.selectedEntityDetails.group_fields.length) {
                 $scope.selectedEntityDetails.group_fields = _.reject($scope.selectedEntityDetails.group_fields, { value: 'BLANK' });
             }
-            
 
+            processSortFields();
             runDigestCycle();
         };
 
