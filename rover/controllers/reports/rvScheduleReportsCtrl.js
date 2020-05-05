@@ -804,6 +804,23 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             }
         };
 
+        // Get user list
+        var getUserList = () => {
+            var userList = angular.copy( $scope.$parent.activeUserList);
+
+            if ($scope.selectedEntityDetails.report.title === reportNames['ROOM_STATUS_REPORT']) {
+                var UNDEFINED = {
+                    full_name: 'UNDEFINED',
+                    id: -1
+                };
+
+                userList.push(UNDEFINED);
+            }
+
+            return userList;
+           
+        };
+
         // this is a temporary setup
         // may have to share logic with
         // rvReportUtilsFac.js in future
@@ -949,7 +966,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 } else if (filter.value === 'SHOW_EMPLOYEES' || filter.value === 'EMPLOYEE') {
                     $scope.filters.hasUsers = {
                         title: $scope.selectedEntityDetails.report.title === reportNames['RESERVATIONS_BY_USER'] ? 'Users' : 'Employees',
-                        data: angular.copy($scope.$parent.activeUserList),
+                        data: getUserList(),
                         options: {
                             selectAll: true,
                             hasSearch: true,
@@ -1082,7 +1099,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
                 } else if (key === reportParams['USER_IDS'] && value.length > 0) {
                     var selectedEmps = [],
-                        employeesCopy = angular.copy($scope.$parent.activeUserList);
+                        employeesCopy = getUserList();
 
                     employeesCopy.forEach(emp => {
                         emp.selected = false;
