@@ -75,14 +75,12 @@ angular.module('sntRover')
                     }
                     else {
                         // CICO-75894
-                        // seperating these blocks because selectedRestrictionValue === 0 would return false
-                        // if we combine the above condition in a ternary operator for formValid
                         if ($scope.selectedRestriction.type === "boolean") {
                             formValid = true;
                         }
                         else if ($scope.selectedRestriction.type === 'number') {
                             // Allow zero and positive values
-                            formValid = /^\d+$/.test($scope.selectedRestriction.value)
+                            formValid = /^[1-9]\d*$/.test($scope.selectedRestriction.value);
                         }
                         else {
                             formValid = false;
