@@ -668,6 +668,22 @@ sntRover.controller('RVbillCardController',
 
 		$scope.callAPI(RVBillCardSrv.fetchBillData, dataToSend);
 	};
+
+	$scope.setBillAddressType = function() {
+		$scope.reservationBillData.bills[0].bill_address_type = $scope.reservationBillData.bills[0].bill_address_type === 'COMPANY' ? 'GUEST' : 'COMPANY';
+		$timeout(function() {
+			var dataToSend = {
+				params: {
+					"parmasToApi": {
+						"bill_address_type": $scope.reservationBillData.bills[0].bill_address_type
+					},
+					"bill_id": $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id
+				}
+			};
+
+			$scope.callAPI(RVBillCardSrv.setBillAddressType, dataToSend);
+		}, 800);
+	};
 	/*
 	 * Set clicked bill active and show corresponding days/packages/addons calender
 	 * @param {int} index of bill
@@ -2696,10 +2712,6 @@ sntRover.controller('RVbillCardController',
 				successCallBack: settleInvoiceSuccess
 			};
 	
-		if (data.bill_address_type) {
-			options.params.bill_address_type = data.bill_address_type;
-		}
-
 		$scope.callAPI(RVBillCardSrv.settleFinalInvoice, options);
 	};
 
@@ -3392,6 +3404,15 @@ sntRover.controller('RVbillCardController',
 		!$scope.reservationBillData.bills[$scope.currentActiveBill].is_void_bill &&
 		!isDbpaymentExistsForThisBill;
 	};
+	$scope.$on("CARD_REMOVED", function() {
+		$scope.reservationBillData.bills[0].show_invoice_type_toggle = false;
+	});
+
+	$scope.$on("COMPANY_ADDED", function() {
+		$scope.reservationBillData.bills[0].show_invoice_type_toggle = true;
+		
+	});
+	
 	/*
 	 * Open void bill popup
 	 */

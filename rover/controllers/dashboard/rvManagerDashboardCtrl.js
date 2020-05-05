@@ -360,6 +360,7 @@ sntRover.controller('RVmanagerDashboardController',
         $scope.dashboardFilter.chartType = rvAnalyticsSrv.managerChartFilterSet.chartType;
         $scope.dashboardFilter.aggType = rvAnalyticsSrv.managerChartFilterSet.aggType;
         $scope.dashboardFilter.gridViewToggle = angular.copy(rvAnalyticsSrv.managerChartFilterSet.gridViewActive);
+        $scope.dashboardFilter.gridViewActive = angular.copy(rvAnalyticsSrv.managerChartFilterSet.gridViewActive);
       } else {
         $scope.dashboardFilter.lineChartActive = angular.copy(rvAnalyticsSrv.managerChartFilterSet.lineChartActive);
         $scope.dashboardFilter.datesToCompare = angular.copy(rvAnalyticsSrv.managerChartFilterSet.datesToCompare);
@@ -471,9 +472,17 @@ sntRover.controller('RVmanagerDashboardController',
   };
 
   var emptyAllChartFilters = function() {
+    filtersSelected = {
+      filters: {
+        room_type_id: [],
+        market_id: [],
+        source_id: [],
+        booking_origin_id: [],
+        segment_id: []
+      }
+    };
     shallowEncoded = "";
     $scope.dashboardFilter.selectedRoomType = "";
-    rvAnalyticsSrv.selectedRoomType = "";
     $scope.dashboardFilter.chartType = "occupancy";
     $scope.dashboardFilter.aggType = "";
     $scope.dashboardFilter.datePicked = $rootScope.businessDate;
@@ -501,6 +510,7 @@ sntRover.controller('RVmanagerDashboardController',
   };
 
   $scope.$on('RESET_CHART_FILTERS', function() {
+    rvAnalyticsSrv.resetChartFilterSet();
     emptyAllChartFilters();
   });
 
@@ -751,7 +761,6 @@ sntRover.controller('RVmanagerDashboardController',
 
   $scope.clearAllFilters = function () {
     emptyAllChartFilters();
-    rvAnalyticsSrv.resetChartFilterSet();
   };
   /** ************************* SAVED FILTERS CODE ENDS HERE ***********************************/
 

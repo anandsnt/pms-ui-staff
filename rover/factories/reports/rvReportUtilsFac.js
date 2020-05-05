@@ -2777,9 +2777,9 @@ angular.module('reportsModule')
              * @param {Object} report - has the selected report details
              * @return {void}
              */
-            factory.fillMarkets = function (filter, filterValues) {
+            factory.fillMarkets = function (filter, filterValues, reportName) {
                 var getSelectAllVal = (markets) => {
-                    var selectAll = false;
+                    var selectAll = reportName === reportNames['RESERVATIONS_BY_USER'];
 
                     if (filterValues && filterValues.market_ids) {
                         selectAll = markets.length === filterValues.market_ids;
@@ -2834,9 +2834,9 @@ angular.module('reportsModule')
              * @param {Object} filter - holding filter details
              * @return {void} 
              */
-            factory.fillBookingOrigins = function (filter, filterValues) {
+            factory.fillBookingOrigins = function (filter, filterValues, reportName) {
                 var getSelectAllVal = (bookingOrigin) => {
-                    var selectAll = false;
+                    var selectAll = reportName === reportNames['RESERVATIONS_BY_USER'];
 
                     if (filterValues && filterValues.booking_origin_ids) {
                         selectAll = bookingOrigin.length === filterValues.booking_origin_ids;
@@ -2891,9 +2891,9 @@ angular.module('reportsModule')
              * @param {Object} filter - holding filter details
              * @return {void} 
              */
-            factory.fillSources = function (filter, filterValues) {
+            factory.fillSources = function (filter, filterValues, reportName) {
                 var getSelectAllVal = (sources) => {
-                    var selectAll = false;
+                    var selectAll = reportName === reportNames['RESERVATIONS_BY_USER'];
 
                     if (filterValues && filterValues.source_ids) {
                         selectAll = sources.length === filterValues.source_ids;
@@ -2987,6 +2987,253 @@ angular.module('reportsModule')
             };
 
             /**
+             * Fill Work Types
+             * @param {Object} filter - holding filter details
+             * @return {void}
+             */
+            factory.fillWorkTypes = function (filter, filterValues) {
+                var getSelectAllVal = (workType) => {
+                    var selectAll = true;
+
+                    if (filterValues && filterValues.work_type_ids) {
+                        selectAll = workType.length === filterValues.work_type_ids;
+                    }
+
+                    return selectAll;
+                };
+
+                reportsSubSrv.fetchWorkTypes().then(function (data) {
+                    var UNDEFINED = {
+                        is_active: true,
+                        name: 'UNDEFINED',
+                        value: 'UNDEFINED',
+                        id: -1
+                    };
+                    
+                    _.each(data, (workType) => {
+                        workType.value = workType.name.toUpperCase();
+                    });
+                    var undefinedEntry = _.find(data, { name: 'UNDEFINED' });
+
+                    if (!undefinedEntry) {
+                        data.push(UNDEFINED);
+                    }
+
+                    var workCopy = angular.copy(data);
+
+                    if (filterValues && filterValues.work_type_ids) {
+                        workCopy = workCopy.map(workType => {
+                            workType.selected = false;
+
+                            if (filterValues.work_type_ids.indexOf(workType.id) > -1) {
+                                workType.selected = true;
+                            }
+                            return workType;
+                        });
+                    }
+
+                    filter.hasIncludeWorkTypes = {
+                        data: workCopy,
+                        options: {
+                            selectAll: getSelectAllVal(workCopy),
+                            hasSearch: true,
+                            key: 'value',
+                            defaultValue: 'Select Work Type'
+                        }
+                    };
+
+
+                });
+
+            };
+
+            /**
+             * Fill Front Office Status
+             * @param {Object} filter - holding filter details
+             * @return {void}
+             */
+            factory.fillFrontOfficeStatus = function (filter, filterValues) {
+                var getSelectAllVal = (officeStatus) => {
+                    var selectAll = true;
+
+                    if (filterValues && filterValues.fo_status_ids) {
+                        selectAll = officeStatus.length === filterValues.fo_status_ids;
+                    }
+
+                    return selectAll;
+                };
+                
+                reportsSubSrv.fetchFrontOfficeStatus().then(function (data) {
+                    var officeCopy = angular.copy(data);
+
+                    if (filterValues && filterValues.fo_status_ids) {
+                        officeCopy = officeCopy.map(status => {
+                            status.selected = false;
+
+                            if (filterValues.fo_status_ids.indexOf(status.id) > -1) {
+                                status.selected = true;
+                            }
+                            return status;
+                        });
+                    }
+
+                    filter.hasFrontOfficeStatus = {
+                        data: officeCopy,
+                        options: {
+                            selectAll: getSelectAllVal(officeCopy),
+                            hasSearch: true,
+                            key: 'value',
+                            defaultValue: 'Select Front Office Status'
+                        }
+                    };
+                });
+            };
+
+            /**
+             * Fill Floors
+             * @param {Object} filter - holding filter details
+             * @return {void}
+             */
+            factory.fillFloors = function (filter, filterValues) {
+                var getSelectAllVal = (floors) => {
+                    var selectAll = true;
+
+                    if (filterValues && filterValues.floor_ids) {
+                        selectAll = floors.length === filterValues.floor_ids;
+                    }
+
+                    return selectAll;
+                };
+
+                reportsSubSrv.fetchFloors().then(function (data) {
+                    var UNDEFINED = {
+                        is_active: true,
+                        name: 'UNDEFINED',
+                        floor_number: 'UNDEFINED',
+                        id: -1
+                    };
+
+                    var undefinedEntry = _.find(data, { name: 'UNDEFINED' });
+
+                    if (!undefinedEntry) {
+                        data.push(UNDEFINED);
+                    } else {
+                        _.find(data, { name: 'UNDEFINED' }).floor_number = 'UNDEFINED';
+                    }
+
+                    var floorCopy = angular.copy(data);
+
+                    if (filterValues && filterValues.floor_ids) {
+                        floorCopy = floorCopy.map(floor => {
+                            floor.selected = false;
+
+                            if (filterValues.floor_ids.indexOf(floor.id) > -1) {
+                                floor.selected = true;
+                            }
+                            return floor;
+                        });
+                    }
+                    
+                    filter.hasFloorList = {
+                        data: floorCopy,
+                        options: {
+                            selectAll: getSelectAllVal(floorCopy),
+                            hasSearch: true,
+                            key: 'floor_number',
+                            defaultValue: 'Select Floor'
+                        }
+                    };
+                }); 
+            };
+
+            /**
+             * Fill Housekeeping Status
+             * @param {Object} filter - holding filter details
+             * @return {void} 
+             */
+            factory.fillHouseKeepingStatus = function (filter, filterValues) {
+                var getSelectAllVal = (hkStatus) => {
+                    var selectAll = true;
+
+                    if (filterValues && filterValues.hk_status_ids) {
+                        selectAll = hkStatus.length === filterValues.hk_status_ids;
+                    }
+
+                    return selectAll;
+                };
+
+                reportsSubSrv.fetchHouseKeepingStatus().then(function (data) {
+                    var statusCopy = angular.copy(data);
+
+                    if (filterValues && filterValues.hk_status_ids) {
+                        statusCopy = statusCopy.map(hkStatus => {
+                            hkStatus.selected = false;
+
+                            if (filterValues.hk_status_ids.indexOf(hkStatus.id) > -1) {
+                                hkStatus.selected = true;
+                            }
+                            return hkStatus;
+                        });
+                    }
+
+                    filter.hasHouseKeepingStatus = {
+                        data: statusCopy,
+                        options: {
+                            selectAll: getSelectAllVal(statusCopy),
+                            hasSearch: false,
+                            key: 'value',
+                            defaultValue: 'Select Status'
+                        }
+                    };
+                    
+                });
+            };
+
+             /**
+             * Fill Reservation Status
+             * @param {Object} filter - holding filter details
+             * @return {void}
+             */
+            factory.fillReservationStatus = function (filter, filterValues) {
+                var getSelectAllVal = (resStatus) => {
+                    var selectAll = true;
+
+                    if (filterValues && filterValues.status_ids) {
+                        selectAll = resStatus.length === filterValues.status_ids;
+                    }
+
+                    return selectAll;
+                };
+
+                reportsSubSrv.fetchReservationStatus().then(function (data) {
+
+                    var statusCopy = angular.copy(data);
+
+                    if (filterValues && filterValues.status_ids) {
+                        statusCopy = statusCopy.map(resStatus => {
+                            resStatus.selected = false;
+
+                            if (filterValues.status_ids.indexOf(resStatus.id) > -1) {
+                                resStatus.selected = true;
+                            }
+                            return resStatus;
+                        });
+                    }
+
+                    filter.hasReservationStatus = {
+                        data: statusCopy,
+                        options: {
+                            selectAll: getSelectAllVal(statusCopy),
+                            hasSearch: false,
+                            key: 'status',
+                            defaultValue: 'Select Status'
+                        }
+                    };
+
+                });
+            };
+
+            /**
              * Fill actionables options
              * @param {Object} filter - holding filter details
              * @return {void}
@@ -3016,6 +3263,237 @@ angular.module('reportsModule')
                 };
 
 
+            };
+
+            /**
+             * Fill rate codes
+             * @param {Object} filter - holding filter details
+             * @param {Object} filterValues -contain filter values
+             * @param {String} reportName name of the report
+             * @return {void} 
+             */
+            factory.fillRateCodes = function (filter, filterValues, reportName) {
+                var getSelectAllVal = (rateCodes) => {
+                    var selectAll = reportName === reportNames['RESERVATIONS_BY_USER'];
+
+                    if (filterValues && filterValues.rate_ids) {
+                        selectAll = rateCodes.length === filterValues.rate_ids;
+                    }
+
+                    return selectAll;
+                };
+
+                reportsSubSrv.fetchRateCode().then(function (data) {
+                    if (reportName === reportNames['RESERVATIONS_BY_USER']) {
+                        var hasCustomRateItemPresent = _.find(data, { id: -1 });
+
+                        if (!hasCustomRateItemPresent) {
+                            var customRate = {
+                                id: -1,
+                                description: "UNDEFINED"
+                            };
+
+                            data.push(customRate);
+                        }
+                    }
+
+                    var rateCodesCopy = angular.copy(data);
+
+                    if (filterValues && filterValues.rate_ids) {
+                        rateCodesCopy = rateCodesCopy.map(rateCode => {
+                            rateCode.selected = false;
+
+                            if (filterValues.rate_ids.indexOf(rateCode.id) > -1) {
+                                rateCode.selected = true;
+                            }
+                            return rateCode;
+                        });
+                    }
+
+                    filter.hasRateCodeList = {
+                        data: rateCodesCopy,
+                        options: {
+                            hasSearch: true,
+                            selectAll: getSelectAllVal(rateCodesCopy),
+                            singleSelect: reportName !== reportNames['RESERVATIONS_BY_USER'],
+                            key: 'description',
+                            defaultValue: 'Select Rate'
+                        }
+                    };
+                    
+                });
+            };
+
+            /**
+             * Fill room types
+             * @param {Object} filter - holding filter details
+             * @param {Object} filterValues -contain filter values
+             * @param {String} reportName name of the report
+             * @return {void} 
+             */
+            factory.fillRoomTypes = function (filter, filterValues, reportName) {
+                var getSelectAllVal = (roomTypes) => {
+                    var selectAll = true;
+
+                    if (filterValues && filterValues.room_type_ids) {
+                        selectAll = roomTypes.length === filterValues.room_type_ids;
+                    }
+
+                    return selectAll;
+                };
+
+                reportsSubSrv.fetchRoomTypeList().then(function (data) {
+                    if (reportName !== reportNames['RESERVATIONS_BY_USER']) {
+                        var selectedData = _.filter(data, function (rooms) {
+                            return !rooms.is_suite && !rooms.is_pseudo;
+                        });
+
+                        data = selectedData;
+                    }
+
+                    var roomTypesCopy = angular.copy(data);
+
+                    if (filterValues && filterValues.room_type_ids) {
+                        roomTypesCopy = roomTypesCopy.map(roomType => {
+                            roomType.selected = false;
+
+                            if (filterValues.room_type_ids.indexOf(roomType.id) > -1) {
+                                roomType.selected = true;
+                            }
+                            return roomType;
+                        });
+                    }
+
+                    filter.hasRoomTypeList = {
+                        data: roomTypesCopy,
+                        options: {
+                            hasSearch: false,
+                            selectAll: getSelectAllVal(roomTypesCopy),
+                            key: 'name'
+                        }
+                    };
+                    
+                });
+            };
+
+            /**
+             * Fill segments
+             * @param {Object} filter - holding filter details
+             * @param {Object} filterValues -contain filter values
+             * @param {String} reportName name of the report
+             * @return {void} 
+             */
+            factory.fillSegments = function (filter, filterValues, reportName) {
+                var getSelectAllVal = (segments) => {
+                    var selectAll = reportName === reportNames['RESERVATIONS_BY_USER'];
+
+                    if (filterValues && filterValues.segment_ids) {
+                        selectAll = segments.length === filterValues.segment_ids;
+                    }
+
+                    return selectAll;
+                };
+
+                reportsSubSrv.fetchSegments().then(function (data) {
+                    var UNDEFINED = {
+                        is_active: true,
+                        name: 'UNDEFINED',
+                        value: -1
+                    };
+
+                    var undefinedEntry = _.find(data, { name: 'UNDEFINED' });
+
+                    if (!undefinedEntry) {
+                        data.push(UNDEFINED);
+                    }
+
+                    _.each(data, function (segmentData) {
+                        segmentData.id = segmentData.value;
+                    });
+
+                    var segmentCopy = angular.copy(data);
+
+                    if (filterValues && filterValues.segment_ids) {
+                        segmentCopy = segmentCopy.map(segment => {
+                            segment.selected = false;
+
+                            if (filterValues.segment_ids.indexOf(segment.id) > -1) {
+                                segment.selected = true;
+                            }
+                            return segment;
+                        });
+                    }
+
+                    filter.hasSegmentList = {
+                        data: segmentCopy,
+                        options: {
+                            selectAll: getSelectAllVal(segmentCopy),
+                            hasSearch: false,
+                            key: 'name'
+                        }
+                    };
+                });
+            };
+
+            /**
+             * Fill guarantee Types
+             * @param {Object} filter - holding filter details
+             * @param {Object} filterValues -contain filter values
+             * @param {String} reportName name of the report
+             * @return {void} 
+             */
+            factory.fillGuaranteeTypes = function (filter, filterValues, reportName) {
+                var getSelectAllVal = (guranteeTypes) => {
+                    var selectAll = reportName === reportNames['RESERVATIONS_BY_USER'];
+
+                    if (filterValues && filterValues.include_guarantee_type) {
+                        selectAll = guranteeTypes.length === filterValues.include_guarantee_type;
+                    }
+
+                    return selectAll;
+                };
+
+                reportsSubSrv.fetchGuaranteeTypes().then(function (data) {
+                    var UNDEFINED = {
+                        is_active: true,
+                        name: 'UNDEFINED',
+                        value: -1
+                    };
+
+                    var undefinedEntry = _.find(data, { name: 'UNDEFINED' });
+
+                    if (!undefinedEntry) {
+                        data.push(UNDEFINED);
+                    }
+
+                    _.each(data, function (guaranteeTypeData) {
+                        guaranteeTypeData.id = guaranteeTypeData.name;
+                    });
+
+                    var guaranteeTypesCopy = angular.copy(data);
+
+                    if (filterValues && filterValues.include_guarantee_type) {
+                        guaranteeTypesCopy = guaranteeTypesCopy.map(guaranteeType => {
+                            guaranteeType.selected = false;
+
+                            if (filterValues.include_guarantee_type.indexOf(guaranteeType.id) > -1) {
+                                guaranteeType.selected = true;
+                            }
+                            return guaranteeType;
+                        });
+                    }
+
+                    filter.hasGuaranteeTypeList = {
+                        data: guaranteeTypesCopy,
+                        options: {
+                            selectAll: getSelectAllVal(guaranteeTypesCopy),
+                            hasSearch: true,
+                            key: 'name',
+                            defaultValue: 'Select guarantees'
+                        }
+                    };
+                    
+                });
             };
 
             return factory;

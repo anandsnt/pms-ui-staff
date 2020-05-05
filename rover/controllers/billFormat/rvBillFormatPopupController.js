@@ -6,11 +6,9 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
 
     BaseCtrl.call(this, $scope);
     $scope.isCompanyCardInvoice = true;
-    $scope.isCompanyInvoice = false;
     $scope.disableCompanyCardInvoice = false;
     $scope.disableCompanyGuestToggle = false;
-    $scope.hideCompanyCardInvoiceToggle = true;  
-    $scope.hideCompanyOrGuestInvoiceToggle = true; 
+    $scope.hideCompanyCardInvoiceToggle = true;    
     $scope.billFormat.isInformationalInvoice = !$scope.shouldGenerateFinalInvoice 
                                                 && $scope.isSettledBill 
                                                 && $scope.reservationBillData.is_bill_lock_enabled;
@@ -99,26 +97,6 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
         };
 
 
-    var handleCompanyGuestToggleVisibility = function () {
-        if ($scope.data.show_invoice_type_toggle) {
-            // Company card is attached.
-            $scope.isCompanyInvoice = false;
-            $scope.hideCompanyOrGuestInvoiceToggle = false;
-            if (!$scope.isSettledBill) {
-                if ($scope.data.bill_address_type === "company") {
-                    $scope.isCompanyInvoice = true;
-                } else if ($scope.data.bill_address_type === "guest") {
-                    $scope.isCompanyInvoice = false;
-                }
-                $scope.disableCompanyGuestToggle = true;
-            }
-        }
-        else {
-            $scope.hideCompanyOrGuestInvoiceToggle = true;
-            $scope.isCompanyInvoice = false;
-        }
-    };
-
     var successCallBackForLanguagesFetch = function(data) {
       $scope.$emit('hideLoader');
       if (data.languages) {
@@ -159,10 +137,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
             }
 
             $scope.data = response.data;
-            $scope.setEmailAddress();
-            if ($scope.reservationBillData && $scope.reservationBillData.reservation_id) {
-                handleCompanyGuestToggleVisibility();
-            }
+            $scope.setEmailAddress();            
         };
 
         $scope.invokeApi(RVBillCardSrv.getBillSettingsInfo, params, onBillSettingsInfoFetchSuccess);
@@ -176,7 +151,6 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
 
         if ($scope.reservationBillData && $scope.reservationBillData.reservation_id) {
             params.reservation_id = $scope.reservationBillData.reservation_id;
-            params.bill_address_type = $scope.isCompanyInvoice ? 'company' : 'guest';
         } else {
             if (!!$scope.groupConfigData) {
                 params.group_id = $scope.groupConfigData.summary.group_id;
@@ -407,10 +381,6 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
         $scope.setEmailAddress();
     };
 
-    // Toggle on COMPANY/GUEST invoice generation tab.
-    $scope.changeCompanyorGuestInvoiceToggle = function() {
-        $scope.isCompanyInvoice = !$scope.isCompanyInvoice;
-    };
     $scope.$on('$destroy', updateWindow);
 
     init();

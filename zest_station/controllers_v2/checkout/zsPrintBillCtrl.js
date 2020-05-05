@@ -240,8 +240,9 @@ sntZestStation.controller('zsPrintBillCtrl', [
 
         var fetchBillData = function() {
             var data = {
-                'reservation_id': $scope.reservation_id,
-                'bill_number': 1
+                reservation_id: $scope.reservation_id,
+                bill_number: 1,
+                locale: $translate.use()
             };
 
             var fetchBillSuccess = function(response) {

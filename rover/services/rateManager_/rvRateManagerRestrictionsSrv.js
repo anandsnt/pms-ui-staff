@@ -52,8 +52,8 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
         service.activeHierarchyRestrictions = function() {
             return {
                 house: service.hierarchyRestrictions.houseEnabled,
-                rate_types: service.hierarchyRestrictions.rateTypeEnabled,
-                room_types: service.hierarchyRestrictions.roomTypeEnabled,
+                rateTypes: service.hierarchyRestrictions.rateTypeEnabled,
+                roomTypes: service.hierarchyRestrictions.roomTypeEnabled,
                 rates: service.hierarchyRestrictions.rateEnabled
             };
         };

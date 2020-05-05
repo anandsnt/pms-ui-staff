@@ -267,12 +267,12 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             var activeHierarchies = rvRateManagerRestrictionsSrv.activeHierarchyRestrictions();
 
             // each of the following functions are to be defined as part of future stories where the panel restrictions will be handled
-            if (activeHierarchies.rate_types) {
+            if (activeHierarchies.rateTypes) {
                 promises.push(service.fetchRateTypePanelRestrictions().then((data) => {
                     response.panelRestrictions.rateTypeRestrictions = rvRateManagerRestrictionsSrv.formatRestrictionsData(data.results, {forPanel: true});
                 }));
             }
-            if (activeHierarchies.room_types) {
+            if (activeHierarchies.roomTypes) {
                 promises.push(service.fetchRoomTypePanelRestrictions().then((data) => {
                     response.panelRestrictions.roomTypeRestrictions = rvRateManagerRestrictionsSrv.formatRestrictionsData(data.results, {forPanel: true});
                 }));
