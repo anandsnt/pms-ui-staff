@@ -891,10 +891,8 @@ angular.module('reportsModule')
                         reportsSubSrv.fetchRestrictionList()
                             .then(fillRestrictionList);
                     } else if (('INCLUDE_CHARGE_GROUP' === filter.value && !filter.filled) || ('INCLUDE_CHARGE_CODE' === filter.value && !filter.filled) || ('ADDON_GROUPS' === filter.value && !filter.filled) || ('SHOW_CHARGE_CODES' === filter.value && !filter.filled)) {
-
-                        // fetch charge groups
                         requested++;
-                        reportsSubSrv.fetchChargeNAddonGroups()
+                        reportsSubSrv.fetchChargeNAddonGroups({for_addon_forecast_report: reportItem.title === 'Add-On Forecast'})
                             .then(function (chargeNAddonGroups) {
 
                                 // then fetch charge code
@@ -2955,10 +2953,6 @@ angular.module('reportsModule')
                 };
 
                 reportsSubSrv.fetchCountries().then(function (data) {
-                    _.each(data, function (countryData) {
-                        countryData.id = countryData.value;
-                    });
-
                     var countryCopy = angular.copy(data);
 
                     if (filterValues && filterValues.country_ids) {

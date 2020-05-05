@@ -65,15 +65,16 @@ angular.module('sntRover').service('RVBillCardSrv',
 			RVBaseWebSrv.postJSON(url, params).then(function(data) {
 				// Manually creating charge details list & credit deatils list.
 				data.charge_details_list = [];
-				data.credit_details_list = [];
 				angular.forEach(data.fee_details, function(fees, index1) {
-					angular.forEach(fees.charge_details, function(charge, index2) {
+					angular.forEach(fees.charge_details, function(charge) {
 						charge.date = fees.date;
+						charge.isCredit = false;
 						data.charge_details_list.push(charge);
 					});
-					angular.forEach(fees.credit_details, function(credit, index3) {
+					angular.forEach(fees.credit_details, function(credit) {
 						credit.date = fees.date;
-						data.credit_details_list.push(credit);
+						credit.isCredit = true;
+						data.charge_details_list.push(credit);
 					});
 				});
 		   	 	deferred.resolve(data);
@@ -434,7 +435,7 @@ angular.module('sntRover').service('RVBillCardSrv',
 		var deferred = $q.defer(),
 			url = '/api/bills/' + params.bill_id + '/final_invoice_settlement';
 
-		BaseWebSrvV2.postJSON(url).then(function(data) {
+		BaseWebSrvV2.postJSON(url, params).then(function(data) {
 
 			deferred.resolve(data);
 		}, function(data) {

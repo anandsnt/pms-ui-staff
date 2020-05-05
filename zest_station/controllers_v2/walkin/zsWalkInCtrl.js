@@ -496,6 +496,8 @@ sntZestStation.controller('zsWalkInCtrl', [
                                                        $scope.zestStationData.featuresSupportedInIosApp);
 
             idCaptureConfig.useAilaDevice = $scope.zestStationData.usingAilaDevice;
+            idCaptureConfig.useThirdPartyScan = $scope.zestStationData.thirdPartyScanEnabled;
+            idCaptureConfig.thirdPatrtyConnectionUrl = $scope.zestStationData.third_party_scan_url;
             $scope.setConfigurations(idCaptureConfig);
             // Fetch bussiness date to set as arrival date
             fetchHotelBussinessDate();
