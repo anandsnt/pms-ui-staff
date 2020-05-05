@@ -30,7 +30,7 @@ sntRover.controller('RVShowPaymentListCtrl', ['$rootScope', '$scope', '$state', 
 
         if ($scope.dataToPaymentList.currentView === "billCard") {
             reservationId = $scope.dataToPaymentList.reservation_id;
-            bill_number: $scope.dataToPaymentList.bills[$scope.dataToPaymentList.currentActiveBill].bill_number
+            bill_number = $scope.dataToPaymentList.bills[$scope.dataToPaymentList.currentActiveBill].bill_number;
         } else {
             reservationId = $scope.dataToPaymentList.reservation_card.reservation_id;
         }
