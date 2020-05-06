@@ -12,7 +12,7 @@
 <div class="info-container account-info">
     <div class="info-left">
         <span ng-if="isFromBillCard">
-            <span ng-if="!receiptPrintData.is_db_payment">
+            <span ng-if="!receiptPrintData.is_db_payment && !receiptPrintData.card_details.address">
                 {{receiptPrintData.guest_details.first_name}} {{receiptPrintData.guest_details.last_name}}<br/>
                 <span class="type" ng-bind-html="receiptPrintData.guest_details.address"></span>
                 <br/>
