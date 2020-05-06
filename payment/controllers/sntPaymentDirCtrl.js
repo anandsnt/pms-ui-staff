@@ -1088,6 +1088,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 if ($scope.selectedPaymentType !== '') {
                     $scope.$emit('PAYMENT_TYPE_CHANGED', $scope.selectedPaymentType);
                 }
+                // $scope.$emit('PAYMENT_TYPE_CHANGED', $scope.selectedPaymentType);
 
                 // -- CICO-33971 :: Direct Bill Payment --
                 if ($scope.selectedPaymentType === 'DB') {
