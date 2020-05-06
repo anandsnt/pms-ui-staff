@@ -49,6 +49,62 @@ angular.module('reportsModule')
                 'show_upsell_only'
             ];
 
+            var HK_RESERVATION_STATUS_LIST = [
+                {
+                    status: 'VACANT',
+                    description: 'Show Vacant'
+                },
+                {
+                    status: 'OCCUPIED',
+                    description: 'Show Occupied'
+                },
+                {
+                    status: 'QUEUED',
+                    description: 'Show Queued'
+                },
+                {
+                    status: 'LATE_CHECKOUT',
+                    description: 'Late Checkout'
+                },
+                {
+                    status: 'PRE_CHECKIN',
+                    description: 'Pre Checkin'
+                }
+                
+            ];
+
+            var HK_FO_STATUS_LIST = [
+                {
+                    status: 'STAY_OVER',
+                    description: 'Show Stayover'
+                },
+                {
+                    status: 'NOT_RESERVED',
+                    description: 'Show Not Reserved'
+                },
+                {
+                    status: 'ARRIVAL',
+                    description: 'Show Arrival'
+                },
+                {
+                    status: 'ARRIVED',
+                    description: 'Show Arrived'
+                },
+                {
+                    status: 'DAY_USE',
+                    description: 'Show Day Use'
+                },
+                {
+                    status: 'DUE_OUT',
+                    description: 'Show Due Out'
+                },
+                {
+                    status: 'DEPARTED',
+                    description: 'Show Departed'
+                }
+                
+            ];
+
             // Extract rate types and rates list
             var extractRateTypesFromRateTypesAndRateList = function (rateTypesAndRateList) {
                 var rateTypeListIds = _.pluck(rateTypesAndRateList, "rate_type_id"),
@@ -2729,7 +2785,7 @@ angular.module('reportsModule')
                     var selectAll = true;
 
                     if (filterValues && filterValues.assigned_departments) {
-                        selectAll = departments.length === filterValues.assigned_departments;
+                        selectAll = departments.length === filterValues.assigned_departments.length;
                     }
 
                     return selectAll;
@@ -2776,7 +2832,7 @@ angular.module('reportsModule')
                     var selectAll = reportName === reportNames['RESERVATIONS_BY_USER'];
 
                     if (filterValues && filterValues.market_ids) {
-                        selectAll = markets.length === filterValues.market_ids;
+                        selectAll = markets.length === filterValues.market_ids.length;
                     }
 
                     return selectAll;
@@ -2833,7 +2889,7 @@ angular.module('reportsModule')
                     var selectAll = reportName === reportNames['RESERVATIONS_BY_USER'];
 
                     if (filterValues && filterValues.booking_origin_ids) {
-                        selectAll = bookingOrigin.length === filterValues.booking_origin_ids;
+                        selectAll = bookingOrigin.length === filterValues.booking_origin_ids.length;
                     }
 
                     return selectAll;
@@ -2890,7 +2946,7 @@ angular.module('reportsModule')
                     var selectAll = reportName === reportNames['RESERVATIONS_BY_USER'];
 
                     if (filterValues && filterValues.source_ids) {
-                        selectAll = sources.length === filterValues.source_ids;
+                        selectAll = sources.length === filterValues.source_ids.length;
                     }
 
                     return selectAll;
@@ -2947,7 +3003,7 @@ angular.module('reportsModule')
                     var selectAll = true;
 
                     if (filterValues && filterValues.country_ids) {
-                        selectAll = countries.length === filterValues.country_ids;
+                        selectAll = countries.length === filterValues.country_ids.length;
                     }
 
                     return selectAll;
@@ -2990,7 +3046,7 @@ angular.module('reportsModule')
                     var selectAll = true;
 
                     if (filterValues && filterValues.work_type_ids) {
-                        selectAll = workType.length === filterValues.work_type_ids;
+                        selectAll = workType.length === filterValues.work_type_ids.length;
                     }
 
                     return selectAll;
@@ -3050,37 +3106,37 @@ angular.module('reportsModule')
                 var getSelectAllVal = (officeStatus) => {
                     var selectAll = true;
 
-                    if (filterValues && filterValues.fo_status_ids) {
-                        selectAll = officeStatus.length === filterValues.fo_status_ids;
+                    if (filterValues && filterValues.hk_fo_statuses) {
+                        selectAll = officeStatus.length === filterValues.hk_fo_statuses.length;
                     }
 
                     return selectAll;
                 };
                 
-                reportsSubSrv.fetchFrontOfficeStatus().then(function (data) {
-                    var officeCopy = angular.copy(data);
+            
+                var officeCopy = angular.copy(HK_FO_STATUS_LIST);
 
-                    if (filterValues && filterValues.fo_status_ids) {
-                        officeCopy = officeCopy.map(status => {
-                            status.selected = false;
+                if (filterValues && filterValues.hk_fo_statuses) {
+                    officeCopy = officeCopy.map(status => {
+                        status.selected = false;
 
-                            if (filterValues.fo_status_ids.indexOf(status.id) > -1) {
-                                status.selected = true;
-                            }
-                            return status;
-                        });
-                    }
-
-                    filter.hasFrontOfficeStatus = {
-                        data: officeCopy,
-                        options: {
-                            selectAll: getSelectAllVal(officeCopy),
-                            hasSearch: true,
-                            key: 'value',
-                            defaultValue: 'Select Front Office Status'
+                        if (filterValues.hk_fo_statuses.indexOf(status.status) > -1) {
+                            status.selected = true;
                         }
-                    };
-                });
+                        return status;
+                    });
+                }
+
+                filter.hasFrontOfficeStatus = {
+                    data: officeCopy,
+                    options: {
+                        selectAll: getSelectAllVal(officeCopy),
+                        hasSearch: false,
+                        key: 'description',
+                        defaultValue: 'Select Front Office Status'
+                    }
+                };
+                
             };
 
             /**
@@ -3093,7 +3149,7 @@ angular.module('reportsModule')
                     var selectAll = true;
 
                     if (filterValues && filterValues.floor_ids) {
-                        selectAll = floors.length === filterValues.floor_ids;
+                        selectAll = floors.length === filterValues.floor_ids.length;
                     }
 
                     return selectAll;
@@ -3145,19 +3201,40 @@ angular.module('reportsModule')
              * @param {Object} filter - holding filter details
              * @return {void} 
              */
-            factory.fillHouseKeepingStatus = function (filter, filterValues) {
+            factory.fillHouseKeepingStatus = function (filter, filterValues, reportName) {
                 var getSelectAllVal = (hkStatus) => {
-                    var selectAll = true;
+                        var selectAll = true;
 
-                    if (filterValues && filterValues.hk_status_ids) {
-                        selectAll = hkStatus.length === filterValues.hk_status_ids;
-                    }
+                        if (filterValues && filterValues.hk_status_ids) {
+                            selectAll = hkStatus.length === filterValues.hk_status_ids.length;
+                        }
 
-                    return selectAll;
-                };
+                        return selectAll;
+                    },
+                    // Process each hk status entry
+                    processStatusEntries = (statuses) => {
+                        var statusClone = angular.copy(statuses);
+
+                        if (reportName === reportNames['ROOM_STATUS_REPORT']) {
+                            statusClone = statusClone.map((status) => {
+                                if (status.value === 'OO') {
+                                    status.value = 'Show Out of Order';
+                                } else if (status.value === 'OS') {
+                                    status.value = 'Show Out of Service';  
+                                } else {
+                                    status.value = 'Show ' + status.value;
+                                }
+                                
+                                return status;
+                            });
+                        }
+
+                        return statusClone;
+                        
+                    };
 
                 reportsSubSrv.fetchHouseKeepingStatus().then(function (data) {
-                    var statusCopy = angular.copy(data);
+                    var statusCopy = processStatusEntries(data);
 
                     if (filterValues && filterValues.hk_status_ids) {
                         statusCopy = statusCopy.map(hkStatus => {
@@ -3192,39 +3269,36 @@ angular.module('reportsModule')
                 var getSelectAllVal = (resStatus) => {
                     var selectAll = true;
 
-                    if (filterValues && filterValues.status_ids) {
-                        selectAll = resStatus.length === filterValues.status_ids;
+                    if (filterValues && filterValues.hk_reservation_statuses) {
+                        selectAll = resStatus.length === filterValues.hk_reservation_statuses.length;
                     }
 
                     return selectAll;
                 };
 
-                reportsSubSrv.fetchReservationStatus().then(function (data) {
+                var statusCopy = angular.copy(HK_RESERVATION_STATUS_LIST);
 
-                    var statusCopy = angular.copy(data);
+                if (filterValues && filterValues.hk_reservation_statuses) {
+                    statusCopy = statusCopy.map(resStatus => {
+                        resStatus.selected = false;
 
-                    if (filterValues && filterValues.status_ids) {
-                        statusCopy = statusCopy.map(resStatus => {
-                            resStatus.selected = false;
-
-                            if (filterValues.status_ids.indexOf(resStatus.id) > -1) {
-                                resStatus.selected = true;
-                            }
-                            return resStatus;
-                        });
-                    }
-
-                    filter.hasReservationStatus = {
-                        data: statusCopy,
-                        options: {
-                            selectAll: getSelectAllVal(statusCopy),
-                            hasSearch: false,
-                            key: 'status',
-                            defaultValue: 'Select Status'
+                        if (filterValues.hk_reservation_statuses.indexOf(resStatus.status) > -1) {
+                            resStatus.selected = true;
                         }
-                    };
+                        return resStatus;
+                    });
+                }
 
-                });
+                filter.hasReservationStatus = {
+                    data: statusCopy,
+                    options: {
+                        selectAll: getSelectAllVal(statusCopy),
+                        hasSearch: false,
+                        key: 'description',
+                        defaultValue: 'Select Status'
+                    }
+                };
+
             };
 
             /**
