@@ -289,6 +289,11 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
                 'room_no': $scope.reservationParams.room_no + ''.replace(/\-/g, ''), // adding '' to for non-str values
                 'action_type': $stateParams.mode === 'PICKUP_KEY' ? 'PICKUP_KEY' : 'CHECKOUT'
             };
+
+            if ($stateParams.mode === 'PICKUP_KEY') {
+                params.checked_in = true;
+            }
+
             var options = {
                 params: params,
                 successCallBack: checkoutVerificationSuccess,
