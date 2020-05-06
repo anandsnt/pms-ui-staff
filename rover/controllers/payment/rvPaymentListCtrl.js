@@ -38,6 +38,7 @@ sntRover.controller('RVShowPaymentListCtrl', ['$rootScope', '$scope', '$state', 
             reservation_id: $scope.reservationData.reservationId,
             bill_number: bill_number
         };
+        
         $scope.invokeApi(RVPaymentSrv.getExistingPaymentsForBill, existingPaymentsParams, $scope.paymentListSuccess);
 
         $scope.clickPaymentItem = function(paymentId, cardCode, cardNumberEndingWith, expiryDate, isSwiped, colorCode) {
