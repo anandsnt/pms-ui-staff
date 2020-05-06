@@ -6,7 +6,6 @@ angular.module('sntPay').controller('sntPaymentController',
             // ---------------------------------------------------------------------------------------------------------
             var timeOutForScrollerRefresh = 300,
                 initialPaymentAmount = 0,
-                billBalanceAmount = 0,
                 defaultScrollerOptions = {
                     snap: false,
                     scrollbars: 'custom',
@@ -1064,7 +1063,6 @@ angular.module('sntPay').controller('sntPaymentController',
                 }
 
                 if (shouldReset) {
-
                     $scope.payment.selectedPaymentCurrencyId = $rootScope.hotelCurrencyId;
                     $scope.payment.selectedPaymentCurrencySymbol = $rootScope.currencySymbol;
                     $scope.payment.amount = initialPaymentAmount;
@@ -1102,10 +1100,8 @@ angular.module('sntPay').controller('sntPaymentController',
                 }
 
 
-                if (isInitialLoad && $scope.payment.paymentCurrencyAmount && !$scope.splitBillEnabled) {
-                    billBalanceAmount = initialPaymentAmount;
+                if (isInitialLoad && $scope.payment.paymentCurrencyAmount) {
                     $scope.payment.amount = $scope.payment.paymentCurrencyAmount;
-                    $scope.$emit("UPDATE_STARTING_AMOUNT", $scope.payment.paymentCurrencyAmount);
                 }
 
                 // If the changed payment type is CC and payment gateway is MLI show CC addition options
@@ -1151,7 +1147,7 @@ angular.module('sntPay').controller('sntPaymentController',
             $scope.onPaymentCurrencyChange = function() {
                 $scope.payment.selectedPaymentCurrencySymbol = (_.find($scope.paymentCurrencyList, {"id": $scope.payment.selectedPaymentCurrencyId})).symbol;
                 var paramsToApi = {
-                    "amount": parseFloat(billBalanceAmount),
+                    "amount": parseFloat(initialPaymentAmount),
                     "fee": parseFloat($scope.originalFee),
                     "currency_id": parseInt($scope.payment.selectedPaymentCurrencyId),
                     "date": $rootScope.businessDate
@@ -1159,7 +1155,6 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 sntPaymentSrv.getConvertedAmount(paramsToApi).then(
                     response => {
-                        $scope.$emit("UPDATE_STARTING_AMOUNT", response.data.converted_amount);
                         $scope.payment.amount = response.data.converted_amount;
                         $scope.feeData.calculatedFee = response.data.converted_fee;
                         $scope.feeData.totalOfValueAndFee = parseFloat($scope.payment.amount) + parseFloat($scope.feeData.calculatedFee);
