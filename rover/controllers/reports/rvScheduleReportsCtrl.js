@@ -963,7 +963,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     reportUtils.fillFrontOfficeStatus($scope.filters, $scope.selectedEntityDetails.filter_values);
                 } else if (filter.value === 'HOUSEKEEPING_STATUS') {
                     reportUtils.fillHouseKeepingStatus($scope.filters, $scope.selectedEntityDetails.filter_values, $scope.selectedEntityDetails.report.title);
-                } else if (filter.value === 'SHOW_EMPLOYEES' || filter.value === 'EMPLOYEE') {
+                } else if (filter.value === 'SHOW_EMPLOYEES') {
                     $scope.filters.hasUsers = {
                         title: $scope.selectedEntityDetails.report.title === reportNames['RESERVATIONS_BY_USER'] ? 'Users' : 'Employees',
                         data: getUserList(),
@@ -1010,6 +1010,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 } else if (($scope.selectedEntityDetails.report.title === reportNames['RESERVATIONS_BY_USER']) && filter.value === 'ARRIVAL_DATE_RANGE') {
                     $scope.arrivalDateTimePeriods = reportsSrv.getScheduleReportTimePeriods($scope.selectedEntityDetails.report.title + ':' + filter.value);
                     $scope.arrivalDateTimePeriods = populateTimePeriodsData($scope.arrivalDateTimePeriods);
+                } else if (filter.value === 'EMPLOYEE') {
+                    reportUtils.fillEmployeeList($scope.filters, $scope.selectedEntityDetails.filter_values);
                 }
             });
 
