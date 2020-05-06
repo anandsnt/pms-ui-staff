@@ -321,13 +321,6 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 		$scope.renderDefaultValues();
 	};
 
-	$scope.$on("UPDATE_STARTING_AMOUNT", function(event, amount) {
-		startingAmount = amount;
-		$scope.spliteButtonClicked($scope.splitePaymentDetail["totalNoOfsplits"]);
-	});
-
-	$scope.billsArray[$scope.currentActiveBill].total_fees[0].balance_amount;
-	
 	/*
 	* Params - Index of clicked button starting from 1.
 	* Return - null - Updates totalNoOfsplits.
@@ -336,11 +329,8 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 		$scope.splitePaymentDetail["totalNoOfsplits"] = index;
 		if (!$scope.splitSelected) {
 			$scope.splitSelected = true;
-			if (startingAmount === 0) {
-				startingAmount = angular.copy($scope.renderData.defaultPaymentAmount);
-			}			
+			startingAmount = angular.copy($scope.renderData.defaultPaymentAmount);
 		}
-
 		calulateSplitAmount();
 	};
 	/*
@@ -602,14 +592,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
         }
         else if (paymentType === "DB") {
             resetSplitPaymentDB();
-		}
-		if ($rootScope.hotelCurrencyId !== $rootScope.hotelDefaultCurrencyId) {
-			startingAmount = $scope.billsArray[$scope.currentActiveBill].total_fees[0].default_payment_amount;
-		} else {
-			startingAmount = $scope.billsArray[$scope.currentActiveBill].total_fees[0].balance_amount;
-		}
-		
-		$scope.spliteButtonClicked($scope.splitePaymentDetail["totalNoOfsplits"]);
+        }
     });
     // CICO-33971 : Hide Payment popup while confrimation is active.
     $scope.$on("HIDE_BILL_PAYMENT_POPUP", function() {
