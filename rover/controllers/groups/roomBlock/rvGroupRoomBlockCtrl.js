@@ -581,32 +581,30 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
         $scope.fetchCurrentSetOfRoomBlockData = function() {
 			// for pagination in group room block CICO-20097
-            var shoulderStartDate = new tzIndependentDate($scope.groupConfigData.summary.shoulder_from_date),
-                shoulderEndDate = new tzIndependentDate($scope.groupConfigData.summary.shoulder_to_date);
-            
-			// check lower  bound
-            if (shoulderStartDate > $scope.timeLineStartDate) {
-                $scope.timeLineStartDate = new tzIndependentDate(shoulderStartDate);
+            var summary = $scope.groupConfigData.summary,
+                perPage = 14; // days
+
+            // shoulder_from_date and shoulder_to_date in summary are JS Date objects;
+            // they are assigned at populateShoulderDates in rvGroupConfigurationSummaryTab controller
+
+            // ensure the start and end dates are within the shoulder boundaries
+            if ($scope.timeLineStartDate < summary.shoulder_from_date) {
+                $scope.timeLineStartDate = summary.shoulder_from_date;
+            } else if ($scope.timeLineStartDate > summary.shoulder_to_date) {
+                $scope.timeLineStartDate = summary.shoulder_to_date;
             }
 
-			// 14 days are shown by default.
-            $scope.timeLineEndDate = new tzIndependentDate($scope.timeLineStartDate);
-            $scope.timeLineEndDate.setDate($scope.timeLineStartDate.getDate() + 14);
-
-			// check upper bound
-            if ($scope.timeLineStartDate > shoulderEndDate) {
-                $scope.timeLineStartDate = new tzIndependentDate(shoulderEndDate);
-            }
-            if ($scope.timeLineEndDate > shoulderEndDate) {
-                $scope.timeLineEndDate = new tzIndependentDate(shoulderEndDate);
+            // 14 days are shown by default.
+            $scope.timeLineEndDate = moment($scope.timeLineStartDate).add(perPage, 'days');
+            // restrict end_date in request to shoulder boundary
+            if ($scope.timeLineEndDate > summary.shoulder_to_date) {
+                $scope.timeLineEndDate = summary.shoulder_to_date;
             }
 
-            var options = {
+            $scope.fetchRoomBlockGridDetails({
                 start_date: formatDateForAPI($scope.timeLineStartDate),
                 end_date: formatDateForAPI($scope.timeLineEndDate)
-            };
-
-            $scope.fetchRoomBlockGridDetails(options);
+            });
         };
 
         var formatDateForAPI = function(date) {

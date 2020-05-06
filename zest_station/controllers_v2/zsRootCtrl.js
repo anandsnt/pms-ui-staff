@@ -1334,6 +1334,7 @@ sntZestStation.controller('zsRootCtrl', [
 				// set work station id and status
                 $scope.zestStationData.workstationName = station.name;
                 $scope.zestStationData.set_workstation_id = $scope.getStationIdFromName(station.name).id;
+                sntIDCollectionUtilsSrv.workstation_id = $scope.zestStationData.set_workstation_id;
                 $rootScope.workstation_id = $scope.zestStationData.set_workstation_id;
                 $scope.zestStationData.key_encoder_id = $scope.getStationIdFromName(station.name).key_encoder_id;
                 var previousWorkStationStatus = angular.copy($scope.zestStationData.workstationStatus);
@@ -1756,6 +1757,7 @@ sntZestStation.controller('zsRootCtrl', [
             $('body').css('display', 'none'); // this will hide contents until svg logos are loaded
 			// call Zest station settings API
             $scope.zestStationData = zestStationSettings;
+            sntIDCollectionUtilsSrv.thirdPartyScannerTimeout = zestStationSettings.third_party_scanner_timeout;
             $controller('zsThemeActionsCtrl', {
                 $scope: $scope
             });
@@ -1851,7 +1853,11 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.id_scan_enabled = $scope.zestStationData.kiosk_scan_enabled &&
                 ($scope.zestStationData.kiosk_scan_mode === 'id_scan' ||
                     $scope.zestStationData.kiosk_scan_mode === 'id_scan_with_staff_verification' ||
-                    $scope.zestStationData.kiosk_scan_mode === 'id_scan_with_facial_verification');
+                    $scope.zestStationData.kiosk_scan_mode === 'id_scan_with_facial_verification' ||
+                    $scope.zestStationData.kiosk_scan_mode === 'third_party');
+
+            $scope.zestStationData.thirdPartyScanEnabled = $scope.zestStationData.kiosk_scan_enabled &&
+                                                           $scope.zestStationData.kiosk_scan_mode === 'third_party';
 
             if ($scope.isIpad &&
                 $scope.zestStationData.kiosk_walk_in_enabled &&

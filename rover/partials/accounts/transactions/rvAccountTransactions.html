@@ -174,7 +174,7 @@
 										<th translate>CHARGE_CODE</th>
 										<th translate>DESCRIPTION</th>
 										<th translate>CHARGES</th>
-										<th translate>CREDITS</th>
+										<th class="credits align-right" translate>CREDITS</th>
 										<th class="form" ng-show="showMoveCharges">{{'BILL' |translate}} #</th>
 										<th class="action" translate>EDIT</th>
 										<th class="action">
@@ -267,7 +267,7 @@
 												</span>
 											</strong>
 										</td>
-										<td>
+										<td class="credits align-right">
 											<strong ng-show="feesData.credits">
 												<span class="currency">{{currencySymbol}}</span>{{feesData.credits| number: precisonTwo}}
 											</strong>

@@ -141,8 +141,8 @@
 				<th><span translate>DATE</span> </th>
 				<th><span translate>CHARGE_CODE</span></th>
 				<th><span translate>DESCRIPTION</span></th>
-				<th><span translate>FEES</span></th>
-				<th><span translate>CREDITS</span></th>
+				<th class="align-right"><span translate>FEES</span></th>
+				<th class="credits align-right"><span translate>CREDITS</span></th>
 				<th class="form"><span translate>BILL</span> #</th>
 				<th class="action" ng-if="isStandAlone"><span translate>EDIT</span></th>
 				<th class="action" ng-if="hasMoveToOtherBillPermission() && isStandAlone"><label class="checkbox inline">
@@ -270,7 +270,7 @@
 						<em>{{'ADJUSTMENT' | translate}}</em> - {{feesData.adjustment_reason}}
 					</span>
 				</td>
-				<td>
+				<td class="align-right">
 					<strong>
 						<span ng-repeat="description in feesData.description">
 							<span ng-show="!isBalanceShown(feesData.is_rate_suppressed) && description.fees_amount != '' && description.fees_amount != NIL">
@@ -283,7 +283,7 @@
 						</span>
 					</strong>
 				</td>
-				<td>
+				<td class="credits align-right">
 					<strong ng-show="feesData.credits!='' && isBalanceShown(feesData.is_rate_suppressed)">
 						<span class="currency">{{currencySymbol}}</span>{{feesData.credits}}
 					</strong>
