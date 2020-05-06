@@ -912,11 +912,6 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                         selected = true;
                     }
 
-                    if ($scope.selectedEntityDetails.report.title === reportNames['RESERVATIONS_BY_USER'] && filter.value === 'SHOW_RATE_ADJUSTMENTS_ONLY') {
-                        $scope.filters.hasGeneralOptions.options.selectiveSingleSelectKey = filter.value.toLowerCase();
-                        $scope.filters.hasGeneralOptions.options.noSelectAll = true;
-                    }
-
                     $scope.filters.hasGeneralOptions.data.push({
                         paramKey: filter.value.toLowerCase(),
                         description: filter.description,
@@ -1061,6 +1056,14 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 });
             }
 
+            // Reset all initial selections, when the filters are set explicitly be the user
+            if (!_.isEmpty($scope.selectedEntityDetails.filter_values) && $scope.filters.hasGeneralOptions.data.length > 0) {
+                $scope.filters.hasGeneralOptions.data = $scope.filters.hasGeneralOptions.data.map((option) => {
+                    option.selected = false;
+
+                    return option;
+                });
+            }
 
             _.each($scope.selectedEntityDetails.filter_values, function(value, key) {
                 var optionFilter, upperCaseKey;
