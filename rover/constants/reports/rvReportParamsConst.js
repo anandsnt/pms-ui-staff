@@ -127,5 +127,7 @@ angular.module('reportsModule')
         "ENTITY_NAME": "entity_name",
         "WORK_TYPE": "work_type_ids",
         "FRONT_OFFICE_STATUS": "fo_status_ids",
-        "HOUSEKEEPING_STATUS": "hk_status_ids"
+        "HOUSEKEEPING_STATUS": "hk_status_ids",
+        "HK_RESERVATION_STATUSES": "hk_reservation_statuses",
+        "HK_FRONT_OFFICE_STATUSES": "hk_fo_statuses"
     });

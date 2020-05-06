@@ -380,8 +380,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
 
                 } else if (keyName === 'hasReservationStatus') {
-                    key = reportParams['RESERVATION_STATUS'];
-                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
+                    key = reportParams['HK_RESERVATION_STATUSES'];
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'status');
 
                 } else if (keyName === 'hasFloorList') {
                     key = reportParams['FLOOR'];
@@ -392,8 +392,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
 
                 } else if (keyName === 'hasFrontOfficeStatus') {
-                    key = reportParams['FRONT_OFFICE_STATUS'];
-                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
+                    key = reportParams['HK_FRONT_OFFICE_STATUSES'];
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'status');
 
                 } else if (keyName === 'hasHouseKeepingStatus') {
                     key = reportParams['HOUSEKEEPING_STATUS'];
@@ -641,8 +641,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
 
                 } else if (keyName === 'hasReservationStatus') {
-                    key = reportParams['RESERVATION_STATUS'];
-                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
+                    key = reportParams['HK_RESERVATION_STATUSES'];
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'status');
 
                 } else if (keyName === 'hasFloorList') {
                     key = reportParams['FLOOR'];
@@ -653,8 +653,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
 
                 } else if (keyName === 'hasFrontOfficeStatus') {
-                    key = reportParams['FRONT_OFFICE_STATUS'];
-                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
+                    key = reportParams['HK_FRONT_OFFICE_STATUSES'];
+                    filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'status');
 
                 } else if (keyName === 'hasHouseKeepingStatus') {
                     key = reportParams['HOUSEKEEPING_STATUS'];
@@ -953,16 +953,16 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     reportUtils.fillSources($scope.filters, $scope.selectedEntityDetails.filter_values, $scope.selectedEntityDetails.report.title);
                 } else if (filter.value === 'CHOOSE_BOOKING_ORIGIN') {
                     reportUtils.fillBookingOrigins($scope.filters, $scope.selectedEntityDetails.filter_values, $scope.selectedEntityDetails.report.title);
-                } else if (filter.value === 'RESERVATION_STATUS') {
+                } else if (filter.value === 'RESERVATION_STATUS' && $scope.selectedEntityDetails.report.title === reportNames['ROOM_STATUS_REPORT']) {
                     reportUtils.fillReservationStatus($scope.filters, $scope.selectedEntityDetails.filter_values);
                 } else if (filter.value === 'FLOOR') {
                     reportUtils.fillFloors($scope.filters, $scope.selectedEntityDetails.filter_values);
                 } else if (filter.value === 'WORK_TYPE') {
                     reportUtils.fillWorkTypes($scope.filters, $scope.selectedEntityDetails.filter_values);
-                } else if (filter.value === 'FRONT_OFFICE_STATUS') {
+                } else if (filter.value === 'FRONT_OFFICE_STATUS' && $scope.selectedEntityDetails.report.title === reportNames['ROOM_STATUS_REPORT']) {
                     reportUtils.fillFrontOfficeStatus($scope.filters, $scope.selectedEntityDetails.filter_values);
                 } else if (filter.value === 'HOUSEKEEPING_STATUS') {
-                    reportUtils.fillHouseKeepingStatus($scope.filters, $scope.selectedEntityDetails.filter_values);
+                    reportUtils.fillHouseKeepingStatus($scope.filters, $scope.selectedEntityDetails.filter_values, $scope.selectedEntityDetails.report.title);
                 } else if (filter.value === 'SHOW_EMPLOYEES' || filter.value === 'EMPLOYEE') {
                     $scope.filters.hasUsers = {
                         title: $scope.selectedEntityDetails.report.title === reportNames['RESERVATIONS_BY_USER'] ? 'Users' : 'Employees',
