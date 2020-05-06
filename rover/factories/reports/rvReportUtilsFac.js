@@ -3053,22 +3053,10 @@ angular.module('reportsModule')
                 };
 
                 reportsSubSrv.fetchWorkTypes().then(function (data) {
-                    var UNDEFINED = {
-                        is_active: true,
-                        name: 'UNDEFINED',
-                        value: 'UNDEFINED',
-                        id: -1
-                    };
-                    
                     _.each(data, (workType) => {
                         workType.value = workType.name.toUpperCase();
                     });
-                    var undefinedEntry = _.find(data, { name: 'UNDEFINED' });
-
-                    if (!undefinedEntry) {
-                        data.push(UNDEFINED);
-                    }
-
+                    
                     var workCopy = angular.copy(data);
 
                     if (filterValues && filterValues.work_type_ids) {
@@ -3156,20 +3144,6 @@ angular.module('reportsModule')
                 };
 
                 reportsSubSrv.fetchFloors().then(function (data) {
-                    var UNDEFINED = {
-                        is_active: true,
-                        name: 'UNDEFINED',
-                        floor_number: 'UNDEFINED',
-                        id: -1
-                    };
-
-                    var undefinedEntry = _.find(data, { name: 'UNDEFINED' });
-
-                    if (!undefinedEntry) {
-                        data.push(UNDEFINED);
-                    } else {
-                        _.find(data, { name: 'UNDEFINED' }).floor_number = 'UNDEFINED';
-                    }
 
                     var floorCopy = angular.copy(data);
 
@@ -3345,7 +3319,7 @@ angular.module('reportsModule')
                     var selectAll = reportName === reportNames['RESERVATIONS_BY_USER'];
 
                     if (filterValues && filterValues.rate_ids) {
-                        selectAll = rateCodes.length === filterValues.rate_ids;
+                        selectAll = rateCodes.length === filterValues.rate_ids.length;
                     }
 
                     return selectAll;
@@ -3404,7 +3378,7 @@ angular.module('reportsModule')
                     var selectAll = true;
 
                     if (filterValues && filterValues.room_type_ids) {
-                        selectAll = roomTypes.length === filterValues.room_type_ids;
+                        selectAll = roomTypes.length === filterValues.room_type_ids.length;
                     }
 
                     return selectAll;
@@ -3456,7 +3430,7 @@ angular.module('reportsModule')
                     var selectAll = reportName === reportNames['RESERVATIONS_BY_USER'];
 
                     if (filterValues && filterValues.segment_ids) {
-                        selectAll = segments.length === filterValues.segment_ids;
+                        selectAll = segments.length === filterValues.segment_ids.length;
                     }
 
                     return selectAll;
@@ -3515,7 +3489,7 @@ angular.module('reportsModule')
                     var selectAll = reportName === reportNames['RESERVATIONS_BY_USER'];
 
                     if (filterValues && filterValues.include_guarantee_type) {
-                        selectAll = guranteeTypes.length === filterValues.include_guarantee_type;
+                        selectAll = guranteeTypes.length === filterValues.include_guarantee_type.length;
                     }
 
                     return selectAll;
@@ -3558,6 +3532,51 @@ angular.module('reportsModule')
                             hasSearch: true,
                             key: 'name',
                             defaultValue: 'Select guarantees'
+                        }
+                    };
+                    
+                });
+            };
+
+            /**
+             * Fill employeeList
+             * @param {Object} filter - holding filter details
+             * @param {Object} filterValues -contain filter values
+             * @return {void} 
+             */
+            factory.fillEmployeeList = function (filter, filterValues) {
+                var getSelectAllVal = (employees) => {
+                    var selectAll = true;
+
+                    if (filterValues && filterValues.user_ids) {
+                        selectAll = employees.length === filterValues.user_ids.length;
+                    }
+
+                    return selectAll;
+                };
+
+                reportsSubSrv.fetchEmployeeList().then(function (data) {
+                    var employeesCopy = angular.copy(data.results);
+
+                    if (filterValues && filterValues.user_ids) {
+                        employeesCopy = employeesCopy.map(employee => {
+                            employee.selected = false;
+
+                            if (filterValues.user_ids.indexOf(employee.id) > -1) {
+                                employee.selected = true;
+                            }
+                            return employee;
+                        });
+                    }
+
+                    filter.hasUsers = {
+                        title: 'Employees',
+                        data: employeesCopy,
+                        options: {
+                            selectAll: getSelectAllVal(employeesCopy),
+                            hasSearch: true,
+                            key: 'maid_name',
+                            altKey: 'email'
                         }
                     };
                     
