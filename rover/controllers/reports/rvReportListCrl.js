@@ -62,7 +62,7 @@ sntRover.controller('RVReportListCrl', [
 
                 report[i].filteredOut = false;
 
-                if (!$rootScope.isFolioTaxEnabled && report[i].method === "folio_tax_report") {
+                if ( (!$rootScope.isFolioTaxEnabled && report[i].method === "folio_tax_report") || report[i].method === 'room_status') {
                     report[i].filteredOut = true;
                 }
 

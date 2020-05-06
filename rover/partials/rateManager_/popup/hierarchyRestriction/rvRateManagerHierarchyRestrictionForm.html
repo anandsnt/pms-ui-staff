@@ -23,7 +23,6 @@
                     <div ng-repeat="restriction in restrictionStylePack" class="restriction-option" ng-click="restrictionSelected(restriction)">
                         <!-- 'restriction-value' => number of days if a restriction has any, if not it is empty -->
                         <span class="{{'restriction-icon ' + restriction.bgClass + ' ' + restriction.iconClass}}">
-                            {{restriction.value}}
                         </span>  
                         <span class="restriction-title">{{restriction.title}}</span>
                     </div>
