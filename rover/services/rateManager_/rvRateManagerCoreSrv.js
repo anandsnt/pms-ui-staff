@@ -645,23 +645,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             }
 
             promises.push(service.fetchMultipleRateInfo(paramsForRateAPI).then((data) => {
-                if (params.hierarchialRateRestrictionRequired) {
-                    if (response.rateAmountList) {
-                        data.results = rvRateManagerRestrictionsSrv.concatRateWithAmount(response.rateAmountList, data.results);
-                        response.dailyRateAndRestrictions =  rvRateManagerRestrictionsSrv.processRateRestrictionResponse(data.results);
-                    }
-                    else {
-                        // response.rateAmountList still not generated, wait for two sec..
-                        setTimeout(function() { 
-                            data.results = rvRateManagerRestrictionsSrv.concatRateWithAmount(response.rateAmountList, data.results);
-                            response.dailyRateAndRestrictions =  rvRateManagerRestrictionsSrv.processRateRestrictionResponse(data.results);
-                        }, 2000);
-                    }
-                }
-                else {
-                    response.dailyRateAndRestrictions = data.results;
-                }
-
+                response.dailyRateAndRestrictions = data.results;
                 response.totalCount = data.total_count || data.results[0].rates.length;
             }));
 
@@ -696,6 +680,11 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             }
 
             $q.all(promises).then(() => {
+                if (params.hierarchialRateRestrictionRequired) {
+                    let concatedRateData = rvRateManagerRestrictionsSrv.concatRateWithAmount(response.rateAmountList, response.dailyRateAndRestrictions);
+
+                    response.dailyRateAndRestrictions =  rvRateManagerRestrictionsSrv.processRateRestrictionResponse(concatedRateData);
+                }
                 deferred.resolve(response);
             });
 
