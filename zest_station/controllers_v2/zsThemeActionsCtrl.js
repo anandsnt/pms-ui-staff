@@ -221,7 +221,8 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                     'hotel-171',
                     'beachside',
                     'under-canvas',
-                    'botanic-sanctuary'
+                    'botanic-sanctuary',
+                    'beckers'
                 ],
                 nonCircleNavIcons = ['public_v2'];// minor adjustment to the back/close icons for some themes (only show the inner x or <)
 
