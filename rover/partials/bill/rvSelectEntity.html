@@ -194,9 +194,9 @@
 
 		</div>
     <!-- Search pagination -->
-		<rv-pagination ng-if="isReservationActive && showPagination" page-options="reservationPaginationObj" page-data="totalReservation"></rv-pagination>
+		<rv-pagination ng-if="isReservationActive && showPagination && textInQueryBox!=''" page-options="reservationPaginationObj" page-data="totalReservation"></rv-pagination>
 		
-		<rv-pagination ng-if="!isReservationActive && showPagination" page-options="accountsPaginationObj" page-data="totalCards"></rv-pagination>
+		<rv-pagination ng-if="!isReservationActive && showPagination && textInQueryBox!=''" page-options="accountsPaginationObj" page-data="totalCards"></rv-pagination>
 	</div>
 
 	 </fieldset>
