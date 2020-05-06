@@ -652,7 +652,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                     }
                     else {
                         // response.rateAmountList still not generated, wait for two sec..
-                        setTimeout(function(){ 
+                        setTimeout(function() { 
                             data.results = rvRateManagerRestrictionsSrv.concatRateWithAmount(response.rateAmountList, data.results);
                             response.dailyRateAndRestrictions =  rvRateManagerRestrictionsSrv.processRateRestrictionResponse(data.results);
                         }, 2000);
