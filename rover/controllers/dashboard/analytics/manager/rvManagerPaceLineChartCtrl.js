@@ -94,7 +94,7 @@ angular.module('sntRover')
 							colors = configData.colors,
 							margin = {
 								top: 40,
-								right: 30,
+								right: 50,
 								bottom: 100,
 								left: 70
 							},
