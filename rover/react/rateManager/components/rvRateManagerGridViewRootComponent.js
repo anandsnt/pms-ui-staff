@@ -56,7 +56,7 @@ const RateManagerGridViewRootComponent = createClass ({
 			this.rightHeadScroller = new IScroll(this.rightHeadScrollableElement, {
 				...this.commonIScrollOptions,
 				scrollX: true,
-				scrollY: true,
+				scrollY: false,
 				scrollbars: false
 			});
 		}
