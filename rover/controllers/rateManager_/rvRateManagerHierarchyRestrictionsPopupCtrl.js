@@ -6,15 +6,13 @@ angular.module('sntRover')
         'ngDialog',
         'rvRateManagerUtilitySrv',
         'rvRateManagerHierarchyRestrictionsSrv',
-        '$timeout',
         function(
             $scope,
             $rootScope,
             rvRateManagerEventConstants,
             ngDialog,
             hierarchyUtils,
-            hierarchySrv,
-            $timeout) {
+            hierarchySrv) {
                 BaseCtrl.call(this, $scope);
 
                 var setscroller = () => {
@@ -22,9 +20,7 @@ angular.module('sntRover')
                 };
 
                 var refreshScroller = function() {
-                    $timeout(function() {
-                        $scope.refreshScroller('hierarchyPopupFormScroll');
-                    }, 500);
+                    $scope.refreshScroller('hierarchyPopupFormScroll');
                 };
 
                 /**
