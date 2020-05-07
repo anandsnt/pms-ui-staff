@@ -6,15 +6,13 @@ angular.module('sntRover')
         'ngDialog',
         'rvRateManagerUtilitySrv',
         'rvRateManagerHierarchyRestrictionsSrv',
-        '$timeout',
         function(
             $scope,
             $rootScope,
             rvRateManagerEventConstants,
             ngDialog,
             hierarchyUtils,
-            hierarchySrv,
-            $timeout) {
+            hierarchySrv) {
                 BaseCtrl.call(this, $scope);
 
                 var setscroller = () => {
