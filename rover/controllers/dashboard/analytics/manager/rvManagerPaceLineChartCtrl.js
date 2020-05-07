@@ -1,6 +1,6 @@
 angular.module('sntRover')
-	.controller('rvManagerPaceLineChartCtrl', ['$scope', 'rvAnalyticsHelperSrv', 'rvManagersAnalyticsSrv', '$rootScope', '$log',
-		function ($scope, rvAnalyticsHelperSrv, rvManagersAnalyticsSrv, $rootScope, $log) {
+	.controller('rvManagerPaceLineChartCtrl', ['$scope', 'rvAnalyticsHelperSrv', 'rvManagersAnalyticsSrv', '$rootScope', '$log', '$filter',
+		function ($scope, rvAnalyticsHelperSrv, rvManagersAnalyticsSrv, $rootScope, $log, $filter) {
 
 			var dataForDateInfo = [],
 				numberOfDateInfoFetched = 0,
@@ -93,9 +93,9 @@ angular.module('sntRover')
 							chartLines = configData.key,
 							colors = configData.colors,
 							margin = {
-								top: 30,
-								right: 30,
-								bottom: 80,
+								top: 40,
+								right: 50,
+								bottom: 100,
 								left: 70
 							},
 							xAxisDates = [],
@@ -103,6 +103,7 @@ angular.module('sntRover')
 							chartDatum = [],
 							colorMap = {};
 
+						$scope.screenData.mainHeading = $filter('translate')("AN_PACE");
 						// extract date and values, remove -ve values coming for some reason
 						_.each(dataForDateInfo, function (dataObject) {
 							_.each(dataObject.chartData, function (chartData) {
@@ -302,11 +303,11 @@ angular.module('sntRover')
 									tooltip.style("display", "none");
 								})
 								.on("mousemove", function (d) {
-									var xPosition = d3.mouse(this)[0] - 15,
-										yPosition = d3.mouse(this)[1] - 45,
+									var xPosition = d3.mouse(this)[0] - 25,
+										yPosition = d3.mouse(this)[1] - 42,
 										dateText = moment(d.date, 'YYYY-MM-DD').format('MMM Do'),
 										activeCount = keyDate === 'Mean' ? parseFloat(d.new + d.on_the_books).toFixed(2) :
-										parseInt(d.new + d.on_the_books);
+											parseInt(d.new + d.on_the_books);
 
 									tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
 									tooltip.select(".item-qty")
@@ -424,6 +425,9 @@ angular.module('sntRover')
 							.text(function (d, i) {
 								return rvAnalyticsHelperSrv.textTruncate(chartLines[i], 35, '...');
 							});
+
+						rvAnalyticsHelperSrv.addChartHeading($scope.screenData.mainHeading,
+							$scope.screenData.analyticsDataUpdatedTime);
 
 					}
 				};
