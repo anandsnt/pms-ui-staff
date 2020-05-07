@@ -52,6 +52,11 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
 	
 	$scope.filterArAccounts = function() {
 		$scope.hasArNumber = !$scope.hasArNumber;
+		$scope.paginationAccData = {
+			'page': 1,
+			'perPage': 10,
+			'totalCount': 0
+			};
 		var dataDict = {
 			'page': $scope.paginationAccData.page,
 			'per_page': $scope.paginationAccData.perPage,
