@@ -217,8 +217,11 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                     'first-v2',
                     'waldhotel-davos',
                     'margaritaville',
+                    'hotel-171',
                     'beachside',
-                    'hotel-171'
+                    'under-canvas',
+                    'botanic-sanctuary',
+                    'beckers'
                 ],
                 nonCircleNavIcons = ['public_v2'];// minor adjustment to the back/close icons for some themes (only show the inner x or <)
 
