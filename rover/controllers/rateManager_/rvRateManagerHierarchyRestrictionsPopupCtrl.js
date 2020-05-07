@@ -6,14 +6,26 @@ angular.module('sntRover')
         'ngDialog',
         'rvRateManagerUtilitySrv',
         'rvRateManagerHierarchyRestrictionsSrv',
+        '$timeout',
         function(
             $scope,
             $rootScope,
             rvRateManagerEventConstants,
             ngDialog,
             hierarchyUtils,
-            hierarchySrv) {
+            hierarchySrv,
+            $timeout) {
                 BaseCtrl.call(this, $scope);
+
+                var setscroller = () => {
+                    $scope.setScroller('hierarchyPopupFormScroll');
+                };
+
+                var refreshScroller = function() {
+                    $timeout(function() {
+                        $scope.refreshScroller('hierarchyPopupFormScroll');
+                    }, 500);
+                };
 
                 /**
                  * Function for initializing of dialogue variables
@@ -27,7 +39,7 @@ angular.module('sntRover')
                     // The below variable can have one of four values: EMPTY/LIST/NEW/EDIT
                     $scope.popUpView = '';
                     $scope.selectedRestriction = {};
-                    $scope.restrictionStylePack = hierarchyUtils.restrictionColorAndIconMapping;
+                    $scope.restrictionStylePack = [];
                 }, initialiseFirstScreen = () => {
                     // as part of CICO-75894 we are always showing the first screen as empty.
                     // the below code must be changed when the story to view restrictions is taken up.
@@ -38,7 +50,9 @@ angular.module('sntRover')
                 $scope.initiateNewRestrictionForm = () => {
                     // trigger Restriction setting window
                     $scope.popUpView = 'NEW';
+                    $scope.restrictionStylePack = angular.copy(hierarchyUtils.restrictionColorAndIconMapping);
                     $scope.showRestrictionSelection = false;
+                    refreshScroller();
                 };
 
                 var setHouseRestrictionDataForPopup = () => {
@@ -57,6 +71,7 @@ angular.module('sntRover')
 
                 $scope.toggleRestrictionSelection = () => {
                     $scope.showRestrictionSelection = !$scope.showRestrictionSelection;
+                    refreshScroller();
                 };
 
                 $scope.restrictionSelected = (restriction) => {
@@ -131,6 +146,8 @@ angular.module('sntRover')
                 var initController = () => {
                     initializeScopeVariables();
                     initialiseFirstScreen();
+                    setscroller();
+                    refreshScroller();
 
                     switch ($scope.ngDialogData.hierarchyLevel) {
                         case 'House':
