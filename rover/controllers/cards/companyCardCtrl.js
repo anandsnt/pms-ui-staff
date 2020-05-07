@@ -124,6 +124,7 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 			$scope.arAccountDetails = data;
 			$scope.isArTabAvailable = true;
 			$scope.shouldSaveArDataFromPopup = true;
+			$scope.contactInformation.account_details.accounts_receivable_number = data.ar_number;
 		});
 
 		$scope.openCompanyTravelAgentCardMandatoryFieldsPopup = function() {
