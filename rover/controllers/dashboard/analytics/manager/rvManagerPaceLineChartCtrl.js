@@ -423,7 +423,7 @@ angular.module('sntRover')
 						legend.append("span")
 							.attr("class", "bar-label")
 							.text(function (d, i) {
-								return rvAnalyticsHelperSrv.textTruncate(chartLines[i], 35, '...');
+								return rvAnalyticsHelperSrv.textTruncate(dataForDateInfo[i].date, 35, '...');
 							});
 
 						rvAnalyticsHelperSrv.addChartHeading($scope.screenData.mainHeading,
