@@ -303,7 +303,7 @@ angular.module('sntRover')
 									tooltip.style("display", "none");
 								})
 								.on("mousemove", function (d) {
-									var xPosition = d3.mouse(this)[0] - 25,
+									var xPosition = d3.mouse(this)[0] - 35,
 										yPosition = d3.mouse(this)[1] - 42,
 										dateText = moment(d.date, 'YYYY-MM-DD').format('MMM Do'),
 										activeCount = keyDate === 'Mean' ? parseFloat(d.new + d.on_the_books).toFixed(2) :
