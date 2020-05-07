@@ -22,9 +22,7 @@ angular.module('sntRover')
                 };
 
                 var refreshScroller = function() {
-                    $timeout(function() {
-                        $scope.refreshScroller('hierarchyPopupFormScroll');
-                    }, 500);
+                    $scope.refreshScroller('hierarchyPopupFormScroll');
                 };
 
                 /**

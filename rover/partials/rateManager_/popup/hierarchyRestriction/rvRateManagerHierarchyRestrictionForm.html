@@ -1,6 +1,6 @@
 <!-- Remove hidden to show the form -->
 <div class="scrollable" ng-iscroll="hierarchyPopupFormScroll">
-    <div class="wrapper">
+    <div class="wrapper" ng-class="{'showing-dropdown': showRestrictionSelection}">
         <h2>{{(popUpView === 'NEW') ? 'Set' : (popUpView === 'EDIT') ? 'Edit' : ''}} Restriction</h2>
         <div class="entry-group">
             <div class="entry margin restriction">
