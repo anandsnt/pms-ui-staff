@@ -674,6 +674,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 } else if (keyName === 'hasUsers') {
                     key = reportParams['USER_IDS'];
                     filter_values[key] = _.pluck(_.where(filter.data, { selected: true }), 'id');
+                    if (filter_values[key].length === filter.data.length) {
+                        filter_values['all_users_selected'] = true;
+                    }
 
                 } else if (keyName === 'hasIncludeCompanyTaGroup' && $scope.selectedEntityDetails.chosenIncludeCompanyTaGroup) {
                     key = filter.value.toLowerCase();
