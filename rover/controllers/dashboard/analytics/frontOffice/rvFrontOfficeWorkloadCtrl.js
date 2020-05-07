@@ -59,7 +59,7 @@ angular.module('sntRover')
 						top: 50,
 						right: 20,
 						bottom: 30,
-						left: 150
+						left: 300
 					},
 					width = chartAreaWidth - margin.left - margin.right,
 					height = window.innerHeight * (2 / 3 + 1 / 2) / 2 - margin.top - margin.bottom;
@@ -88,6 +88,7 @@ angular.module('sntRover')
 					.tickSizeOuter(0)
 					.tickPadding(10)
 					.tickFormat(function(d) {
+						d = d ? rvAnalyticsHelperSrv.textTruncate(d, 35, '...') : '';
 						return (d === 'REMAINING' && !$scope.dashboardFilter.showRemainingReservations) ? '' : d.toUpperCase();
 					});
 
