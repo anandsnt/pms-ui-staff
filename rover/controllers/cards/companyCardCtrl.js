@@ -155,10 +155,6 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 
 		$scope.showARTab = function($event) {
 			saveContactInformation($scope.contactInformation);
-			// $scope.isArTabAvailable = true;
-			// $scope.$broadcast('setgenerateNewAutoAr', true);
-			// $scope.switchTabTo($event, 'cc-ar-accounts');
-
 		};
 		$scope.$on('ARNumberChanged', function(e, data) {
 			$scope.contactInformation.account_details.accounts_receivable_number = data.newArNumber;
