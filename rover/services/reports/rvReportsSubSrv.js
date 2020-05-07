@@ -744,6 +744,17 @@ angular.module('sntRover').service('RVreportsSubSrv', [
         };
 
         /**
+         * Fetch employee list for room status report
+         * @return {Promise} promise
+         */
+        service.fetchEmployeeList = function() {
+            return callApi({
+                method: 'getJSON',
+                url: '/api/work_statistics/employees_list?per_page=9999'
+            });
+        };
+
+        /**
          * Fetch rate info for an array of rate ids
          * @param {Object} params hold array of rate ids
          * @return {Promise}
