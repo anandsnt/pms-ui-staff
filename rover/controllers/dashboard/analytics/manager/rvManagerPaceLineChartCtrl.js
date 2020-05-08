@@ -190,6 +190,10 @@ angular.module('sntRover')
 						xAxisDates = _.uniq(xAxisDates);
 						yAxisValues = _.uniq(yAxisValues);
 
+						dataForDateInfo = _.sortBy(dataForDateInfo, function (data) {
+							return data.date;
+						});
+
 						xAxisDates = _.sortBy(xAxisDates, function (date) {
 							return date;
 						});
