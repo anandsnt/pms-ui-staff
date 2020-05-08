@@ -200,7 +200,7 @@ angular.module('sntRover')
                 }
 
                 for (i = 0, j = source.length; i < j; i++) {
-                    title = source[i].title || ( source[i].report && source[i].report.title);
+                    title = source[i].title || source[i].name || ( source[i].report && source[i].report.title);
                     title = title.toLowerCase();
                     source[i].filteredOut = title.indexOf(query) === -1;
                 }
