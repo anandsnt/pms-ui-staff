@@ -324,7 +324,6 @@ angular.module('sntRover')
 									.x(function (d) { return xScale(d.date); })
 									.y(function (d) { return yScale(d.new + d.on_the_books); })
 								);
-							initToolTip();
 
 							svg.selectAll("dot")
 								.data(cordinateData)
@@ -356,6 +355,7 @@ angular.module('sntRover')
 									tooltip.select(".date-label")
 										.text(keyDate);
 								});
+							initToolTip();
 						};
 
 						// draw grid lines
