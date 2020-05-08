@@ -522,7 +522,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
                 $scope.isFailureScreen = true;
                 $scope.cc_auth_amount = data.cc_auth_amount;
             }
-
+            $scope.goBack();
             $scope.closeDialog();
         };
 
