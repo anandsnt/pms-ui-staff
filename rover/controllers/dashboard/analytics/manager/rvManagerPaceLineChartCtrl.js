@@ -274,6 +274,7 @@ angular.module('sntRover')
 
 						// tooltip
 						var tooltip;
+
 						var initToolTip = function () {
 							tooltip = svg.append("g")
 								.attr("class", "tooltip")
@@ -305,8 +306,8 @@ angular.module('sntRover')
 								.attr("font-weight", "bold")
 								.style("fill", "#000");
 						};
-						initToolTip();
 
+						initToolTip();
 						// draw line with tooltip over circles
 						var drawSingleLine = function (cordinateData, keyDate) {
 							svg.append("path")
