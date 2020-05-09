@@ -582,6 +582,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         if (isHierarchyRestrictionNeeded()) {
             params.restrictionType = getRestrictionType();
         }
+        considerHierarchyRestrictions(params);
 
         var options = {
             params: params,
@@ -630,8 +631,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     var considerHierarchyRestrictions = function(params) {
         if ($scope.hierarchyRestrictions.rateTypeEnabled && $scope.chosenTab === 'RATE_TYPES') {
             params.hierarchialRateTypeRestrictionRequired = true;
-        } else if ($scope.hierarchyRestrictions.roomTypeEnabled && $scope.chosenTab === 'ROOM_TYPES') {
+        }
+        else if ($scope.hierarchyRestrictions.roomTypeEnabled && $scope.chosenTab === 'ROOM_TYPES') {
             params.hierarchialRoomTypeRestrictionRequired = true;
+        }
+        else if ($scope.hierarchyRestrictions.rateEnabled && ($scope.chosenTab === 'RATES' || $scope.chosenTab === 'RATE_TYPES')) {
+            params.hierarchialRateRestrictionRequired = true;
         }
     };
 
@@ -742,7 +747,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 rateType.restrictionList.push(dateRateTypeSet.restrictions);
                 if (dateRateTypeSet.amount === null) {
                     rateType.amountList.push(null);
-                } else if(dateRateTypeSet.hasOwnProperty('amount')) {
+                }
+                else if (dateRateTypeSet.hasOwnProperty('amount')) {
                     rateType.amountList.push(dateRateTypeSet.rate_currency + "" + dateRateTypeSet.amount);
                 }
             });
@@ -1165,12 +1171,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                     rate.restrictionList.push(dateRateSet.restrictions);
                     if (dateRateSet.amount === null) {
                         rate.amountList.push(null);
-                    } else {
+                    }
+                    else if (dateRateSet.hasOwnProperty('amount')) {
                         rate.amountList.push(dateRateSet.rate_currency + "" + dateRateSet.amount);
                     }
-                    
-                }
-                );
+                });
+                
                 return _.omit(rate, 'restrictions');
             });
 
@@ -1414,7 +1420,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                     roomType.restrictionList.push(dateRoomTypeSet.restrictions);
                     if (dateRoomTypeSet.amount === null) {
                         roomType.amountList.push(null);
-                    } else if (dateRoomTypeSet.hasOwnProperty('amount')) {
+                    }
+                    else if (dateRoomTypeSet.hasOwnProperty('amount')) {
                         roomType.amountList.push(dateRoomTypeSet.rate_currency + "" + dateRoomTypeSet.amount);
                     }                    
                 });
@@ -1535,7 +1542,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 }
             });
 
-
             var params = {
                 from_date: formatDateForAPI(filterValues.fromDate),
                 to_date: formatDateForAPI(filterValues.toDate),
@@ -1545,6 +1551,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fetchRates: !cachedRateList.length,
                 fetchCommonRestrictions
             };
+
+            considerHierarchyRestrictions(params);
 
             if (filterValues.selectedRateTypes.length) {
                 params['rate_type_ids[]'] = _.pluck(filterValues.selectedRateTypes, 'id');
@@ -1759,6 +1767,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fetchRoomTypes: !cachedRoomTypeList.length,
                 fetchRates: !cachedRateList.length
             };
+
+            considerHierarchyRestrictions(params);
 
             var options = {
                 params,

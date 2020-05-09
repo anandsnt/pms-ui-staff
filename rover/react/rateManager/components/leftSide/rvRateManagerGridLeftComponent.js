@@ -6,7 +6,7 @@ const RateManagerGridLeftSideComponent = ({hierarchyCount, hierarchyClass, panel
 			<RateManagerGridLeftHierarchyHeaderContainer/>
 		}
 		{	(hierarchyCount === 0) &&
-			<div className='pinnedLeft-select'>
+			<div className='pinnedLeft-select last'>
 				<RateManagerGridLeftFirstRowContainer/>
 			</div>
 		}

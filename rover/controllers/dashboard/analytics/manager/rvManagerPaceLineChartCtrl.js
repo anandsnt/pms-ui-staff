@@ -1,6 +1,6 @@
 angular.module('sntRover')
-	.controller('rvManagerPaceLineChartCtrl', ['$scope', 'rvAnalyticsHelperSrv', 'rvManagersAnalyticsSrv', '$rootScope', '$log',
-		function ($scope, rvAnalyticsHelperSrv, rvManagersAnalyticsSrv, $rootScope, $log) {
+	.controller('rvManagerPaceLineChartCtrl', ['$scope', 'rvAnalyticsHelperSrv', 'rvManagersAnalyticsSrv', '$rootScope', '$log', '$filter',
+		function ($scope, rvAnalyticsHelperSrv, rvManagersAnalyticsSrv, $rootScope, $log, $filter) {
 
 			var dataForDateInfo = [],
 				numberOfDateInfoFetched = 0,
@@ -93,9 +93,9 @@ angular.module('sntRover')
 							chartLines = configData.key,
 							colors = configData.colors,
 							margin = {
-								top: 30,
-								right: 30,
-								bottom: 80,
+								top: 40,
+								right: 50,
+								bottom: 100,
 								left: 70
 							},
 							xAxisDates = [],
@@ -103,6 +103,7 @@ angular.module('sntRover')
 							chartDatum = [],
 							colorMap = {};
 
+						$scope.screenData.mainHeading = $filter('translate')("AN_PACE");
 						// extract date and values, remove -ve values coming for some reason
 						_.each(dataForDateInfo, function (dataObject) {
 							_.each(dataObject.chartData, function (chartData) {
@@ -189,6 +190,10 @@ angular.module('sntRover')
 						xAxisDates = _.uniq(xAxisDates);
 						yAxisValues = _.uniq(yAxisValues);
 
+						dataForDateInfo = _.sortBy(dataForDateInfo, function (data) {
+							return data.date;
+						});
+
 						xAxisDates = _.sortBy(xAxisDates, function (date) {
 							return date;
 						});
@@ -271,6 +276,42 @@ angular.module('sntRover')
 							.append("g")
 							.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+						// tooltip
+						var tooltip;
+
+						var initToolTip = function () {
+							tooltip = svg.append("g")
+								.attr("class", "tooltip")
+								.style("display", "none");
+
+							tooltip.append("rect")
+								.attr("width", 80)
+								.attr("height", 40)
+								.attr("fill", "white")
+								.style("opacity", 0.5);
+
+							tooltip.append("text")
+								.attr('class', 'date-label')
+								.attr("x", 14)
+								.attr("dx", "2.4em")
+								.attr("dy", "1.4em")
+								.style("text-anchor", "middle")
+								.style("fill", "black")
+								.attr("font-size", "12px")
+								.attr("font-weight", "bold");
+
+							tooltip.append("text")
+								.attr('class', 'item-qty')
+								.attr("x", 12)
+								.attr("dx", "2.4em")
+								.attr("dy", "2.6em")
+								.style("text-anchor", "middle")
+								.attr("font-size", "12px")
+								.attr("font-weight", "bold")
+								.style("fill", "#000");
+						};
+
+						initToolTip();
 						// draw line with tooltip over circles
 						var drawSingleLine = function (cordinateData, keyDate) {
 							svg.append("path")
@@ -302,11 +343,11 @@ angular.module('sntRover')
 									tooltip.style("display", "none");
 								})
 								.on("mousemove", function (d) {
-									var xPosition = d3.mouse(this)[0] - 15,
-										yPosition = d3.mouse(this)[1] - 45,
+									var xPosition = d3.mouse(this)[0] - 35,
+										yPosition = d3.mouse(this)[1] - 42,
 										dateText = moment(d.date, 'YYYY-MM-DD').format('MMM Do'),
 										activeCount = keyDate === 'Mean' ? parseFloat(d.new + d.on_the_books).toFixed(2) :
-										parseInt(d.new + d.on_the_books);
+											parseInt(d.new + d.on_the_books);
 
 									tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
 									tooltip.select(".item-qty")
@@ -314,6 +355,7 @@ angular.module('sntRover')
 									tooltip.select(".date-label")
 										.text(keyDate);
 								});
+							initToolTip();
 						};
 
 						// draw grid lines
@@ -368,37 +410,6 @@ angular.module('sntRover')
 							drawSingleLine(dataObject.chartData, dataObject.date);
 						});
 
-						// tooltip
-						var tooltip = svg.append("g")
-							.attr("class", "tooltip")
-							.style("display", "none");
-
-						tooltip.append("rect")
-							.attr("width", 80)
-							.attr("height", 40)
-							.attr("fill", "white")
-							.style("opacity", 0.5);
-
-						tooltip.append("text")
-							.attr('class', 'date-label')
-							.attr("x", 14)
-							.attr("dx", "2.4em")
-							.attr("dy", "1.4em")
-							.style("text-anchor", "middle")
-							.style("fill", "black")
-							.attr("font-size", "12px")
-							.attr("font-weight", "bold");
-
-						tooltip.append("text")
-							.attr('class', 'item-qty')
-							.attr("x", 12)
-							.attr("dx", "2.4em")
-							.attr("dy", "2.6em")
-							.style("text-anchor", "middle")
-							.attr("font-size", "12px")
-							.attr("font-weight", "bold")
-							.style("fill", "#000");
-
 						// add right side legend
 						var legendParentElement = d3.select("#right-side-legend");
 
@@ -411,6 +422,7 @@ angular.module('sntRover')
 								return "translate(-100," + i * 30 + ")";
 							})
 							.on("click", function (d, i) {
+								tooltip.remove();
 								drawSingleLine(dataForDateInfo[i].chartData, dataForDateInfo[i].date);
 							});
 
@@ -422,8 +434,11 @@ angular.module('sntRover')
 						legend.append("span")
 							.attr("class", "bar-label")
 							.text(function (d, i) {
-								return rvAnalyticsHelperSrv.textTruncate(chartLines[i], 35, '...');
+								return rvAnalyticsHelperSrv.textTruncate(dataForDateInfo[i].date, 35, '...');
 							});
+
+						rvAnalyticsHelperSrv.addChartHeading($scope.screenData.mainHeading,
+							$scope.screenData.analyticsDataUpdatedTime);
 
 					}
 				};

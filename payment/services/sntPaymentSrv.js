@@ -528,7 +528,12 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
 
 
             $http.post(url, data).then(response => {
-                deferred.resolve(response.data);
+                if (response.data.status === "success") {
+                    deferred.resolve(response.data);
+                } else {
+                    deferred.reject(response.data.errors);
+                }
+                
             }, response => {
                 deferred.reject(response.data);
             });

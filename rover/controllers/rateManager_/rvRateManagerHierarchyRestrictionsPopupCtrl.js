@@ -15,18 +15,33 @@ angular.module('sntRover')
             hierarchySrv) {
                 BaseCtrl.call(this, $scope);
 
+                var setscroller = () => {
+                    $scope.setScroller('hierarchyPopupFormScroll');
+                };
+
+                var refreshScroller = function() {
+                    $scope.refreshScroller('hierarchyPopupFormScroll');
+                };
+
                 /**
                  * Function for initializing of dialogue variables
                  */
                 var initializeScopeVariables = () => {
                     $scope.header = {
                         date: '',
-                        hierarchyType: ''
+                        hierarchyType: '',
+                        disableNewRestriction: false
                     };
                     // The below variable can have one of four values: EMPTY/LIST/NEW/EDIT
                     $scope.popUpView = '';
                     $scope.selectedRestriction = {};
-                    $scope.restrictionStylePack = hierarchyUtils.restrictionColorAndIconMapping;
+                    $scope.restrictionStylePack = [];
+                    $scope.restrictionObj = {
+                        isRepeatOnDates: false,
+                        daysList: hierarchyUtils.repeatOnDatesList,
+                        cellDate: $scope.ngDialogData.date,
+                        untilDate: ''
+                    };
                 },
                 initialiseFirstScreen = () => {
                     // as part of CICO-75894 we are always showing the first screen as empty.
@@ -38,18 +53,14 @@ angular.module('sntRover')
                 $scope.initiateNewRestrictionForm = () => {
                     // trigger Restriction setting window
                     $scope.popUpView = 'NEW';
+                    $scope.restrictionStylePack = angular.copy(hierarchyUtils.restrictionColorAndIconMapping);
                     $scope.showRestrictionSelection = false;
-                    $scope.restrictionObj = {
-                        isRepeatOnDates: false,
-                        daysList: hierarchyUtils.repeatOnDatesList,
-                        cellDate: $scope.ngDialogData.date,
-                        untilDate: ''
-                    };
                 };
 
                 var setHouseRestrictionDataForPopup = () => {
                     $scope.header.hierarchyType = $scope.ngDialogData.hierarchyLevel;
                     $scope.header.date = moment($scope.ngDialogData.date).format('dddd, MMMM DD');
+                    $scope.header.disableNewRestriction = $rootScope.businessDate > $scope.ngDialogData.date;
                 };
 
                 $scope.showPlaceholder = () => {
@@ -62,9 +73,13 @@ angular.module('sntRover')
 
                 $scope.toggleRestrictionSelection = () => {
                     $scope.showRestrictionSelection = !$scope.showRestrictionSelection;
+                    refreshScroller();
                 };
 
                 $scope.restrictionSelected = (restriction) => {
+                    if (!_.isEmpty($scope.selectedRestriction)) {
+                        $scope.selectedRestriction.value = null;
+                    }
                     $scope.selectedRestriction = restriction;
                     $scope.toggleRestrictionSelection();
                     $scope.$broadcast('SCROLL_REFRESH_REPEAT_ON_DATES');
@@ -83,11 +98,16 @@ angular.module('sntRover')
                     }
                     else {
                         // CICO-75894
-                        formValid = (
-                            $scope.selectedRestriction.type === 'number' &&
-                            $scope.selectedRestriction.value &&
-                            $scope.selectedRestriction.value > 0
-                        ) || $scope.selectedRestriction.type === "boolean";
+                        if ($scope.selectedRestriction.type === "boolean") {
+                            formValid = true;
+                        }
+                        else if ($scope.selectedRestriction.type === 'number') {
+                            // Allow zero and positive values
+                            formValid = /^[1-9]\d*$/.test($scope.selectedRestriction.value);
+                        }
+                        else {
+                            formValid = false;
+                        }
                     }
                     return formValid;
                 };
@@ -141,15 +161,14 @@ angular.module('sntRover')
                 * To close dialog box
                 */
                 $scope.closeDialog = function() {
-        
                     $rootScope.modalClosing = true;
                     setTimeout(function() {
-                    ngDialog.close();
-                    $rootScope.modalClosing = false;
-                    window.scrollTo(0, 0);
-                    document.getElementById("rate-manager").scrollTop = 0;
-                    document.getElementsByClassName("pinnedLeft-list")[0].scrollTop = 0;
-                    $scope.$apply();
+                        ngDialog.close();
+                        $rootScope.modalClosing = false;
+                        window.scrollTo(0, 0);
+                        document.getElementById("rate-manager").scrollTop = 0;
+                        document.getElementsByClassName("pinnedLeft-list")[0].scrollTop = 0;
+                        $scope.$apply();
                     }, 700);
                 };
 
@@ -173,6 +192,8 @@ angular.module('sntRover')
                 var initController = () => {
                     initializeScopeVariables();
                     initialiseFirstScreen();
+                    setscroller();
+                    refreshScroller();
 
                     switch ($scope.ngDialogData.hierarchyLevel) {
                         case 'House':
