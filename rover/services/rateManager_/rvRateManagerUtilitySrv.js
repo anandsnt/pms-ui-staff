@@ -70,6 +70,44 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
             }
         ];
 
+        service.repeatOnDatesList = [
+            {
+                name: 'MON',
+                value: 1,
+                isChecked: false
+            },
+            {
+                name: 'TUE',
+                value: 2,
+                isChecked: false
+            },
+            {
+                name: 'WED',
+                value: 3,
+                isChecked: false
+            },
+            {
+                name: 'THU',
+                value: 4,
+                isChecked: false
+            },
+            {
+                name: 'FRI',
+                value: 5,
+                isChecked: false
+            },
+            {
+                name: 'SAT',
+                value: 6,
+                isChecked: false
+            },
+            {
+                name: 'SUN',
+                value: 0,
+                isChecked: false
+            }
+        ];
+
         // Mapping of restriction key to code/id.
         service.restrictionKeyToCodeMapping = {
             'closed': [1, 'CLOSED'],

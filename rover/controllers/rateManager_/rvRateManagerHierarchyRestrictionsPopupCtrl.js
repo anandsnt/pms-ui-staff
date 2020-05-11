@@ -36,7 +36,14 @@ angular.module('sntRover')
                     $scope.popUpView = '';
                     $scope.selectedRestriction = {};
                     $scope.restrictionStylePack = [];
-                }, initialiseFirstScreen = () => {
+                    $scope.restrictionObj = {
+                        isRepeatOnDates: false,
+                        daysList: hierarchyUtils.repeatOnDatesList,
+                        cellDate: $scope.ngDialogData.date,
+                        untilDate: ''
+                    };
+                },
+                initialiseFirstScreen = () => {
                     // as part of CICO-75894 we are always showing the first screen as empty.
                     // the below code must be changed when the story to view restrictions is taken up.
                     // There may be code, but for now, the following one line will do
@@ -48,7 +55,6 @@ angular.module('sntRover')
                     $scope.popUpView = 'NEW';
                     $scope.restrictionStylePack = angular.copy(hierarchyUtils.restrictionColorAndIconMapping);
                     $scope.showRestrictionSelection = false;
-                    refreshScroller();
                 };
 
                 var setHouseRestrictionDataForPopup = () => {
@@ -76,12 +82,18 @@ angular.module('sntRover')
                     }
                     $scope.selectedRestriction = restriction;
                     $scope.toggleRestrictionSelection();
+                    $scope.$broadcast('SCROLL_REFRESH_REPEAT_ON_DATES');
+                };
+
+                // Check repeat on dates fields are valid.
+                let isRepeatOnDatesValid = () => {
+                    return ($scope.restrictionObj && $scope.restrictionObj.isRepeatOnDates && $scope.restrictionObj.untilDate === '');
                 };
 
                 $scope.validateForm = () => {
                     var formValid;
 
-                    if ($scope.showPlaceholder()) {
+                    if ($scope.showPlaceholder() || isRepeatOnDatesValid()) {
                         formValid = false;
                     }
                     else {
@@ -100,6 +112,19 @@ angular.module('sntRover')
                     return formValid;
                 };
 
+                // Utility method to pick up selected week days for API.
+                let getSelectedWeekDays = function() {
+                    let weekDays = [];
+
+                    _.each($scope.restrictionObj.daysList, function( day ) {
+                        if (day.isChecked) {
+                            weekDays.push(day.value);
+                        }
+                    });
+
+                    return weekDays;
+                };
+
                 $scope.setHouseHierarchyRestriction = () => {
                     var restrictions = {};
 
@@ -115,6 +140,15 @@ angular.module('sntRover')
                         params: params,
                         onSuccess: houseRestrictionSuccessCallback
                     };
+                
+                    if ($scope.restrictionObj.isRepeatOnDates) {
+                        let selectedWeekDays = getSelectedWeekDays();
+
+                        if (selectedWeekDays.length > 0) {
+                            options.params.weekdays = selectedWeekDays;
+                        }
+                        options.params.to_date = $scope.restrictionObj.untilDate;
+                    }
 
                     $scope.callAPI(hierarchySrv.saveHouseRestrictions, options);
                 };
@@ -127,16 +161,32 @@ angular.module('sntRover')
                 * To close dialog box
                 */
                 $scope.closeDialog = function() {
-        
                     $rootScope.modalClosing = true;
                     setTimeout(function() {
-                    ngDialog.close();
-                    $rootScope.modalClosing = false;
-                    window.scrollTo(0, 0);
-                    document.getElementById("rate-manager").scrollTop = 0;
-                    document.getElementsByClassName("pinnedLeft-list")[0].scrollTop = 0;
-                    $scope.$apply();
+                        ngDialog.close();
+                        $rootScope.modalClosing = false;
+                        window.scrollTo(0, 0);
+                        document.getElementById("rate-manager").scrollTop = 0;
+                        document.getElementsByClassName("pinnedLeft-list")[0].scrollTop = 0;
+                        $scope.$apply();
                     }, 700);
+                };
+
+                // Handle click on Repeat on dates checkbox.
+                $scope.clickedOnRepeatOnDates = function() {
+                    $scope.restrictionObj.isRepeatOnDates = !$scope.restrictionObj.isRepeatOnDates;
+                    $scope.$broadcast('CLICKED_REPEAT_ON_DATES');
+                };
+
+                // Set the label name for SET or SET Dates button.
+                $scope.getSetButtonLabel = function() {
+                    let label = 'Set';
+
+                    if ($scope.restrictionObj.isRepeatOnDates) {
+                        label = 'Set on date(s)';
+                    }
+
+                    return label;
                 };
 
                 var initController = () => {
