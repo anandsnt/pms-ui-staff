@@ -24,8 +24,6 @@ sntRover.controller('RVDepositBalanceCtrl', [
 
         SharedMethodsBaseCtrl.call (this, $scope, $rootScope, RVAutomaticEmailSrv, ngDialog);
 
-        // $scope.autoTriggerPaymentReceiptActions();
-
         // NOTE: For connected hotels, the deposit policy is not available inside this controller.
         // CICO-34705 in case no deposit policy is set; then the API will not provide the deposit_policy key
         $scope.isDepositEditable = $scope.depositDetails.deposit_policy === undefined ||
@@ -410,7 +408,6 @@ sntRover.controller('RVDepositBalanceCtrl', [
             }
 
             $scope.depositPaidSuccesFully = true;
-
             
             $rootScope.$broadcast("UPDATE_DEPOSIT_BALANCE", data);
             // Update reservation type

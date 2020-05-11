@@ -1,5 +1,5 @@
 sntRover.controller('RVValidateEmailOnPaymentCtrl', ['$scope', '$state', 'ngDialog', 'RVContactInfoSrv',  function( $scope, $state, ngDialog, RVContactInfoSrv) {
-	console.log("---------");
+
 	BaseCtrl.call(this, $scope);
 
 	$scope.saveData = {};
@@ -17,6 +17,4 @@ sntRover.controller('RVValidateEmailOnPaymentCtrl', ['$scope', '$state', 'ngDial
 
 		$scope.$emit("AUTO_TRIGGER_EMAIL_AFTER_PAYMENT", $scope.saveData.email);
 	};
-	
-
 }]);
