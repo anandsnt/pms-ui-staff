@@ -407,6 +407,10 @@ sntRover.controller('reservationDetailsController',
 				var minDate = businessDate > groupShoulderStartDate ? 
 							businessDate : groupShoulderStartDate;
 
+				if ($scope.reservationData.reservation_card.reservation_status === 'CHECKEDIN') {
+					minDate = $scope.editStore.arrival;
+				}
+
 				return $filter('date')(minDate, $rootScope.dateFormat);
 			};
 
@@ -2168,6 +2172,19 @@ sntRover.controller('reservationDetailsController',
 			saveAddonPosting(data.selectedPurchesedAddon);
 		}
 	});
+
+	// Should disable arrrival date
+	$scope.shouldDisableArrivalDate = function() {
+		var disable = false;
+
+		if ($scope.reservationData.reservation_card.reservation_status === 'CHECKEDIN') {
+			if (tzIndependentDate($scope.editStore.arrival) <= tzIndependentDate($rootScope.businessDate) ) {
+				disable = true;
+			}
+		}
+
+		return disable;
+	};
 
 	$scope.$on( '$destroy', proceedBookingListner);
 	$scope.$on( '$destroy', removeSelectedAddonsListner);
