@@ -413,12 +413,10 @@ sntRover.controller('RVDepositBalanceCtrl', [
             // Update reservation type
             $rootScope.$broadcast('UPDATERESERVATIONTYPE', data.reservation_type_id);
             $rootScope.$broadcast('UPDATE_DEPOSIT_BALANCE_FLAG', false);
-
             // CICO-42399 - Reload staycard after successful payment
             $timeout(function() {
-                ngDialog.close();
                 $state.reload($state.$current.name); 
-            }, 2000);            
+            }, 1000);            
         };
 
         $scope.$on("AUTO_TRIGGER_EMAIL_AFTER_PAYMENT", function(e, data) {
