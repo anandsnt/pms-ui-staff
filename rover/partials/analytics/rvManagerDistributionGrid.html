@@ -25,8 +25,8 @@
                 <div class="cell day" 
                      ng-repeat="rowData in distributionChartData"
                      ng-class="{'weekend': rowData.isWeekend, 'today': rowData.isToday }">
-                    <span>{{ ::rowData.weekDay }}</span>
-                    <strong>{{ ::rowData.dateToDisplay }}</strong>
+                    <span>{{ rowData.weekDay }}</span>
+                    <strong>{{ rowData.dateToDisplay }}</strong>
                 </div>
             </div>
         </div>

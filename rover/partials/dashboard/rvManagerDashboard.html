@@ -33,12 +33,12 @@ ng-if="showDashboard && !dashboardFilter.analyticsActive">
 	<section id="dashboard" class="content scrollable analytics"
 			 role="main"
 	         ng-iscroll="analytics_details_scroller" ng-iscroll-delay="100"
-	         ng-if="dashboardFilter.displayMode === 'CHART_DETAILS' && !dashboardFilter.gridViewActive" ng-include="'/assets/partials/analytics/rvAnalyticsMain.html'">
+	         ng-show="dashboardFilter.displayMode === 'CHART_DETAILS' && !dashboardFilter.gridViewActive" ng-include="'/assets/partials/analytics/rvAnalyticsMain.html'">
 	 </section>
 
 	<section id="dashboard-grid" class="analytics-grid" role="main"
 	         ng-iscroll="analytics_scroller" ng-iscroll-delay="100"
-	         ng-if="dashboardFilter.gridViewActive"
+	         ng-show="dashboardFilter.gridViewActive"
 	         ng-include="'/assets/partials/analytics/rvManagerDistributionGrid.html'">
 	</section>
 </div>
