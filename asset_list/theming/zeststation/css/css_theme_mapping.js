@@ -131,7 +131,8 @@ module.exports = {
             'hotel-171': [themeCSSRoot + 'hotel-171.less'],
             'beachside': [themeCSSRoot + 'beachside.less'],
             'under-canvas': [themeCSSRoot + 'under-canvas.less'],
-            'botanic-sanctuary': [themeCSSRoot + 'botanic-sanctuary.less']
+            'botanic-sanctuary': [themeCSSRoot + 'botanic-sanctuary.less'],
+            'beckers': [themeCSSRoot + 'beckers.less']
         };
     }
 };
