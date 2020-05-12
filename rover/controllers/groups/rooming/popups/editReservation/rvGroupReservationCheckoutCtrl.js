@@ -3,12 +3,12 @@ angular.module('sntRover').controller('rvGroupReservationCheckoutCtrl', [
     '$scope',
     '$timeout',
     'RVBillCardSrv',
-    '$state',
+    'ngDialog',
     function ($rootScope,
             $scope,
             $timeout,
             RVBillCardSrv,
-            $state) {
+            ngDialog) {
 
     var completeCheckoutSuccessCallback = function(data) {
         // calling initially required APIs
@@ -18,8 +18,10 @@ angular.module('sntRover').controller('rvGroupReservationCheckoutCtrl', [
         }, 700);
     };
 
+    // Call back for checkout failure
     var completeCheckoutFailureCallback = function(error) {
-
+        $scope.$emit('showErrorMessage', error[0]);
+        ngDialog.close();
     };
 
     /**
