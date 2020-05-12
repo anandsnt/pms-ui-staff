@@ -481,6 +481,9 @@ angular.module('sntRover')
 						});
 				}, 1000);
 			};
+			
+			setGridScrollers();
+
 			var refreshGridScrollers = function() {
 				$scope.refreshScroller(GRID_HEADER_HORIZONTAL_SCROLL);
 				$scope.refreshScroller(GRID_VIEW_DUAL_SCROLL);
@@ -548,10 +551,9 @@ angular.module('sntRover')
 
 				$scope.distributionChartData = distributionChartData;
 				$scope.dashboardFilter.showFilters = false;
-				setGridScrollers();
 				$timeout(function() {
 					refreshGridScrollers();
-				}, 1000);
+				}, 100);
 			};
 
 			$scope.$on('DISTRUBUTION_CHART_CHANGED', toggleDistributionChartGridView);

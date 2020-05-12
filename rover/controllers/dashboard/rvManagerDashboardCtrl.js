@@ -347,7 +347,9 @@ sntRover.controller('RVmanagerDashboardController',
 
     if (selectedAnalyticsMenu === 'DISTRIBUTION' ||
         selectedAnalyticsMenu === 'PACE') {
-      emptyAllChartFilters();
+      var excludeDatePickerSelection =  true;
+
+      emptyAllChartFilters(excludeDatePickerSelection);
       
       populateSelectedFilter(rvAnalyticsSrv.managerChartFilterSet.filtersSelected.filters);
       $scope.dashboardFilter.selectedAnalyticsFilter = angular.copy(rvAnalyticsSrv.managerChartFilterSet.selectedSavedFilter);
@@ -471,7 +473,7 @@ sntRover.controller('RVmanagerDashboardController',
     return dataSet;
   };
 
-  var emptyAllChartFilters = function() {
+  var emptyAllChartFilters = function(excludeDatePickerSelection) {
     filtersSelected = {
       filters: {
         room_type_id: [],
@@ -485,9 +487,14 @@ sntRover.controller('RVmanagerDashboardController',
     $scope.dashboardFilter.selectedRoomType = "";
     $scope.dashboardFilter.chartType = "occupancy";
     $scope.dashboardFilter.aggType = "";
-    $scope.dashboardFilter.datePicked = $rootScope.businessDate;
-    $scope.dashboardFilter.toDate = angular.copy($rootScope.businessDate);
-    $scope.dashboardFilter.fromDate = angular.copy(moment($scope.dashboardFilter.toDate).subtract(7, 'days').format('YYYY-MM-DD'));
+
+    if (!excludeDatePickerSelection) {
+      $scope.dashboardFilter.datePicked = $rootScope.businessDate;
+      $scope.dashboardFilter.toDate = angular.copy($rootScope.businessDate);
+      $scope.dashboardFilter.fromDate = angular.copy(moment($scope.dashboardFilter.toDate)
+                                               .subtract(7, 'days')
+                                               .format('YYYY-MM-DD'));
+    }
     $scope.dashboardFilter.showRemainingReservations = false;
     $scope.dashboardFilter.showPreviousDayData = false;
 
