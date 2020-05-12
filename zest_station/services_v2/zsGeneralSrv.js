@@ -150,7 +150,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             "guestweb_beachside_resort_and_suites": "beachside",
             "guestweb_under_canvas": "under-canvas",
             "guestweb_botanic_sanctuary_antwerp": "botanic-sanctuary",
-            "guestweb_beckers_hotel": "beckers"
+            "guestweb_beckers_hotel": "beckers",
+            "guestweb_silver_collection_hotel": "silver-collection"
         };
 
 
