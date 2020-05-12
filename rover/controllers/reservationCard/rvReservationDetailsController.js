@@ -407,6 +407,10 @@ sntRover.controller('reservationDetailsController',
 				var minDate = businessDate > groupShoulderStartDate ? 
 							businessDate : groupShoulderStartDate;
 
+				if ($scope.reservationData.reservation_card.reservation_status === 'CHECKEDIN') {
+					minDate = $scope.editStore.arrival;
+				}
+
 				return $filter('date')(minDate, $rootScope.dateFormat);
 			};
 
@@ -1598,6 +1602,7 @@ sntRover.controller('reservationDetailsController',
 				}
 				else{
 					console.warn("There should be atleast one credit card needed");
+					$scope.closeDialog();
 				}
 			};
 
@@ -1953,6 +1958,25 @@ sntRover.controller('reservationDetailsController',
 		$scope.$broadcast('PROCEED_CHECKIN');
 	};
 
+	/*
+     * Clicked skip ID scan and thus record actions in activity logs and proceed checkin
+     */
+    $scope.continueToCheckinAfterSkipIdScan = function() {
+        var dataToApi = {
+            id: $scope.reservationData.reservation_card.reservation_id,
+            action_type: 'ID_DETAILS',
+            details: [
+                {
+                    key: 'Skipped ID Scan',
+                    new_value: true
+                }
+            ]
+        }
+        $scope.invokeApi(RVReservationCardSrv.createActivityLog, dataToApi, function(data) {
+            $scope.$broadcast('PROCEED_CHECKIN');
+        });
+    };
+
 	$scope.showScannedGuestID = function(isPrimaryGuest, guestData) {
 
 		$scope.$emit('hideLoader');
@@ -2075,7 +2099,7 @@ sntRover.controller('reservationDetailsController',
 			});
 	};
 
-	$scope.saveAddonPosting = function() {
+	var saveAddonPosting = function(selectedPurchesedAddon) {
 
 		var addonPostingSaveSuccess = function(data) {
 			$scope.$emit('hideLoader');
@@ -2083,18 +2107,18 @@ sntRover.controller('reservationDetailsController',
 		};
 
 		var dataToApi = {
-			'addon_id': $scope.selectedPurchesedAddon.id,
+			'addon_id': selectedPurchesedAddon.id,
 			'reservation_id': $scope.reservationData.reservation_card.reservation_id,
-			'post_instances': $scope.selectedPurchesedAddon.post_instances,
-			'start_date': $filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.start_date), $rootScope.dateFormatForAPI),
-			'end_date': $filter('date')(tzIndependentDate($scope.selectedPurchesedAddon.end_date), $rootScope.dateFormatForAPI),
-			'selected_post_days': $scope.selectedPurchesedAddon.selected_post_days
+			'post_instances': selectedPurchesedAddon.post_instances,
+			'start_date': $filter('date')(tzIndependentDate(selectedPurchesedAddon.start_date), $rootScope.dateFormatForAPI),
+			'end_date': $filter('date')(tzIndependentDate(selectedPurchesedAddon.end_date), $rootScope.dateFormatForAPI),
+			'selected_post_days': selectedPurchesedAddon.selected_post_days
 		}
 
 		$scope.invokeApi(RVReservationPackageSrv.updateAddonPosting, dataToApi, addonPostingSaveSuccess);
 	};
 
-	$scope.removeSelectedAddons = function(index, addonId) {
+	var removeSelectedAddons = function(index, addonId) {
 
 		var reservationId = $scope.reservationData.reservation_card.reservation_id;
 
@@ -2139,16 +2163,28 @@ sntRover.controller('reservationDetailsController',
 
 	var removeSelectedAddonsListner = $rootScope.$on('REMOVE_ADDON', function(event, data) {
 		if(data.addonPostingMode === 'staycard') {
-			$scope.removeSelectedAddons(data.index, data.addon.id);
+			removeSelectedAddons(data.index, data.addon.id);
 		}
 	});
 
 	var proceedBookingListner = $scope.$on('PROCEED_BOOKING', function(event, data) {
 		if(data.addonPostingMode === 'staycard') {
-			$scope.selectedPurchesedAddon = data.selectedPurchesedAddon;
-			$scope.saveAddonPosting();
+			saveAddonPosting(data.selectedPurchesedAddon);
 		}
 	});
+
+	// Should disable arrrival date
+	$scope.shouldDisableArrivalDate = function() {
+		var disable = false;
+
+		if ($scope.reservationData.reservation_card.reservation_status === 'CHECKEDIN') {
+			if (tzIndependentDate($scope.editStore.arrival) <= tzIndependentDate($rootScope.businessDate) ) {
+				disable = true;
+			}
+		}
+
+		return disable;
+	};
 
 	$scope.$on( '$destroy', proceedBookingListner);
 	$scope.$on( '$destroy', removeSelectedAddonsListner);

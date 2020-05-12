@@ -61,7 +61,13 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 	        if ($rootScope.previousState.controller === "rvAllotmentConfigurationCtrl")
 	        {
 	            $scope.searchBackButtonCaption = $filter('translate')('ALLOTMENTS');
-	        }
+			}
+			else if ($rootScope.previousState.controller === "rvGroupConfigurationCtrl") {
+				$scope.searchBackButtonCaption = $filter('translate')('GROUPS');
+			}
+			else if ($rootScope.previousState.controller === "rvAccountsConfigurationCtrl") {
+				$scope.searchBackButtonCaption = $filter('translate')('ACCOUNTS');
+			}
 	        else if ($stateParams.origin === 'AR_OVERVIEW') {
 	        	$scope.searchBackButtonCaption = $filter('translate')('MENU_ACCOUNTS_RECEIVABLES');
 	        }
@@ -246,6 +252,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			$scope.arAccountDetails = data;
 			$scope.isArTabAvailable = true;
 			$scope.shouldSaveArDataFromPopup = true;
+			$scope.contactInformation.account_details.accounts_receivable_number = data.ar_number;
 		});
 
 		$scope.$on("UPDATE_AR_ACCOUNT_DETAILS_AFTER_DELETE", function(e, data) {

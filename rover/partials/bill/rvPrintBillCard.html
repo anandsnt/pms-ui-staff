@@ -12,7 +12,7 @@
 <!-- Case 1: Guest Bill -->
 <div class="info-container" ng-if="!printData.is_from_cards">
     <div class="info-left">
-        <span ng-bind-html="printData.guest_details.address"></span>
+        <span ng-bind-html="printData.guest_details.address"></span><br/>
         <div class="info-bottom" ng-if="!printData.is_deposit_invoice">
             <strong >{{printData.translation.invoice_date}}: </strong>{{printData.invoice_date | date:dateFormat}}<br/>
             <span ng-show="!printData.is_informational_invoice && printData.is_print_invoice_enabled && (printData.is_print_ar_invoice_number_enabled  && printData.is_db_payment_exists ? false : true)">
@@ -195,7 +195,7 @@
                     </div>
                     <span class="reference" ng-show="item.reference_text != ''">{{item.reference_text}}</span>
                 </td>
-                <td class="align-right">{{currencySymbol}}{{item.amount | number: precisonTwo}}
+                <td ng-if="!item.isCredit" class="align-right">{{currencySymbol}}{{item.amount | number: precisonTwo}}
                     <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol!='' && item.invoice_currency_amount !== null">
                         {{invoiceCurrencySymbol}}{{item.invoice_currency_amount}}
                     </div>
@@ -204,21 +204,9 @@
                         {{item.rate_currency}}{{item.rate_converted_amount}}
                     </div>
                 </td>
-                <td class="align-right"></td>
-            </tr>
-
-            <tr ng-repeat="item in printData.credit_details_list">
-                <td>{{item.date | date:dateFormat}}</td>
-                <td class="description">
-                    <strong>{{item.item_description}}</strong>
-                    <span>{{item.description}}</span>
-                    <div class="converted-currency smaller">
-                        {{item.rate_coversion_rate}}
-                    </div>
-                    <span class="reference" ng-show="item.reference_text != ''">{{item.reference_text}}</span>
-                </td>
-                <td class="align-right"></td>
-                <td class="align-right">{{currencySymbol}}{{item.amount | number: precisonTwo}}
+                <td ng-if="!item.isCredit" class="align-right"></td>
+                <td class="align-right" ng-if="item.isCredit"></td>
+                <td ng-if="item.isCredit" class="align-right">{{currencySymbol}}{{item.amount | number: precisonTwo}}
 
                     <div class="converted-currency" ng-if="isMultiCurrencyEnabled && invoiceCurrencySymbol!='' && item.invoice_currency_amount !== null">
                         {{invoiceCurrencySymbol}}{{item.invoice_currency_amount}}
@@ -228,6 +216,7 @@
                     </div>
                 </td>
             </tr>
+
         </tbody>
     </table>
 </div>

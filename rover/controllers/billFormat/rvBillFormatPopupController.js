@@ -7,6 +7,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
     BaseCtrl.call(this, $scope);
     $scope.isCompanyCardInvoice = true;
     $scope.disableCompanyCardInvoice = false;
+    $scope.disableCompanyGuestToggle = false;
     $scope.hideCompanyCardInvoiceToggle = true;    
     $scope.billFormat.isInformationalInvoice = !$scope.shouldGenerateFinalInvoice 
                                                 && $scope.isSettledBill 
@@ -72,14 +73,14 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
      * @return none
      */
     var handleGenerateToggleWidgetVisibility = function (card) {
-            if ( !isEmpty(card.company.name) && !isEmpty(card.travel_agent.name)) {
+            if ( !isEmpty(card.company) && !isEmpty(card.travel_agent)) {
                 // Both cards are attached.
             }
-            else if (isEmpty(card.company.name) && isEmpty(card.travel_agent.name)) {
+            else if (isEmpty(card.company) && isEmpty(card.travel_agent)) {
                 // Both cards are not attached.
                 $scope.hideCompanyCardInvoiceToggle = true;
             }
-            else if (!isEmpty(card.company.name) && isEmpty(card.travel_agent.name)) {
+            else if (!isEmpty(card.company) && isEmpty(card.travel_agent)) {
                 // Only Company card is attached.
                 $scope.isCompanyCardInvoice = true;
                 $scope.disableCompanyCardInvoice = true;
@@ -94,6 +95,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
         isEmpty = function( str ) {
             return (!str || 0 === str.length);
         };
+
 
     var successCallBackForLanguagesFetch = function(data) {
       $scope.$emit('hideLoader');
@@ -135,7 +137,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
             }
 
             $scope.data = response.data;
-            $scope.setEmailAddress();
+            $scope.setEmailAddress();            
         };
 
         $scope.invokeApi(RVBillCardSrv.getBillSettingsInfo, params, onBillSettingsInfoFetchSuccess);
@@ -378,6 +380,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
         $scope.isCompanyCardInvoice = !$scope.isCompanyCardInvoice;
         $scope.setEmailAddress();
     };
+
     $scope.$on('$destroy', updateWindow);
 
     init();

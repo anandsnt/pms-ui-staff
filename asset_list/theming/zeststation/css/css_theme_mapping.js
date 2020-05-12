@@ -121,7 +121,18 @@ module.exports = {
             'jonas': [themeCSSRoot + 'jonas.less'],
             'westminster': [themeCSSRoot + 'westminster.less'],
             'coyote': [themeCSSRoot + 'coyote.less'],
-            'hermitage': [themeCSSRoot + 'hermitage.less']
+            'hermitage': [themeCSSRoot + 'hermitage.less'],
+            'sage-inn-v2': [themeCSSRoot + 'sage-inn-v2.less'],
+            'lake-house': [themeCSSRoot + 'lake-house.less'],
+            'first-v2': [themeCSSRoot + 'first-v2.less'],
+            'waldhotel-davos': [themeCSSRoot + 'waldhotel-davos.less'],
+            'autocamp': [themeCSSRoot + 'autocamp.less'],
+            'margaritaville': [themeCSSRoot + 'margaritaville.less'],
+            'hotel-171': [themeCSSRoot + 'hotel-171.less'],
+            'beachside': [themeCSSRoot + 'beachside.less'],
+            'under-canvas': [themeCSSRoot + 'under-canvas.less'],
+            'botanic-sanctuary': [themeCSSRoot + 'botanic-sanctuary.less'],
+            'beckers': [themeCSSRoot + 'beckers.less']
         };
     }
 };

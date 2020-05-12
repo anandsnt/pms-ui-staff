@@ -33,6 +33,29 @@ sntRover.controller('RVReservationPackageController',
 			}, 300);
 		};
 
+		$scope.shouldHideCount = function(addon) {
+			var postType = addon.post_type.value.toUpperCase();
+
+			if ((postType === 'WEEKDAY' || postType === 'WEEKEND' || postType === 'CUSTOM') && typeof addon.post_instances === 'undefined' 
+				&& $scope.showCustomPosting() && $scope.addonPopUpData.addonPostingMode === 'reservation') {
+				return true;
+			}
+			return false;
+		};
+
+		var getApplicableAddonsCount = function(amountType, numAdults, numChildren, numNights) {
+			
+			if (amountType === 'PERSON') {
+				return (numAdults + numChildren) * numNights;
+			} else if (amountType === 'ADULT') {
+				return numAdults * numNights;
+			} else if (amountType === 'CHILD') {
+				return numChildren * numNights;
+			} else if (amountType === 'FLAT' || amountType === 'ROOM') {
+				return numNights;
+			}
+		};
+
 		// Get addon count
 		$scope.getAddonCount = function(addon) {
 			var postingRythm = addon.post_type.frequency,
@@ -41,26 +64,32 @@ sntRover.controller('RVReservationPackageController',
 				numAdults = $scope.addonPopUpData.number_of_adults,
 				numChildren = $scope.addonPopUpData.number_of_children,
 				numNights = $scope.addonPopUpData.duration_of_stay,
+				addonCount = 0,
 				chargeFullWeeksOnly = addon.charge_full_weeks_only;
 				
-			if (!postingRythm) {				
-				if (postType === 'WEEK' || postType === 'EVERY WEEK' || postType === 'WEEKLY' || postType === 'WEEKDAY' || postType === 'WEEKEND') {
-					postingRythm = 7;
-				} else if (postType === 'STAY' || postType === 'ENTIRE STAY') {
-					postingRythm = 1;
-				} else if (postType === 'NIGHT' || postType === 'First Night' || postType === 'LAST_NIGHT' || postType === 'CUSTOM' || postType === 'POST ON LAST NIGHT') {
-					postingRythm = 0;
+			if ($scope.showCustomPosting() && typeof addon.post_instances !== 'undefined') {
+				numNights = _.filter(addon.post_instances, {active: true}).length;		
+				addonCount = getApplicableAddonsCount(amountType, numAdults, numChildren, numNights);		
+			} else {
+				if (!postingRythm) {				
+					if (postType === 'WEEK' || postType === 'EVERY WEEK' || postType === 'WEEKLY' || postType === 'WEEKDAY' || postType === 'WEEKEND') {
+						postingRythm = 7;
+					} else if (postType === 'STAY' || postType === 'ENTIRE STAY') {
+						postingRythm = 1;
+					} else if (postType === 'NIGHT' || postType === 'First Night' || postType === 'LAST_NIGHT' || postType === 'CUSTOM' || postType === 'POST ON LAST NIGHT') {
+						postingRythm = 0;
+					}
 				}
+				addonCount = RVReservationStateService.getApplicableAddonsCount(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly);
 			}
-			if ($scope.showCustomPosting() && typeof addon.post_instances !== 'undefined' && addon.post_instances.length > 0) {
-				numNights = _.filter(addon.post_instances, {active: true}).length;
-			}
-			var addonCount = RVReservationStateService.getApplicableAddonsCount(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly);
 
 			return (addonCount * addon.addon_count);
 		};
 
 		$scope.getAddonTotal = function(addon) {
+			if ($scope.shouldHideCount(addon)) {
+				return addon.amount;
+			}
 			return $scope.getAddonCount(addon) * addon.amount;
 		};
 
@@ -134,6 +163,54 @@ sntRover.controller('RVReservationPackageController',
 				$scope.selectedPurchesedAddon = addon;
 			}
 
+		};
+
+		var ordinal_suffix_of = function (i) {
+		    var j = i % 10,
+		        k = i % 100;
+
+		    if (j === 1 && k !== 11) {
+		        return i + "st";
+		    }
+		    if (j === 2 && k !== 12) {
+		        return i + "nd";
+		    }
+		    if (j === 3 && k !== 13) {
+		        return i + "rd";
+		    }
+		    return i + "th";
+		};
+
+		$scope.getCustomPostingInfo = function() {
+			var posting_info = "";
+
+			if (typeof $scope.selectedPurchesedAddon.frequency_type === 'undefined' || typeof $scope.selectedPurchesedAddon.frequency === 'undefined') {
+				posting_info = "Posts daily";
+			} else if ($scope.selectedPurchesedAddon.frequency_type === "days") {
+				if ($scope.selectedPurchesedAddon.frequency === 1) {
+					posting_info = "Posts daily";
+				} else {
+					posting_info = "Posts on every " + $scope.selectedPurchesedAddon.frequency + " days.";
+				}
+				
+			} else if ($scope.selectedPurchesedAddon.frequency_type === "weeks") {
+				if ($scope.selectedPurchesedAddon.frequency === 1) {
+					posting_info = "Posts weekly, on " + $scope.selectedPurchesedAddon.post_day_of_the_week;
+				} else {
+					posting_info = "Posts every " + $scope.selectedPurchesedAddon.frequency + " weeks, on " +  $scope.selectedPurchesedAddon.post_day_of_the_week;
+				}
+				
+			} else if ($scope.selectedPurchesedAddon.frequency_type === "months") {
+				if ($scope.selectedPurchesedAddon.frequency === 1) {
+					posting_info = "Posts every month, on " + ordinal_suffix_of($scope.selectedPurchesedAddon.post_day_of_the_month);
+				} else {
+					posting_info = "Posts every " + $scope.selectedPurchesedAddon.frequency + " months, on " +  ordinal_suffix_of($scope.selectedPurchesedAddon.post_day_of_the_month);
+				}
+				
+			} else {
+				posting_info = "Posts daily";
+			}
+			return posting_info;
 		};
 
 		$scope.showCustomPosting = function() {

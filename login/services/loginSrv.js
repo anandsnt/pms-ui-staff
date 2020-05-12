@@ -57,7 +57,11 @@ angular.module('login').service('loginSrv',
                     else if (response.status === 401) { // 401- Unauthorized
                         // so lets redirect to login page
                         $window.location.href = '/logout';
-                    } else {
+                    }
+                    else if (response.status === 403) {
+                        $window.location.href = '/403.html';
+                    }
+                    else {
                         deferred.reject(response.data.errors);
                     }
 

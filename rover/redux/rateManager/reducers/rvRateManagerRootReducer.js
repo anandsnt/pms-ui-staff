@@ -15,7 +15,10 @@ const rateManagerRootReducer = (state, action) => (
 		paginationState: rateManagerPaginationStateDataReducer(state.paginationState, action),
 		isHierarchyHouseRestrictionEnabled: state.isHierarchyHouseRestrictionEnabled,
 		isHierarchyRoomTypeRestrictionEnabled: state.isHierarchyRoomTypeRestrictionEnabled,
-		isHierarchyRateTypeRestrictionEnabled: state.isHierarchyRateTypeRestrictionEnabled
+		isHierarchyRateTypeRestrictionEnabled: state.isHierarchyRateTypeRestrictionEnabled,
+		isHierarchyRateRestrictionEnabled: state.isHierarchyRateRestrictionEnabled,
+		hierarchyRestrictionClass: state.hierarchyRestrictionClass,
+		frozenPanelClass: rateManagerPanelClassReducer(state, action)
 	}
 );
 

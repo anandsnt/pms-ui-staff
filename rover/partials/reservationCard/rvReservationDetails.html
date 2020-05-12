@@ -167,7 +167,7 @@
             <div class="check-data has-datepicker">
                 <label for="check-in-date" class="guest-status small-icon check-in">Arrival Date</label>
                 <!-- <input id="" type="text" class="datepicker" value="{Arrival Date}" readonly /> -->
-                <input name="room-service-date" id="check-in-date" type="text" class="datepicker" ui-date="arrivalDateOptions" ng-model="editStore.arrival" ui-date-format readonly ng-change="arrivalDateChanged()">
+                <input name="room-service-date" id="check-in-date" type="text" class="datepicker" ui-date="arrivalDateOptions" ng-model="editStore.arrival" ui-date-format readonly ng-change="arrivalDateChanged()" ng-disabled="shouldDisableArrivalDate()">
             </div>
             <div class="check-data has-datepicker">
                 <label for="check-out-date" class="guest-status small-icon check-out">Departure Date</label>
@@ -340,6 +340,14 @@
         <!-- Show this if we have missing mandatory guest IDs -->
         <div class="bottom-actions"  ng-show="isFromCheckin">
             <button class="button blank" click-touch="toggleGuests()">Cancel</button>
+
+            <button class="button green" 
+                    click-touch="continueToCheckinAfterSkipIdScan()" 
+                    ng-if="hasPermissionToSkipIdScan && isGuestIdRequiredForCheckin()"
+                    style="margin-right: 10px"
+                    translate>
+                        SKIP_ID_SCAN
+            </button>
             <!-- Replace .grey with .green if we have all mandatory Guest IDs and can proceed to check in -->
             <button class="button " ng-disabled="isGuestIdRequiredForCheckin()" click-touch="continueToCheckinAfterIdScan()" ng-class="{'grey': isGuestIdRequiredForCheckin(), 'green': !isGuestIdRequiredForCheckin()}" translate>CONTINUE_TO_CHECKIN_BUTTON</button>
         </div>

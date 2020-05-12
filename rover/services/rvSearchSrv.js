@@ -51,6 +51,19 @@ angular.module("sntRover").service("RVSearchSrv", [
             return deferred.promise;
         };
 
+        this.fetchReservationForBillingInfo = function(data) {
+            var deferred = $q.defer();
+            var url =  '/api/reservations/search_reservation_for_billing_info';
+    
+            RVBaseWebSrv.getJSON(url, data).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+    
+
         // update the reservation details of cached data
         this.updateRoomDetails = function(confirmation, data) {
             if (!self.data) {

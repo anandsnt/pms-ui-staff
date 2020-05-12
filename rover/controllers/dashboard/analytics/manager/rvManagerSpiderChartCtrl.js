@@ -869,8 +869,8 @@ angular.module('sntRover')
 				var addMainLabelsOnGraph = function(label) {
 
 					var xValue = label.isLeftSide ? -0.3 : 0;
-					var rectYvalue = label.isDownSide ? -0.9 : 1;
-					var textrectYvalue = label.isDownSide ? -0.95 : 0.95;
+					var rectYvalue = label.isDownSide ? -1.05 : 1.15;
+					var textrectYvalue = label.isDownSide ? -1.1 : 1.1;
 
 					var textLabelGroup = svg.append("g");
 
@@ -1025,6 +1025,9 @@ angular.module('sntRover')
 			// On filter chage, fetch the perfomance date correspoding to the selected filter
 			$scope.$on('ANALYTICS_FILTER_CHANGED', function(e, data) {
 				if ($scope.dashboardFilter.selectedAnalyticsMenu === 'PERFOMANCE') {
+					$scope.dashboardFilter.showFilters = false;
+					rvAnalyticsSrv.managerChartFilterSet.showLastYearData = $scope.dashboardFilter.showLastYearData;
+      				rvAnalyticsSrv.managerChartFilterSet.lastyearType = $scope.dashboardFilter.lastyearType;
 					handleFilterChangeForPerfomanceChart();
 				}
 			});

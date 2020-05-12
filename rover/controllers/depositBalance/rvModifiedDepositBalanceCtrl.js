@@ -312,7 +312,8 @@ sntRover.controller('RVDepositBalanceCtrl', [
             $scope.closeDialog();
         };
 
-        $scope.$on("CLOSE_DIALOG", function() {
+        $scope.$on("CLOSE_DIALOG", function() {   
+            $state.reload($state.$current.name);         
             $scope.closeDepositModal();
         });
 
@@ -366,7 +367,7 @@ sntRover.controller('RVDepositBalanceCtrl', [
                 $scope.autoTriggerPaymentReceiptActions();
             }     
 
-            cardDetails = data.payment_type || {};
+            var cardDetails = data.payment_type || {};
 
             var reservationCard = $scope.reservationData.reservation_card;
 
@@ -407,19 +408,16 @@ sntRover.controller('RVDepositBalanceCtrl', [
             }
 
             $scope.depositPaidSuccesFully = true;
-
-            ngDialog.close();
+            
             $rootScope.$broadcast("UPDATE_DEPOSIT_BALANCE", data);
             // Update reservation type
             $rootScope.$broadcast('UPDATERESERVATIONTYPE', data.reservation_type_id);
-            $rootScope.$broadcast('UPDATE_DEPOSIT_BALANCE_FLAG', false);
-
-            // CICO-42399 - Reload staycard after successful payment
-            $state.reload($state.$current.name); 
+            $rootScope.$broadcast('UPDATE_DEPOSIT_BALANCE_FLAG', false);                         
         };
 
         $scope.$on("AUTO_TRIGGER_EMAIL_AFTER_PAYMENT", function(e, data) {
             $scope.sendAutomaticEmails(data);
+            $state.reload($state.$current.name);
         });
 
 

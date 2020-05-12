@@ -743,22 +743,15 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
-        // Method to get the revenue and tax of accounts
-        // @data - params to API
-        service.getRevenueAndTax = function(data) {
-            var deferred = $q.defer(),
-                url = '/api/accounts/revenue_and_tax';
-
-            rvBaseWebSrvV2.postJSON(url, data.postParamsToApi).then(function(revenueData) {
-                revenueData.accountVatType = data.accountVatType;
-                revenueData.isPrint = data.isPrint;
-                revenueData.accountTypeId = data.accountTypeId;
-                deferred.resolve(revenueData);
-            }, function(data) {
-                deferred.reject(data);
+        /**
+         * Fetch employee list for room status report
+         * @return {Promise} promise
+         */
+        service.fetchEmployeeList = function() {
+            return callApi({
+                method: 'getJSON',
+                url: '/api/work_statistics/employees_list?per_page=9999'
             });
-
-            return deferred.promise;
         };
 
         /**
@@ -814,6 +807,60 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 
             return deferred.promise;
         };        
+
+        /**
+         * Fetch work types 
+         * @return {Promise}
+         */
+        service.fetchWorkTypes = () => {
+            var deferred = $q.defer(),
+                url = 'api/work_types';
+
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                deferred.resolve(data.results);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+
+        };
+
+        /**
+         * Fetch Front Office Status
+         * @return {Promise}
+         */
+        service.fetchFrontOfficeStatus = () => {
+            var deferred = $q.defer(),
+                url = 'api/reference_values?type=front_office_status';
+
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+            
+        };
+
+        /**
+         * Fetch Housekeeping Status
+         * @return {Promise}
+         */
+        service.fetchHouseKeepingStatus = () => {
+            var deferred = $q.defer(),
+                url = 'api/reference_values?type=housekeeping_status';
+
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+
+        };
 
         return service;
     }

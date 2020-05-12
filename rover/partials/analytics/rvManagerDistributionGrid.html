@@ -9,7 +9,9 @@
     <!-- Rows -->
     <div class="analytics-grid-rows scrollable" ng-iscroll="side-bar-vertical-scroll" id="div1"> <!-- Vertical iScroll here, make it connected to iScroll on L227 so they both move vertically when any of them is scrolled. -->
         <div class="wrapper">
-            <div class="row" ng-if="dashboardFilter.aggType" ng-repeat="item in gridLeftSideHeaders">{{::item}}</div>
+            <div class="row" ng-if="dashboardFilter.aggType" ng-repeat="item in gridLeftSideHeaders track by $index">
+                {{ (item && item.length > 45) ?  (item.substring(0, 45 - 3) + "...") : item }}
+            </div>
             <!-- ... repeat L206 for every Room Type or Market or Source or Segment or Origin -->
         </div>
     </div>
@@ -21,7 +23,7 @@
         <div class="wrapper">
             <div class="row">
                 <div class="cell day" 
-                     ng-repeat="rowData in distributionChartData"
+                     ng-repeat="rowData in distributionChartData track by $index"
                      ng-class="{'weekend': rowData.isWeekend, 'today': rowData.isToday }">
                     <span>{{ ::rowData.weekDay }}</span>
                     <strong>{{ ::rowData.dateToDisplay }}</strong>
@@ -33,10 +35,10 @@
     <!-- Grid -->
     <div class="analytics-grid-rows scrollable" ng-iscroll="grid-scroll" id="div2"> <!-- dual iScroll here, make it connected to: 1.) iScroll on L204 so they both move vertically when any of them is scrolled, and 2.) iScroll on L214 so they both move horizontally when any of them is scrolled. -->
         <div class="wrapper">
-            <div class="row" ng-repeat="item in gridLeftSideHeaders">
+            <div class="row" ng-repeat="item in gridLeftSideHeaders track by $index">
                 <div class="cell day"
                 ng-class="{'weekend': rowData.isWeekend, 'today': rowData.isToday }"
-                ng-repeat="rowData in distributionChartData">
+                ng-repeat="rowData in distributionChartData track by $index">
                    {{ rowData[item] == 0 ? '' : rowData[item] }}
                 </div>
             </div>

@@ -16,6 +16,19 @@ angular.module('sntRover').service('RVReservationPackageSrv', ['$http', '$q', 'r
 		return deferred.promise;
 	};
 
+	this.applyAddon = function(params) {
+        var deferred = $q.defer();
+
+        var url =  '/api/reservations/update_package';
+
+        RVBaseWebSrvV2.postJSON(url, params).then(function(data) {
+            deferred.resolve(data);
+        }, function(errorMessage) {
+            deferred.reject(errorMessage);
+        });
+        return deferred.promise;
+    };
+
 	this.deleteAddonsFromReservation = function(dataToApi) {
 		var deferred = $q.defer();
 
@@ -78,6 +91,10 @@ angular.module('sntRover').service('RVReservationPackageSrv', ['$http', '$q', 'r
 		addonItem.is_allowance = item.is_allowance;
 		addonItem.is_consume_next_day = item.is_consume_next_day;
 		addonItem.post_day_of_the_week = item.post_day_of_the_week;
+		addonItem.post_day_of_the_month = item.post_day_of_the_month;
+		addonItem.frequency_type = item.frequency_type;
+		addonItem.frequency = item.frequency;
+
 		return addonItem;
 	};
 
@@ -88,8 +105,8 @@ angular.module('sntRover').service('RVReservationPackageSrv', ['$http', '$q', 'r
 			title: addon.name,
 			totalAmount: addon.amount, // Rate associated Addons have quantity ONE
 			price_per_piece: addon.amount,
-			amount_type: addon.amount_type.description,
-			post_type: addon.post_type.description,
+			amount_type: addon.amount_type,
+			post_type: addon.post_type,
 			is_inclusive: !!addon.is_inclusive,
 			is_rate_addon: true,
 			rate_currency: addon.rate_currency

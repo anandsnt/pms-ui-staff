@@ -5,7 +5,7 @@
         <strong class="h2 message">Choose Invoice Type</strong>
 
         <button type="button" id="inform-invoice" class="button blue" ng-click="clickedInformationalButton()"> <!-- Opens format-bill.html -->
-             Informational Invoice
+             Information Invoice
         </button>
 
         <button type="button" id="final-invoice" class="button orange" ng-show="!is_from_ar" ng-click="clickedFinalInvoiceButton()"> <!-- Opens final-bill.html -->
@@ -80,6 +80,7 @@
                 </select>
             </div>
         </div>
+
         <div class="entry full-width" ng-if="!shouldGenerateFinalInvoice">
             <label class="checkbox inline" ng-class="{checked: billFormat.isInformationalInvoice, disabled: billFormat.isInformationalInvoiceDisabled }">
                 <span class="icon-form icon-checkbox" ng-class="{checked: billFormat.isInformationalInvoice, disabled: billFormat.isInformationalInvoiceDisabled}">
