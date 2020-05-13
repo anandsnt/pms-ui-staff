@@ -1088,7 +1088,7 @@ sntRover.controller('RVbillCardController',
 	 	$scope.isRefreshOnBackToStaycard = true; // CICO-17739 Refresh view when returning from staycard after altering the payment method.
 	 	$scope.addNewPaymentModal();
 	 };
-	 $rootScope.$on('OPENPAYMENTMODEL', function() {
+	 $scope.$on('OPENPAYMENTMODEL', function() {
 	 	$scope.clickedAddUpdateCCButton();
 	 });
 	 /*
