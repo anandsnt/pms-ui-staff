@@ -842,6 +842,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             },
             dates,
             restrictionTypes,
+            activeHierarchyRestrictions: activeHierarchyRestrictions()
         };
 
         // dispatching to redux
@@ -1130,7 +1131,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                                             page: lastSelectedFilterValues[activeFilterIndex].allRate.currentPage
                                        },
                 dates,
-                restrictionTypes
+                restrictionTypes,
+                activeHierarchyRestrictions: activeHierarchyRestrictions()
             };
 
             // we will attach scrollTo if attached filter from somewhere
@@ -1461,6 +1463,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 callbacksFromAngular: getTheCallbacksFromAngularToReact(),
                 dates,
                 restrictionTypes,
+                activeHierarchyRestrictions: activeHierarchyRestrictions()
             };
 
             // dispatching to redux
@@ -2220,7 +2223,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 businessDate: tzIndependentDate($rootScope.businessDate),
                 callbacksFromAngular: getTheCallbacksFromAngularToReact(),
                 restrictionTypes,
-                dates
+                dates,
+                activeHierarchyRestrictions: activeHierarchyRestrictions()
             });
         };
 
@@ -2551,7 +2555,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             $scope.viewingScreen = RM_RX_CONST.GRID_VIEW;
         };
 
-        var activerHierarchyRestrictions = () => {
+        var activeHierarchyRestrictions = () => {
             return ((
                 $scope.hierarchyRestrictions.houseEnabled && 1
             ) + (
@@ -2569,8 +2573,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             isHierarchyRoomTypeRestrictionEnabled: $scope.hierarchyRestrictions.roomTypeEnabled,
             isHierarchyRateTypeRestrictionEnabled: $scope.hierarchyRestrictions.rateTypeEnabled,
             isHierarchyRateRestrictionEnabled: $scope.hierarchyRestrictions.rateEnabled,
-            hierarchyRestrictionClass: (activerHierarchyRestrictions() > 1) ? 'calendar-rate-table-hierarchy-' + activerHierarchyRestrictions() : '',
-            frozenPanelClosed: true
         };
 
         const store = configureStore(initialState);
