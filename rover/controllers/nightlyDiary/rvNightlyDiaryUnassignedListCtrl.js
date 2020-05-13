@@ -115,7 +115,9 @@ angular.module('sntRover')
                         selectUnassignedListItem(reservationItem);
                     }
                     else {
-                        unSelectUnassignedListItem();
+                        $scope.diaryData.selectedUnassignedReservation = {};
+                        $scope.diaryData.isReservationSelected = false;
+                        $scope.$emit('CANCEL_RESERVATION_EDITING');
                     }
                 }
             },
