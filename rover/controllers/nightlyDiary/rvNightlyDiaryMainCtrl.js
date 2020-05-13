@@ -1095,7 +1095,7 @@ angular.module('sntRover')
                         // Logic for select unassigned reservation.
                         $timeout(function () {
                             $scope.diaryData.rightFilter = 'UNASSIGNED_RESERVATION';
-                            $scope.$broadcast('SELECT_UNASSIGNED_RESERVATION', reservation.reservation_id);
+                            $scope.$broadcast('SELECT_UNASSIGNED_RESERVATION', reservation.reservation_id, reservation.arrival_date);
                         }, 500);
                     }
                     else {
