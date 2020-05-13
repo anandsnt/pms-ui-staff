@@ -768,7 +768,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             OVERRIDE_AMOUNT: 'OVERRIDE_AMOUNT',
             RATE_AMOUNT: 'RATE_AMOUNT',
             RESERVATION: 'RESERVATION',
-            TYPE: 'TYPE'
+            TYPE: 'TYPE',
+            GUEST_USER: 'GUEST_USER'
         };
         
         var groupByFields = {
