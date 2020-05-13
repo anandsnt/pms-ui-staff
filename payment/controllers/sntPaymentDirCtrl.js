@@ -25,6 +25,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 referenceText: $scope.referenceText,
                 amount: 0,
                 paymentCurrencyAmount: 0,
+                isPenalty:false,
                 isRateSuppressed: false,
                 isEditable: false,
                 addToGuestCard: false,
@@ -917,6 +918,10 @@ angular.module('sntPay').controller('sntPaymentController',
                     params.postData.payment_type_id = paymentTypeId;
                 }
 
+                if ($scope.isPenalty) {
+                    params.postData.is_cancellation_penalty = true;
+                }
+
 
                 sntActivity.start('SUBMIT_PAYMENT');
 
@@ -1079,7 +1084,11 @@ angular.module('sntPay').controller('sntPaymentController',
                 selectedPaymentType = _.find($scope.paymentTypes, {
                     name: $scope.selectedPaymentType
                 });
-                $scope.$emit('PAYMENT_TYPE_CHANGED', $scope.selectedPaymentType);
+
+                if ($scope.selectedPaymentType !== '') {
+                    $scope.$emit('PAYMENT_TYPE_CHANGED', $scope.selectedPaymentType);
+                }
+                // $scope.$emit('PAYMENT_TYPE_CHANGED', $scope.selectedPaymentType);
 
                 // -- CICO-33971 :: Direct Bill Payment --
                 if ($scope.selectedPaymentType === 'DB') {
@@ -1591,6 +1600,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 $scope.payment.amount = $scope.amount || 0;
                 $scope.payment.paymentCurrencyAmount = $scope.paymentCurrencyAmount || 0;
                 $scope.payment.isRateSuppressed = $scope.isRateSuppressed || false;
+                $scope.payment.isPenalty = $scope.isPenalty || false;
                 $scope.billNumber = $scope.billNumber || 1;
                 $scope.payment.linkedCreditCards = $scope.linkedCreditCards || [];
 

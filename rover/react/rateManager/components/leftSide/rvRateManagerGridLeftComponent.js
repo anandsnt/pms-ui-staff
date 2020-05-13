@@ -1,14 +1,15 @@
-const RateManagerGridLeftSideComponent = ({expandedClass, isHierarchyHouseRestrictionEnabled}) => ( 
-	<div className={'pinnedLeft '+ expandedClass}>
+const RateManagerGridLeftSideComponent = ({hierarchyCount, hierarchyClass, panelToggleClass}) => ( 
+	<div className={'pinnedLeft ' + panelToggleClass + hierarchyClass}>
 		<RateManagerGridLeftSideHeadButtonContainer/>
-		 <div className='pinnedLeft-select'>
-		 	{ 	isHierarchyHouseRestrictionEnabled &&
-		 	   	<RateManagerHierarchyRestrictionsContainer/>
-		 	}
-		 	{ 	!isHierarchyHouseRestrictionEnabled &&
-	        	<RateManagerGridLeftFirstRowContainer/>
-	    	}
-	    </div>
+		{
+			(hierarchyCount !== 0) &&
+			<RateManagerGridLeftHierarchyHeaderContainer/>
+		}
+		{	(hierarchyCount === 0) &&
+			<div className='pinnedLeft-select last'>
+				<RateManagerGridLeftFirstRowContainer/>
+			</div>
+		}
 		<div className='pinnedLeft-list'>
 			<div className='wrapper'>
 				<table className='rate-calendar'>

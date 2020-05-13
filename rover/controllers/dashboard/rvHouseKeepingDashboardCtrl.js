@@ -156,11 +156,21 @@ sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope'
 
   $scope.toggleFilterView = function() {
     $scope.dashboardFilter.showFilters = !$scope.dashboardFilter.showFilters;
+    // reset filters if was not applied
+    if (rvAnalyticsSrv.selectedRoomType !== $scope.dashboardFilter.selectedRoomType) {
+      $scope.dashboardFilter.selectedRoomType = rvAnalyticsSrv.selectedRoomType;
+    }
   };
 
-  $scope.$on('RESET_CHART_FILTERS', function() {
+  var resetHKFilters = function () {
     $scope.dashboardFilter.selectedRoomType = "";
     rvAnalyticsSrv.selectedRoomType = "";
-  });
+  };
+
+  $scope.$on('RESET_CHART_FILTERS', resetHKFilters);
+
+  $scope.clearAllFilters = function () {
+    $scope.dashboardFilter.selectedRoomType = "";
+  };
 
 }]);

@@ -13,7 +13,7 @@
                 <span ng-bind-html="printData.card_details.address"></span>
                 <br ng-if = "printData.invoice_date"/>
                 <br ng-if = "printData.invoice_date"/>
-                <span ng-if = "printData.invoice_date"><strong>{{printData.translation.invoice_date}}:</strong> {{printData.invoice_date}}</span>                
+                <span ng-if = "printData.invoice_date"><strong>{{printData.translation.invoice_date}}:</strong> {{printData.invoice_date}}</span>
                 <br ng-if = "!printData.is_informational_invoice && (!printData.is_print_ar_invoice_number_enabled || printData.is_manual_balance) && printData.invoice_number" />
                 <span ng-if = "!printData.is_informational_invoice && (!printData.is_print_ar_invoice_number_enabled || printData.is_manual_balance) && printData.invoice_number"><strong>{{printData.translation.invoice_number}}:</strong> {{printData.invoice_number}}</span>
                 <br ng-if = "!printData.is_informational_invoice && !printData.is_print_ar_invoice_number_enabled && printData.folio_number && printData.is_print_folio_enabled"/>
@@ -27,6 +27,8 @@
         </div>
         <div class="info-right">
             <br /><br />
+            <span ng-if = "printData.account_name"><strong>{{printData.translation.account_name}}:</strong> {{printData.account_name}}</span>
+            <br ng-if = "printData.arrival_date"/>
             <span ng-if = "printData.arrival_date"><strong>{{printData.translation.arrival_date}}:</strong> {{printData.arrival_date}}</span>
             <br ng-if = "printData.departure_date"/>
             <span ng-if = "printData.departure_date"><strong>{{printData.translation.departure_date}}:</strong> {{printData.departure_date}}</span>
@@ -49,7 +51,7 @@
     <div class="invoice-header" ng-if="printData.custom_text_header">
         <!-- {header-text} -->
     </div>
-    
+
     <div class="invoice-body">
         <br /><br /><br />
         <table class="invoice-details">
@@ -232,7 +234,8 @@
             </tr>
         </tbody>           
     </table>
-
+    <div class="invoice-footer text-center" ng-bind-html="trustAsHtml(printData.ar_billing_text)">
+    </div>
     <div class="invoice-footer" ng-if="printData.custom_text_footer">
         <p>{{printData.custom_text_footer}}</p>
     </div>

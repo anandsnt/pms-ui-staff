@@ -216,6 +216,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                     'lake-house',
                     'first-v2',
                     'waldhotel-davos',
+                    'autocamp',
                     'margaritaville',
                     'hotel-171',
                     'beachside',

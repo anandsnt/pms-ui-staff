@@ -124,5 +124,10 @@ angular.module('reportsModule')
         "INCLUDE_LONG_STAYS": "include_long_stays",
         "INCLUDE_DAYUSE": "include_day_use",
         "SHOW_UPSELL_ONLY": 'show_upsell_only',
-        "ENTITY_NAME": "entity_name"
+        "ENTITY_NAME": "entity_name",
+        "WORK_TYPE": "work_type_ids",
+        "FRONT_OFFICE_STATUS": "fo_status_ids",
+        "HOUSEKEEPING_STATUS": "hk_status_ids",
+        "HK_RESERVATION_STATUSES": "hk_reservation_statuses",
+        "HK_FRONT_OFFICE_STATUSES": "hk_fo_statuses"
     });

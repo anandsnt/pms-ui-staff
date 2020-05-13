@@ -1,7 +1,74 @@
 angular.module('sntRover').service('rvRateManagerUtilitySrv', [
     function() {
 
-		var service = this;
+        var service = this;
+        
+        service.restrictionColorAndIconMapping = [
+            {
+                title: 'CLOSED',
+                iconClass: 'icon-cross',
+                bgClass: 'bg-red',
+                key: 'closed',
+                type: 'boolean',
+                value: null
+            },
+            {
+                title: 'CLOSED TO ARRIVAL',
+                iconClass: 'icon-block',
+                bgClass: 'bg-red',
+                key: 'closed_arrival',
+                type: 'boolean',
+                value: null
+            },
+            {
+                title: 'CLOSED TO DEPARTURE',
+                iconClass: '',
+                bgClass: 'bg-red',
+                key: 'closed_departure',
+                type: 'boolean',
+                value: null
+            },
+            {
+                title: 'MIN LENGTH OF STAY',
+                iconClass: '',
+                bgClass: 'bg-blue',
+                key: 'min_length_of_stay',
+                type: 'number',
+                value: null
+            },
+            {
+                title: 'MAX LENGTH OF STAY',
+                iconClass: '',
+                bgClass: 'bg-blue-dark',
+                key: 'max_length_of_stay',
+                type: 'number',
+                value: null
+            },
+            {
+                title: 'MIN STAY THROUGH',
+                iconClass: '',
+                bgClass: 'bg-violet',
+                key: 'min_stay_through',
+                type: 'number',
+                value: null
+            },
+            {
+                title: 'MIN ADVANCE BOOKING',
+                iconClass: '',
+                bgClass: 'bg-green',
+                key: 'min_advanced_booking',
+                type: 'number',
+                value: null
+            },
+            {
+                title: 'MAX ADVANCE BOOKING',
+                iconClass: '',
+                bgClass: 'bg-orange',
+                key: 'max_advanced_booking',
+                type: 'number',
+                value: null
+            }
+        ];
 
         // Mapping of restriction key to code/id.
         service.restrictionKeyToCodeMapping = {
@@ -53,18 +120,16 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
                 value = input[key],
                 obj = {};
 
-                if (typeof(value) === "boolean" && value) {
+                if (value) {
                     obj.status = 'ON';
                     obj.restriction_type_id = service.restrictionKeyToCodeMapping[key][0];
                     obj.is_on_rate = false;
-                    obj.days = null;
-                    output.push(obj);
-                }
-                else if (typeof(value) === "number") {
-                    obj.status = 'ON';
-                    obj.restriction_type_id = service.restrictionKeyToCodeMapping[key][0];
-                    obj.days = value;
-                    obj.is_on_rate = false;
+                    if (typeof(value) === "boolean") {
+                        obj.days = null;
+                    }
+                    else if (typeof(value) === "number") {
+                        obj.days = value;
+                    }
                     output.push(obj);
                 }
             }
@@ -129,6 +194,14 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
 
                 if (params.details[1] && Object.keys(params.details[1].weekdays).length > 0) {
                     newPostApiParams.weekdays = service.convertWeekDaysToNewApiFormat(params.details[1].weekdays);
+                }
+
+                if (params.rate_type_ids) {
+                    newPostApiParams.rate_type_ids = params.rate_type_ids;
+                }
+
+                if (params.room_type_id) {
+                    newPostApiParams.room_type_ids = [params.room_type_id];
                 }
             }
             return newPostApiParams;

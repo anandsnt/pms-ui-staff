@@ -171,7 +171,7 @@ angular.module('sntRover')
                         source[i].title.toLowerCase() : source[i].report.description.toLowerCase();
 
                     source[i].filteredOut = title.indexOf(query) === -1;
-                    if (!$rootScope.isFolioTaxEnabled && source[i].method === "folio_tax_report") {
+                    if ( (!$rootScope.isFolioTaxEnabled && source[i].method === "folio_tax_report") || source[i].method === 'room_status') {
                         source[i].filteredOut = true;
                     }
                 }

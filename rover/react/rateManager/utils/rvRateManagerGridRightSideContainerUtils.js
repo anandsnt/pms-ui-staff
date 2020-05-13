@@ -39,7 +39,6 @@ const rvRateManagerRightSideContainerUtils = function() {
 	 * @return {array}
 	 */
 	self.convertDataForRestrictionListing = (listingData, restrictionTypes) => {
-
 		// adding the css class and all stuff for restriction types
 		restrictionTypes = restrictionTypes.map((restrictionType) => ({
 				...restrictionType,
@@ -74,5 +73,5 @@ const rvRateManagerRightSideContainerUtils = function() {
 	return {
 		convertDateListForRestrictionView: self.convertDateListForRestrictionView,
 		convertDataForRestrictionListing: self.convertDataForRestrictionListing
-	}
-}
+	};
+};

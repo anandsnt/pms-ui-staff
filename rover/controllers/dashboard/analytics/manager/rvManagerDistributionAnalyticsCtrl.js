@@ -34,7 +34,7 @@ angular.module('sntRover')
 			/** ****************************** DRAW CHART STARTS HERE ********************************************/
 
 			var drawDistributionChart = function(chartData) {
-				$scope.dashboardFilter.selectedAnalyticsMenu = 'DISTRIBUTION';
+				$scope.dashboardFilter.showFilters = false;
 				chartData = _.sortBy(chartData, function(data) {
 					return data.date;
 				});
@@ -308,6 +308,8 @@ angular.module('sntRover')
 
 
 			var fetchDistributionChartData = function() {
+				$scope.dashboardFilter.selectedAnalyticsMenu = 'DISTRIBUTION';
+				$scope.$emit('FETCH_SAVED_ANALYTICS_FILTERS');
 				$scope.dashboardFilter.displayMode = 'CHART_DETAILS';
 				$('base').attr('href', initialBaseHrefValue);
 
@@ -359,11 +361,6 @@ angular.module('sntRover')
 			});
 
 			$scope.$on('CHART_TYPE_CHANGED', function(e, data) {
-				setPageHeading();
-				redrawDistributionChartIfNeeded();
-			});
-
-			$scope.$on('CHART_AGGGREGATION_CHANGED', function() {
 				setPageHeading();
 				redrawDistributionChartIfNeeded();
 			});
@@ -484,6 +481,9 @@ angular.module('sntRover')
 						});
 				}, 1000);
 			};
+			
+			setGridScrollers();
+
 			var refreshGridScrollers = function() {
 				$scope.refreshScroller(GRID_HEADER_HORIZONTAL_SCROLL);
 				$scope.refreshScroller(GRID_VIEW_DUAL_SCROLL);
@@ -526,6 +526,10 @@ angular.module('sntRover')
 						}
 					}
 				});
+				//  sort keys by alphabetically
+				$scope.gridLeftSideHeaders = _.sortBy($scope.gridLeftSideHeaders, function(sideHeader) {
+					return sideHeader
+				});
 
 				var today = $rootScope.businessDate;
 
@@ -547,12 +551,40 @@ angular.module('sntRover')
 
 				$scope.distributionChartData = distributionChartData;
 				$scope.dashboardFilter.showFilters = false;
-				setGridScrollers();
 				$timeout(function() {
 					refreshGridScrollers();
-				}, 1000);
+				}, 100);
 			};
 
 			$scope.$on('DISTRUBUTION_CHART_CHANGED', toggleDistributionChartGridView);
+
+			$scope.$on('EXPORT_AS_CSV', function(e, shallowDecodedParams) {
+				var params = {
+					start_date: $scope.dashboardFilter.fromDate,
+					end_date: $scope.dashboardFilter.toDate,
+					chart_type: $scope.dashboardFilter.chartType,
+					shallowDecodedParams: shallowDecodedParams,
+					group_by: $scope.dashboardFilter.aggType
+				};
+
+				var options = {
+					params: params,
+					successCallBack: function(csvData) {
+						$('base').attr('href', '#');
+						var hiddenElement = document.createElement('a');
+
+						hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvData);
+						hiddenElement.target = '_blank';
+						hiddenElement.download = 'distribution__' + params.chart_type + '__' + params.start_date + '__to__' + params.end_date + '.csv';
+						hiddenElement.click();
+					},
+					failureCallBack: function() {
+						$('base').attr('href', '#')
+					}
+				};
+                
+				$('base').attr('href', initialBaseHrefValue);
+				$scope.callAPI(rvManagersAnalyticsSrv.exportAsCsv, options);
+			});
 		}
 	]);
