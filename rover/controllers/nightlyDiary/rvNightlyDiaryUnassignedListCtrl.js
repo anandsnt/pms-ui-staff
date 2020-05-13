@@ -114,6 +114,10 @@ angular.module('sntRover')
                     if (reservationItem) {
                         selectUnassignedListItem(reservationItem);
                     }
+                    else {
+                        $scope.diaryData.selectedUnassignedReservation = {};
+                        $scope.diaryData.isReservationSelected = false;
+                    }
                 }
             },
             postData = {
