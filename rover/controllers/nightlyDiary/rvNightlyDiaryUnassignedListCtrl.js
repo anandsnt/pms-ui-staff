@@ -97,7 +97,7 @@ angular.module('sntRover')
 
         // Method to fetch Unassigned reservations list.
         // reservationId - id which needed to be selected by default.
-        var fetchUnassignedReservationList = function ( reservationId ) {
+        var fetchUnassignedReservationList = function ( reservationId, arrivalDate ) {
             var successCallBackFetchList = function (data) {
                 $scope.errorMessage = '';
                 $scope.diaryData.unassignedReservationList = data;
@@ -121,7 +121,7 @@ angular.module('sntRover')
                 }
             },
             postData = {
-                'date': $scope.diaryData.arrivalDate
+                'date': arrivalDate ? arrivalDate : $scope.diaryData.arrivalDate
             },
             options = {
                 params: postData,
@@ -181,8 +181,8 @@ angular.module('sntRover')
             return (screen.width >= 1600 || $scope.diaryData.rightFilter === 'UNASSIGNED_RESERVATION') ? 'visible' : '';
         };
         // CICO-73889 : Handle unassigned reservation selection.
-        $scope.addListener('SELECT_UNASSIGNED_RESERVATION', function(event, reservationId) {
-            fetchUnassignedReservationList( reservationId );
+        $scope.addListener('SELECT_UNASSIGNED_RESERVATION', function(event, reservationId, arrivalDate) {
+            fetchUnassignedReservationList( reservationId, arrivalDate );
         });
 
         $scope.addListener('CANCEL_UNASSIGNED_RESERVATION', function() {
