@@ -22,8 +22,7 @@ module.exports = function(gulp, $, options) {
             ]);
 
             var compilationTasks = [
-                    'rover-asset-prod-precompile',  
-                    'zest-asset-prod-precompile',
+                    'rover-asset-prod-precompile',
                     'login-asset-prod-precompile',
                     'station-login-asset-prod-precompile',
                     'payment-asset-prod-precompile',
