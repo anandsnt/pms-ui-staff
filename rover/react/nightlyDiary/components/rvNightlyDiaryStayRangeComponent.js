@@ -86,6 +86,7 @@ const NightlyDiaryStayRangeComponent = createClass ({
     mouseMove(e) {
         e.preventDefault ();
         e.stopPropagation ();
+        e = this.isTouchEnabled ? e.changedTouches[0] : e;
         let state = this.state,
             diff = e.clientX - this.state.mouseLastPositionX;
 

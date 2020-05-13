@@ -2881,6 +2881,42 @@
                 }
             }
 
+            &.invoice-tax-reports {
+                td {
+                    table {
+                        table-layout: fixed;
+                        thead {
+                            td {
+                                border-bottom: 1px solid rgba(0,0,0,0.1);
+                            }
+                        }
+                    }
+
+                    &.vat-groupings {
+                        padding-top: 0;
+                        width: 300px;
+
+                        td {
+                            &:first-child {
+                                width: 60px;
+                            }
+                        }
+                    }
+                
+                }
+
+                tr {
+                    &.totals {
+                        table {
+                            td {
+                                background: none;
+                                font-weight: 600;
+                            }
+                        }
+                    }
+                }
+            }
+
         }
 
         &.with-graphs {
@@ -4226,6 +4262,10 @@
                 .size(40px, auto);
                 -webkit-filter: grayscale(100%);
                 filter: grayscale(100%);
+
+                &.qr-code {
+                    .size(140px, auto);
+                }
             }
 
             &.envelope {
@@ -4242,6 +4282,12 @@
                     font-size:18pt;
                     font-weight: 600;
                     line-height: 40px;
+                }
+
+                .qr-code {
+                    position: absolute;
+                    top: 35x;
+                    right: -10px;
                 }
             }
         }
@@ -4422,6 +4468,45 @@
                         }
                     }
                 }
+
+                &.proforma-details {
+                    table-layout: fixed;
+                    
+                    td,
+                    th {
+                        &.amount {
+                            width: 50pt;
+                        }
+
+                        &.qty { width: 40pt; }
+                        &.date { width: 50pt; }
+                        &.occ {width: 60pt; }
+
+                        
+                    }
+
+                    tr {
+                        &.first {
+                            td {
+                                padding-top: 5pt;
+                            }
+                        }
+                        &.last {
+                            td {
+                                border-bottom: 1px solid @grey2;
+                                padding-bottom: 5pt;
+                            }
+                        }
+
+                        td {
+                            &[rowspan] {
+                                border-bottom: 1px solid @grey2;
+                                page-break-inside: avoid;
+                                padding-bottom: 5pt;
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -4438,8 +4523,16 @@
     .registration-card {
         margin: 1cm 2cm 0;
 
-        &.registration-card-2 {
+        &.registration-card-2,
+        &.registration-card-3 {
             margin: 0.5cm;
+        }
+
+        &.registration-card-3 {
+            .value {
+                display: block;
+                clear: both;
+            }
         }
 
         table {
@@ -4459,6 +4552,18 @@
                     padding-bottom: 10pt;
                 }
             }
+
+            &.fixed {
+                table-layout: fixed;
+            }
+        }
+
+        .align-right {
+            text-align: right;
+        }
+
+        .float-left {
+            .pull-left
         }
 
         .hotel-guest-info {
@@ -4539,6 +4644,13 @@
                 height: 50pt;
                 font-weight: normal;
                 text-transform: none;
+
+                span {
+                    display: block;
+                    font-weight: 400;
+                    font-size: 11pt;
+                    margin-top: 5pt;
+                }
             }
 
             .details {
@@ -4666,6 +4778,38 @@
                     }
                 }
             }
+
+            &:not(.customized) {
+                td {
+                    &.inner-table {
+                        padding: 0;
+
+                        td {
+                            border-top: none;
+                            border-left: none;
+                            border-bottom: 2pt solid #ebebeb;
+                            border-right: 2pt solid #ebebeb;
+                            height: 50pt;
+
+                            span {
+                                &.pull-left,
+                                &.pull-right {
+                                    margin: 0;
+                                }
+                            }
+
+                            &:last-child {
+                                border-right: none;
+                            }
+                        }
+
+                        table {
+                            margin: 0;
+                            height: 100%;
+                        }
+                    }
+                }
+            }
         }
 
         .terms-signature {
@@ -4685,12 +4829,31 @@
                 width: 50%;
             }
         }
+
+        .registration-card-text-columns {
+            #flexbox > .parent(row nowrap, '', '', '');
+            page-break-inside: avoid;
+
+            .column {
+                width: 100%;
+            }
+
+            &.columns-2 {
+                .column {
+                    width: 50%;
+                }
+            }
+        }
     }
 
     .converted-currency {
         display: block;
         color: @grey3;
         margin-top: 3px;
+
+        &.smaller {
+            font-size: 0.875em;
+        }
     }
 
 /* Rooming List             ==============================*/

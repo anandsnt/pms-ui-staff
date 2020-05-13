@@ -1,5 +1,5 @@
 <section ng-hide="paymentAttempted && !isPaymentFailure">
-    <div class="entry full-width" ng-class="{'amount': feeData.showFee}">
+    <div class="entry amount" ng-class="{'amount': feeData.showFee}">
 
         <label>Amount to pay (<span>{{currencySymbol}}</span>)</label>
 
@@ -32,6 +32,12 @@
                class="fee"/>
 
         <span ng-show="feeData.showFee" class="delimiter">fee</span>
+
+        <div class="select" ng-hide="selectedPaymentType === 'CC' ">
+            <select ng-options="paymentCurrency.id as paymentCurrency.symbol for paymentCurrency in paymentCurrencyList" ng-change="onPaymentCurrencyChange()" ng-model="payment.selectedPaymentCurrencyId">
+                <option style="display:none" value="">Select Currency</option>
+            </select>
+        </div>
 
         <span ng-show="feeData.showFee" class="total">
           Total:
@@ -73,8 +79,9 @@
                         </span>
         </li>
         <li ng-if="!feeData.showFee">
-            Amount paid: <span class="value">{{currencySymbol}}{{payment.amount}}
-                        </span>
+           Amount paid:
+           <span class="value" ng-bind-html="payment.amount | sntCurrency:this">
+           </span>
         </li>
     </ul>
 </div>

@@ -1,10 +1,12 @@
 sntRover.controller('RVReservationDepositController',
 	['$rootScope', '$scope', '$stateParams', 'RVPaymentSrv', '$timeout',
-	'RVReservationCardSrv', '$state', '$filter', 'ngDialog', 'rvPermissionSrv',
+	'RVReservationCardSrv', '$state', '$filter', 'ngDialog', 'rvPermissionSrv', 'RVAutomaticEmailSrv',
 	function($rootScope, $scope, $stateParams, RVPaymentSrv, $timeout,
-		RVReservationCardSrv, $state, $filter, ngDialog, rvPermissionSrv) {
+		RVReservationCardSrv, $state, $filter, ngDialog, rvPermissionSrv, RVAutomaticEmailSrv) {
 
 		BaseCtrl.call(this, $scope);
+
+		SharedMethodsBaseCtrl.call (this, $scope, $rootScope, RVAutomaticEmailSrv, ngDialog);
 		// adding a flag to be set after some timeout to remove flickering action in iPad
 		$scope.pageloadingOver = false;
 		$timeout(function() {
@@ -58,11 +60,14 @@ sntRover.controller('RVReservationDepositController',
 
 		$scope.reservationData = {};
 		$scope.reservationData.depositAmount = "";
+		$scope.reservationData.depositPaymentAmount = "";
 		$scope.depositPolicyName = "";
 		$scope.reservationData.referanceText = "";
 		$scope.isDepositEditable = !!$scope.depositDetails.deposit_policy.allow_deposit_edit;
+		$scope.rateCurrency = $scope.depositDetails.deposit_policy.rate_currency;
 		$scope.depositPolicyName = $scope.depositDetails.deposit_policy.description;
 		$scope.reservationData.depositAmount = parseFloat($scope.depositDetails.deposit_amount).toFixed(2);
+		$scope.reservationData.depositPaymentAmount = parseFloat($scope.depositDetails.deposit_payment_amount).toFixed(2);
 
 		$scope.closeDialog = function() {
 			$scope.$emit("UPDATE_STAY_CARD_DEPOSIT_FLAG", false);
@@ -520,7 +525,7 @@ sntRover.controller('RVReservationDepositController',
 			$scope.$parent.reservationData.reservation_card.payment_details.card_number = angular.copy($scope.depositData.cardNumber);
 			$scope.$parent.reservationData.reservation_card.payment_details.card_expiry = angular.copy($scope.depositData.expiry_date);
 			$scope.$parent.reservationData.reservation_card.payment_details.card_type_image = 'images/' + angular.copy($scope.depositData.card_type.toLowerCase()) + '.png';
-		}
+		}		
 
 		$rootScope.$broadcast("UPDATE_DEPOSIT_BALANCE", data);
 		// Update reservation type
@@ -535,6 +540,10 @@ sntRover.controller('RVReservationDepositController',
 		$scope.isLoading =  false;
 
 	};
+
+	$scope.$on("AUTO_TRIGGER_EMAIL_AFTER_PAYMENT", function(e, data) {
+		$scope.sendAutomaticEmails(data);
+	});
 
 
 	  /*

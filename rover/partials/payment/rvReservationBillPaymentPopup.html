@@ -45,7 +45,11 @@
             <div class="feedback no-top-border"
                  style="margin-top: 0; padding-top: 0;"
                  ng-show="paymentDetails.paymentSuccess && (!splitBillEnabled || paymentDetails.authorizationCode)">
-                <div class="notice success" ng-if="!splitBillEnabled">Amount paid!</div>
+                <div class="notice success" ng-if="!splitBillEnabled">Amount paid! <br />
+                    <span ng-if="paymentDetails.selectedPaymentType === 'CA' && hasPaymentRounding">
+                        Final invoiced amount is subject to rounding!!
+                    </span>
+                </div>
                 <ul class="transaction" style="width: 80%;">
                     <li ng-show="!!paymentDetails.authorizationCode">
                         Your Authorize code is: <span class="auth">{{paymentDetails.authorizationCode}}</span>
@@ -59,10 +63,11 @@
                         </span>
                     </li>
                     <li ng-if="!splitBillEnabled && !paymentDetails.feePaid">
-                        Amount paid:
-                        <span class="value">
-                        <i class="currency">{{currencySymbol}}</i>{{paymentDetails.amount}}</span>
+                       Amount paid:
+                       <span class="value" ng-bind-html="paymentDetails.amount | sntCurrency:this">
+                       </span>
                     </li>
+                    
                 </ul>
             </div>
             <!-- Split payment -->
@@ -99,7 +104,6 @@
                     5
                 </label>
             </div>
-
             <snt-payment
                     hotel-config="hotelPaymentConfig"
                     workstation-id="{{workstation_id}}"
@@ -110,6 +114,7 @@
                     selected-payment-type="defaultPaymentTypeOfBill"
                     selected-c-c="reservationBillData.bills[currentActiveBill || 0].selectedCC"
                     amount='renderData.defaultPaymentAmount'
+                    payment-currency-amount='renderData.defaultPaymentCurrencyAmount'
                     action-type="PAYMENT_RESERVATION_BILL"
                     deposit-policy-name="{{depositPolicyName}}"
                     is-editable='isDepositEditable'
@@ -120,10 +125,10 @@
                     last-name="{{guestCardData.contactInfo.last_name}}"
                     split-bill-enabled="splitBillEnabled"
                     num-splits="splitePaymentDetail.totalNoOfsplits"
-                    completed-split-payments="splitePaymentDetail.completedSplitPayments"
+                    completed-split-payments="splitePaymentDetail.completedSplitPayments" 
+                    payment-currency-list="paymentCurrencyList" 
                     ng-show="!errorOccured && !depositPaidSuccesFully">
             </snt-payment>
-
             <div class="actions" ng-hide="!depositPaidSuccesFully">
                 <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="closeDialog()"
                         translate>

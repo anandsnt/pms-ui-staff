@@ -3,7 +3,8 @@ angular.module('sntRover').service('RVreportsSubSrv', [
     'rvBaseWebSrvV2',
     'rvReportsCache',
     'RVReportMsgsConst',
-    function($q, rvBaseWebSrvV2, reportsCache, RVReportMsgsConst) {
+    'RVReportNamesConst',
+    function($q, rvBaseWebSrvV2, reportsCache, RVReportMsgsConst, reportNames) {
         var service = {};
 
         var store = {};
@@ -31,9 +32,34 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             var results = angular.copy(service.cachedInboxReport).results,
                 start = (params.page - 1) * params.per_page,
                 end = start + params.per_page,
+                hasDateFilters = false,
+                paginatedResult,
+                reportName = params.reportTitle,
+                fromDate,
+                toDate;
+
+                if (reportName === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ||
+                    reportName === reportNames['DAILY_PRODUCTION_DEMO'] ||
+                    reportName === reportNames['DAILY_PRODUCTION_RATE']) {
+                    hasDateFilters = true;
+                }
+                if (params.fiterFromDate && params.filterToDate && hasDateFilters) {
+                    fromDate = new Date(params.fiterFromDate);
+                    toDate = new Date(params.filterToDate);
+                    var itemDate;
+                
+                    results = Object.keys(results).reduce(function (obj, k) {
+                        itemDate = new Date(k);
+                
+                        if (itemDate >= fromDate && itemDate <= toDate) {
+                            obj[k] = results[k];
+                        }
+                        return obj;
+                    }, {});
+                }
                 paginatedResult = _.isArray(results) ? results.slice(start, end)
                     : results;
-
+            
             return paginatedResult;
         };
         /**
@@ -47,7 +73,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 toatalCount = response.total_count,
                 lastPage = Math.ceil(toatalCount / params.per_page);
 
-            return params.page === lastPage ? response.results_total_row : null;
+            return (toatalCount < params.per_page || params.page === lastPage ) ? response.results_total_row : null;
         };
         /**
          * Abstract the response based on params
@@ -243,12 +269,13 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
-        service.fetchChargeNAddonGroups = function() {
+        service.fetchChargeNAddonGroups = function(reportParams) {
             return callApi({
                 name: 'chargeNAddonGroups',
                 method: 'getJSON',
                 url: 'api/charge_groups',
-                resKey: 'results'
+                resKey: 'results',
+                params: reportParams
             });
         };
 
@@ -272,38 +299,62 @@ angular.module('sntRover').service('RVreportsSubSrv', [
         };     
 
 
-        service.fetchMarkets = function(params) {
+        service.fetchMarkets = function(shouldIncludeInactive) {
+            var url = '/api/market_segments?is_active=true';
+
+            if (shouldIncludeInactive) {
+                url = '/api/market_segments';
+            }
+
             return callApi({
                 name: 'markets',
                 method: 'getJSON',
-                url: '/api/market_segments?is_active=true',
+                url: url,
                 resKey: 'markets'
             });
         };
 
-        service.fetchSegments = function(params) {
+        service.fetchSegments = function(shouldIncludeInactive) {
+            var url = '/api/segments?is_active=true';
+
+            if (shouldIncludeInactive) {
+                url = '/api/segments';
+            }
+
             return callApi({
                 name: 'segments',
                 method: 'getJSON',
-                url: '/api/segments?is_active=true',
+                url: url,
                 resKey: 'segments'
             });
         };
 
-        service.fetchSources = function() {
+        service.fetchSources = function(shouldIncludeInactive) {
+            var url = 'api/sources?is_active=true';
+
+            if (shouldIncludeInactive) {
+                url = 'api/sources';
+            }
+
             return callApi({
                 name: 'sources',
                 method: 'getJSON',
-                url: 'api/sources?is_active=true',
+                url: url,
                 resKey: 'sources'
             });
         };
 
-        service.fetchBookingOrigins = function() {
+        service.fetchBookingOrigins = function(shouldIncludeInactive) {
+            var url = 'api/booking_origins?is_active=true';
+
+            if (shouldIncludeInactive) {
+                url = 'api/booking_origins';
+            }
+
             return callApi({
                 name: 'bookingOrigins',
                 method: 'getJSON',
-                url: 'api/booking_origins?is_active=true',
+                url: url,
                 resKey: 'booking_origins'
             });
         };
@@ -458,12 +509,21 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
         service.fetchSchedules = function(exportOnly) {
-            var url = exportOnly ? 'admin/export_schedules.json?export_only=true' : 'admin/export_schedules.json';
+            var url = 'admin/export_schedules.json',
+                params = {
+                    page: 1,
+                    per_page: 9999
+                };
+
+            if (exportOnly) {
+                params.export_only = true;
+            }
 
             return callApi({
                 method: 'getJSON',
                 url: url,
-                resKey: 'results'
+                resKey: 'results',
+                params: params
             });
         };
         service.fetchOneSchedule = function(params) {
@@ -577,6 +637,15 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
+        service.fetchLanguages = function() {
+            return callApi({
+                name: 'languages',
+                method: 'getJSON',
+                url: 'api/guest_languages',
+                resKey: 'languages'
+            });
+        };        
+
         service.getChargeCodes = function(params) {
             return callApi({
                 method: 'getJSON',
@@ -674,22 +743,15 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
-        // Method to get the revenue and tax of accounts
-        // @data - params to API
-        service.getRevenueAndTax = function(data) {
-            var deferred = $q.defer(),
-                url = '/api/accounts/revenue_and_tax';
-
-            rvBaseWebSrvV2.postJSON(url, data.postParamsToApi).then(function(revenueData) {
-                revenueData.accountVatType = data.accountVatType;
-                revenueData.isPrint = data.isPrint;
-                revenueData.accountTypeId = data.accountTypeId;
-                deferred.resolve(revenueData);
-            }, function(data) {
-                deferred.reject(data);
+        /**
+         * Fetch employee list for room status report
+         * @return {Promise} promise
+         */
+        service.fetchEmployeeList = function() {
+            return callApi({
+                method: 'getJSON',
+                url: '/api/work_statistics/employees_list?per_page=9999'
             });
-
-            return deferred.promise;
         };
 
         /**
@@ -745,6 +807,60 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 
             return deferred.promise;
         };        
+
+        /**
+         * Fetch work types 
+         * @return {Promise}
+         */
+        service.fetchWorkTypes = () => {
+            var deferred = $q.defer(),
+                url = 'api/work_types';
+
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                deferred.resolve(data.results);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+
+        };
+
+        /**
+         * Fetch Front Office Status
+         * @return {Promise}
+         */
+        service.fetchFrontOfficeStatus = () => {
+            var deferred = $q.defer(),
+                url = 'api/reference_values?type=front_office_status';
+
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+            
+        };
+
+        /**
+         * Fetch Housekeeping Status
+         * @return {Promise}
+         */
+        service.fetchHouseKeepingStatus = () => {
+            var deferred = $q.defer(),
+                url = 'api/reference_values?type=housekeeping_status';
+
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+
+        };
 
         return service;
     }

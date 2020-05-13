@@ -26,7 +26,7 @@
                         <div class="options">
                             <button type="button" ng-click="showEnhancementsPopup()" class="button white"><span class="label" translate>ENHANCEMENTS</span>
                             <span class="count">{{ existingAddonsLength }}</span></button>
-                            <button class="button green" ng-click="proceed()" translate>BOOK</button>
+                            <button class="button green" ng-click="proceed()" translate ng-hide="fromPage === 'staycard'">BOOK</button>
                         </div>
                         <!-- FIX style="margin-top:60px; width: 100%;" -->
                         <ul id="addon-best-sellers" class="addon-tab">
@@ -41,7 +41,8 @@
                                     <em>{{ addon.description }}</em>
                                 </div>
                                 <div class="price">
-                                   {{currencySymbol}}{{ addon.price | number : 2}}
+                                    <span class="value">{{addon.rateCurrency}}{{ addon.price | number : 2}}</span>
+                                   <span class="list-price" ng-if="addon.addon_value > 0">VALUE: {{addon.rateCurrency}}{{ addon.addon_value | number : 2}}</span>
                                    <span class="amount-type">{{ addon.amountTypeDesc | uppercase}}</span>
                                    <span class="post-type">{{ addon.postTypeDesc | uppercase}}</span>
                                 </div>

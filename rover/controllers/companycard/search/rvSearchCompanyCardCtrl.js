@@ -92,7 +92,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		 * function to perform filtering/request data from service in change event of query box
 		 */
 		$scope.queryEntered = _.debounce(function () {
-			if ($scope.textInQueryBox === "") {
+			if ($scope.textInQueryBox.length < 3) {
 				$scope.results = [];
 				refreshScroller();
 			} else {
@@ -312,6 +312,35 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 				activeSubView: $scope.viewState.isCompanyCardSelected ? 'CC' : 'TA',
 				cardType: $scope.cardFilter
 			});
+		};
+
+		var singleRateName = '';
+
+		/**
+		 * Function to return the single rate's name is any
+		 * @return {String}
+		 */
+		$scope.getRateName = function() {
+			return singleRateName;
+		};
+
+		/**
+		 * Function to check if multiple rates exists on any of the contracts
+		 * @param {Object} account the account object
+		 * @return {Boolean}
+		 */
+		$scope.ratesCount = function(account) {
+			var rateCount = false;
+
+			if (account.current_contracts && account.current_contracts.length !== 0) {
+				angular.forEach(account.current_contracts, function(contract) {
+					if (contract.contract_rates.length !== 0) {
+						rateCount += contract.contract_rates.length;
+                        singleRateName = contract.contract_rates[0].rate_name;
+					}
+				});
+			}
+			return rateCount;
 		};
 
 		/**

@@ -1,7 +1,11 @@
 sntRover.controller('RVShowPaymentListCtrl', ['$rootScope', '$scope', '$state', 'RVPaymentSrv', 'ngDialog',
-    function($rootScope, $scope, $state, RVPaymentSrv, ngDialog) {
+    'rvPermissionSrv',
+    function($rootScope, $scope, $state, RVPaymentSrv, ngDialog, rvPermissionSrv) {
         BaseCtrl.call(this, $scope);
         $scope.showNoValues = false;
+
+        var hasCreditCardRemovalPermission = rvPermissionSrv.getPermissionValue('REMOVE_CREDIT_CARD_FROM_STAYCARD');
+
         $scope.paymentListSuccess = function(data) {
             $scope.$emit('hideLoader');
             $scope.paymentListData = data;
@@ -22,14 +26,20 @@ sntRover.controller('RVShowPaymentListCtrl', ['$rootScope', '$scope', '$state', 
         };
 
 
-        var reservationId = '';
+        var reservationId = '', bill_number = 1;
 
         if ($scope.dataToPaymentList.currentView === "billCard") {
             reservationId = $scope.dataToPaymentList.reservation_id;
+            bill_number = $scope.dataToPaymentList.bills[$scope.dataToPaymentList.currentActiveBill].bill_number;
         } else {
             reservationId = $scope.dataToPaymentList.reservation_card.reservation_id;
         }
-        $scope.invokeApi(RVPaymentSrv.getPaymentList, reservationId, $scope.paymentListSuccess);
+        var existingPaymentsParams = {
+            reservation_id: $scope.reservationData.reservationId,
+            bill_number: bill_number
+        };
+        
+        $scope.invokeApi(RVPaymentSrv.getExistingPaymentsForBill, existingPaymentsParams, $scope.paymentListSuccess);
 
         $scope.clickPaymentItem = function(paymentId, cardCode, cardNumberEndingWith, expiryDate, isSwiped, colorCode) {
             var data = {
@@ -66,6 +76,7 @@ sntRover.controller('RVShowPaymentListCtrl', ['$rootScope', '$scope', '$state', 
                     $scope.dataToPaymentList.bills[billIndex].credit_card_details.auth_color_code = colorCode;
                     // CICO-35346
                     $scope.dataToPaymentList.bills[billIndex].credit_card_details.payment_id = data.id;
+                    $scope.dataToPaymentList.bills[billIndex].credit_card_details.token = data.token;
 
                     // CICO-9739 : To update on reservation card payment section while updating from bill#1 credit card type.
                     if (billIndex === 0) {
@@ -109,7 +120,38 @@ sntRover.controller('RVShowPaymentListCtrl', ['$rootScope', '$scope', '$state', 
 
         $scope.openAddNewPaymentModel = function() {
             $scope.closeDialog();
-            $rootScope.$emit('OPENPAYMENTMODEL');
+            $rootScope.$broadcast('OPENPAYMENTMODEL');
+        };
+
+        /**
+         * Delete the given credit card
+         * @param {Number} paymentMethodId - the id of the given credit card
+         * @return {void}
+         */
+        $scope.deleteCreditCard = function ( paymentMethodId ) {
+            var onDeleteSuccess = function () {
+                    $scope.closeDialog();
+                },
+                onDeleteFailure = function ( error ) {
+                    $scope.errorMessage = error;
+                };
+
+            $scope.callAPI(RVPaymentSrv.deleteCreditCard, {
+                onSuccess: onDeleteSuccess,
+                onFailure: onDeleteFailure,
+                params: {
+                    reservation_id: reservationId,
+                    payment_method_id: paymentMethodId
+                }
+            });
+        };
+
+        /**
+         * Should show the credit card delete btn
+         */
+        $scope.shouldShowCreditCardDeleteBtn = function () {
+            return $rootScope.isStandAlone && hasCreditCardRemovalPermission && 
+                    ($state.current.name === 'rover.reservation.staycard.reservationcard.reservationdetails');
         };
 
     }]);

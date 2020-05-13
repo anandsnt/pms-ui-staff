@@ -68,7 +68,8 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
                     'first_name': data.first_name,
                     'last_name': data.last_name,
                     'days_of_stay': data.days_of_stay,
-                    'hours_of_stay': data.hours_of_stay
+                    'hours_of_stay': data.hours_of_stay,
+                    'restrict_post': data.restrict_post
                 };
 
                 $state.go('zest_station.checkoutReservationBill', stateParams);

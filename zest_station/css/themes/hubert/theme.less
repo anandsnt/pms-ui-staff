@@ -133,6 +133,10 @@
             .details {
                 background: rgba(0,0,0,0.5);
                 color: @brandColor;
+
+                &.missing-details {
+                    background: rgba(0,0,0,0.15);
+                }
             }
         }
     }
@@ -235,5 +239,10 @@
         &.upgrade-list-v2 {
             .button { color: @black; }
         }
+    }
+
+    .minibar-item,
+    .minibar-review .review-container {
+        background: #ececec;
     }
 }

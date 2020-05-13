@@ -937,6 +937,42 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                 formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(accounts, value, 'id'), 'account_name').join(',');
             })); 
         };
+
+        /**
+         * Fill selected countries
+         * @param {Array} value 
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
+        this.fillSelectedCountries = (value, key, promises, formatedFilter) => { 
+            if (!formatedFilter[reportInboxFilterLabelConst[key]]) {
+                formatedFilter[reportInboxFilterLabelConst[key]] = [];
+            }
+            promises.push(RVreportsSubSrv.fetchCountries().then(function(countries) {
+                // Here -1 is for UNDEFINED entry
+                if (value.length === (countries.length + 1)) { 
+                    formatedFilter[reportInboxFilterLabelConst[key]] = 'All Countries'; 
+                } else {
+                    formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(countries, value, 'id'), 'value').join(',');
+                }
+            })); 
+        };
+
+        /**
+         * Fill show upsells only
+         * @param {Boolean} value 
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
+        this.fillShowUpsellsOnly = (value, key, formatedFilter) => { 
+            if (value) {
+                formatedFilter[reportInboxFilterLabelConst[key]] = 'Yes';
+            }
+            
+        };
         
         /**
          * Process filters for the given generated report
@@ -1011,8 +1047,8 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                     case reportParamsConst['INCLUDE_NEW']:  
                     case reportParamsConst['SHOW_RATE_ADJUSTMENTS_ONLY']: 
                     case reportParamsConst['NO_NATIONALITY']:       
-                   //   case reportParamsConst['EXCLUDE_TAX']:   
-                    case reportParamsConst['DUE_OUT_DEPARTURES']: 
+                    case reportParamsConst['DUE_OUT_DEPARTURES']:
+                    case reportParamsConst['HAS_VEHICLE_REG_NO']:
                         self.processOptions(value, key, processedFilter);
                         break;
                     case reportParamsConst['SHOW_DELETED_CHARGES']:
@@ -1149,6 +1185,12 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                     case reportParamsConst['GROUP_BY_GROUP_NAME']:
                         self.fillGroupByInfo(value, key, processedFilter);
                         break;
+                    case reportParamsConst['COUNTRY']:
+                        self.fillSelectedCountries(value, key, promises, processedFilter);
+                        break;
+                    case reportParamsConst['SHOW_UPSELL_ONLY']:
+                        self.fillShowUpsellsOnly(value, key, processedFilter);
+                        break;
                 }
             });
 
@@ -1211,17 +1253,21 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
         this.formatReportList = (generatedReports, reportList) => {
             let selectedReport;
 
-            _.each(generatedReports, function(report) {
+            _.each(generatedReports, function(report, key) {
                 selectedReport = _.find(reportList, {id: report.report_id});
-                report.name = selectedReport.title;
-                report.reportIconCls = selectedReport.reportIconCls;
-                report.shouldShowExport = selectedReport.display_export_button;
-                report.shouldDisplayView = selectedReport.display_show_button;
-                report.isExpanded = false;
-                reportUtils.parseDatesInObject(report.filters.rawData);
-                report.rawData = report.filters.rawData; 
-                report.appliedFilter = report.filters.appliedFilter;               
-                self.fillReportDates(report);
+                if (selectedReport) {
+                    report.name = selectedReport.title;
+                    report.reportIconCls = selectedReport.reportIconCls;
+                    report.shouldShowExport = selectedReport.display_export_button;
+                    report.shouldDisplayView = selectedReport.display_show_button;
+                    report.isExpanded = false;
+                    reportUtils.parseDatesInObject(report.filters.rawData);
+                    report.rawData = report.filters.rawData; 
+                    report.appliedFilter = report.filters.appliedFilter;               
+                    self.fillReportDates(report);
+                } else {
+                    delete generatedReports[key];
+                }
             });
             
             return generatedReports;

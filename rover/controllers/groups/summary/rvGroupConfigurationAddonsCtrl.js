@@ -118,12 +118,26 @@ angular.module('sntRover').controller('rvGroupConfigurationAddonsCtrl', [
 		 * @return undefined
 		 */
 		$scope.openAddonsPopup = function() {
-			ngDialog.open({
-				template: '/assets/partials/groups/summary/groupAddonsPopup.html',
-				className: '',
+			$scope.addonPopUpData = {
+				addonPostingMode: 'create_group',
+				cancelLabel: "Cancel",
+                saveLabel: "Save",
+                number_of_adults: 1,
+				number_of_children: 0,
+				duration_of_stay: 1
+            };
+            $scope.packageData = {
+                existing_packages: $scope.groupConfigData.selectedAddons
+            };
+            _.each($scope.packageData.existing_packages, function(item) {
+                item.totalAmount = item.amount * item.addon_count;
+            });
+            ngDialog.open({ 
+                template: '/assets/partials/packages/showPackages.html',
+				controller: 'RVReservationPackageController',
 				scope: $scope,
-				closeByDocument: false,
-				closeByEscape: false
+                closeByDocument: false,
+                closeByEscape: false
 			});
 		};
 
@@ -151,6 +165,10 @@ angular.module('sntRover').controller('rvGroupConfigurationAddonsCtrl', [
 		$scope.removeAddon = function(addon) {
 			var onRemoveAddonSuccess = function(data) {
 					$scope.groupConfigData.selectedAddons = data;
+                    $scope.packageData.existing_packages = data;
+                    _.each($scope.packageData.existing_packages, function(item) {
+                        item.totalAmount = item.amount * item.addon_count;
+                    });
 					$scope.computeAddonsCount();
 				},
 				onRemoveAddonFailure = function(errorMessage) {
@@ -166,5 +184,47 @@ angular.module('sntRover').controller('rvGroupConfigurationAddonsCtrl', [
 				}
 			});
 		};
+
+		$scope.saveAddonsPosting = function() {
+
+            var addonPostingSaveSuccess = function() {
+                $scope.$emit('hideLoader');
+                $scope.reloadPage();
+            };
+    
+            var dataToApi = {
+                'group_id': $scope.groupConfigData.summary.group_id,
+                'addon_id': $scope.selectedPurchesedAddon.id,
+                'post_instances': $scope.selectedPurchesedAddon.post_instances,
+                'start_date': $scope.selectedPurchesedAddon.start_date,
+                'end_date': $scope.selectedPurchesedAddon.end_date,
+                'selected_post_days': $scope.selectedPurchesedAddon.selected_post_days
+            };
+    
+            $scope.invokeApi(rvGroupConfigurationSrv.updateAddonPosting, dataToApi, addonPostingSaveSuccess);
+        };
+	
+		var removeSelectedAddonsListner = $rootScope.$on('REMOVE_ADDON', function(event, data) {
+			if (data.addonPostingMode === 'create_group') {
+				$scope.removeAddon(data.addon);
+			}
+		});
+	
+		var proceedBookingListner = $scope.$on('PROCEED_BOOKING', function(event, data) {
+			if (data.addonPostingMode === 'create_group') {
+				$scope.selectedPurchesedAddon = data.selectedPurchesedAddon;
+				$scope.saveAddonsPosting();
+			}
+		});
+
+		$scope.addListener('CLOSE_ADDON_POPUP', function (event, data) {
+			if (data.addonPostingMode === 'create_group') {
+				$scope.reloadPage();
+			}
+		});
+
+		$scope.$on( '$destroy', proceedBookingListner);
+		$scope.$on( '$destroy', removeSelectedAddonsListner);
+
 	}
 ]);

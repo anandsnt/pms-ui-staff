@@ -50,6 +50,10 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
                 $scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty = data.id;
                 $scope.selectedLoyaltyID = data.id;
                 $scope.selectedLoyalty = data;
+
+                if (_.isString($scope.selectedLoyalty.membership_card_number)) {
+                    $scope.selectedLoyalty.membership_card_number = $scope.selectedLoyalty.membership_card_number.substr($scope.selectedLoyalty.membership_card_number.length - 4);
+                }
             }
 
             $scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);

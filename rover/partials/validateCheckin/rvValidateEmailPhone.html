@@ -57,13 +57,33 @@
 							<label>Place of Birth<strong>*</strong></label>
 							<input type="text" placeholder="Enter Place of Birth" ng-model="saveData.birth_place">
 						</div>
-						<div class="entry" ng-if="showGender && (guestCardData.contactInfo.gender === '' || guestCardData.contactInfo.gender === null)">
+						<div class="entry" ng-if="showGender && (guestCardData.contactInfo.gender_id === '' || guestCardData.contactInfo.gender_id === null)">
 							<label>Gender<strong>*</strong></label>
-							<input type="text" placeholder="Enter Gender" ng-model="saveData.gender">
+							<select iscroll-stop-propagation ng-options="genderType.id as genderType.value for genderType in guestCardData.contactInfo.genderTypeList" ng-model="saveData.gender_id"  ng-class="{'placeholder': saveData.gender_id === null}" >
+								<option value="" disabled selected>Select Gender</option>
+								<option style="display:none" value="genderType.id"></option>
+							</select>
 						</div>
 						<div class="entry" ng-if="showVehicleRegistrationNumber && (guestCardData.contactInfo.vehicle_registration_number === '' || guestCardData.contactInfo.vehicle_registration_number === null)">
 							<label>Vehicle Registration Number<strong>*</strong></label>
 							<input type="text" placeholder="Enter Vehicle Registration Number" ng-model="saveData.vehicle_registration_number">
+						</div>
+
+						<div class="entry" ng-if="showIdPlaceOfIssue && (guestCardData.contactInfo.id_place_of_issue === '' || guestCardData.contactInfo.id_place_of_issue === null)">
+							<label>Id Place of Issue<strong>*</strong></label>
+							<input type="text" placeholder="Enter Id Place of Issue" ng-model="saveData.id_place_of_issue">
+						</div>
+						<div class="entry" ng-if="showIdExpDate">
+							<label>ID Date of Expiry<strong>*</strong></label>
+							<input type="text" ng-model="saveData.id_expiration_date | date:dateFormat" name="guest-birthday" maxlength="8" id="guest-birthday" class="datepicker" ng-click="popupCalendar('idExpirationDateValidate')" readonly />
+						</div>
+						<div class="entry" ng-if="showIdCountryOfIssue">
+							<label>ID Country of issue<strong>*</strong></label>
+							<div class="select">
+								<select iscroll-stop-propagation ng-options="country.id as country.value for country  in countries" ng-model="saveData.id_country_id" class="placeholder">
+									<option style="display:none" value="">Select id country of issue</option>
+								</select>
+							</div>
 						</div>
 						<div class="entry" ng-if="showPersonalIdNumber && (guestCardData.contactInfo.personal_id_no === '' || guestCardData.contactInfo.personal_id_no === null)">
 							<label>Personal Id Number<strong>*</strong></label>
@@ -87,7 +107,7 @@
 						</div>
 						<div class="entry" ng-if="showDateOfBirth">
 							<label>Date Of Birth<strong>*</strong></label>
-							<input type="text" ng-model="saveData.birth_day" name="guest-birthday" maxlength="8" id="guest-birthday" class="datepicker" ng-click="popupCalendar()" readonly />
+							<input type="text" ng-model="saveData.birth_day | date:dateFormat" name="guest-birthday" maxlength="8" id="guest-birthday" class="datepicker" ng-click="popupCalendar('validate')" readonly />
 						</div>
 			        </div>
 			    </fieldset>

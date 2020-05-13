@@ -149,9 +149,12 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.fetchAddonDetails = function(param) {
             var deferred = $q.defer(),
-                url = '/staff/staycards/reservation_addons?reservation_id=' + param.id;
+                url = '/staff/staycards/reservation_addons';
 
-            zsBaseWebSrv.getJSON(url).then(function(data) {
+            zsBaseWebSrv.getJSON(url, {
+                reservation_id: param.id,
+                is_kiosk: param.is_kiosk
+            }).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
@@ -637,6 +640,28 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var url = '/reservation_notes';
 
             return zsBaseWebSrv2.postJSON(url, params);
+        };
+
+        var passportBypassReason;
+
+        this.savePassportBypassReason = function (bypassReason) {
+            passportBypassReason = bypassReason;
+        };
+ 
+        this.getPassportBypassReason = function () {
+            return passportBypassReason;
+        };
+
+        this.getGuestMandatoryFields = function(params) {
+            var url = '/api/guest_mandatory_schemas/guest_mandatory_fields';
+
+            return zsBaseWebSrv.getJSON(url, params);
+        };
+
+        this.savePendingGuestFields = function(params) {
+            var url = '/api/guest_mandatory_schemas/save_guest_mandatory_fields';
+
+            return zsBaseWebSrv.postJSON(url, params);
         };
     }
 ]);

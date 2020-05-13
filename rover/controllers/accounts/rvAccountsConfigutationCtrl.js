@@ -255,7 +255,8 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 									label: each.account_name,
 									value: each.id,
 									address: each.account_address,
-									type: each.account_type
+									type: each.account_type,
+									contract_access_code: each.current_contracts.length > 0 ? each.current_contracts[0].access_code : null
 								};
 								list.push(entry);
 							});
@@ -294,7 +295,8 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 									label: each.account_name,
 									value: each.id,
 									address: each.account_address,
-									type: each.account_type
+									type: each.account_type,
+									contract_access_code: each.current_contracts.length > 0 ? each.current_contracts[0].access_code : null
 								};
 								list.push(entry);
 							});
@@ -367,6 +369,37 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 			runDigestCycle();
 		});
 
+		/**
+         * Show company card navigation icon only if cc is attached to group
+         * @return {Boolean} should show or not
+         */
+		$scope.shouldShowCompanyCardNavigationButton = function() {
+            return (!$scope.isInAddMode() && $scope.accountConfigData.summary.company && !!$scope.accountConfigData.summary.company.id);
+		};
+		
+		/**
+         * Show show the ta navigation icon only if ta is attached to group
+         * @return {Boolean} should show or not
+         */
+		$scope.shouldShowTravelAgentNavigationButton = function() {
+            return (!$scope.isInAddMode() && $scope.accountConfigData.summary.travel_agent && !!$scope.accountConfigData.summary.travel_agent.id);
+        };
+
+		// Navigate to ta card screen
+        $scope.goToTACard = function() {
+            $state.go('rover.companycarddetails', {
+                id: $scope.accountConfigData.summary.travel_agent.id,
+                type: 'TRAVELAGENT'
+            });
+        };
+
+		// Navigate to cc screen
+        $scope.goToCompanyCard = function() {
+            $state.go('rover.companycarddetails', {
+                id: $scope.accountConfigData.summary.company.id,
+                type: 'COMPANY'
+            });
+        };
 		/**
 		 * function to initialize things for group config.
 		 * @return - None

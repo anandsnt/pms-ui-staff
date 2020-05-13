@@ -1,6 +1,6 @@
 <div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak>
     <div class="modal-content"
-         ng-show="showManualEntryDisabledPopup && !showWarningMessage">
+         ng-if="showManualEntryDisabledPopup && !showWarningMessage">
         <button type="button" id="modal-close" class="modal-close" ng-click="closeDialog()">
             <span class="icons icon-close invert"></span>
         </button>
@@ -27,6 +27,8 @@
                     hotel-config="hotelPaymentConfig"
                     reservation-id="{{passData.reservationId}}"
                     fetch-linked-cards="!isFromGuestCard"
+                    account-id="{{passData.accountId}}"
+                    is-from-wallet="{{passData.isFromWallet}}"
                     guest-id="{{passData.guest_id}}"
                     workstation-id="{{workstation_id}}"
                     bill-number="billNumber"
@@ -35,6 +37,7 @@
                     selected-payment-type="selectedPaymentType"
                     swiped-card-data="{{swipedCardData}}"
                     amount='depositBalanceMakePaymentData.amount'
+                    payment-currency-amount='depositBalanceMakePaymentData.payment_amount'
                     action-type="{{getAddActionType()}}"
                     deposit-policy-name="{{depositPolicyName}}"
                     is-editable='isDepositEditable'

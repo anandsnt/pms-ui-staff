@@ -639,6 +639,36 @@ sntZestStation.config(['$stateProvider',
             },
             templateUrl: '/assets/partials_v2/checkin/zsCheckinPaymentTypeNotAllowed.html'
         });
-        
+
+        $stateProvider.state('zest_station.checkInCCCollectionUsingOpi', {
+            url: '/checkInCCCollectionUsingOpi',
+            params: {
+                params: ''
+            },
+            templateUrl: '/assets/partials_v2/checkin/zscheckInCCCollectionUsingOpi.html',
+            controller: 'zsCheckInCCCollectionUsingOpiCtrl'
+        });
+
+        $stateProvider.state('zest_station.zsCheckinPassportDetails', {
+            url: '/passportDetails',
+            templateUrl: '/assets/partials_v2/checkin/zsCheckinPassportDetails.html',
+            controller: 'zsCheckinPassportDetailsCtrl',
+            params: {
+                params: ''
+            }
+        });
+
+        $stateProvider.state('zest_station.zsCheckinSaveGuestInfo', {
+            url: '/saveGuestInfo',
+            templateUrl: '/assets/partials_v2/checkin/zsCheckinSaveGuestInfo.html',
+            controller: 'zsCheckinSaveGuestInfoCtrl',
+            params: {
+                checkinParams: '',
+                guestInfo: '',
+                flowType: '',
+                reservation_id: '',
+                prevStateParams: ''
+            }
+        });
     }
 ]);

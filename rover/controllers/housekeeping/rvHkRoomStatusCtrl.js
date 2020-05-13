@@ -1049,8 +1049,12 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 					_setUpWorkTypeEmployees();
 				} else {
 					$scope.invokeApi(RVHkRoomStatusSrv.fetchWorkTypes, {}, function(data) {
-						$scope.workTypes = data;
-						$scope.invokeApi(RVHkRoomStatusSrv.fetchHKEmps, {}, function(data) {
+                        var params = {
+                            per_page: 9999
+                        };
+
+                        $scope.workTypes = data;
+						$scope.invokeApi(RVHkRoomStatusSrv.fetchHKEmps, params, function(data) {
 							$scope.employees = data;
 							_setUpWorkTypeEmployees();
 						});

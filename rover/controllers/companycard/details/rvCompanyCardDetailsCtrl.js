@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv', '$state', '$stateParams', 'ngDialog', '$filter', '$timeout', '$rootScope', 'rvPermissionSrv', '$interval', '$log',
-	function($scope, RVCompanyCardSrv, $state, $stateParams, ngDialog, $filter, $timeout, $rootScope, rvPermissionSrv, $interval, $log) {
+angular.module('sntRover').controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv', 'rvCompanyCardContractsSrv', '$state', '$stateParams', 'ngDialog', '$filter', '$timeout', '$rootScope', 'rvPermissionSrv', '$interval', '$log',
+	function($scope, RVCompanyCardSrv, rvCompanyCardContractsSrv, $state, $stateParams, ngDialog, $filter, $timeout, $rootScope, rvPermissionSrv, $interval, $log) {
 
 		// Flag for add new card or not
 		$scope.isAddNewCard = ($stateParams.id === "add");
@@ -61,7 +61,13 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 	        if ($rootScope.previousState.controller === "rvAllotmentConfigurationCtrl")
 	        {
 	            $scope.searchBackButtonCaption = $filter('translate')('ALLOTMENTS');
-	        }
+			}
+			else if ($rootScope.previousState.controller === "rvGroupConfigurationCtrl") {
+				$scope.searchBackButtonCaption = $filter('translate')('GROUPS');
+			}
+			else if ($rootScope.previousState.controller === "rvAccountsConfigurationCtrl") {
+				$scope.searchBackButtonCaption = $filter('translate')('ACCOUNTS');
+			}
 	        else if ($stateParams.origin === 'AR_OVERVIEW') {
 	        	$scope.searchBackButtonCaption = $filter('translate')('MENU_ACCOUNTS_RECEIVABLES');
 	        }
@@ -202,6 +208,9 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			if (tabToSwitch === 'statistics') {
 				$scope.$broadcast("LOAD_STATISTICS");
 			}
+			if (tabToSwitch === 'wallet') {
+				$scope.$broadcast("wallet");
+			}
 			if (tabToSwitch === 'cc-ar-transactions' && !isArNumberAvailable) {
 			  	console.warn("Save AR Account and Navigate to AR Transactions");
 			}
@@ -243,6 +252,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			$scope.arAccountDetails = data;
 			$scope.isArTabAvailable = true;
 			$scope.shouldSaveArDataFromPopup = true;
+			$scope.contactInformation.account_details.accounts_receivable_number = data.ar_number;
 		});
 
 		$scope.$on("UPDATE_AR_ACCOUNT_DETAILS_AFTER_DELETE", function(e, data) {
@@ -444,10 +454,12 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 * If contract rate exists then should not allow editing name of CC/TA - CICO-56441
 		 */
 		$scope.isUpdateEnabledForName = function() {
-			var contractedRates = RVCompanyCardSrv.getContractedRates(),
+			var contractedRates = rvCompanyCardContractsSrv.getContractedRates(),
 				isUpdateEnabledForNameInCard = true;
 
-			if (contractedRates.current_contracts.length > 0 || contractedRates.future_contracts.length > 0 || contractedRates.history_contracts.length > 0) {
+			if ((contractedRates.current_contracts && contractedRates.current_contracts.length > 0 ) || 
+				(contractedRates.future_contracts && contractedRates.future_contracts.length > 0 ) || 
+				(contractedRates.history_contracts && contractedRates.history_contracts.length > 0)) {
 				isUpdateEnabledForNameInCard = false;
 			}
 			return isUpdateEnabledForNameInCard;

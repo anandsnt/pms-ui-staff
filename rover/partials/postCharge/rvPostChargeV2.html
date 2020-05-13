@@ -73,9 +73,7 @@
 									<img ng-repeat="image in cardAttached.images"
 									ng-src="{{image.guest_image}}"
 
-									ng-class="{'first-image':(cardAttached.images.length >1 && image.is_primary==true),
-
-									'second-image':(cardAttached.images.length >1 && image.is_primary==false)}">
+									ng-class="{'second-image':(cardAttached.images.length >1 && image.is_primary==false)}">
 
 									<span class="vip" ng-show="cardAttached.vip==true" translate>VIP</span>
 								</figure>
@@ -348,6 +346,20 @@
 					
 					<div id="actions" class="form">
 						<div class="entry full-width" ng-repeat="each in selectedChargeItemHash" ng-show="each.name === selectedChargeItem.name && isStandAlone">
+							<div class="entry full-width" style="margin-bottom:15px;" ng-show='warningMessage.length && showReason'>
+								<section ng-if="warningMessage.length" ng-switch="" on="warningMessage.length" class="error error-message">                  
+								<span class="close-btn" ng-click="clearWarningMessage()"></span>
+								<span class="ng-binding ng-scope">{{warningMessage}}</span></section>
+							</div>
+							<label ng-if="showReason && adjustmentReasonOptions.length !== 0" for="reference">Adjustment Reason</label>
+							<div class="select" ng-if="showReason && adjustmentReasonOptions.length !== 0">
+								<select iscroll-stop-propagation ng-required ="true" id="company-country" name="company-country" ng-change="selectedAdjReason(each)" ng-model="each.adjustmentReason">
+									<option value="" class="placeholder" translate>Select Adjustment Reason</option>
+									<option ng-repeat="reason in adjustmentReasonOptions" value="{{reason.id}}">
+									   {{reason.value}}
+									</option>
+								 </select>
+							 </div>
 							<label for="reference">Reference & Description</label>
 							<input id="reference" ng-model="each.reference_text" placeholder="Enter charge reference" value="" type="text" />
 							<label class="checkbox inline" for="show-on-guest-bill" ng-class="{'checked': each.show_ref_on_invoice}"> <!-- Add class 'checked' when L68 is checked --> 

@@ -1,8 +1,11 @@
-sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout', 'ngDialog', 'RVPaymentSrv', 'RVReservationCardSrv', 'RVGuestCardSrv', 'rvPermissionSrv', 'RVReservationGuestSrv', '$q', 'paymentMethods', 'RVReservationPackageSrv',
-    function($rootScope, jsMappings, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout, ngDialog, RVPaymentSrv, RVReservationCardSrv, RVGuestCardSrv, rvPermissionSrv, RVReservationGuestSrv, $q, paymentMethods, RVReservationPackageSrv) {
+sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout', 'ngDialog', 'RVPaymentSrv', 'RVReservationCardSrv', 'RVGuestCardSrv', 'rvPermissionSrv', 'RVReservationGuestSrv', '$q', 'paymentMethods', 'RVReservationPackageSrv', 'RVAutomaticEmailSrv',
+    function($rootScope, jsMappings, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout, ngDialog, RVPaymentSrv, RVReservationCardSrv, RVGuestCardSrv, rvPermissionSrv, RVReservationGuestSrv, $q, paymentMethods, RVReservationPackageSrv, RVAutomaticEmailSrv) {
 
 
         BaseCtrl.call(this, $scope);
+
+        SharedMethodsBaseCtrl.call (this, $scope, $rootScope, RVAutomaticEmailSrv, ngDialog);
+
         $scope.isSubmitButtonEnabled = false;
 
         if ($scope.reservationData.reservationId !== '') {
@@ -878,11 +881,13 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             };
 
             var arrivalTime = ($scope.reservationData.checkinTime && $scope.reservationData.checkinTime.hh) ? $scope.reservationData.checkinTime.hh + ':' + $scope.reservationData.checkinTime.mm + ' ' + $scope.reservationData.checkinTime.ampm : null,
-                departureTime = ($scope.reservationData.checkoutTime && $scope.reservationData.checkoutTime.hh) ? $scope.reservationData.checkoutTime.hh + ':' + $scope.reservationData.checkoutTime.mm + ' ' + $scope.reservationData.checkoutTime.ampm : null;
+                departureTime = ($scope.reservationData.checkoutTime && $scope.reservationData.checkoutTime.hh) ? $scope.reservationData.checkoutTime.hh + ':' + $scope.reservationData.checkoutTime.mm + ' ' + $scope.reservationData.checkoutTime.ampm : null,
+                checkinTime = arrivalTime !== null ? moment(arrivalTime, 'hh:mm A').format('HH:mm') : null,
+                checkoutTime = departureTime !== null ? moment(departureTime, 'hh:mm A').format('HH:mm') : null;
 
             var postData = {
-                arrival_time: moment(arrivalTime, 'hh:mm A').format('HH:mm'),
-                departure_time: moment(departureTime, 'hh:mm A').format('HH:mm'),
+                arrival_time: checkinTime,
+                departure_time: checkoutTime,
                 arrival_date: $scope.reservationData.arrivalDate,
                 departure_date: $scope.reservationData.departureDate,
                 payment_type: {},
@@ -1431,7 +1436,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             var isValid = true;
             // Override force demographic flag if there are no options to select from (CICO-21166) all are disabled from admin
 
-            if ($scope.otherData.reservationTypeIsForced && $scope.otherData.reservationTypes.length > 0) {
+            if ($scope.otherData.reservationTypeIsForced && $scope.otherData.reservationTypes && $scope.otherData.reservationTypes.length > 0) {
                 isValid = demographicsData.reservationType !== "" && demographicsData.reservationType !== null;
             }
             if ($scope.otherData.marketsEnabled && $scope.otherData.marketIsForced && $scope.otherData.markets.length > 0 && isValid) {
@@ -1603,6 +1608,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             }
         };
 
+        $scope.addListener('REFRESH_SCROLL_SUMMARY', function() {
+            $scope.refreshScroller('reservationSummary');
+        });
 
         $scope.$on("PAY_LATER", function(e, data) {
             $scope.reservationData.paymentType.ccDetails = data.cardDetails;
@@ -1618,13 +1626,27 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             }
             $scope.depositData.attempted = true;
             $scope.depositData.depositSuccess = true;
+
+            $scope.currentPaymentBillId = data.bill_id;
+            $scope.currentPaymentTransactionId = data.transaction_id;
+            $scope.isDepositPayment = data.is_deposit_payment;
+
+            if ($rootScope.autoEmailPayReceipt || ($rootScope.autoEmailDepositInvoice && $scope.isDepositPayment)) {
+                $scope.autoTriggerPaymentReceiptActions();
+            }
+
             $scope.depositData.authorizationCode = data.authorization_code;
             $scope.reservationData.selectedPaymentId = data.payment_method.id;
+            $scope.isDepositPayment = data.is_deposit_payment;
 
             $scope.reservationData.depositData = angular.copy($scope.depositData);
             runDigestCycle();
             // On continue on create reservation - add to guest card - to fix undefined issue on tokendetails - commenting the if else block below for CICO-14199
-            $scope.$emit('hideLoader');
+            $scope.$emit('hideLoader');            
+        });
+
+        $scope.$on("AUTO_TRIGGER_EMAIL_AFTER_PAYMENT", function(e, data) {
+            $scope.sendAutomaticEmails(data);
         });
 
         $scope.$on("PAYMENT_FAILED", function(e, errorMessage) {
@@ -1717,6 +1739,16 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
         };
 
         $scope.init();
+
+        // Create group reservation, when borrow from house is done
+        $scope.addListener('CREATE_RESERVATION_AFTER_BORROW', function() {
+            $scope.init();
+        });
+
+        // Navigate to room and rates screen, when borrow is declined
+        $scope.addListener('SHOW_ROOM_AND_RATES_AFTER_BORROW_DECLINE', function() {
+            $state.go(roomAndRatesState, $rootScope.setPrevState.param);
+        });
     }
 
 ]);

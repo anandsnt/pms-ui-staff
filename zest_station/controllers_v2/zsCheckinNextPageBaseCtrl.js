@@ -8,7 +8,7 @@ sntZestStation.controller('zsCheckinNextPageBaseCtrl', [
 
 		var stateParams = JSON.parse($stateParams.params);
 		var checkIfEmailIsBlackListedOrValid = function() {
-			var email = stateParams.guest_email ? stateParams.guest_email : stateParams.guest_email;
+			var email = stateParams.guest_email ? stateParams.guest_email : stateParams.email;
 
 			return email && email.length > 0 && !(stateParams.guest_email_blacklisted === 'true') && zsUtilitySrv.isValidEmail(email);
 		};
@@ -40,6 +40,7 @@ sntZestStation.controller('zsCheckinNextPageBaseCtrl', [
 		};
 
 		$scope.checkinGuest = function() {
+            var bypassReason = zsCheckinSrv.getPassportBypassReason();
 			var checkinParams = {
 				'reservation_id': stateParams.reservation_id,
 				'workstation_id': $scope.zestStationData.set_workstation_id,
@@ -47,7 +48,8 @@ sntZestStation.controller('zsCheckinNextPageBaseCtrl', [
 				'do_not_cc_auth': false,
 				'is_promotions_and_email_set': false,
 				'is_kiosk': true,
-				'signature': stateParams.signature
+				'signature': stateParams.signature,
+                'passport_bypass_reason': bypassReason
 			};
 			var options = {
 				params: checkinParams,

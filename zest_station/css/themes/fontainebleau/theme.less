@@ -97,6 +97,10 @@
             fill: none;
             stroke: @white;
         }
+
+        &.icon-arrow-down {
+            fill: @brandColor;
+        }
 	}
 
     .logo-svg{
@@ -131,6 +135,12 @@
 		#textual {
 			&:before,
 			&:after { background-color: #ebebeb; }
+
+            &.guest-information {
+                .guest-information-right {
+                    background: rgba(0, 0, 0, 0.025);
+                }
+            }
 		}
 
 		#selection {
@@ -157,6 +167,11 @@
  				}
 	    	}
 	    }
+
+        .minibar-item,
+        .minibar-review .review-container {
+            background: #ebebeb;
+        }
 	}
 
 .entry {

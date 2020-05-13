@@ -1,9 +1,11 @@
 sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$scope', '$stateParams', '$timeout',
-	'RVReservationCardSrv', '$state', '$filter', 'ngDialog', 'rvPermissionSrv',
+	'RVReservationCardSrv', '$state', '$filter', 'ngDialog', 'rvPermissionSrv', 'RVAutomaticEmailSrv', 
 	function($rootScope, $scope, $stateParams, $timeout,
-		RVReservationCardSrv, $state, $filter, ngDialog, rvPermissionSrv) {
+		RVReservationCardSrv, $state, $filter, ngDialog, rvPermissionSrv, RVAutomaticEmailSrv) {
 
 		BaseCtrl.call(this, $scope);
+
+		SharedMethodsBaseCtrl.call (this, $scope, $rootScope, RVAutomaticEmailSrv, ngDialog);
 
 		var init = (function() {
 
@@ -29,7 +31,9 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 			$scope.paymentType = ($scope.reservationData.reservation_card.payment_method_used) ? $scope.reservationData.reservation_card.payment_method_used : "";
 			$scope.isDepositEditable = !!$scope.depositDetails.deposit_policy.allow_deposit_edit;
 			$scope.depositPolicyName = $scope.depositDetails.deposit_policy.description;
+			$scope.rateCurrency = $scope.depositDetails.rate_currency;
 			$scope.depositAmount = parseFloat($scope.depositDetails.deposit_amount).toFixed(2);
+			$scope.depositPaymentAmount = parseFloat($scope.depositDetails.deposit_payment_amount).toFixed(2);
 		}());
 
 
@@ -99,6 +103,10 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 			closeDepositPopup();
 		});
 
+		$scope.$on("AUTO_TRIGGER_EMAIL_AFTER_PAYMENT", function(e, data) {
+			$scope.sendAutomaticEmails(data);
+		});
+
 		// payment success
 		$scope.$on('PAYMENT_SUCCESS', function(event, data) {
 			$scope.depositPaidSuccesFully = true;
@@ -139,6 +147,14 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 				};
 
 				$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
+			}
+
+			$scope.currentPaymentBillId = data.bill_id;
+			$scope.currentPaymentTransactionId = data.transaction_id;
+			$scope.isDepositPayment = data.is_deposit_payment;
+
+			if ($rootScope.autoEmailPayReceipt || ($rootScope.autoEmailDepositInvoice && $scope.isDepositPayment)) {
+				$scope.autoTriggerPaymentReceiptActions();
 			}
 		});
 

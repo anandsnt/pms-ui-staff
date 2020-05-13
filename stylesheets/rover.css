@@ -1,5 +1,4 @@
  @import 'stylesheets/less/rover-theme.less';
- @import 'rover/css/rate-manager.less';
  @import 'rover/css/reservation.less';
  @import 'rover/css/housekeeping.less';
  @import 'rover/css/groups.less';
@@ -12,4 +11,3 @@
  @import 'shared/lib/css/date-picker.css.less';
  @import (inline) 'shared/lib/css/advanced_date_picker.css';
  @import (inline) 'shared/lib/css/angular-multi-select.css';
- @import (inline) 'shared/lib/css/toastr/toastr.min.css';

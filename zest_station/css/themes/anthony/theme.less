@@ -191,4 +191,33 @@
             fill: @white;
         }
     }
+
+    .minibar-item,
+    .minibar-review .review-container {
+        background: #ebebeb;
+    }
+    .minibar-items {
+        .minibar-item {
+            .minibar-item-info {
+                .minibar-item-meta { color:#a1a1a1; }
+            }
+        }
+    }
+
+    .minibar-review {
+        .review-items {
+            ul.totals {
+                li {
+                    &:not(.total) {
+                        color:#a1a1a1;
+                    }
+
+                    &:first-child,
+                    &.total {
+                        border-top-color: #a1a1a1;
+                    }
+                }
+            }
+        }
+    }
 }

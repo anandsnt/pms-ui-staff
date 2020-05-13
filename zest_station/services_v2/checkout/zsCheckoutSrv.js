@@ -118,6 +118,10 @@ sntZestStation.service('zsCheckoutSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseW
         this.fetchReservationFromUId = function(params) {
             var deferred = $q.defer();
             var url = '/api/reservations/find_by_key_uid';
+            // CICO-71659 - we should sent to API as encoded string only
+            if (params['keydata_ilco_34']) {
+               params['keydata_ilco_34'] = encodeURIComponent(params['keydata_ilco_34']);
+            }
 
             zsBaseWebSrv.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);
@@ -162,6 +166,76 @@ sntZestStation.service('zsCheckoutSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseW
             }, function(data) {
                 deferred.reject(data);
             });
+            return deferred.promise;
+        };
+
+        /*
+        * Service function to get groups
+        * @method GET
+        * @return {object} defer promise
+        */
+        this.fetchChargeGroups = function (params) {
+
+            var deferred = $q.defer();
+            var url = "/api/charge_groups.json";
+
+            zsBaseWebSrv.getJSON(url, params).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        /*
+        * Service function to get items
+        * @method GET
+        * @param {object} data
+        * @return {object} defer promise
+        */
+        this.fetchChargeItems = function (params) {
+            var deferred = $q.defer();
+            var url = "/api/charge_codes/items_and_charge_codes.json";
+
+            zsBaseWebSrv.getJSON(url, params).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        /*
+		* Service function to post charge
+		* @method POST
+		* @param {object} data
+		* @return {object} defer promise
+		*/
+        this.postCharges =  function (params) {
+            var deferred = $q.defer();
+            var url = '/staff/items/post_items_to_bill?application=KIOSK';
+
+            zsBaseWebSrv.postJSON(url, params)
+                .then(function (data) {
+                    deferred.resolve(data);
+                }, function (data) {
+                    deferred.reject(data);
+                });
+
+            return deferred.promise;
+        };
+
+        this.fetchCompanyTADetails = function (params) {
+            var deferred = $q.defer();
+            var url = '/zest_station/fetch_account_details';
+
+            zsBaseWebSrv.getJSON(url, params)
+                .then(function (data) {
+                    deferred.resolve(data);
+                }, function (data) {
+                    deferred.reject(data);
+                });
+
             return deferred.promise;
         };
     }

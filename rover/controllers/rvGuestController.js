@@ -53,6 +53,10 @@ angular.module('sntRover').controller('guestCardController', [
         BaseCtrl.call(this, $scope);
         GuestCardBaseCtrl.call (this, $scope, RVSearchSrv, RVContactInfoSrv, rvPermissionSrv, $rootScope);
 
+        $scope.hasOverBookRoomTypePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
+		$scope.hasOverBookHousePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE');
+		$scope.hasBorrowFromHousePermission = rvPermissionSrv.getPermissionValue('GROUP_HOUSE_BORROW');
+
         // Initialize reservation
         var initReservation = function() {
             var fromVault = $vault.get('searchReservationData'),
@@ -207,6 +211,8 @@ angular.module('sntRover').controller('guestCardController', [
                 $scope.eventTimestamp = "";
                 var preventClicking = false;
             }
+            $scope.hasPermissionToCreateTACard = rvPermissionSrv.getPermissionValue('CREATE_TRAVEL_AGENT_CARD');
+            $scope.hasPermissionToCreateCCard = rvPermissionSrv.getPermissionValue('CREATE_COMPANY_CARD');
         };
 
         $scope.$on("swipeAtGuestCard", function() {
@@ -675,7 +681,13 @@ angular.module('sntRover').controller('guestCardController', [
                     $scope.closeGuestCard();
                 } else {
                     // Handle group removal in stay-card
-                    detachGroupFromThisReservation();
+                    $scope.closeGuestCard();
+                    resetReservationGroupData();
+                    var options = {
+                        isGroupDetachmentRequested: true
+                    };
+
+                    $scope.navigateToRoomAndRates(options);
                 }
             },
             removeAllotmentCard = function() {
@@ -867,12 +879,13 @@ angular.module('sntRover').controller('guestCardController', [
                 if (data.results.length > 0) {
                     angular.forEach(data.results, function(item) {
                         var guestData = {};
-
+                        
                         guestData.id = item.id;
                         guestData.firstName = item.first_name;
                         guestData.lastName = item.last_name;
                         guestData.image = item.image_url;
                         guestData.vip = item.vip;
+                        guestData.is_flagged = item.is_flagged;
                         if (item.address !== null) {
                             guestData.address = {};
                             guestData.address.city = item.address.city;
@@ -908,6 +921,7 @@ angular.module('sntRover').controller('guestCardController', [
                 $scope.guestSearchIntiated = false;
                 $scope.searchedGuests = [];
                 $scope.$apply();
+                resetObject(previousSearchData, '');
                 $scope.$broadcast('guestSearchStopped');
             }
         };
@@ -1004,28 +1018,31 @@ angular.module('sntRover').controller('guestCardController', [
                             if (item.current_contracts.length > 0) {
                                 companyData.rateList = item.current_contracts;
                                 companyData.rate = item.current_contracts[0];
-                                companyData.rate.difference = (function() {
-                                    if (parseInt(companyData.rate.based_on.value) < 0) {
-                                        if (companyData.rate.based_on.type === "amount") {
-                                            return $scope.currencySymbol + (parseFloat(companyData.rate.based_on.value) * -1).toFixed(2) + " off ";
-                                        } else {
-                                            return (parseFloat(companyData.rate.based_on.value) * -1) + "%" + " off ";
+                                if (!_.isEmpty(companyData.rate)) {
+                                    companyData.contract_access_code = companyData.rate.access_code;
+                                    companyData.rate.difference = (function() {
+                                        if (parseInt(companyData.rate.based_on && companyData.rate.based_on.value) < 0) {
+                                            if (companyData.rate.based_on.type === "amount") {
+                                                return $scope.currencySymbol + (parseFloat(companyData.rate.based_on.value) * -1).toFixed(2) + " off ";
+                                            } else {
+                                                return (parseFloat(companyData.rate.based_on.value) * -1) + "%" + " off ";
+                                            }
+    
                                         }
-
-                                    }
-                                    return "";
-                                })();
-
-                                companyData.rate.surplus = (function() {
-                                    if (parseInt(companyData.rate.based_on.value) > 0) {
-                                        if (companyData.rate.based_on.type === "amount") {
-                                            return " plus " + $scope.currencySymbol + parseFloat(companyData.rate.based_on.value).toFixed(2);
-                                        } else {
-                                            return " plus " + parseFloat(companyData.rate.based_on.value) + "%";
+                                        return "";
+                                    })();
+    
+                                    companyData.rate.surplus = (function() {
+                                        if (parseInt(companyData.rate.based_on && companyData.rate.based_on.value) > 0) {
+                                            if (companyData.rate.based_on.type === "amount") {
+                                                return " plus " + $scope.currencySymbol + parseFloat(companyData.rate.based_on.value).toFixed(2);
+                                            } else {
+                                                return " plus " + parseFloat(companyData.rate.based_on.value) + "%";
+                                            }
                                         }
-                                    }
-                                    return "";
-                                })();
+                                        return "";
+                                    })();
+                                }
                             }
 
                             companyData.email = item.email;
@@ -1045,7 +1062,8 @@ angular.module('sntRover').controller('guestCardController', [
                     'city': $scope.searchData.companyCard.companyCity,
                     'account_number': $scope.searchData.companyCard.companyCorpId,
                     'from_date': ($scope.viewState.identifier === "CREATION" || $scope.viewState.identifier === "CONFIRM") ? $scope.reservationData.arrivalDate : new Date($scope.reservation.reservation_card.arrival_date).toISOString().slice(0, 10).replace(/-/g, "-"),
-                    'to_date': ($scope.viewState.identifier === "CREATION" || $scope.viewState.identifier === "CONFIRM") ? $scope.reservationData.departureDate : new Date($scope.reservation.reservation_card.departure_date).toISOString().slice(0, 10).replace(/-/g, "-")
+                    'to_date': ($scope.viewState.identifier === "CREATION" || $scope.viewState.identifier === "CONFIRM") ? $scope.reservationData.departureDate : new Date($scope.reservation.reservation_card.departure_date).toISOString().slice(0, 10).replace(/-/g, "-"),
+                    'reservation_id': $scope.viewState.identifier === "STAY_CARD" ? $scope.reservationData.reservationId : null
                 };
 
                 $scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchCompanies);
@@ -1084,29 +1102,33 @@ angular.module('sntRover').controller('guestCardController', [
                                 travelAgentData.address.state = item.address.state;
                             }
                             if (item.current_contracts.length > 0) {
+                                travelAgentData.activeContracts = item.current_contracts;
                                 travelAgentData.rate = item.current_contracts[0];
-                                travelAgentData.rate.difference = (function() {
-                                    if (parseInt(travelAgentData.rate.based_on.value) < 0) {
-                                        if (travelAgentData.rate.based_on.type === "amount") {
-                                            return $scope.currencySymbol + (parseFloat(travelAgentData.rate.based_on.value) * -1).toFixed(2) + " off ";
-                                        } else {
-                                            return (parseFloat(travelAgentData.rate.based_on.value) * -1) + "%" + " off ";
+                                if (!_.isEmpty(travelAgentData.rate)) {
+                                    travelAgentData.contract_access_code = travelAgentData.rate.access_code;
+                                    travelAgentData.rate.difference = (function() {
+                                        if (parseInt(travelAgentData.rate.based_on && travelAgentData.rate.based_on.value) < 0) {
+                                            if (travelAgentData.rate.based_on.type === "amount") {
+                                                return $scope.currencySymbol + (parseFloat(travelAgentData.rate.based_on.value) * -1).toFixed(2) + " off ";
+                                            } else {
+                                                return (parseFloat(travelAgentData.rate.based_on.value) * -1) + "%" + " off ";
+                                            }
+    
                                         }
-
-                                    }
-                                    return "";
-                                })();
-
-                                travelAgentData.rate.surplus = (function() {
-                                    if (parseInt(travelAgentData.rate.based_on.value) > 0) {
-                                        if (travelAgentData.rate.based_on.type === "amount") {
-                                            return " plus " + $scope.currencySymbol + parseFloat(travelAgentData.rate.based_on.value).toFixed(2);
-                                        } else {
-                                            return " plus " + parseFloat(travelAgentData.rate.based_on.value) + "%";
+                                        return "";
+                                    })();
+    
+                                    travelAgentData.rate.surplus = (function() {
+                                        if (parseInt(travelAgentData.rate.based_on && travelAgentData.rate.based_on.value) > 0) {
+                                            if (travelAgentData.rate.based_on.type === "amount") {
+                                                return " plus " + $scope.currencySymbol + parseFloat(travelAgentData.rate.based_on.value).toFixed(2);
+                                            } else {
+                                                return " plus " + parseFloat(travelAgentData.rate.based_on.value) + "%";
+                                            }
                                         }
-                                    }
-                                    return "";
-                                })();
+                                        return "";
+                                    })();
+                                }
                             }
                             travelAgentData.email = item.email;
                             travelAgentData.phone = item.phone;
@@ -1123,7 +1145,8 @@ angular.module('sntRover').controller('guestCardController', [
                     'city': $scope.searchData.travelAgentCard.travelAgentCity,
                     'account_number': $scope.searchData.travelAgentCard.travelAgentIATA,
                     'from_date': ($scope.viewState.identifier === "CREATION" || $scope.viewState.identifier === "CONFIRM") ? $scope.reservationData.arrivalDate : new Date($scope.reservation.reservation_card.arrival_date).toISOString().slice(0, 10).replace(/-/g, "-"),
-                    'to_date': ($scope.viewState.identifier === "CREATION" || $scope.viewState.identifier === "CONFIRM") ? $scope.reservationData.departureDate : new Date($scope.reservation.reservation_card.departure_date).toISOString().slice(0, 10).replace(/-/g, "-")
+                    'to_date': ($scope.viewState.identifier === "CREATION" || $scope.viewState.identifier === "CONFIRM") ? $scope.reservationData.departureDate : new Date($scope.reservation.reservation_card.departure_date).toISOString().slice(0, 10).replace(/-/g, "-"),
+                    'reservation_id': $scope.viewState.identifier === "STAY_CARD" ? $scope.reservationData.reservationId : null
                 };
 
                 $scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchTravelAgents);
@@ -1132,6 +1155,43 @@ angular.module('sntRover').controller('guestCardController', [
                 $scope.travelAgentSearchIntiated = false;
                 $scope.$broadcast('travelAgentSearchStopped');
             }
+        };
+
+        var singleRateName = '';
+
+        /**
+         * Function to get rate name, if one exists on any of the contracts
+         * @return {Boolean}
+         */
+        $scope.getRateName = function() {
+            return singleRateName;
+        };
+
+        /**
+         * Function to check if multiple rates exists on any of the contracts
+         * @param {Object} account the account object
+		 * @return {Number}
+         */
+        $scope.ratesCount = function(account) {
+            var rateCount = 0,
+                activeContracts;
+
+            if (account.account_type === 'TRAVELAGENT') {
+                activeContracts = account.activeContracts;
+            }
+            else if (account.account_type === 'COMPANY') {
+                activeContracts = account.rateList;
+            }
+
+            if (activeContracts && activeContracts.length !== 0) {
+				angular.forEach(activeContracts, function(contract) {
+					if (contract.contract_rates.length !== 0) {
+                        rateCount += contract.contract_rates.length;
+                        singleRateName = contract.contract_rates[0].rate_name;
+					}
+				});
+            }
+            return rateCount;
         };
         $scope.checkFuture = function(cardType, card, useCardRate) {
             // Changing this reservation only will unlink the stay card from the previous company / travel agent card and assign it to the newly selected card.
@@ -1247,15 +1307,88 @@ angular.module('sntRover').controller('guestCardController', [
             });
         };
 
+        /**
+         * 
+         * @param {Object} object holding various flags
+         * @param {Object} selectedGroup selected group
+         * @return {void}
+         */
+        var showBorrowFromHousePopup = function (results, selectedGroup) {
+
+            // Close borrow popup
+            $scope.closeBorrowPopup = function (shouldClearData) {
+                if (shouldClearData) {
+                    $scope.borrowData = {};
+                }
+                ngDialog.close();
+            };
+
+            // Handles the borrow action
+            $scope.performBorrowFromHouse = function () {
+                if ($scope.borrowData.isBorrowFromHouse) {
+                    attachGroupToThisReservation(selectedGroup, true);
+                    $scope.closeBorrowPopup(true);
+                } else {
+                    $scope.closeBorrowPopup();
+                    ngDialog.open({
+                        template: '/assets/partials/common/group/rvGroupOverbookPopup.html',
+                        className: '',
+                        closeByDocument: false,
+                        closeByEscape: true,
+                        scope: $scope
+                    });
+                }
+                
+            };
+
+            // Closes the current borrow dialog
+            $scope.closeOverbookPopup = function() {
+                $scope.borrowData = {};
+                ngDialog.close();
+            };
+
+            // Perform overbook
+            $scope.performOverBook = function () {
+                attachGroupToThisReservation(selectedGroup, true);
+                $scope.closeOverbookPopup();
+            };
+						
+            $scope.borrowData = {};
+
+            if (!results.room_overbooked && !results.house_overbooked) {
+                $scope.borrowData.isBorrowFromHouse = true;
+            }
+             
+            if (results.room_overbooked && !results.house_overbooked) {
+                $scope.borrowData.shouldShowOverBookBtn = $scope.hasOverBookRoomTypePermission;
+                $scope.borrowData.isRoomTypeOverbooked = true;
+            } else if (!results.room_overbooked && results.house_overbooked) {
+                $scope.borrowData.shouldShowOverBookBtn = $scope.hasOverBookHousePermission;
+                $scope.borrowData.isHouseOverbooked = true;
+            } else if (results.room_overbooked && results.house_overbooked) {
+                $scope.borrowData.shouldShowOverBookBtn = $scope.hasOverBookRoomTypePermission && $scope.hasOverBookHousePermission;
+                $scope.borrowData.isHouseAndRoomTypeOverbooked = true;
+            }
+
+            ngDialog.open({
+                template: '/assets/partials/common/group/rvGroupBorrowPopup.html',
+                className: '',
+                closeByDocument: false,
+                closeByEscape: true,
+                scope: $scope
+            });
+        };
 
         /**
          * when we failed in attaching a group
          */
-        var failureCallBackOfAttachGroupToReservation = function(error) {
+        var failureCallBackOfAttachGroupToReservation = function(error, failureCallbackParams) {
             if (error.hasOwnProperty('httpStatus')) {
 
                 // 470 is reserved for other room type is available
-                if (error.httpStatus === 470) {
+                if (error.httpStatus === 470 && error.is_borrowed_from_house) {
+                    showBorrowFromHousePopup(error, failureCallbackParams.selectedGroup);
+                } else if (error.httpStatus === 470 && !error.is_borrowed_from_house) {
                     showGroupOtherRoomTypeAvailablePopup();
                 }
 
@@ -1293,12 +1426,13 @@ angular.module('sntRover').controller('guestCardController', [
             // updating the central reservation data model
             updateReservationGroupData(selectedGroup);
 
+            $scope.closeGuestCard();
             // we are in card adding mode
             switchToNomralCardViewingMode();
 
             // we need to upadte the rate and other associated field, to do that, we are reloading the staycard
             if ($scope.isInStayCardScreen()) {
-                $scope.reloadTheStaycard();
+                $scope.reloadTheStaycard(true);
             }
         };
 
@@ -1307,11 +1441,12 @@ angular.module('sntRover').controller('guestCardController', [
          * @param  {Object} selectedGroup
          * @return undefined
          */
-        var attachGroupToThisReservation = function(selectedGroup) {
+        var attachGroupToThisReservation = function(selectedGroup, forcefullyOverbook) {
             // calling the API
             var params = {
                 reservation_id: $scope.reservationData.reservationId,
-                group_id: selectedGroup.id
+                group_id: selectedGroup.id,
+                forcefully_overbook: forcefullyOverbook
             };
 
             var options = {
@@ -1319,6 +1454,9 @@ angular.module('sntRover').controller('guestCardController', [
                 successCallBack: successCallBackOfAttachGroupToReservation,
                 failureCallBack: failureCallBackOfAttachGroupToReservation,
                 successCallBackParameters: {
+                    selectedGroup: selectedGroup
+                },
+                failureCallBackParameters: {
                     selectedGroup: selectedGroup
                 }
             };
@@ -1371,8 +1509,8 @@ angular.module('sntRover').controller('guestCardController', [
             switchToAddCardViewMode();
 
             $scope.$broadcast("groupCardDetached");
-
-            $scope.navigateToRoomAndRates();
+            $rootScope.$broadcast('UPDATE_RATE_POST_GROUP_DETACH');
+            
         };
 
         /**
@@ -1959,7 +2097,7 @@ angular.module('sntRover').controller('guestCardController', [
 
             $scope.guestCardData.contactInfo = contactInfoData.contactInfo;
             $scope.guestCardData.contactInfo.avatar = contactInfoData.avatar;
-            $scope.guestCardData.contactInfo.vip = contactInfoData.vip;
+            $scope.guestCardData.contactInfo.vip = contactInfoData.vip;  
             $scope.countriesList = contactInfoData.countries;
             $scope.guestCardData.userId = contactInfoData.userId;
             $scope.guestCardData.guestId = contactInfoData.guestId;
@@ -2102,6 +2240,9 @@ angular.module('sntRover').controller('guestCardController', [
 
         $scope.$on('$destroy', guestCardSetListener);
 
-
+        // CICO-65967
+        $scope.addListener('DETACH_GROUP_FROM_RESERVATION', function () {
+            detachGroupFromThisReservation();
+        }); 
     }
 ]);

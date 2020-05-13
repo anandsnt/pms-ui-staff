@@ -82,22 +82,36 @@ sntRover.controller('RVReservationAddonsCtrl', [
                 $scope.is_rate_addons_fetch = false;
                 $scope.addonsData.existingAddons = [];
             },
-            computeTotals = function() {
-                if ($scope.reservationData.isHourly) {
-                    $scope.computeHourlyTotalandTaxes();
-                } else {
-                    $scope.computeTotalStayCost();
-                }
+            updateAddonPostOptions = function() {
+                $($scope.reservationData.rooms).each(function(index, room) {
+                    $(room.addons).each(function(i, addon) {
+                        var updatedAddon = _.find($scope.packageData.existing_packages, {
+                            id: addon.id
+                        });
+
+                        if (updatedAddon) {
+                            addon.selected_post_days = updatedAddon.selected_post_days;
+                            addon.start_date = $filter('date')(tzIndependentDate(updatedAddon.start_date), $rootScope.dateFormatForAPI);
+                            addon.end_date = $filter('date')(tzIndependentDate(updatedAddon.end_date), $rootScope.dateFormatForAPI);
+                        }
+                    });
+                });
             },
             goToSummaryAndConfirm = function() {
+                if ($scope.packageData === undefined) {
+                    $scope.packageData = {
+                        existing_packages: []
+                    };
+                }
                 if ($scope.fromPage === "staycard") {
-
                     var saveData = {
                         reservationId: $scope.reservationData.reservationId,
                         room_types: [{
                             id: $scope.reservationData.rooms[0].roomTypeId,
                             num_rooms: 1,
-                            addons: _.filter($scope.addonsData.existingAddons, function(addon) {
+                            addons: _.filter($scope.packageData.existing_packages, function(addon) {
+                                addon.start_date = $filter('date')(tzIndependentDate(addon.start_date), $rootScope.dateFormatForAPI);
+                                addon.end_date = $filter('date')(tzIndependentDate(addon.end_date), $rootScope.dateFormatForAPI);
                                 return !addon.is_rate_addon;
                             })
                         }]
@@ -118,6 +132,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
 
                     $scope.invokeApi(RVReservationSummarySrv.updateReservation, saveData, successCallBack, failureCallBack);
                 } else {
+                    updateAddonPostOptions();
                     var save = function() {
                         if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id || $scope.reservationData.group.id || $scope.reservationData.allotment.id) {
                             /**
@@ -224,7 +239,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                                     }
                                 }
                             });
-                            computeTotals();
+                            
                         }
                         $scope.is_rate_addons_fetch = true;
                     }
@@ -239,7 +254,10 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     'is_active': true,
                     'is_not_rate_only': true,
                     'rate_id': $scope.reservationData.rooms[$scope.roomDetails.firstIndex].rateId,
-                    'no_pagination': true // Added for CICO-25066
+                    'reservation_id': $scope.reservationData.reservationId === undefined ? '' : $scope.reservationData.reservationId,
+                    'no_pagination': true, // Added for CICO-25066
+                    'adults': $scope.reservationData.tabs[$scope.viewState.currentTab].numAdults,
+                    'children': $scope.reservationData.tabs[$scope.viewState.currentTab].numChildren
                 }, successCallBackFetchAddons);
             },
             insertAddon = function(addon, addonQty) {
@@ -276,11 +294,23 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         title: addon.title,
                         totalAmount: addonQty * (addon.price),
                         price_per_piece: addon.price,
-                        amount_type: addon.amountType.description,
-                        post_type: addon.postType.description,
+                        amount_type: addon.amountType,
+                        post_type: addon.postType,
                         charge_full_weeks_only: addon.chargefullweeksonly,
-                        posting_frequency: addon.postType.frequency
+                        posting_frequency: addon.postType.frequency,
+                        rate_currency: addon.rateCurrency,
+                        start_date: tzIndependentDate($scope.reservationData.arrivalDate),
+                        end_date: tzIndependentDate($scope.reservationData.departureDate),
+                        is_allowance: addon.is_allowance,
+                        is_consume_next_day: addon.is_consume_next_day,
+                        is_inclusive: addon.is_inclusive,
+                        is_rate_addon: addon.is_rate_addon,
+                        post_day_of_the_week: addon.post_day_of_the_week,
+                        post_day_of_the_month: addon.post_day_of_the_month,
+                        frequency_type: addon.frequency_type,
+                        frequency: addon.frequency
                     });
+                       
                     $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
 
                     for (i = startIndex; i <= endIndex; i++) {
@@ -300,20 +330,76 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         });
                     }
                 }
-
                 $scope.showEnhancementsPopup();
-                computeTotals();
+               
+            },
+            applyAddon = function(addon, addonQty) {
+                var successCallBackApplyAddons = function() {
+                    fetchReservationAddons(true);
+                }, 
+                failureCallBack = function(errorMessage) {
+                    $scope.$emit('hideLoader');
+                    $scope.errorMessage = errorMessage;
+                };
+
+                $scope.invokeApi(RVReservationPackageSrv.applyAddon, {
+                    'id': $scope.reservationData.reservationId === undefined ? '' : $scope.reservationData.reservationId,
+                    'addon_id': addon.id,
+                    'quantity': addonQty,
+                    'application': 'ROVER'
+                }, successCallBackApplyAddons, failureCallBack);
             },
             addonsDataCopy = [];
 
         $scope.showEnhancementsPopup = function() {
             var selectedAddons = $scope.addonsData.existingAddons;
+            
+            $scope.addonPopUpData = {
+                addonPostingMode: 'reservation',
+				cancelLabel: "Cancel",
+                saveLabel: $scope.fromPage === 'staycard' ? "Save" : "Book",
+                shouldShowAddMoreButton: false,
+                number_of_adults: $scope.reservationData.number_of_adults,
+                number_of_children: $scope.reservationData.number_of_children,
+                duration_of_stay: $scope.duration_of_stay
+            };
+
+            $scope.packageData = {
+                existing_packages: []
+            };
+
+            angular.forEach($scope.addonsData.existingAddons, function(item) {
+                var addonsData = {
+                    id: item.id,
+                    name: item.title,
+                    addon_count: item.quantity,
+                    totalAmount: item.totalAmount,
+                    amount: item.price_per_piece,
+                    amount_type: item.amount_type,
+                    post_type: item.post_type,
+                    is_inclusive: item.is_inclusive,
+                    is_rate_addon: item.is_rate_addon,
+                    start_date: item.start_date,
+                    end_date: item.end_date,
+                    addon_currency: item.rate_currency,
+                    charge_full_weeks_only: item.charge_full_weeks_only,
+                    post_instances: item.post_instances,
+                    quantity: item.quantity,
+                    is_allowance: item.is_allowance,
+                    is_consume_next_day: item.is_consume_next_day,
+                    post_day_of_the_week: item.post_day_of_the_week,
+                    post_day_of_the_month: item.post_day_of_the_month,
+                    frequency_type: item.frequency_type,
+                    frequency: item.frequency
+                };
+
+                $scope.packageData.existing_packages.push(addonsData);
+            });
 
             if (selectedAddons.length > 0) {
                 ngDialog.open({
-                    template: '/assets/partials/reservation/selectedAddonsListPopup.html',
-                    className: 'ngdialog-theme-default',
-                    closeByDocument: true,
+                    template: '/assets/partials/packages/showPackages.html',
+                    controller: 'RVReservationPackageController',
                     scope: $scope
                 });
             }
@@ -378,7 +464,11 @@ sntRover.controller('RVReservationAddonsCtrl', [
         $scope.selectAddon = function(addon, addonQty, overBook) {
             $scope.closePopup();
             if (!$rootScope.isItemInventoryOn || overBook) {
-                insertAddon(addon, addonQty);
+                if ($stateParams.from_screen === "staycard") {
+                    applyAddon(addon, addonQty);
+                } else {
+                    insertAddon(addon, addonQty);
+                }
             } else {
                 /*
                  *  the following is for the calculation to check if the inventory limit is exeeded
@@ -406,7 +496,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     headCount = getTotalPostedAddons(addon.postType, $scope.reservationData.number_of_adults);
                 } else if (addon.amountType.value === 'CHILD') {
                     headCount = getTotalPostedAddons(addon.postType, $scope.reservationData.number_of_children);
-                } else if (addon.amountType.value === 'FLAT') {
+                } else if (addon.amountType.value === 'FLAT' || addon.amountType.value === 'ROOM') {
                     headCount = getTotalPostedAddons(addon.postType, 1);
                 }
 
@@ -440,7 +530,11 @@ sntRover.controller('RVReservationAddonsCtrl', [
                      */
 
                     if (remainingCount >= 0 || availableAddonCount === null) {
-                        insertAddon(addon, addonQty);
+                        if ($stateParams.from_screen === "staycard") {
+                            applyAddon(addon, addonQty);
+                        } else {
+                            insertAddon(addon, addonQty);
+                        }
                     } else {
                         $scope.addon = addon;
                         $scope.addonQty = addonQty;
@@ -478,7 +572,30 @@ sntRover.controller('RVReservationAddonsCtrl', [
 
         };
 
-        $scope.removeSelectedAddons = function(index) {
+        var deleteReservationAddon = function(addonId, index) {
+            var reservationId = $scope.reservationData.reservationId;
+
+            var successDelete = function() {
+                removeSelectedAddons(index);
+            },
+            failureCallBack = function(errorMessage) {
+                $scope.errorMessage = errorMessage;
+            },
+            addonArray = [];
+
+            addonArray.push(addonId);
+            var dataToApi = {
+                "postData": {
+                    "addons": addonArray
+                },
+
+                "reservationId": reservationId
+            };
+
+            $scope.invokeApi(RVReservationPackageSrv.deleteAddonsFromReservation, dataToApi, successDelete, failureCallBack);
+        };
+
+        var removeSelectedAddons = function(index) {
             var roomIndex,
                 startIndex = $scope.roomDetails.firstIndex,
                 endIndex = $scope.roomDetails.lastIndex;
@@ -490,6 +607,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
 
             // subtract selected addon amount from total stay cost
             $scope.addonsData.existingAddons.splice(index, 1);
+            $scope.packageData.existing_packages.splice(index, 1);
 
             for (roomIndex = startIndex; roomIndex <= endIndex; roomIndex++) {
                 $scope.reservationData.rooms[roomIndex].addons.splice(index, 1);
@@ -499,7 +617,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
             if ($scope.addonsData.existingAddons.length === 0) {
                 $scope.closePopup();
             }
-            computeTotals();
+            
         };
 
         var initController = function() {
@@ -509,6 +627,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
             $scope.duration_of_stay = $scope.reservationData.numNights || 1;
             $scope.existingAddonsLength = 0;
             $scope.setHeadingTitle('Enhance Stay');
+            $scope.$parent.hideSidebar = true;
 
             /**
              * Moving the below 7 lines(incl. single line comments) outside of the else block
@@ -529,69 +648,14 @@ sntRover.controller('RVReservationAddonsCtrl', [
                 initFromHourly();
             } else {
                 $scope.roomDetails = getCurrentRoomDetails();
-                var successCallBack = function(data) {
-                    var roomIndex,
-                        startIndex = $scope.roomDetails.firstIndex,
-                        endIndex = $scope.roomDetails.lastIndex;
-
-                    if ($stateParams.reservation === "HOURLY") {
-                        startIndex = 0;
-                        endIndex = $scope.reservationData.rooms.length - 1;
-                    }
-
-                    $scope.$emit('hideLoader');
-                    $scope.roomNumber = data.room_no;
-                    $scope.duration_of_stay = data.duration_of_stay || $scope.reservationData.numNights;
-                    $scope.addonsData.existingAddons = [];
-                    for (roomIndex = startIndex; roomIndex <= endIndex; roomIndex++) { // Reset Addons list in Room Model - CICO-20061
-                        $scope.reservationData.rooms[roomIndex].addons = [];
-                    }
-                    var associatedPackages = data.existing_packages || data;
-
-                    angular.forEach(associatedPackages, function(item) {
-                        var addonsData = {
-                            id: item.id,
-                            title: item.name,
-                            quantity: item.addon_count,
-                            totalAmount: item.addon_count * parseFloat(item.amount),
-                            price_per_piece: item.amount,
-                            amount_type: item.amount_type.value,
-                            post_type: item.post_type.value,
-                            is_inclusive: item.is_inclusive,
-                            is_rate_addon: item.is_rate_addon
-                        };
-
-                        $scope.addonsData.existingAddons.push(addonsData);
-
-                        for (roomIndex = startIndex; roomIndex <= endIndex; roomIndex++) {
-                            $scope.reservationData.rooms[roomIndex].addons.push({
-                                quantity: addonsData.quantity,
-                                id: addonsData.id,
-                                price: parseFloat(item.amount),
-                                amountType: item.amount_type,
-                                postType: item.post_type,
-                                title: addonsData.title,
-                                totalAmount: addonsData.totalAmount,
-                                is_inclusive: addonsData.is_inclusive,
-                                taxes: item.taxes,
-                                is_rate_addon: item.is_rate_addon
-                            });
-                        }
-
-                    });
-
-                    addonsDataCopy = angular.copy($scope.addonsData.existingAddons);
-                    $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
-
-                    $scope.computeTotalStayCost();
-                };
+                
 
                 if (!RVReservationStateService.getReservationFlag('RATE_CHANGED') && !!$scope.reservationData.reservationId) {
-                    $scope.invokeApi(RVReservationPackageSrv.getReservationPackages, $scope.reservationData.reservationId, successCallBack);
+                    fetchReservationAddons();
                 } else if (!!$scope.reservationData.group.id) {
                     $scope.is_rate_addons_fetch = true;
                     $scope.callAPI(rvGroupConfigurationSrv.getGroupEnhancements, {
-                        successCallBack: successCallBack,
+                        successCallBack: setUpAssociatedAddons,
                         params: {
                             "id": $scope.reservationData.group.id
                         }
@@ -605,25 +669,142 @@ sntRover.controller('RVReservationAddonsCtrl', [
                  * CICO-16792 Sending a second parameter to the fetchAddons method to identify the initial call to the method
                  */
                 fetchAddons('', true);
-                $scope.setScroller("enhanceStays");
+                var scrollerOptions = {
+                    click: true,
+                    preventDefault: false,
+                    showScrollbar: true
+                };
+
+                $scope.setScroller("enhanceStays", scrollerOptions);
+                $timeout(function() {
+                    $scope.refreshAddonsScroller();
+                }, 2000);
+
+                var proceedBookingListner = $scope.$on('PROCEED_BOOKING', function(event, data) {
+                    if (data.addonPostingMode === 'reservation' && $scope.fromPage === 'staycard') {
+                        saveAddonPosting(data.selectedPurchesedAddon);
+                    } else if (data.addonPostingMode === 'reservation') {
+                        $scope.proceed();
+                    }
+                 });
+
+                var removeSelectedAddonsListner = $rootScope.$on('REMOVE_ADDON', function(event, data) {
+                    if (data.addonPostingMode === 'reservation' && $scope.fromPage === 'staycard') {
+                        deleteReservationAddon(data.addon.id, data.index);
+                    } else if (data.addonPostingMode === 'reservation') {
+                        removeSelectedAddons(data.index);
+                    }
+                });
+
+                $scope.$on( '$destroy', proceedBookingListner);
+                $scope.$on( '$destroy', removeSelectedAddonsListner);
             }
         };
 
-        // Get addon count
-        $scope.getAddonCount = function(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly, quantity) {
-            if (!postingRythm) {
-                if (postType === 'Every Week' || postType === 'WEEKLY') {
-                    postingRythm = 7;
-                } else if (postType === 'Entire Stay' || postType === 'STAY') {
-                    postingRythm = 1;
-                } else if (postType === 'First Night' || postType === 'NIGHT') {
-                    postingRythm = 0;
-                }
-            }
-            amountType = amountType.toUpperCase();
-            var addonCount = RVReservationStateService.getApplicableAddonsCount(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly);
+        var saveAddonPosting = function(selectedPurchesedAddon) {
 
-            return (addonCount * quantity);
+            var addonPostingSaveSuccess = function() {
+                $scope.$emit('hideLoader');
+                fetchReservationAddons(true);
+            };
+
+            var dataToApi = {
+                'addon_id': selectedPurchesedAddon.id,
+                'reservation_id': $scope.reservationData.reservationId,
+                'post_instances': selectedPurchesedAddon.post_instances,
+                'start_date': $filter('date')(tzIndependentDate(selectedPurchesedAddon.start_date), $rootScope.dateFormatForAPI),
+                'end_date': $filter('date')(tzIndependentDate(selectedPurchesedAddon.end_date), $rootScope.dateFormatForAPI),
+                'selected_post_days': selectedPurchesedAddon.selected_post_days
+            };
+
+            $scope.invokeApi(RVReservationPackageSrv.updateAddonPosting, dataToApi, addonPostingSaveSuccess);
+        };
+
+        var setUpAssociatedAddons = function(data) {
+                var roomIndex,
+                    startIndex = $scope.roomDetails.firstIndex,
+                    endIndex = $scope.roomDetails.lastIndex;
+
+                if ($stateParams.reservation === "HOURLY") {
+                    startIndex = 0;
+                    endIndex = $scope.reservationData.rooms.length - 1;
+                }
+
+                $scope.$emit('hideLoader');
+                $scope.roomNumber = data.room_no;
+                $scope.duration_of_stay = data.duration_of_stay || $scope.reservationData.numNights;
+                $scope.addonsData.existingAddons = [];
+                for (roomIndex = startIndex; roomIndex <= endIndex; roomIndex++) { // Reset Addons list in Room Model - CICO-20061
+                    $scope.reservationData.rooms[roomIndex].addons = [];
+                }
+                var associatedPackages = data.existing_packages || data;
+
+                $scope.packageData = {
+                    existing_packages: []
+                };
+                angular.forEach(associatedPackages, function(item) {
+                    var addonsData = {
+                        id: item.id,
+                        title: item.name,
+                        quantity: item.addon_count,
+                        description: item.description,
+                        totalAmount: item.addon_count * parseFloat(item.amount),
+                        price_per_piece: item.amount,
+                        amount_type: item.amount_type,
+                        post_type: item.post_type,
+                        is_inclusive: item.is_inclusive,
+                        is_rate_addon: item.is_rate_addon,
+                        rate_currency: item.addon_currency,
+                        post_instances: item.post_instances,
+                        start_date: item.start_date,
+                        end_date: item.end_date,
+                        posting_frequency: item.post_type.frequency,
+                        post_day_of_the_week: item.post_day_of_the_week,
+                        post_day_of_the_month: item.post_day_of_the_month,
+                        frequency_type: item.frequency_type,
+                        frequency: item.frequency
+                    };
+
+                    $scope.addonsData.existingAddons.push(addonsData);
+
+                    $scope.packageData.existing_packages.push(addonsData);
+
+                    for (roomIndex = startIndex; roomIndex <= endIndex; roomIndex++) {
+                        $scope.reservationData.rooms[roomIndex].addons.push({
+                            quantity: addonsData.quantity,
+                            id: addonsData.id,
+                            price: parseFloat(item.amount),
+                            amountType: item.amount_type,
+                            postType: item.post_type,
+                            title: addonsData.title,
+                            totalAmount: addonsData.totalAmount,
+                            is_inclusive: addonsData.is_inclusive,
+                            taxes: item.taxes,
+                            is_rate_addon: item.is_rate_addon,
+                            rate_currency: item.addon_currency
+                        });
+                    }
+
+                });
+
+                addonsDataCopy = angular.copy($scope.addonsData.existingAddons);
+                $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
+
+        };
+
+        var fetchReservationAddons = function(showAddonPopup) {
+            var successCallBackAssociatedAddons = function(data) {
+                setUpAssociatedAddons(data);
+                if (showAddonPopup) {
+                    $scope.showEnhancementsPopup();
+                }
+            };
+
+            $scope.invokeApi(RVReservationPackageSrv.getReservationPackages, $scope.reservationData.reservationId, successCallBackAssociatedAddons);
+        };
+
+        $scope.goToAddons = function() {
+            $scope.closePopup();
         };
 
         // CICO-32856

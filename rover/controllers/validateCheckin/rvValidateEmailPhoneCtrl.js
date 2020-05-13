@@ -17,6 +17,8 @@ sntRover.controller('RVValidateEmailPhoneCtrl',
     $scope.saveData.phone = "";
     $scope.saveData.guest_id = "";
     $scope.saveData.user_id = "";
+    $scope.saveData.gender_id = $scope.guestCardData.contactInfo.gender_id;
+    $scope.guestCardData.contactInfo.genderTypeList = $scope.guestCardData.contactInfo.gender_list;
 
     $scope.putInQueue = false;
 
@@ -28,10 +30,11 @@ sntRover.controller('RVValidateEmailPhoneCtrl',
             }, 1500);
     };
 
-    $scope.popupCalendar = function() {
+    $scope.popupCalendar = function(calenderFor) {
+        $scope.calenderFor = calenderFor;
         $scope.datePicker = ngDialog.open({
             template: '/assets/partials/guestCard/contactInfoCalendarPopup.html',
-            controller: 'RVContactInfoDatePickerController',
+            controller: 'RVAllContactInfoDatePickerController',
             className: 'single-date-picker',
             scope: $scope
         });
@@ -116,13 +119,19 @@ sntRover.controller('RVValidateEmailPhoneCtrl',
             $scope.guestCardData.contactInfo.birth_place = $scope.saveData.birth_place;
         }
         if ($scope.showGender) {
-            $scope.guestCardData.contactInfo.gender = $scope.saveData.gender;
+            $scope.guestCardData.contactInfo.gender_id = $scope.saveData.gender_id;
         }
         if ($scope.showPersonalIdNumber) {
             $scope.guestCardData.contactInfo.personal_id_no = $scope.saveData.personal_id_no;
         }
         if ($scope.showVehicleRegistrationNumber) {
             $scope.guestCardData.contactInfo.vehicle_registration_number = $scope.saveData.vehicle_registration_number;
+        }
+        if ($scope.showIdPlaceOfIssue) {
+            $scope.guestCardData.contactInfo.id_place_of_issue = $scope.saveData.id_place_of_issue;
+        }
+        if ($scope.showIdCountryOfIssue) {
+            $scope.guestCardData.contactInfo.id_country_id = $scope.saveData.id_country_id;
         }
         if ($scope.showHomeTown) {
             $scope.guestCardData.contactInfo.home_town = $scope.saveData.home_town;
@@ -135,6 +144,9 @@ sntRover.controller('RVValidateEmailPhoneCtrl',
         }
         if ($scope.showDateOfBirth) {
             $scope.guestCardData.contactInfo.birth_day = $scope.saveData.birth_day;
+        }
+        if ($scope.showIdExpDate) {
+            $scope.guestCardData.contactInfo.id_expiration_date = $scope.saveData.id_expiration_date;
         }
 		$scope.$emit('hideLoader');
 		ngDialog.close();

@@ -1,5 +1,5 @@
 <!-- The bill display section -->
-<section id="main" role="main" class="centered" ng-hide="printOpted" click-touch='resetTime()'>
+<section id="main" role="main" class="centered" ng-if="!printOpted &&  !showPostChargeScreen && !emailBillingOptions" click-touch='resetTime()'>
     <div id="content">
         <h1 ng-show="isReservationDetailsFetched">
             <text data-ng-bind-html="getTagValue('BILL_REVIEW')" editable-text="BILL_REVIEW"></text>
@@ -47,17 +47,21 @@
                         <br/>
                     </div>
                     <h4 style="width: 100%;margin-bottom: 10px;" ng-show="zestStationData.kiosk_collect_balance && paymentDetails &&  paymentDetails.card_number.length" data-ng-bind-html="getTagValue('PAYMENT')" editable-text="PAYMENT"></h4>
-                    <div id="payment" ng-show="zestStationData.kiosk_collect_balance && paymentDetails &&  paymentDetails.card_number.length">
-                        <p>
+                    <div id="payment">
+                        <p ng-if="zestStationData.kiosk_collect_balance && paymentDetails &&  paymentDetails.card_number.length">
                             <strong>{{paymentDetails.card_type_name}}</strong><br>
                             <span data-ng-bind-html="getTagValue('ENDING_WITH')" editable-text="ENDING_WITH"></span> {{paymentDetails.card_number}}<br>
                             <span data-ng-bind-html="getTagValue('EXPIRES')" editable-text="EXPIRES"></span> {{paymentDetails.card_expiry}}
                         </p>
+                        <div class="payment-actions" ng-if="zestStationData.enable_items_for_station && !restrict_post">
+                            <a touch-press="clickedAddCharge()" class="button" translate="ADD_CHARGE"></a>
+                        </div>
                         <!-- <a href="{swipe.html, change title of that screen if arrived from here}" class="button">Change Card</a> -->
                     </div>
                     <ul id="rate">
                         <li class="sub">
                             <text data-ng-bind-html="getTagValue('BILL_SUB')" editable-text="BILL_SUB"></text>
+                            <span ng-if="spillage_included">({{'ALLOWANCE_SPILLAGE_INCLUDE' |translate}}):</span>
                         <span>{{zestStationData.currency}}{{net_amount}}</span></li>
                         <li class="sub">
                             <text data-ng-bind-html="getTagValue('BILL_DEP')" editable-text="BILL_DEP"></text>
@@ -81,9 +85,27 @@
         </div>
     </div>
 </section>
+<section id="main" role="main" ng-include="'/assets/partials_v2/checkout/zsPostCharge.html'" ng-if="showPostChargeScreen"></section>
+
+<!-- Add .open to show the popup -->
+<div class="popup" ng-class="{'open':showPostErrorPopup}">
+    <!-- Remove class "open" to hide popup content -->
+    <div class="popup-content">
+        <h2 class="nocaps">
+            <text editable-text="{{errorHeader}}"> {{ errorHeader  |translate}}</text>
+        </h2>
+        <h3 editable-text="{{errorMessage}}"> {{errorMessage | translate}}</h3>
+        <button type="button" class="button" click-touch='showPostErrorPopup = false'>
+            <text data-ng-bind-html="getTagValue('DONE_BTN')" editable-text="DONE"></text>
+        </button>
+    </div>
+</div>
+<!-- add .open when showing popup -->
+<div id="popup-overlay" ng-class="{'open': showPostErrorPopup}"></div>
+
 <!-- print option for stand alone-->
-<div ng-controller="zsPrintBillCtrl" ng-if="zestStationData.is_standalone">
-    <section id="main" role="main" class="centered" ng-show="printOpted">
+<div ng-controller="zsPrintBillCtrl" ng-if="zestStationData.is_standalone || !showPostChargeScreen">
+    <section id="main" role="main" class="centered" ng-show="printOpted && !showAddressOptions">
         <div id="content">
             <h1>
                 <text data-ng-bind-html="getTagValue('END_THANKS')" editable-text="END_THANKS"></text>
@@ -114,6 +136,67 @@
                 </ul>
             </nav>
         </div>
+    </section>
+    <!-- show options -->
+    <section id="main" role="main" ng-show="printOpted && showAddressOptions">
+            <div id="content">
+                <h1 translate>PRINT_GUEST_INVOICE</h1>
+                <h2 translate>BILL_ADDRESSED_TO_TEXT</h2>
+                <nav id="options" role="nav">
+                    <ul role="menu">
+                        <!-- {{printData}} -->
+                        <li>
+                            <button type="button" class="button option" touch-press="addressSelected('guest')">
+                                <div ng-include="icons.url.adults"></div>
+                            </button>
+                             {{ printData.guest_info.name}}
+                            <span ng-bind-html="::printData.guest_info.address">
+                            </span>
+                        </li>
+                        <li class="break" ng-if="printData.company_card_details.name">
+                            <span>Or</span>
+                        </li>
+                        <li ng-if="printData.company_card_details.name">
+                            <button type="button" class="button option" touch-press="addressSelected('company')">
+                                <div ng-include="icons.url.company"></div>
+                            </button>
+                            {{ printData.company_card_details.name}}
+                            <span ng-bind-html="::printData.company_card_details.address">
+                            </span>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+    </section>
+    <section id="main" role="main" ng-show="emailBillingOptions">
+            <div id="content">
+                <h1 translate>EMAIL_GUEST_INVOICE</h1>
+                <h2 translate>BILL_ADDRESSED_TO_TEXT</h2>
+                <nav id="options" role="nav">
+                    <ul role="menu">
+                        <!-- {{printData}} -->
+                        <li>
+                            <button type="button" class="button option" touch-press="emailInvoice('guest')">
+                                <div ng-include="icons.url.adults"></div>
+                            </button>
+                             {{ emailData.guest_info.name}}
+                            <span ng-bind-html="::emailData.guest_info.address">
+                            </span>
+                        </li>
+                        <li class="break" ng-if="emailData.company_card_details.name">
+                            <span>Or</span>
+                        </li>
+                        <li ng-if="emailData.company_card_details.name">
+                            <button type="button" class="button option" touch-press="emailInvoice('company')">
+                                <div ng-include="icons.url.company"></div>
+                            </button>
+                            {{ emailData.company_card_details.name}}
+                            <span ng-bind-html="::emailData.company_card_details.address">
+                            </span>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
     </section>
     <!-- print starts here -->
     <div ng-include="'/assets/partials_v2/checkout/zsGenericBillPrint.html'" ng-if="zestStationData.theme !== 'yotel'">

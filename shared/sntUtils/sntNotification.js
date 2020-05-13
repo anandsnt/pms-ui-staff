@@ -45,11 +45,12 @@ angular.module('snt.utils').component('sntNotify', {
         message: '<',
         type: '@'
     },
-    controller: ['sntNotifySrv', 'Toggles', function (sntNotifySrv, Toggles) {
+    controller: ['sntNotifySrv', 'Toggles', '$scope', function (sntNotifySrv, Toggles, $scope) {
         var ctrl = this;
 
         ctrl.clearErrorMessage = function () {
             this.message = '';
+            $scope.$emit('CLEAR_ERROR_MSG');
         };
 
 
@@ -71,6 +72,14 @@ angular.module('snt.utils').component('sntNotify', {
                 }
             };
 
+            ctrl.$doCheck = function() {
+                if (ctrl.showToasts) {
+                    if (this.message.length !== 0 ) {
+                        sntNotifySrv.show(this.message, ctrl.type);
+                        ctrl.clearErrorMessage();
+                    }
+                }
+            };
         };
     }]
 });

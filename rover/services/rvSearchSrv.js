@@ -51,6 +51,19 @@ angular.module("sntRover").service("RVSearchSrv", [
             return deferred.promise;
         };
 
+        this.fetchReservationForBillingInfo = function(data) {
+            var deferred = $q.defer();
+            var url =  '/api/reservations/search_reservation_for_billing_info';
+    
+            RVBaseWebSrv.getJSON(url, data).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+    
+
         // update the reservation details of cached data
         this.updateRoomDetails = function(confirmation, data) {
             if (!self.data) {
@@ -222,7 +235,7 @@ angular.module("sntRover").service("RVSearchSrv", [
                 page: self.page
             };
 
-            rvBaseWebSrvV2.getJSON(url, data).then(
+            rvBaseWebSrvV2.postJSON(url, data).then(
                 function(data) {
                     self.data = data.groups;
                     deferred.resolve(self.data);
@@ -269,6 +282,26 @@ angular.module("sntRover").service("RVSearchSrv", [
                 deferred = $q.defer();
 
             rvBaseWebSrvV2.postJSON(url, params).then(
+                function (data) {
+                    deferred.resolve(data);
+                },
+                function (data) {
+                    deferred.reject(data);
+                }
+            );
+
+            return deferred.promise;
+        };
+
+        /**
+         * Refresh the reservtions with open balance
+         * @return {Promise} promise
+         */
+        this.refreshReservationsWithOpenBalance = function () {
+            var url = '/api/reservations/update_has_any_open_bill',
+                deferred = $q.defer();
+
+            rvBaseWebSrvV2.postJSON(url).then(
                 function (data) {
                     deferred.resolve(data);
                 },

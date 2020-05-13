@@ -53,7 +53,9 @@ angular.module('sntIDCollection').controller('sntIdSampleCtrl', function($scope,
 	} else {
 		$scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
 		var config = {
-			useAutoDetection: true
+			useAutoDetection: true,
+			useThirdPartyScan: true,
+			thirdPatrtyConnectionUrl: 'wss://localhost.stayntouch.com:4647/CCSwipeService'
 		};
 		
 		$scope.setConfigurations(config);

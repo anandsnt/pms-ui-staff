@@ -23,7 +23,7 @@ sntZestStation.controller('zsRoomNotAvailableNowCtrl', [
 		var guestWaitingLocations = $filter('translate')('GUEST_WAITING_LOCATIONS');
 
 		// The tag GUEST_WAITING_LOCATIONS has to be saved in admin with ';' separating location names
-		$scope.guestWaitingLocations = guestWaitingLocations === 'GUEST_WAITING_LOCATIONS' ? [] : guestWaitingLocations.split(";");
+		$scope.guestWaitingLocations = guestWaitingLocations === 'GUEST_WAITING_LOCATIONS' ? [] : guestWaitingLocations.split(";").slice(0, 6);
 
 		$scope.showNextButton = function() {
 			return ($scope.screenData.action_type === 'send_mail' && zsUtilitySrv.isValidEmail($scope.screenData.email)) ||
@@ -98,7 +98,8 @@ sntZestStation.controller('zsRoomNotAvailableNowCtrl', [
 				params: {
 					guest_id: $stateParams.guest_id,
 					email: $scope.screenData.email,
-					application: 'KIOSK'
+					application: 'KIOSK',
+					'is_kiosk': true
 				},
 				successCallBack: precheckinReseravation
 			};

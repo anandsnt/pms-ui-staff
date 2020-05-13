@@ -1,8 +1,25 @@
-angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope', '$q', 'jsMappings', '$rootScope', 'rvGroupSrv', '$filter', '$stateParams', 'rvGroupConfigurationSrv', 'dateFilter', 'RVReservationSummarySrv', 'ngDialog', 'RVReservationAddonsSrv', 'RVReservationCardSrv', 'rvUtilSrv', '$state', 'rvPermissionSrv', '$timeout', 'rvGroupActionsSrv', 'RVContactInfoSrv', function($scope, $q, jsMappings, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state, rvPermissionSrv, $timeout, rvGroupActionsSrv, RVContactInfoSrv) {
-
-
+angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', [
+    '$scope',
+    '$q',
+    'jsMappings',
+    '$rootScope',
+    'rvGroupSrv',
+    '$filter',
+    '$stateParams',
+    'rvGroupConfigurationSrv',
+    'dateFilter',
+    'RVReservationSummarySrv',
+    'ngDialog',
+    'RVReservationAddonsSrv',
+    'RVReservationCardSrv',
+    'rvUtilSrv',
+    '$state',
+    'rvPermissionSrv',
+    '$timeout',
+    'rvGroupActionsSrv',
+    'RVContactInfoSrv',
+    function($scope, $q, jsMappings, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state, rvPermissionSrv, $timeout, rvGroupActionsSrv, RVContactInfoSrv) {
         var summaryMemento, demographicsMemento;
-        
 
         /**
          * Whether our summary data has changed
@@ -52,6 +69,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
             // setting max date of from date
             $scope.fromDateOptions.maxDate = $scope.groupConfigData.summary.block_to;
         };
+
 
         /**
          * Our Move date, start date, end date change are defined in parent controller
@@ -112,6 +130,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
             $scope.fromDateOptions.maxDate = '';
 
             $scope.changeDatesActions.clickedOnMoveButton ();
+            $scope.isShoulderDateDisabled = true;
 
         };
 
@@ -388,6 +407,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
          * @return undefined
          */
         $scope.$on('UPDATED_GROUP_INFO', function(event) {
+            populateShoulderDates();
             // data has changed
             summaryMemento = angular.copy($scope.groupConfigData.summary);
             $scope.isUpdateInProgress = false;
@@ -476,26 +496,32 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                     $scope.emit('hideLoader');
                 },
                 updateSegment = function() {
-                    var aptSegment = ''; // Variable to store the suitable segment ID
+                    var aptSegment = '', // Variable to store the suitable segment ID
+                        blockStartDate = $scope.groupConfigData.summary.block_from,
+                        blockEndDate = $scope.groupConfigData.summary.block_to;
 
                     // CICO-42249 - Flag to allow adding demographics for a newly created group
                     $scope.forceDemographics = $scope.shouldShowDemographics();
 
-                    if (!!$scope.groupConfigData.summary.block_to && !!$scope.groupConfigData.summary.block_from) {
-                        var dayDiff = Math.floor((new tzIndependentDate($scope.groupConfigData.summary.block_to) - new tzIndependentDate($scope.groupConfigData.summary.block_from)) / 86400000);
+                    if (!!blockStartDate && !!blockEndDate) {
+                        var blockPeriod = Math.floor((new tzIndependentDate(blockEndDate) - new tzIndependentDate(blockStartDate)) / 86400000),
+                            segments = _.sortBy($scope.groupSummaryData.demographics.segments, function(segment) { return segment.los; });
 
-                        angular.forEach($scope.groupSummaryData.demographics.segments, function(segment) {
-                            if (dayDiff < segment.los) {
+                        angular.forEach(segments, function(segment) {
+                            if (blockPeriod < segment.los) {
                                 if (!aptSegment) {
                                     aptSegment = segment.value;
+                                    // CICO-70889: Group Demographics. Only set the segment id when
+                                    // a value has been computed to prevent a user selected segment
+                                    // from being unintentionally overwritten.
+                                    $scope.groupConfigData.summary.demographics.segment_id = aptSegment;
                                 }
                             }
                         });
-                        $scope.groupSummaryData.computedSegment = !!aptSegment;
-                        $scope.groupConfigData.summary.demographics.segment_id = aptSegment;
-                    } else {
-                        return false;
                     }
+
+                    $scope.groupSummaryData.isComputedSegment = !!aptSegment;
+                    return $scope.groupSummaryData.isComputedSegment;
                 };
 
             if ($scope.groupSummaryData.demographics === null) {
@@ -555,6 +581,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                 $scope.groupConfigData.summary.release_date = refData.block_from;
             }
             $scope.releaseDateOptions.maxDate = newBlockTo;
+            $scope.fromDateOptions.maxDate = newBlockTo;
             runDigestCycle();
         };
 
@@ -572,6 +599,17 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
         };
 
         /**
+         * set the payment date
+         * @param  {Object} date - Date object
+         * @param  {Object} datePickerObj - Date picker object
+         * @return {undefined}
+         */
+        var paymentDateChoosed = function(date, datePickerObj) {
+            $scope.groupConfigData.summary.payment_date = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+            runDigestCycle();
+        };
+
+        /**
          * every logic to disable the from date picker should be here
          * @return {Boolean} [description]
          */
@@ -580,13 +618,15 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                 noOfInhouseIsNotZero = (sData.total_checked_in_reservations > 0),
                 cancelledGroup = sData.is_cancelled,
                 is_A_PastGroup = sData.is_a_past_group,
-                inEditMode = !$scope.isInAddMode();
+                inEditMode = !$scope.isInAddMode(),
+                hasCheckedoutReservations = sData.total_checked_out_reservations_count > 0;
 
             return ($scope.isInStaycardScreen()) || ( inEditMode &&
                     (
                       noOfInhouseIsNotZero  ||
                       cancelledGroup        ||
-                      is_A_PastGroup
+                      is_A_PastGroup ||
+                      hasCheckedoutReservations
                     )
                    );
         };
@@ -598,15 +638,13 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
         var shouldDisableEndDatePicker = function() {
             var sData = $scope.groupConfigData.summary,
                 endDateHasPassed = new tzIndependentDate(sData.block_to) < new tzIndependentDate($rootScope.businessDate),
-                cancelledGroup = sData.is_cancelled,
-                toRightMoveNotAllowed = !sData.is_to_date_right_move_allowed,
+                cancelledGroup = sData.is_cancelled,                
                 inEditMode = !$scope.isInAddMode();
 
             return ($scope.isInStaycardScreen()) || ( inEditMode &&
                     (
                      endDateHasPassed   ||
-                     cancelledGroup     ||
-                     toRightMoveNotAllowed
+                     cancelledGroup
                     )
                    );
         };
@@ -670,6 +708,12 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                 disabled: shouldDisableReleaseDatePicker(),
                 minDate: tzIndependentDate($rootScope.businessDate),
                 maxDate: $scope.groupConfigData.summary.block_to
+            }, commonDateOptions);
+
+            // Payment date options
+            $scope.paymentDateOptions = _.extend({
+                onSelect: paymentDateChoosed,
+                minDate: tzIndependentDate($rootScope.businessDate)
             }, commonDateOptions);
 
             // summary memento will change we attach date picker to controller
@@ -831,6 +875,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
             }
 
         };
+
         $scope.openBillingInformation = function() {
             if ($scope.isInAddMode()) {
                 // If the group has not been saved yet, prompt user for the same
@@ -924,7 +969,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                     is_salutation_enabled: false,
                     is_include_rooming_list: false,
                     personal_salutation: '',
-                    locale: data.selected_language_code
+                    locale: data.selected_language_code,
+                    showLanguageField: data.show_language_field
                 };
                 ngDialog.open({
                     template: '/assets/partials/groups/summary/groupSendConfirmationPopup.html',
@@ -996,9 +1042,13 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
             if (!response.is_changed && !response.is_room_rate_available) {
                 showRateChangeWarningPopup();
                 $scope.groupConfigData.summary.rate = summaryMemento.rate;
+                $scope.groupConfigData.summary.contract_id = summaryMemento.contract_id;
+                $scope.groupConfigData.summary.uniqId = summaryMemento.uniqId;
             }
             else {
                 summaryMemento.rate = $scope.groupConfigData.summary.rate;
+                summaryMemento.contract_id = $scope.groupConfigData.summary.contract_id;
+                summaryMemento.uniqId = $scope.groupConfigData.summary.uniqId;
                 // fetch summary once rate is changed - as per CICO-31812 comments
                 $scope.$emit('FETCH_SUMMARY');
             }
@@ -1007,7 +1057,10 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
         var onRateChangeFailureCallBack = function(errorMessage) {
             $scope.$emit('hideLoader');
             $scope.errorMessage = errorMessage;
+            $scope.$emit('showErrorMessage', errorMessage);
             $scope.groupConfigData.summary.rate = summaryMemento.rate;
+            $scope.groupConfigData.summary.contract_id = summaryMemento.contract_id;
+            $scope.groupConfigData.summary.uniqId = summaryMemento.uniqId;
         };
 
         /**
@@ -1015,15 +1068,26 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
          * @returns {undefined}
          */
         $scope.onRateChange = function() {
-            var summaryData = $scope.groupConfigData.summary;
+            var summaryData = $scope.groupConfigData.summary,
+                uniqId = summaryData.uniqId,
+                rateId = uniqId && uniqId.split(':')[0],
+                contractId = uniqId && uniqId.split(':')[1];
 
-            if (!summaryData.group_id) {
+            /**
+             * Call the API only if the group is saved, else allow the group
+             * to be saved with the rate selected.
+             */
+            $scope.groupConfigData.summary.rate = rateId;
+            $scope.groupConfigData.summary.contract_id = contractId;
+
+            if (!summaryData.group_id || !uniqId) {
                 return false;
             }
 
             var params = {
                 group_id: summaryData.group_id,
-                rate_id: summaryData.rate
+                rate_id: rateId,
+                contract_id: contractId
             };
             var options = {
                 successCallBack: onRateChangeSuccessCallBack,
@@ -1235,10 +1299,24 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
          * @return undefined
          */
         $scope.openAddonsPopup = function() {
-            ngDialog.open({
-                template: '/assets/partials/groups/summary/groupAddonsPopup.html',
-                className: '',
-                scope: $scope,
+            $scope.addonPopUpData = {
+                addonPostingMode: 'group',
+				cancelLabel: "Cancel",
+                saveLabel: "Save",
+                number_of_adults: 1,
+				number_of_children: 0,
+				duration_of_stay: 1
+            };
+            $scope.packageData = {
+                existing_packages: $scope.groupConfigData.selectedAddons
+            };
+            _.each($scope.packageData.existing_packages, function(item) {
+                item.totalAmount = item.amount * item.addon_count;
+            });
+            ngDialog.open({ 
+                template: '/assets/partials/packages/showPackages.html',
+				controller: 'RVReservationPackageController',
+				scope: $scope,
                 closeByDocument: false,
                 closeByEscape: false
             });
@@ -1283,6 +1361,10 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
         $scope.removeAddon = function(addon) {
             var onRemoveAddonSuccess = function(data) {
                     $scope.groupConfigData.selectedAddons = data;
+                    $scope.packageData.existing_packages = data;
+                    _.each($scope.packageData.existing_packages, function(item) {
+                        item.totalAmount = item.amount * item.addon_count;
+                    });
                     $scope.computeAddonsCount();
                 },
                 onRemoveAddonFailure = function(errorMessage) {
@@ -1462,19 +1544,45 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                     // add custom rate obect
                     sumData.rateSelectDataObject.push({
                         id: '-1',
-                        name: 'Custom Rate'
+                        name: 'Custom Rate',
+                        uniqId: '-1'
                     });
-                    // group rates by contracted and group rates.
-                    _.each(data.results, function(rate) {
-                        if (rate.is_contracted) {
-                            rate.groupName = 'Company/ Travel Agent Contract';
-                        }
-                        else {
-                            rate.groupName = 'Group Rates';
-                        }
-                        sumData.rateSelectDataObject.push(rate);
-                    });
+                    /**
+                     * we have the company/travel-agent/group rates in separate arrays
+                     */
+                    var groupRatesBy = function(rateArray, groupName) {
+                        angular.forEach(rateArray, function(rate) {
+                            rate.groupName = groupName;
+                            if (rate.is_contracted) {
+                                rate.uniqId = rate.id + ':' + rate.contract_id;
+                                rate.name = rate.name + ' (' + rate.contract_name + ')';
+                                if (rate.id === $scope.groupConfigData.summary.rate && rate.contract_id === $scope.groupConfigData.summary.contract_id) {
+                                    $scope.groupConfigData.summary.uniqId = rate.uniqId;
+                                }
+                            }
+                            else {
+                                rate.uniqId = rate.id + ':';
+                                if (rate.id === $scope.groupConfigData.summary.rate) {
+                                    $scope.groupConfigData.summary.uniqId = rate.uniqId;
+                                }
+                            }
+                            sumData.rateSelectDataObject.push(rate);
+                        });
+                    };
 
+                    if (data.group_rates.length !== 0) {
+                        groupRatesBy(data.group_rates, 'Group Rates');
+                    }
+                    if (data.company_rates.length !== 0) {
+                        groupRatesBy(data.company_rates, 'Company Contract');
+                    }
+                    if (data.travel_agent_rates.length !== 0) {
+                        groupRatesBy(data.travel_agent_rates, 'Travel Agent Contract');
+                    }
+                    if ($scope.groupConfigData.summary.rate === '-1') {
+                        $scope.groupConfigData.summary.uniqId = '-1';
+                    }
+                    summaryMemento.uniqId = $scope.groupConfigData.summary.uniqId;
                 },
                 onFetchRatesFailure = function(errorMessage) {
                     $scope.errorMessage = errorMessage;
@@ -1499,6 +1607,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
          * we will use this to fetch summary data
          */
         $scope.$on('GROUP_TAB_SWITCHED', function(event, activeTab) {
+            
             if (activeTab !== 'SUMMARY') {
                 return;
             }
@@ -1557,6 +1666,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                 releaseOnDate: $rootScope.businessDate,
                 demographics: null,
                 promptMandatoryDemographics: false,
+                isComputedSegment: false,
                 isDemographicsPopupOpen: false,
                 newNote: '',
                 // CICO-24928
@@ -1673,6 +1783,46 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
             }           
         };
 
+        /*
+         * Hide rates toggle button
+         * When this is turned on, we will not show rates on the stationary pages
+         */
+        $scope.clickedShowRate = function() {
+            $scope.groupConfigData.summary.hide_rates = !$scope.groupConfigData.summary.hide_rates;
+            var params = {
+                'group_id': $scope.groupConfigData.summary.group_id,
+                'hide_rates': $scope.groupConfigData.summary.hide_rates
+            };
+
+            $scope.callAPI(rvGroupConfigurationSrv.toggleHideRate, {
+                successCallBack: function() {
+                    $scope.errorMessage = "";
+                },
+                failureCallBack: function(errorData) {
+                    $scope.errorMessage = errorData;
+                },
+                params: params
+            });
+        };
+
+        $scope.saveAddonsPosting = function() {
+
+            var addonPostingSaveSuccess = function(data) {
+                $scope.$emit('hideLoader');
+            };
+    
+            var dataToApi = {
+                'group_id': $scope.groupConfigData.summary.group_id,
+                'addon_id': $scope.selectedPurchesedAddon.id,
+                'post_instances': $scope.selectedPurchesedAddon.post_instances,
+                'start_date': $scope.selectedPurchesedAddon.start_date,
+                'end_date': $scope.selectedPurchesedAddon.end_date,
+                'selected_post_days': $scope.selectedPurchesedAddon.selected_post_days
+            };
+    
+            $scope.invokeApi(rvGroupConfigurationSrv.updateAddonPosting, dataToApi, addonPostingSaveSuccess);
+        };
+
         /**
          * Invoked from the groupconfig ctrl while saving a new group
          */
@@ -1688,6 +1838,29 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
         });
 
         /**
+         * Invoked to populate shoulder_from and shoulder_to keys which are used to contain value of shoulder date dropdown
+         * Invoked on init
+         * CICO-74643
+         */
+        var populateShoulderDates = function () {
+            // Using startOf('day') method to reset any time offsets that may be applied to the date objects
+            // tzIndependent date applies time offset for daylight, passing a date object to the method keeps adding offsets
+            var summary = $scope.groupConfigData.summary,
+                shoulderFrom = moment(summary.shoulder_from_date || summary.block_from).startOf('day'),
+                shoulderTo = moment(summary.shoulder_to_date || summary.block_to).startOf('day'),
+                blockFrom = moment(summary.block_from).startOf('day'),
+                blockTo = moment(summary.block_to).startOf('day');
+
+            // Handle null entries for shoulder_from_date (groups created before introduction of shoulder days)
+            // https://momentjs.com/docs/#/parsing/string/
+            summary.shoulder_from = '' + blockFrom.diff(shoulderFrom, 'days');
+            summary.shoulder_to = '' + shoulderTo.diff(blockTo, 'days');
+            // API returned values as JS Dates for future consumption
+            summary.shoulder_from_date = shoulderFrom.toDate();
+            summary.shoulder_to_date = shoulderTo.toDate();
+        };
+
+        /**
          * Function used to initialize summary view
          * @return undefined
          */
@@ -1701,6 +1874,15 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                 tap: true,
                 preventDefault: false
             });
+
+            // set up shoulder dates CICO-74643
+            $scope.isShoulderDateDisabled = false;
+            $scope.groupConfigData.summary.shoulder_from = '0';
+            $scope.groupConfigData.summary.shoulder_to = '0';
+
+            if (!$scope.isInAddMode()) {
+                populateShoulderDates();
+            }
 
             // we have a list of scope varibales which we wanted to initialize
             initializeVariables();
@@ -1723,13 +1905,45 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                 }
             });
 
+            var navigateToAddonsListner = $rootScope.$on('NAVIGATE_TO_ADDONS', function(event, data) {
+                if (data.addonPostingMode === 'group') {
+                    $scope.manageAddons();
+                }
+            });
+        
+            var removeSelectedAddonsListner = $rootScope.$on('REMOVE_ADDON', function(event, data) {
+                if (data.addonPostingMode === 'group') {
+                    $scope.removeAddon(data.addon);
+                }
+            });
+        
+            var proceedBookingListner = $scope.$on('PROCEED_BOOKING', function(event, data) {
+                if (data.addonPostingMode === 'group') {
+                    $scope.selectedPurchesedAddon = data.selectedPurchesedAddon;
+                    $scope.saveAddonsPosting();
+                }
+            });
+        
+            $scope.$on( '$destroy', proceedBookingListner);
+            $scope.$on( '$destroy', removeSelectedAddonsListner);
+            $scope.$on( '$destroy', navigateToAddonsListner);
+
             // start date change, end date change, move date actions
             initializeChangeDateActions();
 
             setDatePickerOptions();
 
             $scope.computeSegment();
-        }());
-    }
 
+        }());
+        
+        $scope.onShoulderDateChange = function(fromOrToFlag) {
+            if (fromOrToFlag === "from") {
+                $scope.groupConfigData.summary.shoulder_from_date = $scope.setShoulderDatesInAPIFormat($scope.groupConfigData.summary.block_from, (-1) * $scope.groupConfigData.summary.shoulder_from);
+            }
+            if (fromOrToFlag === "to") {
+                $scope.groupConfigData.summary.shoulder_to_date = $scope.setShoulderDatesInAPIFormat($scope.groupConfigData.summary.block_to, $scope.groupConfigData.summary.shoulder_to);
+            }
+        };
+    }
 ]);

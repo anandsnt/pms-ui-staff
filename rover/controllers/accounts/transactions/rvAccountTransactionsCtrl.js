@@ -11,6 +11,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 	'RVReservationCardSrv',
 	'RVBillCardSrv',
 	'rvPermissionSrv',
+	'RVAutomaticEmailSrv',
 	'$timeout',
 	'$window',
 	'$q',
@@ -28,6 +29,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		RVReservationCardSrv,
 		RVBillCardSrv,
 		rvPermissionSrv,
+		RVAutomaticEmailSrv,
 		$timeout,
 		$window,
 		$q,
@@ -35,10 +37,13 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		sntActivity) {
 
 		BaseCtrl.call(this, $scope);
+
+		SharedMethodsBaseCtrl.call (this, $scope, $rootScope, RVAutomaticEmailSrv, ngDialog);
 		var that = this;
 
 		$scope.perPage = 50;
 		$scope.businessDate = $rootScope.businessDate;
+
 		$scope.isFromBillCard = false;
 
 		// Success callback for transaction fetch API.
@@ -423,6 +428,12 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.callAPI(rvAccountTransactionsSrv.fetchTransactionDetails, options);
 		};
 
+
+		$scope.$on("AUTO_TRIGGER_EMAIL_AFTER_PAYMENT", function(e, data) {
+			$scope.sendAutomaticEmails(data);
+		});
+
+
 		$scope.UPDATE_TRANSACTION_DATA = function() {
 			getTransactionDetails();
 		};
@@ -439,6 +450,13 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				$scope.shouldGenerateFolioNumber = true;
 			}
 			getTransactionDetails();
+
+			$scope.currentPaymentBillId = data.bill_id;
+			$scope.currentPaymentTransactionId = data.transaction_id;
+			if ($scope.isFromGroups && $rootScope.autoEmailPayReceipt && $scope.isFromPaymentScreen) {
+				$scope.autoTriggerPaymentReceiptActions();
+			}
+			
 		});
 
 		// To destroy listener
@@ -552,6 +570,13 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			loadDefaultBillDateData();
 		};
 
+		$scope.callAPI(RVBillCardSrv.fetchAdjustmentReasons, {
+			successCallBack: function(response) {
+				$scope.adjustmentReasonOptions = response.force_adjustment_reasons;
+				$scope.showAdjustmentReason = response.force_adjustment_reason_enabled;
+			}
+		});
+
 		$scope.openPostCharge = function( activeBillNo ) {
 			// Show a loading message until promises are not resolved
 			sntActivity.start("OPEN_POST_CHARGE");
@@ -627,6 +652,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				sntActivity.stop("SHOW_PAYMENT_MODEL");
 				$scope.passData = getPassData();
 				$scope.paymentModalOpened = true;
+				$scope.$emit('TOGGLE_PAYMET_POPUP_STATUS', true);
 				ngDialog.open({
 					template: '/assets/partials/accounts/transactions/rvAccountPaymentModal.html',
 					className: '',
@@ -658,6 +684,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		var modalOpened = $scope.$on('HANDLE_MODAL_OPENED', function(event) {
 			$scope.paymentModalOpened = false;
+			$scope.$emit('TOGGLE_PAYMET_POPUP_STATUS', false);
 		});
 
 		$scope.$on('$destroy', modalOpened);
@@ -940,6 +967,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		var accountsPrintCompleted = function() { 
 			$scope.invoiceActive = false;
+			$scope.printGroupProfomaActive = false;
         	$('.nav-bar').removeClass('no-print');
 			$('.cards-header').removeClass('no-print');
 			$('.card-tabs-nav').removeClass('no-print');
@@ -976,6 +1004,12 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 						$scope.shouldShowArInvoiceNumber = true;
 						if (dateDifference < 0) {
 							$scope.shouldShowArInvoiceNumber = false;
+						}
+
+
+						if (responseData.is_group && responseData.is_proforma_invoice) {
+							$scope.invoiceActive = false;
+							$scope.printGroupProfomaActive = true;
 						}
 
 						if ($scope.billFormat.isInformationalInvoice) {
@@ -1098,7 +1132,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * @return {[type]}	  [description]
 		 */
 		var successFetchOfAllReqdForTransactionDetails = function(data) {
-			// $scope.$emit('hideLoader');
+			$scope.isFromGroups = (typeof $scope.groupConfigData !== "undefined" && $scope.groupConfigData.activeTab === "TRANSACTIONS");
 		};
 
 		/*
@@ -1137,7 +1171,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * @return {[type]}	  [description]
 		 */
 		var failedToFetchOfAllReqdForTransactionDetails = function(data) {
-			$scope.$emit('hideLoader');
+			$scope.$emit('hideLoader');			
 		};
 
 		/**

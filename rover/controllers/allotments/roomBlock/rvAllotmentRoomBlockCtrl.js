@@ -1533,7 +1533,12 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {String} [with px]
 		 */
 		$scope.getWidthForContractViewTimeLine = function() {
-			return ($scope.allotmentConfigData.roomblock.selected_room_types_and_occupanies.length * 280 + 140) + 'px';
+			var width = $scope.allotmentConfigData.roomblock.selected_room_types_and_occupanies.length * 280 + 140;
+
+			if ($scope.shouldShowLoadNextSetButton()) {
+				width += 80;
+			}
+			return width + 'px';
 		};
 
 		/**
@@ -1541,7 +1546,12 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {String} [with px]
 		 */
 		$scope.getWidthForCurrentViewTimeLine = function() {
-			return ($scope.allotmentConfigData.roomblock.selected_room_types_and_occupanies.length * 190 + 140) + 'px';
+			var width = $scope.allotmentConfigData.roomblock.selected_room_types_and_occupanies.length * 180 + 40;
+
+			if ($scope.shouldShowLoadNextSetButton()) {
+				width += 80;
+			}
+			return width + 'px';
 		};
 
 		/**
@@ -1549,7 +1559,12 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {String} [with px]
 		 */
 		$scope.getWidthForReleaseViewTimeLine = function() {
-			return ($scope.allotmentConfigData.roomblock.selected_room_types_and_occupanies.length * 190 + 140) + 'px';
+			var width = $scope.allotmentConfigData.roomblock.selected_room_types_and_occupanies.length * 180 + 40;
+
+			if ($scope.shouldShowLoadNextSetButton()) {
+				width += 80;
+			}
+			return width + 'px';
 		};
 
 		/**
@@ -1760,10 +1775,16 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return - None
 		 */
 		var setDatePickers = function() {
-			var summaryData = $scope.allotmentConfigData.summary;
+			var summaryData = $scope.allotmentConfigData.summary,
+				businessDate = new tzIndependentDate($rootScope.businessDate);
 
 			// default start date
-			$scope.timeLineStartDate = new tzIndependentDate($rootScope.businessDate);
+			$scope.timeLineStartDate = new tzIndependentDate(summaryData.block_from);
+
+			if (summaryData.block_from < businessDate) {
+				$scope.timeLineStartDate = businessDate;
+			}
+
 			$scope.timeLineEndDate = new tzIndependentDate(summaryData.block_to);
 
 			// referring data model -> from allotment summary
@@ -1868,6 +1889,25 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
         // Update error message from popup
         $scope.$on("UPDATE_ERR_MSG", function(event, error) {
             $scope.errorMessage = error;
-        });
+		});
+		
+		// Should show the copy btn
+		$scope.shouldShowCopyButton = function (date) {
+            var dateObject;
+
+            switch (typeof date) {
+				case 'string': 
+					dateObject = new tzIndependentDate(date); 
+                    break;
+				case 'object':
+				 	dateObject = new tzIndependentDate(date.date);
+            }
+            
+            if (dateObject.getTime() === $scope.allotmentConfigData.summary.block_from.getTime()) {
+				return true;	
+            } else {
+            	return false;
+            }
+        };
 	}
 ]);

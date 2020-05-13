@@ -12,17 +12,20 @@
             <snt-payment
                     hotel-config="hotelPaymentConfig"
                     workstation-id="{{workstation_id}}"
+                    account-id={{arDataObj.accountId}}
                     bill-id="arDataObj.company_or_ta_bill_id"
                     payment-types="renderData.paymentTypes"
                     selected-payment-type="saveData.paymentType"
                     bill-number="billNumber"
                     ar-transaction-id = "passData.payment.transaction_id" 
                     amount='renderData.defaultPaymentAmount'
+                    payment-currency-amount='renderData.defaultPaymentCurrencyAmount'
                     action-type="{{actionType}}" 
                     allocate-payment-after-posting = "allocatePaymentAfterPosting"
                     has-permission='hasPermissionToMakePayment()' 
                     selected-c-c='passData.payment.card_details'
                     reference-text='passData.payment.reference_text' 
+                    payment-currency-list="paymentCurrencyList" 
                     form-template-url='/assets/partials/payment/rvARPaymentPartial.html'>
             </snt-payment>
         </div>

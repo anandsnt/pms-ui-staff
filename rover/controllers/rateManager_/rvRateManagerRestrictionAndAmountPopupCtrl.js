@@ -497,6 +497,28 @@ angular.module('sntRover')
         };
 
         /**
+         * Function to set the restriction level if the heirarchy restriction feature is turned on
+         * @return {String}
+         */
+        const getHierarchyRestrictionType = () => {
+            let restriction = '';
+
+            // ROOMTYPE and RATETYPE restriction levels to be accommodated in coming stories
+            if ($scope.hierarchyRestrictions.houseEnabled) {
+                restriction = 'HOUSE';
+            }
+            return restriction;
+        }
+
+        /**
+         * Function to check if hierarchy restriction param is needed
+         * @return {boolean}
+         */
+        const isHierarchyRestrictionNeeded = () => {
+            return $scope.hierarchyRestrictions.houseEnabled;
+        }
+
+        /**
          * to update restriction rate
          */
         const callRateRestrictionUpdateAPI = () => {
@@ -504,22 +526,29 @@ angular.module('sntRover')
                 dialogData = $scope.ngDialogData,
                 mode = dialogData.mode;
 
-            if(mode === $scope.modeConstants.RM_SINGLE_RATE_RESTRICTION_MODE) {
+            if (mode === $scope.modeConstants.RM_SINGLE_RATE_RESTRICTION_MODE) {
                 params.rate_id = dialogData.rate.id;
             }
-            else if(mode === $scope.modeConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE) {
+            else if (mode === $scope.modeConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE) {
                 let rate_ids = _.pluck(dialogData.rates, 'id');
 
                 // if there is no rate_ids passed, checking for rate_type is being passed
-                if(!rate_ids.length && _.has(dialogData, 'rateTypes') && dialogData.rateTypes.length) {
+                if (!rate_ids.length && _.has(dialogData, 'rateTypes') && dialogData.rateTypes.length) {
                     params.rate_type_ids = _.pluck(dialogData.rateTypes, 'id');
                 }
                 else {
                     params.rate_ids = rate_ids;
                 }
+                if (isHierarchyRestrictionNeeded()) {
+                    params.restrictionType = getHierarchyRestrictionType();
+                }
             }
 
             params.details = [];
+
+            if (dialogData.hierarchialRateRestrictionRequired) {
+                params.hierarchialRateRestrictionRequired = true;
+            }
 
             formDayRestrictionParamsForAPI(params);
 
@@ -544,11 +573,22 @@ angular.module('sntRover')
             if (mode === $scope.modeConstants.RM_SINGLE_RATE_TYPE_RESTRICTION_MODE) {
                 params.rate_type_ids = [];
                 params.rate_type_ids.push(dialogData.rateType.id);
-            } else {
+            }
+            else {
                 params.rate_type_ids = _.pluck(dialogData.rateType, 'id');
             }
 
+            if (mode === $scope.modeConstants.RM_MULTIPLE_RATE_TYPE_RESTRICTION_MODE) {
+                if (isHierarchyRestrictionNeeded()) {
+                    params.restrictionType = getHierarchyRestrictionType();
+                }
+            }
+
             params.details = [];
+
+            if (dialogData.hierarchialRateTypeRestrictionRequired) {
+                params.hierarchialRateTypeRestrictionRequired = true;
+            }
 
             formDayRestrictionParamsForAPI(params);
 
@@ -571,11 +611,20 @@ angular.module('sntRover')
                 dialogData = $scope.ngDialogData,
                 mode = dialogData.mode;
 
-            if(mode === $scope.modeConstants.RM_SINGLE_ROOMTYPE_RESTRICTION_MODE) {
+            if (mode === $scope.modeConstants.RM_SINGLE_ROOMTYPE_RESTRICTION_MODE) {
                 params.room_type_id = dialogData.roomType.id;
+            }
+            else if (mode === $scope.modeConstants.RM_MULTIPLE_ROOMTYPE_RESTRICTION_MODE) {
+                if (isHierarchyRestrictionNeeded()) {
+                    params.restrictionType = getHierarchyRestrictionType();
+                }
             }
 
             params.details = [];
+
+            if (dialogData.hierarchialRoomTypeRestrictionRequired) {
+                params.hierarchialRoomTypeRestrictionRequired = true;
+            }
 
             formDayRestrictionParamsForAPI(params);
 
@@ -599,8 +648,13 @@ angular.module('sntRover')
                 mode = dialogData.mode;
 
             params.rate_id = dialogData.rate.id;
-            if(mode === $scope.modeConstants.RM_SINGLE_RATE_SINGLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE) {
+            if (mode === $scope.modeConstants.RM_SINGLE_RATE_SINGLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE) {
                 params.room_type_id = dialogData.roomType.id;
+            }
+            else if (mode === $scope.modeConstants.RM_SINGLE_RATE_MULTIPLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE) {
+                if (isHierarchyRestrictionNeeded()) {
+                    params.restrictionType = getHierarchyRestrictionType();
+                }
             }
 
             params.details = [];
@@ -1125,7 +1179,12 @@ angular.module('sntRover')
                     break;
 
                 case $scope.modeConstants.RM_SINGLE_RATE_MULTIPLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE:
-                    initializeSingleRateMultipleRoomTypeRestrictionAndAmountMode();
+                    if ($scope.ngDialogData.isHierarchyRestrictionEnabled) {
+                        initializeMultipleRateRestrictionMode();
+                    }
+                    else {
+                        initializeSingleRateMultipleRoomTypeRestrictionAndAmountMode();
+                    }
                     break;
 
                 dafault:

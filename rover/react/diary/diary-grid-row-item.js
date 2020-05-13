@@ -65,7 +65,7 @@ var GridRowItem = React.createClass({
         switch (data[meta.status]) {
             case 'available':
                 if (showRateAmount) {
-                    caption = display.currency_symbol + ' ' + parseFloat(data[meta.rate]).toFixed(2) + ' | ' + data[meta.room_type];
+                    caption = data.rate_currency + ' ' + parseFloat(data[meta.rate]).toFixed(2) + ' | ' + data[meta.room_type];
                 } else {
                     caption = data[meta.room_type];
                 }
@@ -178,7 +178,7 @@ var GridRowItem = React.createClass({
         }
 
         return className;
-
+        
     },
 
     render: function() {
@@ -203,13 +203,15 @@ var GridRowItem = React.createClass({
             left = (start_time_ms - x_origin) * px_per_ms + 'px',
             is_balance_present = data.is_balance_present,
             is_room_locked = data.cannot_move_room,
+            isNightlyReservation = (typeof data.is_hourly !== 'undefined' && !data.is_hourly),
             is_vip = data.is_vip,
             show_outstanding_indicator = (data.reservation_status === 'check-in' || data.reservation_status === 'reserved') && is_balance_present,
             row_item_class = 'occupancy-block' + (state.editing ? ' editing' : '') +
                 (show_outstanding_indicator ? ' deposit-required' : '');
-
-        if (typeof data.is_hourly !== 'undefined' && !data.is_hourly) {
-            row_item_class += ' overlay';
+        
+        // CICO-73467 : Disable Click,Drag and other Events for Night Components in Edit Mode.
+        if (state.editing && isNightlyReservation) {
+            row_item_class += ' disable-element';
         }
 
         if (state.editing) {
@@ -226,7 +228,8 @@ var GridRowItem = React.createClass({
 
             dateForCalculatingLeft.setMinutes(dateForCalculatingLeft.getMinutes() + dateForCalculatingLeft.getDSTDifference());
             left = (dateForCalculatingLeft.getTime() - x_origin) * px_per_ms + 'px';
-        } else if (display_start_time.isOnDST() && !start_date.isOnDST()) {
+        } 
+        else if (display_start_time.isOnDST() && !start_date.isOnDST()) {
             var dateForCalculatingLeft = new Date(start_time_ms);
 
             dateForCalculatingLeft.setMinutes(dateForCalculatingLeft.getMinutes() + dateForCalculatingLeft.getDSTDifference());
@@ -239,25 +242,30 @@ var GridRowItem = React.createClass({
             }
         }
 
-        var styleForDepositIcon = {};
-
+        var styleForDepositIcon = {},
+            styleForRoomLocked = {},
+            styleForNightlyIcon = {};
+        
         if (!show_outstanding_indicator) {
             styleForDepositIcon.display = 'none';
             styleForDepositIcon.width = '0px';
         }
-
-        var styleForRoomLocked = {};
-
         if (!this.props.data.is_hourly) {
             styleForRoomLocked.display = 'none';
             styleForRoomLocked.width = '0px';
         }
+        if (this.props.data.is_hourly) {
+            styleForNightlyIcon.display = 'none';
+            styleForNightlyIcon.width = '0px';
+        }
+
         return React.createElement(GridRowItemDrag, {
                 key: data.key,
                 className: row_item_class,
                 row_data: row_data,
                 meta: props.meta,
                 data: data,
+                rateCurrency: data.rate_currency,
                 display: display,
                 viewport: props.viewport,
                 edit: props.edit,
@@ -269,6 +277,7 @@ var GridRowItem = React.createClass({
                 __onResizeCommand: props.__onResizeCommand,
                 show_outstanding_indicator: show_outstanding_indicator,
                 is_room_locked: is_room_locked,
+                isNightlyReservation: isNightlyReservation,
                 currentDragItem: props.currentResizeItem,
                 style: {
                     left: left,
@@ -284,16 +293,23 @@ var GridRowItem = React.createClass({
                         width: reservation_time_span + 'px'
                     }
                 },
-
+                React.DOM.span({
+                        className: 'name'
+                    },
+                    innerText,
+                    React.DOM.span({
+                        className: isNightlyReservation ? 'reservation-type' : '',
+                        style: styleForNightlyIcon
+                    }, isNightlyReservation ? '(N)' : ''),
+                ''),
                 React.DOM.span({
                     className: show_outstanding_indicator ? 'deposit-icon' : '',
                     style: styleForDepositIcon
-                }, display.currency_symbol),
+                }, data.rate_currency),
                 React.DOM.span({
                     className: is_room_locked ? 'icons icon-diary-lock' : '',
                     style: styleForRoomLocked
                 }, ''),
-                innerText,
                 React.DOM.span({
                     className: is_vip ? 'vip' : '',
                     style: styleForRoomLocked

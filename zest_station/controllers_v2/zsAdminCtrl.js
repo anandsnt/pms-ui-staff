@@ -1,7 +1,7 @@
 sntZestStation.controller('zsAdminCtrl', [
     '$scope',
-    '$state', 'zsEventConstants', 'zsGeneralSrv', 'zsLoginSrv', '$window', '$rootScope', '$timeout', 'zsReceiptPrintHelperSrv', '$log',
-    function($scope, $state, zsEventConstants, zsGeneralSrv, zsLoginSrv, $window, $rootScope, $timeout, zsReceiptPrintHelperSrv, $log) {
+    '$state', 'zsEventConstants', 'zsGeneralSrv', 'zsLoginSrv', '$window', '$rootScope', '$timeout', 'zsReceiptPrintHelperSrv', '$log', 'sntIDCollectionUtilsSrv',
+    function($scope, $state, zsEventConstants, zsGeneralSrv, zsLoginSrv, $window, $rootScope, $timeout, zsReceiptPrintHelperSrv, $log, sntIDCollectionUtilsSrv) {
 
         BaseCtrl.call(this, $scope);
         var  isLightTurnedOn = false; // initially consider the HUE light status to be turned OFF.
@@ -300,6 +300,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 restartTimers();
                 $scope.setEditorModeCls();
                 $scope.zestStationData.set_workstation_id = station.id;
+                sntIDCollectionUtilsSrv.workstation_id = $scope.zestStationData.set_workstation_id;
                 $rootScope.workstation_id = $scope.zestStationData.set_workstation_id;
                 $scope.zestStationData.key_encoder_id = station.key_encoder_id;
                 $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS, {
@@ -343,7 +344,10 @@ sntZestStation.controller('zsAdminCtrl', [
                     'is_out_of_order': station.is_out_of_order,
                     'out_of_order_msg': station.out_of_order_msg,
                     'emv_terminal_id': station.emv_terminal_id,
-                    'id': station.id
+                    'id': station.id,
+                    // while updating a work station data, we need to supress passing of workstation id (zsBaseWebSrv) of previously selected workstation
+                    // new workstation id will be set only after this API is success
+                    'exclude_kiosk_workstation_id': true
                 };
             }
 
@@ -370,7 +374,7 @@ sntZestStation.controller('zsAdminCtrl', [
             var getParams = function() {
                 // CICO-42233
                 if (!$scope.zestStationData.idle_timer.prompt) {
-                    $scope.zestStationData.idle_timer.prompt = 0;
+                    return;
                 }
                 var params = {
                     'kiosk': {
@@ -539,6 +543,18 @@ sntZestStation.controller('zsAdminCtrl', [
         $scope.selectedCamera = localStorage.getItem('ID_SCAN_CAMERA_ID');
         $scope.selectedFRCamera = localStorage.getItem('FR_CAMERA_ID');
 
+        $scope.fetchAilaStatus = function() {
+            if (typeof cordova !== "undefined") {
+
+                cordova.exec(function(response) {
+                        $scope.zestStationData.usingAilaDevice = response;
+                    },
+                    function() {
+                        // do nothing
+                    }, 'RoverCDVPlugin', 'hasAilaScanHardware', ['']);
+            }
+        };
+
         // initialize
         (function() {
             var localDebugging = false, // change this if testing locally, be sure to make false if going up to dev/release/prod
@@ -597,6 +613,11 @@ sntZestStation.controller('zsAdminCtrl', [
                 $scope.autoIdDetectionChanged = function() {
                     localStorage.setItem('useAutoDetection', $scope.useIdAutoCapture === "YES" ? "YES" : "NO");
                 };
+            }
+
+            // Fetch AILA device status on reaching the admin screen
+            if ($scope.isIpad && $scope.zestStationData.is_snt_id_scan_enabled && $scope.idCaptureFeature) {
+                $scope.fetchAilaStatus();
             }
         }());
     }

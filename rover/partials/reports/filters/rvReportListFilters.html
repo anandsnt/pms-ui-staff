@@ -413,6 +413,14 @@
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasDepartments.data"
     options="uiChosenReport.hasDepartments.options"></multi-option-selection>
+<div class="entry" ng-show="uiChosenReport.hasLanguages && uiChosenReport.hasLanguages.data.length">
+    <label>Language</label>
+    <div class="select">
+        <select ng-model="uiChosenReport.locale" ng-options="languages.code as languages.language for languages in uiChosenReport.hasLanguages.data" ng-change="sortByChanged(uiChosenReport)" iscroll-stop-propagation>
+            <option value="">Select Language</option>
+        </select>
+    </div>
+</div>
 
 <div class="entry" ng-show="uiChosenReport.hasMinNoOfDaysNotOccupied">
     <label>Min. Days Not Occupied</label>
@@ -505,6 +513,14 @@
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasChargeTypes.data"
     options="uiChosenReport.hasChargeTypes.options"></multi-option-selection>
+
+<div class="entry date-range" ng-show="uiChosenReport.hasShowUpsellOnly">
+    <label class="checkbox inline" ng-class="{'checked':uiChosenReport.show_upsell_only}">
+        <span class="icon-form icon-checkbox" ng-class="{'checked':uiChosenReport.show_upsell_only}"></span>
+        <input type="checkbox" checked="checked" ng-model="uiChosenReport.show_upsell_only">
+        SHOW UPSELLS ONLY
+    </label>
+</div>
 
 <div class="entry" ng-show="uiChosenReport.sortByOptions.length && !!uiChosenReport.showSort">
     <label>Sort By</label>

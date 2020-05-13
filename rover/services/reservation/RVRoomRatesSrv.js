@@ -58,11 +58,6 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
                 delete params.promotion_id;
                }
             }
-
-            if (currentRoomAndRateActiveView === "RECOMMENDED") {
-                delete params.room_type_id;
-            }
-
         };
 
         // --------------------------------------------------------------------------------------------------------------

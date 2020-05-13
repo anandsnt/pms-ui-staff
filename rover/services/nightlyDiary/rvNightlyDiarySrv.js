@@ -87,6 +87,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             paramsToApi.per_page = data.per_page;
             paramsToApi.selected_room_type_ids = data.selected_room_type_ids;
             paramsToApi.selected_floor_ids = data.selected_floor_ids;
+            paramsToApi.selected_room_feature_ids = data.selected_room_feature_ids;
 
             sntBaseWebSrv.postJSON(url, paramsToApi).then(function(response) {
                 deferred.resolve(response);
@@ -206,6 +207,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             sntBaseWebSrv.getJSON(url, params).then(function(data) {
                 angular.forEach(data.reservations, function(item) {
                     item.statusClass = item.arrival_date === businessDate ? 'check-in' : 'no-status';
+                    item.fullName = item.last_name + ' ' + item.first_name;
                 });
                 deferred.resolve(data);
             }, function(error) {

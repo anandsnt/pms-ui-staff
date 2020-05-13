@@ -28,12 +28,15 @@ angular.module('sntRover').service('RVValidateCheckinSrv', ['$http',
 			"father_name": data.father_name,
 			"mother_name": data.mother_name,
 			"birth_place": data.birth_place,
-			"gender": data.gender,
+			"id_expiration_date": data.id_expiration_date,
+			"gender_id": data.gender_id,
 			"vehicle_registration_number": data.vehicle_registration_number,
 			"personal_id_no": data.personal_id_no,
 			"home_town": data.home_town,
 			"place_of_residence": data.place_of_residence,
 			"country_code": data.country_code,
+			"id_country_id": data.id_country_id,
+			"id_place_of_issue": data.id_place_of_issue,
 			"birthday": $filter('date')(tzIndependentDate(data.birth_day), "MM-dd-yyyy")
 		};
 		

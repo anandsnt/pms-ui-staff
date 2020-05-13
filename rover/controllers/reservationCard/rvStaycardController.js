@@ -160,7 +160,8 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCards
 			// fetching the card details
             if (!$rootScope.isStandAlone &&
                 !RVGuestCardsSrv.isGuestFetchComplete($scope.reservationData.guest.id)) {
-                $scope.callAPI(RVContactInfoSrv.getGuestDetails, {
+                $scope.callAPI(RVContactInfoSrv.getGuestDetailsById, {
+                    params: $scope.reservationData.guest.id,
                     successCallBack: function(data) {
                         $scope.$emit("UPDATE_GUEST_CARD_DETAILS", data);
                         openPaymentListDialog();

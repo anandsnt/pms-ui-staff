@@ -22,6 +22,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             'totalFees': 0
         };
 
+        // fetch payment methods and corresponding fees configurations
         $scope.$on("FETCH_PAYMENT_TYPES", function(event, data) {
             $scope.callAPI(zsPaymentSrv.fetchAvailablePaymentTyes, {
                 params: {},
@@ -77,6 +78,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
 
         /**  ***************************** CBA **************************************/
 
+        // inject CBS ctrl inside the payment app for CBA actions
         if ($scope.zestStationData.paymentGateway === 'CBA' || ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.hotelSettings.mli_cba_enabled)) {
             $controller('payCBACtrl', {
                 $scope: $scope
@@ -216,7 +218,14 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             $scope.screenMode.paymentInProgress = true;
             $scope.callAPI(zsPaymentSrv.submitDeposit, {
                 params: params,
-                'successCallBack': function() {
+                'successCallBack': function(response) {
+                      // assign the transaction_id and bill_id to srv
+                    var paymentData = zsPaymentSrv.getPaymentData();
+
+                    paymentData.transaction_id = response.transaction_id;
+                    paymentData.bill_id = response.bill_id;
+                    zsPaymentSrv.setPaymentData(paymentData);
+                    
                     $scope.$emit('hideLoader');
                     $scope.screenMode.value = 'PAYMENT_SUCCESS';
                     $scope.screenMode.paymentSuccess = true;
@@ -254,7 +263,8 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             $scope.screenMode.errorMessage = '';
             var isCBA = ($scope.zestStationData.paymentGateway === 'CBA' || ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.hotelSettings.mli_cba_enabled)) && $scope.isIpad;
             var isEMVPayment = ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.mliEmvEnabled) ||
-                $scope.zestStationData.paymentGateway === 'sixpayments';
+                $scope.zestStationData.paymentGateway === 'sixpayments' || 
+                $scope.zestStationData.paymentGateway === 'SHIJI';
             var isDesktopMLIPayment = $scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.ccReader === 'websocket';
             var isIpadDevicePayment = $scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.ccReader === 'local';
 
@@ -289,7 +299,9 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
         /**  *************************** EMV **********************************/
 
         var saveCardByEmv = function (params) {
-            if (params.amount === 0 && $scope.zestStationData.paymentGateway === 'sixpayments') {
+            // Work around fix for six payments and SHIJI
+            if (params.amount === 0 &&
+                ($scope.zestStationData.paymentGateway === 'sixpayments' || $scope.zestStationData.paymentGateway === 'SHIJI')) {
                 delete params.amount;
             }
             

@@ -11,6 +11,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		
 		var lcoAddonList = [];
 
+        $scope.showAddReference = true;
 		$scope.selectedLcoAddonId = '';
 		$scope.selectedAddon = {};
 		$scope.pageData = zsGeneralSrv.retrievePaginationStartingData();
@@ -74,6 +75,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			$('#upgrades').css({
 				"height": "calc(100% - 230px)"
 			});
+            setLoadingCompleted();
 		};
 
 		$scope.paginationAction = function(disableButtonFlag, isNextPage) {
@@ -127,7 +129,8 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		var addAddonToReservation = function(addon, isLco) {
 			var params = {
 				id: $scope.selectedReservation.id,
-				addon_id: addon.addon_id
+				addon_id: addon.addon_id,
+                reference_text: $scope.selectedAddonReference
 			};
 
 			if ($scope.isAddonFlatOrRoomType(addon)) {
@@ -248,7 +251,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 						$scope.showAddonPopup = false;
 					}
 				} else {
-					addAddonToReservation(selectedAddon);
+                    addAddonToReservation(selectedAddon);
 				}
 			}
 		};
@@ -267,6 +270,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				$scope.selectedLcoAddonId = _.isUndefined(selectLcoAddon) ? '' : selectLcoAddon.addon_id;
 			}
 		};
+		// Quantity popuup
 		$scope.closePopup = function() {
 			$scope.showAddonPopup = false;
 		};
@@ -425,9 +429,6 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				} else {
 					setPageNumberDetails();
 				}
-
-				$scope.loadingCompleted = true;
-				$scope.showPageNumberDetails = true;
 			};
 
 			$scope.callAPI(zsCheckinSrv.fetchHotelAddonLabels, {
@@ -438,6 +439,11 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				'failureCallBack': generalError
 			});
 		};
+
+		var setLoadingCompleted = function() {
+            $scope.loadingCompleted = true;
+            $scope.showPageNumberDetails = true;
+        };
 
 		var fetchAddons = function() {
 

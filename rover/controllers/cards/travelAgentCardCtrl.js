@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout', 'RVCompanyCardSrv', 'ngDialog', '$filter', '$stateParams', 'rvPermissionSrv',
-	function($scope, $rootScope, $timeout, RVCompanyCardSrv, ngDialog, $filter, $stateParams, rvPermissionSrv) {
+angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout', 'RVCompanyCardSrv', 'rvCompanyCardContractsSrv', 'ngDialog', '$filter', '$stateParams', 'rvPermissionSrv',
+	function($scope, $rootScope, $timeout, RVCompanyCardSrv, rvCompanyCardContractsSrv, ngDialog, $filter, $stateParams, rvPermissionSrv) {
 
 		$scope.searchMode = true;
 		$scope.account_type = 'TRAVELAGENT';
@@ -53,6 +53,9 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			} else if (tabToSwitch === 'statistics') {
 				$scope.$broadcast("LOAD_STATISTICS");
 			} 
+			else if (tabToSwitch === 'wallet') {
+				$scope.$broadcast("wallet");
+			} 
 			else if (tabToSwitch === 'cc-commissions') {
 				$scope.$broadcast("commissionsTabActive");
 			}
@@ -71,13 +74,94 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			$scope.isWithFilters = data;
 		});
 		
-		var presentContactInfo = {};
+		var presentContactInfo = {},
+			createArAccountCheck = false;
 		/* -------AR account starts here-----------*/
 
-		$scope.showARTab = function($event) {
+
+		$scope.shouldShowARMandatoryPopup = function() {
+            var shouldEnable = ($scope.contactInformation.mandatoryFields.address_line1_mandatory.is_mandatory_on_ar_account_creation 
+                        ? !isEmpty($scope.contactInformation.address_details.street1)
+                        : true) 
+                    && ($scope.contactInformation.mandatoryFields.city_mandatory.is_mandatory_on_ar_account_creation 
+                        ? !isEmpty($scope.contactInformation.address_details.city)
+                        : true)  
+                    && ($scope.contactInformation.mandatoryFields.postal_code_mandatory.is_mandatory_on_ar_account_creation 
+                        ? !isEmpty($scope.contactInformation.address_details.postal_code)
+                        : true)  
+                    && ($scope.contactInformation.mandatoryFields.country_mandatory.is_mandatory_on_ar_account_creation 
+                        ? ($scope.contactInformation.address_details.country_id !== '' 
+                            && $scope.contactInformation.address_details.country_id !== null)
+                        : true)
+
+                    && ($scope.contactInformation.mandatoryFields.contact_phone_mandatory.is_mandatory_on_ar_account_creation 
+                        ? !isEmpty($scope.contactInformation.address_details.phone)
+                        : true) 
+                    && ($scope.contactInformation.mandatoryFields.contact_email_address_mandatory.is_mandatory_on_ar_account_creation 
+                        ? !isEmpty($scope.contactInformation.address_details.email_address) 
+                        && (isValidEmail($scope.contactInformation.address_details.email_address))
+                        : true) 
+                    && ($scope.contactInformation.mandatoryFields.e_invoice_mandatory.is_mandatory_on_ar_account_creation 
+                        ? !isEmpty($scope.contactInformation.e_invoice_address)
+                        : true) 
+                    && ($scope.contactInformation.mandatoryFields.organization_id_mandatory.is_mandatory_on_ar_account_creation 
+                        ? !isEmpty($scope.contactInformation.account_details.organization_id)
+                        : true) 
+                    && ($scope.contactInformation.mandatoryFields.tax_id_mandatory.is_mandatory_on_ar_account_creation 
+                        ? !isEmpty($scope.contactInformation.account_details.tax_number)
+                        : true) 
+                    && ($scope.contactInformation.mandatoryFields.regd_tax_office_mandatory.is_mandatory_on_ar_account_creation 
+                        ? !isEmpty($scope.contactInformation.account_details.reg_tax_office)
+                        : true) 
+                    && ($scope.contactInformation.mandatoryFields.contact_name_mandatory.is_mandatory_on_ar_account_creation 
+                        ? (!isEmpty($scope.contactInformation.primary_contact_details.contact_first_name) 
+                            && !isEmpty($scope.contactInformation.primary_contact_details.contact_last_name))
+                        : true) 
+                    && (!$scope.arAccountDetails.is_auto_assign_ar_numbers 
+                        ? ($scope.arAccountDetails.ar_number !== '' 
+                        && $scope.arAccountDetails.ar_number !== null)
+                        : true) 
+                    && ($scope.contactInformation.mandatoryFields.payment_due_days_mandatory.is_mandatory_on_ar_account_creation 
+                        ? ($scope.arAccountDetails.payment_due_days !== '' 
+                            && $scope.arAccountDetails.payment_due_days !== null)
+                        : true);
+
+                return shouldEnable;
+		};
+
+		$scope.$on("saveArAccountFromMandatoryPopup", function(e, data) {
+			$scope.arAccountDetails = data;
 			$scope.isArTabAvailable = true;
-			$scope.$broadcast('setgenerateNewAutoAr', true);
-			$scope.switchTabTo($event, 'cc-ar-accounts');
+			$scope.shouldSaveArDataFromPopup = true;
+		});
+
+		$scope.openCompanyTravelAgentCardMandatoryFieldsPopup = function() {
+			$scope.shouldSaveArDataFromPopup = false;
+			ngDialog.open({
+				template: '/assets/partials/companyCard/rvCompanyTravelAgentCardMandatoryFieldsPopup.html',
+				className: 'ngdialog-theme-default1 calendar-single1',
+				controller: 'companyTravelAgentMandatoryFieldsController',
+				closeByDocument: false,
+				scope: $scope
+			});
+		};
+
+		$scope.clickedCreateArAccountButton = function() {
+			if (!$scope.shouldShowARMandatoryPopup()) {
+				$scope.isMandatoryPopupOpen = true;
+				$scope.openCompanyTravelAgentCardMandatoryFieldsPopup();
+			} else {
+				createArAccountCheck = true;
+				$scope.showARTab();
+			}							
+		};
+
+		$scope.$on("UPDATE_MANDATORY_POPUP_OPEN_FLAG", function() {
+			$scope.isMandatoryPopupOpen = false;
+		});
+
+		$scope.showARTab = function($event) {
+			saveContactInformation($scope.contactInformation);
 		};
 		$scope.$on('ARNumberChanged', function(e, data) {
 			$scope.contactInformation.account_details.accounts_receivable_number = data.newArNumber;
@@ -165,7 +249,10 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			if (!isNew) {
 				callCompanyCardServices();
 			}
-			$scope.displayShowPropertiesButton = !$scope.contactInformation.commission_details.is_global_commission;
+			if ($scope.contactInformation.commission_details) {
+				$scope.displayShowPropertiesButton = !$scope.contactInformation.commission_details.is_global_commission;
+			}
+			
 		});
 
 		$scope.$on("travelAgentSearchInitiated", function() {
@@ -257,7 +344,7 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 		 * If contract rate exists then should not allow editing name of CC/TA - CICO-56441
 		 */
 		$scope.isUpdateEnabledForName = function() {
-			var contractedRates = RVCompanyCardSrv.getContractedRates(),
+			var contractedRates = rvCompanyCardContractsSrv.getContractedRates(),
 				isUpdateEnabledForNameInCard = true;
 
 			if ( ( contractedRates.current_contracts && contractedRates.current_contracts.length > 0 ) || ( contractedRates.future_contracts && contractedRates.future_contracts.length > 0 )|| ( contractedRates.history_contracts && contractedRates.history_contracts.length > 0 ) ) {
@@ -290,7 +377,7 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			/** Set the other hotels' commission details same as that of current hotel's,
 			 *  when contact information saved with global commission true.
 			 **/
-			if ($scope.contactInformation.commission_details.is_global_commission) {
+			if ($scope.contactInformation.commission_details && $scope.contactInformation.commission_details.is_global_commission) {
 				angular.forEach($scope.contactInformation.commission_details.other_hotels_info, function (item) {
 					item.commission_type = $scope.contactInformation.commission_details.commission_type;
 					item.type = $scope.contactInformation.commission_details.type;
@@ -302,6 +389,11 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			$scope.contactInformation.id = data.id;
 			$scope.reservationDetails.travelAgent.id = data.id;
 			$rootScope.$broadcast("IDGENERATED", { 'id': data.id });
+			if ($scope.shouldSaveArDataFromPopup) {	
+				$scope.shouldSaveArDataFromPopup = false;	
+				$scope.$broadcast("UPDATE_AR_ACCOUNT_DETAILS", $scope.arAccountDetails);			
+				$scope.$broadcast("saveArAccount");
+			}
 			callCompanyCardServices();
 			// New Card Handler
 			if ($scope.viewState.isAddNewCard && typeof data.id !== "undefined") {
@@ -340,7 +432,7 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 		 * failure callback of save contact data
 		 */
 		var failureCallbackOfContactSaveData = function(errorMessage) {
-			$scope.$broadcast("setCardContactErrorMessage", errorMessage);
+			$rootScope.$broadcast("setCardContactErrorMessage", errorMessage);
 			$scope.currentSelectedTab = 'cc-contact-info';
 		};
 
@@ -389,10 +481,12 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 					});
 				});
 			}
-			if (typeof data !== 'undefined' && (dataUpdated || $scope.isAddNewCard)) {
+			if (typeof data !== 'undefined' && (dataUpdated || $scope.viewState.isAddNewCard)) {
 				var dataToSend = JSON.parse(JSON.stringify(data));
 
-				dataToSend.commission_details.other_hotels_info = angular.copy(updatedOtherHotelsInfo);
+				if (dataToSend.commission_details) {
+					dataToSend.commission_details.other_hotels_info = angular.copy(updatedOtherHotelsInfo);
+				}
 
 				if (typeof dataToSend.countries !== 'undefined') {
 					delete dataToSend['countries'];
@@ -423,6 +517,17 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 
 				$scope.callAPI(RVCompanyCardSrv.saveContactInformation, options);
 			} else {
+				if ($scope.shouldSaveArDataFromPopup) {
+					$scope.shouldSaveArDataFromPopup = false;			
+					$scope.$broadcast("UPDATE_AR_ACCOUNT_DETAILS", $scope.arAccountDetails);			
+					$scope.$broadcast("saveArAccount");
+				}
+				if (createArAccountCheck) {
+					$scope.$broadcast('setgenerateNewAutoAr', true);
+					$scope.$broadcast("saveArAccount");
+					$scope.isArTabAvailable = true;
+				}
+				createArAccountCheck = false;
 				// Close the hotel info popup on saving
 				if (hotelInfoChangedFromPopup) {
 					ngDialog.close();

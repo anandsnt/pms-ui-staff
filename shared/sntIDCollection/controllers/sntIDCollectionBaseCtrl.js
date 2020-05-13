@@ -26,7 +26,10 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		useExtCamForFR: false,
 		useAutoDetection: false,
 		idCapturePluginName: '',
-		idCaptureActionName: ''
+		idCaptureActionName: '',
+		useAilaDevice: false,
+		useThirdPartyScan: false,
+		thirdPatrtyConnectionUrl: ''
 	};
 
 	var stopVideoStream = function() {
@@ -47,8 +50,89 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		};
 	};
 
+	/** ******* THIRD PARTY SCAN ACTIONS STARTS HERE ********************/ 
+
+	var frontSideResults;
+	var thirdPatrtyScanFinalActions = function(data) {
+		$timeout(function() {
+			// Process response
+			var response = sntIDCollectionUtilsSrv.formatResultsFromThirdParty(data.doc);		
+
+			$scope.screenData.scanMode = screenModes.final_id_results;
+			if ($scope.screenData.imageSide === 0) {
+				response.back_side_image = "";
+			}
+			$scope.$emit('FINAL_RESULTS', response);
+
+			$scope.screenData.idDetails = response;
+			$('#' + 'id-front-side').attr('src', response.front_side_image);
+			if (response.back_side_image) {
+				$('#' + 'id-back-side').attr('src', response.back_side_image);
+			}
+		}, 2000);
+	};
+
+	var scanIdUsingThirdParty = function() {
+			if (sntIDCollectionSrv.WebSocketObj && sntIDCollectionSrv.WebSocketObj.readyState === 1) {
+				$scope.$emit('IMAGE_ANALYSIS_STARTED');
+				
+				var json = {
+                    'command': 'cmd_scan_with_3rd_party_scanner',
+                    'timeout': sntIDCollectionUtilsSrv.thirdPartyScannerTimeout,
+                    'workstation_id': sntIDCollectionUtilsSrv.workstation_id
+                };
+                
+				sntIDCollectionSrv.WebSocketObj.send(JSON.stringify(json));
+			} else {
+				if ($scope.screenData.imageSide === 0) {
+					$scope.screenData.scanMode = screenModes.upload_front_image_failed;
+				} else {
+					$scope.screenData.scanMode = screenModes.upload_back_image_failed;
+				}
+				createWebSocketConnection();
+			}
+	};
+
+	var WebSocketActions = function(evt) {
+		var response = JSON.parse(evt.data);
+		// if ResponseCode is not 0, the scan was failure
+		if (response.ResponseCode && response.ResponseCode.toLowerCase() !== 0) {
+			$timeout(function() {
+				$scope.screenData.scanMode = $scope.screenData.imageSide === 0 ? 
+											 screenModes.upload_front_image_failed :
+											 screenModes.upload_back_image_failed;
+			}, 0);
+			return;
+		}
+
+		if (response.should_scan_more && $scope.screenData.imageSide === 0) {
+			$scope.screenData.scanMode = 'UPLOAD_BACK_IMAGE';
+			frontSideResults = response.doc;
+			$scope.screenData.imageSide = 1;
+		} else if ($scope.screenData.imageSide === 1) {
+			// join front side and back side details
+			response.doc = Object.assign({}, frontSideResults, response.doc);
+		}
+		thirdPatrtyScanFinalActions(response);
+	};
+
+	var createWebSocketConnection = function () {
+		if (sntIDCollectionSrv.WebSocketObj && sntIDCollectionSrv.WebSocketObj.readyState === 1) {
+			sntIDCollectionSrv.WebSocketObj.close();
+		}
+		
+		sntIDCollectionSrv.WebSocketObj = new WebSocket($scope.deviceConfig.thirdPatrtyConnectionUrl + '?workstation_id=' + sntIDCollectionUtilsSrv.workstation_id);
+		sntIDCollectionSrv.WebSocketObj.onmessage = function(evt) {
+			WebSocketActions(evt);
+		};
+	};
+	/** ******* THIRD PARTY SCAN ACTIONS ENDS HERE ********************/ 
+
 	$scope.setConfigurations = function(config) {
 		$scope.deviceConfig = config;
+		if (config.useThirdPartyScan) {
+			createWebSocketConnection();
+		}
 	};
 
 	var getImageDetails = function() {
@@ -58,8 +142,10 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			
 			if (!$scope.screenData.needBackSideScan || $scope.screenData.imageSide === 1) {
 				$scope.screenData.scanMode = screenModes.confirm_id_images;
+				$scope.$emit('ID_BACK_IMAGE_CAPTURED');
 			} else {
 				$scope.screenData.scanMode = screenModes.confirm_front_image;
+				$scope.$emit('ID_FRONT_IMAGE_CAPTURED');
 			}
 			if (response.image) {
 				var base64String = sntIDCollectionUtilsSrv.base64ArrayBuffer(response.image);
@@ -272,7 +358,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 
 		var cameraParams = {
 			'CAPTURE_TIMER': 3,
-			'PREVIEW_TIMER': 3,
+			'PREVIEW_TIMER': $scope.deviceConfig.useAilaDevice ? 0 : 3,
 			'CAMERA_TYPE': 'back_camera',
 			'CAMERA_MESSAGES': {
 				'DETECTING_FACE': 'WAITING FOR AN ID TO SCAN, PLEASE SHOW YOUR ID TO THE IPAD BACK CAMERA',
@@ -332,7 +418,10 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 	};
 
 	$scope.captureFrontImage = function() {
-		if (typeof cordova !== "undefined" && $scope.deviceConfig.useAutoDetection) {
+		if ($scope.deviceConfig.useThirdPartyScan) {
+			scanIdUsingThirdParty();
+		}
+		else if (typeof cordova !== "undefined" && $scope.deviceConfig.useAutoDetection) {
 			autoDetectIDAndProcessData();
 		} else {
 			$timeout(function() {
@@ -342,7 +431,10 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 	};
 
 	$scope.captureBackImage = function() {
-		if (typeof cordova !== "undefined" && $scope.deviceConfig.useAutoDetection) {
+		if ($scope.deviceConfig.useThirdPartyScan) {
+			scanIdUsingThirdParty();
+		}
+		else if (typeof cordova !== "undefined" && $scope.deviceConfig.useAutoDetection) {
 			autoDetectIDAndProcessData();
 		} else {
 			$timeout(function() {
@@ -357,7 +449,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		$('#'+ domIDMappings.back_image_preview).attr('src', '');
 		$scope.screenData.scanMode = screenModes.upload_front_image;
 		$scope.$emit('CLEAR_PREVIOUS_DATA');
-		if ($scope.deviceConfig.useExtCamera) {
+		if ($scope.deviceConfig.useExtCamera && !$scope.deviceConfig.useThirdPartyScan) {
 			$scope.$emit('FRONT_SIDE_SCANNING_STARTED');
 		}
 	};

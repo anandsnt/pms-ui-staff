@@ -1,0 +1,58 @@
+<section ng-if="mode ==='PASSPORT_DETAILS'" id="main" class="centered" role="main">
+    <div id="content">
+        <h1 translate>PASSPORT_DETAILS_HEADER</h1>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press='clickedOnEnterPassportNoButton()'>
+                        <div ng-include="icons.url.user_passport"></div>
+                        </button>
+                        {{ 'ENTER_PASSPORT_NUMBER_LABEL' | translate}}
+                </li>
+                <li class="break" ng-if="bypass_passport_entry">
+                    <span>Or</span>
+                </li>
+                <li ng-if="bypass_passport_entry">
+                    <button type="button" class="button option" touch-press='clickedOnBypassButton()'">
+                        <div ng-include="icons.url.no_user_passport"></div>
+                        </button>
+                    {{ 'BYPASS_PASSPORT_LABEL' | translate}}
+                </li>
+            </ul>
+        </nav>
+    </div>
+</section>
+
+<section ng-if="mode ==='COLLECT_PASSPORT_NUMBER'" id="main" class="centered" role="main">
+    <div id="content">
+        <h1 translate>PASSPORT_DETAILS_HEADER</h1>
+        <form method="post" class="form">
+            <div class="entry input">
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('passport-number')"
+                    click-touch="showOnScreenKeyboard('input_text'); resetTime();"
+                    ng-model="data.passportNumber" ng-change="onchangePassportNumber()"
+                    ng-keydown="resetTime()" id="passport-number" touch-press />
+            </div>
+            <div class="entry action">
+                <button type="button" class="button" ng-disabled="isPassportNumberBlank" ng-class="{'disabled': isPassportNumberBlank}" click-touch="passportNumberEntered()" translate>NEXT_BTN</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<section ng-if="mode === 'BYPASS_PASSPORT_DETAILS'" id="main" class="centered" role="main">
+    <div id="content">
+        <h1 translate>PASSPORT_DETAILS_HEADER</h1>
+        <h3 translate>PASPORT_BYPASS_REASON_SELECTOR_LABEL</h3>
+        <form method="post" class="form">
+            <div class="entry select select-with-button">
+                <select ng-model="data.bypassReason" ng-change="onchangeBypassReason()">
+                    <option ng-repeat="reason in bypassPassportReasons" value="{{reason}}">{{reason}}</option>
+                </select>
+            </div>
+            <div class="entry action">
+                <button type="button" class="button" ng-disabled="isBypassReasonNil" ng-class="{'disabled': isBypassReasonNil}" click-touch="bypassPassportDetails()" translate="">NEXT_BTN</button>
+            </div>
+        </form>
+    </div>
+</section>

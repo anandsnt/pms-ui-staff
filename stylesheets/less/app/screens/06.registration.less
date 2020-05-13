@@ -115,6 +115,14 @@
                         img { .size(auto, 40px); }
                     }
 
+                    .card-logo {
+                        &.blank {
+                            img {
+                                .size(20px, auto);
+                            }
+                        }
+                    }
+
                     &.error,
                     &.has-icon {
                         position: relative;
@@ -664,20 +672,20 @@
     
     /* Total Stay Fees ***/
     .total-stay-fees {
-        margin-top: 10px;
-        .float;
+        padding-top: 10px;
+        #flexbox > .parent(row wrap, '', flex-start, '');
 
+        /* Reservation Overview ***/
         .overview {
-            .pull-left;
+            #flexbox > .parent(row wrap, '', '', '');
 
             .toggle {
                 text-align: left;
-                margin-right: 20px;
                 padding-right: 20px;
+                margin-right: 10px;
                 background-position: 100% 65%;
                 max-width: 240px;
-                .show;
-                .pull-left;
+                .show();
 
                 .title {
                     font-size: 14px;
@@ -700,7 +708,6 @@
 
             .button { 
                 margin-right: 10px;
-                .pull-left;
                 .show;
 
                 &.green {
@@ -726,6 +733,10 @@
 
                     .icons { top: 8px; }
                 }
+
+                &.disabled {
+                    .opacity(35);
+                }
             }
 
             .checkbox {
@@ -743,55 +754,18 @@
                     left: 50%;
                     margin-left: -10px;
                 }
+
+
+                &.disabled {
+                    .opacity(35);
+                }
             }
         } 
 
-        .group-overview {
-            width: 100%;
-            .float;
-
-            li {
-                font-size: 14px;
-                line-height: 40px;
-                text-transform: uppercase;
-                margin: 0 10px 0 0;                
-                .pull-left;
-
-                .title,
-                .value {
-                    .pull-left;
-                }
-
-                .value {
-                    font-size: 30px;
-                    margin-left: 5px;
-
-                    &.red { color: @red; }
-                    &.green { color: @green; }
-                }
-
-                .button {
-                    margin-right: 5px;
-
-                    &.with-icon { .square(40px); }
-                }
-
-                &.break {
-                    padding: 0 10px 0 0;
-                    border-right: 1px solid rgba(0,0,0,.1);
-                }
-
-                &:last-child { 
-                    margin-right: 5px;
-                    .pull-right; 
-                }
-            }
-        }
-
+         /* Reservation Signature ***/
         .signature {
             position: relative;
             margin-left: 10px;
-            .pull-left;
 
             .toggle {
                 color: @textColor;
@@ -837,17 +811,17 @@
             }
         }
 
+        /* Reservation Payment Details ***/
         .item-payment {
-            .pull-right;
-            .float;
+            margin-left: auto;
+            #flexbox > .parent(row wrap, '', center, '');
 
             .next-view {
                 position: relative;
                 line-height: 14px;
                 height: 60px;
                 padding: 10px 15px;
-                .pull-left;
-                .clickable;
+                .clickable();
 
                 span { color: @textColor; }
 
@@ -863,6 +837,14 @@
                         float: none;
                         align-items: none;
                         .show;
+                    }
+
+                    &.blank {
+                        width: 40px;
+                        text-align: right;
+                        img {
+                            .size(25px, auto);
+                        }
                     }
                 }
 
@@ -883,7 +865,7 @@
                 .type { 
                     font-size: 18px;
                     font-weight: 600;
-                    max-width: 160px; 
+                    max-width: 140px; 
                 }
 
                 .icon-swiped { margin-top: 3px; }
@@ -898,24 +880,83 @@
                     border-top: 4px solid @textColor;
                     .square(0px);
                 }
+
+                @media only screen and (max-width: 1140px) {
+                    .name,
+                    .type { 
+                        max-width: 160px; 
+                    }
+                }
             }
 
             .add-new-button { 
                 padding: 0 40px; 
                 height: 60px;
-                .pull-left;
             }
 
             .button {
                 margin: 10px;
                 .square(40px);
-                .pull-left;
+
+                &.unmask-button {
+                    margin: 0 10px;
+                    .size( 60px, 65px );
+
+                    .icon-eye {
+                        background-size: 100px;
+                        background-position: 0 -10782px;
+                    }
+                }
             }
         }
 
+        /* Groups & Accounts Overview ***/
+        .group-overview {
+            width: 100%;
+            .float;
+
+            li {
+                font-size: 14px;
+                line-height: 40px;
+                text-transform: uppercase;
+                margin: 0 10px 0 0;                
+                .pull-left;
+
+                .title,
+                .value {
+                    .pull-left;
+                }
+
+                .value {
+                    font-size: 30px;
+                    margin-left: 5px;
+
+                    &.red { color: @red; }
+                    &.green { color: @green; }
+                }
+
+                .button {
+                    margin-right: 5px;
+
+                    &.with-icon { .square(40px); }
+                }
+
+                &.break {
+                    padding: 0 10px 0 0;
+                    border-right: 1px solid rgba(0,0,0,.1);
+                }
+
+                &:last-child { 
+                    margin-right: 5px;
+                    .pull-right; 
+                }
+            }
+        }
+
+        /* Fee details ***/   
         .details {
-            clear: both;
             padding-top: 10px;
+            width: 100%;
 
             /* Total stay fees table ***/
             .total-fees {

@@ -6,6 +6,8 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
         
         GuestCardBaseCtrl.call (this, $scope, RVSearchSrv, RVContactInfoSrv, rvPermissionSrv, $rootScope);
 
+        var reservationDetailsState = 'rover.reservation.staycard.reservationcard.reservationdetails';
+
     /**
      * storing to check if data will be updated
      */
@@ -148,6 +150,9 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
                     $scope.reservationData.guest.address = $scope.guestCardData.contactInfo.address;
 
                     $scope.reservationData.guest.loyaltyNumber = $scope.guestLoyaltyNumber;
+                    if ($state.current.name !== reservationDetailsState && $scope.reservationData.reservationId) {
+                        attachGuestToReservation($scope.reservationData.reservationId, $scope.reservationData.guest.id, true);
+                    }
                 }
                 $scope.guestCardData.userId = data.id;
                 if (!$scope.isGuestCardFromMenu) {
@@ -180,11 +185,26 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
             } else {
 
                 RVContactInfoSrv.completeContactInfoClone = JSON.parse(JSON.stringify(dataToUpdate));
-        // change date format to be send to API
+                // change date format to be send to API
                 if ($scope.guestCardData.contactInfo.birthday) {
-                    dataToUpdate.birthday = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
+                    dataToUpdate.birthday = moment($scope.guestCardData.contactInfo.birthday).format("MM-DD-YYYY");
                 } else {
                     dataToUpdate.birthday = null;
+                }
+                if ($scope.guestCardData.contactInfo.id_issue_date) {
+                    dataToUpdate.id_issue_date = moment($scope.guestCardData.contactInfo.id_issue_date).format("YYYY-MM-DD");
+                } else {
+                    dataToUpdate.id_issue_date = null;
+                }
+                if ($scope.guestCardData.contactInfo.entry_date) {
+                    dataToUpdate.entry_date = moment($scope.guestCardData.contactInfo.entry_date).format("YYYY-MM-DD");
+                } else {
+                    dataToUpdate.entry_date = null;
+                }
+                if ($scope.guestCardData.contactInfo.id_expiration_date) {
+                    dataToUpdate.id_expiration_date = moment($scope.guestCardData.contactInfo.id_expiration_date).format("YYYY-MM-DD");
+                } else {
+                    dataToUpdate.id_expiration_date = null;
                 }
                 var unwantedKeys = ['avatar']; // remove unwanted keys for API
 
@@ -223,14 +243,6 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
         };
 
     /**
-     * watch and update formatted date for display
-     */
-        $scope.$watch('guestCardData.contactInfo.birthday', function() {
-            if ($scope.guestCardData.contactInfo.birthday) {
-                $scope.birthdayText = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, $rootScope.dateFormat)));
-            }
-        });
-    /**
      * to handle click actins outside this tab
      */
         $scope.$on('saveContactInfo', function() {
@@ -265,10 +277,11 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
             $scope.errorMessage = ['Please save the Guest Card first'];
         });
 
-        $scope.popupCalendar = function() {
+        $scope.popupCalendarForGuestContactInfoDate = function(calenderFor) {
+            $scope.calenderFor = calenderFor;
             ngDialog.open({
                 template: '/assets/partials/guestCard/contactInfoCalendarPopup.html',
-                controller: 'RVContactInfoDatePickerController',
+                controller: 'RVAllContactInfoDatePickerController',
                 className: 'single-date-picker',
                 scope: $scope
             });
@@ -306,6 +319,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
             var unwantedKeys = ['avatar', 'confirmation_num']; // remove unwanted keys for API
 
             initialGuestCardData = dclone($scope.guestCardData.contactInfo, unwantedKeys);
+            $scope.hasPermissionToFlagGuest = rvPermissionSrv.getPermissionValue('FLAG_GUEST');
             
         };
 
@@ -376,6 +390,18 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
 
             return '';
         };
+
+        /**
+         * Toggle the blacklist flag upon click
+         */
+        $scope.onBlackListToggle = function() {
+            $scope.guestCardData.contactInfo.is_flagged = !$scope.guestCardData.contactInfo.is_flagged;
+
+            if (!$scope.guestCardData.contactInfo.is_flagged) {
+                $scope.guestCardData.contactInfo.flagged_reason = '';
+            }
+        };
+        
 
         init();
     }

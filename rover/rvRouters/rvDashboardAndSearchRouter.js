@@ -80,28 +80,29 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
         $stateProvider.state('rover.dashboard.manager', {
             url: '/manager',
             templateUrl: '/assets/partials/dashboard/rvManagerDashboard.html',
-            controller: 'RVmanagerDashboardController'
-        });
-        $stateProvider.state('rover.dashboard.frontoffice', {
-            url: '/frontoffice',
-            templateUrl: '/assets/partials/dashboard/rvFrontDeskDashboard.html',
-            controller: 'RVfrontDeskDashboardController',
+            controller: 'RVmanagerDashboardController',
             resolve: {
-                statistics: function(RVDashboardSrv) {
-                    var requestParams = {
-                        'show_adr': false,
-                        'show_upsell': true,
-                        'show_rate_of_day': false
-                    };
-
-                    return RVDashboardSrv.fetchStatisticData(requestParams);
+                marketData: function(rvAnalyticsSrv) {
+                    return rvAnalyticsSrv.fetchMarketCodes();
+                },
+                sourceData: function(rvAnalyticsSrv) {
+                    return rvAnalyticsSrv.fetchSourceCodes();
+                },
+                segmentData: function(rvAnalyticsSrv) {
+                    return rvAnalyticsSrv.fetchSegmantCodes();
+                },
+                originData: function(rvAnalyticsSrv) {
+                    return rvAnalyticsSrv.fetchOriginCodes();
                 }
             }
         });
+        $stateProvider.state('rover.dashboard.frontoffice', {
+            url: '/frontoffice',
+            templateUrl: '/assets/partials/dashboard/rvFrontDeskDashboard.html'
+        });
         $stateProvider.state('rover.dashboard.housekeeping', {
             url: '/housekeeping',  // TODO: check can we reduced it to hk?
-            templateUrl: '/assets/partials/dashboard/rvHouseKeepingDashboard.html',
-            controller: 'RVhouseKeepingDashboardController'
+            templateUrl: '/assets/partials/dashboard/rvHouseKeepingDashboard.html'
         });
 
         /**

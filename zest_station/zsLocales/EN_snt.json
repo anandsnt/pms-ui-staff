@@ -843,6 +843,42 @@
     "ROOM_UNAVAILABLE_FINAL_COME_BACK_LATER_MSG": "Please come back later and check with the front desk agent",
 
     "PAYMENT_TYPE_NOT_ALLOWED_HEADER": "Sorry",
-    "PAYMENT_TYPE_NOT_ALLOWED_SUB_HEADER": "Sorry, your payment type is not allowed, Please see front desk"
+    "PAYMENT_TYPE_NOT_ALLOWED_SUB_HEADER": "Sorry, your payment type is not allowed, Please see front desk",
 
+    "TO_COMPLETE_CHECKIN_INSERT_CARD_IN_EMV_DEVICE": "To Complete your Check-in",
+    "TO_COMPLETE_CHECKIN_INSERT_CARD_IN_EMV_DEVICE_SUB": "Insert your CC in the EMV device",
+    "INSERT_CARD_INSTRUCTIONS": "EMV device will be in the left side of the KIOSK",
+    "CC_INSERT_TIMEOUT": "Are you still there ?",
+    "CC_INSERT_ERROR": "Something went wrong!.",
+
+    "GUEST_CHARGES_HEADING": "Guest Charges",
+    "TOTAL": "Total",
+    "POST_ITEMS": "Post Items",
+    "ADD_CHARGE": "Add Charge",
+    "POST_ITEMS_ERROR_HEADER": "Posting failed!",
+
+    "PASSPORT_DETAILS_HEADER": "Your Passport Information is Required",
+    "ENTER_PASSPORT_NUMBER_LABEL": "Enter number",
+    "BYPASS_PASSPORT_LABEL": "Bypass",
+    "PASPORT_BYPASS_REASON_SELECTOR_LABEL": "Please select the reason of your bypass",
+    "PASSPORT_BYPASS_REASONS": "Reason 1;Reason2",
+
+    "GUEST_INFO_ERROR_MSG": "Something went wrong!. Please try agin after verifying the date entered",
+    "FILL_IN_GUEST_INFO": "Fill in the guest info to proceed",
+    "FILL_INFO_INSTRUCTIONS": "Fields marked with * are mandatory",
+    "SAVE_GUEST_INFO": "Save",
+    "GUEST_INFO_MISSGING_HEADING": "Guest Info missing",
+    "GUEST_INFO_MISSGING_SUB_HEADING": "Please enter all the required details",
+    "CLOSE": "CLOSE",
+    "VIEW_GUEST_DETAILS": "View Details",
+    "ADD_GUEST_DETAILS": "Add Details",
+    "SKIP_GUEST_DETAILS": "Skip Details",
+    "PARKING_ADDON_SKIP_HEADING": "Vehicle registation number missing",
+    "PARKING_ADDON_SKIP_MSG": "Since you have a parking add-on attached to your reservation, we will need your vehicle registation number. You can either add now or add later with the help of a front desk staff",
+    "ADD_NOW": "Add now",
+    "ADD_LATER": "Add later",
+    "BILLING_ADDRESS": "Billing Address",
+    "PRINT_GUEST_INVOICE":  "Print Bill",
+    "BILL_ADDRESSED_TO_TEXT": "Who should we address the bill to?",
+    "EMAIL_GUEST_INVOICE":  "E-mail Bill"
 }

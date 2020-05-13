@@ -10,7 +10,9 @@ sntRover
 				report: '=',
 				data: '=',
 				options: '=',
-				affectsFilter: '='
+				affectsFilter: '=',
+				displayStyle: '=',
+				filterHolderObj: '='
 			},
 			controller: function($scope, $element, $attrs) {
 				BaseCtrl.call(this, $scope);
@@ -139,7 +141,9 @@ sntRover
 					}
 
 					if ( typeof $scope.affectsFilter == typeof {} ) {
-						$scope.affectsFilter.process( $scope.report[$scope.affectsFilter.name], selectedItems );
+						var filterHolderObject = $scope.report || $scope.filterHolderObj;
+
+						$scope.affectsFilter.process( filterHolderObject[$scope.affectsFilter.name], selectedItems );
 					}
 
 					$timeout($scope.onUpdate, 150);
@@ -163,6 +167,7 @@ sntRover
 					}
 
 					updateSelectedValue();
+
 				};
 
 				init();

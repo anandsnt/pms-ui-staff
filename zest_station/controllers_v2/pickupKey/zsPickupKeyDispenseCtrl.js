@@ -5,8 +5,9 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
     'zsEventConstants',
     '$controller',
     'zsCheckinSrv',
+    'zsGeneralSrv',
     '$log',
-    function($scope, $stateParams, $state, zsEventConstants, $controller, zsCheckinSrv, $log) {
+    function($scope, $stateParams, $state, zsEventConstants, $controller, zsCheckinSrv, zsGeneralSrv, $log) {
 
         /** ********************************************************************************************
          **     Expected state params -----> reservation_id, room_no and first_name'              
@@ -28,15 +29,90 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
         /**
          * [initializeMe description]
          */
+
+        var fetchReservationDetails = function(getGuestMandatoryFields) {
+            var onSuccess = function(response) {
+                zsCheckinSrv.setSelectedCheckInReservation(response.results); // important
+                $state.go('zest_station.zsCheckinSaveGuestInfo', {
+                    guestInfo: angular.toJson(getGuestMandatoryFields),
+                    reservation_id: $stateParams.reservation_id,
+                    flowType: 'PICKUP_KEY',
+                    prevStateParams:JSON.stringify($stateParams)
+                });
+            };
+            var options = {
+                params: {
+                    'reservation_id': $stateParams.reservation_id
+                },
+                successCallBack: onSuccess
+            };
+
+            $scope.callAPI(zsGeneralSrv.fetchCheckinReservationDetails, options);
+        };
+
+        var checkIfAnyGuestDetailsAreMissing = function() {
+            var retrievGuestInfoCallback = function(data) {
+
+                if (!data.metadata.required_for_all_adults) {
+                    data.guests = _.filter(data.guests, function(guest) {
+                        return guest.primary;
+                    });
+                } else {
+                    // Filter out only Adult guest
+                    data.guests = _.filter(data.guests, function(guest) {
+                        return guest.guest_type === 'ADULT';
+                    });
+                }
+
+                // utils function
+                _.each(data.guests, function(guest) {
+                    var mandatoryFields = _.filter(guest.guest_details, function(field) {
+                        return field.mandatory;
+                    });
+                    var missingInfoForGuest = _.filter(mandatoryFields, function(field) {
+                        return !field.current_value;
+                    });
+
+                    var missingVehicleRegNumbers = _.filter(guest.guest_details, function(field) {
+                        return field.field_category === 'parking';
+                    });
+
+                    guest.is_missing_any_required_field = guest.info_bypassed ? false : missingInfoForGuest.length > 0 || missingVehicleRegNumbers.length > 0;
+                });
+
+                var guestsWithMissingInfo = _.filter(data.guests, function(guest) {
+                    return guest.is_missing_any_required_field;
+                });
+
+                if (guestsWithMissingInfo.length > 0) {
+                    fetchReservationDetails(data);
+                } else {
+                    $scope.zestStationData.skipGuestMandatorySchemaCheck = true;
+                    initializeMe();
+                }
+            };
+            var options = {
+                params: {
+                    guest_detail_id: $stateParams.guest_id,
+                    reservation_id: $stateParams.reservation_id
+                },
+                successCallBack: retrievGuestInfoCallback
+            };
+
+            $scope.callAPI(zsCheckinSrv.getGuestMandatoryFields, options);
+        };
+
         var initializeMe = function() {
             // All the common actions for dispensing keys are to be included in
             // zsKeyDispenseCtrl
+
             $controller('zsKeyDispenseCtrl', {
                 $scope: $scope
             });
-
-
-            if ($stateParams.isQuickJump === 'true') {
+            if (!$scope.zestStationData.skipGuestMandatorySchemaCheck) {
+                checkIfAnyGuestDetailsAreMissing();
+            }
+            else if ($stateParams.isQuickJump === 'true') {
 
                 $log.log('Jumping to Screen with demo data');
                 $scope.mode = $stateParams.quickJumpMode;

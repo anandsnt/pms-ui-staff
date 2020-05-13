@@ -13,6 +13,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
          *********************************************************************************/
 
         BaseCtrl.call(this, $scope);
+        $scope.showAddressOptions = false;
         /**
          *  general failure actions inside bill screen
          **/
@@ -185,19 +186,68 @@ sntZestStation.controller('zsPrintBillCtrl', [
             }, 100);
         };
 
+        var executePrint = function(addressType) {
+            $scope.printData.addressType = addressType;
+            if (addressType === 'ta') {
+                $scope.printData.billingInfo = $scope.printData.ta_card_details;
+            } else if (addressType === 'company') {
+                $scope.printData.billingInfo = $scope.printData.company_card_details;
+            } else {
+                $scope.printData.billingInfo = $scope.printData.guest_info;
+            }
+            
+            // add the orientation
+            addPrintOrientation();
+            // print section - if its from device call cordova.
+            handleBillPrint();
+        };
+
+        var sendEmailAlongWithPrint = false;
+
+        $scope.$on('EMAIL_TO_BE_SEND_WITH_PRINT', function(ev, data) {
+            sendEmailAlongWithPrint = data.sendEmail;
+        });
+
+        $scope.addressSelected = function(addressType) {
+            executePrint(addressType);
+            if (sendEmailAlongWithPrint) {
+                $scope.emailInvoice(addressType);
+            }
+        };
+
+        var fetcCompanyTADetails = function() {
+            var successCallBack = function(response) {
+                $scope.printData.guest_info = response.guest;
+                $scope.printData.company_card_details = response.company_card;
+                if (response &&
+                    (response.company_card && response.company_card.name)) {
+                    $scope.showAddressOptions = true;
+                } else {
+                    executePrint('guest');
+                }
+            };
+
+            var data = {
+                'reservation_id': $scope.reservation_id
+            };
+            var options = {
+                params: data,
+                successCallBack: successCallBack
+            };
+            
+            $scope.callAPI(zsCheckoutSrv.fetchCompanyTADetails, options);
+        };
 
         var fetchBillData = function() {
             var data = {
-                'reservation_id': $scope.reservation_id,
-                'bill_number': 1
+                reservation_id: $scope.reservation_id,
+                bill_number: 1,
+                locale: $translate.use()
             };
 
             var fetchBillSuccess = function(response) {
                 $scope.printData = response;
-                // add the orientation
-                addPrintOrientation();
-                // print section - if its from device call cordova.
-                handleBillPrint();
+                fetcCompanyTADetails();
             };
             var options = {
                 params: data,

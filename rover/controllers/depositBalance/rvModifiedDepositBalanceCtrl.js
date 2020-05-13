@@ -10,6 +10,7 @@ sntRover.controller('RVDepositBalanceCtrl', [
     'rvPermissionSrv',
     'RVReservationCardSrv',
     '$state',
+    'RVAutomaticEmailSrv',
     function($scope,
              ngDialog,
              $rootScope,
@@ -17,9 +18,11 @@ sntRover.controller('RVDepositBalanceCtrl', [
              RVPaymentSrv,
              $stateParams,
              $filter,
-             $timeout, rvPermissionSrv, RVReservationCardSrv, $state) {
+             $timeout, rvPermissionSrv, RVReservationCardSrv, $state, RVAutomaticEmailSrv) {
 
         BaseCtrl.call(this, $scope);
+
+        SharedMethodsBaseCtrl.call (this, $scope, $rootScope, RVAutomaticEmailSrv, ngDialog);
 
         // NOTE: For connected hotels, the deposit policy is not available inside this controller.
         // CICO-34705 in case no deposit policy is set; then the API will not provide the deposit_policy key
@@ -67,7 +70,9 @@ sntRover.controller('RVDepositBalanceCtrl', [
         $scope.showAddtoGuestCard = true;
         $scope.shouldCardAvailable = false;
         $scope.depositBalanceMakePaymentData = {};
+        $scope.depositBalanceMakePaymentData.rateCurrency = $scope.depositBalanceData.data.rate_currency;
         $scope.depositBalanceMakePaymentData.amount = parseFloat($scope.depositBalanceData.data.balance_deposit_amount).toFixed(2);
+        $scope.depositBalanceMakePaymentData.payment_amount = parseFloat($scope.depositBalanceData.data.balance_deposit_payment_amount).toFixed(2);
         $scope.refundAmount = 0;
 
         if ($scope.depositBalanceMakePaymentData.amount < 0) {
@@ -307,7 +312,8 @@ sntRover.controller('RVDepositBalanceCtrl', [
             $scope.closeDialog();
         };
 
-        $scope.$on("CLOSE_DIALOG", function() {
+        $scope.$on("CLOSE_DIALOG", function() {   
+            $state.reload($state.$current.name);         
             $scope.closeDepositModal();
         });
 
@@ -351,9 +357,17 @@ sntRover.controller('RVDepositBalanceCtrl', [
              */
 
             $scope.$emit("hideLoader");
-            $scope.errorMessage = [];
+            $scope.errorMessage = [];      
 
-            cardDetails = data.payment_type || {};
+            $scope.currentPaymentBillId = data.bill_id;
+            $scope.currentPaymentTransactionId = data.transaction_id;
+            $scope.isDepositPayment = data.is_deposit_payment;
+
+            if ($rootScope.autoEmailPayReceipt || ($rootScope.autoEmailDepositInvoice && $scope.isDepositPayment)) {
+                $scope.autoTriggerPaymentReceiptActions();
+            }     
+
+            var cardDetails = data.payment_type || {};
 
             var reservationCard = $scope.reservationData.reservation_card;
 
@@ -394,16 +408,17 @@ sntRover.controller('RVDepositBalanceCtrl', [
             }
 
             $scope.depositPaidSuccesFully = true;
-
-            ngDialog.close();
+            
             $rootScope.$broadcast("UPDATE_DEPOSIT_BALANCE", data);
             // Update reservation type
             $rootScope.$broadcast('UPDATERESERVATIONTYPE', data.reservation_type_id);
-            $rootScope.$broadcast('UPDATE_DEPOSIT_BALANCE_FLAG', false);
-
-            // CICO-42399 - Reload staycard after successful payment
-            $state.reload($state.$current.name);
+            $rootScope.$broadcast('UPDATE_DEPOSIT_BALANCE_FLAG', false);                         
         };
+
+        $scope.$on("AUTO_TRIGGER_EMAIL_AFTER_PAYMENT", function(e, data) {
+            $scope.sendAutomaticEmails(data);
+            $state.reload($state.$current.name);
+        });
 
 
         $scope.$on("PAYMENT_SUCCESS", function(event, data) {

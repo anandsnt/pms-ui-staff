@@ -1,13 +1,9 @@
 <!-- First column - Scheduled reports -->
-<div class="report-col main-col scrollable" ng-iscroll="REPORT_SCHEDULES_SCROLL"> <!-- Add vertical scroller here -->
+<div class="report-col main-col scrollable" ng-iscroll="REPORT_SCHEDULES_SCROLL">
+    <!-- Add vertical scroller here -->
     <div class="wrapper">
         <ul ng-hide="isAddingNew">
-            <li ng-repeat="item in schedulesList"
-                ng-hide="item.filteredOut"
-                ng-class="{'active': item.active}"
-                ng-click="pickSchedule(item, $index)"
-                class="report-item"
-            >
+            <li ng-repeat="item in schedulesList" ng-hide="item.filteredOut" ng-class="{'active': item.active}" ng-click="pickSchedule(item, $index)" class="report-item">
                 <span ng-class="item.reportIconCls"></span>
                 <div class="data">
                     <h2 ng-bind-html="escapeNull(item.report.title)|highlight:query:false"></h2>
@@ -17,12 +13,7 @@
         </ul>
 
         <ul ng-show="isAddingNew">
-            <li ng-repeat="item in schedulableReports"
-                ng-hide="item.filteredOut"
-                ng-class="{'active': item.active}"
-                ng-click="pickReport(item, $index)"
-                class="report-item"
-            >
+            <li ng-repeat="item in schedulableReports" ng-hide="item.filteredOut" ng-class="{'active': item.active}" ng-click="pickReport(item, $index)" class="report-item">
                 <span ng-class="item.reportIconCls"></span>
                 <div class="data">
                     <h2 ng-bind-html="escapeNull(item.report.title)|highlight:query:false"></h2>
@@ -31,8 +22,7 @@
             </li>
         </ul>
 
-        <div class="no-content"
-          ng-show="!schedulesList.length && !isAddingNew">
+        <div class="no-content" ng-show="!schedulesList.length && !isAddingNew">
             <div class="info">
                 <span class="icon-no-content icon-reports"></span>
                 <strong class="h1">Schedules unavailable</strong>
@@ -40,55 +30,49 @@
             </div>
         </div>
     </div>
-    
+
 </div>
 
 <!-- Second column - paremeters -->
-<div ng-if="!shouldHideParametersCol()"
-    class="report-col">
-    <div class="scrollable" ng-iscroll="SECOND_COLUMN_SCROLL"> <!-- Add vertical scroller here + add class "buttons-3" if it's an existing schedule -->
+<div ng-show="!shouldHideParametersCol()" class="report-col">
+    <div class="scrollable" ng-iscroll="SECOND_COLUMN_SCROLL">
+        <!-- Add vertical scroller here + add class "buttons-3" if it's an existing schedule -->
         <div class="wrapper">
             <h3>Schedule Parameters<span>{{ selectedEntityDetails.report.title }}</span></h3>
-            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-            <div class="entry" ng-hide="isGuestBalanceReport || isYearlyTaxReport">
+            <multi-option-selection ng-show="filters.hasShow && filters.hasShow.data.length" label="Show" on-update="refreshSecondColumnScroll" data="filters.hasShow.data" options="filters.hasShow.options">
+            </multi-option-selection>
+            <div class="entry" ng-hide="isGuestBalanceReport || isYearlyTaxReport || isCreditCheckReport || isReservationsByUserReport || isRoomStatusReport">
                 <label for="time-period">Time Period</label>
                 <div class="select">
-                    <select ng-model="scheduleParams.time_period_id"
-                        ng-options="timePeriod.id as timePeriod.description for timePeriod in scheduleTimePeriods"
-                        ng-disabled="isGuestBalanceReport"
-                        iscroll-stop-propagation>
+                    <select ng-model="scheduleParams.time_period_id" ng-options="timePeriod.id as timePeriod.description for timePeriod in scheduleTimePeriods" ng-disabled="isGuestBalanceReport" iscroll-stop-propagation>
+                        <option value="">Time period</option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry" ng-show="creationDateTimePeriods.length > 0">
+                <label for="time-period">Creation Date</label>
+                <div class="select">
+                    <select ng-model="scheduleParams.create_date_range" ng-options="timePeriod.id as timePeriod.description for timePeriod in creationDateTimePeriods" iscroll-stop-propagation>
+                        <option value="">Time period</option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry" ng-show="arrivalDateTimePeriods.length > 0">
+                <label for="time-period">Arrival Date</label>
+                <div class="select">
+                    <select ng-model="scheduleParams.arrival_date_range" ng-options="timePeriod.id as timePeriod.description for timePeriod in arrivalDateTimePeriods" iscroll-stop-propagation>
                         <option value="">Time period</option>
                     </select>
                 </div>
             </div>
 
-            <multi-option-selection ng-show="isGuestBalanceReport"
-                label="Guest/Account"
-                on-update="refreshSecondColumnScroll"
-                data="filters.hasGeneralOptions.data"
-                options="filters.hasGeneralOptions.options"></multi-option-selection>
+            <multi-option-selection ng-show="isGuestBalanceReport" label="Guest/Account" on-update="refreshSecondColumnScroll" data="filters.hasGeneralOptions.data" options="filters.hasGeneralOptions.options"></multi-option-selection>
 
-            <multi-option-selection ng-show="filters.hasGeneralOptions && filters.hasGeneralOptions.data.length && !isGuestBalanceReport"
-                label="Option(s)"
-                data="filters.hasGeneralOptions.data"
-                on-update="refreshSecondColumnScroll"
-                options="filters.hasGeneralOptions.options"></multi-option-selection>
-            <multi-option-selection ng-show="filters.hasDisplay && filters.hasDisplay.data.length"
-                label="Display(s)"
-                on-update="refreshSecondColumnScroll"
-                data="filters.hasDisplay.data"
-                options="filters.hasDisplay.options"></multi-option-selection>
-            <multi-option-selection ng-show="filters.hasRateTypeFilter && filters.hasRateTypeFilter.data.length"
-                label="Rate Type"
-                on-update="refreshSecondColumnScroll"
-                data="filters.hasRateTypeFilter.data"
-                options="filters.hasRateTypeFilter.options"></multi-option-selection>
-            
-            <multi-option-selection ng-show="filters.hasRateFilter && filters.hasRateFilter.data.length"
-                label="Display(s)"
-                on-update="refreshSecondColumnScroll"
-                data="filters.hasRateFilter.data"
-                options="filters.hasRateFilter.options"></multi-option-selection>
+            <multi-option-selection ng-show="filters.hasGeneralOptions && filters.hasGeneralOptions.data.length && !isGuestBalanceReport && !isCreditCheckReport" label="Option(s)" data="filters.hasGeneralOptions.data" on-update="refreshSecondColumnScroll" options="filters.hasGeneralOptions.options"></multi-option-selection>
+            <multi-option-selection ng-show="filters.hasDisplay && filters.hasDisplay.data.length" label="Display(s)" on-update="refreshSecondColumnScroll" data="filters.hasDisplay.data" options="filters.hasDisplay.options"></multi-option-selection>
+            <multi-option-selection ng-show="filters.hasRateTypeFilter && filters.hasRateTypeFilter.data.length" label="Rate Type" on-update="refreshSecondColumnScroll" data="filters.hasRateTypeFilter.data" options="filters.hasRateTypeFilter.options"></multi-option-selection>
+
+            <multi-option-selection ng-show="filters.hasRateFilter && filters.hasRateFilter.data.length" label="Display(s)" on-update="refreshSecondColumnScroll" data="filters.hasRateFilter.data" options="filters.hasRateFilter.options"></multi-option-selection>
 
             <div class="entry" ng-show="isYearlyTaxReport">
                 <label>Year</label>
@@ -102,27 +86,78 @@
                     <input type="checkbox" checked="checked" ng-model="scheduleParams.with_vat_number">
                     Cards With Tax ID
                 </label>
-                 <label class="checkbox inline" ng-class="{'checked':scheduleParams.without_vat_number}">
+                <label class="checkbox inline" ng-class="{'checked':scheduleParams.without_vat_number}">
                     <span class="icon-form icon-checkbox" ng-class="{'checked':scheduleParams.without_vat_number}"></span>
                     <input type="checkbox" checked="checked" ng-model="scheduleParams.without_vat_number">
                     Cards Without Tax ID
                 </label>
             </div>
+            <multi-option-selection ng-show="isYearlyTaxReport" label="Country" on-update="refreshFilterScroll" data="filters.hasIncludeCountry.data" options="filters.hasIncludeCountry.options"></multi-option-selection>
+            <multi-option-selection ng-show="filters.hasByChargeGroup && filters.hasByChargeGroup.data.length" label="Charge Group(s)" on-update="refreshSecondColumnScroll" data="filters.hasByChargeGroup.data" options="filters.hasByChargeGroup.options" affects-filter="filters.hasByChargeGroup.affectsFilter"
+                filter-holder-obj="filters"></multi-option-selection>
+            <!-- related options -->
+            <multi-option-selection ng-show="filters.hasByChargeCode && filters.hasByChargeCode.data.length" label="Charge Code(s)" on-update="refreshSecondColumnScroll" data="filters.hasByChargeCode.data" options="filters.hasByChargeCode.options"></multi-option-selection>
 
+            <multi-option-selection ng-show="filters.hasCompletionStatus && filters.hasCompletionStatus.data.length" label="Completion Status" on-update="refreshSecondColumnScroll" data="filters.hasCompletionStatus.data" options="filters.hasCompletionStatus.options"></multi-option-selection>
+            <multi-option-selection ng-show="filters.hasDepartments && filters.hasDepartments.data.length" label="Department Assigned" on-update="refreshSecondColumnScroll" data="filters.hasDepartments.data" options="filters.hasDepartments.options"></multi-option-selection>
+            <div class="entry date-range" ng-show="filters.hasShowActionables">
+                <label>Show</label>
+                <div class="select">
+                    <select name="show-actionables" ng-model="filters.showActionables" ng-options="action.value as action.name for action in filters.hasShowActionables.data">
+                    </select>
+                </div>
+            </div>
+
+            <multi-option-selection ng-show="filters.hasUsers && filters.hasUsers.data.length" label="{{ filters.hasUsers.title }}" on-update="refreshSecondColumnScroll" data="filters.hasUsers.data" options="filters.hasUsers.options"></multi-option-selection>
+
+            <multi-option-selection ng-show="filters.hasChargeTypes && filters.hasChargeTypes.data.length" label="Charge Types(s)" on-update="refreshSecondColumnScroll" data="filters.hasChargeTypes.data" options="filters.hasChargeTypes.options"></multi-option-selection>
+
+            <div class="entry search" ng-show="filters.hasIncludeCompanyTaGroup">
+                <label>Company/TA/Group</label>
+                <input class="icons icon-search" auto-complete auto-options="compTaGrpAutoCompleteOnList" data-card-type="" type="text" placeholder="Search by Company/TA/Group" value="" autocomplete="off" ng-model="selectedEntityDetails.uiChosenIncludeCompanyTaGroup"
+                    report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnuiChosenReport(selectedEntityDetails)" ng-change="removeCompTaGrpId(selectedEntityDetails, 'uiChosenIncludeCompanyTaGroup', 'chosenIncludeCompanyTaGroup')">
+                <input type="text" class="hidden" ng-model="uiChosenReport.chosenIncludeCompanyTaGroup">
+            </div>
+
+            <multi-option-selection ng-show="filters.hasMarketsList" label="Market(s)" on-update="refreshSecondColumnScroll" data="filters.hasMarketsList.data" options="filters.hasMarketsList.options"></multi-option-selection>
+
+            <multi-option-selection ng-show="filters.hasSourcesList" label="Source(s)" on-update="refreshSecondColumnScroll" data="filters.hasSourcesList.data" options="filters.hasSourcesList.options"></multi-option-selection>
+
+            <multi-option-selection ng-show="filters.hasOriginsList" label="Origin(s)" on-update="refreshSecondColumnScroll" data="filters.hasOriginsList.data" options="filters.hasOriginsList.options"></multi-option-selection>
+            <multi-option-selection ng-show="filters.hasSegmentList" label="Segment(s)" on-update="refreshSecondColumnScroll" data="filters.hasSegmentList.data" options="filters.hasSegmentList.options"></multi-option-selection>
+            <multi-option-selection ng-show="filters.hasGuaranteeTypeList" label="Guarantee Type(s)" on-update="refreshSecondColumnScroll" data="filters.hasGuaranteeTypeList.data" options="filters.hasGuaranteeTypeList.options"></multi-option-selection>
+            <multi-option-selection ng-show="filters.hasRateCodeList" label="Rate" on-update="refreshSecondColumnScroll" data="filters.hasRateCodeList.data" options="filters.hasRateCodeList.options"></multi-option-selection>
+            <multi-option-selection ng-show="filters.hasRoomTypeList" label="Room Types" on-update="refreshSecondColumnScroll" data="filters.hasRoomTypeList.data" options="filters.hasRoomTypeList.options"></multi-option-selection>
+            <multi-option-selection ng-show="filters.hasReservationStatus" label="Reservation Status" on-update="refreshSecondColumnScroll" data="filters.hasReservationStatus.data" options="filters.hasReservationStatus.options"></multi-option-selection>
+
+            <multi-option-selection ng-show="filters.hasFloorList" label="Floor(s)" on-update="refreshSecondColumnScroll" data="filters.hasFloorList.data" options="filters.hasFloorList.options"></multi-option-selection>
+
+            <multi-option-selection ng-show="filters.hasIncludeWorkTypes" label="Work type(s)" on-update="refreshSecondColumnScroll" data="filters.hasIncludeWorkTypes.data" options="filters.hasIncludeWorkTypes.options"></multi-option-selection>
+
+            <multi-option-selection ng-show="filters.hasFrontOfficeStatus" label="Front Office Status" on-update="refreshSecondColumnScroll" data="filters.hasFrontOfficeStatus.data" options="filters.hasFrontOfficeStatus.options"></multi-option-selection>
+
+            <multi-option-selection ng-show="filters.hasHouseKeepingStatus" label="Housekeeping Status" on-update="refreshSecondColumnScroll" data="filters.hasHouseKeepingStatus.data" options="filters.hasHouseKeepingStatus.options"></multi-option-selection>
             <div class="entry" ng-show="selectedEntityDetails.sort_fields.length">
                 <label>Sort By</label>
                 <div class="select">
-                    <select ng-model="scheduleParams.sort_field"
-                        ng-options="sortBy.value as sortBy.description for sortBy in selectedEntityDetails.sort_fields | filter:showValidSortBy"
-                    >
+                    <select ng-model="scheduleParams.sort_field" ng-options="sortBy.value as sortBy.description for sortBy in selectedEntityDetails.sort_fields | filter:showValidSortBy">
                         <option value="">Sort By</option>
                     </select>
                 </div>
             </div>
+            <div class="entry" ng-show="selectedEntityDetails.group_fields.length">
+                <label>Group By</label>
+                <div class="select">
+                    <select ng-model="scheduleParams.groupBy" ng-options="groupBy.value as groupBy.description for groupBy in selectedEntityDetails.group_fields"  iscroll-stop-propagation>
+                        <option value="">Group By</option>
+                    </select>
+                 </div>
+            </div>
+            
             <div class="entry" ng-show="shouldShowFileFormat(selectedEntityDetails)">
                 <label for="file-format">File Format</label>
                 <div class="select">
-                    <select iscroll-stop-propagation  ng-model="scheduleParams.format_id" ng-options="format.id as format.value for format in scheduleFormat">
+                    <select iscroll-stop-propagation ng-model="scheduleParams.format_id" ng-options="format.id as format.value for format in scheduleFormat">
                        <option value="" >File Format</option>
                     </select>
                 </div>
@@ -130,30 +165,22 @@
         </div>
     </div>
 
-    <div ng-hide="isAddingNew"
-        class="column-actions"
-    >
-        <button class="button green"
-            ng-click="checkCanSaveSchedule()">Save Schedule</button>
-        <button class="button red"
-            ng-click="confirmDelete()">Delete Schedule</button>
+    <div ng-hide="isAddingNew" class="column-actions">
+        <button class="button green" ng-click="checkCanSaveSchedule()">Save Schedule</button>
+        <button class="button red" ng-click="confirmDelete()">Delete Schedule</button>
     </div>
 
-    <div ng-show="isAddingNew"
-        class="column-actions"
-    >
-        <button class="button white blue-text next-view has-arrow"
-            ng-click="goToNext()">Schedule Details</button>
+    <div ng-show="isAddingNew" class="column-actions">
+        <button class="button white blue-text next-view has-arrow" ng-click="goToNext()">Schedule Details</button>
     </div>
 </div>
 
 <!-- Third column - details -->
-<div ng-if="!shouldHideDetailsCol()"
-    class="report-col">
-    <div class="scrollable" ng-iscroll="THIRD_COLUMN_SCROLL"> <!-- Add vertical scroller here + add class "buttons-2" if it's an existing schedule -->
+<div ng-show="!shouldHideDetailsCol()" class="report-col">
+    <div class="scrollable" ng-iscroll="THIRD_COLUMN_SCROLL">
+        <!-- Add vertical scroller here + add class "buttons-2" if it's an existing schedule -->
         <div class="wrapper">
             <h3>Schedule Details<span>{{ selectedEntityDetails.report.title }}</span></h3>
-            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <div class="entry" ng-show="NOT_NOW">
                 <label for="schedule-date-range">Data Date Range</label>
                 <div class="select">
@@ -243,29 +270,31 @@
         </div>
     </div>
 
-    <div ng-hide="isAddingNew"
-        class="column-actions"
-    >
-        <button class="button green"
-            ng-click="checkCanSaveSchedule()">Save Schedule</button>
+    <div ng-hide="isAddingNew" class="column-actions">
+        <button class="button green" ng-click="checkCanSaveSchedule()">Save Schedule</button>
     </div>
 
-    <div ng-show="isAddingNew"
-        class="column-actions"
-    >
-        <button ng-click="goToNext()"
-            class="button white blue-text next-view has-arrow">Distribution List</button>
+    <div ng-show="isAddingNew" class="column-actions">
+        <button ng-click="goToNext()" class="button white blue-text next-view has-arrow">Distribution List</button>
     </div>
 </div>
 
 <!-- Fourth column - distribution list -->
-<div  ng-if="!shouldHideDistributionCol()"
-    class="report-col">
-    <div class="scrollable" ng-iscroll="FOURTH_COLUMN_SCROLL"> <!-- Add vertical scroller here -->
+<div ng-show="!shouldHideDistributionCol()" class="report-col">
+    <div class="scrollable" ng-iscroll="FOURTH_COLUMN_SCROLL">
+        <!-- Add vertical scroller here -->
         <div class="wrapper">
             <h3>Distribution List<span>{{ selectedEntityDetails.report.title }}</span></h3>
-            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-            <div class="entry search">
+            <div class="entry">
+                <label for="delivery_method">Delivery method</label>
+                <div class="select">
+                    <select id="delivery_method" ng-model="scheduleParams.delivery_id" ng-options="dist.value as dist.description for dist in scheduleDeliveryTypes" ng-change="onDeliveryOptionChange()" iscroll-stop-propagation>
+                        <option value="">Delivery method</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="entry search" ng-show="checkDeliveryType('EMAIL')">
                 <label for="distribution-list-add-user">Add Recipient</label>
                 <button class="clear-query">
                     <span class="icons icon-clear-search">Clear query</span>
@@ -273,7 +302,7 @@
                 <input class="icons icon-search" auto-complete auto-options="userAutoCompleteSimple" type="search" placeholder="Search by User Name" value="" autocomplete="off" insert-email="true">
             </div>
             <!-- Display search results like this -->
-            <ul class="col-list">
+            <ul class="col-list" ng-show="checkDeliveryType('EMAIL')">
                 <li ng-repeat="email in emailList track by $index">
                     {{ email }}
                     <button type="button" class="button only-icon icons icon-remove-10" ng-click="removeEmail($index)">
@@ -281,20 +310,49 @@
                     </button>
                 </li>
             </ul>
+
+            <div class="entry search" ng-show="checkDeliveryType('SFTP') && ftpServerList.length">
+                <label for="ftp-recipient">SFTP Recipient</label>
+                <div class="select">
+                    <select id="ftp-recipient" ng-model="scheduleParams.selectedFtpRecipient" ng-options="ftp.id as ftp.description for ftp in ftpServerList" iscroll-stop-propagation>
+                        <option value="">SFTP Recipient</option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry search" ng-show="checkDeliveryType('FTP') && !ftpServerList.length">
+                <label for="ftp-recipient">No SFTP configured</label>
+            </div>
+            <!-- DELIVER 3: Drive/Dropbox etc. -->
+            <div class="entry join" ng-show="checkDeliveryType('GOOGLE DRIVE') && googleDriveAccountList.length">
+                <label for="export-folder">Google Drive Folder</label>
+                <div class="select">
+                    <select id="export-folder" ng-options="googleDrive.id as googleDrive.description for googleDrive in googleDriveAccountList" ng-model="scheduleParams.selectedCloudAccount" iscroll-stop-propagation>
+                        <option value="">Select Google Drive Folder</option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry join" ng-show="checkDeliveryType('GOOGLE DRIVE') && !googleDriveAccountList.length">
+                <label for="export-folder">No Google Drive Accounts configured</label>
+            </div>
+            <div class="entry join" ng-show="checkDeliveryType('DROPBOX') && dropBoxAccountList.length">
+                <label for="export-folder">Dropbox</label>
+                <div class="select">
+                    <select id="export-folder" ng-options="dropbox.id as dropbox.description for dropbox in dropBoxAccountList" ng-model="scheduleParams.selectedCloudAccount" iscroll-stop-propagation>
+                        <option value="">Select Dropbox</option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry join" ng-show="checkDeliveryType('DROPBOX') && !dropBoxAccountList.length">
+                <label for="export-folder">No Dropbox accounts configured</label>
+            </div>
         </div>
     </div>
 
-    <div ng-hide="isAddingNew"
-        class="column-actions"
-    >
-        <button class="button green"
-            ng-click="checkCanSaveSchedule()">Save Schedule</button>
+    <div ng-hide="isAddingNew" class="column-actions">
+        <button class="button green" ng-click="checkCanSaveSchedule()">Save Schedule</button>
     </div>
 
-    <div ng-show="isAddingNew"
-        class="column-actions"
-    >
-        <button ng-click="checkCanCreateSchedule()"
-            class="button green">Create Schedule</button>
+    <div ng-show="isAddingNew" class="column-actions">
+        <button ng-click="checkCanCreateSchedule()" class="button green">Create Schedule</button>
     </div>
 </div>

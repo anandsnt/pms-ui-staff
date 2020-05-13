@@ -41,7 +41,10 @@ var sntRover = angular.module('sntRover', [
         'snt.transitionManager',
         'sntCurrencyFilter',
         'sntCanvasUtil',
-        'snt.utils'
+		'snt.utils',
+		'ui.sortable',
+		'restrictMinVal',
+		'sntPayConfig'
 	]);
 
 sntRover.config([
@@ -64,9 +67,10 @@ sntRover.config([
         // }]);
 
 
-        // adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
+		// adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
 		$httpProvider.interceptors.push('sharedHttpInterceptor');
-
+		$httpProvider.interceptors.push('sharedSessionTimeoutInterceptor');
+		
 		$qProvider.errorOnUnhandledRejections(false);
 
 	    ngDialogProvider.setDefaults({
@@ -158,7 +162,7 @@ sntRover.run([
 			};
 
 			this.getOriginState = function() {
-				var ret, name, params, title;
+				var ret, name, param, title;
 
 				if (self.fromState) {
 					name  = self.fromState;
@@ -279,8 +283,13 @@ sntRover.run([
 			// so what the hell, put them here
 			var options = $rootScope.setPrevState,
 				name    = !!options.name ? options.name : $_prevStateName,
-				param   = !!options.name && !!options.param ? options.param : (!!$_prevStateParam ? $_prevStateParam : {}),
+				param   = !!options.name && !!options.param ? options.param :
+							(!!$_prevStateParam ? angular.copy($_prevStateParam) : {}),
 				reverse = typeof options.reverse === 'boolean' ? true : false;
+
+			// angular.copy is used above because an error was consoled
+			// that param.useCache can not be updated,
+			// Causing back navigation from D-diary to error out.
 
 			// if currently disabled, return
 			if ( options.disable ) {
@@ -319,11 +328,15 @@ sntRover.run([
 		};
 
 
-		$transitions.onExit({}, function () {
+		$transitions.onFinish({}, function (transition) {
             // this must be reset with every state change
             // invidual controllers can then set it
-            // with its own desired values
-            $rootScope.setPrevState = {};
+			// with its own desired values
+			// While paginating through the report records, we don't have an option to 
+			// set prev state again in the controller , so excluding that case
+			if ( !(transition.from('name').name === 'rover.reports.show' && transition.to('name').name === 'rover.reports.show')) {
+				$rootScope.setPrevState = {};
+			}
         });
 
 		/**
@@ -397,6 +410,9 @@ sntRover.run([
 			$_prevStateName  = fromState.name;
 			$_prevStateParam = fromParams;
 
+			if (toState.name === 'rover.diary') {
+				$rootScope.$broadcast('setDiaryBackButton');
+			}
 		});
 
 

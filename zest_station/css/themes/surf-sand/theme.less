@@ -117,6 +117,10 @@
                 .details {
                     background: @brandColor;
                     color: @white;
+
+                    &.missing-details {
+                        background: fade( @brandColor, 20 );
+                    }
                 }
             }
         }
@@ -175,5 +179,10 @@
             .icons {
                 fill: @white;
             }
+        }
+
+        .minibar-item,
+        .minibar-review .review-container {
+            background: #ececec;
         }
     }

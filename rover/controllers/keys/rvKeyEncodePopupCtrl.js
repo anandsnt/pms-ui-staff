@@ -17,6 +17,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
             $scope.keyType = data.type;
         });
 	$scope.init = function() {
+	    var use_tablet_encoding;
 
 		$scope.$emit('HOLD_OBSERVE_FOR_SWIPE_RESETS');
 
@@ -112,18 +113,23 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
         } else {
             $scope.buttonText = $filter('translate')('KEY_DUPLICATE_BUTTON_TEXT');
         }
+
         // as per CICO-31909 Initally we check if the device is connected
         // check if it is a desktop or iPad
         $scope.isIpad = sntapp.browser === 'rv_native' && sntapp.cordovaLoaded;
 
-        if ($scope.isIpad && $scope.isRemoteEncodingEnabled) {
+        // CICO-70280 Incase of comtrol key servers, the settings will have a disable_tablet_key_encoding flag set to true
+        // Key encoding can't be done with bluetooth encoders in case of comtrol
+        use_tablet_encoding = !$scope.hotelDetails.disable_tablet_key_encoding && $scope.isIpad;
+
+        if (use_tablet_encoding && $scope.isRemoteEncodingEnabled) {
             $scope.deviceConnecting = true;
             that.setStatusAndMessage($filter('translate')('CONNECTING_TO_KEY_CARD_READER'), 'pending');
 
             $scope.showDeviceConnectingMessge();
             $scope.showPrintKeyOptions = true;
             $scope.encoderSelected = '';
-        } else if (!$scope.isIpad && $scope.isRemoteEncodingEnabled) {
+        } else if (!use_tablet_encoding && $scope.isRemoteEncodingEnabled) {
             $scope.showTabletOption = false;
             showPrintKeyOptions(true);
         } else {

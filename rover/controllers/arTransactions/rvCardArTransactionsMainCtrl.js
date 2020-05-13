@@ -142,6 +142,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			}
 
 			$scope.arDataObj.unpaidAmount = data.unpaid_amount;
+			$scope.arDataObj.unpaidPaymentAmount = data.unpaid_payment_amount;
 			$scope.arDataObj.paidAmount = data.paid_amount;
 			$scope.arDataObj.allocatedCredit = data.allocated_credit;
 			$scope.arDataObj.unallocatedCredit = data.unallocated_credit;
@@ -312,7 +313,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.popupCalendar = function(clickedOn) {
 			$scope.clickedOn = clickedOn;
 			ngDialog.open({
-				template: '/assets/partials/companyCard/rvCompanyCardContractsCalendar.html',
+				template: '/assets/partials/companyCard/contracts/rvCompanyCardContractsCalendar.html',
 				controller: 'RVArTransactionsDatePickerController',
 				className: '',
 				scope: $scope
@@ -367,14 +368,15 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 * Failure callback of payment
 		 */
 		var failureCallBackOfPayment = function(errorMessage) {
+			$scope.arDataObj.selectedInvoices = [];
 			// In this case - we have to show the error in footer
-		if (errorMessage[0] === "Insufficient Funds.Please 'Add payment' first") {
-				$scope.errorMessage = [];
-				$scope.arFlags.insufficientAmount = true;
-			}
-			else {
-				$scope.errorMessage = errorMessage;
-			}
+			if (errorMessage[0] === "Insufficient Funds.Please 'Add payment' first") {
+					$scope.errorMessage = [];
+					$scope.arFlags.insufficientAmount = true;
+				}
+				else {
+					$scope.errorMessage = errorMessage;
+				}
 		};
 
 		/*
@@ -414,7 +416,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				selectedInvoiceObj.invoice_id = eachItem.transaction_id;
 				selectedInvoiceObj.amount = eachItem.amount;
 				$scope.arDataObj.selectedInvoices.push(selectedInvoiceObj);
-				totalAllocatedAmount = totalAllocatedAmount + eachItem.amount;
+				totalAllocatedAmount = parseInt(totalAllocatedAmount) + parseInt(eachItem.amount);
 			});
 			$scope.arDataObj.totalAllocatedAmount  = totalAllocatedAmount;
 
@@ -665,7 +667,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 		// Handle Ar Statement button actions.
 		$scope.clickedArStatementButton = function() {
-
+			$scope.filterData.statementEmailAddress = $scope.contactInformation.address_details.email_address
 			var dataFetchSuccess = function(data) {
 				$scope.statementEmailAddress = !!data.to_address ? data.to_address : '';
 				fetchGuestLanguages();
@@ -745,6 +747,65 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
             // remove the orientation after similar delay
             removePrintOrientation();
         };
+        /* 
+		 * Should print AR invoice number
+		 * @param printData response
+		 * @param statement individual item
+		 */
+		$scope.shouldPrintArInvoiceNumber = function(printData, statement) {
+			var printArInvNo = false;
+
+			if (printData.is_print_ar_invoice_number_enabled && statement.ar_invoice_number) {
+				printArInvNo = true;
+			}
+
+			return printArInvNo;
+		};
+		/* 
+		 * Should print folio number
+		 * @param printData response
+		 * @param statement individual item
+		 */
+		$scope.shouldPrintFolioNumber = function(printData, statement) {
+			var printFolioNo = false;
+
+			if (!statement.ar_invoice_number) {
+				if (printData.is_print_folio_enabled && statement.folio_number) {
+					printFolioNo = true;
+				} else if (!printData.is_print_folio_enabled && (statement.folio_number || !statement.folio_number)) {
+					printFolioNo = false;
+				} 
+			} else {
+				if (!printData.is_print_ar_invoice_number_enabled && printData.is_print_folio_enabled && statement.folio_number) {
+					printFolioNo = true;
+				} else if (!printData.is_print_folio_enabled && (statement.folio_number || !statement.folio_number)) {
+					printFolioNo = false;
+				}
+			}
+
+			return printFolioNo;
+		};
+		/* 
+		 * Should print Invoice number
+		 * @param printData response
+		 * @param statement individual item
+		 */
+
+		$scope.shouldPrintInvoiceNumber = function(printData, statement) {
+			var printInvNo = false;
+
+			if (!printData.is_print_ar_invoice_number_enabled && !printData.is_print_folio_enabled) {
+				printInvNo = true;
+			} else if (!printData.is_print_ar_invoice_number_enabled && printData.is_print_folio_enabled && !statement.folio_number) {
+				printInvNo = true;
+			} else if (printData.is_print_ar_invoice_number_enabled && !statement.ar_invoice_number && printData.is_print_folio_enabled && !statement.folio_number) {
+				printInvNo = true;
+			} else if (!statement.ar_invoice_number && !statement.folio_number) {
+				printInvNo = true;
+			}
+
+			return printInvNo;
+		};
 
         // print AR Statement
         var printArStatement = function(params) {
@@ -924,9 +985,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$("#add-balance").removeClass('no-print');
 			if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
 				$scope.$broadcast("UPDATE_WINDOW");
-			} else {
-				$scope.closeDialog();
-			}
+			} 
+			$scope.closeDialog();
 			$("body #loading").html('<div id="loading-spinner" ></div>');
 			$scope.switchArTransactionTab($scope.arFlags.currentSelectedArTab)
 			sntActivity.stop("PRINT_STARTED");
@@ -938,7 +998,9 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			var getCopyCount = function(successData) {
 					var copyCount = "";
 
-					if (successData.is_copy_counter) {
+					if (successData.is_copy_counter && successData.no_of_original_invoices === 0) {
+						copyCount = parseInt(successData.print_counter) - 1;
+					} else if (successData.is_copy_counter && successData.no_of_original_invoices > 0) {
 						copyCount = parseInt(successData.print_counter) - parseInt(successData.no_of_original_invoices);
 					}
 					return copyCount;
@@ -966,11 +1028,15 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					{
 						successData.invoiceLabel = successData.translation.ar_invoice;
 					}
-					else if (parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices))
+					else if (parseInt(successData.print_counter) === 1 && parseInt(successData.no_of_original_invoices) === 0)
+					{
+						successData.invoiceLabel = successData.translation.ar_invoice;
+					}
+					else if ((parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices)) && !$scope.roverObj.noReprintReEmailInvoice)
 					{
 						if (successData.is_copy_counter) {
-							copyCount = getCopyCount(successData);
-						}						
+            				copyCount = getCopyCount(successData);
+						}
 						successData.invoiceLabel = successData.translation.copy_of_ar_invoice.replace("#count", copyCount);
 					}
 					else if (!$scope.billFormat.isInformationalInvoice) 

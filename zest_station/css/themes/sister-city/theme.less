@@ -54,6 +54,9 @@
         fill: none;
         stroke: @white;
     }
+    &.icon-arrow-down {
+        fill: @white;
+    }
 }
 
 /* 4. LAYOUT
@@ -367,6 +370,11 @@
                 color: @white;
                 border-radius: 0px;
                 border: 2px solid @white;
+
+                &.missing-details {
+                    border: 2px dashed @white;
+                    color: fade( @white, 50 ) !important;
+                }
             } 
         } 
     }
@@ -405,6 +413,12 @@
                 &.total {
                     color: @white;
                 }
+            }
+        }
+
+        &.guest-information { 
+            .guest-information-right {
+                background: transparent;
             }
         }
     }
@@ -638,6 +652,19 @@
                 font-size: 16px;
                 line-height: 60px;
             }
+
+            .ui-datepicker-title {
+                    
+                select.ui-datepicker-month,
+                select.ui-datepicker-year {
+                    height: 40px;
+                    margin: 5px;
+                    line-height: 1.5;
+                    background-image: url("icons/down.svg");
+                    color: @white; 
+                    
+                }
+            }
         }
         tbody {
             td {
@@ -652,5 +679,52 @@
 
     #skipEmailInputBtn {
         margin-top: 20px !important;
+    }
+
+    .minibar-item,
+    .minibar-review .review-container {
+        background: transparent;
+        color: @textColor;
+    }
+    .minibar-review .review-items .items .iScrollVerticalScrollbar .iScrollIndicator { background: @white; border-radius: 0; }
+    .minibar-items {
+        .iScrollVerticalScrollbar .iScrollIndicator { background: @white; border-radius: 0;}
+        .minibar-item {
+            border-radius: 0;
+
+            .minibar-item-actions { 
+                border-radius: 0; 
+                border: none;
+            }
+            .minibar-item-qty { color: @white; }
+            .minibar-item-info {
+                .minibar-item-meta { color:@white; }
+            }
+
+            &:not(.group) {
+                border-color: @white;
+            }
+
+            &.group {
+                border-bottom: 2px solid @white;
+            }
+        }
+    }
+
+    .minibar-review {
+        .review-items {
+            ul.totals {
+                li {
+                    &:not(.total) {
+                        color:@white;
+                    }
+
+                    &:first-child,
+                    &.total {
+                        border-top-color: @white;
+                    }
+                }
+            }
+        }
     }
 }

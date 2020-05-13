@@ -135,12 +135,13 @@
 
     /* Add ons ***/
     .addons {
-        .float;
+        display: grid;
+        grid-template-columns: 180px 1fr;
+        grid-column-gap: 20px;
 
         /* Categories ***/
         .addon-categories {
-            #pixel-to-percent > .width(360,2048);
-            .pull-left;
+            grid-column: 1;
 
             li {
                 font-size: 15px;
@@ -173,9 +174,7 @@
         /* Items ***/
         .addon-items {
             position: relative;
-            #pixel-to-percent > .left-margin(45,2048);
-            #pixel-to-percent > .width(1640,2048);
-            .pull-left;
+            grid-column: 2;
 
             .addon-tab {
                 position: relative;
@@ -183,23 +182,24 @@
                 left: 0;
 
                 li {
+                    display: grid;
+                    grid-template-columns: 1fr 220px 120px;
+                    grid-column-gap: 10px;
                     padding: 15px;
-                    vertical-align: middle;
-                    .float;
-                    .faux-clickable;
+                    background-color: @white;
+                    border-radius: 3px;
+                    box-shadow: 1px 1px 0 rgba(0,0,0,.2);
 
                     .data {
-                        margin-right: 40px;
-                        #pixel-to-percent > .width(900,1680);
-                        .pull-left;
 
                         .categories {
                             font-size: 14px;
+                            line-height: 18px;
                             text-transform: uppercase;
-                            .show;
+                            .show();
 
                             span {
-                                margin: 0 5px;
+                                margin: 0 4px;
 
                                 &.current { color: @logoPrimary; }
                                 &:first-child { margin-left: 0; }
@@ -209,48 +209,118 @@
 
                         h2 { 
                             font-weight: 700;
-                            white-space: normal;
                         }
 
                         em {
                             font-size: 14px;
                             line-height: 18px;
                             color: @grey4;
-                            white-space: normal;
-                            .show;
+                            .show();
                         }
                     }
 
                     .price {
                         position: relative;
-                        font-size: 36px;
-                        line-height: 40px;
-                        vertical-align: middle;
-                        font-weight: 300;
-                        padding-right: 70px;
-                        .show;
-                        .pull-left;
-
-                        span {
-                            position: absolute;
-                            right: 0;
-                            width: 65px;
-                            color: @grey3;
-                            font-size: 12px;
-                            line-height: 12px;
-                            text-transform: uppercase;
-                            text-align: left;
-                            font-weight: 400;
-                            overflow: hidden;
-
-                            &.amount-type { top: 7px; }
-                            &.post-type { top: 22px; }
-                        }
+                        text-align: right;
+                        line-height: 1;
+                        padding: 2px 75px 0 0;
                     }
 
-                    .button { 
-                        width: auto;
-                        .pull-right;
+                    .value {
+                        font-size: 36px;
+                        font-weight: 300;
+                    }
+
+                    .list-price {
+                        position: absolute;
+                        top: 36px;
+                        right: 75px;
+                        width: 100%;
+                        font-size: 14px;
+                        text-decoration: line-through;
+                        color: @grey3;
+                    }
+
+                    .amount-type,
+                    .post-type {
+                        position: absolute;
+                        right: 0;
+                        font-size: 12px;
+                        text-transform: uppercase;
+                        text-align: left;
+                        color: @grey3;
+                        width: 70px;
+                    }
+
+                    .amount-type { top: 9px; }
+                    .post-type { top: 23px; }
+
+                    .add-enhancement {
+                        display: inline-grid;
+                        grid-template-rows: 40px 40px;
+                        grid-row-gap: 10px;
+                    }
+
+                    .select {
+                        position: relative;
+                        background-color: @grey1;
+                        border-radius: 3px;
+                        box-shadow: 1px 1px 0 rgba(0,0,0,.2);
+                        height: 40px;
+
+                        .label {
+                            position: absolute;
+                            top: 15px;
+                            left: 10px;
+                            font-size: 12px;
+                            line-height: 1;
+                            text-transform: uppercase;
+                            cursor: default;
+                            margin: 0;
+                        }
+
+                        select {
+                            font-size: 24px;
+                            line-height: 40px;
+                            padding: 0 20px 0 70px;
+                            background: transparent;
+                            text-align: right;
+                            border: 0;
+                            box-shadow: none;
+                        }
+
+                        &:after { background-color: @grey1; }
+                    }
+
+                    &:not(:last-child) {
+                        margin-bottom: 10px;
+                    }
+                }
+
+                @media only screen and (min-width: 1280px) { 
+                    li {
+                        grid-template-columns: 1fr 240px 200px;
+
+                        .add-enhancement {
+                            display: inline-grid;
+                            grid-template-columns: 1fr 80px;
+                            grid-template-rows: 40px;
+                            grid-column-gap: 10px;
+                            grid-row-gap: 0;
+
+                            .button,
+                            .select {
+                                grid-row: 1;
+                            }
+
+                            .button {
+                                grid-column: 2;
+                            }
+
+                            .select {
+                                grid-column: 1;
+                            }
+                        }
                     }
                 }
 

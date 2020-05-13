@@ -3,6 +3,8 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 
 
 	BaseCtrl.call(this, $scope);
+	$scope.warningMessage = "";
+	$scope.adjustmentData = {};
 
 	var reloadBillScreen =  function() {
 		$timeout(function() {
@@ -89,18 +91,31 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 
 	};
 
+	$scope.selectedAdjReason = function() {
+		$scope.warningMessage = "";
+	};
+
+	$scope.clearWarningMessage = function () {
+		$scope.warningMessage = '';
+	};
+
    /*
 	 * API call edit transaction
 	 */
+	
 	$scope.editCharge = function() {
+		if (!$scope.adjustmentData.adjustmentReason && $scope.showAdjustmentReason) {
+			$scope.warningMessage = 'Please fill adjustment reason';
+			return;
+		}
 		$scope.$emit('showLoader');
 		var editData =
 		{
 			"updatedDate":
 						{
-				  			"new_amount": $scope.newAmount,
-				  			"charge_code_id": $scope.selectedChargeCode.id,
-				  			"adjustment_reason": $scope.adjustmentReason,
+							"new_amount": $scope.newAmount,
+							"charge_code_id": $scope.selectedChargeCode.id,
+							"adjustment_reason": $scope.adjustmentData.adjustmentReason,
 							"reference_text": $scope.reference_text,
 							"show_ref_on_invoice": $scope.show_ref_on_invoice
 						},
@@ -112,9 +127,8 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 			loader: 'NONE',
 			successCallBack: hideLoaderAndClosePopup
 		};
-
+		
 		$scope.callAPI (rvAccountTransactionsSrv.transactionEdit, options);
-
 	};
 
 	/*
@@ -221,7 +235,27 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 	   	var queryText = $scope.chargecodeData.chargeCodeSearchText;
 
 	    $scope.chargecodeData.chargeCodeSearchText = queryText.charAt(0).toUpperCase() + queryText.slice(1);
-    };
+	};
+	
+	// To show or hide charge code list
+    $scope.isShowChargeCodeList = function() {
+    	var isShowChargeCodeList = false,
+    		chargeCodeLength = $scope.availableChargeCodes.length,
+    		queryLength = $scope.chargecodeData.chargeCodeSearchText.length;
+
+    	if ($scope.showChargeCodes) {
+    		isShowChargeCodeList = true;
+    	}
+    	else if (queryLength > 2 && chargeCodeLength !== 0) {
+			for (var i = 0; i < chargeCodeLength; i++) {
+			 	if ($scope.availableChargeCodes[i].is_row_visible) {
+			 		isShowChargeCodeList = true;
+			 		break;
+			 	}
+			}
+		}
+		return isShowChargeCodeList;
+	};
     /* 
      * Method to update the button label on EDIT CHARGE screen
      */

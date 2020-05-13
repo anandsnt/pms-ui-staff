@@ -62,6 +62,10 @@ sntRover.controller('RVReportListCrl', [
 
                 report[i].filteredOut = false;
 
+                if ( (!$rootScope.isFolioTaxEnabled && report[i].method === "folio_tax_report") || report[i].method === 'room_status') {
+                    report[i].filteredOut = true;
+                }
+
                 // apply icon class based on the report name
                 applyIconClass.init( report[i] );
 
@@ -170,7 +174,7 @@ sntRover.controller('RVReportListCrl', [
                 e.preventDefault();
                 e.stopPropagation();
             }
-
+        
             var callback = function() {
                 // deselect all reports
                 _.map($scope.$parent.reportList,

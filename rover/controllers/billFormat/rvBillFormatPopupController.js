@@ -7,6 +7,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
     BaseCtrl.call(this, $scope);
     $scope.isCompanyCardInvoice = true;
     $scope.disableCompanyCardInvoice = false;
+    $scope.disableCompanyGuestToggle = false;
     $scope.hideCompanyCardInvoiceToggle = true;    
     $scope.billFormat.isInformationalInvoice = !$scope.shouldGenerateFinalInvoice 
                                                 && $scope.isSettledBill 
@@ -35,16 +36,19 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
                     // Only Company card is attached.
                     $scope.disableCompanyCardInvoice = true;
                 }
-            } else if (!!$scope.groupConfigData) {
+            }
+            if (!!$scope.groupConfigData) {
                 params.id = $scope.groupConfigData.summary.group_id;
                 params.is_group = true;
                 params.is_type = "Account";
                 handleGenerateToggleWidgetVisibility($scope.groupConfigData.summary);
             } else {
-                params.id = $scope.accountConfigData.summary.posting_account_id;
+                params.id = $scope.accountConfigData ? $scope.accountConfigData.summary.posting_account_id : $scope.clickedInvoiceData.associated_item.item_id;
                 params.is_group = false;
                 params.is_type = "Account";
-                handleGenerateToggleWidgetVisibility($scope.accountConfigData.summary);
+                if ($scope.accountConfigData) {
+                    handleGenerateToggleWidgetVisibility($scope.accountConfigData.summary);
+                }                
             }
 
         }
@@ -69,21 +73,21 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
      * @return none
      */
     var handleGenerateToggleWidgetVisibility = function (card) {
-            if ( !isEmpty(card.company.name) && !isEmpty(card.travel_agent.name)) {
+            if ( !isEmpty(card.company) && !isEmpty(card.travel_agent)) {
                 // Both cards are attached.
             }
-            else if (isEmpty(card.company.name) && isEmpty(card.travel_agent.name)) {
+            else if (isEmpty(card.company) && isEmpty(card.travel_agent)) {
                 // Both cards are not attached.
                 $scope.hideCompanyCardInvoiceToggle = true;
             }
-            else if (!isEmpty(card.company.name) && isEmpty(card.travel_agent.name)) {
-                // Only TA card is attached.
+            else if (!isEmpty(card.company) && isEmpty(card.travel_agent)) {
+                // Only Company card is attached.
                 $scope.isCompanyCardInvoice = true;
                 $scope.disableCompanyCardInvoice = true;
             }
             else {
                 $scope.isCompanyCardInvoice = false;
-                // Only Company card is attached.
+                // Only TA card is attached.
                 $scope.disableCompanyCardInvoice = true;
             }
 
@@ -91,6 +95,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
         isEmpty = function( str ) {
             return (!str || 0 === str.length);
         };
+
 
     var successCallBackForLanguagesFetch = function(data) {
       $scope.$emit('hideLoader');
@@ -132,7 +137,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
             }
 
             $scope.data = response.data;
-            $scope.setEmailAddress();
+            $scope.setEmailAddress();            
         };
 
         $scope.invokeApi(RVBillCardSrv.getBillSettingsInfo, params, onBillSettingsInfoFetchSuccess);
@@ -373,7 +378,9 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
 
     $scope.changeCompanyCardInvoiceToggle = function() {
         $scope.isCompanyCardInvoice = !$scope.isCompanyCardInvoice;
+        $scope.setEmailAddress();
     };
+
     $scope.$on('$destroy', updateWindow);
 
     init();

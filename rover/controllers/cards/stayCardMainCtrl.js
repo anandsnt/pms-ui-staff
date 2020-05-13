@@ -48,7 +48,6 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 
                 $scope.guestCardData.userId = param.id;
                 $scope.guestCardData.guestId = param.id;
-
                 angular.merge($scope.guestCardData.contactInfo, {
                     first_name: $scope.reservationData.guest.firstName,
                     last_name: $scope.reservationData.guest.lastName,
@@ -60,11 +59,11 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
                     address: $scope.reservationData.guest.address,
                     notes_count: $scope.reservationData.guest.notes_count,
                     user_id: param.id,
-                    nationality_id: $scope.guestCardData.nationality_id,
+					nationality_id: $scope.guestCardData.nationality_id,
                     address: {
                     	country_id: ($scope.guestCardData.contactInfo.address !== undefined) ? $scope.guestCardData.contactInfo.address.country_id : ''
                     } 
-                });
+				});
 
                 // Timeout to allow the RVGuestCardCtrl(app/assets/rover/controllers/cards/guestCardControl.js) to initiate
                 $timeout(function() {
@@ -85,7 +84,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
                 if ($stateParams.mode === "EDIT_HOURLY" || ($rootScope.isHourlyRateOn && $state.current.name !== 'rover.reservation.staycard.reservationcard.reservationdetails')) {
                     $scope.callAPI(RVGuestCardsSrv.fetchGuestDetailsInformation, {
                         successCallBack: function(data) {
-                            fetchGuestCardDataSuccessCallback(data);
+							fetchGuestCardDataSuccessCallback(data);
                         },
                         failureCallBack: function(errorMessage) {
                             $scope.errorMessage = errorMessage;
@@ -121,7 +120,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
             if (!data.stayCount) {
             	data.stayCount = $scope.guestCardData && $scope.guestCardData.contactInfo && $scope.guestCardData.contactInfo.stayCount;
             }
-            
+
             //	CICO-9169
             contactInfoData = {
                 'contactInfo': data,
@@ -131,16 +130,27 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
                 'userId': $scope.reservationDetails.guestCard.id || $scope.reservationData.guest.id,
                 'avatar': $scope.guestCardData.cardHeaderImage,
                 'guestId': $scope.reservationDetails.guestCard.id || $scope.reservationData.guest.id,
-                'vip': data.vip
+				'vip': data.vip
             };
-
             $scope.guestCardData.contactInfo = contactInfoData.contactInfo;
+            if ($scope.guestCardData.contactInfo.birthday !== null) {
+            	$scope.guestCardData.contactInfo.birthday = moment($scope.guestCardData.contactInfo.birthday).format("YYYY-MM-DD");
+            }
+            if ($scope.guestCardData.contactInfo.id_issue_date !== null) {
+            	$scope.guestCardData.contactInfo.id_issue_date = moment($scope.guestCardData.contactInfo.id_issue_date).format("YYYY-MM-DD");
+            }
+            if ($scope.guestCardData.contactInfo.entry_date !== null) {
+            	$scope.guestCardData.contactInfo.entry_date = moment($scope.guestCardData.contactInfo.entry_date).format("YYYY-MM-DD");
+            }
+            if ($scope.guestCardData.contactInfo.id_expiration_date !== null) {
+            	$scope.guestCardData.contactInfo.id_expiration_date = moment($scope.guestCardData.contactInfo.id_expiration_date).format("YYYY-MM-DD");
+            }
+            
             $scope.guestCardData.contactInfo.avatar = contactInfoData.avatar;
             $scope.guestCardData.contactInfo.vip = contactInfoData.vip;
             $scope.countriesList = $scope.countries;
             $scope.guestCardData.userId = contactInfoData.userId;
             $scope.guestCardData.guestId = contactInfoData.guestId;
-            $scope.guestCardData.contactInfo.birthday = data.birthday;
             $scope.guestCardData.contactInfo.genderTypeList = data.gender_list;
 
             guestInfo = {
@@ -265,15 +275,20 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 						excluded_rate_ids: addon.excluded_rate_ids
 					});
 				});
-				if (!$scope.reservationData.keepExistingRate) {
+				if (options) {
 					$scope.navigateToRoomAndRates(options);
 				}
-                else {
-                    $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-						"id": typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
-						"confirmationId": $stateParams.confirmationId
-					});
-                }
+				else {
+					if	(!$scope.reservationData.keepExistingRate) {
+						$scope.navigateToRoomAndRates(options);
+					}
+					else {
+						$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+							"id": typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
+							"confirmationId": $stateParams.confirmationId
+						});
+					}
+				}
 			});
 		};
 
@@ -468,7 +483,8 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 		 */
 		$scope.navigateToRoomAndRates = function(options) {
 			var resData = $scope.reservationData,
-				disableBackToStaycard = (options && options.disableBackToStaycard);
+				disableBackToStaycard = (options && options.disableBackToStaycard),
+				isGroupDetachmentRequested = (options && options.isGroupDetachmentRequested);
 
 			$state.go(roomAndRatesState, {
 				from_date: resData.arrivalDate,
@@ -489,7 +505,8 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				view: "ROOM_RATE",
 				room_type_id: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].roomTypeId,
 				adults: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numAdults,
-				children: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numChildren
+				children: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numChildren,
+				isGroupDetachmentRequested: isGroupDetachmentRequested
 			});
 		};
 
@@ -497,12 +514,17 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 		 * if we wanted to reload particular staycard details
 		 * @return {undeifned} [description]
 		 */
-		$scope.reloadTheStaycard = function() {
-			$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-				"id": typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
-				"confirmationId": $stateParams.confirmationId,
-				"isrefresh": false
-			});
+		$scope.reloadTheStaycard = function(shouldReload) {
+			if (shouldReload) {
+				$state.reload($state.current.name);
+			} else {
+				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+					"id": typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
+					"confirmationId": $stateParams.confirmationId,
+					"isrefresh": false
+				});
+			}
+			
 		};
 
 		/**
@@ -654,14 +676,24 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 
 		$scope.noRoutingToReservation = function() {
 			ngDialog.close();
-			that.reloadStaycard();
+			if (that.useCardRate) {
+				$scope.navigateToRoomAndRates();
+			}
+			else {
+				that.reloadStaycard();
+			}
 		};
 
 		$scope.applyRoutingToReservation = function() {
 			var routingApplySuccess = function(data) {
 				$scope.$emit("hideLoader");
 				ngDialog.close();
-				that.reloadStaycard();
+				if (that.useCardRate) {
+					$scope.navigateToRoomAndRates();
+				}
+				else {
+					that.reloadStaycard();
+				}
 				$scope.$broadcast('paymentTypeUpdated'); // to update bill screen data
 			};
 			var routingApplyFailed = function(errorMessage) {
@@ -680,8 +712,12 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 
 		$scope.okClickedForConflictingRoutes = function() {
 			ngDialog.close();
-			that.reloadStaycard();
-
+			if (that.useCardRate) {
+				$scope.navigateToRoomAndRates();
+			}
+			else {
+				that.reloadStaycard();
+			}
 		};
 
 		this.showConfirmRoutingPopup = function(type, id) {
@@ -738,6 +774,13 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.company.id);
 					return false;
 				}
+				if (((card === 'company' && data.company.routings_count === 0) ||
+					(card === 'travel_agent' && data.travel_agent.routings_count === 0) ||
+					!data.has_conflicting_routes) &&
+					that.useCardRate) {
+					$scope.navigateToRoomAndRates();
+					return false;
+				}
 
 				that.reloadStaycard();
 			};
@@ -757,6 +800,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 
 		$scope.newCardData = {};
 		$scope.replaceCard = function(card, cardData, future, useCardRate) {
+			that.useCardRate = useCardRate;
 			if (card === 'company') {
 				$scope.reservationData.company.id = cardData.id;
 				$scope.reservationData.company.name = cardData.account_name;
@@ -768,6 +812,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			var onReplaceSuccess = function(data) {
 					$scope.cardRemoved(card);
 					$scope.cardReplaced(card, cardData);
+					
 
 					// CICO-21205
 					// Fix for Replace card was called even if lastCardSlot.cardType was an empty string
@@ -777,6 +822,10 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					if (card === 'travel_agent') {
 						$scope.$broadcast('travelagentcardreplaced', data.data);
 					}
+
+					if (card === 'company') {
+						$scope.$broadcast("COMPANY_ADDED");
+					}					
 					$scope.viewState.lastCardSlot = "";
 					$scope.$emit('hideLoader');
 					$scope.newCardData = cardData;
@@ -1009,7 +1058,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			$scope.otherData.hourlyTaxInfo = data.tax_information;
 			RVReservationStateService.metaData.taxDetails = angular.copy(data.tax_codes);
 			$scope.reservationData.totalTax = 0;
-			$scope.computeHourlyTotalandTaxes();
+			
 			if (saveReservation) {
 				if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
 					$scope.$emit('PROMPTCARD');
@@ -1243,7 +1292,6 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					id: room.rateId
 				}, success);
 				for (var ms = new tzIndependentDate($scope.reservationData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
-
 					room.stayDates[dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd')] = {
 						guests: {
 							adults: room.numAdults,
@@ -1259,6 +1307,10 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 							is_discount_allowed: 'true'
 						}
 					};
+					if (!!room.contract_id) {
+						room.stayDates[dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd')].contractId = room.contract_id;
+						delete room.contract_id;
+					}
 				}
 			});
 

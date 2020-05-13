@@ -33,7 +33,7 @@
             .size(90px, 100%);
             .show;
 
-            .guest-image { 
+            .guest-image {
                 text-align: center;
                 text-transform: uppercase;
                 color: @white;
@@ -44,7 +44,7 @@
                 background-color: rgba(0,0,0,.1);
                 .square(50px);
 
-                span { .show; }        
+                span { .show; }
 
                 &.new { line-height: 80px; }
             }
@@ -114,7 +114,7 @@
                         }
                     }
 
-                    /* Notes / Loyalty Status / VIP / Global Flag ***/                   
+                    /* Notes / Loyalty Status / VIP / Global Flag ***/
                     .icon-notes {
                         margin-top: 10px;
                         .show;
@@ -123,7 +123,7 @@
                     }
 
                     .switch-button,
-                    .status { 
+                    .status {
                         line-height: 30px;
                         vertical-align: middle;
                         text-transform: uppercase;
@@ -177,13 +177,13 @@
                                 height: 20px;
                                 min-height: 20px;
                             }
-                            
+
                             .data-off,
                             .data-on {
                                 top: 0;
                                 padding: 0 5px;
                                 #flexbox > .parent(row wrap, center, center, '');
-                            }                        
+                            }
 
                             .switch-icon,
                             .value {
@@ -223,9 +223,9 @@
                             }
 
                             .data-on {
-                                .switch-icon { 
+                                .switch-icon {
                                     color: @white;
-                                    background: @blue; 
+                                    background: @blue;
                                 }
                             }
 
@@ -251,8 +251,8 @@
                             min-height: 35px;
 
                             &.icons { padding-left: 30px; }
-                            &.icon-gc-location { 
-                                margin-right: 0; 
+                            &.icon-gc-location {
+                                margin-right: 0;
 
                                 &[value=""] { margin-right: 5px; }
                             }
@@ -260,12 +260,12 @@
                     }
                 }
 
-                &.card-search-form { 
-                    padding-top: 15px; 
+                &.card-search-form {
+                    padding-top: 15px;
 
                     .entry { float: none; }
 
-                    .masked-input { 
+                    .masked-input {
                         margin-right: 10px;
                         .hide;
 
@@ -354,7 +354,7 @@
                     }
                 }
 
-                
+
                 &.dual-actions {
                     width: 260px;
 
@@ -405,12 +405,12 @@
             &.fourth { cursor: pointer; }
 
             &.second {
-                z-index: 20; 
+                z-index: 20;
                 #calc-position > .left(100, 150);
             }
 
-            &.third { 
-                z-index: 30; 
+            &.third {
+                z-index: 30;
                 #calc-position > .left(100, 100);
             }
 
@@ -423,10 +423,10 @@
         /* Card content with tabs ***/
         .cards-content {
             overflow: hidden;
-            .calc-height(100, 80); 
+            .calc-height(100, 80);
         }
 
-        .card-content { 
+        .card-content {
             .square(100%);
             .hide;
 
@@ -520,7 +520,7 @@
                     }
 
                     &.with-filters {
-                        &.ui-tabs-active { 
+                        &.ui-tabs-active {
                             position: relative;
 
                             &:after {
@@ -545,9 +545,9 @@
                 #border-radius > .rounded();
                 #border-radius > .left-top(0px);
                 .calc-height(100, 60);
-                
-                > .wrapper { 
-                    padding: 20px; 
+
+                > .wrapper {
+                    padding: 20px;
                     position: relative;
                     .float;
                 }
@@ -568,13 +568,12 @@
 
                         &.margin { padding-top: 20px; }
                     }
-                    
+
                     .entry {
-                        #fade > .in();
                         #pixel-to-percent > .width(432, 904);
 
                         label { margin-bottom: 0; }
-                        
+
                         input[size] {
                             text-align: center;
                             margin-right: 5px;
@@ -595,32 +594,53 @@
                             #border-radius > .rounded();
                             .show;
 
-                            &:hover,
-                            &:active { background-position: 95% -140px !important; }
+                            &:hover:not([disabled]),
+                            &:active:not([disabled]) { background-position: 95% -140px !important; }
+
+                            &[disabled] {
+                                cursor: default;
+                                background-color: rgba(0, 0, 0, 0.01) !important;
+                            }
 
                             @media @highdpi { background-image: @calendar2x; }
                         }
 
                         .switch-button {
+                            min-width: 120px;
+                            height: 40px;
+
+                            .switch-icon,
+                            .value {
+                                padding: 0 10px;
+                            }
+
+                            input[type="checkbox"] {
+                                line-height: 40px;
+                                height: 40px;
+                            }
 
                             .data-off,
                             .data-on {
                                 left: auto;
+                                line-height: 30px;
+                                height: 30px;
 
-                                &.data-off { 
+                                &.data-off {
                                     right: -100%;
 
-                                    .switch-icon { 
-                                        margin: 0 5px 0 0; 
-                                        .gradient(@greenStart, @greenEnd);                                    
+                                    .switch-icon {
+                                        margin: 0 5px 0 0;
+                                        .gradient(@greenStart, @greenEnd);
+
+                                        &.red { .gradient(@redStart, @redEnd); }
                                     }
                                 }
-                                
-                                &.data-on { 
+
+                                &.data-on {
                                     right: 0;
 
-                                    .switch-icon { 
-                                        margin: 0 0 0 5px; 
+                                    .switch-icon {
+                                        margin: 0 0 0 5px;
                                         .gradient(@redStart, @redEnd);
 
                                         &.grey { .gradient(@grey2, @grey4); }
@@ -632,10 +652,16 @@
                                 .data-off { right: 0; }
                                 .data-on { right: 100%; }
                             }
+
+                            &.full-width {
+                                max-width: 180px;
+                            }
                         }
 
                         .button {
                             position: relative;
+                            font-size: 14px;
+                            padding: 0 10px;
                             height: 40px;
 
                             .count {
@@ -670,23 +696,32 @@
                                     font-weight: 400;
                                 }
 
-                                &.icon-actions { 
+                                &.icon-actions {
                                     color: @green;
-                                    background-position: 0 -306px; 
+                                    background-position: 0 -306px;
                                 }
 
-                                &.icon-new-actions { 
+                                &.icon-new-actions {
                                     color: @red;
-                                    background-position: 0 -356px; 
+                                    background-position: 0 -356px;
                                 }
 
-                                &.icon-no-actions { 
+                                &.icon-no-actions {
                                     color: @grey3;
-                                    background-position: 0 -406px; 
+                                    background-position: 0 -406px;
                                 }
 
                                 &:hover,
                                 &:active { .box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.15)"); }
+                            }
+                        }
+
+                        .checkbox {
+                            font-size: 14px;
+                            text-transform: uppercase;
+                            
+                            &:not(.inline) {
+                                padding-right: 10px;
                             }
                         }
 
@@ -707,7 +742,7 @@
                                 .pull-left;
                             }
 
-                            .button { 
+                            .button {
                                 max-width: 180px;
                                 overflow: hidden;
                                 #pixel-to-percent > .left-margin(40, 904);
@@ -724,18 +759,16 @@
                                         top: 10px;
                                         left: 10px;
                                         margin-left: 0;
-                                    } 
+                                    }
                                 }
                             }
                         }
 
-                        &.only-button { 
+                        &.only-button {
                             .button { width: 100%; }
                         }
 
                         &.stay-dates {
-                            .float;
-
                             .entry-data {
                                 margin-right: 10px;
                                 #pixel-to-percent > .width(260, 904);
@@ -749,66 +782,51 @@
                             }
 
                             &.no-actions {
-                                .entry-data { 
-                                    .calc-width(50, 5);
+                                .entry-data {
+                                    #pixel-to-percent > .width(432, 904);
+                                    #pixel-to-percent > .right-margin(40, 904);
 
                                     &:last-child { margin-right: 0; }
                                 }
                             }
+
+                            &:not(.shoulder-dates) {
+                                .float;
+                            }
                         }
 
-                        &.find-rate {
-                            position: relative;
-                            
-                            .clear-query {
-                                position: absolute;
-                                top: 24px;
-                                right: 0;
-                                z-index: 99;
-                                visibility: hidden;
-                                background: @white;
-                                #border-radius > .right();
-                                .box-shadow(inset -1px 1px 1px rgba(0, 0, 0, .15));
-                                .square(40px);
+                        &.shoulder-dates {
+                            display: grid;
+                            grid-template-columns: 1fr 1fr 140px;
+                            grid-column-gap: 20px;
 
-                                .icons {
-                                    position: absolute;
-                                    top: 12.5px;
-                                    right: 12.5px;
-                                    background-color: @grey2;
-                                    .hide-text;
-                                    .square(15px);
-                                    .opacity(0);
-                                    .show;
-                                    #fade > .out();
-                                    #border-radius > .rounded(15px);
+                            .entry-data {
+                                float: none;
+                                margin: 0;
+                                width: 100%;
+                                .float;
+
+                                input {
+                                    .pull-left;
+                                    .calc-width(100, 60);
                                 }
 
-                                &.visible { 
-                                    visibility: visible;
+                                .select {
+                                    width: 50px;
+                                    .pull-left;
 
-                                    .icons {    
-                                        .opacity(100); 
-                                        #fade > .in(); 
+                                    &:not(:last-child) {
+                                        margin-right: 10px;
+                                    }
+                                    &:last-child {
+                                        margin-left: 10px;
                                     }
                                 }
-
-                                &:hover,
-                                &.active { 
-                                    .icons { background-color: @logoPrimary; }
-                                }
                             }
 
-                            input {
-                                padding-right: 40px;
+                            .button {
+                                padding: 0 10px;
                                 .nowrap();
-                            }
-
-                            .mini-select {
-                                position: absolute;
-                                top: 24px;
-                                right: 0;
-                                z-index: 9;
                             }
                         }
 
@@ -833,13 +851,13 @@
                             textarea {
                                 height: 80px;
                                 #pixel-to-percent > .right-margin(40, 904);
-                                #pixel-to-percent > .width(664, 904); 
+                                #pixel-to-percent > .width(664, 904);
                                 .pull-left;
                             }
 
                             .button {
                                 line-height: 40px;
-                                #pixel-to-percent > .width(200, 904); 
+                                #pixel-to-percent > .width(200, 904);
                                 .pull-left;
                             }
                         }
@@ -850,16 +868,16 @@
                             width: 100%;
                         }
 
-                        &.clear { 
-                            float: none; 
+                        &.clear {
+                            float: none;
                             clear: both;
                         }
 
                         &.small { #pixel-to-percent > .width(196, 904); }
 
-                        &.radio-check { 
-                            .float;                         
-                            
+                        &.radio-check {
+                            .float;
+
                             .checkbox,
                             .radio { #pixel-to-percent > .width(432, 904); }
 
@@ -868,8 +886,8 @@
                                 .radio { width: 100%; }
                             }
 
-                            .check-block { 
-                                margin-bottom: 10px; 
+                            .check-block {
+                                margin-bottom: 10px;
                                 .float;
                             }
                         }
@@ -983,7 +1001,37 @@
                             }
                         }
 
-                        &.hidden { #fade > .out(); }
+                        &.blacklisted {
+                            width: 100%;
+                            display: grid;
+                            grid-template-columns: 120px calc(~'100% - 130px');
+                            grid-column-gap: 10px;
+
+                            label {
+                                grid-row: 1;
+                            }
+
+                            .switch-button {
+                                grid-row: 2;
+                                height: 40px;
+
+                                input[type="checkbox"] {
+                                    line-height: 40px;
+                                    height: 40px;
+                                }
+
+                                .data-off,
+                                .data-on {
+                                    line-height: 30px;
+                                    height: 30px;
+                                }
+                            }
+
+                            input {
+                                grid-column: 2;
+                                grid-row: 2;
+                            }
+                        }
                     }
 
                     &.left {
@@ -1082,8 +1130,8 @@
                     }
 
                     &.item-loyalty {
-                        > span { 
-                            margin-right: 20px; 
+                        > span {
+                            margin-right: 20px;
 
                             &.name {
                                 font-size: 14px;
@@ -1091,7 +1139,7 @@
                             }
                         }
                     }
-                } 
+                }
 
                 .add-new-button {
                     width: 100%;
@@ -1127,11 +1175,11 @@
                     }
 
                     .holder {
-                        position: relative; 
+                        position: relative;
                         .calc-height(100, 50);
 
                         > .wrapper { padding: 0 20px 0 0; }
-                        
+
                         > .iScrollVerticalScrollbar {
                             top: 0;
                             bottom: 0;
@@ -1150,9 +1198,9 @@
 
                         .entry { margin: 0; }
 
-                        .button { 
+                        .button {
                             font-size: 14px;
-                            padding: 0 10px; 
+                            padding: 0 10px;
                             height: 40px;
 
                             &:not(:last-child) { margin-right: 10px; }
@@ -1172,7 +1220,7 @@
                         .calc-height(100, 80);
 
                         > .wrapper {
-                            padding: 20px; 
+                            padding: 20px;
                             position: relative;
                             .float;
                         }
@@ -1202,7 +1250,7 @@
 
                     .tab-details {
                         .wrapper { padding: 20px; }
-                        .iScrollVerticalScrollbar { 
+                        .iScrollVerticalScrollbar {
                             top: 20px;
                             bottom: 20px;
                         }
@@ -1212,10 +1260,10 @@
                         #pixel-to-percent > .width(652, 1888);
                         #pixel-to-percent > .right-margin(40, 1888);
 
-                        &:last-child { 
+                        &:last-child {
                             #pixel-to-percent > .width(503, 1888);
-                            margin-right: 0; 
-                        }                   
+                            margin-right: 0;
+                        }
                     }
 
                     .timeline-title {
@@ -1260,7 +1308,7 @@
 
                             .toggle {
                                 background-position: 100% 100%;
-                                .show; 
+                                .show;
                                 .float;
                             }
 
@@ -1335,7 +1383,7 @@
                                         position: relative;
                                         min-height: 18px;
                                         padding-left: 40px;
-                                        
+
                                         .icons {
                                             display: inline-block;
                                             position: absolute;
@@ -1361,15 +1409,15 @@
 
                                     &.conversation-open {
                                         > a .data {
-                                            h4:not(.unread) { 
-                                                color: @textColor; 
+                                            h4:not(.unread) {
+                                                color: @textColor;
 
                                                 &.staff { color: @blue; }
                                             }
 
                                             &.other {
-                                                h4:not(.unread) { 
-                                                    color: @grey3; 
+                                                h4:not(.unread) {
+                                                    color: @grey3;
 
                                                     &.staff { color: @blue; }
                                                 }
@@ -1406,11 +1454,11 @@
                                         vertical-align: middle;
                                     }
 
-                                    ul { 
+                                    ul {
                                         margin-top: 10px;
                                         padding-top: 10px;
                                         border-top: 1px solid rgba(0,0,0,.1);
-                                        padding-left: 0; 
+                                        padding-left: 0;
 
                                         li {
                                             font-size: 12px;
@@ -1432,66 +1480,719 @@
 
                 /* Contracts ***/
                 &.contracts {
-                    
+
                     .tab-header {
-                        padding: 20px;
+                        height: 60px;
+                        background-color: rgba( 0, 0, 0, 0.1 );
+                        #flexbox > .parent( row, '', center, '' );
 
-                        .entry {
-                            .calc-width(100, 240);
-                            .float;
-
-                            input,
-                            .select { 
-                                width: 220px;
-                                margin-right: 10px;
-                                .pull-left; 
-                            }
-
-                            .button { 
-                                width: 80px;
-                                .pull-left; 
-                            }
+                        .search-form {
+                            background: transparent;
+                            .calc-width( 100, 140 );
                         }
 
                         .actions {
-                            .button {
-                                &.green {
-                                    width: 120px;
-                                    margin-right: 0;
-                                }
-
-                                &.blank { 
-                                    width: 90px;
-                                    margin-right: 10px; 
-                                }
-                            }
+                            width: 140px;
+                            padding-right: 15px;
                         }
                     }
 
                     .tab-details {
-                        .holder {
-                            margin-bottom: 20px;
+                        height: 100%;
+
+                        &.searching {
+                            .calc-height( 100, 60 );
                         }
-                        
-                        .contract-stats {
-                            li {
-                                color: @grey3;
-                                text-transform: uppercase;
-                                margin-bottom: 20px;
-                                line-height: 30px;
-                                .float;
 
-                                span {
-                                    font-size: 30px;
-                                    font-weight: 300;
-                                    color: @textColor;
-                                    text-transform: none;
-                                    .pull-right;
+                        &.no-content {
+                            .icon-no-content { height: 90px; }
+                            .info {
+                                .h1 { margin-bottom: 0; }
+                                .h2 { margin-bottom: 20px; }
+                                .button {
+                                    height: 60px;
+                                    font-size: 18px;
 
-                                    &.green { color: @green; }
-                                    &.red { color: @red; }
-                                    &.blue { color: @blue; }
+                                    &:not(:last-child) {
+                                        margin-right: 10px;
+                                    }
                                 }
+                            }
+                        }
+
+                        &:not(.no-content):not(.searching) {
+                            #flexbox > .parent( row, '', '', '' );
+                        }
+
+                        .contracts-search-results { height: 100%; }
+                        .contracts-search-results-content {
+                            position: relative;
+                            .calc-height( 100, 40 );
+
+                            .iScrollVerticalScrollbar { top: 0; }
+
+                            .search-results {
+                                padding-top: 0;
+                                padding-bottom: 20px;
+                            }
+                        }
+                        .contracts-search-results-header {
+                            padding: 15px 15px 5px 15px;
+                            height: 40px;
+                            font-size: 14px;
+                            text-transform: uppercase;
+                            color: @grey3;
+                            font-weight: 600;
+                            #flexbox > .parent( row, '', '', '' );
+
+                            li {
+                                margin: 0;
+                            }
+                            .contract-status {
+                                width: 90px;
+                            }
+
+                            .contract-dates {
+                                width: 100px;
+                            }
+
+                            .contract-rates {
+                                .calc-width( 100, 550)
+                            }
+
+                            .contract-details {
+                                width: 350px;
+                            }
+
+                            .contract-details {
+                                padding-left: 15px;
+                            }
+                        }
+
+                        .contracts-list {
+                            position: relative;
+                            background: rgba(0,0,0,.1);
+                            .size( 100%, 265px );
+                            .box-shadow( inset -2px 0px 0 rgba(0, 0, 0, 0.15));
+
+                            .no-content {
+                                padding: 0;
+
+                                .icon-no-content {
+                                    &.icon-contracts-black {
+                                        opacity: 0.15;
+                                        background-size: 80px;
+                                        background-position: -10px -1612px;
+                                        .square(60px);
+                                    }
+                                }
+
+                                .h1 {
+                                    font-size: 18px;
+                                    margin-bottom: 0;
+                                }
+
+                                .h2 {
+                                    font-size: 16px;
+                                    line-height: 16px;
+                                }
+                            }
+
+                            .contracts-list-items {
+                                position: relative;
+                                height: 100%;
+
+                                .wrapper {
+                                    padding: 0 0 20px 0;
+                                }
+
+                                .button {
+                                    width: 100%;
+                                    font-size: 14px;
+                                }
+
+                                .contract-list-items-section {
+
+                                    h2 {
+                                        padding: 0 30px 0 10px;
+                                        font-size: 16px;
+                                        font-weight: 600;
+                                        text-transform: uppercase;
+                                        background: rgba(0, 0, 0, 0.05);
+                                        width: 100%;
+                                        height: 40px;
+                                        line-height: 40px;
+                                        position: relative;
+                                        cursor: pointer;
+                                        #flexbox > .parent( row, space-between, '', '' );
+
+                                        .icons {
+                                            &.icon-double-arrow {
+                                                &.black {
+                                                    position: absolute;
+                                                    top: 12px;
+                                                    right: 9px;
+                                                    width: 14px;
+                                                    height: 13px;
+                                                    background-size: 100px;
+                                                    opacity: 0.3;
+                                                    background-position: 0px -1282px;
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    ul {
+                                        display: none;
+
+                                        li {
+                                            height: 50px;
+                                            margin: 0;
+                                            padding: 10px 20px 10px 10px;
+                                            cursor: pointer;
+                                            position: relative;
+
+                                            .icons {
+                                                &.icon-contracts {
+                                                    position: absolute;
+                                                    right: 7px;
+                                                    top: 0;
+                                                    bottom: 0;
+                                                    margin: auto;
+                                                    .square( 15px );
+                                                }
+                                            }
+
+                                            &.active {
+                                                cursor: default;
+                                                .background(@white);
+                                                .box-shadow(0px 2px 0 rgba(0, 0, 0, 0.15));
+                                            }
+
+                                            &.inactive {
+                                                color: @grey3;
+                                            }
+
+                                            &:not(:last-child):not(.active) {
+                                                .box-shadow(0px 1px 1px rgba(0, 0, 0, 0.1));
+                                            }
+
+                                            .item-title {
+                                                font-size: 16px;
+                                                font-weight: 600;
+                                                .nowrap();
+                                            }
+
+                                            .item-info {
+                                                font-size: 14px;
+                                                color: @grey3;
+                                                line-height: 1;
+                                                #flexbox > .parent( row, '', '', '' );
+
+                                                .icon-single-arrow {
+                                                    .opacity(35);
+                                                    margin: 0 5px;
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    &.open {
+                                        h2 {
+                                            .icons {
+                                                &.icon-double-arrow {
+                                                    &.black {
+                                                        top: 13px;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        ul {
+                                            display: block;
+                                        }
+                                    }
+
+                                    &.no-items {
+                                        h2 {
+                                            color: @grey3;
+                                        }
+                                    }
+
+                                    &:not(.open):not(:last-child) {
+                                        border-bottom: 1px solid rgba( 0, 0, 0, 0.1 );
+                                    }
+                                }
+
+                                .iScrollVerticalScrollbar {
+                                    top: 5px;
+
+                                    .iScrollIndicator {
+                                        background: rgba(0,0,0,0.15);
+                                    }
+                                }
+                            }
+
+                            .contracts-list-actions {
+                                display: block;
+                                background: #d0d0d0;
+                                position: absolute;
+                                left: 0;
+                                bottom: 0;
+                                padding: 20px;
+                                .size( 80px, 100% );
+                                .box-shadow(inset -2px 1px 0 rgba(0, 0, 0, 0.15));
+
+                                .button {
+                                    width: 100%;
+                                    font-size: 14px;
+
+                                    &:not(:last-child) {
+                                        margin-bottom: 10px;
+                                    }
+                                }
+                            }
+
+                            &.with-actions {
+                                .contracts-list-items {
+                                    .calc-height( 100, 80 );
+                                }
+
+                                &.actions-2 {
+                                    .contracts-list-items {
+                                        .calc-height( 100, 130 );
+                                    }
+
+                                    .contracts-list-actions {
+                                        height: 130px;
+                                    }
+                                }
+                            }
+                        }
+
+                        .contracts-details {
+                            height: 100%;
+                            position: relative;
+                            .calc-width( 100, 265 );
+
+                            .contract-details-footer {
+                                height: 60px;
+                                padding: 10px 15px;
+                                background: @white;
+                                position: relative;
+                                z-index: 10;
+                                .box-shadow(0px -1px 0 rgba(0, 0, 0, 0.15));
+                                #flexbox > .parent( row, flex-end, '', '' );
+
+                                .button {
+                                    &.red {
+                                        margin-right: auto;
+                                    }
+                                }
+                            }
+
+                            .no-content {
+                                padding: 0;
+                                height: auto;
+                                min-height: 130px;
+
+                                .icon-no-content {
+                                    &.icon-rates {
+                                        .square(60px);
+                                        background-size: 60px;
+                                        background-position: 0 -632px;
+                                        margin-bottom: 20px;
+                                    }
+
+                                    &.icon-cards {
+                                        .square(80px);
+                                        background-size: 80px;
+                                        background-position: 0 -612px;
+                                    }
+                                }
+
+                                .h2 {
+                                    font-size: 16px;
+                                }
+                            }
+
+                            .linked-contracts {
+                                .linked-contract {
+                                    #flexbox > .parent( row wrap, '', '', '' );
+
+                                    &:first-child {
+                                        margin-top: 20px;
+                                    }
+
+                                    .contract {
+                                        .calc-width( 100, 60 );
+                                    }
+
+                                    .remove-contract {
+                                        .square(50px);
+                                        margin-left: 10px;
+                                        background-color: @white;
+                                        background-position: 15px -3745px;
+                                        cursor: pointer;
+                                        .box-shadow();
+                                    }
+                                }
+                            }
+                            .contract {
+                                padding: 10px 25px 10px 10px;
+                                background-color: @white;
+                                background-position: calc(~"100% - 10px" ) 50%;
+                                cursor: pointer;
+                                .box-shadow();
+
+                                &.with-image {
+                                    position: relative;
+                                    padding-left: 45px;
+                                    padding-right: 30px;
+                                    min-height: 50px;
+                                    display: flex;
+                                    flex-direction: column;
+                                    justify-content: center;
+                                    background-image: @arrowRight;
+                                    background-repeat: no-repeat;
+
+                                    @media @highdpi {
+                                        background-image: @arrowRight2x;
+                                        background-size: 14px 14px;
+                                    }
+
+                                    &.no-arrow {
+                                        background-image: none;
+                                        padding-right: 15px;
+                                    }
+
+                                    &:not(:last-child) {
+                                        margin-bottom: 10px;
+                                    }
+
+                                    .guest-image {
+                                        position: absolute;
+                                        top: 10px;
+                                        left: 10px;
+                                        .square(25px);
+
+                                        &.icons {
+                                            background-size: 80px;
+                                        }
+
+                                        &.icon-company {
+                                            background-color: @ccard;
+                                            background-position: 8px -2340px;
+                                        }
+
+                                        &.icon-travel-agent {
+                                            background-color: @tacard;
+                                            background-position: 5px -2381px;
+                                        }
+                                    }
+                                }
+
+                                .item-title {
+                                    color: @black;
+                                    font-size: 16px;
+                                    font-weight: 700;
+                                }
+
+                                .item-info {
+                                    font-size: 14px;
+                                    color: @grey3;
+                                    line-height: 1;
+                                    #flexbox > .parent( row, flex-start, '', '' );
+
+                                    .icon-single-arrow {
+                                        .opacity(35);
+                                        margin: 0 5px;
+                                    }
+                                }
+                            }
+
+                            .contracts-details-form {
+                                position: relative;
+                                .calc-height( 100, 60 );
+
+                                input[disabled]:not(.icons),
+                                input[readonly]:not(.icons) {
+                                    color: @black;
+                                    -webkit-text-fill-color: @black;
+
+                                    .placeholder-color(@grey3);
+                                }
+
+                                &.without-footer {
+                                    height: 100%;
+                                }
+
+                                > .wrapper { padding: 20px; }
+
+                                .switch-button {
+
+                                    .data-on {
+                                        right: 100%;
+                                    }
+                                    .data-off {
+                                        right: 0;
+                                    }
+
+                                    &.on {
+                                        .data-on {
+                                            right: 0;
+                                        }
+                                        .data-off {
+                                            right: -100%;
+                                        }
+                                    }
+
+                                    .switch-icon {
+                                        .gradient(@grey2, @grey3);
+                                    }
+
+                                    .data-on {
+                                        .switch-icon {
+                                            .gradient(@greenStart, @greenEnd);
+                                        }
+                                    }
+
+                                    &.disabled {
+                                        .opacity(50);
+                                        .switch-icon {
+                                            .gradient-important(@grey2, @grey3);
+                                        }
+
+                                        .data-on {
+                                            .switch-icon {
+                                                .gradient-important(@greenStart, @greenEnd);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                .autocomplete-search {
+                                    &:not(.searching):not(.compact) {
+                                        .search {
+                                            padding: 0;
+
+                                            .icon-search {
+                                                top: 10px;
+                                                left: 10px;
+                                            }
+
+                                            .clear-query {
+                                                top: 0;
+                                                right: 0;
+                                            }
+                                        }
+                                    }
+
+                                    &.compact {
+                                        margin: 0;
+                                        background: @white;
+                                        .box-shadow();
+
+                                        .search {
+                                            input {
+                                                background: @background;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                .contract-grid {
+                                    display: grid;
+                                    grid-template-columns: 50% 50%;
+                                    grid-column-gap: 10px;
+
+                                    .checkbox {
+                                        font-size: 14px;
+                                        text-transform: uppercase;
+                                    }
+
+                                    &:not(:last-child) {
+                                        margin-bottom: 10px;
+                                    }
+                                }
+
+                                .find-rate {
+
+                                    .autocomplete-search {
+                                        .search {
+                                            .transition();
+
+                                            .icons {
+                                                .transition();
+                                            }
+                                        }
+                                    }
+
+                                    .card {
+                                        #flexbox > .parent( row, space-between, '', '' );
+
+                                        .rate-name {
+                                            padding-right: 10px;
+                                            .nowrap();
+                                        }
+
+                                        .rate-code {
+                                            color: @grey3;
+                                            font-size: 14px;
+                                        }
+
+                                        &.linked {
+                                            position: relative;
+                                            padding-right: 30px;
+
+                                            span:not(.highlight) {
+                                                opacity: 0.35;
+                                            }
+
+                                            &:after {
+                                                content: '';
+                                                .icons();
+                                                position: absolute;
+                                                width: 14px;
+                                                height: 14px;
+                                                right: 10px;
+                                                top: 0;
+                                                bottom: 0;
+                                                margin: auto;
+                                                background-size: 60px;
+                                                background-position: 0px -3679px;
+
+                                                @media @highdpi {
+                                                    background-size: 60px;
+                                                }
+                                            }
+
+                                        }
+                                    }
+                                }
+
+                                .contracted-rates {
+                                    li {
+                                        background-color: @white;
+                                        font-weight: 600;
+                                        padding: 10px 40px 10px 10px;
+                                        list-style: none;
+                                        position: relative;
+                                        #flexbox > .parent( row, space-between, '', '' );
+                                        .box-shadow();
+
+                                        &:not(:last-child) {
+                                            margin-bottom: 10px;
+                                        }
+
+                                        .rate-remove {
+                                            position: absolute;
+                                            right: 0;
+                                            height: 100%;
+                                            width: 40px;
+                                            top: 0;
+                                            box-shadow: none;
+                                            background: transparent;
+                                            border: none;
+                                            cursor: pointer;
+                                        }
+
+                                        .icons {
+                                            &.icon-remove-10 {
+                                                background-position: 3px -2624px;
+                                                background-size: 80px;
+                                                margin: auto;
+                                                border-radius: 14px;
+                                                background-color: @grey1;
+                                            }
+                                        }
+
+                                        .rate-name {
+                                            padding-right: 10px;
+                                            .nowrap();
+                                        }
+
+                                        .rate-code {
+                                            color: @grey3;
+                                            font-size: 14px;
+                                            font-weight: 400;
+                                        }
+                                    }
+
+                                    &.disabled {
+                                        li {
+                                            cursor: default;
+                                            padding-right: 10px;
+                                            color: @grey3;
+
+                                            .rate-remove { .hide(); }
+                                        }
+                                    }
+
+                                    &.compact {
+                                        li {
+                                            margin: 0;
+                                            &:not(:last-child) {
+                                                border-bottom: 1px solid rgba( 0, 0, 0, 0.15 );
+                                            }
+                                        }
+
+                                        &.disabled {
+                                            li {
+                                                color: @black;
+                                                .box-shadow(none);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                .relative {
+                                    position: relative;
+                                }
+
+
+                            }
+                        }
+
+                        .holder {
+                            &.left {
+                                margin-right: 40px;
+                                .calc-width( 100, 340 );
+                            }
+
+                            &.right {
+                                width: 300px;
+
+                                .button {
+                                    width: 100%;
+
+                                    &:not(:last-child) {
+                                        margin-bottom: 10px;
+                                    }
+                                }
+                            }
+                        }
+
+                        /* Occupancy graph ***/
+                        .occupancy-graph {
+                            position: relative;
+                            clear: both;
+                            background-color: @white;
+                            padding: 20px;
+                            margin-bottom: 20px;
+                            .box-shadow();
+                            #border-radius > .rounded();
+                            .show;
+
+                            .h3 {
+                                position: absolute;
+                                top: 20px;
+                                left: 20px;
+                                font-weight: 400;
+                            }
+
+                            .temporary-graph {
+                                width: 100%;
+                                height: auto;
                             }
                         }
                     }
@@ -1553,7 +2254,7 @@
                                             &.cancel { background-color: @grey3; }
                                             &.no-show { background: @grey2; }
                                         }
-                                    }                                       
+                                    }
                                 }
                             }
                         }
@@ -1569,22 +2270,22 @@
 
                         .entry {
                             margin-right: 20px;
-                            width: 100px;
+                            width: 90px;
 
                             label { margin: 0; }
 
                             .disabled {
                                 select { background: rgba(0,0,0,.01); }
-                                
+
                                 &:after { .hide; }
                             }
 
-                            &.status,
-                            &.date { width: 160px; }
+                            &.status { width: 160px; }
+                            &.date { width: 120px; }
 
                             &.date-range {
                                 margin-right: 0;
-                                .calc-width(100, 760);
+                                .calc-width(100, 660);
                                 .float;
 
                                 .has-datepicker {
@@ -1601,18 +2302,18 @@
                             margin-top: 24px;
                             .pull-right;
 
-                            .button { 
+                            .button {
                                 padding: 0 20px;
 
                                 &.red,
                                 &.grey,
                                 &.brand-colors {
                                     &:not(:last-child) { margin-right: 10px; }
-                                }                                
+                                }
                             }
 
                             &.move-group {
-                                width: 140px;
+                                width: 120px;
                                 margin-right: 20px;
                                 .pull-left;
 
@@ -1650,6 +2351,8 @@
                             text-transform: uppercase;
                             z-index: 9920;
                             background: @background;
+                            box-shadow: -1px -3px 3px rgba(0,0,0,.15);
+                            z-index: 9950;
                             .size(100%, 80px);
 
                             .has-arrow {
@@ -1717,11 +2420,11 @@
                                     margin-bottom: 20px;
                                 }
 
-                                .highlight { 
+                                .highlight {
                                     text-align: center;
                                     font-weight: 600;
                                     width: 50%;
-                                    background: lighten(@yellow, 40); 
+                                    background: lighten(@yellow, 40);
                                 }
 
                                 .icon-mover-right {
@@ -1743,15 +2446,15 @@
                             z-index: 9910;
                             height: 180px;
                             .float;
-                            .calc-width(180, 180);
+                            .calc-width(100, 180);
 
                             > .wrapper { padding: 0; }
 
                             li {
                                 text-align: center;
                                 text-transform: uppercase;
-                                margin: 0 10px 0 0;
-                                padding: 20px 10px 10px 0;
+                                margin: 0;
+                                padding: 20px 10px 10px;
                                 .size(180px, 180px);
                                 .box-shadow(2px 0 0 rgba(0,0,0,.3));
                                 .pull-left;
@@ -1778,24 +2481,23 @@
 
                                     em { text-transform: none; }
 
-                                    span { 
+                                    span {
                                         font-size: 13px;
-                                        color: rgba(255,255,255,.6); 
+                                        color: rgba(255,255,255,.6);
                                     }
-                                } 
+                                }
 
                                 .column {
                                     position: relative;
                                     padding: 5px 0;
 
                                     .line {
-                                        padding-left: 10px;
                                         margin: 0;
                                         overflow: hidden;
                                         .flex(center);
                                         .size(50px, 100%);
 
-                                        &.small { 
+                                        &.small {
                                             height: 20px;
                                             color: @grey3;
                                             font-size: 14px;
@@ -1811,15 +2513,15 @@
                                         &:not(:last-of-type) { margin-right: 10px; }
                                     }
 
-                                    input { 
-                                        .box-shadow(inset 1px 1px 1px rgba(0,0,0,.2)); 
+                                    input {
+                                        .box-shadow(inset 1px 1px 1px rgba(0,0,0,.2));
 
-                                        &.highlight { 
+                                        &.highlight {
                                             text-align: center;
                                             font-weight: 600;
                                             width: 50%;
                                             margin: 0 auto;
-                                            background: lighten(@yellow, 40); 
+                                            background: lighten(@yellow, 40);
                                         }
                                     }
 
@@ -1832,19 +2534,21 @@
                                         .hide-text;
                                         .square(40px);
                                         .show;
-                                    } 
+                                    }
                                 }
 
-                                &:first-child { 
+                                &.with-button {
                                     padding-right: 40px;
-                                    margin-left: 10px;
                                     width: 220px;
                                 }
 
                                 &:last-child {
-                                    margin-right: 0;
                                     .box-shadow(none);
-                                }                                      
+                                }
+
+                                &.shoulder-date {
+                                    background-color: fade(@red, 10);
+                                }
                             }
 
                             &.cols-3 {
@@ -1855,7 +2559,9 @@
                                         .cell { .calc-width(33.33333, 6.66666); }
                                     }
 
-                                    &:first-child { width: 310px; }
+                                    &.with-button {
+                                        width: 310px;
+                                    }
                                 }
                             }
 
@@ -1869,7 +2575,7 @@
                                 height: 150px;
 
                                 li { height: 150px; }
-                            }                            
+                            }
                         }
 
                         .room-block-sidebar,
@@ -1877,7 +2583,7 @@
                             position: absolute;
                             top: 180px;
                             .calc-height(100, 180);
-                            .show; 
+                            .show;
 
                             > .wrapper { padding: 0; }
 
@@ -1896,8 +2602,8 @@
 
                                     &.small { height: 30px; }
 
-                                    &.cellspan { 
-                                        justify-content: center; 
+                                    &.cellspan {
+                                        justify-content: center;
 
                                         .green { color: @green; }
                                         .red { color: @red; }
@@ -1969,8 +2675,8 @@
                                     }
                                 }
 
-                                &.open { 
-                                    padding: 35px 0 5px; 
+                                &.open {
+                                    padding: 35px 0 5px;
 
                                     &.end { padding-bottom: 35px; }
                                 }
@@ -1985,24 +2691,25 @@
 
                             &.release-range {
                                 .row {
-                                    &.open { 
-                                        .line-toggle { margin-bottom: 30px; }
+                                    &.open {
+                                        .line-toggle { margin-bottom: 80px; }
                                     }
                                 }
                             }
-                        }                                
+                        }
 
                         .room-block-grid {
                             left: 180px;
                             .calc-width(100, 180);
-                            
+
                             > .iScrollVerticalScrollbar { .hide; }
 
-                            > .iScrollHorizontalScrollbar { 
+                            > .iScrollHorizontalScrollbar {
                                 top: auto;
                                 bottom: 10px;
                                 left: 10px;
                                 right: 10px;
+                                z-index: 9940;
                             }
 
                             .row {
@@ -2011,18 +2718,17 @@
                                 .column {
                                     position: relative;
                                     width: 180px;
-                                    margin-right: 10px;
                                     padding: 5px 0;
                                     .box-shadow(2px 0 0 rgba(0,0,0,.3));
                                     .pull-left;
 
                                     .line {
 
-                                        &.small { 
+                                        &.small {
                                             color: @grey3;
                                             font-size: 14px;
                                         }
-                                        
+
                                         &.cellspan { color: @textColor; }
                                     }
 
@@ -2034,15 +2740,15 @@
                                         &:not(:last-of-type) { margin-right: 10px; }
                                     }
 
-                                    input { 
-                                        .box-shadow(inset 1px 1px 1px rgba(0,0,0,.2)); 
+                                    input {
+                                        .box-shadow(inset 1px 1px 1px rgba(0,0,0,.2));
 
-                                        &.highlight { 
+                                        &.highlight {
                                             text-align: center;
                                             font-weight: 600;
                                             width: 50%;
                                             margin: 0 auto;
-                                            background: lighten(@yellow, 40); 
+                                            background: lighten(@yellow, 40);
                                         }
                                     }
 
@@ -2055,8 +2761,13 @@
                                         .size(10px, 100%);
                                     }
 
-                                    &:first-child { 
-                                        margin-left: 10px;
+                                    &:last-child {
+                                        .box-shadow(none);
+
+                                        &:after { .hide; }
+                                    }
+
+                                    &.with-button {
                                         width: 220px;
 
                                         .line {
@@ -2074,12 +2785,8 @@
                                         }
                                     }
 
-                                    &:last-child {
-                                        padding-right: 0;
-                                        margin-right: 0;
-                                        .box-shadow(none);
-
-                                        &:after { .hide; }
+                                    &.shoulder-date {
+                                        background-color: fade(@red, 10);
                                     }
                                 }
 
@@ -2101,7 +2808,7 @@
                         .room-block-grid {
                             &.paginated {
                                 .wrapper { 
-                                    padding-right: 100px; 
+                                    padding-right: 80px; 
                                     .float; 
                                 }
                             }
@@ -2148,7 +2855,7 @@
 
                                 .button {
                                     height: 40px;
-                                    
+
                                     &.white { margin-right: 10px; }
                                     &.with-icon { width: 40px; }
                                 }
@@ -2157,16 +2864,16 @@
 
                                 &:nth-last-child(2) {
                                     padding-right: 0;
-                                    border-right: 0;                                        
+                                    border-right: 0;
                                 }
-                                
-                                &:last-child { 
+
+                                &:last-child {
                                     position: absolute;
                                     top: 20px;
                                     right: 20px;
                                     text-align: right;
                                     padding-right: 0;
-                                    border-right: 0; 
+                                    border-right: 0;
                                 }
                             }
                         }
@@ -2192,25 +2899,25 @@
                                 overflow: hidden;
                                 visibility: hidden;
 
-                                &.filter { 
+                                &.filter {
                                     visibility: visible;
 
-                                    .button { 
+                                    .button {
                                         padding: 0;
                                         background-color: @white;
-                                        .square(40px); 
+                                        .square(40px);
                                     }
                                 }
                             }
 
-                            &.open { 
+                            &.open {
                                 position: absolute;
                                 top: 0;
                                 left: 0;
                                 z-index: 9;
                                 width: 100%;
 
-                                .entry { 
+                                .entry {
                                     padding: 0 10px 0 0;
                                     margin: 0 10px 0 0;
                                     border-right: 1px solid rgba(0,0,0,.1);
@@ -2237,7 +2944,7 @@
 
                             &.dual-search { .calc-width(100, 160); }
                         }
-                    } 
+                    }
                 }
 
                 /* AR Transactions ***/
@@ -2249,7 +2956,7 @@
                         bottom: 0;
                         right: 0;
                         left: auto;
-                        .calc-width(100, 140); 
+                        .calc-width(100, 140);
                     }
 
                     .billing-footer {
@@ -2258,7 +2965,7 @@
                         background: @white;
                         .box-shadow(0px -1px 1px rgba(0,0,0,.2));
                         #flexbox > .parent(row wrap, flex-end, '', '');
-                        
+
                         &.error {
                             background: fade(@red, 10);
                             color: @red;
@@ -2274,7 +2981,7 @@
                                 margin: 0 5px;
                             }
                         }
-                        
+
                         .payment-data {
                             width: 300px;
 
@@ -2319,7 +3026,7 @@
                             .date {
                                 text-transform: uppercase;
                                 color: @grey3;
-                                font-size: 14px; 
+                                font-size: 14px;
                             }
 
                             .date {
@@ -2338,9 +3045,9 @@
 
                         .balance {
                             padding: 15px 20px;
-                            width: 220px;
+                            width: auto;
                             #flexbox > .parent(row wrap, '', center, '');
-                            
+
                             li {
                                 margin: 0 20px 0 0;
                                 line-height: 1;
@@ -2365,7 +3072,8 @@
 
                         .actions {
                             height: 100%;
-                            .calc-width(100, 520);
+                            width: auto;
+                            margin-left: auto;
                             #flexbox > .parent(row wrap, flex-end, center, '');
 
                             li {
@@ -2418,7 +3126,7 @@
                                 &.green {
                                     color: @green;
                                 }
-                            }                          
+                            }
                         }
 
                         .search-form {
@@ -2464,7 +3172,7 @@
                             box-shadow: inset 2px 0 0 rgba(0,0,0,.1);
                             .size(60px, 135px);
                             .pull-left;
-                            
+
                             .button {
                                 padding-left: 30px;
                                 width: 100%;
@@ -2473,12 +3181,12 @@
                                     top: 10px;
                                     left: 16px;
                                 }
-                            }                             
+                            }
                         }
 
                         @media @highdpi {
                             background-size: 40px;
-                        } 
+                        }
                     }
 
                     .tab-details {
@@ -2493,11 +3201,11 @@
                         /* Content ***/
                         .billing-content {
                             height: 100%;
-                            .calc-width(100, 140); 
-                            
+                            .calc-width(100, 140);
+
                             &.with-pagination,
-                            &.with-footer { 
-                                .calc-height(100, 60); 
+                            &.with-footer {
+                                .calc-height(100, 60);
                                 .iScrollVerticalScrollbar { bottom: 70px; }
                             }
 
@@ -2506,7 +3214,7 @@
                                 padding-bottom: 10px;
                                 background: @white;
                                 .box-shadow(1px 1px 0 rgba(0, 0, 0, 0.1));
-                                
+
                                 table {
                                     table-layout: auto;
                                     width: 100%;
@@ -2534,7 +3242,7 @@
                                 th {
                                     font-weight: 600;
                                     text-transform: uppercase;
-                                    padding-top: 20px; 
+                                    padding-top: 20px;
                                     font-size: 14px;
                                 }
 
@@ -2546,7 +3254,7 @@
                                     &.invoice-no {
                                         width: 160px;
                                     }
-                                    
+
                                     &.name {
                                         padding-left: 15px;
                                     }
@@ -2575,7 +3283,7 @@
                                         &.has-datepicker {
                                             position: relative;
 
-                                            .clear-query { 
+                                            .clear-query {
                                                 visibility: hidden;
                                                 position: absolute;
                                                 right: 2px;
@@ -2650,14 +3358,14 @@
                                 }
                             }
                         }
-                        
+
                         /* Sidebar ***/
                         .billing-sidebar {
                             width: 140px;
                             background: rgba(0,0,0,0.05);
                             .box-shadow(inset -1px 0px 1px rgba(0,0,0,.2));
                             font-size: 14px;
-                            
+
                             li {
                                 padding: 12px 10px 8px 10px;
                                 text-transform: uppercase;
@@ -2702,7 +3410,7 @@
                             }
                         }
                     }
-                }                    
+                }
 
                 /* Rooming List ***/
                 &.rooming-list {
@@ -2723,7 +3431,7 @@
                                     padding: 0px 20px;
                                     margin: 10px 0;
                                     height: 40px;
-                                    &.search { 
+                                    &.search {
                                         .query {
                                             padding-right: 35px;
                                         }
@@ -2732,7 +3440,7 @@
                                         .clear-query {
                                             top: 0px;
                                             right: 20px;
-                                        }                                    
+                                        }
                                     }
 
                                     &.date-range {
@@ -2752,7 +3460,7 @@
                                             color: @black;
                                             font-weight: 600;
                                         }
-                                        
+
                                         .has-datepicker {
                                             .clear-query {
                                                 top: 2px;
@@ -2769,6 +3477,7 @@
                                             text-transform: uppercase;
                                             font-size: 14px;
                                             width: 50%;
+                                            #flexbox > .parent( '', '', '', '' );
                                             .pull-left;
                                             span {
                                                 position: static;
@@ -2796,9 +3505,9 @@
                                 padding: 20px 0;
                                 height: 80px;
 
-                                label { 
+                                label {
                                     line-height: 1em;
-                                    margin-bottom: 4px; 
+                                    margin-bottom: 4px;
                                 }
 
                                 select { .nowrap(); }
@@ -2807,24 +3516,24 @@
                                 &.type { width: 240px; }
                                 &.occupancy { width: 140px; }
 
-                                &.search { 
+                                &.search {
                                     .calc-width(100, 570);
                                     .icon-search { top: 38px; }
 
                                     .clear-query {
                                         top: 28px;
                                         right: 10px;
-                                    }                                    
+                                    }
                                 }
 
-                                &.date-range { 
-                                    .calc-width(100, 670); 
+                                &.date-range {
+                                    .calc-width(100, 670);
 
                                     .has-datepicker {
                                         .calc-width(50, 5);
                                         .pull-left;
 
-                                        .clear-query { 
+                                        .clear-query {
                                             top: 20px;
                                             right: 0;
                                             background-color: @white;
@@ -2840,14 +3549,14 @@
                                         .green { color: @green; }
 
                                         &:first-child { margin-right: 10px; }
-                                    }                                            
+                                    }
                                 }
 
                                 &.filter {
                                     width: 60px;
                                     .show;
 
-                                    .button { 
+                                    .button {
                                         .no-transition();
 
                                         &.icon-add-60 { background-position: 10px -3690px; }
@@ -2858,15 +3567,15 @@
                                 &.action {
                                     width: 80px;
 
-                                    .button { 
+                                    .button {
                                         padding: 0;
-                                        width: 100%; 
+                                        width: 100%;
                                     }
                                 }
                             }
 
                             &.open {
-                                .entry { 
+                                .entry {
                                     padding: 10px 10px 10px 0;
 
                                     &.filter,
@@ -2924,7 +3633,7 @@
                     }
 
                     .tab-details {
-                        
+
                         .rooming-list-header {
                             margin: 10px 20px;
                             .float;
@@ -2948,9 +3657,9 @@
                                     .box-shadow(1px 1px 0 rgba(0,0,0,.3));
 
                                     &.sorting-asc,
-                                    &.sorting-desc { 
+                                    &.sorting-desc {
                                         color: @white;
-                                        background-color: darken(@grey2, 20); 
+                                        background-color: darken(@grey2, 20);
                                         background-size: 14px;
                                     }
 
@@ -2981,7 +3690,7 @@
                                     }
                                 }
 
-                                &.status { 
+                                &.status {
                                     width: 80px;
                                     margin-right: 0;
                                 }
@@ -3002,7 +3711,7 @@
                                 padding: 0 20px 20px 20px;
                             }
 
-                            .iScrollVerticalScrollbar { 
+                            .iScrollVerticalScrollbar {
                                 top: 0;
                                 bottom: 20px;
                             }
@@ -3128,7 +3837,7 @@
 
                                     &:not(:last-child) {
                                         margin: 0;
-                                        border-right: 1px solid rgba(0,0,0,0.1); 
+                                        border-right: 1px solid rgba(0,0,0,0.1);
                                     }
 
                                     &.paid-status,
@@ -3140,12 +3849,12 @@
                                         width: 100%;
                                         margin: 0;
                                     }
-                                    
+
                                 }
                             }
-                            
+
                             .entry {
-                                padding: 0; 
+                                padding: 0;
                                 .box-shadow(none);
 
                                 label { margin: 0; z-index: 99; }
@@ -3189,7 +3898,7 @@
                                         margin-right: 10px;
                                         padding: 0;
 
-                                        input[type=text] {
+                                        input[type=text] {
                                             padding-right: 80px;
                                             .box-shadow(inset 1px 1px 0 rgba(0,0,0,.2));
                                         }
@@ -3211,7 +3920,7 @@
 
                                                 &.data-off {
                                                     left: auto;
-                                                    right: 0; 
+                                                    right: 0;
                                                 }
 
                                                 &.data-on {
@@ -3310,15 +4019,15 @@
                                     }
                                 }
                             }
-                           
+
                         }
 
-                        &:not(.no-filters) {
+                        &:not(.no-filters) {
                             .search-form {
                                 .button-filter {
                                     .box-shadow(inset 1px 1px 1px rgba(0,0,0,.3));
                                     .gradient (@logoGradientEnd, @logoGradientStart);
-    
+
                                     .icons {
                                         &.icon-filter {
                                             .icons > .icon-filter.active;
@@ -3341,10 +4050,10 @@
                                 .search-form {
                                     width: 60px;
                                 }
-    
+
                                 .totals {
                                     .calc-width(100, 60);
-                                } 
+                                }
                             }
                         }
                     }
@@ -3359,7 +4068,7 @@
                             #flexbox > .parent(row, flex-start, center, center);
 
                             li {
-                                margin:0; 
+                                margin:0;
                                 height: 40px;
                                 line-height: 40px;
                                 font-size: 14px;
@@ -3404,7 +4113,7 @@
                                     width: 140px;
                                     text-align: right;
                                 }
-                                
+
                                 &.reservation {
                                     flex-grow: 1;
                                 }
@@ -3455,7 +4164,7 @@
                         .search-form {
                             padding: 20px;
                             width: 100%;
-                            height: 80px; 
+                            height: 80px;
                             background: transparent;
                             overflow: visible;
                             .box-shadow(none);
@@ -3536,9 +4245,9 @@
                                     overflow: visible;
                                     vertical-align: top;
 
-                                    &.details { 
+                                    &.details {
                                         text-transform: uppercase;
-                                        color: @grey3; 
+                                        color: @grey3;
 
                                         strong {
                                             position: relative;
@@ -3560,7 +4269,7 @@
                                             }
                                         }
 
-                                        .old { 
+                                        .old {
                                             text-decoration: line-through;
                                             margin-right: 10px;
 
@@ -3570,7 +4279,7 @@
                                                 color: @grey3;
                                                 &:after { .show; }
                                             }
-                                        }                           
+                                        }
                                     }
                                 }
                             }
@@ -3820,7 +4529,7 @@
                                 }
 
                                 &.row-head {
-                                    .column { 
+                                    .column {
                                         font-size: 14px;
                                     }
 
@@ -3837,16 +4546,16 @@
                                 border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 
                                 .search-results { padding: 20px; }
-                                
+
                                 .reservation {
                                     .faux-anchor {
                                         &:not(.no-arrow) {
                                             background-position: 98% 50%;
                                             background-image: @arrowRight;
                                             background-repeat: no-repeat;
-                                            
+
                                             @media @highdpi {
-                                                background-image: @arrowRight2x; 
+                                                background-image: @arrowRight2x;
                                                 background-size: 14px 14px;
                                             }
                                         }
@@ -3861,7 +4570,7 @@
                                     .data {
                                         .calc-width(100, 540);
                                     }
-                                    
+
                                     .guest-data {
                                         width: 150px;
                                         padding-right: 20px;
@@ -3878,8 +4587,8 @@
 
                                         > strong {
                                             font-weight: 600
-                                        }  
-                                        
+                                        }
+
                                         &.room {
                                             > strong {
                                                 font-weight: 700;
@@ -3906,8 +4615,8 @@
                                     margin-bottom: 20px;
                                     .box-shadow(none);
 
-                                    .button { 
-                                        font-size: 14px; 
+                                    .button {
+                                        font-size: 14px;
                                     }
 
                                     &:before,
@@ -3926,7 +4635,7 @@
                         .float;
                         .show;
 
-                        li { 
+                        li {
                             cursor: pointer;
                             margin: 0 0 0 1px;
                             font-size: 14px;
@@ -3941,8 +4650,8 @@
                             #border-radius > .rounded(0);
                             .pull-left;
 
-                            &:hover { 
-                                color: @logoPrimary; 
+                            &:hover {
+                                color: @logoPrimary;
                                 .box-shadow();
                             }
 
@@ -3955,7 +4664,7 @@
                             }
 
                             &:first-child {
-                                #border-radius > .left(); 
+                                #border-radius > .left();
                             }
 
                             &:last-child { #border-radius > .right(); }
@@ -3965,7 +4674,7 @@
             }
 
             &.card-tabs { padding: 20px; }
-            
+
             /* Cards search ***/
             &.card-search {
                 .float;
@@ -3987,7 +4696,7 @@
                     height: 40px;
                     margin: 0 20px 10px 0;
                     padding-right: 30px;
-                    .pull-right;                        
+                    .pull-right;
                 }
 
                 .search-cards {
@@ -4001,15 +4710,15 @@
                     .calc-height(100, 80);
                     .calc-width(100, 40);
 
-                    &.no-content { 
-                        color: @grey3; 
+                    &.no-content {
+                        color: @grey3;
                         .calc-height(100, 30);
                         #border-radius > .left-top(2px);
 
                         &.no-results { .calc-height(100, 80); }
                     }
 
-                    &.no-results { 
+                    &.no-results {
                         .wrapper,
                         .search-results { height: 100%; }
                     }
@@ -4019,7 +4728,7 @@
 
         /* No transition while resizing ***/
         &.ui-resizable-resizing { .no-transition(); }
-        
+
         /* Open card ***/
         &.open,
         &.fullscreen {
@@ -4027,12 +4736,12 @@
 
                 .guest-image { margin-right: 20px; }
 
-                form { 
+                form {
                     .calc-width(100, 250);
 
                     &.card-search-form { .calc-width(100, 70); }
 
-                    &.dual-actions { .calc-width(100, 350); } 
+                    &.dual-actions { .calc-width(100, 350); }
                 }
 
                 .card-actions { .show; }
@@ -4041,8 +4750,8 @@
 
         &.open {
             .card-header {
-                &.first { 
-                    width: 100%; 
+                &.first {
+                    width: 100%;
 
                     .masked-input,
                     .switch-button { .show; }
@@ -4080,7 +4789,7 @@
 
                     .card-actions {
                         .button {
-                            &.has-arrow { 
+                            &.has-arrow {
                                 width: auto;
                                 margin: 0;
                             }
@@ -4088,9 +4797,9 @@
 
                         &.dual-actions {
                             width: 300px;
-                            position: relative; 
-                            
-                            .button { 
+                            position: relative;
+
+                            .button {
                                 &.add-new-button {
                                     display: inline-block;
                                     font-size: 14px;
@@ -4098,7 +4807,7 @@
                                     height: 40px;
                                     line-height: 40px;
                                     margin: 0;
-                                    padding: 0 10px; 
+                                    padding: 0 10px;
                                 }
 
                                 &.add-new-button {
@@ -4211,4 +4920,25 @@
         padding-right: 2.5em !important;
     }
 
+}
+
+@media screen and (min-width: 1280px) {
+    .cards {
+        .card-content {
+            .card-tab{
+                &.contracts {
+                    .tab-details {
+                        .holder {
+                            &.left {
+                                .calc-width( 100, 460 );
+                            }
+                            &.right {
+                                width: 420px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

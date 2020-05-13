@@ -15,7 +15,7 @@
 		    	<input type="text" ng-model="groupConfirmationData.contact_email"/>
 			</div>
 
-			<div class="entry full-width" >
+			<div class="entry full-width" ng-if="groupConfirmationData.showLanguageField">
 	            <label for="languages">Language</label>
 	            <div  class="select">
 	                <select convert-to-number iscroll-stop-propagation ng-model="groupConfirmationData.locale">

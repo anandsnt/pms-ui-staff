@@ -6,7 +6,10 @@ angular.module('sntPay').directive('sntPayment', function() {
             hotelConfig: '=', // hotel settings related
             paymentTypes: '=', // the payment types present
             selectedPaymentType: '=?', // selected initial payment type
+            paymentCurrencyList: '=',
             reservationId: '@',
+            isFromWallet: '@',
+            rateCurrency: '@',
             postingAccountId: '=?',
             billId: '=?',
             arTransactionId: '=?', // param used for ar payment refund
@@ -16,6 +19,8 @@ angular.module('sntPay').directive('sntPayment', function() {
             guestId: '@',
             billNumber: '=',
             amount: '=', // amount to pay
+            isPenalty: '=?',
+            paymentCurrencyAmount: '=?', // default payment currency amount
             selectedCC: '=?', // selected CC details
             referenceText: '=?', // selected CC details
             actionType: '@',
@@ -34,7 +39,8 @@ angular.module('sntPay').directive('sntPayment', function() {
             fetchLinkedCards: "=?",
             hideOverlayGiftcard: "=?",
             reservationIds: "=?",
-            onlyPaymentSelection: "=?"
+            onlyPaymentSelection: "=?",
+            hasPaymentRounding: "=?"
         },
         link: function(scope, element, attrs) {
             console.log("--From Payment Module Init--");

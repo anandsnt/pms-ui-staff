@@ -21,6 +21,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
          **/
 
         BaseCtrl.call(this, $scope);
+        $scope.zestStationData.skipGuestMandatorySchemaCheck = false;
 
         var debugWithReservation = function() {
             // use this to quickly go through last name + room number and debug keys faster
@@ -271,7 +272,8 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
                             'first_name': data.first_name,
                             'last_name': data.last_name,
                             'days_of_stay': data.days_of_stay,
-                            'hours_of_stay': data.hours_of_stay
+                            'hours_of_stay': data.hours_of_stay,
+                            'restrict_post': data.restrict_post
                         };
 
                         $state.go('zest_station.checkoutReservationBill', stateParams);
@@ -284,7 +286,8 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 
             var params = {
                 'last_name': $scope.reservationParams.last_name,
-                'room_no': $scope.reservationParams.room_no + ''.replace(/\-/g, '') // adding '' to for non-str values
+                'room_no': $scope.reservationParams.room_no + ''.replace(/\-/g, ''), // adding '' to for non-str values
+                'action_type': $stateParams.mode === 'PICKUP_KEY' ? 'PICKUP_KEY' : 'CHECKOUT'
             };
 
             if ($stateParams.mode === 'PICKUP_KEY') {

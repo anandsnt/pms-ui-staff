@@ -110,7 +110,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
                         $state.go('zest_station.collectGuestAddress');
                     } else {
                         $state.go('zest_station.checkInReservationDetails');
-                    }    
+                    } 
                 } else {
                     zsCheckinSrv.setCheckInReservations(data.results);
                     $state.go('zest_station.selectReservationForCheckIn');
@@ -336,7 +336,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
                 $scope.reservationParams.no_of_nights = '';
                 $scope.mode = 'CHOOSE_OPTIONS';
             } else if ($scope.mode === 'LAST_NAME_ENTRY') {
-                if ($scope.zestStationData.id_scan_enabled && $scope.zestStationData.scan_id_to_find_reservations) {
+                if ($scope.isIpad && $scope.zestStationData.id_scan_enabled && $scope.zestStationData.scan_id_to_find_reservations) {
                     $state.go('zest_station.findReservationFromId');
                 } else {
                     $state.go('zest_station.home');

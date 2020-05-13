@@ -9,6 +9,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
     'RVBillCardSrv',
     '$state',
     'ngDialog',
+    'rvPermissionSrv',
     function ($rootScope,
         $scope,
         rvGroupRoomingListSrv,
@@ -18,7 +19,8 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
         rvGroupConfigurationSrv,
         RVBillCardSrv,
         $state,
-        ngDialog) {
+        ngDialog,
+        rvPermissionSrv) {
 
     BaseCtrl.call(this, $scope);
     var parentScope = $scope.$parent;
@@ -32,10 +34,17 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
       occupancy: true,
       roomType: true
     };
+    var RESPONSE_STATUS_470 = 470;
+
+    var borrowPopup, overbookPopup;
+    
+    $scope.hasOverBookRoomTypePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
+    $scope.hasOverBookHousePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE');
+    $scope.hasBorrowFromHousePermission = rvPermissionSrv.getPermissionValue('GROUP_HOUSE_BORROW');
 
     var calculateDisableCondition = function(field, value) {
       fieldsEnabled[field] = value;
-      for (key in fieldsEnabled) {
+      for (var key in fieldsEnabled) {
         if (key !== field) {
           fieldsEnabled[key] = !value;
         }
@@ -214,8 +223,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
     * @return {undefined}
     */
 
-    $scope.updateReservation = function(reservation) {
-
+    $scope.updateReservation = function(reservation, forcefullyOverbook) {
 
             $scope.errorMessage = "";
 
@@ -226,6 +234,11 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
               room_type_id: parseInt(reservation.room_type_id),
               room_id: parseInt(reservation.room_id)
             });
+
+            if (forcefullyOverbook) {
+                reservation.forcefully_overbook = true;
+  
+            }
             angular.forEach(reservation.accompanying_guests_details, function(guest, index) {
 
                 if (!guest.first_name && !guest.last_name) {
@@ -235,14 +248,92 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
 
             });
 
+            // Reservation update failure
+            var onUpdateReservationFailure = function( error ) {
+                if (error.status === RESPONSE_STATUS_470 && error.results.is_borrowed_from_house) {
+                    
+                    var results = error.results;
+                
+                    $scope.borrowData = {};
+                    $scope.borrowData.currentReservation = reservation;
+
+                    if (!results.room_overbooked && !results.house_overbooked) {
+                        $scope.borrowData.isBorrowFromHouse = true;
+                    }
+                     
+                    if (results.room_overbooked && !results.house_overbooked) {
+                        $scope.borrowData.shouldShowOverBookBtn = $scope.hasOverBookRoomTypePermission;
+                        $scope.borrowData.isRoomTypeOverbooked = true;
+                    } else if (!results.room_overbooked && results.house_overbooked) {
+                        $scope.borrowData.shouldShowOverBookBtn = $scope.hasOverBookHousePermission;
+                        $scope.borrowData.isHouseOverbooked = true;
+                    } else if (results.room_overbooked && results.house_overbooked) {
+                        $scope.borrowData.shouldShowOverBookBtn = $scope.hasOverBookRoomTypePermission && $scope.hasOverBookHousePermission;
+                        $scope.borrowData.isHouseAndRoomTypeOverbooked = true;
+                    }
+
+                    borrowPopup = ngDialog.open({
+                        template: '/assets/partials/common/group/rvGroupBorrowPopup.html',
+                        className: '',
+                        closeByDocument: false,
+                        closeByEscape: true,
+                        scope: $scope
+                    });
+
+                } else {
+                    $scope.errorMessage = error; 
+                }
+
+            };
+
 
             var options = {
               params: reservation,
-              successCallBack: onUpdateReservationSuccess
+              successCallBack: onUpdateReservationSuccess,
+              failureCallBack: onUpdateReservationFailure
             };
 
             $scope.callAPI(rvGroupConfigurationSrv.updateRoomingListItem, options);
 
+    };
+
+    // Handles the borrow action
+    $scope.performBorrowFromHouse = function () {
+
+        if ($scope.borrowData.isBorrowFromHouse) {
+            $scope.updateReservation($scope.borrowData.currentReservation, true);
+            $scope.closeBorrowPopup(true);
+        } else {
+            $scope.closeBorrowPopup();
+            overbookPopup = ngDialog.open({
+                template: '/assets/partials/common/group/rvGroupOverbookPopup.html',
+                className: '',
+                closeByDocument: false,
+                closeByEscape: true,
+                scope: $scope
+            });
+        }
+        
+    };
+
+    // Close borrow popup
+    $scope.closeBorrowPopup = function (shouldClearData) {
+        if (shouldClearData) {
+            $scope.borrowData = {};
+        }
+        borrowPopup.close();
+    };
+
+    // Closes the current borrow dialog
+    $scope.closeOverbookPopup = function() {
+        $scope.borrowData = {};
+        overbookPopup.close();
+    };
+
+    // Perform over book
+    $scope.performOverBook = function () {
+        $scope.updateReservation($scope.borrowData.currentReservation, true);
+        $scope.closeOverbookPopup();
     };
 
     var showCheckoutConfirmationPopup = function(data) {
@@ -480,10 +571,12 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
 
     // CICO-49191 Get the min date that can be chosen for a group reservation
     var getReservationMinDate = function (groupInfo) {
-      var minDate = groupInfo.block_from > $rootScope.businessDate ? 
-                    groupInfo.block_from : $rootScope.businessDate;
+        var shoulderStartDate = tzIndependentDate(groupInfo.shoulder_from_date),
+            businessDate = tzIndependentDate($rootScope.businessDate),
+            minDate = shoulderStartDate > businessDate ?
+                shoulderStartDate : businessDate;
 
-      return new tzIndependentDate(minDate);
+        return minDate;
     };
 
     /**
@@ -499,7 +592,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
             dateFormat: $rootScope.jqDateFormat,
             numberOfMonths: 1,
             minDate: getReservationMinDate(refData),
-            maxDate: new tzIndependentDate(refData.block_to),
+            maxDate: new tzIndependentDate(refData.shoulder_to_date),
             beforeShow: function(input, inst) {
                 $('#ui-datepicker-div').addClass('reservation hide-arrow');
                 $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');

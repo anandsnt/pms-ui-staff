@@ -38,7 +38,8 @@
         "CBAMockOperation": false,
         "sntZestStation": false,
         "require": false,
-        "toastr": false
+        "toastr": false,
+        "d3": true
     },
     "installedESLint": true,
     "parserOptions": {

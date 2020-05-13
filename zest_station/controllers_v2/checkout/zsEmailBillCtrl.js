@@ -2,11 +2,12 @@ sntZestStation.controller('zsEmailBillCtrl', [
     '$scope',
     '$stateParams',
     '$state',
+    '$translate',
     'zsEventConstants',
     'zsUtilitySrv',
     'zsCheckoutSrv',
     'zsGeneralSrv',
-    function($scope, $stateParams, $state, zsEventConstants, zsUtilitySrv, zsCheckoutSrv, zsGeneralSrv) {
+    function($scope, $stateParams, $state, $translate, zsEventConstants, zsUtilitySrv, zsCheckoutSrv, zsGeneralSrv) {
 
 		/** *********************************************************************************************
 		 **		Expected state params -----> printopted, reservation_id, email and guest_detail_id			  
@@ -59,7 +60,8 @@ sntZestStation.controller('zsEmailBillCtrl', [
             var afterBlackListValidation = function() {
                 var params = {
                     'guest_detail_id': $stateParams.guest_detail_id,
-                    'email': $scope.email
+                    'email': $scope.email,
+                    'is_kiosk': true
                 };
                 var emailSaveSuccess = function() {
                     $scope.mode = 'EMAIL_BILL_GUEST_OPTIONS';
@@ -108,8 +110,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
             }
         };
 
-        $scope.sendEmail = function() {
-			// future story, add black-list check here
+        var sendEmail = function(bill_address_type) {
 
             var sendBillSuccess = function() {
                 $scope.emailSent = true;
@@ -121,7 +122,9 @@ sntZestStation.controller('zsEmailBillCtrl', [
             };
             var params = {
                 reservation_id: $stateParams.reservation_id,
-                bill_number: '1'
+                bill_number: '1',
+                bill_address_type: bill_address_type,
+                locale: $translate.use()
             };
             var options = {
                 params: params,
@@ -132,6 +135,38 @@ sntZestStation.controller('zsEmailBillCtrl', [
             $scope.callBlurEventForIpad();
 
             $scope.callAPI(zsCheckoutSrv.sendBill, options);
+        };
+
+        $scope.emailAddressSelected = function(billingAddresstype) {
+            sendEmail(billingAddresstype);
+        };
+
+        var fetcCompanyTADetails = function() {
+            var successCallBack = function(response) {
+                $scope.addressInfo = response;
+             
+                if (response &&
+                    (response.company_card && response.company_card.name)) {
+                    $scope.mode = 'BILLING_ADDRESS_MODE';
+                } else {
+                    sendEmail('guest');
+                }
+            };
+
+            var data = {
+                'reservation_id': $stateParams.reservation_id,
+            };
+            var options = {
+                params: data,
+                successCallBack: successCallBack
+            };
+            
+            $scope.callAPI(zsCheckoutSrv.fetchCompanyTADetails, options);
+        };
+
+        $scope.sendEmail = function() {
+			// future story, add black-list check here
+            fetcCompanyTADetails();
         };
 
         /**

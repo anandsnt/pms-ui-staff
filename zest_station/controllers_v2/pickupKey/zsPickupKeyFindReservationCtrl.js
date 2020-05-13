@@ -30,6 +30,7 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 			};
 			$scope.creditCardNumber = '';
 			$scope.reservationData = {};
+			$scope.zestStationData.skipGuestMandatorySchemaCheck = false;
 			$scope.hideAddCardOption = $scope.zestStationData.paymentGateway === 'MLI' &&
 					$scope.zestStationData.hotelSettings.mli_cba_enabled ||
 				$scope.zestStationData.paymentGateway === 'CBA';
@@ -201,7 +202,8 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 			};
 			var params = {
 				'last_name': $scope.reservationParams.last_name,
-				'room_no': $scope.reservationParams.room_no + ''.replace(/\-/g, '') // adding '' to for non-str values
+				'room_no': $scope.reservationParams.room_no + ''.replace(/\-/g, ''), // adding '' to for non-str values
+				'action_type': 'PICKUP_KEY'
 			};
 			var options = {
 				params: params,

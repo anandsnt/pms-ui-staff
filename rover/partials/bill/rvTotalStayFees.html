@@ -35,7 +35,13 @@
         <span class="icon-form icon-checkbox" ng-class="{ 'checked':reservationBillData.hide_rates }"></span>
         <input ng-click="clickedShowRate()" id="no-rate-print" value="" type="checkbox">
         {{ 'DONT_PRINT_RATE' | translate }}
-    </label>
+	</label>
+	<!-- Show only during checkout and only for bill #1 -->
+	<label class="checkbox inline" ng-click="setBillAddressType()"  ng-show="currentActiveBill === 0 && billData.show_invoice_type_toggle" ng-class="{'overlay' : !billData.is_active }"> <!-- Add class "checked" if checked -->
+		<span class="icon-form icon-checkbox" ng-class="{ 'checked':billData.bill_address_type === 'COMPANY' }"></span> <!-- Add class "checked" if checked -->
+		<input type="checkbox" >
+		Use Company Address
+	</label>
 
 </div>
 <div class="overview" ng-click="toggleFeesDetails($parent.$index)" ng-show="billData.hasFeesArray" ng-class="showFeesDetailsOpenClose(billData.isOpenFeesDetails)">
@@ -75,6 +81,10 @@
 
 <!-- Payment method -->
 <div class="block-item item-payment">
+	<button ng-if="hotelDetails.shiji_detokenization_allowed && hasPermissionToDetokenizeCC() && billData.credit_card_details.payment_type == 'CC'" ng-click="openDetokenizationPopup()" type="button" class="button with-icon blue unmask-button">
+        <span class="icons icon-eye"></span> 
+                            Unmask
+    </button>
 	<!-- Credit Card -->
 	<button type="button" class="next-view" ng-show="billData.credit_card_details.payment_type == 'CC'" ng-click="showPaymentList()" ng-disabled="!billData.is_active" ng-class="{ 'overlay' : !billData.is_active }">
 		<figure class="card-logo">
@@ -137,8 +147,8 @@
 				<th><span translate>DATE</span> </th>
 				<th><span translate>CHARGE_CODE</span></th>
 				<th><span translate>DESCRIPTION</span></th>
-				<th><span translate>FEES</span></th>
-				<th><span translate>CREDITS</span></th>
+				<th class="align-right"><span translate>FEES</span></th>
+				<th class="credits align-right"><span translate>CREDITS</span></th>
 				<th class="form"><span translate>BILL</span> #</th>
 				<th class="action" ng-if="isStandAlone"><span translate>EDIT</span></th>
 				<th class="action" ng-if="hasMoveToOtherBillPermission() && isStandAlone"><label class="checkbox inline">
@@ -266,7 +276,7 @@
 						<em>{{'ADJUSTMENT' | translate}}</em> - {{feesData.adjustment_reason}}
 					</span>
 				</td>
-				<td>
+				<td class="align-right">
 					<strong>
 						<span ng-repeat="description in feesData.description">
 							<span ng-show="!isBalanceShown(feesData.is_rate_suppressed) && description.fees_amount != '' && description.fees_amount != NIL">
@@ -279,7 +289,7 @@
 						</span>
 					</strong>
 				</td>
-				<td>
+				<td class="credits align-right">
 					<strong ng-show="feesData.credits!='' && isBalanceShown(feesData.is_rate_suppressed)">
 						<span class="currency">{{currencySymbol}}</span>{{feesData.credits}}
 					</strong>

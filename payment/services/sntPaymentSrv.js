@@ -16,9 +16,9 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
             var urlStart = url.split('?')[0];
             // please note the type of error expecting is array
             // so form error as array if you modifying it
-            
 
-if (status === 406) { // 406- Network error
+
+            if (status === 406) { // 406- Network error
                 deferred.reject(errors);
             } else if (status === 422) { // 422
                 deferred.reject(errors);
@@ -26,9 +26,6 @@ if (status === 406) { // 406- Network error
                 deferred.reject(['Internal server error occured']);
             } else if (status === 501 || status === 502 || status === 503 || status === 504) { // 500- Internal Server Error
                 $window.location.href = '/500';
-            } else if (status === 401) { // 401- Unauthorized
-                // so lets redirect to login page
-                $window.location.href = '/logout';
             }
 
             // set of custom error emssage range http status
@@ -67,10 +64,10 @@ if (status === 406) { // 406- Network error
             return deferred.promise;
         };
 
-        service.getLinkedCardList = function(reservationId) {
+        service.getLinkedCardList = function(params) {
 
             var deferred = $q.defer(),
-                url = '/staff/staycards/get_credit_cards.json?reservation_id=' + reservationId;
+                url = '/staff/staycards/get_credit_cards.json?reservation_id=' + params.reservationId + '&bill_number=' + params.billNumber;
 
             $http.get(url).then(function(response) {
                 deferred.resolve(response.data.data);
@@ -79,7 +76,46 @@ if (status === 406) { // 406- Network error
             });
             return deferred.promise;
         };
-        
+
+        service.getAccountsLinkedCardList = function(AccountId) {
+
+            var deferred = $q.defer(),
+                url = 'staff/payments/fetch_attached_credit_cards?posting_account_id=' + AccountId;
+
+            $http.get(url).then(function(response) {
+                deferred.resolve(response.data.data);
+            }, function(error) {
+                deferred.reject(error);
+            });
+            return deferred.promise;
+        };
+
+        service.getCoTaLinkedCardList = function(AccountId) {
+
+            var deferred = $q.defer(),
+                url = 'staff/payments/fetch_attached_credit_cards?account_id=' + AccountId;
+
+            $http.get(url).then(function(response) {
+                deferred.resolve(response.data.data);
+            }, function(error) {
+                deferred.reject(error);
+            });
+            return deferred.promise;
+        };
+
+        service.getConvertedAmount = function(params) {
+
+            var deferred = $q.defer(),
+                url = '/api/hotel_currency_conversions/converted_payment_amount?amount=' + params.amount + '&currency_id=' + params.currency_id + '&date=' + params.date + '&fee=' + params.fee;
+
+            $http.get(url).then(function(response) {
+                deferred.resolve(response.data);
+            }, function(error) {
+                deferred.reject(error);
+            });
+            return deferred.promise;
+        };
+
         service.checkWorkStationMandatoryFields = function(workstationId) {
 
             var deferred = $q.defer(),
@@ -97,7 +133,7 @@ if (status === 406) { // 406- Network error
          *
          * @param amount
          * @param feeInfo
-         * @returns {{calculatedFee: string, minFees: number, defaultAmount: *, totalOfValueAndFee: string}}
+         * @returns {{calculatedFee: string, calculatedPaymentFee: string, minFees: number, defaultAmount: *, totalOfValueAndFee: string, totalOfValueAndPaymentFee: string}}
          */
         service.calculateFee = function(amount, feeInfo) {
             /**
@@ -112,13 +148,17 @@ if (status === 406) { // 406- Network error
 
             var amountSymbol = "",
                 feeAmount = 0,
+                paymentCurrencyFee = 0,
                 minFees = 0,
                 calculatedFee = "",
-                totalOfValueAndFee = "";
+                calculatedPaymentFee = "",
+                totalOfValueAndFee = "",
+                totalOfValueAndPaymentFee = "";
 
             if (!!feeInfo) {
                 amountSymbol = feeInfo.amount_symbol;
                 feeAmount = feeInfo.amount ? parseFloat(feeInfo.amount) : 0;
+                paymentCurrencyFee = feeInfo.default_payment_currency_fee ? parseFloat(feeInfo.default_payment_currency_fee) : 0;
                 minFees = feeInfo.minimum_amount_for_fees ? parseFloat(feeInfo.minimum_amount_for_fees) : 0;
             } else {
                 console.warn("No fee information for the current selected payment type");
@@ -131,18 +171,24 @@ if (status === 406) { // 406- Network error
                 var appliedFee = parseFloat(defaultAmount * (feeAmount / 100));
 
                 calculatedFee = parseFloat(appliedFee).toFixed(2);
+                calculatedPaymentFee = calculatedFee;
                 totalOfValueAndFee = parseFloat(appliedFee + defaultAmount).toFixed(2);
+                totalOfValueAndPaymentFee = totalOfValueAndFee;
             } else {
                 calculatedFee = parseFloat(feeAmount).toFixed(2);
+                calculatedPaymentFee = parseFloat(paymentCurrencyFee).toFixed(2);
                 totalOfValueAndFee = parseFloat(defaultAmount + feeAmount).toFixed(2);
+                totalOfValueAndPaymentFee = parseFloat(defaultAmount + paymentCurrencyFee).toFixed(2);
             }
 
             return {
                 calculatedFee: calculatedFee,
+                calculatedPaymentFee: calculatedPaymentFee,
                 feeChargeCode: feeInfo.charge_code_id,
                 minFees: minFees,
                 defaultAmount: defaultAmount,
                 totalOfValueAndFee: totalOfValueAndFee,
+                totalOfValueAndPaymentFee: totalOfValueAndPaymentFee,
                 showFees: defaultAmount >= minFees && !!defaultAmount && !!feeAmount
             };
         };
@@ -482,7 +528,12 @@ if (status === 406) { // 406- Network error
 
 
             $http.post(url, data).then(response => {
-                deferred.resolve(response.data);
+                if (response.data.status === "success") {
+                    deferred.resolve(response.data);
+                } else {
+                    deferred.reject(response.data.errors);
+                }
+                
             }, response => {
                 deferred.reject(response.data);
             });
@@ -548,7 +599,7 @@ if (status === 406) { // 406- Network error
 
         service.isAddCardAction = function(actoionType) {
             let addCardActionTypes = ['ADD_PAYMENT_GUEST_CARD', 'ADD_PAYMENT_BILL', 'ADD_PAYMENT_STAY_CARD'];
-            
+
             return _.contains(addCardActionTypes, actoionType);
         };
 
@@ -556,9 +607,9 @@ if (status === 406) { // 406- Network error
             "cardType": "VA",
             "cardNumber": "xxxx-xxxx-xxxx-0135",
             "nameOnCard": "UAT USA/TEST CARD 19",
-            "cardExpiry": "1912",
+            "cardExpiry": "9912",
             "cardExpiryMonth": "12",
-            "cardExpiryYear": "19",
+            "cardExpiryYear": "99",
             "et2": "",
             "ksn": "FFFF987654165420000E",
             "pan": "476173000000**35",

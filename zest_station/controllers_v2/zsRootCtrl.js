@@ -43,6 +43,11 @@ sntZestStation.controller('zsRootCtrl', [
         // in order to prevent url change or fresh url entering with states
         BaseCtrl.call(this, $scope);
 
+        if (!zsGeneralSrv.isZestStationEnabled) {
+            $state.go('zest_station.handleUnauthorizedAccess');
+            return ;
+        }
+
         $scope.zestImages = configurableImagesData.configurable_images || {};
         // set degfault as ''
         _.each(Object.keys($scope.zestImages), function(key) {
@@ -786,7 +791,8 @@ sntZestStation.controller('zsRootCtrl', [
                     var creditCardUsingStates = ['zest_station.checkInSignature',
                         'zest_station.checkInCardSwipe',
                         'zest_station.payment',
-                        'zest_station.pickUpKeyReservationSearch'
+                        'zest_station.pickUpKeyReservationSearch',
+                        'zest_station.checkInCCCollectionUsingOpi'
                     ];
 
 					// when user activity is not recorded for more than idle_timer.prompt
@@ -1328,6 +1334,7 @@ sntZestStation.controller('zsRootCtrl', [
 				// set work station id and status
                 $scope.zestStationData.workstationName = station.name;
                 $scope.zestStationData.set_workstation_id = $scope.getStationIdFromName(station.name).id;
+                sntIDCollectionUtilsSrv.workstation_id = $scope.zestStationData.set_workstation_id;
                 $rootScope.workstation_id = $scope.zestStationData.set_workstation_id;
                 $scope.zestStationData.key_encoder_id = $scope.getStationIdFromName(station.name).key_encoder_id;
                 var previousWorkStationStatus = angular.copy($scope.zestStationData.workstationStatus);
@@ -1750,6 +1757,7 @@ sntZestStation.controller('zsRootCtrl', [
             $('body').css('display', 'none'); // this will hide contents until svg logos are loaded
 			// call Zest station settings API
             $scope.zestStationData = zestStationSettings;
+            sntIDCollectionUtilsSrv.thirdPartyScannerTimeout = zestStationSettings.third_party_scanner_timeout;
             $controller('zsThemeActionsCtrl', {
                 $scope: $scope
             });
@@ -1845,11 +1853,16 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.id_scan_enabled = $scope.zestStationData.kiosk_scan_enabled &&
                 ($scope.zestStationData.kiosk_scan_mode === 'id_scan' ||
                     $scope.zestStationData.kiosk_scan_mode === 'id_scan_with_staff_verification' ||
-                    $scope.zestStationData.kiosk_scan_mode === 'id_scan_with_facial_verification');
+                    $scope.zestStationData.kiosk_scan_mode === 'id_scan_with_facial_verification' ||
+                    $scope.zestStationData.kiosk_scan_mode === 'third_party');
+
+            $scope.zestStationData.thirdPartyScanEnabled = $scope.zestStationData.kiosk_scan_enabled &&
+                                                           $scope.zestStationData.kiosk_scan_mode === 'third_party';
 
             if ($scope.isIpad &&
                 $scope.zestStationData.kiosk_walk_in_enabled &&
-                $scope.zestStationData.kiosk_scan_mode === 'id_scan_with_facial_verification') {
+                $scope.zestStationData.kiosk_scan_mode === 'id_scan_with_facial_verification' &&
+                $scope.zestStationData.kiosk_scan_enabled) {
                 // TODO: following style fix is a workaround, will be fixed by designers in next sprint
                 $('head').append('<style type="text/css">#options.large-icons li { margin: 0 10px !important;}</style>');
                 $scope.zestStationData.showWalkinReservationOption = true;
@@ -1872,6 +1885,7 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.connectedDeviceDetails = {};
             $scope.zestStationData.iOSCameraEnabled = false;
             $scope.zestStationData.featuresSupportedInIosApp = [];
+            $scope.zestStationData.usingAilaDevice = false;
 
             if (typeof cordova !== "undefined") {
                 cordova.exec(function(response) {
@@ -1882,6 +1896,13 @@ sntZestStation.controller('zsRootCtrl', [
                     function() {
                         // do nothing
                     }, 'RVDevicePlugin', 'featureList', ['should_show_details']);
+
+                cordova.exec(function(response) {
+                        $scope.zestStationData.usingAilaDevice = response;
+                    },
+                    function() {
+                        // do nothing
+                    }, 'RoverCDVPlugin', 'hasAilaScanHardware', ['']);
             }
             
             if ($scope.isIpad && typeof cordova !== typeof undefined) {

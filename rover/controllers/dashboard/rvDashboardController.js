@@ -1,14 +1,16 @@
 sntRover.controller('RVdashboardController',
     ['$scope', 'ngDialog', 'RVDashboardSrv', 'RVSearchSrv', 'dashBoarddata',
         '$rootScope', '$filter', '$state', 'RVWorkstationSrv', 'roomTypes', '$timeout', '$interval', '$log',
-        'RVHotelDetailsSrv', '$transitions',
+        'RVHotelDetailsSrv', '$transitions', 'Toggles',
         function($scope, ngDialog, RVDashboardSrv, RVSearchSrv, dashBoarddata,
                  $rootScope, $filter, $state, RVWorkstationSrv, roomTypes, $timeout, $interval, $log,
-                 RVHotelDetailsSrv, $transitions) {
+                 RVHotelDetailsSrv, $transitions, Toggles) {
 
             // setting the heading of the screen
             $scope.heading = 'DASHBOARD_HEADING';
-
+            $scope.dashboardFilter = {
+                analyticsActive: false
+            };
             // We are not showing the backbutton now, so setting as blank
             $scope.backButtonCaption = ''; // if it is not blank, backbutton will show, otherwise dont
             $scope.roomTypes = roomTypes;
@@ -375,5 +377,121 @@ sntRover.controller('RVdashboardController',
 
                 $scope.callAPI(RVHotelDetailsSrv.fetchInfrasecDetails, options);
             };
+
+            $scope.analyticsDashboardEnabled = Toggles.isEnabled('dashboard_analytics');
+
+            if ($scope.analyticsDashboardEnabled) {
+                $scope.dashboardFilter.analyticsActive = false;
+
+                $scope.toggleAnalyticsView = function() {
+                    $scope.dashboardFilter.showFilters = false;
+                    $scope.$broadcast('RESET_CHART_FILTERS');
+                    if ($scope.dashboardFilter.analyticsActive) {
+                        $scope.dashboardFilter.analyticsActive = false;
+                        $scope.$broadcast("showDashboardArea", true);
+                    } else {
+                        $scope.$broadcast('ANALYTICS_VIEW_ACTIVE');
+                        $scope.dashboardFilter.analyticsActive = true;
+                    }
+                };
+
+                $scope.changeAnalyticsView = function(selectedChart) {
+                    $scope.dashboardFilter.selectedAnalyticsMenu = selectedChart;
+                    $scope.$broadcast('ANALYTICS_MENU_CHANGED', selectedChart);
+                };
+
+                $scope.$on('SET_DEFAULT_ANALYTICS_MENU', function(e, selectedChart) {
+                    $scope.dashboardFilter.selectedAnalyticsMenu = selectedChart;
+                });
+
+                $scope.dashboardFilter.datePicked = angular.copy($rootScope.businessDate);
+                $scope.datePicked = moment($rootScope.businessDate).format('YYYY-MM-DD');
+
+                $scope.$on('RESET_CHART_FILTERS', function() {
+                    $scope.datePicked = moment($rootScope.businessDate).format('YYYY-MM-DD');
+                });
+                
+               $scope.dateOptions = {
+                    changeYear: true,
+                    changeMonth: true,
+                    yearRange: "-5:+5",
+                    dateFormat: 'yy-mm-dd',
+                    onSelect: function(dateText, inst) {
+                        $scope.datePicked = dateText;
+                        $scope.dashboardFilter.datePicked = dateText;
+                        $scope.$broadcast('RELOAD_DATA_WITH_DATE_FILTER_' + $scope.dashboardFilter.selectedAnalyticsMenu);
+                        ngDialog.close();
+                    }
+                };
+
+                $scope.showAnalyticsDatePicker = function() {
+                    $timeout(function() {
+                        ngDialog.open({
+                            template: '/assets/partials/search/rvDatePickerPopup.html',
+                            className: '',
+                            scope: $scope
+                        });
+                    }, 1000);
+                };
+
+                $scope.$on('ROOM_TYPE_SHORTAGE_CALCULATED', function(e, calculatedRoomTypes) {
+                    $scope.roomTypesForWorkPrioriy = [];
+                    _.each($scope.roomTypes, function(roomType) {
+                        roomType.shortage = 0;
+                        roomType.overBooking = 0;
+                        _.each(calculatedRoomTypes, function(calculatedRoomType) {
+                            if (roomType.code === calculatedRoomType.code) {
+                                roomType.shortage = calculatedRoomType.shortage;
+                                roomType.overBooking = calculatedRoomType.overBooking;
+                            }
+                        });
+                    });
+                });
+
+                $scope.refreshAnalyticsChart = function(selectedChart) {
+                    $scope.$broadcast('RESET_CHART_FILTERS');
+                    $scope.$broadcast('REFRESH_ANALYTCIS_CHART_' + selectedChart);
+                    $scope.dashboardFilter.showFilters = false;
+                };
+
+                $scope.onAnlayticsFilterChanged = function() {
+                    $scope.$broadcast('ANALYTICS_FILTER_CHANGED');
+                };
+
+                $scope.getAppliedFilterCount = function() {
+                    if ($scope.dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION' ||
+                        $scope.dashboardFilter.selectedAnalyticsMenu === 'PACE') {
+                        var aggTypeFilterCount = $scope.dashboardFilter.aggType ? 1 : 0;
+                        var datesToCompareCount =  ($scope.dashboardFilter.selectedAnalyticsMenu === 'PACE' && 
+                                                    $scope.dashboardFilter.lineChartActive) ?
+                                                    $scope.dashboardFilter.datesToCompare.length : 0;
+                        
+                        return $scope.dashboardFilter.selectedFilters.marketCodes.length +
+                            $scope.dashboardFilter.selectedFilters.sourceCodes.length +
+                            $scope.dashboardFilter.selectedFilters.segmentCodes.length +
+                            $scope.dashboardFilter.selectedFilters.originCodes.length +
+                            $scope.dashboardFilter.selectedFilters.roomTypes.length +
+                            aggTypeFilterCount +
+                            datesToCompareCount;
+
+                    } else if ($scope.dashboardFilter.selectedAnalyticsMenu === 'PERFOMANCE') {
+                        return $scope.dashboardFilter.showLastYearData ? 2 : 0;
+                    } else if ($scope.dashboardFilter.selectedAnalyticsMenu === 'HK_OVERVIEW' ||
+                        $scope.dashboardFilter.selectedAnalyticsMenu === 'HK_WORK_PRIRORITY' ||
+                        $scope.dashboardFilter.selectedAnalyticsMenu === 'FO_ARRIVALS') {
+                        return $scope.dashboardFilter.selectedRoomType ? 1 : 0;
+                    } else if ($scope.dashboardFilter.selectedAnalyticsMenu === 'FO_ACTIVITY') {
+                        var filterCount = 0;
+
+                        filterCount = $scope.dashboardFilter.selectedRoomType ? 1 : 0;
+                        return filterCount + ($scope.dashboardFilter.showPreviousDayData ? 1 : 0);
+                    } else if ($scope.dashboardFilter.selectedAnalyticsMenu === 'FO_WORK_LOAD') {
+                        var filterCount = 0;
+
+                        filterCount = $scope.dashboardFilter.selectedRoomType ? 1 : 0;
+                        return filterCount + ($scope.dashboardFilter.showRemainingReservations ? 1 : 0);
+                    }
+                };
+            }
 
         }]);

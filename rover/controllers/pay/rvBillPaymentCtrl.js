@@ -11,6 +11,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 		$scope.newPaymentInfo.addToGuestCard = false;
 		$scope.renderData.billNumberSelected = '';
 		$scope.renderData.defaultPaymentAmount = '';
+		$scope.renderData.defaultPaymentCurrencyAmount = '';
 		$scope.copyOfdefaultPaymentAmount = '';
 		$scope.defaultRefundAmount = 0;
 		// We are passing $scope from bill to this modal
@@ -189,8 +190,10 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 		}
 
 		var parsedAmount = parseFloat(defaultAmount).toFixed(2);
+		var defaultPaymentCurrencyAmount = currentBillTotalFees[0].default_payment_amount;
 
 		$scope.renderData.defaultPaymentAmount = parsedAmount;
+		$scope.renderData.defaultPaymentCurrencyAmount = defaultPaymentCurrencyAmount;
 		$scope.copyOfdefaultPaymentAmount = parsedAmount;
 		$scope.splitePaymentDetail["totalAmount"] = parsedAmount;
 		$scope.defaultRefundAmount = (-1) * parseFloat($scope.renderData.defaultPaymentAmount);
@@ -426,7 +429,8 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
             authorizationCode: data.authorizationCode || data.authorization_code,
             amount: data.amountPaid,
             feePaid: parseFloat(data.feePaid),
-            showFee: data.showFee
+            showFee: data.showFee,
+            selectedPaymentType: data.selectedPaymentType
         };
 
         processeRestOfPaymentOperations();
@@ -544,7 +548,8 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 				fees_information: cardDetails.fees_information,
 				holder_name: cardDetails.card_name,
 				is_credit_card: cardDetails.payment_type === "CC",
-				value: cardDetails.payment_id
+				value: cardDetails.payment_id,
+				auth_code: cardDetails.auth_code
 			};
 		});
 	};

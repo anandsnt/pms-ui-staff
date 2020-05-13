@@ -106,8 +106,14 @@ angular.module('stayCardModule', [])
                 to_date: '',
                 fromState: '',
                 view: 'DEFAULT',
-                company_id: null,
-                travel_agent_id: null,
+                company_id: {
+                    value: null,
+                    dynamic: true
+                },
+                travel_agent_id: {
+                    value: null,
+                    dynamic: true
+                },
                 group_id: null,
                 borrow_for_groups: '',
                 allotment_id: null,
@@ -123,7 +129,9 @@ angular.module('stayCardModule', [])
                 selectedRoomNo: null,
                 arrivalTime: null,
                 departureTime: null,
-                numNights: null
+                numNights: null,
+                selectedCurrencyId: '',
+                isGroupDetachmentRequested: null
             },
             templateUrl: '/assets/partials/reservation/rvSelectRoomAndRate.html',
             controller: 'RVSelectRoomAndRateCtrl',
@@ -157,6 +165,8 @@ angular.module('stayCardModule', [])
                         params.room_type_id = $stateParams.room_type_id;
                     if ($stateParams.is_member)
                         params.is_member = $stateParams.is_member;
+                    if ($stateParams.selectedCurrencyId)
+                        params.rate_currency_id = $stateParams.selectedCurrencyId;
 
                     var activeTab = RVReservationBaseSearchSrv.getRoomRatesDefaultView();
 
@@ -186,16 +196,19 @@ angular.module('stayCardModule', [])
                 from_date: '',
                 to_date: '',
                 reservation: 'DAILY',
-                from_screen: ''
+                from_screen: '',
+                rate_id: ''
             },
             resolve: {
                 addonData: function (RVReservationAddonsSrv, $stateParams) {
+
                     var params = {};
 
                     params.from_date = $stateParams.from_date;
                     params.to_date = $stateParams.to_date;
                     params.is_active = true;
                     params.is_not_rate_only = true;
+                    params.rate_id = $stateParams.rate_id;
                     return RVReservationAddonsSrv.fetchAddonData(params);
                 }
             }
@@ -245,7 +258,8 @@ angular.module('stayCardModule', [])
                 isFromGuestStatistics: null,
                 isFromCardStatistics: null,
                 isBulkCheckoutSelected: false,
-                isAllowOpenBalanceCheckoutSelected: false
+                isAllowOpenBalanceCheckoutSelected: false,
+                isGroupDetachmentRequested: null
             },
             resolve: {
                 reservationListData: function (RVReservationCardSrv, $stateParams) {

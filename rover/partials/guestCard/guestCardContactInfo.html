@@ -12,7 +12,7 @@
 			<rv-textbox value="guestCardData.contactInfo.tax_number" label = "Tax Number" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.tax_number, 'margin')}}"></rv-textbox>
 			<div ng-if="guestCardData.contactInfo.guestAdminSettings.date_of_birth.is_visible" class="entry has-datepicker" ng-class="{'no-print': !birthdayText}">
 				<label for="birthday"> Birthday <strong ng-if="guestCardData.contactInfo.guestAdminSettings.date_of_birth.is_mandatory_on_guest_card_creation">*</strong></label>
-				<input type="text" ng-model="birthdayText" name="guest-birthday" maxlength="8" id="guest-birthday" class="datepicker" ng-click="popupCalendar()" readonly />
+				<input type="text" ng-value="guestCardData.contactInfo.birthday | date:dateFormat" name="guest-birthday" maxlength="8" id="guest-birthday" class="datepicker" ng-click="popupCalendarForGuestContactInfoDate('birthday')" readonly />
 			</div>
 
 			<div ng-if="guestCardData.contactInfo.guestAdminSettings.nationality.is_visible" class="entry margin" ng-class="{'no-print': !guestCardData.contactInfo.nationality_id}">
@@ -44,6 +44,33 @@
 			</div>
 			<rv-textbox value="guestCardData.contactInfo.id_number" label = "Id Number" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.id_number, '')}}"></rv-textbox>
 
+			<div class="entry margin has-datepicker" ng-if="guestCardData.contactInfo.guestAdminSettings.id_issue_date.is_visible">
+				<label for="id date issue"> ID Date of issue </label>
+				<input type="text" ng-model="guestCardData.contactInfo.id_issue_date  | date:dateFormat" class="datepicker" ng-click="popupCalendarForGuestContactInfoDate('idDate')" readonly />
+			</div>
+			<div class="entry" ng-class="{'margin': !guestCardData.contactInfo.guestAdminSettings.id_issue_date.is_visible}" ng-if="guestCardData.contactInfo.guestAdminSettings.id_place_of_issue.is_visible">
+				<label for="id place issue"> ID Place of issue </label>
+				<input type="text" ng-model="guestCardData.contactInfo.id_place_of_issue" />
+			</div>
+			<div class="entry" ng-class="{'margin': !(!guestCardData.contactInfo.guestAdminSettings.id_issue_date.is_visible && guestCardData.contactInfo.guestAdminSettings.id_place_of_issue.is_visible) || (guestCardData.contactInfo.guestAdminSettings.id_issue_date.is_visible && !guestCardData.contactInfo.guestAdminSettings.id_place_of_issue.is_visible)}" ng-if="guestCardData.contactInfo.guestAdminSettings.id_country_of_issue.is_visible">
+				<label for="id date issue"> ID Country of issue </label>
+				<div class="select">
+					<select iscroll-stop-propagation ng-options="country.id as country.value for country  in countries" ng-model="guestCardData.contactInfo.id_country_id">
+						<option style="display:none" value=""></option>
+					</select>					
+				</div>
+			</div>
+
+			<div class="entry has-datepicker" ng-class="{'margin': !(!guestCardData.contactInfo.guestAdminSettings.id_issue_date.is_visible && guestCardData.contactInfo.guestAdminSettings.id_place_of_issue.is_visible) || (guestCardData.contactInfo.guestAdminSettings.id_issue_date.is_visible && !guestCardData.contactInfo.guestAdminSettings.id_place_of_issue.is_visible)}" ng-if="guestCardData.contactInfo.guestAdminSettings.id_expiration_date.is_visible">
+				<label for="entry date"> ID Date of Expiry <strong ng-if="guestCardData.contactInfo.guestAdminSettings.id_expiration_date.is_mandatory_on_guest_card_creation">*</strong></label>
+				<input type="text" ng-model="guestCardData.contactInfo.id_expiration_date | date:dateFormat" class="datepicker" ng-click="popupCalendarForGuestContactInfoDate('idExpirationDate')" readonly />
+			</div>
+
+			<div class="entry has-datepicker" ng-class="{'margin': (!guestCardData.contactInfo.guestAdminSettings.id_issue_date.is_visible && guestCardData.contactInfo.guestAdminSettings.id_place_of_issue.is_visible) || (guestCardData.contactInfo.guestAdminSettings.id_issue_date.is_visible && !guestCardData.contactInfo.guestAdminSettings.id_place_of_issue.is_visible)}" ng-if="guestCardData.contactInfo.guestAdminSettings.entry_date.is_visible">
+				<label for="entry date"> Entry Date </label>
+				<input type="text" ng-model="guestCardData.contactInfo.entry_date | date:dateFormat" class="datepicker" ng-click="popupCalendarForGuestContactInfoDate('entryDate')" readonly />
+			</div>
+
 			<rv-textbox ng-if="guestCardData.contactInfo.guestAdminSettings.father_name.is_visible" required ="{{guestCardData.contactInfo.guestAdminSettings.father_name.is_mandatory_on_guest_card_creation ? 'yes' : 'no'}}" value="guestCardData.contactInfo.father_name" label = "Name of Father" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.father_name, 'margin')}}"></rv-textbox>
 
 			<rv-textbox ng-if="guestCardData.contactInfo.guestAdminSettings.mother_name.is_visible" required ="{{guestCardData.contactInfo.guestAdminSettings.mother_name.is_mandatory_on_guest_card_creation ? 'yes' : 'no'}}" value="guestCardData.contactInfo.mother_name" label = "Name of Mother" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.mother_name, guestCardData.contactInfo.is_father_name_visible ? '' : 'margin')}}"></rv-textbox>
@@ -51,7 +78,7 @@
 			<rv-textbox ng-if="guestCardData.contactInfo.guestAdminSettings.birth_place.is_visible" required ="{{guestCardData.contactInfo.guestAdminSettings.birth_place.is_mandatory_on_guest_card_creation ? 'yes' : 'no'}}" value="guestCardData.contactInfo.birth_place" label = "Place of Birth" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.birth_place, guestCardData.contactInfo.is_father_name_visible && guestCardData.contactInfo.is_mother_name_visible ? 'margin' : '')}}"></rv-textbox>
 
 			<div class="entry" ng-if="guestCardData.contactInfo.guestAdminSettings.gender.is_visible" ng-class="getStyleClassForPrint(guestCardData.contactInfo.genderTypeList, guestCardData.contactInfo.is_father_name_visible ? '' : 'margin')">
-				<label for="country">Gender</label>
+				<label for="country"> Gender <strong ng-if="guestCardData.contactInfo.guestAdminSettings.gender.is_mandatory_on_guest_card_creation">*</strong></label>
 				<div form="contact-info" class="select">
 					<select iscroll-stop-propagation ng-options="genderType.id as genderType.value for genderType in guestCardData.contactInfo.genderTypeList" ng-model="guestCardData.contactInfo.gender_id" required ="{{guestCardData.contactInfo.guestAdminSettings.gender.is_mandatory_on_guest_card_creation ? 'yes' : 'no'}}">
 						<option style="display:none" value="genderType.id"></option>
@@ -103,6 +130,22 @@
 				</div>
 				<rv-textbox value="guestCardData.contactInfo.phone" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.phone, 'margin')}}" label="Phone"></rv-textbox>
 				<rv-textbox value="guestCardData.contactInfo.mobile" label="Mobile" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.mobile, '')}}"></rv-textbox>
+				<div class="entry blacklisted" ng-if="isStandAlone" ng-class="{'overlay': !hasPermissionToFlagGuest, 'no-print': !guestCardData.contactInfo.is_flagged}">
+					<label for="guest-blacklist">Flag Guest</label>
+
+					<div class="switch-button no-print" ng-class="{'on':guestCardData.contactInfo.is_flagged}"> <!-- Add class 'on' when guest is blacklisted / L187 is checked -->
+						<input id="guest-blacklist" type="checkbox" ng-model="guestCardData.contactInfo.is_flagged" ng-click="onBlackListToggle()" /> <!-- Add attr 'checked' when when guest is blacklisted -->
+						<label class="data-off">
+							<span class="value">Off</span>
+							<span class="switch-icon red">On</span>
+						</label>
+						<label class="data-on">
+							<span class="switch-icon grey">Off</span>
+							<span class="value">On</span>
+						</label>
+					</div>
+					<input id="guest-blacklist-reason" type="text" ng-class="{'hidden':!guestCardData.contactInfo.is_flagged}" placeholder="Reason" ng-model="guestCardData.contactInfo.flagged_reason"> <!-- Remove class 'hidden' when guest is blacklisted / L187 is checked -->
+				</div>			
 		</div> 	
 	</div> 		
  </form>

@@ -20,6 +20,9 @@
 			$controller('zsCheckinNextPageBaseCtrl', {
 				$scope: $scope
 			});
+			$controller('zsCheckinCommonBaseCtrl', {
+				$scope: $scope
+			});
 
 			var stateParams = JSON.parse($stateParams.params);
 			var SCANING_PENDING = $filter('translate')('GID_SCAN_NOT_STARTED') || 'Pending';
@@ -197,6 +200,12 @@
 				    $scope.idScanData.selectedGuest.faceImage) {
 					saveFaceImage();
 				}
+
+				for (var key in apiParams) {
+					if (!apiParams[key]) {
+						delete apiParams[key];
+					}
+				}
 				$scope.callAPI(zsCheckinSrv.savePassport, {
 					params: apiParams,
 					successCallBack: accpetIdSuccess
@@ -275,6 +284,11 @@
 				} 
 				else {
 					$scope.idScanData.selectedGuest.scannedDetails = data;
+					if ($scope.zestStationData.thirdPartyScanEnabled) {
+						$scope.idScanData.selectedGuest.front_image_data = data.front_side_image;
+						$scope.idScanData.selectedGuest.back_image_data = data.back_side_image;
+					}
+					
 					refreshIDdetailsScroller();
 				}
 			});
@@ -294,11 +308,28 @@
 			});
 
 			var verfiedStaffId;
+
+			var checkinGuest = function() {
+
+				var checkinParams = {
+					'reservation_id': stateParams.reservation_id,
+					'workstation_id': $scope.zestStationData.set_workstation_id,
+					'authorize_credit_card': false,
+					'do_not_cc_auth': false,
+					'is_promotions_and_email_set': false,
+					'is_kiosk': true,
+					'signature': stateParams.signature
+				};
+				$scope.$emit('CHECK_IF_REQUIRED_GUEST_DETAILS_ARE_PRESENT', {
+					checkinParams: _.extend({}, checkinParams, stateParams)
+				});
+			};
+			
 			var nextPageActions = function() {
 				if (stateParams.mode === 'PICKUP_KEY') {
 					$scope.zestStationData.continuePickupFlow();
 				} else {
-					$scope.checkinGuest(stateParams);
+					checkinGuest();
 				}
 			};
 
@@ -476,6 +507,19 @@
 				$scope.idScanData.selectedGuest.faceImage = response;
 			});
 
+			$scope.$on('ID_FRONT_IMAGE_CAPTURED', function() {
+				if ($scope.deviceConfig.useAilaDevice) {
+					$scope.confirmFrontImage();
+				}
+			});
+
+
+			$scope.$on('ID_BACK_IMAGE_CAPTURED', function() {
+				if ($scope.deviceConfig.useAilaDevice) {
+					$scope.confirmImages();
+				}
+			});
+
 			$scope.detachGuest = function(guest_id) {
 				$scope.detachingGuest = _.find($scope.selectedReservation.guest_details, function(guest) {
 					return guest.id === guest_id;
@@ -547,7 +591,10 @@
 				$scope.setScroller('passport-validate');
 				$scope.setScroller('confirm-images');
 				var idCaptureConfig = processCameraConfigs($scope.zestStationData.iOSCameraEnabled, $scope.zestStationData.connectedCameras, $scope.zestStationData.featuresSupportedInIosApp);
-            
+				
+				idCaptureConfig.useAilaDevice = $scope.zestStationData.usingAilaDevice;
+				idCaptureConfig.useThirdPartyScan = $scope.zestStationData.thirdPartyScanEnabled;
+            	idCaptureConfig.thirdPatrtyConnectionUrl = $scope.zestStationData.third_party_scan_url;
            		$scope.setConfigurations(idCaptureConfig);
 			}());
 		}

@@ -1,13 +1,33 @@
-sntRover.controller('RVfrontDeskDashboardController', ['$scope', '$rootScope', 'statistics', function($scope, $rootScope, statistics) {
+sntRover.controller('RVfrontDeskDashboardController',
+    ['$scope', '$rootScope', 'RVDashboardSrv', '$timeout', 'ngDialog', 'rvAnalyticsSrv',
+        function($scope, $rootScope, RVDashboardSrv, $timeout, ngDialog, rvAnalyticsSrv) {
 	// inheriting some useful things
 	BaseCtrl.call(this, $scope);
     var that = this;
 
-  $scope.statistics = statistics;
+    var requestParams = {
+        'show_adr': false,
+        'show_upsell': true,
+        'show_rate_of_day': false
+    };
+
+    RVDashboardSrv.fetchStatisticData(requestParams).then(function(data) {
+        $scope.statistics = data;
+    });
+    
 	// scroller related settings
 	var scrollerOptions = {click: true, preventDefault: false};
 
   	$scope.setScroller('dashboard_scroller', scrollerOptions);
+    var analyticsScrollerOptions = {
+      preventDefaultException: {
+        tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/
+      },
+      preventDefault: false
+    };
+
+    $scope.setScroller('analytics_scroller', analyticsScrollerOptions);
+    $scope.setScroller('analytics_details_scroller', analyticsScrollerOptions);
 
   	$scope.showDashboard = true; // variable used to hide/show dabshboard
     // changing the header
@@ -60,4 +80,63 @@ sntRover.controller('RVfrontDeskDashboardController', ['$scope', '$rootScope', '
     setTimeout(function() {
       $scope.refreshScroller('dashboard_scroller');
     }, 500);
+
+    $scope.$emit('SET_DEFAULT_ANALYTICS_MENU', 'FO_ARRIVALS');
+
+    var refreshAnalyticsScroller = function() {
+      $timeout(function() {
+        $scope.refreshScroller('analytics_scroller');
+        $scope.refreshScroller('analytics_details_scroller');
+      }, 500);
+    };
+
+    $scope.dashboardFilter.isFrontDeskDashboard = true;
+    $scope.$on('REFRESH_ANALTICS_SCROLLER', refreshAnalyticsScroller);
+    $scope.selectedFilters = {
+      "roomType": "",
+      "roomTypes": []
+    };
+
+    $scope.toggleFilterView = function() {
+      $scope.dashboardFilter.showFilters = !$scope.dashboardFilter.showFilters;
+      var selectedAnalyticsMenu = $scope.dashboardFilter.selectedAnalyticsMenu;
+
+      // reset filters if was not applied
+      if (rvAnalyticsSrv.selectedRoomType !== $scope.dashboardFilter.selectedRoomType) {
+        $scope.dashboardFilter.selectedRoomType = rvAnalyticsSrv.selectedRoomType;
+      }
+      if (selectedAnalyticsMenu === 'FO_ACTIVITY') {
+        $scope.dashboardFilter.showPreviousDayData = rvAnalyticsSrv.foChartFilterSet.showPreviousDayData;
+      }
+
+      if (selectedAnalyticsMenu === 'FO_WORK_LOAD') {
+        $scope.dashboardFilter.showRemainingReservations = rvAnalyticsSrv.foChartFilterSet.showRemainingReservations;
+      }
+    };
+    
+    $scope.applyFoFilters = function () {
+      $scope.dashboardFilter.showFilters = false;
+
+      rvAnalyticsSrv.selectedRoomType = $scope.dashboardFilter.selectedRoomType;
+      rvAnalyticsSrv.foChartFilterSet.showRemainingReservations = $scope.dashboardFilter.showRemainingReservations;
+      rvAnalyticsSrv.foChartFilterSet.showPreviousDayData = $scope.dashboardFilter.showPreviousDayData;
+
+      $scope.$broadcast('RELOAD_DATA_WITH_SELECTED_FILTER_' + $scope.dashboardFilter.selectedAnalyticsMenu);
+    };
+
+    var resetFoFilters = function() {
+      $scope.dashboardFilter.datePicked = $rootScope.businessDate;
+      $scope.dashboardFilter.showRemainingReservations = false;
+      $scope.dashboardFilter.selectedRoomType = "";
+      $scope.dashboardFilter.showPreviousDayData = false;
+    };
+
+    $scope.$on('RESET_CHART_FILTERS', function() {
+      resetFoFilters();
+      rvAnalyticsSrv.selectedRoomType = "";
+    });
+
+    $scope.clearAllFilters = function() {
+      resetFoFilters();
+    };
 }]);

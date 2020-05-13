@@ -68,6 +68,10 @@
         stroke: @white;
     }
 
+    &.icon-arrow-down {
+        fill: @brandColor;
+    }
+
 }
 
 /* 4. LAYOUT
@@ -98,7 +102,10 @@
         
         .selected-language {
             .button();
-            padding-left: 55px;
+
+            &.with-icon {
+                padding-left: 55px;
+            }
 
             .icons {
                 left: 10px;
@@ -345,6 +352,10 @@
                 }
             }
         }
+
+        &.guest-information {
+            text-transform: none;
+        }
     }
 
     #textual,
@@ -383,5 +394,10 @@
         .popup-content {
             color: @green;
         }
+    }
+
+    .minibar-item,
+    .minibar-review .review-container {
+        color: @textColor;
     }
 }

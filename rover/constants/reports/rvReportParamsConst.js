@@ -1,6 +1,6 @@
 angular.module('reportsModule')
     .constant('RVReportParamsConst', {
-    	'FROM_DATE': 'from_date',
+        'FROM_DATE': 'from_date',
         'TO_DATE': 'to_date',
         'CANCEL_FROM_DATE': 'cancel_from_date',
         'CANCEL_TO_DATE': 'cancel_to_date',
@@ -20,7 +20,7 @@ angular.module('reportsModule')
 
         'FROM_TIME': 'from_time',
         'TO_TIME': 'to_time',
-
+        'SELECTED_LANGUAGE': 'locale',
         'SORT_FIELD': 'sort_field',
         'SORT_DIR': 'sort_dir',
 
@@ -66,7 +66,7 @@ angular.module('reportsModule')
         "DEPOSIT_DUE": "deposit_due",
         "DEPOSIT_PAID": "deposit_paid",
         "DEPOSIT_PAST": "deposit_past",
-        "INCLUDE_CANCELED": "include_canceled",        
+        "INCLUDE_CANCELED": "include_canceled",
         "INCLUDE_NO_SHOW": "include_no_show",
         "INCLUDE_TAX": "include_tax",
         'SHOW_DELETED_CHARGES': 'show_deleted_charges',
@@ -122,5 +122,12 @@ angular.module('reportsModule')
         "SHOW_VAT_WITH_RATES": "show_vat_with_rates",
         "COUNTRY": "country_ids",
         "INCLUDE_LONG_STAYS": "include_long_stays",
-        "INCLUDE_DAYUSE": "include_day_use"
+        "INCLUDE_DAYUSE": "include_day_use",
+        "SHOW_UPSELL_ONLY": 'show_upsell_only',
+        "ENTITY_NAME": "entity_name",
+        "WORK_TYPE": "work_type_ids",
+        "FRONT_OFFICE_STATUS": "fo_status_ids",
+        "HOUSEKEEPING_STATUS": "hk_status_ids",
+        "HK_RESERVATION_STATUSES": "hk_reservation_statuses",
+        "HK_FRONT_OFFICE_STATUSES": "hk_fo_statuses"
     });

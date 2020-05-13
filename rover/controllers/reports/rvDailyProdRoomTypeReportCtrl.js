@@ -66,7 +66,7 @@ angular.module('sntRover')
             delete mainCtrlScope.myScroll[ RIGHT_PANE_SCROLL ];
         };
 
-        var watchShowAvailability, watchshowRevenue, reportSubmited, reportPrinting, reportUpdated, reportPageChanged;
+        var watchShowAvailability, watchshowRevenue, reportSubmited, reportPrinting, reportUpdated, reportPageChanged, reloadResultsListner;
 
         BaseCtrl.call(this, $scope);
         
@@ -120,6 +120,7 @@ angular.module('sntRover')
         reportPrinting = $scope.$on( reportMsgs['REPORT_PRINTING'], reInit );
         reportUpdated = $scope.$on( reportMsgs['REPORT_UPDATED'], reInit );
         reportPageChanged = $scope.$on( reportMsgs['REPORT_PAGE_CHANGED'], reInit );
+        reloadResultsListner = $rootScope.$on( 'RELOAD_RESULTS', reInit );
 
         $scope.$on( '$destroy', watchShowAvailability );
         $scope.$on( '$destroy', watchshowRevenue );
@@ -127,6 +128,7 @@ angular.module('sntRover')
         $scope.$on( '$destroy', reportUpdated );
         $scope.$on( '$destroy', reportPrinting );
         $scope.$on( '$destroy', reportPageChanged );
+        $scope.$on( '$destroy', reloadResultsListner );
 
         /**
          * generate the 2D matrix data that will fill the content part of the report
