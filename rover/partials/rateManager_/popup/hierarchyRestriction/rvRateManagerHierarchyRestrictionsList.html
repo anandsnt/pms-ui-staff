@@ -1,94 +1,99 @@
 <!-- Remove .hidden when showing the table -->
-<ul class="restrictions-table-header">
-    <li>Restriction</li>
-    <!-- Show if on rate or room type restrictios 
-    <li>Set on</li>
-    -->
-    <li>Remove</li>
-</ul>
-<!-- Remove .hidden when showing the table -->
 
-<div class="scrollable restrictions-table-list" ng-controller="rvRateManagerHierarchyRestrictionsListCtrl" ng-iscroll="hierarchyPopupListScroll">
-    <div class="wrapper">
-        <ul>
-            <!-- If we have more than 1 of the same restrictions, add for each of those list items class .grouped,
-                 For the first of those add another class .first,
-                 For the last of those add another class .last
-            -->
-            
-            <li class="data" ng-if="restrictionObj.listData.closed">
-                <div class="restriction-item">
-                    <div>
-                        <!-- 'restriction-value' => number of days if a restriction has any, if not it is empty -->
-                        <span class="restriction-icon bg-red icon-cross">
-                        </span>  
+<section>
+
+    <ul class="restrictions-table-header">
+        <li>Restriction</li>
+        <!-- Show if on rate or room type restrictios 
+        <li>Set on</li>
+        -->
+        <li>Remove</li>
+    </ul>
+    <!-- Remove .hidden when showing the table -->
+
+    <div class="scrollable restrictions-table-list" ng-controller="rvRateManagerHierarchyRestrictionsListCtrl" ng-iscroll="hierarchyPopupListScroll">
+        <div class="wrapper">
+            <ul>
+                <!-- If we have more than 1 of the same restrictions, add for each of those list items class .grouped,
+                     For the first of those add another class .first,
+                     For the last of those add another class .last
+                -->
+                
+                <li class="data" ng-if="restrictionObj.listData.closed">
+                    <div class="restriction-item">
+                        <div>
+                            <!-- 'restriction-value' => number of days if a restriction has any, if not it is empty -->
+                            <span class="restriction-icon bg-red icon-cross">
+                            </span>  
+                        </div>
                     </div>
-                </div>
 
-                <button type="button" class="button white remove-restriction">
-                    <span class="icons icon-remove-40" ng-click="clickedOnRemove('closed', false)"></span>
-                </button>
-            </li>
+                    <button type="button" class="button white remove-restriction">
+                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('closed', false)"></span>
+                    </button>
+                </li>
 
-            <li class="data" ng-if="restrictionObj.listData.closed_arrival">
-                <div class="restriction-item">
-                    <div>
-                        <!-- 'restriction-value' => number of days if a restriction has any, if not it is empty -->
-                        <span class="restriction-icon bg-red icon-block">
-                        </span>  
+                <li class="data" ng-if="restrictionObj.listData.closed_arrival">
+                    <div class="restriction-item">
+                        <div>
+                            <!-- 'restriction-value' => number of days if a restriction has any, if not it is empty -->
+                            <span class="restriction-icon bg-red icon-block">
+                            </span>  
+                        </div>
                     </div>
-                </div>
 
-                <button type="button" class="button white remove-restriction">
-                    <span class="icons icon-remove-40" ng-click="clickedOnRemove('closed_arrival', false)"></span>
-                </button>
-            </li>
+                    <button type="button" class="button white remove-restriction">
+                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('closed_arrival', false)"></span>
+                    </button>
+                </li>
 
-            <li class="data" ng-if="restrictionObj.listData.closed_departure">
-                <div class="restriction-item">
-                    <div>
-                        <!-- 'restriction-value' => number of days if a restriction has any, if not it is empty -->
-                        <span class="restriction-icon bg-red icon-block">
-                        </span>
+                <li class="data" ng-if="restrictionObj.listData.closed_departure">
+                    <div class="restriction-item">
+                        <div>
+                            <!-- 'restriction-value' => number of days if a restriction has any, if not it is empty -->
+                            <span class="restriction-icon bg-red icon-block">
+                            </span>
+                        </div>
                     </div>
-                </div>
 
-                <button type="button" class="button white remove-restriction">
-                    <span class="icons icon-remove-40" ng-click="clickedOnRemove('closed_departure', false)"></span>
-                </button>
-            </li>
+                    <button type="button" class="button white remove-restriction">
+                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('closed_departure', false)"></span>
+                    </button>
+                </li>
 
-            <li class="data" ng-if="restrictionObj.listData.min_length_of_stay" ng-repeat="restriction in restrictionObj.listData.min_length_of_stay">
-                <div class="restriction-item">
-                    <div>
-                        <!-- 'restriction-value' => number of days if a restriction has any, if not it is empty -->
-                        <span class="restriction-icon bg-blue">
-                            {{restriction.value}}
-                        </span>  
-                        <span class="restriction-title"></span>
-                    </div>
-                    <!-- Show if we are on rate or room type restrictions --
-                    <div class="set-on">
-                        -- If we have a rate or room type:
-                            <span class="set-on-text">{Rate&Room Type}</span>
-                            -- If we have more than 1:
-                            <span class="set-on-more">+{count} more</span>
+                <li class="data" ng-if="restrictionObj.listData.min_length_of_stay" ng-repeat="restriction in restrictionObj.listData.min_length_of_stay">
+                    <div class="restriction-item">
+                        <div>
+                            <!-- 'restriction-value' => number of days if a restriction has any, if not it is empty -->
+                            <span class="restriction-icon bg-blue">
+                                {{restriction.value}}
+                            </span>  
+                            <span class="restriction-title"></span>
+                        </div>
+                        <!-- Show if we are on rate or room type restrictions --
+                        <div class="set-on">
+                            -- If we have a rate or room type:
+                                <span class="set-on-text">{Rate&Room Type}</span>
+                                -- If we have more than 1:
+                                <span class="set-on-more">+{count} more</span>
+                                --
                             --
-                        --
-                        -- If applied on all rate/room type:
-                        <div class="notice">{text}</div>
-                        --
+                            -- If applied on all rate/room type:
+                            <div class="notice">{text}</div>
+                            --
+                        </div>
+                        -->
                     </div>
-                    -->
-                </div>
 
-                <button type="button" class="button white remove-restriction">
-                    <span class="icons icon-remove-40" ng-click="clickedOnRemove('min_length_of_stay', null)"></span>
-                </button>
-            </li>
+                    <button type="button" class="button white remove-restriction">
+                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('min_length_of_stay', null)"></span>
+                    </button>
+                </li>
 
-            <!-- ... repeat for each restriction -->
-            
-        </ul>
+                <!-- ... repeat for each restriction -->
+                
+            </ul>
+        </div>
     </div>
-</div>
+
+</section>
