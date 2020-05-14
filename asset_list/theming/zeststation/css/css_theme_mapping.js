@@ -132,7 +132,8 @@ module.exports = {
             'beachside': [themeCSSRoot + 'beachside.less'],
             'under-canvas': [themeCSSRoot + 'under-canvas.less'],
             'botanic-sanctuary': [themeCSSRoot + 'botanic-sanctuary.less'],
-            'beckers': [themeCSSRoot + 'beckers.less']
+            'beckers': [themeCSSRoot + 'beckers.less'],
+            'silver-collection': [themeCSSRoot + 'silver-collection.less']
         };
     }
 };

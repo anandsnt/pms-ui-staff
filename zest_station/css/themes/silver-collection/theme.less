@@ -1,0 +1,262 @@
+/* StayNTouch Zest Station Styles | Arc Theme */
+
+/* 1. COLORS
+==========================================================*/
+@brandColor:            #00667e;
+    
+@textColor:             @black;
+@backgroundColor:       @white;
+
+@actionColor:           @white;
+@actionBackground:      @brandColor;
+
+@inputBackground:       #707070;
+@inputColor:            @white;
+@transparentColor:      rgba(0,0,0,.5);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+
+@font-face {
+    font-family: 'Lato';
+    src: url('../../type/lato/Lato-Regular.eot');
+    src: url('../../type/lato/Lato-Regular.eot?#iefix') format('embedded-opentype'),
+        url('../../type/lato/Lato-Regular.woff2') format('woff2'),
+        url('../../type/lato/Lato-Regular.woff') format('woff'),
+        url('../../type/lato/Lato-Regular.ttf') format('truetype'),
+        url('../../type/lato/Lato-Regular.svg#Lato-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Lato';
+    src: url('../../type/lato/Lato-Italic.eot');
+    src: url('../../type/lato/Lato-Italic.eot?#iefix') format('embedded-opentype'),
+        url('../../type/lato/Lato-Italic.woff2') format('woff2'),
+        url('../../type/lato/Lato-Italic.woff') format('woff'),
+        url('../../type/lato/Lato-Italic.ttf') format('truetype'),
+        url('../../type/lato/Lato-Italic.svg#Lato-Italic') format('svg');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Lato';
+    src: url('../../type/lato/Lato-Bold.eot');
+    src: url('../../type/lato/Lato-Bold.eot?#iefix') format('embedded-opentype'),
+        url('../../type/lato/Lato-Bold.woff2') format('woff2'),
+        url('../../type/lato/Lato-Bold.woff') format('woff'),
+        url('../../type/lato/Lato-Bold.ttf') format('truetype'),
+        url('../../type/lato/Lato-Bold.svg#Lato-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@fontFamily: 'Lato', Helvetica, Arial, sans-serif;
+
+/* 3. IMAGES
+==========================================================*/
+@background: @white;
+@backgroundSize: '';
+
+@headerIconsColor:      @black;
+@headerIconsActive:     @black;
+
+.icons { 
+    &.icon-create-key {
+        fill: @brandColor;
+        stroke: @brandColor;
+    }
+
+    &.icon-no-print { stroke: @white; }
+
+    &.icon-oos {
+        fill: @brandColor;
+    }
+
+    &.icon-arrow-left,
+    &.icon-arrow-right {
+        fill: none;
+        stroke: @white;
+    }
+
+    &.icon-arrow-down {
+        fill: @brandColor;
+    }
+
+    &.icon-user-id {
+        .cls-1 {
+            stroke: @white;
+        }
+    }
+}
+
+// PMS Zest Station logo
+    .logo-svg{
+        background-image: url("../css/themes/silver-collection/logo.svg");
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 297px;
+        height: 100px;
+        background-position: center;
+    }
+
+/* 4. LAYOUT
+==========================================================*/
+
+#silver-collection {
+
+    #header {
+        height: 140px;
+    }
+
+    #main {
+        #calc > #height > .remove(100%, 140px);
+        top: 140px;
+
+        &.centered {
+            padding-top: 100px;
+            #content {
+                height: 100%;
+            }
+        }
+    }
+ 
+    
+    #logo {
+        padding-top: 0;
+        margin-top: 40px;
+
+        .logo {
+            width: auto;
+            height: 100px;
+        }
+    }
+
+    #options {
+        
+        .icon-text {
+            color: @white;
+        }
+
+        .icons {
+            fill: @white;
+        }
+
+        li.break {
+            padding-top: 60px;
+
+            &:after,
+            &:before {
+                display: none;
+            }
+        }
+    }
+
+    #selection {
+        li {
+            .details {
+                background-color: fade(@brandColor, 5);
+            }
+        }
+    }
+
+    #guests {
+        .button {
+            color: @white;
+            background-color: #000;
+        }
+    } 
+
+    #signature {
+        background: #f3f3f3;
+    }
+
+    .add-on-list {
+        li {
+
+            &:not(.selected){
+                border-color: #f3f3f3;
+
+                .add-on-content {
+                    background: #f3f3f3;
+                }
+            }
+            
+        }
+    }
+
+    .add-on {
+
+        .input-group {
+            input {
+                color: @black;
+            }
+        }
+    }
+
+    .upgrade-list {
+        li {
+            &:not(.selected) {
+                background: #f3f3f3;
+                border-color: #f3f3f3;
+
+                .upgrade-content {
+                    background: #f3f3f3;
+                }
+            }
+        }
+    }
+
+    #upgrade {
+        background: #f3f3f3;
+        border-color: #f3f3f3;
+
+        .upgrade-price {
+            background: @brandColor;
+            color: @white;
+        }
+    }
+
+   
+
+    #textual {
+        background: #f3f3f3;
+         
+
+        &:before,
+        &:after {
+            background: #f3f3f3;
+        }
+
+        #rate {
+            li {
+                &.total {
+                    color: @black;
+                }
+            }
+        }
+
+    }
+
+    #rate {
+        li {
+            &.sub {
+                color: #a1a1a1;
+            }
+        }
+    }
+
+    #textual,
+    .popup {
+        .icons {
+            fill: @white;
+        }
+    }
+
+    .minibar-item,
+    .minibar-review .review-container {
+        background: #f3f3f3;
+    }
+}
