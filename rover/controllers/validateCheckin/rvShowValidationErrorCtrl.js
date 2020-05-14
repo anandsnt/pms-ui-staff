@@ -1,4 +1,5 @@
-sntRover.controller('RVShowValidationErrorCtrl', ['$rootScope', '$scope', 'ngDialog', 'RVBillCardSrv',  function($rootScope, $scope, ngDialog, RVBillCardSrv) {
+sntRover.controller('RVShowValidationErrorCtrl', ['$rootScope', '$scope', 'ngDialog', 'RVBillCardSrv', '$state',
+ function($rootScope, $scope, ngDialog, RVBillCardSrv, $state) {
 	BaseCtrl.call(this, $scope);
 
 	var init = function() {
@@ -7,15 +8,17 @@ sntRover.controller('RVShowValidationErrorCtrl', ['$rootScope', '$scope', 'ngDia
 
 	};
 
-	var cancelPopup = function() {
-		if ($scope.callBackMethod) {
-			$scope.callBackMethod();
+	var cancelPopup = function(redirectTo) {
+		if (redirectTo === 'bill') {
+			$scope.$emit("STAY_ON_BILL");
+		} else {
+			$state.go("rover.dashboard.manager");
 		}
 		ngDialog.close();
 	};
 
 
-	$scope.okButtonClicked = function() {
+	$scope.okButtonClicked = function(redirectTo) {
 		// If we chose the room status as ready, then we should make an API call to change the HK status
 		if ($scope.flag.roomStatusReady) {
 			/*
@@ -30,14 +33,14 @@ sntRover.controller('RVShowValidationErrorCtrl', ['$rootScope', '$scope', 'ngDia
 			}
 
 			var houseKeepingStatusUpdateSuccess = function(data) {
-				$scope.$emit('hideLoader');
-				cancelPopup();
+				$scope.$emit('hideLoader');				
+				cancelPopup(redirectTo);
 			};
 
 			$scope.invokeApi(RVBillCardSrv.changeHousekeepingStatus, data, houseKeepingStatusUpdateSuccess);
 		// Room is set to be not ready by default in checkout process. So we don't need to change the HK status
 		} else {
-			cancelPopup();
+			cancelPopup(redirectTo);
 		}
 	};
 	init();
