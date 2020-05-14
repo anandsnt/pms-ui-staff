@@ -1008,7 +1008,13 @@ sntRover.controller('RVbillCardController',
 			$scope.refreshScroller('bill-tab-scroller');
 			},
 		3000);
-     });
+	 });
+	 
+	$scope.addListener('STAY_ON_BILL', function() {
+		$scope.isMessagePopupDuringCheckout = false;
+		$scope.reservationBillData.reservation_status = "CHECKEDOUT";
+		$scope.getBillData($scope.currentActiveBill);
+	});
 
 
      /*
@@ -1088,7 +1094,7 @@ sntRover.controller('RVbillCardController',
 	 	$scope.isRefreshOnBackToStaycard = true; // CICO-17739 Refresh view when returning from staycard after altering the payment method.
 	 	$scope.addNewPaymentModal();
 	 };
-	 $rootScope.$on('OPENPAYMENTMODEL', function() {
+	 $scope.$on('OPENPAYMENTMODEL', function() {
 	 	$scope.clickedAddUpdateCCButton();
 	 });
 	 /*
@@ -2106,9 +2112,11 @@ sntRover.controller('RVbillCardController',
 	// CICO-45029 - handle check-out in progress tracking so user doesnt initiate errors
 	// due to having already clicked the review bill & complete check-out button
 	$scope.checkoutInProgress = false;
+	$scope.isMessagePopupDuringCheckout = false;
 	// To handle complete checkout button click
 	$scope.clickedCompleteCheckout = function() {
 		$scope.checkoutInProgress = true;
+		
 		$scope.findNextBillToReview();	// Verifying wheather any bill is remaing for reviewing.
 		if (!$scope.isAllBillsReviewed) {
 			$scope.checkoutInProgress = false;
@@ -2226,6 +2234,7 @@ sntRover.controller('RVbillCardController',
 			$scope.checkoutInProgress = false;
 		}
 		else {
+			$scope.isMessagePopupDuringCheckout = true;
 			var data = {
 				"reservation_id": $scope.reservationBillData.reservation_id,
 				"email": $scope.guestCardData.contactInfo.email,
