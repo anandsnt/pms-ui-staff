@@ -17,23 +17,12 @@ angular.module('sntRover')
                     $scope.refreshScroller('hierarchyPopupListScroll');
                 };
 
-                refreshScroller();
-
-                let fetchRestrictionsListData = function() {
-                    let params = {
-                        'from_date': $scope.ngDialogData.date,
-                        'to_date': $scope.ngDialogData.date,
-                        'levels[]': $scope.ngDialogData.hierarchyLevel
-                    };
-                    let fetchRestrictionsListSuccessCallback = () => {
-                        
-                    };
-                    let options = {
-                        params: params,
-                        onSuccess: fetchRestrictionsListSuccessCallback
-                    };
-
-                    $scope.callAPI(hierarchySrv.fetchRestrictionsListData, options);
+                $scope.clickedOnRemove = function( key, value ) {
+                    console.log(key);
+                    console.log(value);
                 };
+
+                setscroller();
+                refreshScroller();
             }
     ]);

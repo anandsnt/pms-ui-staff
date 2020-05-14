@@ -6,13 +6,15 @@ angular.module('sntRover')
         'ngDialog',
         'rvRateManagerUtilitySrv',
         'rvRateManagerHierarchyRestrictionsSrv',
+        '$timeout',
         function(
             $scope,
             $rootScope,
             rvRateManagerEventConstants,
             ngDialog,
             hierarchyUtils,
-            hierarchySrv) {
+            hierarchySrv,
+            $timeout) {
                 BaseCtrl.call(this, $scope);
 
                 var setscroller = () => {
@@ -33,21 +35,24 @@ angular.module('sntRover')
                         disableNewRestriction: false
                     };
                     // The below variable can have one of four values: EMPTY/LIST/NEW/EDIT
-                    $scope.popUpView = '';
+                    let isEmptyList = _.isEmpty($scope.ngDialogData.listData);
+
+                    $scope.popUpView = isEmptyList ? 'EMPTY' : 'LIST';
                     $scope.selectedRestriction = {};
                     $scope.restrictionStylePack = [];
                     $scope.restrictionObj = {
                         isRepeatOnDates: false,
                         daysList: hierarchyUtils.repeatOnDatesList,
                         cellDate: $scope.ngDialogData.date,
-                        untilDate: ''
+                        untilDate: '',
+                        listData: $scope.ngDialogData.listData
                     };
                 },
                 initialiseFirstScreen = () => {
                     // as part of CICO-75894 we are always showing the first screen as empty.
                     // the below code must be changed when the story to view restrictions is taken up.
                     // There may be code, but for now, the following one line will do
-                    $scope.popUpView = 'EMPTY';
+                    $scope.popUpView = 'LIST';
                 };
 
                 $scope.initiateNewRestrictionForm = () => {
@@ -162,13 +167,12 @@ angular.module('sntRover')
                 */
                 $scope.closeDialog = function() {
                     $rootScope.modalClosing = true;
-                    setTimeout(function() {
+                    $timeout(function () {
                         ngDialog.close();
                         $rootScope.modalClosing = false;
                         window.scrollTo(0, 0);
                         document.getElementById("rate-manager").scrollTop = 0;
                         document.getElementsByClassName("pinnedLeft-list")[0].scrollTop = 0;
-                        $scope.$apply();
                     }, 700);
                 };
 
@@ -191,7 +195,6 @@ angular.module('sntRover')
 
                 var initController = () => {
                     initializeScopeVariables();
-                    initialiseFirstScreen();
                     setscroller();
                     refreshScroller();
 

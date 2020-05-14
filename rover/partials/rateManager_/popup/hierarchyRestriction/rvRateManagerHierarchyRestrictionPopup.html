@@ -44,10 +44,10 @@
                 </div>
                 <div class="restriction-content">
                     <div class="content-middle">
-                        <span ng-if="popUpView === 'EMPTY'"
+                        <span ng-show="popUpView === 'EMPTY'"
                         rv-include-template="/assets/partials/rateManager_/popup/hierarchyRestriction/rvRateManagerHierarchyRestrictionsEmpty.html">
                         </span>
-                        <span ng-if="popUpView === 'LIST'"
+                        <span ng-show="popUpView === 'LIST'"
                         rv-include-template="/assets/partials/rateManager_/popup/hierarchyRestriction/rvRateManagerHierarchyRestrictionsList.html">
                         </span>
                         <span ng-if="popUpView === 'NEW' || popUpView === 'EDIT'"
