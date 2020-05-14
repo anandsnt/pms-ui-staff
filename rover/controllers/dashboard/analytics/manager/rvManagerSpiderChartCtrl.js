@@ -15,6 +15,7 @@ angular.module('sntRover')
 			/** ****************************** DRAW CHART STARTS HERE ********************************************/
 
 			var drawPerfomceChart = function(chartData) {
+				$scope.$emit('CLEAR_ALL_CHART_ELEMENTS');
 				$scope.screenData.mainHeading = $filter('translate')("AN_ROOM_PERFOMANCE_KPR");
 				$scope.dashboardFilter.selectedAnalyticsMenu = 'PERFOMANCE';
 				var hasLastYearData = $scope.dashboardFilter.showLastYearData;
@@ -1041,7 +1042,11 @@ angular.module('sntRover')
 
 			$scope.$on('ON_WINDOW_RESIZE', function() {
 				if ($scope.dashboardFilter.selectedAnalyticsMenu === 'PERFOMANCE') {
-					fetchPerfomanceChartData();
+					if ($scope.dashboardFilter.showLastYearData) {
+						handleFilterChangeForPerfomanceChart();
+					} else {
+						fetchPerfomanceChartData();
+					}
 				}
 			});
 		}
