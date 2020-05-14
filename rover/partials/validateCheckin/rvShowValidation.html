@@ -1,5 +1,5 @@
 <div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
-	<div class="modal-content">
+	<!-- <div class="modal-content">
 		<button ng-if='checkoutStatus !== "success"' type="button" id="modal-close" class="modal-close" ng-click="closeDialog()">
 			<span class="icons icon-close invert"></span>
 		</button>
@@ -12,11 +12,11 @@
 		   <div class="switch-button" ng-class="{'on': flag.roomStatusReady}">
 		      <input id="room-status" name="room-status" type="checkbox" value="not-ready" ng-model="flag.roomStatusReady">
 		      <label class="data-off">
-			      <span class="switch-icon">Not Ready</span>
+			      <span class="switch-icon">Not Readyyyyyyyyyy</span>
 			      <span class="value">Ready</span>
 		      </label>
 		      <label class="data-on">
-			      <span class="value">Not Ready</span>
+			      <span class="value">Not Readybbbbbbbbbbbb</span>
 			      <span class="switch-icon">Ready</span>
 		      </label>
 		   </div>
@@ -30,5 +30,42 @@
 		<button id="ok" class="button modal-close" ng-class="{'red':status==='error','green':status === 'success'}" ng-click="okButtonClicked()">
 			Ok
 		</button>
+	</div> -->
+
+	<div class="modal-content checkout-print form">
+		<button id="modal-close" type="button" class="modal-close"  ng-click="closeDialog()">
+			<span class="icons icon-close invert"></span>
+		</button>
+	
+		<span class="icons icon-popup-success"></span>
+		<span class="h2 message">{{popupMessage}}</span>
+	
+		<em class="text" ng-if="status === 'success' && reservationBillData.enable_room_status_at_checkout === 'true'">You can print the invoice from the Guest Bill</em>
+	
+		<div class="entry" ng-if="status === 'success' && reservationBillData.enable_room_status_at_checkout === 'true'">
+			<label for="room-status">Room Status</label>
+			<!-- Add .on when the room is checked ready, remove .on when not ready -->
+			<div class="switch-button" ng-class="{'on': flag.roomStatusReady}">
+				<!-- Add checked when the rom is checked ready, remove checked when not ready -->
+				<input name="room-status" id="room-status" value="" type="checkbox" ng-model="flag.roomStatusReady"/>
+				<label class="data-on">
+					<span class="value">Not Ready</span>
+					<span class="switch-icon">Ready</span>
+				</label>
+				<label class="data-off">
+					<span class="switch-icon">Not Ready</span>
+					<span class="value">Ready</span>
+				</label>
+			</div>
+		</div>
+	
+		<div class="actions" >
+			
+			<button type="button" class="button blue" ng-click="okButtonClicked('dashboard')" ng-if="isMessagePopupDuringCheckout">Go to Dashboard</button>
+			<button type="button" class="button blank" ng-click="okButtonClicked('bill')" ng-if="isMessagePopupDuringCheckout">Stay on Guest Bill</button>
+			<button id="ok" class="button modal-close" ng-class="{'red':status==='error','green':status === 'success'}" ng-if="!isMessagePopupDuringCheckout" ng-click="closeDialog()">
+				Ok
+			</button>
+		</div>
 	</div>
 </div>
