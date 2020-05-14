@@ -3279,7 +3279,9 @@
 
                         &.guests {
                             max-width: 3cm;
-                            .nowrap();
+                            &:not(.accompany){
+                                .nowrap();
+                            }
 
                             span {
                                 margin: 0 5px;
@@ -3287,6 +3289,18 @@
                                 &:first-child { margin-left: 0; }
                                 &:last-child { margin-right: 0; }
                             }
+
+                            .accompanying-guest {
+                                margin: 0;
+
+                                span {
+                                    margin: 0 5px;
+                                }
+
+                                &:first-child span { margin-left: 0; }
+                                &:last-child span { margin-right: 0; }
+                            }
+
 
                             &.accompany {
                                 white-space: normal;
