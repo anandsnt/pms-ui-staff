@@ -125,6 +125,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     has = $scope.scheduleParams.create_date_range || $scope.scheduleParams.arrival_date_range;
                 }
 
+                if ($scope.isRateAdjustmentReport) {
+                    has = $scope.scheduleParams.arrival_date_range || $scope.scheduleParams.adjustment_date_range;
+                }
+
                 return has;
             };
 
@@ -250,6 +254,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
             if ($scope.scheduleParams.arrival_date_range) {
                 filter_values.arrival_date_range = $scope.scheduleParams.arrival_date_range;
+            }
+
+            if ($scope.scheduleParams.adjustment_date_range) {
+                filter_values.adjustment_date_range = $scope.scheduleParams.adjustment_date_range;
             }
 
             // fill 'frequency_id', 'starts_on', 'repeats_every' and 'ends_on_date'
@@ -522,6 +530,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 filter_values.arrival_date_range = $scope.scheduleParams.arrival_date_range;
             }
 
+            if ($scope.scheduleParams.adjustment_date_range) {
+                filter_values.adjustment_date_range = $scope.scheduleParams.adjustment_date_range;
+            }
+
             params.format_id = parseInt($scope.scheduleParams.format_id);
 
             // fill 'frequency_id', 'starts_on', 'repeats_every' and 'ends_on_date'
@@ -756,7 +768,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             OVERRIDE_AMOUNT: 'OVERRIDE_AMOUNT',
             RATE_AMOUNT: 'RATE_AMOUNT',
             RESERVATION: 'RESERVATION',
-            TYPE: 'TYPE'
+            TYPE: 'TYPE',
+            GUEST_USER: 'GUEST_USER'
         };
         
         var groupByFields = {
@@ -1005,14 +1018,17 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     reportUtils.fillSegments($scope.filters, $scope.selectedEntityDetails.filter_values, $scope.selectedEntityDetails.report.title);
                 } else if ( filter.value === 'INCLUDE_GUARANTEE_TYPE') {
                     reportUtils.fillGuaranteeTypes($scope.filters, $scope.selectedEntityDetails.filter_values, $scope.selectedEntityDetails.report.title);
-                } else if (($scope.selectedEntityDetails.report.title === reportNames['RESERVATIONS_BY_USER']) && filter.value === 'CREATE_DATE_RANGE') {
+                } else if (filter.value === 'CREATE_DATE_RANGE') {
                     $scope.creationDateTimePeriods = reportsSrv.getScheduleReportTimePeriods($scope.selectedEntityDetails.report.title + ':' + filter.value);
                     $scope.creationDateTimePeriods = populateTimePeriodsData($scope.creationDateTimePeriods);
-                } else if (($scope.selectedEntityDetails.report.title === reportNames['RESERVATIONS_BY_USER']) && filter.value === 'ARRIVAL_DATE_RANGE') {
+                } else if (filter.value === 'ARRIVAL_DATE_RANGE') {
                     $scope.arrivalDateTimePeriods = reportsSrv.getScheduleReportTimePeriods($scope.selectedEntityDetails.report.title + ':' + filter.value);
                     $scope.arrivalDateTimePeriods = populateTimePeriodsData($scope.arrivalDateTimePeriods);
                 } else if (filter.value === 'EMPLOYEE') {
                     reportUtils.fillEmployeeList($scope.filters, $scope.selectedEntityDetails.filter_values);
+                } else if (filter.value === 'ADJUSTMENT_DATE_RANGE') {
+                    $scope.adjustmentDateTimePeriods = reportsSrv.getScheduleReportTimePeriods($scope.selectedEntityDetails.report.title + ':' + filter.value);
+                    $scope.adjustmentDateTimePeriods = populateTimePeriodsData($scope.adjustmentDateTimePeriods);
                 }
             });
 
@@ -1141,7 +1157,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     $scope.selectedEntityDetails.uiChosenIncludeCompanyTaGroup = $scope.selectedEntityDetails.filter_values[reportParams['ENTITY_NAME']];
                 } else if (groupByFields[key.toUpperCase()]) {
                     $scope.scheduleParams.groupBy = groupByFields[key.toUpperCase()];
-                } else if (upperCaseKey === 'CREATE_DATE_RANGE' || upperCaseKey === 'ARRIVAL_DATE_RANGE') {
+                } else if (upperCaseKey === 'CREATE_DATE_RANGE' || upperCaseKey === 'ARRIVAL_DATE_RANGE' || upperCaseKey === 'ADJUSTMENT_DATE_RANGE') {
                     $scope.scheduleParams[key] = value;
                 } 
 
@@ -1174,6 +1190,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
             $scope.creationDateTimePeriods = [];
             $scope.arrivalDateTimePeriods = [];
+            $scope.adjustmentDateTimePeriods = [];
             
             $scope.scheduleParams = {};
 
@@ -1181,6 +1198,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.isForecastReport = ($scope.selectedEntityDetails.report.title === reportNames['FORECAST_BY_DATE']);
             $scope.isReservationsByUserReport = ($scope.selectedEntityDetails.report.title === reportNames['RESERVATIONS_BY_USER']);
             $scope.isRoomStatusReport = $scope.selectedEntityDetails.report.title === reportNames['ROOM_STATUS_REPORT'];
+            $scope.isRateAdjustmentReport = $scope.selectedEntityDetails.report.title === reportNames['RATE_ADJUSTMENTS_REPORT'];
             
             if (angular.isDefined($scope.selectedEntityDetails.schedule_formats)) {
                 $scope.schedule_formats = $scope.selectedEntityDetails.schedule_formats;
@@ -1536,7 +1554,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Credit Check Report': true,
                 'Forecast': true,
                 'Reservations By User': true,
-                'Room Status Report': true
+                'Room Status Report': true,
+                'Rate Adjustment Report': true
             };
 
             var forWeekly = {
@@ -1553,7 +1572,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Credit Check Report': true,
                 'Forecast': true,
                 'Reservations By User': true,
-                'Room Status Report': true
+                'Room Status Report': true,
+                'Rate Adjustment Report': true
             };
             var forMonthly = {
                 'Arrival': true,
@@ -1569,7 +1589,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Credit Check Report': true,
                 'Forecast': true,
                 'Reservations By User': true,
-                'Room Status Report': true
+                'Room Status Report': true,
+                'Rate Adjustment Report': true
             };
 
             var forHourly = {
@@ -1583,7 +1604,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Credit Check Report': true,
                 'Forecast': true,
                 'Reservations By User': true,
-                'Room Status Report': true
+                'Room Status Report': true,
+                'Rate Adjustment Report': true
             };
 
             if (forHourly[item.report.title]) {
@@ -1806,7 +1828,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     selectedEntity.report.title === reportNames['CREDIT_CHECK_REPORT'] ||
                     selectedEntity.report.title === reportNames['FORECAST_BY_DATE'] || 
                     selectedEntity.report.title === reportNames['RESERVATIONS_BY_USER'] ||
-                    selectedEntity.report.title === reportNames['ROOM_STATUS_REPORT'])) {
+                    selectedEntity.report.title === reportNames['ROOM_STATUS_REPORT'] ||
+                    selectedEntity.report.title === reportNames['RATE_ADJUSTMENTS_REPORT'])) {
 
                 $scope.scheduleFormat = _.filter($scope.scheduleFormat, function(object) {
                     return object.value === 'CSV';
@@ -1828,7 +1851,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 selectedEntity.report.title === reportNames['CREDIT_CHECK_REPORT'] ||
                 selectedEntity.report.title === reportNames['FORECAST_BY_DATE'] || 
                 selectedEntity.report.title === reportNames['RESERVATIONS_BY_USER'] ||
-                selectedEntity.report.title === reportNames['ROOM_STATUS_REPORT']);
+                selectedEntity.report.title === reportNames['ROOM_STATUS_REPORT'] || 
+                selectedEntity.report.title === reportNames['RATE_ADJUSTMENTS_REPORT']);
 
         };
 
@@ -1893,6 +1917,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.scheduleParams = {};
             $scope.creationDateTimePeriods = [];
             $scope.arrivalDateTimePeriods = [];
+            $scope.adjustmentDateTimePeriods = [];
             setupScrolls();
 
             fetch_reportSchedules_frequency_timePeriod_scheduableReports();
