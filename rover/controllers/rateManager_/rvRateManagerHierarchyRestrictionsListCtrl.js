@@ -16,7 +16,13 @@ angular.module('sntRover')
                 const refreshScroller = function() {
                     $scope.refreshScroller('hierarchyPopupListScroll');
                 };
-
+                
+                /*
+                 *  Handle delete button click
+                 *  @param {String} ['closed', 'close_arrival' etc.]
+                 *  @param {Number | null} [ value of 'min_length_of_stay', 'max_length_of_stay' etc.]
+                 *  @param {Number | null} [ index of clicked item in 'min_length_of_stay', 'max_length_of_stay' etc.]
+                 */
                 $scope.clickedOnRemove = function( key, value, index ) {
                     let restrictions = {};
                     restrictions[key] = value ? value : $scope.restrictionObj.listData[key].value;
