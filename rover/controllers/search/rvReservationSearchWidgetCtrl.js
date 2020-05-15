@@ -78,6 +78,8 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.allowOpenBalanceCheckout = !!$stateParams.isAllowOpenBalanceCheckoutSelected;
 		$scope.bulkCheckoutReservationsCount = 0;
 		$scope.showAddNewGuestButton = false; // read cooment below :(
+		$scope.isDueinShowing = $stateParams.type === 'DUEIN';
+		$scope.isBulkCheckinSelected = !!$stateParams.isBulkCheckinSelected;
 		/**
 		 *	should we show ADD Guest Button
 		 *	we can determine this from wrapper class
@@ -1250,6 +1252,22 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				onSuccess: reservationsFetchSuccess				
 			});
 
+		};
+
+		/**
+		 * Should disable bulk checkin button in arrivals screen
+		 */
+		$scope.shouldDisableBulkCheckinOption = function() {
+			return (
+                !$rootScope.isStandAlone ||
+                $rootScope.isHourlyRateOn ||
+                !rvPermissionSrv.getPermissionValue("BULK_CHECKIN") 
+            );
+		};
+
+		// Toggles the bulk check-in btn
+		$scope.toggleBulkCheckinBtn = function () {
+			$scope.isBulkCheckinSelected = !$scope.isBulkCheckinSelected;
 		};
 	}
 ]);
