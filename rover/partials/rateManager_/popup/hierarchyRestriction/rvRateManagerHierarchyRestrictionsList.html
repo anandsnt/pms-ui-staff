@@ -1,6 +1,4 @@
-<!-- Remove .hidden when showing the table -->
-
-<section>
+<div class="content-middle" ng-controller="rvRateManagerHierarchyRestrictionsListCtrl" >
 
     <ul class="restrictions-table-header">
         <li>Restriction</li>
@@ -10,7 +8,7 @@
         <li>Remove</li>
     </ul>
 
-    <div class="scrollable restrictions-table-list" ng-controller="rvRateManagerHierarchyRestrictionsListCtrl" ng-iscroll="hierarchyPopupListScroll">
+    <div class="scrollable restrictions-table-list" ng-iscroll="hierarchyPopupListScroll">
         <div class="wrapper">
             <ul>
                 <li class="data" ng-if="restrictionObj.listData.closed">
@@ -23,7 +21,7 @@
                     </div>
 
                     <button type="button" class="button white remove-restriction">
-                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('closed', false)"></span>
+                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('closed')"></span>
                     </button>
                 </li>
 
@@ -37,7 +35,7 @@
                     </div>
 
                     <button type="button" class="button white remove-restriction">
-                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('closed_arrival', false)"></span>
+                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('closed_arrival')"></span>
                     </button>
                 </li>
 
@@ -51,7 +49,7 @@
                     </div>
 
                     <button type="button" class="button white remove-restriction">
-                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('closed_departure', false)"></span>
+                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('closed_departure')"></span>
                     </button>
                 </li>
 
@@ -80,7 +78,7 @@
                     </div>
 
                     <button type="button" class="button white remove-restriction">
-                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('min_length_of_stay', null)"></span>
+                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('min_length_of_stay', restriction.value, $index)"></span>
                     </button>
                 </li>
 
@@ -109,7 +107,7 @@
                     </div>
 
                     <button type="button" class="button white remove-restriction">
-                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('max_length_of_stay', null)"></span>
+                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('max_length_of_stay', restriction.value, $index)"></span>
                     </button>
                 </li>
 
@@ -138,7 +136,7 @@
                     </div>
 
                     <button type="button" class="button white remove-restriction">
-                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('min_stay_through', null)"></span>
+                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('min_stay_through', restriction.value, $index)"></span>
                     </button>
                 </li>
 
@@ -167,7 +165,7 @@
                     </div>
 
                     <button type="button" class="button white remove-restriction">
-                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('min_advanced_booking', null)"></span>
+                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('min_advanced_booking', restriction.value, $index)"></span>
                     </button>
                 </li>
 
@@ -196,11 +194,11 @@
                     </div>
 
                     <button type="button" class="button white remove-restriction">
-                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('max_advanced_booking', null)"></span>
+                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('max_advanced_booking', restriction.value, $index)"></span>
                     </button>
                 </li>
             </ul>
         </div>
     </div>
 
-</section>
+</div>
