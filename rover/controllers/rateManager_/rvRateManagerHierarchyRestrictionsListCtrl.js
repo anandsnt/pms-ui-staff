@@ -9,37 +9,34 @@ angular.module('sntRover')
             $timeout) {
                 BaseCtrl.call(this, $scope);
 
-                var setscroller = () => {
+                const setscroller = () => {
                     $scope.setScroller('hierarchyPopupListScroll');
                 };
 
-                var refreshScroller = function() {
+                const refreshScroller = function() {
                     $scope.refreshScroller('hierarchyPopupListScroll');
                 };
-                
+
                 $scope.clickedOnRemove = function( key, value, index ) {
-                    console.log(key);
-                    console.log(value);
+                    let restrictions = {};
+                    restrictions[key] = value ? value : $scope.restrictionObj.listData[key].value;
 
-                    let restrictionObj = {};
-                    restrictionObj[key] = value ? value : restrictionObj.listData[key].value;
-
-                    console.log(restrictionObj);
-
-                    var params = {
+                    let params = {
                         from_date: $scope.ngDialogData.date,
                         to_date: $scope.ngDialogData.date,
-                        restrictionObj
-                    }, 
-                    deleteSuccessCallback = () => {
-                        if (value) {
-                            delete restrictionObj.listData[key][index];
+                        restrictions
+                    };
+
+                    const deleteSuccessCallback = () => {
+                        if (value && index) {
+                            delete $scope.restrictionObj.listData[key][index];
                         }
                         else {
-                            delete restrictionObj.listData[key];
+                            delete $scope.restrictionObj.listData[key];
                         }
-                    }, 
-                    options = {
+                    };
+
+                    let options = {
                         params: params,
                         onSuccess: deleteSuccessCallback
                     };
