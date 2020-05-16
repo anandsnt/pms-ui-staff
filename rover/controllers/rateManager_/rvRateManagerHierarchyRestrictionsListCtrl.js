@@ -34,6 +34,7 @@ angular.module('sntRover')
                     };
 
                     const deleteSuccessCallback = () => {
+                        $scope.$parent.errorMessage = '';
                         if (value && index) {
                             delete $scope.restrictionObj.listData[key][index];
                         }
@@ -42,9 +43,14 @@ angular.module('sntRover')
                         }
                     };
 
+                    const deleteFailureCallback = (errorMessage) => {
+                        $scope.$parent.errorMessage = errorMessage;
+                    };
+
                     let options = {
                         params: params,
-                        onSuccess: deleteSuccessCallback
+                        successCallBack: deleteSuccessCallback,
+                        failureCallBack: deleteFailureCallback
                     };
 
                     $scope.callAPI(hierarchySrv.deleteRestrictions, options);
