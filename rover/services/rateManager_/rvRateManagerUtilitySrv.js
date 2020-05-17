@@ -194,6 +194,41 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
             return output;
         };
 
+        /**
+         * Conversion function exclusively for the panel
+         * 
+         */
+        service.generateOldGetApiResponseFormatForPanel = function(input, lockedRestrictions) {
+            var output = [],
+                key = '',
+                restrictionData = '', 
+                obj = {};
+
+            for (key in input) {
+                restrictionData = input[key],
+                obj = {};
+
+                if (typeof(restrictionData) === "object" && !_.isEmpty(restrictionData)) {
+                    obj.status = 'ON';
+                    obj.restriction_type_id = service.restrictionKeyToCodeMapping[key][0];
+                    obj.is_on_rate = lockedRestrictions ? service.checkLockedRestriction(lockedRestrictions, service.restrictionKeyToCodeMapping[key][2]) : false;
+                    if (restrictionData.length === undefined) {
+                        obj.days = null;
+                        output.push(obj);
+                    }
+                    else {
+                        var tempStorage = angular.copy(obj);
+                        restrictionData.forEach((restriction) => {
+                            tempStorage.days = restriction.value;
+                            output.push(tempStorage);
+                        });
+                    }
+                }
+            }
+
+            return output;
+        };
+
         /*
          *  Method to Restructure restriction data, Array to Object format.
          *  @param {Array}  [restrcionsList]
