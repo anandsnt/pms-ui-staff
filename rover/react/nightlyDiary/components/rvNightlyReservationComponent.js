@@ -63,7 +63,7 @@ const ReservationComponent = createClass({
                         {
                             ((this.props.reservation.isReservationDayStay) || ((this.props.reservation.numberOfNightsVisibleInGrid === 1) && (this.props.reservation.no_room_move || this.props.reservation.belongs_to_group || this.props.reservation.belongs_to_allotment) && (this.props.gridDays === NIGHTLY_DIARY_CONST.DAYS_7)) || ((this.props.reservation.numberOfNightsVisibleInGrid <= 2) && (this.props.reservation.no_room_move || this.props.reservation.belongs_to_group || this.props.reservation.belongs_to_allotment) && (this.props.gridDays === NIGHTLY_DIARY_CONST.DAYS_21))) ?
                                 <span className="name" data-initials={this.props.reservation.guest_details.short_name} >{this.props.reservation.guest_details.short_name}</span> :
-                                (this.props.reservation.numberOfNightsVisibleInGrid === 0) ? <span className="name" data-initials={this.props.reservation.guest_details.short_name} >===={this.props.reservation.guest_details.short_name}</span> : <span className="name">{this.props.reservation.guest_details.full_name} </span>
+                                (this.props.reservation.numberOfNightsVisibleInGrid === 0) ? <span className="name" data-initials={this.props.reservation.guest_details.short_name} >{this.props.reservation.guest_details.short_name}</span> : <span className="name">{this.props.reservation.guest_details.full_name} </span>
                         }
 
                         {
