@@ -274,6 +274,7 @@ sntRover.controller('reservationDetailsController',
 				backParam.useCache = true;
 				backParam.isBulkCheckoutSelected = $stateParams.isBulkCheckoutSelected;
 				backParam.isAllowOpenBalanceCheckoutSelected = $stateParams.isAllowOpenBalanceCheckoutSelected;
+				backParam.isBulkCheckinSelected = $stateParams.isBulkCheckinSelected;
 				$state.go('rover.search', backParam);
 			};
 		}

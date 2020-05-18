@@ -213,6 +213,14 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$scope.start = ((RVSearchSrv.page - 1) * RVSearchSrv.searchPerPage) + $scope.start;
 			$scope.end = $scope.start + $scope.results.length - 1;
 			refreshScroller();
+			// CICO-76792 - Restore to the original page while navigating back from the staycard
+			if ($stateParams.isBulkCheckinSelected) {
+				$timeout(function () {
+					$scope.$broadcast('updatePagination', 'DASHBOARD_SEARCH');
+					$scope.$broadcast('updatePageNo', RVSearchSrv.page);
+				}, 1000);
+			}
+			
 			$scope.$emit('hideLoader');
 		});
 
@@ -752,7 +760,8 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				confirmationId: confirmationID,
 				isrefresh: true,
 				isBulkCheckoutSelected: $scope.isBulkCheckoutSelected,
-				isAllowOpenBalanceCheckoutSelected: $scope.allowOpenBalanceCheckout
+				isAllowOpenBalanceCheckoutSelected: $scope.allowOpenBalanceCheckout,
+				isBulkCheckinSelected: $scope.isBulkCheckinSelected
 			});
 		};
 
@@ -1230,9 +1239,14 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			});
 		};
 
-		$scope.closeSuccessDialog = function() {
+		$scope.closeSuccessDialog = function(dialogData) {
 			ngDialog.close();
-			$state.go('rover.dashboard');
+			if (dialogData.isBulkCheckin) {
+
+			} else {
+				$state.go('rover.dashboard');
+			}
+			
 		};
 		$scope.closeErrorDialog = function() {
 			ngDialog.close();
@@ -1268,6 +1282,41 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		// Toggles the bulk check-in btn
 		$scope.toggleBulkCheckinBtn = function () {
 			$scope.isBulkCheckinSelected = !$scope.isBulkCheckinSelected;
+			if ($scope.isBulkCheckinSelected) {
+				$scope.callAPI(RVSearchSrv.fetchBulkCheckinReservationsCount, {
+					onSuccess: function (data) {
+						$scope.bulkCheckinReservationsCount = data.count;
+					}				
+				});
+				
+			}
+			// Should reset the pages while switching between all and bulk check-in views
+			$scope.fetchSearchResults(1);
+		};
+
+		// Show bulk check-in status popup
+		var showBulkCheckinStatusPopup = function () {
+			ngDialog.open({
+				template: '/assets/partials/popups/rvInfoPopup.html',						
+				closeByDocument: true,
+				scope: $scope,
+				data: JSON.stringify(data)
+			});
+		};
+
+		/**
+		 * Perform bulk check-in of eligible reservations
+		 */
+		$scope.performBulkCheckin = function () {
+			$scope.callAPI(RVSearchSrv.peformBulkCheckin, {
+				onSuccess: function () {
+					var data = {
+						message: "BULK_CHECKIN_INITIATED",
+						isSuccess: true,
+						isBulkCheckin: true
+					};
+				}				
+			});
 		};
 	}
 ]);

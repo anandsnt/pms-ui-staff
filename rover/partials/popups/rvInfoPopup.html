@@ -7,7 +7,7 @@
                 class="icons icon-close invert"></span></button>
         <span class="message h2" translate>{{ngDialogData.message}}</span>
         <div class="actions">
-            <button type="button" class="button green modal-close" ng-click="closeSuccessDialog()" ng-if="ngDialogData.isSuccess">OK</button>
+            <button type="button" class="button green modal-close" ng-click="closeSuccessDialog(ngDialogData)" ng-if="ngDialogData.isSuccess">OK</button>
             <button type="button" class="button green modal-close" ng-click="closeErrorDialog()" ng-if="ngDialogData.isFailure">OK</button>
         </div>
     </form>

@@ -50,9 +50,9 @@
 
 			<div class="entry notice-check-in" ng-if="isDueinShowing && isBulkCheckinSelected">
 				<div class="notice">
-					This will check in a total of <span class="count">{number-of-reservationsm}</span> reservations
+					This will check in a total of <span class="count">{{ bulkCheckinReservationsCount }}</span> reservations
 				</div>
-				<button type="button" class="button green">Check In</button>
+				<button type="button" class="button green" ng-click="performBulkCheckin()">Check In</button>
 			</div>
 			
 			<!-- remove .hidden when showing bulk checkout -->

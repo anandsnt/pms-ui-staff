@@ -6,7 +6,7 @@ angular.module("sntRover").service("RVSearchSrv", [
     function($q, RVBaseWebSrv, rvBaseWebSrvV2, $vault) {
         var self = this;
 
-        self.searchPerPage = 50;
+        self.searchPerPage = 10;
         self.page = 1;
         self.to_date = "";
         self.from_date = "";
@@ -299,6 +299,43 @@ angular.module("sntRover").service("RVSearchSrv", [
          */
         this.refreshReservationsWithOpenBalance = function () {
             var url = '/api/reservations/update_has_any_open_bill',
+                deferred = $q.defer();
+
+            rvBaseWebSrvV2.postJSON(url).then(
+                function (data) {
+                    deferred.resolve(data);
+                },
+                function (data) {
+                    deferred.reject(data);
+                }
+            );
+
+            return deferred.promise;
+        };
+
+        /**
+         * Fetch the count of reservations which are eligible for bulk check-in
+         * @return {Promise} promise
+         */
+        this.fetchBulkCheckinReservationsCount = function() {
+            var deferred = $q.defer(),
+                url =  'api/reservations/fetch_bulk_checkin_reservations_count';
+    
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+        };
+
+        /**
+         * Perform bulk check-in of eligible reservations
+         * @return {Promise} promise
+         */
+        this.peformBulkCheckin = function () {
+            var url = '/api/reservations/bulk_checkin',
                 deferred = $q.defer();
 
             rvBaseWebSrvV2.postJSON(url).then(
