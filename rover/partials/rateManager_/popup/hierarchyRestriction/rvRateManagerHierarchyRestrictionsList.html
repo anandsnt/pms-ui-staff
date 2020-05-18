@@ -11,10 +11,9 @@
     <div class="scrollable restrictions-table-list" ng-iscroll="hierarchyPopupListScroll">
         <div class="wrapper">
             <ul>
-                <li class="data" ng-if="restrictionObj.listData.closed">
+                <li ng-if="restrictionObj.listData.closed">
                     <div class="restriction-item">
-                        <div>
-                            <!-- 'restriction-value' => number of days if a restriction has any, if not it is empty -->
+                        <div class="data">
                             <span class="restriction-icon bg-red icon-cross">
                             </span>  
                         </div>
@@ -25,10 +24,9 @@
                     </button>
                 </li>
 
-                <li class="data" ng-if="restrictionObj.listData.closed_arrival">
+                <li ng-if="restrictionObj.listData.closed_arrival">
                     <div class="restriction-item">
-                        <div>
-                            <!-- 'restriction-value' => number of days if a restriction has any, if not it is empty -->
+                        <div class="data">
                             <span class="restriction-icon bg-red icon-block">
                             </span>  
                         </div>
@@ -39,10 +37,9 @@
                     </button>
                 </li>
 
-                <li class="data" ng-if="restrictionObj.listData.closed_departure">
+                <li ng-if="restrictionObj.listData.closed_departure">
                     <div class="restriction-item">
-                        <div>
-                            <!-- 'restriction-value' => number of days if a restriction has any, if not it is empty -->
+                        <div class="data">
                             <span class="restriction-icon bg-red icon-block">
                             </span>
                         </div>
@@ -53,10 +50,9 @@
                     </button>
                 </li>
 
-                <li class="data grouped" ng-class="{'first': $first, 'last': $last}" ng-if="restrictionObj.listData.min_length_of_stay" ng-repeat="restriction in restrictionObj.listData.min_length_of_stay">
+                <li ng-class="{'': first': $first, 'last': $last}" ng-if="restrictionObj.listData.min_length_of_stay" ng-repeat="restriction in restrictionObj.listData.min_length_of_stay">
                     <div class="restriction-item">
-                        <div>
-                            <!-- 'restriction-value' => number of days if a restriction has any, if not it is empty -->
+                        <div class="data">
                             <span class="restriction-icon bg-blue">
                                 {{restriction.value}}
                             </span>  
@@ -82,10 +78,9 @@
                     </button>
                 </li>
 
-                <li class="data grouped" ng-class="{'first': $first, 'last': $last}" ng-if="restrictionObj.listData.max_length_of_stay" ng-repeat="restriction in restrictionObj.listData.max_length_of_stay">
+                <li ng-class="{'grouped': restrictionObj.listData.max_length_of_stay.length > 1, 'first': $first, 'last': $last}" ng-if="restrictionObj.listData.max_length_of_stay" ng-repeat="restriction in restrictionObj.listData.max_length_of_stay">
                     <div class="restriction-item">
-                        <div>
-                            <!-- 'restriction-value' => number of days if a restriction has any, if not it is empty -->
+                        <div class="data">
                             <span class="restriction-icon bg-blue">
                                 {{restriction.value}}
                             </span>  
@@ -111,10 +106,9 @@
                     </button>
                 </li>
 
-                <li class="data grouped" ng-class="{'first': $first, 'last': $last}" ng-if="restrictionObj.listData.min_stay_through" ng-repeat="restriction in restrictionObj.listData.min_stay_through">
+                <li ng-class="{'grouped': restrictionObj.listData.min_stay_through.length > 1, 'first': $first, 'last': $last}" ng-if="restrictionObj.listData.min_stay_through" ng-repeat="restriction in restrictionObj.listData.min_stay_through">
                     <div class="restriction-item">
-                        <div>
-                            <!-- 'restriction-value' => number of days if a restriction has any, if not it is empty -->
+                        <div class="data">
                             <span class="restriction-icon bg-blue">
                                 {{restriction.value}}
                             </span>  
@@ -140,10 +134,9 @@
                     </button>
                 </li>
 
-                <li class="data grouped" ng-class="{'first': $first, 'last': $last}" ng-if="restrictionObj.listData.min_advanced_booking" ng-repeat="restriction in restrictionObj.listData.min_advanced_booking">
+                <li ng-class="{'grouped': restrictionObj.listData.min_advanced_booking.length > 1, 'first': $first, 'last': $last}" ng-if="restrictionObj.listData.min_advanced_booking" ng-repeat="restriction in restrictionObj.listData.min_advanced_booking">
                     <div class="restriction-item">
-                        <div>
-                            <!-- 'restriction-value' => number of days if a restriction has any, if not it is empty -->
+                        <div class="data">
                             <span class="restriction-icon bg-blue">
                                 {{restriction.value}}
                             </span>  
@@ -169,10 +162,9 @@
                     </button>
                 </li>
 
-                <li class="data grouped" ng-class="{'first': $first, 'last': $last}" ng-if="restrictionObj.listData.max_advanced_booking" ng-repeat="restriction in restrictionObj.listData.max_advanced_booking">
+                <li ng-class="{'grouped': restrictionObj.listData.max_advanced_booking.length > 1, 'first': $first, 'last': $last}" ng-if="restrictionObj.listData.max_advanced_booking" ng-repeat="restriction in restrictionObj.listData.max_advanced_booking">
                     <div class="restriction-item">
-                        <div>
-                            <!-- 'restriction-value' => number of days if a restriction has any, if not it is empty -->
+                        <div class="data">
                             <span class="restriction-icon bg-blue">
                                 {{restriction.value}}
                             </span>  
