@@ -15,7 +15,8 @@
                     <div class="restriction-item">
                         <div class="data">
                             <span class="restriction-icon bg-red icon-cross">
-                            </span>  
+                            </span>
+                            <span class="restriction-title">CLOSED</span>
                         </div>
                     </div>
 
@@ -28,7 +29,8 @@
                     <div class="restriction-item">
                         <div class="data">
                             <span class="restriction-icon bg-red icon-block">
-                            </span>  
+                            </span>
+                            <span class="restriction-title">CLOSED TO ARRIVAL</span>
                         </div>
                     </div>
 
@@ -40,8 +42,9 @@
                 <li ng-if="restrictionObj.listData.closed_departure">
                     <div class="restriction-item">
                         <div class="data">
-                            <span class="restriction-icon bg-red icon-block">
+                            <span class="restriction-icon bg-red">
                             </span>
+                            <span class="restriction-title">CLOSED TO DEPARTURE</span>
                         </div>
                     </div>
 
@@ -56,7 +59,7 @@
                             <span class="restriction-icon bg-blue">
                                 {{restriction.value}}
                             </span>  
-                            <span class="restriction-title"></span>
+                            <span class="restriction-title">MIN. LENGTH OF STAY</span>
                         </div>
                         <!-- Show if we are on rate or room type restrictions --
                         <div class="set-on">
@@ -81,10 +84,10 @@
                 <li ng-class="{'grouped': restrictionObj.listData.max_length_of_stay.length > 1, 'first': $first, 'last': $last}" ng-if="restrictionObj.listData.max_length_of_stay" ng-repeat="restriction in restrictionObj.listData.max_length_of_stay">
                     <div class="restriction-item">
                         <div class="data">
-                            <span class="restriction-icon bg-blue">
+                            <span class="restriction-icon bg-blue-dark">
                                 {{restriction.value}}
                             </span>  
-                            <span class="restriction-title"></span>
+                            <span class="restriction-title">MAX. LENGTH OF STAY</span>
                         </div>
                         <!-- Show if we are on rate or room type restrictions --
                         <div class="set-on">
@@ -109,10 +112,10 @@
                 <li ng-class="{'grouped': restrictionObj.listData.min_stay_through.length > 1, 'first': $first, 'last': $last}" ng-if="restrictionObj.listData.min_stay_through" ng-repeat="restriction in restrictionObj.listData.min_stay_through">
                     <div class="restriction-item">
                         <div class="data">
-                            <span class="restriction-icon bg-blue">
+                            <span class="restriction-icon bg-violet">
                                 {{restriction.value}}
                             </span>  
-                            <span class="restriction-title"></span>
+                            <span class="restriction-title">MIN. STAY THROUGH</span>
                         </div>
                         <!-- Show if we are on rate or room type restrictions --
                         <div class="set-on">
@@ -137,10 +140,10 @@
                 <li ng-class="{'grouped': restrictionObj.listData.min_advanced_booking.length > 1, 'first': $first, 'last': $last}" ng-if="restrictionObj.listData.min_advanced_booking" ng-repeat="restriction in restrictionObj.listData.min_advanced_booking">
                     <div class="restriction-item">
                         <div class="data">
-                            <span class="restriction-icon bg-blue">
+                            <span class="restriction-icon bg-green">
                                 {{restriction.value}}
                             </span>  
-                            <span class="restriction-title"></span>
+                            <span class="restriction-title">MIN. ADVANCED BOOKING</span>
                         </div>
                         <!-- Show if we are on rate or room type restrictions --
                         <div class="set-on">
@@ -165,10 +168,10 @@
                 <li ng-class="{'grouped': restrictionObj.listData.max_advanced_booking.length > 1, 'first': $first, 'last': $last}" ng-if="restrictionObj.listData.max_advanced_booking" ng-repeat="restriction in restrictionObj.listData.max_advanced_booking">
                     <div class="restriction-item">
                         <div class="data">
-                            <span class="restriction-icon bg-blue">
+                            <span class="restriction-icon bg-orange">
                                 {{restriction.value}}
                             </span>  
-                            <span class="restriction-title"></span>
+                            <span class="restriction-title">MAX. ADVANCED BOOKING</span>
                         </div>
                         <!-- Show if we are on rate or room type restrictions --
                         <div class="set-on">
