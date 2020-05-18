@@ -214,15 +214,15 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
                     obj.is_on_rate = lockedRestrictions ? service.checkLockedRestriction(lockedRestrictions, service.restrictionKeyToCodeMapping[key][2]) : false;
                     if (restrictionData.length === undefined) {
                         obj.days = null;
-                        output.push(obj);
                     }
                     else {
-                        var tempStorage = angular.copy(obj);
-                        restrictionData.forEach((restriction) => {
-                            tempStorage.days = restriction.value;
-                            output.push(tempStorage);
+                        var daysArray = [];
+                        restrictionData.forEach((item) => {
+                            daysArray.push(item.value);
                         });
+                        obj.days = daysArray;
                     }
+                    output.push(obj);
                 }
             }
 
