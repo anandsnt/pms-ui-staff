@@ -43,17 +43,20 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="restriction-content">
-                    
-                    <span ng-if="popUpView === 'EMPTY'"
-                    rv-include-template="/assets/partials/rateManager_/popup/hierarchyRestriction/rvRateManagerHierarchyRestrictionsEmpty.html">
-                    </span>
-                    <span ng-if="popUpView === 'LIST'"
-                    rv-include-template="/assets/partials/rateManager_/popup/hierarchyRestriction/rvRateManagerHierarchyRestrictionsList.html">
-                    </span>
-                    <span ng-if="popUpView === 'NEW' || popUpView === 'EDIT'"
-                    rv-include-template="/assets/partials/rateManager_/popup/hierarchyRestriction/rvRateManagerHierarchyRestrictionForm.html">
-                    </span>
+                
+                    <div class="content-middle">
+                        <span ng-if="popUpView === 'EMPTY'"
+                        rv-include-template="/assets/partials/rateManager_/popup/hierarchyRestriction/rvRateManagerHierarchyRestrictionsEmpty.html">
+                        </span>
+                        <span ng-if="popUpView === 'LIST'"
+                        rv-include-template="/assets/partials/rateManager_/popup/hierarchyRestriction/rvRateManagerHierarchyRestrictionsList.html">
+                        </span>
+                        <span ng-if="popUpView === 'NEW' || popUpView === 'EDIT'"
+                        rv-include-template="/assets/partials/rateManager_/popup/hierarchyRestriction/rvRateManagerHierarchyRestrictionForm.html">
+                        </span>
+                    </div>
 
                     <!-- hiding as this will be implemented in another story -->
                     <div class="content-right">
@@ -61,6 +64,7 @@
                         rv-include-template="/assets/partials/rateManager_/popup/hierarchyRestriction/rvRateManagerHierarchyRestrictionsRepeatOnDates.html">
                         </span>
                     </div>
+
                     <div class="footer">
                         <!-- Add .with-remove-button when we also have the remove button (example: on edit screens)-->
                         <div class="actions" ng-class="{'with-remove-button': popUpView === 'EDIT'}">
