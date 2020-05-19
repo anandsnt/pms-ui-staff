@@ -6,7 +6,7 @@ angular.module("sntRover").service("RVSearchSrv", [
     function($q, RVBaseWebSrv, rvBaseWebSrvV2, $vault) {
         var self = this;
 
-        self.searchPerPage = 10;
+        self.searchPerPage = 50;
         self.page = 1;
         self.to_date = "";
         self.from_date = "";
