@@ -37,7 +37,8 @@
                 <td ng-if="shouldPrintFolioNumber(printData, statement)">{{statement.folio_number}}</td>
                 <td ng-if="shouldPrintInvoiceNumber(printData, statement)">{{statement.invoice_number}}</td>
                 <td class="align-right"><span class="currency">{{currencySymbol}}</span>{{statement.debit}}</td>
-                <td class="align-right"><span class="currency">{{currencySymbol}}</span>{{statement.credit}}</td>
+                <td class="align-right" ng-if="statement.credit !== '' && statement.credit !== nil && statement.credit !== null"><span class="currency">{{currencySymbol}}</span>{{statement.credit}}</td>
+                <td class="align-right" ng-if="statement.credit === '' || statement.credit === nil || statement.credit === null">-</td>
                 <td class="align-right"><span class="currency">{{currencySymbol}}</span>{{statement.amount_due}}</td>
             </tr>
           </tbody>
