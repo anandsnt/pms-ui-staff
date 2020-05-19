@@ -1239,11 +1239,11 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			});
 		};
 
-		$scope.closeSuccessDialog = function(dialogData) {
+		$scope.closeSuccessDialog = function() {
 			ngDialog.close();
 			$state.go('rover.dashboard');
 		};
-		
+
 		$scope.closeErrorDialog = function() {
 			ngDialog.close();
 		};
@@ -1300,6 +1300,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 						message: "BULK_CHECKIN_INITIATED",
 						isSuccess: true
 					};
+					
 					that.showBulkCheckoutCheckinStatusPopup(data);
 				},
 				onFailure: function (errorMsg) {
