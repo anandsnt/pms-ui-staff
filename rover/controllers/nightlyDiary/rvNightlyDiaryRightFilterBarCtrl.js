@@ -334,6 +334,7 @@ angular.module('sntRover')
 
 			// CICO-65277 : Apply Guest preferences corresponding to a seletced Reservation.
 			$scope.applyGuestPreferenceFilter = function() {
+				fetchIdFromRoomFeaturesList();
 				retrieveAvailableRooms();
 			};
 
