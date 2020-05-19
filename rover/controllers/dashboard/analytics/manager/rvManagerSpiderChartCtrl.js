@@ -934,7 +934,12 @@ angular.module('sntRover')
 						perfomanceData = data;
 						$scope.screenData.analyticsDataUpdatedTime = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
 						$scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
-						drawPerfomceChart(data);
+						if (rvAnalyticsSrv.managerChartFilterSet.showLastYearData) {
+							handleFilterChangeForPerfomanceChart();
+						} else {
+							drawPerfomceChart(data);
+						}
+						
 						$scope.dashboardFilter.displayMode = 'CHART_DETAILS';
 					}
 				};
@@ -1038,18 +1043,7 @@ angular.module('sntRover')
 				fetchPerfomanceChartData();
 			});
 
-			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER_PERFOMANCE', function() {
-				// When date changes, hide opened filter view
-				$scope.dashboardFilter.showFilters = false;
-				// Reset all filters as the filter applied (if any) will be invalid with new date
-				$scope.dashboardFilter.showLastYearData = false;
-				$scope.dashboardFilter.lastyearType = "SAME_DATE_LAST_YEAR";
-				// Clear the filter values in service
-				rvAnalyticsSrv.managerChartFilterSet.showLastYearData = false;
-				rvAnalyticsSrv.managerChartFilterSet.lastyearType = "SAME_DATE_LAST_YEAR";
-				// Fetch data corresponding to new date selected
-				fetchPerfomanceChartData();
-			});
+			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER_PERFOMANCE', fetchPerfomanceChartData);
 
 			$scope.$on('ON_WINDOW_RESIZE', function() {
 				if ($scope.dashboardFilter.selectedAnalyticsMenu === 'PERFOMANCE') {
