@@ -1205,13 +1205,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
         }; 
         
         var updateConfirmationData = function(key, reservation) {
-            var totalStayCost = 0,
-                totalTax = 0;
-                
             var successCallBackOfGetConfirmationData = function(response) {
-
-                totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(totalStayCost) + parseFloat(response.data.total_stay_cost);
-                totalTax = parseFloat(totalTax) + parseFloat(response.data.total_tax);
 
                 var targetObject = {
                         "numAdults": response.data.stay_dates[0].adult_count,
@@ -1225,8 +1219,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
                 $scope.reservationData.rooms[key] = Object.assign($scope.reservationData.rooms[key], targetObject);
 
-                $scope.reservationData.totalStayCost = totalStayCost;
-                $scope.reservationData.totalTax = totalTax;
+                $scope.reservationData.totalStayCost = parseFloat(response.data.total_stay_cost);
+                $scope.reservationData.totalTax = parseFloat(response.data.total_tax);
                 $scope.$broadcast("REFRESH_SCROLL_SUMMARY");
             },
             params = {
