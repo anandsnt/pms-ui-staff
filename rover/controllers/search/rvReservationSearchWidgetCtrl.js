@@ -1193,7 +1193,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 * @param {Object} data holding the details for the popup content
 		 * @return {void}
 		 */
-		this.showBulkCheckoutStatusPopup = function (data) {
+		this.showBulkCheckoutCheckinStatusPopup = function (data) {
 			ngDialog.open({
 				template: '/assets/partials/popups/rvInfoPopup.html',						
 				closeByDocument: true,
@@ -1218,13 +1218,13 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 							message: "BULK_CHECKOUT_PROCESS_IN_PROGRESS",
 							isFailure: true
 						};
-						that.showBulkCheckoutStatusPopup(data);
+						that.showBulkCheckoutCheckinStatusPopup(data);
 					} else {
 						data = {
 							message: "BULK_CHECKOUT_INITIATED",
 							isSuccess: true
 						};
-						that.showBulkCheckoutStatusPopup(data);
+						that.showBulkCheckoutCheckinStatusPopup(data);
 					}
 					
 				},
@@ -1241,13 +1241,9 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 		$scope.closeSuccessDialog = function(dialogData) {
 			ngDialog.close();
-			if (dialogData.isBulkCheckin) {
-
-			} else {
-				$state.go('rover.dashboard');
-			}
-			
+			$state.go('rover.dashboard');
 		};
+		
 		$scope.closeErrorDialog = function() {
 			ngDialog.close();
 		};
@@ -1294,16 +1290,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$scope.fetchSearchResults(1);
 		};
 
-		// Show bulk check-in status popup
-		var showBulkCheckinStatusPopup = function () {
-			ngDialog.open({
-				template: '/assets/partials/popups/rvInfoPopup.html',						
-				closeByDocument: true,
-				scope: $scope,
-				data: JSON.stringify(data)
-			});
-		};
-
 		/**
 		 * Perform bulk check-in of eligible reservations
 		 */
@@ -1312,9 +1298,12 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				onSuccess: function () {
 					var data = {
 						message: "BULK_CHECKIN_INITIATED",
-						isSuccess: true,
-						isBulkCheckin: true
+						isSuccess: true
 					};
+					that.showBulkCheckoutCheckinStatusPopup(data);
+				},
+				onFailure: function (errorMsg) {
+					$scope.errorMessage = errorMsg;
 				}				
 			});
 		};
