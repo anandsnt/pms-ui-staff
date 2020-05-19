@@ -342,6 +342,7 @@ sntRover.controller('roverController', [
         
         $rootScope.isInfrasecEnabled = hotelDetails.is_infrasec_enabled;
         $rootScope.allowCheckInToNotReadyRooms = hotelDetails.allow_checkin_to_not_ready_rooms;
+        $rootScope.isBulkCheckinEnabled = hotelDetails.bulk_checkin_enabled;
         /**
          * reciever function used to change the heading according to the current page
          * if there is any trnslation, please use that

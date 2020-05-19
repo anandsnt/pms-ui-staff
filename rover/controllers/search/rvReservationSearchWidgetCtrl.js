@@ -78,6 +78,8 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.allowOpenBalanceCheckout = !!$stateParams.isAllowOpenBalanceCheckoutSelected;
 		$scope.bulkCheckoutReservationsCount = 0;
 		$scope.showAddNewGuestButton = false; // read cooment below :(
+		$scope.isDueinShowing = $stateParams.type === 'DUEIN';
+		$scope.isBulkCheckinSelected = !!$stateParams.isBulkCheckinSelected;
 		/**
 		 *	should we show ADD Guest Button
 		 *	we can determine this from wrapper class
@@ -211,6 +213,14 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$scope.start = ((RVSearchSrv.page - 1) * RVSearchSrv.searchPerPage) + $scope.start;
 			$scope.end = $scope.start + $scope.results.length - 1;
 			refreshScroller();
+			// CICO-76792 - Restore to the original page while navigating back from the staycard
+			if ($stateParams.isBulkCheckinSelected) {
+				$timeout(function () {
+					$scope.$broadcast('updatePagination', 'DASHBOARD_SEARCH');
+					$scope.$broadcast('updatePageNo', RVSearchSrv.page);
+				}, 1000);
+			}
+			
 			$scope.$emit('hideLoader');
 		});
 
@@ -750,7 +760,8 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				confirmationId: confirmationID,
 				isrefresh: true,
 				isBulkCheckoutSelected: $scope.isBulkCheckoutSelected,
-				isAllowOpenBalanceCheckoutSelected: $scope.allowOpenBalanceCheckout
+				isAllowOpenBalanceCheckoutSelected: $scope.allowOpenBalanceCheckout,
+				isBulkCheckinSelected: $scope.isBulkCheckinSelected
 			});
 		};
 
@@ -1182,7 +1193,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 * @param {Object} data holding the details for the popup content
 		 * @return {void}
 		 */
-		this.showBulkCheckoutStatusPopup = function (data) {
+		this.showBulkCheckoutCheckinStatusPopup = function (data) {
 			ngDialog.open({
 				template: '/assets/partials/popups/rvInfoPopup.html',						
 				closeByDocument: true,
@@ -1207,13 +1218,13 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 							message: "BULK_CHECKOUT_PROCESS_IN_PROGRESS",
 							isFailure: true
 						};
-						that.showBulkCheckoutStatusPopup(data);
+						that.showBulkCheckoutCheckinStatusPopup(data);
 					} else {
 						data = {
 							message: "BULK_CHECKOUT_INITIATED",
 							isSuccess: true
 						};
-						that.showBulkCheckoutStatusPopup(data);
+						that.showBulkCheckoutCheckinStatusPopup(data);
 					}
 					
 				},
@@ -1228,10 +1239,11 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			});
 		};
 
-		$scope.closeSuccessDialog = function() {
+		$scope.closeSuccessDialog = function(dialogData) {
 			ngDialog.close();
 			$state.go('rover.dashboard');
 		};
+		
 		$scope.closeErrorDialog = function() {
 			ngDialog.close();
 		};
@@ -1250,6 +1262,50 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				onSuccess: reservationsFetchSuccess				
 			});
 
+		};
+
+		/**
+		 * Should disable bulk checkin button in arrivals screen
+		 */
+		$scope.shouldDisableBulkCheckinOption = function() {
+			return (
+                !$rootScope.isStandAlone ||
+                $rootScope.isHourlyRateOn ||
+                !rvPermissionSrv.getPermissionValue("BULK_CHECKIN") 
+            );
+		};
+
+		// Toggles the bulk check-in btn
+		$scope.toggleBulkCheckinBtn = function () {
+			$scope.isBulkCheckinSelected = !$scope.isBulkCheckinSelected;
+			if ($scope.isBulkCheckinSelected) {
+				$scope.callAPI(RVSearchSrv.fetchBulkCheckinReservationsCount, {
+					onSuccess: function (data) {
+						$scope.bulkCheckinReservationsCount = data.count;
+					}				
+				});
+				
+			}
+			// Should reset the pages while switching between all and bulk check-in views
+			$scope.fetchSearchResults(1);
+		};
+
+		/**
+		 * Perform bulk check-in of eligible reservations
+		 */
+		$scope.performBulkCheckin = function () {
+			$scope.callAPI(RVSearchSrv.peformBulkCheckin, {
+				onSuccess: function () {
+					var data = {
+						message: "BULK_CHECKIN_INITIATED",
+						isSuccess: true
+					};
+					that.showBulkCheckoutCheckinStatusPopup(data);
+				},
+				onFailure: function (errorMsg) {
+					$scope.errorMessage = errorMsg;
+				}				
+			});
 		};
 	}
 ]);
