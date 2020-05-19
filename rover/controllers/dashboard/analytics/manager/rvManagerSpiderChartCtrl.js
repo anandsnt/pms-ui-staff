@@ -1043,7 +1043,11 @@ angular.module('sntRover')
 				fetchPerfomanceChartData();
 			});
 
-			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER_PERFOMANCE', fetchPerfomanceChartData);
+			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER_PERFOMANCE', function() {
+				// When date changes, hide opened filter view	
+				$scope.dashboardFilter.showFilters = false;
+				fetchPerfomanceChartData();
+			});
 
 			$scope.$on('ON_WINDOW_RESIZE', function() {
 				if ($scope.dashboardFilter.selectedAnalyticsMenu === 'PERFOMANCE') {
