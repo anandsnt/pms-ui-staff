@@ -2,11 +2,9 @@ angular.module('sntRover')
     .controller('rvRateManagerHierarchyRestrictionsListCtrl', [
         '$scope',
         'rvRateManagerHierarchyRestrictionsSrv',
-        '$timeout',
         function(
             $scope,
-            hierarchySrv,
-            $timeout) {
+            hierarchySrv) {
                 BaseCtrl.call(this, $scope);
 
                 const setscroller = () => {
@@ -25,6 +23,7 @@ angular.module('sntRover')
                  */
                 $scope.clickedOnRemove = function( key, value, index ) {
                     let restrictions = {};
+                    
                     restrictions[key] = value ? value : $scope.restrictionObj.listData[key].value;
 
                     let params = {
