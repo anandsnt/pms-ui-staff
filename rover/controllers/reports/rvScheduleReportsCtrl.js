@@ -23,7 +23,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         var showFilterNames = [
             'INCLUDE_DUE_OUT',
             'INCLUDE_INHOUSE',
-            'EXCEEDED_ONLY'
+            'EXCEEDED_ONLY',
+            'OOO',
+            'OOS'
         ];
 
         var setupScrolls = function() {
@@ -1536,7 +1538,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Credit Check Report': true,
                 'Forecast': true,
                 'Reservations By User': true,
-                'Room Status Report': true
+                'Room Status Report': true,
+                'Rooms OOO/OOS': true
             };
 
             var forWeekly = {
@@ -1553,7 +1556,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Credit Check Report': true,
                 'Forecast': true,
                 'Reservations By User': true,
-                'Room Status Report': true
+                'Room Status Report': true,
+                'Rooms OOO/OOS': true
             };
             var forMonthly = {
                 'Arrival': true,
@@ -1569,7 +1573,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Credit Check Report': true,
                 'Forecast': true,
                 'Reservations By User': true,
-                'Room Status Report': true
+                'Room Status Report': true,
+                'Rooms OOO/OOS': true
             };
 
             var forHourly = {
@@ -1583,7 +1588,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Credit Check Report': true,
                 'Forecast': true,
                 'Reservations By User': true,
-                'Room Status Report': true
+                'Room Status Report': true,
+                'Rooms OOO/OOS': true
             };
 
             if (forHourly[item.report.title]) {

@@ -329,6 +329,12 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'CURRENT_MONTH_PLUS_TWO',
                 'CURRENT_MONTH_PLUS_THREE'
              ],
+             'Rooms OOO/OOS': [
+                'CURRENT_MONTH',
+                'CURRENT_MONTH_PLUS_ONE',
+                'CURRENT_MONTH_PLUS_TWO',
+                'CURRENT_MONTH_PLUS_THREE'
+             ],
              'Reservations By User:CREATE_DATE_RANGE': [
                 'YESTERDAY',
                 'LAST_SEVEN_DAYS',
