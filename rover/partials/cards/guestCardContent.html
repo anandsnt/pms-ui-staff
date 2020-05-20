@@ -25,7 +25,7 @@
                 <a>Activity Log</a>
             </li>
             <li ng-if="isStandAlone" ng-class="{'ui-tabs-active': current == 'notes'}" ng-click="guestCardTabSwitch('notes')">
-                <a id="guest-credit">Notes</a>
+                <a id="guest-credit">{{ isCloudStorageEnabledForCardType('guest_card') ? 'Files & Notes' : 'Notes' }}</a>
             </li>             
         </ul>
 
