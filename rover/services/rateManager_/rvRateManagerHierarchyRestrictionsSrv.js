@@ -5,52 +5,22 @@ angular.module('sntRover').service('rvRateManagerHierarchyRestrictionsSrv', ['$q
             houseUrl = '/api/restrictions/house';
 
         service.fetchHouseRestrictions = (params) => {
-            return this.getJSON(houseUrl, params);
+            return BaseWebSrvV2.getJSON(houseUrl, params);
         };
-        service.fetchRoomTypeRestrictions = () => {};
-        service.fetchRateTypeRestrictions = () => {};
-        service.fetchRateRestrictions = () => {};
-
+        
         service.saveHouseRestrictions = (params) => {
-            return this.postJSON(houseUrl, params);
+            return BaseWebSrvV2.postJSON(houseUrl, params);
         };
         service.saveRoomTypeRestrictions = () => {};
         service.saveRateTypeRestrictions = () => {};
         service.saveRateRestrictions = () => {};
 
-        /**
-         * utility method as getJSON is repeating all the time
-         * @param  {String} url
-         * @param  {Object} params
-         * @return {Object} Promise
-         */
-        this.getJSON = (url, params, keyFromResult) => {
-            var deferred = $q.defer();
-
-            BaseWebSrvV2.getJSON(url, params).then(function(data) {
-                deferred.resolve(keyFromResult ? data[keyFromResult] : data);
-            }, function(data) {
-                deferred.reject(data);
-            });
-            return deferred.promise;
+        service.fetchHierarchyRestrictions = (params) => {
+            return BaseWebSrvV2.getJSON('/api/restrictions/hierarchy', params);
         };
 
-        /**
-         * utility method as postJSON is repeating all the time
-         * @param  {String} url
-         * @param  {Object} params
-         * @return {Object} Promise
-         */
-        this.postJSON = (url, params) => {
-            var deferred = $q.defer();
-
-            BaseWebSrvV2.postJSON(url, params)
-                .then(data => {
-                    deferred.resolve(data);
-                }, error => {
-                    deferred.reject(error);
-                });
-            return deferred.promise;
+        service.deleteRestrictions = (params) => {
+            return BaseWebSrvV2.postJSON('/api/restrictions/house', params);
         };
     }
 ]);
