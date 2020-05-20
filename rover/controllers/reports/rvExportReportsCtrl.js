@@ -172,7 +172,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
         var getFileFormatId = function() {
             var formatId = 1;
 
-            if ($scope.selectedEntityDetails.report.title === 'Police Report Export') {
+            if ($scope.selectedEntityDetails.report.title === 'Police Report Export' || $scope.selectedEntityDetails.report.title === 'HESTA Switzerland') {
                 formatId = 3;
             } else if ($scope.selectedEntityDetails.report.title === 'Spain Barcelona Police Export') {
                 formatId = 4;
@@ -598,7 +598,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Criterion Hospitality CC Export': true,
                 'Guest Details by Arrival Date': true,
                 'Cancellations by Arrival Date': true,
-                'Cancellations by Cancel Date': true
+                'Cancellations by Cancel Date': true,
+                'HESTA Switzerland': true
             };
 
             var forRunOnceOnly = {
@@ -623,7 +624,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Criterion Hospitality CC Export': true,
                 'GOBD Export': true,
                 'Cancellations by Arrival Date': true,
-                'Cancellations by Cancel Date': true
+                'Cancellations by Cancel Date': true,
+                'HESTA Switzerland': true
             };
 
             var forWeekly = {
@@ -636,7 +638,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Spain Barcelona Police Export': true,
                 'Invoice / Folio Export': true,
                 'Cancellations by Arrival Date': true,
-                'Cancellations by Cancel Date': true
+                'Cancellations by Cancel Date': true,
+                'HESTA Switzerland': true
             };
             var forMonthly = {
                 'Future Reservations': true,
@@ -654,7 +657,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Nationality Export - France': true,
                 'Criterion Hospitality CC Export': true,
                 'Cancellations by Arrival Date': true,
-                'Cancellations by Cancel Date': true
+                'Cancellations by Cancel Date': true,
+                'HESTA Switzerland': true
             };
 
             var forHourly = {
@@ -666,7 +670,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Switzerland Zurich Police Export': true,
                 'Spain Barcelona Police Export': true,
                 'Cancellations by Arrival Date': true,
-                'Cancellations by Cancel Date': true
+                'Cancellations by Cancel Date': true,
+                'HESTA Switzerland': true
             };
 
             if ( forHourly[item.report.title] ) {

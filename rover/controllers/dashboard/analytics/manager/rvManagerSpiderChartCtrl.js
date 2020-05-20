@@ -934,7 +934,12 @@ angular.module('sntRover')
 						perfomanceData = data;
 						$scope.screenData.analyticsDataUpdatedTime = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
 						$scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
-						drawPerfomceChart(data);
+						if (rvAnalyticsSrv.managerChartFilterSet.showLastYearData) {
+							handleFilterChangeForPerfomanceChart();
+						} else {
+							drawPerfomceChart(data);
+						}
+						
 						$scope.dashboardFilter.displayMode = 'CHART_DETAILS';
 					}
 				};
@@ -1038,7 +1043,11 @@ angular.module('sntRover')
 				fetchPerfomanceChartData();
 			});
 
-			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER_PERFOMANCE', fetchPerfomanceChartData);
+			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER_PERFOMANCE', function() {
+				// When date changes, hide opened filter view	
+				$scope.dashboardFilter.showFilters = false;
+				fetchPerfomanceChartData();
+			});
 
 			$scope.$on('ON_WINDOW_RESIZE', function() {
 				if ($scope.dashboardFilter.selectedAnalyticsMenu === 'PERFOMANCE') {

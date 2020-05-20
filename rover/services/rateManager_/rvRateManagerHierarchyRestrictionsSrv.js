@@ -18,5 +18,9 @@ angular.module('sntRover').service('rvRateManagerHierarchyRestrictionsSrv', ['$q
         service.fetchHierarchyRestrictions = (params) => {
             return BaseWebSrvV2.getJSON('/api/restrictions/hierarchy', params);
         };
+
+        service.deleteRestrictions = (params) => {
+            return BaseWebSrvV2.postJSON('/api/restrictions/house', params);
+        };
     }
 ]);

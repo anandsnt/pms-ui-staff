@@ -6,7 +6,7 @@
     -->
     <div class="rate-manager-modal rate-manager-hierarchy modal-content" ng-class="{'restriction-view': (popUpView === 'NEW' || popUpView === 'EDIT'), 'showing-dates': restrictionObj.isRepeatOnDates }">
         <button class="modal-close dark-title" id="modal-close" type="button"><span class="icons icon-close" ng-click="closeDialog()"></span></button>
-            
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div class="modal-container">
             <div class="modal-header">
                 <div class="modal-header-left">
@@ -21,6 +21,7 @@
                 </div>
             </div>                
             <div class="modal-body">
+                
                 <!-- selection list on the left for edit screen -->
                 <div class="restrictions-list" ng-class="{'hidden': popUpView !== 'EDIT'}">
                     <div class="scrollable">
@@ -42,24 +43,28 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="restriction-content">
+                
                     <div class="content-middle">
                         <span ng-if="popUpView === 'EMPTY'"
                         rv-include-template="/assets/partials/rateManager_/popup/hierarchyRestriction/rvRateManagerHierarchyRestrictionsEmpty.html">
                         </span>
                         <span ng-if="popUpView === 'LIST'"
-                        rv-include-template="/assets/partials/rateManager_/popup/hierarchyRestriction/rvRateManagerHierarchyRestrictionsTable.html">
+                        rv-include-template="/assets/partials/rateManager_/popup/hierarchyRestriction/rvRateManagerHierarchyRestrictionsList.html">
                         </span>
                         <span ng-if="popUpView === 'NEW' || popUpView === 'EDIT'"
                         rv-include-template="/assets/partials/rateManager_/popup/hierarchyRestriction/rvRateManagerHierarchyRestrictionForm.html">
                         </span>
                     </div>
+
                     <!-- hiding as this will be implemented in another story -->
                     <div class="content-right">
                         <span ng-if="popUpView === 'NEW' || popUpView === 'EDIT'"
                         rv-include-template="/assets/partials/rateManager_/popup/hierarchyRestriction/rvRateManagerHierarchyRestrictionsRepeatOnDates.html">
                         </span>
                     </div>
+
                     <div class="footer">
                         <!-- Add .with-remove-button when we also have the remove button (example: on edit screens)-->
                         <div class="actions" ng-class="{'with-remove-button': popUpView === 'EDIT'}">

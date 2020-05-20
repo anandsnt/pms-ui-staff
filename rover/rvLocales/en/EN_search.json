@@ -10,4 +10,5 @@
     "SEARCH":"Search",
     "MOBILE_CHECKIN" : "Mobile Check In",
     "BULK_CHECKOUT_INITIATED": "Bulk check out initiated",
-    "BULK_CHECKOUT_PROCESS_IN_PROGRESS": "Bulk check out process is in progress"
+    "BULK_CHECKOUT_PROCESS_IN_PROGRESS": "Bulk check out process is in progress",
+    "BULK_CHECKIN_INITIATED": "Bulk check in initiated"

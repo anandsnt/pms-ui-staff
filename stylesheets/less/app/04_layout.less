@@ -1931,7 +1931,8 @@ body { overflow: hidden; }
 	                }
 		        }
 
-		        &.has-bulk-checkout {
+		        /** Bulk Checkout / Bulk Check In **/
+	            &.has-bulk-check {
 	                .entry {
 	                    &.switch {
 	                        width: 190px;
@@ -1949,6 +1950,30 @@ body { overflow: hidden; }
 
 	                    &.notice-checkout {
 	                        .calc-width(100, 480);
+	                        .float;
+
+	                        .notice {
+	                            margin-right: 10px;
+	                            text-transform: uppercase;
+	                            color: @black;
+	                            .calc-width( 100, 140);
+	                            .pull-left;
+
+	                            .count {
+	                                display: inline-block;
+	                                padding: 0 2px;
+	                                font-weight: 600;
+	                                background-color: @red;
+	                                color: white;
+	                            }
+	                        }
+	                        .button {
+	                            width: 130px;
+	                        }
+	                    }
+
+	                    &.notice-check-in {
+	                        .calc-width(100, 200);
 	                        .float;
 
 	                        .notice {
@@ -2060,6 +2085,10 @@ body { overflow: hidden; }
 
 	                        &.notice-checkout {
 	                            .calc-width(100, 540);
+	                        }
+
+	                        &.notice-check-in {
+	                            .calc-width(100, 250);
 	                        }
 	                    }
 	                }
