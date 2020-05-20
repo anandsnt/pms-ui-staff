@@ -145,6 +145,16 @@
             <multi-option-selection ng-show="filters.hasFrontOfficeStatus" label="Front Office Status" on-update="refreshSecondColumnScroll" data="filters.hasFrontOfficeStatus.data" options="filters.hasFrontOfficeStatus.options"></multi-option-selection>
 
             <multi-option-selection ng-show="filters.hasHouseKeepingStatus" label="Housekeeping Status" on-update="refreshSecondColumnScroll" data="filters.hasHouseKeepingStatus.data" options="filters.hasHouseKeepingStatus.options"></multi-option-selection>
+           
+            <div class="entry date-range" ng-show="isOccupancyRevenueSummaryReport">
+                <label>DAY USE</label>
+                <label class="checkbox inline" ng-class="{'checked':scheduleParams.include_day_use}">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked':scheduleParams.include_day_use}"></span>
+                    <input type="checkbox" checked="checked" ng-model="scheduleParams.include_day_use">
+                    INCLUDE DAY USE
+                </label>
+            </div>
+           
             <div class="entry" ng-show="selectedEntityDetails.sort_fields.length">
                 <label>Sort By</label>
                 <div class="select">
