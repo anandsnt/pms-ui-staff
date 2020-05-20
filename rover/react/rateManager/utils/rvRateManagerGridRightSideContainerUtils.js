@@ -78,16 +78,14 @@ const rvRateManagerRightSideContainerUtils = function() {
 						return panelRestriction;
 					});
 				}
-				else {
-					if (dayRestrictionList.length >= RM_RX_CONST.MAX_RESTRICTION_IN_COLUMN) {
-						return [{...restrictionForMoreThanMaxAllowed
-						}];
-					}
-					return dayRestrictionList.map((restriction) => ({
-							...restriction,
-							...restrictionTypesBasedOnIDs[restriction.restriction_type_id]
-					}));
+				if (dayRestrictionList.length >= RM_RX_CONST.MAX_RESTRICTION_IN_COLUMN) {
+					return [{...restrictionForMoreThanMaxAllowed
+					}];
 				}
+				return dayRestrictionList.map((restriction) => ({
+						...restriction,
+						...restrictionTypesBasedOnIDs[restriction.restriction_type_id]
+				}));
 			});
 			return data;
 		});

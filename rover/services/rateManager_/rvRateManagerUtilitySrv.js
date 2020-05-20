@@ -174,7 +174,7 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
                 obj = {};
 
             for (key in input) {
-                value = input[key],
+                value = input[key];
                 obj = {};
 
                 if (value) {
@@ -205,7 +205,7 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
                 obj = {};
 
             for (key in input) {
-                restrictionData = input[key],
+                restrictionData = input[key];
                 obj = {};
 
                 if (typeof(restrictionData) === "object" && !_.isEmpty(restrictionData)) {
@@ -216,11 +216,9 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
                         obj.days = null;
                     }
                     else {
-                        var daysArray = [];
-                        restrictionData.forEach((item) => {
-                            daysArray.push(item.value);
+                        obj.days = restrictionData.map((item) => {
+                            return item.value;
                         });
-                        obj.days = daysArray;
                     }
                     output.push(obj);
                 }
