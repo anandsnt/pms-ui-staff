@@ -1,0 +1,19 @@
+<form outside-click-handler  class="form card-tab scrollable" ng-iscroll='' ng-iscroll-delay="1000" ng-iscroll-form="true">
+	<div class="wrapper">
+		<div class="entry full-width">
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		</div>
+		<div class="holder left">
+			<ol>
+				<li ng-click="changeScreenMode('FILES')">Files</li>
+				<li ng-click="changeScreenMode('NOTES')">Notes</li>
+			</ol>
+			
+		</div>
+		
+		<div class="holder right" >
+			<ng-include ng-if="screenMode === 'NOTES'" src="'/assets/directives/fileCloudStorage/rvFileCloudNotes.html'"></ng-include>
+			<ng-include ng-if="screenMode === 'FILES'" src="'/assets/directives/fileCloudStorage/rvFileCloudFiles.html'"></ng-include>
+		</div>
+	</div>
+</form>

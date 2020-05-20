@@ -37,7 +37,7 @@ module.exports = {
                     'shared/directives/prettyTimeAgo/prettyTimeAgo.js',
                     jsLibRoot + 'fullcalender/**/*.js',
                     'rover/directives/includeReplaceDir.js',
-
+                    'rover/directives/fileCloudStorage/*js',
                     'rover/directives/convertToNumber/*js',
                     'rover/directives/stringToNumber/*js',
                     'shared/sntUtils/directives/sntSessionTimeoutDir.js',

@@ -42,7 +42,8 @@
         <!-- Guest Card Tab 6 Activity Log-->
         <span ng-show="current == 'activity-log' && isStandAlone" ng-include="'/assets/partials/guestCard/guestCardActivityLog.html'"></span>
         <!-- Guest Card Tab 7 Notes-->
-        <span ng-if="current == 'notes' && isStandAlone" ng-include="'/assets/partials/guestCard/guestCardNotes.html'"></span>
+        <span ng-if="current == 'notes' && isStandAlone && !isCloudStorageEnabledForCardType('guest_card')" ng-include="'/assets/partials/guestCard/guestCardNotes.html'"></span>
+        <span ng-if="current == 'notes' && isStandAlone && isCloudStorageEnabledForCardType('guest_card')" ng-include="'/assets/partials/guestCard/rvGuestCardNotesAndFiles.html'"></span>
     </div>
 
     <!-- Guest Search -->

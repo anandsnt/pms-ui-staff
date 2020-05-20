@@ -1219,6 +1219,11 @@ sntRover.controller('roverController', [
             $scope.$broadcast(eventIdentifier, payLoad);
         };
 
+        $scope.isCloudStorageEnabledForCardType = function(cardType) {
+            return RVHotelDetailsSrv.hotelDetails.cloud_storage_config &&
+                RVHotelDetailsSrv.hotelDetails.cloud_storage_config["enabled_" + cardType]
+        };
+
         (function() {
             if ($window.dataLayer) {
                 $window.dataLayer.push({
