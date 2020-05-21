@@ -3,6 +3,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 
 		// Flag for add new card or not
 		$scope.isAddNewCard = ($stateParams.id === "add");
+		$scope.disableGlobalToggle = $scope.isAddNewCard ? false : true;
 
 		// To store changes in other hotels' commissions data
 		var updatedOtherHotelsInfo = [];
@@ -674,6 +675,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			presentContactInfo = JSON.parse(JSON.stringify($scope.contactInformation));
 			// In the case of ass mode - rename the headding after saving contact info
 			if ($scope.isAddNewCard) {
+				$scope.disableGlobalToggle = false;
 				// setting the heading of the screen
 				if ($stateParams.type === "COMPANY") {
 					$scope.heading = $filter('translate')('COMPANY_CARD');
@@ -682,6 +684,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				}
 			}
 			$scope.isAddNewCard = false;
+			$scope.disableGlobalToggle = true;
 			$scope.errorMessage = "";
 			$scope.$broadcast("clearCardContactErrorMessage");
 			$scope.$broadcast("IDGENERATED", {
@@ -852,6 +855,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				'textInQueryBox': $stateParams.query
 			});
 			$scope.isAddNewCard = false;
+			$scope.disableGlobalToggle = true;
 			ngDialog.close();
 		};
 		// To implement a prompt for save/discard card info.
