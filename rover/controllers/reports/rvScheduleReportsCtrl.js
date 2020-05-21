@@ -23,7 +23,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         var showFilterNames = [
             'INCLUDE_DUE_OUT',
             'INCLUDE_INHOUSE',
-            'EXCEEDED_ONLY'
+            'EXCEEDED_ONLY',
+            'OOO',
+            'OOS'
         ];
 
         var setupScrolls = function() {
@@ -769,6 +771,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             RATE_AMOUNT: 'RATE_AMOUNT',
             RESERVATION: 'RESERVATION',
             TYPE: 'TYPE',
+            END_DATE: 'END_DATE',
+            ROOM_TYPE: 'ROOM_TYPE',
+            START_DATE: 'START_DATE',
             GUEST_USER: 'GUEST_USER'
         };
         
@@ -1555,6 +1560,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Forecast': true,
                 'Reservations By User': true,
                 'Room Status Report': true,
+                'Rooms OOO/OOS': true,
                 'Rate Adjustment Report': true
             };
 
@@ -1573,6 +1579,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Forecast': true,
                 'Reservations By User': true,
                 'Room Status Report': true,
+                'Rooms OOO/OOS': true,
                 'Rate Adjustment Report': true
             };
             var forMonthly = {
@@ -1590,6 +1597,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Forecast': true,
                 'Reservations By User': true,
                 'Room Status Report': true,
+                'Rooms OOO/OOS': true,
                 'Rate Adjustment Report': true
             };
 
@@ -1605,6 +1613,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Forecast': true,
                 'Reservations By User': true,
                 'Room Status Report': true,
+                'Rooms OOO/OOS': true,
                 'Rate Adjustment Report': true
             };
 
@@ -1829,7 +1838,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     selectedEntity.report.title === reportNames['FORECAST_BY_DATE'] || 
                     selectedEntity.report.title === reportNames['RESERVATIONS_BY_USER'] ||
                     selectedEntity.report.title === reportNames['ROOM_STATUS_REPORT'] ||
-                    selectedEntity.report.title === reportNames['RATE_ADJUSTMENTS_REPORT'])) {
+                    selectedEntity.report.title === reportNames['RATE_ADJUSTMENTS_REPORT'] || 
+                    selectedEntity.report.title === reportNames['ROOMS_OOO_OOS'])) {
 
                 $scope.scheduleFormat = _.filter($scope.scheduleFormat, function(object) {
                     return object.value === 'CSV';
@@ -1852,7 +1862,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 selectedEntity.report.title === reportNames['FORECAST_BY_DATE'] || 
                 selectedEntity.report.title === reportNames['RESERVATIONS_BY_USER'] ||
                 selectedEntity.report.title === reportNames['ROOM_STATUS_REPORT'] || 
-                selectedEntity.report.title === reportNames['RATE_ADJUSTMENTS_REPORT']);
+                selectedEntity.report.title === reportNames['RATE_ADJUSTMENTS_REPORT'] ||
+                selectedEntity.report.title === reportNames['ROOMS_OOO_OOS']);
 
         };
 
