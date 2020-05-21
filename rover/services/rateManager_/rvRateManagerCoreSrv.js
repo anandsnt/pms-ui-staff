@@ -267,9 +267,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                 options = {
                     from_date: params.from_date,
                     to_date: params.to_date,
-                    'levels[]': activeHierarchies.map((hierarchy) => {
-                        return hierarchy.active && hierarchy.level;
-                    })
+                    'levels[]': _.pluck(_.where(activeHierarchies, {active: true}), 'level')
                 };
 
             response.panelRestrictions = {};
