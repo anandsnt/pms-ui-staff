@@ -143,10 +143,12 @@ angular.module('sntRover')
                         from_date: $scope.ngDialogData.date,
                         to_date: $scope.ngDialogData.date,
                         restrictions 
-                    }, houseRestrictionSuccessCallback = () => {
+                    },
+                    houseRestrictionSuccessCallback = () => {
                         $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
-                        $scope.closeDialog();
-                    }, options = {
+                        $scope.$broadcast('RELOAD_RESTRICTIONS_LIST');
+                    },
+                    options = {
                         params: params,
                         onSuccess: houseRestrictionSuccessCallback
                     };

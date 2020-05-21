@@ -96,5 +96,7 @@ angular.module('sntRover')
 
                 setscroller();
                 fetchRestrictionList();
+
+                $scope.addListener('RELOAD_RESTRICTIONS_LIST', fetchRestrictionList);
             }
     ]);
