@@ -73,7 +73,7 @@
                             <button class="button blank" type="button" ng-click="closeDialog()" ng-class="{'hidden': popUpView === 'NEW' || popUpView === 'EDIT'}">
                                 Close window
                             </button>
-                            <button ng-show="popUpView === 'EDIT'" class="button small red first-button" type="button" ng-click="clickedOnRemove()">
+                            <button ng-show="popUpView === 'EDIT'" class="button red first-button" ng-class="{'small': !restrictionObj.isRepeatOnDates}" type="button" ng-click="clickedOnRemoveButton()">
                                 {{getRemoveButtonLabel()}}
                             </button>
                             <!-- On set restriction screen without dates -- -->
@@ -81,7 +81,7 @@
                                 Cancel
                             </button>
                             <!-- -- remove .grey and add .green if we can set the restriction -- -->
-                            <button class="button" ng-class="{'hidden': (popUpView !== 'NEW' && popUpView !== 'EDIT'), 'grey disable-element': !validateForm(), 'green': validateForm()}" type="button" ng-click="setHouseHierarchyRestriction()">
+                            <button class="button last-button" ng-class="{'hidden': (popUpView !== 'NEW' && popUpView !== 'EDIT'), 'grey disable-element': !validateForm(), 'green': validateForm(), 'small': !restrictionObj.isRepeatOnDates}" type="button" ng-click="setHouseHierarchyRestriction()">
                                 {{getSetButtonLabel()}}
                             </button>
                         

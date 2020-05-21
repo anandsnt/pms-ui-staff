@@ -193,7 +193,7 @@ angular.module('sntRover')
                 $scope.getSetButtonLabel = function() {
                     let label = 'Set';
 
-                    if ($scope.popUpView === 'EDIT';) {
+                    if ($scope.popUpView === 'EDIT') {
                         label = 'Update';
                     }
                     if ($scope.restrictionObj.isRepeatOnDates) {
@@ -211,9 +211,9 @@ angular.module('sntRover')
                     }
                     return label;
                 };
-                
+
                 // Handle REMOVE button click
-                $scope.clickedOnRemove =  function() {
+                $scope.clickedOnRemoveButton =  function() {
                     $scope.$broadcast('CLICKED_REMOVE_ON_DATES');
                 };
 

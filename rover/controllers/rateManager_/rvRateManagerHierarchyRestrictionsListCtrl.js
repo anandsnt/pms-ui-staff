@@ -73,19 +73,10 @@ angular.module('sntRover')
                                                         function(item) { return item.key  === key; }
                                                 );
                     $scope.selectedRestriction.value = clickedItem.value || clickedItem[0].value;
+                    $scope.selectedRestriction.index = index;
                 };
 
-                /*
-                 *  Handle delete button click
-                 *  @param {String} ['closed', 'close_arrival' etc.]
-                 *  @param {Number | null} [ value of 'min_length_of_stay', 'max_length_of_stay' etc.]
-                 *  @param {Number | null} [ index of clicked item in 'min_length_of_stay', 'max_length_of_stay' etc.]
-                 */
-                $scope.clickedOnRemove = function( key, value, index ) {
-                    let restrictions = {};
-                    
-                    restrictions[key] = value ? value : $scope.restrictionObj.listData[key].value;
-
+                const callRemoveAPI = (restrictions) => {
                     let params = {
                         from_date: $scope.ngDialogData.date,
                         to_date: $scope.ngDialogData.date,
@@ -94,12 +85,7 @@ angular.module('sntRover')
 
                     const deleteSuccessCallback = () => {
                         $scope.errorMessage = '';
-                        if (value && index) {
-                            delete $scope.restrictionObj.listData[key][index];
-                        }
-                        else {
-                            delete $scope.restrictionObj.listData[key];
-                        }
+                        fetchRestrictionList();
                     };
 
                     const deleteFailureCallback = (errorMessage) => {
@@ -115,11 +101,27 @@ angular.module('sntRover')
                     $scope.callAPI(hierarchySrv.deleteRestrictions, options);
                 };
 
-                const processRemoveOnDates = () => {
-                    console.log($scope.selectedRestriction);
-                    console.log($scope.restrictionObj);
-
+                /*
+                 *  Handle delete button click on each item on LIST screen.
+                 *  @param {String} ['closed', 'close_arrival' etc.]
+                 *  @param {Number | null} [ value of 'min_length_of_stay', 'max_length_of_stay' etc.]
+                 *  @param {Number | null} [ index of clicked item in 'min_length_of_stay', 'max_length_of_stay' etc.]
+                 */
+                $scope.clickedOnRemove = function( key, value, index ) {
+                    let restrictions = {};
                     
+                    restrictions[key] = value ? value : $scope.restrictionObj.listData[key].value;
+                    callRemoveAPI(restrictions);
+                };
+
+                // Process Remove action on EDIT screen.
+                const processRemoveOnDates = () => {
+                    let key = $scope.selectedRestriction.key;
+                    let index = $scope.selectedRestriction.index;
+                    let restrictions = {};
+
+                    restrictions[key] = (typeof index !== 'undefined') ? $scope.restrictionObj.listData[key][index].value : $scope.restrictionObj.listData[key].value;
+                    callRemoveAPI(restrictions);
                 };
 
                 setscroller();
