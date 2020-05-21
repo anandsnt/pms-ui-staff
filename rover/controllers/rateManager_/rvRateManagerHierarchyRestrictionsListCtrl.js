@@ -65,7 +65,7 @@ angular.module('sntRover')
                  *  @param {String} ['closed', 'close_arrival' etc.]
                  *  @param {Number | null} [ index of clicked item in 'min_length_of_stay', 'max_length_of_stay' etc.]
                  */
-                $scope.clickedOnListItem = function(key, index ) {
+                $scope.clickedOnListItem = function(key, index) {
                     let clickedItem = index ? $scope.restrictionObj.listData[key][index] : $scope.restrictionObj.listData[key];
 
                     $scope.popUpView = 'EDIT';
@@ -73,7 +73,6 @@ angular.module('sntRover')
                                                         function(item) { return item.key  === key; }
                                                 );
                     $scope.selectedRestriction.value = clickedItem.value || clickedItem[0].value;
-                    $scope.selectedRestriction.index = index;
                 };
 
                 const callRemoveAPI = (restrictions) => {
@@ -104,8 +103,7 @@ angular.module('sntRover')
                 /*
                  *  Handle delete button click on each item on LIST screen.
                  *  @param {String} ['closed', 'close_arrival' etc.]
-                 *  @param {Number | null} [ value of 'min_length_of_stay', 'max_length_of_stay' etc.]
-                 *  @param {Number | null} [ index of clicked item in 'min_length_of_stay', 'max_length_of_stay' etc.]
+                 *  @param {Boolean | null} [value will be false or null]
                  */
                 $scope.clickedOnRemove = function(key, value) {
                     let restrictions = {};
@@ -117,7 +115,7 @@ angular.module('sntRover')
                 // Process Remove action on EDIT screen.
                 const processRemoveOnDates = () => {
                     let key = $scope.selectedRestriction.key;
-                    let value = ($scope.selectedRestriction.type === 'number') ? false : null;
+                    let value = ($scope.selectedRestriction.type === 'number') ? null : false;
                     let restrictions = {};
 
                     restrictions[key] = value;
