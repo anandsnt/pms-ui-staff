@@ -12,7 +12,8 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                 useCache: null,
                 isMobileCheckin: null,
                 isBulkCheckoutSelected: null,
-                isAllowOpenBalanceCheckoutSelected: null
+                isAllowOpenBalanceCheckoutSelected: null,
+                isBulkCheckinSelected: null                
             },
             resolve: {
                 searchResultdata: function(RVSearchSrv, $stateParams) {

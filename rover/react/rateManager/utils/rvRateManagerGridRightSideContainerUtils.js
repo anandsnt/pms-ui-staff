@@ -38,7 +38,7 @@ const rvRateManagerRightSideContainerUtils = function() {
 	 * @param  {array} restrictionTypes
 	 * @return {array}
 	 */
-	self.convertDataForRestrictionListing = (listingData, restrictionTypes) => {
+	self.convertDataForRestrictionListing = (listingData, restrictionTypes, forPanel) => {
 		// adding the css class and all stuff for restriction types
 		restrictionTypes = restrictionTypes.map((restrictionType) => ({
 				...restrictionType,
@@ -55,6 +55,29 @@ const rvRateManagerRightSideContainerUtils = function() {
 		listingData = listingData.map((data) => {
 			data.restrictionList = data.restrictionList.map((dayRestrictionList, index) => {
 				// If we cross max restriction allowed in a single column, we will replace with single restriction
+				if (forPanel) {
+					if (dayRestrictionList.length > RM_RX_CONST.MAX_RESTRICTION_IN_COLUMN) {
+						return [{...restrictionForMoreThanMaxAllowed
+						}];
+					}
+					return dayRestrictionList.map((restriction) => {
+						let panelRestriction = {
+							...restriction,
+							...restrictionTypesBasedOnIDs[restriction.restriction_type_id]
+						};
+
+						if (panelRestriction.days && panelRestriction.days.length > 1) {
+							panelRestriction.days = restrictionForMoreThanMaxAllowed.days;
+							panelRestriction.defaultText = restrictionForMoreThanMaxAllowed.defaultText;
+							panelRestriction.description = restrictionForMoreThanMaxAllowed.description;
+						}
+						else if (panelRestriction.days && panelRestriction.days.length === 1) {
+							panelRestriction.days = panelRestriction.days[0];
+						}
+
+						return panelRestriction;
+					});
+				}
 				if (dayRestrictionList.length >= RM_RX_CONST.MAX_RESTRICTION_IN_COLUMN) {
 					return [{...restrictionForMoreThanMaxAllowed
 					}];
