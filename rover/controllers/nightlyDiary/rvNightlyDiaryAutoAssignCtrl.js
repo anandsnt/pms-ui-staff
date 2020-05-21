@@ -10,8 +10,30 @@ angular.module('sntRover')
             $timeout
         ) {
             BaseCtrl.call(this, $scope);
-            $scope.selectedRoomTypes = [];
-            $scope.selectedFloors = [];
+            var initVariables = function() {
+                $scope.selectedRoomTypes = [];
+                $scope.selectedFloors = [];
+            }, setAutoAssignStatus = function(response) {
+                $scope.diaryData.autoAssign.status = response.auto_room_assignment_status;
+                switch (response.auto_room_assignment_status) {
+                    case 'pending':
+                        $scope.diaryData.autoAssign.statusText = 'Diary is locked until process is completed';
+                        $scope.diaryData.autoAssign.statusClass = '';
+                        break;
+                    case 'failed':
+                        $scope.diaryData.autoAssign.statusText = '0 Rooms Assigned';
+                        $scope.diaryData.autoAssign.statusClass = 'failed';
+                        break;
+                    case 'partial':
+                        $scope.diaryData.autoAssign.statusText = 'Some Reservations Remain Unassigned';
+                        $scope.diaryData.autoAssign.statusClass = 'semi-completed';
+                        break;
+                    case 'completed':
+                        $scope.diaryData.autoAssign.statusText = 'Rooms Assigned to All Reservations';
+                        $scope.diaryData.autoAssign.statusClass = 'completed';
+                        break;
+                }
+            };
 
             $scope.roomTypeSelected = function(roomType) {
                 roomType.selected = !roomType.selected;
@@ -24,40 +46,37 @@ angular.module('sntRover')
             };
 
             $scope.cancelAutoAssign = function() {
+                initVariables();
                 $scope.$emit('CLOSE_AUTO_ASSIGN_OVERLAY');
             };
 
             $scope.autoAssignRooms = function() {
-                var postAutoAssignIntiationCallback = function(response) {
-                    $scope.diaryData.autoAssign.status = response.auto_room_assignment_status;
-                }, data = {
-                        'reservation_ids': _.pluck($scope.diaryData.unassignedReservationList.reservations, 'reservation_id'),
-                        'room_type_ids': $scope.selectedRoomTypes,
-                        'floor_ids': $scope.selectedFloors,
-                        'apply_room_preferences': true
-                }, options = {
-                    params: data,
-                    successCallBack: postAutoAssignIntiationCallback
+                var data = {
+                    'reservation_ids': _.pluck($scope.diaryData.unassignedReservationList.reservations, 'reservation_id'),
+                    'room_type_ids': $scope.selectedRoomTypes,
+                    'floor_ids': $scope.selectedFloors,
+                    'apply_room_preferences': true
                 };
 
-                RVNightlyDiarySrv.initiateAutoAssignRooms(options).then(function(response) {
+                RVNightlyDiarySrv.initiateAutoAssignRooms(data).then(function(response) {
+                    setAutoAssignStatus(response);
                     $timeout($scope.refreshAutoAssignStatus(), 500);
                 });
             };
 
             $scope.refreshAutoAssignStatus = function() {
-                RVNightlyDiarySrv.fetchAutoAssignStatus().then(function(response) {
-                    $scope.diaryData.autoAssign.status = response.auto_room_assignment_status;
-                });
+                RVNightlyDiarySrv.fetchAutoAssignStatus().then(setAutoAssignStatus);
             };
 
             $scope.unlockRoomDiary = function() {
                 RVNightlyDiarySrv.unlockRoomDiary().then(function(response) {
                     if (!response.is_diary_locked) {
-                        $scope.$emit('CLOSE_AUTO_ASSIGN_OVERLAY');
+                        $scope.cancelAutoAssign();
                     }
                 });
             };
+
+            initVariables();
         }
     ]
 );

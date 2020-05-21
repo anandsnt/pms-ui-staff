@@ -13,18 +13,13 @@
             <span class="value" ng-if="selectedRoomTypes.length !== 0"><span>{{selectedRoomTypes.length}}</span> selected</span>
         </div>
         <div class="multi-select-options" ng-class="{'hidden': !showRoomTypes}">
-            <div class="scrollable">
+            <div class="scrollable scroll-vertical">
                 <div class="wrapper">
-                    <!-- add .checked when checked -->
                     <label class="checkbox inline" ng-repeat="roomType in diaryData.filterList.roomType" ng-class="{'checked':roomType.selected}" ng-click="roomTypeSelected(roomType)">
-                         <!-- add .checked when checked -->
                         <span class="icon-form icon-checkbox" ng-class="{'checked':roomType.selected}"></span>
-                         <!-- add checked when checked -->
                         <input name="rooomTypes[]" type="checkbox" ng-class="{'checked':roomType.selected}">
                         <span class="text">{{roomType.name}}</span>
                     </label>
-                    <!-- ... repeat for each  -->
-    
                 </div>
             </div>
         </div>
@@ -37,108 +32,42 @@
             <span class="value" ng-if="selectedFloors.length !== 0"><span>{{selectedFloors.length}}</span> selected</span>
         </div>
         <div class="multi-select-options" ng-class="{'hidden': !showFloors}">
-            <div class="scrollable">
+            <div class="scrollable scroll-vertical">
                 <div class="wrapper">
-    
-                    <!-- add .checked when checked -->
                     <label class="checkbox inline" ng-repeat="floorList in diaryData.filterList.floorList" ng-class="{'checked':floorList.selected}" ng-click="floorSelected(floorList)">
-                         <!-- add .checked when checked -->
                         <span class="icon-form icon-checkbox" ng-class="{'checked':floorList.selected}"></span>
-                         <!-- add checked when checked -->
                         <input name="roomFloors[]" type="checkbox" ng-class="{'checked':floorList.selected}">
                         <span class="text">{{floorList.floor_number}}</span>
                     </label>
-                    <!-- ... repeat for each  -->
-    
                 </div>
             </div>
         </div>
     </div>
-    
+
     <div class="notice">
        ROOM REFERENCES APPLY
     </div>
-    
+
     <div class="actions">
         <button type="button" class="button blank text-white" ng-click="cancelAutoAssign()">Cancel</button>
-        
-        <!-- On click add .with-progress to .diary-header-nightly -->
+
         <button type="button" class="button green" ng-click="autoAssignRooms()">Assign Rooms</button>
     </div>
     
-    <!-- Default Progress: -->
-    <div class="progress" ng-if="diaryData.autoAssign.status === 'pending'">
+    <!-- Progress: -->
+    <div class="progress" ng-class="diaryData.autoAssign.statusClass">
         <div class="progress-icon"></div>
         <div class="progress-data">
             <h3>Room auto assignment in progress ({{ diaryData.arrivalDate | date: 'd LLLL yyyy' }})</h3>
             <div class="progress-description">
-                Diary is locked until process is completed
+                {{diaryData.autoAssign.statusText}}
             </div>
         </div>
         <div class="progress-actions">
-            <button type="button" class="button white with-icon only-icon" ng-click="autoAssignStatusRefresh()">
+            <button type="button" class="button white with-icon only-icon" ng-if="diaryData.autoAssign.status === 'pending'" ng-click="refreshAutoAssignStatus()">
                 <span class="icons icon-reset"></span>
             </button>
+            <button type="button" class="button purple" ng-if="diaryData.autoAssign.status !== 'pending' && diaryData.autoAssign.status !== ''" ng-click="unlockRoomDiary()">Unlock Diary</button>
         </div>
     </div>
-
-    <!-- Failed Progress: -- -->
-    <div class="progress failed" ng-if="diaryData.autoAssign.status === 'failed'">
-        <div class="progress-icon"></div>
-        <div class="progress-data">
-            <h3>Room auto assignment failed ({{ diaryData.arrivalDate | date: 'd LLLL yyyy' }})</h3>
-            <div class="progress-description">
-                <strong>{rooms-assigned}</strong><span class="count-text">Rooms Assigned</span>
-            </div>
-        </div>
-        <div class="progress-actions">
-            <!-- -- On click:
-                - remove .locked to #diary-nightly
-                - remove .auto-assigning-rooms and .with-progress on .diary-header-nightly 
-            -- -->
-            <button type="button" class="button purple" ng-click="unlockRoomDiary()">Unlock Diary</button>
-        </div>
-    </div>
-   
-    <!-- Semi Completed Progress: -- -->
-    <div class="progress semi-completed" ng-if="diaryData.autoAssign.status === 'partial'">
-        <div class="progress-icon"></div>
-        <div class="progress-data">
-            <h3>Room auto assignment completed ({{ diaryData.arrivalDate | date: 'd LLLL yyyy' }})</h3>
-            <div class="progress-description">
-                <!-- -- If showing numbers --
-                <strong class="green">{rooms-assigned}</strong> <span class="count-text">Assigned</span> 
-                <strong class="red">{rooms-unassigned}</strong> <span class="count-text">Unassgined</span>
-                -- If showing text only -- -->
-                {text}
-            </div>
-        </div>
-        <div class="progress-actions">    
-            <button type="button" class="button white">Activity Log</button>
-            
-            -- On click:
-                - remove .locked to #diary-nightly
-                - remove .auto-assigning-rooms and .with-progress on .diary-header-nightly 
-            --
-            <button type="button" class="button purple" ng-click="unlockRoomDiary()">Unlock Diary</button>
-        </div>
-    </div>
-   
-
-    <!-- Completed Progress: -- -->
-    <div class="progress completed" ng-if="diaryData.autoAssign.status === 'completed'">
-        <div class="progress-icon"></div>
-        <div class="progress-data">
-            <h3>Room auto assignment completed ({{ diaryData.arrivalDate | date: 'd LLLL yyyy' }})</h3>
-            <div class="progress-description">
-                Rooms Assigned to All Reservations
-            </div>
-        </div>
-        <div class="progress-actions">    
-            <!-- <button type="button" class="button white">Activity Log</button> -->
-
-            <button type="button" class="button purple" ng-click="unlockRoomDiary()">Unlock Diary</button>
-        </div>
-    </div>
-       
 </div>
