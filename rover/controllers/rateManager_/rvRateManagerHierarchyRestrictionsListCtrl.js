@@ -2,9 +2,13 @@ angular.module('sntRover')
     .controller('rvRateManagerHierarchyRestrictionsListCtrl', [
         '$scope',
         'rvRateManagerHierarchyRestrictionsSrv',
+        'rvRateManagerUtilitySrv',
+        '$timeout',
         function(
             $scope,
-            hierarchySrv) {
+            hierarchySrv,
+            hierarchyUtils,
+            $timeout) {
                 BaseCtrl.call(this, $scope);
 
                 const setscroller = () => {
@@ -12,7 +16,9 @@ angular.module('sntRover')
                 };
 
                 const refreshScroller = function() {
-                    $scope.refreshScroller('hierarchyPopupListScroll');
+                    $timeout(function () {
+                        $scope.refreshScroller('hierarchyPopupListScroll');
+                    }, 500);
                 };
 
                 const checkEmptyOrListView = function( listData ) {
@@ -33,8 +39,8 @@ angular.module('sntRover')
                             default:
                             break;
                         }
-                        refreshScroller();
                         $scope.popUpView = checkEmptyOrListView($scope.restrictionObj.listData);
+                        refreshScroller();
                     };
                     const fetchRestrictionsFailureCallback = (errorMessage) => {
                         $scope.errorMessage = errorMessage;
@@ -52,6 +58,21 @@ angular.module('sntRover')
                     };
 
                     $scope.callAPI(hierarchySrv.fetchHierarchyRestrictions, options);
+                };
+
+                /*
+                 *  Handle list item click
+                 *  @param {String} ['closed', 'close_arrival' etc.]
+                 *  @param {Number | null} [ index of clicked item in 'min_length_of_stay', 'max_length_of_stay' etc.]
+                 */
+                $scope.clickedOnListItem = function(key, index ) {
+                    let clickedItem = index ? $scope.restrictionObj.listData[key][index] : $scope.restrictionObj.listData[key];
+
+                    $scope.popUpView = 'EDIT';
+                    $scope.selectedRestriction = _.find(hierarchyUtils.restrictionColorAndIconMapping, 
+                                                        function(item) { return item.key  === key; }
+                                                );
+                    $scope.selectedRestriction.value = clickedItem.value || clickedItem[0].value;
                 };
 
                 /*
@@ -94,9 +115,17 @@ angular.module('sntRover')
                     $scope.callAPI(hierarchySrv.deleteRestrictions, options);
                 };
 
+                const processRemoveOnDates = () => {
+                    console.log($scope.selectedRestriction);
+                    console.log($scope.restrictionObj);
+
+                    
+                };
+
                 setscroller();
                 fetchRestrictionList();
 
                 $scope.addListener('RELOAD_RESTRICTIONS_LIST', fetchRestrictionList);
+                $scope.addListener('CLICKED_REMOVE_ON_DATES', processRemoveOnDates);
             }
     ]);

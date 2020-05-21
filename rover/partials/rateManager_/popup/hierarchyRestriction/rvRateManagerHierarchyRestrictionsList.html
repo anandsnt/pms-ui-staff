@@ -12,7 +12,7 @@
         <div class="wrapper">
             <ul>
                 <li ng-if="restrictionObj.listData.closed">
-                    <div class="restriction-item">
+                    <div class="restriction-item" ng-click="clickedOnListItem('closed')">
                         <div class="data">
                             <span class="restriction-icon bg-red icon-cross">
                             </span>
@@ -26,7 +26,7 @@
                 </li>
 
                 <li ng-if="restrictionObj.listData.closed_arrival">
-                    <div class="restriction-item">
+                    <div class="restriction-item" ng-click="clickedOnListItem('closed_arrival')">
                         <div class="data">
                             <span class="restriction-icon bg-red icon-block">
                             </span>
@@ -40,7 +40,7 @@
                 </li>
 
                 <li ng-if="restrictionObj.listData.closed_departure">
-                    <div class="restriction-item">
+                    <div class="restriction-item" ng-click="clickedOnListItem('closed_departure')">
                         <div class="data">
                             <span class="restriction-icon bg-red">
                             </span>
@@ -54,7 +54,7 @@
                 </li>
 
                 <li ng-class="{'': first': $first, 'last': $last}" ng-if="restrictionObj.listData.min_length_of_stay" ng-repeat="restriction in restrictionObj.listData.min_length_of_stay">
-                    <div class="restriction-item">
+                    <div class="restriction-item" ng-click="clickedOnListItem('min_length_of_stay', $index)">
                         <div class="data">
                             <span class="restriction-icon bg-blue">
                                 {{restriction.value}}
@@ -82,7 +82,7 @@
                 </li>
 
                 <li ng-class="{'grouped': restrictionObj.listData.max_length_of_stay.length > 1, 'first': $first, 'last': $last}" ng-if="restrictionObj.listData.max_length_of_stay" ng-repeat="restriction in restrictionObj.listData.max_length_of_stay">
-                    <div class="restriction-item">
+                    <div class="restriction-item" ng-click="clickedOnListItem('max_length_of_stay', $index)">
                         <div class="data">
                             <span class="restriction-icon bg-blue-dark">
                                 {{restriction.value}}
@@ -110,7 +110,7 @@
                 </li>
 
                 <li ng-class="{'grouped': restrictionObj.listData.min_stay_through.length > 1, 'first': $first, 'last': $last}" ng-if="restrictionObj.listData.min_stay_through" ng-repeat="restriction in restrictionObj.listData.min_stay_through">
-                    <div class="restriction-item">
+                    <div class="restriction-item" ng-click="clickedOnListItem('min_stay_through', $index)">
                         <div class="data">
                             <span class="restriction-icon bg-violet">
                                 {{restriction.value}}
@@ -138,7 +138,7 @@
                 </li>
 
                 <li ng-class="{'grouped': restrictionObj.listData.min_advanced_booking.length > 1, 'first': $first, 'last': $last}" ng-if="restrictionObj.listData.min_advanced_booking" ng-repeat="restriction in restrictionObj.listData.min_advanced_booking">
-                    <div class="restriction-item">
+                    <div class="restriction-item" ng-click="clickedOnListItem('min_advanced_booking', $index)">
                         <div class="data">
                             <span class="restriction-icon bg-green">
                                 {{restriction.value}}
@@ -166,7 +166,7 @@
                 </li>
 
                 <li ng-class="{'grouped': restrictionObj.listData.max_advanced_booking.length > 1, 'first': $first, 'last': $last}" ng-if="restrictionObj.listData.max_advanced_booking" ng-repeat="restriction in restrictionObj.listData.max_advanced_booking">
-                    <div class="restriction-item">
+                    <div class="restriction-item" ng-click="clickedOnListItem('max_advanced_booking', $index)">
                         <div class="data">
                             <span class="restriction-icon bg-orange">
                                 {{restriction.value}}
