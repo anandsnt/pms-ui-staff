@@ -73,6 +73,10 @@ angular.module('sntRover')
 
                     // data set for diary used for Angular code.
                     $scope.diaryData = {
+                        autoAssign: {
+                            showOverlay: false,
+                            status: ''
+                        },
                         datesGridData: datesList.dates,
                         businessDate: $rootScope.businessDate,
                         diaryRoomsList: roomsList.rooms,
@@ -1067,6 +1071,19 @@ angular.module('sntRover')
 
                 $scope.addListener('CANCEL_UNASSIGNED_RESERVATION_MAIN', function() {
                     $scope.$broadcast('CANCEL_UNASSIGNED_RESERVATION');
+                });
+
+                /**
+                 * Listener functions for enabling and disabling the Auto-Assign mode
+                 */
+                $scope.addListener('SHOW_AUTO_ASSIGN_OVERLAY', function() {
+                    $scope.diaryData.autoAssign.showOverlay = true;
+                });
+                $scope.addListener('CLOSE_AUTO_ASSIGN_OVERLAY', function() {
+                    $scope.diaryData.autoAssign = {
+                        showOverlay: false,
+                        status: ''
+                    };
                 });
 
                 /**
