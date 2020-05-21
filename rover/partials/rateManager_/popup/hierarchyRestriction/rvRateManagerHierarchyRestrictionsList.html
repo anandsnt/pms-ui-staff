@@ -21,7 +21,7 @@
                     </div>
 
                     <button type="button" class="button white remove-restriction">
-                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('closed')"></span>
+                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('closed', false)"></span>
                     </button>
                 </li>
 
@@ -35,7 +35,7 @@
                     </div>
 
                     <button type="button" class="button white remove-restriction">
-                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('closed_arrival')"></span>
+                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('closed_arrival', false)"></span>
                     </button>
                 </li>
 
@@ -49,7 +49,7 @@
                     </div>
 
                     <button type="button" class="button white remove-restriction">
-                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('closed_departure')"></span>
+                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('closed_departure', false)"></span>
                     </button>
                 </li>
 
@@ -77,7 +77,7 @@
                     </div>
 
                     <button type="button" class="button white remove-restriction">
-                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('min_length_of_stay', restriction.value, $index)"></span>
+                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('min_length_of_stay', null)"></span>
                     </button>
                 </li>
 
@@ -105,7 +105,7 @@
                     </div>
 
                     <button type="button" class="button white remove-restriction">
-                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('max_length_of_stay', restriction.value, $index)"></span>
+                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('max_length_of_stay', null)"></span>
                     </button>
                 </li>
 
@@ -133,7 +133,7 @@
                     </div>
 
                     <button type="button" class="button white remove-restriction">
-                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('min_stay_through', restriction.value, $index)"></span>
+                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('min_stay_through', null)"></span>
                     </button>
                 </li>
 
@@ -161,7 +161,7 @@
                     </div>
 
                     <button type="button" class="button white remove-restriction">
-                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('min_advanced_booking', restriction.value, $index)"></span>
+                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('min_advanced_booking', null)"></span>
                     </button>
                 </li>
 
@@ -189,7 +189,7 @@
                     </div>
 
                     <button type="button" class="button white remove-restriction">
-                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('max_advanced_booking', restriction.value, $index)"></span>
+                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('max_advanced_booking', null)"></span>
                     </button>
                 </li>
             </ul>
