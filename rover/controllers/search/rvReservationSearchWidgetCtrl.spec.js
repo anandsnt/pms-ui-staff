@@ -34,7 +34,7 @@ describe('rvReservationSearchWidgetController', function () {
                 return deferred.promise;
             });
 
-            spyOn(rvReservationSearchWidgetController, 'showBulkCheckoutStatusPopup').and.callFake(function () {
+            spyOn(rvReservationSearchWidgetController, 'showBulkCheckoutCheckinStatusPopup').and.callFake(function () {
                 expect(arguments[0].isFailure).toEqual(true);
             });
 
@@ -52,7 +52,7 @@ describe('rvReservationSearchWidgetController', function () {
                 return deferred.promise;
             });
 
-            spyOn(rvReservationSearchWidgetController, 'showBulkCheckoutStatusPopup').and.callFake(function () {
+            spyOn(rvReservationSearchWidgetController, 'showBulkCheckoutCheckinStatusPopup').and.callFake(function () {
                 expect(arguments[0].isSuccess).toEqual(true);
             });
 

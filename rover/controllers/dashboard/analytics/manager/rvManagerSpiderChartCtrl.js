@@ -15,6 +15,7 @@ angular.module('sntRover')
 			/** ****************************** DRAW CHART STARTS HERE ********************************************/
 
 			var drawPerfomceChart = function(chartData) {
+				$scope.$emit('CLEAR_ALL_CHART_ELEMENTS');
 				$scope.screenData.mainHeading = $filter('translate')("AN_ROOM_PERFOMANCE_KPR");
 				$scope.dashboardFilter.selectedAnalyticsMenu = 'PERFOMANCE';
 				var hasLastYearData = $scope.dashboardFilter.showLastYearData;
@@ -933,7 +934,12 @@ angular.module('sntRover')
 						perfomanceData = data;
 						$scope.screenData.analyticsDataUpdatedTime = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
 						$scope.$emit("CLEAR_ALL_CHART_ELEMENTS");
-						drawPerfomceChart(data);
+						if (rvAnalyticsSrv.managerChartFilterSet.showLastYearData) {
+							handleFilterChangeForPerfomanceChart();
+						} else {
+							drawPerfomceChart(data);
+						}
+						
 						$scope.dashboardFilter.displayMode = 'CHART_DETAILS';
 					}
 				};
@@ -1037,11 +1043,19 @@ angular.module('sntRover')
 				fetchPerfomanceChartData();
 			});
 
-			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER_PERFOMANCE', fetchPerfomanceChartData);
+			$scope.$on('RELOAD_DATA_WITH_DATE_FILTER_PERFOMANCE', function() {
+				// When date changes, hide opened filter view	
+				$scope.dashboardFilter.showFilters = false;
+				fetchPerfomanceChartData();
+			});
 
 			$scope.$on('ON_WINDOW_RESIZE', function() {
 				if ($scope.dashboardFilter.selectedAnalyticsMenu === 'PERFOMANCE') {
-					fetchPerfomanceChartData();
+					if ($scope.dashboardFilter.showLastYearData) {
+						handleFilterChangeForPerfomanceChart();
+					} else {
+						fetchPerfomanceChartData();
+					}
 				}
 			});
 		}
