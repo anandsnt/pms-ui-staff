@@ -107,20 +107,20 @@ angular.module('sntRover')
                  *  @param {Number | null} [ value of 'min_length_of_stay', 'max_length_of_stay' etc.]
                  *  @param {Number | null} [ index of clicked item in 'min_length_of_stay', 'max_length_of_stay' etc.]
                  */
-                $scope.clickedOnRemove = function( key, value, index ) {
+                $scope.clickedOnRemove = function(key, value) {
                     let restrictions = {};
                     
-                    restrictions[key] = value ? null : false;
+                    restrictions[key] = value;
                     callRemoveAPI(restrictions);
                 };
 
                 // Process Remove action on EDIT screen.
                 const processRemoveOnDates = () => {
                     let key = $scope.selectedRestriction.key;
-                    let index = $scope.selectedRestriction.index;
+                    let value = ($scope.selectedRestriction.type === 'number') ? false : null;
                     let restrictions = {};
 
-                    restrictions[key] = (typeof index !== 'undefined') ? null : false;
+                    restrictions[key] = value;
                     callRemoveAPI(restrictions);
                 };
 
