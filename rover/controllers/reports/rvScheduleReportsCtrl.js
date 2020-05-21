@@ -1838,7 +1838,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     selectedEntity.report.title === reportNames['FORECAST_BY_DATE'] || 
                     selectedEntity.report.title === reportNames['RESERVATIONS_BY_USER'] ||
                     selectedEntity.report.title === reportNames['ROOM_STATUS_REPORT'] ||
-                    selectedEntity.report.title === reportNames['RATE_ADJUSTMENTS_REPORT'])) {
+                    selectedEntity.report.title === reportNames['RATE_ADJUSTMENTS_REPORT'] || 
+                    selectedEntity.report.title === reportNames['ROOMS_OOO_OOS'])) {
 
                 $scope.scheduleFormat = _.filter($scope.scheduleFormat, function(object) {
                     return object.value === 'CSV';
@@ -1861,7 +1862,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 selectedEntity.report.title === reportNames['FORECAST_BY_DATE'] || 
                 selectedEntity.report.title === reportNames['RESERVATIONS_BY_USER'] ||
                 selectedEntity.report.title === reportNames['ROOM_STATUS_REPORT'] || 
-                selectedEntity.report.title === reportNames['RATE_ADJUSTMENTS_REPORT']);
+                selectedEntity.report.title === reportNames['RATE_ADJUSTMENTS_REPORT'] ||
+                selectedEntity.report.title === reportNames['ROOMS_OOO_OOS']);
 
         };
 
