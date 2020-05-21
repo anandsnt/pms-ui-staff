@@ -2,14 +2,10 @@ angular.module('sntRover')
 .controller('nightlyDiaryAutoAssignController',
     [
         '$scope',
-        '$rootScope',
         'RVNightlyDiarySrv',
-        'ngDialog',
         function(
             $scope,
-            $rootScope,
             RVNightlyDiarySrv,
-            ngDialog
         ) {
             BaseCtrl.call(this, $scope);
             $scope.selectedRoomTypes = [];
@@ -17,12 +13,12 @@ angular.module('sntRover')
 
             $scope.roomTypeSelected = function(roomType) {
                 roomType.selected = !roomType.selected;
-                $scope.selectedRoomTypes = _.pluck($scope.diaryData.filterList.roomType, 'id');
+                $scope.selectedRoomTypes = _.pluck(_.where($scope.diaryData.filterList.roomType, {selected: true}), 'id');
             };
 
-            $scope.foorSelected = function(floor) {
+            $scope.floorSelected = function(floor) {
                 floor.selected = !floor.selected;
-                $scope.selectedFloors = _.pluck($scope.diaryData.filterList.floorList, 'id');
+                $scope.selectedFloors = _.pluck(_.where($scope.diaryData.filterList.floorList, {selected: true}), 'id');
             };
 
             $scope.cancelAutoAssign = function() {

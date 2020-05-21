@@ -16,11 +16,11 @@
             <div class="scrollable">
                 <div class="wrapper">
                     <!-- add .checked when checked -->
-                    <label class="checkbox inline" ng-repeat="roomType in diaryData.filterList.roomType" ng-class="{'checked':roomType.isSelected}" ng-click="roomTypeSelected(roomType)">
+                    <label class="checkbox inline" ng-repeat="roomType in diaryData.filterList.roomType" ng-class="{'checked':roomType.selected}" ng-click="roomTypeSelected(roomType)">
                          <!-- add .checked when checked -->
-                        <span class="icon-form icon-checkbox" ng-class="{'checked':roomType.isSelected}"></span>
+                        <span class="icon-form icon-checkbox" ng-class="{'checked':roomType.selected}"></span>
                          <!-- add checked when checked -->
-                        <input name="rooomTypes[]" type="checkbox" ng-class="{'checked':roomType.isSelected}">
+                        <input name="rooomTypes[]" type="checkbox" ng-class="{'checked':roomType.selected}">
                         <span class="text">{{roomType.name}}</span>
                     </label>
                     <!-- ... repeat for each  -->
@@ -41,11 +41,11 @@
                 <div class="wrapper">
     
                     <!-- add .checked when checked -->
-                    <label class="checkbox inline" ng-repeat="floorList in diaryData.filterList.floorList" ng-class="{'checked':floorList.isSelected}" ng-click="floorSelected(floorList)">
+                    <label class="checkbox inline" ng-repeat="floorList in diaryData.filterList.floorList" ng-class="{'checked':floorList.selected}" ng-click="floorSelected(floorList)">
                          <!-- add .checked when checked -->
-                        <span class="icon-form icon-checkbox" ng-class="{'checked':floorList.isSelected}"></span>
+                        <span class="icon-form icon-checkbox" ng-class="{'checked':floorList.selected}"></span>
                          <!-- add checked when checked -->
-                        <input name="roomFloors[]" type="checkbox" ng-class="{'checked':floorList.isSelected}">
+                        <input name="roomFloors[]" type="checkbox" ng-class="{'checked':floorList.selected}">
                         <span class="text">{{floorList.floor_number}}</span>
                     </label>
                     <!-- ... repeat for each  -->
