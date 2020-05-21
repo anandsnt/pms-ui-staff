@@ -3,9 +3,11 @@ angular.module('sntRover')
     [
         '$scope',
         'RVNightlyDiarySrv',
+        '$timeout',
         function(
             $scope,
             RVNightlyDiarySrv,
+            $timeout
         ) {
             BaseCtrl.call(this, $scope);
             $scope.selectedRoomTypes = [];
@@ -34,12 +36,13 @@ angular.module('sntRover')
                         'floor_ids': $scope.selectedFloors,
                         'apply_room_preferences': true
                 }, options = {
-                    data: params,
+                    params: data,
                     successCallBack: postAutoAssignIntiationCallback
                 };
 
-                RVNightlyDiarySrv.unlockRoomDiary(options).then(function(response) {
-                })
+                RVNightlyDiarySrv.initiateAutoAssignRooms(options).then(function(response) {
+                    $timeout($scope.refreshAutoAssignStatus(), 500);
+                });
             };
 
             $scope.refreshAutoAssignStatus = function() {
