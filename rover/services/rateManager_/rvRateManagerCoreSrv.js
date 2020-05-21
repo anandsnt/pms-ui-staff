@@ -263,22 +263,24 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
         var fetchPanelRestritctions = (promises, response, params) => {
             // Adding as part of CICO-77002, laying out base. House panel restrictions to be added in later story
             // as it is currently taken as common restriction which has use in many other places.
-            var activeHierarchies = rvRateManagerRestrictionsSrv.activeHierarchyRestrictions(),
+            var activeHierarchies = _.pluck(_.where(rvRateManagerRestrictionsSrv.activeHierarchyRestrictions(), {active: true}), 'level'),
                 options = {
                     from_date: params.from_date,
                     to_date: params.to_date,
-                    'levels[]': _.pluck(_.where(activeHierarchies, {active: true}), 'level')
+                    'levels[]': activeHierarchies
                 };
 
-            response.panelRestrictions = {};
-            promises.push(
-                rvRateManagerHierarchyRestrictionsSrv.fetchHierarchyRestrictions(options).then((data) => {
-                    response.panelRestrictions.houseRestrictions = rvRateManagerRestrictionsSrv.formatRestrictionsData(data.house, {forPanel: true});
-                    response.panelRestrictions.rateTypeRestrictions = rvRateManagerRestrictionsSrv.formatRestrictionsData(data.rate_type, {forPanel: true});
-                    response.panelRestrictions.roomTypeRestrictions = rvRateManagerRestrictionsSrv.formatRestrictionsData(data.room_type, {forPanel: true});
-                    response.panelRestrictions.rateRestrictions = rvRateManagerRestrictionsSrv.formatRestrictionsData(data.rate, {forPanel: true});
-                })
-            );
+            if (activeHierarchies.length !== 0) {
+                response.panelRestrictions = {};
+                promises.push(
+                    rvRateManagerHierarchyRestrictionsSrv.fetchHierarchyRestrictions(options).then((data) => {
+                        response.panelRestrictions.houseRestrictions = rvRateManagerRestrictionsSrv.formatRestrictionsData(data.house, {forPanel: true});
+                        response.panelRestrictions.rateTypeRestrictions = rvRateManagerRestrictionsSrv.formatRestrictionsData(data.rate_type, {forPanel: true});
+                        response.panelRestrictions.roomTypeRestrictions = rvRateManagerRestrictionsSrv.formatRestrictionsData(data.room_type, {forPanel: true});
+                        response.panelRestrictions.rateRestrictions = rvRateManagerRestrictionsSrv.formatRestrictionsData(data.rate, {forPanel: true});
+                    })
+                );
+            }
         };
 
         /**
