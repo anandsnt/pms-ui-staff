@@ -110,7 +110,7 @@ angular.module('sntRover')
                 $scope.clickedOnRemove = function( key, value, index ) {
                     let restrictions = {};
                     
-                    restrictions[key] = value ? value : $scope.restrictionObj.listData[key].value;
+                    restrictions[key] = value ? null : false;
                     callRemoveAPI(restrictions);
                 };
 
@@ -120,7 +120,7 @@ angular.module('sntRover')
                     let index = $scope.selectedRestriction.index;
                     let restrictions = {};
 
-                    restrictions[key] = (typeof index !== 'undefined') ? $scope.restrictionObj.listData[key][index].value : $scope.restrictionObj.listData[key].value;
+                    restrictions[key] = (typeof index !== 'undefined') ? null : false;
                     callRemoveAPI(restrictions);
                 };
 
