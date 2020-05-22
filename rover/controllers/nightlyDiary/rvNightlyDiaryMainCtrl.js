@@ -43,7 +43,35 @@ angular.module('sntRover')
                 });
                 var isFromStayCard = $stateParams.origin === 'STAYCARD',
                     MAX_NO_OF_DAYS = 21,
-                    paginationDataBeforeMoveOrAssign = {};
+                    paginationDataBeforeMoveOrAssign = {},
+                    setAutoAssignStatus = function(data) {
+                        $scope.diaryData.autoAssign.isLocked = data.is_diary_locked;
+                        $scope.diaryData.autoAssign.status = data.auto_room_assignment_status;
+                        switch (data.auto_room_assignment_status) {
+                            case 'pending':
+                                $scope.diaryData.autoAssign.statusText = 'Diary is locked until process is completed';
+                                $scope.diaryData.autoAssign.statusClass = '';
+                                break;
+                            case 'failed':
+                                $scope.diaryData.autoAssign.statusText = '0 Rooms Assigned';
+                                $scope.diaryData.autoAssign.statusClass = 'failed';
+                                break;
+                            case 'partial':
+                                $scope.diaryData.autoAssign.statusText = 'Some Reservations Remain Unassigned';
+                                $scope.diaryData.autoAssign.statusClass = 'semi-completed';
+                                break;
+                            case 'completed':
+                                if (data.is_diary_locked) {
+                                    $scope.diaryData.autoAssign.statusText = 'Rooms Assigned to All Reservations';
+                                    $scope.diaryData.autoAssign.statusClass = 'completed';
+                                }
+                                else {
+                                    $scope.diaryData.autoAssign.statusText = '';
+                                    $scope.diaryData.autoAssign.statusClass = '';
+                                }
+                                break;
+                        }
+                    };
 
                 /*
                  * utility method Initiate controller
@@ -76,6 +104,7 @@ angular.module('sntRover')
                     $scope.diaryData = {
                         autoAssign: {
                             showOverlay: false,
+                            isLocked: false,
                             status: '',
                             statusText: '',
                             statusClass: ''
@@ -143,26 +172,7 @@ angular.module('sntRover')
                         isCancelledMoveOrAssign: false
                     };
                     if (!_.isEmpty(autoAssign)) {
-                        $scope.diaryData.autoAssign.showOverlay = autoAssign.is_diary_locked;
-                        $scope.diaryData.autoAssign.status = autoAssign.auto_room_assignment_status;
-                        switch (autoAssign.auto_room_assignment_status) {
-                            case 'pending':
-                                $scope.diaryData.autoAssign.statusText = 'Diary is locked until process is completed';
-                                $scope.diaryData.autoAssign.statusClass = '';
-                                break;
-                            case 'failed':
-                                $scope.diaryData.autoAssign.statusText = '0 Rooms Assigned';
-                                $scope.diaryData.autoAssign.statusClass = 'failed';
-                                break;
-                            case 'partial':
-                                $scope.diaryData.autoAssign.statusText = 'Some Reservations Remain Unassigned';
-                                $scope.diaryData.autoAssign.statusClass = 'semi-completed';
-                                break;
-                            case 'completed':
-                                $scope.diaryData.autoAssign.statusText = 'Rooms Assigned to All Reservations';
-                                $scope.diaryData.autoAssign.statusClass = 'completed';
-                                break;
-                        }
+                        setAutoAssignStatus(autoAssign);
                     }
                     $scope.currentSelectedReservation = {};
                     $scope.currentSelectedRoom = {};
@@ -1107,10 +1117,18 @@ angular.module('sntRover')
                 $scope.addListener('CLOSE_AUTO_ASSIGN_OVERLAY', function() {
                     $scope.diaryData.autoAssign = {
                         showOverlay: false,
+                        isLocked: false,
                         status: '',
                         statusText: '',
                         statusClass: ''
                     };
+                });
+
+                /**
+                 * Listner to set auto assign status
+                 */
+                $scope.addListener('REFRESH_AUTO_ASSIGN_STATUS', function(event, data) {
+                    setAutoAssignStatus(data);
                 });
 
                 /**

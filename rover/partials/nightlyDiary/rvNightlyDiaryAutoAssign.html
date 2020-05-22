@@ -2,7 +2,7 @@
     <div class="data">
         <strong>{{ diaryData.arrivalDate | date: 'd LLLL yyyy' }}</strong>
         <div class="count-reservations">
-            <span class="count">{{diaryData.unassignedReservationList.reservations.length}}</span> Unassigned Reservations
+            <span class="count">{{selectedReservations.length}}</span> Unassigned Reservations
         </div>
     </div>
     
@@ -51,7 +51,7 @@
     <div class="actions">
         <button type="button" class="button blank text-white" ng-click="cancelAutoAssign()">Cancel</button>
 
-        <button type="button" class="button green" ng-click="autoAssignRooms()">Assign Rooms</button>
+        <button type="button" class="button" ng-click="autoAssignRooms()" ng-class="{'grey disable-element': selectedReservations.length === 0, 'green':selectedReservations.length !== 0}">Assign Rooms</button>
     </div>
     
     <!-- Progress: -->
