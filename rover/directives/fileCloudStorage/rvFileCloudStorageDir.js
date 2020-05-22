@@ -13,10 +13,11 @@ sntRover.directive('rvFileCloudStorage', function($timeout) {
          //    datagroup: '@datagroup',
          //    isDisabled: '=isDisabled',
          //    index: '@index'
-         cardType: '@'
+         cardType: '@',
+         cardId: '='
 	    },
 
-    	templateUrl: '/assets/directives/fileCloudStorage/rvFileCloudStorage.html',
+    	templateUrl: '/assets/directives/fileCloudStorage/partials/rvFileCloudStorage.html',
         controller: 'rvFileCloudStorageCtrl'
     };
 
