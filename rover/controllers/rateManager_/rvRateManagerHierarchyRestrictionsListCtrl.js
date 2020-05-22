@@ -63,7 +63,7 @@ angular.module('sntRover')
                 $scope.clickedOnRemove = function( key, value, index ) {
                     let restrictions = {};
                     
-                    restrictions[key] = value ? value : $scope.restrictionObj.listData[key].value;
+                    restrictions[key] = value ? null : false;
 
                     let params = {
                         from_date: $scope.ngDialogData.date,
