@@ -10,7 +10,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     '$timeout',
     'rvRateManagerPaginationConstants',
     'Toggles',
-    'rvRateManagerHierarchyRestrictionsSrv',
     function($scope,
              $filter,
              $rootScope,
@@ -21,8 +20,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
              ngDialog,
              $timeout,
              rvRateManagerPaginationConstants,
-             Toggles,
-             hierarchySrv) {
+             Toggles) {
 
         BaseCtrl.call(this, $scope);
 
