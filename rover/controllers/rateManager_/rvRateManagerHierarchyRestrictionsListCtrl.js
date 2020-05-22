@@ -2,9 +2,11 @@ angular.module('sntRover')
     .controller('rvRateManagerHierarchyRestrictionsListCtrl', [
         '$scope',
         'rvRateManagerHierarchyRestrictionsSrv',
+        'rvRateManagerEventConstants',
         function(
             $scope,
-            hierarchySrv) {
+            hierarchySrv,
+            rvRateManagerEventConstants) {
                 BaseCtrl.call(this, $scope);
 
                 const setscroller = () => {
@@ -79,6 +81,7 @@ angular.module('sntRover')
                         else {
                             delete $scope.restrictionObj.listData[key];
                         }
+                        $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
                     };
 
                     const deleteFailureCallback = (errorMessage) => {
