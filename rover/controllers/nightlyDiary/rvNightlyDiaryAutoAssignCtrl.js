@@ -88,7 +88,7 @@ angular.module('sntRover')
              */
             $scope.refreshAutoAssignStatus = function() {
                 RVNightlyDiarySrv.fetchAutoAssignStatus().then(function(response) {
-                    $scope.$emit('REFRESH_AUTO_ASSIGN_STATUS', response)
+                    $scope.$emit('REFRESH_AUTO_ASSIGN_STATUS', response);
                 });
             };
 
