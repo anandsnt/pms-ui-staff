@@ -115,7 +115,8 @@
     <!-- Action details -->
     <div class="content-right" ng-if="actions.length > 0">
         <div class="sender-details">
-            <figure class="guest-image" ng-class="{'accompany': selectedAction.guest_images.length > 1}" ng-if="filterOptions.selectedView === 'GUEST'">
+            <figure class="guest-image" ng-class="{'accompany': selectedAction.guest_images.length > 1, 'blacklisted': selectedAction.is_flagged}" 
+                ng-if="filterOptions.selectedView === 'GUEST'">
                 <!-- If accompany, add class accompany -->
                 <!-- If accompany, show primary guest image here:  -->
                 <img ng-src="{{avatar.guest_image}}" ng-repeat="avatar in selectedAction.guest_images"/>
