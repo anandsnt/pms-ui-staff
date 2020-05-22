@@ -34,10 +34,8 @@ sntRover.controller('RVShowPaymentListCtrl', ['$rootScope', '$scope', '$state', 
         } else {
             reservationId = $scope.dataToPaymentList.reservation_card.reservation_id;
         }
-        var reservationId = typeof $scope.reservationData.reservationId === 'undefined' ? 
-                            $scope.reservationData.reservation_id : 
-                            $scope.reservationData.reservationId,        
-            existingPaymentsParams = {
+     
+        var existingPaymentsParams = {
                 reservation_id: reservationId,
                 bill_number: bill_number
             };
