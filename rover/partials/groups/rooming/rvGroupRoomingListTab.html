@@ -223,7 +223,7 @@
                     </label>
                 </div>
                 <a ng-click="clickedOnReservation(reservation)">
-                    <figure class="guest-image" ng-class="{'accompany': reservation.is_accompanying_guest}">
+                    <figure class="guest-image" ng-class="{'accompany': reservation.is_accompanying_guest,'blacklisted': !!reservation.is_flagged}">
                         <img ng-repeat="image in reservation.guest_images track by $index" ng-src="{{image}}" >
                         <span class="stay-count" ng-if="reservation.stay_count > 0">{{reservation.stay_count}}</span>
                         <span class="vip" ng-if="reservation.is_vip">VIP</span>
