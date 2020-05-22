@@ -14,7 +14,46 @@ angular.module('sntRover')
                 const refreshScroller = function() {
                     $scope.refreshScroller('hierarchyPopupListScroll');
                 };
-                
+
+                const checkEmptyOrListView = function( listData ) {
+                    let isEmptyList = _.isEmpty(listData);
+                    let view = isEmptyList ? 'EMPTY' : 'LIST';
+
+                    return view;
+                };
+
+                const fetchRestrictionList = () => {
+                    const fetchRestrictionsListSuccessCallback = ( response ) => {
+                        $scope.errorMessage = '';
+                        switch ($scope.ngDialogData.hierarchyLevel) {
+                            case 'House':
+                                $scope.restrictionObj.listData = response.house[0].restrictions;
+                                break;
+
+                            default:
+                            break;
+                        }
+                        refreshScroller();
+                        $scope.popUpView = checkEmptyOrListView($scope.restrictionObj.listData);
+                    };
+                    const fetchRestrictionsFailureCallback = (errorMessage) => {
+                        $scope.errorMessage = errorMessage;
+                    };
+
+                    let params = {
+                        'from_date': $scope.ngDialogData.date,
+                        'to_date': $scope.ngDialogData.date,
+                        'levels[]': $scope.ngDialogData.hierarchyLevel
+                    };
+                    let options = {
+                        params: params,
+                        onSuccess: fetchRestrictionsListSuccessCallback,
+                        failureCallBack: fetchRestrictionsFailureCallback
+                    };
+
+                    $scope.callAPI(hierarchySrv.fetchHierarchyRestrictions, options);
+                };
+
                 /*
                  *  Handle delete button click
                  *  @param {String} ['closed', 'close_arrival' etc.]
@@ -24,7 +63,7 @@ angular.module('sntRover')
                 $scope.clickedOnRemove = function( key, value, index ) {
                     let restrictions = {};
                     
-                    restrictions[key] = value ? value : $scope.restrictionObj.listData[key].value;
+                    restrictions[key] = value ? null : false;
 
                     let params = {
                         from_date: $scope.ngDialogData.date,
@@ -33,7 +72,7 @@ angular.module('sntRover')
                     };
 
                     const deleteSuccessCallback = () => {
-                        $scope.$parent.errorMessage = '';
+                        $scope.errorMessage = '';
                         if (value && index) {
                             delete $scope.restrictionObj.listData[key][index];
                         }
@@ -43,7 +82,7 @@ angular.module('sntRover')
                     };
 
                     const deleteFailureCallback = (errorMessage) => {
-                        $scope.$parent.errorMessage = errorMessage;
+                        $scope.errorMessage = errorMessage;
                     };
 
                     let options = {
@@ -56,6 +95,8 @@ angular.module('sntRover')
                 };
 
                 setscroller();
-                refreshScroller();
+                fetchRestrictionList();
+
+                $scope.addListener('RELOAD_RESTRICTIONS_LIST', fetchRestrictionList);
             }
     ]);
