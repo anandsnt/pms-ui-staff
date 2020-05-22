@@ -45,6 +45,7 @@ angular.module('sntRover')
                     MAX_NO_OF_DAYS = 21,
                     paginationDataBeforeMoveOrAssign = {},
                     setAutoAssignStatus = function(data) {
+                        $scope.diaryData.autoAssign.showOverlay = data.is_diary_locked;
                         $scope.diaryData.autoAssign.isLocked = data.is_diary_locked;
                         $scope.diaryData.autoAssign.status = data.auto_room_assignment_status;
                         switch (data.auto_room_assignment_status) {
@@ -1106,22 +1107,6 @@ angular.module('sntRover')
 
                 $scope.addListener('CANCEL_UNASSIGNED_RESERVATION_MAIN', function() {
                     $scope.$broadcast('CANCEL_UNASSIGNED_RESERVATION');
-                });
-
-                /**
-                 * Listener functions for enabling and disabling the Auto-Assign mode
-                 */
-                $scope.addListener('SHOW_AUTO_ASSIGN_OVERLAY', function() {
-                    $scope.diaryData.autoAssign.showOverlay = true;
-                });
-                $scope.addListener('CLOSE_AUTO_ASSIGN_OVERLAY', function() {
-                    $scope.diaryData.autoAssign = {
-                        showOverlay: false,
-                        isLocked: false,
-                        status: '',
-                        statusText: '',
-                        statusClass: ''
-                    };
                 });
 
                 /**

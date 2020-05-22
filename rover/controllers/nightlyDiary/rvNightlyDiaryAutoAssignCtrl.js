@@ -23,7 +23,7 @@ angular.module('sntRover')
                     var reservations = [];
 
                     $scope.selectedRoomTypes.forEach(function(roomTypeId) {
-                        reservations.push(..._.filter($scope.diaryData.unassignedReservationList.reservations, {room_type_id: roomTypeId}))
+                        reservations.push(..._.filter($scope.diaryData.unassignedReservationList.reservations, {room_type_id: roomTypeId}));
                     });
                     reservations = _.reject(reservations, {is_hourly: true});
                     reservationIDs = _.pluck(reservations, 'reservation_id');
@@ -31,22 +31,44 @@ angular.module('sntRover')
                 return reservationIDs;
             };
 
+            /**
+             * Collect the selected roomtype ids and reset the reservation ids
+             * @params {Object} - roomType
+             * @return {undefined}
+             */
             $scope.roomTypeSelected = function(roomType) {
                 roomType.selected = !roomType.selected;
                 $scope.selectedRoomTypes = _.pluck(_.where($scope.diaryData.filterList.roomType, {selected: true}), 'id');
                 $scope.selectedReservations = filterReservationIDs();
             };
 
+            /**
+             * Function call on selecting a floor from the dropdown
+             * @params {Object} - floor
+             * @return {undefined}
+             */
             $scope.floorSelected = function(floor) {
                 floor.selected = !floor.selected;
                 $scope.selectedFloors = _.pluck(_.where($scope.diaryData.filterList.floorList, {selected: true}), 'id');
             };
 
+            /**
+             * Cancel and/or close the autoAssign overlay template
+             */
             $scope.cancelAutoAssign = function() {
                 initVariables();
-                $scope.$emit('CLOSE_AUTO_ASSIGN_OVERLAY');
+                $scope.diaryData.autoAssign = {
+                    showOverlay: false,
+                    isLocked: false,
+                    status: '',
+                    statusText: '',
+                    statusClass: ''
+                };
             };
 
+            /**
+             * Auto assign API caller
+             */
             $scope.autoAssignRooms = function() {
                 var data = {
                     'reservation_ids': $scope.selectedReservations,
@@ -61,16 +83,24 @@ angular.module('sntRover')
                 });
             };
 
+            /**
+             * Function to fetch the auto assign status and reset the header
+             */
             $scope.refreshAutoAssignStatus = function() {
                 RVNightlyDiarySrv.fetchAutoAssignStatus().then(function(response) {
                     $scope.$emit('REFRESH_AUTO_ASSIGN_STATUS', response)
                 });
             };
 
+            /**
+             * Unlocks room diary after completion of the autoAssign process
+             * Then refresh the diary data
+             */
             $scope.unlockRoomDiary = function() {
                 RVNightlyDiarySrv.unlockRoomDiary().then(function(response) {
                     if (!response.is_diary_locked) {
                         $scope.cancelAutoAssign();
+                        $scope.$emit('RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY');
                     }
                 });
             };
