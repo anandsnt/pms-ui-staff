@@ -31,6 +31,11 @@ sntRover.directive('appFilereader', function($q) {
                     var reader = new FileReader();
 
                     reader.onload = function(e) {
+                        if (file) {
+                            file.base64 = e.target.result;
+                            scope.$emit('FILE_UPLOADED', file);
+                        }
+                        
                         deferred.resolve(e.target.result);
                     };
                     reader.onerror = function(e) {

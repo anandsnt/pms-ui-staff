@@ -1,37 +1,41 @@
-sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv', '$controller',
-	function($scope, rvFileCloudStorageSrv, $controller) {
+sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv',
+	function($scope, rvFileCloudStorageSrv) {
 
-		$scope.screenMode = 'FILES';
-		$scope.fileList = [];
-		rvFileCloudStorageSrv.cardType = $scope.cardType;
+		var fetchFiles = function() {
+			rvFileCloudStorageSrv.fetchFileAttachments({}).then(function(fileList) {
+					_.each(fileList, function(file) {
+						file.is_selected = false;
+					});
+					$scope.cardData.fileList = fileList;
+					console.log(fileList)
+				},
+				function(errorMessage) {
 
-		console.log($scope.cardType);
-
-
-		$scope.changeScreenMode = function (selectedMode) {
-			$scope.screenMode = selectedMode;
-		};
-		var fetchFileAttachments = function() {
-			rvFileCloudStorageSrv.fetchFileAttachments({}).then(function(response) {
-				$scope.fileList = response;
-				console.log(response)
-			},
-			function(errorMessage) {
-
-			});
+				});
 		};
 
-		(function(){
-			fetchFileAttachments();
+		$scope.$on('FILE_UPLOADED', function(evt, file) {
+			$scope.cardData.newFile = file;
+			$scope.cardData.newFileList.push(file);
+			console.log($scope.cardData.newFileList);
+		});
 
-			$scope.cardData = {
-				fileList: [],
-				noteText: ""
+		$scope.fileChange = function() {
+			// File selection done
+			console.log($scope.cardData.newFile);
+		};
+
+		$scope.$on('FETCH_FILES', fetchFiles);
+
+		(function() {
+			$scope.cardData.fileList = [];
+			$scope.cardData.newFileList = [];
+			$scope.cardData.newFile = {
+				base64: '',
+				name: '',
+				size: '',
+				type: ''
 			};
-			$controller('rvCardNotesCtrl', {
-                  $scope: $scope
-             });
-			
 		})();
 	}
 ]);

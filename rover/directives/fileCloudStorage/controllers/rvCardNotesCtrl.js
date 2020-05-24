@@ -73,14 +73,15 @@ sntRover.controller('rvCardNotesCtrl', ['$scope', 'rvFileCloudStorageSrv', 'rvCa
 			return $filter('date')(new tzIndependentDate(date), $rootScope.dateFormat);
 		};
 
+		$scope.$on('FETCH_NOTES', fetchNotes);
+
 		(function() {
+			$scope.cardData.noteText = "";
 			$scope.editingNote = null;
 			$scope.notes = [];
 			$scope.cardData.noteText = '';
-
 			$scope.setScroller('card_notes_scroller', {});
 			rvCardNotesSrv.setApiConfigs($scope.cardType);
-			fetchNotes();
 		}());
 	}
 ]);

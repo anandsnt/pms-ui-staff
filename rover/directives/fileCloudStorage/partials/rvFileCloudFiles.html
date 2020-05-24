@@ -1,7 +1,16 @@
 FILES
 
 <ul>
-	<li ng-repeat="file in fileList">
+	<li ng-repeat="file in cardData.fileList">
 		{{ file.name }}
 	</li>
 </ul>
+
+ <input type="file" ng-model="cardData.newFile.base64" accept="*" app-filereader multiple ng-change="fileChange()"/>
+
+ {{cardData.newFile.name}}
+ <br/>{{cardData.newFile.type}}
+
+ <ul>
+ 	<li ng-repeat="file in cardData.newFileList">{{file.name}}</li>
+ </ul>
