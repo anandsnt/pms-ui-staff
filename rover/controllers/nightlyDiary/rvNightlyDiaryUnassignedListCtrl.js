@@ -224,7 +224,7 @@ angular.module('sntRover')
          * Display the autoassign overlay and header
          */
         $scope.initiateAutoAssign = function() {
-            $scope.diaryData.autoAssign.showOverlay = true;
+            $scope.$emit('INITIATE_AUTO_ASSIGN');
         };
 
         /**
