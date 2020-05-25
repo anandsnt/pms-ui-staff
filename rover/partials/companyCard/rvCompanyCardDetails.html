@@ -118,10 +118,11 @@
                     <!-- Company - Activity Log -->
                     <span ng-controller="RVCompanyCardActivityLogCtrl" ng-include="'/assets/partials/companyCard/activityLog/rvCompanyCardActivityLog.html'" ng-show="currentSelectedTab == 'cc-activity-log'"></span>
                     <!-- Company - Notes -->
-                    <span  ng-if="currentSelectedTab == 'cc-notes'"
-                           ng-include="isCloudStorageEnabledForCardType('cota_card') ? 
-                                         '/assets/partials/companyCard/rvCompanyTAFilesAndNotes.html':
-                                         '/assets/partials/companyCard/rvCompanyCardNotes.html' ">        
+                    <span  ng-show="currentSelectedTab == 'cc-notes' && !isCloudStorageEnabledForCardType('cota_card')"
+                           ng-include="'/assets/partials/companyCard/rvCompanyCardNotes.html'">       
+                    </span>
+                    <span  ng-if="currentSelectedTab == 'cc-notes' && isCloudStorageEnabledForCardType('cota_card')"
+                           ng-include="'/assets/partials/companyCard/rvCompanyTAFilesAndNotes.html'">       
                     </span>
                     <!-- Company Card Tab 5 Resevations -->
                     <!-- <span ng-hide="true" ng-include="'/assets/partials/companyCard/rvCompanyCardReservations.html'"></span> -->
