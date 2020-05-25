@@ -62,6 +62,7 @@ angular.module('sntRover')
 
                 $scope.initiateNewRestrictionForm = () => {
                     // trigger Restriction setting window
+                    $scope.selectedRestriction = {};
                     $scope.popUpView = 'NEW';
                     $scope.restrictionStylePack = angular.copy(hierarchyUtils.restrictionColorAndIconMapping);
                     $scope.showRestrictionSelection = false;
