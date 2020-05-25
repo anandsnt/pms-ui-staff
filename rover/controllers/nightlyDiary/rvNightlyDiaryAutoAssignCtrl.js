@@ -119,7 +119,7 @@ angular.module('sntRover')
                 $scope.callAPI(RVNightlyDiarySrv.unlockRoomDiary, options);
             };
 
-            initVariables();
+            $scope.addListener('INITIATE_AUTO_ASSIGN_CTRL', initVariables);
         }
     ]
 );
