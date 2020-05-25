@@ -7,7 +7,7 @@ sntRover.controller('rvFileCloudStorageAndNotesCtrl', ['$scope', 'rvFileCloudSto
 		};
 
 		(function(){
-			rvFileCloudStorageSrv.cardType = $scope.cardType;
+			rvFileCloudStorageSrv.setCardType($scope.cardType);
 			$scope.cardData = {};
 			$controller('rvCardNotesCtrl', {
                   $scope: $scope
