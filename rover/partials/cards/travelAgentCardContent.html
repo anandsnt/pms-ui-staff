@@ -20,7 +20,7 @@
                 <button type="button" class="button white icons icon-expand" rv-fullscreen fs-sub-header="Wallet" fs-toggle-class="fullscreen-card">Fullscreen</button>                            
             </li>
             <li ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-notes'}" ng-click="switchTabTo($event, 'cc-notes')">
-                <a translate>Notes</a>
+                <a translate> {{ isCloudStorageEnabledForCardType('cota_card') ? 'NOTES_AND_FILES' : 'NOTES' }}</a> 
             </li>
             <li class="with-filters" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-commissions'}" ng-click="switchTabTo($event, 'cc-commissions')" ng-show="isCommissionTabAvailable && account_type == 'TRAVELAGENT' && !isEmptyObject(contactInformation.commission_details)">
                 <a translate>COMMISSIONS</a>
@@ -56,7 +56,10 @@
         <!-- Travel Agent - Activity Log -->
         <span ng-controller="RVCompanyCardActivityLogCtrl" ng-include="'/assets/partials/companyCard/activityLog/rvCompanyCardActivityLog.html'" ng-show="currentSelectedTab == 'cc-activity-log'"></span>
         <!-- Travel Agent - Notes -->
-        <span ng-include="'/assets/partials/companyCard/rvCompanyCardNotes.html'" ng-show="currentSelectedTab == 'cc-notes'"></span>
+        <span  ng-if="currentSelectedTab == 'cc-notes'"
+               ng-include="isCloudStorageEnabledForCardType('cota_card') ? 
+                                         '/assets/partials/companyCard/rvCompanyTAFilesAndNotes.html':
+                                         '/assets/partials/companyCard/rvCompanyCardNotes.html' ">
         
         <!-- Travel Agent - Resevations -->
        <!--  <span ng-hide="true" ng-include="'/assets/partials/companyCard/rvCompanyCardReservations.html'"></span> -->

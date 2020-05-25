@@ -12,6 +12,8 @@ angular.module('sntRover').service('rvCardNotesSrv', ['$q', 'rvBaseWebSrvV2',
 
 			if (cardType === 'guest_card') {
 				service.baseApiURL = '/api/guest_details/' + cardId + '/notes';
+			} else if (cardType === 'company_ta_card') {
+				service.baseApiURL = '/api/accounts/' + service.cardId;
 			}
 		};
 
@@ -23,19 +25,13 @@ angular.module('sntRover').service('rvCardNotesSrv', ['$q', 'rvBaseWebSrvV2',
 					"update": service.baseApiURL + '/' + params.note_id,
 					"delete": service.baseApiURL + '/' + params.note_id
 				},
-				"company_card": {
-					"fetch": '/api/accounts/' + service.cardId + '/account_notes',
-					"create": '/api/accounts/' + service.cardId + '/save_account_note',
-					"update": '/api/accounts/' + service.cardId + '/update_account_note',
-					"delete": '/api/accounts/' + service.cardId + '/delete_account_note'
-				},
-				"ta_card": {
-					"fetch": '/api/accounts/' + service.cardId + '/account_notes',
-					"create": '/api/accounts/' + service.cardId + '/save_account_note',
-					"update": '/api/accounts/' + service.cardId + '/update_account_note',
-					"delete": '/api/accounts/' + service.cardId + '/delete_account_note'
+				"company_ta_card": {
+					"fetch": service.baseApiURL + '/account_notes',
+					"create": service.baseApiURL + '/save_account_note',
+					"update": service.baseApiURL + '/update_account_note',
+					"delete": service.baseApiURL + '/delete_account_note'
 				}
-			}
+			};
 
 			return apiMapping[service.cardType][method];
 		};
