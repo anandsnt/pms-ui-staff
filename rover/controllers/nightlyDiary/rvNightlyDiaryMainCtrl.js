@@ -922,6 +922,14 @@ angular.module('sntRover')
                     $scope.$broadcast('RESET_UNASSIGNED_LIST_SELECTION');
                 });
 
+                /**
+                 * Listener to initiate the auto assign controller
+                 */
+                $scope.addListener('INITIATE_AUTO_ASSIGN', function() {
+                    $scope.$broadcast('INITIATE_AUTO_ASSIGN_CTRL');
+                    $scope.diaryData.autoAssign.showOverlay = true;
+                });
+
                 /* Handle event emitted from child controllers.
                  * To refresh diary data - rooms & reservations.
                  * @param {Number} RoomId - selected room id from search filters.
