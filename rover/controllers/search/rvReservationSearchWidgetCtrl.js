@@ -754,14 +754,15 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			RVSearchSrv.toDate = $scope.toDate;
 
             $rootScope.goToReservationCalled = true;
-            $scope.$emit('GUESTCARDVISIBLE', false);
+			$scope.$emit('GUESTCARDVISIBLE', false);
+			$vault.set('isBulkCheckinSelected', $scope.isBulkCheckinSelected.toString());			
 			$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
 				id: reservationID,
 				confirmationId: confirmationID,
 				isrefresh: true,
 				isBulkCheckoutSelected: $scope.isBulkCheckoutSelected,
 				isAllowOpenBalanceCheckoutSelected: $scope.allowOpenBalanceCheckout,
-				isBulkCheckinSelected: $scope.isBulkCheckinSelected
+				isBulkCheckinSelected: $scope.isBulkCheckinSelected 
 			});
 		};
 
@@ -1275,17 +1276,23 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
             );
 		};
 
-		// Toggles the bulk check-in btn
-		$scope.toggleBulkCheckinBtn = function () {
-			$scope.isBulkCheckinSelected = !$scope.isBulkCheckinSelected;
+		var getBulkCheckinReservationCount = function () {
 			if ($scope.isBulkCheckinSelected) {
 				$scope.callAPI(RVSearchSrv.fetchBulkCheckinReservationsCount, {
 					onSuccess: function (data) {
 						$scope.bulkCheckinReservationsCount = data.count;
+					},
+					onFailure: function () {
+						$scope.bulkCheckinReservationsCount = 0;	
 					}				
 				});
-				
 			}
+		};
+
+		// Toggles the bulk check-in btn
+		$scope.toggleBulkCheckinBtn = function () {
+			$scope.isBulkCheckinSelected = !$scope.isBulkCheckinSelected;
+			getBulkCheckinReservationCount();
 			// Should reset the pages while switching between all and bulk check-in views
 			$scope.fetchSearchResults(1);
 		};
@@ -1308,5 +1315,11 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				}				
 			});
 		};
+
+		(function () {
+			getBulkCheckinReservationCount();
+		})();
+
+
 	}
 ]);
