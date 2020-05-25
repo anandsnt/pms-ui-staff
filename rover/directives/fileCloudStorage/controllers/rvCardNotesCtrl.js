@@ -7,16 +7,31 @@ sntRover.controller('rvCardNotesCtrl', ['$scope', 'rvFileCloudStorageSrv', 'rvCa
 			var params = {
 				card_id: $scope.cardId,
 				note_id: noteID,
-				text: $scope.cardData.noteText
+				text: $scope.cardData.noteText,// used in guest details Apis
+				description: $scope.cardData.noteText  // used in  TA and company note Apis
 			};
 
 			return params;
+		};
+
+		var processNotes = function(notes){
+			_.each(notes, function(note){
+				note.posted_user_image_url = note.avatar;
+				note.posted_user_first_name = note.user_name;
+				note.posted_user_last_name = '';
+				note.posted_user_image_url = note.avatar;
+				note.text = note.note;
+			});
+			return notes;
 		};
 
 		var fetchNotes = function() {
 			var options = {
 				params: generateApiParams(),
 				successCallBack: function(response) {
+					if ($scope.cardType  !== 'guest_card') {
+						response.notes  = processNotes(response.notes);
+					}
 					$scope.notes = response.notes;
 					$scope.refreshScroller('card_notes_scroller');
 				}
@@ -81,7 +96,7 @@ sntRover.controller('rvCardNotesCtrl', ['$scope', 'rvFileCloudStorageSrv', 'rvCa
 			$scope.notes = [];
 			$scope.cardData.noteText = '';
 			$scope.setScroller('card_notes_scroller', {});
-			rvCardNotesSrv.setApiConfigs($scope.cardType);
+			rvCardNotesSrv.setApiConfigs($scope.cardType, $scope.cardId);
 		}());
 	}
 ]);

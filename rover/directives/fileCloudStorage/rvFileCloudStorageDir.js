@@ -4,7 +4,7 @@ sntRover.directive('rvFileCloudStorage', function($timeout) {
         replace: 'true',
       	scope: {
          cardType: '@',
-         cardId: '='
+         cardId: '@'
 	    },
     	templateUrl: '/assets/directives/fileCloudStorage/partials/rvFileCloudStorage.html',
         controller: 'rvFileCloudStorageAndNotesCtrl'
