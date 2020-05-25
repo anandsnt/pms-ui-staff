@@ -76,21 +76,29 @@ angular.module('sntRover')
                     'room_type_ids': $scope.selectedRoomTypes,
                     'floor_ids': $scope.selectedFloors,
                     'apply_room_preferences': true
+                },
+                options = {
+                    params: data,
+                    successCallBack: function(response) {
+                        $scope.$emit('REFRESH_AUTO_ASSIGN_STATUS', response);
+                        $timeout($scope.refreshAutoAssignStatus(), 500);
+                    }
                 };
 
-                RVNightlyDiarySrv.initiateAutoAssignRooms(data).then(function(response) {
-                    $scope.$emit('REFRESH_AUTO_ASSIGN_STATUS', response);
-                    $timeout($scope.refreshAutoAssignStatus(), 500);
-                });
+                $scope.callAPI(RVNightlyDiarySrv.initiateAutoAssignRooms, options);
             };
 
             /**
              * Function to fetch the auto assign status and reset the header
              */
             $scope.refreshAutoAssignStatus = function() {
-                RVNightlyDiarySrv.fetchAutoAssignStatus().then(function(response) {
-                    $scope.$emit('REFRESH_AUTO_ASSIGN_STATUS', response);
-                });
+                var options = {
+                    successCallBack: function(response) {
+                        $scope.$emit('REFRESH_AUTO_ASSIGN_STATUS', response);
+                    }
+                };
+
+                $scope.callAPI(RVNightlyDiarySrv.fetchAutoAssignStatus, options);
             };
 
             /**
@@ -98,12 +106,17 @@ angular.module('sntRover')
              * Then refresh the diary data
              */
             $scope.unlockRoomDiary = function() {
-                RVNightlyDiarySrv.unlockRoomDiary().then(function(response) {
-                    if (!response.is_diary_locked) {
-                        $scope.cancelAutoAssign();
-                        $scope.$emit('RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY');
+                var options = {
+                    successCallBack: function(response) {
+                        if (!response.is_diary_locked) {
+                            $scope.cancelAutoAssign();
+                            $scope.$emit('REFRESH_DIARY_SCREEN');
+                            $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
+                        }
                     }
-                });
+                };
+
+                $scope.callAPI(RVNightlyDiarySrv.unlockRoomDiary, options);
             };
 
             initVariables();
