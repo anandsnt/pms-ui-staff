@@ -45,7 +45,7 @@
     </div>
 
     <div class="notice">
-       ROOM REFERENCES APPLY
+       ROOM PREFERENCES APPLY!
     </div>
 
     <div class="actions">
@@ -58,9 +58,9 @@
     <div class="progress" ng-class="diaryData.autoAssign.statusClass">
         <div class="progress-icon"></div>
         <div class="progress-data">
-            <h3>Room auto assignment in progress ({{ diaryData.arrivalDate | date: 'd LLLL yyyy' }})</h3>
+            <h3>{{diaryData.autoAssign.statusText}} ({{ diaryData.arrivalDate | date: 'd LLLL yyyy' }})</h3>
             <div class="progress-description">
-                {{diaryData.autoAssign.statusText}}
+                {{diaryData.autoAssign.statusDescription}}
             </div>
         </div>
         <div class="progress-actions">

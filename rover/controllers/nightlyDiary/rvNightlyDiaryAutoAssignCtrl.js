@@ -62,6 +62,7 @@ angular.module('sntRover')
                     isLocked: false,
                     status: '',
                     statusText: '',
+                    statusDescription: '',
                     statusClass: ''
                 };
             };
