@@ -34,10 +34,11 @@ sntRover.controller('RVShowPaymentListCtrl', ['$rootScope', '$scope', '$state', 
         } else {
             reservationId = $scope.dataToPaymentList.reservation_card.reservation_id;
         }
+     
         var existingPaymentsParams = {
-            reservation_id: $scope.reservationData.reservationId,
-            bill_number: bill_number
-        };
+                reservation_id: reservationId,
+                bill_number: bill_number
+            };
         
         $scope.invokeApi(RVPaymentSrv.getExistingPaymentsForBill, existingPaymentsParams, $scope.paymentListSuccess);
 
@@ -120,7 +121,7 @@ sntRover.controller('RVShowPaymentListCtrl', ['$rootScope', '$scope', '$state', 
 
         $scope.openAddNewPaymentModel = function() {
             $scope.closeDialog();
-            $rootScope.$emit('OPENPAYMENTMODEL');
+            $rootScope.$broadcast('OPENPAYMENTMODEL');
         };
 
         /**

@@ -48,8 +48,8 @@
 
     </div>
 
-    <div class="invoice-header" ng-if="printData.custom_text_header">
-        <!-- {header-text} -->
+    <div class="invoice-header" ng-if="printData.ar_invoice_header">
+        <p>{{printData.ar_invoice_header}}</p>
     </div>
 
     <div class="invoice-body">
@@ -236,7 +236,7 @@
     </table>
     <div class="invoice-footer text-center" ng-bind-html="trustAsHtml(printData.ar_billing_text)">
     </div>
-    <div class="invoice-footer" ng-if="printData.custom_text_footer">
-        <p>{{printData.custom_text_footer}}</p>
+    <div class="invoice-footer text-center" ng-if="printData.ar_invoice_footer">
+        <p>{{printData.ar_invoice_footer}}</p>
     </div>
 </div>

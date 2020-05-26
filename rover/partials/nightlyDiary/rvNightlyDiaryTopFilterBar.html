@@ -1,6 +1,11 @@
 <div class="diary-header-nightly"
      ng-controller="rvNightlyDiaryTopFilterBarController"
-     ng-class="{'editing': diaryData.isEditReservationMode, 'unassigned': diaryData.isReservationSelected }">
+     ng-class="{
+            'editing': diaryData.isEditReservationMode,
+            'unassigned': diaryData.isReservationSelected,
+            'auto-assigning-rooms': diaryData.autoAssign.showOverlay,
+            'with-progress': diaryData.autoAssign.isLocked
+        }">
 
     <!-- Toggle Hourly / Nightly -->
     <div class="entry switch switch-view" ng-hide="hideToggleMenu()">
@@ -66,6 +71,8 @@
     <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryBookRoomFilter.html'" include-replace></div>
 
     <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryTopEditBar.html'" include-replace></div>
+
+    <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryAutoAssign.html'" include-replace></div>
 
     <!-- Show / Hide Filters -->
     <div class="entry filters" ng-class="{'show-one': diaryData.showBookFilterPanel }">

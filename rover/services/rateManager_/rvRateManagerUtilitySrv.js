@@ -174,7 +174,7 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
                 obj = {};
 
             for (key in input) {
-                value = input[key],
+                value = input[key];
                 obj = {};
 
                 if (value) {
@@ -186,6 +186,39 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
                     }
                     else if (typeof(value) === "number") {
                         obj.days = value;
+                    }
+                    output.push(obj);
+                }
+            }
+
+            return output;
+        };
+
+        /**
+         * Conversion function exclusively for the panel
+         * 
+         */
+        service.generateOldGetApiResponseFormatForPanel = function(input, lockedRestrictions) {
+            var output = [],
+                key = '',
+                restrictionData = '', 
+                obj = {};
+
+            for (key in input) {
+                restrictionData = input[key];
+                obj = {};
+
+                if (typeof(restrictionData) === "object" && !_.isEmpty(restrictionData)) {
+                    obj.status = 'ON';
+                    obj.restriction_type_id = service.restrictionKeyToCodeMapping[key][0];
+                    obj.is_on_rate = lockedRestrictions ? service.checkLockedRestriction(lockedRestrictions, service.restrictionKeyToCodeMapping[key][2]) : false;
+                    if (restrictionData.length === undefined) {
+                        obj.days = null;
+                    }
+                    else {
+                        obj.days = restrictionData.map((item) => {
+                            return item.value;
+                        });
                     }
                     output.push(obj);
                 }

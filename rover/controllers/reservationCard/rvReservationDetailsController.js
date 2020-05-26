@@ -82,7 +82,7 @@ sntRover.controller('reservationDetailsController',
 
 		$scope.guestIdAdminEnabled = $rootScope.hotelDetails.guest_id_scan.view_scanned_guest_id;
    		$scope.hasGuestIDPermission = rvPermissionSrv.getPermissionValue('ACCESS_GUEST_ID_DETAILS');
-   		
+		
 		if (!$rootScope.stayCardStateBookMark) {
 			setNavigationBookMark();
 		}
@@ -274,6 +274,7 @@ sntRover.controller('reservationDetailsController',
 				backParam.useCache = true;
 				backParam.isBulkCheckoutSelected = $stateParams.isBulkCheckoutSelected;
 				backParam.isAllowOpenBalanceCheckoutSelected = $stateParams.isAllowOpenBalanceCheckoutSelected;
+				backParam.isBulkCheckinSelected = $vault.get('isBulkCheckinSelected') === 'true';
 				$state.go('rover.search', backParam);
 			};
 		}

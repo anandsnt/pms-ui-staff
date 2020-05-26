@@ -96,12 +96,30 @@ angular.module('sntRover')
         });
 
         // Method to fetch Unassigned reservations list.
-        var fetchUnassignedReservationList = function () {
+        // reservationId - id which needed to be selected by default.
+        var fetchUnassignedReservationList = function (reservationId) {
             var successCallBackFetchList = function (data) {
                 $scope.errorMessage = '';
                 $scope.diaryData.unassignedReservationList = data;
                 initialUnassignedListData = angular.copy(data.reservations);
                 $scope.searchQuery = '';
+
+                // Select an unassigned reservation from here if reservationId is passed.
+                if (reservationId) {
+                    var unassignedReservationList = $scope.diaryData.unassignedReservationList.reservations,
+                        reservationItem = _.find(unassignedReservationList, function(item) { 
+                            return item.reservation_id === reservationId;
+                        });
+
+                    if (reservationItem) {
+                        selectUnassignedListItem(reservationItem);
+                    }
+                    else {
+                        $scope.diaryData.selectedUnassignedReservation = {};
+                        $scope.diaryData.isReservationSelected = false;
+                        $scope.$emit('CANCEL_RESERVATION_EDITING');
+                    }
+                }
             },
             postData = {
                 'date': $scope.diaryData.arrivalDate
@@ -164,13 +182,9 @@ angular.module('sntRover')
             return (screen.width >= 1600 || $scope.diaryData.rightFilter === 'UNASSIGNED_RESERVATION') ? 'visible' : '';
         };
         // CICO-73889 : Handle unassigned reservation selection.
-        $scope.addListener('SELECT_UNASSIGNED_RESERVATION', function(event, reservationId) {
-            var unassignedReservationList = $scope.diaryData.unassignedReservationList.reservations,
-                reservationItem = _.find(unassignedReservationList, function(item) { 
-                    return item.reservation_id === reservationId;
-                });
-
-            selectUnassignedListItem(reservationItem);
+        $scope.addListener('SELECT_UNASSIGNED_RESERVATION', function(event, reservationId, arrivalDate) {
+            $scope.diaryData.arrivalDate = arrivalDate;
+            fetchUnassignedReservationList(reservationId);
         });
 
         $scope.addListener('CANCEL_UNASSIGNED_RESERVATION', function() {
@@ -202,6 +216,24 @@ angular.module('sntRover')
             else {
                 fetchUnassignedReservationList();
             }
+        };
+
+        /**
+         * This functions initiates the auto assign call.
+         * Setting necessary classes to the respective container,
+         * Display the autoassign overlay and header
+         */
+        $scope.initiateAutoAssign = function() {
+            $scope.$emit('INITIATE_AUTO_ASSIGN');
+        };
+
+        /**
+         * hide the auto-assign button for FULL HOURLY hotels
+         */
+        $scope.enableAutoAssign = function() {
+            return $rootScope.hotelDiaryConfig.mode !== 'FULL' &&
+                !_.isEmpty($scope.diaryData.unassignedReservationList) &&
+                $scope.diaryData.unassignedReservationList.reservations.length !== 0;
         };
 
         // CICO-65962 : Handle Clear Query.

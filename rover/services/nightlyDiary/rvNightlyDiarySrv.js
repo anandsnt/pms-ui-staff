@@ -328,5 +328,32 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             });
             return deferred.promise;
         };
+
+        /**
+         * Initiate auoto-assign of rooms
+         */
+        this.initiateAutoAssignRooms = function(params) {
+            var url = 'api/auto_room_assign_processes/auto_room_assignment';
+
+            return sntBaseWebSrv.postJSON(url, params);
+        };
+
+        /**
+         * Fetch auto-assign status
+         */
+        this.fetchAutoAssignStatus = function() {
+            var url = 'api/auto_room_assign_processes/status';
+
+            return sntBaseWebSrv.getJSON(url);
+        };
+
+        /**
+         * Unlock Diary after auto-assign process
+         */
+        this.unlockRoomDiary = function() {
+            var url = ' api/auto_room_assign_processes/unlock_diary';
+
+            return sntBaseWebSrv.postJSON(url);
+        };
     }
 ]);
