@@ -2102,7 +2102,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     params[key] = [];
                     /**/
                     _.each(selected, function (source) {
-                        params[key].push(source.floor_number);
+                        params[key].push(source.id);
                         /**/
                         if (changeAppliedFilter) {
                             $scope.appliedFilter.floorList.push(source.floor_number);
