@@ -16,7 +16,7 @@
 				</div>
 			</div>
 			<div class="entry switch" ng-if="isDueinShowing && isBulkCheckinEnabled">
-				<div class="switch-button" ng-class="{'on': !isBulkCheckinSelected}">
+				<div class="switch-button" ng-class="{'on': !isBulkCheckinSelected}" >
 					<input value="" type="checkbox" checked="" 
 						ng-model="isBulkCheckinSelected"  
 						ng-disabled="shouldDisableBulkCheckinOption()" 
@@ -52,7 +52,7 @@
 				<div class="notice">
 					This will check in a total of <span class="count">{{ bulkCheckinReservationsCount }}</span> reservations
 				</div>
-				<button type="button" class="button green" ng-click="performBulkCheckin()">Check In</button>
+				<button type="button" class="button green" ng-click="performBulkCheckin()" ng-disabled="bulkCheckinReservationsCount === 0" ng-class="{'grey': bulkCheckinReservationsCount === 0}">Check In</button>
 			</div>
 			
 			<!-- remove .hidden when showing bulk checkout -->
