@@ -1,12 +1,12 @@
-sntRover.directive('rvFileCloudStorage', function($timeout) {
+sntRover.directive('rvFileCloudStorage', function() {
     return {
-    	restrict: 'AE',
+        restrict: 'AE',
         replace: 'true',
-      	scope: {
-         cardType: '@',
-         cardId: '@'
-	    },
-    	templateUrl: '/assets/directives/fileCloudStorage/partials/rvFileCloudStorage.html',
+        scope: {
+            cardType: '@',
+            cardId: '@'
+        },
+        templateUrl: '/assets/directives/fileCloudStorage/partials/rvFileCloudStorage.html',
         controller: 'rvFileCloudStorageAndNotesCtrl'
     };
 });

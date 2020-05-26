@@ -51,7 +51,7 @@ angular.module('sntRover').service('rvCardNotesSrv', ['$q', 'rvBaseWebSrvV2',
 		service.updateNote = function(params) {
 			var url =  getApiURL('update', params);
 
-			return rvBaseWebSrvV2.putJSON(url, params)
+			return rvBaseWebSrvV2.putJSON(url, params);
 		};
 
 		service.deleteNote = function(params) {

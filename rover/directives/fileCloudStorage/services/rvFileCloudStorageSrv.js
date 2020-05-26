@@ -2,7 +2,7 @@ sntRover.service('rvFileCloudStorageSrv', ['$q', 'rvBaseWebSrvV2', function($q, 
     var service = this;
     
 	service.setCardType = function(cardTye) {
-		service.cardTye = cardTye
+		service.cardTye = cardTye;
 	};
 
     service.fetchFiles = function (params) {

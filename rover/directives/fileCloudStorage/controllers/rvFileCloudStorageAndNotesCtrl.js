@@ -1,20 +1,20 @@
 sntRover.controller('rvFileCloudStorageAndNotesCtrl', ['$scope', 'rvFileCloudStorageSrv', '$controller',
 	function($scope, rvFileCloudStorageSrv, $controller) {
 
-		$scope.setScreenMode = function (selectedMode) {
+		$scope.setScreenMode = function(selectedMode) {
 			$scope.screenMode = selectedMode;
-			$scope.$broadcast('FETCH_'+ selectedMode);
+			$scope.$broadcast('FETCH_' + selectedMode);
 		};
 
-		(function(){
+		(function() {
 			rvFileCloudStorageSrv.setCardType($scope.cardType);
 			$scope.cardData = {};
 			$controller('rvCardNotesCtrl', {
-                  $scope: $scope
-            });
+				$scope: $scope
+			});
 			$controller('rvFileCloudStorageCtrl', {
-                  $scope: $scope
-            });
+				$scope: $scope
+			});
 			$scope.setScreenMode('NOTES');
 		})();
 	}

@@ -152,7 +152,6 @@ angular.module('sntRover').service('RVHotelDetailsSrv', ['$q', 'rvBaseWebSrvV2',
                 _.extend(service.hotelDetails, {
                     cloud_storage_config: data
                 });
-                console.log(service.hotelDetails)
             });
         };
 

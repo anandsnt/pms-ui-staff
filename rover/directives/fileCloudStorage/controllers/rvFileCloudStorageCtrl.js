@@ -4,13 +4,13 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 		var newFileList = [];
 		var fetchFiles = function() {
 			rvFileCloudStorageSrv.fetchFiles({}).then(function(fileList) {
-					_.each(fileList, function(file) {
-						file.is_selected = false;
-					});
-					$scope.cardData.fileList = fileList;
-					$scope.refreshScroller('card_file_list_scroller');
-					// console.log(fileList)
+				_.each(fileList, function(file) {
+					file.is_selected = false;
 				});
+				$scope.cardData.fileList = fileList;
+				$scope.refreshScroller('card_file_list_scroller');
+				// console.log(fileList)
+			});
 		};
 
 		$scope.$on('FILE_UPLOADED', function(evt, file) {
@@ -42,26 +42,26 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 			file.is_selected = !file.is_selected;
 		};
 
-		var filterSelectedFilesList =function() {
-			return  _.filter($scope.cardData.fileList, function(file){
+		var filterSelectedFilesList = function() {
+			return _.filter($scope.cardData.fileList, function(file) {
 				return file.is_selected;
 			});
 		};
 
-		$scope.donwloadFiles = function (){
+		$scope.donwloadFiles = function() {
 			var selectedFilesList = filterSelectedFilesList();
 
-			_.each(selectedFilesList,function(file) {
+			_.each(selectedFilesList, function(file) {
 				rvFileCloudStorageSrv.downLoadFile({
 					id: file.id
 				});
 			});
 		};
 
-		$scope.deleteFiles = function (){
+		$scope.deleteFiles = function() {
 			var selectedFilesList = filterSelectedFilesList();
 
-			_.each(selectedFilesList,function(file) {
+			_.each(selectedFilesList, function(file) {
 				rvFileCloudStorageSrv.deleteFile({
 					id: file.id
 				}).then(fetchFiles);
