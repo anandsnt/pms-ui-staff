@@ -1068,13 +1068,15 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			if (activeTab !== 'SUMMARY') {
 				return;
 			}
-			$scope.$emit("FETCH_SUMMARY");
+			if (!$scope.isInAddMode()) {
+				$scope.$emit("FETCH_SUMMARY");
 
-			// we are resetting the API call in progress check variable
-			$scope.isUpdateInProgress = false;
+				// we are resetting the API call in progress check variable
+				$scope.isUpdateInProgress = false;
 
-			// we have to refresh this data on tab siwtch
-			$scope.computeSegment();
+				// we have to refresh this data on tab siwtch
+				$scope.computeSegment();
+			}
 		});
 
 		/**
