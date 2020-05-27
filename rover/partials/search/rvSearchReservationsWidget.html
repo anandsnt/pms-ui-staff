@@ -15,7 +15,7 @@
 					</label>
 				</div>
 			</div>
-			<div class="entry switch" ng-if="isDueinShowing && isBulkCheckinEnabled">
+			<div class="entry switch" ng-if="isDueinShowing && isBulkCheckinEnabled && !isHourlyRateOn">
 				<div class="switch-button" ng-class="{'on': !isBulkCheckinSelected}" >
 					<input value="" type="checkbox" checked="" 
 						ng-model="isBulkCheckinSelected"  
@@ -32,7 +32,7 @@
 				</div>
 			</div>
 
-			<button type="button" class=" button white with-icon only-icon refresh" 
+			<button type="button" class="button white with-icon only-icon refresh" 
 					ng-if="isStandAlone && isCheckoutWithBalance"
 					ng-click="refreshReservationsWithOpenBalance()">
 				<span class="icons icon-reset"></span>
