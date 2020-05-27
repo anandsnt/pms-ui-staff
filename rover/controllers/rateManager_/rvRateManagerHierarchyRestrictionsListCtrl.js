@@ -2,10 +2,14 @@ angular.module('sntRover')
     .controller('rvRateManagerHierarchyRestrictionsListCtrl', [
         '$scope',
         'rvRateManagerHierarchyRestrictionsSrv',
+        'rvRateManagerUtilitySrv',
+        '$timeout',
         'rvRateManagerEventConstants',
         function(
             $scope,
             hierarchySrv,
+            hierarchyUtils,
+            $timeout,
             rvRateManagerEventConstants) {
                 BaseCtrl.call(this, $scope);
 
@@ -14,7 +18,9 @@ angular.module('sntRover')
                 };
 
                 const refreshScroller = function() {
-                    $scope.refreshScroller('hierarchyPopupListScroll');
+                    $timeout(function () {
+                        $scope.refreshScroller('hierarchyPopupListScroll');
+                    }, 500);
                 };
 
                 const checkEmptyOrListView = function( listData ) {
@@ -35,8 +41,8 @@ angular.module('sntRover')
                             default:
                             break;
                         }
-                        refreshScroller();
                         $scope.popUpView = checkEmptyOrListView($scope.restrictionObj.listData);
+                        refreshScroller();
                     };
                     const fetchRestrictionsFailureCallback = (errorMessage) => {
                         $scope.errorMessage = errorMessage;
@@ -57,16 +63,21 @@ angular.module('sntRover')
                 };
 
                 /*
-                 *  Handle delete button click
+                 *  Handle list item click
                  *  @param {String} ['closed', 'close_arrival' etc.]
-                 *  @param {Number | null} [ value of 'min_length_of_stay', 'max_length_of_stay' etc.]
                  *  @param {Number | null} [ index of clicked item in 'min_length_of_stay', 'max_length_of_stay' etc.]
                  */
-                $scope.clickedOnRemove = function( key, value, index ) {
-                    let restrictions = {};
-                    
-                    restrictions[key] = value ? null : false;
+                $scope.clickedOnListItem = function(key, index) {
+                    let clickedItem = index ? $scope.restrictionObj.listData[key][index] : $scope.restrictionObj.listData[key];
 
+                    $scope.popUpView = 'EDIT';
+                    $scope.selectedRestriction = _.find(hierarchyUtils.restrictionColorAndIconMapping, 
+                                                        function(item) { return item.key  === key; }
+                                                );
+                    $scope.selectedRestriction.value = clickedItem.value || clickedItem[0].value;
+                };
+
+                const callRemoveAPI = (restrictions) => {
                     let params = {
                         from_date: $scope.ngDialogData.date,
                         to_date: $scope.ngDialogData.date,
@@ -75,12 +86,7 @@ angular.module('sntRover')
 
                     const deleteSuccessCallback = () => {
                         $scope.errorMessage = '';
-                        if (value && index) {
-                            delete $scope.restrictionObj.listData[key][index];
-                        }
-                        else {
-                            delete $scope.restrictionObj.listData[key];
-                        }
+                        fetchRestrictionList();
                         $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
                     };
 
@@ -97,9 +103,32 @@ angular.module('sntRover')
                     $scope.callAPI(hierarchySrv.deleteRestrictions, options);
                 };
 
+                /*
+                 *  Handle delete button click on each item on LIST screen.
+                 *  @param {String} ['closed', 'close_arrival' etc.]
+                 *  @param {Boolean | null} [value will be false or null]
+                 */
+                $scope.clickedOnRemove = function(key, value) {
+                    let restrictions = {};
+                    
+                    restrictions[key] = value;
+                    callRemoveAPI(restrictions);
+                };
+
+                // Process Remove action on EDIT screen.
+                const processRemoveOnDates = () => {
+                    let key = $scope.selectedRestriction.key;
+                    let value = ($scope.selectedRestriction.type === 'number') ? null : false;
+                    let restrictions = {};
+
+                    restrictions[key] = value;
+                    callRemoveAPI(restrictions);
+                };
+
                 setscroller();
                 fetchRestrictionList();
 
                 $scope.addListener('RELOAD_RESTRICTIONS_LIST', fetchRestrictionList);
+                $scope.addListener('CLICKED_REMOVE_ON_DATES', processRemoveOnDates);
             }
     ]);
