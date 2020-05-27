@@ -28,19 +28,19 @@ angular.module('sntRover')
                     });
                 }
             }, filterReservationIDs = function() {
-                var reservationIDs = [];
+                var reservationIDs = [],
+                    reservations = [];
 
                 if ($scope.selectedRoomTypes.length === 0) {
-                    reservationIDs = _.pluck(_.reject($scope.diaryData.unassignedReservationList.reservations, {is_hourly: true}), 'reservation_id');
+                    reservations = angular.copy($scope.diaryData.unassignedReservationList.reservations);
                 } else {
-                    var reservations = [];
-
                     $scope.selectedRoomTypes.forEach(function(roomTypeId) {
                         reservations.push(..._.filter($scope.diaryData.unassignedReservationList.reservations, {room_type_id: roomTypeId}));
                     });
-                    reservations = _.reject(reservations, {is_hourly: true});
-                    reservationIDs = _.pluck(reservations, 'reservation_id');
                 }
+                reservations = _.reject(reservations, {is_hourly: true});
+                reservations = _.reject(reservations, {is_suite_reservation: true});
+                reservationIDs = _.pluck(reservations, 'reservation_id');
                 return reservationIDs;
             };
 
