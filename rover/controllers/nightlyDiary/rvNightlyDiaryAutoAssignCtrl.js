@@ -13,7 +13,20 @@ angular.module('sntRover')
             var initVariables = function() {
                 $scope.selectedRoomTypes = [];
                 $scope.selectedFloors = [];
+                $scope.showRoomTypes = false;
+                $scope.showFloors = false;
                 $scope.selectedReservations = filterReservationIDs();
+            }, clearFilters = function() {
+                if ($scope.selectedRoomTypes.length !== 0) {
+                    $scope.selectedRoomTypes.forEach(function(roomTypeId) {
+                        _.findWhere($scope.diaryData.filterList.roomType, {id: roomTypeId}).selected = false;
+                    });
+                }
+                if ($scope.selectedFloors.length !== 0) {
+                    $scope.selectedFloors.forEach(function(floorId) {
+                        _.findWhere($scope.diaryData.filterList.floorList, {id: floorId}).selected = false;
+                    });
+                }
             }, filterReservationIDs = function() {
                 var reservationIDs = [];
 
@@ -56,6 +69,7 @@ angular.module('sntRover')
              * Cancel and/or close the autoAssign overlay template
              */
             $scope.cancelAutoAssign = function() {
+                clearFilters();
                 initVariables();
                 $scope.diaryData.autoAssign = {
                     showOverlay: false,
