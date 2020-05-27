@@ -19,12 +19,12 @@ angular.module('sntRover')
             }, clearFilters = function() {
                 if ($scope.selectedRoomTypes.length !== 0) {
                     $scope.selectedRoomTypes.forEach(function(roomTypeId) {
-                        return _.findWhere($scope.diaryData.filterList.roomType, {id: roomTypeId}).selected = false;
+                        _.findWhere($scope.diaryData.filterList.roomType, {id: roomTypeId}).selected = false;
                     });
                 }
                 if ($scope.selectedFloors.length !== 0) {
                     $scope.selectedFloors.forEach(function(floorId) {
-                        return _.findWhere($scope.diaryData.filterList.floorList, {id: floorId}).selected = false;
+                        _.findWhere($scope.diaryData.filterList.floorList, {id: floorId}).selected = false;
                     });
                 }
             }, filterReservationIDs = function() {
