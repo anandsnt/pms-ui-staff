@@ -788,12 +788,13 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @param {object} panelRestrictions
      * @returns {Object} 
      */
-    var gatherPanelRestrictionSummary = (dates, panelRestrictions) => {
+    var gatherPanelRestrictionSummary = (dates, panelRestrictions, commonRestrictions) => {
         var restrictionSummary = [{
             houseRestrictionSummary: createRestrictionList(dates, (panelRestrictions && panelRestrictions.houseRestrictions)),
             roomTypeRestrictionSummary: createRestrictionList(dates, (panelRestrictions && panelRestrictions.roomTypeRestrictions)),
             rateTypeRestrictionSummary: createRestrictionList(dates, (panelRestrictions && panelRestrictions.rateTypeRestrictions)),
-            rateRestrictionSummary: createRestrictionList(dates, (panelRestrictions && panelRestrictions.rateRestrictions))
+            rateRestrictionSummary: createRestrictionList(dates, (panelRestrictions && panelRestrictions.rateRestrictions)),
+            allRoomTypeSummary: createRestrictionList(dates, commonRestrictions)
         }];
 
         return restrictionSummary;
@@ -2194,7 +2195,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                  * Summary information holds the first row - this is rendered in the header of the grid
                  * @type {Array}
                  */
-                var restrictionSummary = isHierarchyActive() ? gatherPanelRestrictionSummary(dates, panelRestrictions) :
+                var restrictionSummary = isHierarchyActive() ? gatherPanelRestrictionSummary(dates, panelRestrictions, commonRestrictions) :
                     [{
                         rateDetails: [],
                         restrictionList: dates.map((date) => {
@@ -2359,6 +2360,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             if (isHierarchyRestrictionNeeded()) {
                 params.restrictionType = getRestrictionType();
             }
+            considerHierarchyRestrictions(params);
 
             var options = {
                 params: params,
