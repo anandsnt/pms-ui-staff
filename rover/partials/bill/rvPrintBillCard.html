@@ -13,7 +13,7 @@
 <div class="info-container" ng-if="!printData.is_from_cards">
     <div class="info-left">
         <span ng-show="printData.show_works_at_field && printData.guest_details.works_at">
-            <span >{{printData.translation.works_at}}: </span>{{printData.guest_details.works_at}}<br/>
+            {{printData.guest_details.works_at}}<br/>
         </span>
         <span ng-bind-html="printData.guest_details.address"></span><br/>
         <div class="info-bottom" ng-if="!printData.is_deposit_invoice">
