@@ -2133,9 +2133,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fetchRates: !cachedRateList.length
             };
 
-            if (isHierarchyRestrictionNeeded()) {
-                params.restrictionType = getRestrictionType();
-            }
             var options = {
                 params: params,
                 onSuccess: onFetchMultipleRoomTypeRestrictionsAndAmountDetailsForPopup,
