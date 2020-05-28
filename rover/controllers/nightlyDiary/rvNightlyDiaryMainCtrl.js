@@ -45,6 +45,9 @@ angular.module('sntRover')
                     MAX_NO_OF_DAYS = 21,
                     paginationDataBeforeMoveOrAssign = {},
                     setAutoAssignStatus = function(data) {
+                        if (data.is_diary_locked) {
+                            $scope.diaryData.arrivalDate = data.process_date;
+                        }
                         $scope.diaryData.autoAssign.showOverlay = data.is_diary_locked;
                         $scope.diaryData.autoAssign.isLocked = data.is_diary_locked;
                         $scope.diaryData.autoAssign.status = data.auto_room_assignment_status;
