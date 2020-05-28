@@ -15,13 +15,13 @@
 	    		class="button" 
 	    		ng-class="{'brand-colors': cardData.noteText.trim()!=='', 'grey': cardData.noteText.trim()===''}" 
 	    		ng-disabled="cardData.noteText.trim()===''" 
-	    		ng-show="editingNote===null">
+	    		ng-style="{'display':  editingNote === null ? 'block': 'none'}">
 	    	Post
 	    </button>
         <button type="button" 
         		class="button brand-colors" 
         		ng-class="{'brand-colors': cardData.noteText.trim()!=='', 'grey': cardData.noteText.trim()===''}" 
-        		ng-show="editingNote!==null"
+        		ng-style="{'display':  editingNote !== null ? 'block': 'none'}"
         		ng-disabled="cardData.noteText.trim()===''"  
         		ng-click="updateActiveNote()">
         	Save
