@@ -2,9 +2,7 @@
 
     <ul class="restrictions-table-header">
         <li>Restriction</li>
-        <!-- Show if on rate or room type restrictios 
-        <li>Set on</li>
-        -->
+        <li ng-hide="ngDialogData.hierarchyLevel === 'House'">Set on</li>
         <li>Remove</li>
     </ul>
 
@@ -19,7 +17,15 @@
                             <span class="restriction-title">CLOSED</span>
                         </div>
                     </div>
-
+                    <!-- Show if we are on rate or room type restrictions -->
+                    <div class="set-on" ng-hide="ngDialogData.hierarchyLevel === 'House' || restrictionObj.listData.closed.room_types.length === 0">
+                        <!-- If we have a rate or room type: -->
+                            <span class="set-on-text">{{restrictionObj.listData.closed.room_types[0].name}}</span>
+                            <!-- If we have more than 1: -->
+                            <span class="set-on-more" ng-show="restrictionObj.listData.closed.room_types.length > 1">+{{restrictionObj.listData.closed.room_types.length - 1}} more</span>
+                        <!-- If applied on all rate/room type: -->
+                        <div class="notice hidden">{{restrictionObj.listData.noticeLabel}}</div>
+                    </div>
                     <button type="button" class="button white remove-restriction">
                         <span class="icons icon-remove-40" ng-click="clickedOnRemove('closed', false)"></span>
                     </button>
@@ -62,7 +68,7 @@
                             <span class="restriction-title">MIN LENGTH OF STAY</span>
                         </div>
                         <!-- Show if we are on rate or room type restrictions --
-                        <div class="set-on">
+                        <div class="set-on" ng-hide="ngDialogData.hierarchyLevel === 'House'">
                             -- If we have a rate or room type:
                                 <span class="set-on-text">{Rate&Room Type}</span>
                                 -- If we have more than 1:
@@ -90,7 +96,7 @@
                             <span class="restriction-title">MAX LENGTH OF STAY</span>
                         </div>
                         <!-- Show if we are on rate or room type restrictions --
-                        <div class="set-on">
+                        <div class="set-on" ng-hide="ngDialogData.hierarchyLevel === 'House'">
                             -- If we have a rate or room type:
                                 <span class="set-on-text">{Rate&Room Type}</span>
                                 -- If we have more than 1:
@@ -118,7 +124,7 @@
                             <span class="restriction-title">MIN STAY THROUGH</span>
                         </div>
                         <!-- Show if we are on rate or room type restrictions --
-                        <div class="set-on">
+                        <div class="set-on" ng-hide="ngDialogData.hierarchyLevel === 'House'">
                             -- If we have a rate or room type:
                                 <span class="set-on-text">{Rate&Room Type}</span>
                                 -- If we have more than 1:
@@ -146,7 +152,7 @@
                             <span class="restriction-title">MIN ADVANCE BOOKING</span>
                         </div>
                         <!-- Show if we are on rate or room type restrictions --
-                        <div class="set-on">
+                        <div class="set-on" ng-hide="ngDialogData.hierarchyLevel === 'House'">
                             -- If we have a rate or room type:
                                 <span class="set-on-text">{Rate&Room Type}</span>
                                 -- If we have more than 1:
@@ -174,7 +180,7 @@
                             <span class="restriction-title">MAX ADVANCE BOOKING</span>
                         </div>
                         <!-- Show if we are on rate or room type restrictions --
-                        <div class="set-on">
+                        <div class="set-on" ng-hide="ngDialogData.hierarchyLevel === 'House'">
                             -- If we have a rate or room type:
                                 <span class="set-on-text">{Rate&Room Type}</span>
                                 -- If we have more than 1:

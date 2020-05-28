@@ -36,6 +36,11 @@ angular.module('sntRover')
                         switch ($scope.ngDialogData.hierarchyLevel) {
                             case 'House':
                                 $scope.restrictionObj.listData = response.house[0].restrictions;
+                                $scope.restrictionObj.listData.noticeLabel = '';
+                                break;
+                            case 'RoomType':
+                                $scope.restrictionObj.listData = response.room_type[0].restrictions;
+                                $scope.restrictionObj.listData.noticeLabel = 'ALL ROOM TYPES';
                                 break;
 
                             default:
