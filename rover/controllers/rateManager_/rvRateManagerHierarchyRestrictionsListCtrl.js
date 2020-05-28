@@ -37,11 +37,15 @@ angular.module('sntRover')
                             case 'House':
                                 $scope.restrictionObj.listData = response.house[0].restrictions;
                                 $scope.restrictionObj.noticeLabel = '';
+                                $scope.restrictionObj.setOnCount = 0;
+                                $scope.restrictionObj.enableEditRestrictions = true;
                                 break;
                             case 'RoomType':
                                 $scope.restrictionObj.listData = response.room_type[0].restrictions;
                                 $scope.restrictionObj.noticeLabel = 'ALL ROOM TYPES';
                                 $scope.restrictionObj.setOnCount = response.room_types_count;
+                                $scope.header.disableNewRestriction = true;
+                                $scope.restrictionObj.enableEditRestrictions = false;
                                 break;
 
                             default:
@@ -74,14 +78,22 @@ angular.module('sntRover')
                  *  @param {Number | null} [ index of clicked item in 'min_length_of_stay', 'max_length_of_stay' etc.]
                  */
                 $scope.clickedOnListItem = function(key, index) {
-                    let clickedItem = index ? $scope.restrictionObj.listData[key][index] : $scope.restrictionObj.listData[key];
+                    if ($scope.restrictionObj.enableEditRestrictions) {
+                        let clickedItem = index ? $scope.restrictionObj.listData[key][index] : $scope.restrictionObj.listData[key];
 
-                    $scope.popUpView = 'EDIT';
-                    $scope.selectedRestriction = _.find(hierarchyUtils.restrictionColorAndIconMapping, 
-                                                        function(item) { return item.key  === key; }
-                                                );
-                    $scope.selectedRestriction.value = clickedItem.value || clickedItem[0].value;
-                    $scope.selectedRestriction.setOnValuesList = clickedItem.set_on_values || clickedItem[0].set_on_values;
+                        $scope.popUpView = 'EDIT';
+                        $scope.selectedRestriction = _.find(hierarchyUtils.restrictionColorAndIconMapping, 
+                                                            function(item) { return item.key  === key; }
+                                                    );
+                        if (clickedItem.value) {
+                            $scope.selectedRestriction.value = null;
+                            $scope.selectedRestriction.setOnValuesList = clickedItem.set_on_values || [];
+                        }
+                        else {
+                            $scope.selectedRestriction.value = clickedItem[0].value;
+                            $scope.selectedRestriction.setOnValuesList = clickedItem[0].set_on_values;
+                        }
+                    }
                 };
 
                 /*  
@@ -94,11 +106,13 @@ angular.module('sntRover')
                         to_date: $scope.ngDialogData.date,
                         restrictions
                     };
+                    let apiMethod = hierarchySrv.deleteHouseRestrictions;
 
                     if (setOnIdList.length > 0) {
                         switch ($scope.ngDialogData.hierarchyLevel) {
                             case 'RoomType':
                                 params.room_type_ids = setOnIdList;
+                                apiMethod = hierarchySrv.deleteRoomTypeRestrictions;
                                 break;
 
                             default:
@@ -122,7 +136,7 @@ angular.module('sntRover')
                         failureCallBack: deleteFailureCallback
                     };
 
-                    $scope.callAPI(hierarchySrv.deleteRestrictions, options);
+                    $scope.callAPI(apiMethod, options);
                 };
 
                 /*
@@ -148,6 +162,10 @@ angular.module('sntRover')
                     let value = ($scope.selectedRestriction.type === 'number') ? null : false;
                     let restrictions = {};
                     let setOnIdList = [];
+
+                    if ($scope.selectedRestriction.setOnValuesList) {
+                        setOnIdList = _.pluck($scope.selectedRestriction.setOnValuesList, 'id');
+                    }
 
                     restrictions[key] = value;
                     callRemoveAPI(restrictions, setOnIdList);
