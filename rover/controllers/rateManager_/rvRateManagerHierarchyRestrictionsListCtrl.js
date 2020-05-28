@@ -81,14 +81,30 @@ angular.module('sntRover')
                                                         function(item) { return item.key  === key; }
                                                 );
                     $scope.selectedRestriction.value = clickedItem.value || clickedItem[0].value;
+                    $scope.selectedRestriction.setOnValuesList = clickedItem.set_on_values || clickedItem[0].set_on_values;
                 };
 
-                const callRemoveAPI = (restrictions) => {
+                /*  
+                 *  @param {Object} [restriction object needed to be deleted]
+                 *  @param {Array} [Ids of set on values to be deleted]
+                 */
+                const callRemoveAPI = (restrictions, setOnIdList) => {
                     let params = {
                         from_date: $scope.ngDialogData.date,
                         to_date: $scope.ngDialogData.date,
                         restrictions
                     };
+
+                    if (setOnIdList.length > 0) {
+                        switch ($scope.ngDialogData.hierarchyLevel) {
+                            case 'RoomType':
+                                params.room_type_ids = setOnIdList;
+                                break;
+
+                            default:
+                            break;
+                        }
+                    }
 
                     const deleteSuccessCallback = () => {
                         $scope.errorMessage = '';
@@ -113,12 +129,17 @@ angular.module('sntRover')
                  *  Handle delete button click on each item on LIST screen.
                  *  @param {String} ['closed', 'close_arrival' etc.]
                  *  @param {Boolean | null} [value will be false or null]
+                 *  @param {Array | undefined} [set on list values]
                  */
-                $scope.clickedOnRemove = function(key, value) {
+                $scope.clickedOnRemove = function(key, value, setOnValuesList) {
                     let restrictions = {};
+                    let setOnIdList = [];
                     
                     restrictions[key] = value;
-                    callRemoveAPI(restrictions);
+                    if (setOnValuesList) {
+                        setOnIdList = _.pluck(setOnValuesList, 'id');
+                    }
+                    callRemoveAPI(restrictions, setOnIdList);
                 };
 
                 // Process Remove action on EDIT screen.
@@ -126,9 +147,10 @@ angular.module('sntRover')
                     let key = $scope.selectedRestriction.key;
                     let value = ($scope.selectedRestriction.type === 'number') ? null : false;
                     let restrictions = {};
+                    let setOnIdList = [];
 
                     restrictions[key] = value;
-                    callRemoveAPI(restrictions);
+                    callRemoveAPI(restrictions, setOnIdList);
                 };
 
                 setscroller();
