@@ -53,14 +53,14 @@
                         <span ng-show="popUpView === 'LIST'"
                         rv-include-template="/assets/partials/rateManager_/popup/hierarchyRestriction/rvRateManagerHierarchyRestrictionsList.html">
                         </span>
-                        <span ng-if="popUpView === 'NEW' || popUpView === 'EDIT'"
+                        <span ng-show="popUpView === 'NEW' || popUpView === 'EDIT'"
                         rv-include-template="/assets/partials/rateManager_/popup/hierarchyRestriction/rvRateManagerHierarchyRestrictionForm.html">
                         </span>
                     </div>
 
                     <!-- hiding as this will be implemented in another story -->
                     <div class="content-right">
-                        <span ng-if="popUpView === 'NEW' || popUpView === 'EDIT'"
+                        <span ng-show="popUpView === 'NEW' || popUpView === 'EDIT'"
                         rv-include-template="/assets/partials/rateManager_/popup/hierarchyRestriction/rvRateManagerHierarchyRestrictionsRepeatOnDates.html">
                         </span>
                     </div>
@@ -73,12 +73,15 @@
                             <button class="button blank" type="button" ng-click="closeDialog()" ng-class="{'hidden': popUpView === 'NEW' || popUpView === 'EDIT'}">
                                 Close window
                             </button>
+                            <button ng-show="popUpView === 'EDIT'" class="button red first-button" ng-class="{'small': !restrictionObj.isRepeatOnDates}" type="button" ng-click="clickedOnRemoveButton()">
+                                {{getRemoveButtonLabel()}}
+                            </button>
                             <!-- On set restriction screen without dates -- -->
                             <button class="button blank" ng-class="{'hidden': (popUpView !== 'NEW' && popUpView !== 'EDIT')}" type="button" ng-click="backToInitialScreen()">
                                 Cancel
                             </button>
                             <!-- -- remove .grey and add .green if we can set the restriction -- -->
-                            <button class="button" ng-class="{'hidden': (popUpView !== 'NEW' && popUpView !== 'EDIT'), 'grey disable-element': !validateForm(), 'green': validateForm()}" type="button" ng-click="setHouseHierarchyRestriction()">
+                            <button class="button last-button" ng-class="{'hidden': (popUpView !== 'NEW' && popUpView !== 'EDIT'), 'grey disable-element': !validateForm(), 'green': validateForm(), 'small': !restrictionObj.isRepeatOnDates}" type="button" ng-click="setHouseHierarchyRestriction()">
                                 {{getSetButtonLabel()}}
                             </button>
                         
