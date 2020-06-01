@@ -12,6 +12,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
   '$state',
   '$window',
   '$stateParams',
+  'rvGroupRoomingListSrv',
   function(
     $scope,
     $rootScope,
@@ -25,7 +26,8 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
     rvAllotmentConfigurationSrv,
     $state,
     $window,
-    $stateParams) {
+    $stateParams,
+    rvGroupRoomingListSrv) {
 
     BaseCtrl.call(this, $scope);
 
@@ -954,7 +956,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
 
       // API params
       var params = {
-        id: $scope.allotmentConfigData.summary.allotment_id,
+        group_id: $scope.allotmentConfigData.summary.allotment_id,
         room_type_id: $scope.selectedRoomType,
         from_date: $scope.reservationAddFromDate !== '' ? getApiFormattedDate($scope.reservationAddFromDate) : '',
         to_date: $scope.reservationAddToDate !== '' ? getApiFormattedDate($scope.reservationAddToDate) : '',
@@ -968,7 +970,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
         successCallBack: successCallBackOfAddReservations
       };
 
-      $scope.callAPI(rvAllotmentReservationsListSrv.addReservations, options);
+      $scope.callAPI(rvGroupRoomingListSrv.addReservations, options);
 
     };
 
