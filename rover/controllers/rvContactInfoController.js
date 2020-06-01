@@ -408,7 +408,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
         };
 
         $scope.addMarginClass = function() {
-            if ($scope.guestCardData.contactInfo.guestAdminSettings.id_place_of_issue.is_visible){
+            if ($scope.guestCardData.contactInfo.guestAdminSettings.id_place_of_issue.is_visible) {
                 if (!$("#place-of-issue").hasClass('margin')) {
                     return true;
                 }
@@ -417,23 +417,25 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
         };
 
         $scope.addMarginClassForExpirationDate = function() {
-            if ($scope.guestCardData.contactInfo.guestAdminSettings.id_country_of_issue.is_visible){
-                if(!$("#country-of-issue").hasClass('margin')) {
+            if ($scope.guestCardData.contactInfo.guestAdminSettings.id_country_of_issue.is_visible) {
+                if (!$("#country-of-issue").hasClass('margin')) {
                     return true;
                 }
             } else {
                 var isMargin = $scope.addMarginClass();
+
                 return isMargin;
             } 
         };
 
         $scope.addMarginClassForEntryDate = function() {
-            if ($scope.guestCardData.contactInfo.guestAdminSettings.id_expiration_date.is_visible){
-                if(!$("#expiry-date").hasClass('margin')) {
+            if ($scope.guestCardData.contactInfo.guestAdminSettings.id_expiration_date.is_visible) {
+                if (!$("#expiry-date").hasClass('margin')) {
                     return true;
                 }
             } else {
                 var isMargin = $scope.addMarginClassForExpirationDate();
+
                 return isMargin;
             }
         };
