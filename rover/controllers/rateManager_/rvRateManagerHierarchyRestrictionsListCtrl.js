@@ -44,6 +44,15 @@ angular.module('sntRover')
                                 $scope.restrictionObj.listData = response.room_type[0].restrictions;
                                 $scope.restrictionObj.noticeLabel = 'ALL ROOM TYPES';
                                 $scope.restrictionObj.setOnCount = response.room_types_count;
+                                // TODO : Remove while implementing ADD, EDIT stories
+                                $scope.header.disableNewRestriction = true;
+                                $scope.restrictionObj.enableEditRestrictions = false;
+                                break;
+                            case 'RateType':
+                                $scope.restrictionObj.listData = response.rate_type[0].restrictions;
+                                $scope.restrictionObj.noticeLabel = 'ALL RATE TYPES';
+                                $scope.restrictionObj.setOnCount = response.rate_types_count;
+                                // TODO : Remove while implementing ADD, EDIT stories
                                 $scope.header.disableNewRestriction = true;
                                 $scope.restrictionObj.enableEditRestrictions = false;
                                 break;
@@ -113,6 +122,10 @@ angular.module('sntRover')
                             case 'RoomType':
                                 params.room_type_ids = setOnIdList;
                                 apiMethod = hierarchySrv.deleteRoomTypeRestrictions;
+                                break;
+                            case 'RateType':
+                                params.rate_type_ids = setOnIdList;
+                                apiMethod = hierarchySrv.deleteRateTypeRestrictions;
                                 break;
 
                             default:
