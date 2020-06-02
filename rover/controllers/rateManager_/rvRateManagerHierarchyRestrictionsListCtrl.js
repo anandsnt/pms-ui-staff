@@ -56,6 +56,14 @@ angular.module('sntRover')
                                 $scope.header.disableNewRestriction = true;
                                 $scope.restrictionObj.enableEditRestrictions = false;
                                 break;
+                            case 'Rate':
+                                $scope.restrictionObj.listData = response.rate[0].restrictions;
+                                $scope.restrictionObj.noticeLabel = 'ALL RATES';
+                                $scope.restrictionObj.setOnCount = response.rates_count;
+                                // TODO : Remove while implementing ADD, EDIT stories
+                                $scope.header.disableNewRestriction = true;
+                                $scope.restrictionObj.enableEditRestrictions = false;
+                                break;
 
                             default:
                             break;
@@ -126,6 +134,10 @@ angular.module('sntRover')
                             case 'RateType':
                                 params.rate_type_ids = setOnIdList;
                                 apiMethod = hierarchySrv.deleteRateTypeRestrictions;
+                                break;
+                            case 'Rate':
+                                params.rate_ids = setOnIdList;
+                                apiMethod = hierarchySrv.deleteRateRestrictions;
                                 break;
 
                             default:
