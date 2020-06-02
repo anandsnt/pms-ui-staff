@@ -302,6 +302,7 @@ angular.module('sntRover')
 
 				$scope.screenData.hideChartData = false;
 				$scope.dashboardFilter.showFilters = false;
+				$scope.$emit('REFRESH_ANALTICS_SCROLLER');
 			};
 
 			/** ****************************** DRAW CHART ENDS HERE ********************************************/

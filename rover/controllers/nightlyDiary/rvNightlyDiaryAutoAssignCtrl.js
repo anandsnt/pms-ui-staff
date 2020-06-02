@@ -17,12 +17,12 @@ angular.module('sntRover')
                 $scope.showFloors = false;
                 $scope.selectedReservations = filterReservationIDs();
             }, clearFilters = function() {
-                if ($scope.selectedRoomTypes.length !== 0) {
+                if ($scope.selectedRoomTypes && $scope.selectedRoomTypes.length !== 0) {
                     $scope.selectedRoomTypes.forEach(function(roomTypeId) {
                         _.findWhere($scope.diaryData.filterList.roomType, {id: roomTypeId}).selected = false;
                     });
                 }
-                if ($scope.selectedFloors.length !== 0) {
+                if ($scope.selectedFloors && $scope.selectedFloors.length !== 0) {
                     $scope.selectedFloors.forEach(function(floorId) {
                         _.findWhere($scope.diaryData.filterList.floorList, {id: floorId}).selected = false;
                     });
@@ -89,7 +89,8 @@ angular.module('sntRover')
                     'reservation_ids': $scope.selectedReservations,
                     'room_type_ids': $scope.selectedRoomTypes,
                     'floor_ids': $scope.selectedFloors,
-                    'apply_room_preferences': true
+                    'apply_room_preferences': true,
+                    'process_date': $scope.diaryData.arrivalDate
                 },
                 options = {
                     params: data,
