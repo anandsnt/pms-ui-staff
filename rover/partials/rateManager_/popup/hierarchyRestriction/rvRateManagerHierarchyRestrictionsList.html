@@ -2,9 +2,7 @@
 
     <ul class="restrictions-table-header">
         <li>Restriction</li>
-        <!-- Show if on rate or room type restrictios 
-        <li>Set on</li>
-        -->
+        <li ng-hide="ngDialogData.hierarchyLevel === 'House'">Set on</li>
         <li>Remove</li>
     </ul>
 
@@ -18,10 +16,16 @@
                             </span>
                             <span class="restriction-title">CLOSED</span>
                         </div>
+                        <div ng-if="restrictionObj.listData.closed.set_on_values.length !== restrictionObj.setOnCount" class="set-on" ng-hide="ngDialogData.hierarchyLevel === 'House' || restrictionObj.listData.closed.set_on_values.length === 0">
+                            <span class="set-on-text" >{{restrictionObj.listData.closed.set_on_values[0].name}}</span>
+                            <span class="set-on-more" ng-show="restrictionObj.listData.closed.set_on_values.length > 1">+{{restrictionObj.listData.closed.set_on_values.length - 1}} more</span>
+                        </div>
+                        <div ng-if="restrictionObj.listData.closed.set_on_values.length === restrictionObj.setOnCount" class="set-on">
+                            <div class="notice">{{restrictionObj.noticeLabel}}</div>
+                        </div>
                     </div>
-
                     <button type="button" class="button white remove-restriction">
-                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('closed', false)"></span>
+                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('closed', false, restrictionObj.listData.closed.set_on_values)"></span>
                     </button>
                 </li>
 
@@ -32,10 +36,16 @@
                             </span>
                             <span class="restriction-title">CLOSED TO ARRIVAL</span>
                         </div>
+                        <div ng-if="restrictionObj.listData.closed_arrival.set_on_values.length !== restrictionObj.setOnCount" class="set-on" ng-hide="ngDialogData.hierarchyLevel === 'House' || restrictionObj.listData.closed_arrival.set_on_values.length === 0">
+                            <span class="set-on-text" >{{restrictionObj.listData.closed_arrival.set_on_values[0].name}}</span>
+                            <span class="set-on-more" ng-show="restrictionObj.listData.closed_arrival.set_on_values.length > 1">+{{restrictionObj.listData.closed_arrival.set_on_values.length - 1}} more</span>
+                        </div>
+                        <div ng-if="restrictionObj.listData.closed_arrival.set_on_values.length === restrictionObj.setOnCount" class="set-on">
+                            <div class="notice">{{restrictionObj.noticeLabel}}</div>
+                        </div>
                     </div>
-
                     <button type="button" class="button white remove-restriction">
-                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('closed_arrival', false)"></span>
+                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('closed_arrival', false, restrictionObj.listData.closed_arrival.set_on_values)"></span>
                     </button>
                 </li>
 
@@ -46,10 +56,16 @@
                             </span>
                             <span class="restriction-title">CLOSED TO DEPARTURE</span>
                         </div>
+                        <div ng-if="restrictionObj.listData.closed_departure.set_on_values.length !== restrictionObj.setOnCount" class="set-on" ng-hide="ngDialogData.hierarchyLevel === 'House' || restrictionObj.listData.closed_departure.set_on_values.length === 0">
+                            <span class="set-on-text" >{{restrictionObj.listData.closed_departure.set_on_values[0].name}}</span>
+                            <span class="set-on-more" ng-show="restrictionObj.listData.closed_departure.set_on_values.length > 1">+{{restrictionObj.listData.closed_departure.set_on_values.length - 1}} more</span>
+                        </div>
+                        <div ng-if="restrictionObj.listData.closed_departure.set_on_values.length === restrictionObj.setOnCount" class="set-on">
+                            <div class="notice">{{restrictionObj.noticeLabel}}</div>
+                        </div>
                     </div>
-
                     <button type="button" class="button white remove-restriction">
-                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('closed_departure', false)"></span>
+                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('closed_departure', false, restrictionObj.listData.closed_departure.set_on_values)"></span>
                     </button>
                 </li>
 
@@ -61,23 +77,16 @@
                             </span>  
                             <span class="restriction-title">MIN LENGTH OF STAY</span>
                         </div>
-                        <!-- Show if we are on rate or room type restrictions --
-                        <div class="set-on">
-                            -- If we have a rate or room type:
-                                <span class="set-on-text">{Rate&Room Type}</span>
-                                -- If we have more than 1:
-                                <span class="set-on-more">+{count} more</span>
-                                --
-                            --
-                            -- If applied on all rate/room type:
-                            <div class="notice">{text}</div>
-                            --
+                        <div ng-if="restriction.set_on_values.length !== restrictionObj.setOnCount" class="set-on" ng-hide="ngDialogData.hierarchyLevel === 'House' || restriction.set_on_values.length === 0">
+                            <span class="set-on-text" >{{restriction.set_on_values[0].name}}</span>
+                            <span class="set-on-more" ng-show="restriction.set_on_values.length > 1">+{{restriction.set_on_values.length - 1}} more</span>
                         </div>
-                        -->
+                        <div ng-if="restriction.set_on_values.length === restrictionObj.setOnCount" class="set-on">
+                            <div class="notice">{{restrictionObj.noticeLabel}}</div>
+                        </div>
                     </div>
-
                     <button type="button" class="button white remove-restriction">
-                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('min_length_of_stay', null)"></span>
+                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('min_length_of_stay', null, restriction.set_on_values)"></span>
                     </button>
                 </li>
 
@@ -89,23 +98,16 @@
                             </span>  
                             <span class="restriction-title">MAX LENGTH OF STAY</span>
                         </div>
-                        <!-- Show if we are on rate or room type restrictions --
-                        <div class="set-on">
-                            -- If we have a rate or room type:
-                                <span class="set-on-text">{Rate&Room Type}</span>
-                                -- If we have more than 1:
-                                <span class="set-on-more">+{count} more</span>
-                                --
-                            --
-                            -- If applied on all rate/room type:
-                            <div class="notice">{text}</div>
-                            --
+                        <div ng-if="restriction.set_on_values.length !== restrictionObj.setOnCount" class="set-on" ng-hide="ngDialogData.hierarchyLevel === 'House' || restriction.set_on_values.length === 0">
+                            <span class="set-on-text" >{{restriction.set_on_values[0].name}}</span>
+                            <span class="set-on-more" ng-show="restriction.set_on_values.length > 1">+{{restriction.set_on_values.length - 1}} more</span>
                         </div>
-                        -->
+                        <div ng-if="restriction.set_on_values.length === restrictionObj.setOnCount" class="set-on">
+                            <div class="notice">{{restrictionObj.noticeLabel}}</div>
+                        </div>
                     </div>
-
                     <button type="button" class="button white remove-restriction">
-                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('max_length_of_stay', null)"></span>
+                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('max_length_of_stay', null, restriction.set_on_values)"></span>
                     </button>
                 </li>
 
@@ -117,23 +119,16 @@
                             </span>  
                             <span class="restriction-title">MIN STAY THROUGH</span>
                         </div>
-                        <!-- Show if we are on rate or room type restrictions --
-                        <div class="set-on">
-                            -- If we have a rate or room type:
-                                <span class="set-on-text">{Rate&Room Type}</span>
-                                -- If we have more than 1:
-                                <span class="set-on-more">+{count} more</span>
-                                --
-                            --
-                            -- If applied on all rate/room type:
-                            <div class="notice">{text}</div>
-                            --
+                        <div ng-if="restriction.set_on_values.length !== restrictionObj.setOnCount" class="set-on" ng-hide="ngDialogData.hierarchyLevel === 'House' || restriction.set_on_values.length === 0">
+                            <span class="set-on-text" >{{restriction.set_on_values[0].name}}</span>
+                            <span class="set-on-more" ng-show="restriction.set_on_values.length > 1">+{{restriction.set_on_values.length - 1}} more</span>
                         </div>
-                        -->
+                        <div ng-if="restriction.set_on_values.length === restrictionObj.setOnCount" class="set-on">
+                            <div class="notice">{{restrictionObj.noticeLabel}}</div>
+                        </div>
                     </div>
-
                     <button type="button" class="button white remove-restriction">
-                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('min_stay_through', null)"></span>
+                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('min_stay_through', null, restriction.set_on_values)"></span>
                     </button>
                 </li>
 
@@ -145,23 +140,16 @@
                             </span>  
                             <span class="restriction-title">MIN ADVANCE BOOKING</span>
                         </div>
-                        <!-- Show if we are on rate or room type restrictions --
-                        <div class="set-on">
-                            -- If we have a rate or room type:
-                                <span class="set-on-text">{Rate&Room Type}</span>
-                                -- If we have more than 1:
-                                <span class="set-on-more">+{count} more</span>
-                                --
-                            --
-                            -- If applied on all rate/room type:
-                            <div class="notice">{text}</div>
-                            --
+                        <div ng-if="restriction.set_on_values.length !== restrictionObj.setOnCount" class="set-on" ng-hide="ngDialogData.hierarchyLevel === 'House' || restriction.set_on_values.length === 0">
+                            <span class="set-on-text" >{{restriction.set_on_values[0].name}}</span>
+                            <span class="set-on-more" ng-show="restriction.set_on_values.length > 1">+{{restriction.set_on_values.length - 1}} more</span>
                         </div>
-                        -->
+                        <div ng-if="restriction.set_on_values.length === restrictionObj.setOnCount" class="set-on">
+                            <div class="notice">{{restrictionObj.noticeLabel}}</div>
+                        </div>
                     </div>
-
                     <button type="button" class="button white remove-restriction">
-                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('min_advanced_booking', null)"></span>
+                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('min_advanced_booking', null, restriction.set_on_values)"></span>
                     </button>
                 </li>
 
@@ -173,23 +161,16 @@
                             </span>  
                             <span class="restriction-title">MAX ADVANCE BOOKING</span>
                         </div>
-                        <!-- Show if we are on rate or room type restrictions --
-                        <div class="set-on">
-                            -- If we have a rate or room type:
-                                <span class="set-on-text">{Rate&Room Type}</span>
-                                -- If we have more than 1:
-                                <span class="set-on-more">+{count} more</span>
-                                --
-                            --
-                            -- If applied on all rate/room type:
-                            <div class="notice">{text}</div>
-                            --
+                        <div ng-if="restriction.set_on_values.length !== restrictionObj.setOnCount" class="set-on" ng-hide="ngDialogData.hierarchyLevel === 'House' || restriction.set_on_values.length === 0">
+                            <span class="set-on-text" >{{restriction.set_on_values[0].name}}</span>
+                            <span class="set-on-more" ng-show="restriction.set_on_values.length > 1">+{{restriction.set_on_values.length - 1}} more</span>
                         </div>
-                        -->
+                        <div ng-if="restriction.set_on_values.length === restrictionObj.setOnCount" class="set-on">
+                            <div class="notice">{{restrictionObj.noticeLabel}}</div>
+                        </div>
                     </div>
-
                     <button type="button" class="button white remove-restriction">
-                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('max_advanced_booking', null)"></span>
+                        <span class="icons icon-remove-40" ng-click="clickedOnRemove('max_advanced_booking', null, restriction.set_on_values)"></span>
                     </button>
                 </li>
             </ul>

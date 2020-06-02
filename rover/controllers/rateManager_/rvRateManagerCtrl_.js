@@ -996,19 +996,24 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
     const clickedOnHierarchyRoomTypeCell = ({roomTypeIDs, date}) => {
         var data = {
-            date: date
+            date: date,
+            hierarchyLevel: 'RoomType'
         };
+
+        callHierarchyRestrictionPopup(data);
     };
 
     const clickedOnHierarchyRateTypeCell = ({rateTupeIDs, date}) => {
         var data = {
-            date: date
+            date: date,
+            hierarchyLevel: 'RateType'
         };
     };
 
     const clickedOnHierarchyRateCell = ({rateIDs, date}) => {
         var data = {
-            date: date
+            date: date,
+            hierarchyLevel: 'Rate'
         };
     };
 
