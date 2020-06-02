@@ -5175,6 +5175,194 @@ body { overflow: hidden; }
         }
 	}
 
+/* Files  (with notes)            ==============================*/
+@media not print {
+    .notes-files {
+
+        .notes-files-drag {
+            position: absolute;
+            top: 0;
+            left: 0px;
+            border: 20px solid #fcfcfc;
+            
+            z-index: 999;
+            width: 100%;
+            height: 100%;
+
+            .notes-files-drag-content {
+                width: 100%;
+                height: 100%;
+                border: 2px dashed rgba( 0, 0, 0, 0.15);
+                background: rgba( 255,255,255, 0.85);
+                text-align: center;
+                #flexbox > .parent(column, center, '', '');
+
+                .icon-upload {
+                    .square(55px);
+                    background: @upload;
+                    background-repeat: no-repeat;
+                    background-size: contain;
+                    display: block;
+                    margin: 0 auto;
+                    opacity: 0.5;
+                }
+
+                p {
+                    font-weight: 700;
+                    font-size: 24px;
+                    color: @grey3;
+                }
+            }
+        }
+
+        .file-type-title {
+            font-size: 20px;
+            line-height: 30px;
+            border-bottom: 1px solid rgba( 0, 0, 0, 0.15 );
+            margin-bottom: 20px;
+            .show();
+
+            span {
+                color: @grey3;
+                margin-left: 5px;
+            }
+        }
+
+        .files {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(170px, 1fr));
+            grid-gap: 20px;
+
+            &.files-file-type {
+                grid-template-columns: repeat(auto-fit,170px);
+                margin-bottom: 20px;
+            }
+
+            .file {
+                position: relative;
+                margin: 0;
+                background: @white;
+                overflow: hidden;
+                #border-radius > .rounded();
+                .box-shadow();
+                height: 210px;
+                width: 100%; // Grid Column | usuall ~ 170px
+                max-width: 180px;
+
+                .file-container {
+                    cursor: pointer;
+                    .square(100%);
+                }
+
+                &.selected {
+                    .box-shadow(1px 1px 0 rgba(0, 0, 0, 0.15), 0px 0px 0px 2px @orange;);
+                }
+
+                .checkbox {
+                    position: absolute;
+                    top: 10px;
+                    left: 10px;
+                    margin: 0;
+                    padding: 0;
+                    .square(20px);
+
+                    .icon-form {
+                        position: static;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        display: block;
+
+                        &:not(.checked) {
+                            background: @grey1;
+                        }
+                    }
+                }
+
+                .file-image {
+                    .size(85px,100%);
+                    overflow: hidden;
+
+                    img {
+                        min-height: 100%;
+                        min-width: 100%;
+                        height: auto;
+                        width: auto;
+                    }
+
+                    .file-icon {
+                        position: relative;
+                        width: 100%;
+
+                        .icons {
+                            margin: 20px auto 0;
+                        }
+
+                        .file-type {
+                            position: absolute;
+                            left: 0;
+                            right: 0;
+                            bottom: 10px;
+                            margin: auto;
+                            line-height: 20px;
+                            font-size: 13px;
+                            text-align: center;
+                            text-transform: uppercase;
+                            font-weight: 600;
+                            color: @white;
+                            background: #57b5de;
+                            .size(20px,60px);
+
+                            &.sheet {
+                                background: #76bd2f;
+                            }
+
+                            &.pdf {
+                                background: #e60909;
+                            }
+
+                            &.presentation {
+                                background: #ee672b;
+                            }
+                        }
+                    }
+                }
+
+                .file-title {
+                    margin-top: 20px;
+                    font-size: 14px;
+                    font-weight: 600;
+                    text-align: center;
+                    padding: 0 20px;
+                    word-break: break-all;
+                    height: 43px;
+                    overflow: hidden;
+                }
+
+                .file-details {
+                    position: absolute;
+                    width: 100%;
+                    left: 0;
+                    bottom: 15px;
+                    text-align: center;
+                    font-size: 14px;
+                    text-transform: uppercase;
+
+                    .file-date {
+                        line-height: 1;
+                        color: @grey3;
+                    }
+
+                    .file-author {
+                        line-height: 1;
+                    }
+                }
+            }
+        }
+    }
+}
+
 /* 6. IE
 ==========================================================*/
 /* 7. RESPONSIVE
