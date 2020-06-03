@@ -1,0 +1,53 @@
+<!-- Remove .hidden if checked Selection -->
+<div class="files-selected hidden">
+    <strong class="files-count"><span class="count">0</span> files selected</strong>
+    <button type="button" class="button purple">Download Selected</button>
+    <button type="button" class="button red">Delete Selected</button>
+</div>
+<!-- Remove .hidden if showing files. Add .hidden if not showing files or selecting files -->
+<div class="entry search hidden">
+    <button id="faux-select-clear-query" class="clear-query">
+        <span class="icons icon-clear-search">Clear query</span>
+    </button>
+    <button type="submit" name="submit" class="icons icon-search">Search</button>
+    <input name="faux-select-query" id="faux-select-query" class="query" placeholder="Search by Rate Name or Code" autocomplete="off" type="search">
+</div>
+
+<!-- Remove .hidden if showing files. Add .hidden if not showing files or selecting files -->
+<div class="entry group-by hidden">
+    <div class="select with-label">
+        <label for="files-group-by">Group By</label>
+        <select id="files-group-by">
+            <option value="ungrouped" selected="">Ungrouped</option>
+            <option value="filetype">File Type</option>
+        </select>
+    </div>
+</div>
+
+<!-- Remove .hidden if showing files. Add .hidden if not showing files or selecting files -->
+<div class="entry sort hidden">
+    <div class="select with-label">
+        <label for="sort">Sort</label>
+        <select id="sort">
+            <option value="last-added" selected="">Last Added</option>
+            <option value="first-added">First Added</option>
+        </select>
+    </div>
+</div>
+
+<!-- Remove .hidden if showing files. Add .hidden if not showing files or selecting files -->
+<div class="entry add-new hidden">
+    <label for="add-new-file" class="add-new-button">
+        <input id="add-new-file" type="file" multiple class="hidden"/>
+        + Add New
+    </label>
+</div>
+
+<!-- Add .selected if checked. If checked, remove .hidden on .files-selected-->
+<div class="entry selection-checkbox hidden">
+    <label class="checkbox inline">
+        <span class="icon-form icon-checkbox"></span>
+        <input name="file-selection-enabled" id="file-selection-enabled" value="cancel" type="checkbox" />
+        <span class="label-text">Cancel Selection</span>
+    </label>
+</div>

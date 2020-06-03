@@ -1,19 +1,20 @@
-<form outside-click-handler  class="form card-tab scrollable" ng-iscroll='' ng-iscroll-delay="1000" ng-iscroll-form="true">
-	<div class="wrapper">
-		<div class="entry full-width">
-			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+<div>
+	<div id="gc-notes-header" class="tab-header search-form no-print">
+		<div class="entry switch">
+			<div class="switch-button full-width" ng-class="{'on': cardData.notesViewOn}">
+				<input id="gc-notes-switch" value="1" type="checkbox" checked="" ng-model="cardData.notesViewOn">
+				<label class="data-off">
+					<span class="value">Notes</span>
+					<span class="switch-icon">Files</span>
+				</label>
+				<label class="data-on">
+					<span class="switch-icon">Notes</span>
+					<span class="value">Files</span>
+				</label>
+			</div>
 		</div>
-		<!-- <div class="holder left"> -->
-			<ol>
-				<li ng-click="setScreenMode('FILES')">Files</li>
-				<li ng-click="setScreenMode('NOTES')">Notes</li>
-			</ol>
-		<!-- 	
-		</div>
-		
-		<div class="holder right" > -->
-			<ng-include ng-if="screenMode === 'NOTES'" src="'/assets/directives/fileCloudStorage/partials/rvCardNotes.html'"></ng-include>
-			<ng-include ng-if="screenMode === 'FILES'" src="'/assets/directives/fileCloudStorage/partials/rvFileCloudFiles.html'"></ng-include>
-		<!-- </div> -->
+		<ng-include src="'/assets/directives/fileCloudStorage/partials/rvFileCloudHeader.html'"></ng-include>
 	</div>
-</form>
+	<ng-include ng-if="cardData.notesViewOn" src="'/assets/directives/fileCloudStorage/partials/rvCardNotes.html'"></ng-include>
+	<ng-include ng-if="!cardData.notesViewOn" src="'/assets/directives/fileCloudStorage/partials/rvFileCloudFiles.html'"></ng-include>
+</div>

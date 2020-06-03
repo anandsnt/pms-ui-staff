@@ -8,7 +8,9 @@ sntRover.controller('rvFileCloudStorageAndNotesCtrl', ['$scope', 'rvFileCloudSto
 
 		(function() {
 			rvFileCloudStorageSrv.setCardType($scope.cardType);
-			$scope.cardData = {};
+			$scope.cardData = {
+				notesViewOn: true
+			};
 			$controller('rvCardNotesCtrl', {
 				$scope: $scope
 			});

@@ -1,4 +1,4 @@
-FILES
+<!-- FILES
 
 <ul>
 	<li ng-repeat="file in cardData.fileList">
@@ -16,3 +16,68 @@ FILES
  <ul>
  	<li ng-repeat="file in cardData.newFileList">{{file.name}}</li>
  </ul>
+ -->
+
+ <!-- Create scroll -->
+<div class="notes-files scrollable">
+    <div class="wrapper">
+
+        <!-- If grouping by file type --
+        <h4 class="file-type-title">
+            {File Type}
+            <span>({count})</span>
+        </h4>
+        -->
+
+        <!-- if grouping by file type, add .files-file-type -->
+        <ul class="files">
+         
+                <li class="file">
+                    <label class="checkbox inline hidden">
+                        <span class="icon-form icon-checkbox"></span>
+                        <input name="fileSelected[]" value="<?php echo $index; ?>" type="checkbox" />
+                    </label>
+
+                      <div class="file-container open-modal" data-href="<?php echo $config['url']; ?>app/modals/file-edit?<?php echo $query; ?>">
+                        <div class="file-image">
+                            <!-- If image:
+                            <img src="{src}" />
+                            -->
+                            <!-- if other types:-->
+                            <!--
+                                'file-icon':
+                                 - <span class="icons icon-document"></span> - PDF, DOCx, Pages or any other document type
+                                 - <span class="icons icon-sheet"></span> -for any sheet type document
+                                 - <span class="icons icon-presentation"></span> - for any presentation type such as keynote or ppt
+
+                                 'filetype':
+                                  - pdf - PDF document
+                                  - sheet - csv, numbers, xsls or any other sheet
+                                  - presentation - ppt, keynote or any other presentation type
+                                  - document - for documents
+                              -->
+                            
+                            <div class="file-icon">
+                                <span class="icons icon-document"></span>
+                                <div class="file-type document">{File Type | ex. 'Pages' or 'Keynote'}</div>
+                            </div>
+                        </div>
+                        <h3 class="file-title">{File Title}</h3>
+                        <div class="file-details">
+                            <div class="file-author">{File Author}</div>
+                            <div class="file-date">{Time}  · {Date}</div>
+                        </div>
+                    </div>
+                </li>
+             
+        </ul>
+    </div>
+
+    <!-- remove .hidden if dragging files -->
+    <div class="notes-files-drag hidden">
+        <div class="notes-files-drag-content">
+            <span class="icon-upload"></span>
+            <p>Drop your file here to upload</p>
+        </div>
+    </div>
+</div>
