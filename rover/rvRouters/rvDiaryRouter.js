@@ -98,9 +98,6 @@ angular
                 }
                 
                 return RVNightlyDiarySrv.fetchUnassignedReservationList(params);
-            },
-            autoAssign: function(RVNightlyDiarySrv) {
-                return RVNightlyDiarySrv.fetchAutoAssignStatus();
             }
         },
         lazyLoad: function($transition$) {

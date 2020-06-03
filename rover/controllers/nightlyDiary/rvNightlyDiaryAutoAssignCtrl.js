@@ -70,7 +70,7 @@ angular.module('sntRover')
                 clearFilters();
                 initVariables();
                 $scope.diaryData.autoAssign = {
-                    showOverlay: false,
+                    showHeader: false,
                     isLocked: false,
                     status: '',
                     statusText: '',

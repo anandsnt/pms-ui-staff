@@ -14,7 +14,6 @@ angular.module('sntRover')
             'unassignedReservationList',
             'rvPermissionSrv',
             'rvUtilSrv',
-            'autoAssign',
             '$interval',
             function (
                 $scope,
@@ -31,7 +30,6 @@ angular.module('sntRover')
                 unassignedReservationList,
                 rvPermissionSrv,
                 rvUtilSrv,
-                autoAssign,
                 $interval
             ) {
 
@@ -48,12 +46,58 @@ angular.module('sntRover')
                     paginationDataBeforeMoveOrAssign = {},
                     diaryStatusInterval = null,
                     setAutoAssignStatus = function(data) {
-                        if (data.is_diary_locked) {
-                            $scope.diaryData.arrivalDate = data.process_date;
-                        }
-                        $scope.diaryData.autoAssign.showOverlay = data.is_diary_locked;
-                        $scope.diaryData.autoAssign.isLocked = data.is_diary_locked;
                         $scope.diaryData.autoAssign.status = data.auto_room_assignment_status;
+                        /**
+                         * showHeader=false, isLocked=false, is_diary_locked=false
+                         * normal diary view, not locked, no need to lock
+                         * 
+                         * showHeader=true, isLocked=false, is_diary_locked=false
+                         * the auto assignment header is on display, no need to lock UI or cancel the header
+                         * 
+                         * showHeader=true, isLocked=true, is_diary_locked=true
+                         * poll result returned with locked status, maintain lock, display the status header
+                         * pending, failed, completed, partial
+                         * Display the refresh button or unlock button
+                         */
+
+                        if (!$scope.diaryData.autoAssign.showHeader) {
+                            /**
+                             * showHeader=false, isLocked=false, is_diary_locked=true
+                             * normal diary view, not locked, need to lock
+                             */
+                            if (data.is_diary_locked) {
+                                $scope.diaryData.autoAssign.showHeader = true;
+                                $scope.diaryData.autoAssign.isLocked = true;
+                            }
+                        }
+                        if ($scope.diaryData.autoAssign.showHeader) {
+                            if (!$scope.diaryData.autoAssign.isLocked) {
+                                /**
+                                 * showHeader=true, isLocked=false, is_diary_locked=true
+                                 * Someone is checking the header and the poll return the status as locked
+                                 * we need to lock the diary
+                                 */
+                                if (data.is_diary_locked) {
+                                    $scope.diaryData.autoAssign.isLocked = true;
+                                }
+                            } else {
+                                /**
+                                 * showHeader=true, isLocked=true, is_diary_locked=false
+                                 * diary UI is locked but poll returns that diary is unlocked, so need to unlock the UI
+                                 * also need to update diary view and unassigned list
+                                 */
+                                if (!data.is_diary_locked) {
+                                    $scope.diaryData.autoAssign.showHeader = false;
+                                    $scope.diaryData.autoAssign.isLocked = false;
+                                    refreshDiaryScreen();
+                                    updateUnAssignedReservationList();
+                                }
+                            }
+                        }
+                        if (data.process_date) {
+                            $scope.diaryData.autoAssign.processDate = data.process_date;
+                        }
+
                         switch (data.auto_room_assignment_status) {
                             case 'pending':
                                 $scope.diaryData.autoAssign.statusText = 'Room auto assignment in progress';
@@ -80,6 +124,7 @@ angular.module('sntRover')
                                     $scope.diaryData.autoAssign.statusText = '';
                                     $scope.diaryData.autoAssign.statusDescription = '';
                                     $scope.diaryData.autoAssign.statusClass = '';
+                                    $scope.diaryData.autoAssign.processDate = $scope.diaryData.arrivalDate;
                                 }
                                 break;
                         }
@@ -115,12 +160,13 @@ angular.module('sntRover')
                     // data set for diary used for Angular code.
                     $scope.diaryData = {
                         autoAssign: {
-                            showOverlay: false,
+                            showHeader: false,
                             isLocked: false,
                             status: '',
                             statusText: '',
                             statusDescription: '',
-                            statusClass: ''
+                            statusClass: '',
+                            processDate: ''
                         },
                         datesGridData: datesList.dates,
                         businessDate: $rootScope.businessDate,
@@ -184,9 +230,6 @@ angular.module('sntRover')
                         roomAssignmentFilters: {},
                         isCancelledMoveOrAssign: false
                     };
-                    if (!_.isEmpty(autoAssign)) {
-                        setAutoAssignStatus(autoAssign);
-                    }
                     $scope.currentSelectedReservation = {};
                     $scope.currentSelectedRoom = {};
                 };
@@ -936,22 +979,23 @@ angular.module('sntRover')
                     cancelReservationEditing();
                     fetchRoomListDataAndReservationListData(roomId, null, reservationId);
                 });
-
-                $scope.addListener('UPDATE_UNASSIGNED_RESERVATIONLIST', function (event, action) {
+                var updateUnAssignedReservationList = function (event, action) {
                     resetUnassignedList();
                     if (action !== 'REFRESH') {
                         $scope.diaryData.arrivalDate = ($scope.diaryData.fromDate <= $rootScope.businessDate || action === 'RESET') ? $rootScope.businessDate : $scope.diaryData.fromDate;
                     }
                     $scope.$broadcast('FETCH_UNASSIGNED_LIST_DATA');
                     $scope.$broadcast('RESET_UNASSIGNED_LIST_SELECTION');
-                });
+                };
+
+                $scope.addListener('UPDATE_UNASSIGNED_RESERVATIONLIST', updateUnAssignedReservationList);
 
                 /**
                  * Listener to initiate the auto assign controller
                  */
                 $scope.addListener('INITIATE_AUTO_ASSIGN', function() {
                     $scope.$broadcast('INITIATE_AUTO_ASSIGN_CTRL');
-                    $scope.diaryData.autoAssign.showOverlay = true;
+                    $scope.diaryData.autoAssign.showHeader = true;
                 });
 
                 /* Handle event emitted from child controllers.
@@ -968,11 +1012,13 @@ angular.module('sntRover')
                  * Handle event emitted from child controller.
                  * To refresh diary data - rooms and reservations after applying filter.
                  */
-                $scope.addListener('REFRESH_DIARY_SCREEN', function () {
+                var refreshDiaryScreen = function () {
                     $scope.diaryData.paginationData.page = 1;
                     fetchRoomListDataAndReservationListData();
                     cancelReservationEditing();
-                });
+                };
+
+                $scope.addListener('REFRESH_DIARY_SCREEN', refreshDiaryScreen);
 
                 var resetFilterBarAndRefreshDiary = function() {
                     resetUnassignedList();
