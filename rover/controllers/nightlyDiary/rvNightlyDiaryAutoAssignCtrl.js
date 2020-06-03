@@ -3,11 +3,9 @@ angular.module('sntRover')
     [
         '$scope',
         'RVNightlyDiarySrv',
-        '$timeout',
         function(
             $scope,
-            RVNightlyDiarySrv,
-            $timeout
+            RVNightlyDiarySrv
         ) {
             BaseCtrl.call(this, $scope);
             var initVariables = function() {
@@ -95,8 +93,7 @@ angular.module('sntRover')
                 options = {
                     params: data,
                     successCallBack: function(response) {
-                        $scope.$emit('REFRESH_AUTO_ASSIGN_STATUS', response);
-                        $timeout($scope.refreshAutoAssignStatus(), 500);
+                        $scope.$emit('SET_AUTO_ASSIGN_STATUS', response);
                     }
                 };
 
@@ -107,13 +104,7 @@ angular.module('sntRover')
              * Function to fetch the auto assign status and reset the header
              */
             $scope.refreshAutoAssignStatus = function() {
-                var options = {
-                    successCallBack: function(response) {
-                        $scope.$emit('REFRESH_AUTO_ASSIGN_STATUS', response);
-                    }
-                };
-
-                $scope.callAPI(RVNightlyDiarySrv.fetchAutoAssignStatus, options);
+                $scope.$emit('REFRESH_AUTO_ASSIGN_STATUS');
             };
 
             /**

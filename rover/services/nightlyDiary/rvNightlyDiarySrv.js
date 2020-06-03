@@ -351,7 +351,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
          * Unlock Diary after auto-assign process
          */
         this.unlockRoomDiary = function() {
-            var url = ' api/auto_room_assign_processes/unlock_diary';
+            var url = 'api/auto_room_assign_processes/unlock_diary';
 
             return sntBaseWebSrv.postJSON(url);
         };

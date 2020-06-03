@@ -15,6 +15,7 @@ angular.module('sntRover')
             'rvPermissionSrv',
             'rvUtilSrv',
             'autoAssign',
+            '$interval',
             function (
                 $scope,
                 $rootScope,
@@ -30,7 +31,8 @@ angular.module('sntRover')
                 unassignedReservationList,
                 rvPermissionSrv,
                 rvUtilSrv,
-                autoAssign
+                autoAssign,
+                $interval
             ) {
 
                 BaseCtrl.call(this, $scope);
@@ -44,6 +46,7 @@ angular.module('sntRover')
                 var isFromStayCard = $stateParams.origin === 'STAYCARD',
                     MAX_NO_OF_DAYS = 21,
                     paginationDataBeforeMoveOrAssign = {},
+                    diaryStatusInterval = null,
                     setAutoAssignStatus = function(data) {
                         if (data.is_diary_locked) {
                             $scope.diaryData.arrivalDate = data.process_date;
@@ -187,6 +190,12 @@ angular.module('sntRover')
                     $scope.currentSelectedReservation = {};
                     $scope.currentSelectedRoom = {};
                 };
+                $scope.addListener('POLL_AUTO_ASSIGN_STATUS', function() {
+                    diaryStatusInterval = $interval(diaryLockStatus, 3500);
+                });
+                $scope.addListener('STOP_AUTO_ASSIGN_STATUS_POLLING', function() {
+                    $interval.cancel(diaryStatusInterval);
+                });
 
                 initiateBasicConfig();
                 /**
@@ -1129,9 +1138,15 @@ angular.module('sntRover')
                 /**
                  * Listner to set auto assign status
                  */
-                $scope.addListener('REFRESH_AUTO_ASSIGN_STATUS', function(event, data) {
+                $scope.addListener('SET_AUTO_ASSIGN_STATUS', function(event, data) {
                     setAutoAssignStatus(data);
                 });
+                // As part of CICO-79488 moved the status refresh call from AutoAssign controller to the diary main.
+                var diaryLockStatus = function() {
+                    RVNightlyDiarySrv.fetchAutoAssignStatus().then(setAutoAssignStatus);
+                };
+
+                $scope.addListener('REFRESH_AUTO_ASSIGN_STATUS', diaryLockStatus);
 
                 /**
                  * utility method to pass callbacks from
