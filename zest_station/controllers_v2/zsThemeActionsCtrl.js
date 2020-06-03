@@ -67,6 +67,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                     clear_text: commonIconsPath + '/clear-text.svg',
                     no_of_nights: commonIconsPath + '/nights.svg',
                     adults: $scope.zestStationData.theme === 'yotel' ? iconBasePath + '/adults.svg' : commonIconsPath + '/adults.svg',
+                    adults_icon: commonIconsPath + '/adults.svg',
                     children: commonIconsPath + '/children.svg',
                     down: commonIconsPath + '/down.svg',
                     company: $scope.zestStationData.theme === 'yotel' ? iconBasePath + '/company.svg' :  commonIconsPath + '/company.svg'

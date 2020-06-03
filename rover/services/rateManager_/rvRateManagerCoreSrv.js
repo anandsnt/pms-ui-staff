@@ -1,5 +1,5 @@
-angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2', 'rvRateManagerRestrictionsSrv',
-    function($q, BaseWebSrvV2, rvRateManagerRestrictionsSrv) {
+angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2', 'rvRateManagerRestrictionsSrv', 'rvRateManagerHierarchyRestrictionsSrv',
+    function($q, BaseWebSrvV2, rvRateManagerRestrictionsSrv, rvRateManagerHierarchyRestrictionsSrv) {
 
         /**
          * A. MULTIPLE RATES
@@ -25,14 +25,21 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
          *          2. to_date
          *          3. order_id
          */
-
         var service = this;
 
         this.activeRates = null;
 
         service.fetchMultipleRateInfo = function(params) {
-            var url = '/api/daily_rates';
+            var url = rvRateManagerRestrictionsSrv.rateRestrictionsUrl(params);
 
+            params = _.omit(params, 'restrictionType', 'hierarchialRateRestrictionRequired');
+            return this.getJSON(url, params);
+        };
+
+        service.fetchRateWithAmount = function(params) {
+            var url = '/api/daily_rates/rates_amount_by_date';
+
+            params = _.omit(params, 'restrictionType', 'hierarchialRateRestrictionRequired');
             return this.getJSON(url, params);
         };
 
@@ -152,8 +159,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                 );
             }
 
-            // uncomment the following code when working on displaying data for rate/rateType/roomType frozen panel
-            // fetchPanelRestritctions(promises, response);
+            fetchPanelRestritctions(promises, response, params);
 
             if (params.fetchRoomTypes) {
                 promises.push(service.fetchRoomTypes().then((data) => {
@@ -200,8 +206,8 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                     })
                 );
             }
-            // uncomment the following code when working on displaying data for rateType frozen panel
-            // fetchPanelRestritctions(promises, response);
+
+            fetchPanelRestritctions(promises, response, params);
 
             if (params.fetchRoomTypes) {
                 promises.push(service.fetchRoomTypes().then((data) => {
@@ -239,8 +245,8 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                     })
                 );
             }
-            // uncomment the following code when working on displaying data for rateType frozen panel
-            // fetchPanelRestritctions(promises, response);
+
+            fetchPanelRestritctions(promises, response, params);
 
             if (params.fetchRateTypes) {
                 promises.push(service.fetchRateTypeList().then((data) => {
@@ -254,26 +260,26 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             return deferred.promise;
         };
 
-        var fetchPanelRestritctions = (promises, response) => {
+        var fetchPanelRestritctions = (promises, response, params) => {
             // Adding as part of CICO-77002, laying out base. House panel restrictions to be added in later story
             // as it is currently taken as common restriction which has use in many other places.
-            var activeHierarchies = rvRateManagerRestrictionsSrv.activeHierarchyRestrictions();
+            var activeHierarchies = _.pluck(_.where(rvRateManagerRestrictionsSrv.activeHierarchyRestrictions(), {active: true}), 'level'),
+                options = {
+                    from_date: params.from_date,
+                    to_date: params.to_date,
+                    'levels[]': activeHierarchies
+                };
 
-            // each of the following functions are to be defined as part of future stories where the panel restrictions will be handled
-            if (activeHierarchies.rateTypes) {
-                promises.push(service.fetchRateTypePanelRestrictions().then((data) => {
-                    response.panelRestrictions.rateTypeRestrictions = rvRateManagerRestrictionsSrv.formatRestrictionsData(data.results, {forPanel: true});
-                }));
-            }
-            if (activeHierarchies.roomTypes) {
-                promises.push(service.fetchRoomTypePanelRestrictions().then((data) => {
-                    response.panelRestrictions.roomTypeRestrictions = rvRateManagerRestrictionsSrv.formatRestrictionsData(data.results, {forPanel: true});
-                }));
-            }
-            if (activeHierarchies.rates) {
-                promises.push(service.fetchRatePanelRestrictions().then((data) => {
-                    response.panelRestrictions.rateRestrictions = rvRateManagerRestrictionsSrv.formatRestrictionsData(data.results, {forPanel: true});
-                }));
+            if (activeHierarchies.length !== 0) {
+                response.panelRestrictions = {};
+                promises.push(
+                    rvRateManagerHierarchyRestrictionsSrv.fetchHierarchyRestrictions(options).then((data) => {
+                        response.panelRestrictions.houseRestrictions = rvRateManagerRestrictionsSrv.formatRestrictionsData(data.house, {forPanel: true});
+                        response.panelRestrictions.rateTypeRestrictions = rvRateManagerRestrictionsSrv.formatRestrictionsData(data.rate_type, {forPanel: true});
+                        response.panelRestrictions.roomTypeRestrictions = rvRateManagerRestrictionsSrv.formatRestrictionsData(data.room_type, {forPanel: true});
+                        response.panelRestrictions.rateRestrictions = rvRateManagerRestrictionsSrv.formatRestrictionsData(data.rate, {forPanel: true});
+                    })
+                );
             }
         };
 
@@ -321,7 +327,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
         this.fetchAllRestrictionsWithStatus = (params) => {
             var url = rvRateManagerRestrictionsSrv.getURLforAllRestrictionsWithStatus( params );
 
-            params = _.omit(params, 'restrictionType', 'hierarchialRoomTypeRestrictionRequired', 'hierarchialRateTypeRestrictionRequired');
+            params = _.omit(params, 'restrictionType', 'hierarchialRoomTypeRestrictionRequired', 'hierarchialRateTypeRestrictionRequired', 'hierarchialRateRestrictionRequired');
 
             return this.getJSON(url, params);
         };
@@ -360,7 +366,6 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                         rvRateManagerRestrictionsSrv.formatRestrictionsData(data.results, params);
                     })
             );
-
 
             if (params.fetchRoomTypes) {
                 promises.push(
@@ -414,7 +419,6 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                     })
             );
 
-
             if (params.fetchRoomTypes) {
                 promises.push(
                     this.fetchRoomTypes()
@@ -450,7 +454,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                 response = {};
 
             // single rate info.
-            var paramsForSingleRate = _.omit(params, 'fetchRoomTypes', 'fetchRates');
+            var paramsForSingleRate = _.omit(params, 'fetchRoomTypes', 'fetchRates', 'hierarchialRateRestrictionRequired');
 
             promises.push(
                 this.fetchSingleRateInfo(paramsForSingleRate)
@@ -461,17 +465,27 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
 
             // common restriction params
             var commonRestrictionsParams = {
-                ..._.pick(params, 'from_date', 'to_date'),
+                ..._.pick(params, 'from_date', 'to_date', 'hierarchialRateRestrictionRequired'),
                 'rate_ids[]': [params.rate_id]
             };
 
             promises.push(
                 this.fetchAllRestrictionsWithStatus(commonRestrictionsParams)
                     .then(data => {
-                        response.restrictionsWithStatus = data.results;
+                        
+                        if (params.hierarchialRateRestrictionRequired) {
+                            var processedData = rvRateManagerRestrictionsSrv.processRateRestrictionResponse(data.results);
+                                
+                            response.restrictionsWithStatus = [{
+                                date: data.results[0].date,
+                                restrictions: processedData[0].rates[0].restrictions
+                            }];
+                        }
+                        else {
+                            response.restrictionsWithStatus = data.results;
+                        }
                     })
             );
-
 
             if (params.fetchRoomTypes) {
                 promises.push(
@@ -620,9 +634,18 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                 totalCount = 0,
                 response = {};
 
-            promises.push(service.fetchMultipleRateInfo(_.omit(params, 'fetchRates', 'fetchCommonRestrictions', 'considerRateIDsInCommonRestriction')).then((data) => {
+            // CICO-77791
+            let paramsForRateAPI = _.omit(params, 'fetchRates', 'fetchCommonRestrictions', 'considerRateIDsInCommonRestriction');
+
+            if (params.hierarchialRateRestrictionRequired) {
+                promises.push(service.fetchRateWithAmount(paramsForRateAPI).then((data) => {
+                    response.rateAmountList = data.results;
+                }));
+            }
+
+            promises.push(service.fetchMultipleRateInfo(paramsForRateAPI).then((data) => {
                 response.dailyRateAndRestrictions = data.results;
-                response.totalCount = data.total_count;
+                response.totalCount = data.total_count || data.results[0].rates.length;
             }));
 
             if (params.fetchCommonRestrictions) {
@@ -646,8 +669,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                 );
             }
 
-            // uncomment the following code when working on displaying data for rate/rateType/roomType frozen panel
-            // fetchPanelRestritctions(promises, response);
+            fetchPanelRestritctions(promises, response, params);
 
             if (params.fetchRates) {
                 promises.push(service.fetchRates().then((data) => {
@@ -656,6 +678,11 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             }
 
             $q.all(promises).then(() => {
+                if (params.hierarchialRateRestrictionRequired) {
+                    let concatedRateData = rvRateManagerRestrictionsSrv.concatRateWithAmount(response.rateAmountList, response.dailyRateAndRestrictions);
+
+                    response.dailyRateAndRestrictions =  rvRateManagerRestrictionsSrv.processRateRestrictionResponse(concatedRateData);
+                }
                 deferred.resolve(response);
             });
 

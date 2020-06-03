@@ -11,14 +11,51 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
             rateEnabled: Toggles.isEnabled('hierarchical_rate_restrictions')
         };
 
+        // CICO-77044 - for rate only
+        service.processRateRestrictionResponse = function(response) {
+            _.each(response, function( item ) {
+                _.each(item.rates, function( rate ) {
+                    rate.restrictions = rvRateManagerUtilitySrv.generateOldGetApiResponseFormat(rate.restrictions, rate.locked_restrictions);
+                });
+            });
+
+            return response;
+        };
+
+        /*
+         *  Concat two lists for restrictions list values and rate amount.
+         *  @param {Array}  [ rateAmountList - API response with amount and currency values ]
+         *  @param {Array}  [ rate restrictions list ]
+         *  @return {Array} [ Merged list ]
+         */
+        service.concatRateWithAmount = function(rateAmountList, rateRestrictionsList) {
+            if (rateAmountList.length > 0) {
+                var i = 0, j = 0;
+                
+                for (i = 0; i < rateAmountList.length; i ++ ) {
+                    let newList = [];
+
+                    for (j = 0; j < rateAmountList[i].rates.length; j ++) {
+                        let merged = Object.assign(rateAmountList[i].rates[j], rateRestrictionsList[i].rates[j]);
+                        
+                        newList.push(merged);
+                    }
+
+                    rateRestrictionsList[i].rates = newList;
+                }
+            }
+
+            return rateRestrictionsList;
+        };
+
         // check if any of the hierarchy restrictions are enabled
         service.activeHierarchyRestrictions = function() {
-            return {
-                house: service.hierarchyRestrictions.houseEnabled,
-                rateTypes: service.hierarchyRestrictions.rateTypeEnabled,
-                roomTypes: service.hierarchyRestrictions.roomTypeEnabled,
-                rates: service.hierarchyRestrictions.rateEnabled
-            };
+            return [
+                {level: 'House', active: service.hierarchyRestrictions.houseEnabled},
+                {level: 'RateType', active: service.hierarchyRestrictions.rateTypeEnabled},
+                {level: 'RoomType', active: service.hierarchyRestrictions.roomTypeEnabled},
+                {level: 'Rate', active: service.hierarchyRestrictions.rateEnabled}
+            ];
         };
 
         // CICO-76337 - for rateType only
@@ -47,12 +84,13 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
         // Handle GET api, for individual cell click & popup in House Level ( Frozen Panel).
         service.formatRestrictionsData = function(restrcionsList, params) {
 			// CICO-76813 : New API for hierarchyRestrictions
-            if (
-                (service.hierarchyRestrictions.houseEnabled && params.restrictionType === 'HOUSE') ||
-                params.forPanel
-            ) {
+            if (service.hierarchyRestrictions.houseEnabled && params.restrictionType === 'HOUSE') {
                 _.each(restrcionsList, function( item ) {
                     item.restrictions = rvRateManagerUtilitySrv.generateOldGetApiResponseFormat(item.restrictions);
+                });
+            } else if (params.forPanel) {
+                _.each(restrcionsList, function( item ) {
+                    item.restrictions = rvRateManagerUtilitySrv.generateOldGetApiResponseFormatForPanel(item.restrictions);
                 });
             }
 
@@ -67,6 +105,13 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
             if (service.hierarchyRestrictions.houseEnabled) {
                 url = '/api/restrictions/house';
             }
+            return url;
+        };
+
+        // CICO-76337 rateType restrictions API
+        service.rateRestrictionsUrl = function (params) {
+            var url = params.hierarchialRateRestrictionRequired ? '/api/restrictions/rates' : '/api/daily_rates';
+
             return url;
         };
 
@@ -89,10 +134,15 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
             // CICO-76813 : New API for hierarchyRestrictions
             if (service.hierarchyRestrictions.houseEnabled && params.restrictionType === 'HOUSE') {
                 url = '/api/restrictions/house';
-            } else if (params.hierarchialRateTypeRestrictionRequired) {
+            }
+            else if (params.hierarchialRateTypeRestrictionRequired) {
                 url = '/api/restrictions/rate_types';
-            } else if (params.hierarchialRoomTypeRestrictionRequired) {
+            }
+            else if (params.hierarchialRoomTypeRestrictionRequired) {
                 url = '/api/restrictions/room_types';
+            }
+            else if (params.hierarchialRateRestrictionRequired) {
+                url = '/api/restrictions/rates';
             }
             return url;
         };
@@ -104,10 +154,15 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
             // CICO-76813 : New API for hierarchyRestrictions
             if (service.hierarchyRestrictions.houseEnabled && params.restrictionType === 'HOUSE') {
                 url = '/api/restrictions/house';
-            } else if (params.hierarchialRateTypeRestrictionRequired) {
+            }
+            else if (params.hierarchialRateTypeRestrictionRequired) {
                 url = '/api/restrictions/rate_types';
-            } else if (params.hierarchialRoomTypeRestrictionRequired) {
+            }
+            else if (params.hierarchialRoomTypeRestrictionRequired) {
                 url = '/api/restrictions/room_types';
+            }
+            else if (params.hierarchialRateRestrictionRequired) {
+                url = '/api/restrictions/rates';
             }
             return url;
         };
@@ -117,7 +172,8 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
             if (
                 (service.hierarchyRestrictions.houseEnabled && params.restrictionType === 'HOUSE') ||
                 params.hierarchialRoomTypeRestrictionRequired ||
-                params.hierarchialRateTypeRestrictionRequired
+                params.hierarchialRateTypeRestrictionRequired ||
+                params.hierarchialRateRestrictionRequired
             ) {
                 params = rvRateManagerUtilitySrv.generateNewPostApiParams(params);
             }

@@ -18,14 +18,11 @@ module.exports = function(gulp, $, options) {
                 'copy-rover-files', 
                 'copy-login-files', 
                 'copy-station-login-files',
-                'copy-zest-files', 
-                'copy-zeststation-files',
                 'copy-workers'
             ]);
 
             var compilationTasks = [
-                    'rover-asset-prod-precompile',  
-                    'zest-asset-prod-precompile',
+                    'rover-asset-prod-precompile',
                     'login-asset-prod-precompile',
                     'station-login-asset-prod-precompile',
                     'payment-asset-prod-precompile',
@@ -35,24 +32,21 @@ module.exports = function(gulp, $, options) {
         tasksAfterCompilation = [
                     'rover-inject-assets-to-templates',
                     'login-inject-assets-to-templates', 
-                    'station-login-inject-assets-to-templates', 
-                    'zest-inject-assets-to-templates',
+                    'station-login-inject-assets-to-templates',
                     'copy-cordova-assets'
                 ],
 
         copyBaseHtmlToPublicAssets = [
                     'copy-login-base-html',
                     'copy-station-login-base-html',
-                    'copy-zest-base-html',
                     'copy-rover-base-html',
                     'compress-images-loselessly'
                 ],
 
         developmentTasks = [
                     'build-rover-dev', 
-                    'build-login-dev', 
-                    'build-station-login-dev', 
-                    'build-zest-dev', 
+                    'build-login-dev',
+                    'build-station-login-dev',
                     'build-payment-dev',
                     'copy-cordova-assets'
                 ],
@@ -60,8 +54,7 @@ module.exports = function(gulp, $, options) {
         watchTasks = [
                     'watch-rover-files', 
                     'watch-login-files',
-                    'watch-station-login-files',  
-                    'watch-zest-files', 
+                    'watch-station-login-files',
                     'watch-payment-files',
                     'watch-workers'
                 ];

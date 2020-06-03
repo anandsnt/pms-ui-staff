@@ -40,5 +40,6 @@ sntRover.constant('RVCustomExportFilterParamsConst', {
 	'RESERVATION_TYPE': 'RESERVATION_TYPE',
 	'TAX_EXEMPT': 'TAX_EXEMPT',
 	'GLOBAL': 'GLOBAL',
-	'GROUP_NAME': 'GROUP_NAME'
+	'GROUP_NAME': 'GROUP_NAME',
+	'DO_NOT_MOVE': 'DO_NOT_MOVE'
 });

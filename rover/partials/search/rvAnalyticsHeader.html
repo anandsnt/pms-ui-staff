@@ -54,9 +54,11 @@
    </div>
    <!-- Actions -->
    <div class="entry actions">
-      <button id="analytics-download" type="button" class="button with-icon only-icon purple open-modal" ng-if="dashboardFilter.selectedAnalyticsMenu &&
-      dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION' &&
-      dashboardFilter.gridViewActive" ng-click="exportAsCSV()">
+      <button id="analytics-download" type="button" class="button with-icon only-icon purple open-modal" 
+      ng-click="exportAsCSV()"
+      ng-style="{'display':  (dashboardFilter.selectedAnalyticsMenu &&
+                             dashboardFilter.selectedAnalyticsMenu === 'DISTRIBUTION' &&
+                             dashboardFilter.gridViewActive) ? 'block': 'none'}">
          <span class="icons icon-save"></span>
       </button>
       <button class="button white with-icon only-icon" ng-class="{'open' : dashboardFilter.showFilters }" ng-click="toggleFilterView()">

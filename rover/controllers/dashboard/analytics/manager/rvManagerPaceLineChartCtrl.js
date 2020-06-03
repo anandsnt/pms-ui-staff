@@ -190,6 +190,10 @@ angular.module('sntRover')
 						xAxisDates = _.uniq(xAxisDates);
 						yAxisValues = _.uniq(yAxisValues);
 
+						dataForDateInfo = _.sortBy(dataForDateInfo, function (data) {
+							return data.date;
+						});
+
 						xAxisDates = _.sortBy(xAxisDates, function (date) {
 							return date;
 						});
@@ -272,6 +276,42 @@ angular.module('sntRover')
 							.append("g")
 							.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+						// tooltip
+						var tooltip;
+
+						var initToolTip = function () {
+							tooltip = svg.append("g")
+								.attr("class", "tooltip")
+								.style("display", "none");
+
+							tooltip.append("rect")
+								.attr("width", 80)
+								.attr("height", 40)
+								.attr("fill", "white")
+								.style("opacity", 0.5);
+
+							tooltip.append("text")
+								.attr('class', 'date-label')
+								.attr("x", 14)
+								.attr("dx", "2.4em")
+								.attr("dy", "1.4em")
+								.style("text-anchor", "middle")
+								.style("fill", "black")
+								.attr("font-size", "12px")
+								.attr("font-weight", "bold");
+
+							tooltip.append("text")
+								.attr('class', 'item-qty')
+								.attr("x", 12)
+								.attr("dx", "2.4em")
+								.attr("dy", "2.6em")
+								.style("text-anchor", "middle")
+								.attr("font-size", "12px")
+								.attr("font-weight", "bold")
+								.style("fill", "#000");
+						};
+
+						initToolTip();
 						// draw line with tooltip over circles
 						var drawSingleLine = function (cordinateData, keyDate) {
 							svg.append("path")
@@ -315,6 +355,7 @@ angular.module('sntRover')
 									tooltip.select(".date-label")
 										.text(keyDate);
 								});
+							initToolTip();
 						};
 
 						// draw grid lines
@@ -369,37 +410,6 @@ angular.module('sntRover')
 							drawSingleLine(dataObject.chartData, dataObject.date);
 						});
 
-						// tooltip
-						var tooltip = svg.append("g")
-							.attr("class", "tooltip")
-							.style("display", "none");
-
-						tooltip.append("rect")
-							.attr("width", 80)
-							.attr("height", 40)
-							.attr("fill", "white")
-							.style("opacity", 0.5);
-
-						tooltip.append("text")
-							.attr('class', 'date-label')
-							.attr("x", 14)
-							.attr("dx", "2.4em")
-							.attr("dy", "1.4em")
-							.style("text-anchor", "middle")
-							.style("fill", "black")
-							.attr("font-size", "12px")
-							.attr("font-weight", "bold");
-
-						tooltip.append("text")
-							.attr('class', 'item-qty')
-							.attr("x", 12)
-							.attr("dx", "2.4em")
-							.attr("dy", "2.6em")
-							.style("text-anchor", "middle")
-							.attr("font-size", "12px")
-							.attr("font-weight", "bold")
-							.style("fill", "#000");
-
 						// add right side legend
 						var legendParentElement = d3.select("#right-side-legend");
 
@@ -412,6 +422,7 @@ angular.module('sntRover')
 								return "translate(-100," + i * 30 + ")";
 							})
 							.on("click", function (d, i) {
+								tooltip.remove();
 								drawSingleLine(dataForDateInfo[i].chartData, dataForDateInfo[i].date);
 							});
 

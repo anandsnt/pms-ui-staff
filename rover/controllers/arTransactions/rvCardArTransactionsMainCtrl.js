@@ -368,14 +368,15 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 * Failure callback of payment
 		 */
 		var failureCallBackOfPayment = function(errorMessage) {
+			$scope.arDataObj.selectedInvoices = [];
 			// In this case - we have to show the error in footer
-		if (errorMessage[0] === "Insufficient Funds.Please 'Add payment' first") {
-				$scope.errorMessage = [];
-				$scope.arFlags.insufficientAmount = true;
-			}
-			else {
-				$scope.errorMessage = errorMessage;
-			}
+			if (errorMessage[0] === "Insufficient Funds.Please 'Add payment' first") {
+					$scope.errorMessage = [];
+					$scope.arFlags.insufficientAmount = true;
+				}
+				else {
+					$scope.errorMessage = errorMessage;
+				}
 		};
 
 		/*
@@ -415,7 +416,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				selectedInvoiceObj.invoice_id = eachItem.transaction_id;
 				selectedInvoiceObj.amount = eachItem.amount;
 				$scope.arDataObj.selectedInvoices.push(selectedInvoiceObj);
-				totalAllocatedAmount = totalAllocatedAmount + eachItem.amount;
+				totalAllocatedAmount = parseInt(totalAllocatedAmount) + parseInt(eachItem.amount);
 			});
 			$scope.arDataObj.totalAllocatedAmount  = totalAllocatedAmount;
 

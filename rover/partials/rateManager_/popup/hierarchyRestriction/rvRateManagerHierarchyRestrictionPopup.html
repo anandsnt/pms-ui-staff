@@ -4,9 +4,9 @@
         - restriction-view - When editing or setting a restriction
         - showing-dates - When showing Dates (right content)
     -->
-    <div class="rate-manager-modal rate-manager-hierarchy modal-content" ng-class="{'restriction-view': popUpView === 'NEW' || popUpView === 'EDIT'}">
+    <div class="rate-manager-modal rate-manager-hierarchy modal-content" ng-class="{'restriction-view': (popUpView === 'NEW' || popUpView === 'EDIT'), 'showing-dates': restrictionObj.isRepeatOnDates }">
         <button class="modal-close dark-title" id="modal-close" type="button"><span class="icons icon-close" ng-click="closeDialog()"></span></button>
-            
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div class="modal-container">
             <div class="modal-header">
                 <div class="modal-header-left">
@@ -17,10 +17,11 @@
                     <em ng-class="{'yellow': header.hierarchyType === 'House'}">{{header.hierarchyType}} restrictions</em>
                 </div>
                 <div class="modal-header-right">
-                    <button type="button" class="button green" ng-class="{'hidden': popUpView === 'NEW' || popUpView === 'EDIT', 'grey disable-element': header.disableNewRestriction, 'green': !header.disableNewRestriction}" ng-click="initiateNewRestrictionForm()">Add Restriction</button>
+                    <button type="button" class="button green" ng-class="{'hidden': popUpView === 'NEW' || popUpView === 'EDIT', 'grey disable-element': header.disableNewRestriction, 'green': !header.disableNewRestriction}" ng-click="initiateNewRestrictionForm()">Set Restriction</button>
                 </div>
             </div>                
             <div class="modal-body">
+                
                 <!-- selection list on the left for edit screen -->
                 <div class="restrictions-list" ng-class="{'hidden': popUpView !== 'EDIT'}">
                     <div class="scrollable">
@@ -42,56 +43,28 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="restriction-content">
+                
                     <div class="content-middle">
-                        <span ng-if="popUpView === 'EMPTY'"
+                        <span ng-show="popUpView === 'EMPTY'"
                         rv-include-template="/assets/partials/rateManager_/popup/hierarchyRestriction/rvRateManagerHierarchyRestrictionsEmpty.html">
                         </span>
-                        <span ng-if="popUpView === 'LIST'"
-                        rv-include-template="/assets/partials/rateManager_/popup/hierarchyRestriction/rvRateManagerHierarchyRestrictionsTable.html">
+                        <span ng-show="popUpView === 'LIST'"
+                        rv-include-template="/assets/partials/rateManager_/popup/hierarchyRestriction/rvRateManagerHierarchyRestrictionsList.html">
                         </span>
                         <span ng-if="popUpView === 'NEW' || popUpView === 'EDIT'"
                         rv-include-template="/assets/partials/rateManager_/popup/hierarchyRestriction/rvRateManagerHierarchyRestrictionForm.html">
                         </span>
                     </div>
+
                     <!-- hiding as this will be implemented in another story -->
-                    <div class="content-right hidden">
-                        <div class="scrollable">
-                            <div class="wrapper">
-                                <h2>Repeat on Dates</h2>
-                                <div class="notice">
-                                    Overrides All <strong>min. length of stay</strong> set on these rate types and dates
-                                </div>
-
-                                <h4>For every</h4>
-                                <div class="list_week_days">
-                                    <!-- Add class .checked when checked-->
-                                    <label class="checkbox" for="{day-id}">
-                                        <!-- Add class .checked when checked-->
-                                        <span class="icon-form icon-checkbox"></span>
-                                        <!-- add attribute 'checked="checked"' when checked-->
-                                        <input name="{day-name}" id="{day-id}" value="restrictions" type="checkbox"/>
-                                        {SHORT DAY | Mon, Tue, Wed ...}
-                                    </label>
-                                    <!-- ... repeat for each day in the week -->
-                                    
-                                    <!-- 'ButtonText':
-                                        - 'Select All' - when some day is not selected, 'text-class': brand-text
-                                        - 'Clear All' - when all days are selected, 'text-class': red-text
-                                    -->
-                                    <button class="button white {text-class}">
-                                        {ButtonText}
-                                    </button>
-                                </div>
-
-                                <h4>Until</h4>
-                                <div class="has-datepicker">
-                                    <input id="rmDateRange" placeholder="Select Date Range" readonly="" maxlength="8" class="hasDatepicker" name="">
-                                    <button type="button" class="ui-datepicker-trigger">...</button>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="content-right">
+                        <span ng-if="popUpView === 'NEW' || popUpView === 'EDIT'"
+                        rv-include-template="/assets/partials/rateManager_/popup/hierarchyRestriction/rvRateManagerHierarchyRestrictionsRepeatOnDates.html">
+                        </span>
                     </div>
+
                     <div class="footer">
                         <!-- Add .with-remove-button when we also have the remove button (example: on edit screens)-->
                         <div class="actions" ng-class="{'with-remove-button': popUpView === 'EDIT'}">
@@ -106,7 +79,7 @@
                             </button>
                             <!-- -- remove .grey and add .green if we can set the restriction -- -->
                             <button class="button" ng-class="{'hidden': (popUpView !== 'NEW' && popUpView !== 'EDIT'), 'grey disable-element': !validateForm(), 'green': validateForm()}" type="button" ng-click="setHouseHierarchyRestriction()">
-                                Set
+                                {{getSetButtonLabel()}}
                             </button>
                         
 

@@ -26,14 +26,21 @@ sntRover.controller('RVShowPaymentListCtrl', ['$rootScope', '$scope', '$state', 
         };
 
 
-        var reservationId = '';
+        var reservationId = '', bill_number = 1;
 
         if ($scope.dataToPaymentList.currentView === "billCard") {
             reservationId = $scope.dataToPaymentList.reservation_id;
+            bill_number = $scope.dataToPaymentList.bills[$scope.dataToPaymentList.currentActiveBill].bill_number;
         } else {
             reservationId = $scope.dataToPaymentList.reservation_card.reservation_id;
         }
-        $scope.invokeApi(RVPaymentSrv.getPaymentList, reservationId, $scope.paymentListSuccess);
+     
+        var existingPaymentsParams = {
+                reservation_id: reservationId,
+                bill_number: bill_number
+            };
+        
+        $scope.invokeApi(RVPaymentSrv.getExistingPaymentsForBill, existingPaymentsParams, $scope.paymentListSuccess);
 
         $scope.clickPaymentItem = function(paymentId, cardCode, cardNumberEndingWith, expiryDate, isSwiped, colorCode) {
             var data = {
@@ -114,7 +121,7 @@ sntRover.controller('RVShowPaymentListCtrl', ['$rootScope', '$scope', '$state', 
 
         $scope.openAddNewPaymentModel = function() {
             $scope.closeDialog();
-            $rootScope.$emit('OPENPAYMENTMODEL');
+            $rootScope.$broadcast('OPENPAYMENTMODEL');
         };
 
         /**

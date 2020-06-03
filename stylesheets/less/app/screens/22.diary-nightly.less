@@ -506,8 +506,241 @@
         }
     }
 
-    .show-editing {
+    .show-editing,
+    .show-assign-rooms {
         .hide();
+    }
+
+    &.auto-assigning-rooms {
+        position: relative;
+        background: @gcard;
+        z-index: 130;
+
+        .show-assign-rooms {
+            .show();
+        }
+
+        .progress {
+            .hide();
+        }
+
+        .entry {
+            &:not(.show-assign-rooms) {
+                .hide();
+            }
+
+            &.auto-assign-rooms {
+                padding: 0;
+                margin: 0;
+                width: 100%;
+                #flexbox > .parent(row nowrap, space-between, center, '');
+            }
+        }
+
+        .data {
+            color: @white;
+            font-size: 14px;
+            line-height: 14px;
+            width: 200px;
+            font-weight: 600;
+            text-transform: uppercase;
+
+            strong {
+                font-size: 20px;
+                text-transform: none;
+                line-height: 18px;
+                .show();
+            }
+
+            .count {
+                display: inline-block;
+                padding: 1px 4px;
+                background: @orange;
+                height: 15px;
+            }
+
+            .count-reservations {
+                line-height: 15px;
+            }
+        }
+
+        .notice {
+            width: 100%;
+            margin: 0;
+            text-align: center;
+            text-transform: uppercase;
+            background: #fcde45;
+            color: #866a00;
+            .nowrap();
+        }
+
+        .assign-room-types,
+        .assign-floors {
+            position: relative;
+
+            .multi-select-options {
+                width: 100%;
+            }
+        }
+
+        .assign-room-types {
+            width: 210px;
+        }
+
+        .assign-floors {
+            width: 130px;
+        }
+
+        .data,
+        .assign-room-types,
+        .assign-floors,
+        .actions {
+            flex-shrink: 0;
+        }
+
+        .actions {
+            height: 100%;
+            width: 210px;
+            margin-left: 10px;
+            flex: 0 0 auto;
+            padding: 10px 0;
+            overflow: hidden;
+            #flexbox > .parent(row nowrap, '', center, '' );
+            .box-shadow(inset 2px 0px 0px rgba(0,0,0,0.2));
+
+            .button {
+                font-size: 14px;
+                padding: 0 10px;
+                margin-left: 10px;
+
+                &.blank {
+                    margin-left: 5px;
+                    padding: 0 15px;
+                    color: @white;
+                }
+            }
+        }
+
+        &.with-progress {
+            padding: 0;
+
+            .data,
+            .assign-room-types,
+            .assign-floors,
+            .actions,
+            .notice {
+                .hide();
+            }
+
+            .progress {
+                padding: 0 10px;
+                margin: 0;
+                width: 100%;
+                height: 100%;
+                background: #fcde45;
+                color: #866a00;
+                #flexbox > .parent(row nowrap, space-between, center, '');
+
+                .progress-icon {
+                    background-position: 3px -13536px;
+                    margin-right: 10px;
+                    .icons();
+                    .square(30px);
+                }
+
+                .progress-data {
+                    .calc-width( 100, 300 );
+                    
+                    h3 {
+                        font-size: 20px;
+                        font-weight: 600;
+                        line-height: 24px;
+                        .show();
+                        .nowrap();
+                    }
+
+                    .progress-description {
+                        margin: 0;
+                        font-size: 14px;
+                        text-transform: uppercase;
+                        line-height: 14px;
+                        .nowrap();
+
+                        strong {
+                            display: inline-block;
+                            vertical-align: middle;
+                            height: 15px;
+                            padding: 0 4px;
+                            line-height: 15px;
+
+                            &.red {
+                                background: @red;
+
+                                + .count-text {line-height: 16px;}
+                            }
+
+                            &.green {
+                                background: @green;
+
+                                + .count-text {line-height: 16px;}
+                            }
+                        }
+
+                        .count-text {
+                            line-height: 15px;
+                            display: inline-block;
+                            vertical-align: middle;
+                            height: 15px;
+                            margin-right: 5px;
+                        }
+                    }
+                }
+
+                .progress-actions {
+                    width: 260px;
+                    #flexbox > .parent(row nowrap, flex-end, center, '' );
+
+                    .button {
+                        padding: 0 15px;
+                        font-size: 14px;
+
+                        &:not(:last-child) {
+                            margin-right: 10px;
+                        }
+                    }
+                }
+
+                &.semi-completed,
+                &.failed {
+                    .progress-icon {
+                        background-position: 3px -7176px;
+                    }
+                }
+
+                &.completed,
+                &.failed,
+                &.semi-completed {
+                    color: white;
+                }
+
+                &.completed {
+                    background: @green;
+
+                    .progress-icon {
+                        background-position: 3px -7418px;
+                    }
+                }
+
+                &.failed {
+                    background: @red;
+                }
+
+                &.semi-completed {
+                    background: @blue;
+                }
+
+            }
+        }
     }
 
     &.editing {
@@ -619,6 +852,121 @@
                 .button {
                     margin-right: 0;
                 }
+            }
+        }
+    }
+
+    .multi-select {
+        position: relative;
+        line-height: 1;
+        height: 40px;
+        padding: 0 10px;
+        background-color: @white;
+        cursor: pointer;
+        #border-radius > .rounded();
+        .box-shadow();
+        .show();
+
+        &:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: @white @selectArrow no-repeat 50% 50%;
+            background-size: 6px 4px;
+            pointer-events: none;
+            z-index: 999;
+            .size(100%, 25px);
+            #border-radius > .right();
+        }
+
+        &.with-label {
+            padding-top: 15px;
+
+            label {
+                position: absolute;
+                top: 6px;
+                font-size: 13px;
+                color: @grey3;
+                margin: 0;
+            }
+
+            .value {
+                font-size: 14px;
+                font-weight: 600;
+                line-height: 25px;
+            }
+        }
+
+        &.active {
+            border-bottom: 1px solid rgba(0,0,0,0.15);
+            .box-shadow(1px 0 0 rgba(0,0,0,.15));
+            #border-radius > .bottom(0px);
+
+            &:after {
+                .rotate(180deg);
+            }
+        }
+    }
+
+    .multi-select-options {
+        position: absolute;
+        background-color: @white;
+        max-height: 290px;
+        overflow: hidden;
+        .box-shadow();
+        .transition();
+        #border-radius > .bottom();
+
+        .scrollable {
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+            max-height: 290px;
+
+            .iScrollVerticalScrollbar .iScrollIndicator {
+                background: rgba(0,0,0,0.15);
+            }
+        }
+
+        .checkbox {
+            font-size: 14px;
+            line-height: 1.2;
+            white-space: normal;
+            color: @grey4;
+            padding: 10px;
+            margin-bottom: 0;
+            min-height: 40px;
+            width: 100%;
+            cursor: pointer;
+            #border-radius > .rounded(0px);
+            #flexbox > .parent(row nowrap, '', center, '');
+
+            .icon-form {
+                position: static;
+                top: auto;
+                left: auto;
+                margin-right: 10px;
+                .show();
+                .square(20px);
+
+                &:not(.checked) {
+                    background: #f5f5f5;
+                }
+            }
+
+            .text {
+                color: #202225;
+                text-transform: uppercase;
+                .calc-width(100, 30);
+            }
+
+            &.checked {
+                color: @textColor;
+            }
+
+            &:not(:last-child) {
+                .box-shadow(inset 0 -1px 0 rgba(0,0,0,0.15));
             }
         }
     }
@@ -1905,6 +2253,21 @@
             z-index: 120;
             width: 100%;
             .extend-height(100, 60);
+            .show();
+        }
+    }
+
+    /* When Diary is Locked ***/
+    &.locked {
+        &:after {
+            content:'';
+            position: absolute;
+            top: 0px;
+            left: 0;
+            background: fade(@black, 50);
+            z-index: 120;
+            width: 100%;
+            height: 100%;
             .show();
         }
     }

@@ -1,0 +1,73 @@
+<div class="entry auto-assign-rooms show-assign-rooms" ng-controller="nightlyDiaryAutoAssignController">
+    <div class="data">
+        <strong>{{ diaryData.arrivalDate | date: 'd LLLL yyyy' }}</strong>
+        <div class="count-reservations">
+            <span class="count">{{selectedReservations.length}}</span> Unassigned Reservations
+        </div>
+    </div>
+    
+    <div class="entry show-assign-rooms assign-room-types">
+        <!-- On click add .active and remove .hidden on multi-select-options below + start/refresh scroller on .scrollable below -->
+        <div class="multi-select with-label" ng-click="showRoomTypes = !showRoomTypes" ng-class="{'active': showRoomTypes}">
+            <label for="room-type">Room Type</label>
+            <span class="value" ng-if="selectedRoomTypes.length !== 0"><span>{{selectedRoomTypes.length}}</span> selected</span>
+        </div>
+        <div class="multi-select-options" ng-class="{'hidden': !showRoomTypes}">
+            <div class="scrollable scroll-vertical">
+                <div class="wrapper">
+                    <label class="checkbox inline" ng-repeat="roomType in diaryData.filterList.roomType" ng-class="{'checked':roomType.selected}" ng-click="roomTypeSelected(roomType)">
+                        <span class="icon-form icon-checkbox" ng-class="{'checked':roomType.selected}"></span>
+                        <input name="rooomTypes[]" type="checkbox" ng-class="{'checked':roomType.selected}">
+                        <span class="text">{{roomType.name}}</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="entry show-assign-rooms assign-floors">
+        <!-- On click add .active and remove .hidden on multi-select-options below + start/refresh scroller on .scrollable below -->
+        <div class="multi-select with-label" ng-click="showFloors = !showFloors" ng-class="{'active': showFloors}">
+            <label for="room-type">Floors</label>
+            <span class="value" ng-if="selectedFloors.length !== 0"><span>{{selectedFloors.length}}</span> selected</span>
+        </div>
+        <div class="multi-select-options" ng-class="{'hidden': !showFloors}">
+            <div class="scrollable scroll-vertical">
+                <div class="wrapper">
+                    <label class="checkbox inline" ng-repeat="floorList in diaryData.filterList.floorList" ng-class="{'checked':floorList.selected}" ng-click="floorSelected(floorList)">
+                        <span class="icon-form icon-checkbox" ng-class="{'checked':floorList.selected}"></span>
+                        <input name="roomFloors[]" type="checkbox" ng-class="{'checked':floorList.selected}">
+                        <span class="text">{{floorList.floor_number}}</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="notice">
+       ROOM PREFERENCES APPLY!
+    </div>
+
+    <div class="actions">
+        <button type="button" class="button blank text-white" ng-click="cancelAutoAssign()">Cancel</button>
+
+        <button type="button" class="button" ng-click="autoAssignRooms()" ng-class="{'grey disable-element': selectedReservations.length === 0, 'green':selectedReservations.length !== 0}">Assign Rooms</button>
+    </div>
+    
+    <!-- Progress: -->
+    <div class="progress" ng-class="diaryData.autoAssign.statusClass">
+        <div class="progress-icon"></div>
+        <div class="progress-data">
+            <h3>{{diaryData.autoAssign.statusText}} ({{ diaryData.arrivalDate | date: 'd LLLL yyyy' }})</h3>
+            <div class="progress-description">
+                {{diaryData.autoAssign.statusDescription}}
+            </div>
+        </div>
+        <div class="progress-actions">
+            <button type="button" class="button white with-icon only-icon" ng-if="diaryData.autoAssign.status === 'pending'" ng-click="refreshAutoAssignStatus()">
+                <span class="icons icon-reset"></span>
+            </button>
+            <button type="button" class="button purple" ng-if="diaryData.autoAssign.status !== 'pending' && diaryData.autoAssign.status !== ''" ng-click="unlockRoomDiary()">Unlock Diary</button>
+        </div>
+    </div>
+</div>

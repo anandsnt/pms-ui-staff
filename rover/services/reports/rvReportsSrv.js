@@ -232,6 +232,21 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'NEXT_THIRTY_DAYS',
                 'NEXT_MONTH',
                 'DATE_RANGE'
+            ],
+            'HESTA Switzerland': [
+                'LAST_MONTH',
+                'LAST_JANUARY',
+                'LAST_FEBRUARY',
+                'LAST_MARCH',
+                'LAST_APRIL',
+                'LAST_MAY',
+                'LAST_JUNE',
+                'LAST_JULY',
+                'LAST_AUGUST',
+                'LAST_SEPTEMBER',
+                'LAST_OCTOBER',
+                'LAST_NOVEMBER',
+                'LAST_DECEMBER'
             ]
         };
 
@@ -329,6 +344,12 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'CURRENT_MONTH_PLUS_TWO',
                 'CURRENT_MONTH_PLUS_THREE'
              ],
+             'Rooms OOO/OOS': [
+                'CURRENT_MONTH',
+                'CURRENT_MONTH_PLUS_ONE',
+                'CURRENT_MONTH_PLUS_TWO',
+                'CURRENT_MONTH_PLUS_THREE'
+             ],
              'Reservations By User:CREATE_DATE_RANGE': [
                 'YESTERDAY',
                 'LAST_SEVEN_DAYS',
@@ -367,7 +388,47 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'NEXT_SEVEN_DAYS',
                 'NEXT_THIRTY_DAYS',
                 'NEXT_MONTH'
-             ]
+             ],
+            'Rate Adjustment Report:ARRIVAL_DATE_RANGE': [
+                'YESTERDAY',
+                'LAST_SEVEN_DAYS',
+                'LAST_THIRTY_DAYS',
+                'LAST_MONTH',
+                'LAST_JANUARY',
+                'LAST_FEBRUARY',
+                'LAST_MARCH',
+                'LAST_APRIL',
+                'LAST_MAY',
+                'LAST_JUNE',
+                'LAST_JULY',
+                'LAST_AUGUST',
+                'LAST_SEPTEMBER',
+                'LAST_OCTOBER',
+                'LAST_NOVEMBER',
+                'LAST_DECEMBER',
+                'TOMORROW',
+                'NEXT_SEVEN_DAYS',
+                'NEXT_THIRTY_DAYS',
+                'NEXT_MONTH'
+            ],
+            'Rate Adjustment Report:ADJUSTMENT_DATE_RANGE': [
+                'YESTERDAY',
+                'LAST_SEVEN_DAYS',
+                'LAST_THIRTY_DAYS',
+                'LAST_MONTH',
+                'LAST_JANUARY',
+                'LAST_FEBRUARY',
+                'LAST_MARCH',
+                'LAST_APRIL',
+                'LAST_MAY',
+                'LAST_JUNE',
+                'LAST_JULY',
+                'LAST_AUGUST',
+                'LAST_SEPTEMBER',
+                'LAST_OCTOBER',
+                'LAST_NOVEMBER',
+                'LAST_DECEMBER'
+            ]
         };
 
         var cacheKey = 'REPORT_PAYLOAD_CACHE';

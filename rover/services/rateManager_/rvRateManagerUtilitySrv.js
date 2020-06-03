@@ -70,6 +70,44 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
             }
         ];
 
+        service.repeatOnDatesList = [
+            {
+                name: 'MON',
+                value: 1,
+                isChecked: false
+            },
+            {
+                name: 'TUE',
+                value: 2,
+                isChecked: false
+            },
+            {
+                name: 'WED',
+                value: 3,
+                isChecked: false
+            },
+            {
+                name: 'THU',
+                value: 4,
+                isChecked: false
+            },
+            {
+                name: 'FRI',
+                value: 5,
+                isChecked: false
+            },
+            {
+                name: 'SAT',
+                value: 6,
+                isChecked: false
+            },
+            {
+                name: 'SUN',
+                value: 0,
+                isChecked: false
+            }
+        ];
+
         // Mapping of restriction key to code/id.
         service.restrictionKeyToCodeMapping = {
             'closed': [1, 'CLOSED'],
@@ -83,15 +121,18 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
         };
 
         // Mapping of restriction code/id to key and data type.
+        // [0] - key
+        // [1] - data type
+        // [2] - lockedRestrictions key
         service.restrictionCodeToKeyMapping = {
-            1: ['closed', 'boolean'],
-            2: ['closed_arrival', 'boolean'],
-            3: ['closed_departure', 'boolean'],
-            4: ['min_length_of_stay', 'number'],
-            5: ['max_length_of_stay', 'number'],
-            6: ['min_stay_through', 'number'],
-            7: ['min_advanced_booking', 'number'],
-            8: ['max_advanced_booking', 'number']
+            1: ['closed', 'boolean', 'closed'],
+            2: ['closed_arrival', 'boolean', 'closed_arrival'],
+            3: ['closed_departure', 'boolean', 'closed_departure'],
+            4: ['min_length_of_stay', 'number', 'min_stay_length'],
+            5: ['max_length_of_stay', 'number', 'max_stay_length'],
+            6: ['min_stay_through', 'number', 'min_stay_through'],
+            7: ['min_advanced_booking', 'number', 'min_adv_booking'],
+            8: ['max_advanced_booking', 'number', 'max_adv_booking']
         };
 
         // Mapping of weekdays code and id for API.
@@ -106,29 +147,78 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
         };
 
         /*
+         *  Method to check lockedRestrictions present.
+         *  @param {Array} [lockedRestrictions]
+         *  @param {String} [key for the lockedRestriction ]
+         *  @return {Boolean}
+         */
+        service.checkLockedRestriction = function(lockedRestrictions, key) {
+            var isPresent = false;
+
+            if (lockedRestrictions.length > 0) {
+                isPresent = _.contains(lockedRestrictions, key);
+            }
+
+            return isPresent;
+        };
+
+        /*
          *  Method to process new restrcion data structure to convert into old structure.
          *  @param [Object] [input value as key value pair]
          *  @return [Array] [output - converted values into array structure]
          */
-        service.generateOldGetApiResponseFormat = function( input ) {
+        service.generateOldGetApiResponseFormat = function( input, lockedRestrictions) {
             var output = [],
                 key = '',
                 value = '', 
                 obj = {};
 
             for (key in input) {
-                value = input[key],
+                value = input[key];
                 obj = {};
 
                 if (value) {
                     obj.status = 'ON';
                     obj.restriction_type_id = service.restrictionKeyToCodeMapping[key][0];
-                    obj.is_on_rate = false;
+                    obj.is_on_rate = lockedRestrictions ? service.checkLockedRestriction(lockedRestrictions, service.restrictionKeyToCodeMapping[key][2]) : false;
                     if (typeof(value) === "boolean") {
                         obj.days = null;
                     }
                     else if (typeof(value) === "number") {
                         obj.days = value;
+                    }
+                    output.push(obj);
+                }
+            }
+
+            return output;
+        };
+
+        /**
+         * Conversion function exclusively for the panel
+         * 
+         */
+        service.generateOldGetApiResponseFormatForPanel = function(input, lockedRestrictions) {
+            var output = [],
+                key = '',
+                restrictionData = '', 
+                obj = {};
+
+            for (key in input) {
+                restrictionData = input[key];
+                obj = {};
+
+                if (typeof(restrictionData) === "object" && !_.isEmpty(restrictionData)) {
+                    obj.status = 'ON';
+                    obj.restriction_type_id = service.restrictionKeyToCodeMapping[key][0];
+                    obj.is_on_rate = lockedRestrictions ? service.checkLockedRestriction(lockedRestrictions, service.restrictionKeyToCodeMapping[key][2]) : false;
+                    if (restrictionData.length === undefined) {
+                        obj.days = null;
+                    }
+                    else {
+                        obj.days = restrictionData.map((item) => {
+                            return item.value;
+                        });
                     }
                     output.push(obj);
                 }
@@ -202,6 +292,10 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
 
                 if (params.room_type_id) {
                     newPostApiParams.room_type_ids = [params.room_type_id];
+                }
+
+                if (params.rate_id) {
+                    newPostApiParams.rate_ids = [params.rate_id];
                 }
             }
             return newPostApiParams;

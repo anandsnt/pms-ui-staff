@@ -9,7 +9,7 @@
                 <div class="entry">
                     <input ng-readonly="isUpdateEnabled() || !isUpdateEnabledForName()" name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.account_details.account_name}}" ng-model="contactInformation.account_details.account_name" type="text" class="masked-input h1" auto-grow-field />
                 </div>
-                <div class="switch-button global-flag" ng-click="toggleGlobalButton()"  ng-class="{'on': contactInformation.is_global_enabled, 'readonly': isGlobalToggleReadOnly}"> <!-- Add class 'on' when checked -->
+                <div class="switch-button global-flag" ng-click="toggleGlobalButton()"  ng-class="{'on': contactInformation.is_global_enabled, 'readonly': isGlobalToggleReadOnly, 'overlay': !disableGlobalToggle}"> <!-- Add class 'on' when checked -->
                     <input id="global-company-card" type="checkbox">
                     <label class="data-off">
                         <span class="switch-icon">Global</span>

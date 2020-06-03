@@ -39,9 +39,7 @@
         <!-- Add vertical scroller here + add class "buttons-3" if it's an existing schedule -->
         <div class="wrapper">
             <h3>Schedule Parameters<span>{{ selectedEntityDetails.report.title }}</span></h3>
-            <multi-option-selection ng-show="filters.hasShow && filters.hasShow.data.length" label="Show" on-update="refreshSecondColumnScroll" data="filters.hasShow.data" options="filters.hasShow.options">
-            </multi-option-selection>
-            <div class="entry" ng-hide="isGuestBalanceReport || isYearlyTaxReport || isCreditCheckReport || isReservationsByUserReport || isRoomStatusReport">
+            <div class="entry" ng-hide="isGuestBalanceReport || isYearlyTaxReport || isCreditCheckReport || isReservationsByUserReport || isRoomStatusReport || isRateAdjustmentReport">
                 <label for="time-period">Time Period</label>
                 <div class="select">
                     <select ng-model="scheduleParams.time_period_id" ng-options="timePeriod.id as timePeriod.description for timePeriod in scheduleTimePeriods" ng-disabled="isGuestBalanceReport" iscroll-stop-propagation>
@@ -65,7 +63,16 @@
                     </select>
                 </div>
             </div>
-
+            <div class="entry" ng-show="adjustmentDateTimePeriods.length > 0">
+                <label for="time-period">Adjustment Date</label>
+                <div class="select">
+                    <select ng-model="scheduleParams.adjustment_date_range" ng-options="timePeriod.id as timePeriod.description for timePeriod in adjustmentDateTimePeriods" iscroll-stop-propagation>
+                        <option value="">Time period</option>
+                    </select>
+                </div>
+            </div>
+            <multi-option-selection ng-show="filters.hasShow && filters.hasShow.data.length" label="Show" on-update="refreshSecondColumnScroll" data="filters.hasShow.data" options="filters.hasShow.options">
+            </multi-option-selection>
             <multi-option-selection ng-show="isGuestBalanceReport" label="Guest/Account" on-update="refreshSecondColumnScroll" data="filters.hasGeneralOptions.data" options="filters.hasGeneralOptions.options"></multi-option-selection>
 
             <multi-option-selection ng-show="filters.hasGeneralOptions && filters.hasGeneralOptions.data.length && !isGuestBalanceReport && !isCreditCheckReport" label="Option(s)" data="filters.hasGeneralOptions.data" on-update="refreshSecondColumnScroll" options="filters.hasGeneralOptions.options"></multi-option-selection>
