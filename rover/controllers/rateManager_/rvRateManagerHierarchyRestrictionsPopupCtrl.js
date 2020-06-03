@@ -68,7 +68,7 @@ angular.module('sntRover')
                     $scope.showRestrictionSelection = false;
                 };
 
-                var setHouseRestrictionDataForPopup = () => {
+                var setRestrictionDataForPopup = () => {
                     $scope.header.hierarchyType = $scope.ngDialogData.hierarchyLevel;
                     $scope.header.date = moment($scope.ngDialogData.date).format('dddd, MMMM DD');
                     $scope.header.disableNewRestriction = $rootScope.businessDate > $scope.ngDialogData.date;
@@ -222,15 +222,7 @@ angular.module('sntRover')
                     initializeScopeVariables();
                     setscroller();
                     refreshScroller();
-
-                    switch ($scope.ngDialogData.hierarchyLevel) {
-                        case 'House':
-                            setHouseRestrictionDataForPopup();
-                            break;
-
-                        default:
-                            break;
-                    }
+                    setRestrictionDataForPopup();
                 };
 
                 initController();

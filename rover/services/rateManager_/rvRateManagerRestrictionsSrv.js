@@ -101,10 +101,6 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
         service.getURLforCommonRestrictions = function() {
 			var url = '/api/daily_rates/all_restrictions';
 
-            // CICO-76813 : New API for hierarchyRestrictions
-            if (service.hierarchyRestrictions.houseEnabled) {
-                url = '/api/restrictions/house';
-            }
             return url;
         };
 
