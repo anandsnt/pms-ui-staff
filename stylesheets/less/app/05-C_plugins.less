@@ -6236,6 +6236,179 @@
                 @media only screen and (min-height: 768px) { 
                     .scrollable { max-height: 370px; }
                 }
+
+                &.with-files {
+                    &.show-files {
+                        .size(580px,795px);
+                    }
+                    
+                    .modal-header {
+                        position: relative;
+                        height: 70px;
+                        padding: 15px 200px 15px 20px;
+
+                        h1 {
+                            font-size: 24px;
+                            line-height: 21px;
+                        }
+
+                        strong {
+                            font-style: italic;
+                            font-weight: 400;
+                            line-height: 12px;
+                        }
+
+                        .switch {
+                            position: absolute;
+                            width: 170px;
+                            height: 40px;
+                            top: 15px;
+                            right: 20px;
+
+                            .switch-button {
+                                background: rgba( 0,0,0,0.15);
+                                #border-radius > .rounded();
+
+                                .data-off,
+                                .data-on {
+                                    padding: 0 5px;
+                                    overflow: hidden;
+                                }
+
+                                .switch-icon,
+                                .value {
+                                    line-height: 30px;
+                                    font-size: 14px;
+                                    text-transform: uppercase;
+                                }
+                            
+                                .switch-icon {
+                                    background: @white;
+                                    color: @black;
+                                    text-shadow: none;
+                                    #border-radius > .rounded();
+                                }
+                            }
+                        }
+                    }
+
+                    .notes-files-header {
+                        #flexbox > .parent(row, '', '', '');
+
+                        .files-selected {
+                            #flexbox > .parent(row, '', '', '');
+                            margin-right: auto;
+
+                            .files-count,
+                            .button {
+                                flex-shrink: 0;
+                            }
+
+                            .button {
+                                width: 160px;
+                                font-size: 14px;
+                                text-transform: uppercase;
+                                line-height: 40px;
+                                margin-right: 10px;
+                            }
+
+                            .files-count {
+                                padding-right: 10px;
+                                line-height: 40px;
+                                font-size: 18px;
+                                font-weight: 600;
+                                .show();
+                            }
+                        }
+
+                        .entry { 
+                            &.search {
+                                padding-left: 0;
+                                margin-left: 0;
+                                width: 100%;
+                                .calc-max-width(100,430);
+                                .box-shadow(none);
+
+                                input {
+                                    font-size: 18px;
+                                }
+                            }
+
+                            &.group-by,
+                            &.sort {
+                                width: 130px;
+                                padding-left: 0;
+                                .box-shadow(none);
+                                flex-shrink: 0;
+                            }
+
+                            &.add-new {
+                                width: 110px;
+                                margin-left: 10px;
+                                flex-shrink: 0;
+                            }
+
+                            &.selection-checkbox {
+                                width: auto;
+                                margin-left: 10px;
+
+                                &.selected {
+                                    .box-shadow(none);
+                                }
+
+                                .checkbox {
+                                    height: 40px;
+                                    margin: 0;
+
+                                    .label-text {
+                                        color: @black;
+                                        text-transform: uppercase;
+                                        font-size: 14px;
+                                        .hide();
+                                    }
+
+                                    &.inline { 
+                                        width: 30px;
+                                        padding-left: 20px;
+                                    }
+
+                                    &:not(.inline) {
+                                        padding-right: 10px;
+                                        .label-text { .show(); }
+                                    }
+                                }
+                            }
+
+                            .select {
+                                &.with-label {
+
+                                    select {
+                                        padding: 10px 30px 0 10px;
+                                        text-transform: uppercase;
+                                        font-size: 14px;
+                                    }
+
+                                    label {
+                                        position: absolute;
+                                        top: 0;
+                                        left: 10px;
+                                        font-size: 12px;
+                                        text-transform: uppercase;
+                                        color: @grey3;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .notes-files {
+                        .calc-max-height(100,130);
+
+                        .wrapper {
+                            padding: 20px;
+                        }
+                    }
+                }
             }
 
             &.staycard-actions {
@@ -10261,6 +10434,145 @@
                             margin-bottom: 10px;
                         }
                     }
+                }
+            }
+
+            /** File Edit in Guests Card **/
+            &.file-edit {
+                padding: 0;
+                .size(585px,790px);
+
+                .modal-body {
+                    width: 100%;
+                    .calc-height(100,80);
+                    #flexbox > .parent(row, '','','');
+
+                    .file-info {
+                        width: 100%;
+                        padding: 30px 20px;
+
+                        .h2 {
+                            font-size: 20px;
+                            margin: 0;
+                        }
+
+                        .file-image {
+                            .size(auto,100%);
+                            max-height: 85px;
+                            max-width: 175px;
+                            overflow: hidden;
+                            margin: 15px auto 0;
+        
+                            img {
+                                min-height: 100%;
+                                min-width: 100%;
+                                height: auto;
+                                width: auto;
+                            }
+        
+                            .file-icon {
+                                position: relative;
+                                width: 100%;
+
+                                .icons {
+                                    margin: 0 auto;
+                                }
+        
+                                .file-type {
+                                    position: absolute;
+                                    left: 0;
+                                    right: 0;
+                                    bottom: 10px;
+                                    margin: auto;
+                                    line-height: 20px;
+                                    font-size: 13px;
+                                    text-align: center;
+                                    text-transform: uppercase;
+                                    font-weight: 600;
+                                    color: @white;
+                                    background: #57b5de;
+                                    .size(20px,60px);
+        
+                                    &.sheet {
+                                        background: #76bd2f;
+                                    }
+        
+                                    &.pdf {
+                                        background: #e60909;
+                                    }
+        
+                                    &.presentation {
+                                        background: #ee672b;
+                                    }
+                                }
+                            }
+                        }
+
+                        .file-title {
+                            font-size: 16px;
+                            font-weight: 600;
+                            margin: 20px auto 0;
+                            height: 110px;
+                            max-width: 175px;
+                            .show();
+                        }
+         
+                        .file-details {
+                            position: static;
+                            width: 100%;
+                            margin-top: 10px;
+                            text-align: center;
+                            font-size: 14px;
+                            text-transform: uppercase;
+        
+                            .file-date {
+                                line-height: 1;
+                                color: @grey3;
+                            }
+        
+                            .file-author {
+                                line-height: 1;
+                            }
+                        }
+                    }
+
+                    .preview-file {
+                        width: 575px;
+                        height: 100%;
+                        flex-shrink: 0;
+                        background: @white;
+                        .box-shadow(-1px 0px 2px rgba( 0, 0, 0, 0.35));
+                        
+                        iframe {
+                            .square(100%);
+                            margin: 0;
+                            padding: 0;
+                        }
+                    }
+                }
+
+                .actions {
+                    padding: 20px;
+                    border-top: 1px solid rgba( 0, 0, 0, 0.15);
+                    #flexbox > .parent(row, '','','');
+                    .button {
+                        font-size: 14px;
+                        line-height: 40px;
+                        width: 130px;
+                        padding: 0;
+                        
+                        &:not(:last-child) {
+                            margin-right: 10px;
+                        }
+
+                        &.blank {
+                            margin-left: auto;
+                        }
+                    }
+                }
+
+                &.no-file-preview {
+
                 }
             }
         } // end of modals

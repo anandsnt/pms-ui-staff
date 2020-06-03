@@ -170,6 +170,10 @@ angular.module("sntRover").service("RVSearchSrv", [
                         self.data[i]["vip"] = data["vip"];
                     }
 
+                    if (data["is_flagged"]) {
+                        self.data[i]["is_flagged"] = data["is_flagged"];
+                    }
+
                     // Update the primary image of the guest with the changed avatar
                     if (data["avatar"]) {
                         for (var k in self.data[i]["images"]) {

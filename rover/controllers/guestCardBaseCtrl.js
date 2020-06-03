@@ -32,7 +32,8 @@ window.GuestCardBaseCtrl = function ($scope, RVSearchSrv, RVContactInfoSrv, rvPe
         var data = {
             'firstname': dataSource.first_name,
             'lastname': dataSource.last_name,
-            'vip': dataSource.vip
+            'vip': dataSource.vip,
+            'is_flagged': dataSource.is_flagged
         };
 
         if (avatarImage) {

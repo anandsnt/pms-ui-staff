@@ -25,7 +25,7 @@ angular.module('sntRover')
                     $scope.refreshScroller('hierarchyPopupFormScroll');
                 };
 
-                var checkEmptyOrListView = function( listData ) {
+                const checkEmptyOrListView = function( listData ) {
                     let isEmptyList = _.isEmpty(listData);
                     let view = isEmptyList ? 'EMPTY' : 'LIST';
 
@@ -42,7 +42,7 @@ angular.module('sntRover')
                         disableNewRestriction: false
                     };
 
-                    $scope.popUpView = checkEmptyOrListView($scope.ngDialogData.listData);
+                    $scope.popUpView = 'LIST';
                     $scope.selectedRestriction = {};
                     $scope.restrictionStylePack = [];
                     $scope.restrictionObj = {
@@ -57,17 +57,18 @@ angular.module('sntRover')
                     // as part of CICO-75894 we are always showing the first screen as empty.
                     // the below code must be changed when the story to view restrictions is taken up.
                     // There may be code, but for now, the following one line will do
-                    $scope.popUpView = checkEmptyOrListView($scope.ngDialogData.listData);
+                    $scope.popUpView = checkEmptyOrListView($scope.restrictionObj.listData);
                 };
 
                 $scope.initiateNewRestrictionForm = () => {
                     // trigger Restriction setting window
+                    $scope.selectedRestriction = {};
                     $scope.popUpView = 'NEW';
                     $scope.restrictionStylePack = angular.copy(hierarchyUtils.restrictionColorAndIconMapping);
                     $scope.showRestrictionSelection = false;
                 };
 
-                var setHouseRestrictionDataForPopup = () => {
+                var setRestrictionDataForPopup = () => {
                     $scope.header.hierarchyType = $scope.ngDialogData.hierarchyLevel;
                     $scope.header.date = moment($scope.ngDialogData.date).format('dddd, MMMM DD');
                     $scope.header.disableNewRestriction = $rootScope.businessDate > $scope.ngDialogData.date;
@@ -143,10 +144,12 @@ angular.module('sntRover')
                         from_date: $scope.ngDialogData.date,
                         to_date: $scope.ngDialogData.date,
                         restrictions 
-                    }, houseRestrictionSuccessCallback = () => {
+                    },
+                    houseRestrictionSuccessCallback = () => {
                         $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
-                        $scope.closeDialog();
-                    }, options = {
+                        $scope.$broadcast('RELOAD_RESTRICTIONS_LIST');
+                    },
+                    options = {
                         params: params,
                         onSuccess: houseRestrictionSuccessCallback
                     };
@@ -191,26 +194,35 @@ angular.module('sntRover')
                 $scope.getSetButtonLabel = function() {
                     let label = 'Set';
 
+                    if ($scope.popUpView === 'EDIT') {
+                        label = 'Update';
+                    }
                     if ($scope.restrictionObj.isRepeatOnDates) {
                         label = 'Set on date(s)';
                     }
-
                     return label;
+                };
+
+                // Set the label name for Remove or Remove Dates button.
+                $scope.getRemoveButtonLabel = function() {
+                    let label = 'Remove';
+                    
+                    if ($scope.restrictionObj.isRepeatOnDates) {
+                        label = 'Remove on date(s)';
+                    }
+                    return label;
+                };
+
+                // Handle REMOVE button click
+                $scope.clickedOnRemoveButton =  function() {
+                    $scope.$broadcast('CLICKED_REMOVE_ON_DATES');
                 };
 
                 var initController = () => {
                     initializeScopeVariables();
                     setscroller();
                     refreshScroller();
-
-                    switch ($scope.ngDialogData.hierarchyLevel) {
-                        case 'House':
-                            setHouseRestrictionDataForPopup();
-                            break;
-
-                        default:
-                            break;
-                    }
+                    setRestrictionDataForPopup();
                 };
 
                 initController();

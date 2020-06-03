@@ -576,6 +576,25 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                     selectedFilter.isMultiSelect = true;
                     deferred.resolve(selectedFilter);
                 });
+            },
+
+            /**
+             * Populate multi select dual state options
+             * @param {Object} selectedFilter selected filter
+             * @param {Array} selectedValues array of selected values
+             * @param {Object} deferred - deferred object
+             * @return {void}
+             */
+            populateMultiSelectDualStates = (stateOptions, selectedFilter, selectedValues, deferred ) => {
+                selectedFilter.secondLevelData = markAsSelected(angular.copy(stateOptions), selectedValues, 'value');
+                selectedFilter.options = {
+                    hasSearch: false,
+                    selectAll: selectedValues ? boolStateOptions.length === selectedValues.length : true,
+                    key: 'label',
+                    value_key: 'value'
+                };
+                selectedFilter.isMultiSelect = true;
+                deferred.resolve(selectedFilter);
             };
 
         /**
@@ -687,6 +706,9 @@ angular.module('reportsModule').factory('RVCustomExportsUtilFac', [
                     break;
                 case customExportFilterParamsConst['GROUP_NAME']:
                     populateGroups(selectedFilter, selectedValues, deferred);
+                    break;
+                case customExportFilterParamsConst['DO_NOT_MOVE']:
+                    populateMultiSelectDualStates(boolStateOptions, selectedFilter, selectedValues, deferred);
                     break;
                 default:
 
