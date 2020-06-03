@@ -190,6 +190,7 @@ angular.module('sntRover')
                     $scope.currentSelectedReservation = {};
                     $scope.currentSelectedRoom = {};
                 };
+
                 $scope.addListener('POLL_AUTO_ASSIGN_STATUS', function() {
                     diaryStatusInterval = $interval(diaryLockStatus, 2000);
                 });
