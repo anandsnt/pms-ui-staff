@@ -44,15 +44,15 @@
 			</div>
 			<rv-textbox value="guestCardData.contactInfo.id_number" label = "Id Number" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.id_number, '')}}"></rv-textbox>
 
-			<div class="entry margin has-datepicker" ng-if="guestCardData.contactInfo.guestAdminSettings.id_issue_date.is_visible">
+			<div class="entry margin has-datepicker" id="issue-date" ng-if="guestCardData.contactInfo.guestAdminSettings.id_issue_date.is_visible">
 				<label for="id date issue"> ID Date of issue </label>
 				<input type="text" ng-model="guestCardData.contactInfo.id_issue_date  | date:dateFormat" class="datepicker" ng-click="popupCalendarForGuestContactInfoDate('idDate')" readonly />
 			</div>
-			<div class="entry" ng-class="{'margin': !guestCardData.contactInfo.guestAdminSettings.id_issue_date.is_visible}" ng-if="guestCardData.contactInfo.guestAdminSettings.id_place_of_issue.is_visible">
+			<div class="entry" id="place-of-issue" ng-class="{'margin': !guestCardData.contactInfo.guestAdminSettings.id_issue_date.is_visible}" ng-if="guestCardData.contactInfo.guestAdminSettings.id_place_of_issue.is_visible">
 				<label for="id place issue"> ID Place of issue </label>
 				<input type="text" ng-model="guestCardData.contactInfo.id_place_of_issue" />
 			</div>
-			<div class="entry" ng-class="{'margin': !(!guestCardData.contactInfo.guestAdminSettings.id_issue_date.is_visible && guestCardData.contactInfo.guestAdminSettings.id_place_of_issue.is_visible) || (guestCardData.contactInfo.guestAdminSettings.id_issue_date.is_visible && !guestCardData.contactInfo.guestAdminSettings.id_place_of_issue.is_visible)}" ng-if="guestCardData.contactInfo.guestAdminSettings.id_country_of_issue.is_visible">
+			<div class="entry" id="country-of-issue" ng-class="{'margin': addMarginClass()}" ng-if="guestCardData.contactInfo.guestAdminSettings.id_country_of_issue.is_visible">
 				<label for="id date issue"> ID Country of issue </label>
 				<div class="select">
 					<select iscroll-stop-propagation ng-options="country.id as country.value for country  in countries" ng-model="guestCardData.contactInfo.id_country_id">
@@ -61,12 +61,12 @@
 				</div>
 			</div>
 
-			<div class="entry has-datepicker" ng-class="{'margin': !(!guestCardData.contactInfo.guestAdminSettings.id_issue_date.is_visible && guestCardData.contactInfo.guestAdminSettings.id_place_of_issue.is_visible) || (guestCardData.contactInfo.guestAdminSettings.id_issue_date.is_visible && !guestCardData.contactInfo.guestAdminSettings.id_place_of_issue.is_visible)}" ng-if="guestCardData.contactInfo.guestAdminSettings.id_expiration_date.is_visible">
+			<div class="entry has-datepicker" id="expiry-date" ng-class="{'margin': addMarginClassForExpirationDate()}" ng-if="guestCardData.contactInfo.guestAdminSettings.id_expiration_date.is_visible">
 				<label for="entry date"> ID Date of Expiry <strong ng-if="guestCardData.contactInfo.guestAdminSettings.id_expiration_date.is_mandatory_on_guest_card_creation">*</strong></label>
 				<input type="text" ng-model="guestCardData.contactInfo.id_expiration_date | date:dateFormat" class="datepicker" ng-click="popupCalendarForGuestContactInfoDate('idExpirationDate')" readonly />
 			</div>
 
-			<div class="entry has-datepicker" ng-class="{'margin': (!guestCardData.contactInfo.guestAdminSettings.id_issue_date.is_visible && guestCardData.contactInfo.guestAdminSettings.id_place_of_issue.is_visible) || (guestCardData.contactInfo.guestAdminSettings.id_issue_date.is_visible && !guestCardData.contactInfo.guestAdminSettings.id_place_of_issue.is_visible)}" ng-if="guestCardData.contactInfo.guestAdminSettings.entry_date.is_visible">
+			<div class="entry has-datepicker" id="entry-date" ng-class="{'margin': addMarginClassForEntryDate()}" ng-if="guestCardData.contactInfo.guestAdminSettings.entry_date.is_visible">
 				<label for="entry date"> Entry Date </label>
 				<input type="text" ng-model="guestCardData.contactInfo.entry_date | date:dateFormat" class="datepicker" ng-click="popupCalendarForGuestContactInfoDate('entryDate')" readonly />
 			</div>

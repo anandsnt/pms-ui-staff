@@ -3,11 +3,9 @@ angular.module('sntRover')
     [
         '$scope',
         'RVNightlyDiarySrv',
-        '$timeout',
         function(
             $scope,
-            RVNightlyDiarySrv,
-            $timeout
+            RVNightlyDiarySrv
         ) {
             BaseCtrl.call(this, $scope);
             var initVariables = function() {
@@ -95,8 +93,12 @@ angular.module('sntRover')
                 options = {
                     params: data,
                     successCallBack: function(response) {
-                        $scope.$emit('REFRESH_AUTO_ASSIGN_STATUS', response);
-                        $timeout($scope.refreshAutoAssignStatus(), 500);
+                        $scope.$emit('SET_AUTO_ASSIGN_STATUS', response);
+                    },
+                    failureCallBack: function(errorMessage) {
+                        if (errorMessage.httpStatus && errorMessage.httpStatus === 470) {
+                            $scope.$emit('REFRESH_AUTO_ASSIGN_STATUS');
+                        }
                     }
                 };
 
@@ -107,13 +109,7 @@ angular.module('sntRover')
              * Function to fetch the auto assign status and reset the header
              */
             $scope.refreshAutoAssignStatus = function() {
-                var options = {
-                    successCallBack: function(response) {
-                        $scope.$emit('REFRESH_AUTO_ASSIGN_STATUS', response);
-                    }
-                };
-
-                $scope.callAPI(RVNightlyDiarySrv.fetchAutoAssignStatus, options);
+                $scope.$emit('REFRESH_AUTO_ASSIGN_STATUS');
             };
 
             /**
@@ -127,6 +123,11 @@ angular.module('sntRover')
                             $scope.cancelAutoAssign();
                             $scope.$emit('REFRESH_DIARY_SCREEN');
                             $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
+                        }
+                    },
+                    failureCallBack: function(errorMessage) {
+                        if (errorMessage.httpStatus && errorMessage.httpStatus === 470) {
+                            $scope.$emit('REFRESH_AUTO_ASSIGN_STATUS');
                         }
                     }
                 };

@@ -48,6 +48,7 @@ const mapStateToRateManagerGridRightSideHierarchyHeaderContainerProps = (state) 
         showRoomType: state.isHierarchyRoomTypeRestrictionEnabled,
         showRateType: state.isHierarchyRateTypeRestrictionEnabled,
         showRate: state.isHierarchyRateRestrictionEnabled,
+        showAllRoomTypes: state.mode === RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE,
         hierarchyRestrictionClass: state.hierarchyRestrictionClass,
         frozenPanelClass: state.frozenPanelClass
     };

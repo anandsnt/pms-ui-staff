@@ -154,7 +154,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
 
                 promises.push(service.fetchCommonRestrictions(commonRestrictionsParams)
                     .then((data) => {
-                        response.commonRestrictions = rvRateManagerRestrictionsSrv.formatRestrictionsData(data.results, params);
+                        response.commonRestrictions = data.results;
                     })
                 );
             }
