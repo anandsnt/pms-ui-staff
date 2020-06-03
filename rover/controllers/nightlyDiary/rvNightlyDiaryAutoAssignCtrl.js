@@ -94,6 +94,11 @@ angular.module('sntRover')
                     params: data,
                     successCallBack: function(response) {
                         $scope.$emit('SET_AUTO_ASSIGN_STATUS', response);
+                    },
+                    failureCallBack: function(errorMessage) {
+                        if (errorMessage.httpStatus && errorMessage.httpStatus === 470) {
+                            $scope.$emit('REFRESH_AUTO_ASSIGN_STATUS');
+                        }
                     }
                 };
 
@@ -118,6 +123,11 @@ angular.module('sntRover')
                             $scope.cancelAutoAssign();
                             $scope.$emit('REFRESH_DIARY_SCREEN');
                             $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
+                        }
+                    },
+                    failureCallBack: function(errorMessage) {
+                        if (errorMessage.httpStatus && errorMessage.httpStatus === 470) {
+                            $scope.$emit('REFRESH_AUTO_ASSIGN_STATUS');
                         }
                     }
                 };

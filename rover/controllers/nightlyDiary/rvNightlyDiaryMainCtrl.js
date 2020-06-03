@@ -191,7 +191,7 @@ angular.module('sntRover')
                     $scope.currentSelectedRoom = {};
                 };
                 $scope.addListener('POLL_AUTO_ASSIGN_STATUS', function() {
-                    diaryStatusInterval = $interval(diaryLockStatus, 3500);
+                    diaryStatusInterval = $interval(diaryLockStatus, 2000);
                 });
                 $scope.addListener('STOP_AUTO_ASSIGN_STATUS_POLLING', function() {
                     $interval.cancel(diaryStatusInterval);
@@ -413,6 +413,10 @@ angular.module('sntRover')
                         if (timeObj) {
                             ngDialog.close();
                         }
+                    }, failureCallBackAssignRoom = function(errorMessage) {
+                        if (errorMessage.httpStatus && errorMessage.httpStatus === 470) {
+                            diaryLockStatus();
+                        }
                     },
                     postData = {
                         "reservation_id": reservationDetails.reservationId,
@@ -430,7 +434,8 @@ angular.module('sntRover')
 
                     var options = {
                         params: postData,
-                        successCallBack: successCallBackAssignRoom
+                        successCallBack: successCallBackAssignRoom,
+                        failureCallBack: failureCallBackAssignRoom
                     };
 
                     $scope.callAPI(RVNightlyDiarySrv.assignRoom, options);
@@ -771,7 +776,8 @@ angular.module('sntRover')
                         params: {
                             'from_date': $scope.extendShortenReservationDetails.arrival_date,
                             'to_date': $scope.extendShortenReservationDetails.dep_date,
-                            'reservation_id': $scope.extendShortenReservationDetails.reservation_id
+                            'reservation_id': $scope.extendShortenReservationDetails.reservation_id,
+                            'is_from_diary': true
                         },
                         successCallBack: successCallBack
                     };
@@ -840,7 +846,12 @@ angular.module('sntRover')
 
                     let options = {
                         params: $scope.extendShortenReservationDetails,
-                        successCallBack: successCallBack
+                        successCallBack: successCallBack,
+                        failureCallBack: function(errorMessage) {
+                            if (errorMessage.httpStatus && errorMessage.httpStatus === 470) {
+                                diaryLockStatus();
+                            }
+                        }
                     };
 
                     $scope.callAPI(RVNightlyDiarySrv.confirmUpdates, options);
