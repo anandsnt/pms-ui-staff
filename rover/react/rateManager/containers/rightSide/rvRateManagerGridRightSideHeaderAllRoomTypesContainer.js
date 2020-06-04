@@ -1,27 +1,26 @@
 const {connect} = ReactRedux;
 
-const mapStateForRateManagerHierarchyRateHeaderContainerProps = (state) => {
+const mapStateForRateManagerGridRightSideHeaderAllRoomTypesContainerProps = (state) => {
     var rvRMUtils = new rvRateManagerRightSideContainerUtils();
     // for every mode (all rate view, room type, single rate view), this is same
     var propsToReturn =  {
         mode: state.mode,
-        restrictionSummary: rvRMUtils.convertDataForRestrictionListing(state.summary[0].rateRestrictionSummary, state.restrictionTypes, true),
+        restrictionSummary: rvRMUtils.convertDataForRestrictionListing(state.summary[0].allRoomTypeSummary, state.restrictionTypes),
         dateList: rvRMUtils.convertDateListForRestrictionView(state.dates, state.businessDate),
         dates: state.dates,
-        cellClicked: state.callBacksFromAngular.clickedOnHierarchyRateCell
+        cellClicked: state.callBacksFromAngular.clickedOnRoomTypeAndAmountCell
     };
 
     return propsToReturn;
 };
 
-const mapDispatchForRateManagerHierarchyRateHeaderContainerProps = (stateProps, dispatch) => {
-
+const mapDispatchForRateManagerGridRightSideHeaderAllRoomTypesContainerProps = (stateProps, dispatch) => {
     var onTdClick = (e, colIndex) => {
         var date = stateProps.dates[colIndex],
-            rateIDs = [];
+            roomTypeIDs = [];
 
         return stateProps.cellClicked({
-            rateIDs,
+            roomTypeIDs,
             date
         });
     };
@@ -37,8 +36,8 @@ const mapDispatchForRateManagerHierarchyRateHeaderContainerProps = (stateProps, 
     };
 };
 
-const RateManagerHierarchyRateHeaderContainer = connect(
-    mapStateForRateManagerHierarchyRateHeaderContainerProps,
+const RateManagerGridRightSideHeaderAllRoomTypesContainer = connect(
+    mapStateForRateManagerGridRightSideHeaderAllRoomTypesContainerProps,
     null,
-    mapDispatchForRateManagerHierarchyRateHeaderContainerProps
+    mapDispatchForRateManagerGridRightSideHeaderAllRoomTypesContainerProps
 )(RateManagerGridRightSideHierarchyHeaderCellComponent);

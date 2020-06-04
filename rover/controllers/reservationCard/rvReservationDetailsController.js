@@ -82,7 +82,7 @@ sntRover.controller('reservationDetailsController',
 
 		$scope.guestIdAdminEnabled = $rootScope.hotelDetails.guest_id_scan.view_scanned_guest_id;
    		$scope.hasGuestIDPermission = rvPermissionSrv.getPermissionValue('ACCESS_GUEST_ID_DETAILS');
-   		
+		
 		if (!$rootScope.stayCardStateBookMark) {
 			setNavigationBookMark();
 		}
@@ -274,6 +274,7 @@ sntRover.controller('reservationDetailsController',
 				backParam.useCache = true;
 				backParam.isBulkCheckoutSelected = $stateParams.isBulkCheckoutSelected;
 				backParam.isAllowOpenBalanceCheckoutSelected = $stateParams.isAllowOpenBalanceCheckoutSelected;
+				backParam.isBulkCheckinSelected = $vault.get('isBulkCheckinSelected') === 'true';
 				$state.go('rover.search', backParam);
 			};
 		}
@@ -412,7 +413,34 @@ sntRover.controller('reservationDetailsController',
 				}
 
 				return $filter('date')(minDate, $rootScope.dateFormat);
+			},
+			getMinDateForAllotmentReservation = function () {
+				var businessDate = tzIndependentDate($rootScope.businessDate),
+					allotmentStartDate = tzIndependentDate($scope.reservationData.reservation_card.allotment_block_from);
+
+				var minDate = businessDate > allotmentStartDate ? 
+							businessDate : allotmentStartDate;
+
+				if ($scope.reservationData.reservation_card.reservation_status === 'CHECKEDIN') {
+					minDate = $scope.editStore.arrival;
+				}
+
+				return $filter('date')(minDate, $rootScope.dateFormat);
+			},
+			getMaxDepartureDate = function () {
+				var departureDate;
+
+				if (!!$scope.reservationData.reservation_card.group_id) {
+					departureDate = $filter('date')($scope.reservationData.reservation_card.group_shoulder_block_to, $rootScope.dateFormat);
+				} else if (!! $scope.reservationData.reservation_card.allotment_id) {
+					departureDate = $filter('date')($scope.reservationData.reservation_card.allotment_block_to, $rootScope.dateFormat);
+				} else {
+					departureDate = $scope.getReservationMaxDepartureDate($scope.editStore.arrival);
+				}
+
+				return departureDate;
 			};
+
 
 		// for groups this date picker must not allow user to pick
 		// a date that is after the group end date.
@@ -425,11 +453,19 @@ sntRover.controller('reservationDetailsController',
 
 		}
 
+		if ( !! $scope.reservationData.reservation_card.allotment_id ) {
+			datePickerCommon = angular.extend(datePickerCommon, {
+				minDate: getMinDateForAllotmentReservation(),
+				maxDate: $filter('date')($scope.reservationData.reservation_card.allotment_block_to, $rootScope.dateFormat)
+			});
+
+		}
+
 		$scope.arrivalDateOptions = angular.copy(datePickerCommon);
 		$scope.departureDateOptions = angular.copy(datePickerCommon);	
 
 	    // CICO-46933
-		$scope.departureDateOptions.maxDate = !!$scope.reservationData.reservation_card.group_id ? $filter('date')($scope.reservationData.reservation_card.group_shoulder_block_to, $rootScope.dateFormat) : $scope.getReservationMaxDepartureDate($scope.editStore.arrival);
+		$scope.departureDateOptions.maxDate = getMaxDepartureDate();
 		
 		// CICO-46933
 		$scope.arrivalDateChanged = function () {			

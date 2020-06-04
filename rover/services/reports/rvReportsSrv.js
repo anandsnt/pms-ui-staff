@@ -232,6 +232,21 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'NEXT_THIRTY_DAYS',
                 'NEXT_MONTH',
                 'DATE_RANGE'
+            ],
+            'HESTA Switzerland': [
+                'LAST_MONTH',
+                'LAST_JANUARY',
+                'LAST_FEBRUARY',
+                'LAST_MARCH',
+                'LAST_APRIL',
+                'LAST_MAY',
+                'LAST_JUNE',
+                'LAST_JULY',
+                'LAST_AUGUST',
+                'LAST_SEPTEMBER',
+                'LAST_OCTOBER',
+                'LAST_NOVEMBER',
+                'LAST_DECEMBER'
             ]
         };
 
@@ -324,6 +339,12 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'LAST_DECEMBER',
                 'LAST_THIRTY_DAYS',
                 'NEXT_THIRTY_DAYS',
+                'CURRENT_MONTH',
+                'CURRENT_MONTH_PLUS_ONE',
+                'CURRENT_MONTH_PLUS_TWO',
+                'CURRENT_MONTH_PLUS_THREE'
+             ],
+             'Rooms OOO/OOS': [
                 'CURRENT_MONTH',
                 'CURRENT_MONTH_PLUS_ONE',
                 'CURRENT_MONTH_PLUS_TWO',

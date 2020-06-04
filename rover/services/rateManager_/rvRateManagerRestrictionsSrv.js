@@ -50,12 +50,12 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
 
         // check if any of the hierarchy restrictions are enabled
         service.activeHierarchyRestrictions = function() {
-            return {
-                house: service.hierarchyRestrictions.houseEnabled,
-                rateTypes: service.hierarchyRestrictions.rateTypeEnabled,
-                roomTypes: service.hierarchyRestrictions.roomTypeEnabled,
-                rates: service.hierarchyRestrictions.rateEnabled
-            };
+            return [
+                {level: 'House', active: service.hierarchyRestrictions.houseEnabled},
+                {level: 'RateType', active: service.hierarchyRestrictions.rateTypeEnabled},
+                {level: 'RoomType', active: service.hierarchyRestrictions.roomTypeEnabled},
+                {level: 'Rate', active: service.hierarchyRestrictions.rateEnabled}
+            ];
         };
 
         // CICO-76337 - for rateType only
@@ -84,12 +84,13 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
         // Handle GET api, for individual cell click & popup in House Level ( Frozen Panel).
         service.formatRestrictionsData = function(restrcionsList, params) {
 			// CICO-76813 : New API for hierarchyRestrictions
-            if (
-                (service.hierarchyRestrictions.houseEnabled && params.restrictionType === 'HOUSE') ||
-                params.forPanel
-            ) {
+            if (service.hierarchyRestrictions.houseEnabled && params.restrictionType === 'HOUSE') {
                 _.each(restrcionsList, function( item ) {
                     item.restrictions = rvRateManagerUtilitySrv.generateOldGetApiResponseFormat(item.restrictions);
+                });
+            } else if (params.forPanel) {
+                _.each(restrcionsList, function( item ) {
+                    item.restrictions = rvRateManagerUtilitySrv.generateOldGetApiResponseFormatForPanel(item.restrictions);
                 });
             }
 
@@ -100,10 +101,6 @@ angular.module('sntRover').service('rvRateManagerRestrictionsSrv', ['Toggles', '
         service.getURLforCommonRestrictions = function() {
 			var url = '/api/daily_rates/all_restrictions';
 
-            // CICO-76813 : New API for hierarchyRestrictions
-            if (service.hierarchyRestrictions.houseEnabled) {
-                url = '/api/restrictions/house';
-            }
             return url;
         };
 

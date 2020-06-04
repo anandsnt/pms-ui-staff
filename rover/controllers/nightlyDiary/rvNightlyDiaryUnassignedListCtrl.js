@@ -218,6 +218,25 @@ angular.module('sntRover')
             }
         };
 
+        /**
+         * This functions initiates the auto assign call.
+         * Setting necessary classes to the respective container,
+         * Display the autoassign overlay and header
+         */
+        $scope.initiateAutoAssign = function() {
+            $scope.$emit('INITIATE_AUTO_ASSIGN');
+        };
+
+        /**
+         * hide the auto-assign button for FULL HOURLY hotels
+         */
+        $scope.enableAutoAssign = function() {
+            return !$rootScope.isPmsProductionEnv &&
+                $rootScope.hotelDiaryConfig.mode !== 'FULL' &&
+                !_.isEmpty($scope.diaryData.unassignedReservationList) &&
+                $scope.diaryData.unassignedReservationList.reservations.length !== 0;
+        };
+
         // CICO-65962 : Handle Clear Query.
         $scope.clearQuery = function() {
             $scope.searchQuery = '';

@@ -148,7 +148,8 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
                 'arrival_date': data.arrival_date,
                 'dep_date': data.dep_date,
                 'room_number': data.room_number,
-                'authorize_credit_card': data.authorize_credit_card
+                'authorize_credit_card': data.authorize_credit_card,
+                'is_from_diary': true
             };
             var deferred = $q.defer ();
 
@@ -327,6 +328,33 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
                 deferred.reject(data);
             });
             return deferred.promise;
+        };
+
+        /**
+         * Initiate auoto-assign of rooms
+         */
+        this.initiateAutoAssignRooms = function(params) {
+            var url = 'api/auto_room_assign_processes/auto_room_assignment';
+
+            return sntBaseWebSrv.postJSON(url, params);
+        };
+
+        /**
+         * Fetch auto-assign status
+         */
+        this.fetchAutoAssignStatus = function() {
+            var url = 'api/auto_room_assign_processes/status';
+
+            return sntBaseWebSrv.getJSON(url);
+        };
+
+        /**
+         * Unlock Diary after auto-assign process
+         */
+        this.unlockRoomDiary = function() {
+            var url = 'api/auto_room_assign_processes/unlock_diary';
+
+            return sntBaseWebSrv.postJSON(url);
         };
     }
 ]);

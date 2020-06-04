@@ -14,8 +14,8 @@ angular.module('reportsModule')
         'PAID_TO_DATE': 'paid_to_date',
         'CREATE_FROM_DATE': 'create_from_date',
         'CREATE_TO_DATE': 'create_to_date',
-        'ADJUSTMENT_FROM_DATE': 'from_date',
-        'ADJUSTMENT_TO_DATE': 'to_date',
+        'ADJUSTMENT_FROM_DATE': 'adjustment_from_date',
+        'ADJUSTMENT_TO_DATE': 'adjustment_to_date',
         'SINGLE_DATE': 'date',
 
         'FROM_TIME': 'from_time',

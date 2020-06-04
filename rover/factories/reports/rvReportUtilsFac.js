@@ -3136,8 +3136,8 @@ angular.module('reportsModule')
                 var getSelectAllVal = (floors) => {
                     var selectAll = true;
 
-                    if (filterValues && filterValues.floor_ids) {
-                        selectAll = floors.length === filterValues.floor_ids.length;
+                    if (filterValues && filterValues.floor) {
+                        selectAll = floors.length === filterValues.floor.length;
                     }
 
                     return selectAll;
@@ -3147,14 +3147,14 @@ angular.module('reportsModule')
 
                     var floorCopy = angular.copy(data);
 
-                    if (filterValues && filterValues.floor_ids) {
-                        floorCopy = floorCopy.map(floor => {
-                            floor.selected = false;
+                    if (filterValues && filterValues.floor) {
+                        floorCopy = floorCopy.map(floorItem => {
+                            floorItem.selected = false;
 
-                            if (filterValues.floor_ids.indexOf(floor.id) > -1) {
-                                floor.selected = true;
+                            if (filterValues.floor.indexOf(floorItem.id) > -1) {
+                                floorItem.selected = true;
                             }
-                            return floor;
+                            return floorItem;
                         });
                     }
                     
