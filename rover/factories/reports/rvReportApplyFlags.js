@@ -13,7 +13,7 @@ angular.module('reportsModule')
                         'RESERVATIONS_BY_USER': ['hasUserFilter', 'canRemoveDate'],
                         'MARKET_SEGMENT_STAT_REPORT': ['hasSysDateLimit'],
                         'ROOMS_QUEUED': ['hasSysDateLimit'],
-                        'RATE_ADJUSTMENTS_REPORT': ['canRemoveDate'],
+                        'RATE_ADJUSTMENTS_REPORT': ['hasDateLimit', 'canRemoveDate'],
                         'ADDON_FORECAST': ['canRemoveDate', 'hasOneYearLimit'],
                         'DAILY_PRODUCTION_ROOM_TYPE': ['canRemoveDate', 'hasOneYearLimit'],
                         'DAILY_PRODUCTION_DEMO': ['hasOneYearLimit'],

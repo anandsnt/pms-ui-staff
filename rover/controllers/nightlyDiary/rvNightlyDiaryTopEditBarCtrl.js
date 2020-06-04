@@ -91,6 +91,10 @@ angular.module('sntRover')
                     $scope.$emit('UPDATE_RESERVATIONLIST');
                 },
                 failureCallBack = function(errorMessage) {
+                    if (errorMessage.httpStatus && errorMessage.httpStatus === 470) {
+						$scope.$emit('REFRESH_AUTO_ASSIGN_STATUS');
+						return;
+					}
                     $scope.$emit('SHOW_ERROR_MESSAGE', errorMessage[0]);
                 },
                 postData = {
