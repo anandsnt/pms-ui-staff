@@ -413,6 +413,9 @@ sntRover.run([
 			if (toState.name === 'rover.diary') {
 				$rootScope.$broadcast('setDiaryBackButton');
 			}
+			if (toState.name === 'rover.nightlyDiary') {
+				$rootScope.$broadcast('POLL_AUTO_ASSIGN_STATUS');
+			}
 		});
 
 
@@ -442,6 +445,9 @@ sntRover.run([
 			if ( $rootScope.setNextState.data ) {
 				_.extend(toParams, $rootScope.setNextState.data);
 				$rootScope.setNextState = {};
+			}
+			if (fromState.name === 'rover.nightlyDiary') {
+				$rootScope.$broadcast('STOP_AUTO_ASSIGN_STATUS_POLLING');
 			}
 
 			$rootScope.diaryState.update(toState.name, fromState.name, fromParams);
