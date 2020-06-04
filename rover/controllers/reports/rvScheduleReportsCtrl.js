@@ -1583,6 +1583,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Room Status Report': true,
                 'Rate Adjustment Report': true,
                 'Occupancy & Revenue Summary': true,
+                'Rooms OOO/OOS': true
             };
 
             var forWeekly = {
