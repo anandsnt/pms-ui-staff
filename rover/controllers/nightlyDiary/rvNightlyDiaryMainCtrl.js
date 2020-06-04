@@ -47,51 +47,48 @@ angular.module('sntRover')
                     diaryStatusInterval = null,
                     setAutoAssignStatus = function(data) {
                         $scope.diaryData.autoAssign.status = data.auto_room_assignment_status;
-                        /**
-                         * showHeader=false, isLocked=false, is_diary_locked=false
-                         * normal diary view, not locked, no need to lock
-                         * 
-                         * showHeader=true, isLocked=false, is_diary_locked=false
-                         * the auto assignment header is on display, no need to lock UI or cancel the header
-                         * 
-                         * showHeader=true, isLocked=true, is_diary_locked=true
-                         * poll result returned with locked status, maintain lock, display the status header
-                         * pending, failed, completed, partial
-                         * Display the refresh button or unlock button
-                         */
-
                         if (!$scope.diaryData.autoAssign.showHeader) {
                             /**
-                             * showHeader=false, isLocked=false, is_diary_locked=true
-                             * normal diary view, not locked, need to lock
+                             * Two valid cases:
+                             * 1. showHeader=false, isLocked=false, is_diary_locked=false
+                             *    normal diary view, UI not locked, no need to lock.
+                             * 2. showHeader=false, isLocked=false, is_diary_locked=true
+                             *    normal diary view, UI not locked, need to lock.
+                             *
+                             * isLocked can't be true when showHeader is false, so no need to worry about those 2 cases
+                             * Ultimately, is_diary_locked rewrites the other two variable if the showHeader is false
                              */
-                            if (data.is_diary_locked) {
-                                $scope.diaryData.autoAssign.showHeader = true;
-                                $scope.diaryData.autoAssign.isLocked = true;
-                            }
-                        }
-                        if ($scope.diaryData.autoAssign.showHeader) {
-                            if (!$scope.diaryData.autoAssign.isLocked) {
-                                /**
-                                 * showHeader=true, isLocked=false, is_diary_locked=true
-                                 * Someone is checking the header and the poll return the status as locked
-                                 * we need to lock the diary
-                                 */
-                                if (data.is_diary_locked) {
-                                    $scope.diaryData.autoAssign.isLocked = true;
-                                }
-                            } else {
-                                /**
-                                 * showHeader=true, isLocked=true, is_diary_locked=false
-                                 * diary UI is locked but poll returns that diary is unlocked, so need to unlock the UI
-                                 * also need to update diary view and unassigned list
-                                 */
-                                if (!data.is_diary_locked) {
-                                    $scope.diaryData.autoAssign.showHeader = false;
-                                    $scope.diaryData.autoAssign.isLocked = false;
-                                    refreshDiaryScreen();
-                                    updateUnAssignedReservationList();
-                                }
+                            $scope.diaryData.autoAssign.showHeader = data.is_diary_locked;
+                            $scope.diaryData.autoAssign.isLocked = data.is_diary_locked;
+                        } else if ($scope.diaryData.autoAssign.showHeader && !$scope.diaryData.autoAssign.isLocked) {
+                            /**
+                             * 1. showHeader=true, isLocked=false, is_diary_locked=false
+                             *    The auto assignment header is on display, no need to lock UI or cancel the header
+                             * 2. showHeader=true, isLocked=false, is_diary_locked=true
+                             *    Someone is checking the header and the poll return the status as locked, we need to lock the diary
+                             *
+                             * In these cases, the auto assigne header is already on display but the UI isn't locked.
+                             * So only the second value needs to change depending on the value of is_diary_locked.
+                             */
+                            $scope.diaryData.autoAssign.isLocked = data.is_diary_locked;
+                        } else if ($scope.diaryData.autoAssign.showHeader && $scope.diaryData.autoAssign.isLocked) {
+                            /**
+                             * 1. showHeader=true, isLocked=true, is_diary_locked=false
+                             *    Diary UI is locked but poll returns that diary is unlocked, so need to unlock the UI.
+                             *    Also need to update diary view and unassigned list.
+                             * 2. showHeader=true, isLocked=true, is_diary_locked=true
+                             *    Poll result returned with locked status, maintain lock, display the header depending on the statuses
+                             *    pending, failed, completed, partial.
+                             *    Display the refresh button or unlock button.
+                             *
+                             * The second case is handled mainly by the switch block below.
+                             * In either of these cases also, we need to update the first two variables based on the value of is_diary_locked
+                             */
+                            $scope.diaryData.autoAssign.showHeader = data.is_diary_locked;
+                            $scope.diaryData.autoAssign.isLocked = data.is_diary_locked;
+                            if (!data.is_diary_locked) {
+                                refreshDiaryScreen();
+                                updateUnAssignedReservationList();
                             }
                         }
                         $scope.diaryData.autoAssign.processDate = data.process_date ? data.process_date : $scope.diaryData.arrivalDate;
