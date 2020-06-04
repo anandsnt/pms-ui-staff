@@ -94,9 +94,7 @@ angular.module('sntRover')
                                 }
                             }
                         }
-                        if (data.process_date) {
-                            $scope.diaryData.autoAssign.processDate = data.process_date;
-                        }
+                        $scope.diaryData.autoAssign.processDate = data.process_date ? data.process_date : $scope.diaryData.arrivalDate;
 
                         switch (data.auto_room_assignment_status) {
                             case 'pending':
