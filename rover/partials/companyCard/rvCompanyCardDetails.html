@@ -75,8 +75,11 @@
                             <a translate>WALLET</a>
                             <button type="button" class="button white icons icon-expand" rv-fullscreen fs-sub-header="Wallet" fs-toggle-class="fullscreen-card">Fullscreen</button>                            
                         </li>
-                        <li ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-notes'}" ng-click="switchTabTo($event, 'cc-notes')">
+                        <li ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-notes', 'with-filters': isCloudStorageEnabledForCardType('cota_card')}" ng-click="switchTabTo($event, 'cc-notes')">
                             <a translate> {{ isCloudStorageEnabledForCardType('cota_card') ? 'NOTES_AND_FILES' : 'NOTES' }}</a>
+                            <button type="button" ng-if="isCloudStorageEnabledForCardType('cota_card')" class="button white icons icon-expand" rv-fullscreen fs-sub-header="Notes & Files" fs-toggle-class="fullscreen-card">
+                                Fullscreen
+                            </button>
                         </li>
                         <li class="with-filters" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-commissions'}" ng-click="switchTabTo($event, 'cc-commissions')" ng-show="shouldShowCommissionsTab()">
                             <a translate>COMMISSIONS</a>
@@ -121,9 +124,13 @@
                     <span  ng-show="currentSelectedTab == 'cc-notes' && !isCloudStorageEnabledForCardType('cota_card')"
                            ng-include="'/assets/partials/companyCard/rvCompanyCardNotes.html'">       
                     </span>
-                    <span  ng-if="currentSelectedTab == 'cc-notes' && isCloudStorageEnabledForCardType('cota_card')"
-                           ng-include="'/assets/partials/companyCard/rvCompanyTAFilesAndNotes.html'">       
-                    </span>
+
+                    <form method="post" action="{action}" id="gc-notes" name="gc-notes" class="form inner-header card-tab notes-tab no-print"
+                        ng-if="currentSelectedTab == 'cc-notes' && isCloudStorageEnabledForCardType('cota_card')">
+                        <div ng-include="'/assets/partials/common/rvFullscreenHeader.html'" class="fullscreen-header"></div>
+                        <span ng-include="'/assets/partials/companyCard/rvCompanyTAFilesAndNotes.html'">
+                        </span>
+                    </form>
                     <!-- Company Card Tab 5 Resevations -->
                     <!-- <span ng-hide="true" ng-include="'/assets/partials/companyCard/rvCompanyCardReservations.html'"></span> -->
                 </div>

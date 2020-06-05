@@ -1,15 +1,19 @@
 sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv',
 	function($scope, rvFileCloudStorageSrv) {
 
+		$scope.cardData.fileList = [];
+		$scope.cardData.selectedFileList = [];
 		var newFileList = [];
 		var fetchFiles = function() {
 			rvFileCloudStorageSrv.fetchFiles({}).then(function(fileList) {
 				_.each(fileList, function(file) {
-					file.is_selected = false;
+					var indexOffileInSelectedList = _.findIndex($scope.cardData.selectedFileList, function(selectedFile) {
+						return selectedFile.id === file.id;
+					});
+					file.is_selected = indexOffileInSelectedList !== -1;
+					$scope.cardData.fileList = fileList;
+					$scope.refreshScroller('card_file_list_scroller');
 				});
-				$scope.cardData.fileList = fileList;
-				$scope.refreshScroller('card_file_list_scroller');
-				// console.log(fileList)
 			});
 		};
 
@@ -17,6 +21,12 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 			$scope.cardData.newFile = file;
 			newFileList.push(file);
 		});
+
+		$scope.fileSelectionChanged = function () {
+			$scope.cardData.selectedFileList = _.filter($scope.cardData.fileList, function(file) {
+				return file.is_selected;
+			});
+		};
 
 		$scope.fileChange = function() {
 			// File selection done
@@ -38,20 +48,9 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 			});
 		};
 
-		$scope.markFileSelected = function(file) {
-			file.is_selected = !file.is_selected;
-		};
-
-		var filterSelectedFilesList = function() {
-			return _.filter($scope.cardData.fileList, function(file) {
-				return file.is_selected;
-			});
-		};
-
 		$scope.donwloadFiles = function() {
-			var selectedFilesList = filterSelectedFilesList();
 
-			_.each(selectedFilesList, function(file) {
+			_.each($scope.cardData.selectedFileList, function(file) {
 				rvFileCloudStorageSrv.downLoadFile({
 					id: file.id
 				});
@@ -59,26 +58,26 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 		};
 
 		$scope.deleteFiles = function() {
-			var selectedFilesList = filterSelectedFilesList();
-
-			_.each(selectedFilesList, function(file) {
+			_.each($scope.cardData.selectedFileList, function(file) {
 				rvFileCloudStorageSrv.deleteFile({
 					id: file.id
 				}).then(fetchFiles);
 			});
 		};
 
-		$scope.$on('FETCH_FILES', fetchFiles);
+		$scope.$on('FETCH_FILES', function(){
+			$scope.setScroller('card_file_list_scroller', {});
+			fetchFiles();
+		});
 
 		(function() {
-			$scope.cardData.fileList = [];
 			$scope.cardData.newFile = {
 				base64: '',
 				name: '',
 				size: '',
 				type: ''
 			};
-			$scope.setScroller('card_file_list_scroller', {});
+			$scope.cardData.hasFilePersmissions = true;
 		})();
 	}
 ]);

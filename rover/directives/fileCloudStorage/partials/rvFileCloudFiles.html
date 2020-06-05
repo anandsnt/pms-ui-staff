@@ -1,25 +1,5 @@
-<!-- FILES
-
-<ul>
-	<li ng-repeat="file in cardData.fileList">
-		{{ file.name }}-- <button ng-click="markFileSelected(file)">Select</button>
-	</li>
-</ul>
-<button ng-click="deleteFiles()">Delete</button>
-<button ng-click="donwloadFiles()">Download</button>
-
- <input type="file" ng-model="cardData.newFile.base64" accept="*" app-filereader multiple ng-change="fileChange()"/>
-
- {{cardData.newFile.name}}
- <br/>{{cardData.newFile.type}}
-
- <ul>
- 	<li ng-repeat="file in cardData.newFileList">{{file.name}}</li>
- </ul>
- -->
-
  <!-- Create scroll -->
-<div class="notes-files scrollable">
+<div class="notes-files scrollable" ng-iscroll="card_file_list_scroller">
     <div class="wrapper">
 
         <!-- If grouping by file type --
@@ -28,14 +8,13 @@
             <span>({count})</span>
         </h4>
         -->
-
         <!-- if grouping by file type, add .files-file-type -->
         <ul class="files">
          
                 <li class="file" ng-repeat="file in cardData.fileList">
-                    <label class="checkbox inline hidden">
-                        <span class="icon-form icon-checkbox"></span>
-                        <input name="fileSelected[]" value="<?php echo $index; ?>" type="checkbox" />
+                    <label class="checkbox inline" ng-class="{'hidden': !cardData.hasFilePersmissions}" >
+                        <span class="icon-form icon-checkbox" ng-class="{'checked': file.is_selected }"></span>
+                        <input ng-model="file.is_selected" type="checkbox" ng-change="fileSelectionChanged()"/>
                     </label>
 
                       <div class="file-container open-modal">

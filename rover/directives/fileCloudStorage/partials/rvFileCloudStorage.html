@@ -13,7 +13,7 @@
 				</label>
 			</div>
 		</div>
-		<ng-include src="'/assets/directives/fileCloudStorage/partials/rvFileCloudHeader.html'"></ng-include>
+		<ng-include ng-if="!cardData.notesViewOn" src="'/assets/directives/fileCloudStorage/partials/rvFileCloudHeader.html'"></ng-include>
 	</div>
 	<div class="tab-details">
 		<ng-include ng-show="cardData.notesViewOn" src="'/assets/directives/fileCloudStorage/partials/rvCardNotes.html'"></ng-include>
