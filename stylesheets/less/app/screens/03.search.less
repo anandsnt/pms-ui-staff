@@ -2620,6 +2620,21 @@
                 .assigned { font-weight: 600; }
                 .unassigned { color: @grey2; }
 
+                .no-service {
+                    
+                    .notice();
+                    margin: 0;
+                    display: block;
+                    text-transform: uppercase;
+                    position: absolute;
+                    padding: 0 5px;
+                    right: 40px;
+                    top: 35px;
+                    font-size: 10px;
+                    height: 20px;
+                    line-height: 20px;
+                }
+
                 /* Service Status ***/
                 .service-status {
                     font-size: 14px;
@@ -4235,6 +4250,14 @@
                     font-size: 16px;
                     line-height: 20px;
                     .calc-width(40, 250);
+                }
+
+                .no-service {
+                    font-size: 12px;
+                    right: 100px;
+                    top: 22px;
+                    height: 25px;
+                    line-height: 25px;
                 }
 
                 /* Service Status ***/
