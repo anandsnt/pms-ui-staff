@@ -4,29 +4,32 @@
 		<label class="checkbox inline" ng-hide="true">
 			<span class="icon-form icon-checkbox"></span>
 			<input value="{value}" type="checkbox">
-			Add to Stay Card
+			{{ 'ADD_TO_STAYCARD' | translate }}
 		</label>
 		<button type="button"
-		ng-click="createNewNote()"
-		class="button"
-		ng-class="{'brand-colors': cardData.noteText.trim()!=='', 'grey': cardData.noteText.trim()===''}"
-		ng-disabled="cardData.noteText.trim()===''"
-		ng-style="{'display':  editingNote === null ? 'block': 'none'}">
-		Post
+				ng-click="createNewNote()"
+				class="button"
+				ng-class="{'brand-colors': cardData.noteText.trim()!=='', 'grey': cardData.noteText.trim()===''}"
+				ng-disabled="cardData.noteText.trim()===''"
+				ng-style="{'display':  editingNote === null ? 'block': 'none'}"
+				translate>
+				POST
 		</button>
 		<button type="button"
-		class="button brand-colors"
-		ng-class="{'brand-colors': cardData.noteText.trim()!=='', 'grey': cardData.noteText.trim()===''}"
-		ng-style="{'display':  editingNote !== null ? 'block': 'none'}"
-		ng-disabled="cardData.noteText.trim()===''"
-		ng-click="updateActiveNote()">
-		Save
+				class="button brand-colors"
+				ng-class="{'brand-colors': cardData.noteText.trim()!=='', 'grey': cardData.noteText.trim()===''}"
+				ng-style="{'display':  editingNote !== null ? 'block': 'none'}"
+				ng-disabled="cardData.noteText.trim()===''"
+				ng-click="updateActiveNote()"
+				translate>
+				SAVE
 		</button>
 		<button type="button"
-		class="button blank"
-		ng-show="editingNote!==null"
-		ng-click="cancelEditMode()">
-		Cancel
+				class="button blank"
+				ng-show="editingNote!==null"
+				ng-click="cancelEditMode()"
+				translate>
+				CANCEL
 		</button>
 	</div>
 	<div class="holder scrollable no-print" ng-iscroll="card_notes_scroller">
@@ -45,8 +48,9 @@
 					</time>
 					<button type="button"
 					class="icons icon-trash"
-					ng-click="deleteCardNote($event, note.id)">
-					Delete post
+					ng-click="deleteCardNote($event, note.id)"
+					translate>
+					DELETE_POST
 					</button>
 				</div>
 				<p>{{note.text}}</p>
@@ -55,8 +59,8 @@
 		<div class="no-content" ng-show="!notes.length">
 			<div class="info">
 				<span class="icon-no-content icon-notes"></span>
-				<strong class="h1">No Notes</strong>
-				<span class="h2">Leave a Note for {{guestCardData.contactInfo.first_name}} {{guestCardData.contactInfo.last_name}}</span>
+				<strong class="h1" translate>NO_NOTES</strong>
+				<span class="h2" translate>NO_NOTES_SUB</span>
 			</div>
 		</div>
 	</div>

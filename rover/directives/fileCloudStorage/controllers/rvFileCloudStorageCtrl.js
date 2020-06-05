@@ -12,7 +12,6 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 					});
 					file.is_selected = indexOffileInSelectedList !== -1;
 					$scope.cardData.fileTypes = _.union($scope.cardData.fileTypes, [file.type]);
-					console.log($scope.cardData.fileTypes);
 				});
 				$scope.cardData.fileList = fileList;
 				$scope.refreshScroller('card_file_list_scroller');

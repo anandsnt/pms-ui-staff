@@ -1,66 +1,49 @@
- <!-- Create scroll -->
+<!-- Create scroll -->
 <div class="notes-files scrollable" ng-iscroll="card_file_list_scroller">
-    <div class="wrapper">
-
-
-        
-        <ng-include ng-if="cardData.group_files_by === 'FILE_TYPE' && !cardData.searchText" src="'/assets/directives/fileCloudStorage/partials/rvGroupedFilesList.html'"></ng-include>
-
-        <!-- if grouping by file type, add .files-file-type -->
-        <ul class="files" ng-if="cardData.group_files_by !== 'FILE_TYPE' || cardData.searchText"
-            ng-class="{'files-file-type': cardData.searchText}">
-         
-                <li class="file" ng-repeat="file in cardData.fileList | orderBy : sortFiles : cardData.sort_files_by === 'NEWLY_ADDED' | filter: cardData.searchText">
-                    <label class="checkbox inline" ng-class="{'hidden': !cardData.hasFilePersmissions}" >
-                        <span class="icon-form icon-checkbox" ng-class="{'checked': file.is_selected }"></span>
-                        <input ng-model="file.is_selected" type="checkbox" ng-change="fileSelectionChanged()"/>
-                    </label>
-
-                      <div class="file-container open-modal">
-                        <div class="file-image">
-                            <!-- If image:
-                            <img src="{src}" />
-                            -->
-                            <!-- if other types:-->
-                            <!--
-                                'file-icon':
-                                 - <span class="icons icon-document"></span> - PDF, DOCx, Pages or any other document type
-                                 - <span class="icons icon-sheet"></span> -for any sheet type document
-                                 - <span class="icons icon-presentation"></span> - for any presentation type such as keynote or ppt
-
-                                 'filetype':
-                                  - pdf - PDF document
-                                  - sheet - csv, numbers, xsls or any other sheet
-                                  - presentation - ppt, keynote or any other presentation type
-                                  - document - for documents
-                              -->
-                            
-                            <div ng-if="file.type !== 'image'" class="file-icon">
-                                <span class="icons icon-document"
-                                      ng-class="{'icon-document': file.type === 'document' || file.type === 'pdf',
-                                                 'icon-sheet': file.type === 'csv' || file.type === 'numbers' || file.type === 'xsls',
-                                                 'icon-presentation': file.type === 'keynote' || file.type === 'ppt'}"></span>
-                                <div class="file-type {{ (file.type === 'pdf') ? 'pdf' :
-                                                         (file.type === 'csv' || file.type === 'numbers' || file.type === 'xsls') ? 'sheet': (file.type === 'keynote' || file.type === 'ppt') ? 'presentation' : ''}}">{{file.type}}</div>
-                            </div>
-                            <img ng-if="file.type === 'image'" src="{{file.img_preview}}"/>
-                        </div>
-                        <h3 class="file-title">{{file.title}}</h3>
-                        <div class="file-details">
-                            <div class="file-author">{{file.author}}</div>
-                            <div class="file-date">{{file.updated_time}}  · {{file.updated_date}}</div>
-                        </div>
-                    </div>
-                </li>
-             
-        </ul>
-    </div>
-
-    <!-- remove .hidden if dragging files -->
-    <div class="notes-files-drag hidden">
-        <div class="notes-files-drag-content">
-            <span class="icon-upload"></span>
-            <p>Drop your file here to upload</p>
+  <div class="wrapper">
+    <ng-include ng-if="cardData.group_files_by === 'FILE_TYPE' && !cardData.searchText"
+    src="'/assets/directives/fileCloudStorage/partials/rvGroupedFilesList.html'"></ng-include>
+    <!-- if grouping by file type, add .files-file-type -->
+    <ul class="files" ng-if="cardData.group_files_by !== 'FILE_TYPE' || cardData.searchText"
+      ng-class="{'files-file-type': cardData.searchText}">
+      
+      <li class="file"
+        ng-repeat="file in cardData.fileList | orderBy : sortFiles : cardData.sort_files_by === 'NEWLY_ADDED' | filter: cardData.searchText"
+        ng-class="{'selected': file.is_selected}">
+        <label class="checkbox inline"
+          ng-class="{'hidden': !cardData.hasFilePersmissions}" >
+          <span class="icon-form icon-checkbox"
+          ng-class="{'checked': file.is_selected }"></span>
+          <input ng-model="file.is_selected" type="checkbox"
+          ng-change="fileSelectionChanged()"/>
+        </label>
+        <div class="file-container open-modal">
+          <div class="file-image">
+            <div ng-if="file.type !== 'image'" class="file-icon">
+              <span class="icons icon-document"
+                ng-class="{'icon-document': file.type === 'document' || file.type === 'pdf',
+                'icon-sheet': file.type === 'csv' || file.type === 'numbers' || file.type === 'xsls',
+              'icon-presentation': file.type === 'keynote' || file.type === 'ppt'}"></span>
+              <div class="file-type {{ (file.type === 'pdf') ? 'pdf' :
+              (file.type === 'csv' || file.type === 'numbers' || file.type === 'xsls') ? 'sheet': (file.type === 'keynote' || file.type === 'ppt') ? 'presentation' : ''}}">{{file.type}}</div>
+            </div>
+            <img ng-if="file.type === 'image'" src="{{file.img_preview}}"/>
+          </div>
+          <h3 class="file-title">{{file.title}}</h3>
+          <div class="file-details">
+            <div class="file-author">{{file.author}}</div>
+            <div class="file-date">{{file.updated_time}}  · {{file.updated_date}}</div>
+          </div>
         </div>
+      </li>
+      
+    </ul>
+  </div>
+  <!-- remove .hidden if dragging files -->
+  <div class="notes-files-drag hidden">
+    <div class="notes-files-drag-content">
+      <span class="icon-upload"></span>
+      <p translate>DROP_FILES_TO_UPLOAD</p>
     </div>
+  </div>
 </div>
