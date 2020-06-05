@@ -651,11 +651,6 @@ angular.module('sntRover')
             if (mode === $scope.modeConstants.RM_SINGLE_RATE_SINGLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE) {
                 params.room_type_id = dialogData.roomType.id;
             }
-            else if (mode === $scope.modeConstants.RM_SINGLE_RATE_MULTIPLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE) {
-                if (isHierarchyRestrictionNeeded()) {
-                    params.restrictionType = getHierarchyRestrictionType();
-                }
-            }
 
             params.details = [];
 
