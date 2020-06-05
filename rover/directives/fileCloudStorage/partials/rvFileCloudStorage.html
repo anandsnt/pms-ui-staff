@@ -2,7 +2,7 @@
 	<div id="gc-notes-header" class="tab-header search-form no-print">
 		<div class="entry switch">
 			<div class="switch-button full-width" ng-class="{'on': cardData.notesViewOn}">
-				<input id="gc-notes-switch" value="1" type="checkbox" checked="" ng-model="cardData.notesViewOn">
+				<input id="gc-notes-switch" value="1" type="checkbox" checked="" ng-model="cardData.notesViewOn" ng-change="screenModeChanged(cardData.notesViewOn ? 'NOTES' : 'FILES')">
 				<label class="data-off">
 					<span class="value">Notes</span>
 					<span class="switch-icon">Files</span>
@@ -15,6 +15,8 @@
 		</div>
 		<ng-include src="'/assets/directives/fileCloudStorage/partials/rvFileCloudHeader.html'"></ng-include>
 	</div>
-	<ng-include ng-show="cardData.notesViewOn" src="'/assets/directives/fileCloudStorage/partials/rvCardNotes.html'"></ng-include>
-	<ng-include ng-if="!cardData.notesViewOn" src="'/assets/directives/fileCloudStorage/partials/rvFileCloudFiles.html'"></ng-include>
+	<div class="tab-details">
+		<ng-include ng-show="cardData.notesViewOn" src="'/assets/directives/fileCloudStorage/partials/rvCardNotes.html'"></ng-include>
+		<ng-include ng-if="!cardData.notesViewOn" src="'/assets/directives/fileCloudStorage/partials/rvFileCloudFiles.html'"></ng-include>
+	</div>
 </div>

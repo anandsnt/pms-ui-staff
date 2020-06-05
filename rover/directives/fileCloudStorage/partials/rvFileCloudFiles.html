@@ -32,13 +32,13 @@
         <!-- if grouping by file type, add .files-file-type -->
         <ul class="files">
          
-                <li class="file">
+                <li class="file" ng-repeat="file in cardData.fileList">
                     <label class="checkbox inline hidden">
                         <span class="icon-form icon-checkbox"></span>
                         <input name="fileSelected[]" value="<?php echo $index; ?>" type="checkbox" />
                     </label>
 
-                      <div class="file-container open-modal" data-href="<?php echo $config['url']; ?>app/modals/file-edit?<?php echo $query; ?>">
+                      <div class="file-container open-modal">
                         <div class="file-image">
                             <!-- If image:
                             <img src="{src}" />
@@ -58,14 +58,17 @@
                               -->
                             
                             <div class="file-icon">
-                                <span class="icons icon-document"></span>
-                                <div class="file-type document">{File Type | ex. 'Pages' or 'Keynote'}</div>
+                                <span class="icons icon-document"
+                                      ng-class="{'icon-document': file.type === 'document' || file.type === 'pdf',
+                                                 'icon-sheet': file.type === 'csv' || file.type === 'numbers' || file.type === 'xsls',
+                                                 'icon-presentation': file.type === 'keynote' || file.type === 'ppt'}"></span>
+                                <div class="file-type document">{{file.type}}</div>
                             </div>
                         </div>
-                        <h3 class="file-title">{File Title}</h3>
+                        <h3 class="file-title">{{file.title}}</h3>
                         <div class="file-details">
-                            <div class="file-author">{File Author}</div>
-                            <div class="file-date">{Time}  · {Date}</div>
+                            <div class="file-author">{{file.author}}</div>
+                            <div class="file-date">{{file.updated_time}}  · {{file.updated_date}}</div>
                         </div>
                     </div>
                 </li>
