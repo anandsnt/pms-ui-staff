@@ -312,6 +312,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 filter_values.with_vat_number = $scope.scheduleParams.with_vat_number;
                 filter_values.without_vat_number = $scope.scheduleParams.without_vat_number;
             }
+            if ($scope.isOccupancyRevenueSummaryReport) {
+                filter_values.include_day_use = $scope.scheduleParams.include_day_use;
+            }
 
             // Fill group by fields
             if ($scope.selectedEntityDetails.group_fields.length > 0) {
@@ -588,6 +591,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 filter_values.with_vat_number = $scope.scheduleParams.with_vat_number;
                 filter_values.without_vat_number = $scope.scheduleParams.without_vat_number;
             }
+            if ($scope.isOccupancyRevenueSummaryReport) {
+                filter_values.include_day_use = $scope.scheduleParams.include_day_use;
+            }
 
             // Fill group by fields
             if ($scope.selectedEntityDetails.group_fields.length > 0) {
@@ -753,7 +759,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             INCLUDE_NEW: 'INCLUDE_NEW',
             INCLUDE_BOTH: 'INCLUDE_BOTH',
             SHOW_RATE_ADJUSTMENTS_ONLY: 'SHOW_RATE_ADJUSTMENTS_ONLY',
-            INCLUDE_CANCELLED: 'INCLUDE_CANCELLED'
+            INCLUDE_CANCELLED: 'INCLUDE_CANCELLED',
+            INCLUDE_LAST_YEAR: 'INCLUDE_LAST_YEAR',
+            INCLUDE_VARIANCE: 'INCLUDE_VARIANCE'
         };
 
         var matchSortFields = {
@@ -936,6 +944,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                         selected = true;
                     }
 
+                    if ($scope.selectedEntityDetails.report.title === reportNames['OCCUPANCY_REVENUE_SUMMARY']) {
+                        selected = true;
+                    }
+
                     $scope.filters.hasGeneralOptions.data.push({
                         paramKey: filter.value.toLowerCase(),
                         description: filter.description,
@@ -1034,6 +1046,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 } else if (filter.value === 'ADJUSTMENT_DATE_RANGE') {
                     $scope.adjustmentDateTimePeriods = reportsSrv.getScheduleReportTimePeriods($scope.selectedEntityDetails.report.title + ':' + filter.value);
                     $scope.adjustmentDateTimePeriods = populateTimePeriodsData($scope.adjustmentDateTimePeriods);
+                } else if (filter.value === 'INCLUDE_DAY_USE') {
+                    $scope.filters.hasDayUseFilter = true;
+                    $scope.filters.include_day_use = false;
                 }
             });
 
@@ -1204,6 +1219,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.isReservationsByUserReport = ($scope.selectedEntityDetails.report.title === reportNames['RESERVATIONS_BY_USER']);
             $scope.isRoomStatusReport = $scope.selectedEntityDetails.report.title === reportNames['ROOM_STATUS_REPORT'];
             $scope.isRateAdjustmentReport = $scope.selectedEntityDetails.report.title === reportNames['RATE_ADJUSTMENTS_REPORT'];
+            $scope.isOccupancyRevenueSummaryReport = $scope.selectedEntityDetails.report.title === reportNames['OCCUPANCY_REVENUE_SUMMARY'];
             
             if (angular.isDefined($scope.selectedEntityDetails.schedule_formats)) {
                 $scope.schedule_formats = $scope.selectedEntityDetails.schedule_formats;
@@ -1302,6 +1318,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 $scope.scheduleParams.year = $scope.selectedEntityDetails.filter_values.year;
                 $scope.scheduleParams.with_vat_number = $scope.selectedEntityDetails.filter_values.with_vat_number;
                 $scope.scheduleParams.without_vat_number = $scope.selectedEntityDetails.filter_values.without_vat_number;
+            }
+
+            if ($scope.selectedEntityDetails.filter_values && $scope.isOccupancyRevenueSummaryReport) {
+                $scope.scheduleParams.include_day_use = $scope.selectedEntityDetails.filter_values.include_day_use;
             }
 
             $scope.timeSlots = reportUtils.createTimeSlots(TIME_SLOT);
@@ -1477,6 +1497,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 $scope.isYearlyTaxReport = false;
                 $scope.isCreditCheckReport = false;
                 $scope.isForecastReport = false;
+                $scope.isOccupancyRevenueSummaryReport = false;
 
                 if ($scope.selectedEntityDetails.report.title === reportNames['CREDIT_CHECK_REPORT']) {
                     $scope.isCreditCheckReport = true;
@@ -1560,8 +1581,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Forecast': true,
                 'Reservations By User': true,
                 'Room Status Report': true,
-                'Rooms OOO/OOS': true,
-                'Rate Adjustment Report': true
+                'Rate Adjustment Report': true,
+                'Occupancy & Revenue Summary': true,
+                'Rooms OOO/OOS': true
             };
 
             var forWeekly = {
@@ -1579,8 +1601,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Forecast': true,
                 'Reservations By User': true,
                 'Room Status Report': true,
-                'Rooms OOO/OOS': true,
-                'Rate Adjustment Report': true
+                'Rate Adjustment Report': true,
+                'Occupancy & Revenue Summary': true,
+                'Rooms OOO/OOS': true
             };
             var forMonthly = {
                 'Arrival': true,
@@ -1597,8 +1620,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Forecast': true,
                 'Reservations By User': true,
                 'Room Status Report': true,
-                'Rooms OOO/OOS': true,
-                'Rate Adjustment Report': true
+                'Rate Adjustment Report': true,
+                'Occupancy & Revenue Summary': true,
+                'Rooms OOO/OOS': true
             };
 
             var forHourly = {
@@ -1613,8 +1637,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 'Forecast': true,
                 'Reservations By User': true,
                 'Room Status Report': true,
-                'Rooms OOO/OOS': true,
-                'Rate Adjustment Report': true
+                'Rate Adjustment Report': true,
+                'Occupancy & Revenue Summary': true,
+                'Rooms OOO/OOS': true
             };
 
             if (forHourly[item.report.title]) {
@@ -1646,6 +1671,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.isCreditCheckReport = false;
             $scope.isYearlyTaxReport = false;
             $scope.isForecastReport = false;
+            $scope.isOccupancyRevenueSummaryReport = false;
 
             if ($scope.selectedEntityDetails.report.title === reportNames['CREDIT_CHECK_REPORT']) {
                 $scope.isCreditCheckReport = true;
