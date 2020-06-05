@@ -2,16 +2,15 @@
 <div class="notes-files scrollable" ng-iscroll="card_file_list_scroller">
     <div class="wrapper">
 
-        <!-- If grouping by file type --
-        <h4 class="file-type-title">
-            {File Type}
-            <span>({count})</span>
-        </h4>
-        -->
+
+        
+        <ng-include ng-if="cardData.group_files_by === 'FILE_TYPE' && !cardData.searchText" src="'/assets/directives/fileCloudStorage/partials/rvGroupedFilesList.html'"></ng-include>
+
         <!-- if grouping by file type, add .files-file-type -->
-        <ul class="files">
+        <ul class="files" ng-if="cardData.group_files_by !== 'FILE_TYPE' || cardData.searchText"
+            ng-class="{'files-file-type': cardData.searchText}">
          
-                <li class="file" ng-repeat="file in cardData.fileList">
+                <li class="file" ng-repeat="file in cardData.fileList | orderBy : sortFiles : cardData.sort_files_by === 'NEWLY_ADDED' | filter: cardData.searchText">
                     <label class="checkbox inline" ng-class="{'hidden': !cardData.hasFilePersmissions}" >
                         <span class="icon-form icon-checkbox" ng-class="{'checked': file.is_selected }"></span>
                         <input ng-model="file.is_selected" type="checkbox" ng-change="fileSelectionChanged()"/>
@@ -36,13 +35,15 @@
                                   - document - for documents
                               -->
                             
-                            <div class="file-icon">
+                            <div ng-if="file.type !== 'image'" class="file-icon">
                                 <span class="icons icon-document"
                                       ng-class="{'icon-document': file.type === 'document' || file.type === 'pdf',
                                                  'icon-sheet': file.type === 'csv' || file.type === 'numbers' || file.type === 'xsls',
                                                  'icon-presentation': file.type === 'keynote' || file.type === 'ppt'}"></span>
-                                <div class="file-type document">{{file.type}}</div>
+                                <div class="file-type {{ (file.type === 'pdf') ? 'pdf' :
+                                                         (file.type === 'csv' || file.type === 'numbers' || file.type === 'xsls') ? 'sheet': (file.type === 'keynote' || file.type === 'ppt') ? 'presentation' : ''}}">{{file.type}}</div>
                             </div>
+                            <img ng-if="file.type === 'image'" src="{{file.img_preview}}"/>
                         </div>
                         <h3 class="file-title">{{file.title}}</h3>
                         <div class="file-details">

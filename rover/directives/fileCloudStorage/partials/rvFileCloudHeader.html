@@ -1,53 +1,64 @@
-<!-- Remove .hidden if checked Selection -->
-<div class="files-selected" ng-class="{'hidden': cardData.selectedFileList.length === 0}">
-    <strong class="files-count"><span class="count">{{cardData.selectedFileList.length}}</span> files selected</strong>
-    <button type="button" class="button purple" ng-click="donwloadFiles()">Download Selected</button>
-    <button type="button" class="button red" ng-click="deleteFiles()">Delete Selected</button>
-</div>
-<!-- Remove .hidden if showing files. Add .hidden if not showing files or selecting files -->
-<div class="entry search" ng-class="{'hidden': cardData.selectedFileList.length !== 0}">
-    <button id="faux-select-clear-query" class="clear-query">
-        <span class="icons icon-clear-search">Clear query</span>
-    </button>
-    <button type="submit" name="submit" class="icons icon-search">Search</button>
-    <input name="faux-select-query" id="faux-select-query" class="query" placeholder="Search by Rate Name or Code" autocomplete="off" type="search">
-</div>
-
-<!-- Remove .hidden if showing files. Add .hidden if not showing files or selecting files -->
-<div class="entry group-by" ng-class="{'hidden': cardData.selectedFileList.length !== 0}">
-    <div class="select with-label">
-        <label for="files-group-by">Group By</label>
-        <select id="files-group-by">
-            <option value="ungrouped" selected="">Ungrouped</option>
-            <option value="filetype">File Type</option>
-        </select>
+<div id="gc-notes-header" class="tab-header search-form no-print">
+    <div class="entry switch">
+        <div class="switch-button full-width" ng-class="{'on': cardData.notesViewOn}">
+            <input id="gc-notes-switch" value="1" type="checkbox" checked="" ng-model="cardData.notesViewOn" ng-change="screenModeChanged(cardData.notesViewOn ? 'NOTES' : 'FILES')">
+            <label class="data-off">
+                <span class="value">Notes</span>
+                <span class="switch-icon">Files</span>
+            </label>
+            <label class="data-on">
+                <span class="switch-icon">Notes</span>
+                <span class="value">Files</span>
+            </label>
+        </div>
     </div>
-</div>
-
-<!-- Remove .hidden if showing files. Add .hidden if not showing files or selecting files -->
-<div class="entry sort" ng-class="{'hidden': cardData.selectedFileList.length !== 0}">
-    <div class="select with-label">
-        <label for="sort">Sort</label>
-        <select id="sort">
-            <option value="last-added" selected="">Last Added</option>
-            <option value="first-added">First Added</option>
-        </select>
+    <!-- Remove .hidden if checked Selection -->
+    <div class="files-selected" ng-class="{'hidden': cardData.selectedFileList.length === 0 || cardData.notesViewOn}">
+        <strong class="files-count"><span class="count">{{cardData.selectedFileList.length}}</span> files selected</strong>
+        <button type="button" class="button purple" ng-click="donwloadFiles()">Download Selected</button>
+        <button type="button" class="button red" ng-click="deleteFiles()">Delete Selected</button>
     </div>
-</div>
-
-<!-- Remove .hidden if showing files. Add .hidden if not showing files or selecting files -->
-<div class="entry add-new" ng-class="{'hidden': cardData.selectedFileList.length !== 0}">
-    <label for="add-new-file" class="add-new-button">
-        <input id="add-new-file" type="file" multiple class="hidden"/>
-        + Add New
-    </label>
-</div>
-
-<!-- Add .selected if checked. If checked, remove .hidden on .files-selected-->
-<div class="entry selection-checkbox" ng-class="{'hidden': cardData.selectedFileList.length === 0}">
-    <label class="checkbox inline">
-        <span class="icon-form icon-checkbox"></span>
-        <input name="file-selection-enabled" id="file-selection-enabled" value="cancel" type="checkbox" />
-        <span class="label-text">Cancel Selection</span>
-    </label>
+    <!-- Remove .hidden if showing files. Add .hidden if not showing files or selecting files -->
+    <div class="entry search" id="file-search" ng-class="{'hidden': cardData.selectedFileList.length !== 0 || cardData.notesViewOn}">
+        <button id="faux-select-clear-query" class="clear-query" ng-click="cardData.searchText= ''">
+            <span class="icons icon-clear-search">Clear query</span>
+        </button>
+        <button type="submit" name="submit" class="icons icon-search">Search</button>
+        <input name="faux-select-query" id="faux-select-query" class="query" ng-model="cardData.searchText" placeholder="Search by File" autocomplete="off" type="search">
+    </div>
+    <!-- Remove .hidden if showing files. Add .hidden if not showing files or selecting files -->
+    <div class="entry group-by" ng-class="{'hidden': cardData.selectedFileList.length !== 0 || cardData.notesViewOn}">
+        <div class="select with-label">
+            <label for="files-group-by">Group By</label>
+            <select id="files-group-by" ng-model="cardData.group_files_by" ng-change="filterChanged()">
+                <option value="UNGROUPED" selected="">Ungrouped</option>
+                <option value="FILE_TYPE">File Type</option>
+            </select>
+        </div>
+    </div>
+    <!-- Remove .hidden if showing files. Add .hidden if not showing files or selecting files -->
+    <div class="entry sort" ng-class="{'hidden': cardData.selectedFileList.length !== 0 || cardData.notesViewOn}">
+        <div class="select with-label">
+            <label for="sort">Sort</label>
+            <select id="sort" ng-model="cardData.sort_files_by" ng-change="filterChanged()">
+                <option value="NEWLY_ADDED" selected="">Last Added</option>
+                <option value="FIRST_ADDED">First Added</option>
+            </select>
+        </div>
+    </div>
+    <!-- Remove .hidden if showing files. Add .hidden if not showing files or selecting files -->
+    <div class="entry add-new" ng-class="{'hidden': cardData.selectedFileList.length !== 0 || cardData.notesViewOn}">
+        <label for="add-new-file" class="add-new-button">
+            <input id="add-new-file" type="file" multiple class="hidden"/>
+            + Add New
+        </label>
+    </div>
+    <!-- Add .selected if checked. If checked, remove .hidden on .files-selected-->
+    <div class="entry selection-checkbox" ng-class="{'hidden': cardData.selectedFileList.length === 0 || cardData.notesViewOn}">
+        <label class="checkbox inline" ng-click="cancelFileSelection()">
+            <span class="icon-form icon-checkbox" ng-class="{'checked': cardData.selectedFileList.length > 0 }"></span>
+            <input name="file-selection-enabled" id="file-selection-enabled" type="checkbox" />
+            <span class="label-text">Cancel Selection</span>
+        </label>
+    </div>
 </div>

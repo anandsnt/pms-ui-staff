@@ -1,0 +1,36 @@
+<div ng-repeat="fileType in cardData.fileTypes">
+	<!-- If grouping by file type -->
+	<h4 class="file-type-title" ng-if="cardData.group_files_by === 'FILE_TYPE'">
+	{{fileType}}
+	<span>({{getFileCount(fileType)}})</span>
+	</h4>
+	<ul class="files files-file-type">
+		
+		<li class="file"
+			ng-if="file.type === fileType"
+			ng-repeat="file in cardData.fileList | orderBy : sortFiles : cardData.sort_files_by === 'NEWLY_ADDED' | filter: cardData.searchText">
+			<label class="checkbox inline" ng-class="{'hidden': !cardData.hasFilePersmissions}" >
+				<span class="icon-form icon-checkbox" ng-class="{'checked': file.is_selected }"></span>
+				<input ng-model="file.is_selected" type="checkbox" ng-change="fileSelectionChanged()"/>
+			</label>
+			<div class="file-container open-modal">
+				<div class="file-image">
+					<div ng-if="file.type !== 'image'" class="file-icon">
+						<span class="icons icon-document"
+							ng-class="{'icon-document': file.type === 'document' || file.type === 'pdf',
+							'icon-sheet': file.type === 'csv' || file.type === 'numbers' || file.type === 'xsls',
+						'icon-presentation': file.type === 'keynote' || file.type === 'ppt'}"></span>
+						<div class="file-type {{ (file.type === 'pdf') ? 'pdf' :
+                                                         (file.type === 'csv' || file.type === 'numbers' || file.type === 'xsls') ? 'sheet': (file.type === 'keynote' || file.type === 'ppt') ? 'presentation' : ''}}">{{file.type}}</div>
+					</div>
+					<img ng-if="file.type === 'image'" src="{{file.img_preview}}"/>
+				</div>
+				<h3 class="file-title">{{file.title}}</h3>
+				<div class="file-details">
+					<div class="file-author">{{file.author}}</div>
+					<div class="file-date">{{file.updated_time}}  · {{file.updated_date}}</div>
+				</div>
+			</div>
+		</li>
+	</ul>
+</div>
