@@ -1,5 +1,5 @@
-sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv',
-	function($scope, rvFileCloudStorageSrv) {
+sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv', '$timeout',
+	function($scope, rvFileCloudStorageSrv, $timeout) {
 
 		$scope.cardData.fileList = [];
 		$scope.cardData.selectedFileList = [];
@@ -21,6 +21,9 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 		$scope.$on('FILE_UPLOADED', function(evt, file) {
 			$scope.cardData.newFile = file;
 			newFileList.push(file);
+			$timeout(function() {
+				$scope.cardData.dragInProgress = false;
+			}, 100);
 		});
 
 		$scope.fileSelectionChanged = function () {
@@ -48,7 +51,7 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 			$scope.refreshScroller('card_file_list_scroller');
 		};
 
-		$scope.fileChange = function() {
+		$scope.fileUploadCompleted = function() {
 			// File selection done
 			var uploadedFileCount = 0;
 			var fileUploadSuccess = function() {
@@ -67,6 +70,8 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 				}).then(fileUploadSuccess);
 			});
 		};
+
+		$scope.$on('FILE_UPLOADED_DONE', $scope.fileUploadCompleted);
 
 		$scope.donwloadFiles = function() {
 
@@ -108,6 +113,7 @@ sntRover.controller('rvFileCloudStorageCtrl', ['$scope', 'rvFileCloudStorageSrv'
 			$scope.cardData.sort_files_by = 'NEWLY_ADDED';
 			$scope.cardData.group_files_by = 'UNGROUPED';
 			$scope.cardData.searchText = '';
+			$scope.cardData.dragInProgress = false;
 		})();
 	}
 ]);

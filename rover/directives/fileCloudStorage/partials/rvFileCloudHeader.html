@@ -65,7 +65,12 @@
     <!-- Remove .hidden if showing files. Add .hidden if not showing files or selecting files -->
     <div class="entry add-new" ng-class="{'hidden': cardData.selectedFileList.length !== 0 || cardData.notesViewOn}">
         <label for="add-new-file" class="add-new-button">
-            <input id="add-new-file" type="file" multiple class="hidden"/>
+            <input id="add-new-file" 
+                   type="file" 
+                   ng-model="cardData.newFile.base64" 
+                   accept="*" app-filereader multiple 
+                   ng-change="fileUploadCompleted()"
+                   class="hidden"/>
             {{ 'ADD_NEW_FILE' | translate }}
         </label>
     </div>
