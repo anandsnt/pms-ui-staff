@@ -301,5 +301,17 @@ angular.module('sntRover').service('rvRateManagerUtilitySrv', [
             return newPostApiParams;
         };
 
+        // Utility method to pick up selected week days for API.
+        service.getSelectedWeekDays = function( daysList ) {
+            var weekDays = [];
+
+            _.each(daysList, function( day ) {
+                if (day.isChecked) {
+                    weekDays.push(day.value);
+                }
+            });
+
+            return weekDays;
+        };
     }
 ]);
