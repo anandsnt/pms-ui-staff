@@ -231,8 +231,7 @@ angular.module('sntRover')
          * hide the auto-assign button for FULL HOURLY hotels
          */
         $scope.enableAutoAssign = function() {
-            return !$rootScope.isPmsProductionEnv &&
-                $rootScope.hotelDiaryConfig.mode !== 'FULL' &&
+            return $rootScope.hotelDiaryConfig.mode !== 'FULL' &&
                 !_.isEmpty($scope.diaryData.unassignedReservationList) &&
                 $scope.diaryData.unassignedReservationList.reservations.length !== 0;
         };
