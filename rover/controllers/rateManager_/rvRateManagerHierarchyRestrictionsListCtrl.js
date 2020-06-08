@@ -40,11 +40,12 @@ angular.module('sntRover')
                                 $scope.restrictionObj.setOnCount = 0;
                                 $scope.restrictionObj.enableEditRestrictions = true;
                                 break;
+                                
                             case 'RoomType':
                                 $scope.restrictionObj.listData = response.room_type[0].restrictions;
                                 $scope.restrictionObj.noticeLabel = 'ALL ROOM TYPES';
                                 $scope.restrictionObj.setOnCount = response.room_types_count;
-                                $scope.header.disableNewRestriction = true;
+                                $scope.header.disableNewRestriction = false;
                                 $scope.restrictionObj.enableEditRestrictions = false;
                                 break;
 
