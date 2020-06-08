@@ -5,6 +5,8 @@ sntRover.directive("rvDropFile", function() {
             dragInProgress: '='
         },
         link: function(scope, elem) {
+            var dragTime = 0;
+
             elem.bind('dragover', function(e) {
                 e.stopPropagation();
                 e.preventDefault();
@@ -12,6 +14,7 @@ sntRover.directive("rvDropFile", function() {
             elem.bind('dragenter', function(e) {
                 e.stopPropagation();
                 e.preventDefault();
+                dragTime = (new Date).getTime();
                 scope.$apply(function() {
                     scope.dragInProgress = true;
                 });
@@ -19,6 +22,11 @@ sntRover.directive("rvDropFile", function() {
             elem.bind('dragleave', function(e) {
                 e.stopPropagation();
                 e.preventDefault();
+                if ((new Date).getTime() - dragTime > 5) {
+                    scope.$apply(function() {
+                        scope.dragInProgress = false;
+                    });
+                }
             });
             elem.bind('drop', function(evt) {
                 evt.stopPropagation();
