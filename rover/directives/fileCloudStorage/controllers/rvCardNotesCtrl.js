@@ -44,7 +44,10 @@ sntRover.controller('rvCardNotesCtrl', ['$scope', 'rvFileCloudStorageSrv', 'rvCa
 			var params = generateApiParams();
 			var options = {
 				params: params,
-				successCallBack: fetchNotes
+				successCallBack: function () {
+					$scope.cardData.noteText = "";
+					fetchNotes();
+				}
 			};
 
 			$scope.callAPI(rvCardNotesSrv.createNote, options);
