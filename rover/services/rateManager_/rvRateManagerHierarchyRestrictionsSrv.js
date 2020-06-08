@@ -28,5 +28,9 @@ angular.module('sntRover').service('rvRateManagerHierarchyRestrictionsSrv', ['$q
         service.deleteRoomTypeRestrictions = (params) => {
             return BaseWebSrvV2.postJSON(roomTypeUrl, params);
         };
+
+        service.searchRoomTypes = (params) => {
+            return BaseWebSrvV2.postJSON('/api/room_types.json', params);
+        };
     }
 ]);
