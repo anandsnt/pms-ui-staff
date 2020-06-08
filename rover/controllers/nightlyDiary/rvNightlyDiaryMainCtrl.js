@@ -91,11 +91,14 @@ angular.module('sntRover')
                                 updateUnAssignedReservationList();
                             }
                         }
+ 
                         if (data.is_diary_locked && $scope.diaryData.isEditReservationMode) {
                             cancelReservationEditing();
+                            ngDialog.close();
                             $scope.diaryData.isReservationSelected = false;
                         }
                         if (data.is_diary_locked && $scope.diaryData.isReservationSelected && !_.isEmpty($scope.diaryData.selectedUnassignedReservation)) {
+                            ngDialog.close();
                             $scope.$broadcast('CANCEL_UNASSIGNED_RESERVATION');
                         }
                         $scope.diaryData.autoAssign.processDate = data.process_date ? data.process_date : $scope.diaryData.arrivalDate;
